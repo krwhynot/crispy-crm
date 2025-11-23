@@ -1,5 +1,6 @@
 import { Bar } from "react-chartjs-2";
 import { useChartTheme } from "../hooks/useChartTheme";
+import { truncateLabel, TooltipTitleContext } from "./chartUtils";
 import "./chartSetup";
 
 interface RepPerformanceChartProps {
@@ -55,7 +56,7 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
       },
       tooltip: {
         callbacks: {
-          title: (context: any) => {
+          title: (context: TooltipTitleContext[]) => {
             const index = context[0].dataIndex;
             return topData[index]?.name || "";
           },
@@ -99,9 +100,4 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
   }
 
   return <Bar data={chartData} options={options} />;
-}
-
-function truncateLabel(label: string, maxLength: number): string {
-  if (label.length <= maxLength) return label;
-  return label.substring(0, maxLength - 3) + "...";
 }

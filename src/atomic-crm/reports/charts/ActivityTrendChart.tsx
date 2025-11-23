@@ -1,5 +1,6 @@
 import { Line } from "react-chartjs-2";
 import { useChartTheme } from "../hooks/useChartTheme";
+import { TooltipContextY } from "./chartUtils";
 import "./chartSetup";
 
 interface ActivityTrendChartProps {
@@ -40,7 +41,7 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
       },
       tooltip: {
         callbacks: {
-          label: (context: any) => {
+          label: (context: TooltipContextY) => {
             return `${context.parsed.y} activities`;
           },
         },

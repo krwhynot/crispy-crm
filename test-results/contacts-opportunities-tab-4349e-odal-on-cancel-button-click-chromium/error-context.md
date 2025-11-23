@@ -58,270 +58,269 @@
                 - cell "Momentum" [ref=e54]
                 - cell "Next Action" [ref=e55]
             - rowgroup [ref=e56]:
-              - row "RJC 3 1 3 decreasing Follow up on RJC pricing proposal" [ref=e57] [cursor=pointer]:
-                - cell "RJC" [ref=e58]
-                - cell "3" [ref=e59]:
-                  - generic [ref=e60]: "3"
+              - button "View opportunities for Demo Principal Org" [ref=e57] [cursor=pointer]:
+                - cell "Demo Principal Org" [ref=e58]
+                - cell "1" [ref=e59]:
+                  - generic [ref=e60]: "1"
                 - cell "1" [ref=e61]:
                   - generic [ref=e62]: "1"
-                - cell "3" [ref=e63]:
-                  - generic [ref=e64]: "3"
-                - cell "decreasing" [ref=e65]:
-                  - generic [ref=e66]:
-                    - img [ref=e67]
-                    - generic [ref=e70]: decreasing
-                - cell "Follow up on RJC pricing proposal" [ref=e71]
-              - row "Demo Principal Org 1 1 - increasing Call back" [ref=e72] [cursor=pointer]:
-                - cell "Demo Principal Org" [ref=e73]
-                - cell "1" [ref=e74]:
-                  - generic [ref=e75]: "1"
-                - cell "1" [ref=e76]:
-                  - generic [ref=e77]: "1"
-                - cell "-" [ref=e78]
-                - cell "increasing" [ref=e79]:
-                  - generic [ref=e80]:
-                    - img [ref=e81]
-                    - generic [ref=e84]: increasing
-                - cell "Call back" [ref=e85]
-              - row "Kaufholds 5 - 5 decreasing Deliver coffee samples to tasting room" [ref=e86] [cursor=pointer]:
-                - cell "Kaufholds" [ref=e87]
+                - cell "-" [ref=e63]
+                - cell "increasing" [ref=e64]:
+                  - generic [ref=e65]:
+                    - img [ref=e66]
+                    - generic [ref=e69]: increasing
+                - cell "Call back" [ref=e70]
+              - button "View opportunities for Wicks" [ref=e71] [cursor=pointer]:
+                - cell "Wicks" [ref=e72]
+                - cell "0" [ref=e73]:
+                  - generic [ref=e74]: "0"
+                - cell "-" [ref=e75]
+                - cell "-" [ref=e76]
+                - cell "steady" [ref=e77]:
+                  - generic [ref=e78]:
+                    - img [ref=e79]
+                    - generic [ref=e80]: steady
+                - cell "Schedule follow-up" [ref=e81]:
+                  - button "Schedule follow-up" [ref=e82]
+              - button "View opportunities for Kaufholds" [ref=e83] [cursor=pointer]:
+                - cell "Kaufholds" [ref=e84]
+                - cell "5" [ref=e85]:
+                  - generic [ref=e86]: "5"
+                - cell "-" [ref=e87]
                 - cell "5" [ref=e88]:
                   - generic [ref=e89]: "5"
-                - cell "-" [ref=e90]
-                - cell "5" [ref=e91]:
-                  - generic [ref=e92]: "5"
-                - cell "decreasing" [ref=e93]:
-                  - generic [ref=e94]:
-                    - img [ref=e95]
-                    - generic [ref=e98]: decreasing
-                - cell "Deliver coffee samples to tasting room" [ref=e99]
-              - row "Frites Street 0 - - steady Schedule follow-up" [ref=e100] [cursor=pointer]:
-                - cell "Frites Street" [ref=e101]
-                - cell "0" [ref=e102]:
-                  - generic [ref=e103]: "0"
-                - cell "-" [ref=e104]
-                - cell "-" [ref=e105]
-                - cell "steady" [ref=e106]:
-                  - generic [ref=e107]:
-                    - img [ref=e108]
-                    - generic [ref=e109]: steady
-                - cell "Schedule follow-up" [ref=e110]:
-                  - button "Schedule follow-up" [ref=e111]
-              - row "Better Balance 0 - - steady Schedule follow-up" [ref=e112] [cursor=pointer]:
-                - cell "Better Balance" [ref=e113]
-                - cell "0" [ref=e114]:
-                  - generic [ref=e115]: "0"
-                - cell "-" [ref=e116]
-                - cell "-" [ref=e117]
-                - cell "steady" [ref=e118]:
-                  - generic [ref=e119]:
-                    - img [ref=e120]
-                    - generic [ref=e121]: steady
-                - cell "Schedule follow-up" [ref=e122]:
-                  - button "Schedule follow-up" [ref=e123]
-              - row "VAF 0 - - steady Schedule follow-up" [ref=e124] [cursor=pointer]:
-                - cell "VAF" [ref=e125]
-                - cell "0" [ref=e126]:
-                  - generic [ref=e127]: "0"
-                - cell "-" [ref=e128]
-                - cell "-" [ref=e129]
-                - cell "steady" [ref=e130]:
-                  - generic [ref=e131]:
-                    - img [ref=e132]
-                    - generic [ref=e133]: steady
-                - cell "Schedule follow-up" [ref=e134]:
-                  - button "Schedule follow-up" [ref=e135]
-              - row "Ofk 0 - - steady Schedule follow-up" [ref=e136] [cursor=pointer]:
-                - cell "Ofk" [ref=e137]
-                - cell "0" [ref=e138]:
-                  - generic [ref=e139]: "0"
-                - cell "-" [ref=e140]
-                - cell "-" [ref=e141]
-                - cell "steady" [ref=e142]:
-                  - generic [ref=e143]:
-                    - img [ref=e144]
-                    - generic [ref=e145]: steady
-                - cell "Schedule follow-up" [ref=e146]:
-                  - button "Schedule follow-up" [ref=e147]
-              - row "Annasea 0 - - steady Schedule follow-up" [ref=e148] [cursor=pointer]:
-                - cell "Annasea" [ref=e149]
-                - cell "0" [ref=e150]:
-                  - generic [ref=e151]: "0"
-                - cell "-" [ref=e152]
-                - cell "-" [ref=e153]
-                - cell "steady" [ref=e154]:
-                  - generic [ref=e155]:
-                    - img [ref=e156]
-                    - generic [ref=e157]: steady
-                - cell "Schedule follow-up" [ref=e158]:
-                  - button "Schedule follow-up" [ref=e159]
-              - row "Rapid Rasoi 73 - - stale Schedule follow-up" [ref=e160] [cursor=pointer]:
-                - cell "Rapid Rasoi" [ref=e161]
-                - cell "73" [ref=e162]:
-                  - generic [ref=e163]: "73"
-                - cell "-" [ref=e164]
-                - cell "-" [ref=e165]
-                - cell "stale" [ref=e166]:
-                  - generic [ref=e167]:
-                    - img [ref=e168]
-                    - generic [ref=e170]: stale
-                - cell "Schedule follow-up" [ref=e171]:
-                  - button "Schedule follow-up" [ref=e172]
-              - row "SWAP 0 - - steady Schedule follow-up" [ref=e173] [cursor=pointer]:
-                - cell "SWAP" [ref=e174]
-                - cell "0" [ref=e175]:
-                  - generic [ref=e176]: "0"
-                - cell "-" [ref=e177]
-                - cell "-" [ref=e178]
-                - cell "steady" [ref=e179]:
-                  - generic [ref=e180]:
-                    - img [ref=e181]
-                    - generic [ref=e182]: steady
-                - cell "Schedule follow-up" [ref=e183]:
-                  - button "Schedule follow-up" [ref=e184]
-              - row "Never Better 0 - - steady Schedule follow-up" [ref=e185] [cursor=pointer]:
-                - cell "Never Better" [ref=e186]
-                - cell "0" [ref=e187]:
-                  - generic [ref=e188]: "0"
+                - cell "decreasing" [ref=e90]:
+                  - generic [ref=e91]:
+                    - img [ref=e92]
+                    - generic [ref=e95]: decreasing
+                - cell "Deliver coffee samples to tasting room" [ref=e96]
+              - button "View opportunities for Frites Street" [ref=e97] [cursor=pointer]:
+                - cell "Frites Street" [ref=e98]
+                - cell "0" [ref=e99]:
+                  - generic [ref=e100]: "0"
+                - cell "-" [ref=e101]
+                - cell "-" [ref=e102]
+                - cell "steady" [ref=e103]:
+                  - generic [ref=e104]:
+                    - img [ref=e105]
+                    - generic [ref=e106]: steady
+                - cell "Schedule follow-up" [ref=e107]:
+                  - button "Schedule follow-up" [ref=e108]
+              - button "View opportunities for Better Balance" [ref=e109] [cursor=pointer]:
+                - cell "Better Balance" [ref=e110]
+                - cell "0" [ref=e111]:
+                  - generic [ref=e112]: "0"
+                - cell "-" [ref=e113]
+                - cell "-" [ref=e114]
+                - cell "steady" [ref=e115]:
+                  - generic [ref=e116]:
+                    - img [ref=e117]
+                    - generic [ref=e118]: steady
+                - cell "Schedule follow-up" [ref=e119]:
+                  - button "Schedule follow-up" [ref=e120]
+              - button "View opportunities for VAF" [ref=e121] [cursor=pointer]:
+                - cell "VAF" [ref=e122]
+                - cell "0" [ref=e123]:
+                  - generic [ref=e124]: "0"
+                - cell "-" [ref=e125]
+                - cell "-" [ref=e126]
+                - cell "steady" [ref=e127]:
+                  - generic [ref=e128]:
+                    - img [ref=e129]
+                    - generic [ref=e130]: steady
+                - cell "Schedule follow-up" [ref=e131]:
+                  - button "Schedule follow-up" [ref=e132]
+              - button "View opportunities for Ofk" [ref=e133] [cursor=pointer]:
+                - cell "Ofk" [ref=e134]
+                - cell "0" [ref=e135]:
+                  - generic [ref=e136]: "0"
+                - cell "-" [ref=e137]
+                - cell "-" [ref=e138]
+                - cell "steady" [ref=e139]:
+                  - generic [ref=e140]:
+                    - img [ref=e141]
+                    - generic [ref=e142]: steady
+                - cell "Schedule follow-up" [ref=e143]:
+                  - button "Schedule follow-up" [ref=e144]
+              - button "View opportunities for Annasea" [ref=e145] [cursor=pointer]:
+                - cell "Annasea" [ref=e146]
+                - cell "0" [ref=e147]:
+                  - generic [ref=e148]: "0"
+                - cell "-" [ref=e149]
+                - cell "-" [ref=e150]
+                - cell "steady" [ref=e151]:
+                  - generic [ref=e152]:
+                    - img [ref=e153]
+                    - generic [ref=e154]: steady
+                - cell "Schedule follow-up" [ref=e155]:
+                  - button "Schedule follow-up" [ref=e156]
+              - button "View opportunities for Rapid Rasoi" [ref=e157] [cursor=pointer]:
+                - cell "Rapid Rasoi" [ref=e158]
+                - cell "73" [ref=e159]:
+                  - generic [ref=e160]: "73"
+                - cell "-" [ref=e161]
+                - cell "-" [ref=e162]
+                - cell "stale" [ref=e163]:
+                  - generic [ref=e164]:
+                    - img [ref=e165]
+                    - generic [ref=e167]: stale
+                - cell "Schedule follow-up" [ref=e168]:
+                  - button "Schedule follow-up" [ref=e169]
+              - button "View opportunities for RJC" [ref=e170] [cursor=pointer]:
+                - cell "RJC" [ref=e171]
+                - cell "3" [ref=e172]:
+                  - generic [ref=e173]: "3"
+                - cell "-" [ref=e174]
+                - cell "2" [ref=e175]:
+                  - generic [ref=e176]: "2"
+                - cell "decreasing" [ref=e177]:
+                  - generic [ref=e178]:
+                    - img [ref=e179]
+                    - generic [ref=e182]: decreasing
+                - cell "Follow up on RJC pricing proposal" [ref=e183]
+              - button "View opportunities for Never Better" [ref=e184] [cursor=pointer]:
+                - cell "Never Better" [ref=e185]
+                - cell "0" [ref=e186]:
+                  - generic [ref=e187]: "0"
+                - cell "-" [ref=e188]
                 - cell "-" [ref=e189]
-                - cell "-" [ref=e190]
-                - cell "steady" [ref=e191]:
-                  - generic [ref=e192]:
-                    - img [ref=e193]
-                    - generic [ref=e194]: steady
-                - cell "Schedule follow-up" [ref=e195]:
-                  - button "Schedule follow-up" [ref=e196]
-              - row "TCFB 0 - - steady Schedule follow-up" [ref=e197] [cursor=pointer]:
-                - cell "TCFB" [ref=e198]
-                - cell "0" [ref=e199]:
-                  - generic [ref=e200]: "0"
+                - cell "steady" [ref=e190]:
+                  - generic [ref=e191]:
+                    - img [ref=e192]
+                    - generic [ref=e193]: steady
+                - cell "Schedule follow-up" [ref=e194]:
+                  - button "Schedule follow-up" [ref=e195]
+              - button "View opportunities for TCFB" [ref=e196] [cursor=pointer]:
+                - cell "TCFB" [ref=e197]
+                - cell "0" [ref=e198]:
+                  - generic [ref=e199]: "0"
+                - cell "-" [ref=e200]
                 - cell "-" [ref=e201]
-                - cell "-" [ref=e202]
-                - cell "steady" [ref=e203]:
-                  - generic [ref=e204]:
-                    - img [ref=e205]
-                    - generic [ref=e206]: steady
-                - cell "Schedule follow-up" [ref=e207]:
-                  - button "Schedule follow-up" [ref=e208]
-              - row "Mrs Ressler's 0 - - steady Schedule follow-up" [ref=e209] [cursor=pointer]:
-                - cell "Mrs Ressler's" [ref=e210]
-                - cell "0" [ref=e211]:
-                  - generic [ref=e212]: "0"
+                - cell "steady" [ref=e202]:
+                  - generic [ref=e203]:
+                    - img [ref=e204]
+                    - generic [ref=e205]: steady
+                - cell "Schedule follow-up" [ref=e206]:
+                  - button "Schedule follow-up" [ref=e207]
+              - button "View opportunities for Mrs Ressler's" [ref=e208] [cursor=pointer]:
+                - cell "Mrs Ressler's" [ref=e209]
+                - cell "0" [ref=e210]:
+                  - generic [ref=e211]: "0"
+                - cell "-" [ref=e212]
                 - cell "-" [ref=e213]
-                - cell "-" [ref=e214]
-                - cell "steady" [ref=e215]:
-                  - generic [ref=e216]:
-                    - img [ref=e217]
-                    - generic [ref=e218]: steady
-                - cell "Schedule follow-up" [ref=e219]:
-                  - button "Schedule follow-up" [ref=e220]
-              - row "Abdale 0 - - steady Schedule follow-up" [ref=e221] [cursor=pointer]:
-                - cell "Abdale" [ref=e222]
-                - cell "0" [ref=e223]:
-                  - generic [ref=e224]: "0"
+                - cell "steady" [ref=e214]:
+                  - generic [ref=e215]:
+                    - img [ref=e216]
+                    - generic [ref=e217]: steady
+                - cell "Schedule follow-up" [ref=e218]:
+                  - button "Schedule follow-up" [ref=e219]
+              - button "View opportunities for Abdale" [ref=e220] [cursor=pointer]:
+                - cell "Abdale" [ref=e221]
+                - cell "0" [ref=e222]:
+                  - generic [ref=e223]: "0"
+                - cell "-" [ref=e224]
                 - cell "-" [ref=e225]
-                - cell "-" [ref=e226]
-                - cell "steady" [ref=e227]:
-                  - generic [ref=e228]:
-                    - img [ref=e229]
-                    - generic [ref=e230]: steady
-                - cell "Schedule follow-up" [ref=e231]:
-                  - button "Schedule follow-up" [ref=e232]
-              - row "Mccrum 0 - - steady Schedule follow-up" [ref=e233] [cursor=pointer]:
-                - cell "Mccrum" [ref=e234]
-                - cell "0" [ref=e235]:
-                  - generic [ref=e236]: "0"
+                - cell "steady" [ref=e226]:
+                  - generic [ref=e227]:
+                    - img [ref=e228]
+                    - generic [ref=e229]: steady
+                - cell "Schedule follow-up" [ref=e230]:
+                  - button "Schedule follow-up" [ref=e231]
+              - button "View opportunities for Mccrum" [ref=e232] [cursor=pointer]:
+                - cell "Mccrum" [ref=e233]
+                - cell "0" [ref=e234]:
+                  - generic [ref=e235]: "0"
+                - cell "-" [ref=e236]
                 - cell "-" [ref=e237]
-                - cell "-" [ref=e238]
-                - cell "steady" [ref=e239]:
-                  - generic [ref=e240]:
-                    - img [ref=e241]
-                    - generic [ref=e242]: steady
-                - cell "Schedule follow-up" [ref=e243]:
-                  - button "Schedule follow-up" [ref=e244]
-              - row "Kayco 0 - - steady Schedule follow-up" [ref=e245] [cursor=pointer]:
-                - cell "Kayco" [ref=e246]
-                - cell "0" [ref=e247]:
-                  - generic [ref=e248]: "0"
+                - cell "steady" [ref=e238]:
+                  - generic [ref=e239]:
+                    - img [ref=e240]
+                    - generic [ref=e241]: steady
+                - cell "Schedule follow-up" [ref=e242]:
+                  - button "Schedule follow-up" [ref=e243]
+              - button "View opportunities for Kayco" [ref=e244] [cursor=pointer]:
+                - cell "Kayco" [ref=e245]
+                - cell "0" [ref=e246]:
+                  - generic [ref=e247]: "0"
+                - cell "-" [ref=e248]
                 - cell "-" [ref=e249]
-                - cell "-" [ref=e250]
-                - cell "steady" [ref=e251]:
-                  - generic [ref=e252]:
-                    - img [ref=e253]
-                    - generic [ref=e254]: steady
-                - cell "Schedule follow-up" [ref=e255]:
-                  - button "Schedule follow-up" [ref=e256]
-              - row "Kaufholds Kurds Inc 155 - - stale Schedule follow-up" [ref=e257] [cursor=pointer]:
-                - cell "Kaufholds Kurds Inc" [ref=e258]
-                - cell "155" [ref=e259]:
-                  - generic [ref=e260]: "155"
+                - cell "steady" [ref=e250]:
+                  - generic [ref=e251]:
+                    - img [ref=e252]
+                    - generic [ref=e253]: steady
+                - cell "Schedule follow-up" [ref=e254]:
+                  - button "Schedule follow-up" [ref=e255]
+              - button "View opportunities for Kaufholds Kurds Inc" [ref=e256] [cursor=pointer]:
+                - cell "Kaufholds Kurds Inc" [ref=e257]
+                - cell "155" [ref=e258]:
+                  - generic [ref=e259]: "155"
+                - cell "-" [ref=e260]
                 - cell "-" [ref=e261]
-                - cell "-" [ref=e262]
-                - cell "stale" [ref=e263]:
-                  - generic [ref=e264]:
-                    - img [ref=e265]
-                    - generic [ref=e267]: stale
-                - cell "Schedule follow-up" [ref=e268]:
-                  - button "Schedule follow-up" [ref=e269]
-              - row "Swap Foods USA 141 - - stale Schedule follow-up" [ref=e270] [cursor=pointer]:
-                - cell "Swap Foods USA" [ref=e271]
-                - cell "141" [ref=e272]:
-                  - generic [ref=e273]: "141"
+                - cell "stale" [ref=e262]:
+                  - generic [ref=e263]:
+                    - img [ref=e264]
+                    - generic [ref=e266]: stale
+                - cell "Schedule follow-up" [ref=e267]:
+                  - button "Schedule follow-up" [ref=e268]
+              - button "View opportunities for Swap Foods USA" [ref=e269] [cursor=pointer]:
+                - cell "Swap Foods USA" [ref=e270]
+                - cell "141" [ref=e271]:
+                  - generic [ref=e272]: "141"
+                - cell "-" [ref=e273]
                 - cell "-" [ref=e274]
-                - cell "-" [ref=e275]
-                - cell "stale" [ref=e276]:
-                  - generic [ref=e277]:
-                    - img [ref=e278]
-                    - generic [ref=e280]: stale
-                - cell "Schedule follow-up" [ref=e281]:
-                  - button "Schedule follow-up" [ref=e282]
-              - row "Wicks 0 - - steady Schedule follow-up" [ref=e283] [cursor=pointer]:
-                - cell "Wicks" [ref=e284]
-                - cell "0" [ref=e285]:
-                  - generic [ref=e286]: "0"
+                - cell "stale" [ref=e275]:
+                  - generic [ref=e276]:
+                    - img [ref=e277]
+                    - generic [ref=e279]: stale
+                - cell "Schedule follow-up" [ref=e280]:
+                  - button "Schedule follow-up" [ref=e281]
+              - button "View opportunities for SWAP" [ref=e282] [cursor=pointer]:
+                - cell "SWAP" [ref=e283]
+                - cell "0" [ref=e284]:
+                  - generic [ref=e285]: "0"
+                - cell "-" [ref=e286]
                 - cell "-" [ref=e287]
-                - cell "-" [ref=e288]
-                - cell "steady" [ref=e289]:
-                  - generic [ref=e290]:
-                    - img [ref=e291]
-                    - generic [ref=e292]: steady
-                - cell "Schedule follow-up" [ref=e293]:
-                  - button "Schedule follow-up" [ref=e294]
-        - separator [ref=e295]:
-          - img [ref=e297]
-        - generic [ref=e305]:
-          - generic [ref=e306]:
-            - generic [ref=e308]:
-              - generic [ref=e309]: My Tasks
-              - generic [ref=e310]: Today's priorities and upcoming activities
-            - paragraph [ref=e311]: Overdue items highlighted • Click to complete • Drag to reschedule
-          - generic [ref=e313]:
-            - button "Today (0)" [ref=e315] [cursor=pointer]:
-              - generic [ref=e316]:
-                - img [ref=e317]
-                - heading "Today" [level=3] [ref=e319]
-                - generic [ref=e320]: (0)
-            - button "Tomorrow (0)" [ref=e322] [cursor=pointer]:
-              - generic [ref=e323]:
-                - img [ref=e324]
-                - heading "Tomorrow" [level=3] [ref=e326]
-                - generic [ref=e327]: (0)
-        - separator [ref=e328]:
-          - img [ref=e330]
-        - generic [ref=e338]:
-          - generic [ref=e341]:
-            - generic [ref=e342]: Log Activity
-            - generic [ref=e343]: Quick capture for calls, meetings, and notes
-          - generic [ref=e345]:
-            - paragraph [ref=e346]: Capture your customer interactions as they happen
-            - button "New Activity" [ref=e347] [cursor=pointer]:
+                - cell "steady" [ref=e288]:
+                  - generic [ref=e289]:
+                    - img [ref=e290]
+                    - generic [ref=e291]: steady
+                - cell "Schedule follow-up" [ref=e292]:
+                  - button "Schedule follow-up" [ref=e293]
+        - separator [ref=e294]:
+          - img [ref=e296]
+        - generic [ref=e304]:
+          - generic [ref=e305]:
+            - generic [ref=e307]:
+              - generic [ref=e308]: My Tasks
+              - generic [ref=e309]: Today's priorities and upcoming activities
+            - paragraph [ref=e310]: Overdue items highlighted • Click to complete • Drag to reschedule
+          - generic [ref=e312]:
+            - button "Today (0)" [ref=e314] [cursor=pointer]:
+              - generic [ref=e315]:
+                - img [ref=e316]
+                - heading "Today" [level=3] [ref=e318]
+                - generic [ref=e319]: (0)
+            - button "Tomorrow (0)" [ref=e321] [cursor=pointer]:
+              - generic [ref=e322]:
+                - img [ref=e323]
+                - heading "Tomorrow" [level=3] [ref=e325]
+                - generic [ref=e326]: (0)
+        - separator [ref=e327]:
+          - img [ref=e329]
+        - generic [ref=e337]:
+          - generic [ref=e340]:
+            - generic [ref=e341]: Log Activity
+            - generic [ref=e342]: Quick capture for calls, meetings, and notes
+          - generic [ref=e344]:
+            - paragraph [ref=e345]: Capture your customer interactions as they happen
+            - button "New Activity" [ref=e346] [cursor=pointer]:
               - img
               - text: New Activity
-  - contentinfo [ref=e348]:
-    - generic [ref=e350]:
-      - paragraph [ref=e351]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e352] [cursor=pointer]:
-        - img [ref=e353]
-        - generic [ref=e355]: Keyboard shortcuts
+  - contentinfo [ref=e347]:
+    - generic [ref=e349]:
+      - paragraph [ref=e350]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e351] [cursor=pointer]:
+        - img [ref=e352]
+        - generic [ref=e354]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```
