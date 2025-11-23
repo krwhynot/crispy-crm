@@ -1,8 +1,16 @@
 /**
  * Cleanup migration utility for transitioning from old reports to tabbed interface
  * Removes localStorage keys used by the previous reports implementation
+ *
+ * This function is idempotent - it checks if migration was already performed
+ * before cleaning up keys, avoiding unnecessary localStorage operations.
  */
-export function cleanupOldReportKeys() {
+export function cleanupOldReportKeys(): void {
+  // Skip if migration already completed
+  if (localStorage.getItem("reports.migration.completed") === "true") {
+    return;
+  }
+
   const oldKeys = [
     "reports.opportunities.filters",
     "reports.weekly.filters",

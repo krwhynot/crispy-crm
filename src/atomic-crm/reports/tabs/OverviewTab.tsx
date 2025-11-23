@@ -12,7 +12,9 @@ import { RepPerformanceChart } from "../charts/RepPerformanceChart";
 import { OPPORTUNITY_STAGE_CHOICES } from "../../opportunities/stageConstants";
 import { format, subDays, startOfDay, eachDayOfInterval } from "date-fns";
 import "../charts/chartSetup";
+import type { Sale } from "../types";
 
+/** Pipeline opportunity for overview reporting */
 interface Opportunity {
   id: number;
   stage: string;
@@ -23,16 +25,11 @@ interface Opportunity {
   deleted_at?: string;
 }
 
+/** Minimal activity record for trend calculations */
 interface ActivityRecord {
   id: number;
   created_at: string;
   created_by: number;
-}
-
-interface Sale {
-  id: number;
-  first_name: string;
-  last_name: string;
 }
 
 export default function OverviewTab() {

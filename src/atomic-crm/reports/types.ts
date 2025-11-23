@@ -41,4 +41,5 @@ export interface ActivityGroup {
   uniqueOrgs: number;
   percentage?: number;
   mostActiveOrg?: string;
+  mostActiveCount?: number;
 }

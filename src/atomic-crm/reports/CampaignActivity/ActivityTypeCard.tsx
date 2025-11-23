@@ -1,28 +1,7 @@
 import React from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-
-interface Activity {
-  id: number;
-  type: string;
-  subject: string;
-  created_at: string;
-  created_by: number;
-  organization_id: number;
-  contact_id: number | null;
-  organization_name?: string;
-  contact_name?: string;
-}
-
-interface ActivityGroup {
-  type: string;
-  activities: Activity[];
-  totalCount: number;
-  uniqueOrgs: number;
-  percentage?: number;
-  mostActiveOrg?: string;
-  mostActiveCount?: number;
-}
+import type { ActivityGroup } from "../types";
 
 interface ActivityTypeCardProps {
   group: ActivityGroup;
