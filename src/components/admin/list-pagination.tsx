@@ -97,7 +97,7 @@ export const ListPagination = ({
           </SelectContent>
         </Select>
       </div>
-      <div className="text-sm text-[color:var(--text-subtle)]">
+      <div className="text-sm text-muted-foreground">
         <Translate
           i18nKey="ra.navigation.page_range_info"
           options={{

@@ -131,7 +131,7 @@ const OpportunityShowContent = () => {
                         ) : (
                           <Badge
                             variant="secondary"
-                            className="bg-[var(--brand-100)] text-[var(--brand-700)] border-[var(--brand-300)]"
+                            className="bg-primary/10 text-primary border-primary/30"
                           >
                             {formatDistanceToNow(new Date(record.estimated_close_date), {
                               addSuffix: true,
