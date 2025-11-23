@@ -159,6 +159,30 @@ describe("transformArrayFilters", () => {
       };
       expect(transformArrayFilters(filter)).toEqual(filter);
     });
+
+    it("should preserve @is operator with null value for soft delete filtering", () => {
+      // CRITICAL: The @is operator specifically needs null as a value
+      // e.g., "deleted_at@is": null translates to PostgREST's "deleted_at=is.null"
+      // This is used for soft delete filtering throughout the codebase
+      const filter = {
+        "deleted_at@is": null,
+        status: "active",
+      };
+      expect(transformArrayFilters(filter)).toEqual({
+        "deleted_at@is": null,
+        status: "active",
+      });
+    });
+
+    it("should preserve @is operator with other null-check values", () => {
+      // PostgREST also supports is.true and is.false for boolean checks
+      const filter = {
+        "is_active@is": true,
+        "is_deleted@is": false,
+        "deleted_at@is": null,
+      };
+      expect(transformArrayFilters(filter)).toEqual(filter);
+    });
   });
 
   describe("non-array value handling", () => {
