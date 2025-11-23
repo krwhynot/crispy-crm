@@ -206,6 +206,7 @@ Papa.parse(file, {
 
 ## Recent Changes (Keep Updated Quarterly)
 
+- **V1/V2 Cleanup (2025-11-22)**: Removed 34 legacy dashboard files, V3 is only version
 - **Dashboard V3 (2025-11-18)**: Default dashboard with pipeline table, tasks panel, activity logger
 - **Users List Fix (2025-11-16)**: Standardized on `role` enum ('admin', 'manager', 'rep')
 - **Cloud-First Dev (2025-11-10)**: Migrated from local Docker to Supabase Cloud
@@ -220,9 +221,11 @@ Papa.parse(file, {
 
 ## MCP Tools Available
 
+- `mcp__serena__*` - Semantic code navigation (find_symbol, replace_symbol_body)
 - `mcp__supabase-lite__*` - Database queries
 - `mcp__zen__*` - AI thinking/debugging
 - `mcp__context7__*` - Library documentation lookup
+- `mcp__sequential-thinking__*` - Complex reasoning chains
 
 ## Slash Commands
 
@@ -233,4 +236,9 @@ See `.claude/commands/` for full list. Key commands:
 
 ---
 
-*For Dashboard V2 (legacy at `/dashboard-v2`), see `docs/plans/2025-11-13-principal-dashboard-v2-PLANNING.md`*
+## Quick Context Loading
+
+For efficient session startup, read `PROJECT_INDEX.md` first (~2,500 tokens vs ~58,000 for full codebase).
+
+**Serena MCP memories** available for cross-session context:
+- `project_overview`, `code_style_conventions`, `database_security`
