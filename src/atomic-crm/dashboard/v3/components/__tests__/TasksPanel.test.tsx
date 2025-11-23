@@ -1,6 +1,7 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { TasksPanel } from "../TasksPanel";
+import * as reactAdmin from "react-admin";
 
 const mockTaskData = [
   {
@@ -36,6 +37,12 @@ const mockTaskData = [
 const mockUseMyTasks = vi.fn();
 vi.mock("../../hooks/useMyTasks", () => ({
   useMyTasks: () => mockUseMyTasks(),
+}));
+
+// Mock React Admin's useNotify hook
+const mockNotify = vi.fn();
+vi.mock("react-admin", () => ({
+  useNotify: () => mockNotify,
 }));
 
 describe("TasksPanel", () => {
@@ -99,5 +106,33 @@ describe("TasksPanel", () => {
     expect(screen.getByText("Overdue")).toBeInTheDocument();
     expect(screen.getByText("Today")).toBeInTheDocument();
     expect(screen.getByText("Tomorrow")).toBeInTheDocument();
+  });
+
+  it("should show success toast when task is snoozed", async () => {
+    const mockSnoozeTask = vi.fn().mockResolvedValue(undefined);
+    mockUseMyTasks.mockReturnValue({
+      tasks: [mockTaskData[1]], // Today task
+      loading: false,
+      error: null,
+      completeTask: vi.fn(),
+      snoozeTask: mockSnoozeTask,
+    });
+
+    render(<TasksPanel />);
+
+    // Find and click the snooze button
+    const snoozeButton = screen.getByLabelText(/Snooze "Send contract for review" by 1 day/);
+    fireEvent.click(snoozeButton);
+
+    // Wait for async snooze operation
+    await waitFor(() => {
+      expect(mockSnoozeTask).toHaveBeenCalledWith(2);
+    });
+
+    // Should show success notification
+    expect(mockNotify).toHaveBeenCalledWith(
+      "Task snoozed for tomorrow",
+      expect.objectContaining({ type: "success" })
+    );
   });
 });

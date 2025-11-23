@@ -7,6 +7,9 @@ import { QuickLoggerPanel } from "./components/QuickLoggerPanel";
 const STORAGE_KEY = "principal-dashboard-v3-layout";
 
 export function PrincipalDashboardV3() {
+  // Refresh key to force data components to re-mount and re-fetch
+  const [refreshKey, setRefreshKey] = useState(0);
+
   // Client-side-safe localStorage read
   const [sizes, setSizes] = useState<number[]>(() => {
     if (typeof window === "undefined") return [40, 30, 30];
@@ -32,6 +35,11 @@ export function PrincipalDashboardV3() {
     }
   };
 
+  const handleRefresh = () => {
+    // Increment refresh key to force data components to re-mount and re-fetch
+    setRefreshKey(prev => prev + 1);
+  };
+
   return (
     <div className="flex h-screen flex-col">
       {/* Header */}
@@ -50,21 +58,21 @@ export function PrincipalDashboardV3() {
         >
           {/* Panel 1: Pipeline by Principal */}
           <ResizablePanel defaultSize={sizes[0]} minSize={25}>
-            <PrincipalPipelineTable />
+            <PrincipalPipelineTable key={`pipeline-${refreshKey}`} />
           </ResizablePanel>
 
           <ResizableHandle withHandle />
 
           {/* Panel 2: My Tasks */}
           <ResizablePanel defaultSize={sizes[1]} minSize={20}>
-            <TasksPanel />
+            <TasksPanel key={`tasks-${refreshKey}`} />
           </ResizablePanel>
 
           <ResizableHandle withHandle />
 
           {/* Panel 3: Quick Logger */}
           <ResizablePanel defaultSize={sizes[2]} minSize={20}>
-            <QuickLoggerPanel />
+            <QuickLoggerPanel onRefresh={handleRefresh} />
           </ResizablePanel>
         </ResizablePanelGroup>
       </div>
