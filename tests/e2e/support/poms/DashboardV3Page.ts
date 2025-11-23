@@ -224,10 +224,10 @@ export class DashboardV3Page extends BasePage {
   // =============================================================================
 
   /**
-   * Get Tasks panel heading
+   * Get Tasks panel heading (CardTitle renders as div, not heading)
    */
   getTasksHeading(): Locator {
-    return this.page.getByRole("heading", { name: /my tasks/i });
+    return this.page.getByText("My Tasks", { exact: true });
   }
 
   /**
@@ -337,10 +337,10 @@ export class DashboardV3Page extends BasePage {
   // =============================================================================
 
   /**
-   * Get Quick Logger panel heading
+   * Get Quick Logger panel heading (CardTitle renders as div, not heading)
    */
   getQuickLoggerHeading(): Locator {
-    return this.page.getByRole("heading", { name: /log activity/i });
+    return this.page.getByText("Log Activity", { exact: true });
   }
 
   /**
@@ -351,10 +351,10 @@ export class DashboardV3Page extends BasePage {
   }
 
   /**
-   * Get "Start Logging" button
+   * Get "New Activity" button (opens the logging form)
    */
   getStartLoggingButton(): Locator {
-    return this.page.getByRole("button", { name: /start logging|log activity|plus/i });
+    return this.page.getByRole("button", { name: /new activity/i });
   }
 
   /**
