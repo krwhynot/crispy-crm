@@ -84,9 +84,8 @@ export function PipelineDrillDownSheet({
       <SheetContent
         side="right"
         className="w-[480px] max-w-[90vw] p-0 flex flex-col"
-        role="dialog"
-        aria-modal="true"
-        aria-labelledby="drill-down-title"
+        // Note: role="dialog" and aria-modal="true" are set automatically by Radix
+        // aria-labelledby is auto-wired to SheetTitle's id by Radix
       >
         {/* Header */}
         <SheetHeader className="border-b border-border px-6 py-4">
