@@ -80,52 +80,50 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     [contacts, selectedContactId]
   );
 
-  // Determine the "anchor" organization - from contact or opportunity selection
+  // Determine the "anchor" organization - from organization, contact, or opportunity selection
   const anchorOrganizationId = useMemo(() => {
-    // Contact takes priority if selected
+    // Direct organization selection takes priority
+    const organizationId = form.watch("organizationId");
+    if (organizationId) {
+      return organizationId;
+    }
+    // Then contact's organization
     if (selectedContact?.organization_id) {
       return selectedContact.organization_id;
     }
-    // Otherwise use opportunity's customer org
+    // Finally opportunity's customer org
     if (selectedOpportunity?.customer_organization_id) {
       return selectedOpportunity.customer_organization_id;
     }
     return null;
-  }, [selectedContact?.organization_id, selectedOpportunity?.customer_organization_id]);
+  }, [form.watch("organizationId"), selectedContact?.organization_id, selectedOpportunity?.customer_organization_id]);
 
-  // Filter contacts by anchor organization (if opportunity selected first)
+  // Filter contacts by anchor organization
   const filteredContacts = useMemo(() => {
-    if (selectedOpportunity?.customer_organization_id && !selectedContact) {
-      return contacts.filter(
-        (c) => c.organization_id === selectedOpportunity.customer_organization_id
-      );
+    if (!anchorOrganizationId) {
+      return contacts;
     }
-    return contacts;
-  }, [contacts, selectedOpportunity?.customer_organization_id, selectedContact]);
+    return contacts.filter((c) => c.organization_id === anchorOrganizationId);
+  }, [contacts, anchorOrganizationId]);
 
-  // Smart sort organizations: contact's org at top, but all orgs available
+  // Filter organizations by anchor organization (lock to single org when anchor exists)
   const filteredOrganizations = useMemo(() => {
-    if (!selectedContact?.organization_id) {
+    if (!anchorOrganizationId) {
       return organizations;
     }
-    // Sort contact's org to top, but keep all others selectable
-    const contactOrgId = selectedContact.organization_id;
-    return [
-      ...organizations.filter((o) => o.id === contactOrgId),
-      ...organizations.filter((o) => o.id !== contactOrgId),
-    ];
-  }, [organizations, selectedContact?.organization_id]);
+    // Only show the anchor organization when one is set
+    return organizations.filter((o) => o.id === anchorOrganizationId);
+  }, [organizations, anchorOrganizationId]);
 
-  // Filter opportunities by selected contact's organization
+  // Filter opportunities by anchor organization
   const filteredOpportunities = useMemo(() => {
-    if (selectedContact?.organization_id) {
-      // When contact is selected, only show opportunities for their organization
-      return opportunities.filter(
-        (o) => o.customer_organization_id === selectedContact.organization_id
-      );
+    if (!anchorOrganizationId) {
+      return opportunities;
     }
-    return opportunities;
-  }, [opportunities, selectedContact?.organization_id]);
+    return opportunities.filter(
+      (o) => o.customer_organization_id === anchorOrganizationId
+    );
+  }, [opportunities, anchorOrganizationId]);
 
   // When opportunity changes, auto-fill organization and clear mismatched contact
   useEffect(() => {
