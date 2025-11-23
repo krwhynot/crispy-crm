@@ -3,8 +3,7 @@
  * Shared between application code and test scripts
  */
 
-import type { ContactImportSchema } from "./useContactImport";
-import type { DataQualityDecisions } from "./ContactImportPreview";
+import type { ContactImportSchema, DataQualityDecisions } from "./contactImport.types";
 import { importContactSchema } from "../validation/contacts";
 
 /**

@@ -145,10 +145,18 @@ export const CampaignGroupedList = ({ openSlideOver }: CampaignGroupedListProps)
                               <div
                                 key={opp.id}
                                 className="flex items-center gap-3 p-2 rounded-md hover:bg-muted/50 transition-colors cursor-pointer"
+                                role="button"
+                                tabIndex={0}
                                 onClick={(e) => {
                                   e.preventDefault();
                                   e.stopPropagation();
                                   openSlideOver(opp.id as number, 'view');
+                                }}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    openSlideOver(opp.id as number, 'view');
+                                  }
                                 }}
                               >
                                 <div className="flex-1 text-sm text-primary hover:underline flex items-center gap-2">

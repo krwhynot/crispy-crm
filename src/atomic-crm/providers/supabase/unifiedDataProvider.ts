@@ -12,15 +12,27 @@ import type {
   CreateParams,
   DataProvider,
   GetListParams,
+  GetListResult,
   GetOneParams,
+  GetOneResult,
   GetManyParams,
+  GetManyResult,
   GetManyReferenceParams,
+  GetManyReferenceResult,
   UpdateParams,
+  UpdateResult,
   UpdateManyParams,
+  UpdateManyResult,
   DeleteParams,
+  DeleteResult,
   DeleteManyParams,
+  DeleteManyResult,
+  CreateResult,
   Identifier,
+  RaRecord,
+  FilterPayload,
 } from "ra-core";
+import type { FileObject } from "@supabase/storage-js";
 import type { QuickAddInput } from "../validation/quickAdd";
 
 import { supabase } from "./supabase";
@@ -48,10 +60,79 @@ import {
 } from "../../validation/rpc";
 
 // Import types for custom methods
-import type { SalesFormData, Sale, Opportunity, OpportunityParticipant } from "../../types";
+import type {
+  SalesFormData,
+  Sale,
+  Opportunity,
+  OpportunityParticipant,
+  ContactOrganization,
+  OpportunityContact,
+  Activity,
+} from "../../types";
 
 // Type for potentially wrapped RPC responses
 type RpcWrappedResponse<T> = T | { data: T };
+
+/**
+ * Interface for data provider method params logging
+ * Captures common fields for error context
+ */
+interface DataProviderLogParams {
+  id?: Identifier;
+  ids?: Identifier[];
+  filter?: FilterPayload;
+  sort?: { field: string; order: "ASC" | "DESC" };
+  pagination?: { page: number; perPage: number };
+  target?: string;
+  data?: unknown;
+}
+
+/**
+ * Interface for validation errors in React Admin format
+ */
+interface ValidationError {
+  message: string;
+  errors: Record<string, string>;
+}
+
+/**
+ * Interface for Supabase errors with detailed field information
+ */
+interface SupabaseError extends Error {
+  code?: string;
+  details?: string;
+  hint?: string;
+}
+
+/**
+ * Extended error type for error handling
+ * Captures both standard Error properties and validation/API error structures
+ */
+interface ExtendedError extends Error {
+  body?: { errors?: Record<string, string> };
+  errors?: Record<string, string>;
+  code?: string;
+  details?: string;
+  issues?: Array<{ path: (string | number)[]; message: string }>;
+}
+
+/**
+ * Interface for junction table relationship params
+ */
+interface JunctionParams {
+  is_primary?: boolean;
+  role?: string;
+  notes?: string;
+}
+
+/**
+ * Type for booth visitor creation result
+ */
+interface BoothVisitorResult {
+  organization_id: Identifier;
+  contact_id: Identifier;
+  opportunity_id: Identifier;
+}
 
 // Initialize decomposed services
 const storageService = new StorageService();
@@ -82,7 +163,12 @@ const junctionsService = new JunctionsService(baseDataProvider);
  * Log error with context for debugging
  * Integrated from resilientDataProvider for consolidated error logging
  */
-function logError(method: string, resource: string, params: any, error: unknown): void {
+function logError(
+  method: string,
+  resource: string,
+  params: DataProviderLogParams,
+  error: unknown
+): void {
   const context = {
     method,
     resource,
@@ -98,18 +184,25 @@ function logError(method: string, resource: string, params: any, error: unknown)
     timestamp: new Date().toISOString(),
   };
 
+  const extendedError = error as ExtendedError | undefined;
+
   console.error(`[DataProvider Error]`, context, {
-    error: error instanceof Error ? error.message : error?.message ? error.message : String(error),
+    error:
+      error instanceof Error
+        ? error.message
+        : extendedError?.message
+          ? extendedError.message
+          : String(error),
     stack: error instanceof Error ? error.stack : undefined,
-    validationErrors: error?.body?.errors || error?.errors || undefined,
+    validationErrors: extendedError?.body?.errors || extendedError?.errors || undefined,
     fullError: error,
   });
 
   // Log validation errors in detail for debugging
-  if (error?.body?.errors) {
-    console.error("[Validation Errors Detail]", JSON.stringify(error.body.errors, null, 2));
-  } else if (error?.errors) {
-    console.error("[Validation Errors Detail]", JSON.stringify(error.errors, null, 2));
+  if (extendedError?.body?.errors) {
+    console.error("[Validation Errors Detail]", JSON.stringify(extendedError.body.errors, null, 2));
+  } else if (extendedError?.errors) {
+    console.error("[Validation Errors Detail]", JSON.stringify(extendedError.errors, null, 2));
   }
 }
 
@@ -119,7 +212,7 @@ function logError(method: string, resource: string, params: any, error: unknown)
  */
 async function validateData(
   resource: string,
-  data: any,
+  data: Record<string, unknown>,
   operation: "create" | "update" = "create"
 ): Promise<void> {
   // For opportunities, merge defaults for fields that React Hook Form might not include
@@ -136,14 +229,16 @@ async function validateData(
   try {
     // Use the ValidationService
     await validationService.validate(resource, operation, dataToValidate);
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const extendedError = error as ExtendedError | undefined;
+
     // Parse Zod validation errors into React Admin format
     // Zod errors have an 'issues' array with field-level errors
-    if (error.issues && Array.isArray(error.issues)) {
+    if (extendedError?.issues && Array.isArray(extendedError.issues)) {
       const fieldErrors: Record<string, string> = {};
 
       // Convert Zod issues to field-error map
-      for (const issue of error.issues) {
+      for (const issue of extendedError.issues) {
         const fieldPath = issue.path.join(".");
         const fieldName = fieldPath || "_error";
         fieldErrors[fieldName] = issue.message;
@@ -152,15 +247,15 @@ async function validateData(
       throw {
         message: "Validation failed",
         errors: fieldErrors,
-      };
+      } satisfies ValidationError;
     }
 
     // If already in expected format (has errors object at top level)
-    if (error.errors && typeof error.errors === "object") {
+    if (extendedError?.errors && typeof extendedError.errors === "object") {
       throw {
-        message: error.message || "Validation failed",
-        errors: error.errors,
-      };
+        message: extendedError.message || "Validation failed",
+        errors: extendedError.errors,
+      } satisfies ValidationError;
     }
 
     // For other Error types, wrap with generic error
@@ -168,14 +263,14 @@ async function validateData(
       throw {
         message: error.message || "Validation failed",
         errors: { _error: error.message },
-      };
+      } satisfies ValidationError;
     }
 
     // Unknown error format - wrap it
     throw {
       message: "Validation failed",
       errors: { _error: String(error) },
-    };
+    } satisfies ValidationError;
   }
 }
 
@@ -198,7 +293,7 @@ async function transformData<T>(
  * @param response The response to check
  * @returns True if the response is wrapped
  */
-function isWrappedResponse<T extends { id: any }>(
+function isWrappedResponse<T extends { id: Identifier }>(
   response: RpcWrappedResponse<T>
 ): response is { data: T } {
   return (
@@ -219,7 +314,9 @@ function isWrappedResponse<T extends { id: any }>(
  * @param rpcData The raw data returned from a Supabase RPC call
  * @returns A React Admin-compatible response object
  */
-function formatRpcResponse<T extends { id: any }>(rpcData: RpcWrappedResponse<T>): { data: T } {
+function formatRpcResponse<T extends { id: Identifier }>(
+  rpcData: RpcWrappedResponse<T>
+): { data: T } {
   // Use type guard for safer unwrapping
   if (isWrappedResponse(rpcData)) {
     return { data: rpcData.data };
@@ -235,11 +332,11 @@ function formatRpcResponse<T extends { id: any }>(rpcData: RpcWrappedResponse<T>
  * @param error The error from a Supabase RPC call
  * @throws The parsed error or original error
  */
-function handleRpcError(error: any): never {
+function handleRpcError(error: SupabaseError | Error): never {
   if (error?.message) {
     try {
       // Attempt to parse a structured error message
-      const parsedError = JSON.parse(error.message);
+      const parsedError = JSON.parse(error.message) as unknown;
       throw parsedError;
     } catch {
       // If parsing fails, it's not JSON, so throw the original error
@@ -275,19 +372,20 @@ async function processForDatabase<T>(
 async function wrapMethod<T>(
   method: string,
   resource: string,
-  params: any,
+  params: DataProviderLogParams & { previousData?: RaRecord },
   operation: () => Promise<T>
 ): Promise<T> {
   try {
     return await operation();
-  } catch (error: any) {
+  } catch (error: unknown) {
     logError(method, resource, params, error);
+    const extendedError = error as ExtendedError | undefined;
 
     // Handle idempotent delete - if resource doesn't exist, treat as success
     // This happens with React Admin's undoable mode where UI updates before API call
     if (
       method === "delete" &&
-      error.message?.includes("Cannot coerce the result to a single JSON object")
+      extendedError?.message?.includes("Cannot coerce the result to a single JSON object")
     ) {
       // Return successful delete response - resource was already deleted
       return { data: params.previousData } as T;
@@ -295,30 +393,30 @@ async function wrapMethod<T>(
 
     // For validation errors, ensure React Admin format
     // This allows errors to be displayed inline next to form fields
-    if (error.body?.errors && typeof error.body.errors === "object") {
+    if (extendedError?.body?.errors && typeof extendedError.body.errors === "object") {
       // Already in correct format { message, body: { errors: { field: message } } }
       throw error;
     }
 
     // For Supabase errors, try to extract field-specific errors
-    if (error.code && error.details) {
+    if (extendedError?.code && extendedError?.details) {
       const fieldErrors: Record<string, string> = {};
 
       // Try to parse field from error details
-      if (typeof error.details === "string") {
+      if (typeof extendedError.details === "string") {
         // Simple heuristic to extract field name from error
-        const match = error.details.match(/column "(\w+)"/i);
+        const match = extendedError.details.match(/column "(\w+)"/i);
         if (match) {
-          fieldErrors[match[1]] = error.details;
+          fieldErrors[match[1]] = extendedError.details;
         } else {
-          fieldErrors._error = error.details;
+          fieldErrors._error = extendedError.details;
         }
       }
 
       throw {
-        message: error.message || "Operation failed",
+        message: extendedError.message || "Operation failed",
         errors: fieldErrors,
-      };
+      } satisfies ValidationError;
     }
 
     // Pass through other errors
@@ -330,7 +428,10 @@ async function wrapMethod<T>(
  * Create the unified data provider with integrated transformations and error logging
  */
 export const unifiedDataProvider: DataProvider = {
-  async getList(resource: string, params: GetListParams): Promise<any> {
+  async getList<RecordType extends RaRecord = RaRecord>(
+    resource: string,
+    params: GetListParams
+  ): Promise<GetListResult<RecordType>> {
     return wrapMethod("getList", resource, params, async () => {
       // Create a mutable copy of params to potentially modify filters
       const processedParams = { ...params };
@@ -362,7 +463,10 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async getOne(resource: string, params: GetOneParams): Promise<any> {
+  async getOne<RecordType extends RaRecord = RaRecord>(
+    resource: string,
+    params: GetOneParams<RecordType>
+  ): Promise<GetOneResult<RecordType>> {
     return wrapMethod("getOne", resource, params, async () => {
       // Get appropriate database resource
       const dbResource = getDatabaseResource(resource, "one");
@@ -378,7 +482,10 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async getMany(resource: string, params: GetManyParams): Promise<any> {
+  async getMany<RecordType extends RaRecord = RaRecord>(
+    resource: string,
+    params: GetManyParams<RecordType>
+  ): Promise<GetManyResult<RecordType>> {
     return wrapMethod("getMany", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
@@ -402,7 +509,10 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async getManyReference(resource: string, params: GetManyReferenceParams): Promise<any> {
+  async getManyReference<RecordType extends RaRecord = RaRecord>(
+    resource: string,
+    params: GetManyReferenceParams
+  ): Promise<GetManyReferenceResult<RecordType>> {
     return wrapMethod("getManyReference", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
@@ -430,7 +540,10 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async create(resource: string, params: CreateParams): Promise<any> {
+  async create<RecordType extends RaRecord = RaRecord>(
+    resource: string,
+    params: CreateParams
+  ): Promise<CreateResult<RecordType>> {
     return wrapMethod("create", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
@@ -506,7 +619,7 @@ export const unifiedDataProvider: DataProvider = {
       // Execute create
       const result = await baseDataProvider.create(dbResource, {
         ...params,
-        data: processedData as any,
+        data: processedData as Partial<RecordType>,
       });
 
       // No transformation needed yet (will be added in a future task)
@@ -514,7 +627,10 @@ export const unifiedDataProvider: DataProvider = {
     });
   },
 
-  async update(resource: string, params: UpdateParams): Promise<any> {
+  async update<RecordType extends RaRecord = RaRecord>(
+    resource: string,
+    params: UpdateParams<RecordType>
+  ): Promise<UpdateResult<RecordType>> {
     return wrapMethod("update", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
@@ -567,7 +683,7 @@ export const unifiedDataProvider: DataProvider = {
         data: {
           ...processedData,
           id: params.id, // Preserve ID
-        } as any,
+        } as Partial<RecordType>,
       });
 
       // No transformation needed yet (will be added in a future task)

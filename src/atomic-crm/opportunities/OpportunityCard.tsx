@@ -56,7 +56,15 @@ export function OpportunityCard({ index, openSlideOver }: OpportunityCardProps) 
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          role="button"
+          tabIndex={0}
           onClick={handleCardClick}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleCardClick(e as unknown as React.MouseEvent);
+            }
+          }}
           className={`
             bg-card rounded-lg border border-border
             p-[var(--spacing-widget-padding)]

@@ -15,59 +15,24 @@ import {
   isContactWithoutContactInfo,
 } from "./contactImport.logic";
 
-export interface ContactImportSchema {
-  first_name: string;
-  last_name: string;
-  gender?: string;
-  title?: string;
-  organization_name: string; // Primary organization (mandatory)
-  email_work?: string;
-  email_home?: string;
-  email_other?: string;
-  phone_work?: string;
-  phone_home?: string;
-  phone_other?: string;
-  first_seen?: string;
-  last_seen?: string;
-  tags?: string;
-  linkedin_url?: string;
-  notes?: string; // Contact notes text field
-}
+// Re-export types from centralized types file for backward compatibility
+export type {
+  ContactImportSchema,
+  DataQualityDecisions,
+  FieldError,
+  ImportError,
+  ImportResult,
+  ImportOptions,
+} from "./contactImport.types";
 
-export interface FieldError {
-  field: string;
-  message: string;
-  value?: any;
-}
-
-export interface ImportError {
-  row: number;
-  data: any;
-  errors: FieldError[]; // Changed from 'reason: string' to support multiple errors
-}
-
-export interface ImportResult {
-  totalProcessed: number;
-  successCount: number;
-  skippedCount: number;
-  failedCount: number;
-  errors: ImportError[];
-  duration: number;
-  startTime: Date;
-  endTime: Date;
-}
-
-export interface DataQualityDecisions {
-  importOrganizationsWithoutContacts: boolean;
-  importContactsWithoutContactInfo: boolean;
-}
-
-export interface ImportOptions {
-  preview?: boolean; // If true, validate only without database writes
-  onProgress?: (current: number, total: number) => void; // Progress callback
-  startingRow?: number; // The absolute starting row number for this batch (1-indexed)
-  dataQualityDecisions?: DataQualityDecisions; // User decisions about data quality issues
-}
+import type {
+  ContactImportSchema,
+  DataQualityDecisions,
+  ImportError,
+  ImportOptions,
+  ImportResult,
+  FieldError,
+} from "./contactImport.types";
 
 export function useContactImport() {
   const today = new Date().toISOString();
