@@ -2,7 +2,7 @@ import { test, expect } from "../../support/fixtures/authenticated";
 import { OpportunitiesListPage } from "../../support/poms/OpportunitiesListPage";
 import { OpportunityShowPage } from "../../support/poms/OpportunityShowPage";
 import { OpportunityFormPage } from "../../support/poms/OpportunityFormPage";
-import { createOpportunitySeedHelper, cleanupTestOpportunities } from "../../support/helpers/opportunity-seed";
+import { createOpportunitySeedHelper as _createOpportunitySeedHelper, cleanupTestOpportunities as _cleanupTestOpportunities } from "../../support/helpers/opportunity-seed";
 
 /**
  * Opportunities CRUD Test Suite

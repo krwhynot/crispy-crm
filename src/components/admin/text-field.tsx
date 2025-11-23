@@ -8,10 +8,10 @@ export const TextField = <RecordType extends Record<string, any> = Record<string
   record,
   empty,
   // Filter out React Admin-specific props that shouldn't be passed to DOM elements
-  label,
-  sortable,
-  sortBy,
-  textAlign,
+  label: _label,
+  sortable: _sortable,
+  sortBy: _sortBy,
+  textAlign: _textAlign,
   ...rest
 }: TextFieldProps<RecordType>) => {
   const value = useFieldValue({ defaultValue, source, record });

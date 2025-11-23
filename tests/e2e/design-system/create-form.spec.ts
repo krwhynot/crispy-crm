@@ -194,7 +194,7 @@ test.describe("Create Form - Design System", () => {
       await authenticatedPage.waitForTimeout(500);
 
       // Fill form with unique data
-      const testData = await formPage.fillFormWithUniqueData({
+      const _testData = await formPage.fillFormWithUniqueData({
         "First Name": "SaveCloseTest",
         "Last Name": "User",
       });
@@ -217,7 +217,7 @@ test.describe("Create Form - Design System", () => {
       await authenticatedPage.waitForTimeout(500);
 
       // Fill form
-      const testData = await formPage.fillFormWithUniqueData({
+      const _testData = await formPage.fillFormWithUniqueData({
         "First Name": "SaveAddTest",
         "Last Name": "User",
       });
@@ -282,7 +282,7 @@ test.describe("Create Form - Design System", () => {
       await authenticatedPage.waitForTimeout(500);
 
       // Fill form
-      const testData = await formPage.fillFormWithUniqueData({
+      const _testData = await formPage.fillFormWithUniqueData({
         Name: "AutosaveTest",
       });
 
@@ -350,7 +350,7 @@ test.describe("Create Form - Design System", () => {
       const genderField = authenticatedPage.getByLabel(/gender/i);
 
       if (await genderField.isVisible().catch(() => false)) {
-        const value = await genderField.inputValue().catch(() => "");
+        const _value = await genderField.inputValue().catch(() => "");
 
         // If there's a default, it came from Zod (we can't directly test this,
         // but we can verify the form initializes without errors)

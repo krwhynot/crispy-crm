@@ -20,11 +20,11 @@ export const ReferenceManyField = <
     pagination,
     render,
     // Filter out React Admin-specific props that shouldn't be passed to child components
-    label,
-    sortable,
-    sortBy,
-    textAlign,
-    rowClassName,
+    label: _label,
+    sortable: _sortable,
+    sortBy: _sortBy,
+    textAlign: _textAlign,
+    rowClassName: _rowClassName,
     ...rest
   } = props;
 

@@ -333,7 +333,7 @@ test.describe('Dashboard V3 - Full Stack E2E', () => {
       await expect(notesTextarea).toBeVisible();
 
       // Browser might show validation message on required fields
-      const validationMessage = await notesTextarea.getAttribute('aria-invalid');
+      const _validationMessage = await notesTextarea.getAttribute('aria-invalid');
       // Validation may be handled different ways
       expect(saveButton).toBeVisible(); // Form should still be open
     });

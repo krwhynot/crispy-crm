@@ -202,11 +202,11 @@ test.describe("Visual Primitives - Design System", () => {
       await listPage.navigate();
 
       // Check for hardcoded color values in computed styles
-      const hasHardcodedColors = await authenticatedPage.evaluate(() => {
+      const _hasHardcodedColors = await authenticatedPage.evaluate(() => {
         const allText = Array.from(document.querySelectorAll("p, span, label, a, h1, h2, h3"));
 
         const hardcoded = allText.filter((el) => {
-          const color = window.getComputedStyle(el).color;
+          const _color = window.getComputedStyle(el).color;
 
           // Pure black is acceptable, but specific hex values are not
           // (CSS outputs rgb() values, so we can't directly detect hex)

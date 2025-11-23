@@ -19,15 +19,6 @@ const SalesListActions = () => (
 const filters = [<SearchInput source="q" alwaysOn />];
 
 /**
- * NameField - Display full name (first_name + last_name)
- */
-const NameField = () => {
-  const record = useRecordContext();
-  if (!record) return null;
-  return <span>{`${record.first_name} ${record.last_name}`}</span>;
-};
-
-/**
  * RoleBadgeField - Display role badge with semantic colors
  */
 const RoleBadgeField = () => {

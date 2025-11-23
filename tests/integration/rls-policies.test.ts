@@ -286,7 +286,7 @@ describe('RLS Policy Integration', () => {
       testData.contactIds.push(contact!.id);
 
       // Rep cannot update
-      const { data: updated, error: updateError } = await repClient
+      const { data: updated, error: _updateError } = await repClient
         .from('contacts')
         .update({ name: 'Hacked Contact' })
         .eq('id', contact!.id)
@@ -419,7 +419,7 @@ describe('RLS Policy Integration', () => {
       expect(insertError).toBeNull();
       testData.organizationIds.push(org!.id);
 
-      const { data: updated, error: updateError } = await repClient
+      const { data: updated, error: _updateError } = await repClient
         .from('organizations')
         .update({ name: 'Hacked Org' })
         .eq('id', org!.id)
@@ -581,7 +581,7 @@ describe('RLS Policy Integration', () => {
       expect(insertError).toBeNull();
       testData.opportunityIds.push(opp!.id);
 
-      const { data: updated, error: updateError } = await repClient
+      const { data: updated, error: _updateError } = await repClient
         .from('opportunities')
         .update({ stage: 'closed_won' })
         .eq('id', opp!.id)
@@ -764,7 +764,7 @@ describe('RLS Policy Integration', () => {
       expect(updated!.title).toBe('Updated Rep Task');
 
       // Admin cannot update rep's task
-      const { data: adminUpdate, error: adminUpdateError } = await adminClient
+      const { data: adminUpdate, error: _adminUpdateError } = await adminClient
         .from('tasks')
         .update({ title: 'Hacked Task' })
         .eq('id', task!.id)

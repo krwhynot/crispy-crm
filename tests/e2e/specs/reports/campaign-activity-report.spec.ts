@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { LoginPage } from "../../support/poms/LoginPage";
+import { LoginPage as _LoginPage } from "../../support/poms/LoginPage";
 import { CampaignActivityReportPage } from "../../support/poms/CampaignActivityReportPage";
 import { consoleMonitor } from "../../support/utils/console-monitor";
 

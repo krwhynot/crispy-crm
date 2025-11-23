@@ -251,7 +251,7 @@ export class ExportScheduler {
         }
         break;
 
-      case 'weekly':
+      case 'weekly': {
         // Set to next occurrence of specified day/hour
         const targetDay = schedule.dayOfWeek ?? 0;
         const daysUntilTarget = (targetDay - now.getDay() + 7) % 7;
@@ -262,6 +262,7 @@ export class ExportScheduler {
           nextRun.setDate(nextRun.getDate() + 7);
         }
         break;
+      }
 
       case 'monthly':
         // Set to next occurrence of specified day/hour

@@ -53,7 +53,7 @@ test.describe("Dashboard V2 - Opportunity Slide-Over", () => {
       }
 
       // Get opportunity name for later verification
-      const oppText = await opportunityRow.textContent();
+      const _oppText = await opportunityRow.textContent();
 
       await opportunityRow.click();
 

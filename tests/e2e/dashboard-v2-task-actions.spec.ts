@@ -103,7 +103,7 @@ test.describe("Dashboard V2 - Task Actions", () => {
 
       // Get task title before completing (for verification)
       const taskRow = taskCheckbox.locator("..");
-      const taskTitle = await taskRow.textContent();
+      const _taskTitle = await taskRow.textContent();
 
       // Click checkbox to complete
       await taskCheckbox.click();
