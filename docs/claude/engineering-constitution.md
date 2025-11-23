@@ -32,28 +32,48 @@ try {
 const data = await fetchData() // Let it throw
 ```
 
-## 2. SINGLE SOURCE OF TRUTH
+## 2. SINGLE COMPOSABLE ENTRY POINT
 
-**Rule:** One data provider (Supabase), one validation layer (Zod at API boundary).
+**Rule:** Have a single, composable entry point for data access, but delegate the implementation to resource-specific modules.
 
-**Rationale:** Multiple data sources or validation layers cause drift. Questions like "Which DB is the source of truth?" waste hours. Centralized validation prevents UI and backend accepting different data.
+**Rationale:** A unified data provider maintains simplicity at the consumption layer, but complex systems need resource-specific logic. The **Composite pattern** solves this: one facade (`unifiedDataProvider`) that delegates to specialized providers per resource. This prevents the "god object" anti-pattern while maintaining a clean API surface. Data truth remains centralized (Supabase), validation truth remains centralized (Zod), but access patterns can be modular.
 
 **Architecture:**
-- **Data Source:** Supabase (PostgreSQL) only
-- **Validation:** Zod schemas in `src/atomic-crm/validation/`
-- **No client-side transforms:** UI displays what backend provides
+- **Data Source:** Supabase (PostgreSQL) as authoritative truth
+- **Validation:** Zod schemas in `src/atomic-crm/validation/` (one schema per resource)
+- **Entry Point:** `unifiedDataProvider.ts` - single facade for all data access
+- **Delegation:** Resource-specific providers handle specialized logic
+
+**Pattern:**
+```typescript
+// unifiedDataProvider.ts - Single entry point, delegates to resource modules
+const resourceProviders = {
+  contacts: contactsProvider,
+  opportunities: opportunitiesProvider,
+  tasks: tasksProvider,
+};
+
+export const dataProvider = {
+  getList: (resource, params) =>
+    resourceProviders[resource]?.getList(params) ?? defaultProvider.getList(resource, params),
+  // ... other methods delegate similarly
+};
+```
 
 **Anti-Pattern:**
 ```typescript
-// DON'T: Validation in multiple places
-const isValidEmail = (email: string) => /regex/.test(email) // UI util
-const emailSchema = z.string().email() // API schema
-// Now two definitions can diverge!
+// DON'T: Multiple competing entry points
+import { contactsApi } from './contactsApi'  // Direct API calls
+import { dataProvider } from './dataProvider' // React Admin provider
+await contactsApi.updateContact(id, data)    // Which is authoritative?
 
-// DO: Single Zod schema, import everywhere
-import { contactSchema } from '@/atomic-crm/validation/contacts'
-const { email } = contactSchema.shape
+// DO: Single entry point with delegation
+import { dataProvider } from '@/atomic-crm/providers/supabase/unifiedDataProvider'
+await dataProvider.update('contacts', { id, data })  // Always use unified provider
+// The provider internally delegates to contacts-specific logic
 ```
+
+**Key Distinction:** "Single source of truth" for *data* (Supabase) and *validation* (Zod) remains unchanged. This principle adds structure for how code *accesses* that truth—through one composable facade.
 
 ## 3. BOY SCOUT RULE
 
