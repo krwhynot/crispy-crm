@@ -433,12 +433,6 @@ export const unifiedDataProvider: DataProvider = {
     params: GetListParams
   ): Promise<GetListResult<RecordType>> {
     return wrapMethod("getList", resource, params, async () => {
-      // DEBUG: Log incoming params
-      console.log(`[getList] Resource: ${resource}`, {
-        filter: params.filter,
-        pagination: params.pagination,
-      });
-
       // Create a mutable copy of params to potentially modify filters
       const processedParams = { ...params };
 
@@ -457,19 +451,8 @@ export const unifiedDataProvider: DataProvider = {
       // Get appropriate database resource
       const dbResource = getDatabaseResource(resource, "list");
 
-      // DEBUG: Log processed params before query
-      console.log(`[getList] Processed for ${dbResource}:`, {
-        filter: searchParams.filter,
-      });
-
       // Execute query
       const result = await baseDataProvider.getList(dbResource, searchParams);
-
-      // DEBUG: Log result
-      console.log(`[getList] Result for ${resource}:`, {
-        count: result.data?.length,
-        total: result.total,
-      });
 
       // Apply data normalization to ensure JSONB fields are arrays
       return {

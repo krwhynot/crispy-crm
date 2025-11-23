@@ -48,6 +48,9 @@ export default function OverviewTab() {
   );
 
   // Fetch activities for the date range (last 30 days for trends)
+  // IMPORTANT: All dates must be memoized to prevent infinite re-render loops
+  // Creating new Date().toISOString() on each render causes useGetList to re-fetch infinitely
+  const now = useMemo(() => new Date().toISOString(), []);
   const thirtyDaysAgo = useMemo(() => subDays(new Date(), 30).toISOString(), []);
   const sixtyDaysAgo = useMemo(() => subDays(new Date(), 60).toISOString(), []);
 
@@ -57,7 +60,7 @@ export default function OverviewTab() {
       pagination: { page: 1, perPage: 10000 },
       filter: {
         "created_at@gte": sixtyDaysAgo, // Get 60 days for comparison
-        "created_at@lte": new Date().toISOString(),
+        "created_at@lte": now,
         ...(filters.salesRepId && { created_by: filters.salesRepId }),
       },
     }

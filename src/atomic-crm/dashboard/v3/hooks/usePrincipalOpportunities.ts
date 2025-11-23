@@ -46,12 +46,15 @@ export function usePrincipalOpportunities({
         setLoading(true);
         setError(null);
 
-        // Fetch opportunities filtered by organization (principal)
+        // Fetch opportunities filtered by principal organization
+        // Note: Uses opportunities_summary view (via getDatabaseResource)
+        // - Filter: principal_organization_id (not organization_id)
+        // - Sort: estimated_close_date (not expected_close_date)
         const { data } = await dataProvider.getList("opportunities", {
           filter: {
-            organization_id: principalId,
+            principal_organization_id: principalId,
           },
-          sort: { field: "expected_close_date", order: "ASC" },
+          sort: { field: "estimated_close_date", order: "ASC" },
           pagination: { page: 1, perPage: 50 },
         });
 
