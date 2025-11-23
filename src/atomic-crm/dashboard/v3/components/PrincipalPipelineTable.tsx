@@ -160,6 +160,16 @@ export function PrincipalPipelineTable() {
             </p>
           </div>
           <div className="flex items-center gap-2">
+            {/* Search input */}
+            <div className="relative">
+              <Search className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Search principals..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="h-9 w-48 pl-8"
+              />
+            </div>
             <div className="flex items-center gap-2">
               <Switch
                 id="my-principals"
@@ -187,12 +197,16 @@ export function PrincipalPipelineTable() {
 
       {/* Table */}
       <div className="flex-1 overflow-auto">
-        {data.length === 0 ? (
+        {sortedData.length === 0 ? (
           <div className="flex h-full items-center justify-center py-12">
             <div className="text-center">
-              <p className="text-muted-foreground">No principals found</p>
+              <p className="text-muted-foreground">
+                {searchQuery ? "No matching principals found" : "No principals found"}
+              </p>
               <p className="mt-1 text-sm text-muted-foreground">
-                Create opportunities linked to organizations to see them here
+                {searchQuery
+                  ? `Try adjusting your search term "${searchQuery}"`
+                  : "Create opportunities linked to organizations to see them here"}
               </p>
             </div>
           </div>
