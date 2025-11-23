@@ -94,14 +94,16 @@ export function transformArrayFilters(filter: FilterRecord | undefined | null): 
   const jsonbArrayFields = ["tags", "email", "phone"];
 
   for (const [key, value] of Object.entries(filter)) {
-    // Skip null/undefined values
-    if (value === null || value === undefined) {
+    // Preserve existing PostgREST operators (keys containing @)
+    // IMPORTANT: Check this BEFORE null check because @is operator needs null values
+    // e.g., "deleted_at@is": null translates to PostgREST's "deleted_at=is.null"
+    if (key.includes("@")) {
+      transformed[key] = value;
       continue;
     }
 
-    // Preserve existing PostgREST operators (keys containing @)
-    if (key.includes("@")) {
-      transformed[key] = value;
+    // Skip null/undefined values for non-operator keys
+    if (value === null || value === undefined) {
       continue;
     }
 
