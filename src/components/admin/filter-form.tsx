@@ -202,24 +202,39 @@ export const FilterButton = (props: FilterButtonProps) => {
     hideFilter,
     sort,
   } = useListContext();
-  const hasFilterValues = !isEqual(filterValues, {});
-  const validSavedQueries = extractValidSavedQueries(savedQueries);
-  const hasSavedCurrentQuery = validSavedQueries.some((savedQuery) =>
-    isEqual(savedQuery.value, {
+  // Memoize expensive computations to prevent cascading re-renders
+  const hasFilterValues = useMemo(() => !isEqual(filterValues, {}), [filterValues]);
+  const validSavedQueries = useMemo(() => extractValidSavedQueries(savedQueries), [savedQueries]);
+
+  // Memoize the current query object to prevent new object creation on every render
+  const currentQueryValue = useMemo(
+    () => ({
       filter: filterValues,
       sort,
       perPage,
       displayedFilters,
-    })
+    }),
+    [filterValues, sort, perPage, displayedFilters]
   );
+
+  const hasSavedCurrentQuery = useMemo(
+    () => validSavedQueries.some((savedQuery) => isEqual(savedQuery.value, currentQueryValue)),
+    [validSavedQueries, currentQueryValue]
+  );
+
   const [open, setOpen] = useState(false);
 
   if (filters === undefined) {
     throw new Error("The <FilterButton> component requires the <List filters> prop to be set");
   }
 
-  const allTogglableFilters = filters.filter(
-    (filterElement: React.ReactElement<FilterElementProps>) => !filterElement.props.alwaysOn
+  // Memoize filter array to prevent recalculation on every render
+  const allTogglableFilters = useMemo(
+    () =>
+      filters.filter(
+        (filterElement: React.ReactElement<FilterElementProps>) => !filterElement.props.alwaysOn
+      ),
+    [filters]
   );
 
   const handleShow = useCallback(
@@ -297,12 +312,7 @@ export const FilterButton = (props: FilterButtonProps) => {
           ))}
           {(hasFilterValues || validSavedQueries.length > 0) && <DropdownMenuSeparator />}
           {validSavedQueries.map((savedQuery: SavedQuery, index: number) =>
-            isEqual(savedQuery.value, {
-              filter: filterValues,
-              sort,
-              perPage,
-              displayedFilters,
-            }) ? (
+            isEqual(savedQuery.value, currentQueryValue) ? (
               <DropdownMenuItem onClick={showRemoveSavedQueryDialog} key={index}>
                 <BookmarkMinus className="h-4 w-4 mr-2" />
                 {translate("ra.saved_queries.remove_label_with_name", {
