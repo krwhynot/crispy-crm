@@ -103,13 +103,17 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     return contacts;
   }, [contacts, selectedOpportunity?.customer_organization_id, selectedContact]);
 
-  // Filter organizations by selected contact's organization
+  // Smart sort organizations: contact's org at top, but all orgs available
   const filteredOrganizations = useMemo(() => {
-    if (selectedContact?.organization_id) {
-      // When contact is selected, only show their organization
-      return organizations.filter((o) => o.id === selectedContact.organization_id);
+    if (!selectedContact?.organization_id) {
+      return organizations;
     }
-    return organizations;
+    // Sort contact's org to top, but keep all others selectable
+    const contactOrgId = selectedContact.organization_id;
+    return [
+      ...organizations.filter((o) => o.id === contactOrgId),
+      ...organizations.filter((o) => o.id !== contactOrgId),
+    ];
   }, [organizations, selectedContact?.organization_id]);
 
   // Filter opportunities by selected contact's organization
