@@ -1,55 +1,24 @@
 # Page snapshot
 
 ```yaml
-- generic [ref=e2]:
-  - navigation [ref=e3]:
-    - generic [ref=e6]:
-      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
-        - /url: "#/"
-        - generic "MFB Master Food Brokers" [ref=e8]
-      - navigation [ref=e10]:
-        - link "Dashboard" [ref=e11] [cursor=pointer]:
-          - /url: "#/"
-        - link "Contacts" [ref=e12] [cursor=pointer]:
-          - /url: "#/contacts"
-        - link "Organizations" [ref=e13] [cursor=pointer]:
-          - /url: "#/organizations"
-        - link "Opportunities" [ref=e14] [cursor=pointer]:
-          - /url: "#/opportunities"
-        - link "Products" [ref=e15] [cursor=pointer]:
-          - /url: "#/products"
-        - link "Tasks" [ref=e16] [cursor=pointer]:
-          - /url: "#/tasks"
-        - link "Reports" [ref=e17] [cursor=pointer]:
-          - /url: "#/reports"
-      - generic [ref=e18]:
-        - button "Toggle theme" [ref=e19] [cursor=pointer]:
-          - img
-          - generic [ref=e20]: Toggle theme
-        - button [ref=e21] [cursor=pointer]:
-          - img
-        - button "Notifications" [ref=e22] [cursor=pointer]:
-          - img
-        - button "A" [ref=e23] [cursor=pointer]:
-          - generic [ref=e25]: A
-  - main [ref=e26]:
-    - generic [ref=e27]:
-      - heading "Principal Dashboard" [level=1] [ref=e30]
-      - generic [ref=e32]:
-        - separator [ref=e44]:
-          - img [ref=e46]
-        - separator [ref=e63]:
-          - img [ref=e65]
-        - generic [ref=e73]:
-          - generic [ref=e76]:
-            - generic [ref=e77]: Log Activity
-            - generic [ref=e78]: Quick capture for calls, meetings, and notes
-          - generic [ref=e82]: Loading...
-  - contentinfo [ref=e83]:
-    - generic [ref=e85]:
-      - paragraph [ref=e86]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e87] [cursor=pointer]:
-        - img [ref=e88]
-        - generic [ref=e90]: Keyboard shortcuts
+- generic [ref=e3]:
+  - generic [ref=e4]:
+    - generic [ref=e7]:
+      - img "MFB Master Food Brokers" [ref=e8]
+      - text: MFB Master Food Brokers
+    - generic [ref=e10]:
+      - heading "Sign in" [level=1] [ref=e12]
+      - generic [ref=e13]:
+        - group [ref=e14]:
+          - generic [ref=e16]: Email *
+          - textbox "Email *" [ref=e17]
+          - generic [ref=e18]: Required
+        - group [ref=e19]:
+          - generic [ref=e21]: Password *
+          - textbox "Password *" [ref=e22]
+          - generic [ref=e23]: Required
+        - button "Sign in" [ref=e24] [cursor=pointer]
+      - link "Forgot your password?" [ref=e25] [cursor=pointer]:
+        - /url: "#/forgot-password"
   - region "Notifications alt+T"
 ```

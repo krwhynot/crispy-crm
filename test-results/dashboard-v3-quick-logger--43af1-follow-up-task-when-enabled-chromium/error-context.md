@@ -331,7 +331,7 @@
               - generic [ref=e357]:
                 - generic [ref=e358]: Contact *
                 - combobox "Contact *" [ref=e359] [cursor=pointer]:
-                  - text: . Bryant Anderson
+                  - text: A Mclovin
                   - img
                 - paragraph [ref=e360]: Select a contact OR organization
               - generic [ref=e361]:
@@ -341,28 +341,31 @@
                 - paragraph [ref=e364]: Select a contact OR organization
               - generic [ref=e365]:
                 - generic [ref=e366]: Opportunity
-                - combobox "Opportunity" [ref=e368] [cursor=pointer]:
-                  - text: Select opportunity (optional)
-                  - img
-            - generic [ref=e369]:
-              - generic [ref=e370]: Notes
-              - textbox "Notes" [active] [ref=e371]:
+                - generic [ref=e367]:
+                  - combobox "Opportunity" [ref=e368] [cursor=pointer]:
+                    - text: A Mclovin @ Muskegon Country Club
+                    - img
+                  - button "Clear opportunity selection" [ref=e369] [cursor=pointer]:
+                    - img
+            - generic [ref=e370]:
+              - generic [ref=e371]: Notes
+              - textbox "Notes" [active] [ref=e372]:
                 - /placeholder: Summary of the interaction...
-                - text: "Follow-up required for contract discussion. Test ID: 1763924004289"
-            - generic [ref=e373]:
-              - generic [ref=e374]: Create follow-up task?
-              - switch "Create follow-up task?" [ref=e375] [cursor=pointer]
+                - text: "Follow-up required for contract discussion. Test ID: 1763924730836"
+            - generic [ref=e374]:
+              - generic [ref=e375]: Create follow-up task?
+              - switch "Create follow-up task?" [ref=e376] [cursor=pointer]
               - checkbox
-            - generic [ref=e376]:
-              - button "Cancel" [ref=e377] [cursor=pointer]
-              - generic [ref=e378]:
-                - button "Save & Close" [ref=e379] [cursor=pointer]
-                - button "Save & New" [ref=e380] [cursor=pointer]
-  - contentinfo [ref=e381]:
-    - generic [ref=e383]:
-      - paragraph [ref=e384]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e385] [cursor=pointer]:
-        - img [ref=e386]
-        - generic [ref=e388]: Keyboard shortcuts
+            - generic [ref=e377]:
+              - button "Cancel" [ref=e378] [cursor=pointer]
+              - generic [ref=e379]:
+                - button "Save & Close" [ref=e380] [cursor=pointer]
+                - button "Save & New" [ref=e381] [cursor=pointer]
+  - contentinfo [ref=e382]:
+    - generic [ref=e384]:
+      - paragraph [ref=e385]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e386] [cursor=pointer]:
+        - img [ref=e387]
+        - generic [ref=e389]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```

@@ -51,12 +51,21 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
         contentType: "text/plain",
       });
 
-      // Check for specific error types
+      // Check for specific error types (handle both strings and objects)
+      const getErrorString = (e: unknown): string =>
+        typeof e === 'string' ? e : JSON.stringify(e);
+
       const rlsErrors = errors.filter(
-        (e) => e.includes("RLS") || e.includes("permission denied") || e.includes("42501")
+        (e) => {
+          const str = getErrorString(e);
+          return str.includes("RLS") || str.includes("permission denied") || str.includes("42501") || str.includes("row-level security");
+        }
       );
       const reactErrors = errors.filter(
-        (e) => e.includes("React") || e.includes("Uncaught")
+        (e) => {
+          const str = getErrorString(e);
+          return str.includes("React") || str.includes("Uncaught");
+        }
       );
 
       if (rlsErrors.length > 0) {
@@ -67,9 +76,12 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       }
     }
 
-    // Fail test if critical errors were detected
+    // Fail test if critical errors were detected (use helper for object errors)
     expect(
-      errors.filter((e) => e.includes("permission denied") || e.includes("Uncaught")),
+      errors.filter((e) => {
+        const str = typeof e === 'string' ? e : JSON.stringify(e);
+        return str.includes("permission denied") || str.includes("Uncaught");
+      }),
       "Critical console errors detected"
     ).toHaveLength(0);
   });
