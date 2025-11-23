@@ -104,16 +104,17 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       // Navigate directly without auth
       await page.goto("/");
 
-      // App shows login form inline (not redirect) when unauthenticated
-      // Wait for either login form or redirect to login path
-      await page.waitForLoadState("networkidle");
+      // React Admin with requireAuth shows navigation initially while checking auth,
+      // then redirects to login page. Wait for the "Sign in" heading to appear.
+      // The login page has an h1 with "Sign in" text.
+      await expect(
+        page.getByRole("heading", { name: /sign in/i, level: 1 })
+      ).toBeVisible({ timeout: 15000 });
 
-      // Check for login-related UI elements
-      const hasLoginForm =
-        (await page.getByRole("button", { name: /sign in|log in|login/i }).count()) > 0 ||
-        (await page.getByText(/sign in|log in|email/i).count()) > 0;
-
-      expect(hasLoginForm).toBe(true);
+      // Also verify the form elements are present
+      await expect(page.getByLabel(/email/i)).toBeVisible();
+      await expect(page.getByLabel(/password/i)).toBeVisible();
+      await expect(page.getByRole("button", { name: /sign in/i })).toBeVisible();
 
       await context.close();
     });
@@ -554,8 +555,7 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await oppCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
-
-      // Wait for auto-fill effect
+      // Ensure popover closes before interacting with other elements
       await authenticatedPage.waitForTimeout(500);
 
       // Organization should be auto-filled from opportunity's customer org
@@ -574,8 +574,7 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await contactCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
-
-      // Wait for auto-fill effect
+      // Ensure popover closes before interacting with other elements
       await authenticatedPage.waitForTimeout(500);
 
       // Some contacts may not have organization, so just verify no error
@@ -637,6 +636,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
+      // Ensure popover closes before interacting with other elements
+      await authenticatedPage.waitForTimeout(300);
 
       await dashboard.getSaveAndCloseButton().click();
 
@@ -704,6 +705,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
+      // Ensure popover closes before interacting with other elements
+      await authenticatedPage.waitForTimeout(300);
 
       // Enable follow-up with date
       await dashboard.enableFollowUp();
@@ -746,6 +749,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
+      // Ensure popover closes before interacting with other elements
+      await authenticatedPage.waitForTimeout(300);
 
       await dashboard.getSaveAndNewButton().click();
 
@@ -846,6 +851,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await orgCombobox.click();
       await authenticatedPage.keyboard.press("ArrowDown");
       await authenticatedPage.keyboard.press("Enter");
+      // Ensure popover closes before interacting with other elements
+      await authenticatedPage.waitForTimeout(300);
 
       await dashboard.enableFollowUp();
       const tomorrow = new Date();
