@@ -288,7 +288,7 @@ describe("PrincipalPipelineTable", () => {
 
       // Should show momentum filter options
       await waitFor(() => {
-        expect(screen.getByText(/momentum/i)).toBeInTheDocument();
+        expect(screen.getByText(/filter by momentum/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/increasing/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/steady/i)).toBeInTheDocument();
         expect(screen.getByLabelText(/decreasing/i)).toBeInTheDocument();

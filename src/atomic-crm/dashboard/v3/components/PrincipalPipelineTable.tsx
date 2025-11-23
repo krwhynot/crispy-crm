@@ -63,14 +63,25 @@ export function PrincipalPipelineTable() {
     }
   }, [sortField]);
 
-  // Filter data based on search query
+  // Filter data based on search query and momentum filters
   const filteredData = useMemo(() => {
     if (!data || data.length === 0) return data;
-    if (!searchQuery.trim()) return data;
 
-    const query = searchQuery.toLowerCase().trim();
-    return data.filter((row) => row.name.toLowerCase().includes(query));
-  }, [data, searchQuery]);
+    let result = data;
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase().trim();
+      result = result.filter((row) => row.name.toLowerCase().includes(query));
+    }
+
+    // Apply momentum filter (if any filters selected)
+    if (momentumFilters.size > 0) {
+      result = result.filter((row) => momentumFilters.has(row.momentum));
+    }
+
+    return result;
+  }, [data, searchQuery, momentumFilters]);
 
   // Sort data based on current sort state
   const sortedData = useMemo(() => {
@@ -201,10 +212,31 @@ export function PrincipalPipelineTable() {
                 <Button variant="outline" size="sm">
                   <Filter className="mr-2 h-4 w-4" />
                   Filters
+                  {momentumFilters.size > 0 && (
+                    <Badge variant="secondary" className="ml-1 h-5 px-1.5">
+                      {momentumFilters.size}
+                    </Badge>
+                  )}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-64">
-                {/* Filter options will be added in next task */}
+                <div className="p-2">
+                  <p className="mb-2 text-sm font-medium">Filter by Momentum</p>
+                  <div className="space-y-2">
+                    {(["increasing", "steady", "decreasing", "stale"] as const).map((momentum) => (
+                      <div key={momentum} className="flex items-center gap-2">
+                        <Checkbox
+                          id={`momentum-${momentum}`}
+                          checked={momentumFilters.has(momentum)}
+                          onCheckedChange={() => toggleMomentumFilter(momentum)}
+                        />
+                        <Label htmlFor={`momentum-${momentum}`} className="text-sm capitalize">
+                          {momentum}
+                        </Label>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
