@@ -1,25 +1,25 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { PrincipalPipelineTable } from "../PrincipalPipelineTable";
+import * as usePrincipalPipelineModule from "../../hooks/usePrincipalPipeline";
 
-// Mock the usePrincipalPipeline hook
+const mockPipelineData = [
+  {
+    id: 1,
+    name: "Acme Corporation",
+    totalPipeline: 5,
+    activeThisWeek: 3,
+    activeLastWeek: 1,
+    momentum: "increasing" as const,
+    nextAction: "Demo scheduled Friday",
+  },
+];
+
+// Mock the usePrincipalPipeline hook with vi.fn() for per-test control
+const mockUsePrincipalPipeline = vi.fn();
 vi.mock("../../hooks/usePrincipalPipeline", () => ({
-  usePrincipalPipeline: () => ({
-    data: [
-      {
-        id: 1,
-        name: "Acme Corporation",
-        totalPipeline: 5,
-        activeThisWeek: 3,
-        activeLastWeek: 1,
-        momentum: "increasing",
-        nextAction: "Demo scheduled Friday",
-      },
-    ],
-    loading: false,
-    error: null,
-  }),
+  usePrincipalPipeline: () => mockUsePrincipalPipeline(),
 }));
 
 // Mock the usePrincipalOpportunities hook (used by PipelineDrillDownSheet)
@@ -32,6 +32,15 @@ vi.mock("../../hooks/usePrincipalOpportunities", () => ({
 }));
 
 describe("PrincipalPipelineTable", () => {
+  beforeEach(() => {
+    // Default mock returns populated data
+    mockUsePrincipalPipeline.mockReturnValue({
+      data: mockPipelineData,
+      loading: false,
+      error: null,
+    });
+  });
+
   it("should render table headers correctly", () => {
     render(
       <MemoryRouter>
@@ -56,5 +65,25 @@ describe("PrincipalPipelineTable", () => {
     );
     const rows = container.querySelectorAll(".table-row-premium");
     expect(rows.length).toBeGreaterThan(0);
+  });
+
+  it("should display empty state when no data is available", () => {
+    // Override mock to return empty data for this test
+    mockUsePrincipalPipeline.mockReturnValue({
+      data: [],
+      loading: false,
+      error: null,
+    });
+
+    render(
+      <MemoryRouter>
+        <PrincipalPipelineTable />
+      </MemoryRouter>
+    );
+
+    // Should show empty state message
+    expect(screen.getByText(/no principals found/i)).toBeInTheDocument();
+    // Should NOT show the table body with data rows
+    expect(screen.queryByRole("button", { name: /view opportunities/i })).not.toBeInTheDocument();
   });
 });

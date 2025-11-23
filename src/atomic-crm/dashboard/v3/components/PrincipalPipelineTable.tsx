@@ -115,6 +115,16 @@ export function PrincipalPipelineTable() {
 
       {/* Table */}
       <div className="flex-1 overflow-auto">
+        {data.length === 0 ? (
+          <div className="flex h-full items-center justify-center py-12">
+            <div className="text-center">
+              <p className="text-muted-foreground">No principals found</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Create opportunities linked to organizations to see them here
+              </p>
+            </div>
+          </div>
+        ) : (
         <Table>
           <TableHeader className="sticky top-0 bg-background">
             <TableRow>
@@ -181,6 +191,7 @@ export function PrincipalPipelineTable() {
             ))}
           </TableBody>
         </Table>
+        )}
       </div>
 
       {/* Drill-Down Sheet */}
