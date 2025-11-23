@@ -509,9 +509,29 @@ export class DashboardV3Page extends BasePage {
     await combobox.click();
     // Wait for options to load
     await this.page.waitForTimeout(300);
-    // Click the first option directly - this is more reliable than keyboard
+    // Click the first option - scroll into view first to avoid viewport issues
     const firstOption = this.page.locator("[cmdk-item]").first();
-    await firstOption.click();
+    await firstOption.scrollIntoViewIfNeeded();
+    await firstOption.click({ force: true }); // Force click in case of any overlay
+    // Wait for selection to be applied and popover to close
+    await this.page.waitForTimeout(300);
+    // If popover is still open, dismiss it
+    await this.dismissComboboxPopoverIfOpen();
+  }
+
+  /**
+   * Select first opportunity from combobox by clicking first option
+   * Required for interaction activities (Call, Email, Meeting, etc.)
+   */
+  async selectFirstOpportunity(): Promise<void> {
+    const combobox = this.getOpportunityCombobox();
+    await combobox.click();
+    // Wait for options to load
+    await this.page.waitForTimeout(300);
+    // Click the first option - scroll into view first to avoid viewport issues
+    const firstOption = this.page.locator("[cmdk-item]").first();
+    await firstOption.scrollIntoViewIfNeeded();
+    await firstOption.click({ force: true }); // Force click in case of any overlay
     // Wait for selection to be applied and popover to close
     await this.page.waitForTimeout(300);
     // If popover is still open, dismiss it

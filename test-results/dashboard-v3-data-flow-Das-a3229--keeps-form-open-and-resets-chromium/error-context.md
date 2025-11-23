@@ -317,7 +317,7 @@
               - generic [ref=e347]:
                 - generic [ref=e348]: Activity Type
                 - combobox "Activity Type" [ref=e349] [cursor=pointer]:
-                  - generic: Note
+                  - generic: Email
                   - img
                 - combobox [ref=e350]
               - generic [ref=e351]:
@@ -349,7 +349,7 @@
               - generic [ref=e369]: Notes
               - textbox "Notes" [ref=e370]:
                 - /placeholder: Summary of the interaction...
-                - text: E2E Test Activity 1763884022679
+                - text: Test Save & New
             - generic [ref=e372]:
               - generic [ref=e373]: Create follow-up task?
               - switch "Create follow-up task?" [ref=e374] [cursor=pointer]
@@ -357,8 +357,8 @@
             - generic [ref=e375]:
               - button "Cancel" [ref=e376] [cursor=pointer]
               - generic [ref=e377]:
-                - button "Save & Close" [active] [ref=e378] [cursor=pointer]
-                - button "Save & New" [ref=e379] [cursor=pointer]
+                - button "Save & Close" [ref=e378] [cursor=pointer]
+                - button "Save & New" [active] [ref=e379] [cursor=pointer]
   - contentinfo [ref=e380]:
     - generic [ref=e382]:
       - paragraph [ref=e383]: © 2025 MFB Master Food Brokers. All rights reserved.
