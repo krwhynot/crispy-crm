@@ -100,7 +100,7 @@ export const AvatarGroup: Story = {
         <AvatarFallback>U3</AvatarFallback>
       </Avatar>
       <Avatar className="border-2 border-background">
-        <AvatarFallback className="bg-muted text-[color:var(--text-subtle)]">+5</AvatarFallback>
+        <AvatarFallback className="bg-muted text-muted-foreground">+5</AvatarFallback>
       </Avatar>
     </div>
   ),
@@ -282,7 +282,7 @@ export const UserList: Story = {
         </Avatar>
         <div>
           <p className="text-sm font-medium">Alice Johnson</p>
-          <p className="text-xs text-[color:var(--text-subtle)]">alice@example.com</p>
+          <p className="text-xs text-muted-foreground">alice@example.com</p>
         </div>
       </div>
       <div className="flex items-center gap-3">
@@ -292,7 +292,7 @@ export const UserList: Story = {
         </Avatar>
         <div>
           <p className="text-sm font-medium">Bob Smith</p>
-          <p className="text-xs text-[color:var(--text-subtle)]">bob@example.com</p>
+          <p className="text-xs text-muted-foreground">bob@example.com</p>
         </div>
       </div>
       <div className="flex items-center gap-3">
@@ -302,7 +302,7 @@ export const UserList: Story = {
         </Avatar>
         <div>
           <p className="text-sm font-medium">Carol White</p>
-          <p className="text-xs text-[color:var(--text-subtle)]">carol@example.com</p>
+          <p className="text-xs text-muted-foreground">carol@example.com</p>
         </div>
       </div>
     </div>
@@ -319,7 +319,7 @@ export const ProfileCard: Story = {
       </Avatar>
       <div className="text-center">
         <h3 className="font-semibold">John Doe</h3>
-        <p className="text-sm text-[color:var(--text-subtle)]">Software Engineer</p>
+        <p className="text-sm text-muted-foreground">Software Engineer</p>
       </div>
     </div>
   ),

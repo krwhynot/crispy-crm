@@ -66,21 +66,21 @@ export const WithDescriptions: Story = {
         <RadioGroupItem value="card" id="card" className="mt-1" />
         <div className="grid gap-1.5 leading-none">
           <Label htmlFor="card">Card Payment</Label>
-          <p className="text-sm text-[color:var(--text-subtle)]">Pay with credit or debit card</p>
+          <p className="text-sm text-muted-foreground">Pay with credit or debit card</p>
         </div>
       </div>
       <div className="flex items-start space-x-2">
         <RadioGroupItem value="paypal" id="paypal" className="mt-1" />
         <div className="grid gap-1.5 leading-none">
           <Label htmlFor="paypal">PayPal</Label>
-          <p className="text-sm text-[color:var(--text-subtle)]">Pay with your PayPal account</p>
+          <p className="text-sm text-muted-foreground">Pay with your PayPal account</p>
         </div>
       </div>
       <div className="flex items-start space-x-2">
         <RadioGroupItem value="apple" id="apple" className="mt-1" />
         <div className="grid gap-1.5 leading-none">
           <Label htmlFor="apple">Apple Pay</Label>
-          <p className="text-sm text-[color:var(--text-subtle)]">Pay with Apple Pay</p>
+          <p className="text-sm text-muted-foreground">Pay with Apple Pay</p>
         </div>
       </div>
     </RadioGroup>
@@ -151,7 +151,7 @@ export const Controlled: Story = {
               <Label htmlFor="opt3">Option 3</Label>
             </div>
           </RadioGroup>
-          <p className="text-sm text-[color:var(--text-subtle)]">Selected: {value}</p>
+          <p className="text-sm text-muted-foreground">Selected: {value}</p>
         </div>
       );
     };
@@ -303,7 +303,7 @@ export const WithAriaDescribedBy: Story = {
           <Label htmlFor="push-pref">Push Notifications</Label>
         </div>
       </RadioGroup>
-      <p id="notification-help" className="text-sm text-[color:var(--text-subtle)]">
+      <p id="notification-help" className="text-sm text-muted-foreground">
         Choose how you'd like to receive updates
       </p>
     </div>
@@ -314,7 +314,7 @@ export const WithAriaDescribedBy: Story = {
 export const Focused: Story = {
   render: () => (
     <div className="space-y-4">
-      <p className="text-sm text-[color:var(--text-subtle)]">Tab to focus the radio group</p>
+      <p className="text-sm text-muted-foreground">Tab to focus the radio group</p>
       <RadioGroup defaultValue="focused">
         <div className="flex items-center space-x-2">
           <RadioGroupItem value="focused" id="f1" />
@@ -347,7 +347,7 @@ export const WithIcons: Story = {
             </svg>
             <Label htmlFor="public">Public</Label>
           </div>
-          <p className="text-sm text-[color:var(--text-subtle)]">
+          <p className="text-sm text-muted-foreground">
             Anyone on the internet can see this
           </p>
         </div>
@@ -366,7 +366,7 @@ export const WithIcons: Story = {
             </svg>
             <Label htmlFor="private">Private</Label>
           </div>
-          <p className="text-sm text-[color:var(--text-subtle)]">Only you can see this</p>
+          <p className="text-sm text-muted-foreground">Only you can see this</p>
         </div>
       </div>
     </RadioGroup>

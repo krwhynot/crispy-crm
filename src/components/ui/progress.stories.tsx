@@ -120,7 +120,7 @@ export const Animated: Story = {
       return (
         <div className="w-[300px] space-y-2">
           <Progress value={progress} />
-          <p className="text-sm text-[color:var(--text-subtle)] text-center">{progress}%</p>
+          <p className="text-sm text-muted-foreground text-center">{progress}%</p>
         </div>
       );
     };
@@ -152,7 +152,7 @@ export const LoopAnimation: Story = {
       return (
         <div className="w-[300px] space-y-2">
           <Progress value={progress} />
-          <p className="text-sm text-[color:var(--text-subtle)] text-center">
+          <p className="text-sm text-muted-foreground text-center">
             Loading... {progress}%
           </p>
         </div>
@@ -216,7 +216,7 @@ export const FileUpload: Story = {
             <span>{Math.round(progress)}%</span>
           </div>
           <Progress value={progress} />
-          <p className="text-xs text-[color:var(--text-subtle)]">document.pdf (2.4 MB)</p>
+          <p className="text-xs text-muted-foreground">document.pdf (2.4 MB)</p>
         </div>
       );
     };
@@ -257,7 +257,7 @@ export const MultipleProgress: Story = {
 export const Small: Story = {
   render: () => (
     <div className="w-[300px] space-y-2">
-      <p className="text-sm text-[color:var(--text-subtle)]">Small (h-1)</p>
+      <p className="text-sm text-muted-foreground">Small (h-1)</p>
       <Progress value={60} className="h-1" />
     </div>
   ),
@@ -266,7 +266,7 @@ export const Small: Story = {
 export const Medium: Story = {
   render: () => (
     <div className="w-[300px] space-y-2">
-      <p className="text-sm text-[color:var(--text-subtle)]">Medium (default h-2)</p>
+      <p className="text-sm text-muted-foreground">Medium (default h-2)</p>
       <Progress value={60} />
     </div>
   ),
@@ -275,7 +275,7 @@ export const Medium: Story = {
 export const Large: Story = {
   render: () => (
     <div className="w-[300px] space-y-2">
-      <p className="text-sm text-[color:var(--text-subtle)]">Large (h-4)</p>
+      <p className="text-sm text-muted-foreground">Large (h-4)</p>
       <Progress value={60} className="h-4" />
     </div>
   ),
@@ -286,15 +286,15 @@ export const CustomColor: Story = {
   render: () => (
     <div className="w-[300px] space-y-4">
       <div className="space-y-2">
-        <p className="text-sm text-[color:var(--text-subtle)]">Success</p>
+        <p className="text-sm text-muted-foreground">Success</p>
         <Progress value={75} className="[&>div]:bg-green-500" />
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-[color:var(--text-subtle)]">Warning</p>
+        <p className="text-sm text-muted-foreground">Warning</p>
         <Progress value={50} className="[&>div]:bg-yellow-500" />
       </div>
       <div className="space-y-2">
-        <p className="text-sm text-[color:var(--text-subtle)]">Error</p>
+        <p className="text-sm text-muted-foreground">Error</p>
         <Progress value={25} className="[&>div]:bg-red-500" />
       </div>
     </div>
@@ -319,7 +319,7 @@ export const Indeterminate: Story = {
 
       return (
         <div className="w-[300px] space-y-2">
-          <p className="text-sm text-[color:var(--text-subtle)]">Loading...</p>
+          <p className="text-sm text-muted-foreground">Loading...</p>
           <div className="relative h-2 w-full overflow-hidden rounded-full bg-primary/20">
             <div
               className="h-full w-1/3 bg-primary rounded-full absolute transition-transform duration-300"
@@ -354,7 +354,7 @@ export const WithAriaValueText: Story = {
   render: (args) => (
     <div className="w-[300px] space-y-2">
       <Progress {...args} />
-      <p className="text-sm text-[color:var(--text-subtle)]">
+      <p className="text-sm text-muted-foreground">
         Screen readers will announce: "33 percent complete"
       </p>
     </div>
@@ -380,14 +380,14 @@ export const StepsProgress: Story = {
           {steps.map((step, index) => (
             <span
               key={index}
-              className={step.complete ? "text-primary" : "text-[color:var(--text-subtle)]"}
+              className={step.complete ? "text-primary" : "text-muted-foreground"}
             >
               {step.name}
             </span>
           ))}
         </div>
         <Progress value={progress} />
-        <p className="text-sm text-center text-[color:var(--text-subtle)]">
+        <p className="text-sm text-center text-muted-foreground">
           Step {completedSteps} of {steps.length}
         </p>
       </div>

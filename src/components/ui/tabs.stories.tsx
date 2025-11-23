@@ -369,7 +369,7 @@ export const SettingsPage: Story = {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-sm">Marketing emails</p>
-                <p className="text-xs text-[color:var(--text-subtle)]">
+                <p className="text-xs text-muted-foreground">
                   Receive emails about new features and updates
                 </p>
               </div>
@@ -380,7 +380,7 @@ export const SettingsPage: Story = {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium text-sm">Security alerts</p>
-                <p className="text-xs text-[color:var(--text-subtle)]">
+                <p className="text-xs text-muted-foreground">
                   Receive alerts about account security
                 </p>
               </div>
@@ -401,7 +401,7 @@ export const SettingsPage: Story = {
             <div className="space-y-4">
               <div>
                 <Label>Color Scheme</Label>
-                <p className="text-sm text-[color:var(--text-subtle)]">
+                <p className="text-sm text-muted-foreground">
                   Choose between light and dark mode
                 </p>
               </div>
@@ -430,19 +430,19 @@ export const Compact: Story = {
       <TabsContent value="recent" className="mt-2">
         <div className="space-y-2">
           <p className="text-sm font-medium">Recent Items</p>
-          <p className="text-xs text-[color:var(--text-subtle)]">Items from the last 24 hours</p>
+          <p className="text-xs text-muted-foreground">Items from the last 24 hours</p>
         </div>
       </TabsContent>
       <TabsContent value="popular" className="mt-2">
         <div className="space-y-2">
           <p className="text-sm font-medium">Popular Items</p>
-          <p className="text-xs text-[color:var(--text-subtle)]">Most viewed this week</p>
+          <p className="text-xs text-muted-foreground">Most viewed this week</p>
         </div>
       </TabsContent>
       <TabsContent value="trending" className="mt-2">
         <div className="space-y-2">
           <p className="text-sm font-medium">Trending Items</p>
-          <p className="text-xs text-[color:var(--text-subtle)]">Rising in popularity</p>
+          <p className="text-xs text-muted-foreground">Rising in popularity</p>
         </div>
       </TabsContent>
     </Tabs>

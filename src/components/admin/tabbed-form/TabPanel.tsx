@@ -12,7 +12,7 @@ export const TabPanel = ({ value, children, className }: TabPanelProps) => {
     <TabsContent
       value={value}
       className={cn(
-        "rounded-b-lg rounded-tr-lg border border-[color:var(--border-subtle)] bg-background p-3",
+        "rounded-b-lg rounded-tr-lg border border-border bg-background p-3",
         className
       )}
     >

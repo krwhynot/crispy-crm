@@ -104,7 +104,7 @@ export const WithLabelDescription: Story = {
       <Switch id="marketing" />
       <div className="grid gap-1.5 leading-none">
         <Label htmlFor="marketing">Marketing emails</Label>
-        <p className="text-sm text-[color:var(--text-subtle)]">
+        <p className="text-sm text-muted-foreground">
           Receive emails about new products and features.
         </p>
       </div>
@@ -124,7 +124,7 @@ export const Controlled: Story = {
             <Switch id="controlled" checked={checked} onCheckedChange={setChecked} />
             <Label htmlFor="controlled">Controlled switch</Label>
           </div>
-          <p className="text-sm text-[color:var(--text-subtle)]">State: {checked ? "On" : "Off"}</p>
+          <p className="text-sm text-muted-foreground">State: {checked ? "On" : "Off"}</p>
         </div>
       );
     };
@@ -225,7 +225,7 @@ export const WithAriaDescribedBy: Story = {
         <Switch id="described" aria-describedby="description" />
         <Label htmlFor="described">Auto-save</Label>
       </div>
-      <p id="description" className="text-sm text-[color:var(--text-subtle)]">
+      <p id="description" className="text-sm text-muted-foreground">
         Automatically save your work every 5 minutes
       </p>
     </div>
@@ -263,7 +263,7 @@ export const Invalid: Story = {
 export const Focused: Story = {
   render: () => (
     <div className="space-y-4">
-      <p className="text-sm text-[color:var(--text-subtle)]">Tab to focus the switch</p>
+      <p className="text-sm text-muted-foreground">Tab to focus the switch</p>
       <Switch />
     </div>
   ),
