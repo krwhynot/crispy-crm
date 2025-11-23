@@ -33,7 +33,7 @@ vi.mock("ra-core", async () => {
         data-testid="contact-form"
         onSubmit={(e) => {
           e.preventDefault();
-          onSubmit && onSubmit(record);
+          if (onSubmit) onSubmit(record);
         }}
       >
         {children}
