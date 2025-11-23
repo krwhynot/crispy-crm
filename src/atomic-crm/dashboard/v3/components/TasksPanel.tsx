@@ -1,23 +1,25 @@
+import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
-  Clock,
+  AlarmClock,
   CheckCircle2,
   Phone,
   Mail,
   Users,
   FileText,
-  MoreHorizontal
+  MoreHorizontal,
+  Loader2
 } from 'lucide-react';
 import { TaskGroup } from './TaskGroup';
 import type { TaskItem } from '../types';
 import { useMyTasks } from '../hooks/useMyTasks';
 
 export function TasksPanel() {
-  const { tasks, loading, error, completeTask } = useMyTasks();
+  const { tasks, loading, error, completeTask, snoozeTask } = useMyTasks();
 
   const overdueTasks = tasks.filter(t => t.status === 'overdue');
   const todayTasks = tasks.filter(t => t.status === 'today');
@@ -84,7 +86,7 @@ export function TasksPanel() {
           {overdueTasks.length > 0 && (
             <TaskGroup title="Overdue" variant="danger" count={overdueTasks.length}>
               {overdueTasks.map(task => (
-                <TaskItemComponent key={task.id} task={task} onComplete={completeTask} />
+                <TaskItemComponent key={task.id} task={task} onComplete={completeTask} onSnooze={snoozeTask} />
               ))}
             </TaskGroup>
           )}
@@ -92,14 +94,14 @@ export function TasksPanel() {
           {/* Today section */}
           <TaskGroup title="Today" variant="warning" count={todayTasks.length}>
             {todayTasks.map(task => (
-              <TaskItemComponent key={task.id} task={task} onComplete={completeTask} />
+              <TaskItemComponent key={task.id} task={task} onComplete={completeTask} onSnooze={snoozeTask} />
             ))}
           </TaskGroup>
 
           {/* Tomorrow section */}
           <TaskGroup title="Tomorrow" variant="info" count={tomorrowTasks.length}>
             {tomorrowTasks.map(task => (
-              <TaskItemComponent key={task.id} task={task} onComplete={completeTask} />
+              <TaskItemComponent key={task.id} task={task} onComplete={completeTask} onSnooze={snoozeTask} />
             ))}
           </TaskGroup>
         </div>
@@ -108,7 +110,26 @@ export function TasksPanel() {
   );
 }
 
-function TaskItemComponent({ task, onComplete }: { task: TaskItem; onComplete: (taskId: number) => Promise<void> }) {
+interface TaskItemProps {
+  task: TaskItem;
+  onComplete: (taskId: number) => Promise<void>;
+  onSnooze: (taskId: number) => Promise<void>;
+}
+
+function TaskItemComponent({ task, onComplete, onSnooze }: TaskItemProps) {
+  const [isSnoozing, setIsSnoozing] = useState(false);
+
+  const handleSnooze = async () => {
+    setIsSnoozing(true);
+    try {
+      await onSnooze(task.id);
+    } catch {
+      // Error already logged in hook, just reset state
+    } finally {
+      setIsSnoozing(false);
+    }
+  };
+
   const getTaskIcon = (type: TaskItem['taskType']) => {
     switch(type) {
       case 'Call': return <Phone className="h-4 w-4" />;
@@ -154,8 +175,20 @@ function TaskItemComponent({ task, onComplete }: { task: TaskItem; onComplete: (
       </div>
 
       <div className="flex items-center gap-1">
-        <Button variant="ghost" size="sm" className="h-11 w-11 p-0">
-          <Clock className="h-4 w-4" />
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-11 w-11 p-0"
+          onClick={handleSnooze}
+          disabled={isSnoozing}
+          title="Snooze task by 1 day"
+          aria-label={`Snooze "${task.subject}" by 1 day`}
+        >
+          {isSnoozing ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <AlarmClock className="h-4 w-4" />
+          )}
         </Button>
         <Button variant="ghost" size="sm" className="h-11 w-11 p-0">
           <MoreHorizontal className="h-4 w-4" />
