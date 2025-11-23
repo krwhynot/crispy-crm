@@ -3,8 +3,9 @@ import { describe, it, expect, vi } from "vitest";
 // Unit tests for drill-down logic (no React components)
 describe("Pipeline Drill-Down Feature", () => {
   describe("usePrincipalOpportunities hook logic", () => {
-    it("should map opportunity data correctly", () => {
+    it("should map opportunity data correctly using estimated_close_date", () => {
       // Test the data mapping logic
+      // NOTE: Database uses estimated_close_date, hook maps it to expectedCloseDate
       const rawOpportunity = {
         id: 1,
         name: "Test Opportunity",
@@ -12,7 +13,7 @@ describe("Pipeline Drill-Down Feature", () => {
         amount: 50000,
         probability: 75,
         last_activity_date: "2025-01-15",
-        expected_close_date: "2025-02-28",
+        estimated_close_date: "2025-02-28", // Database field name
       };
 
       // Mapping function (same logic as in the hook)
@@ -25,8 +26,9 @@ describe("Pipeline Drill-Down Feature", () => {
         lastActivityDate: rawOpportunity.last_activity_date
           ? new Date(rawOpportunity.last_activity_date)
           : null,
-        expectedCloseDate: rawOpportunity.expected_close_date
-          ? new Date(rawOpportunity.expected_close_date)
+        // Maps estimated_close_date -> expectedCloseDate
+        expectedCloseDate: rawOpportunity.estimated_close_date
+          ? new Date(rawOpportunity.estimated_close_date)
           : null,
       };
 
@@ -54,8 +56,8 @@ describe("Pipeline Drill-Down Feature", () => {
         lastActivityDate: (rawOpportunity as any).last_activity_date
           ? new Date((rawOpportunity as any).last_activity_date)
           : null,
-        expectedCloseDate: (rawOpportunity as any).expected_close_date
-          ? new Date((rawOpportunity as any).expected_close_date)
+        expectedCloseDate: (rawOpportunity as any).estimated_close_date
+          ? new Date((rawOpportunity as any).estimated_close_date)
           : null,
       };
 
