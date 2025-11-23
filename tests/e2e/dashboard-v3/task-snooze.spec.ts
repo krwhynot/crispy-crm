@@ -22,7 +22,8 @@ test.describe("Task Snooze - Dashboard V3", () => {
     await authenticatedPage.waitForLoadState("networkidle");
 
     // Wait for the Tasks panel to be visible
-    const tasksPanel = authenticatedPage.getByRole("heading", { name: /my tasks/i });
+    // Note: CardTitle renders as a div, not a semantic heading, so we use getByText
+    const tasksPanel = authenticatedPage.getByText("My Tasks", { exact: true });
     await expect(tasksPanel).toBeVisible({ timeout: 10000 });
   });
 
