@@ -1,13 +1,13 @@
 ---
 name: atomic-crm-constitution
-description: Use when implementing features in Atomic CRM - enforces Engineering Constitution principles including fail-fast error handling, single source of truth for validation, form state from Zod schemas, and pre-launch velocity over resilience
+description: Use when implementing features in Atomic CRM - enforces Engineering Constitution principles including fail-fast error handling, single composable entry point for data access, form state from Zod schemas, and pre-launch velocity over resilience
 ---
 
 # Atomic CRM Engineering Constitution
 
 ## Overview
 
-Enforce Atomic CRM's Engineering Constitution principles to prevent over-engineering and maintain codebase velocity. Most critical: **fail fast** (no retry logic/circuit breakers) and **single source of truth** (Zod validation only).
+Enforce Atomic CRM's Engineering Constitution principles to prevent over-engineering and maintain codebase velocity. Most critical: **fail fast** (no retry logic/circuit breakers) and **single composable entry point** (unified data provider delegating to resource modules, Zod validation at API boundary).
 
 **Core principle:** Pre-launch phase prioritizes velocity over resilience. Simple solutions over clever ones.
 
@@ -94,33 +94,34 @@ const data = await supabase.from('contacts').select()
 - "Users will see errors" → **No users yet**, operators need to see errors
 - "Industry best practice" → Context matters, pre-launch has different needs
 
-### 2. SINGLE SOURCE OF TRUTH
+### 2. SINGLE COMPOSABLE ENTRY POINT
 
-**Rule:** Zod schemas at API boundary (`src/atomic-crm/validation/`) ONLY. No validation elsewhere.
+**Rule:** Have a single, composable entry point for data access (`unifiedDataProvider`), delegating to resource-specific modules. Validation via Zod schemas at API boundary (`src/atomic-crm/validation/`) ONLY.
 
-**❌ WRONG - Multiple Validation Sources:**
+**❌ WRONG - Multiple Competing Entry Points:**
 ```typescript
+// ❌ Direct API calls bypassing provider
+import { contactsApi } from './contactsApi'
+await contactsApi.updateContact(id, data)
+
 // ❌ Validation in component
 const isValidEmail = (email: string) => /@/.test(email)
 
-// ❌ Validation in utils
-function validateContact(data) {
-  if (!data.email?.includes('@')) throw new Error()
-}
-
-// Now two+ definitions can diverge!
+// ❌ Which is authoritative? Now two+ definitions can diverge!
 ```
 
-**✅ CORRECT - Zod at API Boundary:**
+**✅ CORRECT - Unified Entry Point with Delegation:**
 ```typescript
-// src/atomic-crm/validation/contacts.ts
-export const contactSchema = z.object({
-  email: z.string().email(), // Single source of truth
-})
+// Always use the unified provider
+import { dataProvider } from '@/atomic-crm/providers/supabase/unifiedDataProvider'
+await dataProvider.update('contacts', { id, data })
+// Provider internally delegates to contacts-specific logic
 
-// Import everywhere:
+// Validation: Zod at API boundary only
 import { contactSchema } from '@/atomic-crm/validation/contacts'
 ```
+
+**Key Insight:** This is the **Composite pattern** - one facade for the app to talk to, with resource-specific modules handling implementation details.
 
 ### 3. FORM STATE DERIVED FROM TRUTH
 
@@ -288,14 +289,14 @@ If you find yourself:
 **Following Constitution:**
 - Fast feature velocity (no over-engineering)
 - Loud failures = quick fixes
-- Consistent validation (single source)
+- Consistent data access (single composable entry point)
 - No drift between UI and validation
 - Clean codebase (Boy Scout Rule)
 
 **Violating Constitution:**
 - 3,000+ lines of retry/circuit breaker code
 - Hidden failures (silent degradation)
-- Validation drift (multiple sources)
+- Multiple competing data access paths (bypassing unified provider)
 - Form defaults out of sync
 - Technical debt accumulation
 
@@ -404,7 +405,7 @@ Comprehensive patterns with real code examples from Atomic CRM:
 ## Constitution Principles Summary
 
 1. **NO OVER-ENGINEERING** - Fail fast, no retry/circuit breakers
-2. **SINGLE SOURCE OF TRUTH** - Zod validation at API boundary only
+2. **SINGLE COMPOSABLE ENTRY POINT** - Unified data provider delegating to resource modules, Zod at API boundary
 3. **BOY SCOUT RULE** - Fix issues in files you edit
 4. **VALIDATION** - API boundary only (`src/atomic-crm/validation/`)
 5. **FORM STATE** - Derived from Zod schema (`.partial().parse({})`)

@@ -2,20 +2,20 @@
 
 ## Purpose
 
-Document single-source-of-truth validation patterns for Atomic CRM using Zod schemas at API boundary. Covers Zod schema design, business logic defaults, JSONB array validation, custom validators, and error formatting for React Admin.
+Document validation patterns for Atomic CRM using Zod schemas at API boundary. Covers Zod schema design, business logic defaults, JSONB array validation, custom validators, and error formatting for React Admin.
 
-## Core Principle: Single Source of Truth
+## Core Principle: Composable Entry Point (Validation Layer)
 
-**Engineering Constitution #2:** Zod schemas at API boundary (`src/atomic-crm/validation/`) ONLY. No validation elsewhere.
+**Engineering Constitution #2:** Have a single, composable entry point for data access, delegating to resource-specific modules. For validation, this means Zod schemas at API boundary (`src/atomic-crm/validation/`) ONLY. No validation elsewhere.
 
-**Why Single Source:**
+**Why Centralized Validation:**
 - ✅ No drift between validation rules
 - ✅ Type safety via `z.infer<typeof schema>`
 - ✅ Business logic defaults in one place
 - ✅ Easy to test (pure functions)
 - ✅ Self-documenting (schema = specification)
 
-**Critical Rule:** If validation happens outside Zod schemas, it's WRONG.
+**Critical Rule:** If validation happens outside Zod schemas, it's WRONG. The data provider delegates to these schemas at the API boundary.
 
 ## Pattern 1: Basic Schema with Defaults
 
@@ -58,7 +58,7 @@ const opportunityBaseSchema = z.object({
 
 export const opportunitySchema = opportunityBaseSchema;
 
-// Type inference - single source of truth for TypeScript types
+// Type inference - derived from the schema (composable entry point)
 export type Opportunity = z.infer<typeof opportunitySchema>;
 ```
 
@@ -693,7 +693,7 @@ Need validation?
 ### DON'T
 
 ❌ Validate in components (use schema only)
-❌ Validate in utility functions (single source of truth)
+❌ Validate in utility functions (use centralized schemas only)
 ❌ Validate in data provider (schemas at API boundary)
 ❌ Put `defaultValue` in form components (use schema)
 ❌ Duplicate validation rules across files

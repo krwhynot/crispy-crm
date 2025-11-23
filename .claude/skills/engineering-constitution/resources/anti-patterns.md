@@ -118,12 +118,12 @@ const contactSchema = z.object({
 - Three different email validation definitions
 - Rules can drift over time (component says valid, schema says invalid)
 - Hard to maintain (change one, forget to change others)
-- No single source of truth
+- Violates single composable entry point (validation scattered across files)
 
 ### ✅ CORRECT
 
 ```typescript
-// ✅ Single source of truth - Zod schema only
+// ✅ Centralized validation - Zod schema at API boundary
 const contactSchema = z.object({
   email: z.string().email("Invalid email address"),
   first_name: z.string().min(1, "First name is required"),
@@ -195,7 +195,7 @@ const OpportunityCreate = () => {
 ```
 
 **Why it's right:**
-- Single source of truth (Zod schema)
+- Centralized validation (Zod schema at API boundary)
 - Schema changes automatically apply to forms
 - Type-safe
 - Less code
@@ -623,7 +623,7 @@ END $$;
 **Before committing, check for these:**
 
 - [ ] ❌ Retry logic or circuit breakers (fail fast instead)
-- [ ] ❌ Validation outside Zod schemas (single source of truth)
+- [ ] ❌ Validation outside Zod schemas (centralized at API boundary)
 - [ ] ❌ Hardcoded form defaults (use `schema.partial().parse({})`)
 - [ ] ❌ RLS policies without GRANT (need both)
 - [ ] ❌ `Promise.all()` for bulk operations (use `Promise.allSettled()`)
