@@ -82,6 +82,7 @@ export const filterableFields: Record<string, string[]> = {
   organizations: [
     "id",
     "name",
+    "type", // Alias for organization_type used in some filters
     "organization_type",
     "parent_organization_id",
     "priority",
@@ -127,6 +128,45 @@ export const filterableFields: Record<string, string[]> = {
     "created_at",
     "updated_at",
     "deleted_at", // Soft delete timestamp
+    "q", // Special: full-text search parameter
+  ],
+
+  // Opportunities Summary View (database view with computed fields)
+  // Used automatically by getDatabaseResource() for opportunities list queries
+  opportunities_summary: [
+    "id",
+    "name",
+    "stage",
+    "status",
+    "priority",
+    "index",
+    "amount",
+    "probability",
+    "estimated_close_date",
+    "actual_close_date",
+    "customer_organization_id",
+    "principal_organization_id",
+    "distributor_organization_id",
+    "related_opportunity_id",
+    "founding_interaction_id",
+    "stage_manual",
+    "status_manual",
+    "next_action_date",
+    "contact_ids", // Array field
+    "opportunity_owner_id",
+    "account_manager_id",
+    "lead_source",
+    "campaign",
+    "tags", // Array field
+    "created_by",
+    "created_at",
+    "updated_at",
+    "deleted_at", // Soft delete timestamp
+    // Additional computed/joined fields from the view
+    "customer_organization_name",
+    "principal_organization_name",
+    "distributor_organization_name",
+    "products", // JSONB array from view
     "q", // Special: full-text search parameter
   ],
 
