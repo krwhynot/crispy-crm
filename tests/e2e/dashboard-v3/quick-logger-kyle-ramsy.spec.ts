@@ -365,6 +365,9 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       await expect(firstOpp).toBeVisible({ timeout: 5000 });
       await firstOpp.evaluate(node => (node as HTMLElement).click());
 
+      // Verify opportunity was selected (popover closes)
+      await expect(oppSearchInput).not.toBeVisible({ timeout: 5000 });
+
       // Now select contact (filtered by opportunity's organization)
       const contactTrigger = authenticatedPage
         .getByLabel("Contact *")
@@ -378,8 +381,17 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       const firstContact = authenticatedPage.getByRole("option").first();
       await expect(firstContact).toBeVisible({ timeout: 5000 });
 
+      // Get the contact name before clicking
+      const contactName = await firstContact.textContent();
+
       // Use JavaScript click to bypass viewport issues (cmdk popover positioning)
       await firstContact.evaluate(node => (node as HTMLElement).click());
+
+      // Verify contact was actually selected (popover closes and combobox shows selected value)
+      await expect(searchInput).not.toBeVisible({ timeout: 5000 });
+      if (contactName) {
+        await expect(contactTrigger).toContainText(contactName.substring(0, 10), { timeout: 5000 });
+      }
 
       // Fill notes
       const timestamp = Date.now();

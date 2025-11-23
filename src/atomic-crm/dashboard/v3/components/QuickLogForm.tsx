@@ -223,14 +223,12 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
           created_by: salesId,
         };
         // Only add IDs if they're valid numbers (not NaN/undefined/null)
+        // Note: tasks table only has contact_id and opportunity_id, NOT organization_id
         if (typeof data.contactId === "number" && !isNaN(data.contactId)) {
           Object.assign(taskData, { contact_id: data.contactId });
         }
         if (typeof data.opportunityId === "number" && !isNaN(data.opportunityId)) {
           Object.assign(taskData, { opportunity_id: data.opportunityId });
-        }
-        if (typeof data.organizationId === "number" && !isNaN(data.organizationId)) {
-          Object.assign(taskData, { organization_id: data.organizationId });
         }
         await dataProvider.create("tasks", { data: taskData });
       }
