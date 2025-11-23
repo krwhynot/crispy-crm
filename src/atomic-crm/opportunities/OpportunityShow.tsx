@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { format, isValid, formatDistanceToNow, isPast } from "date-fns";
 import { Archive, ArchiveRestore } from "lucide-react";
 import {
@@ -47,6 +47,13 @@ const OpportunityShowContent = () => {
   const { record, isPending } = useShowContext<Opportunity>();
   const navigate = useNavigate();
   const [activityFilters, setActivityFilters] = useState<Record<string, any>>({});
+
+  // Memoize the activities filter to prevent infinite re-renders
+  // This ensures the filter object reference stays stable unless activityFilters changes
+  const activitiesListFilter = useMemo(
+    () => ({ activity_type: "interaction", ...activityFilters }),
+    [activityFilters]
+  );
 
   // Get tab from URL or default to "details"
   const tabMatch = useMatch("/opportunities/:id/show/:tab");
@@ -308,7 +315,7 @@ const OpportunityShowContent = () => {
                   <ReferenceManyField
                     target="opportunity_id"
                     reference="activities"
-                    filter={{ activity_type: "interaction", ...activityFilters }}
+                    filter={activitiesListFilter}
                     sort={{ field: "activity_date", order: "DESC" }}
                   >
                     <ActivitiesList />

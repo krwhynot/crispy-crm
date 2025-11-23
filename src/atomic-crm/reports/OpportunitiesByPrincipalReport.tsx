@@ -46,12 +46,15 @@ function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) {
     defaultValues: filters,
   });
 
-  // Watch form values and sync to parent state
-  const watchedValues = form.watch();
-
+  // Watch form values and sync to parent state using subscription pattern
+  // This avoids infinite loops - form.watch() returns new object each render,
+  // but the subscription only fires when actual values change
   useEffect(() => {
-    onFiltersChange(watchedValues);
-  }, [watchedValues, onFiltersChange]);
+    const subscription = form.watch((value) => {
+      onFiltersChange(value as FilterValues);
+    });
+    return () => subscription.unsubscribe();
+  }, [form, onFiltersChange]);
 
   const hasActiveFilters =
     filters.principal_organization_id ||

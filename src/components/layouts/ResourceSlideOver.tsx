@@ -120,11 +120,14 @@ export function ResourceSlideOver({
    */
 
   // Reset active tab when slide-over opens
+  // Note: Depend on tabs[0]?.key (primitive) instead of tabs array to avoid
+  // unnecessary re-runs when parent passes inline array literals
+  const firstTabKey = tabs[0]?.key;
   React.useEffect(() => {
-    if (isOpen && tabs.length > 0) {
-      setActiveTab(tabs[0].key);
+    if (isOpen && firstTabKey) {
+      setActiveTab(firstTabKey);
     }
-  }, [isOpen, tabs]);
+  }, [isOpen, firstTabKey]);
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
