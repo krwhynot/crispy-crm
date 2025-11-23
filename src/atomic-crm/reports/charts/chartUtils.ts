@@ -25,7 +25,7 @@ export interface TooltipContextY {
 
 export interface TooltipContextX {
   parsed: {
-    x: number;
+    x: number | null;
   };
   label?: string;
 }

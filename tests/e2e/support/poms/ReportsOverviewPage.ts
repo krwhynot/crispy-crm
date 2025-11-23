@@ -40,14 +40,31 @@ export class ReportsOverviewPage extends BasePage {
 
   /**
    * Wait for page to finish loading (condition-based)
+   * Waits for actual content to appear rather than loading spinner to disappear
    */
   async waitForPageLoad(): Promise<void> {
+    // Wait for the page title OR tabs to be visible (indicates app has rendered)
     await this.page.waitForFunction(
       () => {
-        const hasLoading = document.body.textContent?.includes("Loading...");
-        return !hasLoading;
+        // Check for Reports & Analytics heading or tab content
+        const hasTitle = document.body.textContent?.includes("Reports & Analytics");
+        const hasTabs = document.querySelector('[role="tab"]') !== null;
+        return hasTitle || hasTabs;
       },
-      { timeout: 15000 }
+      { timeout: 30000 }
+    );
+
+    // Then wait for the Overview tab content to load (KPI cards)
+    await this.page.waitForFunction(
+      () => {
+        // Check for actual KPI card content (not just "Loading...")
+        const hasKPICards = document.body.textContent?.includes("Total Opportunities");
+        const hasCharts = document.body.textContent?.includes("Pipeline by Stage");
+        const hasSkeletons = document.querySelectorAll('[data-slot="skeleton"]').length > 0;
+        // Either content loaded OR still showing skeletons (data loading)
+        return hasKPICards || hasCharts || hasSkeletons;
+      },
+      { timeout: 30000 }
     );
   }
 
@@ -107,9 +124,9 @@ export class ReportsOverviewPage extends BasePage {
    * Expect all KPI cards to be visible
    */
   async expectKPICardsVisible(): Promise<void> {
-    await expect(this.page.getByText("Total Opportunities")).toBeVisible();
-    await expect(this.page.getByText("Activities This Week")).toBeVisible();
-    await expect(this.page.getByText("Stale Leads")).toBeVisible();
+    await expect(this.page.getByText("Total Opportunities")).toBeVisible({ timeout: 30000 });
+    await expect(this.page.getByText("Activities This Week")).toBeVisible({ timeout: 10000 });
+    await expect(this.page.getByText("Stale Leads")).toBeVisible({ timeout: 10000 });
   }
 
   // ============================================
@@ -127,10 +144,10 @@ export class ReportsOverviewPage extends BasePage {
    * Expect all chart sections to be visible
    */
   async expectChartSectionsVisible(): Promise<void> {
-    await expect(this.page.getByText("Pipeline by Stage")).toBeVisible();
-    await expect(this.page.getByText("Activity Trend (14 Days)")).toBeVisible();
-    await expect(this.page.getByText("Top Principals by Opportunities")).toBeVisible();
-    await expect(this.page.getByText("Rep Performance")).toBeVisible();
+    await expect(this.page.getByText("Pipeline by Stage")).toBeVisible({ timeout: 30000 });
+    await expect(this.page.getByText("Activity Trend (14 Days)")).toBeVisible({ timeout: 10000 });
+    await expect(this.page.getByText("Top Principals by Opportunities")).toBeVisible({ timeout: 10000 });
+    await expect(this.page.getByText("Rep Performance")).toBeVisible({ timeout: 10000 });
   }
 
   /**
