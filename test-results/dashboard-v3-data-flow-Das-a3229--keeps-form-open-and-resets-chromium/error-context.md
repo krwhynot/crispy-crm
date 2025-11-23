@@ -312,15 +312,59 @@
             - generic [ref=e341]: Log Activity
             - generic [ref=e342]: Quick capture for calls, meetings, and notes
           - generic [ref=e344]:
-            - paragraph [ref=e345]: Capture your customer interactions as they happen
-            - button "New Activity" [ref=e346] [cursor=pointer]:
-              - img
-              - text: New Activity
-  - contentinfo [ref=e347]:
-    - generic [ref=e349]:
-      - paragraph [ref=e350]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e351] [cursor=pointer]:
-        - img [ref=e352]
-        - generic [ref=e354]: Keyboard shortcuts
+            - generic [ref=e345]:
+              - heading "What happened?" [level=3] [ref=e346]
+              - generic [ref=e347]:
+                - generic [ref=e348]: Activity Type
+                - combobox "Activity Type" [ref=e349] [cursor=pointer]:
+                  - generic: Email
+                  - img
+                - combobox [ref=e350]
+              - generic [ref=e351]:
+                - generic [ref=e352]: Outcome
+                - combobox "Outcome" [ref=e353] [cursor=pointer]:
+                  - generic: Completed
+                  - img
+                - combobox [ref=e354]
+            - generic [ref=e355]:
+              - heading "Who was involved?" [level=3] [ref=e356]
+              - generic [ref=e357]:
+                - generic [ref=e358]: Contact *
+                - combobox "Contact *" [ref=e359] [cursor=pointer]:
+                  - text: Select contact
+                  - img
+                - paragraph [ref=e360]: Select a contact OR organization
+                - paragraph [ref=e361]: Select a contact or organization before logging
+              - generic [ref=e362]:
+                - generic [ref=e363]: Organization *
+                - combobox "Organization *" [ref=e364] [cursor=pointer]:
+                  - text: Select organization
+                  - img
+                - paragraph [ref=e365]: Select a contact OR organization
+              - generic [ref=e366]:
+                - generic [ref=e367]: Opportunity
+                - combobox "Opportunity" [ref=e368] [cursor=pointer]:
+                  - text: Select opportunity (optional)
+                  - img
+            - generic [ref=e369]:
+              - generic [ref=e370]: Notes
+              - textbox "Notes" [ref=e371]:
+                - /placeholder: Summary of the interaction...
+                - text: Test Save & New
+            - generic [ref=e373]:
+              - generic [ref=e374]: Create follow-up task?
+              - switch "Create follow-up task?" [ref=e375] [cursor=pointer]
+              - checkbox
+            - generic [ref=e376]:
+              - button "Cancel" [ref=e377] [cursor=pointer]
+              - generic [ref=e378]:
+                - button "Save & Close" [ref=e379] [cursor=pointer]
+                - button "Save & New" [active] [ref=e380] [cursor=pointer]
+  - contentinfo [ref=e381]:
+    - generic [ref=e383]:
+      - paragraph [ref=e384]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e385] [cursor=pointer]:
+        - img [ref=e386]
+        - generic [ref=e388]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```
