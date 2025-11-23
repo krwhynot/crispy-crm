@@ -132,30 +132,28 @@ export class DashboardV3Page extends BasePage {
    * Get all pipeline table headers
    */
   getPipelineTableHeaders(): Locator {
-    return this.page.getByRole("columnheader");
+    return this.page.locator('[data-slot="table-head"]');
   }
 
   /**
    * Get specific pipeline table header by name
    */
   getPipelineTableHeader(name: string | RegExp): Locator {
-    return this.page.getByRole("columnheader", { name });
+    return this.page.locator('[data-slot="table-head"]').filter({ hasText: name });
   }
 
   /**
-   * Get all pipeline data rows (clickable)
+   * Get all pipeline data rows (clickable buttons with aria-label)
    */
   getPipelineRows(): Locator {
-    return this.page.getByRole("row").filter({
-      has: this.page.getByRole("cell"),
-    });
+    return this.page.getByRole("button", { name: /view opportunities for/i });
   }
 
   /**
    * Get a specific pipeline row by principal name
    */
   getPipelineRowByName(principalName: string): Locator {
-    return this.getPipelineRows().filter({ hasText: principalName });
+    return this.page.getByRole("button", { name: `View opportunities for ${principalName}` });
   }
 
   /**
