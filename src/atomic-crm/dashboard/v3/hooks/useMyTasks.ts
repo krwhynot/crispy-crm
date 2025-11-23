@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useDataProvider } from 'react-admin';
-import { isSameDay, isBefore, startOfDay, addDays } from 'date-fns';
+import { isSameDay, isBefore, startOfDay, addDays, endOfDay } from 'date-fns';
 import { useCurrentSale } from './useCurrentSale';
-import type { TaskItem } from '../types';
+import type { TaskItem, TaskStatus } from '../types';
 
 export function useMyTasks() {
   const dataProvider = useDataProvider();

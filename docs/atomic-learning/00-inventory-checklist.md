@@ -61,20 +61,15 @@ Small, focused presentational components with minimal logic. These are the build
 
 Components that combine 2-5 atoms into reusable patterns.
 
-**Location:** `src/atomic-crm/dashboard/v3/components/`, `src/atomic-crm/dashboard/`
+**Location:** `src/atomic-crm/dashboard/v3/components/`
 
 ### Dashboard Molecules
 - [x] `src/atomic-crm/dashboard/v3/components/TaskGroup.tsx` – MOLECULE: Collapsible task list header with count badge
-- [x] `src/atomic-crm/dashboard/PriorityIndicator.tsx` – MOLECULE: Priority badge with icon + label
-- [x] `src/atomic-crm/dashboard/PrincipalCardSkeleton.tsx` – MOLECULE: Loading state for principal cards
-- [x] `src/atomic-crm/dashboard/DashboardWidget.tsx` – MOLECULE: Generic widget container wrapper
-
-### Form Molecules
 - [x] `src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx` – MOLECULE (large): Activity logging form
   - Uses: Form, Select, Combobox, Calendar, Switch, Button, Textarea
+- [x] `TaskItemComponent` (in `TasksPanel.tsx`) – MOLECULE: Task row with checkbox, icon, badge, action buttons
 
-### List Item Molecules
-- [x] `TaskItemComponent` (in TasksPanel.tsx) – MOLECULE: Task row with checkbox, icon, badge, action buttons
+> Legacy molecules such as `DashboardWidget`, `PriorityIndicator`, and `PrincipalCardSkeleton` now live only in `archive/` and are no longer part of the active dashboard.
 
 ---
 
@@ -82,7 +77,7 @@ Components that combine 2-5 atoms into reusable patterns.
 
 Larger sections composed of multiple molecules and atoms. These are self-contained UI regions.
 
-**Location:** `src/atomic-crm/dashboard/v3/components/`, `src/atomic-crm/dashboard/v2/components/`
+**Location:** `src/atomic-crm/dashboard/v3/components/`
 
 ### Dashboard V3 Organisms
 - [x] `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx` – ORGANISM: Pipeline data table with filters
@@ -97,17 +92,7 @@ Larger sections composed of multiple molecules and atoms. These are self-contain
   - Uses: Card, Button, QuickLogForm
   - Data: Creates activities and tasks records
 
-### Dashboard V2 Organisms
-- [x] `src/atomic-crm/dashboard/v2/components/FiltersSidebar.tsx` – ORGANISM: Collapsible filter sidebar
-- [x] `src/atomic-crm/dashboard/v2/components/TasksPanel.tsx` – ORGANISM: Tasks with grouping modes
-- [x] `src/atomic-crm/dashboard/v2/components/OpportunitiesHierarchy.tsx` – ORGANISM: Tree view of opportunities
-- [x] `src/atomic-crm/dashboard/v2/components/RightSlideOver.tsx` – ORGANISM: Detail panel slide-over
-- [x] `src/atomic-crm/dashboard/v2/components/QuickLogger.tsx` – ORGANISM: V2 quick activity logger
-
-### Legacy Dashboard Organisms
-- [x] `src/atomic-crm/dashboard/PipelineSummary.tsx` – ORGANISM: Pipeline metrics cards
-- [x] `src/atomic-crm/dashboard/CompactTasksWidget.tsx` – ORGANISM: Compact task list
-- [x] `src/atomic-crm/dashboard/ActivityFeed.tsx` – ORGANISM: Activity timeline
+> Historic V2/V1 dashboard organisms remain in `archive/dashboard` for reference but are no longer wired into the app.
 
 ---
 
@@ -115,19 +100,12 @@ Larger sections composed of multiple molecules and atoms. These are self-contain
 
 Full screens/routes composed of organisms and molecules.
 
-**Location:** `src/atomic-crm/dashboard/`, `src/atomic-crm/root/`
+**Location:** `src/atomic-crm/dashboard/v3/`, `src/atomic-crm/root/`
 
-### Dashboard Pages
+### Dashboard Page
 - [x] `src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx` – PAGE: Main dashboard (DEFAULT at `/`)
   - Layout: 3-column resizable (40/30/30)
   - Organisms: PrincipalPipelineTable, TasksPanel, QuickLoggerPanel
-
-- [x] `src/atomic-crm/dashboard/v2/PrincipalDashboardV2.tsx` – PAGE: Legacy dashboard at `/dashboard-v2`
-  - Layout: Sidebar + 3-column resizable
-  - Organisms: FiltersSidebar, OpportunitiesHierarchy, TasksPanel, QuickLogger, RightSlideOver
-
-- [x] `src/atomic-crm/dashboard/PrincipalDashboard.tsx` – PAGE: Original dashboard at `/dashboard`
-- [x] `src/atomic-crm/dashboard/CompactGridDashboard.tsx` – PAGE: Grid-based compact layout
 
 ### Core App Pages
 - [x] `src/atomic-crm/root/CRM.tsx` – PAGE (root): Main app shell, route definitions, resource registration
@@ -135,11 +113,13 @@ Full screens/routes composed of organisms and molecules.
 - [x] `src/atomic-crm/settings/SettingsPage.tsx` – PAGE: User settings
 
 ### Resource Pages (React Admin Generated)
-- [x] `src/atomic-crm/opportunities/` – List/Show/Edit/Create pages
-- [x] `src/atomic-crm/contacts/` – List/Show/Edit/Create pages
-- [x] `src/atomic-crm/organizations/` – List/Show/Edit/Create pages
-- [x] `src/atomic-crm/tasks/` – List/Show/Edit/Create pages
-- [x] `src/atomic-crm/products/` – List/Show/Edit/Create pages
+- [x] `src/atomic-crm/opportunities/` – List/Edit/Create pages (+ detail slide-over via `?view=ID`)
+- [x] `src/atomic-crm/contacts/` – List/Edit/Create pages (+ detail slide-over)
+- [x] `src/atomic-crm/organizations/` – List/Edit/Create pages (+ detail slide-over)
+- [x] `src/atomic-crm/tasks/` – List/Edit/Create pages (+ detail slide-over)
+- [x] `src/atomic-crm/products/` – List/Edit/Create pages (+ detail slide-over)
+
+> “Show” routes now redirect to `/<resource>?view=<id>` so the slide-over detail stays within the list view.
 
 ---
 
@@ -166,9 +146,9 @@ Multi-step user journeys across pages and components.
   - Data: Updates `tasks.completed` and `completed_at`
 
 ### Opportunity Management Flow
-- [x] Flow: "View pipeline → drill into opportunity"
+- [x] Flow: "View pipeline → drill into opportunity" (navigation TBD)
   - Organism: PrincipalPipelineTable
-  - Navigation: Click row → Opportunity detail page
+  - Navigation: Row click wiring pending; UI currently read-only
   - Data: `principal_pipeline_summary` view
 
 ---
@@ -178,9 +158,9 @@ Multi-step user journeys across pages and components.
 | Level | Count | Primary Location |
 |-------|-------|------------------|
 | Atoms | 25+ | `src/components/ui/` |
-| Molecules | ~8 | `src/atomic-crm/dashboard/*/components/` |
-| Organisms | ~12 | `src/atomic-crm/dashboard/*/components/` |
-| Pages | ~10 | `src/atomic-crm/dashboard/`, `src/atomic-crm/root/` |
+| Molecules | Current dashboard in `src/atomic-crm/dashboard/v3/components/` |
+| Organisms | 3 (Pipeline, Tasks, Quick Logger) | `src/atomic-crm/dashboard/v3/components/` |
+| Pages | 3 custom (CRM root, Dashboard V3, Settings) | `src/atomic-crm/dashboard/v3/`, `src/atomic-crm/root/` |
 | Flows | 4 | Documented below |
 
 ---
