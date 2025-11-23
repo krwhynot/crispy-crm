@@ -96,8 +96,16 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
               relative px-3 py-1.5 flex items-center justify-between text-sm
               ${item.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-accent cursor-pointer'}
             `}
+            tabIndex={item.disabled ? -1 : 0}
             onClick={() => {
               if (!item.disabled && item.action) {
+                item.action();
+                onClose();
+              }
+            }}
+            onKeyDown={(e) => {
+              if ((e.key === 'Enter' || e.key === ' ') && !item.disabled && item.action) {
+                e.preventDefault();
                 item.action();
                 onClose();
               }
@@ -133,9 +141,18 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({
                       px-3 py-1.5 text-sm
                       ${subItem.disabled ? 'opacity-50 cursor-not-allowed' : 'hover:bg-accent cursor-pointer'}
                     `}
+                    tabIndex={subItem.disabled ? -1 : 0}
                     onClick={(e) => {
                       e.stopPropagation();
                       if (!subItem.disabled && subItem.action) {
+                        subItem.action();
+                        onClose();
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if ((e.key === 'Enter' || e.key === ' ') && !subItem.disabled && subItem.action) {
+                        e.preventDefault();
+                        e.stopPropagation();
                         subItem.action();
                         onClose();
                       }

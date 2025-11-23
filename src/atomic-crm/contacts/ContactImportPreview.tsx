@@ -38,6 +38,10 @@ import { contactSchema } from "@/atomic-crm/validation/contacts";
 import { z } from "zod";
 import { getAvailableFieldsWithLabels } from "./columnAliases";
 import { FULL_NAME_SPLIT_MARKER } from "./csvConstants";
+import type { DataQualityDecisions } from "./contactImport.types";
+
+// Re-export DataQualityDecisions for backward compatibility
+export type { DataQualityDecisions } from "./contactImport.types";
 
 // Types for preview data
 export interface ColumnMapping {
@@ -55,7 +59,7 @@ export interface ValidationError {
 
 export interface PreviewData {
   mappings: ColumnMapping[];
-  sampleRows: any[];
+  sampleRows: unknown[];
   validCount: number;
   skipCount: number;
   totalRows: number;
@@ -68,11 +72,6 @@ export interface PreviewData {
   // Data quality analysis
   organizationsWithoutContacts: Array<{ organization_name: string; row: number }>;
   contactsWithoutContactInfo: Array<{ name: string; organization_name: string; row: number }>;
-}
-
-export interface DataQualityDecisions {
-  importOrganizationsWithoutContacts: boolean;
-  importContactsWithoutContactInfo: boolean;
 }
 
 interface ContactImportPreviewProps {

@@ -1,5 +1,93 @@
-import type { DataProvider, Identifier } from "ra-core";
-import type { OpportunityParticipant, OpportunityContact } from "../types";
+import type { DataProvider, Identifier, RaRecord } from "ra-core";
+import type {
+  OpportunityParticipant,
+  OpportunityContact,
+  Contact,
+  ContactOrganization,
+} from "../types";
+import type { Organization } from "../validation/organizations";
+
+/**
+ * RPC parameters for set_primary_organization function
+ */
+interface SetPrimaryOrganizationParams {
+  p_contact_id: Identifier;
+  p_organization_id: Identifier;
+}
+
+/**
+ * Extended DataProvider with optional RPC capability
+ */
+type DataProviderWithRpc = DataProvider & {
+  rpc?: <T = unknown>(functionName: string, params: Record<string, Identifier>) => Promise<T>;
+};
+
+/**
+ * Contact organization junction record with populated organization data
+ */
+interface ContactOrganizationWithDetails extends ContactOrganization {
+  organization?: Organization;
+}
+
+/**
+ * Opportunity participant with populated organization data
+ */
+interface OpportunityParticipantWithDetails extends OpportunityParticipant {
+  organization?: Organization;
+}
+
+/**
+ * Opportunity contact junction record with populated contact data
+ */
+interface OpportunityContactWithDetails extends OpportunityContact {
+  contact?: Contact;
+}
+
+/**
+ * Parameters for adding a contact to an organization
+ */
+interface AddContactToOrganizationParams {
+  is_primary?: boolean;
+  created_at?: string;
+}
+
+/**
+ * Parameters for adding a contact to an opportunity
+ */
+interface AddOpportunityContactParams {
+  role?: string;
+  is_primary?: boolean;
+  created_at?: string;
+}
+
+/**
+ * Generic error with message property
+ */
+interface ErrorWithMessage {
+  message: string;
+}
+
+/**
+ * Type guard to check if error has message property
+ */
+function isErrorWithMessage(error: unknown): error is ErrorWithMessage {
+  return (
+    typeof error === "object" &&
+    error !== null &&
+    "message" in error &&
+    typeof (error as ErrorWithMessage).message === "string"
+  );
+}
+
+/**
+ * Extract error message from unknown error
+ */
+function getErrorMessage(error: unknown): string {
+  if (isErrorWithMessage(error)) {
+    return error.message;
+  }
+  return String(error);
+}
 
 /**
  * Junction service handles many-to-many relationship operations
@@ -9,11 +97,7 @@ import type { OpportunityParticipant, OpportunityContact } from "../types";
  * per Engineering Constitution principle #2: Single Source of Truth
  */
 export class JunctionsService {
-  constructor(
-    private dataProvider: DataProvider & {
-      rpc?: (functionName: string, params: any) => Promise<any>;
-    }
-  ) {}
+  constructor(private dataProvider: DataProviderWithRpc) {}
 
   // Contact-Organization Relationships
 
@@ -22,44 +106,56 @@ export class JunctionsService {
    * @param contactId Contact identifier
    * @returns Object with data array of contact organizations with populated organization data
    */
-  async getContactOrganizations(contactId: Identifier): Promise<{ data: any[] }> {
+  async getContactOrganizations(
+    contactId: Identifier
+  ): Promise<{ data: ContactOrganizationWithDetails[] }> {
     try {
       // Use dataProvider.getList with proper filter
-      const response = await this.dataProvider.getList("contact_organizations", {
-        filter: { contact_id: contactId },
-        pagination: { page: 1, perPage: 100 },
-        sort: { field: "is_primary", order: "DESC" },
-      });
+      const response = await this.dataProvider.getList<ContactOrganization>(
+        "contact_organizations",
+        {
+          filter: { contact_id: contactId },
+          pagination: { page: 1, perPage: 100 },
+          sort: { field: "is_primary", order: "DESC" },
+        }
+      );
 
       // Optimize: Use getMany instead of N+1 queries
-      const orgIds = response.data.map((co: any) => co.organization_id).filter(Boolean); // Remove any null/undefined IDs
+      const orgIds = response.data
+        .map((co) => co.organization_id)
+        .filter((id): id is Identifier => id != null);
 
-      let orgMap = new Map();
+      let orgMap = new Map<Identifier, Organization>();
       if (orgIds.length > 0) {
         try {
-          const { data: orgs } = await this.dataProvider.getMany("organizations", { ids: orgIds });
-          orgMap = new Map(orgs.map((o: any) => [o.id, o]));
-        } catch (error: any) {
+          const { data: orgs } = await this.dataProvider.getMany<Organization & RaRecord>(
+            "organizations",
+            { ids: orgIds }
+          );
+          orgMap = new Map(orgs.map((o) => [o.id, o]));
+        } catch (error: unknown) {
           console.error(`[JunctionsService] Failed to fetch organizations in batch`, {
             orgIds,
             error,
           });
-          throw new Error(`Failed to fetch organizations: ${error.message}`);
+          throw new Error(`Failed to fetch organizations: ${getErrorMessage(error)}`);
         }
       }
 
-      const organizationsWithDetails = response.data.map((contactOrg: any) => {
-        const org = orgMap.get(contactOrg.organization_id);
-        return org ? { ...contactOrg, organization: org } : contactOrg;
-      });
+      const organizationsWithDetails: ContactOrganizationWithDetails[] = response.data.map(
+        (contactOrg) => {
+          const org = orgMap.get(contactOrg.organization_id);
+          return org ? { ...contactOrg, organization: org } : contactOrg;
+        }
+      );
 
       return { data: organizationsWithDetails };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to get contact organizations`, {
         contactId,
         error,
       });
-      throw new Error(`Get contact organizations failed: ${error.message}`);
+      throw new Error(`Get contact organizations failed: ${getErrorMessage(error)}`);
     }
   }
 
@@ -73,28 +169,31 @@ export class JunctionsService {
   async addContactToOrganization(
     contactId: Identifier,
     organizationId: Identifier,
-    params: any = {}
-  ): Promise<{ data: any }> {
+    params: AddContactToOrganizationParams = {}
+  ): Promise<{ data: ContactOrganization }> {
     try {
-      const response = await this.dataProvider.create("contact_organizations", {
-        data: {
-          contact_id: contactId,
-          organization_id: organizationId,
-          is_primary: params.is_primary || false,
-          created_at: new Date().toISOString(),
-          ...params,
-        },
-      });
+      const response = await this.dataProvider.create<ContactOrganization>(
+        "contact_organizations",
+        {
+          data: {
+            contact_id: contactId,
+            organization_id: organizationId,
+            is_primary: params.is_primary || false,
+            created_at: new Date().toISOString(),
+            ...params,
+          },
+        }
+      );
 
       return { data: response.data };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to add contact to organization`, {
         contactId,
         organizationId,
         params,
         error,
       });
-      throw new Error(`Add contact to organization failed: ${error.message}`);
+      throw new Error(`Add contact to organization failed: ${getErrorMessage(error)}`);
     }
   }
 
@@ -110,14 +209,17 @@ export class JunctionsService {
   ): Promise<{ data: { id: string } }> {
     try {
       // Need to find the record first, then delete it
-      const response = await this.dataProvider.getList("contact_organizations", {
-        filter: {
-          contact_id: contactId,
-          organization_id: organizationId,
-        },
-        pagination: { page: 1, perPage: 1 },
-        sort: { field: "id", order: "ASC" },
-      });
+      const response = await this.dataProvider.getList<ContactOrganization>(
+        "contact_organizations",
+        {
+          filter: {
+            contact_id: contactId,
+            organization_id: organizationId,
+          },
+          pagination: { page: 1, perPage: 1 },
+          sort: { field: "id", order: "ASC" },
+        }
+      );
 
       if (response.data.length > 0) {
         await this.dataProvider.delete("contact_organizations", {
@@ -126,13 +228,13 @@ export class JunctionsService {
       }
 
       return { data: { id: `${contactId}-${organizationId}` } };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to remove contact from organization`, {
         contactId,
         organizationId,
         error,
       });
-      throw new Error(`Remove contact from organization failed: ${error.message}`);
+      throw new Error(`Remove contact from organization failed: ${getErrorMessage(error)}`);
     }
   }
 
@@ -159,19 +261,20 @@ export class JunctionsService {
     }
 
     try {
-      await this.dataProvider.rpc("set_primary_organization", {
+      const params: SetPrimaryOrganizationParams = {
         p_contact_id: contactId,
         p_organization_id: organizationId,
-      });
+      };
+      await this.dataProvider.rpc("set_primary_organization", params);
 
       return { data: { success: true } };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to set primary organization`, {
         contactId,
         organizationId,
         error,
       });
-      throw new Error(`Set primary organization failed: ${error.message}`);
+      throw new Error(`Set primary organization failed: ${getErrorMessage(error)}`);
     }
   }
 
@@ -182,43 +285,55 @@ export class JunctionsService {
    * @param opportunityId Opportunity identifier
    * @returns Object with data array of opportunity participants with populated organization data
    */
-  async getOpportunityParticipants(opportunityId: Identifier): Promise<{ data: any[] }> {
+  async getOpportunityParticipants(
+    opportunityId: Identifier
+  ): Promise<{ data: OpportunityParticipantWithDetails[] }> {
     try {
-      const response = await this.dataProvider.getList("opportunity_participants", {
-        filter: { opportunity_id: opportunityId },
-        pagination: { page: 1, perPage: 100 },
-        sort: { field: "is_primary", order: "DESC" },
-      });
+      const response = await this.dataProvider.getList<OpportunityParticipant>(
+        "opportunity_participants",
+        {
+          filter: { opportunity_id: opportunityId },
+          pagination: { page: 1, perPage: 100 },
+          sort: { field: "is_primary", order: "DESC" },
+        }
+      );
 
       // Optimize: Use getMany instead of N+1 queries
-      const orgIds = response.data.map((p: any) => p.organization_id).filter(Boolean); // Remove any null/undefined IDs
+      const orgIds = response.data
+        .map((p) => p.organization_id)
+        .filter((id): id is Identifier => id != null);
 
-      let orgMap = new Map();
+      let orgMap = new Map<Identifier, Organization>();
       if (orgIds.length > 0) {
         try {
-          const { data: orgs } = await this.dataProvider.getMany("organizations", { ids: orgIds });
-          orgMap = new Map(orgs.map((o: any) => [o.id, o]));
-        } catch (error: any) {
+          const { data: orgs } = await this.dataProvider.getMany<Organization & RaRecord>(
+            "organizations",
+            { ids: orgIds }
+          );
+          orgMap = new Map(orgs.map((o) => [o.id, o]));
+        } catch (error: unknown) {
           console.error(`[JunctionsService] Failed to fetch participant organizations in batch`, {
             orgIds,
             error,
           });
-          throw new Error(`Failed to fetch participant organizations: ${error.message}`);
+          throw new Error(`Failed to fetch participant organizations: ${getErrorMessage(error)}`);
         }
       }
 
-      const participantsWithDetails = response.data.map((participant: any) => {
-        const org = orgMap.get(participant.organization_id);
-        return org ? { ...participant, organization: org } : participant;
-      });
+      const participantsWithDetails: OpportunityParticipantWithDetails[] = response.data.map(
+        (participant) => {
+          const org = orgMap.get(participant.organization_id);
+          return org ? { ...participant, organization: org } : participant;
+        }
+      );
 
       return { data: participantsWithDetails };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to get opportunity participants`, {
         opportunityId,
         error,
       });
-      throw new Error(`Get opportunity participants failed: ${error.message}`);
+      throw new Error(`Get opportunity participants failed: ${getErrorMessage(error)}`);
     }
   }
 
@@ -233,29 +348,32 @@ export class JunctionsService {
     opportunityId: Identifier,
     organizationId: Identifier,
     params: Partial<OpportunityParticipant> = {}
-  ): Promise<{ data: any }> {
+  ): Promise<{ data: OpportunityParticipant }> {
     try {
-      const response = await this.dataProvider.create("opportunity_participants", {
-        data: {
-          opportunity_id: opportunityId,
-          organization_id: organizationId,
-          role: params.role || "customer",
-          is_primary: params.is_primary || false,
-          notes: params.notes,
-          created_at: new Date().toISOString(),
-          ...params,
-        },
-      });
+      const response = await this.dataProvider.create<OpportunityParticipant>(
+        "opportunity_participants",
+        {
+          data: {
+            opportunity_id: opportunityId,
+            organization_id: organizationId,
+            role: params.role || "customer",
+            is_primary: params.is_primary || false,
+            notes: params.notes,
+            created_at: new Date().toISOString(),
+            ...params,
+          },
+        }
+      );
 
       return { data: response.data };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to add opportunity participant`, {
         opportunityId,
         organizationId,
         params,
         error,
       });
-      throw new Error(`Add opportunity participant failed: ${error.message}`);
+      throw new Error(`Add opportunity participant failed: ${getErrorMessage(error)}`);
     }
   }
 
@@ -271,14 +389,17 @@ export class JunctionsService {
   ): Promise<{ data: { id: string } }> {
     try {
       // Find the record first, then delete it
-      const response = await this.dataProvider.getList("opportunity_participants", {
-        filter: {
-          opportunity_id: opportunityId,
-          organization_id: organizationId,
-        },
-        pagination: { page: 1, perPage: 1 },
-        sort: { field: "id", order: "ASC" },
-      });
+      const response = await this.dataProvider.getList<OpportunityParticipant>(
+        "opportunity_participants",
+        {
+          filter: {
+            opportunity_id: opportunityId,
+            organization_id: organizationId,
+          },
+          pagination: { page: 1, perPage: 1 },
+          sort: { field: "id", order: "ASC" },
+        }
+      );
 
       if (response.data.length > 0) {
         await this.dataProvider.delete("opportunity_participants", {
@@ -287,13 +408,13 @@ export class JunctionsService {
       }
 
       return { data: { id: `${opportunityId}-${organizationId}` } };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to remove opportunity participant`, {
         opportunityId,
         organizationId,
         error,
       });
-      throw new Error(`Remove opportunity participant failed: ${error.message}`);
+      throw new Error(`Remove opportunity participant failed: ${getErrorMessage(error)}`);
     }
   }
 
@@ -304,45 +425,57 @@ export class JunctionsService {
    * @param opportunityId Opportunity identifier
    * @returns Object with data array of opportunity contacts with populated contact data
    */
-  async getOpportunityContacts(opportunityId: Identifier): Promise<{ data: any[] }> {
+  async getOpportunityContacts(
+    opportunityId: Identifier
+  ): Promise<{ data: OpportunityContactWithDetails[] }> {
     try {
-      const response = await this.dataProvider.getList("opportunity_contacts", {
-        filter: { opportunity_id: opportunityId },
-        pagination: { page: 1, perPage: 100 },
-        sort: { field: "is_primary", order: "DESC" },
-      });
+      const response = await this.dataProvider.getList<OpportunityContact>(
+        "opportunity_contacts",
+        {
+          filter: { opportunity_id: opportunityId },
+          pagination: { page: 1, perPage: 100 },
+          sort: { field: "is_primary", order: "DESC" },
+        }
+      );
 
       // Optimize: Use getMany instead of N+1 queries
-      const contactIds = response.data.map((oc: any) => oc.contact_id).filter(Boolean); // Remove any null/undefined IDs
+      const contactIds = response.data
+        .map((oc) => oc.contact_id)
+        .filter((id): id is Identifier => id != null);
 
-      let contactMap = new Map();
+      let contactMap = new Map<Identifier, Contact>();
       if (contactIds.length > 0) {
         try {
-          const { data: contacts } = await this.dataProvider.getMany("contacts", {
-            ids: contactIds,
-          });
-          contactMap = new Map(contacts.map((c: any) => [c.id, c]));
-        } catch (error: any) {
+          const { data: contacts } = await this.dataProvider.getMany<Contact & RaRecord>(
+            "contacts",
+            {
+              ids: contactIds,
+            }
+          );
+          contactMap = new Map(contacts.map((c) => [c.id, c]));
+        } catch (error: unknown) {
           console.error(`[JunctionsService] Failed to fetch contacts in batch`, {
             contactIds,
             error,
           });
-          throw new Error(`Failed to fetch contacts: ${error.message}`);
+          throw new Error(`Failed to fetch contacts: ${getErrorMessage(error)}`);
         }
       }
 
-      const contactsWithDetails = response.data.map((oppContact: any) => {
-        const contact = contactMap.get(oppContact.contact_id);
-        return contact ? { ...oppContact, contact } : oppContact;
-      });
+      const contactsWithDetails: OpportunityContactWithDetails[] = response.data.map(
+        (oppContact) => {
+          const contact = contactMap.get(oppContact.contact_id);
+          return contact ? { ...oppContact, contact } : oppContact;
+        }
+      );
 
       return { data: contactsWithDetails };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to get opportunity contacts`, {
         opportunityId,
         error,
       });
-      throw new Error(`Get opportunity contacts failed: ${error.message}`);
+      throw new Error(`Get opportunity contacts failed: ${getErrorMessage(error)}`);
     }
   }
 
@@ -356,10 +489,10 @@ export class JunctionsService {
   async addOpportunityContact(
     opportunityId: Identifier,
     contactId: Identifier,
-    params: any = {}
-  ): Promise<{ data: any }> {
+    params: AddOpportunityContactParams = {}
+  ): Promise<{ data: OpportunityContact }> {
     try {
-      const response = await this.dataProvider.create("opportunity_contacts", {
+      const response = await this.dataProvider.create<OpportunityContact>("opportunity_contacts", {
         data: {
           opportunity_id: opportunityId,
           contact_id: contactId,
@@ -371,14 +504,14 @@ export class JunctionsService {
       });
 
       return { data: response.data };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to add opportunity contact`, {
         opportunityId,
         contactId,
         params,
         error,
       });
-      throw new Error(`Add opportunity contact failed: ${error.message}`);
+      throw new Error(`Add opportunity contact failed: ${getErrorMessage(error)}`);
     }
   }
 
@@ -394,7 +527,7 @@ export class JunctionsService {
   ): Promise<{ data: { id: string } }> {
     try {
       // Find the record first, then delete it
-      const response = await this.dataProvider.getList("opportunity_contacts", {
+      const response = await this.dataProvider.getList<OpportunityContact>("opportunity_contacts", {
         filter: {
           opportunity_id: opportunityId,
           contact_id: contactId,
@@ -410,13 +543,13 @@ export class JunctionsService {
       }
 
       return { data: { id: `${opportunityId}-${contactId}` } };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to remove opportunity contact`, {
         opportunityId,
         contactId,
         error,
       });
-      throw new Error(`Remove opportunity contact failed: ${error.message}`);
+      throw new Error(`Remove opportunity contact failed: ${getErrorMessage(error)}`);
     }
   }
 
@@ -426,54 +559,61 @@ export class JunctionsService {
    * @param opportunityId The opportunity ID
    * @returns Promise with array of OpportunityContact records with contact details
    */
-  async getOpportunityContactsViaJunction(opportunityId: Identifier): Promise<{ data: any[] }> {
+  async getOpportunityContactsViaJunction(
+    opportunityId: Identifier
+  ): Promise<{ data: OpportunityContactWithDetails[] }> {
     try {
       // 1. Get junction records
-      const junctionResult = await this.dataProvider.getList("opportunity_contacts", {
-        filter: { opportunity_id: opportunityId },
-        pagination: { page: 1, perPage: 100 },
-        sort: { field: "created_at", order: "ASC" },
-      });
+      const junctionResult = await this.dataProvider.getList<OpportunityContact>(
+        "opportunity_contacts",
+        {
+          filter: { opportunity_id: opportunityId },
+          pagination: { page: 1, perPage: 100 },
+          sort: { field: "created_at", order: "ASC" },
+        }
+      );
 
       if (!junctionResult.data || junctionResult.data.length === 0) {
         return { data: [] };
       }
 
       // 2. Get unique contact IDs
-      const contactIds = junctionResult.data.map((jc: any) => jc.contact_id).filter(Boolean);
+      const contactIds = junctionResult.data
+        .map((jc) => jc.contact_id)
+        .filter((id): id is Identifier => id != null);
 
-      let contactMap = new Map();
+      let contactMap = new Map<Identifier, Contact>();
       if (contactIds.length > 0) {
         try {
           // 3. Batch fetch contacts
-          const contactsResult = await this.dataProvider.getMany("contacts", {
+          const contactsResult = await this.dataProvider.getMany<Contact & RaRecord>("contacts", {
             ids: contactIds,
           });
 
           // 4. Create map for efficient lookup
-          contactMap = new Map(contactsResult.data.map((contact: any) => [contact.id, contact]));
-        } catch (error: any) {
+          contactMap = new Map(contactsResult.data.map((contact) => [contact.id, contact]));
+        } catch (error: unknown) {
           console.error(`[JunctionsService] Failed to fetch contacts in batch`, {
             contactIds,
             error,
           });
-          throw new Error(`Failed to fetch contacts: ${error.message}`);
+          throw new Error(`Failed to fetch contacts: ${getErrorMessage(error)}`);
         }
       }
 
       // 5. Map contacts into junction records
-      return {
-        data: junctionResult.data.map((junction: any) => ({
-          ...junction,
-          contact: contactMap.get(junction.contact_id),
-        })),
-      };
-    } catch (error: any) {
+      const result: OpportunityContactWithDetails[] = junctionResult.data.map((junction) => ({
+        ...junction,
+        contact: contactMap.get(junction.contact_id),
+      }));
+
+      return { data: result };
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to get opportunity contacts via junction`, {
         opportunityId,
         error,
       });
-      throw new Error(`Get opportunity contacts via junction failed: ${error.message}`);
+      throw new Error(`Get opportunity contacts via junction failed: ${getErrorMessage(error)}`);
     }
   }
 
@@ -489,9 +629,9 @@ export class JunctionsService {
     opportunityId: Identifier,
     contactId: Identifier,
     metadata?: Partial<Pick<OpportunityContact, "role" | "is_primary" | "notes">>
-  ): Promise<{ data: any }> {
+  ): Promise<{ data: OpportunityContact }> {
     try {
-      return await this.dataProvider.create("opportunity_contacts", {
+      return await this.dataProvider.create<OpportunityContact>("opportunity_contacts", {
         data: {
           opportunity_id: opportunityId,
           contact_id: contactId,
@@ -501,14 +641,14 @@ export class JunctionsService {
           created_at: new Date().toISOString(),
         },
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to add opportunity contact via junction`, {
         opportunityId,
         contactId,
         metadata,
         error,
       });
-      throw new Error(`Add opportunity contact via junction failed: ${error.message}`);
+      throw new Error(`Add opportunity contact via junction failed: ${getErrorMessage(error)}`);
     }
   }
 
@@ -527,12 +667,12 @@ export class JunctionsService {
       });
 
       return { data: { id: junctionId } };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to remove opportunity contact via junction ID`, {
         junctionId,
         error,
       });
-      throw new Error(`Remove opportunity contact via junction ID failed: ${error.message}`);
+      throw new Error(`Remove opportunity contact via junction ID failed: ${getErrorMessage(error)}`);
     }
   }
 
@@ -546,25 +686,28 @@ export class JunctionsService {
   async updateOpportunityContactMetadata(
     junctionId: Identifier,
     updates: Partial<Pick<OpportunityContact, "role" | "is_primary" | "notes">>
-  ): Promise<{ data: any }> {
+  ): Promise<{ data: OpportunityContact }> {
     try {
       // Get current record first for previousData
-      const currentRecord = await this.dataProvider.getOne("opportunity_contacts", {
-        id: junctionId,
-      });
+      const currentRecord = await this.dataProvider.getOne<OpportunityContact>(
+        "opportunity_contacts",
+        {
+          id: junctionId,
+        }
+      );
 
-      return await this.dataProvider.update("opportunity_contacts", {
+      return await this.dataProvider.update<OpportunityContact>("opportunity_contacts", {
         id: junctionId,
         data: updates,
         previousData: currentRecord.data,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[JunctionsService] Failed to update opportunity contact metadata`, {
         junctionId,
         updates,
         error,
       });
-      throw new Error(`Update opportunity contact metadata failed: ${error.message}`);
+      throw new Error(`Update opportunity contact metadata failed: ${getErrorMessage(error)}`);
     }
   }
 }
