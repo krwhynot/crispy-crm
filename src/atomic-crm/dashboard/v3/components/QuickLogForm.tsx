@@ -331,7 +331,11 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                     </FormControl>
                   </PopoverTrigger>
                   <PopoverContent className="w-full p-0">
-                    <Command>
+                    <Command
+                      filter={(value, search) =>
+                        value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
+                      }
+                    >
                       <CommandInput placeholder="Search contact..." />
                       <CommandEmpty>
                         {selectedOpportunity
@@ -455,7 +459,11 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                     </FormControl>
                   </PopoverTrigger>
                   <PopoverContent className="w-full p-0">
-                    <Command>
+                    <Command
+                      filter={(value, search) =>
+                        value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
+                      }
+                    >
                       <CommandInput placeholder="Search opportunity..." />
                       <CommandEmpty>No opportunity found.</CommandEmpty>
                       <CommandGroup>
