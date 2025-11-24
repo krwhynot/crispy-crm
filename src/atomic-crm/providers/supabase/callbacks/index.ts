@@ -43,3 +43,18 @@ export {
   COMPUTED_FIELDS as OPP_COMPUTED_FIELDS,
   CREATE_DEFAULTS as OPP_CREATE_DEFAULTS,
 } from "./opportunitiesCallbacks";
+
+// Activities callbacks
+export { activitiesCallbacks } from "./activitiesCallbacks";
+export { COMPUTED_FIELDS as ACTIVITIES_COMPUTED_FIELDS } from "./activitiesCallbacks";
+
+// Products callbacks
+export { productsCallbacks } from "./productsCallbacks";
+
+// Factory function for creating standardized callbacks
+export {
+  createResourceCallbacks,
+  type ResourceCallbacks,
+  type ResourceCallbacksConfig,
+  type CallbacksConfig,
+} from "./createResourceCallbacks";
