@@ -14,9 +14,7 @@
 
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
-
-// Will import after implementation
-// import { withErrorLogging } from "./withErrorLogging";
+import { withErrorLogging } from "./withErrorLogging";
 
 describe("withErrorLogging", () => {
   let mockProvider: DataProvider;
@@ -49,33 +47,26 @@ describe("withErrorLogging", () => {
       const expectedResult = { data: [{ id: 1, name: "Test" }], total: 1 };
       (mockProvider.getList as ReturnType<typeof vi.fn>).mockResolvedValue(expectedResult);
 
-      // TODO: Uncomment after implementation
-      // const wrappedProvider = withErrorLogging(mockProvider);
-      // const result = await wrappedProvider.getList("contacts", {
-      //   pagination: { page: 1, perPage: 10 },
-      //   sort: { field: "id", order: "ASC" },
-      //   filter: {},
-      // });
-      // expect(result).toEqual(expectedResult);
-      // expect(consoleErrorSpy).not.toHaveBeenCalled();
-
-      // Placeholder assertion until implementation
-      expect(true).toBe(true);
+      const wrappedProvider = withErrorLogging(mockProvider);
+      const result = await wrappedProvider.getList("contacts", {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "id", order: "ASC" },
+        filter: {},
+      });
+      expect(result).toEqual(expectedResult);
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
     });
 
     it("should pass through successful create calls unchanged", async () => {
       const expectedResult = { data: { id: 1, name: "New Contact" } };
       (mockProvider.create as ReturnType<typeof vi.fn>).mockResolvedValue(expectedResult);
 
-      // TODO: Uncomment after implementation
-      // const wrappedProvider = withErrorLogging(mockProvider);
-      // const result = await wrappedProvider.create("contacts", {
-      //   data: { name: "New Contact" },
-      // });
-      // expect(result).toEqual(expectedResult);
-      // expect(consoleErrorSpy).not.toHaveBeenCalled();
-
-      expect(true).toBe(true);
+      const wrappedProvider = withErrorLogging(mockProvider);
+      const result = await wrappedProvider.create("contacts", {
+        data: { name: "New Contact" },
+      });
+      expect(result).toEqual(expectedResult);
+      expect(consoleErrorSpy).not.toHaveBeenCalled();
     });
   });
 
@@ -84,79 +75,70 @@ describe("withErrorLogging", () => {
       const error = new Error("Database connection failed");
       (mockProvider.getList as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
-      // TODO: Uncomment after implementation
-      // const wrappedProvider = withErrorLogging(mockProvider);
-      // await expect(
-      //   wrappedProvider.getList("contacts", {
-      //     pagination: { page: 1, perPage: 10 },
-      //     sort: { field: "id", order: "ASC" },
-      //     filter: { status: "active" },
-      //   })
-      // ).rejects.toThrow("Database connection failed");
+      const wrappedProvider = withErrorLogging(mockProvider);
+      await expect(
+        wrappedProvider.getList("contacts", {
+          pagination: { page: 1, perPage: 10 },
+          sort: { field: "id", order: "ASC" },
+          filter: { status: "active" },
+        })
+      ).rejects.toThrow("Database connection failed");
 
-      // // Verify structured logging
-      // expect(consoleErrorSpy).toHaveBeenCalledWith(
-      //   "[DataProvider Error]",
-      //   expect.objectContaining({
-      //     method: "getList",
-      //     resource: "contacts",
-      //     params: expect.objectContaining({
-      //       filter: { status: "active" },
-      //       pagination: { page: 1, perPage: 10 },
-      //     }),
-      //     timestamp: expect.any(String),
-      //   }),
-      //   expect.objectContaining({
-      //     error: "Database connection failed",
-      //     stack: expect.any(String),
-      //   })
-      // );
-
-      expect(true).toBe(true);
+      // Verify structured logging
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "[DataProvider Error]",
+        expect.objectContaining({
+          method: "getList",
+          resource: "contacts",
+          params: expect.objectContaining({
+            filter: { status: "active" },
+            pagination: { page: 1, perPage: 10 },
+          }),
+          timestamp: expect.any(String),
+        }),
+        expect.objectContaining({
+          error: "Database connection failed",
+          stack: expect.any(String),
+        })
+      );
     });
 
     it("should redact data field in logs (show [Data Present] instead)", async () => {
       const error = new Error("Validation failed");
       (mockProvider.create as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
-      // TODO: Uncomment after implementation
-      // const wrappedProvider = withErrorLogging(mockProvider);
-      // await expect(
-      //   wrappedProvider.create("contacts", {
-      //     data: { name: "Secret", email: "secret@example.com" },
-      //   })
-      // ).rejects.toThrow();
+      const wrappedProvider = withErrorLogging(mockProvider);
+      await expect(
+        wrappedProvider.create("contacts", {
+          data: { name: "Secret", email: "secret@example.com" },
+        })
+      ).rejects.toThrow();
 
-      // // Verify data is redacted
-      // expect(consoleErrorSpy).toHaveBeenCalledWith(
-      //   "[DataProvider Error]",
-      //   expect.objectContaining({
-      //     params: expect.objectContaining({
-      //       data: "[Data Present]",
-      //     }),
-      //   }),
-      //   expect.anything()
-      // );
-
-      expect(true).toBe(true);
+      // Verify data is redacted
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "[DataProvider Error]",
+        expect.objectContaining({
+          params: expect.objectContaining({
+            data: "[Data Present]",
+          }),
+        }),
+        expect.anything()
+      );
     });
 
     it("should include timestamp in ISO format", async () => {
       const error = new Error("Test error");
       (mockProvider.getOne as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
-      // TODO: Uncomment after implementation
-      // const wrappedProvider = withErrorLogging(mockProvider);
-      // await expect(
-      //   wrappedProvider.getOne("contacts", { id: 1 })
-      // ).rejects.toThrow();
+      const wrappedProvider = withErrorLogging(mockProvider);
+      await expect(
+        wrappedProvider.getOne("contacts", { id: 1 })
+      ).rejects.toThrow();
 
-      // const loggedContext = consoleErrorSpy.mock.calls[0][1];
-      // expect(loggedContext.timestamp).toMatch(
-      //   /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/
-      // );
-
-      expect(true).toBe(true);
+      const loggedContext = consoleErrorSpy.mock.calls[0][1];
+      expect(loggedContext.timestamp).toMatch(
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/
+      );
     });
   });
 
@@ -173,16 +155,13 @@ describe("withErrorLogging", () => {
       };
       (mockProvider.create as ReturnType<typeof vi.fn>).mockRejectedValue(validationError);
 
-      // TODO: Uncomment after implementation
-      // const wrappedProvider = withErrorLogging(mockProvider);
-      // await expect(
-      //   wrappedProvider.create("contacts", { data: {} })
-      // ).rejects.toEqual(validationError);
+      const wrappedProvider = withErrorLogging(mockProvider);
+      await expect(
+        wrappedProvider.create("contacts", { data: {} })
+      ).rejects.toEqual(validationError);
 
-      // // Error should be passed through unchanged for React Admin
-      // expect(consoleErrorSpy).toHaveBeenCalled();
-
-      expect(true).toBe(true);
+      // Error should be passed through unchanged for React Admin
+      expect(consoleErrorSpy).toHaveBeenCalled();
     });
 
     it("should log validation errors in detail", async () => {
@@ -196,19 +175,16 @@ describe("withErrorLogging", () => {
       };
       (mockProvider.update as ReturnType<typeof vi.fn>).mockRejectedValue(validationError);
 
-      // TODO: Uncomment after implementation
-      // const wrappedProvider = withErrorLogging(mockProvider);
-      // await expect(
-      //   wrappedProvider.update("contacts", { id: 1, data: {}, previousData: {} as RaRecord })
-      // ).rejects.toThrow();
+      const wrappedProvider = withErrorLogging(mockProvider);
+      await expect(
+        wrappedProvider.update("contacts", { id: 1, data: {}, previousData: {} as RaRecord })
+      ).rejects.toThrow();
 
-      // // Should log validation errors separately
-      // expect(consoleErrorSpy).toHaveBeenCalledWith(
-      //   "[Validation Errors Detail]",
-      //   expect.stringContaining("email")
-      // );
-
-      expect(true).toBe(true);
+      // Should log validation errors separately
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "[Validation Errors Detail]",
+        expect.stringContaining("email")
+      );
     });
   });
 
@@ -221,17 +197,14 @@ describe("withErrorLogging", () => {
       };
       (mockProvider.create as ReturnType<typeof vi.fn>).mockRejectedValue(supabaseError);
 
-      // TODO: Uncomment after implementation
-      // const wrappedProvider = withErrorLogging(mockProvider);
-      // try {
-      //   await wrappedProvider.create("contacts", { data: { email: "test@test.com" } });
-      // } catch (error: any) {
-      //   // Should transform to validation error format with field
-      //   expect(error.errors).toBeDefined();
-      //   expect(error.errors.email || error.errors._error).toBeDefined();
-      // }
-
-      expect(true).toBe(true);
+      const wrappedProvider = withErrorLogging(mockProvider);
+      try {
+        await wrappedProvider.create("contacts", { data: { email: "test@test.com" } });
+      } catch (error: any) {
+        // Should transform to validation error format with field
+        expect(error.errors).toBeDefined();
+        expect(error.errors.email || error.errors._error).toBeDefined();
+      }
     });
   });
 
@@ -243,33 +216,27 @@ describe("withErrorLogging", () => {
       const previousData = { id: 1, name: "Deleted Contact" } as RaRecord;
       (mockProvider.delete as ReturnType<typeof vi.fn>).mockRejectedValue(alreadyDeletedError);
 
-      // TODO: Uncomment after implementation
-      // const wrappedProvider = withErrorLogging(mockProvider);
-      // const result = await wrappedProvider.delete("contacts", {
-      //   id: 1,
-      //   previousData,
-      // });
+      const wrappedProvider = withErrorLogging(mockProvider);
+      const result = await wrappedProvider.delete("contacts", {
+        id: 1,
+        previousData,
+      });
 
-      // // Should return success with previousData
-      // expect(result).toEqual({ data: previousData });
-
-      expect(true).toBe(true);
+      // Should return success with previousData
+      expect(result).toEqual({ data: previousData });
     });
 
     it("should still throw non-idempotent delete errors", async () => {
       const realError = new Error("Foreign key constraint violation");
       (mockProvider.delete as ReturnType<typeof vi.fn>).mockRejectedValue(realError);
 
-      // TODO: Uncomment after implementation
-      // const wrappedProvider = withErrorLogging(mockProvider);
-      // await expect(
-      //   wrappedProvider.delete("contacts", {
-      //     id: 1,
-      //     previousData: { id: 1 } as RaRecord,
-      //   })
-      // ).rejects.toThrow("Foreign key constraint violation");
-
-      expect(true).toBe(true);
+      const wrappedProvider = withErrorLogging(mockProvider);
+      await expect(
+        wrappedProvider.delete("contacts", {
+          id: 1,
+          previousData: { id: 1 } as RaRecord,
+        })
+      ).rejects.toThrow("Foreign key constraint violation");
     });
   });
 
@@ -291,14 +258,11 @@ describe("withErrorLogging", () => {
         const error = new Error(`${method} failed`);
         (mockProvider[method] as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
-        // TODO: Uncomment after implementation
-        // const wrappedProvider = withErrorLogging(mockProvider);
-        // await expect(
-        //   (wrappedProvider[method] as any)("resource", {})
-        // ).rejects.toThrow(`${method} failed`);
-        // expect(consoleErrorSpy).toHaveBeenCalled();
-
-        expect(true).toBe(true);
+        const wrappedProvider = withErrorLogging(mockProvider);
+        await expect(
+          (wrappedProvider[method] as any)("resource", {})
+        ).rejects.toThrow(`${method} failed`);
+        expect(consoleErrorSpy).toHaveBeenCalled();
       });
     });
   });
@@ -310,13 +274,10 @@ describe("withErrorLogging", () => {
         customMethod: vi.fn().mockResolvedValue({ success: true }),
       };
 
-      // TODO: Uncomment after implementation
-      // const wrappedProvider = withErrorLogging(extendedProvider);
-      // expect(wrappedProvider.customMethod).toBeDefined();
-      // const result = await wrappedProvider.customMethod();
-      // expect(result).toEqual({ success: true });
-
-      expect(true).toBe(true);
+      const wrappedProvider = withErrorLogging(extendedProvider);
+      expect((wrappedProvider as any).customMethod).toBeDefined();
+      const result = await (wrappedProvider as any).customMethod();
+      expect(result).toEqual({ success: true });
     });
   });
 });
