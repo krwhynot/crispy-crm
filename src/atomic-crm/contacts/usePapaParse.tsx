@@ -1,6 +1,6 @@
 import * as Papa from "papaparse";
 import { useCallback, useMemo, useRef, useState } from "react";
-import { parseRawCsvData } from "../contacts/csvProcessor";
+import { parseRawCsvData } from "./csvProcessor";
 
 type Import =
   | {

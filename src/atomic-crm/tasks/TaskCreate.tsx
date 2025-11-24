@@ -8,7 +8,7 @@ import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { SaveButton } from "@/components/admin/form";
 import { Button } from "@/components/ui/button";
 import { useConfigurationContext } from "../root/ConfigurationContext";
-import { contactOptionText } from "../misc/ContactOption";
+import { contactOptionText } from "../contacts/ContactOption";
 import { getTaskDefaultValues } from "../validation/task";
 
 /**

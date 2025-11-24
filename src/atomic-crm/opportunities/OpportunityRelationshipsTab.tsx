@@ -9,7 +9,7 @@ import { CreateInDialogButton } from "@/components/admin/create-in-dialog-button
 import { useWatch, useFormContext } from "react-hook-form";
 import { useGetIdentity } from "ra-core";
 import { TextInput } from "@/components/admin/text-input";
-import { contactOptionText } from "../misc/ContactOption";
+import { contactOptionText } from "../contacts/ContactOption";
 import { AutocompleteOrganizationInput } from "../organizations/AutocompleteOrganizationInput";
 import { OrganizationInputs } from "../organizations/OrganizationInputs";
 import { ContactInputs } from "../contacts/ContactInputs";

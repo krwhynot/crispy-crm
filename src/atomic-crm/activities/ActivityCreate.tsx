@@ -8,7 +8,7 @@ import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { BooleanInput } from "@/components/admin/boolean-input";
 import { FormToolbar } from "@/components/admin/simple-form";
 import { TabbedFormInputs } from "@/components/admin/tabbed-form";
-import { contactOptionText } from "../misc/ContactOption";
+import { contactOptionText } from "../contacts/ContactOption";
 import { INTERACTION_TYPE_OPTIONS, activitiesSchema } from "../validation/activities";
 
 const sentimentChoices = [

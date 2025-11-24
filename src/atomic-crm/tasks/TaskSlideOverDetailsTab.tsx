@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { AsideSection } from "../misc/AsideSection";
 import { SaleName } from "../sales/SaleName";
 import { useConfigurationContext } from "../root/ConfigurationContext";
-import { contactOptionText } from "../misc/ContactOption";
+import { contactOptionText } from "../contacts/ContactOption";
 import type { Task } from "../types";
 
 interface TaskSlideOverDetailsTabProps {

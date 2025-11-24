@@ -5,8 +5,7 @@
  * following Engineering Constitution principle #1: Single unified data provider
  */
 
-import { fetchWithTimeout } from "../misc/fetchWithTimeout";
-import { DOMAINS_NOT_SUPPORTING_FAVICON } from "../misc/unsupportedDomains.const";
+import { fetchWithTimeout, DOMAINS_NOT_SUPPORTING_FAVICON } from "./avatar";
 import type { Contact } from "../types";
 import type { Organization } from "../validation/organizations";
 import { emailAndTypeSchema } from "../validation/contacts";

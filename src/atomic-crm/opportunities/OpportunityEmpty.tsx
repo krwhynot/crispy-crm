@@ -3,7 +3,7 @@ import { Progress } from "@/components/ui/progress";
 import { useGetList } from "ra-core";
 import { matchPath, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
-import useAppBarHeight from "../misc/useAppBarHeight";
+import useAppBarHeight from "../hooks/useAppBarHeight";
 import type { Contact } from "../types";
 import { OpportunityCreate } from "./OpportunityCreate";
 

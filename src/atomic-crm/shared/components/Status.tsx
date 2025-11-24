@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils.ts";
-import { useConfigurationContext } from "../root/ConfigurationContext";
+import { useConfigurationContext } from "../../root/ConfigurationContext";
 
 /**
  * Maps status value to semantic CSS class for background color
