@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 import { TopToolbar } from "../layout/TopToolbar";
 import { OpportunityArchivedList } from "./OpportunityArchivedList";
 import { OpportunityEmpty } from "./OpportunityEmpty";
-import { OpportunityListContent } from "./OpportunityListContent";
+import { OpportunityListContent } from "./kanban";
 import { OpportunityRowListView } from "./OpportunityRowListView";
 import { CampaignGroupedList } from "./CampaignGroupedList";
 import { OpportunityViewSwitcher, type OpportunityView } from "./OpportunityViewSwitcher";

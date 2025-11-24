@@ -1,8 +1,8 @@
 import { TabbedFormInputs } from "@/components/admin/tabbed-form";
-import { OpportunityGeneralTab } from "./OpportunityGeneralTab";
-import { OpportunityClassificationTab } from "./OpportunityClassificationTab";
-import { OpportunityRelationshipsTab } from "./OpportunityRelationshipsTab";
-import { OpportunityDetailsTab } from "./OpportunityDetailsTab";
+import { OpportunityGeneralTab } from "./tabs/OpportunityGeneralTab";
+import { OpportunityClassificationTab } from "./tabs/OpportunityClassificationTab";
+import { OpportunityRelationshipsTab } from "./tabs/OpportunityRelationshipsTab";
+import { OpportunityDetailsTab } from "./tabs/OpportunityDetailsTab";
 
 interface OpportunityInputsProps {
   mode: "create" | "edit";

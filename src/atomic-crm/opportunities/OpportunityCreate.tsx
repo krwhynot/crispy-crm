@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { SaveButton } from "@/components/admin/form";
 import { FormToolbar } from "../layout/FormToolbar";
-import { OpportunityInputs } from "./OpportunityInputs";
+import { OpportunityInputs } from "./forms/OpportunityInputs";
 import { opportunitySchema } from "../validation/opportunities";
 
 const OpportunityCreate = () => {
