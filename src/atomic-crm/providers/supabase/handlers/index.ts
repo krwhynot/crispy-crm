@@ -20,3 +20,5 @@
 export { createContactsHandler } from "./contactsHandler";
 export { createOrganizationsHandler } from "./organizationsHandler";
 export { createOpportunitiesHandler } from "./opportunitiesHandler";
+export { createActivitiesHandler } from "./activitiesHandler";
+export { createProductsHandler } from "./productsHandler";
