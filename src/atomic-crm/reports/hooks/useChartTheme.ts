@@ -68,18 +68,35 @@ export function useChartTheme(): ChartTheme {
     const root = document.documentElement;
     const computedStyles = getComputedStyle(root);
 
+    /**
+     * Get CSS custom property value with fail-fast validation
+     *
+     * @param varName - CSS custom property name (without --)
+     * @returns Resolved CSS value
+     * @throws Error if CSS variable is not defined
+     */
+    const getCssVar = (varName: string): string => {
+      const value = computedStyles.getPropertyValue(`--${varName}`).trim();
+      if (!value) {
+        throwMissingCssVarError(`--${varName}`);
+      }
+      return value;
+    };
+
     setTheme({
       colors: {
-        primary: computedStyles.getPropertyValue("--primary") || "#000",
-        brand700: computedStyles.getPropertyValue("--brand-700") || "#1a1a1a",
-        brand600: computedStyles.getPropertyValue("--brand-600") || "#2a2a2a",
-        success: computedStyles.getPropertyValue("--success") || "#10b981",
-        warning: computedStyles.getPropertyValue("--warning") || "#f59e0b",
-        destructive: computedStyles.getPropertyValue("--destructive") || "#ef4444",
-        muted: computedStyles.getPropertyValue("--muted") || "#6b7280",
+        // Semantic color variables (Constitution #8)
+        primary: getCssVar("primary"),
+        brand700: getCssVar("brand-700"),
+        brand600: getCssVar("brand-600"),
+        success: getCssVar("success"),
+        warning: getCssVar("warning"),
+        destructive: getCssVar("destructive"),
+        muted: getCssVar("muted"),
       },
       font: {
-        family: computedStyles.getPropertyValue("--font-sans") || "system-ui",
+        // Font variable with system-ui fallback (safe fallback for non-color)
+        family: computedStyles.getPropertyValue("--font-sans").trim() || "system-ui",
         size: 12,
       },
     });
