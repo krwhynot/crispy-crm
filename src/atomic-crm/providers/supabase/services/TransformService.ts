@@ -3,6 +3,7 @@ import type {
   Contact,
   ContactNote,
   OpportunityNote,
+  Opportunity,
   Organization,
   Sale,
 } from "../../../types";
@@ -14,6 +15,7 @@ type TransformableData =
   | Partial<Contact>
   | Partial<ContactNote>
   | Partial<OpportunityNote>
+  | Partial<Opportunity>
   | Partial<Organization>
   | Partial<Sale>;
 
@@ -97,6 +99,30 @@ export class TransformService {
         // Preserve organizations for sync (rename to avoid column error, handled by data provider)
         if (organizations) {
           (cleanedData as any).organizations_to_sync = organizations;
+        }
+
+        return cleanedData;
+      },
+    },
+    opportunities: {
+      transform: async (data: TransformableData) => {
+        const opportunityData = data as Partial<Opportunity>;
+
+        // Extract products for service layer sync (similar to contacts/organizations pattern)
+        // The products field comes from form input and needs to be handled by OpportunitiesService
+        const { products, ...cleanedData } = opportunityData as any;
+
+        // Preserve products for sync (rename to avoid column error, handled by service layer)
+        // products_to_sync is extracted in OpportunitiesService.createWithProducts() and
+        // OpportunitiesService.updateWithProducts() for atomic RPC operations
+        if (products) {
+          (cleanedData as any).products_to_sync = products;
+        }
+
+        // Add timestamp for create operations
+        if (!cleanedData.id) {
+          // Use type assertion since created_at is a database field that might not be in type definition
+          (cleanedData as Record<string, unknown>).created_at = new Date().toISOString();
         }
 
         return cleanedData;
