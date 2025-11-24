@@ -1,11 +1,11 @@
 import { render, screen } from "@testing-library/react";
 import { OpportunityCard } from "../OpportunityCard";
 import { describe, it, expect, vi } from "vitest";
-import { useOpportunityContacts } from "../useOpportunityContacts";
+import { useOpportunityContacts } from "../hooks/useOpportunityContacts";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { BrowserRouter } from "react-router-dom";
 
-vi.mock("../useOpportunityContacts");
+vi.mock("../hooks/useOpportunityContacts");
 
 const mockRecord = {
   id: 1,

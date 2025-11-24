@@ -1,5 +1,5 @@
 import { renderHook, act } from "@testing-library/react";
-import { useColumnPreferences } from "../useColumnPreferences";
+import { useColumnPreferences } from "../hooks/useColumnPreferences";
 import { describe, it, expect, beforeEach } from "vitest";
 
 describe("useColumnPreferences", () => {

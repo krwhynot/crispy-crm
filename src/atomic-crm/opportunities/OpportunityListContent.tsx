@@ -8,7 +8,7 @@ import { OpportunityColumn } from "./OpportunityColumn";
 import { OPPORTUNITY_STAGES_LEGACY, getOpportunityStageLabel } from "./stageConstants";
 import type { OpportunitiesByStage } from "./stages";
 import { getOpportunitiesByStage } from "./stages";
-import { useColumnPreferences } from "./useColumnPreferences";
+import { useColumnPreferences } from "./hooks/useColumnPreferences";
 import { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
 
 interface OpportunityListContentProps {
