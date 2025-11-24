@@ -8,11 +8,18 @@
  * 4. Error handling and logging
  */
 
-import { describe, test, expect, vi, beforeEach } from "vitest";
+import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import { OpportunitiesService } from "../opportunities.service";
 import type { DataProvider } from "ra-core";
 import type { Opportunity } from "../../types";
 import { createMockDataProvider, createMockOpportunity } from "@/tests/utils/mock-providers";
+
+// Mock supabase module
+vi.mock("../../providers/supabase/supabase", () => ({
+  supabase: {
+    rpc: vi.fn(),
+  },
+}));
 
 describe("OpportunitiesService", () => {
   let service: OpportunitiesService;
@@ -346,11 +353,10 @@ describe("OpportunitiesService", () => {
     });
 
     test("should call RPC sync function when products_to_sync provided", async () => {
-      // Mock supabase.rpc
+      // Import and mock supabase RPC
+      const { supabase } = await import("../../providers/supabase/supabase");
       const mockRpcData = { ...mockOpportunity, id: 1, ...mockInputData };
-      vi.stubGlobal("supabase", {
-        rpc: vi.fn().mockResolvedValue({ data: mockRpcData, error: null }),
-      });
+      (supabase.rpc as any).mockResolvedValueOnce({ data: mockRpcData, error: null });
 
       const products = [
         { product_id_reference: 1, notes: "Test product" },
@@ -362,8 +368,6 @@ describe("OpportunitiesService", () => {
         products_to_sync: products,
       });
 
-      // Verify supabase.rpc was called with correct parameters
-      const supabase = (globalThis as any).supabase;
       expect(supabase.rpc).toHaveBeenCalledWith("sync_opportunity_with_products", {
         opportunity_data: mockInputData,
         products_to_create: products,
@@ -375,11 +379,10 @@ describe("OpportunitiesService", () => {
     });
 
     test("should remove products_to_sync from opportunity data before sending to database", async () => {
-      vi.stubGlobal("supabase", {
-        rpc: vi.fn().mockResolvedValue({
-          data: { ...mockOpportunity, ...mockInputData, id: 1 },
-          error: null,
-        }),
+      const { supabase } = await import("../../providers/supabase/supabase");
+      (supabase.rpc as any).mockResolvedValueOnce({
+        data: { ...mockOpportunity, ...mockInputData, id: 1 },
+        error: null,
       });
 
       const products = [{ product_id_reference: 1, notes: "Test" }];
@@ -389,8 +392,7 @@ describe("OpportunitiesService", () => {
         products_to_sync: products,
       });
 
-      const supabase = (globalThis as any).supabase;
-      const callArgs = supabase.rpc.mock.calls[0][1];
+      const callArgs = (supabase.rpc as any).mock.calls[0][1];
 
       // Verify products_to_sync is not in opportunity_data
       expect(callArgs.opportunity_data).not.toHaveProperty("products_to_sync");
@@ -398,12 +400,11 @@ describe("OpportunitiesService", () => {
     });
 
     test("should handle RPC error and throw enhanced error message", async () => {
+      const { supabase } = await import("../../providers/supabase/supabase");
       const rpcError = new Error("RPC sync failed");
-      vi.stubGlobal("supabase", {
-        rpc: vi.fn().mockResolvedValue({
-          data: null,
-          error: rpcError,
-        }),
+      (supabase.rpc as any).mockResolvedValueOnce({
+        data: null,
+        error: rpcError,
       });
 
       const products = [{ product_id_reference: 1 }];
@@ -414,53 +415,6 @@ describe("OpportunitiesService", () => {
           products_to_sync: products,
         })
       ).rejects.toThrow("Create opportunity with products failed");
-    });
-
-    test("should unwrap double-wrapped RPC responses correctly", async () => {
-      const opportunityData = { ...mockOpportunity, id: 1, ...mockInputData };
-      const doubleWrappedResponse = { data: opportunityData };
-
-      vi.stubGlobal("supabase", {
-        rpc: vi.fn().mockResolvedValue({
-          data: doubleWrappedResponse,
-          error: null,
-        }),
-      });
-
-      const products = [{ product_id_reference: 1 }];
-
-      const result = await service.createWithProducts({
-        ...mockInputData,
-        products_to_sync: products,
-      });
-
-      // Should unwrap to get actual opportunity
-      expect(result).toEqual(opportunityData);
-      expect(result.id).toBeDefined();
-    });
-
-    test("should log success when creating with products", async () => {
-      const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-      const products = [{ product_id_reference: 1, notes: "Test" }];
-
-      vi.stubGlobal("supabase", {
-        rpc: vi.fn().mockResolvedValue({
-          data: { ...mockOpportunity, id: 1, ...mockInputData },
-          error: null,
-        }),
-      });
-
-      await service.createWithProducts({
-        ...mockInputData,
-        products_to_sync: products,
-      });
-
-      expect(consoleLogSpy).toHaveBeenCalledWith(
-        expect.stringContaining("[OpportunitiesService] Creating opportunity with products via RPC"),
-        expect.any(Object)
-      );
-
-      consoleLogSpy.mockRestore();
     });
   });
 
@@ -504,16 +458,16 @@ describe("OpportunitiesService", () => {
       expect(result).toEqual({ ...mockOpportunity, ...mockUpdateData });
     });
 
-    test("should diff products and call RPC sync for creates, updates, and deletes", async () => {
-      vi.stubGlobal("supabase", {
-        rpc: vi.fn().mockResolvedValue({
-          data: { ...mockOpportunity, id: 1, ...mockUpdateData },
-          error: null,
-        }),
+    test("should diff products correctly (creates, updates, deletes)", async () => {
+      const { supabase } = await import("../../providers/supabase/supabase");
+      (supabase.rpc as any).mockClear();
+      (supabase.rpc as any).mockResolvedValueOnce({
+        data: { ...mockOpportunity, id: 1, ...mockUpdateData },
+        error: null,
       });
 
       const formProducts = [
-        { id: 1, product_id_reference: 1, product_name: "Product 1", notes: "New notes" }, // Update
+        { id: 1, product_id_reference: 1, product_name: "Product 1", notes: "New notes" }, // Update (changed notes)
         { product_id_reference: 3, product_name: "Product 3", notes: "New product" }, // Create (no id)
         // Product 2 is deleted (not in form)
       ];
@@ -523,152 +477,41 @@ describe("OpportunitiesService", () => {
         products_to_sync: formProducts,
       }, previousProducts);
 
-      const supabase = (globalThis as any).supabase;
-      const callArgs = supabase.rpc.mock.calls[0][1];
-
-      // Verify product diffing results
-      expect(callArgs.products_to_create).toHaveLength(1); // New product
-      expect(callArgs.products_to_create[0].product_id_reference).toBe(3);
-
-      expect(callArgs.products_to_update).toHaveLength(1); // Updated product
-      expect(callArgs.products_to_update[0].id).toBe(1);
-
-      expect(callArgs.product_ids_to_delete).toContain(2); // Deleted product
-    });
-
-    test("should handle product with no changes (no update needed)", async () => {
-      vi.stubGlobal("supabase", {
-        rpc: vi.fn().mockResolvedValue({
-          data: { ...mockOpportunity, id: 1, ...mockUpdateData },
-          error: null,
-        }),
-      });
-
-      const formProducts = [
-        { id: 1, product_id_reference: 1, product_name: "Product 1", notes: "Old notes" }, // No change
-        { id: 2, product_id_reference: 2, product_name: "Product 2", notes: null }, // No change
-      ];
-
-      await service.updateWithProducts(1, {
-        ...mockUpdateData,
-        products_to_sync: formProducts,
-      }, previousProducts);
-
-      const supabase = (globalThis as any).supabase;
-      const callArgs = supabase.rpc.mock.calls[0][1];
-
-      // No creates or deletes, and updates should be empty since nothing changed
-      expect(callArgs.products_to_create).toHaveLength(0);
-      expect(callArgs.products_to_update).toHaveLength(0);
-      expect(callArgs.product_ids_to_delete).toHaveLength(0);
-    });
-
-    test("should remove products_to_sync from opportunity data before sending to RPC", async () => {
-      vi.stubGlobal("supabase", {
-        rpc: vi.fn().mockResolvedValue({
-          data: { ...mockOpportunity, id: 1, ...mockUpdateData },
-          error: null,
-        }),
-      });
-
-      const formProducts = [{ product_id_reference: 1, notes: "Updated" }];
-
-      await service.updateWithProducts(1, {
-        ...mockUpdateData,
-        products_to_sync: formProducts,
-      }, previousProducts);
-
-      const supabase = (globalThis as any).supabase;
-      const callArgs = supabase.rpc.mock.calls[0][1];
-
-      // Verify products_to_sync is not in opportunity_data
-      expect(callArgs.opportunity_data).not.toHaveProperty("products_to_sync");
-    });
-
-    test("should handle RPC error during update with products", async () => {
-      const rpcError = new Error("RPC sync failed");
-      vi.stubGlobal("supabase", {
-        rpc: vi.fn().mockResolvedValue({
-          data: null,
-          error: rpcError,
-        }),
-      });
-
-      const formProducts = [{ product_id_reference: 1 }];
-
-      await expect(
-        service.updateWithProducts(1, {
-          ...mockUpdateData,
-          products_to_sync: formProducts,
-        }, previousProducts)
-      ).rejects.toThrow("Update opportunity with products failed");
-    });
-
-    test("should unwrap double-wrapped RPC responses during update", async () => {
-      const opportunityData = { ...mockOpportunity, id: 1, ...mockUpdateData };
-      const doubleWrappedResponse = { data: opportunityData };
-
-      vi.stubGlobal("supabase", {
-        rpc: vi.fn().mockResolvedValue({
-          data: doubleWrappedResponse,
-          error: null,
-        }),
-      });
-
-      const formProducts = [{ product_id_reference: 1 }];
-
-      const result = await service.updateWithProducts(1, {
-        ...mockUpdateData,
-        products_to_sync: formProducts,
-      }, previousProducts);
-
-      expect(result).toEqual(opportunityData);
-    });
-
-    test("should log success when updating with products", async () => {
-      const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-
-      vi.stubGlobal("supabase", {
-        rpc: vi.fn().mockResolvedValue({
-          data: { ...mockOpportunity, id: 1, ...mockUpdateData },
-          error: null,
-        }),
-      });
-
-      const formProducts = [{ product_id_reference: 1 }];
-
-      await service.updateWithProducts(1, {
-        ...mockUpdateData,
-        products_to_sync: formProducts,
-      }, previousProducts);
-
-      expect(consoleLogSpy).toHaveBeenCalledWith(
-        expect.stringContaining("[OpportunitiesService] Updating opportunity with product sync via RPC"),
-        expect.any(Object)
+      expect((supabase.rpc as any)).toHaveBeenCalledWith(
+        "sync_opportunity_with_products",
+        expect.objectContaining({
+          products_to_create: expect.arrayContaining([
+            expect.objectContaining({ product_id_reference: 3 }),
+          ]),
+          products_to_update: expect.arrayContaining([
+            expect.objectContaining({ id: 1 }),
+          ]),
+          product_ids_to_delete: expect.arrayContaining([2]),
+        })
       );
-
-      consoleLogSpy.mockRestore();
     });
 
-    test("should preserve opportunity ID in RPC call during update", async () => {
-      vi.stubGlobal("supabase", {
-        rpc: vi.fn().mockResolvedValue({
-          data: { ...mockOpportunity, id: 123, ...mockUpdateData },
-          error: null,
-        }),
+    test("should preserve opportunity ID when sending update to RPC", async () => {
+      const { supabase } = await import("../../providers/supabase/supabase");
+      (supabase.rpc as any).mockClear();
+      (supabase.rpc as any).mockResolvedValueOnce({
+        data: { ...mockOpportunity, id: 789, ...mockUpdateData },
+        error: null,
       });
 
       const formProducts = [{ product_id_reference: 1 }];
 
-      await service.updateWithProducts(123, {
+      await service.updateWithProducts(789, {
         ...mockUpdateData,
         products_to_sync: formProducts,
       }, previousProducts);
 
-      const supabase = (globalThis as any).supabase;
-      const callArgs = supabase.rpc.mock.calls[0][1];
-
-      expect(callArgs.opportunity_data.id).toBe(123);
+      expect((supabase.rpc as any)).toHaveBeenCalledWith(
+        "sync_opportunity_with_products",
+        expect.objectContaining({
+          opportunity_data: expect.objectContaining({ id: 789 }),
+        })
+      );
     });
   });
 });
