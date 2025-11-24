@@ -3,15 +3,17 @@
  *
  * Reusable transformation functions for resource callbacks.
  * These transforms can be used with the createResourceCallbacks factory
- * via the afterReadTransform parameter.
+ * via the readTransforms, writeTransforms, or deleteTransforms parameters.
  *
  * Design principle: Each transform is a pure function that does one thing well.
- * Multiple transforms can be chained by composing them in a callback.
+ * Multiple transforms can be composed sequentially by listing them in the config array.
  *
  * Engineering Constitution: Shared utility functions extracted for reuse
+ * Pattern: Factory pattern with composable transforms (see createResourceCallbacks.ts)
  */
 
 import type { RaRecord } from "ra-core";
+import type { Transform, TransformFn } from "./createResourceCallbacks";
 
 /**
  * JSONB array fields that need normalization across multiple resources
@@ -31,11 +33,14 @@ const JSONB_ARRAY_FIELDS_CONTACTS = ["email", "phone", "tags"] as const;
  *
  * @example
  * ```typescript
+ * import { createResourceCallbacks } from "./createResourceCallbacks";
+ * import { commonTransforms } from "./commonTransforms";
+ *
  * export const contactsCallbacks = createResourceCallbacks({
  *   resource: 'contacts',
  *   supportsSoftDelete: true,
  *   computedFields: CONTACT_COMPUTED_FIELDS,
- *   afterReadTransform: normalizeJsonbArrays,
+ *   readTransforms: [commonTransforms.normalizeJsonbArrays], // New way!
  * });
  * ```
  */
@@ -59,28 +64,37 @@ export function normalizeJsonbArrays(record: RaRecord): RaRecord {
 
 /**
  * Registry of common transforms for easy discovery and composition
- * Allows resources to opt-in to transforms by name
+ * Allows resources to opt-in to reusable transforms by name
  *
  * @example
  * ```typescript
- * // Future: Use registry for dynamic transform composition
- * const transforms = [commonTransforms.normalizeJsonbArrays];
+ * // Use transforms from registry in createResourceCallbacks
+ * const callbacks = createResourceCallbacks({
+ *   resource: 'contacts',
+ *   readTransforms: [
+ *     commonTransforms.normalizeJsonbArrays,
+ *     commonTransforms.ensurePhoneArrays,
+ *   ],
+ * });
+ * ```
+ *
+ * @example
+ * ```typescript
+ * // Or compose them with inline transforms
+ * const callbacks = createResourceCallbacks({
+ *   resource: 'contacts',
+ *   readTransforms: [
+ *     commonTransforms.normalizeJsonbArrays,
+ *     (record) => ({ ...record, custom: true }), // Inline function
+ *   ],
+ * });
  * ```
  */
 export const commonTransforms = {
   normalizeJsonbArrays: {
     name: "normalize-jsonb-arrays",
-    description: "Ensure JSONB array fields (email, phone, tags) are always arrays",
+    description:
+      "Ensure JSONB array fields (email, phone, tags) are always arrays, not null/undefined",
     apply: normalizeJsonbArrays,
   },
-} as const;
-
-/**
- * Type for a transform registry entry
- * Enables future extensibility for transform discovery and composition
- */
-export interface Transform {
-  name: string;
-  description: string;
-  apply: (record: RaRecord) => RaRecord;
-}
+} as const satisfies Record<string, Transform>;
