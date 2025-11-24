@@ -46,7 +46,7 @@ The Opportunities module implements a **Kanban board interface** for managing sa
 
 ### Integration Points
 - `/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/ActivityNoteForm.tsx`: Create activity/interaction from opportunity (links to Activities module)
-- `/home/krwhynot/projects/crispy-crm/src/atomic-crm/activity/ActivityLogOpportunityCreated.tsx`: Activity log entry for opportunity creation
+- `/home/krwhynot/projects/crispy-crm/src/atomic-crm/activity-log/ActivityLogOpportunityCreated.tsx`: Activity log entry for opportunity creation
 - `/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/ContactList.tsx`: Display contacts linked to opportunity
 
 ## Architectural Patterns

@@ -62,7 +62,7 @@ Coverage: ~62% of assertions passing
 **To test:** ~20 tests, 2 days
 
 ### 5. Activity Module - ZERO TESTS
-**Files:** `activity/*.tsx` (9 files)
+**Files:** `activity-log/*.tsx` (9 files)
 
 **Critical for MVP:** Activity timeline shows what actually happened
 
@@ -206,7 +206,7 @@ Status: Good, keep going ✓
 **All 4 service files untested**
 **Effort:** 2 days (critical)
 
-### activity/ (0% done)
+### activity-log/ (0% done)
 **All 9 files untested, MVP feature**
 **Effort:** 1 day (critical)
 
@@ -314,7 +314,7 @@ src/atomic-crm/{contacts,organizations,opportunities}/__tests__/
 
 ### Phase 2 (High)
 ```
-src/atomic-crm/activity/__tests__/
+src/atomic-crm/activity-log/__tests__/
   ├─ ActivityLog.test.tsx (NEW)
   └─ ActivityLogIterator.test.tsx (NEW)
 
