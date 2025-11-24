@@ -34,3 +34,12 @@ export {
   stripComputedFields as stripOrgComputedFields,
   COMPUTED_FIELDS as ORG_COMPUTED_FIELDS,
 } from "./organizationsCallbacks";
+
+// Opportunities callbacks
+export { opportunitiesCallbacks } from "./opportunitiesCallbacks";
+export {
+  stripComputedFields as stripOppComputedFields,
+  mergeCreateDefaults as mergeOppCreateDefaults,
+  COMPUTED_FIELDS as OPP_COMPUTED_FIELDS,
+  CREATE_DEFAULTS as OPP_CREATE_DEFAULTS,
+} from "./opportunitiesCallbacks";
