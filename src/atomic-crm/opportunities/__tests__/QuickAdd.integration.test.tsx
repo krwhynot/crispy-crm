@@ -25,7 +25,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
-import { QuickAddButton } from "../QuickAddButton";
+import { QuickAddButton } from "../quick-add/QuickAddButton";
 
 /**
  * Helper to find a cmdk CommandItem by text content.
