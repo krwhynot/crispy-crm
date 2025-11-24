@@ -85,7 +85,7 @@
   - `KeyboardShortcutsProvider.tsx` - NO TEST
   
 **Activity Module - No Tests:**
-- `activity/` (9 files) - NO TESTS
+- `activity-log/` (9 files) - NO TESTS
   - `ActivityLog.tsx`, `ActivityLogIterator.tsx`
   - Activity filtering and display logic critical to MVP
 
@@ -264,7 +264,7 @@ Multiple test files only verify rendering without assertions:
 | **root/** | 3 | 0 | 0% - CRITICAL |
 | **services/** | 4 | 0 | 0% - CRITICAL |
 | **hooks/** | 9 | 0 | 0% - MISSING |
-| **activity/** | 9 | 0 | 0% - CRITICAL |
+| **activity-log/** | 9 | 0 | 0% - CRITICAL |
 | **tasks/** | 4 | 0 | 0% - CRITICAL |
 | **sales/** | 7 | 0 | 0% - MISSING |
 | **misc/** | 9 | 0 | 0% - MISSING |

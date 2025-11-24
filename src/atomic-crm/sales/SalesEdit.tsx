@@ -25,7 +25,7 @@ function EditToolbar() {
   );
 }
 
-export function SalesEdit() {
+export default function SalesEdit() {
   const { record } = useEditController();
 
   const dataProvider = useDataProvider();

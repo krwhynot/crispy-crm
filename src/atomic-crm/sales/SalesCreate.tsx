@@ -7,7 +7,7 @@ import { SalesService } from "../services";
 import type { SalesFormData } from "../types";
 import { SalesInputs } from "./SalesInputs";
 
-export function SalesCreate() {
+export default function SalesCreate() {
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const redirect = useRedirect();

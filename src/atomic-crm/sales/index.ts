@@ -1,12 +1,14 @@
+import * as React from "react";
 import type { Sale } from "../types";
 import { formatName } from "../utils/formatName";
-import { SalesCreate } from "./SalesCreate";
-import { SalesEdit } from "./SalesEdit";
-import { SalesList } from "./SalesList";
+
+const SalesList = React.lazy(() => import("./SalesList"));
+const SalesEdit = React.lazy(() => import("./SalesEdit"));
+const SalesCreate = React.lazy(() => import("./SalesCreate"));
 
 export default {
   list: SalesList,
-  create: SalesCreate,
   edit: SalesEdit,
-  recordRepresentation: (record: Sale) => formatName(record.first_name, record.last_name),
+  create: SalesCreate,
+  recordRepresentation: (record: Sale) => formatName(record?.first_name, record?.last_name),
 };

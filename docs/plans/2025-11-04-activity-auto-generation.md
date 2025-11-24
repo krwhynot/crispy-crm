@@ -89,7 +89,7 @@ psql $DATABASE_URL -c "SELECT * FROM activities WHERE subject LIKE 'Stage change
 
 ### Step 7-9: Add UI Indicator for Auto Activities (Day 3)
 
-**File:** `src/atomic-crm/activity/ActivityLog.tsx`
+**File:** `src/atomic-crm/activity-log/ActivityLog.tsx`
 
 ```typescript
 // Add visual indicator for auto-generated activities
@@ -105,7 +105,7 @@ psql $DATABASE_URL -c "SELECT * FROM activities WHERE subject LIKE 'Stage change
 
 ```bash
 git add supabase/migrations/*_auto_generate_activities.sql
-git add src/atomic-crm/activity/ActivityLog.tsx
+git add src/atomic-crm/activity-log/ActivityLog.tsx
 git commit -m "feat: auto-generate activities on stage/status changes
 
 - Create trigger function for automatic activity logging

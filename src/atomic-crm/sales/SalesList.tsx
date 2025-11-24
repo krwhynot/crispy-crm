@@ -75,7 +75,7 @@ const StatusField = () => {
   );
 };
 
-export function SalesList() {
+export default function SalesList() {
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
 

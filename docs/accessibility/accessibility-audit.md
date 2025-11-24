@@ -248,7 +248,7 @@ The Atomic CRM codebase shows **moderate accessibility compliance** with WCAG 2.
 **Severity:** Medium
 **Files:**
 - `src/atomic-crm/dashboard/RecentActivityFeed.tsx`
-- `src/atomic-crm/activity/ActivityLog.tsx`
+- `src/atomic-crm/activity-log/ActivityLog.tsx`
 
 **Issue:** Activity items may not be marked as a list or have proper structure
 
