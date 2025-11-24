@@ -2,7 +2,7 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
 import { useRecordContext } from "ra-core";
 import { Avatar } from "../contacts/Avatar";
-import { RelativeDate } from "../misc/RelativeDate";
+import { RelativeDate } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";
 import type { ActivityContactNoteCreated, Contact } from "../types";
 import { useActivityLogContext } from "./ActivityLogContext";

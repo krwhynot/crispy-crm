@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDataProvider, RecordContextProvider } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AsideSection } from "../../misc/AsideSection";
+import { AsideSection } from "@/components/ui";
 import { Users } from "lucide-react";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";

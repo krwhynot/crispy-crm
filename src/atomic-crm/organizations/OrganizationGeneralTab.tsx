@@ -3,7 +3,7 @@ import { ReferenceInput } from "@/components/admin/reference-input";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { useRecordContext, useDataProvider } from "ra-core";
-import ImageEditorField from "../misc/ImageEditorField";
+import { ImageEditorField } from "@/components/ui";
 import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import type { Company, Sale } from "../types";
 import { formatName } from "../utils/formatName";

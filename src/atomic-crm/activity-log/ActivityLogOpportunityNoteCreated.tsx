@@ -2,7 +2,7 @@ import { ReferenceField } from "@/components/admin/reference-field";
 
 import type { RaRecord } from "ra-core";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
-import { RelativeDate } from "../misc/RelativeDate";
+import { RelativeDate } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";
 import type { ActivityOpportunityNoteCreated } from "../types";
 import { useActivityLogContext } from "./ActivityLogContext";

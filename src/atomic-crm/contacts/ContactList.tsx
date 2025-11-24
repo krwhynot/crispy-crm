@@ -26,7 +26,7 @@ import { ContactSlideOver } from "./ContactSlideOver";
 import { TopToolbar } from "../layout/TopToolbar";
 import { Avatar } from "./Avatar";
 import { TagsList } from "./TagsList";
-import { Status } from "../misc/Status";
+import { Status } from "../shared/components/Status";
 
 export const ContactList = () => {
   const { identity } = useGetIdentity();

@@ -15,7 +15,7 @@ import {
 } from "ra-core";
 import { useState } from "react";
 import { useFormState } from "react-hook-form";
-import ImageEditorField from "../misc/ImageEditorField";
+import { ImageEditorField } from "@/components/ui";
 import type { CrmDataProvider } from "../providers/types";
 import type { Sale, SalesFormData } from "../types";
 

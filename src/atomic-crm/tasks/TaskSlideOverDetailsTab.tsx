@@ -11,7 +11,7 @@ import { BooleanInput } from "@/components/admin/boolean-input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AsideSection } from "../misc/AsideSection";
+import { AsideSection } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import { contactOptionText } from "../contacts/ContactOption";
