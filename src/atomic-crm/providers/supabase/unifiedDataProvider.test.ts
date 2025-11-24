@@ -231,6 +231,9 @@ vi.mock("../../services", () => ({
     updatePassword: vi.fn(),
   })),
   OpportunitiesService: vi.fn().mockImplementation(() => ({
+    createWithProducts: vi.fn().mockResolvedValue({ id: 1 }),
+    updateWithProducts: vi.fn().mockResolvedValue({ id: 1 }),
+    archiveOpportunity: vi.fn(),
     unarchiveOpportunity: vi.fn(),
   })),
   ActivitiesService: vi.fn().mockImplementation(() => ({
