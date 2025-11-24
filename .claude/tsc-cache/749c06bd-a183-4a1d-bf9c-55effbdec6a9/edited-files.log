@@ -9,3 +9,13 @@
 1763961716:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityInputs.spec.tsx:src
 1763961775:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/forms/tabs/OpportunityRelationshipsTab.tsx:src
 1763961980:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/quick-add/QuickAddButton.tsx:src
+1763961981:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/quick-add/QuickAddDialog.tsx:src
+1763962051:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx:src
+1763962065:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/OpportunityList.tsx:src
+1763962095:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/QuickAddButton.test.tsx:src
+1763962096:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/QuickAddDialog.test.tsx:src
+1763962097:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/QuickAddForm.test.tsx:src
+1763962098:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx:src
+1763962099:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/quick-add-product-filtering-flow.test.tsx:src
+1763962107:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/QuickAddDialog.test.tsx:src
+1763962287:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/utils/diffProducts.ts:src

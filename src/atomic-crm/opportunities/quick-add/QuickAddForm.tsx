@@ -3,8 +3,8 @@ import { useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { quickAddSchema, type QuickAddInput } from "@/atomic-crm/validation/quickAdd";
-import { useQuickAdd } from "./hooks/useQuickAdd";
-import { useFilteredProducts } from "./hooks/useFilteredProducts";
+import { useQuickAdd } from "../hooks/useQuickAdd";
+import { useFilteredProducts } from "../hooks/useFilteredProducts";
 import { useGetList } from "ra-core";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Combobox, MultiSelectCombobox } from "@/components/ui/combobox";
-import { US_CITIES } from "./data/us-cities";
+import { US_CITIES } from "../data/us-cities";
 import { cn } from "@/lib/utils";
 
 interface QuickAddFormProps {

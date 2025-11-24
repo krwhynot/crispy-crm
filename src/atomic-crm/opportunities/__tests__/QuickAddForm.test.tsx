@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { QuickAddForm } from "../QuickAddForm";
+import { QuickAddForm } from "../quick-add/QuickAddForm";
 import { useQuickAdd } from "../hooks/useQuickAdd";
 import { useGetList } from "ra-core";
 import { selectCityAndVerifyState } from "@/tests/utils/combobox";
