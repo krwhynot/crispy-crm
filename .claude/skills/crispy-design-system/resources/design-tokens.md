@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Design tokens provide a single source of truth for spacing, sizing, borders, shadows, and touch targets in Atomic CRM. Ensures consistency across iPad, mobile, and desktop viewports.
+Design tokens provide a centralized system for spacing, sizing, borders, shadows, and touch targets in Atomic CRM. Ensures consistency across iPad, mobile, and desktop viewports.
 
 ## Core Pattern: CSS Variables + TypeScript Constants
 
