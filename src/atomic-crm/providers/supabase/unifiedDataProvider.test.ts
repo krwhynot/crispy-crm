@@ -248,6 +248,9 @@ vi.mock("../../services", () => ({
     addOpportunityContact: vi.fn(),
     removeOpportunityContact: vi.fn(),
   })),
+  SegmentsService: vi.fn().mockImplementation(() => ({
+    getOrCreateSegment: vi.fn(),
+  })),
 }));
 
 // Mock utils
