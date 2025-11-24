@@ -1,4 +1,5 @@
 import * as React from "react";
+import type { Organization } from "../types";
 
 const OrganizationList = React.lazy(() => import("./OrganizationList"));
 const OrganizationShow = React.lazy(() => import("./OrganizationShow"));
@@ -21,5 +22,5 @@ export default {
   show: OrganizationShow,
   create: OrganizationCreate,
   edit: OrganizationEdit,
-  recordRepresentation: (record: any) => record?.name || "Organization",
+  recordRepresentation: (record: Organization) => record?.name || "Organization",
 };
