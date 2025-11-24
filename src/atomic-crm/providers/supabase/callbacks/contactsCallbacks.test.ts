@@ -196,12 +196,13 @@ describe("contactsCallbacks", () => {
       // q should be removed from filter
       expect(result.filter).not.toHaveProperty("q");
 
-      // @or filter should be created with ILIKE conditions
+      // @or filter should be created with ILIKE conditions on text fields only
       expect(result.filter).toHaveProperty("@or");
       expect(result.filter["@or"]).toHaveProperty("name@ilike", "%john%");
       expect(result.filter["@or"]).toHaveProperty("first_name@ilike", "%john%");
       expect(result.filter["@or"]).toHaveProperty("last_name@ilike", "%john%");
-      expect(result.filter["@or"]).toHaveProperty("email@ilike", "%john%");
+      // email is a JSONB field and should NOT be included in text search
+      expect(result.filter["@or"]).not.toHaveProperty("email@ilike");
     });
 
     it("should preserve other filters when q is transformed", async () => {

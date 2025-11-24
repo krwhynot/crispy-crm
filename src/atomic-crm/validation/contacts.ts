@@ -64,7 +64,9 @@ export const contactOrganizationSchema = z
 
 // Base contact schema - validates only fields that have UI inputs in ContactInputs.tsx
 // Per "UI as source of truth" principle: we only validate what users can actually input
-const contactBaseSchema = z.object({
+// EXPORTED: Enables form default generation via contactBaseSchema.partial().parse({})
+// per Engineering Constitution #5: FORM STATE DERIVED FROM TRUTH
+export const contactBaseSchema = z.object({
   // Primary key
   id: z.union([z.string(), z.number()]).optional(),
 
