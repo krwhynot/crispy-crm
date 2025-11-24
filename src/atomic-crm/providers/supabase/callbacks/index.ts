@@ -4,6 +4,11 @@
  * Resource-specific logic for React Admin's withLifecycleCallbacks pattern.
  * These callbacks are composed with the base DataProvider to add resource-specific behavior.
  *
+ * Architecture:
+ * - Factory pattern (createResourceCallbacks) for standard resources (activities, products, contacts, organizations)
+ * - Inline callbacks for complex resources (opportunities with RPC-based cascading deletes)
+ * - Shared transforms (commonTransforms) for reusable data transformations
+ *
  * Usage:
  * ```typescript
  * import { withLifecycleCallbacks } from 'react-admin';
@@ -19,10 +24,24 @@
  * Engineering Constitution: Each callback module handles a single resource
  */
 
+// Factory for creating standardized callbacks
+export {
+  createResourceCallbacks,
+  type ResourceCallbacks,
+  type ResourceCallbacksConfig,
+  type CallbacksConfig,
+} from "./createResourceCallbacks";
+
+// Common reusable transforms
+export {
+  normalizeJsonbArrays,
+  commonTransforms,
+  type Transform,
+} from "./commonTransforms";
+
 // Contacts callbacks
 export { contactsCallbacks } from "./contactsCallbacks";
 export {
-  normalizeJsonbArrays,
   stripComputedFields as stripContactComputedFields,
   COMPUTED_FIELDS as CONTACT_COMPUTED_FIELDS,
   JSONB_ARRAY_FIELDS,
@@ -50,11 +69,3 @@ export { COMPUTED_FIELDS as ACTIVITIES_COMPUTED_FIELDS } from "./activitiesCallb
 
 // Products callbacks
 export { productsCallbacks } from "./productsCallbacks";
-
-// Factory function for creating standardized callbacks
-export {
-  createResourceCallbacks,
-  type ResourceCallbacks,
-  type ResourceCallbacksConfig,
-  type CallbacksConfig,
-} from "./createResourceCallbacks";

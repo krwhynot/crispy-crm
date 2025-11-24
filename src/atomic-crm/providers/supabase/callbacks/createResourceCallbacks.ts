@@ -26,6 +26,64 @@ export interface ResourceCallbacks {
 }
 
 /**
+ * Transform function that operates on a record
+ * Pure function - no side effects
+ */
+export type TransformFn = (record: RaRecord) => RaRecord;
+
+/**
+ * Validation function that checks if a record is valid
+ * Returns object with validity status and optional error messages
+ */
+export type ValidateFn = (
+  record: RaRecord
+) => { valid: boolean; errors?: string[] };
+
+/**
+ * Transform with metadata for registry and composition
+ * Enables discovery and debugging of transform pipelines
+ */
+export interface Transform {
+  /** Unique identifier for the transform */
+  name: string;
+  /** Human-readable description of what this transform does */
+  description: string;
+  /** The transformation function to apply */
+  apply: TransformFn;
+  /** Optional validation function to run before/after transform */
+  validate?: ValidateFn;
+}
+
+/**
+ * Type that accepts either a raw transform function or a Transform object
+ * Allows inline simple transforms and reusable structured transforms
+ */
+export type TransformInput = TransformFn | Transform;
+
+/**
+ * Composition strategy for multiple transforms
+ * - sequential: Apply each transform in order (default)
+ * - parallel: Apply all transforms independently (not yet implemented)
+ * - conditional: Apply transforms based on conditions (future)
+ */
+export type CompositionStrategy = "sequential" | "parallel" | "conditional";
+
+/**
+ * Configuration for soft-delete behavior
+ * Replaces boolean flag with detailed, configurable options
+ */
+export interface SoftDeleteConfig {
+  /** Enable soft delete functionality */
+  enabled: boolean;
+  /** Database field name that stores deletion timestamp */
+  field: string;
+  /** Filter out deleted records in getList by default */
+  filterOutDeleted: boolean;
+  /** Value to set when restoring a soft-deleted record (usually null) */
+  restoreValue: null | unknown;
+}
+
+/**
  * Configuration options for creating resource callbacks
  */
 export interface ResourceCallbacksConfig {
@@ -33,12 +91,24 @@ export interface ResourceCallbacksConfig {
   resource: string;
   /** Fields to strip before save (computed/view fields) */
   computedFields?: readonly string[];
-  /** Whether resource supports soft delete */
+  /** Whether resource supports soft delete (legacy - use softDeleteConfig instead) */
   supportsSoftDelete?: boolean;
-  /** Custom afterRead transformation */
+  /** Soft delete configuration (replaces supportsSoftDelete boolean) */
+  softDeleteConfig?: Partial<SoftDeleteConfig>;
+  /** Custom afterRead transformation (legacy - use readTransforms instead) */
   afterReadTransform?: (record: RaRecord) => RaRecord;
   /** Default values to merge on create */
   createDefaults?: Record<string, unknown>;
+  /** Read transforms: applied after data is fetched from database */
+  readTransforms?: TransformInput[];
+  /** Write transforms: applied before data is saved to database */
+  writeTransforms?: TransformInput[];
+  /** Delete transforms: applied before record is deleted */
+  deleteTransforms?: TransformInput[];
+  /** Strategy for composing multiple transforms */
+  compositionStrategy?: CompositionStrategy;
+  /** Error handling strategy for transforms */
+  onTransformError?: "throw" | "log" | "ignore";
 }
 
 /**
