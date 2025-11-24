@@ -7,8 +7,9 @@
  * Key behaviors:
  * 1. Soft delete - Sets deleted_at instead of hard delete
  * 2. JSONB normalization - Ensures email/phone/tags are always arrays
- * 3. Filter cleaning - Adds soft delete filter by default
- * 4. Data transformation - Strips computed fields before save
+ * 3. Name field computation - Combines first_name + last_name → name (required by DB NOT NULL constraint)
+ * 4. Filter cleaning - Adds soft delete filter by default
+ * 5. Data transformation - Strips computed fields before save
  *
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
  */
@@ -43,6 +44,42 @@ export const JSONB_ARRAY_FIELDS = ["email", "phone", "tags"] as const;
 export { normalizeJsonbArrays } from "./commonTransforms";
 
 /**
+ * Compute name field from first_name and last_name
+ *
+ * Required by database NOT NULL constraint on contacts.name.
+ * The database schema requires a name field, but the UI form captures
+ * first_name and last_name separately for better UX.
+ *
+ * @param data - Contact data (partial for updates, full for creates)
+ * @returns Data with computed name field
+ *
+ * @example
+ * ```typescript
+ * computeNameField({ first_name: "John", last_name: "Doe" })
+ * // Returns: { first_name: "John", last_name: "Doe", name: "John Doe" }
+ *
+ * computeNameField({ first_name: "John" })
+ * // Returns: { first_name: "John", name: "John" }
+ *
+ * computeNameField({ last_name: "Doe" })
+ * // Returns: { last_name: "Doe", name: "Doe" }
+ * ```
+ */
+export function computeNameField(data: Partial<RaRecord>): Partial<RaRecord> {
+  // Only compute if first_name or last_name is present in the data
+  // This allows partial updates that don't touch these fields to pass through
+  if (data.first_name !== undefined || data.last_name !== undefined) {
+    const firstName = data.first_name || "";
+    const lastName = data.last_name || "";
+    return {
+      ...data,
+      name: `${firstName} ${lastName}`.trim(),
+    };
+  }
+  return data;
+}
+
+/**
  * Contacts lifecycle callbacks for React Admin withLifecycleCallbacks
  *
  * Usage:
@@ -60,6 +97,7 @@ export const contactsCallbacks: ResourceCallbacks = createResourceCallbacks({
   supportsSoftDelete: true,
   computedFields: COMPUTED_FIELDS,
   afterReadTransform: normalizeJsonbArrays,
+  writeTransforms: [computeNameField],
 });
 
 /**
