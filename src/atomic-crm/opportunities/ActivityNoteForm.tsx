@@ -15,6 +15,7 @@ import {
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import {
   activityNoteFormSchema,
+  activitiesSchema,
   INTERACTION_TYPE_OPTIONS,
   type ActivityNoteFormData,
 } from "../validation/activities";
@@ -78,6 +79,10 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
   const notify = useNotify();
   const { opportunityStages } = useConfigurationContext();
 
+  // Extract form defaults from schema per Constitution #5
+  // activitiesSchema provides defaults for activity_date and type
+  const schemaDefaults = activitiesSchema.partial().parse({});
+
   const {
     control,
     handleSubmit,
@@ -87,11 +92,12 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
   } = useForm<ActivityNoteFormData>({
     resolver: zodResolver(activityNoteFormSchema),
     defaultValues: {
-      activity_date: new Date(),
-      type: "email",
-      contact_id: null,
-      stage: opportunity.stage,
-      subject: "",
+      // Convert ISO date string from schema to Date object for activityNoteFormSchema
+      activity_date: new Date(schemaDefaults.activity_date!),
+      type: schemaDefaults.type!, // Schema default: "call"
+      contact_id: null, // Optional field, no default in schema
+      stage: opportunity.stage, // Derived from opportunity, not schema
+      subject: "", // Required field, intentionally empty for user input
     },
   });
 
