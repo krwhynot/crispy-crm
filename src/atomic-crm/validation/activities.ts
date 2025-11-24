@@ -24,6 +24,7 @@ export const interactionTypeSchema = z.enum([
   "contract_review",
   "check_in",
   "social",
+  "note", // Added for Quick Logger note activities
 ]);
 
 // Sentiment enum
