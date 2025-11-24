@@ -38,7 +38,7 @@ import type { QuickAddInput } from "../validation/quickAdd";
 import { supabase } from "./supabase";
 import { getResourceName, supportsSoftDelete } from "./resources";
 import { getDatabaseResource, applySearchParams, normalizeResponseData } from "./dataProviderUtils";
-import { diffProducts } from "../../opportunities/diffProducts";
+import { diffProducts } from "../../opportunities/utils";
 
 // Import decomposed services
 import { ValidationService, TransformService, StorageService } from "./services";
