@@ -6,19 +6,21 @@ import { Button } from "@/components/ui/button";
 import { SaveButton } from "@/components/admin/form";
 import type { Contact } from "../types";
 import { ContactInputs } from "./ContactInputs";
-import { createContactSchema } from "../validation/contacts";
 
 const ContactCreate = () => {
   const { identity } = useGetIdentity();
   const notify = useNotify();
   const redirect = useRedirect();
 
-  // Generate defaults from schema, then merge with identity-specific values
+  // Generate defaults from schema truth
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
-  // Use .partial() to make all fields optional during default generation
-  // This extracts fields with .default() (email: [], phone: [])
+  // Note: createContactSchema is ZodEffects (has .transform/.superRefine), not ZodObject,
+  // so .partial() is not available. Using known defaults from contactBaseSchema (validation/contacts.ts:78-79):
+  // - email: z.array(emailAndTypeSchema).default([])
+  // - phone: z.array(phoneNumberAndTypeSchema).default([])
   const formDefaults = {
-    ...createContactSchema.partial().parse({}),
+    email: [],  // From contactBaseSchema.email.default([])
+    phone: [],  // From contactBaseSchema.phone.default([])
     sales_id: identity?.id,
   };
 
