@@ -6,14 +6,14 @@ Validation patterns ensure data integrity at API boundaries using Zod schemas. T
 
 ## Core Pattern
 
-### Single Source of Truth
+### Centralized Validation (Composable Entry Point)
 
 **All validation happens at API boundary only - never in components or forms.**
 
 ```typescript
 import { z } from "zod";
 
-// 1. Define schema (single source of truth)
+// 1. Define schema (centralized validation at API boundary)
 export const entitySchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email"),
@@ -35,7 +35,7 @@ export const getEntityDefaults = () => entitySchema.partial().parse({
 ```
 
 **Why this works:**
-- Schema is single source for validation AND types AND defaults
+- Schema is centralized source for validation AND types AND defaults
 - Form state derives from schema via `.partial().parse({})`
 - No duplication between validation rules and TypeScript types
 - Changes to schema automatically update types and defaults

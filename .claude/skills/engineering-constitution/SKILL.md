@@ -391,7 +391,7 @@ Comprehensive patterns with real code examples from Atomic CRM:
 
 ### Core Patterns
 - [error-handling.md](resources/error-handling.md) - Fail-fast patterns, Promise.allSettled, error logging
-- [validation-patterns.md](resources/validation-patterns.md) - Zod schemas, single source of truth, error formatting
+- [validation-patterns.md](resources/validation-patterns.md) - Zod schemas, centralized validation, error formatting
 - [form-state-management.md](resources/form-state-management.md) - Schema-driven forms, ArrayInput, defaults
 - [database-patterns.md](resources/database-patterns.md) - GRANT + RLS, migrations, helper functions
 

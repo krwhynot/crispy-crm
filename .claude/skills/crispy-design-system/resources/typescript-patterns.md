@@ -10,7 +10,7 @@ TypeScript should **enhance** developer experience, not hinder it. Use types to 
 
 **Golden Rules:**
 1. **Prefer `interface` over `type`** for object shapes (extendable, better error messages)
-2. **Infer types from Zod schemas** (single source of truth for validation + types)
+2. **Infer types from Zod schemas** (centralized validation + type inference)
 3. **Use generics sparingly** (only when type varies based on input)
 4. **Leverage utility types** (Pick, Omit, Partial avoid duplication)
 5. **Type database schemas** with generated types from Supabase
@@ -97,7 +97,7 @@ export type Company = Organization;
 
 ## Zod Schema Inference
 
-Zod schemas serve as **single source of truth** for both validation and TypeScript types. Define schema once, infer type automatically.
+Zod schemas serve as the **centralized source** for both validation and TypeScript types. Define schema once, infer type automatically.
 
 ### Pattern 1: Basic Schema with Type Inference
 

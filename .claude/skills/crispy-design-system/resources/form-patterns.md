@@ -59,7 +59,7 @@ export const ContactCreate = () => {
 
 ## Core Principle: Schema-Driven Forms
 
-Forms derive validation rules AND default values from **Zod schemas** (single source of truth). This eliminates duplication between validation logic and TypeScript types, ensuring forms stay in sync with business rules.
+Forms derive validation rules AND default values from **Zod schemas** (centralized at API boundary). This eliminates duplication between validation logic and TypeScript types, ensuring forms stay in sync with business rules.
 
 **Golden Rule:** `zodSchema.partial().parse({})` provides form defaults
 

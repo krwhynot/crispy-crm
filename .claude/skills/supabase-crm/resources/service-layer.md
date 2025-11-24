@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Service classes orchestrate business logic and abstract data access through the DataProvider pattern. This follows Engineering Constitution principle #2 (Single Source of Truth) and principle #14 (Service Layer orchestration).
+Service classes orchestrate business logic and abstract data access through the DataProvider pattern. This follows Engineering Constitution principle #2 (Single Composable Entry Point) and principle #14 (Service Layer orchestration).
 
 ## Core Pattern
 
@@ -11,7 +11,7 @@ Service classes orchestrate business logic and abstract data access through the 
 **All data access goes through DataProvider - never direct Supabase client access.**
 
 ```typescript
-// ✅ GOOD - Uses DataProvider (single source of truth)
+// ✅ GOOD - Uses DataProvider (composable entry point)
 export class OrganizationService {
   constructor(private dataProvider: DataProvider) {}
 
