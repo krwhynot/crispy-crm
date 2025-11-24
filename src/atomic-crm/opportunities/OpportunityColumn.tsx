@@ -6,7 +6,7 @@ import {
   getOpportunityStageLabel,
   getOpportunityStageColor,
   getOpportunityStageElevation,
-} from "./stageConstants";
+} from "./constants/stageConstants";
 import { useStageMetrics, STUCK_THRESHOLD_DAYS } from "./hooks/useStageMetrics";
 import { QuickAddOpportunity } from "./QuickAddOpportunity";
 

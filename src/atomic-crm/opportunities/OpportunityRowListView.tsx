@@ -10,7 +10,7 @@ import { EditButton } from "@/components/admin/edit-button";
 import { formatDistance, format } from "date-fns";
 import { Building2, X } from "lucide-react";
 import type { Opportunity } from "../types";
-import { getOpportunityStageLabel, getOpportunityStageColor } from "./stageConstants";
+import { getOpportunityStageLabel, getOpportunityStageColor } from "./constants/stageConstants";
 import { BulkActionsToolbar } from "./BulkActionsToolbar";
 
 interface OpportunityRowListViewProps {

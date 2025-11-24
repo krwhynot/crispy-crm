@@ -8,7 +8,7 @@ import type {
   OPPORTUNITY_NOTE_CREATED,
 } from "./consts";
 import type { Organization } from "./validation/organizations";
-import type { OpportunityStageValue } from "./opportunities/stageConstants";
+import type { OpportunityStageValue } from "./opportunities/constants/stageConstants";
 import type { Database } from "@/types/database.generated";
 
 // Type definitions for enhanced CRM features

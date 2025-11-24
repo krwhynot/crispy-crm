@@ -23,7 +23,7 @@ import {
   OPPORTUNITY_STAGES,
   getOpportunityStageLabel,
   getOpportunityStageColor,
-} from "./stageConstants";
+} from "./constants/stageConstants";
 import { useExportOpportunities } from "./hooks/useExportOpportunities";
 
 type BulkAction = "change_stage" | "change_status" | "assign_owner" | null;

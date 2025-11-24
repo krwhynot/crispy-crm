@@ -1,5 +1,5 @@
 import { SelectInput } from "@/components/admin/select-input";
-import { LEAD_SOURCE_CHOICES } from "./LeadSourceInput.constants";
+import { LEAD_SOURCE_CHOICES } from "./constants/LeadSourceInput.constants";
 
 export const LeadSourceInput = () => {
   return (

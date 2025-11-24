@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from "react";
-import { OPPORTUNITY_STAGES } from "./stageConstants";
+import { OPPORTUNITY_STAGES } from "./constants/stageConstants";
 import type { OpportunityStageValue } from "../types";
 
 interface ColumnCustomizationMenuProps {

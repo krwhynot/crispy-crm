@@ -1,5 +1,5 @@
 import { SelectInput } from "@/components/admin/select-input";
-import { OPPORTUNITY_STAGE_CHOICES } from "./stageConstants";
+import { OPPORTUNITY_STAGE_CHOICES } from "./constants/stageConstants";
 import { LeadSourceInput } from "./LeadSourceInput";
 
 export const OpportunityClassificationTab = () => {
