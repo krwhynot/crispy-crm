@@ -14,6 +14,7 @@
  */
 
 import type { DataProvider, RaRecord, GetListParams, DeleteParams } from "ra-core";
+import type { ResourceCallbacks } from "./createResourceCallbacks";
 
 /**
  * Computed fields that should be stripped before saving to database
@@ -32,17 +33,6 @@ const COMPUTED_FIELDS = [
  * Database may return null/undefined but frontend expects arrays
  */
 const JSONB_ARRAY_FIELDS = ["email", "phone", "tags"] as const;
-
-/**
- * Lifecycle callback type for React Admin withLifecycleCallbacks
- */
-interface ResourceCallbacks {
-  resource: string;
-  beforeDelete?: (params: DeleteParams, dataProvider: DataProvider) => Promise<DeleteParams & { meta?: { skipDelete?: boolean } }>;
-  afterRead?: (record: RaRecord, dataProvider: DataProvider) => Promise<RaRecord>;
-  beforeGetList?: (params: GetListParams, dataProvider: DataProvider) => Promise<GetListParams>;
-  beforeSave?: (data: Partial<RaRecord>, dataProvider: DataProvider, resource: string) => Promise<Partial<RaRecord>>;
-}
 
 /**
  * Normalize JSONB array fields to ensure they are always arrays
