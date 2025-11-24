@@ -13,7 +13,7 @@ import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { TaskListFilter } from "./TaskListFilter";
 import { TaskSlideOver } from "./TaskSlideOver";
 import { SaleName } from "../sales/SaleName";
-import { contactOptionText } from "../misc/ContactOption";
+import { contactOptionText } from "../contacts/ContactOption";
 import type { Task, Opportunity, Organization } from "../types";
 
 /**

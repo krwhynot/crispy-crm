@@ -5,7 +5,7 @@ import { TextInput } from "@/components/admin/text-input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AsideSection } from "../misc/AsideSection";
+import { AsideSection } from "@/components/ui";
 
 interface Product {
   id: number;

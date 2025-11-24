@@ -1,4 +1,9 @@
-// If you want to add more domains to the list, you can do so by adding them to the DOMAINS_NOT_SUPPORTING_FAVICON array.
+/**
+ * Email domains that don't support favicon fetching
+ *
+ * These are typically webmail providers whose favicons don't represent
+ * the user's organization. Used to skip favicon lookup for avatar generation.
+ */
 export const DOMAINS_NOT_SUPPORTING_FAVICON = [
   "gmail.com",
   "yahoo.com",

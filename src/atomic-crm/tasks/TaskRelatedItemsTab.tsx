@@ -6,7 +6,7 @@ import { AsideSection } from "../misc/AsideSection";
 import { SaleName } from "../sales/SaleName";
 import { Building2, UserCircle, Target } from "lucide-react";
 import type { Task } from "../types";
-import { contactOptionText } from "../misc/ContactOption";
+import { contactOptionText } from "../contacts/ContactOption";
 
 interface TaskRelatedItemsTabProps {
   record: Task;

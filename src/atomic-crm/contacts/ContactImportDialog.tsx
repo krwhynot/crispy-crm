@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Loader2, CheckCircle2, Users } from "lucide-react";
 import { Form, useRefresh } from "ra-core";
 import { Link } from "react-router-dom";
-import { usePapaParse } from "../misc/usePapaParse";
+import { usePapaParse } from "./usePapaParse";
 import type { ContactImportSchema, ImportResult, ImportError } from "./useContactImport";
 import { useContactImport } from "./useContactImport";
 import type { PreviewData, DataQualityDecisions } from "./ContactImportPreview";

@@ -2,7 +2,7 @@ import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { useConfigurationContext } from "../root/ConfigurationContext";
-import { contactOptionText } from "../misc/ContactOption";
+import { contactOptionText } from "../contacts/ContactOption";
 
 export const TaskDetailsTab = () => {
   const { taskTypes } = useConfigurationContext();

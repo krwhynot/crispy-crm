@@ -1,5 +1,5 @@
 import { CreateButton } from "@/components/admin/create-button";
-import useAppBarHeight from "../misc/useAppBarHeight";
+import useAppBarHeight from "../hooks/useAppBarHeight";
 
 export const OrganizationEmpty = () => {
   const appbarHeight = useAppBarHeight();
