@@ -111,19 +111,12 @@ export class OpportunitiesService {
         productsToCreate: productsToSync,
       });
 
-      const { data: rpcData, error } = await supabase.rpc("sync_opportunity_with_products", {
-        opportunity_data: opportunityData,
-        products_to_create: productsToSync,
-        products_to_update: [],
-        product_ids_to_delete: [],
-      });
-
-      if (error) {
-        console.error("[OpportunitiesService] RPC create failed:", error);
-        throw new Error(`Create opportunity with products failed: ${error.message}`);
-      }
-
-      const opportunity = this.unwrapRpcResponse(rpcData);
+      const opportunity = await this.rpcSyncOpportunity(
+        opportunityData,
+        productsToSync,
+        [],
+        []
+      );
       console.log("[OpportunitiesService] Opportunity created successfully with products", opportunity);
       return opportunity;
     } catch (error: any) {
