@@ -1,16 +1,10 @@
 import * as React from "react";
-import type { ResourceProps } from "react-admin";
-import { Activity } from "lucide-react";
+import type { Activity } from "../types";
 
 const ActivityCreate = React.lazy(() => import("./ActivityCreate"));
 
-const resource: ResourceProps = {
-  name: "activities",
-  icon: Activity,
+export default {
   create: ActivityCreate,
-  options: {
-    label: "Activities",
-  },
+  recordRepresentation: (record: Activity) =>
+    `${record?.type || "Activity"} - ${record?.date ? new Date(record.date).toLocaleDateString() : "Unknown date"}`,
 };
-
-export default resource;
