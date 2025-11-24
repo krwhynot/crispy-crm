@@ -170,19 +170,12 @@ export class OpportunitiesService {
       });
 
       // Call RPC function for atomic update with products
-      const { data: rpcData, error } = await supabase.rpc("sync_opportunity_with_products", {
-        opportunity_data: opportunityData,
-        products_to_create: creates,
-        products_to_update: updates,
-        product_ids_to_delete: deletes,
-      });
-
-      if (error) {
-        console.error("[OpportunitiesService] RPC update failed:", error);
-        throw new Error(`Update opportunity with products failed: ${error.message}`);
-      }
-
-      const opportunity = this.unwrapRpcResponse(rpcData);
+      const opportunity = await this.rpcSyncOpportunity(
+        opportunityData,
+        creates,
+        updates,
+        deletes
+      );
       console.log("[OpportunitiesService] Opportunity updated successfully with product sync", opportunity);
       return opportunity;
     } catch (error: any) {
@@ -192,6 +185,38 @@ export class OpportunitiesService {
       });
       throw error;
     }
+  }
+
+  /**
+   * Call sync_opportunity_with_products RPC function
+   * Handles RPC call, error checking, and response unwrapping
+   * Used by both create and update operations to eliminate code duplication
+   *
+   * @param opportunityData Opportunity fields to sync to database
+   * @param productsToCreate Products to add
+   * @param productsToUpdate Products to modify
+   * @param productIdsToDelete Product IDs to remove
+   * @returns Promise resolving to the synced opportunity
+   * @throws Error if RPC call fails
+   */
+  private async rpcSyncOpportunity(
+    opportunityData: any,
+    productsToCreate: Product[],
+    productsToUpdate: Product[],
+    productIdsToDelete: (string | number)[]
+  ): Promise<Opportunity> {
+    const { data: rpcData, error } = await supabase.rpc("sync_opportunity_with_products", {
+      opportunity_data: opportunityData,
+      products_to_create: productsToCreate,
+      products_to_update: productsToUpdate,
+      product_ids_to_delete: productIdsToDelete,
+    });
+
+    if (error) {
+      throw new Error(`Sync opportunity with products failed: ${error.message}`);
+    }
+
+    return this.unwrapRpcResponse(rpcData);
   }
 
   /**
