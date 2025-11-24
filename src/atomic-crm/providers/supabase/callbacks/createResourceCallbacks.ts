@@ -112,6 +112,65 @@ export interface ResourceCallbacksConfig {
 }
 
 /**
+ * Helper: Check if a value is a Transform object vs a TransformFn
+ */
+function isTransform(value: unknown): value is Transform {
+  return (
+    typeof value === "object" &&
+    value !== null &&
+    "apply" in value &&
+    typeof (value as any).apply === "function" &&
+    "name" in value &&
+    typeof (value as any).name === "string"
+  );
+}
+
+/**
+ * Compose multiple transforms into a single function
+ * Handles both Transform objects and raw functions
+ * Returns a single function that applies all transforms in order
+ *
+ * @param transforms - Array of transforms to compose (can be functions or Transform objects)
+ * @param strategy - How to compose the transforms (default: sequential)
+ * @param errorHandler - Callback when a transform throws an error
+ * @returns A single function that applies all transforms
+ */
+function composeTransforms(
+  transforms: TransformInput[],
+  strategy: CompositionStrategy = "sequential",
+  errorHandler?: (transform: TransformInput, error: Error) => void
+): TransformFn {
+  if (transforms.length === 0) {
+    return (record) => record;
+  }
+
+  if (strategy === "sequential") {
+    return (record: RaRecord): RaRecord => {
+      let result = record;
+
+      for (const transform of transforms) {
+        try {
+          const fn = isTransform(transform) ? transform.apply : transform;
+          result = fn(result);
+        } catch (error) {
+          const err = error instanceof Error ? error : new Error(String(error));
+          if (errorHandler) {
+            errorHandler(transform, err);
+          } else {
+            throw err;
+          }
+        }
+      }
+
+      return result;
+    };
+  }
+
+  // Other strategies (parallel, conditional) not yet implemented
+  throw new Error(`Transform composition strategy "${strategy}" not yet implemented`);
+}
+
+/**
  * Strip computed fields from data
  */
 function stripFields(data: Partial<RaRecord>, fields: readonly string[]): Partial<RaRecord> {
@@ -136,29 +195,81 @@ function stripFields(data: Partial<RaRecord>, fields: readonly string[]): Partia
  *   computedFields: ['assignee_name', 'opportunity_name'],
  * });
  * ```
+ *
+ * @example
+ * ```typescript
+ * // New: Using read transforms
+ * export const contactsCallbacks = createResourceCallbacks({
+ *   resource: 'contacts',
+ *   readTransforms: [
+ *     commonTransforms.normalizeJsonbArrays,
+ *     (record) => ({ ...record, email: record.email || [] }),
+ *   ],
+ *   softDeleteConfig: { enabled: true },
+ * });
+ * ```
  */
 export function createResourceCallbacks(config: ResourceCallbacksConfig): ResourceCallbacks {
   const {
     resource,
     computedFields = [],
     supportsSoftDelete = true,
+    softDeleteConfig: userSoftDeleteConfig,
     afterReadTransform,
     createDefaults = {},
+    readTransforms = [],
+    writeTransforms = [],
+    deleteTransforms = [],
+    compositionStrategy = "sequential",
+    onTransformError = "log",
   } = config;
+
+  // Backward compatibility: convert legacy supportsSoftDelete to new format
+  const softDeleteConfig: SoftDeleteConfig = {
+    enabled: userSoftDeleteConfig?.enabled ?? supportsSoftDelete,
+    field: userSoftDeleteConfig?.field ?? "deleted_at",
+    filterOutDeleted: userSoftDeleteConfig?.filterOutDeleted ?? true,
+    restoreValue: userSoftDeleteConfig?.restoreValue ?? null,
+  };
+
+  // Error handler for transforms
+  const handleTransformError = (transform: TransformInput, error: Error) => {
+    const name = isTransform(transform) ? transform.name : "<anonymous>";
+    const message = `Transform error in "${name}": ${error.message}`;
+
+    switch (onTransformError) {
+      case "throw":
+        throw new Error(message);
+      case "log":
+        console.error(message, error);
+        break;
+      case "ignore":
+        // Silently ignore
+        break;
+    }
+  };
+
+  // Compose transform pipelines
+  const readPipeline = composeTransforms(readTransforms, compositionStrategy, handleTransformError);
+  const writePipeline = composeTransforms(writeTransforms, compositionStrategy, handleTransformError);
+  const deletePipeline = composeTransforms(deleteTransforms, compositionStrategy, handleTransformError);
 
   const callbacks: ResourceCallbacks = {
     resource,
   };
 
-  // Soft delete handler
-  if (supportsSoftDelete) {
+  // === Soft Delete Handling ===
+  if (softDeleteConfig.enabled) {
     callbacks.beforeDelete = async (params, dataProvider) => {
+      // Apply delete transforms first
+      const transformed = deletePipeline(params.previousData || {});
+
       const deletedAt = new Date().toISOString();
 
       await dataProvider.update(resource, {
         id: params.id,
-        data: { deleted_at: deletedAt },
-        previousData: params.previousData,
+        data: { [softDeleteConfig.field]: deletedAt },
+        previousData: transformed,
       });
 
       return {
@@ -170,7 +281,9 @@ export function createResourceCallbacks(config: ResourceCallbacksConfig): Resour
     // Add soft delete filter to getList
     callbacks.beforeGetList = async (params, _dataProvider) => {
       const { includeDeleted, ...otherFilters } = params.filter || {};
-      const softDeleteFilter = includeDeleted ? {} : { "deleted_at@is": null };
+      const softDeleteFilter = softDeleteConfig.filterOutDeleted && !includeDeleted
+        ? { [`${softDeleteConfig.field}@is`]: null }
+        : {};
 
       return {
         ...params,
@@ -182,12 +295,18 @@ export function createResourceCallbacks(config: ResourceCallbacksConfig): Resour
     };
   }
 
-  // Data transformation before save
-  if (computedFields.length > 0 || Object.keys(createDefaults).length > 0) {
+  // === Before Save: Write Transforms → Computed Fields → Create Defaults ===
+  if (writeTransforms.length > 0 || computedFields.length > 0 || Object.keys(createDefaults).length > 0) {
     callbacks.beforeSave = async (data, _dataProvider, _resource) => {
-      let processed = computedFields.length > 0 ? stripFields(data, computedFields) : { ...data };
+      // 1. Apply write transform pipeline
+      let processed = writePipeline(data);
 
-      // Merge create defaults if no id (create operation)
+      // 2. Strip computed fields (legacy support)
+      if (computedFields.length > 0) {
+        processed = stripFields(processed, computedFields);
+      }
+
+      // 3. Merge create defaults if create operation
       if (!data.id && Object.keys(createDefaults).length > 0) {
         processed = { ...createDefaults, ...processed };
       }
@@ -196,10 +315,18 @@ export function createResourceCallbacks(config: ResourceCallbacksConfig): Resour
     };
   }
 
-  // Custom afterRead transformation
-  if (afterReadTransform) {
+  // === After Read: Read Transforms → Custom Transform ===
+  if (readTransforms.length > 0 || afterReadTransform) {
     callbacks.afterRead = async (record, _dataProvider) => {
-      return afterReadTransform(record);
+      // 1. Apply read transform pipeline
+      let result = readPipeline(record);
+
+      // 2. Apply legacy afterReadTransform if provided
+      if (afterReadTransform) {
+        result = afterReadTransform(result);
+      }
+
+      return result;
     };
   }
 
@@ -209,4 +336,12 @@ export function createResourceCallbacks(config: ResourceCallbacksConfig): Resour
 /**
  * Export types for external use
  */
-export type { ResourceCallbacksConfig as CallbacksConfig };
+export type {
+  ResourceCallbacksConfig as CallbacksConfig,
+  TransformFn,
+  ValidateFn,
+  Transform,
+  TransformInput,
+  CompositionStrategy,
+  SoftDeleteConfig,
+};
