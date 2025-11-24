@@ -50,8 +50,8 @@ import type {
   ContactOrganization,
   OpportunityContact,
   Activity,
-  QuickAddInput,
 } from "../../../types";
+import type { QuickAddInput } from "../../../validation/quickAdd";
 
 /**
  * Configuration for extending DataProvider with custom methods
@@ -178,12 +178,12 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
      *
      * @param id - Sale record ID
      * @param data - Partial sales data (password excluded)
-     * @returns Updated sale record
+     * @returns Updated partial sales data
      */
     salesUpdate: async (
       id: Identifier,
       data: Partial<Omit<SalesFormData, "password">>
-    ): Promise<{ data: Sale }> => {
+    ): Promise<Partial<Omit<SalesFormData, "password">>> => {
       return services.sales.salesUpdate(id, data);
     },
 
@@ -455,7 +455,8 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
     removeOpportunityContactViaJunction: async (
       junctionId: Identifier
     ): Promise<{ data: { id: string } }> => {
-      return services.junctions.removeOpportunityContactViaJunction(junctionId);
+      const result = await services.junctions.removeOpportunityContactViaJunctionId(junctionId);
+      return { data: { id: String(result.data.id) } };
     },
 
     // ========================================================================
@@ -697,8 +698,15 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
         console.log(`[DataProvider Edge] Invoking ${functionName}`, options);
 
         // Validate body params if schema exists for this Edge Function
-        if (functionName in edgeFunctionSchemas && processedOptions.body) {
-          const schema = edgeFunctionSchemas[functionName as EdgeFunctionName];
+        // Note: edgeFunctionSchemas is currently empty, validation will be added when Edge Functions are implemented
+        const edgeFunctionNames = Object.keys(edgeFunctionSchemas);
+        if (
+          edgeFunctionNames.length > 0 &&
+          edgeFunctionNames.includes(functionName) &&
+          processedOptions.body
+        ) {
+          // Safe to access schema since we've verified the function name exists
+          const schema = edgeFunctionSchemas[functionName as EdgeFunctionName] as any;
           const validationResult = schema.safeParse(processedOptions.body);
 
           if (!validationResult.success) {

@@ -16,5 +16,5 @@ export type {
   BoothVisitorResult,
 } from "./types";
 
-// Extension function will be exported here after implementation
-// export { extendWithCustomMethods } from "./customMethodsExtension";
+// Export extension function
+export { extendWithCustomMethods, type ExtensionConfig } from "./customMethodsExtension";
