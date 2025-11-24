@@ -6,6 +6,7 @@ import { FormToolbar } from "@/components/admin/simple-form";
 import { useLocation } from "react-router-dom";
 
 import { OrganizationInputs } from "./OrganizationInputs";
+import { organizationSchema } from "../validation/organizations";
 import type { Database } from "@/types/database.generated";
 
 type Segment = Database["public"]["Tables"]["segments"]["Row"];
@@ -31,7 +32,12 @@ const OrganizationCreate = () => {
   // Read parent_organization_id from router state (set by "Add Branch" button)
   const parentOrgId = (location.state as any)?.record?.parent_organization_id;
 
-  const defaultValues = {
+  // Generate defaults from schema, then merge with runtime values
+  // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
+  // Use .partial() to make all fields optional during default generation
+  // This extracts fields with .default() (organization_type, priority)
+  const formDefaults = {
+    ...organizationSchema.partial().parse({}),
     sales_id: identity?.id,
     segment_id: unknownSegmentId ?? undefined,
     ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch
@@ -51,7 +57,7 @@ const OrganizationCreate = () => {
     >
       <div className="mt-2 flex lg:mr-72">
         <div className="flex-1">
-          <Form key={formKey} defaultValues={defaultValues}>
+          <Form key={formKey} defaultValues={formDefaults}>
             <Card>
               <CardContent>
                 <OrganizationInputs />
