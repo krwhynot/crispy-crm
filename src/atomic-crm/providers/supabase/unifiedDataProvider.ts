@@ -38,7 +38,6 @@ import type { QuickAddInput } from "../validation/quickAdd";
 import { supabase } from "./supabase";
 import { getResourceName, supportsSoftDelete } from "./resources";
 import { getDatabaseResource, applySearchParams, normalizeResponseData } from "./dataProviderUtils";
-import { diffProducts } from "../../opportunities/utils";
 
 // Import decomposed services
 import { ValidationService, TransformService, StorageService } from "./services";
@@ -573,46 +572,10 @@ export const unifiedDataProvider: DataProvider = {
         return { data: data[0] };
       }
 
-      // Special handling for opportunities
+      // Delegate opportunity creation to service (handles products sync)
       if (resource === "opportunities") {
-        // Handle products sync if present
-        if (processedData.products_to_sync) {
-          const products = processedData.products_to_sync;
-          delete processedData.products_to_sync;
-
-          // DEBUG: Log what we're sending to RPC
-          console.log("[RPC sync_opportunity_with_products] Calling with:", {
-            opportunity_data: processedData,
-            products_to_create: products,
-            products_to_update: [],
-            product_ids_to_delete: [],
-          });
-
-          // Call RPC function to create opportunity with products atomically
-          const { data, error } = await supabase.rpc("sync_opportunity_with_products", {
-            opportunity_data: processedData,
-            products_to_create: products,
-            products_to_update: [],
-            product_ids_to_delete: [],
-          });
-
-          if (error) {
-            console.error("[RPC sync_opportunity_with_products] Error:", error);
-            console.error("[RPC sync_opportunity_with_products] Error details:", {
-              message: error.message,
-              details: error.details,
-              hint: error.hint,
-              code: error.code,
-            });
-
-            // Use helper function for consistent error handling
-            handleRpcError(error);
-          }
-
-          console.log("[RPC sync_opportunity_with_products] Success:", data);
-          // Use helper function for consistent response formatting
-          return formatRpcResponse(data);
-        }
+        const result = await opportunitiesService.createWithProducts(processedData as any);
+        return { data: result as unknown as RecordType };
       }
 
       // Execute create
@@ -639,41 +602,15 @@ export const unifiedDataProvider: DataProvider = {
       // Validate and process data
       const processedData = await processForDatabase(resource, dataToProcess, "update");
 
-      // Special handling for opportunities
+      // Delegate opportunity update to service (handles products sync)
       if (resource === "opportunities") {
-        // Handle products sync if present
-        if (processedData.products_to_sync) {
-          // CRITICAL: Check previousData.products exists (Issue 0.1)
-          if (!params.previousData?.products) {
-            throw new Error(
-              "Cannot update products: previousData.products is missing. " +
-                "Ensure the form fetches the complete record with meta.select."
-            );
-          }
-
-          const formProducts = processedData.products_to_sync;
-          const originalProducts = params.previousData.products;
-          delete processedData.products_to_sync;
-
-          // Diff products to identify creates, updates, deletes
-          const { creates, updates, deletes } = diffProducts(originalProducts, formProducts);
-
-          // Call RPC function to update opportunity with products atomically
-          const { data, error } = await supabase.rpc("sync_opportunity_with_products", {
-            opportunity_data: { ...processedData, id: params.id },
-            products_to_create: creates,
-            products_to_update: updates,
-            product_ids_to_delete: deletes,
-          });
-
-          if (error) {
-            // Use helper function for consistent error handling
-            handleRpcError(error);
-          }
-
-          // Use helper function for consistent response formatting
-          return formatRpcResponse(data);
-        }
+        const previousProducts = params.previousData?.products || [];
+        const result = await opportunitiesService.updateWithProducts(
+          params.id,
+          processedData as any,
+          previousProducts
+        );
+        return { data: result as unknown as RecordType };
       }
 
       // Execute update
