@@ -5,7 +5,7 @@ import { useGetIdentity, useGetList } from "ra-core";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import type { Opportunity } from "../types";
-import { getOpportunityStageLabel } from "./stageConstants";
+import { getOpportunityStageLabel } from "./constants/stageConstants";
 
 export const OpportunityArchivedList = () => {
   const { identity } = useGetIdentity();

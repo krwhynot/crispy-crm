@@ -1,7 +1,7 @@
 import { useCallback } from "react";
 import { useNotify } from "ra-core";
 import type { Opportunity } from "../../types";
-import { getOpportunityStageLabel } from "../stageConstants";
+import { getOpportunityStageLabel } from "../constants/stageConstants";
 import { format } from "date-fns";
 
 export const useExportOpportunities = () => {

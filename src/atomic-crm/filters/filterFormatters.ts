@@ -1,5 +1,5 @@
-import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/stageConstants";
-import { priorityChoices } from "../opportunities/priorityChoices";
+import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/constants/stageConstants";
+import { priorityChoices } from "../opportunities/constants/priorityChoices";
 import type { FilterValues, FilterChipData, SingleFilterValue } from "./types";
 import { FILTER_KEYS } from "./types";
 

@@ -9,7 +9,7 @@ import { PipelineChart } from "../charts/PipelineChart";
 import { ActivityTrendChart } from "../charts/ActivityTrendChart";
 import { TopPrincipalsChart } from "../charts/TopPrincipalsChart";
 import { RepPerformanceChart } from "../charts/RepPerformanceChart";
-import { OPPORTUNITY_STAGE_CHOICES } from "../../opportunities/stageConstants";
+import { OPPORTUNITY_STAGE_CHOICES } from "../../opportunities/constants/stageConstants";
 import { format, subDays, startOfDay, eachDayOfInterval } from "date-fns";
 import "../charts/chartSetup";
 import type { Sale } from "../types";

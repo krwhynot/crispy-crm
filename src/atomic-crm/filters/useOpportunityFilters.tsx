@@ -3,7 +3,7 @@ import { SearchInput } from "@/components/admin/search-input";
 import { MultiSelectInput } from "@/components/admin/multi-select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
-import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/stageConstants";
+import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/constants/stageConstants";
 import { OnlyMineInput } from "../opportunities/OnlyMineInput";
 import { getInitialStageFilter } from "./opportunityStagePreferences";
 

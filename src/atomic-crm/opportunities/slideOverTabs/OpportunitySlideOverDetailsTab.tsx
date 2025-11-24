@@ -5,7 +5,7 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { OPPORTUNITY_STAGE_CHOICES } from "../stageConstants";
+import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
 import { LeadSourceInput } from "../LeadSourceInput";
 
 interface OpportunitySlideOverDetailsTabProps {

@@ -1,4 +1,4 @@
-import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/stageConstants";
+import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/constants/stageConstants";
 import { getStorageItem, setStorageItem } from "../utils/secureStorage";
 
 /**

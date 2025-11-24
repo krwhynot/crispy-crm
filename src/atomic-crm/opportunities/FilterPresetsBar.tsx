@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import type { LucideIcon } from "lucide-react";
 import { User, Calendar, AlertCircle, Flag, Trophy } from "lucide-react";
-import { getFilterPresets, type FilterPreset } from "./filterPresets";
+import { getFilterPresets, type FilterPreset } from "./constants/filterPresets";
 import type { Opportunity } from "../types";
 
 // Map icon names to lucide-react components

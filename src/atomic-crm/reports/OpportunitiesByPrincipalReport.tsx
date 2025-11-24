@@ -12,7 +12,7 @@ import { ChevronDown, ChevronRight, ExternalLink } from "lucide-react";
 import { MultiSelectInput } from "@/components/admin/multi-select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
-import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/stageConstants";
+import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/constants/stageConstants";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 import type { Opportunity, Sale } from "../types";
 
