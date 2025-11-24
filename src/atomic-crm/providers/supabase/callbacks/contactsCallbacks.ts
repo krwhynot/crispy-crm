@@ -10,11 +10,12 @@
  * 3. Name field computation - Combines first_name + last_name → name (required by DB NOT NULL constraint)
  * 4. Filter cleaning - Adds soft delete filter by default
  * 5. Data transformation - Strips computed fields before save
+ * 6. Search transformation - Transforms q filter into ILIKE search on name fields
  *
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
  */
 
-import type { RaRecord } from "ra-core";
+import type { RaRecord, GetListParams, DataProvider } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
 import { normalizeJsonbArrays } from "./commonTransforms";
 
