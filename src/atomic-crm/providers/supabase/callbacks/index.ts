@@ -7,11 +7,11 @@
  * Usage:
  * ```typescript
  * import { withLifecycleCallbacks } from 'react-admin';
- * import { contactsCallbacks, opportunitiesCallbacks } from './callbacks';
+ * import { contactsCallbacks, organizationsCallbacks } from './callbacks';
  *
  * const dataProvider = withLifecycleCallbacks(baseProvider, [
  *   contactsCallbacks,
- *   opportunitiesCallbacks,
+ *   organizationsCallbacks,
  *   // ... other resource callbacks
  * ]);
  * ```
@@ -19,10 +19,18 @@
  * Engineering Constitution: Each callback module handles a single resource
  */
 
+// Contacts callbacks
 export { contactsCallbacks } from "./contactsCallbacks";
 export {
   normalizeJsonbArrays,
-  stripComputedFields,
-  COMPUTED_FIELDS,
+  stripComputedFields as stripContactComputedFields,
+  COMPUTED_FIELDS as CONTACT_COMPUTED_FIELDS,
   JSONB_ARRAY_FIELDS,
 } from "./contactsCallbacks";
+
+// Organizations callbacks
+export { organizationsCallbacks } from "./organizationsCallbacks";
+export {
+  stripComputedFields as stripOrgComputedFields,
+  COMPUTED_FIELDS as ORG_COMPUTED_FIELDS,
+} from "./organizationsCallbacks";
