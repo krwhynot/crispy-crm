@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { SaveButton } from "@/components/admin/form";
 import type { Contact } from "../types";
 import { ContactInputs } from "./ContactInputs";
-import { contactSchema } from "../validation/contacts";
+import { createContactSchema } from "../validation/contacts";
 
 const ContactCreate = () => {
   const { identity } = useGetIdentity();
@@ -18,7 +18,7 @@ const ContactCreate = () => {
   // Use .partial() to make all fields optional during default generation
   // This extracts fields with .default() (email: [], phone: [])
   const formDefaults = {
-    ...contactSchema.partial().parse({}),
+    ...createContactSchema.partial().parse({}),
     sales_id: identity?.id,
   };
 
