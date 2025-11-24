@@ -14,7 +14,7 @@ import { TextField } from "@/components/admin/text-field";
 import { DateField } from "@/components/admin/date-field";
 import { EmailField } from "@/components/admin/email-field";
 import type { ReactNode } from "react";
-import { AsideSection } from "../misc/AsideSection";
+import { AsideSection } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";
 import type { Contact } from "../types";
 

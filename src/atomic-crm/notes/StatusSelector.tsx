@@ -5,7 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Status } from "../misc/Status";
+import { Status } from "../shared/components/Status";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 
 export const StatusSelector = ({ status, setStatus }: any) => {

@@ -19,7 +19,7 @@ import { ActivityLog } from "../activity-log/ActivityLog";
 import { Avatar } from "../contacts/Avatar";
 import { TagsList } from "../contacts/TagsList";
 import { findOpportunityLabel } from "../opportunities/opportunity";
-import { Status } from "../misc/Status";
+import { Status } from "../shared/components/Status";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import type { Company, Contact, Opportunity } from "../types";
 import { formatName } from "../utils/formatName";

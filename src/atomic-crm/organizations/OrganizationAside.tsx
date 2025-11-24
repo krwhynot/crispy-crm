@@ -8,7 +8,7 @@ import { DateField } from "@/components/admin/date-field";
 import { UrlField } from "@/components/admin/url-field";
 import { SelectField } from "@/components/admin/select-field";
 
-import { AsideSection } from "../misc/AsideSection";
+import { AsideSection } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";
 import type { Company } from "../types";
 import { sizes as _sizes } from "./sizes";

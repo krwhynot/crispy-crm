@@ -1,8 +1,8 @@
 import { useRecordContext } from "react-admin";
 import { Draggable } from "@hello-pangea/dnd";
 import { format } from "date-fns";
-import { useOpportunityContacts } from "./useOpportunityContacts";
-import { STUCK_THRESHOLD_DAYS } from "./useStageMetrics";
+import { useOpportunityContacts } from "./hooks/useOpportunityContacts";
+import { STUCK_THRESHOLD_DAYS } from "./hooks/useStageMetrics";
 import { OpportunityCardActions } from "./OpportunityCardActions";
 import type { Opportunity } from "../types";
 

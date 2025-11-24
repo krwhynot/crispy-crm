@@ -8,7 +8,7 @@ import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-in
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AsideSection } from "../../misc/AsideSection";
+import { AsideSection } from "@/components/ui";
 import { ArrayInput, SimpleFormIterator } from "react-admin";
 import type { OrganizationWithHierarchy } from "../../types";
 

@@ -10,7 +10,7 @@ import { SingleFieldList } from "@/components/admin/single-field-list";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AsideSection } from "../misc/AsideSection";
+import { AsideSection } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";
 import { ContactInputs } from "./ContactInputs";
 import { Avatar } from "./Avatar";

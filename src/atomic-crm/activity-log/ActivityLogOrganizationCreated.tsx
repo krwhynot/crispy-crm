@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 import { ReferenceField } from "@/components/admin/reference-field";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
-import { RelativeDate } from "../misc/RelativeDate";
+import { RelativeDate } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";
 import type { ActivityOrganizationCreated } from "../types";
 import { useActivityLogContext } from "./ActivityLogContext";

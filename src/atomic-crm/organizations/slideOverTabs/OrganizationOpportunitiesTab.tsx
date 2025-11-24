@@ -3,7 +3,7 @@ import { useDataProvider, RecordContextProvider } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
-import { AsideSection } from "../../misc/AsideSection";
+import { AsideSection } from "@/components/ui";
 import { Target } from "lucide-react";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";

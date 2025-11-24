@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
 import type { RaRecord } from "ra-core";
-import { RelativeDate } from "../misc/RelativeDate";
+import { RelativeDate } from "@/components/ui";
 import type { ActivityOpportunityCreated } from "../types";
 import { useActivityLogContext } from "./ActivityLogContext";
 
