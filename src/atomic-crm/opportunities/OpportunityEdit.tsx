@@ -9,7 +9,7 @@ import { CancelButton } from "@/components/admin/cancel-button";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { ReferenceManyField } from "@/components/admin/reference-many-field";
 import { FormToolbar } from "../layout/FormToolbar";
-import { OpportunityInputs } from "./OpportunityInputs";
+import { OpportunityInputs } from "./forms/OpportunityInputs";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { NoteCreate as _NoteCreate, NotesIterator } from "../notes";
 import type { Opportunity } from "../types";
