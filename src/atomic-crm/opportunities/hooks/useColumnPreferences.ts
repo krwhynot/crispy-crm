@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import type { OpportunityStageValue } from "../types";
-import { OPPORTUNITY_STAGES } from "./stageConstants";
+import { OPPORTUNITY_STAGES } from "../stageConstants";
 
 const COLLAPSED_KEY = "opportunity.kanban.collapsed_stages";
 const VISIBLE_KEY = "opportunity.kanban.visible_stages";

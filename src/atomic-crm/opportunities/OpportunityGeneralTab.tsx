@@ -2,7 +2,7 @@ import { TextInput } from "@/components/admin/text-input";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RefreshCw } from "lucide-react";
-import { useAutoGenerateName } from "./useAutoGenerateName";
+import { useAutoGenerateName } from "./hooks/useAutoGenerateName";
 import { NamingConventionHelp } from "./NamingConventionHelp";
 
 interface OpportunityGeneralTabProps {

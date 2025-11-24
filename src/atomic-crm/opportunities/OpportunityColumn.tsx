@@ -7,7 +7,7 @@ import {
   getOpportunityStageColor,
   getOpportunityStageElevation,
 } from "./stageConstants";
-import { useStageMetrics, STUCK_THRESHOLD_DAYS } from "./useStageMetrics";
+import { useStageMetrics, STUCK_THRESHOLD_DAYS } from "./hooks/useStageMetrics";
 import { QuickAddOpportunity } from "./QuickAddOpportunity";
 
 export const OpportunityColumn = ({

@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { calculateStageMetrics } from "../useStageMetrics";
+import { calculateStageMetrics } from "../hooks/useStageMetrics";
 
 describe("calculateStageMetrics", () => {
   it("calculates count and average days in stage", () => {

@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { useOpportunityContacts } from "../useOpportunityContacts";
+import { useOpportunityContacts } from "../hooks/useOpportunityContacts";
 import { useGetMany } from "react-admin";
 import { describe, it, expect, vi } from "vitest";
 
