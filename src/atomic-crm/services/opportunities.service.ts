@@ -1,5 +1,7 @@
-import type { DataProvider } from "ra-core";
+import type { CreateResult, DataProvider, Identifier } from "ra-core";
 import type { Opportunity } from "../types";
+import { diffProducts, type Product, type ProductDiff } from "../opportunities/utils/diffProducts";
+import { supabase } from "../providers/supabase/supabase";
 
 /**
  * Opportunities service handles business logic for opportunity management
