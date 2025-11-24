@@ -30,3 +30,9 @@
 1763951378:/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/callbacks/productsCallbacks.ts:src
 1763951402:/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/callbacks/index.ts:src
 1763952261:/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/handlers/contactsHandler.test.ts:src
+1763952291:/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/handlers/contactsHandler.ts:src
+1763952329:/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/handlers/index.ts:src
+1763952444:/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/handlers/organizationsHandler.test.ts:src
+1763952479:/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/handlers/organizationsHandler.ts:src
+1763952515:/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/handlers/index.ts:src
+1763952662:/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.test.ts:src
