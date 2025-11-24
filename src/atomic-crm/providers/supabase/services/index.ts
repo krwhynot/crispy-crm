@@ -110,3 +110,15 @@ export function createServiceContainer(baseProvider: DataProvider): ServiceConta
  * Export types for type-safe service access
  */
 export type { ServiceContainer };
+
+/**
+ * Re-export utility services for backward compatibility
+ *
+ * These are internal provider services used by unifiedDataProvider:
+ * - ValidationService: Zod schema validation for resources
+ * - TransformService: Data transformation (JSONB arrays, file uploads)
+ * - StorageService: File storage operations
+ */
+export { ValidationService } from "./ValidationService";
+export { TransformService } from "./TransformService";
+export { StorageService } from "./StorageService";
