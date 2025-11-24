@@ -19,3 +19,9 @@
 1763962099:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/quick-add-product-filtering-flow.test.tsx:src
 1763962107:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/__tests__/QuickAddDialog.test.tsx:src
 1763962287:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/utils/diffProducts.ts:src
+1763962288:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/utils/opportunityUtils.ts:src
+1763962296:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/utils/index.ts:src
+1763962302:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/diffProducts.test.ts:src
+1763962321:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/quick-add/index.ts:src
+1763962322:/home/krwhynot/projects/crispy-crm/src/atomic-crm/opportunities/forms/index.ts:src
+1763962379:/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts:src

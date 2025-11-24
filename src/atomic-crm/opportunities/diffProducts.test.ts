@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { diffProducts, productsAreDifferent, type Product } from "./diffProducts";
+import { diffProducts, productsAreDifferent, type Product } from "./utils";
 
 describe("productsAreDifferent", () => {
   it("should return false for identical products", () => {
