@@ -414,7 +414,7 @@ describe("OpportunitiesService", () => {
           ...mockInputData,
           products_to_sync: products,
         })
-      ).rejects.toThrow("Create opportunity with products failed");
+      ).rejects.toThrow("Sync opportunity with products failed");
     });
   });
 
