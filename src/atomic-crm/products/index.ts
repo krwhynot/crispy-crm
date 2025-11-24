@@ -1,34 +1,13 @@
-import { lazy } from "react";
-import type { ResourceProps } from "react-admin";
-import { Package } from "lucide-react";
+import * as React from "react";
 
-const ProductList = lazy(() =>
-  import("./ProductList").then((module) => ({
-    default: module.ProductList,
-  }))
-);
+const ProductList = React.lazy(() => import("./ProductList"));
+const ProductCreate = React.lazy(() => import("./ProductCreate"));
+const ProductEdit = React.lazy(() => import("./ProductEdit"));
 
-const ProductCreate = lazy(() =>
-  import("./ProductCreate").then((module) => ({
-    default: module.ProductCreate,
-  }))
-);
-
-const ProductEdit = lazy(() =>
-  import("./ProductEdit").then((module) => ({
-    default: module.ProductEdit,
-  }))
-);
-
-const resource: ResourceProps = {
-  name: "products",
+export default {
   list: ProductList,
   create: ProductCreate,
   edit: ProductEdit,
-  icon: Package,
-  options: {
-    label: "Products",
-  },
+  recordRepresentation: (record: { name?: string; sku?: string }) =>
+    record?.name || record?.sku || "Product",
 };
-
-export default resource;
