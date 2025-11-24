@@ -197,7 +197,9 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
       // Create the activity record
       await dataProvider.create("activities", {
         data: {
-          activity_type: data.activityType === "Note" ? "engagement" : "interaction",
+          // Quick Logger uses "engagement" by default (no opportunity required)
+          // Only use "interaction" if user explicitly selects an opportunity
+          activity_type: data.opportunityId ? "interaction" : "engagement",
           type: ACTIVITY_TYPE_MAP[data.activityType],
           outcome: data.outcome, // ✅ Persist user-selected outcome
           subject: data.notes.substring(0, 100) || `${data.activityType} update`,
