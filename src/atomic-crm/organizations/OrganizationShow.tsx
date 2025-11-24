@@ -15,7 +15,7 @@ import { ReferenceManyField } from "@/components/admin/reference-many-field";
 import { SortButton } from "@/components/admin/sort-button";
 import { ResponsiveGrid } from "@/components/design-system";
 
-import { ActivityLog } from "../activity/ActivityLog";
+import { ActivityLog } from "../activity-log/ActivityLog";
 import { Avatar } from "../contacts/Avatar";
 import { TagsList } from "../contacts/TagsList";
 import { findOpportunityLabel } from "../opportunities/opportunity";
