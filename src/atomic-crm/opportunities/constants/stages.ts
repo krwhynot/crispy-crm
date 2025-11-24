@@ -1,4 +1,4 @@
-import type { Opportunity } from "../types";
+import type { Opportunity } from "../../types";
 import { OPPORTUNITY_STAGES } from "./stageConstants";
 
 export type OpportunitiesByStage = Record<Opportunity["stage"], Opportunity[]>;
