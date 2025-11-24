@@ -39,10 +39,72 @@ export const COMPUTED_FIELDS = [
 export const JSONB_ARRAY_FIELDS = ["email", "phone", "tags"] as const;
 
 /**
+ * Fields to search when q filter is provided
+ * These fields will be searched with ILIKE for partial matching
+ * Only text fields are included - JSONB fields (email, phone) require different operators
+ */
+export const CONTACTS_SEARCH_FIELDS = ["name", "first_name", "last_name"] as const;
+
+/**
  * Re-export normalizeJsonbArrays from commonTransforms for backward compatibility
  * @deprecated Import from commonTransforms instead
  */
 export { normalizeJsonbArrays } from "./commonTransforms";
+
+/**
+ * Transform q filter into ILIKE search on contact name fields
+ *
+ * Matches the unified data provider's search behavior by transforming a simple
+ * `q` filter into an `@or` filter with ILIKE conditions on each searchable field.
+ *
+ * @param params - GetListParams containing the filter with q
+ * @returns GetListParams with q transformed to @or ILIKE filters
+ *
+ * @example
+ * ```typescript
+ * // Input filter:
+ * { q: "john", status: "active" }
+ *
+ * // Output filter:
+ * {
+ *   status: "active",
+ *   "@or": {
+ *     "name@ilike": "%john%",
+ *     "first_name@ilike": "%john%",
+ *     "last_name@ilike": "%john%",
+ *     "email@ilike": "%john%"
+ *   }
+ * }
+ * ```
+ */
+export function transformQToIlikeSearch(params: GetListParams): GetListParams {
+  const { q, ...filterWithoutQ } = params.filter || {};
+
+  // If no q filter, return params unchanged
+  if (!q || typeof q !== "string") {
+    return params;
+  }
+
+  // Wrap search term with wildcards for partial matching
+  const searchTerm = `%${q}%`;
+
+  // Build @or filter with ILIKE conditions for each searchable field
+  const orFilter = CONTACTS_SEARCH_FIELDS.reduce(
+    (acc, field) => ({
+      ...acc,
+      [`${field}@ilike`]: searchTerm,
+    }),
+    {} as Record<string, string>
+  );
+
+  return {
+    ...params,
+    filter: {
+      ...filterWithoutQ,
+      "@or": orFilter,
+    },
+  };
+}
 
 /**
  * Compute name field from first_name and last_name
@@ -81,6 +143,42 @@ export function computeNameField(data: Partial<RaRecord>): Partial<RaRecord> {
 }
 
 /**
+ * Base callbacks from factory (soft delete, computed fields, transforms)
+ * We extract this so we can override beforeGetList with search support
+ */
+const baseCallbacks = createResourceCallbacks({
+  resource: "contacts",
+  supportsSoftDelete: true,
+  computedFields: COMPUTED_FIELDS,
+  afterReadTransform: normalizeJsonbArrays,
+  writeTransforms: [computeNameField],
+});
+
+/**
+ * Custom beforeGetList that chains:
+ * 1. q filter → ILIKE search transformation
+ * 2. Soft delete filter (from base callbacks)
+ *
+ * This matches the unified data provider's search behavior while preserving
+ * the factory's soft-delete filtering.
+ */
+async function contactsBeforeGetList(
+  params: GetListParams,
+  dataProvider: DataProvider
+): Promise<GetListParams> {
+  // Step 1: Transform q filter to ILIKE search (removes q from filter)
+  const searchTransformedParams = transformQToIlikeSearch(params);
+
+  // Step 2: Apply soft delete filter from base callbacks
+  // The base callback will add deleted_at@is: null unless includeDeleted is true
+  if (baseCallbacks.beforeGetList) {
+    return baseCallbacks.beforeGetList(searchTransformedParams, dataProvider);
+  }
+
+  return searchTransformedParams;
+}
+
+/**
  * Contacts lifecycle callbacks for React Admin withLifecycleCallbacks
  *
  * Usage:
@@ -93,13 +191,10 @@ export function computeNameField(data: Partial<RaRecord>): Partial<RaRecord> {
  * ]);
  * ```
  */
-export const contactsCallbacks: ResourceCallbacks = createResourceCallbacks({
-  resource: "contacts",
-  supportsSoftDelete: true,
-  computedFields: COMPUTED_FIELDS,
-  afterReadTransform: normalizeJsonbArrays,
-  writeTransforms: [computeNameField],
-});
+export const contactsCallbacks: ResourceCallbacks = {
+  ...baseCallbacks,
+  beforeGetList: contactsBeforeGetList,
+};
 
 /**
  * Export stripComputedFields for backward compatibility with tests
