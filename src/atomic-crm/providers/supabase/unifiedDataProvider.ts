@@ -48,6 +48,7 @@ import {
   OpportunitiesService,
   ActivitiesService,
   JunctionsService,
+  SegmentsService,
 } from "../../services";
 
 // Import RPC validation schemas
@@ -157,6 +158,7 @@ const salesService = new SalesService(baseDataProvider);
 const opportunitiesService = new OpportunitiesService(baseDataProvider);
 const activitiesService = new ActivitiesService(baseDataProvider);
 const junctionsService = new JunctionsService(baseDataProvider);
+const segmentsService = new SegmentsService(baseDataProvider);
 
 /**
  * Log error with context for debugging
@@ -560,16 +562,10 @@ export const unifiedDataProvider: DataProvider = {
         };
       }
 
-      // Special handling for segments - use RPC for get_or_create
+      // Delegate segment creation to service (handles get_or_create)
       if (resource === "segments") {
-        const { data, error } = await supabase.rpc("get_or_create_segment", {
-          p_name: processedData.name,
-        });
-
-        if (error) throw error;
-
-        // RPC returns array, return first item
-        return { data: data[0] };
+        const result = await segmentsService.getOrCreateSegment(processedData.name);
+        return { data: result as unknown as RecordType };
       }
 
       // Delegate opportunity creation to service (handles products sync)
