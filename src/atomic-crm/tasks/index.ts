@@ -1,23 +1,13 @@
 import * as React from "react";
-import type { ResourceProps } from "react-admin";
-import { CheckSquare } from "lucide-react";
 import type { Task } from "../types";
 
 const TaskList = React.lazy(() => import("./TaskList"));
 const TaskEdit = React.lazy(() => import("./TaskEdit"));
 const TaskCreate = React.lazy(() => import("./TaskCreate"));
 
-const resource: ResourceProps = {
-  name: "tasks",
+export default {
   list: TaskList,
-  // show: Removed - using slide-over via ?view=:id
   edit: TaskEdit,
   create: TaskCreate,
-  icon: CheckSquare,
-  options: {
-    label: "Tasks",
-  },
   recordRepresentation: (record: Task) => record?.title || `Task #${record?.id}`,
 };
-
-export default resource;
