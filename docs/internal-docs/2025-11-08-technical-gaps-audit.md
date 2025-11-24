@@ -116,7 +116,7 @@ A comprehensive technical audit of the Atomic CRM codebase identified **gaps acr
 | `organizations/` | 29% | 🔴 Poor | Medium |
 | `dashboard/` | 5% | 🔴 Critical | High |
 | `root/layout/services/` | 0-5% | 🔴 Missing | Critical |
-| `activity/tasks/hooks/` | 0% | 🔴 Missing | Critical |
+| `activity-log/tasks/hooks/` | 0% | 🔴 Missing | Critical |
 
 ### **Critical Gaps (Launch Blockers):**
 
