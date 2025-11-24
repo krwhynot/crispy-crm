@@ -4,6 +4,36 @@ import { diffProducts, type Product, type ProductDiff } from "../opportunities/u
 import { supabase } from "../providers/supabase/supabase";
 
 /**
+ * Input types for opportunity creation and updates with products
+ * Extracted from validation schemas to support service layer typesafety
+ */
+export interface OpportunityCreateInput {
+  name: string;
+  customer_organization_id: Identifier;
+  principal_organization_id: Identifier;
+  distributor_organization_id?: Identifier | null;
+  estimated_close_date: string;
+  stage?: string | null;
+  priority?: string | null;
+  lead_source?: string | null;
+  account_manager_id?: Identifier | null;
+  contact_ids?: Identifier[];
+  campaign?: string | null;
+  related_opportunity_id?: Identifier | null;
+  notes?: string | null;
+  tags?: string[];
+  next_action?: string | null;
+  next_action_date?: string | null;
+  decision_criteria?: string | null;
+  products_to_sync?: Product[];
+  description?: string | null;
+}
+
+export interface OpportunityUpdateInput extends Partial<OpportunityCreateInput> {
+  id: Identifier;
+}
+
+/**
  * Opportunities service handles business logic for opportunity management
  * Follows Engineering Constitution principle #14: Service Layer orchestration for business ops
  */
@@ -50,5 +80,149 @@ export class OpportunitiesService {
       });
       throw new Error(`Unarchive opportunity failed: ${error.message}`);
     }
+  }
+
+  /**
+   * Create an opportunity with product synchronization
+   * Handles atomic creation of opportunity and linked products via RPC
+   * Extracts products_to_sync field and passes to sync RPC function
+   *
+   * @param data Opportunity data from form (may include products_to_sync)
+   * @returns Promise resolving to created opportunity
+   * @throws Error if RPC call fails
+   */
+  async createWithProducts(data: Partial<OpportunityCreateInput>): Promise<Opportunity> {
+    try {
+      // Extract products before sending to database
+      const productsToSync = data.products_to_sync || [];
+      const opportunityData = { ...data };
+      delete (opportunityData as any).products_to_sync;
+
+      // If no products to sync, use standard create
+      if (productsToSync.length === 0) {
+        console.log("[OpportunitiesService] Creating opportunity without products");
+        const result = await this.dataProvider.create("opportunities", { data: opportunityData });
+        return result.data as Opportunity;
+      }
+
+      // Call RPC function for atomic creation with products
+      console.log("[OpportunitiesService] Creating opportunity with products via RPC", {
+        opportunityData,
+        productsToCreate: productsToSync,
+      });
+
+      const { data: rpcData, error } = await supabase.rpc("sync_opportunity_with_products", {
+        opportunity_data: opportunityData,
+        products_to_create: productsToSync,
+        products_to_update: [],
+        product_ids_to_delete: [],
+      });
+
+      if (error) {
+        console.error("[OpportunitiesService] RPC create failed:", error);
+        throw new Error(`Create opportunity with products failed: ${error.message}`);
+      }
+
+      const opportunity = this.unwrapRpcResponse(rpcData);
+      console.log("[OpportunitiesService] Opportunity created successfully with products", opportunity);
+      return opportunity;
+    } catch (error: any) {
+      console.error("[OpportunitiesService] Failed to create opportunity with products", {
+        error,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Update an opportunity with product synchronization
+   * Diffs products between current state and form state
+   * Calls RPC function for atomic update with product sync
+   *
+   * @param id Opportunity ID to update
+   * @param data Opportunity data from form (may include products_to_sync)
+   * @param previousProducts Current products from database (for diffing)
+   * @returns Promise resolving to updated opportunity
+   * @throws Error if RPC call fails or previousProducts missing when updating products
+   */
+  async updateWithProducts(
+    id: Identifier,
+    data: Partial<OpportunityUpdateInput>,
+    previousProducts: Product[] = []
+  ): Promise<Opportunity> {
+    try {
+      // Extract products before sending to database
+      const productsToSync = data.products_to_sync || [];
+      const opportunityData = { ...data, id };
+      delete (opportunityData as any).products_to_sync;
+
+      // If no products in form, use standard update
+      if (productsToSync.length === 0) {
+        console.log("[OpportunitiesService] Updating opportunity without product changes");
+        const result = await this.dataProvider.update("opportunities", {
+          id,
+          data: opportunityData as any,
+        });
+        return result.data as Opportunity;
+      }
+
+      // Diff products to determine creates, updates, deletes
+      const { creates, updates, deletes } = diffProducts(previousProducts, productsToSync);
+
+      console.log("[OpportunitiesService] Updating opportunity with product sync via RPC", {
+        opportunityData,
+        productsToCreate: creates,
+        productsToUpdate: updates,
+        productIdsToDelete: deletes,
+      });
+
+      // Call RPC function for atomic update with products
+      const { data: rpcData, error } = await supabase.rpc("sync_opportunity_with_products", {
+        opportunity_data: opportunityData,
+        products_to_create: creates,
+        products_to_update: updates,
+        product_ids_to_delete: deletes,
+      });
+
+      if (error) {
+        console.error("[OpportunitiesService] RPC update failed:", error);
+        throw new Error(`Update opportunity with products failed: ${error.message}`);
+      }
+
+      const opportunity = this.unwrapRpcResponse(rpcData);
+      console.log("[OpportunitiesService] Opportunity updated successfully with product sync", opportunity);
+      return opportunity;
+    } catch (error: any) {
+      console.error("[OpportunitiesService] Failed to update opportunity with products", {
+        opportunityId: id,
+        error,
+      });
+      throw error;
+    }
+  }
+
+  /**
+   * Unwrap potentially double-wrapped RPC responses
+   * Some Supabase RPC functions return { data: <actual_data> } while others return <actual_data>
+   * This helper ensures consistent unwrapping behavior
+   *
+   * @param response RPC response that may or may not be wrapped
+   * @returns Unwrapped response data
+   */
+  private unwrapRpcResponse(response: any): Opportunity {
+    // Check if response is wrapped in { data: ... } format
+    if (
+      response !== null &&
+      response !== undefined &&
+      typeof response === "object" &&
+      "data" in response &&
+      response.data !== null &&
+      typeof response.data === "object" &&
+      "id" in response.data
+    ) {
+      return response.data as Opportunity;
+    }
+    // Otherwise, assume it's already unwrapped
+    return response as Opportunity;
   }
 }
