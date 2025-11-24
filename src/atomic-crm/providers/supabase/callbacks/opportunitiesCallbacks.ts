@@ -11,6 +11,7 @@
  */
 
 import type { DataProvider, RaRecord, GetListParams, DeleteParams } from "ra-core";
+import type { ResourceCallbacks } from "./createResourceCallbacks";
 
 /**
  * Extended DataProvider type with RPC method
@@ -40,17 +41,6 @@ const COMPUTED_FIELDS = [
 const CREATE_DEFAULTS = {
   contact_ids: [] as number[],
 } as const;
-
-/**
- * Lifecycle callback type for React Admin withLifecycleCallbacks
- */
-interface ResourceCallbacks {
-  resource: string;
-  beforeDelete?: (params: DeleteParams, dataProvider: DataProvider) => Promise<DeleteParams & { meta?: { skipDelete?: boolean } }>;
-  afterRead?: (record: RaRecord, dataProvider: DataProvider) => Promise<RaRecord>;
-  beforeGetList?: (params: GetListParams, dataProvider: DataProvider) => Promise<GetListParams>;
-  beforeSave?: (data: Partial<RaRecord>, dataProvider: DataProvider, resource: string) => Promise<Partial<RaRecord>>;
-}
 
 /**
  * Strip computed fields that shouldn't be sent to database
