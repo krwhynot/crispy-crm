@@ -140,17 +140,15 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
   const shouldSearchOpps = oppSearch.debouncedTerm.length >= MIN_SEARCH_LENGTH;
 
   // Build contact filter (with optional organization constraint)
+  // NOTE: Supabase doesn't support `q` text search filter - we use client-side filtering instead
   const contactFilter = useMemo(() => {
     const filter: Record<string, unknown> = {};
-    if (shouldSearchContacts) {
-      filter.q = contactSearch.debouncedTerm;
-    }
     // Apply organization filter if anchor org is set (cascading filter)
     if (selectedOrganizationId) {
       filter.organization_id = selectedOrganizationId;
     }
     return filter;
-  }, [shouldSearchContacts, contactSearch.debouncedTerm, selectedOrganizationId]);
+  }, [selectedOrganizationId]);
 
   // Build organization filter
   const orgFilter = useMemo(() => {
@@ -348,43 +346,53 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     return result;
   }, [contacts, anchorOrganizationId, contactsForAnchorOrg, contactSearch.debouncedTerm]);
 
-  // Filter organizations by anchor organization (lock to single org when anchor exists)
+  // Filter organizations by anchor organization AND search term (client-side filtering)
   // BUG FIX: When anchorOrganizationId is set but the org isn't in the fetched list,
   // we fetch it separately via useGetOne and include it here.
   const filteredOrganizations = useMemo(() => {
-    if (!anchorOrganizationId) {
-      return organizations;
-    }
-    // Filter to the anchor organization from the paginated list
-    const filtered = organizations.filter((o) => o.id === anchorOrganizationId);
+    let result = organizations;
 
-    // If the anchor org isn't in the paginated list, use the separately fetched one
-    if (filtered.length === 0 && fetchedAnchorOrg) {
-      return [fetchedAnchorOrg];
+    // Apply anchor org filter if set (locks to single org for cascading consistency)
+    if (anchorOrganizationId) {
+      const filtered = organizations.filter((o) => o.id === anchorOrganizationId);
+      // Use fallback if not in paginated list
+      result = filtered.length === 0 && fetchedAnchorOrg ? [fetchedAnchorOrg] : filtered;
     }
 
-    return filtered;
-  }, [organizations, anchorOrganizationId, fetchedAnchorOrg]);
+    // Apply search term filter (client-side search for responsiveness)
+    if (orgSearch.debouncedTerm.length > 0) {
+      const searchLower = orgSearch.debouncedTerm.toLowerCase();
+      result = result.filter((o) => o.name.toLowerCase().includes(searchLower));
+    }
 
-  // Filter opportunities by anchor organization (client-side filtering)
+    return result;
+  }, [organizations, anchorOrganizationId, fetchedAnchorOrg, orgSearch.debouncedTerm]);
+
+  // Filter opportunities by anchor organization AND search term (client-side filtering)
   // BUG FIX: When org/contact is selected first, main opportunities list might not have opps from that org.
   // Use the separately fetched oppsForAnchorOrg as fallback.
   const filteredOpportunities = useMemo(() => {
-    if (!anchorOrganizationId) {
-      return opportunities;
-    }
-    // Filter main opportunities list by anchor org
-    const filtered = opportunities.filter(
-      (o) => o.customer_organization_id === anchorOrganizationId
-    );
+    let result = opportunities;
 
-    // If no opportunities found in main list, use the separately fetched ones
-    if (filtered.length === 0 && oppsForAnchorOrg.length > 0) {
-      return oppsForAnchorOrg;
+    // Apply anchor org filter if set
+    if (anchorOrganizationId) {
+      const filtered = opportunities.filter(
+        (o) => o.customer_organization_id === anchorOrganizationId
+      );
+      // Use fallback if main list has no matches
+      result = filtered.length === 0 && oppsForAnchorOrg.length > 0
+        ? oppsForAnchorOrg
+        : filtered;
     }
 
-    return filtered;
-  }, [opportunities, anchorOrganizationId, oppsForAnchorOrg]);
+    // Apply search term filter (client-side search for responsiveness)
+    if (oppSearch.debouncedTerm.length > 0) {
+      const searchLower = oppSearch.debouncedTerm.toLowerCase();
+      result = result.filter((o) => o.name.toLowerCase().includes(searchLower));
+    }
+
+    return result;
+  }, [opportunities, anchorOrganizationId, oppsForAnchorOrg, oppSearch.debouncedTerm]);
 
   // ============================================
   // SIDE EFFECTS
