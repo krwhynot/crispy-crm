@@ -172,6 +172,75 @@ describe("Note Validation Schemas", () => {
     });
   });
 
+  describe("organizationNoteSchema", () => {
+    const validOrganizationNote = {
+      text: "Important meeting notes about partnership",
+      date: "2024-01-15T10:00:00Z",
+      organization_id: "org-123",
+      sales_id: "user-456",
+    };
+
+    it("should accept valid organization note", () => {
+      const result = organizationNoteSchema.parse(validOrganizationNote);
+      expect(result.organization_id).toBe("org-123");
+      expect(result.text).toBe("Important meeting notes about partnership");
+    });
+
+    it("should reject empty text", () => {
+      const invalidData = { ...validOrganizationNote, text: "" };
+      expect(() => organizationNoteSchema.parse(invalidData)).toThrow(z.ZodError);
+    });
+
+    it("should reject empty date", () => {
+      const invalidData = { ...validOrganizationNote, date: "" };
+      expect(() => organizationNoteSchema.parse(invalidData)).toThrow(z.ZodError);
+    });
+
+    it("should require organization_id", () => {
+      const withoutOrganizationId = {
+        text: "Note without organization",
+        date: "2024-01-15T10:00:00Z",
+        sales_id: "user-456",
+      };
+
+      expect(() => organizationNoteSchema.parse(withoutOrganizationId)).toThrow(z.ZodError);
+    });
+
+    it("should require sales_id", () => {
+      const withoutSalesId = {
+        text: "Note without sales",
+        date: "2024-01-15T10:00:00Z",
+        organization_id: "org-123",
+      };
+
+      expect(() => organizationNoteSchema.parse(withoutSalesId)).toThrow(z.ZodError);
+    });
+
+    it("should accept both string and number IDs", () => {
+      const withNumberIds = {
+        text: "Note with number IDs",
+        date: "2024-01-15T10:00:00Z",
+        organization_id: 123,
+        sales_id: 456,
+      };
+
+      expect(() => organizationNoteSchema.parse(withNumberIds)).not.toThrow();
+    });
+
+    it("should handle attachments", () => {
+      const noteWithAttachments = {
+        ...validOrganizationNote,
+        attachments: [
+          { src: "https://example.com/contract.pdf", title: "Contract" },
+          { src: "https://example.com/notes.pdf", title: "Meeting Notes" },
+        ],
+      };
+
+      const result = organizationNoteSchema.parse(noteWithAttachments);
+      expect(result.attachments).toHaveLength(2);
+    });
+  });
+
   describe("Validation Functions", () => {
     describe("validateCreateContactNote", () => {
       it("should validate and return parsed data", () => {
@@ -211,6 +280,42 @@ describe("Note Validation Schemas", () => {
         const result = validateCreateOpportunityNote(validData);
         expect(result.text).toBe("Opportunity discussion");
         expect(result.opportunity_id).toBe("opp-123");
+      });
+    });
+
+    describe("validateCreateOrganizationNote", () => {
+      it("should validate and return parsed data", () => {
+        const validData = {
+          text: "Organization partnership notes",
+          date: "2024-01-15T10:00:00Z",
+          organization_id: "org-123",
+          sales_id: "user-456",
+        };
+
+        const result = validateCreateOrganizationNote(validData);
+        expect(result.text).toBe("Organization partnership notes");
+        expect(result.organization_id).toBe("org-123");
+      });
+
+      it("should throw for invalid creation data", () => {
+        const invalidData = {
+          text: "",
+          date: "2024-01-15T10:00:00Z",
+          organization_id: "org-123",
+          sales_id: "user-456",
+        };
+
+        expect(() => validateCreateOrganizationNote(invalidData)).toThrow(z.ZodError);
+      });
+
+      it("should throw for missing organization_id", () => {
+        const invalidData = {
+          text: "Some notes",
+          date: "2024-01-15T10:00:00Z",
+          sales_id: "user-456",
+        };
+
+        expect(() => validateCreateOrganizationNote(invalidData)).toThrow(z.ZodError);
       });
     });
   });
