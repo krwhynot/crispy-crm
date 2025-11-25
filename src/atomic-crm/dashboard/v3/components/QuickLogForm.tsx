@@ -299,13 +299,44 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     }
   );
 
+  // Check if we need to fetch opportunities for the anchor org (org/contact selected first)
+  const oppsForAnchorOrgMissing = useMemo(() => {
+    if (!anchorOrganizationId) return false;
+    // If org is selected first, opportunities might not include any from that org
+    return !opportunities.some((o) => o.customer_organization_id === anchorOrganizationId);
+  }, [anchorOrganizationId, opportunities]);
+
+  // Fetch opportunities specifically for the anchor organization if none are in the paginated list
+  const { data: oppsForAnchorOrg = [] } = useGetList<Opportunity>(
+    "opportunities",
+    {
+      pagination: { page: 1, perPage: 50 },
+      sort: { field: "name", order: "ASC" },
+      filter: { customer_organization_id: anchorOrganizationId },
+    },
+    {
+      enabled: oppsForAnchorOrgMissing && anchorOrganizationId !== null,
+      staleTime: STALE_TIME_MS,
+    }
+  );
+
   // Filter contacts by anchor organization (client-side filtering of cached data)
+  // BUG FIX: When org is selected first, main contacts list might not have contacts from that org.
+  // Use the separately fetched contactsForAnchorOrg as fallback.
   const filteredContacts = useMemo(() => {
     if (!anchorOrganizationId) {
       return contacts;
     }
-    return contacts.filter((c) => c.organization_id === anchorOrganizationId);
-  }, [contacts, anchorOrganizationId]);
+    // Filter main contacts list by anchor org
+    const filtered = contacts.filter((c) => c.organization_id === anchorOrganizationId);
+
+    // If no contacts found in main list, use the separately fetched ones
+    if (filtered.length === 0 && contactsForAnchorOrg.length > 0) {
+      return contactsForAnchorOrg;
+    }
+
+    return filtered;
+  }, [contacts, anchorOrganizationId, contactsForAnchorOrg]);
 
   // Filter organizations by anchor organization (lock to single org when anchor exists)
   // BUG FIX: When anchorOrganizationId is set but the org isn't in the fetched list,
@@ -566,7 +597,9 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                           )}
                         >
                           {field.value
-                            ? contacts.find((c) => c.id === field.value)?.name ?? "Select contact"
+                            ? (contacts.find((c) => c.id === field.value)?.name
+                              ?? contactsForAnchorOrg.find((c) => c.id === field.value)?.name
+                              ?? "Select contact")
                             : "Select contact"}
                           {contactsLoading ? (
                             <Loader2 className="ml-2 h-4 w-4 animate-spin" />
