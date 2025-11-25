@@ -9,11 +9,12 @@
  * 2. Filter cleaning - Adds soft delete filter by default
  * 3. Data transformation - Strips computed fields before save
  * 4. Logo handling - Preserved by storage service
+ * 5. Search transformation - Transforms q filter into ILIKE search on name, city, state, sector
  *
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
  */
 
-import type { RaRecord } from "ra-core";
+import type { RaRecord, GetListParams, DataProvider } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
 
 /**
@@ -29,6 +30,101 @@ export const COMPUTED_FIELDS = [
 ] as const;
 
 /**
+ * Fields to search when q filter is provided
+ * These fields will be searched with ILIKE for partial matching
+ */
+export const ORGANIZATIONS_SEARCH_FIELDS = ["name", "city", "state", "sector"] as const;
+
+/**
+ * Transform q filter into ILIKE search on organization fields
+ *
+ * Matches the unified data provider's search behavior by transforming a simple
+ * `q` filter into an `@or` filter with ILIKE conditions on each searchable field.
+ *
+ * @param params - GetListParams containing the filter with q
+ * @returns GetListParams with q transformed to @or ILIKE filters
+ *
+ * @example
+ * ```typescript
+ * // Input filter:
+ * { q: "chicago", org_type: "customer" }
+ *
+ * // Output filter:
+ * {
+ *   org_type: "customer",
+ *   "@or": {
+ *     "name@ilike": "%chicago%",
+ *     "city@ilike": "%chicago%",
+ *     "state@ilike": "%chicago%",
+ *     "sector@ilike": "%chicago%"
+ *   }
+ * }
+ * ```
+ */
+export function transformQToIlikeSearch(params: GetListParams): GetListParams {
+  const { q, ...filterWithoutQ } = params.filter || {};
+
+  // If no q filter, return params unchanged
+  if (!q || typeof q !== "string") {
+    return params;
+  }
+
+  // Wrap search term with wildcards for partial matching
+  const searchTerm = `%${q}%`;
+
+  // Build @or filter with ILIKE conditions for each searchable field
+  const orFilter = ORGANIZATIONS_SEARCH_FIELDS.reduce(
+    (acc, field) => ({
+      ...acc,
+      [`${field}@ilike`]: searchTerm,
+    }),
+    {} as Record<string, string>
+  );
+
+  return {
+    ...params,
+    filter: {
+      ...filterWithoutQ,
+      "@or": orFilter,
+    },
+  };
+}
+
+/**
+ * Base callbacks from factory (soft delete, computed fields, transforms)
+ * We extract this so we can override beforeGetList with search support
+ */
+const baseCallbacks = createResourceCallbacks({
+  resource: "organizations",
+  supportsSoftDelete: true,
+  computedFields: COMPUTED_FIELDS,
+});
+
+/**
+ * Custom beforeGetList that chains:
+ * 1. q filter → ILIKE search transformation
+ * 2. Soft delete filter (from base callbacks)
+ *
+ * This matches the unified data provider's search behavior while preserving
+ * the factory's soft-delete filtering.
+ */
+async function organizationsBeforeGetList(
+  params: GetListParams,
+  dataProvider: DataProvider
+): Promise<GetListParams> {
+  // Step 1: Transform q filter to ILIKE search (removes q from filter)
+  const searchTransformedParams = transformQToIlikeSearch(params);
+
+  // Step 2: Apply soft delete filter from base callbacks
+  // The base callback will add deleted_at@is: null unless includeDeleted is true
+  if (baseCallbacks.beforeGetList) {
+    return baseCallbacks.beforeGetList(searchTransformedParams, dataProvider);
+  }
+
+  return searchTransformedParams;
+}
+
+/**
  * Organizations lifecycle callbacks for React Admin withLifecycleCallbacks
  *
  * Usage:
@@ -41,11 +137,10 @@ export const COMPUTED_FIELDS = [
  * ]);
  * ```
  */
-export const organizationsCallbacks: ResourceCallbacks = createResourceCallbacks({
-  resource: "organizations",
-  supportsSoftDelete: true,
-  computedFields: COMPUTED_FIELDS,
-});
+export const organizationsCallbacks: ResourceCallbacks = {
+  ...baseCallbacks,
+  beforeGetList: organizationsBeforeGetList,
+};
 
 /**
  * Export stripComputedFields for backward compatibility with tests

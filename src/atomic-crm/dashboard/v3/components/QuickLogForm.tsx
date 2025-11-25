@@ -150,29 +150,31 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     return filter;
   }, [selectedOrganizationId]);
 
-  // Build organization filter
+  // Build organization filter with server-side search
+  // Server-side q filter is transformed to ILIKE search in organizationsCallbacks.ts
   const orgFilter = useMemo(() => {
     const filter: Record<string, unknown> = {};
-    if (shouldSearchOrgs) {
+    // Enable server-side search via ILIKE transformation in callbacks
+    if (orgSearch.debouncedTerm.length >= MIN_SEARCH_LENGTH) {
       filter.q = orgSearch.debouncedTerm;
     }
     return filter;
-  }, [shouldSearchOrgs, orgSearch.debouncedTerm]);
+  }, [orgSearch.debouncedTerm]);
 
-  // Build opportunity filter (with optional organization constraint)
-  // Note: Filtering to exclude closed opportunities (closed_won, closed_lost) would require
-  // a custom filter operator. For now, users see all opportunities and can choose active ones.
+  // Build opportunity filter with server-side search
+  // Server-side q filter is transformed to ILIKE search in opportunitiesCallbacks.ts
   const oppFilter = useMemo(() => {
     const filter: Record<string, unknown> = {};
-    if (shouldSearchOpps) {
-      filter.q = oppSearch.debouncedTerm;
-    }
     // Apply organization filter if anchor org is set
     if (selectedOrganizationId) {
       filter.customer_organization_id = selectedOrganizationId;
     }
+    // Enable server-side search via ILIKE transformation in callbacks
+    if (oppSearch.debouncedTerm.length >= MIN_SEARCH_LENGTH) {
+      filter.q = oppSearch.debouncedTerm;
+    }
     return filter;
-  }, [shouldSearchOpps, oppSearch.debouncedTerm, selectedOrganizationId]);
+  }, [selectedOrganizationId, oppSearch.debouncedTerm]);
 
   // Fetch contacts with hybrid approach
   const {
