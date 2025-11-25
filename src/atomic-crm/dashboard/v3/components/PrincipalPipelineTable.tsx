@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, lazy, Suspense } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,7 +22,12 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import type { PrincipalPipelineRow } from "../types";
 import { usePrincipalPipeline } from "../hooks/usePrincipalPipeline";
-import { PipelineDrillDownSheet } from "./PipelineDrillDownSheet";
+
+// Lazy load PipelineDrillDownSheet - saves ~3-5KB from main dashboard chunk
+// Only loaded when user clicks a principal row to drill down
+const PipelineDrillDownSheet = lazy(() =>
+  import("./PipelineDrillDownSheet").then(m => ({ default: m.PipelineDrillDownSheet }))
+);
 
 type SortField = "name" | "totalPipeline" | "activeThisWeek" | "activeLastWeek" | "momentum";
 type SortDirection = "ascending" | "descending" | "none";
@@ -373,13 +378,17 @@ export function PrincipalPipelineTable() {
         )}
       </div>
 
-      {/* Drill-Down Sheet */}
-      <PipelineDrillDownSheet
-        principalId={selectedPrincipal?.id ?? null}
-        principalName={selectedPrincipal?.name ?? ""}
-        isOpen={selectedPrincipal !== null}
-        onClose={handleCloseSheet}
-      />
+      {/* Drill-Down Sheet - lazy loaded, only renders when a principal is selected */}
+      {selectedPrincipal !== null && (
+        <Suspense fallback={null}>
+          <PipelineDrillDownSheet
+            principalId={selectedPrincipal.id}
+            principalName={selectedPrincipal.name}
+            isOpen={true}
+            onClose={handleCloseSheet}
+          />
+        </Suspense>
+      )}
     </div>
   );
 }
