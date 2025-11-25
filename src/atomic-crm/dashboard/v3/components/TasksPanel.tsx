@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo, memo } from "react";
 import { useNotify } from "react-admin";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -33,9 +33,13 @@ import { useMyTasks } from "../hooks/useMyTasks";
 export function TasksPanel() {
   const { tasks, loading, error, completeTask, snoozeTask, deleteTask, viewTask } = useMyTasks();
 
-  const overdueTasks = tasks.filter((t) => t.status === "overdue");
-  const todayTasks = tasks.filter((t) => t.status === "today");
-  const tomorrowTasks = tasks.filter((t) => t.status === "tomorrow");
+  // Memoize filtered task lists to avoid recomputing on every render
+  // Only recalculates when tasks array reference changes
+  const { overdueTasks, todayTasks, tomorrowTasks } = useMemo(() => ({
+    overdueTasks: tasks.filter((t) => t.status === "overdue"),
+    todayTasks: tasks.filter((t) => t.status === "today"),
+    tomorrowTasks: tasks.filter((t) => t.status === "tomorrow"),
+  }), [tasks]);
 
   if (loading) {
     return (
