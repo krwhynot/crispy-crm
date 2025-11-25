@@ -110,7 +110,10 @@ import { unifiedDataProvider } from "./unifiedDataProvider";
 
 describe("unifiedDataProvider - Error Handling", () => {
   beforeEach(() => {
-    vi.clearAllMocks();
+    // TD-001 FIX: Use resetAllMocks() instead of clearAllMocks()
+    // clearAllMocks() only clears call history, NOT mock implementations
+    // resetAllMocks() clears BOTH, preventing state leakage between tests
+    vi.resetAllMocks();
   });
 
   describe("network errors", () => {
