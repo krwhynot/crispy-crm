@@ -31,13 +31,7 @@
 
 | ID | Type | File | Line | Description | Effort | Status | Assignee |
 |----|------|------|------|-------------|--------|--------|----------|
-| TD-003 | TEST | `opportunities/__tests__/QuickAddForm.test.tsx` | 242 | **Missing test coverage** - Principal selection and product filtering interaction not tested. Test renders UI but skips interaction validation. | 4-6h | Open | - |
 | TD-004 | FEATURE | `utils/avatar.utils.ts` | 96, 116 | **LinkedIn avatar integration** - TODO comments for LinkedIn profile/company logo retrieval. Requires product decision (Direct API vs third-party service). | 2-3d | Open | - |
-
-**TD-003 Details:**
-- **Missing Coverage:** Select component open/select/close cycle for principal → product filtering
-- **Testing Approach:** Use `@testing-library/user-event` with `selectOptions` helper
-- **Impact:** Product filtering logic unverified, potential UX regressions
 
 **TD-004 Details:**
 - **Options:**
@@ -70,6 +64,7 @@
 
 | ID | Type | File | Description | Resolved Date | Resolution |
 |----|------|------|-------------|---------------|------------|
+| TD-003 | TEST | `QuickAddForm.test.tsx`, `useFilteredProducts.test.tsx` | Missing test coverage - Principal selection and product filtering interaction | 2025-11-25 | Added 17 QuickAddForm tests (8 for principal/product flow) + 24 useFilteredProducts hook tests. Full coverage: dropdown display, selection state, filter params, principal switching, empty products edge case, persistence after form reset. |
 | TD-002 | DRY | `providers/commons/getContactAvatar.ts`, `utils/avatar.utils.ts` | Code duplication - Avatar logic duplicated between `providers/commons/` and `utils/` | 2025-11-24 | Test coverage added (29 tests for avatar.utils.ts), duplicate files deleted (`getContactAvatar.ts`, `getOrganizationAvatar.ts` + specs), single source of truth established in `utils/avatar.utils.ts` |
 | TD-001 | TEST | `unifiedDataProvider.errors.test.ts` | Mock isolation bug - vi.clearAllMocks() preserving implementations | 2025-11-24 | Changed to `vi.resetAllMocks()` in beforeEach; fixed delete tests to use `mockUpdate` (soft delete path) |
 
@@ -173,6 +168,7 @@ Use this template when adding new technical debt items:
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2025-11-25 | Resolved TD-003: Principal/product filtering tests - 17 QuickAddForm + 24 useFilteredProducts tests | Claude |
 | 2025-11-24 | Resolved TD-002: Avatar code duplication - added 29 tests, deleted duplicates, single source of truth | Claude |
 | 2025-11-24 | Resolved TD-001: Mock isolation bug fixed with vi.resetAllMocks() | Claude |
 | 2024-11-24 | Initial creation with 5 items from TODO/FIXME analysis | Claude |
