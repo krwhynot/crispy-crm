@@ -1,4 +1,4 @@
-import { TargetIcon, Users, Building2, Package, Activity } from "lucide-react";
+import { TargetIcon, Users, Building2, Package, Activity, StickyNote } from "lucide-react";
 import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
 import { OpportunitySlideOverDetailsTab } from "./slideOverTabs/OpportunitySlideOverDetailsTab";
@@ -6,6 +6,7 @@ import { OpportunityContactsTab } from "./slideOverTabs/OpportunityContactsTab";
 import { OpportunityOrganizationsTab } from "./slideOverTabs/OpportunityOrganizationsTab";
 import { OpportunityProductsTab } from "./slideOverTabs/OpportunityProductsTab";
 import { OpportunityActivitiesTab } from "./slideOverTabs/OpportunityActivitiesTab";
+import { OpportunityNotesTab } from "./slideOverTabs/OpportunityNotesTab";
 
 interface OpportunitySlideOverProps {
   recordId: number | null;
@@ -52,6 +53,12 @@ export function OpportunitySlideOver({
       label: "Activities",
       component: OpportunityActivitiesTab,
       icon: Activity,
+    },
+    {
+      key: "notes",
+      label: "Notes",
+      component: OpportunityNotesTab,
+      icon: StickyNote,
     },
   ];
 
