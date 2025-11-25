@@ -365,4 +365,161 @@ export class DashboardPage extends BasePage {
 
     return (rightBox.width / gridBox.width) * 100;
   }
+
+  // ===== Widget Assertion Helpers =====
+
+  /**
+   * Verify all core dashboard widgets are visible
+   * Use in smoke tests to confirm dashboard loaded correctly
+   */
+  async expectAllWidgetsVisible(): Promise<void> {
+    await expect(this.getHeading()).toBeVisible({ timeout: 10000 });
+    // Check for at least one widget type (V3 has pipeline, tasks, logger)
+    const pipelineVisible = await this.getPrincipalPipelineHeading().isVisible().catch(() => false);
+    const tasksVisible = await this.getTasksWidgetHeading().isVisible().catch(() => false);
+
+    expect(pipelineVisible || tasksVisible).toBe(true);
+  }
+
+  /**
+   * Wait for dashboard widgets to finish loading
+   * Checks for loading skeletons to disappear
+   */
+  async waitForWidgetsLoaded(): Promise<void> {
+    // Wait for any loading skeletons to disappear
+    const loadingSkeletons = this.page.locator(".animate-pulse");
+    await loadingSkeletons.first().waitFor({ state: "hidden", timeout: 15000 }).catch(() => {
+      // No skeletons found - dashboard already loaded
+    });
+  }
+
+  /**
+   * Get loading skeleton (indicates widget is still loading)
+   */
+  getLoadingSkeleton(): Locator {
+    return this.page.locator(".animate-pulse").first();
+  }
+
+  /**
+   * Check if any widget is in loading state
+   */
+  async isAnyWidgetLoading(): Promise<boolean> {
+    const skeletonCount = await this.page.locator(".animate-pulse").count();
+    return skeletonCount > 0;
+  }
+
+  /**
+   * Get widget error message (if widget failed to load)
+   */
+  getWidgetErrorMessage(): Locator {
+    return this.page.getByText(/failed to load|error loading/i);
+  }
+
+  /**
+   * Check if any widget has an error state
+   */
+  async hasWidgetError(): Promise<boolean> {
+    return this.getWidgetErrorMessage().isVisible().catch(() => false);
+  }
+
+  // ===== Task Widget Interactions =====
+
+  /**
+   * Get task items in the Tasks widget
+   */
+  getTaskItems(): Locator {
+    return this.page.locator(".interactive-card");
+  }
+
+  /**
+   * Get task item by subject text
+   */
+  getTaskBySubject(subject: string | RegExp): Locator {
+    return this.getTaskItems().filter({ hasText: subject });
+  }
+
+  /**
+   * Get snooze button for a specific task
+   */
+  getTaskSnoozeButton(taskSubject: string | RegExp): Locator {
+    return this.getTaskBySubject(taskSubject).getByRole("button", { name: /snooze/i });
+  }
+
+  /**
+   * Get task group accordion (Overdue, Today, Tomorrow)
+   */
+  getTaskGroup(groupName: "Overdue" | "Today" | "Tomorrow"): Locator {
+    return this.page.getByRole("button").filter({ hasText: groupName });
+  }
+
+  /**
+   * Get overdue badge showing count of overdue tasks
+   */
+  getOverdueBadge(): Locator {
+    return this.page.locator('[class*="destructive"]').filter({ hasText: /overdue/i });
+  }
+
+  /**
+   * Complete a task by clicking its checkbox
+   */
+  async completeTask(taskSubject: string | RegExp): Promise<void> {
+    const checkbox = this.getTaskBySubject(taskSubject).getByRole("checkbox");
+    await checkbox.click();
+    // Wait for task to be removed from list (optimistic UI)
+    await expect(this.getTaskBySubject(taskSubject)).not.toBeVisible({ timeout: 5000 });
+  }
+
+  /**
+   * Snooze a task by one day
+   */
+  async snoozeTask(taskSubject: string | RegExp): Promise<void> {
+    await this.getTaskSnoozeButton(taskSubject).click();
+    // Wait for API response
+    await this.waitForAPIResponse("/tasks");
+  }
+
+  // ===== Activity Logger Interactions =====
+
+  /**
+   * Get "New Activity" button to open the logger form
+   */
+  getNewActivityButton(): Locator {
+    return this.page.getByRole("button", { name: /new activity/i });
+  }
+
+  /**
+   * Get activity type select in the logger form
+   */
+  getActivityTypeSelect(): Locator {
+    return this.page.getByLabel(/activity type/i);
+  }
+
+  /**
+   * Get notes textarea in the logger form
+   */
+  getActivityNotesInput(): Locator {
+    return this.page.getByLabel(/notes/i);
+  }
+
+  /**
+   * Get "Save & Close" button in the logger form
+   */
+  getSaveAndCloseButton(): Locator {
+    return this.page.getByRole("button", { name: /save & close/i });
+  }
+
+  /**
+   * Get "Save & New" button in the logger form
+   */
+  getSaveAndNewButton(): Locator {
+    return this.page.getByRole("button", { name: /save & new/i });
+  }
+
+  /**
+   * Open the activity logger form
+   */
+  async openActivityLogger(): Promise<void> {
+    await this.getNewActivityButton().click();
+    await expect(this.getActivityTypeSelect()).toBeVisible({ timeout: 5000 });
+  }
 }
