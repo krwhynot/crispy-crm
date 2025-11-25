@@ -12,7 +12,12 @@ import { useContactImport } from "./useContactImport";
 import type { PreviewData, DataQualityDecisions } from "./ContactImportPreview";
 import { ContactImportPreview } from "./ContactImportPreview";
 import { ContactImportResult } from "./ContactImportResult";
-import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactImport.logic";
+import {
+  extractNewOrganizations,
+  extractNewTags,
+  findOrganizationsWithoutContacts,
+  findContactsWithoutContactInfo,
+} from "./contactImport.helpers";
 import { findCanonicalField, isFullNameColumn } from "./columnAliases";
 import { useColumnMapping } from "./useColumnMapping";
 import { useImportWizard } from "./useImportWizard";
@@ -683,80 +688,3 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
   );
 }
 
-// ============================================================
-// HELPER FUNCTIONS
-// ============================================================
-
-/** Extract unique organizations from parsed data */
-function extractNewOrganizations(rows: ContactImportSchema[]): string[] {
-  const organizations = new Set<string>();
-  rows.forEach((row) => {
-    if (row.organization_name) {
-      organizations.add(row.organization_name.trim());
-    }
-  });
-  return Array.from(organizations);
-}
-
-/** Extract unique tags from parsed data */
-function extractNewTags(rows: ContactImportSchema[]): string[] {
-  const tags = new Set<string>();
-  rows.forEach((row) => {
-    if (row.tags) {
-      row.tags.split(",").forEach((tag) => {
-        const trimmed = tag.trim();
-        if (trimmed) {
-          tags.add(trimmed);
-        }
-      });
-    }
-  });
-  return Array.from(tags);
-}
-
-/** Find organizations without contact persons */
-function findOrganizationsWithoutContacts(
-  rows: ContactImportSchema[]
-): Array<{ organization_name: string; row: number }> {
-  const orgOnlyEntries: Array<{ organization_name: string; row: number }> = [];
-
-  rows.forEach((row, index) => {
-    if (isOrganizationOnlyEntry(row)) {
-      orgOnlyEntries.push({
-        organization_name: String(row.organization_name).trim(),
-        row: index + 4, // +3 for header rows, +1 for 1-indexed
-      });
-    }
-  });
-
-  return orgOnlyEntries;
-}
-
-/** Find contacts without email or phone */
-function findContactsWithoutContactInfo(
-  rows: ContactImportSchema[]
-): Array<{ name: string; organization_name: string; row: number }> {
-  const contactsWithoutInfo: Array<{ name: string; organization_name: string; row: number }> = [];
-
-  rows.forEach((row, index) => {
-    if (isContactWithoutContactInfo(row)) {
-      const hasFirstName = row.first_name && String(row.first_name).trim();
-      const hasLastName = row.last_name && String(row.last_name).trim();
-      const name =
-        [
-          hasFirstName ? String(row.first_name).trim() : "",
-          hasLastName ? String(row.last_name).trim() : "",
-        ]
-          .filter(Boolean)
-          .join(" ") || "Unknown";
-
-      contactsWithoutInfo.push({
-        name,
-        organization_name: row.organization_name ? String(row.organization_name).trim() : "",
-        row: index + 4, // +3 for header rows, +1 for 1-indexed
-      });
-    }
-  });
-
-  return contactsWithoutInfo;
-}
