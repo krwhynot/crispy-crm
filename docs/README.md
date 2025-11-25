@@ -131,6 +131,7 @@ Get the project running locally and deploy to production.
 - [Common Tasks](development/common-tasks.md) - Step-by-step guides for frequent operations
 - [Commands Reference](development/commands-quick-reference.md) - All CLI commands with descriptions
 - [Testing Reference](development/testing-quick-reference.md) - Testing commands and patterns
+- [Technical Debt Tracker](technical-debt-tracker.md) - Prioritized TODO/FIXME items with effort estimates
 
 ### Specialized Topics
 
