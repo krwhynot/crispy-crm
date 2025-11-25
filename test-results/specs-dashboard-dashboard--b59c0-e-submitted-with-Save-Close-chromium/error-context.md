@@ -383,20 +383,14 @@
                     - img
         - separator [ref=e404]:
           - img [ref=e406]
-        - generic [ref=e414]:
-          - generic [ref=e417]:
-            - generic [ref=e418]: Log Activity
-            - generic [ref=e419]: Quick capture for calls, meetings, and notes
-          - generic [ref=e421]:
-            - paragraph [ref=e422]: Capture your customer interactions as they happen
-            - button "New Activity" [ref=e423] [cursor=pointer]:
-              - img
-              - text: New Activity
-  - contentinfo [ref=e424]:
-    - generic [ref=e426]:
-      - paragraph [ref=e427]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e428] [cursor=pointer]:
-        - img [ref=e429]
-        - generic [ref=e431]: Keyboard shortcuts
+        - generic [ref=e417]:
+          - generic [ref=e418]: Log Activity
+          - generic [ref=e419]: Quick capture for calls, meetings, and notes
+  - contentinfo [ref=e446]:
+    - generic [ref=e448]:
+      - paragraph [ref=e449]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e450] [cursor=pointer]:
+        - img [ref=e451]
+        - generic [ref=e453]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```
