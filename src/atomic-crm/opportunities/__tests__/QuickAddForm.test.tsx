@@ -239,8 +239,10 @@ describe("QuickAddForm", () => {
     // Initially should show message to select principal
     expect(screen.getByText(/select a principal first to filter products/i)).toBeInTheDocument();
 
-    // TODO: Test principal selection and product filtering
-    // This would require more complex mocking of Select component interactions
+    // TD-003 [P2] Missing test coverage - Test principal selection and product filtering
+    // Effort: 4-6 hours | Approach: Use @testing-library/user-event selectOptions helper
+    // This requires mocking Select component open/select/close cycle
+    // Tracker: docs/technical-debt-tracker.md
   });
 
   it("validates all required fields", async () => {

@@ -151,8 +151,11 @@ describe("unifiedDataProvider - Error Handling", () => {
     it("should propagate network errors on delete", async () => {
       // Use segments which do NOT support soft delete (not in SOFT_DELETE_RESOURCES)
       // Note: This test has mock state isolation issues - skipping for now
-      // TODO: Investigate why vi.clearAllMocks() doesn't properly reset mockDelete
-      // between tests, causing "ENOTFOUND" from previous test to persist
+      //
+      // TD-001 [P1] Mock isolation bug - vi.clearAllMocks() doesn't reset mockDelete
+      // Effort: 2-4 hours | Fix: Use vi.resetAllMocks() in beforeEach
+      // Tracker: docs/technical-debt-tracker.md
+      // Root cause: vi.clearAllMocks() clears call history but not mock implementations
       expect(true).toBe(true);
     });
 

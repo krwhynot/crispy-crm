@@ -1,4 +1,7 @@
-// FIXME: This should be exported from the ra-core package
+// TD-005 [P3] Missing export from ra-core - CanAccessParams interface locally duplicated
+// Effort: 1-2 hours | Status: Keep as-is with version documentation
+// ra-core doesn't export this interface, forcing local definition
+// Verified against: ra-core@4.x | Tracker: docs/technical-debt-tracker.md
 interface CanAccessParams<RecordType extends Record<string, any> = Record<string, any>> {
   action: string;
   resource: string;

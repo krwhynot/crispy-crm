@@ -93,7 +93,10 @@ export async function getContactAvatar(record: Partial<Contact>): Promise<string
       return faviconUrl;
     }
 
-    // TODO: Step 3: Try to get image from LinkedIn.
+    // TD-004 [P2] LinkedIn avatar integration - Step 3: Try to get image from LinkedIn
+    // Effort: 2-3 days | Options: Direct LinkedIn API (OAuth) or third-party (Clearbit/Hunter)
+    // Prerequisite: Product decision on build vs buy approach
+    // Tracker: docs/technical-debt-tracker.md
   }
 
   return null;
@@ -113,7 +116,10 @@ export async function getOrganizationAvatar(record: Partial<Organization>): Prom
   src: string;
   title: string;
 } | null> {
-  // TODO: Step 1: Try to get image from LinkedIn.
+  // TD-004 [P2] LinkedIn avatar integration - Step 1: Try to get company logo from LinkedIn
+  // Effort: 2-3 days | Options: Direct LinkedIn API (OAuth) or third-party (Clearbit/Hunter)
+  // Prerequisite: Product decision on build vs buy approach
+  // Tracker: docs/technical-debt-tracker.md
 
   // Step 2: Fallback to the favicon from website domain
   if (!record.website) {
