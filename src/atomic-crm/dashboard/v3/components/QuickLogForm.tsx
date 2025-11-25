@@ -271,13 +271,27 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
   }, [contacts, anchorOrganizationId]);
 
   // Filter organizations by anchor organization (lock to single org when anchor exists)
+  // BUG FIX: When anchorOrganizationId is set but the org isn't in the fetched list,
+  // we must still show it. Use selectedContact's company_name as fallback.
   const filteredOrganizations = useMemo(() => {
     if (!anchorOrganizationId) {
       return organizations;
     }
-    // Only show the anchor organization when one is set
-    return organizations.filter((o) => o.id === anchorOrganizationId);
-  }, [organizations, anchorOrganizationId]);
+    // Filter to the anchor organization
+    const filtered = organizations.filter((o) => o.id === anchorOrganizationId);
+
+    // If the anchor org isn't in the fetched list, create a placeholder from contact data
+    if (filtered.length === 0 && selectedContact?.organization_id === anchorOrganizationId) {
+      // Use the contact's company_name if available
+      const fallbackOrg: Organization = {
+        id: anchorOrganizationId,
+        name: selectedContact.company_name || `Organization #${anchorOrganizationId}`,
+      };
+      return [fallbackOrg];
+    }
+
+    return filtered;
+  }, [organizations, anchorOrganizationId, selectedContact?.organization_id, selectedContact?.company_name]);
 
   // Filter opportunities by anchor organization (client-side filtering)
   const filteredOpportunities = useMemo(() => {
