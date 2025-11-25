@@ -16,6 +16,7 @@ import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactI
 import { findCanonicalField, isFullNameColumn } from "./columnAliases";
 import { useColumnMapping } from "./useColumnMapping";
 import { useImportWizard } from "./useImportWizard";
+import { assertNever } from "./useImportWizard.types";
 import { FULL_NAME_SPLIT_MARKER } from "./csvConstants";
 import {
   validateCsvFile,
@@ -595,9 +596,10 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
 
   /**
    * Renders the main dialog content based on current wizard step.
-   * Uses explicit switch pattern for type-safe step handling.
+   * Uses explicit switch pattern with exhaustive type checking.
+   * TypeScript will error at compile time if any step is unhandled.
    */
-  const renderMainDialogContent = () => {
+  const renderMainDialogContent = (): React.ReactNode => {
     switch (wizardState.step) {
       case "idle":
       case "file_selected":
@@ -618,8 +620,8 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
         return null;
 
       default:
-        // TypeScript exhaustive check - this should never happen
-        return null;
+        // TypeScript exhaustive check - compiler will error if any case is missing
+        return assertNever(wizardState);
     }
   };
 
