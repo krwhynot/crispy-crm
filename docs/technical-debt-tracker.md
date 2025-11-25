@@ -12,8 +12,8 @@
 |----------|------|-------------|----------|
 | P1 (Critical) | 0 | 0 | 1 |
 | P2 (High) | 1 | 0 | 2 |
-| P3 (Low) | 1 | 0 | 0 |
-| **Total** | **2** | **0** | **3** |
+| P3 (Low) | 0 | 0 | 1 |
+| **Total** | **1** | **0** | **4** |
 
 **Last Updated:** 2025-11-25
 
@@ -47,16 +47,7 @@
 
 ### P3 - Low (Address When Convenient)
 
-| ID | Type | File | Line | Description | Effort | Status | Assignee |
-|----|------|------|------|-------------|--------|--------|----------|
-| TD-005 | TYPE | `providers/commons/canAccess.ts` | 1 | **Missing export from ra-core** - `CanAccessParams` interface locally duplicated because `ra-core` doesn't export it. | 1-2h | Open | - |
-
-**TD-005 Details:**
-- **Options:**
-  1. Keep local definition with version comment (recommended)
-  2. Submit PR to ra-core (high coordination cost)
-- **Impact:** Minor - type may drift from upstream
-- **Recommendation:** Document the ra-core version verified against
+*No open P3 items* ✅
 
 ---
 
@@ -64,6 +55,7 @@
 
 | ID | Type | File | Description | Resolved Date | Resolution |
 |----|------|------|-------------|---------------|------------|
+| TD-005 | TYPE | `providers/commons/canAccess.ts` | Missing export from ra-core - `CanAccessParams` interface locally duplicated | 2025-11-25 | Comprehensive JSDoc added with: version verification (ra-core@5.10.0), source reference link, resolution options documented, maintenance notes. Local definition is correct approach - low maintenance, avoids upstream PR coordination. |
 | TD-003 | TEST | `QuickAddForm.test.tsx`, `useFilteredProducts.test.tsx` | Missing test coverage - Principal selection and product filtering interaction | 2025-11-25 | Added 17 QuickAddForm tests (8 for principal/product flow) + 24 useFilteredProducts hook tests. Full coverage: dropdown display, selection state, filter params, principal switching, empty products edge case, persistence after form reset. |
 | TD-002 | DRY | `providers/commons/getContactAvatar.ts`, `utils/avatar.utils.ts` | Code duplication - Avatar logic duplicated between `providers/commons/` and `utils/` | 2025-11-24 | Test coverage added (29 tests for avatar.utils.ts), duplicate files deleted (`getContactAvatar.ts`, `getOrganizationAvatar.ts` + specs), single source of truth established in `utils/avatar.utils.ts` |
 | TD-001 | TEST | `unifiedDataProvider.errors.test.ts` | Mock isolation bug - vi.clearAllMocks() preserving implementations | 2025-11-24 | Changed to `vi.resetAllMocks()` in beforeEach; fixed delete tests to use `mockUpdate` (soft delete path) |
