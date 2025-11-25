@@ -9,7 +9,8 @@ import { z } from "zod";
 
 describe("Task Edge Cases and Business Rules", () => {
   describe("Business Rules", () => {
-    it("should enforce required contact association", () => {
+    it("should allow tasks without contact association", () => {
+      // Tasks can be associated with contact, opportunity, or organization - all optional
       const taskWithoutContact = {
         title: "Orphan task",
         type: "Call",
@@ -17,7 +18,10 @@ describe("Task Edge Cases and Business Rules", () => {
         sales_id: 456,
       };
 
-      expect(() => taskSchema.parse(taskWithoutContact)).toThrow(z.ZodError);
+      // Should parse successfully - contact_id is optional per schema design
+      const result = taskSchema.parse(taskWithoutContact);
+      expect(result.title).toBe("Orphan task");
+      expect(result.contact_id).toBeUndefined();
     });
 
     it("should enforce sales assignment", () => {

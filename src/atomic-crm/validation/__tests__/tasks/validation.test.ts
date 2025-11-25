@@ -46,14 +46,17 @@ describe("Task Validation Schemas", () => {
       expect(() => taskSchema.parse(invalidData)).toThrow(z.ZodError);
     });
 
-    it("should require contact_id", () => {
+    it("should allow optional contact_id", () => {
+      // Per schema design: tasks can be associated with contact, opportunity, or organization - all optional
       const withoutContact = {
         title: "Task without contact",
         type: "Call",
         due_date: "2024-12-31T10:00:00Z",
         sales_id: 456,
       };
-      expect(() => taskSchema.parse(withoutContact)).toThrow(z.ZodError);
+      const result = taskSchema.parse(withoutContact);
+      expect(result.title).toBe("Task without contact");
+      expect(result.contact_id).toBeUndefined();
     });
 
     it("should require sales_id", () => {
