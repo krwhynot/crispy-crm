@@ -403,12 +403,12 @@ export class DashboardV3Page extends BasePage {
 
   /**
    * Get Outcome select
-   * NOTE: shadcn Select with FormLabel doesn't have HTML label association,
-   * so we find the combobox by its placeholder text instead
+   * NOTE: shadcn Select with FormLabel doesn't have HTML label association.
+   * The SelectTrigger is a button containing the placeholder "Select outcome".
    */
   getOutcomeSelect(): Locator {
-    // Find the Select trigger by its placeholder "Select outcome"
-    return this.page.getByRole("combobox").filter({ hasText: /select outcome/i }).first();
+    // Find the button that contains "Select outcome" placeholder text
+    return this.page.locator("button", { hasText: "Select outcome" }).first();
   }
 
   /**
@@ -497,14 +497,18 @@ export class DashboardV3Page extends BasePage {
 
   /**
    * Open the activity log form
-   * Waits for form loading to complete (salesId + entities load)
+   * The panel starts in "New Activity" button state, then shows form after click
    */
   async openActivityForm(): Promise<void> {
-    await this.getStartLoggingButton().click();
-    // Wait for loading spinner to disappear (form has loading state while fetching salesId + entities)
-    await expect(this.getFormLoadingState()).not.toBeVisible({ timeout: 10000 });
-    // Then verify form fields are visible
-    await expect(this.getActivityTypeSelect()).toBeVisible({ timeout: 5000 });
+    // First, scroll the Quick Logger panel into view to ensure button is visible
+    await this.getQuickLoggerHeading().scrollIntoViewIfNeeded();
+    // Wait for and click the New Activity button
+    const newActivityBtn = this.getStartLoggingButton();
+    await expect(newActivityBtn).toBeVisible({ timeout: 10000 });
+    await newActivityBtn.click();
+    // Wait for lazy-loaded form to appear (Suspense shows skeleton then form)
+    // The form shows "What happened?" section heading when ready
+    await expect(this.page.getByText("What happened?")).toBeVisible({ timeout: 10000 });
   }
 
   /**
@@ -627,19 +631,16 @@ export class DashboardV3Page extends BasePage {
 
   /**
    * Set follow-up date
-   * NOTE: Calendar shows days from prev/current/next months, so we filter
-   * to only enabled gridcells and take the first match (current month's day)
+   * NOTE: Calendar shows days from prev/current/next months.
+   * Using first() should get the current month's day since it renders first in DOM.
    */
   async setFollowUpDate(date: Date): Promise<void> {
     await this.getFollowUpDatePicker().click();
-    // Click the day in the calendar
-    // Use exact match and filter to enabled cells only (current month days are enabled)
+    // Wait for calendar to be visible
+    await this.page.getByRole("grid").first().waitFor({ state: "visible" });
+    // Click the day in the calendar - first match is from current month
     const dayNumber = date.getDate().toString();
-    const dayCell = this.page
-      .getByRole("gridcell", { name: dayNumber, exact: true })
-      .and(this.page.locator(':not([aria-disabled="true"])'))
-      .first();
-    await dayCell.click();
+    await this.page.getByRole("gridcell", { name: dayNumber, exact: true }).first().click();
     // Press Escape to close the date picker popover
     await this.page.keyboard.press("Escape");
     await this.page.waitForTimeout(200);
