@@ -160,6 +160,7 @@ Use this template when adding new technical debt items:
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2025-11-25 | Resolved TD-005: canAccess.ts documentation - comprehensive JSDoc with version info, source reference, maintenance notes | Claude |
 | 2025-11-25 | Resolved TD-003: Principal/product filtering tests - 17 QuickAddForm + 24 useFilteredProducts tests | Claude |
 | 2025-11-24 | Resolved TD-002: Avatar code duplication - added 29 tests, deleted duplicates, single source of truth | Claude |
 | 2025-11-24 | Resolved TD-001: Mock isolation bug fixed with vi.resetAllMocks() | Claude |
