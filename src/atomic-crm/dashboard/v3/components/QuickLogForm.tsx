@@ -66,9 +66,13 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     defaultValues: activityLogSchema.partial().parse({}),
   });
 
-  // Track selected values for cascading filters
+  // Consolidate all form.watch() calls at component top for stable memoization
+  // Each watch() creates a subscription - calling inside useMemo deps breaks memoization
   const selectedOpportunityId = form.watch("opportunityId");
   const selectedContactId = form.watch("contactId");
+  const selectedOrganizationId = form.watch("organizationId");
+  const activityType = form.watch("activityType");
+  const createFollowUp = form.watch("createFollowUp");
 
   const selectedOpportunity = useMemo(
     () => opportunities.find((o) => o.id === selectedOpportunityId),
@@ -81,11 +85,11 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
   );
 
   // Determine the "anchor" organization - from organization, contact, or opportunity selection
+  // Uses pre-watched values to ensure stable memoization
   const anchorOrganizationId = useMemo(() => {
     // Direct organization selection takes priority
-    const organizationId = form.watch("organizationId");
-    if (organizationId) {
-      return organizationId;
+    if (selectedOrganizationId) {
+      return selectedOrganizationId;
     }
     // Then contact's organization
     if (selectedContact?.organization_id) {
@@ -96,7 +100,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
       return selectedOpportunity.customer_organization_id;
     }
     return null;
-  }, [form.watch("organizationId"), selectedContact?.organization_id, selectedOpportunity?.customer_organization_id]);
+  }, [selectedOrganizationId, selectedContact?.organization_id, selectedOpportunity?.customer_organization_id]);
 
   // Filter contacts by anchor organization
   const filteredContacts = useMemo(() => {
@@ -255,9 +259,9 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     }
   };
 
-  const showDuration =
-    form.watch("activityType") === "Call" || form.watch("activityType") === "Meeting";
-  const showFollowUpDate = form.watch("createFollowUp");
+  // Derived UI state from pre-watched values (no additional watch() calls)
+  const showDuration = activityType === "Call" || activityType === "Meeting";
+  const showFollowUpDate = createFollowUp;
 
   // Show loading state while entities or salesId are loading
   if (loading || salesIdLoading) {

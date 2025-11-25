@@ -172,7 +172,9 @@ interface TaskItemProps {
   onView: (taskId: number) => void;
 }
 
-function TaskItemComponent({ task, onComplete, onSnooze, onDelete, onView }: TaskItemProps) {
+// Memoized to prevent re-renders when parent re-renders but props haven't changed
+// Each task item has local state (isSnoozing, isDeleting) that shouldn't trigger sibling re-renders
+const TaskItemComponent = memo(function TaskItemComponent({ task, onComplete, onSnooze, onDelete, onView }: TaskItemProps) {
   const [isSnoozing, setIsSnoozing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const notify = useNotify();
@@ -315,4 +317,4 @@ function TaskItemComponent({ task, onComplete, onSnooze, onDelete, onView }: Tas
       </div>
     </div>
   );
-}
+});
