@@ -13,8 +13,8 @@ import type { PreviewData, DataQualityDecisions } from "./ContactImportPreview";
 import { ContactImportPreview } from "./ContactImportPreview";
 import { ContactImportResult } from "./ContactImportResult";
 import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactImport.logic";
-import { findCanonicalField, isFullNameColumn, mapHeadersToFields } from "./columnAliases";
-import { processCsvDataWithMappings } from "./csvProcessor";
+import { findCanonicalField, isFullNameColumn } from "./columnAliases";
+import { useColumnMapping } from "./useColumnMapping";
 import { FULL_NAME_SPLIT_MARKER } from "./csvConstants";
 import {
   validateCsvFile,
@@ -55,10 +55,17 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
     importContactsWithoutContactInfo: false,
   });
 
-  // Interactive column mapping state
-  const [userOverrides, setUserOverrides] = useState<Map<string, string | null>>(new Map());
-  const [rawHeaders, setRawHeaders] = useState<string[]>([]);
-  const [rawDataRows, setRawDataRows] = useState<any[][]>([]);
+  // Interactive column mapping - extracted to reusable hook
+  const {
+    mappings: mergedMappings,
+    overrides: userOverrides,
+    contacts: reprocessedContacts,
+    headers: rawHeaders,
+    setOverride: handleMappingChange,
+    setRawData,
+    reset: resetColumnMapping,
+    hasData: hasColumnData,
+  } = useColumnMapping();
 
   // State for the actual import process (replaces actualImporter)
   const [importState, setImportState] = useState<ImportState>("idle");
@@ -84,17 +91,16 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
   });
   const rowOffsetRef = React.useRef(0); // Track absolute row position in CSV file
 
-  // Handle preview mode
+  // Handle preview mode - delegates raw data to useColumnMapping hook
   const onPreview = useCallback(
     (data: { rows: ContactImportSchema[]; headers: string[]; rawDataRows?: any[][] }) => {
       if (!ENABLE_IMPORT_PREVIEW) return;
 
       const { rows, headers, rawDataRows: dataRows } = data;
 
-      // Store raw data for re-processing when user changes mappings
-      setRawHeaders(headers);
+      // Delegate raw data storage to column mapping hook
       if (dataRows) {
-        setRawDataRows(dataRows);
+        setRawData(headers, dataRows);
       }
 
       // Run data quality analysis
@@ -146,50 +152,15 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
       setPreviewData(preview);
       setShowPreview(true);
     },
-    []
+    [setRawData]
   );
 
-  // Handle user changing a column mapping - simplified to only manage state
-  const handleMappingChange = useCallback((csvHeader: string, targetField: string | null) => {
-    setUserOverrides((prev) => {
-      const next = new Map(prev);
-      if (targetField === null || targetField === "") {
-        // Clear override → revert to auto-detection
-        next.delete(csvHeader);
-      } else {
-        next.set(csvHeader, targetField);
-      }
-      return next;
-    });
-  }, []);
-
-  // Derive final mappings by merging auto-detection with user overrides
-  const mergedMappings = useMemo<Record<string, string | null>>(() => {
-    if (rawHeaders.length === 0) return {};
-
-    const autoMappings = mapHeadersToFields(rawHeaders);
-    const finalMappings: Record<string, string | null> = {};
-
-    rawHeaders.forEach((header) => {
-      // Priority: User override > Auto-detection
-      finalMappings[header] = userOverrides.get(header) ?? autoMappings[header];
-    });
-
-    return finalMappings;
-  }, [rawHeaders, userOverrides]);
-
-  // Derive re-processed contacts whenever mappings or raw data change
-  // THIS IS THE SOURCE OF TRUTH FOR THE IMPORT - not re-parsing the file!
-  const reprocessedContacts = useMemo<ContactImportSchema[]>(() => {
-    if (!rawHeaders.length || !rawDataRows.length) {
-      return [];
-    }
-    return processCsvDataWithMappings(rawHeaders, rawDataRows, mergedMappings);
-  }, [rawHeaders, rawDataRows, mergedMappings]);
+  // NOTE: handleMappingChange, mergedMappings, and reprocessedContacts
+  // are now provided by useColumnMapping hook (lines 59-68)
 
   // Derive all preview data declaratively using useMemo
   const derivedPreviewData = useMemo<PreviewData | null>(() => {
-    if (!rawHeaders.length || !rawDataRows.length) {
+    if (!hasColumnData) {
       return previewData; // Return initial previewData until raw data is ready
     }
 
@@ -275,7 +246,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
       organizationsWithoutContacts,
       contactsWithoutContactInfo,
     };
-  }, [reprocessedContacts, mergedMappings, rawHeaders, rawDataRows, userOverrides, previewData]);
+  }, [reprocessedContacts, mergedMappings, rawHeaders, hasColumnData, userOverrides, previewData]);
 
   // Enhanced processBatch wrapper with result accumulation across batches
   const processBatch = useCallback(
@@ -461,9 +432,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
     setPreviewData(null);
     setImportResult(null);
     setFile(null);
-    setUserOverrides(new Map());
-    setRawHeaders([]);
-    setRawDataRows([]);
+    resetColumnMapping(); // Reset column mapping hook state
 
     // Reset accumulated results
     accumulatedResultRef.current = {
