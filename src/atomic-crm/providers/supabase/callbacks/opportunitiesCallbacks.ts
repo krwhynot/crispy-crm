@@ -43,6 +43,65 @@ const CREATE_DEFAULTS = {
 } as const;
 
 /**
+ * Fields to search when q filter is provided
+ * These fields will be searched with ILIKE for partial matching
+ */
+export const OPPORTUNITIES_SEARCH_FIELDS = ["name", "description"] as const;
+
+/**
+ * Transform q filter into ILIKE search on opportunity fields
+ *
+ * Matches the unified data provider's search behavior by transforming a simple
+ * `q` filter into an `@or` filter with ILIKE conditions on each searchable field.
+ *
+ * @param params - GetListParams containing the filter with q
+ * @returns GetListParams with q transformed to @or ILIKE filters
+ *
+ * @example
+ * ```typescript
+ * // Input filter:
+ * { q: "enterprise", stage: "negotiation" }
+ *
+ * // Output filter:
+ * {
+ *   stage: "negotiation",
+ *   "@or": {
+ *     "name@ilike": "%enterprise%",
+ *     "description@ilike": "%enterprise%"
+ *   }
+ * }
+ * ```
+ */
+export function transformQToIlikeSearch(params: GetListParams): GetListParams {
+  const { q, ...filterWithoutQ } = params.filter || {};
+
+  // If no q filter, return params unchanged
+  if (!q || typeof q !== "string") {
+    return params;
+  }
+
+  // Wrap search term with wildcards for partial matching
+  const searchTerm = `%${q}%`;
+
+  // Build @or filter with ILIKE conditions for each searchable field
+  const orFilter = OPPORTUNITIES_SEARCH_FIELDS.reduce(
+    (acc, field) => ({
+      ...acc,
+      [`${field}@ilike`]: searchTerm,
+    }),
+    {} as Record<string, string>
+  );
+
+  return {
+    ...params,
+    filter: {
+      ...filterWithoutQ,
+      "@or": orFilter,
+    },
+  };
+}
+
+/**
  * Strip computed fields that shouldn't be sent to database
  *
  * @param data - The data being saved
@@ -133,17 +192,20 @@ export const opportunitiesCallbacks: ResourceCallbacks = {
   },
 
   /**
-   * Add soft delete filter and clean filters before getList
-   * Excludes soft-deleted records by default
+   * Add soft delete filter and transform q filter before getList
+   * 1. Transform q filter → ILIKE search
+   * 2. Exclude soft-deleted records by default
    */
   beforeGetList: async (params, _dataProvider) => {
-    const { includeDeleted, ...otherFilters } = params.filter || {};
+    // Step 1: Transform q filter to ILIKE search (removes q from filter)
+    const searchTransformedParams = transformQToIlikeSearch(params);
 
-    // Add soft delete filter unless explicitly including deleted
+    // Step 2: Apply soft delete filter
+    const { includeDeleted, ...otherFilters } = searchTransformedParams.filter || {};
     const softDeleteFilter = includeDeleted ? {} : { "deleted_at@is": null };
 
     return {
-      ...params,
+      ...searchTransformedParams,
       filter: {
         ...otherFilters,
         ...softDeleteFilter,
