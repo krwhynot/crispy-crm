@@ -7,7 +7,7 @@ import { Loader2, CheckCircle2, Users } from "lucide-react";
 import { Form, useRefresh } from "ra-core";
 import { Link } from "react-router-dom";
 import { usePapaParse } from "./usePapaParse";
-import type { ContactImportSchema, ImportResult, ImportError } from "./useContactImport";
+import type { ContactImportSchema } from "./useContactImport";
 import { useContactImport } from "./useContactImport";
 import type { PreviewData, DataQualityDecisions } from "./ContactImportPreview";
 import { ContactImportPreview } from "./ContactImportPreview";
@@ -15,18 +15,18 @@ import { ContactImportResult } from "./ContactImportResult";
 import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactImport.logic";
 import { findCanonicalField, isFullNameColumn } from "./columnAliases";
 import { useColumnMapping } from "./useColumnMapping";
+import { useImportWizard } from "./useImportWizard";
 import { FULL_NAME_SPLIT_MARKER } from "./csvConstants";
 import {
   validateCsvFile,
   getSecurePapaParseConfig,
-  type CsvValidationError,
 } from "../utils/csvUploadValidator";
 import { contactImportLimiter } from "../utils/rateLimiter";
 
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
 import * as React from "react";
-import { useState, useCallback, useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import * as sampleCsv from "./contacts_export.csv?raw";
 
 // Feature flag for enhanced import preview
@@ -41,21 +41,18 @@ interface ContactImportModalProps {
   onClose(): void;
 }
 
-type ImportState = "idle" | "running" | "complete" | "error";
-
 export function ContactImportDialog({ open, onClose }: ContactImportModalProps) {
   const refresh = useRefresh();
   const processBatchHook = useContactImport();
 
-  // Preview state management
-  const [showPreview, setShowPreview] = useState(false);
-  const [previewData, setPreviewData] = useState<PreviewData | null>(null);
-  const [dataQualityDecisions, setDataQualityDecisions] = useState<DataQualityDecisions>({
-    importOrganizationsWithoutContacts: false,
-    importContactsWithoutContactInfo: false,
-  });
+  // ============================================================
+  // STATE MACHINE - Replaces 10 useState calls + 2 refs
+  // ============================================================
+  const { state: wizardState, actions: wizardActions, flags } = useImportWizard();
 
-  // Interactive column mapping - extracted to reusable hook
+  // ============================================================
+  // COLUMN MAPPING - Extracted hook for reusability
+  // ============================================================
   const {
     mappings: mergedMappings,
     overrides: userOverrides,
@@ -67,31 +64,9 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
     hasData: hasColumnData,
   } = useColumnMapping();
 
-  // State for the actual import process (replaces actualImporter)
-  const [importState, setImportState] = useState<ImportState>("idle");
-  const [importProgress, setImportProgress] = useState({ count: 0, total: 0 });
-
-  // Import result state - accumulate across all batches
-  const [importResult, setImportResult] = useState<ImportResult | null>(null);
-  const [showResult, setShowResult] = useState(false);
-  const accumulatedResultRef = React.useRef<{
-    totalProcessed: number;
-    successCount: number;
-    skippedCount: number;
-    failedCount: number;
-    errors: ImportError[];
-    startTime: Date | null;
-  }>({
-    totalProcessed: 0,
-    successCount: 0,
-    skippedCount: 0,
-    failedCount: 0,
-    errors: [],
-    startTime: null,
-  });
-  const rowOffsetRef = React.useRef(0); // Track absolute row position in CSV file
-
-  // Handle preview mode - delegates raw data to useColumnMapping hook
+  // ============================================================
+  // PREVIEW CALLBACK - Triggered when PapaParse completes
+  // ============================================================
   const onPreview = useCallback(
     (data: { rows: ContactImportSchema[]; headers: string[]; rawDataRows?: any[][] }) => {
       if (!ENABLE_IMPORT_PREVIEW) return;
@@ -149,19 +124,19 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
         contactsWithoutContactInfo,
       };
 
-      setPreviewData(preview);
-      setShowPreview(true);
+      // Transition wizard to preview state
+      wizardActions.parsingComplete(preview);
     },
-    [setRawData]
+    [setRawData, wizardActions]
   );
 
-  // NOTE: handleMappingChange, mergedMappings, and reprocessedContacts
-  // are now provided by useColumnMapping hook (lines 59-68)
-
-  // Derive all preview data declaratively using useMemo
+  // ============================================================
+  // DERIVED PREVIEW DATA - Updates when column mappings change
+  // ============================================================
   const derivedPreviewData = useMemo<PreviewData | null>(() => {
-    if (!hasColumnData) {
-      return previewData; // Return initial previewData until raw data is ready
+    // Only compute when in preview state with column data
+    if (wizardState.step !== "preview" || !hasColumnData) {
+      return wizardState.step === "preview" ? wizardState.previewData : null;
     }
 
     // Re-run data quality analysis on the latest reprocessed data
@@ -246,58 +221,11 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
       organizationsWithoutContacts,
       contactsWithoutContactInfo,
     };
-  }, [reprocessedContacts, mergedMappings, rawHeaders, hasColumnData, userOverrides, previewData]);
+  }, [reprocessedContacts, mergedMappings, rawHeaders, hasColumnData, userOverrides, wizardState]);
 
-  // Enhanced processBatch wrapper with result accumulation across batches
-  const processBatch = useCallback(
-    async (batch: ContactImportSchema[]) => {
-      // Set start time on first batch
-      if (!accumulatedResultRef.current.startTime) {
-        accumulatedResultRef.current.startTime = new Date();
-      }
-
-      try {
-        const result = await processBatchHook(batch, {
-          preview: false,
-          startingRow: rowOffsetRef.current + 1, // Pass correct starting row for this batch
-          dataQualityDecisions, // Pass user's data quality decisions
-          onProgress: () => {
-            setImportProgress((prev) => ({ ...prev, count: prev.count + 1 }));
-          },
-        });
-
-        rowOffsetRef.current += batch.length; // Increment offset for next batch
-
-        // Accumulate results across all batches
-        accumulatedResultRef.current.totalProcessed += result.totalProcessed;
-        accumulatedResultRef.current.successCount += result.successCount;
-        accumulatedResultRef.current.skippedCount += result.skippedCount;
-        accumulatedResultRef.current.failedCount += result.failedCount;
-        accumulatedResultRef.current.errors.push(...result.errors);
-      } catch (error: any) {
-        const errorMessage = error.message || "A critical error occurred during batch processing.";
-        const batchStartRow = rowOffsetRef.current + 1;
-
-        // Add an error entry for each contact in the failed batch
-        batch.forEach((contactData, index) => {
-          accumulatedResultRef.current.errors.push({
-            row: batchStartRow + index,
-            data: contactData,
-            errors: [{ field: "batch_processing", message: errorMessage }],
-          });
-        });
-
-        // Count entire batch as failed
-        accumulatedResultRef.current.totalProcessed += batch.length;
-        accumulatedResultRef.current.failedCount += batch.length;
-        rowOffsetRef.current += batch.length; // Ensure offset is still incremented
-      }
-    },
-    [processBatchHook, dataQualityDecisions]
-  );
-
-  // Use a single importer for the preview step only
-  // SECURITY: Apply secure Papa Parse configuration (Phase 1 Security Remediation)
+  // ============================================================
+  // PAPAPARSE HOOK - For CSV parsing
+  // ============================================================
   const {
     importer: previewImporter,
     parseCsv,
@@ -308,15 +236,67 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
     papaConfig: getSecurePapaParseConfig(),
   });
 
-  const [file, setFile] = useState<File | null>(null);
-  const [validationErrors, setValidationErrors] = useState<CsvValidationError[]>([]);
-  const [validationWarnings, setValidationWarnings] = useState<string[]>([]);
+  // ============================================================
+  // IMPORT HANDLERS
+  // ============================================================
 
-  // Handle preview confirmation and start the actual import
-  // THIS IS THE FIX: Use reprocessedContacts (with user overrides) instead of re-parsing the file
+  /**
+   * Process a single batch of contacts during import.
+   * Updates wizard state with accumulated results.
+   */
+  const processBatch = useCallback(
+    async (batch: ContactImportSchema[], dataQualityDecisions: DataQualityDecisions) => {
+      if (wizardState.step !== "importing") return;
+
+      try {
+        const result = await processBatchHook(batch, {
+          preview: false,
+          startingRow: wizardState.rowOffset + 1,
+          dataQualityDecisions,
+          onProgress: () => {
+            // Progress is updated at batch level, not per-contact
+          },
+        });
+
+        // Accumulate results in wizard state
+        wizardActions.accumulateResult({
+          batchProcessed: result.totalProcessed,
+          batchSuccess: result.successCount,
+          batchSkipped: result.skippedCount,
+          batchFailed: result.failedCount,
+          batchErrors: result.errors,
+          batchSize: batch.length,
+        });
+      } catch (error: any) {
+        const errorMessage = error.message || "A critical error occurred during batch processing.";
+        const batchStartRow = wizardState.rowOffset + 1;
+
+        // Add an error entry for each contact in the failed batch
+        const batchErrors = batch.map((contactData, index) => ({
+          row: batchStartRow + index,
+          data: contactData,
+          errors: [{ field: "batch_processing", message: errorMessage }],
+        }));
+
+        wizardActions.accumulateResult({
+          batchProcessed: batch.length,
+          batchSuccess: 0,
+          batchSkipped: 0,
+          batchFailed: batch.length,
+          batchErrors,
+          batchSize: batch.length,
+        });
+      }
+    },
+    [processBatchHook, wizardState, wizardActions]
+  );
+
+  /**
+   * Handle preview confirmation - start the actual import.
+   */
   const handlePreviewContinue = useCallback(
     async (decisions: DataQualityDecisions) => {
-      // SECURITY: Check rate limit before starting import (Phase 1 Security Remediation)
+      // SECURITY: Check rate limit before starting import
       if (!contactImportLimiter.canProceed()) {
         const resetTime = contactImportLimiter.getResetTimeFormatted();
         const remaining = contactImportLimiter.getRemaining();
@@ -329,134 +309,140 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
         return;
       }
 
-      // Store data quality decisions for validation logic
-      setDataQualityDecisions(decisions);
+      // Update data quality decisions in wizard state
+      wizardActions.updateDataQualityDecisions(decisions);
 
-      // Reset accumulated results for new import
-      accumulatedResultRef.current = {
-        totalProcessed: 0,
-        successCount: 0,
-        skippedCount: 0,
-        failedCount: 0,
-        errors: [],
-        startTime: null,
-      };
-      rowOffsetRef.current = 0; // Reset row offset for new import
+      // Transition to importing state
+      wizardActions.startImport(reprocessedContacts.length);
 
-      setShowPreview(false);
-      setImportState("running");
-      setImportProgress({ count: 0, total: reprocessedContacts.length });
-
-      // Process the reprocessedContacts (which have user overrides applied) in batches
+      // Process contacts in batches
       const batchSize = 10;
       for (let i = 0; i < reprocessedContacts.length; i += batchSize) {
         const batch = reprocessedContacts.slice(i, i + batchSize);
-        await processBatch(batch);
-        setImportProgress((prev) => ({ ...prev, count: i + batch.length }));
+        await processBatch(batch, decisions);
+        wizardActions.updateProgress(i + batch.length);
       }
 
-      setImportState("complete");
-
-      // Build and show final result
-      const endTime = new Date();
-      const startTime = accumulatedResultRef.current.startTime || endTime;
-      const finalResult: ImportResult = {
-        totalProcessed: accumulatedResultRef.current.totalProcessed,
-        successCount: accumulatedResultRef.current.successCount,
-        skippedCount: accumulatedResultRef.current.skippedCount,
-        failedCount: accumulatedResultRef.current.failedCount,
-        errors: accumulatedResultRef.current.errors,
-        duration: endTime.getTime() - startTime.getTime(),
-        startTime: startTime,
-        endTime: endTime,
-      };
-
-      setImportResult(finalResult);
-      setShowResult(true);
+      // Mark import as complete
+      wizardActions.importComplete();
       refresh();
     },
-    [reprocessedContacts, processBatch, refresh]
+    [reprocessedContacts, processBatch, refresh, wizardActions]
   );
 
-  const handleFileChange = async (file: File | null) => {
-    // Clear previous validation errors
-    setValidationErrors([]);
-    setValidationWarnings([]);
+  /**
+   * Handle file selection with validation.
+   */
+  const handleFileChange = useCallback(
+    async (file: File | null) => {
+      if (!file) {
+        wizardActions.reset();
+        return;
+      }
 
-    if (!file) {
-      setFile(null);
-      return;
-    }
+      // SECURITY: Validate file before processing
+      const validation = await validateCsvFile(file);
 
-    // SECURITY: Validate file before processing (Phase 1 Security Remediation)
-    const validation = await validateCsvFile(file);
+      if (!validation.valid && validation.errors) {
+        wizardActions.selectFile(file, validation.errors, []);
+        return;
+      }
 
-    if (!validation.valid && validation.errors) {
-      setValidationErrors(validation.errors);
-      setFile(null);
-      return;
-    }
+      // File is valid - store with any warnings
+      wizardActions.selectFile(file, [], validation.warnings || []);
+    },
+    [wizardActions]
+  );
 
-    // Show warnings if any (non-blocking)
-    if (validation.warnings && validation.warnings.length > 0) {
-      setValidationWarnings(validation.warnings);
-    }
+  /**
+   * Start the import/preview process.
+   */
+  const startImport = useCallback(() => {
+    if (wizardState.step !== "file_selected") return;
 
-    setFile(file);
-  };
+    // Transition to parsing state
+    wizardActions.startParsing();
 
-  const startImport = () => {
-    if (!file) return;
+    // Start parsing with PapaParse
+    parseCsv(wizardState.file);
+  }, [wizardState, wizardActions, parseCsv]);
 
-    if (ENABLE_IMPORT_PREVIEW) {
-      // Parse for preview first
-      parseCsv(file);
-    } else {
-      // Direct import without preview
-      parseCsv(file);
-    }
-  };
-
-  // Handle preview cancellation
-  const handlePreviewCancel = () => {
-    setShowPreview(false);
-    setPreviewData(null);
+  /**
+   * Handle preview cancellation.
+   */
+  const handlePreviewCancel = useCallback(() => {
+    wizardActions.cancel();
     resetPreviewImporter();
-  };
+    resetColumnMapping();
+  }, [wizardActions, resetPreviewImporter, resetColumnMapping]);
 
-  const handleClose = () => {
+  /**
+   * Handle dialog close - reset all state.
+   */
+  const handleClose = useCallback(() => {
     resetPreviewImporter();
-    setImportState("idle");
-    setShowPreview(false);
-    setShowResult(false);
-    setPreviewData(null);
-    setImportResult(null);
-    setFile(null);
-    resetColumnMapping(); // Reset column mapping hook state
-
-    // Reset accumulated results
-    accumulatedResultRef.current = {
-      totalProcessed: 0,
-      successCount: 0,
-      skippedCount: 0,
-      failedCount: 0,
-      errors: [],
-      startTime: null,
-    };
-    rowOffsetRef.current = 0; // Reset row offset
-
+    resetColumnMapping();
+    wizardActions.reset();
     onClose();
-  };
+  }, [resetPreviewImporter, resetColumnMapping, wizardActions, onClose]);
 
-  const handleReset = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    handleClose();
-  };
+  /**
+   * Handle cancel/reset during import.
+   */
+  const handleReset = useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      handleClose();
+    },
+    [handleClose]
+  );
+
+  // ============================================================
+  // DERIVED VALUES FROM WIZARD STATE
+  // ============================================================
+
+  // Get file from wizard state (available in multiple steps)
+  const selectedFile =
+    wizardState.step === "file_selected" ||
+    wizardState.step === "parsing" ||
+    wizardState.step === "preview" ||
+    wizardState.step === "importing"
+      ? wizardState.file
+      : null;
+
+  // Get validation errors/warnings from file_selected state
+  const validationErrors =
+    wizardState.step === "file_selected" ? wizardState.validationErrors : [];
+  const validationWarnings =
+    wizardState.step === "file_selected" ? wizardState.validationWarnings : [];
+
+  // Get progress from importing state
+  const importProgress =
+    wizardState.step === "importing"
+      ? wizardState.progress
+      : { count: 0, total: 0 };
+
+  // Get accumulated results from importing state
+  const accumulatedResult =
+    wizardState.step === "importing"
+      ? wizardState.accumulated
+      : { totalProcessed: 0, successCount: 0, skippedCount: 0, failedCount: 0, errors: [] };
+
+  // Get final result from complete state
+  const importResult = wizardState.step === "complete" ? wizardState.result : null;
+
+  // Determine if we're in idle-like state (for UI)
+  const isIdle = wizardState.step === "idle" || wizardState.step === "file_selected";
+  const isParsing = wizardState.step === "parsing" || previewImporter.state === "parsing";
+
+  // ============================================================
+  // RENDER
+  // ============================================================
 
   return (
     <>
       {/* Main Import Dialog */}
-      <Dialog open={open && !showPreview && !showResult} onOpenChange={handleClose}>
+      <Dialog open={open && !flags.showPreview && !flags.showResult} onOpenChange={handleClose}>
         <DialogContent className="max-w-2xl">
           <Form className="flex flex-col gap-4">
             <DialogHeader>
@@ -464,7 +450,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
             </DialogHeader>
 
             <div className="flex flex-col space-y-2">
-              {importState === "running" && (
+              {flags.isImporting && (
                 <Card className="border-primary/20">
                   <CardContent className="pt-6 space-y-4">
                     {/* Progress Header */}
@@ -488,7 +474,11 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
                     {/* Progress Bar */}
                     <div className="space-y-2">
                       <Progress
-                        value={(importProgress.count / importProgress.total) * 100}
+                        value={
+                          importProgress.total > 0
+                            ? (importProgress.count / importProgress.total) * 100
+                            : 0
+                        }
                         className="h-3"
                       />
                       <div className="flex justify-between text-sm text-muted-foreground">
@@ -496,8 +486,10 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
                           Processing {importProgress.count} of {importProgress.total} contacts
                         </span>
                         <span>
-                          {Math.round((importProgress.count / importProgress.total) * 100)}%
-                          Complete
+                          {importProgress.total > 0
+                            ? Math.round((importProgress.count / importProgress.total) * 100)
+                            : 0}
+                          % Complete
                         </span>
                       </div>
                     </div>
@@ -515,7 +507,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
                       <div className="space-y-1">
                         <p className="text-sm font-medium">Errors</p>
                         <p className="text-2xl font-bold text-destructive">
-                          {accumulatedResultRef.current.errors.length}
+                          {accumulatedResult.errors.length}
                         </p>
                         <p className="text-xs text-muted-foreground">failed imports</p>
                       </div>
@@ -523,7 +515,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
                       <div className="space-y-1">
                         <p className="text-sm font-medium">Success</p>
                         <p className="text-2xl font-bold text-success">
-                          {accumulatedResultRef.current.successCount}
+                          {accumulatedResult.successCount}
                         </p>
                         <p className="text-xs text-muted-foreground">imported</p>
                       </div>
@@ -539,7 +531,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
                 </Card>
               )}
 
-              {previewImporter.state === "error" && (
+              {(previewImporter.state === "error" || flags.hasError) && (
                 <Alert variant="destructive">
                   <AlertDescription>
                     Failed to import this file, please make sure your provided a valid CSV file.
@@ -547,39 +539,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
                 </Alert>
               )}
 
-              {importState === "complete" && (
-                <Card className="border-success/20 bg-success/5">
-                  <CardContent className="pt-6">
-                    <div className="flex flex-col items-center text-center space-y-4">
-                      <CheckCircle2 className="h-12 w-12 text-success" />
-                      <div className="space-y-2">
-                        <h3 className="text-lg font-semibold">Import Complete!</h3>
-                        <p className="text-sm text-muted-foreground">
-                          Successfully processed {accumulatedResultRef.current.totalProcessed}{" "}
-                          contacts
-                        </p>
-                      </div>
-                      <div className="flex gap-4 text-sm">
-                        <div className="flex items-center gap-1">
-                          <Users className="h-4 w-4 text-success" />
-                          <span className="font-medium">
-                            {accumulatedResultRef.current.successCount} imported
-                          </span>
-                        </div>
-                        {accumulatedResultRef.current.failedCount > 0 && (
-                          <div className="flex items-center gap-1">
-                            <span className="text-destructive">
-                              • {accumulatedResultRef.current.failedCount} errors
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              )}
-
-              {previewImporter.state === "idle" && importState === "idle" && (
+              {isIdle && !flags.isImporting && (
                 <>
                   <Alert>
                     <AlertDescription className="flex flex-col gap-4">
@@ -601,7 +561,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
                     <FileField source="src" title="title" target="_blank" />
                   </FileInput>
 
-                  {/* SECURITY: Display validation errors (Phase 1 Security Remediation) */}
+                  {/* SECURITY: Display validation errors */}
                   {validationErrors.length > 0 && (
                     <Alert variant="destructive">
                       <AlertDescription>
@@ -634,15 +594,16 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
           </Form>
 
           <div className="flex justify-start pt-6 gap-2">
-            {importState === "idle" ? (
-              <Button onClick={startImport} disabled={!file || previewImporter.state === "parsing"}>
-                {previewImporter.state === "parsing" ? (
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                ) : null}
+            {isIdle ? (
+              <Button
+                onClick={startImport}
+                disabled={!selectedFile || isParsing || validationErrors.length > 0}
+              >
+                {isParsing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                 Import
               </Button>
             ) : (
-              <Button variant="outline" onClick={handleClose} disabled={importState === "running"}>
+              <Button variant="outline" onClick={handleClose} disabled={flags.isImporting}>
                 Close
               </Button>
             )}
@@ -651,8 +612,8 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
       </Dialog>
 
       {/* Preview Dialog (when feature flag is enabled) */}
-      {ENABLE_IMPORT_PREVIEW && showPreview && derivedPreviewData && (
-        <Dialog open={showPreview} onOpenChange={() => setShowPreview(false)}>
+      {ENABLE_IMPORT_PREVIEW && flags.showPreview && derivedPreviewData && (
+        <Dialog open={flags.showPreview} onOpenChange={handlePreviewCancel}>
           <DialogContent className="sm:max-w-7xl h-[90vh] flex flex-col p-0">
             <DialogHeader className="px-6 pt-6 pb-4 border-b">
               <DialogTitle>Import Preview</DialogTitle>
@@ -673,7 +634,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
       {/* Enhanced Result Dialog */}
       {importResult && (
         <ContactImportResult
-          open={showResult}
+          open={flags.showResult}
           onClose={handleClose}
           result={importResult}
           allowRetry={false}
@@ -683,7 +644,11 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
   );
 }
 
-// Helper function to extract unique organizations from parsed data
+// ============================================================
+// HELPER FUNCTIONS
+// ============================================================
+
+/** Extract unique organizations from parsed data */
 function extractNewOrganizations(rows: ContactImportSchema[]): string[] {
   const organizations = new Set<string>();
   rows.forEach((row) => {
@@ -694,7 +659,7 @@ function extractNewOrganizations(rows: ContactImportSchema[]): string[] {
   return Array.from(organizations);
 }
 
-// Helper function to extract unique tags from parsed data
+/** Extract unique tags from parsed data */
 function extractNewTags(rows: ContactImportSchema[]): string[] {
   const tags = new Set<string>();
   rows.forEach((row) => {
@@ -710,8 +675,7 @@ function extractNewTags(rows: ContactImportSchema[]): string[] {
   return Array.from(tags);
 }
 
-// Helper function to find organizations without contact persons
-// These are rows with organization_name but no first_name AND no last_name
+/** Find organizations without contact persons */
 function findOrganizationsWithoutContacts(
   rows: ContactImportSchema[]
 ): Array<{ organization_name: string; row: number }> {
@@ -729,8 +693,7 @@ function findOrganizationsWithoutContacts(
   return orgOnlyEntries;
 }
 
-// Helper function to find contacts without email or phone
-// These are contacts with a name but missing ALL email fields AND ALL phone fields
+/** Find contacts without email or phone */
 function findContactsWithoutContactInfo(
   rows: ContactImportSchema[]
 ): Array<{ name: string; organization_name: string; row: number }> {
