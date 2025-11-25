@@ -161,12 +161,11 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     return filter;
   }, [shouldSearchOrgs, orgSearch.debouncedTerm]);
 
-  // Build opportunity filter (with optional organization constraint + active stages only)
+  // Build opportunity filter (with optional organization constraint)
+  // Note: Filtering to exclude closed opportunities (closed_won, closed_lost) would require
+  // a custom filter operator. For now, users see all opportunities and can choose active ones.
   const oppFilter = useMemo(() => {
-    const filter: Record<string, unknown> = {
-      // Exclude closed opportunities
-      "stage@not_in": ["closed_won", "closed_lost"],
-    };
+    const filter: Record<string, unknown> = {};
     if (shouldSearchOpps) {
       filter.q = oppSearch.debouncedTerm;
     }

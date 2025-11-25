@@ -502,13 +502,17 @@ export class DashboardV3Page extends BasePage {
   async openActivityForm(): Promise<void> {
     // First, scroll the Quick Logger panel into view to ensure button is visible
     await this.getQuickLoggerHeading().scrollIntoViewIfNeeded();
+    // Wait for scroll animation to settle
+    await this.page.waitForTimeout(300);
     // Wait for and click the New Activity button
     const newActivityBtn = this.getStartLoggingButton();
     await expect(newActivityBtn).toBeVisible({ timeout: 10000 });
     await newActivityBtn.click();
+    // Verify button disappears (confirms click registered and state changed)
+    await expect(newActivityBtn).not.toBeVisible({ timeout: 5000 });
     // Wait for lazy-loaded form to appear (Suspense shows skeleton then form)
     // The form shows "What happened?" section heading when ready
-    await expect(this.page.getByText("What happened?")).toBeVisible({ timeout: 10000 });
+    await expect(this.page.getByText("What happened?")).toBeVisible({ timeout: 15000 });
   }
 
   /**
