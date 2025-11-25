@@ -1,4 +1,4 @@
-import type { FilterValues } from "./types";
+import type { FilterValues, FilterValue } from "./types";
 import { FILTER_KEYS } from "./types";
 import { getStorageItem, setStorageItem, removeStorageItem } from "../utils/secureStorage";
 
@@ -48,28 +48,36 @@ export const parseUrlFilters = (search: string): FilterValues => {
 /**
  * Get filter preferences from sessionStorage
  * Phase 1 Security Remediation: Uses sessionStorage (cleared on tab close)
+ *
+ * @template T - Expected type of stored value (defaults to FilterValue)
+ * @param key - Storage key
+ * @returns The stored value or null if not found
  */
-export const getStoredFilterPreferences = (key: string): any => {
+export function getStoredFilterPreferences<T = FilterValue>(key: string): T | null {
   try {
     // SECURITY: Use sessionStorage instead of localStorage
-    return getStorageItem<any>(key, { type: "session" });
+    return getStorageItem<T>(key, { type: "session" });
   } catch {
     return null;
   }
-};
+}
 
 /**
  * Save filter preferences to sessionStorage
  * Phase 1 Security Remediation: Uses sessionStorage (cleared on tab close)
+ *
+ * @template T - Type of value being stored
+ * @param key - Storage key
+ * @param value - Value to store
  */
-export const saveFilterPreferences = (key: string, value: any): void => {
+export function saveFilterPreferences<T = FilterValue>(key: string, value: T): void {
   try {
     // SECURITY: Use sessionStorage instead of localStorage
     setStorageItem(key, value, { type: "session" });
   } catch (error) {
     console.warn("Failed to save filter preferences:", error);
   }
-};
+}
 
 /**
  * Get default visible stages (excludes closed stages)
@@ -97,26 +105,37 @@ export const getDefaultVisibleStages = (): string[] => {
  * Get initial filter value with precedence
  * URL > sessionStorage > default
  * Phase 1 Security Remediation: sessionStorage clears on tab close (better privacy)
+ *
+ * The precedence algorithm:
+ * 1. URL value has highest priority (explicit user navigation)
+ * 2. sessionStorage preference (user's last choice this session)
+ * 3. Default value (code-defined fallback)
+ *
+ * @template T - Type of filter value (inferred from defaultValue or urlValue)
+ * @param filterKey - The filter key to look up
+ * @param urlValue - Value from URL parameters (optional)
+ * @param defaultValue - Fallback default value (optional)
+ * @returns The value with highest precedence, or undefined if none found
  */
-export const getInitialFilterValue = (
+export function getInitialFilterValue<T extends FilterValue = FilterValue>(
   filterKey: string,
-  urlValue?: any,
-  defaultValue?: any
-): any => {
+  urlValue?: T,
+  defaultValue?: T
+): T | undefined {
   // 1. URL has highest priority (if present and valid)
   if (urlValue !== undefined && urlValue !== null && urlValue !== "") {
     return urlValue;
   }
 
   // 2. sessionStorage preferences (if no URL value)
-  const storedValue = getStoredFilterPreferences(`filter.${filterKey}`);
+  const storedValue = getStoredFilterPreferences<T>(`filter.${filterKey}`);
   if (storedValue !== undefined && storedValue !== null) {
     return storedValue;
   }
 
   // 3. Default value (if provided)
   return defaultValue;
-};
+}
 
 /**
  * Simplified function to get initial stage filter
@@ -126,7 +145,7 @@ export const getInitialStageFilter = (urlFilters?: FilterValues): string[] => {
   // Use nullish coalescing chain for precedence
   const stageFilter =
     urlFilters?.[FILTER_KEYS.STAGE] ??
-    getStoredFilterPreferences("opportunity_hidden_stages") ??
+    getStoredFilterPreferences<string[]>("opportunity_hidden_stages") ??
     getDefaultVisibleStages();
 
   // Ensure it's always an array
@@ -154,7 +173,7 @@ export const updateStagePreferences = (stages: string[]): void => {
     stages.length !== defaults.length || !stages.every((stage) => defaults.includes(stage));
 
   if (isDifferent) {
-    saveFilterPreferences("opportunity_hidden_stages", stages);
+    saveFilterPreferences<string[]>("opportunity_hidden_stages", stages);
   } else {
     // Remove from storage if back to defaults
     try {
@@ -168,10 +187,17 @@ export const updateStagePreferences = (stages: string[]): void => {
 
 /**
  * Build filter object with all precedence rules applied
+ *
+ * This is the main entry point for initializing filters with proper precedence.
+ * It combines URL parameters, stored preferences, and code defaults.
+ *
+ * @param urlSearch - The URL search string (e.g., "?stage=new_lead")
+ * @param defaults - Default filter values to use as fallbacks
+ * @returns Combined filter values with precedence rules applied
  */
 export const buildInitialFilters = (
   urlSearch: string,
-  defaults: Record<string, any> = {}
+  defaults: FilterValues = {}
 ): FilterValues => {
   const urlFilters = parseUrlFilters(urlSearch);
   const initialFilters: FilterValues = {};
