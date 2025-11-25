@@ -18,9 +18,10 @@ import { getCurrentDate } from "../validation/notes";
 const foreignKeyMapping = {
   contacts: "contact_id",
   opportunities: "opportunity_id",
+  organizations: "organization_id",
 };
 
-export const NoteCreate = ({ reference }: { reference: "contacts" | "opportunities" }) => {
+export const NoteCreate = ({ reference }: { reference: "contacts" | "opportunities" | "organizations" }) => {
   const resource = useResourceContext();
   const record = useRecordContext();
   const { identity } = useGetIdentity();
@@ -43,7 +44,7 @@ const NoteCreateButton = ({
   reference,
   record,
 }: {
-  reference: "contacts" | "opportunities";
+  reference: "contacts" | "opportunities" | "organizations";
   record: RaRecord<Identifier>;
 }) => {
   const [update] = useUpdate();

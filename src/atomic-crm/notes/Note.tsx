@@ -11,7 +11,7 @@ import { Avatar } from "../contacts/Avatar";
 import { RelativeDate } from "@/components/ui";
 import { Status } from "../shared/components/Status";
 import { SaleName } from "../sales/SaleName";
-import type { ContactNote, OpportunityNote } from "../types";
+import type { ContactNote, OpportunityNote, OrganizationNote } from "../types";
 import { NoteAttachments } from "./NoteAttachments";
 import { NoteInputs } from "./NoteInputs";
 
@@ -20,7 +20,7 @@ export const Note = ({
   note,
 }: {
   showStatus?: boolean;
-  note: OpportunityNote | ContactNote;
+  note: OpportunityNote | ContactNote | OrganizationNote;
   isLast: boolean;
 }) => {
   const [isHover, setHover] = useState(false);
@@ -82,6 +82,15 @@ export const Note = ({
             <ReferenceField source="customer_organization_id" reference="organizations" link="show">
               <OrganizationAvatar width={20} height={20} />
             </ReferenceField>
+          </ReferenceField>
+        ) : resource === "organizationNotes" ? (
+          <ReferenceField
+            source="organization_id"
+            reference="organizations"
+            record={note}
+            link={false}
+          >
+            <OrganizationAvatar width={20} height={20} />
           </ReferenceField>
         ) : null}
         <div className="inline-flex h-full items-center text-sm text-muted-foreground">

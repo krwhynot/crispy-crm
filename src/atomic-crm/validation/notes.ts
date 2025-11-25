@@ -95,15 +95,28 @@ export const createOpportunityNoteSchema = opportunityNoteSchema.omit({
 export const updateOpportunityNoteSchema = opportunityNoteSchema.partial().required({ id: true });
 
 /**
+ * Schema for creating an organization note
+ */
+export const createOrganizationNoteSchema = organizationNoteSchema.omit({ id: true });
+
+/**
+ * Schema for updating an organization note
+ */
+export const updateOrganizationNoteSchema = organizationNoteSchema.partial().required({ id: true });
+
+/**
  * Inferred types from schemas
  */
 export type Attachment = z.infer<typeof attachmentSchema>;
 export type ContactNote = z.infer<typeof contactNoteSchema>;
 export type OpportunityNote = z.infer<typeof opportunityNoteSchema>;
+export type OrganizationNote = z.infer<typeof organizationNoteSchema>;
 export type CreateContactNoteInput = z.infer<typeof createContactNoteSchema>;
 export type UpdateContactNoteInput = z.infer<typeof updateContactNoteSchema>;
 export type CreateOpportunityNoteInput = z.infer<typeof createOpportunityNoteSchema>;
 export type UpdateOpportunityNoteInput = z.infer<typeof updateOpportunityNoteSchema>;
+export type CreateOrganizationNoteInput = z.infer<typeof createOrganizationNoteSchema>;
+export type UpdateOrganizationNoteInput = z.infer<typeof updateOrganizationNoteSchema>;
 
 /**
  * Validate contact note creation data
@@ -143,6 +156,26 @@ export function validateCreateOpportunityNote(data: unknown): CreateOpportunityN
  */
 export function validateUpdateOpportunityNote(data: unknown): UpdateOpportunityNoteInput {
   return updateOpportunityNoteSchema.parse(data);
+}
+
+/**
+ * Validate organization note creation data
+ * @param data - Note data to validate
+ * @returns Validated note data
+ * @throws Zod validation error if data is invalid
+ */
+export function validateCreateOrganizationNote(data: unknown): CreateOrganizationNoteInput {
+  return createOrganizationNoteSchema.parse(data);
+}
+
+/**
+ * Validate organization note update data
+ * @param data - Note data to validate
+ * @returns Validated note data
+ * @throws Zod validation error if data is invalid
+ */
+export function validateUpdateOrganizationNote(data: unknown): UpdateOrganizationNoteInput {
+  return updateOrganizationNoteSchema.parse(data);
 }
 
 /**
@@ -198,11 +231,27 @@ export function validateOpportunityNoteForSubmission(data: unknown): Opportunity
 }
 
 /**
+ * Validate and transform organization note for submission
+ * @param data - Note data to validate and transform
+ * @returns Transformed note data ready for database
+ */
+export function validateOrganizationNoteForSubmission(data: unknown): OrganizationNote {
+  const validated = organizationNoteSchema.parse(data);
+
+  // Transform date to ISO format with milliseconds
+  if (validated.date) {
+    validated.date = transformNoteDate(validated.date);
+  }
+
+  return validated;
+}
+
+/**
  * Check if a note has attachments
  * @param note - Note to check
  * @returns True if note has attachments
  */
-export function noteHasAttachments(note: ContactNote | OpportunityNote): boolean {
+export function noteHasAttachments(note: ContactNote | OpportunityNote | OrganizationNote): boolean {
   return Array.isArray(note.attachments) && note.attachments.length > 0;
 }
 

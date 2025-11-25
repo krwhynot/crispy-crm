@@ -1,0 +1,43 @@
+import { RecordContextProvider } from "ra-core";
+import { ReferenceManyField } from "@/components/admin/reference-many-field";
+import { NoteCreate, NotesIterator } from "../../notes";
+import type { OrganizationWithHierarchy } from "../../types";
+
+interface OrganizationNotesTabProps {
+  record: OrganizationWithHierarchy;
+  mode: "view" | "edit";
+}
+
+/**
+ * Notes tab for OrganizationSlideOver.
+ *
+ * Wrapper around existing NotesIterator component.
+ * Displays organization notes with create/edit/delete functionality.
+ *
+ * Both view and edit modes allow note creation and editing.
+ */
+export function OrganizationNotesTab({ record, mode }: OrganizationNotesTabProps) {
+  return (
+    <RecordContextProvider value={record}>
+      <div className="space-y-4">
+        {/* Notes list with create form - NoteCreate must be inside ReferenceManyField for ListContext */}
+        <ReferenceManyField
+          target="organization_id"
+          reference="organizationNotes"
+          sort={{ field: "created_at", order: "DESC" }}
+        >
+          {/* Note creation form at top */}
+          <NoteCreate reference="organizations" />
+          <NotesIterator reference="organizations" />
+        </ReferenceManyField>
+
+        {/* Helper text for empty state */}
+        <div className="text-sm text-muted-foreground text-center py-4">
+          {mode === "view"
+            ? "Notes are visible to all team members"
+            : "Add notes to track important information about this organization"}
+        </div>
+      </div>
+    </RecordContextProvider>
+  );
+}

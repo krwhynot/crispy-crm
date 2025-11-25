@@ -268,6 +268,19 @@ export interface OpportunityNote extends Pick<RaRecord, "id"> {
   status?: undefined;
 }
 
+export interface OrganizationNote extends Pick<RaRecord, "id"> {
+  organization_id: Identifier;
+  text: string;
+  date: string;
+  created_at: string;
+  updated_at: string;
+  sales_id: Identifier;
+  attachments?: AttachmentNote[];
+
+  // This is defined for compatibility with `ContactNote`
+  status?: undefined;
+}
+
 export interface Tag extends Pick<RaRecord, "id"> {
   name: string;
   color: string;

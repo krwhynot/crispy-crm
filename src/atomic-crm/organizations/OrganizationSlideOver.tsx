@@ -1,9 +1,10 @@
-import { BuildingIcon, Users, Target } from "lucide-react";
+import { BuildingIcon, Users, Target, StickyNote } from "lucide-react";
 import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
 import { OrganizationDetailsTab } from "./slideOverTabs/OrganizationDetailsTab";
 import { OrganizationContactsTab } from "./slideOverTabs/OrganizationContactsTab";
 import { OrganizationOpportunitiesTab } from "./slideOverTabs/OrganizationOpportunitiesTab";
+import { OrganizationNotesTab } from "./slideOverTabs/OrganizationNotesTab";
 
 interface OrganizationSlideOverProps {
   recordId: number | null;
@@ -38,6 +39,12 @@ export function OrganizationSlideOver({
       label: "Opportunities",
       component: OrganizationOpportunitiesTab,
       icon: Target,
+    },
+    {
+      key: "notes",
+      label: "Notes",
+      component: OrganizationNotesTab,
+      icon: StickyNote,
     },
   ];
 
