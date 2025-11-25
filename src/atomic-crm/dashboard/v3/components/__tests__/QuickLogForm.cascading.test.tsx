@@ -375,8 +375,10 @@ describe("QuickLogForm - Cascading Filter Behavior", () => {
 
       // Data is provided by mocked useGetList and renders in command items
       // Check that contact names appear in the rendered output
-      expect(screen.getByTestId("command-item-1")).toBeInTheDocument();
-      expect(screen.getByTestId("command-item-2")).toBeInTheDocument();
+      // Note: Multiple entities (contacts, orgs, opps) use the same ID scheme,
+      // so we check for text content instead
+      expect(screen.getByText("John Doe")).toBeInTheDocument();
+      expect(screen.getByText("Jane Smith")).toBeInTheDocument();
     });
 
     it("should have action buttons", async () => {
