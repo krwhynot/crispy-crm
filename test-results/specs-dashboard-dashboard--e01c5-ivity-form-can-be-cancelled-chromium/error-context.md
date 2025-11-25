@@ -306,20 +306,91 @@
                   - button "Schedule follow-up" [ref=e317]
         - separator [ref=e318]:
           - img [ref=e320]
-        - separator [ref=e337]:
-          - img [ref=e339]
-        - generic [ref=e347]:
-          - generic [ref=e350]:
-            - generic [ref=e351]: Log Activity
-            - generic [ref=e352]: Quick capture for calls, meetings, and notes
-          - generic [ref=e355]:
-            - img [ref=e356]
-            - generic [ref=e358]: Loading...
-  - contentinfo [ref=e359]:
-    - generic [ref=e361]:
-      - paragraph [ref=e362]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e363] [cursor=pointer]:
-        - img [ref=e364]
-        - generic [ref=e366]: Keyboard shortcuts
+        - generic [ref=e328]:
+          - generic [ref=e329]:
+            - generic [ref=e330]:
+              - generic [ref=e331]:
+                - generic [ref=e332]: My Tasks
+                - generic [ref=e333]: Today's priorities and upcoming activities
+              - generic [ref=e334]:
+                - generic [ref=e335]: 4 overdue
+                - button "New Task" [ref=e336] [cursor=pointer]:
+                  - img
+                  - text: New Task
+            - paragraph [ref=e337]: Overdue items highlighted • Click to complete
+          - generic [ref=e340]:
+            - button "Overdue (4)" [ref=e341] [cursor=pointer]:
+              - generic [ref=e342]:
+                - img [ref=e343]
+                - heading "Overdue" [level=3] [ref=e345]
+                - generic [ref=e346]: (4)
+            - generic [ref=e347]:
+              - generic [ref=e348]:
+                - checkbox [ref=e349] [cursor=pointer]
+                - generic [ref=e350]:
+                  - generic [ref=e351]:
+                    - img [ref=e352]
+                    - generic [ref=e355]: "Follow-up: Follow-up required for contract discussion. Test I"
+                  - generic [ref=e356]:
+                    - generic [ref=e357]: medium
+                    - generic [ref=e358]: → Unknown
+                - generic [ref=e359]:
+                  - 'button "Snooze \"Follow-up: Follow-up required for contract discussion. Test I\" by 1 day" [ref=e360] [cursor=pointer]':
+                    - img
+                  - 'button "More actions for \"Follow-up: Follow-up required for contract discussion. Test I\"" [ref=e361] [cursor=pointer]':
+                    - img
+              - generic [ref=e362]:
+                - checkbox [ref=e363] [cursor=pointer]
+                - generic [ref=e364]:
+                  - generic [ref=e365]:
+                    - img [ref=e366]
+                    - generic [ref=e369]: "Follow-up: Follow-up required for contract discussion. Test I"
+                  - generic [ref=e370]:
+                    - generic [ref=e371]: medium
+                    - generic [ref=e372]: → Unknown
+                - generic [ref=e373]:
+                  - 'button "Snooze \"Follow-up: Follow-up required for contract discussion. Test I\" by 1 day" [ref=e374] [cursor=pointer]':
+                    - img
+                  - 'button "More actions for \"Follow-up: Follow-up required for contract discussion. Test I\"" [ref=e375] [cursor=pointer]':
+                    - img
+              - generic [ref=e376]:
+                - checkbox [ref=e377] [cursor=pointer]
+                - generic [ref=e378]:
+                  - generic [ref=e379]:
+                    - img [ref=e380]
+                    - generic [ref=e383]: "Follow-up: Follow-up required for contract discussion. Test I"
+                  - generic [ref=e384]:
+                    - generic [ref=e385]: medium
+                    - generic [ref=e386]: → Unknown
+                - generic [ref=e387]:
+                  - 'button "Snooze \"Follow-up: Follow-up required for contract discussion. Test I\" by 1 day" [ref=e388] [cursor=pointer]':
+                    - img
+                  - 'button "More actions for \"Follow-up: Follow-up required for contract discussion. Test I\"" [ref=e389] [cursor=pointer]':
+                    - img
+              - generic [ref=e390]:
+                - checkbox [ref=e391] [cursor=pointer]
+                - generic [ref=e392]:
+                  - generic [ref=e393]:
+                    - img [ref=e394]
+                    - generic [ref=e397]: "Follow-up: Follow-up required for contract discussion. Test I"
+                  - generic [ref=e398]:
+                    - generic [ref=e399]: medium
+                    - generic [ref=e400]: → Unknown
+                - generic [ref=e401]:
+                  - 'button "Snooze \"Follow-up: Follow-up required for contract discussion. Test I\" by 1 day" [ref=e402] [cursor=pointer]':
+                    - img
+                  - 'button "More actions for \"Follow-up: Follow-up required for contract discussion. Test I\"" [ref=e403] [cursor=pointer]':
+                    - img
+        - separator [ref=e404]:
+          - img [ref=e406]
+        - generic [ref=e417]:
+          - generic [ref=e418]: Log Activity
+          - generic [ref=e419]: Quick capture for calls, meetings, and notes
+  - contentinfo [ref=e446]:
+    - generic [ref=e448]:
+      - paragraph [ref=e449]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e450] [cursor=pointer]:
+        - img [ref=e451]
+        - generic [ref=e453]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```

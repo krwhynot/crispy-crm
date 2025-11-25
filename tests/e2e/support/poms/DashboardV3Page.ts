@@ -393,9 +393,12 @@ export class DashboardV3Page extends BasePage {
 
   /**
    * Get Activity Type select
+   * NOTE: shadcn Select with FormLabel doesn't have HTML label association,
+   * so we find the combobox by its placeholder text instead
    */
   getActivityTypeSelect(): Locator {
-    return this.page.getByLabel(/activity type/i);
+    // Find the Select trigger by its placeholder "Select type"
+    return this.page.getByRole("combobox").filter({ hasText: /select type/i }).first();
   }
 
   /**

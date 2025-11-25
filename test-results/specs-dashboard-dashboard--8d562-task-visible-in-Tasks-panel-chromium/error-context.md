@@ -394,69 +394,172 @@
                 - generic [ref=e424]:
                   - generic [ref=e425]: Activity Type
                   - combobox "Activity Type" [ref=e426] [cursor=pointer]:
-                    - generic: Call
+                    - generic: Note
                     - img
                   - combobox [ref=e427]
                 - generic [ref=e428]:
                   - generic [ref=e429]: Outcome
                   - combobox "Outcome" [ref=e430] [cursor=pointer]:
-                    - generic: Connected
+                    - generic: Completed
                     - img
                   - combobox [ref=e431]
-                - generic [ref=e432]:
-                  - generic [ref=e433]: Duration (minutes)
-                  - spinbutton "Duration (minutes)" [ref=e434]
-              - generic [ref=e435]:
-                - heading "Who was involved?" [level=3] [ref=e436]
-                - generic [ref=e437]:
-                  - generic [ref=e438]: Contact
-                  - combobox "Contact" [ref=e440] [cursor=pointer]:
+              - generic [ref=e432]:
+                - heading "Who was involved?" [level=3] [ref=e433]
+                - generic [ref=e434]:
+                  - generic [ref=e435]: Contact
+                  - combobox "Contact" [ref=e437] [cursor=pointer]:
                     - text: Select contact
                     - img
-                  - paragraph [ref=e441]: Select a contact and/or organization (must be from same company)
-                - generic [ref=e442]:
-                  - generic [ref=e443]: Organization
-                  - generic [ref=e444]:
-                    - combobox "Organization" [ref=e445] [cursor=pointer]:
+                  - paragraph [ref=e438]: Select a contact and/or organization (must be from same company)
+                - generic [ref=e439]:
+                  - generic [ref=e440]: Organization
+                  - generic [ref=e441]:
+                    - combobox "Organization" [ref=e442] [cursor=pointer]:
                       - text: 040 KITCHEN INC
                       - img
-                    - button "Clear organization selection" [ref=e446] [cursor=pointer]:
+                    - button "Clear organization selection" [ref=e443] [cursor=pointer]:
                       - img
-                  - paragraph [ref=e447]: Select a contact and/or organization (must be from same company)
-                - generic [ref=e448]:
-                  - generic [ref=e449]: Opportunity
-                  - combobox "Opportunity" [expanded] [ref=e451] [cursor=pointer]:
+                  - paragraph [ref=e444]: Select a contact and/or organization (must be from same company)
+                - generic [ref=e445]:
+                  - generic [ref=e446]: Opportunity
+                  - combobox "Opportunity" [ref=e448] [cursor=pointer]:
                     - text: Select opportunity (optional)
                     - img
-              - generic [ref=e452]:
-                - generic [ref=e453]: Notes
-                - textbox "Notes" [ref=e454]:
+              - generic [ref=e449]:
+                - generic [ref=e450]: Notes
+                - textbox "Notes" [ref=e451]:
                   - /placeholder: Summary of the interaction...
-              - generic [ref=e456]:
-                - generic [ref=e457]: Create follow-up task?
-                - switch "Create follow-up task?" [ref=e458] [cursor=pointer]
-                - checkbox
-              - generic [ref=e459]:
-                - button "Cancel" [ref=e460] [cursor=pointer]
-                - generic [ref=e461]:
-                  - button "Save & Close" [ref=e462] [cursor=pointer]
-                  - button "Save & New" [ref=e463] [cursor=pointer]
-    - contentinfo [ref=e464]:
-      - generic [ref=e466]:
-        - paragraph [ref=e467]: © 2025 MFB Master Food Brokers. All rights reserved.
-        - button "View keyboard shortcuts" [ref=e468] [cursor=pointer]:
-          - img [ref=e469]
-          - generic [ref=e471]: Keyboard shortcuts
+                  - text: Follow-up 1764058358287
+              - generic [ref=e452]:
+                - generic [ref=e453]:
+                  - generic [ref=e454]: Create follow-up task?
+                  - switch "Create follow-up task?" [checked] [ref=e455] [cursor=pointer]
+                  - checkbox [checked]
+                - generic [ref=e456]:
+                  - generic [ref=e457]: Follow-up Date
+                  - button "Follow-up Date" [expanded] [ref=e458] [cursor=pointer]:
+                    - img
+                    - generic [ref=e459]: Pick a date
+              - generic [ref=e460]:
+                - button "Cancel" [ref=e461] [cursor=pointer]
+                - generic [ref=e462]:
+                  - button "Save & Close" [ref=e463] [cursor=pointer]
+                  - button "Save & New" [ref=e464] [cursor=pointer]
+    - contentinfo [ref=e465]:
+      - generic [ref=e467]:
+        - paragraph [ref=e468]: © 2025 MFB Master Food Brokers. All rights reserved.
+        - button "View keyboard shortcuts" [ref=e469] [cursor=pointer]:
+          - img [ref=e470]
+          - generic [ref=e472]: Keyboard shortcuts
     - region "Notifications alt+T"
-  - dialog [ref=e473]:
-    - generic [ref=e474]:
-      - generic [ref=e476]:
-        - img [ref=e477]
-        - combobox [expanded] [active] [ref=e480]
-      - listbox "Suggestions" [ref=e481]:
-        - generic [ref=e482]:
-          - generic [ref=e483]:
-            - img [ref=e484]
-            - generic [ref=e486]: Searching...
-          - group
+  - dialog [ref=e474]:
+    - generic [ref=e476]:
+      - navigation [ref=e477]:
+        - button "Go to the Previous Month" [active] [ref=e478] [cursor=pointer]:
+          - img
+        - button "Go to the Next Month" [ref=e479] [cursor=pointer]:
+          - img
+      - generic [ref=e480]:
+        - status [ref=e482]: November 2025
+        - grid "November 2025" [ref=e483]:
+          - rowgroup [ref=e484]:
+            - row [ref=e485]:
+              - columnheader [ref=e486]: Su
+              - columnheader [ref=e487]: Mo
+              - columnheader [ref=e488]: Tu
+              - columnheader [ref=e489]: We
+              - columnheader [ref=e490]: Th
+              - columnheader [ref=e491]: Fr
+              - columnheader [ref=e492]: Sa
+          - rowgroup [ref=e493]:
+            - row "Sunday, October 26th, 2025 Monday, October 27th, 2025 Tuesday, October 28th, 2025 Wednesday, October 29th, 2025 Thursday, October 30th, 2025 Friday, October 31st, 2025 Saturday, November 1st, 2025" [ref=e494]:
+              - gridcell "Sunday, October 26th, 2025" [ref=e495]:
+                - button "Sunday, October 26th, 2025" [disabled]: "26"
+              - gridcell "Monday, October 27th, 2025" [ref=e496]:
+                - button "Monday, October 27th, 2025" [disabled]: "27"
+              - gridcell "Tuesday, October 28th, 2025" [ref=e497]:
+                - button "Tuesday, October 28th, 2025" [disabled]: "28"
+              - gridcell "Wednesday, October 29th, 2025" [ref=e498]:
+                - button "Wednesday, October 29th, 2025" [disabled]: "29"
+              - gridcell "Thursday, October 30th, 2025" [ref=e499]:
+                - button "Thursday, October 30th, 2025" [disabled]: "30"
+              - gridcell "Friday, October 31st, 2025" [ref=e500]:
+                - button "Friday, October 31st, 2025" [disabled]: "31"
+              - gridcell "Saturday, November 1st, 2025" [ref=e501]:
+                - button "Saturday, November 1st, 2025" [disabled]: "1"
+            - row "Sunday, November 2nd, 2025 Monday, November 3rd, 2025 Tuesday, November 4th, 2025 Wednesday, November 5th, 2025 Thursday, November 6th, 2025 Friday, November 7th, 2025 Saturday, November 8th, 2025" [ref=e502]:
+              - gridcell "Sunday, November 2nd, 2025" [ref=e503]:
+                - button "Sunday, November 2nd, 2025" [disabled]: "2"
+              - gridcell "Monday, November 3rd, 2025" [ref=e504]:
+                - button "Monday, November 3rd, 2025" [disabled]: "3"
+              - gridcell "Tuesday, November 4th, 2025" [ref=e505]:
+                - button "Tuesday, November 4th, 2025" [disabled]: "4"
+              - gridcell "Wednesday, November 5th, 2025" [ref=e506]:
+                - button "Wednesday, November 5th, 2025" [disabled]: "5"
+              - gridcell "Thursday, November 6th, 2025" [ref=e507]:
+                - button "Thursday, November 6th, 2025" [disabled]: "6"
+              - gridcell "Friday, November 7th, 2025" [ref=e508]:
+                - button "Friday, November 7th, 2025" [disabled]: "7"
+              - gridcell "Saturday, November 8th, 2025" [ref=e509]:
+                - button "Saturday, November 8th, 2025" [disabled]: "8"
+            - row "Sunday, November 9th, 2025 Monday, November 10th, 2025 Tuesday, November 11th, 2025 Wednesday, November 12th, 2025 Thursday, November 13th, 2025 Friday, November 14th, 2025 Saturday, November 15th, 2025" [ref=e510]:
+              - gridcell "Sunday, November 9th, 2025" [ref=e511]:
+                - button "Sunday, November 9th, 2025" [disabled]: "9"
+              - gridcell "Monday, November 10th, 2025" [ref=e512]:
+                - button "Monday, November 10th, 2025" [disabled]: "10"
+              - gridcell "Tuesday, November 11th, 2025" [ref=e513]:
+                - button "Tuesday, November 11th, 2025" [disabled]: "11"
+              - gridcell "Wednesday, November 12th, 2025" [ref=e514]:
+                - button "Wednesday, November 12th, 2025" [disabled]: "12"
+              - gridcell "Thursday, November 13th, 2025" [ref=e515]:
+                - button "Thursday, November 13th, 2025" [disabled]: "13"
+              - gridcell "Friday, November 14th, 2025" [ref=e516]:
+                - button "Friday, November 14th, 2025" [disabled]: "14"
+              - gridcell "Saturday, November 15th, 2025" [ref=e517]:
+                - button "Saturday, November 15th, 2025" [disabled]: "15"
+            - row "Sunday, November 16th, 2025 Monday, November 17th, 2025 Tuesday, November 18th, 2025 Wednesday, November 19th, 2025 Thursday, November 20th, 2025 Friday, November 21st, 2025 Saturday, November 22nd, 2025" [ref=e518]:
+              - gridcell "Sunday, November 16th, 2025" [ref=e519]:
+                - button "Sunday, November 16th, 2025" [disabled]: "16"
+              - gridcell "Monday, November 17th, 2025" [ref=e520]:
+                - button "Monday, November 17th, 2025" [disabled]: "17"
+              - gridcell "Tuesday, November 18th, 2025" [ref=e521]:
+                - button "Tuesday, November 18th, 2025" [disabled]: "18"
+              - gridcell "Wednesday, November 19th, 2025" [ref=e522]:
+                - button "Wednesday, November 19th, 2025" [disabled]: "19"
+              - gridcell "Thursday, November 20th, 2025" [ref=e523]:
+                - button "Thursday, November 20th, 2025" [disabled]: "20"
+              - gridcell "Friday, November 21st, 2025" [ref=e524]:
+                - button "Friday, November 21st, 2025" [disabled]: "21"
+              - gridcell "Saturday, November 22nd, 2025" [ref=e525]:
+                - button "Saturday, November 22nd, 2025" [disabled]: "22"
+            - row "Sunday, November 23rd, 2025 Monday, November 24th, 2025 Today, Tuesday, November 25th, 2025 Wednesday, November 26th, 2025 Thursday, November 27th, 2025 Friday, November 28th, 2025 Saturday, November 29th, 2025" [ref=e526]:
+              - gridcell "Sunday, November 23rd, 2025" [ref=e527]:
+                - button "Sunday, November 23rd, 2025" [disabled]: "23"
+              - gridcell "Monday, November 24th, 2025" [ref=e528]:
+                - button "Monday, November 24th, 2025" [disabled]: "24"
+              - gridcell "Today, Tuesday, November 25th, 2025" [ref=e529]:
+                - button "Today, Tuesday, November 25th, 2025" [ref=e530] [cursor=pointer]: "25"
+              - gridcell "Wednesday, November 26th, 2025" [ref=e531]:
+                - button "Wednesday, November 26th, 2025" [ref=e532] [cursor=pointer]: "26"
+              - gridcell "Thursday, November 27th, 2025" [ref=e533]:
+                - button "Thursday, November 27th, 2025" [ref=e534] [cursor=pointer]: "27"
+              - gridcell "Friday, November 28th, 2025" [ref=e535]:
+                - button "Friday, November 28th, 2025" [ref=e536] [cursor=pointer]: "28"
+              - gridcell "Saturday, November 29th, 2025" [ref=e537]:
+                - button "Saturday, November 29th, 2025" [ref=e538] [cursor=pointer]: "29"
+            - row "Sunday, November 30th, 2025 Monday, December 1st, 2025 Tuesday, December 2nd, 2025 Wednesday, December 3rd, 2025 Thursday, December 4th, 2025 Friday, December 5th, 2025 Saturday, December 6th, 2025" [ref=e539]:
+              - gridcell "Sunday, November 30th, 2025" [ref=e540]:
+                - button "Sunday, November 30th, 2025" [ref=e541] [cursor=pointer]: "30"
+              - gridcell "Monday, December 1st, 2025" [ref=e542]:
+                - button "Monday, December 1st, 2025" [ref=e543] [cursor=pointer]: "1"
+              - gridcell "Tuesday, December 2nd, 2025" [ref=e544]:
+                - button "Tuesday, December 2nd, 2025" [ref=e545] [cursor=pointer]: "2"
+              - gridcell "Wednesday, December 3rd, 2025" [ref=e546]:
+                - button "Wednesday, December 3rd, 2025" [ref=e547] [cursor=pointer]: "3"
+              - gridcell "Thursday, December 4th, 2025" [ref=e548]:
+                - button "Thursday, December 4th, 2025" [ref=e549] [cursor=pointer]: "4"
+              - gridcell "Friday, December 5th, 2025" [ref=e550]:
+                - button "Friday, December 5th, 2025" [ref=e551] [cursor=pointer]: "5"
+              - gridcell "Saturday, December 6th, 2025" [ref=e552]:
+                - button "Saturday, December 6th, 2025" [ref=e553] [cursor=pointer]: "6"
 ```
