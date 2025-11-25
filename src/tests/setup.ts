@@ -189,3 +189,33 @@ if (!HTMLElement.prototype.setPointerCapture) {
 if (!HTMLElement.prototype.releasePointerCapture) {
   HTMLElement.prototype.releasePointerCapture = vi.fn();
 }
+
+// Mock PointerEvent for Radix UI Select component
+// jsdom doesn't implement PointerEvent, but Radix UI relies on it to open dropdowns
+// Without this, fireEvent.pointerDown and userEvent.click won't trigger Select to open
+// Reference: https://github.com/shadcn-ui/ui/discussions/4168
+class MockPointerEvent extends Event {
+  button: number;
+  ctrlKey: boolean;
+  pointerType: string;
+  pointerId: number;
+  pressure: number;
+  width: number;
+  height: number;
+
+  constructor(type: string, props: PointerEventInit = {}) {
+    super(type, props);
+    this.button = props.button ?? 0;
+    this.ctrlKey = props.ctrlKey ?? false;
+    this.pointerType = props.pointerType ?? "mouse";
+    this.pointerId = props.pointerId ?? 1;
+    this.pressure = props.pressure ?? 0;
+    this.width = props.width ?? 1;
+    this.height = props.height ?? 1;
+  }
+}
+
+// Only set if not already defined (avoid breaking real browser environments)
+if (typeof window.PointerEvent === "undefined") {
+  window.PointerEvent = MockPointerEvent as unknown as typeof PointerEvent;
+}
