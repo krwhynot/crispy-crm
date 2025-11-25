@@ -23,7 +23,7 @@ import { BasePage } from "./BasePage";
  */
 export class DashboardV3Page extends BasePage {
   // =============================================================================
-  // NAVIGATION
+  // NAVIGATION & REFRESH
   // =============================================================================
 
   /**
@@ -32,6 +32,42 @@ export class DashboardV3Page extends BasePage {
   async navigate(): Promise<void> {
     await this.goto("/");
     await this.waitForDashboardReady();
+  }
+
+  /**
+   * Refresh dashboard data by reloading the page
+   *
+   * NOTE: V3 Dashboard has no visible refresh button.
+   * Data refreshes automatically after activity creation via Quick Logger.
+   * This method provides manual refresh capability for testing by reloading the page.
+   *
+   * For testing automatic refresh behavior, use:
+   * - submitActivityAndClose() → triggers onRefresh callback
+   * - waitForDataRefresh() → waits for API responses after refresh
+   */
+  async refresh(): Promise<void> {
+    await this.page.reload();
+    await this.waitForDashboardReady();
+  }
+
+  /**
+   * Wait for dashboard data to refresh after an action
+   * Waits for both pipeline and tasks API responses
+   */
+  async waitForDataRefresh(): Promise<void> {
+    await Promise.all([
+      this.page.waitForResponse(
+        (resp) => resp.url().includes("principal_pipeline_summary") && resp.status() === 200,
+        { timeout: 10000 }
+      ),
+      this.page.waitForResponse(
+        (resp) =>
+          resp.url().includes("/tasks") &&
+          resp.request().method() === "GET" &&
+          resp.status() === 200,
+        { timeout: 10000 }
+      ),
+    ]);
   }
 
   /**
@@ -497,7 +533,7 @@ export class DashboardV3Page extends BasePage {
     await this.getOrganizationCombobox().click();
     await this.page.getByRole("option", { name: orgName }).click();
     // CMDK popovers don't auto-close on selection, blur the input to close
-    await this.dismissComboboxPopover();
+    await this.dismissComboboxPopoverIfOpen();
   }
 
   /**
