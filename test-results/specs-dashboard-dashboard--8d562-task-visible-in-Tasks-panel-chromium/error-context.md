@@ -1,7 +1,7 @@
 # Page snapshot
 
 ```yaml
-- generic [ref=e1]:
+- generic [active] [ref=e1]:
   - generic [ref=e2]:
     - navigation [ref=e3]:
       - generic [ref=e6]:
@@ -429,7 +429,7 @@
                 - generic [ref=e450]: Notes
                 - textbox "Notes" [ref=e451]:
                   - /placeholder: Summary of the interaction...
-                  - text: Follow-up 1764058358287
+                  - text: Follow-up 1764058738055
               - generic [ref=e452]:
                 - generic [ref=e453]:
                   - generic [ref=e454]: Create follow-up task?
@@ -455,7 +455,7 @@
   - dialog [ref=e474]:
     - generic [ref=e476]:
       - navigation [ref=e477]:
-        - button "Go to the Previous Month" [active] [ref=e478] [cursor=pointer]:
+        - button "Go to the Previous Month" [ref=e478] [cursor=pointer]:
           - img
         - button "Go to the Next Month" [ref=e479] [cursor=pointer]:
           - img

@@ -393,19 +393,22 @@ export class DashboardV3Page extends BasePage {
 
   /**
    * Get Activity Type select
-   * NOTE: shadcn Select with FormLabel doesn't have HTML label association,
-   * so we find the combobox by its placeholder text instead
+   * NOTE: shadcn Select with FormLabel doesn't have HTML label association.
+   * The SelectTrigger is a button containing the placeholder "Select type".
    */
   getActivityTypeSelect(): Locator {
-    // Find the Select trigger by its placeholder "Select type"
-    return this.page.getByRole("combobox").filter({ hasText: /select type/i }).first();
+    // Find the button that contains "Select type" placeholder text
+    return this.page.locator("button", { hasText: "Select type" }).first();
   }
 
   /**
    * Get Outcome select
+   * NOTE: shadcn Select with FormLabel doesn't have HTML label association,
+   * so we find the combobox by its placeholder text instead
    */
   getOutcomeSelect(): Locator {
-    return this.page.getByLabel(/outcome/i);
+    // Find the Select trigger by its placeholder "Select outcome"
+    return this.page.getByRole("combobox").filter({ hasText: /select outcome/i }).first();
   }
 
   /**
@@ -494,9 +497,13 @@ export class DashboardV3Page extends BasePage {
 
   /**
    * Open the activity log form
+   * Waits for form loading to complete (salesId + entities load)
    */
   async openActivityForm(): Promise<void> {
     await this.getStartLoggingButton().click();
+    // Wait for loading spinner to disappear (form has loading state while fetching salesId + entities)
+    await expect(this.getFormLoadingState()).not.toBeVisible({ timeout: 10000 });
+    // Then verify form fields are visible
     await expect(this.getActivityTypeSelect()).toBeVisible({ timeout: 5000 });
   }
 
@@ -620,12 +627,19 @@ export class DashboardV3Page extends BasePage {
 
   /**
    * Set follow-up date
+   * NOTE: Calendar shows days from prev/current/next months, so we filter
+   * to only enabled gridcells and take the first match (current month's day)
    */
   async setFollowUpDate(date: Date): Promise<void> {
     await this.getFollowUpDatePicker().click();
     // Click the day in the calendar
+    // Use exact match and filter to enabled cells only (current month days are enabled)
     const dayNumber = date.getDate().toString();
-    await this.page.getByRole("gridcell", { name: dayNumber }).click();
+    const dayCell = this.page
+      .getByRole("gridcell", { name: dayNumber, exact: true })
+      .and(this.page.locator(':not([aria-disabled="true"])'))
+      .first();
+    await dayCell.click();
     // Press Escape to close the date picker popover
     await this.page.keyboard.press("Escape");
     await this.page.waitForTimeout(200);
