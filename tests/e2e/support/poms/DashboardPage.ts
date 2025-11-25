@@ -151,39 +151,106 @@ export class DashboardPage extends BasePage {
 
   /**
    * Get Upcoming Events by Principal widget
+   * Uses semantic text matching for resilience
    */
   getUpcomingEventsWidget(): Locator {
-    // Get the card containing this title
-    return this.page.locator('[data-slot="card"]', {
-      has: this.page.locator('[data-slot="card-title"]:has-text("Upcoming by Principal")'),
-    });
+    // Prefer semantic: find card section containing the title text
+    return this.page
+      .locator("section, [role='region'], div")
+      .filter({ has: this.page.getByText(/upcoming by principal/i) })
+      .first();
+  }
+
+  /**
+   * Get Upcoming Events widget heading
+   */
+  getUpcomingEventsHeading(): Locator {
+    return this.page.getByText(/upcoming by principal/i);
   }
 
   /**
    * Get My Tasks This Week widget
+   * Uses semantic text matching for resilience
    */
   getMyTasksWidget(): Locator {
-    return this.page.locator('[data-slot="card"]', {
-      has: this.page.locator('[data-slot="card-title"]:has-text("My Tasks This Week")'),
-    });
+    return this.page
+      .locator("section, [role='region'], div")
+      .filter({ has: this.page.getByText(/my tasks/i) })
+      .first();
+  }
+
+  /**
+   * Get Tasks widget heading
+   */
+  getTasksWidgetHeading(): Locator {
+    return this.page.getByText(/my tasks/i).first();
+  }
+
+  /**
+   * Get "New Task" button within Tasks widget
+   */
+  getNewTaskButton(): Locator {
+    return this.page.getByRole("button", { name: /new task/i });
   }
 
   /**
    * Get Recent Activity Feed widget
+   * Uses semantic text matching for resilience
    */
   getRecentActivityWidget(): Locator {
-    return this.page.locator('[data-slot="card"]', {
-      has: this.page.locator('[data-slot="card-title"]:has-text("Recent Activity")'),
-    });
+    return this.page
+      .locator("section, [role='region'], div")
+      .filter({ has: this.page.getByText(/recent activity|activity feed|log activity/i) })
+      .first();
+  }
+
+  /**
+   * Get Activity Feed heading
+   */
+  getActivityFeedHeading(): Locator {
+    return this.page.getByText(/recent activity|log activity/i).first();
   }
 
   /**
    * Get Pipeline Summary widget
    */
   getPipelineSummaryWidget(): Locator {
-    return this.page.locator('[data-slot="card"]', {
-      has: this.page.getByRole("heading", { name: /pipeline summary/i }),
-    });
+    return this.page
+      .locator("section, [role='region'], div")
+      .filter({ has: this.page.getByText(/pipeline/i) })
+      .first();
+  }
+
+  /**
+   * Get Principal Pipeline Table (V3 dashboard)
+   * Semantic: Uses heading text to locate the table container
+   */
+  getPrincipalPipelineTable(): Locator {
+    return this.page
+      .locator("section, [role='region'], div")
+      .filter({ has: this.page.getByText(/pipeline by principal/i) })
+      .first();
+  }
+
+  /**
+   * Get Principal Pipeline Table heading
+   */
+  getPrincipalPipelineHeading(): Locator {
+    return this.page.getByRole("heading", { name: /pipeline by principal/i });
+  }
+
+  /**
+   * Get pipeline table rows (clickable principal rows)
+   */
+  getPipelineRows(): Locator {
+    return this.page.getByRole("button", { name: /view opportunities for/i });
+  }
+
+  /**
+   * Get specific pipeline row by principal name
+   */
+  getPipelineRowByPrincipal(principalName: string): Locator {
+    return this.page.getByRole("button", { name: new RegExp(`view opportunities for.*${principalName}`, "i") });
   }
 
   /**
