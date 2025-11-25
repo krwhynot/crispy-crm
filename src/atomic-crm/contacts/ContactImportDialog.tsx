@@ -505,12 +505,14 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
                         <span className="font-medium">Processing CSV Import</span>
                       </div>
                       <div className="ml-auto">
-                        <button
+                        <Button
+                          variant="ghost"
+                          size="sm"
                           onClick={handleReset}
-                          className="text-sm text-destructive hover:underline"
+                          className="h-11 px-4 text-destructive hover:text-destructive hover:bg-destructive/10"
                         >
                           Cancel Import
-                        </button>
+                        </Button>
                       </div>
                     </div>
 

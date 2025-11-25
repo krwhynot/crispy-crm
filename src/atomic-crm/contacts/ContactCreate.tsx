@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { SaveButton } from "@/components/admin/form";
 import type { Contact } from "../types";
 import { ContactInputs } from "./ContactInputs";
+import { contactBaseSchema } from "../validation/contacts";
 
 const ContactCreate = () => {
   const { identity } = useGetIdentity();
@@ -14,13 +15,9 @@ const ContactCreate = () => {
 
   // Generate defaults from schema truth
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
-  // Note: createContactSchema is ZodEffects (has .transform/.superRefine), not ZodObject,
-  // so .partial() is not available. Using known defaults from contactBaseSchema (validation/contacts.ts:78-79):
-  // - email: z.array(emailAndTypeSchema).default([])
-  // - phone: z.array(phoneNumberAndTypeSchema).default([])
+  // contactBaseSchema is a ZodObject (not ZodEffects), so .partial().parse({}) works
   const formDefaults = {
-    email: [],  // From contactBaseSchema.email.default([])
-    phone: [],  // From contactBaseSchema.phone.default([])
+    ...contactBaseSchema.partial().parse({}),
     sales_id: identity?.id,
   };
 
