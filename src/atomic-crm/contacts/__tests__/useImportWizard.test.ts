@@ -13,9 +13,11 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
+import { renderHook, act } from "@testing-library/react";
 import {
   importWizardReducer,
   createInitialState,
+  useImportWizard,
 } from "../useImportWizard";
 import type {
   WizardState,
@@ -626,5 +628,191 @@ describe("createInitialState", () => {
     const state2 = createInitialState();
     expect(state1).not.toBe(state2);
     expect(state1).toEqual(state2);
+  });
+});
+
+// ============================================================
+// HOOK TESTS - AbortController & Stable References
+// ============================================================
+
+describe("useImportWizard hook", () => {
+  it("returns stable action references across renders", () => {
+    const { result, rerender } = renderHook(() => useImportWizard());
+
+    const actions1 = result.current.actions;
+    rerender();
+    const actions2 = result.current.actions;
+
+    // Actions object should be stable (same reference)
+    expect(actions1).toBe(actions2);
+  });
+
+  it("provides isAborted function", () => {
+    const { result } = renderHook(() => useImportWizard());
+
+    expect(typeof result.current.isAborted).toBe("function");
+    // Initially not aborted
+    expect(result.current.isAborted()).toBe(false);
+  });
+
+  it("provides getAbortSignal function", () => {
+    const { result } = renderHook(() => useImportWizard());
+
+    expect(typeof result.current.getAbortSignal).toBe("function");
+    // Initially no signal (no operation started)
+    expect(result.current.getAbortSignal()).toBeNull();
+  });
+
+  it("creates AbortController on startParsing", () => {
+    const { result } = renderHook(() => useImportWizard());
+
+    // Select a file first
+    act(() => {
+      result.current.actions.selectFile(mockFile, [], []);
+    });
+
+    // Start parsing creates AbortController
+    act(() => {
+      result.current.actions.startParsing();
+    });
+
+    // Now there should be a signal
+    expect(result.current.getAbortSignal()).not.toBeNull();
+    expect(result.current.isAborted()).toBe(false);
+  });
+
+  it("creates AbortController on startImport", () => {
+    const { result } = renderHook(() => useImportWizard());
+
+    // Set up state to preview
+    act(() => {
+      result.current.actions.selectFile(mockFile, [], []);
+    });
+    act(() => {
+      result.current.actions.startParsing();
+    });
+    act(() => {
+      result.current.actions.parsingComplete(mockPreviewData);
+    });
+
+    // Start import creates AbortController
+    act(() => {
+      result.current.actions.startImport(100);
+    });
+
+    expect(result.current.getAbortSignal()).not.toBeNull();
+    expect(result.current.isAborted()).toBe(false);
+  });
+
+  it("aborts on cancel action", () => {
+    const { result } = renderHook(() => useImportWizard());
+
+    // Set up state to importing
+    act(() => {
+      result.current.actions.selectFile(mockFile, [], []);
+    });
+    act(() => {
+      result.current.actions.startParsing();
+    });
+    act(() => {
+      result.current.actions.parsingComplete(mockPreviewData);
+    });
+    act(() => {
+      result.current.actions.startImport(100);
+    });
+
+    // Capture signal before cancel
+    const signalBeforeCancel = result.current.getAbortSignal();
+    expect(signalBeforeCancel).not.toBeNull();
+
+    // Cancel should abort
+    act(() => {
+      result.current.actions.cancel();
+    });
+
+    // The signal that was active should now be aborted
+    expect(signalBeforeCancel?.aborted).toBe(true);
+  });
+
+  it("aborts on reset action", () => {
+    const { result } = renderHook(() => useImportWizard());
+
+    // Set up state to importing
+    act(() => {
+      result.current.actions.selectFile(mockFile, [], []);
+    });
+    act(() => {
+      result.current.actions.startParsing();
+    });
+    act(() => {
+      result.current.actions.parsingComplete(mockPreviewData);
+    });
+    act(() => {
+      result.current.actions.startImport(100);
+    });
+
+    // Capture signal before reset
+    const signalBeforeReset = result.current.getAbortSignal();
+    expect(signalBeforeReset).not.toBeNull();
+
+    // Reset should abort
+    act(() => {
+      result.current.actions.reset();
+    });
+
+    // The signal that was active should now be aborted
+    expect(signalBeforeReset?.aborted).toBe(true);
+  });
+
+  it("cleans up AbortController on unmount", () => {
+    const { result, unmount } = renderHook(() => useImportWizard());
+
+    // Start an operation
+    act(() => {
+      result.current.actions.selectFile(mockFile, [], []);
+    });
+    act(() => {
+      result.current.actions.startParsing();
+    });
+
+    const signalBeforeUnmount = result.current.getAbortSignal();
+    expect(signalBeforeUnmount).not.toBeNull();
+
+    // Unmount should abort
+    unmount();
+
+    // The signal should now be aborted
+    expect(signalBeforeUnmount?.aborted).toBe(true);
+  });
+
+  it("creates fresh AbortController for each new operation", () => {
+    const { result } = renderHook(() => useImportWizard());
+
+    // First operation
+    act(() => {
+      result.current.actions.selectFile(mockFile, [], []);
+    });
+    act(() => {
+      result.current.actions.startParsing();
+    });
+
+    const firstSignal = result.current.getAbortSignal();
+
+    // Complete first operation and start second
+    act(() => {
+      result.current.actions.parsingComplete(mockPreviewData);
+    });
+    act(() => {
+      result.current.actions.startImport(100);
+    });
+
+    const secondSignal = result.current.getAbortSignal();
+
+    // Should be different signals
+    expect(firstSignal).not.toBe(secondSignal);
+    // First signal should be aborted (replaced by second)
+    expect(firstSignal?.aborted).toBe(true);
+    // Second signal should be active
+    expect(secondSignal?.aborted).toBe(false);
   });
 });

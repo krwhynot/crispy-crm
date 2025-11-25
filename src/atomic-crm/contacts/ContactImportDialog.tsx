@@ -47,8 +47,9 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
 
   // ============================================================
   // STATE MACHINE - Replaces 10 useState calls + 2 refs
+  // AbortController support for cancelling async operations
   // ============================================================
-  const { state: wizardState, actions: wizardActions, flags } = useImportWizard();
+  const { state: wizardState, actions: wizardActions, flags, isAborted } = useImportWizard();
 
   // ============================================================
   // COLUMN MAPPING - Extracted hook for reusability
@@ -315,19 +316,30 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
       // Transition to importing state
       wizardActions.startImport(reprocessedContacts.length);
 
-      // Process contacts in batches
+      // Process contacts in batches with abort support
       const batchSize = 10;
       for (let i = 0; i < reprocessedContacts.length; i += batchSize) {
+        // Check if operation was cancelled
+        if (isAborted()) {
+          // Don't mark as complete - user cancelled
+          return;
+        }
+
         const batch = reprocessedContacts.slice(i, i + batchSize);
         await processBatch(batch, decisions);
         wizardActions.updateProgress(i + batch.length);
+      }
+
+      // Check abort one final time before marking complete
+      if (isAborted()) {
+        return;
       }
 
       // Mark import as complete
       wizardActions.importComplete();
       refresh();
     },
-    [reprocessedContacts, processBatch, refresh, wizardActions]
+    [reprocessedContacts, processBatch, refresh, wizardActions, isAborted]
   );
 
   /**
@@ -398,222 +410,247 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
   );
 
   // ============================================================
-  // DERIVED VALUES FROM WIZARD STATE
+  // STEP-BASED RENDER FUNCTIONS
   // ============================================================
 
-  // Get file from wizard state (available in multiple steps)
-  const selectedFile =
-    wizardState.step === "file_selected" ||
-    wizardState.step === "parsing" ||
-    wizardState.step === "preview" ||
-    wizardState.step === "importing"
-      ? wizardState.file
-      : null;
+  /**
+   * Renders the file selection UI (idle and file_selected states).
+   * Shows download sample, file input, and validation messages.
+   */
+  const renderFileSelectionStep = () => {
+    const validationErrors =
+      wizardState.step === "file_selected" ? wizardState.validationErrors : [];
+    const validationWarnings =
+      wizardState.step === "file_selected" ? wizardState.validationWarnings : [];
+    const selectedFile =
+      wizardState.step === "file_selected" ? wizardState.file : null;
+    const isParsing = wizardState.step === "parsing" || previewImporter.state === "parsing";
 
-  // Get validation errors/warnings from file_selected state
-  const validationErrors =
-    wizardState.step === "file_selected" ? wizardState.validationErrors : [];
-  const validationWarnings =
-    wizardState.step === "file_selected" ? wizardState.validationWarnings : [];
+    return (
+      <>
+        <Alert>
+          <AlertDescription className="flex flex-col gap-4">
+            Here is a sample CSV file you can use as a template
+            <Button asChild variant="outline" size="sm">
+              <Link to={SAMPLE_URL} download={"crm_contacts_sample.csv"}>
+                Download CSV sample
+              </Link>
+            </Button>
+          </AlertDescription>
+        </Alert>
 
-  // Get progress from importing state
-  const importProgress =
-    wizardState.step === "importing"
-      ? wizardState.progress
-      : { count: 0, total: 0 };
+        <FileInput
+          source="csv"
+          label="CSV File"
+          accept={{ "text/csv": [".csv"] }}
+          onChange={handleFileChange}
+        >
+          <FileField source="src" title="title" target="_blank" />
+        </FileInput>
 
-  // Get accumulated results from importing state
-  const accumulatedResult =
-    wizardState.step === "importing"
-      ? wizardState.accumulated
-      : { totalProcessed: 0, successCount: 0, skippedCount: 0, failedCount: 0, errors: [] };
+        {/* SECURITY: Display validation errors */}
+        {validationErrors.length > 0 && (
+          <Alert variant="destructive">
+            <AlertDescription>
+              <div className="font-semibold mb-2">File validation failed:</div>
+              <ul className="list-disc pl-5 space-y-1">
+                {validationErrors.map((error, idx) => (
+                  <li key={idx}>{error.message}</li>
+                ))}
+              </ul>
+            </AlertDescription>
+          </Alert>
+        )}
 
-  // Get final result from complete state
-  const importResult = wizardState.step === "complete" ? wizardState.result : null;
+        {/* Display non-blocking warnings */}
+        {validationWarnings.length > 0 && (
+          <Alert>
+            <AlertDescription>
+              <div className="font-semibold mb-2">Warnings:</div>
+              <ul className="list-disc pl-5 space-y-1">
+                {validationWarnings.map((warning, idx) => (
+                  <li key={idx}>{warning}</li>
+                ))}
+              </ul>
+            </AlertDescription>
+          </Alert>
+        )}
 
-  // Determine if we're in idle-like state (for UI)
-  const isIdle = wizardState.step === "idle" || wizardState.step === "file_selected";
-  const isParsing = wizardState.step === "parsing" || previewImporter.state === "parsing";
+        {/* Action Button */}
+        <div className="flex justify-start pt-6 gap-2">
+          <Button
+            onClick={startImport}
+            disabled={!selectedFile || isParsing || validationErrors.length > 0}
+          >
+            {isParsing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+            Import
+          </Button>
+        </div>
+      </>
+    );
+  };
+
+  /**
+   * Renders the parsing state with loading indicator.
+   */
+  const renderParsingStep = () => (
+    <div className="flex flex-col items-center justify-center py-8 space-y-4">
+      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <p className="text-muted-foreground">Parsing CSV file...</p>
+      <Button variant="ghost" onClick={handleClose}>
+        Cancel
+      </Button>
+    </div>
+  );
+
+  /**
+   * Renders the importing state with progress tracking.
+   * Shows real-time progress bar, statistics, and cancel button.
+   */
+  const renderImportingStep = () => {
+    if (wizardState.step !== "importing") return null;
+
+    const { progress, accumulated } = wizardState;
+    const progressPercent = progress.total > 0 ? (progress.count / progress.total) * 100 : 0;
+
+    return (
+      <Card className="border-primary/20">
+        <CardContent className="pt-6 space-y-4">
+          {/* Progress Header */}
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
+              <Loader2 className="h-5 w-5 animate-spin text-primary" />
+              <span className="font-medium">Processing CSV Import</span>
+            </div>
+            <div className="ml-auto">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleReset}
+                className="h-11 px-4 text-destructive hover:text-destructive hover:bg-destructive/10"
+              >
+                Cancel Import
+              </Button>
+            </div>
+          </div>
+
+          {/* Progress Bar */}
+          <div className="space-y-2">
+            <Progress value={progressPercent} className="h-3" />
+            <div className="flex justify-between text-sm text-muted-foreground">
+              <span>Processing {progress.count} of {progress.total} contacts</span>
+              <span>{Math.round(progressPercent)}% Complete</span>
+            </div>
+          </div>
+
+          {/* Statistics */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 pt-2">
+            <div className="space-y-1">
+              <p className="text-sm font-medium">Processed</p>
+              <p className="text-2xl font-bold text-primary">{progress.count}</p>
+              <p className="text-xs text-muted-foreground">of {progress.total} contacts</p>
+            </div>
+
+            <div className="space-y-1">
+              <p className="text-sm font-medium">Errors</p>
+              <p className="text-2xl font-bold text-destructive">{accumulated.errors.length}</p>
+              <p className="text-xs text-muted-foreground">failed imports</p>
+            </div>
+
+            <div className="space-y-1">
+              <p className="text-sm font-medium">Success</p>
+              <p className="text-2xl font-bold text-success">{accumulated.successCount}</p>
+              <p className="text-xs text-muted-foreground">imported</p>
+            </div>
+          </div>
+
+          {/* Warning Message */}
+          <Alert className="border-warning/50 bg-warning/10">
+            <AlertDescription className="text-sm">
+              Please keep this tab open until the import completes
+            </AlertDescription>
+          </Alert>
+        </CardContent>
+      </Card>
+    );
+  };
+
+  /**
+   * Renders the error state with error message and retry option.
+   */
+  const renderErrorStep = () => (
+    <>
+      <Alert variant="destructive">
+        <AlertDescription>
+          Failed to import this file, please make sure your provided a valid CSV file.
+        </AlertDescription>
+      </Alert>
+      <div className="flex justify-start pt-6 gap-2">
+        <Button variant="outline" onClick={handleClose}>
+          Close
+        </Button>
+      </div>
+    </>
+  );
+
+  /**
+   * Renders the main dialog content based on current wizard step.
+   * Uses explicit switch pattern for type-safe step handling.
+   */
+  const renderMainDialogContent = () => {
+    switch (wizardState.step) {
+      case "idle":
+      case "file_selected":
+        return renderFileSelectionStep();
+
+      case "parsing":
+        return renderParsingStep();
+
+      case "importing":
+        return renderImportingStep();
+
+      case "error":
+        return renderErrorStep();
+
+      case "preview":
+      case "complete":
+        // These states use separate dialogs, show nothing in main dialog
+        return null;
+
+      default:
+        // TypeScript exhaustive check - this should never happen
+        return null;
+    }
+  };
 
   // ============================================================
-  // RENDER
+  // MAIN RENDER
   // ============================================================
+
+  // Determine which dialog should be visible
+  const showMainDialog = open && wizardState.step !== "preview" && wizardState.step !== "complete";
+  const showPreviewDialog = open && wizardState.step === "preview" && derivedPreviewData;
+  const showResultDialog = open && wizardState.step === "complete";
 
   return (
     <>
-      {/* Main Import Dialog */}
-      <Dialog open={open && !flags.showPreview && !flags.showResult} onOpenChange={handleClose}>
+      {/* Main Import Dialog - File Selection, Parsing, Importing, Error */}
+      <Dialog open={showMainDialog} onOpenChange={handleClose}>
         <DialogContent className="max-w-2xl">
           <Form className="flex flex-col gap-4">
             <DialogHeader>
               <DialogTitle>Import</DialogTitle>
             </DialogHeader>
-
             <div className="flex flex-col space-y-2">
-              {flags.isImporting && (
-                <Card className="border-primary/20">
-                  <CardContent className="pt-6 space-y-4">
-                    {/* Progress Header */}
-                    <div className="flex items-center gap-3">
-                      <div className="flex items-center gap-2">
-                        <Loader2 className="h-5 w-5 animate-spin text-primary" />
-                        <span className="font-medium">Processing CSV Import</span>
-                      </div>
-                      <div className="ml-auto">
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={handleReset}
-                          className="h-11 px-4 text-destructive hover:text-destructive hover:bg-destructive/10"
-                        >
-                          Cancel Import
-                        </Button>
-                      </div>
-                    </div>
-
-                    {/* Progress Bar */}
-                    <div className="space-y-2">
-                      <Progress
-                        value={
-                          importProgress.total > 0
-                            ? (importProgress.count / importProgress.total) * 100
-                            : 0
-                        }
-                        className="h-3"
-                      />
-                      <div className="flex justify-between text-sm text-muted-foreground">
-                        <span>
-                          Processing {importProgress.count} of {importProgress.total} contacts
-                        </span>
-                        <span>
-                          {importProgress.total > 0
-                            ? Math.round((importProgress.count / importProgress.total) * 100)
-                            : 0}
-                          % Complete
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Statistics */}
-                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 pt-2">
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium">Processed</p>
-                        <p className="text-2xl font-bold text-primary">{importProgress.count}</p>
-                        <p className="text-xs text-muted-foreground">
-                          of {importProgress.total} contacts
-                        </p>
-                      </div>
-
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium">Errors</p>
-                        <p className="text-2xl font-bold text-destructive">
-                          {accumulatedResult.errors.length}
-                        </p>
-                        <p className="text-xs text-muted-foreground">failed imports</p>
-                      </div>
-
-                      <div className="space-y-1">
-                        <p className="text-sm font-medium">Success</p>
-                        <p className="text-2xl font-bold text-success">
-                          {accumulatedResult.successCount}
-                        </p>
-                        <p className="text-xs text-muted-foreground">imported</p>
-                      </div>
-                    </div>
-
-                    {/* Warning Message */}
-                    <Alert className="border-warning/50 bg-warning/10">
-                      <AlertDescription className="text-sm">
-                        Please keep this tab open until the import completes
-                      </AlertDescription>
-                    </Alert>
-                  </CardContent>
-                </Card>
-              )}
-
-              {(previewImporter.state === "error" || flags.hasError) && (
-                <Alert variant="destructive">
-                  <AlertDescription>
-                    Failed to import this file, please make sure your provided a valid CSV file.
-                  </AlertDescription>
-                </Alert>
-              )}
-
-              {isIdle && !flags.isImporting && (
-                <>
-                  <Alert>
-                    <AlertDescription className="flex flex-col gap-4">
-                      Here is a sample CSV file you can use as a template
-                      <Button asChild variant="outline" size="sm">
-                        <Link to={SAMPLE_URL} download={"crm_contacts_sample.csv"}>
-                          Download CSV sample
-                        </Link>
-                      </Button>{" "}
-                    </AlertDescription>
-                  </Alert>
-
-                  <FileInput
-                    source="csv"
-                    label="CSV File"
-                    accept={{ "text/csv": [".csv"] }}
-                    onChange={handleFileChange}
-                  >
-                    <FileField source="src" title="title" target="_blank" />
-                  </FileInput>
-
-                  {/* SECURITY: Display validation errors */}
-                  {validationErrors.length > 0 && (
-                    <Alert variant="destructive">
-                      <AlertDescription>
-                        <div className="font-semibold mb-2">File validation failed:</div>
-                        <ul className="list-disc pl-5 space-y-1">
-                          {validationErrors.map((error, idx) => (
-                            <li key={idx}>{error.message}</li>
-                          ))}
-                        </ul>
-                      </AlertDescription>
-                    </Alert>
-                  )}
-
-                  {/* Display non-blocking warnings */}
-                  {validationWarnings.length > 0 && (
-                    <Alert>
-                      <AlertDescription>
-                        <div className="font-semibold mb-2">Warnings:</div>
-                        <ul className="list-disc pl-5 space-y-1">
-                          {validationWarnings.map((warning, idx) => (
-                            <li key={idx}>{warning}</li>
-                          ))}
-                        </ul>
-                      </AlertDescription>
-                    </Alert>
-                  )}
-                </>
-              )}
+              {renderMainDialogContent()}
             </div>
           </Form>
-
-          <div className="flex justify-start pt-6 gap-2">
-            {isIdle ? (
-              <Button
-                onClick={startImport}
-                disabled={!selectedFile || isParsing || validationErrors.length > 0}
-              >
-                {isParsing ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
-                Import
-              </Button>
-            ) : (
-              <Button variant="outline" onClick={handleClose} disabled={flags.isImporting}>
-                Close
-              </Button>
-            )}
-          </div>
         </DialogContent>
       </Dialog>
 
-      {/* Preview Dialog (when feature flag is enabled) */}
-      {ENABLE_IMPORT_PREVIEW && flags.showPreview && derivedPreviewData && (
-        <Dialog open={flags.showPreview} onOpenChange={handlePreviewCancel}>
+      {/* Preview Dialog - Column mapping and data review */}
+      {ENABLE_IMPORT_PREVIEW && showPreviewDialog && derivedPreviewData && (
+        <Dialog open={true} onOpenChange={handlePreviewCancel}>
           <DialogContent className="sm:max-w-7xl h-[90vh] flex flex-col p-0">
             <DialogHeader className="px-6 pt-6 pb-4 border-b">
               <DialogTitle>Import Preview</DialogTitle>
@@ -631,12 +668,12 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
         </Dialog>
       )}
 
-      {/* Enhanced Result Dialog */}
-      {importResult && (
+      {/* Result Dialog - Import completion summary */}
+      {showResultDialog && wizardState.step === "complete" && (
         <ContactImportResult
-          open={flags.showResult}
+          open={true}
           onClose={handleClose}
-          result={importResult}
+          result={wizardState.result}
           allowRetry={false}
         />
       )}
