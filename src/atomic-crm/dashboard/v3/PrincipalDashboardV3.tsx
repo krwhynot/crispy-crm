@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { PrincipalPipelineTable } from "./components/PrincipalPipelineTable";
 import { TasksPanel } from "./components/TasksPanel";
@@ -35,10 +35,11 @@ export function PrincipalDashboardV3() {
     }
   };
 
-  const handleRefresh = () => {
+  // Memoized to prevent child re-renders when passed as prop
+  const handleRefresh = useCallback(() => {
     // Increment refresh key to force data components to re-mount and re-fetch
     setRefreshKey(prev => prev + 1);
-  };
+  }, []);
 
   return (
     <div className="flex h-screen flex-col">
