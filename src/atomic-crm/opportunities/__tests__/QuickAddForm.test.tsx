@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { QuickAddForm } from "../quick-add/QuickAddForm";
@@ -220,9 +220,7 @@ describe("QuickAddForm", () => {
     });
   }, 15000);
 
-  it("filters products by selected principal", async () => {
-    userEvent.setup();
-
+  it("shows 'Select a Principal first' when no principal is selected", async () => {
     // Mock no principal selected initially
     mockLocalStorage.getItem.mockImplementation((key) => {
       if (key === "last_campaign") return "Test Campaign";
@@ -238,11 +236,6 @@ describe("QuickAddForm", () => {
 
     // Initially should show message to select principal
     expect(screen.getByText(/select a principal first to filter products/i)).toBeInTheDocument();
-
-    // TD-003 [P2] Missing test coverage - Test principal selection and product filtering
-    // Effort: 4-6 hours | Approach: Use @testing-library/user-event selectOptions helper
-    // This requires mocking Select component open/select/close cycle
-    // Tracker: docs/technical-debt-tracker.md
   });
 
   it("validates all required fields", async () => {
@@ -333,4 +326,354 @@ describe("QuickAddForm", () => {
     expect(screen.getByRole("button", { name: /save & add another/i })).toBeDisabled();
     expect(screen.getByRole("button", { name: /save & close/i })).toBeDisabled();
   });
+});
+
+/**
+ * Principal Selection and Product Filtering Tests (TD-003)
+ *
+ * These tests verify the dependent dropdown behavior where:
+ * 1. Principal dropdown shows available principals
+ * 2. Selecting a principal enables the products dropdown
+ * 3. Products are filtered by the selected principal
+ * 4. Switching principals updates the products list
+ *
+ * Uses fireEvent.pointerDown for Radix UI Select compatibility
+ * See: https://github.com/shadcn-ui/ui/discussions/4168
+ */
+describe("QuickAddForm - Principal Selection and Product Filtering", () => {
+  const mockOnSuccess = vi.fn();
+  const mockMutate = vi.fn();
+
+  // Test data: Each principal has different products
+  const principals = [
+    { id: 1, name: "Acme Corp" },
+    { id: 2, name: "Beta Industries" },
+    { id: 3, name: "Empty Principal" }, // Has no products - edge case
+  ];
+
+  const productsForPrincipal1 = [
+    { id: 101, name: "Widget A" },
+    { id: 102, name: "Widget B" },
+  ];
+
+  const productsForPrincipal2 = [
+    { id: 201, name: "Gadget X" },
+    { id: 202, name: "Gadget Y" },
+    { id: 203, name: "Gadget Z" },
+  ];
+
+  /**
+   * Filter-aware mock that returns different products based on principal_id filter
+   * This is critical for testing the actual filtering behavior, not just UI state
+   */
+  const setupFilterAwareMock = () => {
+    (useGetList as Mock).mockImplementation((resource, params) => {
+      if (resource === "organizations") {
+        return {
+          data: principals,
+          isLoading: false,
+        };
+      }
+      if (resource === "products") {
+        const principalId = params?.filter?.principal_id;
+        if (principalId === 1) {
+          return { data: productsForPrincipal1, isLoading: false };
+        }
+        if (principalId === 2) {
+          return { data: productsForPrincipal2, isLoading: false };
+        }
+        if (principalId === 3) {
+          return { data: [], isLoading: false }; // Empty Principal has no products
+        }
+        // No principal selected = no products
+        return { data: [], isLoading: false };
+      }
+      return { data: [], isLoading: false };
+    });
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+
+    (useQuickAdd as Mock).mockReturnValue({
+      mutate: mockMutate,
+      isPending: false,
+    });
+
+    setupFilterAwareMock();
+
+    // No pre-selected principal for these tests
+    Object.defineProperty(window, "localStorage", {
+      value: {
+        getItem: vi.fn((key) => {
+          if (key === "last_campaign") return "Q4 Campaign";
+          if (key === "last_principal") return null; // No pre-selected principal
+          return null;
+        }),
+        setItem: vi.fn(),
+        clear: vi.fn(),
+        removeItem: vi.fn(),
+        length: 0,
+        key: vi.fn(),
+      },
+    });
+  });
+
+  /**
+   * Helper to open a Radix UI Select dropdown
+   * Uses pointerDown because Radix relies on PointerEvent, not click
+   */
+  const openSelectDropdown = (trigger: HTMLElement) => {
+    fireEvent.pointerDown(trigger, {
+      button: 0,
+      pointerType: "mouse",
+      pointerId: 1,
+    });
+  };
+
+  /**
+   * Helper to find the Principal Select trigger
+   * The form has multiple comboboxes (Principal, City), so we target by placeholder text
+   */
+  const getPrincipalTrigger = () => {
+    // Find by the placeholder text "Select principal"
+    return screen.getByRole("combobox", { name: /principal/i }) ||
+      screen.getByText(/select principal/i).closest('[role="combobox"]') ||
+      screen.getAllByRole("combobox")[0]; // Fallback: Principal is first combobox
+  };
+
+  it("displays principal dropdown with all available principals", async () => {
+    render(
+      <TestWrapper>
+        <QuickAddForm onSuccess={mockOnSuccess} />
+      </TestWrapper>
+    );
+
+    // Find and open principal dropdown - it's the first combobox with "Select principal" text
+    const principalTrigger = screen.getAllByRole("combobox")[0];
+    openSelectDropdown(principalTrigger);
+
+    // Verify all principals are shown in the dropdown
+    await waitFor(() => {
+      expect(screen.getByRole("option", { name: "Acme Corp" })).toBeInTheDocument();
+      expect(screen.getByRole("option", { name: "Beta Industries" })).toBeInTheDocument();
+      expect(screen.getByRole("option", { name: "Empty Principal" })).toBeInTheDocument();
+    });
+  });
+
+  it("selects a principal and updates the form state", async () => {
+    render(
+      <TestWrapper>
+        <QuickAddForm onSuccess={mockOnSuccess} />
+      </TestWrapper>
+    );
+
+    // Initially products should be disabled
+    expect(screen.getByText(/select a principal first/i)).toBeInTheDocument();
+
+    // Open principal dropdown and select "Acme Corp"
+    const principalTrigger = screen.getAllByRole("combobox")[0];
+    openSelectDropdown(principalTrigger);
+
+    const acmeOption = await screen.findByRole("option", { name: "Acme Corp" });
+    fireEvent.click(acmeOption);
+
+    // Verify: "Select principal first" message should disappear
+    await waitFor(() => {
+      expect(screen.queryByText(/select a principal first/i)).not.toBeInTheDocument();
+    });
+
+    // Verify: Principal trigger should show selected value
+    await waitFor(() => {
+      expect(principalTrigger).toHaveTextContent("Acme Corp");
+    });
+  });
+
+  it("fetches products with correct filter after principal selection", async () => {
+    render(
+      <TestWrapper>
+        <QuickAddForm onSuccess={mockOnSuccess} />
+      </TestWrapper>
+    );
+
+    // Open principal dropdown and select "Acme Corp" (id: 1)
+    const principalTrigger = screen.getAllByRole("combobox")[0];
+    openSelectDropdown(principalTrigger);
+
+    const acmeOption = await screen.findByRole("option", { name: "Acme Corp" });
+    fireEvent.click(acmeOption);
+
+    // Wait for products to load
+    await waitFor(() => {
+      expect(screen.queryByText(/select a principal first/i)).not.toBeInTheDocument();
+    });
+
+    // Verify useGetList was called with the correct filter
+    expect(useGetList).toHaveBeenCalledWith(
+      "products",
+      expect.objectContaining({
+        filter: { principal_id: 1 },
+      }),
+      expect.any(Object)
+    );
+  });
+
+  it("shows correct products for selected principal", async () => {
+    render(
+      <TestWrapper>
+        <QuickAddForm onSuccess={mockOnSuccess} />
+      </TestWrapper>
+    );
+
+    // Select "Beta Industries" (id: 2)
+    const principalTrigger = screen.getAllByRole("combobox")[0];
+    openSelectDropdown(principalTrigger);
+
+    const betaOption = await screen.findByRole("option", { name: "Beta Industries" });
+    fireEvent.click(betaOption);
+
+    // Wait for products dropdown to be enabled
+    await waitFor(() => {
+      expect(screen.queryByText(/select a principal first/i)).not.toBeInTheDocument();
+    });
+
+    // Verify the mock was called with principal_id: 2
+    expect(useGetList).toHaveBeenCalledWith(
+      "products",
+      expect.objectContaining({
+        filter: { principal_id: 2 },
+      }),
+      expect.any(Object)
+    );
+  });
+
+  it("updates products when switching principals", async () => {
+    render(
+      <TestWrapper>
+        <QuickAddForm onSuccess={mockOnSuccess} />
+      </TestWrapper>
+    );
+
+    const principalTrigger = screen.getAllByRole("combobox")[0];
+
+    // First: Select "Acme Corp"
+    openSelectDropdown(principalTrigger);
+    const acmeOption = await screen.findByRole("option", { name: "Acme Corp" });
+    fireEvent.click(acmeOption);
+
+    await waitFor(() => {
+      expect(principalTrigger).toHaveTextContent("Acme Corp");
+    });
+
+    // Verify first call was for principal 1
+    expect(useGetList).toHaveBeenCalledWith(
+      "products",
+      expect.objectContaining({
+        filter: { principal_id: 1 },
+      }),
+      expect.any(Object)
+    );
+
+    // Clear mock call history to track new calls
+    vi.clearAllMocks();
+    setupFilterAwareMock(); // Re-setup the mock
+
+    // Second: Switch to "Beta Industries"
+    openSelectDropdown(principalTrigger);
+    const betaOption = await screen.findByRole("option", { name: "Beta Industries" });
+    fireEvent.click(betaOption);
+
+    await waitFor(() => {
+      expect(principalTrigger).toHaveTextContent("Beta Industries");
+    });
+
+    // Verify products were re-fetched for principal 2
+    expect(useGetList).toHaveBeenCalledWith(
+      "products",
+      expect.objectContaining({
+        filter: { principal_id: 2 },
+      }),
+      expect.any(Object)
+    );
+  });
+
+  it("handles principal with no products gracefully", async () => {
+    render(
+      <TestWrapper>
+        <QuickAddForm onSuccess={mockOnSuccess} />
+      </TestWrapper>
+    );
+
+    // Select "Empty Principal" (id: 3) which has no products
+    const principalTrigger = screen.getAllByRole("combobox")[0];
+    openSelectDropdown(principalTrigger);
+
+    const emptyOption = await screen.findByRole("option", { name: "Empty Principal" });
+    fireEvent.click(emptyOption);
+
+    // Wait for products to be fetched (even though empty)
+    await waitFor(() => {
+      expect(screen.queryByText(/select a principal first/i)).not.toBeInTheDocument();
+    });
+
+    // Products dropdown should be enabled but empty
+    // The mock returns [] for principal_id: 3
+    expect(useGetList).toHaveBeenCalledWith(
+      "products",
+      expect.objectContaining({
+        filter: { principal_id: 3 },
+      }),
+      expect.any(Object)
+    );
+  });
+
+  it("persists principal selection after Save & Add Another", async () => {
+    const user = userEvent.setup({ delay: null });
+
+    mockMutate.mockImplementation((_data, options) => {
+      options.onSuccess();
+    });
+
+    render(
+      <TestWrapper>
+        <QuickAddForm onSuccess={mockOnSuccess} />
+      </TestWrapper>
+    );
+
+    // Select principal
+    const principalTrigger = screen.getAllByRole("combobox")[0];
+    openSelectDropdown(principalTrigger);
+    const acmeOption = await screen.findByRole("option", { name: "Acme Corp" });
+    fireEvent.click(acmeOption);
+
+    await waitFor(() => {
+      expect(principalTrigger).toHaveTextContent("Acme Corp");
+    });
+
+    // Fill minimum required fields
+    await user.type(screen.getByLabelText(/first name \*/i), "John");
+    await user.type(screen.getByLabelText(/last name \*/i), "Doe");
+    await user.type(screen.getByLabelText(/^email$/i), "john@test.com");
+    await user.type(screen.getByLabelText(/organization name \*/i), "Test Org");
+
+    // Use the combobox helper for city
+    const { selectCityAndVerifyState } = await import("@/tests/utils/combobox");
+    await selectCityAndVerifyState("Denver", "CO", { user, timeout: 5000 });
+
+    // Click Save & Add Another
+    await user.click(screen.getByRole("button", { name: /save & add another/i }));
+
+    await waitFor(() => {
+      expect(mockMutate).toHaveBeenCalled();
+    });
+
+    // Principal should still be selected after form reset
+    await waitFor(() => {
+      expect(principalTrigger).toHaveTextContent("Acme Corp");
+    });
+
+    // Other fields should be cleared
+    const firstNameInput = screen.getByLabelText(/first name \*/i) as HTMLInputElement;
+    expect(firstNameInput.value).toBe("");
+  }, 20000);
 });

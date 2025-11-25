@@ -11,11 +11,11 @@
 | Priority | Open | In Progress | Resolved |
 |----------|------|-------------|----------|
 | P1 (Critical) | 0 | 0 | 1 |
-| P2 (High) | 2 | 0 | 1 |
+| P2 (High) | 1 | 0 | 2 |
 | P3 (Low) | 1 | 0 | 0 |
-| **Total** | **3** | **0** | **2** |
+| **Total** | **2** | **0** | **3** |
 
-**Last Updated:** 2025-11-24
+**Last Updated:** 2025-11-25
 
 ---
 
