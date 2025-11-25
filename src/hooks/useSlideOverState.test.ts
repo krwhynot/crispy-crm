@@ -15,10 +15,12 @@ describe("useSlideOverState", () => {
     delete (window as any).location;
     delete (window as any).history;
 
+    // Hook uses hash-based routing, so we need to mock hash property
     window.location = {
       ...originalLocation,
       search: "",
       pathname: "/test",
+      hash: "", // Default empty hash for hash-based routing
     } as Location;
 
     window.history = {
@@ -44,7 +46,7 @@ describe("useSlideOverState", () => {
     });
 
     it("should initialize with view mode when ?view=123 in URL", () => {
-      window.location.search = "?view=123";
+      window.location.hash = "#/test?view=123";
 
       const { result } = renderHook(() => useSlideOverState());
 
@@ -54,7 +56,7 @@ describe("useSlideOverState", () => {
     });
 
     it("should initialize with edit mode when ?edit=456 in URL", () => {
-      window.location.search = "?edit=456";
+      window.location.hash = "#/test?edit=456";
 
       const { result } = renderHook(() => useSlideOverState());
 
@@ -64,7 +66,7 @@ describe("useSlideOverState", () => {
     });
 
     it("should prioritize view param when both view and edit params exist", () => {
-      window.location.search = "?view=123&edit=456";
+      window.location.hash = "#/test?view=123&edit=456";
 
       const { result } = renderHook(() => useSlideOverState());
 
@@ -84,7 +86,8 @@ describe("useSlideOverState", () => {
       expect(result.current.slideOverId).toBe(789);
       expect(result.current.isOpen).toBe(true);
       expect(result.current.mode).toBe("view");
-      expect(window.history.pushState).toHaveBeenCalledWith(null, "", "/test?view=789");
+      // Hash-based routing: hash is empty initially, so setHashParams returns "?view=789"
+      expect(window.history.pushState).toHaveBeenCalledWith(null, "", "?view=789");
     });
 
     it("should open slide-over in edit mode when specified", () => {
@@ -97,24 +100,26 @@ describe("useSlideOverState", () => {
       expect(result.current.slideOverId).toBe(999);
       expect(result.current.isOpen).toBe(true);
       expect(result.current.mode).toBe("edit");
-      expect(window.history.pushState).toHaveBeenCalledWith(null, "", "/test?edit=999");
+      // Hash-based routing: hash is empty initially, so setHashParams returns "?edit=999"
+      expect(window.history.pushState).toHaveBeenCalledWith(null, "", "?edit=999");
     });
 
     it("should clear previous params when opening with new ID", () => {
-      window.location.search = "?view=100&other=param";
+      window.location.hash = "#/test?view=100&other=param";
       const { result } = renderHook(() => useSlideOverState());
 
       act(() => {
         result.current.openSlideOver(200, "edit");
       });
 
-      expect(window.history.pushState).toHaveBeenCalledWith(null, "", "/test?other=param&edit=200");
+      // Hash-based routing preserves other params
+      expect(window.history.pushState).toHaveBeenCalledWith(null, "", "#/test?other=param&edit=200");
     });
   });
 
   describe("closeSlideOver function", () => {
     it("should close slide-over and clear state", () => {
-      window.location.search = "?view=123";
+      window.location.hash = "#/test?view=123";
       const { result } = renderHook(() => useSlideOverState());
 
       act(() => {
@@ -123,31 +128,33 @@ describe("useSlideOverState", () => {
 
       expect(result.current.slideOverId).toBeNull();
       expect(result.current.isOpen).toBe(false);
-      expect(window.history.pushState).toHaveBeenCalledWith(null, "", "/test");
+      // Hash-based routing: closeSlideOver removes view param, leaving just the base path
+      expect(window.history.pushState).toHaveBeenCalledWith(null, "", "#/test");
     });
 
     it("should preserve other query params when closing", () => {
-      window.location.search = "?view=123&filter=active&sort=name";
+      window.location.hash = "#/test?view=123&filter=active&sort=name";
       const { result } = renderHook(() => useSlideOverState());
 
       // Update window.location.search to simulate the new URL state
-      window.location.search = "?filter=active&sort=name";
+      window.location.hash = "#/test?filter=active&sort=name";
 
       act(() => {
         result.current.closeSlideOver();
       });
 
+      // Hash-based routing: preserves other params in hash format
       expect(window.history.pushState).toHaveBeenCalledWith(
         null,
         "",
-        "/test?filter=active&sort=name"
+        "#/test?filter=active&sort=name"
       );
     });
   });
 
   describe("toggleMode function", () => {
     it("should toggle from view to edit mode", () => {
-      window.location.search = "?view=123";
+      window.location.hash = "#/test?view=123";
       const { result } = renderHook(() => useSlideOverState());
 
       act(() => {
@@ -155,11 +162,11 @@ describe("useSlideOverState", () => {
       });
 
       expect(result.current.mode).toBe("edit");
-      expect(window.history.replaceState).toHaveBeenCalledWith(null, "", "/test?edit=123");
+      expect(window.history.replaceState).toHaveBeenCalledWith(null, "", "#/test?edit=123");
     });
 
     it("should toggle from edit to view mode", () => {
-      window.location.search = "?edit=456";
+      window.location.hash = "#/test?edit=456";
       const { result } = renderHook(() => useSlideOverState());
 
       act(() => {
@@ -167,7 +174,7 @@ describe("useSlideOverState", () => {
       });
 
       expect(result.current.mode).toBe("view");
-      expect(window.history.replaceState).toHaveBeenCalledWith(null, "", "/test?view=456");
+      expect(window.history.replaceState).toHaveBeenCalledWith(null, "", "#/test?view=456");
     });
 
     it("should not update URL if slideOverId is null", () => {
@@ -209,7 +216,7 @@ describe("useSlideOverState", () => {
       const { result } = renderHook(() => useSlideOverState());
 
       // Simulate browser back/forward navigation
-      window.location.search = "?view=123";
+      window.location.hash = "#/test?view=123";
       act(() => {
         window.dispatchEvent(new PopStateEvent("popstate"));
       });
@@ -222,7 +229,7 @@ describe("useSlideOverState", () => {
     it("should open slide-over in edit mode when navigating to ?edit=456", () => {
       const { result } = renderHook(() => useSlideOverState());
 
-      window.location.search = "?edit=456";
+      window.location.hash = "#/test?edit=456";
       act(() => {
         window.dispatchEvent(new PopStateEvent("popstate"));
       });
@@ -233,11 +240,11 @@ describe("useSlideOverState", () => {
     });
 
     it("should close slide-over when navigating to URL without params", () => {
-      window.location.search = "?view=123";
+      window.location.hash = "#/test?view=123";
       const { result } = renderHook(() => useSlideOverState());
 
       // Navigate back to URL without params
-      window.location.search = "";
+      window.location.hash = "";
       act(() => {
         window.dispatchEvent(new PopStateEvent("popstate"));
       });
@@ -250,7 +257,7 @@ describe("useSlideOverState", () => {
       const { result } = renderHook(() => useSlideOverState());
 
       // Navigate to view
-      window.location.search = "?view=100";
+      window.location.hash = "#/test?view=100";
       act(() => {
         window.dispatchEvent(new PopStateEvent("popstate"));
       });
@@ -258,7 +265,7 @@ describe("useSlideOverState", () => {
       expect(result.current.mode).toBe("view");
 
       // Navigate to edit
-      window.location.search = "?edit=200";
+      window.location.hash = "#/test?edit=200";
       act(() => {
         window.dispatchEvent(new PopStateEvent("popstate"));
       });
@@ -266,7 +273,7 @@ describe("useSlideOverState", () => {
       expect(result.current.mode).toBe("edit");
 
       // Navigate back to no params
-      window.location.search = "";
+      window.location.hash = "";
       act(() => {
         window.dispatchEvent(new PopStateEvent("popstate"));
       });
@@ -276,7 +283,7 @@ describe("useSlideOverState", () => {
 
   describe("ESC key press", () => {
     it("should close slide-over when ESC is pressed while open", () => {
-      window.location.search = "?view=123";
+      window.location.hash = "#/test?view=123";
       const { result } = renderHook(() => useSlideOverState());
 
       act(() => {
@@ -304,7 +311,7 @@ describe("useSlideOverState", () => {
     });
 
     it("should not close on other key presses", () => {
-      window.location.search = "?view=123";
+      window.location.hash = "#/test?view=123";
       const { result } = renderHook(() => useSlideOverState());
 
       act(() => {
