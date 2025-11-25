@@ -11,11 +11,11 @@
 | Priority | Open | In Progress | Resolved |
 |----------|------|-------------|----------|
 | P1 (Critical) | 0 | 0 | 1 |
-| P2 (High) | 3 | 0 | 0 |
+| P2 (High) | 2 | 0 | 1 |
 | P3 (Low) | 1 | 0 | 0 |
-| **Total** | **4** | **0** | **1** |
+| **Total** | **3** | **0** | **2** |
 
-**Last Updated:** 2024-11-25
+**Last Updated:** 2025-11-24
 
 ---
 
@@ -31,15 +31,8 @@
 
 | ID | Type | File | Line | Description | Effort | Status | Assignee |
 |----|------|------|------|-------------|--------|--------|----------|
-| TD-002 | DRY | `providers/commons/getContactAvatar.ts`, `utils/avatar.utils.ts` | - | **Code duplication** - Avatar logic duplicated between `providers/commons/` and `utils/`. `TransformService` correctly imports from `utils/`, but duplicates remain. | 1d | Open | - |
 | TD-003 | TEST | `opportunities/__tests__/QuickAddForm.test.tsx` | 242 | **Missing test coverage** - Principal selection and product filtering interaction not tested. Test renders UI but skips interaction validation. | 4-6h | Open | - |
 | TD-004 | FEATURE | `utils/avatar.utils.ts` | 96, 116 | **LinkedIn avatar integration** - TODO comments for LinkedIn profile/company logo retrieval. Requires product decision (Direct API vs third-party service). | 2-3d | Open | - |
-
-**TD-002 Details:**
-- **Files to Remove:** `providers/commons/getContactAvatar.ts`, `providers/commons/getOrganizationAvatar.ts`
-- **Canonical Location:** `src/atomic-crm/utils/avatar.utils.ts`
-- **Impact:** Maintenance burden, risk of divergent implementations
-- **Constitution Reference:** Violates Single Composable Entry Point (Principle #2)
 
 **TD-003 Details:**
 - **Missing Coverage:** Select component open/select/close cycle for principal → product filtering
@@ -54,7 +47,7 @@
   | Third-party (Clearbit) | 1 day | $50-200 | Low |
   | Defer to post-MVP | 0 | $0 | None |
 - **Dependencies:** `linkedin_url` field exists in schema
-- **Prerequisite:** Complete TD-002 (DRY cleanup) first
+- **Prerequisite:** ~~Complete TD-002 (DRY cleanup) first~~ ✅ Resolved - avatar.utils.ts is now canonical
 
 ---
 
@@ -77,6 +70,7 @@
 
 | ID | Type | File | Description | Resolved Date | Resolution |
 |----|------|------|-------------|---------------|------------|
+| TD-002 | DRY | `providers/commons/getContactAvatar.ts`, `utils/avatar.utils.ts` | Code duplication - Avatar logic duplicated between `providers/commons/` and `utils/` | 2025-11-24 | Test coverage added (29 tests for avatar.utils.ts), duplicate files deleted (`getContactAvatar.ts`, `getOrganizationAvatar.ts` + specs), single source of truth established in `utils/avatar.utils.ts` |
 | TD-001 | TEST | `unifiedDataProvider.errors.test.ts` | Mock isolation bug - vi.clearAllMocks() preserving implementations | 2025-11-24 | Changed to `vi.resetAllMocks()` in beforeEach; fixed delete tests to use `mockUpdate` (soft delete path) |
 
 ---
@@ -179,5 +173,6 @@ Use this template when adding new technical debt items:
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2025-11-24 | Resolved TD-002: Avatar code duplication - added 29 tests, deleted duplicates, single source of truth | Claude |
 | 2025-11-24 | Resolved TD-001: Mock isolation bug fixed with vi.resetAllMocks() | Claude |
 | 2024-11-24 | Initial creation with 5 items from TODO/FIXME analysis | Claude |
