@@ -1,7 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useDataProvider, useNotify } from "react-admin";
-import { useState, useEffect, useMemo } from "react";
+import { useDataProvider, useNotify, useGetList } from "react-admin";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
 import {
@@ -26,13 +26,14 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
+  CommandList,
 } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, Check, ChevronsUpDown, X } from "lucide-react";
+import { CalendarIcon, Check, ChevronsUpDown, X, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
 import {
@@ -42,24 +43,80 @@ import {
 } from "../validation/activitySchema";
 import { useCurrentSale } from "../hooks/useCurrentSale";
 
+// Cache duration for data queries (5 minutes)
+const STALE_TIME_MS = 5 * 60 * 1000;
+
+// Initial page size for dropdown population
+const INITIAL_PAGE_SIZE = 100;
+
+// Minimum characters before server search
+const MIN_SEARCH_LENGTH = 2;
+
+// Debounce delay for search
+const DEBOUNCE_MS = 300;
+
 interface QuickLogFormProps {
   onComplete: () => void;
   onRefresh?: () => void; // Callback to refresh dashboard data
+}
+
+// Type definitions for entities
+interface Contact {
+  id: number;
+  name: string;
+  organization_id?: number;
+  company_name?: string;
+}
+
+interface Organization {
+  id: number;
+  name: string;
+}
+
+interface Opportunity {
+  id: number;
+  name: string;
+  customer_organization_id?: number;
+  stage: string;
+}
+
+/**
+ * Custom hook for debounced search state
+ */
+function useDebouncedSearch(delay: number = DEBOUNCE_MS) {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedTerm, setDebouncedTerm] = useState("");
+
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedTerm(searchTerm);
+    }, delay);
+
+    return () => clearTimeout(handler);
+  }, [searchTerm, delay]);
+
+  const clearSearch = useCallback(() => {
+    setSearchTerm("");
+    setDebouncedTerm("");
+  }, []);
+
+  return { searchTerm, debouncedTerm, setSearchTerm, clearSearch };
 }
 
 export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const { salesId, loading: salesIdLoading } = useCurrentSale();
-  const [contacts, setContacts] = useState<any[]>([]);
-  const [organizations, setOrganizations] = useState<any[]>([]);
-  const [opportunities, setOpportunities] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
 
   // Combobox open state - controlled popovers that close on selection
   const [contactOpen, setContactOpen] = useState(false);
   const [orgOpen, setOrgOpen] = useState(false);
   const [oppOpen, setOppOpen] = useState(false);
+
+  // Debounced search state for each dropdown
+  const contactSearch = useDebouncedSearch();
+  const orgSearch = useDebouncedSearch();
+  const oppSearch = useDebouncedSearch();
 
   const form = useForm<ActivityLogInput>({
     resolver: zodResolver(activityLogSchema),
@@ -67,12 +124,117 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
   });
 
   // Consolidate all form.watch() calls at component top for stable memoization
-  // Each watch() creates a subscription - calling inside useMemo deps breaks memoization
   const selectedOpportunityId = form.watch("opportunityId");
   const selectedContactId = form.watch("contactId");
   const selectedOrganizationId = form.watch("organizationId");
   const activityType = form.watch("activityType");
   const createFollowUp = form.watch("createFollowUp");
+
+  // ============================================
+  // DATA FETCHING WITH useGetList + CACHING
+  // ============================================
+
+  // Determine if we should do server search (2+ chars typed)
+  const shouldSearchContacts = contactSearch.debouncedTerm.length >= MIN_SEARCH_LENGTH;
+  const shouldSearchOrgs = orgSearch.debouncedTerm.length >= MIN_SEARCH_LENGTH;
+  const shouldSearchOpps = oppSearch.debouncedTerm.length >= MIN_SEARCH_LENGTH;
+
+  // Build contact filter (with optional organization constraint)
+  const contactFilter = useMemo(() => {
+    const filter: Record<string, unknown> = {};
+    if (shouldSearchContacts) {
+      filter.q = contactSearch.debouncedTerm;
+    }
+    // Apply organization filter if anchor org is set (cascading filter)
+    if (selectedOrganizationId) {
+      filter.organization_id = selectedOrganizationId;
+    }
+    return filter;
+  }, [shouldSearchContacts, contactSearch.debouncedTerm, selectedOrganizationId]);
+
+  // Build organization filter
+  const orgFilter = useMemo(() => {
+    const filter: Record<string, unknown> = {};
+    if (shouldSearchOrgs) {
+      filter.q = orgSearch.debouncedTerm;
+    }
+    return filter;
+  }, [shouldSearchOrgs, orgSearch.debouncedTerm]);
+
+  // Build opportunity filter (with optional organization constraint + active stages only)
+  const oppFilter = useMemo(() => {
+    const filter: Record<string, unknown> = {
+      // Exclude closed opportunities
+      "stage@not_in": ["closed_won", "closed_lost"],
+    };
+    if (shouldSearchOpps) {
+      filter.q = oppSearch.debouncedTerm;
+    }
+    // Apply organization filter if anchor org is set
+    if (selectedOrganizationId) {
+      filter.customer_organization_id = selectedOrganizationId;
+    }
+    return filter;
+  }, [shouldSearchOpps, oppSearch.debouncedTerm, selectedOrganizationId]);
+
+  // Fetch contacts with hybrid approach
+  const {
+    data: contacts = [],
+    isPending: contactsLoading,
+  } = useGetList<Contact>(
+    "contacts",
+    {
+      pagination: { page: 1, perPage: shouldSearchContacts ? 50 : INITIAL_PAGE_SIZE },
+      sort: { field: "name", order: "ASC" },
+      filter: contactFilter,
+    },
+    {
+      staleTime: STALE_TIME_MS,
+      placeholderData: (prev) => prev,
+    }
+  );
+
+  // Fetch organizations with hybrid approach
+  const {
+    data: organizations = [],
+    isPending: organizationsLoading,
+  } = useGetList<Organization>(
+    "organizations",
+    {
+      pagination: { page: 1, perPage: shouldSearchOrgs ? 50 : INITIAL_PAGE_SIZE },
+      sort: { field: "name", order: "ASC" },
+      filter: orgFilter,
+    },
+    {
+      staleTime: STALE_TIME_MS,
+      placeholderData: (prev) => prev,
+    }
+  );
+
+  // Fetch opportunities with hybrid approach
+  const {
+    data: opportunities = [],
+    isPending: opportunitiesLoading,
+  } = useGetList<Opportunity>(
+    "opportunities",
+    {
+      pagination: { page: 1, perPage: shouldSearchOpps ? 50 : INITIAL_PAGE_SIZE },
+      sort: { field: "name", order: "ASC" },
+      filter: oppFilter,
+    },
+    {
+      staleTime: STALE_TIME_MS,
+      placeholderData: (prev) => prev,
+    }
+  );
+
+  // Overall loading state (initial load only)
+  const isInitialLoading = contactsLoading && organizationsLoading && opportunitiesLoading &&
+    contacts.length === 0 && organizations.length === 0 && opportunities.length === 0;
+
+  // ============================================
+  // DERIVED STATE
+  // ============================================
 
   const selectedOpportunity = useMemo(
     () => opportunities.find((o) => o.id === selectedOpportunityId),
@@ -85,7 +247,6 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
   );
 
   // Determine the "anchor" organization - from organization, contact, or opportunity selection
-  // Uses pre-watched values to ensure stable memoization
   const anchorOrganizationId = useMemo(() => {
     // Direct organization selection takes priority
     if (selectedOrganizationId) {
@@ -102,7 +263,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     return null;
   }, [selectedOrganizationId, selectedContact?.organization_id, selectedOpportunity?.customer_organization_id]);
 
-  // Filter contacts by anchor organization
+  // Filter contacts by anchor organization (client-side filtering of cached data)
   const filteredContacts = useMemo(() => {
     if (!anchorOrganizationId) {
       return contacts;
@@ -119,7 +280,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     return organizations.filter((o) => o.id === anchorOrganizationId);
   }, [organizations, anchorOrganizationId]);
 
-  // Filter opportunities by anchor organization
+  // Filter opportunities by anchor organization (client-side filtering)
   const filteredOpportunities = useMemo(() => {
     if (!anchorOrganizationId) {
       return opportunities;
@@ -128,6 +289,10 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
       (o) => o.customer_organization_id === anchorOrganizationId
     );
   }, [opportunities, anchorOrganizationId]);
+
+  // ============================================
+  // SIDE EFFECTS
+  // ============================================
 
   // When opportunity changes, auto-fill organization and clear mismatched contact
   useEffect(() => {
@@ -149,44 +314,22 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     }
   }, [selectedOpportunity?.customer_organization_id, contacts, form, notify]);
 
-  // Load related entities
+  // Clear search when popover closes
   useEffect(() => {
-    const loadEntities = async () => {
-      try {
-        setLoading(true);
-        const [contactsRes, orgsRes, oppsRes] = await Promise.all([
-          dataProvider.getList("contacts", {
-            pagination: { page: 1, perPage: 5000 },
-            sort: { field: "name", order: "ASC" },
-            filter: {},
-          }),
-          dataProvider.getList("organizations", {
-            pagination: { page: 1, perPage: 5000 },
-            sort: { field: "name", order: "ASC" },
-            filter: {},
-          }),
-          dataProvider.getList("opportunities", {
-            pagination: { page: 1, perPage: 100 },
-            sort: { field: "name", order: "ASC" },
-            filter: {},
-          }),
-        ]);
+    if (!contactOpen) contactSearch.clearSearch();
+  }, [contactOpen, contactSearch]);
 
-        setContacts(contactsRes.data);
-        setOrganizations(orgsRes.data);
-        setOpportunities(
-          oppsRes.data.filter((opp: any) => !["closed_won", "closed_lost"].includes(opp.stage))
-        );
-      } catch (error) {
-        console.error("Failed to load entities:", error);
-        notify("Failed to load data", { type: "error" });
-      } finally {
-        setLoading(false);
-      }
-    };
+  useEffect(() => {
+    if (!orgOpen) orgSearch.clearSearch();
+  }, [orgOpen, orgSearch]);
 
-    loadEntities();
-  }, [dataProvider, notify]);
+  useEffect(() => {
+    if (!oppOpen) oppSearch.clearSearch();
+  }, [oppOpen, oppSearch]);
+
+  // ============================================
+  // FORM SUBMISSION
+  // ============================================
 
   const onSubmit = async (data: ActivityLogInput, closeAfterSave = true) => {
     // Validate salesId exists before attempting to create records
@@ -201,11 +344,9 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
       // Create the activity record
       await dataProvider.create("activities", {
         data: {
-          // Quick Logger uses "engagement" by default (no opportunity required)
-          // Only use "interaction" if user explicitly selects an opportunity
           activity_type: data.opportunityId ? "interaction" : "engagement",
           type: ACTIVITY_TYPE_MAP[data.activityType],
-          outcome: data.outcome, // ✅ Persist user-selected outcome
+          outcome: data.outcome,
           subject: data.notes.substring(0, 100) || `${data.activityType} update`,
           description: data.notes,
           activity_date: data.date.toISOString(),
@@ -213,25 +354,22 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
           contact_id: data.contactId,
           organization_id: data.organizationId,
           opportunity_id: data.opportunityId,
-          follow_up_required: data.createFollowUp || false, // ✅ Track if follow-up needed
-          follow_up_date: data.followUpDate ? data.followUpDate.toISOString().split("T")[0] : null, // ✅ Store follow-up date (DATE format YYYY-MM-DD)
+          follow_up_required: data.createFollowUp || false,
+          follow_up_date: data.followUpDate ? data.followUpDate.toISOString().split("T")[0] : null,
           created_by: salesId,
         },
       });
 
       // Create follow-up task if requested
       if (data.createFollowUp && data.followUpDate) {
-        // Build task data with only valid IDs (use ternary to ensure we spread objects, not NaN)
         const taskData = {
           title: `Follow-up: ${data.notes.substring(0, 50)}`,
           due_date: data.followUpDate.toISOString(),
-          type: "Follow-up", // Match schema enum (title-case with hyphen)
+          type: "Follow-up",
           priority: "medium",
           sales_id: salesId,
           created_by: salesId,
         };
-        // Only add IDs if they're valid numbers (not NaN/undefined/null)
-        // Note: tasks table only has contact_id and opportunity_id, NOT organization_id
         if (typeof data.contactId === "number" && !isNaN(data.contactId)) {
           Object.assign(taskData, { contact_id: data.contactId });
         }
@@ -244,12 +382,10 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
       notify("Activity logged successfully", { type: "success" });
       form.reset();
 
-      // Only close if Save & Close was clicked
       if (closeAfterSave) {
         onComplete();
       }
 
-      // Trigger dashboard data refresh if callback provided
       if (onRefresh) {
         onRefresh();
       }
@@ -259,16 +395,17 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     }
   };
 
-  // Derived UI state from pre-watched values (no additional watch() calls)
+  // Derived UI state from pre-watched values
   const showDuration = activityType === "Call" || activityType === "Meeting";
   const showFollowUpDate = createFollowUp;
 
   // Show loading state while entities or salesId are loading
-  if (loading || salesIdLoading) {
+  if (isInitialLoading || salesIdLoading) {
     return (
       <div className="flex items-center justify-center p-8">
         <div className="text-center">
-          <div className="text-sm text-muted-foreground">Loading...</div>
+          <Loader2 className="mx-auto h-6 w-6 animate-spin text-muted-foreground" />
+          <div className="mt-2 text-sm text-muted-foreground">Loading...</div>
         </div>
       </div>
     );
@@ -361,7 +498,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
         <div className="space-y-3">
           <h3 className="text-sm font-medium">Who was involved?</h3>
 
-          {/* Contact Combobox - Controlled popover that closes on selection */}
+          {/* Contact Combobox with hybrid search */}
           <FormField
             control={form.control}
             name="contactId"
@@ -384,57 +521,68 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                           )}
                         >
                           {field.value
-                            ? contacts.find((c) => c.id === field.value)?.name
+                            ? contacts.find((c) => c.id === field.value)?.name ?? "Select contact"
                             : "Select contact"}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          {contactsLoading ? (
+                            <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          )}
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-full p-0">
-                      <Command
-                        id="contact-list"
-                        filter={(value, search) =>
-                          value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
-                        }
-                      >
-                        <CommandInput placeholder="Search contact..." />
-                        <CommandEmpty>
-                          {anchorOrganizationId
-                            ? "No contacts found for this organization"
-                            : "No contact found."}
-                        </CommandEmpty>
-                        <CommandGroup>
-                          {filteredContacts.map((contact) => (
-                            <CommandItem
-                              key={contact.id}
-                              value={`${contact.name} ${contact.company_name || ""}`}
-                              className="h-11"
-                              onSelect={() => {
-                                field.onChange(contact.id);
-                                // Auto-fill organization if contact has one
-                                if (contact.organization_id) {
-                                  form.setValue("organizationId", contact.organization_id);
-                                }
-                                setContactOpen(false); // Close popover after selection
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  field.value === contact.id ? "opacity-100" : "opacity-0"
-                                )}
-                              />
-                              <span className="flex flex-col">
-                                <span>{contact.name}</span>
-                                {contact.company_name && (
-                                  <span className="text-xs text-muted-foreground">
-                                    {contact.company_name}
-                                  </span>
-                                )}
-                              </span>
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
+                    <PopoverContent className="w-full p-0" align="start">
+                      <Command id="contact-list" shouldFilter={false}>
+                        <CommandInput
+                          placeholder="Search contact..."
+                          value={contactSearch.searchTerm}
+                          onValueChange={contactSearch.setSearchTerm}
+                        />
+                        <CommandList>
+                          <CommandEmpty>
+                            {contactsLoading ? (
+                              <div className="flex items-center justify-center py-2">
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                <span className="ml-2">Searching...</span>
+                              </div>
+                            ) : anchorOrganizationId ? (
+                              "No contacts found for this organization"
+                            ) : (
+                              "No contact found. Type to search."
+                            )}
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {filteredContacts.map((contact) => (
+                              <CommandItem
+                                key={contact.id}
+                                value={String(contact.id)}
+                                className="h-11"
+                                onSelect={() => {
+                                  field.onChange(contact.id);
+                                  if (contact.organization_id) {
+                                    form.setValue("organizationId", contact.organization_id);
+                                  }
+                                  setContactOpen(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    field.value === contact.id ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                <span className="flex flex-col">
+                                  <span>{contact.name}</span>
+                                  {contact.company_name && (
+                                    <span className="text-xs text-muted-foreground">
+                                      {contact.company_name}
+                                    </span>
+                                  )}
+                                </span>
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
                       </Command>
                     </PopoverContent>
                   </Popover>
@@ -446,7 +594,6 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                       className="h-11 w-11 shrink-0"
                       onClick={() => {
                         field.onChange(undefined);
-                        // Clear dependent fields per engineering constitution - fail fast
                         form.setValue("organizationId", undefined);
                         form.setValue("opportunityId", undefined);
                       }}
@@ -462,7 +609,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
             )}
           />
 
-          {/* Organization Combobox - Controlled popover that closes on selection */}
+          {/* Organization Combobox with hybrid search */}
           <FormField
             control={form.control}
             name="organizationId"
@@ -485,58 +632,72 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                           )}
                         >
                           {field.value
-                            ? organizations.find((o) => o.id === field.value)?.name
+                            ? organizations.find((o) => o.id === field.value)?.name ?? "Select organization"
                             : "Select organization"}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          {organizationsLoading ? (
+                            <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          )}
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-full p-0">
-                      <Command
-                        id="organization-list"
-                        filter={(value, search) =>
-                          value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
-                        }
-                      >
-                        <CommandInput placeholder="Search organization..." />
-                        <CommandEmpty>No organization found.</CommandEmpty>
-                        <CommandGroup>
-                          {filteredOrganizations.map((org) => (
-                            <CommandItem
-                              key={org.id}
-                              value={org.name}
-                              className="h-11"
-                              onSelect={() => {
-                                field.onChange(org.id);
-                                // Clear mismatched contact and opportunity per engineering constitution
-                                const contactId = form.getValues("contactId");
-                                if (contactId) {
-                                  const contact = contacts.find((c) => c.id === contactId);
-                                  if (contact && contact.organization_id !== org.id) {
-                                    form.setValue("contactId", undefined);
-                                    notify("Contact cleared - doesn't belong to selected organization", { type: "info" });
+                    <PopoverContent className="w-full p-0" align="start">
+                      <Command id="organization-list" shouldFilter={false}>
+                        <CommandInput
+                          placeholder="Search organization..."
+                          value={orgSearch.searchTerm}
+                          onValueChange={orgSearch.setSearchTerm}
+                        />
+                        <CommandList>
+                          <CommandEmpty>
+                            {organizationsLoading ? (
+                              <div className="flex items-center justify-center py-2">
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                <span className="ml-2">Searching...</span>
+                              </div>
+                            ) : (
+                              "No organization found. Type to search."
+                            )}
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {filteredOrganizations.map((org) => (
+                              <CommandItem
+                                key={org.id}
+                                value={String(org.id)}
+                                className="h-11"
+                                onSelect={() => {
+                                  field.onChange(org.id);
+                                  // Clear mismatched contact and opportunity
+                                  const currentContactId = form.getValues("contactId");
+                                  if (currentContactId) {
+                                    const contact = contacts.find((c) => c.id === currentContactId);
+                                    if (contact && contact.organization_id !== org.id) {
+                                      form.setValue("contactId", undefined);
+                                      notify("Contact cleared - doesn't belong to selected organization", { type: "info" });
+                                    }
                                   }
-                                }
-                                const oppId = form.getValues("opportunityId");
-                                if (oppId) {
-                                  const opp = opportunities.find((o) => o.id === oppId);
-                                  if (opp && opp.customer_organization_id !== org.id) {
-                                    form.setValue("opportunityId", undefined);
+                                  const oppId = form.getValues("opportunityId");
+                                  if (oppId) {
+                                    const opp = opportunities.find((o) => o.id === oppId);
+                                    if (opp && opp.customer_organization_id !== org.id) {
+                                      form.setValue("opportunityId", undefined);
+                                    }
                                   }
-                                }
-                                setOrgOpen(false); // Close popover after selection
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  field.value === org.id ? "opacity-100" : "opacity-0"
-                                )}
-                              />
-                              {org.name}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
+                                  setOrgOpen(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    field.value === org.id ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {org.name}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
                       </Command>
                     </PopoverContent>
                   </Popover>
@@ -548,7 +709,6 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                       className="h-11 w-11 shrink-0"
                       onClick={() => {
                         field.onChange(undefined);
-                        // Clear dependent opportunity if it belongs to this org
                         const oppId = form.getValues("opportunityId");
                         if (oppId) {
                           const opp = opportunities.find((o) => o.id === oppId);
@@ -569,7 +729,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
             )}
           />
 
-          {/* Opportunity Combobox - Controlled popover with clear button */}
+          {/* Opportunity Combobox with hybrid search */}
           <FormField
             control={form.control}
             name="opportunityId"
@@ -592,50 +752,61 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                           )}
                         >
                           {field.value
-                            ? opportunities.find((o) => o.id === field.value)?.name
+                            ? opportunities.find((o) => o.id === field.value)?.name ?? "Select opportunity (optional)"
                             : "Select opportunity (optional)"}
-                          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          {opportunitiesLoading ? (
+                            <Loader2 className="ml-2 h-4 w-4 animate-spin" />
+                          ) : (
+                            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                          )}
                         </Button>
                       </FormControl>
                     </PopoverTrigger>
-                    <PopoverContent className="w-full p-0">
-                      <Command
-                        id="opportunity-list"
-                        filter={(value, search) =>
-                          value.toLowerCase().includes(search.toLowerCase()) ? 1 : 0
-                        }
-                      >
-                        <CommandInput placeholder="Search opportunity..." />
-                        <CommandEmpty>
-                          {anchorOrganizationId
-                            ? "No opportunities for this organization"
-                            : "No opportunity found."}
-                        </CommandEmpty>
-                        <CommandGroup>
-                          {filteredOpportunities.map((opp) => (
-                            <CommandItem
-                              key={opp.id}
-                              value={opp.name}
-                              className="h-11"
-                              onSelect={() => {
-                                field.onChange(opp.id);
-                                setOppOpen(false); // Close popover after selection
-                              }}
-                            >
-                              <Check
-                                className={cn(
-                                  "mr-2 h-4 w-4",
-                                  field.value === opp.id ? "opacity-100" : "opacity-0"
-                                )}
-                              />
-                              {opp.name}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
+                    <PopoverContent className="w-full p-0" align="start">
+                      <Command id="opportunity-list" shouldFilter={false}>
+                        <CommandInput
+                          placeholder="Search opportunity..."
+                          value={oppSearch.searchTerm}
+                          onValueChange={oppSearch.setSearchTerm}
+                        />
+                        <CommandList>
+                          <CommandEmpty>
+                            {opportunitiesLoading ? (
+                              <div className="flex items-center justify-center py-2">
+                                <Loader2 className="h-4 w-4 animate-spin" />
+                                <span className="ml-2">Searching...</span>
+                              </div>
+                            ) : anchorOrganizationId ? (
+                              "No opportunities for this organization"
+                            ) : (
+                              "No opportunity found. Type to search."
+                            )}
+                          </CommandEmpty>
+                          <CommandGroup>
+                            {filteredOpportunities.map((opp) => (
+                              <CommandItem
+                                key={opp.id}
+                                value={String(opp.id)}
+                                className="h-11"
+                                onSelect={() => {
+                                  field.onChange(opp.id);
+                                  setOppOpen(false);
+                                }}
+                              >
+                                <Check
+                                  className={cn(
+                                    "mr-2 h-4 w-4",
+                                    field.value === opp.id ? "opacity-100" : "opacity-0"
+                                  )}
+                                />
+                                {opp.name}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </CommandList>
                       </Command>
                     </PopoverContent>
                   </Popover>
-                  {/* Clear button - only visible when opportunity is selected */}
                   {field.value && (
                     <Button
                       type="button"
@@ -743,8 +914,7 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
               className="h-11"
               onClick={() => {
                 form.handleSubmit((data) => {
-                  onSubmit(data, false); // ✅ Pass false to keep form open
-                  // Form resets but stays open for next entry
+                  onSubmit(data, false);
                 })();
               }}
             >
