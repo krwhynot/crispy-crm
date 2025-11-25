@@ -486,11 +486,12 @@ describe("useSlideOverState", () => {
     });
 
     it("should handle malformed URL params gracefully", () => {
-      window.location.search = "?view=abc";
+      // Hook uses hash-based routing, not search params
+      window.location.hash = "#/contacts?view=abc";
 
       const { result } = renderHook(() => useSlideOverState());
 
-      // Number('abc') = NaN
+      // Number('abc') = NaN, hook sets slideOverId to the parsed Number which is NaN
       expect(result.current.slideOverId).toBeNaN();
       expect(result.current.isOpen).toBe(true);
     });
