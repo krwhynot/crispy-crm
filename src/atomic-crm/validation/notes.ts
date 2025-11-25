@@ -62,6 +62,17 @@ export const opportunityNoteSchema = baseNoteSchema.extend({
 });
 
 /**
+ * Organization note specific schema
+ * Added for organization-level notes (CRM relationship tracking)
+ */
+export const organizationNoteSchema = baseNoteSchema.extend({
+  organization_id: z.union([
+    z.string().min(1, "Organization ID is required"),
+    z.number().min(1, "Organization ID is required"),
+  ]),
+});
+
+/**
  * Schema for creating a contact note
  */
 export const createContactNoteSchema = contactNoteSchema.omit({ id: true });
