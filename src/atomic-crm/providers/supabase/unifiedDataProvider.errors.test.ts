@@ -152,14 +152,17 @@ describe("unifiedDataProvider - Error Handling", () => {
     });
 
     it("should propagate network errors on delete", async () => {
-      // Use segments which do NOT support soft delete (not in SOFT_DELETE_RESOURCES)
-      // Note: This test has mock state isolation issues - skipping for now
-      //
-      // TD-001 [P1] Mock isolation bug - vi.clearAllMocks() doesn't reset mockDelete
-      // Effort: 2-4 hours | Fix: Use vi.resetAllMocks() in beforeEach
-      // Tracker: docs/technical-debt-tracker.md
-      // Root cause: vi.clearAllMocks() clears call history but not mock implementations
-      expect(true).toBe(true);
+      // TD-001 RESOLVED: Mock isolation fixed by using vi.resetAllMocks() in beforeEach
+      // NOTE: All resources use SOFT DELETE (update deleted_at), not hard delete
+      // So delete errors propagate through mockUpdate, not mockDelete
+      mockUpdate.mockRejectedValue(new Error("Network unreachable"));
+
+      await expect(
+        unifiedDataProvider.delete("tags", {
+          id: 1,
+          previousData: { id: 1 },
+        })
+      ).rejects.toThrow("Network unreachable");
     });
 
     it("should propagate network errors on getOne", async () => {
@@ -220,8 +223,8 @@ describe("unifiedDataProvider - Error Handling", () => {
     });
 
     it("should propagate RLS errors on delete", async () => {
-      vi.clearAllMocks();
-      mockDelete.mockRejectedValue({
+      // NOTE: All resources use SOFT DELETE - delete errors come through mockUpdate
+      mockUpdate.mockRejectedValue({
         message: "permission denied for table tags",
       });
 
@@ -384,7 +387,8 @@ describe("unifiedDataProvider - Error Handling", () => {
     });
 
     it("should propagate record not found on delete", async () => {
-      mockDelete.mockRejectedValue({
+      // NOTE: All resources use SOFT DELETE - delete errors come through mockUpdate
+      mockUpdate.mockRejectedValue({
         code: "PGRST116",
         message: "The result contains 0 rows",
       });

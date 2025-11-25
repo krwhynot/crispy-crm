@@ -10,12 +10,12 @@
 
 | Priority | Open | In Progress | Resolved |
 |----------|------|-------------|----------|
-| P1 (Critical) | 1 | 0 | 0 |
+| P1 (Critical) | 0 | 0 | 1 |
 | P2 (High) | 3 | 0 | 0 |
 | P3 (Low) | 1 | 0 | 0 |
-| **Total** | **5** | **0** | **0** |
+| **Total** | **4** | **0** | **1** |
 
-**Last Updated:** 2024-11-24
+**Last Updated:** 2024-11-25
 
 ---
 
@@ -23,15 +23,7 @@
 
 ### P1 - Critical (Fix Immediately)
 
-| ID | Type | File | Line | Description | Effort | Status | Assignee |
-|----|------|------|------|-------------|--------|--------|----------|
-| TD-001 | TEST | `providers/supabase/unifiedDataProvider.errors.test.ts` | 154 | **Mock isolation bug** - `vi.clearAllMocks()` doesn't reset mockDelete implementation between tests, causing test pollution. Test is currently skipped with `expect(true).toBe(true)`. | 2-4h | Open | - |
-
-**TD-001 Details:**
-- **Root Cause:** `vi.clearAllMocks()` clears call history but not mock implementations
-- **Impact:** Hidden test failures, CI unreliability, potential regression masking
-- **Fix:** Replace with `vi.resetAllMocks()` in `beforeEach` hook
-- **Constitution Reference:** Violates fail-fast principle by silently skipping tests
+*No open P1 items* ✅
 
 ---
 
@@ -85,7 +77,7 @@
 
 | ID | Type | File | Description | Resolved Date | Resolution |
 |----|------|------|-------------|---------------|------------|
-| - | - | - | *No items resolved yet* | - | - |
+| TD-001 | TEST | `unifiedDataProvider.errors.test.ts` | Mock isolation bug - vi.clearAllMocks() preserving implementations | 2025-11-24 | Changed to `vi.resetAllMocks()` in beforeEach; fixed delete tests to use `mockUpdate` (soft delete path) |
 
 ---
 
@@ -187,4 +179,5 @@ Use this template when adding new technical debt items:
 
 | Date | Change | Author |
 |------|--------|--------|
+| 2025-11-24 | Resolved TD-001: Mock isolation bug fixed with vi.resetAllMocks() | Claude |
 | 2024-11-24 | Initial creation with 5 items from TODO/FIXME analysis | Claude |
