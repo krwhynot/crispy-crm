@@ -139,16 +139,20 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
   const shouldSearchOrgs = orgSearch.debouncedTerm.length >= MIN_SEARCH_LENGTH;
   const shouldSearchOpps = oppSearch.debouncedTerm.length >= MIN_SEARCH_LENGTH;
 
-  // Build contact filter (with optional organization constraint)
-  // NOTE: Supabase doesn't support `q` text search filter - we use client-side filtering instead
+  // Build contact filter with server-side search
+  // Server-side q filter is transformed to ILIKE search in contactsCallbacks.ts
   const contactFilter = useMemo(() => {
     const filter: Record<string, unknown> = {};
     // Apply organization filter if anchor org is set (cascading filter)
     if (selectedOrganizationId) {
       filter.organization_id = selectedOrganizationId;
     }
+    // Enable server-side search via ILIKE transformation in callbacks
+    if (contactSearch.debouncedTerm.length >= MIN_SEARCH_LENGTH) {
+      filter.q = contactSearch.debouncedTerm;
+    }
     return filter;
-  }, [selectedOrganizationId]);
+  }, [selectedOrganizationId, contactSearch.debouncedTerm]);
 
   // Build organization filter with server-side search
   // Server-side q filter is transformed to ILIKE search in organizationsCallbacks.ts
