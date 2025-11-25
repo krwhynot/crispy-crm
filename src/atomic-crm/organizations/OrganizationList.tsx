@@ -97,6 +97,10 @@ export const OrganizationList = () => {
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
 
+  // Clean up stale cached filters from localStorage
+  // Generic hook validates all filters against filterRegistry.ts
+  useFilterCleanup("organizations");
+
   if (!identity) return null;
 
   return (
