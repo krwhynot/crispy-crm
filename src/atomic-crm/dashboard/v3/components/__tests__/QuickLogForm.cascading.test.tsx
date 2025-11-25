@@ -325,6 +325,15 @@ vi.mock("react-admin", () => ({
       refetch: vi.fn(),
     };
   },
+  // useGetOne is used to fetch a specific organization when not in paginated list
+  useGetOne: (resource: string, params: any, options?: any) => {
+    // Return the org from mock data if it exists
+    if (resource === "organizations" && params?.id) {
+      const org = mockOrganizations.find((o: any) => o.id === params.id);
+      return { data: org, isPending: false, error: null };
+    }
+    return { data: undefined, isPending: false, error: null };
+  },
 }));
 
 vi.mock("../../hooks/useCurrentSale", () => ({

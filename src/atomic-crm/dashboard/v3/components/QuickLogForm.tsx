@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { useDataProvider, useNotify, useGetList } from "react-admin";
+import { useDataProvider, useNotify, useGetList, useGetOne } from "react-admin";
 import { useState, useEffect, useMemo, useCallback } from "react";
 import { startOfDay } from "date-fns";
 import { Button } from "@/components/ui/button";
@@ -262,6 +262,43 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     return null;
   }, [selectedOrganizationId, selectedContact?.organization_id, selectedOpportunity?.customer_organization_id]);
 
+  // Check if anchor org is missing from the fetched organizations list
+  const anchorOrgMissing = useMemo(() => {
+    if (!anchorOrganizationId) return false;
+    return !organizations.some((o) => o.id === anchorOrganizationId);
+  }, [anchorOrganizationId, organizations]);
+
+  // Fetch the specific anchor organization if it's not in the paginated list
+  const { data: fetchedAnchorOrg } = useGetOne<Organization>(
+    "organizations",
+    { id: anchorOrganizationId! },
+    {
+      enabled: anchorOrgMissing && anchorOrganizationId !== null,
+      staleTime: STALE_TIME_MS,
+    }
+  );
+
+  // Check if we need to fetch contacts for the anchor org (org selected first scenario)
+  const contactsForAnchorOrgMissing = useMemo(() => {
+    if (!anchorOrganizationId) return false;
+    // If org is selected first, contacts might not include any from that org
+    return !contacts.some((c) => c.organization_id === anchorOrganizationId);
+  }, [anchorOrganizationId, contacts]);
+
+  // Fetch contacts specifically for the anchor organization if none are in the paginated list
+  const { data: contactsForAnchorOrg = [] } = useGetList<Contact>(
+    "contacts",
+    {
+      pagination: { page: 1, perPage: 50 },
+      sort: { field: "name", order: "ASC" },
+      filter: { organization_id: anchorOrganizationId },
+    },
+    {
+      enabled: contactsForAnchorOrgMissing && anchorOrganizationId !== null,
+      staleTime: STALE_TIME_MS,
+    }
+  );
+
   // Filter contacts by anchor organization (client-side filtering of cached data)
   const filteredContacts = useMemo(() => {
     if (!anchorOrganizationId) {
@@ -272,26 +309,21 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
 
   // Filter organizations by anchor organization (lock to single org when anchor exists)
   // BUG FIX: When anchorOrganizationId is set but the org isn't in the fetched list,
-  // we must still show it. Use selectedContact's company_name as fallback.
+  // we fetch it separately via useGetOne and include it here.
   const filteredOrganizations = useMemo(() => {
     if (!anchorOrganizationId) {
       return organizations;
     }
-    // Filter to the anchor organization
+    // Filter to the anchor organization from the paginated list
     const filtered = organizations.filter((o) => o.id === anchorOrganizationId);
 
-    // If the anchor org isn't in the fetched list, create a placeholder from contact data
-    if (filtered.length === 0 && selectedContact?.organization_id === anchorOrganizationId) {
-      // Use the contact's company_name if available
-      const fallbackOrg: Organization = {
-        id: anchorOrganizationId,
-        name: selectedContact.company_name || `Organization #${anchorOrganizationId}`,
-      };
-      return [fallbackOrg];
+    // If the anchor org isn't in the paginated list, use the separately fetched one
+    if (filtered.length === 0 && fetchedAnchorOrg) {
+      return [fetchedAnchorOrg];
     }
 
     return filtered;
-  }, [organizations, anchorOrganizationId, selectedContact?.organization_id, selectedContact?.company_name]);
+  }, [organizations, anchorOrganizationId, fetchedAnchorOrg]);
 
   // Filter opportunities by anchor organization (client-side filtering)
   const filteredOpportunities = useMemo(() => {
@@ -645,7 +677,9 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                           )}
                         >
                           {field.value
-                            ? organizations.find((o) => o.id === field.value)?.name ?? "Select organization"
+                            ? (organizations.find((o) => o.id === field.value)?.name
+                              ?? filteredOrganizations.find((o) => o.id === field.value)?.name
+                              ?? "Select organization")
                             : "Select organization"}
                           {organizationsLoading ? (
                             <Loader2 className="ml-2 h-4 w-4 animate-spin" />
