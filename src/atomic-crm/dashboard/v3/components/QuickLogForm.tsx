@@ -320,23 +320,33 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
     }
   );
 
-  // Filter contacts by anchor organization (client-side filtering of cached data)
+  // Filter contacts by anchor organization AND search term (client-side filtering)
   // BUG FIX: When org is selected first, main contacts list might not have contacts from that org.
   // Use the separately fetched contactsForAnchorOrg as fallback.
   const filteredContacts = useMemo(() => {
-    if (!anchorOrganizationId) {
-      return contacts;
-    }
-    // Filter main contacts list by anchor org
-    const filtered = contacts.filter((c) => c.organization_id === anchorOrganizationId);
+    // Start with main contacts or fallback
+    let result = contacts;
 
-    // If no contacts found in main list, use the separately fetched ones
-    if (filtered.length === 0 && contactsForAnchorOrg.length > 0) {
-      return contactsForAnchorOrg;
+    // Apply anchor org filter if set
+    if (anchorOrganizationId) {
+      const filtered = contacts.filter((c) => c.organization_id === anchorOrganizationId);
+      // Use fallback if main list has no matches
+      result = filtered.length === 0 && contactsForAnchorOrg.length > 0
+        ? contactsForAnchorOrg
+        : filtered;
     }
 
-    return filtered;
-  }, [contacts, anchorOrganizationId, contactsForAnchorOrg]);
+    // Apply search term filter (client-side search for responsiveness)
+    if (contactSearch.debouncedTerm.length > 0) {
+      const searchLower = contactSearch.debouncedTerm.toLowerCase();
+      result = result.filter((c) =>
+        c.name.toLowerCase().includes(searchLower) ||
+        c.company_name?.toLowerCase().includes(searchLower)
+      );
+    }
+
+    return result;
+  }, [contacts, anchorOrganizationId, contactsForAnchorOrg, contactSearch.debouncedTerm]);
 
   // Filter organizations by anchor organization (lock to single org when anchor exists)
   // BUG FIX: When anchorOrganizationId is set but the org isn't in the fetched list,
@@ -357,14 +367,24 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
   }, [organizations, anchorOrganizationId, fetchedAnchorOrg]);
 
   // Filter opportunities by anchor organization (client-side filtering)
+  // BUG FIX: When org/contact is selected first, main opportunities list might not have opps from that org.
+  // Use the separately fetched oppsForAnchorOrg as fallback.
   const filteredOpportunities = useMemo(() => {
     if (!anchorOrganizationId) {
       return opportunities;
     }
-    return opportunities.filter(
+    // Filter main opportunities list by anchor org
+    const filtered = opportunities.filter(
       (o) => o.customer_organization_id === anchorOrganizationId
     );
-  }, [opportunities, anchorOrganizationId]);
+
+    // If no opportunities found in main list, use the separately fetched ones
+    if (filtered.length === 0 && oppsForAnchorOrg.length > 0) {
+      return oppsForAnchorOrg;
+    }
+
+    return filtered;
+  }, [opportunities, anchorOrganizationId, oppsForAnchorOrg]);
 
   // ============================================
   // SIDE EFFECTS
@@ -832,7 +852,9 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
                           )}
                         >
                           {field.value
-                            ? opportunities.find((o) => o.id === field.value)?.name ?? "Select opportunity (optional)"
+                            ? (opportunities.find((o) => o.id === field.value)?.name
+                              ?? oppsForAnchorOrg.find((o) => o.id === field.value)?.name
+                              ?? "Select opportunity (optional)")
                             : "Select opportunity (optional)"}
                           {opportunitiesLoading ? (
                             <Loader2 className="ml-2 h-4 w-4 animate-spin" />
