@@ -1,63 +1,41 @@
-import { useEffect, useState } from "react";
-import { useDataProvider } from "ra-core";
-
 /**
  * Custom hook to fetch and cache sales person names
  * Handles batch fetching for performance optimization
+ *
+ * REFACTORED: Now uses type-safe generic base hook
+ * BACKWARD COMPATIBLE: Same API as before
+ *
+ * @module filters/useSalesNames
+ */
+
+import type { Sales } from "../validation/sales";
+import { useResourceNamesBase } from "./hooks/useResourceNamesBase";
+import { resourceExtractors } from "./types/resourceTypes";
+
+/**
+ * Fetch and cache sales person names for display
+ *
+ * @param salesIds - Array of sales IDs to look up
+ * @returns Object with salesMap, getSalesName function, and loading state
+ *
+ * @example
+ * ```typescript
+ * const { getSalesName, loading } = useSalesNames(["1", "2", "3"]);
+ * const name = getSalesName("1"); // "John Smith" or "Sales #1"
+ * ```
  */
 export const useSalesNames = (salesIds: string[] | undefined) => {
-  const dataProvider = useDataProvider();
-  const [salesMap, setSalesMap] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(false);
+  const { namesMap, getName, loading } = useResourceNamesBase<Sales>(
+    "sales",
+    salesIds,
+    resourceExtractors.sales,
+    "Sales"
+  );
 
-  // Create a stable key for dependency array
-  const salesIdsKey = salesIds?.join(",") || "";
-
-  useEffect(() => {
-    if (!salesIds || salesIds.length === 0) {
-      return;
-    }
-
-    const fetchSalesNames = async () => {
-      // Only fetch IDs we don't already have cached
-      const idsToFetch = salesIds.filter((id) => !salesMap[id]);
-
-      if (idsToFetch.length === 0) {
-        return;
-      }
-
-      setLoading(true);
-      try {
-        const { data } = await dataProvider.getMany("sales", {
-          ids: idsToFetch,
-        });
-
-        const newMap = data.reduce((acc: Record<string, string>, sale: any) => {
-          acc[String(sale.id)] = `${sale.first_name} ${sale.last_name}`;
-          return acc;
-        }, {});
-
-        setSalesMap((prev) => ({ ...prev, ...newMap }));
-      } catch (error) {
-        console.error("Failed to fetch sales names:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchSalesNames();
-  }, [salesIdsKey, salesIds, salesMap, dataProvider]);
-
-  /**
-   * Get sales person name by ID with fallback
-   */
-  const getSalesName = (id: string): string => {
-    return salesMap[id] || `Sales #${id}`;
-  };
-
+  // Return with original property names for backward compatibility
   return {
-    salesMap,
-    getSalesName,
+    salesMap: namesMap,
+    getSalesName: getName,
     loading,
   };
 };

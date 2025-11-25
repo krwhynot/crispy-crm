@@ -2,7 +2,7 @@
  * Generic type utilities for type-safe resource name lookups
  *
  * This module provides type constraints that ensure:
- * 1. Resources always have an `id` field
+ * 1. Resources have an `id` field (required or optional in schema)
  * 2. Display name extractors are correctly typed per resource
  * 3. The reduce callback receives typed data, not `any`
  *
@@ -15,17 +15,26 @@ import type { Tag } from "../../validation/tags";
 
 /**
  * Base constraint for any resource that can be looked up by ID
- * All CRM resources have `id: string | number` from Zod schemas
+ *
+ * Note: Zod schemas define `id` as optional (for creation scenarios),
+ * but data returned from dataProvider.getMany() always has id.
+ * We use optional here for schema compatibility.
  */
 export interface ResourceWithId {
-  id: string | number;
+  id?: string | number;
 }
 
 /**
- * Generic function type for extracting display name from a resource
- * @template T - The resource type (must have an id)
+ * Represents a resource as returned from the API (id is always present)
+ * This is what dataProvider.getMany() actually returns
  */
-export type DisplayNameExtractor<T extends ResourceWithId> = (item: T) => string;
+export type FetchedResource<T extends ResourceWithId> = T & { id: string | number };
+
+/**
+ * Generic function type for extracting display name from a resource
+ * @template T - The resource type (must have an id field defined in schema)
+ */
+export type DisplayNameExtractor<T extends ResourceWithId> = (item: FetchedResource<T>) => string;
 
 /**
  * Return type for useResourceNames hooks
@@ -43,25 +52,27 @@ export interface ResourceNamesResult {
 /**
  * Pre-defined extractors for common resources
  * These are type-safe and provide compile-time checking
+ *
+ * Note: The `satisfies` keyword ensures type safety while allowing
+ * TypeScript to infer the most specific function type.
  */
 export const resourceExtractors = {
   /**
    * Extract display name from Sales resource
    * Combines first_name and last_name with fallback
    */
-  sales: ((s: Sales) =>
-    `${s.first_name ?? ""} ${s.last_name ?? ""}`.trim() ||
-    "Unknown") satisfies DisplayNameExtractor<Sales>,
+  sales: ((s) =>
+    `${s.first_name ?? ""} ${s.last_name ?? ""}`.trim() || "Unknown") satisfies DisplayNameExtractor<Sales>,
 
   /**
    * Extract display name from Organization resource
    */
-  organizations: ((o: Organization) => o.name) satisfies DisplayNameExtractor<Organization>,
+  organizations: ((o) => o.name) satisfies DisplayNameExtractor<Organization>,
 
   /**
    * Extract display name from Tag resource
    */
-  tags: ((t: Tag) => t.name) satisfies DisplayNameExtractor<Tag>,
+  tags: ((t) => t.name) satisfies DisplayNameExtractor<Tag>,
 } as const;
 
 /**

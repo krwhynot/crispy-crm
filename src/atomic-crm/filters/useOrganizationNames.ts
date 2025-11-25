@@ -1,63 +1,41 @@
-import { useEffect, useState } from "react";
-import { useDataProvider } from "ra-core";
-
 /**
  * Custom hook to fetch and cache organization names
  * Handles batch fetching for performance optimization
+ *
+ * REFACTORED: Now uses type-safe generic base hook
+ * BACKWARD COMPATIBLE: Same API as before
+ *
+ * @module filters/useOrganizationNames
+ */
+
+import type { Organization } from "../validation/organizations";
+import { useResourceNamesBase } from "./hooks/useResourceNamesBase";
+import { resourceExtractors } from "./types/resourceTypes";
+
+/**
+ * Fetch and cache organization names for display
+ *
+ * @param organizationIds - Array of organization IDs to look up
+ * @returns Object with organizationMap, getOrganizationName function, and loading state
+ *
+ * @example
+ * ```typescript
+ * const { getOrganizationName, loading } = useOrganizationNames(["1", "2"]);
+ * const name = getOrganizationName("1"); // "Acme Corp" or "Organization #1"
+ * ```
  */
 export const useOrganizationNames = (organizationIds: string[] | undefined) => {
-  const dataProvider = useDataProvider();
-  const [organizationMap, setOrganizationMap] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(false);
+  const { namesMap, getName, loading } = useResourceNamesBase<Organization>(
+    "organizations",
+    organizationIds,
+    resourceExtractors.organizations,
+    "Organization"
+  );
 
-  // Create a stable key for dependency array
-  const organizationIdsKey = organizationIds?.join(",") || "";
-
-  useEffect(() => {
-    if (!organizationIds || organizationIds.length === 0) {
-      return;
-    }
-
-    const fetchOrganizationNames = async () => {
-      // Only fetch IDs we don't already have cached
-      const idsToFetch = organizationIds.filter((id) => !organizationMap[id]);
-
-      if (idsToFetch.length === 0) {
-        return;
-      }
-
-      setLoading(true);
-      try {
-        const { data } = await dataProvider.getMany("organizations", {
-          ids: idsToFetch,
-        });
-
-        const newMap = data.reduce((acc: Record<string, string>, org: any) => {
-          acc[String(org.id)] = org.name;
-          return acc;
-        }, {});
-
-        setOrganizationMap((prev) => ({ ...prev, ...newMap }));
-      } catch (error) {
-        console.error("Failed to fetch organization names:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchOrganizationNames();
-  }, [organizationIdsKey, organizationIds, organizationMap, dataProvider]);
-
-  /**
-   * Get organization name by ID with fallback
-   */
-  const getOrganizationName = (id: string): string => {
-    return organizationMap[id] || `Organization #${id}`;
-  };
-
+  // Return with original property names for backward compatibility
   return {
-    organizationMap,
-    getOrganizationName,
+    organizationMap: namesMap,
+    getOrganizationName: getName,
     loading,
   };
 };
