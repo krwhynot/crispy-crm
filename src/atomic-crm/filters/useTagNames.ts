@@ -1,6 +1,3 @@
-import { useEffect, useState } from "react";
-import { useDataProvider } from "ra-core";
-
 /**
  * Custom hook to fetch and cache tag names
  * Handles batch fetching for performance optimization
@@ -8,60 +5,41 @@ import { useDataProvider } from "ra-core";
  * Note: Tags in opportunities table are stored as text[] (tag names),
  * not IDs. However, this hook will be needed for contacts which use
  * bigint[] (tag IDs). For opportunities, tag values ARE the display names.
+ *
+ * REFACTORED: Now uses type-safe generic base hook
+ * BACKWARD COMPATIBLE: Same API as before
+ *
+ * @module filters/useTagNames
+ */
+
+import type { Tag } from "../validation/tags";
+import { useResourceNamesBase } from "./hooks/useResourceNamesBase";
+import { resourceExtractors } from "./types/resourceTypes";
+
+/**
+ * Fetch and cache tag names for display
+ *
+ * @param tagIds - Array of tag IDs to look up
+ * @returns Object with tagMap, getTagName function, and loading state
+ *
+ * @example
+ * ```typescript
+ * const { getTagName, loading } = useTagNames(["1", "2", "3"]);
+ * const name = getTagName("1"); // "Important" or "Tag #1"
+ * ```
  */
 export const useTagNames = (tagIds: string[] | undefined) => {
-  const dataProvider = useDataProvider();
-  const [tagMap, setTagMap] = useState<Record<string, string>>({});
-  const [loading, setLoading] = useState(false);
+  const { namesMap, getName, loading } = useResourceNamesBase<Tag>(
+    "tags",
+    tagIds,
+    resourceExtractors.tags,
+    "Tag"
+  );
 
-  // Create a stable key for dependency array
-  const tagIdsKey = tagIds?.join(",") || "";
-
-  useEffect(() => {
-    if (!tagIds || tagIds.length === 0) {
-      return;
-    }
-
-    const fetchTagNames = async () => {
-      // Only fetch IDs we don't already have cached
-      const idsToFetch = tagIds.filter((id) => !tagMap[id]);
-
-      if (idsToFetch.length === 0) {
-        return;
-      }
-
-      setLoading(true);
-      try {
-        const { data } = await dataProvider.getMany("tags", {
-          ids: idsToFetch,
-        });
-
-        const newMap = data.reduce((acc: Record<string, string>, tag: any) => {
-          acc[String(tag.id)] = tag.name;
-          return acc;
-        }, {});
-
-        setTagMap((prev) => ({ ...prev, ...newMap }));
-      } catch (error) {
-        console.error("Failed to fetch tag names:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchTagNames();
-  }, [tagIdsKey, tagIds, tagMap, dataProvider]);
-
-  /**
-   * Get tag name by ID with fallback
-   */
-  const getTagName = (id: string): string => {
-    return tagMap[id] || `Tag #${id}`;
-  };
-
+  // Return with original property names for backward compatibility
   return {
-    tagMap,
-    getTagName,
+    tagMap: namesMap,
+    getTagName: getName,
     loading,
   };
 };

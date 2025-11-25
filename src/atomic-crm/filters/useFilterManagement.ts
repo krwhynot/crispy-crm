@@ -1,28 +1,69 @@
 import { useMemo } from "react";
 import { useListContext } from "ra-core";
+import type { SingleFilterValue, FilterValue } from "./types";
 
 /**
- * Filter value type definitions
+ * Re-export types for backward compatibility
+ * (consumers may import FilterValue/FilterValues from this file)
  */
-export type FilterValue = string | number | boolean | string[] | number[] | null;
+export type { FilterValue };
 export type FilterValues = Record<string, FilterValue>;
+
+/**
+ * Primitive filter value type for add/remove/toggle operations
+ *
+ * These functions operate on individual values that may be added to
+ * or removed from array filters. Arrays are not valid here because:
+ * - addFilterValue adds ONE value to an array or sets a single value
+ * - removeFilterValue removes ONE value from an array
+ * - toggleFilterValue toggles ONE value's presence
+ *
+ * Note: We exclude undefined from the type because adding/removing
+ * undefined doesn't make semantic sense for filters.
+ */
+type PrimitiveFilterValue = string | number | boolean | null;
 
 /**
  * Custom hook for managing filter state and operations
  * Consolidates filter logic to avoid duplication
+ *
+ * @returns Filter management utilities with type-safe value operations
+ *
+ * @example
+ * ```typescript
+ * const { addFilterValue, removeFilterValue, toggleFilterValue } = useFilterManagement();
+ *
+ * // Add a single stage to the filter (accumulates in array)
+ * addFilterValue("stage", "new_lead");
+ *
+ * // Remove a specific value
+ * removeFilterValue("stage", "closed_lost");
+ *
+ * // Toggle presence of a value
+ * toggleFilterValue("priority", "high");
+ * ```
  */
 export const useFilterManagement = () => {
   const { filterValues, setFilters } = useListContext();
 
   /**
    * Add a value to an array filter or set a single value
+   *
+   * Behavior:
+   * - If current filter is an array: adds value if not present
+   * - If current filter is a single value: converts to array with both values
+   * - If no current filter: sets as single value
+   *
+   * @param key - The filter key (e.g., "stage", "priority")
+   * @param value - The primitive value to add (string, number, boolean, or null)
    */
-  const addFilterValue = (key: string, value: any) => {
+  const addFilterValue = (key: string, value: PrimitiveFilterValue): void => {
     const currentValue = filterValues?.[key];
 
     if (Array.isArray(currentValue)) {
       // Add to existing array if not already present
-      if (!currentValue.includes(value)) {
+      // Note: includes() works correctly with primitives
+      if (!currentValue.includes(value as never)) {
         setFilters({
           ...filterValues,
           [key]: [...currentValue, value],
@@ -44,9 +85,17 @@ export const useFilterManagement = () => {
   };
 
   /**
-   * Remove a value from an array filter
+   * Remove a value from an array filter or clear a single-value filter
+   *
+   * Behavior:
+   * - If current filter is an array: removes the specific value
+   * - If array becomes empty: removes the filter entirely
+   * - If current filter is a single value: removes the filter entirely
+   *
+   * @param key - The filter key
+   * @param valueToRemove - The primitive value to remove
    */
-  const removeFilterValue = (key: string, valueToRemove: any) => {
+  const removeFilterValue = (key: string, valueToRemove: PrimitiveFilterValue): void => {
     const currentValue = filterValues?.[key];
 
     if (Array.isArray(currentValue)) {
@@ -71,13 +120,22 @@ export const useFilterManagement = () => {
   };
 
   /**
-   * Toggle a value in an array filter
+   * Toggle a value's presence in a filter
+   *
+   * Behavior:
+   * - If value exists in array: removes it
+   * - If value doesn't exist in array: adds it
+   * - If current value equals toggle value: removes filter
+   * - Otherwise: adds the value
+   *
+   * @param key - The filter key
+   * @param value - The primitive value to toggle
    */
-  const toggleFilterValue = (key: string, value: any) => {
+  const toggleFilterValue = (key: string, value: PrimitiveFilterValue): void => {
     const currentValue = filterValues?.[key];
 
     if (Array.isArray(currentValue)) {
-      if (currentValue.includes(value)) {
+      if (currentValue.includes(value as never)) {
         removeFilterValue(key, value);
       } else {
         addFilterValue(key, value);
@@ -91,8 +149,10 @@ export const useFilterManagement = () => {
 
   /**
    * Clear all values for a specific filter
+   *
+   * @param key - The filter key to clear
    */
-  const clearFilter = (key: string) => {
+  const clearFilter = (key: string): void => {
     if (!filterValues?.[key]) return;
 
     const { [key]: _, ...rest } = filterValues;
@@ -102,12 +162,15 @@ export const useFilterManagement = () => {
   /**
    * Clear all filters
    */
-  const clearAllFilters = () => {
+  const clearAllFilters = (): void => {
     setFilters({});
   };
 
   /**
-   * Check if a filter is active
+   * Check if a filter is active (has non-empty value)
+   *
+   * @param key - The filter key to check
+   * @returns true if the filter has an active value
    */
   const isFilterActive = (key: string): boolean => {
     const value = filterValues?.[key];
@@ -118,7 +181,7 @@ export const useFilterManagement = () => {
   };
 
   /**
-   * Get active filter count
+   * Get count of active filters (excluding internal/system filters)
    */
   const activeFilterCount = useMemo(() => {
     if (!filterValues) return 0;
