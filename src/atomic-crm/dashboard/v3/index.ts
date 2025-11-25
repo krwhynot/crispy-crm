@@ -22,16 +22,15 @@ const PrincipalDashboardV3Lazy = lazy(() =>
   }))
 );
 
-// Export with error boundary wrapper
+// Public API exports
 export { PrincipalDashboardV3Lazy as PrincipalDashboardV3 };
 export { DashboardErrorBoundary } from "./DashboardErrorBoundary";
 
-// Export child components for direct use if needed
-export { PrincipalPipelineTable } from "./components/PrincipalPipelineTable";
-export { TasksPanel } from "./components/TasksPanel";
-export { QuickLoggerPanel } from "./components/QuickLoggerPanel";
+// Note: Child components (PrincipalPipelineTable, TasksPanel, QuickLoggerPanel)
+// are internal implementation details and not exported from the public API.
+// They are imported directly within dashboard/v3 via relative paths.
 
-// Export types
+// Export types for consumers that need to work with dashboard data
 export type {
   PrincipalPipelineRow,
   TaskItem,

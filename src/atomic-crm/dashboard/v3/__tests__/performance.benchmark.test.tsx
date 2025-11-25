@@ -136,8 +136,10 @@ vi.mock("react-admin", () => ({
 
 // NOTE: These benchmarks are timing-sensitive and should be run in isolation:
 // `npm test -- --run performance.benchmark`
-// They may flake when run with the full test suite due to jsdom overhead
-describe.skipIf(process.env.CI === "true")("TasksPanel Performance Benchmarks", () => {
+// Skip in full suite runs to avoid flakiness from jsdom concurrent execution overhead
+const runBenchmarks = process.env.BENCHMARK === "true";
+
+describe.skipIf(!runBenchmarks)("TasksPanel Performance Benchmarks", () => {
   const TASK_COUNT = 100;
   const TARGET_MS = 15;
   let largeTasks: ReturnType<typeof generateTasks>;
@@ -505,7 +507,7 @@ vi.mock("../../hooks/useCurrentSale", () => ({
   useCurrentSale: () => ({ salesId: 1, loading: false, error: null }),
 }));
 
-describe("QuickLogForm Performance Benchmarks", () => {
+describe.skipIf(!runBenchmarks)("QuickLogForm Performance Benchmarks", () => {
   const CONTACT_COUNT = 5000;
   const TARGET_MS = 500;
 
@@ -571,7 +573,7 @@ describe("QuickLogForm Performance Benchmarks", () => {
 // SUMMARY REPORT
 // ============================================================================
 
-describe("Performance Summary", () => {
+describe.skipIf(!runBenchmarks)("Performance Summary", () => {
   it("should generate optimization summary report", () => {
     console.log(`
 ╔══════════════════════════════════════════════════════════════╗
