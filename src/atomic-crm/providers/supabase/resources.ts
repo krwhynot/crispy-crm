@@ -25,6 +25,7 @@ export const RESOURCE_MAPPING = {
   contactNotes: "contactNotes",
   // dealNotes: REMOVED - use opportunityNotes
   opportunityNotes: "opportunityNotes",
+  organizationNotes: "organizationNotes",
 
   // Junction tables for many-to-many relationships
   contact_organizations: "contact_organizations",
@@ -85,6 +86,7 @@ export const SOFT_DELETE_RESOURCES = [
   // Added per Constitution audit - now have deleted_at columns:
   "segments",
   "contactNotes",
+  "organizationNotes",
   "interaction_participants",
   "tags",
   "opportunity_products",
@@ -100,6 +102,9 @@ export const RESOURCE_LIFECYCLE_CONFIG = {
   },
   // dealNotes: REMOVED - use opportunityNotes
   opportunityNotes: {
+    hasAttachments: true,
+  },
+  organizationNotes: {
     hasAttachments: true,
   },
   sales: {

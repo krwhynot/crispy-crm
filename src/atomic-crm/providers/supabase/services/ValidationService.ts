@@ -25,7 +25,10 @@ import {
   validateUpdateContactNote,
   validateCreateOpportunityNote,
   validateUpdateOpportunityNote,
+  validateCreateOrganizationNote,
+  validateUpdateOrganizationNote,
 } from "../../../validation/notes";
+import type { OrganizationNote } from "../../../validation/notes";
 import { validateTaskForSubmission } from "../../../validation/task";
 import { validateProductForm } from "../../../validation/products";
 import { validateCreateTag, validateUpdateTag } from "../../../validation/tags";
@@ -53,6 +56,7 @@ interface ResourceTypeMap {
   opportunities: Opportunity;
   contactNotes: ContactNote;
   opportunityNotes: OpportunityNote;
+  organizationNotes: OrganizationNote;
   tasks: Task;
   tags: Tag;
   products: ProductFormData;
@@ -112,6 +116,14 @@ export class ValidationService {
       },
       update: async (data: unknown) => {
         validateUpdateOpportunityNote(data);
+      },
+    },
+    organizationNotes: {
+      create: async (data: unknown) => {
+        validateCreateOrganizationNote(data);
+      },
+      update: async (data: unknown) => {
+        validateUpdateOrganizationNote(data);
       },
     },
     tasks: {
