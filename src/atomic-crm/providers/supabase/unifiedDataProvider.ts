@@ -527,6 +527,7 @@ export const unifiedDataProvider: DataProvider = {
         false // getManyReference doesn't use summary views
       );
 
+      // Use transformed filter (with $or → or conversion) while preserving required GetManyReferenceParams
       const result = await baseDataProvider.getManyReference(dbResource, {
         ...params,
         filter: searchParams.filter,
