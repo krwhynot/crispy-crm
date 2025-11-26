@@ -193,12 +193,8 @@ export function applyFullTextSearch(
  * @returns Filter with $or transformed to PostgREST string format
  */
 export const transformOrFilter = (filter: FilterPayload): FilterPayload => {
-  // DEBUG: Log input
-  console.log('[DEBUG 2/4] transformOrFilter - INPUT', { filter: JSON.stringify(filter) });
-
   const orFilter = filter.$or;
   if (!orFilter) {
-    console.log('[DEBUG 2/4] transformOrFilter - NO $or found, returning unchanged');
     return filter;
   }
 
@@ -217,15 +213,7 @@ export const transformOrFilter = (filter: FilterPayload): FilterPayload => {
   }
 
   const { $or, ...rest } = filter;
-  const result = { ...rest, "@or": orObject };
-
-  // DEBUG: Log output
-  console.log('[DEBUG 2/4] transformOrFilter - OUTPUT', {
-    orObject,
-    result: JSON.stringify(result),
-  });
-
-  return result;
+  return { ...rest, "@or": orObject };
 };
 
 /**
@@ -416,7 +404,15 @@ export function normalizeJsonbArrayFields<T extends JsonbArrayRecord>(
  * Applies to both single records and arrays of records
  */
 export function normalizeResponseData<T extends JsonbArrayRecord>(
-  resource: string,
+  _resource: string,
+  data: T[] | null | undefined
+): T[];
+export function normalizeResponseData<T extends JsonbArrayRecord>(
+  _resource: string,
+  data: T | null | undefined
+): T | null;
+export function normalizeResponseData<T extends JsonbArrayRecord>(
+  _resource: string,
   data: T | T[] | null | undefined
 ): T | T[] | null | undefined {
   // Handle array of records (getList, getMany, getManyReference)

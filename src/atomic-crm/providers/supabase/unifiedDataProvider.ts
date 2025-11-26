@@ -33,7 +33,7 @@ import type {
   FilterPayload,
 } from "ra-core";
 import type { FileObject } from "@supabase/storage-js";
-import type { QuickAddInput } from "../validation/quickAdd";
+import { quickAddSchema } from '../../validation/quickAdd';
 
 import { supabase } from "./supabase";
 import { getResourceName, supportsSoftDelete } from "./resources";
@@ -308,23 +308,7 @@ function isWrappedResponse<T extends { id: Identifier }>(
   );
 }
 
-/**
- * Formats RPC responses to match React Admin's expected structure.
- * Handles potentially double-wrapped responses from Supabase RPC functions.
- *
- * @param rpcData The raw data returned from a Supabase RPC call
- * @returns A React Admin-compatible response object
- */
-function formatRpcResponse<T extends { id: Identifier }>(
-  rpcData: RpcWrappedResponse<T>
-): { data: T } {
-  // Use type guard for safer unwrapping
-  if (isWrappedResponse(rpcData)) {
-    return { data: rpcData.data };
-  }
-  // Otherwise, wrap the raw response
-  return { data: rpcData as T };
-}
+
 
 /**
  * Handles RPC errors by attempting to parse JSON error messages.
@@ -922,14 +906,14 @@ export const unifiedDataProvider: DataProvider = {
         });
 
         if (error) {
-          logError("storage.upload", bucket, { path, size: file.size }, error);
+          logError("storage.upload", bucket, { data: { path, size: file.size } }, error);
           throw new Error(`Upload failed: ${error.message}`);
         }
 
         console.log(`[DataProvider Storage] Upload succeeded`, data);
         return data;
       } catch (error) {
-        logError("storage.upload", bucket, { path }, error);
+        logError("storage.upload", bucket, { data: { path } }, error);
         throw error;
       }
     },
@@ -958,13 +942,13 @@ export const unifiedDataProvider: DataProvider = {
         const { error } = await supabase.storage.from(bucket).remove(paths);
 
         if (error) {
-          logError("storage.remove", bucket, { paths }, error);
+          logError("storage.remove", bucket, { data: { paths } }, error);
           throw new Error(`Remove failed: ${error.message}`);
         }
 
         console.log(`[DataProvider Storage] Remove succeeded`);
       } catch (error) {
-        logError("storage.remove", bucket, { paths }, error);
+        logError("storage.remove", bucket, { data: { paths } }, error);
         throw error;
       }
     },
@@ -1014,20 +998,6 @@ export const unifiedDataProvider: DataProvider = {
     try {
       console.log(`[DataProvider Edge] Invoking ${functionName}`, options);
 
-      // Validate body params if schema exists for this Edge Function
-      if (functionName in edgeFunctionSchemas && processedOptions.body) {
-        const schema = edgeFunctionSchemas[functionName as EdgeFunctionName];
-        const validationResult = schema.safeParse(processedOptions.body);
-
-        if (!validationResult.success) {
-          throw new Error(
-            `Invalid Edge Function parameters for ${functionName}: ${validationResult.error.message}`
-          );
-        }
-
-        // Use validated params
-        processedOptions.body = validationResult.data as Record<string, unknown>;
-      }
 
       const { data, error } = await supabase.functions.invoke<T>(functionName, {
         method: processedOptions.method || "POST",
