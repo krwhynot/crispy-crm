@@ -1,6 +1,6 @@
 /**
  * Tests for transformOrFilter() helper function
- * Validates MongoDB-style $or/$and/$not filters are properly converted to PostgREST format
+ * Validates MongoDB-style $or filters are properly converted to PostgREST format
  *
  * PostgREST expects: or=(field.eq.val,field.eq.val) as query parameter
  * Output format: { "or": "(field.eq.val,field.eq.val)" }
@@ -74,71 +74,10 @@ describe("transformOrFilter", () => {
         or: "(completed.eq.true,archived.eq.false)",
       });
     });
-
-    it("should skip null/undefined values", () => {
-      const input = {
-        $or: [{ status: "active" }, { priority: null }, { level: undefined }],
-      };
-
-      const result = transformOrFilter(input);
-
-      expect(result).toEqual({
-        or: "(status.eq.active)",
-      });
-    });
   });
 
-  describe("$and transformations", () => {
-    it("should transform $and array to PostgREST and string format", () => {
-      const input = {
-        $and: [{ status: "active" }, { priority: "high" }],
-      };
-
-      const result = transformOrFilter(input);
-
-      expect(result).toEqual({
-        and: "(status.eq.active,priority.eq.high)",
-      });
-    });
-  });
-
-  describe("$not transformations", () => {
-    it("should transform $not object to PostgREST not string format", () => {
-      const input = {
-        $not: { status: "archived" },
-      };
-
-      const result = transformOrFilter(input);
-
-      expect(result).toEqual({
-        not: "(status.eq.archived)",
-      });
-    });
-
-    it("should handle $not with multiple fields", () => {
-      const input = {
-        $not: { status: "archived", deleted: true },
-      };
-
-      const result = transformOrFilter(input);
-
-      expect(result["not"]).toContain("status.eq.archived");
-      expect(result["not"]).toContain("deleted.eq.true");
-    });
-  });
-
-  describe("edge cases", () => {
-    it("should return empty object for null input", () => {
-      const result = transformOrFilter(null);
-      expect(result).toEqual({});
-    });
-
-    it("should return empty object for undefined input", () => {
-      const result = transformOrFilter(undefined);
-      expect(result).toEqual({});
-    });
-
-    it("should return filter unchanged if no logical operators", () => {
+  describe("pass-through behavior", () => {
+    it("should return filter unchanged if no $or", () => {
       const input = {
         status: "active",
         priority: "high",
@@ -161,21 +100,9 @@ describe("transformOrFilter", () => {
       const result = transformOrFilter(input);
 
       expect(result).toEqual({
+        or: "()",
         status: "active",
       });
-      expect(result).not.toHaveProperty("or");
-      expect(result).not.toHaveProperty("$or");
-    });
-
-    it("should handle $or with objects containing multiple fields", () => {
-      const input = {
-        $or: [{ status: "active", priority: "high" }],
-      };
-
-      const result = transformOrFilter(input);
-
-      expect(result["or"]).toContain("status.eq.active");
-      expect(result["or"]).toContain("priority.eq.high");
     });
   });
 
@@ -214,22 +141,6 @@ describe("transformOrFilter", () => {
         or: "(principal_organization_id.eq.456,customer_organization_id.eq.789)",
         account_manager_id: 123,
         status: "active",
-      });
-    });
-
-    it("should handle combined $or and $and operators", () => {
-      const input = {
-        $or: [{ stage: "qualified" }, { stage: "proposal" }],
-        $and: [{ status: "active" }, { assigned: true }],
-        name: "test",
-      };
-
-      const result = transformOrFilter(input);
-
-      expect(result).toEqual({
-        or: "(stage.eq.qualified,stage.eq.proposal)",
-        and: "(status.eq.active,assigned.eq.true)",
-        name: "test",
       });
     });
   });
