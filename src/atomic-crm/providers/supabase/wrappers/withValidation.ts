@@ -129,7 +129,10 @@ export function withValidation<T extends DataProvider>(
   ) => {
     try {
       // Validate before update
-      await validationService.validate(resource, "update", params.data);
+      // Include params.id in data since some schemas (e.g., taskUpdateSchema) require id
+      // This matches what unifiedDataProvider.update() does before processing
+      const dataWithId = { ...params.data, id: params.id };
+      await validationService.validate(resource, "update", dataWithId);
     } catch (error: unknown) {
       if (isZodError(error)) {
         throw transformZodToReactAdmin(error);
