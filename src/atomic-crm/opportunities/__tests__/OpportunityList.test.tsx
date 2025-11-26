@@ -22,15 +22,16 @@ vi.mock("ra-core", async () => {
 });
 
 // Mock OpportunityColumn to simplify rendering
-vi.mock("../OpportunityColumn", () => ({
+// Path is relative to the component being tested (kanban/OpportunityListContent.tsx)
+vi.mock("../kanban/OpportunityColumn", () => ({
   OpportunityColumn: ({ stage, opportunities }: any) => (
     <div data-testid={`column-${stage?.value || stage}`}>
       <h3>{stage?.label || stage}</h3>
-      {opportunities.map((opp: any) => (
+      {opportunities?.map((opp: any) => (
         <div key={opp.id} data-testid={`opportunity-${opp.id}`}>
           {opp.name}
         </div>
-      ))}
+      )) || null}
     </div>
   ),
 }));
@@ -90,8 +91,11 @@ describe("OpportunityListContent", () => {
     vi.restoreAllMocks();
   });
 
+  // Mock openSlideOver for all tests
+  const mockOpenSlideOver = vi.fn();
+
   test("renders list with mocked data from useListContext", async () => {
-    renderWithAdminContext(<OpportunityListContent />);
+    renderWithAdminContext(<OpportunityListContent openSlideOver={mockOpenSlideOver} />);
 
     // Wait for component to render with mock data
     await waitFor(() => {
@@ -113,7 +117,7 @@ describe("OpportunityListContent", () => {
 
     (useListContext as any).mockReturnValue(contextWithFilters);
 
-    renderWithAdminContext(<OpportunityListContent />);
+    renderWithAdminContext(<OpportunityListContent openSlideOver={mockOpenSlideOver} />);
 
     await waitFor(() => {
       // When stages are filtered, OpportunityListContent only shows those stage columns
@@ -140,7 +144,7 @@ describe("OpportunityListContent", () => {
 
     (useListContext as any).mockReturnValue(emptyContext);
 
-    renderWithAdminContext(<OpportunityListContent />);
+    renderWithAdminContext(<OpportunityListContent openSlideOver={mockOpenSlideOver} />);
 
     await waitFor(() => {
       // Should show all stage columns but empty
@@ -175,7 +179,7 @@ describe("OpportunityListContent", () => {
 
     (useListContext as any).mockReturnValue(paginatedContext);
 
-    renderWithAdminContext(<OpportunityListContent />);
+    renderWithAdminContext(<OpportunityListContent openSlideOver={mockOpenSlideOver} />);
 
     await waitFor(() => {
       // Should show first page of results
@@ -197,7 +201,7 @@ describe("OpportunityListContent", () => {
 
     (useListContext as any).mockReturnValue(contextWithGrouping);
 
-    renderWithAdminContext(<OpportunityListContent />);
+    renderWithAdminContext(<OpportunityListContent openSlideOver={mockOpenSlideOver} />);
 
     await waitFor(() => {
       // Find all columns
