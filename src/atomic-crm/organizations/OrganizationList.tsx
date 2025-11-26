@@ -1,7 +1,8 @@
 import jsonExport from "jsonexport/dist";
 import type { Exporter } from "ra-core";
-import { downloadCSV, useGetIdentity } from "ra-core";
+import { downloadCSV, useGetIdentity, useListContext } from "ra-core";
 import { TextField, ReferenceField, FunctionField } from "react-admin";
+import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { List } from "@/components/admin/list";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
@@ -14,6 +15,7 @@ import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { OrganizationListFilter } from "./OrganizationListFilter";
 import { OrganizationSlideOver } from "./OrganizationSlideOver";
 import { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
+import { OrganizationEmpty } from "./OrganizationEmpty";
 import { TopToolbar } from "../layout/TopToolbar";
 import type { Organization, Sale, Segment } from "../types";
 
@@ -92,6 +94,61 @@ const exporter: Exporter<Organization> = async (records, fetchRelatedRecords) =>
   });
 };
 
+const OrganizationListLayout = ({
+  openSlideOver,
+}: {
+  openSlideOver: (id: number, mode: "view" | "edit") => void;
+}) => {
+  const { data, isPending, filterValues } = useListContext();
+  const { identity } = useGetIdentity();
+
+  const hasFilters = filterValues && Object.keys(filterValues).length > 0;
+
+  if (!identity || isPending) return null;
+
+  if (!data?.length && !hasFilters) return <OrganizationEmpty />;
+
+  return (
+    <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
+      <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
+        <TextField source="name" label="Organization Name" />
+
+        <FunctionField
+          label="Type"
+          render={(record: any) => <OrganizationTypeBadge type={record.organization_type} />}
+        />
+
+        <FunctionField
+          label="Priority"
+          render={(record: any) => <PriorityBadge priority={record.priority} />}
+        />
+
+        <ReferenceField
+          source="parent_organization_id"
+          reference="organizations"
+          label="Parent"
+          link={false}
+          emptyText="-"
+        >
+          <TextField source="name" />
+        </ReferenceField>
+
+        <FunctionField
+          label="Contacts"
+          render={(record: any) => record.nb_contacts || 0}
+          textAlign="center"
+        />
+
+        <FunctionField
+          label="Opportunities"
+          render={(record: any) => record.nb_opportunities || 0}
+          textAlign="center"
+        />
+      </PremiumDatagrid>
+    </StandardListLayout>
+  );
+};
+
 export const OrganizationList = () => {
   const { identity } = useGetIdentity();
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
@@ -112,43 +169,7 @@ export const OrganizationList = () => {
         sort={{ field: "name", order: "ASC" }}
         exporter={exporter}
       >
-        <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
-          <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
-            <TextField source="name" label="Organization Name" />
-
-            <FunctionField
-              label="Type"
-              render={(record: any) => <OrganizationTypeBadge type={record.organization_type} />}
-            />
-
-            <FunctionField
-              label="Priority"
-              render={(record: any) => <PriorityBadge priority={record.priority} />}
-            />
-
-            <ReferenceField
-              source="parent_organization_id"
-              reference="organizations"
-              label="Parent"
-              link={false}
-              emptyText="-"
-            >
-              <TextField source="name" />
-            </ReferenceField>
-
-            <FunctionField
-              label="Contacts"
-              render={(record: any) => record.nb_contacts || 0}
-              textAlign="center"
-            />
-
-            <FunctionField
-              label="Opportunities"
-              render={(record: any) => record.nb_opportunities || 0}
-              textAlign="center"
-            />
-          </PremiumDatagrid>
-        </StandardListLayout>
+        <OrganizationListLayout openSlideOver={openSlideOver} />
         <FloatingCreateButton />
       </List>
       <OrganizationSlideOver
