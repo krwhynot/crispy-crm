@@ -109,43 +109,46 @@ const OrganizationListLayout = ({
   if (!data?.length && !hasFilters) return <OrganizationEmpty />;
 
   return (
-    <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
-      <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
-        <TextField source="name" label="Organization Name" />
+    <>
+      <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
+        <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
+          <TextField source="name" label="Organization Name" />
 
-        <FunctionField
-          label="Type"
-          render={(record: any) => <OrganizationTypeBadge type={record.organization_type} />}
-        />
+          <FunctionField
+            label="Type"
+            render={(record: any) => <OrganizationTypeBadge type={record.organization_type} />}
+          />
 
-        <FunctionField
-          label="Priority"
-          render={(record: any) => <PriorityBadge priority={record.priority} />}
-        />
+          <FunctionField
+            label="Priority"
+            render={(record: any) => <PriorityBadge priority={record.priority} />}
+          />
 
-        <ReferenceField
-          source="parent_organization_id"
-          reference="organizations"
-          label="Parent"
-          link={false}
-          emptyText="-"
-        >
-          <TextField source="name" />
-        </ReferenceField>
+          <ReferenceField
+            source="parent_organization_id"
+            reference="organizations"
+            label="Parent"
+            link={false}
+            emptyText="-"
+          >
+            <TextField source="name" />
+          </ReferenceField>
 
-        <FunctionField
-          label="Contacts"
-          render={(record: any) => record.nb_contacts || 0}
-          textAlign="center"
-        />
+          <FunctionField
+            label="Contacts"
+            render={(record: any) => record.nb_contacts || 0}
+            textAlign="center"
+          />
 
-        <FunctionField
-          label="Opportunities"
-          render={(record: any) => record.nb_opportunities || 0}
-          textAlign="center"
-        />
-      </PremiumDatagrid>
-    </StandardListLayout>
+          <FunctionField
+            label="Opportunities"
+            render={(record: any) => record.nb_opportunities || 0}
+            textAlign="center"
+          />
+        </PremiumDatagrid>
+      </StandardListLayout>
+      <BulkActionsToolbar />
+    </>
   );
 };
 
