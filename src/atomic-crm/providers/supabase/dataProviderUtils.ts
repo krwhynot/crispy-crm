@@ -173,27 +173,27 @@ export function applyFullTextSearch(
 }
 
 /**
- * Transform MongoDB-style $or filter arrays to PostgREST @or format
+ * Transform MongoDB-style $or filter arrays to ra-data-postgrest @or format
  *
- * Converts React Admin/frontend-style $or filters into PostgREST's expected format.
- * This enables OR conditions that span multiple fields with equality checks.
+ * Converts React Admin/frontend-style $or filters into the nested object format
+ * that ra-data-postgrest expects for its OR query handling.
  *
  * @example
  * // Input (MongoDB-style from frontend components)
- * { $or: [{ stage: "qualified" }, { stage: "proposal" }] }
+ * { $or: [{ customer_organization_id: 5 }, { principal_organization_id: 5 }] }
  *
- * // Output (PostgREST format)
- * { "@or": "(stage.eq.qualified,stage.eq.proposal)" }
+ * // Output (ra-data-postgrest format - nested object)
+ * { "@or": { "customer_organization_id": 5, "principal_organization_id": 5 } }
  *
  * @example
- * // Multiple fields
+ * // Multiple fields with other filters preserved
  * { $or: [{ status: "active" }, { priority: "high" }], name: "test" }
  *
  * // Output
- * { "@or": "(status.eq.active,priority.eq.high)", name: "test" }
+ * { "@or": { "status": "active", "priority": "high" }, name: "test" }
  *
  * @param filter - The filter object potentially containing $or
- * @returns Filter with $or transformed to @or PostgREST format
+ * @returns Filter with $or transformed to @or nested object format
  */
 export function transformOrFilter(filter: FilterRecord | undefined | null): FilterRecord {
   if (!filter || typeof filter !== "object") {
@@ -206,9 +206,9 @@ export function transformOrFilter(filter: FilterRecord | undefined | null): Filt
     return filter;
   }
 
-  // Build PostgREST or conditions
-  // Format: (field1.eq.value1,field2.eq.value2)
-  const postgrestConditions: string[] = [];
+  // Build ra-data-postgrest @or format: nested object with field: value pairs
+  // The library's parseFilters() will convert this to PostgREST format
+  const orObject: Record<string, FilterValue> = {};
 
   for (const condition of orConditions) {
     if (typeof condition === "object" && condition !== null) {
@@ -218,24 +218,8 @@ export function transformOrFilter(filter: FilterRecord | undefined | null): Filt
         if (value === null || value === undefined) {
           continue;
         }
-
-        // Handle different value types
-        if (typeof value === "string") {
-          // String values - use eq operator
-          postgrestConditions.push(`${field}.eq.${escapeForPostgREST(value)}`);
-        } else if (typeof value === "number") {
-          // Numeric values - use eq operator
-          postgrestConditions.push(`${field}.eq.${value}`);
-        } else if (typeof value === "boolean") {
-          // Boolean values - use is operator for true/false
-          postgrestConditions.push(`${field}.is.${value}`);
-        } else if (Array.isArray(value)) {
-          // Array values - use in operator
-          // Format: field.in.(val1,val2,val3)
-          const escapedValues = value.map(escapeForPostgREST).join(",");
-          postgrestConditions.push(`${field}.in.(${escapedValues})`);
-        }
-        // Objects/nested conditions are not supported in this basic implementation
+        // Add to the @or object - ra-data-postgrest will handle type conversion
+        orObject[field] = value as FilterValue;
       }
     }
   }
@@ -243,13 +227,13 @@ export function transformOrFilter(filter: FilterRecord | undefined | null): Filt
   // Remove $or from filter and add @or if we have conditions
   const { $or: _removed, ...restFilter } = filter as FilterRecord & { $or?: unknown[] };
 
-  if (postgrestConditions.length === 0) {
+  if (Object.keys(orObject).length === 0) {
     return restFilter;
   }
 
   return {
     ...restFilter,
-    "@or": `(${postgrestConditions.join(",")})`,
+    "@or": orObject,
   };
 }
 
