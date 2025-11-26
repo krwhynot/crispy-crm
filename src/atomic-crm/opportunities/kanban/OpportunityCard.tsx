@@ -1,3 +1,4 @@
+import React from "react";
 import { useRecordContext } from "react-admin";
 import { Draggable } from "@hello-pangea/dnd";
 import { format } from "date-fns";
@@ -18,7 +19,19 @@ const priorityColors = {
   critical: "bg-destructive text-destructive-foreground",
 } as const;
 
-export function OpportunityCard({ index, openSlideOver }: OpportunityCardProps) {
+/**
+ * OpportunityCard - Draggable card for the Kanban board
+ *
+ * Memoized to prevent re-renders when sibling cards change.
+ * The component only re-renders when:
+ * - index changes (card position)
+ * - openSlideOver reference changes (should be stable via useCallback)
+ * - RecordContext changes (card data)
+ */
+export const OpportunityCard = React.memo(function OpportunityCard({
+  index,
+  openSlideOver,
+}: OpportunityCardProps) {
   const record = useRecordContext<Opportunity>();
   const { primaryContact, isLoading: contactsLoading } = useOpportunityContacts(
     record?.contact_ids || []
