@@ -173,6 +173,87 @@ export function applyFullTextSearch(
 }
 
 /**
+ * Transform MongoDB-style $or filter arrays to PostgREST @or format
+ *
+ * Converts React Admin/frontend-style $or filters into PostgREST's expected format.
+ * This enables OR conditions that span multiple fields with equality checks.
+ *
+ * @example
+ * // Input (MongoDB-style from frontend components)
+ * { $or: [{ stage: "qualified" }, { stage: "proposal" }] }
+ *
+ * // Output (PostgREST format)
+ * { "@or": "(stage.eq.qualified,stage.eq.proposal)" }
+ *
+ * @example
+ * // Multiple fields
+ * { $or: [{ status: "active" }, { priority: "high" }], name: "test" }
+ *
+ * // Output
+ * { "@or": "(status.eq.active,priority.eq.high)", name: "test" }
+ *
+ * @param filter - The filter object potentially containing $or
+ * @returns Filter with $or transformed to @or PostgREST format
+ */
+export function transformOrFilter(filter: FilterRecord | undefined | null): FilterRecord {
+  if (!filter || typeof filter !== "object") {
+    return filter || {};
+  }
+
+  // Check if filter has $or property
+  const orConditions = filter["$or"];
+  if (!orConditions || !Array.isArray(orConditions)) {
+    return filter;
+  }
+
+  // Build PostgREST or conditions
+  // Format: (field1.eq.value1,field2.eq.value2)
+  const postgrestConditions: string[] = [];
+
+  for (const condition of orConditions) {
+    if (typeof condition === "object" && condition !== null) {
+      // Each condition object can have multiple fields
+      for (const [field, value] of Object.entries(condition)) {
+        // Skip null/undefined values
+        if (value === null || value === undefined) {
+          continue;
+        }
+
+        // Handle different value types
+        if (typeof value === "string") {
+          // String values - use eq operator
+          postgrestConditions.push(`${field}.eq.${escapeForPostgREST(value)}`);
+        } else if (typeof value === "number") {
+          // Numeric values - use eq operator
+          postgrestConditions.push(`${field}.eq.${value}`);
+        } else if (typeof value === "boolean") {
+          // Boolean values - use is operator for true/false
+          postgrestConditions.push(`${field}.is.${value}`);
+        } else if (Array.isArray(value)) {
+          // Array values - use in operator
+          // Format: field.in.(val1,val2,val3)
+          const escapedValues = value.map(escapeForPostgREST).join(",");
+          postgrestConditions.push(`${field}.in.(${escapedValues})`);
+        }
+        // Objects/nested conditions are not supported in this basic implementation
+      }
+    }
+  }
+
+  // Remove $or from filter and add @or if we have conditions
+  const { $or: _removed, ...restFilter } = filter as FilterRecord & { $or?: unknown[] };
+
+  if (postgrestConditions.length === 0) {
+    return restFilter;
+  }
+
+  return {
+    ...restFilter,
+    "@or": `(${postgrestConditions.join(",")})`,
+  };
+}
+
+/**
  * Get the appropriate database resource name
  */
 export function getDatabaseResource(
