@@ -34,14 +34,22 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
       setIsLoading(true);
       setError(null);
       try {
+        // DEBUG: Log filter before dataProvider call
+        const filterPayload = {
+          $or: [
+            { customer_organization_id: record.id },
+            { principal_organization_id: record.id },
+            { distributor_organization_id: record.id },
+          ],
+        };
+        console.log('[DEBUG 1/4] OrganizationOpportunitiesTab - BEFORE dataProvider.getList', {
+          resource: 'opportunities',
+          filter: filterPayload,
+          recordId: record.id,
+        });
+
         const result = await dataProvider.getList("opportunities", {
-          filter: {
-            $or: [
-              { customer_organization_id: record.id },
-              { principal_organization_id: record.id },
-              { distributor_organization_id: record.id },
-            ],
-          },
+          filter: filterPayload,
           pagination: { page: 1, perPage: 100 },
           sort: { field: "created_at", order: "DESC" },
         });
