@@ -1,5 +1,5 @@
 import { render, screen } from "@testing-library/react";
-import { OpportunityCard } from "../OpportunityCard";
+import { OpportunityCard } from "../kanban/OpportunityCard";
 import { describe, it, expect, vi } from "vitest";
 import { useOpportunityContacts } from "../hooks/useOpportunityContacts";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
