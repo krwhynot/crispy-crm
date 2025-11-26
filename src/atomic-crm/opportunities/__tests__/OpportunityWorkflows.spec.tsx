@@ -6,9 +6,9 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { AdminContext } from "ra-core";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { OpportunityCreate } from "./OpportunityCreate";
-import { OpportunityEdit } from "./OpportunityEdit";
-import { ConfigurationContext } from "../root/ConfigurationContext";
+import { OpportunityCreate } from "../OpportunityCreate";
+import { OpportunityEdit } from "../OpportunityEdit";
+import { ConfigurationContext } from "../../root/ConfigurationContext";
 
 // Mock the data provider
 const mockDataProvider = {
