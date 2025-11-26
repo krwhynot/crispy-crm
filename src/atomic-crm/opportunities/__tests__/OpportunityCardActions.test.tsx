@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { OpportunityCardActions } from "../OpportunityCardActions";
+import { OpportunityCardActions } from "../kanban/OpportunityCardActions";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { BrowserRouter } from "react-router-dom";
 

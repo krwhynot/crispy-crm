@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { ColumnCustomizationMenu } from "../ColumnCustomizationMenu";
+import { ColumnCustomizationMenu } from "../kanban/ColumnCustomizationMenu";
 import { describe, it, expect, vi } from "vitest";
 
 describe("ColumnCustomizationMenu", () => {

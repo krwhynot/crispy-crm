@@ -1,5 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
-import { QuickAddOpportunity } from "../QuickAddOpportunity";
+import { QuickAddOpportunity } from "../kanban/QuickAddOpportunity";
 import { describe, it, expect, vi } from "vitest";
 
 vi.mock("react-admin", () => ({

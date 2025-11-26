@@ -163,4 +163,4 @@ export const OpportunityCard = React.memo(function OpportunityCard({
       )}
     </Draggable>
   );
-}
+});
