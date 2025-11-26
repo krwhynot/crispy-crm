@@ -13,7 +13,6 @@ import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
 import { TextField } from "@/components/admin/text-field";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { DateField } from "@/components/admin/date-field";
-import { EditButton } from "@/components/admin/edit-button";
 import { FunctionField } from "react-admin";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import type { Organization, Contact, Sale, Tag } from "../types";
@@ -25,8 +24,7 @@ import { ContactListFilter } from "./ContactListFilter";
 import { ContactSlideOver } from "./ContactSlideOver";
 import { TopToolbar } from "../layout/TopToolbar";
 import { Avatar } from "./Avatar";
-import { TagsList } from "./TagsList";
-import { Status } from "../shared/components/Status";
+import { ContactStatusBadge } from "./ContactBadges";
 
 export const ContactList = () => {
   const { identity } = useGetIdentity();
@@ -80,14 +78,14 @@ const ContactListLayout = ({
     <>
       <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
         <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
-          {/* Avatar Column - Non-sortable */}
+          {/* Column 1: Avatar - Visual identifier (non-sortable) */}
           <FunctionField
             label=""
             sortable={false}
             render={(record: Contact) => <Avatar record={record} width={40} height={40} />}
           />
 
-          {/* Name Column - Sortable */}
+          {/* Column 2: Name - Primary identifier (sortable by first_name) */}
           <FunctionField
             label="Name"
             sortBy="first_name"
@@ -101,13 +99,21 @@ const ContactListLayout = ({
             }}
           />
 
-          {/* Title Column - Sortable */}
-          <TextField source="title" label="Title" sortable />
+          {/* Column 3: Role - Merged Title + Department (sortable by title) */}
+          <FunctionField
+            label="Role"
+            sortBy="title"
+            render={(record: Contact) => {
+              const title = record.title?.trim();
+              const department = record.department?.trim();
+              if (!title && !department) return "--";
+              if (!title) return department;
+              if (!department) return title;
+              return `${title}, ${department}`;
+            }}
+          />
 
-          {/* Department Column - Sortable */}
-          <TextField source="department" label="Department" sortable />
-
-          {/* Organization Column - Sortable */}
+          {/* Column 4: Organization - Relationship reference (sortable) */}
           <ReferenceField
             source="organization_id"
             reference="organizations"
@@ -118,21 +124,15 @@ const ContactListLayout = ({
             <TextField source="name" />
           </ReferenceField>
 
-          {/* Tags Column - Non-sortable */}
-          <FunctionField label="Tags" sortable={false} render={() => <TagsList />} />
-
-          {/* Last Activity Column - Sortable */}
-          <DateField source="last_seen" label="Last Activity" sortable showTime={false} />
-
-          {/* Status Column - Non-sortable */}
+          {/* Column 5: Status - Badge-based indicator (non-sortable) */}
           <FunctionField
             label="Status"
             sortable={false}
-            render={(record: Contact) => <Status status={record.status} />}
+            render={(record: Contact) => <ContactStatusBadge status={record.status} />}
           />
 
-          {/* Actions Column - Non-sortable */}
-          <FunctionField label="Actions" sortable={false} render={() => <EditButton />} />
+          {/* Column 6: Last Activity - Recency metric (sortable) */}
+          <DateField source="last_seen" label="Last Activity" sortable showTime={false} />
         </PremiumDatagrid>
       </StandardListLayout>
       <BulkActionsToolbar />
