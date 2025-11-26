@@ -104,19 +104,16 @@ describe("Service Integration Tests", () => {
       expect(result).toHaveProperty("created_at@gte");
     });
 
-    it("should preserve @or filter (ra-data-postgrest format)", () => {
-      // After transformOrFilter runs, filter will have @or as nested object
+    it("should preserve 'or' filter (PostgREST format after transformation)", () => {
+      // After transformOrFilter runs, filter will have "or" as string value
       const filters = {
-        "@or": {
-          customer_organization_id: 123,
-          principal_organization_id: 123,
-        },
+        or: "(customer_organization_id.eq.123,principal_organization_id.eq.123)",
         status: "active",
       };
 
       const result = validationService.validateFilters("opportunities", filters);
 
-      expect(result).toHaveProperty("@or");
+      expect(result).toHaveProperty("or");
       expect(result).toHaveProperty("status");
     });
   });

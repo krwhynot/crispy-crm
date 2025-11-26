@@ -9,8 +9,12 @@
  */
 
 import type { GetListParams } from "ra-core";
+import { head } from "lodash";
 import { getSearchableFields, supportsSoftDelete, getResourceName } from "./resources";
 import { escapeCacheManager } from "./dataProviderCache";
+
+// Type for filter payloads (compatible with React Admin filters)
+type FilterPayload = Record<string, any>;
 
 /**
  * Cache for searchable fields to avoid repeated lookups

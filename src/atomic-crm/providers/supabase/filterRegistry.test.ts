@@ -193,61 +193,55 @@ describe("filterRegistry", () => {
       });
     });
 
-    describe("PostgREST logical operators", () => {
-      it("should allow @or operator for valid resources", () => {
-        expect(isValidFilterField("contacts", "@or")).toBe(true);
-        expect(isValidFilterField("organizations", "@or")).toBe(true);
-        expect(isValidFilterField("opportunities", "@or")).toBe(true);
-      });
+    describe("logical operators", () => {
+      // Both input ($or/$and/$not) and output (or/and/not) formats must be whitelisted
+      // Input: MongoDB-style from components
+      // Output: PostgREST format after transformOrFilter() conversion
 
-      it("should allow @and operator for valid resources", () => {
-        expect(isValidFilterField("contacts", "@and")).toBe(true);
-        expect(isValidFilterField("organizations", "@and")).toBe(true);
-        expect(isValidFilterField("opportunities", "@and")).toBe(true);
-      });
-
-      it("should allow @not operator for valid resources", () => {
-        expect(isValidFilterField("contacts", "@not")).toBe(true);
-        expect(isValidFilterField("organizations", "@not")).toBe(true);
-        expect(isValidFilterField("opportunities", "@not")).toBe(true);
-      });
-
-      it("should reject logical operators for unknown resources", () => {
-        // Security: Unknown resources are blocked even for logical operators
-        expect(isValidFilterField("unknown_resource", "@or")).toBe(false);
-        expect(isValidFilterField("unknown_resource", "@and")).toBe(false);
-        expect(isValidFilterField("unknown_resource", "@not")).toBe(false);
-      });
-    });
-
-    describe("MongoDB-style logical operators", () => {
-      // MongoDB-style operators ($or, $and, $not) are used by components before
-      // being transformed to PostgREST format (@or, @and, @not) by transformOrFilter()
-      // They MUST be whitelisted to survive ValidationService.validateFilters()
-
-      it("should allow $or operator for valid resources", () => {
+      it("should allow MongoDB-style $or operator for valid resources", () => {
         expect(isValidFilterField("contacts", "$or")).toBe(true);
         expect(isValidFilterField("organizations", "$or")).toBe(true);
         expect(isValidFilterField("opportunities", "$or")).toBe(true);
       });
 
-      it("should allow $and operator for valid resources", () => {
+      it("should allow PostgREST or operator for valid resources", () => {
+        expect(isValidFilterField("contacts", "or")).toBe(true);
+        expect(isValidFilterField("organizations", "or")).toBe(true);
+        expect(isValidFilterField("opportunities", "or")).toBe(true);
+      });
+
+      it("should allow MongoDB-style $and operator for valid resources", () => {
         expect(isValidFilterField("contacts", "$and")).toBe(true);
         expect(isValidFilterField("organizations", "$and")).toBe(true);
         expect(isValidFilterField("opportunities", "$and")).toBe(true);
       });
 
-      it("should allow $not operator for valid resources", () => {
+      it("should allow PostgREST and operator for valid resources", () => {
+        expect(isValidFilterField("contacts", "and")).toBe(true);
+        expect(isValidFilterField("organizations", "and")).toBe(true);
+        expect(isValidFilterField("opportunities", "and")).toBe(true);
+      });
+
+      it("should allow MongoDB-style $not operator for valid resources", () => {
         expect(isValidFilterField("contacts", "$not")).toBe(true);
         expect(isValidFilterField("organizations", "$not")).toBe(true);
         expect(isValidFilterField("opportunities", "$not")).toBe(true);
       });
 
-      it("should reject MongoDB-style logical operators for unknown resources", () => {
-        // Security: Unknown resources are blocked even for MongoDB-style operators
+      it("should allow PostgREST not operator for valid resources", () => {
+        expect(isValidFilterField("contacts", "not")).toBe(true);
+        expect(isValidFilterField("organizations", "not")).toBe(true);
+        expect(isValidFilterField("opportunities", "not")).toBe(true);
+      });
+
+      it("should reject logical operators for unknown resources", () => {
+        // Security: Unknown resources are blocked even for logical operators
         expect(isValidFilterField("unknown_resource", "$or")).toBe(false);
+        expect(isValidFilterField("unknown_resource", "or")).toBe(false);
         expect(isValidFilterField("unknown_resource", "$and")).toBe(false);
+        expect(isValidFilterField("unknown_resource", "and")).toBe(false);
         expect(isValidFilterField("unknown_resource", "$not")).toBe(false);
+        expect(isValidFilterField("unknown_resource", "not")).toBe(false);
       });
     });
 

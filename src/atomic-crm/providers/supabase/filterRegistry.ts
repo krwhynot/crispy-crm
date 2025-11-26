@@ -391,18 +391,11 @@ export function isValidFilterField(resource: string, filterKey: string): boolean
     return false; // Unknown resource, consider invalid
   }
 
-  // PostgREST logical operators have no field prefix - whitelist them
-  // These are special operators used for combining conditions
-  const POSTGREST_LOGICAL_OPERATORS = ["@or", "@and", "@not"];
-  if (POSTGREST_LOGICAL_OPERATORS.includes(filterKey)) {
-    return true;
-  }
-
-  // MongoDB-style logical operators (used by components before transformation)
-  // These get converted to PostgREST format by transformOrFilter() in applySearchParams()
-  // MUST be whitelisted here so they survive ValidationService.validateFilters()
-  const MONGODB_LOGICAL_OPERATORS = ["$or", "$and", "$not"];
-  if (MONGODB_LOGICAL_OPERATORS.includes(filterKey)) {
+  // Logical operators - whitelist both input and output formats:
+  // Input: MongoDB-style $or/$and/$not from components
+  // Output: PostgREST or/and/not after transformOrFilter() conversion
+  const LOGICAL_OPERATORS = ["$or", "$and", "$not", "or", "and", "not"];
+  if (LOGICAL_OPERATORS.includes(filterKey)) {
     return true;
   }
 
