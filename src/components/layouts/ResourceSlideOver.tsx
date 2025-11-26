@@ -145,7 +145,7 @@ export function ResourceSlideOver({
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent
         side="right"
-        className="w-[40vw] min-w-[480px] max-w-[720px] bg-card shadow-md p-0 flex flex-col"
+        className="w-[50vw] min-w-[600px] max-w-[720px] bg-card shadow-md p-0 flex flex-col"
         role="dialog"
         aria-modal="true"
         aria-labelledby="slide-over-title"
@@ -192,16 +192,26 @@ export function ResourceSlideOver({
               onValueChange={setActiveTab}
               className="flex-1 flex flex-col overflow-hidden"
             >
-              <TabsList className="border-b border-border h-11 rounded-none bg-transparent p-0 w-full justify-start">
+              <TabsList className="border-b border-border h-11 rounded-none bg-transparent p-0 w-full justify-start gap-1 px-2">
                 {tabs.map((tab) => (
-                  <TabsTrigger
-                    key={tab.key}
-                    value={tab.key}
-                    className="h-11 px-4 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary"
-                  >
-                    {tab.icon && <tab.icon className="size-4 mr-2" />}
-                    {tab.label}
-                  </TabsTrigger>
+                  <Tooltip key={tab.key}>
+                    <TooltipTrigger asChild>
+                      <TabsTrigger
+                        value={tab.key}
+                        className="h-11 w-11 px-0 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary flex items-center justify-center"
+                        aria-label={tab.label}
+                      >
+                        {tab.icon ? (
+                          <tab.icon className="size-5" />
+                        ) : (
+                          <span className="text-sm font-medium">{tab.label.charAt(0)}</span>
+                        )}
+                      </TabsTrigger>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom" sideOffset={4}>
+                      {tab.label}
+                    </TooltipContent>
+                  </Tooltip>
                 ))}
               </TabsList>
 
