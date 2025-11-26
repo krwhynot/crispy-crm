@@ -177,9 +177,9 @@ export function applyFullTextSearch(
 }
 
 /**
- * Transform MongoDB-style $or/$and/$not filter arrays to PostgREST format
+ * Transform MongoDB-style $or filter to PostgREST format
  *
- * Converts React Admin/frontend-style logical operators into PostgREST query string format.
+ * Converts React Admin/frontend-style $or operator into PostgREST query string format.
  * PostgREST expects: `or=(field1.eq.val1,field2.eq.val2)` as a query parameter.
  *
  * @example
@@ -189,71 +189,25 @@ export function applyFullTextSearch(
  * // Output (PostgREST format - string value)
  * { "or": "(customer_organization_id.eq.5,principal_organization_id.eq.5)" }
  *
- * @example
- * // Multiple fields with other filters preserved
- * { $or: [{ status: "active" }, { priority: "high" }], name: "test" }
- *
- * // Output
- * { "or": "(status.eq.active,priority.eq.high)", name: "test" }
- *
- * @param filter - The filter object potentially containing $or/$and/$not
- * @returns Filter with logical operators transformed to PostgREST string format
+ * @param filter - The filter object potentially containing $or
+ * @returns Filter with $or transformed to PostgREST string format
  */
-export function transformOrFilter(filter: FilterRecord | undefined | null): FilterRecord {
-  if (!filter || typeof filter !== "object") {
-    return filter || {};
+export const transformOrFilter = (filter: FilterPayload): FilterPayload => {
+  const orFilter = filter.$or;
+  if (!orFilter) {
+    return filter;
   }
 
-  // Extract MongoDB-style logical operators
-  const { $or, $and, $not, ...restFilter } = filter as FilterRecord & {
-    $or?: Array<Record<string, unknown>>;
-    $and?: Array<Record<string, unknown>>;
-    $not?: Record<string, unknown>;
-  };
+  const conditions = orFilter
+    .map((f: FilterPayload) => {
+      const key = head(Object.keys(f));
+      return key ? `${key}.eq.${f[key]}` : null;
+    })
+    .filter(Boolean);
 
-  const result: FilterRecord = { ...restFilter };
-
-  // Transform $or to PostgREST or=(...) format
-  if ($or && Array.isArray($or)) {
-    const conditions = $or
-      .flatMap((cond: Record<string, unknown>) =>
-        Object.entries(cond)
-          .filter(([, val]) => val !== null && val !== undefined)
-          .map(([field, val]) => `${field}.eq.${val}`)
-      )
-      .join(",");
-    if (conditions) {
-      result["or"] = `(${conditions})`;
-    }
-  }
-
-  // Transform $and to PostgREST and=(...) format
-  if ($and && Array.isArray($and)) {
-    const conditions = $and
-      .flatMap((cond: Record<string, unknown>) =>
-        Object.entries(cond)
-          .filter(([, val]) => val !== null && val !== undefined)
-          .map(([field, val]) => `${field}.eq.${val}`)
-      )
-      .join(",");
-    if (conditions) {
-      result["and"] = `(${conditions})`;
-    }
-  }
-
-  // Transform $not to PostgREST not.(...) format
-  if ($not && typeof $not === "object") {
-    const conditions = Object.entries($not as Record<string, unknown>)
-      .filter(([, val]) => val !== null && val !== undefined)
-      .map(([field, val]) => `${field}.eq.${val}`)
-      .join(",");
-    if (conditions) {
-      result["not"] = `(${conditions})`;
-    }
-  }
-
-  return result;
-}
+  const { $or, ...rest } = filter;
+  return { ...rest, or: `(${conditions.join(",")})` };
+};
 
 /**
  * Get the appropriate database resource name
@@ -335,6 +289,7 @@ export function applySearchParams(
   const { q: _q, ...filterWithoutQ } = transformedFilter;
 
   // If no searchable fields configured, apply basic soft delete only
+  // If no searchable fields are configured, just apply the soft delete filter if needed.
   if (searchableFields.length === 0) {
     const softDeleteFilter = needsSoftDeleteFilter ? { "deleted_at@is": null } : {};
     return {
@@ -346,17 +301,12 @@ export function applySearchParams(
     };
   }
 
-  // Use the applyFullTextSearch helper for resources with search configuration
-  // Pass the needsSoftDeleteFilter flag to avoid adding deleted_at filter for views
-  const searchParams = applyFullTextSearch(
-    searchableFields,
-    needsSoftDeleteFilter
-  )({
+  // Use the applyFullTextSearch helper for resources with search configuration.
+  // CRITICAL: Pass transformedFilter (not params.filter) to preserve $or transformation.
+  return applyFullTextSearch(searchableFields, needsSoftDeleteFilter)({
     ...params,
     filter: transformedFilter,
   });
-
-  return searchParams;
 }
 
 // Type for database records that may have JSONB array fields

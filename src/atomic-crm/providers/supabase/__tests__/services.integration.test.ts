@@ -49,8 +49,8 @@ describe("Service Integration Tests", () => {
   });
 
   describe("Filter Validation Integration", () => {
-    // Tests that MongoDB-style operators survive ValidationService.validateFilters()
-    // so they can be transformed to ra-data-postgrest format by transformOrFilter()
+    // Tests that MongoDB-style $or operator survives ValidationService.validateFilters()
+    // so it can be transformed to ra-data-postgrest format by transformOrFilter()
 
     it("should preserve $or filter through validateFilters", () => {
       const filters = {
@@ -68,29 +68,7 @@ describe("Service Integration Tests", () => {
       expect(result.$or).toHaveLength(3);
     });
 
-    it("should preserve $and filter through validateFilters", () => {
-      const filters = {
-        $and: [{ status: "active" }, { priority: "high" }],
-        name: "test",
-      };
-
-      const result = validationService.validateFilters("opportunities", filters);
-
-      expect(result).toHaveProperty("$and");
-      expect(result).toHaveProperty("name");
-    });
-
-    it("should preserve $not filter through validateFilters", () => {
-      const filters = {
-        $not: { status: "archived" },
-      };
-
-      const result = validationService.validateFilters("contacts", filters);
-
-      expect(result).toHaveProperty("$not");
-    });
-
-    it("should preserve mixed MongoDB and field filters", () => {
+    it("should preserve mixed $or and field filters", () => {
       const filters = {
         $or: [{ stage: "qualified" }, { stage: "proposal" }],
         status: "active",
