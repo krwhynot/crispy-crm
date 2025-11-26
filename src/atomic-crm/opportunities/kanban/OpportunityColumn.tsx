@@ -1,3 +1,4 @@
+import React from "react";
 import { Droppable } from "@hello-pangea/dnd";
 import { RecordContextProvider } from "react-admin";
 import type { Opportunity } from "../../types";
@@ -10,19 +11,72 @@ import {
 import { useStageMetrics, STUCK_THRESHOLD_DAYS } from "../hooks/useStageMetrics";
 import { QuickAddOpportunity } from "./QuickAddOpportunity";
 
-export const OpportunityColumn = ({
-  stage,
-  opportunities,
-  isCollapsed = false,
-  onToggleCollapse,
-  openSlideOver,
-}: {
+/**
+ * Props interface for OpportunityColumn component
+ * Extracted for use with React.memo comparison function
+ */
+interface OpportunityColumnProps {
   stage: string;
   opportunities: Opportunity[];
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
-}) => {
+}
+
+/**
+ * Custom comparison function for React.memo optimization
+ * Compares props shallowly, with special handling for the opportunities array
+ * to prevent unnecessary re-renders during drag-and-drop operations
+ */
+function arePropsEqual(
+  prevProps: OpportunityColumnProps,
+  nextProps: OpportunityColumnProps
+): boolean {
+  // Quick reference equality checks for primitives and stable callbacks
+  if (prevProps.stage !== nextProps.stage) return false;
+  if (prevProps.isCollapsed !== nextProps.isCollapsed) return false;
+  if (prevProps.onToggleCollapse !== nextProps.onToggleCollapse) return false;
+  if (prevProps.openSlideOver !== nextProps.openSlideOver) return false;
+
+  // Deep comparison for opportunities array
+  // Only re-render if the actual opportunity data changed
+  const prevOpps = prevProps.opportunities;
+  const nextOpps = nextProps.opportunities;
+
+  if (prevOpps.length !== nextOpps.length) return false;
+
+  // Compare opportunity IDs and key fields that affect rendering
+  for (let i = 0; i < prevOpps.length; i++) {
+    const prev = prevOpps[i];
+    const next = nextOpps[i];
+    if (
+      prev.id !== next.id ||
+      prev.name !== next.name ||
+      prev.stage !== next.stage ||
+      prev.priority !== next.priority ||
+      prev.estimated_close_date !== next.estimated_close_date ||
+      prev.days_in_stage !== next.days_in_stage
+    ) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * OpportunityColumn - A Kanban column for displaying opportunities in a specific stage
+ *
+ * Performance: Wrapped with React.memo and custom comparison to prevent re-renders
+ * when other columns are being interacted with during drag-and-drop operations.
+ */
+export const OpportunityColumn = React.memo(function OpportunityColumn({
+  stage,
+  opportunities,
+  isCollapsed = false,
+  onToggleCollapse,
+  openSlideOver,
+}: OpportunityColumnProps) {
   const metrics = useStageMetrics(opportunities);
 
   // Map elevation levels to semantic shadow tokens
@@ -109,4 +163,4 @@ export const OpportunityColumn = ({
       )}
     </div>
   );
-};
+}, arePropsEqual);
