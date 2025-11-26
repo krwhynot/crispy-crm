@@ -452,8 +452,24 @@ export const unifiedDataProvider: DataProvider = {
       // Get appropriate database resource
       const dbResource = getDatabaseResource(resource, "list");
 
+      // DEBUG: Log before baseDataProvider call
+      console.log('[DEBUG 4/4] unifiedDataProvider - BEFORE baseDataProvider.getList', {
+        originalResource: resource,
+        dbResource,
+        searchParamsFilter: JSON.stringify(searchParams.filter),
+        pagination: searchParams.pagination,
+        sort: searchParams.sort,
+      });
+
       // Execute query
       const result = await baseDataProvider.getList(dbResource, searchParams);
+
+      // DEBUG: Log result
+      console.log('[DEBUG 4/4] unifiedDataProvider - AFTER baseDataProvider.getList', {
+        dataCount: result.data?.length,
+        total: result.total,
+        firstRecord: result.data?.[0] ? JSON.stringify(Object.keys(result.data[0])) : 'none',
+      });
 
       // Apply data normalization to ensure JSONB fields are arrays
       return {

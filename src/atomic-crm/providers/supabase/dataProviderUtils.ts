@@ -193,20 +193,39 @@ export function applyFullTextSearch(
  * @returns Filter with $or transformed to PostgREST string format
  */
 export const transformOrFilter = (filter: FilterPayload): FilterPayload => {
+  // DEBUG: Log input
+  console.log('[DEBUG 2/4] transformOrFilter - INPUT', { filter: JSON.stringify(filter) });
+
   const orFilter = filter.$or;
   if (!orFilter) {
+    console.log('[DEBUG 2/4] transformOrFilter - NO $or found, returning unchanged');
     return filter;
   }
 
-  const conditions = orFilter
-    .map((f: FilterPayload) => {
-      const key = head(Object.keys(f));
-      return key ? `${key}.eq.${f[key]}` : null;
-    })
-    .filter(Boolean);
+  // Transform $or array into @or object format for ra-data-postgrest
+  // Library expects: { "@or": { field1: value1, field2: value2 } }
+  // NOT: { "or": "(field1.eq.value1,field2.eq.value2)" }
+  //
+  // The library parses "@or" by splitting on "@" to get operator="or",
+  // then recursively processes the object value to build the PostgREST query.
+  const orObject: FilterPayload = {};
+  for (const condition of orFilter) {
+    const key = head(Object.keys(condition));
+    if (key) {
+      orObject[key] = condition[key];
+    }
+  }
 
   const { $or, ...rest } = filter;
-  return { ...rest, or: `(${conditions.join(",")})` };
+  const result = { ...rest, "@or": orObject };
+
+  // DEBUG: Log output
+  console.log('[DEBUG 2/4] transformOrFilter - OUTPUT', {
+    orObject,
+    result: JSON.stringify(result),
+  });
+
+  return result;
 };
 
 /**
@@ -247,12 +266,26 @@ export function applySearchParams(
   params: GetListParams,
   useView: boolean = true
 ): GetListParams {
+  // DEBUG: Log input
+  console.log('[DEBUG 3/4] applySearchParams - INPUT', {
+    resource,
+    filter: JSON.stringify(params.filter),
+    useView,
+  });
+
   const searchableFields = getCachedSearchableFields(resource);
 
   // Check if we're using a view (views already handle soft delete filtering internally)
   // Only check for view if the operation will actually use one
   const dbResource = useView ? getDatabaseResource(resource, "list") : getResourceName(resource);
   const isView = dbResource.includes("_summary") || dbResource.includes("_view");
+
+  // DEBUG: Log view detection
+  console.log('[DEBUG 3/4] applySearchParams - VIEW DETECTION', {
+    dbResource,
+    isView,
+    searchableFields,
+  });
 
   // Apply soft delete filter for all supported resources, even without search
   // But skip for views as they handle this internally and adding the filter causes PostgREST errors
@@ -266,23 +299,38 @@ export function applySearchParams(
   // Transform array filters to PostgREST operators
   const transformedFilter = transformArrayFilters(orTransformedFilter);
 
+  // DEBUG: Log after transformations
+  console.log('[DEBUG 3/4] applySearchParams - AFTER TRANSFORMATIONS', {
+    orTransformedFilter: JSON.stringify(orTransformedFilter),
+    transformedFilter: JSON.stringify(transformedFilter),
+    needsSoftDeleteFilter,
+  });
+
   // If no search query but needs soft delete filter
   if (!transformedFilter?.q && needsSoftDeleteFilter) {
-    return {
+    const result = {
       ...params,
       filter: {
         ...transformedFilter,
         "deleted_at@is": null,
       },
     };
+    console.log('[DEBUG 3/4] applySearchParams - OUTPUT (soft delete path)', {
+      finalFilter: JSON.stringify(result.filter),
+    });
+    return result;
   }
 
   // If no search query and no soft delete needed, return params with transformed filters
   if (!transformedFilter?.q) {
-    return {
+    const result = {
       ...params,
       filter: transformedFilter,
     };
+    console.log('[DEBUG 3/4] applySearchParams - OUTPUT (no search, no soft delete path)', {
+      finalFilter: JSON.stringify(result.filter),
+    });
+    return result;
   }
 
   // Extract search query and apply full-text search
@@ -291,22 +339,30 @@ export function applySearchParams(
   // If no searchable fields configured, apply basic soft delete only
   if (searchableFields.length === 0) {
     const softDeleteFilter = needsSoftDeleteFilter ? { "deleted_at@is": null } : {};
-    return {
+    const result = {
       ...params,
       filter: {
         ...filterWithoutQ,
         ...softDeleteFilter,
       },
     };
+    console.log('[DEBUG 3/4] applySearchParams - OUTPUT (no searchable fields path)', {
+      finalFilter: JSON.stringify(result.filter),
+    });
+    return result;
   }
 
   // Use the applyFullTextSearch helper for resources with search configuration
   // Pass the needsSoftDeleteFilter flag to avoid adding deleted_at filter for views
-  return applyFullTextSearch(searchableFields, needsSoftDeleteFilter)({
+  const result = applyFullTextSearch(searchableFields, needsSoftDeleteFilter)({
     ...params,
     // CRITICAL: Pass the transformedFilter to preserve the $or and array transformations.
     filter: transformedFilter,
   });
+  console.log('[DEBUG 3/4] applySearchParams - OUTPUT (full text search path)', {
+    finalFilter: JSON.stringify(result.filter),
+  });
+  return result;
 }
 
 // Type for database records that may have JSONB array fields
