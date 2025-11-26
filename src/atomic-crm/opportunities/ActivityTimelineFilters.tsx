@@ -128,7 +128,7 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
     <div className="flex items-center gap-2 mb-4">
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline" size="sm" className="gap-2">
+          <Button variant="outline" className="h-11 gap-2 touch-manipulation">
             <Filter className="w-4 h-4" />
             Filters
             {activeFilterCount > 0 && (
@@ -145,9 +145,8 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
               {hasActiveFilters && (
                 <Button
                   variant="ghost"
-                  size="sm"
                   onClick={clearAllFilters}
-                  className="h-auto p-1 text-xs"
+                  className="h-11 px-3 text-xs touch-manipulation"
                 >
                   Clear all
                 </Button>

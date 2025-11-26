@@ -79,7 +79,7 @@ export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListView
                 {selectedIds.length} opportunit{selectedIds.length === 1 ? "y" : "ies"} selected
               </span>
             </div>
-            <Button variant="ghost" size="sm" onClick={onUnselectItems} className="h-8 gap-1.5">
+            <Button variant="ghost" onClick={onUnselectItems} className="h-11 gap-1.5 touch-manipulation">
               <X className="h-4 w-4" />
               Clear selection
             </Button>
