@@ -398,6 +398,14 @@ export function isValidFilterField(resource: string, filterKey: string): boolean
     return true;
   }
 
+  // MongoDB-style logical operators (used by components before transformation)
+  // These get converted to PostgREST format by transformOrFilter() in applySearchParams()
+  // MUST be whitelisted here so they survive ValidationService.validateFilters()
+  const MONGODB_LOGICAL_OPERATORS = ["$or", "$and", "$not"];
+  if (MONGODB_LOGICAL_OPERATORS.includes(filterKey)) {
+    return true;
+  }
+
   // Extract base field name, handling React Admin's filter operators
   // Examples: "last_seen@gte" -> "last_seen", "name@like" -> "name"
   const baseField = filterKey.split("@")[0];

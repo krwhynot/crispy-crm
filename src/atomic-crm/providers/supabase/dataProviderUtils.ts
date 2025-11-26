@@ -303,8 +303,12 @@ export function applySearchParams(
   const needsSoftDeleteFilter =
     supportsSoftDelete(resource) && !params.filter?.includeDeleted && !isView;
 
+  // Transform $or filters to PostgREST @or format FIRST
+  // This must happen before array transformation to properly handle $or conditions
+  const orTransformedFilter = transformOrFilter(params.filter);
+
   // Transform array filters to PostgREST operators
-  const transformedFilter = transformArrayFilters(params.filter);
+  const transformedFilter = transformArrayFilters(orTransformedFilter);
 
   // If no search query but needs soft delete filter
   if (!transformedFilter?.q && needsSoftDeleteFilter) {
