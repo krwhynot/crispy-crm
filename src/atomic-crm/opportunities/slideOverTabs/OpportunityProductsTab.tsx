@@ -10,18 +10,21 @@ interface OpportunityProductsTabProps {
   record: any;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+  /** Whether this tab is currently active - controls data fetching */
+  isActiveTab: boolean;
 }
 
 export function OpportunityProductsTab({
   record,
   mode,
   onModeToggle,
+  isActiveTab,
 }: OpportunityProductsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
   const [isSaving, setIsSaving] = useState(false);
 
-  // Fetch junction table data for view mode
+  // Fetch junction table data for view mode - only when tab is active AND in view mode
   const { data: junctionRecords, isLoading } = useGetList(
     "opportunity_products",
     {
@@ -29,10 +32,10 @@ export function OpportunityProductsTab({
       pagination: { page: 1, perPage: 100 },
       sort: { field: "created_at", order: "DESC" },
     },
-    { enabled: mode === "view" }
+    { enabled: isActiveTab && mode === "view" }
   );
 
-  // Fetch product details for view mode
+  // Fetch product details for view mode - only when tab is active
   const productIds = junctionRecords?.map((jr: any) => jr.product_id_reference) || [];
   const { data: products } = useGetList(
     "products",
@@ -40,7 +43,7 @@ export function OpportunityProductsTab({
       filter: { id: productIds },
       pagination: { page: 1, perPage: 100 },
     },
-    { enabled: mode === "view" && productIds.length > 0 }
+    { enabled: isActiveTab && mode === "view" && productIds.length > 0 }
   );
 
   const handleSave = async (data: any) => {

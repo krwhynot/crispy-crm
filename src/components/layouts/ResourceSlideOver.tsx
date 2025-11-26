@@ -204,9 +204,10 @@ export function ResourceSlideOver({
                 ))}
               </TabsList>
 
-              {/* Tab content panels */}
+              {/* Tab content panels - only render active tab's component for performance */}
               {tabs.map((tab) => {
                 const TabComponent = tab.component;
+                const isActive = activeTab === tab.key;
 
                 return (
                   <TabsContent
@@ -214,16 +215,29 @@ export function ResourceSlideOver({
                     value={tab.key}
                     className="flex-1 overflow-y-auto p-6 m-0"
                   >
-                    {isLoading ? (
-                      <div className="space-y-4">
-                        <Skeleton className="h-11 w-full" />
-                        <Skeleton className="h-11 w-full" />
-                        <Skeleton className="h-11 w-full" />
-                      </div>
-                    ) : record ? (
-                      <TabComponent record={record} mode={mode} onModeToggle={onModeToggle} />
-                    ) : (
-                      <p className="text-muted-foreground">Record not found</p>
+                    {/* Only mount TabComponent when this tab is active to avoid:
+                        1. Unnecessary React component tree creation
+                        2. useEffect hooks firing in hidden tabs
+                        3. Memory allocation for unused tab state */}
+                    {isActive && (
+                      <>
+                        {isLoading ? (
+                          <div className="space-y-4">
+                            <Skeleton className="h-11 w-full" />
+                            <Skeleton className="h-11 w-full" />
+                            <Skeleton className="h-11 w-full" />
+                          </div>
+                        ) : record ? (
+                          <TabComponent
+                            record={record}
+                            mode={mode}
+                            onModeToggle={onModeToggle}
+                            isActiveTab={isActive}
+                          />
+                        ) : (
+                          <p className="text-muted-foreground">Record not found</p>
+                        )}
+                      </>
                     )}
                   </TabsContent>
                 );

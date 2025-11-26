@@ -10,18 +10,21 @@ interface OpportunityContactsTabProps {
   record: any;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+  /** Whether this tab is currently active - controls data fetching */
+  isActiveTab: boolean;
 }
 
 export function OpportunityContactsTab({
   record,
   mode,
   onModeToggle,
+  isActiveTab,
 }: OpportunityContactsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
   const [isSaving, setIsSaving] = useState(false);
 
-  // Fetch junction table data for view mode
+  // Fetch junction table data for view mode - only when tab is active AND in view mode
   const { data: junctionRecords, isLoading } = useGetList(
     "opportunity_contacts",
     {
@@ -29,10 +32,10 @@ export function OpportunityContactsTab({
       pagination: { page: 1, perPage: 100 },
       sort: { field: "is_primary", order: "DESC" },
     },
-    { enabled: mode === "view" }
+    { enabled: isActiveTab && mode === "view" }
   );
 
-  // Fetch contact details for view mode
+  // Fetch contact details for view mode - only when tab is active
   const contactIds = junctionRecords?.map((jr: any) => jr.contact_id) || [];
   const { data: contacts } = useGetList(
     "contacts",
@@ -40,7 +43,7 @@ export function OpportunityContactsTab({
       filter: { id: contactIds },
       pagination: { page: 1, perPage: 100 },
     },
-    { enabled: mode === "view" && contactIds.length > 0 }
+    { enabled: isActiveTab && mode === "view" && contactIds.length > 0 }
   );
 
   const handleSave = async (data: any) => {

@@ -9,12 +9,15 @@ interface OpportunityOrganizationsTabProps {
   record: any;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+  /** Whether this tab is currently active - available for conditional data fetching */
+  isActiveTab: boolean;
 }
 
 export function OpportunityOrganizationsTab({
   record,
   mode,
   onModeToggle,
+  isActiveTab,
 }: OpportunityOrganizationsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
@@ -120,10 +123,11 @@ export function OpportunityOrganizationsTab({
     label: string;
     required?: boolean;
   }) => {
+    // Only fetch when tab is active AND we have an organization ID
     const { data: org, isLoading } = useGetOne(
       "organizations",
       { id: organizationId! },
-      { enabled: !!organizationId }
+      { enabled: isActiveTab && !!organizationId }
     );
 
     if (!organizationId && !required) {

@@ -5,15 +5,26 @@ import { Activity, FileText } from "lucide-react";
 interface OpportunityActivitiesTabProps {
   record: any;
   mode: "view" | "edit";
+  onModeToggle?: () => void;
+  /** Whether this tab is currently active - controls data fetching */
+  isActiveTab: boolean;
 }
 
-export function OpportunityActivitiesTab({ record }: OpportunityActivitiesTabProps) {
+export function OpportunityActivitiesTab({
+  record,
+  isActiveTab,
+}: OpportunityActivitiesTabProps) {
   // Fetch opportunity notes (activities) from opportunityNotes table
-  const { data: notes, isLoading } = useGetList("opportunityNotes", {
-    filter: { opportunity_id: record.id },
-    pagination: { page: 1, perPage: 100 },
-    sort: { field: "created_at", order: "DESC" },
-  });
+  // Only fetch when tab is active to reduce unnecessary network requests
+  const { data: notes, isLoading } = useGetList(
+    "opportunityNotes",
+    {
+      filter: { opportunity_id: record.id },
+      pagination: { page: 1, perPage: 100 },
+      sort: { field: "created_at", order: "DESC" },
+    },
+    { enabled: isActiveTab }
+  );
 
   if (isLoading) {
     return (
