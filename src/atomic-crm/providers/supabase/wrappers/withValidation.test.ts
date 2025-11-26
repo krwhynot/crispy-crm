@@ -132,10 +132,11 @@ describe("withValidation", () => {
         previousData,
       });
 
+      // Validation should receive data with id merged (since schemas like taskUpdateSchema require id)
       expect(mockValidationService.validate).toHaveBeenCalledWith(
         "contacts",
         "update",
-        updateData
+        { ...updateData, id: 1 }
       );
       expect(mockProvider.update).toHaveBeenCalled();
     });

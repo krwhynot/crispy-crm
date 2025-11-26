@@ -7,12 +7,23 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 
 /**
+ * Props passed to each tab component
+ */
+export interface TabComponentProps {
+  record: any;
+  mode: "view" | "edit";
+  onModeToggle?: () => void;
+  /** Whether this tab is currently active - use to enable/disable data fetching */
+  isActiveTab: boolean;
+}
+
+/**
  * Configuration for a single tab in the slide-over
  */
 export interface TabConfig {
   key: string;
   label: string;
-  component: React.ComponentType<{ record: any; mode: "view" | "edit"; onModeToggle?: () => void }>;
+  component: React.ComponentType<TabComponentProps>;
   icon?: React.ComponentType<{ className?: string }>;
 }
 
