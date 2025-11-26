@@ -124,13 +124,12 @@ export const ProductsTable: React.FC<ProductsTableProps> = ({
                   <TableCell className="text-right">
                     <Button
                       variant="ghost"
-                      size="sm"
                       onClick={() => handleRemoveClick(product)}
                       disabled={isRemoving}
-                      className="h-8 w-8 p-0"
+                      className="h-11 w-11 p-0 touch-manipulation"
                       aria-label={`Remove ${product.product_name}`}
                     >
-                      <Trash2 className="h-4 w-4 text-destructive" />
+                      <Trash2 className="h-5 w-5 text-destructive" />
                     </Button>
                   </TableCell>
                 )}

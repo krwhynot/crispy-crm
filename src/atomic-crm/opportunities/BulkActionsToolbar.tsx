@@ -162,9 +162,8 @@ export const BulkActionsToolbar = ({
 
         <Button
           variant="outline"
-          size="sm"
           onClick={() => handleOpenDialog("change_stage")}
-          className="gap-2"
+          className="h-11 gap-2 touch-manipulation"
         >
           <Layers className="h-4 w-4" />
           Change Stage
@@ -172,9 +171,8 @@ export const BulkActionsToolbar = ({
 
         <Button
           variant="outline"
-          size="sm"
           onClick={() => handleOpenDialog("change_status")}
-          className="gap-2"
+          className="h-11 gap-2 touch-manipulation"
         >
           <CircleDot className="h-4 w-4" />
           Change Status
@@ -182,9 +180,8 @@ export const BulkActionsToolbar = ({
 
         <Button
           variant="outline"
-          size="sm"
           onClick={() => handleOpenDialog("assign_owner")}
-          className="gap-2"
+          className="h-11 gap-2 touch-manipulation"
         >
           <UserPlus className="h-4 w-4" />
           Assign Owner
@@ -192,7 +189,7 @@ export const BulkActionsToolbar = ({
 
         {/* Export button */}
         <div className="ml-auto">
-          <Button variant="default" size="sm" onClick={handleExport} className="gap-2">
+          <Button variant="default" onClick={handleExport} className="h-11 gap-2 touch-manipulation">
             <Download className="h-4 w-4" />
             Export CSV
           </Button>

@@ -88,7 +88,7 @@ export function OpportunityCardActions({ opportunityId }: OpportunityCardActions
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-8 w-48 bg-popover border border-border rounded-md shadow-lg z-50">
+        <div className="absolute right-0 top-full mt-1 w-48 bg-popover border border-border rounded-md shadow-lg z-50">
           <div className="py-1">
             <button
               onClick={handleViewDetails}

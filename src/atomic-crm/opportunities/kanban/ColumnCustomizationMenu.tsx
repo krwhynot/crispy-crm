@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { OPPORTUNITY_STAGES } from "../constants/stageConstants";
 import type { OpportunityStageValue } from "../../types";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface ColumnCustomizationMenuProps {
   visibleStages: OpportunityStageValue[];
@@ -39,21 +40,21 @@ export function ColumnCustomizationMenu({
         type="button"
         aria-label="Customize columns"
         onClick={() => setIsOpen(!isOpen)}
-        className="px-3 py-1.5 text-sm border border-border rounded hover:bg-accent transition-colors"
+        className="min-h-[44px] px-4 text-sm border border-border rounded hover:bg-accent transition-colors touch-manipulation"
       >
         Customize Columns
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 top-10 w-64 bg-popover border border-border rounded-md shadow-lg z-50">
+        <div className="absolute right-0 top-full mt-1 w-64 bg-popover border border-border rounded-md shadow-lg z-50">
           <div className="py-2">
-            <div className="px-4 py-2 border-b border-border">
+            <div className="px-4 py-2 border-b border-border flex gap-2">
               <button
                 onClick={() => {
                   collapseAll();
                   setIsOpen(false);
                 }}
-                className="text-sm text-primary hover:underline mr-3"
+                className="min-h-[44px] px-3 text-sm text-primary hover:bg-accent rounded transition-colors touch-manipulation"
               >
                 Collapse All
               </button>
@@ -62,7 +63,7 @@ export function ColumnCustomizationMenu({
                   expandAll();
                   setIsOpen(false);
                 }}
-                className="text-sm text-primary hover:underline"
+                className="min-h-[44px] px-3 text-sm text-primary hover:bg-accent rounded transition-colors touch-manipulation"
               >
                 Expand All
               </button>
@@ -71,14 +72,16 @@ export function ColumnCustomizationMenu({
             <div className="px-4 py-2">
               <p className="text-xs font-medium text-muted-foreground mb-2">Visible Stages</p>
               {OPPORTUNITY_STAGES.map((stage) => (
-                <label key={stage.value} className="flex items-center gap-2 py-1 cursor-pointer">
-                  <input
-                    type="checkbox"
+                <label
+                  key={stage.value}
+                  className="flex items-center gap-3 min-h-[44px] cursor-pointer hover:bg-accent rounded px-1 -mx-1 transition-colors"
+                >
+                  <Checkbox
+                    id={`stage-${stage.value}`}
                     checked={visibleStages.includes(stage.value)}
-                    onChange={() => toggleVisibility(stage.value)}
-                    className="rounded border-border"
+                    onCheckedChange={() => toggleVisibility(stage.value)}
                   />
-                  <span className="text-sm">{stage.label}</span>
+                  <span className="text-sm select-none">{stage.label}</span>
                 </label>
               ))}
             </div>
