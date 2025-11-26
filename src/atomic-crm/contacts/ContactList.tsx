@@ -131,7 +131,15 @@ const ContactListLayout = ({
             render={(record: Contact) => <ContactStatusBadge status={record.status} />}
           />
 
-          {/* Column 6: Last Activity - Recency metric (sortable) */}
+          {/* Column 6: Notes - Activity count metric (non-sortable) */}
+          <FunctionField
+            label="Notes"
+            sortable={false}
+            render={(record: Contact) => record.nb_notes ?? 0}
+            textAlign="center"
+          />
+
+          {/* Column 7: Last Activity - Recency metric (sortable) */}
           <DateField source="last_seen" label="Last Activity" sortable showTime={false} />
         </PremiumDatagrid>
       </StandardListLayout>

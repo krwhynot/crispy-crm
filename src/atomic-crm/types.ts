@@ -103,7 +103,8 @@ export interface Contact extends Pick<RaRecord, "id"> {
   department?: string;
   deleted_at?: string;
 
-  // Calculated fields
+  // Calculated fields from contacts_summary view
+  nb_notes?: number;
   nb_tasks?: number;
   company_name?: string;
 }
