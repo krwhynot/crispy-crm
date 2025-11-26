@@ -289,7 +289,6 @@ export function applySearchParams(
   const { q: _q, ...filterWithoutQ } = transformedFilter;
 
   // If no searchable fields configured, apply basic soft delete only
-  // If no searchable fields are configured, just apply the soft delete filter if needed.
   if (searchableFields.length === 0) {
     const softDeleteFilter = needsSoftDeleteFilter ? { "deleted_at@is": null } : {};
     return {
@@ -301,12 +300,17 @@ export function applySearchParams(
     };
   }
 
-  // Use the applyFullTextSearch helper for resources with search configuration.
-  // CRITICAL: Pass transformedFilter (not params.filter) to preserve $or transformation.
-  return applyFullTextSearch(searchableFields, needsSoftDeleteFilter)({
+  // Use the applyFullTextSearch helper for resources with search configuration
+  // Pass the needsSoftDeleteFilter flag to avoid adding deleted_at filter for views
+  const searchParams = applyFullTextSearch(
+    searchableFields,
+    needsSoftDeleteFilter
+  )({
     ...params,
     filter: transformedFilter,
   });
+
+  return searchParams;
 }
 
 // Type for database records that may have JSONB array fields
