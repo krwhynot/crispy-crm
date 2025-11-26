@@ -302,15 +302,11 @@ export function applySearchParams(
 
   // Use the applyFullTextSearch helper for resources with search configuration
   // Pass the needsSoftDeleteFilter flag to avoid adding deleted_at filter for views
-  const searchParams = applyFullTextSearch(
-    searchableFields,
-    needsSoftDeleteFilter
-  )({
+  return applyFullTextSearch(searchableFields, needsSoftDeleteFilter)({
     ...params,
+    // CRITICAL: Pass the transformedFilter to preserve the $or and array transformations.
     filter: transformedFilter,
   });
-
-  return searchParams;
 }
 
 // Type for database records that may have JSONB array fields
