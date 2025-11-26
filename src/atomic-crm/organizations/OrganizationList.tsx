@@ -112,36 +112,47 @@ const OrganizationListLayout = ({
     <>
       <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
         <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
-          <TextField source="name" label="Organization Name" />
+          {/* Column 1: Name - Primary identifier (sortable) */}
+          <TextField source="name" label="Organization Name" sortable />
 
+          {/* Column 2: Type - Organization classification (sortable by organization_type) */}
           <FunctionField
             label="Type"
+            sortBy="organization_type"
             render={(record: any) => <OrganizationTypeBadge type={record.organization_type} />}
           />
 
+          {/* Column 3: Priority - Business priority indicator (sortable) */}
           <FunctionField
             label="Priority"
+            sortBy="priority"
             render={(record: any) => <PriorityBadge priority={record.priority} />}
           />
 
+          {/* Column 4: Parent - Hierarchy reference (sortable by parent_organization_id) */}
           <ReferenceField
             source="parent_organization_id"
             reference="organizations"
             label="Parent"
             link={false}
             emptyText="-"
+            sortable
           >
             <TextField source="name" />
           </ReferenceField>
 
+          {/* Column 5: Contacts - Computed count metric (non-sortable) */}
           <FunctionField
             label="Contacts"
+            sortable={false}
             render={(record: any) => record.nb_contacts || 0}
             textAlign="center"
           />
 
+          {/* Column 6: Opportunities - Computed count metric (non-sortable) */}
           <FunctionField
             label="Opportunities"
+            sortable={false}
             render={(record: any) => record.nb_opportunities || 0}
             textAlign="center"
           />

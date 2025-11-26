@@ -422,15 +422,16 @@ describe("ContactList", () => {
   });
 });
 
-describe("ContactList 6-column structure", () => {
+describe("ContactList 7-column structure", () => {
   /**
-   * Tests for the refactored ContactList with 6 columns:
+   * Tests for the refactored ContactList with 7 columns:
    * 1. Avatar (non-sortable)
    * 2. Name (computed first_name + last_name, sortable)
    * 3. Role (merged Title + Department, sortable by title)
    * 4. Organization (reference field, sortable)
    * 5. Status (ContactStatusBadge, non-sortable)
-   * 6. Last Activity (date field, sortable)
+   * 6. Notes (nb_notes count, non-sortable)
+   * 7. Last Activity (date field, sortable)
    *
    * Removed columns: Tags, Actions
    */
@@ -460,6 +461,8 @@ describe("ContactList 6-column structure", () => {
           department: "Executive",
           status: "warm",
           last_seen: "2024-01-15T10:00:00Z",
+          nb_notes: 5,
+          nb_tasks: 2,
         },
       ],
       total: 1,
@@ -483,17 +486,18 @@ describe("ContactList 6-column structure", () => {
     });
   });
 
-  test("renders 6 columns: Avatar, Name, Role, Organization, Status, Last Activity", async () => {
+  test("renders 7 columns: Avatar, Name, Role, Organization, Status, Notes, Last Activity", async () => {
     renderWithAdminContext(<ContactList />);
 
     await waitFor(() => {
       // PremiumDatagrid should render
       expect(screen.getByTestId("premium-datagrid")).toBeInTheDocument();
 
-      // FunctionField for Name and Role columns (via mock)
+      // FunctionField for Name, Role, Status, and Notes columns (via mock)
       expect(screen.getByTestId("function-field-Name")).toBeInTheDocument();
       expect(screen.getByTestId("function-field-Role")).toBeInTheDocument();
       expect(screen.getByTestId("function-field-Status")).toBeInTheDocument();
+      expect(screen.getByTestId("function-field-Notes")).toBeInTheDocument();
 
       // Empty label for Avatar column
       expect(screen.getByTestId("function-field-")).toBeInTheDocument();
