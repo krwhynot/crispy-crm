@@ -6,8 +6,8 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { AdminContext } from "ra-core";
 import { MemoryRouter } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { OpportunityShow } from "./OpportunityShow";
-import { ConfigurationContext } from "../root/ConfigurationContext";
+import { OpportunityShow } from "../OpportunityShow";
+import { ConfigurationContext } from "../../root/ConfigurationContext";
 
 // Mock opportunity data with participants
 const mockOpportunity = {
