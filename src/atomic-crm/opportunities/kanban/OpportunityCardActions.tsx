@@ -80,9 +80,9 @@ export function OpportunityCardActions({ opportunityId }: OpportunityCardActions
           setIsOpen(!isOpen);
         }}
         onMouseDown={(e) => e.stopPropagation()} // Prevent drag
-        className="p-1 rounded hover:bg-muted transition-colors"
+        className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded hover:bg-muted transition-colors touch-manipulation"
       >
-        <svg className="w-4 h-4 text-muted-foreground" fill="currentColor" viewBox="0 0 20 20">
+        <svg className="w-5 h-5 text-muted-foreground" fill="currentColor" viewBox="0 0 20 20">
           <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
         </svg>
       </button>

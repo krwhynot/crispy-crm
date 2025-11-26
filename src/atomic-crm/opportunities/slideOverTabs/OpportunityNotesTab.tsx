@@ -6,6 +6,9 @@ import type { Opportunity } from "../../types";
 interface OpportunityNotesTabProps {
   record: Opportunity;
   mode: "view" | "edit";
+  onModeToggle?: () => void;
+  /** Whether this tab is currently active - available for conditional data fetching */
+  isActiveTab: boolean;
 }
 
 /**
@@ -16,7 +19,11 @@ interface OpportunityNotesTabProps {
  *
  * Both view and edit modes allow note creation and editing.
  */
-export function OpportunityNotesTab({ record, mode }: OpportunityNotesTabProps) {
+export function OpportunityNotesTab({
+  record,
+  mode,
+  isActiveTab,
+}: OpportunityNotesTabProps) {
   return (
     <RecordContextProvider value={record}>
       <div className="space-y-4">

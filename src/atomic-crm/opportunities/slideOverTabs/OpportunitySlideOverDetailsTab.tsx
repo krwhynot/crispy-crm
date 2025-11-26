@@ -12,12 +12,15 @@ interface OpportunitySlideOverDetailsTabProps {
   record: any;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+  /** Whether this tab is currently active - available for conditional data fetching */
+  isActiveTab: boolean;
 }
 
 export function OpportunitySlideOverDetailsTab({
   record,
   mode,
   onModeToggle,
+  isActiveTab,
 }: OpportunitySlideOverDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
