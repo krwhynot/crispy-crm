@@ -46,15 +46,25 @@ test.describe("Organization Opportunities Filter - $or Transformation", () => {
     consoleMonitor.clear();
   });
 
+  /**
+   * Helper to get a clickable organization row from the datagrid
+   * OrganizationList uses PremiumDatagrid which renders table rows
+   */
+  async function getFirstOrganizationRow(page: typeof authenticatedPage) {
+    // Wait for the datagrid to load - look for a table body with rows
+    await page.locator("tbody tr").first().waitFor({ state: "visible", timeout: 15000 });
+    // Return the first data row (skip header row by targeting tbody tr)
+    return page.locator("tbody tr").first();
+  }
+
   test("navigates to Organizations list and opens slide-over", async ({ authenticatedPage }) => {
     const organizationsPage = new OrganizationsListPage(authenticatedPage);
     await organizationsPage.gotoOrganizationsList();
-    await organizationsPage.waitForOrganizationsLoaded();
 
-    // Click first organization card to open slide-over
-    const firstCard = organizationsPage.getOrganizationCards().first();
-    await expect(firstCard).toBeVisible();
-    await firstCard.click();
+    // Wait for table to load - OrganizationList uses PremiumDatagrid (table rows, not cards)
+    const firstRow = await getFirstOrganizationRow(authenticatedPage);
+    await expect(firstRow).toBeVisible();
+    await firstRow.click();
 
     // Wait for slide-over dialog to appear
     const slideOver = createSlideOver(authenticatedPage);
@@ -68,11 +78,10 @@ test.describe("Organization Opportunities Filter - $or Transformation", () => {
   test("Opportunities tab loads and shows filter results", async ({ authenticatedPage }) => {
     const organizationsPage = new OrganizationsListPage(authenticatedPage);
     await organizationsPage.gotoOrganizationsList();
-    await organizationsPage.waitForOrganizationsLoaded();
 
-    // Open first organization slide-over
-    const firstCard = organizationsPage.getOrganizationCards().first();
-    await firstCard.click();
+    // Open first organization slide-over (using table row click)
+    const firstRow = await getFirstOrganizationRow(authenticatedPage);
+    await firstRow.click();
 
     const slideOver = createSlideOver(authenticatedPage);
     await slideOver.expectVisible();
@@ -84,12 +93,9 @@ test.describe("Organization Opportunities Filter - $or Transformation", () => {
     if (hasOpportunitiesTab) {
       await opportunitiesTab.click();
 
-      // Wait for tab panel to be visible
-      await authenticatedPage.waitForTimeout(500); // Animation delay
-
-      // Tab panel should show opportunities or "No opportunities" message
+      // Wait for tab panel content to load (condition-based, not timeout)
       const tabPanel = slideOver.getTabPanel();
-      await expect(tabPanel).toBeVisible();
+      await tabPanel.waitFor({ state: "visible", timeout: 5000 });
 
       // Check for either opportunities content or empty state
       const hasContent = await tabPanel.locator("text=/opportunity|opportunities/i").isVisible().catch(() => false);
@@ -104,7 +110,6 @@ test.describe("Organization Opportunities Filter - $or Transformation", () => {
   test("Network request contains correct @or filter format", async ({ authenticatedPage }) => {
     const organizationsPage = new OrganizationsListPage(authenticatedPage);
     await organizationsPage.gotoOrganizationsList();
-    await organizationsPage.waitForOrganizationsLoaded();
 
     // Set up network request interception BEFORE clicking
     let capturedOpportunitiesRequest: { url: string; queryParams: URLSearchParams } | null = null;
@@ -121,9 +126,9 @@ test.describe("Organization Opportunities Filter - $or Transformation", () => {
       }
     });
 
-    // Open first organization slide-over
-    const firstCard = organizationsPage.getOrganizationCards().first();
-    await firstCard.click();
+    // Open first organization slide-over (using table row click)
+    const firstRow = await getFirstOrganizationRow(authenticatedPage);
+    await firstRow.click();
 
     const slideOver = createSlideOver(authenticatedPage);
     await slideOver.expectVisible();
@@ -179,11 +184,10 @@ test.describe("Organization Opportunities Filter - $or Transformation", () => {
   }) => {
     const organizationsPage = new OrganizationsListPage(authenticatedPage);
     await organizationsPage.gotoOrganizationsList();
-    await organizationsPage.waitForOrganizationsLoaded();
 
-    // Open first organization
-    const firstCard = organizationsPage.getOrganizationCards().first();
-    await firstCard.click();
+    // Open first organization (using table row click)
+    const firstRow = await getFirstOrganizationRow(authenticatedPage);
+    await firstRow.click();
 
     const slideOver = createSlideOver(authenticatedPage);
     await slideOver.expectVisible();
