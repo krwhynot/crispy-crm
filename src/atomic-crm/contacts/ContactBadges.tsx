@@ -94,6 +94,11 @@ interface InfluenceBadgeProps {
  * against light backgrounds (85%+ lightness) = ~10:1 contrast ratio
  */
 export function ContactStatusBadge({ status }: ContactStatusBadgeProps) {
+  // Handle null/undefined status gracefully - return placeholder
+  if (!status) {
+    return <Badge className="text-xs px-2 py-1 tag-gray">--</Badge>;
+  }
+
   const config: Record<string, { label: string; className: string }> = {
     cold: { label: "Cold", className: "tag-blue" },
     warm: { label: "Warm", className: "tag-amber" },
