@@ -435,8 +435,21 @@ describe("ContactList 6-column structure", () => {
    * Removed columns: Tags, Actions
    */
 
+  const mockTags = [
+    { id: 1, name: "VIP", color: "blue" },
+    { id: 2, name: "Lead", color: "green" },
+  ];
+
   beforeEach(() => {
     vi.clearAllMocks();
+
+    // Mock useGetList for tags (used by ContactListFilter)
+    (useGetList as any).mockReturnValue({
+      data: mockTags,
+      total: mockTags.length,
+      isPending: false,
+    });
+
     (useListContext as any).mockReturnValue({
       data: [
         {
