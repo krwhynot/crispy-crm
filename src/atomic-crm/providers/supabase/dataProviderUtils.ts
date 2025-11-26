@@ -173,68 +173,82 @@ export function applyFullTextSearch(
 }
 
 /**
- * Transform MongoDB-style $or filter arrays to ra-data-postgrest @or format
+ * Transform MongoDB-style $or/$and/$not filter arrays to PostgREST format
  *
- * Converts React Admin/frontend-style $or filters into the nested object format
- * that ra-data-postgrest expects for its OR query handling.
+ * Converts React Admin/frontend-style logical operators into PostgREST query string format.
+ * PostgREST expects: `or=(field1.eq.val1,field2.eq.val2)` as a query parameter.
  *
  * @example
  * // Input (MongoDB-style from frontend components)
  * { $or: [{ customer_organization_id: 5 }, { principal_organization_id: 5 }] }
  *
- * // Output (ra-data-postgrest format - nested object)
- * { "@or": { "customer_organization_id": 5, "principal_organization_id": 5 } }
+ * // Output (PostgREST format - string value)
+ * { "or": "(customer_organization_id.eq.5,principal_organization_id.eq.5)" }
  *
  * @example
  * // Multiple fields with other filters preserved
  * { $or: [{ status: "active" }, { priority: "high" }], name: "test" }
  *
  * // Output
- * { "@or": { "status": "active", "priority": "high" }, name: "test" }
+ * { "or": "(status.eq.active,priority.eq.high)", name: "test" }
  *
- * @param filter - The filter object potentially containing $or
- * @returns Filter with $or transformed to @or nested object format
+ * @param filter - The filter object potentially containing $or/$and/$not
+ * @returns Filter with logical operators transformed to PostgREST string format
  */
 export function transformOrFilter(filter: FilterRecord | undefined | null): FilterRecord {
   if (!filter || typeof filter !== "object") {
     return filter || {};
   }
 
-  // Check if filter has $or property
-  const orConditions = filter["$or"];
-  if (!orConditions || !Array.isArray(orConditions)) {
-    return filter;
-  }
+  // Extract MongoDB-style logical operators
+  const { $or, $and, $not, ...restFilter } = filter as FilterRecord & {
+    $or?: Array<Record<string, unknown>>;
+    $and?: Array<Record<string, unknown>>;
+    $not?: Record<string, unknown>;
+  };
 
-  // Build ra-data-postgrest @or format: nested object with field: value pairs
-  // The library's parseFilters() will convert this to PostgREST format
-  const orObject: Record<string, FilterValue> = {};
+  const result: FilterRecord = { ...restFilter };
 
-  for (const condition of orConditions) {
-    if (typeof condition === "object" && condition !== null) {
-      // Each condition object can have multiple fields
-      for (const [field, value] of Object.entries(condition)) {
-        // Skip null/undefined values
-        if (value === null || value === undefined) {
-          continue;
-        }
-        // Add to the @or object - ra-data-postgrest will handle type conversion
-        orObject[field] = value as FilterValue;
-      }
+  // Transform $or to PostgREST or=(...) format
+  if ($or && Array.isArray($or)) {
+    const conditions = $or
+      .flatMap((cond: Record<string, unknown>) =>
+        Object.entries(cond)
+          .filter(([, val]) => val !== null && val !== undefined)
+          .map(([field, val]) => `${field}.eq.${val}`)
+      )
+      .join(",");
+    if (conditions) {
+      result["or"] = `(${conditions})`;
     }
   }
 
-  // Remove $or from filter and add @or if we have conditions
-  const { $or: _removed, ...restFilter } = filter as FilterRecord & { $or?: unknown[] };
-
-  if (Object.keys(orObject).length === 0) {
-    return restFilter;
+  // Transform $and to PostgREST and=(...) format
+  if ($and && Array.isArray($and)) {
+    const conditions = $and
+      .flatMap((cond: Record<string, unknown>) =>
+        Object.entries(cond)
+          .filter(([, val]) => val !== null && val !== undefined)
+          .map(([field, val]) => `${field}.eq.${val}`)
+      )
+      .join(",");
+    if (conditions) {
+      result["and"] = `(${conditions})`;
+    }
   }
 
-  return {
-    ...restFilter,
-    "@or": orObject,
-  };
+  // Transform $not to PostgREST not.(...) format
+  if ($not && typeof $not === "object") {
+    const conditions = Object.entries($not as Record<string, unknown>)
+      .filter(([, val]) => val !== null && val !== undefined)
+      .map(([field, val]) => `${field}.eq.${val}`)
+      .join(",");
+    if (conditions) {
+      result["not"] = `(${conditions})`;
+    }
+  }
+
+  return result;
 }
 
 /**

@@ -50,7 +50,7 @@ describe("Service Integration Tests", () => {
 
   describe("Filter Validation Integration", () => {
     // Tests that MongoDB-style operators survive ValidationService.validateFilters()
-    // so they can be transformed to PostgREST format by transformOrFilter()
+    // so they can be transformed to ra-data-postgrest format by transformOrFilter()
 
     it("should preserve $or filter through validateFilters", () => {
       const filters = {
@@ -102,6 +102,22 @@ describe("Service Integration Tests", () => {
       expect(result).toHaveProperty("$or");
       expect(result).toHaveProperty("status");
       expect(result).toHaveProperty("created_at@gte");
+    });
+
+    it("should preserve @or filter (ra-data-postgrest format)", () => {
+      // After transformOrFilter runs, filter will have @or as nested object
+      const filters = {
+        "@or": {
+          customer_organization_id: 123,
+          principal_organization_id: 123,
+        },
+        status: "active",
+      };
+
+      const result = validationService.validateFilters("opportunities", filters);
+
+      expect(result).toHaveProperty("@or");
+      expect(result).toHaveProperty("status");
     });
   });
 });
