@@ -78,7 +78,7 @@ export const ContactAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
             </div>
           )}
           {record.department && (
-            <div className="text-[15px] font-medium text-foreground leading-tight">
+            <div className="text-sm font-medium text-foreground leading-tight">
               <span className="text-sm text-muted-foreground">Dept: </span>
               {record.department}
             </div>

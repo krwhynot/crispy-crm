@@ -94,7 +94,7 @@ export function TasksPanel() {
             <Button
               variant="outline"
               size="sm"
-              className="h-9 gap-1"
+              className="h-11 gap-1"
               onClick={() => {
                 window.location.href = "/#/tasks/create";
               }}

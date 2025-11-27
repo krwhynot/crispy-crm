@@ -121,6 +121,29 @@
 }
 
 @layer utilities {
+  /* Semantic Shadow Utilities - Kanban Card Elevations */
+  .shadow-card-1 {
+    box-shadow: var(--shadow-card-1);
+  }
+  .shadow-card-2 {
+    box-shadow: var(--shadow-card-2);
+  }
+  .shadow-card-3 {
+    box-shadow: var(--shadow-card-3);
+  }
+  .shadow-col-inner {
+    box-shadow: var(--shadow-col-inner);
+  }
+  .hover\:shadow-card-1-hover:hover {
+    box-shadow: var(--shadow-card-1-hover);
+  }
+  .hover\:shadow-card-2-hover:hover {
+    box-shadow: var(--shadow-card-2-hover);
+  }
+  .hover\:shadow-card-3-hover:hover {
+    box-shadow: var(--shadow-card-3-hover);
+  }
+
   /* Vertical Spacing Utilities */
   .space-y-section > * + * {
     margin-top: var(--spacing-section);
@@ -258,6 +281,16 @@
   --shadow-elevation-1: var(--elevation-1);
   --shadow-elevation-2: var(--elevation-2);
   --shadow-elevation-3: var(--elevation-3);
+
+  /* Semantic Shadow Utilities for Kanban Cards (Tailwind v4) */
+  /* These enable: shadow-card-1, shadow-card-2, shadow-card-3, etc. */
+  --shadow-card-1: 0 1px 2px 0 oklch(30% 0.01 92 / 0.1), 0 4px 8px -2px oklch(30% 0.01 92 / 0.16);
+  --shadow-card-2: 0 2px 3px 0 oklch(30% 0.01 92 / 0.12), 0 8px 16px -4px oklch(30% 0.01 92 / 0.18);
+  --shadow-card-3: 0 3px 6px -2px oklch(30% 0.01 92 / 0.14), 0 16px 24px -8px oklch(30% 0.01 92 / 0.2);
+  --shadow-card-1-hover: var(--shadow-card-2);
+  --shadow-card-2-hover: var(--shadow-card-3);
+  --shadow-card-3-hover: var(--shadow-card-3);
+  --shadow-col-inner: inset 0 1px 2px oklch(30% 0.01 92 / 0.05);
 }
 
 /*

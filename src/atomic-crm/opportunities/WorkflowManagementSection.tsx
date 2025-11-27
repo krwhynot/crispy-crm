@@ -162,7 +162,7 @@ export const WorkflowManagementSection: React.FC = () => {
               placeholder="Add tag..."
               className="h-8 text-sm"
             />
-            <Button onClick={handleAddTag} size="sm" variant="outline">
+            <Button onClick={handleAddTag} size="sm" variant="outline" className="h-11">
               Add
             </Button>
           </div>

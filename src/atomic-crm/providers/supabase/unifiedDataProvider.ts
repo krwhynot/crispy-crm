@@ -33,7 +33,8 @@ import type {
   FilterPayload,
 } from "ra-core";
 import type { FileObject } from "@supabase/storage-js";
-import { quickAddSchema, QuickAddInput } from '../../validation/quickAdd';
+import type { QuickAddInput } from '../../validation/quickAdd';
+import { quickAddSchema } from '../../validation/quickAdd';
 
 import { supabase } from "./supabase";
 import { getResourceName, supportsSoftDelete } from "./resources";

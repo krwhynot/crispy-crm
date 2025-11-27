@@ -242,6 +242,77 @@ describe("Task Validation Schemas (task.ts)", () => {
       const result = taskSchema.safeParse(taskWithNulls);
       expect(result.success).toBe(true);
     });
+
+    // =========================================================================
+    // created_by field tests (per migration 20251127054700)
+    // =========================================================================
+    describe("created_by field", () => {
+      it("should accept number for created_by (matches sales.id)", () => {
+        const taskWithCreatedBy = { ...validTask, created_by: 123 };
+        const result = taskSchema.safeParse(taskWithCreatedBy);
+        expect(result.success).toBe(true);
+        if (result.success) {
+          expect(result.data.created_by).toBe(123);
+        }
+      });
+
+      it("should accept string for created_by (React Admin compatibility)", () => {
+        // React Admin may pass IDs as strings
+        const taskWithCreatedBy = { ...validTask, created_by: "456" };
+        const result = taskSchema.safeParse(taskWithCreatedBy);
+        expect(result.success).toBe(true);
+        if (result.success) {
+          expect(result.data.created_by).toBe("456");
+        }
+      });
+
+      it("should accept null for created_by (optional)", () => {
+        const taskWithNullCreator = { ...validTask, created_by: null };
+        const result = taskSchema.safeParse(taskWithNullCreator);
+        expect(result.success).toBe(true);
+        if (result.success) {
+          expect(result.data.created_by).toBeNull();
+        }
+      });
+
+      it("should accept undefined for created_by (optional)", () => {
+        const taskWithoutCreator = { ...validTask };
+        delete (taskWithoutCreator as any).created_by;
+        const result = taskSchema.safeParse(taskWithoutCreator);
+        expect(result.success).toBe(true);
+      });
+    });
+
+    // =========================================================================
+    // deleted_at field tests (per migration 20251127055705)
+    // =========================================================================
+    describe("deleted_at field (soft-delete)", () => {
+      it("should accept ISO timestamp for deleted_at", () => {
+        const deletedTask = { ...validTask, deleted_at: "2025-01-15T10:30:00Z" };
+        const result = taskSchema.safeParse(deletedTask);
+        expect(result.success).toBe(true);
+        if (result.success) {
+          expect(result.data.deleted_at).toBe("2025-01-15T10:30:00Z");
+        }
+      });
+
+      it("should accept null for deleted_at (active record)", () => {
+        // Per soft-delete pattern: NULL = active record
+        const activeTask = { ...validTask, deleted_at: null };
+        const result = taskSchema.safeParse(activeTask);
+        expect(result.success).toBe(true);
+        if (result.success) {
+          expect(result.data.deleted_at).toBeNull();
+        }
+      });
+
+      it("should accept undefined for deleted_at (active record)", () => {
+        const taskWithoutDeleted = { ...validTask };
+        delete (taskWithoutDeleted as any).deleted_at;
+        const result = taskSchema.safeParse(taskWithoutDeleted);
+        expect(result.success).toBe(true);
+      });
+    });
   });
 
   describe("taskCreateSchema", () => {
@@ -324,6 +395,45 @@ describe("Task Validation Schemas (task.ts)", () => {
       expect(result.success).toBe(true);
       if (result.success) {
         expect("updated_at" in result.data).toBe(false);
+      }
+    });
+
+    // =========================================================================
+    // Tests for new audit fields (per migrations 20251127054700/55705)
+    // =========================================================================
+    it("should omit created_by on creation (auto-set by DB trigger)", () => {
+      // Per migration: created_by is set by trigger_set_task_created_by
+      const dataWithCreatedBy = {
+        title: "New task",
+        due_date: "2025-01-20",
+        type: "Call" as const,
+        contact_id: 1,
+        sales_id: 1,
+        created_by: 999, // Should be stripped - DB trigger handles this
+      };
+
+      const result = taskCreateSchema.safeParse(dataWithCreatedBy);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect("created_by" in result.data).toBe(false);
+      }
+    });
+
+    it("should omit deleted_at on creation (soft-delete managed by app)", () => {
+      // Per soft-delete pattern: deleted_at should never be set at creation
+      const dataWithDeletedAt = {
+        title: "New task",
+        due_date: "2025-01-20",
+        type: "Call" as const,
+        contact_id: 1,
+        sales_id: 1,
+        deleted_at: "2025-01-01T00:00:00Z", // Should be stripped
+      };
+
+      const result = taskCreateSchema.safeParse(dataWithDeletedAt);
+      expect(result.success).toBe(true);
+      if (result.success) {
+        expect("deleted_at" in result.data).toBe(false);
       }
     });
 
@@ -480,6 +590,9 @@ describe("Task Validation Schemas (task.ts)", () => {
       expect("reminder_date" in defaults).toBe(false);
       expect("created_at" in defaults).toBe(false);
       expect("updated_at" in defaults).toBe(false);
+      // New audit fields (per migrations 20251127054700/55705)
+      expect("created_by" in defaults).toBe(false);
+      expect("deleted_at" in defaults).toBe(false);
     });
   });
 

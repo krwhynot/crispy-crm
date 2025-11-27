@@ -55,8 +55,8 @@ const OrganizationCreate = () => {
         return values;
       }}
     >
-      <div className="mt-2 flex lg:mr-72">
-        <div className="flex-1">
+      <div className="bg-muted px-6 py-6">
+        <div className="max-w-4xl mx-auto create-form-card">
           <Form key={formKey} defaultValues={formDefaults}>
             <Card>
               <CardContent>

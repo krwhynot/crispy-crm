@@ -192,7 +192,7 @@ const NotificationRow = ({ notification }: { notification: Notification }) => {
         <Button
           variant="ghost"
           size="icon"
-          className="flex-shrink-0 h-9 w-9"
+          className="flex-shrink-0 h-11 w-11"
           onClick={markAsRead}
           aria-label="Mark as read"
         >
@@ -237,7 +237,7 @@ const NotificationsBulkActions = () => {
   };
 
   return (
-    <Button variant="ghost" size="sm" onClick={markAllAsRead} className="h-8 text-xs">
+    <Button variant="ghost" size="sm" onClick={markAllAsRead} className="h-11 text-xs">
       <Check className="h-4 w-4 mr-2" />
       Mark as read
     </Button>

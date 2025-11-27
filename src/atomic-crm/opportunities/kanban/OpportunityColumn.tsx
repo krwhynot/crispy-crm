@@ -79,26 +79,26 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
 }: OpportunityColumnProps) {
   const metrics = useStageMetrics(opportunities);
 
-  // Map elevation levels to semantic shadow tokens
+  // Map elevation levels to semantic shadow utilities (design system compliant)
   const elevation = getOpportunityStageElevation(stage);
   const shadowConfig = {
     1: {
-      rest: "shadow-[var(--shadow-card-1)]",
-      hover: "hover:shadow-[var(--shadow-card-1-hover)]",
+      rest: "shadow-card-1",
+      hover: "hover:shadow-card-1-hover",
     },
     2: {
-      rest: "shadow-[var(--shadow-card-2)]",
-      hover: "hover:shadow-[var(--shadow-card-2-hover)]",
+      rest: "shadow-card-2",
+      hover: "hover:shadow-card-2-hover",
     },
     3: {
-      rest: "shadow-[var(--shadow-card-3)]",
-      hover: "hover:shadow-[var(--shadow-card-3-hover)]",
+      rest: "shadow-card-3",
+      hover: "hover:shadow-card-3-hover",
     },
   }[elevation];
 
   return (
     <div
-      className={`flex-1 pb-8 min-w-[240px] max-w-[280px] bg-card border border-border rounded-2xl shadow-[var(--shadow-col-inner)] ${shadowConfig.rest} ${shadowConfig.hover} transition-[box-shadow,border-color] duration-200 ease-in-out px-3`}
+      className={`flex-1 pb-8 min-w-[240px] max-w-[280px] bg-card border border-border rounded-2xl shadow-col-inner ${shadowConfig.rest} ${shadowConfig.hover} transition-[box-shadow,border-color] duration-200 ease-in-out px-3`}
       data-testid="kanban-column"
     >
       <div className="flex items-center justify-between mb-4 pb-3 border-b border-border px-3 py-2">

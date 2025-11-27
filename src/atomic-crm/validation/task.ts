@@ -46,19 +46,25 @@ export const taskSchema = z.object({
   contact_id: idSchema.nullable().optional(), // Optional: task can be associated with contact, opportunity, or organization
   opportunity_id: idSchema.nullable().optional(),
   sales_id: idSchema, // Required: task must be assigned to a sales rep
+
+  // Audit fields (per migration 20251127054700_fix_critical_rls_security_tasks.sql)
+  created_by: z.union([z.string(), z.number()]).optional().nullable(), // Sales rep who created this task (different from assignee)
   created_at: z.string().optional(),
   updated_at: z.string().optional(),
+  deleted_at: z.string().optional().nullable(), // Soft-delete timestamp (NULL = active)
 });
 
 // ============================================================================
 // Derived Schemas
 // ============================================================================
 
-/** Schema for creating new tasks */
+/** Schema for creating new tasks (system fields auto-populated by DB triggers) */
 export const taskCreateSchema = taskSchema.omit({
   id: true,
+  created_by: true, // Auto-set by trigger_set_task_created_by
   created_at: true,
   updated_at: true,
+  deleted_at: true, // Soft-delete managed by application
 });
 
 /** Schema for updating existing tasks (requires id) */
