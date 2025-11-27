@@ -92,7 +92,7 @@ export const getTaskDefaultValues = () =>
   taskSchema.partial().parse({
     completed: false,
     priority: "medium" as const,
-    type: "None" as const,
+    type: "Call" as const, // Changed from "None" - meaningful default reduces cognitive load
     due_date: new Date().toISOString().slice(0, 10),
   });
 
