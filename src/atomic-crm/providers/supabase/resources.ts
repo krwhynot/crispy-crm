@@ -56,7 +56,7 @@ export const SEARCHABLE_RESOURCES = {
     "description",
   ],
   contacts: ["first_name", "last_name", "company_name", "title"],
-  opportunities: ["name", "category", "description", "next_action"],
+  opportunities: ["name", "description", "next_action", "lead_source"],
   opportunities_summary: [
     "name",
     "category",
