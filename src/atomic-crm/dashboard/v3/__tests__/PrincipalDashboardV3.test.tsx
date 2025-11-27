@@ -28,6 +28,12 @@ vi.mock("../hooks/useMyTasks", () => ({
     error: null,
     completeTask: vi.fn(),
     snoozeTask: vi.fn(),
+    deleteTask: vi.fn(),
+    viewTask: vi.fn(),
+    updateTaskDueDate: vi.fn(),
+    updateTaskLocally: vi.fn(),
+    rollbackTask: vi.fn(),
+    calculateStatus: vi.fn(),
   }),
 }));
 
