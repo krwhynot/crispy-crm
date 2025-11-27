@@ -58,6 +58,10 @@ const DEBOUNCE_MS = 300;
 interface QuickLogFormProps {
   onComplete: () => void;
   onRefresh?: () => void; // Callback to refresh dashboard data
+  /** Initial draft data to restore from localStorage */
+  initialDraft?: Partial<ActivityLogInput> | null;
+  /** Callback when form data changes (for draft persistence) */
+  onDraftChange?: (formData: Partial<ActivityLogInput>) => void;
 }
 
 // Type definitions for entities
@@ -103,7 +107,12 @@ function useDebouncedSearch(delay: number = DEBOUNCE_MS) {
   return { searchTerm, debouncedTerm, setSearchTerm, clearSearch };
 }
 
-export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
+export function QuickLogForm({
+  onComplete,
+  onRefresh,
+  initialDraft,
+  onDraftChange,
+}: QuickLogFormProps) {
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const { salesId, loading: salesIdLoading } = useCurrentSale();
@@ -118,10 +127,29 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
   const orgSearch = useDebouncedSearch();
   const oppSearch = useDebouncedSearch();
 
+  // Merge initialDraft with schema defaults for form initialization
+  const defaultValues = useMemo(() => {
+    const schemaDefaults = activityLogSchema.partial().parse({});
+    if (initialDraft) {
+      return { ...schemaDefaults, ...initialDraft };
+    }
+    return schemaDefaults;
+  }, [initialDraft]);
+
   const form = useForm<ActivityLogInput>({
     resolver: zodResolver(activityLogSchema),
-    defaultValues: activityLogSchema.partial().parse({}),
+    defaultValues,
   });
+
+  // Watch all form values for draft persistence
+  const formValues = form.watch();
+
+  // Notify parent of form changes for draft persistence
+  useEffect(() => {
+    if (onDraftChange) {
+      onDraftChange(formValues);
+    }
+  }, [formValues, onDraftChange]);
 
   // Consolidate all form.watch() calls at component top for stable memoization
   const selectedOpportunityId = form.watch("opportunityId");
