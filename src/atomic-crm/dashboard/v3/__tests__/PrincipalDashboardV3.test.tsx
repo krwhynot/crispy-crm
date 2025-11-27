@@ -3,13 +3,12 @@ import { describe, it, expect, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { PrincipalDashboardV3 } from "../PrincipalDashboardV3";
 
-// Mock QuickLoggerPanel to avoid React Admin dependency in tests
-vi.mock("../components/QuickLoggerPanel", () => ({
-  QuickLoggerPanel: () => (
-    <div>
-      <h2>Log Activity</h2>
-      <p>Quick capture for calls, meetings, and notes</p>
-    </div>
+// Mock LogActivityFAB to avoid React Admin dependency in tests
+vi.mock("../components/LogActivityFAB", () => ({
+  LogActivityFAB: () => (
+    <button aria-label="Log Activity">
+      Log Activity FAB
+    </button>
   ),
 }));
 
@@ -42,7 +41,7 @@ vi.mock("../hooks/usePrincipalOpportunities", () => ({
 }));
 
 describe("PrincipalDashboardV3", () => {
-  it("should render all three panels", () => {
+  it("should render both panels (Pipeline and Tasks)", () => {
     render(
       <MemoryRouter>
         <PrincipalDashboardV3 />
@@ -51,28 +50,39 @@ describe("PrincipalDashboardV3", () => {
 
     expect(screen.getByText("Pipeline by Principal")).toBeInTheDocument();
     expect(screen.getByText("My Tasks")).toBeInTheDocument();
-    expect(screen.getByText("Log Activity")).toBeInTheDocument();
   });
 
-  it("should render resizable panel group", () => {
+  it("should render the Log Activity FAB", () => {
+    render(
+      <MemoryRouter>
+        <PrincipalDashboardV3 />
+      </MemoryRouter>
+    );
+
+    expect(screen.getByRole("button", { name: /log activity/i })).toBeInTheDocument();
+  });
+
+  it("should use CSS Grid layout with two columns on desktop", () => {
     const { container } = render(
       <MemoryRouter>
         <PrincipalDashboardV3 />
       </MemoryRouter>
     );
 
-    const panelGroup = container.querySelector("[data-panel-group]");
-    expect(panelGroup).toBeInTheDocument();
+    // The grid container should have the responsive grid classes
+    const gridContainer = container.querySelector(".grid");
+    expect(gridContainer).toBeInTheDocument();
+    expect(gridContainer).toHaveClass("grid-cols-1");
+    expect(gridContainer).toHaveClass("lg:grid-cols-[2fr_3fr]");
   });
 
-  it("should have three panels with correct default sizes", () => {
-    const { container } = render(
+  it("should render dashboard header", () => {
+    render(
       <MemoryRouter>
         <PrincipalDashboardV3 />
       </MemoryRouter>
     );
 
-    const panels = container.querySelectorAll("[data-panel]");
-    expect(panels).toHaveLength(3);
+    expect(screen.getByText("Principal Dashboard")).toBeInTheDocument();
   });
 });

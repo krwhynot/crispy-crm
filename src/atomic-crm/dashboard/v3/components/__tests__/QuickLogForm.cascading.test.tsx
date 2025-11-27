@@ -25,10 +25,12 @@ import { QuickLogForm } from "../QuickLogForm";
 
 // Mock Form components (react-hook-form wrapper)
 vi.mock("@/components/ui/form", () => ({
-  Form: ({ children }: any) => <div data-testid="form-wrapper">{children}</div>,
-  FormField: ({ render, name }: any) => {
+  Form: ({ children }: any) => <form data-testid="form-wrapper" onSubmit={(e: any) => e.preventDefault()}>{children}</form>,
+  FormField: ({ render, name, control }: any) => {
     const field = { value: undefined, onChange: vi.fn(), name };
-    return render({ field });
+    const fieldState = { error: undefined, invalid: false };
+    const formState = { isSubmitting: false, errors: {} };
+    return render({ field, fieldState, formState });
   },
   FormItem: ({ children, className }: any) => (
     <div className={className}>{children}</div>
@@ -236,7 +238,14 @@ vi.mock("react-hook-form", () => ({
         date: new Date(),
       });
     },
-    watch: (field: string) => {
+    watch: (field?: string) => {
+      if (!field) return {
+        activityType: "Call",
+        outcome: "Connected",
+        notes: "",
+        date: new Date(),
+        createFollowUp: false,
+      };
       if (field === "activityType") return "Call";
       if (field === "createFollowUp") return false;
       return undefined;
@@ -244,6 +253,7 @@ vi.mock("react-hook-form", () => ({
     getValues: () => ({}),
     setValue: vi.fn(),
     reset: vi.fn(),
+    formState: { isSubmitting: false, errors: {} },
   }),
   Controller: ({ render, name }: any) => {
     const field = { value: undefined, onChange: vi.fn(), name };
@@ -252,7 +262,7 @@ vi.mock("react-hook-form", () => ({
   FormProvider: ({ children }: any) => <>{children}</>,
   useFormContext: () => ({
     getFieldState: () => ({}),
-    formState: {},
+    formState: { isSubmitting: false, errors: {} },
   }),
 }));
 
