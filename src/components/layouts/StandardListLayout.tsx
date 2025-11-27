@@ -19,8 +19,13 @@
  * - Uses `.filter-sidebar` and `.card-container` utility classes
  * - Semantic HTML: `<aside>` for filters, `<main>` for content
  * - ARIA labels for screen reader navigation
- * - Sticky positioning for filter sidebar (remains visible on scroll)
+ * - Sticky positioning for filter sidebar on desktop (remains visible on scroll)
  * - Responsive gap spacing (24px) for comfortable visual separation
+ *
+ * Responsive Behavior (Desktop-First):
+ * - Base (mobile/tablet <1024px): Stacked vertical layout (flex-col)
+ * - Desktop (≥1024px): Side-by-side two-column layout (lg:flex-row)
+ * - Filter sidebar collapses above content on smaller screens
  *
  * @param filterComponent - React node containing filter UI components
  * @param children - Main content area (typically a Datagrid or table)
@@ -42,10 +47,10 @@ export function StandardListLayout({
   resource,
 }: StandardListLayoutProps) {
   return (
-    <div className="flex flex-row gap-6">
+    <div className="flex flex-col lg:flex-row gap-6">
       <aside
         aria-label={`Filter ${resource}`}
-        className="filter-sidebar sticky top-[var(--spacing-section)] h-fit"
+        className="filter-sidebar w-full lg:w-auto lg:sticky lg:top-[var(--spacing-section)] lg:h-fit"
       >
         <div className="card-container p-2">{filterComponent}</div>
       </aside>
