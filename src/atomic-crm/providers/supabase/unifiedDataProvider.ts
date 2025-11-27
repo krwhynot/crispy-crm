@@ -33,7 +33,7 @@ import type {
   FilterPayload,
 } from "ra-core";
 import type { FileObject } from "@supabase/storage-js";
-import { quickAddSchema } from '../../validation/quickAdd';
+import { quickAddSchema, QuickAddInput } from '../../validation/quickAdd';
 
 import { supabase } from "./supabase";
 import { getResourceName, supportsSoftDelete } from "./resources";
@@ -55,8 +55,6 @@ import {
 import {
   RPC_SCHEMAS,
   type RPCFunctionName,
-  edgeFunctionSchemas,
-  type EdgeFunctionName,
 } from "../../validation/rpc";
 
 // Import types for custom methods
@@ -95,14 +93,7 @@ interface ValidationError {
   errors: Record<string, string>;
 }
 
-/**
- * Interface for Supabase errors with detailed field information
- */
-interface SupabaseError extends Error {
-  code?: string;
-  details?: string;
-  hint?: string;
-}
+
 
 /**
  * Extended error type for error handling
@@ -287,48 +278,11 @@ async function transformData<T>(
   return (await transformService.transform(resource, data)) as Partial<T>;
 }
 
-/**
- * Type guard to check if an RPC response is wrapped.
- * Checks for the presence of a data property with an id field.
- *
- * @param response The response to check
- * @returns True if the response is wrapped
- */
-function isWrappedResponse<T extends { id: Identifier }>(
-  response: RpcWrappedResponse<T>
-): response is { data: T } {
-  return (
-    response !== null &&
-    response !== undefined &&
-    typeof response === "object" &&
-    "data" in response &&
-    response.data !== null &&
-    typeof response.data === "object" &&
-    "id" in response.data
-  );
-}
 
 
 
-/**
- * Handles RPC errors by attempting to parse JSON error messages.
- * Many Supabase RPC functions return structured error messages as JSON strings.
- *
- * @param error The error from a Supabase RPC call
- * @throws The parsed error or original error
- */
-function handleRpcError(error: SupabaseError | Error): never {
-  if (error?.message) {
-    try {
-      // Attempt to parse a structured error message
-      const parsedError = JSON.parse(error.message) as unknown;
-      throw parsedError;
-    } catch {
-      // If parsing fails, it's not JSON, so throw the original error
-    }
-  }
-  throw error;
-}
+
+
 
 /**
  * Process data for database operations
@@ -1033,8 +987,13 @@ export const unifiedDataProvider: DataProvider = {
     try {
       console.log("[DataProvider] Creating booth visitor", data);
 
+      const validationResult = quickAddSchema.safeParse(data);
+      if (!validationResult.success) {
+        throw new Error(`Invalid booth visitor data: ${validationResult.error.message}`);
+      }
+
       const { data: result, error } = await supabase.rpc("create_booth_visitor_opportunity", {
-        _data: data,
+        _data: validationResult.data,
       });
 
       if (error) {
