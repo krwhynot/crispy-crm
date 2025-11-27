@@ -236,5 +236,81 @@ export function useMyTasks() {
     window.location.href = `/#/tasks/${taskId}/show`;
   }, []);
 
-  return { tasks, loading, error, completeTask, snoozeTask, deleteTask, viewTask };
+  /**
+   * Update task due date (for Kanban drag-drop)
+   * Uses optimistic UI update for immediate feedback
+   *
+   * @param taskId - The task ID to update
+   * @param newDueDate - The new due date
+   * @returns Promise that resolves when update completes
+   */
+  const updateTaskDueDate = useCallback(
+    async (taskId: number, newDueDate: Date) => {
+      const task = tasks.find((t) => t.id === taskId);
+      if (!task) return;
+
+      const newStatus = calculateStatus(newDueDate);
+
+      // Optimistic UI update - immediately move task to new column
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.id === taskId ? { ...t, dueDate: newDueDate, status: newStatus } : t
+        )
+      );
+
+      try {
+        await dataProvider.update("tasks", {
+          id: taskId,
+          data: { due_date: newDueDate.toISOString() },
+          previousData: task,
+        });
+      } catch (err) {
+        console.error("Failed to update task due date:", err);
+        // Rollback optimistic update on failure
+        setTasks((prev) =>
+          prev.map((t) =>
+            t.id === taskId ? { ...t, dueDate: task.dueDate, status: task.status } : t
+          )
+        );
+        throw err; // Re-throw so UI can handle
+      }
+    },
+    [tasks, dataProvider, calculateStatus]
+  );
+
+  /**
+   * Optimistic update for local state (used by Kanban for instant feedback)
+   * Called before API request, allows immediate column move
+   */
+  const updateTaskLocally = useCallback(
+    (taskId: number, updates: Partial<TaskItem>) => {
+      setTasks((prev) =>
+        prev.map((t) => (t.id === taskId ? { ...t, ...updates } : t))
+      );
+    },
+    []
+  );
+
+  /**
+   * Rollback a task to previous state (for failed API calls)
+   */
+  const rollbackTask = useCallback((taskId: number, previousState: TaskItem) => {
+    setTasks((prev) =>
+      prev.map((t) => (t.id === taskId ? previousState : t))
+    );
+  }, []);
+
+  return {
+    tasks,
+    loading,
+    error,
+    completeTask,
+    snoozeTask,
+    deleteTask,
+    viewTask,
+    updateTaskDueDate,
+    updateTaskLocally,
+    rollbackTask,
+    calculateStatus,
+  };
 }

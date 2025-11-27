@@ -42,3 +42,7 @@ export type {
   ActivityType,
   ActivityOutcome,
 } from "./types";
+
+// Export KPI-related types and components for external use
+export type { KPIMetrics } from "./hooks/useKPIMetrics";
+export type { KPIMetricType } from "./components/KPICard";
