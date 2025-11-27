@@ -59,9 +59,9 @@ export const SEARCHABLE_RESOURCES = {
   opportunities: ["name", "description", "next_action", "lead_source"],
   opportunities_summary: [
     "name",
-    "category",
     "description",
     "next_action",
+    "lead_source",
     "principal_organization_name",
   ],
   contacts_summary: ["first_name", "last_name"],
