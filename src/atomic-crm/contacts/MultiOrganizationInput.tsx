@@ -53,14 +53,14 @@ export const MultiOrganizationInput = () => {
 
   return (
     <div className="space-y-4">
-      <h6 className="text-md font-medium flex items-center gap-2">
+      <h3 className="text-md font-medium flex items-center gap-2">
         <Building2 className="h-4 w-4" />
         Associated Organizations
-      </h6>
+      </h3>
 
       {/* Organizations */}
       <Card className="p-4">
-        <h6 className="text-sm font-medium mb-3">Organizations</h6>
+        <h4 className="text-sm font-medium mb-3">Organizations</h4>
         <ArrayInput source="organizations" label={false} helperText={false}>
           <SimpleFormIterator
             inline={false}

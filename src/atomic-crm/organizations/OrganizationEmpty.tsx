@@ -19,7 +19,7 @@ export const OrganizationEmpty = () => {
 
       {/* Welcome message */}
       <div className="flex flex-col gap-compact items-center max-w-md">
-        <h6 className="text-lg font-bold text-foreground">No organizations yet</h6>
+        <h2 className="text-lg font-bold text-foreground">No organizations yet</h2>
         <p className="text-sm text-muted-foreground text-center">
           Start building your network by adding organizations like customers, prospects,
           principals, and distributors.
@@ -32,7 +32,7 @@ export const OrganizationEmpty = () => {
           <div className="flex items-center justify-center w-11 h-11 rounded-full bg-primary/10">
             <Users className="h-6 w-6 text-primary" />
           </div>
-          <h6 className="text-sm font-semibold text-foreground">Track relationships</h6>
+          <h3 className="text-sm font-semibold text-foreground">Track relationships</h3>
           <p className="text-xs text-muted-foreground">
             Manage contacts, opportunities, and activities for each organization.
           </p>
@@ -42,7 +42,7 @@ export const OrganizationEmpty = () => {
           <div className="flex items-center justify-center w-11 h-11 rounded-full bg-primary/10">
             <Building2 className="h-6 w-6 text-primary" />
           </div>
-          <h6 className="text-sm font-semibold text-foreground">Organize hierarchies</h6>
+          <h3 className="text-sm font-semibold text-foreground">Organize hierarchies</h3>
           <p className="text-xs text-muted-foreground">
             Set up parent-child relationships and track branch locations.
           </p>
@@ -52,7 +52,7 @@ export const OrganizationEmpty = () => {
           <div className="flex items-center justify-center w-11 h-11 rounded-full bg-primary/10">
             <TrendingUp className="h-6 w-6 text-primary" />
           </div>
-          <h6 className="text-sm font-semibold text-foreground">Prioritize accounts</h6>
+          <h3 className="text-sm font-semibold text-foreground">Prioritize accounts</h3>
           <p className="text-xs text-muted-foreground">
             Assign priority levels and segments to focus on high-value accounts.
           </p>

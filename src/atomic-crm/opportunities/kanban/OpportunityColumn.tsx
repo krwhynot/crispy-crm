@@ -80,19 +80,20 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
   const metrics = useStageMetrics(opportunities);
 
   // Map elevation levels to semantic shadow utilities (design system compliant)
+  // Uses shadow-elevation-* utilities defined in index.css, which map to --elevation-* tokens
   const elevation = getOpportunityStageElevation(stage);
   const shadowConfig = {
     1: {
-      rest: "shadow-card-1",
-      hover: "hover:shadow-card-1-hover",
+      rest: "shadow-elevation-1",
+      hover: "hover:shadow-elevation-2",
     },
     2: {
-      rest: "shadow-card-2",
-      hover: "hover:shadow-card-2-hover",
+      rest: "shadow-elevation-2",
+      hover: "hover:shadow-elevation-3",
     },
     3: {
-      rest: "shadow-card-3",
-      hover: "hover:shadow-card-3-hover",
+      rest: "shadow-elevation-3",
+      hover: "hover:shadow-elevation-3",
     },
   }[elevation];
 

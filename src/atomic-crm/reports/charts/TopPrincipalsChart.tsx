@@ -75,7 +75,7 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
         x: {
           beginAtZero: true,
           grid: {
-            color: "rgba(0, 0, 0, 0.05)",
+            color: "var(--chart-gridline)",
           },
           ticks: {
             font: {
