@@ -1,3 +1,4 @@
+import React from "react";
 import { useUpdate, useNotify, downloadCSV, type Exporter } from "ra-core";
 import jsonExport from "jsonexport/dist";
 
@@ -127,7 +128,7 @@ function CompletionCheckbox({ task }: { task: Task }) {
   };
 
   return (
-    <label className="flex items-center justify-center cursor-pointer">
+    <label className="flex items-center justify-center h-11 w-11 cursor-pointer">
       <input
         type="checkbox"
         checked={task.completed || false}
