@@ -412,6 +412,10 @@
   --destructive: oklch(58% 0.18 27); /* Slightly lighter terracotta for cream background */
   --destructive-foreground: oklch(99% 0 0); /* White text on destructive */
 
+  /* Chart semantic aliases (map to *-default variants for useChartTheme hook) */
+  --success: var(--success-default);
+  --warning: var(--warning-default);
+
   /* Borders and focus */
   --border: var(--neutral-200); /* Borders */
   --input: var(--neutral-200); /* Input borders */
