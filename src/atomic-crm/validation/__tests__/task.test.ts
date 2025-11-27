@@ -558,9 +558,9 @@ describe("Task Validation Schemas (task.ts)", () => {
       expect(defaults.priority).toBe("medium");
     });
 
-    it("should set type to None by default", () => {
+    it("should set type to Call by default (meaningful default reduces cognitive load)", () => {
       const defaults = getTaskDefaultValues();
-      expect(defaults.type).toBe("None");
+      expect(defaults.type).toBe("Call");
     });
 
     it("should set due_date to today", () => {
