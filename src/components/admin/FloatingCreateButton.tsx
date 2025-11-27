@@ -65,8 +65,8 @@ export const FloatingCreateButton: React.FC<FloatingCreateButtonProps> = ({
         "text-primary-foreground",
         // Shadow for elevation
         "shadow-lg hover:shadow-xl",
-        // Transitions
-        "transition-all duration-200",
+        // Standardized 150ms transition timing with smooth easing
+        "transition-[box-shadow,transform,background-color] duration-150 ease-out",
         // Focus states for accessibility
         "focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-primary/30",
         // Active state
