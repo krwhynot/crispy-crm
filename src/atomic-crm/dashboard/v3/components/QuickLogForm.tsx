@@ -1017,24 +1017,48 @@ export function QuickLogForm({ onComplete, onRefresh }: QuickLogFormProps) {
 
         {/* Action buttons */}
         <div className="flex justify-between pt-4">
-          <Button type="button" variant="outline" onClick={onComplete}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={onComplete}
+            disabled={form.formState.isSubmitting}
+          >
             Cancel
           </Button>
           <div className="flex gap-2">
-            <Button type="submit" className="h-11">
-              Save & Close
+            <Button
+              type="submit"
+              className="h-11"
+              disabled={form.formState.isSubmitting}
+            >
+              {form.formState.isSubmitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Save & Close"
+              )}
             </Button>
             <Button
               type="button"
               variant="secondary"
               className="h-11"
+              disabled={form.formState.isSubmitting}
               onClick={() => {
                 form.handleSubmit((data) => {
                   onSubmit(data, false);
                 })();
               }}
             >
-              Save & New
+              {form.formState.isSubmitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                "Save & New"
+              )}
             </Button>
           </div>
         </div>

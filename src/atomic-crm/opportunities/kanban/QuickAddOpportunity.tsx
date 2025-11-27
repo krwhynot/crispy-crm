@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useCreate, useNotify, useRefresh } from "react-admin";
+import { Loader2 } from "lucide-react";
 import { createOpportunitySchema } from "../../validation/opportunities";
 import type { OpportunityStageValue } from "../../types";
 
@@ -53,8 +54,8 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-card rounded-lg shadow-xl p-6 w-full max-w-md">
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-150">
+          <div className="bg-card rounded-lg shadow-xl p-6 w-full max-w-md motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-200">
             <h2 className="text-lg font-semibold mb-4">Create Opportunity</h2>
 
             <form onSubmit={handleSubmit}>
@@ -67,8 +68,9 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
                   type="text"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
                   placeholder="Enter opportunity name"
+                  disabled={isLoading}
                 />
               </div>
 
@@ -92,17 +94,24 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
                     setIsOpen(false);
                     setName("");
                   }}
-                  className="px-4 py-2 text-sm border border-border rounded hover:bg-accent transition-colors"
+                  className="px-4 py-2 text-sm border border-border rounded hover:bg-accent active:bg-accent/80 transition-colors motion-safe:active:scale-[0.98]"
                   disabled={isLoading}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 transition-colors disabled:opacity-50"
+                  className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 active:bg-primary/80 transition-colors motion-safe:active:scale-[0.98] disabled:opacity-50 inline-flex items-center gap-2"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Creating..." : "Create"}
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                      Creating...
+                    </>
+                  ) : (
+                    "Create"
+                  )}
                 </button>
               </div>
             </form>
