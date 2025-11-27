@@ -166,9 +166,8 @@ export function ResourceSlideOver({
               {onModeToggle && (
                 <Button
                   variant="ghost"
-                  size="sm"
                   onClick={onModeToggle}
-                  className="h-8 px-2 text-sm"
+                  className="h-11 px-3 text-sm"
                   aria-label={mode === "view" ? "Switch to edit mode" : "Switch to view mode"}
                 >
                   {mode === "view" ? (

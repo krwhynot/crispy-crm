@@ -44,7 +44,7 @@ export default function TaskList() {
       exporter={exporter}
     >
       <StandardListLayout resource="tasks" filterComponent={<TaskListFilter />}>
-        <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
+        <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "edit")}>
           {/* Inline completion checkbox - CRITICAL: prevent row click */}
           <FunctionField
             label="Done"

@@ -98,7 +98,7 @@ export function TaskSlideOverDetailsTab({
   if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
-        <Form onSubmit={handleSave} record={record} resolver={zodResolver(taskUpdateSchema)}>
+        <Form onSubmit={handleSave} record={record} resolver={zodResolver(taskEditFormSchema)}>
           <div className="space-y-6" role="form" aria-label="Edit task form">
             <div className="space-y-4">
               <TextInput source="title" label="Task Title" />
