@@ -202,6 +202,27 @@
     margin-bottom: var(--spacing-widget);
   }
 
+  /* Shadow Elevation Utilities - Maps to 3-tier warm-tinted shadow system */
+  .shadow-elevation-1 {
+    box-shadow: var(--elevation-1);
+  }
+  .shadow-elevation-2 {
+    box-shadow: var(--elevation-2);
+  }
+  .shadow-elevation-3 {
+    box-shadow: var(--elevation-3);
+  }
+  .hover\:shadow-elevation-2:hover {
+    box-shadow: var(--elevation-2);
+  }
+  .hover\:shadow-elevation-3:hover {
+    box-shadow: var(--elevation-3);
+  }
+  /* Column inner shadow for kanban boards */
+  .shadow-col-inner {
+    box-shadow: var(--shadow-col-inner);
+  }
+
   /* Screen Reader Only - Accessibility */
   .sr-only {
     position: absolute;
