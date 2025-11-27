@@ -235,19 +235,44 @@
     white-space: nowrap;
     border-width: 0;
   }
+
+  /* Typography Polish Utilities */
+  .text-heading {
+    letter-spacing: var(--text-heading-tracking);
+    line-height: var(--leading-heading);
+  }
+
+  .text-body {
+    letter-spacing: var(--text-body-tracking);
+    line-height: var(--leading-body);
+  }
+
+  .text-caption {
+    letter-spacing: var(--text-caption-tracking);
+    line-height: var(--leading-relaxed);
+    color: var(--text-subtle);
+  }
 }
 
 @layer components {
-  /* Premium interactive card/row - shared styles for all premium hover effects */
+  /* Premium interactive card/row - refined for B2B professional feel */
   /* IMPORTANT: Both classes need identical @apply statements (no @extend in PostCSS!) */
   .interactive-card,
   .table-row-premium {
-    @apply rounded-lg border border-transparent bg-card px-3 py-1.5;
-    @apply transition-all duration-150;
-    @apply hover:border-border hover:shadow-md;
-    @apply motion-safe:hover:-translate-y-0.5;
-    @apply active:scale-[0.98];
-    @apply focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2;
+    @apply rounded-lg border border-transparent bg-card px-3 py-2;
+    transition: all var(--duration-normal) var(--ease-out-soft);
+
+    /* Subtle hover - background tint instead of dramatic lift */
+    @apply hover:bg-muted/30 hover:border-border/50;
+
+    /* Nearly imperceptible scale for premium feel */
+    @apply motion-safe:hover:scale-[1.002];
+
+    /* Selection feedback */
+    @apply active:bg-muted/50;
+
+    /* Focus for keyboard navigation */
+    @apply focus-within:ring-2 focus-within:ring-ring/40 focus-within:ring-offset-1;
   }
 
   /* Standard card container */
@@ -275,6 +300,95 @@
   /* Focus ring */
   .focus-ring {
     @apply focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2;
+  }
+
+  /* Card with premium hover effect - explicit interactive variant */
+  .card-interactive {
+    @apply bg-card border border-border rounded-xl;
+    box-shadow: var(--elevation-1);
+    transition: all var(--duration-slow) var(--ease-out-soft);
+  }
+
+  .card-interactive:hover {
+    box-shadow: var(--elevation-2);
+    border-color: oklch(90% 0.005 92);
+    transform: translateY(-1px);
+  }
+
+  .card-interactive:active {
+    transform: translateY(0);
+    box-shadow: var(--elevation-1);
+  }
+
+  /* Skeleton loading shimmer animation */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      var(--loading-skeleton) 0%,
+      var(--loading-shimmer) 50%,
+      var(--loading-skeleton) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: var(--radius-sm);
+  }
+
+  .skeleton-text {
+    height: 1em;
+    width: 100%;
+    background: linear-gradient(
+      90deg,
+      var(--loading-skeleton) 0%,
+      var(--loading-shimmer) 50%,
+      var(--loading-skeleton) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: var(--radius-sm);
+  }
+
+  .skeleton-avatar {
+    background: linear-gradient(
+      90deg,
+      var(--loading-skeleton) 0%,
+      var(--loading-shimmer) 50%,
+      var(--loading-skeleton) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s ease-in-out infinite;
+    border-radius: 9999px;
+  }
+
+  /* Divider system */
+  .divider {
+    height: 1px;
+    background: var(--divider-subtle);
+    border: none;
+    margin: var(--spacing-content) 0;
+  }
+
+  .divider-section {
+    height: 1px;
+    background: var(--divider-strong);
+    border: none;
+    margin: var(--spacing-section) 0;
+  }
+
+  .divider-vertical {
+    width: 1px;
+    height: 100%;
+    background: var(--divider-subtle);
+    margin: 0 var(--spacing-content);
+  }
+}
+
+/* Skeleton shimmer keyframes - outside @layer for global access */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
   }
 }
 
