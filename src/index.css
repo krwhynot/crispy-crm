@@ -696,6 +696,10 @@
   --overlay: oklch(0 0 0 / 70%); /* Higher opacity in dark mode */
   --overlay-light: oklch(0 0 0 / 50%); /* Medium opacity for dark mode */
 
+  /* Chart semantic aliases (map to *-default variants for useChartTheme hook) */
+  --success: var(--success-default);
+  --warning: var(--warning-default);
+
   /* Borders and focus */
   --border: oklch(1 0 0 / 15%); /* Transparent white border */
   --input: oklch(1 0 0 / 15%); /* Input borders */
