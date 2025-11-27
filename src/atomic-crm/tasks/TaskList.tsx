@@ -101,7 +101,8 @@ export default function TaskList() {
 }
 
 // Inline completion checkbox component - prevents row click propagation
-function CompletionCheckbox({ task }: { task: Task }) {
+// Memoized to prevent re-renders when other rows update
+const CompletionCheckbox = React.memo(function CompletionCheckbox({ task }: { task: Task }) {
   const [update] = useUpdate();
   const notify = useNotify();
 
@@ -134,14 +135,14 @@ function CompletionCheckbox({ task }: { task: Task }) {
         checked={task.completed || false}
         onChange={handleToggle}
         onClick={(e) => e.stopPropagation()}
-        className="h-4 w-4 rounded border-input"
+        className="h-4 w-4 rounded border-input focus:ring-2 focus:ring-primary focus:ring-offset-2"
         aria-label={
           task.completed ? `Mark "${task.title}" as incomplete` : `Mark "${task.title}" as complete`
         }
       />
     </label>
   );
-}
+});
 
 
 // CSV exporter
