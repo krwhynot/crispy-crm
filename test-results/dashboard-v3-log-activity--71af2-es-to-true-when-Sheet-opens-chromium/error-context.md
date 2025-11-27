@@ -1,0 +1,69 @@
+# Page snapshot
+
+```yaml
+- generic:
+  - generic:
+    - navigation:
+      - generic:
+        - generic:
+          - generic:
+            - link:
+              - /url: "#/"
+            - generic:
+              - navigation:
+                - link:
+                  - /url: "#/"
+                  - text: Dashboard
+                - link:
+                  - /url: "#/contacts"
+                  - text: Contacts
+                - link:
+                  - /url: "#/organizations"
+                  - text: Organizations
+                - link:
+                  - /url: "#/opportunities"
+                  - text: Opportunities
+                - link:
+                  - /url: "#/products"
+                  - text: Products
+                - link:
+                  - /url: "#/tasks"
+                  - text: Tasks
+                - link:
+                  - /url: "#/reports"
+                  - text: Reports
+            - generic:
+              - button:
+                - img
+                - generic: Toggle theme
+              - button:
+                - img
+              - button:
+                - img
+              - button:
+                - generic:
+                  - generic: A
+    - main:
+      - generic:
+        - generic:
+          - generic:
+            - heading [level=1]: Principal Dashboard
+        - main:
+          - button [expanded]:
+            - img
+    - contentinfo:
+      - generic:
+        - generic:
+          - paragraph: © 2025 MFB Master Food Brokers. All rights reserved.
+          - button:
+            - img
+            - generic: Keyboard shortcuts
+    - region "Notifications alt+T"
+  - dialog "Log Activity" [ref=e2]:
+    - generic [ref=e3]:
+      - heading "Log Activity" [level=2] [ref=e4]
+      - paragraph [ref=e5]: Quick capture for calls, meetings, and notes
+    - button "Close" [active] [ref=e32] [cursor=pointer]:
+      - img [ref=e33]
+      - generic [ref=e36]: Close
+```

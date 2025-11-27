@@ -3,16 +3,17 @@ import { lazy } from "react";
 /**
  * Principal Dashboard V3
  *
- * Three-panel resizable dashboard:
- * - Left: Pipeline by Principal (table view with momentum indicators)
- * - Center: My Tasks (grouped by due date)
- * - Right: Quick Activity Logger
+ * Two-column CSS Grid dashboard with Log Activity FAB:
+ * - Left (40%): Pipeline by Principal (table view with momentum indicators)
+ * - Right (60%): My Tasks (grouped by due date)
+ * - FAB: Opens Sheet slide-over for activity logging
  *
  * Features:
- * - Resizable panels with localStorage persistence
+ * - CSS Grid layout (grid-cols-1 lg:grid-cols-[2fr_3fr])
  * - Error boundary for graceful failure handling
  * - Lazy loading for code splitting
- * - Desktop-optimized layout (1440px+)
+ * - Desktop-first design (lg: breakpoint at 1024px+)
+ * - Draft persistence in localStorage for activity form
  */
 
 // Lazy-load the dashboard component for code splitting
