@@ -42,11 +42,6 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
             { distributor_organization_id: record.id },
           ],
         };
-        console.log('[DEBUG 1/4] OrganizationOpportunitiesTab - BEFORE dataProvider.getList', {
-          resource: 'opportunities',
-          filter: filterPayload,
-          recordId: record.id,
-        });
 
         const result = await dataProvider.getList("opportunities", {
           filter: filterPayload,

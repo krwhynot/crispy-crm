@@ -254,26 +254,12 @@ export function applySearchParams(
   params: GetListParams,
   useView: boolean = true
 ): GetListParams {
-  // DEBUG: Log input
-  console.log('[DEBUG 3/4] applySearchParams - INPUT', {
-    resource,
-    filter: JSON.stringify(params.filter),
-    useView,
-  });
-
   const searchableFields = getCachedSearchableFields(resource);
 
   // Check if we're using a view (views already handle soft delete filtering internally)
   // Only check for view if the operation will actually use one
   const dbResource = useView ? getDatabaseResource(resource, "list") : getResourceName(resource);
   const isView = dbResource.includes("_summary") || dbResource.includes("_view");
-
-  // DEBUG: Log view detection
-  console.log('[DEBUG 3/4] applySearchParams - VIEW DETECTION', {
-    dbResource,
-    isView,
-    searchableFields,
-  });
 
   // Apply soft delete filter for all supported resources, even without search
   // But skip for views as they handle this internally and adding the filter causes PostgREST errors
@@ -287,38 +273,23 @@ export function applySearchParams(
   // Transform array filters to PostgREST operators
   const transformedFilter = transformArrayFilters(orTransformedFilter);
 
-  // DEBUG: Log after transformations
-  console.log('[DEBUG 3/4] applySearchParams - AFTER TRANSFORMATIONS', {
-    orTransformedFilter: JSON.stringify(orTransformedFilter),
-    transformedFilter: JSON.stringify(transformedFilter),
-    needsSoftDeleteFilter,
-  });
-
   // If no search query but needs soft delete filter
   if (!transformedFilter?.q && needsSoftDeleteFilter) {
-    const result = {
+    return {
       ...params,
       filter: {
         ...transformedFilter,
         "deleted_at@is": null,
       },
     };
-    console.log('[DEBUG 3/4] applySearchParams - OUTPUT (soft delete path)', {
-      finalFilter: JSON.stringify(result.filter),
-    });
-    return result;
   }
 
   // If no search query and no soft delete needed, return params with transformed filters
   if (!transformedFilter?.q) {
-    const result = {
+    return {
       ...params,
       filter: transformedFilter,
     };
-    console.log('[DEBUG 3/4] applySearchParams - OUTPUT (no search, no soft delete path)', {
-      finalFilter: JSON.stringify(result.filter),
-    });
-    return result;
   }
 
   // Extract search query and apply full-text search
@@ -327,30 +298,22 @@ export function applySearchParams(
   // If no searchable fields configured, apply basic soft delete only
   if (searchableFields.length === 0) {
     const softDeleteFilter = needsSoftDeleteFilter ? { "deleted_at@is": null } : {};
-    const result = {
+    return {
       ...params,
       filter: {
         ...filterWithoutQ,
         ...softDeleteFilter,
       },
     };
-    console.log('[DEBUG 3/4] applySearchParams - OUTPUT (no searchable fields path)', {
-      finalFilter: JSON.stringify(result.filter),
-    });
-    return result;
   }
 
   // Use the applyFullTextSearch helper for resources with search configuration
   // Pass the needsSoftDeleteFilter flag to avoid adding deleted_at filter for views
-  const result = applyFullTextSearch(searchableFields, needsSoftDeleteFilter)({
+  return applyFullTextSearch(searchableFields, needsSoftDeleteFilter)({
     ...params,
     // CRITICAL: Pass the transformedFilter to preserve the $or and array transformations.
     filter: transformedFilter,
   });
-  console.log('[DEBUG 3/4] applySearchParams - OUTPUT (full text search path)', {
-    finalFilter: JSON.stringify(result.filter),
-  });
-  return result;
 }
 
 // Type for database records that may have JSONB array fields
@@ -409,14 +372,19 @@ export function normalizeResponseData<T extends JsonbArrayRecord>(
 ): T[];
 export function normalizeResponseData<T extends JsonbArrayRecord>(
   _resource: string,
-  data: T | null | undefined
-): T | null;
+  data: T
+): T;
+export function normalizeResponseData<T extends JsonbArrayRecord>(
+  _resource: string,
+  data: null | undefined
+): null | undefined;
 export function normalizeResponseData<T extends JsonbArrayRecord>(
   _resource: string,
   data: T | T[] | null | undefined
 ): T | T[] | null | undefined {
   // Handle array of records (getList, getMany, getManyReference)
   if (Array.isArray(data)) {
+    if (!data) return [];
     return data
       .map((record) => normalizeJsonbArrayFields(record))
       .filter((r): r is T => r !== null && r !== undefined);
