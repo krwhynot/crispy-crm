@@ -1,8 +1,11 @@
 import { useState } from "react";
-import { Form, useUpdate, useNotify } from "react-admin";
+import { Form, useUpdate, useNotify, ReferenceInput, useGetOne } from "react-admin";
+import { Link } from "react-router-dom";
 import { format } from "date-fns";
+import { Building2 } from "lucide-react";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
+import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
@@ -61,7 +64,7 @@ export function OpportunitySlideOverDetailsTab({
 
   if (mode === "edit") {
     return (
-      <Form defaultValues={record} onSubmit={handleSave} className="space-y-4">
+      <Form defaultValues={record} onSubmit={handleSave} className="space-y-3">
         <TextInput source="name" label="Opportunity Name" helperText={false} fullWidth />
         <TextInput
           source="description"
@@ -119,6 +122,42 @@ export function OpportunitySlideOverDetailsTab({
           fullWidth
         />
 
+        {/* Organizations section */}
+        <div className="pt-4 border-t border-border">
+          <span className="text-sm font-medium text-muted-foreground block mb-4">Organizations</span>
+          <div className="space-y-4">
+            <ReferenceInput source="customer_organization_id" reference="organizations">
+              <AutocompleteInput
+                label="Customer Organization *"
+                optionText="name"
+                filterToQuery={(searchText: string) => ({ q: searchText })}
+                helperText="The customer organization for this opportunity"
+                fullWidth
+              />
+            </ReferenceInput>
+
+            <ReferenceInput source="principal_organization_id" reference="organizations">
+              <AutocompleteInput
+                label="Principal Organization *"
+                optionText="name"
+                filterToQuery={(searchText: string) => ({ q: searchText })}
+                helperText="The principal/manufacturer organization"
+                fullWidth
+              />
+            </ReferenceInput>
+
+            <ReferenceInput source="distributor_organization_id" reference="organizations">
+              <AutocompleteInput
+                label="Distributor Organization"
+                optionText="name"
+                filterToQuery={(searchText: string) => ({ q: searchText })}
+                helperText="Optional distributor organization"
+                fullWidth
+              />
+            </ReferenceInput>
+          </div>
+        </div>
+
         {/* Action buttons */}
         <div className="flex gap-2 pt-4">
           <Button type="submit" disabled={isSaving} className="flex-1">
@@ -153,6 +192,69 @@ export function OpportunitySlideOverDetailsTab({
     if (priority === "high") return "default";
     if (priority === "medium") return "secondary";
     return "outline";
+  };
+
+  // Organization card component for view mode
+  const OrganizationCard = ({
+    organizationId,
+    label,
+    required = false,
+  }: {
+    organizationId: number | null;
+    label: string;
+    required?: boolean;
+  }) => {
+    const { data: org, isLoading } = useGetOne(
+      "organizations",
+      { id: organizationId! },
+      { enabled: isActiveTab && !!organizationId }
+    );
+
+    if (!organizationId && !required) {
+      return null;
+    }
+
+    if (isLoading) {
+      return (
+        <div className="border border-border rounded-lg p-3">
+          <label className="text-xs font-medium text-muted-foreground block mb-2">{label}</label>
+          <div className="h-5 bg-muted animate-pulse rounded" />
+        </div>
+      );
+    }
+
+    if (!org) {
+      return (
+        <div className="border border-border rounded-lg p-3">
+          <label className="text-xs font-medium text-muted-foreground block mb-2">{label}</label>
+          <p className="text-sm text-muted-foreground">Not set</p>
+        </div>
+      );
+    }
+
+    return (
+      <div className="border border-border rounded-lg p-3 hover:bg-muted/50 transition-colors">
+        <label className="text-xs font-medium text-muted-foreground block mb-2">{label}</label>
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-md bg-primary/10 flex items-center justify-center shrink-0">
+            <Building2 className="w-4 h-4 text-primary" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <Link
+              to={`/organizations?view=${org.id}`}
+              className="text-sm font-medium hover:underline block truncate"
+            >
+              {org.name}
+            </Link>
+            {org.type && (
+              <p className="text-xs text-muted-foreground capitalize">
+                {org.type.replace(/_/g, " ")}
+              </p>
+            )}
+          </div>
+        </div>
+      </div>
+    );
   };
 
   const stageName =
@@ -249,6 +351,27 @@ export function OpportunitySlideOverDetailsTab({
           <p className="text-base mt-1 whitespace-pre-wrap">{record.decision_criteria}</p>
         </div>
       )}
+
+      {/* Organizations */}
+      <div className="pt-4 border-t border-border">
+        <span className="text-sm font-medium text-muted-foreground block mb-3">Organizations</span>
+        <div className="grid gap-3">
+          <OrganizationCard
+            organizationId={record.customer_organization_id}
+            label="Customer"
+            required
+          />
+          <OrganizationCard
+            organizationId={record.principal_organization_id}
+            label="Principal"
+            required
+          />
+          <OrganizationCard
+            organizationId={record.distributor_organization_id}
+            label="Distributor"
+          />
+        </div>
+      </div>
 
       {/* Timestamps */}
       <div className="pt-4 border-t border-border space-y-2">
