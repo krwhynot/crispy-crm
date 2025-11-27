@@ -138,15 +138,33 @@ export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({ open, onClos
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="call">Call</SelectItem>
-                <SelectItem value="email">Email</SelectItem>
-                <SelectItem value="meeting">Meeting</SelectItem>
-                <SelectItem value="demo">Demo</SelectItem>
-                <SelectItem value="proposal">Proposal</SelectItem>
-                <SelectItem value="follow_up">Follow-up</SelectItem>
-                <SelectItem value="site_visit">Site Visit</SelectItem>
-                <SelectItem value="contract_review">Contract Review</SelectItem>
-                <SelectItem value="check_in">Check-in</SelectItem>
+                {/* Group 1: Communication (3 items) */}
+                <SelectGroup>
+                  <SelectLabel>Communication</SelectLabel>
+                  <SelectItem value="call">Call</SelectItem>
+                  <SelectItem value="email">Email</SelectItem>
+                  <SelectItem value="check_in">Check-in</SelectItem>
+                </SelectGroup>
+
+                <SelectSeparator />
+
+                {/* Group 2: Meetings (3 items) */}
+                <SelectGroup>
+                  <SelectLabel>Meetings</SelectLabel>
+                  <SelectItem value="meeting">Meeting</SelectItem>
+                  <SelectItem value="demo">Demo</SelectItem>
+                  <SelectItem value="site_visit">Site Visit</SelectItem>
+                </SelectGroup>
+
+                <SelectSeparator />
+
+                {/* Group 3: Documentation (3 items) */}
+                <SelectGroup>
+                  <SelectLabel>Documentation</SelectLabel>
+                  <SelectItem value="proposal">Proposal</SelectItem>
+                  <SelectItem value="contract_review">Contract Review</SelectItem>
+                  <SelectItem value="follow_up">Follow-up</SelectItem>
+                </SelectGroup>
               </SelectContent>
             </Select>
           </div>
