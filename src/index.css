@@ -653,6 +653,7 @@
   --brand-100: oklch(26% 0.055 142); /* Darkest tint */
   --brand-300: oklch(45% 0.075 142); /* Medium dark */
   --brand-500: oklch(55% 0.095 142); /* Lightened for visibility */
+  --brand-600: oklch(52% 0.092 142); /* Chart accent (lighter for dark bg) */
   --brand-650: oklch(50% 0.09 142); /* Hover state (darker in dark mode) */
   --brand-700: oklch(60% 0.1 142); /* Primary (lighter for dark bg) */
   --brand-750: oklch(55% 0.095 142); /* Active state */
