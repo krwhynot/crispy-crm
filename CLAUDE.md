@@ -96,12 +96,13 @@ const form = useForm({
 
 ### Dashboard V3 (Default)
 
-**Route:** `/` | **Layout:** 3-column resizable (40% | 30% | 30%)
+**Route:** `/` | **Layout:** 2-column CSS Grid (40% | 60%) + FAB
 
 **Organisms:**
 - `PrincipalPipelineTable` - Aggregated pipeline with momentum indicators
 - `TasksPanel` - Time-bucketed tasks (Overdue → Today → Tomorrow)
-- `QuickLoggerPanel` - Activity logging with optional follow-up tasks
+- `LogActivityFAB` - Floating action button that opens Sheet slide-over
+- `QuickLogForm` - Activity logging form with draft persistence
 
 **Database view:** `principal_pipeline_summary` with activity-based momentum
 
