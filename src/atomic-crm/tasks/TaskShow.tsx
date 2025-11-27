@@ -3,6 +3,7 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { DateField } from "@/components/admin/date-field";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PriorityBadge } from "@/components/ui/priority-badge";
 import type { Task as TTask } from "../types";
 
 /**
@@ -48,7 +49,7 @@ export default function TaskShow() {
 
           <div>
             <h4 className="text-sm font-semibold mb-1">Priority</h4>
-            <Badge variant={getPriorityVariant(record.priority)}>{record.priority}</Badge>
+            {record.priority && <PriorityBadge priority={record.priority} />}
           </div>
 
           <div>
@@ -95,19 +96,3 @@ export default function TaskShow() {
   );
 }
 
-function getPriorityVariant(
-  priority?: string
-): "default" | "secondary" | "destructive" | "outline" {
-  switch (priority) {
-    case "critical":
-      return "destructive";
-    case "high":
-      return "destructive";
-    case "medium":
-      return "default";
-    case "low":
-      return "secondary";
-    default:
-      return "outline";
-  }
-}

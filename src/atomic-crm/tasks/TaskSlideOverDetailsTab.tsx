@@ -11,6 +11,7 @@ import { BooleanInput } from "@/components/admin/boolean-input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PriorityBadge } from "@/components/ui/priority-badge";
 import { AsideSection } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";
 import { useConfigurationContext } from "../root/ConfigurationContext";
@@ -259,18 +260,3 @@ export function TaskSlideOverDetailsTab({
   );
 }
 
-// Priority badge component with semantic colors
-function PriorityBadge({ priority }: { priority: string }) {
-  const variants: Record<string, "outline" | "secondary" | "default" | "destructive"> = {
-    low: "outline",
-    medium: "secondary",
-    high: "default",
-    critical: "destructive",
-  };
-
-  return (
-    <Badge variant={variants[priority] || "outline"}>
-      {priority.charAt(0).toUpperCase() + priority.slice(1)}
-    </Badge>
-  );
-}
