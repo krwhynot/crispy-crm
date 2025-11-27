@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
-import { SaveIcon } from "lucide-react";
+import { Loader2, SaveIcon } from "lucide-react";
 import type { FormEvent } from "react";
 import { useEffect, useState } from "react";
 import type { Tag } from "../types";
@@ -25,6 +25,7 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
   const [newTagName, setNewTagName] = useState("");
   const [newTagColor, setNewTagColor] = useState<TagColorName>(colors[0]);
   const [disabled, setDisabled] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [colorError, setColorError] = useState<string | undefined>();
 
   const handleNewTagNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,6 +34,7 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
 
   const handleClose = () => {
     setDisabled(false);
+    setIsSubmitting(false);
     setColorError(undefined);
     onClose();
   };
@@ -47,14 +49,19 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
       return;
     }
 
-    await onSubmit({ name: newTagName, color: newTagColor });
+    setIsSubmitting(true);
+    try {
+      await onSubmit({ name: newTagName, color: newTagColor });
 
-    setDisabled(true);
-    setNewTagName("");
-    setNewTagColor(colors[0]);
-    setColorError(undefined);
+      setDisabled(true);
+      setNewTagName("");
+      setNewTagColor(colors[0]);
+      setColorError(undefined);
 
-    handleClose();
+      handleClose();
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   useEffect(() => {
@@ -109,15 +116,24 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
           <div className="flex justify-end pt-4">
             <Button
               variant="outline"
-              disabled={disabled || !newTagName.trim()}
+              disabled={disabled || isSubmitting || !newTagName.trim()}
               className={cn(
                 buttonVariants({ variant: "outline" }),
                 "text-primary",
-                disabled || !newTagName.trim() ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                disabled || isSubmitting || !newTagName.trim() ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
               )}
             >
-              <SaveIcon />
-              Save
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Saving...
+                </>
+              ) : (
+                <>
+                  <SaveIcon />
+                  Save
+                </>
+              )}
             </Button>
           </div>
         </form>

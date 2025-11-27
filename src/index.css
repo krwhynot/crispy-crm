@@ -375,6 +375,7 @@
   --brand-100: oklch(88% 0.045 142); /* #C8E6C9 - Very light sage */
   --brand-300: oklch(75% 0.065 142); /* #81C784 - Soft sage */
   --brand-500: oklch(38% 0.085 142); /* #336600 identity color (forest green) */
+  --brand-600: oklch(41% 0.088 142); /* #3B7200 - Chart accent (between 500 and 650) */
   --brand-650: oklch(45% 0.09 142); /* #3D7A00 - Hover state */
   --brand-700: oklch(32% 0.08 142); /* #2B5600 - Darker emphasis */
   --brand-750: oklch(28% 0.075 142); /* #244A00 - Active state */
