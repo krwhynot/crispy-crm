@@ -123,9 +123,9 @@ export function OpportunitySlideOverDetailsTab({
         />
 
         {/* Organizations section */}
-        <div className="pt-3 border-t border-border">
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide block mb-3">Organizations</span>
-          <div className="space-y-3">
+        <div className="pt-2 border-t border-border">
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide block mb-2">Organizations</span>
+          <div className="space-y-2">
             <ReferenceInput source="customer_organization_id" reference="organizations">
               <AutocompleteInput
                 label="Customer Organization *"
@@ -159,7 +159,7 @@ export function OpportunitySlideOverDetailsTab({
         </div>
 
         {/* Action buttons */}
-        <div className="flex gap-2 pt-3">
+        <div className="flex gap-2 pt-2">
           <Button type="submit" disabled={isSaving} className="flex-1">
             {isSaving ? "Saving..." : "Save Changes"}
           </Button>
@@ -256,54 +256,52 @@ export function OpportunitySlideOverDetailsTab({
     OPPORTUNITY_STAGE_CHOICES.find((choice) => choice.id === record.stage)?.name || record.stage;
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-2">
       {/* Name */}
       <div>
         <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Name</span>
-        <p className="text-sm mt-0.5">{record.name || "N/A"}</p>
+        <p className="text-sm">{record.name || "N/A"}</p>
       </div>
 
       {/* Description */}
       {record.description && (
         <div>
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Description</span>
-          <p className="text-sm mt-0.5 whitespace-pre-wrap">{record.description}</p>
+          <p className="text-sm whitespace-pre-wrap">{record.description}</p>
         </div>
       )}
 
       {/* Stage & Priority row */}
-      <div className="flex gap-4">
-        <div className="flex-1">
+      <div className="grid grid-cols-2 gap-3">
+        <div>
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Stage</span>
-          <div className="mt-0.5">
+          <div>
             <Badge variant={getStageBadgeVariant(record.stage || "")}>{stageName}</Badge>
           </div>
         </div>
-        {record.priority && (
-          <div className="flex-1">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Priority</span>
-            <div className="mt-0.5">
-              <Badge variant={getPriorityBadgeVariant(record.priority)}>
-                {record.priority.charAt(0).toUpperCase() + record.priority.slice(1)}
-              </Badge>
-            </div>
+        <div>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Priority</span>
+          <div>
+            <Badge variant={getPriorityBadgeVariant(record.priority || "low")}>
+              {record.priority ? record.priority.charAt(0).toUpperCase() + record.priority.slice(1) : "Low"}
+            </Badge>
           </div>
-        )}
+        </div>
       </div>
 
       {/* Lead Source & Close Date row */}
-      <div className="flex gap-4">
-        {record.lead_source && (
-          <div className="flex-1">
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Lead Source</span>
-            <p className="text-sm mt-0.5">
-              {record.lead_source.replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase())}
-            </p>
-          </div>
-        )}
-        <div className="flex-1">
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Lead Source</span>
+          <p className="text-sm">
+            {record.lead_source
+              ? record.lead_source.replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase())
+              : "—"}
+          </p>
+        </div>
+        <div>
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Est. Close</span>
-          <p className="text-sm mt-0.5">{formatDate(record.estimated_close_date)}</p>
+          <p className="text-sm">{formatDate(record.estimated_close_date)}</p>
         </div>
       </div>
 
@@ -311,7 +309,7 @@ export function OpportunitySlideOverDetailsTab({
       {record.campaign && (
         <div>
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Campaign</span>
-          <p className="text-sm mt-0.5">{record.campaign}</p>
+          <p className="text-sm">{record.campaign}</p>
         </div>
       )}
 
@@ -319,25 +317,21 @@ export function OpportunitySlideOverDetailsTab({
       {record.notes && (
         <div>
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Notes</span>
-          <p className="text-sm mt-0.5 whitespace-pre-wrap">{record.notes}</p>
+          <p className="text-sm whitespace-pre-wrap">{record.notes}</p>
         </div>
       )}
 
       {/* Next Action row */}
       {(record.next_action || record.next_action_date) && (
-        <div className="flex gap-4">
-          {record.next_action && (
-            <div className="flex-1">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Next Action</span>
-              <p className="text-sm mt-0.5">{record.next_action}</p>
-            </div>
-          )}
-          {record.next_action_date && (
-            <div className="flex-1">
-              <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Action Date</span>
-              <p className="text-sm mt-0.5">{formatDate(record.next_action_date)}</p>
-            </div>
-          )}
+        <div className="grid grid-cols-2 gap-3">
+          <div>
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Next Action</span>
+            <p className="text-sm">{record.next_action || "—"}</p>
+          </div>
+          <div>
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Action Date</span>
+            <p className="text-sm">{formatDate(record.next_action_date)}</p>
+          </div>
         </div>
       )}
 
@@ -345,14 +339,14 @@ export function OpportunitySlideOverDetailsTab({
       {record.decision_criteria && (
         <div>
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Decision Criteria</span>
-          <p className="text-sm mt-0.5 whitespace-pre-wrap">{record.decision_criteria}</p>
+          <p className="text-sm whitespace-pre-wrap">{record.decision_criteria}</p>
         </div>
       )}
 
-      {/* Organizations */}
-      <div className="pt-3 border-t border-border">
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide block mb-2">Organizations</span>
-        <div className="grid gap-2">
+      {/* Organizations - 3 column grid */}
+      <div className="pt-2 border-t border-border">
+        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide block mb-1.5">Organizations</span>
+        <div className="grid grid-cols-3 gap-1.5">
           <OrganizationCard
             organizationId={record.customer_organization_id}
             label="Customer"
@@ -371,7 +365,7 @@ export function OpportunitySlideOverDetailsTab({
       </div>
 
       {/* Timestamps */}
-      <div className="pt-3 border-t border-border flex gap-4 text-xs text-muted-foreground">
+      <div className="pt-2 border-t border-border flex gap-3 text-xs text-muted-foreground">
         <span>Created {formatDate(record.created_at)}</span>
         <span>•</span>
         <span>Updated {formatDate(record.updated_at)}</span>
