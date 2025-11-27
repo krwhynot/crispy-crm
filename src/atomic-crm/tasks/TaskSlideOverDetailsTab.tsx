@@ -85,11 +85,15 @@ export function TaskSlideOverDetailsTab({
     }
   };
 
+  const handleCancel = () => {
+    onModeToggle?.();
+  };
+
   if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
         <Form onSubmit={handleSave} record={record}>
-          <div className="space-y-6">
+          <div className="space-y-6" role="form" aria-label="Edit task form">
             <div className="space-y-4">
               <TextInput source="title" label="Task Title" />
               <TextInput source="description" label="Description" multiline rows={3} />
@@ -128,10 +132,19 @@ export function TaskSlideOverDetailsTab({
               </ReferenceInput>
             </div>
 
-            {/* Save button - Cancel handled by slide-over header */}
-            <div className="flex gap-2 justify-end pt-4 border-t border-border">
-              <Button type="submit" disabled={isSaving} className="h-11 px-4">
+            {/* Form toolbar with Save/Cancel - keyboard submit via Enter key */}
+            <div className="flex gap-2 pt-4 border-t border-border" role="toolbar" aria-label="Form actions">
+              <Button type="submit" disabled={isSaving} className="h-11 px-4 flex-1">
                 {isSaving ? "Saving..." : "Save Changes"}
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleCancel}
+                disabled={isSaving}
+                className="h-11 px-4"
+              >
+                Cancel
               </Button>
             </div>
           </div>
@@ -158,7 +171,8 @@ export function TaskSlideOverDetailsTab({
               </div>
 
               {/* Completion status - Interactive checkbox even in view mode */}
-              <label className="flex items-center gap-2 pt-2 cursor-pointer">
+              {/* min-h-11 ensures 44px touch target for WCAG AA compliance */}
+              <label className="flex items-center gap-2 pt-2 min-h-11 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={record.completed || false}

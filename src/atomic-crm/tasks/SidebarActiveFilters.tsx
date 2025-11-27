@@ -16,8 +16,9 @@ export const SidebarActiveFilters = () => {
       <div className="flex items-center justify-between">
         <h3 className="text-sm font-semibold text-foreground">Active Filters ({chips.length})</h3>
         <button
+          type="button"
           onClick={clearAllFilters}
-          className="text-xs text-muted-foreground hover:text-foreground transition-colors"
+          className="text-xs text-muted-foreground hover:text-foreground transition-colors min-h-11 px-2"
         >
           Clear All
         </button>
@@ -40,8 +41,9 @@ export const SidebarActiveFilters = () => {
               <span className="text-foreground truncate block">{chip.label}</span>
             </div>
             <button
+              type="button"
               onClick={() => removeFilterValue(chip.key, chip.value)}
-              className="shrink-0 p-0.5 rounded-sm hover:bg-background transition-colors"
+              className="shrink-0 h-11 w-11 flex items-center justify-center rounded-sm hover:bg-background transition-colors -mr-2"
               aria-label={`Remove ${chip.category} filter`}
             >
               <X className="h-3 w-3 text-muted-foreground group-hover:text-foreground" />
