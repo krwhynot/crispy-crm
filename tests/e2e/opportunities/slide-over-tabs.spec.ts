@@ -57,41 +57,63 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
   });
 
   /**
+   * Helper to get the active tab panel (data-state="active")
+   * This is needed because Radix renders all 4 panels but only shows one
+   */
+  function getActiveTabPanel(slideOver: ReturnType<typeof createSlideOver>) {
+    return slideOver.getDialog().locator('[role="tabpanel"][data-state="active"]');
+  }
+
+  /**
    * Helper to find and click the sample opportunity card in Kanban view
    */
   async function openSampleOpportunitySlideOver(authenticatedPage: any): Promise<boolean> {
-    // Look for the card in Kanban view
+    // Wait for Kanban board to load
+    await authenticatedPage.waitForTimeout(1000);
+
+    // First check total opportunity cards on page
+    const allCards = authenticatedPage.locator('[data-testid="opportunity-card"]');
+    const totalCards = await allCards.count();
+
+    // Look for our specific card
     const card = authenticatedPage
       .locator('[data-testid="opportunity-card"]')
-      .filter({ hasText: new RegExp(SAMPLE_OPPORTUNITY_NAME, "i") });
+      .filter({ hasText: /Hubbard Inn/i });
 
-    const cardCount = await card.count();
+    let cardCount = await card.count();
+
+    if (cardCount === 0 && totalCards > 0) {
+      // Try scrolling the Kanban board to find the card (it might be in a different column)
+      const kanbanBoard = authenticatedPage.locator('[data-testid="kanban-board"]');
+      if (await kanbanBoard.isVisible()) {
+        await kanbanBoard.evaluate((el: HTMLElement) => {
+          el.scrollLeft = el.scrollWidth; // Scroll to see all columns
+        });
+        await authenticatedPage.waitForTimeout(500);
+      }
+
+      // Check again after scroll
+      cardCount = await card.count();
+    }
 
     if (cardCount === 0) {
-      // Try to find in any view by searching
+      // Try using search functionality
       const searchInput = authenticatedPage
         .getByRole("searchbox")
         .or(authenticatedPage.getByPlaceholder(/search/i));
 
-      if (await searchInput.isVisible()) {
-        await searchInput.fill("Hubbard Inn");
-        await authenticatedPage.waitForTimeout(500);
+      if (await searchInput.isVisible().catch(() => false)) {
+        await searchInput.fill("Hubbard");
+        await authenticatedPage.waitForTimeout(1000);
+        cardCount = await card.count();
       }
-
-      // Check again for card
-      const cardAfterSearch = authenticatedPage
-        .locator('[data-testid="opportunity-card"]')
-        .filter({ hasText: new RegExp(SAMPLE_OPPORTUNITY_NAME, "i") });
-
-      if ((await cardAfterSearch.count()) === 0) {
-        return false; // Sample opportunity not found
-      }
-
-      await cardAfterSearch.first().click();
-    } else {
-      await card.first().click();
     }
 
+    if (cardCount === 0) {
+      return false; // Sample opportunity not found
+    }
+
+    await card.first().click();
     await authenticatedPage.waitForTimeout(300);
     return true;
   }
@@ -134,12 +156,17 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       const tabs = ["Details", "Contacts", "Products", "Notes"];
 
       for (const tabName of tabs) {
-        await slideOver.switchTab(tabName);
-        await slideOver.expectVisible();
+        // Click the tab
+        const tab = slideOver.getTab(tabName);
+        await expect(tab).toBeVisible();
+        await tab.click();
+        await authenticatedPage.waitForTimeout(200);
 
-        // Tab panel should be visible after switch
-        const panel = slideOver.getTabPanel();
-        await expect(panel).toBeVisible();
+        // Active tab panel should be visible (data-state="active")
+        const activePanel = slideOver
+          .getDialog()
+          .locator('[role="tabpanel"][data-state="active"]');
+        await expect(activePanel).toBeVisible();
       }
     });
   });
@@ -157,7 +184,7 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       await slideOver.expectVisible();
 
       // Verify Details tab content (default tab)
-      const panel = slideOver.getTabPanel();
+      const panel = getActiveTabPanel(slideOver);
 
       // Check for opportunity name
       await expect(panel.getByText(SAMPLE_OPPORTUNITY_NAME)).toBeVisible();
@@ -177,7 +204,7 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       const slideOver = createSlideOver(authenticatedPage);
       await slideOver.expectVisible();
 
-      const panel = slideOver.getTabPanel();
+      const panel = getActiveTabPanel(slideOver);
 
       // Check for stage badge (demo_scheduled)
       await expect(panel.getByText(/demo scheduled/i)).toBeVisible();
@@ -197,7 +224,7 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       const slideOver = createSlideOver(authenticatedPage);
       await slideOver.expectVisible();
 
-      const panel = slideOver.getTabPanel();
+      const panel = getActiveTabPanel(slideOver);
 
       // Check for organization labels
       await expect(panel.getByText(/customer/i).first()).toBeVisible();
@@ -221,7 +248,7 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       const slideOver = createSlideOver(authenticatedPage);
       await slideOver.expectVisible();
 
-      const panel = slideOver.getTabPanel();
+      const panel = getActiveTabPanel(slideOver);
 
       // Check for lead source (trade_show)
       await expect(panel.getByText(/trade show/i)).toBeVisible();
@@ -246,7 +273,7 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       // Switch to Contacts tab
       await slideOver.switchTab("Contacts");
 
-      const panel = slideOver.getTabPanel();
+      const panel = getActiveTabPanel(slideOver);
 
       // Wait for contacts to load (data fetching is conditional on tab active)
       await authenticatedPage.waitForTimeout(1000);
@@ -280,7 +307,7 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       await slideOver.switchTab("Contacts");
       await authenticatedPage.waitForTimeout(1000);
 
-      const panel = slideOver.getTabPanel();
+      const panel = getActiveTabPanel(slideOver);
 
       // Check for "Primary" badge (from is_primary=true in seed data)
       const primaryBadge = panel.getByText(/primary/i);
@@ -308,7 +335,7 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       // Switch to Products tab
       await slideOver.switchTab("Products");
 
-      const panel = slideOver.getTabPanel();
+      const panel = getActiveTabPanel(slideOver);
 
       // Wait for products to load
       await authenticatedPage.waitForTimeout(1000);
@@ -348,7 +375,7 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       await slideOver.switchTab("Products");
       await authenticatedPage.waitForTimeout(1000);
 
-      const panel = slideOver.getTabPanel();
+      const panel = getActiveTabPanel(slideOver);
 
       // Check for product notes from seed data (if products tab shows notes)
       const notesExcerpt = panel.getByText(/chef favorite|high margin|requested for/i);
@@ -374,7 +401,7 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       // Switch to Notes tab
       await slideOver.switchTab("Notes");
 
-      const panel = slideOver.getTabPanel();
+      const panel = getActiveTabPanel(slideOver);
 
       // Wait for notes to load
       await authenticatedPage.waitForTimeout(1000);
@@ -409,7 +436,7 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       await slideOver.switchTab("Notes");
       await authenticatedPage.waitForTimeout(500);
 
-      const panel = slideOver.getTabPanel();
+      const panel = getActiveTabPanel(slideOver);
 
       // Check for note creation input/textarea (NoteCreate component)
       const noteInput = panel.locator('textarea, input[type="text"]').first();
