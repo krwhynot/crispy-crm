@@ -39,11 +39,11 @@ USING (true)
 
 ### Personal Data (Owner Only)
 ```sql
--- Tasks - only owner's records
+-- Tasks - owner-based with manager elevation
+-- Uses helper functions from migration 20251111121526
 USING (
-  sales_id IN (
-    SELECT id FROM sales WHERE user_id = auth.uid()
-  )
+  public.is_manager_or_admin() OR
+  sales_id = public.current_sales_id()
 )
 ```
 

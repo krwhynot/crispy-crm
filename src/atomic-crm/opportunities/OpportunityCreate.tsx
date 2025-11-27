@@ -24,20 +24,22 @@ const OpportunityCreate = () => {
 
   return (
     <CreateBase redirect="show">
-      <div className="mt-2">
-        <Form defaultValues={formDefaults}>
-          <Card>
-            <CardContent>
-              <OpportunityInputs mode="create" />
-              <FormToolbar>
-                <div className="flex flex-row gap-2 justify-end">
-                  <CancelButton />
-                  <SaveButton label="Create Opportunity" />
-                </div>
-              </FormToolbar>
-            </CardContent>
-          </Card>
-        </Form>
+      <div className="bg-muted px-6 py-6">
+        <div className="max-w-4xl mx-auto create-form-card">
+          <Form defaultValues={formDefaults}>
+            <Card>
+              <CardContent>
+                <OpportunityInputs mode="create" />
+                <FormToolbar>
+                  <div className="flex flex-row gap-2 justify-end">
+                    <CancelButton />
+                    <SaveButton label="Create Opportunity" />
+                  </div>
+                </FormToolbar>
+              </CardContent>
+            </Card>
+          </Form>
+        </div>
       </div>
     </CreateBase>
   );

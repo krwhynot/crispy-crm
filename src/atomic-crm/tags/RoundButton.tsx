@@ -15,7 +15,7 @@ export const RoundButton = ({ color, handleClick, selected }: RoundButtonProps) 
     <button
       type="button"
       className={`
-        w-8 h-8 rounded-full inline-block m-1 transition-all
+        w-11 h-11 rounded-full inline-block m-1 transition-all
         ${colorClass}
         ${
           selected

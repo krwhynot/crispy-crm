@@ -84,7 +84,7 @@ export const AddTask = ({
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button size="sm" variant="ghost" className="p-2 cursor-pointer" onClick={handleOpen}>
+              <Button size="sm" variant="ghost" className="h-11 w-11 p-0 cursor-pointer" onClick={handleOpen}>
                 <Plus className="w-4 h-4" />
               </Button>
             </TooltipTrigger>
@@ -93,7 +93,7 @@ export const AddTask = ({
         </TooltipProvider>
       ) : (
         <div className="my-2">
-          <Button variant="outline" className="h-6 cursor-pointer" onClick={handleOpen} size="sm">
+          <Button variant="outline" className="h-11 cursor-pointer" onClick={handleOpen} size="sm">
             <Plus className="w-4 h-4" />
             Add task
           </Button>
