@@ -27,6 +27,7 @@ import {
 import { useState } from "react";
 import { contactOptionText } from "../contacts/ContactOption";
 import { useConfigurationContext } from "../root/ConfigurationContext";
+import { getTaskDefaultValues } from "../validation/task";
 
 export const AddTask = ({
   selectContact,
@@ -102,18 +103,9 @@ export const AddTask = ({
       <CreateBase
         resource="tasks"
         record={{
-          type: "None",
+          ...getTaskDefaultValues(),
           contact_id: contact?.id,
-          due_date: new Date().toISOString().slice(0, 10),
           sales_id: identity.id,
-        }}
-        transform={(data) => {
-          const dueDate = new Date(data.due_date);
-          dueDate.setHours(0, 0, 0, 0);
-          return {
-            ...data,
-            due_date: dueDate.toISOString(),
-          };
         }}
         mutationOptions={{ onSuccess: handleSuccess }}
       >

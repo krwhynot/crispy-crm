@@ -9,6 +9,7 @@ import { TextField } from "@/components/admin/text-field";
 import { DateField } from "@/components/admin/date-field";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { Badge } from "@/components/ui/badge";
+import { PriorityBadge } from "@/components/ui/priority-badge";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { TaskListFilter } from "./TaskListFilter";
 import { TaskSlideOver } from "./TaskSlideOver";
@@ -55,9 +56,7 @@ export default function TaskList() {
 
           <FunctionField
             label="Priority"
-            render={(record: Task) =>
-              record.priority && <PriorityBadge priority={record.priority} />
-            }
+            render={(record: Task) => record.priority && <PriorityBadge priority={record.priority} />}
           />
 
           <FunctionField
@@ -143,21 +142,6 @@ function CompletionCheckbox({ task }: { task: Task }) {
   );
 }
 
-// Priority badge component with semantic colors
-function PriorityBadge({ priority }: { priority: string }) {
-  const variants: Record<string, "outline" | "secondary" | "default" | "destructive"> = {
-    low: "outline",
-    medium: "secondary",
-    high: "default",
-    critical: "destructive",
-  };
-
-  return (
-    <Badge variant={variants[priority] || "outline"}>
-      {priority.charAt(0).toUpperCase() + priority.slice(1)}
-    </Badge>
-  );
-}
 
 // CSV exporter
 const exporter: Exporter<Task> = async (records, fetchRelatedRecords) => {
