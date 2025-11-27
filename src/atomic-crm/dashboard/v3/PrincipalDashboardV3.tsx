@@ -1,18 +1,19 @@
 import { useState, useCallback } from "react";
 import { PrincipalPipelineTable } from "./components/PrincipalPipelineTable";
-import { TasksPanel } from "./components/TasksPanel";
+import { TasksKanbanPanel } from "./components/TasksKanbanPanel";
 import { LogActivityFAB } from "./components/LogActivityFAB";
 import { KPISummaryRow } from "./components/KPISummaryRow";
 
 /**
- * PrincipalDashboardV3 - Two-column dashboard with Log Activity FAB
+ * PrincipalDashboardV3 - Vertically stacked dashboard with Log Activity FAB
  *
  * Layout:
- * - Desktop (≥1024px): 2-column grid (40% Pipeline | 60% Tasks)
- * - iPad/Tablet (<1024px): Single column stacked
+ * - KPI Summary Row (4-column on desktop, 2x2 on mobile)
+ * - Pipeline Table (full width)
+ * - Tasks Kanban Board (full width)
  *
  * Features:
- * - CSS Grid for clean responsive breakpoints
+ * - Vertical stacking for better data visibility
  * - FAB opens Sheet slide-over for activity logging
  * - Draft persistence in localStorage
  */
@@ -50,8 +51,8 @@ export function PrincipalDashboardV3() {
             {/* Panel 1: Pipeline by Principal (40% on desktop) */}
             <PrincipalPipelineTable key={`pipeline-${refreshKey}`} />
 
-            {/* Panel 2: My Tasks (60% on desktop) */}
-            <TasksPanel key={`tasks-${refreshKey}`} />
+            {/* Panel 2: My Tasks Kanban (60% on desktop) */}
+            <TasksKanbanPanel key={`tasks-${refreshKey}`} />
           </div>
         </div>
 
