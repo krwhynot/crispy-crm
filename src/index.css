@@ -358,6 +358,34 @@
 :root {
   --radius: 0.5rem; /* 8px - MFB organic aesthetic */
 
+  /* === AESTHETIC POLISH TOKENS === */
+
+  /* Button elevation - subtle depth for B2B professional feel */
+  --btn-shadow-rest: 0 1px 2px 0 oklch(30% 0.01 92 / 0.1);
+  --btn-shadow-hover: 0 2px 4px -1px oklch(30% 0.01 92 / 0.15);
+
+  /* Badge refinement - hairline depth */
+  --badge-shadow: 0 1px 2px -1px oklch(30% 0.01 92 / 0.08);
+  --badge-ring-opacity: 0.08;
+
+  /* Input glow - elegant focus states */
+  --input-shadow-rest: inset 0 1px 2px oklch(30% 0.01 92 / 0.04);
+  --input-glow-focus: 0 0 0 3px oklch(55% 0.095 142 / 0.15);
+
+  /* Typography polish */
+  --text-heading-tracking: -0.01em;
+  --text-body-tracking: 0.005em;
+  --text-caption-tracking: 0.02em;
+  --leading-heading: 1.2;
+  --leading-body: 1.5;
+  --leading-relaxed: 1.65;
+
+  /* Micro-interaction timing - natural deceleration */
+  --duration-fast: 100ms;
+  --duration-normal: 150ms;
+  --duration-slow: 200ms;
+  --ease-out-soft: cubic-bezier(0.25, 0.1, 0.25, 1);
+
   /* Core Neutrals - OKLCH format with paper cream undertone (hue 92° for consistency) */
   --neutral-50: oklch(97.8% 0.008 92); /* Lightest - card backgrounds */
   --neutral-100: oklch(95.5% 0.01 92); /* Subtle backgrounds */
