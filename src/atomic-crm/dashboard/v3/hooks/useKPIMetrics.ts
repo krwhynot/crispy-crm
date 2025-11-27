@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDataProvider } from "react-admin";
-import { startOfWeek, endOfWeek, isBefore, startOfDay } from "date-fns";
+import { startOfWeek, endOfWeek, startOfDay } from "date-fns";
 import { useCurrentSale } from "./useCurrentSale";
 
 /**

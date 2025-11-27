@@ -2,6 +2,7 @@ import { useState, useCallback } from "react";
 import { PrincipalPipelineTable } from "./components/PrincipalPipelineTable";
 import { TasksPanel } from "./components/TasksPanel";
 import { LogActivityFAB } from "./components/LogActivityFAB";
+import { KPISummaryRow } from "./components/KPISummaryRow";
 
 /**
  * PrincipalDashboardV3 - Two-column dashboard with Log Activity FAB
@@ -36,17 +37,22 @@ export function PrincipalDashboardV3() {
 
       {/* Main Content - CSS Grid layout */}
       <main className="relative flex-1 overflow-hidden p-4">
-        {/*
-          Grid Layout:
-          - Base (mobile/tablet <1024px): Single column stacked
-          - Desktop (≥1024px): 2-column (2fr | 3fr = 40% | 60%)
-        */}
-        <div className="grid h-full grid-cols-1 gap-4 lg:grid-cols-[2fr_3fr]">
-          {/* Panel 1: Pipeline by Principal (40% on desktop) */}
-          <PrincipalPipelineTable key={`pipeline-${refreshKey}`} />
+        <div className="flex h-full flex-col gap-4">
+          {/* KPI Summary Row - Above the main grid */}
+          <KPISummaryRow key={`kpi-${refreshKey}`} />
 
-          {/* Panel 2: My Tasks (60% on desktop) */}
-          <TasksPanel key={`tasks-${refreshKey}`} />
+          {/*
+            Main Grid Layout:
+            - Base (mobile/tablet <1024px): Single column stacked
+            - Desktop (≥1024px): 2-column (2fr | 3fr = 40% | 60%)
+          */}
+          <div className="grid flex-1 grid-cols-1 gap-4 lg:grid-cols-[2fr_3fr] min-h-0">
+            {/* Panel 1: Pipeline by Principal (40% on desktop) */}
+            <PrincipalPipelineTable key={`pipeline-${refreshKey}`} />
+
+            {/* Panel 2: My Tasks (60% on desktop) */}
+            <TasksPanel key={`tasks-${refreshKey}`} />
+          </div>
         </div>
 
         {/* FAB - Fixed position, opens Log Activity Sheet */}
