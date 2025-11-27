@@ -31,9 +31,9 @@ const ContactShowContent = () => {
             <div className="flex">
               <Avatar />
               <div className="ml-2 flex-1">
-                <h5 className="text-xl font-semibold">
+                <h2 className="text-xl font-semibold">
                   {record.first_name} {record.last_name}
-                </h5>
+                </h2>
                 <div className="text-sm text-muted-foreground">
                   {record.title}
                   {record.department && ` - ${record.department}`}
@@ -83,7 +83,7 @@ const ContactShowContent = () => {
                 {/* Organizations Section */}
                 {record.organizations && record.organizations.length > 0 && (
                   <div className="mt-4">
-                    <h6 className="text-lg font-semibold mb-4">Associated Organizations</h6>
+                    <h3 className="text-lg font-semibold mb-4">Associated Organizations</h3>
                     <div className="space-y-2">
                       {record.organizations.map((org: any) => (
                         <div

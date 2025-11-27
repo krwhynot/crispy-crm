@@ -91,9 +91,9 @@ export const OrganizationCard = (props: { record?: Company }) => {
           <div className="flex flex-col items-center gap-1">
             <OrganizationAvatar />
             <div className="text-center mt-1">
-              <h6 className="text-sm font-medium group-hover:text-foreground transition-colors">
+              <h3 className="text-sm font-medium group-hover:text-foreground transition-colors">
                 {record.name}
-              </h6>
+              </h3>
               {record.segment_id && (
                 <ReferenceField source="segment_id" reference="segments" link={false}>
                   <TextField source="name" className="text-xs text-muted-foreground" />

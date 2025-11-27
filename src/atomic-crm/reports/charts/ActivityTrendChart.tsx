@@ -68,7 +68,7 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
         y: {
           beginAtZero: true,
           grid: {
-            color: "rgba(0, 0, 0, 0.05)",
+            color: "var(--chart-gridline)",
           },
           ticks: {
             font: {

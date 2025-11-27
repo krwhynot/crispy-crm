@@ -49,9 +49,9 @@ export const ProductCard = (props: { record?: Product }) => {
               <Package className="w-6 h-6 text-primary" />
             </div>
             <div className="text-center mt-1">
-              <h6 className="text-sm font-medium line-clamp-1 group-hover:text-foreground transition-colors">
+              <h3 className="text-sm font-medium line-clamp-1 group-hover:text-foreground transition-colors">
                 {record.name}
-              </h6>
+              </h3>
               <p className="text-xs text-muted-foreground">SKU: {record.sku}</p>
               <div className="flex gap-1 mt-1 justify-center flex-wrap">
                 {record.status && (
