@@ -28,6 +28,7 @@
 -- ============================================================================
 
 -- Clean up existing data (in correct order for FK constraints)
+-- Note: contact_organizations, contact_tags, contact_preferred_principals were deprecated/removed
 TRUNCATE TABLE "public"."organizationNotes" CASCADE;
 TRUNCATE TABLE "public"."contactNotes" CASCADE;
 TRUNCATE TABLE "public"."opportunityNotes" CASCADE;
@@ -35,10 +36,7 @@ TRUNCATE TABLE "public"."tasks" CASCADE;
 TRUNCATE TABLE "public"."activities" CASCADE;
 TRUNCATE TABLE "public"."opportunity_products" CASCADE;
 TRUNCATE TABLE "public"."opportunities" CASCADE;
-TRUNCATE TABLE "public"."contact_tags" CASCADE;
 TRUNCATE TABLE "public"."tags" CASCADE;
-TRUNCATE TABLE "public"."contact_preferred_principals" CASCADE;
-TRUNCATE TABLE "public"."contact_organizations" CASCADE;
 TRUNCATE TABLE "public"."contacts" CASCADE;
 TRUNCATE TABLE "public"."products" CASCADE;
 TRUNCATE TABLE "public"."organizations" CASCADE;

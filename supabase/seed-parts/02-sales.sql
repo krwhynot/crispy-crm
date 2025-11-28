@@ -3,7 +3,19 @@
 -- ============================================================================
 -- Links auth.users to the CRM sales rep profiles
 -- is_admin determines admin access (no role column in schema)
+-- Note: auth.users trigger auto-creates basic sales records,
+--       so we DELETE and re-INSERT with full details
 -- ============================================================================
+
+-- Delete auto-created records from trigger (will be recreated below)
+DELETE FROM "public"."sales" WHERE user_id IN (
+  'a0000000-0000-0000-0000-000000000001',
+  'b0000000-0000-0000-0000-000000000001',
+  'c0000000-0000-0000-0000-000000000001',
+  'd0000000-0000-0000-0000-000000000001',
+  'e0000000-0000-0000-0000-000000000001',
+  'f0000000-0000-0000-0000-000000000001'
+);
 
 INSERT INTO "public"."sales" (id, user_id, first_name, last_name, email, phone, is_admin, avatar_url, created_at, updated_at)
 VALUES
