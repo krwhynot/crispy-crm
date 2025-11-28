@@ -1,8 +1,8 @@
 -- ============================================================================
--- PART 10: TAGS (10 tags) + CONTACT-TAG LINKS
+-- PART 10: TAGS (10 tags)
 -- ============================================================================
 -- Contact classification tags
--- Plus links to assign tags to various contacts
+-- Tags are assigned to contacts via contacts.tags bigint[] array
 -- ============================================================================
 
 INSERT INTO "public"."tags" (id, name, color, created_at, updated_at)
@@ -22,67 +22,36 @@ VALUES
 SELECT setval(pg_get_serial_sequence('tags', 'id'), 10, true);
 
 -- ============================================================================
--- CONTACT-TAG LINKS
+-- ASSIGN TAGS TO CONTACTS VIA UPDATE
 -- ============================================================================
--- Assign tags to contacts based on their roles
+-- Tags are stored as bigint[] arrays in contacts.tags
 
-INSERT INTO "public"."contact_tags" (id, contact_id, tag_id, created_at)
-VALUES
-  -- Decision Makers (executives and VPs)
-  (1, 3, 1, NOW()),   -- Michael Chen (CEO)
-  (2, 5, 1, NOW()),   -- Raj Patel (Owner)
-  (3, 7, 1, NOW()),   -- Tom Harrison (President)
-  (4, 13, 1, NOW()),  -- Sam Galletti (Founder)
-  (5, 17, 1, NOW()),  -- Robert James (President)
-  (6, 27, 1, NOW()),  -- Dan Shamrock (President)
-  (7, 37, 1, NOW()),  -- Christopher Pappas (CEO)
-  (8, 78, 1, NOW()),  -- Larry Levy (Chairman)
+-- Decision Makers (executives and VPs) - tag_id = 1
+UPDATE "public"."contacts" SET tags = ARRAY[1]::bigint[] WHERE id IN (3, 5, 7, 13, 17, 27, 37, 78);
 
-  -- Champions (our advocates inside accounts)
-  (9, 1, 2, NOW()),   -- John McCrum
-  (10, 11, 2, NOW()), -- David Thompson
-  (11, 19, 2, NOW()), -- Mike Reynolds
-  (12, 39, 2, NOW()), -- Andrew Sterling
+-- Champions (our advocates inside accounts) - tag_id = 2
+UPDATE "public"."contacts" SET tags = ARRAY[2]::bigint[] WHERE id IN (1, 11, 19, 39);
 
-  -- Gatekeepers (control access)
-  (13, 20, 3, NOW()), -- Susan Clark
-  (14, 46, 3, NOW()), -- Nancy Wright
-  (15, 54, 3, NOW()), -- Rebecca Stone
+-- Gatekeepers (control access) - tag_id = 3
+UPDATE "public"."contacts" SET tags = ARRAY[3]::bigint[] WHERE id IN (20, 46, 54);
 
-  -- Influencers
-  (16, 45, 4, NOW()), -- Kevin Brinker
-  (17, 55, 4, NOW()), -- Chef Nate Appleman
-  (18, 72, 4, NOW()), -- Chef Philippe
+-- Influencers - tag_id = 4
+UPDATE "public"."contacts" SET tags = ARRAY[4]::bigint[] WHERE id IN (45, 55, 72);
 
-  -- Technical contacts
-  (19, 41, 5, NOW()), -- Chef William Hayes
-  (20, 43, 5, NOW()), -- Chef Antonio Russo
-  (21, 57, 5, NOW()), -- Chef Mark Rosati
+-- Technical contacts - tag_id = 5
+UPDATE "public"."contacts" SET tags = ARRAY[5]::bigint[] WHERE id IN (41, 43, 57);
 
-  -- Budget Holders
-  (22, 21, 6, NOW()), -- James Patterson (VP)
-  (23, 42, 6, NOW()), -- Sharon Wood (VP Supply Chain)
-  (24, 59, 6, NOW()), -- Chef Antoine (VP Global)
+-- Budget Holders - tag_id = 6
+UPDATE "public"."contacts" SET tags = ARRAY[6]::bigint[] WHERE id IN (21, 42, 59);
 
-  -- New Contacts (recently added)
-  (25, 10, 7, NOW()), -- Anna Bianchi
-  (26, 14, 7, NOW()), -- Nicole Green
-  (27, 32, 7, NOW()), -- Diane Foster
+-- New Contacts (recently added) - tag_id = 7
+UPDATE "public"."contacts" SET tags = ARRAY[7]::bigint[] WHERE id IN (10, 14, 32);
 
-  -- VIP (high-value relationships)
-  (28, 25, 8, NOW()), -- Paul Gordon (GFS VP)
-  (29, 33, 8, NOW()), -- Tracy Dot (Dot Foods VP)
-  (30, 62, 8, NOW()), -- Chef Thomas Keller
+-- VIP (high-value relationships) - tag_id = 8
+UPDATE "public"."contacts" SET tags = ARRAY[8]::bigint[] WHERE id IN (25, 33, 62);
 
-  -- Needs Follow-up
-  (31, 48, 9, NOW()), -- Christine Hall
-  (32, 52, 9, NOW()), -- Kimberly Scott
-  (33, 67, 9, NOW()), -- Betty Cook
+-- Needs Follow-up - tag_id = 9
+UPDATE "public"."contacts" SET tags = ARRAY[9]::bigint[] WHERE id IN (48, 52, 67);
 
-  -- Cold Leads
-  (34, 24, 10, NOW()), -- Mary Davis
-  (35, 30, 10, NOW()), -- Amanda Torres
-  (36, 44, 10, NOW()); -- Barbara Chen
-
--- Reset sequence
-SELECT setval(pg_get_serial_sequence('contact_tags', 'id'), 36, true);
+-- Cold Leads - tag_id = 10
+UPDATE "public"."contacts" SET tags = ARRAY[10]::bigint[] WHERE id IN (24, 30, 44);
