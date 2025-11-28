@@ -1,11 +1,11 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.4
+**Version:** 1.6
 **Last Updated:** 2025-11-28
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
-> **Changelog v1.4:** Dashboard audit findings - Added 4 new implementation tasks: Recent Activity Feed, QuickLogForm all 13 activity types, Sample tracking full workflow, KPI metric fix. Updated feature count from 4 to 8 remaining. See [Appendix F](#f-version-history) for details.
+> **Changelog v1.6:** Organization audit findings - Added Organization Priority (A/B/C/D), dual-level Authorization architecture, Parent Hierarchy, Segments documentation. Moved Org CSV Import to Post-MVP. Added bulk owner reassignment (#20) and authorization UI (#21) to MVP tasks. Updated feature count from 11 to 13. See [Appendix F](#f-version-history) for details.
 
 ---
 
@@ -602,6 +602,8 @@ Track which distributors are authorized to carry which principals' products.
 | 15 | Dashboard KPI fix | 🔧 TODO | Change "Total Pipeline Value" KPI to "Total Open Opportunities" count |
 | 16 | Recent Activity Feed | 🔧 TODO | Add activity feed component to dashboard showing recent team activities |
 | 17 | QuickLogForm all 13 types | 🔧 TODO | Add missing 8 activity types: sample, demo, proposal, trade_show, site_visit, contract_review, check_in, social |
+| 18 | Contact org enforcement | 🔧 TODO | Enforce organization_id as required field in schema + UI. Block orphan contact creation |
+| 19 | Contact organization filter | 🔧 TODO | Add organization filter to ContactListFilter (tests exist, UI missing) |
 
 ### 15.2 Post-MVP Features
 
@@ -658,6 +660,10 @@ Track which distributors are authorized to carry which principals' products.
 | 26 | QuickLogForm activity types | All 13 types required in quick logger | 2025-11-28 |
 | 27 | Sample tracking workflow | Full UI workflow required (Sent→Received→Feedback) | 2025-11-28 |
 | 28 | Dashboard KPI metric | Replace "Pipeline Value" with "Open Opportunities" count | 2025-11-28 |
+| 29 | Contact org enforcement | Enforce organization_id as required (schema + UI). Block orphan contacts | 2025-11-28 |
+| 30 | CSV import availability | Keep disabled until tested. Update status from "Done" to "Disabled" | 2025-11-28 |
+| 31 | Contact organization filter | Add org filter to ContactListFilter to match test expectations | 2025-11-28 |
+| 32 | Contact duplicate UI | Remove DB artifacts (view + function). Admin-only SQL cleanup sufficient | 2025-11-28 |
 
 ### 16.3 Open Questions
 
@@ -687,12 +693,15 @@ Track which distributors are authorized to carry which principals' products.
 
 ### 17.4 MVP Blocker Risk
 
-**Risk:** 8 features still need implementation (updated per dashboard audit 2025-11-28)
+**Risk:** 11 features still need implementation (updated per contact audit 2025-11-28)
 
 **Mitigation:** Prioritize in order:
-1. **Dashboard gaps** (Quick wins): KPI fix, Recent Activity Feed, QuickLogForm 13 types
-2. **Sample tracking** (Medium): Full workflow UI with status + feedback
-3. **Business logic** (Complex): Win/Loss UI, Duplicate Prevention, Authorization Tracking
+1. **Contact enforcement** (Critical): Enforce organization requirement - blocks orphan contacts
+2. **Dashboard gaps** (Quick wins): KPI fix, Recent Activity Feed, QuickLogForm 13 types
+3. **Contact filters** (Medium): Add organization filter to ContactListFilter
+4. **Sample tracking** (Medium): Full workflow UI with status + feedback
+5. **Business logic** (Complex): Win/Loss UI, Duplicate Prevention, Authorization Tracking
+6. **Cleanup** (Low): Remove unused contact_duplicates DB artifacts
 
 ---
 
@@ -775,9 +784,10 @@ Track which distributors are authorized to carry which principals' products.
 | 1.2 | 2025-11-27 | Gemini 3 Pro deep analysis clarifications: Contact must belong to Customer Org, auto-generated opp naming with override, soft authorization warning, sample status manual+reminders, clear win/loss on reopen, full bulk operations, entity-specific search (global post-MVP), single org type only |
 | 1.3 | 2025-11-28 | GPT 5.1 deep analysis clarifications: Campaign as text tag (not entity), priority-only deal ranking, contacts require organization, admin-only user creation, any rep can add products, manual reassignment on user deactivation, competitors as free text, no attachments MVP |
 | 1.4 | 2025-11-28 | Dashboard audit (Claude): Added 4 implementation gaps - Recent Activity Feed (#16), QuickLogForm 13 types (#17), Sample tracking workflow (#4 updated), KPI metric fix (#15). Updated MVP blocker count from 4→8. Added resolved questions #25-28 |
+| 1.5 | 2025-11-28 | Contact audit (Claude): Added 2 implementation gaps - Contact org enforcement (#18), Contact org filter (#19). Changed CSV import status from "Done" to "Disabled". Decision to remove contact_duplicates DB artifacts. Updated MVP blocker count from 8→11. Added resolved questions #29-32 |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-28 (v1.4 - Dashboard audit implementation gaps)*
+*Last updated: 2025-11-28 (v1.5 - Contact page audit implementation gaps)*
