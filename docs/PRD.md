@@ -386,6 +386,25 @@ For `sample_visit_offered` stage (where deals often stall waiting for customer f
 3. Generate report (Excel format)
 4. Email to principal
 
+### 7.4 MFB Sales Process Mapping (v1.11)
+
+The CRM pipeline stages align with MFB's established 7-phase sales process. This mapping provides contextual guidance for reps transitioning from the Excel-based workflow.
+
+| MFB Phase | Pipeline Stage(s) | Typical Activities |
+|-----------|-------------------|-------------------|
+| **Phase 1: Start of Plan** | Pre-CRM | Account manager assignment, principal documentation, sample requests |
+| **Phase 2: Planning** | `new_lead` | Define parameters, set goals, distributor analysis |
+| **Phase 3A: Target Distributors** | `initial_outreach`, `sample_visit_offered` | Intro emails, presentations, operator calls, sample coordination |
+| **Phase 3B: Stocking Distributors** | `feedback_logged`, `demo_scheduled` | Create stock lists, develop marketing campaigns, set appointments |
+| **Phase 4: Measuring Results** | All active stages | Monthly sales reports, corrective actions, operator call reviews |
+| **Phase 5: Ongoing Activities** | `closed_won` (repeat) | Annual/quarterly goals, promotions, DSR training, food shows |
+| **Phase 6: Business Support** | N/A (Accounting) | Commission tracking, order processing, collections |
+| **Phase 7: Keep It Going** | Continuous | Review and update all phases quarterly |
+
+> **Note:** Phases 4-7 represent ongoing operational activities that span multiple opportunities. The CRM tracks individual deals through stages while the phases represent the broader sales methodology.
+
+**UI Implementation:** Tooltip help text on the Kanban board will reference this mapping (e.g., "Phase 3A activities typically happen in this stage").
+
 ---
 
 ## 8. Reporting & Forecasting
