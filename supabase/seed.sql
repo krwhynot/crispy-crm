@@ -256,28 +256,28 @@ END $$;
 -- PART 2: SALES TABLE (6 reps)
 -- ============================================================================
 -- Links auth.users to the CRM sales rep profiles
--- Role enum: 'admin', 'manager', 'rep'
+-- is_admin determines admin access (no role column in schema)
 -- ============================================================================
 
-INSERT INTO "public"."sales" (id, user_id, first_name, last_name, role, is_admin, avatar, created_at, updated_at)
+INSERT INTO "public"."sales" (id, user_id, first_name, last_name, email, phone, is_admin, avatar_url, created_at, updated_at)
 VALUES
   -- Admin Test User (id=1)
-  (1, 'a0000000-0000-0000-0000-000000000001', 'Admin', 'User', 'admin', true, NULL, NOW(), NOW()),
+  (1, 'a0000000-0000-0000-0000-000000000001', 'Admin', 'User', 'admin@test.com', '555-000-0001', true, NULL, NOW(), NOW()),
 
   -- Brent Gustafson - Owner/Admin (id=2)
-  (2, 'b0000000-0000-0000-0000-000000000001', 'Brent', 'Gustafson', 'admin', true, NULL, NOW(), NOW()),
+  (2, 'b0000000-0000-0000-0000-000000000001', 'Brent', 'Gustafson', 'brent@mfbroker.com', '555-000-0002', true, NULL, NOW(), NOW()),
 
   -- Michelle Gustafson - Manager (id=3)
-  (3, 'c0000000-0000-0000-0000-000000000001', 'Michelle', 'Gustafson', 'manager', false, NULL, NOW(), NOW()),
+  (3, 'c0000000-0000-0000-0000-000000000001', 'Michelle', 'Gustafson', 'michelle@mfbroker.com', '555-000-0003', false, NULL, NOW(), NOW()),
 
   -- Gary - Sales Rep (id=4)
-  (4, 'd0000000-0000-0000-0000-000000000001', 'Gary', 'Thompson', 'rep', false, NULL, NOW(), NOW()),
+  (4, 'd0000000-0000-0000-0000-000000000001', 'Gary', 'Thompson', 'gary@mfbroker.com', '555-000-0004', false, NULL, NOW(), NOW()),
 
   -- Dale - Sales Rep (id=5)
-  (5, 'e0000000-0000-0000-0000-000000000001', 'Dale', 'Anderson', 'rep', false, NULL, NOW(), NOW()),
+  (5, 'e0000000-0000-0000-0000-000000000001', 'Dale', 'Anderson', 'dale@mfbroker.com', '555-000-0005', false, NULL, NOW(), NOW()),
 
   -- Sue - Sales Rep (id=6)
-  (6, 'f0000000-0000-0000-0000-000000000001', 'Sue', 'Martinez', 'rep', false, NULL, NOW(), NOW());
+  (6, 'f0000000-0000-0000-0000-000000000001', 'Sue', 'Martinez', 'sue@mfbroker.com', '555-000-0006', false, NULL, NOW(), NOW());
 
 -- Reset the sequence to continue after our inserts
 SELECT setval(pg_get_serial_sequence('sales', 'id'), 6, true);
@@ -1459,7 +1459,7 @@ SELECT setval(pg_get_serial_sequence('opportunities', 'id'), 50, true);
 INSERT INTO "public"."activities" (
   id, activity_type, type, subject, description, activity_date,
   duration_minutes, contact_id, organization_id, opportunity_id,
-  follow_up_required, sales_id, created_at, updated_at
+  follow_up_required, created_by, created_at, updated_at
 )
 VALUES
   -- ========================================
@@ -1671,10 +1671,12 @@ SELECT setval(pg_get_serial_sequence('activities', 'id'), 150, true);
 -- ============================================================================
 -- Assigned to sales reps, linked to opportunities/contacts
 -- Mix of: overdue, due today, due tomorrow, upcoming
+-- Schema: id, title, description, due_date, reminder_date, completed,
+--         completed_at, priority, contact_id, opportunity_id, sales_id
 -- ============================================================================
 
 INSERT INTO "public"."tasks" (
-  id, text, due_date, contact_id, opportunity_id, sales_id, done,
+  id, title, due_date, contact_id, opportunity_id, sales_id, completed,
   created_at, updated_at
 )
 VALUES
