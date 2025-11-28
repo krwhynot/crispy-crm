@@ -712,262 +712,263 @@ SELECT setval(pg_get_serial_sequence('products', 'id'), 36, true);
 -- 2-3 contacts per organization
 -- Distribution: 18 for principals, 20 for distributors, 42 for customers
 -- Contact IDs: 1-80
+-- Schema: id, name, first_name, last_name, email (JSONB), phone (JSONB),
+--         title, department, sales_id, created_at, updated_at
 -- ============================================================================
 
 INSERT INTO "public"."contacts" (
-  id, name, first_name, last_name, email, phone, title, department,
-  status, lead_source, created_at, updated_at
+  id, name, first_name, last_name, email, phone, title, department, sales_id, created_at, updated_at
 )
 VALUES
   -- ========================================
   -- PRINCIPAL CONTACTS (18 total, 2 per org)
   -- ========================================
 
-  -- McCRUM (Org 1)
+  -- McCRUM (Org 1) - Brent manages
   (1, 'John McCrum', 'John', 'McCrum', '[{"email": "john@mccrum.com", "type": "Work"}]', '[{"phone": "208-555-1101", "type": "Work"}]',
-   'VP Sales', 'Sales', 'active', 'referral', NOW(), NOW()),
+   'VP Sales', 'Sales', 2, NOW(), NOW()),
   (2, 'Sarah Miller', 'Sarah', 'Miller', '[{"email": "sarah.miller@mccrum.com", "type": "Work"}]', '[{"phone": "208-555-1102", "type": "Work"}]',
-   'Account Manager', 'Sales', 'active', 'trade_show', NOW(), NOW()),
+   'Account Manager', 'Sales', 2, NOW(), NOW()),
 
-  -- SWAP (Org 2)
+  -- SWAP (Org 2) - Brent manages
   (3, 'Michael Chen', 'Michael', 'Chen', '[{"email": "mchen@swapfoods.com", "type": "Work"}]', '[{"phone": "312-555-1201", "type": "Work"}]',
-   'CEO', 'Executive', 'active', 'direct', NOW(), NOW()),
+   'CEO', 'Executive', 2, NOW(), NOW()),
   (4, 'Lisa Wong', 'Lisa', 'Wong', '[{"email": "lwong@swapfoods.com", "type": "Work"}]', '[{"phone": "312-555-1202", "type": "Work"}]',
-   'National Sales Manager', 'Sales', 'active', 'referral', NOW(), NOW()),
+   'National Sales Manager', 'Sales', 2, NOW(), NOW()),
 
-  -- Rapid Rasoi (Org 3)
+  -- Rapid Rasoi (Org 3) - Michelle manages
   (5, 'Raj Patel', 'Raj', 'Patel', '[{"email": "raj@rapidrasoi.com", "type": "Work"}]', '[{"phone": "510-555-1301", "type": "Work"}]',
-   'Owner', 'Executive', 'active', 'trade_show', NOW(), NOW()),
+   'Owner', 'Executive', 3, NOW(), NOW()),
   (6, 'Priya Sharma', 'Priya', 'Sharma', '[{"email": "priya@rapidrasoi.com", "type": "Work"}]', '[{"phone": "510-555-1302", "type": "Work"}]',
-   'Sales Director', 'Sales', 'active', 'website', NOW(), NOW()),
+   'Sales Director', 'Sales', 3, NOW(), NOW()),
 
-  -- Lakeview Farms (Org 4)
+  -- Lakeview Farms (Org 4) - Michelle manages
   (7, 'Tom Harrison', 'Tom', 'Harrison', '[{"email": "tharrison@lakeviewfarms.com", "type": "Work"}]', '[{"phone": "614-555-1401", "type": "Work"}]',
-   'President', 'Executive', 'active', 'referral', NOW(), NOW()),
+   'President', 'Executive', 3, NOW(), NOW()),
   (8, 'Jennifer Adams', 'Jennifer', 'Adams', '[{"email": "jadams@lakeviewfarms.com", "type": "Work"}]', '[{"phone": "614-555-1402", "type": "Work"}]',
-   'Regional Sales Manager', 'Sales', 'active', 'cold_call', NOW(), NOW()),
+   'Regional Sales Manager', 'Sales', 3, NOW(), NOW()),
 
-  -- Frico (Org 5)
+  -- Frico (Org 5) - Gary manages
   (9, 'Marco Rossi', 'Marco', 'Rossi', '[{"email": "mrossi@frico.it", "type": "Work"}]', '[{"phone": "201-555-1501", "type": "Work"}]',
-   'US Sales Director', 'Sales', 'active', 'trade_show', NOW(), NOW()),
+   'US Sales Director', 'Sales', 4, NOW(), NOW()),
   (10, 'Anna Bianchi', 'Anna', 'Bianchi', '[{"email": "abianchi@frico.it", "type": "Work"}]', '[{"phone": "201-555-1502", "type": "Work"}]',
-   'Account Executive', 'Sales', 'active', 'referral', NOW(), NOW()),
+   'Account Executive', 'Sales', 4, NOW(), NOW()),
 
-  -- Anchor (Org 6)
+  -- Anchor (Org 6) - Gary manages
   (11, 'David Thompson', 'David', 'Thompson', '[{"email": "dthompson@anchor.com", "type": "Work"}]', '[{"phone": "415-555-1601", "type": "Work"}]',
-   'VP Foodservice', 'Sales', 'active', 'direct', NOW(), NOW()),
+   'VP Foodservice', 'Sales', 4, NOW(), NOW()),
   (12, 'Emma Wilson', 'Emma', 'Wilson', '[{"email": "ewilson@anchor.com", "type": "Work"}]', '[{"phone": "415-555-1602", "type": "Work"}]',
-   'Key Account Manager', 'Sales', 'active', 'website', NOW(), NOW()),
+   'Key Account Manager', 'Sales', 4, NOW(), NOW()),
 
-  -- Tattooed Chef (Org 7)
+  -- Tattooed Chef (Org 7) - Dale manages
   (13, 'Sam Galletti', 'Sam', 'Galletti', '[{"email": "sam@tattooedchef.com", "type": "Work"}]', '[{"phone": "310-555-1701", "type": "Work"}]',
-   'Founder & CEO', 'Executive', 'active', 'trade_show', NOW(), NOW()),
+   'Founder & CEO', 'Executive', 5, NOW(), NOW()),
   (14, 'Nicole Green', 'Nicole', 'Green', '[{"email": "ngreen@tattooedchef.com", "type": "Work"}]', '[{"phone": "310-555-1702", "type": "Work"}]',
-   'Foodservice Sales Manager', 'Sales', 'active', 'referral', NOW(), NOW()),
+   'Foodservice Sales Manager', 'Sales', 5, NOW(), NOW()),
 
-  -- Litehouse (Org 8)
+  -- Litehouse (Org 8) - Dale manages
   (15, 'Chris Anderson', 'Chris', 'Anderson', '[{"email": "canderson@litehousefoods.com", "type": "Work"}]', '[{"phone": "208-555-1801", "type": "Work"}]',
-   'VP Sales', 'Sales', 'active', 'direct', NOW(), NOW()),
+   'VP Sales', 'Sales', 5, NOW(), NOW()),
   (16, 'Amy Roberts', 'Amy', 'Roberts', '[{"email": "aroberts@litehousefoods.com", "type": "Work"}]', '[{"phone": "208-555-1802", "type": "Work"}]',
-   'National Account Manager', 'Sales', 'active', 'cold_call', NOW(), NOW()),
+   'National Account Manager', 'Sales', 5, NOW(), NOW()),
 
-  -- Custom Culinary (Org 9)
+  -- Custom Culinary (Org 9) - Sue manages
   (17, 'Robert James', 'Robert', 'James', '[{"email": "rjames@customculinary.com", "type": "Work"}]', '[{"phone": "630-555-1901", "type": "Work"}]',
-   'President', 'Executive', 'active', 'referral', NOW(), NOW()),
+   'President', 'Executive', 6, NOW(), NOW()),
   (18, 'Karen White', 'Karen', 'White', '[{"email": "kwhite@customculinary.com", "type": "Work"}]', '[{"phone": "630-555-1902", "type": "Work"}]',
-   'Director of Sales', 'Sales', 'active', 'trade_show', NOW(), NOW()),
+   'Director of Sales', 'Sales', 6, NOW(), NOW()),
 
   -- ========================================
   -- DISTRIBUTOR CONTACTS (20 total, 2 per org)
   -- ========================================
 
-  -- Sysco (Org 10)
+  -- Sysco (Org 10) - Brent manages
   (19, 'Mike Reynolds', 'Mike', 'Reynolds', '[{"email": "mike.reynolds@sysco.com", "type": "Work"}]', '[{"phone": "281-555-2101", "type": "Work"}]',
-   'Category Manager - Frozen', 'Purchasing', 'active', 'direct', NOW(), NOW()),
+   'Category Manager - Frozen', 'Purchasing', 2, NOW(), NOW()),
   (20, 'Susan Clark', 'Susan', 'Clark', '[{"email": "susan.clark@sysco.com", "type": "Work"}]', '[{"phone": "281-555-2102", "type": "Work"}]',
-   'Senior Buyer', 'Purchasing', 'active', 'trade_show', NOW(), NOW()),
+   'Senior Buyer', 'Purchasing', 2, NOW(), NOW()),
 
-  -- US Foods (Org 11)
+  -- US Foods (Org 11) - Brent manages
   (21, 'James Patterson', 'James', 'Patterson', '[{"email": "jpatterson@usfoods.com", "type": "Work"}]', '[{"phone": "847-555-2201", "type": "Work"}]',
-   'VP Merchandising', 'Purchasing', 'active', 'referral', NOW(), NOW()),
+   'VP Merchandising', 'Purchasing', 2, NOW(), NOW()),
   (22, 'Linda Martinez', 'Linda', 'Martinez', '[{"email": "lmartinez@usfoods.com", "type": "Work"}]', '[{"phone": "847-555-2202", "type": "Work"}]',
-   'Category Manager - Dairy', 'Purchasing', 'active', 'direct', NOW(), NOW()),
+   'Category Manager - Dairy', 'Purchasing', 2, NOW(), NOW()),
 
-  -- PFG (Org 12)
+  -- PFG (Org 12) - Michelle manages
   (23, 'Steve Johnson', 'Steve', 'Johnson', '[{"email": "sjohnson@pfgc.com", "type": "Work"}]', '[{"phone": "804-555-2301", "type": "Work"}]',
-   'Director of Purchasing', 'Purchasing', 'active', 'trade_show', NOW(), NOW()),
+   'Director of Purchasing', 'Purchasing', 3, NOW(), NOW()),
   (24, 'Mary Davis', 'Mary', 'Davis', '[{"email": "mdavis@pfgc.com", "type": "Work"}]', '[{"phone": "804-555-2302", "type": "Work"}]',
-   'Buyer - Center of Plate', 'Purchasing', 'active', 'cold_call', NOW(), NOW()),
+   'Buyer - Center of Plate', 'Purchasing', 3, NOW(), NOW()),
 
-  -- GFS (Org 13)
+  -- GFS (Org 13) - Michelle manages
   (25, 'Paul Gordon', 'Paul', 'Gordon', '[{"email": "pgordon@gfs.com", "type": "Work"}]', '[{"phone": "616-555-2401", "type": "Work"}]',
-   'VP Procurement', 'Purchasing', 'active', 'referral', NOW(), NOW()),
+   'VP Procurement', 'Purchasing', 3, NOW(), NOW()),
   (26, 'Rachel Brown', 'Rachel', 'Brown', '[{"email": "rbrown@gfs.com", "type": "Work"}]', '[{"phone": "616-555-2402", "type": "Work"}]',
-   'Senior Merchandiser', 'Purchasing', 'active', 'direct', NOW(), NOW()),
+   'Senior Merchandiser', 'Purchasing', 3, NOW(), NOW()),
 
-  -- Shamrock (Org 14)
+  -- Shamrock (Org 14) - Gary manages
   (27, 'Dan Shamrock', 'Dan', 'Shamrock', '[{"email": "dshamrock@shamrockfoods.com", "type": "Work"}]', '[{"phone": "602-555-2501", "type": "Work"}]',
-   'President', 'Executive', 'active', 'referral', NOW(), NOW()),
+   'President', 'Executive', 4, NOW(), NOW()),
   (28, 'Teresa Lopez', 'Teresa', 'Lopez', '[{"email": "tlopez@shamrockfoods.com", "type": "Work"}]', '[{"phone": "602-555-2502", "type": "Work"}]',
-   'Category Manager', 'Purchasing', 'active', 'trade_show', NOW(), NOW()),
+   'Category Manager', 'Purchasing', 4, NOW(), NOW()),
 
-  -- Ben E. Keith (Org 15)
+  -- Ben E. Keith (Org 15) - Gary manages
   (29, 'Robert Keith', 'Robert', 'Keith', '[{"email": "rkeith@benekeith.com", "type": "Work"}]', '[{"phone": "817-555-2601", "type": "Work"}]',
-   'VP Sales', 'Sales', 'active', 'direct', NOW(), NOW()),
+   'VP Sales', 'Sales', 4, NOW(), NOW()),
   (30, 'Amanda Torres', 'Amanda', 'Torres', '[{"email": "atorres@benekeith.com", "type": "Work"}]', '[{"phone": "817-555-2602", "type": "Work"}]',
-   'Purchasing Manager', 'Purchasing', 'active', 'cold_call', NOW(), NOW()),
+   'Purchasing Manager', 'Purchasing', 4, NOW(), NOW()),
 
-  -- Reinhart (Org 16)
+  -- Reinhart (Org 16) - Dale manages
   (31, 'Greg Reinhart', 'Greg', 'Reinhart', '[{"email": "greinhart@rfrsinc.com", "type": "Work"}]', '[{"phone": "715-555-2701", "type": "Work"}]',
-   'Director of Procurement', 'Purchasing', 'active', 'trade_show', NOW(), NOW()),
+   'Director of Procurement', 'Purchasing', 5, NOW(), NOW()),
   (32, 'Diane Foster', 'Diane', 'Foster', '[{"email": "dfoster@rfrsinc.com", "type": "Work"}]', '[{"phone": "715-555-2702", "type": "Work"}]',
-   'Buyer', 'Purchasing', 'active', 'referral', NOW(), NOW()),
+   'Buyer', 'Purchasing', 5, NOW(), NOW()),
 
-  -- Dot Foods (Org 17)
+  -- Dot Foods (Org 17) - Dale manages
   (33, 'Tracy Dot', 'Tracy', 'Dot', '[{"email": "tdot@dotfoods.com", "type": "Work"}]', '[{"phone": "217-555-2801", "type": "Work"}]',
-   'VP Vendor Relations', 'Purchasing', 'active', 'direct', NOW(), NOW()),
+   'VP Vendor Relations', 'Purchasing', 5, NOW(), NOW()),
   (34, 'Mark Stevens', 'Mark', 'Stevens', '[{"email": "mstevens@dotfoods.com", "type": "Work"}]', '[{"phone": "217-555-2802", "type": "Work"}]',
-   'Category Manager', 'Purchasing', 'active', 'website', NOW(), NOW()),
+   'Category Manager', 'Purchasing', 5, NOW(), NOW()),
 
-  -- European Imports (Org 18)
+  -- European Imports (Org 18) - Sue manages
   (35, 'Hans Mueller', 'Hans', 'Mueller', '[{"email": "hmueller@eiltd.com", "type": "Work"}]', '[{"phone": "312-555-2901", "type": "Work"}]',
-   'President', 'Executive', 'active', 'trade_show', NOW(), NOW()),
+   'President', 'Executive', 6, NOW(), NOW()),
   (36, 'Sofia Greco', 'Sofia', 'Greco', '[{"email": "sgreco@eiltd.com", "type": "Work"}]', '[{"phone": "312-555-2902", "type": "Work"}]',
-   'Buyer - Specialty Cheese', 'Purchasing', 'active', 'referral', NOW(), NOW()),
+   'Buyer - Specialty Cheese', 'Purchasing', 6, NOW(), NOW()),
 
-  -- Chefs Warehouse (Org 19)
+  -- Chefs Warehouse (Org 19) - Sue manages
   (37, 'Christopher Pappas', 'Christopher', 'Pappas', '[{"email": "cpappas@chefswarehouse.com", "type": "Work"}]', '[{"phone": "718-555-3001", "type": "Work"}]',
-   'CEO', 'Executive', 'active', 'direct', NOW(), NOW()),
+   'CEO', 'Executive', 6, NOW(), NOW()),
   (38, 'Michelle Lane', 'Michelle', 'Lane', '[{"email": "mlane@chefswarehouse.com", "type": "Work"}]', '[{"phone": "718-555-3002", "type": "Work"}]',
-   'Director of Purchasing', 'Purchasing', 'active', 'trade_show', NOW(), NOW()),
+   'Director of Purchasing', 'Purchasing', 6, NOW(), NOW()),
 
   -- ========================================
   -- CUSTOMER CONTACTS (42 total, 2-3 per org)
   -- ========================================
 
-  -- Capital Grille (Org 20)
+  -- Capital Grille (Org 20) - Brent manages
   (39, 'Andrew Sterling', 'Andrew', 'Sterling', '[{"email": "asterling@capitalgrille.com", "type": "Work"}]', '[{"phone": "312-555-3101", "type": "Work"}]',
-   'Executive Chef', 'Culinary', 'active', 'trade_show', NOW(), NOW()),
+   'Executive Chef', 'Culinary', 2, NOW(), NOW()),
   (40, 'Patricia Mills', 'Patricia', 'Mills', '[{"email": "pmills@capitalgrille.com", "type": "Work"}]', '[{"phone": "312-555-3102", "type": "Work"}]',
-   'Purchasing Director', 'Purchasing', 'active', 'referral', NOW(), NOW()),
+   'Purchasing Director', 'Purchasing', 2, NOW(), NOW()),
 
-  -- Ruth''s Chris (Org 21)
+  -- Ruth''s Chris (Org 21) - Brent manages
   (41, 'Chef William Hayes', 'William', 'Hayes', '[{"email": "whayes@ruthschris.com", "type": "Work"}]', '[{"phone": "504-555-3201", "type": "Work"}]',
-   'Corporate Executive Chef', 'Culinary', 'active', 'direct', NOW(), NOW()),
+   'Corporate Executive Chef', 'Culinary', 2, NOW(), NOW()),
   (42, 'Sharon Wood', 'Sharon', 'Wood', '[{"email": "swood@ruthschris.com", "type": "Work"}]', '[{"phone": "504-555-3202", "type": "Work"}]',
-   'VP Supply Chain', 'Operations', 'active', 'trade_show', NOW(), NOW()),
+   'VP Supply Chain', 'Operations', 2, NOW(), NOW()),
 
-  -- Morton''s (Org 22)
+  -- Morton''s (Org 22) - Michelle manages
   (43, 'Chef Antonio Russo', 'Antonio', 'Russo', '[{"email": "arusso@mortons.com", "type": "Work"}]', '[{"phone": "312-555-3301", "type": "Work"}]',
-   'Executive Chef', 'Culinary', 'active', 'referral', NOW(), NOW()),
+   'Executive Chef', 'Culinary', 3, NOW(), NOW()),
   (44, 'Barbara Chen', 'Barbara', 'Chen', '[{"email": "bchen@mortons.com", "type": "Work"}]', '[{"phone": "312-555-3302", "type": "Work"}]',
-   'Purchasing Manager', 'Purchasing', 'active', 'cold_call', NOW(), NOW()),
+   'Purchasing Manager', 'Purchasing', 3, NOW(), NOW()),
 
-  -- Chili''s (Org 23)
+  -- Chili''s (Org 23) - Michelle manages
   (45, 'Kevin Brinker', 'Kevin', 'Brinker', '[{"email": "kbrinker@brinker.com", "type": "Work"}]', '[{"phone": "972-555-3401", "type": "Work"}]',
-   'VP Culinary Innovation', 'Culinary', 'active', 'trade_show', NOW(), NOW()),
+   'VP Culinary Innovation', 'Culinary', 3, NOW(), NOW()),
   (46, 'Nancy Wright', 'Nancy', 'Wright', '[{"email": "nwright@brinker.com", "type": "Work"}]', '[{"phone": "972-555-3402", "type": "Work"}]',
-   'Director of Procurement', 'Purchasing', 'active', 'direct', NOW(), NOW()),
+   'Director of Procurement', 'Purchasing', 3, NOW(), NOW()),
 
-  -- Applebee''s (Org 24)
+  -- Applebee''s (Org 24) - Gary manages
   (47, 'Chef Brian Palmer', 'Brian', 'Palmer', '[{"email": "bpalmer@applebees.com", "type": "Work"}]', '[{"phone": "913-555-3501", "type": "Work"}]',
-   'VP Menu Development', 'Culinary', 'active', 'referral', NOW(), NOW()),
+   'VP Menu Development', 'Culinary', 4, NOW(), NOW()),
   (48, 'Christine Hall', 'Christine', 'Hall', '[{"email": "chall@applebees.com", "type": "Work"}]', '[{"phone": "913-555-3502", "type": "Work"}]',
-   'Senior Buyer', 'Purchasing', 'active', 'website', NOW(), NOW()),
+   'Senior Buyer', 'Purchasing', 4, NOW(), NOW()),
 
-  -- Buffalo Wild Wings (Org 25)
+  -- Buffalo Wild Wings (Org 25) - Gary manages
   (49, 'Derek Wings', 'Derek', 'Wings', '[{"email": "dwings@buffalowildwings.com", "type": "Work"}]', '[{"phone": "612-555-3601", "type": "Work"}]',
-   'Director of Food Innovation', 'Culinary', 'active', 'trade_show', NOW(), NOW()),
+   'Director of Food Innovation', 'Culinary', 4, NOW(), NOW()),
   (50, 'Laura Burke', 'Laura', 'Burke', '[{"email": "lburke@buffalowildwings.com", "type": "Work"}]', '[{"phone": "612-555-3602", "type": "Work"}]',
-   'Purchasing Manager', 'Purchasing', 'active', 'direct', NOW(), NOW()),
+   'Purchasing Manager', 'Purchasing', 4, NOW(), NOW()),
 
-  -- Red Robin (Org 26)
+  -- Red Robin (Org 26) - Dale manages
   (51, 'Chef Scott Peters', 'Scott', 'Peters', '[{"email": "speters@redrobin.com", "type": "Work"}]', '[{"phone": "303-555-3701", "type": "Work"}]',
-   'Corporate Chef', 'Culinary', 'active', 'referral', NOW(), NOW()),
+   'Corporate Chef', 'Culinary', 5, NOW(), NOW()),
   (52, 'Kimberly Scott', 'Kimberly', 'Scott', '[{"email": "kscott@redrobin.com", "type": "Work"}]', '[{"phone": "303-555-3702", "type": "Work"}]',
-   'Supply Chain Manager', 'Operations', 'active', 'cold_call', NOW(), NOW()),
+   'Supply Chain Manager', 'Operations', 5, NOW(), NOW()),
 
-  -- Panera (Org 27)
+  -- Panera (Org 27) - Dale manages
   (53, 'Chef Dan Kish', 'Dan', 'Kish', '[{"email": "dkish@panerabread.com", "type": "Work"}]', '[{"phone": "314-555-3801", "type": "Work"}]',
-   'Head Baker', 'Culinary', 'active', 'trade_show', NOW(), NOW()),
+   'Head Baker', 'Culinary', 5, NOW(), NOW()),
   (54, 'Rebecca Stone', 'Rebecca', 'Stone', '[{"email": "rstone@panerabread.com", "type": "Work"}]', '[{"phone": "314-555-3802", "type": "Work"}]',
-   'VP Procurement', 'Purchasing', 'active', 'direct', NOW(), NOW()),
+   'VP Procurement', 'Purchasing', 5, NOW(), NOW()),
 
-  -- Chipotle (Org 28)
+  -- Chipotle (Org 28) - Sue manages
   (55, 'Chef Nate Appleman', 'Nate', 'Appleman', '[{"email": "nappleman@chipotle.com", "type": "Work"}]', '[{"phone": "949-555-3901", "type": "Work"}]',
-   'VP Culinary', 'Culinary', 'active', 'referral', NOW(), NOW()),
+   'VP Culinary', 'Culinary', 6, NOW(), NOW()),
   (56, 'Jessica Rivera', 'Jessica', 'Rivera', '[{"email": "jrivera@chipotle.com", "type": "Work"}]', '[{"phone": "949-555-3902", "type": "Work"}]',
-   'Director of Supply', 'Operations', 'active', 'website', NOW(), NOW()),
+   'Director of Supply', 'Operations', 6, NOW(), NOW()),
 
-  -- Shake Shack (Org 29)
+  -- Shake Shack (Org 29) - Sue manages
   (57, 'Chef Mark Rosati', 'Mark', 'Rosati', '[{"email": "mrosati@shakeshack.com", "type": "Work"}]', '[{"phone": "212-555-4001", "type": "Work"}]',
-   'Culinary Director', 'Culinary', 'active', 'trade_show', NOW(), NOW()),
+   'Culinary Director', 'Culinary', 6, NOW(), NOW()),
   (58, 'Angela Morrison', 'Angela', 'Morrison', '[{"email": "amorrison@shakeshack.com", "type": "Work"}]', '[{"phone": "212-555-4002", "type": "Work"}]',
-   'Purchasing Manager', 'Purchasing', 'active', 'direct', NOW(), NOW()),
+   'Purchasing Manager', 'Purchasing', 6, NOW(), NOW()),
 
-  -- Marriott (Org 30)
+  -- Marriott (Org 30) - Brent manages
   (59, 'Chef Antoine Westermann', 'Antoine', 'Westermann', '[{"email": "awestermann@marriott.com", "type": "Work"}]', '[{"phone": "301-555-4101", "type": "Work"}]',
-   'VP Global Culinary', 'Culinary', 'active', 'referral', NOW(), NOW()),
+   'VP Global Culinary', 'Culinary', 2, NOW(), NOW()),
   (60, 'Dorothy Lane', 'Dorothy', 'Lane', '[{"email": "dlane@marriott.com", "type": "Work"}]', '[{"phone": "301-555-4102", "type": "Work"}]',
-   'Director of Procurement', 'Purchasing', 'active', 'trade_show', NOW(), NOW()),
+   'Director of Procurement', 'Purchasing', 2, NOW(), NOW()),
   (61, 'George Mason', 'George', 'Mason', '[{"email": "gmason@marriott.com", "type": "Work"}]', '[{"phone": "301-555-4103", "type": "Work"}]',
-   'Regional F&B Director', 'Operations', 'active', 'direct', NOW(), NOW()),
+   'Regional F&B Director', 'Operations', 2, NOW(), NOW()),
 
-  -- Hilton (Org 31)
+  -- Hilton (Org 31) - Michelle manages
   (62, 'Chef Thomas Keller', 'Thomas', 'Keller', '[{"email": "tkeller@hilton.com", "type": "Work"}]', '[{"phone": "703-555-4201", "type": "Work"}]',
-   'Corporate Executive Chef', 'Culinary', 'active', 'referral', NOW(), NOW()),
+   'Corporate Executive Chef', 'Culinary', 3, NOW(), NOW()),
   (63, 'Margaret Hill', 'Margaret', 'Hill', '[{"email": "mhill@hilton.com", "type": "Work"}]', '[{"phone": "703-555-4202", "type": "Work"}]',
-   'VP Supply Chain', 'Operations', 'active', 'cold_call', NOW(), NOW()),
+   'VP Supply Chain', 'Operations', 3, NOW(), NOW()),
 
-  -- Hyatt (Org 32)
+  -- Hyatt (Org 32) - Michelle manages
   (64, 'Chef Peter Gordon', 'Peter', 'Gordon', '[{"email": "pgordon@hyatt.com", "type": "Work"}]', '[{"phone": "312-555-4301", "type": "Work"}]',
-   'VP F&B Operations', 'Culinary', 'active', 'trade_show', NOW(), NOW()),
+   'VP F&B Operations', 'Culinary', 3, NOW(), NOW()),
   (65, 'Sandra Newman', 'Sandra', 'Newman', '[{"email": "snewman@hyatt.com", "type": "Work"}]', '[{"phone": "312-555-4302", "type": "Work"}]',
-   'Purchasing Director', 'Purchasing', 'active', 'direct', NOW(), NOW()),
+   'Purchasing Director', 'Purchasing', 3, NOW(), NOW()),
 
-  -- HCA Healthcare (Org 33)
+  -- HCA Healthcare (Org 33) - Gary manages
   (66, 'Dr. Richard Nutrition', 'Richard', 'Nutrition', '[{"email": "rnutrition@hcahealthcare.com", "type": "Work"}]', '[{"phone": "615-555-4401", "type": "Work"}]',
-   'Director of Nutrition Services', 'Clinical', 'active', 'referral', NOW(), NOW()),
+   'Director of Nutrition Services', 'Clinical', 4, NOW(), NOW()),
   (67, 'Betty Cook', 'Betty', 'Cook', '[{"email": "bcook@hcahealthcare.com", "type": "Work"}]', '[{"phone": "615-555-4402", "type": "Work"}]',
-   'Foodservice Manager', 'Operations', 'active', 'website', NOW(), NOW()),
+   'Foodservice Manager', 'Operations', 4, NOW(), NOW()),
 
-  -- Ascension (Org 34)
+  -- Ascension (Org 34) - Gary manages
   (68, 'Sister Mary Frances', 'Mary', 'Frances', '[{"email": "mfrances@ascension.org", "type": "Work"}]', '[{"phone": "314-555-4501", "type": "Work"}]',
-   'VP Support Services', 'Operations', 'active', 'trade_show', NOW(), NOW()),
+   'VP Support Services', 'Operations', 4, NOW(), NOW()),
   (69, 'Paul Dietary', 'Paul', 'Dietary', '[{"email": "pdietary@ascension.org", "type": "Work"}]', '[{"phone": "314-555-4502", "type": "Work"}]',
-   'Regional Nutrition Director', 'Clinical', 'active', 'direct', NOW(), NOW()),
+   'Regional Nutrition Director', 'Clinical', 4, NOW(), NOW()),
 
-  -- Aramark (Org 35)
+  -- Aramark (Org 35) - Dale manages
   (70, 'Chef Eric Martino', 'Eric', 'Martino', '[{"email": "emartino@aramark.com", "type": "Work"}]', '[{"phone": "215-555-4601", "type": "Work"}]',
-   'VP Culinary - Higher Ed', 'Culinary', 'active', 'referral', NOW(), NOW()),
+   'VP Culinary - Higher Ed', 'Culinary', 5, NOW(), NOW()),
   (71, 'Janet Campus', 'Janet', 'Campus', '[{"email": "jcampus@aramark.com", "type": "Work"}]', '[{"phone": "215-555-4602", "type": "Work"}]',
-   'Director of Purchasing', 'Purchasing', 'active', 'cold_call', NOW(), NOW()),
+   'Director of Purchasing', 'Purchasing', 5, NOW(), NOW()),
 
-  -- Sodexo (Org 36)
+  -- Sodexo (Org 36) - Dale manages
   (72, 'Chef Philippe Bourguignon', 'Philippe', 'Bourguignon', '[{"email": "pbourguignon@sodexo.com", "type": "Work"}]', '[{"phone": "301-555-4701", "type": "Work"}]',
-   'Global Executive Chef', 'Culinary', 'active', 'trade_show', NOW(), NOW()),
+   'Global Executive Chef', 'Culinary', 5, NOW(), NOW()),
   (73, 'Catherine University', 'Catherine', 'University', '[{"email": "cuniversity@sodexo.com", "type": "Work"}]', '[{"phone": "301-555-4702", "type": "Work"}]',
-   'Campus Dining Director', 'Operations', 'active', 'direct', NOW(), NOW()),
+   'Campus Dining Director', 'Operations', 5, NOW(), NOW()),
 
-  -- Brookdale (Org 37)
+  -- Brookdale (Org 37) - Sue manages
   (74, 'Chef William Senior', 'William', 'Senior', '[{"email": "wsenior@brookdale.com", "type": "Work"}]', '[{"phone": "615-555-4801", "type": "Work"}]',
-   'VP Culinary Services', 'Culinary', 'active', 'referral', NOW(), NOW()),
+   'VP Culinary Services', 'Culinary', 6, NOW(), NOW()),
   (75, 'Helen Care', 'Helen', 'Care', '[{"email": "hcare@brookdale.com", "type": "Work"}]', '[{"phone": "615-555-4802", "type": "Work"}]',
-   'Director of Dining', 'Operations', 'active', 'website', NOW(), NOW()),
+   'Director of Dining', 'Operations', 6, NOW(), NOW()),
 
-  -- Sunrise (Org 38)
+  -- Sunrise (Org 38) - Sue manages
   (76, 'Chef David Wellness', 'David', 'Wellness', '[{"email": "dwellness@sunriseseniorliving.com", "type": "Work"}]', '[{"phone": "703-555-4901", "type": "Work"}]',
-   'Executive Chef', 'Culinary', 'active', 'trade_show', NOW(), NOW()),
+   'Executive Chef', 'Culinary', 6, NOW(), NOW()),
   (77, 'Gloria Living', 'Gloria', 'Living', '[{"email": "gliving@sunriseseniorliving.com", "type": "Work"}]', '[{"phone": "703-555-4902", "type": "Work"}]',
-   'Dining Services Manager', 'Operations', 'active', 'direct', NOW(), NOW()),
+   'Dining Services Manager', 'Operations', 6, NOW(), NOW()),
 
-  -- Levy (Org 39)
+  -- Levy (Org 39) - Brent manages
   (78, 'Chef Larry Levy', 'Larry', 'Levy', '[{"email": "llevy@levyrestaurants.com", "type": "Work"}]', '[{"phone": "312-555-5001", "type": "Work"}]',
-   'Founder & Chairman', 'Executive', 'active', 'referral', NOW(), NOW()),
+   'Founder & Chairman', 'Executive', 2, NOW(), NOW()),
   (79, 'Stadium Sam', 'Sam', 'Stadium', '[{"email": "sstadium@levyrestaurants.com", "type": "Work"}]', '[{"phone": "312-555-5002", "type": "Work"}]',
-   'VP Purchasing', 'Purchasing', 'active', 'cold_call', NOW(), NOW()),
+   'VP Purchasing', 'Purchasing', 2, NOW(), NOW()),
   (80, 'Arena Alice', 'Alice', 'Arena', '[{"email": "aarena@levyrestaurants.com", "type": "Work"}]', '[{"phone": "312-555-5003", "type": "Work"}]',
-   'Corporate Chef', 'Culinary', 'active', 'trade_show', NOW(), NOW());
+   'Corporate Chef', 'Culinary', 2, NOW(), NOW());
 
 -- Reset sequence
 SELECT setval(pg_get_serial_sequence('contacts', 'id'), 80, true);
@@ -1166,11 +1167,14 @@ SELECT setval(pg_get_serial_sequence('contact_tags', 'id'), 36, true);
 --   new_lead, initial_outreach, sample_visit_offered, feedback_logged,
 --   demo_scheduled, closed_won, closed_lost
 -- Links Principal + Distributor (optional) + Customer
+-- Schema: principal_organization_id, customer_organization_id,
+--         distributor_organization_id, opportunity_owner_id, contact_ids[]
 -- ============================================================================
 
 INSERT INTO "public"."opportunities" (
-  id, name, principal_id, customer_id, distributor_id, sales_id,
-  stage, contact_id, expected_close_date, description,
+  id, name, principal_organization_id, customer_organization_id,
+  distributor_organization_id, opportunity_owner_id,
+  stage, contact_ids, estimated_close_date, description,
   created_at, updated_at
 )
 VALUES
@@ -1178,37 +1182,37 @@ VALUES
   -- NEW_LEAD (7 opportunities)
   -- ========================================
   (1, 'McCRUM Fries - Capital Grille', 1, 20, 10, 2,
-   'new_lead', 39, CURRENT_DATE + INTERVAL '60 days',
+   'new_lead', ARRAY[39]::bigint[], CURRENT_DATE + INTERVAL '60 days',
    'Potential to replace current fry supplier with premium Idaho product',
    NOW() - INTERVAL '2 days', NOW()),
 
   (2, 'SWAP Plant-Based - Panera', 2, 27, 11, 3,
-   'new_lead', 53, CURRENT_DATE + INTERVAL '45 days',
+   'new_lead', ARRAY[53]::bigint[], CURRENT_DATE + INTERVAL '45 days',
    'Interest in plant-based options for menu expansion',
    NOW() - INTERVAL '5 days', NOW()),
 
   (3, 'Rapid Rasoi - Marriott Banquets', 3, 30, 12, 3,
-   'new_lead', 59, CURRENT_DATE + INTERVAL '90 days',
+   'new_lead', ARRAY[59]::bigint[], CURRENT_DATE + INTERVAL '90 days',
    'Indian cuisine for convention center catering',
    NOW() - INTERVAL '1 day', NOW()),
 
   (4, 'Lakeview Farms - Sunrise Senior', 4, 38, 13, 4,
-   'new_lead', 76, CURRENT_DATE + INTERVAL '30 days',
+   'new_lead', ARRAY[76]::bigint[], CURRENT_DATE + INTERVAL '30 days',
    'Dessert and dip products for senior dining',
    NOW() - INTERVAL '3 days', NOW()),
 
   (5, 'Frico Cheese - Mortons', 5, 22, 18, 4,
-   'new_lead', 43, CURRENT_DATE + INTERVAL '75 days',
+   'new_lead', ARRAY[43]::bigint[], CURRENT_DATE + INTERVAL '75 days',
    'Premium Italian cheeses for tableside presentations',
    NOW() - INTERVAL '4 days', NOW()),
 
   (6, 'Anchor Butter - Ruth''s Chris', 6, 21, 10, 5,
-   'new_lead', 41, CURRENT_DATE + INTERVAL '55 days',
+   'new_lead', ARRAY[41]::bigint[], CURRENT_DATE + INTERVAL '55 days',
    'NZ grass-fed butter for signature dishes',
    NOW() - INTERVAL '6 days', NOW()),
 
   (7, 'Custom Culinary - HCA Healthcare', 9, 33, 11, 6,
-   'new_lead', 66, CURRENT_DATE + INTERVAL '120 days',
+   'new_lead', ARRAY[66]::bigint[], CURRENT_DATE + INTERVAL '120 days',
    'Soup bases for hospital nutrition services',
    NOW() - INTERVAL '7 days', NOW()),
 
@@ -1216,37 +1220,37 @@ VALUES
   -- INITIAL_OUTREACH (7 opportunities)
   -- ========================================
   (8, 'McCRUM Hash Browns - Hilton', 1, 31, 11, 2,
-   'initial_outreach', 62, CURRENT_DATE + INTERVAL '50 days',
+   'initial_outreach', ARRAY[62]::bigint[], CURRENT_DATE + INTERVAL '50 days',
    'Breakfast program hash brown supply',
    NOW() - INTERVAL '10 days', NOW()),
 
   (9, 'SWAP Oat Milk - Shake Shack', 2, 29, 19, 3,
-   'initial_outreach', 57, CURRENT_DATE + INTERVAL '40 days',
+   'initial_outreach', ARRAY[57]::bigint[], CURRENT_DATE + INTERVAL '40 days',
    'Barista oat milk for shake menu expansion',
    NOW() - INTERVAL '12 days', NOW()),
 
   (10, 'Rapid Rasoi Naan - Buffalo Wild Wings', 3, 25, 13, 3,
-   'initial_outreach', 49, CURRENT_DATE + INTERVAL '35 days',
+   'initial_outreach', ARRAY[49]::bigint[], CURRENT_DATE + INTERVAL '35 days',
    'Naan as appetizer/shareables addition',
    NOW() - INTERVAL '8 days', NOW()),
 
   (11, 'Lakeview Parfaits - Sodexo Campus', 4, 36, 12, 4,
-   'initial_outreach', 72, CURRENT_DATE + INTERVAL '60 days',
+   'initial_outreach', ARRAY[72]::bigint[], CURRENT_DATE + INTERVAL '60 days',
    'Grab-and-go parfaits for campus retail',
    NOW() - INTERVAL '14 days', NOW()),
 
   (12, 'Frico Parmesan - Levy Restaurants', 5, 39, 18, 4,
-   'initial_outreach', 78, CURRENT_DATE + INTERVAL '45 days',
+   'initial_outreach', ARRAY[78]::bigint[], CURRENT_DATE + INTERVAL '45 days',
    'Premium Parmesan for stadium premium suites',
    NOW() - INTERVAL '9 days', NOW()),
 
   (13, 'Tattooed Chef - Chipotle', 7, 28, 17, 5,
-   'initial_outreach', 55, CURRENT_DATE + INTERVAL '80 days',
+   'initial_outreach', ARRAY[55]::bigint[], CURRENT_DATE + INTERVAL '80 days',
    'Plant-based bowl ingredients',
    NOW() - INTERVAL '11 days', NOW()),
 
   (14, 'Litehouse Ranch - Red Robin', 8, 26, 13, 5,
-   'initial_outreach', 51, CURRENT_DATE + INTERVAL '30 days',
+   'initial_outreach', ARRAY[51]::bigint[], CURRENT_DATE + INTERVAL '30 days',
    'Premium ranch for bottomless fries upgrade',
    NOW() - INTERVAL '15 days', NOW()),
 
@@ -1254,37 +1258,37 @@ VALUES
   -- SAMPLE_VISIT_OFFERED (7 opportunities)
   -- ========================================
   (15, 'McCRUM Wedges - Applebees', 1, 24, 11, 2,
-   'sample_visit_offered', 47, CURRENT_DATE + INTERVAL '25 days',
+   'sample_visit_offered', ARRAY[47]::bigint[], CURRENT_DATE + INTERVAL '25 days',
    'Seasoned wedges for new appetizer menu',
    NOW() - INTERVAL '20 days', NOW()),
 
   (16, 'SWAP Jackfruit - Aramark', 2, 35, 17, 3,
-   'sample_visit_offered', 70, CURRENT_DATE + INTERVAL '40 days',
+   'sample_visit_offered', ARRAY[70]::bigint[], CURRENT_DATE + INTERVAL '40 days',
    'BBQ jackfruit for campus sustainability initiatives',
    NOW() - INTERVAL '18 days', NOW()),
 
   (17, 'Rapid Rasoi Samosas - Hyatt', 3, 32, 12, 3,
-   'sample_visit_offered', 64, CURRENT_DATE + INTERVAL '35 days',
+   'sample_visit_offered', ARRAY[64]::bigint[], CURRENT_DATE + INTERVAL '35 days',
    'Appetizer samosas for hotel bars',
    NOW() - INTERVAL '22 days', NOW()),
 
   (18, 'Lakeview Dips - Brookdale', 4, 37, 13, 4,
-   'sample_visit_offered', 74, CURRENT_DATE + INTERVAL '20 days',
+   'sample_visit_offered', ARRAY[74]::bigint[], CURRENT_DATE + INTERVAL '20 days',
    'French onion dip for resident happy hours',
    NOW() - INTERVAL '17 days', NOW()),
 
   (19, 'Anchor Cream - Ascension', 6, 34, 11, 5,
-   'sample_visit_offered', 68, CURRENT_DATE + INTERVAL '50 days',
+   'sample_visit_offered', ARRAY[68]::bigint[], CURRENT_DATE + INTERVAL '50 days',
    'UHT cream for patient trays',
    NOW() - INTERVAL '25 days', NOW()),
 
   (20, 'Tattooed Chef Bowls - Panera', 7, 27, 17, 5,
-   'sample_visit_offered', 54, CURRENT_DATE + INTERVAL '30 days',
+   'sample_visit_offered', ARRAY[54]::bigint[], CURRENT_DATE + INTERVAL '30 days',
    'Plant-based Buddha bowls for catering',
    NOW() - INTERVAL '19 days', NOW()),
 
   (21, 'Custom Culinary Bases - Marriott', 9, 30, 10, 6,
-   'sample_visit_offered', 60, CURRENT_DATE + INTERVAL '45 days',
+   'sample_visit_offered', ARRAY[60]::bigint[], CURRENT_DATE + INTERVAL '45 days',
    'Gold Label bases for banquet soups',
    NOW() - INTERVAL '21 days', NOW()),
 
@@ -1292,37 +1296,37 @@ VALUES
   -- FEEDBACK_LOGGED (7 opportunities)
   -- ========================================
   (22, 'McCRUM Diced - Chilis', 1, 23, 11, 2,
-   'feedback_logged', 45, CURRENT_DATE + INTERVAL '15 days',
+   'feedback_logged', ARRAY[45]::bigint[], CURRENT_DATE + INTERVAL '15 days',
    'Diced potatoes for loaded dishes - positive sample feedback',
    NOW() - INTERVAL '30 days', NOW()),
 
   (23, 'SWAP Cauliflower - Shake Shack', 2, 29, 19, 3,
-   'feedback_logged', 58, CURRENT_DATE + INTERVAL '20 days',
+   'feedback_logged', ARRAY[58]::bigint[], CURRENT_DATE + INTERVAL '20 days',
    'Cauliflower rice for low-carb options - testing complete',
    NOW() - INTERVAL '28 days', NOW()),
 
   (24, 'Rapid Rasoi Curry - Levy', 3, 39, 18, 3,
-   'feedback_logged', 79, CURRENT_DATE + INTERVAL '25 days',
+   'feedback_logged', ARRAY[79]::bigint[], CURRENT_DATE + INTERVAL '25 days',
    'Butter chicken for stadium Indian station - chef approved',
    NOW() - INTERVAL '32 days', NOW()),
 
   (25, 'Frico Gorgonzola - Capital Grille', 5, 20, 18, 4,
-   'feedback_logged', 40, CURRENT_DATE + INTERVAL '10 days',
+   'feedback_logged', ARRAY[40]::bigint[], CURRENT_DATE + INTERVAL '10 days',
    'Gorgonzola crumbles for wedge salad - pricing review',
    NOW() - INTERVAL '35 days', NOW()),
 
   (26, 'Anchor Butter - Morton''s', 6, 22, 10, 4,
-   'feedback_logged', 44, CURRENT_DATE + INTERVAL '18 days',
+   'feedback_logged', ARRAY[44]::bigint[], CURRENT_DATE + INTERVAL '18 days',
    'Clarified butter for steaks - quality confirmed',
    NOW() - INTERVAL '26 days', NOW()),
 
   (27, 'Litehouse Blue Cheese - BWW', 8, 25, 13, 5,
-   'feedback_logged', 50, CURRENT_DATE + INTERVAL '12 days',
+   'feedback_logged', ARRAY[50]::bigint[], CURRENT_DATE + INTERVAL '12 days',
    'Chunky blue cheese for wing dipping - volume pricing TBD',
    NOW() - INTERVAL '29 days', NOW()),
 
   (28, 'Custom Culinary Demi - Ruth''s Chris', 9, 21, 10, 6,
-   'feedback_logged', 42, CURRENT_DATE + INTERVAL '22 days',
+   'feedback_logged', ARRAY[42]::bigint[], CURRENT_DATE + INTERVAL '22 days',
    'Demi-glace for signature sauces - final approval pending',
    NOW() - INTERVAL '33 days', NOW()),
 
@@ -1330,42 +1334,42 @@ VALUES
   -- DEMO_SCHEDULED (8 opportunities)
   -- ========================================
   (29, 'McCRUM Full Line - Sysco', 1, 10, NULL, 2,
-   'demo_scheduled', 19, CURRENT_DATE + INTERVAL '7 days',
+   'demo_scheduled', ARRAY[19]::bigint[], CURRENT_DATE + INTERVAL '7 days',
    'Full product line review for Sysco distribution',
    NOW() - INTERVAL '40 days', NOW()),
 
   (30, 'SWAP Plant Line - US Foods', 2, 11, NULL, 3,
-   'demo_scheduled', 21, CURRENT_DATE + INTERVAL '10 days',
+   'demo_scheduled', ARRAY[21]::bigint[], CURRENT_DATE + INTERVAL '10 days',
    'Complete plant-based lineup presentation',
    NOW() - INTERVAL '38 days', NOW()),
 
   (31, 'Rapid Rasoi Menu - GFS', 3, 13, NULL, 3,
-   'demo_scheduled', 25, CURRENT_DATE + INTERVAL '5 days',
+   'demo_scheduled', ARRAY[25]::bigint[], CURRENT_DATE + INTERVAL '5 days',
    'Full Indian menu demo for regional distribution',
    NOW() - INTERVAL '42 days', NOW()),
 
   (32, 'Lakeview Desserts - Hilton Corp', 4, 31, 12, 4,
-   'demo_scheduled', 63, CURRENT_DATE + INTERVAL '14 days',
+   'demo_scheduled', ARRAY[63]::bigint[], CURRENT_DATE + INTERVAL '14 days',
    'Dessert line for corporate standardization',
    NOW() - INTERVAL '36 days', NOW()),
 
   (33, 'Frico Italian Line - European Imports', 5, 18, NULL, 4,
-   'demo_scheduled', 35, CURRENT_DATE + INTERVAL '8 days',
+   'demo_scheduled', ARRAY[35]::bigint[], CURRENT_DATE + INTERVAL '8 days',
    'Full Italian cheese portfolio review',
    NOW() - INTERVAL '45 days', NOW()),
 
   (34, 'Anchor Dairy - Chefs Warehouse', 6, 19, NULL, 5,
-   'demo_scheduled', 38, CURRENT_DATE + INTERVAL '12 days',
+   'demo_scheduled', ARRAY[38]::bigint[], CURRENT_DATE + INTERVAL '12 days',
    'Premium dairy line for fine dining distribution',
    NOW() - INTERVAL '41 days', NOW()),
 
   (35, 'Tattooed Chef Retail - PFG', 7, 12, NULL, 5,
-   'demo_scheduled', 23, CURRENT_DATE + INTERVAL '9 days',
+   'demo_scheduled', ARRAY[23]::bigint[], CURRENT_DATE + INTERVAL '9 days',
    'Retail-ready plant-based items for C-store',
    NOW() - INTERVAL '39 days', NOW()),
 
   (36, 'Litehouse Dressings - Ben E. Keith', 8, 15, NULL, 6,
-   'demo_scheduled', 29, CURRENT_DATE + INTERVAL '6 days',
+   'demo_scheduled', ARRAY[29]::bigint[], CURRENT_DATE + INTERVAL '6 days',
    'Regional dressing distribution agreement',
    NOW() - INTERVAL '44 days', NOW()),
 
@@ -1373,37 +1377,37 @@ VALUES
   -- CLOSED_WON (7 opportunities)
   -- ========================================
   (37, 'McCRUM Fries - Applebees National', 1, 24, 11, 2,
-   'closed_won', 48, CURRENT_DATE - INTERVAL '10 days',
+   'closed_won', ARRAY[48]::bigint[], CURRENT_DATE - INTERVAL '10 days',
    'National fry contract secured - 3 year agreement',
    NOW() - INTERVAL '90 days', NOW() - INTERVAL '10 days'),
 
   (38, 'SWAP Oat Milk - Panera Regional', 2, 27, 17, 3,
-   'closed_won', 53, CURRENT_DATE - INTERVAL '5 days',
+   'closed_won', ARRAY[53]::bigint[], CURRENT_DATE - INTERVAL '5 days',
    'Midwest region oat milk supply - pilot program',
    NOW() - INTERVAL '60 days', NOW() - INTERVAL '5 days'),
 
   (39, 'Rapid Rasoi - Aramark Campuses', 3, 35, 12, 3,
-   'closed_won', 71, CURRENT_DATE - INTERVAL '15 days',
+   'closed_won', ARRAY[71]::bigint[], CURRENT_DATE - INTERVAL '15 days',
    'Campus Indian station program - 25 universities',
    NOW() - INTERVAL '120 days', NOW() - INTERVAL '15 days'),
 
   (40, 'Lakeview Dips - Sodexo National', 4, 36, 13, 4,
-   'closed_won', 73, CURRENT_DATE - INTERVAL '20 days',
+   'closed_won', ARRAY[73]::bigint[], CURRENT_DATE - INTERVAL '20 days',
    'National dip contract for campus retail',
    NOW() - INTERVAL '100 days', NOW() - INTERVAL '20 days'),
 
   (41, 'Frico Parmesan - Sysco National', 5, 10, NULL, 4,
-   'closed_won', 20, CURRENT_DATE - INTERVAL '8 days',
+   'closed_won', ARRAY[20]::bigint[], CURRENT_DATE - INTERVAL '8 days',
    'National Parmesan distribution agreement',
    NOW() - INTERVAL '75 days', NOW() - INTERVAL '8 days'),
 
   (42, 'Anchor - GFS Regional', 6, 13, NULL, 5,
-   'closed_won', 26, CURRENT_DATE - INTERVAL '12 days',
+   'closed_won', ARRAY[26]::bigint[], CURRENT_DATE - INTERVAL '12 days',
    'Midwest butter and cream distribution',
    NOW() - INTERVAL '85 days', NOW() - INTERVAL '12 days'),
 
   (43, 'Custom Culinary - HCA National', 9, 33, 11, 6,
-   'closed_won', 67, CURRENT_DATE - INTERVAL '25 days',
+   'closed_won', ARRAY[67]::bigint[], CURRENT_DATE - INTERVAL '25 days',
    'Healthcare soup base standardization program',
    NOW() - INTERVAL '150 days', NOW() - INTERVAL '25 days'),
 
@@ -1411,37 +1415,37 @@ VALUES
   -- CLOSED_LOST (7 opportunities)
   -- ========================================
   (44, 'McCRUM - Chipotle National', 1, 28, 17, 2,
-   'closed_lost', 56, CURRENT_DATE - INTERVAL '30 days',
+   'closed_lost', ARRAY[56]::bigint[], CURRENT_DATE - INTERVAL '30 days',
    'Lost to incumbent - price sensitivity',
    NOW() - INTERVAL '180 days', NOW() - INTERVAL '30 days'),
 
   (45, 'SWAP - BWW Pilot', 2, 25, 13, 3,
-   'closed_lost', 49, CURRENT_DATE - INTERVAL '45 days',
+   'closed_lost', ARRAY[49]::bigint[], CURRENT_DATE - INTERVAL '45 days',
    'Menu direction changed - no plant-based focus',
    NOW() - INTERVAL '90 days', NOW() - INTERVAL '45 days'),
 
   (46, 'Rapid Rasoi - Red Robin', 3, 26, 13, 3,
-   'closed_lost', 52, CURRENT_DATE - INTERVAL '20 days',
+   'closed_lost', ARRAY[52]::bigint[], CURRENT_DATE - INTERVAL '20 days',
    'Decided against ethnic menu expansion',
    NOW() - INTERVAL '70 days', NOW() - INTERVAL '20 days'),
 
   (47, 'Lakeview - Shake Shack', 4, 29, 19, 4,
-   'closed_lost', 57, CURRENT_DATE - INTERVAL '35 days',
+   'closed_lost', ARRAY[57]::bigint[], CURRENT_DATE - INTERVAL '35 days',
    'Brand fit concerns - looking for artisan suppliers',
    NOW() - INTERVAL '80 days', NOW() - INTERVAL '35 days'),
 
   (48, 'Tattooed Chef - Marriott', 7, 30, 12, 5,
-   'closed_lost', 61, CURRENT_DATE - INTERVAL '40 days',
+   'closed_lost', ARRAY[61]::bigint[], CURRENT_DATE - INTERVAL '40 days',
    'Budget constraints - postponed plant-based initiative',
    NOW() - INTERVAL '95 days', NOW() - INTERVAL '40 days'),
 
   (49, 'Litehouse - Hyatt National', 8, 32, 12, 5,
-   'closed_lost', 65, CURRENT_DATE - INTERVAL '15 days',
+   'closed_lost', ARRAY[65]::bigint[], CURRENT_DATE - INTERVAL '15 days',
    'Lost to competitor on pricing',
    NOW() - INTERVAL '110 days', NOW() - INTERVAL '15 days'),
 
   (50, 'Custom Culinary - Brookdale', 9, 37, 13, 6,
-   'closed_lost', 75, CURRENT_DATE - INTERVAL '50 days',
+   'closed_lost', ARRAY[75]::bigint[], CURRENT_DATE - INTERVAL '50 days',
    'GPO contract locked with competitor',
    NOW() - INTERVAL '130 days', NOW() - INTERVAL '50 days');
 
