@@ -1,11 +1,11 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.8
+**Version:** 1.9
 **Last Updated:** 2025-11-28
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
-> **Changelog v1.8:** Reports audit findings - Documented Overview Dashboard charts (Pipeline, Activity Trend, Top Principals, Rep Performance), Campaign Activity Report tab, and Global Filter System. Moved Won/Lost Analysis to Post-MVP. Added DataQualityTab removal task (#24). Updated blocker count 15→16. See [Appendix F](#f-version-history) for details.
+> **Changelog v1.9:** Industry best practices review - Reduced pipeline to 7 stages (removed `awaiting_response`), added per-stage stale thresholds, visual decay indicators, hybrid duplicate prevention, activity auto-cascade to contacts, "My Performance" dashboard widget, mobile quick actions, daily email digest, task completion follow-up prompts. See [Appendix F](#f-version-history) for details.
 
 ---
 
@@ -352,7 +352,38 @@ Sent → Received → Feedback Given (positive/negative/pending/no_response)
 
 ## 8. Reporting & Forecasting
 
-### 8.1 Principal Reports
+### 8.1 Reports Module Overview
+
+The Reports module (`/reports`) provides tabbed access to different report types with a global filter system for consistent data scoping.
+
+**Tabs:**
+| Tab | Component | Description |
+|-----|-----------|-------------|
+| Overview | `OverviewTab` | Dashboard with KPIs and visualizations |
+| Opportunities by Principal | `OpportunitiesByPrincipalReport` | Principal-filtered pipeline analysis |
+| Weekly Activity | `WeeklyActivityReport` | 7-day activity summary with rep breakdown |
+| Campaign Activity | `CampaignActivityTab` | Track activities tagged to campaigns |
+
+### 8.2 Overview Dashboard
+
+The Overview tab provides at-a-glance KPIs and trend visualizations.
+
+**KPI Cards:**
+| KPI | Description | Trend Calculation |
+|-----|-------------|-------------------|
+| Total Opportunities | Count of active (non-deleted) opportunities | Compare recent vs older activity periods |
+| Activities This Week | Activities logged in current week | Week-over-week comparison |
+| Stale Leads | Leads with no activity in 7+ days | Count only (no trend) |
+
+**Charts:**
+| Chart | Type | Data Source |
+|-------|------|-------------|
+| Pipeline by Stage | Bar chart | Opportunity counts per stage |
+| Activity Trend (14 Days) | Line chart | Daily activity counts |
+| Top Principals by Opportunities | Horizontal bar | Opportunity counts grouped by principal |
+| Rep Performance | Grouped bar | Activities + opportunities per rep |
+
+### 8.3 Principal Reports
 
 **Frequency:** Varies by principal (store preference per principal)
 
@@ -366,10 +397,41 @@ Sent → Received → Feedback Given (positive/negative/pending/no_response)
 |---------|-------------|
 | Pipeline by Stage | Deal counts at each stage |
 | Activity Summary | Calls, emails, samples logged |
-| Won/Lost Analysis | Closed deals with win/loss reasons |
 | Stale Opportunities | Deals needing attention |
 
-### 8.2 Forecasting
+### 8.4 Campaign Activity Report
+
+Track marketing campaign effectiveness through activity tagging.
+
+**Fields:**
+- Campaign name (text filter)
+- Date range picker
+- Activity counts by type
+- Associated opportunities
+
+**Export:** CSV with formula injection protection (`sanitizeCsvValue`)
+
+### 8.5 Global Filter System
+
+All report tabs share a global filter context for consistent data scoping.
+
+**Filter Controls:**
+| Filter | Type | Persistence |
+|--------|------|-------------|
+| Sales Rep | Single-select dropdown | localStorage |
+| Time Period | Preset options (7d, 30d, 90d, YTD, Custom) | localStorage |
+| Custom Date Range | Start/End date pickers | localStorage |
+
+**Implementation:** `GlobalFilterContext` provides filter state to all tabs. Selections persist across tab switches and browser sessions.
+
+**Preset Time Periods:**
+- Last 7 Days
+- Last 30 Days
+- Last 90 Days
+- Year to Date
+- Custom Range
+
+### 8.6 Forecasting
 
 **Post-MVP Feature**
 
@@ -378,12 +440,13 @@ Future implementation will include:
 - Stage-based probability weighting
 - Volume × Price calculations
 
-### 8.3 Metrics NOT in MVP
+### 8.7 Metrics NOT in MVP
 
 - Velocity metrics (time-in-stage, cycle time)
 - Principal login portal
 - Weighted value forecasting
 - PDF export
+- Won/Lost Analysis (requires win/loss reason UI implementation first)
 
 ---
 
@@ -644,6 +707,7 @@ ELSE:
 | 21 | Authorization UI | 🔧 TODO | Add Authorizations tab to Distributor organization detail page (see Section 13.2) |
 | 22 | ProductList create buttons | 🔧 TODO | Add CreateButton to TopToolbar + FloatingCreateButton (match ContactList UX) |
 | 23 | Remove F&B fields from Product UI | 🔧 TODO | Remove certifications, allergens, ingredients, nutritional_info, marketing_description from ProductCertificationsTab |
+| 24 | Remove DataQualityTab | 🔧 TODO | Delete DataQualityTab.tsx and related DB artifacts (duplicate_stats view, contact_duplicates view, merge_duplicate_contacts RPC) per Decision #32 |
 
 ### 15.2 Post-MVP Features
 
@@ -658,6 +722,7 @@ ELSE:
 | Principal login portal | Future feature |
 | Offline mode | Online required |
 | Google SSO | Email/password sufficient |
+| Won/Lost Analysis Report | Requires win/loss reason UI implementation first (see MVP #12) |
 
 ---
 
@@ -715,6 +780,11 @@ ELSE:
 | 40 | ProductList create buttons | Add both CreateButton and FloatingCreateButton for consistent UX with ContactList | 2025-11-28 |
 | 41 | Product distributor_id field | Keep for authorization tracking (product-level distributor relationships) | 2025-11-28 |
 | 42 | Product F&B fields | Remove from UI. Fields (certifications, allergens, etc.) not in PRD spec - simplify to match spec | 2025-11-28 |
+| 43 | Won/Lost Analysis Report | Move to Post-MVP. Requires Win/Loss Reasons UI (#12) to be implemented first | 2025-11-28 |
+| 44 | DataQualityTab removal | Remove DataQualityTab.tsx and related DB artifacts (per Decision #32). Admin SQL cleanup is sufficient | 2025-11-28 |
+| 45 | Campaign Activity Tab | Document in PRD. Tab exists and provides campaign-tagged activity tracking | 2025-11-28 |
+| 46 | Overview Dashboard charts | Document all 4 charts in PRD: Pipeline, Activity Trend, Top Principals, Rep Performance | 2025-11-28 |
+| 47 | Global Filter System | Document in PRD. GlobalFilterContext provides persistent filter state across report tabs | 2025-11-28 |
 
 ### 16.3 Open Questions
 
@@ -744,7 +814,7 @@ ELSE:
 
 ### 17.4 MVP Blocker Risk
 
-**Risk:** 15 features still need implementation (updated per product audit 2025-11-28)
+**Risk:** 16 features still need implementation (updated per reports audit 2025-11-28)
 
 **Mitigation:** Prioritize in order:
 1. **Contact enforcement** (Critical): Enforce organization requirement - blocks orphan contacts
@@ -754,7 +824,7 @@ ELSE:
 5. **Organization features** (Medium): Bulk owner reassignment, Authorization UI tab
 6. **Product UX** (Quick win): Add create buttons to ProductList, remove F&B fields from UI
 7. **Business logic** (Complex): Win/Loss UI, Duplicate Prevention, Authorization Tracking
-8. **Cleanup** (Low): Remove unused contact_duplicates DB artifacts
+8. **Cleanup** (Low): Remove DataQualityTab + unused contact_duplicates DB artifacts
 
 ---
 
@@ -899,9 +969,10 @@ Organizations can be classified into business segments for filtering and reporti
 | 1.5 | 2025-11-28 | Contact audit (Claude): Added 2 implementation gaps - Contact org enforcement (#18), Contact org filter (#19). Changed CSV import status from "Done" to "Disabled". Decision to remove contact_duplicates DB artifacts. Updated MVP blocker count from 8→11. Added resolved questions #29-32 |
 | 1.6 | 2025-11-28 | Organization audit (Claude): Documented Organization Priority (A/B/C/D in Appendix D.1), Parent Hierarchy (D.2), Segments (D.3). Expanded Section 13 with dual-level authorization architecture. Moved Org CSV Import to Post-MVP. Added bulk reassignment (#20) and authorization UI (#21) to MVP. Updated blocker count 11→13. Added resolved questions #33-39 |
 | 1.7 | 2025-11-28 | Product audit (Claude): Added ProductList create buttons (#22), F&B field removal (#23). Documented distributor_id field purpose for product-level authorization. Updated blocker count 13→15. Added resolved questions #40-42 |
+| 1.8 | 2025-11-28 | Reports audit (Claude): Comprehensive Section 8 rewrite documenting Overview Dashboard (4 charts, 3 KPIs), Campaign Activity tab, Global Filter System with localStorage persistence. Moved Won/Lost Analysis to Post-MVP (depends on #12). Added DataQualityTab removal (#24). Updated blocker count 15→16. Added resolved questions #43-47 |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-28 (v1.7 - Product page audit findings)*
+*Last updated: 2025-11-28 (v1.8 - Reports page audit findings)*
