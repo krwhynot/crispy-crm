@@ -1,11 +1,11 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.13
+**Version:** 1.15
 **Last Updated:** 2025-11-28
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
-> **Changelog v1.13:** Organization Feature Matrix audit - Validated Organization resource against PRD with industry best practices research (Salesforce Accounts, HubSpot Companies via Perplexity). Decisions: (1) Add email field to Organization UI (industry alignment), (2) Keep 2-level hierarchy limit (sufficient for franchises), (3) Change duplicate name validation to soft warning (HubSpot-style), (4) Implement Authorization Tab (#21) and Bulk Reassignment (#20) in parallel. Added MVP features #44-45 (Organization email field, soft duplicate warning). Added resolved questions #79-80. Updated MVP blocker count 35→37. See audit: docs/audits/organization-feature-matrix.md
+> **Changelog v1.15:** Dashboard V3 Feature Matrix audit - Validated Dashboard against PRD with industry best practices research (Salesforce Dashboards, HubSpot Reporting via Perplexity). Key decisions: (1) KPI #1 change from "Total Pipeline Value" ($) to "Open Opportunities" (count) - aligns with Decision #5, (2) KPI #4 change from "Open Opportunities" to "Stale Deals" with amber styling, (3) Add all 13 activity types to QuickLogForm (enables sample tracking MVP #4), (4) Add Recent Activity Feed component below Tasks, (5) Add My Performance sidebar widget, (6) Task snooze popover with Tomorrow/Next Week/Custom options, (7) Weekly Focus widget deferred to post-MVP. Added MVP features #50-55. Added resolved questions #87-94. Updated MVP blocker count 41→47. See audit: docs/audits/dashboard-feature-matrix.md
 
 ---
 
@@ -1025,6 +1025,12 @@ ELSE:
 | 47 | Win/Loss Reasons UI (MVP #12 detail) | 🔧 TODO | Add modal on stage change to `closed_won`/`closed_lost` requiring reason selection. Add `win_reason`/`loss_reason` fields to Zod schema. Block save without reason. Industry standard (Salesforce/HubSpot require reasons) |
 | 48 | Opportunity bulk delete | 🔧 TODO | Add bulk soft delete option to BulkActionsToolbar.tsx (Archive selected). PRD #13 specifies full bulk ops |
 | 49 | Contact from Customer Org validation | 🔧 TODO | Enforce that selected contacts belong to Customer Organization. Show warning if contact is from different org (Section 4.2 requirement) |
+| 50 | Dashboard KPI #1 fix | 🔧 TODO | Change KPI #1 from "Total Pipeline Value" ($) to "Open Opportunities" (count). Aligns with Decision #5 (no pricing MVP). See audit: docs/audits/dashboard-feature-matrix.md |
+| 51 | Dashboard KPI #4 Stale Deals | 🔧 TODO | Change KPI #4 from "Open Opportunities" to "Stale Deals" with amber styling when >0. Update useKPIMetrics hook |
+| 52 | QuickLogForm 13 activity types | 🔧 TODO | Add 8 missing types: sample, demo, proposal, trade_show, site_visit, contract_review, check_in, social. Enables sample tracking (MVP #4) |
+| 53 | Recent Activity Feed component | 🔧 TODO | Add ActivityFeedPanel.tsx below Tasks panel. Show last 10-20 team activities with avatar, type, timestamp. Industry standard (Salesforce/HubSpot) |
+| 54 | My Performance sidebar widget | 🔧 TODO | Add MyPerformanceWidget.tsx with personal metrics: Activities This Week, Deals Moved, Tasks Completed, Open Opps. Click-through to personal report |
+| 55 | Task snooze popover | 🔧 TODO | Replace auto-snooze with popover: Tomorrow (9 AM), Next Week (Monday 9 AM), Custom Date. Per PRD Section 9.2.3 |
 
 ### 15.2 Post-MVP Features
 
@@ -1042,6 +1048,9 @@ ELSE:
 | Won/Lost Analysis Report | Requires win/loss reason UI implementation first (see MVP #12) |
 | Territory Management | Geographic filtering, territory assignment, region-based reports (reps manage assigned accounts without enforcement) |
 | Commission Tracking | Requires volume/price tracking; includes rates, payments, outstanding amounts |
+| Weekly Focus Widget | MFB-specific "One Thing" accountability widget for dashboard. Deferred per audit decision. See docs/audits/dashboard-feature-matrix.md |
+| Task Follow-up Prompt | Modal prompt on task completion to create follow-up task. Deferred to medium priority. Per PRD Section 12.4 |
+| Pipeline Visual Decay Borders | Green/yellow/red borders for deals in `sample_visit_offered` stage. Deferred per Section 6.3 |
 
 ---
 
@@ -1143,6 +1152,14 @@ ELSE:
 | 84 | Duplicate prevention approach | Hybrid: hard block exact matches (Principal+Customer+Product), soft warn fuzzy name matches (Levenshtein ≤3). Industry best practice from both Salesforce and HubSpot | 2025-11-28 |
 | 85 | Opportunity bulk delete | Add to BulkActionsToolbar. PRD #13 specifies full bulk operations (stage, owner, delete). Currently missing delete option | 2025-11-28 |
 | 86 | Contact-Customer Org constraint | Enforce that opportunity contacts belong to Customer Organization. PRD Section 4.2 requirement. Show warning for mismatched orgs | 2025-11-28 |
+| 87 | Dashboard KPI #1 metric | Change from "Total Pipeline Value" ($) to "Open Opportunities" (count). Aligns with Decision #5 (no pricing in MVP). See audit: docs/audits/dashboard-feature-matrix.md | 2025-11-28 |
+| 88 | Dashboard KPI #4 metric | Change from "Open Opportunities" to "Stale Deals" with amber styling when >0. Stale deals = no activity for 14+ days. Industry pattern (Salesforce/HubSpot highlight stale deals) | 2025-11-28 |
+| 89 | QuickLogForm activity types | Expand from 5 to all 13 types defined in Section 6.1 (sample, demo, proposal, trade_show, site_visit, contract_review, check_in, social). Required for sample tracking (MVP #4) | 2025-11-28 |
+| 90 | Task snooze UX | Replace auto-snooze (1 day) with popover offering: Tomorrow (9 AM), Next Week (Monday 9 AM), Custom Date. Per PRD Section 9.2.3. Enterprise UX standard | 2025-11-28 |
+| 91 | Pipeline Next Action styling | Change "Schedule follow-up" from clickable link (`variant="link"`) to plain text. Non-functional elements shouldn't look interactive. Accessibility best practice | 2025-11-28 |
+| 92 | Recent Activity Feed | Add ActivityFeedPanel component below Tasks panel. Show last 10-20 team activities. Industry standard (Salesforce Activity Timeline, HubSpot Activity Feed) | 2025-11-28 |
+| 93 | My Performance widget | Add sidebar widget with personal metrics (Activities This Week, Deals Moved, Tasks Completed, Open Opps). Industry standard for sales dashboards | 2025-11-28 |
+| 94 | Weekly Focus widget | Defer to post-MVP. MFB-specific "One Thing" methodology widget. Nice-to-have but not blocking core dashboard functionality | 2025-11-28 |
 
 ### 16.3 Open Questions
 
@@ -1373,9 +1390,10 @@ Organizations can be classified into business segments for filtering and reporti
 | 1.12 | 2025-11-28 | **Contact Feature Matrix audit:** Validated Contact resource against PRD requirements with industry best practices research (Salesforce, HubSpot via Perplexity). Key decisions: (1) Enforce single-org model for contacts - deprecated contact_organizations junction table, (2) Remove Files tab from ContactSlideOver per Decision #24. Added 2 new MVP features (#42-43): Remove Contact Files tab, Simplify Contact-Org UI. Added 2 resolved questions (#77-78). Updated MVP blocker count 33→35. See: docs/audits/contact-feature-matrix.md |
 | 1.13 | 2025-11-28 | **Organization Feature Matrix audit:** Validated Organization resource against PRD requirements with industry best practices research (Salesforce Accounts, HubSpot Companies via Perplexity). Key decisions: (1) Add email field to Organization UI - industry standard alignment, (2) Keep 2-level hierarchy limit - sufficient for franchises/branches, (3) Change duplicate name validation to soft warning (HubSpot-style) - supports franchises, (4) Implement Authorization Tab (#21) and Bulk Reassignment (#20) in parallel. Added 2 new MVP features (#44-45): Organization email field, soft duplicate warning. Added 2 resolved questions (#79-80). Updated MVP blocker count 35→37. See: docs/audits/organization-feature-matrix.md |
 | 1.14 | 2025-11-28 | **Opportunity Feature Matrix audit:** Validated Opportunity resource against PRD requirements with industry best practices research (Salesforce Opportunity Stages, HubSpot Deal Pipeline via Perplexity/WebSearch). Key decisions: (1) Migrate from 8→7 stages (remove `awaiting_response` per PRD v1.9), (2) Win/Loss Reasons is MVP Blocker - High Priority (industry standard), (3) Per-stage stale thresholds (7d/14d/21d) instead of global 14d, (4) Hybrid duplicate prevention (hard block exact, soft warn fuzzy). Added 4 new MVP features (#46-49): Stage migration, Win/Loss UI detail, Bulk delete, Contact-Customer Org validation. Added 6 resolved questions (#81-86). Updated MVP blocker count 37→41. See: docs/audits/opportunity-feature-matrix.md |
+| 1.15 | 2025-11-28 | **Dashboard V3 Feature Matrix audit:** Validated Dashboard V3 against PRD requirements with industry best practices research (Salesforce Dashboards, HubSpot Reporting via Perplexity). Key decisions: (1) KPI #1 change from "Total Pipeline Value" ($) to "Open Opportunities" (count), (2) KPI #4 change to "Stale Deals" with amber styling, (3) Expand QuickLogForm to all 13 activity types, (4) Add Recent Activity Feed component, (5) Add My Performance sidebar widget, (6) Task snooze popover with date options, (7) Weekly Focus widget deferred to post-MVP. Added 6 new MVP features (#50-55). Added 8 resolved questions (#87-94). Updated MVP blocker count 41→47. See: docs/audits/dashboard-feature-matrix.md |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-28 (v1.14 - Opportunity Feature Matrix audit)*
+*Last updated: 2025-11-28 (v1.15 - Dashboard V3 Feature Matrix audit)*
