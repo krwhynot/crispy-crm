@@ -1,11 +1,11 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.11
+**Version:** 1.12
 **Last Updated:** 2025-11-28
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
-> **Changelog v1.11:** Business Playbook integration - Incorporated key operational information from MFB Business Playbook to make PRD self-contained. Added Principal→Account Manager assignments (Section 2.3.1), MFB 7-phase sales process mapping (Section 7.4), Weekly Focus "One Thing" widget (Section 9.2.5). Expanded organization segments to 8 Playbook categories (Appendix D.3). Documented anchor account convention, principal parameters storage. Added 3 new MVP features (#39-41), 11 resolved questions (#66-76). Territory Management and Commission Tracking deferred to Post-MVP. See [Appendix F](#f-version-history) for details.
+> **Changelog v1.12:** Contact Feature Matrix audit - Validated Contact resource against PRD with industry best practices research (Salesforce, HubSpot via Perplexity). Confirmed single-org model for contacts (contact_organizations junction deprecated). Added MVP features #42-43 (Remove Contact Files tab, Simplify Contact-Org UI). Added resolved questions #77-78. Updated MVP blocker count 33→35. See audit: docs/audits/contact-feature-matrix.md
 
 ---
 
@@ -1017,6 +1017,8 @@ ELSE:
 | 39 | Weekly Focus widget | 🔧 TODO | Add "One Thing" weekly focus text widget to dashboard top (see Section 9.2.5) |
 | 40 | Expand organization segments | 🔧 TODO | Replace generic segments with 8 Playbook categories (Major Broadline, GPO, University, etc. - see Appendix D.3) |
 | 41 | Pipeline stage tooltips | 🔧 TODO | Add tooltip help text mapping MFB 7-phase process to pipeline stages (see Section 7.4) |
+| 42 | Remove Contact Files tab | 🔧 TODO | Remove Files tab from ContactSlideOver (no attachments in MVP per Decision #24) |
+| 43 | Simplify Contact-Org UI | 🔧 TODO | Remove multi-org UI remnants. Contacts use single organization_id field (contact_organizations junction deprecated) |
 
 ### 15.2 Post-MVP Features
 
@@ -1125,6 +1127,8 @@ ELSE:
 | 74 | Principal parameters | Store in Description/Notes field (guaranteed sale, program offers, market fit) | 2025-11-28 |
 | 75 | Quarterly business review | Manual Excel export + formatting; no dedicated QBR features in MVP | 2025-11-28 |
 | 76 | Weekly Focus widget | Add "One Thing" widget to dashboard for weekly goal setting | 2025-11-28 |
+| 77 | Contact-Organization model | Single organization per contact only. Simplified from multi-org (contact_organizations junction table deprecated). See audit: docs/audits/contact-feature-matrix.md | 2025-11-28 |
+| 78 | Contact Files tab | Remove Files tab from ContactSlideOver. Aligns with Decision #24 (no attachments in MVP) | 2025-11-28 |
 
 ### 16.3 Open Questions
 
@@ -1154,7 +1158,7 @@ ELSE:
 
 ### 17.4 MVP Blocker Risk
 
-**Risk:** 30 features still need implementation (updated per UI/UX clarity audit 2025-11-28)
+**Risk:** 35 features still need implementation (updated per Contact Feature Matrix audit 2025-11-28)
 
 **Mitigation:** Prioritize in order:
 1. **Contact enforcement** (Critical): Enforce organization requirement - blocks orphan contacts
@@ -1350,9 +1354,10 @@ Organizations can be classified into business segments for filtering and reporti
 | 1.9 | 2025-11-28 | **Industry best practices review (Perplexity research):** Reduced pipeline from 8→7 stages (removed `awaiting_response`). Added per-stage stale thresholds (7d/14d/21d). Visual decay indicators (green/yellow/red borders) for `sample_visit_offered` stage. Activity auto-cascade to primary contact. "My Performance" dashboard widget. Mobile quick actions (6 buttons). Hybrid duplicate prevention (hard block exact, soft warn fuzzy). Daily email digest at 7 AM (tasks + stale deals). Task completion follow-up prompt. Updated product display to hybrid "Primary + X more". Added 9 new MVP features (#25-33). Added resolved questions #48-59. Updated MVP blocker count 16→25. |
 | 1.10 | 2025-11-28 | **UI/UX clarity audit:** Fixed critical KPI conflict - "Total Pipeline Value" → "Open Opportunities" (no $ in MVP per Decision #5). Added Section 9.2.1-9.2.4 documenting KPI cards, pipeline tooltips, snooze popover, tasks panel scope. Added 5 new MVP features (#34-38): Fix KPI card, pipeline tooltips, Next Action dead link fix, task snooze popover, stale deals KPI. Added resolved questions #60-65. Updated MVP blocker count 25→30. |
 | 1.11 | 2025-11-28 | **Business Playbook integration:** Incorporated key operational information from MFB Business Playbook to make PRD self-contained. Added Section 2.3.1 (Principal→Account Manager seed data assignments), Section 7.4 (MFB 7-phase sales process mapping to pipeline stages), Section 9.2.5 (Weekly Focus "One Thing" widget). Expanded Appendix D.3 with 8 Playbook target categories (Major Broadline, GPO, University, etc.). Documented anchor account convention (Priority A + #anchor tag), principal parameters storage (Notes field). Added 3 new MVP features (#39-41): Weekly Focus widget, segment expansion, pipeline stage tooltips. Deferred Territory Management and Commission Tracking to Post-MVP. Added resolved questions #66-76. Updated MVP blocker count 30→33. |
+| 1.12 | 2025-11-28 | **Contact Feature Matrix audit:** Validated Contact resource against PRD requirements with industry best practices research (Salesforce, HubSpot via Perplexity). Key decisions: (1) Enforce single-org model for contacts - deprecated contact_organizations junction table, (2) Remove Files tab from ContactSlideOver per Decision #24. Added 2 new MVP features (#42-43): Remove Contact Files tab, Simplify Contact-Org UI. Added 2 resolved questions (#77-78). Updated MVP blocker count 33→35. See: docs/audits/contact-feature-matrix.md |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-28 (v1.11 - Business Playbook integration)*
+*Last updated: 2025-11-28 (v1.12 - Contact Feature Matrix audit)*
