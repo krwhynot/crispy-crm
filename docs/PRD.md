@@ -1,11 +1,11 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.16
+**Version:** 1.17
 **Last Updated:** 2025-11-28
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
-> **Changelog v1.16:** Tasks Feature Matrix audit - Validated Tasks resource against PRD with industry best practices research (Salesforce Task Object, HubSpot Tasks via Perplexity). Key decisions: (1) Task types alignment - use PRD 7 types (Call, Email, Meeting, Follow-up, Demo, Proposal, Other), remove None/Discovery/Administrative from code, (2) Add organization_id field to tasks for org-level tasks (matches Salesforce WhatId pattern), (3) Task snooze popover confirmed (Tomorrow/Next Week/Custom per PRD §9.2.3), (4) Task completion follow-up as inline toast (less intrusive than modal). Added MVP features #56-58. Added resolved questions #95-98. Updated MVP blocker count 47→50. See audit: docs/audits/tasks-feature-matrix.md
+> **Changelog v1.17:** Reports Module Feature Matrix audit - Validated Reports module against PRD Section 8 requirements with industry best practices research (Salesforce Reporting, HubSpot Dashboards via WebSearch). Key decisions: (1) Overview tab should have 4 KPIs per Section 9.2.1 (add Stale Deals), (2) Keep current 6 date presets (Today, Yesterday, Last 7/30, This/Last Month) - sufficient for MVP, (3) Add KPI click-through navigation to filtered lists (Salesforce/HubSpot pattern), (4) Use per-stage stale thresholds from Section 6.3 in Reports (7d/14d/21d). Added MVP features #59-61. Added resolved questions #99-102. Updated MVP blocker count 50→53. See audit: docs/audits/reports-feature-matrix.md
 
 ---
 
@@ -443,12 +443,26 @@ The Reports module (`/reports`) provides tabbed access to different report types
 
 The Overview tab provides at-a-glance KPIs and trend visualizations.
 
-**KPI Cards:**
-| KPI | Description | Trend Calculation |
-|-----|-------------|-------------------|
-| Total Opportunities | Count of active (non-deleted) opportunities | Compare recent vs older activity periods |
-| Activities This Week | Activities logged in current week | Week-over-week comparison |
-| Stale Leads | Leads with no activity in 7+ days | Count only (no trend) |
+**KPI Cards (4 total):**
+
+*See Section 9.2.1 for complete KPI specifications including click actions and styling.*
+
+| KPI | Description | Trend Calculation | Click Action |
+|-----|-------------|-------------------|--------------|
+| Total Opportunities | Count of active (non-deleted) opportunities | Compare recent vs older activity periods | → Opportunities List (all active) |
+| Activities This Week | Activities logged in current week | Week-over-week comparison | → Weekly Activity Report |
+| Stale Leads | Leads with no activity past stage threshold | Count only (no trend) | → Opportunities List (stale filter) |
+| Stale Deals | Deals exceeding per-stage SLA (amber styling) | Count only (no trend) | → Opportunities List (stale filter) |
+
+**Per-Stage Stale Thresholds (from Section 6.3):**
+| Stage | Threshold | Rationale |
+|-------|-----------|-----------|
+| `new_lead` | 7 days | New leads need fast follow-up |
+| `initial_outreach` | 14 days | Active engagement phase |
+| `sample_visit_offered` | 14 days | Sample logistics window |
+| `feedback_logged` | 21 days | Customer evaluation period |
+| `demo_scheduled` | 14 days | Decision pending |
+| Other stages | 14 days | Default threshold |
 
 **Charts:**
 | Chart | Type | Data Source |
@@ -494,17 +508,19 @@ All report tabs share a global filter context for consistent data scoping.
 | Filter | Type | Persistence |
 |--------|------|-------------|
 | Sales Rep | Single-select dropdown | localStorage |
-| Time Period | Preset options (7d, 30d, 90d, YTD, Custom) | localStorage |
-| Custom Date Range | Start/End date pickers | localStorage |
+| Time Period | 6 preset options (see below) | localStorage |
 
-**Implementation:** `GlobalFilterContext` provides filter state to all tabs. Selections persist across tab switches and browser sessions.
+**Implementation:** `GlobalFilterContext` provides filter state to all tabs. Selections persist across tab switches and browser sessions via `reports.globalFilters` localStorage key.
 
-**Preset Time Periods:**
+**Preset Time Periods (validated for MVP):**
+- Today
+- Yesterday
 - Last 7 Days
 - Last 30 Days
-- Last 90 Days
-- Year to Date
-- Custom Range
+- This Month
+- Last Month
+
+*Note: Custom date range pickers are implemented per-tab (Opportunities by Principal, Campaign Activity) rather than in the global filter bar. This provides sufficient flexibility without adding complexity to the global controls.*
 
 ### 8.6 Forecasting
 
@@ -1034,6 +1050,9 @@ ELSE:
 | 56 | Task type enum alignment | 🔧 TODO | Update taskTypeSchema to PRD 7 types: Call, Email, Meeting, Follow-up, Demo, Proposal, Other. Remove None/Discovery/Administrative. Update defaultConfiguration.ts. See audit: docs/audits/tasks-feature-matrix.md |
 | 57 | Task organization_id field | 🔧 TODO | Add optional organization_id FK to tasks table. Enables org-level tasks without opportunity (e.g., "Prepare for Sysco annual review"). Update schema, forms, TaskRelatedItemsTab. Matches Salesforce WhatId pattern |
 | 58 | Task completion follow-up toast | 🔧 TODO | On task completion, show toast: "Task completed! [Create follow-up →]". Link opens pre-filled task form with same contact/opportunity. Less intrusive than modal per user decision |
+| 59 | Reports Overview 4th KPI (Stale Deals) | 🔧 TODO | Add 4th KPICard to OverviewTab with amber styling when count > 0. Count deals exceeding per-stage thresholds (Section 6.3). See audit: docs/audits/reports-feature-matrix.md |
+| 60 | Reports KPI click navigation | 🔧 TODO | Add onClick handlers to all 4 KPICards in OverviewTab. Navigate to filtered views (Opportunities List or Weekly Activity Report). Matches Salesforce/HubSpot UX pattern |
+| 61 | Reports per-stage stale thresholds | 🔧 TODO | Update OverviewTab stale calculations to use STAGE_STALE_THRESHOLDS map (new_lead: 7d, initial_outreach: 14d, sample_visit_offered: 14d, feedback_logged: 21d, demo_scheduled: 14d). Replace current fixed 7-day threshold |
 
 ### 15.2 Post-MVP Features
 
@@ -1167,6 +1186,10 @@ ELSE:
 | 96 | Task organization linking | Add optional organization_id FK field to tasks. Enables org-level tasks without opportunity (e.g., "Prepare for Sysco annual review"). Matches Salesforce WhatId pattern for flexible entity linking | 2025-11-28 |
 | 97 | Task snooze UX | Implement popover with options: Tomorrow (next day 9 AM), Next Week (Monday 9 AM), Custom Date picker. Replaces current auto +1 day behavior. Per PRD §9.2.3 | 2025-11-28 |
 | 98 | Task completion follow-up | Inline toast with "Create follow-up" link (less intrusive than modal). Toast shows on completion, auto-dismisses after 5 seconds. Link opens pre-filled task form | 2025-11-28 |
+| 99 | Reports Overview KPI count | 4 KPIs per Section 9.2.1 (Total Opportunities, Activities This Week, Stale Leads, Stale Deals). Add missing 4th KPI with amber styling | 2025-11-28 |
+| 100 | Reports date filter presets | Keep current 6 presets (Today, Yesterday, Last 7/30 Days, This/Last Month). More granular than PRD spec but sufficient for MVP. Per-tab custom pickers available | 2025-11-28 |
+| 101 | Reports KPI click navigation | Add click handlers to all KPI cards linking to filtered list views. Industry standard pattern (Salesforce/HubSpot) for dashboard drill-down UX | 2025-11-28 |
+| 102 | Reports stale detection logic | Use per-stage thresholds from Section 6.3 (7d/14d/21d) instead of global 7-day threshold. More accurate deal health assessment per stage | 2025-11-28 |
 
 ### 16.3 Open Questions
 
@@ -1196,7 +1219,7 @@ ELSE:
 
 ### 17.4 MVP Blocker Risk
 
-**Risk:** 41 features still need implementation (updated per Opportunity Feature Matrix audit 2025-11-28)
+**Risk:** 53 features still need implementation (updated per Reports Feature Matrix audit 2025-11-28)
 
 **Mitigation:** Prioritize in order:
 1. **Contact enforcement** (Critical): Enforce organization requirement - blocks orphan contacts
@@ -1399,9 +1422,10 @@ Organizations can be classified into business segments for filtering and reporti
 | 1.14 | 2025-11-28 | **Opportunity Feature Matrix audit:** Validated Opportunity resource against PRD requirements with industry best practices research (Salesforce Opportunity Stages, HubSpot Deal Pipeline via Perplexity/WebSearch). Key decisions: (1) Migrate from 8→7 stages (remove `awaiting_response` per PRD v1.9), (2) Win/Loss Reasons is MVP Blocker - High Priority (industry standard), (3) Per-stage stale thresholds (7d/14d/21d) instead of global 14d, (4) Hybrid duplicate prevention (hard block exact, soft warn fuzzy). Added 4 new MVP features (#46-49): Stage migration, Win/Loss UI detail, Bulk delete, Contact-Customer Org validation. Added 6 resolved questions (#81-86). Updated MVP blocker count 37→41. See: docs/audits/opportunity-feature-matrix.md |
 | 1.15 | 2025-11-28 | **Dashboard V3 Feature Matrix audit:** Validated Dashboard V3 against PRD requirements with industry best practices research (Salesforce Dashboards, HubSpot Reporting via Perplexity). Key decisions: (1) KPI #1 change from "Total Pipeline Value" ($) to "Open Opportunities" (count), (2) KPI #4 change to "Stale Deals" with amber styling, (3) Expand QuickLogForm to all 13 activity types, (4) Add Recent Activity Feed component, (5) Add My Performance sidebar widget, (6) Task snooze popover with date options, (7) Weekly Focus widget deferred to post-MVP. Added 6 new MVP features (#50-55). Added 8 resolved questions (#87-94). Updated MVP blocker count 41→47. See: docs/audits/dashboard-feature-matrix.md |
 | 1.16 | 2025-11-28 | **Tasks Feature Matrix audit:** Validated Tasks resource against PRD requirements with industry best practices research (Salesforce Task Object, HubSpot Tasks via Perplexity). Key decisions: (1) Task types alignment - use PRD 7 types (Call, Email, Meeting, Follow-up, Demo, Proposal, Other), remove None/Discovery/Administrative from code, (2) Add organization_id field to tasks for org-level tasks (matches Salesforce WhatId pattern), (3) Task snooze popover confirmed (Tomorrow/Next Week/Custom per PRD §9.2.3), (4) Task completion follow-up as inline toast (less intrusive than modal). Added 3 new MVP features (#56-58). Added 4 resolved questions (#95-98). Updated MVP blocker count 47→50. See: docs/audits/tasks-feature-matrix.md |
+| 1.17 | 2025-11-28 | **Reports Module Feature Matrix audit:** Validated Reports module (`/reports`) against PRD Section 8 requirements with industry best practices research (Salesforce Reporting, HubSpot Dashboards via WebSearch). Key decisions: (1) Overview tab should have 4 KPIs per Section 9.2.1 - add Stale Deals as 4th KPI with amber styling, (2) Keep current 6 date presets (Today, Yesterday, Last 7/30 Days, This/Last Month) - sufficient for MVP, (3) Add KPI click-through navigation to filtered list views (Salesforce/HubSpot pattern), (4) Use per-stage stale thresholds from Section 6.3 (7d/14d/21d) instead of fixed 7-day. Updated Section 8.2 with 4 KPIs + per-stage thresholds table. Updated Section 8.5 with validated date presets. Added 3 new MVP features (#59-61). Added 4 resolved questions (#99-102). Updated MVP blocker count 50→53. See: docs/audits/reports-feature-matrix.md |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-28 (v1.16 - Tasks Feature Matrix audit)*
+*Last updated: 2025-11-28 (v1.17 - Reports Module Feature Matrix audit)*
