@@ -1,7 +1,7 @@
 # Complete User Guide: Managing Opportunities in Atomic CRM
 
-**Version:** 1.0
-**Last Updated:** October 28, 2025
+**Version:** 1.1
+**Last Updated:** November 28, 2025
 **Target Audience:** Sales users, account managers, food service brokers
 
 ---
@@ -123,21 +123,23 @@ Activities form the **historical record** of your sales effort:
 - **Stage progression** – Certain activities naturally move opportunities to new stages
 - **Follow-up tracking** – Never lose track of what needs to happen next
 
-### When to Log Different Activity Types
+### When to Log Different Activity Types (13 types - PRD v1.11)
 
 | Activity Type | When to Use It | Example |
 |--------------|----------------|---------|
 | **Call** | Phone conversations | "Called chef to discuss menu fit for new sauce line" |
 | **Email** | Email correspondence | "Sent pricing and case pack info to purchasing manager" |
 | **Meeting** | In-person or virtual meetings | "Met with owner to present product portfolio" |
+| **Site Visit** | Visiting customer location | "Visited kitchen to assess equipment compatibility" |
+| **Sample** | Sending product samples | "Shipped sample case of 6 SKUs for tasting" |
 | **Demo** | Product demonstrations | "Scheduled tasting for kitchen staff - 3 SKUs" |
 | **Proposal** | Formal proposals sent | "Submitted proposal for spring menu changeover" |
+| **Negotiation** | Price/terms discussions | "Negotiated volume discount for quarterly commitment" |
 | **Follow Up** | Any follow-up contact | "Followed up on samples sent last week" |
-| **Trade Show** | Trade show encounters | "Met at NRA Show booth - interested in gluten-free items" |
-| **Site Visit** | Visiting customer location | "Visited kitchen to assess equipment compatibility" |
-| **Contract Review** | Contract discussions | "Reviewed distributor agreement terms" |
-| **Check In** | Routine check-ins | "Quarterly check-in - discussed summer specials" |
-| **Social** | Social/relationship building | "Attended chef's tasting event" |
+| **Referral** | Referral-related contact | "Received referral from Chef Maria - her colleague needs sauces" |
+| **Social Media** | LinkedIn, social interactions | "Connected on LinkedIn, shared product video" |
+| **Conference** | Trade shows, industry events | "Met at NRA Show booth - interested in gluten-free items" |
+| **Other** | Anything else | "Dropped off POS materials at restaurant" |
 
 ---
 
@@ -219,7 +221,7 @@ Navigate to the opportunity and click "Edit". The form looks the same as creatio
    - Creates the activity record
    - Updates the opportunity stage
 
-> **💡 Best Practice:** Method 2 is powerful because it **ties stage progression to actual work**. When you log "Had demo with chef - 3 products tested" and move from "Sample/Visit Offered" to "Awaiting Response", you're creating an audit trail that proves the stage change was based on real activity, not guesswork.
+> **💡 Best Practice:** Method 2 is powerful because it **ties stage progression to actual work**. When you log "Had demo with chef - 3 products tested" and move from "Sample/Visit Offered" to "Feedback Logged", you're creating an audit trail that proves the stage change was based on real activity, not guesswork.
 
 ---
 
@@ -229,25 +231,26 @@ Navigate to the opportunity and click "Edit". The form looks the same as creatio
 
 Stages represent **where you are in the sales process**. Think of them as checkpoints on the path from "just met" to "signed contract."
 
-#### The 8 Stages Explained
+#### The 7 Stages Explained (v1.1 - aligned with PRD v1.11)
 
 | Stage | What It Means | When to Use It | Example |
 |-------|---------------|----------------|---------|
 | **New Lead** | Just identified this potential customer | Initial prospect identification, trade show leads | "Met owner at NRA Show, got business card" |
 | **Initial Outreach** | Made first contact or following up | After first call, email, or meeting scheduled | "Called to introduce myself and our product line" |
 | **Sample/Visit Offered** | Offered to send samples or schedule a visit | When you've offered product samples or proposed a site visit | "Shipped sample case of 6 SKUs to chef" |
-| **Awaiting Response** | Waiting to hear back after sample/proposal | After samples delivered, waiting for feedback | "Samples delivered Monday, following up Friday" |
-| **Feedback Logged** | Received feedback, analyzing fit | After customer has tried product and given input | "Chef loved 3 items, passed on 2, pricing concern on 1" |
+| **Feedback Logged** | Received feedback, analyzing fit | After customer has tried product and given input (includes waiting period) | "Chef loved 3 items, passed on 2, pricing concern on 1" |
 | **Demo Scheduled** | Planning or scheduled a product demonstration | When you've set a date for formal presentation/tasting | "Scheduled kitchen demo for May 15 - full staff tasting" |
 | **Closed - Won** | Customer agreed to buy! | When they've committed to purchase/sign contract | "Signed agreement for 4 SKUs, starting June 1" |
 | **Closed - Lost** | Customer declined or went another direction | When they say no or choose a competitor | "Chose competitor due to lower pricing" |
+
+> **Note:** The "Awaiting Response" stage was consolidated into "Feedback Logged" in PRD v1.9 to simplify the pipeline.
 
 #### Stage Progression Best Practices
 
 **✅ DO:**
 - Move stages based on **actual events** (calls, meetings, samples sent)
 - Log an activity when you change stages to document why
-- Use "Awaiting Response" when you're genuinely waiting on the customer
+- Use "Feedback Logged" when waiting on customer response or after receiving feedback
 - Be honest about "Closed - Lost" so you can track win rates
 
 **❌ DON'T:**
@@ -442,8 +445,8 @@ Over the next weeks, you'd log:
 - Stage: "Demo Scheduled" (you scheduled a formal tasting)
 
 **Week 4:**
-- Activity: "Proposal" - "Submitted pricing proposal and transition timeline for April 1 menu launch"
-- Stage: "Awaiting Response"
+- Activity: "Proposal" - "Submitted pricing proposal and transition timeline for April 1 menu launch. Waiting for approval."
+- Stage: "Feedback Logged" (awaiting final decision)
 
 **Week 5:**
 - Activity: "Call" - "Chef approved! Starting with 3 SKUs, delivery via Sysco Chicago weekly."
@@ -461,15 +464,14 @@ Over the next weeks, you'd log:
 
 ## Quick Reference Card
 
-### 8 Stages in Order
+### 7 Stages in Order (PRD v1.11)
 1. New Lead
 2. Initial Outreach
 3. Sample/Visit Offered
-4. Awaiting Response
-5. Feedback Logged
-6. Demo Scheduled
-7. Closed - Won
-8. Closed - Lost
+4. Feedback Logged
+5. Demo Scheduled
+6. Closed - Won
+7. Closed - Lost
 
 ### 4 Priority Levels
 - **Critical** (urgent must-wins)
@@ -483,8 +485,8 @@ Over the next weeks, you'd log:
 - Customer Organization
 - At least one Contact
 
-### 11 Activity Types
-Call • Email • Meeting • Demo • Proposal • Follow Up • Trade Show • Site Visit • Contract Review • Check In • Social
+### 13 Activity Types (PRD v1.11)
+Call • Email • Meeting • Site Visit • Sample • Demo • Proposal • Negotiation • Follow Up • Referral • Social Media • Conference • Other
 
 ### 8 Lead Sources
 Referral • Trade Show • Website • Cold Call • Email Campaign • Social Media • Partner • Existing Customer
