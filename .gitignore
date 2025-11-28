@@ -25,14 +25,13 @@ tests/e2e/.playwright-mcp/
 # Keep these files (committed):
 # .env.example - Template showing structure
 # .env.local - Local development config (safe Docker keys)
-# .env.cloud - Cloud config template (public anon key only)
 
 # Ignore these:
 .env                        # Active configuration (copied from .env.local or .env.cloud)
 .env.*                      # Catch-all: .env.production, .env.staging, .env.development, .env.test, etc.
+.env.cloud                  # Cloud config with API keys (not committed)
 !.env.example               # Exception: Keep .env.example (template)
 !.env.local                 # Exception: Keep .env.local (safe Docker keys)
-!.env.cloud                 # Exception: Keep .env.cloud (public anon key template)
 .env-archive/               # Archived old env files
 
 npm-debug.log*
