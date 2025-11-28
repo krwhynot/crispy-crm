@@ -14,7 +14,7 @@
 | **Automate Workflows** | Reduce manual data entry and formula dependencies |
 | **Improve Pipeline Visibility** | Real-time dashboards across the 7-stage sales pipeline |
 | **Enable Collaboration** | Multi-user access with role-based permissions for the sales team |
-| **Enhance Forecasting** | Volume (cases/units) AND dollar-based sales projections |
+| **Enhance Forecasting** | Volume (cases/units) AND dollar-based sales projections *(Post-MVP)* |
 | **Cross-Device Access** | Desktop-first design with critical mobile/tablet support for field reps |
 
 ---
@@ -101,12 +101,22 @@ Opportunity (1) ──────── (1) Principal
 
 ### Pipeline Stages
 
-**Status**: 8 stages (to be finalized)
+**Status**: 7 stages (finalized in PRD v1.9)
 
-### Forecasting Model
+1. `new_lead` - New Lead
+2. `initial_outreach` - Initial Outreach
+3. `sample_visit_offered` - Sample/Visit Offered
+4. `feedback_logged` - Feedback Logged
+5. `demo_scheduled` - Demo Scheduled
+6. `closed_won` - Closed Won
+7. `closed_lost` - Closed Lost
+
+### Forecasting Model *(Post-MVP)*
 
 - **Dual tracking**: Both volume (cases/units) AND dollar value
 - **Reporting periods**: Weekly and Monthly
+
+> **Note:** Volume/price tracking deferred to Post-MVP. MVP focuses on pipeline visibility and activity tracking.
 
 ---
 
@@ -123,8 +133,8 @@ Opportunity (1) ──────── (1) Principal
 
 ### Delivery Methods
 
-- PDF export (email to principals)
-- Excel export (for their own analysis)
+- Excel export (for their own analysis) - **MVP**
+- PDF export (email to principals) - *Post-MVP*
 
 ### Win/Loss Reasons
 
@@ -170,14 +180,17 @@ Without these, the team won't adopt:
 |---------|----------|
 | **Principal-filtered views** | See pipeline/activities for one principal at a time |
 | **Quick activity logging** | Log a call in under 30 seconds |
-| **Export to PDF/Excel** | Generate reports for principals |
+| **Export to Excel** | Generate reports for principals |
 | **Sample tracking** | Log when samples sent and follow-up status |
 | **Mobile/tablet access** | Critical for daily field use |
+| **Task management** | Tasks panel, snooze, daily email digest |
 
 ### NOT Required for MVP
 
-- Task reminders (nice to have, not blocking)
+- PDF export (Excel sufficient)
+- Volume/price tracking (deferred complexity)
 - External integrations (standalone system)
+- Territory management (geographic filtering)
 
 ---
 
@@ -250,6 +263,6 @@ What defines a "good week":
 
 ---
 
-*This document defines WHY we're building Crispy-CRM. For HOW, see the technical documentation.*
+*This document defines WHY we're building Crispy-CRM. For detailed WHAT (features, specifications), see [PRD.md](./docs/PRD.md). For HOW (technical), see [CLAUDE.md](./CLAUDE.md).*
 
-*Last updated via questionnaire: Captures MFB's specific food brokerage workflow, principal reporting needs, and field sales requirements.*
+*Last updated: 2025-11-28 - Aligned with PRD v1.11 (7-stage pipeline, Post-MVP deferrals, task management in MVP)*

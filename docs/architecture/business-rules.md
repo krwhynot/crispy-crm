@@ -1,6 +1,6 @@
 # Business Rules
 
-**Status:** Living Document | **Last Updated:** 2025-11-09
+**Status:** Living Document | **Last Updated:** 2025-11-28
 **Owner:** Architecture Team | **Scope:** All Business Logic
 
 ## Overview
@@ -169,14 +169,13 @@ const contactOrganizationSchema = z.object({
 
 ### Stage Validation
 
-**Schema:**
+**Schema (7 stages - updated PRD v1.9):**
 
 ```typescript
 export const opportunityStageSchema = z.enum([
   "new_lead",
   "initial_outreach",
   "sample_visit_offered",
-  "awaiting_response",
   "feedback_logged",
   "demo_scheduled",
   "closed_won",
@@ -189,6 +188,7 @@ export const opportunityStageSchema = z.enum([
 **Business Rules:**
 - Stage changes tracked via `stage_changed_at` (updated by trigger)
 - No validation on stage transitions (sales rep controls workflow)
+- `awaiting_response` stage removed in PRD v1.9 (consolidated into `feedback_logged`)
 
 ---
 
@@ -519,21 +519,23 @@ export const activityTypeSchema = z.enum(["engagement", "interaction"]);
 
 ### Interaction Type
 
-**Schema:**
+**Schema (13 types - aligned with PRD v1.11):**
 
 ```typescript
 export const interactionTypeSchema = z.enum([
   "call",
   "email",
   "meeting",
+  "site_visit",
+  "sample",
   "demo",
   "proposal",
+  "negotiation",
   "follow_up",
-  "trade_show",
-  "site_visit",
-  "contract_review",
-  "check_in",
-  "social",
+  "referral",
+  "social_media",
+  "conference",
+  "other",
 ]);
 ```
 
