@@ -517,12 +517,85 @@ Future implementation will include:
 **Default View:** Principal-focused dashboard (V3)
 
 **Key Components:**
+- KPI Summary Row (4 clickable metric cards)
 - Pipeline summary by principal with momentum indicators
 - Stale deal warnings (per-stage thresholds with visual decay)
 - Tasks panel (time-bucketed: Overdue → Today → Tomorrow)
 - Quick activity logging FAB (Floating Action Button)
 - Recent activity feed
 - **My Performance widget (v1.9)**
+
+#### 9.2.1 KPI Summary Row (v1.9 - CORRECTED)
+
+Four clickable metric cards at top of dashboard. Each card navigates to a filtered list view on click.
+
+| # | KPI | Display | Click Action | Notes |
+|---|-----|---------|--------------|-------|
+| 1 | **Open Opportunities** | Count (e.g., "23") | → Opportunities list (open only) | ⚠️ Changed from "Total Pipeline Value" - no $ amounts in MVP |
+| 2 | **Overdue Tasks** | Count (RED if > 0) | → Tasks list (overdue filter) | Red destructive styling when count > 0 |
+| 3 | **Activities This Week** | Count | → Activities list (this week) | Calendar week (Mon-Sun) |
+| 4 | **Stale Deals** | Count (AMBER if > 0) | → Opportunities list (stale filter) | Per-stage thresholds apply |
+
+> **CRITICAL FIX (v1.9):** The first KPI was incorrectly showing "Total Pipeline Value: $125,000" which conflicts with Decision #5 (Pricing/Volume deferred to post-MVP). Changed to "Open Opportunities" count to avoid misleading users about forecasting capabilities.
+
+**KPI Card Interaction:**
+- `role="button"` with `tabIndex={0}` for keyboard accessibility
+- `aria-label` includes metric name, value, and "Click to view details"
+- Hover: subtle elevation lift
+- Focus: `ring-2 ring-primary` focus indicator
+
+#### 9.2.2 Pipeline Table UI Clarity (v1.9)
+
+**Column Definitions with Tooltips:**
+
+| Column | Tooltip Text | Calculation |
+|--------|--------------|-------------|
+| **This Week** | "Activities logged Mon-Sun of current week" | Count of activities with `activity_date` in current calendar week |
+| **Last Week** | "Activities logged Mon-Sun of previous week" | Count of activities with `activity_date` in previous calendar week |
+| **Momentum** | "Based on activity trend over 14 days" | See Section 6.3 for thresholds |
+
+**"Next Action" Column Behavior:**
+- If opportunity has a scheduled task → Show task subject as text
+- If no scheduled task → Show "Schedule follow-up" as **plain text** (not a link)
+- ⚠️ **Do NOT** use `variant="link"` styling for non-functional elements
+
+#### 9.2.3 Task Snooze Behavior (v1.9)
+
+When user clicks the snooze icon (⏰) on a task:
+
+**Interaction Flow:**
+```
+[Click ⏰] → Popover opens with options:
+            ┌─────────────────────────┐
+            │ Snooze until...         │
+            ├─────────────────────────┤
+            │ ○ Tomorrow              │
+            │ ○ Next Week (Monday)    │
+            │ ○ Custom Date... [📅]   │
+            └─────────────────────────┘
+```
+
+**Business Rules:**
+- "Tomorrow" = next calendar day at 9:00 AM
+- "Next Week" = following Monday at 9:00 AM
+- "Custom Date" opens date picker (time defaults to 9:00 AM)
+- Snooze updates `due_date` field on task record
+- Toast notification: "Task snoozed until [date]"
+
+> **Rationale:** Auto-snoozing by exactly 24 hours without feedback is confusing. Users need to know when the task will reappear.
+
+#### 9.2.4 Tasks Panel Scope (v1.9)
+
+The Tasks panel shows **only immediate tasks** (Overdue, Today, Tomorrow). Tasks due in 3+ days do NOT appear on the dashboard.
+
+| Time Bucket | Color | Criteria |
+|-------------|-------|----------|
+| **Overdue** | 🔴 Red (`destructive`) | `due_date < today` |
+| **Today** | 🟡 Amber (`warning`) | `due_date = today` |
+| **Tomorrow** | 🔵 Blue (`info`) | `due_date = tomorrow` |
+| **Future** | — | Not shown on dashboard |
+
+> **User Expectation:** Users should use the full Tasks list (`/tasks`) to see all upcoming tasks. The dashboard is for **immediate execution**, not planning.
 
 **My Performance Widget:**
 
@@ -987,17 +1060,21 @@ ELSE:
 
 ### 17.4 MVP Blocker Risk
 
-**Risk:** 16 features still need implementation (updated per reports audit 2025-11-28)
+**Risk:** 25 features still need implementation (updated per industry best practices review 2025-11-28)
 
 **Mitigation:** Prioritize in order:
 1. **Contact enforcement** (Critical): Enforce organization requirement - blocks orphan contacts
-2. **Dashboard gaps** (Quick wins): KPI fix, Recent Activity Feed, QuickLogForm 13 types
-3. **Contact filters** (Medium): Add organization filter to ContactListFilter
-4. **Sample tracking** (Medium): Full workflow UI with status + feedback
-5. **Organization features** (Medium): Bulk owner reassignment, Authorization UI tab
-6. **Product UX** (Quick win): Add create buttons to ProductList, remove F&B fields from UI
-7. **Business logic** (Complex): Win/Loss UI, Duplicate Prevention, Authorization Tracking
-8. **Cleanup** (Low): Remove DataQualityTab + unused contact_duplicates DB artifacts
+2. **Pipeline migration** (Critical): Migrate from 8→7 stages, update existing `awaiting_response` records
+3. **Dashboard gaps** (Quick wins): KPI fix, Recent Activity Feed, QuickLogForm 13 types, My Performance widget
+4. **Stale detection** (Medium): Per-stage thresholds, visual decay indicators
+5. **Contact filters** (Medium): Add organization filter to ContactListFilter
+6. **Sample tracking** (Medium): Full workflow UI with status + feedback
+7. **Organization features** (Medium): Bulk owner reassignment, Authorization UI tab
+8. **Product UX** (Quick win): Add create buttons to ProductList, remove F&B fields from UI
+9. **Mobile UX** (Medium): 6-button mobile quick actions
+10. **Business logic** (Complex): Win/Loss UI, Hybrid Duplicate Prevention, Authorization Tracking, Activity auto-cascade
+11. **Notifications** (Medium): Daily email digest (Supabase Edge Function), Task follow-up prompt
+12. **Cleanup** (Low): Remove DataQualityTab + unused contact_duplicates DB artifacts
 
 ---
 
