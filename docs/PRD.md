@@ -1,11 +1,11 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.2
-**Last Updated:** 2025-11-27
+**Version:** 1.3
+**Last Updated:** 2025-11-28
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
-> **Changelog v1.2:** Added clarifications from Gemini 3 Pro deep analysis - Contact constraints, opportunity naming, authorization behavior, sample status workflow, bulk operations, and more. See [Appendix F](#f-version-history) for details.
+> **Changelog v1.3:** Added clarifications from GPT 5.1 deep analysis - Campaign as tag field, priority-only deal ranking, contact requires org, admin-only user creation, product catalog permissions, and more. See [Appendix F](#f-version-history) for details.
 
 ---
 
@@ -143,7 +143,11 @@ Organization (type: principal) ──── (many) Products
 **Required Fields:**
 - Principal Organization
 - Customer Organization
-- At least one Contact
+- At least one Contact (**must belong to Customer Organization** - enforced by system)
+
+**Opportunity Naming:**
+- Auto-generated with override: System suggests name like "McCRUM - Sysco - Restaurant ABC - 001"
+- User can edit before saving
 
 **Optional Fields:**
 - Distributor Organization
@@ -171,6 +175,11 @@ Organization (type: principal) ──── (many) Products
 ```
 Sent → Received → Feedback Given (positive/negative/pending/no_response)
 ```
+
+**Status Updates:** Manual entry by rep with system reminders
+- Rep manually updates status transitions
+- System sends follow-up reminders when follow_up_date approaches
+- No shipping API integration (MVP)
 
 **Fields (via Activity record):**
 - Activity type = `sample`
@@ -229,11 +238,13 @@ Sent → Received → Feedback Given (positive/negative/pending/no_response)
 
 | Action | Behavior |
 |--------|----------|
-| **Create** | Required: Principal + Customer + Contact |
+| **Create** | Required: Principal + Customer + Contact (from Customer Org) |
 | **Duplicate** | **Blocked** - System prevents duplicate opportunities |
-| **Reopen** | **Allowed** - Can change status anytime after Won/Lost |
+| **Reopen** | **Allowed** - Win/loss reason is **cleared** (fresh start) |
 | **Delete** | **Soft delete only** - Archived, never truly deleted |
 | **Reassign** | Manual reassignment by admin/manager |
+
+**Reopen Behavior:** When reopening a closed_won or closed_lost opportunity, the win/loss reason is cleared. If closed again, a new reason must be selected.
 
 ---
 
@@ -381,6 +392,16 @@ Future implementation will include:
 - Status (Open/Won/Lost)
 - Campaign
 
+**Bulk Operations (MVP):**
+- Bulk stage updates
+- Bulk owner reassignment
+- Bulk soft delete
+- Select all / select page / individual selection
+
+**Search:**
+- Entity-specific search within each module (MVP)
+- Global search across all entities (Post-MVP)
+
 ### 9.2 Dashboard
 
 **Default View:** Principal-focused dashboard (V3)
@@ -518,8 +539,9 @@ Track which distributors are authorized to carry which principals' products.
 ### 13.2 Authorization Workflow
 
 - View authorizations on Distributor detail page
-- Warning when creating opportunity for non-authorized combo
+- **Soft warning** when creating opportunity for non-authorized combo (banner displayed, creation allowed)
 - Filter opportunities by authorization status
+- No manager approval required - informational warning only
 
 ### 13.3 Lost Authorization
 
@@ -603,12 +625,19 @@ Track which distributors are authorized to carry which principals' products.
 | 5 | Pricing/Volume | Defer to post-MVP | 2025-11-27 |
 | 6 | PDF export | Excel only for MVP | 2025-11-27 |
 | 7 | Tasks/Notifications | Include in MVP (already built) | 2025-11-27 |
+| 8 | Contact-Org constraint | Contact must belong to Customer Org (strict) | 2025-11-27 |
+| 9 | Opportunity naming | Auto-generated with user override | 2025-11-27 |
+| 10 | Authorization warning | Soft warning only (allow creation) | 2025-11-27 |
+| 11 | Sample status updates | Manual with system reminders | 2025-11-27 |
+| 12 | Reopen win/loss reason | Clear reason on reopen (fresh start) | 2025-11-27 |
+| 13 | Bulk operations | Full bulk ops (stage, owner, delete) | 2025-11-27 |
+| 14 | Global search | Entity-specific MVP, global post-MVP | 2025-11-27 |
+| 15 | Organization dual-role | Single type only (no dual roles) | 2025-11-27 |
+| 16 | QuickLogForm performance | Passes <30 second target (tested) | 2025-11-27 |
 
 ### 16.3 Open Questions
 
-| # | Question | Options | Status |
-|---|----------|---------|--------|
-| 1 | QuickLogForm performance | Test <30 second target | Pending test |
+*No open questions - all clarified via Gemini 3 Pro deep analysis.*
 
 ---
 
@@ -686,6 +715,8 @@ Track which distributors are authorized to carry which principals' products.
 
 ### D. Organization Type Reference
 
+**Note:** Organizations have a single type only. Dual-role organizations (e.g., both Distributor and Customer) should be handled by creating separate organization records if needed.
+
 | Type | UI Label | Description |
 |------|----------|-------------|
 | `principal` | Principal | Food manufacturer |
@@ -712,9 +743,10 @@ Track which distributors are authorized to carry which principals' products.
 |---------|------|---------|
 | 1.0 | 2025-11-27 | Initial PRD from questionnaire |
 | 1.1 | 2025-11-27 | Updated after codebase audit: aligned terminology, stages, activity types, required fields, Tasks/Notifications scope, deferred pricing/forecasting/PDF |
+| 1.2 | 2025-11-27 | Gemini 3 Pro deep analysis clarifications: Contact must belong to Customer Org, auto-generated opp naming with override, soft authorization warning, sample status manual+reminders, clear win/loss on reopen, full bulk operations, entity-specific search (global post-MVP), single org type only |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-27 (v1.1 - Post-audit alignment)*
+*Last updated: 2025-11-27 (v1.2 - Gemini 3 Pro deep analysis clarifications)*
