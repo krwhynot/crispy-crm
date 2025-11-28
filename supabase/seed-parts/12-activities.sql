@@ -10,7 +10,7 @@
 INSERT INTO "public"."activities" (
   id, activity_type, type, subject, description, activity_date,
   duration_minutes, contact_id, organization_id, opportunity_id,
-  follow_up_required, sales_id, created_at, updated_at
+  follow_up_required, created_by, created_at, updated_at
 )
 VALUES
   -- ========================================

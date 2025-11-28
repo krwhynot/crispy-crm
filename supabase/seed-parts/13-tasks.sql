@@ -3,10 +3,12 @@
 -- ============================================================================
 -- Assigned to sales reps, linked to opportunities/contacts
 -- Mix of: overdue, due today, due tomorrow, upcoming
+-- Schema: id, title, description, due_date, reminder_date, completed,
+--         completed_at, priority, contact_id, opportunity_id, sales_id
 -- ============================================================================
 
 INSERT INTO "public"."tasks" (
-  id, text, due_date, contact_id, opportunity_id, sales_id, done,
+  id, title, due_date, contact_id, opportunity_id, sales_id, completed,
   created_at, updated_at
 )
 VALUES
