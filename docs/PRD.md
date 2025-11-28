@@ -1,10 +1,14 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.18
+**Version:** 1.20
 **Last Updated:** 2025-11-28
 **Status:** MVP In Progress
-**Target Launch:** 30-60 days
+**Target Launch:** 90-120 days
 
+> **Changelog v1.20:** PRD Quality Audit Remediation - Addressed 5 findings and 4 open questions from PRD review. Key changes: (1) Deferred quantitative success metrics to post-MVP, launch with qualitative goals, (2) Extended timeline from 30-60 to 90-120 days for 57 MVP blockers, (3) Added external reference for data migration plan (`docs/migration/DATA_MIGRATION_PLAN.md`), (4) Added Section 3.4 Resource Ownership Table + Section 10.5 Audit Logging with team-wide visibility justification, (5) Added explicit closed-stage exclusion to stale logic in §8.2, (6) Added Supabase defaults for non-functional requirements, (7) PostHog analytics integration added to v1.1 roadmap. Added decisions #118-122.
+>
+> **Changelog v1.19:** Dashboard V3 Responsive UX Specification - Added Section 9.2.6 documenting progressive disclosure hierarchy across viewport sizes. Research via Perplexity (Salesforce Split View, Linear 2024 UI, Outlook Web patterns). Key decisions: (1) iPad Landscape uses Collapsible Sidebar for Tasks (48px icon rail), (2) Row Leading Edge pattern for stuck indicators (4px color bar, no column), (3) Contextual Drawer on Principal selection (ResourceSlideOver, Tasks panel independent), (4) iPad Portrait uses Master-Detail Drill navigation, (5) FAB persists bottom-right across all breakpoints. Updated Section 9.3 responsive breakpoint table. Added decisions #113-117.
+>
 > **Changelog v1.18:** Activities Resource Feature Matrix audit - Validated Activities module against PRD Section 6 requirements with Perplexity deep research (Salesforce Activities, HubSpot Engagements). Key decisions: (1) QuickLogForm expand from 5→13 types with grouped dropdown, (2) Timeline-focused CRUD (HubSpot pattern) - no standalone list/show pages, (3) Server-side PostgreSQL trigger for auto-cascade (Opp→Contact), (4) Sample as activity type + sample_status enum field. Added resolved questions #103-106. Updated MVP blocker count 53→57. See audit: docs/audits/activities-feature-matrix.md
 >
 > **Changelog v1.17:** Reports Module Feature Matrix audit - Validated Reports module against PRD Section 8 requirements with industry best practices research (Salesforce Reporting, HubSpot Dashboards via WebSearch). Key decisions: (1) Overview tab should have 4 KPIs per Section 9.2.1 (add Stale Deals), (2) Keep current 6 date presets (Today, Yesterday, Last 7/30, This/Last Month) - sufficient for MVP, (3) Add KPI click-through navigation to filtered lists (Salesforce/HubSpot pattern), (4) Use per-stage stale thresholds from Section 6.3 in Reports (7d/14d/21d). Added MVP features #59-61. Added resolved questions #99-102. Updated MVP blocker count 50→53. See audit: docs/audits/reports-feature-matrix.md
@@ -453,13 +457,13 @@ The Overview tab provides at-a-glance KPIs and trend visualizations.
 |-----|-------------|-------------------|--------------|
 | Total Opportunities | Count of active (non-deleted) opportunities | Compare recent vs older activity periods | → Opportunities List (all active) |
 | Activities This Week | Activities logged in current week | Week-over-week comparison | → Weekly Activity Report |
-| Stale Leads | Leads with no activity past stage threshold | Count only (no trend) | → Opportunities List (stale filter) |
+| Overdue Tasks | Count of tasks with `due_date < today` | Count only (no trend) | → Tasks List (overdue filter) |
 | Stale Deals | Deals exceeding per-stage SLA (amber styling) | Count only (no trend) | → Opportunities List (stale filter) |
 
 **Per-Stage Stale Thresholds (from Section 6.3):**
 | Stage | Threshold | Rationale |
 |-------|-----------|-----------|
-| `new_lead` | 7 days | New leads need fast follow-up |
+| `new_lead` | 7 days | New leads need fast follow-up. This is the primary source for the "Stale Deals" KPI when filtered to this stage. |
 | `initial_outreach` | 14 days | Active engagement phase |
 | `sample_visit_offered` | 14 days | Sample logistics window |
 | `feedback_logged` | 21 days | Customer evaluation period |
@@ -856,11 +860,15 @@ Desktop/Tablet:                    Mobile:
 
 | Screen Size | Support Level |
 |-------------|---------------|
-| Desktop (1024px+) | Primary design |
-| Tablet (768-1023px) | Full functionality |
-| Phone (320-767px) | **Full functionality** (required) |
+| Desktop (1440px+) | Primary design (3-panel dashboard) |
+| Laptop (1280-1439px) | Collapsible Tasks panel |
+| Tablet Landscape (1024-1279px) | 2-panel + overlay drawers |
+| Tablet Portrait (768-1023px) | Master-detail navigation |
+| Phone (320-767px) | **Full functionality** (stacked layout) |
 
-**Approach:** Desktop-first design with full mobile support
+**Approach:** Desktop-first design with progressive disclosure on smaller viewports
+
+> **See Section 9.2.6** for detailed Dashboard V3 responsive breakpoint specifications and implementation patterns.
 
 **Mobile Quick Actions (v1.9):**
 
@@ -1229,9 +1237,6 @@ ELSE:
 | Won/Lost Analysis Report | Requires win/loss reason UI implementation first (see MVP #12) |
 | Territory Management | Geographic filtering, territory assignment, region-based reports (reps manage assigned accounts without enforcement) |
 | Commission Tracking | Requires volume/price tracking; includes rates, payments, outstanding amounts |
-| Weekly Focus Widget | MFB-specific "One Thing" accountability widget for dashboard. Deferred per audit decision. See docs/audits/dashboard-feature-matrix.md |
-| Task Follow-up Prompt | Modal prompt on task completion to create follow-up task. Deferred to medium priority. Per PRD Section 12.4 |
-| Pipeline Visual Decay Borders | Green/yellow/red borders for deals in `sample_visit_offered` stage. Deferred per Section 6.3 |
 | Notes → Activities Migration | Migrate notes to unified Activities system with `type='note'`. PRD Section 6.1 defines note as activity type. Enables unified timeline. See docs/audits/notes-feature-matrix.md |
 | Notes Text Search | Add basic text search within notes on record pages. Industry standard (Salesforce SOSL, HubSpot search). See docs/audits/notes-feature-matrix.md |
 | Notes Multi-Association | Add `note_associations` junction table for many-to-many linking (one note → multiple records). Matches Salesforce ContentDocumentLink, HubSpot associations API. See docs/audits/notes-feature-matrix.md |
@@ -1344,11 +1349,11 @@ ELSE:
 | 92 | Recent Activity Feed | Add ActivityFeedPanel component below Tasks panel. Show last 10-20 team activities. Industry standard (Salesforce Activity Timeline, HubSpot Activity Feed) | 2025-11-28 |
 | 93 | My Performance widget | Add sidebar widget with personal metrics (Activities This Week, Deals Moved, Tasks Completed, Open Opps). Industry standard for sales dashboards | 2025-11-28 |
 | 94 | Weekly Focus widget | Defer to post-MVP. MFB-specific "One Thing" methodology widget. Nice-to-have but not blocking core dashboard functionality | 2025-11-28 |
-| 95 | Task types alignment | Use PRD 7 types (Call, Email, Meeting, Follow-up, Demo, Proposal, Other). Remove None/Discovery/Administrative from code. Aligns with Appendix E specification | 2025-11-28 |
+| 95 | Task types alignment | Use PRD 7 types (Call, Email, Meeting, Follow-up, Demo, Proposal, Other). Remove None/Discovery/Administrative from code. Aligns with Appendix E specification. | 2025-11-28 |
 | 96 | Task organization linking | Add optional organization_id FK field to tasks. Enables org-level tasks without opportunity (e.g., "Prepare for Sysco annual review"). Matches Salesforce WhatId pattern for flexible entity linking | 2025-11-28 |
 | 97 | Task snooze UX | Implement popover with options: Tomorrow (next day 9 AM), Next Week (Monday 9 AM), Custom Date picker. Replaces current auto +1 day behavior. Per PRD §9.2.3 | 2025-11-28 |
-| 98 | Task completion follow-up | Inline toast with "Create follow-up" link (less intrusive than modal). Toast shows on completion, auto-dismisses after 5 seconds. Link opens pre-filled task form | 2025-11-28 |
-| 99 | Reports Overview KPI count | 4 KPIs per Section 9.2.1 (Total Opportunities, Activities This Week, Stale Leads, Stale Deals). Add missing 4th KPI with amber styling | 2025-11-28 |
+| 98 | Task completion follow-up | Inline toast with "Create follow-up" link (less intrusive than modal). Toast shows on completion, auto-dismisses after 5 seconds. Link opens pre-filled task form. | 2025-11-28 |
+| 99 | Reports Overview KPI count | 4 KPIs per Section 9.2.1 (Open Opportunities, Overdue Tasks, Activities This Week, Stale Deals). Add missing 4th KPI with amber styling. | 2025-11-28 |
 | 100 | Reports date filter presets | Keep current 6 presets (Today, Yesterday, Last 7/30 Days, This/Last Month). More granular than PRD spec but sufficient for MVP. Per-tab custom pickers available | 2025-11-28 |
 | 101 | Reports KPI click navigation | Add click handlers to all KPI cards linking to filtered list views. Industry standard pattern (Salesforce/HubSpot) for dashboard drill-down UX | 2025-11-28 |
 | 102 | Reports stale detection logic | Use per-stage thresholds from Section 6.3 (7d/14d/21d) instead of global 7-day threshold. More accurate deal health assessment per stage | 2025-11-28 |
@@ -1362,6 +1367,11 @@ ELSE:
 | 110 | Activity CRUD strategy | Timeline-focused (HubSpot pattern). No standalone list/show pages. ActivityTimeline component on Contact/Org/Opp records. Aligns with industry trend and PRD #53. See audit: docs/audits/activities-feature-matrix.md | 2025-11-28 |
 | 111 | Activity auto-cascade implementation | Server-side PostgreSQL trigger on activities INSERT. When opportunity_id NOT NULL and contact_id IS NULL, auto-fill contact_id from opportunity's primary contact. Data integrity regardless of client. See audit: docs/audits/activities-feature-matrix.md | 2025-11-28 |
 | 112 | Sample tracking implementation | Add sample as activity type + sample_status enum (sent/received/feedback_pending/feedback_received). Extends existing schema vs new resource. Conditional validation: if type=sample, sample_status required. See audit: docs/audits/activities-feature-matrix.md | 2025-11-28 |
+| 113 | Dashboard iPad Landscape layout | Collapsible Sidebar pattern: Tasks panel collapses to 48px icon rail at 1024-1279px. Click expands as overlay drawer. Research: Salesforce Console, VS Code, Linear patterns | 2025-11-28 |
+| 114 | Dashboard stuck indicator | Row Leading Edge pattern: 4px vertical color bar (green/amber/red) based on days since activity. No dedicated column. Research: Linear priority bars, GitHub PR status | 2025-11-28 |
+| 115 | Dashboard panel sync | Contextual Drawer pattern: Principal row click opens ResourceSlideOver with tabs (Opportunities/Tasks/Activity). Tasks panel remains independent. Research: Outlook Web, Linear | 2025-11-28 |
+| 116 | Dashboard iPad Portrait layout | Master-Detail Drill pattern: Pipeline fills viewport at 768px. Row tap navigates to full-screen detail. Tasks via header drawer (70% width). Research: Salesforce Mobile | 2025-11-28 |
+| 117 | Dashboard Quick Logger position | FAB persists at bottom-right across all breakpoints. 56px touch target. Opens Sheet slide-over. Research: Google Material Design, industry standard | 2025-11-28 |
 
 ### 16.3 Open Questions
 
