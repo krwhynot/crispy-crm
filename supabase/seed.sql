@@ -28,6 +28,7 @@
 -- ============================================================================
 
 -- Clean up existing data (in correct order for FK constraints)
+-- Note: contact_organizations, contact_tags, contact_preferred_principals were deprecated/removed
 TRUNCATE TABLE "public"."organizationNotes" CASCADE;
 TRUNCATE TABLE "public"."contactNotes" CASCADE;
 TRUNCATE TABLE "public"."opportunityNotes" CASCADE;
@@ -35,10 +36,7 @@ TRUNCATE TABLE "public"."tasks" CASCADE;
 TRUNCATE TABLE "public"."activities" CASCADE;
 TRUNCATE TABLE "public"."opportunity_products" CASCADE;
 TRUNCATE TABLE "public"."opportunities" CASCADE;
-TRUNCATE TABLE "public"."contact_tags" CASCADE;
 TRUNCATE TABLE "public"."tags" CASCADE;
-TRUNCATE TABLE "public"."contact_preferred_principals" CASCADE;
-TRUNCATE TABLE "public"."contact_organizations" CASCADE;
 TRUNCATE TABLE "public"."contacts" CASCADE;
 TRUNCATE TABLE "public"."products" CASCADE;
 TRUNCATE TABLE "public"."organizations" CASCADE;
@@ -257,7 +255,19 @@ END $$;
 -- ============================================================================
 -- Links auth.users to the CRM sales rep profiles
 -- is_admin determines admin access (no role column in schema)
+-- Note: auth.users trigger auto-creates basic sales records,
+--       so we DELETE and re-INSERT with full details
 -- ============================================================================
+
+-- Delete auto-created records from trigger (will be recreated below)
+DELETE FROM "public"."sales" WHERE user_id IN (
+  'a0000000-0000-0000-0000-000000000001',
+  'b0000000-0000-0000-0000-000000000001',
+  'c0000000-0000-0000-0000-000000000001',
+  'd0000000-0000-0000-0000-000000000001',
+  'e0000000-0000-0000-0000-000000000001',
+  'f0000000-0000-0000-0000-000000000001'
+);
 
 INSERT INTO "public"."sales" (id, user_id, first_name, last_name, email, phone, is_admin, avatar_url, created_at, updated_at)
 VALUES
@@ -1323,10 +1333,10 @@ SELECT setval(pg_get_serial_sequence('opportunities', 'id'), 50, true);
 -- ============================================================================
 -- PART 12: ACTIVITIES (150 activities)
 -- ============================================================================
--- All 13 activity types distributed across opportunities
--- Types: call, email, sample, meeting, demo, proposal, follow_up,
---        trade_show, site_visit, contract_review, check_in, social, note
--- ~12 activities per type
+-- Two activity_type values: 'interaction' (opportunity-linked) or 'engagement'
+-- Type column: call, email, meeting, demo, proposal, follow_up,
+--              trade_show, site_visit, contract_review, check_in, social, note
+-- All opportunity-linked activities MUST use activity_type='interaction'
 -- ============================================================================
 
 INSERT INTO "public"."activities" (
@@ -1338,204 +1348,200 @@ VALUES
   -- ========================================
   -- CALL Activities (12)
   -- ========================================
-  (1, 'call', 'call', 'Initial discovery call', 'Discussed current supplier situation and pain points', NOW() - INTERVAL '5 days', 30, 39, 20, 1, true, 2, NOW() - INTERVAL '5 days', NOW()),
-  (2, 'call', 'call', 'Follow-up pricing discussion', 'Reviewed volume pricing tiers', NOW() - INTERVAL '10 days', 25, 53, 27, 2, false, 3, NOW() - INTERVAL '10 days', NOW()),
-  (3, 'call', 'call', 'Introduction call with chef', 'Introduced product line capabilities', NOW() - INTERVAL '8 days', 20, 59, 30, 3, true, 3, NOW() - INTERVAL '8 days', NOW()),
-  (4, 'call', 'call', 'Quarterly check-in', 'Reviewed account status and upcoming needs', NOW() - INTERVAL '15 days', 35, 76, 38, 4, false, 4, NOW() - INTERVAL '15 days', NOW()),
-  (5, 'call', 'call', 'Pricing negotiation call', 'Discussed volume discounts and payment terms', NOW() - INTERVAL '12 days', 45, 43, 22, 5, true, 4, NOW() - INTERVAL '12 days', NOW()),
-  (6, 'call', 'call', 'Product inquiry follow-up', 'Answered questions about product specs', NOW() - INTERVAL '3 days', 15, 41, 21, 6, false, 5, NOW() - INTERVAL '3 days', NOW()),
-  (7, 'call', 'call', 'Budget discussion', 'Reviewed budget cycles and timing', NOW() - INTERVAL '20 days', 40, 66, 33, 7, true, 6, NOW() - INTERVAL '20 days', NOW()),
-  (8, 'call', 'call', 'Sample coordination', 'Arranged sample delivery details', NOW() - INTERVAL '18 days', 20, 62, 31, 8, false, 2, NOW() - INTERVAL '18 days', NOW()),
-  (9, 'call', 'call', 'Menu planning discussion', 'Discussed integration with current menu', NOW() - INTERVAL '22 days', 30, 57, 29, 9, true, 3, NOW() - INTERVAL '22 days', NOW()),
-  (10, 'call', 'call', 'Contract renewal discussion', 'Reviewed terms for upcoming renewal', NOW() - INTERVAL '25 days', 35, 49, 25, 10, false, 3, NOW() - INTERVAL '25 days', NOW()),
-  (11, 'call', 'call', 'New product introduction', 'Presented new product additions', NOW() - INTERVAL '28 days', 25, 72, 36, 11, true, 4, NOW() - INTERVAL '28 days', NOW()),
-  (12, 'call', 'call', 'Competitive situation review', 'Discussed competitor offerings', NOW() - INTERVAL '30 days', 30, 78, 39, 12, false, 4, NOW() - INTERVAL '30 days', NOW()),
+  (1, 'interaction', 'call', 'Initial discovery call', 'Discussed current supplier situation and pain points', NOW() - INTERVAL '5 days', 30, 39, 20, 1, true, 2, NOW() - INTERVAL '5 days', NOW()),
+  (2, 'interaction', 'call', 'Follow-up pricing discussion', 'Reviewed volume pricing tiers', NOW() - INTERVAL '10 days', 25, 53, 27, 2, false, 3, NOW() - INTERVAL '10 days', NOW()),
+  (3, 'interaction', 'call', 'Introduction call with chef', 'Introduced product line capabilities', NOW() - INTERVAL '8 days', 20, 59, 30, 3, true, 3, NOW() - INTERVAL '8 days', NOW()),
+  (4, 'interaction', 'call', 'Quarterly check-in', 'Reviewed account status and upcoming needs', NOW() - INTERVAL '15 days', 35, 76, 38, 4, false, 4, NOW() - INTERVAL '15 days', NOW()),
+  (5, 'interaction', 'call', 'Pricing negotiation call', 'Discussed volume discounts and payment terms', NOW() - INTERVAL '12 days', 45, 43, 22, 5, true, 4, NOW() - INTERVAL '12 days', NOW()),
+  (6, 'interaction', 'call', 'Product inquiry follow-up', 'Answered questions about product specs', NOW() - INTERVAL '3 days', 15, 41, 21, 6, false, 5, NOW() - INTERVAL '3 days', NOW()),
+  (7, 'interaction', 'call', 'Budget discussion', 'Reviewed budget cycles and timing', NOW() - INTERVAL '20 days', 40, 66, 33, 7, true, 6, NOW() - INTERVAL '20 days', NOW()),
+  (8, 'interaction', 'call', 'Sample coordination', 'Arranged sample delivery details', NOW() - INTERVAL '18 days', 20, 62, 31, 8, false, 2, NOW() - INTERVAL '18 days', NOW()),
+  (9, 'interaction', 'call', 'Menu planning discussion', 'Discussed integration with current menu', NOW() - INTERVAL '22 days', 30, 57, 29, 9, true, 3, NOW() - INTERVAL '22 days', NOW()),
+  (10, 'interaction', 'call', 'Contract renewal discussion', 'Reviewed terms for upcoming renewal', NOW() - INTERVAL '25 days', 35, 49, 25, 10, false, 3, NOW() - INTERVAL '25 days', NOW()),
+  (11, 'interaction', 'call', 'New product introduction', 'Presented new product additions', NOW() - INTERVAL '28 days', 25, 72, 36, 11, true, 4, NOW() - INTERVAL '28 days', NOW()),
+  (12, 'interaction', 'call', 'Competitive situation review', 'Discussed competitor offerings', NOW() - INTERVAL '30 days', 30, 78, 39, 12, false, 4, NOW() - INTERVAL '30 days', NOW()),
 
   -- ========================================
   -- EMAIL Activities (12)
   -- ========================================
-  (13, 'email', 'email', 'Product catalog sent', 'Sent comprehensive product catalog PDF', NOW() - INTERVAL '4 days', 5, 55, 28, 13, false, 5, NOW() - INTERVAL '4 days', NOW()),
-  (14, 'email', 'email', 'Pricing proposal attached', 'Sent formal pricing proposal document', NOW() - INTERVAL '6 days', 10, 51, 26, 14, true, 5, NOW() - INTERVAL '6 days', NOW()),
-  (15, 'email', 'email', 'Sample request confirmation', 'Confirmed sample shipment details', NOW() - INTERVAL '14 days', 5, 47, 24, 15, false, 2, NOW() - INTERVAL '14 days', NOW()),
-  (16, 'email', 'email', 'Meeting recap sent', 'Sent summary of discussion points', NOW() - INTERVAL '16 days', 15, 70, 35, 16, true, 3, NOW() - INTERVAL '16 days', NOW()),
-  (17, 'email', 'email', 'Spec sheets requested', 'Chef requested detailed specifications', NOW() - INTERVAL '19 days', 5, 64, 32, 17, false, 3, NOW() - INTERVAL '19 days', NOW()),
-  (18, 'email', 'email', 'Introduction email', 'Initial outreach to new contact', NOW() - INTERVAL '7 days', 10, 74, 37, 18, true, 4, NOW() - INTERVAL '7 days', NOW()),
-  (19, 'email', 'email', 'Quote follow-up', 'Following up on sent quotation', NOW() - INTERVAL '21 days', 5, 68, 34, 19, false, 5, NOW() - INTERVAL '21 days', NOW()),
-  (20, 'email', 'email', 'Contract draft sent', 'Sent initial contract for review', NOW() - INTERVAL '23 days', 15, 54, 27, 20, true, 5, NOW() - INTERVAL '23 days', NOW()),
-  (21, 'email', 'email', 'Thank you note', 'Post-meeting thank you', NOW() - INTERVAL '26 days', 5, 60, 30, 21, false, 6, NOW() - INTERVAL '26 days', NOW()),
-  (22, 'email', 'email', 'Reference request', 'Sent customer reference contacts', NOW() - INTERVAL '29 days', 10, 45, 23, 22, false, 2, NOW() - INTERVAL '29 days', NOW()),
-  (23, 'email', 'email', 'Product update notification', 'Informed about new product launch', NOW() - INTERVAL '32 days', 5, 58, 29, 23, true, 3, NOW() - INTERVAL '32 days', NOW()),
-  (24, 'email', 'email', 'Scheduling confirmation', 'Confirmed upcoming demo date', NOW() - INTERVAL '35 days', 5, 79, 39, 24, false, 3, NOW() - INTERVAL '35 days', NOW()),
+  (13, 'interaction', 'email', 'Product catalog sent', 'Sent comprehensive product catalog PDF', NOW() - INTERVAL '4 days', 5, 55, 28, 13, false, 5, NOW() - INTERVAL '4 days', NOW()),
+  (14, 'interaction', 'email', 'Pricing proposal attached', 'Sent formal pricing proposal document', NOW() - INTERVAL '6 days', 10, 51, 26, 14, true, 5, NOW() - INTERVAL '6 days', NOW()),
+  (15, 'interaction', 'email', 'Sample request confirmation', 'Confirmed sample shipment details', NOW() - INTERVAL '14 days', 5, 47, 24, 15, false, 2, NOW() - INTERVAL '14 days', NOW()),
+  (16, 'interaction', 'email', 'Meeting recap sent', 'Sent summary of discussion points', NOW() - INTERVAL '16 days', 15, 70, 35, 16, true, 3, NOW() - INTERVAL '16 days', NOW()),
+  (17, 'interaction', 'email', 'Spec sheets requested', 'Chef requested detailed specifications', NOW() - INTERVAL '19 days', 5, 64, 32, 17, false, 3, NOW() - INTERVAL '19 days', NOW()),
+  (18, 'interaction', 'email', 'Introduction email', 'Initial outreach to new contact', NOW() - INTERVAL '7 days', 10, 74, 37, 18, true, 4, NOW() - INTERVAL '7 days', NOW()),
+  (19, 'interaction', 'email', 'Follow-up after call', 'Summarized call discussion points', NOW() - INTERVAL '9 days', 10, 68, 34, 19, false, 5, NOW() - INTERVAL '9 days', NOW()),
+  (20, 'interaction', 'email', 'Case study shared', 'Sent relevant customer success story', NOW() - INTERVAL '11 days', 5, 54, 27, 20, true, 5, NOW() - INTERVAL '11 days', NOW()),
+  (21, 'interaction', 'email', 'Thank you note', 'Thanked for demo attendance', NOW() - INTERVAL '13 days', 5, 60, 30, 21, false, 6, NOW() - INTERVAL '13 days', NOW()),
+  (22, 'interaction', 'email', 'Contract draft sent', 'Sent initial contract for review', NOW() - INTERVAL '17 days', 15, 45, 23, 22, true, 2, NOW() - INTERVAL '17 days', NOW()),
+  (23, 'interaction', 'email', 'Questions answered', 'Responded to technical questions', NOW() - INTERVAL '21 days', 10, 58, 29, 23, false, 3, NOW() - INTERVAL '21 days', NOW()),
+  (24, 'interaction', 'email', 'Update on order status', 'Provided shipping information', NOW() - INTERVAL '23 days', 5, 79, 39, 24, false, 3, NOW() - INTERVAL '23 days', NOW()),
 
   -- ========================================
-  -- SAMPLE Activities (12)
+  -- MEETING Activities (12) - includes sample visits
   -- ========================================
-  (25, 'sample', 'sample', 'Initial product samples delivered', 'Sent 5 SKU variety pack for evaluation', NOW() - INTERVAL '17 days', 60, 40, 20, 25, true, 4, NOW() - INTERVAL '17 days', NOW()),
-  (26, 'sample', 'sample', 'Chef evaluation samples', 'Sent samples for kitchen testing', NOW() - INTERVAL '24 days', 45, 44, 22, 26, true, 4, NOW() - INTERVAL '24 days', NOW()),
-  (27, 'sample', 'sample', 'Menu development samples', 'Provided samples for R&D testing', NOW() - INTERVAL '27 days', 90, 50, 25, 27, false, 5, NOW() - INTERVAL '27 days', NOW()),
-  (28, 'sample', 'sample', 'Re-sample after feedback', 'Sent adjusted formulation samples', NOW() - INTERVAL '31 days', 60, 42, 21, 28, true, 6, NOW() - INTERVAL '31 days', NOW()),
-  (29, 'sample', 'sample', 'Full line samples for buyer', 'Complete product line for category review', NOW() - INTERVAL '34 days', 120, 19, 10, 29, false, 2, NOW() - INTERVAL '34 days', NOW()),
-  (30, 'sample', 'sample', 'Competitor comparison samples', 'Side-by-side comparison pack', NOW() - INTERVAL '37 days', 75, 21, 11, 30, true, 3, NOW() - INTERVAL '37 days', NOW()),
-  (31, 'sample', 'sample', 'Banquet menu samples', 'Samples for catering menu development', NOW() - INTERVAL '40 days', 90, 25, 13, 31, false, 3, NOW() - INTERVAL '40 days', NOW()),
-  (32, 'sample', 'sample', 'Dessert line samples', 'Full dessert product sampling', NOW() - INTERVAL '33 days', 60, 63, 31, 32, true, 4, NOW() - INTERVAL '33 days', NOW()),
-  (33, 'sample', 'sample', 'Cheese variety pack', 'Italian cheese collection samples', NOW() - INTERVAL '36 days', 45, 35, 18, 33, false, 4, NOW() - INTERVAL '36 days', NOW()),
-  (34, 'sample', 'sample', 'Dairy products sample', 'Butter and cream sample kit', NOW() - INTERVAL '39 days', 60, 38, 19, 34, true, 5, NOW() - INTERVAL '39 days', NOW()),
-  (35, 'sample', 'sample', 'Plant-based samples', 'Vegan product line samples', NOW() - INTERVAL '42 days', 75, 23, 12, 35, false, 5, NOW() - INTERVAL '42 days', NOW()),
-  (36, 'sample', 'sample', 'Dressing sampler kit', 'Ranch and blue cheese variety', NOW() - INTERVAL '45 days', 45, 29, 15, 36, true, 6, NOW() - INTERVAL '45 days', NOW()),
-
-  -- ========================================
-  -- MEETING Activities (12)
-  -- ========================================
-  (37, 'meeting', 'meeting', 'Initial discovery meeting', 'In-person meeting to understand needs', NOW() - INTERVAL '48 days', 90, 48, 24, 37, true, 2, NOW() - INTERVAL '48 days', NOW()),
-  (38, 'meeting', 'meeting', 'Product presentation meeting', 'Formal product line presentation', NOW() - INTERVAL '50 days', 120, 53, 27, 38, false, 3, NOW() - INTERVAL '50 days', NOW()),
-  (39, 'meeting', 'meeting', 'Chef collaboration session', 'Joint menu development workshop', NOW() - INTERVAL '52 days', 180, 71, 35, 39, true, 3, NOW() - INTERVAL '52 days', NOW()),
-  (40, 'meeting', 'meeting', 'Quarterly business review', 'QBR with key stakeholders', NOW() - INTERVAL '55 days', 90, 73, 36, 40, false, 4, NOW() - INTERVAL '55 days', NOW()),
-  (41, 'meeting', 'meeting', 'Contract negotiation meeting', 'Terms and pricing discussion', NOW() - INTERVAL '58 days', 120, 20, 10, 41, true, 4, NOW() - INTERVAL '58 days', NOW()),
-  (42, 'meeting', 'meeting', 'Distribution partnership meeting', 'Regional expansion discussion', NOW() - INTERVAL '60 days', 90, 26, 13, 42, false, 5, NOW() - INTERVAL '60 days', NOW()),
-  (43, 'meeting', 'meeting', 'Healthcare compliance review', 'Dietary requirements discussion', NOW() - INTERVAL '62 days', 75, 67, 33, 43, true, 6, NOW() - INTERVAL '62 days', NOW()),
-  (44, 'meeting', 'meeting', 'Executive introduction', 'C-level relationship building', NOW() - INTERVAL '65 days', 60, 56, 28, 44, false, 2, NOW() - INTERVAL '65 days', NOW()),
-  (45, 'meeting', 'meeting', 'Menu innovation workshop', 'Collaborative menu development', NOW() - INTERVAL '68 days', 150, 49, 25, 45, true, 3, NOW() - INTERVAL '68 days', NOW()),
-  (46, 'meeting', 'meeting', 'Regional sales meeting', 'Territory planning session', NOW() - INTERVAL '70 days', 90, 52, 26, 46, false, 3, NOW() - INTERVAL '70 days', NOW()),
-  (47, 'meeting', 'meeting', 'Budget planning meeting', 'FY planning discussion', NOW() - INTERVAL '72 days', 120, 57, 29, 47, true, 4, NOW() - INTERVAL '72 days', NOW()),
-  (48, 'meeting', 'meeting', 'Senior living food committee', 'Resident dining committee presentation', NOW() - INTERVAL '75 days', 90, 65, 32, 48, false, 4, NOW() - INTERVAL '75 days', NOW()),
+  (25, 'interaction', 'meeting', 'Kitchen sample presentation', 'Chef tasted products in their kitchen', NOW() - INTERVAL '2 days', 90, 40, 20, 25, true, 4, NOW() - INTERVAL '2 days', NOW()),
+  (26, 'interaction', 'meeting', 'Menu review meeting', 'Reviewed potential menu applications', NOW() - INTERVAL '5 days', 60, 44, 22, 26, false, 4, NOW() - INTERVAL '5 days', NOW()),
+  (27, 'interaction', 'meeting', 'Product tasting session', 'Sampled new product line', NOW() - INTERVAL '8 days', 120, 50, 25, 27, true, 5, NOW() - INTERVAL '8 days', NOW()),
+  (28, 'interaction', 'meeting', 'Quarterly business review', 'Reviewed partnership performance', NOW() - INTERVAL '12 days', 90, 42, 21, 28, false, 6, NOW() - INTERVAL '12 days', NOW()),
+  (29, 'interaction', 'meeting', 'New product introduction', 'Presented seasonal additions', NOW() - INTERVAL '15 days', 60, 19, 10, 29, true, 2, NOW() - INTERVAL '15 days', NOW()),
+  (30, 'interaction', 'meeting', 'Chef training session', 'Trained kitchen staff on products', NOW() - INTERVAL '18 days', 180, 21, 11, 30, false, 3, NOW() - INTERVAL '18 days', NOW()),
+  (31, 'interaction', 'meeting', 'Distribution review', 'Discussed distribution strategy', NOW() - INTERVAL '22 days', 60, 25, 13, 31, true, 3, NOW() - INTERVAL '22 days', NOW()),
+  (32, 'interaction', 'meeting', 'Sample delivery follow-up', 'Gathered feedback on samples', NOW() - INTERVAL '25 days', 45, 63, 31, 32, false, 4, NOW() - INTERVAL '25 days', NOW()),
+  (33, 'interaction', 'meeting', 'Partnership discussion', 'Explored expanded relationship', NOW() - INTERVAL '28 days', 75, 35, 18, 33, true, 4, NOW() - INTERVAL '28 days', NOW()),
+  (34, 'interaction', 'meeting', 'Menu planning workshop', 'Collaborated on menu development', NOW() - INTERVAL '30 days', 120, 38, 19, 34, false, 5, NOW() - INTERVAL '30 days', NOW()),
+  (35, 'interaction', 'meeting', 'Sales team alignment', 'Synced on account strategy', NOW() - INTERVAL '32 days', 45, 23, 12, 35, true, 5, NOW() - INTERVAL '32 days', NOW()),
+  (36, 'interaction', 'meeting', 'Executive meeting', 'Met with VP for approval', NOW() - INTERVAL '35 days', 60, 29, 15, 36, false, 6, NOW() - INTERVAL '35 days', NOW()),
 
   -- ========================================
   -- DEMO Activities (12)
   -- ========================================
-  (49, 'demo', 'demo', 'Kitchen demo - fry station', 'Demonstrated fry preparation methods', NOW() - INTERVAL '38 days', 120, 39, 20, 1, true, 5, NOW() - INTERVAL '38 days', NOW()),
-  (50, 'demo', 'demo', 'Plant-based cooking demo', 'Chef demonstration of versatility', NOW() - INTERVAL '41 days', 90, 53, 27, 2, false, 5, NOW() - INTERVAL '41 days', NOW()),
-  (51, 'demo', 'demo', 'Indian cuisine demo', 'Full menu preparation demonstration', NOW() - INTERVAL '44 days', 180, 59, 30, 3, true, 6, NOW() - INTERVAL '44 days', NOW()),
-  (52, 'demo', 'demo', 'Dessert service demo', 'Plating and presentation techniques', NOW() - INTERVAL '47 days', 75, 76, 38, 4, false, 2, NOW() - INTERVAL '47 days', NOW()),
-  (53, 'demo', 'demo', 'Cheese cutting demo', 'Proper handling and portioning', NOW() - INTERVAL '49 days', 60, 43, 22, 5, true, 3, NOW() - INTERVAL '49 days', NOW()),
-  (54, 'demo', 'demo', 'Butter applications demo', 'High-heat cooking techniques', NOW() - INTERVAL '51 days', 90, 41, 21, 6, false, 3, NOW() - INTERVAL '51 days', NOW()),
-  (55, 'demo', 'demo', 'Soup base preparation', 'From-scratch soup demonstration', NOW() - INTERVAL '53 days', 120, 66, 33, 7, true, 4, NOW() - INTERVAL '53 days', NOW()),
-  (56, 'demo', 'demo', 'Breakfast station demo', 'Hash brown preparation methods', NOW() - INTERVAL '56 days', 90, 62, 31, 8, false, 4, NOW() - INTERVAL '56 days', NOW()),
-  (57, 'demo', 'demo', 'Oat milk barista demo', 'Latte art and steaming techniques', NOW() - INTERVAL '59 days', 60, 57, 29, 9, true, 5, NOW() - INTERVAL '59 days', NOW()),
-  (58, 'demo', 'demo', 'Naan bread service demo', 'Proper reheating and presentation', NOW() - INTERVAL '61 days', 45, 49, 25, 10, false, 5, NOW() - INTERVAL '61 days', NOW()),
-  (59, 'demo', 'demo', 'Campus dining demo', 'High-volume service techniques', NOW() - INTERVAL '64 days', 150, 72, 36, 11, true, 6, NOW() - INTERVAL '64 days', NOW()),
-  (60, 'demo', 'demo', 'Stadium concessions demo', 'Quick-serve application demo', NOW() - INTERVAL '67 days', 120, 78, 39, 12, false, 2, NOW() - INTERVAL '67 days', NOW()),
+  (37, 'interaction', 'demo', 'Full product line demo', 'Demonstrated complete portfolio', NOW() - INTERVAL '6 days', 120, 39, 20, 1, true, 2, NOW() - INTERVAL '6 days', NOW()),
+  (38, 'interaction', 'demo', 'Kitchen demo with chef', 'Hands-on cooking demonstration', NOW() - INTERVAL '10 days', 90, 43, 22, 5, false, 4, NOW() - INTERVAL '10 days', NOW()),
+  (39, 'interaction', 'demo', 'New product showcase', 'Presented latest innovations', NOW() - INTERVAL '14 days', 60, 47, 24, 15, true, 2, NOW() - INTERVAL '14 days', NOW()),
+  (40, 'interaction', 'demo', 'Taste testing event', 'Organized tasting for culinary team', NOW() - INTERVAL '18 days', 150, 57, 29, 9, false, 3, NOW() - INTERVAL '18 days', NOW()),
+  (41, 'interaction', 'demo', 'Virtual product demo', 'Online demo for remote team', NOW() - INTERVAL '22 days', 45, 72, 36, 11, true, 4, NOW() - INTERVAL '22 days', NOW()),
+  (42, 'interaction', 'demo', 'Competitive comparison', 'Side-by-side product testing', NOW() - INTERVAL '26 days', 90, 49, 25, 10, false, 3, NOW() - INTERVAL '26 days', NOW()),
+  (43, 'interaction', 'demo', 'Executive demo', 'Presented to leadership team', NOW() - INTERVAL '30 days', 60, 19, 10, 29, true, 2, NOW() - INTERVAL '30 days', NOW()),
+  (44, 'interaction', 'demo', 'Distribution partner demo', 'Demo for distributor category team', NOW() - INTERVAL '34 days', 75, 21, 11, 30, false, 3, NOW() - INTERVAL '34 days', NOW()),
+  (45, 'interaction', 'demo', 'Chef collaboration demo', 'Co-created recipes with chef', NOW() - INTERVAL '38 days', 180, 55, 28, 13, true, 6, NOW() - INTERVAL '38 days', NOW()),
+  (46, 'interaction', 'demo', 'Menu integration demo', 'Showed menu applications', NOW() - INTERVAL '42 days', 90, 70, 35, 16, false, 3, NOW() - INTERVAL '42 days', NOW()),
+  (47, 'interaction', 'demo', 'Quality comparison demo', 'Compared to current supplier', NOW() - INTERVAL '46 days', 60, 64, 32, 17, true, 3, NOW() - INTERVAL '46 days', NOW()),
+  (48, 'interaction', 'demo', 'ROI demonstration', 'Showed cost savings potential', NOW() - INTERVAL '50 days', 45, 74, 37, 18, false, 4, NOW() - INTERVAL '50 days', NOW()),
 
   -- ========================================
-  -- PROPOSAL Activities (11)
+  -- PROPOSAL Activities (12)
   -- ========================================
-  (61, 'proposal', 'proposal', 'Initial pricing proposal', 'Presented volume-based pricing tiers', NOW() - INTERVAL '43 days', 30, 55, 28, 13, true, 3, NOW() - INTERVAL '43 days', NOW()),
-  (62, 'proposal', 'proposal', 'Annual contract proposal', 'Full year commitment proposal', NOW() - INTERVAL '46 days', 45, 51, 26, 14, true, 3, NOW() - INTERVAL '46 days', NOW()),
-  (63, 'proposal', 'proposal', 'Menu program proposal', 'Custom menu integration proposal', NOW() - INTERVAL '54 days', 60, 47, 24, 15, false, 4, NOW() - INTERVAL '54 days', NOW()),
-  (64, 'proposal', 'proposal', 'Distribution agreement proposal', 'Territory exclusive proposal', NOW() - INTERVAL '57 days', 45, 70, 35, 16, true, 4, NOW() - INTERVAL '57 days', NOW()),
-  (65, 'proposal', 'proposal', 'Revised pricing proposal', 'Adjusted terms after negotiation', NOW() - INTERVAL '63 days', 30, 64, 32, 17, false, 5, NOW() - INTERVAL '63 days', NOW()),
-  (66, 'proposal', 'proposal', 'Multi-year proposal', '3-year partnership proposal', NOW() - INTERVAL '66 days', 60, 74, 37, 18, true, 5, NOW() - INTERVAL '66 days', NOW()),
-  (67, 'proposal', 'proposal', 'Healthcare program proposal', 'Nutrition-compliant product proposal', NOW() - INTERVAL '69 days', 45, 68, 34, 19, false, 6, NOW() - INTERVAL '69 days', NOW()),
-  (68, 'proposal', 'proposal', 'Pilot program proposal', 'Limited market test proposal', NOW() - INTERVAL '71 days', 30, 54, 27, 20, true, 2, NOW() - INTERVAL '71 days', NOW()),
-  (69, 'proposal', 'proposal', 'Rebate program proposal', 'Volume incentive program', NOW() - INTERVAL '73 days', 45, 60, 30, 21, false, 2, NOW() - INTERVAL '73 days', NOW()),
-  (70, 'proposal', 'proposal', 'Custom product proposal', 'Private label development', NOW() - INTERVAL '76 days', 60, 45, 23, 22, true, 3, NOW() - INTERVAL '76 days', NOW()),
-  (71, 'proposal', 'proposal', 'Sustainability program proposal', 'Eco-friendly packaging option', NOW() - INTERVAL '78 days', 45, 58, 29, 23, false, 3, NOW() - INTERVAL '78 days', NOW()),
+  (49, 'interaction', 'proposal', 'Initial pricing proposal', 'Submitted first pricing quote', NOW() - INTERVAL '7 days', 30, 53, 27, 2, true, 3, NOW() - INTERVAL '7 days', NOW()),
+  (50, 'interaction', 'proposal', 'Volume discount proposal', 'Offered tiered pricing', NOW() - INTERVAL '11 days', 25, 59, 30, 3, false, 3, NOW() - INTERVAL '11 days', NOW()),
+  (51, 'interaction', 'proposal', 'Custom product proposal', 'Proposed customized solution', NOW() - INTERVAL '15 days', 45, 76, 38, 4, true, 4, NOW() - INTERVAL '15 days', NOW()),
+  (52, 'interaction', 'proposal', 'Partnership proposal', 'Submitted partnership terms', NOW() - INTERVAL '19 days', 60, 66, 33, 7, false, 6, NOW() - INTERVAL '19 days', NOW()),
+  (53, 'interaction', 'proposal', 'Revised pricing proposal', 'Updated pricing based on feedback', NOW() - INTERVAL '23 days', 30, 62, 31, 8, true, 2, NOW() - INTERVAL '23 days', NOW()),
+  (54, 'interaction', 'proposal', 'Annual contract proposal', 'Proposed yearly agreement', NOW() - INTERVAL '27 days', 40, 78, 39, 12, false, 4, NOW() - INTERVAL '27 days', NOW()),
+  (55, 'interaction', 'proposal', 'Regional distribution proposal', 'Proposed regional rollout', NOW() - INTERVAL '31 days', 35, 51, 26, 14, true, 5, NOW() - INTERVAL '31 days', NOW()),
+  (56, 'interaction', 'proposal', 'Pilot program proposal', 'Proposed limited trial', NOW() - INTERVAL '35 days', 45, 68, 34, 19, false, 5, NOW() - INTERVAL '35 days', NOW()),
+  (57, 'interaction', 'proposal', 'Renewal proposal', 'Proposed contract renewal terms', NOW() - INTERVAL '39 days', 30, 54, 27, 20, true, 5, NOW() - INTERVAL '39 days', NOW()),
+  (58, 'interaction', 'proposal', 'Expansion proposal', 'Proposed additional products', NOW() - INTERVAL '43 days', 50, 60, 30, 21, false, 6, NOW() - INTERVAL '43 days', NOW()),
+  (59, 'interaction', 'proposal', 'National rollout proposal', 'Proposed nationwide distribution', NOW() - INTERVAL '47 days', 60, 45, 23, 22, true, 2, NOW() - INTERVAL '47 days', NOW()),
+  (60, 'interaction', 'proposal', 'Exclusive partnership proposal', 'Proposed exclusive arrangement', NOW() - INTERVAL '51 days', 45, 58, 29, 23, false, 3, NOW() - INTERVAL '51 days', NOW()),
 
   -- ========================================
   -- FOLLOW_UP Activities (12)
   -- ========================================
-  (72, 'follow_up', 'follow_up', 'Post-sample follow-up', 'Checked on sample evaluation status', NOW() - INTERVAL '11 days', 15, 79, 39, 24, false, 4, NOW() - INTERVAL '11 days', NOW()),
-  (73, 'follow_up', 'follow_up', 'Quote status check', 'Following up on pending quotation', NOW() - INTERVAL '13 days', 10, 40, 20, 25, true, 4, NOW() - INTERVAL '13 days', NOW()),
-  (74, 'follow_up', 'follow_up', 'Decision timeline follow-up', 'Checking on approval process', NOW() - INTERVAL '16 days', 20, 44, 22, 26, false, 5, NOW() - INTERVAL '16 days', NOW()),
-  (75, 'follow_up', 'follow_up', 'Contract review follow-up', 'Status of legal review', NOW() - INTERVAL '20 days', 15, 50, 25, 27, true, 5, NOW() - INTERVAL '20 days', NOW()),
-  (76, 'follow_up', 'follow_up', 'Budget approval follow-up', 'Checking budget cycle timing', NOW() - INTERVAL '23 days', 20, 42, 21, 28, false, 6, NOW() - INTERVAL '23 days', NOW()),
-  (77, 'follow_up', 'follow_up', 'Demo scheduling follow-up', 'Confirming demo logistics', NOW() - INTERVAL '27 days', 10, 19, 10, 29, true, 2, NOW() - INTERVAL '27 days', NOW()),
-  (78, 'follow_up', 'follow_up', 'Reference check follow-up', 'Did they contact references?', NOW() - INTERVAL '30 days', 15, 21, 11, 30, false, 2, NOW() - INTERVAL '30 days', NOW()),
-  (79, 'follow_up', 'follow_up', 'Pilot results follow-up', 'Checking on test results', NOW() - INTERVAL '33 days', 25, 25, 13, 31, true, 3, NOW() - INTERVAL '33 days', NOW()),
-  (80, 'follow_up', 'follow_up', 'Meeting action items', 'Following up on commitments', NOW() - INTERVAL '36 days', 15, 63, 31, 32, false, 3, NOW() - INTERVAL '36 days', NOW()),
-  (81, 'follow_up', 'follow_up', 'Proposal review status', 'Has committee reviewed?', NOW() - INTERVAL '39 days', 20, 35, 18, 33, true, 4, NOW() - INTERVAL '39 days', NOW()),
-  (82, 'follow_up', 'follow_up', 'Training scheduling', 'Following up on staff training', NOW() - INTERVAL '42 days', 15, 38, 19, 34, false, 4, NOW() - INTERVAL '42 days', NOW()),
-  (83, 'follow_up', 'follow_up', 'Launch date confirmation', 'Confirming go-live timing', NOW() - INTERVAL '45 days', 20, 23, 12, 35, true, 5, NOW() - INTERVAL '45 days', NOW()),
+  (61, 'interaction', 'follow_up', 'Post-demo follow-up', 'Checked in after demo', NOW() - INTERVAL '3 days', 15, 40, 20, 25, true, 4, NOW() - INTERVAL '3 days', NOW()),
+  (62, 'interaction', 'follow_up', 'Proposal follow-up', 'Followed up on submitted proposal', NOW() - INTERVAL '8 days', 20, 44, 22, 26, false, 4, NOW() - INTERVAL '8 days', NOW()),
+  (63, 'interaction', 'follow_up', 'Sample feedback follow-up', 'Gathered feedback on samples', NOW() - INTERVAL '12 days', 25, 50, 25, 27, true, 5, NOW() - INTERVAL '12 days', NOW()),
+  (64, 'interaction', 'follow_up', 'Meeting recap follow-up', 'Confirmed next steps', NOW() - INTERVAL '16 days', 15, 42, 21, 28, false, 6, NOW() - INTERVAL '16 days', NOW()),
+  (65, 'interaction', 'follow_up', 'Decision timeline follow-up', 'Checked on decision progress', NOW() - INTERVAL '20 days', 20, 19, 10, 29, true, 2, NOW() - INTERVAL '20 days', NOW()),
+  (66, 'interaction', 'follow_up', 'Contract review follow-up', 'Checked on legal review status', NOW() - INTERVAL '24 days', 15, 21, 11, 30, false, 3, NOW() - INTERVAL '24 days', NOW()),
+  (67, 'interaction', 'follow_up', 'Budget approval follow-up', 'Inquired about budget status', NOW() - INTERVAL '28 days', 20, 25, 13, 31, true, 3, NOW() - INTERVAL '28 days', NOW()),
+  (68, 'interaction', 'follow_up', 'Trial results follow-up', 'Discussed pilot outcomes', NOW() - INTERVAL '32 days', 30, 63, 31, 32, false, 4, NOW() - INTERVAL '32 days', NOW()),
+  (69, 'interaction', 'follow_up', 'Competitive update follow-up', 'Checked on competitive situation', NOW() - INTERVAL '36 days', 25, 35, 18, 33, true, 4, NOW() - INTERVAL '36 days', NOW()),
+  (70, 'interaction', 'follow_up', 'Menu launch follow-up', 'Checked on menu roll-out', NOW() - INTERVAL '40 days', 20, 38, 19, 34, false, 5, NOW() - INTERVAL '40 days', NOW()),
+  (71, 'interaction', 'follow_up', 'Stakeholder alignment follow-up', 'Confirmed internal alignment', NOW() - INTERVAL '44 days', 25, 23, 12, 35, true, 5, NOW() - INTERVAL '44 days', NOW()),
+  (72, 'interaction', 'follow_up', 'Executive decision follow-up', 'Followed up with decision maker', NOW() - INTERVAL '48 days', 30, 29, 15, 36, false, 6, NOW() - INTERVAL '48 days', NOW()),
 
   -- ========================================
-  -- TRADE_SHOW Activities (11)
+  -- TRADE_SHOW Activities (12)
   -- ========================================
-  (84, 'trade_show', 'trade_show', 'NRA Show - Booth visit', 'Met at National Restaurant Association Show', NOW() - INTERVAL '90 days', 30, 29, 15, 36, false, 5, NOW() - INTERVAL '90 days', NOW()),
-  (85, 'trade_show', 'trade_show', 'IFDA Conference meeting', 'Distributor conference connection', NOW() - INTERVAL '95 days', 45, 48, 24, 37, true, 6, NOW() - INTERVAL '95 days', NOW()),
-  (86, 'trade_show', 'trade_show', 'NACUFS Annual Conference', 'College foodservice show', NOW() - INTERVAL '100 days', 60, 53, 27, 38, false, 2, NOW() - INTERVAL '100 days', NOW()),
-  (87, 'trade_show', 'trade_show', 'Healthcare Foodservice Show', 'AHF annual meeting', NOW() - INTERVAL '105 days', 45, 71, 35, 39, true, 2, NOW() - INTERVAL '105 days', NOW()),
-  (88, 'trade_show', 'trade_show', 'MUFSO Conference', 'Multi-unit foodservice event', NOW() - INTERVAL '110 days', 30, 73, 36, 40, false, 3, NOW() - INTERVAL '110 days', NOW()),
-  (89, 'trade_show', 'trade_show', 'Sysco Food Show', 'Regional distributor show', NOW() - INTERVAL '115 days', 90, 20, 10, 41, true, 3, NOW() - INTERVAL '115 days', NOW()),
-  (90, 'trade_show', 'trade_show', 'US Foods Innovation Show', 'New product showcase', NOW() - INTERVAL '120 days', 75, 26, 13, 42, false, 4, NOW() - INTERVAL '120 days', NOW()),
-  (91, 'trade_show', 'trade_show', 'Plant-Based World Expo', 'Specialty show connection', NOW() - INTERVAL '125 days', 45, 67, 33, 43, true, 4, NOW() - INTERVAL '125 days', NOW()),
-  (92, 'trade_show', 'trade_show', 'Senior Living Executive Conference', 'Industry networking', NOW() - INTERVAL '130 days', 60, 56, 28, 44, false, 5, NOW() - INTERVAL '130 days', NOW()),
-  (93, 'trade_show', 'trade_show', 'Western Foodservice Show', 'Regional expo meeting', NOW() - INTERVAL '135 days', 30, 49, 25, 45, true, 5, NOW() - INTERVAL '135 days', NOW()),
-  (94, 'trade_show', 'trade_show', 'PMA Fresh Summit', 'Produce industry connection', NOW() - INTERVAL '140 days', 45, 52, 26, 46, false, 6, NOW() - INTERVAL '140 days', NOW()),
+  (73, 'interaction', 'trade_show', 'NRA Show booth visit', 'Met at National Restaurant Association show', NOW() - INTERVAL '60 days', 30, 39, 20, 1, true, 2, NOW() - INTERVAL '60 days', NOW()),
+  (74, 'interaction', 'trade_show', 'Regional food show', 'Connected at regional industry event', NOW() - INTERVAL '65 days', 45, 53, 27, 2, false, 3, NOW() - INTERVAL '65 days', NOW()),
+  (75, 'interaction', 'trade_show', 'Healthcare foodservice expo', 'Met at ANFP conference', NOW() - INTERVAL '70 days', 30, 66, 33, 7, true, 6, NOW() - INTERVAL '70 days', NOW()),
+  (76, 'interaction', 'trade_show', 'Distributor show', 'Presented at distributor event', NOW() - INTERVAL '75 days', 60, 19, 10, 29, false, 2, NOW() - INTERVAL '75 days', NOW()),
+  (77, 'interaction', 'trade_show', 'Plant-based summit', 'Exhibited at specialty show', NOW() - INTERVAL '80 days', 45, 55, 28, 13, true, 6, NOW() - INTERVAL '80 days', NOW()),
+  (78, 'interaction', 'trade_show', 'Hotel F&B conference', 'Connected at hospitality event', NOW() - INTERVAL '85 days', 30, 59, 30, 3, false, 3, NOW() - INTERVAL '85 days', NOW()),
+  (79, 'interaction', 'trade_show', 'Campus dining expo', 'Met at higher ed foodservice show', NOW() - INTERVAL '90 days', 45, 70, 35, 16, true, 3, NOW() - INTERVAL '90 days', NOW()),
+  (80, 'interaction', 'trade_show', 'Senior living conference', 'Exhibited at AHCA conference', NOW() - INTERVAL '95 days', 30, 74, 37, 18, false, 4, NOW() - INTERVAL '95 days', NOW()),
+  (81, 'interaction', 'trade_show', 'Casual dining summit', 'Met at chain restaurant event', NOW() - INTERVAL '100 days', 45, 47, 24, 15, true, 2, NOW() - INTERVAL '100 days', NOW()),
+  (82, 'interaction', 'trade_show', 'Sports venue expo', 'Connected at venue management show', NOW() - INTERVAL '105 days', 30, 78, 39, 12, false, 4, NOW() - INTERVAL '105 days', NOW()),
+  (83, 'interaction', 'trade_show', 'Distributor partner day', 'Attended partner event', NOW() - INTERVAL '110 days', 60, 25, 13, 31, true, 3, NOW() - INTERVAL '110 days', NOW()),
+  (84, 'interaction', 'trade_show', 'Specialty foods show', 'Exhibited at Fancy Food Show', NOW() - INTERVAL '115 days', 45, 35, 18, 33, false, 4, NOW() - INTERVAL '115 days', NOW()),
 
   -- ========================================
-  -- SITE_VISIT Activities (11)
+  -- SITE_VISIT Activities (12)
   -- ========================================
-  (95, 'site_visit', 'site_visit', 'Plant tour - Idaho facility', 'Manufacturing facility visit', NOW() - INTERVAL '80 days', 240, 57, 29, 47, true, 2, NOW() - INTERVAL '80 days', NOW()),
-  (96, 'site_visit', 'site_visit', 'Customer kitchen visit', 'On-site needs assessment', NOW() - INTERVAL '82 days', 120, 65, 32, 48, false, 2, NOW() - INTERVAL '82 days', NOW()),
-  (97, 'site_visit', 'site_visit', 'Distribution center tour', 'Logistics capabilities review', NOW() - INTERVAL '84 days', 180, 39, 20, 1, true, 3, NOW() - INTERVAL '84 days', NOW()),
-  (98, 'site_visit', 'site_visit', 'Corporate headquarters visit', 'Executive relationship building', NOW() - INTERVAL '86 days', 150, 53, 27, 2, false, 3, NOW() - INTERVAL '86 days', NOW()),
-  (99, 'site_visit', 'site_visit', 'Test kitchen visit', 'R&D collaboration session', NOW() - INTERVAL '88 days', 180, 59, 30, 3, true, 4, NOW() - INTERVAL '88 days', NOW()),
-  (100, 'site_visit', 'site_visit', 'Regional office visit', 'Team introduction meeting', NOW() - INTERVAL '91 days', 120, 76, 38, 4, false, 4, NOW() - INTERVAL '91 days', NOW()),
-  (101, 'site_visit', 'site_visit', 'QA facility inspection', 'Quality assurance review', NOW() - INTERVAL '93 days', 240, 43, 22, 5, true, 5, NOW() - INTERVAL '93 days', NOW()),
-  (102, 'site_visit', 'site_visit', 'New store opening support', 'Launch assistance visit', NOW() - INTERVAL '96 days', 300, 41, 21, 6, false, 5, NOW() - INTERVAL '96 days', NOW()),
-  (103, 'site_visit', 'site_visit', 'Commissary kitchen tour', 'Central production review', NOW() - INTERVAL '98 days', 180, 66, 33, 7, true, 6, NOW() - INTERVAL '98 days', NOW()),
-  (104, 'site_visit', 'site_visit', 'Stadium walkthrough', 'Concession operations review', NOW() - INTERVAL '101 days', 150, 62, 31, 8, false, 2, NOW() - INTERVAL '101 days', NOW()),
-  (105, 'site_visit', 'site_visit', 'Hotel F&B operation visit', 'Full service assessment', NOW() - INTERVAL '103 days', 210, 57, 29, 9, true, 3, NOW() - INTERVAL '103 days', NOW()),
+  (85, 'interaction', 'site_visit', 'Kitchen tour and assessment', 'Visited kitchen to assess needs', NOW() - INTERVAL '4 days', 120, 41, 21, 6, true, 5, NOW() - INTERVAL '4 days', NOW()),
+  (86, 'interaction', 'site_visit', 'Distribution center visit', 'Toured warehouse facility', NOW() - INTERVAL '9 days', 180, 21, 11, 30, false, 3, NOW() - INTERVAL '9 days', NOW()),
+  (87, 'interaction', 'site_visit', 'Plant tour for buyer', 'Showed manufacturing facility', NOW() - INTERVAL '14 days', 240, 19, 10, 29, true, 2, NOW() - INTERVAL '14 days', NOW()),
+  (88, 'interaction', 'site_visit', 'Kitchen installation review', 'Reviewed equipment setup', NOW() - INTERVAL '19 days', 90, 64, 32, 17, false, 3, NOW() - INTERVAL '19 days', NOW()),
+  (89, 'interaction', 'site_visit', 'Multi-unit assessment', 'Visited several locations', NOW() - INTERVAL '24 days', 300, 72, 36, 11, true, 4, NOW() - INTERVAL '24 days', NOW()),
+  (90, 'interaction', 'site_visit', 'Quality audit visit', 'Conducted quality review', NOW() - INTERVAL '29 days', 150, 62, 31, 8, false, 2, NOW() - INTERVAL '29 days', NOW()),
+  (91, 'interaction', 'site_visit', 'New location opening', 'Supported new store opening', NOW() - INTERVAL '34 days', 180, 49, 25, 10, true, 3, NOW() - INTERVAL '34 days', NOW()),
+  (92, 'interaction', 'site_visit', 'Commissary visit', 'Toured central kitchen', NOW() - INTERVAL '39 days', 120, 57, 29, 9, false, 3, NOW() - INTERVAL '39 days', NOW()),
+  (93, 'interaction', 'site_visit', 'Executive site tour', 'Hosted leadership visit', NOW() - INTERVAL '44 days', 180, 38, 19, 34, true, 5, NOW() - INTERVAL '44 days', NOW()),
+  (94, 'interaction', 'site_visit', 'Training facility visit', 'Conducted on-site training', NOW() - INTERVAL '49 days', 240, 68, 34, 19, false, 5, NOW() - INTERVAL '49 days', NOW()),
+  (95, 'interaction', 'site_visit', 'Banquet kitchen visit', 'Assessed banquet operations', NOW() - INTERVAL '54 days', 120, 60, 30, 21, true, 6, NOW() - INTERVAL '54 days', NOW()),
+  (96, 'interaction', 'site_visit', 'Regional office visit', 'Met at regional headquarters', NOW() - INTERVAL '59 days', 90, 23, 12, 35, false, 5, NOW() - INTERVAL '59 days', NOW()),
 
   -- ========================================
-  -- CONTRACT_REVIEW Activities (11)
+  -- CONTRACT_REVIEW Activities (12)
   -- ========================================
-  (106, 'contract_review', 'contract_review', 'Initial contract review', 'First pass of terms', NOW() - INTERVAL '55 days', 60, 49, 25, 10, false, 3, NOW() - INTERVAL '55 days', NOW()),
-  (107, 'contract_review', 'contract_review', 'Legal redlines review', 'Discussed legal changes', NOW() - INTERVAL '57 days', 45, 72, 36, 11, true, 4, NOW() - INTERVAL '57 days', NOW()),
-  (108, 'contract_review', 'contract_review', 'Pricing schedule review', 'Volume tier confirmation', NOW() - INTERVAL '60 days', 30, 78, 39, 12, false, 4, NOW() - INTERVAL '60 days', NOW()),
-  (109, 'contract_review', 'contract_review', 'Terms negotiation', 'Payment terms discussion', NOW() - INTERVAL '62 days', 60, 55, 28, 13, true, 5, NOW() - INTERVAL '62 days', NOW()),
-  (110, 'contract_review', 'contract_review', 'Service level review', 'SLA terms finalization', NOW() - INTERVAL '65 days', 45, 51, 26, 14, false, 5, NOW() - INTERVAL '65 days', NOW()),
-  (111, 'contract_review', 'contract_review', 'Renewal terms review', 'Auto-renewal clause review', NOW() - INTERVAL '68 days', 30, 47, 24, 15, true, 6, NOW() - INTERVAL '68 days', NOW()),
-  (112, 'contract_review', 'contract_review', 'Exclusivity discussion', 'Territory exclusivity terms', NOW() - INTERVAL '70 days', 45, 70, 35, 16, false, 2, NOW() - INTERVAL '70 days', NOW()),
-  (113, 'contract_review', 'contract_review', 'Insurance requirements', 'Liability coverage review', NOW() - INTERVAL '73 days', 30, 64, 32, 17, true, 2, NOW() - INTERVAL '73 days', NOW()),
-  (114, 'contract_review', 'contract_review', 'Quality standards review', 'Spec compliance terms', NOW() - INTERVAL '76 days', 45, 74, 37, 18, false, 3, NOW() - INTERVAL '76 days', NOW()),
-  (115, 'contract_review', 'contract_review', 'Termination clause review', 'Exit terms discussion', NOW() - INTERVAL '79 days', 30, 68, 34, 19, true, 3, NOW() - INTERVAL '79 days', NOW()),
-  (116, 'contract_review', 'contract_review', 'Final contract approval', 'Executive sign-off meeting', NOW() - INTERVAL '81 days', 60, 54, 27, 20, false, 4, NOW() - INTERVAL '81 days', NOW()),
+  (97, 'interaction', 'contract_review', 'Initial contract review', 'Reviewed initial terms', NOW() - INTERVAL '5 days', 60, 42, 21, 28, true, 6, NOW() - INTERVAL '5 days', NOW()),
+  (98, 'interaction', 'contract_review', 'Pricing terms discussion', 'Negotiated pricing section', NOW() - INTERVAL '10 days', 45, 45, 23, 22, false, 2, NOW() - INTERVAL '10 days', NOW()),
+  (99, 'interaction', 'contract_review', 'Legal review meeting', 'Discussed legal concerns', NOW() - INTERVAL '15 days', 90, 54, 27, 20, true, 5, NOW() - INTERVAL '15 days', NOW()),
+  (100, 'interaction', 'contract_review', 'Renewal terms review', 'Reviewed renewal conditions', NOW() - INTERVAL '20 days', 60, 58, 29, 23, false, 3, NOW() - INTERVAL '20 days', NOW()),
+  (101, 'interaction', 'contract_review', 'Volume commitment review', 'Discussed volume requirements', NOW() - INTERVAL '25 days', 45, 79, 39, 24, true, 3, NOW() - INTERVAL '25 days', NOW()),
+  (102, 'interaction', 'contract_review', 'Payment terms negotiation', 'Negotiated payment schedule', NOW() - INTERVAL '30 days', 60, 46, 23, 22, false, 2, NOW() - INTERVAL '30 days', NOW()),
+  (103, 'interaction', 'contract_review', 'Distribution agreement review', 'Reviewed distributor terms', NOW() - INTERVAL '35 days', 75, 26, 13, 31, true, 3, NOW() - INTERVAL '35 days', NOW()),
+  (104, 'interaction', 'contract_review', 'Service level review', 'Discussed SLA terms', NOW() - INTERVAL '40 days', 45, 30, 15, 36, false, 6, NOW() - INTERVAL '40 days', NOW()),
+  (105, 'interaction', 'contract_review', 'Exclusivity terms review', 'Discussed exclusive arrangement', NOW() - INTERVAL '45 days', 60, 33, 17, 35, true, 5, NOW() - INTERVAL '45 days', NOW()),
+  (106, 'interaction', 'contract_review', 'Final contract review', 'Final review before signing', NOW() - INTERVAL '50 days', 90, 20, 10, 29, false, 2, NOW() - INTERVAL '50 days', NOW()),
+  (107, 'interaction', 'contract_review', 'Amendment review', 'Reviewed contract changes', NOW() - INTERVAL '55 days', 45, 22, 11, 30, true, 3, NOW() - INTERVAL '55 days', NOW()),
+  (108, 'interaction', 'contract_review', 'Term extension review', 'Discussed term extension', NOW() - INTERVAL '60 days', 60, 24, 12, 35, false, 5, NOW() - INTERVAL '60 days', NOW()),
 
   -- ========================================
   -- CHECK_IN Activities (12)
   -- ========================================
-  (117, 'check_in', 'check_in', 'Monthly relationship check-in', 'Regular cadence call', NOW() - INTERVAL '2 days', 20, 60, 30, 21, false, 4, NOW() - INTERVAL '2 days', NOW()),
-  (118, 'check_in', 'check_in', 'Post-implementation check-in', 'How is rollout going?', NOW() - INTERVAL '9 days', 25, 45, 23, 22, true, 5, NOW() - INTERVAL '9 days', NOW()),
-  (119, 'check_in', 'check_in', 'Quarterly review prep', 'Pre-QBR check-in', NOW() - INTERVAL '15 days', 30, 58, 29, 23, false, 5, NOW() - INTERVAL '15 days', NOW()),
-  (120, 'check_in', 'check_in', 'Holiday planning check-in', 'Seasonal inventory discussion', NOW() - INTERVAL '21 days', 20, 79, 39, 24, true, 6, NOW() - INTERVAL '21 days', NOW()),
-  (121, 'check_in', 'check_in', 'New hire introduction', 'Meet new purchasing contact', NOW() - INTERVAL '26 days', 30, 40, 20, 25, false, 2, NOW() - INTERVAL '26 days', NOW()),
-  (122, 'check_in', 'check_in', 'Service satisfaction check', 'Delivery performance review', NOW() - INTERVAL '32 days', 25, 44, 22, 26, true, 2, NOW() - INTERVAL '32 days', NOW()),
-  (123, 'check_in', 'check_in', 'Menu change check-in', 'New menu planning status', NOW() - INTERVAL '38 days', 30, 50, 25, 27, false, 3, NOW() - INTERVAL '38 days', NOW()),
-  (124, 'check_in', 'check_in', 'Budget cycle check-in', 'Next FY planning status', NOW() - INTERVAL '44 days', 35, 42, 21, 28, true, 3, NOW() - INTERVAL '44 days', NOW()),
-  (125, 'check_in', 'check_in', 'Year-end review', 'Annual performance discussion', NOW() - INTERVAL '48 days', 45, 19, 10, 29, false, 4, NOW() - INTERVAL '48 days', NOW()),
-  (126, 'check_in', 'check_in', 'Market update check-in', 'Competitive landscape review', NOW() - INTERVAL '52 days', 25, 21, 11, 30, true, 4, NOW() - INTERVAL '52 days', NOW()),
-  (127, 'check_in', 'check_in', 'Executive sponsor check-in', 'Relationship maintenance', NOW() - INTERVAL '58 days', 30, 25, 13, 31, false, 5, NOW() - INTERVAL '58 days', NOW()),
-  (128, 'check_in', 'check_in', 'Product feedback check-in', 'User satisfaction pulse', NOW() - INTERVAL '63 days', 20, 63, 31, 32, true, 5, NOW() - INTERVAL '63 days', NOW()),
+  (109, 'interaction', 'check_in', 'Monthly account check-in', 'Regular monthly touchpoint', NOW() - INTERVAL '2 days', 20, 48, 24, 15, false, 4, NOW() - INTERVAL '2 days', NOW()),
+  (110, 'interaction', 'check_in', 'Relationship maintenance call', 'Nurturing key relationship', NOW() - INTERVAL '7 days', 25, 52, 26, 14, true, 5, NOW() - INTERVAL '7 days', NOW()),
+  (111, 'interaction', 'check_in', 'Quarterly business check-in', 'Quarterly account review', NOW() - INTERVAL '12 days', 30, 67, 33, 7, false, 6, NOW() - INTERVAL '12 days', NOW()),
+  (112, 'interaction', 'check_in', 'New contact introduction', 'Introduction to new team member', NOW() - INTERVAL '17 days', 20, 69, 34, 19, true, 4, NOW() - INTERVAL '17 days', NOW()),
+  (113, 'interaction', 'check_in', 'Holiday greeting call', 'Season greetings touchpoint', NOW() - INTERVAL '22 days', 15, 71, 35, 16, false, 3, NOW() - INTERVAL '22 days', NOW()),
+  (114, 'interaction', 'check_in', 'Account health check', 'Verified account satisfaction', NOW() - INTERVAL '27 days', 25, 73, 36, 11, true, 4, NOW() - INTERVAL '27 days', NOW()),
+  (115, 'interaction', 'check_in', 'Post-order check-in', 'Followed up after delivery', NOW() - INTERVAL '32 days', 15, 75, 37, 18, false, 6, NOW() - INTERVAL '32 days', NOW()),
+  (116, 'interaction', 'check_in', 'Year-end review call', 'Annual relationship review', NOW() - INTERVAL '37 days', 30, 77, 38, 4, true, 4, NOW() - INTERVAL '37 days', NOW()),
+  (117, 'interaction', 'check_in', 'New year planning call', 'Discussed upcoming year plans', NOW() - INTERVAL '42 days', 25, 80, 39, 12, false, 2, NOW() - INTERVAL '42 days', NOW()),
+  (118, 'interaction', 'check_in', 'Summer season check-in', 'Seasonal planning discussion', NOW() - INTERVAL '47 days', 20, 56, 28, 13, true, 6, NOW() - INTERVAL '47 days', NOW()),
+  (119, 'interaction', 'check_in', 'Executive relationship check', 'Executive level touchpoint', NOW() - INTERVAL '52 days', 30, 17, 9, 43, false, 6, NOW() - INTERVAL '52 days', NOW()),
+  (120, 'interaction', 'check_in', 'Operations alignment check', 'Verified operational alignment', NOW() - INTERVAL '57 days', 25, 18, 9, 43, true, 6, NOW() - INTERVAL '57 days', NOW()),
 
   -- ========================================
-  -- SOCIAL Activities (11)
+  -- SOCIAL Activities (12)
   -- ========================================
-  (129, 'social', 'social', 'Industry dinner networking', 'Dinner at NRA Show', NOW() - INTERVAL '92 days', 150, 35, 18, 33, false, 6, NOW() - INTERVAL '92 days', NOW()),
-  (130, 'social', 'social', 'Golf outing', 'Customer appreciation golf', NOW() - INTERVAL '97 days', 300, 38, 19, 34, true, 2, NOW() - INTERVAL '97 days', NOW()),
-  (131, 'social', 'social', 'Sporting event', 'Hosted at local MLB game', NOW() - INTERVAL '102 days', 240, 23, 12, 35, false, 2, NOW() - INTERVAL '102 days', NOW()),
-  (132, 'social', 'social', 'Holiday party attendance', 'Customer holiday celebration', NOW() - INTERVAL '107 days', 180, 29, 15, 36, true, 3, NOW() - INTERVAL '107 days', NOW()),
-  (133, 'social', 'social', 'Coffee catch-up', 'Informal relationship building', NOW() - INTERVAL '8 days', 45, 48, 24, 37, false, 3, NOW() - INTERVAL '8 days', NOW()),
-  (134, 'social', 'social', 'Lunch meeting', 'Business lunch discussion', NOW() - INTERVAL '19 days', 90, 53, 27, 38, true, 4, NOW() - INTERVAL '19 days', NOW()),
-  (135, 'social', 'social', 'Customer appreciation event', 'Annual thank you event', NOW() - INTERVAL '112 days', 180, 71, 35, 39, false, 4, NOW() - INTERVAL '112 days', NOW()),
-  (136, 'social', 'social', 'Industry award dinner', 'Award ceremony networking', NOW() - INTERVAL '117 days', 210, 73, 36, 40, true, 5, NOW() - INTERVAL '117 days', NOW()),
-  (137, 'social', 'social', 'Charity event', 'Industry charity fundraiser', NOW() - INTERVAL '122 days', 180, 20, 10, 41, false, 5, NOW() - INTERVAL '122 days', NOW()),
-  (138, 'social', 'social', 'Supplier dinner', 'Executive dinner meeting', NOW() - INTERVAL '127 days', 150, 26, 13, 42, true, 6, NOW() - INTERVAL '127 days', NOW()),
-  (139, 'social', 'social', 'Wine tasting event', 'Client entertainment event', NOW() - INTERVAL '132 days', 180, 67, 33, 43, false, 2, NOW() - INTERVAL '132 days', NOW()),
+  (121, 'interaction', 'social', 'Industry dinner event', 'Networking dinner with contacts', NOW() - INTERVAL '10 days', 180, 39, 20, 1, false, 2, NOW() - INTERVAL '10 days', NOW()),
+  (122, 'interaction', 'social', 'Golf outing', 'Client appreciation golf', NOW() - INTERVAL '20 days', 300, 19, 10, 29, true, 2, NOW() - INTERVAL '20 days', NOW()),
+  (123, 'interaction', 'social', 'Wine dinner event', 'Hosted wine pairing dinner', NOW() - INTERVAL '30 days', 180, 43, 22, 5, false, 4, NOW() - INTERVAL '30 days', NOW()),
+  (124, 'interaction', 'social', 'Sporting event tickets', 'Hosted at baseball game', NOW() - INTERVAL '40 days', 240, 78, 39, 12, true, 4, NOW() - INTERVAL '40 days', NOW()),
+  (125, 'interaction', 'social', 'Charity event', 'Connected at charity fundraiser', NOW() - INTERVAL '50 days', 180, 59, 30, 3, false, 3, NOW() - INTERVAL '50 days', NOW()),
+  (126, 'interaction', 'social', 'Industry awards dinner', 'Attended awards ceremony together', NOW() - INTERVAL '60 days', 240, 55, 28, 13, true, 6, NOW() - INTERVAL '60 days', NOW()),
+  (127, 'interaction', 'social', 'Coffee meeting', 'Informal catch-up coffee', NOW() - INTERVAL '70 days', 60, 66, 33, 7, false, 6, NOW() - INTERVAL '70 days', NOW()),
+  (128, 'interaction', 'social', 'Happy hour networking', 'After-work networking event', NOW() - INTERVAL '80 days', 120, 72, 36, 11, true, 4, NOW() - INTERVAL '80 days', NOW()),
+  (129, 'interaction', 'social', 'Holiday party', 'Annual holiday celebration', NOW() - INTERVAL '90 days', 180, 47, 24, 15, false, 2, NOW() - INTERVAL '90 days', NOW()),
+  (130, 'interaction', 'social', 'Client appreciation lunch', 'Thank you lunch for key buyer', NOW() - INTERVAL '100 days', 90, 21, 11, 30, true, 3, NOW() - INTERVAL '100 days', NOW()),
+  (131, 'interaction', 'social', 'Industry mixer', 'Networking at industry event', NOW() - INTERVAL '110 days', 120, 25, 13, 31, false, 3, NOW() - INTERVAL '110 days', NOW()),
+  (132, 'interaction', 'social', 'New Year celebration', 'Rang in New Year with client', NOW() - INTERVAL '120 days', 180, 35, 18, 33, true, 4, NOW() - INTERVAL '120 days', NOW()),
 
   -- ========================================
-  -- NOTE Activities (11)
+  -- NOTE Activities (18 - general notes)
   -- ========================================
-  (140, 'note', 'note', 'Competitor intelligence noted', 'Learned about competitor pricing', NOW() - INTERVAL '7 days', 5, 56, 28, 44, false, 2, NOW() - INTERVAL '7 days', NOW()),
-  (141, 'note', 'note', 'Menu change notification', 'Customer updating menu Q2', NOW() - INTERVAL '14 days', 5, 49, 25, 45, true, 3, NOW() - INTERVAL '14 days', NOW()),
-  (142, 'note', 'note', 'Budget timing noted', 'FY starts in July', NOW() - INTERVAL '22 days', 5, 52, 26, 46, false, 3, NOW() - INTERVAL '22 days', NOW()),
-  (143, 'note', 'note', 'Key contact leaving', 'Primary contact retiring June', NOW() - INTERVAL '29 days', 10, 57, 29, 47, true, 4, NOW() - INTERVAL '29 days', NOW()),
-  (144, 'note', 'note', 'Expansion plans noted', 'Opening 5 new locations', NOW() - INTERVAL '35 days', 5, 65, 32, 48, false, 4, NOW() - INTERVAL '35 days', NOW()),
-  (145, 'note', 'note', 'Quality concern logged', 'Reported texture issue batch 2234', NOW() - INTERVAL '41 days', 10, 39, 20, 1, true, 5, NOW() - INTERVAL '41 days', NOW()),
-  (146, 'note', 'note', 'Preferred communication noted', 'Prefers email over calls', NOW() - INTERVAL '47 days', 5, 53, 27, 2, false, 5, NOW() - INTERVAL '47 days', NOW()),
-  (147, 'note', 'note', 'Decision process noted', 'Committee meets monthly', NOW() - INTERVAL '53 days', 5, 59, 30, 3, true, 6, NOW() - INTERVAL '53 days', NOW()),
-  (148, 'note', 'note', 'Dietary requirements noted', 'Need allergen-free options', NOW() - INTERVAL '59 days', 10, 76, 38, 4, false, 2, NOW() - INTERVAL '59 days', NOW()),
-  (149, 'note', 'note', 'Sustainability focus noted', 'Pursuing B-Corp certification', NOW() - INTERVAL '64 days', 5, 43, 22, 5, true, 3, NOW() - INTERVAL '64 days', NOW()),
-  (150, 'note', 'note', 'Price sensitivity noted', 'Very cost-conscious buyer', NOW() - INTERVAL '69 days', 5, 41, 21, 6, false, 3, NOW() - INTERVAL '69 days', NOW());
+  (133, 'interaction', 'note', 'Competitive intelligence', 'Learned competitor is offering lower prices', NOW() - INTERVAL '1 day', 5, 40, 20, 25, false, 4, NOW() - INTERVAL '1 day', NOW()),
+  (134, 'interaction', 'note', 'Menu change planned', 'Chef mentioned upcoming menu revamp', NOW() - INTERVAL '3 days', 5, 44, 22, 26, true, 4, NOW() - INTERVAL '3 days', NOW()),
+  (135, 'interaction', 'note', 'Budget cycle timing', 'Budget decisions made in Q3', NOW() - INTERVAL '5 days', 5, 50, 25, 27, false, 5, NOW() - INTERVAL '5 days', NOW()),
+  (136, 'interaction', 'note', 'Key stakeholder identified', 'CFO has final approval authority', NOW() - INTERVAL '7 days', 5, 42, 21, 28, true, 6, NOW() - INTERVAL '7 days', NOW()),
+  (137, 'interaction', 'note', 'Expansion plans shared', 'Opening 5 new locations next year', NOW() - INTERVAL '9 days', 5, 19, 10, 29, false, 2, NOW() - INTERVAL '9 days', NOW()),
+  (138, 'interaction', 'note', 'Pain point identified', 'Current supplier has quality issues', NOW() - INTERVAL '11 days', 5, 21, 11, 30, true, 3, NOW() - INTERVAL '11 days', NOW()),
+  (139, 'interaction', 'note', 'Timeline update', 'Decision pushed to next quarter', NOW() - INTERVAL '13 days', 5, 25, 13, 31, false, 3, NOW() - INTERVAL '13 days', NOW()),
+  (140, 'interaction', 'note', 'Contact leaving', 'Key contact taking new job', NOW() - INTERVAL '15 days', 5, 63, 31, 32, true, 4, NOW() - INTERVAL '15 days', NOW()),
+  (141, 'interaction', 'note', 'Vendor consolidation', 'Looking to reduce vendor count', NOW() - INTERVAL '17 days', 5, 35, 18, 33, false, 4, NOW() - INTERVAL '17 days', NOW()),
+  (142, 'interaction', 'note', 'Sustainability focus', 'Increasing focus on sustainability', NOW() - INTERVAL '19 days', 5, 38, 19, 34, true, 5, NOW() - INTERVAL '19 days', NOW()),
+  (143, 'interaction', 'note', 'Regional preference', 'Prefers local/regional suppliers', NOW() - INTERVAL '21 days', 5, 23, 12, 35, false, 5, NOW() - INTERVAL '21 days', NOW()),
+  (144, 'interaction', 'note', 'Pricing sensitivity', 'Very price sensitive account', NOW() - INTERVAL '23 days', 5, 29, 15, 36, true, 6, NOW() - INTERVAL '23 days', NOW()),
+  (145, 'interaction', 'note', 'Quality over price', 'Willing to pay premium for quality', NOW() - INTERVAL '25 days', 5, 53, 27, 2, false, 3, NOW() - INTERVAL '25 days', NOW()),
+  (146, 'interaction', 'note', 'Contract renewal timing', 'Contract up for renewal in June', NOW() - INTERVAL '27 days', 5, 76, 38, 4, true, 4, NOW() - INTERVAL '27 days', NOW()),
+  (147, 'interaction', 'note', 'Decision maker identified', 'VP Operations makes final call', NOW() - INTERVAL '29 days', 5, 41, 21, 6, false, 5, NOW() - INTERVAL '29 days', NOW()),
+  (148, 'interaction', 'note', 'Competitor weakness', 'Competitor having supply issues', NOW() - INTERVAL '31 days', 5, 66, 33, 7, true, 6, NOW() - INTERVAL '31 days', NOW()),
+  (149, 'interaction', 'note', 'Budget approved', 'Got budget approval for new vendor', NOW() - INTERVAL '33 days', 5, 62, 31, 8, false, 2, NOW() - INTERVAL '33 days', NOW()),
+  (150, 'interaction', 'note', 'Trial feedback positive', 'Pilot program getting great reviews', NOW() - INTERVAL '35 days', 5, 57, 29, 9, true, 3, NOW() - INTERVAL '35 days', NOW());
 
 -- Reset sequence
 SELECT setval(pg_get_serial_sequence('activities', 'id'), 150, true);
