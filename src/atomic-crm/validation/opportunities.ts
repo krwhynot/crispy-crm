@@ -10,7 +10,6 @@ export const opportunityStageSchema = z.enum([
   "new_lead",
   "initial_outreach",
   "sample_visit_offered",
-  "awaiting_response",
   "feedback_logged",
   "demo_scheduled",
   "closed_won",

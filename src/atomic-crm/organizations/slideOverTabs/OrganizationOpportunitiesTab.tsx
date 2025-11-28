@@ -156,7 +156,6 @@ function StageBadge({ stage }: { stage: string }) {
     new_lead: "outline",
     initial_outreach: "secondary",
     sample_visit_offered: "secondary",
-    awaiting_response: "outline",
     feedback_logged: "secondary",
     demo_scheduled: "default",
     closed_won: "default",

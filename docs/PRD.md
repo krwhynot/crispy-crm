@@ -23,19 +23,25 @@ Crispy-CRM replaces Excel-based sales pipeline management for MFB, a food distri
 
 ### 1.2 Success Criteria
 
-| Metric | Target |
-|--------|--------|
-| Team Adoption | 100% within 60 days of launch |
-| Data Accuracy | <5% error rate |
-| Admin Time Reduction | 40% less time on manual tasks |
-| Forecast Accuracy | ±15% variance (post-MVP) |
+**MVP Launch Goal (Qualitative):** Users prefer CRM over Excel for daily pipeline management.
+
+> **Note:** Quantitative metrics deferred to post-MVP. Instrumentation via PostHog planned for v1.1 to establish baselines before measuring targets.
+
+| Metric | Target | Measurement Method | Timeline |
+|--------|--------|-------------------|----------|
+| Team Adoption | 100% daily usage | PostHog: login frequency | Post-MVP (v1.1) |
+| Data Accuracy | <5% error rate | Monthly data audit | Post-MVP (v1.1) |
+| Admin Time Reduction | 40% less manual work | Time-tracking comparison | Post-MVP (v1.1) |
+| Forecast Accuracy | ±15% variance | Requires pricing feature | Post-MVP (v1.2+) |
 
 ### 1.3 Launch Readiness Criteria
 
 All three must pass before launch:
-1. **Feature Completeness** - All MVP features functional
+1. **Feature Completeness** - All MVP features functional (see §15.1 for 57-item checklist)
 2. **User Acceptance** - Key users approve after testing
-3. **Data Migration** - Current year data successfully imported
+3. **Data Migration** - Current year data successfully imported per migration plan
+
+**Data Migration:** See `docs/migration/DATA_MIGRATION_PLAN.md` for source definitions, field mappings, dedupe rules, owner assignment logic, and rollback strategy.
 
 **Fallback Plan:** Full commitment - no parallel Excel system
 
@@ -132,11 +138,31 @@ The following Principal → Account Manager assignments will be configured durin
 
 **Team-wide visibility:** All reps can see all opportunities and activities (collaborative/transparent culture).
 
+> **Justification (v1.20):** Team-wide visibility is appropriate for MFB's 5-6 person team where cross-coverage and collaboration are essential. No regulatory requirements (HIPAA, SOX, etc.) apply to food brokerage CRM data. Audit logging (§10.5) provides accountability for all data access and modifications. Principal-specific visibility scoping deferred to v1.1 if team grows beyond 10 users or compliance review requires it.
+
 ### 3.3 Delete Permissions
 
 **Soft delete only** - Nothing is truly deleted. Records are archived/hidden.
 - Soft delete available to: Record owner, Manager, Admin
 - Hard delete: Not permitted (data preservation)
+
+### 3.4 Resource Ownership (v1.20)
+
+Each resource has a defined **owner** field used for permission checks and audit trails. Follows HubSpot's single-owner-per-record pattern.
+
+| Resource | Owner Field | Auto-Assignment | Can Soft Delete |
+|----------|-------------|-----------------|-----------------|
+| **Organization** | `created_by` | Creator on insert | Owner, Manager, Admin |
+| **Contact** | `created_by` | Creator on insert | Owner, Manager, Admin |
+| **Opportunity** | `primary_account_manager_id` | Required field (manual) | Owner, Manager, Admin |
+| **Activity** | `sales_id` | Current user on insert | Owner, Manager, Admin |
+| **Task** | `sales_id` | Assignee (required field) | Owner, Manager, Admin |
+| **Note** | `created_by` | Creator on insert | Owner, Manager, Admin |
+| **Product** | `created_by` | Creator on insert | Admin only |
+
+**Ownership Transfer:** Manager or Admin can reassign ownership via record edit. Original owner loses delete permission after transfer.
+
+**Restore Capability:** Soft-deleted records can be restored by Admin only via database query (no UI in MVP). Audit log captures restore events.
 
 ---
 
@@ -468,7 +494,10 @@ The Overview tab provides at-a-glance KPIs and trend visualizations.
 | `sample_visit_offered` | 14 days | Sample logistics window |
 | `feedback_logged` | 21 days | Customer evaluation period |
 | `demo_scheduled` | 14 days | Decision pending |
-| Other stages | 14 days | Default threshold |
+| `closed_won` | N/A | **Excluded from staleness** - deal completed successfully |
+| `closed_lost` | N/A | **Excluded from staleness** - deal closed, no follow-up needed |
+
+> **Important (v1.20):** Stale logic applies **only to open opportunities**. Closed stages (`closed_won`, `closed_lost`) are always excluded from staleness calculations. The "Other stages" row has been removed to prevent ambiguity.
 
 **Charts:**
 | Chart | Type | Data Source |
@@ -955,6 +984,69 @@ ON opportunity.create:
     CREATE normally
 ```
 
+### 10.5 Audit Logging (v1.20)
+
+MVP-essential audit logging for accountability and compliance. Follows industry standard for small-team CRMs (HubSpot, Pipedrive patterns).
+
+**Audit Log Table Schema:**
+
+| Column | Type | Description |
+|--------|------|-------------|
+| `id` | BIGINT | Primary key |
+| `timestamp` | TIMESTAMPTZ | Event time (UTC) |
+| `user_id` | UUID | User who performed action |
+| `action` | TEXT | `create`, `update`, `delete`, `restore`, `login`, `logout`, `export` |
+| `resource_type` | TEXT | `organization`, `contact`, `opportunity`, `activity`, `task`, `note` |
+| `resource_id` | BIGINT | ID of affected record |
+| `changes` | JSONB | Before/after values for updates (null for create/delete) |
+| `ip_address` | TEXT | Client IP (optional, for security audits) |
+
+**Events Logged:**
+
+| Event | Logged | Details |
+|-------|--------|---------|
+| Record create | ✅ | Resource type, ID, creator |
+| Record update | ✅ | Changed fields with before/after values |
+| Record soft delete | ✅ | Resource type, ID, who deleted |
+| Record restore | ✅ | Resource type, ID, who restored |
+| Owner change | ✅ | Old owner → new owner |
+| Login/logout | ✅ | User ID, timestamp, success/failure |
+| Bulk export (CSV) | ✅ | Resource type, record count, who exported |
+| Field-level changes | ❌ | Enterprise feature (deferred) |
+
+**Retention Policy:**
+- Default: 1 year (365 days)
+- Automatic cleanup via scheduled Supabase Edge Function (weekly)
+- No manual purge capability (audit integrity)
+
+**Access:**
+- Admin only via database query (no UI in MVP)
+- Audit log is append-only (no updates or deletes via application)
+
+**Implementation Notes:**
+- PostgreSQL trigger on each audited table
+- Supabase RLS: Admin read-only, no write access via API
+- Consider PostHog for user behavior analytics (v1.1)
+
+### 10.6 Non-Functional Requirements (v1.20)
+
+MVP relies on Supabase Cloud defaults. Custom performance targets deferred to v1.1 after baseline established.
+
+| Requirement | MVP Target | Source |
+|-------------|------------|--------|
+| **Availability** | 99.9% uptime | Supabase Pro SLA |
+| **Backups** | Daily automated | Supabase default |
+| **Point-in-Time Recovery** | 7 days | Supabase Pro |
+| **Page Load** | <3 seconds | No custom target (Supabase defaults) |
+| **API Response** | <500ms p95 | No custom target (Supabase defaults) |
+| **Concurrent Users** | 10 | Supabase handles (team size = 6) |
+
+**Monitoring:**
+- Supabase Dashboard: Database metrics, API latency, error rates
+- No custom alerting in MVP (manual review weekly)
+
+**Load Testing:** Deferred to v1.1. MVP team size (6 users) well within Supabase capacity.
+
 ---
 
 ## 11. Data Migration
@@ -1372,6 +1464,11 @@ ELSE:
 | 115 | Dashboard panel sync | Contextual Drawer pattern: Principal row click opens ResourceSlideOver with tabs (Opportunities/Tasks/Activity). Tasks panel remains independent. Research: Outlook Web, Linear | 2025-11-28 |
 | 116 | Dashboard iPad Portrait layout | Master-Detail Drill pattern: Pipeline fills viewport at 768px. Row tap navigates to full-screen detail. Tasks via header drawer (70% width). Research: Salesforce Mobile | 2025-11-28 |
 | 117 | Dashboard Quick Logger position | FAB persists at bottom-right across all breakpoints. 56px touch target. Opens Sheet slide-over. Research: Google Material Design, industry standard | 2025-11-28 |
+| 118 | Success metrics timing | Quantitative metrics (adoption, data accuracy, admin time) deferred to post-MVP. Launch with qualitative goal: "users prefer CRM over Excel." PostHog instrumentation planned for v1.1 to establish baselines | 2025-11-28 |
+| 119 | Timeline extension | Extended from 30-60 days to 90-120 days to realistically accommodate 57 MVP blockers. No scope reduction; all blockers remain required | 2025-11-28 |
+| 120 | Team-wide visibility compliance | Team-wide visibility acceptable for 5-6 person team. No PII export restrictions needed. Audit logging (§10.5) provides accountability. No regulatory requirements (HIPAA, SOX) apply to food brokerage CRM. Research: Perplexity industry analysis | 2025-11-28 |
+| 121 | Resource ownership model | HubSpot-style single owner per record. Owner fields defined per resource in §3.4. Auto-assignment on create, manual transfer by Manager/Admin. Research: Perplexity (HubSpot, Salesforce, Pipedrive patterns) | 2025-11-28 |
+| 122 | Non-functional requirements | MVP relies on Supabase Cloud defaults: 99.9% uptime, daily backups, 7-day PITR. No custom performance targets. Load testing deferred to v1.1 | 2025-11-28 |
 
 ### 16.3 Open Questions
 
