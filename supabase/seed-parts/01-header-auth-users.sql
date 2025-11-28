@@ -114,146 +114,76 @@ BEGIN
 
   -- Brent Gustafson (Owner/Admin)
   INSERT INTO auth.users (
-    id,
-    instance_id,
-    email,
-    encrypted_password,
-    email_confirmed_at,
-    raw_app_meta_data,
-    raw_user_meta_data,
-    created_at,
-    updated_at,
-    role,
-    aud,
-    confirmation_token
+    id, instance_id, email, encrypted_password, email_confirmed_at,
+    raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+    role, aud, confirmation_token, recovery_token, email_change,
+    email_change_token_new, email_change_token_current, phone_change,
+    phone_change_token, reauthentication_token
   ) VALUES (
-    v_brent_uid,
-    '00000000-0000-0000-0000-000000000000',
-    'brent@mfb.com',
-    crypt('password123', gen_salt('bf')),
-    NOW(),
-    '{"provider": "email", "providers": ["email"]}',
-    '{"name": "Brent Gustafson"}',
-    NOW(),
-    NOW(),
-    'authenticated',
-    'authenticated',
-    ''
+    v_brent_uid, '00000000-0000-0000-0000-000000000000', 'brent@mfb.com',
+    crypt('password123', gen_salt('bf')), NOW(),
+    '{"provider": "email", "providers": ["email"]}', '{"name": "Brent Gustafson"}',
+    NOW(), NOW(), 'authenticated', 'authenticated',
+    '', '', '', '', '', '', '', ''
   );
 
   -- Michelle Gustafson (Manager)
   INSERT INTO auth.users (
-    id,
-    instance_id,
-    email,
-    encrypted_password,
-    email_confirmed_at,
-    raw_app_meta_data,
-    raw_user_meta_data,
-    created_at,
-    updated_at,
-    role,
-    aud,
-    confirmation_token
+    id, instance_id, email, encrypted_password, email_confirmed_at,
+    raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+    role, aud, confirmation_token, recovery_token, email_change,
+    email_change_token_new, email_change_token_current, phone_change,
+    phone_change_token, reauthentication_token
   ) VALUES (
-    v_michelle_uid,
-    '00000000-0000-0000-0000-000000000000',
-    'michelle@mfb.com',
-    crypt('password123', gen_salt('bf')),
-    NOW(),
-    '{"provider": "email", "providers": ["email"]}',
-    '{"name": "Michelle Gustafson"}',
-    NOW(),
-    NOW(),
-    'authenticated',
-    'authenticated',
-    ''
+    v_michelle_uid, '00000000-0000-0000-0000-000000000000', 'michelle@mfb.com',
+    crypt('password123', gen_salt('bf')), NOW(),
+    '{"provider": "email", "providers": ["email"]}', '{"name": "Michelle Gustafson"}',
+    NOW(), NOW(), 'authenticated', 'authenticated',
+    '', '', '', '', '', '', '', ''
   );
 
   -- Gary (Sales Rep)
   INSERT INTO auth.users (
-    id,
-    instance_id,
-    email,
-    encrypted_password,
-    email_confirmed_at,
-    raw_app_meta_data,
-    raw_user_meta_data,
-    created_at,
-    updated_at,
-    role,
-    aud,
-    confirmation_token
+    id, instance_id, email, encrypted_password, email_confirmed_at,
+    raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+    role, aud, confirmation_token, recovery_token, email_change,
+    email_change_token_new, email_change_token_current, phone_change,
+    phone_change_token, reauthentication_token
   ) VALUES (
-    v_gary_uid,
-    '00000000-0000-0000-0000-000000000000',
-    'gary@mfb.com',
-    crypt('password123', gen_salt('bf')),
-    NOW(),
-    '{"provider": "email", "providers": ["email"]}',
-    '{"name": "Gary"}',
-    NOW(),
-    NOW(),
-    'authenticated',
-    'authenticated',
-    ''
+    v_gary_uid, '00000000-0000-0000-0000-000000000000', 'gary@mfb.com',
+    crypt('password123', gen_salt('bf')), NOW(),
+    '{"provider": "email", "providers": ["email"]}', '{"name": "Gary"}',
+    NOW(), NOW(), 'authenticated', 'authenticated',
+    '', '', '', '', '', '', '', ''
   );
 
   -- Dale (Sales Rep)
   INSERT INTO auth.users (
-    id,
-    instance_id,
-    email,
-    encrypted_password,
-    email_confirmed_at,
-    raw_app_meta_data,
-    raw_user_meta_data,
-    created_at,
-    updated_at,
-    role,
-    aud,
-    confirmation_token
+    id, instance_id, email, encrypted_password, email_confirmed_at,
+    raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+    role, aud, confirmation_token, recovery_token, email_change,
+    email_change_token_new, email_change_token_current, phone_change,
+    phone_change_token, reauthentication_token
   ) VALUES (
-    v_dale_uid,
-    '00000000-0000-0000-0000-000000000000',
-    'dale@mfb.com',
-    crypt('password123', gen_salt('bf')),
-    NOW(),
-    '{"provider": "email", "providers": ["email"]}',
-    '{"name": "Dale"}',
-    NOW(),
-    NOW(),
-    'authenticated',
-    'authenticated',
-    ''
+    v_dale_uid, '00000000-0000-0000-0000-000000000000', 'dale@mfb.com',
+    crypt('password123', gen_salt('bf')), NOW(),
+    '{"provider": "email", "providers": ["email"]}', '{"name": "Dale"}',
+    NOW(), NOW(), 'authenticated', 'authenticated',
+    '', '', '', '', '', '', '', ''
   );
 
   -- Sue (Sales Rep)
   INSERT INTO auth.users (
-    id,
-    instance_id,
-    email,
-    encrypted_password,
-    email_confirmed_at,
-    raw_app_meta_data,
-    raw_user_meta_data,
-    created_at,
-    updated_at,
-    role,
-    aud,
-    confirmation_token
+    id, instance_id, email, encrypted_password, email_confirmed_at,
+    raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+    role, aud, confirmation_token, recovery_token, email_change,
+    email_change_token_new, email_change_token_current, phone_change,
+    phone_change_token, reauthentication_token
   ) VALUES (
-    v_sue_uid,
-    '00000000-0000-0000-0000-000000000000',
-    'sue@mfb.com',
-    crypt('password123', gen_salt('bf')),
-    NOW(),
-    '{"provider": "email", "providers": ["email"]}',
-    '{"name": "Sue"}',
-    NOW(),
-    NOW(),
-    'authenticated',
-    'authenticated',
-    ''
+    v_sue_uid, '00000000-0000-0000-0000-000000000000', 'sue@mfb.com',
+    crypt('password123', gen_salt('bf')), NOW(),
+    '{"provider": "email", "providers": ["email"]}', '{"name": "Sue"}',
+    NOW(), NOW(), 'authenticated', 'authenticated',
+    '', '', '', '', '', '', '', ''
   );
 END $$;
