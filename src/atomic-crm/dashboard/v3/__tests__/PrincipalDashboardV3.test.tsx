@@ -83,25 +83,26 @@ describe("PrincipalDashboardV3", () => {
     expect(screen.getByRole("button", { name: /log activity/i })).toBeInTheDocument();
   });
 
-  it("should use CSS Grid layout with two columns on desktop", () => {
+  it("should use vertically stacked layout for main sections", () => {
     const { container } = render(
       <MemoryRouter>
         <PrincipalDashboardV3 />
       </MemoryRouter>
     );
 
-    // The main content grid container should have the responsive grid classes
-    // Now nested inside a flex container that also contains KPISummaryRow
-    const gridContainers = container.querySelectorAll(".grid");
-    // Should have at least 2 grids: KPISummaryRow (4-col) and main panels (2-col)
-    expect(gridContainers.length).toBeGreaterThanOrEqual(2);
+    // Main content should use flex-col for vertical stacking
+    const flexColContainers = container.querySelectorAll(".flex-col");
+    expect(flexColContainers.length).toBeGreaterThanOrEqual(1);
 
-    // Find the main panel grid with 2fr/3fr layout
-    const mainPanelGrid = Array.from(gridContainers).find(
-      (el) => el.classList.contains("lg:grid-cols-[2fr_3fr]")
+    // KPI Summary Row should still have its responsive grid
+    const gridContainers = container.querySelectorAll(".grid");
+    expect(gridContainers.length).toBeGreaterThanOrEqual(1);
+
+    // Verify KPI row uses 4-column grid on desktop
+    const kpiGrid = Array.from(gridContainers).find(
+      (el) => el.classList.contains("lg:grid-cols-4")
     );
-    expect(mainPanelGrid).toBeInTheDocument();
-    expect(mainPanelGrid).toHaveClass("grid-cols-1");
+    expect(kpiGrid).toBeInTheDocument();
   });
 
   it("should render dashboard header", () => {
