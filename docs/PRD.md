@@ -1,11 +1,11 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.9
+**Version:** 1.10
 **Last Updated:** 2025-11-28
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
-> **Changelog v1.9:** Industry best practices review - Reduced pipeline to 7 stages (removed `awaiting_response`), added per-stage stale thresholds, visual decay indicators, hybrid duplicate prevention, activity auto-cascade to contacts, "My Performance" dashboard widget, mobile quick actions, daily email digest, task completion follow-up prompts. See [Appendix F](#f-version-history) for details.
+> **Changelog v1.10:** UI/UX clarity audit - Fixed critical KPI conflict ("Total Pipeline Value" → "Open Opportunities" count, no $ in MVP). Added detailed dashboard specifications: KPI card behavior (Section 9.2.1), pipeline column tooltips (9.2.2), task snooze popover with date options (9.2.3), tasks panel scope definition (9.2.4). Fixed "Next Action" phantom link issue. Added 5 new MVP features, 6 resolved questions. See [Appendix F](#f-version-history) for details.
 
 ---
 
@@ -942,6 +942,11 @@ ELSE:
 | 31 | Daily email digest | 🔧 TODO | 7 AM cron via Supabase Edge Function with overdue tasks + stale deals |
 | 32 | Task follow-up prompt | 🔧 TODO | Modal prompt on task completion asking to create follow-up task |
 | 33 | Pipeline stage migration | 🔧 TODO | Migrate from 8 to 7 stages (remove `awaiting_response`, update existing data) |
+| 34 | Fix KPI card (Total Pipeline → Open Opps) | 🔧 TODO | Change first KPI from "Total Pipeline Value" ($) to "Open Opportunities" (count) - conflicts with Decision #5 |
+| 35 | Pipeline column tooltips | 🔧 TODO | Add tooltips to "This Week", "Last Week", "Momentum" columns explaining calculation |
+| 36 | Fix Next Action dead link | 🔧 TODO | Remove `variant="link"` from "Schedule follow-up" - show as plain text until functional |
+| 37 | Task snooze popover | 🔧 TODO | Replace auto-snooze with popover (Tomorrow, Next Week, Custom Date options) |
+| 38 | Stale Deals KPI card | 🔧 TODO | Add 4th KPI card showing stale deals count with amber styling |
 
 ### 15.2 Post-MVP Features
 
@@ -1031,6 +1036,12 @@ ELSE:
 | 57 | Task follow-up prompt | Modal on task completion to create follow-up | 2025-11-28 |
 | 58 | Feedback stage distinct | Keep `feedback_logged` as gate stage (not merged with sample) | 2025-11-28 |
 | 59 | Check-in mobile priority | Move `check_in` to mobile quick actions (field use case) | 2025-11-28 |
+| 60 | KPI card conflict fix | Replace "Total Pipeline Value" with "Open Opportunities" count (no $ in MVP) | 2025-11-28 |
+| 61 | Pipeline column tooltips | Add tooltips: "This Week" = Mon-Sun current, "Momentum" = 14-day trend | 2025-11-28 |
+| 62 | Next Action dead link | Show plain text "Schedule follow-up", NOT variant="link" for non-functional elements | 2025-11-28 |
+| 63 | Task snooze popover | Snooze shows popover with options (Tomorrow, Next Week, Custom Date), not auto-24h | 2025-11-28 |
+| 64 | Tasks panel scope | Dashboard shows Overdue/Today/Tomorrow only. 3+ days = use /tasks list | 2025-11-28 |
+| 65 | Stale Deals KPI | Add 4th KPI card for "Stale Deals" count with amber styling when > 0 | 2025-11-28 |
 
 ### 16.3 Open Questions
 
@@ -1060,7 +1071,7 @@ ELSE:
 
 ### 17.4 MVP Blocker Risk
 
-**Risk:** 25 features still need implementation (updated per industry best practices review 2025-11-28)
+**Risk:** 30 features still need implementation (updated per UI/UX clarity audit 2025-11-28)
 
 **Mitigation:** Prioritize in order:
 1. **Contact enforcement** (Critical): Enforce organization requirement - blocks orphan contacts
@@ -1221,9 +1232,10 @@ Organizations can be classified into business segments for filtering and reporti
 | 1.7 | 2025-11-28 | Product audit (Claude): Added ProductList create buttons (#22), F&B field removal (#23). Documented distributor_id field purpose for product-level authorization. Updated blocker count 13→15. Added resolved questions #40-42 |
 | 1.8 | 2025-11-28 | Reports audit (Claude): Comprehensive Section 8 rewrite documenting Overview Dashboard (4 charts, 3 KPIs), Campaign Activity tab, Global Filter System with localStorage persistence. Moved Won/Lost Analysis to Post-MVP (depends on #12). Added DataQualityTab removal (#24). Updated blocker count 15→16. Added resolved questions #43-47 |
 | 1.9 | 2025-11-28 | **Industry best practices review (Perplexity research):** Reduced pipeline from 8→7 stages (removed `awaiting_response`). Added per-stage stale thresholds (7d/14d/21d). Visual decay indicators (green/yellow/red borders) for `sample_visit_offered` stage. Activity auto-cascade to primary contact. "My Performance" dashboard widget. Mobile quick actions (6 buttons). Hybrid duplicate prevention (hard block exact, soft warn fuzzy). Daily email digest at 7 AM (tasks + stale deals). Task completion follow-up prompt. Updated product display to hybrid "Primary + X more". Added 9 new MVP features (#25-33). Added resolved questions #48-59. Updated MVP blocker count 16→25. |
+| 1.10 | 2025-11-28 | **UI/UX clarity audit:** Fixed critical KPI conflict - "Total Pipeline Value" → "Open Opportunities" (no $ in MVP per Decision #5). Added Section 9.2.1-9.2.4 documenting KPI cards, pipeline tooltips, snooze popover, tasks panel scope. Added 5 new MVP features (#34-38): Fix KPI card, pipeline tooltips, Next Action dead link fix, task snooze popover, stale deals KPI. Added resolved questions #60-65. Updated MVP blocker count 25→30. |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-28 (v1.9 - Industry best practices review)*
+*Last updated: 2025-11-28 (v1.10 - UI/UX clarity audit)*
