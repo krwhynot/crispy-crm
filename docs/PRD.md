@@ -1,11 +1,11 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.6
+**Version:** 1.8
 **Last Updated:** 2025-11-28
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
-> **Changelog v1.6:** Organization audit findings - Added Organization Priority (A/B/C/D), dual-level Authorization architecture, Parent Hierarchy, Segments documentation. Moved Org CSV Import to Post-MVP. Added bulk owner reassignment (#20) and authorization UI (#21) to MVP tasks. Updated feature count from 11 to 13. See [Appendix F](#f-version-history) for details.
+> **Changelog v1.8:** Reports audit findings - Documented Overview Dashboard charts (Pipeline, Activity Trend, Top Principals, Rep Performance), Campaign Activity Report tab, and Global Filter System. Moved Won/Lost Analysis to Post-MVP. Added DataQualityTab removal task (#24). Updated blocker count 15→16. See [Appendix F](#f-version-history) for details.
 
 ---
 
@@ -534,20 +534,55 @@ In-app notification system implemented:
 
 ## 13. Authorization Tracking
 
-### 13.1 Distributor Authorizations (MVP - To Implement)
+### 13.1 Dual-Level Authorization Architecture (MVP - To Implement)
 
-Track which distributors are authorized to carry which principals' products.
+Authorization tracking operates at **two levels** to support both broad distributor relationships and granular product-level control.
 
-**Required Fields:**
-- Distributor (organization_id)
-- Principal (organization_id)
-- Authorization status (Authorized/Not Authorized/Pending)
-- Authorization date
-- Notes
+#### Level 1: Distributor-Principal Authorization (Organization Level)
+
+Track which distributors are authorized to carry a principal's product line.
+
+**Table:** `distributor_principal_authorizations` (to be created)
+
+**Fields:**
+- `distributor_id` - Organization with type='distributor'
+- `principal_id` - Organization with type='principal'
+- `is_authorized` - Boolean (Authorized/Not Authorized)
+- `authorization_date` - When authorization was granted
+- `expiration_date` - Optional expiration (nullable)
+- `notes` - Free text notes
+- `created_by` - User who created the record
+
+**Use Case:** "Sysco is authorized to carry McCRUM products"
+
+#### Level 2: Product-Distributor Authorization (Product Level)
+
+Track product-specific exceptions to the organization-level authorization.
+
+**Table:** `product_distributor_authorizations` (exists)
+
+**Fields:**
+- `product_id` - Specific product from products table
+- `distributor_id` - Organization with type='distributor'
+- `is_authorized` - Boolean override
+- `authorization_date`, `notes`, `created_by`
+
+**Use Case:** "Sysco carries McCRUM products EXCEPT for Product X (discontinued)"
+
+#### Authorization Logic
+
+```
+IF product_distributor_authorization exists for (product, distributor):
+    USE product-level authorization
+ELSE:
+    DERIVE from distributor_principal_authorization (via product.principal_id)
+```
 
 ### 13.2 Authorization Workflow
 
-- View authorizations on Distributor detail page
+- **View authorizations on Distributor detail page** - New "Authorizations" tab showing:
+  - List of authorized principals (org-level)
+  - Product-level exceptions/overrides
 - **Soft warning** when creating opportunity for non-authorized combo (banner displayed, creation allowed)
 - Filter opportunities by authorization status
 - No manager approval required - informational warning only
@@ -558,6 +593,7 @@ Track which distributors are authorized to carry which principals' products.
 - Manual cleanup by users
 - No automatic cascade to opportunities
 - Users manually close affected opportunities
+- Product-level authorizations remain (explicit overrides preserved)
 
 ---
 
@@ -604,6 +640,10 @@ Track which distributors are authorized to carry which principals' products.
 | 17 | QuickLogForm all 13 types | 🔧 TODO | Add missing 8 activity types: sample, demo, proposal, trade_show, site_visit, contract_review, check_in, social |
 | 18 | Contact org enforcement | 🔧 TODO | Enforce organization_id as required field in schema + UI. Block orphan contact creation |
 | 19 | Contact organization filter | 🔧 TODO | Add organization filter to ContactListFilter (tests exist, UI missing) |
+| 20 | Bulk owner reassignment | 🔧 TODO | Add BulkReassignButton to Organizations list for manager workflows |
+| 21 | Authorization UI | 🔧 TODO | Add Authorizations tab to Distributor organization detail page (see Section 13.2) |
+| 22 | ProductList create buttons | 🔧 TODO | Add CreateButton to TopToolbar + FloatingCreateButton (match ContactList UX) |
+| 23 | Remove F&B fields from Product UI | 🔧 TODO | Remove certifications, allergens, ingredients, nutritional_info, marketing_description from ProductCertificationsTab |
 
 ### 15.2 Post-MVP Features
 
@@ -613,6 +653,7 @@ Track which distributors are authorized to carry which principals' products.
 | Forecasting (weighted) | Requires pricing/probability setup |
 | Volume/Price tracking | Deferred complexity |
 | Opportunity CSV import | Contact import sufficient |
+| Organization CSV import | Code exists but deferred; Contact import is higher priority |
 | Velocity metrics | Future analytics |
 | Principal login portal | Future feature |
 | Offline mode | Online required |
@@ -664,6 +705,16 @@ Track which distributors are authorized to carry which principals' products.
 | 30 | CSV import availability | Keep disabled until tested. Update status from "Done" to "Disabled" | 2025-11-28 |
 | 31 | Contact organization filter | Add org filter to ContactListFilter to match test expectations | 2025-11-28 |
 | 32 | Contact duplicate UI | Remove DB artifacts (view + function). Admin-only SQL cleanup sufficient | 2025-11-28 |
+| 33 | Organization priority system | Keep A/B/C/D letter grades for organizations (distinct from opportunity Low/Med/High/Critical) | 2025-11-28 |
+| 34 | Authorization granularity | Dual-level: org-level (Distributor↔Principal) + product-level exceptions. Both are needed | 2025-11-28 |
+| 35 | Organization CSV import | Move to Post-MVP. Code exists but Contact import is higher priority | 2025-11-28 |
+| 36 | Organization hierarchy | Document in PRD. Valuable for franchise/branch modeling | 2025-11-28 |
+| 37 | Organization segments | Document in PRD. Used for business classification (Restaurant, Hotel, etc.) | 2025-11-28 |
+| 38 | Bulk owner reassignment | Add to MVP. Required for manager workflows when reps leave | 2025-11-28 |
+| 39 | Authorization UI | Add to MVP. Reps need to see authorized principals on distributor pages | 2025-11-28 |
+| 40 | ProductList create buttons | Add both CreateButton and FloatingCreateButton for consistent UX with ContactList | 2025-11-28 |
+| 41 | Product distributor_id field | Keep for authorization tracking (product-level distributor relationships) | 2025-11-28 |
+| 42 | Product F&B fields | Remove from UI. Fields (certifications, allergens, etc.) not in PRD spec - simplify to match spec | 2025-11-28 |
 
 ### 16.3 Open Questions
 
@@ -693,15 +744,17 @@ Track which distributors are authorized to carry which principals' products.
 
 ### 17.4 MVP Blocker Risk
 
-**Risk:** 11 features still need implementation (updated per contact audit 2025-11-28)
+**Risk:** 15 features still need implementation (updated per product audit 2025-11-28)
 
 **Mitigation:** Prioritize in order:
 1. **Contact enforcement** (Critical): Enforce organization requirement - blocks orphan contacts
 2. **Dashboard gaps** (Quick wins): KPI fix, Recent Activity Feed, QuickLogForm 13 types
 3. **Contact filters** (Medium): Add organization filter to ContactListFilter
 4. **Sample tracking** (Medium): Full workflow UI with status + feedback
-5. **Business logic** (Complex): Win/Loss UI, Duplicate Prevention, Authorization Tracking
-6. **Cleanup** (Low): Remove unused contact_duplicates DB artifacts
+5. **Organization features** (Medium): Bulk owner reassignment, Authorization UI tab
+6. **Product UX** (Quick win): Add create buttons to ProductList, remove F&B fields from UI
+7. **Business logic** (Complex): Win/Loss UI, Duplicate Prevention, Authorization Tracking
+8. **Cleanup** (Low): Remove unused contact_duplicates DB artifacts
 
 ---
 
@@ -763,6 +816,65 @@ Track which distributors are authorized to carry which principals' products.
 | `prospect` | Prospect | Potential customer |
 | `unknown` | Unknown | Uncategorized |
 
+### D.1 Organization Priority Reference
+
+**Note:** Organizations use a letter-grade priority system (A/B/C/D), distinct from Opportunity priority (Low/Medium/High/Critical). This provides quick visual triage for account prioritization.
+
+| Priority | UI Label | Description | Color |
+|----------|----------|-------------|-------|
+| `A` | A - High Priority | Top-tier accounts requiring immediate attention | Red (destructive) |
+| `B` | B - Medium-High Priority | Important accounts with active engagement | Amber (warning) |
+| `C` | C - Medium Priority | Standard accounts (default for new organizations) | Gray (secondary) |
+| `D` | D - Low Priority | Lower priority or dormant accounts | Light gray (muted) |
+
+**Default:** New organizations default to Priority C.
+
+**Usage:** Priority is set per-organization and helps reps focus on high-value relationships. It does not affect opportunity stage calculations.
+
+### D.2 Organization Parent Hierarchy
+
+Organizations support parent-child relationships for modeling corporate structures (franchises, regional branches, subsidiaries).
+
+**Fields:**
+- `parent_organization_id` - Reference to parent organization (nullable)
+
+**Features:**
+- **Hierarchy Breadcrumb** - Shows parent chain on organization detail page
+- **Branch Locations Section** - Lists child organizations on parent's page
+- **Rollup Metrics** - Parent orgs show aggregated contact/opportunity counts across branches
+
+**Business Rules:**
+- An organization can have at most one parent
+- Circular references are prevented at the database level
+- Deleting a parent does NOT cascade to children (children become top-level)
+- Type inheritance: Children do NOT inherit parent's organization_type
+
+**Use Cases:**
+- Sysco (parent) → Sysco Denver, Sysco Chicago (branches)
+- Restaurant Group (parent) → Individual restaurant locations
+
+### D.3 Organization Segments
+
+Organizations can be classified into business segments for filtering and reporting.
+
+**Implementation:** `segment_id` references the `segments` table.
+
+**Default Segments:**
+- Restaurant
+- Hotel/Hospitality
+- Healthcare
+- Education
+- Corporate/Catering
+- Retail
+- Unknown (default for new organizations)
+
+**Usage:**
+- Filter organization lists by segment
+- Segment appears in organization detail sidebar
+- Segment is included in CSV exports
+
+**Permissions:** Any authenticated user can assign segments. Segment management (add/edit/delete segment types) is admin-only.
+
 ### E. Task Type Reference
 
 | Type | Description |
@@ -785,9 +897,11 @@ Track which distributors are authorized to carry which principals' products.
 | 1.3 | 2025-11-28 | GPT 5.1 deep analysis clarifications: Campaign as text tag (not entity), priority-only deal ranking, contacts require organization, admin-only user creation, any rep can add products, manual reassignment on user deactivation, competitors as free text, no attachments MVP |
 | 1.4 | 2025-11-28 | Dashboard audit (Claude): Added 4 implementation gaps - Recent Activity Feed (#16), QuickLogForm 13 types (#17), Sample tracking workflow (#4 updated), KPI metric fix (#15). Updated MVP blocker count from 4→8. Added resolved questions #25-28 |
 | 1.5 | 2025-11-28 | Contact audit (Claude): Added 2 implementation gaps - Contact org enforcement (#18), Contact org filter (#19). Changed CSV import status from "Done" to "Disabled". Decision to remove contact_duplicates DB artifacts. Updated MVP blocker count from 8→11. Added resolved questions #29-32 |
+| 1.6 | 2025-11-28 | Organization audit (Claude): Documented Organization Priority (A/B/C/D in Appendix D.1), Parent Hierarchy (D.2), Segments (D.3). Expanded Section 13 with dual-level authorization architecture. Moved Org CSV Import to Post-MVP. Added bulk reassignment (#20) and authorization UI (#21) to MVP. Updated blocker count 11→13. Added resolved questions #33-39 |
+| 1.7 | 2025-11-28 | Product audit (Claude): Added ProductList create buttons (#22), F&B field removal (#23). Documented distributor_id field purpose for product-level authorization. Updated blocker count 13→15. Added resolved questions #40-42 |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-28 (v1.5 - Contact page audit implementation gaps)*
+*Last updated: 2025-11-28 (v1.7 - Product page audit findings)*
