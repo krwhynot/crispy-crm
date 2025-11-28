@@ -1,11 +1,11 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.3
+**Version:** 1.4
 **Last Updated:** 2025-11-28
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
-> **Changelog v1.3:** Added clarifications from GPT 5.1 deep analysis - Campaign as tag field, priority-only deal ranking, contact requires org, admin-only user creation, product catalog permissions, and more. See [Appendix F](#f-version-history) for details.
+> **Changelog v1.4:** Dashboard audit findings - Added 4 new implementation tasks: Recent Activity Feed, QuickLogForm all 13 activity types, Sample tracking full workflow, KPI metric fix. Updated feature count from 4 to 8 remaining. See [Appendix F](#f-version-history) for details.
 
 ---
 
@@ -592,7 +592,7 @@ Track which distributors are authorized to carry which principals' products.
 | 5 | Mobile/tablet access | ✅ Done | Full functionality on phone screens |
 | 6 | Opportunity list with filters | ✅ Done | Sort/filter by principal, stage, owner, date |
 | 7 | Dashboard with stale warnings | 🔧 Partial | Stale warnings ✅. **Gap:** Missing Recent Activity Feed component |
-| 8 | CSV import (Contacts) | ✅ Done | Bulk upload contacts |
+| 8 | CSV import (Contacts) | 🔧 Disabled | Feature implemented but UI disabled. Needs testing before enabling |
 | 9 | Soft delete + audit trail | ✅ Done | All changes tracked, nothing hard deleted |
 | 10 | Dark mode toggle | ✅ Done | User can switch between light/dark theme |
 | 11 | Tasks & Notifications | ✅ Done | Full task management with reminders |
@@ -654,10 +654,14 @@ Track which distributors are authorized to carry which principals' products.
 | 22 | Product catalog permissions | Any rep can add products | 2025-11-28 |
 | 23 | User deactivation | Manual reassignment by manager | 2025-11-28 |
 | 24 | Activity attachments | No attachments in MVP (text only) | 2025-11-28 |
+| 25 | Recent Activity Feed | Required on dashboard (audit finding) | 2025-11-28 |
+| 26 | QuickLogForm activity types | All 13 types required in quick logger | 2025-11-28 |
+| 27 | Sample tracking workflow | Full UI workflow required (Sent→Received→Feedback) | 2025-11-28 |
+| 28 | Dashboard KPI metric | Replace "Pipeline Value" with "Open Opportunities" count | 2025-11-28 |
 
 ### 16.3 Open Questions
 
-*No open questions - all clarified via Gemini 3 Pro + GPT 5.1 deep analysis.*
+*No open questions - all clarified via Gemini 3 Pro + GPT 5.1 deep analysis + Claude audit.*
 
 ---
 
@@ -683,9 +687,12 @@ Track which distributors are authorized to carry which principals' products.
 
 ### 17.4 MVP Blocker Risk
 
-**Risk:** 4 features still need implementation
+**Risk:** 8 features still need implementation (updated per dashboard audit 2025-11-28)
 
-**Mitigation:** Prioritize Sample type, Win/Loss UI, Duplicates, Authorizations
+**Mitigation:** Prioritize in order:
+1. **Dashboard gaps** (Quick wins): KPI fix, Recent Activity Feed, QuickLogForm 13 types
+2. **Sample tracking** (Medium): Full workflow UI with status + feedback
+3. **Business logic** (Complex): Win/Loss UI, Duplicate Prevention, Authorization Tracking
 
 ---
 
@@ -767,9 +774,10 @@ Track which distributors are authorized to carry which principals' products.
 | 1.1 | 2025-11-27 | Updated after codebase audit: aligned terminology, stages, activity types, required fields, Tasks/Notifications scope, deferred pricing/forecasting/PDF |
 | 1.2 | 2025-11-27 | Gemini 3 Pro deep analysis clarifications: Contact must belong to Customer Org, auto-generated opp naming with override, soft authorization warning, sample status manual+reminders, clear win/loss on reopen, full bulk operations, entity-specific search (global post-MVP), single org type only |
 | 1.3 | 2025-11-28 | GPT 5.1 deep analysis clarifications: Campaign as text tag (not entity), priority-only deal ranking, contacts require organization, admin-only user creation, any rep can add products, manual reassignment on user deactivation, competitors as free text, no attachments MVP |
+| 1.4 | 2025-11-28 | Dashboard audit (Claude): Added 4 implementation gaps - Recent Activity Feed (#16), QuickLogForm 13 types (#17), Sample tracking workflow (#4 updated), KPI metric fix (#15). Updated MVP blocker count from 4→8. Added resolved questions #25-28 |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-28 (v1.3 - GPT 5.1 deep analysis clarifications)*
+*Last updated: 2025-11-28 (v1.4 - Dashboard audit implementation gaps)*
