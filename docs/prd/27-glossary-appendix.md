@@ -1,5 +1,7 @@
 ---
-**Part of:** Atomic CRM Product Requirements Document
+> **⚠️ SUPERSEDED**: See `../PRD.md` v1.18 Appendices (D-F) for current glossary and terminology.
+
+**Part of:** Crispy-CRM Product Requirements Document (v1.5 - ARCHIVED)
 **Document:** Glossary & Appendix
 **Category:** Reference
 

@@ -698,6 +698,160 @@ A dedicated text widget at the top of the dashboard where reps define their sing
 - Widget renders at top of dashboard, above KPI cards
 - [Edit] button opens inline text input (no modal needed)
 
+#### 9.2.6 Dashboard V3 Responsive UX Specification (v1.19)
+
+The Principal Dashboard V3 employs a **progressive disclosure hierarchy** that adapts across viewport sizes while maintaining consistent interaction patterns. These specifications were finalized through UX research comparing Salesforce Split View, Linear's 2024 UI redesign, and Outlook Web patterns.
+
+**Breakpoint Architecture:**
+
+| Viewport | Layout | Panel Behavior |
+|----------|--------|----------------|
+| **Desktop (1440px+)** | 3-panel simultaneous | KPIs → Pipeline Table → Tasks Kanban all visible |
+| **Laptop (1280-1439px)** | 2-panel + collapsible | Tasks panel collapses to 48px icon rail |
+| **iPad Landscape (1024-1279px)** | 2-panel + overlay | Tasks as drawer overlay; Pipeline + KPIs visible |
+| **iPad Portrait (768-1023px)** | Master-detail drill | Pipeline fills viewport; detail via full-screen navigation |
+| **Mobile (<768px)** | Single panel + navigation | Stacked layout with bottom sheet actions |
+
+**Decision 1: iPad Landscape Panel Interaction (1024px)**
+
+At constrained desktop/tablet widths, the Tasks panel uses a **Collapsible Sidebar** pattern:
+
+```
+┌─────────────────────────────────────────────────────────┬────┐
+│ [KPIs]                                                  │ 📋 │ ← 48px icon rail
+├─────────────────────────────────────────────────────────┤    │
+│                                                         │    │
+│              Pipeline Table (full width)                │    │
+│                                                         │    │
+└─────────────────────────────────────────────────────────┴────┘
+                                                          ↑
+                                            Click → Tasks drawer overlays
+```
+
+**Implementation:**
+- Icon rail: `w-12` (48px) with `CheckSquare` icon for Tasks
+- Expanded drawer: `w-80` (320px) overlay with `Sheet` component
+- Animation: `200ms ease-out` transition (per design system)
+- Focus trap when drawer open
+
+**Decision 2: Stuck/Stale Indicator Visualization**
+
+Pipeline table rows use a **Row Leading Edge** pattern (4px vertical color bar) rather than a dedicated column:
+
+```
+┌────┬─────────────────────────────────────────────────────────┐
+│ 🟢 │ Ocean Hugger Foods    │ 3 opps │ Demo Scheduled │ 2d  │
+├────┼─────────────────────────────────────────────────────────┤
+│ 🟡 │ Fishpeople Seafood    │ 2 opps │ Sample Offered │ 18d │
+├────┼─────────────────────────────────────────────────────────┤
+│ 🔴 │ La Tourangelle        │ 1 opp  │ Feedback       │ 35d │
+└────┴─────────────────────────────────────────────────────────┘
+  ↑
+  4px bar: bg-success (<7d) | bg-warning (7-29d) | bg-destructive (30d+)
+```
+
+**Implementation:**
+- CSS: `::before` pseudo-element or dedicated `<div className="w-1 h-full">`
+- Colors: `bg-success` (green), `bg-warning` (amber), `bg-destructive` (red)
+- Hover tooltip: "Last activity: X days ago"
+- No dedicated "Stuck?" column needed (saves horizontal space)
+
+**Decision 3: Principal Selection → Contextual Drawer**
+
+When user clicks a Principal row in the Pipeline Table:
+
+```
+[Click Principal Row] → ResourceSlideOver opens from right
+                        ├── Principal Header (name, status badge)
+                        ├── Tabs: [Opportunities] [Tasks] [Activity]
+                        └── Tab content with related records
+
+Tasks panel remains unchanged underneath (independent panels)
+```
+
+**Implementation:**
+- Reuses existing `ResourceSlideOver` component (40vw, min 480px, max 720px)
+- URL state: `?principal=123` query parameter
+- Tabs: React Admin `TabbedShowLayout` pattern
+- Tasks panel does NOT filter on selection (independent operation)
+
+**Decision 4: iPad Portrait Fallback (768px)**
+
+At portrait tablet width, dashboard uses **Master-Detail Drill** navigation:
+
+```
+[Portrait Mode - Pipeline fills viewport]
+┌─────────────────────────────────────────────────┐
+│ Principal Dashboard            [Tasks 📋] [Log+]│
+├─────────────────────────────────────────────────┤
+│ [KPI] [KPI] │ [KPI] [KPI]                       │ ← 2x2 grid
+├─────────────────────────────────────────────────┤
+│                                                 │
+│  🟢 Ocean Hugger    3 opps   Demo      2d   >  │
+│  🟡 Fishpeople      2 opps   Sample   18d   >  │
+│  🔴 La Tourangelle  1 opp    Feedback 35d   >  │
+│                                                 │
+└─────────────────────────────────────────────────┘
+
+[Tap Row] → Full-screen detail view with back navigation
+[Tap Tasks icon] → Tasks drawer (70% viewport width)
+```
+
+**Implementation:**
+- Row height increases to 52-56px (from 44px) for touch targets
+- Header icons: Tasks (with badge count), Quick Log (+)
+- Row tap navigates to `/principals/:id` detail view
+- Breadcrumb: "Dashboard > Ocean Hugger Foods"
+- Tasks drawer: `Sheet` from right, 70% width
+
+**Decision 5: Quick Logger FAB Position**
+
+The Floating Action Button (FAB) for activity logging **persists across all breakpoints**:
+
+```
+Desktop/Tablet:                    Mobile:
+┌──────────────────────────┐      ┌────────────────┐
+│                          │      │                │
+│                          │      │                │
+│                          │      │                │
+│                    [FAB] │      │          [FAB] │
+└──────────────────────────┘      └────────────────┘
+              ↑                            ↑
+        Bottom-right, 24px inset    Bottom-right, 16px inset
+```
+
+**Implementation:**
+- Position: `fixed bottom-6 right-6` (desktop) / `bottom-4 right-4` (mobile)
+- Size: `w-14 h-14` (56px) for touch target compliance
+- Icon: `Plus` or `PencilLine`
+- Click opens `Sheet` slide-over with `QuickLogForm`
+- Z-index above all panels but below modals
+
+**CSS Breakpoint Implementation:**
+
+```css
+/* Dashboard responsive layout */
+@media (min-width: 1440px) {
+  .dashboard-layout { grid-template-columns: 1fr 320px; } /* Pipeline | Tasks */
+}
+
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .dashboard-layout { grid-template-columns: 1fr 48px; } /* Pipeline | Icon rail */
+  .tasks-panel { position: fixed; width: 320px; transform: translateX(100%); }
+  .tasks-panel.open { transform: translateX(0); }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .dashboard-layout { grid-template-columns: 1fr; } /* Single column */
+  .tasks-panel { display: none; } /* Accessed via drawer */
+}
+
+@media (max-width: 767px) {
+  .dashboard-layout { display: flex; flex-direction: column; }
+  .kpi-grid { grid-template-columns: 1fr 1fr; } /* 2x2 on mobile */
+}
+```
+
 ### 9.3 Responsive Design
 
 | Screen Size | Support Level |

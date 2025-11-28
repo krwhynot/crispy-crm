@@ -1,5 +1,7 @@
 ---
-**Part of:** Atomic CRM Product Requirements Document
+> **⚠️ SUPERSEDED**: See `../PRD.md` v1.18 Section 14 (Decisions Log) for current requirements.
+
+**Part of:** Crispy-CRM Product Requirements Document (v1.5 - ARCHIVED)
 **Category:** Implementation & Operations
 **Document:** 23-implementation-deviations.md
 
