@@ -1,8 +1,10 @@
 # User & Developer Guides
 
+> **PRD Reference:** See `../PRD.md` v1.18 for complete business requirements and terminology (Principal, Distributor, Customer).
+
 ## Overview
 
-This directory contains comprehensive guides for both end-users and developers.
+This directory contains comprehensive guides for both end-users and developers working with Crispy-CRM.
 
 ## User Guides
 

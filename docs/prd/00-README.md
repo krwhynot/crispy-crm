@@ -1,7 +1,10 @@
-# Atomic CRM - Product Requirements Documentation
+# Crispy-CRM - Product Requirements Documentation
 
-**Version:** 1.5 MVP (Modular Edition)
+> **⚠️ SUPERSEDED**: These modular PRD files are from v1.5 (November 2025). The **canonical PRD** is now `../PRD.md` v1.18 (2025-11-28). Key differences: 7 pipeline stages (not 8), 13 activity types, Business Playbook integration. Use `../PRD.md` for current requirements.
+
+**Version:** 1.5 MVP (Modular Edition) - **ARCHIVED**
 **Last Updated:** November 4, 2025
+**Superseded By:** `../PRD.md` v1.18
 **Purpose:** Complete product specification split into focused, navigable modules
 
 ---
