@@ -285,7 +285,42 @@ VALUES
   (50, 'Custom Culinary - Brookdale', 9, 37, 13, 6,
    'closed_lost', ARRAY[75]::bigint[], CURRENT_DATE - INTERVAL '50 days',
    'GPO contract locked with competitor',
-   NOW() - INTERVAL '130 days', NOW() - INTERVAL '50 days');
+   NOW() - INTERVAL '130 days', NOW() - INTERVAL '50 days'),
+
+  -- ========================================
+  -- EDGE CASE OPPORTUNITIES (5 additional)
+  -- ========================================
+  -- For testing special scenarios
+
+  -- 51: STALE opportunity - no activity for 45+ days (reports testing)
+  (51, 'Litehouse Dressings - Stale Deal', 8, 24, 11, 5,
+   'sample_visit_offered', ARRAY[47]::bigint[], CURRENT_DATE + INTERVAL '30 days',
+   'STALE: No activity in 45 days - for testing stale opportunity reports',
+   NOW() - INTERVAL '60 days', NOW() - INTERVAL '45 days'),
+
+  -- 52: $0 VALUE - pilot/trial opportunity (no revenue)
+  (52, 'SWAP Plant Trial - Zero Value Pilot', 2, 29, NULL, 3,
+   'feedback_logged', ARRAY[57]::bigint[], CURRENT_DATE + INTERVAL '14 days',
+   'PILOT PROGRAM: Free trial with no revenue - tests $0 value handling',
+   NOW() - INTERVAL '20 days', NOW()),
+
+  -- 53: DIRECT SALE - no distributor (customer buys direct from principal)
+  (53, 'McCRUM Direct - No Distributor', 1, 39, NULL, 2,
+   'initial_outreach', ARRAY[78]::bigint[], CURRENT_DATE + INTERVAL '45 days',
+   'DIRECT SALE: Customer buying directly from manufacturer, no distributor involved',
+   NOW() - INTERVAL '8 days', NOW()),
+
+  -- 54: VERY OLD - created 6 months ago, still in early stage
+  (54, 'Frico Cheese - Ancient Deal', 5, 34, 18, 4,
+   'new_lead', ARRAY[68]::bigint[], CURRENT_DATE + INTERVAL '90 days',
+   'ANCIENT: Created 6 months ago, still new_lead - tests long-running deals',
+   NOW() - INTERVAL '180 days', NOW() - INTERVAL '30 days'),
+
+  -- 55: FAST CLOSE - moved through stages in 7 days
+  (55, 'Anchor Express - Quick Win', 6, 20, 10, 5,
+   'closed_won', ARRAY[40]::bigint[], CURRENT_DATE - INTERVAL '2 days',
+   'FAST CLOSE: Entire sales cycle in 7 days - tests velocity metrics',
+   NOW() - INTERVAL '9 days', NOW() - INTERVAL '2 days');
 
 -- Reset sequence
-SELECT setval(pg_get_serial_sequence('opportunities', 'id'), 50, true);
+SELECT setval(pg_get_serial_sequence('opportunities', 'id'), 55, true);
