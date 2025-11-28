@@ -713,11 +713,11 @@ SELECT setval(pg_get_serial_sequence('products', 'id'), 36, true);
 -- Distribution: 18 for principals, 20 for distributors, 42 for customers
 -- Contact IDs: 1-80
 -- Schema: id, name, first_name, last_name, email (JSONB), phone (JSONB),
---         title, department, sales_id, created_at, updated_at
+--         title, department, organization_id, sales_id, created_at, updated_at
 -- ============================================================================
 
 INSERT INTO "public"."contacts" (
-  id, name, first_name, last_name, email, phone, title, department, sales_id, created_at, updated_at
+  id, name, first_name, last_name, email, phone, title, department, organization_id, sales_id, created_at, updated_at
 )
 VALUES
   -- ========================================
@@ -726,357 +726,257 @@ VALUES
 
   -- McCRUM (Org 1) - Brent manages
   (1, 'John McCrum', 'John', 'McCrum', '[{"email": "john@mccrum.com", "type": "Work"}]', '[{"phone": "208-555-1101", "type": "Work"}]',
-   'VP Sales', 'Sales', 2, NOW(), NOW()),
+   'VP Sales', 'Sales', 1, 2, NOW(), NOW()),
   (2, 'Sarah Miller', 'Sarah', 'Miller', '[{"email": "sarah.miller@mccrum.com", "type": "Work"}]', '[{"phone": "208-555-1102", "type": "Work"}]',
-   'Account Manager', 'Sales', 2, NOW(), NOW()),
+   'Account Manager', 'Sales', 1, 2, NOW(), NOW()),
 
   -- SWAP (Org 2) - Brent manages
   (3, 'Michael Chen', 'Michael', 'Chen', '[{"email": "mchen@swapfoods.com", "type": "Work"}]', '[{"phone": "312-555-1201", "type": "Work"}]',
-   'CEO', 'Executive', 2, NOW(), NOW()),
+   'CEO', 'Executive', 2, 2, NOW(), NOW()),
   (4, 'Lisa Wong', 'Lisa', 'Wong', '[{"email": "lwong@swapfoods.com", "type": "Work"}]', '[{"phone": "312-555-1202", "type": "Work"}]',
-   'National Sales Manager', 'Sales', 2, NOW(), NOW()),
+   'National Sales Manager', 'Sales', 2, 2, NOW(), NOW()),
 
   -- Rapid Rasoi (Org 3) - Michelle manages
   (5, 'Raj Patel', 'Raj', 'Patel', '[{"email": "raj@rapidrasoi.com", "type": "Work"}]', '[{"phone": "510-555-1301", "type": "Work"}]',
-   'Owner', 'Executive', 3, NOW(), NOW()),
+   'Owner', 'Executive', 3, 3, NOW(), NOW()),
   (6, 'Priya Sharma', 'Priya', 'Sharma', '[{"email": "priya@rapidrasoi.com", "type": "Work"}]', '[{"phone": "510-555-1302", "type": "Work"}]',
-   'Sales Director', 'Sales', 3, NOW(), NOW()),
+   'Sales Director', 'Sales', 3, 3, NOW(), NOW()),
 
   -- Lakeview Farms (Org 4) - Michelle manages
   (7, 'Tom Harrison', 'Tom', 'Harrison', '[{"email": "tharrison@lakeviewfarms.com", "type": "Work"}]', '[{"phone": "614-555-1401", "type": "Work"}]',
-   'President', 'Executive', 3, NOW(), NOW()),
+   'President', 'Executive', 4, 3, NOW(), NOW()),
   (8, 'Jennifer Adams', 'Jennifer', 'Adams', '[{"email": "jadams@lakeviewfarms.com", "type": "Work"}]', '[{"phone": "614-555-1402", "type": "Work"}]',
-   'Regional Sales Manager', 'Sales', 3, NOW(), NOW()),
+   'Regional Sales Manager', 'Sales', 4, 3, NOW(), NOW()),
 
   -- Frico (Org 5) - Gary manages
   (9, 'Marco Rossi', 'Marco', 'Rossi', '[{"email": "mrossi@frico.it", "type": "Work"}]', '[{"phone": "201-555-1501", "type": "Work"}]',
-   'US Sales Director', 'Sales', 4, NOW(), NOW()),
+   'US Sales Director', 'Sales', 5, 4, NOW(), NOW()),
   (10, 'Anna Bianchi', 'Anna', 'Bianchi', '[{"email": "abianchi@frico.it", "type": "Work"}]', '[{"phone": "201-555-1502", "type": "Work"}]',
-   'Account Executive', 'Sales', 4, NOW(), NOW()),
+   'Account Executive', 'Sales', 5, 4, NOW(), NOW()),
 
   -- Anchor (Org 6) - Gary manages
   (11, 'David Thompson', 'David', 'Thompson', '[{"email": "dthompson@anchor.com", "type": "Work"}]', '[{"phone": "415-555-1601", "type": "Work"}]',
-   'VP Foodservice', 'Sales', 4, NOW(), NOW()),
-  (12, 'Emma Wilson', 'Emma', 'Wilson', '[{"email": "ewilson@anchor.com", "type": "Work"}]', '[{"phone": "415-555-1602", "type": "Work"}]',
-   'Key Account Manager', 'Sales', 4, NOW(), NOW()),
+   'VP Foodservice', 'Sales', 6, 4, NOW(), NOW()),
+  (12, 'Emily Walker', 'Emily', 'Walker', '[{"email": "ewalker@anchor.com", "type": "Work"}]', '[{"phone": "415-555-1602", "type": "Work"}]',
+   'Key Account Manager', 'Sales', 6, 4, NOW(), NOW()),
 
   -- Tattooed Chef (Org 7) - Dale manages
-  (13, 'Sam Galletti', 'Sam', 'Galletti', '[{"email": "sam@tattooedchef.com", "type": "Work"}]', '[{"phone": "310-555-1701", "type": "Work"}]',
-   'Founder & CEO', 'Executive', 5, NOW(), NOW()),
-  (14, 'Nicole Green', 'Nicole', 'Green', '[{"email": "ngreen@tattooedchef.com", "type": "Work"}]', '[{"phone": "310-555-1702", "type": "Work"}]',
-   'Foodservice Sales Manager', 'Sales', 5, NOW(), NOW()),
+  (13, 'Sarah Johnson', 'Sarah', 'Johnson', '[{"email": "sjohnson@tattooedchef.com", "type": "Work"}]', '[{"phone": "323-555-1701", "type": "Work"}]',
+   'Founder', 'Executive', 7, 5, NOW(), NOW()),
+  (14, 'Brian Martinez', 'Brian', 'Martinez', '[{"email": "bmartinez@tattooedchef.com", "type": "Work"}]', '[{"phone": "323-555-1702", "type": "Work"}]',
+   'Foodservice Director', 'Sales', 7, 5, NOW(), NOW()),
 
   -- Litehouse (Org 8) - Dale manages
-  (15, 'Chris Anderson', 'Chris', 'Anderson', '[{"email": "canderson@litehousefoods.com", "type": "Work"}]', '[{"phone": "208-555-1801", "type": "Work"}]',
-   'VP Sales', 'Sales', 5, NOW(), NOW()),
-  (16, 'Amy Roberts', 'Amy', 'Roberts', '[{"email": "aroberts@litehousefoods.com", "type": "Work"}]', '[{"phone": "208-555-1802", "type": "Work"}]',
-   'National Account Manager', 'Sales', 5, NOW(), NOW()),
+  (15, 'Robert Lewis', 'Robert', 'Lewis', '[{"email": "rlewis@litehousefoods.com", "type": "Work"}]', '[{"phone": "208-555-1801", "type": "Work"}]',
+   'VP Sales', 'Sales', 8, 5, NOW(), NOW()),
+  (16, 'Karen White', 'Karen', 'White', '[{"email": "kwhite@litehousefoods.com", "type": "Work"}]', '[{"phone": "208-555-1802", "type": "Work"}]',
+   'National Accounts', 'Sales', 8, 5, NOW(), NOW()),
 
   -- Custom Culinary (Org 9) - Sue manages
-  (17, 'Robert James', 'Robert', 'James', '[{"email": "rjames@customculinary.com", "type": "Work"}]', '[{"phone": "630-555-1901", "type": "Work"}]',
-   'President', 'Executive', 6, NOW(), NOW()),
-  (18, 'Karen White', 'Karen', 'White', '[{"email": "kwhite@customculinary.com", "type": "Work"}]', '[{"phone": "630-555-1902", "type": "Work"}]',
-   'Director of Sales', 'Sales', 6, NOW(), NOW()),
+  (17, 'James Wilson', 'James', 'Wilson', '[{"email": "jwilson@customculinary.com", "type": "Work"}]', '[{"phone": "708-555-1901", "type": "Work"}]',
+   'President', 'Executive', 9, 6, NOW(), NOW()),
+  (18, 'Nancy Brown', 'Nancy', 'Brown', '[{"email": "nbrown@customculinary.com", "type": "Work"}]', '[{"phone": "708-555-1902", "type": "Work"}]',
+   'Sales Team Leader', 'Sales', 9, 6, NOW(), NOW()),
 
   -- ========================================
   -- DISTRIBUTOR CONTACTS (20 total, 2 per org)
   -- ========================================
 
   -- Sysco (Org 10) - Brent manages
-  (19, 'Mike Reynolds', 'Mike', 'Reynolds', '[{"email": "mike.reynolds@sysco.com", "type": "Work"}]', '[{"phone": "281-555-2101", "type": "Work"}]',
-   'Category Manager - Frozen', 'Purchasing', 2, NOW(), NOW()),
-  (20, 'Susan Clark', 'Susan', 'Clark', '[{"email": "susan.clark@sysco.com", "type": "Work"}]', '[{"phone": "281-555-2102", "type": "Work"}]',
-   'Senior Buyer', 'Purchasing', 2, NOW(), NOW()),
+  (19, 'Michael Roberts', 'Michael', 'Roberts', '[{"email": "mroberts@sysco.com", "type": "Work"}]', '[{"phone": "281-555-2001", "type": "Work"}]',
+   'Category Manager', 'Purchasing', 10, 2, NOW(), NOW()),
+  (20, 'Susan Clark', 'Susan', 'Clark', '[{"email": "sclark@sysco.com", "type": "Work"}]', '[{"phone": "281-555-2002", "type": "Work"}]',
+   'Senior Buyer', 'Purchasing', 10, 2, NOW(), NOW()),
 
   -- US Foods (Org 11) - Brent manages
-  (21, 'James Patterson', 'James', 'Patterson', '[{"email": "jpatterson@usfoods.com", "type": "Work"}]', '[{"phone": "847-555-2201", "type": "Work"}]',
-   'VP Merchandising', 'Purchasing', 2, NOW(), NOW()),
-  (22, 'Linda Martinez', 'Linda', 'Martinez', '[{"email": "lmartinez@usfoods.com", "type": "Work"}]', '[{"phone": "847-555-2202", "type": "Work"}]',
-   'Category Manager - Dairy', 'Purchasing', 2, NOW(), NOW()),
+  (21, 'Richard Davis', 'Richard', 'Davis', '[{"email": "rdavis@usfoods.com", "type": "Work"}]', '[{"phone": "847-555-2101", "type": "Work"}]',
+   'VP Merchandising', 'Purchasing', 11, 2, NOW(), NOW()),
+  (22, 'Patricia Moore', 'Patricia', 'Moore', '[{"email": "pmoore@usfoods.com", "type": "Work"}]', '[{"phone": "847-555-2102", "type": "Work"}]',
+   'Category Specialist', 'Purchasing', 11, 2, NOW(), NOW()),
 
-  -- PFG (Org 12) - Michelle manages
-  (23, 'Steve Johnson', 'Steve', 'Johnson', '[{"email": "sjohnson@pfgc.com", "type": "Work"}]', '[{"phone": "804-555-2301", "type": "Work"}]',
-   'Director of Purchasing', 'Purchasing', 3, NOW(), NOW()),
-  (24, 'Mary Davis', 'Mary', 'Davis', '[{"email": "mdavis@pfgc.com", "type": "Work"}]', '[{"phone": "804-555-2302", "type": "Work"}]',
-   'Buyer - Center of Plate', 'Purchasing', 3, NOW(), NOW()),
+  -- GFS (Org 12) - Michelle manages
+  (23, 'Steven Anderson', 'Steven', 'Anderson', '[{"email": "sanderson@gfs.com", "type": "Work"}]', '[{"phone": "616-555-2201", "type": "Work"}]',
+   'Purchasing Director', 'Purchasing', 12, 3, NOW(), NOW()),
+  (24, 'Linda Thomas', 'Linda', 'Thomas', '[{"email": "lthomas@gfs.com", "type": "Work"}]', '[{"phone": "616-555-2202", "type": "Work"}]',
+   'Buyer', 'Purchasing', 12, 3, NOW(), NOW()),
 
   -- GFS (Org 13) - Michelle manages
-  (25, 'Paul Gordon', 'Paul', 'Gordon', '[{"email": "pgordon@gfs.com", "type": "Work"}]', '[{"phone": "616-555-2401", "type": "Work"}]',
-   'VP Procurement', 'Purchasing', 3, NOW(), NOW()),
-  (26, 'Rachel Brown', 'Rachel', 'Brown', '[{"email": "rbrown@gfs.com", "type": "Work"}]', '[{"phone": "616-555-2402", "type": "Work"}]',
-   'Senior Merchandiser', 'Purchasing', 3, NOW(), NOW()),
+  (25, 'William Taylor', 'William', 'Taylor', '[{"email": "wtaylor@gfs.com", "type": "Work"}]', '[{"phone": "616-555-2301", "type": "Work"}]',
+   'VP Procurement', 'Purchasing', 13, 3, NOW(), NOW()),
+  (26, 'Barbara Jackson', 'Barbara', 'Jackson', '[{"email": "bjackson@gfs.com", "type": "Work"}]', '[{"phone": "616-555-2302", "type": "Work"}]',
+   'Merchandising Manager', 'Purchasing', 13, 3, NOW(), NOW()),
 
-  -- Shamrock (Org 14) - Gary manages
-  (27, 'Dan Shamrock', 'Dan', 'Shamrock', '[{"email": "dshamrock@shamrockfoods.com", "type": "Work"}]', '[{"phone": "602-555-2501", "type": "Work"}]',
-   'President', 'Executive', 4, NOW(), NOW()),
-  (28, 'Teresa Lopez', 'Teresa', 'Lopez', '[{"email": "tlopez@shamrockfoods.com", "type": "Work"}]', '[{"phone": "602-555-2502", "type": "Work"}]',
-   'Category Manager', 'Purchasing', 4, NOW(), NOW()),
+  -- Shamrock Foods (Org 14) - Gary manages
+  (27, 'Daniel Martin', 'Daniel', 'Martin', '[{"email": "dmartin@shamrockfoods.com", "type": "Work"}]', '[{"phone": "602-555-2401", "type": "Work"}]',
+   'President', 'Executive', 14, 4, NOW(), NOW()),
+  (28, 'Jennifer Garcia', 'Jennifer', 'Garcia', '[{"email": "jgarcia@shamrockfoods.com", "type": "Work"}]', '[{"phone": "602-555-2402", "type": "Work"}]',
+   'Buyer', 'Purchasing', 14, 4, NOW(), NOW()),
 
   -- Ben E. Keith (Org 15) - Gary manages
-  (29, 'Robert Keith', 'Robert', 'Keith', '[{"email": "rkeith@benekeith.com", "type": "Work"}]', '[{"phone": "817-555-2601", "type": "Work"}]',
-   'VP Sales', 'Sales', 4, NOW(), NOW()),
-  (30, 'Amanda Torres', 'Amanda', 'Torres', '[{"email": "atorres@benekeith.com", "type": "Work"}]', '[{"phone": "817-555-2602", "type": "Work"}]',
-   'Purchasing Manager', 'Purchasing', 4, NOW(), NOW()),
+  (29, 'Christopher Lee', 'Christopher', 'Lee', '[{"email": "clee@benekeith.com", "type": "Work"}]', '[{"phone": "817-555-2501", "type": "Work"}]',
+   'VP Sales', 'Sales', 15, 4, NOW(), NOW()),
+  (30, 'Amanda Wilson', 'Amanda', 'Wilson', '[{"email": "awilson@benekeith.com", "type": "Work"}]', '[{"phone": "817-555-2502", "type": "Work"}]',
+   'Purchasing Manager', 'Purchasing', 15, 4, NOW(), NOW()),
 
   -- Reinhart (Org 16) - Dale manages
-  (31, 'Greg Reinhart', 'Greg', 'Reinhart', '[{"email": "greinhart@rfrsinc.com", "type": "Work"}]', '[{"phone": "715-555-2701", "type": "Work"}]',
-   'Director of Procurement', 'Purchasing', 5, NOW(), NOW()),
-  (32, 'Diane Foster', 'Diane', 'Foster', '[{"email": "dfoster@rfrsinc.com", "type": "Work"}]', '[{"phone": "715-555-2702", "type": "Work"}]',
-   'Buyer', 'Purchasing', 5, NOW(), NOW()),
+  (31, 'Matthew Harris', 'Matthew', 'Harris', '[{"email": "mharris@rfrsinc.com", "type": "Work"}]', '[{"phone": "630-555-2601", "type": "Work"}]',
+   'Procurement Director', 'Purchasing', 16, 5, NOW(), NOW()),
+  (32, 'Jessica Robinson', 'Jessica', 'Robinson', '[{"email": "jrobinson@rfrsinc.com", "type": "Work"}]', '[{"phone": "630-555-2602", "type": "Work"}]',
+   'Buyer', 'Purchasing', 16, 5, NOW(), NOW()),
 
-  -- Dot Foods (Org 17) - Dale manages
-  (33, 'Tracy Dot', 'Tracy', 'Dot', '[{"email": "tdot@dotfoods.com", "type": "Work"}]', '[{"phone": "217-555-2801", "type": "Work"}]',
-   'VP Vendor Relations', 'Purchasing', 5, NOW(), NOW()),
-  (34, 'Mark Stevens', 'Mark', 'Stevens', '[{"email": "mstevens@dotfoods.com", "type": "Work"}]', '[{"phone": "217-555-2802", "type": "Work"}]',
-   'Category Manager', 'Purchasing', 5, NOW(), NOW()),
+  -- PFG (Org 17) - Dale manages
+  (33, 'Andrew Clark', 'Andrew', 'Clark', '[{"email": "aclark@pfgc.com", "type": "Work"}]', '[{"phone": "804-555-2701", "type": "Work"}]',
+   'VP Vendor Relations', 'Purchasing', 17, 5, NOW(), NOW()),
+  (34, 'Michelle Lewis', 'Michelle', 'Lewis', '[{"email": "mlewis@pfgc.com", "type": "Work"}]', '[{"phone": "804-555-2702", "type": "Work"}]',
+   'Category Manager', 'Purchasing', 17, 5, NOW(), NOW()),
 
   -- European Imports (Org 18) - Sue manages
-  (35, 'Hans Mueller', 'Hans', 'Mueller', '[{"email": "hmueller@eiltd.com", "type": "Work"}]', '[{"phone": "312-555-2901", "type": "Work"}]',
-   'President', 'Executive', 6, NOW(), NOW()),
-  (36, 'Sofia Greco', 'Sofia', 'Greco', '[{"email": "sgreco@eiltd.com", "type": "Work"}]', '[{"phone": "312-555-2902", "type": "Work"}]',
-   'Buyer - Specialty Cheese', 'Purchasing', 6, NOW(), NOW()),
+  (35, 'Paul Scott', 'Paul', 'Scott', '[{"email": "pscott@europeanimports.com", "type": "Work"}]', '[{"phone": "312-555-2801", "type": "Work"}]',
+   'President', 'Executive', 18, 6, NOW(), NOW()),
+  (36, 'Rachel Young', 'Rachel', 'Young', '[{"email": "ryoung@europeanimports.com", "type": "Work"}]', '[{"phone": "312-555-2802", "type": "Work"}]',
+   'Specialty Buyer', 'Purchasing', 18, 6, NOW(), NOW()),
 
   -- Chefs Warehouse (Org 19) - Sue manages
-  (37, 'Christopher Pappas', 'Christopher', 'Pappas', '[{"email": "cpappas@chefswarehouse.com", "type": "Work"}]', '[{"phone": "718-555-3001", "type": "Work"}]',
-   'CEO', 'Executive', 6, NOW(), NOW()),
-  (38, 'Michelle Lane', 'Michelle', 'Lane', '[{"email": "mlane@chefswarehouse.com", "type": "Work"}]', '[{"phone": "718-555-3002", "type": "Work"}]',
-   'Director of Purchasing', 'Purchasing', 6, NOW(), NOW()),
+  (37, 'Kevin King', 'Kevin', 'King', '[{"email": "kking@chefswarehouse.com", "type": "Work"}]', '[{"phone": "203-555-2901", "type": "Work"}]',
+   'CEO', 'Executive', 19, 6, NOW(), NOW()),
+  (38, 'Laura Wright', 'Laura', 'Wright', '[{"email": "lwright@chefswarehouse.com", "type": "Work"}]', '[{"phone": "203-555-2902", "type": "Work"}]',
+   'Purchasing Director', 'Purchasing', 19, 6, NOW(), NOW()),
 
   -- ========================================
   -- CUSTOMER CONTACTS (42 total, 2-3 per org)
   -- ========================================
 
   -- Capital Grille (Org 20) - Brent manages
-  (39, 'Andrew Sterling', 'Andrew', 'Sterling', '[{"email": "asterling@capitalgrille.com", "type": "Work"}]', '[{"phone": "312-555-3101", "type": "Work"}]',
-   'Executive Chef', 'Culinary', 2, NOW(), NOW()),
-  (40, 'Patricia Mills', 'Patricia', 'Mills', '[{"email": "pmills@capitalgrille.com", "type": "Work"}]', '[{"phone": "312-555-3102", "type": "Work"}]',
-   'Purchasing Director', 'Purchasing', 2, NOW(), NOW()),
+  (39, 'Chef Marcus Sterling', 'Marcus', 'Sterling', '[{"email": "msterling@darden.com", "type": "Work"}]', '[{"phone": "312-555-3001", "type": "Work"}]',
+   'Executive Chef', 'Culinary', 20, 2, NOW(), NOW()),
+  (40, 'Victoria Hayes', 'Victoria', 'Hayes', '[{"email": "vhayes@darden.com", "type": "Work"}]', '[{"phone": "312-555-3002", "type": "Work"}]',
+   'Purchasing Director', 'Operations', 20, 2, NOW(), NOW()),
 
   -- Ruth''s Chris (Org 21) - Brent manages
-  (41, 'Chef William Hayes', 'William', 'Hayes', '[{"email": "whayes@ruthschris.com", "type": "Work"}]', '[{"phone": "504-555-3201", "type": "Work"}]',
-   'Corporate Executive Chef', 'Culinary', 2, NOW(), NOW()),
-  (42, 'Sharon Wood', 'Sharon', 'Wood', '[{"email": "swood@ruthschris.com", "type": "Work"}]', '[{"phone": "504-555-3202", "type": "Work"}]',
-   'VP Supply Chain', 'Operations', 2, NOW(), NOW()),
+  (41, 'Chef Anthony Romano', 'Anthony', 'Romano', '[{"email": "aromano@ruthschris.com", "type": "Work"}]', '[{"phone": "504-555-3101", "type": "Work"}]',
+   'Corporate Executive Chef', 'Culinary', 21, 2, NOW(), NOW()),
+  (42, 'Diana Mitchell', 'Diana', 'Mitchell', '[{"email": "dmitchell@ruthschris.com", "type": "Work"}]', '[{"phone": "504-555-3102", "type": "Work"}]',
+   'VP Supply Chain', 'Operations', 21, 2, NOW(), NOW()),
 
   -- Morton''s (Org 22) - Michelle manages
-  (43, 'Chef Antonio Russo', 'Antonio', 'Russo', '[{"email": "arusso@mortons.com", "type": "Work"}]', '[{"phone": "312-555-3301", "type": "Work"}]',
-   'Executive Chef', 'Culinary', 3, NOW(), NOW()),
-  (44, 'Barbara Chen', 'Barbara', 'Chen', '[{"email": "bchen@mortons.com", "type": "Work"}]', '[{"phone": "312-555-3302", "type": "Work"}]',
-   'Purchasing Manager', 'Purchasing', 3, NOW(), NOW()),
+  (43, 'Chef Robert Chen', 'Robert', 'Chen', '[{"email": "rchen@mortons.com", "type": "Work"}]', '[{"phone": "312-555-3201", "type": "Work"}]',
+   'Executive Chef', 'Culinary', 22, 3, NOW(), NOW()),
+  (44, 'Sandra Phillips', 'Sandra', 'Phillips', '[{"email": "sphillips@mortons.com", "type": "Work"}]', '[{"phone": "312-555-3202", "type": "Work"}]',
+   'Purchasing Manager', 'Operations', 22, 3, NOW(), NOW()),
 
   -- Chili''s (Org 23) - Michelle manages
-  (45, 'Kevin Brinker', 'Kevin', 'Brinker', '[{"email": "kbrinker@brinker.com", "type": "Work"}]', '[{"phone": "972-555-3401", "type": "Work"}]',
-   'VP Culinary Innovation', 'Culinary', 3, NOW(), NOW()),
-  (46, 'Nancy Wright', 'Nancy', 'Wright', '[{"email": "nwright@brinker.com", "type": "Work"}]', '[{"phone": "972-555-3402", "type": "Work"}]',
-   'Director of Procurement', 'Purchasing', 3, NOW(), NOW()),
+  (45, 'Chef Kevin Park', 'Kevin', 'Park', '[{"email": "kpark@brinker.com", "type": "Work"}]', '[{"phone": "972-555-3301", "type": "Work"}]',
+   'VP Culinary Innovation', 'Culinary', 23, 3, NOW(), NOW()),
+  (46, 'Mary Johnson', 'Mary', 'Johnson', '[{"email": "mjohnson@brinker.com", "type": "Work"}]', '[{"phone": "972-555-3302", "type": "Work"}]',
+   'Procurement Director', 'Operations', 23, 3, NOW(), NOW()),
 
   -- Applebee''s (Org 24) - Gary manages
-  (47, 'Chef Brian Palmer', 'Brian', 'Palmer', '[{"email": "bpalmer@applebees.com", "type": "Work"}]', '[{"phone": "913-555-3501", "type": "Work"}]',
-   'VP Menu Development', 'Culinary', 4, NOW(), NOW()),
-  (48, 'Christine Hall', 'Christine', 'Hall', '[{"email": "chall@applebees.com", "type": "Work"}]', '[{"phone": "913-555-3502", "type": "Work"}]',
-   'Senior Buyer', 'Purchasing', 4, NOW(), NOW()),
+  (47, 'Chef Jason Torres', 'Jason', 'Torres', '[{"email": "jtorres@dinebrands.com", "type": "Work"}]', '[{"phone": "913-555-3401", "type": "Work"}]',
+   'VP Menu Development', 'Culinary', 24, 4, NOW(), NOW()),
+  (48, 'Carol Anderson', 'Carol', 'Anderson', '[{"email": "canderson@dinebrands.com", "type": "Work"}]', '[{"phone": "913-555-3402", "type": "Work"}]',
+   'Senior Buyer', 'Operations', 24, 4, NOW(), NOW()),
 
   -- Buffalo Wild Wings (Org 25) - Gary manages
-  (49, 'Derek Wings', 'Derek', 'Wings', '[{"email": "dwings@buffalowildwings.com", "type": "Work"}]', '[{"phone": "612-555-3601", "type": "Work"}]',
-   'Director of Food Innovation', 'Culinary', 4, NOW(), NOW()),
-  (50, 'Laura Burke', 'Laura', 'Burke', '[{"email": "lburke@buffalowildwings.com", "type": "Work"}]', '[{"phone": "612-555-3602", "type": "Work"}]',
-   'Purchasing Manager', 'Purchasing', 4, NOW(), NOW()),
+  (49, 'Chef Tyler Reed', 'Tyler', 'Reed', '[{"email": "treed@inspirebrands.com", "type": "Work"}]', '[{"phone": "612-555-3501", "type": "Work"}]',
+   'Food Innovation Director', 'Culinary', 25, 4, NOW(), NOW()),
+  (50, 'Rebecca Moore', 'Rebecca', 'Moore', '[{"email": "rmoore@inspirebrands.com", "type": "Work"}]', '[{"phone": "612-555-3502", "type": "Work"}]',
+   'Purchasing Manager', 'Operations', 25, 4, NOW(), NOW()),
 
   -- Red Robin (Org 26) - Dale manages
-  (51, 'Chef Scott Peters', 'Scott', 'Peters', '[{"email": "speters@redrobin.com", "type": "Work"}]', '[{"phone": "303-555-3701", "type": "Work"}]',
-   'Corporate Chef', 'Culinary', 5, NOW(), NOW()),
-  (52, 'Kimberly Scott', 'Kimberly', 'Scott', '[{"email": "kscott@redrobin.com", "type": "Work"}]', '[{"phone": "303-555-3702", "type": "Work"}]',
-   'Supply Chain Manager', 'Operations', 5, NOW(), NOW()),
+  (51, 'Chef Amanda Foster', 'Amanda', 'Foster', '[{"email": "afoster@redrobin.com", "type": "Work"}]', '[{"phone": "303-555-3601", "type": "Work"}]',
+   'Corporate Chef', 'Culinary', 26, 5, NOW(), NOW()),
+  (52, 'Brian Taylor', 'Brian', 'Taylor', '[{"email": "btaylor@redrobin.com", "type": "Work"}]', '[{"phone": "303-555-3602", "type": "Work"}]',
+   'Supply Chain Manager', 'Operations', 26, 5, NOW(), NOW()),
 
   -- Panera (Org 27) - Dale manages
-  (53, 'Chef Dan Kish', 'Dan', 'Kish', '[{"email": "dkish@panerabread.com", "type": "Work"}]', '[{"phone": "314-555-3801", "type": "Work"}]',
-   'Head Baker', 'Culinary', 5, NOW(), NOW()),
-  (54, 'Rebecca Stone', 'Rebecca', 'Stone', '[{"email": "rstone@panerabread.com", "type": "Work"}]', '[{"phone": "314-555-3802", "type": "Work"}]',
-   'VP Procurement', 'Purchasing', 5, NOW(), NOW()),
+  (53, 'Chef Sarah Mitchell', 'Sarah', 'Mitchell', '[{"email": "smitchell@panerabread.com", "type": "Work"}]', '[{"phone": "314-555-3701", "type": "Work"}]',
+   'Head Baker', 'Culinary', 27, 5, NOW(), NOW()),
+  (54, 'David Clark', 'David', 'Clark', '[{"email": "dclark@panerabread.com", "type": "Work"}]', '[{"phone": "314-555-3702", "type": "Work"}]',
+   'VP Procurement', 'Operations', 27, 5, NOW(), NOW()),
 
   -- Chipotle (Org 28) - Sue manages
-  (55, 'Chef Nate Appleman', 'Nate', 'Appleman', '[{"email": "nappleman@chipotle.com", "type": "Work"}]', '[{"phone": "949-555-3901", "type": "Work"}]',
-   'VP Culinary', 'Culinary', 6, NOW(), NOW()),
-  (56, 'Jessica Rivera', 'Jessica', 'Rivera', '[{"email": "jrivera@chipotle.com", "type": "Work"}]', '[{"phone": "949-555-3902", "type": "Work"}]',
-   'Director of Supply', 'Operations', 6, NOW(), NOW()),
+  (55, 'Chef Maria Santos', 'Maria', 'Santos', '[{"email": "msantos@chipotle.com", "type": "Work"}]', '[{"phone": "949-555-3801", "type": "Work"}]',
+   'VP Culinary', 'Culinary', 28, 6, NOW(), NOW()),
+  (56, 'Thomas Brown', 'Thomas', 'Brown', '[{"email": "tbrown@chipotle.com", "type": "Work"}]', '[{"phone": "949-555-3802", "type": "Work"}]',
+   'Supply Director', 'Operations', 28, 6, NOW(), NOW()),
 
   -- Shake Shack (Org 29) - Sue manages
-  (57, 'Chef Mark Rosati', 'Mark', 'Rosati', '[{"email": "mrosati@shakeshack.com", "type": "Work"}]', '[{"phone": "212-555-4001", "type": "Work"}]',
-   'Culinary Director', 'Culinary', 6, NOW(), NOW()),
-  (58, 'Angela Morrison', 'Angela', 'Morrison', '[{"email": "amorrison@shakeshack.com", "type": "Work"}]', '[{"phone": "212-555-4002", "type": "Work"}]',
-   'Purchasing Manager', 'Purchasing', 6, NOW(), NOW()),
+  (57, 'Chef Daniel Kim', 'Daniel', 'Kim', '[{"email": "dkim@shakeshack.com", "type": "Work"}]', '[{"phone": "212-555-3901", "type": "Work"}]',
+   'Culinary Director', 'Culinary', 29, 6, NOW(), NOW()),
+  (58, 'Lisa White', 'Lisa', 'White', '[{"email": "lwhite@shakeshack.com", "type": "Work"}]', '[{"phone": "212-555-3902", "type": "Work"}]',
+   'Purchasing Manager', 'Operations', 29, 6, NOW(), NOW()),
 
   -- Marriott (Org 30) - Brent manages
-  (59, 'Chef Antoine Westermann', 'Antoine', 'Westermann', '[{"email": "awestermann@marriott.com", "type": "Work"}]', '[{"phone": "301-555-4101", "type": "Work"}]',
-   'VP Global Culinary', 'Culinary', 2, NOW(), NOW()),
-  (60, 'Dorothy Lane', 'Dorothy', 'Lane', '[{"email": "dlane@marriott.com", "type": "Work"}]', '[{"phone": "301-555-4102", "type": "Work"}]',
-   'Director of Procurement', 'Purchasing', 2, NOW(), NOW()),
-  (61, 'George Mason', 'George', 'Mason', '[{"email": "gmason@marriott.com", "type": "Work"}]', '[{"phone": "301-555-4103", "type": "Work"}]',
-   'Regional F&B Director', 'Operations', 2, NOW(), NOW()),
+  (59, 'Chef Pierre Dubois', 'Pierre', 'Dubois', '[{"email": "pdubois@marriott.com", "type": "Work"}]', '[{"phone": "301-555-4001", "type": "Work"}]',
+   'VP Global Culinary', 'Culinary', 30, 2, NOW(), NOW()),
+  (60, 'Jennifer Adams', 'Jennifer', 'Adams', '[{"email": "jadams2@marriott.com", "type": "Work"}]', '[{"phone": "301-555-4002", "type": "Work"}]',
+   'Procurement Director', 'Operations', 30, 2, NOW(), NOW()),
+  (61, 'Robert Williams', 'Robert', 'Williams', '[{"email": "rwilliams@marriott.com", "type": "Work"}]', '[{"phone": "301-555-4003", "type": "Work"}]',
+   'Regional F&B Director', 'Operations', 30, 2, NOW(), NOW()),
 
   -- Hilton (Org 31) - Michelle manages
-  (62, 'Chef Thomas Keller', 'Thomas', 'Keller', '[{"email": "tkeller@hilton.com", "type": "Work"}]', '[{"phone": "703-555-4201", "type": "Work"}]',
-   'Corporate Executive Chef', 'Culinary', 3, NOW(), NOW()),
-  (63, 'Margaret Hill', 'Margaret', 'Hill', '[{"email": "mhill@hilton.com", "type": "Work"}]', '[{"phone": "703-555-4202", "type": "Work"}]',
-   'VP Supply Chain', 'Operations', 3, NOW(), NOW()),
+  (62, 'Chef James Martin', 'James', 'Martin', '[{"email": "jmartin@hilton.com", "type": "Work"}]', '[{"phone": "703-555-4101", "type": "Work"}]',
+   'Corporate Executive Chef', 'Culinary', 31, 3, NOW(), NOW()),
+  (63, 'Susan Davis', 'Susan', 'Davis', '[{"email": "sdavis@hilton.com", "type": "Work"}]', '[{"phone": "703-555-4102", "type": "Work"}]',
+   'VP Supply Chain', 'Operations', 31, 3, NOW(), NOW()),
 
   -- Hyatt (Org 32) - Michelle manages
-  (64, 'Chef Peter Gordon', 'Peter', 'Gordon', '[{"email": "pgordon@hyatt.com", "type": "Work"}]', '[{"phone": "312-555-4301", "type": "Work"}]',
-   'VP F&B Operations', 'Culinary', 3, NOW(), NOW()),
-  (65, 'Sandra Newman', 'Sandra', 'Newman', '[{"email": "snewman@hyatt.com", "type": "Work"}]', '[{"phone": "312-555-4302", "type": "Work"}]',
-   'Purchasing Director', 'Purchasing', 3, NOW(), NOW()),
+  (64, 'Chef Michael Chang', 'Michael', 'Chang', '[{"email": "mchang@hyatt.com", "type": "Work"}]', '[{"phone": "312-555-4201", "type": "Work"}]',
+   'VP F&B Operations', 'Culinary', 32, 3, NOW(), NOW()),
+  (65, 'Patricia Lewis', 'Patricia', 'Lewis', '[{"email": "plewis@hyatt.com", "type": "Work"}]', '[{"phone": "312-555-4202", "type": "Work"}]',
+   'Purchasing Director', 'Operations', 32, 3, NOW(), NOW()),
 
   -- HCA Healthcare (Org 33) - Gary manages
-  (66, 'Dr. Richard Nutrition', 'Richard', 'Nutrition', '[{"email": "rnutrition@hcahealthcare.com", "type": "Work"}]', '[{"phone": "615-555-4401", "type": "Work"}]',
-   'Director of Nutrition Services', 'Clinical', 4, NOW(), NOW()),
-  (67, 'Betty Cook', 'Betty', 'Cook', '[{"email": "bcook@hcahealthcare.com", "type": "Work"}]', '[{"phone": "615-555-4402", "type": "Work"}]',
-   'Foodservice Manager', 'Operations', 4, NOW(), NOW()),
+  (66, 'Dr. Sarah Thompson', 'Sarah', 'Thompson', '[{"email": "sthompson@hcahealthcare.com", "type": "Work"}]', '[{"phone": "615-555-4301", "type": "Work"}]',
+   'Nutrition Services Director', 'Dietary', 33, 4, NOW(), NOW()),
+  (67, 'Mark Johnson', 'Mark', 'Johnson', '[{"email": "mjohnson2@hcahealthcare.com", "type": "Work"}]', '[{"phone": "615-555-4302", "type": "Work"}]',
+   'Foodservice Manager', 'Dietary', 33, 4, NOW(), NOW()),
 
   -- Ascension (Org 34) - Gary manages
-  (68, 'Sister Mary Frances', 'Mary', 'Frances', '[{"email": "mfrances@ascension.org", "type": "Work"}]', '[{"phone": "314-555-4501", "type": "Work"}]',
-   'VP Support Services', 'Operations', 4, NOW(), NOW()),
-  (69, 'Paul Dietary', 'Paul', 'Dietary', '[{"email": "pdietary@ascension.org", "type": "Work"}]', '[{"phone": "314-555-4502", "type": "Work"}]',
-   'Regional Nutrition Director', 'Clinical', 4, NOW(), NOW()),
+  (68, 'Dr. Emily Roberts', 'Emily', 'Roberts', '[{"email": "eroberts@ascension.org", "type": "Work"}]', '[{"phone": "314-555-4401", "type": "Work"}]',
+   'VP Support Services', 'Dietary', 34, 4, NOW(), NOW()),
+  (69, 'William Davis', 'William', 'Davis', '[{"email": "wdavis@ascension.org", "type": "Work"}]', '[{"phone": "314-555-4402", "type": "Work"}]',
+   'Regional Nutrition Director', 'Dietary', 34, 4, NOW(), NOW()),
 
   -- Aramark (Org 35) - Dale manages
-  (70, 'Chef Eric Martino', 'Eric', 'Martino', '[{"email": "emartino@aramark.com", "type": "Work"}]', '[{"phone": "215-555-4601", "type": "Work"}]',
-   'VP Culinary - Higher Ed', 'Culinary', 5, NOW(), NOW()),
-  (71, 'Janet Campus', 'Janet', 'Campus', '[{"email": "jcampus@aramark.com", "type": "Work"}]', '[{"phone": "215-555-4602", "type": "Work"}]',
-   'Director of Purchasing', 'Purchasing', 5, NOW(), NOW()),
+  (70, 'Chef Christopher Lee', 'Christopher', 'Lee', '[{"email": "clee2@aramark.com", "type": "Work"}]', '[{"phone": "215-555-4501", "type": "Work"}]',
+   'VP Culinary Higher Ed', 'Culinary', 35, 5, NOW(), NOW()),
+  (71, 'Nancy Wilson', 'Nancy', 'Wilson', '[{"email": "nwilson@aramark.com", "type": "Work"}]', '[{"phone": "215-555-4502", "type": "Work"}]',
+   'Purchasing Director', 'Operations', 35, 5, NOW(), NOW()),
 
   -- Sodexo (Org 36) - Dale manages
-  (72, 'Chef Philippe Bourguignon', 'Philippe', 'Bourguignon', '[{"email": "pbourguignon@sodexo.com", "type": "Work"}]', '[{"phone": "301-555-4701", "type": "Work"}]',
-   'Global Executive Chef', 'Culinary', 5, NOW(), NOW()),
-  (73, 'Catherine University', 'Catherine', 'University', '[{"email": "cuniversity@sodexo.com", "type": "Work"}]', '[{"phone": "301-555-4702", "type": "Work"}]',
-   'Campus Dining Director', 'Operations', 5, NOW(), NOW()),
+  (72, 'Chef Antoine Bernard', 'Antoine', 'Bernard', '[{"email": "abernard@sodexo.com", "type": "Work"}]', '[{"phone": "301-555-4601", "type": "Work"}]',
+   'Global Executive Chef', 'Culinary', 36, 5, NOW(), NOW()),
+  (73, 'Rachel Green', 'Rachel', 'Green', '[{"email": "rgreen@sodexo.com", "type": "Work"}]', '[{"phone": "301-555-4602", "type": "Work"}]',
+   'Campus Dining Director', 'Operations', 36, 5, NOW(), NOW()),
 
   -- Brookdale (Org 37) - Sue manages
-  (74, 'Chef William Senior', 'William', 'Senior', '[{"email": "wsenior@brookdale.com", "type": "Work"}]', '[{"phone": "615-555-4801", "type": "Work"}]',
-   'VP Culinary Services', 'Culinary', 6, NOW(), NOW()),
-  (75, 'Helen Care', 'Helen', 'Care', '[{"email": "hcare@brookdale.com", "type": "Work"}]', '[{"phone": "615-555-4802", "type": "Work"}]',
-   'Director of Dining', 'Operations', 6, NOW(), NOW()),
+  (74, 'Chef Richard Taylor', 'Richard', 'Taylor', '[{"email": "rtaylor@brookdale.com", "type": "Work"}]', '[{"phone": "615-555-4701", "type": "Work"}]',
+   'VP Culinary Services', 'Culinary', 37, 6, NOW(), NOW()),
+  (75, 'Karen Martinez', 'Karen', 'Martinez', '[{"email": "kmartinez@brookdale.com", "type": "Work"}]', '[{"phone": "615-555-4702", "type": "Work"}]',
+   'Dining Director', 'Operations', 37, 6, NOW(), NOW()),
 
-  -- Sunrise (Org 38) - Sue manages
-  (76, 'Chef David Wellness', 'David', 'Wellness', '[{"email": "dwellness@sunriseseniorliving.com", "type": "Work"}]', '[{"phone": "703-555-4901", "type": "Work"}]',
-   'Executive Chef', 'Culinary', 6, NOW(), NOW()),
-  (77, 'Gloria Living', 'Gloria', 'Living', '[{"email": "gliving@sunriseseniorliving.com", "type": "Work"}]', '[{"phone": "703-555-4902", "type": "Work"}]',
-   'Dining Services Manager', 'Operations', 6, NOW(), NOW()),
+  -- Sunrise Senior (Org 38) - Sue manages
+  (76, 'Chef Andrea Miller', 'Andrea', 'Miller', '[{"email": "amiller@sunriseseniorliving.com", "type": "Work"}]', '[{"phone": "703-555-4801", "type": "Work"}]',
+   'Executive Chef', 'Culinary', 38, 6, NOW(), NOW()),
+  (77, 'Steven Brown', 'Steven', 'Brown', '[{"email": "sbrown@sunriseseniorliving.com", "type": "Work"}]', '[{"phone": "703-555-4802", "type": "Work"}]',
+   'Dining Services Manager', 'Operations', 38, 6, NOW(), NOW()),
 
-  -- Levy (Org 39) - Brent manages
-  (78, 'Chef Larry Levy', 'Larry', 'Levy', '[{"email": "llevy@levyrestaurants.com", "type": "Work"}]', '[{"phone": "312-555-5001", "type": "Work"}]',
-   'Founder & Chairman', 'Executive', 2, NOW(), NOW()),
-  (79, 'Stadium Sam', 'Sam', 'Stadium', '[{"email": "sstadium@levyrestaurants.com", "type": "Work"}]', '[{"phone": "312-555-5002", "type": "Work"}]',
-   'VP Purchasing', 'Purchasing', 2, NOW(), NOW()),
-  (80, 'Arena Alice', 'Alice', 'Arena', '[{"email": "aarena@levyrestaurants.com", "type": "Work"}]', '[{"phone": "312-555-5003", "type": "Work"}]',
-   'Corporate Chef', 'Culinary', 2, NOW(), NOW());
+  -- Levy Restaurants (Org 39) - Brent manages
+  (78, 'Chef Larry Levy', 'Larry', 'Levy', '[{"email": "llevy@levyrestaurants.com", "type": "Work"}]', '[{"phone": "312-555-4901", "type": "Work"}]',
+   'Founder & Chairman', 'Executive', 39, 2, NOW(), NOW()),
+  (79, 'Michelle Adams', 'Michelle', 'Adams', '[{"email": "madams@levyrestaurants.com", "type": "Work"}]', '[{"phone": "312-555-4902", "type": "Work"}]',
+   'VP Purchasing', 'Operations', 39, 2, NOW(), NOW()),
+  (80, 'Chef David Park', 'David', 'Park', '[{"email": "dpark@levyrestaurants.com", "type": "Work"}]', '[{"phone": "312-555-4903", "type": "Work"}]',
+   'Corporate Chef', 'Culinary', 39, 2, NOW(), NOW());
 
 -- Reset sequence
 SELECT setval(pg_get_serial_sequence('contacts', 'id'), 80, true);
 -- ============================================================================
--- PART 9: CONTACT-ORGANIZATION LINKS (80 links)
--- ============================================================================
--- Links contacts to their organizations
--- Each contact gets one primary organization link
--- ============================================================================
-
-INSERT INTO "public"."contact_organizations" (
-  id, contact_id, organization_id, is_primary, is_primary_decision_maker,
-  relationship_start_date, notes, created_at, updated_at
-)
-VALUES
-  -- Principal contacts (1-18) → Principals (1-9)
-  (1, 1, 1, true, true, '2020-01-15', 'VP Sales - key decision maker', NOW(), NOW()),
-  (2, 2, 1, true, false, '2021-06-01', 'Account manager for Midwest region', NOW(), NOW()),
-  (3, 3, 2, true, true, '2019-03-10', 'CEO and founder', NOW(), NOW()),
-  (4, 4, 2, true, false, '2022-02-20', 'Handles national accounts', NOW(), NOW()),
-  (5, 5, 3, true, true, '2018-05-01', 'Owner - all decisions go through him', NOW(), NOW()),
-  (6, 6, 3, true, false, '2020-09-15', 'Primary sales contact', NOW(), NOW()),
-  (7, 7, 4, true, true, '2015-01-01', 'Company president', NOW(), NOW()),
-  (8, 8, 4, true, false, '2022-04-10', 'Regional sales coverage', NOW(), NOW()),
-  (9, 9, 5, true, true, '2017-08-20', 'US market lead', NOW(), NOW()),
-  (10, 10, 5, true, false, '2023-01-15', 'Account executive', NOW(), NOW()),
-  (11, 11, 6, true, true, '2016-11-01', 'Foodservice division head', NOW(), NOW()),
-  (12, 12, 6, true, false, '2021-07-20', 'Key accounts focus', NOW(), NOW()),
-  (13, 13, 7, true, true, '2017-01-01', 'Founder - brand visionary', NOW(), NOW()),
-  (14, 14, 7, true, false, '2022-03-15', 'Foodservice channel lead', NOW(), NOW()),
-  (15, 15, 8, true, true, '2014-06-01', 'VP Sales - pricing authority', NOW(), NOW()),
-  (16, 16, 8, true, false, '2020-11-10', 'National account focus', NOW(), NOW()),
-  (17, 17, 9, true, true, '2010-01-01', 'Company president', NOW(), NOW()),
-  (18, 18, 9, true, false, '2019-08-25', 'Sales team leader', NOW(), NOW()),
-
-  -- Distributor contacts (19-38) → Distributors (10-19)
-  (19, 19, 10, true, true, '2018-04-01', 'Category manager - key buyer', NOW(), NOW()),
-  (20, 20, 10, true, false, '2021-02-15', 'Senior buyer - supports category', NOW(), NOW()),
-  (21, 21, 11, true, true, '2017-09-10', 'VP level - strategic decisions', NOW(), NOW()),
-  (22, 22, 11, true, false, '2022-06-01', 'Category specialist', NOW(), NOW()),
-  (23, 23, 12, true, true, '2019-01-20', 'Purchasing director', NOW(), NOW()),
-  (24, 24, 12, true, false, '2021-11-05', 'Buyer for center of plate', NOW(), NOW()),
-  (25, 25, 13, true, true, '2016-03-15', 'VP level procurement', NOW(), NOW()),
-  (26, 26, 13, true, false, '2020-07-20', 'Merchandising role', NOW(), NOW()),
-  (27, 27, 14, true, true, '2015-01-01', 'Family ownership - president', NOW(), NOW()),
-  (28, 28, 14, true, false, '2022-08-10', 'Day-to-day buyer contact', NOW(), NOW()),
-  (29, 29, 15, true, true, '2018-05-01', 'VP Sales', NOW(), NOW()),
-  (30, 30, 15, true, false, '2021-03-25', 'Purchasing manager', NOW(), NOW()),
-  (31, 31, 16, true, true, '2019-07-15', 'Procurement director', NOW(), NOW()),
-  (32, 32, 16, true, false, '2023-02-01', 'Buyer', NOW(), NOW()),
-  (33, 33, 17, true, true, '2017-11-10', 'Vendor relations VP', NOW(), NOW()),
-  (34, 34, 17, true, false, '2020-06-20', 'Category manager', NOW(), NOW()),
-  (35, 35, 18, true, true, '2016-08-01', 'President of company', NOW(), NOW()),
-  (36, 36, 18, true, false, '2022-01-10', 'Specialty cheese buyer', NOW(), NOW()),
-  (37, 37, 19, true, true, '2018-02-15', 'CEO', NOW(), NOW()),
-  (38, 38, 19, true, false, '2021-09-05', 'Purchasing director', NOW(), NOW()),
-
-  -- Customer contacts (39-80) → Customers (20-39)
-  (39, 39, 20, true, true, '2019-05-01', 'Executive chef - menu decisions', NOW(), NOW()),
-  (40, 40, 20, true, false, '2021-08-15', 'Purchasing director', NOW(), NOW()),
-  (41, 41, 21, true, true, '2018-03-10', 'Corporate executive chef', NOW(), NOW()),
-  (42, 42, 21, true, false, '2020-12-01', 'Supply chain VP', NOW(), NOW()),
-  (43, 43, 22, true, true, '2019-11-20', 'Executive chef', NOW(), NOW()),
-  (44, 44, 22, true, false, '2022-04-15', 'Purchasing manager', NOW(), NOW()),
-  (45, 45, 23, true, true, '2017-07-01', 'VP culinary innovation', NOW(), NOW()),
-  (46, 46, 23, true, false, '2021-01-25', 'Procurement director', NOW(), NOW()),
-  (47, 47, 24, true, true, '2018-09-10', 'VP menu development', NOW(), NOW()),
-  (48, 48, 24, true, false, '2022-07-20', 'Senior buyer', NOW(), NOW()),
-  (49, 49, 25, true, true, '2019-04-15', 'Food innovation director', NOW(), NOW()),
-  (50, 50, 25, true, false, '2021-06-05', 'Purchasing manager', NOW(), NOW()),
-  (51, 51, 26, true, true, '2020-02-01', 'Corporate chef', NOW(), NOW()),
-  (52, 52, 26, true, false, '2022-10-10', 'Supply chain manager', NOW(), NOW()),
-  (53, 53, 27, true, true, '2017-12-15', 'Head baker', NOW(), NOW()),
-  (54, 54, 27, true, false, '2020-04-20', 'VP procurement', NOW(), NOW()),
-  (55, 55, 28, true, true, '2018-06-01', 'VP culinary', NOW(), NOW()),
-  (56, 56, 28, true, false, '2021-11-15', 'Supply director', NOW(), NOW()),
-  (57, 57, 29, true, true, '2019-08-10', 'Culinary director', NOW(), NOW()),
-  (58, 58, 29, true, false, '2022-03-25', 'Purchasing manager', NOW(), NOW()),
-  (59, 59, 30, true, true, '2016-01-15', 'VP global culinary', NOW(), NOW()),
-  (60, 60, 30, true, false, '2019-09-01', 'Procurement director', NOW(), NOW()),
-  (61, 61, 30, true, false, '2021-05-10', 'Regional F&B director', NOW(), NOW()),
-  (62, 62, 31, true, true, '2017-04-20', 'Corporate executive chef', NOW(), NOW()),
-  (63, 63, 31, true, false, '2020-10-05', 'VP supply chain', NOW(), NOW()),
-  (64, 64, 32, true, true, '2018-07-15', 'VP F&B operations', NOW(), NOW()),
-  (65, 65, 32, true, false, '2022-02-28', 'Purchasing director', NOW(), NOW()),
-  (66, 66, 33, true, true, '2019-03-01', 'Nutrition services director', NOW(), NOW()),
-  (67, 67, 33, true, false, '2021-07-10', 'Foodservice manager', NOW(), NOW()),
-  (68, 68, 34, true, true, '2017-10-15', 'VP support services', NOW(), NOW()),
-  (69, 69, 34, true, false, '2020-05-20', 'Regional nutrition director', NOW(), NOW()),
-  (70, 70, 35, true, true, '2018-01-10', 'VP culinary higher ed', NOW(), NOW()),
-  (71, 71, 35, true, false, '2021-08-05', 'Purchasing director', NOW(), NOW()),
-  (72, 72, 36, true, true, '2016-12-01', 'Global executive chef', NOW(), NOW()),
-  (73, 73, 36, true, false, '2020-03-15', 'Campus dining director', NOW(), NOW()),
-  (74, 74, 37, true, true, '2019-06-20', 'VP culinary services', NOW(), NOW()),
-  (75, 75, 37, true, false, '2022-01-25', 'Dining director', NOW(), NOW()),
-  (76, 76, 38, true, true, '2018-11-10', 'Executive chef', NOW(), NOW()),
-  (77, 77, 38, true, false, '2021-04-15', 'Dining services manager', NOW(), NOW()),
-  (78, 78, 39, true, true, '2015-06-01', 'Founder and chairman', NOW(), NOW()),
-  (79, 79, 39, true, false, '2020-09-10', 'VP purchasing', NOW(), NOW()),
-  (80, 80, 39, true, false, '2022-06-20', 'Corporate chef', NOW(), NOW());
-
--- Reset sequence
-SELECT setval(pg_get_serial_sequence('contact_organizations', 'id'), 80, true);
--- ============================================================================
--- PART 10: TAGS (10 tags) + CONTACT-TAG LINKS
+-- PART 10: TAGS (10 tags)
 -- ============================================================================
 -- Contact classification tags
--- Plus links to assign tags to various contacts
+-- Tags are assigned to contacts via contacts.tags bigint[] array
 -- ============================================================================
 
 INSERT INTO "public"."tags" (id, name, color, created_at, updated_at)
@@ -1096,70 +996,39 @@ VALUES
 SELECT setval(pg_get_serial_sequence('tags', 'id'), 10, true);
 
 -- ============================================================================
--- CONTACT-TAG LINKS
+-- ASSIGN TAGS TO CONTACTS VIA UPDATE
 -- ============================================================================
--- Assign tags to contacts based on their roles
+-- Tags are stored as bigint[] arrays in contacts.tags
 
-INSERT INTO "public"."contact_tags" (id, contact_id, tag_id, created_at)
-VALUES
-  -- Decision Makers (executives and VPs)
-  (1, 3, 1, NOW()),   -- Michael Chen (CEO)
-  (2, 5, 1, NOW()),   -- Raj Patel (Owner)
-  (3, 7, 1, NOW()),   -- Tom Harrison (President)
-  (4, 13, 1, NOW()),  -- Sam Galletti (Founder)
-  (5, 17, 1, NOW()),  -- Robert James (President)
-  (6, 27, 1, NOW()),  -- Dan Shamrock (President)
-  (7, 37, 1, NOW()),  -- Christopher Pappas (CEO)
-  (8, 78, 1, NOW()),  -- Larry Levy (Chairman)
+-- Decision Makers (executives and VPs) - tag_id = 1
+UPDATE "public"."contacts" SET tags = ARRAY[1]::bigint[] WHERE id IN (3, 5, 7, 13, 17, 27, 37, 78);
 
-  -- Champions (our advocates inside accounts)
-  (9, 1, 2, NOW()),   -- John McCrum
-  (10, 11, 2, NOW()), -- David Thompson
-  (11, 19, 2, NOW()), -- Mike Reynolds
-  (12, 39, 2, NOW()), -- Andrew Sterling
+-- Champions (our advocates inside accounts) - tag_id = 2
+UPDATE "public"."contacts" SET tags = ARRAY[2]::bigint[] WHERE id IN (1, 11, 19, 39);
 
-  -- Gatekeepers (control access)
-  (13, 20, 3, NOW()), -- Susan Clark
-  (14, 46, 3, NOW()), -- Nancy Wright
-  (15, 54, 3, NOW()), -- Rebecca Stone
+-- Gatekeepers (control access) - tag_id = 3
+UPDATE "public"."contacts" SET tags = ARRAY[3]::bigint[] WHERE id IN (20, 46, 54);
 
-  -- Influencers
-  (16, 45, 4, NOW()), -- Kevin Brinker
-  (17, 55, 4, NOW()), -- Chef Nate Appleman
-  (18, 72, 4, NOW()), -- Chef Philippe
+-- Influencers - tag_id = 4
+UPDATE "public"."contacts" SET tags = ARRAY[4]::bigint[] WHERE id IN (45, 55, 72);
 
-  -- Technical contacts
-  (19, 41, 5, NOW()), -- Chef William Hayes
-  (20, 43, 5, NOW()), -- Chef Antonio Russo
-  (21, 57, 5, NOW()), -- Chef Mark Rosati
+-- Technical contacts - tag_id = 5
+UPDATE "public"."contacts" SET tags = ARRAY[5]::bigint[] WHERE id IN (41, 43, 57);
 
-  -- Budget Holders
-  (22, 21, 6, NOW()), -- James Patterson (VP)
-  (23, 42, 6, NOW()), -- Sharon Wood (VP Supply Chain)
-  (24, 59, 6, NOW()), -- Chef Antoine (VP Global)
+-- Budget Holders - tag_id = 6
+UPDATE "public"."contacts" SET tags = ARRAY[6]::bigint[] WHERE id IN (21, 42, 59);
 
-  -- New Contacts (recently added)
-  (25, 10, 7, NOW()), -- Anna Bianchi
-  (26, 14, 7, NOW()), -- Nicole Green
-  (27, 32, 7, NOW()), -- Diane Foster
+-- New Contacts (recently added) - tag_id = 7
+UPDATE "public"."contacts" SET tags = ARRAY[7]::bigint[] WHERE id IN (10, 14, 32);
 
-  -- VIP (high-value relationships)
-  (28, 25, 8, NOW()), -- Paul Gordon (GFS VP)
-  (29, 33, 8, NOW()), -- Tracy Dot (Dot Foods VP)
-  (30, 62, 8, NOW()), -- Chef Thomas Keller
+-- VIP (high-value relationships) - tag_id = 8
+UPDATE "public"."contacts" SET tags = ARRAY[8]::bigint[] WHERE id IN (25, 33, 62);
 
-  -- Needs Follow-up
-  (31, 48, 9, NOW()), -- Christine Hall
-  (32, 52, 9, NOW()), -- Kimberly Scott
-  (33, 67, 9, NOW()), -- Betty Cook
+-- Needs Follow-up - tag_id = 9
+UPDATE "public"."contacts" SET tags = ARRAY[9]::bigint[] WHERE id IN (48, 52, 67);
 
-  -- Cold Leads
-  (34, 24, 10, NOW()), -- Mary Davis
-  (35, 30, 10, NOW()), -- Amanda Torres
-  (36, 44, 10, NOW()); -- Barbara Chen
-
--- Reset sequence
-SELECT setval(pg_get_serial_sequence('contact_tags', 'id'), 36, true);
+-- Cold Leads - tag_id = 10
+UPDATE "public"."contacts" SET tags = ARRAY[10]::bigint[] WHERE id IN (24, 30, 44);
 -- ============================================================================
 -- PART 11: OPPORTUNITIES (50 opportunities)
 -- ============================================================================
