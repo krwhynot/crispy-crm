@@ -96,9 +96,13 @@ All three must pass before launch:
 
 | Role | Access Level | Key Activities |
 |------|--------------|----------------|
-| **Admin** | Full access | User management, settings, all data, delete/archive |
+| **Admin** | Full access | User management, settings, all data, delete/archive, product catalog |
 | **Manager** | All reps' data | Pipeline review, reports, reassign opportunities |
-| **Rep** | Full visibility (all data) | Log activities, manage opportunities, view dashboards |
+| **Rep** | Full visibility (all data) | Log activities, manage opportunities, view dashboards, add products |
+
+**User Provisioning:** Admin-only. Only admins can create new user accounts.
+
+**User Deactivation:** When a rep leaves, manager must manually reassign their opportunities.
 
 ### 3.2 Visibility Model
 
@@ -145,6 +149,8 @@ Organization (type: principal) ──── (many) Products
 - Customer Organization
 - At least one Contact (**must belong to Customer Organization** - enforced by system)
 
+**Contact Requirement:** Contacts cannot exist without an organization. For trade show leads, create an "Unknown" or placeholder organization first, then add the contact.
+
 **Opportunity Naming:**
 - Auto-generated with override: System suggests name like "McCRUM - Sysco - Restaurant ABC - 001"
 - User can edit before saving
@@ -164,8 +170,11 @@ Organization (type: principal) ──── (many) Products
 | **Catalog Type** | Mixed - some principals have SKUs, others just product names |
 | **Fields** | Name, SKU, Category, Status, Description |
 | **Pricing** | **Post-MVP** - Volume/price tracking deferred |
+| **Permissions** | Any rep can add products to catalog (no approval required) |
 
 > **Note:** Value calculation (Volume × Price) is planned for post-MVP. Current MVP tracks opportunities without monetary values.
+
+**Deal Prioritization:** Use the existing Priority field (Low/Medium/High/Critical) for deal ranking. No deal size field in MVP.
 
 ### 4.4 Sample Tracking
 
@@ -390,7 +399,7 @@ Future implementation will include:
 - Owner (rep)
 - Date range
 - Status (Open/Won/Lost)
-- Campaign
+- Campaign (simple text tag on opportunity - not a separate entity)
 
 **Bulk Operations (MVP):**
 - Bulk stage updates
@@ -577,12 +586,12 @@ Track which distributors are authorized to carry which principals' products.
 | # | Feature | Status | Acceptance Criteria |
 |---|---------|--------|---------------------|
 | 1 | Principal-filtered views | ✅ Done | Filter all views by single principal |
-| 2 | Quick activity logging | ✅ Done | Log activity in <30 seconds |
+| 2 | Quick activity logging | 🔧 Partial | Log activity in <30 seconds. **Gap:** Only 5 of 13 activity types supported |
 | 3 | Export to Excel | ✅ Done | Generate principal reports in Excel |
-| 4 | Sample tracking | 🔧 Partial | Need `sample` activity type + status workflow |
+| 4 | Sample tracking | 🔧 TODO | Need `sample` activity type + full status workflow UI (Sent→Received→Feedback) |
 | 5 | Mobile/tablet access | ✅ Done | Full functionality on phone screens |
 | 6 | Opportunity list with filters | ✅ Done | Sort/filter by principal, stage, owner, date |
-| 7 | Dashboard with stale warnings | ✅ Done | Show deals with no activity in 14+ days |
+| 7 | Dashboard with stale warnings | 🔧 Partial | Stale warnings ✅. **Gap:** Missing Recent Activity Feed component |
 | 8 | CSV import (Contacts) | ✅ Done | Bulk upload contacts |
 | 9 | Soft delete + audit trail | ✅ Done | All changes tracked, nothing hard deleted |
 | 10 | Dark mode toggle | ✅ Done | User can switch between light/dark theme |
@@ -590,6 +599,9 @@ Track which distributors are authorized to carry which principals' products.
 | 12 | Win/Loss Reasons | 🔧 TODO | Required reasons when closing opportunity |
 | 13 | Duplicate Prevention | 🔧 TODO | Block duplicate opportunity creation |
 | 14 | Authorization Tracking | 🔧 TODO | Track distributor-principal authorizations |
+| 15 | Dashboard KPI fix | 🔧 TODO | Change "Total Pipeline Value" KPI to "Total Open Opportunities" count |
+| 16 | Recent Activity Feed | 🔧 TODO | Add activity feed component to dashboard showing recent team activities |
+| 17 | QuickLogForm all 13 types | 🔧 TODO | Add missing 8 activity types: sample, demo, proposal, trade_show, site_visit, contract_review, check_in, social |
 
 ### 15.2 Post-MVP Features
 
@@ -634,10 +646,18 @@ Track which distributors are authorized to carry which principals' products.
 | 14 | Global search | Entity-specific MVP, global post-MVP | 2025-11-27 |
 | 15 | Organization dual-role | Single type only (no dual roles) | 2025-11-27 |
 | 16 | QuickLogForm performance | Passes <30 second target (tested) | 2025-11-27 |
+| 17 | Campaign entity | Simple text tag on opportunity (not entity) | 2025-11-28 |
+| 18 | Deal prioritization | Priority field only (Low/Med/High/Critical) | 2025-11-28 |
+| 19 | Orphan contacts | Not allowed - require organization first | 2025-11-28 |
+| 20 | User provisioning | Admin-only account creation | 2025-11-28 |
+| 21 | Competitor tracking | Free text only (no entity) | 2025-11-28 |
+| 22 | Product catalog permissions | Any rep can add products | 2025-11-28 |
+| 23 | User deactivation | Manual reassignment by manager | 2025-11-28 |
+| 24 | Activity attachments | No attachments in MVP (text only) | 2025-11-28 |
 
 ### 16.3 Open Questions
 
-*No open questions - all clarified via Gemini 3 Pro deep analysis.*
+*No open questions - all clarified via Gemini 3 Pro + GPT 5.1 deep analysis.*
 
 ---
 
@@ -683,10 +703,12 @@ Track which distributors are authorized to carry which principals' products.
 **Loss Reasons:**
 - Price too high
 - No distributor authorization
-- Competitor relationship
+- Competitor relationship (competitor name in free-text notes)
 - Product not a fit
 - Timing/budget
 - Other (free text)
+
+**Competitor Tracking:** Free text only. No competitor entity in MVP. Mention competitor names in notes or "Other" loss reason field.
 
 ### B. Sample Feedback Options
 
@@ -744,9 +766,10 @@ Track which distributors are authorized to carry which principals' products.
 | 1.0 | 2025-11-27 | Initial PRD from questionnaire |
 | 1.1 | 2025-11-27 | Updated after codebase audit: aligned terminology, stages, activity types, required fields, Tasks/Notifications scope, deferred pricing/forecasting/PDF |
 | 1.2 | 2025-11-27 | Gemini 3 Pro deep analysis clarifications: Contact must belong to Customer Org, auto-generated opp naming with override, soft authorization warning, sample status manual+reminders, clear win/loss on reopen, full bulk operations, entity-specific search (global post-MVP), single org type only |
+| 1.3 | 2025-11-28 | GPT 5.1 deep analysis clarifications: Campaign as text tag (not entity), priority-only deal ranking, contacts require organization, admin-only user creation, any rep can add products, manual reassignment on user deactivation, competitors as free text, no attachments MVP |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-27 (v1.2 - Gemini 3 Pro deep analysis clarifications)*
+*Last updated: 2025-11-28 (v1.3 - GPT 5.1 deep analysis clarifications)*
