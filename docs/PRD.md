@@ -137,7 +137,7 @@ Organization (type: principal) ──── (many) Products
 
 ### 4.2 Opportunity Structure
 
-**Products per Opportunity:** Database supports multiple products; UI simplified to show primary product.
+**Products per Opportunity:** Database supports multiple products; UI shows primary product with indicator (e.g., "Fryer Oil + 2 more"). Click expands to show all products.
 
 **Links three parties:**
 - Principal Organization (whose product) - **Required**
@@ -205,18 +205,19 @@ Sent → Received → Feedback Given (positive/negative/pending/no_response)
 
 ### 5.1 Pipeline Stages
 
-**8 stages implemented:**
+**7 stages implemented:**
 
-| # | Value | Label | Description |
-|---|-------|-------|-------------|
-| 1 | `new_lead` | New Lead | Initial prospect identification |
-| 2 | `initial_outreach` | Initial Outreach | First contact and follow-up |
-| 3 | `sample_visit_offered` | Sample/Visit Offered | Product sampling and visit scheduling |
-| 4 | `awaiting_response` | Awaiting Response | Following up after sample delivery |
-| 5 | `feedback_logged` | Feedback Logged | Recording customer feedback |
-| 6 | `demo_scheduled` | Demo Scheduled | Planning product demonstrations |
-| 7 | `closed_won` | Closed - Won | Successful deal completion |
-| 8 | `closed_lost` | Closed - Lost | Lost opportunity |
+| # | Value | Label | Description | Visual Decay |
+|---|-------|-------|-------------|--------------|
+| 1 | `new_lead` | New Lead | Initial prospect identification | No |
+| 2 | `initial_outreach` | Initial Outreach | First contact and follow-up | No |
+| 3 | `sample_visit_offered` | Sample/Visit Offered | Product sampling and visit scheduling | **Yes** - Critical stage requiring follow-up |
+| 4 | `feedback_logged` | Feedback Logged | Recording customer feedback (gate stage) | No |
+| 5 | `demo_scheduled` | Demo Scheduled | Planning product demonstrations | No |
+| 6 | `closed_won` | Closed - Won | Successful deal completion | No |
+| 7 | `closed_lost` | Closed - Lost | Lost opportunity | No |
+
+> **Note:** `awaiting_response` stage removed (v1.9) - consolidated with `sample_visit_offered` which now includes visual decay indicators to surface deals needing follow-up.
 
 ### 5.2 Stage Probabilities
 
@@ -293,17 +294,54 @@ Sent → Received → Feedback Given (positive/negative/pending/no_response)
 - Timestamp
 - Duration (optional)
 
+**Activity Auto-Cascade (v1.9):**
+
+When logging an activity on an Opportunity, the system automatically links the activity to the Opportunity's primary Contact.
+
+| User Logs On | Auto-Linked To | Rationale |
+|--------------|----------------|-----------|
+| Opportunity | Primary Contact | Contact relationship builds over time |
+| Contact | — | Direct contact activity, no cascade |
+| Organization | — | Org-level activity, no cascade |
+
+**Business Rules:**
+- Primary contact = first contact associated with opportunity
+- Auto-cascade is silent (no confirmation dialog)
+- Activity appears in both Opportunity and Contact timelines
+- Contact can be changed manually after logging if needed
+
 ### 6.3 Stale Deal Detection
 
-**Definition:** No activity logged in **14 days**
+**Definition:** Per-stage thresholds with visual decay indicators
+
+**Per-Stage Stale Thresholds:**
+
+| Stage | Stale Threshold | Rationale |
+|-------|-----------------|-----------|
+| `new_lead` | 7 days | New leads need quick follow-up |
+| `initial_outreach` | 14 days | Standard engagement cycle |
+| `sample_visit_offered` | 14 days | **Critical** - Visual decay applies here |
+| `feedback_logged` | 21 days | Allow time for evaluation |
+| `demo_scheduled` | 14 days | Standard engagement cycle |
+| `closed_won` / `closed_lost` | N/A | Closed deals don't go stale |
+
+**Visual Decay Indicators (v1.9):**
+
+For `sample_visit_offered` stage (where deals often stall waiting for customer feedback):
+
+| Days Since Activity | Visual Indicator | Border Color |
+|--------------------|------------------|--------------|
+| 0-7 days | Green border | Fresh/Active |
+| 8-14 days | Yellow border | Needs attention |
+| 14+ days | Red border | Stale/At risk |
 
 **Implementation:** Database view calculates `momentum` field:
 - `increasing` - Activity in last 7 days
 - `steady` - Activity 8-14 days ago
 - `decreasing` - Activity declining
-- `stale` - No activity in 14+ days
+- `stale` - No activity past stage threshold
 
-**Display:** Highlighted on dashboard and opportunity lists
+**Display:** Highlighted on dashboard and opportunity lists with color-coded borders
 
 ---
 
@@ -480,10 +518,27 @@ Future implementation will include:
 
 **Key Components:**
 - Pipeline summary by principal with momentum indicators
-- Stale deal warnings (14+ days no activity)
+- Stale deal warnings (per-stage thresholds with visual decay)
 - Tasks panel (time-bucketed: Overdue → Today → Tomorrow)
 - Quick activity logging FAB (Floating Action Button)
 - Recent activity feed
+- **My Performance widget (v1.9)**
+
+**My Performance Widget:**
+
+Personal performance snapshot showing current user's metrics:
+
+| Metric | Display | Time Period |
+|--------|---------|-------------|
+| Activities This Week | Count + trend arrow | Current week |
+| Deals Moved Forward | Stage progressions | Current week |
+| Tasks Completed | Count | Current week |
+| Open Opportunities | Active deal count | Current |
+
+**Design:**
+- Compact card in dashboard sidebar
+- Green/red trend indicators vs. previous week
+- Click-through to detailed personal report
 
 ### 9.3 Responsive Design
 
@@ -494,6 +549,28 @@ Future implementation will include:
 | Phone (320-767px) | **Full functionality** (required) |
 
 **Approach:** Desktop-first design with full mobile support
+
+**Mobile Quick Actions (v1.9):**
+
+Field reps need fast, one-tap access to common activities. The mobile interface shows 6 optimized quick action buttons:
+
+| Quick Action | Activity Type | Rationale |
+|--------------|---------------|-----------|
+| Log Check-In | `check_in` | Quick "I was here" marker |
+| Log Sample Drop | `sample` | Sample delivery in field |
+| Log Call | `call` | Phone conversation |
+| Log Meeting/Visit | `meeting` / `site_visit` | In-person engagement |
+| Quick Note | `note` | Fast text capture |
+| Complete Task | Task completion | Mark tasks done on-the-go |
+
+**Desktop-Only Activity Types (accessible via full form):**
+- `email` - Typically logged at desk
+- `demo` - Scheduled, not impromptu
+- `proposal` - Document-heavy
+- `trade_show` - Event context
+- `contract_review` - Complex activity
+- `social` - Less common
+- `follow_up` - Can use Quick Note instead
 
 ### 9.4 Theme
 
@@ -527,10 +604,36 @@ All operations require internet connection.
 
 ### 10.4 Duplicate Prevention
 
-**Duplicate Detection:**
-- Check for existing opportunity with same Principal + Distributor + Customer + Product combination
-- **Block creation** if exact match exists
-- Show link to existing opportunity
+**Hybrid Duplicate Detection (v1.9):**
+
+Two-tier approach balancing data quality with user flexibility:
+
+| Match Type | Behavior | User Action |
+|------------|----------|-------------|
+| **Exact Match** | Hard block | Must use existing opportunity |
+| **Fuzzy Match** | Soft warning | Can proceed with confirmation |
+
+**Exact Match Definition:**
+- Same Principal + Same Customer + Same Product (if specified)
+- Case-insensitive comparison
+- **Hard block** - Cannot create duplicate
+
+**Fuzzy Match Definition:**
+- Similar customer name (Levenshtein distance ≤ 3)
+- Same Principal + Different product
+- **Soft warning** - Shows potential duplicates, allows creation
+
+**Implementation:**
+```
+ON opportunity.create:
+  IF exact_match_exists:
+    BLOCK with link to existing opportunity
+  ELSE IF fuzzy_match_found:
+    WARN "Similar opportunity exists: [link]"
+    ALLOW creation with confirmation
+  ELSE:
+    CREATE normally
+```
 
 ---
 
@@ -588,10 +691,59 @@ In-app notification system implemented:
 | In-App Dropdown | Bell icon with unread count |
 | Mark as Read | Individual and bulk mark as read |
 
-### 12.3 Future Notifications
+### 12.3 Daily Email Digest (v1.9)
 
-- Email alerts for key events
+**Delivery:** 7:00 AM local time via Supabase Edge Function (cron)
+
+**Scope:** Tasks + Stale Deals (per user decision)
+
+**Email Content Structure:**
+
+```
+Subject: Your Daily CRM Digest - [Date]
+
+🚨 RED ALERT: Overdue Tasks
+   - [Task 1] - Due [X days ago]
+   - [Task 2] - Due [X days ago]
+
+📅 TODAY: Tasks Due Today
+   - [Task 3] - [Opportunity Name]
+   - [Task 4] - [Contact Name]
+
+⚠️ AT RISK: Deals Needing Attention
+   - [Opportunity] in "Sample Offered" - 16 days since activity
+   - [Opportunity] in "New Lead" - 9 days since activity
+
+[View Dashboard →]
+```
+
+**Configuration:**
+- Per-user opt-in/opt-out in user settings
+- Default: Enabled for all users
+- Skip empty digests (no email if nothing to report)
+
+### 12.4 Task Completion Follow-Up Prompt (v1.9)
+
+When a user marks a task complete, prompt for follow-up:
+
+**Flow:**
+```
+[Mark Complete] → Modal: "Create follow-up task?"
+                   [Yes - Opens task form pre-filled]
+                   [No - Close and complete]
+```
+
+**Pre-filled Fields:**
+- Related entity (same as completed task)
+- Assigned to (current user)
+- Due date (empty - user must set)
+
+**Design:** Non-blocking modal, can dismiss with Escape or click outside
+
+### 12.5 Future Notifications
+
 - Push notifications (mobile)
+- Real-time WebSocket notifications (post-MVP)
 
 ---
 
@@ -708,6 +860,15 @@ ELSE:
 | 22 | ProductList create buttons | 🔧 TODO | Add CreateButton to TopToolbar + FloatingCreateButton (match ContactList UX) |
 | 23 | Remove F&B fields from Product UI | 🔧 TODO | Remove certifications, allergens, ingredients, nutritional_info, marketing_description from ProductCertificationsTab |
 | 24 | Remove DataQualityTab | 🔧 TODO | Delete DataQualityTab.tsx and related DB artifacts (duplicate_stats view, contact_duplicates view, merge_duplicate_contacts RPC) per Decision #32 |
+| 25 | Per-stage stale thresholds | 🔧 TODO | Implement variable stale thresholds per stage (7d new_lead, 14d outreach, 21d feedback) with visual decay indicators |
+| 26 | Visual decay indicators | 🔧 TODO | Add green/yellow/red border colors for `sample_visit_offered` stage based on days since activity |
+| 27 | Activity auto-cascade | 🔧 TODO | Auto-link opportunity activities to primary contact |
+| 28 | My Performance widget | 🔧 TODO | Add personal metrics widget to dashboard (activities, deals moved, tasks completed) |
+| 29 | Mobile quick actions | 🔧 TODO | Implement 6-button mobile quick action bar (Check-In, Sample Drop, Call, Meeting, Note, Complete Task) |
+| 30 | Hybrid duplicate prevention | 🔧 TODO | Hard block exact matches, soft warn fuzzy matches with confirmation |
+| 31 | Daily email digest | 🔧 TODO | 7 AM cron via Supabase Edge Function with overdue tasks + stale deals |
+| 32 | Task follow-up prompt | 🔧 TODO | Modal prompt on task completion asking to create follow-up task |
+| 33 | Pipeline stage migration | 🔧 TODO | Migrate from 8 to 7 stages (remove `awaiting_response`, update existing data) |
 
 ### 15.2 Post-MVP Features
 
@@ -738,7 +899,7 @@ ELSE:
 
 | # | Question | Decision | Date |
 |---|----------|----------|------|
-| 1 | Pipeline stages | Use implemented 8 stages | 2025-11-27 |
+| 1 | Pipeline stages | Reduced to 7 stages (removed `awaiting_response`) | 2025-11-28 |
 | 2 | Activity types | Keep all 13 types (add sample) | 2025-11-27 |
 | 3 | Required fields | Principal + Customer + Contact | 2025-11-27 |
 | 4 | Products per opp | Multi in DB, simplified UI | 2025-11-27 |
@@ -785,10 +946,22 @@ ELSE:
 | 45 | Campaign Activity Tab | Document in PRD. Tab exists and provides campaign-tagged activity tracking | 2025-11-28 |
 | 46 | Overview Dashboard charts | Document all 4 charts in PRD: Pipeline, Activity Trend, Top Principals, Rep Performance | 2025-11-28 |
 | 47 | Global Filter System | Document in PRD. GlobalFilterContext provides persistent filter state across report tabs | 2025-11-28 |
+| 48 | Pipeline stage reduction | Remove `awaiting_response` stage. Consolidate with `sample_visit_offered` + visual decay | 2025-11-28 |
+| 49 | Per-stage stale thresholds | Implement variable thresholds (7d/14d/21d) instead of universal 14-day | 2025-11-28 |
+| 50 | Visual decay indicators | Green/yellow/red borders for `sample_visit_offered` stage | 2025-11-28 |
+| 51 | Activity auto-cascade | Auto-link opportunity activities to primary contact | 2025-11-28 |
+| 52 | Product display hybrid | Show "Primary + X more" with expandable detail | 2025-11-28 |
+| 53 | My Performance widget | Personal metrics widget on dashboard | 2025-11-28 |
+| 54 | Mobile quick actions | 6-button mobile bar (Check-In, Sample, Call, Meeting, Note, Task) | 2025-11-28 |
+| 55 | Hybrid duplicate prevention | Hard block exact, soft warn fuzzy | 2025-11-28 |
+| 56 | Daily email digest | 7 AM cron with tasks + stale deals (not closing soon) | 2025-11-28 |
+| 57 | Task follow-up prompt | Modal on task completion to create follow-up | 2025-11-28 |
+| 58 | Feedback stage distinct | Keep `feedback_logged` as gate stage (not merged with sample) | 2025-11-28 |
+| 59 | Check-in mobile priority | Move `check_in` to mobile quick actions (field use case) | 2025-11-28 |
 
 ### 16.3 Open Questions
 
-*No open questions - all clarified via Gemini 3 Pro + GPT 5.1 deep analysis + Claude audit.*
+*No open questions - all clarified via Gemini 3 Pro + GPT 5.1 deep analysis + Claude audit + industry best practices review (Perplexity research).*
 
 ---
 
@@ -970,9 +1143,10 @@ Organizations can be classified into business segments for filtering and reporti
 | 1.6 | 2025-11-28 | Organization audit (Claude): Documented Organization Priority (A/B/C/D in Appendix D.1), Parent Hierarchy (D.2), Segments (D.3). Expanded Section 13 with dual-level authorization architecture. Moved Org CSV Import to Post-MVP. Added bulk reassignment (#20) and authorization UI (#21) to MVP. Updated blocker count 11→13. Added resolved questions #33-39 |
 | 1.7 | 2025-11-28 | Product audit (Claude): Added ProductList create buttons (#22), F&B field removal (#23). Documented distributor_id field purpose for product-level authorization. Updated blocker count 13→15. Added resolved questions #40-42 |
 | 1.8 | 2025-11-28 | Reports audit (Claude): Comprehensive Section 8 rewrite documenting Overview Dashboard (4 charts, 3 KPIs), Campaign Activity tab, Global Filter System with localStorage persistence. Moved Won/Lost Analysis to Post-MVP (depends on #12). Added DataQualityTab removal (#24). Updated blocker count 15→16. Added resolved questions #43-47 |
+| 1.9 | 2025-11-28 | **Industry best practices review (Perplexity research):** Reduced pipeline from 8→7 stages (removed `awaiting_response`). Added per-stage stale thresholds (7d/14d/21d). Visual decay indicators (green/yellow/red borders) for `sample_visit_offered` stage. Activity auto-cascade to primary contact. "My Performance" dashboard widget. Mobile quick actions (6 buttons). Hybrid duplicate prevention (hard block exact, soft warn fuzzy). Daily email digest at 7 AM (tasks + stale deals). Task completion follow-up prompt. Updated product display to hybrid "Primary + X more". Added 9 new MVP features (#25-33). Added resolved questions #48-59. Updated MVP blocker count 16→25. |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-28 (v1.8 - Reports page audit findings)*
+*Last updated: 2025-11-28 (v1.9 - Industry best practices review)*
