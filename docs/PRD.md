@@ -1,11 +1,11 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.12
+**Version:** 1.13
 **Last Updated:** 2025-11-28
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
-> **Changelog v1.12:** Contact Feature Matrix audit - Validated Contact resource against PRD with industry best practices research (Salesforce, HubSpot via Perplexity). Confirmed single-org model for contacts (contact_organizations junction deprecated). Added MVP features #42-43 (Remove Contact Files tab, Simplify Contact-Org UI). Added resolved questions #77-78. Updated MVP blocker count 33→35. See audit: docs/audits/contact-feature-matrix.md
+> **Changelog v1.13:** Organization Feature Matrix audit - Validated Organization resource against PRD with industry best practices research (Salesforce Accounts, HubSpot Companies via Perplexity). Decisions: (1) Add email field to Organization UI (industry alignment), (2) Keep 2-level hierarchy limit (sufficient for franchises), (3) Change duplicate name validation to soft warning (HubSpot-style), (4) Implement Authorization Tab (#21) and Bulk Reassignment (#20) in parallel. Added MVP features #44-45 (Organization email field, soft duplicate warning). Added resolved questions #79-80. Updated MVP blocker count 35→37. See audit: docs/audits/organization-feature-matrix.md
 
 ---
 
@@ -987,8 +987,8 @@ ELSE:
 | 9 | Soft delete + audit trail | ✅ Done | All changes tracked, nothing hard deleted |
 | 10 | Dark mode toggle | ✅ Done | User can switch between light/dark theme |
 | 11 | Tasks & Notifications | ✅ Done | Full task management with reminders |
-| 12 | Win/Loss Reasons | 🔧 TODO | Required reasons when closing opportunity |
-| 13 | Duplicate Prevention | 🔧 TODO | Block duplicate opportunity creation |
+| 12 | Win/Loss Reasons | 🔧 TODO | Required reasons when closing opportunity. **See #47 for implementation detail** |
+| 13 | Duplicate Prevention | 🔧 TODO | Block duplicate opportunity creation. **See #30 for hybrid approach detail** |
 | 14 | Authorization Tracking | 🔧 TODO | Track distributor-principal authorizations |
 | 15 | Dashboard KPI fix | 🔧 TODO | Change "Total Pipeline Value" KPI to "Total Open Opportunities" count |
 | 16 | Recent Activity Feed | 🔧 TODO | Add activity feed component to dashboard showing recent team activities |
@@ -1019,6 +1019,12 @@ ELSE:
 | 41 | Pipeline stage tooltips | 🔧 TODO | Add tooltip help text mapping MFB 7-phase process to pipeline stages (see Section 7.4) |
 | 42 | Remove Contact Files tab | 🔧 TODO | Remove Files tab from ContactSlideOver (no attachments in MVP per Decision #24) |
 | 43 | Simplify Contact-Org UI | 🔧 TODO | Remove multi-org UI remnants. Contacts use single organization_id field (contact_organizations junction deprecated) |
+| 44 | Add Organization email field | 🔧 TODO | Add email TextInput to OrganizationDetailsTab. Industry standard (Salesforce/HubSpot). Field exists in schema/export |
+| 45 | Soft duplicate org warning | 🔧 TODO | Change duplicate organization name validation from hard block to soft warning (HubSpot-style). Supports franchises with same brand name |
+| 46 | Opportunity stage migration (8→7) | 🔧 TODO | Remove `awaiting_response` from stageConstants.ts. Create DB migration to update existing records to `sample_visit_offered`. Update Zod enum. See audit: docs/audits/opportunity-feature-matrix.md |
+| 47 | Win/Loss Reasons UI (MVP #12 detail) | 🔧 TODO | Add modal on stage change to `closed_won`/`closed_lost` requiring reason selection. Add `win_reason`/`loss_reason` fields to Zod schema. Block save without reason. Industry standard (Salesforce/HubSpot require reasons) |
+| 48 | Opportunity bulk delete | 🔧 TODO | Add bulk soft delete option to BulkActionsToolbar.tsx (Archive selected). PRD #13 specifies full bulk ops |
+| 49 | Contact from Customer Org validation | 🔧 TODO | Enforce that selected contacts belong to Customer Organization. Show warning if contact is from different org (Section 4.2 requirement) |
 
 ### 15.2 Post-MVP Features
 
@@ -1129,6 +1135,14 @@ ELSE:
 | 76 | Weekly Focus widget | Add "One Thing" widget to dashboard for weekly goal setting | 2025-11-28 |
 | 77 | Contact-Organization model | Single organization per contact only. Simplified from multi-org (contact_organizations junction table deprecated). See audit: docs/audits/contact-feature-matrix.md | 2025-11-28 |
 | 78 | Contact Files tab | Remove Files tab from ContactSlideOver. Aligns with Decision #24 (no attachments in MVP) | 2025-11-28 |
+| 79 | Organization email field | Add email field to Organization UI. Aligns with industry standard (Salesforce Accounts, HubSpot Companies). Field exists in schema/export but missing from forms. See audit: docs/audits/organization-feature-matrix.md | 2025-11-28 |
+| 80 | Organization duplicate name validation | Change from hard block to soft warning (HubSpot-style). Supports franchises with same brand name. Warning displays but creation allowed with confirmation | 2025-11-28 |
+| 81 | Opportunity stage count | Migrate from 8 to 7 stages. Remove `awaiting_response` (PRD v1.9 decision). Industry standard is 5-7 stages (Salesforce, HubSpot). See audit: docs/audits/opportunity-feature-matrix.md | 2025-11-28 |
+| 82 | Win/Loss Reasons priority | MVP Blocker - High Priority. Salesforce/HubSpot require reasons on close. Critical for sales analysis and identifying win/loss patterns | 2025-11-28 |
+| 83 | Stale detection approach | Per-stage thresholds (7d new_lead, 14d outreach/sample, 21d feedback). Industry uses stage-specific SLAs. 32% deal velocity improvement per DemandFarm research | 2025-11-28 |
+| 84 | Duplicate prevention approach | Hybrid: hard block exact matches (Principal+Customer+Product), soft warn fuzzy name matches (Levenshtein ≤3). Industry best practice from both Salesforce and HubSpot | 2025-11-28 |
+| 85 | Opportunity bulk delete | Add to BulkActionsToolbar. PRD #13 specifies full bulk operations (stage, owner, delete). Currently missing delete option | 2025-11-28 |
+| 86 | Contact-Customer Org constraint | Enforce that opportunity contacts belong to Customer Organization. PRD Section 4.2 requirement. Show warning for mismatched orgs | 2025-11-28 |
 
 ### 16.3 Open Questions
 
@@ -1158,21 +1172,23 @@ ELSE:
 
 ### 17.4 MVP Blocker Risk
 
-**Risk:** 35 features still need implementation (updated per Contact Feature Matrix audit 2025-11-28)
+**Risk:** 41 features still need implementation (updated per Opportunity Feature Matrix audit 2025-11-28)
 
 **Mitigation:** Prioritize in order:
 1. **Contact enforcement** (Critical): Enforce organization requirement - blocks orphan contacts
 2. **Pipeline migration** (Critical): Migrate from 8→7 stages, update existing `awaiting_response` records
-3. **Dashboard gaps** (Quick wins): KPI fix, Recent Activity Feed, QuickLogForm 13 types, My Performance widget
-4. **Stale detection** (Medium): Per-stage thresholds, visual decay indicators
-5. **Contact filters** (Medium): Add organization filter to ContactListFilter
-6. **Sample tracking** (Medium): Full workflow UI with status + feedback
-7. **Organization features** (Medium): Bulk owner reassignment, Authorization UI tab
-8. **Product UX** (Quick win): Add create buttons to ProductList, remove F&B fields from UI
-9. **Mobile UX** (Medium): 6-button mobile quick actions
-10. **Business logic** (Complex): Win/Loss UI, Hybrid Duplicate Prevention, Authorization Tracking, Activity auto-cascade
-11. **Notifications** (Medium): Daily email digest (Supabase Edge Function), Task follow-up prompt
-12. **Cleanup** (Low): Remove DataQualityTab + unused contact_duplicates DB artifacts
+3. **Win/Loss Reasons** (Critical): MVP Blocker - required for sales analysis (industry standard)
+4. **Dashboard gaps** (Quick wins): KPI fix, Recent Activity Feed, QuickLogForm 13 types, My Performance widget
+5. **Stale detection** (Medium): Per-stage thresholds, visual decay indicators
+6. **Contact filters** (Medium): Add organization filter to ContactListFilter
+7. **Sample tracking** (Medium): Full workflow UI with status + feedback
+8. **Organization features** (Medium): Bulk owner reassignment, Authorization UI tab, email field, soft duplicate warning
+9. **Opportunity features** (Medium): Bulk delete, Contact-Customer Org validation
+10. **Product UX** (Quick win): Add create buttons to ProductList, remove F&B fields from UI
+11. **Mobile UX** (Medium): 6-button mobile quick actions
+12. **Business logic** (Complex): Hybrid Duplicate Prevention, Authorization Tracking, Activity auto-cascade
+13. **Notifications** (Medium): Daily email digest (Supabase Edge Function), Task follow-up prompt
+14. **Cleanup** (Low): Remove DataQualityTab + unused contact_duplicates DB artifacts
 
 ---
 
@@ -1355,9 +1371,11 @@ Organizations can be classified into business segments for filtering and reporti
 | 1.10 | 2025-11-28 | **UI/UX clarity audit:** Fixed critical KPI conflict - "Total Pipeline Value" → "Open Opportunities" (no $ in MVP per Decision #5). Added Section 9.2.1-9.2.4 documenting KPI cards, pipeline tooltips, snooze popover, tasks panel scope. Added 5 new MVP features (#34-38): Fix KPI card, pipeline tooltips, Next Action dead link fix, task snooze popover, stale deals KPI. Added resolved questions #60-65. Updated MVP blocker count 25→30. |
 | 1.11 | 2025-11-28 | **Business Playbook integration:** Incorporated key operational information from MFB Business Playbook to make PRD self-contained. Added Section 2.3.1 (Principal→Account Manager seed data assignments), Section 7.4 (MFB 7-phase sales process mapping to pipeline stages), Section 9.2.5 (Weekly Focus "One Thing" widget). Expanded Appendix D.3 with 8 Playbook target categories (Major Broadline, GPO, University, etc.). Documented anchor account convention (Priority A + #anchor tag), principal parameters storage (Notes field). Added 3 new MVP features (#39-41): Weekly Focus widget, segment expansion, pipeline stage tooltips. Deferred Territory Management and Commission Tracking to Post-MVP. Added resolved questions #66-76. Updated MVP blocker count 30→33. |
 | 1.12 | 2025-11-28 | **Contact Feature Matrix audit:** Validated Contact resource against PRD requirements with industry best practices research (Salesforce, HubSpot via Perplexity). Key decisions: (1) Enforce single-org model for contacts - deprecated contact_organizations junction table, (2) Remove Files tab from ContactSlideOver per Decision #24. Added 2 new MVP features (#42-43): Remove Contact Files tab, Simplify Contact-Org UI. Added 2 resolved questions (#77-78). Updated MVP blocker count 33→35. See: docs/audits/contact-feature-matrix.md |
+| 1.13 | 2025-11-28 | **Organization Feature Matrix audit:** Validated Organization resource against PRD requirements with industry best practices research (Salesforce Accounts, HubSpot Companies via Perplexity). Key decisions: (1) Add email field to Organization UI - industry standard alignment, (2) Keep 2-level hierarchy limit - sufficient for franchises/branches, (3) Change duplicate name validation to soft warning (HubSpot-style) - supports franchises, (4) Implement Authorization Tab (#21) and Bulk Reassignment (#20) in parallel. Added 2 new MVP features (#44-45): Organization email field, soft duplicate warning. Added 2 resolved questions (#79-80). Updated MVP blocker count 35→37. See: docs/audits/organization-feature-matrix.md |
+| 1.14 | 2025-11-28 | **Opportunity Feature Matrix audit:** Validated Opportunity resource against PRD requirements with industry best practices research (Salesforce Opportunity Stages, HubSpot Deal Pipeline via Perplexity/WebSearch). Key decisions: (1) Migrate from 8→7 stages (remove `awaiting_response` per PRD v1.9), (2) Win/Loss Reasons is MVP Blocker - High Priority (industry standard), (3) Per-stage stale thresholds (7d/14d/21d) instead of global 14d, (4) Hybrid duplicate prevention (hard block exact, soft warn fuzzy). Added 4 new MVP features (#46-49): Stage migration, Win/Loss UI detail, Bulk delete, Contact-Customer Org validation. Added 6 resolved questions (#81-86). Updated MVP blocker count 37→41. See: docs/audits/opportunity-feature-matrix.md |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-28 (v1.12 - Contact Feature Matrix audit)*
+*Last updated: 2025-11-28 (v1.14 - Opportunity Feature Matrix audit)*
