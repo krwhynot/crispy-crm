@@ -7,6 +7,7 @@ import { AsideSection } from "@/components/ui";
 import { Target } from "lucide-react";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";
+import { getOpportunityStageLabel } from "../../opportunities/constants/stageConstants";
 
 interface Opportunity {
   id: Identifier;
@@ -150,11 +151,14 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
 }
 
 function StageBadge({ stage }: { stage: string }) {
+  // Map PRD's 8 official stages to Badge variants
   const stageColors: Record<string, "default" | "secondary" | "destructive" | "outline"> = {
-    lead: "outline",
-    qualified: "secondary",
-    proposal: "default",
-    negotiation: "default",
+    new_lead: "outline",
+    initial_outreach: "secondary",
+    sample_visit_offered: "secondary",
+    awaiting_response: "outline",
+    feedback_logged: "secondary",
+    demo_scheduled: "default",
     closed_won: "default",
     closed_lost: "destructive",
   };
@@ -163,10 +167,7 @@ function StageBadge({ stage }: { stage: string }) {
 
   return (
     <Badge variant={variant} className="text-xs">
-      {stage
-        .split("_")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ")}
+      {getOpportunityStageLabel(stage)}
     </Badge>
   );
 }
