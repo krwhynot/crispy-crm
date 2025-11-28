@@ -28,7 +28,6 @@ export const defaultOpportunityStages = [
   { value: "new_lead", label: "New Lead" },
   { value: "initial_outreach", label: "Initial Outreach" },
   { value: "sample_visit_offered", label: "Sample Visit Offered" },
-  { value: "awaiting_response", label: "Awaiting Response" },
   { value: "feedback_logged", label: "Feedback Logged" },
   { value: "demo_scheduled", label: "Demo Scheduled" },
   { value: "closed_won", label: "Closed Won" },

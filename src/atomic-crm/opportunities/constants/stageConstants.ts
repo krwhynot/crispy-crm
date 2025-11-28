@@ -15,7 +15,6 @@ export type OpportunityStageValue =
   | "new_lead"
   | "initial_outreach"
   | "sample_visit_offered"
-  | "awaiting_response"
   | "feedback_logged"
   | "demo_scheduled"
   | "closed_won"
@@ -42,13 +41,6 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
     color: "var(--warning-subtle)",
     description: "Product sampling and visit scheduling",
     elevation: 2, // Medium - active opportunity
-  },
-  {
-    value: "awaiting_response",
-    label: "Awaiting Response",
-    color: "var(--tag-purple-bg)",
-    description: "Following up after sample delivery",
-    elevation: 1, // Subtle - waiting state
   },
   {
     value: "feedback_logged",

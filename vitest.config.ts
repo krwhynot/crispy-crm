@@ -14,7 +14,7 @@ export default defineConfig({
       VITE_SUPABASE_ANON_KEY: "test-anon-key",
       OPPORTUNITY_DEFAULT_STAGE: "new_lead",
       OPPORTUNITY_PIPELINE_STAGES:
-        "new_lead,initial_outreach,sample_visit_offered,awaiting_response,feedback_logged,demo_scheduled,closed_won,closed_lost",
+        "new_lead,initial_outreach,sample_visit_offered,feedback_logged,demo_scheduled,closed_won,closed_lost",
     },
     coverage: {
       provider: "v8",
