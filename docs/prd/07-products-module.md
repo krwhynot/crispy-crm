@@ -1,5 +1,7 @@
 ---
-**Part of:** Atomic CRM Product Requirements Document
+> **⚠️ SUPERSEDED**: See `../PRD.md` v1.18 for current requirements. Note: No pricing/volume tracking in MVP per Decision #5.
+
+**Part of:** Crispy-CRM Product Requirements Document (v1.5 - ARCHIVED)
 **Feature Module:** Products Module
 **Category:** Features
 

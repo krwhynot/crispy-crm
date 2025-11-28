@@ -1,5 +1,7 @@
 ---
-**Part of:** Atomic CRM Product Requirements Document
+> **⚠️ SUPERSEDED**: See `../PRD.md` v1.18 Section 9.6 (Reports Module) for current requirements - 4 KPIs, per-stage stale thresholds.
+
+**Part of:** Crispy-CRM Product Requirements Document (v1.5 - ARCHIVED)
 **Feature Module:** Reports (MVP - 2 Reports Only)
 **Category:** Features
 

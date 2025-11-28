@@ -1,5 +1,7 @@
 ---
-**Part of:** Atomic CRM Product Requirements Document
+> **⚠️ SUPERSEDED**: See `../PRD.md` v1.18 Section 4 (Data Model) for current requirements.
+
+**Part of:** Crispy-CRM Product Requirements Document (v1.5 - ARCHIVED)
 **Document:** Data Architecture
 **Category:** Foundation
 

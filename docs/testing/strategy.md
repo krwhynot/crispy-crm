@@ -1,8 +1,10 @@
 # Testing Strategy
 
+> **PRD Reference:** See `../PRD.md` v1.18 Section 10 (Technical Requirements) for testing coverage targets.
+
 ## Overview
 
-Atomic CRM uses a multi-layer testing approach optimized for a pre-launch CRM with Supabase backend, iPad-first UI, and business workflow complexity.
+Crispy-CRM (Atomic CRM) uses a multi-layer testing approach optimized for a pre-launch CRM with Supabase backend, iPad-first UI, and business workflow complexity.
 
 **Philosophy:** Fast feedback, business-critical coverage, and practical test maintenance for a small team.
 

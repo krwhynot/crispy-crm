@@ -1,5 +1,7 @@
 ---
-**Part of:** Atomic CRM Product Requirements Document
+> **⚠️ SUPERSEDED**: See `../PRD.md` v1.18 Section 7 (Pipeline Management) for current requirements. Key change: 7 stages (not 8).
+
+**Part of:** Crispy-CRM Product Requirements Document (v1.5 - ARCHIVED)
 **Feature Module:** Opportunities Module ⭐ PRINCIPAL TRACKING (MOST IMPORTANT FEATURE)
 **Category:** Features
 
