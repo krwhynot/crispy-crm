@@ -1,7 +1,7 @@
 -- ============================================================================
 -- CRISPY-CRM SEED DATA
 -- Generated: 2025-11-28
--- Version: 2.0 (Minimal - ~500 records)
+-- Version: 2.1 (Enhanced with Audit Recommendations)
 -- ============================================================================
 --
 -- Contents:
@@ -9,14 +9,34 @@
 --   - 9 Principals (manufacturers)
 --   - 10 Distributors
 --   - 20 Customers (operators/restaurants)
---   - ~80 Contacts (2-3 per org)
+--   - ~80 Contacts (2-4 per org, 6 with MULTI-TAGS)
 --   - 36 Products (4 per principal)
---   - 50 Opportunities (even stage distribution)
---   - 150 Activities (all 13 types)
+--   - 55 Opportunities (7 per stage + 5 EDGE CASES)
+--   - 150 Activities (all 12 types)
 --   - 40 Tasks (including overdue)
 --   - 75 Notes
 --   - 10 Tags
 --   - 28 Segments
+--
+-- PERSONAS (for testing):
+--   - Brent (id=2): POWER USER - 25+ organizations
+--   - Admin (id=1): NEW REP - 0 organizations (empty state testing)
+--   - Others: Standard 5-8 orgs each
+--
+-- EDGE CASES (opportunities 51-55):
+--   - #51: STALE (45+ days no activity)
+--   - #52: $0 VALUE (pilot/trial)
+--   - #53: NULL DISTRIBUTOR (direct sale)
+--   - #54: ANCIENT (6 months old, still new_lead)
+--   - #55: FAST CLOSE (7-day cycle)
+--
+-- MULTI-TAG CONTACTS (for filtering/UI tests):
+--   - Contact 3: Decision Maker + Budget Holder + VIP
+--   - Contact 39: Champion + Decision Maker
+--   - Contact 78: Decision Maker + Influencer + Technical
+--   - Contact 40: Champion + Needs Follow-up
+--   - Contact 60: Budget Holder + VIP
+--   - Contact 70: Technical + Influencer
 --
 -- Test credentials:
 --   Admin: admin@test.com / password123
@@ -456,7 +476,12 @@ INSERT INTO "public"."organizations" (
   notes, created_at, updated_at
 )
 VALUES
-  -- Fine Dining (3)
+  -- ============================================================================
+  -- POWER USER PERSONA: Brent (sales_id=2) manages 15 customers
+  -- This tests UI rendering, pagination, and performance with heavy load
+  -- ============================================================================
+
+  -- Fine Dining (3) - ALL to Brent for Power User testing
   (20, 'The Capital Grille', 'customer', '11111111-0000-0000-0000-000000000001',
    '312-555-3001', 'manager@capitalgrille.com', 'https://thecapitalgrille.com',
    '633 N Saint Clair Street', 'Chicago', 'IL', '60611', 2,
@@ -471,55 +496,55 @@ VALUES
 
   (22, 'Morton''s The Steakhouse', 'customer', '11111111-0000-0000-0000-000000000001',
    '312-555-3003', 'gm@mortons.com', 'https://mortons.com',
-   '65 E Wacker Place', 'Chicago', 'IL', '60601', 3,
+   '65 E Wacker Place', 'Chicago', 'IL', '60601', 2,
    'Landry''s owned steakhouse. Premium cuts and classic sides.',
    NOW(), NOW()),
 
-  -- Casual Dining (4)
+  -- Casual Dining (4) - Most to Brent
   (23, 'Chili''s Grill & Bar', 'customer', '11111111-0000-0000-0000-000000000002',
    '972-555-3004', 'procurement@brinker.com', 'https://chilis.com',
-   '6820 LBJ Freeway', 'Dallas', 'TX', '75240', 3,
+   '6820 LBJ Freeway', 'Dallas', 'TX', '75240', 2,
    'Brinker International casual dining. High volume, value-focused.',
    NOW(), NOW()),
 
   (24, 'Applebee''s', 'customer', '11111111-0000-0000-0000-000000000002',
    '913-555-3005', 'vendors@applebees.com', 'https://applebees.com',
-   '8140 Ward Parkway', 'Kansas City', 'MO', '64114', 4,
+   '8140 Ward Parkway', 'Kansas City', 'MO', '64114', 2,
    'Dine Brands casual dining. Neighborhood bar and grill concept.',
    NOW(), NOW()),
 
   (25, 'Buffalo Wild Wings', 'customer', '11111111-0000-0000-0000-000000000002',
    '612-555-3006', 'purchasing@buffalowildwings.com', 'https://buffalowildwings.com',
-   '5500 Wayzata Blvd', 'Minneapolis', 'MN', '55416', 4,
+   '5500 Wayzata Blvd', 'Minneapolis', 'MN', '55416', 2,
    'Sports bar concept. High sauce and wing volume.',
    NOW(), NOW()),
 
   (26, 'Red Robin', 'customer', '11111111-0000-0000-0000-000000000002',
    '303-555-3007', 'foodsupply@redrobin.com', 'https://redrobin.com',
-   '6312 S Fiddlers Green Circle', 'Greenwood Village', 'CO', '80111', 5,
+   '6312 S Fiddlers Green Circle', 'Greenwood Village', 'CO', '80111', 3,
    'Gourmet burger casual dining. Bottomless fries concept.',
    NOW(), NOW()),
 
-  -- Fast Casual (3)
+  -- Fast Casual (3) - Most to Brent
   (27, 'Panera Bread', 'customer', '11111111-0000-0000-0000-000000000003',
    '314-555-3008', 'suppliers@panerabread.com', 'https://panerabread.com',
-   '3630 S Geyer Road', 'St. Louis', 'MO', '63127', 5,
+   '3630 S Geyer Road', 'St. Louis', 'MO', '63127', 2,
    'JAB Holdings bakery-cafe chain. Clean ingredients focus.',
    NOW(), NOW()),
 
   (28, 'Chipotle Mexican Grill', 'customer', '11111111-0000-0000-0000-000000000003',
    '949-555-3009', 'purchasing@chipotle.com', 'https://chipotle.com',
-   '610 Newport Center Drive', 'Newport Beach', 'CA', '92660', 6,
+   '610 Newport Center Drive', 'Newport Beach', 'CA', '92660', 2,
    'Fast casual Mexican. Food with Integrity sourcing program.',
    NOW(), NOW()),
 
   (29, 'Shake Shack', 'customer', '11111111-0000-0000-0000-000000000003',
    '212-555-3010', 'supply@shakeshack.com', 'https://shakeshack.com',
-   '225 Varick Street', 'New York', 'NY', '10014', 6,
+   '225 Varick Street', 'New York', 'NY', '10014', 3,
    'Premium fast casual burgers. 100% Angus beef, no hormones.',
    NOW(), NOW()),
 
-  -- Hotels (3)
+  -- Hotels (3) - Most to Brent
   (30, 'Marriott International', 'customer', '11111111-0000-0000-0000-000000000007',
    '301-555-3011', 'foodprocurement@marriott.com', 'https://marriott.com',
    '10400 Fernwood Road', 'Bethesda', 'MD', '20817', 2,
@@ -528,20 +553,20 @@ VALUES
 
   (31, 'Hilton Hotels', 'customer', '11111111-0000-0000-0000-000000000007',
    '703-555-3012', 'purchasing@hilton.com', 'https://hilton.com',
-   '7930 Jones Branch Drive', 'McLean', 'VA', '22102', 3,
+   '7930 Jones Branch Drive', 'McLean', 'VA', '22102', 2,
    'Global hotel chain. Convention and banquet focus.',
    NOW(), NOW()),
 
   (32, 'Hyatt Hotels', 'customer', '11111111-0000-0000-0000-000000000007',
    '312-555-3013', 'foodsourcing@hyatt.com', 'https://hyatt.com',
-   '150 N Riverside Plaza', 'Chicago', 'IL', '60606', 3,
+   '150 N Riverside Plaza', 'Chicago', 'IL', '60606', 2,
    'Upscale hotel chain. Strong restaurant-in-hotel concepts.',
    NOW(), NOW()),
 
-  -- Healthcare (2)
+  -- Healthcare (2) - Split
   (33, 'HCA Healthcare', 'customer', '11111111-0000-0000-0000-000000000011',
    '615-555-3014', 'dietary@hcahealthcare.com', 'https://hcahealthcare.com',
-   'One Park Plaza', 'Nashville', 'TN', '37203', 4,
+   'One Park Plaza', 'Nashville', 'TN', '37203', 2,
    'Largest for-profit hospital chain. High volume dietary operations.',
    NOW(), NOW()),
 
@@ -551,10 +576,10 @@ VALUES
    'Largest non-profit hospital system. Faith-based healthcare.',
    NOW(), NOW()),
 
-  -- Education (2)
+  -- Education (2) - Split
   (35, 'Aramark Higher Education', 'customer', '11111111-0000-0000-0000-000000000013',
    '215-555-3016', 'education@aramark.com', 'https://aramark.com',
-   '2400 Market Street', 'Philadelphia', 'PA', '19103', 5,
+   '2400 Market Street', 'Philadelphia', 'PA', '19103', 2,
    'Contract foodservice for universities. Retail and residential dining.',
    NOW(), NOW()),
 
@@ -564,7 +589,7 @@ VALUES
    'Global contract foodservice. University and K-12 operations.',
    NOW(), NOW()),
 
-  -- Senior Living (2)
+  -- Senior Living (2) - Sue
   (37, 'Brookdale Senior Living', 'customer', '11111111-0000-0000-0000-000000000015',
    '615-555-3018', 'culinary@brookdale.com', 'https://brookdale.com',
    '111 Westwood Place', 'Brentwood', 'TN', '37027', 6,
@@ -577,7 +602,7 @@ VALUES
    'Premium senior living communities. Chef-prepared dining.',
    NOW(), NOW()),
 
-  -- Sports/Entertainment (1)
+  -- Sports/Entertainment (1) - Brent
   (39, 'Levy Restaurants', 'customer', '11111111-0000-0000-0000-000000000027',
    '312-555-3020', 'procurement@levyrestaurants.com', 'https://levyrestaurants.com',
    '980 N Michigan Avenue', 'Chicago', 'IL', '60611', 2,
@@ -946,12 +971,14 @@ SELECT setval(pg_get_serial_sequence('tags', 'id'), 10, true);
 -- ASSIGN TAGS TO CONTACTS VIA UPDATE
 -- ============================================================================
 -- Tags are stored as bigint[] arrays in contacts.tags
+-- Some contacts have MULTIPLE tags to test multi-role scenarios
 
 -- Decision Makers (executives and VPs) - tag_id = 1
-UPDATE "public"."contacts" SET tags = ARRAY[1]::bigint[] WHERE id IN (3, 5, 7, 13, 17, 27, 37, 78);
+-- Note: Some get MULTIPLE tags below
+UPDATE "public"."contacts" SET tags = ARRAY[1]::bigint[] WHERE id IN (5, 7, 13, 17, 27, 37);
 
 -- Champions (our advocates inside accounts) - tag_id = 2
-UPDATE "public"."contacts" SET tags = ARRAY[2]::bigint[] WHERE id IN (1, 11, 19, 39);
+UPDATE "public"."contacts" SET tags = ARRAY[2]::bigint[] WHERE id IN (1, 11, 19);
 
 -- Gatekeepers (control access) - tag_id = 3
 UPDATE "public"."contacts" SET tags = ARRAY[3]::bigint[] WHERE id IN (20, 46, 54);
@@ -976,6 +1003,29 @@ UPDATE "public"."contacts" SET tags = ARRAY[9]::bigint[] WHERE id IN (48, 52, 67
 
 -- Cold Leads - tag_id = 10
 UPDATE "public"."contacts" SET tags = ARRAY[10]::bigint[] WHERE id IN (24, 30, 44);
+
+-- ============================================================================
+-- MULTI-TAG CONTACTS (testing multiple roles per contact)
+-- ============================================================================
+-- These contacts have 2-3 tags to test UI rendering and filtering
+
+-- Contact 3: Decision Maker + Budget Holder + VIP (C-suite executive)
+UPDATE "public"."contacts" SET tags = ARRAY[1, 6, 8]::bigint[] WHERE id = 3;
+
+-- Contact 39: Champion + Decision Maker (internal advocate who is also exec)
+UPDATE "public"."contacts" SET tags = ARRAY[1, 2]::bigint[] WHERE id = 39;
+
+-- Contact 78: Decision Maker + Influencer + Technical (tech-savvy VP)
+UPDATE "public"."contacts" SET tags = ARRAY[1, 4, 5]::bigint[] WHERE id = 78;
+
+-- Contact 40: Champion + Needs Follow-up (advocate we need to reconnect with)
+UPDATE "public"."contacts" SET tags = ARRAY[2, 9]::bigint[] WHERE id = 40;
+
+-- Contact 60: Budget Holder + VIP (key financial decision maker)
+UPDATE "public"."contacts" SET tags = ARRAY[6, 8]::bigint[] WHERE id = 60;
+
+-- Contact 70: Technical + Influencer (technical buyer with influence)
+UPDATE "public"."contacts" SET tags = ARRAY[4, 5]::bigint[] WHERE id = 70;
 -- ============================================================================
 -- PART 11: OPPORTUNITIES (50 opportunities)
 -- ============================================================================
@@ -1263,10 +1313,45 @@ VALUES
   (50, 'Custom Culinary - Brookdale', 9, 37, 13, 6,
    'closed_lost', ARRAY[75]::bigint[], CURRENT_DATE - INTERVAL '50 days',
    'GPO contract locked with competitor',
-   NOW() - INTERVAL '130 days', NOW() - INTERVAL '50 days');
+   NOW() - INTERVAL '130 days', NOW() - INTERVAL '50 days'),
+
+  -- ========================================
+  -- EDGE CASE OPPORTUNITIES (5 additional)
+  -- ========================================
+  -- For testing special scenarios
+
+  -- 51: STALE opportunity - no activity for 45+ days (reports testing)
+  (51, 'Litehouse Dressings - Stale Deal', 8, 24, 11, 5,
+   'sample_visit_offered', ARRAY[47]::bigint[], CURRENT_DATE + INTERVAL '30 days',
+   'STALE: No activity in 45 days - for testing stale opportunity reports',
+   NOW() - INTERVAL '60 days', NOW() - INTERVAL '45 days'),
+
+  -- 52: $0 VALUE - pilot/trial opportunity (no revenue)
+  (52, 'SWAP Plant Trial - Zero Value Pilot', 2, 29, NULL, 3,
+   'feedback_logged', ARRAY[57]::bigint[], CURRENT_DATE + INTERVAL '14 days',
+   'PILOT PROGRAM: Free trial with no revenue - tests $0 value handling',
+   NOW() - INTERVAL '20 days', NOW()),
+
+  -- 53: DIRECT SALE - no distributor (customer buys direct from principal)
+  (53, 'McCRUM Direct - No Distributor', 1, 39, NULL, 2,
+   'initial_outreach', ARRAY[78]::bigint[], CURRENT_DATE + INTERVAL '45 days',
+   'DIRECT SALE: Customer buying directly from manufacturer, no distributor involved',
+   NOW() - INTERVAL '8 days', NOW()),
+
+  -- 54: VERY OLD - created 6 months ago, still in early stage
+  (54, 'Frico Cheese - Ancient Deal', 5, 34, 18, 4,
+   'new_lead', ARRAY[68]::bigint[], CURRENT_DATE + INTERVAL '90 days',
+   'ANCIENT: Created 6 months ago, still new_lead - tests long-running deals',
+   NOW() - INTERVAL '180 days', NOW() - INTERVAL '30 days'),
+
+  -- 55: FAST CLOSE - moved through stages in 7 days
+  (55, 'Anchor Express - Quick Win', 6, 20, 10, 5,
+   'closed_won', ARRAY[40]::bigint[], CURRENT_DATE - INTERVAL '2 days',
+   'FAST CLOSE: Entire sales cycle in 7 days - tests velocity metrics',
+   NOW() - INTERVAL '9 days', NOW() - INTERVAL '2 days');
 
 -- Reset sequence
-SELECT setval(pg_get_serial_sequence('opportunities', 'id'), 50, true);
+SELECT setval(pg_get_serial_sequence('opportunities', 'id'), 55, true);
 -- ============================================================================
 -- PART 12: ACTIVITIES (150 activities)
 -- ============================================================================

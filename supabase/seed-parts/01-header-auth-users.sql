@@ -1,7 +1,7 @@
 -- ============================================================================
 -- CRISPY-CRM SEED DATA
 -- Generated: 2025-11-28
--- Version: 2.0 (Minimal - ~500 records)
+-- Version: 2.1 (Enhanced with Audit Recommendations)
 -- ============================================================================
 --
 -- Contents:
@@ -9,14 +9,34 @@
 --   - 9 Principals (manufacturers)
 --   - 10 Distributors
 --   - 20 Customers (operators/restaurants)
---   - ~80 Contacts (2-3 per org)
+--   - ~80 Contacts (2-4 per org, 6 with MULTI-TAGS)
 --   - 36 Products (4 per principal)
---   - 50 Opportunities (even stage distribution)
---   - 150 Activities (all 13 types)
+--   - 55 Opportunities (7 per stage + 5 EDGE CASES)
+--   - 150 Activities (all 12 types)
 --   - 40 Tasks (including overdue)
 --   - 75 Notes
 --   - 10 Tags
 --   - 28 Segments
+--
+-- PERSONAS (for testing):
+--   - Brent (id=2): POWER USER - 25+ organizations
+--   - Admin (id=1): NEW REP - 0 organizations (empty state testing)
+--   - Others: Standard 5-8 orgs each
+--
+-- EDGE CASES (opportunities 51-55):
+--   - #51: STALE (45+ days no activity)
+--   - #52: $0 VALUE (pilot/trial)
+--   - #53: NULL DISTRIBUTOR (direct sale)
+--   - #54: ANCIENT (6 months old, still new_lead)
+--   - #55: FAST CLOSE (7-day cycle)
+--
+-- MULTI-TAG CONTACTS (for filtering/UI tests):
+--   - Contact 3: Decision Maker + Budget Holder + VIP
+--   - Contact 39: Champion + Decision Maker
+--   - Contact 78: Decision Maker + Influencer + Technical
+--   - Contact 40: Champion + Needs Follow-up
+--   - Contact 60: Budget Holder + VIP
+--   - Contact 70: Technical + Influencer
 --
 -- Test credentials:
 --   Admin: admin@test.com / password123
