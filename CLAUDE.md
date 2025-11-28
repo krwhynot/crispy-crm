@@ -41,6 +41,19 @@ npm run db:local:reset             # Reset local only (safe)
 
 **⚠️ NEVER:** `npx supabase db reset --linked` (deletes cloud data)
 
+## Business Context (from PRD)
+
+**Three-Party Model:**
+- **Principal** = Food manufacturer whose products MFB represents (e.g., McCRUM, Rapid Rasoi)
+- **Distributor** = Company that buys from principals and distributes (e.g., Sysco, USF, GFS)
+- **Customer/Operator** = Restaurant or foodservice business (end customer)
+
+**Opportunity** = A deal linking Principal + Distributor + Customer (Distributor is optional)
+
+**7 Pipeline Stages:** `new_lead` → `initial_outreach` → `sample_visit_offered` → `feedback_logged` → `demo_scheduled` → `closed_won` | `closed_lost`
+
+**13 Activity Types:** call, email, sample, meeting, demo, proposal, follow_up, trade_show, site_visit, contract_review, check_in, social, note
+
 ## Core Principles
 
 See [Engineering Constitution](docs/claude/engineering-constitution.md) for complete details.
@@ -52,6 +65,7 @@ See [Engineering Constitution](docs/claude/engineering-constitution.md) for comp
 4. **FORM STATE FROM SCHEMA**: `zodSchema.partial().parse({})` for defaults
 5. **SEMANTIC COLORS ONLY**: CSS vars (`--primary`, `--brand-700`), never hex
 6. **TWO-LAYER SECURITY**: Tables need BOTH GRANT + RLS policies
+7. **CONTACT REQUIRES ORG**: Contacts cannot exist without an organization (no orphans)
 
 ## Architecture
 
@@ -209,6 +223,9 @@ Papa.parse(file, {
 
 ## Recent Changes (Keep Updated Quarterly)
 
+- **PRD v1.18 (2025-11-28)**: Activities Feature Matrix audit - 13 activity types, timeline-focused CRUD, server-side auto-cascade
+- **PRD v1.17 (2025-11-28)**: Reports Module audit - 4 KPIs, per-stage stale thresholds, click-through navigation
+- **Pipeline Stages (2025-11-28)**: Reduced from 8 to 7 stages (removed `awaiting_response`)
 - **V1/V2 Cleanup (2025-11-22)**: Removed 34 legacy dashboard files, V3 is only version
 - **Dashboard V3 (2025-11-18)**: Default dashboard with pipeline table, tasks panel, activity logger
 - **Users List Fix (2025-11-16)**: Standardized on `role` enum ('admin', 'manager', 'rep')
@@ -239,9 +256,34 @@ See `.claude/commands/` for full list. Key commands:
 
 ---
 
+## MVP Feature Status (from PRD v1.18)
+
+**Critical Priorities (in order):**
+1. Contact enforcement - require organization_id
+2. Pipeline migration - 8→7 stages (remove `awaiting_response`)
+3. Win/Loss Reasons - required on close (industry standard)
+4. QuickLogForm - expand to all 13 activity types
+5. Dashboard KPI fix - "Open Opportunities" count (not $ value)
+
+**Key PRD Decisions:**
+- No pricing/volume tracking in MVP (Decision #5)
+- No attachments in MVP (Decision #24)
+- Campaign = simple text tag (not separate entity)
+- Soft delete only - nothing truly deleted
+
+See `docs/PRD.md` Section 15.1 for complete 61-feature MVP checklist.
+
+---
+
 ## Quick Context Loading
 
 For efficient session startup, read `PROJECT_INDEX.md` first (~2,500 tokens vs ~58,000 for full codebase).
 
 **Serena MCP memories** available for cross-session context:
 - `project_overview`, `code_style_conventions`, `database_security`
+
+**Feature Matrix Audits** (validate implementation against PRD):
+- `docs/audits/activities-feature-matrix.md`
+- `docs/audits/dashboard-feature-matrix.md`
+- `docs/audits/opportunity-feature-matrix.md`
+- `docs/audits/reports-feature-matrix.md`

@@ -1,8 +1,10 @@
 # Archived Planning Documents - October 2025
 
+> **⚠️ ARCHIVE NOTICE**: These documents predate PRD v1.18 (2025-11-28). For current requirements, see `../../PRD.md`. Key changes since archival: 7 pipeline stages (not 8), 13 activity types, no pricing/volume tracking in MVP.
+
 **Archived:** 2025-10-31
 **Reason:** Planning phase completed, implementation finished
-**Status:** Historical reference
+**Status:** Historical reference - superseded by PRD v1.18
 
 ---
 

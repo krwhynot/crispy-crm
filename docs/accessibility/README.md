@@ -1,6 +1,8 @@
 # Accessibility (A11y) Documentation
 
-This directory contains comprehensive accessibility analysis and implementation guides for Atomic CRM.
+> **PRD Reference:** See `../PRD.md` v1.18 Section 9 (UI/UX Guidelines) for WCAG 2.1 AA requirements.
+
+This directory contains comprehensive accessibility analysis and implementation guides for Crispy-CRM (Atomic CRM).
 
 ## Quick Navigation
 

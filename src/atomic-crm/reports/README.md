@@ -1,13 +1,14 @@
-# Atomic CRM - Reports Module Documentation
+# Crispy-CRM - Reports Module Documentation
 
 > **Comprehensive documentation for the Reports & Analytics system**
-> Last Updated: 2025-11-13
+> Last Updated: 2025-11-28
+> **PRD Reference:** See `docs/PRD.md` v1.18 Section 9.6 (Reports Module) for MVP requirements: 4 KPIs, per-stage stale thresholds, click-through navigation
 
 ---
 
 ## 1. Report Page Overview
 
-The **Reports Module** provides a comprehensive analytics dashboard for tracking sales activities, opportunities, and campaign performance in the Atomic CRM system. It features a **tabbed interface** with four specialized report views, global filtering capabilities, CSV export functionality, and interactive data visualization.
+The **Reports Module** provides a comprehensive analytics dashboard for tracking sales activities, opportunities, and campaign performance in the Crispy-CRM system. It features a **tabbed interface** with four specialized report views, global filtering capabilities, CSV export functionality, and interactive data visualization.
 
 ### Purpose
 - **Principal-centric reporting**: Groups opportunities and activities by principal organization

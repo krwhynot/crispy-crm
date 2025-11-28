@@ -1,9 +1,12 @@
 # CSV Import System - Current Implementation Analysis
 
+> **⚠️ ARCHIVE NOTICE**: This document was created 2025-10-20. Per PRD v1.18 Decision #30, CSV import is currently **DISABLED** in the UI until tested. Contact import is MVP-ready but UI disabled. See `docs/PRD.md` Section 15.1 feature #8.
+
 **Document Purpose**: Comprehensive analysis of existing CSV import functionality to inform enhancement planning for Phase 1 (column aliasing, validation preview, error reporting).
 
 **Date**: 2025-10-20
-**Status**: Pre-launch phase - no production data
+**Status**: UI DISABLED - Feature implemented but needs testing before enabling
+**PRD Reference**: See `../PRD.md` v1.18 Section 11 (Data Migration) and Decision #30
 
 ---
 

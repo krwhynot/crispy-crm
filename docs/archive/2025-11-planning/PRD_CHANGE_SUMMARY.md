@@ -1,5 +1,7 @@
 # PRD Change Summary: Aspirational → Realistic MVP
 
+> **⚠️ ARCHIVE NOTICE**: This document is from 2025-11-03 and describes the PRD v1.0 → v1.1 evolution. The PRD has since evolved to **v1.18** (2025-11-28) with additional refinements. Key changes since this document: 7 pipeline stages (reduced from 8), 13 activity types (added sample, check_in, social), Business Playbook integration. See `../../PRD.md` for current version.
+
 **Date:** 2025-11-03
 **Purpose:** Document all changes made to align PRD with actual database implementation and realistic MVP scope
 **Context:** User was overwhelmed by aspirational PRD that didn't match their actual needs for a small team (2-10 people) replacing Excel spreadsheets
