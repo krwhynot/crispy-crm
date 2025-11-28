@@ -1,5 +1,7 @@
 # UI Components
 
+> **PRD Reference:** See `docs/PRD.md` v1.18 Section 9 (UI/UX Guidelines) for design system requirements.
+
 The components in this directory come from [shadcn/ui](https://ui.shadcn.com/). They are low-level building blocks for creating user interfaces, including:
 
 - Badges
@@ -21,7 +23,7 @@ You can find the documentation for these components on the [shadcn/ui website](h
 
 ## Customization
 
-In Atomic CRM, these components are sometimes slightly modified to fit the look and feel of the application. You can customize them further by editing the source files in this directory.
+In Crispy-CRM (Atomic CRM), these components are sometimes slightly modified to fit the look and feel of the application. You can customize them further by editing the source files in this directory.
 
 ## Updates
 

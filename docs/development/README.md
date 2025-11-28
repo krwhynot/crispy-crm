@@ -2,7 +2,9 @@
 
 ## Overview
 
-This directory contains guides for developers working on Atomic CRM.
+This directory contains guides for developers working on Crispy-CRM (Atomic CRM).
+
+**PRD Reference:** See `../PRD.md` v1.18 for complete business requirements, terminology, and 61 MVP features.
 
 ## Quick Start Guides
 

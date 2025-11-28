@@ -1,5 +1,7 @@
 # Pre-Launch Security Hardening Summary
 
+> **Note**: Part of MVP security requirements. See `docs/PRD.md` v1.18 Section 10 (Technical Requirements) for authentication and audit trail specs.
+
 **Date:** 2025-10-05
 **Status:** ✅ Complete
 **Migration:** `20251005221416_fix_security_warnings.sql`

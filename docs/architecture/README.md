@@ -2,7 +2,9 @@
 
 ## Overview
 
-This directory contains architectural decisions, design patterns, and system design documentation for Atomic CRM.
+This directory contains architectural decisions, design patterns, and system design documentation for Crispy-CRM (Atomic CRM).
+
+**PRD Reference:** See `../PRD.md` v1.18 for business context, data model, and MVP requirements.
 
 ## Contents
 

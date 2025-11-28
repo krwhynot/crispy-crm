@@ -1,4 +1,6 @@
-Before starting any work, read the memory knowledge graph for the Atomic CRM project context.
+Before starting any work, read the memory knowledge graph for the Crispy-CRM (Atomic CRM) project context.
+
+**PRD Reference:** See `docs/PRD.md` v1.18 for complete business requirements and 61 MVP features.
 
 Apply these stored patterns to ALL code you write:
 
