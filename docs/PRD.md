@@ -1,10 +1,12 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.17
+**Version:** 1.18
 **Last Updated:** 2025-11-28
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
+> **Changelog v1.18:** Activities Resource Feature Matrix audit - Validated Activities module against PRD Section 6 requirements with Perplexity deep research (Salesforce Activities, HubSpot Engagements). Key decisions: (1) QuickLogForm expand from 5→13 types with grouped dropdown, (2) Timeline-focused CRUD (HubSpot pattern) - no standalone list/show pages, (3) Server-side PostgreSQL trigger for auto-cascade (Opp→Contact), (4) Sample as activity type + sample_status enum field. Added resolved questions #103-106. Updated MVP blocker count 53→57. See audit: docs/audits/activities-feature-matrix.md
+>
 > **Changelog v1.17:** Reports Module Feature Matrix audit - Validated Reports module against PRD Section 8 requirements with industry best practices research (Salesforce Reporting, HubSpot Dashboards via WebSearch). Key decisions: (1) Overview tab should have 4 KPIs per Section 9.2.1 (add Stale Deals), (2) Keep current 6 date presets (Today, Yesterday, Last 7/30, This/Last Month) - sufficient for MVP, (3) Add KPI click-through navigation to filtered lists (Salesforce/HubSpot pattern), (4) Use per-stage stale thresholds from Section 6.3 in Reports (7d/14d/21d). Added MVP features #59-61. Added resolved questions #99-102. Updated MVP blocker count 50→53. See audit: docs/audits/reports-feature-matrix.md
 
 ---
@@ -1053,6 +1055,9 @@ ELSE:
 | 59 | Reports Overview 4th KPI (Stale Deals) | 🔧 TODO | Add 4th KPICard to OverviewTab with amber styling when count > 0. Count deals exceeding per-stage thresholds (Section 6.3). See audit: docs/audits/reports-feature-matrix.md |
 | 60 | Reports KPI click navigation | 🔧 TODO | Add onClick handlers to all 4 KPICards in OverviewTab. Navigate to filtered views (Opportunities List or Weekly Activity Report). Matches Salesforce/HubSpot UX pattern |
 | 61 | Reports per-stage stale thresholds | 🔧 TODO | Update OverviewTab stale calculations to use STAGE_STALE_THRESHOLDS map (new_lead: 7d, initial_outreach: 14d, sample_visit_offered: 14d, feedback_logged: 21d, demo_scheduled: 14d). Replace current fixed 7-day threshold |
+| 62 | Remove Note attachment UI | 🔧 TODO | Remove FileInput from NoteInputs.tsx, remove NoteAttachments.tsx usage. Aligns with Decision #24 (no attachments MVP). Keep DB schema for post-MVP. See audit: docs/audits/notes-feature-matrix.md |
+| 63 | Remove Note StatusSelector | 🔧 TODO | Remove StatusSelector component and `showStatus` prop from notes. Status belongs on parent record, not individual notes. Industry pattern (Salesforce/HubSpot). See audit: docs/audits/notes-feature-matrix.md |
+| 64 | Note RLS Manager/Admin override | 🔧 TODO | Update RLS policies for contactNotes, opportunityNotes, organizationNotes to allow Manager/Admin UPDATE and DELETE. PRD Section 3.3 requires "Record owner, Manager, Admin" access. See audit: docs/audits/notes-feature-matrix.md |
 
 ### 15.2 Post-MVP Features
 
@@ -1073,6 +1078,9 @@ ELSE:
 | Weekly Focus Widget | MFB-specific "One Thing" accountability widget for dashboard. Deferred per audit decision. See docs/audits/dashboard-feature-matrix.md |
 | Task Follow-up Prompt | Modal prompt on task completion to create follow-up task. Deferred to medium priority. Per PRD Section 12.4 |
 | Pipeline Visual Decay Borders | Green/yellow/red borders for deals in `sample_visit_offered` stage. Deferred per Section 6.3 |
+| Notes → Activities Migration | Migrate notes to unified Activities system with `type='note'`. PRD Section 6.1 defines note as activity type. Enables unified timeline. See docs/audits/notes-feature-matrix.md |
+| Notes Text Search | Add basic text search within notes on record pages. Industry standard (Salesforce SOSL, HubSpot search). See docs/audits/notes-feature-matrix.md |
+| Notes Multi-Association | Add `note_associations` junction table for many-to-many linking (one note → multiple records). Matches Salesforce ContentDocumentLink, HubSpot associations API. See docs/audits/notes-feature-matrix.md |
 
 ---
 
@@ -1190,6 +1198,16 @@ ELSE:
 | 100 | Reports date filter presets | Keep current 6 presets (Today, Yesterday, Last 7/30 Days, This/Last Month). More granular than PRD spec but sufficient for MVP. Per-tab custom pickers available | 2025-11-28 |
 | 101 | Reports KPI click navigation | Add click handlers to all KPI cards linking to filtered list views. Industry standard pattern (Salesforce/HubSpot) for dashboard drill-down UX | 2025-11-28 |
 | 102 | Reports stale detection logic | Use per-stage thresholds from Section 6.3 (7d/14d/21d) instead of global 7-day threshold. More accurate deal health assessment per stage | 2025-11-28 |
+| 103 | Note attachments UI | Remove attachment UI from NoteInputs.tsx (align with Decision #24). Keep DB schema for post-MVP. Industry supports attachments but PRD says no for MVP | 2025-11-28 |
+| 104 | Note StatusSelector | Remove StatusSelector entirely. Industry pattern: status belongs on parent record (Contact/Deal), not individual notes. Not in PRD | 2025-11-28 |
+| 105 | Notes vs Activities architecture | Migrate to unified Activities system post-MVP. PRD Section 6.1 defines `note` as one of 13 activity types. Keep separate tables for MVP | 2025-11-28 |
+| 106 | Note UPDATE/DELETE permissions | Add Manager/Admin override to RLS policies. PRD Section 3.3 explicitly allows "Record owner, Manager, Admin" for soft delete | 2025-11-28 |
+| 107 | Note search capability | Add basic text search post-MVP. Industry standard (Salesforce SOSL, HubSpot search). Acceptable to defer for MVP | 2025-11-28 |
+| 108 | Note multi-association | Add junction table post-MVP for many-to-many linking. Matches Salesforce ContentDocumentLink, HubSpot associations API patterns | 2025-11-28 |
+| 109 | QuickLogForm activity types expansion | Add all 13 types with grouped dropdown: Communication (Call, Email, Check-in), Meetings (Meeting, Demo, Site Visit), Documentation (Proposal, Contract Review, Follow-up, Note), Sales (Trade Show, Social), Samples (Sample). Full PRD compliance. See audit: docs/audits/activities-feature-matrix.md | 2025-11-28 |
+| 110 | Activity CRUD strategy | Timeline-focused (HubSpot pattern). No standalone list/show pages. ActivityTimeline component on Contact/Org/Opp records. Aligns with industry trend and PRD #53. See audit: docs/audits/activities-feature-matrix.md | 2025-11-28 |
+| 111 | Activity auto-cascade implementation | Server-side PostgreSQL trigger on activities INSERT. When opportunity_id NOT NULL and contact_id IS NULL, auto-fill contact_id from opportunity's primary contact. Data integrity regardless of client. See audit: docs/audits/activities-feature-matrix.md | 2025-11-28 |
+| 112 | Sample tracking implementation | Add sample as activity type + sample_status enum (sent/received/feedback_pending/feedback_received). Extends existing schema vs new resource. Conditional validation: if type=sample, sample_status required. See audit: docs/audits/activities-feature-matrix.md | 2025-11-28 |
 
 ### 16.3 Open Questions
 
@@ -1219,16 +1237,17 @@ ELSE:
 
 ### 17.4 MVP Blocker Risk
 
-**Risk:** 53 features still need implementation (updated per Reports Feature Matrix audit 2025-11-28)
+**Risk:** 57 features still need implementation (updated per Activities Feature Matrix audit 2025-11-28)
 
 **Mitigation:** Prioritize in order:
 1. **Contact enforcement** (Critical): Enforce organization requirement - blocks orphan contacts
 2. **Pipeline migration** (Critical): Migrate from 8→7 stages, update existing `awaiting_response` records
 3. **Win/Loss Reasons** (Critical): MVP Blocker - required for sales analysis (industry standard)
 4. **Dashboard gaps** (Quick wins): KPI fix, Recent Activity Feed, QuickLogForm 13 types, My Performance widget
-5. **Stale detection** (Medium): Per-stage thresholds, visual decay indicators
-6. **Contact filters** (Medium): Add organization filter to ContactListFilter
-7. **Sample tracking** (Medium): Full workflow UI with status + feedback
+5. **Activities gaps** (Critical): QuickLogForm all 13 types, ActivityTimeline component, auto-cascade trigger
+6. **Sample tracking** (Critical): Add sample type + sample_status enum + workflow UI (PRD #4)
+7. **Stale detection** (Medium): Per-stage thresholds, visual decay indicators
+8. **Contact filters** (Medium): Add organization filter to ContactListFilter
 8. **Organization features** (Medium): Bulk owner reassignment, Authorization UI tab, email field, soft duplicate warning
 9. **Opportunity features** (Medium): Bulk delete, Contact-Customer Org validation
 10. **Product UX** (Quick win): Add create buttons to ProductList, remove F&B fields from UI
