@@ -1,11 +1,11 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.15
+**Version:** 1.16
 **Last Updated:** 2025-11-28
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
-> **Changelog v1.15:** Dashboard V3 Feature Matrix audit - Validated Dashboard against PRD with industry best practices research (Salesforce Dashboards, HubSpot Reporting via Perplexity). Key decisions: (1) KPI #1 change from "Total Pipeline Value" ($) to "Open Opportunities" (count) - aligns with Decision #5, (2) KPI #4 change from "Open Opportunities" to "Stale Deals" with amber styling, (3) Add all 13 activity types to QuickLogForm (enables sample tracking MVP #4), (4) Add Recent Activity Feed component below Tasks, (5) Add My Performance sidebar widget, (6) Task snooze popover with Tomorrow/Next Week/Custom options, (7) Weekly Focus widget deferred to post-MVP. Added MVP features #50-55. Added resolved questions #87-94. Updated MVP blocker count 41→47. See audit: docs/audits/dashboard-feature-matrix.md
+> **Changelog v1.16:** Tasks Feature Matrix audit - Validated Tasks resource against PRD with industry best practices research (Salesforce Task Object, HubSpot Tasks via Perplexity). Key decisions: (1) Task types alignment - use PRD 7 types (Call, Email, Meeting, Follow-up, Demo, Proposal, Other), remove None/Discovery/Administrative from code, (2) Add organization_id field to tasks for org-level tasks (matches Salesforce WhatId pattern), (3) Task snooze popover confirmed (Tomorrow/Next Week/Custom per PRD §9.2.3), (4) Task completion follow-up as inline toast (less intrusive than modal). Added MVP features #56-58. Added resolved questions #95-98. Updated MVP blocker count 47→50. See audit: docs/audits/tasks-feature-matrix.md
 
 ---
 
@@ -1031,6 +1031,9 @@ ELSE:
 | 53 | Recent Activity Feed component | 🔧 TODO | Add ActivityFeedPanel.tsx below Tasks panel. Show last 10-20 team activities with avatar, type, timestamp. Industry standard (Salesforce/HubSpot) |
 | 54 | My Performance sidebar widget | 🔧 TODO | Add MyPerformanceWidget.tsx with personal metrics: Activities This Week, Deals Moved, Tasks Completed, Open Opps. Click-through to personal report |
 | 55 | Task snooze popover | 🔧 TODO | Replace auto-snooze with popover: Tomorrow (9 AM), Next Week (Monday 9 AM), Custom Date. Per PRD Section 9.2.3 |
+| 56 | Task type enum alignment | 🔧 TODO | Update taskTypeSchema to PRD 7 types: Call, Email, Meeting, Follow-up, Demo, Proposal, Other. Remove None/Discovery/Administrative. Update defaultConfiguration.ts. See audit: docs/audits/tasks-feature-matrix.md |
+| 57 | Task organization_id field | 🔧 TODO | Add optional organization_id FK to tasks table. Enables org-level tasks without opportunity (e.g., "Prepare for Sysco annual review"). Update schema, forms, TaskRelatedItemsTab. Matches Salesforce WhatId pattern |
+| 58 | Task completion follow-up toast | 🔧 TODO | On task completion, show toast: "Task completed! [Create follow-up →]". Link opens pre-filled task form with same contact/opportunity. Less intrusive than modal per user decision |
 
 ### 15.2 Post-MVP Features
 
@@ -1160,6 +1163,10 @@ ELSE:
 | 92 | Recent Activity Feed | Add ActivityFeedPanel component below Tasks panel. Show last 10-20 team activities. Industry standard (Salesforce Activity Timeline, HubSpot Activity Feed) | 2025-11-28 |
 | 93 | My Performance widget | Add sidebar widget with personal metrics (Activities This Week, Deals Moved, Tasks Completed, Open Opps). Industry standard for sales dashboards | 2025-11-28 |
 | 94 | Weekly Focus widget | Defer to post-MVP. MFB-specific "One Thing" methodology widget. Nice-to-have but not blocking core dashboard functionality | 2025-11-28 |
+| 95 | Task types alignment | Use PRD 7 types (Call, Email, Meeting, Follow-up, Demo, Proposal, Other). Remove None/Discovery/Administrative from code. Aligns with Appendix E specification | 2025-11-28 |
+| 96 | Task organization linking | Add optional organization_id FK field to tasks. Enables org-level tasks without opportunity (e.g., "Prepare for Sysco annual review"). Matches Salesforce WhatId pattern for flexible entity linking | 2025-11-28 |
+| 97 | Task snooze UX | Implement popover with options: Tomorrow (next day 9 AM), Next Week (Monday 9 AM), Custom Date picker. Replaces current auto +1 day behavior. Per PRD §9.2.3 | 2025-11-28 |
+| 98 | Task completion follow-up | Inline toast with "Create follow-up" link (less intrusive than modal). Toast shows on completion, auto-dismisses after 5 seconds. Link opens pre-filled task form | 2025-11-28 |
 
 ### 16.3 Open Questions
 
@@ -1391,9 +1398,10 @@ Organizations can be classified into business segments for filtering and reporti
 | 1.13 | 2025-11-28 | **Organization Feature Matrix audit:** Validated Organization resource against PRD requirements with industry best practices research (Salesforce Accounts, HubSpot Companies via Perplexity). Key decisions: (1) Add email field to Organization UI - industry standard alignment, (2) Keep 2-level hierarchy limit - sufficient for franchises/branches, (3) Change duplicate name validation to soft warning (HubSpot-style) - supports franchises, (4) Implement Authorization Tab (#21) and Bulk Reassignment (#20) in parallel. Added 2 new MVP features (#44-45): Organization email field, soft duplicate warning. Added 2 resolved questions (#79-80). Updated MVP blocker count 35→37. See: docs/audits/organization-feature-matrix.md |
 | 1.14 | 2025-11-28 | **Opportunity Feature Matrix audit:** Validated Opportunity resource against PRD requirements with industry best practices research (Salesforce Opportunity Stages, HubSpot Deal Pipeline via Perplexity/WebSearch). Key decisions: (1) Migrate from 8→7 stages (remove `awaiting_response` per PRD v1.9), (2) Win/Loss Reasons is MVP Blocker - High Priority (industry standard), (3) Per-stage stale thresholds (7d/14d/21d) instead of global 14d, (4) Hybrid duplicate prevention (hard block exact, soft warn fuzzy). Added 4 new MVP features (#46-49): Stage migration, Win/Loss UI detail, Bulk delete, Contact-Customer Org validation. Added 6 resolved questions (#81-86). Updated MVP blocker count 37→41. See: docs/audits/opportunity-feature-matrix.md |
 | 1.15 | 2025-11-28 | **Dashboard V3 Feature Matrix audit:** Validated Dashboard V3 against PRD requirements with industry best practices research (Salesforce Dashboards, HubSpot Reporting via Perplexity). Key decisions: (1) KPI #1 change from "Total Pipeline Value" ($) to "Open Opportunities" (count), (2) KPI #4 change to "Stale Deals" with amber styling, (3) Expand QuickLogForm to all 13 activity types, (4) Add Recent Activity Feed component, (5) Add My Performance sidebar widget, (6) Task snooze popover with date options, (7) Weekly Focus widget deferred to post-MVP. Added 6 new MVP features (#50-55). Added 8 resolved questions (#87-94). Updated MVP blocker count 41→47. See: docs/audits/dashboard-feature-matrix.md |
+| 1.16 | 2025-11-28 | **Tasks Feature Matrix audit:** Validated Tasks resource against PRD requirements with industry best practices research (Salesforce Task Object, HubSpot Tasks via Perplexity). Key decisions: (1) Task types alignment - use PRD 7 types (Call, Email, Meeting, Follow-up, Demo, Proposal, Other), remove None/Discovery/Administrative from code, (2) Add organization_id field to tasks for org-level tasks (matches Salesforce WhatId pattern), (3) Task snooze popover confirmed (Tomorrow/Next Week/Custom per PRD §9.2.3), (4) Task completion follow-up as inline toast (less intrusive than modal). Added 3 new MVP features (#56-58). Added 4 resolved questions (#95-98). Updated MVP blocker count 47→50. See: docs/audits/tasks-feature-matrix.md |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-28 (v1.15 - Dashboard V3 Feature Matrix audit)*
+*Last updated: 2025-11-28 (v1.16 - Tasks Feature Matrix audit)*
