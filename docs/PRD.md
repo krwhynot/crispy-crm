@@ -1,11 +1,11 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.1
+**Version:** 1.2
 **Last Updated:** 2025-11-27
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
-> **Changelog v1.1:** Updated after codebase audit to align PRD with implemented features. See [Appendix F](#f-version-history) for details.
+> **Changelog v1.2:** Added clarifications from Gemini 3 Pro deep analysis - Contact constraints, opportunity naming, authorization behavior, sample status workflow, bulk operations, and more. See [Appendix F](#f-version-history) for details.
 
 ---
 
