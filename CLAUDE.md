@@ -4,9 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Atomic CRM - Full-featured CRM with React, shadcn/ui, and Supabase. Manages contacts, organizations, opportunities, tasks, notes with type-safe frontend and PostgreSQL backend.
+Crispy-CRM (Atomic CRM) - Full-featured CRM for MFB, a food distribution brokerage managing relationships between **Principals** (manufacturers), **Distributors**, and **Operators** (restaurants). Built with React, shadcn/ui, and Supabase.
 
-**Status:** Pre-launch | **Stack:** React 19 + Vite + TypeScript + Supabase + React Admin + Tailwind CSS v4
+**Status:** MVP In Progress (57 features TODO) | **PRD Version:** v1.18 (2025-11-28)
+**Stack:** React 19 + Vite + TypeScript + Supabase + React Admin + Tailwind CSS v4
+**Target Launch:** 30-60 days
 
 ## Commands
 
