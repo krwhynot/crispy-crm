@@ -1,11 +1,11 @@
 # Crispy-CRM Product Requirements Document (PRD)
 
-**Version:** 1.10
+**Version:** 1.11
 **Last Updated:** 2025-11-28
 **Status:** MVP In Progress
 **Target Launch:** 30-60 days
 
-> **Changelog v1.10:** UI/UX clarity audit - Fixed critical KPI conflict ("Total Pipeline Value" → "Open Opportunities" count, no $ in MVP). Added detailed dashboard specifications: KPI card behavior (Section 9.2.1), pipeline column tooltips (9.2.2), task snooze popover with date options (9.2.3), tasks panel scope definition (9.2.4). Fixed "Next Action" phantom link issue. Added 5 new MVP features, 6 resolved questions. See [Appendix F](#f-version-history) for details.
+> **Changelog v1.11:** Business Playbook integration - Incorporated key operational information from MFB Business Playbook to make PRD self-contained. Added Principal→Account Manager assignments (Section 2.3.1), MFB 7-phase sales process mapping (Section 7.4), Weekly Focus "One Thing" widget (Section 9.2.5). Expanded organization segments to 8 Playbook categories (Appendix D.3). Documented anchor account convention, principal parameters storage. Added 3 new MVP features (#39-41), 11 resolved questions (#66-76). Territory Management and Commission Tracking deferred to Post-MVP. See [Appendix F](#f-version-history) for details.
 
 ---
 
@@ -75,6 +75,24 @@ All three must pass before launch:
 | Account Managers | 6 | MFB sales team |
 | Principals | 9 | McCRUM, Rapid Rasoi, Kaufholds |
 | Distributors | 50+ | Sysco, USF, GFS, PFG |
+
+#### 2.3.1 Initial Account Manager Assignments (Seed Data)
+
+The following Principal → Account Manager assignments will be configured during initial data migration:
+
+| Principal | Account Manager | Primary Regions | Key Distributors |
+|-----------|-----------------|-----------------|------------------|
+| McCRUM | Brent | IN, KY, TN, OH | HT Hackney, PFG-BG, Sysco Nashville/Louisville/Cincinnati |
+| SWAP | Michelle | IL, WI, IN, MI | USF (Streator/Bensenville/WI), Sysco (Chicago/Baraboo/Milwaukee) |
+| Rapid Rasoi | Gary | US National (IL, IN, MI, OH, KY, PA focus) | C&U, GFS, HPS, USF accounts |
+| ANNASEA | Dale | IL, WI, IN | PFG (all), Greco, Pancho, Wilkens, Chefs Warehouse |
+| Kaufholds | Gary | IL, IN, MI, OH, KY, PA | GFS (priority), Lipari, Stanz |
+| TCCF | Michelle | TN, KY, IL | Sysco Central, PFG-BG |
+| Valley Lahvosh | Sue | IL (Chicago area) | Sysco (Chicago/Baraboo/Milwaukee), European Imports |
+| Wicks | Sue | IL (Chicago area) | Sysco Chicago |
+| OFK | Sue | IL (Chicago area) | Sysco Chicago |
+
+> **Implementation:** These assignments are handled via database seed/import during initial setup. The system does not enforce territory boundaries—reps manage accounts assigned to them collaboratively.
 
 ### 2.4 Key Terminology
 
@@ -632,6 +650,36 @@ Personal performance snapshot showing current user's metrics:
 - Green/red trend indicators vs. previous week
 - Click-through to detailed personal report
 
+#### 9.2.5 Weekly Focus Widget (v1.11)
+
+A dedicated text widget at the top of the dashboard where reps define their single weekly focus goal. Based on MFB's "One Thing" accountability methodology.
+
+**Display:**
+```
+┌────────────────────────────────────────────────────────┐
+│ 🎯 My Focus This Week                           [Edit] │
+├────────────────────────────────────────────────────────┤
+│ "Close Sysco Chicago authorization for McCRUM"        │
+│                                          Set: Mon 9am │
+└────────────────────────────────────────────────────────┘
+```
+
+**Fields:**
+- `focus_text` - Free text (max 200 chars)
+- `set_date` - Timestamp when focus was set
+- `user_id` - Current user
+
+**Behavior:**
+- One focus per user per week (Monday-Sunday)
+- Persists until user changes it or new week starts
+- Previous week's focus archived (viewable in history)
+- Empty state: "What's your ONE focus this week?" with CTA to set
+
+**Implementation:**
+- Simple `user_weekly_focus` table with user_id, week_start_date, focus_text
+- Widget renders at top of dashboard, above KPI cards
+- [Edit] button opens inline text input (no modal needed)
+
 ### 9.3 Responsive Design
 
 | Screen Size | Support Level |
@@ -966,6 +1014,9 @@ ELSE:
 | 36 | Fix Next Action dead link | 🔧 TODO | Remove `variant="link"` from "Schedule follow-up" - show as plain text until functional |
 | 37 | Task snooze popover | 🔧 TODO | Replace auto-snooze with popover (Tomorrow, Next Week, Custom Date options) |
 | 38 | Stale Deals KPI card | 🔧 TODO | Add 4th KPI card showing stale deals count with amber styling |
+| 39 | Weekly Focus widget | 🔧 TODO | Add "One Thing" weekly focus text widget to dashboard top (see Section 9.2.5) |
+| 40 | Expand organization segments | 🔧 TODO | Replace generic segments with 8 Playbook categories (Major Broadline, GPO, University, etc. - see Appendix D.3) |
+| 41 | Pipeline stage tooltips | 🔧 TODO | Add tooltip help text mapping MFB 7-phase process to pipeline stages (see Section 7.4) |
 
 ### 15.2 Post-MVP Features
 
@@ -981,6 +1032,8 @@ ELSE:
 | Offline mode | Online required |
 | Google SSO | Email/password sufficient |
 | Won/Lost Analysis Report | Requires win/loss reason UI implementation first (see MVP #12) |
+| Territory Management | Geographic filtering, territory assignment, region-based reports (reps manage assigned accounts without enforcement) |
+| Commission Tracking | Requires volume/price tracking; includes rates, payments, outstanding amounts |
 
 ---
 
@@ -1061,6 +1114,17 @@ ELSE:
 | 63 | Task snooze popover | Snooze shows popover with options (Tomorrow, Next Week, Custom Date), not auto-24h | 2025-11-28 |
 | 64 | Tasks panel scope | Dashboard shows Overdue/Today/Tomorrow only. 3+ days = use /tasks list | 2025-11-28 |
 | 65 | Stale Deals KPI | Add 4th KPI card for "Stale Deals" count with amber styling when > 0 | 2025-11-28 |
+| 66 | Sales process mapping | Add Section 7.4 mapping MFB 7-phase process to pipeline stages (guidance, not stage renaming) | 2025-11-28 |
+| 67 | Account manager assignments | Document Principal → Account Manager assignments in Section 2.3.1 as seed data specification | 2025-11-28 |
+| 68 | Territory management | Defer to Post-MVP; reps manage assigned accounts without geographic enforcement | 2025-11-28 |
+| 69 | Activity framework (A-H) | Omit MFB A-H activity codes; use standard 13 activity types for simplicity | 2025-11-28 |
+| 70 | Distributor contact roles | Use Job Title text field for DSR/Category Manager identification (no role dropdown) | 2025-11-28 |
+| 71 | Organization segments expansion | Replace generic segments with 8 Playbook categories (Broadline, GPO, University, etc.) | 2025-11-28 |
+| 72 | Commission tracking | Defer to Post-MVP; requires volume/price tracking foundation | 2025-11-28 |
+| 73 | Anchor account convention | Use Priority A + #anchor tag in notes (no dedicated field) | 2025-11-28 |
+| 74 | Principal parameters | Store in Description/Notes field (guaranteed sale, program offers, market fit) | 2025-11-28 |
+| 75 | Quarterly business review | Manual Excel export + formatting; no dedicated QBR features in MVP | 2025-11-28 |
+| 76 | Weekly Focus widget | Add "One Thing" widget to dashboard for weekly goal setting | 2025-11-28 |
 
 ### 16.3 Open Questions
 
@@ -1166,6 +1230,20 @@ ELSE:
 | `prospect` | Prospect | Potential customer |
 | `unknown` | Unknown | Uncategorized |
 
+**Principal Parameters (v1.11):**
+
+For Principal-type organizations, the Description/Notes field should capture key business parameters from the MFB Sales Process (Phase 2 Planning):
+
+| Parameter | Description | Example |
+|-----------|-------------|---------|
+| **Guaranteed Sale Policy** | Whether principal offers guaranteed sales | "Yes - 30-day returns accepted" |
+| **Initial Program Offer** | Standard introductory programs | "Free shipping on first 3 orders" |
+| **Market Segment Fit** | Target customer types | "Fine dining, upscale casual" |
+| **Competitive Analysis** | Key differentiators vs competitors | "Premium quality, 20% higher price point vs Brand X" |
+| **Corporate/Group Programs** | Available GPO or chain programs | "Foodbuy contracted, Premier pending" |
+
+> **Usage:** Admin or manager pastes this information into the Principal organization's Description field during setup. Reps can reference this context when pitching to distributors and operators.
+
 ### D.1 Organization Priority Reference
 
 **Note:** Organizations use a letter-grade priority system (A/B/C/D), distinct from Opportunity priority (Low/Medium/High/Critical). This provides quick visual triage for account prioritization.
@@ -1180,6 +1258,17 @@ ELSE:
 **Default:** New organizations default to Priority C.
 
 **Usage:** Priority is set per-organization and helps reps focus on high-value relationships. It does not affect opportunity stage calculations.
+
+**Anchor Account Convention (v1.11):**
+
+"Anchor accounts" are critical operator relationships that secure distribution slots for a principal's products. These accounts are strategically important because losing them could affect distributor authorization.
+
+**Identification Methods:**
+1. **Priority A designation** - Use Priority A for anchor accounts requiring immediate attention
+2. **Tag in notes** - Add `#anchor` to the organization's notes field for searchability
+3. **Description field** - Document why the account is an anchor (e.g., "Anchor for McCRUM at Sysco Chicago - 500 cases/month")
+
+> **Note:** No dedicated "anchor" field exists. Reps use the flexible Priority + notes approach to identify strategic relationships without additional schema complexity.
 
 ### D.2 Organization Parent Hierarchy
 
@@ -1203,25 +1292,33 @@ Organizations support parent-child relationships for modeling corporate structur
 - Sysco (parent) → Sysco Denver, Sysco Chicago (branches)
 - Restaurant Group (parent) → Individual restaurant locations
 
-### D.3 Organization Segments
+### D.3 Organization Segments (v1.11 - Expanded)
 
-Organizations can be classified into business segments for filtering and reporting.
+Organizations can be classified into business segments for filtering and reporting. Segments are aligned with MFB's strategic target categories from the Business Playbook.
 
 **Implementation:** `segment_id` references the `segments` table.
 
-**Default Segments:**
-- Restaurant
-- Hotel/Hospitality
-- Healthcare
-- Education
-- Corporate/Catering
-- Retail
-- Unknown (default for new organizations)
+**Segment Categories (8 types from Playbook):**
+
+| Segment | Description | Target Count |
+|---------|-------------|--------------|
+| **Major Broadline Distributor** | Large national distributors (Sysco, USF, GFS, PFG) | 27 |
+| **Specialty/Regional Distributor** | Regional and specialty food distributors | 50+ |
+| **Management Company** | Foodservice management companies (Aramark, Compass, Sodexo) | 12 |
+| **GPO** | Group Purchasing Organizations (Foodbuy, Premier, Vizient, Entegra) | 6 |
+| **University** | College and university foodservice | 13 |
+| **Restaurant Group** | Multi-location restaurant operators (LEYE, Dineamic, Boka) | 18 |
+| **Chain Restaurant** | National/regional chain restaurants | 45+ |
+| **Hotel & Aviation** | Hotels, casinos, airline catering | — |
+| **Unknown** | Uncategorized (default for new organizations) | — |
+
+> **Migration Note:** The previous generic segments (Restaurant, Healthcare, Education, etc.) are replaced by these strategic categories. Existing organizations should be re-categorized during data migration.
 
 **Usage:**
 - Filter organization lists by segment
 - Segment appears in organization detail sidebar
 - Segment is included in CSV exports
+- Enables strategic reporting by target category
 
 **Permissions:** Any authenticated user can assign segments. Segment management (add/edit/delete segment types) is admin-only.
 
@@ -1252,9 +1349,10 @@ Organizations can be classified into business segments for filtering and reporti
 | 1.8 | 2025-11-28 | Reports audit (Claude): Comprehensive Section 8 rewrite documenting Overview Dashboard (4 charts, 3 KPIs), Campaign Activity tab, Global Filter System with localStorage persistence. Moved Won/Lost Analysis to Post-MVP (depends on #12). Added DataQualityTab removal (#24). Updated blocker count 15→16. Added resolved questions #43-47 |
 | 1.9 | 2025-11-28 | **Industry best practices review (Perplexity research):** Reduced pipeline from 8→7 stages (removed `awaiting_response`). Added per-stage stale thresholds (7d/14d/21d). Visual decay indicators (green/yellow/red borders) for `sample_visit_offered` stage. Activity auto-cascade to primary contact. "My Performance" dashboard widget. Mobile quick actions (6 buttons). Hybrid duplicate prevention (hard block exact, soft warn fuzzy). Daily email digest at 7 AM (tasks + stale deals). Task completion follow-up prompt. Updated product display to hybrid "Primary + X more". Added 9 new MVP features (#25-33). Added resolved questions #48-59. Updated MVP blocker count 16→25. |
 | 1.10 | 2025-11-28 | **UI/UX clarity audit:** Fixed critical KPI conflict - "Total Pipeline Value" → "Open Opportunities" (no $ in MVP per Decision #5). Added Section 9.2.1-9.2.4 documenting KPI cards, pipeline tooltips, snooze popover, tasks panel scope. Added 5 new MVP features (#34-38): Fix KPI card, pipeline tooltips, Next Action dead link fix, task snooze popover, stale deals KPI. Added resolved questions #60-65. Updated MVP blocker count 25→30. |
+| 1.11 | 2025-11-28 | **Business Playbook integration:** Incorporated key operational information from MFB Business Playbook to make PRD self-contained. Added Section 2.3.1 (Principal→Account Manager seed data assignments), Section 7.4 (MFB 7-phase sales process mapping to pipeline stages), Section 9.2.5 (Weekly Focus "One Thing" widget). Expanded Appendix D.3 with 8 Playbook target categories (Major Broadline, GPO, University, etc.). Documented anchor account convention (Priority A + #anchor tag), principal parameters storage (Notes field). Added 3 new MVP features (#39-41): Weekly Focus widget, segment expansion, pipeline stage tooltips. Deferred Territory Management and Commission Tracking to Post-MVP. Added resolved questions #66-76. Updated MVP blocker count 30→33. |
 
 ---
 
 *This PRD captures WHAT we're building. For WHY, see [PROJECT_MISSION.md](../PROJECT_MISSION.md). For HOW (technical), see [CLAUDE.md](../CLAUDE.md).*
 
-*Last updated: 2025-11-28 (v1.10 - UI/UX clarity audit)*
+*Last updated: 2025-11-28 (v1.11 - Business Playbook integration)*

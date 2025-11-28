@@ -12,7 +12,7 @@
 |-----------|-------------|
 | **Centralize Sales Data** | Unified platform for opportunities, accounts, and contacts (eliminating scattered spreadsheets) |
 | **Automate Workflows** | Reduce manual data entry and formula dependencies |
-| **Improve Pipeline Visibility** | Real-time dashboards across the 8-stage sales pipeline |
+| **Improve Pipeline Visibility** | Real-time dashboards across the 7-stage sales pipeline |
 | **Enable Collaboration** | Multi-user access with role-based permissions for the sales team |
 | **Enhance Forecasting** | Volume (cases/units) AND dollar-based sales projections |
 | **Cross-Device Access** | Desktop-first design with critical mobile/tablet support for field reps |
