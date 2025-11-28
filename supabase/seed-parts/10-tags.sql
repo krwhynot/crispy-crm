@@ -25,12 +25,14 @@ SELECT setval(pg_get_serial_sequence('tags', 'id'), 10, true);
 -- ASSIGN TAGS TO CONTACTS VIA UPDATE
 -- ============================================================================
 -- Tags are stored as bigint[] arrays in contacts.tags
+-- Some contacts have MULTIPLE tags to test multi-role scenarios
 
 -- Decision Makers (executives and VPs) - tag_id = 1
-UPDATE "public"."contacts" SET tags = ARRAY[1]::bigint[] WHERE id IN (3, 5, 7, 13, 17, 27, 37, 78);
+-- Note: Some get MULTIPLE tags below
+UPDATE "public"."contacts" SET tags = ARRAY[1]::bigint[] WHERE id IN (5, 7, 13, 17, 27, 37);
 
 -- Champions (our advocates inside accounts) - tag_id = 2
-UPDATE "public"."contacts" SET tags = ARRAY[2]::bigint[] WHERE id IN (1, 11, 19, 39);
+UPDATE "public"."contacts" SET tags = ARRAY[2]::bigint[] WHERE id IN (1, 11, 19);
 
 -- Gatekeepers (control access) - tag_id = 3
 UPDATE "public"."contacts" SET tags = ARRAY[3]::bigint[] WHERE id IN (20, 46, 54);
@@ -55,3 +57,26 @@ UPDATE "public"."contacts" SET tags = ARRAY[9]::bigint[] WHERE id IN (48, 52, 67
 
 -- Cold Leads - tag_id = 10
 UPDATE "public"."contacts" SET tags = ARRAY[10]::bigint[] WHERE id IN (24, 30, 44);
+
+-- ============================================================================
+-- MULTI-TAG CONTACTS (testing multiple roles per contact)
+-- ============================================================================
+-- These contacts have 2-3 tags to test UI rendering and filtering
+
+-- Contact 3: Decision Maker + Budget Holder + VIP (C-suite executive)
+UPDATE "public"."contacts" SET tags = ARRAY[1, 6, 8]::bigint[] WHERE id = 3;
+
+-- Contact 39: Champion + Decision Maker (internal advocate who is also exec)
+UPDATE "public"."contacts" SET tags = ARRAY[1, 2]::bigint[] WHERE id = 39;
+
+-- Contact 78: Decision Maker + Influencer + Technical (tech-savvy VP)
+UPDATE "public"."contacts" SET tags = ARRAY[1, 4, 5]::bigint[] WHERE id = 78;
+
+-- Contact 40: Champion + Needs Follow-up (advocate we need to reconnect with)
+UPDATE "public"."contacts" SET tags = ARRAY[2, 9]::bigint[] WHERE id = 40;
+
+-- Contact 60: Budget Holder + VIP (key financial decision maker)
+UPDATE "public"."contacts" SET tags = ARRAY[6, 8]::bigint[] WHERE id = 60;
+
+-- Contact 70: Technical + Influencer (technical buyer with influence)
+UPDATE "public"."contacts" SET tags = ARRAY[4, 5]::bigint[] WHERE id = 70;
