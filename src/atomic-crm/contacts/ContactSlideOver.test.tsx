@@ -2,7 +2,7 @@
  * Tests for ContactSlideOver component
  *
  * Tests slide-over functionality:
- * - Tab switching (4 tabs: Details, Activities, Notes, Files)
+ * - Tab switching (3 tabs: Details, Activities, Notes)
  * - View/edit mode toggle
  * - Save/cancel in edit mode
  * - Validation errors display
@@ -167,14 +167,6 @@ vi.mock("./ContactNotesTab", () => ({
   ),
 }));
 
-vi.mock("./ContactFilesTab", () => ({
-  ContactFilesTab: ({ record }: any) => (
-    <div data-testid="contact-files-tab">
-      <p>Files for contact {record.id}</p>
-    </div>
-  ),
-}));
-
 vi.mock("./ActivitiesTab", () => ({
   ActivitiesTab: ({ contactId }: any) => (
     <div data-testid="activities-tab">
@@ -267,7 +259,7 @@ describe("ContactSlideOver", () => {
   });
 
   describe("Tab Navigation", () => {
-    test("renders all 4 tabs (Details, Activities, Notes, Files)", async () => {
+    test("renders all 3 tabs (Details, Activities, Notes)", async () => {
       renderWithAdminContext(
         <ContactSlideOver
           recordId={123}
@@ -282,7 +274,6 @@ describe("ContactSlideOver", () => {
         expect(screen.getByTestId("tab-details")).toBeInTheDocument();
         expect(screen.getByTestId("tab-activities")).toBeInTheDocument();
         expect(screen.getByTestId("tab-notes")).toBeInTheDocument();
-        expect(screen.getByTestId("tab-files")).toBeInTheDocument();
       });
     });
 
@@ -301,7 +292,6 @@ describe("ContactSlideOver", () => {
         expect(screen.getByTestId("tab-panel-details")).toBeInTheDocument();
         expect(screen.getByTestId("tab-panel-activities")).toBeInTheDocument();
         expect(screen.getByTestId("tab-panel-notes")).toBeInTheDocument();
-        expect(screen.getByTestId("tab-panel-files")).toBeInTheDocument();
       });
     });
 
@@ -356,22 +346,6 @@ describe("ContactSlideOver", () => {
       });
     });
 
-    test("Files tab shows files component", async () => {
-      renderWithAdminContext(
-        <ContactSlideOver
-          recordId={123}
-          isOpen={true}
-          mode="view"
-          onClose={mockOnClose}
-          onModeToggle={mockOnModeToggle}
-        />
-      );
-
-      await waitFor(() => {
-        expect(screen.getByTestId("contact-files-tab")).toBeInTheDocument();
-        expect(screen.getByText(/Files for contact 123/)).toBeInTheDocument();
-      });
-    });
   });
 
   describe("View/Edit Mode", () => {
@@ -529,15 +503,14 @@ describe("ContactSlideOver", () => {
       await waitFor(() => {
         const tabList = screen.getByTestId("tab-list");
 
-        // All 4 tabs should be present
+        // All 3 tabs should be present
         const tabs = within(tabList).getAllByRole("tab");
-        expect(tabs).toHaveLength(4);
+        expect(tabs).toHaveLength(3);
 
         // Verify tab labels
         expect(tabs[0]).toHaveTextContent("Details");
         expect(tabs[1]).toHaveTextContent("Activities");
         expect(tabs[2]).toHaveTextContent("Notes");
-        expect(tabs[3]).toHaveTextContent("Files");
       });
     });
   });

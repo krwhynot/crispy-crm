@@ -18,6 +18,7 @@ export const OrganizationDetailsTab = () => {
         emptyText="Select priority level"
       />
       <TextInput source="phone" helperText={false} label="Phone" />
+      <TextInput source="email" helperText={false} label="Email" type="email" />
       <TextInput source="address" helperText={false} label="Address" />
       <TextInput source="city" helperText={false} label="City" />
       <TextInput source="postal_code" label="Postal Code" helperText={false} />
