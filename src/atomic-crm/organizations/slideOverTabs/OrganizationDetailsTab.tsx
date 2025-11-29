@@ -72,6 +72,12 @@ export function OrganizationDetailsTab({
 
               <SelectInput source="priority" label="Priority" choices={priorities} />
 
+              <TextInput
+                source="email"
+                label="Email"
+                type="email"
+              />
+
               <ReferenceArrayInput source="tags" reference="tags" label="Tags">
                 <AutocompleteArrayInput optionText="name" />
               </ReferenceArrayInput>
