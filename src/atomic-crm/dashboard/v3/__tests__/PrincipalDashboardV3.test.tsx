@@ -116,18 +116,22 @@ describe("PrincipalDashboardV3", () => {
     expect(screen.getByText("Principal Dashboard")).toBeInTheDocument();
   });
 
-  it("should render KPI summary row with four metrics", () => {
+  it("should render KPI summary row with four metrics (PRD v1.9)", () => {
     render(
       <MemoryRouter>
         <PrincipalDashboardV3 />
       </MemoryRouter>
     );
 
-    // Check that KPI labels are rendered
-    expect(screen.getByText("Total Pipeline")).toBeInTheDocument();
+    // Check that KPI labels are rendered per PRD v1.9 Section 9.2.1
+    // KPI #1: Open Opportunities (count, not $ value per Decision #5)
+    // KPI #2: Overdue Tasks
+    // KPI #3: Activities This Week
+    // KPI #4: Stale Deals (with amber styling when > 0)
+    expect(screen.getByText("Open Opportunities")).toBeInTheDocument();
     expect(screen.getByText("Overdue Tasks")).toBeInTheDocument();
     expect(screen.getByText("Activities This Week")).toBeInTheDocument();
-    expect(screen.getByText("Open Opportunities")).toBeInTheDocument();
+    expect(screen.getByText("Stale Deals")).toBeInTheDocument();
   });
 
   it("should render KPI values from mocked data", () => {
@@ -137,10 +141,10 @@ describe("PrincipalDashboardV3", () => {
       </MemoryRouter>
     );
 
-    // Check formatted values from our mock
-    expect(screen.getByText("$150,000")).toBeInTheDocument();
-    expect(screen.getByText("3")).toBeInTheDocument();
-    expect(screen.getByText("12")).toBeInTheDocument();
-    expect(screen.getByText("8")).toBeInTheDocument();
+    // Check formatted values from our mock (all counts, no $ amounts)
+    expect(screen.getByText("8")).toBeInTheDocument(); // Open Opportunities
+    expect(screen.getByText("3")).toBeInTheDocument(); // Overdue Tasks
+    expect(screen.getByText("12")).toBeInTheDocument(); // Activities This Week
+    expect(screen.getByText("2")).toBeInTheDocument(); // Stale Deals
   });
 });
