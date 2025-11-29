@@ -333,7 +333,7 @@ function AuthorizationCard({ authorization, distributorId, onRemove }: Authoriza
             <Button
               variant="ghost"
               size="sm"
-              className="h-10 w-10 p-0 flex-shrink-0 mt-0.5"
+              className="h-11 w-11 p-0 flex-shrink-0 mt-0.5"
               aria-label={isExpanded ? "Collapse product exceptions" : "Expand product exceptions"}
             >
               {isExpanded ? (

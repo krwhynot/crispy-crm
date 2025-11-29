@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-034 completed - Note RLS Manager/Admin Override)
+**Last Updated:** 2025-11-29 (TODO-042 Daily Email Digest completed - pg_cron + Edge Function)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -1056,36 +1056,59 @@ Important features that can be worked in parallel.
 
 #### TODO-042a: Edge Function Infrastructure & Cron
 - **PRD Reference:** Section 12.3, MVP #31
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
 - **Effort:** M (2 days)
+- **Completed:** 2025-11-29
 - **Description:** Create Supabase Edge Function skeleton with cron trigger
 - **Tasks:**
-  - [ ] Create Edge Function: `supabase/functions/daily-digest/index.ts`
-  - [ ] Set up pg_cron extension in database (if not exists)
-  - [ ] Configure cron schedule for 7 AM (handle timezones)
-  - [ ] Add basic logging and error handling (log failures to Sentry, skip user, continue)
-  - [ ] Test function invocation manually
+  - [x] Create Edge Function: `supabase/functions/daily-digest/index.ts`
+  - [x] Set up pg_cron extension in database (if not exists)
+  - [x] Configure cron schedule for 7 AM (handle timezones)
+  - [x] Add basic logging and error handling (log failures to Sentry, skip user, continue)
+  - [x] Test function invocation manually
 - **Constitution Compliance:**
-  - P1: Error handling is fail-fast per user. Log failures, skip user, continue to next. NO retry queues.
-  - P2 Exception: Edge Functions run server-side and may use direct Supabase SQL (documented exception)
-- **Acceptance Criteria:** Edge Function deploys and can be triggered; cron schedule configured
-- **Testability:** Integration: Manual invoke returns 200; cron job visible in pg_cron
+  - P1: Error handling is fail-fast per user. Log failures, skip user, continue to next. NO retry queues. ✅
+  - P2 Exception: Edge Functions run server-side and may use direct Supabase SQL (documented exception) ✅
+- **Implementation Notes:**
+  - Edge Function: `supabase/functions/daily-digest/index.ts` (v3.0 - fail-fast per user)
+  - Migration: `supabase/migrations/20251129231451_setup_daily_digest_cron_trigger.sql`
+  - pg_cron v1.6.4 enabled, pg_net v0.19.5 enabled
+  - Cron job: `daily-digest-7am` at `0 7 * * *` (7 AM UTC daily)
+  - Helper function: `invoke_daily_digest_function()` with SECURITY DEFINER
+  - Vault secrets: `project_url` and `service_role_key` configured
+  - Architecture: pg_cron → invoke_daily_digest_function() → pg_net HTTP POST → Edge Function
+- **Acceptance Criteria:** Edge Function deploys and can be triggered; cron schedule configured ✅
+- **Testability:** Integration: Manual invoke returns 200; cron job visible in pg_cron ✅
 
 #### TODO-042b: Digest Query Logic
 - **PRD Reference:** Section 12.3, MVP #31
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
-- **Depends On:** TODO-042a, TODO-012
+- **Depends On:** TODO-042a ✅, TODO-012 ✅
 - **Effort:** S (1 day)
+- **Completed:** 2025-11-29
 - **Description:** Build queries for digest content (overdue tasks, stale deals)
 - **Tasks:**
-  - [ ] Query overdue tasks per user (due_date < today, completed = false)
-  - [ ] Query tasks due today per user
-  - [ ] Query at-risk/stale deals per user (using STAGE_STALE_THRESHOLDS)
-  - [ ] Return structured data for email template
-- **Acceptance Criteria:** Queries return correct data grouped by user
-- **Testability:** Unit: Mock data returns expected task/deal counts; SQL queries return correct rows
+  - [x] Query overdue tasks per user (due_date < today, completed = false)
+  - [x] Query tasks due today per user
+  - [x] Query at-risk/stale deals per user (using STAGE_STALE_THRESHOLDS)
+  - [x] Return structured data for email template
+- **Implementation Notes:**
+  - Migrations:
+    - `supabase/migrations/20251129180000_add_digest_query_functions.sql`
+    - `supabase/migrations/20251129190000_add_tasks_due_today_function.sql`
+  - PostgreSQL Types: `overdue_task_record`, `today_task_record`, `stale_deal_record`, `user_digest_summary`
+  - Functions:
+    - `get_overdue_tasks_for_user(p_sales_id)` → SETOF overdue_task_record
+    - `get_tasks_due_today_for_user(p_sales_id)` → SETOF today_task_record
+    - `get_stale_deals_for_user(p_sales_id)` → SETOF stale_deal_record (uses per-stage thresholds)
+    - `get_user_digest_summary(p_sales_id)` → user_digest_summary (aggregated counts + JSON arrays)
+  - TypeScript Service: `DigestService` in `src/atomic-crm/services/digest.service.ts`
+  - Per-stage stale thresholds from PRD Section 6.3: new_lead=7, initial_outreach=14, sample_visit_offered=14, feedback_logged=21, demo_scheduled=14
+  - Edge Function calls `get_user_digest_summary` RPC for each user
+- **Acceptance Criteria:** Queries return correct data grouped by user ✅
+- **Testability:** Unit: Mock data returns expected task/deal counts; SQL queries return correct rows ✅
 
 #### TODO-042c: Email Template & Formatting
 - **PRD Reference:** Section 12.3, MVP #31
@@ -1560,18 +1583,16 @@ Polish items and technical cleanup.
 
 ## Summary by Status
 
-### ⬜ TODO (Not Started): 59 items
-- **Remaining original items:** 28 (TODO-049 Monitoring completed)
-- **Remaining decomposed subtasks:** 17 (from TODO-004c, 011, 022, 042, 043)
-- **Hygiene items:** 1 (TODO-046 Pre-Launch Cleanup)
+### ⬜ TODO (Not Started): ~15 items
+- **Remaining P2 items:** TODO-014, 016, 020, 023, 032, 033, 035
+- **Remaining P3 items:** TODO-038, 041, 041a, 046
 - **Operational readiness:** 4 (TODO-047 Accessibility, TODO-048 Performance, TODO-050 Docs, TODO-051 Backup)
-- **Other remaining items:** 5 (TODO-052 Import Handling, etc.)
 - **Constitution Compliance Audits:** 1 (TODO-055 DataProvider Audit)
 
 ### 🔧 Partial/In Progress: 1 item
 - **TODO-052:** Contact Import Organization Handling (4/5 tasks complete)
 
-### ✅ Done: 32 items (completed 2025-11-28/29)
+### ✅ Done: 44 items (completed 2025-11-28/29)
 - **TODO-001:** Pipeline Stage Migration (3/3 subtasks ✅)
   - TODO-001a: Pipeline DB Migration
   - TODO-001b: Pipeline Constants & Schema Update
@@ -1598,6 +1619,11 @@ Polish items and technical cleanup.
 - **TODO-022:** Hybrid Duplicate Prevention (2/2 subtasks ✅)
   - TODO-022a: Exact Match Duplicate Detection (checkExactDuplicate utility, 9 unit tests)
   - TODO-022b: Fuzzy Match Detection (Levenshtein algorithm, warning dialog, 27 unit tests)
+- **TODO-042:** Daily Email Digest (4/4 subtasks ✅)
+  - TODO-042a: Edge Function Infrastructure & Cron (pg_cron + pg_net + Vault secrets)
+  - TODO-042b: Digest Query Logic (get_user_digest_summary RPC with per-stage thresholds)
+  - TODO-042c: Email Template & Formatting (HTML template with MFB branding)
+  - TODO-042d: User Preferences & Empty Skip (digest_opt_in field, opt-out tokens)
 - **TODO-019:** Bulk Owner Reassignment (BulkReassignButton, OrganizationBulkActionsToolbar, 31 unit tests)
 - **TODO-027:** Task Snooze Popover (SnoozePopover component with Tomorrow/Next Week/Custom options)
 - **TODO-028:** Task Completion Follow-Up Toast (showFollowUpToast utility, 5s auto-dismiss, pre-filled create form)
@@ -1614,7 +1640,7 @@ Polish items and technical cleanup.
 - **TODO-004** → 3 subtasks (004a ✅, 004b ✅, 004c ✅) - Win/Loss Reasons **COMPLETE**
 - **TODO-011** → 4 subtasks (011a ✅, 011b ✅, 011c ✅, 011d ✅) - Sample Tracking **COMPLETE**
 - **TODO-022** → 2 subtasks (022a ✅, 022b ✅) - Duplicate Prevention **COMPLETE**
-- **TODO-042** → 4 subtasks (042a, 042b, 042c, 042d) - Email Digest
+- **TODO-042** → 4 subtasks (042a ✅, 042b ✅, 042c ✅, 042d ✅) - Email Digest **COMPLETE**
 - **TODO-043** → 4 subtasks (043a ✅, 043b ✅, 043c ✅, 043d ✅) - Authorization **COMPLETE**
 
 ---
@@ -1660,11 +1686,11 @@ TODO-022 (Hybrid Duplicate Prevention)
     └── TODO-022a (Exact Match - MVP)
         └── TODO-022b (Fuzzy Match - Enhancement)
 
-TODO-042 (Daily Email Digest)
-    └── TODO-042a (Infrastructure & Cron)
-        └── TODO-042b (Query Logic) → Depends on TODO-012
-            └── TODO-042c (Email Template)
-                └── TODO-042d (User Preferences)
+TODO-042 (Daily Email Digest) ✅ COMPLETE
+    └── TODO-042a (Infrastructure & Cron) ✅
+        └── TODO-042b (Query Logic) ✅ → Depends on TODO-012 ✅
+            └── TODO-042c (Email Template) ✅
+                └── TODO-042d (User Preferences) ✅
 
 TODO-043 (Dual-Level Authorization) ✅ COMPLETE
     └── TODO-043a (Org-Level Table) ✅
@@ -1788,18 +1814,18 @@ Each sprint must meet these criteria before items are marked complete:
 - **Sprint Total:** ~10 days | **Risk:** Low
 
 ### Sprint 6 (Week 10-12): Email Digest, Authorization & Ops Foundation
-- TODO-042a: Email Digest Infrastructure (M, 2d)
-- TODO-042b: Digest Query Logic (S, 1d) ← Depends on TODO-012
-- TODO-042c: Email Template (S, 1d)
-- TODO-042d: User Preferences & Empty Skip (M, 2d)
+- TODO-042a: Email Digest Infrastructure (M, 2d) ✅ COMPLETE
+- TODO-042b: Digest Query Logic (S, 1d) ✅ COMPLETE
+- TODO-042c: Email Template (S, 1d) ✅ COMPLETE
+- TODO-042d: User Preferences & Empty Skip (M, 2d) ✅ COMPLETE
 - TODO-043a: Org-Level Authorizations Table (M, 2d) ✅
 - TODO-043b: Product-Level Authorizations (S, 1d) ✅
 - TODO-043c: Authorization Inheritance Logic (M, 2d) ✅
 - TODO-043d: Opportunity Authorization Warning (S, 1d) ✅
 - TODO-020: Authorization UI Tab (L, 4d) ← Moved from Sprint 5, deferrable to post-MVP
-- TODO-049: Production Monitoring & Observability (M, 2d) ← P1: Critical for launch
+- TODO-049: Production Monitoring & Observability (M, 2d) ✅ COMPLETE
 - TODO-051: Backup & Recovery Verification (S, 1d) ← P1: Must verify before launch
-- **Sprint Total:** ~19 days | **Risk:** High (TODO-020 deferrable if slippage)
+- **Sprint Total:** ~5 days remaining (TODO-020 + TODO-051) | **Risk:** Low (most items complete)
 
 ### Sprint 7 (Week 12-14): Polish, Mobile, QA & Launch Readiness
 - TODO-035: Mobile Quick Actions (M, 3d) ← Moved from Sprint 6
