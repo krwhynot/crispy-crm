@@ -104,6 +104,23 @@ These items block other work or are foundational to the system.
 - **Acceptance Criteria:** Cannot create contact without organization; clear error message shown
 - **Blocks:** TODO-003, TODO-049
 
+#### TODO-049: Contact Import Organization Handling
+- **PRD Reference:** Section 4.2, MVP #18 (edge case)
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Depends On:** TODO-002
+- **Effort:** M (2 days)
+- **Deferrable:** Yes - can defer to post-MVP if CSV import not critical path
+- **Description:** Handle organization requirement during CSV contact import
+- **Tasks:**
+  - [ ] Update CSV import to require organization_id column OR organization_name for lookup
+  - [ ] Add validation: reject rows missing organization reference
+  - [ ] Add organization lookup by name (create if not exists, or match existing)
+  - [ ] Show import preview with organization assignments
+  - [ ] Add "Skip rows without organization" option
+- **Acceptance Criteria:** CSV import enforces organization; clear error on missing org; preview shows assignments
+- **Testability:** Integration: Import CSV without org column → error; with org column → success
+
 #### TODO-003: Contact-Customer Org Validation
 - **PRD Reference:** Section 4.2, MVP #49
 - **Status:** ⬜ TODO
@@ -119,21 +136,59 @@ These items block other work or are foundational to the system.
 
 ### Core Business Logic
 
-#### TODO-004: Win/Loss Reasons UI
+#### TODO-004: Win/Loss Reasons UI (PARENT - See subtasks below)
 - **PRD Reference:** Section 5.3, MVP #12, #47
 - **Status:** ⬜ TODO
 - **Priority:** 🔴 P0
 - **Description:** Require reason selection when closing opportunities
-- **Tasks:**
-  - [ ] Add `win_reason` and `loss_reason` fields to opportunity Zod schema
-  - [ ] Create modal component for stage change to `closed_won`/`closed_lost`
-  - [ ] Implement win reasons dropdown (Relationship, Product quality, Price competitive, Distributor preference, Other)
-  - [ ] Implement loss reasons dropdown (Price too high, No distributor authorization, Competitor relationship, Product not a fit, Timing/budget, Other)
-  - [ ] Add "Other" free-text field
-  - [ ] Block save without reason selection
-  - [ ] Store reason in database
+- **Subtasks:** TODO-004a, TODO-004b, TODO-004c
 - **Acceptance Criteria:** Cannot close opportunity without selecting reason; reason visible on closed opportunities
 - **Industry Standard:** Salesforce/HubSpot require reasons on close
+
+#### TODO-004a: Win/Loss Reason Schema & Fields
+- **PRD Reference:** Section 5.3, MVP #12
+- **Status:** ⬜ TODO
+- **Priority:** 🔴 P0
+- **Effort:** S (1 day)
+- **Description:** Add win/loss reason fields to schema and database
+- **Tasks:**
+  - [ ] Add `win_reason` and `loss_reason` fields to opportunity Zod schema
+  - [ ] Add `win_reason_other` and `loss_reason_other` text fields for "Other" option
+  - [ ] Create database migration to add columns
+  - [ ] Define reason enums: WIN_REASONS, LOSS_REASONS constants
+- **Acceptance Criteria:** Schema validates reason fields; DB columns exist
+- **Testability:** Unit: Zod accepts valid reasons, rejects invalid; Integration: columns queryable
+
+#### TODO-004b: Win/Loss Modal Component
+- **PRD Reference:** Section 5.3, MVP #47
+- **Status:** ⬜ TODO
+- **Priority:** 🔴 P0
+- **Depends On:** TODO-004a
+- **Effort:** M (2 days)
+- **Description:** Create modal that appears when closing opportunities
+- **Tasks:**
+  - [ ] Create `CloseOpportunityModal.tsx` component
+  - [ ] Implement win reasons dropdown (Relationship, Product quality, Price competitive, Distributor preference, Other)
+  - [ ] Implement loss reasons dropdown (Price too high, No distributor authorization, Competitor relationship, Product not a fit, Timing/budget, Other)
+  - [ ] Add conditional "Other" free-text field
+  - [ ] Block save without reason selection (disabled submit button)
+- **Acceptance Criteria:** Modal appears on close action; submit disabled until reason selected
+- **Testability:** E2E: Click close → modal appears; select reason → submit enabled; skip reason → submit disabled
+
+#### TODO-004c: Win/Loss Integration & Display
+- **PRD Reference:** Section 5.3, MVP #12
+- **Status:** ⬜ TODO
+- **Priority:** 🔴 P0
+- **Depends On:** TODO-004b
+- **Effort:** S (1 day)
+- **Description:** Integrate modal into stage change flow and display reasons
+- **Tasks:**
+  - [ ] Wire modal into Kanban drag-to-close flow
+  - [ ] Wire modal into opportunity edit stage dropdown
+  - [ ] Display reason on closed opportunity detail view
+  - [ ] Add reason column to opportunity list (optional, filterable)
+- **Acceptance Criteria:** Cannot close via any path without reason; reason visible on closed opps
+- **Testability:** E2E: Drag to closed_won → modal appears; view closed opp → reason displayed
 
 #### TODO-005: Activity Auto-Cascade Trigger
 - **PRD Reference:** Section 6.2, MVP #27
@@ -147,6 +202,24 @@ These items block other work or are foundational to the system.
   - [ ] Verify activity appears in both opportunity and contact timelines
 - **Acceptance Criteria:** Activity logged on opportunity automatically appears on contact timeline
 - **Audit Doc:** `docs/audits/activities-feature-matrix.md`
+
+### Security & Permissions
+
+#### TODO-044: RBAC Foundation
+- **PRD Reference:** Section 3.1-3.3
+- **Status:** ⬜ TODO
+- **Priority:** 🔴 P0
+- **Effort:** M (2 days)
+- **Description:** Establish role-based access control foundation for Manager/Admin features
+- **Tasks:**
+  - [ ] Verify `role` enum exists in sales table ('admin', 'manager', 'rep')
+  - [ ] Create `isAdmin()` and `isManager()` helper functions
+  - [ ] Create `useCurrentUserRole()` hook for frontend
+  - [ ] Update RLS policies to use role checks where needed
+  - [ ] Document role permissions matrix
+- **Acceptance Criteria:** Role helpers work correctly; RLS policies enforce role-based access
+- **Testability:** Unit: isAdmin returns true for admin role; Integration: RLS blocks rep from admin actions
+- **Enables:** TODO-019 (Bulk Reassignment), TODO-034 (Note RLS Override)
 
 ---
 
@@ -634,6 +707,149 @@ Important features that can be worked in parallel.
   - [ ] Position at bottom of mobile screen
 - **Acceptance Criteria:** 6 quick action buttons visible on mobile; each opens appropriate form
 
+### Notifications & Automation
+
+#### TODO-042: Daily Email Digest (PARENT - See subtasks below)
+- **PRD Reference:** Section 12.3, MVP #31
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Description:** 7 AM cron email with overdue tasks + stale deals
+- **Subtasks:** TODO-042a, TODO-042b, TODO-042c, TODO-042d
+- **Acceptance Criteria:** Users receive daily digest at 7 AM; can opt out
+
+#### TODO-042a: Edge Function Infrastructure & Cron
+- **PRD Reference:** Section 12.3, MVP #31
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Effort:** M (2 days)
+- **Description:** Create Supabase Edge Function skeleton with cron trigger
+- **Tasks:**
+  - [ ] Create Edge Function: `supabase/functions/daily-digest/index.ts`
+  - [ ] Set up pg_cron extension in database (if not exists)
+  - [ ] Configure cron schedule for 7 AM (handle timezones)
+  - [ ] Add basic logging and error handling
+  - [ ] Test function invocation manually
+- **Acceptance Criteria:** Edge Function deploys and can be triggered; cron schedule configured
+- **Testability:** Integration: Manual invoke returns 200; cron job visible in pg_cron
+
+#### TODO-042b: Digest Query Logic
+- **PRD Reference:** Section 12.3, MVP #31
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Depends On:** TODO-042a, TODO-012
+- **Effort:** S (1 day)
+- **Description:** Build queries for digest content (overdue tasks, stale deals)
+- **Tasks:**
+  - [ ] Query overdue tasks per user (due_date < today, completed = false)
+  - [ ] Query tasks due today per user
+  - [ ] Query at-risk/stale deals per user (using STAGE_STALE_THRESHOLDS)
+  - [ ] Return structured data for email template
+- **Acceptance Criteria:** Queries return correct data grouped by user
+- **Testability:** Unit: Mock data returns expected task/deal counts; SQL queries return correct rows
+
+#### TODO-042c: Email Template & Formatting
+- **PRD Reference:** Section 12.3, MVP #31
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Depends On:** TODO-042b
+- **Effort:** S (1 day)
+- **Description:** Create HTML email template with digest content
+- **Tasks:**
+  - [ ] Create HTML email template with MFB branding
+  - [ ] Format overdue tasks section with links to tasks
+  - [ ] Format at-risk deals section with links to opportunities
+  - [ ] Add "View Dashboard" CTA button
+  - [ ] Ensure mobile-responsive email design
+- **Acceptance Criteria:** Email renders correctly in Gmail, Outlook; links work
+- **Testability:** Visual: Send test email to various clients; verify links resolve
+
+#### TODO-042d: User Preferences & Empty Skip
+- **PRD Reference:** Section 12.3, MVP #31
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Depends On:** TODO-042c
+- **Effort:** M (2 days)
+- **Description:** Add per-user opt-in/out and skip empty digests
+- **Tasks:**
+  - [ ] Add `digest_opt_in` boolean to sales/users table
+  - [ ] Create user settings UI for digest preference
+  - [ ] Filter users by opt-in status in digest function
+  - [ ] Skip sending if user has no overdue tasks AND no stale deals
+  - [ ] Add opt-out link in email footer
+- **Acceptance Criteria:** Users can toggle digest in settings; empty digests not sent
+- **Testability:** E2E: Opt out → no email received; opt in with data → email received
+
+### Authorization System
+
+#### TODO-043: Dual-Level Authorization Architecture (PARENT - See subtasks below)
+- **PRD Reference:** Section 13.1, MVP #14
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Description:** Implement org-level and product-level authorization tracking
+- **Subtasks:** TODO-043a, TODO-043b, TODO-043c, TODO-043d
+- **Acceptance Criteria:** Can track authorizations at both org and product level; warning shown for non-authorized combos
+
+#### TODO-043a: Org-Level Authorizations Table
+- **PRD Reference:** Section 13.1, MVP #14
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Effort:** M (2 days)
+- **Description:** Create distributor_principal_authorizations table with RLS
+- **Tasks:**
+  - [ ] Create migration: `distributor_principal_authorizations` table
+  - [ ] Columns: id, distributor_id (FK), principal_id (FK), is_authorized, authorization_date, expiration_date, notes, created_at, updated_at
+  - [ ] Add unique constraint on (distributor_id, principal_id)
+  - [ ] Enable RLS with team-wide read policy
+  - [ ] Add GRANT for authenticated role
+- **Acceptance Criteria:** Table created with proper constraints and RLS; can insert/query records
+- **Testability:** Integration: Insert authorization record; query by distributor_id returns it
+
+#### TODO-043b: Verify Product-Level Authorizations
+- **PRD Reference:** Section 13.1, MVP #14
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Depends On:** TODO-043a
+- **Effort:** S (1 day)
+- **Description:** Verify existing product_distributor_authorizations table or create if missing
+- **Tasks:**
+  - [ ] Check if `product_distributor_authorizations` table exists
+  - [ ] If not, create migration with: product_id (FK), distributor_id (FK), is_authorized, notes
+  - [ ] Ensure RLS and GRANT policies match org-level table
+  - [ ] Document relationship between org-level and product-level tables
+- **Acceptance Criteria:** Product-level authorizations table exists with proper schema
+- **Testability:** Integration: Query product_distributor_authorizations returns results
+
+#### TODO-043c: Authorization Inheritance Logic
+- **PRD Reference:** Section 13.1, MVP #14
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Depends On:** TODO-043b
+- **Effort:** M (2 days)
+- **Description:** Implement dual-level authorization resolution (product → org fallback)
+- **Tasks:**
+  - [ ] Create utility: `checkAuthorization(distributor_id, principal_id, product_id?)`
+  - [ ] Logic: If product_id provided AND product-level record exists → use product-level
+  - [ ] Otherwise → derive from org-level authorization
+  - [ ] Return: { authorized: boolean, source: 'product' | 'org' | 'none', expiration?: Date }
+  - [ ] Add database view for efficient authorization lookup
+- **Acceptance Criteria:** Utility correctly resolves authorization with proper precedence
+- **Testability:** Unit: Product-level override returns 'product'; fallback returns 'org'; no record returns 'none'
+
+#### TODO-043d: Opportunity Authorization Warning
+- **PRD Reference:** Section 13.1, MVP #14
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Depends On:** TODO-043c
+- **Effort:** S (1 day)
+- **Description:** Show soft warning when creating opportunity for non-authorized combo
+- **Tasks:**
+  - [ ] Call checkAuthorization on opportunity create/edit when distributor selected
+  - [ ] If not authorized, show warning banner: "Distributor not authorized for this Principal"
+  - [ ] Allow creation despite warning (soft warning, not blocking)
+  - [ ] Log warning acknowledgment for analytics
+- **Acceptance Criteria:** Warning displays for non-authorized combos; creation still allowed
+- **Testability:** E2E: Select non-authorized distributor → warning appears; can still save
+
 ---
 
 ## 🟢 P3 - Low Priority / Cleanup (Week 8-12)
@@ -735,166 +951,26 @@ Polish items and technical cleanup.
   - [ ] Resolve `no-restricted-imports` and `no-restricted-syntax` violations to align with the engineering constitution.
   - [ ] Correct React hooks dependency array warnings.
 - **Acceptance Criteria:** `npm run lint:check` passes with zero errors.
----
-
-## Notifications & Automation
-
-### TODO-042: Daily Email Digest (PARENT - See subtasks below)
-- **PRD Reference:** Section 12.3, MVP #31
-- **Status:** ⬜ TODO
-- **Priority:** 🟡 P2
-- **Description:** 7 AM cron email with overdue tasks + stale deals
-- **Subtasks:** TODO-042a, TODO-042b, TODO-042c, TODO-042d
-- **Acceptance Criteria:** Users receive daily digest at 7 AM; can opt out
-
-#### TODO-042a: Edge Function Infrastructure & Cron
-- **PRD Reference:** Section 12.3, MVP #31
-- **Status:** ⬜ TODO
-- **Priority:** 🟡 P2
-- **Effort:** M (2 days)
-- **Description:** Create Supabase Edge Function skeleton with cron trigger
-- **Tasks:**
-  - [ ] Create Edge Function: `supabase/functions/daily-digest/index.ts`
-  - [ ] Set up pg_cron extension in database (if not exists)
-  - [ ] Configure cron schedule for 7 AM (handle timezones)
-  - [ ] Add basic logging and error handling
-  - [ ] Test function invocation manually
-- **Acceptance Criteria:** Edge Function deploys and can be triggered; cron schedule configured
-- **Testability:** Integration: Manual invoke returns 200; cron job visible in pg_cron
-
-#### TODO-042b: Digest Query Logic
-- **PRD Reference:** Section 12.3, MVP #31
-- **Status:** ⬜ TODO
-- **Priority:** 🟡 P2
-- **Depends On:** TODO-042a
-- **Effort:** S (1 day)
-- **Description:** Build queries for digest content (overdue tasks, stale deals)
-- **Tasks:**
-  - [ ] Query overdue tasks per user (due_date < today, completed = false)
-  - [ ] Query tasks due today per user
-  - [ ] Query at-risk/stale deals per user (using STAGE_STALE_THRESHOLDS)
-  - [ ] Return structured data for email template
-- **Acceptance Criteria:** Queries return correct data grouped by user
-- **Testability:** Unit: Mock data returns expected task/deal counts; SQL queries return correct rows
-
-#### TODO-042c: Email Template & Formatting
-- **PRD Reference:** Section 12.3, MVP #31
-- **Status:** ⬜ TODO
-- **Priority:** 🟡 P2
-- **Depends On:** TODO-042b
-- **Effort:** S (1 day)
-- **Description:** Create HTML email template with digest content
-- **Tasks:**
-  - [ ] Create HTML email template with MFB branding
-  - [ ] Format overdue tasks section with links to tasks
-  - [ ] Format at-risk deals section with links to opportunities
-  - [ ] Add "View Dashboard" CTA button
-  - [ ] Ensure mobile-responsive email design
-- **Acceptance Criteria:** Email renders correctly in Gmail, Outlook; links work
-- **Testability:** Visual: Send test email to various clients; verify links resolve
-
-#### TODO-042d: User Preferences & Empty Skip
-- **PRD Reference:** Section 12.3, MVP #31
-- **Status:** ⬜ TODO
-- **Priority:** 🟡 P2
-- **Depends On:** TODO-042c
-- **Effort:** M (2 days)
-- **Description:** Add per-user opt-in/out and skip empty digests
-- **Tasks:**
-  - [ ] Add `digest_opt_in` boolean to sales/users table
-  - [ ] Create user settings UI for digest preference
-  - [ ] Filter users by opt-in status in digest function
-  - [ ] Skip sending if user has no overdue tasks AND no stale deals
-  - [ ] Add opt-out link in email footer
-- **Acceptance Criteria:** Users can toggle digest in settings; empty digests not sent
-- **Testability:** E2E: Opt out → no email received; opt in with data → email received
-
----
-
-## Authorization System
-
-### TODO-043: Dual-Level Authorization Architecture (PARENT - See subtasks below)
-- **PRD Reference:** Section 13.1, MVP #14
-- **Status:** ⬜ TODO
-- **Priority:** 🟡 P2
-- **Description:** Implement org-level and product-level authorization tracking
-- **Subtasks:** TODO-043a, TODO-043b, TODO-043c, TODO-043d
-- **Acceptance Criteria:** Can track authorizations at both org and product level; warning shown for non-authorized combos
-
-#### TODO-043a: Org-Level Authorizations Table
-- **PRD Reference:** Section 13.1, MVP #14
-- **Status:** ⬜ TODO
-- **Priority:** 🟡 P2
-- **Effort:** M (2 days)
-- **Description:** Create distributor_principal_authorizations table with RLS
-- **Tasks:**
-  - [ ] Create migration: `distributor_principal_authorizations` table
-  - [ ] Columns: id, distributor_id (FK), principal_id (FK), is_authorized, authorization_date, expiration_date, notes, created_at, updated_at
-  - [ ] Add unique constraint on (distributor_id, principal_id)
-  - [ ] Enable RLS with team-wide read policy
-  - [ ] Add GRANT for authenticated role
-- **Acceptance Criteria:** Table created with proper constraints and RLS; can insert/query records
-- **Testability:** Integration: Insert authorization record; query by distributor_id returns it
-
-#### TODO-043b: Verify Product-Level Authorizations
-- **PRD Reference:** Section 13.1, MVP #14
-- **Status:** ⬜ TODO
-- **Priority:** 🟡 P2
-- **Depends On:** TODO-043a
-- **Effort:** S (1 day)
-- **Description:** Verify existing product_distributor_authorizations table or create if missing
-- **Tasks:**
-  - [ ] Check if `product_distributor_authorizations` table exists
-  - [ ] If not, create migration with: product_id (FK), distributor_id (FK), is_authorized, notes
-  - [ ] Ensure RLS and GRANT policies match org-level table
-  - [ ] Document relationship between org-level and product-level tables
-- **Acceptance Criteria:** Product-level authorizations table exists with proper schema
-- **Testability:** Integration: Query product_distributor_authorizations returns results
-
-#### TODO-043c: Authorization Inheritance Logic
-- **PRD Reference:** Section 13.1, MVP #14
-- **Status:** ⬜ TODO
-- **Priority:** 🟡 P2
-- **Depends On:** TODO-043b
-- **Effort:** M (2 days)
-- **Description:** Implement dual-level authorization resolution (product → org fallback)
-- **Tasks:**
-  - [ ] Create utility: `checkAuthorization(distributor_id, principal_id, product_id?)`
-  - [ ] Logic: If product_id provided AND product-level record exists → use product-level
-  - [ ] Otherwise → derive from org-level authorization
-  - [ ] Return: { authorized: boolean, source: 'product' | 'org' | 'none', expiration?: Date }
-  - [ ] Add database view for efficient authorization lookup
-- **Acceptance Criteria:** Utility correctly resolves authorization with proper precedence
-- **Testability:** Unit: Product-level override returns 'product'; fallback returns 'org'; no record returns 'none'
-
-#### TODO-043d: Opportunity Authorization Warning
-- **PRD Reference:** Section 13.1, MVP #14
-- **Status:** ⬜ TODO
-- **Priority:** 🟡 P2
-- **Depends On:** TODO-043c
-- **Effort:** S (1 day)
-- **Description:** Show soft warning when creating opportunity for non-authorized combo
-- **Tasks:**
-  - [ ] Call checkAuthorization on opportunity create/edit when distributor selected
-  - [ ] If not authorized, show warning banner: "Distributor not authorized for this Principal"
-  - [ ] Allow creation despite warning (soft warning, not blocking)
-  - [ ] Log warning acknowledgment for analytics
-- **Acceptance Criteria:** Warning displays for non-authorized combos; creation still allowed
-- **Testability:** E2E: Select non-authorized distributor → warning appears; can still save
 
 ---
 
 ## Summary by Status
 
-### ⬜ TODO (Not Started): 55 items (43 original + 12 decomposed subtasks)
+### ⬜ TODO (Not Started): 66 items
+- **Original items:** 43
+- **Decomposed subtasks:** 20 (from TODO-001, 004, 011, 022, 042, 043)
+- **New items:** 3 (TODO-044 RBAC, TODO-049 Import Handling, Definition of Done)
+
 ### 🔧 Partial/In Progress: 0 items
 ### ✅ Done: 0 items
 
 ### Decomposed Items Breakdown
-- **TODO-011** → 4 subtasks (011a, 011b, 011c, 011d)
-- **TODO-022** → 2 subtasks (022a, 022b)
-- **TODO-042** → 4 subtasks (042a, 042b, 042c, 042d)
-- **TODO-043** → 4 subtasks (043a, 043b, 043c, 043d)
+- **TODO-001** → 3 subtasks (001a, 001b, 001c) - Pipeline Migration
+- **TODO-004** → 3 subtasks (004a, 004b, 004c) - Win/Loss Reasons
+- **TODO-011** → 4 subtasks (011a, 011b, 011c, 011d) - Sample Tracking
+- **TODO-022** → 2 subtasks (022a, 022b) - Duplicate Prevention
+- **TODO-042** → 4 subtasks (042a, 042b, 042c, 042d) - Email Digest
+- **TODO-043** → 4 subtasks (043a, 043b, 043c, 043d) - Authorization
 
 ---
 
@@ -902,14 +978,25 @@ Polish items and technical cleanup.
 
 ```
 TODO-001 (Pipeline Stage Migration)
-    └── (Many components depend on stage constants)
+    └── TODO-001a (DB Migration)
+        └── TODO-001b (Constants & Schema)
+            └── TODO-001c (UI & Filter Updates)
 
 TODO-002 (Contact Org Enforcement)
-    └── TODO-003 (Contact-Customer Org Validation)
-        └── TODO-049 (Import handling)
+    ├── TODO-003 (Contact-Customer Org Validation)
+    └── TODO-049 (Contact Import Org Handling)
+
+TODO-004 (Win/Loss Reasons UI)
+    └── TODO-004a (Schema & Fields)
+        └── TODO-004b (Modal Component)
+            └── TODO-004c (Integration & Display)
 
 TODO-005 (Activity Auto-Cascade)
     └── TODO-008 (Recent Activity Feed) [implicit - data integrity]
+
+TODO-044 (RBAC Foundation)
+    ├── TODO-019 (Bulk Owner Reassignment)
+    └── TODO-034 (Note RLS Manager Override)
 
 TODO-010 (QuickLogForm 13 Types)
     └── TODO-011 (Sample Tracking Workflow)
@@ -921,7 +1008,8 @@ TODO-010 (QuickLogForm 13 Types)
 TODO-012 (Per-Stage Stale Thresholds)
     ├── TODO-007 (Dashboard Stale KPI) [implicit]
     ├── TODO-013 (Visual Decay Indicators)
-    └── TODO-031 (Reports Per-Stage Stale)
+    ├── TODO-031 (Reports Per-Stage Stale)
+    └── TODO-042b (Digest Query Logic) [implicit - stale calculations]
 
 TODO-022 (Hybrid Duplicate Prevention)
     └── TODO-022a (Exact Match - MVP)
@@ -929,7 +1017,7 @@ TODO-022 (Hybrid Duplicate Prevention)
 
 TODO-042 (Daily Email Digest)
     └── TODO-042a (Infrastructure & Cron)
-        └── TODO-042b (Query Logic)
+        └── TODO-042b (Query Logic) → Depends on TODO-012
             └── TODO-042c (Email Template)
                 └── TODO-042d (User Preferences)
 
@@ -944,73 +1032,110 @@ TODO-043 (Dual-Level Authorization)
 
 | Parent | Subtasks | Total Effort | Parallelizable |
 |--------|----------|--------------|----------------|
+| TODO-001 | 001a, 001b, 001c | 4 days | No (sequential) |
+| TODO-004 | 004a, 004b, 004c | 4 days | No (sequential) |
 | TODO-011 | 011a, 011b, 011c, 011d | 6 days | No (sequential) |
 | TODO-022 | 022a, 022b | 4 days | No (022a is MVP) |
 | TODO-042 | 042a, 042b, 042c, 042d | 6 days | No (sequential) |
 | TODO-043 | 043a, 043b, 043c, 043d | 6 days | No (sequential) |
 
+**Total Decomposed Effort:** 30 days across 20 subtasks
+
+---
+
+## Definition of Done (Per Sprint)
+
+Each sprint must meet these criteria before items are marked complete:
+
+### Code Quality
+- [ ] All new code has unit tests (minimum 70% coverage for new files)
+- [ ] TypeScript compiles with no errors (`npm run build`)
+- [ ] Linting passes (`npm run lint:check`)
+- [ ] No console errors in browser dev tools
+
+### Testing
+- [ ] Unit tests pass (`npm test`)
+- [ ] E2E tests pass for affected features (`npm run test:e2e`)
+- [ ] Manual smoke test of changed functionality
+- [ ] Cross-browser check (Chrome, Safari, Edge)
+
+### Documentation
+- [ ] Zod schemas document new fields
+- [ ] Complex logic has inline comments
+- [ ] Breaking changes noted in CHANGELOG (if applicable)
+
+### Review
+- [ ] Code reviewed by at least one team member
+- [ ] No unresolved review comments
+- [ ] Sprint demo completed with stakeholder
+
 ---
 
 ## Sprint Planning Suggestion
 
-### Sprint 1 (Week 1-2): Foundation
-- TODO-001: Pipeline Stage Migration (L, 4d)
+### Sprint 1 (Week 1-2): Foundation & Security
+- TODO-001a: Pipeline DB Migration (S, 1d)
+- TODO-001b: Pipeline Constants & Schema (S, 1d)
+- TODO-001c: Pipeline UI & Filter Updates (M, 2d)
 - TODO-002: Contact Org Enforcement (M, 2d)
-- TODO-004: Win/Loss Reasons UI (L, 3d)
+- TODO-044: RBAC Foundation (M, 2d) ← NEW: Enables role-based features
 - TODO-005: Activity Auto-Cascade Trigger (M, 2d)
-- **Sprint Total:** ~11 days | **Risk:** Tight
+- **Sprint Total:** ~10 days | **Risk:** Medium (decomposed TODO-001 reduces risk)
 
-### Sprint 2 (Week 2-4): Dashboard & Activities
+### Sprint 2 (Week 2-4): Dashboard & Win/Loss
+- TODO-004a: Win/Loss Reason Schema (S, 1d)
+- TODO-004b: Win/Loss Modal Component (M, 2d)
+- TODO-004c: Win/Loss Integration (S, 1d)
 - TODO-006: Dashboard KPI #1 Fix (S, 1d)
 - TODO-007: Dashboard KPI #4 Stale Deals (M, 2d)
 - TODO-008: Recent Activity Feed (M, 2d)
 - TODO-009: My Performance Widget (M, 2d)
-- TODO-010: QuickLogForm 13 Types (M, 3d)
-- **Sprint Total:** ~10 days | **Risk:** Medium
+- **Sprint Total:** ~11 days | **Risk:** Medium
 
-### Sprint 3 (Week 4-6): Sample Tracking & Stale Detection
+### Sprint 3 (Week 4-6): Activities & Sample Tracking
+- TODO-010: QuickLogForm 13 Types (M, 3d)
 - TODO-011a: Sample Status Schema (S, 1d)
 - TODO-011b: Sample Form Fields UI (M, 2d)
 - TODO-011c: Sample Status Workflow UI (M, 2d)
 - TODO-011d: Sample Tracking Views (S, 1d)
+- TODO-003: Contact-Customer Org Validation (M, 2d)
+- **Sprint Total:** ~11 days | **Risk:** Medium
+
+### Sprint 4 (Week 6-8): Stale Detection & Duplicate Prevention
 - TODO-012: Per-Stage Stale Thresholds (M, 2d)
 - TODO-013: Visual Decay Indicators (M, 2d)
-- TODO-003: Contact-Customer Org Validation (M, 2d)
-- **Sprint Total:** ~12 days | **Risk:** Medium-High (can defer TODO-003 if needed)
-
-### Sprint 4 (Week 6-8): Duplicate Prevention & Module Improvements
 - TODO-022a: Exact Match Detection (M, 2d) ← MVP critical
-- TODO-022b: Fuzzy Match Detection (M, 2d) ← Can defer to Sprint 5 if needed
-- TODO-019: Bulk Owner Reassignment (M, 3d)
-- TODO-020: Authorization UI Tab (L, 4d)
-- TODO-021: Opportunity Bulk Delete (S, 1d)
-- **Sprint Total:** ~12 days | **Risk:** Medium
+- TODO-022b: Fuzzy Match Detection (M, 2d)
+- TODO-019: Bulk Owner Reassignment (M, 3d) ← Requires TODO-044
+- **Sprint Total:** ~11 days | **Risk:** Medium
 
-### Sprint 5 (Week 8-10): Tasks, Reports & Email
+### Sprint 5 (Week 8-10): Tasks, Reports & Authorization UI
 - TODO-025-028: Task Module Items (~5d total)
 - TODO-029-031: Reports Module Items (~4d total)
-- TODO-042a: Email Digest Infrastructure (M, 2d)
-- TODO-042b: Digest Query Logic (S, 1d)
-- TODO-042c: Email Template (S, 1d)
-- **Sprint Total:** ~13 days | **Risk:** High (email digest complex)
+- TODO-020: Authorization UI Tab (L, 4d)
+- TODO-021: Opportunity Bulk Delete (S, 1d)
+- **Sprint Total:** ~14 days | **Risk:** High (can defer TODO-020 to Sprint 6)
 
-### Sprint 6 (Week 10-12): Authorization, Cleanup & QA
-- TODO-042d: User Preferences & Empty Skip (M, 2d) ← Finish email digest
+### Sprint 6 (Week 10-12): Email Digest & Authorization Logic
+- TODO-042a: Email Digest Infrastructure (M, 2d)
+- TODO-042b: Digest Query Logic (S, 1d) ← Depends on TODO-012
+- TODO-042c: Email Template (S, 1d)
+- TODO-042d: User Preferences & Empty Skip (M, 2d)
 - TODO-043a: Org-Level Authorizations Table (M, 2d)
 - TODO-043b: Product-Level Authorizations (S, 1d)
 - TODO-043c: Authorization Inheritance Logic (M, 2d)
 - TODO-043d: Opportunity Authorization Warning (S, 1d)
-- TODO-035: Mobile Quick Actions (M, 3d)
-- TODO-032-034: Notes Cleanup (~3d total)
-- **Sprint Total:** ~14 days | **Risk:** High
+- **Sprint Total:** ~12 days | **Risk:** Medium
 
-### Sprint 7 (Week 12-14): Polish & QA Buffer
+### Sprint 7 (Week 12-14): Polish, Mobile & QA
+- TODO-035: Mobile Quick Actions (M, 3d) ← Moved from Sprint 6
+- TODO-032-034: Notes Cleanup (~3d total) ← Moved from Sprint 6
 - TODO-036-038: Dashboard Polish (~3d total)
 - TODO-039-041: Technical Cleanup (~4d total)
-- Full regression testing (3d)
+- TODO-049: Contact Import Org Handling (M, 2d) ← Can defer to post-MVP if needed
+- Final regression testing (2d)
 - User acceptance testing (2d)
-- Buffer for overflow items
-- **Sprint Total:** ~12 days + buffer | **Risk:** Low (buffer sprint)
+- **Sprint Total:** ~19 days | **Risk:** Medium (has buffer capacity)
 
 ---
 
@@ -1025,3 +1150,4 @@ TODO-043 (Dual-Level Authorization)
 
 *Generated from PRD v1.20 - Last Updated: 2025-11-28*
 *Decomposition Update: 2025-11-28 - Added 14 atomic subtasks for TODO-011, 022, 042, 043*
+*Audit Remediation: 2025-11-28 - Added TODO-001/004 decomposition, TODO-044 (RBAC), TODO-049, Definition of Done, rebalanced sprints*
