@@ -17,6 +17,12 @@ export function OpportunityCardActions({ opportunityId }: OpportunityCardActions
   const [deleteOne] = useDelete();
   const notify = useNotify();
   const refresh = useRefresh();
+  const record = useRecordContext<Opportunity>();
+
+  // State for CloseOpportunityModal
+  const [showCloseModal, setShowCloseModal] = useState(false);
+  const [closeTargetStage, setCloseTargetStage] = useState<"closed_won" | "closed_lost">("closed_won");
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -43,21 +49,59 @@ export function OpportunityCardActions({ opportunityId }: OpportunityCardActions
     navigate(`/opportunities/${opportunityId}`);
   };
 
-  const handleMarkWon = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    try {
-      await update("opportunities", {
-        id: opportunityId,
-        data: { stage: "closed_won" },
-        previousData: {},
-      });
-      notify("Opportunity marked as won", { type: "success" });
-      refresh();
-    } catch {
-      notify("Error updating opportunity", { type: "error" });
-    }
-    setIsOpen(false);
-  };
+  /**
+   * Open the close modal with the specified target stage
+   */
+  const handleOpenCloseModal = useCallback(
+    (e: React.MouseEvent, targetStage: "closed_won" | "closed_lost") => {
+      e.stopPropagation();
+      setCloseTargetStage(targetStage);
+      setShowCloseModal(true);
+      setIsOpen(false);
+    },
+    []
+  );
+
+  /**
+   * Handle confirmation from CloseOpportunityModal
+   */
+  const handleCloseConfirm = useCallback(
+    async (data: CloseOpportunityInput) => {
+      setIsClosing(true);
+      try {
+        await update("opportunities", {
+          id: opportunityId,
+          data: {
+            stage: closeTargetStage,
+            win_reason: data.win_reason,
+            loss_reason: data.loss_reason,
+            close_reason_notes: data.close_reason_notes,
+          },
+          previousData: record || {},
+        });
+        notify(
+          closeTargetStage === "closed_won"
+            ? "Opportunity marked as won"
+            : "Opportunity marked as lost",
+          { type: "success" }
+        );
+        refresh();
+        setShowCloseModal(false);
+      } catch {
+        notify("Error updating opportunity", { type: "error" });
+      } finally {
+        setIsClosing(false);
+      }
+    },
+    [opportunityId, closeTargetStage, update, notify, refresh, record]
+  );
+
+  /**
+   * Handle modal open state change (for cancel/close)
+   */
+  const handleCloseModalOpenChange = useCallback((open: boolean) => {
+    setShowCloseModal(open);
+  }, []);
 
   const handleDelete = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -105,11 +149,18 @@ export function OpportunityCardActions({ opportunityId }: OpportunityCardActions
             >
               Edit
             </button>
+            <hr className="my-1 border-border" />
             <button
-              onClick={handleMarkWon}
+              onClick={(e) => handleOpenCloseModal(e, "closed_won")}
               className="w-full px-4 py-2 text-left text-sm text-success-strong hover:bg-accent transition-colors"
             >
               Mark as Won
+            </button>
+            <button
+              onClick={(e) => handleOpenCloseModal(e, "closed_lost")}
+              className="w-full px-4 py-2 text-left text-sm text-destructive hover:bg-accent transition-colors"
+            >
+              Mark as Lost
             </button>
             <hr className="my-1 border-border" />
             <button
@@ -121,6 +172,17 @@ export function OpportunityCardActions({ opportunityId }: OpportunityCardActions
           </div>
         </div>
       )}
+
+      {/* CloseOpportunityModal - shown when clicking Mark as Won/Lost */}
+      <CloseOpportunityModal
+        open={showCloseModal}
+        onOpenChange={handleCloseModalOpenChange}
+        opportunityId={opportunityId}
+        opportunityName={record?.name || "Opportunity"}
+        targetStage={closeTargetStage}
+        onConfirm={handleCloseConfirm}
+        isSubmitting={isClosing}
+      />
     </div>
   );
 }

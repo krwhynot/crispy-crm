@@ -1,8 +1,8 @@
-import { useState } from "react";
+import { useState, useCallback, useRef } from "react";
 import { Form, useUpdate, useNotify, ReferenceInput, useGetOne } from "react-admin";
 import { Link } from "react-router-dom";
 import { format } from "date-fns";
-import { Building2 } from "lucide-react";
+import { Building2, Trophy, XCircle } from "lucide-react";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
@@ -10,6 +10,9 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
 import { LeadSourceInput } from "../LeadSourceInput";
+import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
+import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
+import { WIN_REASONS, LOSS_REASONS } from "@/atomic-crm/validation/opportunities";
 
 interface OpportunitySlideOverDetailsTabProps {
   record: any;
@@ -29,32 +32,94 @@ export function OpportunitySlideOverDetailsTab({
   const notify = useNotify();
   const [isSaving, setIsSaving] = useState(false);
 
-  const handleSave = async (data: any) => {
-    setIsSaving(true);
-    try {
-      await update(
-        "opportunities",
-        {
-          id: record.id,
-          data,
-          previousData: record,
-        },
-        {
-          onSuccess: () => {
-            notify("Opportunity updated successfully", { type: "success" });
-            if (onModeToggle) {
-              onModeToggle(); // Switch back to view mode
-            }
+  // State for CloseOpportunityModal
+  const [showCloseModal, setShowCloseModal] = useState(false);
+  const [closeTargetStage, setCloseTargetStage] = useState<"closed_won" | "closed_lost">("closed_won");
+  const pendingFormDataRef = useRef<any>(null);
+
+  /**
+   * Perform the actual save operation
+   */
+  const performSave = useCallback(
+    async (data: any, additionalData?: Partial<CloseOpportunityInput>) => {
+      setIsSaving(true);
+      try {
+        await update(
+          "opportunities",
+          {
+            id: record.id,
+            data: { ...data, ...additionalData },
+            previousData: record,
           },
-          onError: (error: any) => {
-            notify(error?.message || "Failed to update opportunity", { type: "error" });
-          },
-        }
-      );
-    } finally {
-      setIsSaving(false);
+          {
+            onSuccess: () => {
+              notify("Opportunity updated successfully", { type: "success" });
+              if (onModeToggle) {
+                onModeToggle(); // Switch back to view mode
+              }
+            },
+            onError: (error: any) => {
+              notify(error?.message || "Failed to update opportunity", { type: "error" });
+            },
+          }
+        );
+      } finally {
+        setIsSaving(false);
+      }
+    },
+    [update, record, notify, onModeToggle]
+  );
+
+  /**
+   * Handle form submission - intercept closed stage transitions
+   */
+  const handleSave = useCallback(
+    async (data: any) => {
+      const isClosingOpportunity =
+        (data.stage === "closed_won" || data.stage === "closed_lost") &&
+        record.stage !== data.stage;
+
+      if (isClosingOpportunity) {
+        // Store form data and show modal
+        pendingFormDataRef.current = data;
+        setCloseTargetStage(data.stage as "closed_won" | "closed_lost");
+        setShowCloseModal(true);
+        return;
+      }
+
+      // Regular save - no modal needed
+      await performSave(data);
+    },
+    [record.stage, performSave]
+  );
+
+  /**
+   * Handle confirmation from CloseOpportunityModal
+   */
+  const handleCloseConfirm = useCallback(
+    async (closeData: CloseOpportunityInput) => {
+      setShowCloseModal(false);
+      if (pendingFormDataRef.current) {
+        await performSave(pendingFormDataRef.current, {
+          win_reason: closeData.win_reason,
+          loss_reason: closeData.loss_reason,
+          close_reason_notes: closeData.close_reason_notes,
+        });
+        pendingFormDataRef.current = null;
+      }
+    },
+    [performSave]
+  );
+
+  /**
+   * Handle modal cancel
+   */
+  const handleCloseModalOpenChange = useCallback((open: boolean) => {
+    setShowCloseModal(open);
+    if (!open) {
+      pendingFormDataRef.current = null;
     }
-  };
+  }, []);
 
   const handleCancel = () => {
     if (onModeToggle) {
@@ -167,6 +232,17 @@ export function OpportunitySlideOverDetailsTab({
             Cancel
           </Button>
         </div>
+
+        {/* CloseOpportunityModal - shown when changing stage to closed_won/closed_lost */}
+        <CloseOpportunityModal
+          open={showCloseModal}
+          onOpenChange={handleCloseModalOpenChange}
+          opportunityId={record.id}
+          opportunityName={record.name || "Opportunity"}
+          targetStage={closeTargetStage}
+          onConfirm={handleCloseConfirm}
+          isSubmitting={isSaving}
+        />
       </Form>
     );
   }
@@ -255,6 +331,23 @@ export function OpportunitySlideOverDetailsTab({
   const stageName =
     OPPORTUNITY_STAGE_CHOICES.find((choice) => choice.id === record.stage)?.name || record.stage;
 
+  /**
+   * Get the display name for a win/loss reason
+   */
+  const getReasonDisplayName = (reason: string | null | undefined, isWin: boolean): string | null => {
+    if (!reason) return null;
+    const reasons = isWin ? WIN_REASONS : LOSS_REASONS;
+    return reasons.find((r) => r.id === reason)?.name || reason;
+  };
+
+  // Determine if this is a closed opportunity with reason data
+  const isClosedOpportunity = record.stage === "closed_won" || record.stage === "closed_lost";
+  const closedReason = record.stage === "closed_won"
+    ? getReasonDisplayName(record.win_reason, true)
+    : record.stage === "closed_lost"
+    ? getReasonDisplayName(record.loss_reason, false)
+    : null;
+
   return (
     <div className="space-y-2">
       {/* Name */}
@@ -288,6 +381,36 @@ export function OpportunitySlideOverDetailsTab({
           </div>
         </div>
       </div>
+
+      {/* Win/Loss Reason - shown for closed opportunities */}
+      {isClosedOpportunity && closedReason && (
+        <div
+          className={`rounded-lg p-3 ${
+            record.stage === "closed_won"
+              ? "bg-success/10 border border-success/20"
+              : "bg-destructive/10 border border-destructive/20"
+          }`}
+        >
+          <div className="flex items-center gap-2 mb-1">
+            {record.stage === "closed_won" ? (
+              <Trophy className="h-4 w-4 text-success" />
+            ) : (
+              <XCircle className="h-4 w-4 text-destructive" />
+            )}
+            <span
+              className={`text-xs font-medium uppercase tracking-wide ${
+                record.stage === "closed_won" ? "text-success" : "text-destructive"
+              }`}
+            >
+              {record.stage === "closed_won" ? "Won Reason" : "Lost Reason"}
+            </span>
+          </div>
+          <p className="text-sm font-medium">{closedReason}</p>
+          {record.close_reason_notes && (
+            <p className="text-sm text-muted-foreground mt-1">{record.close_reason_notes}</p>
+          )}
+        </div>
+      )}
 
       {/* Lead Source & Close Date row */}
       <div className="grid grid-cols-2 gap-3">

@@ -10,3 +10,4 @@ export { PrincipalPipelineTable } from "./PrincipalPipelineTable";
 export { PipelineDrillDownSheet } from "./PipelineDrillDownSheet";
 export { KPICard, type KPIMetricType } from "./KPICard";
 export { KPISummaryRow } from "./KPISummaryRow";
+export { MyPerformanceWidget } from "./MyPerformanceWidget";

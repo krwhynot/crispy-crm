@@ -4,6 +4,7 @@ import { TasksKanbanPanel } from "./components/TasksKanbanPanel";
 import { ActivityFeedPanel } from "./components/ActivityFeedPanel";
 import { LogActivityFAB } from "./components/LogActivityFAB";
 import { KPISummaryRow } from "./components/KPISummaryRow";
+import { MyPerformanceWidget } from "./components/MyPerformanceWidget";
 
 /**
  * PrincipalDashboardV3 - Vertically stacked dashboard with Log Activity FAB
@@ -47,13 +48,21 @@ export function PrincipalDashboardV3() {
           {/* Pipeline Table - Full width */}
           <PrincipalPipelineTable key={`pipeline-${refreshKey}`} />
 
-          {/* Tasks + Activity Feed - Two columns on desktop, stacked on mobile */}
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-            {/* Tasks Kanban Board */}
-            <TasksKanbanPanel key={`tasks-${refreshKey}`} />
+          {/* Tasks + Activity Feed + Performance - Three columns on desktop, stacked on mobile */}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+            {/* Tasks Kanban Board - spans 2 columns on desktop */}
+            <div className="lg:col-span-2">
+              <TasksKanbanPanel key={`tasks-${refreshKey}`} />
+            </div>
 
-            {/* Activity Feed Panel */}
-            <ActivityFeedPanel key={`activities-${refreshKey}`} limit={15} />
+            {/* Right column: Performance Widget + Activity Feed stacked */}
+            <div className="flex flex-col gap-4">
+              {/* My Performance Widget */}
+              <MyPerformanceWidget key={`performance-${refreshKey}`} />
+
+              {/* Activity Feed Panel */}
+              <ActivityFeedPanel key={`activities-${refreshKey}`} limit={10} />
+            </div>
           </div>
         </div>
 
