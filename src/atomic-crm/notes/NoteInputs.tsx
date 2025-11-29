@@ -33,7 +33,7 @@ export const NoteInputs = () => {
           >
             Show options
           </Button>
-          <span className="text-sm text-muted-foreground">(change date/time or attach files)</span>
+          <span className="text-sm text-muted-foreground">(change date/time)</span>
         </div>
       )}
 
@@ -51,9 +51,6 @@ export const NoteInputs = () => {
           className="text-primary"
           // defaultValue removed per Constitution #5 - defaults come from Zod schema via form-level defaultValues
         />
-        <FileInput source="attachments" multiple>
-          <FileField source="src" title="title" target="_blank" />
-        </FileInput>
       </div>
     </div>
   );

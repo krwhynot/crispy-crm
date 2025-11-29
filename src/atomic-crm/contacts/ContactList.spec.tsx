@@ -9,7 +9,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ContactList } from "./ContactList";
 import { ConfigurationContext } from "../root/ConfigurationContext";
 
-// Mock contacts with multi-organization data
+// Mock contacts with single organization relationship (per PRD - one contact = one org)
 const mockContacts = [
   {
     id: 1,
@@ -18,8 +18,7 @@ const mockContacts = [
     title: "CTO",
     email: [{ email: "john.doe@acme.com", type: "Work" }],
     phone: [{ number: "+1-555-0123", type: "Work" }],
-    organization_names: ["Acme Corp", "Tech Partners Ltd"], // Aggregated from junction table
-    primary_organization_name: "Acme Corp",
+    organization_id: 1, // Single org relationship
     role: "decision_maker",
     purchase_influence: "High",
     created_at: "2024-01-15T10:00:00Z",
@@ -31,8 +30,7 @@ const mockContacts = [
     title: "VP Engineering",
     email: [{ email: "jane.smith@techcorp.com", type: "Work" }],
     phone: [{ number: "+1-555-0124", type: "Work" }],
-    organization_names: ["TechCorp Inc"],
-    primary_organization_name: "TechCorp Inc",
+    organization_id: 2, // Single org relationship
     role: "influencer",
     purchase_influence: "Medium",
     created_at: "2024-01-20T10:00:00Z",
@@ -44,8 +42,7 @@ const mockContacts = [
     title: "Procurement Manager",
     email: [{ email: "bob.johnson@global.com", type: "Work" }],
     phone: [{ number: "+1-555-0125", type: "Work" }],
-    organization_names: ["Global Systems Ltd", "Consulting Firm Inc", "Tech Distributors Ltd"],
-    primary_organization_name: "Global Systems Ltd",
+    organization_id: 3, // Single org relationship
     role: "buyer",
     purchase_influence: "High",
     created_at: "2024-02-01T10:00:00Z",
@@ -56,9 +53,6 @@ const mockOrganizations = [
   { id: 1, name: "Acme Corp", sector: "Technology" },
   { id: 2, name: "TechCorp Inc", sector: "Software" },
   { id: 3, name: "Global Systems Ltd", sector: "Consulting" },
-  { id: 4, name: "Tech Partners Ltd", sector: "Technology" },
-  { id: 5, name: "Consulting Firm Inc", sector: "Services" },
-  { id: 6, name: "Tech Distributors Ltd", sector: "Distribution" },
 ];
 
 // Mock the unified data provider with service methods
@@ -126,11 +120,11 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
+describe("ContactList - Single Organization Model (Unified Provider)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    // Mock getList for contacts
+    // Mock getList for contacts - simplified single-org model
     mockDataProvider.getList.mockImplementation((resource, params) => {
       if (resource === "contacts_summary") {
         let filteredContacts = [...mockContacts];
@@ -138,13 +132,9 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
         // Apply filters
         if (params.filter) {
           if (params.filter.organization_id) {
-            // Filter by any organization the contact is associated with via junction table
-            filteredContacts = filteredContacts.filter((contact) =>
-              contact.organization_names.some((name) =>
-                mockOrganizations.find(
-                  (org) => org.id === params.filter.organization_id && org.name === name
-                )
-              )
+            // Direct organization_id match (single-org model)
+            filteredContacts = filteredContacts.filter(
+              (contact) => contact.organization_id === params.filter.organization_id
             );
           }
 
@@ -162,12 +152,16 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
 
           if (params.filter.q) {
             const query = params.filter.q.toLowerCase();
+            // Get org name for search matching
+            const getOrgName = (orgId: number) =>
+              mockOrganizations.find(org => org.id === orgId)?.name || "";
+
             filteredContacts = filteredContacts.filter(
               (contact) =>
                 contact.first_name.toLowerCase().includes(query) ||
                 contact.last_name.toLowerCase().includes(query) ||
                 contact.title?.toLowerCase().includes(query) ||
-                contact.organization_names.some((name) => name.toLowerCase().includes(query))
+                getOrgName(contact.organization_id).toLowerCase().includes(query)
             );
           }
         }
@@ -198,7 +192,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     });
   });
 
-  it("should render contact list with multi-organization data", async () => {
+  it("should render contact list with organization data", async () => {
     render(
       <TestWrapper>
         <ContactList />
@@ -212,7 +206,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     });
   });
 
-  it("should display primary organization for each contact", async () => {
+  it("should display organization for each contact", async () => {
     render(
       <TestWrapper>
         <ContactList />
@@ -255,21 +249,6 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
       expect(screen.getByText("Procurement Manager")).toBeInTheDocument();
       expect(screen.getByText("john.doe@acme.com")).toBeInTheDocument();
       expect(screen.getByText("jane.smith@techcorp.com")).toBeInTheDocument();
-    });
-  });
-
-  it("should show associated organizations count for multi-org contacts", async () => {
-    render(
-      <TestWrapper>
-        <ContactList />
-      </TestWrapper>
-    );
-
-    await waitFor(() => {
-      // Bob Johnson is associated with 3 organizations
-      const bobRow = screen.getByText("Bob Johnson").closest("tr");
-      expect(bobRow).toBeInTheDocument();
-      // Should indicate multiple organizations somehow (badge, count, etc.)
     });
   });
 
@@ -357,7 +336,7 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     });
   });
 
-  it("should search contacts across all organizations", async () => {
+  it("should search contacts by name", async () => {
     render(
       <TestWrapper>
         <ContactList />
@@ -465,35 +444,13 @@ describe("ContactList - Multi-Organization Support (Unified Provider)", () => {
     });
   });
 
-  it("should display multiple organization associations visually", async () => {
-    render(
-      <TestWrapper>
-        <ContactList />
-      </TestWrapper>
-    );
-
-    await waitFor(() => {
-      // John Doe has 2 organizations
-      const johnRow = screen.getByText("John Doe").closest("tr");
-      expect(johnRow).toBeInTheDocument();
-
-      // Bob Johnson has 3 organizations
-      const bobRow = screen.getByText("Bob Johnson").closest("tr");
-      expect(bobRow).toBeInTheDocument();
-
-      // Jane Smith has 1 organization
-      const janeRow = screen.getByText("Jane Smith").closest("tr");
-      expect(janeRow).toBeInTheDocument();
-    });
-  });
-
-  it("should handle pagination with multi-organization data", async () => {
+  it("should handle pagination with organization data", async () => {
     const manyContacts = Array.from({ length: 50 }, (_, i) => ({
       ...mockContacts[0],
       id: i + 1,
       first_name: `Contact${i + 1}`,
       last_name: "Test",
-      organization_names: [`Organization ${i + 1}`],
+      organization_id: (i % 3) + 1, // Cycle through org IDs 1, 2, 3
     }));
 
     mockDataProvider.getList.mockResolvedValue({
