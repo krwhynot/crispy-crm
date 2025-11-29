@@ -37,13 +37,9 @@ const ContactShowContent = () => {
                 <div className="text-sm text-muted-foreground">
                   {record.title}
                   {record.department && ` - ${record.department}`}
-                  {record.title && record.organizations?.find((org) => org.is_primary) && " at "}
-                  {record.organizations?.find((org) => org.is_primary) && (
+                  {record.title && record.organization_id && " at "}
+                  {record.organization_id && (
                     <ReferenceField
-                      record={{
-                        organization_id: record.organizations.find((org) => org.is_primary)
-                          ?.organization_id,
-                      }}
                       source="organization_id"
                       reference="organizations"
                       link="show"
@@ -54,12 +50,8 @@ const ContactShowContent = () => {
                 </div>
               </div>
               <div>
-                {record.organizations?.find((org) => org.is_primary) && (
+                {record.organization_id && (
                   <ReferenceField
-                    record={{
-                      organization_id: record.organizations.find((org) => org.is_primary)
-                        ?.organization_id,
-                    }}
                     source="organization_id"
                     reference="organizations"
                     link="show"
@@ -80,36 +72,21 @@ const ContactShowContent = () => {
               </TabsList>
 
               <TabsContent value="details" className="pt-2">
-                {/* Organizations Section */}
-                {record.organizations && record.organizations.length > 0 && (
+                {/* Organization Section - Single organization per contact */}
+                {record.organization_id && (
                   <div className="mt-4">
-                    <h3 className="text-lg font-semibold mb-4">Associated Organizations</h3>
-                    <div className="space-y-2">
-                      {record.organizations.map((org: any) => (
-                        <div
-                          key={org.organization_id}
-                          className="flex items-center justify-between p-3 border rounded-lg"
+                    <h3 className="text-lg font-semibold mb-4">Organization</h3>
+                    <div className="flex items-center justify-between p-3 border rounded-lg">
+                      <div className="flex-1">
+                        <ReferenceField
+                          source="organization_id"
+                          reference="organizations"
+                          link="show"
+                          className="font-medium"
                         >
-                          <div className="flex-1">
-                            <ReferenceField
-                              record={{ organization_id: org.organization_id }}
-                              source="organization_id"
-                              reference="organizations"
-                              link="show"
-                              className="font-medium"
-                            >
-                              <TextField source="name" />
-                            </ReferenceField>
-                          </div>
-                          <div className="text-sm">
-                            {org.is_primary && (
-                              <span className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-xs">
-                                Primary
-                              </span>
-                            )}
-                          </div>
-                        </div>
-                      ))}
+                          <TextField source="name" />
+                        </ReferenceField>
+                      </div>
                     </div>
                   </div>
                 )}

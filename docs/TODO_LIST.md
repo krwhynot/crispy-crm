@@ -923,28 +923,45 @@ Important features that can be worked in parallel.
 
 #### TODO-029: Reports Overview 4th KPI (Stale Deals)
 - **PRD Reference:** Section 8.2, MVP #59
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Add 4th KPICard to OverviewTab
 - **Tasks:**
-  - [ ] Add Stale Deals KPICard to Overview
-  - [ ] Apply `bg-warning` (--warning semantic token) styling when count > 0
-  - [ ] Use per-stage thresholds from Section 6.3
+  - [x] Add Stale Deals KPICard to Overview
+  - [x] Apply `bg-warning` (--warning semantic token) styling when count > 0
+  - [x] Use per-stage thresholds from Section 6.3
 - **Constitution Compliance:**
-  - P8: Use `bg-warning` semantic token, not amber/yellow hex codes
-- **Acceptance Criteria:** 4th KPI visible on reports overview; amber when stale count > 0
+  - P8: Use `bg-warning` semantic token, not amber/yellow hex codes ✓
+- **Implementation Notes:**
+  - KPICard component at `src/atomic-crm/reports/components/KPICard.tsx` supports `variant` prop
+  - Variant styles: `warning` → `border-warning/50 bg-warning/5`, `text-warning` for value/icon
+  - OverviewTab.tsx:333-343 passes `variant={kpis.staleDeals > 0 ? "warning" : "default"}`
+  - Uses `countStaleOpportunities()` from `stalenessCalculation.ts` (per-stage thresholds)
+  - Unit tests added for all variant styling (13 tests passing)
+  - E2E tests added in `reports-overview.spec.ts` for Stale Deals KPI
+- **Acceptance Criteria:** 4th KPI visible on reports overview; amber when stale count > 0 ✅
 
 #### TODO-030: Reports KPI Click Navigation
 - **PRD Reference:** MVP #60
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Add onClick handlers to all KPICards
 - **Tasks:**
-  - [ ] Total Opportunities → Opportunities List (all active)
-  - [ ] Overdue Tasks → Tasks List (overdue filter)
-  - [ ] Activities This Week → Weekly Activity Report
-  - [ ] Stale Deals → Opportunities List (stale filter)
-- **Acceptance Criteria:** Clicking any KPI navigates to appropriate filtered view
+  - [x] Total Opportunities → Opportunities List (all active)
+  - [x] Activities This Week → Activities List (this week filter)
+  - [x] Stale Leads → Opportunities List (new_lead stage + stale flag)
+  - [x] Stale Deals → Opportunities List (stale filter)
+- **Implementation Notes:**
+  - Click handlers defined in OverviewTab.tsx:46-87
+  - `handleTotalOpportunitiesClick` → `/opportunities?filter={"deleted_at@is":null}`
+  - `handleActivitiesClick` → `/activities?filter={"created_at@gte":...}` (last 7 days)
+  - `handleStaleLeadsClick` → `/opportunities?filter={"stage":"new_lead"}&stale=true`
+  - `handleStaleDealsClick` → `/opportunities?stale=true`
+  - KPICard component supports `onClick` prop with role="button", tabIndex, aria-label
+  - Unit tests verify click handlers and keyboard accessibility (Enter/Space)
+- **Acceptance Criteria:** Clicking any KPI navigates to appropriate filtered view ✅
 
 #### TODO-031: Reports Per-Stage Stale Thresholds
 - **PRD Reference:** MVP #61

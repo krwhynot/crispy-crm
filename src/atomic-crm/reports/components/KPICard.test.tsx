@@ -123,4 +123,68 @@ describe("KPICard", () => {
       expect(card).toHaveAttribute("tabIndex", "0");
     });
   });
+
+  describe("variant styling (PRD Section 9.2.1)", () => {
+    it("applies warning styling for warning variant", () => {
+      render(
+        <KPICard
+          title="Stale Deals"
+          value="5"
+          icon={TrendingUp}
+          variant="warning"
+        />
+      );
+
+      // Find the card element (not button since no onClick)
+      const card = screen.getByText("Stale Deals").closest('[data-slot="card"]');
+      expect(card).toHaveClass("border-warning/50");
+      expect(card).toHaveClass("bg-warning/5");
+    });
+
+    it("applies success styling for success variant", () => {
+      render(
+        <KPICard
+          title="Wins"
+          value="10"
+          icon={TrendingUp}
+          variant="success"
+        />
+      );
+
+      const card = screen.getByText("Wins").closest('[data-slot="card"]');
+      expect(card).toHaveClass("border-success/50");
+      expect(card).toHaveClass("bg-success/5");
+    });
+
+    it("applies destructive styling for destructive variant", () => {
+      render(
+        <KPICard
+          title="Overdue Tasks"
+          value="3"
+          icon={TrendingDown}
+          variant="destructive"
+        />
+      );
+
+      const card = screen.getByText("Overdue Tasks").closest('[data-slot="card"]');
+      expect(card).toHaveClass("border-destructive/50");
+      expect(card).toHaveClass("bg-destructive/5");
+    });
+
+    it("applies default styling when no variant specified", () => {
+      render(
+        <KPICard
+          title="Default KPI"
+          value="42"
+          icon={TrendingUp}
+        />
+      );
+
+      const card = screen.getByText("Default KPI").closest('[data-slot="card"]');
+      // Default variant should NOT have warning/success/destructive classes
+      expect(card).not.toHaveClass("border-warning/50");
+      expect(card).not.toHaveClass("border-success/50");
+      expect(card).not.toHaveClass("border-destructive/50");
+    });
+  });
 });
