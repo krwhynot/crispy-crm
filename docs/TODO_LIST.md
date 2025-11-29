@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-001a, TODO-001b, TODO-002, TODO-045, TODO-053 completed)
+**Last Updated:** 2025-11-29 (TODO-001a/b/c, TODO-002, TODO-004a, TODO-005, TODO-006, TODO-007, TODO-044, TODO-045, TODO-053, TODO-054 completed)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -202,22 +202,23 @@ These items block other work or are foundational to the system.
 
 #### TODO-004b: Win/Loss Modal Component
 - **PRD Reference:** Section 5.3, MVP #47
-- **Status:** ⬜ TODO
+- **Status:** ✅ DONE (2025-11-28)
 - **Priority:** 🔴 P0
 - **Depends On:** TODO-004a
 - **Effort:** M (2 days)
 - **Description:** Create modal that appears when closing opportunities
 - **Tasks:**
-  - [ ] Create `CloseOpportunityModal.tsx` component
-  - [ ] Implement win reasons dropdown using `SelectInput` (react-admin) or shadcn `Select`
-  - [ ] Implement loss reasons dropdown using `SelectInput` (react-admin) or shadcn `Select`
-  - [ ] Add conditional "Other" free-text field
-  - [ ] Block save without reason selection (disabled submit button)
+  - [x] Create `CloseOpportunityModal.tsx` component
+  - [x] Implement win reasons dropdown using `SelectInput` (react-admin) or shadcn `Select`
+  - [x] Implement loss reasons dropdown using `SelectInput` (react-admin) or shadcn `Select`
+  - [x] Add conditional "Other" free-text field
+  - [x] Block save without reason selection (disabled submit button)
 - **Constitution Compliance:**
   - P5: Form defaults from `closeOpportunitySchema.partial().parse({})`
   - P7: Use react-admin `SelectInput` or shadcn/ui `Select` with RHF integration
 - **Acceptance Criteria:** Modal appears on close action; submit disabled until reason selected
 - **Testability:** E2E: Click close → modal appears; select reason → submit enabled; skip reason → submit disabled
+- **Implementation:** `src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx`
 
 #### TODO-004c: Win/Loss Integration & Display
 - **PRD Reference:** Section 5.3, MVP #12
