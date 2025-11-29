@@ -87,9 +87,13 @@ const ALLOWED_PATTERNS = [
   // CSS variable definitions in index.css
   /^--[\w-]+:\s*oklch/,
   /^--[\w-]+:\s*var/,
-  // Comments documenting hex values
+  // Comments documenting hex values (single-line)
   /\/\*.*#[0-9a-fA-F]{3,8}.*\*\//,
   /\/\/.*#[0-9a-fA-F]{3,8}/,
+  // JSDoc lines (start with *)
+  /^\s*\*.*#[0-9a-fA-F]{3,8}/,
+  // Example patterns in comments/docs (e.g., "Sales #123")
+  /#\d{1,3}(?!\d|[a-fA-F])/,  // # followed by only digits (not hex)
   // SVG fills that are truly neutral (black/white)
   /fill=["']#(?:000|FFF|fff|000000|FFFFFF|ffffff)["']/,
   // Tailwind arbitrary values for non-color properties
