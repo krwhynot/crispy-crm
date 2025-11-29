@@ -121,6 +121,18 @@ export function OrganizationDetailsTab({
                 <PriorityBadge priority={record.priority} />
               </div>
 
+              {record.email && (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">Email:</span>
+                  <a
+                    href={`mailto:${record.email}`}
+                    className="text-sm text-primary hover:underline"
+                  >
+                    {record.email}
+                  </a>
+                </div>
+              )}
+
               {record.tags && record.tags.length > 0 && (
                 <div>
                   <span className="text-sm text-muted-foreground block mb-2">Tags:</span>

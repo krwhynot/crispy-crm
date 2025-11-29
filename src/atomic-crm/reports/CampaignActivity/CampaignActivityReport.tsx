@@ -18,6 +18,11 @@ import { ActivityTypeCard } from "./ActivityTypeCard";
 import { StaleLeadsView } from "./StaleLeadsView";
 import { INTERACTION_TYPE_OPTIONS } from "@/atomic-crm/validation/activities";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
+import {
+  STAGE_STALE_THRESHOLDS,
+  isOpportunityStale,
+  getStaleThreshold,
+} from "@/atomic-crm/utils/stalenessCalculation";
 import { format, subDays, startOfMonth } from "date-fns";
 import type { Sale, Activity as BaseActivity, ActivityGroup } from "../types";
 
@@ -56,7 +61,9 @@ export default function CampaignActivityReport() {
   const [datePreset, setDatePreset] = useState<string>("allTime");
   const [selectedSalesRep, setSelectedSalesRep] = useState<number | null>(null);
   const [showStaleLeads, setShowStaleLeads] = useState<boolean>(false);
-  const [staleLeadsThreshold, setStaleLeadsThreshold] = useState<number>(7);
+  // Per-stage thresholds from PRD Section 6.3 - no longer using a fixed threshold
+  // Thresholds: new_lead=7d, initial_outreach=14d, sample_visit_offered=14d, feedback_logged=21d, demo_scheduled=14d
+  // Closed stages (closed_won, closed_lost) are excluded from staleness calculations
   const [ariaLiveMessage, setAriaLiveMessage] = useState<string>("");
 
   // Track if initial expansion has happened (prevents re-expansion on re-renders)
@@ -230,7 +237,8 @@ export default function CampaignActivityReport() {
     return sortedActivities[0].created_at;
   };
 
-  // Calculate stale opportunities (must be before useEffect that uses it)
+  // Calculate stale opportunities using per-stage thresholds (PRD Section 6.3)
+  // Closed stages (closed_won, closed_lost) are excluded from staleness calculations
   const staleOpportunities = useMemo(() => {
     if (!showStaleLeads || !allOpportunities) return [];
 
@@ -248,17 +256,29 @@ export default function CampaignActivityReport() {
             )
           : 999999; // Never had activity - sort to end
 
+        // Get per-stage threshold (undefined for closed stages)
+        const stage = opp.stage || "new_lead";
+        const stageThreshold = getStaleThreshold(stage);
+
         return {
           ...opp,
           lastActivityDate,
           daysInactive,
+          stageThreshold, // Include threshold for display
+          isStale: isOpportunityStale(stage, lastActivityDate, now),
         };
       })
-      .filter((opp) => opp.daysInactive >= staleLeadsThreshold)
-      .sort((a, b) => b.daysInactive - a.daysInactive);
+      // Exclude closed stages (stageThreshold is undefined for them)
+      // Only include opportunities that are actually stale per their stage threshold
+      .filter((opp) => opp.isStale && opp.stageThreshold !== undefined)
+      .sort((a, b) => {
+        // Sort by "days over threshold" (most urgent first)
+        const aOverage = a.daysInactive - (a.stageThreshold || 0);
+        const bOverage = b.daysInactive - (b.stageThreshold || 0);
+        return bOverage - aOverage;
+      });
   }, [
     showStaleLeads,
-    staleLeadsThreshold,
     allOpportunities,
     selectedCampaign,
     allCampaignActivities,
@@ -277,7 +297,7 @@ export default function CampaignActivityReport() {
   React.useEffect(() => {
     if (showStaleLeads) {
       setAriaLiveMessage(
-        `Switched to stale leads view. Showing ${staleOpportunities.length} opportunities with no activity in the last ${staleLeadsThreshold} days.`
+        `Switched to stale leads view. Showing ${staleOpportunities.length} opportunities exceeding their per-stage activity thresholds.`
       );
     } else {
       setAriaLiveMessage(
@@ -287,7 +307,7 @@ export default function CampaignActivityReport() {
     // Clear message after announcement
     const timer = setTimeout(() => setAriaLiveMessage(""), 1000);
     return () => clearTimeout(timer);
-  }, [showStaleLeads, staleOpportunities.length, staleLeadsThreshold, activityGroups.length]);
+  }, [showStaleLeads, staleOpportunities.length, activityGroups.length]);
 
   // Calculate summary metrics
   const totalActivities = activities.length;
@@ -367,7 +387,6 @@ export default function CampaignActivityReport() {
     setDatePreset("allTime");
     setSelectedSalesRep(null);
     setShowStaleLeads(false);
-    setStaleLeadsThreshold(7);
   };
 
   // Check if any filters are active
@@ -674,7 +693,7 @@ export default function CampaignActivityReport() {
                 </Select>
               </div>
 
-              {/* Stale Leads Filter */}
+              {/* Stale Leads Filter - Using Per-Stage Thresholds (PRD Section 6.3) */}
               <div>
                 <h4 className="text-sm font-medium mb-3">Stale Leads</h4>
                 <div className="space-y-3">
@@ -688,26 +707,16 @@ export default function CampaignActivityReport() {
                       htmlFor="show-stale-leads"
                       className="text-sm font-normal cursor-pointer"
                     >
-                      Show only leads with no activity
+                      Show stale leads (per-stage thresholds)
                     </Label>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Label htmlFor="stale-threshold" className="text-xs whitespace-nowrap">
-                      in last
-                    </Label>
-                    <input
-                      id="stale-threshold"
-                      type="number"
-                      min="1"
-                      max="365"
-                      value={staleLeadsThreshold}
-                      onChange={(e) => setStaleLeadsThreshold(parseInt(e.target.value, 10) || 7)}
-                      disabled={!showStaleLeads}
-                      className="w-16 px-2 py-1 border rounded-md text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                    />
-                    <Label htmlFor="stale-threshold" className="text-xs">
-                      days
-                    </Label>
+                  {/* Per-stage threshold info */}
+                  <div className="text-xs text-muted-foreground space-y-0.5">
+                    <p>Thresholds by stage:</p>
+                    <p className="pl-2">• New Lead: {STAGE_STALE_THRESHOLDS.new_lead}d</p>
+                    <p className="pl-2">• Outreach/Sample/Demo: {STAGE_STALE_THRESHOLDS.initial_outreach}d</p>
+                    <p className="pl-2">• Feedback: {STAGE_STALE_THRESHOLDS.feedback_logged}d</p>
+                    <p className="pl-2 italic">Closed stages excluded</p>
                   </div>
                   {showStaleLeads && staleOpportunities.length > 0 && (
                     <div className="text-xs font-medium text-warning bg-warning/10 px-2 py-1 rounded">
@@ -807,7 +816,6 @@ export default function CampaignActivityReport() {
       ) : showStaleLeads ? (
         <StaleLeadsView
           campaignName={selectedCampaign}
-          threshold={staleLeadsThreshold}
           staleOpportunities={staleOpportunities}
         />
       ) : activityGroups.length > 0 ? (
