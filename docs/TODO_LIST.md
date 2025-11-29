@@ -1047,11 +1047,12 @@ Important features that can be worked in parallel.
 
 #### TODO-042: Daily Email Digest (PARENT - See subtasks below)
 - **PRD Reference:** Section 12.3, MVP #31
-- **Status:** 🔧 In Progress (2/4 subtasks complete)
+- **Status:** ✅ Done (4/4 subtasks complete)
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** 7 AM cron email with overdue tasks + stale deals
-- **Subtasks:** TODO-042a ⬜, TODO-042b ⬜, TODO-042c ✅, TODO-042d ✅
-- **Acceptance Criteria:** Users receive daily digest at 7 AM; can opt out
+- **Subtasks:** TODO-042a ✅, TODO-042b ✅, TODO-042c ✅, TODO-042d ✅
+- **Acceptance Criteria:** Users receive daily digest at 7 AM; can opt out ✅
 
 #### TODO-042a: Edge Function Infrastructure & Cron
 - **PRD Reference:** Section 12.3, MVP #31
