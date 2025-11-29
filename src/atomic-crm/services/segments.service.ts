@@ -1,50 +1,117 @@
-import type { DataProvider } from "ra-core";
-import type { Segment } from "../validation/segments";
-import { supabase } from "../providers/supabase/supabase";
+import {
+  PLAYBOOK_CATEGORIES,
+  PLAYBOOK_CATEGORY_IDS,
+  PLAYBOOK_CATEGORY_CHOICES,
+  type PlaybookCategory,
+  type Segment,
+  isValidPlaybookCategory,
+} from "../validation/segments";
+import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
 
 /**
- * Segments service handles business logic for segment management
- * Follows Engineering Constitution principle #14: Service Layer orchestration for business ops
+ * Segments service handles business logic for Playbook category management
+ *
+ * With fixed Playbook categories, this service provides:
+ * - Category lookup by name
+ * - Category lookup by ID
+ * - Validation helpers
+ *
+ * NO dynamic segment creation - categories are fixed in the database
  */
 export class SegmentsService {
-  constructor(private dataProvider: DataProvider) {}
+  constructor(private dataProvider: ExtendedDataProvider) {}
 
   /**
-   * Get or create a segment by name
-   * Uses RPC function for atomic get-or-create operation
-   * Returns existing segment if found, creates new one if not
+   * Get segment by name (case-insensitive)
+   * Returns the matching Playbook category or undefined
    *
-   * @param name Segment name to find or create
-   * @returns Promise resolving to the segment (existing or newly created)
-   * @throws Error if RPC call fails
+   * @param name Category name to find
+   * @returns Segment object or undefined if not found
+   */
+  getSegmentByName(name: string): Segment | undefined {
+    const normalizedName = name.trim();
+
+    // Check if it's a valid Playbook category
+    const matchedCategory = PLAYBOOK_CATEGORIES.find(
+      (cat) => cat.toLowerCase() === normalizedName.toLowerCase()
+    );
+
+    if (!matchedCategory) {
+      console.warn(`[SegmentsService] Unknown category: ${name}`);
+      return undefined;
+    }
+
+    return {
+      id: PLAYBOOK_CATEGORY_IDS[matchedCategory],
+      name: matchedCategory,
+    };
+  }
+
+  /**
+   * Get segment by ID
+   * Returns the matching Playbook category or undefined
+   *
+   * @param id Category UUID to find
+   * @returns Segment object or undefined if not found
+   */
+  getSegmentById(id: string): Segment | undefined {
+    const entry = Object.entries(PLAYBOOK_CATEGORY_IDS).find(([, uuid]) => uuid === id);
+
+    if (!entry) {
+      console.warn(`[SegmentsService] Unknown category ID: ${id}`);
+      return undefined;
+    }
+
+    return {
+      id,
+      name: entry[0] as PlaybookCategory,
+    };
+  }
+
+  /**
+   * Get all Playbook categories
+   * @returns Array of all segment choices (for dropdowns)
+   */
+  getAllCategories(): typeof PLAYBOOK_CATEGORY_CHOICES {
+    return PLAYBOOK_CATEGORY_CHOICES;
+  }
+
+  /**
+   * Validate if a string is a valid Playbook category
+   * @param value String to validate
+   * @returns True if valid category name
+   */
+  isValidCategory(value: string): boolean {
+    return isValidPlaybookCategory(value);
+  }
+
+  /**
+   * Get the default category (Unknown)
+   * Use when no category is specified
+   */
+  getDefaultCategory(): Segment {
+    return {
+      id: PLAYBOOK_CATEGORY_IDS["Unknown"],
+      name: "Unknown",
+    };
+  }
+
+  /**
+   * @deprecated Use getSegmentByName instead
+   * Legacy method for backward compatibility - now just looks up by name
+   * DOES NOT create new segments (categories are fixed)
    */
   async getOrCreateSegment(name: string): Promise<Segment> {
-    try {
-      console.log("[SegmentsService] Getting or creating segment", { name });
+    const segment = this.getSegmentByName(name);
 
-      const { data, error } = await supabase.rpc("get_or_create_segment", {
-        p_name: name,
-      });
-
-      if (error) {
-        console.error("[SegmentsService] RPC get_or_create failed:", error);
-        throw new Error(`Get or create segment failed: ${error.message}`);
-      }
-
-      // RPC returns array, extract first item
-      if (!data || !Array.isArray(data) || data.length === 0) {
-        throw new Error("Get or create segment returned empty result");
-      }
-
-      const segment = data[0] as Segment;
-      console.log("[SegmentsService] Segment retrieved or created successfully", segment);
-      return segment;
-    } catch (error: any) {
-      console.error("[SegmentsService] Failed to get or create segment", {
-        name,
-        error,
-      });
-      throw error;
+    if (!segment) {
+      console.warn(
+        `[SegmentsService] Category "${name}" not found, returning Unknown. ` +
+          `Valid categories: ${PLAYBOOK_CATEGORIES.join(", ")}`
+      );
+      return this.getDefaultCategory();
     }
+
+    return segment;
   }
 }

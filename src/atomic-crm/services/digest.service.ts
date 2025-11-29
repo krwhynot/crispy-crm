@@ -13,7 +13,7 @@
  */
 
 import { z } from "zod";
-import { supabase } from "../providers/supabase/supabase";
+import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
 import {
   STAGE_STALE_THRESHOLDS,
   type ActivePipelineStage,
@@ -121,6 +121,8 @@ export type DigestGenerationResult = z.infer<typeof DigestGenerationResultSchema
  * ```
  */
 export class DigestService {
+  constructor(private dataProvider: ExtendedDataProvider) {}
+
   /**
    * Get overdue tasks for a specific sales user
    *
@@ -134,27 +136,27 @@ export class DigestService {
    * @throws Error if RPC call fails
    */
   async getOverdueTasksForUser(salesId: number): Promise<OverdueTask[]> {
-    const { data, error } = await supabase.rpc("get_overdue_tasks_for_user", {
-      p_sales_id: salesId,
-    });
+    try {
+      const data = await this.dataProvider.rpc("get_overdue_tasks_for_user", {
+        p_sales_id: salesId,
+      });
 
-    if (error) {
+      // Validate and parse response
+      const parsed = z.array(OverdueTaskSchema).safeParse(data);
+      if (!parsed.success) {
+        console.warn("[DigestService] Overdue tasks validation warning", {
+          salesId,
+          errors: parsed.error.errors,
+        });
+        // Return raw data if validation fails (graceful degradation)
+        return (data || []) as OverdueTask[];
+      }
+
+      return parsed.data;
+    } catch (error: any) {
       console.error("[DigestService] Failed to get overdue tasks", { salesId, error });
       throw new Error(`Failed to get overdue tasks: ${error.message}`);
     }
-
-    // Validate and parse response
-    const parsed = z.array(OverdueTaskSchema).safeParse(data);
-    if (!parsed.success) {
-      console.warn("[DigestService] Overdue tasks validation warning", {
-        salesId,
-        errors: parsed.error.errors,
-      });
-      // Return raw data if validation fails (graceful degradation)
-      return (data || []) as OverdueTask[];
-    }
-
-    return parsed.data;
   }
 
   /**
@@ -175,26 +177,26 @@ export class DigestService {
    * @throws Error if RPC call fails
    */
   async getStaleDealsForUser(salesId: number): Promise<StaleDeal[]> {
-    const { data, error } = await supabase.rpc("get_stale_deals_for_user", {
-      p_sales_id: salesId,
-    });
+    try {
+      const data = await this.dataProvider.rpc("get_stale_deals_for_user", {
+        p_sales_id: salesId,
+      });
 
-    if (error) {
+      // Validate and parse response
+      const parsed = z.array(StaleDealSchema).safeParse(data);
+      if (!parsed.success) {
+        console.warn("[DigestService] Stale deals validation warning", {
+          salesId,
+          errors: parsed.error.errors,
+        });
+        return (data || []) as StaleDeal[];
+      }
+
+      return parsed.data;
+    } catch (error: any) {
       console.error("[DigestService] Failed to get stale deals", { salesId, error });
       throw new Error(`Failed to get stale deals: ${error.message}`);
     }
-
-    // Validate and parse response
-    const parsed = z.array(StaleDealSchema).safeParse(data);
-    if (!parsed.success) {
-      console.warn("[DigestService] Stale deals validation warning", {
-        salesId,
-        errors: parsed.error.errors,
-      });
-      return (data || []) as StaleDeal[];
-    }
-
-    return parsed.data;
   }
 
   /**
@@ -214,31 +216,31 @@ export class DigestService {
    * @throws Error if RPC call fails
    */
   async getUserDigestSummary(salesId: number): Promise<UserDigestSummary | null> {
-    const { data, error } = await supabase.rpc("get_user_digest_summary", {
-      p_sales_id: salesId,
-    });
+    try {
+      const data = await this.dataProvider.rpc("get_user_digest_summary", {
+        p_sales_id: salesId,
+      });
 
-    if (error) {
+      // RPC returns null if user not found or disabled
+      if (!data) {
+        return null;
+      }
+
+      // Validate and parse response
+      const parsed = UserDigestSummarySchema.safeParse(data);
+      if (!parsed.success) {
+        console.warn("[DigestService] Digest summary validation warning", {
+          salesId,
+          errors: parsed.error.errors,
+        });
+        return data as UserDigestSummary;
+      }
+
+      return parsed.data;
+    } catch (error: any) {
       console.error("[DigestService] Failed to get digest summary", { salesId, error });
       throw new Error(`Failed to get digest summary: ${error.message}`);
     }
-
-    // RPC returns null if user not found or disabled
-    if (!data) {
-      return null;
-    }
-
-    // Validate and parse response
-    const parsed = UserDigestSummarySchema.safeParse(data);
-    if (!parsed.success) {
-      console.warn("[DigestService] Digest summary validation warning", {
-        salesId,
-        errors: parsed.error.errors,
-      });
-      return data as UserDigestSummary;
-    }
-
-    return parsed.data;
   }
 
   /**
@@ -251,23 +253,23 @@ export class DigestService {
    * @throws Error if RPC call fails
    */
   async generateDailyDigests(): Promise<DigestGenerationResult> {
-    const { data, error } = await supabase.rpc("generate_daily_digest_v2");
+    try {
+      const data = await this.dataProvider.rpc("generate_daily_digest_v2", {});
 
-    if (error) {
+      // Validate response
+      const parsed = DigestGenerationResultSchema.safeParse(data);
+      if (!parsed.success) {
+        console.warn("[DigestService] Digest generation result validation warning", {
+          errors: parsed.error.errors,
+        });
+        return data as DigestGenerationResult;
+      }
+
+      return parsed.data;
+    } catch (error: any) {
       console.error("[DigestService] Failed to generate daily digests", { error });
       throw new Error(`Failed to generate daily digests: ${error.message}`);
     }
-
-    // Validate response
-    const parsed = DigestGenerationResultSchema.safeParse(data);
-    if (!parsed.success) {
-      console.warn("[DigestService] Digest generation result validation warning", {
-        errors: parsed.error.errors,
-      });
-      return data as DigestGenerationResult;
-    }
-
-    return parsed.data;
   }
 
   /**
@@ -323,5 +325,6 @@ export class DigestService {
   }
 }
 
-// Export singleton instance for convenience
-export const digestService = new DigestService();
+// Factory function to create DigestService with dataProvider
+export const createDigestService = (dataProvider: ExtendedDataProvider) =>
+  new DigestService(dataProvider);
