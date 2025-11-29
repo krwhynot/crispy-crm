@@ -55,7 +55,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
   // STATE MACHINE - Replaces 10 useState calls + 2 refs
   // AbortController support for cancelling async operations
   // ============================================================
-  const { state: wizardState, actions: wizardActions, flags, isAborted } = useImportWizard();
+  const { state: wizardState, actions: wizardActions, isAborted } = useImportWizard();
 
   // ============================================================
   // COLUMN MAPPING - Extracted hook for reusability
