@@ -3,6 +3,7 @@ import { PrincipalPipelineTable } from "./components/PrincipalPipelineTable";
 import { TasksKanbanPanel } from "./components/TasksKanbanPanel";
 import { ActivityFeedPanel } from "./components/ActivityFeedPanel";
 import { LogActivityFAB } from "./components/LogActivityFAB";
+import { MobileQuickActionBar } from "./components/MobileQuickActionBar";
 import { KPISummaryRow } from "./components/KPISummaryRow";
 import { MyPerformanceWidget } from "./components/MyPerformanceWidget";
 
@@ -66,8 +67,11 @@ export function PrincipalDashboardV3() {
           </div>
         </div>
 
-        {/* FAB - Fixed position, opens Log Activity Sheet */}
+        {/* FAB - Fixed position, opens Log Activity Sheet (desktop only) */}
         <LogActivityFAB onRefresh={handleRefresh} />
+
+        {/* Mobile Quick Action Bar - Bottom-positioned (mobile/tablet only) */}
+        <MobileQuickActionBar onRefresh={handleRefresh} />
       </main>
     </div>
   );
