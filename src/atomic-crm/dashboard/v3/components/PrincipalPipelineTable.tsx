@@ -347,10 +347,7 @@ export function PrincipalPipelineTable() {
                       </span>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="max-w-xs">
-                      <p className="font-medium">Opportunities with activity 8-14 days ago</p>
-                      <p className="mt-1 text-muted-foreground/80">
-                        Counts opportunities that had activity the previous week but may need follow-up now.
-                      </p>
+                      <p>Activities logged Mon–Sun of previous week</p>
                     </TooltipContent>
                   </Tooltip>
                   {renderSortIcon("activeLastWeek")}
@@ -369,16 +366,7 @@ export function PrincipalPipelineTable() {
                       </span>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="max-w-xs">
-                      <p className="font-medium">Pipeline engagement trend</p>
-                      <p className="mt-1 text-muted-foreground/80">
-                        Compares this week's activity to last week:
-                      </p>
-                      <ul className="mt-1 space-y-0.5 text-muted-foreground/80">
-                        <li>📈 <strong>Increasing</strong> – More activity this week</li>
-                        <li>➡️ <strong>Steady</strong> – Similar activity levels</li>
-                        <li>📉 <strong>Decreasing</strong> – Less activity this week</li>
-                        <li>⚠️ <strong>Stale</strong> – No recent activity (needs attention)</li>
-                      </ul>
+                      <p>Based on activity trend over 14 days</p>
                     </TooltipContent>
                   </Tooltip>
                   {renderSortIcon("momentum")}

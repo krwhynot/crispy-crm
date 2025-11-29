@@ -81,7 +81,7 @@ This audit compares the actual Dashboard V3 implementation against PRD Section 9
 | "This Week" column | Section 9.2.2 | `activeThisWeek` with green badge | ✅ Aligned |
 | "Last Week" column | Section 9.2.2 | `activeLastWeek` with secondary badge | ✅ Aligned |
 | Column tooltips | MVP #35 | NOT IMPLEMENTED | ⚠️ Gap |
-| Next Action styling | Section 9.2.2 | Shows as `variant="link"` | ⚠️ Gap |
+| Next Action styling | Section 9.2.2 | Plain text span (MVP #36 fixed) | ✅ Aligned |
 | Row click drill-down | Section 9.2 | `<PipelineDrillDownSheet />` lazy-loaded | ✅ Aligned |
 | Visual decay borders | MVP #26, Section 6.3 | NOT IMPLEMENTED | ⚠️ Gap |
 

@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-033 Note StatusSelector verified clean - no code existed)
+**Last Updated:** 2025-11-29 (TODO-016 Simplify Contact-Org UI - removed multi-org remnants)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -139,34 +139,35 @@ These items block other work or are foundational to the system.
 
 #### TODO-052: Contact Import Organization Handling
 - **PRD Reference:** Section 4.2, MVP #18 (edge case)
-- **Status:** 🔧 In Progress (4/5 tasks complete)
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
 - **Depends On:** TODO-002 ✅
 - **Effort:** S (already mostly implemented)
-- **Deferrable:** Yes - can defer to post-MVP if CSV import not critical path
+- **Completed:** 2025-11-29
 - **Description:** Handle organization requirement during CSV contact import
 - **Tasks:**
   - [x] Update CSV import to require organization_name for lookup
   - [x] Add validation: reject rows missing organization reference (via Zod schema)
   - [x] Add organization lookup by name (create if not exists, or match existing)
-  - [ ] Show import preview with organization assignments (minor UI enhancement)
+  - [x] Show import preview with organization assignments (ContactImportPreview.tsx:468-501 shows "New Organizations" section)
   - [~] Add "Skip rows without organization" option - DECISION: Rejected - org is required, rows should fail
 - **Implementation Notes:**
-  - `importContactSchema` (contacts.ts:175-307) already requires `organization_name`:
+  - `importContactSchema` (contacts.ts:179-186) requires `organization_name`:
     ```typescript
     organization_name: z
       .string({ required_error: "Organization name is required" })
       .trim()
       .min(1, { message: "Organization name is required" }),
     ```
-  - `useContactImport.tsx:48-63` has `getOrganizations()` that creates org if not exists
-  - `useContactImport.tsx:233` assigns `organization_id: organization?.id`
-  - Only remaining task: UI preview showing organization assignments
+  - `useContactImport.tsx:42-58` has `getOrganizations()` that creates org if not exists
+  - `useContactImport.tsx:227` assigns `organization_id: organization?.id`
+  - Preview shows: "New Organizations" collapsible (line 469), organization column in Sample Data (line 428, 451)
+  - **Documentation:** `docs/guides/contact-import-field-mappings.md` created
 - **Constitution Compliance:**
   - P5: Import preview form defaults from `contactImportSchema.partial().parse({})` ✅
   - P4: CSV row validation via Zod schema at import boundary ✅
-- **Acceptance Criteria:** CSV import enforces organization; clear error on missing org; preview shows assignments
-- **Testability:** Integration: Import CSV without org column → error; with org column → success
+- **Acceptance Criteria:** CSV import enforces organization; clear error on missing org; preview shows assignments ✅
+- **Testability:** 170 unit tests pass - `useColumnMapping.test.ts`, `useImportWizard.test.ts`, `contactImport.helpers.test.ts`
 
 #### TODO-003: Contact-Customer Org Validation
 - **PRD Reference:** Section 4.2, MVP #49
@@ -633,14 +634,23 @@ Important features that can be worked in parallel.
 
 #### TODO-016: Simplify Contact-Org UI
 - **PRD Reference:** MVP #43
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Remove multi-org UI remnants; contacts use single organization_id
 - **Tasks:**
-  - [ ] Remove any UI for `contact_organizations` junction table
-  - [ ] Simplify to single organization selector
-  - [ ] Update any multi-org display components
-- **Acceptance Criteria:** Contact forms show single organization field only
+  - [x] Remove any UI for `contact_organizations` junction table
+  - [x] Simplify to single organization selector
+  - [x] Update any multi-org display components
+- **Implementation Notes:**
+  - Removed `contact_organizations` from `resources.ts` (RESOURCE_MAPPING and SOFT_DELETE_RESOURCES)
+  - Removed deprecated junction methods from `junctions.service.ts` (getContactOrganizations, addContactToOrganization, removeContactFromOrganization, setPrimaryOrganization)
+  - Removed `ContactOrganization` interface from `types.ts`
+  - Fixed comment in `ContactBadges.tsx` referencing deprecated `contact_organizations.role`
+  - Removed ~190 lines of tests for deprecated methods in `junctions.service.test.ts`
+  - Verified `ContactPositionTab.tsx` uses single `AutocompleteOrganizationInput` (correct pattern)
+  - Database: `contact_organizations` table was already dropped via migration `20251103220544`
+- **Acceptance Criteria:** Contact forms show single organization field only ✅
 
 ### Organization Module
 
@@ -1609,10 +1619,10 @@ Polish items and technical cleanup.
 - **Operational readiness:** 4 (TODO-047 Accessibility, TODO-048 Performance, TODO-050 Docs, TODO-051 Backup)
 - **Constitution Compliance Audits:** 1 (TODO-055 DataProvider Audit)
 
-### 🔧 Partial/In Progress: 1 item
-- **TODO-052:** Contact Import Organization Handling (4/5 tasks complete)
+### 🔧 Partial/In Progress: 0 items
 
-### ✅ Done: 44 items (completed 2025-11-28/29)
+### ✅ Done: 45 items (completed 2025-11-28/29)
+- **TODO-052:** Contact Import Organization Handling ✅ (completed 2025-11-29)
 - **TODO-001:** Pipeline Stage Migration (3/3 subtasks ✅)
   - TODO-001a: Pipeline DB Migration
   - TODO-001b: Pipeline Constants & Schema Update

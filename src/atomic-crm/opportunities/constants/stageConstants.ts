@@ -1,7 +1,21 @@
 /**
  * Centralized constants for food service opportunity pipeline stages
  * Replaces hardcoded stage definitions across components
+ *
+ * MFB Sales Process Mapping (PRD Section 7.4):
+ * The CRM pipeline stages align with MFB's established 7-phase sales process.
+ * This mapping provides contextual guidance for reps transitioning from Excel.
  */
+
+/**
+ * MFB Sales Process Phase information
+ * Maps pipeline stages to the broader 7-phase methodology
+ */
+export interface MfbPhaseInfo {
+  phase: string; // e.g., "Phase 2", "Phase 3A"
+  name: string; // e.g., "Planning", "Target Distributors"
+  context: string; // Tooltip text explaining what typically happens
+}
 
 export interface OpportunityStage {
   value: string;
@@ -9,6 +23,7 @@ export interface OpportunityStage {
   color: string;
   description: string;
   elevation: 1 | 2 | 3; // Visual depth: 1=subtle, 2=medium, 3=prominent
+  mfbPhase: MfbPhaseInfo; // MFB 7-phase process mapping (PRD Section 7.4)
 }
 
 export type OpportunityStageValue =
@@ -28,6 +43,12 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
     description:
       "New prospect identified. Research the operator's menu, identify which principal products fit, and prepare your pitch.",
     elevation: 3, // Prominent - new opportunities should stand out
+    mfbPhase: {
+      phase: "Phase 2",
+      name: "Planning",
+      context:
+        "Phase 2 activities typically happen here: defining parameters, setting goals, and analyzing distributor landscape.",
+    },
   },
   {
     value: "initial_outreach",
@@ -36,6 +57,12 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
     description:
       "First contact made. Introduce MFB and relevant principals, qualify interest, and schedule a follow-up call or visit.",
     elevation: 2, // Medium - active engagement
+    mfbPhase: {
+      phase: "Phase 3A",
+      name: "Target Distributors",
+      context:
+        "Phase 3A activities typically happen here: intro emails, presentations, and operator call coordination.",
+    },
   },
   {
     value: "sample_visit_offered",
@@ -44,6 +71,12 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
     description:
       "Product sample sent or site visit scheduled. Follow up within 3-5 days to gather feedback—this is a critical stage.",
     elevation: 2, // Medium - active opportunity
+    mfbPhase: {
+      phase: "Phase 3A",
+      name: "Target Distributors",
+      context:
+        "Phase 3A activities typically happen here: sample coordination and site visit scheduling with targeted distributors.",
+    },
   },
   {
     value: "feedback_logged",
@@ -52,6 +85,12 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
     description:
       "Operator feedback recorded. Evaluate fit, address concerns, and determine if a formal demo or pricing discussion is warranted.",
     elevation: 2, // Medium - active analysis
+    mfbPhase: {
+      phase: "Phase 3B",
+      name: "Stocking Distributors",
+      context:
+        "Phase 3B activities typically happen here: creating stock lists and developing marketing campaigns.",
+    },
   },
   {
     value: "demo_scheduled",
@@ -60,6 +99,12 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
     description:
       "Final product demonstration or tasting scheduled. Confirm distributor availability and prepare pricing/terms for close.",
     elevation: 3, // Prominent - important milestone
+    mfbPhase: {
+      phase: "Phase 3B",
+      name: "Stocking Distributors",
+      context:
+        "Phase 3B activities typically happen here: setting appointments and finalizing stock arrangements.",
+    },
   },
   {
     value: "closed_won",
@@ -68,6 +113,12 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
     description:
       "Deal won! First purchase order placed. Ensure distributor authorization is active and hand off to account management.",
     elevation: 2, // Medium - completed but notable
+    mfbPhase: {
+      phase: "Phase 5",
+      name: "Ongoing Activities",
+      context:
+        "Phase 5 activities begin here: annual/quarterly goals, promotions, DSR training, and food show planning.",
+    },
   },
   {
     value: "closed_lost",
@@ -76,6 +127,12 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
     description:
       "Opportunity lost. Review the loss reason and consider re-engagement after 90 days if circumstances change.",
     elevation: 1, // Subtle - less emphasis on lost deals
+    mfbPhase: {
+      phase: "Phase 4",
+      name: "Measuring Results",
+      context:
+        "Phase 4 review applies here: analyze loss reasons for corrective actions and future opportunity improvement.",
+    },
   },
 ];
 
@@ -98,6 +155,15 @@ export function getOpportunityStageDescription(stageValue: string): string {
 export function getOpportunityStageElevation(stageValue: string): 1 | 2 | 3 {
   const stage = OPPORTUNITY_STAGES.find((s) => s.value === stageValue);
   return stage?.elevation || 2; // Default to medium elevation
+}
+
+/**
+ * Get the MFB 7-phase process mapping for a stage (PRD Section 7.4)
+ * Returns null if stage not found
+ */
+export function getOpportunityMfbPhase(stageValue: string): MfbPhaseInfo | null {
+  const stage = OPPORTUNITY_STAGES.find((s) => s.value === stageValue);
+  return stage?.mfbPhase || null;
 }
 
 export function isActiveStage(stageValue: string): boolean {
