@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-28 (TODO-019 completed - BulkReassignButton for organizations list with modal, user selector, bulk update)
+**Last Updated:** 2025-11-29 (TODO-027 completed - Task Snooze Popover with Tomorrow/Next Week/Custom date options)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -860,14 +860,21 @@ Important features that can be worked in parallel.
 
 #### TODO-028: Task Completion Follow-Up Toast
 - **PRD Reference:** MVP #32, #58
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** On task completion, show toast with follow-up option
 - **Tasks:**
-  - [ ] Show toast on completion: "Task completed! [Create follow-up →]"
-  - [ ] Link opens pre-filled task form (same contact/opportunity)
-  - [ ] Auto-dismiss after 5 seconds
-- **Acceptance Criteria:** Toast appears on completion with clickable follow-up link
+  - [x] Show toast on completion: "Task completed! [Create follow-up →]"
+  - [x] Link opens pre-filled task form (same contact/opportunity)
+  - [x] Auto-dismiss after 5 seconds
+- **Implementation Notes:**
+  - Utility file: `src/atomic-crm/dashboard/v3/utils/showFollowUpToast.tsx`
+  - Uses Sonner's native `toast.success()` with `action` prop for "Create Follow-up" button
+  - Integrated into `TasksPanel.tsx` and `TaskKanbanCard.tsx` checkbox handlers
+  - Pre-fills task create form via URL params: `type`, `title`, `opportunity_id`/`contact_id`
+  - 5-second auto-dismiss via `duration: 5000`
+- **Acceptance Criteria:** Toast appears on completion with clickable follow-up link ✅
 
 ### Reports Module
 
@@ -1413,7 +1420,7 @@ Polish items and technical cleanup.
 ### 🔧 Partial/In Progress: 1 item
 - **TODO-052:** Contact Import Organization Handling (4/5 tasks complete)
 
-### ✅ Done: 27 items (completed 2025-11-28/29)
+### ✅ Done: 29 items (completed 2025-11-28/29)
 - **TODO-001:** Pipeline Stage Migration (3/3 subtasks ✅)
   - TODO-001a: Pipeline DB Migration
   - TODO-001b: Pipeline Constants & Schema Update
@@ -1441,6 +1448,8 @@ Polish items and technical cleanup.
   - TODO-022a: Exact Match Duplicate Detection (checkExactDuplicate utility, 9 unit tests)
   - TODO-022b: Fuzzy Match Detection (Levenshtein algorithm, warning dialog, 27 unit tests)
 - **TODO-019:** Bulk Owner Reassignment (BulkReassignButton, OrganizationBulkActionsToolbar, 31 unit tests)
+- **TODO-027:** Task Snooze Popover (SnoozePopover component with Tomorrow/Next Week/Custom options)
+- **TODO-028:** Task Completion Follow-Up Toast (showFollowUpToast utility, 5s auto-dismiss, pre-filled create form)
 - **TODO-044:** RBAC Foundation (useUserRole hook)
 - **TODO-045:** Pre-Sprint 1 Cleanup - Baseline verification complete
 - **TODO-053:** Semantic Color Validation in CI

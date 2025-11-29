@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
 import OverviewTab from "./OverviewTab";
 import { GlobalFilterProvider } from "../contexts/GlobalFilterContext";
 
