@@ -89,6 +89,10 @@ export const contactBaseSchema = z.object({
 
   // Relationships - ContactPositionInputs
   sales_id: z.union([z.string(), z.number()]).optional().nullable(),
+  // REQUIRED: Contacts must belong to an organization (no orphans)
+  // See migration 20251129030358_contact_organization_id_not_null.sql
+  // Note: Base schema accepts undefined for form defaults via .partial().parse({})
+  // Create/Update schemas enforce requirement via superRefine
   organization_id: z.union([z.string(), z.number()]).optional().nullable(),
 
   // System fields (readonly, not validated)
@@ -393,6 +397,16 @@ export const createContactSchema = contactBaseSchema
         code: z.ZodIssueCode.custom,
         path: ["sales_id"],
         message: "Account manager is required",
+      });
+    }
+
+    // Organization ID is required for creation (no orphan contacts)
+    // See PRD: "Contact requires organization" business rule
+    if (!data.organization_id) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["organization_id"],
+        message: "Organization is required - contacts cannot exist without an organization",
       });
     }
   });

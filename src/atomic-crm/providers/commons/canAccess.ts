@@ -26,18 +26,53 @@ interface CanAccessParams<RecordType extends Record<string, any> = Record<string
   record?: RecordType;
 }
 
+/**
+ * Role-based access types for type safety
+ */
+type UserRole = "admin" | "manager" | "rep";
+
+/**
+ * Permission matrix for RBAC:
+ * - Admin: Full CRUD on all resources
+ * - Manager: View all + Edit all + No delete (except own records)
+ * - Rep: View all + Edit own only + No delete
+ *
+ * Shared resources (contacts/orgs/products): All roles can edit
+ */
 export const canAccess = <RecordType extends Record<string, any> = Record<string, any>>(
   role: string,
   params: CanAccessParams<RecordType>
-) => {
-  if (role === "admin") {
+): boolean => {
+  const { action, resource } = params;
+  const userRole = role as UserRole;
+
+  // Admin has full access to everything
+  if (userRole === "admin") {
     return true;
   }
 
-  // Non admins can't access the sales resource
-  if (params.resource === "sales") {
+  // Sales resource is admin-only
+  if (resource === "sales") {
     return false;
   }
 
-  return true;
+  // DELETE action: Only admins can delete (already covered above for sales)
+  // For other resources, managers and reps cannot delete
+  if (action === "delete") {
+    return false;
+  }
+
+  // Manager: Can view and edit all resources (except sales)
+  if (userRole === "manager") {
+    return true;
+  }
+
+  // Rep: Can view all, edit handled by RLS at database layer
+  // Frontend allows action, database enforces ownership
+  if (userRole === "rep") {
+    return true;
+  }
+
+  // Default deny for unknown roles
+  return false;
 };

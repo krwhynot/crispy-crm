@@ -192,28 +192,28 @@ describe("ContactCreate", () => {
       expect(result.tags).toEqual([]);
     });
 
-    test("handles contact without organization", () => {
-      const transformData = (data: Contact) => ({
-        ...data,
-        first_seen: new Date().toISOString(),
-        last_seen: new Date().toISOString(),
-        tags: [],
-      });
+    test("rejects contact without organization (organization_id is required)", async () => {
+      // Per business rule: contacts cannot exist without an organization (no orphans)
+      // See migration 20251129030358_contact_organization_id_not_null.sql
+      const { createContactSchema } = await import("../../validation/contacts");
 
       const inputWithoutOrg = {
         first_name: "Jane",
         last_name: "Smith",
         email: [{ email: "jane@example.com", type: "Work" as const }],
+        phone: [],
         sales_id: 1,
-        // No organization_id
+        // No organization_id - should fail validation
       };
 
-      const result = transformData(inputWithoutOrg);
-
-      // Should handle missing organization gracefully
-      expect(result.organization_id).toBeUndefined();
-      expect(result.first_name).toBe("Jane");
-      expect(result.last_name).toBe("Smith");
+      // Validation should fail when organization_id is missing
+      const result = createContactSchema.safeParse(inputWithoutOrg);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        const orgError = result.error.issues.find((i) => i.path.includes("organization_id"));
+        expect(orgError).toBeDefined();
+        expect(orgError?.message).toContain("Organization");
+      }
     });
   });
 
