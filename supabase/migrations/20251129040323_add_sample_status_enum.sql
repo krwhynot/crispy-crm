@@ -11,7 +11,7 @@
 -- =====================================================
 -- Step 1: Create sample_status enum
 -- =====================================================
--- Workflow: sent ’ received ’ feedback_pending ’ feedback_received
+-- Workflow: sent -> received -> feedback_pending -> feedback_received
 -- Note: 'note' is also added to interaction_type as it exists in validation schema
 
 DO $$ BEGIN

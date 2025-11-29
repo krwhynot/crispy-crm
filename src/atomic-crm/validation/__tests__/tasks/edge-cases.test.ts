@@ -40,7 +40,7 @@ describe("Task Edge Cases and Business Rules", () => {
       const newTask = {
         title: "Task to complete",
         contact_id: 123,
-        type: "None",
+        type: "Other",
         due_date: "2024-12-31T10:00:00Z",
         sales_id: 456,
       };
@@ -73,10 +73,9 @@ describe("Task Edge Cases and Business Rules", () => {
         "Email",
         "Meeting",
         "Follow-up",
+        "Demo",
         "Proposal",
-        "Discovery",
-        "Administrative",
-        "None",
+        "Other",
       ];
 
       taskTypes.forEach((type) => {

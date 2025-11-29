@@ -120,7 +120,7 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
           />
           <div className={`flex-grow ${task.completed_at ? "line-through" : ""}`}>
             <div className="text-sm">
-              {task.type && task.type !== "None" && (
+              {task.type && task.type !== "Other" && (
                 <>
                   <span className="font-semibold text-sm">{task.type}</span>
                   &nbsp;

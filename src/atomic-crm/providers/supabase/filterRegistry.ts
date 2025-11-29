@@ -236,7 +236,7 @@ export const filterableFields: Record<string, string[]> = {
     "id",
     "title", // Changed from "text" to match database column
     "description", // Task description field
-    "type", // Task type enum (Call, Email, Meeting, etc.)
+    "type", // Task type enum (Call, Email, Meeting, Follow-up, Demo, Proposal, Other)
     "priority", // Priority level enum (low, medium, high, critical)
     "contact_id",
     "opportunity_id",

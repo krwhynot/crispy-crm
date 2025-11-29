@@ -114,10 +114,9 @@ describe("Task Validation Schemas", () => {
         "Email",
         "Meeting",
         "Follow-up",
+        "Demo",
         "Proposal",
-        "Discovery",
-        "Administrative",
-        "None",
+        "Other",
       ];
 
       taskTypes.forEach((type) => {
