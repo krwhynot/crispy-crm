@@ -16,3 +16,8 @@ export type {
   UseSimilarOpportunityCheckResult,
   UseSimilarOpportunityCheckOptions,
 } from "./useSimilarOpportunityCheck";
+export { useDistributorAuthorization } from "./useDistributorAuthorization";
+export type {
+  DistributorPrincipalAuthorization,
+  UseDistributorAuthorizationResult,
+} from "./useDistributorAuthorization";
