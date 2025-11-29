@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { PrincipalPipelineTable } from "./components/PrincipalPipelineTable";
 import { TasksKanbanPanel } from "./components/TasksKanbanPanel";
+import { ActivityFeedPanel } from "./components/ActivityFeedPanel";
 import { LogActivityFAB } from "./components/LogActivityFAB";
 import { KPISummaryRow } from "./components/KPISummaryRow";
 
@@ -10,12 +11,13 @@ import { KPISummaryRow } from "./components/KPISummaryRow";
  * Layout:
  * - KPI Summary Row (4-column on desktop, 2x2 on mobile)
  * - Pipeline Table (full width)
- * - Tasks Kanban Board (full width)
+ * - Two-column row: Tasks Kanban (left) + Activity Feed (right) on desktop
  *
  * Features:
  * - Vertical stacking for better data visibility
  * - FAB opens Sheet slide-over for activity logging
  * - Draft persistence in localStorage
+ * - Team activity feed showing recent activities with avatars
  */
 export function PrincipalDashboardV3() {
   // Refresh key to force data components to re-mount and re-fetch
@@ -45,8 +47,14 @@ export function PrincipalDashboardV3() {
           {/* Pipeline Table - Full width */}
           <PrincipalPipelineTable key={`pipeline-${refreshKey}`} />
 
-          {/* Tasks Kanban Board - Full width */}
-          <TasksKanbanPanel key={`tasks-${refreshKey}`} />
+          {/* Tasks + Activity Feed - Two columns on desktop, stacked on mobile */}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            {/* Tasks Kanban Board */}
+            <TasksKanbanPanel key={`tasks-${refreshKey}`} />
+
+            {/* Activity Feed Panel */}
+            <ActivityFeedPanel key={`activities-${refreshKey}`} limit={15} />
+          </div>
         </div>
 
         {/* FAB - Fixed position, opens Log Activity Sheet */}
