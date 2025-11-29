@@ -10,7 +10,7 @@
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
  */
 
-import type { DataProvider, RaRecord, GetListParams, DeleteParams } from "ra-core";
+import type { DataProvider, RaRecord, GetListParams } from "ra-core";
 import type { ResourceCallbacks } from "./createResourceCallbacks";
 
 /**

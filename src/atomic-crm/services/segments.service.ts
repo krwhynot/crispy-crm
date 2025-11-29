@@ -1,4 +1,4 @@
-import type { DataProvider, Identifier } from "ra-core";
+import type { DataProvider } from "ra-core";
 import type { Segment } from "../validation/segments";
 import { supabase } from "../providers/supabase/supabase";
 

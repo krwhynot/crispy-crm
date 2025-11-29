@@ -502,7 +502,6 @@ test.describe("Dashboard V3 - Accessibility Audit (WCAG 2.1 AA)", () => {
         elements.forEach((el) => {
           const computed = getComputedStyle(el);
           const color = computed.color;
-          const bgColor = computed.backgroundColor;
 
           // Check for hardcoded hex or rgb that isn't from CSS vars
           // This is a simplified check - in practice you'd verify against your design tokens

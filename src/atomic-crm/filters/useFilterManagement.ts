@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useListContext } from "ra-core";
-import type { SingleFilterValue, FilterValue } from "./types";
+import type { FilterValue } from "./types";
 
 /**
  * Re-export types for backward compatibility

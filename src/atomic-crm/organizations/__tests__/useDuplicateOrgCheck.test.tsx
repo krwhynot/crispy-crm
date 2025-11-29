@@ -8,7 +8,7 @@
  * - Bypassed duplicates don't trigger again
  * - Handles API errors gracefully
  */
-import { renderHook, act, waitFor } from "@testing-library/react";
+import { renderHook, act } from "@testing-library/react";
 import { vi, describe, it, expect, beforeEach } from "vitest";
 import { useDuplicateOrgCheck } from "../useDuplicateOrgCheck";
 

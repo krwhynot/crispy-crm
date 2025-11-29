@@ -27,7 +27,6 @@
  */
 
 import type { DataProvider, Identifier } from "ra-core";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import type { FileObject } from "@supabase/storage-js";
 import type {
   SalesFormData,

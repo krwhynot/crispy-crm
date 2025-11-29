@@ -431,17 +431,6 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
     });
   };
 
-  /**
-   * Helper to find the Principal Select trigger
-   * The form has multiple comboboxes (Principal, City), so we target by placeholder text
-   */
-  const getPrincipalTrigger = () => {
-    // Find by the placeholder text "Select principal"
-    return screen.getByRole("combobox", { name: /principal/i }) ||
-      screen.getByText(/select principal/i).closest('[role="combobox"]') ||
-      screen.getAllByRole("combobox")[0]; // Fallback: Principal is first combobox
-  };
-
   it("displays principal dropdown with all available principals", async () => {
     render(
       <TestWrapper>

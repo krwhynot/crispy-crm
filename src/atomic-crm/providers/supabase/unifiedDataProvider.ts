@@ -77,7 +77,7 @@ import type {
 } from "../../types";
 
 // Type for potentially wrapped RPC responses
-type RpcWrappedResponse<T> = T | { data: T };
+type _RpcWrappedResponse<T> = T | { data: T };
 
 /**
  * Interface for data provider method params logging

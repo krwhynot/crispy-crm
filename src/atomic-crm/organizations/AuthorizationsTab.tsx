@@ -142,7 +142,6 @@ export function AuthorizationsTab({
 
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [removeAuth, setRemoveAuth] = useState<AuthorizationWithPrincipal | null>(null);
-  const notify = useNotify();
   const refresh = useRefresh();
 
   // Fetch authorizations for this distributor (only when tab is active)
@@ -450,7 +449,6 @@ function ProductExceptionsSection({
 }: ProductExceptionsSectionProps) {
   const [addExceptionOpen, setAddExceptionOpen] = useState(false);
   const [removeException, setRemoveException] = useState<ProductAuthorization | null>(null);
-  const notify = useNotify();
   const refresh = useRefresh();
 
   // Map product IDs to their authorizations

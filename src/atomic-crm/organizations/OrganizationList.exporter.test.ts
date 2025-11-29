@@ -9,10 +9,6 @@ import { vi, describe, it, expect, beforeEach, afterEach } from "vitest";
 import type { Exporter } from "ra-core";
 import type { Organization, Sale, Segment } from "../types";
 
-// Create mock functions that will be used by hoisted mocks
-const mockJsonExport = vi.fn();
-const mockDownloadCSV = vi.fn();
-
 // Mock jsonexport - factory must not reference outside variables directly
 vi.mock("jsonexport/dist", () => ({
   default: vi.fn(),

@@ -27,7 +27,6 @@ const {
   mockGetOne,
   mockCreate,
   mockUpdate,
-  mockDelete,
   mockGetMany,
   mockUpdateMany,
   mockDeleteMany,

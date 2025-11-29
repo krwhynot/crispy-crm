@@ -15,7 +15,6 @@ import {
   createResourceCallbacks,
   type Transform,
   type TransformFn,
-  type ResourceCallbacksConfig,
 } from "./createResourceCallbacks";
 
 describe("createResourceCallbacks - Transform Composition", () => {
