@@ -249,53 +249,42 @@ VALUES
 -- Reset the sequence to continue after our inserts
 SELECT setval(pg_get_serial_sequence('sales', 'id'), 6, true);
 -- ============================================================================
--- PART 3: SEGMENTS (28 segments)
+-- PART 3: PLAYBOOK CATEGORIES (9 categories)
 -- ============================================================================
--- Organization classification segments from original data
--- Uses UUID primary keys
+-- Fixed set of distributor/organization classification categories aligned with
+-- MFB's sales playbook. These categories should not be modified at runtime.
+--
+-- UUIDs use the 22222222-... prefix for easy identification
 -- ============================================================================
 
 INSERT INTO "public"."segments" (id, name, created_at, created_by)
 VALUES
-  -- Restaurant Types
-  ('11111111-0000-0000-0000-000000000001', 'Fine Dining', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000002', 'Casual Dining', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000003', 'Fast Casual', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000004', 'QSR (Quick Service)', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000005', 'Food Truck', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000006', 'Ghost Kitchen', NOW(), NULL),
+  -- Major national distributors
+  ('22222222-0000-0000-0000-000000000001', 'Major Broadline', NOW(), NULL),
 
-  -- Hospitality
-  ('11111111-0000-0000-0000-000000000007', 'Hotel', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000008', 'Resort', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000009', 'Casino', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000010', 'Convention Center', NOW(), NULL),
+  -- Regional or specialty-focused distributors
+  ('22222222-0000-0000-0000-000000000002', 'Specialty/Regional', NOW(), NULL),
 
-  -- Institutional
-  ('11111111-0000-0000-0000-000000000011', 'Healthcare', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000012', 'Education K-12', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000013', 'Higher Education', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000014', 'Corporate Dining', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000015', 'Senior Living', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000016', 'Corrections', NOW(), NULL),
+  -- Foodservice management companies (Aramark, Compass, Sodexo)
+  ('22222222-0000-0000-0000-000000000003', 'Management Company', NOW(), NULL),
 
-  -- Retail/Specialty
-  ('11111111-0000-0000-0000-000000000017', 'Grocery', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000018', 'C-Store', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000019', 'Catering', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000020', 'Bakery', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000021', 'Coffee Shop', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000022', 'Bar/Nightclub', NOW(), NULL),
+  -- Group Purchasing Organizations
+  ('22222222-0000-0000-0000-000000000004', 'GPO', NOW(), NULL),
 
-  -- Distribution/Manufacturing
-  ('11111111-0000-0000-0000-000000000023', 'Broadline Distributor', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000024', 'Specialty Distributor', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000025', 'Redistribution', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000026', 'Manufacturer', NOW(), NULL),
+  -- Higher education foodservice
+  ('22222222-0000-0000-0000-000000000005', 'University', NOW(), NULL),
 
-  -- Other
-  ('11111111-0000-0000-0000-000000000027', 'Sports/Entertainment', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000028', 'Travel/Transportation', NOW(), NULL);
+  -- Multi-unit restaurant operators
+  ('22222222-0000-0000-0000-000000000006', 'Restaurant Group', NOW(), NULL),
+
+  -- National/regional chain accounts
+  ('22222222-0000-0000-0000-000000000007', 'Chain Restaurant', NOW(), NULL),
+
+  -- Hospitality and travel foodservice
+  ('22222222-0000-0000-0000-000000000008', 'Hotel & Aviation', NOW(), NULL),
+
+  -- Default for unclassified organizations
+  ('22222222-0000-0000-0000-000000000009', 'Unknown', NOW(), NULL);
 -- ============================================================================
 -- PART 4: PRINCIPALS (9 organizations)
 -- ============================================================================
@@ -312,63 +301,63 @@ INSERT INTO "public"."organizations" (
 )
 VALUES
   -- 1. McCRUM (Idaho potatoes/fries) - Brent manages
-  (1, 'McCRUM', 'principal', '11111111-0000-0000-0000-000000000026',
+  (1, 'McCRUM', 'principal', '22222222-0000-0000-0000-000000000002',
    '208-555-1001', 'sales@mccrum.com', 'https://mccrum.com',
    '123 Potato Lane', 'Idaho Falls', 'ID', '83401', 2,
    'Premium Idaho potato products including fries, hash browns, and specialty cuts. Family-owned since 1985.',
    NOW(), NOW()),
 
   -- 2. SWAP (Specialty ingredients) - Brent manages
-  (2, 'SWAP', 'principal', '11111111-0000-0000-0000-000000000026',
+  (2, 'SWAP', 'principal', '22222222-0000-0000-0000-000000000002',
    '312-555-1002', 'info@swapfoods.com', 'https://swapfoods.com',
    '456 Innovation Drive', 'Chicago', 'IL', '60601', 2,
    'Innovative plant-based and specialty food ingredients for foodservice.',
    NOW(), NOW()),
 
   -- 3. Rapid Rasoi (Indian cuisine) - Michelle manages
-  (3, 'Rapid Rasoi', 'principal', '11111111-0000-0000-0000-000000000026',
+  (3, 'Rapid Rasoi', 'principal', '22222222-0000-0000-0000-000000000002',
    '510-555-1003', 'orders@rapidrasoi.com', 'https://rapidrasoi.com',
    '789 Spice Boulevard', 'Fremont', 'CA', '94536', 3,
    'Authentic Indian cuisine solutions - naan, curries, rice dishes, and appetizers.',
    NOW(), NOW()),
 
   -- 4. Lakeview Farms (Dairy/desserts) - Michelle manages
-  (4, 'Lakeview Farms', 'principal', '11111111-0000-0000-0000-000000000026',
+  (4, 'Lakeview Farms', 'principal', '22222222-0000-0000-0000-000000000002',
    '614-555-1004', 'foodservice@lakeviewfarms.com', 'https://lakeviewfarms.com',
    '321 Dairy Road', 'Columbus', 'OH', '43215', 3,
    'Premium dairy products and desserts including dips, parfaits, and cream-based items.',
    NOW(), NOW()),
 
   -- 5. Frico (Italian cheese) - Gary manages
-  (5, 'Frico', 'principal', '11111111-0000-0000-0000-000000000026',
+  (5, 'Frico', 'principal', '22222222-0000-0000-0000-000000000002',
    '201-555-1005', 'usa@frico.it', 'https://frico.it',
    '555 Cheese Way', 'Newark', 'NJ', '07102', 4,
    'Authentic Italian cheeses - Parmesan, Gorgonzola, Asiago, and specialty varieties.',
    NOW(), NOW()),
 
   -- 6. Anchor (New Zealand dairy) - Gary manages
-  (6, 'Anchor Food Professionals', 'principal', '11111111-0000-0000-0000-000000000026',
+  (6, 'Anchor Food Professionals', 'principal', '22222222-0000-0000-0000-000000000002',
    '415-555-1006', 'foodservice@anchor.com', 'https://anchorfoodprofessionals.com',
    '888 Pacific Avenue', 'San Francisco', 'CA', '94102', 4,
    'New Zealand dairy products - butter, cream, UHT products for professional kitchens.',
    NOW(), NOW()),
 
   -- 7. Tattooed Chef (Plant-based) - Dale manages
-  (7, 'Tattooed Chef', 'principal', '11111111-0000-0000-0000-000000000026',
+  (7, 'Tattooed Chef', 'principal', '22222222-0000-0000-0000-000000000002',
    '310-555-1007', 'foodservice@tattooedchef.com', 'https://tattooedchef.com',
    '777 Vegan Street', 'Los Angeles', 'CA', '90001', 5,
    'Premium plant-based frozen meals and ingredients - bowls, burritos, and ready-to-eat options.',
    NOW(), NOW()),
 
   -- 8. Litehouse (Dressings/dips) - Dale manages
-  (8, 'Litehouse', 'principal', '11111111-0000-0000-0000-000000000026',
+  (8, 'Litehouse', 'principal', '22222222-0000-0000-0000-000000000002',
    '208-555-1008', 'foodservice@litehousefoods.com', 'https://litehousefoods.com',
    '1109 Front Street', 'Sandpoint', 'ID', '83864', 5,
    'Premium dressings, dips, and cheese products. Known for blue cheese and ranch.',
    NOW(), NOW()),
 
   -- 9. Custom Culinary (Bases/sauces) - Sue manages
-  (9, 'Custom Culinary', 'principal', '11111111-0000-0000-0000-000000000026',
+  (9, 'Custom Culinary', 'principal', '22222222-0000-0000-0000-000000000002',
    '630-555-1009', 'sales@customculinary.com', 'https://customculinary.com',
    '2555 Busse Road', 'Elk Grove Village', 'IL', '60007', 6,
    'Professional soup bases, sauces, gravies, and seasonings for foodservice operators.',
@@ -391,49 +380,49 @@ INSERT INTO "public"."organizations" (
 )
 VALUES
   -- 10. Sysco (Broadline - National)
-  (10, 'Sysco Corporation', 'distributor', '11111111-0000-0000-0000-000000000023',
+  (10, 'Sysco Corporation', 'distributor', '22222222-0000-0000-0000-000000000001',
    '281-555-2001', 'purchasing@sysco.com', 'https://sysco.com',
    '1390 Enclave Parkway', 'Houston', 'TX', '77077', 2,
    'Largest foodservice distributor in North America. Full broadline capabilities.',
    NOW(), NOW()),
 
   -- 11. US Foods (Broadline - National)
-  (11, 'US Foods', 'distributor', '11111111-0000-0000-0000-000000000023',
+  (11, 'US Foods', 'distributor', '22222222-0000-0000-0000-000000000001',
    '847-555-2002', 'vendor@usfoods.com', 'https://usfoods.com',
    '9399 W Higgins Road', 'Rosemont', 'IL', '60018', 2,
    'Second largest foodservice distributor. Strong in chain restaurant segment.',
    NOW(), NOW()),
 
   -- 12. Performance Food Group (Broadline)
-  (12, 'Performance Food Group (PFG)', 'distributor', '11111111-0000-0000-0000-000000000023',
+  (12, 'Performance Food Group (PFG)', 'distributor', '22222222-0000-0000-0000-000000000001',
    '804-555-2003', 'purchasing@pfgc.com', 'https://pfgc.com',
    '12500 West Creek Parkway', 'Richmond', 'VA', '23238', 3,
    'Third largest foodservice distributor. Strong regional presence.',
    NOW(), NOW()),
 
   -- 13. Gordon Food Service (Broadline)
-  (13, 'Gordon Food Service (GFS)', 'distributor', '11111111-0000-0000-0000-000000000023',
+  (13, 'Gordon Food Service (GFS)', 'distributor', '22222222-0000-0000-0000-000000000001',
    '616-555-2004', 'vendors@gfs.com', 'https://gfs.com',
    '1300 Gezon Parkway SW', 'Grand Rapids', 'MI', '49509', 3,
    'Family-owned broadline distributor. Strong in Midwest and Canada.',
    NOW(), NOW()),
 
   -- 14. Shamrock Foods (Regional - Southwest)
-  (14, 'Shamrock Foods', 'distributor', '11111111-0000-0000-0000-000000000023',
+  (14, 'Shamrock Foods', 'distributor', '22222222-0000-0000-0000-000000000001',
    '602-555-2005', 'purchasing@shamrockfoods.com', 'https://shamrockfoods.com',
    '2540 N 29th Avenue', 'Phoenix', 'AZ', '85009', 4,
    'Regional broadline distributor focused on Southwest. Family-owned.',
    NOW(), NOW()),
 
   -- 15. Ben E. Keith (Regional - South)
-  (15, 'Ben E. Keith Foods', 'distributor', '11111111-0000-0000-0000-000000000023',
+  (15, 'Ben E. Keith Foods', 'distributor', '22222222-0000-0000-0000-000000000001',
    '817-555-2006', 'vendors@benekeith.com', 'https://benekeith.com',
    '601 E 7th Street', 'Fort Worth', 'TX', '76102', 4,
    'Regional distributor covering Texas and surrounding states.',
    NOW(), NOW()),
 
   -- 16. Reinhart Foodservice (Regional - Midwest)
-  (16, 'Reinhart Foodservice', 'distributor', '11111111-0000-0000-0000-000000000023',
+  (16, 'Reinhart Foodservice', 'distributor', '22222222-0000-0000-0000-000000000001',
    '715-555-2007', 'purchasing@rfrsinc.com', 'https://rfrsinc.com',
    '2355 Oak Industrial Drive NE', 'Grand Rapids', 'MI', '49505', 5,
    'Regional broadline serving Upper Midwest. Part of Performance Food Group.',

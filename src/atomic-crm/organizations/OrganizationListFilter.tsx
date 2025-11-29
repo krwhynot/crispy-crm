@@ -3,21 +3,18 @@ import type { VariantProps } from "class-variance-authority";
 
 import type { badgeVariants } from "@/components/ui/badge.constants";
 import { Badge } from "@/components/ui/badge";
-import { FilterLiveForm, useGetIdentity, useGetList } from "ra-core";
+import { FilterLiveForm, useGetIdentity } from "ra-core";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { SidebarActiveFilters } from "./SidebarActiveFilters";
+import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
 
 type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
 export const OrganizationListFilter = () => {
   const { identity } = useGetIdentity();
-  const { data: segments } = useGetList("segments", {
-    pagination: { page: 1, perPage: 100 },
-    sort: { field: "name", order: "ASC" },
-  });
 
   const organizationTypes = [
     { id: "customer", name: "Customer" },
@@ -104,14 +101,14 @@ export const OrganizationListFilter = () => {
           ))}
         </FilterCategory>
 
-        <FilterCategory icon={<Truck className="h-4 w-4" />} label="Segment">
-          {segments?.map((segment) => (
+        <FilterCategory icon={<Truck className="h-4 w-4" />} label="Playbook Category">
+          {PLAYBOOK_CATEGORY_CHOICES.map((category) => (
             <ToggleFilterButton
               multiselect
-              key={segment.id}
+              key={category.id}
               className="w-full justify-between"
-              label={segment.name}
-              value={{ segment_id: segment.id }}
+              label={category.name}
+              value={{ segment_id: category.id }}
             />
           ))}
         </FilterCategory>

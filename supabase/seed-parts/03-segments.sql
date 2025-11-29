@@ -1,48 +1,37 @@
 -- ============================================================================
--- PART 3: SEGMENTS (28 segments)
+-- PART 3: PLAYBOOK CATEGORIES (9 categories)
 -- ============================================================================
--- Organization classification segments from original data
--- Uses UUID primary keys
+-- Fixed set of distributor/organization classification categories aligned with
+-- MFB's sales playbook. These categories should not be modified at runtime.
+--
+-- UUIDs use the 22222222-... prefix for easy identification
 -- ============================================================================
 
 INSERT INTO "public"."segments" (id, name, created_at, created_by)
 VALUES
-  -- Restaurant Types
-  ('11111111-0000-0000-0000-000000000001', 'Fine Dining', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000002', 'Casual Dining', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000003', 'Fast Casual', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000004', 'QSR (Quick Service)', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000005', 'Food Truck', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000006', 'Ghost Kitchen', NOW(), NULL),
+  -- Major national distributors
+  ('22222222-0000-0000-0000-000000000001', 'Major Broadline', NOW(), NULL),
 
-  -- Hospitality
-  ('11111111-0000-0000-0000-000000000007', 'Hotel', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000008', 'Resort', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000009', 'Casino', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000010', 'Convention Center', NOW(), NULL),
+  -- Regional or specialty-focused distributors
+  ('22222222-0000-0000-0000-000000000002', 'Specialty/Regional', NOW(), NULL),
 
-  -- Institutional
-  ('11111111-0000-0000-0000-000000000011', 'Healthcare', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000012', 'Education K-12', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000013', 'Higher Education', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000014', 'Corporate Dining', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000015', 'Senior Living', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000016', 'Corrections', NOW(), NULL),
+  -- Foodservice management companies (Aramark, Compass, Sodexo)
+  ('22222222-0000-0000-0000-000000000003', 'Management Company', NOW(), NULL),
 
-  -- Retail/Specialty
-  ('11111111-0000-0000-0000-000000000017', 'Grocery', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000018', 'C-Store', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000019', 'Catering', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000020', 'Bakery', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000021', 'Coffee Shop', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000022', 'Bar/Nightclub', NOW(), NULL),
+  -- Group Purchasing Organizations
+  ('22222222-0000-0000-0000-000000000004', 'GPO', NOW(), NULL),
 
-  -- Distribution/Manufacturing
-  ('11111111-0000-0000-0000-000000000023', 'Broadline Distributor', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000024', 'Specialty Distributor', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000025', 'Redistribution', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000026', 'Manufacturer', NOW(), NULL),
+  -- Higher education foodservice
+  ('22222222-0000-0000-0000-000000000005', 'University', NOW(), NULL),
 
-  -- Other
-  ('11111111-0000-0000-0000-000000000027', 'Sports/Entertainment', NOW(), NULL),
-  ('11111111-0000-0000-0000-000000000028', 'Travel/Transportation', NOW(), NULL);
+  -- Multi-unit restaurant operators
+  ('22222222-0000-0000-0000-000000000006', 'Restaurant Group', NOW(), NULL),
+
+  -- National/regional chain accounts
+  ('22222222-0000-0000-0000-000000000007', 'Chain Restaurant', NOW(), NULL),
+
+  -- Hospitality and travel foodservice
+  ('22222222-0000-0000-0000-000000000008', 'Hotel & Aviation', NOW(), NULL),
+
+  -- Default for unclassified organizations
+  ('22222222-0000-0000-0000-000000000009', 'Unknown', NOW(), NULL);
