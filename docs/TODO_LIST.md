@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-011a completed - sample_status enum and conditional validation)
+**Last Updated:** 2025-11-29 (TODO-011b completed - conditional sample_status dropdown in QuickLogForm)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -1328,7 +1328,7 @@ Polish items and technical cleanup.
 - **TODO-011:** Sample Tracking Workflow (1/4 subtasks complete - TODO-011a ✅)
 - **TODO-052:** Contact Import Organization Handling (4/5 tasks complete)
 
-### ✅ Done: 19 items (completed 2025-11-28/29)
+### ✅ Done: 20 items (completed 2025-11-28/29)
 - **TODO-001:** Pipeline Stage Migration (3/3 subtasks ✅)
   - TODO-001a: Pipeline DB Migration
   - TODO-001b: Pipeline Constants & Schema Update
@@ -1346,6 +1346,7 @@ Polish items and technical cleanup.
 - **TODO-009:** My Performance Widget (useMyPerformance hook + MyPerformanceWidget component)
 - **TODO-010:** QuickLogForm - All 13 Activity Types (grouped dropdown, P5/P8 compliant)
 - **TODO-011a:** Sample Status Schema & Validation (sampleStatusSchema, superRefine conditional validation)
+- **TODO-012:** Per-Stage Stale Thresholds (stalenessCalculation.ts, 35 unit tests)
 - **TODO-044:** RBAC Foundation (useUserRole hook)
 - **TODO-045:** Pre-Sprint 1 Cleanup - Baseline verification complete
 - **TODO-053:** Semantic Color Validation in CI
