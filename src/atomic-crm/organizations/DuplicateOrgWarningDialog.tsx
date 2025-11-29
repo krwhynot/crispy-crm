@@ -54,12 +54,14 @@ export function DuplicateOrgWarningDialog({
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>Potential Duplicate Organization</AlertDialogTitle>
-          <AlertDialogDescription className="space-y-2">
-            <p>
-              An organization named <strong>&quot;{duplicateName}&quot;</strong> already exists in
-              the system.
-            </p>
-            <p>Would you like to proceed anyway, or go back to change the name?</p>
+          <AlertDialogDescription asChild>
+            <div className="space-y-2 text-sm text-muted-foreground">
+              <p>
+                An organization named <strong>&quot;{duplicateName}&quot;</strong> already exists in
+                the system.
+              </p>
+              <p>Would you like to proceed anyway, or go back to change the name?</p>
+            </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
