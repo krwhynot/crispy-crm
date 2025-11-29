@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-28 (TODO-045, TODO-053 completed)
+**Last Updated:** 2025-11-28 (TODO-001a, TODO-001b, TODO-045, TODO-053 completed)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -44,10 +44,10 @@ These items block other work or are foundational to the system.
 
 #### TODO-001: Pipeline Stage Migration (PARENT - See subtasks below)
 - **PRD Reference:** Section 5.1, MVP #46
-- **Status:** ⬜ TODO
+- **Status:** 🔧 In Progress (2/3 subtasks complete)
 - **Priority:** 🔴 P0
 - **Description:** Remove `awaiting_response` stage from system
-- **Subtasks:** TODO-001a, TODO-001b, TODO-001c
+- **Subtasks:** TODO-001a ✅, TODO-001b ✅, TODO-001c ⬜
 - **Acceptance Criteria:** System uses 7 stages; no references to `awaiting_response` remain
 - **Audit Doc:** `docs/audits/opportunity-feature-matrix.md`
 
@@ -73,16 +73,22 @@ These items block other work or are foundational to the system.
 
 #### TODO-001b: Pipeline Constants & Schema Update
 - **PRD Reference:** Section 5.1, MVP #46
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🔴 P0
 - **Depends On:** TODO-001a
 - **Effort:** S (1 day)
+- **Completed:** 2025-11-28
 - **Description:** Update TypeScript constants and Zod schema
 - **Tasks:**
-  - [ ] Update `stageConstants.ts` to remove `awaiting_response`
-  - [ ] Update Zod enum in opportunity schema (opportunitySchema.ts)
-  - [ ] Update any type definitions referencing 8 stages
-  - [ ] Run TypeScript compiler to catch any broken references
+  - [x] Update `stageConstants.ts` to remove `awaiting_response` - Already done (7 stages)
+  - [x] Update Zod enum in opportunity schema (opportunitySchema.ts) - Already done (7 stages)
+  - [x] Update any type definitions referencing 8 stages - Fixed test files
+  - [x] Run TypeScript compiler to catch any broken references - `tsc --noEmit` passes
+- **Implementation Notes:**
+  - `stageConstants.ts` already had 7 stages (no changes needed)
+  - `validation/opportunities.ts` already had 7-stage enum (no changes needed)
+  - Test files updated: `useColumnPreferences.test.ts`, `opportunityUtils.test.ts`, `OpportunityCreate.spec.tsx`, `OpportunityWorkflows.spec.tsx`
+  - `database.generated.ts` still has 8 stages (auto-generated from DB enum, intentionally preserved)
 - **Acceptance Criteria:** `tsc` compiles with no stage-related errors; stageConstants has 7 items
 - **Testability:** Unit: stageConstants.length === 7; Zod rejects 'awaiting_response'
 

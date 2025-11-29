@@ -30,7 +30,6 @@ const mockConfiguration = {
     { value: "new_lead", label: "New Lead" },
     { value: "initial_outreach", label: "Initial Outreach" },
     { value: "sample_visit_offered", label: "Sample/Visit Offered" },
-    { value: "awaiting_response", label: "Awaiting Response" },
     { value: "feedback_logged", label: "Feedback Logged" },
     { value: "demo_scheduled", label: "Demo Scheduled" },
     { value: "closed_won", label: "Closed Won" },
@@ -304,12 +303,12 @@ describe("OpportunityCreate - Lifecycle Stages and B2B Features", () => {
       expect(screen.getByLabelText(/stage/i)).toBeInTheDocument();
     });
 
+    // 7-stage pipeline per PRD v1.20 (awaiting_response removed)
     const stageProbabilities = {
       new_lead: 10,
       initial_outreach: 25,
       sample_visit_offered: 40,
-      awaiting_response: 50,
-      feedback_logged: 60,
+      feedback_logged: 55,
       demo_scheduled: 80,
       closed_won: 100,
       closed_lost: 0,
