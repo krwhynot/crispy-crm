@@ -61,6 +61,21 @@ BEGIN
 END $$;
 
 -- =====================================================
+-- NOTE: Enum Type Preservation
+-- =====================================================
+-- The 'awaiting_response' value remains in the opportunity_stage enum type
+-- (defined in cloud_schema_fresh.sql) for backwards compatibility.
+--
+-- PostgreSQL requires recreating enum types to remove values, which is
+-- risky for production data. The enum value is now unused but harmless.
+--
+-- Future cleanup (post-MVP, if desired):
+-- 1. Create new enum without 'awaiting_response'
+-- 2. Alter column to use new enum
+-- 3. Drop old enum
+-- =====================================================
+
+-- =====================================================
 -- DOWN MIGRATION (Manual - run if rollback needed)
 -- =====================================================
 -- To reverse this migration:

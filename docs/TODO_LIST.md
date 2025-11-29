@@ -53,14 +53,21 @@ These items block other work or are foundational to the system.
 
 #### TODO-001a: Pipeline DB Migration
 - **PRD Reference:** Section 5.1, MVP #46
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🔴 P0
 - **Effort:** S (1 day)
+- **Completed:** 2025-11-28
 - **Description:** Create database migration to update existing stage data
 - **Tasks:**
-  - [ ] Create migration: UPDATE opportunities SET stage = 'sample_visit_offered' WHERE stage = 'awaiting_response'
-  - [ ] Add reversible migration (store original stage in metadata if needed)
-  - [ ] Test migration on local DB with seed data
+  - [x] Create migration: UPDATE opportunities SET stage = 'sample_visit_offered' WHERE stage = 'awaiting_response'
+  - [x] Add reversible migration (store original stage in notes field with `[MIGRATION-20251128]` marker)
+  - [x] Test migration on local DB with seed data
+  - [x] Update seed files (`seed_opportunities.sql`, `seed_opportunities_for_tasks.sql`) to use new stages
+- **Implementation Notes:**
+  - Migration file: `supabase/migrations/20251128070000_migrate_awaiting_response_stage.sql`
+  - Reversibility: Original stage stored in `notes` field with marker `[MIGRATION-20251128]`
+  - Enum value `awaiting_response` preserved in PostgreSQL type for backwards compatibility
+  - Verified: `SELECT COUNT(*) FROM opportunities WHERE stage = 'awaiting_response'` returns 0
 - **Acceptance Criteria:** All `awaiting_response` records migrated; migration is reversible
 - **Testability:** Integration: Run migration → query for awaiting_response returns 0 rows
 
