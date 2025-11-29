@@ -21,7 +21,7 @@ import {
   createActivitiesHandler,
   createProductsHandler,
 } from "./handlers";
-import { applySearchParams } from "./dataProviderUtils";
+import { applySearchParams, getDatabaseResource } from "./dataProviderUtils";
 
 /**
  * List of resources with composed handlers
@@ -96,20 +96,21 @@ export function createComposedDataProvider(baseProvider: DataProvider): DataProv
       resource: string,
       params: Parameters<DataProvider["getList"]>[1]
     ) => {
-      // Apply global transformations ($or, arrays, search, soft-delete)
-      // This was missing from the composed architecture, causing $or to fail.
+      // Map resource to database table/view (e.g., opportunities → opportunities_summary)
+      const dbResource = getDatabaseResource(resource, "list");
       const processedParams = applySearchParams(resource, params);
-
       const provider = getProviderForResource(resource);
-      return provider.getList<RecordType>(resource, processedParams);
+      return provider.getList<RecordType>(dbResource, processedParams);
     },
 
     getOne: async <RecordType extends RaRecord = RaRecord>(
       resource: string,
       params: Parameters<DataProvider["getOne"]>[1]
     ) => {
+      // Map resource to database table/view for single record fetch
+      const dbResource = getDatabaseResource(resource, "one");
       const provider = getProviderForResource(resource);
-      return provider.getOne<RecordType>(resource, params);
+      return provider.getOne<RecordType>(dbResource, params);
     },
 
     getMany: async <RecordType extends RaRecord = RaRecord>(
