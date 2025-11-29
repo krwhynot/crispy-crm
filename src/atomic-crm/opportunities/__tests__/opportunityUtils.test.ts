@@ -1,13 +1,13 @@
 import { describe, it, expect } from "vitest";
 
 // Simple utility functions for opportunity management
+// Note: 'awaiting_response' stage removed per PRD v1.20 pipeline simplification
 export const calculateOpportunityProbability = (stage: string): number => {
   const stageProbabilities: Record<string, number> = {
     new_lead: 10,
     initial_outreach: 25,
     sample_visit_offered: 40,
-    awaiting_response: 50,
-    feedback_logged: 60,
+    feedback_logged: 55,
     demo_scheduled: 80,
     closed_won: 100,
     closed_lost: 0,
@@ -21,7 +21,6 @@ export const formatOpportunityStage = (stage: string): string => {
     new_lead: "New Lead",
     initial_outreach: "Initial Outreach",
     sample_visit_offered: "Sample/Visit Offered",
-    awaiting_response: "Awaiting Response",
     feedback_logged: "Feedback Logged",
     demo_scheduled: "Demo Scheduled",
     closed_won: "Closed Won",
@@ -71,10 +70,6 @@ describe("Opportunity Utils", () => {
       expect(formatOpportunityStage("sample_visit_offered")).toBe("Sample/Visit Offered");
     });
 
-    it("should format awaiting_response stage", () => {
-      expect(formatOpportunityStage("awaiting_response")).toBe("Awaiting Response");
-    });
-
     it("should format feedback_logged stage", () => {
       expect(formatOpportunityStage("feedback_logged")).toBe("Feedback Logged");
     });
@@ -98,11 +93,11 @@ describe("Opportunity Utils", () => {
 
   describe("Opportunity Lifecycle Tests", () => {
     it("should validate stage progression logic", () => {
+      // 7-stage pipeline per PRD v1.20 (awaiting_response removed)
       const stageProgression = [
         "new_lead",
         "initial_outreach",
         "sample_visit_offered",
-        "awaiting_response",
         "feedback_logged",
         "demo_scheduled",
         "closed_won",

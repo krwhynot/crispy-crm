@@ -302,12 +302,12 @@ describe("Opportunity Lifecycle Workflows", () => {
     });
 
     it("should progress through all lifecycle stages", async () => {
+      // 7-stage pipeline per PRD v1.20 (awaiting_response removed)
       const stages = [
         { stage: "new_lead", probability: 10 },
         { stage: "initial_outreach", probability: 25 },
         { stage: "sample_visit_offered", probability: 40 },
-        { stage: "awaiting_response", probability: 50 },
-        { stage: "feedback_logged", probability: 60 },
+        { stage: "feedback_logged", probability: 55 },
         { stage: "demo_scheduled", probability: 80 },
         { stage: "closed_won", probability: 100 },
       ];
