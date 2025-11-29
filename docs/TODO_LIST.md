@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-28 (TODO-001a/b/c, TODO-002, TODO-004a/b, TODO-005, TODO-006, TODO-007, TODO-008, TODO-044, TODO-045, TODO-053, TODO-054 completed)
+**Last Updated:** 2025-11-28 (TODO-004c completed - full Win/Loss Reasons UI now done)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -237,17 +237,24 @@ These items block other work or are foundational to the system.
 
 #### TODO-004c: Win/Loss Integration & Display
 - **PRD Reference:** Section 5.3, MVP #12
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🔴 P0
 - **Depends On:** TODO-004b
 - **Effort:** S (1 day)
+- **Completed:** 2025-11-28
 - **Description:** Integrate modal into stage change flow and display reasons
 - **Tasks:**
-  - [ ] Wire modal into Kanban drag-to-close flow
-  - [ ] Wire modal into opportunity edit stage dropdown
-  - [ ] Display reason on closed opportunity detail view
-  - [ ] Add reason column to opportunity list (optional, filterable)
-- **Acceptance Criteria:** Cannot close via any path without reason; reason visible on closed opps
+  - [x] Wire modal into Kanban drag-to-close flow
+  - [x] Wire modal into opportunity edit stage dropdown (slide-over)
+  - [x] Wire modal into card actions menu (Mark as Won/Lost)
+  - [x] Display reason on closed opportunity detail view (slide-over)
+  - [x] Display reason on Kanban cards (badge with icon)
+- **Implementation Notes:**
+  - `OpportunityListContent.tsx`: Intercepts drag to closed_won/closed_lost, shows modal, reverts on cancel
+  - `OpportunityCardActions.tsx`: Added "Mark as Won" and "Mark as Lost" actions with modal
+  - `OpportunitySlideOverDetailsTab.tsx`: Intercepts form submission to closed stages, shows reason in view mode
+  - `OpportunityCard.tsx`: Shows win/loss reason badge with Trophy/XCircle icons
+- **Acceptance Criteria:** Cannot close via any path without reason; reason visible on closed opps ✅
 - **Testability:** E2E: Drag to closed_won → modal appears; view closed opp → reason displayed
 
 #### TODO-005: Activity Auto-Cascade Trigger
@@ -367,18 +374,24 @@ Essential features with no critical dependencies.
 
 #### TODO-009: My Performance Widget
 - **PRD Reference:** Section 9.2.4, MVP #28, #54
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟠 P1
+- **Completed:** 2025-11-28
 - **Description:** Add personal metrics sidebar widget to dashboard
 - **Tasks:**
-  - [ ] Create `MyPerformanceWidget.tsx` component
-  - [ ] Calculate: Activities This Week, Deals Moved Forward, Tasks Completed, Open Opportunities
-  - [ ] Add trend arrows using `text-success` (--success) for up / `text-destructive` (--destructive) for down
-  - [ ] Add click-through to detailed personal report
-  - [ ] Position in dashboard sidebar
+  - [x] Create `MyPerformanceWidget.tsx` component
+  - [x] Calculate: Activities This Week, Deals Moved Forward, Tasks Completed, Open Opportunities
+  - [x] Add trend arrows using `text-success` (--success) for up / `text-destructive` (--destructive) for down
+  - [ ] Add click-through to detailed personal report (minor enhancement - deferred)
+  - [x] Position in dashboard sidebar
 - **Constitution Compliance:**
-  - P8: Trend colors use semantic tokens `--success` / `--destructive`, not raw green/red
-- **Acceptance Criteria:** Widget shows 4 personal metrics with week-over-week trends
+  - P8: Trend colors use semantic tokens `--success` / `--destructive`, not raw green/red ✅
+- **Implementation Notes:**
+  - Hook file: `src/atomic-crm/dashboard/v3/hooks/useMyPerformance.ts`
+  - Component file: `src/atomic-crm/dashboard/v3/components/MyPerformanceWidget.tsx`
+  - Uses `Promise.allSettled` for resilient parallel fetching (8 queries: 4 current week, 4 previous week)
+  - Dashboard layout updated to 3-column grid with widget + activity feed in right column
+- **Acceptance Criteria:** Widget shows 4 personal metrics with week-over-week trends ✅
 
 ### Activities & Quick Logging
 
@@ -1281,22 +1294,24 @@ Polish items and technical cleanup.
 - **Other remaining items:** 6 (TODO-003, TODO-052 Import Handling, etc.)
 - **Constitution Compliance Audits:** 1 (TODO-055 DataProvider Audit)
 
-### 🔧 Partial/In Progress: 2 items
-- **TODO-004:** Win/Loss Reasons UI (2/3 subtasks complete - TODO-004c pending)
+### 🔧 Partial/In Progress: 1 item
 - **TODO-052:** Contact Import Organization Handling (4/5 tasks complete)
 
-### ✅ Done: 14 items (completed 2025-11-28/29)
+### ✅ Done: 16 items (completed 2025-11-28/29)
 - **TODO-001:** Pipeline Stage Migration (3/3 subtasks ✅)
   - TODO-001a: Pipeline DB Migration
   - TODO-001b: Pipeline Constants & Schema Update
   - TODO-001c: Pipeline UI & Filter Updates
 - **TODO-002:** Contact Organization Enforcement
-- **TODO-004a:** Win/Loss Reason Schema & Fields
-- **TODO-004b:** Win/Loss Modal Component
+- **TODO-004:** Win/Loss Reasons UI (3/3 subtasks ✅)
+  - TODO-004a: Win/Loss Reason Schema & Fields
+  - TODO-004b: Win/Loss Modal Component
+  - TODO-004c: Win/Loss Integration & Display (wired to Kanban drag, card actions, slide-over)
 - **TODO-005:** Activity Auto-Cascade Trigger
 - **TODO-006:** Dashboard KPI #1 Fix (Open Opps count)
 - **TODO-007:** Dashboard KPI #4 Stale Deals
 - **TODO-008:** Recent Activity Feed Component (ActivityFeedPanel + useTeamActivities hook)
+- **TODO-009:** My Performance Widget (useMyPerformance hook + MyPerformanceWidget component)
 - **TODO-044:** RBAC Foundation (useUserRole hook)
 - **TODO-045:** Pre-Sprint 1 Cleanup - Baseline verification complete
 - **TODO-053:** Semantic Color Validation in CI
@@ -1304,7 +1319,7 @@ Polish items and technical cleanup.
 
 ### Decomposed Items Breakdown
 - **TODO-001** → 3 subtasks (001a ✅, 001b ✅, 001c ✅) - Pipeline Migration **COMPLETE**
-- **TODO-004** → 3 subtasks (004a ✅, 004b ✅, 004c ⬜) - Win/Loss Reasons
+- **TODO-004** → 3 subtasks (004a ✅, 004b ✅, 004c ✅) - Win/Loss Reasons **COMPLETE**
 - **TODO-011** → 4 subtasks (011a, 011b, 011c, 011d) - Sample Tracking
 - **TODO-022** → 2 subtasks (022a, 022b) - Duplicate Prevention
 - **TODO-042** → 4 subtasks (042a, 042b, 042c, 042d) - Email Digest

@@ -29,6 +29,32 @@ interface QuickLogActivityProps {
   task: Task;
 }
 
+/**
+ * All 13 activity types from PRD v1.18 organized into groups
+ * Matches the structure in dashboard/v3/validation/activitySchema.ts
+ */
+const ACTIVITY_TYPE_GROUPS = {
+  Communication: [
+    { value: "call", label: "Call" },
+    { value: "email", label: "Email" },
+    { value: "check_in", label: "Check-in" },
+    { value: "social", label: "Social" },
+  ],
+  Meetings: [
+    { value: "meeting", label: "Meeting" },
+    { value: "demo", label: "Demo" },
+    { value: "site_visit", label: "Site Visit" },
+    { value: "trade_show", label: "Trade Show" },
+  ],
+  Documentation: [
+    { value: "proposal", label: "Proposal" },
+    { value: "contract_review", label: "Contract Review" },
+    { value: "follow_up", label: "Follow-up" },
+    { value: "note", label: "Note" },
+    { value: "sample", label: "Sample" },
+  ],
+} as const;
+
 // Maps task types to activity interaction types
 const TASK_TYPE_TO_ACTIVITY_TYPE: Record<string, string> = {
   Call: "call",
@@ -41,7 +67,7 @@ const TASK_TYPE_TO_ACTIVITY_TYPE: Record<string, string> = {
   None: "check_in",
 };
 
-// Infer activity type from task title keywords
+// Infer activity type from task title keywords (all 13 types)
 const inferActivityTypeFromTitle = (title: string): string => {
   const lowerTitle = title.toLowerCase();
 
@@ -50,9 +76,13 @@ const inferActivityTypeFromTitle = (title: string): string => {
   if (lowerTitle.includes("meeting") || lowerTitle.includes("meet")) return "meeting";
   if (lowerTitle.includes("demo") || lowerTitle.includes("demonstration")) return "demo";
   if (lowerTitle.includes("proposal") || lowerTitle.includes("quote")) return "proposal";
-  if (lowerTitle.includes("follow") || lowerTitle.includes("check")) return "follow_up";
+  if (lowerTitle.includes("follow") || lowerTitle.includes("check-in")) return "follow_up";
   if (lowerTitle.includes("visit") || lowerTitle.includes("site")) return "site_visit";
   if (lowerTitle.includes("contract") || lowerTitle.includes("agreement")) return "contract_review";
+  if (lowerTitle.includes("trade") || lowerTitle.includes("show") || lowerTitle.includes("expo")) return "trade_show";
+  if (lowerTitle.includes("social") || lowerTitle.includes("linkedin") || lowerTitle.includes("network")) return "social";
+  if (lowerTitle.includes("sample") || lowerTitle.includes("product")) return "sample";
+  if (lowerTitle.includes("note") || lowerTitle.includes("memo")) return "note";
 
   return "check_in"; // Default fallback
 };
@@ -138,32 +168,38 @@ export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({ open, onClos
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                {/* Group 1: Communication (3 items) */}
+                {/* Group 1: Communication (4 items) */}
                 <SelectGroup>
                   <SelectLabel>Communication</SelectLabel>
-                  <SelectItem value="call">Call</SelectItem>
-                  <SelectItem value="email">Email</SelectItem>
-                  <SelectItem value="check_in">Check-in</SelectItem>
+                  {ACTIVITY_TYPE_GROUPS.Communication.map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
 
                 <SelectSeparator />
 
-                {/* Group 2: Meetings (3 items) */}
+                {/* Group 2: Meetings (4 items) */}
                 <SelectGroup>
                   <SelectLabel>Meetings</SelectLabel>
-                  <SelectItem value="meeting">Meeting</SelectItem>
-                  <SelectItem value="demo">Demo</SelectItem>
-                  <SelectItem value="site_visit">Site Visit</SelectItem>
+                  {ACTIVITY_TYPE_GROUPS.Meetings.map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
 
                 <SelectSeparator />
 
-                {/* Group 3: Documentation (3 items) */}
+                {/* Group 3: Documentation (5 items) */}
                 <SelectGroup>
                   <SelectLabel>Documentation</SelectLabel>
-                  <SelectItem value="proposal">Proposal</SelectItem>
-                  <SelectItem value="contract_review">Contract Review</SelectItem>
-                  <SelectItem value="follow_up">Follow-up</SelectItem>
+                  {ACTIVITY_TYPE_GROUPS.Documentation.map((type) => (
+                    <SelectItem key={type.value} value={type.value}>
+                      {type.label}
+                    </SelectItem>
+                  ))}
                 </SelectGroup>
               </SelectContent>
             </Select>
