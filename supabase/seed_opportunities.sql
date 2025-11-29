@@ -95,7 +95,7 @@ BEGIN
     ('3/8" Straight Cut Fries Program',
      6,   -- 8 hospitality group (multiple locations)
      1797, -- Frites Street
-     'awaiting_response',
+     'sample_visit_offered',
      'active',
      'critical',
      'High-volume fry program for entire hospitality group. Awaiting decision from corporate.',
@@ -259,7 +259,7 @@ BEGIN
     ('Butter Chicken LTO',
      53,  -- At the Office Bar & Grill
      1802, -- Rapid Rasoi
-     'awaiting_response',
+     'feedback_logged',
      'active',
      'high',
      'Limited time butter chicken special using our base. Awaiting owner approval.',

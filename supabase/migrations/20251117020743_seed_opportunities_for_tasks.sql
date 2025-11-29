@@ -35,7 +35,7 @@ INSERT INTO opportunities (
    CURRENT_DATE + INTERVAL '45 days', 4, 4, 'cold_call', NOW() - INTERVAL '10 days'),
 
   -- Opportunity 17 (for tasks 12, 16)
-  (17, 'Fries Portfolio & Spring Menu', 44, 1796, 'awaiting_response', 'active', 'critical',
+  (17, 'Fries Portfolio & Spring Menu', 44, 1796, 'sample_visit_offered', 'active', 'critical',
    'Fries product line and spring menu timeline discussion',
    CURRENT_DATE + INTERVAL '21 days', 4, 4, 'existing_customer', NOW() - INTERVAL '20 days'),
 
