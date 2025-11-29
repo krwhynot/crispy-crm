@@ -278,7 +278,7 @@ describe("BulkReassignButton", () => {
     it("should handle all success scenario", () => {
       const selectedIds = [1, 2, 3];
       let successCount = 0;
-      let failureCount = 0;
+      const failureCount = 0;
 
       // Simulate all successes
       for (const _id of selectedIds) {
@@ -291,7 +291,7 @@ describe("BulkReassignButton", () => {
 
     it("should handle all failure scenario", () => {
       const selectedIds = [1, 2, 3];
-      let successCount = 0;
+      const successCount = 0;
       let failureCount = 0;
 
       // Simulate all failures
