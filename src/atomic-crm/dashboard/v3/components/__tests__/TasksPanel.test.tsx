@@ -49,12 +49,15 @@ vi.mock("react-admin", () => ({
 describe("TasksPanel", () => {
   beforeEach(() => {
     // Default mock returns all task statuses
+    // Note: snoozeTask is deprecated in favor of updateTaskDueDate for SnoozePopover
     mockUseMyTasks.mockReturnValue({
       tasks: mockTaskData,
       loading: false,
       error: null,
       completeTask: vi.fn(),
-      snoozeTask: vi.fn(),
+      updateTaskDueDate: vi.fn(),
+      deleteTask: vi.fn(),
+      viewTask: vi.fn(),
     });
   });
 
@@ -86,7 +89,9 @@ describe("TasksPanel", () => {
       loading: false,
       error: null,
       completeTask: vi.fn(),
-      snoozeTask: vi.fn(),
+      updateTaskDueDate: vi.fn(),
+      deleteTask: vi.fn(),
+      viewTask: vi.fn(),
     });
 
     render(<TasksPanel />);
@@ -109,30 +114,68 @@ describe("TasksPanel", () => {
     expect(screen.getByText("Tomorrow")).toBeInTheDocument();
   });
 
-  it("should show success toast when task is snoozed", async () => {
-    const mockSnoozeTask = vi.fn().mockResolvedValue(undefined);
+  it("should show snooze popover when snooze button is clicked", async () => {
+    const user = userEvent.setup();
+    const mockUpdateTaskDueDate = vi.fn().mockResolvedValue(undefined);
     mockUseMyTasks.mockReturnValue({
       tasks: [mockTaskData[1]], // Today task
       loading: false,
       error: null,
       completeTask: vi.fn(),
-      snoozeTask: mockSnoozeTask,
+      updateTaskDueDate: mockUpdateTaskDueDate,
+      deleteTask: vi.fn(),
+      viewTask: vi.fn(),
     });
 
     render(<TasksPanel />);
 
-    // Find and click the snooze button
-    const snoozeButton = screen.getByLabelText(/Snooze "Send contract for review" by 1 day/);
-    fireEvent.click(snoozeButton);
+    // Find and click the snooze button (now opens a popover)
+    const snoozeButton = screen.getByLabelText(/Snooze "Send contract for review"/);
+    await user.click(snoozeButton);
+
+    // Popover should appear with snooze options
+    await waitFor(() => {
+      expect(screen.getByText("Snooze until")).toBeInTheDocument();
+      expect(screen.getByText("Tomorrow")).toBeInTheDocument();
+      expect(screen.getByText("Next Week")).toBeInTheDocument();
+      expect(screen.getByText("Pick a date...")).toBeInTheDocument();
+    });
+  });
+
+  it("should snooze task to tomorrow when Tomorrow option is clicked", async () => {
+    const user = userEvent.setup();
+    const mockUpdateTaskDueDate = vi.fn().mockResolvedValue(undefined);
+    mockUseMyTasks.mockReturnValue({
+      tasks: [mockTaskData[1]], // Today task
+      loading: false,
+      error: null,
+      completeTask: vi.fn(),
+      updateTaskDueDate: mockUpdateTaskDueDate,
+      deleteTask: vi.fn(),
+      viewTask: vi.fn(),
+    });
+
+    render(<TasksPanel />);
+
+    // Open snooze popover
+    const snoozeButton = screen.getByLabelText(/Snooze "Send contract for review"/);
+    await user.click(snoozeButton);
+
+    // Click Tomorrow option
+    await waitFor(() => {
+      expect(screen.getByText("Tomorrow")).toBeInTheDocument();
+    });
+    const tomorrowOption = screen.getByText("Tomorrow").closest("button");
+    await user.click(tomorrowOption!);
 
     // Wait for async snooze operation
     await waitFor(() => {
-      expect(mockSnoozeTask).toHaveBeenCalledWith(2);
+      expect(mockUpdateTaskDueDate).toHaveBeenCalledWith(2, expect.any(Date));
     });
 
     // Should show success notification
     expect(mockNotify).toHaveBeenCalledWith(
-      "Task snoozed for tomorrow",
+      "Task snoozed",
       expect.objectContaining({ type: "success" })
     );
   });
@@ -144,7 +187,7 @@ describe("TasksPanel", () => {
         loading: false,
         error: null,
         completeTask: vi.fn(),
-        snoozeTask: vi.fn(),
+        updateTaskDueDate: vi.fn(),
         deleteTask: vi.fn(),
         viewTask: vi.fn(),
       });
@@ -164,7 +207,7 @@ describe("TasksPanel", () => {
         loading: false,
         error: null,
         completeTask: vi.fn(),
-        snoozeTask: vi.fn(),
+        updateTaskDueDate: vi.fn(),
         deleteTask: vi.fn(),
         viewTask: vi.fn(),
       });
@@ -191,7 +234,7 @@ describe("TasksPanel", () => {
         loading: false,
         error: null,
         completeTask: vi.fn(),
-        snoozeTask: vi.fn(),
+        updateTaskDueDate: vi.fn(),
         deleteTask: vi.fn(),
         viewTask: mockViewTask,
       });
@@ -217,7 +260,7 @@ describe("TasksPanel", () => {
         loading: false,
         error: null,
         completeTask: vi.fn(),
-        snoozeTask: vi.fn(),
+        updateTaskDueDate: vi.fn(),
         deleteTask: mockDeleteTask,
         viewTask: vi.fn(),
       });
@@ -243,7 +286,7 @@ describe("TasksPanel", () => {
         loading: false,
         error: null,
         completeTask: vi.fn(),
-        snoozeTask: vi.fn(),
+        updateTaskDueDate: vi.fn(),
         deleteTask: mockDeleteTask,
         viewTask: vi.fn(),
       });

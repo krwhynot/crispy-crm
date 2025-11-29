@@ -6,7 +6,7 @@
 -- 1. Creates the sample_status enum with 4 states
 -- 2. Adds 'sample' to the interaction_type enum
 -- 3. Adds sample_status column to activities table (nullable)
--- 4. Adds CHECK constraint for conditional validation (type='sample' requires sample_status)
+-- NOTE: CHECK constraint deferred - app layer validates type='sample' requires sample_status
 
 -- =====================================================
 -- Step 1: Create sample_status enum
@@ -53,20 +53,15 @@ ALTER TABLE "public"."activities"
 ADD COLUMN IF NOT EXISTS "sample_status" "public"."sample_status";
 
 -- =====================================================
--- Step 4: Add CHECK constraint for conditional validation
+-- Step 4: CHECK constraint DEFERRED
 -- =====================================================
--- If type = 'sample', then sample_status must not be NULL
--- If type != 'sample', sample_status should be NULL (enforced in app layer)
-
-ALTER TABLE "public"."activities"
-DROP CONSTRAINT IF EXISTS "check_sample_has_status";
-
-ALTER TABLE "public"."activities"
-ADD CONSTRAINT "check_sample_has_status"
-CHECK (
-    (type = 'sample' AND sample_status IS NOT NULL) OR
-    (type != 'sample')
-);
+-- PostgreSQL limitation: Cannot use newly-added enum values in CHECK constraints
+-- within the same transaction (SQLSTATE 55P04: unsafe use of new value).
+--
+-- The constraint (type = 'sample' requires sample_status IS NOT NULL) is enforced
+-- at the application layer via Zod validation in src/atomic-crm/validation/activity.ts
+--
+-- A separate migration can add the CHECK constraint after the enum value is committed.
 
 -- =====================================================
 -- Step 5: Create index for sample status filtering

@@ -837,18 +837,26 @@ Important features that can be worked in parallel.
 
 #### TODO-027: Task Snooze Popover
 - **PRD Reference:** Section 9.2.3, MVP #37, #55
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Replace auto-snooze with popover options
 - **Tasks:**
-  - [ ] Create snooze popover using shadcn/ui `Popover` + `Calendar` components
-  - [ ] Options: Tomorrow (9 AM), Next Week (Monday 9 AM), Custom Date
-  - [ ] Update due_date on snooze via dataProvider
-  - [ ] Show toast: "Task snoozed until [date]"
+  - [x] Create snooze popover using shadcn/ui `Popover` + `Calendar` components
+  - [x] Options: Tomorrow, Next Week, Custom Date (with calendar picker)
+  - [x] Update due_date on snooze via dataProvider (`updateTaskDueDate`)
+  - [x] Show toast: "Task snoozed" on successful snooze
+- **Implementation Notes:**
+  - Component file: `src/atomic-crm/dashboard/v3/components/SnoozePopover.tsx`
+  - Integrated into `TasksPanel.tsx` replacing the old single-click +1 day snooze button
+  - Uses existing `updateTaskDueDate` hook function for optimistic UI updates
+  - Calendar disables past dates; all dates use `endOfDay()` for consistent behavior
+  - 44px touch targets on all interactive elements (WCAG AA compliant)
+  - Proper ARIA attributes: `role="dialog"`, `aria-label`, `aria-haspopup`
 - **Constitution Compliance:**
-  - P7: Use shadcn/ui `Popover` and `Calendar` components, not raw HTML
-  - P5: If date picker form exists, defaults from `snoozeSchema.partial().parse({})`
-- **Acceptance Criteria:** Clicking snooze opens popover with date options; confirmation toast shown
+  - P7: Uses shadcn/ui `Popover` and `Calendar` components ✅
+  - P8: Semantic colors only (`text-muted-foreground`, `bg-accent`, `border-border`) ✅
+- **Acceptance Criteria:** Clicking snooze opens popover with date options; confirmation toast shown ✅
 
 #### TODO-028: Task Completion Follow-Up Toast
 - **PRD Reference:** MVP #32, #58

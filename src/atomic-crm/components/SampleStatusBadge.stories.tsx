@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { AdminContext, DataProvider, defaultDataProvider } from "react-admin";
+import type { DataProvider} from "react-admin";
+import { AdminContext, defaultDataProvider } from "react-admin";
 import {
   SampleStatusBadge,
   SampleStatusStepper,
@@ -382,7 +383,7 @@ export const WithCallback: Story = {
     interactive: true,
     showStepper: true,
     onStatusChange: (newStatus: SampleStatus) => {
-      // eslint-disable-next-line no-alert
+       
       alert(`Status changed to: ${newStatus}`);
     },
   },
