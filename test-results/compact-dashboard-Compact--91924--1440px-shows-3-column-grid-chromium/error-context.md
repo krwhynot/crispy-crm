@@ -1,0 +1,321 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e27]:
+      - heading "Principal Dashboard" [level=1] [ref=e30]
+      - main [ref=e31]:
+        - generic [ref=e32]:
+          - region "Key Performance Indicators" [ref=e33]:
+            - generic "Loading Total Pipeline" [ref=e34]
+            - generic "Loading Overdue Tasks" [ref=e41]
+            - generic "Loading Activities This Week" [ref=e48]
+            - generic "Loading Open Opportunities" [ref=e55]
+          - generic [ref=e62]:
+            - generic [ref=e64]:
+              - generic [ref=e65]:
+                - heading "Pipeline by Principal" [level=2] [ref=e66]
+                - paragraph [ref=e67]: Track opportunity momentum across your customer accounts
+              - generic [ref=e68]:
+                - generic [ref=e69]:
+                  - img [ref=e70]
+                  - textbox "Search principals..." [ref=e73]
+                - generic [ref=e74]:
+                  - switch "My Principals Only" [ref=e75] [cursor=pointer]
+                  - generic [ref=e76]: My Principals Only
+                - button "Filters" [ref=e77] [cursor=pointer]:
+                  - img
+                  - text: Filters
+            - table [ref=e80]:
+              - rowgroup [ref=e81]:
+                - row "Principal Pipeline This Week Last Week Momentum Next Action" [ref=e82]:
+                  - cell "Principal" [ref=e83] [cursor=pointer]:
+                    - generic [ref=e84]:
+                      - text: Principal
+                      - img [ref=e85]
+                  - cell "Pipeline" [ref=e87] [cursor=pointer]:
+                    - generic [ref=e88]:
+                      - text: Pipeline
+                      - img [ref=e89]
+                  - cell "This Week" [ref=e92] [cursor=pointer]:
+                    - generic [ref=e93]:
+                      - text: This Week
+                      - img [ref=e94]
+                  - cell "Last Week" [ref=e97] [cursor=pointer]:
+                    - generic [ref=e98]:
+                      - text: Last Week
+                      - img [ref=e99]
+                  - cell "Momentum" [ref=e102] [cursor=pointer]:
+                    - generic [ref=e103]:
+                      - text: Momentum
+                      - img [ref=e104]
+                  - cell "Next Action" [ref=e107]
+              - rowgroup [ref=e108]:
+                - button "View opportunities for Abdale" [ref=e109] [cursor=pointer]:
+                  - cell "Abdale" [ref=e110]
+                  - cell "0" [ref=e111]:
+                    - generic [ref=e112]: "0"
+                  - cell "-" [ref=e113]
+                  - cell "-" [ref=e114]
+                  - cell "steady" [ref=e115]:
+                    - generic [ref=e116]:
+                      - img [ref=e117]
+                      - generic [ref=e118]: steady
+                  - cell "Schedule follow-up" [ref=e119]:
+                    - button "Schedule follow-up" [ref=e120]
+                - button "View opportunities for Annasea" [ref=e121] [cursor=pointer]:
+                  - cell "Annasea" [ref=e122]
+                  - cell "0" [ref=e123]:
+                    - generic [ref=e124]: "0"
+                  - cell "-" [ref=e125]
+                  - cell "-" [ref=e126]
+                  - cell "steady" [ref=e127]:
+                    - generic [ref=e128]:
+                      - img [ref=e129]
+                      - generic [ref=e130]: steady
+                  - cell "Schedule follow-up" [ref=e131]:
+                    - button "Schedule follow-up" [ref=e132]
+                - button "View opportunities for Better Balance" [ref=e133] [cursor=pointer]:
+                  - cell "Better Balance" [ref=e134]
+                  - cell "0" [ref=e135]:
+                    - generic [ref=e136]: "0"
+                  - cell "-" [ref=e137]
+                  - cell "-" [ref=e138]
+                  - cell "steady" [ref=e139]:
+                    - generic [ref=e140]:
+                      - img [ref=e141]
+                      - generic [ref=e142]: steady
+                  - cell "Schedule follow-up" [ref=e143]:
+                    - button "Schedule follow-up" [ref=e144]
+                - button "View opportunities for Demo Principal Org" [ref=e145] [cursor=pointer]:
+                  - cell "Demo Principal Org" [ref=e146]
+                  - cell "1" [ref=e147]:
+                    - generic [ref=e148]: "1"
+                  - cell "-" [ref=e149]
+                  - cell "1" [ref=e150]:
+                    - generic [ref=e151]: "1"
+                  - cell "decreasing" [ref=e152]:
+                    - generic [ref=e153]:
+                      - img [ref=e154]
+                      - generic [ref=e157]: decreasing
+                  - cell "Call back" [ref=e158]
+                - button "View opportunities for Frites Street" [ref=e159] [cursor=pointer]:
+                  - cell "Frites Street" [ref=e160]
+                  - cell "0" [ref=e161]:
+                    - generic [ref=e162]: "0"
+                  - cell "-" [ref=e163]
+                  - cell "-" [ref=e164]
+                  - cell "steady" [ref=e165]:
+                    - generic [ref=e166]:
+                      - img [ref=e167]
+                      - generic [ref=e168]: steady
+                  - cell "Schedule follow-up" [ref=e169]:
+                    - button "Schedule follow-up" [ref=e170]
+                - button "View opportunities for Kaufholds" [ref=e171] [cursor=pointer]:
+                  - cell "Kaufholds" [ref=e172]
+                  - cell "5" [ref=e173]:
+                    - generic [ref=e174]: "5"
+                  - cell "-" [ref=e175]
+                  - cell "-" [ref=e176]
+                  - cell "stale" [ref=e177]:
+                    - generic [ref=e178]:
+                      - img [ref=e179]
+                      - generic [ref=e181]: stale
+                  - cell "Deliver coffee samples to tasting room" [ref=e182]
+                - button "View opportunities for Kaufholds Kurds Inc" [ref=e183] [cursor=pointer]:
+                  - cell "Kaufholds Kurds Inc" [ref=e184]
+                  - cell "155" [ref=e185]:
+                    - generic [ref=e186]: "155"
+                  - cell "-" [ref=e187]
+                  - cell "-" [ref=e188]
+                  - cell "stale" [ref=e189]:
+                    - generic [ref=e190]:
+                      - img [ref=e191]
+                      - generic [ref=e193]: stale
+                  - cell "Schedule follow-up" [ref=e194]:
+                    - button "Schedule follow-up" [ref=e195]
+                - button "View opportunities for Kayco" [ref=e196] [cursor=pointer]:
+                  - cell "Kayco" [ref=e197]
+                  - cell "0" [ref=e198]:
+                    - generic [ref=e199]: "0"
+                  - cell "-" [ref=e200]
+                  - cell "-" [ref=e201]
+                  - cell "steady" [ref=e202]:
+                    - generic [ref=e203]:
+                      - img [ref=e204]
+                      - generic [ref=e205]: steady
+                  - cell "Schedule follow-up" [ref=e206]:
+                    - button "Schedule follow-up" [ref=e207]
+                - button "View opportunities for Mccrum" [ref=e208] [cursor=pointer]:
+                  - cell "Mccrum" [ref=e209]
+                  - cell "0" [ref=e210]:
+                    - generic [ref=e211]: "0"
+                  - cell "-" [ref=e212]
+                  - cell "-" [ref=e213]
+                  - cell "steady" [ref=e214]:
+                    - generic [ref=e215]:
+                      - img [ref=e216]
+                      - generic [ref=e217]: steady
+                  - cell "Schedule follow-up" [ref=e218]:
+                    - button "Schedule follow-up" [ref=e219]
+                - button "View opportunities for Mrs Ressler's" [ref=e220] [cursor=pointer]:
+                  - cell "Mrs Ressler's" [ref=e221]
+                  - cell "0" [ref=e222]:
+                    - generic [ref=e223]: "0"
+                  - cell "-" [ref=e224]
+                  - cell "-" [ref=e225]
+                  - cell "steady" [ref=e226]:
+                    - generic [ref=e227]:
+                      - img [ref=e228]
+                      - generic [ref=e229]: steady
+                  - cell "Schedule follow-up" [ref=e230]:
+                    - button "Schedule follow-up" [ref=e231]
+                - button "View opportunities for Never Better" [ref=e232] [cursor=pointer]:
+                  - cell "Never Better" [ref=e233]
+                  - cell "0" [ref=e234]:
+                    - generic [ref=e235]: "0"
+                  - cell "-" [ref=e236]
+                  - cell "-" [ref=e237]
+                  - cell "steady" [ref=e238]:
+                    - generic [ref=e239]:
+                      - img [ref=e240]
+                      - generic [ref=e241]: steady
+                  - cell "Schedule follow-up" [ref=e242]:
+                    - button "Schedule follow-up" [ref=e243]
+                - button "View opportunities for Ofk" [ref=e244] [cursor=pointer]:
+                  - cell "Ofk" [ref=e245]
+                  - cell "0" [ref=e246]:
+                    - generic [ref=e247]: "0"
+                  - cell "-" [ref=e248]
+                  - cell "-" [ref=e249]
+                  - cell "steady" [ref=e250]:
+                    - generic [ref=e251]:
+                      - img [ref=e252]
+                      - generic [ref=e253]: steady
+                  - cell "Schedule follow-up" [ref=e254]:
+                    - button "Schedule follow-up" [ref=e255]
+                - button "View opportunities for Rapid Rasoi" [ref=e256] [cursor=pointer]:
+                  - cell "Rapid Rasoi" [ref=e257]
+                  - cell "73" [ref=e258]:
+                    - generic [ref=e259]: "73"
+                  - cell "1" [ref=e260]:
+                    - generic [ref=e261]: "1"
+                  - cell "-" [ref=e262]
+                  - cell "increasing" [ref=e263]:
+                    - generic [ref=e264]:
+                      - img [ref=e265]
+                      - generic [ref=e268]: increasing
+                  - 'cell "Follow-up: Follow-up required for contract discussion. Test I" [ref=e269]'
+                - button "View opportunities for RJC" [ref=e270] [cursor=pointer]:
+                  - cell "RJC" [ref=e271]
+                  - cell "3" [ref=e272]:
+                    - generic [ref=e273]: "3"
+                  - cell "-" [ref=e274]
+                  - cell "-" [ref=e275]
+                  - cell "stale" [ref=e276]:
+                    - generic [ref=e277]:
+                      - img [ref=e278]
+                      - generic [ref=e280]: stale
+                  - cell "Schedule follow-up" [ref=e281]:
+                    - button "Schedule follow-up" [ref=e282]
+                - button "View opportunities for SWAP" [ref=e283] [cursor=pointer]:
+                  - cell "SWAP" [ref=e284]
+                  - cell "0" [ref=e285]:
+                    - generic [ref=e286]: "0"
+                  - cell "-" [ref=e287]
+                  - cell "-" [ref=e288]
+                  - cell "steady" [ref=e289]:
+                    - generic [ref=e290]:
+                      - img [ref=e291]
+                      - generic [ref=e292]: steady
+                  - cell "Schedule follow-up" [ref=e293]:
+                    - button "Schedule follow-up" [ref=e294]
+                - button "View opportunities for Swap Foods USA" [ref=e295] [cursor=pointer]:
+                  - cell "Swap Foods USA" [ref=e296]
+                  - cell "141" [ref=e297]:
+                    - generic [ref=e298]: "141"
+                  - cell "-" [ref=e299]
+                  - cell "-" [ref=e300]
+                  - cell "stale" [ref=e301]:
+                    - generic [ref=e302]:
+                      - img [ref=e303]
+                      - generic [ref=e305]: stale
+                  - cell "Schedule follow-up" [ref=e306]:
+                    - button "Schedule follow-up" [ref=e307]
+                - button "View opportunities for TCFB" [ref=e308] [cursor=pointer]:
+                  - cell "TCFB" [ref=e309]
+                  - cell "0" [ref=e310]:
+                    - generic [ref=e311]: "0"
+                  - cell "-" [ref=e312]
+                  - cell "-" [ref=e313]
+                  - cell "steady" [ref=e314]:
+                    - generic [ref=e315]:
+                      - img [ref=e316]
+                      - generic [ref=e317]: steady
+                  - cell "Schedule follow-up" [ref=e318]:
+                    - button "Schedule follow-up" [ref=e319]
+                - button "View opportunities for VAF" [ref=e320] [cursor=pointer]:
+                  - cell "VAF" [ref=e321]
+                  - cell "0" [ref=e322]:
+                    - generic [ref=e323]: "0"
+                  - cell "-" [ref=e324]
+                  - cell "-" [ref=e325]
+                  - cell "steady" [ref=e326]:
+                    - generic [ref=e327]:
+                      - img [ref=e328]
+                      - generic [ref=e329]: steady
+                  - cell "Schedule follow-up" [ref=e330]:
+                    - button "Schedule follow-up" [ref=e331]
+                - button "View opportunities for Wicks" [ref=e332] [cursor=pointer]:
+                  - cell "Wicks" [ref=e333]
+                  - cell "0" [ref=e334]:
+                    - generic [ref=e335]: "0"
+                  - cell "-" [ref=e336]
+                  - cell "-" [ref=e337]
+                  - cell "steady" [ref=e338]:
+                    - generic [ref=e339]:
+                      - img [ref=e340]
+                      - generic [ref=e341]: steady
+                  - cell "Schedule follow-up" [ref=e342]:
+                    - button "Schedule follow-up" [ref=e343]
+        - button "Log Activity" [ref=e362] [cursor=pointer]:
+          - img
+  - contentinfo [ref=e363]:
+    - generic [ref=e365]:
+      - paragraph [ref=e366]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e367] [cursor=pointer]:
+        - img [ref=e368]
+        - generic [ref=e370]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```

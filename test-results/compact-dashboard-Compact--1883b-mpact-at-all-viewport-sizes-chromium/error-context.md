@@ -1,0 +1,430 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Notifications" [ref=e19] [cursor=pointer]:
+          - img
+        - button "A" [ref=e20] [cursor=pointer]:
+          - generic [ref=e22]: A
+  - main [ref=e23]:
+    - generic [ref=e24]:
+      - heading "Principal Dashboard" [level=1] [ref=e27]
+      - main [ref=e28]:
+        - generic [ref=e29]:
+          - region "Key Performance Indicators" [ref=e30]:
+            - 'button "Total Pipeline: $0. Click to view details." [ref=e31] [cursor=pointer]':
+              - generic [ref=e33]:
+                - img [ref=e35]
+                - generic [ref=e37]:
+                  - paragraph [ref=e38]: Total Pipeline
+                  - paragraph [ref=e39]: $0
+            - 'button "Overdue Tasks: 4. Click to view details." [ref=e40] [cursor=pointer]':
+              - generic [ref=e42]:
+                - img [ref=e44]
+                - generic [ref=e46]:
+                  - paragraph [ref=e47]: Overdue Tasks
+                  - paragraph [ref=e48]: "4"
+            - 'button "Activities This Week: 9. Click to view details." [ref=e49] [cursor=pointer]':
+              - generic [ref=e51]:
+                - img [ref=e53]
+                - generic [ref=e55]:
+                  - paragraph [ref=e56]: Activities This Week
+                  - paragraph [ref=e57]: "9"
+            - 'button "Open Opportunities: 0. Click to view details." [ref=e58] [cursor=pointer]':
+              - generic [ref=e60]:
+                - img [ref=e62]
+                - generic [ref=e65]:
+                  - paragraph [ref=e66]: Open Opportunities
+                  - paragraph [ref=e67]: "0"
+          - generic [ref=e68]:
+            - generic [ref=e70]:
+              - generic [ref=e71]:
+                - heading "Pipeline by Principal" [level=2] [ref=e72]
+                - paragraph [ref=e73]: Track opportunity momentum across your customer accounts
+              - generic [ref=e74]:
+                - generic [ref=e75]:
+                  - img [ref=e76]
+                  - textbox "Search principals..." [ref=e79]
+                - generic [ref=e80]:
+                  - switch "My Principals Only" [ref=e81] [cursor=pointer]
+                  - generic [ref=e82]: My Principals Only
+                - button "Filters" [ref=e83] [cursor=pointer]:
+                  - img
+                  - text: Filters
+            - table [ref=e86]:
+              - rowgroup [ref=e87]:
+                - row "Principal Pipeline This Week Last Week Momentum Next Action" [ref=e88]:
+                  - cell "Principal" [ref=e89] [cursor=pointer]:
+                    - generic [ref=e90]:
+                      - text: Principal
+                      - img [ref=e91]
+                  - cell "Pipeline" [ref=e93] [cursor=pointer]:
+                    - generic [ref=e94]:
+                      - text: Pipeline
+                      - img [ref=e95]
+                  - cell "This Week" [ref=e98] [cursor=pointer]:
+                    - generic [ref=e99]:
+                      - text: This Week
+                      - img [ref=e100]
+                  - cell "Last Week" [ref=e103] [cursor=pointer]:
+                    - generic [ref=e104]:
+                      - text: Last Week
+                      - img [ref=e105]
+                  - cell "Momentum" [ref=e108] [cursor=pointer]:
+                    - generic [ref=e109]:
+                      - text: Momentum
+                      - img [ref=e110]
+                  - cell "Next Action" [ref=e113]
+              - rowgroup [ref=e114]:
+                - button "View opportunities for Abdale" [ref=e115] [cursor=pointer]:
+                  - cell "Abdale" [ref=e116]
+                  - cell "0" [ref=e117]:
+                    - generic [ref=e118]: "0"
+                  - cell "-" [ref=e119]
+                  - cell "-" [ref=e120]
+                  - cell "steady" [ref=e121]:
+                    - generic [ref=e122]:
+                      - img [ref=e123]
+                      - generic [ref=e124]: steady
+                  - cell "Schedule follow-up" [ref=e125]:
+                    - button "Schedule follow-up" [ref=e126]
+                - button "View opportunities for Annasea" [ref=e127] [cursor=pointer]:
+                  - cell "Annasea" [ref=e128]
+                  - cell "0" [ref=e129]:
+                    - generic [ref=e130]: "0"
+                  - cell "-" [ref=e131]
+                  - cell "-" [ref=e132]
+                  - cell "steady" [ref=e133]:
+                    - generic [ref=e134]:
+                      - img [ref=e135]
+                      - generic [ref=e136]: steady
+                  - cell "Schedule follow-up" [ref=e137]:
+                    - button "Schedule follow-up" [ref=e138]
+                - button "View opportunities for Better Balance" [ref=e139] [cursor=pointer]:
+                  - cell "Better Balance" [ref=e140]
+                  - cell "0" [ref=e141]:
+                    - generic [ref=e142]: "0"
+                  - cell "-" [ref=e143]
+                  - cell "-" [ref=e144]
+                  - cell "steady" [ref=e145]:
+                    - generic [ref=e146]:
+                      - img [ref=e147]
+                      - generic [ref=e148]: steady
+                  - cell "Schedule follow-up" [ref=e149]:
+                    - button "Schedule follow-up" [ref=e150]
+                - button "View opportunities for Demo Principal Org" [ref=e151] [cursor=pointer]:
+                  - cell "Demo Principal Org" [ref=e152]
+                  - cell "1" [ref=e153]:
+                    - generic [ref=e154]: "1"
+                  - cell "-" [ref=e155]
+                  - cell "1" [ref=e156]:
+                    - generic [ref=e157]: "1"
+                  - cell "decreasing" [ref=e158]:
+                    - generic [ref=e159]:
+                      - img [ref=e160]
+                      - generic [ref=e163]: decreasing
+                  - cell "Call back" [ref=e164]
+                - button "View opportunities for Frites Street" [ref=e165] [cursor=pointer]:
+                  - cell "Frites Street" [ref=e166]
+                  - cell "0" [ref=e167]:
+                    - generic [ref=e168]: "0"
+                  - cell "-" [ref=e169]
+                  - cell "-" [ref=e170]
+                  - cell "steady" [ref=e171]:
+                    - generic [ref=e172]:
+                      - img [ref=e173]
+                      - generic [ref=e174]: steady
+                  - cell "Schedule follow-up" [ref=e175]:
+                    - button "Schedule follow-up" [ref=e176]
+                - button "View opportunities for Kaufholds" [ref=e177] [cursor=pointer]:
+                  - cell "Kaufholds" [ref=e178]
+                  - cell "5" [ref=e179]:
+                    - generic [ref=e180]: "5"
+                  - cell "-" [ref=e181]
+                  - cell "-" [ref=e182]
+                  - cell "stale" [ref=e183]:
+                    - generic [ref=e184]:
+                      - img [ref=e185]
+                      - generic [ref=e187]: stale
+                  - cell "Deliver coffee samples to tasting room" [ref=e188]
+                - button "View opportunities for Kaufholds Kurds Inc" [ref=e189] [cursor=pointer]:
+                  - cell "Kaufholds Kurds Inc" [ref=e190]
+                  - cell "155" [ref=e191]:
+                    - generic [ref=e192]: "155"
+                  - cell "-" [ref=e193]
+                  - cell "-" [ref=e194]
+                  - cell "stale" [ref=e195]:
+                    - generic [ref=e196]:
+                      - img [ref=e197]
+                      - generic [ref=e199]: stale
+                  - cell "Schedule follow-up" [ref=e200]:
+                    - button "Schedule follow-up" [ref=e201]
+                - button "View opportunities for Kayco" [ref=e202] [cursor=pointer]:
+                  - cell "Kayco" [ref=e203]
+                  - cell "0" [ref=e204]:
+                    - generic [ref=e205]: "0"
+                  - cell "-" [ref=e206]
+                  - cell "-" [ref=e207]
+                  - cell "steady" [ref=e208]:
+                    - generic [ref=e209]:
+                      - img [ref=e210]
+                      - generic [ref=e211]: steady
+                  - cell "Schedule follow-up" [ref=e212]:
+                    - button "Schedule follow-up" [ref=e213]
+                - button "View opportunities for Mccrum" [ref=e214] [cursor=pointer]:
+                  - cell "Mccrum" [ref=e215]
+                  - cell "0" [ref=e216]:
+                    - generic [ref=e217]: "0"
+                  - cell "-" [ref=e218]
+                  - cell "-" [ref=e219]
+                  - cell "steady" [ref=e220]:
+                    - generic [ref=e221]:
+                      - img [ref=e222]
+                      - generic [ref=e223]: steady
+                  - cell "Schedule follow-up" [ref=e224]:
+                    - button "Schedule follow-up" [ref=e225]
+                - button "View opportunities for Mrs Ressler's" [ref=e226] [cursor=pointer]:
+                  - cell "Mrs Ressler's" [ref=e227]
+                  - cell "0" [ref=e228]:
+                    - generic [ref=e229]: "0"
+                  - cell "-" [ref=e230]
+                  - cell "-" [ref=e231]
+                  - cell "steady" [ref=e232]:
+                    - generic [ref=e233]:
+                      - img [ref=e234]
+                      - generic [ref=e235]: steady
+                  - cell "Schedule follow-up" [ref=e236]:
+                    - button "Schedule follow-up" [ref=e237]
+                - button "View opportunities for Never Better" [ref=e238] [cursor=pointer]:
+                  - cell "Never Better" [ref=e239]
+                  - cell "0" [ref=e240]:
+                    - generic [ref=e241]: "0"
+                  - cell "-" [ref=e242]
+                  - cell "-" [ref=e243]
+                  - cell "steady" [ref=e244]:
+                    - generic [ref=e245]:
+                      - img [ref=e246]
+                      - generic [ref=e247]: steady
+                  - cell "Schedule follow-up" [ref=e248]:
+                    - button "Schedule follow-up" [ref=e249]
+                - button "View opportunities for Ofk" [ref=e250] [cursor=pointer]:
+                  - cell "Ofk" [ref=e251]
+                  - cell "0" [ref=e252]:
+                    - generic [ref=e253]: "0"
+                  - cell "-" [ref=e254]
+                  - cell "-" [ref=e255]
+                  - cell "steady" [ref=e256]:
+                    - generic [ref=e257]:
+                      - img [ref=e258]
+                      - generic [ref=e259]: steady
+                  - cell "Schedule follow-up" [ref=e260]:
+                    - button "Schedule follow-up" [ref=e261]
+                - button "View opportunities for Rapid Rasoi" [ref=e262] [cursor=pointer]:
+                  - cell "Rapid Rasoi" [ref=e263]
+                  - cell "73" [ref=e264]:
+                    - generic [ref=e265]: "73"
+                  - cell "1" [ref=e266]:
+                    - generic [ref=e267]: "1"
+                  - cell "-" [ref=e268]
+                  - cell "increasing" [ref=e269]:
+                    - generic [ref=e270]:
+                      - img [ref=e271]
+                      - generic [ref=e274]: increasing
+                  - 'cell "Follow-up: Follow-up required for contract discussion. Test I" [ref=e275]'
+                - button "View opportunities for RJC" [ref=e276] [cursor=pointer]:
+                  - cell "RJC" [ref=e277]
+                  - cell "3" [ref=e278]:
+                    - generic [ref=e279]: "3"
+                  - cell "-" [ref=e280]
+                  - cell "-" [ref=e281]
+                  - cell "stale" [ref=e282]:
+                    - generic [ref=e283]:
+                      - img [ref=e284]
+                      - generic [ref=e286]: stale
+                  - cell "Schedule follow-up" [ref=e287]:
+                    - button "Schedule follow-up" [ref=e288]
+                - button "View opportunities for SWAP" [ref=e289] [cursor=pointer]:
+                  - cell "SWAP" [ref=e290]
+                  - cell "0" [ref=e291]:
+                    - generic [ref=e292]: "0"
+                  - cell "-" [ref=e293]
+                  - cell "-" [ref=e294]
+                  - cell "steady" [ref=e295]:
+                    - generic [ref=e296]:
+                      - img [ref=e297]
+                      - generic [ref=e298]: steady
+                  - cell "Schedule follow-up" [ref=e299]:
+                    - button "Schedule follow-up" [ref=e300]
+                - button "View opportunities for Swap Foods USA" [ref=e301] [cursor=pointer]:
+                  - cell "Swap Foods USA" [ref=e302]
+                  - cell "141" [ref=e303]:
+                    - generic [ref=e304]: "141"
+                  - cell "-" [ref=e305]
+                  - cell "-" [ref=e306]
+                  - cell "stale" [ref=e307]:
+                    - generic [ref=e308]:
+                      - img [ref=e309]
+                      - generic [ref=e311]: stale
+                  - cell "Schedule follow-up" [ref=e312]:
+                    - button "Schedule follow-up" [ref=e313]
+                - button "View opportunities for TCFB" [ref=e314] [cursor=pointer]:
+                  - cell "TCFB" [ref=e315]
+                  - cell "0" [ref=e316]:
+                    - generic [ref=e317]: "0"
+                  - cell "-" [ref=e318]
+                  - cell "-" [ref=e319]
+                  - cell "steady" [ref=e320]:
+                    - generic [ref=e321]:
+                      - img [ref=e322]
+                      - generic [ref=e323]: steady
+                  - cell "Schedule follow-up" [ref=e324]:
+                    - button "Schedule follow-up" [ref=e325]
+                - button "View opportunities for VAF" [ref=e326] [cursor=pointer]:
+                  - cell "VAF" [ref=e327]
+                  - cell "0" [ref=e328]:
+                    - generic [ref=e329]: "0"
+                  - cell "-" [ref=e330]
+                  - cell "-" [ref=e331]
+                  - cell "steady" [ref=e332]:
+                    - generic [ref=e333]:
+                      - img [ref=e334]
+                      - generic [ref=e335]: steady
+                  - cell "Schedule follow-up" [ref=e336]:
+                    - button "Schedule follow-up" [ref=e337]
+                - button "View opportunities for Wicks" [ref=e338] [cursor=pointer]:
+                  - cell "Wicks" [ref=e339]
+                  - cell "0" [ref=e340]:
+                    - generic [ref=e341]: "0"
+                  - cell "-" [ref=e342]
+                  - cell "-" [ref=e343]
+                  - cell "steady" [ref=e344]:
+                    - generic [ref=e345]:
+                      - img [ref=e346]
+                      - generic [ref=e347]: steady
+                  - cell "Schedule follow-up" [ref=e348]:
+                    - button "Schedule follow-up" [ref=e349]
+          - generic [ref=e350]:
+            - generic [ref=e352]:
+              - generic [ref=e353]:
+                - generic [ref=e354]: My Tasks
+                - generic [ref=e355]: Drag tasks between columns to reschedule
+              - generic [ref=e356]:
+                - generic [ref=e357]: 4 overdue
+                - button "New Task" [ref=e358] [cursor=pointer]:
+                  - img
+                  - text: New Task
+            - generic [ref=e360]:
+              - generic [ref=e361]:
+                - generic [ref=e362]:
+                  - heading "Overdue" [level=2] [ref=e363]
+                  - generic [ref=e364]: "4"
+                - generic [ref=e365]:
+                  - 'button "Complete task: Follow-up: Follow-up required for contract discussion. Test I Follow-up: Follow-up required for contract discussion. Test I → Unknown Snooze \"Follow-up: Follow-up required for contract discussion. Test I\" by 1 day More actions for \"Follow-up: Follow-up required for contract discussion. Test I\" Medium Nov 23" [ref=e366] [cursor=pointer]':
+                    - generic [ref=e367]:
+                      - 'checkbox "Complete task: Follow-up: Follow-up required for contract discussion. Test I" [ref=e369]'
+                      - generic [ref=e370]:
+                        - generic [ref=e371]:
+                          - img [ref=e372]
+                          - 'heading "Follow-up: Follow-up required for contract discussion. Test I" [level=3] [ref=e375]'
+                        - generic [ref=e377]: → Unknown
+                      - generic [ref=e378]:
+                        - 'button "Snooze \"Follow-up: Follow-up required for contract discussion. Test I\" by 1 day" [ref=e379]':
+                          - img
+                        - 'button "More actions for \"Follow-up: Follow-up required for contract discussion. Test I\"" [ref=e380]':
+                          - img
+                    - generic [ref=e381]:
+                      - generic [ref=e382]: Medium
+                      - generic [ref=e383]: Nov 23
+                  - 'button "Complete task: Follow-up: Follow-up required for contract discussion. Test I Follow-up: Follow-up required for contract discussion. Test I → Unknown Snooze \"Follow-up: Follow-up required for contract discussion. Test I\" by 1 day More actions for \"Follow-up: Follow-up required for contract discussion. Test I\" Medium Nov 23" [ref=e384] [cursor=pointer]':
+                    - generic [ref=e385]:
+                      - 'checkbox "Complete task: Follow-up: Follow-up required for contract discussion. Test I" [ref=e387]'
+                      - generic [ref=e388]:
+                        - generic [ref=e389]:
+                          - img [ref=e390]
+                          - 'heading "Follow-up: Follow-up required for contract discussion. Test I" [level=3] [ref=e393]'
+                        - generic [ref=e395]: → Unknown
+                      - generic [ref=e396]:
+                        - 'button "Snooze \"Follow-up: Follow-up required for contract discussion. Test I\" by 1 day" [ref=e397]':
+                          - img
+                        - 'button "More actions for \"Follow-up: Follow-up required for contract discussion. Test I\"" [ref=e398]':
+                          - img
+                    - generic [ref=e399]:
+                      - generic [ref=e400]: Medium
+                      - generic [ref=e401]: Nov 23
+                  - 'button "Complete task: Follow-up: Follow-up required for contract discussion. Test I Follow-up: Follow-up required for contract discussion. Test I → Unknown Snooze \"Follow-up: Follow-up required for contract discussion. Test I\" by 1 day More actions for \"Follow-up: Follow-up required for contract discussion. Test I\" Medium Nov 23" [ref=e402] [cursor=pointer]':
+                    - generic [ref=e403]:
+                      - 'checkbox "Complete task: Follow-up: Follow-up required for contract discussion. Test I" [ref=e405]'
+                      - generic [ref=e406]:
+                        - generic [ref=e407]:
+                          - img [ref=e408]
+                          - 'heading "Follow-up: Follow-up required for contract discussion. Test I" [level=3] [ref=e411]'
+                        - generic [ref=e413]: → Unknown
+                      - generic [ref=e414]:
+                        - 'button "Snooze \"Follow-up: Follow-up required for contract discussion. Test I\" by 1 day" [ref=e415]':
+                          - img
+                        - 'button "More actions for \"Follow-up: Follow-up required for contract discussion. Test I\"" [ref=e416]':
+                          - img
+                    - generic [ref=e417]:
+                      - generic [ref=e418]: Medium
+                      - generic [ref=e419]: Nov 23
+                  - 'button "Complete task: Follow-up: Follow-up required for contract discussion. Test I Follow-up: Follow-up required for contract discussion. Test I → Unknown Snooze \"Follow-up: Follow-up required for contract discussion. Test I\" by 1 day More actions for \"Follow-up: Follow-up required for contract discussion. Test I\" Medium Nov 23" [ref=e420] [cursor=pointer]':
+                    - generic [ref=e421]:
+                      - 'checkbox "Complete task: Follow-up: Follow-up required for contract discussion. Test I" [ref=e423]'
+                      - generic [ref=e424]:
+                        - generic [ref=e425]:
+                          - img [ref=e426]
+                          - 'heading "Follow-up: Follow-up required for contract discussion. Test I" [level=3] [ref=e429]'
+                        - generic [ref=e431]: → Unknown
+                      - generic [ref=e432]:
+                        - 'button "Snooze \"Follow-up: Follow-up required for contract discussion. Test I\" by 1 day" [ref=e433]':
+                          - img
+                        - 'button "More actions for \"Follow-up: Follow-up required for contract discussion. Test I\"" [ref=e434]':
+                          - img
+                    - generic [ref=e435]:
+                      - generic [ref=e436]: Medium
+                      - generic [ref=e437]: Nov 23
+              - generic [ref=e438]:
+                - generic [ref=e439]:
+                  - heading "Today" [level=2] [ref=e440]
+                  - generic [ref=e441]: "0"
+                - generic [ref=e443]:
+                  - paragraph [ref=e444]: No tasks due today
+                  - paragraph [ref=e445]: Drag tasks here to focus on them today
+              - generic [ref=e446]:
+                - generic [ref=e447]:
+                  - heading "This Week" [level=2] [ref=e448]
+                  - generic [ref=e449]: "0"
+                - generic [ref=e451]:
+                  - paragraph [ref=e452]: No upcoming tasks
+                  - paragraph [ref=e453]: Plan your week by adding tasks here
+        - button "Log Activity" [ref=e454] [cursor=pointer]:
+          - img
+  - contentinfo [ref=e455]:
+    - generic [ref=e457]:
+      - paragraph [ref=e458]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e459] [cursor=pointer]:
+        - img [ref=e460]
+        - generic [ref=e462]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```
