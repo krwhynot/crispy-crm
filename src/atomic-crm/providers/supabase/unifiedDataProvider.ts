@@ -372,6 +372,9 @@ export const unifiedDataProvider: DataProvider = {
     resource: string,
     params: GetListParams
   ): Promise<GetListResult<RecordType>> {
+    // VERY VISIBLE DEBUG - should appear for EVERY getList call
+    console.warn('🔍 [DATAPROVIDER] getList called for:', resource);
+
     return wrapMethod("getList", resource, params, async () => {
       // Create a mutable copy of params to potentially modify filters
       const processedParams = { ...params };
