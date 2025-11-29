@@ -4,4 +4,4 @@ export { usePrincipalOpportunities } from "./usePrincipalOpportunities";
 export { usePrincipalPipeline } from "./usePrincipalPipeline";
 export { useMyTasks } from "./useMyTasks";
 export { useHybridSearch } from "./useHybridSearch";
-export { useKPIMetrics, type KPIMetrics } from "./useKPIMetrics";
+export { useKPIMetrics, STAGE_STALE_THRESHOLDS, type KPIMetrics } from "./useKPIMetrics";
