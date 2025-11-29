@@ -8,6 +8,7 @@ import {
   getOpportunityStageColor,
   getOpportunityStageElevation,
   getOpportunityStageDescription,
+  getOpportunityMfbPhase,
 } from "../constants/stageConstants";
 import {
   Tooltip,
@@ -131,9 +132,25 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
             </TooltipTrigger>
             <TooltipContent
               side="bottom"
-              className="max-w-[280px] text-sm leading-relaxed"
+              className="max-w-[320px] bg-popover text-popover-foreground border border-border shadow-lg"
             >
-              {getOpportunityStageDescription(stage)}
+              <div className="space-y-2 p-1">
+                {/* Stage description */}
+                <p className="text-sm leading-relaxed">
+                  {getOpportunityStageDescription(stage)}
+                </p>
+                {/* MFB Phase mapping (PRD Section 7.4) */}
+                {getOpportunityMfbPhase(stage) && (
+                  <div className="pt-2 border-t border-border/50">
+                    <p className="text-xs font-medium text-primary">
+                      📋 MFB {getOpportunityMfbPhase(stage)?.phase}: {getOpportunityMfbPhase(stage)?.name}
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      {getOpportunityMfbPhase(stage)?.context}
+                    </p>
+                  </div>
+                )}
+              </div>
             </TooltipContent>
           </Tooltip>
           <span className="text-sm text-muted-foreground">({metrics.count})</span>
