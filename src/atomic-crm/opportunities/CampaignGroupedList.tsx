@@ -8,23 +8,41 @@ import {
 } from "@/components/ui/accordion";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
-import { ExternalLink, FolderOpen, Building2 } from "lucide-react";
+import { ExternalLink, FolderOpen, Building2, Factory } from "lucide-react";
 import type { Opportunity } from "../types";
 
 /**
  * Campaign Grouped List View
  *
  * Displays opportunities in a hierarchical accordion structure:
- * Campaign → Customer Organization → Opportunities
+ * Campaign → Principal Organization → Customer Organization → Opportunities
  *
  * Example:
- * "Q4 2025 Trade Show" (3) →
- *   "Nobu Miami" (2) →
- *     - Ocean Hugger opportunity [Fishpeople badge]
- *     - Better Balance opportunity [Better Balance badge]
- *   "The French Laundry" (1) →
- *     - Cheese Curd opportunity [Kaufholds badge]
+ * "Winter Fancy Food Show 2025" (3 opportunities across 2 principals) →
+ *   "Ocean Hugger" (2 opportunities across 2 customers) →
+ *     "Nobu Miami" (1) →
+ *       - Ocean Hugger Seafood Alternative opportunity
+ *     "The French Laundry" (1) →
+ *       - Ocean Hugger Premium Line opportunity
+ *   "Kaufholds" (1 opportunity across 1 customer) →
+ *     "The French Laundry" (1) →
+ *       - Cheese Curd opportunity
  */
+
+/**
+ * Type for 3-level nested grouping structure
+ * Campaign → Principal → Customer → Opportunities
+ */
+type CampaignGroupedData = Record<
+  string, // Campaign name
+  Record<
+    string, // Principal organization name
+    Record<
+      string, // Customer organization name
+      Opportunity[]
+    >
+  >
+>;
 interface CampaignGroupedListProps {
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
 }
