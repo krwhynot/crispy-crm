@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-027 completed - Task Snooze Popover with Tomorrow/Next Week/Custom date options)
+**Last Updated:** 2025-11-29 (TODO-024 completed - Remove F&B Fields from Product UI)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -810,13 +810,19 @@ Important features that can be worked in parallel.
 
 #### TODO-024: Remove F&B Fields from Product UI
 - **PRD Reference:** MVP #23
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Remove non-PRD fields from ProductCertificationsTab
 - **Tasks:**
-  - [ ] Remove: certifications, allergens, ingredients, nutritional_info, marketing_description
-  - [ ] Simplify to PRD spec: Name, SKU, Category, Status, Description
-- **Acceptance Criteria:** Product forms show only PRD-specified fields
+  - [x] Remove: certifications, allergens, ingredients, nutritional_info, marketing_description
+  - [x] Simplify to PRD spec: Name, SKU, Category, Status, Description
+- **Implementation Notes:**
+  - Deleted entire `ProductCertificationsTab.tsx` file (all fields were F&B-specific)
+  - Updated `ProductSlideOver.tsx`: removed Certifications tab from tab config
+  - Product detail now has 2 tabs: Details, Relationships (was 3)
+  - Build validated: `npm run build` passes
+- **Acceptance Criteria:** Product forms show only PRD-specified fields ✅
 
 ### Tasks Module
 
@@ -1429,7 +1435,7 @@ Polish items and technical cleanup.
 ### 🔧 Partial/In Progress: 1 item
 - **TODO-052:** Contact Import Organization Handling (4/5 tasks complete)
 
-### ✅ Done: 29 items (completed 2025-11-28/29)
+### ✅ Done: 31 items (completed 2025-11-28/29)
 - **TODO-001:** Pipeline Stage Migration (3/3 subtasks ✅)
   - TODO-001a: Pipeline DB Migration
   - TODO-001b: Pipeline Constants & Schema Update
@@ -1459,6 +1465,8 @@ Polish items and technical cleanup.
 - **TODO-019:** Bulk Owner Reassignment (BulkReassignButton, OrganizationBulkActionsToolbar, 31 unit tests)
 - **TODO-027:** Task Snooze Popover (SnoozePopover component with Tomorrow/Next Week/Custom options)
 - **TODO-028:** Task Completion Follow-Up Toast (showFollowUpToast utility, 5s auto-dismiss, pre-filled create form)
+- **TODO-036:** Pipeline Column Tooltips (This Week, Last Week, Momentum explanations with Radix Tooltip)
+- **TODO-037:** Fix Next Action Dead Link (plain text instead of non-functional link)
 - **TODO-044:** RBAC Foundation (useUserRole hook)
 - **TODO-045:** Pre-Sprint 1 Cleanup - Baseline verification complete
 - **TODO-053:** Semantic Color Validation in CI

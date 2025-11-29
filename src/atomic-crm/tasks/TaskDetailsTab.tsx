@@ -26,6 +26,13 @@ export const TaskDetailsTab = () => {
         choices={taskTypes.map((type) => ({ id: type, name: type }))}
         helperText="Category of task"
       />
+      <ReferenceInput source="organization_id" reference="organizations">
+        <AutocompleteInput
+          label="Organization"
+          optionText="name"
+          helperText="Link to organization"
+        />
+      </ReferenceInput>
       <ReferenceInput source="opportunity_id" reference="opportunities">
         <AutocompleteInput
           label="Opportunity"

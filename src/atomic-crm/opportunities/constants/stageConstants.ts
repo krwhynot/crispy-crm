@@ -25,49 +25,56 @@ export const OPPORTUNITY_STAGES: OpportunityStage[] = [
     value: "new_lead",
     label: "New Lead",
     color: "var(--info-subtle)",
-    description: "Initial prospect identification",
+    description:
+      "New prospect identified. Research the operator's menu, identify which principal products fit, and prepare your pitch.",
     elevation: 3, // Prominent - new opportunities should stand out
   },
   {
     value: "initial_outreach",
     label: "Initial Outreach",
     color: "var(--tag-teal-bg)",
-    description: "First contact and follow-up",
+    description:
+      "First contact made. Introduce MFB and relevant principals, qualify interest, and schedule a follow-up call or visit.",
     elevation: 2, // Medium - active engagement
   },
   {
     value: "sample_visit_offered",
     label: "Sample/Visit Offered",
     color: "var(--warning-subtle)",
-    description: "Product sampling and visit scheduling",
+    description:
+      "Product sample sent or site visit scheduled. Follow up within 3-5 days to gather feedback—this is a critical stage.",
     elevation: 2, // Medium - active opportunity
   },
   {
     value: "feedback_logged",
     label: "Feedback Logged",
     color: "var(--tag-blue-bg)",
-    description: "Recording customer feedback",
+    description:
+      "Operator feedback recorded. Evaluate fit, address concerns, and determine if a formal demo or pricing discussion is warranted.",
     elevation: 2, // Medium - active analysis
   },
   {
     value: "demo_scheduled",
     label: "Demo Scheduled",
     color: "var(--success-subtle)",
-    description: "Planning product demonstrations",
+    description:
+      "Final product demonstration or tasting scheduled. Confirm distributor availability and prepare pricing/terms for close.",
     elevation: 3, // Prominent - important milestone
   },
   {
     value: "closed_won",
     label: "Closed - Won",
     color: "var(--success-strong)",
-    description: "Successful deal completion",
+    description:
+      "Deal won! First purchase order placed. Ensure distributor authorization is active and hand off to account management.",
     elevation: 2, // Medium - completed but notable
   },
   {
     value: "closed_lost",
     label: "Closed - Lost",
     color: "var(--error-subtle)",
-    description: "Lost opportunity",
+    description:
+      "Opportunity lost. Review the loss reason and consider re-engagement after 90 days if circumstances change.",
     elevation: 1, // Subtle - less emphasis on lost deals
   },
 ];
