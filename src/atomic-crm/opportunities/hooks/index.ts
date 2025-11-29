@@ -11,3 +11,8 @@ export type {
   MismatchedContact,
   UseContactOrgMismatchResult,
 } from "./useContactOrgMismatch";
+export { useSimilarOpportunityCheck } from "./useSimilarOpportunityCheck";
+export type {
+  UseSimilarOpportunityCheckResult,
+  UseSimilarOpportunityCheckOptions,
+} from "./useSimilarOpportunityCheck";

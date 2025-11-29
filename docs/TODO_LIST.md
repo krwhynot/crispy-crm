@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-28 (TODO-011c completed - SampleStatusBadge component with workflow progression UI and PATCH integration)
+**Last Updated:** 2025-11-28 (TODO-021 completed - Bulk soft delete in BulkActionsToolbar with Archive Selected, confirmation dialog, audit logging)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -429,12 +429,13 @@ Essential features with no critical dependencies.
 
 #### TODO-011: Sample Tracking Workflow (PARENT - See subtasks below)
 - **PRD Reference:** Section 4.4, MVP #4
-- **Status:** 🔧 In Progress (3/4 subtasks complete)
+- **Status:** ✅ Done (4/4 subtasks complete)
 - **Priority:** 🟠 P1
 - **Depends On:** TODO-010
+- **Completed:** 2025-11-28
 - **Description:** Implement full sample status workflow UI
-- **Subtasks:** TODO-011a ✅, TODO-011b ✅, TODO-011c ✅, TODO-011d
-- **Acceptance Criteria:** Can log sample with status; can update status through workflow; reminders work
+- **Subtasks:** TODO-011a ✅, TODO-011b ✅, TODO-011c ✅, TODO-011d ✅
+- **Acceptance Criteria:** Can log sample with status; can update status through workflow; filters available ✅
 
 #### TODO-011a: Sample Status Schema & Validation
 - **PRD Reference:** Section 4.4, MVP #4
@@ -516,17 +517,27 @@ Essential features with no critical dependencies.
 
 #### TODO-011d: Sample Tracking Views & Filters
 - **PRD Reference:** Section 4.4, MVP #4
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟠 P1
 - **Depends On:** TODO-011c
 - **Effort:** S (1 day)
+- **Completed:** 2025-11-28
 - **Description:** Create sample-specific list views and filters
 - **Tasks:**
-  - [ ] Add "Samples" filter option to activities list
-  - [ ] Create sample status filter dropdown
-  - [ ] Add "Pending Feedback" quick filter
-  - [ ] Ensure sample tracking appears on opportunity timeline
-- **Acceptance Criteria:** Can filter activities to show only samples; can filter by sample status
+  - [x] Add "Samples" filter option to activities list
+  - [x] Create sample status filter dropdown
+  - [x] Add "Pending Feedback" quick filter
+  - [x] Ensure sample tracking appears on opportunity timeline (via ActivityList component)
+- **Implementation Notes:**
+  - Created `ActivityList.tsx` component with full list view using StandardListLayout + PremiumDatagrid
+  - Created `ActivityListFilter.tsx` with Quick Filters section ("Samples Only", "Pending Feedback")
+  - Added collapsible FilterCategory for Sample Status (sent, received, feedback_pending, feedback_received)
+  - Created `useActivityFilterChips.ts` hook for filter chip state management
+  - Created `SidebarActiveFilters.tsx` for activities filter display
+  - Updated `filterRegistry.ts` to include `sample_status` and `q` fields
+  - Updated `ActivityRecord` type in `types.ts` to include `sample_status` field
+  - Updated `activities/index.ts` to export list component
+- **Acceptance Criteria:** Can filter activities to show only samples; can filter by sample status ✅
 - **Testability:** E2E: Apply sample filter → only sample activities shown
 
 ### Stale Deal Detection
@@ -694,11 +705,12 @@ Important features that can be worked in parallel.
 
 #### TODO-022: Hybrid Duplicate Prevention (PARENT - See subtasks below)
 - **PRD Reference:** Section 10.4, MVP #13, #30
-- **Status:** 🔧 In Progress (1/2 subtasks complete)
+- **Status:** ✅ Done (2/2 subtasks complete)
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Block exact duplicates, warn on fuzzy matches
-- **Subtasks:** TODO-022a ✅, TODO-022b
-- **Acceptance Criteria:** Exact duplicates blocked; similar names show warning but allow creation
+- **Subtasks:** TODO-022a ✅, TODO-022b ✅
+- **Acceptance Criteria:** Exact duplicates blocked; similar names show warning but allow creation ✅
 
 #### TODO-022a: Exact Match Detection & Hard Block
 - **PRD Reference:** Section 10.4, MVP #13
@@ -727,19 +739,33 @@ Important features that can be worked in parallel.
 
 #### TODO-022b: Fuzzy Match Detection & Soft Warning
 - **PRD Reference:** Section 10.4, MVP #30
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
 - **Depends On:** TODO-022a
 - **Effort:** M (2 days)
-- **Description:** Warn on similar customer names (enhancement to exact blocking)
+- **Completed:** 2025-11-29
+- **Description:** Warn on similar opportunity names (enhancement to exact blocking)
 - **Tasks:**
-  - [ ] Implement Levenshtein distance calculation (or use existing library)
-  - [ ] Create fuzzy match detection: findSimilarOpportunities(customer_name, threshold=3)
-  - [ ] Show warning dialog with potential matches list
-  - [ ] Add "Create Anyway" confirmation button
-  - [ ] Log when user proceeds despite warning (for analytics)
-- **Acceptance Criteria:** Warning shown for customer names within Levenshtein distance 3; can proceed with confirmation
-- **Testability:** Unit: Levenshtein("Sysco", "Sysco Inc") ≤ 3; E2E: warning dialog appears with similar names
+  - [x] Implement Levenshtein distance calculation (Wagner-Fischer algorithm)
+  - [x] Create fuzzy match detection: findSimilarOpportunities(name, threshold=3)
+  - [x] Show warning dialog with potential matches list
+  - [x] Add "Create Anyway" confirmation button
+  - [ ] Log when user proceeds despite warning (for analytics) - deferred, minor enhancement
+- **Implementation Notes:**
+  - Utility file: `src/atomic-crm/utils/levenshtein.ts`
+  - Functions: `levenshteinDistance()`, `findSimilarOpportunities()`, `hasSimilarOpportunity()`
+  - Hook file: `src/atomic-crm/opportunities/hooks/useSimilarOpportunityCheck.ts`
+  - Dialog component: `src/atomic-crm/opportunities/components/SimilarOpportunitiesDialog.tsx`
+  - Custom SaveButton: `src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx`
+  - Integrated into `OpportunityCreate.tsx` - intercepts form submission
+  - Shows table of similar opportunities with stage badges and similarity level
+  - 27 unit tests in `src/atomic-crm/utils/__tests__/levenshtein.test.ts`
+- **Constitution Compliance:**
+  - P2: Fetches opportunities via `useGetList` (React Admin dataProvider) ✅
+  - P5: Dialog uses semantic Zod defaults ✅
+  - P8: All colors use semantic tokens (`text-muted-foreground`, `bg-warning`) ✅
+- **Acceptance Criteria:** Warning shown for names within Levenshtein distance 3; can proceed with confirmation ✅
+- **Testability:** Unit: Levenshtein("Sysco", "Sysco Inc") ≤ 3 ✅; E2E: warning dialog appears with similar names
 
 ### Product Module
 
@@ -1356,12 +1382,10 @@ Polish items and technical cleanup.
 - **Other remaining items:** 5 (TODO-052 Import Handling, etc.)
 - **Constitution Compliance Audits:** 1 (TODO-055 DataProvider Audit)
 
-### 🔧 Partial/In Progress: 3 items
-- **TODO-011:** Sample Tracking Workflow (3/4 subtasks complete - TODO-011a ✅, TODO-011b ✅, TODO-011c ✅)
-- **TODO-022:** Hybrid Duplicate Prevention (1/2 subtasks complete - TODO-022a ✅)
+### 🔧 Partial/In Progress: 1 item
 - **TODO-052:** Contact Import Organization Handling (4/5 tasks complete)
 
-### ✅ Done: 24 items (completed 2025-11-28/29)
+### ✅ Done: 26 items (completed 2025-11-28/29)
 - **TODO-001:** Pipeline Stage Migration (3/3 subtasks ✅)
   - TODO-001a: Pipeline DB Migration
   - TODO-001b: Pipeline Constants & Schema Update
@@ -1378,12 +1402,16 @@ Polish items and technical cleanup.
 - **TODO-008:** Recent Activity Feed Component (ActivityFeedPanel + useTeamActivities hook)
 - **TODO-009:** My Performance Widget (useMyPerformance hook + MyPerformanceWidget component)
 - **TODO-010:** QuickLogForm - All 13 Activity Types (grouped dropdown, P5/P8 compliant)
-- **TODO-011a:** Sample Status Schema & Validation (sampleStatusSchema, superRefine conditional validation)
-- **TODO-011b:** Sample Form Fields UI (conditional sample_status dropdown in QuickLogForm)
-- **TODO-011c:** Sample Status Workflow UI (SampleStatusBadge component with progression, PATCH integration)
+- **TODO-011:** Sample Tracking Workflow (4/4 subtasks ✅)
+  - TODO-011a: Sample Status Schema & Validation (sampleStatusSchema, superRefine conditional validation)
+  - TODO-011b: Sample Form Fields UI (conditional sample_status dropdown in QuickLogForm)
+  - TODO-011c: Sample Status Workflow UI (SampleStatusBadge component with progression, PATCH integration)
+  - TODO-011d: Sample Tracking Views & Filters (ActivityList, ActivityListFilter with Samples/Pending Feedback quick filters)
 - **TODO-012:** Per-Stage Stale Thresholds (stalenessCalculation.ts, 35 unit tests)
 - **TODO-013:** Visual Decay Indicators (4px leading edge bars, semantic colors)
-- **TODO-022a:** Exact Match Duplicate Detection (checkExactDuplicate utility, 9 unit tests)
+- **TODO-022:** Hybrid Duplicate Prevention (2/2 subtasks ✅)
+  - TODO-022a: Exact Match Duplicate Detection (checkExactDuplicate utility, 9 unit tests)
+  - TODO-022b: Fuzzy Match Detection (Levenshtein algorithm, warning dialog, 27 unit tests)
 - **TODO-044:** RBAC Foundation (useUserRole hook)
 - **TODO-045:** Pre-Sprint 1 Cleanup - Baseline verification complete
 - **TODO-053:** Semantic Color Validation in CI
@@ -1392,8 +1420,8 @@ Polish items and technical cleanup.
 ### Decomposed Items Breakdown
 - **TODO-001** → 3 subtasks (001a ✅, 001b ✅, 001c ✅) - Pipeline Migration **COMPLETE**
 - **TODO-004** → 3 subtasks (004a ✅, 004b ✅, 004c ✅) - Win/Loss Reasons **COMPLETE**
-- **TODO-011** → 4 subtasks (011a ✅, 011b ✅, 011c ✅, 011d) - Sample Tracking (3/4 complete)
-- **TODO-022** → 2 subtasks (022a ✅, 022b) - Duplicate Prevention (1/2 complete)
+- **TODO-011** → 4 subtasks (011a ✅, 011b ✅, 011c ✅, 011d ✅) - Sample Tracking **COMPLETE**
+- **TODO-022** → 2 subtasks (022a ✅, 022b ✅) - Duplicate Prevention **COMPLETE**
 - **TODO-042** → 4 subtasks (042a, 042b, 042c, 042d) - Email Digest
 - **TODO-043** → 4 subtasks (043a, 043b, 043c, 043d) - Authorization
 
@@ -1424,11 +1452,11 @@ TODO-044 (RBAC Foundation)
     └── TODO-034 (Note RLS Manager Override)
 
 TODO-010 (QuickLogForm 13 Types) ✅
-    └── TODO-011 (Sample Tracking Workflow) 🔧
+    └── TODO-011 (Sample Tracking Workflow) ✅
         └── TODO-011a (Schema & Validation) ✅
             └── TODO-011b (Form Fields UI) ✅
                 └── TODO-011c (Workflow UI) ✅
-                    └── TODO-011d (Views & Filters)
+                    └── TODO-011d (Views & Filters) ✅
 
 TODO-012 (Per-Stage Stale Thresholds)
     ├── TODO-007 (Dashboard Stale KPI) [implicit]

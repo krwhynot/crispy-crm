@@ -64,7 +64,9 @@ describe("levenshteinDistance", () => {
 
   describe("real-world opportunity name scenarios", () => {
     it("detects typos in company names", () => {
-      expect(levenshteinDistance("ABC Corp", "ABC Crop")).toBe(1);
+      // "Corp" → "Crop" requires 2 edits: transposition isn't a single operation
+      // in standard Levenshtein (delete 'o' at position 4, insert 'o' at position 5)
+      expect(levenshteinDistance("ABC Corp", "ABC Crop")).toBe(2);
       expect(levenshteinDistance("Sysco Foods", "Sysco Food")).toBe(1);
     });
 

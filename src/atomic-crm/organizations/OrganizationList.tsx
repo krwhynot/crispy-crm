@@ -2,7 +2,7 @@ import jsonExport from "jsonexport/dist";
 import type { Exporter } from "ra-core";
 import { downloadCSV, useGetIdentity, useListContext } from "ra-core";
 import { TextField, ReferenceField, FunctionField } from "react-admin";
-import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
+import { OrganizationBulkActionsToolbar } from "./OrganizationBulkActionsToolbar";
 import { List } from "@/components/admin/list";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
@@ -158,7 +158,7 @@ const OrganizationListLayout = ({
           />
         </PremiumDatagrid>
       </StandardListLayout>
-      <BulkActionsToolbar />
+      <OrganizationBulkActionsToolbar />
     </>
   );
 };
