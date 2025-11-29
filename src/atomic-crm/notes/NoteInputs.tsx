@@ -3,8 +3,6 @@ import { useFormContext } from "react-hook-form";
 
 import { cn } from "@/lib/utils.ts";
 import { TextInput } from "@/components/admin/text-input";
-import { FileInput } from "@/components/admin/file-input";
-import { FileField } from "@/components/admin/file-field";
 import { Button } from "@/components/ui/button";
 import { getCurrentDate } from "../validation/notes";
 

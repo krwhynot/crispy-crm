@@ -30,14 +30,15 @@ import {
   Check,
   X,
 } from "lucide-react";
+import type {
+  RaRecord} from "react-admin";
 import {
   useGetList,
   useCreate,
   useDelete,
   useNotify,
   useRefresh,
-  useGetIdentity,
-  RaRecord,
+  useGetIdentity
 } from "react-admin";
 import { format } from "date-fns";
 

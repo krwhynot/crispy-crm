@@ -20,9 +20,8 @@ interface ContactSlideOverProps {
  * - Details: Contact information (view/edit)
  * - Activities: Activity timeline
  * - Notes: Contact notes (create/edit)
- * - Files: File attachments (placeholder)
  *
- * Uses ResourceSlideOver wrapper from Task 1.4 for consistent UI.
+ * Uses ResourceSlideOver wrapper for consistent UI.
  */
 export function ContactSlideOver({
   recordId,
@@ -50,12 +49,6 @@ export function ContactSlideOver({
       label: "Notes",
       component: ContactNotesTab,
       icon: FileTextIcon,
-    },
-    {
-      key: "files",
-      label: "Files",
-      component: ContactFilesTab,
-      icon: FileIcon,
     },
   ];
 

@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { endOfYesterday, startOfMonth, startOfWeek, subMonths } from "date-fns";
-import { Clock, Tag, Users } from "lucide-react";
+import { Building2, Clock, Tag, Users } from "lucide-react";
 import { FilterLiveForm, useGetIdentity, useGetList } from "ra-core";
 import { cn } from "@/lib/utils";
 
@@ -12,9 +12,17 @@ import { SidebarActiveFilters } from "./SidebarActiveFilters";
 
 export const ContactListFilter = () => {
   const { identity } = useGetIdentity();
-  const { data } = useGetList("tags", {
+  const { data: tagsData } = useGetList("tags", {
     pagination: { page: 1, perPage: 10 },
     sort: { field: "name", order: "ASC" },
+  });
+
+  // Fetch organizations for the organization filter dropdown
+  // Prioritize customer/prospect types as most relevant for contact filtering
+  const { data: organizationsData } = useGetList("organizations", {
+    pagination: { page: 1, perPage: 50 },
+    sort: { field: "name", order: "ASC" },
+    filter: { deleted_at: null },
   });
 
   return (
@@ -76,8 +84,8 @@ export const ContactListFilter = () => {
         </FilterCategory>
 
         <FilterCategory label="Tags" icon={<Tag className="h-4 w-4" />}>
-          {data &&
-            data.map((record) => (
+          {tagsData &&
+            tagsData.map((record) => (
               <ToggleFilterButton
                 multiselect
                 className="w-full justify-between"
@@ -96,6 +104,24 @@ export const ContactListFilter = () => {
                 value={{ tags: record.id }}
               />
             ))}
+        </FilterCategory>
+
+        <FilterCategory label="Organization" icon={<Building2 className="h-4 w-4" />}>
+          <div className="max-h-48 overflow-y-auto flex flex-col gap-1">
+            {organizationsData &&
+              organizationsData.map((org) => (
+                <ToggleFilterButton
+                  className="w-full justify-between"
+                  key={org.id}
+                  label={
+                    <span className="truncate text-sm" title={org.name}>
+                      {org.name}
+                    </span>
+                  }
+                  value={{ organization_id: org.id }}
+                />
+              ))}
+          </div>
         </FilterCategory>
 
         <FilterCategory icon={<Users className="h-4 w-4" />} label="Account Manager">

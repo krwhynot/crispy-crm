@@ -17,6 +17,7 @@ import type { Sale } from "../types";
 import {
   isOpportunityStale,
   countStaleOpportunities,
+  STAGE_STALE_THRESHOLDS,
 } from "@/atomic-crm/utils/stalenessCalculation";
 
 /** Pipeline opportunity for overview reporting */
@@ -183,16 +184,16 @@ export default function OverviewTab() {
       opportunityTrend = opportunityChange > 0 ? "up" : opportunityChange < 0 ? "down" : "neutral";
     }
 
-    // Stale leads (new_lead stage with no activity in 7+ days - PRD threshold)
+    // Stale Leads - uses STAGE_STALE_THRESHOLDS.new_lead (7 days) per PRD Section 6.3
     const staleLeads = opportunities.filter((opp) => {
       const isLead = opp.stage === "Lead" || opp.stage === "new_lead";
       if (!isLead) return false;
-      // Use PRD per-stage threshold (7 days for new_lead)
       return isOpportunityStale(opp.stage, opp.last_activity_at ?? null, now);
     }).length;
 
-    // Stale Deals - all opportunities exceeding their per-stage thresholds (PRD Section 9.2.1 KPI #4)
-    // Uses per-stage thresholds: new_lead=7d, initial_outreach=14d, sample_visit=14d, feedback=21d, demo=14d
+    // Stale Deals - all opportunities exceeding STAGE_STALE_THRESHOLDS (PRD Section 9.2.1 KPI #4)
+    // Per-stage thresholds from STAGE_STALE_THRESHOLDS: new_lead=7d, initial_outreach=14d,
+    // sample_visit_offered=14d, feedback_logged=21d, demo_scheduled=14d
     const staleDeals = countStaleOpportunities(opportunities, now);
 
     return {
@@ -326,7 +327,7 @@ export default function OverviewTab() {
             change={0}
             trend="neutral"
             icon={AlertCircle}
-            subtitle="New leads with no activity in 7+ days"
+            subtitle={`New leads with no activity in ${STAGE_STALE_THRESHOLDS.new_lead}+ days`}
             onClick={handleStaleLeadsClick}
           />
           {/* KPI #4: Stale Deals with amber/warning styling (PRD Section 9.2.1) */}

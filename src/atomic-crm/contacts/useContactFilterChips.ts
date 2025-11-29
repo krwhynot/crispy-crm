@@ -39,6 +39,17 @@ export const useContactFilterChips = () => {
     { enabled: !!salesId }
   );
 
+  // Fetch organization name for organization filter
+  const organizationId = filterValues?.organization_id;
+  const { data: organizationData } = useGetList(
+    "organizations",
+    {
+      pagination: { page: 1, perPage: 1 },
+      filter: organizationId ? { id: organizationId } : {},
+    },
+    { enabled: !!organizationId }
+  );
+
   const getTagName = (tagId: string): string => {
     const tag = tagsData?.find((t) => String(t.id) === String(tagId));
     return tag?.name || `Tag #${tagId}`;
@@ -47,6 +58,11 @@ export const useContactFilterChips = () => {
   const getSalesName = (): string => {
     const sales = salesData?.[0];
     return sales ? `${sales.first_name} ${sales.last_name}` : "Unknown";
+  };
+
+  const getOrganizationName = (): string => {
+    const org = organizationData?.[0];
+    return org?.name || "Unknown Organization";
   };
 
   const formatDateRange = (gte?: string, lte?: string): string => {
@@ -123,8 +139,18 @@ export const useContactFilterChips = () => {
     chips.push({
       key: "sales_id",
       value: filterValues.sales_id,
-      label: getSalesName(String(filterValues.sales_id)),
+      label: getSalesName(),
       category: "Manager",
+    });
+  }
+
+  // Organization
+  if (filterValues?.organization_id) {
+    chips.push({
+      key: "organization_id",
+      value: filterValues.organization_id,
+      label: getOrganizationName(),
+      category: "Organization",
     });
   }
 
