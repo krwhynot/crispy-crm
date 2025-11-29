@@ -66,6 +66,7 @@ END $$;
 
 -- ============================================================================
 -- STEP 2: Drop dependent views (will recreate after enum change)
+-- Views reference the column type and block ALTER COLUMN TYPE
 -- ============================================================================
 DROP VIEW IF EXISTS dashboard_pipeline_summary CASCADE;
 DROP VIEW IF EXISTS dashboard_principal_summary CASCADE;
@@ -74,7 +75,28 @@ DROP VIEW IF EXISTS principal_opportunities CASCADE;
 DROP VIEW IF EXISTS principal_pipeline_summary CASCADE;
 
 -- ============================================================================
--- STEP 3: Create new enum type without 'awaiting_response'
+-- STEP 3: Drop partial indexes with enum values in WHERE clause
+-- Indexes like WHERE stage IN ('closed_won', 'closed_lost') block type change
+-- Discovery query:
+--   SELECT indexname, indexdef FROM pg_indexes
+--   WHERE tablename = 'opportunities' AND indexdef LIKE '%stage%';
+-- ============================================================================
+DROP INDEX IF EXISTS idx_opportunities_closed_stage_reason;
+DROP INDEX IF EXISTS idx_opportunities_stage;
+
+-- ============================================================================
+-- STEP 4: Disable triggers that compare OLD.stage vs NEW.stage
+-- Triggers compiled with old enum type cause "operator does not exist" errors
+-- Discovery query:
+--   SELECT tgname, pg_get_triggerdef(oid) FROM pg_trigger
+--   WHERE tgrelid = 'opportunities'::regclass AND NOT tgisinternal;
+-- ============================================================================
+ALTER TABLE opportunities DISABLE TRIGGER trigger_update_opportunity_stage_changed_at;
+ALTER TABLE opportunities DISABLE TRIGGER audit_opportunities_changes;
+ALTER TABLE opportunities DISABLE TRIGGER check_concurrent_opportunity_update;
+
+-- ============================================================================
+-- STEP 5: Create new enum type without 'awaiting_response'
 -- ============================================================================
 CREATE TYPE opportunity_stage_v2 AS ENUM (
   'new_lead',
@@ -87,7 +109,8 @@ CREATE TYPE opportunity_stage_v2 AS ENUM (
 );
 
 -- ============================================================================
--- STEP 4: Update opportunities table to use new enum type
+-- STEP 6: Update opportunities table to use new enum type
+-- The text cast (stage::text::opportunity_stage_v2) is required
 -- ============================================================================
 -- Remove default temporarily
 ALTER TABLE opportunities
@@ -103,25 +126,43 @@ ALTER TABLE opportunities
   ALTER COLUMN stage SET DEFAULT 'new_lead'::opportunity_stage_v2;
 
 -- ============================================================================
--- STEP 5: Drop old enum type and rename new one
+-- STEP 7: Drop old enum type and rename new one
 -- ============================================================================
 DROP TYPE opportunity_stage;
 ALTER TYPE opportunity_stage_v2 RENAME TO opportunity_stage;
 
 -- ============================================================================
--- STEP 6: Update default value reference to use renamed type
+-- STEP 8: Update default value reference to use renamed type
 -- ============================================================================
 ALTER TABLE opportunities
   ALTER COLUMN stage SET DEFAULT 'new_lead'::opportunity_stage;
 
 -- ============================================================================
--- STEP 7: Add documentation
+-- STEP 9: Add documentation
 -- ============================================================================
 COMMENT ON TYPE opportunity_stage IS
   'Pipeline stages (7): new_lead -> initial_outreach -> sample_visit_offered -> feedback_logged -> demo_scheduled -> closed_won/closed_lost. Removed awaiting_response per PRD v1.18.';
 
 -- ============================================================================
--- STEP 8: Recreate dependent views
+-- STEP 10: Re-enable triggers (now compatible with renamed enum type)
+-- ============================================================================
+ALTER TABLE opportunities ENABLE TRIGGER trigger_update_opportunity_stage_changed_at;
+ALTER TABLE opportunities ENABLE TRIGGER audit_opportunities_changes;
+ALTER TABLE opportunities ENABLE TRIGGER check_concurrent_opportunity_update;
+
+-- ============================================================================
+-- STEP 11: Recreate indexes with new enum type
+-- ============================================================================
+CREATE INDEX idx_opportunities_stage
+ON opportunities(stage)
+WHERE deleted_at IS NULL;
+
+CREATE INDEX idx_opportunities_closed_stage_reason
+ON opportunities(stage, win_reason, loss_reason)
+WHERE stage IN ('closed_won', 'closed_lost');
+
+-- ============================================================================
+-- STEP 12: Recreate dependent views
 -- ============================================================================
 
 -- View: dashboard_pipeline_summary
@@ -348,9 +389,33 @@ SELECT o.id,
   GROUP BY o.id, o.name;
 
 -- ============================================================================
--- Verification query (run manually after migration):
+-- VERIFICATION QUERIES (run manually after migration):
+-- ============================================================================
+--
+-- 1. Verify enum has 7 values without 'awaiting_response':
 --   SELECT enumlabel FROM pg_enum
 --   WHERE enumtypid = 'opportunity_stage'::regtype
 --   ORDER BY enumsortorder;
--- Expected: 7 values without 'awaiting_response'
+--   Expected: new_lead, initial_outreach, sample_visit_offered, feedback_logged,
+--             demo_scheduled, closed_won, closed_lost
+--
+-- 2. Verify indexes were recreated:
+--   SELECT indexname FROM pg_indexes
+--   WHERE tablename = 'opportunities' AND indexname LIKE 'idx_opportunities%';
+--
+-- 3. Verify triggers are enabled:
+--   SELECT tgname, tgenabled FROM pg_trigger
+--   WHERE tgrelid = 'opportunities'::regclass
+--   AND tgname IN ('trigger_update_opportunity_stage_changed_at',
+--                  'audit_opportunities_changes',
+--                  'check_concurrent_opportunity_update');
+--   Expected: tgenabled = 'O' (origin) for all three
+--
+-- 4. Verify views exist:
+--   SELECT viewname FROM pg_views
+--   WHERE schemaname = 'public'
+--   AND viewname IN ('dashboard_pipeline_summary', 'dashboard_principal_summary',
+--                    'opportunities_summary', 'principal_opportunities',
+--                    'principal_pipeline_summary');
+--   Expected: 5 rows
 -- ============================================================================
