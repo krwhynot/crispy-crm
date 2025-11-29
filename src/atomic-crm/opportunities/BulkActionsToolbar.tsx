@@ -17,7 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, XCircle, Layers, CircleDot, UserPlus, Download } from "lucide-react";
+import { CheckCircle2, XCircle, Layers, CircleDot, UserPlus, Download, Archive, AlertTriangle } from "lucide-react";
 import type { Opportunity } from "../types";
 import {
   OPPORTUNITY_STAGES,
@@ -26,7 +26,7 @@ import {
 } from "./constants/stageConstants";
 import { useExportOpportunities } from "./hooks/useExportOpportunities";
 
-type BulkAction = "change_stage" | "change_status" | "assign_owner" | null;
+type BulkAction = "change_stage" | "change_status" | "assign_owner" | "archive" | null;
 
 interface BulkActionsToolbarProps {
   selectedIds: (string | number)[];
@@ -187,11 +187,19 @@ export const BulkActionsToolbar = ({
           Assign Owner
         </Button>
 
-        {/* Export button */}
-        <div className="ml-auto">
+        {/* Destructive actions - right side */}
+        <div className="ml-auto flex items-center gap-2">
           <Button variant="default" onClick={handleExport} className="h-11 gap-2 touch-manipulation">
             <Download className="h-4 w-4" />
             Export CSV
+          </Button>
+          <Button
+            variant="destructive"
+            onClick={() => handleOpenDialog("archive")}
+            className="h-11 gap-2 touch-manipulation"
+          >
+            <Archive className="h-4 w-4" />
+            Archive Selected
           </Button>
         </div>
       </div>
@@ -380,6 +388,68 @@ export const BulkActionsToolbar = ({
             </Button>
             <Button onClick={handleExecuteBulkAction} disabled={!canExecute() || isProcessing}>
               {isProcessing ? "Assigning..." : "Assign Owner"}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Archive Confirmation Dialog */}
+      <Dialog
+        open={activeAction === "archive"}
+        onOpenChange={(open) => !open && handleCloseDialog()}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-destructive">
+              <AlertTriangle className="h-5 w-5" />
+              Archive Opportunities
+            </DialogTitle>
+            <DialogDescription>
+              Are you sure you want to archive {selectedIds.length} opportunit
+              {selectedIds.length === 1 ? "y" : "ies"}? Archived opportunities can be restored later.
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="space-y-4">
+            {/* Warning message */}
+            <div className="rounded-lg border border-destructive/30 bg-destructive/10 p-3">
+              <p className="text-sm text-destructive">
+                <strong>Note:</strong> Archived opportunities will be hidden from the main list but
+                remain in the database. You can view and restore them from the archived view.
+              </p>
+            </div>
+
+            {/* Show affected opportunities */}
+            <div className="rounded-lg border border-border bg-muted/50 p-3 max-h-40 overflow-y-auto">
+              <p className="text-xs font-medium text-muted-foreground mb-2">
+                Opportunities to archive:
+              </p>
+              <div className="space-y-1">
+                {selectedOpportunities.map((opp) => (
+                  <div key={opp.id} className="text-sm flex items-center justify-between">
+                    <span className="truncate">{opp.name}</span>
+                    <Badge
+                      className="ml-2 text-xs shrink-0"
+                      style={{ backgroundColor: getOpportunityStageColor(opp.stage) }}
+                    >
+                      {getOpportunityStageLabel(opp.stage)}
+                    </Badge>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          <DialogFooter>
+            <Button variant="outline" onClick={handleCloseDialog} disabled={isProcessing}>
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleBulkArchive}
+              disabled={isProcessing}
+            >
+              {isProcessing ? "Archiving..." : `Archive ${selectedIds.length} Opportunit${selectedIds.length === 1 ? "y" : "ies"}`}
             </Button>
           </DialogFooter>
         </DialogContent>
