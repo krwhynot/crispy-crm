@@ -58,7 +58,6 @@ const NoteCreateButton = ({
   const resetValues = {
     text: null,
     date: null,
-    attachments: null,
   };
 
   const handleSuccess = () => {
