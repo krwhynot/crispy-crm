@@ -14,14 +14,13 @@ import { z } from "zod";
 // ============================================================================
 
 export const taskTypeSchema = z.enum([
-  "None",
   "Call",
   "Email",
   "Meeting",
   "Follow-up",
+  "Demo",
   "Proposal",
-  "Discovery",
-  "Administrative",
+  "Other",
 ]);
 
 export const priorityLevelSchema = z.enum(["low", "medium", "high", "critical"]);
@@ -45,6 +44,7 @@ export const taskSchema = z.object({
   type: taskTypeSchema,
   contact_id: idSchema.nullable().optional(), // Optional: task can be associated with contact, opportunity, or organization
   opportunity_id: idSchema.nullable().optional(),
+  organization_id: idSchema.nullable().optional(), // Optional: direct link to organization (or inherit from contact)
   sales_id: idSchema, // Required: task must be assigned to a sales rep
 
   // Audit fields (per migration 20251127054700_fix_critical_rls_security_tasks.sql)

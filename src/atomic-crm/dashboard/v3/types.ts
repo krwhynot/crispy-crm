@@ -24,7 +24,7 @@ export interface PrincipalPipelineRow {
 // Task Types
 export type Priority = "critical" | "high" | "medium" | "low";
 export type TaskStatus = "overdue" | "today" | "tomorrow" | "upcoming" | "later";
-export type TaskType = "Call" | "Email" | "Meeting" | "Follow-up" | "Other";
+export type TaskType = "Call" | "Email" | "Meeting" | "Follow-up" | "Demo" | "Proposal" | "Other";
 
 export interface RelatedEntity {
   type: "opportunity" | "contact" | "organization";

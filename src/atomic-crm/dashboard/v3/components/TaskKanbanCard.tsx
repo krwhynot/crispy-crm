@@ -24,6 +24,8 @@ import {
   Pencil,
   Trash2,
   AlarmClock,
+  Presentation,
+  FileSignature,
 } from "lucide-react";
 import type { TaskItem } from "../types";
 

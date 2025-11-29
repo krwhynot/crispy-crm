@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-28 (TODO-021 completed - Bulk soft delete in BulkActionsToolbar with Archive Selected, confirmation dialog, audit logging)
+**Last Updated:** 2025-11-28 (TODO-019 completed - BulkReassignButton for organizations list with modal, user selector, bulk update)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -665,16 +665,30 @@ Important features that can be worked in parallel.
 
 #### TODO-019: Bulk Owner Reassignment
 - **PRD Reference:** Section 3.1, MVP #20
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-28
 - **Description:** Add BulkReassignButton to Organizations list
 - **Tasks:**
-  - [ ] Create BulkReassignButton component
-  - [ ] Add to Organizations list TopToolbar
-  - [ ] Implement reassignment modal with user selector
-  - [ ] Bulk update selected organizations
-  - [ ] Add audit logging for reassignments
-- **Acceptance Criteria:** Manager can select multiple orgs and reassign to different user
+  - [x] Create BulkReassignButton component
+  - [x] Add to Organizations list TopToolbar (via OrganizationBulkActionsToolbar)
+  - [x] Implement reassignment modal with user selector
+  - [x] Bulk update selected organizations
+  - [x] Add audit logging for reassignments (automatic via database triggers)
+- **Implementation Notes:**
+  - Component file: `src/atomic-crm/organizations/BulkReassignButton.tsx`
+  - Toolbar wrapper: `src/atomic-crm/organizations/OrganizationBulkActionsToolbar.tsx`
+  - Integrated into `OrganizationList.tsx` replacing generic BulkActionsToolbar
+  - Features: Dialog modal, sales rep selector (filtered active reps), preview panel
+  - Uses `useGetList("sales")` for dropdown, `dataProvider.update()` for bulk updates
+  - Follows pattern from `opportunities/BulkActionsToolbar.tsx`
+  - 31 unit tests in `src/atomic-crm/organizations/__tests__/BulkReassignButton.test.tsx`
+- **Constitution Compliance:**
+  - P1: Fail-fast error handling (no retry logic) ✅
+  - P2: Uses `dataProvider.update()` via unifiedDataProvider ✅
+  - P8: Semantic colors only (`text-muted-foreground`, `border-border`, `bg-muted/50`) ✅
+  - 44px touch targets on all buttons ✅
+- **Acceptance Criteria:** Manager can select multiple orgs and reassign to different user ✅
 
 #### TODO-020: Authorization UI Tab
 - **PRD Reference:** Section 13.2, MVP #21
@@ -693,15 +707,21 @@ Important features that can be worked in parallel.
 
 #### TODO-021: Opportunity Bulk Delete
 - **PRD Reference:** MVP #48
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-28
 - **Description:** Add bulk soft delete to BulkActionsToolbar
 - **Tasks:**
-  - [ ] Add "Archive Selected" option to BulkActionsToolbar
-  - [ ] Implement confirmation dialog
-  - [ ] Soft delete selected opportunities
-  - [ ] Add audit logging
-- **Acceptance Criteria:** Can select multiple opportunities and archive them
+  - [x] Add "Archive Selected" option to BulkActionsToolbar
+  - [x] Implement confirmation dialog
+  - [x] Soft delete selected opportunities (via deleteMany → sets deleted_at)
+  - [x] Add audit logging (automatic via database triggers on deleted_at change)
+- **Acceptance Criteria:** Can select multiple opportunities and archive them ✅
+- **Implementation Notes:**
+  - Archive button (destructive variant) added next to Export CSV
+  - Confirmation dialog shows warning + list of affected opportunities with stage badges
+  - Uses existing `unifiedDataProvider.deleteMany()` which soft deletes for opportunities
+  - 7 new unit tests added to `BulkActionsToolbar.test.tsx`
 
 #### TODO-022: Hybrid Duplicate Prevention (PARENT - See subtasks below)
 - **PRD Reference:** Section 10.4, MVP #13, #30
@@ -1385,7 +1405,7 @@ Polish items and technical cleanup.
 ### 🔧 Partial/In Progress: 1 item
 - **TODO-052:** Contact Import Organization Handling (4/5 tasks complete)
 
-### ✅ Done: 26 items (completed 2025-11-28/29)
+### ✅ Done: 27 items (completed 2025-11-28/29)
 - **TODO-001:** Pipeline Stage Migration (3/3 subtasks ✅)
   - TODO-001a: Pipeline DB Migration
   - TODO-001b: Pipeline Constants & Schema Update
@@ -1412,6 +1432,7 @@ Polish items and technical cleanup.
 - **TODO-022:** Hybrid Duplicate Prevention (2/2 subtasks ✅)
   - TODO-022a: Exact Match Duplicate Detection (checkExactDuplicate utility, 9 unit tests)
   - TODO-022b: Fuzzy Match Detection (Levenshtein algorithm, warning dialog, 27 unit tests)
+- **TODO-019:** Bulk Owner Reassignment (BulkReassignButton, OrganizationBulkActionsToolbar, 31 unit tests)
 - **TODO-044:** RBAC Foundation (useUserRole hook)
 - **TODO-045:** Pre-Sprint 1 Cleanup - Baseline verification complete
 - **TODO-053:** Semantic Color Validation in CI
@@ -1592,7 +1613,7 @@ Each sprint must meet these criteria before items are marked complete:
 ### Sprint 5 (Week 8-10): Tasks & Reports
 - TODO-025-028: Task Module Items (~5d total)
 - TODO-029-031: Reports Module Items (~4d total)
-- TODO-021: Opportunity Bulk Delete (S, 1d)
+- TODO-021: Opportunity Bulk Delete (S, 1d) ✅
 - **Sprint Total:** ~10 days | **Risk:** Low
 
 ### Sprint 6 (Week 10-12): Email Digest, Authorization & Ops Foundation
