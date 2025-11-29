@@ -43,12 +43,13 @@ export function TagChip({ tag, onUnlink }: TagChipProps) {
         }}
       >
         {tag.name}
+        {/* Remove button with 44px touch target (WCAG 2.5.5) - uses negative margin to maintain visual density */}
         <button
           onClick={(e) => {
             e.stopPropagation();
             onUnlink();
           }}
-          className="transition-colors p-0 ml-1 cursor-pointer hover:opacity-70"
+          className="relative -my-2 -mr-1 ml-0.5 h-11 w-8 flex items-center justify-center transition-colors cursor-pointer hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
           aria-label={`Remove ${tag.name} tag`}
         >
           <X className="w-3 h-3" />

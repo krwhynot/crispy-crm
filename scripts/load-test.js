@@ -53,7 +53,7 @@ const ENDPOINTS = [
     weight: 10,
     fn: getContactWithOrganizations,
   },
-  { name: "List Companies", weight: 10, fn: listCompanies },
+  { name: "List Organizations", weight: 10, fn: listOrganizations },  // Updated: Companies -> Organizations
   { name: "Search Opportunities", weight: 5, fn: searchOpportunities },
   { name: "Dashboard Aggregations", weight: 5, fn: getDashboardData },
   { name: "Complex Join Query", weight: 3, fn: complexJoinQuery },
@@ -75,7 +75,8 @@ function selectRandomEndpoint() {
 
 // Endpoint implementations
 async function listOpportunities() {
-  const stages = ["lead", "qualified", "proposal", "negotiation"];
+  // Updated to match PRD v1.18 pipeline stages
+  const stages = ["new_lead", "initial_outreach", "sample_visit_offered", "feedback_logged", "demo_scheduled", "closed_won", "closed_lost"];
   const randomStage = faker.helpers.arrayElement(stages);
 
   const { data, error } = await supabase
@@ -99,18 +100,18 @@ async function getOpportunityDetails() {
 
   const randomId = faker.helpers.arrayElement(opportunities).id;
 
+  // Updated: companies -> organizations
   const { data, error } = await supabase
     .from("opportunities")
     .select(
       `
       *,
-      customer:companies!customer_organization_id(id, name),
-      principal:companies!principal_organization_id(id, name),
-      distributor:companies!distributor_organization_id(id, name),
+      customer:organizations!customer_organization_id(id, name),
+      principal:organizations!principal_organization_id(id, name),
+      distributor:organizations!distributor_organization_id(id, name),
       opportunity_participants(
         role,
-        commission_rate,
-        organization:companies(name)
+        is_primary
       )
     `
     )
@@ -122,15 +123,13 @@ async function getOpportunityDetails() {
 }
 
 async function listContacts() {
+  // Updated: companies -> organizations, company_id -> organization_id
   const { data, error } = await supabase
     .from("contacts")
     .select(
       `
       *,
-      company:companies!company_id(name),
-      contact_organizations(
-        organization:companies(name, organization_type)
-      )
+      organization:organizations!organization_id(name, organization_type)
     `
     )
     .limit(30)
@@ -150,21 +149,17 @@ async function getContactWithOrganizations() {
 
   const randomId = faker.helpers.arrayElement(contacts).id;
 
+  // Updated: use organization_id direct FK instead of junction table
   const { data, error } = await supabase
     .from("contacts")
     .select(
       `
       *,
-      contact_organizations(
-        is_primary_contact,
-        purchase_influence,
-        role,
-        organization:companies(
-          id,
-          name,
-          organization_type,
-          sector
-        )
+      organization:organizations!organization_id(
+        id,
+        name,
+        organization_type,
+        segment_id
       )
     `
     )
@@ -175,12 +170,13 @@ async function getContactWithOrganizations() {
   return { data };
 }
 
-async function listCompanies() {
-  const types = ["customer", "principal", "distributor"];
+async function listOrganizations() {
+  // Updated: companies -> organizations, added 'prospect' and 'unknown' types
+  const types = ["customer", "principal", "distributor", "prospect"];
   const randomType = faker.helpers.arrayElement(types);
 
   const { data, error } = await supabase
-    .from("companies")
+    .from("organizations")
     .select("*", { count: "exact" })
     .eq("organization_type", randomType)
     .limit(25)
@@ -206,18 +202,19 @@ async function searchOpportunities() {
 
 async function getDashboardData() {
   // Simulate dashboard aggregation queries
+  // Updated: removed 'amount' column (not in current schema per PRD Decision #5)
   const queries = await Promise.all([
     // Opportunities by stage
-    supabase.from("opportunities").select("stage").eq("status", "active"),
+    supabase.from("opportunities").select("stage, priority").eq("status", "active"),
 
     // Recent activities
     supabase.from("activities").select("*").order("activity_date", { ascending: false }).limit(10),
 
-    // Top opportunities by amount
+    // Top opportunities by priority (no amount field)
     supabase
       .from("opportunities")
-      .select("name, amount, stage")
-      .order("amount", { ascending: false })
+      .select("name, stage, priority")
+      .eq("priority", "high")
       .limit(5),
   ]);
 
@@ -234,23 +231,18 @@ async function getDashboardData() {
 }
 
 async function complexJoinQuery() {
+  // Updated: companies -> organizations, removed amount (not in schema)
   const { data, error } = await supabase
     .from("opportunities")
     .select(
       `
       id,
       name,
-      amount,
       stage,
-      customer:companies!customer_organization_id(
+      priority,
+      customer:organizations!customer_organization_id(
         name,
-        sector,
-        contact_organizations(
-          contact:contacts(
-            first_name,
-            last_name
-          )
-        )
+        segment_id
       ),
       activities(
         type,
@@ -263,7 +255,7 @@ async function complexJoinQuery() {
     `
     )
     .eq("status", "active")
-    .gte("amount", 10000)
+    .eq("priority", "high")
     .limit(10);
 
   if (error) throw error;
@@ -271,14 +263,16 @@ async function complexJoinQuery() {
 }
 
 async function createActivity() {
-  const types = ["call", "email", "meeting", "demo"];
+  // Updated: use all 13 activity types from PRD v1.18
+  const types = ["call", "email", "meeting", "demo", "sample", "proposal", "follow_up", "trade_show", "site_visit", "contract_review", "check_in", "social", "note"];
 
   // Get random contact and organization
   const { data: contacts } = await supabase.from("contacts").select("id").limit(10);
 
-  const { data: orgs } = await supabase.from("companies").select("id").limit(10);
+  // Updated: companies -> organizations
+  const { data: orgs } = await supabase.from("organizations").select("id").limit(10);
 
-  if (!contacts || !orgs) {
+  if (!contacts || contacts.length === 0 || !orgs || orgs.length === 0) {
     throw new Error("Unable to fetch test data");
   }
 
@@ -424,7 +418,7 @@ async function generateReport() {
   const reportFile = path.join(reportDir, `load-test-${Date.now()}.json`);
   await fs.writeFile(reportFile, JSON.stringify(report, null, 2));
 
-  return { report, reportFile };
+  return { report, reportFile, stats, throughput, errorRate };
 }
 
 // Main execution
@@ -478,7 +472,7 @@ async function runLoadTest() {
   // Generate and display report
   console.log(chalk.cyan("\n📊 Generating Report...\n"));
 
-  const { report, reportFile } = await generateReport();
+  const { report, reportFile, stats, throughput, errorRate } = await generateReport();
 
   // Display summary
   console.log(chalk.green("=== Load Test Results ===\n"));

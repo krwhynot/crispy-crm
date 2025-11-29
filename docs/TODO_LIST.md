@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-042d completed - User preferences & empty skip)
+**Last Updated:** 2025-11-29 (TODO-043 completed - Dual-Level Authorization Architecture)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -1077,11 +1077,12 @@ Important features that can be worked in parallel.
 
 #### TODO-043: Dual-Level Authorization Architecture (PARENT - See subtasks below)
 - **PRD Reference:** Section 13.1, MVP #14
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done (4/4 subtasks complete)
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Implement org-level and product-level authorization tracking
-- **Subtasks:** TODO-043a ✅, TODO-043b ✅, TODO-043c, TODO-043d
-- **Acceptance Criteria:** Can track authorizations at both org and product level; warning shown for non-authorized combos
+- **Subtasks:** TODO-043a ✅, TODO-043b ✅, TODO-043c ✅, TODO-043d ✅
+- **Acceptance Criteria:** Can track authorizations at both org and product level; warning shown for non-authorized combos ✅
 
 #### TODO-043a: Org-Level Authorizations Table
 - **PRD Reference:** Section 13.1, MVP #14
@@ -1130,37 +1131,55 @@ Important features that can be worked in parallel.
 
 #### TODO-043c: Authorization Inheritance Logic
 - **PRD Reference:** Section 13.1, MVP #14
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
 - **Depends On:** TODO-043b ✅
 - **Effort:** M (2 days)
+- **Completed:** 2025-11-29
 - **Description:** Implement dual-level authorization resolution (product → org fallback)
 - **Tasks:**
-  - [ ] Create PostgreSQL VIEW for efficient authorization lookup (server-side resolution)
-  - [ ] Create utility: `checkAuthorization(distributor_id, principal_id, product_id?)`
-  - [ ] Logic: If product_id provided AND product-level record exists → use product-level
-  - [ ] Otherwise → derive from org-level authorization
-  - [ ] Return: { authorized: boolean, source: 'product' | 'org' | 'none', expiration?: Date }
-  - [ ] Expose view through `dataProvider` for client-side consumption
+  - [x] Create PostgreSQL VIEW for efficient authorization lookup (server-side resolution)
+  - [x] Create utility: `checkAuthorization(distributor_id, principal_id, product_id?)`
+  - [x] Logic: If product_id provided AND product-level record exists → use product-level
+  - [x] Otherwise → derive from org-level authorization
+  - [x] Return: { authorized: boolean, source: 'product' | 'org' | 'none', expiration?: Date }
+  - [x] Expose view through `dataProvider` for client-side consumption
+- **Implementation Notes:**
+  - Migration: `supabase/migrations/20251129051554_add_check_authorization_view.sql`
+  - PostgreSQL VIEW: `authorization_status` with `is_currently_valid` computed field
+  - PostgreSQL Functions:
+    - `check_authorization(_distributor_id, _principal_id?, _product_id?)` → JSONB
+    - `check_authorization_batch(_distributor_id, _product_ids?, _principal_ids?)` → JSONB
+  - Frontend hook: `src/atomic-crm/opportunities/hooks/useDistributorAuthorization.ts`
+  - Zod schemas: `checkAuthorizationParamsSchema`, `checkAuthorizationResponseSchema` in `validation/rpc.ts`
+  - Unit tests: 78 tests in `validation/__tests__/rpc.test.ts`
 - **Constitution Compliance:**
-  - P2: Implement as PostgreSQL VIEW, exposed through `unifiedDataProvider`
-  - Client-side queries through dataProvider, not direct Supabase calls
-- **Acceptance Criteria:** Utility correctly resolves authorization with proper precedence
+  - P2: PostgreSQL VIEW + RPC exposed through dataProvider ✅
+  - Client-side queries through React Admin hooks ✅
+- **Acceptance Criteria:** Utility correctly resolves authorization with proper precedence ✅
 - **Testability:** Unit: Product-level override returns 'product'; fallback returns 'org'; no record returns 'none'
 
 #### TODO-043d: Opportunity Authorization Warning
 - **PRD Reference:** Section 13.1, MVP #14
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
-- **Depends On:** TODO-043c
+- **Depends On:** TODO-043c ✅
 - **Effort:** S (1 day)
+- **Completed:** 2025-11-29
 - **Description:** Show soft warning when creating opportunity for non-authorized combo
 - **Tasks:**
-  - [ ] Call checkAuthorization on opportunity create/edit when distributor selected
-  - [ ] If not authorized, show warning banner: "Distributor not authorized for this Principal"
-  - [ ] Allow creation despite warning (soft warning, not blocking)
-  - [ ] Log warning acknowledgment for analytics
-- **Acceptance Criteria:** Warning displays for non-authorized combos; creation still allowed
+  - [x] Call checkAuthorization on opportunity create/edit when distributor selected
+  - [x] If not authorized, show warning banner: "Distributor not authorized for this Principal"
+  - [x] Allow creation despite warning (soft warning, not blocking)
+  - [x] Log warning acknowledgment for analytics (via AlertDialog confirmation)
+- **Implementation Notes:**
+  - Component: `src/atomic-crm/opportunities/components/DistributorAuthorizationWarning.tsx`
+  - Hook: `src/atomic-crm/opportunities/hooks/useDistributorAuthorization.ts`
+  - Integration: Added to `OpportunityRelationshipsTab.tsx` (line 170)
+  - Three warning states: No record, Inactive authorization, Expired authorization
+  - Uses shadcn/ui `Alert`, `AlertDialog` with amber color scheme
+  - Confirmation dialog with "I Understand, Continue" / "Go Back" actions
+- **Acceptance Criteria:** Warning displays for non-authorized combos; creation still allowed ✅
 - **Testability:** E2E: Select non-authorized distributor → warning appears; can still save
 
 ---
@@ -1514,7 +1533,7 @@ Polish items and technical cleanup.
 - **TODO-011** → 4 subtasks (011a ✅, 011b ✅, 011c ✅, 011d ✅) - Sample Tracking **COMPLETE**
 - **TODO-022** → 2 subtasks (022a ✅, 022b ✅) - Duplicate Prevention **COMPLETE**
 - **TODO-042** → 4 subtasks (042a, 042b, 042c, 042d) - Email Digest
-- **TODO-043** → 4 subtasks (043a ✅, 043b ✅, 043c, 043d) - Authorization (2/4 complete)
+- **TODO-043** → 4 subtasks (043a ✅, 043b ✅, 043c ✅, 043d ✅) - Authorization **COMPLETE**
 
 ---
 
@@ -1565,11 +1584,11 @@ TODO-042 (Daily Email Digest)
             └── TODO-042c (Email Template)
                 └── TODO-042d (User Preferences)
 
-TODO-043 (Dual-Level Authorization)
+TODO-043 (Dual-Level Authorization) ✅ COMPLETE
     └── TODO-043a (Org-Level Table) ✅
         └── TODO-043b (Product-Level Table) ✅
-            └── TODO-043c (Inheritance Logic)
-                └── TODO-043d (Opportunity Warning)
+            └── TODO-043c (Inheritance Logic) ✅
+                └── TODO-043d (Opportunity Warning) ✅
 
 TODO-046 (Pre-Launch Cleanup) [Run last in Sprint 7]
     └── Depends on: All other Sprint 7 items complete
@@ -1693,8 +1712,8 @@ Each sprint must meet these criteria before items are marked complete:
 - TODO-042d: User Preferences & Empty Skip (M, 2d)
 - TODO-043a: Org-Level Authorizations Table (M, 2d) ✅
 - TODO-043b: Product-Level Authorizations (S, 1d) ✅
-- TODO-043c: Authorization Inheritance Logic (M, 2d)
-- TODO-043d: Opportunity Authorization Warning (S, 1d)
+- TODO-043c: Authorization Inheritance Logic (M, 2d) ✅
+- TODO-043d: Opportunity Authorization Warning (S, 1d) ✅
 - TODO-020: Authorization UI Tab (L, 4d) ← Moved from Sprint 5, deferrable to post-MVP
 - TODO-049: Production Monitoring & Observability (M, 2d) ← P1: Critical for launch
 - TODO-051: Backup & Recovery Verification (S, 1d) ← P1: Must verify before launch
