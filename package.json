@@ -25,6 +25,7 @@
     "prettier:apply": "prettier --config ./.prettierrc.mjs --write --list-different \"**/*.{js,json,ts,tsx,css,md,html}\"",
     "prettier:check": "prettier --config ./.prettierrc.mjs --check \"**/*.{js,json,ts,tsx,css,md,html}\"",
     "validate:colors": "node ./scripts/validate-colors.js",
+    "validate:semantic-colors": "node ./scripts/validate-semantic-colors.js",
     "ghpages:deploy": "node ./scripts/ghpages-deploy.mjs",
     "supabase:remote:init": "node ./scripts/supabase-remote-init.mjs",
     "db:migrate:new": "npx supabase migration new",

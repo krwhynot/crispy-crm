@@ -31,5 +31,13 @@ if [ -n "$env_files" ]; then
   exit 1
 fi
 
+# Run semantic color validation (fast, catches design system violations)
+echo "🎨 Validating semantic colors..."
+npm run validate:semantic-colors
+if [ $? -ne 0 ]; then
+  echo -e "${RED}❌ Semantic color violations found. Please use design system utilities.${NC}"
+  exit 1
+fi
+
 # Run tests (non-interactive mode for pre-commit)
 npm run test:ci

@@ -27,6 +27,29 @@ jobs:
       - name: Run ESLint
         run: npm run lint
 
+  design-system:
+    name: Design System Compliance
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate semantic colors
+        run: npm run validate:semantic-colors
+
+      - name: Validate color contrast (WCAG)
+        run: npm run validate:colors
+
   test:
     name: Unit Tests
     runs-on: ubuntu-latest
