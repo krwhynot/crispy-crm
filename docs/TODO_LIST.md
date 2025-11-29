@@ -185,11 +185,12 @@ These items block other work or are foundational to the system.
 
 #### TODO-004: Win/Loss Reasons UI (PARENT - See subtasks below)
 - **PRD Reference:** Section 5.3, MVP #12, #47
-- **Status:** 🔧 In Progress (2/3 subtasks complete)
+- **Status:** ✅ Done (3/3 subtasks complete)
 - **Priority:** 🔴 P0
+- **Completed:** 2025-11-28
 - **Description:** Require reason selection when closing opportunities
-- **Subtasks:** TODO-004a ✅, TODO-004b ✅, TODO-004c ⬜
-- **Acceptance Criteria:** Cannot close opportunity without selecting reason; reason visible on closed opportunities
+- **Subtasks:** TODO-004a ✅, TODO-004b ✅, TODO-004c ✅
+- **Acceptance Criteria:** Cannot close opportunity without selecting reason; reason visible on closed opportunities ✅
 - **Industry Standard:** Salesforce/HubSpot require reasons on close
 
 #### TODO-004a: Win/Loss Reason Schema & Fields
