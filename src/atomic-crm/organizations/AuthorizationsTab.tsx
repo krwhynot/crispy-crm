@@ -10,10 +10,26 @@
  * - Add new principal authorization via dialog
  * - Remove authorization with confirmation
  * - Territory restrictions and notes display
+ * - Product-level exceptions (expand to see/manage per-product overrides)
+ *
+ * @see docs/PRD.md Section 4.3 - Distributor Authorization Model
  */
 
 import { useState } from "react";
-import { Building2, Plus, Trash2, Calendar, MapPin, FileText } from "lucide-react";
+import {
+  Building2,
+  Plus,
+  Trash2,
+  Calendar,
+  MapPin,
+  FileText,
+  ChevronDown,
+  ChevronRight,
+  Package,
+  AlertTriangle,
+  Check,
+  X,
+} from "lucide-react";
 import {
   useGetList,
   useCreate,
@@ -55,15 +71,34 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
-import type { DistributorAuthorizationWithNames } from "../validation/distributorAuthorizations";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import type { TabComponentProps } from "@/components/layouts/ResourceSlideOver";
 
-interface AuthorizationsTabProps {
-  distributorId: string | number;
+// =====================================================
+// Types
+// =====================================================
+
+interface AuthorizationsTabProps extends Partial<TabComponentProps> {
+  /** For standalone use outside slide-over */
+  distributorId?: string | number;
 }
 
 interface PrincipalOrganization extends RaRecord {
   name: string;
   organization_type: string;
+}
+
+interface Product extends RaRecord {
+  id: number;
+  name: string;
+  sku: string;
+  principal_id: number;
+  category?: string;
+  status?: string;
 }
 
 interface AuthorizationWithPrincipal extends RaRecord {
@@ -76,17 +111,40 @@ interface AuthorizationWithPrincipal extends RaRecord {
   territory_restrictions: string[] | null;
   notes: string | null;
   created_at: string;
-  // Joined from organizations table
   principal?: PrincipalOrganization;
 }
 
-export function AuthorizationsTab({ distributorId }: AuthorizationsTabProps) {
+interface ProductAuthorization extends RaRecord {
+  id: number;
+  product_id: number;
+  distributor_id: number;
+  is_authorized: boolean;
+  authorization_date: string | null;
+  expiration_date: string | null;
+  territory_restrictions: string[] | null;
+  notes: string | null;
+  special_pricing: Record<string, unknown> | null;
+  created_at: string;
+}
+
+// =====================================================
+// Main Component
+// =====================================================
+
+export function AuthorizationsTab({
+  record,
+  distributorId: propDistributorId,
+  isActiveTab = true,
+}: AuthorizationsTabProps) {
+  // Support both slide-over usage (record prop) and standalone usage (distributorId prop)
+  const distributorId = record?.id ?? propDistributorId;
+
   const [addDialogOpen, setAddDialogOpen] = useState(false);
   const [removeAuth, setRemoveAuth] = useState<AuthorizationWithPrincipal | null>(null);
   const notify = useNotify();
   const refresh = useRefresh();
 
-  // Fetch authorizations for this distributor
+  // Fetch authorizations for this distributor (only when tab is active)
   const {
     data: authorizations,
     isPending,
@@ -95,20 +153,28 @@ export function AuthorizationsTab({ distributorId }: AuthorizationsTabProps) {
     filter: { distributor_id: distributorId, deleted_at: null },
     sort: { field: "created_at", order: "DESC" },
     pagination: { page: 1, perPage: 100 },
-  });
+  }, { enabled: isActiveTab && !!distributorId });
 
   // Fetch principal organizations for the add dialog
   const { data: principals } = useGetList<PrincipalOrganization>("organizations", {
     filter: { organization_type: "principal", deleted_at: null },
     sort: { field: "name", order: "ASC" },
     pagination: { page: 1, perPage: 200 },
-  });
+  }, { enabled: isActiveTab && addDialogOpen });
 
   // Get list of already authorized principal IDs
   const authorizedPrincipalIds = new Set(authorizations?.map((a) => a.principal_id) || []);
 
   // Filter available principals (not already authorized)
   const availablePrincipals = principals?.filter((p) => !authorizedPrincipalIds.has(Number(p.id)));
+
+  if (!distributorId) {
+    return (
+      <div className="text-center py-8 text-muted-foreground">
+        No distributor selected
+      </div>
+    );
+  }
 
   if (isPending) {
     return (
@@ -141,7 +207,7 @@ export function AuthorizationsTab({ distributorId }: AuthorizationsTabProps) {
             ? "No authorized principals"
             : `${authorizationsList.length} authorized principal${authorizationsList.length !== 1 ? "s" : ""}`}
         </p>
-        <Button variant="outline" size="sm" onClick={() => setAddDialogOpen(true)}>
+        <Button variant="outline" size="sm" onClick={() => setAddDialogOpen(true)} className="h-11">
           <Plus className="h-4 w-4 mr-1" />
           Add Principal
         </Button>
@@ -156,6 +222,7 @@ export function AuthorizationsTab({ distributorId }: AuthorizationsTabProps) {
             <AuthorizationCard
               key={auth.id}
               authorization={auth}
+              distributorId={Number(distributorId)}
               onRemove={() => setRemoveAuth(auth)}
             />
           ))}
@@ -187,6 +254,10 @@ export function AuthorizationsTab({ distributorId }: AuthorizationsTabProps) {
   );
 }
 
+// =====================================================
+// Empty State
+// =====================================================
+
 function EmptyState({ onAddClick }: { onAddClick: () => void }) {
   return (
     <div className="text-center py-12 border border-dashed border-border rounded-lg">
@@ -195,7 +266,7 @@ function EmptyState({ onAddClick }: { onAddClick: () => void }) {
       <p className="text-sm text-muted-foreground mb-4">
         Add principals that are authorized to sell through this distributor.
       </p>
-      <Button variant="outline" onClick={onAddClick}>
+      <Button variant="outline" onClick={onAddClick} className="h-11">
         <Plus className="h-4 w-4 mr-1" />
         Add First Principal
       </Button>
@@ -203,91 +274,318 @@ function EmptyState({ onAddClick }: { onAddClick: () => void }) {
   );
 }
 
+// =====================================================
+// Authorization Card (with expandable product exceptions)
+// =====================================================
+
 interface AuthorizationCardProps {
   authorization: AuthorizationWithPrincipal;
+  distributorId: number;
   onRemove: () => void;
 }
 
-function AuthorizationCard({ authorization, onRemove }: AuthorizationCardProps) {
-  // We need to fetch the principal name since it's not joined
+function AuthorizationCard({ authorization, distributorId, onRemove }: AuthorizationCardProps) {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  // Fetch the principal name since it's not joined
   const { data: principal } = useGetList<PrincipalOrganization>("organizations", {
     filter: { id: authorization.principal_id },
     pagination: { page: 1, perPage: 1 },
   });
+
+  // Fetch product-level exceptions for this principal/distributor combo
+  const { data: productAuths, isPending: productAuthsLoading } = useGetList<ProductAuthorization>(
+    "product_distributor_authorizations",
+    {
+      filter: { distributor_id: distributorId, deleted_at: null },
+      sort: { field: "created_at", order: "DESC" },
+      pagination: { page: 1, perPage: 50 },
+    },
+    { enabled: isExpanded }
+  );
+
+  // Fetch products for this principal to show exceptions
+  const { data: principalProducts } = useGetList<Product>("products", {
+    filter: { principal_id: authorization.principal_id, deleted_at: null },
+    sort: { field: "name", order: "ASC" },
+    pagination: { page: 1, perPage: 100 },
+  }, { enabled: isExpanded });
 
   const principalName = principal?.[0]?.name || `Principal #${authorization.principal_id}`;
   const isExpired =
     authorization.expiration_date && new Date(authorization.expiration_date) < new Date();
   const isActive = authorization.is_authorized && !isExpired;
 
-  return (
-    <div className="flex gap-4 p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors">
-      {/* Icon */}
-      <div className="flex-shrink-0 mt-1">
-        <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-          <Building2 className="h-5 w-5 text-primary" />
-        </div>
-      </div>
+  // Filter product authorizations for this principal's products
+  const principalProductIds = new Set(principalProducts?.map((p) => Number(p.id)) || []);
+  const relevantProductAuths = productAuths?.filter((pa) => principalProductIds.has(pa.product_id)) || [];
 
-      {/* Content */}
-      <div className="flex-1 min-w-0">
-        {/* Header */}
-        <div className="flex items-start justify-between mb-1">
-          <div className="flex items-center gap-2 flex-wrap">
-            <span className="font-medium">{principalName}</span>
-            <Badge variant={isActive ? "default" : "secondary"}>
-              {isActive ? "Active" : isExpired ? "Expired" : "Inactive"}
-            </Badge>
+  // Count exceptions (products with different authorization than principal-level)
+  const exceptionCount = relevantProductAuths.length;
+
+  return (
+    <Collapsible open={isExpanded} onOpenChange={setIsExpanded}>
+      <div className="border border-border rounded-lg hover:bg-muted/50 transition-colors">
+        {/* Main Card Content */}
+        <div className="flex gap-4 p-4">
+          {/* Expand/Collapse Trigger */}
+          <CollapsibleTrigger asChild>
+            <Button
+              variant="ghost"
+              size="sm"
+              className="h-10 w-10 p-0 flex-shrink-0 mt-0.5"
+              aria-label={isExpanded ? "Collapse product exceptions" : "Expand product exceptions"}
+            >
+              {isExpanded ? (
+                <ChevronDown className="h-4 w-4" />
+              ) : (
+                <ChevronRight className="h-4 w-4" />
+              )}
+            </Button>
+          </CollapsibleTrigger>
+
+          {/* Icon */}
+          <div className="flex-shrink-0 mt-1">
+            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+              <Building2 className="h-5 w-5 text-primary" />
+            </div>
           </div>
+
+          {/* Content */}
+          <div className="flex-1 min-w-0">
+            {/* Header */}
+            <div className="flex items-start justify-between mb-1">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="font-medium">{principalName}</span>
+                <Badge variant={isActive ? "default" : "secondary"}>
+                  {isActive ? "Active" : isExpired ? "Expired" : "Inactive"}
+                </Badge>
+                {exceptionCount > 0 && (
+                  <Badge variant="outline" className="text-xs">
+                    <Package className="h-3 w-3 mr-1" />
+                    {exceptionCount} exception{exceptionCount !== 1 ? "s" : ""}
+                  </Badge>
+                )}
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-11 w-11 p-0 text-muted-foreground hover:text-destructive"
+                onClick={onRemove}
+                title="Remove authorization"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* Details */}
+            <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mt-2">
+              {authorization.authorization_date && (
+                <div className="flex items-center gap-1">
+                  <Calendar className="h-3.5 w-3.5" />
+                  <span>Since {format(new Date(authorization.authorization_date), "MMM d, yyyy")}</span>
+                </div>
+              )}
+              {authorization.expiration_date && (
+                <div className="flex items-center gap-1">
+                  <Calendar className="h-3.5 w-3.5" />
+                  <span className={isExpired ? "text-destructive" : ""}>
+                    {isExpired ? "Expired" : "Expires"}{" "}
+                    {format(new Date(authorization.expiration_date), "MMM d, yyyy")}
+                  </span>
+                </div>
+              )}
+              {authorization.territory_restrictions && authorization.territory_restrictions.length > 0 && (
+                <div className="flex items-center gap-1">
+                  <MapPin className="h-3.5 w-3.5" />
+                  <span>{authorization.territory_restrictions.join(", ")}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Notes */}
+            {authorization.notes && (
+              <div className="flex items-start gap-1 mt-2 text-sm">
+                <FileText className="h-3.5 w-3.5 mt-0.5 text-muted-foreground" />
+                <span className="text-foreground/80">{authorization.notes}</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Expandable Product Exceptions Section */}
+        <CollapsibleContent>
+          <ProductExceptionsSection
+            authorization={authorization}
+            distributorId={distributorId}
+            products={principalProducts || []}
+            productAuths={relevantProductAuths}
+            isLoading={productAuthsLoading}
+          />
+        </CollapsibleContent>
+      </div>
+    </Collapsible>
+  );
+}
+
+// =====================================================
+// Product Exceptions Section (within expanded card)
+// =====================================================
+
+interface ProductExceptionsSectionProps {
+  authorization: AuthorizationWithPrincipal;
+  distributorId: number;
+  products: Product[];
+  productAuths: ProductAuthorization[];
+  isLoading: boolean;
+}
+
+function ProductExceptionsSection({
+  authorization,
+  distributorId,
+  products,
+  productAuths,
+  isLoading,
+}: ProductExceptionsSectionProps) {
+  const [addExceptionOpen, setAddExceptionOpen] = useState(false);
+  const [removeException, setRemoveException] = useState<ProductAuthorization | null>(null);
+  const notify = useNotify();
+  const refresh = useRefresh();
+
+  // Map product IDs to their authorizations
+  const productAuthMap = new Map(productAuths.map((pa) => [pa.product_id, pa]));
+
+  // Products with explicit exceptions
+  const productsWithExceptions = products.filter((p) => productAuthMap.has(Number(p.id)));
+
+  // Products available to add exceptions (not already overridden)
+  const productsWithoutExceptions = products.filter((p) => !productAuthMap.has(Number(p.id)));
+
+  if (isLoading) {
+    return (
+      <div className="border-t border-border p-4 bg-muted/30">
+        <Skeleton className="h-4 w-48 mb-2" />
+        <Skeleton className="h-3 w-full" />
+      </div>
+    );
+  }
+
+  return (
+    <div className="border-t border-border p-4 bg-muted/30">
+      <div className="flex justify-between items-center mb-3">
+        <h4 className="text-sm font-medium flex items-center gap-2">
+          <Package className="h-4 w-4" />
+          Product Exceptions
+        </h4>
+        {productsWithoutExceptions.length > 0 && (
           <Button
             variant="ghost"
             size="sm"
-            className="h-8 w-8 p-0 text-muted-foreground hover:text-destructive"
-            onClick={onRemove}
-            title="Remove authorization"
+            onClick={() => setAddExceptionOpen(true)}
+            className="h-9 text-xs"
           >
-            <Trash2 className="h-4 w-4" />
+            <Plus className="h-3 w-3 mr-1" />
+            Add Exception
           </Button>
-        </div>
-
-        {/* Details */}
-        <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mt-2">
-          {authorization.authorization_date && (
-            <div className="flex items-center gap-1">
-              <Calendar className="h-3.5 w-3.5" />
-              <span>Since {format(new Date(authorization.authorization_date), "MMM d, yyyy")}</span>
-            </div>
-          )}
-          {authorization.expiration_date && (
-            <div className="flex items-center gap-1">
-              <Calendar className="h-3.5 w-3.5" />
-              <span
-                className={isExpired ? "text-destructive" : ""}
-              >
-                {isExpired ? "Expired" : "Expires"}{" "}
-                {format(new Date(authorization.expiration_date), "MMM d, yyyy")}
-              </span>
-            </div>
-          )}
-          {authorization.territory_restrictions && authorization.territory_restrictions.length > 0 && (
-            <div className="flex items-center gap-1">
-              <MapPin className="h-3.5 w-3.5" />
-              <span>{authorization.territory_restrictions.join(", ")}</span>
-            </div>
-          )}
-        </div>
-
-        {/* Notes */}
-        {authorization.notes && (
-          <div className="flex items-start gap-1 mt-2 text-sm">
-            <FileText className="h-3.5 w-3.5 mt-0.5 text-muted-foreground" />
-            <span className="text-foreground/80">{authorization.notes}</span>
-          </div>
         )}
       </div>
+
+      {products.length === 0 ? (
+        <p className="text-sm text-muted-foreground">
+          No products found for this principal.
+        </p>
+      ) : productsWithExceptions.length === 0 ? (
+        <p className="text-sm text-muted-foreground">
+          All {products.length} product{products.length !== 1 ? "s" : ""} inherit the principal-level authorization.
+          {productsWithoutExceptions.length > 0 && " Add an exception to override for specific products."}
+        </p>
+      ) : (
+        <div className="space-y-2">
+          {productsWithExceptions.map((product) => {
+            const productAuth = productAuthMap.get(Number(product.id))!;
+            const isAuthorized = productAuth.is_authorized;
+            const isExceptionExpired =
+              productAuth.expiration_date && new Date(productAuth.expiration_date) < new Date();
+
+            return (
+              <div
+                key={product.id}
+                className="flex items-center justify-between p-3 bg-background rounded border border-border"
+              >
+                <div className="flex items-center gap-3">
+                  <div
+                    className={`w-8 h-8 rounded flex items-center justify-center ${
+                      isAuthorized && !isExceptionExpired
+                        ? "bg-success/10 text-success"
+                        : "bg-destructive/10 text-destructive"
+                    }`}
+                  >
+                    {isAuthorized && !isExceptionExpired ? (
+                      <Check className="h-4 w-4" />
+                    ) : (
+                      <X className="h-4 w-4" />
+                    )}
+                  </div>
+                  <div>
+                    <span className="text-sm font-medium">{product.name}</span>
+                    <span className="text-xs text-muted-foreground ml-2">({product.sku})</span>
+                    {isExceptionExpired && (
+                      <Badge variant="outline" className="ml-2 text-xs text-destructive border-destructive">
+                        Expired
+                      </Badge>
+                    )}
+                  </div>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Badge variant={isAuthorized ? "default" : "destructive"} className="text-xs">
+                    {isAuthorized ? "Authorized" : "Not Authorized"}
+                  </Badge>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="h-9 w-9 p-0 text-muted-foreground hover:text-destructive"
+                    onClick={() => setRemoveException(productAuth)}
+                    title="Remove exception"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </Button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
+      {/* Add Product Exception Dialog */}
+      <AddProductExceptionDialog
+        open={addExceptionOpen}
+        onOpenChange={setAddExceptionOpen}
+        distributorId={distributorId}
+        availableProducts={productsWithoutExceptions}
+        inheritedAuthorization={authorization.is_authorized}
+        onSuccess={() => {
+          refresh();
+          setAddExceptionOpen(false);
+        }}
+      />
+
+      {/* Remove Product Exception Dialog */}
+      <RemoveProductExceptionDialog
+        productAuth={removeException}
+        products={products}
+        onClose={() => setRemoveException(null)}
+        onSuccess={() => {
+          refresh();
+          setRemoveException(null);
+        }}
+      />
     </div>
   );
 }
+
+// =====================================================
+// Add Principal Dialog
+// =====================================================
 
 interface AddPrincipalDialogProps {
   open: boolean;
@@ -306,7 +604,7 @@ function AddPrincipalDialog({
 }: AddPrincipalDialogProps) {
   const [selectedPrincipalId, setSelectedPrincipalId] = useState<string>("");
   const [notes, setNotes] = useState("");
-  const [create, { isLoading }] = useCreate();
+  const [create, { isPending }] = useCreate();
   const notify = useNotify();
   const { identity } = useGetIdentity();
 
@@ -336,8 +634,9 @@ function AddPrincipalDialog({
       setSelectedPrincipalId("");
       setNotes("");
       onSuccess();
-    } catch (error: any) {
-      notify(error?.message || "Failed to add authorization", { type: "error" });
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to add authorization";
+      notify(errorMessage, { type: "error" });
     }
   };
 
@@ -361,7 +660,7 @@ function AddPrincipalDialog({
           <div className="space-y-2">
             <Label htmlFor="principal">Principal</Label>
             <Select value={selectedPrincipalId} onValueChange={setSelectedPrincipalId}>
-              <SelectTrigger id="principal">
+              <SelectTrigger id="principal" className="h-11">
                 <SelectValue placeholder="Select a principal..." />
               </SelectTrigger>
               <SelectContent>
@@ -393,17 +692,175 @@ function AddPrincipalDialog({
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={handleClose}>
+          <Button variant="outline" onClick={handleClose} className="h-11">
             Cancel
           </Button>
-          <Button onClick={handleSubmit} disabled={isLoading || !selectedPrincipalId}>
-            {isLoading ? "Adding..." : "Add Authorization"}
+          <Button onClick={handleSubmit} disabled={isPending || !selectedPrincipalId} className="h-11">
+            {isPending ? "Adding..." : "Add Authorization"}
           </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 }
+
+// =====================================================
+// Add Product Exception Dialog
+// =====================================================
+
+interface AddProductExceptionDialogProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  distributorId: number;
+  availableProducts: Product[];
+  inheritedAuthorization: boolean;
+  onSuccess: () => void;
+}
+
+function AddProductExceptionDialog({
+  open,
+  onOpenChange,
+  distributorId,
+  availableProducts,
+  inheritedAuthorization,
+  onSuccess,
+}: AddProductExceptionDialogProps) {
+  const [selectedProductId, setSelectedProductId] = useState<string>("");
+  const [isAuthorized, setIsAuthorized] = useState<string>("false"); // Override to NOT authorized by default
+  const [notes, setNotes] = useState("");
+  const [create, { isPending }] = useCreate();
+  const notify = useNotify();
+  const { identity } = useGetIdentity();
+
+  const handleSubmit = async () => {
+    if (!selectedProductId) {
+      notify("Please select a product", { type: "warning" });
+      return;
+    }
+
+    try {
+      await create(
+        "product_distributor_authorizations",
+        {
+          data: {
+            product_id: Number(selectedProductId),
+            distributor_id: distributorId,
+            is_authorized: isAuthorized === "true",
+            authorization_date: new Date().toISOString().split("T")[0],
+            notes: notes.trim() || null,
+            created_by: identity?.id,
+          },
+        },
+        { returnPromise: true }
+      );
+
+      notify("Product exception added", { type: "success" });
+      setSelectedProductId("");
+      setIsAuthorized("false");
+      setNotes("");
+      onSuccess();
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to add product exception";
+      notify(errorMessage, { type: "error" });
+    }
+  };
+
+  const handleClose = () => {
+    setSelectedProductId("");
+    setIsAuthorized("false");
+    setNotes("");
+    onOpenChange(false);
+  };
+
+  return (
+    <Dialog open={open} onOpenChange={handleClose}>
+      <DialogContent className="sm:max-w-md">
+        <DialogHeader>
+          <DialogTitle>Add Product Exception</DialogTitle>
+          <DialogDescription>
+            Override the principal-level authorization for a specific product.
+            Currently, products inherit: <Badge variant={inheritedAuthorization ? "default" : "destructive"} className="ml-1 text-xs">{inheritedAuthorization ? "Authorized" : "Not Authorized"}</Badge>
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label htmlFor="product">Product</Label>
+            <Select value={selectedProductId} onValueChange={setSelectedProductId}>
+              <SelectTrigger id="product" className="h-11">
+                <SelectValue placeholder="Select a product..." />
+              </SelectTrigger>
+              <SelectContent>
+                {availableProducts.length === 0 ? (
+                  <SelectItem value="" disabled>
+                    No products available
+                  </SelectItem>
+                ) : (
+                  availableProducts.map((product) => (
+                    <SelectItem key={product.id} value={String(product.id)}>
+                      {product.name} ({product.sku})
+                    </SelectItem>
+                  ))
+                )}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="authorization-status">Exception Status</Label>
+            <Select value={isAuthorized} onValueChange={setIsAuthorized}>
+              <SelectTrigger id="authorization-status" className="h-11">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="true">
+                  <span className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-success" />
+                    Authorized (Override to Allow)
+                  </span>
+                </SelectItem>
+                <SelectItem value="false">
+                  <span className="flex items-center gap-2">
+                    <X className="h-4 w-4 text-destructive" />
+                    Not Authorized (Override to Block)
+                  </span>
+                </SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-xs text-muted-foreground">
+              <AlertTriangle className="h-3 w-3 inline mr-1" />
+              This overrides the principal-level setting for this specific product only.
+            </p>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="exception-notes">Notes (optional)</Label>
+            <Textarea
+              id="exception-notes"
+              placeholder="Reason for this exception..."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              rows={2}
+            />
+          </div>
+        </div>
+
+        <DialogFooter>
+          <Button variant="outline" onClick={handleClose} className="h-11">
+            Cancel
+          </Button>
+          <Button onClick={handleSubmit} disabled={isPending || !selectedProductId} className="h-11">
+            {isPending ? "Adding..." : "Add Exception"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
+// =====================================================
+// Remove Authorization Dialog
+// =====================================================
 
 interface RemoveAuthorizationDialogProps {
   authorization: AuthorizationWithPrincipal | null;
@@ -416,14 +873,14 @@ function RemoveAuthorizationDialog({
   onClose,
   onSuccess,
 }: RemoveAuthorizationDialogProps) {
-  const [deleteOne, { isLoading }] = useDelete();
+  const [deleteOne, { isPending }] = useDelete();
   const notify = useNotify();
 
   // Fetch principal name for display
   const { data: principal } = useGetList<PrincipalOrganization>("organizations", {
     filter: authorization ? { id: authorization.principal_id } : {},
     pagination: { page: 1, perPage: 1 },
-  });
+  }, { enabled: !!authorization });
 
   const principalName =
     principal?.[0]?.name || (authorization ? `Principal #${authorization.principal_id}` : "");
@@ -440,8 +897,9 @@ function RemoveAuthorizationDialog({
             notify(`Removed authorization for ${principalName}`, { type: "success" });
             onSuccess();
           },
-          onError: (error: any) => {
-            notify(error?.message || "Failed to remove authorization", { type: "error" });
+          onError: (error: unknown) => {
+            const errorMessage = error instanceof Error ? error.message : "Failed to remove authorization";
+            notify(errorMessage, { type: "error" });
           },
         }
       );
@@ -461,13 +919,84 @@ function RemoveAuthorizationDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel className="h-11">Cancel</AlertDialogCancel>
           <AlertDialogAction
             onClick={handleConfirm}
-            disabled={isLoading}
-            className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+            disabled={isPending}
+            className="h-11 bg-destructive text-destructive-foreground hover:bg-destructive/90"
           >
-            {isLoading ? "Removing..." : "Remove"}
+            {isPending ? "Removing..." : "Remove"}
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+}
+
+// =====================================================
+// Remove Product Exception Dialog
+// =====================================================
+
+interface RemoveProductExceptionDialogProps {
+  productAuth: ProductAuthorization | null;
+  products: Product[];
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+function RemoveProductExceptionDialog({
+  productAuth,
+  products,
+  onClose,
+  onSuccess,
+}: RemoveProductExceptionDialogProps) {
+  const [deleteOne, { isPending }] = useDelete();
+  const notify = useNotify();
+
+  const product = products.find((p) => Number(p.id) === productAuth?.product_id);
+  const productName = product?.name || (productAuth ? `Product #${productAuth.product_id}` : "");
+
+  const handleConfirm = async () => {
+    if (!productAuth) return;
+
+    try {
+      await deleteOne(
+        "product_distributor_authorizations",
+        { id: productAuth.id },
+        {
+          onSuccess: () => {
+            notify(`Removed exception for ${productName}`, { type: "success" });
+            onSuccess();
+          },
+          onError: (error: unknown) => {
+            const errorMessage = error instanceof Error ? error.message : "Failed to remove exception";
+            notify(errorMessage, { type: "error" });
+          },
+        }
+      );
+    } catch {
+      notify("Failed to remove exception. Please try again.", { type: "error" });
+    }
+  };
+
+  return (
+    <AlertDialog open={!!productAuth} onOpenChange={onClose}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Remove Product Exception?</AlertDialogTitle>
+          <AlertDialogDescription>
+            Remove the exception for <strong>{productName}</strong>? This product will revert to
+            the principal-level authorization setting.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel className="h-11">Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={handleConfirm}
+            disabled={isPending}
+            className="h-11 bg-destructive text-destructive-foreground hover:bg-destructive/90"
+          >
+            {isPending ? "Removing..." : "Remove Exception"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
