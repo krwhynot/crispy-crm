@@ -99,8 +99,10 @@ These items block other work or are foundational to the system.
   - [ ] Update database schema: `organization_id` NOT NULL constraint
   - [ ] Update Zod schema validation
   - [ ] Update ContactCreate form to require organization selection
-  - [ ] Add validation error messages
+  - [ ] Add validation error messages (via Zod `.refine()` or custom error map)
   - [ ] Handle edge cases (what happens on import?)
+- **Constitution Compliance:**
+  - P5: Form defaults from `contactCreateSchema.partial().parse({})`
 - **Acceptance Criteria:** Cannot create contact without organization; clear error message shown
 - **Blocks:** TODO-003, TODO-052
 
@@ -985,12 +987,93 @@ Polish items and technical cleanup.
 
 ---
 
+## 🚀 Operational Readiness Tasks
+
+#### TODO-047: Accessibility Audit
+- **PRD Reference:** Section 15.3 (WCAG 2.1 AA Compliance)
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Effort:** M (2 days)
+- **Description:** Comprehensive accessibility audit before launch
+- **Tasks:**
+  - [ ] Review and fix issues from `color-contrast-report.json`
+  - [ ] Screen reader testing (NVDA on Windows, VoiceOver on Mac) on critical flows
+  - [ ] Keyboard navigation verification (Tab order, focus indicators, shortcuts)
+  - [ ] WCAG 2.1 AA compliance check using axe-core or Lighthouse
+  - [ ] Document any waivers with justification
+- **Acceptance Criteria:** Lighthouse a11y score ≥ 95; no critical WCAG violations; keyboard-only navigation works
+- **Testability:** E2E: Run axe-core on all major views → 0 critical violations
+
+#### TODO-048: Performance & Load Testing
+- **PRD Reference:** Section 1.2 (6 concurrent users)
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Effort:** S (1 day)
+- **Description:** Verify system performs under expected load
+- **Tasks:**
+  - [ ] Run `load-test.js` against staging environment
+  - [ ] Document bottlenecks under 6+ concurrent users
+  - [ ] Test critical API response times (target: <200ms P95)
+  - [ ] Verify no memory leaks during extended sessions
+  - [ ] Test with realistic data volume (1000+ opportunities)
+- **Acceptance Criteria:** API P95 <200ms; no errors under 6 concurrent users; no memory leaks
+- **Testability:** Load: 6 virtual users → all requests succeed with <200ms P95
+
+#### TODO-049: Production Monitoring & Observability
+- **PRD Reference:** N/A (Operational Excellence)
+- **Status:** ⬜ TODO
+- **Priority:** 🟠 P1
+- **Effort:** M (2 days)
+- **Description:** Set up error tracking and monitoring for production
+- **Tasks:**
+  - [ ] Integrate Sentry for client-side error tracking
+  - [ ] Set up structured logging (JSON format for searchability)
+  - [ ] Create health dashboard (API error rate, response times, active users)
+  - [ ] Configure alerts for error rate spikes (>1% of requests)
+  - [ ] Document runbook for common error scenarios
+- **Acceptance Criteria:** Errors captured in Sentry; dashboard shows key metrics; alerts configured
+- **Testability:** Integration: Trigger intentional error → appears in Sentry within 1 minute
+
+#### TODO-050: End-User Documentation
+- **PRD Reference:** Section 1.4 (User Training)
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Effort:** M (2 days)
+- **Description:** Create user-facing documentation for launch
+- **Tasks:**
+  - [ ] Write "Getting Started" guide (login, navigation, first activity log)
+  - [ ] Document key workflows: Sample Tracking, Win/Loss Recording, Dashboard usage
+  - [ ] Create FAQ section addressing common questions
+  - [ ] Add contextual help tooltips in UI (optional, if time permits)
+  - [ ] Review with stakeholder for completeness
+- **Acceptance Criteria:** Getting Started guide complete; 3+ workflow docs; FAQ with 10+ questions
+- **Testability:** Manual: New user can complete first activity log using only documentation
+
+#### TODO-051: Backup & Recovery Verification
+- **PRD Reference:** N/A (Data Protection)
+- **Status:** ⬜ TODO
+- **Priority:** 🟠 P1
+- **Effort:** S (1 day)
+- **Description:** Verify data backup and recovery procedures
+- **Tasks:**
+  - [ ] Confirm Supabase daily backups are enabled and running
+  - [ ] Document step-by-step restoration procedure
+  - [ ] Test restore to staging environment (full database)
+  - [ ] Verify point-in-time recovery capability
+  - [ ] Document RTO (Recovery Time Objective) and RPO (Recovery Point Objective)
+- **Acceptance Criteria:** Backups verified; restore tested successfully; RTO/RPO documented
+- **Testability:** Integration: Restore backup to staging → verify data integrity
+
+---
+
 ## Summary by Status
 
-### ⬜ TODO (Not Started): 68 items
+### ⬜ TODO (Not Started): 73 items
 - **Original items:** 43
 - **Decomposed subtasks:** 20 (from TODO-001, 004, 011, 022, 042, 043)
-- **New items:** 5 (TODO-044 RBAC, TODO-045 Pre-Sprint Cleanup, TODO-046 Pre-Launch Cleanup, TODO-052 Import Handling)
+- **Hygiene items:** 2 (TODO-045 Pre-Sprint Cleanup, TODO-046 Pre-Launch Cleanup)
+- **Operational readiness:** 5 (TODO-047 Accessibility, TODO-048 Performance, TODO-049 Monitoring, TODO-050 Docs, TODO-051 Backup)
+- **Other new items:** 3 (TODO-044 RBAC, TODO-052 Import Handling)
 
 ### 🔧 Partial/In Progress: 0 items
 ### ✅ Done: 0 items
@@ -1057,6 +1140,17 @@ TODO-043 (Dual-Level Authorization)
         └── TODO-043b (Product-Level Table)
             └── TODO-043c (Inheritance Logic)
                 └── TODO-043d (Opportunity Warning)
+
+TODO-046 (Pre-Launch Cleanup) [Run last in Sprint 7]
+    └── Depends on: All other Sprint 7 items complete
+    └── TODO-048 (Load Testing) should complete first
+    └── TODO-047 (Accessibility) should complete first
+
+TODO-049 (Production Monitoring) [P1 - Must have before launch]
+    └── Enables: Real-time error tracking in production
+
+TODO-051 (Backup Verification) [P1 - Must have before launch]
+    └── Enables: Disaster recovery confidence
 ```
 
 ### Decomposed Task Summary
@@ -1153,7 +1247,7 @@ Each sprint must meet these criteria before items are marked complete:
 - TODO-021: Opportunity Bulk Delete (S, 1d)
 - **Sprint Total:** ~10 days | **Risk:** Low
 
-### Sprint 6 (Week 10-12): Email Digest & Authorization
+### Sprint 6 (Week 10-12): Email Digest, Authorization & Ops Foundation
 - TODO-042a: Email Digest Infrastructure (M, 2d)
 - TODO-042b: Digest Query Logic (S, 1d) ← Depends on TODO-012
 - TODO-042c: Email Template (S, 1d)
@@ -1163,19 +1257,24 @@ Each sprint must meet these criteria before items are marked complete:
 - TODO-043c: Authorization Inheritance Logic (M, 2d)
 - TODO-043d: Opportunity Authorization Warning (S, 1d)
 - TODO-020: Authorization UI Tab (L, 4d) ← Moved from Sprint 5, deferrable to post-MVP
-- **Sprint Total:** ~16 days | **Risk:** Medium-High (TODO-020 deferrable if slippage)
+- TODO-049: Production Monitoring & Observability (M, 2d) ← P1: Critical for launch
+- TODO-051: Backup & Recovery Verification (S, 1d) ← P1: Must verify before launch
+- **Sprint Total:** ~19 days | **Risk:** High (TODO-020 deferrable if slippage)
 
-### Sprint 7 (Week 12-14): Polish, Mobile & QA
+### Sprint 7 (Week 12-14): Polish, Mobile, QA & Launch Readiness
 - TODO-035: Mobile Quick Actions (M, 3d) ← Moved from Sprint 6
 - TODO-032-034: Notes Cleanup (~3d total) ← Moved from Sprint 6
 - TODO-036-038: Dashboard Polish (~3d total)
 - TODO-039-041: Technical Cleanup (~4d total)
+- TODO-047: Accessibility Audit (M, 2d) ← WCAG 2.1 AA compliance
+- TODO-048: Performance & Load Testing (S, 1d) ← Verify 6 concurrent users
+- TODO-050: End-User Documentation (M, 2d) ← Getting Started, workflows, FAQ
 - TODO-052: Contact Import Org Handling (M, 2d) ← **Deferrable** to post-MVP
 - TODO-046: Pre-Launch Cleanup (S, 1d) ← **Run last:** production data import
 - Final regression testing (2d)
 - User acceptance testing (2d)
-- **Sprint Total:** ~20 days | **Risk:** Medium (has buffer capacity)
-- **⚠️ Slippage Cuts:** If schedule slips, cut TODO-052 (import handling) and TODO-041a (linting) first
+- **Sprint Total:** ~25 days | **Risk:** Medium-High (multiple items deferrable)
+- **⚠️ Slippage Cuts:** If schedule slips, cut TODO-052 (import), TODO-041a (linting), TODO-050 (docs) first
 
 ---
 
