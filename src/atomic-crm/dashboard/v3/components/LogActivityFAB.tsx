@@ -229,6 +229,8 @@ export function LogActivityFAB({ onRefresh }: LogActivityFABProps) {
           className={cn(
             // Size: 56px (h-14 w-14) - Spacious CTA per design tokens
             "fixed bottom-6 right-6 z-50 h-14 w-14",
+            // Hidden on mobile - MobileQuickActionBar handles mobile actions
+            "hidden lg:flex",
             // Shape: Circular FAB
             "rounded-full",
             // Elevation: High (floating element)
