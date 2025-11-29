@@ -328,10 +328,7 @@ export function PrincipalPipelineTable() {
                       </span>
                     </TooltipTrigger>
                     <TooltipContent side="top" className="max-w-xs">
-                      <p className="font-medium">Opportunities with activity in the last 7 days</p>
-                      <p className="mt-1 text-muted-foreground/80">
-                        Counts opportunities where at least one activity (call, email, meeting, etc.) was logged this week.
-                      </p>
+                      <p>Activities logged Mon–Sun of current week</p>
                     </TooltipContent>
                   </Tooltip>
                   {renderSortIcon("activeThisWeek")}

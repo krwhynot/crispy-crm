@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-042 Daily Email Digest completed - pg_cron + Edge Function)
+**Last Updated:** 2025-11-29 (TODO-033 Note StatusSelector verified clean - no code existed)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -1004,13 +1004,20 @@ Important features that can be worked in parallel.
 
 #### TODO-033: Remove Note StatusSelector
 - **PRD Reference:** MVP #63
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Remove StatusSelector from notes
 - **Tasks:**
-  - [ ] Remove StatusSelector component from note forms
-  - [ ] Remove `showStatus` prop
-- **Acceptance Criteria:** Notes have no status field
+  - [x] Remove StatusSelector component from note forms
+  - [x] Remove `showStatus` prop
+- **Implementation Notes:**
+  - `NoteInputs.tsx` verified clean - contains only `text` (TextInput) and `date` (datetime-local) fields
+  - `Note.tsx` has no `showStatus` prop in its interface
+  - No `StatusSelector` component exists in the notes module
+  - Codebase-wide grep confirms no StatusSelector/showStatus references in notes
+  - Notes are purely text + timestamp, matching PRD design
+- **Acceptance Criteria:** Notes have no status field ✅
 
 #### TODO-034: Note RLS Manager/Admin Override
 - **PRD Reference:** Section 3.3, MVP #64
@@ -1035,19 +1042,26 @@ Important features that can be worked in parallel.
 
 #### TODO-035: Mobile Quick Actions
 - **PRD Reference:** Section 9.3, MVP #29
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Implement 6-button mobile quick action bar
 - **Tasks:**
-  - [ ] Create mobile quick action component using shadcn/ui `Button` with 44px touch targets (WCAG)
-  - [ ] Buttons: Log Check-In, Log Sample Drop, Log Call, Log Meeting/Visit, Quick Note, Complete Task
-  - [ ] Optimize for one-tap access
-  - [ ] Position at bottom of mobile screen
+  - [x] Create mobile quick action component using shadcn/ui `Button` with 44px touch targets (WCAG)
+  - [x] Buttons: Log Check-In, Log Sample Drop, Log Call, Log Meeting/Visit, Quick Note, Complete Task
+  - [x] Optimize for one-tap access
+  - [x] Position at bottom of mobile screen
+- **Implementation:**
+  - `MobileQuickActionBar.tsx` - 6-button bottom bar (56x56px touch targets)
+  - `TaskCompleteSheet.tsx` - Task completion sheet for "Complete Task" action
+  - `QuickLogForm.tsx` - Activity logging form with schema-derived defaults
+  - `LogActivityFAB.tsx` - Desktop FAB (hidden on mobile via `hidden lg:flex`)
+  - 36 unit tests passing for both components
 - **Constitution Compliance:**
-  - P7: Use shadcn/ui `Button` components with 44px minimum touch targets
-  - P5: Each quick action form uses respective `schema.partial().parse({})` for defaults
-  - P8: Button icon colors use semantic tokens (`--primary`, `--muted-foreground`)
-- **Acceptance Criteria:** 6 quick action buttons visible on mobile; each opens appropriate form
+  - P7: Use shadcn/ui `Button` components with 44px minimum touch targets ✅
+  - P5: Each quick action form uses respective `schema.partial().parse({})` for defaults ✅
+  - P8: Button icon colors use semantic tokens (`--primary`, `--muted-foreground`) ✅
+- **Acceptance Criteria:** 6 quick action buttons visible on mobile; each opens appropriate form ✅
 
 ### Notifications & Automation
 
