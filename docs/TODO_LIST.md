@@ -1287,13 +1287,14 @@ Polish items and technical cleanup.
 
 #### TODO-039: Expand Organization Segments
 - **PRD Reference:** Appendix D.3, MVP #40
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟢 P3
-- **Description:** Replace generic segments with 8 Playbook categories
+- **Completed:** 2025-11-29
+- **Description:** Replace generic segments with 9 Playbook categories
 - **Tasks:**
-  - [ ] Update segments table with:
-    - Major Broadline Distributor
-    - Specialty/Regional Distributor
+  - [x] Update segments table with:
+    - Major Broadline
+    - Specialty/Regional
     - Management Company
     - GPO
     - University
@@ -1301,9 +1302,17 @@ Polish items and technical cleanup.
     - Chain Restaurant
     - Hotel & Aviation
     - Unknown
-  - [ ] Migrate existing data
-  - [ ] Update segment dropdowns
-- **Acceptance Criteria:** 9 strategic segment categories available
+  - [x] Migrate existing data
+  - [x] Update segment dropdowns
+- **Implementation Notes:**
+  - Migration `20251129225719_replace_segments_with_playbook_categories.sql` transforms 28 dynamic segments → 9 fixed categories
+  - UUID scheme changed from `11111111-...` to `22222222-...` prefix
+  - `SegmentsService` simplified to client-side lookup (no RPC, no dynamic creation)
+  - `SegmentComboboxInput` simplified to `SelectInput` with `PLAYBOOK_CATEGORY_CHOICES`
+  - All seed files updated with new segment_id mappings
+  - Dropped `get_or_create_segment` RPC function
+  - 20/20 segment service tests passing, 35/35 organization validation tests passing
+- **Acceptance Criteria:** 9 strategic segment categories available ✅
 
 ### Technical Cleanup
 
