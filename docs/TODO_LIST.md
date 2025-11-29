@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-28 (TODO-003 completed - contact-customer org mismatch warning)
+**Last Updated:** 2025-11-29 (TODO-011a completed - sample_status enum and conditional validation)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -429,25 +429,36 @@ Essential features with no critical dependencies.
 
 #### TODO-011: Sample Tracking Workflow (PARENT - See subtasks below)
 - **PRD Reference:** Section 4.4, MVP #4
-- **Status:** ⬜ TODO
+- **Status:** 🔧 In Progress (1/4 subtasks complete)
 - **Priority:** 🟠 P1
 - **Depends On:** TODO-010
 - **Description:** Implement full sample status workflow UI
-- **Subtasks:** TODO-011a, TODO-011b, TODO-011c, TODO-011d
+- **Subtasks:** TODO-011a ✅, TODO-011b, TODO-011c, TODO-011d
 - **Acceptance Criteria:** Can log sample with status; can update status through workflow; reminders work
 
 #### TODO-011a: Sample Status Schema & Validation
 - **PRD Reference:** Section 4.4, MVP #4
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟠 P1
 - **Depends On:** TODO-010
 - **Effort:** S (1 day)
+- **Completed:** 2025-11-29
 - **Description:** Add sample_status enum and conditional validation to activities schema
 - **Tasks:**
-  - [ ] Add `sample_status` enum to activities schema: sent, received, feedback_pending, feedback_received
-  - [ ] Create conditional validation: if type=sample, sample_status required
-  - [ ] Add database migration for enum type
-- **Acceptance Criteria:** Zod schema validates sample_status when activity type is 'sample'; DB migration applied
+  - [x] Add `sample_status` enum to activities schema: sent, received, feedback_pending, feedback_received
+  - [x] Create conditional validation: if type=sample, sample_status required
+  - [x] Add database migration for enum type
+- **Implementation Notes:**
+  - Migration file: `supabase/migrations/20251129040323_add_sample_status_enum.sql`
+  - Creates `sample_status` PostgreSQL enum type with 4 values
+  - Adds `sample` and `note` to `interaction_type` enum
+  - Adds `sample_status` column to activities table with CHECK constraint
+  - Zod validation: `sampleStatusSchema` in `src/atomic-crm/validation/activities.ts`
+  - Conditional validation via `superRefine` in `activitiesSchema`, `engagementsSchema`, `interactionsSchema`
+  - Dashboard schema: `activityLogSchema` in `src/atomic-crm/dashboard/v3/validation/activitySchema.ts`
+  - Exported types: `SampleStatus`, `InteractionType`
+  - UI options: `SAMPLE_STATUS_OPTIONS` array for dropdown
+- **Acceptance Criteria:** Zod schema validates sample_status when activity type is 'sample'; DB migration applied ✅
 - **Testability:** Unit test: schema rejects sample activity without status; accepts with status
 
 #### TODO-011b: Sample Form Fields UI
@@ -505,20 +516,28 @@ Essential features with no critical dependencies.
 
 #### TODO-012: Per-Stage Stale Thresholds
 - **PRD Reference:** Section 6.3, MVP #25
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟠 P1
+- **Completed:** 2025-11-28
 - **Description:** Implement variable stale thresholds per stage
 - **Tasks:**
-  - [ ] Create `STAGE_STALE_THRESHOLDS` constant map:
+  - [x] Create `STAGE_STALE_THRESHOLDS` constant map:
     - `new_lead`: 7 days
     - `initial_outreach`: 14 days
     - `sample_visit_offered`: 14 days
     - `feedback_logged`: 21 days
     - `demo_scheduled`: 14 days
-  - [ ] Update database view/query to calculate staleness per stage
-  - [ ] Update `momentum` field calculation
-  - [ ] Exclude `closed_won` and `closed_lost` from staleness
-- **Acceptance Criteria:** Stale detection uses stage-specific thresholds; closed deals never show as stale
+  - [x] Update database view/query to calculate staleness per stage
+  - [x] Update `momentum` field calculation
+  - [x] Exclude `closed_won` and `closed_lost` from staleness
+- **Implementation Notes:**
+  - Utility file: `src/atomic-crm/utils/stalenessCalculation.ts`
+  - Exports: `STAGE_STALE_THRESHOLDS`, `ACTIVE_PIPELINE_STAGES`, `CLOSED_STAGES`
+  - Functions: `isOpportunityStale()`, `getStaleThreshold()`, `countStaleOpportunities()`, `filterStaleOpportunities()`
+  - Zod schema: `StageStaleThresholdsSchema` for runtime validation
+  - 35 unit tests in `src/atomic-crm/utils/__tests__/stalenessCalculation.test.ts`
+  - Integrated into `useKPIMetrics.ts` for dashboard stale deals KPI
+- **Acceptance Criteria:** Stale detection uses stage-specific thresholds; closed deals never show as stale ✅
 
 #### TODO-013: Visual Decay Indicators
 - **PRD Reference:** Section 6.3, MVP #26
@@ -1305,10 +1324,11 @@ Polish items and technical cleanup.
 - **Other remaining items:** 5 (TODO-052 Import Handling, etc.)
 - **Constitution Compliance Audits:** 1 (TODO-055 DataProvider Audit)
 
-### 🔧 Partial/In Progress: 1 item
+### 🔧 Partial/In Progress: 2 items
+- **TODO-011:** Sample Tracking Workflow (1/4 subtasks complete - TODO-011a ✅)
 - **TODO-052:** Contact Import Organization Handling (4/5 tasks complete)
 
-### ✅ Done: 18 items (completed 2025-11-28/29)
+### ✅ Done: 19 items (completed 2025-11-28/29)
 - **TODO-001:** Pipeline Stage Migration (3/3 subtasks ✅)
   - TODO-001a: Pipeline DB Migration
   - TODO-001b: Pipeline Constants & Schema Update
@@ -1325,6 +1345,7 @@ Polish items and technical cleanup.
 - **TODO-008:** Recent Activity Feed Component (ActivityFeedPanel + useTeamActivities hook)
 - **TODO-009:** My Performance Widget (useMyPerformance hook + MyPerformanceWidget component)
 - **TODO-010:** QuickLogForm - All 13 Activity Types (grouped dropdown, P5/P8 compliant)
+- **TODO-011a:** Sample Status Schema & Validation (sampleStatusSchema, superRefine conditional validation)
 - **TODO-044:** RBAC Foundation (useUserRole hook)
 - **TODO-045:** Pre-Sprint 1 Cleanup - Baseline verification complete
 - **TODO-053:** Semantic Color Validation in CI
@@ -1333,7 +1354,7 @@ Polish items and technical cleanup.
 ### Decomposed Items Breakdown
 - **TODO-001** → 3 subtasks (001a ✅, 001b ✅, 001c ✅) - Pipeline Migration **COMPLETE**
 - **TODO-004** → 3 subtasks (004a ✅, 004b ✅, 004c ✅) - Win/Loss Reasons **COMPLETE**
-- **TODO-011** → 4 subtasks (011a, 011b, 011c, 011d) - Sample Tracking
+- **TODO-011** → 4 subtasks (011a ✅, 011b, 011c, 011d) - Sample Tracking (1/4 complete)
 - **TODO-022** → 2 subtasks (022a, 022b) - Duplicate Prevention
 - **TODO-042** → 4 subtasks (042a, 042b, 042c, 042d) - Email Digest
 - **TODO-043** → 4 subtasks (043a, 043b, 043c, 043d) - Authorization
@@ -1364,9 +1385,9 @@ TODO-044 (RBAC Foundation)
     ├── TODO-019 (Bulk Owner Reassignment)
     └── TODO-034 (Note RLS Manager Override)
 
-TODO-010 (QuickLogForm 13 Types)
-    └── TODO-011 (Sample Tracking Workflow)
-        └── TODO-011a (Schema & Validation)
+TODO-010 (QuickLogForm 13 Types) ✅
+    └── TODO-011 (Sample Tracking Workflow) 🔧
+        └── TODO-011a (Schema & Validation) ✅
             └── TODO-011b (Form Fields UI)
                 └── TODO-011c (Workflow UI)
                     └── TODO-011d (Views & Filters)
