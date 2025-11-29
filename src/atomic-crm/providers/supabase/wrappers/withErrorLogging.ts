@@ -20,7 +20,6 @@ import type {
   Identifier,
   FilterPayload,
   RaRecord,
-  DeleteParams,
 } from "ra-core";
 
 /**
@@ -224,12 +223,10 @@ export function withErrorLogging<T extends DataProvider>(provider: T): T {
         params: DataProviderLogParams & { previousData?: RaRecord }
       ) => {
         try {
-          return await (original as Function).call(provider, resource, params);
+          return await (original as (...args: unknown[]) => Promise<unknown>).call(provider, resource, params);
         } catch (error: unknown) {
           // Log the error with context
           logError(method, resource, params, error);
-
-          const extendedError = error as ExtendedError | undefined;
 
           // Handle idempotent delete - if resource doesn't exist, treat as success
           // This happens with React Admin's undoable mode where UI updates before API call

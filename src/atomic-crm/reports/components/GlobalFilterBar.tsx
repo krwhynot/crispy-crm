@@ -82,11 +82,12 @@ export function GlobalFilterBar() {
         start = startOfMonth(now);
         end = endOfDay(now);
         break;
-      case "lastMonth":
+      case "lastMonth": {
         const lastMonth = subMonths(now, 1);
         start = startOfMonth(lastMonth);
         end = endOfMonth(lastMonth);
         break;
+      }
       default:
         start = startOfDay(subDays(now, 29));
         end = endOfDay(now);

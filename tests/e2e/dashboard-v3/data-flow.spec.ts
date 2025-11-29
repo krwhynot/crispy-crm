@@ -84,7 +84,7 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
   // =============================================================================
 
   test.describe("1. Authentication Data Flow", () => {
-    test("dashboard loads with authenticated user context", async ({ authenticatedPage }) => {
+    test("dashboard loads with authenticated user context", async ({}) => {
       await dashboard.navigate();
 
       // Dashboard header should be visible (proves auth worked)
@@ -348,9 +348,8 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
         return;
       }
 
-      // Get first task subject
+      // Get first task
       const firstTask = taskItems.first();
-      const taskSubject = await firstTask.locator(".font-medium").first().textContent();
 
       // Track API call
       let patchCalled = false;
@@ -584,7 +583,7 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       expect(consoleMonitor.hasRLSErrors()).toBe(false);
     });
 
-    test("form validation requires notes", async ({ authenticatedPage }) => {
+    test("form validation requires notes", async ({}) => {
       await dashboard.openActivityForm();
 
       // Try to submit without filling notes

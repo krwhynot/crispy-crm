@@ -10,7 +10,6 @@ import {
   levenshteinDistance,
   findSimilarOpportunities,
   hasSimilarOpportunity,
-  type SimilarOpportunity,
 } from "../levenshtein";
 
 describe("levenshteinDistance", () => {

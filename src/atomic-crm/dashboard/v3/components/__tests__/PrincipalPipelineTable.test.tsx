@@ -3,7 +3,6 @@ import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { PrincipalPipelineTable } from "../PrincipalPipelineTable";
-import * as usePrincipalPipelineModule from "../../hooks/usePrincipalPipeline";
 
 const mockPipelineData = [
   {

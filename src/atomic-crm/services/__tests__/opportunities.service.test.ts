@@ -8,7 +8,7 @@
  * 4. Error handling and logging
  */
 
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, vi, beforeEach } from "vitest";
 import { OpportunitiesService } from "../opportunities.service";
 import type { DataProvider } from "ra-core";
 import type { Opportunity } from "../../types";

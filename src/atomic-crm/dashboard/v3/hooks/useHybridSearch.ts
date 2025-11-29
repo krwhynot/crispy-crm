@@ -98,9 +98,6 @@ export function useHybridSearch<T extends { id: number | string }>({
     return baseFilter;
   }, [additionalFilter, shouldSearch, debouncedSearchTerm]);
 
-  // Stringify filter for stable dependency
-  const filterKey = JSON.stringify(filter);
-
   // Initial data query (cached, larger page)
   const {
     data: initialData,

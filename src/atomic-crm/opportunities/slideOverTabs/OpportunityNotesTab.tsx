@@ -8,7 +8,7 @@ interface OpportunityNotesTabProps {
   mode: "view" | "edit";
   onModeToggle?: () => void;
   /** Whether this tab is currently active - available for conditional data fetching */
-  isActiveTab: boolean;
+  isActiveTab?: boolean;
 }
 
 /**
@@ -22,7 +22,6 @@ interface OpportunityNotesTabProps {
 export function OpportunityNotesTab({
   record,
   mode,
-  isActiveTab,
 }: OpportunityNotesTabProps) {
   return (
     <RecordContextProvider value={record}>

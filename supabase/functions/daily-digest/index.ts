@@ -39,7 +39,7 @@ interface DigestResult {
  * Generates an opt-out URL for the given sales ID
  * Uses the generate_digest_opt_out_token RPC function
  */
-async function generateOptOutUrl(salesId: number): Promise<string | null> {
+async function _generateOptOutUrl(salesId: number): Promise<string | null> {
   try {
     const { data: token, error } = await supabaseAdmin.rpc(
       "generate_digest_opt_out_token",

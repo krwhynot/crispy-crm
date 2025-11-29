@@ -13,7 +13,7 @@
  */
 
 import type { RaRecord } from "ra-core";
-import type { Transform, TransformFn } from "./createResourceCallbacks";
+import type { Transform } from "./createResourceCallbacks";
 
 /**
  * JSONB array fields that need normalization across multiple resources

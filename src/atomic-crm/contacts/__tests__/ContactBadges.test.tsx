@@ -7,6 +7,8 @@
  * @see ContactBadges.tsx
  */
 
+/* eslint-disable jsx-a11y/aria-role -- RoleBadge uses 'role' as a component prop name, not HTML aria-role */
+
 import { describe, test, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import {

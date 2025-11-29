@@ -37,7 +37,6 @@ export default defineConfig(({ mode }) => ({
       "@radix-ui/react-radio-group",
 
       // Heavy libraries
-      "@nivo/bar",
       "@tanstack/react-query",
       "@hello-pangea/dnd",
 
@@ -189,9 +188,6 @@ export default defineConfig(({ mode }) => ({
             "@radix-ui/react-progress",
             "@radix-ui/react-radio-group",
           ],
-
-          // Charts and visualization - heavy but not always needed
-          "charts-nivo": ["@nivo/bar"],
 
           // Form handling libraries
           forms: ["react-hook-form", "@hookform/resolvers", "zod"],

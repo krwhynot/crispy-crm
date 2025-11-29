@@ -54,7 +54,7 @@ const mockPreviewData: PreviewData = {
   contactsWithoutContactInfo: [],
 };
 
-const mockAccumulatedResult: AccumulatedResult = {
+const _mockAccumulatedResult: AccumulatedResult = {
   totalProcessed: 5,
   successCount: 4,
   skippedCount: 0,

@@ -102,7 +102,7 @@ export function initSentry(): void {
     maxBreadcrumbs: 50,
 
     // Before send hook for additional filtering
-    beforeSend(event, hint) {
+    beforeSend(event, _hint) {
       // Skip errors in development unless explicitly enabled
       if (IS_DEVELOPMENT && !import.meta.env.VITE_SENTRY_DEV_ENABLED) {
         console.info("[Sentry] Would send event:", event.exception?.values?.[0]?.value);

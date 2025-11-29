@@ -212,7 +212,7 @@ export const transformOrFilter = (filter: FilterPayload): FilterPayload => {
     }
   }
 
-  const { $or, ...rest } = filter;
+  const { $or: _, ...rest } = filter;
   return { ...rest, "@or": orObject };
 };
 

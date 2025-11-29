@@ -1,6 +1,6 @@
-import type { CreateResult, DataProvider, Identifier } from "ra-core";
+import type { DataProvider, Identifier } from "ra-core";
 import type { Opportunity } from "../types";
-import { diffProducts, type Product, type ProductDiff } from "../opportunities/utils/diffProducts";
+import { diffProducts, type Product } from "../opportunities/utils/diffProducts";
 import { supabase } from "../providers/supabase/supabase";
 
 /**
