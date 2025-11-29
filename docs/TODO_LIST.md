@@ -191,20 +191,73 @@ Essential features with no critical dependencies.
 - **Acceptance Criteria:** All 13 types available in quick logger; grouped for easy selection
 - **Enables:** Sample tracking (MVP #4)
 
-#### TODO-011: Sample Tracking Workflow
+#### TODO-011: Sample Tracking Workflow (PARENT - See subtasks below)
 - **PRD Reference:** Section 4.4, MVP #4
 - **Status:** ⬜ TODO
 - **Priority:** 🟠 P1
 - **Depends On:** TODO-010
 - **Description:** Implement full sample status workflow UI
+- **Subtasks:** TODO-011a, TODO-011b, TODO-011c, TODO-011d
+- **Acceptance Criteria:** Can log sample with status; can update status through workflow; reminders work
+
+#### TODO-011a: Sample Status Schema & Validation
+- **PRD Reference:** Section 4.4, MVP #4
+- **Status:** ⬜ TODO
+- **Priority:** 🟠 P1
+- **Depends On:** TODO-010
+- **Effort:** S (1 day)
+- **Description:** Add sample_status enum and conditional validation to activities schema
 - **Tasks:**
   - [ ] Add `sample_status` enum to activities schema: sent, received, feedback_pending, feedback_received
   - [ ] Create conditional validation: if type=sample, sample_status required
-  - [ ] Build sample-specific form fields (product sampled, recipient, follow-up date)
+  - [ ] Add database migration for enum type
+- **Acceptance Criteria:** Zod schema validates sample_status when activity type is 'sample'; DB migration applied
+- **Testability:** Unit test: schema rejects sample activity without status; accepts with status
+
+#### TODO-011b: Sample Form Fields UI
+- **PRD Reference:** Section 4.4, MVP #4
+- **Status:** ⬜ TODO
+- **Priority:** 🟠 P1
+- **Depends On:** TODO-011a
+- **Effort:** M (2 days)
+- **Description:** Build sample-specific form fields that appear conditionally
+- **Tasks:**
+  - [ ] Add conditional form section that appears when type='sample'
+  - [ ] Build sample-specific fields: product sampled (dropdown), recipient (text), follow-up date (date picker)
+  - [ ] Wire fields to Zod schema and form state
+  - [ ] Add field-level validation error messages
+- **Acceptance Criteria:** Sample form fields appear/hide based on activity type selection
+- **Testability:** E2E: Select sample type → fields appear; select other type → fields hidden
+
+#### TODO-011c: Sample Status Workflow UI
+- **PRD Reference:** Section 4.4, MVP #4
+- **Status:** ⬜ TODO
+- **Priority:** 🟠 P1
+- **Depends On:** TODO-011b
+- **Effort:** M (2 days)
+- **Description:** Implement status state machine with UI progression
+- **Tasks:**
   - [ ] Implement status workflow UI: Sent → Received → Feedback Given
-  - [ ] Add feedback options: Positive, Negative, Pending, No Response
-  - [ ] Create sample tracking views/filters
-- **Acceptance Criteria:** Can log sample with status; can update status through workflow; reminders work
+  - [ ] Add feedback options dropdown: Positive, Negative, Pending, No Response
+  - [ ] Create status update action (PATCH to activities)
+  - [ ] Add visual status indicators (badges with semantic colors)
+- **Acceptance Criteria:** Can progress sample through status workflow; status changes persist
+- **Testability:** E2E: Create sample → update status → verify badge color and text changes
+
+#### TODO-011d: Sample Tracking Views & Filters
+- **PRD Reference:** Section 4.4, MVP #4
+- **Status:** ⬜ TODO
+- **Priority:** 🟠 P1
+- **Depends On:** TODO-011c
+- **Effort:** S (1 day)
+- **Description:** Create sample-specific list views and filters
+- **Tasks:**
+  - [ ] Add "Samples" filter option to activities list
+  - [ ] Create sample status filter dropdown
+  - [ ] Add "Pending Feedback" quick filter
+  - [ ] Ensure sample tracking appears on opportunity timeline
+- **Acceptance Criteria:** Can filter activities to show only samples; can filter by sample status
+- **Testability:** E2E: Apply sample filter → only sample activities shown
 
 ### Stale Deal Detection
 

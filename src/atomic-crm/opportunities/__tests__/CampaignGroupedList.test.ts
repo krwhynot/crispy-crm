@@ -4,9 +4,26 @@ import type { Opportunity } from "../../types";
 /**
  * CampaignGroupedList Component Tests
  *
- * Tests the business logic for grouping opportunities by campaign and customer.
+ * Tests the business logic for grouping opportunities by campaign → principal → customer.
  * Full UI rendering tests are deferred to E2E (nested accordions require complex setup).
+ *
+ * Hierarchy: Campaign → Principal → Customer → Opportunities
  */
+
+/**
+ * Type for 3-level nested grouping structure
+ * Campaign → Principal → Customer → Opportunities
+ */
+type CampaignGroupedData = Record<
+  string, // Campaign name
+  Record<
+    string, // Principal organization name
+    Record<
+      string, // Customer organization name
+      Opportunity[]
+    >
+  >
+>;
 
 describe("CampaignGroupedList - Grouping Logic", () => {
   const mockOpportunities: Opportunity[] = [
@@ -84,21 +101,38 @@ describe("CampaignGroupedList - Grouping Logic", () => {
     },
   ];
 
-  describe("Campaign → Customer → Opportunities Grouping", () => {
-    it("should group opportunities by campaign", () => {
-      const campaignGroups: Record<string, Record<string, Opportunity[]>> = {};
+  /**
+   * Helper function that mirrors the component's grouping logic
+   */
+  function groupOpportunities(opportunities: Opportunity[]): CampaignGroupedData {
+    const campaignGroups: CampaignGroupedData = {};
 
-      mockOpportunities.forEach((opp) => {
-        if (!opp.campaign) return;
-        if (!campaignGroups[opp.campaign]) {
-          campaignGroups[opp.campaign] = {};
-        }
-        const customerKey = opp.customer_organization_name || "Unknown Customer";
-        if (!campaignGroups[opp.campaign][customerKey]) {
-          campaignGroups[opp.campaign][customerKey] = [];
-        }
-        campaignGroups[opp.campaign][customerKey].push(opp);
-      });
+    opportunities.forEach((opp) => {
+      if (!opp.campaign) return;
+
+      if (!campaignGroups[opp.campaign]) {
+        campaignGroups[opp.campaign] = {};
+      }
+
+      const principalKey = opp.principal_organization_name || "Unknown Principal";
+      if (!campaignGroups[opp.campaign][principalKey]) {
+        campaignGroups[opp.campaign][principalKey] = {};
+      }
+
+      const customerKey = opp.customer_organization_name || "Unknown Customer";
+      if (!campaignGroups[opp.campaign][principalKey][customerKey]) {
+        campaignGroups[opp.campaign][principalKey][customerKey] = [];
+      }
+
+      campaignGroups[opp.campaign][principalKey][customerKey].push(opp);
+    });
+
+    return campaignGroups;
+  }
+
+  describe("Campaign → Principal → Customer → Opportunities Grouping", () => {
+    it("should group opportunities by campaign", () => {
+      const campaignGroups = groupOpportunities(mockOpportunities);
 
       const campaignNames = Object.keys(campaignGroups);
       expect(campaignNames).toHaveLength(2);
@@ -106,71 +140,69 @@ describe("CampaignGroupedList - Grouping Logic", () => {
       expect(campaignNames).toContain("Summer Natural Products Expo 2025");
     });
 
-    it("should group opportunities by customer within campaign", () => {
-      const campaignGroups: Record<string, Record<string, Opportunity[]>> = {};
-
-      mockOpportunities.forEach((opp) => {
-        if (!opp.campaign) return;
-        if (!campaignGroups[opp.campaign]) {
-          campaignGroups[opp.campaign] = {};
-        }
-        const customerKey = opp.customer_organization_name || "Unknown Customer";
-        if (!campaignGroups[opp.campaign][customerKey]) {
-          campaignGroups[opp.campaign][customerKey] = [];
-        }
-        campaignGroups[opp.campaign][customerKey].push(opp);
-      });
+    it("should group opportunities by principal within campaign", () => {
+      const campaignGroups = groupOpportunities(mockOpportunities);
 
       const winterCampaign = campaignGroups["Winter Fancy Food Show 2025"];
-      const customerNames = Object.keys(winterCampaign);
+      const principalNames = Object.keys(winterCampaign);
 
-      expect(customerNames).toHaveLength(2);
+      expect(principalNames).toHaveLength(3);
+      expect(principalNames).toContain("Ocean Hugger");
+      expect(principalNames).toContain("Better Balance");
+      expect(principalNames).toContain("Kaufholds");
+    });
+
+    it("should group opportunities by customer within principal", () => {
+      const campaignGroups = groupOpportunities(mockOpportunities);
+
+      const winterCampaign = campaignGroups["Winter Fancy Food Show 2025"];
+      const oceanHugger = winterCampaign["Ocean Hugger"];
+      const customerNames = Object.keys(oceanHugger);
+
+      expect(customerNames).toHaveLength(1);
       expect(customerNames).toContain("Nobu Miami");
-      expect(customerNames).toContain("The French Laundry");
     });
 
     it("should correctly count opportunities per customer", () => {
-      const campaignGroups: Record<string, Record<string, Opportunity[]>> = {};
-
-      mockOpportunities.forEach((opp) => {
-        if (!opp.campaign) return;
-        if (!campaignGroups[opp.campaign]) {
-          campaignGroups[opp.campaign] = {};
-        }
-        const customerKey = opp.customer_organization_name || "Unknown Customer";
-        if (!campaignGroups[opp.campaign][customerKey]) {
-          campaignGroups[opp.campaign][customerKey] = [];
-        }
-        campaignGroups[opp.campaign][customerKey].push(opp);
-      });
+      const campaignGroups = groupOpportunities(mockOpportunities);
 
       const winterCampaign = campaignGroups["Winter Fancy Food Show 2025"];
+      const oceanHugger = winterCampaign["Ocean Hugger"];
 
-      expect(winterCampaign["Nobu Miami"]).toHaveLength(2);
-      expect(winterCampaign["The French Laundry"]).toHaveLength(1);
+      expect(oceanHugger["Nobu Miami"]).toHaveLength(1);
+    });
+
+    it("should calculate total opportunities per principal", () => {
+      const campaignGroups = groupOpportunities(mockOpportunities);
+
+      const winterCampaign = campaignGroups["Winter Fancy Food Show 2025"];
+      const kaufholds = winterCampaign["Kaufholds"];
+
+      const customerNames = Object.keys(kaufholds);
+      const totalOpps = customerNames.reduce(
+        (sum, customer) => sum + kaufholds[customer].length,
+        0
+      );
+
+      expect(totalOpps).toBe(1);
     });
 
     it("should calculate total opportunities per campaign", () => {
-      const campaignGroups: Record<string, Record<string, Opportunity[]>> = {};
-
-      mockOpportunities.forEach((opp) => {
-        if (!opp.campaign) return;
-        if (!campaignGroups[opp.campaign]) {
-          campaignGroups[opp.campaign] = {};
-        }
-        const customerKey = opp.customer_organization_name || "Unknown Customer";
-        if (!campaignGroups[opp.campaign][customerKey]) {
-          campaignGroups[opp.campaign][customerKey] = [];
-        }
-        campaignGroups[opp.campaign][customerKey].push(opp);
-      });
+      const campaignGroups = groupOpportunities(mockOpportunities);
 
       const winterCampaign = campaignGroups["Winter Fancy Food Show 2025"];
-      const customerNames = Object.keys(winterCampaign);
-      const totalOpportunities = customerNames.reduce(
-        (sum, customer) => sum + winterCampaign[customer].length,
-        0
-      );
+      const principalNames = Object.keys(winterCampaign);
+
+      const totalOpportunities = principalNames.reduce((sum, principal) => {
+        const customerGroups = winterCampaign[principal];
+        return (
+          sum +
+          Object.values(customerGroups).reduce(
+            (customerSum, opps) => customerSum + opps.length,
+            0
+          )
+        );
+      }, 0);
 
       expect(totalOpportunities).toBe(3);
     });
@@ -185,6 +217,7 @@ describe("CampaignGroupedList - Grouping Logic", () => {
           name: "No Campaign Opp",
           campaign: undefined,
           customer_organization_name: "Test Customer",
+          principal_organization_name: "Test Principal",
           customer_organization_id: 4,
           stage: "new_lead",
           status: "active",
@@ -199,32 +232,21 @@ describe("CampaignGroupedList - Grouping Logic", () => {
         },
       ];
 
-      const campaignGroups: Record<string, Record<string, Opportunity[]>> = {};
-
-      opportunitiesWithNoCampaign.forEach((opp) => {
-        if (!opp.campaign) return;
-        if (!campaignGroups[opp.campaign]) {
-          campaignGroups[opp.campaign] = {};
-        }
-        const customerKey = opp.customer_organization_name || "Unknown Customer";
-        if (!campaignGroups[opp.campaign][customerKey]) {
-          campaignGroups[opp.campaign][customerKey] = [];
-        }
-        campaignGroups[opp.campaign][customerKey].push(opp);
-      });
+      const campaignGroups = groupOpportunities(opportunitiesWithNoCampaign);
 
       // Should still have only 2 campaigns (the one without campaign should be skipped)
       const campaignNames = Object.keys(campaignGroups);
       expect(campaignNames).toHaveLength(2);
     });
 
-    it("should handle opportunities with missing customer organization name", () => {
-      const opportunitiesWithNoCustomer: Opportunity[] = [
+    it("should handle opportunities with missing principal organization name", () => {
+      const opportunitiesWithNoPrincipal: Opportunity[] = [
         {
           id: 6,
-          name: "No Customer Name",
+          name: "No Principal Name",
           campaign: "Test Campaign",
-          customer_organization_name: undefined,
+          customer_organization_name: "Test Customer",
+          principal_organization_name: undefined,
           customer_organization_id: 5,
           stage: "new_lead",
           status: "active",
@@ -239,41 +261,44 @@ describe("CampaignGroupedList - Grouping Logic", () => {
         },
       ];
 
-      const campaignGroups: Record<string, Record<string, Opportunity[]>> = {};
-
-      opportunitiesWithNoCustomer.forEach((opp) => {
-        if (!opp.campaign) return;
-        if (!campaignGroups[opp.campaign]) {
-          campaignGroups[opp.campaign] = {};
-        }
-        const customerKey = opp.customer_organization_name || "Unknown Customer";
-        if (!campaignGroups[opp.campaign][customerKey]) {
-          campaignGroups[opp.campaign][customerKey] = [];
-        }
-        campaignGroups[opp.campaign][customerKey].push(opp);
-      });
+      const campaignGroups = groupOpportunities(opportunitiesWithNoPrincipal);
 
       const testCampaign = campaignGroups["Test Campaign"];
-      expect(testCampaign["Unknown Customer"]).toBeDefined();
-      expect(testCampaign["Unknown Customer"]).toHaveLength(1);
+      expect(testCampaign["Unknown Principal"]).toBeDefined();
+      expect(testCampaign["Unknown Principal"]["Test Customer"]).toHaveLength(1);
+    });
+
+    it("should handle opportunities with missing customer organization name", () => {
+      const opportunitiesWithNoCustomer: Opportunity[] = [
+        {
+          id: 7,
+          name: "No Customer Name",
+          campaign: "Test Campaign",
+          customer_organization_name: undefined,
+          principal_organization_name: "Test Principal",
+          customer_organization_id: 6,
+          stage: "new_lead",
+          status: "active",
+          priority: "medium",
+          description: "",
+          estimated_close_date: "2025-12-31",
+          created_at: "2025-01-01",
+          updated_at: "2025-01-01",
+          contact_ids: [],
+          stage_manual: false,
+          status_manual: false,
+        },
+      ];
+
+      const campaignGroups = groupOpportunities(opportunitiesWithNoCustomer);
+
+      const testCampaign = campaignGroups["Test Campaign"];
+      expect(testCampaign["Test Principal"]["Unknown Customer"]).toBeDefined();
+      expect(testCampaign["Test Principal"]["Unknown Customer"]).toHaveLength(1);
     });
 
     it("should return empty object when no opportunities provided", () => {
-      const campaignGroups: Record<string, Record<string, Opportunity[]>> = {};
-
-      const emptyOpportunities: Opportunity[] = [];
-
-      emptyOpportunities.forEach((opp) => {
-        if (!opp.campaign) return;
-        if (!campaignGroups[opp.campaign]) {
-          campaignGroups[opp.campaign] = {};
-        }
-        const customerKey = opp.customer_organization_name || "Unknown Customer";
-        if (!campaignGroups[opp.campaign][customerKey]) {
-          campaignGroups[opp.campaign][customerKey] = [];
-        }
-        campaignGroups[opp.campaign][customerKey].push(opp);
-      });
+      const campaignGroups = groupOpportunities([]);
 
       expect(Object.keys(campaignGroups)).toHaveLength(0);
     });
@@ -281,19 +306,7 @@ describe("CampaignGroupedList - Grouping Logic", () => {
 
   describe("Sorting Behavior", () => {
     it("should sort campaign names alphabetically", () => {
-      const campaignGroups: Record<string, Record<string, Opportunity[]>> = {};
-
-      mockOpportunities.forEach((opp) => {
-        if (!opp.campaign) return;
-        if (!campaignGroups[opp.campaign]) {
-          campaignGroups[opp.campaign] = {};
-        }
-        const customerKey = opp.customer_organization_name || "Unknown Customer";
-        if (!campaignGroups[opp.campaign][customerKey]) {
-          campaignGroups[opp.campaign][customerKey] = [];
-        }
-        campaignGroups[opp.campaign][customerKey].push(opp);
-      });
+      const campaignGroups = groupOpportunities(mockOpportunities);
 
       const campaignNames = Object.keys(campaignGroups).sort();
 
@@ -301,26 +314,64 @@ describe("CampaignGroupedList - Grouping Logic", () => {
       expect(campaignNames[1]).toBe("Winter Fancy Food Show 2025");
     });
 
-    it("should sort customer names alphabetically within campaign", () => {
-      const campaignGroups: Record<string, Record<string, Opportunity[]>> = {};
-
-      mockOpportunities.forEach((opp) => {
-        if (!opp.campaign) return;
-        if (!campaignGroups[opp.campaign]) {
-          campaignGroups[opp.campaign] = {};
-        }
-        const customerKey = opp.customer_organization_name || "Unknown Customer";
-        if (!campaignGroups[opp.campaign][customerKey]) {
-          campaignGroups[opp.campaign][customerKey] = [];
-        }
-        campaignGroups[opp.campaign][customerKey].push(opp);
-      });
+    it("should sort principal names alphabetically within campaign", () => {
+      const campaignGroups = groupOpportunities(mockOpportunities);
 
       const winterCampaign = campaignGroups["Winter Fancy Food Show 2025"];
-      const customerNames = Object.keys(winterCampaign).sort();
+      const principalNames = Object.keys(winterCampaign).sort();
 
-      expect(customerNames[0]).toBe("Nobu Miami");
-      expect(customerNames[1]).toBe("The French Laundry");
+      expect(principalNames[0]).toBe("Better Balance");
+      expect(principalNames[1]).toBe("Kaufholds");
+      expect(principalNames[2]).toBe("Ocean Hugger");
+    });
+
+    it("should sort customer names alphabetically within principal", () => {
+      // Create test data with multiple customers per principal
+      const multiCustomerOpps: Opportunity[] = [
+        {
+          id: 10,
+          name: "Test Opp 1",
+          campaign: "Test Campaign",
+          customer_organization_name: "Zebra Restaurant",
+          principal_organization_name: "Test Principal",
+          customer_organization_id: 10,
+          stage: "new_lead",
+          status: "active",
+          priority: "medium",
+          description: "",
+          estimated_close_date: "2025-12-31",
+          created_at: "2025-01-01",
+          updated_at: "2025-01-01",
+          contact_ids: [],
+          stage_manual: false,
+          status_manual: false,
+        },
+        {
+          id: 11,
+          name: "Test Opp 2",
+          campaign: "Test Campaign",
+          customer_organization_name: "Alpha Bistro",
+          principal_organization_name: "Test Principal",
+          customer_organization_id: 11,
+          stage: "new_lead",
+          status: "active",
+          priority: "medium",
+          description: "",
+          estimated_close_date: "2025-12-31",
+          created_at: "2025-01-01",
+          updated_at: "2025-01-01",
+          contact_ids: [],
+          stage_manual: false,
+          status_manual: false,
+        },
+      ];
+
+      const campaignGroups = groupOpportunities(multiCustomerOpps);
+      const testPrincipal = campaignGroups["Test Campaign"]["Test Principal"];
+      const customerNames = Object.keys(testPrincipal).sort();
+
+      expect(customerNames[0]).toBe("Alpha Bistro");
+      expect(customerNames[1]).toBe("Zebra Restaurant");
     });
   });
 
@@ -337,6 +388,20 @@ describe("CampaignGroupedList - Grouping Logic", () => {
       const text = `${count} ${count === 1 ? "opportunity" : "opportunities"}`;
 
       expect(text).toBe("3 opportunities");
+    });
+
+    it("should use singular form for 1 principal", () => {
+      const count = 1;
+      const text = `${count} ${count === 1 ? "principal" : "principals"}`;
+
+      expect(text).toBe("1 principal");
+    });
+
+    it("should use plural form for multiple principals", () => {
+      const count = 3;
+      const text = `${count} ${count === 1 ? "principal" : "principals"}`;
+
+      expect(text).toBe("3 principals");
     });
 
     it("should use singular form for 1 customer", () => {
@@ -356,29 +421,71 @@ describe("CampaignGroupedList - Grouping Logic", () => {
 
   describe("Data Integrity", () => {
     it("should preserve all opportunity data in grouped structure", () => {
-      const campaignGroups: Record<string, Record<string, Opportunity[]>> = {};
-
-      mockOpportunities.forEach((opp) => {
-        if (!opp.campaign) return;
-        if (!campaignGroups[opp.campaign]) {
-          campaignGroups[opp.campaign] = {};
-        }
-        const customerKey = opp.customer_organization_name || "Unknown Customer";
-        if (!campaignGroups[opp.campaign][customerKey]) {
-          campaignGroups[opp.campaign][customerKey] = [];
-        }
-        campaignGroups[opp.campaign][customerKey].push(opp);
-      });
+      const campaignGroups = groupOpportunities(mockOpportunities);
 
       const winterCampaign = campaignGroups["Winter Fancy Food Show 2025"];
-      const nobuOpportunities = winterCampaign["Nobu Miami"];
+      const oceanHuggerOpportunities = winterCampaign["Ocean Hugger"]["Nobu Miami"];
 
       // Verify all fields are preserved
-      expect(nobuOpportunities[0].id).toBe(1);
-      expect(nobuOpportunities[0].name).toBe("Nobu Miami - Ocean Hugger - Q4 2025");
-      expect(nobuOpportunities[0].principal_organization_name).toBe("Ocean Hugger");
-      expect(nobuOpportunities[0].stage).toBe("new_lead");
-      expect(nobuOpportunities[0].priority).toBe("high");
+      expect(oceanHuggerOpportunities[0].id).toBe(1);
+      expect(oceanHuggerOpportunities[0].name).toBe("Nobu Miami - Ocean Hugger - Q4 2025");
+      expect(oceanHuggerOpportunities[0].principal_organization_name).toBe("Ocean Hugger");
+      expect(oceanHuggerOpportunities[0].customer_organization_name).toBe("Nobu Miami");
+      expect(oceanHuggerOpportunities[0].stage).toBe("new_lead");
+      expect(oceanHuggerOpportunities[0].priority).toBe("high");
+    });
+
+    it("should maintain separate groupings for same customer under different principals", () => {
+      // Create test data where same customer appears under different principals
+      const sameCustomerDiffPrincipals: Opportunity[] = [
+        {
+          id: 20,
+          name: "Same Customer - Principal A",
+          campaign: "Test Campaign",
+          customer_organization_name: "Shared Customer",
+          principal_organization_name: "Principal A",
+          customer_organization_id: 20,
+          stage: "new_lead",
+          status: "active",
+          priority: "medium",
+          description: "",
+          estimated_close_date: "2025-12-31",
+          created_at: "2025-01-01",
+          updated_at: "2025-01-01",
+          contact_ids: [],
+          stage_manual: false,
+          status_manual: false,
+        },
+        {
+          id: 21,
+          name: "Same Customer - Principal B",
+          campaign: "Test Campaign",
+          customer_organization_name: "Shared Customer",
+          principal_organization_name: "Principal B",
+          customer_organization_id: 20,
+          stage: "demo_scheduled",
+          status: "active",
+          priority: "high",
+          description: "",
+          estimated_close_date: "2025-12-31",
+          created_at: "2025-01-01",
+          updated_at: "2025-01-01",
+          contact_ids: [],
+          stage_manual: false,
+          status_manual: false,
+        },
+      ];
+
+      const campaignGroups = groupOpportunities(sameCustomerDiffPrincipals);
+      const testCampaign = campaignGroups["Test Campaign"];
+
+      // Same customer should appear under both principals
+      expect(testCampaign["Principal A"]["Shared Customer"]).toHaveLength(1);
+      expect(testCampaign["Principal B"]["Shared Customer"]).toHaveLength(1);
+
+      // Each should have its own opportunity data
+      expect(testCampaign["Principal A"]["Shared Customer"][0].id).toBe(20);
+      expect(testCampaign["Principal B"]["Shared Customer"][0].id).toBe(21);
     });
   });
 });
