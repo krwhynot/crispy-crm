@@ -1,9 +1,8 @@
-import { PackageIcon, Link2Icon, ShieldCheckIcon } from "lucide-react";
+import { PackageIcon, Link2Icon } from "lucide-react";
 import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
 import { ProductDetailsTab } from "./ProductDetailsTab";
 import { ProductRelationshipsTab } from "./ProductRelationshipsTab";
-import { ProductCertificationsTab } from "./ProductCertificationsTab";
 
 interface ProductSlideOverProps {
   recordId: number | null;
@@ -19,7 +18,6 @@ interface ProductSlideOverProps {
  * Features:
  * - Details tab: Core product fields (name, SKU, description, category, status, principal)
  * - Relationships tab: Related organizations and opportunities
- * - Certifications tab: Certifications, allergens, nutritional info
  * - View/Edit mode toggle
  * - URL synchronization
  * - ESC key to close
@@ -27,7 +25,7 @@ interface ProductSlideOverProps {
  * Design:
  * - 40vw width (480-720px)
  * - Slide-in from right
- * - Three tabs with icons
+ * - Two tabs with icons
  */
 export function ProductSlideOver({
   recordId,
@@ -49,12 +47,6 @@ export function ProductSlideOver({
       label: "Relationships",
       component: ProductRelationshipsTab,
       icon: Link2Icon,
-    },
-    {
-      key: "certifications",
-      label: "Certifications",
-      component: ProductCertificationsTab,
-      icon: ShieldCheckIcon,
     },
   ];
 

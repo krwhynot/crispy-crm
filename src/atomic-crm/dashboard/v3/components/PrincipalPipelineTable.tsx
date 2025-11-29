@@ -10,6 +10,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
@@ -316,7 +321,19 @@ export function PrincipalPipelineTable() {
                 aria-sort={getAriaSortValue("activeThisWeek")}
               >
                 <div className="flex items-center justify-center">
-                  This Week
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span className="border-b border-dotted border-muted-foreground/50">
+                        This Week
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs">
+                      <p className="font-medium">Opportunities with activity in the last 7 days</p>
+                      <p className="mt-1 text-muted-foreground/80">
+                        Counts opportunities where at least one activity (call, email, meeting, etc.) was logged this week.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
                   {renderSortIcon("activeThisWeek")}
                 </div>
               </TableHead>
@@ -326,7 +343,19 @@ export function PrincipalPipelineTable() {
                 aria-sort={getAriaSortValue("activeLastWeek")}
               >
                 <div className="flex items-center justify-center">
-                  Last Week
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span className="border-b border-dotted border-muted-foreground/50">
+                        Last Week
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs">
+                      <p className="font-medium">Opportunities with activity 8-14 days ago</p>
+                      <p className="mt-1 text-muted-foreground/80">
+                        Counts opportunities that had activity the previous week but may need follow-up now.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
                   {renderSortIcon("activeLastWeek")}
                 </div>
               </TableHead>
@@ -336,7 +365,25 @@ export function PrincipalPipelineTable() {
                 aria-sort={getAriaSortValue("momentum")}
               >
                 <div className="flex items-center">
-                  Momentum
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span className="border-b border-dotted border-muted-foreground/50">
+                        Momentum
+                      </span>
+                    </TooltipTrigger>
+                    <TooltipContent side="top" className="max-w-xs">
+                      <p className="font-medium">Pipeline engagement trend</p>
+                      <p className="mt-1 text-muted-foreground/80">
+                        Compares this week's activity to last week:
+                      </p>
+                      <ul className="mt-1 space-y-0.5 text-muted-foreground/80">
+                        <li>📈 <strong>Increasing</strong> – More activity this week</li>
+                        <li>➡️ <strong>Steady</strong> – Similar activity levels</li>
+                        <li>📉 <strong>Decreasing</strong> – Less activity this week</li>
+                        <li>⚠️ <strong>Stale</strong> – No recent activity (needs attention)</li>
+                      </ul>
+                    </TooltipContent>
+                  </Tooltip>
                   {renderSortIcon("momentum")}
                 </div>
               </TableHead>
