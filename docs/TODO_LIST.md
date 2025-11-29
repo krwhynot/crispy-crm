@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-031 completed - Reports Per-Stage Stale Thresholds)
+**Last Updated:** 2025-11-29 (TODO-025 completed - Task Type Enum Alignment)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -840,15 +840,22 @@ Important features that can be worked in parallel.
 
 #### TODO-025: Task Type Enum Alignment
 - **PRD Reference:** Appendix E, MVP #56
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Align task types with PRD specification
 - **Tasks:**
-  - [ ] Update `taskTypeSchema` to: Call, Email, Meeting, Follow-up, Demo, Proposal, Other
-  - [ ] Remove: None, Discovery, Administrative
-  - [ ] Update `defaultConfiguration.ts`
-  - [ ] Migrate existing tasks with deprecated types
-- **Acceptance Criteria:** Only PRD-specified task types available
+  - [x] Update `taskTypeSchema` to: Call, Email, Meeting, Follow-up, Demo, Proposal, Other
+  - [x] Remove: None, Discovery, Administrative
+  - [x] Update `defaultConfiguration.ts`
+  - [x] Migrate existing tasks with deprecated types
+- **Implementation Notes:**
+  - Migration file: `supabase/migrations/20251129044526_align_task_type_enum.sql`
+  - Data migration: None→Other, Discovery→Meeting, Administrative→Other
+  - Zod schema: `src/atomic-crm/validation/task.ts` (lines 16-24)
+  - Default config: `src/atomic-crm/root/defaultConfiguration.ts` (lines 56-64)
+  - Database enum verified via MCP: 7 PRD-aligned values in cloud
+- **Acceptance Criteria:** Only PRD-specified task types available ✅
 
 #### TODO-026: Task Organization Linking
 - **PRD Reference:** MVP #57
@@ -984,14 +991,22 @@ Important features that can be worked in parallel.
 
 #### TODO-034: Note RLS Manager/Admin Override
 - **PRD Reference:** Section 3.3, MVP #64
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Update RLS policies for Manager/Admin access
 - **Tasks:**
-  - [ ] Update RLS on contactNotes, opportunityNotes, organizationNotes
-  - [ ] Allow Manager/Admin UPDATE and DELETE
-  - [ ] Test with different user roles
-- **Acceptance Criteria:** Managers and Admins can edit/delete any notes
+  - [x] Update RLS on contactNotes, opportunityNotes, organizationNotes
+  - [x] Allow Manager/Admin UPDATE and DELETE
+  - [x] Test with different user roles
+  - [x] Fix search_path security warnings on helper functions
+- **Implementation Notes:**
+  - RLS policies were already correctly configured with `is_manager_or_admin() OR sales_id = current_sales_id()` pattern
+  - UPDATE policies: Allow owner OR manager/admin to modify
+  - DELETE policies: Allow owner OR manager/admin to delete (soft delete)
+  - Migration `fix_rls_helper_function_search_paths` applied to harden helper functions
+  - Functions fixed: `is_manager_or_admin()`, `current_sales_id()`, `is_admin()`, `is_manager()`, `is_rep()`, `user_role()`
+- **Acceptance Criteria:** Managers and Admins can edit/delete any notes ✅
 
 ### Mobile & Responsive
 

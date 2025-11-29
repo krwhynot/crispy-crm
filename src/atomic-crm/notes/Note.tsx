@@ -9,17 +9,13 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import { Avatar } from "../contacts/Avatar";
 import { RelativeDate } from "@/components/ui";
-import { Status } from "../shared/components/Status";
 import { SaleName } from "../sales/SaleName";
 import type { ContactNote, OpportunityNote, OrganizationNote } from "../types";
-import { NoteAttachments } from "./NoteAttachments";
 import { NoteInputs } from "./NoteInputs";
 
 export const Note = ({
-  showStatus,
   note,
 }: {
-  showStatus?: boolean;
   note: OpportunityNote | ContactNote | OrganizationNote;
   isLast: boolean;
 }) => {
@@ -103,8 +99,7 @@ export const Note = ({
           >
             <WithRecord render={(record) => <SaleName sale={record} />} />
           </ReferenceField>{" "}
-          added a note{" "}
-          {showStatus && note.status && <Status className="ml-2" status={note.status} />}
+          added a note
         </div>
         <span className={`${isHover ? "visible" : "invisible"}`}>
           <TooltipProvider>
@@ -149,7 +144,7 @@ export const Note = ({
       </div>
       {isEditing ? (
         <Form onSubmit={handleNoteUpdate} record={note}>
-          <NoteInputs showStatus={showStatus} />
+          <NoteInputs />
           <div className="flex justify-end mt-4 space-x-4">
             <Button
               variant="ghost"
@@ -177,8 +172,6 @@ export const Note = ({
               {paragraph}
             </p>
           ))}
-
-          {note.attachments && <NoteAttachments note={note} />}
         </div>
       )}
     </div>

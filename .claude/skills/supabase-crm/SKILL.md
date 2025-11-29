@@ -349,10 +349,23 @@ supabase db push
 **Cause:** WSL2 uses NAT networking which doesn't pass through IPv6 by default. Supabase direct DB connections require IPv6.
 
 **Solutions:**
-1. **Use pooler URL explicitly** (recommended for IPv4-only networks):
+
+1. **Use Session Pooler URL (IPv4 compatible)** - RECOMMENDED:
    ```bash
-   npx supabase db push --db-url "postgresql://postgres.PROJECT_REF:PASSWORD@aws-1-us-east-2.pooler.supabase.com:5432/postgres"
+   # Crispy-CRM Project Connection String (Session Mode - port 5432)
+   npx supabase db push --db-url "postgresql://postgres.aaqnanddcqvfiwhshndl:[YOUR-PASSWORD]@aws-1-us-east-2.pooler.supabase.com:5432/postgres"
+
+   # Transaction Mode (port 6543) - for serverless/edge functions
+   npx supabase db push --db-url "postgresql://postgres.aaqnanddcqvfiwhshndl:[YOUR-PASSWORD]@aws-1-us-east-2.pooler.supabase.com:6543/postgres"
    ```
+
+   **URL Format Breakdown:**
+   - `postgres.PROJECT_REF` = Username (note the dot, not colon!)
+   - `aws-1-us-east-2` = Region-specific pooler (check Dashboard for yours)
+   - Port `5432` = Session mode (persistent connections)
+   - Port `6543` = Transaction mode (serverless)
+
+   **⚠️ Common Mistake:** Using `aws-0-` instead of `aws-1-` - always verify in Dashboard → Connect
 
 2. **Enable IPv6 mirroring in WSL2** (Windows 11 22H2+):
    Create `C:\Users\<Username>\.wslconfig`:
@@ -361,6 +374,19 @@ supabase db push
    networkingMode=mirrored
    ```
    Then restart: `wsl --shutdown`
+
+   **Note:** This only works if your ISP provides IPv6. Check with `ping -6 ipv6.google.com`
+
+#### Tenant or User Not Found
+**Symptoms:** `FATAL: Tenant or user not found (SQLSTATE XX000)`
+
+**Cause:** Incorrect pooler region or username format.
+
+**Solution:**
+1. Go to Supabase Dashboard → Click **Connect** button (top right)
+2. Copy the exact "Session pooler" or "Transaction pooler" URL
+3. The region varies by project (e.g., `aws-0-`, `aws-1-`, `eu-central-1`)
+4. Username format is `postgres.PROJECT_REF` (with a dot, not underscore)
 
 #### IP Temporarily Banned
 **Symptoms:** `failed SASL auth (unexpected EOF)` or connection hangs
@@ -440,10 +466,11 @@ sed -i 's/\x92/->/g' supabase/migrations/<file>.sql
 
 ## Version
 
-- Skill Version: 1.1
+- Skill Version: 1.2
 - Last Updated: 2025-11-29
 - Crispy-CRM Target: MVP (Phase 1-3)
 
 ### Changelog
+- **1.2** (2025-11-29): Added project-specific pooler URL (`aws-1-us-east-2`), "Tenant not found" troubleshooting, URL format breakdown
 - **1.1** (2025-11-29): Added CLI Troubleshooting section for IPv6/WSL2, IP bans, migration repair, UTF-8 issues
 - **1.0** (2025-11-13): Initial skill with service layer, RLS, Edge Functions, and migration patterns
