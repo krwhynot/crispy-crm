@@ -13,8 +13,9 @@
  * Radix UI primitives don't work properly in jsdom test environment.
  */
 
-import { render, screen, fireEvent, waitFor, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+/* eslint-disable jsx-a11y/click-events-have-key-events, jsx-a11y/interactive-supports-focus, jsx-a11y/role-has-required-aria-props -- Mock components in test file */
+
+import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { QuickLogForm } from "../QuickLogForm";
 
@@ -26,7 +27,7 @@ import { QuickLogForm } from "../QuickLogForm";
 // Mock Form components (react-hook-form wrapper)
 vi.mock("@/components/ui/form", () => ({
   Form: ({ children }: any) => <form data-testid="form-wrapper" onSubmit={(e: any) => e.preventDefault()}>{children}</form>,
-  FormField: ({ render, name, control }: any) => {
+  FormField: ({ render, name }: any) => {
     const field = { value: undefined, onChange: vi.fn(), name };
     const fieldState = { error: undefined, invalid: false };
     const formState = { isSubmitting: false, errors: {} };
@@ -43,7 +44,7 @@ vi.mock("@/components/ui/form", () => ({
 
 // Mock Button component
 vi.mock("@/components/ui/button", () => ({
-  Button: ({ children, onClick, disabled, type, variant, className, "aria-label": ariaLabel, role, ...props }: any) => (
+  Button: ({ children, onClick, disabled, type, className, "aria-label": ariaLabel, role, ...props }: any) => (
     <button
       onClick={onClick}
       disabled={disabled}
@@ -63,7 +64,7 @@ vi.mock("@/components/ui/button", () => ({
 
 // Mock Select components (Radix UI Select)
 vi.mock("@/components/ui/select", () => ({
-  Select: ({ children, onValueChange, defaultValue }: any) => (
+  Select: ({ children, defaultValue }: any) => (
     <div data-testid="select" data-value={defaultValue}>
       {children}
     </div>
@@ -84,7 +85,7 @@ vi.mock("@/components/ui/select", () => ({
 
 // Mock Command components (cmdk - combobox)
 vi.mock("@/components/ui/command", () => ({
-  Command: ({ children, id, filter, shouldFilter }: any) => (
+  Command: ({ children, id }: any) => (
     <div data-testid="command" id={id}>
       {children}
     </div>
@@ -115,15 +116,15 @@ vi.mock("@/components/ui/command", () => ({
 
 // Mock Popover components (Radix UI Popover)
 vi.mock("@/components/ui/popover", () => ({
-  Popover: ({ children, open, onOpenChange }: any) => (
+  Popover: ({ children, open }: any) => (
     <div data-testid="popover" data-open={open}>
       {children}
     </div>
   ),
-  PopoverTrigger: ({ children, asChild }: any) => (
+  PopoverTrigger: ({ children }: any) => (
     <div data-testid="popover-trigger">{children}</div>
   ),
-  PopoverContent: ({ children, className, align }: any) => (
+  PopoverContent: ({ children, className }: any) => (
     <div data-testid="popover-content" className={className}>
       {children}
     </div>
@@ -166,7 +167,7 @@ vi.mock("@/components/ui/input", () => ({
 
 // Mock Calendar component (date picker)
 vi.mock("@/components/ui/calendar", () => ({
-  Calendar: ({ mode, selected, onSelect, disabled, initialFocus }: any) => (
+  Calendar: ({ onSelect }: any) => (
     <div data-testid="calendar">
       <button
         data-testid="calendar-day"
@@ -194,7 +195,7 @@ vi.mock("@/lib/utils", () => ({
 
 // Mock date-fns
 vi.mock("date-fns", () => ({
-  format: (date: Date, formatStr: string) => date.toLocaleDateString(),
+  format: (date: Date) => date.toLocaleDateString(),
   startOfDay: (date: Date) => new Date(date.setHours(0, 0, 0, 0)),
 }));
 
@@ -314,7 +315,7 @@ vi.mock("react-admin", () => ({
   useDataProvider: () => mockDataProvider,
   useNotify: () => mockNotify,
   // useGetList is used by the refactored component for hybrid search
-  useGetList: (resource: string, params: any, options?: any) => {
+  useGetList: (resource: string) => {
     const data = (() => {
       switch (resource) {
         case "contacts":
@@ -336,7 +337,7 @@ vi.mock("react-admin", () => ({
     };
   },
   // useGetOne is used to fetch a specific organization when not in paginated list
-  useGetOne: (resource: string, params: any, options?: any) => {
+  useGetOne: (resource: string, params: any) => {
     // Return the org from mock data if it exists
     if (resource === "organizations" && params?.id) {
       const org = mockOrganizations.find((o: any) => o.id === params.id);

@@ -374,7 +374,7 @@ export function normalizeResponseData<T extends JsonbArrayRecord>(
   _resource: string,
   data: T
 ): T;
-export function normalizeResponseData<T extends JsonbArrayRecord>(
+export function normalizeResponseData<_T extends JsonbArrayRecord>(
   _resource: string,
   data: null | undefined
 ): null | undefined;

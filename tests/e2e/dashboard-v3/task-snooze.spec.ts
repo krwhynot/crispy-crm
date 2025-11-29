@@ -150,8 +150,8 @@ test.describe("Task Snooze - Dashboard V3", () => {
         return;
       }
 
-      // Get the task subject before snooze
-      const firstTaskSubject = await taskCards
+      // Get the task subject before snooze (for verification logging if needed)
+      const _firstTaskSubject = await taskCards
         .first()
         .locator(".font-medium")
         .first()

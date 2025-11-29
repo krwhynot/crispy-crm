@@ -172,8 +172,8 @@ test.describe("Dashboard V3 - Principal Dashboard", () => {
       const toggle = dashboard.getMyPrincipalsOnlySwitch();
       await expect(toggle).toBeVisible();
 
-      // Get initial row count
-      const initialRowCount = await dashboard.getPipelineRows().count();
+      // Get initial row count (used to verify toggle doesn't break data)
+      const _initialRowCount = await dashboard.getPipelineRows().count();
 
       // Toggle the filter (this should make an API call)
       await dashboard.toggleMyPrincipalsOnly();
@@ -255,7 +255,7 @@ test.describe("Dashboard V3 - Principal Dashboard", () => {
       const tomorrowGroup = dashboard.getTaskGroup("Tomorrow");
 
       // At least one group should be visible (depends on task data)
-      const anyGroupVisible =
+      const _anyGroupVisible =
         (await overdueGroup.isVisible().catch(() => false)) ||
         (await todayGroup.isVisible().catch(() => false)) ||
         (await tomorrowGroup.isVisible().catch(() => false));

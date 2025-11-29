@@ -84,7 +84,7 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
   // =============================================================================
 
   test.describe("1. Authentication Data Flow", () => {
-    test("dashboard loads with authenticated user context", async ({}) => {
+    test("dashboard loads with authenticated user context", async () => {
       await dashboard.navigate();
 
       // Dashboard header should be visible (proves auth worked)
@@ -583,7 +583,7 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       expect(consoleMonitor.hasRLSErrors()).toBe(false);
     });
 
-    test("form validation requires notes", async ({}) => {
+    test("form validation requires notes", async () => {
       await dashboard.openActivityForm();
 
       // Try to submit without filling notes
