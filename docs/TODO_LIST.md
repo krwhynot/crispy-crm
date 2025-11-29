@@ -102,9 +102,9 @@ These items block other work or are foundational to the system.
   - [ ] Add validation error messages
   - [ ] Handle edge cases (what happens on import?)
 - **Acceptance Criteria:** Cannot create contact without organization; clear error message shown
-- **Blocks:** TODO-003, TODO-049
+- **Blocks:** TODO-003, TODO-052
 
-#### TODO-049: Contact Import Organization Handling
+#### TODO-052: Contact Import Organization Handling
 - **PRD Reference:** Section 4.2, MVP #18 (edge case)
 - **Status:** ⬜ TODO
 - **Priority:** 🟡 P2
@@ -987,10 +987,10 @@ Polish items and technical cleanup.
 
 ## Summary by Status
 
-### ⬜ TODO (Not Started): 66 items
+### ⬜ TODO (Not Started): 68 items
 - **Original items:** 43
 - **Decomposed subtasks:** 20 (from TODO-001, 004, 011, 022, 042, 043)
-- **New items:** 3 (TODO-044 RBAC, TODO-049 Import Handling, Definition of Done)
+- **New items:** 5 (TODO-044 RBAC, TODO-045 Pre-Sprint Cleanup, TODO-046 Pre-Launch Cleanup, TODO-052 Import Handling)
 
 ### 🔧 Partial/In Progress: 0 items
 ### ✅ Done: 0 items
@@ -1015,7 +1015,7 @@ TODO-001 (Pipeline Stage Migration)
 
 TODO-002 (Contact Org Enforcement)
     ├── TODO-003 (Contact-Customer Org Validation)
-    └── TODO-049 (Contact Import Org Handling)
+    └── TODO-052 (Contact Import Org Handling)
 
 TODO-004 (Win/Loss Reasons UI)
     └── TODO-004a (Schema & Fields)
@@ -1100,18 +1100,25 @@ Each sprint must meet these criteria before items are marked complete:
 - [ ] No unresolved review comments
 - [ ] Sprint demo completed with stakeholder
 
+### Sprint Hygiene
+- [ ] Delete dead code from completed refactors (no commented-out blocks)
+- [ ] Remove `console.log` debugging statements
+- [ ] Update or remove TODO comments in code that reference completed items
+- [ ] No new TypeScript `any` types without justification comment
+
 ---
 
 ## Sprint Planning Suggestion
 
 ### Sprint 1 (Week 1-2): Foundation & Security
+- TODO-045: Pre-Sprint 1 Cleanup (XS, 0.5d) ← **Run first:** baseline verification
 - TODO-001a: Pipeline DB Migration (S, 1d)
 - TODO-001b: Pipeline Constants & Schema (S, 1d)
 - TODO-001c: Pipeline UI & Filter Updates (M, 2d)
 - TODO-002: Contact Org Enforcement (M, 2d)
-- TODO-044: RBAC Foundation (M, 2d) ← NEW: Enables role-based features
+- TODO-044: RBAC Foundation (M, 2d) ← Enables role-based features
 - TODO-005: Activity Auto-Cascade Trigger (M, 2d)
-- **Sprint Total:** ~10 days | **Risk:** Medium (decomposed TODO-001 reduces risk)
+- **Sprint Total:** ~10.5 days | **Risk:** Medium (decomposed TODO-001 reduces risk)
 
 ### Sprint 2 (Week 2-4): Dashboard & Win/Loss
 - TODO-004a: Win/Loss Reason Schema (S, 1d)
@@ -1163,11 +1170,12 @@ Each sprint must meet these criteria before items are marked complete:
 - TODO-032-034: Notes Cleanup (~3d total) ← Moved from Sprint 6
 - TODO-036-038: Dashboard Polish (~3d total)
 - TODO-039-041: Technical Cleanup (~4d total)
-- TODO-049: Contact Import Org Handling (M, 2d) ← **Deferrable** to post-MVP
+- TODO-052: Contact Import Org Handling (M, 2d) ← **Deferrable** to post-MVP
+- TODO-046: Pre-Launch Cleanup (S, 1d) ← **Run last:** production data import
 - Final regression testing (2d)
 - User acceptance testing (2d)
-- **Sprint Total:** ~19 days | **Risk:** Medium (has buffer capacity)
-- **⚠️ Slippage Cuts:** If schedule slips, cut TODO-049 (import handling) and TODO-041a (linting) first
+- **Sprint Total:** ~20 days | **Risk:** Medium (has buffer capacity)
+- **⚠️ Slippage Cuts:** If schedule slips, cut TODO-052 (import handling) and TODO-041a (linting) first
 
 ---
 
@@ -1182,4 +1190,4 @@ Each sprint must meet these criteria before items are marked complete:
 
 *Generated from PRD v1.20 - Last Updated: 2025-11-28*
 *Decomposition Update: 2025-11-28 - Added 14 atomic subtasks for TODO-011, 022, 042, 043*
-*Audit Remediation: 2025-11-28 - Added TODO-001/004 decomposition, TODO-044 (RBAC), TODO-049, Definition of Done, rebalanced sprints*
+*Audit Remediation: 2025-11-28 - Added TODO-001/004 decomposition, TODO-044 (RBAC), TODO-052, Definition of Done, rebalanced sprints*
