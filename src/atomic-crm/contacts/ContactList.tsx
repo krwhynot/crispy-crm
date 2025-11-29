@@ -18,8 +18,8 @@ import { useSlideOverState } from "@/hooks/useSlideOverState";
 import type { Organization, Contact, Sale, Tag } from "../types";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ContactEmpty } from "./ContactEmpty";
-import { ContactImportButton as _ContactImportButton } from "./ContactImportButton";
-import { ContactExportTemplateButton as _ContactExportTemplateButton } from "./ContactExportTemplateButton";
+import { ContactImportButton } from "./ContactImportButton";
+import { ContactExportTemplateButton } from "./ContactExportTemplateButton";
 import { ContactListFilter } from "./ContactListFilter";
 import { ContactSlideOver } from "./ContactSlideOver";
 import { TopToolbar } from "../layout/TopToolbar";
@@ -151,8 +151,8 @@ const ContactListLayout = ({
 const ContactListActions = () => (
   <TopToolbar>
     <SortButton fields={["first_name", "last_name", "last_seen"]} />
-    {/* <ContactImportButton /> */}
-    {/* <ContactExportTemplateButton /> */}
+    <ContactImportButton />
+    <ContactExportTemplateButton />
     <ExportButton exporter={exporter} />
     <CreateButton />
   </TopToolbar>

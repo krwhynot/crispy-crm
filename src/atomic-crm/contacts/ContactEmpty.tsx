@@ -1,6 +1,6 @@
 import { CreateButton } from "@/components/admin/create-button";
 import useAppBarHeight from "../hooks/useAppBarHeight";
-import { ContactImportButton as _ContactImportButton } from "./ContactImportButton";
+import { ContactImportButton } from "./ContactImportButton";
 
 export const ContactEmpty = () => {
   const appbarHeight = useAppBarHeight();
@@ -20,7 +20,7 @@ export const ContactEmpty = () => {
       </div>
       <div className="flex flex-row gap-2">
         <CreateButton label="New Contact" />
-        {/* <ContactImportButton /> */}
+        <ContactImportButton />
       </div>
     </div>
   );
