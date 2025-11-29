@@ -6,3 +6,4 @@
  */
 
 export { CloseOpportunityModal } from "./CloseOpportunityModal";
+export { ContactOrgMismatchWarning } from "./ContactOrgMismatchWarning";

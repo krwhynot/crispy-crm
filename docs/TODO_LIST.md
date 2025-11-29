@@ -397,23 +397,27 @@ Essential features with no critical dependencies.
 
 #### TODO-010: QuickLogForm - All 13 Activity Types
 - **PRD Reference:** Section 6.1, MVP #17, #52
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟠 P1
+- **Completed:** 2025-11-28
 - **Description:** Expand QuickLogForm from 5 to 13 activity types
 - **Tasks:**
-  - [ ] Add missing types: sample, demo, proposal, trade_show, site_visit, contract_review, check_in, social
-  - [ ] Implement grouped dropdown UI:
-    - Communication: Call, Email, Check-in
-    - Meetings: Meeting, Demo, Site Visit
-    - Documentation: Proposal, Contract Review, Follow-up, Note
-    - Sales: Trade Show, Social
-    - Samples: Sample
-  - [ ] Update form validation for each type
-  - [ ] Add appropriate icons for each type (colors use semantic tokens)
+  - [x] Add missing types: sample, demo, proposal, trade_show, site_visit, contract_review, check_in, social
+  - [x] Implement grouped dropdown UI:
+    - Communication: Call, Email, Check-in, Social (4)
+    - Meetings: Meeting, Demo, Site Visit, Trade Show (4)
+    - Documentation: Proposal, Contract Review, Follow-up, Note, Sample (5)
+  - [x] Update form validation for each type
+  - [x] Add appropriate icons for each type (colors use semantic tokens)
 - **Constitution Compliance:**
-  - P5: Form defaults from `activitySchema.partial().parse({})` for each type variant
-  - P8: Icon colors use semantic tokens (`--primary`, `--muted-foreground`)
-- **Acceptance Criteria:** All 13 types available in quick logger; grouped for easy selection
+  - P5: Form defaults from `activitySchema.partial().parse({})` ✅ Already implemented
+  - P8: Icon colors use semantic tokens (`text-muted-foreground`, `bg-muted`) ✅ Verified
+- **Implementation Notes:**
+  - Updated `src/atomic-crm/dashboard/v3/validation/activitySchema.ts` with `ACTIVITY_TYPE_GROUPS` constant
+  - Updated `src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx` with grouped `SelectGroup`/`SelectLabel`/`SelectSeparator`
+  - Updated `src/atomic-crm/activities/QuickLogActivity.tsx` (task completion dialog) with all 13 types
+  - Expanded `showDuration` logic to include all meeting-type activities
+- **Acceptance Criteria:** All 13 types available in quick logger; grouped for easy selection ✅
 - **Enables:** Sample tracking (MVP #4)
 
 #### TODO-011: Sample Tracking Workflow (PARENT - See subtasks below)
