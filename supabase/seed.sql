@@ -1930,3 +1930,28 @@ VALUES
 
 -- Reset sequence
 SELECT setval(pg_get_serial_sequence('"organizationNotes"', 'id'), 15, true);
+
+-- ========================================
+-- VAULT SECRETS (for pg_cron + pg_net)
+-- ========================================
+-- These secrets enable scheduled Edge Function invocation via pg_cron
+-- For local development only - cloud secrets are managed via Dashboard
+
+-- Project URL for local Supabase
+SELECT vault.create_secret(
+  'http://api.supabase.internal:8000',
+  'project_url',
+  'Supabase project URL for Edge Function invocation'
+);
+
+-- Service role key for authenticated API calls
+-- Note: This is the local dev service role key - safe to commit
+SELECT vault.create_secret(
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS1kZW1vIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImV4cCI6MTk4MzgxMjk5Nn0.EGIM96RAZx35lJzdJsyH-qQwv8Hdp7fsn3W0YpN81IU',
+  'service_role_key',
+  'Service role key for authenticated Edge Function calls'
+);
+
+-- ========================================
+-- END OF SEED DATA
+-- ========================================

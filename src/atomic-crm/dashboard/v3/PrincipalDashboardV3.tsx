@@ -4,6 +4,7 @@ import { TasksKanbanPanel } from "./components/TasksKanbanPanel";
 import { ActivityFeedPanel } from "./components/ActivityFeedPanel";
 import { LogActivityFAB } from "./components/LogActivityFAB";
 import { MobileQuickActionBar } from "./components/MobileQuickActionBar";
+import { TaskCompleteSheet } from "./components/TaskCompleteSheet";
 import { KPISummaryRow } from "./components/KPISummaryRow";
 import { MyPerformanceWidget } from "./components/MyPerformanceWidget";
 
@@ -24,11 +25,18 @@ import { MyPerformanceWidget } from "./components/MyPerformanceWidget";
 export function PrincipalDashboardV3() {
   // Refresh key to force data components to re-mount and re-fetch
   const [refreshKey, setRefreshKey] = useState(0);
+  // Task completion sheet state (for mobile quick action bar)
+  const [isTaskSheetOpen, setIsTaskSheetOpen] = useState(false);
 
   // Memoized to prevent child re-renders when passed as prop
   const handleRefresh = useCallback(() => {
     // Increment refresh key to force data components to re-mount and re-fetch
     setRefreshKey((prev) => prev + 1);
+  }, []);
+
+  // Open task completion sheet (from mobile quick action bar)
+  const handleCompleteTask = useCallback(() => {
+    setIsTaskSheetOpen(true);
   }, []);
 
   return (
@@ -71,7 +79,17 @@ export function PrincipalDashboardV3() {
         <LogActivityFAB onRefresh={handleRefresh} />
 
         {/* Mobile Quick Action Bar - Bottom-positioned (mobile/tablet only) */}
-        <MobileQuickActionBar onRefresh={handleRefresh} />
+        <MobileQuickActionBar
+          onRefresh={handleRefresh}
+          onCompleteTask={handleCompleteTask}
+        />
+
+        {/* Task Completion Sheet - Opens from mobile quick action bar */}
+        <TaskCompleteSheet
+          open={isTaskSheetOpen}
+          onOpenChange={setIsTaskSheetOpen}
+          onRefresh={handleRefresh}
+        />
       </main>
     </div>
   );

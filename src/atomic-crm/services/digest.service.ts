@@ -45,6 +45,25 @@ export const OverdueTaskSchema = z.object({
 export type OverdueTask = z.infer<typeof OverdueTaskSchema>;
 
 /**
+ * Schema for tasks due today records returned from database
+ */
+export const TodayTaskSchema = z.object({
+  id: z.number(),
+  title: z.string(),
+  description: z.string().nullable(),
+  priority: z.enum(["low", "medium", "high", "critical"]).nullable(),
+  type: z.enum(["Call", "Email", "Meeting", "Follow-up", "Demo", "Proposal", "Other"]).nullable(),
+  contact_id: z.number().nullable(),
+  contact_name: z.string().nullable(),
+  opportunity_id: z.number().nullable(),
+  opportunity_name: z.string().nullable(),
+  organization_id: z.number().nullable(),
+  organization_name: z.string().nullable(),
+});
+
+export type TodayTask = z.infer<typeof TodayTaskSchema>;
+
+/**
  * Schema for stale deal records with per-stage threshold info
  */
 export const StaleDealSchema = z.object({
@@ -79,6 +98,7 @@ export const UserDigestSummarySchema = z.object({
   activities_logged_24h: z.number().int().min(0),
   overdue_tasks: z.array(OverdueTaskSchema),
   stale_deals_list: z.array(StaleDealSchema),
+  tasks_due_today_list: z.array(TodayTaskSchema),
 });
 
 export type UserDigestSummary = z.infer<typeof UserDigestSummarySchema>;
@@ -160,6 +180,42 @@ export class DigestService {
   }
 
   /**
+   * Get tasks due today for a specific sales user
+   *
+   * Tasks are considered due today when:
+   * - due_date = today
+   * - completed = false
+   * - deleted_at IS NULL
+   *
+   * @param salesId - The sales.id of the user
+   * @returns Array of tasks due today sorted by priority (critical first)
+   * @throws Error if RPC call fails
+   */
+  async getTasksDueTodayForUser(salesId: number): Promise<TodayTask[]> {
+    try {
+      const data = await this.dataProvider.rpc("get_tasks_due_today_for_user", {
+        p_sales_id: salesId,
+      });
+
+      // Validate and parse response
+      const parsed = z.array(TodayTaskSchema).safeParse(data);
+      if (!parsed.success) {
+        console.warn("[DigestService] Tasks due today validation warning", {
+          salesId,
+          errors: parsed.error.errors,
+        });
+        // Return raw data if validation fails (graceful degradation)
+        return (data || []) as TodayTask[];
+      }
+
+      return parsed.data;
+    } catch (error: any) {
+      console.error("[DigestService] Failed to get tasks due today", { salesId, error });
+      throw new Error(`Failed to get tasks due today: ${error.message}`);
+    }
+  }
+
+  /**
    * Get stale deals for a specific sales user using per-stage thresholds
    *
    * Per-stage thresholds (PRD Section 6.3):
@@ -210,6 +266,7 @@ export class DigestService {
    * - activities_logged_24h: Activities logged in last 24 hours
    * - overdue_tasks: Array of top 10 overdue task details
    * - stale_deals_list: Array of top 10 stale deal details
+   * - tasks_due_today_list: Array of top 10 tasks due today details
    *
    * @param salesId - The sales.id of the user
    * @returns Complete digest summary or null if user not found/disabled
