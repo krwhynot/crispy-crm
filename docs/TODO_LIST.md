@@ -653,15 +653,24 @@ Important features that can be worked in parallel.
 
 #### TODO-018: Soft Duplicate Org Warning
 - **PRD Reference:** MVP #45
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Change duplicate name validation from hard block to soft warning
 - **Tasks:**
-  - [ ] Change validation from blocking to warning
-  - [ ] Show warning: "An organization with this name already exists. Continue anyway?"
-  - [ ] Allow creation with confirmation
-  - [ ] Support franchises with same brand name
-- **Acceptance Criteria:** Warning shown for duplicate names; can proceed with confirmation
+  - [x] Change validation from blocking to warning
+  - [x] Show warning: "An organization with this name already exists. Continue anyway?"
+  - [x] Allow creation with confirmation
+  - [x] Support franchises with same brand name
+- **Implementation Notes:**
+  - Dialog component: `src/atomic-crm/organizations/DuplicateOrgWarningDialog.tsx`
+  - Hook for duplicate detection: `src/atomic-crm/organizations/useDuplicateOrgCheck.ts`
+  - Updated form: `src/atomic-crm/organizations/OrganizationCreate.tsx` (custom save button with pre-check)
+  - Removed hard validation from `OrganizationGeneralTab.tsx`
+  - Pattern: Pre-check on save → show dialog if duplicate → user confirms or changes name
+  - Bypass memory: Once user confirms a name, it won't warn again in the session
+  - Unit tests: 17 tests in `__tests__/DuplicateOrgWarningDialog.test.tsx` and `__tests__/useDuplicateOrgCheck.test.tsx`
+- **Acceptance Criteria:** Warning shown for duplicate names; can proceed with confirmation ✅
 
 #### TODO-019: Bulk Owner Reassignment
 - **PRD Reference:** Section 3.1, MVP #20

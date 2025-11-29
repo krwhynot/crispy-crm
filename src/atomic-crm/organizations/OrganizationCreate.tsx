@@ -1,19 +1,102 @@
-import { CreateBase, Form, useGetIdentity, useGetList } from "ra-core";
+/**
+ * OrganizationCreate - Create form for new organizations
+ *
+ * Features:
+ * - Soft duplicate warning: Shows confirmation dialog instead of hard block
+ * - Schema-derived defaults (Constitution #5: Form state from truth)
+ * - Website URL auto-prefixing
+ * - Parent organization pre-fill from router state
+ *
+ * The duplicate check uses useDuplicateOrgCheck hook which performs a
+ * case-insensitive search before save. If a potential duplicate is found,
+ * DuplicateOrgWarningDialog appears to let the user confirm or change the name.
+ */
+import { useState, useCallback, useRef } from "react";
+import { CreateBase, Form, useGetIdentity, useGetList, useCreate, useRedirect, useNotify } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { SaveButton } from "@/components/admin/form";
 import { FormToolbar } from "@/components/admin/simple-form";
 import { useLocation } from "react-router-dom";
+import { useFormContext } from "react-hook-form";
 
 import { OrganizationInputs } from "./OrganizationInputs";
 import { organizationSchema } from "../validation/organizations";
+import { useDuplicateOrgCheck } from "./useDuplicateOrgCheck";
+import { DuplicateOrgWarningDialog } from "./DuplicateOrgWarningDialog";
 import type { Database } from "@/types/database.generated";
 
 type Segment = Database["public"]["Tables"]["segments"]["Row"];
 
+/**
+ * Custom save button that checks for duplicates before saving
+ */
+interface DuplicateCheckSaveButtonProps {
+  onDuplicateFound: (name: string, values: any) => void;
+  checkForDuplicate: (name: string) => Promise<{ id: string | number; name: string } | null>;
+  isChecking: boolean;
+}
+
+const DuplicateCheckSaveButton = ({
+  onDuplicateFound,
+  checkForDuplicate,
+  isChecking,
+}: DuplicateCheckSaveButtonProps) => {
+  const form = useFormContext();
+
+  const handleClick = useCallback(
+    async (event: React.MouseEvent<HTMLButtonElement>) => {
+      // Prevent default form submission
+      event.preventDefault();
+
+      // Get current form values
+      const values = form.getValues();
+      const name = values.name?.trim();
+
+      if (!name) {
+        // Let regular validation handle empty names
+        form.handleSubmit(() => {})();
+        return;
+      }
+
+      // Check for duplicates
+      const duplicate = await checkForDuplicate(name);
+      if (duplicate) {
+        // Duplicate found - trigger the dialog instead of saving
+        onDuplicateFound(duplicate.name, values);
+        return;
+      }
+
+      // No duplicate - proceed with normal form submission
+      form.handleSubmit(() => {})();
+    },
+    [form, checkForDuplicate, onDuplicateFound]
+  );
+
+  return (
+    <SaveButton
+      label={isChecking ? "Checking..." : "Create Organization"}
+      type="button"
+      onClick={handleClick}
+      disabled={isChecking}
+    />
+  );
+};
+
 const OrganizationCreate = () => {
   const { identity } = useGetIdentity();
   const location = useLocation();
+  const [create] = useCreate();
+  const redirect = useRedirect();
+  const notify = useNotify();
+
+  // Duplicate check hook for soft warning
+  const { checkForDuplicate, duplicateOrg, clearDuplicate, bypassDuplicate, isChecking } =
+    useDuplicateOrgCheck();
+
+  // Store pending values when duplicate is found
+  const pendingValuesRef = useRef<any>(null);
+  const [isCreating, setIsCreating] = useState(false);
 
   const { data: segments = [] } = useGetList<Segment>(
     "segments",
@@ -44,35 +127,87 @@ const OrganizationCreate = () => {
   };
   const formKey = unknownSegmentId ? `org-create-${unknownSegmentId}` : "org-create";
 
-  return (
-    <CreateBase
-      redirect="show"
-      transform={(values) => {
-        // add https:// before website if not present
-        if (values.website && !values.website.startsWith("http")) {
-          values.website = `https://${values.website}`;
+  // Transform function for URL prefixing
+  const transformValues = useCallback((values: any) => {
+    if (values.website && !values.website.startsWith("http")) {
+      values.website = `https://${values.website}`;
+    }
+    return values;
+  }, []);
+
+  // Handle when duplicate is found - store values and show dialog
+  const handleDuplicateFound = useCallback((_duplicateName: string, values: any) => {
+    pendingValuesRef.current = values;
+  }, []);
+
+  // Handle user confirming to create despite duplicate
+  const handleProceedAnyway = useCallback(async () => {
+    if (!pendingValuesRef.current) return;
+
+    setIsCreating(true);
+    try {
+      const transformedValues = transformValues(pendingValuesRef.current);
+      await create(
+        "organizations",
+        { data: transformedValues },
+        {
+          onSuccess: (data) => {
+            bypassDuplicate();
+            pendingValuesRef.current = null;
+            notify("Organization created", { type: "success" });
+            redirect("show", "organizations", data.id);
+          },
+          onError: (error: any) => {
+            notify(error?.message || "Failed to create organization", { type: "error" });
+          },
         }
-        return values;
-      }}
-    >
-      <div className="bg-muted px-6 py-6">
-        <div className="max-w-4xl mx-auto create-form-card">
-          <Form key={formKey} defaultValues={formDefaults}>
-            <Card>
-              <CardContent>
-                <OrganizationInputs />
-                <FormToolbar>
-                  <div className="flex flex-row gap-2 justify-end">
-                    <CancelButton />
-                    <SaveButton label="Create Organization" />
-                  </div>
-                </FormToolbar>
-              </CardContent>
-            </Card>
-          </Form>
+      );
+    } finally {
+      setIsCreating(false);
+    }
+  }, [create, transformValues, bypassDuplicate, notify, redirect]);
+
+  // Handle user canceling (wants to change name)
+  const handleCancelDuplicate = useCallback(() => {
+    clearDuplicate();
+    pendingValuesRef.current = null;
+  }, [clearDuplicate]);
+
+  return (
+    <>
+      <CreateBase redirect="show" transform={transformValues}>
+        <div className="bg-muted px-6 py-6">
+          <div className="max-w-4xl mx-auto create-form-card">
+            <Form key={formKey} defaultValues={formDefaults}>
+              <Card>
+                <CardContent>
+                  <OrganizationInputs />
+                  <FormToolbar>
+                    <div className="flex flex-row gap-2 justify-end">
+                      <CancelButton />
+                      <DuplicateCheckSaveButton
+                        onDuplicateFound={handleDuplicateFound}
+                        checkForDuplicate={checkForDuplicate}
+                        isChecking={isChecking}
+                      />
+                    </div>
+                  </FormToolbar>
+                </CardContent>
+              </Card>
+            </Form>
+          </div>
         </div>
-      </div>
-    </CreateBase>
+      </CreateBase>
+
+      {/* Soft duplicate warning dialog */}
+      <DuplicateOrgWarningDialog
+        open={!!duplicateOrg}
+        duplicateName={duplicateOrg?.name}
+        onCancel={handleCancelDuplicate}
+        onProceed={handleProceedAnyway}
+        isLoading={isCreating}
+      />
+    </>
   );
 };
 

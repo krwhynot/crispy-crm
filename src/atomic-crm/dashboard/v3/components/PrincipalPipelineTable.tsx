@@ -443,9 +443,9 @@ export function PrincipalPipelineTable() {
                   {row.nextAction ? (
                     <span className="text-sm">{row.nextAction}</span>
                   ) : (
-                    <Button variant="link" size="sm" className="h-auto p-0 text-primary">
-                      Schedule follow-up
-                    </Button>
+                    <span className="text-sm text-muted-foreground">
+                      No action scheduled
+                    </span>
                   )}
                 </TableCell>
               </TableRow>
