@@ -330,6 +330,7 @@ async function processForDatabase<T>(
 /**
  * Wrap a data provider method with error logging and transformations
  * Ensures validation errors are properly formatted for React Admin's inline display
+ * Tracks request success/failure for health monitoring
  */
 async function wrapMethod<T>(
   method: string,
@@ -337,8 +338,13 @@ async function wrapMethod<T>(
   params: DataProviderLogParams & { previousData?: RaRecord },
   operation: () => Promise<T>
 ): Promise<T> {
+  const startTime = Date.now();
   try {
-    return await operation();
+    const result = await operation();
+    // Track successful request for error rate calculation
+    const latency = Date.now() - startTime;
+    logger.trackRequest(`${method}:${resource}`, true, latency);
+    return result;
   } catch (error: unknown) {
     logError(method, resource, params, error);
     const extendedError = error as ExtendedError | undefined;

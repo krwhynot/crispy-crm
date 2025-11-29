@@ -21,6 +21,10 @@ if (!supabaseKey) {
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Test user credentials
+const TEST_USER_EMAIL = process.env.LOAD_TEST_EMAIL || "admin@test.com";
+const TEST_USER_PASSWORD = process.env.LOAD_TEST_PASSWORD || "password123";
+
 // Load test configuration
 const LOAD_TEST_CONFIG = {
   concurrentUsers: parseInt(process.argv[2]) || 10, // Number of concurrent users
@@ -231,7 +235,8 @@ async function getDashboardData() {
 }
 
 async function complexJoinQuery() {
-  // Updated: companies -> organizations, removed amount (not in schema)
+  // Updated: Use explicit FK reference to avoid ambiguous relationship
+  // (opportunities has both opportunity_id FK and founding_interaction_id FK to activities)
   const { data, error } = await supabase
     .from("opportunities")
     .select(
@@ -244,13 +249,10 @@ async function complexJoinQuery() {
         name,
         segment_id
       ),
-      activities(
+      activities!activities_opportunity_id_fkey(
         type,
         subject,
-        activity_date,
-        interaction_participants(
-          contact:contacts(first_name, last_name)
-        )
+        activity_date
       )
     `
     )
@@ -433,10 +435,28 @@ async function runLoadTest() {
 
   const spinner = ora("Initializing load test...").start();
 
+  // Authenticate test user (required for RLS-protected tables)
+  try {
+    spinner.text = "Authenticating test user...";
+    const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+      email: TEST_USER_EMAIL,
+      password: TEST_USER_PASSWORD,
+    });
+    if (authError) throw authError;
+    console.log(chalk.green(`\n  ✓ Authenticated as: ${TEST_USER_EMAIL}`));
+  } catch (error) {
+    spinner.fail("Failed to authenticate test user");
+    console.error(chalk.red(`Error: ${error.message}`));
+    console.error(chalk.yellow(`Hint: Ensure test user exists with credentials: ${TEST_USER_EMAIL} / ${TEST_USER_PASSWORD}`));
+    process.exit(1);
+  }
+
   // Test connectivity
   try {
+    spinner.text = "Testing database connectivity...";
     const { error } = await supabase.from("opportunities").select("id").limit(1);
     if (error) throw error;
+    console.log(chalk.green("  ✓ Database connection verified\n"));
   } catch (error) {
     spinner.fail("Failed to connect to Supabase");
     console.error(chalk.red(`Error: ${error.message}`));
