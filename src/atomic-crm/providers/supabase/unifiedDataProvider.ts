@@ -391,23 +391,40 @@ export const unifiedDataProvider: DataProvider = {
       // Get appropriate database resource
       const dbResource = getDatabaseResource(resource, "list");
 
+      // DEBUG: Check auth state before API call
+      const { data: { session } } = await supabase.auth.getSession();
+      console.log('[DEBUG AUTH] Session state:', {
+        hasSession: !!session,
+        userId: session?.user?.id?.slice(0, 8) + '...' || 'none',
+        role: session?.user?.role || 'anon',
+        expiresAt: session?.expires_at ? new Date(session.expires_at * 1000).toISOString() : 'none',
+      });
+
       // DEBUG: Log before baseDataProvider call
-      console.log('[DEBUG 4/4] unifiedDataProvider - BEFORE baseDataProvider.getList', {
+      console.log('[DEBUG API] unifiedDataProvider.getList', {
         originalResource: resource,
         dbResource,
-        searchParamsFilter: JSON.stringify(searchParams.filter),
-        pagination: searchParams.pagination,
-        sort: searchParams.sort,
+        hasAuthToken: !!session?.access_token,
       });
 
       // Execute query
       const result = await baseDataProvider.getList(dbResource, searchParams);
 
-      // DEBUG: Log result
-      console.log('[DEBUG 4/4] unifiedDataProvider - AFTER baseDataProvider.getList', {
+      // DEBUG: Log result with customer_organization_name check for opportunities
+      if (resource === 'opportunities' && result.data?.length > 0) {
+        const sample = result.data[0] as Record<string, unknown>;
+        console.log('[DEBUG OPPORTUNITIES] First record fields:', {
+          hasCustomerOrgName: 'customer_organization_name' in sample,
+          customerOrgNameValue: sample.customer_organization_name,
+          hasCustomerOrgId: 'customer_organization_id' in sample,
+          customerOrgIdValue: sample.customer_organization_id,
+          allKeys: Object.keys(sample).filter(k => k.includes('customer') || k.includes('organization')),
+        });
+      }
+
+      console.log('[DEBUG RESULT] getList completed', {
         dataCount: result.data?.length,
         total: result.total,
-        firstRecord: result.data?.[0] ? JSON.stringify(Object.keys(result.data[0])) : 'none',
       });
 
       // Apply data normalization to ensure JSONB fields are arrays
