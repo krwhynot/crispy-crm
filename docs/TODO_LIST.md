@@ -954,6 +954,37 @@ Polish items and technical cleanup.
 
 ---
 
+## 🧹 Cleanup & Hygiene Tasks
+
+#### TODO-045: Pre-Sprint 1 Cleanup
+- **PRD Reference:** N/A (Project Hygiene)
+- **Status:** ⬜ TODO
+- **Priority:** 🔴 P0
+- **Effort:** XS (0.5 day)
+- **Description:** Prepare codebase for Sprint 1 execution
+- **Tasks:**
+  - [ ] Archive/migrate seed data using `awaiting_response` stage (will be removed in TODO-001a)
+  - [ ] Run `npm run lint:check` and document baseline error count
+  - [ ] Verify `npm test` passes (green baseline)
+  - [ ] Verify `npm run build` succeeds
+- **Acceptance Criteria:** Clean baseline documented; all tests pass; no blocking errors
+
+#### TODO-046: Pre-Launch Cleanup
+- **PRD Reference:** N/A (Project Hygiene)
+- **Status:** ⬜ TODO
+- **Priority:** 🟢 P3
+- **Effort:** S (1 day)
+- **Description:** Final cleanup before production launch
+- **Tasks:**
+  - [ ] Remove completed TODO comments from codebase (`grep -r "TODO-0" src/`)
+  - [ ] Audit unused dependencies (`npm prune --dry-run`)
+  - [ ] Clear test/seed data from database
+  - [ ] Import production data from CRM82025.xlsx
+  - [ ] Final smoke test of all critical paths
+- **Acceptance Criteria:** No stale TODOs; minimal dependencies; production data loaded
+
+---
+
 ## Summary by Status
 
 ### ⬜ TODO (Not Started): 66 items
@@ -1109,14 +1140,13 @@ Each sprint must meet these criteria before items are marked complete:
 - TODO-019: Bulk Owner Reassignment (M, 3d) ← Requires TODO-044
 - **Sprint Total:** ~11 days | **Risk:** Medium
 
-### Sprint 5 (Week 8-10): Tasks, Reports & Authorization UI
+### Sprint 5 (Week 8-10): Tasks & Reports
 - TODO-025-028: Task Module Items (~5d total)
 - TODO-029-031: Reports Module Items (~4d total)
-- TODO-020: Authorization UI Tab (L, 4d)
 - TODO-021: Opportunity Bulk Delete (S, 1d)
-- **Sprint Total:** ~14 days | **Risk:** High (can defer TODO-020 to Sprint 6)
+- **Sprint Total:** ~10 days | **Risk:** Low
 
-### Sprint 6 (Week 10-12): Email Digest & Authorization Logic
+### Sprint 6 (Week 10-12): Email Digest & Authorization
 - TODO-042a: Email Digest Infrastructure (M, 2d)
 - TODO-042b: Digest Query Logic (S, 1d) ← Depends on TODO-012
 - TODO-042c: Email Template (S, 1d)
@@ -1125,17 +1155,19 @@ Each sprint must meet these criteria before items are marked complete:
 - TODO-043b: Product-Level Authorizations (S, 1d)
 - TODO-043c: Authorization Inheritance Logic (M, 2d)
 - TODO-043d: Opportunity Authorization Warning (S, 1d)
-- **Sprint Total:** ~12 days | **Risk:** Medium
+- TODO-020: Authorization UI Tab (L, 4d) ← Moved from Sprint 5, deferrable to post-MVP
+- **Sprint Total:** ~16 days | **Risk:** Medium-High (TODO-020 deferrable if slippage)
 
 ### Sprint 7 (Week 12-14): Polish, Mobile & QA
 - TODO-035: Mobile Quick Actions (M, 3d) ← Moved from Sprint 6
 - TODO-032-034: Notes Cleanup (~3d total) ← Moved from Sprint 6
 - TODO-036-038: Dashboard Polish (~3d total)
 - TODO-039-041: Technical Cleanup (~4d total)
-- TODO-049: Contact Import Org Handling (M, 2d) ← Can defer to post-MVP if needed
+- TODO-049: Contact Import Org Handling (M, 2d) ← **Deferrable** to post-MVP
 - Final regression testing (2d)
 - User acceptance testing (2d)
 - **Sprint Total:** ~19 days | **Risk:** Medium (has buffer capacity)
+- **⚠️ Slippage Cuts:** If schedule slips, cut TODO-049 (import handling) and TODO-041a (linting) first
 
 ---
 
