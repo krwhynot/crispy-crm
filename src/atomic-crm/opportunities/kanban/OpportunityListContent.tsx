@@ -1,6 +1,6 @@
 import isEqual from "lodash/isEqual";
 import { useListContext, useUpdate, useNotify } from "ra-core";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
 
 import type { Opportunity } from "../../types";
@@ -10,9 +10,23 @@ import type { OpportunitiesByStage } from "../constants/stages";
 import { getOpportunitiesByStage } from "../constants/stages";
 import { useColumnPreferences } from "../hooks/useColumnPreferences";
 import { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
+import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
+import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 
 interface OpportunityListContentProps {
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
+}
+
+/**
+ * State for pending close modal - stores drag data while modal is open
+ */
+interface PendingCloseData {
+  opportunityId: string;
+  opportunityName: string;
+  targetStage: "closed_won" | "closed_lost";
+  sourceStage: string;
+  previousState: OpportunitiesByStage;
+  draggedItem: Opportunity;
 }
 
 export const OpportunityListContent = ({ openSlideOver }: OpportunityListContentProps) => {
@@ -22,6 +36,11 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
 
   const [update] = useUpdate();
   const notify = useNotify();
+
+  // State for CloseOpportunityModal
+  const [showCloseModal, setShowCloseModal] = useState(false);
+  const [pendingCloseData, setPendingCloseData] = useState<PendingCloseData | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
 
   const {
     collapsedStages,
@@ -57,6 +76,88 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [unorderedOpportunities]);
+
+  /**
+   * Perform the actual stage update after modal confirmation (or for non-close stages)
+   */
+  const performStageUpdate = useCallback(
+    (
+      opportunityId: string,
+      newStage: string,
+      previousState: OpportunitiesByStage,
+      draggedItem: Opportunity,
+      additionalData?: Partial<CloseOpportunityInput>
+    ) => {
+      update(
+        "opportunities",
+        {
+          id: opportunityId,
+          data: { stage: newStage, ...additionalData },
+          previousData: draggedItem,
+        },
+        {
+          onSuccess: () => {
+            notify(`Moved to ${getOpportunityStageLabel(newStage)}`, {
+              type: "success",
+            });
+          },
+          onError: () => {
+            notify("Error: Could not move opportunity. Reverting.", {
+              type: "warning",
+            });
+            setOpportunitiesByStage(previousState);
+          },
+        }
+      );
+    },
+    [update, notify]
+  );
+
+  /**
+   * Handle confirmation from CloseOpportunityModal
+   */
+  const handleCloseConfirm = useCallback(
+    (data: CloseOpportunityInput) => {
+      if (!pendingCloseData) return;
+
+      setIsClosing(true);
+
+      performStageUpdate(
+        pendingCloseData.opportunityId,
+        pendingCloseData.targetStage,
+        pendingCloseData.previousState,
+        pendingCloseData.draggedItem,
+        {
+          win_reason: data.win_reason,
+          loss_reason: data.loss_reason,
+          close_reason_notes: data.close_reason_notes,
+        }
+      );
+
+      setIsClosing(false);
+      setShowCloseModal(false);
+      setPendingCloseData(null);
+    },
+    [pendingCloseData, performStageUpdate]
+  );
+
+  /**
+   * Handle modal cancel - revert to previous state
+   */
+  const handleCloseCancel = useCallback(
+    (open: boolean) => {
+      if (!open && pendingCloseData) {
+        // Modal was closed/cancelled - revert the optimistic update
+        setOpportunitiesByStage(pendingCloseData.previousState);
+        notify("Stage change cancelled", { type: "info" });
+      }
+      setShowCloseModal(open);
+      if (!open) {
+        setPendingCloseData(null);
+      }
+    },
+    [pendingCloseData, notify]
+  );
 
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
@@ -103,31 +204,22 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
     setOpportunitiesByStage(newOpportunitiesByStage);
     // --- End Optimistic UI Update ---
 
-    // --- API Call ---
-    // Note: ra-supabase requires previousData to calculate diffs
-    update(
-      "opportunities",
-      {
-        id: draggableId,
-        data: { stage: destColId },
-        previousData: draggedItem,
-      },
-      {
-        onSuccess: () => {
-          notify(`Moved to ${getOpportunityStageLabel(destColId)}`, {
-            type: "success",
-          });
-          // No refresh() needed - optimistic update already shows correct state
-          // This prevents UI flicker from refetching data
-        },
-        onError: () => {
-          notify("Error: Could not move opportunity. Reverting.", {
-            type: "warning",
-          });
-          // Rollback UI on error
-          setOpportunitiesByStage(previousState);
-        },
-      }
+    // Check if dropping into a closed stage - show modal to collect reason
+    if (destColId === "closed_won" || destColId === "closed_lost") {
+      setPendingCloseData({
+        opportunityId: draggableId,
+        opportunityName: draggedItem.name,
+        targetStage: destColId,
+        sourceStage: sourceColId,
+        previousState,
+        draggedItem,
+      });
+      setShowCloseModal(true);
+      return; // Don't call update yet - wait for modal confirmation
+    }
+
+    // --- API Call for non-close stages ---
+    performStageUpdate(draggableId, destColId, previousState, draggedItem
     );
   };
 
@@ -160,6 +252,19 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
           ))}
         </div>
       </DragDropContext>
+
+      {/* CloseOpportunityModal - shown when dragging to closed_won or closed_lost */}
+      {pendingCloseData && (
+        <CloseOpportunityModal
+          open={showCloseModal}
+          onOpenChange={handleCloseCancel}
+          opportunityId={pendingCloseData.opportunityId}
+          opportunityName={pendingCloseData.opportunityName}
+          targetStage={pendingCloseData.targetStage}
+          onConfirm={handleCloseConfirm}
+          isSubmitting={isClosing}
+        />
+      )}
     </>
   );
 };
