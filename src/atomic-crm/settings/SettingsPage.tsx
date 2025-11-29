@@ -18,6 +18,7 @@ import { useFormState } from "react-hook-form";
 import { ImageEditorField } from "@/components/ui";
 import type { CrmDataProvider } from "../providers/types";
 import type { Sale, SalesFormData } from "../types";
+import { DigestPreferences } from "./DigestPreferences";
 
 export const SettingsPage = () => {
   const [isEditMode, setEditMode] = useState(false);
@@ -169,6 +170,9 @@ const SettingsForm = ({
           </div>
         </CardContent>
       </Card>
+
+      {/* Email Notification Preferences */}
+      <DigestPreferences />
     </div>
   );
 };

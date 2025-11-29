@@ -24,6 +24,9 @@ export const salesSchema = z.object({
 
   disabled: z.boolean().default(false),
 
+  // Notification preferences
+  digest_opt_in: z.boolean().default(true), // Default true for backward compatibility
+
   // System fields
   created_at: z.string().optional(),
   updated_at: z.string().optional(),

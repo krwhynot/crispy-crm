@@ -40,6 +40,7 @@ export interface Sale extends Pick<RaRecord, "id"> {
   avatar?: RAFile;
   disabled?: boolean;
   user_id: string;
+  digest_opt_in?: boolean; // Email digest preference (default true)
 
   /**
    * This is a copy of the user's email, to make it easier to handle by react admin
