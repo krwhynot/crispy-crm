@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-024 completed - Remove F&B Fields from Product UI)
+**Last Updated:** 2025-11-29 (TODO-040 completed - Remove DataQualityTab & DB artifacts)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -1198,15 +1198,20 @@ Polish items and technical cleanup.
 
 #### TODO-040: Remove DataQualityTab
 - **PRD Reference:** MVP #24
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟢 P3
+- **Completed:** 2025-11-29
 - **Description:** Delete DataQualityTab and related DB artifacts
 - **Tasks:**
-  - [ ] Delete `DataQualityTab.tsx`
-  - [ ] Remove `duplicate_stats` view
-  - [ ] Remove `contact_duplicates` view
-  - [ ] Remove `merge_duplicate_contacts` RPC
-- **Acceptance Criteria:** No DataQualityTab; related DB objects removed
+  - [x] Delete `DataQualityTab.tsx` - Already deleted in prior cleanup
+  - [x] Remove `duplicate_stats` view - Migration `20251128063810`
+  - [x] Remove `contact_duplicates` view - Migration `20251128063810`
+  - [x] Remove `merge_duplicate_contacts` RPC - Migration `fix_drop_merge_duplicate_contacts_function` (fixed BIGINT signature)
+- **Implementation Notes:**
+  - Original migration used wrong signature (`UUID, UUID[]`), function had `BIGINT, BIGINT[]`
+  - Fix migration applied via MCP to drop function with correct signature
+  - Per PRD Decision #32: Admin-only SQL cleanup is sufficient for duplicates
+- **Acceptance Criteria:** No DataQualityTab; related DB objects removed ✅
 
 #### TODO-041: Enable CSV Import
 - **PRD Reference:** MVP #8
