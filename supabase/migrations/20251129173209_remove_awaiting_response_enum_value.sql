@@ -8,15 +8,44 @@
 --   SELECT COUNT(*) FROM opportunities WHERE stage = 'awaiting_response';
 --   Result: 0 records
 --
+-- ============================================================================
+-- POSTGRESQL ENUM MIGRATION PATTERN
+-- ============================================================================
 -- PostgreSQL does not support DROP VALUE from enum types directly.
 -- We must recreate the enum type without the deprecated value.
 --
--- DEPENDENT VIEWS (must be dropped and recreated):
---   - dashboard_pipeline_summary
---   - dashboard_principal_summary
---   - opportunities_summary
---   - principal_opportunities
---   - principal_pipeline_summary
+-- DEPENDENCY CASCADE ORDER (critical - follow this exact sequence):
+--   1. Safety check - verify no records use the deprecated value
+--   2. Drop dependent VIEWS (they reference the column type)
+--   3. Drop partial INDEXES with WHERE clauses referencing enum values
+--   4. Disable TRIGGERS that compare OLD.column vs NEW.column
+--   5. Create new enum type (with _v2 suffix)
+--   6. ALTER COLUMN TYPE using text cast: column::text::new_enum
+--   7. Drop old enum, rename new enum to original name
+--   8. Re-enable triggers
+--   9. Recreate indexes
+--  10. Recreate views
+--
+-- ROLLBACK STRATEGY:
+--   This migration is NOT easily reversible. To rollback:
+--   1. Create a new migration that adds back the enum value
+--   2. Follow the same cascade pattern in reverse
+--   3. Note: Adding enum values is simpler (ALTER TYPE ... ADD VALUE)
+--
+-- DEPENDENT OBJECTS (discovered via pg_depend queries):
+--   Views:
+--     - dashboard_pipeline_summary
+--     - dashboard_principal_summary
+--     - opportunities_summary
+--     - principal_opportunities
+--     - principal_pipeline_summary
+--   Indexes (with enum in WHERE clause):
+--     - idx_opportunities_stage
+--     - idx_opportunities_closed_stage_reason
+--   Triggers (compare OLD.stage vs NEW.stage):
+--     - trigger_update_opportunity_stage_changed_at
+--     - audit_opportunities_changes
+--     - check_concurrent_opportunity_update
 -- ============================================================================
 
 -- ============================================================================
