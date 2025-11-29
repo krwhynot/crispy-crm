@@ -987,14 +987,20 @@ Important features that can be worked in parallel.
 
 #### TODO-032: Remove Note Attachment UI
 - **PRD Reference:** MVP #62
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Remove FileInput from NoteInputs.tsx
 - **Tasks:**
-  - [ ] Remove FileInput component from NoteInputs
-  - [ ] Remove NoteAttachments.tsx usage
-  - [ ] Keep DB schema for post-MVP
-- **Acceptance Criteria:** Cannot attach files to notes in UI
+  - [x] Remove FileInput component from NoteInputs
+  - [x] Remove NoteAttachments.tsx usage
+  - [x] Keep DB schema for post-MVP
+- **Implementation Notes:**
+  - `NoteInputs.tsx` verified clean (no FileInput - only TextInput for text + datetime-local for date)
+  - `NoteAttachments.tsx` deleted (was dead code - 0 imports across codebase)
+  - `AttachmentNote` type preserved in `types.ts` for post-MVP schema compatibility
+  - DB `attachments` JSONB columns remain in note tables
+- **Acceptance Criteria:** Cannot attach files to notes in UI ✅
 
 #### TODO-033: Remove Note StatusSelector
 - **PRD Reference:** MVP #63

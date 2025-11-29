@@ -481,9 +481,9 @@ function ProductExceptionsSection({
             variant="ghost"
             size="sm"
             onClick={() => setAddExceptionOpen(true)}
-            className="h-9 text-xs"
+            className="h-11 text-xs"
           >
-            <Plus className="h-3 w-3 mr-1" />
+            <Plus className="h-4 w-4 mr-1" />
             Add Exception
           </Button>
         )}
@@ -542,11 +542,11 @@ function ProductExceptionsSection({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-9 w-9 p-0 text-muted-foreground hover:text-destructive"
+                    className="h-11 w-11 p-0 text-muted-foreground hover:text-destructive"
                     onClick={() => setRemoveException(productAuth)}
                     title="Remove exception"
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
+                    <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
               </div>

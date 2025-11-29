@@ -1,19 +1,6 @@
 import type { DataProvider, Identifier, RaRecord } from "ra-core";
-import type {
-  OpportunityParticipant,
-  OpportunityContact,
-  Contact,
-  ContactOrganization,
-} from "../types";
+import type { OpportunityParticipant, OpportunityContact, Contact } from "../types";
 import type { Organization } from "../validation/organizations";
-
-/**
- * RPC parameters for set_primary_organization function
- */
-interface SetPrimaryOrganizationParams {
-  p_contact_id: Identifier;
-  p_organization_id: Identifier;
-}
 
 /**
  * Extended DataProvider with optional RPC capability
@@ -21,13 +8,6 @@ interface SetPrimaryOrganizationParams {
 type DataProviderWithRpc = DataProvider & {
   rpc?: <T = unknown>(functionName: string, params: Record<string, Identifier>) => Promise<T>;
 };
-
-/**
- * Contact organization junction record with populated organization data
- */
-interface ContactOrganizationWithDetails extends ContactOrganization {
-  organization?: Organization;
-}
 
 /**
  * Opportunity participant with populated organization data
@@ -41,14 +21,6 @@ interface OpportunityParticipantWithDetails extends OpportunityParticipant {
  */
 interface OpportunityContactWithDetails extends OpportunityContact {
   contact?: Contact;
-}
-
-/**
- * Parameters for adding a contact to an organization
- */
-interface AddContactToOrganizationParams {
-  is_primary?: boolean;
-  created_at?: string;
 }
 
 /**
@@ -93,190 +65,18 @@ function getErrorMessage(error: unknown): string {
  * Junction service handles many-to-many relationship operations
  * Follows Engineering Constitution principle #14: Service Layer orchestration for business ops
  *
+ * Manages:
+ * - opportunity_participants (Organizations linked to opportunities)
+ * - opportunity_contacts (Contacts linked to opportunities)
+ *
+ * Note: contact_organizations junction was deprecated and removed.
+ * Contacts now use a direct organization_id FK (single org per contact).
+ *
  * Updated to use dataProvider exclusively - no direct Supabase access
  * per Engineering Constitution principle #2: Single Source of Truth
  */
 export class JunctionsService {
   constructor(private dataProvider: DataProviderWithRpc) {}
-
-  // Contact-Organization Relationships
-
-  /**
-   * Get all organizations associated with a contact
-   * @param contactId Contact identifier
-   * @returns Object with data array of contact organizations with populated organization data
-   */
-  async getContactOrganizations(
-    contactId: Identifier
-  ): Promise<{ data: ContactOrganizationWithDetails[] }> {
-    try {
-      // Use dataProvider.getList with proper filter
-      const response = await this.dataProvider.getList<ContactOrganization>(
-        "contact_organizations",
-        {
-          filter: { contact_id: contactId },
-          pagination: { page: 1, perPage: 100 },
-          sort: { field: "is_primary", order: "DESC" },
-        }
-      );
-
-      // Optimize: Use getMany instead of N+1 queries
-      const orgIds = response.data
-        .map((co) => co.organization_id)
-        .filter((id): id is Identifier => id != null);
-
-      let orgMap = new Map<Identifier, Organization>();
-      if (orgIds.length > 0) {
-        try {
-          const { data: orgs } = await this.dataProvider.getMany<Organization & RaRecord>(
-            "organizations",
-            { ids: orgIds }
-          );
-          orgMap = new Map(orgs.map((o) => [o.id, o]));
-        } catch (error: unknown) {
-          console.error(`[JunctionsService] Failed to fetch organizations in batch`, {
-            orgIds,
-            error,
-          });
-          throw new Error(`Failed to fetch organizations: ${getErrorMessage(error)}`);
-        }
-      }
-
-      const organizationsWithDetails: ContactOrganizationWithDetails[] = response.data.map(
-        (contactOrg) => {
-          const org = orgMap.get(contactOrg.organization_id);
-          return org ? { ...contactOrg, organization: org } : contactOrg;
-        }
-      );
-
-      return { data: organizationsWithDetails };
-    } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to get contact organizations`, {
-        contactId,
-        error,
-      });
-      throw new Error(`Get contact organizations failed: ${getErrorMessage(error)}`);
-    }
-  }
-
-  /**
-   * Add contact to organization with relationship metadata
-   * @param contactId Contact identifier
-   * @param organizationId Organization identifier
-   * @param params Optional relationship parameters (role, influence, etc.)
-   * @returns Object with created relationship data
-   */
-  async addContactToOrganization(
-    contactId: Identifier,
-    organizationId: Identifier,
-    params: AddContactToOrganizationParams = {}
-  ): Promise<{ data: ContactOrganization }> {
-    try {
-      const response = await this.dataProvider.create<ContactOrganization>(
-        "contact_organizations",
-        {
-          data: {
-            contact_id: contactId,
-            organization_id: organizationId,
-            is_primary: params.is_primary || false,
-            created_at: new Date().toISOString(),
-            ...params,
-          },
-        }
-      );
-
-      return { data: response.data };
-    } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to add contact to organization`, {
-        contactId,
-        organizationId,
-        params,
-        error,
-      });
-      throw new Error(`Add contact to organization failed: ${getErrorMessage(error)}`);
-    }
-  }
-
-  /**
-   * Remove contact from organization relationship
-   * @param contactId Contact identifier
-   * @param organizationId Organization identifier
-   * @returns Object with composite ID
-   */
-  async removeContactFromOrganization(
-    contactId: Identifier,
-    organizationId: Identifier
-  ): Promise<{ data: { id: string } }> {
-    try {
-      // Need to find the record first, then delete it
-      const response = await this.dataProvider.getList<ContactOrganization>(
-        "contact_organizations",
-        {
-          filter: {
-            contact_id: contactId,
-            organization_id: organizationId,
-          },
-          pagination: { page: 1, perPage: 1 },
-          sort: { field: "id", order: "ASC" },
-        }
-      );
-
-      if (response.data.length > 0) {
-        await this.dataProvider.delete("contact_organizations", {
-          id: response.data[0].id,
-        });
-      }
-
-      return { data: { id: `${contactId}-${organizationId}` } };
-    } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to remove contact from organization`, {
-        contactId,
-        organizationId,
-        error,
-      });
-      throw new Error(`Remove contact from organization failed: ${getErrorMessage(error)}`);
-    }
-  }
-
-  /**
-   * Set primary organization for a contact using atomic RPC function
-   * @param contactId Contact identifier
-   * @param organizationId Organization identifier to set as primary
-   * @returns Success confirmation
-   */
-  async setPrimaryOrganization(
-    contactId: Identifier,
-    organizationId: Identifier
-  ): Promise<{ data: { success: boolean } }> {
-    // Use the extended RPC capability from unifiedDataProvider
-    if (!this.dataProvider.rpc) {
-      console.error(`[JunctionsService] DataProvider missing RPC capability`, {
-        operation: "setPrimaryOrganization",
-        contactId,
-        organizationId,
-      });
-      throw new Error(
-        `Set primary organization failed: DataProvider does not support RPC operations`
-      );
-    }
-
-    try {
-      const params: SetPrimaryOrganizationParams = {
-        p_contact_id: contactId,
-        p_organization_id: organizationId,
-      };
-      await this.dataProvider.rpc("set_primary_organization", params);
-
-      return { data: { success: true } };
-    } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to set primary organization`, {
-        contactId,
-        organizationId,
-        error,
-      });
-      throw new Error(`Set primary organization failed: ${getErrorMessage(error)}`);
-    }
-  }
 
   // Opportunity Participants
 

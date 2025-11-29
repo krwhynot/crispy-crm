@@ -68,7 +68,7 @@ interface ContactStatusBadgeProps {
 }
 
 interface RoleBadgeProps {
-  /** Contact's role in the buying process (from contact_organizations.role) */
+  /** Contact's role in the buying process (from contacts.role field) */
   role: ContactRole | string;
 }
 

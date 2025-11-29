@@ -28,7 +28,7 @@ export const RESOURCE_MAPPING = {
   organizationNotes: "organizationNotes",
 
   // Junction tables for many-to-many relationships
-  contact_organizations: "contact_organizations",
+  // contact_organizations: REMOVED - deprecated, contacts now use single organization_id FK
   opportunity_participants: "opportunity_participants",
   opportunity_contacts: "opportunity_contacts",
   interaction_participants: "interaction_participants",
@@ -78,7 +78,7 @@ export const SOFT_DELETE_RESOURCES = [
   "organizations",
   "contacts",
   "opportunities",
-  "contact_organizations",
+  // "contact_organizations", - REMOVED: table deprecated
   "opportunity_participants",
   "activities",
   "products",

@@ -110,15 +110,8 @@ export interface Contact extends Pick<RaRecord, "id"> {
   company_name?: string;
 }
 
-export interface ContactOrganization {
-  id?: Identifier; // Optional for new records
-  contact_id: Identifier;
-  organization_id: Identifier;
-  is_primary: boolean; // Matches database schema column name
-  created_at?: string;
-  updated_at?: string;
-  deleted_at?: string;
-}
+// ContactOrganization interface removed - junction table was deprecated.
+// Contacts now use a direct organization_id FK (single org per contact).
 
 export interface OpportunityParticipant extends Pick<RaRecord, "id"> {
   id: Identifier;
