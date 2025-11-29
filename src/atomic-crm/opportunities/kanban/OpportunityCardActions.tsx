@@ -1,6 +1,9 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUpdate, useDelete, useNotify, useRefresh } from "react-admin";
+import { useUpdate, useDelete, useNotify, useRefresh, useRecordContext } from "react-admin";
+import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
+import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
+import type { Opportunity } from "../../types";
 
 interface OpportunityCardActionsProps {
   opportunityId: number;
