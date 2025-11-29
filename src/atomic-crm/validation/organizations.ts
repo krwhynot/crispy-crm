@@ -63,6 +63,16 @@ export const organizationSchema = z.object({
   context_links: z.array(isValidUrl).nullish(),
   tags: z.string().optional(), // Comma-separated tag names for CSV import
 
+  // Business fields (DB columns added for completeness)
+  email: z.string().email().nullish(), // Organization contact email
+  notes: z.string().nullish(), // General notes about organization
+  employee_count: z.coerce.number().int().positive().nullish(), // Number of employees
+  founded_year: z.coerce.number().int().min(1800).max(new Date().getFullYear()).nullish(), // Year founded
+  tax_identifier: z.string().nullish(), // Tax ID / EIN
+  logo_url: z.string().url().nullish(), // Direct URL to logo (separate from logo RAFile)
+  updated_at: z.string().optional(), // System-managed timestamp
+  updated_by: z.union([z.string(), z.number()]).nullish(), // Audit: who last updated
+
   // Organization-specific fields
   organization_type: organizationTypeSchema.default("unknown"), // Default matches database
   priority: organizationPrioritySchema.default("C"), // Default matches database
