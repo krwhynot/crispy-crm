@@ -2,6 +2,23 @@
 -- distributor_principal_authorizations Table
 -- =====================================================
 -- Purpose: Track which principals are authorized to sell through which distributors
+
+-- =====================================================
+-- PREREQUISITE: Create update_updated_at_column() if not exists
+-- =====================================================
+-- This function is used by triggers to auto-update updated_at timestamps
+CREATE OR REPLACE FUNCTION public.update_updated_at_column()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+    NEW.updated_at = now();
+    RETURN NEW;
+END;
+$$;
+
+COMMENT ON FUNCTION public.update_updated_at_column() IS
+    'Trigger function to automatically set updated_at to NOW() on row update.';
 -- This is a many-to-many relationship between organizations flagged as distributors
 -- and organizations flagged as principals.
 --
