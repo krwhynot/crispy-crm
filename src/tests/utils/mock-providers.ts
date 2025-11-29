@@ -211,6 +211,7 @@ export const createMockOpportunity = (overrides?: any) => ({
 
 /**
  * Create a mock contact record
+ * Note: Contacts have a single organization_id (not array) per PRD
  */
 export const createMockContact = (overrides?: any) => ({
   id: faker.number.int({ min: 1, max: 10000 }),
@@ -229,10 +230,13 @@ export const createMockContact = (overrides?: any) => ({
     },
   ],
   title: faker.person.jobTitle(),
-  organization_ids: [faker.number.int({ min: 1, max: 100 })],
+  organization_id: faker.number.int({ min: 1, max: 100 }),
+  department: faker.commerce.department(),
   company_name: faker.company.name(),
   avatar: faker.image.avatar(),
   tags: [],
+  first_seen: faker.date.past().toISOString(),
+  last_seen: faker.date.recent().toISOString(),
   created_at: faker.date.past().toISOString(),
   updated_at: faker.date.recent().toISOString(),
   deleted_at: null,

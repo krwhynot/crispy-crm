@@ -4,7 +4,7 @@
  * Tests the contact details view including:
  * - Loading states
  * - Rendering contact information
- * - Organization relationships (primary/non-primary)
+ * - Single organization relationship (per PRD - one contact = one org)
  * - Error handling (404, permission denied)
  */
 
@@ -122,13 +122,7 @@ describe("ContactShow", () => {
       department: "Engineering",
       email: [{ email: "john@example.com", type: "Work" }],
       phone: [{ number: "555-0100", type: "Work" }],
-      organizations: [
-        {
-          organization_id: 1,
-          organization_name: "Tech Corp",
-          is_primary: true,
-        },
-      ],
+      organization_id: 1,
     });
 
     (useShowContext as any).mockReturnValue({
@@ -167,19 +161,13 @@ describe("ContactShow", () => {
     });
   });
 
-  test("renders contact with primary organization", async () => {
+  test("renders contact with organization", async () => {
     const mockContact = createMockContact({
       id: 2,
       first_name: "Jane",
       last_name: "Smith",
       title: "Product Manager",
-      organizations: [
-        {
-          organization_id: 10,
-          organization_name: "Acme Inc",
-          is_primary: true,
-        },
-      ],
+      organization_id: 10,
     });
 
     (useShowContext as any).mockReturnValue({
@@ -200,75 +188,21 @@ describe("ContactShow", () => {
     );
 
     await waitFor(() => {
-      // Should show associated organizations section
-      expect(screen.getByText("Associated Organizations")).toBeInTheDocument();
+      // Should show organization section (singular, not plural)
+      expect(screen.getByText("Organization")).toBeInTheDocument();
 
-      // Should show primary badge
-      expect(screen.getByText("Primary")).toBeInTheDocument();
-
-      // Should show organization avatar
+      // Should show organization avatar in header
       expect(screen.getByTestId("org-avatar")).toBeInTheDocument();
     });
   });
 
-  test("renders contact with multiple organizations", async () => {
-    const mockContact = createMockContact({
-      id: 3,
-      first_name: "Bob",
-      last_name: "Wilson",
-      title: "Consultant",
-      organizations: [
-        {
-          organization_id: 20,
-          organization_name: "Company A",
-          is_primary: true,
-        },
-        {
-          organization_id: 21,
-          organization_name: "Company B",
-          is_primary: false,
-        },
-        {
-          organization_id: 22,
-          organization_name: "Company C",
-          is_primary: false,
-        },
-      ],
-    });
-
-    (useShowContext as any).mockReturnValue({
-      record: mockContact,
-      isPending: false,
-      error: null,
-    });
-
-    renderWithAdminContext(
-      <Routes>
-        <Route path="/contacts/:id/show" element={<ContactShow />} />
-      </Routes>,
-      {
-        resource: "contacts",
-        record: mockContact,
-        initialEntries: ["/contacts/1/show"],
-      }
-    );
-
-    await waitFor(() => {
-      expect(screen.getByText("Associated Organizations")).toBeInTheDocument();
-
-      // Should only show one Primary badge (for the primary org)
-      const primaryBadges = screen.getAllByText("Primary");
-      expect(primaryBadges).toHaveLength(1);
-    });
-  });
-
-  test("renders contact without organizations", async () => {
+  test("renders contact without organization", async () => {
     const mockContact = createMockContact({
       id: 4,
       first_name: "Alice",
       last_name: "Johnson",
       title: "Freelancer",
-      organizations: [],
+      organization_id: null,
     });
 
     (useShowContext as any).mockReturnValue({
@@ -293,8 +227,8 @@ describe("ContactShow", () => {
       expect(screen.getByText("Alice Johnson")).toBeInTheDocument();
       expect(screen.getByText(/Freelancer/)).toBeInTheDocument();
 
-      // Should not show organizations section
-      expect(screen.queryByText("Associated Organizations")).not.toBeInTheDocument();
+      // Should not show organization section when no org assigned
+      expect(screen.queryByText("Organization")).not.toBeInTheDocument();
     });
   });
 
