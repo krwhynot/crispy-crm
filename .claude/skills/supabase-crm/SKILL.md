@@ -440,6 +440,10 @@ sed -i 's/\x92/->/g' supabase/migrations/<file>.sql
 
 ## Version
 
-- Skill Version: 1.0
-- Last Updated: 2025-11-13
+- Skill Version: 1.1
+- Last Updated: 2025-11-29
 - Crispy-CRM Target: MVP (Phase 1-3)
+
+### Changelog
+- **1.1** (2025-11-29): Added CLI Troubleshooting section for IPv6/WSL2, IP bans, migration repair, UTF-8 issues
+- **1.0** (2025-11-13): Initial skill with service layer, RLS, Edge Functions, and migration patterns
