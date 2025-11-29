@@ -153,6 +153,42 @@ export const BulkActionsToolbar = ({
     exportToCSV(selectedOpportunities);
   };
 
+  /**
+   * Handle bulk archive (soft delete) of selected opportunities
+   * Uses dataProvider.deleteMany which sets deleted_at timestamp
+   * Audit logging is handled automatically by database triggers
+   */
+  const handleBulkArchive = async () => {
+    setIsProcessing(true);
+
+    try {
+      // Log the archive action for debugging
+      console.log(`[BulkArchive] Archiving ${selectedIds.length} opportunities:`, selectedIds);
+
+      // Use deleteMany which internally performs soft delete (sets deleted_at)
+      // This is handled by unifiedDataProvider.deleteMany for soft-delete resources
+      await dataProvider.deleteMany("opportunities", { ids: selectedIds });
+
+      notify(
+        `Successfully archived ${selectedIds.length} opportunit${selectedIds.length === 1 ? "y" : "ies"}`,
+        { type: "success" }
+      );
+
+      // Refresh list and clear selection
+      refresh();
+      onUnselectItems();
+      handleCloseDialog();
+    } catch (error) {
+      console.error("[BulkArchive] Failed to archive opportunities:", error);
+      notify(
+        `Failed to archive opportunities: ${error instanceof Error ? error.message : "Unknown error"}`,
+        { type: "error" }
+      );
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   if (selectedIds.length === 0) return null;
 
   return (

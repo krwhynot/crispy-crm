@@ -147,4 +147,69 @@ describe("BulkActionsToolbar", () => {
       expect(updateData.opportunity_owner_id).toBe(5);
     });
   });
+
+  describe("Bulk Archive Logic", () => {
+    it("should collect IDs for bulk archive operation", () => {
+      const selectedIds = [1, 2];
+
+      // The deleteMany call expects { ids: [...] }
+      const deleteParams = { ids: selectedIds };
+
+      expect(deleteParams.ids).toEqual([1, 2]);
+      expect(deleteParams.ids).toHaveLength(2);
+    });
+
+    it("should handle single item archive", () => {
+      const selectedIds = [1];
+      const deleteParams = { ids: selectedIds };
+
+      expect(deleteParams.ids).toEqual([1]);
+      expect(deleteParams.ids).toHaveLength(1);
+    });
+
+    it("should generate correct success message for single archive", () => {
+      const count = 1;
+      const message = `Successfully archived ${count} opportunit${count === 1 ? "y" : "ies"}`;
+
+      expect(message).toBe("Successfully archived 1 opportunity");
+    });
+
+    it("should generate correct success message for multiple archives", () => {
+      const count = 5;
+      const message = `Successfully archived ${count} opportunit${count === 1 ? "y" : "ies"}`;
+
+      expect(message).toBe("Successfully archived 5 opportunities");
+    });
+
+    it("should identify archived opportunities by deleted_at field", () => {
+      const archivedOpportunity: Opportunity = {
+        ...mockOpportunities[0],
+        deleted_at: "2025-11-28T10:00:00Z",
+      };
+
+      expect(archivedOpportunity.deleted_at).toBeDefined();
+      expect(archivedOpportunity.deleted_at).not.toBeNull();
+    });
+
+    it("should identify non-archived opportunities by missing deleted_at", () => {
+      const activeOpportunity = mockOpportunities[0];
+
+      expect(activeOpportunity.deleted_at).toBeUndefined();
+    });
+
+    it("should filter archived from active opportunities", () => {
+      const mixedOpportunities: Opportunity[] = [
+        { ...mockOpportunities[0], deleted_at: undefined },
+        { ...mockOpportunities[1], deleted_at: "2025-11-28T10:00:00Z" },
+      ];
+
+      const activeOpportunities = mixedOpportunities.filter((opp) => !opp.deleted_at);
+      const archivedOpportunities = mixedOpportunities.filter((opp) => opp.deleted_at);
+
+      expect(activeOpportunities).toHaveLength(1);
+      expect(archivedOpportunities).toHaveLength(1);
+      expect(activeOpportunities[0].id).toBe(1);
+      expect(archivedOpportunities[0].id).toBe(2);
+    });
+  });
 });

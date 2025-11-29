@@ -13,3 +13,11 @@ export {
   sanitizeCsvValue,
 } from "./csvUploadValidator";
 export { getAvatarUrl, getInitials } from "./avatar.utils";
+export {
+  levenshteinDistance,
+  findSimilarOpportunities,
+  hasSimilarOpportunity,
+  type SimilarOpportunity,
+  type FindSimilarParams,
+  type SimilarityCheckResult,
+} from "./levenshtein";
