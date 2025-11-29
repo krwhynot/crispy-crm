@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-28 (TODO-001a, TODO-001b, TODO-045, TODO-053 completed)
+**Last Updated:** 2025-11-29 (TODO-001a, TODO-001b, TODO-002, TODO-045, TODO-053 completed)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -110,37 +110,55 @@ These items block other work or are foundational to the system.
 
 #### TODO-002: Contact Organization Enforcement
 - **PRD Reference:** Section 4.2, MVP #18
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🔴 P0
+- **Completed:** 2025-11-28
 - **Description:** Enforce `organization_id` as required field - block orphan contact creation
 - **Tasks:**
-  - [ ] Update database schema: `organization_id` NOT NULL constraint
-  - [ ] Update Zod schema validation
-  - [ ] Update ContactCreate form to require organization selection
-  - [ ] Add validation error messages (via Zod `.refine()` or custom error map)
-  - [ ] Handle edge cases (what happens on import?)
+  - [x] Update database schema: `organization_id` NOT NULL constraint
+  - [x] Update Zod schema validation
+  - [x] Update ContactCreate form to require organization selection
+  - [x] Add validation error messages (via Zod `.refine()` or custom error map)
+  - [x] Handle edge cases (what happens on import?) - See TODO-052 notes
 - **Constitution Compliance:**
-  - P5: Form defaults from `contactCreateSchema.partial().parse({})`
-- **Acceptance Criteria:** Cannot create contact without organization; clear error message shown
+  - P5: Form defaults from `contactBaseSchema.partial().parse({})` ✅ Verified
+- **Implementation Notes:**
+  - Migration file: `supabase/migrations/20251129030358_contact_organization_id_not_null.sql`
+  - Backward compatibility: Creates "Unknown Organization" for any existing orphan contacts
+  - Schema: `contactBaseSchema` now requires `organization_id` with clear error messages
+  - UI: `ContactPositionTab.tsx` shows "Organization *" label with `isRequired` prop
+  - Test: Updated `ContactCreate.test.tsx` to verify validation rejects missing organization
+- **Acceptance Criteria:** Cannot create contact without organization; clear error message shown ✅
 - **Blocks:** TODO-003, TODO-052
 
 #### TODO-052: Contact Import Organization Handling
 - **PRD Reference:** Section 4.2, MVP #18 (edge case)
-- **Status:** ⬜ TODO
+- **Status:** 🔧 In Progress (4/5 tasks complete)
 - **Priority:** 🟡 P2
-- **Depends On:** TODO-002
-- **Effort:** M (2 days)
+- **Depends On:** TODO-002 ✅
+- **Effort:** S (already mostly implemented)
 - **Deferrable:** Yes - can defer to post-MVP if CSV import not critical path
 - **Description:** Handle organization requirement during CSV contact import
 - **Tasks:**
-  - [ ] Update CSV import to require organization_id column OR organization_name for lookup
-  - [ ] Add validation: reject rows missing organization reference (via Zod schema)
-  - [ ] Add organization lookup by name (create if not exists, or match existing)
-  - [ ] Show import preview with organization assignments
-  - [ ] Add "Skip rows without organization" option
+  - [x] Update CSV import to require organization_name for lookup
+  - [x] Add validation: reject rows missing organization reference (via Zod schema)
+  - [x] Add organization lookup by name (create if not exists, or match existing)
+  - [ ] Show import preview with organization assignments (minor UI enhancement)
+  - [~] Add "Skip rows without organization" option - DECISION: Rejected - org is required, rows should fail
+- **Implementation Notes:**
+  - `importContactSchema` (contacts.ts:175-307) already requires `organization_name`:
+    ```typescript
+    organization_name: z
+      .string({ required_error: "Organization name is required" })
+      .trim()
+      .min(1, { message: "Organization name is required" }),
+    ```
+  - `useContactImport.tsx:48-63` has `getOrganizations()` that creates org if not exists
+  - `useContactImport.tsx:233` assigns `organization_id: organization?.id`
+  - Only remaining task: UI preview showing organization assignments
 - **Constitution Compliance:**
-  - P5: Import preview form defaults from `contactImportSchema.partial().parse({})`
-  - P4: CSV row validation via Zod schema at import boundary
+  - P5: Import preview form defaults from `contactImportSchema.partial().parse({})` ✅
+  - P4: CSV row validation via Zod schema at import boundary ✅
 - **Acceptance Criteria:** CSV import enforces organization; clear error on missing org; preview shows assignments
 - **Testability:** Integration: Import CSV without org column → error; with org column → success
 

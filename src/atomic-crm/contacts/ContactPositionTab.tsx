@@ -15,7 +15,12 @@ export const ContactPositionTab = () => {
       <TextInput source="title" helperText={false} />
       <TextInput source="department" label="Department" helperText={false} />
       <div className="space-y-2">
-        <ReferenceInput source="organization_id" reference="organizations" label="Organization">
+        <ReferenceInput
+          source="organization_id"
+          reference="organizations"
+          label="Organization *"
+          isRequired
+        >
           <AutocompleteOrganizationInput />
         </ReferenceInput>
         <CreateInDialogButton
