@@ -12,6 +12,8 @@ interface KPICardProps {
   subtitle?: string;
   /** Visual variant for styling (PRD Section 9.2.1 - amber styling for stale deals) */
   variant?: "default" | "warning" | "success" | "destructive";
+  /** Click handler for navigation (PRD Section 9.2.1 - KPIs link to filtered views) */
+  onClick?: () => void;
 }
 
 export function KPICard({
@@ -22,6 +24,7 @@ export function KPICard({
   icon: Icon,
   subtitle,
   variant = "default",
+  onClick,
 }: KPICardProps) {
   const trendColor =
     trend === "up"
@@ -57,8 +60,30 @@ export function KPICard({
 
   const styles = variantStyles[variant];
 
+  const isClickable = Boolean(onClick);
+
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (onClick && (event.key === "Enter" || event.key === " ")) {
+      event.preventDefault();
+      onClick();
+    }
+  };
+
   return (
-    <Card className={cn("group cursor-default", styles.card)}>
+    <Card
+      className={cn(
+        "group",
+        isClickable
+          ? "cursor-pointer hover:ring-2 hover:ring-primary/20 focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:outline-none"
+          : "cursor-default",
+        styles.card
+      )}
+      onClick={onClick}
+      onKeyDown={handleKeyDown}
+      role={isClickable ? "button" : undefined}
+      tabIndex={isClickable ? 0 : undefined}
+      aria-label={isClickable ? `${title}: ${value}. Click to view details.` : undefined}
+    >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         {Icon && (

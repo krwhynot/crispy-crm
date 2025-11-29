@@ -1,5 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { useGetList } from "ra-core";
+import { useNavigate } from "react-router-dom";
 import { TrendingUp, Activity, AlertCircle, Clock } from "lucide-react";
 import { KPICard } from "../components/KPICard";
 import { ChartWrapper } from "../components/ChartWrapper";
@@ -38,6 +39,51 @@ interface ActivityRecord {
 
 export default function OverviewTab() {
   const { filters } = useGlobalFilters();
+  const navigate = useNavigate();
+
+  // KPI click handlers - navigate to filtered list views (PRD Section 9.2.1)
+  const handleTotalOpportunitiesClick = useCallback(() => {
+    // Navigate to opportunities list showing all active opportunities
+    const params = new URLSearchParams();
+    params.set("filter", JSON.stringify({ "deleted_at@is": null }));
+    navigate(`/opportunities?${params.toString()}`);
+  }, [navigate]);
+
+  const handleActivitiesClick = useCallback(() => {
+    // Navigate to activities list filtered to this week
+    const params = new URLSearchParams();
+    const weekAgo = new Date();
+    weekAgo.setDate(weekAgo.getDate() - 7);
+    params.set(
+      "filter",
+      JSON.stringify({
+        "created_at@gte": weekAgo.toISOString(),
+      })
+    );
+    navigate(`/activities?${params.toString()}`);
+  }, [navigate]);
+
+  const handleStaleLeadsClick = useCallback(() => {
+    // Navigate to opportunities filtered to new_lead stage (stale leads)
+    const params = new URLSearchParams();
+    params.set(
+      "filter",
+      JSON.stringify({
+        stage: "new_lead",
+        "deleted_at@is": null,
+      })
+    );
+    params.set("stale", "true"); // Custom flag for stale filtering
+    navigate(`/opportunities?${params.toString()}`);
+  }, [navigate]);
+
+  const handleStaleDealsClick = useCallback(() => {
+    // Navigate to opportunities showing all stale deals (exceeding stage thresholds)
+    const params = new URLSearchParams();
+    params.set("filter", JSON.stringify({ "deleted_at@is": null }));
+    params.set("stale", "true"); // Custom flag for stale filtering
+    navigate(`/opportunities?${params.toString()}`);
+  }, [navigate]);
 
   // Fetch opportunities
   const { data: opportunities = [], isPending: opportunitiesPending } = useGetList<Opportunity>(
@@ -263,6 +309,7 @@ export default function OverviewTab() {
             trend={kpis.opportunityTrend}
             icon={TrendingUp}
             subtitle="Active opportunities in pipeline"
+            onClick={handleTotalOpportunitiesClick}
           />
           <KPICard
             title="Activities This Week"
@@ -271,6 +318,7 @@ export default function OverviewTab() {
             trend={kpis.activityTrend}
             icon={Activity}
             subtitle="Calls, emails, meetings logged"
+            onClick={handleActivitiesClick}
           />
           <KPICard
             title="Stale Leads"
@@ -279,6 +327,7 @@ export default function OverviewTab() {
             trend="neutral"
             icon={AlertCircle}
             subtitle="New leads with no activity in 7+ days"
+            onClick={handleStaleLeadsClick}
           />
           {/* KPI #4: Stale Deals with amber/warning styling (PRD Section 9.2.1) */}
           <KPICard
@@ -289,6 +338,7 @@ export default function OverviewTab() {
             icon={Clock}
             subtitle="Deals exceeding stage thresholds"
             variant={kpis.staleDeals > 0 ? "warning" : "default"}
+            onClick={handleStaleDealsClick}
           />
         </div>
       )}

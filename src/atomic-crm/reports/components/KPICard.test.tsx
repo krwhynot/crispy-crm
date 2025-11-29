@@ -1,5 +1,6 @@
 // src/atomic-crm/reports/components/KPICard.test.tsx
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { KPICard } from "./KPICard";
 import { TrendingUp, TrendingDown } from "lucide-react";
 
@@ -25,5 +26,101 @@ describe("KPICard", () => {
 
     const changeElement = screen.getByText("-10%");
     expect(changeElement).toHaveClass("text-destructive");
+  });
+
+  describe("onClick navigation (PRD Section 9.2.1)", () => {
+    it("calls onClick when card is clicked", async () => {
+      const handleClick = vi.fn();
+      render(
+        <KPICard
+          title="Clickable KPI"
+          value="100"
+          icon={TrendingUp}
+          onClick={handleClick}
+        />
+      );
+
+      const card = screen.getByRole("button", { name: /Clickable KPI: 100/i });
+      await userEvent.click(card);
+
+      expect(handleClick).toHaveBeenCalledTimes(1);
+    });
+
+    it("calls onClick on Enter key press", () => {
+      const handleClick = vi.fn();
+      render(
+        <KPICard
+          title="Keyboard KPI"
+          value="50"
+          icon={TrendingUp}
+          onClick={handleClick}
+        />
+      );
+
+      const card = screen.getByRole("button", { name: /Keyboard KPI: 50/i });
+      fireEvent.keyDown(card, { key: "Enter" });
+
+      expect(handleClick).toHaveBeenCalledTimes(1);
+    });
+
+    it("calls onClick on Space key press", () => {
+      const handleClick = vi.fn();
+      render(
+        <KPICard
+          title="Spacebar KPI"
+          value="25"
+          icon={TrendingUp}
+          onClick={handleClick}
+        />
+      );
+
+      const card = screen.getByRole("button", { name: /Spacebar KPI: 25/i });
+      fireEvent.keyDown(card, { key: " " });
+
+      expect(handleClick).toHaveBeenCalledTimes(1);
+    });
+
+    it("has cursor-pointer class when clickable", () => {
+      const handleClick = vi.fn();
+      render(
+        <KPICard
+          title="Pointer KPI"
+          value="75"
+          icon={TrendingUp}
+          onClick={handleClick}
+        />
+      );
+
+      const card = screen.getByRole("button", { name: /Pointer KPI: 75/i });
+      expect(card).toHaveClass("cursor-pointer");
+    });
+
+    it("does not have button role when not clickable", () => {
+      render(
+        <KPICard
+          title="Static KPI"
+          value="200"
+          icon={TrendingUp}
+        />
+      );
+
+      expect(screen.queryByRole("button")).not.toBeInTheDocument();
+      expect(screen.getByText("Static KPI")).toBeInTheDocument();
+    });
+
+    it("is keyboard focusable when clickable", () => {
+      const handleClick = vi.fn();
+      render(
+        <KPICard
+          title="Focusable KPI"
+          value="150"
+          icon={TrendingUp}
+          onClick={handleClick}
+        />
+      );
+
+      const card = screen.getByRole("button", { name: /Focusable KPI: 150/i });
+      expect(card).toHaveAttribute("tabIndex", "0");
+    });
   });
 });
