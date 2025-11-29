@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-28 (TODO-013 completed - 4px visual decay indicator bars in PrincipalPipelineTable)
+**Last Updated:** 2025-11-28 (TODO-011c completed - SampleStatusBadge component with workflow progression UI and PATCH integration)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -429,11 +429,11 @@ Essential features with no critical dependencies.
 
 #### TODO-011: Sample Tracking Workflow (PARENT - See subtasks below)
 - **PRD Reference:** Section 4.4, MVP #4
-- **Status:** 🔧 In Progress (2/4 subtasks complete)
+- **Status:** 🔧 In Progress (3/4 subtasks complete)
 - **Priority:** 🟠 P1
 - **Depends On:** TODO-010
 - **Description:** Implement full sample status workflow UI
-- **Subtasks:** TODO-011a ✅, TODO-011b ✅, TODO-011c, TODO-011d
+- **Subtasks:** TODO-011a ✅, TODO-011b ✅, TODO-011c ✅, TODO-011d
 - **Acceptance Criteria:** Can log sample with status; can update status through workflow; reminders work
 
 #### TODO-011a: Sample Status Schema & Validation
@@ -490,20 +490,28 @@ Essential features with no critical dependencies.
 
 #### TODO-011c: Sample Status Workflow UI
 - **PRD Reference:** Section 4.4, MVP #4
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟠 P1
 - **Depends On:** TODO-011b
 - **Effort:** M (2 days)
+- **Completed:** 2025-11-28
 - **Description:** Implement status state machine with UI progression
 - **Tasks:**
-  - [ ] Implement status workflow UI: Sent → Received → Feedback Given
-  - [ ] Add feedback options dropdown: Positive, Negative, Pending, No Response
-  - [ ] Create status update action (PATCH to activities)
-  - [ ] Add visual status indicators (badges with semantic colors)
+  - [x] Implement status workflow UI: Sent → Received → Feedback Pending → Feedback Received
+  - [x] Add visual workflow stepper showing all 4 stages with progression
+  - [x] Create status update action (PATCH to activities via React Admin `useUpdate`)
+  - [x] Add visual status indicators (badges with semantic colors per P8)
 - **Constitution Compliance:**
-  - P8: Status badge colors: sent=`--muted`, received=`--success`, pending=`--warning`, feedback=`--primary`
-  - Validate with `npm run validate:colors` after implementation
-- **Acceptance Criteria:** Can progress sample through status workflow; status changes persist
+  - P8: Status badge colors: sent=`bg-muted`, received=`bg-success`, pending=`bg-warning`, feedback=`bg-primary` ✅
+  - Validated with `npm run validate:colors` ✅
+- **Implementation Notes:**
+  - Component file: `src/atomic-crm/components/SampleStatusBadge.tsx`
+  - Storybook: `src/atomic-crm/components/SampleStatusBadge.stories.tsx`
+  - Exports: `SampleStatusBadge`, `SampleStatusStepper`, `SAMPLE_STATUS_WORKFLOW`, `SAMPLE_STATUS_CONFIG`
+  - Features: Read-only badge, interactive popover with stepper, direct status selection, PATCH integration
+  - Uses React Admin `useUpdate` hook for status changes via `unifiedDataProvider`
+  - 44px touch targets on all interactive elements (WCAG AA compliant)
+- **Acceptance Criteria:** Can progress sample through status workflow; status changes persist ✅
 - **Testability:** E2E: Create sample → update status → verify badge color and text changes
 
 #### TODO-011d: Sample Tracking Views & Filters
@@ -686,10 +694,10 @@ Important features that can be worked in parallel.
 
 #### TODO-022: Hybrid Duplicate Prevention (PARENT - See subtasks below)
 - **PRD Reference:** Section 10.4, MVP #13, #30
-- **Status:** ⬜ TODO
+- **Status:** 🔧 In Progress (1/2 subtasks complete)
 - **Priority:** 🟡 P2
 - **Description:** Block exact duplicates, warn on fuzzy matches
-- **Subtasks:** TODO-022a, TODO-022b
+- **Subtasks:** TODO-022a ✅, TODO-022b
 - **Acceptance Criteria:** Exact duplicates blocked; similar names show warning but allow creation
 
 #### TODO-022a: Exact Match Detection & Hard Block
@@ -1348,11 +1356,12 @@ Polish items and technical cleanup.
 - **Other remaining items:** 5 (TODO-052 Import Handling, etc.)
 - **Constitution Compliance Audits:** 1 (TODO-055 DataProvider Audit)
 
-### 🔧 Partial/In Progress: 2 items
-- **TODO-011:** Sample Tracking Workflow (2/4 subtasks complete - TODO-011a ✅, TODO-011b ✅)
+### 🔧 Partial/In Progress: 3 items
+- **TODO-011:** Sample Tracking Workflow (3/4 subtasks complete - TODO-011a ✅, TODO-011b ✅, TODO-011c ✅)
+- **TODO-022:** Hybrid Duplicate Prevention (1/2 subtasks complete - TODO-022a ✅)
 - **TODO-052:** Contact Import Organization Handling (4/5 tasks complete)
 
-### ✅ Done: 22 items (completed 2025-11-28/29)
+### ✅ Done: 24 items (completed 2025-11-28/29)
 - **TODO-001:** Pipeline Stage Migration (3/3 subtasks ✅)
   - TODO-001a: Pipeline DB Migration
   - TODO-001b: Pipeline Constants & Schema Update
@@ -1371,8 +1380,10 @@ Polish items and technical cleanup.
 - **TODO-010:** QuickLogForm - All 13 Activity Types (grouped dropdown, P5/P8 compliant)
 - **TODO-011a:** Sample Status Schema & Validation (sampleStatusSchema, superRefine conditional validation)
 - **TODO-011b:** Sample Form Fields UI (conditional sample_status dropdown in QuickLogForm)
+- **TODO-011c:** Sample Status Workflow UI (SampleStatusBadge component with progression, PATCH integration)
 - **TODO-012:** Per-Stage Stale Thresholds (stalenessCalculation.ts, 35 unit tests)
 - **TODO-013:** Visual Decay Indicators (4px leading edge bars, semantic colors)
+- **TODO-022a:** Exact Match Duplicate Detection (checkExactDuplicate utility, 9 unit tests)
 - **TODO-044:** RBAC Foundation (useUserRole hook)
 - **TODO-045:** Pre-Sprint 1 Cleanup - Baseline verification complete
 - **TODO-053:** Semantic Color Validation in CI
@@ -1381,8 +1392,8 @@ Polish items and technical cleanup.
 ### Decomposed Items Breakdown
 - **TODO-001** → 3 subtasks (001a ✅, 001b ✅, 001c ✅) - Pipeline Migration **COMPLETE**
 - **TODO-004** → 3 subtasks (004a ✅, 004b ✅, 004c ✅) - Win/Loss Reasons **COMPLETE**
-- **TODO-011** → 4 subtasks (011a ✅, 011b ✅, 011c, 011d) - Sample Tracking (2/4 complete)
-- **TODO-022** → 2 subtasks (022a, 022b) - Duplicate Prevention
+- **TODO-011** → 4 subtasks (011a ✅, 011b ✅, 011c ✅, 011d) - Sample Tracking (3/4 complete)
+- **TODO-022** → 2 subtasks (022a ✅, 022b) - Duplicate Prevention (1/2 complete)
 - **TODO-042** → 4 subtasks (042a, 042b, 042c, 042d) - Email Digest
 - **TODO-043** → 4 subtasks (043a, 043b, 043c, 043d) - Authorization
 
@@ -1416,7 +1427,7 @@ TODO-010 (QuickLogForm 13 Types) ✅
     └── TODO-011 (Sample Tracking Workflow) 🔧
         └── TODO-011a (Schema & Validation) ✅
             └── TODO-011b (Form Fields UI) ✅
-                └── TODO-011c (Workflow UI)
+                └── TODO-011c (Workflow UI) ✅
                     └── TODO-011d (Views & Filters)
 
 TODO-012 (Per-Stage Stale Thresholds)

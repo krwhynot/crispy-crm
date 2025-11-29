@@ -1,13 +1,27 @@
 import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
-import { SaveButton } from "@/components/admin/form";
 import { FormToolbar } from "../layout/FormToolbar";
 import { OpportunityInputs } from "./forms/OpportunityInputs";
 import { opportunitySchema } from "../validation/opportunities";
+import { OpportunityCreateSaveButton } from "./components/OpportunityCreateSaveButton";
+import { SimilarOpportunitiesDialog } from "./components/SimilarOpportunitiesDialog";
+import { useSimilarOpportunityCheck } from "./hooks/useSimilarOpportunityCheck";
 
 const OpportunityCreate = () => {
   const { identity } = useGetIdentity();
+
+  // Fuzzy match warning system (Levenshtein threshold: 3)
+  const {
+    checkForSimilar,
+    showDialog,
+    closeDialog,
+    confirmCreate,
+    proposedName,
+    similarOpportunities,
+    hasConfirmed,
+    resetConfirmation,
+  } = useSimilarOpportunityCheck();
 
   // Generate defaults from schema, then merge with identity-specific values
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
@@ -33,7 +47,11 @@ const OpportunityCreate = () => {
                 <FormToolbar>
                   <div className="flex flex-row gap-2 justify-end">
                     <CancelButton />
-                    <SaveButton label="Create Opportunity" />
+                    <OpportunityCreateSaveButton
+                      checkForSimilar={checkForSimilar}
+                      hasConfirmed={hasConfirmed}
+                      resetConfirmation={resetConfirmation}
+                    />
                   </div>
                 </FormToolbar>
               </CardContent>
@@ -41,6 +59,15 @@ const OpportunityCreate = () => {
           </Form>
         </div>
       </div>
+
+      {/* Similar Opportunities Warning Dialog */}
+      <SimilarOpportunitiesDialog
+        open={showDialog}
+        onClose={closeDialog}
+        onConfirm={confirmCreate}
+        proposedName={proposedName}
+        similarOpportunities={similarOpportunities}
+      />
     </CreateBase>
   );
 };
