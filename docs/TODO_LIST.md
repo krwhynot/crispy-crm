@@ -1,9 +1,10 @@
 # Crispy-CRM MVP TODO List
 
 **Generated From:** PRD v1.20 (2025-11-28)
-**Total MVP Blockers:** 57 items
+**Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
 **Last Updated:** 2025-11-28
+**Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
 
@@ -36,6 +37,10 @@ This document tracks all MVP blocking features that must be completed before lau
 These items block other work or are foundational to the system.
 
 ### Database & Schema
+
+> **Engineering Constitution Note:** All migrations must follow `YYYYMMDDHHMMSS` format (§9).
+> Database utilities must access data via `unifiedDataProvider` pattern (§2).
+> Form defaults must derive from Zod schemas (§5).
 
 #### TODO-001: Pipeline Stage Migration (PARENT - See subtasks below)
 - **PRD Reference:** Section 5.1, MVP #46
@@ -116,10 +121,13 @@ These items block other work or are foundational to the system.
 - **Description:** Handle organization requirement during CSV contact import
 - **Tasks:**
   - [ ] Update CSV import to require organization_id column OR organization_name for lookup
-  - [ ] Add validation: reject rows missing organization reference
+  - [ ] Add validation: reject rows missing organization reference (via Zod schema)
   - [ ] Add organization lookup by name (create if not exists, or match existing)
   - [ ] Show import preview with organization assignments
   - [ ] Add "Skip rows without organization" option
+- **Constitution Compliance:**
+  - P5: Import preview form defaults from `contactImportSchema.partial().parse({})`
+  - P4: CSV row validation via Zod schema at import boundary
 - **Acceptance Criteria:** CSV import enforces organization; clear error on missing org; preview shows assignments
 - **Testability:** Integration: Import CSV without org column → error; with org column → success
 
@@ -170,10 +178,13 @@ These items block other work or are foundational to the system.
 - **Description:** Create modal that appears when closing opportunities
 - **Tasks:**
   - [ ] Create `CloseOpportunityModal.tsx` component
-  - [ ] Implement win reasons dropdown (Relationship, Product quality, Price competitive, Distributor preference, Other)
-  - [ ] Implement loss reasons dropdown (Price too high, No distributor authorization, Competitor relationship, Product not a fit, Timing/budget, Other)
+  - [ ] Implement win reasons dropdown using `SelectInput` (react-admin) or shadcn `Select`
+  - [ ] Implement loss reasons dropdown using `SelectInput` (react-admin) or shadcn `Select`
   - [ ] Add conditional "Other" free-text field
   - [ ] Block save without reason selection (disabled submit button)
+- **Constitution Compliance:**
+  - P5: Form defaults from `closeOpportunitySchema.partial().parse({})`
+  - P7: Use react-admin `SelectInput` or shadcn/ui `Select` with RHF integration
 - **Acceptance Criteria:** Modal appears on close action; submit disabled until reason selected
 - **Testability:** E2E: Click close → modal appears; select reason → submit enabled; skip reason → submit disabled
 
@@ -252,9 +263,11 @@ Essential features with no critical dependencies.
 - **Tasks:**
   - [ ] Add stale deals calculation to `useKPIMetrics` hook
   - [ ] Use per-stage thresholds from Section 6.3
-  - [ ] Add amber (`warning`) styling when count > 0
+  - [ ] Add `bg-warning` (--warning CSS var) styling when count > 0
   - [ ] Add click action → Opportunities list with stale filter
   - [ ] Add tooltip explaining "Deals exceeding stage SLA"
+- **Constitution Compliance:**
+  - P8: Use semantic color token `bg-warning` (--warning), validate with `npm run validate:colors`
 - **Acceptance Criteria:** 4th KPI shows stale count; amber when > 0; click navigates to filtered list
 
 #### TODO-008: Recent Activity Feed Component
@@ -279,9 +292,11 @@ Essential features with no critical dependencies.
 - **Tasks:**
   - [ ] Create `MyPerformanceWidget.tsx` component
   - [ ] Calculate: Activities This Week, Deals Moved Forward, Tasks Completed, Open Opportunities
-  - [ ] Add trend arrows (green up/red down vs previous week)
+  - [ ] Add trend arrows using `text-success` (--success) for up / `text-destructive` (--destructive) for down
   - [ ] Add click-through to detailed personal report
   - [ ] Position in dashboard sidebar
+- **Constitution Compliance:**
+  - P8: Trend colors use semantic tokens `--success` / `--destructive`, not raw green/red
 - **Acceptance Criteria:** Widget shows 4 personal metrics with week-over-week trends
 
 ### Activities & Quick Logging
@@ -300,7 +315,10 @@ Essential features with no critical dependencies.
     - Sales: Trade Show, Social
     - Samples: Sample
   - [ ] Update form validation for each type
-  - [ ] Add appropriate icons for each type
+  - [ ] Add appropriate icons for each type (colors use semantic tokens)
+- **Constitution Compliance:**
+  - P5: Form defaults from `activitySchema.partial().parse({})` for each type variant
+  - P8: Icon colors use semantic tokens (`--primary`, `--muted-foreground`)
 - **Acceptance Criteria:** All 13 types available in quick logger; grouped for easy selection
 - **Enables:** Sample tracking (MVP #4)
 
@@ -337,8 +355,11 @@ Essential features with no critical dependencies.
 - **Tasks:**
   - [ ] Add conditional form section that appears when type='sample'
   - [ ] Build sample-specific fields: product sampled (dropdown), recipient (text), follow-up date (date picker)
-  - [ ] Wire fields to Zod schema and form state
-  - [ ] Add field-level validation error messages
+  - [ ] Form defaults from `sampleActivitySchema.partial().parse({})` - no hardcoded defaults
+  - [ ] Add field-level validation error messages (via Zod schema)
+- **Constitution Compliance:**
+  - P5: `defaultValues = sampleActivitySchema.partial().parse({})`, not hardcoded
+  - P4: Conditional validation via Zod `.superRefine()` for sample_status requirement
 - **Acceptance Criteria:** Sample form fields appear/hide based on activity type selection
 - **Testability:** E2E: Select sample type → fields appear; select other type → fields hidden
 
@@ -354,6 +375,9 @@ Essential features with no critical dependencies.
   - [ ] Add feedback options dropdown: Positive, Negative, Pending, No Response
   - [ ] Create status update action (PATCH to activities)
   - [ ] Add visual status indicators (badges with semantic colors)
+- **Constitution Compliance:**
+  - P8: Status badge colors: sent=`--muted`, received=`--success`, pending=`--warning`, feedback=`--primary`
+  - Validate with `npm run validate:colors` after implementation
 - **Acceptance Criteria:** Can progress sample through status workflow; status changes persist
 - **Testability:** E2E: Create sample → update status → verify badge color and text changes
 
@@ -400,11 +424,13 @@ Essential features with no critical dependencies.
 - **Tasks:**
   - [ ] Implement Row Leading Edge pattern (4px vertical color bar)
   - [ ] Color logic based on days since activity:
-    - Green (`bg-success`): 0-7 days
-    - Amber (`bg-warning`): 8-14 days
-    - Red (`bg-destructive`): 14+ days
+    - Green (`bg-success` / --success): 0-7 days
+    - Amber (`bg-warning` / --warning): 8-14 days
+    - Red (`bg-destructive` / --destructive): 14+ days
   - [ ] Add hover tooltip: "Last activity: X days ago"
   - [ ] Apply to `sample_visit_offered` stage specifically
+- **Constitution Compliance:**
+  - P8: ALL colors use semantic tokens. Run `npm run validate:colors` after implementation
 - **Acceptance Criteria:** Pipeline rows show colored indicator bar; tooltip shows days
 
 ---
@@ -459,7 +485,10 @@ Important features that can be worked in parallel.
 - **Tasks:**
   - [ ] Add email field to organization form
   - [ ] Field exists in schema/export but missing from UI
-  - [ ] Add email validation
+  - [ ] Add email validation to `organizationSchema`: `z.string().email().optional()`
+- **Constitution Compliance:**
+  - P5: Form defaults from `organizationSchema.partial().parse({})`
+  - P4: Email validation in Zod schema, not inline
 - **Acceptance Criteria:** Can enter and save organization email
 
 #### TODO-018: Soft Duplicate Org Warning
@@ -530,10 +559,13 @@ Important features that can be worked in parallel.
 - **Description:** Detect and block exact duplicate opportunities (MVP-critical)
 - **Tasks:**
   - [ ] Create duplicate detection utility: checkExactDuplicate(principal_id, customer_id, product_id)
-  - [ ] Query existing opportunities for exact match on create/edit
+  - [ ] Query via `dataProvider.getList('opportunities', { filter })` - NOT direct Supabase client
   - [ ] Hard block with error message: "Duplicate opportunity exists"
   - [ ] Add link to existing opportunity in error message
   - [ ] Wire into OpportunityCreate form validation
+- **Constitution Compliance:**
+  - P2: Query through `unifiedDataProvider`, not direct Supabase calls
+  - P1: Return error immediately, no retry logic
 - **Acceptance Criteria:** Cannot create opportunity with identical Principal + Customer + Product combo
 - **Testability:** Unit: checkExactDuplicate returns true for matching IDs; E2E: form shows error on duplicate
 
@@ -607,10 +639,13 @@ Important features that can be worked in parallel.
 - **Priority:** 🟡 P2
 - **Description:** Replace auto-snooze with popover options
 - **Tasks:**
-  - [ ] Create snooze popover component
+  - [ ] Create snooze popover using shadcn/ui `Popover` + `Calendar` components
   - [ ] Options: Tomorrow (9 AM), Next Week (Monday 9 AM), Custom Date
-  - [ ] Update due_date on snooze
+  - [ ] Update due_date on snooze via dataProvider
   - [ ] Show toast: "Task snoozed until [date]"
+- **Constitution Compliance:**
+  - P7: Use shadcn/ui `Popover` and `Calendar` components, not raw HTML
+  - P5: If date picker form exists, defaults from `snoozeSchema.partial().parse({})`
 - **Acceptance Criteria:** Clicking snooze opens popover with date options; confirmation toast shown
 
 #### TODO-028: Task Completion Follow-Up Toast
@@ -633,8 +668,10 @@ Important features that can be worked in parallel.
 - **Description:** Add 4th KPICard to OverviewTab
 - **Tasks:**
   - [ ] Add Stale Deals KPICard to Overview
-  - [ ] Apply amber styling when count > 0
+  - [ ] Apply `bg-warning` (--warning semantic token) styling when count > 0
   - [ ] Use per-stage thresholds from Section 6.3
+- **Constitution Compliance:**
+  - P8: Use `bg-warning` semantic token, not amber/yellow hex codes
 - **Acceptance Criteria:** 4th KPI visible on reports overview; amber when stale count > 0
 
 #### TODO-030: Reports KPI Click Navigation
@@ -703,10 +740,14 @@ Important features that can be worked in parallel.
 - **Priority:** 🟡 P2
 - **Description:** Implement 6-button mobile quick action bar
 - **Tasks:**
-  - [ ] Create mobile quick action component
+  - [ ] Create mobile quick action component using shadcn/ui `Button` with 44px touch targets (WCAG)
   - [ ] Buttons: Log Check-In, Log Sample Drop, Log Call, Log Meeting/Visit, Quick Note, Complete Task
   - [ ] Optimize for one-tap access
   - [ ] Position at bottom of mobile screen
+- **Constitution Compliance:**
+  - P7: Use shadcn/ui `Button` components with 44px minimum touch targets
+  - P5: Each quick action form uses respective `schema.partial().parse({})` for defaults
+  - P8: Button icon colors use semantic tokens (`--primary`, `--muted-foreground`)
 - **Acceptance Criteria:** 6 quick action buttons visible on mobile; each opens appropriate form
 
 ### Notifications & Automation
@@ -729,8 +770,11 @@ Important features that can be worked in parallel.
   - [ ] Create Edge Function: `supabase/functions/daily-digest/index.ts`
   - [ ] Set up pg_cron extension in database (if not exists)
   - [ ] Configure cron schedule for 7 AM (handle timezones)
-  - [ ] Add basic logging and error handling
+  - [ ] Add basic logging and error handling (log failures to Sentry, skip user, continue)
   - [ ] Test function invocation manually
+- **Constitution Compliance:**
+  - P1: Error handling is fail-fast per user. Log failures, skip user, continue to next. NO retry queues.
+  - P2 Exception: Edge Functions run server-side and may use direct Supabase SQL (documented exception)
 - **Acceptance Criteria:** Edge Function deploys and can be triggered; cron schedule configured
 - **Testability:** Integration: Manual invoke returns 200; cron job visible in pg_cron
 
@@ -829,11 +873,15 @@ Important features that can be worked in parallel.
 - **Effort:** M (2 days)
 - **Description:** Implement dual-level authorization resolution (product → org fallback)
 - **Tasks:**
+  - [ ] Create PostgreSQL VIEW for efficient authorization lookup (server-side resolution)
   - [ ] Create utility: `checkAuthorization(distributor_id, principal_id, product_id?)`
   - [ ] Logic: If product_id provided AND product-level record exists → use product-level
   - [ ] Otherwise → derive from org-level authorization
   - [ ] Return: { authorized: boolean, source: 'product' | 'org' | 'none', expiration?: Date }
-  - [ ] Add database view for efficient authorization lookup
+  - [ ] Expose view through `dataProvider` for client-side consumption
+- **Constitution Compliance:**
+  - P2: Implement as PostgreSQL VIEW, exposed through `unifiedDataProvider`
+  - Client-side queries through dataProvider, not direct Supabase calls
 - **Acceptance Criteria:** Utility correctly resolves authorization with proper precedence
 - **Testability:** Unit: Product-level override returns 'product'; fallback returns 'org'; no record returns 'none'
 
@@ -958,6 +1006,58 @@ Polish items and technical cleanup.
 
 ## 🧹 Cleanup & Hygiene Tasks
 
+### Constitution Compliance Audits
+
+#### TODO-053: Semantic Color Validation in CI
+- **PRD Reference:** N/A (Engineering Constitution §8)
+- **Status:** ⬜ TODO
+- **Priority:** 🔴 P0
+- **Effort:** XS (0.5 day)
+- **Description:** Add semantic color validation to CI pipeline and pre-commit hooks
+- **Tasks:**
+  - [ ] Add `npm run validate:colors` to TODO-045 baseline verification
+  - [ ] Add to GitHub Actions CI workflow
+  - [ ] Configure pre-commit hook for color validation
+  - [ ] Document color token requirements in CONTRIBUTING.md
+- **Constitution Compliance:**
+  - P8: Enforces semantic color tokens at build time
+- **Acceptance Criteria:** CI fails on hardcoded hex colors; pre-commit warns on violations
+- **Testability:** CI: Introduce hex color → build fails
+
+#### TODO-054: Form Schema Derivation Audit
+- **PRD Reference:** N/A (Engineering Constitution §5)
+- **Status:** ⬜ TODO
+- **Priority:** 🟠 P1
+- **Effort:** S (1 day)
+- **Description:** Audit existing forms for hardcoded defaultValues and refactor to use Zod
+- **Tasks:**
+  - [ ] Search codebase for `defaultValues:` patterns not using `.partial().parse({})`
+  - [ ] Identify all form components with hardcoded defaults
+  - [ ] Refactor each to use `schema.partial().parse({})` pattern
+  - [ ] Add lint rule or code review checklist item
+- **Constitution Compliance:**
+  - P5: Ensures all forms derive defaults from Zod schemas
+- **Acceptance Criteria:** All form defaultValues use schema derivation; no hardcoded defaults
+- **Testability:** Unit: Search for `defaultValues: {` without `.parse()` returns 0 matches
+
+#### TODO-055: DataProvider Access Audit
+- **PRD Reference:** N/A (Engineering Constitution §2)
+- **Status:** ⬜ TODO
+- **Priority:** 🟡 P2
+- **Effort:** S (1 day)
+- **Description:** Find and refactor direct Supabase calls bypassing unifiedDataProvider
+- **Tasks:**
+  - [ ] Search for `supabase.from(` or `supabaseClient.from(` in React components
+  - [ ] Identify legitimate exceptions (Edge Functions, server-side utilities)
+  - [ ] Refactor client-side direct calls to use dataProvider
+  - [ ] Document allowed exceptions in architecture docs
+- **Constitution Compliance:**
+  - P2: Enforces single composable entry point for data access
+- **Acceptance Criteria:** All client-side data access through dataProvider; exceptions documented
+- **Testability:** Grep: `supabase.from` in `src/` returns only documented exceptions
+
+---
+
 #### TODO-045: Pre-Sprint 1 Cleanup
 - **PRD Reference:** N/A (Project Hygiene)
 - **Status:** ⬜ TODO
@@ -1068,12 +1168,13 @@ Polish items and technical cleanup.
 
 ## Summary by Status
 
-### ⬜ TODO (Not Started): 73 items
+### ⬜ TODO (Not Started): 76 items
 - **Original items:** 43
 - **Decomposed subtasks:** 20 (from TODO-001, 004, 011, 022, 042, 043)
 - **Hygiene items:** 2 (TODO-045 Pre-Sprint Cleanup, TODO-046 Pre-Launch Cleanup)
 - **Operational readiness:** 5 (TODO-047 Accessibility, TODO-048 Performance, TODO-049 Monitoring, TODO-050 Docs, TODO-051 Backup)
 - **Other new items:** 3 (TODO-044 RBAC, TODO-052 Import Handling)
+- **Constitution Compliance Audits:** 3 (TODO-053 Color CI, TODO-054 Form Audit, TODO-055 DataProvider Audit)
 
 ### 🔧 Partial/In Progress: 0 items
 ### ✅ Done: 0 items
@@ -1178,6 +1279,12 @@ Each sprint must meet these criteria before items are marked complete:
 - [ ] Linting passes (`npm run lint:check`)
 - [ ] No console errors in browser dev tools
 
+### Engineering Constitution Compliance
+- [ ] Form defaults derived from Zod schema (`schema.partial().parse({})`)
+- [ ] Colors use semantic tokens only (`npm run validate:colors` passes)
+- [ ] Data access through `unifiedDataProvider` (no direct Supabase in components)
+- [ ] Error handling is fail-fast (no retry queues or circuit breakers)
+
 ### Testing
 - [ ] Unit tests pass (`npm test`)
 - [ ] E2E tests pass for affected features (`npm run test:e2e`)
@@ -1206,15 +1313,17 @@ Each sprint must meet these criteria before items are marked complete:
 
 ### Sprint 1 (Week 1-2): Foundation & Security
 - TODO-045: Pre-Sprint 1 Cleanup (XS, 0.5d) ← **Run first:** baseline verification
+- TODO-053: Semantic Color Validation in CI (XS, 0.5d) ← **Constitution enforcement**
 - TODO-001a: Pipeline DB Migration (S, 1d)
 - TODO-001b: Pipeline Constants & Schema (S, 1d)
 - TODO-001c: Pipeline UI & Filter Updates (M, 2d)
 - TODO-002: Contact Org Enforcement (M, 2d)
 - TODO-044: RBAC Foundation (M, 2d) ← Enables role-based features
 - TODO-005: Activity Auto-Cascade Trigger (M, 2d)
-- **Sprint Total:** ~10.5 days | **Risk:** Medium (decomposed TODO-001 reduces risk)
+- **Sprint Total:** ~11 days | **Risk:** Medium (decomposed TODO-001 reduces risk)
 
 ### Sprint 2 (Week 2-4): Dashboard & Win/Loss
+- TODO-054: Form Schema Derivation Audit (S, 1d) ← **Constitution enforcement**
 - TODO-004a: Win/Loss Reason Schema (S, 1d)
 - TODO-004b: Win/Loss Modal Component (M, 2d)
 - TODO-004c: Win/Loss Integration (S, 1d)
@@ -1222,7 +1331,7 @@ Each sprint must meet these criteria before items are marked complete:
 - TODO-007: Dashboard KPI #4 Stale Deals (M, 2d)
 - TODO-008: Recent Activity Feed (M, 2d)
 - TODO-009: My Performance Widget (M, 2d)
-- **Sprint Total:** ~11 days | **Risk:** Medium
+- **Sprint Total:** ~12 days | **Risk:** Medium
 
 ### Sprint 3 (Week 4-6): Activities & Sample Tracking
 - TODO-010: QuickLogForm 13 Types (M, 3d)
@@ -1234,12 +1343,13 @@ Each sprint must meet these criteria before items are marked complete:
 - **Sprint Total:** ~11 days | **Risk:** Medium
 
 ### Sprint 4 (Week 6-8): Stale Detection & Duplicate Prevention
+- TODO-055: DataProvider Access Audit (S, 1d) ← **Constitution enforcement**
 - TODO-012: Per-Stage Stale Thresholds (M, 2d)
 - TODO-013: Visual Decay Indicators (M, 2d)
 - TODO-022a: Exact Match Detection (M, 2d) ← MVP critical
 - TODO-022b: Fuzzy Match Detection (M, 2d)
 - TODO-019: Bulk Owner Reassignment (M, 3d) ← Requires TODO-044
-- **Sprint Total:** ~11 days | **Risk:** Medium
+- **Sprint Total:** ~12 days | **Risk:** Medium
 
 ### Sprint 5 (Week 8-10): Tasks & Reports
 - TODO-025-028: Task Module Items (~5d total)
@@ -1290,3 +1400,4 @@ Each sprint must meet these criteria before items are marked complete:
 *Generated from PRD v1.20 - Last Updated: 2025-11-28*
 *Decomposition Update: 2025-11-28 - Added 14 atomic subtasks for TODO-011, 022, 042, 043*
 *Audit Remediation: 2025-11-28 - Added TODO-001/004 decomposition, TODO-044 (RBAC), TODO-052, Definition of Done, rebalanced sprints*
+*Constitution Compliance: 2025-11-28 - Added TODO-053/054/055, Constitution Compliance sections to 17 TODOs, updated Definition of Done*
