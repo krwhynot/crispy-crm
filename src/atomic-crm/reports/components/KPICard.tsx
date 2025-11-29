@@ -10,6 +10,8 @@ interface KPICardProps {
   trend?: "up" | "down" | "neutral";
   icon?: LucideIcon;
   subtitle?: string;
+  /** Visual variant for styling (PRD Section 9.2.1 - amber styling for stale deals) */
+  variant?: "default" | "warning" | "success" | "destructive";
 }
 
 export function KPICard({
@@ -19,6 +21,7 @@ export function KPICard({
   trend = "neutral",
   icon: Icon,
   subtitle,
+  variant = "default",
 }: KPICardProps) {
   const trendColor =
     trend === "up"
@@ -28,17 +31,45 @@ export function KPICard({
         : "text-muted-foreground";
   const changePrefix = change && change > 0 ? "+" : "";
 
+  // Variant-based styling for border and value color
+  const variantStyles = {
+    default: {
+      card: "",
+      value: "group-hover:text-primary",
+      icon: "group-hover:text-primary",
+    },
+    warning: {
+      card: "border-warning/50 bg-warning/5",
+      value: "text-warning group-hover:text-warning",
+      icon: "text-warning group-hover:text-warning",
+    },
+    success: {
+      card: "border-success/50 bg-success/5",
+      value: "text-success group-hover:text-success",
+      icon: "text-success group-hover:text-success",
+    },
+    destructive: {
+      card: "border-destructive/50 bg-destructive/5",
+      value: "text-destructive group-hover:text-destructive",
+      icon: "text-destructive group-hover:text-destructive",
+    },
+  };
+
+  const styles = variantStyles[variant];
+
   return (
-    <Card className="group cursor-default">
+    <Card className={cn("group cursor-default", styles.card)}>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
         {Icon && (
           <Icon
             className={cn(
-              "h-4 w-4 text-muted-foreground",
+              "h-4 w-4",
+              variant === "default" ? "text-muted-foreground" : "",
               // Icon animation on card hover
               "transition-[color,transform] duration-150 ease-out",
-              "group-hover:text-primary group-hover:scale-110"
+              "group-hover:scale-110",
+              styles.icon
             )}
           />
         )}
@@ -49,7 +80,7 @@ export function KPICard({
             "text-2xl font-bold",
             // Value emphasis on hover
             "transition-colors duration-150 ease-out",
-            "group-hover:text-primary"
+            styles.value
           )}
         >
           {value}

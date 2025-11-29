@@ -2,6 +2,13 @@ import { useState, useEffect, useRef } from "react";
 import { useDataProvider } from "react-admin";
 import { startOfWeek, endOfWeek, startOfDay } from "date-fns";
 import { useCurrentSale } from "./useCurrentSale";
+import {
+  STAGE_STALE_THRESHOLDS,
+  isOpportunityStale,
+} from "@/atomic-crm/utils/stalenessCalculation";
+
+// Re-export for backward compatibility
+export { STAGE_STALE_THRESHOLDS };
 
 /**
  * KPI Metrics for Dashboard Summary Header (PRD v1.9)
@@ -24,19 +31,8 @@ import { useCurrentSale } from "./useCurrentSale";
  * - Uses Promise.allSettled for resilient parallel fetching
  * - Individual metric errors don't fail entire dashboard
  * - Optimistic empty state while loading
+ * - Staleness calculation extracted to shared utility for reuse
  */
-
-/**
- * Per-stage stale thresholds in days (PRD Section 6.3)
- * Closed stages are excluded from staleness calculations
- */
-export const STAGE_STALE_THRESHOLDS: Record<string, number> = {
-  new_lead: 7,
-  initial_outreach: 14,
-  sample_visit_offered: 14,
-  feedback_logged: 21,
-  demo_scheduled: 14,
-};
 
 export interface KPIMetrics {
   openOpportunitiesCount: number;
@@ -59,34 +55,6 @@ const DEFAULT_METRICS: KPIMetrics = {
   activitiesThisWeek: 0,
   staleDealsCount: 0,
 };
-
-/**
- * Calculate if an opportunity is stale based on its stage and last activity date
- */
-function isOpportunityStale(
-  stage: string,
-  lastActivityDate: string | null,
-  today: Date
-): boolean {
-  const threshold = STAGE_STALE_THRESHOLDS[stage];
-
-  // Closed stages are never stale
-  if (threshold === undefined) {
-    return false;
-  }
-
-  // If no activity date, use a large value to mark as stale
-  if (!lastActivityDate) {
-    return true;
-  }
-
-  const lastActivity = new Date(lastActivityDate);
-  const daysSinceActivity = Math.floor(
-    (today.getTime() - lastActivity.getTime()) / (1000 * 60 * 60 * 24)
-  );
-
-  return daysSinceActivity > threshold;
-}
 
 export function useKPIMetrics(): UseKPIMetricsReturn {
   const dataProvider = useDataProvider();

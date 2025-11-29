@@ -20,3 +20,4 @@ export * from "./tasks";
 export * from "./tags";
 export * from "./notes";
 export * from "./segments";
+export * from "./activities";

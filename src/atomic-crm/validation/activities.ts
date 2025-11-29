@@ -11,7 +11,7 @@ export const activityTypeSchema = z.enum([
   "interaction", // Activity linked to an opportunity
 ]);
 
-// Interaction type enum - the specific type of activity
+// Interaction type enum - the specific type of activity (13 types per PRD v1.18)
 export const interactionTypeSchema = z.enum([
   "call",
   "email",
@@ -24,13 +24,23 @@ export const interactionTypeSchema = z.enum([
   "contract_review",
   "check_in",
   "social",
-  "note", // Added for Quick Logger note activities
+  "note",
+  "sample", // Added for sample tracking workflow (PRD §4.4)
+]);
+
+// Sample status enum - workflow states for sample activities
+// Workflow: sent → received → feedback_pending → feedback_received
+export const sampleStatusSchema = z.enum([
+  "sent",
+  "received",
+  "feedback_pending",
+  "feedback_received",
 ]);
 
 // Sentiment enum
 export const sentimentSchema = z.enum(["positive", "neutral", "negative"]);
 
-// Interaction type options for UI components
+// Interaction type options for UI components (13 types per PRD v1.18)
 export const INTERACTION_TYPE_OPTIONS = [
   { value: "call", label: "Call" },
   { value: "email", label: "Email" },
@@ -43,6 +53,16 @@ export const INTERACTION_TYPE_OPTIONS = [
   { value: "contract_review", label: "Contract Review" },
   { value: "check_in", label: "Check In" },
   { value: "social", label: "Social" },
+  { value: "note", label: "Note" },
+  { value: "sample", label: "Sample" },
+] as const;
+
+// Sample status options for UI components
+export const SAMPLE_STATUS_OPTIONS = [
+  { value: "sent", label: "Sent" },
+  { value: "received", label: "Received" },
+  { value: "feedback_pending", label: "Feedback Pending" },
+  { value: "feedback_received", label: "Feedback Received" },
 ] as const;
 
 // Base schema without refinements - can be extended
@@ -75,6 +95,10 @@ const baseActivitiesSchema = z.object({
     .array(z.union([z.string(), z.number()]))
     .optional()
     .nullable(),
+
+  // Sample tracking fields (PRD §4.4)
+  // Only required when type = 'sample', validated via superRefine
+  sample_status: sampleStatusSchema.optional().nullable(),
 
   // System fields
   created_by: z.union([z.string(), z.number()]).optional().nullable(),
@@ -124,6 +148,26 @@ export const activitiesSchema = baseActivitiesSchema.superRefine((data, ctx) => 
       message: "Follow-up date is required when follow-up is enabled",
     });
   }
+
+  // Sample tracking validation (PRD §4.4)
+  // If type is 'sample', sample_status is required
+  if (data.type === "sample" && !data.sample_status) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["sample_status"],
+      message: "Sample status is required for sample activities",
+    });
+  }
+
+  // If type is NOT 'sample', sample_status should not be set
+  // This prevents data inconsistency
+  if (data.type !== "sample" && data.sample_status) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ["sample_status"],
+      message: "Sample status should only be set for sample activities",
+    });
+  }
 });
 
 // Engagement-specific schema (activity_type = "engagement")
@@ -157,6 +201,23 @@ export const engagementsSchema = baseActivitiesSchema
         code: z.ZodIssueCode.custom,
         path: ["follow_up_date"],
         message: "Follow-up date is required when follow-up is enabled",
+      });
+    }
+
+    // Sample tracking validation (PRD §4.4)
+    if (data.type === "sample" && !data.sample_status) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["sample_status"],
+        message: "Sample status is required for sample activities",
+      });
+    }
+
+    if (data.type !== "sample" && data.sample_status) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["sample_status"],
+        message: "Sample status should only be set for sample activities",
       });
     }
   });
@@ -195,6 +256,23 @@ export const interactionsSchema = baseActivitiesSchema
         message: "Follow-up date is required when follow-up is enabled",
       });
     }
+
+    // Sample tracking validation (PRD §4.4)
+    if (data.type === "sample" && !data.sample_status) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["sample_status"],
+        message: "Sample status is required for sample activities",
+      });
+    }
+
+    if (data.type !== "sample" && data.sample_status) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["sample_status"],
+        message: "Sample status should only be set for sample activities",
+      });
+    }
   });
 
 // Type inference
@@ -204,6 +282,8 @@ export type EngagementsInput = z.input<typeof engagementsSchema>;
 export type Engagements = z.infer<typeof engagementsSchema>;
 export type InteractionsInput = z.input<typeof interactionsSchema>;
 export type Interactions = z.infer<typeof interactionsSchema>;
+export type SampleStatus = z.infer<typeof sampleStatusSchema>;
+export type InteractionType = z.infer<typeof interactionTypeSchema>;
 
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where activities validation occurs
