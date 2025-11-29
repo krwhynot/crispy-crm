@@ -2,12 +2,15 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 
 /**
- * Daily Digest Edge Function (v2)
+ * Daily Digest Edge Function (v2.1)
  *
  * Purpose: Generate and send daily activity digest emails to sales reps
  * Runs: Daily via pg_cron at 7 AM server time (UTC)
  *
- * V2 Enhancements:
+ * V2.1 Enhancements:
+ *   - Respects digest_opt_in user preference (only sends to opted-in users)
+ *   - Generates secure opt-out tokens for one-click unsubscribe links
+ *   - Skips empty digests (no actionable items)
  *   - Uses per-stage stale thresholds from PRD Section 6.3
  *   - Includes stale deals count and detail lists
  *   - Delegates to generate_daily_digest_v2() PostgreSQL function
@@ -26,8 +29,37 @@ interface DigestResult {
   success: boolean;
   digestsGenerated: number;
   notificationsCreated: number;
+  skippedEmpty?: number;
+  skippedOptedOut?: number;
   executedAt: string;
   version?: string;
+}
+
+/**
+ * Generates an opt-out URL for the given sales ID
+ * Uses the generate_digest_opt_out_token RPC function
+ */
+async function generateOptOutUrl(salesId: number): Promise<string | null> {
+  try {
+    const { data: token, error } = await supabaseAdmin.rpc(
+      "generate_digest_opt_out_token",
+      { p_sales_id: salesId }
+    );
+
+    if (error || !token) {
+      console.error("Failed to generate opt-out token:", error);
+      return null;
+    }
+
+    // Build the opt-out URL using the Supabase Functions URL
+    const supabaseUrl = Deno.env.get("SUPABASE_URL") ?? "";
+    const optOutUrl = `${supabaseUrl}/functions/v1/digest-opt-out?token=${encodeURIComponent(token)}`;
+
+    return optOutUrl;
+  } catch (err) {
+    console.error("Error generating opt-out URL:", err);
+    return null;
+  }
 }
 
 Deno.serve(async (req) => {

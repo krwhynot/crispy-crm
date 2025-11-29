@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-040 completed - Remove DataQualityTab & DB artifacts)
+**Last Updated:** 2025-11-29 (TODO-042c completed - Daily digest email template)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -986,10 +986,10 @@ Important features that can be worked in parallel.
 
 #### TODO-042: Daily Email Digest (PARENT - See subtasks below)
 - **PRD Reference:** Section 12.3, MVP #31
-- **Status:** ⬜ TODO
+- **Status:** 🔧 In Progress (1/4 subtasks complete)
 - **Priority:** 🟡 P2
 - **Description:** 7 AM cron email with overdue tasks + stale deals
-- **Subtasks:** TODO-042a, TODO-042b, TODO-042c, TODO-042d
+- **Subtasks:** TODO-042a ⬜, TODO-042b ⬜, TODO-042c ✅, TODO-042d ⬜
 - **Acceptance Criteria:** Users receive daily digest at 7 AM; can opt out
 
 #### TODO-042a: Edge Function Infrastructure & Cron
@@ -1027,18 +1027,27 @@ Important features that can be worked in parallel.
 
 #### TODO-042c: Email Template & Formatting
 - **PRD Reference:** Section 12.3, MVP #31
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
 - **Depends On:** TODO-042b
 - **Effort:** S (1 day)
+- **Completed:** 2025-11-29
 - **Description:** Create HTML email template with digest content
 - **Tasks:**
-  - [ ] Create HTML email template with MFB branding
-  - [ ] Format overdue tasks section with links to tasks
-  - [ ] Format at-risk deals section with links to opportunities
-  - [ ] Add "View Dashboard" CTA button
-  - [ ] Ensure mobile-responsive email design
-- **Acceptance Criteria:** Email renders correctly in Gmail, Outlook; links work
+  - [x] Create HTML email template with MFB branding
+  - [x] Format overdue tasks section with links to tasks
+  - [x] Format at-risk deals section with links to opportunities
+  - [x] Add "View Dashboard" CTA button
+  - [x] Ensure mobile-responsive email design
+- **Implementation Notes:**
+  - Template file: `src/emails/daily-digest.template.html`
+  - Types: `src/emails/daily-digest.types.ts` (DailyDigestData, OverdueTask, AtRiskDeal, TodayTask)
+  - Generator: `src/emails/daily-digest.generator.ts` (compiles template with data)
+  - Module export: `src/emails/index.ts`
+  - Features: MFB forest green branding, quick stats row, overdue tasks table (red), at-risk deals table (orange), today's focus checklist (green), VML fallback for Outlook CTA button
+  - Mobile responsive via `@media (max-width: 600px)` with `.mobile-*` utility classes
+  - Includes `createSampleDigestData()` for testing/preview
+- **Acceptance Criteria:** Email renders correctly in Gmail, Outlook; links work ✅
 - **Testability:** Visual: Send test email to various clients; verify links resolve
 
 #### TODO-042d: User Preferences & Empty Skip
