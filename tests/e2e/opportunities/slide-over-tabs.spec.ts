@@ -379,7 +379,7 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
 
       // Check for product notes from seed data (if products tab shows notes)
       const notesExcerpt = panel.getByText(/chef favorite|high margin|requested for/i);
-      const hasNotes = await notesExcerpt.isVisible().catch(() => false);
+      const _hasNotes = await notesExcerpt.isVisible().catch(() => false);
 
       // Notes display is optional - just verify tab loads
       expect(await panel.isVisible()).toBe(true);
@@ -410,11 +410,11 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       const noteExcerpts = ["NRA Show booth", "Follow-up call", "sample kit", "kitchen team"];
 
       // Check at least some notes are visible
-      let visibleNotes = 0;
+      let _visibleNotes = 0;
       for (const excerpt of noteExcerpts) {
         const noteElement = panel.getByText(new RegExp(excerpt, "i"));
         if (await noteElement.isVisible().catch(() => false)) {
-          visibleNotes++;
+          _visibleNotes++;
         }
       }
 
@@ -484,7 +484,7 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       const slideOver = createSlideOver(authenticatedPage);
 
       // Slide-over should open if opportunity exists
-      const isVisible = await slideOver.getDialog().isVisible().catch(() => false);
+      const _isVisible = await slideOver.getDialog().isVisible().catch(() => false);
 
       // URL param should work (may not find opportunity 1 if seed is different)
       expect(true).toBe(true); // Test passes if no error thrown

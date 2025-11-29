@@ -28,10 +28,11 @@ import { QuickLoggerPage } from "../support/poms/QuickLoggerPage";
  */
 
 test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
-  let quickLogger: QuickLoggerPage;
+  // Page object for semantic interactions
+  let _quickLogger: QuickLoggerPage;
 
   test.beforeEach(async ({ authenticatedPage }) => {
-    quickLogger = new QuickLoggerPage(authenticatedPage);
+    _quickLogger = new QuickLoggerPage(authenticatedPage);
 
     // Navigate to dashboard
     await authenticatedPage.goto("/");
@@ -211,8 +212,8 @@ test.describe("Quick Logger - Kyle Ramsy at Bally's Casino", () => {
       const firstContact = authenticatedPage.getByRole("option").first();
       await expect(firstContact).toBeVisible({ timeout: 5000 });
 
-      // Get the contact name before selecting
-      const contactName = await firstContact.textContent();
+      // Get the contact name before selecting (for logging if needed)
+      const _contactName = await firstContact.textContent();
 
       // Use JavaScript click to bypass viewport issues (cmdk popover positioning)
       await firstContact.evaluate(node => (node as HTMLElement).click());

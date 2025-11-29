@@ -9,6 +9,8 @@
  * performance.now() timing around React Testing Library renders.
  */
 
+/* eslint-disable jsx-a11y/role-has-required-aria-props, jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- Mock components in test file */
+
 import { render, cleanup } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { TasksPanel } from "../components/TasksPanel";
@@ -336,7 +338,7 @@ vi.mock("@/components/ui/checkbox", () => ({
 
 vi.mock("@/components/ui/dropdown-menu", () => ({
   DropdownMenu: ({ children }: any) => <div>{children}</div>,
-  DropdownMenuTrigger: ({ children, asChild }: any) => <div>{children}</div>,
+  DropdownMenuTrigger: ({ children }: any) => <div>{children}</div>,
   DropdownMenuContent: ({ children }: any) => <div>{children}</div>,
   DropdownMenuItem: ({ children, onClick }: any) => (
     <div onClick={onClick}>{children}</div>

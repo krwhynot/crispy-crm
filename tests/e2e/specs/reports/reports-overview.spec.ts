@@ -52,7 +52,7 @@ test.describe("Reports Overview Tab", () => {
   // PAGE LOAD & STRUCTURE TESTS
   // ============================================
 
-  test("LOAD - Overview tab loads with page title and KPI cards", async ({ page }) => {
+  test("LOAD - Overview tab loads with page title and KPI cards", async () => {
     // Navigate to reports
     await reportsPage.navigate();
 
@@ -71,7 +71,7 @@ test.describe("Reports Overview Tab", () => {
     expect(consoleMonitor.hasNetworkErrors(), "Network errors detected").toBe(false);
   });
 
-  test("LOAD - All chart sections render correctly", async ({ page }) => {
+  test("LOAD - All chart sections render correctly", async () => {
     // Navigate to reports
     await reportsPage.navigate();
 
@@ -106,7 +106,7 @@ test.describe("Reports Overview Tab", () => {
   // KPI CARD TESTS
   // ============================================
 
-  test("KPI - Total Opportunities card displays numeric value", async ({ page }) => {
+  test("KPI - Total Opportunities card displays numeric value", async () => {
     // Navigate to reports
     await reportsPage.navigate();
 
@@ -124,7 +124,7 @@ test.describe("Reports Overview Tab", () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test("KPI - Activities This Week card displays numeric value", async ({ page }) => {
+  test("KPI - Activities This Week card displays numeric value", async () => {
     // Navigate to reports
     await reportsPage.navigate();
 
@@ -142,7 +142,7 @@ test.describe("Reports Overview Tab", () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test("KPI - Stale Leads card displays numeric value", async ({ page }) => {
+  test("KPI - Stale Leads card displays numeric value", async () => {
     // Navigate to reports
     await reportsPage.navigate();
 
@@ -182,7 +182,7 @@ test.describe("Reports Overview Tab", () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test("FILTER - Selecting date range updates data", async ({ page }) => {
+  test("FILTER - Selecting date range updates data", async () => {
     // Navigate to reports
     await reportsPage.navigate();
 
@@ -255,7 +255,7 @@ test.describe("Reports Overview Tab", () => {
   // CHART INTERACTION TESTS
   // ============================================
 
-  test("CHART - Pipeline by Stage chart section is rendered", async ({ page }) => {
+  test("CHART - Pipeline by Stage chart section is rendered", async () => {
     // Navigate to reports
     await reportsPage.navigate();
 
@@ -271,7 +271,7 @@ test.describe("Reports Overview Tab", () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test("CHART - Activity Trend chart section is rendered", async ({ page }) => {
+  test("CHART - Activity Trend chart section is rendered", async () => {
     // Navigate to reports
     await reportsPage.navigate();
 
@@ -287,7 +287,7 @@ test.describe("Reports Overview Tab", () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test("CHART - Rep Performance chart section is rendered", async ({ page }) => {
+  test("CHART - Rep Performance chart section is rendered", async () => {
     // Navigate to reports
     await reportsPage.navigate();
 
