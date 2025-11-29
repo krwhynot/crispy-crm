@@ -64,8 +64,8 @@ describe("QuickLogActivity", () => {
     expect(select).toHaveAttribute("aria-expanded", "false");
   });
 
-  it("should infer activity type from task title when type is None", () => {
-    const taskWithNoType = { ...mockTask, type: "None", title: "Email vendor about pricing" };
+  it("should infer activity type from task title when type is Other", () => {
+    const taskWithNoType = { ...mockTask, type: "Other", title: "Email vendor about pricing" };
 
     render(<QuickLogActivity open={true} onClose={vi.fn()} task={taskWithNoType} />);
 

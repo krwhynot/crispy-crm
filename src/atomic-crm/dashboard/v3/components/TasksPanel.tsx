@@ -17,6 +17,8 @@ import {
   Pencil,
   Trash2,
   Plus,
+  Presentation,
+  FileSignature,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -29,6 +31,7 @@ import { TaskGroup } from "./TaskGroup";
 import { SnoozePopover } from "./SnoozePopover";
 import type { TaskItem } from "../types";
 import { useMyTasks } from "../hooks/useMyTasks";
+import { showFollowUpToast } from "../utils/showFollowUpToast";
 
 export function TasksPanel() {
   const { tasks, loading, error, completeTask, updateTaskDueDate, deleteTask, viewTask } = useMyTasks();
@@ -174,22 +177,26 @@ interface TaskItemProps {
 
 // Memoized to prevent re-renders when parent re-renders but props haven't changed
 // Each task item has local state (isSnoozing, isDeleting) that shouldn't trigger sibling re-renders
-const TaskItemComponent = memo(function TaskItemComponent({ task, onComplete, onSnooze, onDelete, onView }: TaskItemProps) {
+const TaskItemComponent = memo(function TaskItemComponent({ task, onComplete, onSnoozeToDate, onDelete, onView }: TaskItemProps) {
   const [isSnoozing, setIsSnoozing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const notify = useNotify();
 
-  const handleSnooze = async () => {
-    setIsSnoozing(true);
-    try {
-      await onSnooze(task.id);
-      notify("Task snoozed for tomorrow", { type: "success" });
-    } catch {
-      // Error already logged in hook, just reset state
-    } finally {
-      setIsSnoozing(false);
-    }
-  };
+  // Memoized snooze handler that wraps the date-based snooze API
+  const handleSnoozeToDate = useCallback(
+    async (newDate: Date) => {
+      setIsSnoozing(true);
+      try {
+        await onSnoozeToDate(task.id, newDate);
+        notify("Task snoozed", { type: "success" });
+      } catch {
+        notify("Failed to snooze task", { type: "error" });
+      } finally {
+        setIsSnoozing(false);
+      }
+    },
+    [task.id, onSnoozeToDate, notify]
+  );
 
   const handleDelete = async () => {
     setIsDeleting(true);
@@ -222,6 +229,11 @@ const TaskItemComponent = memo(function TaskItemComponent({ task, onComplete, on
         return <Users className="h-4 w-4" />;
       case "Follow-up":
         return <CheckCircle2 className="h-4 w-4" />;
+      case "Demo":
+        return <Presentation className="h-4 w-4" />;
+      case "Proposal":
+        return <FileSignature className="h-4 w-4" />;
+      case "Other":
       default:
         return <FileText className="h-4 w-4" />;
     }
@@ -246,9 +258,29 @@ const TaskItemComponent = memo(function TaskItemComponent({ task, onComplete, on
     <div className="interactive-card flex items-center gap-3 rounded-lg border border-transparent bg-card px-3 py-2">
       <Checkbox
         className="h-5 w-5"
-        onCheckedChange={(checked) => {
+        onCheckedChange={async (checked) => {
           if (checked) {
-            onComplete(task.id);
+            try {
+              await onComplete(task.id);
+              // Show follow-up toast after successful completion
+              showFollowUpToast({
+                task,
+                onCreateFollowUp: (completedTask) => {
+                  // Navigate to task create page with pre-filled follow-up context
+                  const params = new URLSearchParams();
+                  params.set("type", "follow_up");
+                  params.set("title", `Follow-up: ${completedTask.subject}`);
+                  if (completedTask.relatedTo.type === "opportunity") {
+                    params.set("opportunity_id", String(completedTask.relatedTo.id));
+                  } else if (completedTask.relatedTo.type === "contact") {
+                    params.set("contact_id", String(completedTask.relatedTo.id));
+                  }
+                  window.location.href = `/#/tasks/create?${params.toString()}`;
+                },
+              });
+            } catch {
+              notify("Failed to complete task", { type: "error" });
+            }
           }
         }}
       />
@@ -267,21 +299,11 @@ const TaskItemComponent = memo(function TaskItemComponent({ task, onComplete, on
       </div>
 
       <div className="flex items-center gap-1">
-        <Button
-          variant="ghost"
-          size="sm"
-          className="h-11 w-11 p-0"
-          onClick={handleSnooze}
-          disabled={isSnoozing}
-          title="Snooze task by 1 day"
-          aria-label={`Snooze "${task.subject}" by 1 day`}
-        >
-          {isSnoozing ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <AlarmClock className="h-4 w-4" />
-          )}
-        </Button>
+        <SnoozePopover
+          taskSubject={task.subject}
+          isLoading={isSnoozing}
+          onSnooze={handleSnoozeToDate}
+        />
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button

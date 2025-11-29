@@ -23,14 +23,13 @@ describe("Task Validation Schemas (task.ts)", () => {
   describe("taskTypeSchema", () => {
     it("should accept all valid task types", () => {
       const validTypes: TaskType[] = [
-        "None",
         "Call",
         "Email",
         "Meeting",
         "Follow-up",
+        "Demo",
         "Proposal",
-        "Discovery",
-        "Administrative",
+        "Other",
       ];
 
       validTypes.forEach((type) => {
@@ -40,7 +39,8 @@ describe("Task Validation Schemas (task.ts)", () => {
     });
 
     it("should reject invalid task types", () => {
-      const invalidTypes = ["InvalidType", "call", "EMAIL", ""];
+      // Note: "None", "Discovery", "Administrative" removed from enum
+      const invalidTypes = ["InvalidType", "call", "EMAIL", "", "None", "Discovery", "Administrative"];
 
       invalidTypes.forEach((type) => {
         const result = taskTypeSchema.safeParse(type);
@@ -98,7 +98,7 @@ describe("Task Validation Schemas (task.ts)", () => {
       const minimalTask = {
         title: "Quick task",
         due_date: "2025-01-15",
-        type: "None" as const,
+        type: "Other" as const,
         contact_id: 1,
         sales_id: 1,
       };
@@ -602,13 +602,13 @@ describe("Task Validation Schemas (task.ts)", () => {
       const formDefaults = taskSchema.partial().parse({
         completed: false,
         priority: "medium" as const,
-        type: "None" as const,
+        type: "Call" as const,
         due_date: "2025-01-15",
       });
 
       expect(formDefaults.completed).toBe(false);
       expect(formDefaults.priority).toBe("medium");
-      expect(formDefaults.type).toBe("None");
+      expect(formDefaults.type).toBe("Call");
       expect(formDefaults.due_date).toBe("2025-01-15");
     });
 

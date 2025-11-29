@@ -28,6 +28,7 @@ import {
   FileSignature,
 } from "lucide-react";
 import type { TaskItem } from "../types";
+import { showFollowUpToast } from "../utils/showFollowUpToast";
 
 interface TaskKanbanCardProps {
   task: TaskItem;
@@ -61,6 +62,11 @@ const getTaskIcon = (type: TaskItem["taskType"]) => {
       return <Users className="h-3.5 w-3.5" />;
     case "Follow-up":
       return <CheckCircle2 className="h-3.5 w-3.5" />;
+    case "Demo":
+      return <Presentation className="h-3.5 w-3.5" />;
+    case "Proposal":
+      return <FileSignature className="h-3.5 w-3.5" />;
+    case "Other":
     default:
       return <FileText className="h-3.5 w-3.5" />;
   }
@@ -199,9 +205,29 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
             >
               <Checkbox
                 className="h-5 w-5"
-                onCheckedChange={(checked) => {
+                onCheckedChange={async (checked) => {
                   if (checked) {
-                    onComplete(task.id);
+                    try {
+                      await onComplete(task.id);
+                      // Show follow-up toast after successful completion
+                      showFollowUpToast({
+                        task,
+                        onCreateFollowUp: (completedTask) => {
+                          // Navigate to task create page with pre-filled follow-up context
+                          const params = new URLSearchParams();
+                          params.set("type", "follow_up");
+                          params.set("title", `Follow-up: ${completedTask.subject}`);
+                          if (completedTask.relatedTo.type === "opportunity") {
+                            params.set("opportunity_id", String(completedTask.relatedTo.id));
+                          } else if (completedTask.relatedTo.type === "contact") {
+                            params.set("contact_id", String(completedTask.relatedTo.id));
+                          }
+                          window.location.href = `/#/tasks/create?${params.toString()}`;
+                        },
+                      });
+                    } catch {
+                      notify("Failed to complete task", { type: "error" });
+                    }
                   }
                 }}
                 aria-label={`Complete task: ${task.subject}`}

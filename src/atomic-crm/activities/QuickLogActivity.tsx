@@ -61,10 +61,9 @@ const TASK_TYPE_TO_ACTIVITY_TYPE: Record<string, string> = {
   Email: "email",
   Meeting: "meeting",
   "Follow-up": "follow_up",
+  Demo: "demo",
   Proposal: "proposal",
-  Discovery: "meeting",
-  Administrative: "check_in",
-  None: "check_in",
+  Other: "check_in",
 };
 
 // Infer activity type from task title keywords (all 13 types)
@@ -93,8 +92,8 @@ export const QuickLogActivity: React.FC<QuickLogActivityProps> = ({ open, onClos
 
   // Determine initial activity type
   const getInitialActivityType = () => {
-    // First try to use the task type if it exists and is not "None"
-    if (task.type && task.type !== "None") {
+    // First try to use the task type if it exists and is not "Other"
+    if (task.type && task.type !== "Other") {
       return TASK_TYPE_TO_ACTIVITY_TYPE[task.type] || "check_in";
     }
     // Otherwise infer from the title
