@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-049 completed - Production Monitoring & Observability with Sentry)
+**Last Updated:** 2025-11-29 (TODO-031 completed - Reports Per-Stage Stale Thresholds)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -615,14 +615,21 @@ Important features that can be worked in parallel.
 
 #### TODO-015: Remove Contact Files Tab
 - **PRD Reference:** MVP #42
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Remove Files tab from ContactSlideOver (no attachments in MVP)
 - **Tasks:**
-  - [ ] Remove Files tab from ContactSlideOver component
-  - [ ] Remove related file upload components
-  - [ ] Keep DB schema for post-MVP
-- **Acceptance Criteria:** No Files tab visible on contact detail
+  - [x] Remove Files tab from ContactSlideOver component
+  - [x] Remove related file upload components
+  - [x] Keep DB schema for post-MVP
+- **Implementation Notes:**
+  - ContactFilesTab was **never implemented** (only in archived design docs)
+  - ContactSlideOver.tsx has correct 3 tabs: Details, Activities, Notes
+  - FileInput component retained for CSV import functionality (different purpose)
+  - StorageService.ts retained for Notes attachments (separate feature)
+  - Aligns with PRD Decision #24: "No attachments in MVP"
+- **Acceptance Criteria:** No Files tab visible on contact detail ✅
 
 #### TODO-016: Simplify Contact-Org UI
 - **PRD Reference:** MVP #43
@@ -639,17 +646,22 @@ Important features that can be worked in parallel.
 
 #### TODO-017: Add Organization Email Field
 - **PRD Reference:** MVP #44
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Add email TextInput to OrganizationDetailsTab
 - **Tasks:**
-  - [ ] Add email field to organization form
-  - [ ] Field exists in schema/export but missing from UI
-  - [ ] Add email validation to `organizationSchema`: `z.string().email().optional()`
+  - [x] Add email field to organization form
+  - [x] Field exists in schema/export but missing from UI
+  - [x] Add email validation to `organizationSchema`: `z.string().email().optional()`
+- **Implementation Notes:**
+  - UI: `OrganizationDetailsTab.tsx:75-79` - TextInput in edit mode, mailto link in view mode
+  - Schema: `organizations.ts:67` - `email: z.string().email().nullish()`
+  - Database: `organizations.email` column (text, nullable) already existed
 - **Constitution Compliance:**
-  - P5: Form defaults from `organizationSchema.partial().parse({})`
-  - P4: Email validation in Zod schema, not inline
-- **Acceptance Criteria:** Can enter and save organization email
+  - P5: Form defaults from `organizationSchema.partial().parse({})` ✅
+  - P4: Email validation in Zod schema, not inline ✅
+- **Acceptance Criteria:** Can enter and save organization email ✅
 
 #### TODO-018: Soft Duplicate Org Warning
 - **PRD Reference:** MVP #45
@@ -840,15 +852,24 @@ Important features that can be worked in parallel.
 
 #### TODO-026: Task Organization Linking
 - **PRD Reference:** MVP #57
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Add optional organization_id FK to tasks table
 - **Tasks:**
-  - [ ] Add `organization_id` column to tasks table
-  - [ ] Update task schema and forms
-  - [ ] Update TaskRelatedItemsTab
-  - [ ] Enable org-level tasks without opportunity
-- **Acceptance Criteria:** Can create tasks linked to organization (e.g., "Prepare for Sysco annual review")
+  - [x] Add `organization_id` column to tasks table
+  - [x] Update task schema and forms
+  - [x] Update TaskRelatedItemsTab
+  - [x] Enable org-level tasks without opportunity
+- **Implementation Notes:**
+  - Migration file: `supabase/migrations/20251129044504_add_organization_id_to_tasks.sql`
+  - Column: `organization_id BIGINT NULL` with FK constraint `tasks_organization_id_fkey`
+  - ON DELETE SET NULL: Task survives org deletion (safer than CASCADE)
+  - Partial index: `idx_tasks_organization_id` WHERE organization_id IS NOT NULL
+  - Backfill: Auto-populated from contact's organization for existing tasks
+  - TypeScript: Updated `src/atomic-crm/types.ts:300` and `src/atomic-crm/validation/task.ts:47`
+  - UI: `TaskRelatedItemsTab.tsx:44-57` displays organization link with Building2 icon
+- **Acceptance Criteria:** Can create tasks linked to organization (e.g., "Prepare for Sysco annual review") ✅
 
 #### TODO-027: Task Snooze Popover
 - **PRD Reference:** Section 9.2.3, MVP #37, #55
@@ -920,15 +941,23 @@ Important features that can be worked in parallel.
 
 #### TODO-031: Reports Per-Stage Stale Thresholds
 - **PRD Reference:** MVP #61
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Depends On:** TODO-012
-- **Description:** Update OverviewTab stale calculations
+- **Description:** Update reports stale calculations to use per-stage thresholds
 - **Tasks:**
-  - [ ] Use `STAGE_STALE_THRESHOLDS` map instead of fixed 7-day
-  - [ ] Update stale count calculation
-  - [ ] Exclude closed stages from staleness
-- **Acceptance Criteria:** Reports use per-stage thresholds matching Section 6.3
+  - [x] Use `STAGE_STALE_THRESHOLDS` map instead of fixed 7-day
+  - [x] Update stale count calculation in `CampaignActivityReport.tsx`
+  - [x] Exclude closed stages from staleness
+  - [x] Update `StaleLeadsView.tsx` to show stage and threshold info
+  - [x] Update tests for new UI
+- **Implementation Notes:**
+  - Files modified: `CampaignActivityReport.tsx`, `StaleLeadsView.tsx`
+  - Imports `STAGE_STALE_THRESHOLDS`, `isOpportunityStale()`, `getStaleThreshold()` from `stalenessCalculation.ts`
+  - StaleLeadsView now shows "Days Over Threshold" column with stage-specific urgency
+  - All 47 reports module tests pass
+- **Acceptance Criteria:** Reports use per-stage thresholds matching Section 6.3 ✅
 
 ### Notes Module
 
