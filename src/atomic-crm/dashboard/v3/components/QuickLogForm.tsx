@@ -44,6 +44,7 @@ import {
   type ActivityLogInput,
   ACTIVITY_TYPE_MAP,
   ACTIVITY_TYPE_GROUPS,
+  SAMPLE_STATUS_OPTIONS,
 } from "../validation/activitySchema";
 import { useCurrentSale } from "../hooks/useCurrentSale";
 
@@ -498,6 +499,8 @@ export function QuickLogForm({
           opportunity_id: data.opportunityId,
           follow_up_required: data.createFollowUp || false,
           follow_up_date: data.followUpDate ? data.followUpDate.toISOString().split("T")[0] : null,
+          // Sample status tracking (PRD §4.4) - only set for sample activities
+          sample_status: data.activityType === "Sample" ? data.sampleStatus : null,
           created_by: salesId,
         },
       });
@@ -542,6 +545,8 @@ export function QuickLogForm({
   const DURATION_ACTIVITY_TYPES = ["Call", "Meeting", "Demo", "Site Visit", "Trade Show"];
   const showDuration = DURATION_ACTIVITY_TYPES.includes(activityType);
   const showFollowUpDate = createFollowUp;
+  // Show sample status dropdown when activity type is "Sample" (PRD §4.4)
+  const showSampleStatus = activityType === "Sample";
 
   // Show loading state while entities or salesId are loading
   if (isInitialLoading || salesIdLoading) {
@@ -659,6 +664,37 @@ export function QuickLogForm({
                       value={field.value || ""}
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
+          {/* Sample Status dropdown - shown only when activity type is "Sample" (PRD §4.4) */}
+          {showSampleStatus && (
+            <FormField
+              control={form.control}
+              name="sampleStatus"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Sample Status</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value ?? undefined}>
+                    <FormControl>
+                      <SelectTrigger className="h-11">
+                        <SelectValue placeholder="Select sample status" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {SAMPLE_STATUS_OPTIONS.map((option) => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormDescription>
+                    Track sample workflow: Sent → Received → Feedback Pending → Feedback Received
+                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

@@ -153,6 +153,29 @@ export function PrincipalPipelineTable() {
     }
   };
 
+  /**
+   * Returns the appropriate semantic background color class for the decay indicator bar.
+   * Maps momentum state to visual urgency using the design system's semantic tokens.
+   *
+   * Color mapping (from most healthy to most urgent):
+   * - increasing: success (green) - actively engaged, growing pipeline
+   * - steady: muted (gray) - stable but not growing
+   * - decreasing: warning (amber) - attention needed, engagement dropping
+   * - stale: destructive (red) - critical, needs immediate action
+   */
+  const getDecayIndicatorColor = (momentum: PrincipalPipelineRow["momentum"]): string => {
+    switch (momentum) {
+      case "increasing":
+        return "bg-success";
+      case "steady":
+        return "bg-muted-foreground/50";
+      case "decreasing":
+        return "bg-warning";
+      case "stale":
+        return "bg-destructive";
+    }
+  };
+
   if (loading) {
     return (
       <div className="flex h-full flex-col">
@@ -324,7 +347,7 @@ export function PrincipalPipelineTable() {
             {sortedData.map((row) => (
               <TableRow
                 key={row.id}
-                className="table-row-premium cursor-pointer"
+                className="table-row-premium cursor-pointer relative"
                 onClick={() => handleRowClick(row)}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
@@ -334,9 +357,16 @@ export function PrincipalPipelineTable() {
                 }}
                 tabIndex={0}
                 role="button"
-                aria-label={`View opportunities for ${row.name}`}
+                aria-label={`View opportunities for ${row.name}. Pipeline momentum: ${row.momentum}`}
               >
-                <TableCell className="font-medium">{row.name}</TableCell>
+                <TableCell className="font-medium relative">
+                  {/* Decay indicator bar - 4px leading edge showing pipeline health */}
+                  <div
+                    className={`absolute left-0 top-0 bottom-0 w-1 ${getDecayIndicatorColor(row.momentum)}`}
+                    aria-hidden="true"
+                  />
+                  <span className="pl-2">{row.name}</span>
+                </TableCell>
                 <TableCell className="text-right">
                   <div className="font-semibold">{row.totalPipeline}</div>
                 </TableCell>
