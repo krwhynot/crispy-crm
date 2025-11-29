@@ -64,7 +64,9 @@ const mockSalesReps = [
 ];
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
-  <GlobalFilterProvider>{children}</GlobalFilterProvider>
+  <MemoryRouter>
+    <GlobalFilterProvider>{children}</GlobalFilterProvider>
+  </MemoryRouter>
 );
 
 describe("OverviewTab", () => {
