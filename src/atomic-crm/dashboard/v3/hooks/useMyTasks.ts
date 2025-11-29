@@ -78,12 +78,15 @@ export function useMyTasks() {
             status = "later";
           }
 
-          // Map task type with proper handling
+          // Map task type with proper handling (aligned with task_type enum)
           const taskTypeMap: Record<string, TaskItem["taskType"]> = {
             call: "Call",
             email: "Email",
             meeting: "Meeting",
-            follow_up: "Follow-up",
+            "follow-up": "Follow-up",
+            demo: "Demo",
+            proposal: "Proposal",
+            other: "Other",
           };
 
           return {

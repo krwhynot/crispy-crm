@@ -17,6 +17,7 @@ interface TaskRelatedItemsTabProps {
  * Related Items tab for TaskSlideOver.
  *
  * Read-only tab showing:
+ * - Related Organization (if organization_id exists)
  * - Related Contact (if contact_id exists)
  * - Related Opportunity (if opportunity_id exists)
  * - Assigned Sales Rep (if sales_id exists)
@@ -24,7 +25,7 @@ interface TaskRelatedItemsTabProps {
  * No edit mode - relationships are edited in Details tab.
  */
 export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
-  const hasRelationships = record.contact_id || record.opportunity_id || record.sales_id;
+  const hasRelationships = record.organization_id || record.contact_id || record.opportunity_id || record.sales_id;
 
   return (
     <RecordContextProvider value={record}>
@@ -37,6 +38,22 @@ export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
               </p>
             </CardContent>
           </Card>
+        )}
+
+        {/* Related Organization */}
+        {record.organization_id && (
+          <AsideSection title="Related Organization">
+            <Card>
+              <CardContent className="p-4">
+                <div className="flex items-center gap-2">
+                  <Building2 className="size-5 text-muted-foreground" />
+                  <ReferenceField source="organization_id" reference="organizations" link="show">
+                    <TextField source="name" className="font-medium" />
+                  </ReferenceField>
+                </div>
+              </CardContent>
+            </Card>
+          </AsideSection>
         )}
 
         {/* Related Contact */}

@@ -55,10 +55,12 @@ export const defaultNoteStatuses = [
 
 export const defaultTaskTypes = [
   "Call", // Phone conversations
-  "Email", // Email communications (includes proposals)
-  "Meeting", // In-person/virtual meetings, demos & discovery
+  "Email", // Email communications
+  "Meeting", // In-person/virtual meetings
   "Follow-up", // Re-engagement reminders
-  "Administrative", // Internal tasks
+  "Demo", // Product demonstrations
+  "Proposal", // Formal offers and proposals
+  "Other", // Miscellaneous tasks
 ];
 
 export const defaultContactGender = [

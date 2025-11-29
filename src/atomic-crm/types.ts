@@ -295,7 +295,8 @@ export interface Tag extends Pick<RaRecord, "id"> {
 export interface Task extends Pick<RaRecord, "id"> {
   title: string;
   description?: string | null;
-  contact_id: Identifier;
+  contact_id?: Identifier;
+  organization_id?: Identifier;
   type: Database["public"]["Enums"]["task_type"];
   due_date: string;
   reminder_date?: string | null;

@@ -1,4 +1,4 @@
-import { useState, useMemo, memo } from "react";
+import { useState, useMemo, memo, useCallback } from "react";
 import { useNotify } from "react-admin";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
-  AlarmClock,
   CheckCircle2,
   Phone,
   Mail,
@@ -27,11 +26,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TaskGroup } from "./TaskGroup";
+import { SnoozePopover } from "./SnoozePopover";
 import type { TaskItem } from "../types";
 import { useMyTasks } from "../hooks/useMyTasks";
 
 export function TasksPanel() {
-  const { tasks, loading, error, completeTask, snoozeTask, deleteTask, viewTask } = useMyTasks();
+  const { tasks, loading, error, completeTask, updateTaskDueDate, deleteTask, viewTask } = useMyTasks();
 
   // Memoize filtered task lists to avoid recomputing on every render
   // Only recalculates when tasks array reference changes
@@ -119,7 +119,7 @@ export function TasksPanel() {
                   key={task.id}
                   task={task}
                   onComplete={completeTask}
-                  onSnooze={snoozeTask}
+                  onSnoozeToDate={updateTaskDueDate}
                   onDelete={deleteTask}
                   onView={viewTask}
                 />
@@ -135,7 +135,7 @@ export function TasksPanel() {
                   key={task.id}
                   task={task}
                   onComplete={completeTask}
-                  onSnooze={snoozeTask}
+                  onSnoozeToDate={updateTaskDueDate}
                   onDelete={deleteTask}
                   onView={viewTask}
                 />
@@ -151,7 +151,7 @@ export function TasksPanel() {
                   key={task.id}
                   task={task}
                   onComplete={completeTask}
-                  onSnooze={snoozeTask}
+                  onSnoozeToDate={updateTaskDueDate}
                   onDelete={deleteTask}
                   onView={viewTask}
                 />
@@ -167,7 +167,7 @@ export function TasksPanel() {
 interface TaskItemProps {
   task: TaskItem;
   onComplete: (taskId: number) => Promise<void>;
-  onSnooze: (taskId: number) => Promise<void>;
+  onSnoozeToDate: (taskId: number, newDate: Date) => Promise<void>;
   onDelete: (taskId: number) => Promise<void>;
   onView: (taskId: number) => void;
 }
