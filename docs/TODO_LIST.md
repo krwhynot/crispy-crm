@@ -1432,17 +1432,27 @@ Polish items and technical cleanup.
 
 #### TODO-049: Production Monitoring & Observability
 - **PRD Reference:** N/A (Operational Excellence)
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟠 P1
 - **Effort:** M (2 days)
+- **Completed:** 2025-11-29
 - **Description:** Set up error tracking and monitoring for production
 - **Tasks:**
-  - [ ] Integrate Sentry for client-side error tracking
-  - [ ] Set up structured logging (JSON format for searchability)
-  - [ ] Create health dashboard (API error rate, response times, active users)
-  - [ ] Configure alerts for error rate spikes (>1% of requests)
-  - [ ] Document runbook for common error scenarios
-- **Acceptance Criteria:** Errors captured in Sentry; dashboard shows key metrics; alerts configured
+  - [x] Integrate Sentry for client-side error tracking
+  - [x] Set up structured logging (JSON format for searchability)
+  - [x] Create health dashboard (API error rate, response times, active users)
+  - [x] Configure alerts for error rate spikes (>1% of requests)
+  - [ ] Document runbook for common error scenarios (deferred to TODO-050)
+- **Implementation Notes:**
+  - Sentry SDK: `src/lib/sentry.ts` - React 19 error hooks, session replay, breadcrumbs
+  - Structured Logger: `src/lib/logger.ts` - Unified logging with error rate tracking
+  - Health Dashboard: `src/atomic-crm/admin/HealthDashboard.tsx` - Route `/admin/health`
+  - Error Boundaries: `src/components/ErrorBoundary.tsx` + updated `DashboardErrorBoundary.tsx`
+  - DataProvider Integration: `unifiedDataProvider.ts` tracks request success/failure
+  - Alert Thresholds: <0.5% healthy (green), 0.5-1% degraded (yellow), >1% critical (red)
+  - CSP Updated: `vite.config.ts` allows Sentry domains
+  - Config: Set `VITE_SENTRY_DSN` in `.env` to enable (see `.env.example`)
+- **Acceptance Criteria:** Errors captured in Sentry; dashboard shows key metrics; alerts configured ✅
 - **Testability:** Integration: Trigger intentional error → appears in Sentry within 1 minute
 
 #### TODO-050: End-User Documentation
