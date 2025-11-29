@@ -1,398 +1,195 @@
-/**
- * Tests for SegmentsService - Segment management business logic
- *
- * Tests verify:
- * 1. Get-or-create segment operations
- * 2. RPC function invocation correctness
- * 3. Array response unwrapping (RPC returns wrapped array)
- * 4. Error handling and logging
- * 5. Edge cases (empty arrays, null/undefined, non-array responses)
- */
-
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { SegmentsService } from "../segments.service";
-import type { DataProvider } from "ra-core";
-import type { Segment } from "../../validation/segments";
-
-// Mock supabase module
-vi.mock("../../providers/supabase/supabase", () => ({
-  supabase: {
-    rpc: vi.fn(),
-  },
-}));
+import {
+  PLAYBOOK_CATEGORIES,
+  PLAYBOOK_CATEGORY_IDS,
+  PLAYBOOK_CATEGORY_CHOICES,
+} from "../../validation/segments";
+import type { ExtendedDataProvider } from "../../providers/supabase/extensions/types";
 
 describe("SegmentsService", () => {
   let service: SegmentsService;
-  let mockDataProvider: DataProvider;
-  let mockSegment: Segment;
+  let mockDataProvider: ExtendedDataProvider;
 
   beforeEach(() => {
-    // Create a minimal mock DataProvider
+    // Mock data provider (not used by most methods now)
     mockDataProvider = {
-      create: vi.fn(),
-      update: vi.fn(),
-      delete: vi.fn(),
       getList: vi.fn(),
       getOne: vi.fn(),
       getMany: vi.fn(),
       getManyReference: vi.fn(),
+      create: vi.fn(),
+      update: vi.fn(),
       updateMany: vi.fn(),
+      delete: vi.fn(),
       deleteMany: vi.fn(),
-    };
+      rpc: vi.fn(),
+    } as unknown as ExtendedDataProvider;
 
     service = new SegmentsService(mockDataProvider);
-
-    mockSegment = {
-      id: 1,
-      name: "VIP Customers",
-      description: "High-value customer segment",
-      created_at: "2025-11-24T00:00:00Z",
-      updated_at: "2025-11-24T00:00:00Z",
-    };
   });
 
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
+  describe("getSegmentByName", () => {
+    it("should return segment for valid Playbook category (exact match)", () => {
+      const result = service.getSegmentByName("Major Broadline");
 
-  describe("getOrCreateSegment - Success Cases", () => {
-    test("should retrieve existing segment via RPC", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: [mockSegment],
-        error: null,
-      });
-
-      const result = await service.getOrCreateSegment("VIP Customers");
-
-      expect(supabase.rpc).toHaveBeenCalledWith("get_or_create_segment", {
-        p_name: "VIP Customers",
-      });
-      expect(result).toEqual(mockSegment);
+      expect(result).toBeDefined();
+      expect(result?.name).toBe("Major Broadline");
+      expect(result?.id).toBe(PLAYBOOK_CATEGORY_IDS["Major Broadline"]);
     });
 
-    test("should create new segment if not found", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-      const newSegment: Segment = {
-        id: 2,
-        name: "New Segment",
-        description: null,
-        created_at: "2025-11-24T00:00:00Z",
-        updated_at: "2025-11-24T00:00:00Z",
-      };
+    it("should return segment for valid category (case-insensitive)", () => {
+      const result = service.getSegmentByName("major broadline");
 
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: [newSegment],
-        error: null,
-      });
-
-      const result = await service.getOrCreateSegment("New Segment");
-
-      expect(supabase.rpc).toHaveBeenCalledWith("get_or_create_segment", {
-        p_name: "New Segment",
-      });
-      expect(result).toEqual(newSegment);
-      expect(result.id).toBe(2);
+      expect(result).toBeDefined();
+      expect(result?.name).toBe("Major Broadline");
     });
 
-    test("should unwrap RPC array response (RPC returns [segment])", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-      const wrappedResponse = [mockSegment];
+    it("should return undefined for invalid category", () => {
+      const result = service.getSegmentByName("Invalid Category");
 
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: wrappedResponse,
-        error: null,
-      });
-
-      const result = await service.getOrCreateSegment("VIP Customers");
-
-      // Should return the unwrapped segment, not the array
-      expect(result).toEqual(mockSegment);
-      expect(Array.isArray(result)).toBe(false);
+      expect(result).toBeUndefined();
     });
 
-    test("should handle segment names with special characters", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-      const specialSegment: Segment = {
-        ...mockSegment,
-        name: "High-Value (>$1M)",
-      };
+    it("should trim whitespace from input", () => {
+      const result = service.getSegmentByName("  University  ");
 
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: [specialSegment],
-        error: null,
-      });
-
-      const result = await service.getOrCreateSegment("High-Value (>$1M)");
-
-      expect(supabase.rpc).toHaveBeenCalledWith("get_or_create_segment", {
-        p_name: "High-Value (>$1M)",
-      });
-      expect(result.name).toBe("High-Value (>$1M)");
+      expect(result).toBeDefined();
+      expect(result?.name).toBe("University");
     });
 
-    test("should handle segment names with spaces and case preservation", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-      const casePreservedSegment: Segment = {
-        ...mockSegment,
-        name: "Active Enterprise Accounts",
-      };
-
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: [casePreservedSegment],
-        error: null,
+    it("should handle all 9 Playbook categories", () => {
+      PLAYBOOK_CATEGORIES.forEach((category) => {
+        const result = service.getSegmentByName(category);
+        expect(result).toBeDefined();
+        expect(result?.name).toBe(category);
+        expect(result?.id).toBe(PLAYBOOK_CATEGORY_IDS[category]);
       });
-
-      const result = await service.getOrCreateSegment("Active Enterprise Accounts");
-
-      expect(result.name).toBe("Active Enterprise Accounts");
-    });
-
-    test("should log success on retrieval", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-      const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: [mockSegment],
-        error: null,
-      });
-
-      await service.getOrCreateSegment("VIP Customers");
-
-      expect(consoleLogSpy).toHaveBeenCalledWith(
-        expect.stringContaining("[SegmentsService] Segment retrieved or created successfully"),
-        mockSegment
-      );
-
-      consoleLogSpy.mockRestore();
     });
   });
 
-  describe("getOrCreateSegment - Error Cases", () => {
-    test("should throw with enhanced error message on RPC error", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-      const rpcError = { message: "Permission denied" };
+  describe("getSegmentById", () => {
+    it("should return segment for valid UUID", () => {
+      const id = PLAYBOOK_CATEGORY_IDS["GPO"];
+      const result = service.getSegmentById(id);
 
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: null,
-        error: rpcError,
-      });
-
-      await expect(service.getOrCreateSegment("VIP Customers")).rejects.toThrow(
-        "Get or create segment failed: Permission denied"
-      );
+      expect(result).toBeDefined();
+      expect(result?.id).toBe(id);
+      expect(result?.name).toBe("GPO");
     });
 
-    test("should handle RPC rejection", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
+    it("should return undefined for invalid UUID", () => {
+      const result = service.getSegmentById("00000000-0000-0000-0000-000000000000");
 
-      (supabase.rpc as any).mockRejectedValueOnce(
-        new Error("Network connection failed")
-      );
-
-      await expect(service.getOrCreateSegment("VIP Customers")).rejects.toThrow(
-        "Network connection failed"
-      );
+      expect(result).toBeUndefined();
     });
 
-    test("should handle RLS policy violations", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: null,
-        error: { message: "new row violates row-level security policy" },
+    it("should handle all 9 category IDs", () => {
+      Object.entries(PLAYBOOK_CATEGORY_IDS).forEach(([name, id]) => {
+        const result = service.getSegmentById(id);
+        expect(result).toBeDefined();
+        expect(result?.id).toBe(id);
+        expect(result?.name).toBe(name);
       });
-
-      await expect(service.getOrCreateSegment("VIP Customers")).rejects.toThrow(
-        "Get or create segment failed: new row violates row-level security policy"
-      );
-    });
-
-    test("should throw when RPC returns empty array", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: [],
-        error: null,
-      });
-
-      await expect(service.getOrCreateSegment("VIP Customers")).rejects.toThrow(
-        "Get or create segment returned empty result"
-      );
-    });
-
-    test("should throw when RPC returns null data", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: null,
-        error: null,
-      });
-
-      await expect(service.getOrCreateSegment("VIP Customers")).rejects.toThrow(
-        "Get or create segment returned empty result"
-      );
-    });
-
-    test("should throw when RPC returns undefined data", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: undefined,
-        error: null,
-      });
-
-      await expect(service.getOrCreateSegment("VIP Customers")).rejects.toThrow(
-        "Get or create segment returned empty result"
-      );
-    });
-
-    test("should throw when RPC returns non-array data", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: { id: 1, name: "Segment" }, // Not wrapped in array
-        error: null,
-      });
-
-      await expect(service.getOrCreateSegment("VIP Customers")).rejects.toThrow(
-        "Get or create segment returned empty result"
-      );
-    });
-
-    test("should log error details on failure", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: null,
-        error: { message: "Database error" },
-      });
-
-      await expect(service.getOrCreateSegment("VIP Customers")).rejects.toThrow();
-
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining("[SegmentsService] Failed to get or create segment"),
-        expect.objectContaining({
-          name: "VIP Customers",
-          error: expect.any(Error),
-        })
-      );
-
-      consoleErrorSpy.mockRestore();
     });
   });
 
-  describe("getOrCreateSegment - Idempotency", () => {
-    test("should handle multiple calls with same segment name", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
+  describe("getAllCategories", () => {
+    it("should return all 9 Playbook categories", () => {
+      const result = service.getAllCategories();
 
-      (supabase.rpc as any)
-        .mockResolvedValueOnce({ data: [mockSegment], error: null })
-        .mockResolvedValueOnce({ data: [mockSegment], error: null });
-
-      // Call twice with same name
-      const result1 = await service.getOrCreateSegment("VIP Customers");
-      const result2 = await service.getOrCreateSegment("VIP Customers");
-
-      expect(result1).toEqual(mockSegment);
-      expect(result2).toEqual(mockSegment);
-      expect(supabase.rpc).toHaveBeenCalledTimes(2);
+      expect(result).toHaveLength(9);
+      expect(result).toEqual(PLAYBOOK_CATEGORY_CHOICES);
     });
 
-    test("should handle multiple different segment names", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
+    it("should include expected categories", () => {
+      const result = service.getAllCategories();
+      const names = result.map((c) => c.name);
 
-      const segment1: Segment = { ...mockSegment, id: 1, name: "Segment 1" };
-      const segment2: Segment = { ...mockSegment, id: 2, name: "Segment 2" };
-
-      (supabase.rpc as any)
-        .mockResolvedValueOnce({ data: [segment1], error: null })
-        .mockResolvedValueOnce({ data: [segment2], error: null });
-
-      const result1 = await service.getOrCreateSegment("Segment 1");
-      const result2 = await service.getOrCreateSegment("Segment 2");
-
-      expect(result1.name).toBe("Segment 1");
-      expect(result2.name).toBe("Segment 2");
-      expect(supabase.rpc).toHaveBeenCalledTimes(2);
+      expect(names).toContain("Major Broadline");
+      expect(names).toContain("Specialty/Regional");
+      expect(names).toContain("Management Company");
+      expect(names).toContain("GPO");
+      expect(names).toContain("University");
+      expect(names).toContain("Restaurant Group");
+      expect(names).toContain("Chain Restaurant");
+      expect(names).toContain("Hotel & Aviation");
+      expect(names).toContain("Unknown");
     });
   });
 
-  describe("getOrCreateSegment - Edge Cases", () => {
-    test("should handle empty string segment name", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: [{ ...mockSegment, name: "" }],
-        error: null,
-      });
-
-      const result = await service.getOrCreateSegment("");
-
-      expect(supabase.rpc).toHaveBeenCalledWith("get_or_create_segment", {
-        p_name: "",
-      });
-      expect(result.name).toBe("");
+  describe("isValidCategory", () => {
+    it("should return true for valid category", () => {
+      expect(service.isValidCategory("Major Broadline")).toBe(true);
+      expect(service.isValidCategory("Unknown")).toBe(true);
     });
 
-    test("should handle very long segment names", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-      const longName =
-        "This is a very long segment name with multiple words and special characters that might be used in real-world scenarios";
-      const longSegment: Segment = { ...mockSegment, name: longName };
-
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: [longSegment],
-        error: null,
-      });
-
-      const result = await service.getOrCreateSegment(longName);
-
-      expect(result.name).toBe(longName);
-    });
-
-    test("should pass segment name with proper parameter name (p_name)", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
-
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: [mockSegment],
-        error: null,
-      });
-
-      await service.getOrCreateSegment("VIP Customers");
-
-      // Verify the RPC parameter name matches the PostgreSQL function signature
-      expect(supabase.rpc).toHaveBeenCalledWith(
-        "get_or_create_segment",
-        expect.objectContaining({
-          p_name: "VIP Customers",
-        })
-      );
+    it("should return false for invalid category", () => {
+      expect(service.isValidCategory("Not A Category")).toBe(false);
+      expect(service.isValidCategory("")).toBe(false);
     });
   });
 
-  describe("Service Integration", () => {
-    test("should not use dataProvider (all logic via RPC)", async () => {
-      const { supabase } = await import("../../providers/supabase/supabase");
+  describe("getDefaultCategory", () => {
+    it("should return Unknown category", () => {
+      const result = service.getDefaultCategory();
 
-      (supabase.rpc as any).mockResolvedValueOnce({
-        data: [mockSegment],
-        error: null,
-      });
+      expect(result.name).toBe("Unknown");
+      expect(result.id).toBe(PLAYBOOK_CATEGORY_IDS["Unknown"]);
+    });
+  });
 
-      await service.getOrCreateSegment("VIP Customers");
+  describe("getOrCreateSegment (legacy)", () => {
+    it("should return segment for valid category", async () => {
+      const result = await service.getOrCreateSegment("Hotel & Aviation");
 
-      // DataProvider should not be called since we use RPC directly
-      expect(mockDataProvider.create).not.toHaveBeenCalled();
-      expect(mockDataProvider.getList).not.toHaveBeenCalled();
-      expect(mockDataProvider.getOne).not.toHaveBeenCalled();
+      expect(result.name).toBe("Hotel & Aviation");
+      expect(result.id).toBe(PLAYBOOK_CATEGORY_IDS["Hotel & Aviation"]);
     });
 
-    test("should verify service receives DataProvider dependency (even if unused)", () => {
-      // Service is constructed with DataProvider as dependency
-      expect(service).toBeDefined();
-      // This allows for future expansion (e.g., fallback CRUD if RPC unavailable)
+    it("should return Unknown for invalid category (no creation)", async () => {
+      const result = await service.getOrCreateSegment("Invalid Category");
+
+      expect(result.name).toBe("Unknown");
+      expect(result.id).toBe(PLAYBOOK_CATEGORY_IDS["Unknown"]);
+    });
+
+    it("should handle case-insensitive lookup", async () => {
+      const result = await service.getOrCreateSegment("restaurant group");
+
+      expect(result.name).toBe("Restaurant Group");
+    });
+
+    it("should NOT call dataProvider.rpc (no dynamic creation)", async () => {
+      await service.getOrCreateSegment("University");
+
+      expect(mockDataProvider.rpc).not.toHaveBeenCalled();
+    });
+  });
+
+  describe("Playbook Category Constants", () => {
+    it("should have exactly 9 categories", () => {
+      expect(PLAYBOOK_CATEGORIES).toHaveLength(9);
+    });
+
+    it("should have matching IDs for all categories", () => {
+      expect(Object.keys(PLAYBOOK_CATEGORY_IDS)).toHaveLength(9);
+
+      PLAYBOOK_CATEGORIES.forEach((cat) => {
+        expect(PLAYBOOK_CATEGORY_IDS[cat]).toBeDefined();
+        expect(PLAYBOOK_CATEGORY_IDS[cat]).toMatch(
+          /^22222222-0000-0000-0000-00000000000\d$/
+        );
+      });
+    });
+
+    it("should have choices for UI with id and name", () => {
+      PLAYBOOK_CATEGORY_CHOICES.forEach((choice) => {
+        expect(choice.id).toBeDefined();
+        expect(choice.name).toBeDefined();
+        expect(typeof choice.id).toBe("string");
+        expect(typeof choice.name).toBe("string");
+      });
     });
   });
 });

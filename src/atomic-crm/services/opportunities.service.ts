@@ -1,7 +1,7 @@
-import type { DataProvider, Identifier } from "ra-core";
+import type { Identifier } from "ra-core";
 import type { Opportunity } from "../types";
 import { diffProducts, type Product } from "../opportunities/utils/diffProducts";
-import { supabase } from "../providers/supabase/supabase";
+import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
 
 /**
  * Input types for opportunity creation and updates with products
@@ -38,7 +38,7 @@ export interface OpportunityUpdateInput extends Partial<OpportunityCreateInput> 
  * Follows Engineering Constitution principle #14: Service Layer orchestration for business ops
  */
 export class OpportunitiesService {
-  constructor(private dataProvider: DataProvider) {}
+  constructor(private dataProvider: ExtendedDataProvider) {}
 
   /**
    * Archive an opportunity and all related records by setting deleted_at
@@ -205,16 +205,12 @@ export class OpportunitiesService {
     productsToUpdate: Product[],
     productIdsToDelete: (string | number)[]
   ): Promise<Opportunity> {
-    const { data: rpcData, error } = await supabase.rpc("sync_opportunity_with_products", {
+    const rpcData = await this.dataProvider.rpc("sync_opportunity_with_products", {
       opportunity_data: opportunityData,
       products_to_create: productsToCreate,
       products_to_update: productsToUpdate,
       product_ids_to_delete: productIdsToDelete,
     });
-
-    if (error) {
-      throw new Error(`Sync opportunity with products failed: ${error.message}`);
-    }
 
     return this.unwrapRpcResponse(rpcData);
   }

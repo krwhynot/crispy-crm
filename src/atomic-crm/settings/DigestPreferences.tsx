@@ -3,9 +3,9 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useNotify } from "ra-core";
+import { useDataProvider, useNotify } from "ra-core";
 import { Mail, Bell, BellOff } from "lucide-react";
-import { supabase } from "../providers/supabase/supabase";
+import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
 
 /**
  * Response type from get_digest_preference RPC
@@ -38,6 +38,7 @@ interface UpdatePreferenceResponse {
 export function DigestPreferences() {
   const notify = useNotify();
   const queryClient = useQueryClient();
+  const dataProvider = useDataProvider() as ExtendedDataProvider;
 
   // Fetch current preference
   const {
@@ -47,12 +48,7 @@ export function DigestPreferences() {
   } = useQuery<DigestPreferenceResponse>({
     queryKey: ["digestPreference"],
     queryFn: async () => {
-      const { data, error } = await supabase.rpc("get_digest_preference");
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
+      const data = await dataProvider.rpc("get_digest_preference", {});
       return data as DigestPreferenceResponse;
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
@@ -61,13 +57,9 @@ export function DigestPreferences() {
   // Update preference mutation
   const { mutate: updatePreference, isPending: isUpdating } = useMutation({
     mutationFn: async (optIn: boolean) => {
-      const { data, error } = await supabase.rpc("update_digest_preference", {
+      const data = await dataProvider.rpc("update_digest_preference", {
         p_opt_in: optIn,
       });
-
-      if (error) {
-        throw new Error(error.message);
-      }
 
       const response = data as UpdatePreferenceResponse;
       if (!response.success) {
