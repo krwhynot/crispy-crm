@@ -160,6 +160,49 @@ test.describe("Reports Overview Tab", () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
+  test("KPI - Stale Deals card displays numeric value (PRD Section 9.2.1 KPI #4)", async () => {
+    // Navigate to reports
+    await reportsPage.navigate();
+
+    // Wait for data to load
+    await reportsPage.expectDataLoaded();
+
+    // Get KPI value - uses per-stage STAGE_STALE_THRESHOLDS
+    const value = await reportsPage.getKPIValue("Stale Deals");
+
+    // Verify it's a valid number
+    expect(value).toMatch(/^\d+$/);
+
+    // Assert no console errors
+    expect(consoleMonitor.hasRLSErrors()).toBe(false);
+    expect(consoleMonitor.hasReactErrors()).toBe(false);
+  });
+
+  test("KPI - Stale Deals card has amber styling when count > 0 (PRD Section 9.2.1)", async () => {
+    // Navigate to reports
+    await reportsPage.navigate();
+
+    // Wait for data to load
+    await reportsPage.expectDataLoaded();
+
+    // Get stale deals count
+    const value = await reportsPage.getKPIValue("Stale Deals");
+    const count = parseInt(value, 10);
+
+    // Check if warning styling is applied (only when count > 0)
+    const hasWarningStyle = await reportsPage.hasStaleDealsWarningStyle();
+
+    // Warning styling should match the count condition
+    if (count > 0) {
+      expect(hasWarningStyle).toBe(true);
+    }
+    // When count is 0, default styling is fine (no warning needed)
+
+    // Assert no console errors
+    expect(consoleMonitor.hasRLSErrors()).toBe(false);
+    expect(consoleMonitor.hasReactErrors()).toBe(false);
+  });
+
   // ============================================
   // FILTER TESTS
   // ============================================

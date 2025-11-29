@@ -441,7 +441,7 @@ export function PrincipalPipelineTable() {
                 </TableCell>
                 <TableCell>
                   {row.nextAction ? (
-                    <span className="text-sm">{row.nextAction}</span>
+                    <span className="text-sm text-foreground">{row.nextAction}</span>
                   ) : (
                     <span className="text-sm text-muted-foreground">
                       No action scheduled
