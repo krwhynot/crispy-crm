@@ -3389,10 +3389,9 @@ export type Database = {
         | "Email"
         | "Meeting"
         | "Follow-up"
+        | "Demo"
         | "Proposal"
-        | "Discovery"
-        | "Administrative"
-        | "None"
+        | "Other"
       user_role: "admin" | "manager" | "rep"
     }
     CompositeTypes: {
@@ -3728,10 +3727,9 @@ export const Constants = {
         "Email",
         "Meeting",
         "Follow-up",
+        "Demo",
         "Proposal",
-        "Discovery",
-        "Administrative",
-        "None",
+        "Other",
       ],
       user_role: ["admin", "manager", "rep"],
     },

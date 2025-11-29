@@ -7,7 +7,13 @@ import {
   getOpportunityStageLabel,
   getOpportunityStageColor,
   getOpportunityStageElevation,
+  getOpportunityStageDescription,
 } from "../constants/stageConstants";
+import {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+} from "@/components/ui/tooltip";
 import { useStageMetrics, STUCK_THRESHOLD_DAYS } from "../hooks/useStageMetrics";
 import { QuickAddOpportunity } from "./QuickAddOpportunity";
 
@@ -114,12 +120,22 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
               {isCollapsed ? "▶" : "▼"}
             </button>
           )}
-          <h2
-            className="font-semibold text-base text-foreground"
-            style={{ borderBottom: `2px solid ${getOpportunityStageColor(stage)}` }}
-          >
-            {getOpportunityStageLabel(stage)}
-          </h2>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <h2
+                className="font-semibold text-base text-foreground cursor-help"
+                style={{ borderBottom: `2px solid ${getOpportunityStageColor(stage)}` }}
+              >
+                {getOpportunityStageLabel(stage)}
+              </h2>
+            </TooltipTrigger>
+            <TooltipContent
+              side="bottom"
+              className="max-w-[280px] text-sm leading-relaxed"
+            >
+              {getOpportunityStageDescription(stage)}
+            </TooltipContent>
+          </Tooltip>
           <span className="text-sm text-muted-foreground">({metrics.count})</span>
         </div>
 
