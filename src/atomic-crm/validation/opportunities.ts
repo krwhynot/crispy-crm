@@ -29,6 +29,55 @@ export const leadSourceSchema = z.enum([
   "existing_customer",
 ]);
 
+/**
+ * Win/Loss Reason Schemas (TODO-004a)
+ * Per PRD Section 5.3, MVP #12, #47 - Industry standard (Salesforce/HubSpot)
+ * Required when closing opportunities to track deal outcomes
+ */
+
+// Win reasons - why deals are won
+export const winReasonSchema = z.enum([
+  "relationship",        // Strong existing relationship with customer
+  "product_quality",     // Superior product quality/fit
+  "price_competitive",   // Competitive pricing
+  "timing",              // Right timing for customer needs
+  "other",               // Free-text reason required
+]);
+
+// Loss reasons - why deals are lost
+export const lossReasonSchema = z.enum([
+  "price_too_high",           // Price not competitive
+  "no_authorization",         // Distributor not authorized for principal
+  "competitor_relationship",  // Customer has existing competitor relationship
+  "product_fit",              // Product doesn't meet customer needs
+  "timing",                   // Bad timing (budget, seasonality, etc.)
+  "no_response",              // Customer became unresponsive
+  "other",                    // Free-text reason required
+]);
+
+// Type exports for use in components
+export type WinReason = z.infer<typeof winReasonSchema>;
+export type LossReason = z.infer<typeof lossReasonSchema>;
+
+// Constants for UI dropdown choices
+export const WIN_REASONS: Array<{ id: WinReason; name: string }> = [
+  { id: "relationship", name: "Strong Relationship" },
+  { id: "product_quality", name: "Product Quality/Fit" },
+  { id: "price_competitive", name: "Competitive Pricing" },
+  { id: "timing", name: "Right Timing" },
+  { id: "other", name: "Other (specify)" },
+];
+
+export const LOSS_REASONS: Array<{ id: LossReason; name: string }> = [
+  { id: "price_too_high", name: "Price Too High" },
+  { id: "no_authorization", name: "No Distributor Authorization" },
+  { id: "competitor_relationship", name: "Competitor Relationship" },
+  { id: "product_fit", name: "Product Didn't Fit" },
+  { id: "timing", name: "Bad Timing" },
+  { id: "no_response", name: "Customer Unresponsive" },
+  { id: "other", name: "Other (specify)" },
+];
+
 // Base schema - validates only fields that have UI inputs in OpportunityInputs.tsx
 const opportunityBaseSchema = z.object({
   // System fields
@@ -80,6 +129,17 @@ const opportunityBaseSchema = z.object({
   next_action_date: z.string().optional().nullable(), // ISO date string
   decision_criteria: z.string().optional().nullable(),
 
+  // Win/Loss Reason Fields (TODO-004a)
+  // Required when stage is closed_won or closed_lost respectively
+  // Per PRD Section 5.3, MVP #12, #47 - industry standard
+  win_reason: winReasonSchema.optional().nullable(),
+  loss_reason: lossReasonSchema.optional().nullable(),
+  close_reason_notes: z
+    .string()
+    .max(500, "Close reason notes must be 500 characters or less")
+    .optional()
+    .nullable(), // Required when reason is "other"
+
   // Note: The following fields exist in database but are NOT validated
   // because they have no UI input fields in OpportunityInputs.tsx (per "UI as truth" principle):
   // - status, actual_close_date
@@ -87,7 +147,7 @@ const opportunityBaseSchema = z.object({
   // - stage_manual, status_manual
   // - competition (undocumented - not in PRD)
   // - probability
-  // - competitor_ids, loss_reason, team_members
+  // - competitor_ids, team_members
   // - opportunity_owner_id
 });
 
@@ -187,7 +247,103 @@ export const updateOpportunitySchema = opportunityBaseSchema
       message: "At least one contact is required",
       path: ["contact_ids"],
     }
+  )
+  // Win/Loss reason validation (TODO-004a)
+  .refine(
+    (data) => {
+      // If stage is closed_won, win_reason is required
+      if (data.stage === "closed_won") {
+        return !!data.win_reason;
+      }
+      return true;
+    },
+    {
+      message: "Win reason is required when closing as won",
+      path: ["win_reason"],
+    }
+  )
+  .refine(
+    (data) => {
+      // If stage is closed_lost, loss_reason is required
+      if (data.stage === "closed_lost") {
+        return !!data.loss_reason;
+      }
+      return true;
+    },
+    {
+      message: "Loss reason is required when closing as lost",
+      path: ["loss_reason"],
+    }
+  )
+  .refine(
+    (data) => {
+      // If reason is "other", close_reason_notes is required
+      if (data.win_reason === "other" || data.loss_reason === "other") {
+        return !!data.close_reason_notes && data.close_reason_notes.trim().length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Please specify the reason in notes when selecting 'Other'",
+      path: ["close_reason_notes"],
+    }
   );
+
+/**
+ * Close Opportunity Schema (TODO-004a)
+ * Dedicated schema for the CloseOpportunityModal component
+ * Enforces win/loss reason based on target stage
+ */
+export const closeOpportunitySchema = z
+  .object({
+    id: z.union([z.string(), z.number()]),
+    stage: z.enum(["closed_won", "closed_lost"]),
+    win_reason: winReasonSchema.optional().nullable(),
+    loss_reason: lossReasonSchema.optional().nullable(),
+    close_reason_notes: z
+      .string()
+      .max(500, "Close reason notes must be 500 characters or less")
+      .optional()
+      .nullable(),
+  })
+  .refine(
+    (data) => {
+      if (data.stage === "closed_won") {
+        return !!data.win_reason;
+      }
+      return true;
+    },
+    {
+      message: "Win reason is required when closing as won",
+      path: ["win_reason"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.stage === "closed_lost") {
+        return !!data.loss_reason;
+      }
+      return true;
+    },
+    {
+      message: "Loss reason is required when closing as lost",
+      path: ["loss_reason"],
+    }
+  )
+  .refine(
+    (data) => {
+      if (data.win_reason === "other" || data.loss_reason === "other") {
+        return !!data.close_reason_notes && data.close_reason_notes.trim().length > 0;
+      }
+      return true;
+    },
+    {
+      message: "Please specify the reason in notes when selecting 'Other'",
+      path: ["close_reason_notes"],
+    }
+  );
+
+export type CloseOpportunityInput = z.infer<typeof closeOpportunitySchema>;
 
 // Export validation functions for specific operations
 export async function validateCreateOpportunity(data: any): Promise<void> {
@@ -222,6 +378,29 @@ export async function validateUpdateOpportunity(data: any): Promise<void> {
       throw {
         message: "Validation failed",
         body: { errors: formattedErrors }, // React Admin expects errors at body.errors
+      };
+    }
+    throw error;
+  }
+}
+
+/**
+ * Validate opportunity close action (TODO-004a)
+ * Used by CloseOpportunityModal to validate before submission
+ */
+export async function validateCloseOpportunity(data: any): Promise<void> {
+  try {
+    closeOpportunitySchema.parse(data);
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      const formattedErrors: Record<string, string> = {};
+      error.issues.forEach((err) => {
+        const path = err.path.join(".");
+        formattedErrors[path] = err.message;
+      });
+      throw {
+        message: "Validation failed",
+        body: { errors: formattedErrors },
       };
     }
     throw error;

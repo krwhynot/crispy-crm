@@ -2,13 +2,13 @@ import { KPICard } from "./KPICard";
 import { useKPIMetrics } from "../hooks/useKPIMetrics";
 
 /**
- * KPISummaryRow - Dashboard KPI metrics header row
+ * KPISummaryRow - Dashboard KPI metrics header row (PRD v1.9 Section 9.2.1)
  *
  * Displays four key metrics in a horizontal row above the main dashboard grid:
- * 1. Total Pipeline Value - sum of open opportunities
+ * 1. Open Opportunities - count (not $ value per Decision #5)
  * 2. Overdue Tasks - count (red accent if > 0)
  * 3. Activities This Week - count
- * 4. Open Opportunities - count
+ * 4. Stale Deals - count (amber/warning if > 0, per-stage thresholds)
  *
  * Layout (desktop-first):
  * - Desktop (≥1024px): 4-column horizontal row
@@ -27,31 +27,31 @@ export function KPISummaryRow() {
       aria-label="Key Performance Indicators"
       className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4"
     >
-      {/* 1. Total Pipeline Value */}
+      {/* KPI #1: Open Opportunities (count, not $ value) */}
       <KPICard
-        type="totalPipeline"
-        value={metrics.totalPipelineValue}
+        type="openOpportunities"
+        value={metrics.openOpportunitiesCount}
         loading={loading}
       />
 
-      {/* 2. Overdue Tasks (red accent when > 0) */}
+      {/* KPI #2: Overdue Tasks (red accent when > 0) */}
       <KPICard
         type="overdueTasks"
         value={metrics.overdueTasksCount}
         loading={loading}
       />
 
-      {/* 3. Activities This Week */}
+      {/* KPI #3: Activities This Week */}
       <KPICard
         type="activitiesThisWeek"
         value={metrics.activitiesThisWeek}
         loading={loading}
       />
 
-      {/* 4. Open Opportunities */}
+      {/* KPI #4: Stale Deals (amber/warning when > 0) */}
       <KPICard
-        type="openOpportunities"
-        value={metrics.openOpportunitiesCount}
+        type="staleDeals"
+        value={metrics.staleDealsCount}
         loading={loading}
       />
     </section>

@@ -3,21 +3,27 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import {
-  DollarSign,
   AlertCircle,
   Activity,
   Briefcase,
+  AlertTriangle,
   type LucideIcon,
 } from "lucide-react";
 
 /**
- * KPI Metric Type for dashboard summary cards
+ * KPI Metric Type for dashboard summary cards (PRD v1.9)
+ *
+ * Order matches PRD Section 9.2.1:
+ * 1. Open Opportunities - count (not $ value per Decision #5)
+ * 2. Overdue Tasks - red when > 0
+ * 3. Activities This Week - count
+ * 4. Stale Deals - amber when > 0 (per-stage thresholds)
  */
 export type KPIMetricType =
-  | "totalPipeline"
+  | "openOpportunities"
   | "overdueTasks"
   | "activitiesThisWeek"
-  | "openOpportunities";
+  | "staleDeals";
 
 interface KPICardProps {
   /** Metric type determines icon, label, and navigation target */
@@ -31,7 +37,7 @@ interface KPICardProps {
 }
 
 /**
- * Configuration for each KPI metric type
+ * Configuration for each KPI metric type (PRD v1.9 Section 9.2.1)
  */
 const KPI_CONFIG: Record<
   KPIMetricType,
@@ -42,21 +48,18 @@ const KPI_CONFIG: Record<
     navigateTo: string;
     /** Whether to show destructive (red) styling when value > 0 */
     destructiveWhenPositive?: boolean;
+    /** Whether to show warning (amber) styling when value > 0 */
+    warningWhenPositive?: boolean;
   }
 > = {
-  totalPipeline: {
-    icon: DollarSign,
-    label: "Total Pipeline",
-    formatValue: (value) =>
-      new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 0,
-        notation: value >= 1_000_000 ? "compact" : "standard",
-      }).format(value),
+  // KPI #1: Open Opportunities count (not $ value per Decision #5)
+  openOpportunities: {
+    icon: Briefcase,
+    label: "Open Opportunities",
+    formatValue: (value) => value.toLocaleString(),
     navigateTo: "/opportunities?filter=%7B%22stage%40not_in%22%3A%5B%22closed_won%22%2C%22closed_lost%22%5D%7D",
   },
+  // KPI #2: Overdue Tasks with red styling when > 0
   overdueTasks: {
     icon: AlertCircle,
     label: "Overdue Tasks",
@@ -64,17 +67,20 @@ const KPI_CONFIG: Record<
     navigateTo: "/tasks?filter=%7B%22completed%22%3Afalse%2C%22due_date%40lt%22%3A%22today%22%7D",
     destructiveWhenPositive: true,
   },
+  // KPI #3: Activities This Week
   activitiesThisWeek: {
     icon: Activity,
     label: "Activities This Week",
     formatValue: (value) => value.toLocaleString(),
     navigateTo: "/activities?filter=%7B%22activity_date%40gte%22%3A%22this_week_start%22%7D",
   },
-  openOpportunities: {
-    icon: Briefcase,
-    label: "Open Opportunities",
+  // KPI #4: Stale Deals with amber/warning styling when > 0
+  staleDeals: {
+    icon: AlertTriangle,
+    label: "Stale Deals",
     formatValue: (value) => value.toLocaleString(),
-    navigateTo: "/opportunities?filter=%7B%22stage%40not_in%22%3A%5B%22closed_won%22%2C%22closed_lost%22%5D%7D",
+    navigateTo: "/opportunities?filter=%7B%22stale%22%3Atrue%7D",
+    warningWhenPositive: true,
   },
 };
 
@@ -98,6 +104,7 @@ export function KPICard({ type, value, loading = false, className }: KPICardProp
   const Icon = config.icon;
 
   const isDestructive = config.destructiveWhenPositive && value > 0;
+  const isWarning = config.warningWhenPositive && value > 0;
 
   const handleClick = () => {
     navigate(config.navigateTo);
@@ -156,7 +163,9 @@ export function KPICard({ type, value, loading = false, className }: KPICardProp
               "flex h-10 w-10 lg:h-12 lg:w-12 items-center justify-center rounded-lg shrink-0",
               isDestructive
                 ? "bg-destructive/10 text-destructive"
-                : "bg-primary/10 text-primary"
+                : isWarning
+                  ? "bg-warning/10 text-warning"
+                  : "bg-primary/10 text-primary"
             )}
           >
             <Icon className="h-5 w-5 lg:h-6 lg:w-6" aria-hidden="true" />
@@ -172,7 +181,11 @@ export function KPICard({ type, value, loading = false, className }: KPICardProp
             <p
               className={cn(
                 "text-lg lg:text-xl font-semibold truncate",
-                isDestructive ? "text-destructive" : "text-foreground"
+                isDestructive
+                  ? "text-destructive"
+                  : isWarning
+                    ? "text-warning"
+                    : "text-foreground"
               )}
             >
               {config.formatValue(value)}

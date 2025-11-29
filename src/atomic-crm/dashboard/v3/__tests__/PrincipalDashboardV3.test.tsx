@@ -47,13 +47,14 @@ vi.mock("../hooks/usePrincipalOpportunities", () => ({
 }));
 
 // Mock the useKPIMetrics hook (used by KPISummaryRow)
+// Updated to match PRD v1.9: KPI #1 = Open Opportunities count (not $), KPI #4 = Stale Deals
 vi.mock("../hooks/useKPIMetrics", () => ({
   useKPIMetrics: () => ({
     metrics: {
-      totalPipelineValue: 150000,
+      openOpportunitiesCount: 8,
       overdueTasksCount: 3,
       activitiesThisWeek: 12,
-      openOpportunitiesCount: 8,
+      staleDealsCount: 2,
     },
     loading: false,
     error: null,
