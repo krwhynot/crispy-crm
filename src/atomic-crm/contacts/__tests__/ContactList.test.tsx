@@ -239,14 +239,7 @@ describe("ContactList", () => {
       phone: [{ number: "555-0100", type: "Work" }],
       tags: [1, 2], // VIP and Lead tags
       company_name: "Tech Corp",
-      organizations: [
-        {
-          organization_id: 1,
-          organization_name: "Tech Corp",
-          is_primary: true,
-          role: "decision_maker",
-        },
-      ],
+      organization_id: 1, // Single org relationship per PRD
       role: "decision_maker",
       purchase_influence: "High",
       sales_id: 1,
@@ -259,21 +252,7 @@ describe("ContactList", () => {
       email: [{ email: "jane@example.com", type: "Personal" }],
       tags: [3], // Customer tag
       company_name: "Health Inc",
-      organizations: [
-        {
-          organization_id: 2,
-          organization_name: "Health Inc",
-          is_primary: false,
-          role: "influencer",
-        },
-        {
-          organization_id: 3,
-          organization_name: "Finance Co",
-          is_primary: true,
-          role: "champion",
-        },
-      ],
-      total_organizations: 2,
+      organization_id: 2, // Single org relationship per PRD
       role: "influencer",
       purchase_influence: "Medium",
       sales_id: 2,
@@ -286,7 +265,7 @@ describe("ContactList", () => {
       email: [{ email: "bob@example.com", type: "Other" }],
       tags: [],
       company_name: null,
-      organizations: [],
+      organization_id: null, // No org (edge case)
       role: "executive",
       purchase_influence: "Low",
       sales_id: 1,
@@ -567,9 +546,10 @@ describe("ContactListFilter", () => {
     renderWithAdminContext(<ContactListFilter />);
 
     // Since we mock useGetList to return tags, they should be rendered
-    expect(screen.getByText("VIP")).toBeInTheDocument();
-    expect(screen.getByText("Lead")).toBeInTheDocument();
-    expect(screen.getByText("Customer")).toBeInTheDocument();
+    // Using getAllByText since tags may appear in multiple locations (badge + filter)
+    expect(screen.getAllByText("VIP").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Lead").length).toBeGreaterThan(0);
+    expect(screen.getAllByText("Customer").length).toBeGreaterThan(0);
   });
 
   test("renders last activity filters", () => {
@@ -680,13 +660,7 @@ describe("ContactList exporter", () => {
           { number: "555-0200", type: "Mobile" },
         ],
         tags: [1, 2],
-        organizations: [
-          {
-            organization_id: 1,
-            organization_name: "Tech Corp",
-            is_primary: true,
-          },
-        ],
+        organization_id: 1, // Single org relationship per PRD
         sales_id: 1,
       }),
     ];
@@ -704,19 +678,18 @@ describe("ContactList exporter", () => {
       1: { id: 1, name: "Tech Corp" },
     };
 
-    // Mock the exporter function
+    // Mock the exporter function - mirrors simplified single-org pattern from ContactList.tsx
     const exporter = async (records: any[]) => {
       const sales = mockSales;
       const tags = mockTags;
       const organizations = mockOrganizations;
 
       const contacts = records.map((contact) => {
-        const primaryOrganization = contact.organizations?.find((org: any) => org.is_primary);
-
         return {
           ...contact,
-          company: primaryOrganization?.organization_id
-            ? organizations[primaryOrganization.organization_id as keyof typeof organizations]?.name
+          // Single organization_id pattern (not multi-org array)
+          organization_name: contact.organization_id
+            ? organizations[contact.organization_id as keyof typeof organizations]?.name
             : undefined,
           sales: `${sales[contact.sales_id as keyof typeof sales].first_name} ${
             sales[contact.sales_id as keyof typeof sales].last_name
@@ -739,7 +712,7 @@ describe("ContactList exporter", () => {
     expect(exportedData[0]).toMatchObject({
       first_name: "John",
       last_name: "Doe",
-      company: "Tech Corp",
+      organization_name: "Tech Corp",
       sales: "Alice Manager",
       tags: "VIP, Lead",
       email_work: "john.work@example.com",

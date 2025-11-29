@@ -161,30 +161,11 @@ const ContactListActions = () => (
 const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
   const sales = await fetchRelatedRecords<Sale>(records, "sales_id", "sales");
   const tags = await fetchRelatedRecords<Tag>(records, "tags", "tags");
-
-  // Collect all organization IDs from all contacts' organizations arrays
-  const organizationIds = Array.from(
-    new Set(
-      records.flatMap((contact) => contact.organizations?.map((org) => org.organization_id) || [])
-    )
-  );
-
-  // Fetch organization names for all unique organization IDs
-  const organizations =
-    organizationIds.length > 0
-      ? await fetchRelatedRecords<Organization>(
-          organizationIds.map((id) => ({ id, organization_id: id })),
-          "organization_id",
-          "organizations"
-        )
-      : {};
+  const organizations = await fetchRelatedRecords<Organization>(records, "organization_id", "organizations");
 
   const contacts = records.map((contact) => {
-    // Find the primary organization from the organizations array
-    const primaryOrganization = contact.organizations?.find((org) => org.is_primary);
-
     // Build the export object with canonical field names matching import expectations
-    const exportedContact: any = {
+    const exportedContact: Record<string, unknown> = {
       // Core identity fields
       first_name: contact.first_name,
       last_name: contact.last_name,
@@ -192,10 +173,10 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
       title: contact.title,
 
       // Organization fields - using canonical names from columnAliases.ts
-      organization_name: primaryOrganization?.organization_id
-        ? organizations[primaryOrganization.organization_id]?.name
+      // Each contact has exactly one organization (organization_id is required per PRD)
+      organization_name: contact.organization_id
+        ? organizations[contact.organization_id]?.name
         : undefined,
-      organization_role: primaryOrganization?.job_title || undefined,
 
       // Email fields - flattened for import compatibility
       email_work: contact.email?.find((email) => email.type === "Work")?.email,
@@ -217,12 +198,11 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
       // Additional fields that may be useful but aren't in import schema
       sales: `${sales[contact.sales_id].first_name} ${sales[contact.sales_id].last_name}`,
       department: contact.department || "",
-      is_primary_contact: primaryOrganization ? "Yes" : "No",
-      total_organizations: contact.organizations?.length || 0,
 
       // ID fields for reference
       id: contact.id,
       sales_id: contact.sales_id,
+      organization_id: contact.organization_id,
     };
 
     return exportedContact;
