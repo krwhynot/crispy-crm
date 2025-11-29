@@ -341,6 +341,80 @@ supabase db push
 
 ## Troubleshooting
 
+### Supabase CLI Connection Issues
+
+#### IPv6 Not Supported (WSL2)
+**Symptoms:** `dial tcp [2600:...]:5432: connect: network is unreachable`
+
+**Cause:** WSL2 uses NAT networking which doesn't pass through IPv6 by default. Supabase direct DB connections require IPv6.
+
+**Solutions:**
+1. **Use pooler URL explicitly** (recommended for IPv4-only networks):
+   ```bash
+   npx supabase db push --db-url "postgresql://postgres.PROJECT_REF:PASSWORD@aws-1-us-east-2.pooler.supabase.com:5432/postgres"
+   ```
+
+2. **Enable IPv6 mirroring in WSL2** (Windows 11 22H2+):
+   Create `C:\Users\<Username>\.wslconfig`:
+   ```ini
+   [wsl2]
+   networkingMode=mirrored
+   ```
+   Then restart: `wsl --shutdown`
+
+#### IP Temporarily Banned
+**Symptoms:** `failed SASL auth (unexpected EOF)` or connection hangs
+
+**Cause:** Repeated failed auth attempts trigger temporary network ban.
+
+**Solution:**
+1. Go to [Supabase Dashboard](https://supabase.com/dashboard) → Project Settings → Database
+2. Scroll to **Network Bans** section
+3. Find and remove your IP (check with `curl ifconfig.me`)
+
+#### Password Authentication Failed
+**Symptoms:** `password authentication failed for user "postgres"`
+
+**Cause:** Database password not set or incorrect.
+
+**Solution:**
+1. Reset password in Dashboard → Project Settings → Database → Reset database password
+2. Link with password:
+   ```bash
+   npx supabase link --project-ref PROJECT_REF --password "YOUR_PASSWORD"
+   ```
+
+#### Migration History Mismatch
+**Symptoms:** `remote migration versions not found in local migrations directory`
+
+**Cause:** Migrations applied directly to cloud (via Dashboard SQL Editor) without syncing locally.
+
+**Solution:**
+```bash
+# Mark remote-only as reverted
+npx supabase migration repair --status reverted TIMESTAMP1 TIMESTAMP2 ... --db-url "..."
+
+# Mark local-only as applied
+npx supabase migration repair --status applied TIMESTAMP1 TIMESTAMP2 ... --db-url "..."
+```
+
+#### Invalid UTF-8 in Migration Files
+**Symptoms:** `invalid byte sequence for encoding "UTF8": 0x92`
+
+**Cause:** Migration file contains Windows smart quotes or other non-ASCII characters.
+
+**Solution:**
+```bash
+# Find the bad file
+file supabase/migrations/*.sql | grep -v ASCII
+
+# Find the characters
+cat -v <file> | grep "M-"
+
+# Fix (replace 0x92 with arrow)
+sed -i 's/\x92/->/g' supabase/migrations/<file>.sql
+```
+
 ### RLS Policy Not Working
 1. Check if RLS is enabled: `ALTER TABLE ... ENABLE ROW LEVEL SECURITY`
 2. Verify policy applies to correct role (`TO authenticated`)

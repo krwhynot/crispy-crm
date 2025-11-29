@@ -3,7 +3,7 @@
 -- =====================================================
 -- Purpose: Provide efficient authorization verification for:
 -- 1. Direct organization (principal/distributor) authorization
--- 2. Product’Organization fallback (check product's principal)
+-- 2. Product->Organization fallback (check product's principal)
 --
 -- Business Context:
 -- - MFB needs to verify if a principal is authorized for a distributor
@@ -65,7 +65,7 @@ Filters out soft-deleted records automatically.';
 -- =====================================================
 -- FUNCTION: check_authorization
 -- =====================================================
--- Versatile authorization check function with Product’Org fallback
+-- Versatile authorization check function with Product->Org fallback
 --
 -- Parameters:
 --   _distributor_id: The distributor to check authorization for
@@ -104,7 +104,7 @@ BEGIN
         -- Direct principal check
         v_principal_id := _principal_id;
     ELSIF _product_id IS NOT NULL THEN
-        -- Product’Org fallback: Get principal from product
+        -- Product->Org fallback: Get principal from product
         SELECT principal_id, name
         INTO v_principal_id, v_product_name
         FROM public.products
@@ -208,7 +208,7 @@ GRANT EXECUTE ON FUNCTION public.check_authorization(BIGINT, BIGINT, BIGINT) TO 
 
 COMMENT ON FUNCTION public.check_authorization IS
 'Check if a principal is authorized to sell through a distributor.
-Supports Product’Org fallback: if product_id is provided instead of principal_id,
+Supports Product->Org fallback: if product_id is provided instead of principal_id,
 the function will look up the product''s principal_id automatically.
 
 Parameters:
