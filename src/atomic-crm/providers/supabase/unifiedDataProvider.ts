@@ -56,6 +56,10 @@ import {
 import {
   RPC_SCHEMAS,
   type RPCFunctionName,
+  type CheckAuthorizationParams,
+  type CheckAuthorizationResponse,
+  type CheckAuthorizationBatchParams,
+  type CheckAuthorizationBatchResponse,
 } from "../../validation/rpc";
 
 // Import types for custom methods
@@ -1026,6 +1030,95 @@ export const unifiedDataProvider: DataProvider = {
       return { data: result as BoothVisitorResult };
     } catch (error) {
       logError("createBoothVisitor", "booth_visitor", { data }, error);
+      throw error;
+    }
+  },
+
+  // =====================================================
+  // Authorization Methods
+  // =====================================================
+
+  /**
+   * Check Authorization (Single)
+   * Verifies if a principal is authorized to sell through a distributor.
+   * Supports Product→Org fallback: if productId provided, looks up principal from product.
+   *
+   * @param distributorId - The distributor to check authorization for
+   * @param principalId - Optional direct principal ID to check
+   * @param productId - Optional product ID (principal will be resolved from product)
+   * @returns Authorization status with details
+   *
+   * @example
+   * // Check direct principal authorization
+   * const result = await dataProvider.checkAuthorization(distributorId, principalId);
+   *
+   * // Check via product (Product→Org fallback)
+   * const result = await dataProvider.checkAuthorization(distributorId, undefined, productId);
+   */
+  async checkAuthorization(
+    distributorId: number,
+    principalId?: number | null,
+    productId?: number | null
+  ): Promise<CheckAuthorizationResponse> {
+    const params: CheckAuthorizationParams = {
+      _distributor_id: distributorId,
+      _principal_id: principalId ?? null,
+      _product_id: productId ?? null,
+    };
+
+    try {
+      console.log("[DataProvider] Checking authorization", params);
+
+      const result = await this.rpc<CheckAuthorizationResponse>("check_authorization", params);
+
+      console.log("[DataProvider] Authorization check result", result);
+      return result;
+    } catch (error) {
+      logError("checkAuthorization", "authorization", { data: params }, error);
+      throw error;
+    }
+  },
+
+  /**
+   * Check Authorization (Batch)
+   * Batch authorization check for multiple products or principals.
+   * Useful for validating entire opportunity line item lists at once.
+   *
+   * @param distributorId - The distributor to check authorization for
+   * @param productIds - Optional array of product IDs to check
+   * @param principalIds - Optional array of principal IDs to check
+   * @returns Batch result with individual authorization statuses
+   *
+   * @example
+   * // Check multiple products
+   * const result = await dataProvider.checkAuthorizationBatch(distributorId, [1, 2, 3]);
+   *
+   * // Check multiple principals
+   * const result = await dataProvider.checkAuthorizationBatch(distributorId, undefined, [4, 5]);
+   */
+  async checkAuthorizationBatch(
+    distributorId: number,
+    productIds?: number[] | null,
+    principalIds?: number[] | null
+  ): Promise<CheckAuthorizationBatchResponse> {
+    const params: CheckAuthorizationBatchParams = {
+      _distributor_id: distributorId,
+      _product_ids: productIds ?? null,
+      _principal_ids: principalIds ?? null,
+    };
+
+    try {
+      console.log("[DataProvider] Checking authorization batch", params);
+
+      const result = await this.rpc<CheckAuthorizationBatchResponse>(
+        "check_authorization_batch",
+        params
+      );
+
+      console.log("[DataProvider] Authorization batch result", result);
+      return result;
+    } catch (error) {
+      logError("checkAuthorizationBatch", "authorization", { data: params }, error);
       throw error;
     }
   },

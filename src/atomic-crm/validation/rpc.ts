@@ -57,6 +57,83 @@ export const syncOpportunityWithProductsParamsSchema = z.object({
 });
 
 /**
+ * check_authorization(
+ *   _distributor_id bigint,
+ *   _principal_id bigint DEFAULT NULL,
+ *   _product_id bigint DEFAULT NULL
+ * ) RETURNS JSONB
+ * Check if a principal is authorized to sell through a distributor.
+ * Supports Product→Org fallback: if product_id provided, looks up principal from product.
+ */
+export const checkAuthorizationParamsSchema = z.object({
+  _distributor_id: z.number().int().positive("Distributor ID must be a positive integer"),
+  _principal_id: z
+    .number()
+    .int()
+    .positive("Principal ID must be a positive integer")
+    .optional()
+    .nullable(),
+  _product_id: z
+    .number()
+    .int()
+    .positive("Product ID must be a positive integer")
+    .optional()
+    .nullable(),
+});
+
+/**
+ * Response schema for check_authorization RPC
+ * Used for type inference and response validation
+ */
+export const checkAuthorizationResponseSchema = z.object({
+  authorized: z.boolean(),
+  reason: z.string().optional(),
+  error: z.string().optional(),
+  authorization_id: z.number().optional(),
+  distributor_id: z.number(),
+  distributor_name: z.string().optional(),
+  principal_id: z.number().optional(),
+  principal_name: z.string().optional(),
+  authorization_date: z.string().optional(),
+  expiration_date: z.string().nullable().optional(),
+  territory_restrictions: z.array(z.string()).nullable().optional(),
+  notes: z.string().nullable().optional(),
+  product_id: z.number().optional(),
+  product_name: z.string().optional(),
+  resolved_via: z.literal("product_lookup").optional(),
+});
+
+export type CheckAuthorizationParams = z.infer<typeof checkAuthorizationParamsSchema>;
+export type CheckAuthorizationResponse = z.infer<typeof checkAuthorizationResponseSchema>;
+
+/**
+ * check_authorization_batch(
+ *   _distributor_id bigint,
+ *   _product_ids bigint[] DEFAULT NULL,
+ *   _principal_ids bigint[] DEFAULT NULL
+ * ) RETURNS JSONB
+ * Batch authorization check for multiple products or principals.
+ */
+export const checkAuthorizationBatchParamsSchema = z.object({
+  _distributor_id: z.number().int().positive("Distributor ID must be a positive integer"),
+  _product_ids: z.array(z.number().int().positive()).optional().nullable(),
+  _principal_ids: z.array(z.number().int().positive()).optional().nullable(),
+});
+
+/**
+ * Response schema for check_authorization_batch RPC
+ */
+export const checkAuthorizationBatchResponseSchema = z.object({
+  distributor_id: z.number(),
+  total_checked: z.number(),
+  all_authorized: z.boolean().nullable(),
+  results: z.array(checkAuthorizationResponseSchema),
+});
+
+export type CheckAuthorizationBatchParams = z.infer<typeof checkAuthorizationBatchParamsSchema>;
+export type CheckAuthorizationBatchResponse = z.infer<typeof checkAuthorizationBatchResponseSchema>;
+
+/**
  * Map of RPC function names to their validation schemas
  * Used by unifiedDataProvider to validate params before calling RPC
  */
@@ -66,6 +143,8 @@ export const RPC_SCHEMAS = {
   archive_opportunity_with_relations: archiveOpportunityWithRelationsParamsSchema,
   unarchive_opportunity_with_relations: unarchiveOpportunityWithRelationsParamsSchema,
   sync_opportunity_with_products: syncOpportunityWithProductsParamsSchema,
+  check_authorization: checkAuthorizationParamsSchema,
+  check_authorization_batch: checkAuthorizationBatchParamsSchema,
 } as const;
 
 export type RPCFunctionName = keyof typeof RPC_SCHEMAS;

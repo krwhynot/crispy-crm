@@ -26,6 +26,7 @@ import { formatName } from "../utils/formatName";
 import { OrganizationAside } from "./OrganizationAside";
 import { OrganizationAvatar } from "./OrganizationAvatar";
 import { ActivitiesTab } from "./ActivitiesTab";
+import { AuthorizationsTab } from "./AuthorizationsTab";
 
 const OrganizationShow = () => (
   <ShowBase>
@@ -52,6 +53,11 @@ const OrganizationShowContent = () => {
 
   if (isPending || !record) return null;
 
+  // Check if this organization is a distributor (shows Authorizations tab)
+  const isDistributor = record.organization_type === "distributor";
+  // Determine grid columns based on organization type
+  const tabGridCols = isDistributor ? "grid-cols-5" : "grid-cols-4";
+
   return (
     <ResponsiveGrid variant="dashboard" className="mt-2 mb-2">
       <main role="main" aria-label="Organization details">
@@ -62,7 +68,7 @@ const OrganizationShowContent = () => {
               <h2 className="text-xl ml-2 flex-1">{record.name}</h2>
             </div>
             <Tabs defaultValue={currentTab} onValueChange={handleTabChange}>
-              <TabsList className="grid w-full grid-cols-4">
+              <TabsList className={`grid w-full ${tabGridCols}`}>
                 <TabsTrigger value="activity">Activity</TabsTrigger>
                 <TabsTrigger value="contacts">
                   {record.nb_contacts
@@ -79,6 +85,9 @@ const OrganizationShowContent = () => {
                     : "No Opportunities"}
                 </TabsTrigger>
                 <TabsTrigger value="activities">Activities</TabsTrigger>
+                {isDistributor && (
+                  <TabsTrigger value="authorizations">Authorizations</TabsTrigger>
+                )}
               </TabsList>
               <TabsContent value="activity" className="pt-2">
                 <ActivityLog organizationId={record.id} context="organization" />
@@ -128,6 +137,11 @@ const OrganizationShowContent = () => {
                   </div>
                 )}
               </TabsContent>
+              {isDistributor && (
+                <TabsContent value="authorizations" className="pt-2">
+                  <AuthorizationsTab distributorId={record.id} />
+                </TabsContent>
+              )}
             </Tabs>
           </CardContent>
         </Card>

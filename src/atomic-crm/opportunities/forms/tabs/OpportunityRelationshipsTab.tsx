@@ -14,6 +14,7 @@ import { AutocompleteOrganizationInput } from "../../../organizations/Autocomple
 import { OrganizationInputs } from "../../../organizations/OrganizationInputs";
 import { ContactInputs } from "../../../contacts/ContactInputs";
 import { ContactOrgMismatchWarning } from "../../components/ContactOrgMismatchWarning";
+import { DistributorAuthorizationWarning } from "../../components/DistributorAuthorizationWarning";
 
 export const OpportunityRelationshipsTab = () => {
   const { identity } = useGetIdentity();
@@ -164,6 +165,9 @@ export const OpportunityRelationshipsTab = () => {
             <OrganizationInputs />
           </CreateInDialogButton>
         </div>
+
+        {/* Soft warning when distributor is not authorized for principal */}
+        <DistributorAuthorizationWarning />
       </div>
 
       {/* Contacts */}

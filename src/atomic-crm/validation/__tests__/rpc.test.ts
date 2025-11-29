@@ -5,6 +5,10 @@ import {
   archiveOpportunityWithRelationsParamsSchema,
   unarchiveOpportunityWithRelationsParamsSchema,
   syncOpportunityWithProductsParamsSchema,
+  checkAuthorizationParamsSchema,
+  checkAuthorizationResponseSchema,
+  checkAuthorizationBatchParamsSchema,
+  checkAuthorizationBatchResponseSchema,
   RPC_SCHEMAS,
 } from "../rpc";
 
@@ -209,6 +213,290 @@ describe("RPC Validation Schemas", () => {
     });
   });
 
+  describe("checkAuthorizationParamsSchema", () => {
+    it("should accept valid params with distributor and principal", () => {
+      const result = checkAuthorizationParamsSchema.safeParse({
+        _distributor_id: 100,
+        _principal_id: 200,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept valid params with distributor and product (Product→Org fallback)", () => {
+      const result = checkAuthorizationParamsSchema.safeParse({
+        _distributor_id: 100,
+        _product_id: 50,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept distributor only (will fail at RPC level)", () => {
+      const result = checkAuthorizationParamsSchema.safeParse({
+        _distributor_id: 100,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept null for optional parameters", () => {
+      const result = checkAuthorizationParamsSchema.safeParse({
+        _distributor_id: 100,
+        _principal_id: null,
+        _product_id: null,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should reject missing distributor_id", () => {
+      const result = checkAuthorizationParamsSchema.safeParse({
+        _principal_id: 200,
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should reject negative distributor_id", () => {
+      const result = checkAuthorizationParamsSchema.safeParse({
+        _distributor_id: -1,
+        _principal_id: 200,
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should reject zero distributor_id", () => {
+      const result = checkAuthorizationParamsSchema.safeParse({
+        _distributor_id: 0,
+        _principal_id: 200,
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should reject non-integer distributor_id", () => {
+      const result = checkAuthorizationParamsSchema.safeParse({
+        _distributor_id: 100.5,
+        _principal_id: 200,
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should reject negative principal_id", () => {
+      const result = checkAuthorizationParamsSchema.safeParse({
+        _distributor_id: 100,
+        _principal_id: -200,
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should reject negative product_id", () => {
+      const result = checkAuthorizationParamsSchema.safeParse({
+        _distributor_id: 100,
+        _product_id: -50,
+      });
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe("checkAuthorizationResponseSchema", () => {
+    it("should accept valid authorized response", () => {
+      const result = checkAuthorizationResponseSchema.safeParse({
+        authorized: true,
+        authorization_id: 1,
+        distributor_id: 100,
+        distributor_name: "Sysco",
+        principal_id: 200,
+        principal_name: "McCRUM",
+        authorization_date: "2024-01-01",
+        expiration_date: null,
+        territory_restrictions: ["MI", "OH"],
+        notes: "Full authorization",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept unauthorized response with reason", () => {
+      const result = checkAuthorizationResponseSchema.safeParse({
+        authorized: false,
+        reason: "no_authorization_record",
+        distributor_id: 100,
+        principal_id: 200,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept error response", () => {
+      const result = checkAuthorizationResponseSchema.safeParse({
+        authorized: false,
+        error: "Product not found or has no principal",
+        distributor_id: 100,
+        product_id: 999,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept product lookup response", () => {
+      const result = checkAuthorizationResponseSchema.safeParse({
+        authorized: true,
+        authorization_id: 1,
+        distributor_id: 100,
+        distributor_name: "Sysco",
+        principal_id: 200,
+        principal_name: "McCRUM",
+        product_id: 50,
+        product_name: "Premium Widget",
+        resolved_via: "product_lookup",
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should reject missing authorized field", () => {
+      const result = checkAuthorizationResponseSchema.safeParse({
+        distributor_id: 100,
+        principal_id: 200,
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should reject missing distributor_id field", () => {
+      const result = checkAuthorizationResponseSchema.safeParse({
+        authorized: true,
+        principal_id: 200,
+      });
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe("checkAuthorizationBatchParamsSchema", () => {
+    it("should accept valid params with product IDs", () => {
+      const result = checkAuthorizationBatchParamsSchema.safeParse({
+        _distributor_id: 100,
+        _product_ids: [1, 2, 3],
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept valid params with principal IDs", () => {
+      const result = checkAuthorizationBatchParamsSchema.safeParse({
+        _distributor_id: 100,
+        _principal_ids: [200, 201, 202],
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept valid params with both product and principal IDs", () => {
+      const result = checkAuthorizationBatchParamsSchema.safeParse({
+        _distributor_id: 100,
+        _product_ids: [1, 2],
+        _principal_ids: [200, 201],
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept null for optional arrays", () => {
+      const result = checkAuthorizationBatchParamsSchema.safeParse({
+        _distributor_id: 100,
+        _product_ids: null,
+        _principal_ids: null,
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept empty arrays", () => {
+      const result = checkAuthorizationBatchParamsSchema.safeParse({
+        _distributor_id: 100,
+        _product_ids: [],
+        _principal_ids: [],
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should reject missing distributor_id", () => {
+      const result = checkAuthorizationBatchParamsSchema.safeParse({
+        _product_ids: [1, 2, 3],
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should reject negative values in product_ids array", () => {
+      const result = checkAuthorizationBatchParamsSchema.safeParse({
+        _distributor_id: 100,
+        _product_ids: [1, -2, 3],
+      });
+      expect(result.success).toBe(false);
+    });
+
+    it("should reject non-integer values in principal_ids array", () => {
+      const result = checkAuthorizationBatchParamsSchema.safeParse({
+        _distributor_id: 100,
+        _principal_ids: [200, 201.5, 202],
+      });
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe("checkAuthorizationBatchResponseSchema", () => {
+    it("should accept valid batch response", () => {
+      const result = checkAuthorizationBatchResponseSchema.safeParse({
+        distributor_id: 100,
+        total_checked: 2,
+        all_authorized: true,
+        results: [
+          {
+            authorized: true,
+            authorization_id: 1,
+            distributor_id: 100,
+            principal_id: 200,
+          },
+          {
+            authorized: true,
+            authorization_id: 2,
+            distributor_id: 100,
+            principal_id: 201,
+          },
+        ],
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept batch response with some unauthorized", () => {
+      const result = checkAuthorizationBatchResponseSchema.safeParse({
+        distributor_id: 100,
+        total_checked: 2,
+        all_authorized: false,
+        results: [
+          {
+            authorized: true,
+            authorization_id: 1,
+            distributor_id: 100,
+            principal_id: 200,
+          },
+          {
+            authorized: false,
+            reason: "no_authorization_record",
+            distributor_id: 100,
+            principal_id: 201,
+          },
+        ],
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should accept null for all_authorized (when no results)", () => {
+      const result = checkAuthorizationBatchResponseSchema.safeParse({
+        distributor_id: 100,
+        total_checked: 0,
+        all_authorized: null,
+        results: [],
+      });
+      expect(result.success).toBe(true);
+    });
+
+    it("should reject missing required fields", () => {
+      const result = checkAuthorizationBatchResponseSchema.safeParse({
+        distributor_id: 100,
+        results: [],
+      });
+      expect(result.success).toBe(false);
+    });
+  });
+
   describe("RPC_SCHEMAS registry", () => {
     it("should contain all expected RPC functions", () => {
       const expectedFunctions = [
@@ -217,6 +505,8 @@ describe("RPC Validation Schemas", () => {
         "archive_opportunity_with_relations",
         "unarchive_opportunity_with_relations",
         "sync_opportunity_with_products",
+        "check_authorization",
+        "check_authorization_batch",
       ];
 
       expectedFunctions.forEach((funcName) => {
@@ -224,8 +514,8 @@ describe("RPC Validation Schemas", () => {
       });
     });
 
-    it("should have exactly 5 RPC function schemas", () => {
-      expect(Object.keys(RPC_SCHEMAS).length).toBe(5);
+    it("should have exactly 7 RPC function schemas", () => {
+      expect(Object.keys(RPC_SCHEMAS).length).toBe(7);
     });
 
     it("should map function names to valid Zod schemas", () => {

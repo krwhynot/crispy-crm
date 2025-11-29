@@ -32,6 +32,7 @@ export const RESOURCE_MAPPING = {
   opportunity_participants: "opportunity_participants",
   opportunity_contacts: "opportunity_contacts",
   interaction_participants: "interaction_participants",
+  distributor_principal_authorizations: "distributor_principal_authorizations",
 
   // Other resources
   tasks: "tasks",
@@ -91,6 +92,7 @@ export const SOFT_DELETE_RESOURCES = [
   "tags",
   "opportunity_products",
   "notifications",
+  "distributor_principal_authorizations",
 ] as const;
 
 /**
