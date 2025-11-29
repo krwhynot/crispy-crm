@@ -1352,6 +1352,37 @@ VALUES
 
 -- Reset sequence
 SELECT setval(pg_get_serial_sequence('opportunities', 'id'), 55, true);
+
+-- ============================================================================
+-- CAMPAIGN ASSIGNMENTS
+-- ============================================================================
+-- Realistic campaign groupings for MFB food broker business
+-- Campaigns enable filtering and grouping in the Opportunity Campaign view
+-- ============================================================================
+
+-- Q1 2025 Premium Proteins Push (steakhouse focus - 6 opps)
+UPDATE opportunities SET campaign = 'Q1 2025 Premium Proteins Push'
+WHERE id IN (1, 5, 6, 25, 26, 28);
+
+-- Plant-Based Initiative 2025 (plant-based products - 5 opps)
+UPDATE opportunities SET campaign = 'Plant-Based Initiative 2025'
+WHERE id IN (2, 13, 20, 45, 52);
+
+-- Healthcare Foodservice Expansion (3 opps)
+UPDATE opportunities SET campaign = 'Healthcare Foodservice Expansion'
+WHERE id IN (7, 19, 43);
+
+-- Hotel & Hospitality Program (7 opps)
+UPDATE opportunities SET campaign = 'Hotel & Hospitality Program'
+WHERE id IN (3, 8, 17, 21, 32, 48, 49);
+
+-- Grand Rapids Trade Show 2024 (4 opps)
+UPDATE opportunities SET campaign = 'Grand Rapids Trade Show 2024'
+WHERE id IN (10, 14, 27, 46);
+
+-- National Accounts Q4 (big distributor deals - 9 opps)
+UPDATE opportunities SET campaign = 'National Accounts Q4'
+WHERE id IN (29, 30, 31, 33, 34, 35, 36, 41, 42);
 -- ============================================================================
 -- PART 12: ACTIVITIES (150 activities)
 -- ============================================================================
