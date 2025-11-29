@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-043 completed - Dual-Level Authorization Architecture)
+**Last Updated:** 2025-11-29 (TODO-049 completed - Production Monitoring & Observability with Sentry)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -1489,18 +1489,18 @@ Polish items and technical cleanup.
 
 ## Summary by Status
 
-### ⬜ TODO (Not Started): 60 items
-- **Remaining original items:** 29 (TODO-003, TODO-008 completed)
+### ⬜ TODO (Not Started): 59 items
+- **Remaining original items:** 28 (TODO-049 Monitoring completed)
 - **Remaining decomposed subtasks:** 17 (from TODO-004c, 011, 022, 042, 043)
 - **Hygiene items:** 1 (TODO-046 Pre-Launch Cleanup)
-- **Operational readiness:** 5 (TODO-047 Accessibility, TODO-048 Performance, TODO-049 Monitoring, TODO-050 Docs, TODO-051 Backup)
+- **Operational readiness:** 4 (TODO-047 Accessibility, TODO-048 Performance, TODO-050 Docs, TODO-051 Backup)
 - **Other remaining items:** 5 (TODO-052 Import Handling, etc.)
 - **Constitution Compliance Audits:** 1 (TODO-055 DataProvider Audit)
 
 ### 🔧 Partial/In Progress: 1 item
 - **TODO-052:** Contact Import Organization Handling (4/5 tasks complete)
 
-### ✅ Done: 31 items (completed 2025-11-28/29)
+### ✅ Done: 32 items (completed 2025-11-28/29)
 - **TODO-001:** Pipeline Stage Migration (3/3 subtasks ✅)
   - TODO-001a: Pipeline DB Migration
   - TODO-001b: Pipeline Constants & Schema Update
@@ -1534,6 +1534,7 @@ Polish items and technical cleanup.
 - **TODO-037:** Fix Next Action Dead Link (plain text instead of non-functional link)
 - **TODO-044:** RBAC Foundation (useUserRole hook)
 - **TODO-045:** Pre-Sprint 1 Cleanup - Baseline verification complete
+- **TODO-049:** Production Monitoring & Observability (Sentry + Health Dashboard)
 - **TODO-053:** Semantic Color Validation in CI
 - **TODO-054:** Form Schema Derivation Audit (4 violations identified)
 
