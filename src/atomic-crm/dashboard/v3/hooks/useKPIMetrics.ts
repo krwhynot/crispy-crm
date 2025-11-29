@@ -4,13 +4,21 @@ import { startOfWeek, endOfWeek, startOfDay } from "date-fns";
 import { useCurrentSale } from "./useCurrentSale";
 
 /**
- * KPI Metrics for Dashboard Summary Header
+ * KPI Metrics for Dashboard Summary Header (PRD v1.9)
  *
  * Fetches aggregated metrics in parallel for:
- * 1. Total Pipeline Value - sum of open opportunities (not closed_won/closed_lost)
+ * 1. Open Opportunities - count of non-closed opportunities (not $ value per Decision #5)
  * 2. Overdue Tasks - count of incomplete tasks past due date
  * 3. Activities This Week - count of activities in current week
- * 4. Open Opportunities - count of non-closed opportunities
+ * 4. Stale Deals - count of deals exceeding per-stage thresholds (PRD Section 6.3)
+ *
+ * Per-Stage Stale Thresholds (days without activity):
+ * - new_lead: 7 days
+ * - initial_outreach: 14 days
+ * - sample_visit_offered: 14 days
+ * - feedback_logged: 21 days
+ * - demo_scheduled: 14 days
+ * - closed_won/closed_lost: N/A (excluded)
  *
  * Design decisions:
  * - Uses Promise.allSettled for resilient parallel fetching
@@ -18,11 +26,23 @@ import { useCurrentSale } from "./useCurrentSale";
  * - Optimistic empty state while loading
  */
 
+/**
+ * Per-stage stale thresholds in days (PRD Section 6.3)
+ * Closed stages are excluded from staleness calculations
+ */
+export const STAGE_STALE_THRESHOLDS: Record<string, number> = {
+  new_lead: 7,
+  initial_outreach: 14,
+  sample_visit_offered: 14,
+  feedback_logged: 21,
+  demo_scheduled: 14,
+};
+
 export interface KPIMetrics {
-  totalPipelineValue: number;
+  openOpportunitiesCount: number;
   overdueTasksCount: number;
   activitiesThisWeek: number;
-  openOpportunitiesCount: number;
+  staleDealsCount: number;
 }
 
 interface UseKPIMetricsReturn {
@@ -34,11 +54,39 @@ interface UseKPIMetricsReturn {
 
 // Stable default metrics to avoid new reference on each render
 const DEFAULT_METRICS: KPIMetrics = {
-  totalPipelineValue: 0,
+  openOpportunitiesCount: 0,
   overdueTasksCount: 0,
   activitiesThisWeek: 0,
-  openOpportunitiesCount: 0,
+  staleDealsCount: 0,
 };
+
+/**
+ * Calculate if an opportunity is stale based on its stage and last activity date
+ */
+function isOpportunityStale(
+  stage: string,
+  lastActivityDate: string | null,
+  today: Date
+): boolean {
+  const threshold = STAGE_STALE_THRESHOLDS[stage];
+
+  // Closed stages are never stale
+  if (threshold === undefined) {
+    return false;
+  }
+
+  // If no activity date, use a large value to mark as stale
+  if (!lastActivityDate) {
+    return true;
+  }
+
+  const lastActivity = new Date(lastActivityDate);
+  const daysSinceActivity = Math.floor(
+    (today.getTime() - lastActivity.getTime()) / (1000 * 60 * 60 * 24)
+  );
+
+  return daysSinceActivity > threshold;
+}
 
 export function useKPIMetrics(): UseKPIMetricsReturn {
   const dataProvider = useDataProvider();
@@ -118,18 +166,20 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
         ]);
 
         // Process results, using 0 for failed requests
-        let totalPipelineValue = 0;
         let openOpportunitiesCount = 0;
+        let staleDealsCount = 0;
         let overdueTasksCount = 0;
         let activitiesThisWeek = 0;
 
         if (opportunitiesResult.status === "fulfilled") {
           const opportunities = opportunitiesResult.value.data;
           openOpportunitiesCount = opportunities.length;
-          totalPipelineValue = opportunities.reduce(
-            (sum: number, opp: { amount?: number }) => sum + (opp.amount || 0),
-            0
-          );
+
+          // Calculate stale deals based on per-stage thresholds (PRD Section 6.3)
+          staleDealsCount = opportunities.filter(
+            (opp: { stage: string; last_activity_date?: string | null }) =>
+              isOpportunityStale(opp.stage, opp.last_activity_date ?? null, today)
+          ).length;
         } else {
           console.error("Failed to fetch opportunities:", opportunitiesResult.reason);
         }
@@ -147,10 +197,10 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
         }
 
         setMetrics({
-          totalPipelineValue,
+          openOpportunitiesCount,
           overdueTasksCount,
           activitiesThisWeek,
-          openOpportunitiesCount,
+          staleDealsCount,
         });
       } catch (err) {
         console.error("Failed to fetch KPI metrics:", err);
