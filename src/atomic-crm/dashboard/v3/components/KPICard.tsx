@@ -67,12 +67,12 @@ const KPI_CONFIG: Record<
     navigateTo: "/tasks?filter=%7B%22completed%22%3Afalse%2C%22due_date%40lt%22%3A%22today%22%7D",
     destructiveWhenPositive: true,
   },
-  // KPI #3: Activities This Week
+  // KPI #3: Activities This Week - Navigate to Reports for weekly analysis
   activitiesThisWeek: {
     icon: Activity,
     label: "Activities This Week",
     formatValue: (value) => value.toLocaleString(),
-    navigateTo: "/activities?filter=%7B%22activity_date%40gte%22%3A%22this_week_start%22%7D",
+    navigateTo: "/reports",
   },
   // KPI #4: Stale Deals with amber/warning styling when > 0
   staleDeals: {

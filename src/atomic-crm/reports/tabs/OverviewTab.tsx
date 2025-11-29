@@ -51,17 +51,9 @@ export default function OverviewTab() {
   }, [navigate]);
 
   const handleActivitiesClick = useCallback(() => {
-    // Navigate to activities list filtered to this week
-    const params = new URLSearchParams();
-    const weekAgo = new Date();
-    weekAgo.setDate(weekAgo.getDate() - 7);
-    params.set(
-      "filter",
-      JSON.stringify({
-        "created_at@gte": weekAgo.toISOString(),
-      })
-    );
-    navigate(`/activities?${params.toString()}`);
+    // Navigate to Reports page for weekly activity analysis
+    // PRD Section 9.2.1: Activities KPI links to weekly report view
+    navigate("/reports");
   }, [navigate]);
 
   const handleStaleLeadsClick = useCallback(() => {

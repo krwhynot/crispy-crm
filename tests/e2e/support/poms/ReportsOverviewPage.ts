@@ -121,12 +121,24 @@ export class ReportsOverviewPage extends BasePage {
   }
 
   /**
-   * Expect all KPI cards to be visible
+   * Expect all 4 KPI cards to be visible (PRD Section 9.2.1)
    */
   async expectKPICardsVisible(): Promise<void> {
     await expect(this.page.getByText("Total Opportunities")).toBeVisible({ timeout: 30000 });
     await expect(this.page.getByText("Activities This Week")).toBeVisible({ timeout: 10000 });
     await expect(this.page.getByText("Stale Leads")).toBeVisible({ timeout: 10000 });
+    await expect(this.page.getByText("Stale Deals")).toBeVisible({ timeout: 10000 });
+  }
+
+  /**
+   * Check if Stale Deals KPI has warning styling (PRD Section 9.2.1)
+   * Returns true if the card has amber/warning border styling
+   */
+  async hasStaleDealsWarningStyle(): Promise<boolean> {
+    const card = this.getKPICard("Stale Deals");
+    const classAttr = await card.getAttribute("class");
+    // Check for warning variant styling: border-warning/50 bg-warning/5
+    return classAttr?.includes("border-warning") || classAttr?.includes("bg-warning") || false;
   }
 
   // ============================================

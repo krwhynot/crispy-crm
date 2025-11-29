@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-025 completed - Task Type Enum Alignment)
+**Last Updated:** 2025-11-29 (TODO-034 completed - Note RLS Manager/Admin Override)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
