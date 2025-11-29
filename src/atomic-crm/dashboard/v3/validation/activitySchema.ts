@@ -1,13 +1,24 @@
 import { z } from "zod";
 
-// Activity types that map to database interaction_type enum
-export const activityTypeSchema = z.enum([
-  "Call",
-  "Email",
-  "Meeting",
-  "Follow-up",
-  "Note", // ✅ Added for quick note logging
-]);
+/**
+ * All 13 activity types from PRD v1.18
+ * Organized into logical groups for dropdown UI
+ */
+export const ACTIVITY_TYPE_GROUPS = {
+  Communication: ["Call", "Email", "Check-in", "Social"] as const,
+  Meetings: ["Meeting", "Demo", "Site Visit", "Trade Show"] as const,
+  Documentation: ["Proposal", "Contract Review", "Follow-up", "Note", "Sample"] as const,
+} as const;
+
+// Flatten all activity types for the schema
+const ALL_ACTIVITY_TYPES = [
+  ...ACTIVITY_TYPE_GROUPS.Communication,
+  ...ACTIVITY_TYPE_GROUPS.Meetings,
+  ...ACTIVITY_TYPE_GROUPS.Documentation,
+] as const;
+
+// Activity types that map to database interaction_type enum (13 types from PRD)
+export const activityTypeSchema = z.enum(ALL_ACTIVITY_TYPES);
 
 export const activityOutcomeSchema = z.enum([
   "Connected",
@@ -17,13 +28,21 @@ export const activityOutcomeSchema = z.enum([
   "Rescheduled",
 ]);
 
-// Mapping to database enum values
+// Mapping display labels to database enum values (snake_case)
 export const ACTIVITY_TYPE_MAP: Record<string, string> = {
   Call: "call",
   Email: "email",
   Meeting: "meeting",
+  Demo: "demo",
+  Proposal: "proposal",
   "Follow-up": "follow_up",
-  Note: "note", // ✅ Maps to interaction_type.note from migration
+  "Trade Show": "trade_show",
+  "Site Visit": "site_visit",
+  "Contract Review": "contract_review",
+  "Check-in": "check_in",
+  Social: "social",
+  Note: "note",
+  Sample: "sample",
 } as const;
 
 export const activityLogSchema = z

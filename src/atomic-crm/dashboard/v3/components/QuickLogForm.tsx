@@ -16,7 +16,10 @@ import {
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
+  SelectSeparator,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -40,6 +43,7 @@ import {
   activityLogSchema,
   type ActivityLogInput,
   ACTIVITY_TYPE_MAP,
+  ACTIVITY_TYPE_GROUPS,
 } from "../validation/activitySchema";
 import { useCurrentSale } from "../hooks/useCurrentSale";
 
@@ -534,7 +538,9 @@ export function QuickLogForm({
   };
 
   // Derived UI state from pre-watched values
-  const showDuration = activityType === "Call" || activityType === "Meeting";
+  // Show duration for all time-based activities (calls + all meeting types)
+  const DURATION_ACTIVITY_TYPES = ["Call", "Meeting", "Demo", "Site Visit", "Trade Show"];
+  const showDuration = DURATION_ACTIVITY_TYPES.includes(activityType);
   const showFollowUpDate = createFollowUp;
 
   // Show loading state while entities or salesId are loading
@@ -569,11 +575,39 @@ export function QuickLogForm({
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    <SelectItem value="Call">Call</SelectItem>
-                    <SelectItem value="Email">Email</SelectItem>
-                    <SelectItem value="Meeting">Meeting</SelectItem>
-                    <SelectItem value="Follow-up">Follow-up</SelectItem>
-                    <SelectItem value="Note">Note</SelectItem>
+                    {/* Group 1: Communication (4 items) */}
+                    <SelectGroup>
+                      <SelectLabel>Communication</SelectLabel>
+                      {ACTIVITY_TYPE_GROUPS.Communication.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+
+                    <SelectSeparator />
+
+                    {/* Group 2: Meetings (4 items) */}
+                    <SelectGroup>
+                      <SelectLabel>Meetings</SelectLabel>
+                      {ACTIVITY_TYPE_GROUPS.Meetings.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+
+                    <SelectSeparator />
+
+                    {/* Group 3: Documentation (5 items) */}
+                    <SelectGroup>
+                      <SelectLabel>Documentation</SelectLabel>
+                      {ACTIVITY_TYPE_GROUPS.Documentation.map((type) => (
+                        <SelectItem key={type} value={type}>
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
                   </SelectContent>
                 </Select>
                 <FormMessage />
