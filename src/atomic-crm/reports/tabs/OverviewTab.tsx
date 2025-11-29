@@ -16,7 +16,6 @@ import type { Sale } from "../types";
 import {
   isOpportunityStale,
   countStaleOpportunities,
-  STAGE_STALE_THRESHOLDS,
 } from "@/atomic-crm/utils/stalenessCalculation";
 
 /** Pipeline opportunity for overview reporting */
@@ -56,7 +55,7 @@ export default function OverviewTab() {
   // IMPORTANT: All dates must be memoized to prevent infinite re-render loops
   // Creating new Date().toISOString() on each render causes useGetList to re-fetch infinitely
   const now = useMemo(() => new Date().toISOString(), []);
-  const thirtyDaysAgo = useMemo(() => subDays(new Date(), 30).toISOString(), []);
+  const _thirtyDaysAgo = useMemo(() => subDays(new Date(), 30).toISOString(), []); // Kept for future use
   const sixtyDaysAgo = useMemo(() => subDays(new Date(), 60).toISOString(), []);
 
   const { data: activities = [], isPending: activitiesPending } = useGetList<ActivityRecord>(
