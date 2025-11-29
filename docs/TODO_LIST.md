@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-042c completed - Daily digest email template)
+**Last Updated:** 2025-11-29 (TODO-042d completed - User preferences & empty skip)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -986,10 +986,10 @@ Important features that can be worked in parallel.
 
 #### TODO-042: Daily Email Digest (PARENT - See subtasks below)
 - **PRD Reference:** Section 12.3, MVP #31
-- **Status:** 🔧 In Progress (1/4 subtasks complete)
+- **Status:** 🔧 In Progress (2/4 subtasks complete)
 - **Priority:** 🟡 P2
 - **Description:** 7 AM cron email with overdue tasks + stale deals
-- **Subtasks:** TODO-042a ⬜, TODO-042b ⬜, TODO-042c ✅, TODO-042d ⬜
+- **Subtasks:** TODO-042a ⬜, TODO-042b ⬜, TODO-042c ✅, TODO-042d ✅
 - **Acceptance Criteria:** Users receive daily digest at 7 AM; can opt out
 
 #### TODO-042a: Edge Function Infrastructure & Cron
@@ -1052,18 +1052,25 @@ Important features that can be worked in parallel.
 
 #### TODO-042d: User Preferences & Empty Skip
 - **PRD Reference:** Section 12.3, MVP #31
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
 - **Depends On:** TODO-042c
 - **Effort:** M (2 days)
+- **Completed:** 2025-11-29
 - **Description:** Add per-user opt-in/out and skip empty digests
 - **Tasks:**
-  - [ ] Add `digest_opt_in` boolean to sales/users table
-  - [ ] Create user settings UI for digest preference
-  - [ ] Filter users by opt-in status in digest function
-  - [ ] Skip sending if user has no overdue tasks AND no stale deals
-  - [ ] Add opt-out link in email footer
-- **Acceptance Criteria:** Users can toggle digest in settings; empty digests not sent
+  - [x] Add `digest_opt_in` boolean to sales/users table
+  - [x] Create user settings UI for digest preference
+  - [x] Filter users by opt-in status in digest function
+  - [x] Skip sending if user has no overdue tasks AND no stale deals
+  - [x] Add opt-out link in email footer
+- **Implementation Notes:**
+  - Migration: Added `digest_opt_in BOOLEAN NOT NULL DEFAULT true` to sales table
+  - RPC functions: `get_digest_preference()`, `update_digest_preference()`, `generate_digest_opt_out_token()`, `process_digest_opt_out()`
+  - UI component: `src/atomic-crm/settings/DigestPreferences.tsx` (Switch toggle with loading/error states)
+  - Edge Functions: Updated `daily-digest/index.ts` with `generateOptOutUrl()` helper; created `digest-opt-out/index.ts` for one-click unsubscribe
+  - Token security: HMAC-signed tokens with 30-day expiration for secure opt-out links
+- **Acceptance Criteria:** Users can toggle digest in settings; empty digests not sent ✅
 - **Testability:** E2E: Opt out → no email received; opt in with data → email received
 
 ### Authorization System
@@ -1073,44 +1080,59 @@ Important features that can be worked in parallel.
 - **Status:** ⬜ TODO
 - **Priority:** 🟡 P2
 - **Description:** Implement org-level and product-level authorization tracking
-- **Subtasks:** TODO-043a, TODO-043b, TODO-043c, TODO-043d
+- **Subtasks:** TODO-043a ✅, TODO-043b ✅, TODO-043c, TODO-043d
 - **Acceptance Criteria:** Can track authorizations at both org and product level; warning shown for non-authorized combos
 
 #### TODO-043a: Org-Level Authorizations Table
 - **PRD Reference:** Section 13.1, MVP #14
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
 - **Effort:** M (2 days)
+- **Completed:** 2025-11-29
 - **Description:** Create distributor_principal_authorizations table with RLS
 - **Tasks:**
-  - [ ] Create migration: `distributor_principal_authorizations` table
-  - [ ] Columns: id, distributor_id (FK), principal_id (FK), is_authorized, authorization_date, expiration_date, notes, created_at, updated_at
-  - [ ] Add unique constraint on (distributor_id, principal_id)
-  - [ ] Enable RLS with team-wide read policy
-  - [ ] Add GRANT for authenticated role
-- **Acceptance Criteria:** Table created with proper constraints and RLS; can insert/query records
+  - [x] Create migration: `distributor_principal_authorizations` table
+  - [x] Columns: id, distributor_id (FK), principal_id (FK), is_authorized, authorization_date, expiration_date, notes, created_at, updated_at
+  - [x] Add unique constraint on (distributor_id, principal_id)
+  - [x] Enable RLS with team-wide read policy
+  - [x] Add GRANT for authenticated role
+- **Implementation Notes:**
+  - Migration file: `supabase/migrations/20251129050428_add_distributor_principal_authorizations.sql`
+  - RLS updated in: `supabase/migrations/20251129180728_add_soft_delete_rls_filtering.sql`
+  - Includes `territory_restrictions TEXT[]`, `no_self_authorization` constraint
+  - `update_updated_at_column()` trigger attached
+- **Acceptance Criteria:** Table created with proper constraints and RLS; can insert/query records ✅
 - **Testability:** Integration: Insert authorization record; query by distributor_id returns it
 
 #### TODO-043b: Verify Product-Level Authorizations
 - **PRD Reference:** Section 13.1, MVP #14
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
-- **Depends On:** TODO-043a
+- **Depends On:** TODO-043a ✅
 - **Effort:** S (1 day)
+- **Completed:** 2025-11-29
 - **Description:** Verify existing product_distributor_authorizations table or create if missing
 - **Tasks:**
-  - [ ] Check if `product_distributor_authorizations` table exists
-  - [ ] If not, create migration with: product_id (FK), distributor_id (FK), is_authorized, notes
-  - [ ] Ensure RLS and GRANT policies match org-level table
-  - [ ] Document relationship between org-level and product-level tables
-- **Acceptance Criteria:** Product-level authorizations table exists with proper schema
+  - [x] Check if `product_distributor_authorizations` table exists
+  - [x] If not, create migration with: product_id (FK), distributor_id (FK), is_authorized, notes
+  - [x] Ensure RLS and GRANT policies match org-level table
+  - [x] Document relationship between org-level and product-level tables
+- **Implementation Notes:**
+  - Migration file: `supabase/migrations/20251129051625_add_product_distributor_authorizations.sql`
+  - RLS updated in: `supabase/migrations/20251129180728_add_soft_delete_rls_filtering.sql`
+  - Additional columns: `special_pricing JSONB`, `territory_restrictions TEXT[]`
+  - Helper functions created:
+    - `is_product_authorized_for_distributor(product_id, distributor_id)` → BOOLEAN
+    - `get_product_distributor_pricing(product_id, distributor_id)` → JSONB
+  - Unique constraint: `uq_product_distributor_authorization (product_id, distributor_id)`
+- **Acceptance Criteria:** Product-level authorizations table exists with proper schema ✅
 - **Testability:** Integration: Query product_distributor_authorizations returns results
 
 #### TODO-043c: Authorization Inheritance Logic
 - **PRD Reference:** Section 13.1, MVP #14
 - **Status:** ⬜ TODO
 - **Priority:** 🟡 P2
-- **Depends On:** TODO-043b
+- **Depends On:** TODO-043b ✅
 - **Effort:** M (2 days)
 - **Description:** Implement dual-level authorization resolution (product → org fallback)
 - **Tasks:**
@@ -1492,7 +1514,7 @@ Polish items and technical cleanup.
 - **TODO-011** → 4 subtasks (011a ✅, 011b ✅, 011c ✅, 011d ✅) - Sample Tracking **COMPLETE**
 - **TODO-022** → 2 subtasks (022a ✅, 022b ✅) - Duplicate Prevention **COMPLETE**
 - **TODO-042** → 4 subtasks (042a, 042b, 042c, 042d) - Email Digest
-- **TODO-043** → 4 subtasks (043a, 043b, 043c, 043d) - Authorization
+- **TODO-043** → 4 subtasks (043a ✅, 043b ✅, 043c, 043d) - Authorization (2/4 complete)
 
 ---
 
@@ -1544,8 +1566,8 @@ TODO-042 (Daily Email Digest)
                 └── TODO-042d (User Preferences)
 
 TODO-043 (Dual-Level Authorization)
-    └── TODO-043a (Org-Level Table)
-        └── TODO-043b (Product-Level Table)
+    └── TODO-043a (Org-Level Table) ✅
+        └── TODO-043b (Product-Level Table) ✅
             └── TODO-043c (Inheritance Logic)
                 └── TODO-043d (Opportunity Warning)
 
@@ -1669,8 +1691,8 @@ Each sprint must meet these criteria before items are marked complete:
 - TODO-042b: Digest Query Logic (S, 1d) ← Depends on TODO-012
 - TODO-042c: Email Template (S, 1d)
 - TODO-042d: User Preferences & Empty Skip (M, 2d)
-- TODO-043a: Org-Level Authorizations Table (M, 2d)
-- TODO-043b: Product-Level Authorizations (S, 1d)
+- TODO-043a: Org-Level Authorizations Table (M, 2d) ✅
+- TODO-043b: Product-Level Authorizations (S, 1d) ✅
 - TODO-043c: Authorization Inheritance Logic (M, 2d)
 - TODO-043d: Opportunity Authorization Warning (S, 1d)
 - TODO-020: Authorization UI Tab (L, 4d) ← Moved from Sprint 5, deferrable to post-MVP
