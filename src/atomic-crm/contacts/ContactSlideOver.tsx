@@ -1,8 +1,7 @@
-import { UserIcon, ActivityIcon, FileTextIcon, FileIcon } from "lucide-react";
+import { UserIcon, ActivityIcon, FileTextIcon } from "lucide-react";
 import { ResourceSlideOver, type TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ContactDetailsTab } from "./ContactDetailsTab";
 import { ContactNotesTab } from "./ContactNotesTab";
-import { ContactFilesTab } from "./ContactFilesTab";
 import { ActivitiesTab } from "./ActivitiesTab";
 import type { Contact } from "../types";
 

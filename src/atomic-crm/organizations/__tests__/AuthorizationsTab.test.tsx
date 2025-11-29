@@ -7,6 +7,8 @@
  * - Add authorization dialog functionality
  * - Remove authorization confirmation
  * - Status badges (active, expired, inactive)
+ * - Product-level exceptions (expandable section)
+ * - Add/remove product exceptions
  */
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
@@ -73,14 +75,35 @@ describe("AuthorizationsTab", () => {
     { id: 4, name: "Fresh Farms", organization_type: "principal" },
   ];
 
+  // Mock products for exception testing
+  const mockProducts = [
+    { id: 101, name: "McCRUM Fries", sku: "MCF-001", principal_id: 1, category: "frozen" },
+    { id: 102, name: "McCRUM Wedges", sku: "MCW-002", principal_id: 1, category: "frozen" },
+    { id: 103, name: "McCRUM Chips", sku: "MCC-003", principal_id: 1, category: "snacks" },
+  ];
+
+  // Mock product authorizations (exceptions)
+  const mockProductAuths = [
+    {
+      id: 501,
+      product_id: 102,
+      distributor_id: 9,
+      is_authorized: false, // Exception: blocked
+      authorization_date: "2024-02-01",
+      expiration_date: null,
+      notes: "Product discontinued in this region",
+      created_at: "2024-02-01T00:00:00Z",
+    },
+  ];
+
   beforeEach(() => {
     vi.clearAllMocks();
 
     // Default implementations for all hooks
     vi.mocked(reactAdmin.useRefresh).mockReturnValue(mockRefresh);
     vi.mocked(reactAdmin.useNotify).mockReturnValue(mockNotify);
-    vi.mocked(reactAdmin.useCreate).mockReturnValue([mockCreateFn, { isLoading: false }] as any);
-    vi.mocked(reactAdmin.useDelete).mockReturnValue([mockDeleteFn, { isLoading: false }] as any);
+    vi.mocked(reactAdmin.useCreate).mockReturnValue([mockCreateFn, { isPending: false }] as any);
+    vi.mocked(reactAdmin.useDelete).mockReturnValue([mockDeleteFn, { isPending: false }] as any);
     vi.mocked(reactAdmin.useGetIdentity).mockReturnValue({ identity: { id: 1 } } as any);
   });
 
@@ -96,8 +119,6 @@ describe("AuthorizationsTab", () => {
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 
       // Should show skeleton loading state (class name contains skeleton-related styling)
-      const skeletons = document.querySelectorAll('[class*="animate-pulse"], [class*="skeleton"]');
-      // Or check for the skeleton component structure
       expect(document.querySelector(".space-y-4")).toBeInTheDocument();
     });
   });
@@ -364,6 +385,251 @@ describe("AuthorizationsTab", () => {
 
       await waitFor(() => {
         expect(screen.queryByRole("alertdialog")).not.toBeInTheDocument();
+      });
+    });
+  });
+
+  describe("Slide-over Tab Interface", () => {
+    test("accepts record prop for slide-over usage", async () => {
+      const mockRecord = { id: mockDistributorId, name: "Test Distributor", organization_type: "distributor" };
+
+      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string) => {
+        if (resource === "distributor_principal_authorizations") {
+          return { data: mockAuthorizations, isPending: false, error: null } as any;
+        }
+        if (resource === "organizations") {
+          return { data: mockPrincipals, isPending: false, error: null } as any;
+        }
+        return { data: [], isPending: false, error: null } as any;
+      });
+
+      renderWithAdminContext(
+        <AuthorizationsTab record={mockRecord} mode="view" isActiveTab={true} />
+      );
+
+      await waitFor(() => {
+        expect(screen.getByText(/2 authorized principals/i)).toBeInTheDocument();
+      });
+    });
+
+    test("shows message when no distributor selected", () => {
+      renderWithAdminContext(<AuthorizationsTab />);
+      expect(screen.getByText(/no distributor selected/i)).toBeInTheDocument();
+    });
+  });
+
+  describe("Product-Level Exceptions", () => {
+    test("shows expand button on authorization cards", async () => {
+      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
+        if (resource === "distributor_principal_authorizations") {
+          return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
+        }
+        if (resource === "organizations") {
+          if (params?.filter?.id) {
+            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+          }
+          return { data: mockPrincipals, isPending: false, error: null } as any;
+        }
+        return { data: [], isPending: false, error: null } as any;
+      });
+
+      renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
+
+      await waitFor(() => {
+        // Should have expand/collapse trigger button
+        const expandButton = screen.getByRole("button", { name: /expand product exceptions/i });
+        expect(expandButton).toBeInTheDocument();
+      });
+    });
+
+    test("expands to show product exceptions section", async () => {
+      const user = userEvent.setup();
+
+      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
+        if (resource === "distributor_principal_authorizations") {
+          return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
+        }
+        if (resource === "product_distributor_authorizations") {
+          return { data: mockProductAuths, isPending: false, error: null } as any;
+        }
+        if (resource === "products") {
+          return { data: mockProducts, isPending: false, error: null } as any;
+        }
+        if (resource === "organizations") {
+          if (params?.filter?.id) {
+            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+          }
+          return { data: mockPrincipals, isPending: false, error: null } as any;
+        }
+        return { data: [], isPending: false, error: null } as any;
+      });
+
+      renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
+
+      await waitFor(() => {
+        expect(screen.getByRole("button", { name: /expand product exceptions/i })).toBeInTheDocument();
+      });
+
+      const expandButton = screen.getByRole("button", { name: /expand product exceptions/i });
+      await user.click(expandButton);
+
+      await waitFor(() => {
+        // Should show Product Exceptions heading
+        expect(screen.getByText(/product exceptions/i)).toBeInTheDocument();
+      });
+    });
+
+    test("shows exception count badge when exceptions exist", async () => {
+      const user = userEvent.setup();
+
+      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
+        if (resource === "distributor_principal_authorizations") {
+          return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
+        }
+        if (resource === "product_distributor_authorizations") {
+          return { data: mockProductAuths, isPending: false, error: null } as any;
+        }
+        if (resource === "products") {
+          return { data: mockProducts, isPending: false, error: null } as any;
+        }
+        if (resource === "organizations") {
+          if (params?.filter?.id) {
+            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+          }
+          return { data: mockPrincipals, isPending: false, error: null } as any;
+        }
+        return { data: [], isPending: false, error: null } as any;
+      });
+
+      renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
+
+      // First expand to trigger the product auth fetch
+      await waitFor(() => {
+        expect(screen.getByRole("button", { name: /expand product exceptions/i })).toBeInTheDocument();
+      });
+
+      const expandButton = screen.getByRole("button", { name: /expand product exceptions/i });
+      await user.click(expandButton);
+
+      await waitFor(() => {
+        // Should show exception count in badge
+        expect(screen.getByText(/1 exception/i)).toBeInTheDocument();
+      });
+    });
+
+    test("displays blocked product in exceptions list", async () => {
+      const user = userEvent.setup();
+
+      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
+        if (resource === "distributor_principal_authorizations") {
+          return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
+        }
+        if (resource === "product_distributor_authorizations") {
+          return { data: mockProductAuths, isPending: false, error: null } as any;
+        }
+        if (resource === "products") {
+          return { data: mockProducts, isPending: false, error: null } as any;
+        }
+        if (resource === "organizations") {
+          if (params?.filter?.id) {
+            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+          }
+          return { data: mockPrincipals, isPending: false, error: null } as any;
+        }
+        return { data: [], isPending: false, error: null } as any;
+      });
+
+      renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
+
+      const expandButton = await screen.findByRole("button", { name: /expand product exceptions/i });
+      await user.click(expandButton);
+
+      await waitFor(() => {
+        // Should show the blocked product with "Not Authorized" status
+        expect(screen.getByText("McCRUM Wedges")).toBeInTheDocument();
+        expect(screen.getByText("Not Authorized")).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe("Status Badges", () => {
+    test("shows Active badge for valid authorization", async () => {
+      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
+        if (resource === "distributor_principal_authorizations") {
+          return { data: [mockAuthorizations[0]], isPending: false, error: null } as any;
+        }
+        if (resource === "organizations") {
+          if (params?.filter?.id) {
+            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+          }
+          return { data: mockPrincipals, isPending: false, error: null } as any;
+        }
+        return { data: [], isPending: false, error: null } as any;
+      });
+
+      renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
+
+      await waitFor(() => {
+        expect(screen.getByText("Active")).toBeInTheDocument();
+      });
+    });
+
+    test("shows Expired badge for expired authorization", async () => {
+      const expiredAuth = {
+        ...mockAuthorizations[0],
+        expiration_date: "2020-01-01", // Past date
+      };
+
+      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
+        if (resource === "distributor_principal_authorizations") {
+          return { data: [expiredAuth], isPending: false, error: null } as any;
+        }
+        if (resource === "organizations") {
+          if (params?.filter?.id) {
+            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+          }
+          return { data: mockPrincipals, isPending: false, error: null } as any;
+        }
+        return { data: [], isPending: false, error: null } as any;
+      });
+
+      renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
+
+      await waitFor(() => {
+        expect(screen.getByText("Expired")).toBeInTheDocument();
+      });
+    });
+
+    test("shows Inactive badge for is_authorized=false", async () => {
+      const inactiveAuth = {
+        ...mockAuthorizations[0],
+        is_authorized: false,
+      };
+
+      vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string, params?: any) => {
+        if (resource === "distributor_principal_authorizations") {
+          return { data: [inactiveAuth], isPending: false, error: null } as any;
+        }
+        if (resource === "organizations") {
+          if (params?.filter?.id) {
+            const principal = mockPrincipals.find((p) => p.id === params.filter.id);
+            return { data: principal ? [principal] : [], isPending: false, error: null } as any;
+          }
+          return { data: mockPrincipals, isPending: false, error: null } as any;
+        }
+        return { data: [], isPending: false, error: null } as any;
+      });
+
+      renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
+
+      await waitFor(() => {
+        expect(screen.getByText("Inactive")).toBeInTheDocument();
       });
     });
   });
