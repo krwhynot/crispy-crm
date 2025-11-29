@@ -81,9 +81,10 @@ export const organizationSchema = z.object({
   nb_contacts: z.number().optional(),
   nb_opportunities: z.number().optional(),
 
-  // System fields
+  // System/Audit fields
   created_at: z.string().optional(),
-  deleted_at: z.string().optional().nullable(),
+  created_by: z.union([z.string(), z.number()]).nullish(), // Audit: who created
+  deleted_at: z.string().optional().nullable(), // Soft-delete timestamp
 });
 
 // Type inference
@@ -116,13 +117,17 @@ export async function validateOrganizationForSubmission(data: any): Promise<void
 }
 
 // Create-specific schema (stricter requirements)
+// Omits system-managed fields that are auto-populated by DB triggers
 export const createOrganizationSchema = organizationSchema
   .omit({
     id: true,
     created_at: true,
+    created_by: true, // Auto-set by trigger
+    updated_at: true, // Auto-set by trigger
+    updated_by: true, // Auto-set by trigger
     deleted_at: true,
-    nb_contacts: true,
-    nb_opportunities: true,
+    nb_contacts: true, // Computed field
+    nb_opportunities: true, // Computed field
   })
   .required({
     name: true,
