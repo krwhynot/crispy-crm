@@ -28,6 +28,23 @@ export const activityOutcomeSchema = z.enum([
   "Rescheduled",
 ]);
 
+// Sample status enum - workflow states for sample activities (PRD §4.4)
+// Workflow: sent → received → feedback_pending → feedback_received
+export const sampleStatusSchema = z.enum([
+  "sent",
+  "received",
+  "feedback_pending",
+  "feedback_received",
+]);
+
+// Sample status options for UI dropdown
+export const SAMPLE_STATUS_OPTIONS = [
+  { value: "sent", label: "Sent" },
+  { value: "received", label: "Received" },
+  { value: "feedback_pending", label: "Feedback Pending" },
+  { value: "feedback_received", label: "Feedback Received" },
+] as const;
+
 // Mapping display labels to database enum values (snake_case)
 export const ACTIVITY_TYPE_MAP: Record<string, string> = {
   Call: "call",
@@ -57,6 +74,9 @@ export const activityLogSchema = z
     notes: z.string().min(1, "Notes are required"),
     createFollowUp: z.boolean().default(false),
     followUpDate: z.date().optional(),
+    // Sample tracking field (PRD §4.4)
+    // Only required when activityType = 'Sample', validated via superRefine
+    sampleStatus: sampleStatusSchema.optional(),
   })
   .refine((data) => data.contactId || data.organizationId, {
     message: "Select a contact or organization before logging",
@@ -65,7 +85,28 @@ export const activityLogSchema = z
   .refine((data) => !data.createFollowUp || data.followUpDate, {
     message: "Follow-up date is required when creating a follow-up task",
     path: ["followUpDate"],
+  })
+  .superRefine((data, ctx) => {
+    // Sample tracking validation (PRD §4.4)
+    // If type is 'Sample', sample_status is required
+    if (data.activityType === "Sample" && !data.sampleStatus) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["sampleStatus"],
+        message: "Sample status is required for sample activities",
+      });
+    }
+
+    // If type is NOT 'Sample', sample_status should not be set
+    if (data.activityType !== "Sample" && data.sampleStatus) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["sampleStatus"],
+        message: "Sample status should only be set for sample activities",
+      });
+    }
   });
 
 export type ActivityLogInput = z.input<typeof activityLogSchema>;
 export type ActivityLog = z.output<typeof activityLogSchema>;
+export type SampleStatus = z.infer<typeof sampleStatusSchema>;

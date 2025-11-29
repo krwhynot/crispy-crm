@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-28 (TODO-004c completed - full Win/Loss Reasons UI now done)
+**Last Updated:** 2025-11-28 (TODO-003 completed - contact-customer org mismatch warning)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -170,16 +170,23 @@ These items block other work or are foundational to the system.
 
 #### TODO-003: Contact-Customer Org Validation
 - **PRD Reference:** Section 4.2, MVP #49
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🔴 P0
 - **Depends On:** TODO-002
+- **Completed:** 2025-11-28
 - **Description:** Enforce that opportunity contacts belong to Customer Organization
 - **Tasks:**
-  - [ ] Add validation on opportunity contact selection
-  - [ ] Show warning if selected contact belongs to different org
-  - [ ] Allow override with confirmation (soft warning)
-  - [ ] Update OpportunityCreate and OpportunityEdit forms
-- **Acceptance Criteria:** Warning displayed when contact org ≠ customer org; can proceed with confirmation
+  - [x] Add validation on opportunity contact selection
+  - [x] Show warning if selected contact belongs to different org
+  - [x] Allow override with confirmation (soft warning)
+  - [x] Update OpportunityCreate and OpportunityEdit forms
+- **Implementation Notes:**
+  - Hook file: `src/atomic-crm/opportunities/hooks/useContactOrgMismatch.ts`
+  - Component file: `src/atomic-crm/opportunities/components/ContactOrgMismatchWarning.tsx`
+  - Integrated into `OpportunityRelationshipsTab.tsx` after contacts selector
+  - Soft warning pattern: amber Alert with "Keep Anyway" (confirmation dialog) or "Remove Mismatched" actions
+  - Unit tests: 8 tests covering all edge cases in `hooks/__tests__/useContactOrgMismatch.test.ts`
+- **Acceptance Criteria:** Warning displayed when contact org ≠ customer org; can proceed with confirmation ✅
 
 ### Core Business Logic
 
@@ -1290,23 +1297,24 @@ Polish items and technical cleanup.
 
 ## Summary by Status
 
-### ⬜ TODO (Not Started): 61 items
-- **Remaining original items:** 30 (TODO-008 completed)
+### ⬜ TODO (Not Started): 60 items
+- **Remaining original items:** 29 (TODO-003, TODO-008 completed)
 - **Remaining decomposed subtasks:** 17 (from TODO-004c, 011, 022, 042, 043)
 - **Hygiene items:** 1 (TODO-046 Pre-Launch Cleanup)
 - **Operational readiness:** 5 (TODO-047 Accessibility, TODO-048 Performance, TODO-049 Monitoring, TODO-050 Docs, TODO-051 Backup)
-- **Other remaining items:** 6 (TODO-003, TODO-052 Import Handling, etc.)
+- **Other remaining items:** 5 (TODO-052 Import Handling, etc.)
 - **Constitution Compliance Audits:** 1 (TODO-055 DataProvider Audit)
 
 ### 🔧 Partial/In Progress: 1 item
 - **TODO-052:** Contact Import Organization Handling (4/5 tasks complete)
 
-### ✅ Done: 16 items (completed 2025-11-28/29)
+### ✅ Done: 18 items (completed 2025-11-28/29)
 - **TODO-001:** Pipeline Stage Migration (3/3 subtasks ✅)
   - TODO-001a: Pipeline DB Migration
   - TODO-001b: Pipeline Constants & Schema Update
   - TODO-001c: Pipeline UI & Filter Updates
 - **TODO-002:** Contact Organization Enforcement
+- **TODO-003:** Contact-Customer Org Validation (soft warning with override confirmation)
 - **TODO-004:** Win/Loss Reasons UI (3/3 subtasks ✅)
   - TODO-004a: Win/Loss Reason Schema & Fields
   - TODO-004b: Win/Loss Modal Component
@@ -1316,6 +1324,7 @@ Polish items and technical cleanup.
 - **TODO-007:** Dashboard KPI #4 Stale Deals
 - **TODO-008:** Recent Activity Feed Component (ActivityFeedPanel + useTeamActivities hook)
 - **TODO-009:** My Performance Widget (useMyPerformance hook + MyPerformanceWidget component)
+- **TODO-010:** QuickLogForm - All 13 Activity Types (grouped dropdown, P5/P8 compliant)
 - **TODO-044:** RBAC Foundation (useUserRole hook)
 - **TODO-045:** Pre-Sprint 1 Cleanup - Baseline verification complete
 - **TODO-053:** Semantic Color Validation in CI
@@ -1339,8 +1348,8 @@ TODO-001 (Pipeline Stage Migration)
         └── TODO-001b (Constants & Schema)
             └── TODO-001c (UI & Filter Updates)
 
-TODO-002 (Contact Org Enforcement)
-    ├── TODO-003 (Contact-Customer Org Validation)
+TODO-002 (Contact Org Enforcement) ✅
+    ├── TODO-003 (Contact-Customer Org Validation) ✅
     └── TODO-052 (Contact Import Org Handling)
 
 TODO-004 (Win/Loss Reasons UI)

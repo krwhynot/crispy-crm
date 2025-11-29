@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useGetList } from "ra-core";
-import { TrendingUp, Activity, AlertCircle } from "lucide-react";
+import { TrendingUp, Activity, AlertCircle, Clock } from "lucide-react";
 import { KPICard } from "../components/KPICard";
 import { ChartWrapper } from "../components/ChartWrapper";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -13,6 +13,11 @@ import { OPPORTUNITY_STAGE_CHOICES } from "../../opportunities/constants/stageCo
 import { format, subDays, startOfDay, eachDayOfInterval } from "date-fns";
 import "../charts/chartSetup";
 import type { Sale } from "../types";
+import {
+  isOpportunityStale,
+  countStaleOpportunities,
+  STAGE_STALE_THRESHOLDS,
+} from "@/atomic-crm/utils/stalenessCalculation";
 
 /** Pipeline opportunity for overview reporting */
 interface Opportunity {
@@ -133,18 +138,23 @@ export default function OverviewTab() {
       opportunityTrend = opportunityChange > 0 ? "up" : opportunityChange < 0 ? "down" : "neutral";
     }
 
-    // Stale leads (Lead stage with no recent activity)
+    // Stale leads (new_lead stage with no activity in 7+ days - PRD threshold)
     const staleLeads = opportunities.filter((opp) => {
       const isLead = opp.stage === "Lead" || opp.stage === "new_lead";
-      const hasNoRecentActivity =
-        !opp.last_activity_at || new Date(opp.last_activity_at) < weekAgo;
-      return isLead && hasNoRecentActivity;
+      if (!isLead) return false;
+      // Use PRD per-stage threshold (7 days for new_lead)
+      return isOpportunityStale(opp.stage, opp.last_activity_at ?? null, now);
     }).length;
+
+    // Stale Deals - all opportunities exceeding their per-stage thresholds (PRD Section 9.2.1 KPI #4)
+    // Uses per-stage thresholds: new_lead=7d, initial_outreach=14d, sample_visit=14d, feedback=21d, demo=14d
+    const staleDeals = countStaleOpportunities(opportunities, now);
 
     return {
       totalOpportunities: currentOpportunities,
       weekActivities: currentWeekActivities,
       staleLeads,
+      staleDeals,
       activityChange: Math.abs(activityChange),
       activityTrend,
       opportunityChange: Math.abs(opportunityChange),
@@ -240,13 +250,13 @@ export default function OverviewTab() {
   return (
     <div className="space-y-6">
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {[...Array(3)].map((_, i) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => (
             <Skeleton key={i} className="h-32" />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <KPICard
             title="Total Opportunities"
             value={kpis.totalOpportunities}
@@ -269,7 +279,17 @@ export default function OverviewTab() {
             change={0}
             trend="neutral"
             icon={AlertCircle}
-            subtitle="Leads with no activity in 7+ days"
+            subtitle="New leads with no activity in 7+ days"
+          />
+          {/* KPI #4: Stale Deals with amber/warning styling (PRD Section 9.2.1) */}
+          <KPICard
+            title="Stale Deals"
+            value={kpis.staleDeals}
+            change={0}
+            trend="neutral"
+            icon={Clock}
+            subtitle="Deals exceeding stage thresholds"
+            variant={kpis.staleDeals > 0 ? "warning" : "default"}
           />
         </div>
       )}
