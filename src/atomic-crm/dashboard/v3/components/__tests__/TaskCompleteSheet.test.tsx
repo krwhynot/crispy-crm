@@ -43,22 +43,17 @@ const createMockTasks = (): TaskItem[] => [
   },
 ];
 
-// Mutable state for mocks
-const mockState = {
-  loading: false,
-  error: null as Error | null,
-  tasks: createMockTasks(),
-  completeTask: vi.fn(),
-};
+// Create mock complete function
+const mockCompleteTask = vi.fn();
 
-// Mock useMyTasks hook
-vi.mock("../hooks/useMyTasks", () => ({
-  useMyTasks: () => ({
-    tasks: mockState.tasks,
-    loading: mockState.loading,
-    error: mockState.error,
-    completeTask: mockState.completeTask,
-  }),
+// Mock useMyTasks hook - using vi.hoisted for proper hoisting
+vi.mock("../../hooks/useMyTasks", () => ({
+  useMyTasks: vi.fn(() => ({
+    tasks: createMockTasks(),
+    loading: false,
+    error: null,
+    completeTask: mockCompleteTask,
+  })),
 }));
 
 // Mock Sheet components for simpler testing
@@ -81,6 +76,10 @@ vi.mock("@/components/ui/sheet", () => ({
 
 // Import component AFTER mocks are set up
 import { TaskCompleteSheet } from "../TaskCompleteSheet";
+import { useMyTasks } from "../../hooks/useMyTasks";
+
+// Get the mocked function for manipulation
+const mockedUseMyTasks = vi.mocked(useMyTasks);
 
 describe("TaskCompleteSheet", () => {
   const mockOnOpenChange = vi.fn();
@@ -88,11 +87,23 @@ describe("TaskCompleteSheet", () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-    mockState.loading = false;
-    mockState.error = null;
-    mockState.tasks = createMockTasks();
-    mockState.completeTask.mockResolvedValue(undefined);
+    mockCompleteTask.mockResolvedValue(undefined);
     mockNotify.mockClear();
+
+    // Reset mock to default state
+    mockedUseMyTasks.mockReturnValue({
+      tasks: createMockTasks(),
+      loading: false,
+      error: null,
+      completeTask: mockCompleteTask,
+      snoozeTask: vi.fn(),
+      deleteTask: vi.fn(),
+      viewTask: vi.fn(),
+      updateTaskDueDate: vi.fn(),
+      updateTaskLocally: vi.fn(),
+      rollbackTask: vi.fn(),
+      calculateStatus: vi.fn(),
+    });
   });
 
   describe("Rendering", () => {
@@ -108,7 +119,7 @@ describe("TaskCompleteSheet", () => {
       expect(screen.queryByTestId("sheet")).not.toBeInTheDocument();
     });
 
-    it("renders task list when open", async () => {
+    it("renders task list when open", () => {
       render(
         <TaskCompleteSheet
           open={true}
@@ -117,17 +128,13 @@ describe("TaskCompleteSheet", () => {
         />
       );
 
-      // Wait for component to render
-      await waitFor(() => {
-        expect(screen.getByTestId("sheet-title")).toHaveTextContent("Complete Task");
-      });
-
+      expect(screen.getByTestId("sheet-title")).toHaveTextContent("Complete Task");
       expect(screen.getByText("Call John about proposal")).toBeInTheDocument();
       expect(screen.getByText("Send contract to Sarah")).toBeInTheDocument();
       expect(screen.getByText("Prepare demo for Acme Corp")).toBeInTheDocument();
     });
 
-    it("shows overdue badge when there are overdue tasks", async () => {
+    it("shows overdue badge when there are overdue tasks", () => {
       render(
         <TaskCompleteSheet
           open={true}
@@ -136,12 +143,10 @@ describe("TaskCompleteSheet", () => {
         />
       );
 
-      await waitFor(() => {
-        expect(screen.getByText("1 overdue")).toBeInTheDocument();
-      });
+      expect(screen.getByText("1 overdue")).toBeInTheDocument();
     });
 
-    it("shows remaining task count", async () => {
+    it("shows remaining task count", () => {
       render(
         <TaskCompleteSheet
           open={true}
@@ -150,14 +155,12 @@ describe("TaskCompleteSheet", () => {
         />
       );
 
-      await waitFor(() => {
-        expect(screen.getByText("3 tasks remaining")).toBeInTheDocument();
-      });
+      expect(screen.getByText("3 tasks remaining")).toBeInTheDocument();
     });
   });
 
   describe("Accessibility", () => {
-    it("has proper aria attributes on sheet", async () => {
+    it("has proper aria attributes on sheet", () => {
       render(
         <TaskCompleteSheet
           open={true}
@@ -166,16 +169,14 @@ describe("TaskCompleteSheet", () => {
         />
       );
 
-      await waitFor(() => {
-        const title = screen.getByTestId("sheet-title");
-        expect(title).toHaveAttribute("id", "complete-task-title");
-      });
+      const title = screen.getByTestId("sheet-title");
+      expect(title).toHaveAttribute("id", "complete-task-title");
 
       const description = screen.getByTestId("sheet-description");
       expect(description).toHaveAttribute("id", "complete-task-description");
     });
 
-    it("complete buttons have descriptive aria-labels", async () => {
+    it("complete buttons have descriptive aria-labels", () => {
       render(
         <TaskCompleteSheet
           open={true}
@@ -184,18 +185,15 @@ describe("TaskCompleteSheet", () => {
         />
       );
 
-      await waitFor(() => {
-        expect(
-          screen.getByLabelText('Mark "Call John about proposal" as complete')
-        ).toBeInTheDocument();
-      });
-
+      expect(
+        screen.getByLabelText('Mark "Call John about proposal" as complete')
+      ).toBeInTheDocument();
       expect(
         screen.getByLabelText('Mark "Send contract to Sarah" as complete')
       ).toBeInTheDocument();
     });
 
-    it("complete buttons meet minimum touch target size (44px)", async () => {
+    it("complete buttons meet minimum touch target size (44px)", () => {
       render(
         <TaskCompleteSheet
           open={true}
@@ -203,10 +201,6 @@ describe("TaskCompleteSheet", () => {
           onRefresh={mockOnRefresh}
         />
       );
-
-      await waitFor(() => {
-        expect(screen.getByText("Call John about proposal")).toBeInTheDocument();
-      });
 
       // Get only the complete buttons (not any other buttons)
       const completeButtons = screen.getAllByRole("button").filter(
@@ -233,17 +227,13 @@ describe("TaskCompleteSheet", () => {
         />
       );
 
-      await waitFor(() => {
-        expect(screen.getByText("Call John about proposal")).toBeInTheDocument();
-      });
-
       const completeButton = screen.getByLabelText(
         'Mark "Call John about proposal" as complete'
       );
       fireEvent.click(completeButton);
 
       await waitFor(() => {
-        expect(mockState.completeTask).toHaveBeenCalledWith(1);
+        expect(mockCompleteTask).toHaveBeenCalledWith(1);
       });
     });
 
@@ -255,10 +245,6 @@ describe("TaskCompleteSheet", () => {
           onRefresh={mockOnRefresh}
         />
       );
-
-      await waitFor(() => {
-        expect(screen.getByText("Call John about proposal")).toBeInTheDocument();
-      });
 
       const completeButton = screen.getByLabelText(
         'Mark "Call John about proposal" as complete'
@@ -272,7 +258,7 @@ describe("TaskCompleteSheet", () => {
   });
 
   describe("Task Sorting", () => {
-    it("shows overdue tasks first", async () => {
+    it("shows overdue tasks first", () => {
       render(
         <TaskCompleteSheet
           open={true}
@@ -280,10 +266,6 @@ describe("TaskCompleteSheet", () => {
           onRefresh={mockOnRefresh}
         />
       );
-
-      await waitFor(() => {
-        expect(screen.getByText("Call John about proposal")).toBeInTheDocument();
-      });
 
       const completeButtons = screen.getAllByRole("button").filter(
         (btn) => btn.getAttribute("aria-label")?.includes("as complete")
@@ -298,7 +280,7 @@ describe("TaskCompleteSheet", () => {
   });
 
   describe("Priority Display", () => {
-    it("shows priority badges for all tasks", async () => {
+    it("shows priority badges for all tasks", () => {
       render(
         <TaskCompleteSheet
           open={true}
@@ -307,17 +289,14 @@ describe("TaskCompleteSheet", () => {
         />
       );
 
-      await waitFor(() => {
-        expect(screen.getByText("High")).toBeInTheDocument();
-      });
-
+      expect(screen.getByText("High")).toBeInTheDocument();
       expect(screen.getByText("Medium")).toBeInTheDocument();
       expect(screen.getByText("Critical")).toBeInTheDocument();
     });
   });
 
   describe("Visual Styling", () => {
-    it("uses semantic color classes (no hex codes)", async () => {
+    it("uses semantic color classes (no hex codes)", () => {
       const { container } = render(
         <TaskCompleteSheet
           open={true}
@@ -325,10 +304,6 @@ describe("TaskCompleteSheet", () => {
           onRefresh={mockOnRefresh}
         />
       );
-
-      await waitFor(() => {
-        expect(screen.getByTestId("sheet-content")).toBeInTheDocument();
-      });
 
       const sheetContent = screen.getByTestId("sheet-content");
 
@@ -346,8 +321,20 @@ describe("TaskCompleteSheet", () => {
   });
 
   describe("Empty State", () => {
-    it("shows empty state when no tasks", async () => {
-      mockState.tasks = [];
+    it("shows empty state when no tasks", () => {
+      mockedUseMyTasks.mockReturnValue({
+        tasks: [],
+        loading: false,
+        error: null,
+        completeTask: mockCompleteTask,
+        snoozeTask: vi.fn(),
+        deleteTask: vi.fn(),
+        viewTask: vi.fn(),
+        updateTaskDueDate: vi.fn(),
+        updateTaskLocally: vi.fn(),
+        rollbackTask: vi.fn(),
+        calculateStatus: vi.fn(),
+      });
 
       render(
         <TaskCompleteSheet
@@ -357,17 +344,26 @@ describe("TaskCompleteSheet", () => {
         />
       );
 
-      await waitFor(() => {
-        expect(screen.getByText("All caught up!")).toBeInTheDocument();
-      });
-
+      expect(screen.getByText("All caught up!")).toBeInTheDocument();
       expect(screen.getByText("No pending tasks to complete")).toBeInTheDocument();
     });
   });
 
   describe("Loading State", () => {
-    it("shows skeleton while loading", async () => {
-      mockState.loading = true;
+    it("shows skeleton while loading", () => {
+      mockedUseMyTasks.mockReturnValue({
+        tasks: [],
+        loading: true,
+        error: null,
+        completeTask: mockCompleteTask,
+        snoozeTask: vi.fn(),
+        deleteTask: vi.fn(),
+        viewTask: vi.fn(),
+        updateTaskDueDate: vi.fn(),
+        updateTaskLocally: vi.fn(),
+        rollbackTask: vi.fn(),
+        calculateStatus: vi.fn(),
+      });
 
       render(
         <TaskCompleteSheet
@@ -377,15 +373,25 @@ describe("TaskCompleteSheet", () => {
         />
       );
 
-      await waitFor(() => {
-        expect(screen.getByTestId("task-list-skeleton")).toBeInTheDocument();
-      });
+      expect(screen.getByTestId("task-list-skeleton")).toBeInTheDocument();
     });
   });
 
   describe("Error State", () => {
-    it("shows error message when error occurs", async () => {
-      mockState.error = new Error("Failed to fetch tasks");
+    it("shows error message when error occurs", () => {
+      mockedUseMyTasks.mockReturnValue({
+        tasks: [],
+        loading: false,
+        error: new Error("Failed to fetch tasks"),
+        completeTask: mockCompleteTask,
+        snoozeTask: vi.fn(),
+        deleteTask: vi.fn(),
+        viewTask: vi.fn(),
+        updateTaskDueDate: vi.fn(),
+        updateTaskLocally: vi.fn(),
+        rollbackTask: vi.fn(),
+        calculateStatus: vi.fn(),
+      });
 
       render(
         <TaskCompleteSheet
@@ -395,10 +401,7 @@ describe("TaskCompleteSheet", () => {
         />
       );
 
-      await waitFor(() => {
-        expect(screen.getByText("Failed to load tasks")).toBeInTheDocument();
-      });
-
+      expect(screen.getByText("Failed to load tasks")).toBeInTheDocument();
       expect(screen.getByText("Failed to fetch tasks")).toBeInTheDocument();
     });
   });
