@@ -200,11 +200,13 @@ export const filterableFields: Record<string, string[]> = {
     "follow_up_required",
     "follow_up_date",
     "sentiment",
+    "sample_status", // Sample workflow status (PRD §4.4)
     "tags", // Array field
     "created_at",
     "updated_at",
     "deleted_at", // Soft delete timestamp
     "created_by", // FK to sales (for filtering by creator)
+    "q", // Special: full-text search parameter
   ],
 
   // Audit trail resource (field-level history)

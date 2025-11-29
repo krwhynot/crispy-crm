@@ -147,6 +147,9 @@ export interface OpportunityContact extends Pick<RaRecord, "id"> {
   created_at: string;
 }
 
+// Sample status type for sample activities (PRD §4.4)
+export type SampleStatus = "sent" | "received" | "feedback_pending" | "feedback_received";
+
 export interface ActivityRecord extends Pick<RaRecord, "id"> {
   id: Identifier;
   activity_type: "engagement" | "interaction";
@@ -167,6 +170,8 @@ export interface ActivityRecord extends Pick<RaRecord, "id"> {
   location?: string;
   attendees?: string[];
   tags?: string[];
+  // Sample tracking (PRD §4.4) - only set when type === 'sample'
+  sample_status?: SampleStatus;
   created_at: string;
   updated_at?: string;
   created_by?: Identifier;
