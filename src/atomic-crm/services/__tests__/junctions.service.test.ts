@@ -2,10 +2,13 @@
  * Tests for JunctionsService - Multi-participant opportunity relationships
  *
  * CRITICAL: This service is essential for multi-participant opportunities
- * Tests verify junction table operations across 3 relationship types:
- * 1. Contact-Organization relationships
- * 2. Opportunity participants (organizations)
- * 3. Opportunity contacts
+ * Tests verify junction table operations across 2 relationship types:
+ * 1. Opportunity participants (organizations)
+ * 2. Opportunity contacts
+ *
+ * Note: Contact-Organization relationships were removed after the
+ * contact_organizations junction table was deprecated. Contacts now
+ * use a direct organization_id FK (single org per contact).
  */
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
@@ -23,200 +26,8 @@ describe("JunctionsService", () => {
     service = new JunctionsService(mockDataProvider);
   });
 
-  describe("Contact-Organization Relationships", () => {
-    describe("getContactOrganizations", () => {
-      test("should fetch and populate organization details using batch loading", async () => {
-        const contactId = 1;
-        const mockJunctions = [
-          { id: 1, contact_id: 1, organization_id: 101, is_primary: true },
-          { id: 2, contact_id: 1, organization_id: 102, is_primary: false },
-        ];
-        const mockOrgs = [
-          { id: 101, name: "Acme Corp" },
-          { id: 102, name: "Beta Inc" },
-        ];
-
-        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: mockJunctions, total: 2 });
-        mockDataProvider.getMany = vi.fn().mockResolvedValue({ data: mockOrgs });
-
-        const result = await service.getContactOrganizations(contactId);
-
-        expect(mockDataProvider.getList).toHaveBeenCalledWith("contact_organizations", {
-          filter: { contact_id: contactId },
-          pagination: { page: 1, perPage: 100 },
-          sort: { field: "is_primary", order: "DESC" },
-        });
-        expect(mockDataProvider.getMany).toHaveBeenCalledWith("organizations", {
-          ids: [101, 102],
-        });
-        expect(result.data).toHaveLength(2);
-        expect(result.data[0].organization).toEqual({ id: 101, name: "Acme Corp" });
-        expect(result.data[1].organization).toEqual({ id: 102, name: "Beta Inc" });
-      });
-
-      test("should handle empty results gracefully", async () => {
-        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: [], total: 0 });
-        mockDataProvider.getMany = vi.fn();
-
-        const result = await service.getContactOrganizations(1);
-
-        expect(result.data).toEqual([]);
-        expect(mockDataProvider.getMany).not.toHaveBeenCalled();
-      });
-
-      test("should filter out null organization IDs", async () => {
-        const mockJunctions = [
-          { id: 1, contact_id: 1, organization_id: 101, is_primary: true },
-          { id: 2, contact_id: 1, organization_id: null, is_primary: false },
-        ];
-
-        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: mockJunctions, total: 2 });
-        mockDataProvider.getMany = vi
-          .fn()
-          .mockResolvedValue({ data: [{ id: 101, name: "Acme Corp" }] });
-
-        const result = await service.getContactOrganizations(1);
-
-        expect(mockDataProvider.getMany).toHaveBeenCalledWith("organizations", {
-          ids: [101],
-        });
-        expect(result.data).toHaveLength(2);
-      });
-
-      test("should throw on data provider error", async () => {
-        mockDataProvider.getList = vi.fn().mockRejectedValue(new Error("Database error"));
-
-        await expect(service.getContactOrganizations(1)).rejects.toThrow(
-          "Get contact organizations failed: Database error"
-        );
-      });
-    });
-
-    describe("addContactToOrganization", () => {
-      test("should create junction record with default is_primary false", async () => {
-        const contactId = 1;
-        const organizationId = 101;
-        const createdRecord = {
-          id: 1,
-          contact_id: contactId,
-          organization_id: organizationId,
-          is_primary: false,
-        };
-
-        mockDataProvider.create = vi.fn().mockResolvedValue({ data: createdRecord });
-
-        const result = await service.addContactToOrganization(contactId, organizationId);
-
-        expect(mockDataProvider.create).toHaveBeenCalledWith(
-          "contact_organizations",
-          expect.objectContaining({
-            data: expect.objectContaining({
-              contact_id: contactId,
-              organization_id: organizationId,
-              is_primary: false,
-            }),
-          })
-        );
-        expect(result.data).toEqual(createdRecord);
-      });
-
-      test("should accept is_primary parameter", async () => {
-        mockDataProvider.create = vi.fn().mockResolvedValue({
-          data: { id: 1, is_primary: true },
-        });
-
-        await service.addContactToOrganization(1, 101, { is_primary: true });
-
-        expect(mockDataProvider.create).toHaveBeenCalledWith(
-          "contact_organizations",
-          expect.objectContaining({
-            data: expect.objectContaining({
-              is_primary: true,
-            }),
-          })
-        );
-      });
-
-      test("should throw on duplicate junction creation", async () => {
-        mockDataProvider.create = vi
-          .fn()
-          .mockRejectedValue(new Error("duplicate key value violates unique constraint"));
-
-        await expect(service.addContactToOrganization(1, 101)).rejects.toThrow(
-          "Add contact to organization failed:"
-        );
-      });
-    });
-
-    describe("removeContactFromOrganization", () => {
-      test("should find and delete junction record", async () => {
-        const contactId = 1;
-        const organizationId = 101;
-        const junctionRecord = {
-          id: 1,
-          contact_id: contactId,
-          organization_id: organizationId,
-        };
-
-        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: [junctionRecord], total: 1 });
-        mockDataProvider.delete = vi.fn().mockResolvedValue({ data: junctionRecord });
-
-        const result = await service.removeContactFromOrganization(contactId, organizationId);
-
-        expect(mockDataProvider.getList).toHaveBeenCalledWith("contact_organizations", {
-          filter: { contact_id: contactId, organization_id: organizationId },
-          pagination: { page: 1, perPage: 1 },
-          sort: { field: "id", order: "ASC" },
-        });
-        expect(mockDataProvider.delete).toHaveBeenCalledWith("contact_organizations", { id: 1 });
-        expect(result.data.id).toBe("1-101");
-      });
-
-      test("should handle non-existent junction gracefully (idempotency)", async () => {
-        mockDataProvider.getList = vi.fn().mockResolvedValue({ data: [], total: 0 });
-        mockDataProvider.delete = vi.fn();
-
-        const result = await service.removeContactFromOrganization(1, 101);
-
-        expect(mockDataProvider.delete).not.toHaveBeenCalled();
-        expect(result.data.id).toBe("1-101");
-      });
-    });
-
-    describe("setPrimaryOrganization", () => {
-      test("should call RPC function with correct parameters", async () => {
-        mockDataProvider.rpc = vi.fn().mockResolvedValue(null);
-
-        const result = await service.setPrimaryOrganization(1, 101);
-
-        expect(mockDataProvider.rpc).toHaveBeenCalledWith("set_primary_organization", {
-          p_contact_id: 1,
-          p_organization_id: 101,
-        });
-        expect(result.data.success).toBe(true);
-      });
-
-      test("should throw if dataProvider lacks RPC capability", async () => {
-        const providerWithoutRPC = createMockDataProvider();
-        // Remove rpc method to simulate a provider without RPC support
-        delete (providerWithoutRPC as any).rpc;
-
-        const serviceWithoutRPC = new JunctionsService(providerWithoutRPC as any);
-
-        await expect(serviceWithoutRPC.setPrimaryOrganization(1, 101)).rejects.toThrow(
-          "DataProvider does not support RPC operations"
-        );
-      });
-
-      test("should throw on RPC error", async () => {
-        mockDataProvider.rpc = vi.fn().mockRejectedValue(new Error("RPC failed"));
-
-        await expect(service.setPrimaryOrganization(1, 101)).rejects.toThrow(
-          "Set primary organization failed: RPC failed"
-        );
-      });
-    });
-  });
+  // Contact-Organization Relationships tests removed - junction table was deprecated.
+  // Contacts now use a direct organization_id FK (single org per contact).
 
   describe("Opportunity Participants (CRITICAL for multi-participant)", () => {
     describe("getOpportunityParticipants", () => {
