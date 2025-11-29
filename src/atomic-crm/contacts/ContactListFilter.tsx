@@ -1,7 +1,14 @@
 import { Badge } from "@/components/ui/badge";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { endOfYesterday, startOfMonth, startOfWeek, subMonths } from "date-fns";
 import { Building2, Clock, Tag, Users } from "lucide-react";
-import { FilterLiveForm, useGetIdentity, useGetList } from "ra-core";
+import { FilterLiveForm, useGetIdentity, useGetList, useListContext } from "ra-core";
 import { cn } from "@/lib/utils";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
@@ -12,6 +19,8 @@ import { SidebarActiveFilters } from "./SidebarActiveFilters";
 
 export const ContactListFilter = () => {
   const { identity } = useGetIdentity();
+  const { filterValues, setFilters } = useListContext();
+
   const { data: tagsData } = useGetList("tags", {
     pagination: { page: 1, perPage: 10 },
     sort: { field: "name", order: "ASC" },
@@ -24,6 +33,25 @@ export const ContactListFilter = () => {
     sort: { field: "name", order: "ASC" },
     filter: { deleted_at: null },
   });
+
+  // Handle organization filter change via Select dropdown
+  const handleOrganizationChange = (value: string) => {
+    if (value === "all") {
+      // Remove organization_id filter when "All Organizations" is selected
+      const { organization_id: _, ...rest } = filterValues || {};
+      setFilters(rest);
+    } else {
+      setFilters({
+        ...filterValues,
+        organization_id: Number(value),
+      });
+    }
+  };
+
+  // Get current organization filter value for controlled Select
+  const currentOrgFilter = filterValues?.organization_id
+    ? String(filterValues.organization_id)
+    : "all";
 
   return (
     <div className="flex flex-col gap-4">
@@ -107,21 +135,26 @@ export const ContactListFilter = () => {
         </FilterCategory>
 
         <FilterCategory label="Organization" icon={<Building2 className="h-4 w-4" />}>
-          <div className="max-h-48 overflow-y-auto flex flex-col gap-1">
-            {organizationsData &&
-              organizationsData.map((org) => (
-                <ToggleFilterButton
-                  className="w-full justify-between"
-                  key={org.id}
-                  label={
-                    <span className="truncate text-sm" title={org.name}>
-                      {org.name}
-                    </span>
-                  }
-                  value={{ organization_id: org.id }}
-                />
+          <Select value={currentOrgFilter} onValueChange={handleOrganizationChange}>
+            <SelectTrigger
+              className="w-full min-h-11 bg-background border-border text-foreground"
+              aria-label="Filter by organization"
+            >
+              <SelectValue placeholder="All Organizations" />
+            </SelectTrigger>
+            <SelectContent className="max-h-60">
+              <SelectItem value="all" className="min-h-11">
+                <span className="text-muted-foreground">All Organizations</span>
+              </SelectItem>
+              {organizationsData?.map((org) => (
+                <SelectItem key={org.id} value={String(org.id)} className="min-h-11">
+                  <span className="truncate" title={org.name}>
+                    {org.name}
+                  </span>
+                </SelectItem>
               ))}
-          </div>
+            </SelectContent>
+          </Select>
         </FilterCategory>
 
         <FilterCategory icon={<Users className="h-4 w-4" />} label="Account Manager">

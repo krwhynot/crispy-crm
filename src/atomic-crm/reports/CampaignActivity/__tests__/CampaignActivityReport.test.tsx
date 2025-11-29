@@ -650,10 +650,10 @@ describe("CampaignActivityReport", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("Show only leads with no activity")).toBeInTheDocument();
+        expect(screen.getByLabelText("Show stale leads (per-stage thresholds)")).toBeInTheDocument();
       });
 
-      const staleLeadsCheckbox = screen.getByLabelText("Show only leads with no activity");
+      const staleLeadsCheckbox = screen.getByLabelText("Show stale leads (per-stage thresholds)");
       await user.click(staleLeadsCheckbox);
 
       await waitFor(() => {
@@ -702,10 +702,10 @@ describe("CampaignActivityReport", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("Show only leads with no activity")).toBeInTheDocument();
+        expect(screen.getByLabelText("Show stale leads (per-stage thresholds)")).toBeInTheDocument();
       });
 
-      const checkbox = screen.getByLabelText("Show only leads with no activity");
+      const checkbox = screen.getByLabelText("Show stale leads (per-stage thresholds)");
       await user.click(checkbox);
 
       await waitFor(() => {
@@ -754,10 +754,10 @@ describe("CampaignActivityReport", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("Show only leads with no activity")).toBeInTheDocument();
+        expect(screen.getByLabelText("Show stale leads (per-stage thresholds)")).toBeInTheDocument();
       });
 
-      const checkbox = screen.getByLabelText("Show only leads with no activity");
+      const checkbox = screen.getByLabelText("Show stale leads (per-stage thresholds)");
       await user.click(checkbox);
 
       await waitFor(() => {
@@ -1012,10 +1012,10 @@ describe("CampaignActivityReport", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("Show only leads with no activity")).toBeInTheDocument();
+        expect(screen.getByLabelText("Show stale leads (per-stage thresholds)")).toBeInTheDocument();
       });
 
-      const checkbox = screen.getByLabelText("Show only leads with no activity");
+      const checkbox = screen.getByLabelText("Show stale leads (per-stage thresholds)");
       await user.click(checkbox);
 
       await waitFor(() => {
