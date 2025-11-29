@@ -38,6 +38,9 @@ import { StartPage } from "@/atomic-crm/login/StartPage.tsx";
 // Lazy load ReportsPage
 const ReportsPage = React.lazy(() => import("../reports/ReportsPage"));
 
+// Lazy load HealthDashboard (admin only)
+const HealthDashboard = React.lazy(() => import("../admin/HealthDashboard"));
+
 // Redirect component for legacy /contacts/:id/show URLs
 const ContactShowRedirect = () => {
   const { id } = useParams();
@@ -177,6 +180,7 @@ export const CRM = ({
         <CustomRoutes>
           <Route path={SettingsPage.path} element={<SettingsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
+          <Route path="/admin/health" element={<HealthDashboard />} />
           <Route path="/contacts/:id/show" element={<ContactShowRedirect />} />
           <Route path="/tasks/:id/show" element={<TaskShowRedirect />} />
           <Route path="/products/:id/show" element={<ProductShowRedirect />} />

@@ -43,6 +43,9 @@ import { getDatabaseResource, applySearchParams, normalizeResponseData } from ".
 // Import decomposed services
 import { ValidationService, TransformService, StorageService } from "./services";
 
+// Import structured logger for Sentry integration
+import { logger } from "@/lib/logger";
+
 // Import service classes
 import {
   SalesService,
@@ -159,6 +162,7 @@ const segmentsService = new SegmentsService(baseDataProvider);
 /**
  * Log error with context for debugging
  * Integrated from resilientDataProvider for consolidated error logging
+ * Now also sends to Sentry via structured logger
  */
 function logError(
   method: string,
@@ -183,6 +187,20 @@ function logError(
 
   const extendedError = error as ExtendedError | undefined;
 
+  // Track request failure for error rate calculation
+  logger.trackRequest(`${method}:${resource}`, false);
+
+  // Use structured logger to send to Sentry
+  logger.error(
+    `DataProvider error: ${method} ${resource}`,
+    error instanceof Error ? error : new Error(String(error)),
+    {
+      ...context,
+      validationErrors: extendedError?.body?.errors || extendedError?.errors || undefined,
+    }
+  );
+
+  // Keep console.error for development debugging
   console.error(`[DataProvider Error]`, context, {
     error:
       error instanceof Error

@@ -203,12 +203,12 @@ const NotificationItem = ({ notification, onMarkAsRead, getEntityLink }: Notific
         </div>
       </div>
 
-      {/* Mark as Read Button */}
+      {/* Mark as Read Button - 44px minimum touch target (WCAG 2.5.5) */}
       {!notification.read && (
         <Button
           variant="ghost"
           size="icon"
-          className="flex-shrink-0 h-8 w-8"
+          className="flex-shrink-0 h-11 w-11"
           onClick={() => onMarkAsRead(notification.id)}
           aria-label="Mark as read"
         >
