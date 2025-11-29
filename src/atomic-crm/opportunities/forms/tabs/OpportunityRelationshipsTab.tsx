@@ -13,6 +13,7 @@ import { contactOptionText } from "../../../contacts/ContactOption";
 import { AutocompleteOrganizationInput } from "../../../organizations/AutocompleteOrganizationInput";
 import { OrganizationInputs } from "../../../organizations/OrganizationInputs";
 import { ContactInputs } from "../../../contacts/ContactInputs";
+import { ContactOrgMismatchWarning } from "../../components/ContactOrgMismatchWarning";
 
 export const OpportunityRelationshipsTab = () => {
   const { identity } = useGetIdentity();
@@ -221,6 +222,9 @@ export const OpportunityRelationshipsTab = () => {
             choices={[]}
           />
         )}
+
+        {/* Soft warning when contacts belong to different org than customer */}
+        <ContactOrgMismatchWarning />
       </div>
 
       {/* Products */}

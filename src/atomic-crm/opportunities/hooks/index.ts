@@ -6,3 +6,8 @@ export { useStageMetrics } from "./useStageMetrics";
 export { useAutoGenerateName } from "./useAutoGenerateName";
 export { useExportOpportunities } from "./useExportOpportunities";
 export { useColumnPreferences } from "./useColumnPreferences";
+export { useContactOrgMismatch } from "./useContactOrgMismatch";
+export type {
+  MismatchedContact,
+  UseContactOrgMismatchResult,
+} from "./useContactOrgMismatch";
