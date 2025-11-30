@@ -287,6 +287,11 @@ export type InteractionsInput = z.input<typeof interactionsSchema>;
 export type Interactions = z.infer<typeof interactionsSchema>;
 export type SampleStatus = z.infer<typeof sampleStatusSchema>;
 export type InteractionType = z.infer<typeof interactionTypeSchema>;
+export type Sentiment = z.infer<typeof sentimentSchema>;
+export type ActivityType = z.infer<typeof activityTypeSchema>;
+
+// P2 consolidation: Alias for backward compatibility with types.ts interface name
+export type ActivityRecord = Activities;
 
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where activities validation occurs

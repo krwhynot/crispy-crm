@@ -17,13 +17,22 @@ import type {
   LeadSource,
   OpportunityPriority,
 } from "./validation/opportunities";
+import type {
+  SampleStatus,
+  InteractionType as ValidationInteractionType,
+  Sentiment,
+} from "./validation/activities";
+import type { SalesRole } from "./validation/sales";
 import type { Database } from "@/types/database.generated";
 
-// Re-export enum types from canonical validation schemas (P1 consolidation)
+// Re-export enum types from canonical validation schemas (P1/P2 consolidation)
 export type { OrganizationType, OrganizationPriority } from "./validation/organizations";
 export type { LeadSource, OpportunityStageValue, OpportunityPriority } from "./validation/opportunities";
+export type { SampleStatus, Sentiment } from "./validation/activities";
+export type { SalesRole } from "./validation/sales";
 
 // Use generated enum as single source of truth for interaction types
+// Note: This comes from database.generated.ts, validation schema mirrors it
 type InteractionType = Database["public"]["Enums"]["interaction_type"];
 
 // SignUpData type removed - all users created through Sales management
@@ -147,8 +156,7 @@ export interface OpportunityContact extends Pick<RaRecord, "id"> {
   created_at: string;
 }
 
-// Sample status type for sample activities (PRD §4.4)
-export type SampleStatus = "sent" | "received" | "feedback_pending" | "feedback_received";
+// SampleStatus type removed - now imported from validation/activities.ts (P2 consolidation)
 
 export interface ActivityRecord extends Pick<RaRecord, "id"> {
   id: Identifier;
