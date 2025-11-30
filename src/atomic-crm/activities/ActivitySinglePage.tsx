@@ -3,7 +3,6 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
-import { BooleanInput } from "@/components/admin/boolean-input";
 import { FormGrid, FormSection } from "@/components/admin/form";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ChevronRight } from "lucide-react";

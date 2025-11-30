@@ -13,7 +13,8 @@
 
 import { renderHook, waitFor, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { useTeamActivities, TeamActivity } from "../useTeamActivities";
+import type { TeamActivity } from "../useTeamActivities";
+import { useTeamActivities } from "../useTeamActivities";
 
 // Create stable mock functions
 const mockGetList = vi.fn();

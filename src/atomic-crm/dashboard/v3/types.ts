@@ -17,7 +17,7 @@ import type {
   ActivityLogInput as ActivityLog,
   QuickLogFormInput,
 } from "@/atomic-crm/validation/activities";
-import {
+import type {
   activityDisplayTypeSchema,
   activityOutcomeSchema,
 } from "@/atomic-crm/validation/activities";
