@@ -62,6 +62,12 @@ export interface KeyboardShortcutHandlers {
   onCancel?: () => void;
   onSubmit?: () => void;
   onDelete?: () => void;
+  /** Arrow up handler for list navigation */
+  onArrowUp?: () => void;
+  /** Arrow down handler for list navigation */
+  onArrowDown?: () => void;
+  /** Enter handler for opening selected item */
+  onEnter?: () => void;
 }
 
 /**
@@ -72,8 +78,9 @@ export interface KeyboardShortcutHandlers {
  * - Ctrl/Cmd + N: New record
  * - Ctrl/Cmd + K or /: Focus search
  * - Escape: Cancel/close modal
- * - Enter: Submit form (not in textarea)
+ * - Enter: Submit form or open selected item (not in textarea)
  * - Delete: Delete selected (with confirmation)
+ * - Arrow Up/Down: Navigate list items
  *
  * @param handlers - Object with handler functions for each shortcut
  */
@@ -141,6 +148,35 @@ export const useKeyboardShortcuts = (handlers: KeyboardShortcutHandlers = {}) =>
         // Only if not in input/textarea
         if (!shouldPreventShortcut(target)) {
           handlers.onDelete?.();
+        }
+        return;
+      }
+
+      // Arrow Up: Navigate list up
+      if (key === "ArrowUp") {
+        // Only if not in input/textarea
+        if (!shouldPreventShortcut(target) && handlers.onArrowUp) {
+          event.preventDefault();
+          handlers.onArrowUp();
+        }
+        return;
+      }
+
+      // Arrow Down: Navigate list down
+      if (key === "ArrowDown") {
+        // Only if not in input/textarea
+        if (!shouldPreventShortcut(target) && handlers.onArrowDown) {
+          event.preventDefault();
+          handlers.onArrowDown();
+        }
+        return;
+      }
+
+      // Enter: Open selected item (when not in form)
+      if (key === "Enter" && !isInForm(target) && !shouldPreventShortcut(target)) {
+        if (handlers.onEnter) {
+          event.preventDefault();
+          handlers.onEnter();
         }
         return;
       }

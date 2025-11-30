@@ -55,6 +55,11 @@ export interface ResourceSlideOverProps {
   tabs: TabConfig[];
   /** Optional record representation function (defaults to record.name) */
   recordRepresentation?: (record: any) => string;
+  /**
+   * Optional breadcrumb component to render above the title.
+   * Receives the record as a prop for dynamic breadcrumb generation.
+   */
+  breadcrumbComponent?: React.ComponentType<{ record: any }>;
 }
 
 /**
@@ -108,6 +113,7 @@ export function ResourceSlideOver({
   onModeToggle,
   tabs,
   recordRepresentation,
+  breadcrumbComponent: BreadcrumbComponent,
 }: ResourceSlideOverProps) {
   const [activeTab, setActiveTab] = useState(tabs[0]?.key || "");
 
@@ -163,33 +169,43 @@ export function ResourceSlideOver({
           </div>
         ) : (
           <>
-            {/* Header with title, mode toggle, and close button */}
-            <SheetHeader className="border-b border-border h-11 px-6 py-0 flex flex-row items-center justify-between shrink-0">
-              <SheetTitle id="slide-over-title" className="text-base font-semibold">
-                {getRecordTitle()}
-              </SheetTitle>
-
-              {/* Mode toggle button (if handler provided) */}
-              {onModeToggle && (
-                <Button
-                  variant="ghost"
-                  onClick={onModeToggle}
-                  className="h-11 px-3 text-sm"
-                  aria-label={mode === "view" ? "Switch to edit mode" : "Switch to view mode"}
-                >
-                  {mode === "view" ? (
-                    <>
-                      <PencilIcon className="size-4 mr-1" />
-                      Edit
-                    </>
-                  ) : (
-                    <>
-                      <XIcon className="size-4 mr-1" />
-                      Cancel
-                    </>
-                  )}
-                </Button>
+            {/* Header with optional breadcrumb, title, mode toggle, and close button */}
+            <SheetHeader className="border-b border-border px-6 py-3 flex flex-col shrink-0">
+              {/* Breadcrumb row (optional) */}
+              {BreadcrumbComponent && record && !isLoading && (
+                <div className="mb-1">
+                  <BreadcrumbComponent record={record} />
+                </div>
               )}
+
+              {/* Title and actions row */}
+              <div className="flex flex-row items-center justify-between min-h-[28px]">
+                <SheetTitle id="slide-over-title" className="text-base font-semibold">
+                  {getRecordTitle()}
+                </SheetTitle>
+
+                {/* Mode toggle button (if handler provided) */}
+                {onModeToggle && (
+                  <Button
+                    variant="ghost"
+                    onClick={onModeToggle}
+                    className="h-11 px-3 text-sm"
+                    aria-label={mode === "view" ? "Switch to edit mode" : "Switch to view mode"}
+                  >
+                    {mode === "view" ? (
+                      <>
+                        <PencilIcon className="size-4 mr-1" />
+                        Edit
+                      </>
+                    ) : (
+                      <>
+                        <XIcon className="size-4 mr-1" />
+                        Cancel
+                      </>
+                    )}
+                  </Button>
+                )}
+              </div>
             </SheetHeader>
 
             {/* Tabbed content area */}
