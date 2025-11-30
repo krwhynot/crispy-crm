@@ -32,9 +32,10 @@ type Segment = Database["public"]["Tables"]["segments"]["Row"];
 /**
  * Custom save button that checks for duplicates before saving
  *
- * Uses SaveButton with type="submit" (the default) and intercepts via onClick.
- * When onClick returns without calling event.preventDefault(), the form submits
- * normally via React Admin's form context.
+ * Uses a hidden submit button pattern:
+ * 1. Visible button checks for duplicates on click
+ * 2. If no duplicate, triggers hidden submit button to perform actual save
+ * 3. Hidden button has type="submit" which triggers React Admin's form submission
  */
 interface DuplicateCheckSaveButtonProps {
   onDuplicateFound: (name: string, values: any) => void;
@@ -48,22 +49,12 @@ const DuplicateCheckSaveButton = ({
   isChecking,
 }: DuplicateCheckSaveButtonProps) => {
   const form = useFormContext();
-  // Track if we should skip duplicate check (already approved)
-  const skipCheckRef = useRef(false);
-  // Ref to the button for programmatic clicks
-  const buttonRef = useRef<HTMLButtonElement>(null);
+  // Ref to the hidden submit button
+  const hiddenSubmitRef = useRef<HTMLButtonElement>(null);
 
   const handleClick = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
-      // If we've already approved, allow the submission
-      if (skipCheckRef.current) {
-        skipCheckRef.current = false;
-        return; // Don't prevent - let form submit
-      }
-
-      // Prevent default submission until we've checked for duplicates
       event.preventDefault();
-      event.stopPropagation();
 
       // Get current form values
       const values = form.getValues();
@@ -83,22 +74,31 @@ const DuplicateCheckSaveButton = ({
         return;
       }
 
-      // No duplicate - set flag and re-click to trigger actual submission
-      skipCheckRef.current = true;
-      buttonRef.current?.click();
+      // No duplicate - trigger the hidden submit button
+      hiddenSubmitRef.current?.click();
     },
     [form, checkForDuplicate, onDuplicateFound]
   );
 
   return (
-    <SaveButton
-      ref={buttonRef}
-      label={isChecking ? "Checking..." : "Create Organization"}
-      type="submit"
-      onClick={handleClick}
-      disabled={isChecking}
-      alwaysEnable={true}
-    />
+    <>
+      {/* Hidden native submit button that triggers React Admin form submission */}
+      <button
+        ref={hiddenSubmitRef}
+        type="submit"
+        style={{ display: "none" }}
+        aria-hidden="true"
+        tabIndex={-1}
+      />
+      {/* Visible button that checks for duplicates first */}
+      <SaveButton
+        label={isChecking ? "Checking..." : "Create Organization"}
+        type="button"
+        onClick={handleClick}
+        disabled={isChecking}
+        alwaysEnable={true}
+      />
+    </>
   );
 };
 
@@ -201,7 +201,8 @@ const OrganizationCreate = () => {
   const formDefaults = {
     ...organizationSchema.partial().parse({}),
     ...smartDefaults,
-    segment_id: unknownSegmentId ?? undefined,
+    // Use null (not undefined) when no segment found - null is a valid value for nullable UUID fields
+    segment_id: unknownSegmentId ?? null,
     ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch
   };
   const formKey = unknownSegmentId ? `org-create-${unknownSegmentId}` : "org-create";

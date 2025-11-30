@@ -47,7 +47,7 @@
                   - generic [ref=e45]: Name *
                   - textbox "Name *" [ref=e46]:
                     - /placeholder: Organization name
-                    - text: Minimal Org-1764490918013
+                    - text: Minimal Fields Org-1764490980778
                   - generic [ref=e47]: Required field
                 - group [ref=e48]:
                   - generic [ref=e50]: Organization Type *
@@ -110,5 +110,11 @@
       - button "View keyboard shortcuts" [ref=e101] [cursor=pointer]:
         - img [ref=e102]
         - generic [ref=e104]: Keyboard shortcuts
-  - region "Notifications alt+T"
+  - region "Notifications alt+T":
+    - list:
+      - listitem [ref=e105]:
+        - button "Close toast" [ref=e106] [cursor=pointer]:
+          - img [ref=e107]
+        - img [ref=e111]
+        - generic [ref=e114]: Validation failed
 ```

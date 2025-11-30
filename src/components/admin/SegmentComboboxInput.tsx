@@ -25,6 +25,7 @@ export const SegmentComboboxInput = (props: SegmentSelectInputProps) => {
       helperText={props.helperText}
       className={props.className}
       emptyText="Select category..."
+      emptyValue={null}
     />
   );
 };

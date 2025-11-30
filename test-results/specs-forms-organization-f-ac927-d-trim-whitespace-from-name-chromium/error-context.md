@@ -47,7 +47,6 @@
                   - generic [ref=e45]: Name *
                   - textbox "Name *" [ref=e46]:
                     - /placeholder: Organization name
-                    - text: Minimal Org-1764490918013
                   - generic [ref=e47]: Required field
                 - group [ref=e48]:
                   - generic [ref=e50]: Organization Type *
@@ -101,7 +100,7 @@
           - button "Cancel" [ref=e95] [cursor=pointer]:
             - img
             - text: Cancel
-          - button "Create Organization" [active] [ref=e96] [cursor=pointer]:
+          - button "Create Organization" [ref=e96] [cursor=pointer]:
             - img
             - text: Create Organization
   - contentinfo [ref=e97]:
