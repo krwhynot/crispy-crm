@@ -12,3 +12,8 @@
 1764472193:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/__tests__/useKPIMetrics.test.ts:src
 1764472207:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/__tests__/useKPIMetrics.test.ts:src
 1764472232:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/__tests__/useKPIMetrics.test.ts:src
+1764472298:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/__tests__/usePrincipalPipeline.test.ts:src
+1764472356:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/__tests__/useTeamActivities.test.ts:src
+1764472426:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/__tests__/useHybridSearch.test.ts:src
+1764472504:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/__tests__/useMyPerformance.test.ts:src
+1764472571:/home/krwhynot/projects/crispy-crm/src/atomic-crm/utils/__tests__/stalenessCalculation.test.ts:src

@@ -271,3 +271,110 @@ describe("StageStaleThresholdsSchema", () => {
     expect(() => StageStaleThresholdsSchema.parse({ new_lead: -1 })).toThrow();
   });
 });
+
+describe("Edge Cases (Additional)", () => {
+  const referenceDate = new Date("2025-11-28T12:00:00Z");
+
+  describe("boundary conditions", () => {
+    it("should correctly handle exactly at threshold boundary (>= vs >)", () => {
+      // Exactly 7 days ago should NOT be stale (threshold is > 7, not >= 7)
+      expect(isOpportunityStale("new_lead", "2025-11-21T12:00:00Z", referenceDate)).toBe(false);
+      // 7 days and 1 ms should NOT be stale (still exactly 7 days in Math.floor)
+      expect(isOpportunityStale("new_lead", "2025-11-21T11:59:59Z", referenceDate)).toBe(false);
+    });
+
+    it("should correctly handle day boundary crossings", () => {
+      // 8 full days (should be stale)
+      const eightDaysAgo = new Date(referenceDate.getTime() - 8 * 24 * 60 * 60 * 1000);
+      expect(isOpportunityStale("new_lead", eightDaysAgo.toISOString(), referenceDate)).toBe(true);
+    });
+  });
+
+  describe("unknown stage handling", () => {
+    it("should treat unknown stages like closed (not stale)", () => {
+      expect(isOpportunityStale("unknown_stage", null, referenceDate)).toBe(false);
+      expect(isOpportunityStale("invalid", "2020-01-01T00:00:00Z", referenceDate)).toBe(false);
+      expect(isOpportunityStale("prospect", null, referenceDate)).toBe(false);
+      expect(isOpportunityStale("qualified", null, referenceDate)).toBe(false);
+    });
+  });
+
+  describe("timezone robustness", () => {
+    it("should handle different timezone offsets in ISO strings", () => {
+      // These represent the same moment in time
+      const utcTime = "2025-11-20T00:00:00Z";
+      const offsetTime = "2025-11-19T19:00:00-05:00"; // Same as UTC midnight Nov 20
+
+      expect(isOpportunityStale("new_lead", utcTime, referenceDate)).toBe(true);
+      expect(isOpportunityStale("new_lead", offsetTime, referenceDate)).toBe(true);
+    });
+  });
+
+  describe("sample_visit_offered (14 day threshold)", () => {
+    it("should use 14-day threshold correctly", () => {
+      const thirteenDaysAgo = "2025-11-15T12:00:00Z"; // 13 days
+      const fifteenDaysAgo = "2025-11-13T12:00:00Z"; // 15 days
+
+      expect(isOpportunityStale("sample_visit_offered", thirteenDaysAgo, referenceDate)).toBe(false);
+      expect(isOpportunityStale("sample_visit_offered", fifteenDaysAgo, referenceDate)).toBe(true);
+    });
+  });
+
+  describe("demo_scheduled (14 day threshold)", () => {
+    it("should use 14-day threshold correctly", () => {
+      const thirteenDaysAgo = "2025-11-15T12:00:00Z"; // 13 days
+      const fifteenDaysAgo = "2025-11-13T12:00:00Z"; // 15 days
+
+      expect(isOpportunityStale("demo_scheduled", thirteenDaysAgo, referenceDate)).toBe(false);
+      expect(isOpportunityStale("demo_scheduled", fifteenDaysAgo, referenceDate)).toBe(true);
+    });
+  });
+
+  describe("empty string handling", () => {
+    it("should treat empty string activity date as null (stale for active stages)", () => {
+      // Empty string parses to Invalid Date, which should be treated as no activity
+      expect(isOpportunityStale("new_lead", "", referenceDate)).toBe(true);
+    });
+  });
+
+  describe("invalid date string handling", () => {
+    it("should handle invalid date strings gracefully", () => {
+      // Invalid date should be treated as no activity (stale)
+      expect(isOpportunityStale("new_lead", "not-a-date", referenceDate)).toBe(true);
+      expect(isOpportunityStale("new_lead", "invalid", referenceDate)).toBe(true);
+    });
+  });
+
+  describe("far future reference date", () => {
+    it("should handle opportunities from distant past", () => {
+      const futureRef = new Date("2030-01-01T00:00:00Z");
+      const oldActivity = "2025-11-28T00:00:00Z"; // About 4+ years ago
+
+      expect(isOpportunityStale("new_lead", oldActivity, futureRef)).toBe(true);
+    });
+  });
+
+  describe("getDaysSinceActivity edge cases", () => {
+    it("should handle future dates (negative days)", () => {
+      const futureDate = "2025-11-30T00:00:00Z"; // 2 days in the future
+      // Math.floor of negative = more negative, but behavior is undefined
+      // The utility should still work (return negative or 0)
+      const days = getDaysSinceActivity(futureDate, referenceDate);
+      expect(days).toBeLessThanOrEqual(0);
+    });
+  });
+
+  describe("countStaleOpportunities with mixed field names", () => {
+    it("should prefer last_activity_date over last_activity_at", () => {
+      const opps = [
+        {
+          stage: "new_lead",
+          last_activity_date: "2025-11-25T00:00:00Z", // 3 days - NOT stale
+          last_activity_at: "2025-11-10T00:00:00Z", // Would be stale if used
+        },
+      ];
+      // Should use last_activity_date (3 days, not stale)
+      expect(countStaleOpportunities(opps, referenceDate)).toBe(0);
+    });
+  });
+});
