@@ -3,7 +3,7 @@
 **Generated From:** PRD v1.20 (2025-11-28)
 **Total MVP Blockers:** 57 items (+3 Constitution Compliance)
 **Target Launch:** 90-120 days
-**Last Updated:** 2025-11-29 (TODO-016 Simplify Contact-Org UI - removed multi-org remnants)
+**Last Updated:** 2025-11-29 (TODO-036 Pipeline Column Tooltips - completed)
 **Constitution Compliance:** 76 items audited (see Engineering Constitution §1-9)
 
 ---
@@ -1305,37 +1305,44 @@ Polish items and technical cleanup.
 
 ### Dashboard Polish
 
-#### TODO-036: Pipeline Column Tooltips
+#### TODO-036: Pipeline Column Tooltips ✅ COMPLETED
 - **PRD Reference:** Section 9.2.2, MVP #35
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟢 P3
+- **Completed:** 2025-11-29
 - **Description:** Add tooltips to pipeline table columns
 - **Tasks:**
-  - [ ] "This Week" → "Activities logged Mon-Sun of current week"
-  - [ ] "Last Week" → "Activities logged Mon-Sun of previous week"
-  - [ ] "Momentum" → "Based on activity trend over 14 days"
-- **Acceptance Criteria:** Hovering over column headers shows explanatory tooltip
+  - [x] "This Week" → "Activities logged Mon-Sun of current week"
+  - [x] "Last Week" → "Activities logged Mon-Sun of previous week"
+  - [x] "Momentum" → "Based on activity trend over 14 days"
+- **Implementation Notes:**
+  - Component: `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx:323-373`
+  - Uses Radix Tooltip via `@/components/ui/tooltip` (semantic colors: `bg-primary`, `text-primary-foreground`)
+  - Visual affordance: dotted underline on column headers (`border-b border-dotted border-muted-foreground/50`)
+- **Acceptance Criteria:** Hovering over column headers shows explanatory tooltip ✅
 
-#### TODO-037: Fix Next Action Dead Link
+#### TODO-037: Fix Next Action Dead Link ✅ COMPLETED
 - **PRD Reference:** Section 9.2.2, MVP #36
-- **Status:** ⬜ TODO
+- **Status:** ✅ DONE
 - **Priority:** 🟢 P3
 - **Description:** Remove link styling from non-functional element
 - **Tasks:**
-  - [ ] Change "Schedule follow-up" from `variant="link"` to plain text
-  - [ ] Only show as link when functional (has scheduled task)
+  - [x] Change "Schedule follow-up" from `variant="link"` to plain text
+  - [x] Now shows "No action scheduled" when empty
 - **Acceptance Criteria:** Non-functional "Schedule follow-up" displays as plain text
+- **Completed:** 2025-11-29 - Verified plain `<span>` in `PrincipalPipelineTable.tsx:428-434`
 
-#### TODO-038: Pipeline Stage Tooltips
+#### TODO-038: Pipeline Stage Tooltips ✅ COMPLETED
 - **PRD Reference:** Section 7.4, MVP #41
-- **Status:** ⬜ TODO
+- **Status:** ✅ DONE
 - **Priority:** 🟢 P3
 - **Description:** Add help text mapping MFB 7-phase process to stages
 - **Tasks:**
-  - [ ] Add tooltip on Kanban stage headers
-  - [ ] Reference Section 7.4 mapping table
-  - [ ] Example: "Phase 3A activities typically happen in this stage"
+  - [x] Add tooltip on Kanban stage headers
+  - [x] Reference Section 7.4 mapping table
+  - [x] Example: "Phase 3A activities typically happen in this stage"
 - **Acceptance Criteria:** Stage headers show MFB process context on hover
+- **Completed:** 2025-11-29 - Added `mfbPhase` property to `OpportunityStage` interface in `stageConstants.ts`. Enhanced tooltip in `OpportunityColumn.tsx` to show stage description + MFB phase context (e.g., "📋 MFB Phase 3A: Target Distributors")
 
 ### Organization Polish
 
