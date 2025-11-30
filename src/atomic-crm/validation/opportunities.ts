@@ -162,6 +162,11 @@ export type OpportunityInput = z.input<typeof opportunitySchema>;
 export type Opportunity = z.infer<typeof opportunitySchema>;
 export type LeadSource = z.infer<typeof leadSourceSchema>;
 
+// Pipeline stage type (P1 consolidation - single source of truth)
+// This replaces the manual type in stageConstants.ts
+export type OpportunityStageValue = z.infer<typeof opportunityStageSchema>;
+export type OpportunityPriority = z.infer<typeof opportunityPrioritySchema>;
+
 // Validation function matching expected signature from unifiedDataProvider
 export async function validateOpportunityForm(data: unknown): Promise<void> {
   try {

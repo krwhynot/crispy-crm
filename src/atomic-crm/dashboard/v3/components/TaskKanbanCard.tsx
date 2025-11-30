@@ -255,7 +255,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
               <Button
                 variant="ghost"
                 size="sm"
-                className="h-9 w-9 p-0"
+                className="h-11 w-11 p-0"
                 onClick={handleSnooze}
                 disabled={isSnoozing}
                 title="Snooze task by 1 day"
@@ -272,7 +272,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="h-9 w-9 p-0"
+                    className="h-11 w-11 p-0"
                     aria-label={`More actions for "${task.subject}"`}
                     disabled={isDeleting}
                   >

@@ -7,18 +7,24 @@ import type {
   OPPORTUNITY_CREATED,
   OPPORTUNITY_NOTE_CREATED,
 } from "./consts";
-import type { Organization } from "./validation/organizations";
-import type { OpportunityStageValue } from "./opportunities/constants/stageConstants";
+import type {
+  Organization,
+  OrganizationType,
+  OrganizationPriority,
+} from "./validation/organizations";
+import type {
+  OpportunityStageValue,
+  LeadSource,
+  OpportunityPriority,
+} from "./validation/opportunities";
 import type { Database } from "@/types/database.generated";
 
-// Type definitions for enhanced CRM features
-export type OrganizationType = "customer" | "prospect" | "principal" | "distributor" | "unknown";
+// Re-export enum types from canonical validation schemas (P1 consolidation)
+export type { OrganizationType, OrganizationPriority } from "./validation/organizations";
+export type { LeadSource, OpportunityStageValue, OpportunityPriority } from "./validation/opportunities";
 
 // Use generated enum as single source of truth for interaction types
 type InteractionType = Database["public"]["Enums"]["interaction_type"];
-
-// Organization priority type (canonical name)
-export type OrganizationPriority = "A" | "B" | "C" | "D";
 
 // SignUpData type removed - all users created through Sales management
 
@@ -193,17 +199,7 @@ export interface ContactNote extends Pick<RaRecord, "id"> {
 }
 
 // Deal type removed - use Opportunity instead
-
-// Lead Source type
-export type LeadSource =
-  | "referral"
-  | "trade_show"
-  | "website"
-  | "cold_call"
-  | "email_campaign"
-  | "social_media"
-  | "partner"
-  | "existing_customer";
+// LeadSource type removed - now imported from validation/opportunities.ts (P1 consolidation)
 
 export interface Opportunity extends Pick<RaRecord, "id"> {
   name: string;
