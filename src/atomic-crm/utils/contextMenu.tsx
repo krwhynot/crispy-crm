@@ -1,3 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
+// Component + hook pattern: ContextMenu component paired with useContextMenu hook
+
 import { createPortal } from "react-dom";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { ChevronRight } from "lucide-react";

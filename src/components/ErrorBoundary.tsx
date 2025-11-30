@@ -15,6 +15,9 @@
  * ```
  */
 
+/* eslint-disable react-refresh/only-export-components */
+// Exports class component + HOC factory function - both are intentional patterns
+
 import type { ReactNode, ErrorInfo } from "react";
 import { Component } from "react";
 import * as Sentry from "@sentry/react";

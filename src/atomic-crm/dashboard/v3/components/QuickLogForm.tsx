@@ -12,7 +12,7 @@ import {
   ACTIVITY_TYPE_MAP,
 } from "@/atomic-crm/validation/activities";
 import { useCurrentSale } from "../hooks/useCurrentSale";
-import { useEntityData, type Contact, type Organization, type Opportunity } from "../hooks/useEntityData";
+import { useEntityData, type Contact } from "../hooks/useEntityData";
 import { EntityCombobox } from "./EntityCombobox";
 import { ActivityTypeSection } from "./ActivityTypeSection";
 import { FollowUpSection } from "./FollowUpSection";

@@ -13,7 +13,7 @@
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useMyTasks } from "../useMyTasks";
-import { startOfDay, addDays, isBefore, isSameDay } from "date-fns";
+import { startOfDay, addDays } from "date-fns";
 
 // Create stable mock functions OUTSIDE the factory to prevent new references
 const mockGetList = vi.fn();

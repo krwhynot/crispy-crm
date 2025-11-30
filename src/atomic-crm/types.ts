@@ -7,22 +7,9 @@ import type {
   OPPORTUNITY_CREATED,
   OPPORTUNITY_NOTE_CREATED,
 } from "./consts";
-import type {
-  Organization,
-  OrganizationType,
-  OrganizationPriority,
-} from "./validation/organizations";
-import type {
-  OpportunityStageValue,
-  LeadSource,
-  OpportunityPriority,
-} from "./validation/opportunities";
-import type {
-  SampleStatus,
-  InteractionType as ValidationInteractionType,
-  Sentiment,
-} from "./validation/activities";
-import type { SalesRole } from "./validation/sales";
+import type { Organization } from "./validation/organizations";
+import type { OpportunityStageValue, LeadSource } from "./validation/opportunities";
+import type { SampleStatus } from "./validation/activities";
 import type { Database } from "@/types/database.generated";
 
 // Re-export enum types from canonical validation schemas (P1/P2 consolidation)

@@ -1,3 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
+// Component + constant pattern: PriorityBadge + priorityChoices for SelectInput
+
 import { Badge } from "@/components/ui/badge";
 
 /**

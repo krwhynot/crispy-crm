@@ -1,3 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
+// shadcn/ui form pattern: Multiple components + useFormField hook must co-exist
+
 import * as React from "react";
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";

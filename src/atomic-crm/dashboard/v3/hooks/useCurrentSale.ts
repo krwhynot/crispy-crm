@@ -42,6 +42,10 @@ export function useCurrentSale() {
   // Try to use cached context first
   const context = useContext(CurrentSaleContext);
 
+  // Always call the direct hook (React rules: hooks must be called unconditionally)
+  // but only use its result when context is unavailable
+  const directResult = useCurrentSaleDirect();
+
   // If context is available and not in error state, use it
   if (context && !context.error?.message?.includes("not found")) {
     return {
@@ -51,8 +55,8 @@ export function useCurrentSale() {
     };
   }
 
-  // Fallback: direct query (for components outside CurrentSaleProvider)
-  return useCurrentSaleDirect();
+  // Fallback: direct query result (for components outside CurrentSaleProvider)
+  return directResult;
 }
 
 /**
