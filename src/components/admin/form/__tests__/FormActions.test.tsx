@@ -129,14 +129,15 @@ describe("FormActions", () => {
     expect(screen.queryByRole("button", { name: /delete/i })).not.toBeInTheDocument();
   });
 
-  it("renders SaveButtonGroup when showSaveAndNew=true", () => {
+  it("renders SaveButtonGroup when showSaveAndNew=true and both handlers provided", () => {
     const onCancel = vi.fn();
+    const onSave = vi.fn();
     const onSaveAndNew = vi.fn();
     const onSubmit = vi.fn();
 
     render(
       <FormWrapper onSubmit={onSubmit}>
-        <FormActions onCancel={onCancel} onSaveAndNew={onSaveAndNew} showSaveAndNew={true} />
+        <FormActions onCancel={onCancel} onSave={onSave} onSaveAndNew={onSaveAndNew} showSaveAndNew={true} />
       </FormWrapper>
     );
 
