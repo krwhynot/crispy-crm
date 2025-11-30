@@ -260,31 +260,31 @@ SELECT setval(pg_get_serial_sequence('sales', 'id'), 6, true);
 INSERT INTO "public"."segments" (id, name, created_at, created_by)
 VALUES
   -- Major national distributors
-  ('22222222-0000-0000-0000-000000000001', 'Major Broadline', NOW(), NULL),
+  ('22222222-2222-4222-8222-000000000001', 'Major Broadline', NOW(), NULL),
 
   -- Regional or specialty-focused distributors
-  ('22222222-0000-0000-0000-000000000002', 'Specialty/Regional', NOW(), NULL),
+  ('22222222-2222-4222-8222-000000000002', 'Specialty/Regional', NOW(), NULL),
 
   -- Foodservice management companies (Aramark, Compass, Sodexo)
-  ('22222222-0000-0000-0000-000000000003', 'Management Company', NOW(), NULL),
+  ('22222222-2222-4222-8222-000000000003', 'Management Company', NOW(), NULL),
 
   -- Group Purchasing Organizations
-  ('22222222-0000-0000-0000-000000000004', 'GPO', NOW(), NULL),
+  ('22222222-2222-4222-8222-000000000004', 'GPO', NOW(), NULL),
 
   -- Higher education foodservice
-  ('22222222-0000-0000-0000-000000000005', 'University', NOW(), NULL),
+  ('22222222-2222-4222-8222-000000000005', 'University', NOW(), NULL),
 
   -- Multi-unit restaurant operators
-  ('22222222-0000-0000-0000-000000000006', 'Restaurant Group', NOW(), NULL),
+  ('22222222-2222-4222-8222-000000000006', 'Restaurant Group', NOW(), NULL),
 
   -- National/regional chain accounts
-  ('22222222-0000-0000-0000-000000000007', 'Chain Restaurant', NOW(), NULL),
+  ('22222222-2222-4222-8222-000000000007', 'Chain Restaurant', NOW(), NULL),
 
   -- Hospitality and travel foodservice
-  ('22222222-0000-0000-0000-000000000008', 'Hotel & Aviation', NOW(), NULL),
+  ('22222222-2222-4222-8222-000000000008', 'Hotel & Aviation', NOW(), NULL),
 
   -- Default for unclassified organizations
-  ('22222222-0000-0000-0000-000000000009', 'Unknown', NOW(), NULL);
+  ('22222222-2222-4222-8222-000000000009', 'Unknown', NOW(), NULL);
 -- ============================================================================
 -- PART 4: PRINCIPALS (9 organizations)
 -- ============================================================================
@@ -302,7 +302,7 @@ INSERT INTO "public"."organizations" (
 )
 VALUES
   -- 1. McCRUM (Idaho potatoes/fries) - Brent manages
-  (1, 'McCRUM', 'principal', '22222222-0000-0000-0000-000000000002',
+  (1, 'McCRUM', 'principal', '22222222-2222-4222-8222-000000000002',
    '208-555-1001', 'sales@mccrum.com', 'https://mccrum.com',
    '123 Potato Lane', 'Idaho Falls', 'ID', '83401', 2,
    'A', 'https://linkedin.com/company/mccrum', 350, 1985,
@@ -311,7 +311,7 @@ VALUES
    NOW(), NOW()),
 
   -- 2. SWAP (Specialty ingredients) - Brent manages
-  (2, 'SWAP', 'principal', '22222222-0000-0000-0000-000000000002',
+  (2, 'SWAP', 'principal', '22222222-2222-4222-8222-000000000002',
    '312-555-1002', 'info@swapfoods.com', 'https://swapfoods.com',
    '456 Innovation Drive', 'Chicago', 'IL', '60601', 2,
    'A', 'https://linkedin.com/company/swapfoods', 120, 2019,
@@ -320,7 +320,7 @@ VALUES
    NOW(), NOW()),
 
   -- 3. Rapid Rasoi (Indian cuisine) - Michelle manages
-  (3, 'Rapid Rasoi', 'principal', '22222222-0000-0000-0000-000000000002',
+  (3, 'Rapid Rasoi', 'principal', '22222222-2222-4222-8222-000000000002',
    '510-555-1003', 'orders@rapidrasoi.com', 'https://rapidrasoi.com',
    '789 Spice Boulevard', 'Fremont', 'CA', '94536', 3,
    'B', 'https://linkedin.com/company/rapidrasoi', 85, 2008,
@@ -329,7 +329,7 @@ VALUES
    NOW(), NOW()),
 
   -- 4. Lakeview Farms (Dairy/desserts) - Michelle manages
-  (4, 'Lakeview Farms', 'principal', '22222222-0000-0000-0000-000000000002',
+  (4, 'Lakeview Farms', 'principal', '22222222-2222-4222-8222-000000000002',
    '614-555-1004', 'foodservice@lakeviewfarms.com', 'https://lakeviewfarms.com',
    '321 Dairy Road', 'Columbus', 'OH', '43215', 3,
    'B', 'https://linkedin.com/company/lakeviewfarms', 450, 1958,
@@ -338,7 +338,7 @@ VALUES
    NOW(), NOW()),
 
   -- 5. Frico (Italian cheese) - Gary manages
-  (5, 'Frico', 'principal', '22222222-0000-0000-0000-000000000002',
+  (5, 'Frico', 'principal', '22222222-2222-4222-8222-000000000002',
    '201-555-1005', 'usa@frico.it', 'https://frico.it',
    '555 Cheese Way', 'Newark', 'NJ', '07102', 4,
    'A', 'https://linkedin.com/company/frico', 1200, 1879,
@@ -347,7 +347,7 @@ VALUES
    NOW(), NOW()),
 
   -- 6. Anchor (New Zealand dairy) - Gary manages
-  (6, 'Anchor Food Professionals', 'principal', '22222222-0000-0000-0000-000000000002',
+  (6, 'Anchor Food Professionals', 'principal', '22222222-2222-4222-8222-000000000002',
    '415-555-1006', 'foodservice@anchor.com', 'https://anchorfoodprofessionals.com',
    '888 Pacific Avenue', 'San Francisco', 'CA', '94102', 4,
    'A', 'https://linkedin.com/company/anchorfoodprofessionals', 2100, 1886,
@@ -356,7 +356,7 @@ VALUES
    NOW(), NOW()),
 
   -- 7. Tattooed Chef (Plant-based) - Dale manages
-  (7, 'Tattooed Chef', 'principal', '22222222-0000-0000-0000-000000000002',
+  (7, 'Tattooed Chef', 'principal', '22222222-2222-4222-8222-000000000002',
    '310-555-1007', 'foodservice@tattooedchef.com', 'https://tattooedchef.com',
    '777 Vegan Street', 'Los Angeles', 'CA', '90001', 5,
    'B', 'https://linkedin.com/company/tattooedchef', 600, 2017,
@@ -365,7 +365,7 @@ VALUES
    NOW(), NOW()),
 
   -- 8. Litehouse (Dressings/dips) - Dale manages
-  (8, 'Litehouse', 'principal', '22222222-0000-0000-0000-000000000002',
+  (8, 'Litehouse', 'principal', '22222222-2222-4222-8222-000000000002',
    '208-555-1008', 'foodservice@litehousefoods.com', 'https://litehousefoods.com',
    '1109 Front Street', 'Sandpoint', 'ID', '83864', 5,
    'A', 'https://linkedin.com/company/litehouse', 520, 1963,
@@ -374,7 +374,7 @@ VALUES
    NOW(), NOW()),
 
   -- 9. Custom Culinary (Bases/sauces) - Sue manages
-  (9, 'Custom Culinary', 'principal', '22222222-0000-0000-0000-000000000002',
+  (9, 'Custom Culinary', 'principal', '22222222-2222-4222-8222-000000000002',
    '630-555-1009', 'sales@customculinary.com', 'https://customculinary.com',
    '2555 Busse Road', 'Elk Grove Village', 'IL', '60007', 6,
    'A', 'https://linkedin.com/company/customculinary', 280, 1974,
@@ -400,7 +400,7 @@ INSERT INTO "public"."organizations" (
 )
 VALUES
   -- 10. Sysco (Broadline - National)
-  (10, 'Sysco Corporation', 'distributor', '22222222-0000-0000-0000-000000000001',
+  (10, 'Sysco Corporation', 'distributor', '22222222-2222-4222-8222-000000000001',
    '281-555-2001', 'purchasing@sysco.com', 'https://sysco.com',
    '1390 Enclave Parkway', 'Houston', 'TX', '77077', 2,
    'A', 'https://linkedin.com/company/sysco', 72000, 1969,
@@ -409,7 +409,7 @@ VALUES
    NOW(), NOW()),
 
   -- 11. US Foods (Broadline - National)
-  (11, 'US Foods', 'distributor', '22222222-0000-0000-0000-000000000001',
+  (11, 'US Foods', 'distributor', '22222222-2222-4222-8222-000000000001',
    '847-555-2002', 'vendor@usfoods.com', 'https://usfoods.com',
    '9399 W Higgins Road', 'Rosemont', 'IL', '60018', 2,
    'A', 'https://linkedin.com/company/usfoods', 30000, 1853,
@@ -418,7 +418,7 @@ VALUES
    NOW(), NOW()),
 
   -- 12. Performance Food Group (Broadline)
-  (12, 'Performance Food Group (PFG)', 'distributor', '22222222-0000-0000-0000-000000000001',
+  (12, 'Performance Food Group (PFG)', 'distributor', '22222222-2222-4222-8222-000000000001',
    '804-555-2003', 'purchasing@pfgc.com', 'https://pfgc.com',
    '12500 West Creek Parkway', 'Richmond', 'VA', '23238', 3,
    'B', 'https://linkedin.com/company/pfgc', 37000, 1885,
@@ -427,7 +427,7 @@ VALUES
    NOW(), NOW()),
 
   -- 13. Gordon Food Service (Broadline)
-  (13, 'Gordon Food Service (GFS)', 'distributor', '22222222-0000-0000-0000-000000000001',
+  (13, 'Gordon Food Service (GFS)', 'distributor', '22222222-2222-4222-8222-000000000001',
    '616-555-2004', 'vendors@gfs.com', 'https://gfs.com',
    '1300 Gezon Parkway SW', 'Grand Rapids', 'MI', '49509', 3,
    'A', 'https://linkedin.com/company/gordon-food-service', 22000, 1897,
@@ -436,7 +436,7 @@ VALUES
    NOW(), NOW()),
 
   -- 14. Shamrock Foods (Regional - Southwest)
-  (14, 'Shamrock Foods', 'distributor', '22222222-0000-0000-0000-000000000001',
+  (14, 'Shamrock Foods', 'distributor', '22222222-2222-4222-8222-000000000001',
    '602-555-2005', 'purchasing@shamrockfoods.com', 'https://shamrockfoods.com',
    '2540 N 29th Avenue', 'Phoenix', 'AZ', '85009', 4,
    'B', 'https://linkedin.com/company/shamrock-foods', 6000, 1922,
@@ -445,7 +445,7 @@ VALUES
    NOW(), NOW()),
 
   -- 15. Ben E. Keith (Regional - South)
-  (15, 'Ben E. Keith Foods', 'distributor', '22222222-0000-0000-0000-000000000001',
+  (15, 'Ben E. Keith Foods', 'distributor', '22222222-2222-4222-8222-000000000001',
    '817-555-2006', 'vendors@benekeith.com', 'https://benekeith.com',
    '601 E 7th Street', 'Fort Worth', 'TX', '76102', 4,
    'B', 'https://linkedin.com/company/ben-e-keith', 4500, 1906,
@@ -454,7 +454,7 @@ VALUES
    NOW(), NOW()),
 
   -- 16. Reinhart Foodservice (Regional - Midwest)
-  (16, 'Reinhart Foodservice', 'distributor', '22222222-0000-0000-0000-000000000001',
+  (16, 'Reinhart Foodservice', 'distributor', '22222222-2222-4222-8222-000000000001',
    '715-555-2007', 'purchasing@rfrsinc.com', 'https://rfrsinc.com',
    '2355 Oak Industrial Drive NE', 'Grand Rapids', 'MI', '49505', 5,
    'B', 'https://linkedin.com/company/reinhart-foodservice', 8500, 1972,
@@ -463,7 +463,7 @@ VALUES
    NOW(), NOW()),
 
   -- 17. Dot Foods (Redistribution)
-  (17, 'Dot Foods', 'distributor', '22222222-0000-0000-0000-000000000002',
+  (17, 'Dot Foods', 'distributor', '22222222-2222-4222-8222-000000000002',
    '217-555-2008', 'purchasing@dotfoods.com', 'https://dotfoods.com',
    '1 Dot Way', 'Mt Sterling', 'IL', '62353', 5,
    'A', 'https://linkedin.com/company/dot-foods', 6800, 1960,
@@ -472,7 +472,7 @@ VALUES
    NOW(), NOW()),
 
   -- 18. European Imports (Specialty)
-  (18, 'European Imports Ltd', 'distributor', '22222222-0000-0000-0000-000000000002',
+  (18, 'European Imports Ltd', 'distributor', '22222222-2222-4222-8222-000000000002',
    '312-555-2009', 'sales@eiltd.com', 'https://eiltd.com',
    '600 E Brook Drive', 'Arlington Heights', 'IL', '60005', 6,
    'C', 'https://linkedin.com/company/european-imports-ltd', 150, 1978,
@@ -481,7 +481,7 @@ VALUES
    NOW(), NOW()),
 
   -- 19. Chefs Warehouse (Specialty)
-  (19, 'The Chefs Warehouse', 'distributor', '22222222-0000-0000-0000-000000000002',
+  (19, 'The Chefs Warehouse', 'distributor', '22222222-2222-4222-8222-000000000002',
    '718-555-2010', 'vendors@chefswarehouse.com', 'https://chefswarehouse.com',
    '100 East Ridge Road', 'Ridgefield', 'CT', '06877', 6,
    'B', 'https://linkedin.com/company/the-chefs-warehouse', 3200, 1985,
@@ -512,7 +512,7 @@ VALUES
   -- ============================================================================
 
   -- Fine Dining (3) - ALL to Brent for Power User testing
-  (20, 'The Capital Grille', 'customer', '22222222-0000-0000-0000-000000000006',
+  (20, 'The Capital Grille', 'customer', '22222222-2222-4222-8222-000000000006',
    '312-555-3001', 'manager@capitalgrille.com', 'https://thecapitalgrille.com',
    '633 N Saint Clair Street', 'Chicago', 'IL', '60611', 2,
    'A', 'https://linkedin.com/company/the-capital-grille', 6500, 1990,
@@ -520,7 +520,7 @@ VALUES
    'Upscale steakhouse chain. High-end proteins and premium sides. Excellent wine program. Key decision maker is GM.',
    NOW(), NOW()),
 
-  (21, 'Ruth''s Chris Steak House', 'customer', '22222222-0000-0000-0000-000000000006',
+  (21, 'Ruth''s Chris Steak House', 'customer', '22222222-2222-4222-8222-000000000006',
    '504-555-3002', 'purchasing@ruthschris.com', 'https://ruthschris.com',
    '500 Tchoupitoulas Street', 'New Orleans', 'LA', '70130', 2,
    'A', 'https://linkedin.com/company/ruths-chris-steak-house', 7200, 1965,
@@ -528,7 +528,7 @@ VALUES
    'Premium steakhouse chain. USDA Prime beef and upscale appetizers. Strong brand recognition. New Orleans heritage.',
    NOW(), NOW()),
 
-  (22, 'Morton''s The Steakhouse', 'customer', '22222222-0000-0000-0000-000000000006',
+  (22, 'Morton''s The Steakhouse', 'customer', '22222222-2222-4222-8222-000000000006',
    '312-555-3003', 'gm@mortons.com', 'https://mortons.com',
    '65 E Wacker Place', 'Chicago', 'IL', '60601', 2,
    'A', 'https://linkedin.com/company/mortons-the-steakhouse', 4800, 1978,
@@ -537,7 +537,7 @@ VALUES
    NOW(), NOW()),
 
   -- Casual Dining (4) - Most to Brent
-  (23, 'Chili''s Grill & Bar', 'customer', '22222222-0000-0000-0000-000000000006',
+  (23, 'Chili''s Grill & Bar', 'customer', '22222222-2222-4222-8222-000000000006',
    '972-555-3004', 'procurement@brinker.com', 'https://chilis.com',
    '6820 LBJ Freeway', 'Dallas', 'TX', '75240', 2,
    'A', 'https://linkedin.com/company/chilis', 72000, 1975,
@@ -545,7 +545,7 @@ VALUES
    'Brinker International casual dining. High volume, value-focused. Tex-Mex strength. Major account.',
    NOW(), NOW()),
 
-  (24, 'Applebee''s', 'customer', '22222222-0000-0000-0000-000000000006',
+  (24, 'Applebee''s', 'customer', '22222222-2222-4222-8222-000000000006',
    '913-555-3005', 'vendors@applebees.com', 'https://applebees.com',
    '8140 Ward Parkway', 'Kansas City', 'MO', '64114', 2,
    'A', 'https://linkedin.com/company/applebees', 28000, 1980,
@@ -553,7 +553,7 @@ VALUES
    'Dine Brands casual dining. Neighborhood bar and grill concept. Franchise model. High volume potential.',
    NOW(), NOW()),
 
-  (25, 'Buffalo Wild Wings', 'customer', '22222222-0000-0000-0000-000000000006',
+  (25, 'Buffalo Wild Wings', 'customer', '22222222-2222-4222-8222-000000000006',
    '612-555-3006', 'purchasing@buffalowildwings.com', 'https://buffalowildwings.com',
    '5500 Wayzata Blvd', 'Minneapolis', 'MN', '55416', 2,
    'A', 'https://linkedin.com/company/buffalo-wild-wings', 35000, 1982,
@@ -561,7 +561,7 @@ VALUES
    'Sports bar concept. High sauce and wing volume. Strong sports partnership strategy. Arby''s (Inspire Brands) owned.',
    NOW(), NOW()),
 
-  (26, 'Red Robin', 'customer', '22222222-0000-0000-0000-000000000006',
+  (26, 'Red Robin', 'customer', '22222222-2222-4222-8222-000000000006',
    '303-555-3007', 'foodsupply@redrobin.com', 'https://redrobin.com',
    '6312 S Fiddlers Green Circle', 'Greenwood Village', 'CO', '80111', 3,
    'B', 'https://linkedin.com/company/red-robin-gourmet-burgers', 23000, 1969,
@@ -570,7 +570,7 @@ VALUES
    NOW(), NOW()),
 
   -- Fast Casual (3) - Most to Brent
-  (27, 'Panera Bread', 'customer', '22222222-0000-0000-0000-000000000007',
+  (27, 'Panera Bread', 'customer', '22222222-2222-4222-8222-000000000007',
    '314-555-3008', 'suppliers@panerabread.com', 'https://panerabread.com',
    '3630 S Geyer Road', 'St. Louis', 'MO', '63127', 2,
    'A', 'https://linkedin.com/company/panera-bread', 120000, 1987,
@@ -578,7 +578,7 @@ VALUES
    'JAB Holdings bakery-cafe chain. Clean ingredients focus. Strong breakfast/lunch dayparts. No artificial preservatives.',
    NOW(), NOW()),
 
-  (28, 'Chipotle Mexican Grill', 'customer', '22222222-0000-0000-0000-000000000007',
+  (28, 'Chipotle Mexican Grill', 'customer', '22222222-2222-4222-8222-000000000007',
    '949-555-3009', 'purchasing@chipotle.com', 'https://chipotle.com',
    '610 Newport Center Drive', 'Newport Beach', 'CA', '92660', 2,
    'A', 'https://linkedin.com/company/chipotle-mexican-grill', 105000, 1993,
@@ -586,7 +586,7 @@ VALUES
    'Fast casual Mexican. Food with Integrity sourcing program. Industry leader in sustainability. High growth.',
    NOW(), NOW()),
 
-  (29, 'Shake Shack', 'customer', '22222222-0000-0000-0000-000000000007',
+  (29, 'Shake Shack', 'customer', '22222222-2222-4222-8222-000000000007',
    '212-555-3010', 'supply@shakeshack.com', 'https://shakeshack.com',
    '225 Varick Street', 'New York', 'NY', '10014', 3,
    'B', 'https://linkedin.com/company/shake-shack', 9500, 2004,
@@ -595,7 +595,7 @@ VALUES
    NOW(), NOW()),
 
   -- Hotels (3) - Most to Brent
-  (30, 'Marriott International', 'customer', '22222222-0000-0000-0000-000000000008',
+  (30, 'Marriott International', 'customer', '22222222-2222-4222-8222-000000000008',
    '301-555-3011', 'foodprocurement@marriott.com', 'https://marriott.com',
    '10400 Fernwood Road', 'Bethesda', 'MD', '20817', 2,
    'A', 'https://linkedin.com/company/marriott-international', 174000, 1927,
@@ -603,7 +603,7 @@ VALUES
    'Largest hotel company. Multiple brands and banquet operations. Global procurement. Starwood integration complete.',
    NOW(), NOW()),
 
-  (31, 'Hilton Hotels', 'customer', '22222222-0000-0000-0000-000000000008',
+  (31, 'Hilton Hotels', 'customer', '22222222-2222-4222-8222-000000000008',
    '703-555-3012', 'purchasing@hilton.com', 'https://hilton.com',
    '7930 Jones Branch Drive', 'McLean', 'VA', '22102', 2,
    'A', 'https://linkedin.com/company/hilton', 159000, 1919,
@@ -611,7 +611,7 @@ VALUES
    'Global hotel chain. Convention and banquet focus. Strong loyalty program. McLean HQ.',
    NOW(), NOW()),
 
-  (32, 'Hyatt Hotels', 'customer', '22222222-0000-0000-0000-000000000008',
+  (32, 'Hyatt Hotels', 'customer', '22222222-2222-4222-8222-000000000008',
    '312-555-3013', 'foodsourcing@hyatt.com', 'https://hyatt.com',
    '150 N Riverside Plaza', 'Chicago', 'IL', '60606', 2,
    'A', 'https://linkedin.com/company/hyatt', 52000, 1957,
@@ -620,7 +620,7 @@ VALUES
    NOW(), NOW()),
 
   -- Healthcare (2) - Split
-  (33, 'HCA Healthcare', 'customer', '22222222-0000-0000-0000-000000000003',
+  (33, 'HCA Healthcare', 'customer', '22222222-2222-4222-8222-000000000003',
    '615-555-3014', 'dietary@hcahealthcare.com', 'https://hcahealthcare.com',
    'One Park Plaza', 'Nashville', 'TN', '37203', 2,
    'A', 'https://linkedin.com/company/hca-healthcare', 250000, 1968,
@@ -628,7 +628,7 @@ VALUES
    'Largest for-profit hospital chain. High volume dietary operations. Centralized purchasing. Nashville HQ.',
    NOW(), NOW()),
 
-  (34, 'Ascension Health', 'customer', '22222222-0000-0000-0000-000000000003',
+  (34, 'Ascension Health', 'customer', '22222222-2222-4222-8222-000000000003',
    '314-555-3015', 'nutrition@ascension.org', 'https://ascension.org',
    '4600 Edmundson Road', 'St. Louis', 'MO', '63134', 4,
    'B', 'https://linkedin.com/company/ascension', 150000, 1999,
@@ -637,7 +637,7 @@ VALUES
    NOW(), NOW()),
 
   -- Education (2) - Split
-  (35, 'Aramark Higher Education', 'customer', '22222222-0000-0000-0000-000000000005',
+  (35, 'Aramark Higher Education', 'customer', '22222222-2222-4222-8222-000000000005',
    '215-555-3016', 'education@aramark.com', 'https://aramark.com',
    '2400 Market Street', 'Philadelphia', 'PA', '19103', 2,
    'A', 'https://linkedin.com/company/aramark', 270000, 1936,
@@ -645,7 +645,7 @@ VALUES
    'Contract foodservice for universities. Retail and residential dining. Broad client base. Philadelphia HQ.',
    NOW(), NOW()),
 
-  (36, 'Sodexo Campus Services', 'customer', '22222222-0000-0000-0000-000000000005',
+  (36, 'Sodexo Campus Services', 'customer', '22222222-2222-4222-8222-000000000005',
    '301-555-3017', 'campus@sodexo.com', 'https://sodexo.com',
    '9801 Washingtonian Blvd', 'Gaithersburg', 'MD', '20878', 5,
    'B', 'https://linkedin.com/company/sodexo', 422000, 1966,
@@ -654,7 +654,7 @@ VALUES
    NOW(), NOW()),
 
   -- Senior Living (2) - Sue
-  (37, 'Brookdale Senior Living', 'customer', '22222222-0000-0000-0000-000000000003',
+  (37, 'Brookdale Senior Living', 'customer', '22222222-2222-4222-8222-000000000003',
    '615-555-3018', 'culinary@brookdale.com', 'https://brookdale.com',
    '111 Westwood Place', 'Brentwood', 'TN', '37027', 6,
    'B', 'https://linkedin.com/company/brookdale-senior-living', 56000, 1978,
@@ -662,7 +662,7 @@ VALUES
    'Largest senior living operator. Multiple care levels. High dining standards. Nashville area HQ.',
    NOW(), NOW()),
 
-  (38, 'Sunrise Senior Living', 'customer', '22222222-0000-0000-0000-000000000003',
+  (38, 'Sunrise Senior Living', 'customer', '22222222-2222-4222-8222-000000000003',
    '703-555-3019', 'dining@sunriseseniorliving.com', 'https://sunriseseniorliving.com',
    '7900 Westpark Drive', 'McLean', 'VA', '22102', 6,
    'B', 'https://linkedin.com/company/sunrise-senior-living', 28000, 1981,
@@ -671,7 +671,7 @@ VALUES
    NOW(), NOW()),
 
   -- Sports/Entertainment (1) - Brent
-  (39, 'Levy Restaurants', 'customer', '22222222-0000-0000-0000-000000000008',
+  (39, 'Levy Restaurants', 'customer', '22222222-2222-4222-8222-000000000008',
    '312-555-3020', 'procurement@levyrestaurants.com', 'https://levyrestaurants.com',
    '980 N Michigan Avenue', 'Chicago', 'IL', '60611', 2,
    'A', 'https://linkedin.com/company/levy-restaurants', 18000, 1978,

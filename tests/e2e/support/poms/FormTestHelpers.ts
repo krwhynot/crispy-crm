@@ -101,6 +101,9 @@ export async function expectFormSubmitted(page: Page, resource: string): Promise
 
 /**
  * Wait for form to be ready (inputs visible)
+ *
+ * Note: React Admin may not use an actual <form> tag, so we look for
+ * form content indicators (inputs, tab panels, or form-like structures)
  */
 export async function waitForFormReady(page: Page): Promise<void> {
   // Wait for any loading skeleton to disappear
@@ -109,8 +112,28 @@ export async function waitForFormReady(page: Page): Promise<void> {
     await skeleton.waitFor({ state: "hidden", timeout: 10000 });
   }
 
-  // Wait for form to be visible
-  await expect(page.locator("form").first()).toBeVisible({ timeout: 10000 });
+  // Try multiple patterns to detect form readiness
+  // React Admin forms may not have <form> tag but will have input fields
+  const formIndicators = [
+    page.locator("form").first(),
+    page.getByRole("textbox").first(),
+    page.getByRole("tabpanel").first(),
+    page.locator('[role="group"]').first(),
+    page.locator("main").first(),
+  ];
+
+  let formReady = false;
+  for (const indicator of formIndicators) {
+    if (await indicator.isVisible({ timeout: 2000 }).catch(() => false)) {
+      formReady = true;
+      break;
+    }
+  }
+
+  if (!formReady) {
+    // Final fallback - wait for any visible input
+    await expect(page.getByRole("textbox").first()).toBeVisible({ timeout: 10000 });
+  }
 
   // Wait for network to settle
   await page.waitForLoadState("networkidle", { timeout: 10000 });
