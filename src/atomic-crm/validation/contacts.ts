@@ -122,8 +122,14 @@ export const contactBaseSchema = z.object({
   // - tags (array field handled separately)
 });
 
+// Email entry type for iteration
+interface EmailEntry {
+  email: string;
+  type?: "Work" | "Home" | "Other";
+}
+
 // Helper function to transform data
-function transformContactData(data: any) {
+function transformContactData(data: Record<string, unknown>) {
   // Compute name from first + last if not provided
   if (!data.name && (data.first_name || data.last_name)) {
     data.name = [data.first_name, data.last_name].filter(Boolean).join(" ") || "Unknown";
@@ -162,7 +168,7 @@ export const contactSchema = contactBaseSchema
     // Contact-level email validation
     if (data.email && Array.isArray(data.email)) {
       const emailValidator = z.string().email("Invalid email address");
-      data.email.forEach((entry: any, index: number) => {
+      data.email.forEach((entry: EmailEntry, index: number) => {
         if (entry.email && !emailValidator.safeParse(entry.email).success) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
@@ -318,12 +324,12 @@ export type ImportContactInput = z.input<typeof importContactSchema>;
 
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where contact validation occurs
-export async function validateContactForm(data: any): Promise<void> {
+export async function validateContactForm(data: unknown): Promise<void> {
   try {
     // Ensure at least one email is provided if email exists
     if (data.email && Array.isArray(data.email) && data.email.length > 0) {
       // Validate each email entry
-      data.email.forEach((entry: any, index: number) => {
+      data.email.forEach((entry: EmailEntry, index: number) => {
         if (!entry.email || entry.email.trim() === "") {
           throw new z.ZodError([
             {
@@ -416,7 +422,7 @@ export const createContactSchema = contactBaseSchema
 export const updateContactSchema = contactBaseSchema.partial().transform(transformContactData);
 
 // Export validation functions for specific operations
-export async function validateCreateContact(data: any): Promise<void> {
+export async function validateCreateContact(data: unknown): Promise<void> {
   try {
     // Ensure at least one email is provided for new contacts
     if (!data.email || !Array.isArray(data.email) || data.email.length === 0) {
@@ -446,7 +452,7 @@ export async function validateCreateContact(data: any): Promise<void> {
   }
 }
 
-export async function validateUpdateContact(data: any): Promise<void> {
+export async function validateUpdateContact(data: unknown): Promise<void> {
   try {
     updateContactSchema.parse(data);
   } catch (error) {
