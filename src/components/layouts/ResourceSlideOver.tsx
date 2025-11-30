@@ -6,6 +6,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+import { Badge } from "@/components/ui/badge";
 
 /**
  * Props passed to each tab component
@@ -26,6 +27,12 @@ export interface TabConfig {
   label: string;
   component: React.ComponentType<TabComponentProps>;
   icon?: React.ComponentType<{ className?: string }>;
+  /**
+   * Function to compute count badge value from record.
+   * Return undefined/null/0 to hide badge.
+   * @example countFromRecord: (record) => record.nb_notes
+   */
+  countFromRecord?: (record: any) => number | undefined | null;
 }
 
 /**
@@ -145,7 +152,7 @@ export function ResourceSlideOver({
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent
         side="right"
-        className="w-[50vw] min-w-[600px] max-w-[720px] bg-card shadow-md p-0 flex flex-col"
+        className="w-full min-w-[320px] max-w-lg lg:max-w-xl xl:max-w-2xl bg-card shadow-md p-0 flex flex-col"
         role="dialog"
         aria-modal="true"
         aria-labelledby="slide-over-title"
@@ -192,26 +199,40 @@ export function ResourceSlideOver({
               className="flex-1 flex flex-col overflow-hidden"
             >
               <TabsList className="border-b border-border h-11 rounded-none bg-transparent p-0 w-full justify-start gap-1 px-2">
-                {tabs.map((tab) => (
-                  <Tooltip key={tab.key}>
-                    <TooltipTrigger asChild>
-                      <TabsTrigger
-                        value={tab.key}
-                        className="h-11 w-11 px-0 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary flex items-center justify-center"
-                        aria-label={tab.label}
-                      >
-                        {tab.icon ? (
-                          <tab.icon className="size-5" />
-                        ) : (
-                          <span className="text-sm font-medium">{tab.label.charAt(0)}</span>
-                        )}
-                      </TabsTrigger>
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom" sideOffset={4}>
-                      {tab.label}
-                    </TooltipContent>
-                  </Tooltip>
-                ))}
+                {tabs.map((tab) => {
+                  // Compute count badge value if function provided
+                  const count = record && tab.countFromRecord ? tab.countFromRecord(record) : null;
+                  const showBadge = count != null && count > 0;
+
+                  return (
+                    <Tooltip key={tab.key}>
+                      <TooltipTrigger asChild>
+                        <TabsTrigger
+                          value={tab.key}
+                          className="h-11 min-w-11 px-2 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary flex items-center justify-center gap-1 relative"
+                          aria-label={showBadge ? `${tab.label} (${count})` : tab.label}
+                        >
+                          {tab.icon ? (
+                            <tab.icon className="size-5" />
+                          ) : (
+                            <span className="text-sm font-medium">{tab.label.charAt(0)}</span>
+                          )}
+                          {showBadge && (
+                            <Badge
+                              variant="secondary"
+                              className="h-5 min-w-5 px-1.5 text-xs font-medium"
+                            >
+                              {count > 99 ? "99+" : count}
+                            </Badge>
+                          )}
+                        </TabsTrigger>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom" sideOffset={4}>
+                        {showBadge ? `${tab.label} (${count})` : tab.label}
+                      </TooltipContent>
+                    </Tooltip>
+                  );
+                })}
               </TabsList>
 
               {/* Tab content panels - only render active tab's component for performance */}

@@ -43,7 +43,7 @@ export function OrganizationSlideOver({
 
   const isDistributor = organization?.organization_type === "distributor";
 
-  // Base tabs available for all organizations
+  // Base tabs available for all organizations with count badges
   const baseTabs: TabConfig[] = [
     {
       key: "details",
@@ -56,12 +56,14 @@ export function OrganizationSlideOver({
       label: "Contacts",
       component: OrganizationContactsTab,
       icon: Users,
+      countFromRecord: (record: any) => record.nb_contacts,
     },
     {
       key: "opportunities",
       label: "Opportunities",
       component: OrganizationOpportunitiesTab,
       icon: Target,
+      countFromRecord: (record: any) => record.nb_opportunities,
     },
     {
       key: "notes",

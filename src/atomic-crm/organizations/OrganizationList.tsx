@@ -112,24 +112,24 @@ const OrganizationListLayout = ({
     <>
       <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
         <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
-          {/* Column 1: Name - Primary identifier (sortable) */}
+          {/* Column 1: Name - Primary identifier (sortable) - always visible */}
           <TextField source="name" label="Organization Name" sortable />
 
-          {/* Column 2: Type - Organization classification (sortable by organization_type) */}
+          {/* Column 2: Type - Organization classification (sortable by organization_type) - always visible */}
           <FunctionField
             label="Type"
             sortBy="organization_type"
             render={(record: any) => <OrganizationTypeBadge type={record.organization_type} />}
           />
 
-          {/* Column 3: Priority - Business priority indicator (sortable) */}
+          {/* Column 3: Priority - Business priority indicator (sortable) - always visible */}
           <FunctionField
             label="Priority"
             sortBy="priority"
             render={(record: any) => <PriorityBadge priority={record.priority} />}
           />
 
-          {/* Column 4: Parent - Hierarchy reference (sortable by parent_organization_id) */}
+          {/* Column 4: Parent - Hierarchy reference (sortable by parent_organization_id) - hidden on tablet */}
           <ReferenceField
             source="parent_organization_id"
             reference="organizations"
@@ -137,24 +137,30 @@ const OrganizationListLayout = ({
             link={false}
             emptyText="-"
             sortable
+            cellClassName="hidden lg:table-cell"
+            headerClassName="hidden lg:table-cell"
           >
             <TextField source="name" />
           </ReferenceField>
 
-          {/* Column 5: Contacts - Computed count metric (non-sortable) */}
+          {/* Column 5: Contacts - Computed count metric (non-sortable) - hidden on mobile */}
           <FunctionField
             label="Contacts"
             sortable={false}
             render={(record: any) => record.nb_contacts || 0}
             textAlign="center"
+            cellClassName="hidden md:table-cell"
+            headerClassName="hidden md:table-cell"
           />
 
-          {/* Column 6: Opportunities - Computed count metric (non-sortable) */}
+          {/* Column 6: Opportunities - Computed count metric (non-sortable) - hidden on mobile */}
           <FunctionField
             label="Opportunities"
             sortable={false}
             render={(record: any) => record.nb_opportunities || 0}
             textAlign="center"
+            cellClassName="hidden md:table-cell"
+            headerClassName="hidden md:table-cell"
           />
         </PremiumDatagrid>
       </StandardListLayout>
