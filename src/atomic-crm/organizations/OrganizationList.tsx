@@ -12,6 +12,7 @@ import { SortButton } from "@/components/admin/sort-button";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { OrganizationListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
+import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { OrganizationListFilter } from "./OrganizationListFilter";
 import { OrganizationSlideOver } from "./OrganizationSlideOver";
@@ -97,11 +98,20 @@ const exporter: Exporter<Organization> = async (records, fetchRelatedRecords) =>
 
 const OrganizationListLayout = ({
   openSlideOver,
+  isSlideOverOpen,
 }: {
   openSlideOver: (id: number, mode: "view" | "edit") => void;
+  isSlideOverOpen: boolean;
 }) => {
   const { data, isPending, filterValues } = useListContext();
   const { identity } = useGetIdentity();
+
+  // Keyboard navigation for list rows
+  // Disabled when slide-over is open to prevent conflicts
+  const { focusedIndex } = useListKeyboardNavigation({
+    onSelect: (id) => openSlideOver(Number(id), "view"),
+    enabled: !isSlideOverOpen,
+  });
 
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
@@ -121,7 +131,10 @@ const OrganizationListLayout = ({
   return (
     <>
       <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
-        <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
+        <PremiumDatagrid
+          onRowClick={(id) => openSlideOver(Number(id), "view")}
+          focusedIndex={focusedIndex}
+        >
           {/* Column 1: Name - Primary identifier (sortable) - always visible */}
           <TextField source="name" label="Organization Name" sortable />
 
@@ -199,7 +212,7 @@ export const OrganizationList = () => {
         sort={{ field: "name", order: "ASC" }}
         exporter={exporter}
       >
-        <OrganizationListLayout openSlideOver={openSlideOver} />
+        <OrganizationListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
         <FloatingCreateButton />
       </List>
       <OrganizationSlideOver

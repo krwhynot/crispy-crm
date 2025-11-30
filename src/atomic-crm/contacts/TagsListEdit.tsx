@@ -104,8 +104,8 @@ export const TagsListEdit = () => {
       <div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button variant="outline" size="sm" className="h-6 cursor-pointer">
-              <Plus className="h-3 w-3 mr-1" />
+            <Button variant="outline" size="sm" className="h-11 px-3 cursor-pointer">
+              <Plus className="h-4 w-4 mr-1" />
               Add tag
             </Button>
           </DropdownMenuTrigger>

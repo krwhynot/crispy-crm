@@ -192,8 +192,8 @@ export function SnoozePopover({
             <div className="flex items-center gap-2 border-b border-border px-4 py-3">
               <Button
                 variant="ghost"
-                size="sm"
-                className="h-8 w-8 p-0"
+                size="icon"
+                className="h-11 w-11"
                 onClick={handleBackToOptions}
                 aria-label="Back to snooze options"
               >

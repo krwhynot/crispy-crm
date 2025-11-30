@@ -48,7 +48,7 @@ export const ContactList = () => {
         sort={{ field: "last_seen", order: "DESC" }}
         exporter={exporter}
       >
-        <ContactListLayout openSlideOver={openSlideOver} />
+        <ContactListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
         <FloatingCreateButton />
       </List>
       <ContactSlideOver
@@ -64,11 +64,20 @@ export const ContactList = () => {
 
 const ContactListLayout = ({
   openSlideOver,
+  isSlideOverOpen,
 }: {
   openSlideOver: (id: number, mode: "view" | "edit") => void;
+  isSlideOverOpen: boolean;
 }) => {
   const { data, isPending, filterValues } = useListContext();
   const { identity } = useGetIdentity();
+
+  // Keyboard navigation for list rows
+  // Disabled when slide-over is open to prevent conflicts
+  const { focusedIndex } = useListKeyboardNavigation({
+    onSelect: (id) => openSlideOver(Number(id), "view"),
+    enabled: !isSlideOverOpen,
+  });
 
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
@@ -88,7 +97,10 @@ const ContactListLayout = ({
   return (
     <>
       <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
-        <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
+        <PremiumDatagrid
+          onRowClick={(id) => openSlideOver(Number(id), "view")}
+          focusedIndex={focusedIndex}
+        >
           {/* Column 1: Avatar - Visual identifier (non-sortable) - hidden on mobile */}
           <FunctionField
             label=""
