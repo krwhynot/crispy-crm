@@ -1,6 +1,6 @@
 import { RecordContextProvider } from "ra-core";
 import { ReferenceManyField } from "@/components/admin/reference-many-field";
-import { NoteCreate, NotesIterator } from "../../notes";
+import { NotesIterator } from "../../notes";
 import type { Opportunity } from "../../types";
 
 interface OpportunityNotesTabProps {
@@ -26,14 +26,12 @@ export function OpportunityNotesTab({
   return (
     <RecordContextProvider value={record}>
       <div className="space-y-4">
-        {/* Notes list with create form - NoteCreate must be inside ReferenceManyField for ListContext */}
+        {/* Notes list with create form - NotesIterator includes NoteCreate internally */}
         <ReferenceManyField
           target="opportunity_id"
           reference="opportunityNotes"
           sort={{ field: "created_at", order: "DESC" }}
         >
-          {/* Note creation form at top */}
-          <NoteCreate reference="opportunities" />
           <NotesIterator reference="opportunities" />
         </ReferenceManyField>
 
