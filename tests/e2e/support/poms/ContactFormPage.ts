@@ -50,31 +50,35 @@ export class ContactFormPage extends BasePage {
   // ============================================================================
 
   /**
-   * Click the Identity tab
+   * Click the Main tab (contains Identity, Organization, Account Manager, Contact Info sections)
    */
+  async clickMainTab(): Promise<void> {
+    await this.page.getByRole("tab", { name: /main/i }).click();
+  }
+
+  /**
+   * Click the More tab (contains additional fields like LinkedIn, notes)
+   */
+  async clickMoreTab(): Promise<void> {
+    await this.page.getByRole("tab", { name: /more/i }).click();
+  }
+
+  // DEPRECATED: Legacy tab methods kept for compatibility but no longer used
+  // The contact form uses Main/More tabs, not Identity/Position/Contact Info/Account
   async clickIdentityTab(): Promise<void> {
-    await this.page.getByRole("tab", { name: /identity/i }).click();
+    await this.clickMainTab(); // Redirect to Main tab
   }
 
-  /**
-   * Click the Position tab
-   */
   async clickPositionTab(): Promise<void> {
-    await this.page.getByRole("tab", { name: /position/i }).click();
+    await this.clickMainTab(); // Redirect to Main tab
   }
 
-  /**
-   * Click the Contact Info tab
-   */
   async clickContactInfoTab(): Promise<void> {
-    await this.page.getByRole("tab", { name: /contact info/i }).click();
+    await this.clickMainTab(); // Redirect to Main tab
   }
 
-  /**
-   * Click the Account tab
-   */
   async clickAccountTab(): Promise<void> {
-    await this.page.getByRole("tab", { name: /account/i }).click();
+    await this.clickMainTab(); // Redirect to Main tab
   }
 
   // ============================================================================
