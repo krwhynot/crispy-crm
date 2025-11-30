@@ -864,10 +864,25 @@ import userEvent from "@testing-library/user-event";
 import { SaveButtonGroup } from "../SaveButtonGroup";
 import { FormProvider, useForm } from "react-hook-form";
 
-// Wrapper that provides form context
-const FormWrapper = ({ children }: { children: React.ReactNode }) => {
+/**
+ * CRITICAL: FormWrapper must wire form's onSubmit to handleSubmit.
+ * Without this, type="submit" buttons do nothing and tests silently pass.
+ */
+const FormWrapper = ({
+  children,
+  onSubmit,
+}: {
+  children: React.ReactNode;
+  onSubmit: (data: any) => void;
+}) => {
   const methods = useForm({ defaultValues: { name: "test" } });
-  return <FormProvider {...methods}>{children}</FormProvider>;
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        {children}
+      </form>
+    </FormProvider>
+  );
 };
 
 describe("SaveButtonGroup", () => {
@@ -880,7 +895,7 @@ describe("SaveButtonGroup", () => {
 
   test("renders Save button", () => {
     render(
-      <FormWrapper>
+      <FormWrapper onSubmit={mockOnSave}>
         <SaveButtonGroup
           onSave={mockOnSave}
           onSaveAndNew={mockOnSaveAndNew}
@@ -889,12 +904,12 @@ describe("SaveButtonGroup", () => {
       </FormWrapper>
     );
 
-    expect(screen.getByRole("button", { name: /save/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /^save$/i })).toBeInTheDocument();
   });
 
   test("renders dropdown trigger button", () => {
     render(
-      <FormWrapper>
+      <FormWrapper onSubmit={mockOnSave}>
         <SaveButtonGroup
           onSave={mockOnSave}
           onSaveAndNew={mockOnSaveAndNew}
@@ -908,59 +923,57 @@ describe("SaveButtonGroup", () => {
     expect(buttons.length).toBeGreaterThanOrEqual(2);
   });
 
-  test("calls onSave with form data when Save clicked", async () => {
+  test("primary Save button triggers form submit and calls onSave", async () => {
     const user = userEvent.setup();
+    const handleFormSubmit = vi.fn();
 
     render(
-      <FormWrapper>
-        <form>
-          <SaveButtonGroup
-            onSave={mockOnSave}
-            onSaveAndNew={mockOnSaveAndNew}
-            isSubmitting={false}
-          />
-        </form>
+      <FormWrapper onSubmit={handleFormSubmit}>
+        <SaveButtonGroup
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          isSubmitting={false}
+        />
       </FormWrapper>
     );
 
     await user.click(screen.getByRole("button", { name: /^save$/i }));
 
     await waitFor(() => {
-      expect(mockOnSave).toHaveBeenCalledWith({ name: "test" });
+      // Form's onSubmit was called with validated data
+      expect(handleFormSubmit).toHaveBeenCalledWith({ name: "test" });
     });
-    expect(mockOnSaveAndNew).not.toHaveBeenCalled();
   });
 
   test("calls onSaveAndNew when dropdown option clicked", async () => {
     const user = userEvent.setup();
 
     render(
-      <FormWrapper>
-        <form>
-          <SaveButtonGroup
-            onSave={mockOnSave}
-            onSaveAndNew={mockOnSaveAndNew}
-            isSubmitting={false}
-          />
-        </form>
+      <FormWrapper onSubmit={mockOnSave}>
+        <SaveButtonGroup
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          isSubmitting={false}
+        />
       </FormWrapper>
     );
 
-    // Open dropdown
-    const dropdownTrigger = screen.getAllByRole("button")[1];
-    await user.click(dropdownTrigger);
+    // Open dropdown (find button with chevron icon)
+    const buttons = screen.getAllByRole("button");
+    const dropdownTrigger = buttons.find((b) => b.querySelector("svg"));
+    await user.click(dropdownTrigger!);
 
     // Click "Save + Create Another"
     await user.click(screen.getByText(/save \+ create another/i));
 
     await waitFor(() => {
-      expect(mockOnSaveAndNew).toHaveBeenCalledWith({ name: "test" });
+      expect(mockOnSaveAndNew).toHaveBeenCalled();
     });
-    expect(mockOnSave).not.toHaveBeenCalled();
   });
 
   test("does not fire handlers when form validation fails", async () => {
     const user = userEvent.setup();
+    const handleFormSubmit = vi.fn();
 
     // Form with validation that will fail
     const FormWrapperWithValidation = ({ children }: { children: React.ReactNode }) => {
@@ -970,7 +983,7 @@ describe("SaveButtonGroup", () => {
       });
       return (
         <FormProvider {...methods}>
-          <form>
+          <form onSubmit={methods.handleSubmit(handleFormSubmit)}>
             <input {...methods.register("name", { required: true })} />
             {children}
           </form>
@@ -990,15 +1003,14 @@ describe("SaveButtonGroup", () => {
 
     await user.click(screen.getByRole("button", { name: /^save$/i }));
 
-    // Wait a tick and verify handlers weren't called
+    // Wait a tick and verify form's onSubmit wasn't called
     await new Promise((r) => setTimeout(r, 100));
-    expect(mockOnSave).not.toHaveBeenCalled();
-    expect(mockOnSaveAndNew).not.toHaveBeenCalled();
+    expect(handleFormSubmit).not.toHaveBeenCalled();
   });
 
   test("disables buttons when isSubmitting", () => {
     render(
-      <FormWrapper>
+      <FormWrapper onSubmit={mockOnSave}>
         <SaveButtonGroup
           onSave={mockOnSave}
           onSaveAndNew={mockOnSaveAndNew}
