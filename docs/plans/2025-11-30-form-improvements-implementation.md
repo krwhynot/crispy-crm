@@ -12,6 +12,54 @@
 
 ---
 
+## Phase 0: Pre-requisite Setup
+
+### Task 0: Resolve form.tsx Namespace Clash
+
+**Rationale:** The existing `src/components/admin/form.tsx` file (252 lines) contains core form primitives (Form, FormField, FormLabel, FormControl, FormDescription, FormError, SaveButton). Creating a `src/components/admin/form/` directory alongside it causes module resolution conflicts. We must rename the existing file first.
+
+**Files:**
+- Rename: `src/components/admin/form.tsx` → `src/components/admin/form-primitives.tsx`
+- Update: 26+ files that import from `@/components/admin/form`
+- Create: `src/components/admin/form/` directory
+
+**Step 1: Rename existing file**
+
+```bash
+mv src/components/admin/form.tsx src/components/admin/form-primitives.tsx
+```
+
+**Step 2: Update all imports (Linux sed)**
+
+```bash
+# Find and update imports
+find src -name "*.tsx" -o -name "*.ts" | xargs grep -l "from ['\"]@/components/admin/form['\"]" | while read file; do
+  sed -i "s|from '@/components/admin/form'|from '@/components/admin/form-primitives'|g" "$file"
+  sed -i "s|from \"@/components/admin/form\"|from \"@/components/admin/form-primitives\"|g" "$file"
+done
+```
+
+**Step 3: Create new form directory**
+
+```bash
+mkdir -p src/components/admin/form/__tests__
+```
+
+**Step 4: Verify no broken imports**
+
+```bash
+npm run build
+```
+
+**Step 5: Commit**
+
+```bash
+git add -A
+git commit -m "refactor: rename form.tsx to form-primitives.tsx for form/ directory"
+```
+
+---
+
 ## Phase 1: Shared Form Components (Foundation)
 
 ### Task 1: FormGrid Component
