@@ -11,6 +11,7 @@
  * 4. Supabase error field extraction
  * 5. Idempotent delete handling (already deleted = success)
  * 6. React Admin validation error format preservation
+ * 7. Sentry error capture for production observability (P0)
  *
  * Engineering Constitution: Cross-cutting concern extracted for single responsibility
  */
@@ -21,6 +22,7 @@ import type {
   FilterPayload,
   RaRecord,
 } from "ra-core";
+import { captureException, addBreadcrumb } from "@/lib/sentry";
 
 /**
  * Interface for data provider method params logging
@@ -67,7 +69,7 @@ interface ExtendedError extends Error {
 }
 
 /**
- * Log error with context for debugging
+ * Log error with context for debugging and send to Sentry
  * Integrated from resilientDataProvider for consolidated error logging
  *
  * @param method - The DataProvider method that failed
@@ -98,14 +100,15 @@ function logError(
   };
 
   const extendedError = error as ExtendedError | undefined;
+  const errorMessage =
+    error instanceof Error
+      ? error.message
+      : extendedError?.message
+        ? extendedError.message
+        : String(error);
 
   console.error(`[DataProvider Error]`, context, {
-    error:
-      error instanceof Error
-        ? error.message
-        : extendedError?.message
-          ? extendedError.message
-          : String(error),
+    error: errorMessage,
     stack: error instanceof Error ? error.stack : undefined,
     validationErrors:
       extendedError?.body?.errors || extendedError?.errors || undefined,
@@ -123,6 +126,42 @@ function logError(
       "[Validation Errors Detail]",
       JSON.stringify(extendedError.errors, null, 2)
     );
+  }
+
+  // === Sentry Integration (P0 - Observability) ===
+  // Add breadcrumb for context trail in Sentry
+  addBreadcrumb(
+    `DataProvider.${method}(${resource}) failed`,
+    "api",
+    {
+      method,
+      resource,
+      id: params?.id,
+      hasData: !!params?.data,
+    },
+    "error"
+  );
+
+  // Capture to Sentry with rich context
+  // Only capture actual errors (not validation errors which are expected user behavior)
+  const isValidationError = !!(extendedError?.body?.errors || extendedError?.errors || extendedError?.issues);
+
+  if (!isValidationError) {
+    const sentryError = error instanceof Error ? error : new Error(errorMessage);
+    captureException(sentryError, {
+      tags: {
+        dataProviderMethod: method,
+        resource,
+        errorType: isSupabaseError(error) ? "supabase" : "unknown",
+      },
+      extra: {
+        ...context,
+        supabaseCode: (error as SupabaseError)?.code,
+        supabaseDetails: (error as SupabaseError)?.details,
+        supabaseHint: (error as SupabaseError)?.hint,
+      },
+      level: "error",
+    });
   }
 }
 
