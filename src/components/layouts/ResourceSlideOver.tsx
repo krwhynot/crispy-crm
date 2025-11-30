@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
+import { useKeyboardShortcuts, formatShortcut } from "@/hooks/useKeyboardShortcuts";
 
 /**
  * Props passed to each tab component
@@ -117,6 +118,12 @@ export function ResourceSlideOver({
 }: ResourceSlideOverProps) {
   const [activeTab, setActiveTab] = useState(tabs[0]?.key || "");
 
+  // Keyboard shortcuts for slide-over navigation
+  useKeyboardShortcuts({
+    onCancel: isOpen ? onClose : undefined,
+    // Future: Add onSave handler when edit forms support it
+  });
+
   // Fetch record data
   const { data: record, isLoading } = useGetOne(
     resource,
@@ -186,24 +193,33 @@ export function ResourceSlideOver({
 
                 {/* Mode toggle button (if handler provided) */}
                 {onModeToggle && (
-                  <Button
-                    variant="ghost"
-                    onClick={onModeToggle}
-                    className="h-11 px-3 text-sm"
-                    aria-label={mode === "view" ? "Switch to edit mode" : "Switch to view mode"}
-                  >
-                    {mode === "view" ? (
-                      <>
-                        <PencilIcon className="size-4 mr-1" />
-                        Edit
-                      </>
-                    ) : (
-                      <>
-                        <XIcon className="size-4 mr-1" />
-                        Cancel
-                      </>
-                    )}
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        onClick={onModeToggle}
+                        className="h-11 px-3 text-sm"
+                        aria-label={mode === "view" ? "Switch to edit mode" : "Switch to view mode"}
+                      >
+                        {mode === "view" ? (
+                          <>
+                            <PencilIcon className="size-4 mr-1" />
+                            Edit
+                          </>
+                        ) : (
+                          <>
+                            <XIcon className="size-4 mr-1" />
+                            Cancel
+                          </>
+                        )}
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">
+                      {mode === "view"
+                        ? "Edit record"
+                        : `Cancel editing (${formatShortcut("Escape")})`}
+                    </TooltipContent>
+                  </Tooltip>
                 )}
               </div>
             </SheetHeader>

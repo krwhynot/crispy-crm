@@ -197,3 +197,43 @@ export const useKeyboardShortcuts = (handlers: KeyboardShortcutHandlers = {}) =>
     modifierKey: isMac() ? "⌘" : "Ctrl",
   };
 };
+
+/**
+ * Format keyboard shortcut for display in tooltips
+ *
+ * @example
+ * formatShortcut("n", true) // "⌘N" on Mac, "Ctrl+N" on Windows
+ * formatShortcut("Escape") // "Esc"
+ * formatShortcut("ArrowDown") // "↓"
+ */
+export function formatShortcut(key: string, withModifier = false, withShift = false): string {
+  const mac = isMac();
+  const parts: string[] = [];
+
+  if (withModifier) {
+    parts.push(mac ? "⌘" : "Ctrl");
+  }
+  if (withShift) {
+    parts.push(mac ? "⇧" : "Shift");
+  }
+
+  // Format special keys
+  const keyDisplay =
+    key === "Escape"
+      ? "Esc"
+      : key === "ArrowDown"
+        ? "↓"
+        : key === "ArrowUp"
+          ? "↑"
+          : key === "ArrowLeft"
+            ? "←"
+            : key === "ArrowRight"
+              ? "→"
+              : key === "Delete"
+                ? "Del"
+                : key.toUpperCase();
+
+  parts.push(keyDisplay);
+
+  return mac ? parts.join("") : parts.join("+");
+}

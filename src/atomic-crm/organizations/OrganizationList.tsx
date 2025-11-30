@@ -10,6 +10,7 @@ import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { SortButton } from "@/components/admin/sort-button";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
+import { OrganizationListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { OrganizationListFilter } from "./OrganizationListFilter";
@@ -104,7 +105,16 @@ const OrganizationListLayout = ({
 
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
-  if (!identity || isPending) return null;
+  // Show skeleton during initial load (identity check happens in parent)
+  if (isPending) {
+    return (
+      <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
+        <OrganizationListSkeleton />
+      </StandardListLayout>
+    );
+  }
+
+  if (!identity) return null;
 
   if (!data?.length && !hasFilters) return <OrganizationEmpty />;
 
