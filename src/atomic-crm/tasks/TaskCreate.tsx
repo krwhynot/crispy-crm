@@ -136,7 +136,7 @@ const TaskCreateFooter = ({
   );
 
   return (
-    <div className="sticky bottom-0 bg-card border-t border-border p-4 flex justify-between mt-6">
+    <div className="sticky bottom-12 bg-card border-t border-border p-4 flex justify-between mt-6">
       <Button variant="outline" onClick={handleCancel}>
         Cancel
       </Button>

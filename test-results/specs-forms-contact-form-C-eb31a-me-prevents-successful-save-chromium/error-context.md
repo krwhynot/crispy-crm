@@ -1,0 +1,393 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e28]:
+      - button "Sort by last seen descending" [ref=e29] [cursor=pointer]:
+        - img
+        - generic [ref=e30]: Sort by last seen descending
+        - img
+      - button "Import" [ref=e31] [cursor=pointer]:
+        - img
+        - text: Import
+      - button "Template" [ref=e32] [cursor=pointer]:
+        - img
+        - text: Template
+      - button "Export" [ref=e33] [cursor=pointer]:
+        - img
+        - text: Export
+      - link "Create" [ref=e34] [cursor=pointer]:
+        - /url: "#/contacts/create"
+        - img
+        - text: Create
+    - generic [ref=e35]:
+      - generic [ref=e36]:
+        - complementary "Filter contacts" [ref=e37]:
+          - generic [ref=e39]:
+            - generic [ref=e41]:
+              - group [ref=e42]:
+                - textbox "Search contacts..." [ref=e43]
+              - img
+            - generic [ref=e45]:
+              - button "Last activity" [ref=e47] [cursor=pointer]:
+                - generic [ref=e48]:
+                  - img [ref=e50]
+                  - heading "Last activity" [level=3] [ref=e53]
+                - img [ref=e54]
+              - button "Tags" [ref=e57] [cursor=pointer]:
+                - generic [ref=e58]:
+                  - img [ref=e60]
+                  - heading "Tags" [level=3] [ref=e63]
+                - img [ref=e64]
+              - button "Organization" [ref=e67] [cursor=pointer]:
+                - generic [ref=e68]:
+                  - img [ref=e70]
+                  - heading "Organization" [level=3] [ref=e74]
+                - img [ref=e75]
+              - button "Account Manager" [ref=e78] [cursor=pointer]:
+                - generic [ref=e79]:
+                  - img [ref=e81]
+                  - heading "Account Manager" [level=3] [ref=e86]
+                - img [ref=e87]
+        - main "contacts list" [ref=e89]:
+          - table [ref=e93]:
+            - rowgroup [ref=e94]:
+              - row "Sort by name ascending Sort by role ascending Sort by organization ascending Status Notes Sort by last Activity ascending" [ref=e95]:
+                - columnheader [ref=e96]
+                - columnheader "Sort by name ascending" [ref=e97]:
+                  - button "Sort by name ascending" [ref=e98] [cursor=pointer]:
+                    - generic [ref=e99]: Name
+                - columnheader "Sort by role ascending" [ref=e100]:
+                  - button "Sort by role ascending" [ref=e101] [cursor=pointer]:
+                    - generic [ref=e102]: Role
+                - columnheader "Sort by organization ascending" [ref=e103]:
+                  - button "Sort by organization ascending" [ref=e104] [cursor=pointer]:
+                    - generic [ref=e105]: Organization
+                - columnheader "Status" [ref=e106]
+                - columnheader "Notes" [ref=e107]
+                - columnheader "Sort by last Activity ascending" [ref=e108]:
+                  - button "Sort by last Activity ascending" [ref=e109] [cursor=pointer]:
+                    - generic [ref=e110]: Last Activity
+                    - img [ref=e111]
+            - rowgroup [ref=e113]:
+              - row "T TestFirst1764517498985 -- Gun Lake Cold 0 11/30/2025" [ref=e114] [cursor=pointer]:
+                - cell "T" [ref=e115]:
+                  - generic [ref=e118]: T
+                - cell "TestFirst1764517498985" [ref=e119]
+                - cell "--" [ref=e120]
+                - cell "Gun Lake" [ref=e121]
+                - cell "Cold" [ref=e122]:
+                  - generic [ref=e124]: Cold
+                - cell "0" [ref=e125]
+                - cell "11/30/2025" [ref=e126]
+              - row "T TestLast1764517497695 -- Gun Lake Cold 0 11/30/2025" [ref=e127] [cursor=pointer]:
+                - cell "T" [ref=e128]:
+                  - generic [ref=e131]: T
+                - cell "TestLast1764517497695" [ref=e132]
+                - cell "--" [ref=e133]
+                - cell "Gun Lake" [ref=e134]
+                - cell "Cold" [ref=e135]:
+                  - generic [ref=e137]: Cold
+                - cell "0" [ref=e138]
+                - cell "11/30/2025" [ref=e139]
+              - row "TT TestFirst1764517428240 TestLast1764517428240 -- Gun Lake Cold 0 11/30/2025" [ref=e140] [cursor=pointer]:
+                - cell "TT" [ref=e141]:
+                  - generic [ref=e144]: TT
+                - cell "TestFirst1764517428240 TestLast1764517428240" [ref=e145]
+                - cell "--" [ref=e146]
+                - cell "Gun Lake" [ref=e147]
+                - cell "Cold" [ref=e148]:
+                  - generic [ref=e150]: Cold
+                - cell "0" [ref=e151]
+                - cell "11/30/2025" [ref=e152]
+              - row "MM MinimalFirst-1764497806665 MinimalLast-1764497806665 -- URL Prefix Test Org-1764497739269 Cold 0 11/30/2025" [ref=e153] [cursor=pointer]:
+                - cell "MM" [ref=e154]:
+                  - generic [ref=e157]: MM
+                - cell "MinimalFirst-1764497806665 MinimalLast-1764497806665" [ref=e158]
+                - cell "--" [ref=e159]
+                - cell "URL Prefix Test Org-1764497739269" [ref=e160]
+                - cell "Cold" [ref=e161]:
+                  - generic [ref=e163]: Cold
+                - cell "0" [ref=e164]
+                - cell "11/30/2025" [ref=e165]
+              - row "MM MinimalFirst-1764497731560 MinimalLast-1764497731560 -- URL Prefix Test Org-1764497651550 Cold 0 11/30/2025" [ref=e166] [cursor=pointer]:
+                - cell "MM" [ref=e167]:
+                  - generic [ref=e170]: MM
+                - cell "MinimalFirst-1764497731560 MinimalLast-1764497731560" [ref=e171]
+                - cell "--" [ref=e172]
+                - cell "URL Prefix Test Org-1764497651550" [ref=e173]
+                - cell "Cold" [ref=e174]:
+                  - generic [ref=e176]: Cold
+                - cell "0" [ref=e177]
+                - cell "11/30/2025" [ref=e178]
+              - row "MM MinimalFirst-1764497644056 MinimalLast-1764497644056 -- URL Prefix Test Org-1764497490319 Cold 0 11/30/2025" [ref=e179] [cursor=pointer]:
+                - cell "MM" [ref=e180]:
+                  - generic [ref=e183]: MM
+                - cell "MinimalFirst-1764497644056 MinimalLast-1764497644056" [ref=e184]
+                - cell "--" [ref=e185]
+                - cell "URL Prefix Test Org-1764497490319" [ref=e186]
+                - cell "Cold" [ref=e187]:
+                  - generic [ref=e189]: Cold
+                - cell "0" [ref=e190]
+                - cell "11/30/2025" [ref=e191]
+              - row "MM MinimalFirst-1764497482690 MinimalLast-1764497482690 -- URL Prefix Test Org-1764497412062 Cold 0 11/30/2025" [ref=e192] [cursor=pointer]:
+                - cell "MM" [ref=e193]:
+                  - generic [ref=e196]: MM
+                - cell "MinimalFirst-1764497482690 MinimalLast-1764497482690" [ref=e197]
+                - cell "--" [ref=e198]
+                - cell "URL Prefix Test Org-1764497412062" [ref=e199]
+                - cell "Cold" [ref=e200]:
+                  - generic [ref=e202]: Cold
+                - cell "0" [ref=e203]
+                - cell "11/30/2025" [ref=e204]
+              - row "MM MinimalFirst-1764497404899 MinimalLast-1764497404899 -- URL Prefix Test Org-1764494492148 Cold 0 11/30/2025" [ref=e205] [cursor=pointer]:
+                - cell "MM" [ref=e206]:
+                  - generic [ref=e209]: MM
+                - cell "MinimalFirst-1764497404899 MinimalLast-1764497404899" [ref=e210]
+                - cell "--" [ref=e211]
+                - cell "URL Prefix Test Org-1764494492148" [ref=e212]
+                - cell "Cold" [ref=e213]:
+                  - generic [ref=e215]: Cold
+                - cell "0" [ref=e216]
+                - cell "11/30/2025" [ref=e217]
+              - row "MM MinimalFirst-1764495804930 MinimalLast-1764495804930 -- URL Prefix Test Org-1764494492148 Cold 0 11/30/2025" [ref=e218] [cursor=pointer]:
+                - cell "MM" [ref=e219]:
+                  - generic [ref=e222]: MM
+                - cell "MinimalFirst-1764495804930 MinimalLast-1764495804930" [ref=e223]
+                - cell "--" [ref=e224]
+                - cell "URL Prefix Test Org-1764494492148" [ref=e225]
+                - cell "Cold" [ref=e226]:
+                  - generic [ref=e228]: Cold
+                - cell "0" [ref=e229]
+                - cell "11/30/2025" [ref=e230]
+              - row "MM MinimalFirst-1764495700392 MinimalLast-1764495700392 -- URL Prefix Test Org-1764494492148 Cold 0 11/30/2025" [ref=e231] [cursor=pointer]:
+                - cell "MM" [ref=e232]:
+                  - generic [ref=e235]: MM
+                - cell "MinimalFirst-1764495700392 MinimalLast-1764495700392" [ref=e236]
+                - cell "--" [ref=e237]
+                - cell "URL Prefix Test Org-1764494492148" [ref=e238]
+                - cell "Cold" [ref=e239]:
+                  - generic [ref=e241]: Cold
+                - cell "0" [ref=e242]
+                - cell "11/30/2025" [ref=e243]
+              - row "RP Raj Patel Owner, Executive Rapid Rasoi Cold 1 11/29/2025" [ref=e244] [cursor=pointer]:
+                - cell "RP" [ref=e245]:
+                  - generic [ref=e248]: RP
+                - cell "Raj Patel" [ref=e249]
+                - cell "Owner, Executive" [ref=e250]
+                - cell "Rapid Rasoi" [ref=e251]
+                - cell "Cold" [ref=e252]:
+                  - generic [ref=e254]: Cold
+                - cell "1" [ref=e255]
+                - cell "11/29/2025" [ref=e256]
+              - row "MS Marcus Sterling Executive Chef, Culinary The Capital Grille Cold 1 11/29/2025" [ref=e257] [cursor=pointer]:
+                - cell "MS" [ref=e258]:
+                  - generic [ref=e261]: MS
+                - cell "Marcus Sterling" [ref=e262]
+                - cell "Executive Chef, Culinary" [ref=e263]
+                - cell "The Capital Grille" [ref=e264]
+                - cell "Cold" [ref=e265]:
+                  - generic [ref=e267]: Cold
+                - cell "1" [ref=e268]
+                - cell "11/29/2025" [ref=e269]
+              - row "SJ Sarah Johnson Founder, Executive Tattooed Chef Cold 1 11/28/2025" [ref=e270] [cursor=pointer]:
+                - cell "SJ" [ref=e271]:
+                  - generic [ref=e274]: SJ
+                - cell "Sarah Johnson" [ref=e275]
+                - cell "Founder, Executive" [ref=e276]
+                - cell "Tattooed Chef" [ref=e277]
+                - cell "Cold" [ref=e278]:
+                  - generic [ref=e280]: Cold
+                - cell "1" [ref=e281]
+                - cell "11/28/2025" [ref=e282]
+              - row "DK Daniel Kim Culinary Director, Culinary Shake Shack Cold 1 11/28/2025" [ref=e283] [cursor=pointer]:
+                - cell "DK" [ref=e284]:
+                  - generic [ref=e287]: DK
+                - cell "Daniel Kim" [ref=e288]
+                - cell "Culinary Director, Culinary" [ref=e289]
+                - cell "Shake Shack" [ref=e290]
+                - cell "Cold" [ref=e291]:
+                  - generic [ref=e293]: Cold
+                - cell "1" [ref=e294]
+                - cell "11/28/2025" [ref=e295]
+              - row "ST Sarah Thompson Nutrition Services Director, Dietary HCA Healthcare Cold 1 11/28/2025" [ref=e296] [cursor=pointer]:
+                - cell "ST" [ref=e297]:
+                  - generic [ref=e300]: ST
+                - cell "Sarah Thompson" [ref=e301]
+                - cell "Nutrition Services Director, Dietary" [ref=e302]
+                - cell "HCA Healthcare" [ref=e303]
+                - cell "Cold" [ref=e304]:
+                  - generic [ref=e306]: Cold
+                - cell "1" [ref=e307]
+                - cell "11/28/2025" [ref=e308]
+              - row "MR Michael Roberts Category Manager, Purchasing Sysco Corporation Cold 1 11/28/2025" [ref=e309] [cursor=pointer]:
+                - cell "MR" [ref=e310]:
+                  - generic [ref=e313]: MR
+                - cell "Michael Roberts" [ref=e314]
+                - cell "Category Manager, Purchasing" [ref=e315]
+                - cell "Sysco Corporation" [ref=e316]
+                - cell "Cold" [ref=e317]:
+                  - generic [ref=e319]: Cold
+                - cell "1" [ref=e320]
+                - cell "11/28/2025" [ref=e321]
+              - row "AB Antoine Bernard Global Executive Chef, Culinary Sodexo Campus Services Cold 1 11/28/2025" [ref=e322] [cursor=pointer]:
+                - cell "AB" [ref=e323]:
+                  - generic [ref=e326]: AB
+                - cell "Antoine Bernard" [ref=e327]
+                - cell "Global Executive Chef, Culinary" [ref=e328]
+                - cell "Sodexo Campus Services" [ref=e329]
+                - cell "Cold" [ref=e330]:
+                  - generic [ref=e332]: Cold
+                - cell "1" [ref=e333]
+                - cell "11/28/2025" [ref=e334]
+              - row "SM Sarah Mitchell Head Baker, Culinary Panera Bread Cold 0 11/28/2025" [ref=e335] [cursor=pointer]:
+                - cell "SM" [ref=e336]:
+                  - generic [ref=e339]: SM
+                - cell "Sarah Mitchell" [ref=e340]
+                - cell "Head Baker, Culinary" [ref=e341]
+                - cell "Panera Bread" [ref=e342]
+                - cell "Cold" [ref=e343]:
+                  - generic [ref=e345]: Cold
+                - cell "0" [ref=e346]
+                - cell "11/28/2025" [ref=e347]
+              - row "PD Pierre Dubois VP Global Culinary, Culinary Marriott International Cold 1 11/27/2025" [ref=e348] [cursor=pointer]:
+                - cell "PD" [ref=e349]:
+                  - generic [ref=e352]: PD
+                - cell "Pierre Dubois" [ref=e353]
+                - cell "VP Global Culinary, Culinary" [ref=e354]
+                - cell "Marriott International" [ref=e355]
+                - cell "Cold" [ref=e356]:
+                  - generic [ref=e358]: Cold
+                - cell "1" [ref=e359]
+                - cell "11/27/2025" [ref=e360]
+              - row "DP David Park Corporate Chef, Culinary Levy Restaurants Cold 0 11/27/2025" [ref=e361] [cursor=pointer]:
+                - cell "DP" [ref=e362]:
+                  - generic [ref=e365]: DP
+                - cell "David Park" [ref=e366]
+                - cell "Corporate Chef, Culinary" [ref=e367]
+                - cell "Levy Restaurants" [ref=e368]
+                - cell "Cold" [ref=e369]:
+                  - generic [ref=e371]: Cold
+                - cell "0" [ref=e372]
+                - cell "11/27/2025" [ref=e373]
+              - row "AM Andrea Miller Executive Chef, Culinary Sunrise Senior Living Cold 0 11/27/2025" [ref=e374] [cursor=pointer]:
+                - cell "AM" [ref=e375]:
+                  - generic [ref=e378]: AM
+                - cell "Andrea Miller" [ref=e379]
+                - cell "Executive Chef, Culinary" [ref=e380]
+                - cell "Sunrise Senior Living" [ref=e381]
+                - cell "Cold" [ref=e382]:
+                  - generic [ref=e384]: Cold
+                - cell "0" [ref=e385]
+                - cell "11/27/2025" [ref=e386]
+              - row "AF Amanda Foster Corporate Chef, Culinary Red Robin Cold 0 11/27/2025" [ref=e387] [cursor=pointer]:
+                - cell "AF" [ref=e388]:
+                  - generic [ref=e391]: AF
+                - cell "Amanda Foster" [ref=e392]
+                - cell "Corporate Chef, Culinary" [ref=e393]
+                - cell "Red Robin" [ref=e394]
+                - cell "Cold" [ref=e395]:
+                  - generic [ref=e397]: Cold
+                - cell "0" [ref=e398]
+                - cell "11/27/2025" [ref=e399]
+              - row "KP Kevin Park VP Culinary Innovation, Culinary Chili's Grill & Bar Cold 1 11/27/2025" [ref=e400] [cursor=pointer]:
+                - cell "KP" [ref=e401]:
+                  - generic [ref=e404]: KP
+                - cell "Kevin Park" [ref=e405]
+                - cell "VP Culinary Innovation, Culinary" [ref=e406]
+                - cell "Chili's Grill & Bar" [ref=e407]
+                - cell "Cold" [ref=e408]:
+                  - generic [ref=e410]: Cold
+                - cell "1" [ref=e411]
+                - cell "11/27/2025" [ref=e412]
+              - row "RD Richard Davis VP Merchandising, Purchasing US Foods Cold 1 11/27/2025" [ref=e413] [cursor=pointer]:
+                - cell "RD" [ref=e414]:
+                  - generic [ref=e417]: RD
+                - cell "Richard Davis" [ref=e418]
+                - cell "VP Merchandising, Purchasing" [ref=e419]
+                - cell "US Foods" [ref=e420]
+                - cell "Cold" [ref=e421]:
+                  - generic [ref=e423]: Cold
+                - cell "1" [ref=e424]
+                - cell "11/27/2025" [ref=e425]
+              - row "CL Christopher Lee VP Culinary Higher Ed, Culinary Aramark Higher Education Cold 1 11/27/2025" [ref=e426] [cursor=pointer]:
+                - cell "CL" [ref=e427]:
+                  - generic [ref=e430]: CL
+                - cell "Christopher Lee" [ref=e431]
+                - cell "VP Culinary Higher Ed, Culinary" [ref=e432]
+                - cell "Aramark Higher Education" [ref=e433]
+                - cell "Cold" [ref=e434]:
+                  - generic [ref=e436]: Cold
+                - cell "1" [ref=e437]
+                - cell "11/27/2025" [ref=e438]
+      - link "Create new contacts" [ref=e439] [cursor=pointer]:
+        - /url: "#/contacts/create"
+        - img [ref=e440]
+    - generic [ref=e441]:
+      - generic [ref=e442]:
+        - paragraph [ref=e443]: "Rows per page:"
+        - combobox [ref=e444] [cursor=pointer]:
+          - generic: "25"
+          - img
+      - generic [ref=e445]: 1-25 of 90
+      - navigation "pagination" [ref=e446]:
+        - list [ref=e447]:
+          - listitem [ref=e448]:
+            - link "Go to previous page" [ref=e449] [cursor=pointer]:
+              - /url: "#"
+              - img
+          - listitem [ref=e450]:
+            - link "1" [ref=e451] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e452]:
+            - link "2" [ref=e453] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e454]:
+            - link "3" [ref=e455] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e456]:
+            - link "4" [ref=e457] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e458]:
+            - link "Go to next page" [ref=e459] [cursor=pointer]:
+              - /url: "#"
+              - img
+  - contentinfo [ref=e460]:
+    - generic [ref=e462]:
+      - paragraph [ref=e463]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e464] [cursor=pointer]:
+        - img [ref=e465]
+        - generic [ref=e467]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```
