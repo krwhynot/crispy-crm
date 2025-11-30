@@ -127,10 +127,10 @@ export function StandardListLayout({
                   variant="ghost"
                   size="icon"
                   onClick={toggleSidebar}
-                  className="h-8 w-8"
+                  className="h-11 w-11"
                   aria-label="Hide filters"
                 >
-                  <PanelLeftClose className="h-4 w-4" />
+                  <PanelLeftClose className="h-5 w-5" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="right">Hide filters</TooltipContent>

@@ -76,9 +76,10 @@ LEFT JOIN organizations o
    AND o.deleted_at IS NULL
 
 -- Notes count subquery (soft-delete aware)
+-- Uses snake_case table name per P3 rename migration
 LEFT JOIN LATERAL (
     SELECT COUNT(*)::integer AS cnt
-    FROM "contactNotes" cn
+    FROM contact_notes cn
     WHERE cn.contact_id = c.id
       AND cn.deleted_at IS NULL
 ) notes_count ON true
@@ -112,5 +113,5 @@ GRANT SELECT ON contacts_summary TO authenticated;
 COMMENT ON VIEW contacts_summary IS
     'Contact summary with organization name and activity counts. '
     'Uses security_invoker to enforce RLS from underlying tables. '
-    'Includes nb_notes (contactNotes count), nb_tasks (tasks count), and nb_activities (activities count) for UI display. '
+    'Includes nb_notes (contact_notes count), nb_tasks (tasks count), and nb_activities (activities count) for UI display. '
     'All counts are soft-delete aware (deleted_at IS NULL).';
