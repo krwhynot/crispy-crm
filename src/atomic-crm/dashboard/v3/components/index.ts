@@ -1,6 +1,7 @@
 // Dashboard V3 components barrel exports
-export { TaskGroup } from "./TaskGroup";
-export { TasksPanel } from "./TasksPanel";
+// Note: TasksPanel and TaskGroup are deprecated (replaced by TasksKanbanPanel)
+// They remain in the codebase for test compatibility but are not exported
+
 export { TasksKanbanPanel } from "./TasksKanbanPanel";
 export { TaskKanbanCard } from "./TaskKanbanCard";
 export { TaskKanbanColumn, type TaskColumnId } from "./TaskKanbanColumn";
@@ -11,3 +12,6 @@ export { PipelineDrillDownSheet } from "./PipelineDrillDownSheet";
 export { KPICard, type KPIMetricType } from "./KPICard";
 export { KPISummaryRow } from "./KPISummaryRow";
 export { MyPerformanceWidget } from "./MyPerformanceWidget";
+export { EntityCombobox } from "./EntityCombobox";
+export { ActivityTypeSection } from "./ActivityTypeSection";
+export { FollowUpSection } from "./FollowUpSection";
