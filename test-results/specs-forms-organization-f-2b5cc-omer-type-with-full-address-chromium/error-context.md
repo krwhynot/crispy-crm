@@ -36,7 +36,7 @@
     - generic [ref=e31]:
       - generic [ref=e32]:
         - tablist [ref=e33]:
-          - tab "Main tab" [selected] [ref=e34] [cursor=pointer]: Main
+          - tab "Main tab" [active] [selected] [ref=e34] [cursor=pointer]: Main
           - tab "More tab" [ref=e35] [cursor=pointer]: More
         - tabpanel "Main tab" [ref=e36]:
           - generic [ref=e37]:
@@ -47,7 +47,7 @@
                   - generic [ref=e45]: Name *
                   - textbox "Name *" [ref=e46]:
                     - /placeholder: Organization name
-                    - text: Minimal Org-1764490918013
+                    - text: Customer Restaurant-1764490941681
                   - generic [ref=e47]: Required field
                 - group [ref=e48]:
                   - generic [ref=e50]: Organization Type *
@@ -101,7 +101,7 @@
           - button "Cancel" [ref=e95] [cursor=pointer]:
             - img
             - text: Cancel
-          - button "Create Organization" [active] [ref=e96] [cursor=pointer]:
+          - button "Create Organization" [ref=e96] [cursor=pointer]:
             - img
             - text: Create Organization
   - contentinfo [ref=e97]:
