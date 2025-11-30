@@ -36,7 +36,7 @@
     - generic [ref=e29]:
       - generic [ref=e30]:
         - tablist [ref=e31]:
-          - tab "Main tab" [selected] [ref=e32] [cursor=pointer]: Main
+          - tab "Main tab" [active] [selected] [ref=e32] [cursor=pointer]: Main
           - tab "More tab" [ref=e33] [cursor=pointer]: More
         - tabpanel "Main tab" [ref=e34]:
           - generic [ref=e35]:
@@ -45,11 +45,11 @@
               - generic [ref=e40]:
                 - group [ref=e41]:
                   - generic [ref=e43]: First Name *
-                  - textbox "First Name *" [ref=e44]
+                  - textbox "First Name *" [ref=e44]: MultiEmail-1764495245224
                   - generic [ref=e45]: Required field
                 - group [ref=e46]:
                   - generic [ref=e48]: Last Name *
-                  - textbox "Last Name *" [ref=e49]
+                  - textbox "Last Name *" [ref=e49]: Test-1764495245224
                   - generic [ref=e50]: Required field
             - generic [ref=e51]:
               - heading "Organization" [level=3] [ref=e53]
@@ -92,17 +92,17 @@
       - generic [ref=e91]:
         - button "Cancel" [ref=e92] [cursor=pointer]
         - generic [ref=e93]:
-          - button "Save & Close" [disabled]:
+          - button "Save & Close" [ref=e94] [cursor=pointer]:
             - img
             - text: Save & Close
-          - button "Save & Add Another" [disabled]:
+          - button "Save & Add Another" [ref=e95] [cursor=pointer]:
             - img
             - text: Save & Add Another
-  - contentinfo [ref=e94]:
-    - generic [ref=e96]:
-      - paragraph [ref=e97]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e98] [cursor=pointer]:
-        - img [ref=e99]
-        - generic [ref=e101]: Keyboard shortcuts
+  - contentinfo [ref=e96]:
+    - generic [ref=e98]:
+      - paragraph [ref=e99]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e100] [cursor=pointer]:
+        - img [ref=e101]
+        - generic [ref=e103]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```
