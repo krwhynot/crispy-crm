@@ -175,11 +175,24 @@ export class OrganizationFormPage extends BasePage {
 
   /**
    * Click Create Organization button (with duplicate check)
+   *
+   * Note: The form has a duplicate check that runs on click.
+   * We wait for either:
+   * 1. Duplicate dialog to appear
+   * 2. Navigation away from create page
+   * 3. Network activity to settle (for API call completion)
    */
   async clickCreateOrganization(): Promise<void> {
     const button = this.page.getByRole("button", { name: /create organization/i });
     await expect(button).toBeVisible();
     await button.click();
+
+    // Wait for duplicate check and/or form submission
+    // First wait a bit for the async duplicate check to complete
+    await this.page.waitForTimeout(500);
+
+    // Wait for network to settle (form submission or duplicate check API call)
+    await this.page.waitForLoadState("networkidle", { timeout: 15000 });
   }
 
   /**

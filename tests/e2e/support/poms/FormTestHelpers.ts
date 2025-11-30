@@ -90,11 +90,19 @@ export async function expectFormNotSubmitted(page: Page, resource: string): Prom
 
 /**
  * Assert that form was submitted successfully
+ *
+ * After successful create, React Admin may redirect to:
+ * 1. /#/resource/ID - Show page (direct ID)
+ * 2. /#/resource/ID/show - Explicit show page
+ * 3. /#/resource?view=ID - List page with panel showing the record
+ *
+ * This function accepts all three patterns as valid success indicators.
  */
 export async function expectFormSubmitted(page: Page, resource: string): Promise<void> {
-  // Should navigate to show or list page
+  // Should navigate to show page, list-with-panel, or list page
+  // Matches: /resource/123, /resource/123/show, /resource?view=123
   await expect(page).toHaveURL(
-    new RegExp(`/#/${resource}/(\\d+(/show)?|$)`),
+    new RegExp(`/#/${resource}(/(\\d+(/show)?)|\\?view=\\d+|$)`),
     { timeout: 10000 }
   );
 }
