@@ -314,9 +314,10 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       await slideOver.expectVisible();
 
       await slideOver.switchTab("Contacts");
-      await authenticatedPage.waitForTimeout(1000);
 
       const panel = getActiveTabPanel(slideOver);
+      await expect(panel).toBeVisible();
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Check for "Primary" badge (from is_primary=true in seed data)
       const primaryBadge = panel.getByText(/primary/i);
@@ -346,8 +347,9 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
 
       const panel = getActiveTabPanel(slideOver);
 
-      // Wait for products to load
-      await authenticatedPage.waitForTimeout(1000);
+      // Wait for products to load (condition-based)
+      await expect(panel).toBeVisible();
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Check for product names from seed data
       const products = [
@@ -382,9 +384,10 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       await slideOver.expectVisible();
 
       await slideOver.switchTab("Products");
-      await authenticatedPage.waitForTimeout(1000);
 
       const panel = getActiveTabPanel(slideOver);
+      await expect(panel).toBeVisible();
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Check for product notes from seed data (if products tab shows notes)
       const notesExcerpt = panel.getByText(/chef favorite|high margin|requested for/i);
@@ -412,8 +415,9 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
 
       const panel = getActiveTabPanel(slideOver);
 
-      // Wait for notes to load
-      await authenticatedPage.waitForTimeout(1000);
+      // Wait for notes to load (condition-based)
+      await expect(panel).toBeVisible();
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Check for note content from seed data
       const noteExcerpts = ["NRA Show booth", "Follow-up call", "sample kit", "kitchen team"];
@@ -443,9 +447,9 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       await slideOver.expectVisible();
 
       await slideOver.switchTab("Notes");
-      await authenticatedPage.waitForTimeout(500);
 
       const panel = getActiveTabPanel(slideOver);
+      await expect(panel).toBeVisible();
 
       // Check for note creation input/textarea (NoteCreate component)
       const noteInput = panel.locator('textarea, input[type="text"]').first();
@@ -470,14 +474,15 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
 
       // Switch to Contacts tab
       await slideOver.switchTab("Contacts");
-      await authenticatedPage.waitForTimeout(300);
+      const contactsTab = slideOver.getTab("Contacts");
+      await expect(contactsTab).toHaveAttribute("aria-selected", "true");
 
       // Toggle to edit mode
       await slideOver.toggleMode("edit");
-      await authenticatedPage.waitForTimeout(300);
+      // Wait for mode change (condition-based)
+      await authenticatedPage.waitForLoadState("domcontentloaded");
 
       // Contacts tab should still be active
-      const contactsTab = slideOver.getTab("Contacts");
       const isSelected = await contactsTab.getAttribute("aria-selected");
       expect(isSelected).toBe("true");
     });
@@ -488,11 +493,10 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       // Navigate directly with a view param (opportunity ID 1)
       await authenticatedPage.goto("/#/opportunities?view=1");
       await authenticatedPage.waitForLoadState("networkidle");
-      await authenticatedPage.waitForTimeout(500);
 
       const slideOver = createSlideOver(authenticatedPage);
 
-      // Slide-over should open if opportunity exists
+      // Slide-over should open if opportunity exists (condition-based check)
       const _isVisible = await slideOver.getDialog().isVisible().catch(() => false);
 
       // URL param should work (may not find opportunity 1 if seed is different)

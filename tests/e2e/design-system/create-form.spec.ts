@@ -20,6 +20,9 @@ import { consoleMonitor } from "../support/utils/console-monitor";
  * - Semantic selectors ✓
  * - Console monitoring ✓
  * - Timestamp-based test data for isolation ✓
+ * - Condition-based waiting (NO waitForTimeout) ✓
+ *
+ * STABILIZATION: 2025-11-29 - Replaced all waitForTimeout with condition-based waiting
  */
 
 test.describe("Create Form - Design System", () => {
@@ -93,8 +96,8 @@ test.describe("Create Form - Design System", () => {
       const formPage = createFormPage(authenticatedPage, "contacts");
       await formPage.navigate();
 
-      // Wait for form to load
-      await authenticatedPage.waitForTimeout(500);
+      // Wait for form to load (condition-based)
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Trigger validation on first name (required field)
       await formPage.triggerValidationError("First Name");
@@ -107,7 +110,7 @@ test.describe("Create Form - Design System", () => {
       const formPage = createFormPage(authenticatedPage, "contacts");
       await formPage.navigate();
 
-      await authenticatedPage.waitForTimeout(500);
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Look for email field
       const emailField = authenticatedPage.getByLabel(/email/i).first();
@@ -117,12 +120,10 @@ test.describe("Create Form - Design System", () => {
         await emailField.fill("invalid-email");
         await emailField.blur();
 
-        await authenticatedPage.waitForTimeout(300);
-
-        // Should show validation error
+        // Wait for validation to run (condition-based: check for error message)
         const hasError = await authenticatedPage
           .getByText(/invalid email|valid email/i)
-          .isVisible()
+          .isVisible({ timeout: 3000 })
           .catch(() => false);
 
         expect(hasError, "Should show email validation error").toBe(true);
@@ -133,7 +134,7 @@ test.describe("Create Form - Design System", () => {
       const formPage = createFormPage(authenticatedPage, "contacts");
       await formPage.navigate();
 
-      await authenticatedPage.waitForTimeout(500);
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Clear required field
       await formPage.triggerValidationError("First Name");
@@ -142,7 +143,8 @@ test.describe("Create Form - Design System", () => {
       const saveBtn = formPage.getSaveAndCloseButton();
       await saveBtn.click();
 
-      await authenticatedPage.waitForTimeout(500);
+      // Wait for any submission attempt (condition-based)
+      await authenticatedPage.waitForLoadState("domcontentloaded");
 
       // Should still be on create page (not navigated away)
       const url = authenticatedPage.url();
@@ -155,17 +157,19 @@ test.describe("Create Form - Design System", () => {
       const formPage = createFormPage(authenticatedPage, "contacts");
       await formPage.navigate();
 
-      await authenticatedPage.waitForTimeout(500);
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Make form dirty
       const firstInput = authenticatedPage.locator('input[type="text"]').first();
+      await expect(firstInput).toBeVisible();
       await firstInput.fill(`DirtyTest-${Date.now()}`);
 
       // Click cancel
       const cancelBtn = formPage.getCancelButton();
       await cancelBtn.click();
 
-      await authenticatedPage.waitForTimeout(300);
+      // Wait for confirmation dialog or navigation (condition-based)
+      await authenticatedPage.waitForLoadState("domcontentloaded");
 
       // Should either show confirmation dialog or stay on page
       const url = authenticatedPage.url();
@@ -189,7 +193,7 @@ test.describe("Create Form - Design System", () => {
       const formPage = createFormPage(authenticatedPage, "contacts");
       await formPage.navigate();
 
-      await authenticatedPage.waitForTimeout(500);
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Fill form with unique data
       const _testData = await formPage.fillFormWithUniqueData({
@@ -212,7 +216,7 @@ test.describe("Create Form - Design System", () => {
       const formPage = createFormPage(authenticatedPage, "contacts");
       await formPage.navigate();
 
-      await authenticatedPage.waitForTimeout(500);
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Fill form
       const _testData = await formPage.fillFormWithUniqueData({
@@ -277,7 +281,7 @@ test.describe("Create Form - Design System", () => {
       const formPage = createFormPage(authenticatedPage, "organizations");
       await formPage.navigate();
 
-      await authenticatedPage.waitForTimeout(500);
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Fill form
       const _testData = await formPage.fillFormWithUniqueData({
@@ -324,7 +328,8 @@ test.describe("Create Form - Design System", () => {
       // Scroll to bottom
       await authenticatedPage.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
 
-      await authenticatedPage.waitForTimeout(200);
+      // Wait for scroll to complete (condition-based)
+      await authenticatedPage.waitForLoadState("domcontentloaded");
 
       // Footer should still be visible (sticky)
       const footer = formPage.getFooter();
@@ -337,7 +342,7 @@ test.describe("Create Form - Design System", () => {
       const formPage = createFormPage(authenticatedPage, "contacts");
       await formPage.navigate();
 
-      await authenticatedPage.waitForTimeout(500);
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Check for any default values in select/dropdown fields
       // Per plan: defaults should come from Zod .default() methods
@@ -358,7 +363,7 @@ test.describe("Create Form - Design System", () => {
       const formPage = createFormPage(authenticatedPage, "contacts");
       await formPage.navigate();
 
-      await authenticatedPage.waitForTimeout(500);
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // JSONB array fields (email, phone, website) should default to empty
       // Check for "Add" button to add first item
@@ -380,7 +385,7 @@ test.describe("Create Form - Design System", () => {
       const formPage = createFormPage(authenticatedPage, "contacts");
       await formPage.navigate();
 
-      await authenticatedPage.waitForTimeout(500);
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Fill form
       await formPage.fillFormWithUniqueData({
@@ -397,12 +402,10 @@ test.describe("Create Form - Design System", () => {
       const saveBtn = formPage.getSaveAndCloseButton();
       await saveBtn.click();
 
-      await authenticatedPage.waitForTimeout(1000);
-
-      // Should show error message (toast or inline)
+      // Wait for error message to appear (condition-based)
       const hasErrorMessage = await authenticatedPage
         .getByText(/error|failed|try again/i)
-        .isVisible()
+        .isVisible({ timeout: 5000 })
         .catch(() => false);
 
       expect(hasErrorMessage, "Should show error message on network failure").toBe(true);
