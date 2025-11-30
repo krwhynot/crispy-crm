@@ -1,0 +1,77 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e31]:
+      - generic [ref=e32]:
+        - tablist [ref=e33]:
+          - tab "Main tab" [ref=e34] [cursor=pointer]: Main
+          - tab "More tab" [selected] [ref=e35] [cursor=pointer]: More
+        - tabpanel "More tab" [ref=e36]:
+          - generic [ref=e38]:
+            - heading "Additional Information" [level=3] [ref=e40]
+            - generic [ref=e42]:
+              - group [ref=e43]:
+                - generic [ref=e45]: Website
+                - textbox "Website" [ref=e46]
+                - generic [ref=e47]: "Format: https://example.com"
+              - group [ref=e48]:
+                - generic [ref=e50]: LinkedIn URL
+                - textbox "LinkedIn URL" [ref=e51]: https://www.linkedin.com/company/test-org
+                - generic [ref=e52]: "Format: https://linkedin.com/company/name"
+              - group [ref=e54]:
+                - generic [ref=e56]: Description
+                - textbox "Description" [ref=e57]
+              - group [ref=e59]:
+                - generic [ref=e61]: Parent Organization
+                - combobox [ref=e62] [cursor=pointer]:
+                  - generic [ref=e63]: Search
+                  - img
+                - generic [ref=e64]: Select a parent organization if this is a branch location
+      - toolbar [ref=e65]:
+        - generic [ref=e66]:
+          - button "Cancel" [ref=e67] [cursor=pointer]:
+            - img
+            - text: Cancel
+          - button "Create Organization" [ref=e68] [cursor=pointer]:
+            - img
+            - text: Create Organization
+  - contentinfo [ref=e69]:
+    - generic [ref=e71]:
+      - paragraph [ref=e72]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e73] [cursor=pointer]:
+        - img [ref=e74]
+        - generic [ref=e76]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```

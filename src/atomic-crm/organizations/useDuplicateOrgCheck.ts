@@ -70,10 +70,12 @@ export function useDuplicateOrgCheck(): UseDuplicateOrgCheckResult {
       setIsChecking(true);
       try {
         // Search for organizations with the same name (case-insensitive via ilike)
+        // NOTE: Don't add deleted_at filter here - the composed data provider
+        // routes list operations to organizations_summary view which handles
+        // soft-delete filtering internally and doesn't expose deleted_at column
         const { data } = await dataProvider.getList<Company>("organizations", {
           filter: {
             "name@ilike": name.trim(),
-            "deleted_at@is": null,
           },
           pagination: { page: 1, perPage: 10 },
           sort: { field: "id", order: "ASC" },
