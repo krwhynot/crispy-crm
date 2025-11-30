@@ -210,7 +210,7 @@ const DataTableRow = ({ children, className }: { children: ReactNode; className?
       className={cn(rowClick !== false && "cursor-pointer", className)}
     >
       {hasBulkActions ? (
-        <TableCell className="flex w-8" onClick={handleToggle}>
+        <TableCell className="flex w-11" onClick={handleToggle}>
           <Checkbox checked={selectedIds?.includes(record.id)} onClick={handleToggle} />
         </TableCell>
       ) : null}

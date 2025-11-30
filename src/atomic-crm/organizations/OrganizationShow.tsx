@@ -206,7 +206,7 @@ const ContactsIterator = () => {
 const CreateRelatedContactButton = () => {
   const organization = useRecordContext<Company>();
   return (
-    <Button variant="outline" asChild size="sm" className="h-9">
+    <Button variant="outline" asChild size="sm" className="h-11">
       <RouterLink
         to="/contacts/create"
         state={organization ? { record: { organization_id: organization.id } } : undefined}
@@ -222,7 +222,7 @@ const CreateRelatedContactButton = () => {
 const CreateRelatedOpportunityButton = () => {
   const organization = useRecordContext<Company>();
   return (
-    <Button variant="outline" asChild size="sm" className="h-9">
+    <Button variant="outline" asChild size="sm" className="h-11">
       <RouterLink
         to="/opportunities/create"
         state={organization ? { record: { customer_organization_id: organization.id } } : undefined}
