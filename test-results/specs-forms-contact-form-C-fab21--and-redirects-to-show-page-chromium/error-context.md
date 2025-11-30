@@ -36,7 +36,7 @@
     - generic [ref=e29]:
       - generic [ref=e30]:
         - tablist [ref=e31]:
-          - tab "Main tab" [active] [selected] [ref=e32] [cursor=pointer]: Main
+          - tab "Main tab" [selected] [ref=e32] [cursor=pointer]: Main
           - tab "More tab" [ref=e33] [cursor=pointer]: More
         - tabpanel "Main tab" [ref=e34]:
           - generic [ref=e35]:
@@ -45,11 +45,11 @@
               - generic [ref=e40]:
                 - group [ref=e41]:
                   - generic [ref=e43]: First Name *
-                  - textbox "First Name *" [ref=e44]: MinimalFirst-1764495193654
+                  - textbox "First Name *" [ref=e44]: MinimalFirst-1764495604351
                   - generic [ref=e45]: Required field
                 - group [ref=e46]:
                   - generic [ref=e48]: Last Name *
-                  - textbox "Last Name *" [ref=e49]: MinimalLast-1764495193654
+                  - textbox "Last Name *" [ref=e49]: MinimalLast-1764495604351
                   - generic [ref=e50]: Required field
             - generic [ref=e51]:
               - heading "Organization" [level=3] [ref=e53]
@@ -57,52 +57,63 @@
                 - group [ref=e56]:
                   - generic [ref=e58]: Organization
                   - combobox [ref=e59] [cursor=pointer]:
-                    - generic [ref=e60]: Search
+                    - text: URL Prefix Test Org-1764494492148
                     - img
-                - button "New Organization" [ref=e61] [cursor=pointer]:
+                - button "New Organization" [ref=e60] [cursor=pointer]:
                   - img
                   - text: New Organization
-            - generic [ref=e62]:
-              - heading "Account Manager" [level=3] [ref=e64]
-              - group [ref=e66]:
-                - generic [ref=e68]: Account manager *
-                - generic [ref=e69]:
-                  - combobox [ref=e70] [cursor=pointer]:
+            - generic [ref=e61]:
+              - heading "Account Manager" [level=3] [ref=e63]
+              - group [ref=e65]:
+                - generic [ref=e67]: Account manager *
+                - generic [ref=e68]:
+                  - combobox [ref=e69] [cursor=pointer]:
                     - generic: Admin User
-                    - button [ref=e71]:
+                    - button [ref=e70]:
                       - img
                     - img
-                  - combobox [ref=e72]
-                - generic [ref=e73]: Required field
-            - generic [ref=e74]:
-              - heading "Contact Information" [level=3] [ref=e76]
-              - generic [ref=e78]:
-                - group [ref=e79]:
-                  - generic [ref=e81]: Email addresses
-                  - generic [ref=e82]:
-                    - list
-                    - button [ref=e84] [cursor=pointer]:
+                  - combobox [ref=e71]
+                - generic [ref=e72]: Required field
+            - generic [ref=e73]:
+              - heading "Contact Information" [level=3] [ref=e75]
+              - generic [ref=e77]:
+                - group [ref=e78]:
+                  - generic [ref=e80]: Email addresses
+                  - generic [ref=e81]:
+                    - list [ref=e82]:
+                      - listitem [ref=e83]:
+                        - generic [ref=e84]:
+                          - group [ref=e85]:
+                            - textbox "Email (valid email required)" [ref=e86]: minimal-1764495604351@example.com
+                          - group [ref=e87]:
+                            - generic [ref=e88]:
+                              - combobox [ref=e89] [cursor=pointer]:
+                                - img
+                              - combobox [ref=e90]
+                        - button [ref=e92] [cursor=pointer]:
+                          - img
+                    - button [ref=e94] [cursor=pointer]:
                       - img
-                - group [ref=e85]:
-                  - generic [ref=e87]: Phone numbers
-                  - generic [ref=e88]:
+                - group [ref=e95]:
+                  - generic [ref=e97]: Phone numbers
+                  - generic [ref=e98]:
                     - list
-                    - button [ref=e90] [cursor=pointer]:
+                    - button [ref=e100] [cursor=pointer]:
                       - img
-      - generic [ref=e91]:
-        - button "Cancel" [ref=e92] [cursor=pointer]
-        - generic [ref=e93]:
-          - button "Save & Close" [ref=e94] [cursor=pointer]:
+      - generic [ref=e101]:
+        - button "Cancel" [ref=e102] [cursor=pointer]
+        - generic [ref=e103]:
+          - button "Save & Close" [ref=e104] [cursor=pointer]:
             - img
             - text: Save & Close
-          - button "Save & Add Another" [ref=e95] [cursor=pointer]:
+          - button "Save & Add Another" [ref=e105] [cursor=pointer]:
             - img
             - text: Save & Add Another
-  - contentinfo [ref=e96]:
-    - generic [ref=e98]:
-      - paragraph [ref=e99]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e100] [cursor=pointer]:
-        - img [ref=e101]
-        - generic [ref=e103]: Keyboard shortcuts
+  - contentinfo [ref=e106]:
+    - generic [ref=e108]:
+      - paragraph [ref=e109]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e110] [cursor=pointer]:
+        - img [ref=e111]
+        - generic [ref=e113]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```

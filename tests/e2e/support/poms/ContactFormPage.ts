@@ -142,35 +142,49 @@ export class ContactFormPage extends BasePage {
   }
 
   /**
-   * Select an organization (autocomplete combobox field)
-   * The organization field uses a combobox pattern without standard label
+   * Select an organization (Radix popover combobox pattern)
+   * Click trigger button -> dialog opens with search combobox -> type and select option
    */
   async selectOrganization(searchText: string): Promise<void> {
     await this.clickMainTab();
 
-    // Find the Organization section group containing the combobox
-    const orgSection = this.page.locator('[role="group"]').filter({ hasText: /^Organization$/ });
-    const combobox = orgSection.getByRole("combobox").first();
+    // Find the Organization section trigger button (shows "Search")
+    const orgHeading = this.page.getByRole("heading", { name: /^Organization$/i, level: 3 });
+    const orgSection = orgHeading.locator("..").locator("..");
+    const triggerButton = orgSection.getByRole("combobox").first();
 
-    // Wait for combobox to be visible and click to open
-    await expect(combobox).toBeVisible({ timeout: 5000 });
-    await combobox.click();
+    // Click to open the popover dialog
+    await expect(triggerButton).toBeVisible({ timeout: 5000 });
+    await triggerButton.click();
+
+    // Wait for dialog to open and find the search input inside it
+    const dialog = this.page.getByRole("dialog");
+    await expect(dialog).toBeVisible({ timeout: 5000 });
+
+    // The search input is a combobox inside the dialog
+    const searchInput = dialog.getByRole("combobox");
+    await expect(searchInput).toBeVisible({ timeout: 3000 });
 
     // Type the search text
-    await combobox.fill(searchText);
+    await searchInput.fill(searchText);
 
-    // Wait for and select the option from dropdown
-    await this.page.waitForTimeout(500); // Allow time for options to load
-    const option = this.page.getByRole("option", { name: new RegExp(searchText, "i") }).first();
+    // Wait for options to filter
+    await this.page.waitForTimeout(500);
+
+    // Select the first matching option
+    const option = dialog.getByRole("option", { name: new RegExp(searchText, "i") }).first();
     if (await option.isVisible({ timeout: 5000 }).catch(() => false)) {
       await option.click();
     } else {
-      // Fallback: try listbox item pattern
-      const listItem = this.page.locator('[role="listbox"] [role="option"]').first();
-      if (await listItem.isVisible({ timeout: 2000 }).catch(() => false)) {
-        await listItem.click();
+      // If no match, just click the first option
+      const firstOption = dialog.getByRole("option").first();
+      if (await firstOption.isVisible({ timeout: 2000 }).catch(() => false)) {
+        await firstOption.click();
       }
     }
+
+    // Wait for dialog to close
+    await expect(dialog).not.toBeVisible({ timeout: 3000 }).catch(() => {});
   }
 
   // ============================================================================
@@ -179,26 +193,49 @@ export class ContactFormPage extends BasePage {
 
   /**
    * Add an email to the contact
-   * Handles the JSONB array pattern (click Add, then fill)
+   * Handles the JSONB array pattern (click Add button in Email section, then fill popup/row)
+   * IMPORTANT: Type must ALWAYS be selected - the form doesn't have a default
    */
   async addEmail(email: string, type: "Work" | "Home" | "Other" = "Work"): Promise<void> {
-    await this.clickContactInfoTab();
+    await this.clickMainTab();
 
-    // Find and click the Add button for email section
-    const addButton = this.page.getByRole("button", { name: /add/i }).first();
+    // Find the Email addresses section - it's a group with label "Email addresses"
+    const emailSection = this.page.locator('[role="group"]').filter({ hasText: /email addresses/i }).first();
+
+    // Click the Add button inside the email section
+    const addButton = emailSection.getByRole("button").first();
     await expect(addButton).toBeVisible({ timeout: 5000 });
     await addButton.click();
 
-    // Wait for the email input to appear
-    const emailInput = this.page.getByLabel(/email/i).first();
+    // Wait for email input to appear
+    await this.page.waitForTimeout(500); // Let the new row render
+
+    // Find the email input - try various strategies
+    let emailInput = this.page.getByPlaceholder(/email/i).first();
+    if (!await emailInput.isVisible({ timeout: 2000 }).catch(() => false)) {
+      emailInput = this.page.locator('input[type="email"]').first();
+    }
+    if (!await emailInput.isVisible({ timeout: 2000 }).catch(() => false)) {
+      // Try finding textbox that appeared in the email section
+      emailInput = emailSection.getByRole("textbox").first();
+    }
+
     await expect(emailInput).toBeVisible({ timeout: 5000 });
     await emailInput.fill(email);
 
-    // If type is not Work, select it from dropdown
-    if (type !== "Work") {
-      const typeDropdown = this.page.getByLabel(/type/i).first();
-      await typeDropdown.click();
+    // ALWAYS select the type - the form doesn't default to anything
+    // Find the type selector - it's typically a combobox or select
+    const typeCombobox = emailSection.getByRole("combobox").first();
+    if (await typeCombobox.isVisible({ timeout: 2000 }).catch(() => false)) {
+      await typeCombobox.click();
       await this.page.getByRole("option", { name: type }).click();
+    } else {
+      // Try finding by label
+      const typeDropdown = this.page.getByLabel(/type/i).first();
+      if (await typeDropdown.isVisible({ timeout: 1000 }).catch(() => false)) {
+        await typeDropdown.click();
+        await this.page.getByRole("option", { name: type }).click();
+      }
     }
   }
 
@@ -244,10 +281,35 @@ export class ContactFormPage extends BasePage {
 
   /**
    * Select account manager (sales_id)
+   * The Account Manager section is on Main tab with a combobox pattern
    */
   async selectAccountManager(searchText: string): Promise<void> {
-    await this.clickAccountTab();
-    await fillAutocompleteField(this.page, /account manager|sales/i, searchText);
+    await this.clickMainTab();
+
+    // Find the Account Manager section group containing the combobox
+    const acctSection = this.page.locator('[role="group"]').filter({ hasText: /account manager/i }).first();
+    const combobox = acctSection.getByRole("combobox").first();
+
+    // Check if already has a value (useSmartDefaults may have pre-filled)
+    const currentValue = await combobox.textContent();
+    if (currentValue && currentValue.toLowerCase().includes(searchText.toLowerCase())) {
+      // Already selected, no action needed
+      return;
+    }
+
+    // Click to open and search
+    await expect(combobox).toBeVisible({ timeout: 5000 });
+    await combobox.click();
+
+    // Type the search text
+    await combobox.fill(searchText);
+
+    // Wait for and select the option from dropdown
+    await this.page.waitForTimeout(500);
+    const option = this.page.getByRole("option", { name: new RegExp(searchText, "i") }).first();
+    if (await option.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await option.click();
+    }
   }
 
   /**
@@ -366,6 +428,7 @@ export class ContactFormPage extends BasePage {
 
   /**
    * Fill all required fields for a valid contact
+   * All required fields are on the Main tab
    */
   async fillRequiredFields(options?: {
     firstName?: string;
@@ -383,18 +446,20 @@ export class ContactFormPage extends BasePage {
       accountManager: options?.accountManager || "Admin", // Will search for existing
     };
 
-    // Identity tab
-    await this.clickIdentityTab();
+    // All required fields are on Main tab
+    await this.clickMainTab();
+
+    // Fill identity fields
     await this.fillFirstName(defaults.firstName);
     await this.fillLastName(defaults.lastName);
 
-    // Position tab - organization
+    // Select organization
     await this.selectOrganization(defaults.organization);
 
-    // Contact Info tab - email
+    // Add email
     await this.addEmail(defaults.email);
 
-    // Account tab - account manager
+    // Select account manager (may already be pre-filled by useSmartDefaults)
     await this.selectAccountManager(defaults.accountManager);
   }
 
