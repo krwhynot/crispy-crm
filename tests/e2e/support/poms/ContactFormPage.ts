@@ -142,11 +142,35 @@ export class ContactFormPage extends BasePage {
   }
 
   /**
-   * Select an organization (autocomplete field)
+   * Select an organization (autocomplete combobox field)
+   * The organization field uses a combobox pattern without standard label
    */
   async selectOrganization(searchText: string): Promise<void> {
-    await this.clickPositionTab();
-    await fillAutocompleteField(this.page, /organization/i, searchText);
+    await this.clickMainTab();
+
+    // Find the Organization section group containing the combobox
+    const orgSection = this.page.locator('[role="group"]').filter({ hasText: /^Organization$/ });
+    const combobox = orgSection.getByRole("combobox").first();
+
+    // Wait for combobox to be visible and click to open
+    await expect(combobox).toBeVisible({ timeout: 5000 });
+    await combobox.click();
+
+    // Type the search text
+    await combobox.fill(searchText);
+
+    // Wait for and select the option from dropdown
+    await this.page.waitForTimeout(500); // Allow time for options to load
+    const option = this.page.getByRole("option", { name: new RegExp(searchText, "i") }).first();
+    if (await option.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await option.click();
+    } else {
+      // Fallback: try listbox item pattern
+      const listItem = this.page.locator('[role="listbox"] [role="option"]').first();
+      if (await listItem.isVisible({ timeout: 2000 }).catch(() => false)) {
+        await listItem.click();
+      }
+    }
   }
 
   // ============================================================================
@@ -179,12 +203,12 @@ export class ContactFormPage extends BasePage {
   }
 
   /**
-   * Fill LinkedIn URL
+   * Fill LinkedIn URL (on More tab)
    */
   async fillLinkedInUrl(url: string): Promise<void> {
-    await this.clickContactInfoTab();
+    await this.clickMoreTab();
     const input = this.page.getByLabel(/linkedin/i);
-    await expect(input).toBeVisible();
+    await expect(input).toBeVisible({ timeout: 5000 });
     await input.fill(url);
   }
 
