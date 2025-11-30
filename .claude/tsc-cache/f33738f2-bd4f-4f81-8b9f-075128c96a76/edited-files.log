@@ -8,3 +8,6 @@
 1764491059:/home/krwhynot/projects/crispy-crm/src/components/admin/SegmentComboboxInput.tsx:src
 1764491176:/home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/organizations.ts:src
 1764491657:/home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/organizations.ts:src
+1764491713:/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/wrappers/withValidation.ts:src
+1764491815:/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:src
+1764491879:/home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/segments.ts:src

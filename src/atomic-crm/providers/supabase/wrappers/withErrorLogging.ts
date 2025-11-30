@@ -121,11 +121,19 @@ function logError(
       "[Validation Errors Detail]",
       JSON.stringify(extendedError.body.errors, null, 2)
     );
+    // DEBUG: Also log the data that caused the error
+    if (params && "data" in params) {
+      console.error("[Validation Data Submitted]", JSON.stringify((params as any).data, null, 2));
+    }
   } else if (extendedError?.errors) {
     console.error(
       "[Validation Errors Detail]",
       JSON.stringify(extendedError.errors, null, 2)
     );
+    // DEBUG: Also log the data that caused the error
+    if (params && "data" in params) {
+      console.error("[Validation Data Submitted]", JSON.stringify((params as any).data, null, 2));
+    }
   }
 
   // === Sentry Integration (P0 - Observability) ===

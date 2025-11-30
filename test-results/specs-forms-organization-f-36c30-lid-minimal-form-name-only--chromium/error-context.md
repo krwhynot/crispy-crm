@@ -47,7 +47,7 @@
                   - generic [ref=e45]: Name *
                   - textbox "Name *" [ref=e46]:
                     - /placeholder: Organization name
-                    - text: Minimal Org-1764491602734
+                    - text: Minimal Org-1764492201640
                   - generic [ref=e47]: Required field
                 - group [ref=e48]:
                   - generic [ref=e50]: Organization Type *
@@ -72,7 +72,6 @@
                   - generic [ref=e65]: Segment
                   - generic [ref=e66]:
                     - combobox [ref=e67] [cursor=pointer]:
-                      - generic: Unknown
                       - button [ref=e68]:
                         - img
                       - img

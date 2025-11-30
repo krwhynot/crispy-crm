@@ -38,16 +38,18 @@ export const PLAYBOOK_CATEGORIES = [
  * Playbook category UUIDs matching the database
  * Use these for programmatic references
  */
+// RFC 4122 compliant UUIDs (v4 format: xxxxxxxx-xxxx-4xxx-[89ab]xxx-xxxxxxxxxxxx)
+// Using deterministic values for consistency between code and database
 export const PLAYBOOK_CATEGORY_IDS = {
-  "Major Broadline": "22222222-0000-0000-0000-000000000001",
-  "Specialty/Regional": "22222222-0000-0000-0000-000000000002",
-  "Management Company": "22222222-0000-0000-0000-000000000003",
-  "GPO": "22222222-0000-0000-0000-000000000004",
-  "University": "22222222-0000-0000-0000-000000000005",
-  "Restaurant Group": "22222222-0000-0000-0000-000000000006",
-  "Chain Restaurant": "22222222-0000-0000-0000-000000000007",
-  "Hotel & Aviation": "22222222-0000-0000-0000-000000000008",
-  "Unknown": "22222222-0000-0000-0000-000000000009",
+  "Major Broadline": "22222222-2222-4222-8222-000000000001",
+  "Specialty/Regional": "22222222-2222-4222-8222-000000000002",
+  "Management Company": "22222222-2222-4222-8222-000000000003",
+  "GPO": "22222222-2222-4222-8222-000000000004",
+  "University": "22222222-2222-4222-8222-000000000005",
+  "Restaurant Group": "22222222-2222-4222-8222-000000000006",
+  "Chain Restaurant": "22222222-2222-4222-8222-000000000007",
+  "Hotel & Aviation": "22222222-2222-4222-8222-000000000008",
+  "Unknown": "22222222-2222-4222-8222-000000000009",
 } as const;
 
 /**
