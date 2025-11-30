@@ -313,35 +313,31 @@ export class OrganizationFormPage extends BasePage {
   async createOrganization(data: {
     name: string;
     type?: "customer" | "prospect" | "principal" | "distributor" | "unknown";
-    priority?: "A" | "B" | "C" | "D";
     website?: string;
-    address?: string;
+    street?: string;
     city?: string;
     state?: string;
-    postalCode?: string;
+    zip?: string;
   }): Promise<void> {
     await this.fillName(data.name);
 
     if (data.type) {
       await this.selectOrganizationType(data.type);
     }
-    if (data.priority) {
-      await this.selectPriority(data.priority);
-    }
     if (data.website) {
       await this.fillWebsite(data.website);
     }
-    if (data.address) {
-      await this.fillAddress(data.address);
+    if (data.street) {
+      await this.fillStreet(data.street);
     }
     if (data.city) {
       await this.fillCity(data.city);
     }
     if (data.state) {
-      await this.fillState(data.state);
+      await this.selectState(data.state);
     }
-    if (data.postalCode) {
-      await this.fillPostalCode(data.postalCode);
+    if (data.zip) {
+      await this.fillZip(data.zip);
     }
 
     await this.clickCreateOrganization();
