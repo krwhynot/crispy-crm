@@ -5,7 +5,7 @@
  * - Base Supabase operations
  * - withLifecycleCallbacks for resource-specific logic
  * - withValidation for Zod schema validation
- * - withErrorLogging for structured error handling
+ * - withErrorLogging for structured error handling + Sentry
  *
  * Usage:
  * ```typescript
@@ -17,8 +17,23 @@
  * Engineering Constitution: Composition over inheritance
  */
 
+// Core CRM resources
 export { createContactsHandler } from "./contactsHandler";
 export { createOrganizationsHandler } from "./organizationsHandler";
 export { createOpportunitiesHandler } from "./opportunitiesHandler";
 export { createActivitiesHandler } from "./activitiesHandler";
 export { createProductsHandler } from "./productsHandler";
+
+// Task management
+export { createTasksHandler } from "./tasksHandler";
+
+// Notes (3 types)
+export {
+  createContactNotesHandler,
+  createOpportunityNotesHandler,
+  createOrganizationNotesHandler,
+} from "./notesHandler";
+
+// Supporting resources
+export { createTagsHandler } from "./tagsHandler";
+export { createSalesHandler } from "./salesHandler";
