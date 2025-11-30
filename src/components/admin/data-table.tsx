@@ -119,7 +119,7 @@ const DataTableHead = ({ children }: { children: ReactNode }) => {
     <TableHeader>
       <TableRow>
         {hasBulkActions ? (
-          <TableHead className="w-8">
+          <TableHead className="w-11">
             <Checkbox
               onCheckedChange={handleToggleSelectAll}
               checked={

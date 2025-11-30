@@ -24,7 +24,7 @@ export const FilterCategory = ({
     <div className="flex flex-col">
       <button
         onClick={() => setIsExpanded(!isExpanded)}
-        className="flex flex-row items-center justify-between w-full text-left py-2 hover:bg-muted rounded-md transition-colors group"
+        className="flex flex-row items-center justify-between w-full text-left min-h-12 px-2 hover:bg-muted rounded-md transition-colors group"
         aria-expanded={isExpanded}
       >
         <div className="flex flex-row items-center gap-2">

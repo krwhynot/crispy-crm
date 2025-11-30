@@ -18,16 +18,16 @@ export const FilterChip: React.FC<FilterChipProps> = ({ label, onRemove }) => {
   };
 
   return (
-    <div className="inline-flex items-center gap-1 px-2 py-1 text-xs rounded-md bg-muted hover:bg-muted/90 transition-colors">
+    <div className="inline-flex items-center gap-1 pl-3 text-xs rounded-full bg-muted hover:bg-muted/90 transition-colors">
       <span className="truncate max-w-[200px]">{label}</span>
       <Button
         variant="ghost"
         size="icon"
-        className="h-3 w-3 p-0 hover:bg-transparent"
+        className="rounded-full hover:bg-accent/50"
         onClick={handleRemove}
         aria-label={`Remove ${label} filter`}
       >
-        <X className="h-2.5 w-2.5" />
+        <X className="h-4 w-4" />
       </Button>
     </div>
   );

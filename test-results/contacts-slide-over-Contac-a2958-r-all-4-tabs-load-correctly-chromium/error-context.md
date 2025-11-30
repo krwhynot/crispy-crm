@@ -1,0 +1,210 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e27]:
+      - heading "Principal Dashboard" [level=1] [ref=e30]
+      - main [ref=e31]:
+        - generic [ref=e32]:
+          - region "Key Performance Indicators" [ref=e33]:
+            - generic "Loading Open Opportunities" [ref=e34]
+            - generic "Loading Overdue Tasks" [ref=e41]
+            - generic "Loading Activities This Week" [ref=e48]
+            - generic "Loading Stale Deals" [ref=e55]
+          - generic [ref=e62]:
+            - generic [ref=e64]:
+              - generic [ref=e65]:
+                - heading "Pipeline by Principal" [level=2] [ref=e66]
+                - paragraph [ref=e67]: Track opportunity momentum across your customer accounts
+              - generic [ref=e68]:
+                - generic [ref=e69]:
+                  - img [ref=e70]
+                  - textbox "Search principals..." [ref=e73]
+                - generic [ref=e74]:
+                  - switch "My Principals Only" [ref=e75] [cursor=pointer]
+                  - generic [ref=e76]: My Principals Only
+                - button "Filters" [ref=e77] [cursor=pointer]:
+                  - img
+                  - text: Filters
+            - table [ref=e80]:
+              - rowgroup [ref=e81]:
+                - row "Principal Pipeline This Week Last Week Momentum Next Action" [ref=e82]:
+                  - cell "Principal" [ref=e83] [cursor=pointer]:
+                    - generic [ref=e84]:
+                      - text: Principal
+                      - img [ref=e85]
+                  - cell "Pipeline" [ref=e87] [cursor=pointer]:
+                    - generic [ref=e88]:
+                      - text: Pipeline
+                      - img [ref=e89]
+                  - cell "This Week" [ref=e92] [cursor=pointer]:
+                    - generic [ref=e93]:
+                      - generic [ref=e94]: This Week
+                      - img [ref=e95]
+                  - cell "Last Week" [ref=e98] [cursor=pointer]:
+                    - generic [ref=e99]:
+                      - generic [ref=e100]: Last Week
+                      - img [ref=e101]
+                  - cell "Momentum" [ref=e104] [cursor=pointer]:
+                    - generic [ref=e105]:
+                      - generic [ref=e106]: Momentum
+                      - img [ref=e107]
+                  - cell "Next Action" [ref=e110]
+              - rowgroup [ref=e111]:
+                - 'button "View opportunities for Anchor Food Professionals. Pipeline momentum: steady" [ref=e112] [cursor=pointer]':
+                  - cell "Anchor Food Professionals" [ref=e113]: Anchor Food Professionals
+                  - cell "4" [ref=e115]:
+                    - generic [ref=e116]: "4"
+                  - cell "2" [ref=e117]:
+                    - generic [ref=e118]: "2"
+                  - cell "2" [ref=e119]:
+                    - generic [ref=e120]: "2"
+                  - cell "steady" [ref=e121]:
+                    - generic [ref=e122]:
+                      - img [ref=e123]
+                      - generic [ref=e124]: steady
+                  - cell "No action scheduled" [ref=e125]
+                - 'button "View opportunities for Custom Culinary. Pipeline momentum: decreasing" [ref=e126] [cursor=pointer]':
+                  - cell "Custom Culinary" [ref=e127]: Custom Culinary
+                  - cell "3" [ref=e129]:
+                    - generic [ref=e130]: "3"
+                  - cell "1" [ref=e131]:
+                    - generic [ref=e132]: "1"
+                  - cell "3" [ref=e133]:
+                    - generic [ref=e134]: "3"
+                  - cell "decreasing" [ref=e135]:
+                    - generic [ref=e136]:
+                      - img [ref=e137]
+                      - generic [ref=e140]: decreasing
+                  - cell "No action scheduled" [ref=e141]
+                - 'button "View opportunities for Frico. Pipeline momentum: steady" [ref=e142] [cursor=pointer]':
+                  - cell "Frico" [ref=e143]: Frico
+                  - cell "5" [ref=e145]:
+                    - generic [ref=e146]: "5"
+                  - cell "1" [ref=e147]:
+                    - generic [ref=e148]: "1"
+                  - cell "1" [ref=e149]:
+                    - generic [ref=e150]: "1"
+                  - cell "steady" [ref=e151]:
+                    - generic [ref=e152]:
+                      - img [ref=e153]
+                      - generic [ref=e154]: steady
+                  - cell "No action scheduled" [ref=e155]
+                - 'button "View opportunities for Lakeview Farms. Pipeline momentum: increasing" [ref=e156] [cursor=pointer]':
+                  - cell "Lakeview Farms" [ref=e157]: Lakeview Farms
+                  - cell "4" [ref=e159]:
+                    - generic [ref=e160]: "4"
+                  - cell "1" [ref=e161]:
+                    - generic [ref=e162]: "1"
+                  - cell "-" [ref=e163]
+                  - cell "increasing" [ref=e164]:
+                    - generic [ref=e165]:
+                      - img [ref=e166]
+                      - generic [ref=e169]: increasing
+                  - cell "No action scheduled" [ref=e170]
+                - 'button "View opportunities for Litehouse. Pipeline momentum: increasing" [ref=e171] [cursor=pointer]':
+                  - cell "Litehouse" [ref=e172]: Litehouse
+                  - cell "4" [ref=e174]:
+                    - generic [ref=e175]: "4"
+                  - cell "2" [ref=e176]:
+                    - generic [ref=e177]: "2"
+                  - cell "1" [ref=e178]:
+                    - generic [ref=e179]: "1"
+                  - cell "increasing" [ref=e180]:
+                    - generic [ref=e181]:
+                      - img [ref=e182]
+                      - generic [ref=e185]: increasing
+                  - cell "No action scheduled" [ref=e186]
+                - 'button "View opportunities for McCRUM. Pipeline momentum: decreasing" [ref=e187] [cursor=pointer]':
+                  - cell "McCRUM" [ref=e188]: McCRUM
+                  - cell "6" [ref=e190]:
+                    - generic [ref=e191]: "6"
+                  - cell "2" [ref=e192]:
+                    - generic [ref=e193]: "2"
+                  - cell "4" [ref=e194]:
+                    - generic [ref=e195]: "4"
+                  - cell "decreasing" [ref=e196]:
+                    - generic [ref=e197]:
+                      - img [ref=e198]
+                      - generic [ref=e201]: decreasing
+                  - cell "No action scheduled" [ref=e202]
+                - 'button "View opportunities for Rapid Rasoi. Pipeline momentum: decreasing" [ref=e203] [cursor=pointer]':
+                  - cell "Rapid Rasoi" [ref=e204]: Rapid Rasoi
+                  - cell "5" [ref=e206]:
+                    - generic [ref=e207]: "5"
+                  - cell "-" [ref=e208]
+                  - cell "2" [ref=e209]:
+                    - generic [ref=e210]: "2"
+                  - cell "decreasing" [ref=e211]:
+                    - generic [ref=e212]:
+                      - img [ref=e213]
+                      - generic [ref=e216]: decreasing
+                  - cell "No action scheduled" [ref=e217]
+                - 'button "View opportunities for SWAP. Pipeline momentum: decreasing" [ref=e218] [cursor=pointer]':
+                  - cell "SWAP" [ref=e219]: SWAP
+                  - cell "6" [ref=e221]:
+                    - generic [ref=e222]: "6"
+                  - cell "1" [ref=e223]:
+                    - generic [ref=e224]: "1"
+                  - cell "2" [ref=e225]:
+                    - generic [ref=e226]: "2"
+                  - cell "decreasing" [ref=e227]:
+                    - generic [ref=e228]:
+                      - img [ref=e229]
+                      - generic [ref=e232]: decreasing
+                  - cell "No action scheduled" [ref=e233]
+                - 'button "View opportunities for Tattooed Chef. Pipeline momentum: steady" [ref=e234] [cursor=pointer]':
+                  - cell "Tattooed Chef" [ref=e235]: Tattooed Chef
+                  - cell "3" [ref=e237]:
+                    - generic [ref=e238]: "3"
+                  - cell "1" [ref=e239]:
+                    - generic [ref=e240]: "1"
+                  - cell "1" [ref=e241]:
+                    - generic [ref=e242]: "1"
+                  - cell "steady" [ref=e243]:
+                    - generic [ref=e244]:
+                      - img [ref=e245]
+                      - generic [ref=e246]: steady
+                  - cell "No action scheduled" [ref=e247]
+          - generic [ref=e269]:
+            - generic [ref=e271]: My Performance
+            - generic [ref=e272]:
+              - region "Personal performance metrics" [ref=e273]
+              - paragraph [ref=e294]: Compared to last week
+        - button "Log Activity" [ref=e326] [cursor=pointer]:
+          - img
+  - contentinfo [ref=e327]:
+    - paragraph [ref=e330]: © 2025 MFB Master Food Brokers. All rights reserved.
+  - region "Notifications alt+T"
+```
