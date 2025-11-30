@@ -15,6 +15,7 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { DateField } from "@/components/admin/date-field";
 import { FunctionField } from "react-admin";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
+import { ContactListSkeleton } from "@/components/ui/list-skeleton";
 import type { Organization, Contact, Sale, Tag } from "../types";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ContactEmpty } from "./ContactEmpty";
@@ -70,7 +71,16 @@ const ContactListLayout = ({
 
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
-  if (!identity || isPending) return null;
+  // Show skeleton during initial load (identity check happens in parent)
+  if (isPending) {
+    return (
+      <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
+        <ContactListSkeleton />
+      </StandardListLayout>
+    );
+  }
+
+  if (!identity) return null;
 
   if (!data?.length && !hasFilters) return <ContactEmpty />;
 

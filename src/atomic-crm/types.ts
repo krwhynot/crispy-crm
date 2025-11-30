@@ -109,6 +109,7 @@ export interface Contact extends Pick<RaRecord, "id"> {
   // Calculated fields from contacts_summary view
   nb_notes?: number;
   nb_tasks?: number;
+  nb_activities?: number;
   company_name?: string;
 }
 
