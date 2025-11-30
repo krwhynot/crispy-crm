@@ -1,6 +1,6 @@
 import { RecordContextProvider } from "ra-core";
 import { ReferenceManyField } from "@/components/admin/reference-many-field";
-import { NoteCreate, NotesIterator } from "../notes";
+import { NotesIterator } from "../notes";
 import type { Contact } from "../types";
 
 interface ContactNotesTabProps {

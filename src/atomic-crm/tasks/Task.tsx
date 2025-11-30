@@ -162,7 +162,7 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
             <Button
               variant="ghost"
               size="icon"
-              className="h-5 pr-0! size-8 cursor-pointer"
+              className="shrink-0"
               aria-label="task actions"
             >
               <MoreVertical className="h-4 w-4" />
