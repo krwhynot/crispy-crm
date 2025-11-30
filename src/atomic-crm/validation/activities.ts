@@ -409,3 +409,150 @@ export const activityNoteFormSchema = z.object({
 
 // Type inference for activity note form
 export type ActivityNoteFormData = z.infer<typeof activityNoteFormSchema>;
+
+// ============================================================================
+// UI Display Transforms (added for QuickLogForm compatibility)
+// ============================================================================
+
+/**
+ * Activity types organized by logical groups for dropdown UI
+ * Uses Title Case for display, snake_case for API
+ */
+export const ACTIVITY_TYPE_GROUPS = {
+  Communication: ["Call", "Email", "Check-in", "Social"] as const,
+  Meetings: ["Meeting", "Demo", "Site Visit", "Trade Show"] as const,
+  Documentation: [
+    "Proposal",
+    "Contract Review",
+    "Follow-up",
+    "Note",
+    "Sample",
+  ] as const,
+} as const;
+
+// Flatten all activity types for schema validation
+const ALL_ACTIVITY_DISPLAY_TYPES = [
+  ...ACTIVITY_TYPE_GROUPS.Communication,
+  ...ACTIVITY_TYPE_GROUPS.Meetings,
+  ...ACTIVITY_TYPE_GROUPS.Documentation,
+] as const;
+
+/**
+ * Display activity type schema (Title Case for UI)
+ * Mirrors interactionTypeSchema but with display-friendly values
+ */
+export const activityDisplayTypeSchema = z.enum(ALL_ACTIVITY_DISPLAY_TYPES);
+
+/**
+ * Map from Title Case (UI) to snake_case (API/database)
+ * Used when submitting forms to convert display values to database values
+ */
+export const ACTIVITY_TYPE_TO_API: Record<string, string> = {
+  Call: "call",
+  Email: "email",
+  Meeting: "meeting",
+  Demo: "demo",
+  Proposal: "proposal",
+  "Follow-up": "follow_up",
+  "Trade Show": "trade_show",
+  "Site Visit": "site_visit",
+  "Contract Review": "contract_review",
+  "Check-in": "check_in",
+  Social: "social",
+  Note: "note",
+  Sample: "sample",
+} as const;
+
+/**
+ * Map from snake_case (API/database) to Title Case (UI)
+ * Used when displaying database values in the UI
+ */
+export const ACTIVITY_TYPE_FROM_API: Record<string, string> = {
+  call: "Call",
+  email: "Email",
+  meeting: "Meeting",
+  demo: "Demo",
+  proposal: "Proposal",
+  follow_up: "Follow-up",
+  trade_show: "Trade Show",
+  site_visit: "Site Visit",
+  contract_review: "Contract Review",
+  check_in: "Check-in",
+  social: "Social",
+  note: "Note",
+  sample: "Sample",
+} as const;
+
+// Legacy alias for backward compatibility during migration
+export const ACTIVITY_TYPE_MAP = ACTIVITY_TYPE_TO_API;
+
+/**
+ * Activity outcome options for forms
+ */
+export const activityOutcomeSchema = z.enum([
+  "Connected",
+  "Left Voicemail",
+  "No Answer",
+  "Completed",
+  "Rescheduled",
+]);
+
+/**
+ * QuickLogForm schema - UI-friendly version with Title Case activity types
+ *
+ * This schema is designed for the QuickLogForm component and uses:
+ * - Title Case activity types (for display)
+ * - camelCase field names (for React form state)
+ * - Date objects (for date picker components)
+ *
+ * When submitting, use ACTIVITY_TYPE_TO_API to convert activityType to API format
+ */
+export const quickLogFormSchema = z
+  .object({
+    activityType: activityDisplayTypeSchema,
+    outcome: activityOutcomeSchema,
+    date: z.date().default(() => new Date()),
+    duration: z.number().min(0).optional(),
+    contactId: z.number().optional(),
+    organizationId: z.number().optional(),
+    opportunityId: z.number().optional(),
+    notes: z.string().min(1, "Notes are required"),
+    createFollowUp: z.boolean().default(false),
+    followUpDate: z.date().optional(),
+    // Sample tracking field (PRD §4.4)
+    sampleStatus: sampleStatusSchema.optional(),
+  })
+  .refine((data) => data.contactId || data.organizationId, {
+    message: "Select a contact or organization before logging",
+    path: ["contactId"],
+  })
+  .refine((data) => !data.createFollowUp || data.followUpDate, {
+    message: "Follow-up date is required when creating a follow-up task",
+    path: ["followUpDate"],
+  })
+  .superRefine((data, ctx) => {
+    // Sample tracking validation (PRD §4.4)
+    if (data.activityType === "Sample" && !data.sampleStatus) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["sampleStatus"],
+        message: "Sample status is required for sample activities",
+      });
+    }
+    if (data.activityType !== "Sample" && data.sampleStatus) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["sampleStatus"],
+        message: "Sample status should only be set for sample activities",
+      });
+    }
+  });
+
+// Type inference for QuickLogForm
+export type QuickLogFormInput = z.input<typeof quickLogFormSchema>;
+export type QuickLogFormOutput = z.output<typeof quickLogFormSchema>;
+
+// Legacy aliases for backward compatibility during migration
+export const activityLogSchema = quickLogFormSchema;
+export type ActivityLogInput = QuickLogFormInput;
+export type ActivityLog = QuickLogFormOutput;

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useDataProvider } from "react-admin";
 import { useCurrentSale } from "./useCurrentSale";
-import type { PrincipalPipelineRow } from "../types";
+import type { PrincipalPipelineRow, PipelineSummaryRow } from "../types";
 
 // Stable empty array to avoid new reference creation on each render
 const EMPTY_PIPELINE: PrincipalPipelineRow[] = [];
@@ -63,12 +63,12 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
           console.log("[usePrincipalPipeline] Filter results:", {
             salesId,
             resultCount: summary.length,
-            firstFewSalesIds: summary.slice(0, 5).map((r: any) => r.sales_id),
+            firstFewSalesIds: summary.slice(0, 5).map((r: PipelineSummaryRow) => r.sales_id),
           });
         }
 
         setData(
-          summary.map((row: any) => ({
+          summary.map((row: PipelineSummaryRow) => ({
             id: row.principal_id,
             name: row.principal_name,
             totalPipeline: row.total_pipeline,

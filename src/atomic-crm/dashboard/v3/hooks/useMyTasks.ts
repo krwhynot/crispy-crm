@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { useDataProvider } from "react-admin";
 import { isSameDay, isBefore, startOfDay, addDays, endOfDay } from "date-fns";
 import { useCurrentSale } from "./useCurrentSale";
-import type { TaskItem, TaskStatus } from "../types";
+import type { TaskItem, TaskStatus, TaskApiResponse } from "../types";
 
 // Stable empty array to avoid new reference creation on each render
 const EMPTY_TASKS: TaskItem[] = [];
@@ -60,7 +60,7 @@ export function useMyTasks() {
         const tomorrow = addDays(today, 1);
         const nextWeek = addDays(today, 7);
 
-        const mappedTasks: TaskItem[] = tasksData.map((task: any) => {
+        const mappedTasks: TaskItem[] = tasksData.map((task: TaskApiResponse) => {
           const dueDate = new Date(task.due_date);
           const dueDateStart = startOfDay(dueDate);
 
