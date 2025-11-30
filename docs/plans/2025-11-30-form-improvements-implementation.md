@@ -1131,6 +1131,383 @@ git commit -m "chore(form): add barrel export for new form components"
 
 ---
 
+### Task 8.5: Create Centralized Form Copy Dictionary
+
+**Rationale:** The design spec defines `CONTACT_FORM_COPY`, `ORGANIZATION_FORM_COPY`, and `ACTIVITY_FORM_COPY` constants for consistent labeling and help text. Centralizing these ensures single source of truth for all form copy.
+
+**Files:**
+- Create: `src/atomic-crm/constants/formCopy.ts`
+- Test: `src/atomic-crm/constants/__tests__/formCopy.test.ts`
+
+**Step 1: Create the constants directory**
+
+```bash
+mkdir -p src/atomic-crm/constants/__tests__
+```
+
+**Step 2: Write the failing test**
+
+```typescript
+// src/atomic-crm/constants/__tests__/formCopy.test.ts
+import { describe, test, expect } from "vitest";
+import {
+  CONTACT_FORM_COPY,
+  ORGANIZATION_FORM_COPY,
+  ACTIVITY_FORM_COPY,
+} from "../formCopy";
+
+describe("formCopy constants", () => {
+  describe("CONTACT_FORM_COPY", () => {
+    test("has labels for all contact fields", () => {
+      expect(CONTACT_FORM_COPY.labels.first_name).toBe("First Name");
+      expect(CONTACT_FORM_COPY.labels.last_name).toBe("Last Name");
+      expect(CONTACT_FORM_COPY.labels.organization_id).toBe("Organization");
+      expect(CONTACT_FORM_COPY.labels.title).toBe("Title");
+      expect(CONTACT_FORM_COPY.labels.sales_id).toBe("Account Owner");
+    });
+
+    test("has help text for key fields", () => {
+      expect(CONTACT_FORM_COPY.help.organization_id).toBeDefined();
+      expect(CONTACT_FORM_COPY.help.sales_id).toBeDefined();
+    });
+
+    test("has section headings", () => {
+      expect(CONTACT_FORM_COPY.sections.identity).toBe("Identity");
+      expect(CONTACT_FORM_COPY.sections.contact).toBe("Contact Information");
+    });
+  });
+
+  describe("ORGANIZATION_FORM_COPY", () => {
+    test("has labels for all organization fields", () => {
+      expect(ORGANIZATION_FORM_COPY.labels.name).toBe("Organization Name");
+      expect(ORGANIZATION_FORM_COPY.labels.organization_type).toBeDefined();
+      expect(ORGANIZATION_FORM_COPY.labels.website).toBe("Website");
+    });
+
+    test("has placeholders for relevant fields", () => {
+      expect(ORGANIZATION_FORM_COPY.placeholders.website).toContain("https://");
+    });
+  });
+
+  describe("ACTIVITY_FORM_COPY", () => {
+    test("has labels for all activity fields", () => {
+      expect(ACTIVITY_FORM_COPY.labels.type).toBe("Interaction Type");
+      expect(ACTIVITY_FORM_COPY.labels.subject).toBe("Subject");
+      expect(ACTIVITY_FORM_COPY.labels.outcome).toBe("Outcome");
+    });
+
+    test("has section headings for collapsible sections", () => {
+      expect(ACTIVITY_FORM_COPY.sections.what).toBe("What Happened");
+      expect(ACTIVITY_FORM_COPY.sections.context).toBe("Context & Relationships");
+    });
+  });
+});
+```
+
+**Step 3: Run test to see it fail (RED)**
+
+```bash
+npm test -- src/atomic-crm/constants/__tests__/formCopy.test.ts
+```
+
+Expected: FAIL (module not found)
+
+**Step 4: Implement formCopy.ts (GREEN)**
+
+```typescript
+// src/atomic-crm/constants/formCopy.ts
+
+/**
+ * Centralized copy dictionary for Contact forms.
+ * Single source of truth for labels, help text, and placeholders.
+ * See design spec: docs/plans/2025-11-29-form-improvements-design.md
+ */
+export const CONTACT_FORM_COPY = {
+  // Field labels
+  labels: {
+    first_name: "First Name",
+    last_name: "Last Name",
+    organization_id: "Organization",
+    title: "Title",
+    sales_id: "Account Owner",
+    email: "Email",
+    phone: "Phone",
+    background: "Background",
+    status: "Status",
+    linkedin_url: "LinkedIn",
+    twitter_url: "Twitter",
+  },
+  // Help text
+  help: {
+    organization_id: "Required. The company this contact works for.",
+    sales_id: "The team member responsible for this relationship.",
+    background: "Any relevant notes about this contact.",
+  },
+  // Placeholders
+  placeholders: {
+    first_name: "Jane",
+    last_name: "Smith",
+    title: "VP of Purchasing",
+    linkedin_url: "https://linkedin.com/in/username",
+    twitter_url: "https://twitter.com/username",
+  },
+  // Section headings
+  sections: {
+    identity: "Identity",
+    contact: "Contact Information",
+    social: "Social Profiles",
+    account: "Account Details",
+  },
+} as const;
+
+/**
+ * Centralized copy dictionary for Organization forms.
+ */
+export const ORGANIZATION_FORM_COPY = {
+  labels: {
+    name: "Organization Name",
+    organization_type: "Type",
+    website: "Website",
+    address: "Street Address",
+    city: "City",
+    state: "State",
+    postal_code: "ZIP Code",
+    phone_number: "Phone",
+    description: "Description",
+    sector: "Sector",
+    employee_count: "Employees",
+    annual_revenue: "Annual Revenue",
+    parent_id: "Parent Organization",
+  },
+  help: {
+    organization_type: "Principal, Distributor, or Customer",
+    parent_id: "Optional. Links to a parent company.",
+  },
+  placeholders: {
+    name: "Acme Corp",
+    website: "https://example.com",
+    address: "123 Main St",
+    city: "New York",
+    postal_code: "10001",
+    phone_number: "(555) 123-4567",
+  },
+  sections: {
+    identity: "Organization Details",
+    address: "Address",
+    details: "Additional Details",
+    hierarchy: "Organization Hierarchy",
+  },
+} as const;
+
+/**
+ * Centralized copy dictionary for Activity forms.
+ */
+export const ACTIVITY_FORM_COPY = {
+  labels: {
+    type: "Interaction Type",
+    subject: "Subject",
+    outcome: "Outcome",
+    description: "Description",
+    date: "Date",
+    organization_id: "Organization",
+    contact_id: "Contact",
+    opportunity_id: "Opportunity",
+    sales_id: "Logged By",
+    next_steps: "Next Steps",
+    follow_up_date: "Follow-up Date",
+  },
+  help: {
+    type: "Select the type of interaction (call, email, meeting, etc.)",
+    outcome: "Brief summary of what was accomplished.",
+    next_steps: "What should happen next?",
+  },
+  placeholders: {
+    subject: "Discussed product demo",
+    outcome: "Customer interested in Q1 pilot",
+    next_steps: "Send pricing proposal by Friday",
+  },
+  sections: {
+    what: "What Happened",
+    context: "Context & Relationships",
+    followup: "Follow-up",
+  },
+} as const;
+```
+
+**Step 5: Run test to verify it passes**
+
+```bash
+npm test -- src/atomic-crm/constants/__tests__/formCopy.test.ts
+```
+
+Expected: PASS (all tests)
+
+**Step 6: Commit**
+
+```bash
+git add src/atomic-crm/constants/formCopy.ts src/atomic-crm/constants/__tests__/formCopy.test.ts
+git commit -m "feat(constants): add centralized form copy dictionaries"
+```
+
+---
+
+### Task 8.6: Extract US_STATES Constant
+
+**Rationale:** The 51-item US_STATES array should be extracted to a dedicated file to avoid duplication and ensure consistency across address fields.
+
+**Files:**
+- Create: `src/atomic-crm/constants/usStates.ts`
+- Test: `src/atomic-crm/constants/__tests__/usStates.test.ts`
+- Create: `src/atomic-crm/constants/index.ts` (barrel export)
+
+**Step 1: Write the failing test**
+
+```typescript
+// src/atomic-crm/constants/__tests__/usStates.test.ts
+import { describe, test, expect } from "vitest";
+import { US_STATES } from "../usStates";
+
+describe("US_STATES constant", () => {
+  test("contains all 50 states plus DC", () => {
+    expect(US_STATES).toHaveLength(51);
+  });
+
+  test("each state has id (abbreviation) and name", () => {
+    US_STATES.forEach((state) => {
+      expect(state.id).toMatch(/^[A-Z]{2}$/);
+      expect(state.name).toBeTruthy();
+      expect(typeof state.name).toBe("string");
+    });
+  });
+
+  test("states are sorted alphabetically by name", () => {
+    const names = US_STATES.map((s) => s.name);
+    const sorted = [...names].sort((a, b) => a.localeCompare(b));
+    expect(names).toEqual(sorted);
+  });
+
+  test("includes common states", () => {
+    const ids = US_STATES.map((s) => s.id);
+    expect(ids).toContain("NY");
+    expect(ids).toContain("CA");
+    expect(ids).toContain("TX");
+    expect(ids).toContain("FL");
+    expect(ids).toContain("DC");
+  });
+
+  test("has unique ids", () => {
+    const ids = US_STATES.map((s) => s.id);
+    expect(new Set(ids).size).toBe(ids.length);
+  });
+});
+```
+
+**Step 2: Run test to see it fail (RED)**
+
+```bash
+npm test -- src/atomic-crm/constants/__tests__/usStates.test.ts
+```
+
+Expected: FAIL (module not found)
+
+**Step 3: Implement usStates.ts (GREEN)**
+
+```typescript
+// src/atomic-crm/constants/usStates.ts
+
+/**
+ * US States and DC for address selection fields.
+ * Used by SelectInput components in organization and contact forms.
+ * Format: { id: "XX", name: "State Name" } for React Admin compatibility.
+ */
+export const US_STATES = [
+  { id: "AL", name: "Alabama" },
+  { id: "AK", name: "Alaska" },
+  { id: "AZ", name: "Arizona" },
+  { id: "AR", name: "Arkansas" },
+  { id: "CA", name: "California" },
+  { id: "CO", name: "Colorado" },
+  { id: "CT", name: "Connecticut" },
+  { id: "DC", name: "District of Columbia" },
+  { id: "DE", name: "Delaware" },
+  { id: "FL", name: "Florida" },
+  { id: "GA", name: "Georgia" },
+  { id: "HI", name: "Hawaii" },
+  { id: "ID", name: "Idaho" },
+  { id: "IL", name: "Illinois" },
+  { id: "IN", name: "Indiana" },
+  { id: "IA", name: "Iowa" },
+  { id: "KS", name: "Kansas" },
+  { id: "KY", name: "Kentucky" },
+  { id: "LA", name: "Louisiana" },
+  { id: "ME", name: "Maine" },
+  { id: "MD", name: "Maryland" },
+  { id: "MA", name: "Massachusetts" },
+  { id: "MI", name: "Michigan" },
+  { id: "MN", name: "Minnesota" },
+  { id: "MS", name: "Mississippi" },
+  { id: "MO", name: "Missouri" },
+  { id: "MT", name: "Montana" },
+  { id: "NE", name: "Nebraska" },
+  { id: "NV", name: "Nevada" },
+  { id: "NH", name: "New Hampshire" },
+  { id: "NJ", name: "New Jersey" },
+  { id: "NM", name: "New Mexico" },
+  { id: "NY", name: "New York" },
+  { id: "NC", name: "North Carolina" },
+  { id: "ND", name: "North Dakota" },
+  { id: "OH", name: "Ohio" },
+  { id: "OK", name: "Oklahoma" },
+  { id: "OR", name: "Oregon" },
+  { id: "PA", name: "Pennsylvania" },
+  { id: "RI", name: "Rhode Island" },
+  { id: "SC", name: "South Carolina" },
+  { id: "SD", name: "South Dakota" },
+  { id: "TN", name: "Tennessee" },
+  { id: "TX", name: "Texas" },
+  { id: "UT", name: "Utah" },
+  { id: "VT", name: "Vermont" },
+  { id: "VA", name: "Virginia" },
+  { id: "WA", name: "Washington" },
+  { id: "WV", name: "West Virginia" },
+  { id: "WI", name: "Wisconsin" },
+  { id: "WY", name: "Wyoming" },
+] as const;
+
+export type USStateId = (typeof US_STATES)[number]["id"];
+export type USStateName = (typeof US_STATES)[number]["name"];
+```
+
+**Step 4: Create barrel export for constants**
+
+```typescript
+// src/atomic-crm/constants/index.ts
+export { US_STATES } from "./usStates";
+export type { USStateId, USStateName } from "./usStates";
+export {
+  CONTACT_FORM_COPY,
+  ORGANIZATION_FORM_COPY,
+  ACTIVITY_FORM_COPY,
+} from "./formCopy";
+```
+
+**Step 5: Run test to verify it passes**
+
+```bash
+npm test -- src/atomic-crm/constants/__tests__/usStates.test.ts
+```
+
+Expected: PASS (all tests)
+
+**Step 6: Commit**
+
+```bash
+git add src/atomic-crm/constants/usStates.ts src/atomic-crm/constants/__tests__/usStates.test.ts src/atomic-crm/constants/index.ts
+git commit -m "feat(constants): extract US_STATES to dedicated module"
+```
+
+---
+
 ## Phase 2: Contact Form Consolidation (4 tabs → 2 tabs)
 
 ### Task 9: Create ContactMainTab Component
