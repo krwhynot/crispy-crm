@@ -111,11 +111,10 @@ test.describe("Contact Slide-Over", () => {
     await listPage.navigate();
     const firstRow = listPage.getContactRows().first();
     await firstRow.click();
-    await page.waitForTimeout(300);
 
-    // Verify slide-over is open
+    // Verify slide-over is open (condition-based wait)
     const slideOver = page.locator('[role="dialog"]');
-    await expect(slideOver).toBeVisible();
+    await expect(slideOver).toBeVisible({ timeout: 5000 });
 
     // Get all focusable elements within slide-over
     const focusableElements = slideOver.locator(
@@ -127,12 +126,11 @@ test.describe("Contact Slide-Over", () => {
 
     // Focus first element
     await focusableElements.first().focus();
+    await expect(focusableElements.first()).toBeFocused();
 
-    // Tab through all elements
+    // Tab through all elements (focus changes are synchronous)
     for (let i = 0; i < count; i++) {
       await page.keyboard.press("Tab");
-      // Wait for focus to move
-      await page.waitForTimeout(50);
     }
 
     // After tabbing through all elements, focus should cycle back to slide-over
@@ -157,11 +155,10 @@ test.describe("Contact Slide-Over", () => {
     await listPage.navigate();
     const firstRow = listPage.getContactRows().first();
     await firstRow.click();
-    await page.waitForTimeout(300);
 
-    // Verify slide-over is open
+    // Verify slide-over is open (condition-based wait)
     const slideOver = page.locator('[role="dialog"]');
-    await expect(slideOver).toBeVisible();
+    await expect(slideOver).toBeVisible({ timeout: 5000 });
 
     // Get all focusable elements within slide-over
     const focusableElements = slideOver.locator(
@@ -172,11 +169,11 @@ test.describe("Contact Slide-Over", () => {
 
     // Focus last element
     await focusableElements.last().focus();
+    await expect(focusableElements.last()).toBeFocused();
 
-    // Shift+Tab backward through elements
+    // Shift+Tab backward through elements (focus changes are synchronous)
     for (let i = 0; i < count; i++) {
       await page.keyboard.press("Shift+Tab");
-      await page.waitForTimeout(50);
     }
 
     // Focus should still be within slide-over
@@ -195,13 +192,10 @@ test.describe("Contact Slide-Over", () => {
     // Note: Using contact ID 1 which should exist in seed data
     await page.goto("/#/contacts?view=1");
 
-    // Wait for page load
+    // Wait for page load (condition-based)
     await page.waitForLoadState("networkidle");
 
-    // Wait for slide-over to appear
-    await page.waitForTimeout(500);
-
-    // Verify slide-over is visible
+    // Verify slide-over is visible (condition-based wait, no timeout)
     const slideOver = page.locator('[role="dialog"]');
     await expect(slideOver).toBeVisible({ timeout: 5000 });
 
@@ -222,20 +216,16 @@ test.describe("Contact Slide-Over", () => {
     // Open slide-over
     const firstRow = listPage.getContactRows().first();
     await firstRow.click();
-    await page.waitForTimeout(300);
 
-    // Verify slide-over is open
+    // Verify slide-over is open (condition-based wait)
     const slideOver = page.locator('[role="dialog"]');
-    await expect(slideOver).toBeVisible();
+    await expect(slideOver).toBeVisible({ timeout: 5000 });
 
     // Browser back button
     await page.goBack();
 
-    // Wait for navigation/close animation
-    await page.waitForTimeout(300);
-
-    // Verify slide-over is closed
-    await expect(slideOver).not.toBeVisible();
+    // Verify slide-over is closed (condition-based wait)
+    await expect(slideOver).not.toBeVisible({ timeout: 5000 });
 
     // Verify we're still on contacts list
     await expect(page).toHaveURL(/\/#\/contacts(\?.*)?$/);
@@ -252,11 +242,10 @@ test.describe("Contact Slide-Over", () => {
     await listPage.navigate();
     const firstRow = listPage.getContactRows().first();
     await firstRow.click();
-    await page.waitForTimeout(300);
 
-    // Verify slide-over is open
+    // Verify slide-over is open (condition-based wait)
     const slideOver = page.locator('[role="dialog"]');
-    await expect(slideOver).toBeVisible();
+    await expect(slideOver).toBeVisible({ timeout: 5000 });
 
     // Test Details tab (default active)
     await test.step("Details tab", async () => {
@@ -280,9 +269,9 @@ test.describe("Contact Slide-Over", () => {
       const activitiesTab = slideOver.getByRole("tab", { name: /activities/i });
       await expect(activitiesTab).toBeVisible();
 
-      // Click and verify content loads
+      // Click and verify content loads (condition-based wait)
       await activitiesTab.click();
-      await page.waitForTimeout(200);
+      await expect(activitiesTab).toHaveAttribute("aria-selected", "true");
 
       // Should show activities content or "No activities" message
       await expect(slideOver.locator('[role="tabpanel"]')).toBeVisible();
@@ -293,9 +282,9 @@ test.describe("Contact Slide-Over", () => {
       const notesTab = slideOver.getByRole("tab", { name: /notes/i });
       await expect(notesTab).toBeVisible();
 
-      // Click and verify content loads
+      // Click and verify content loads (condition-based wait)
       await notesTab.click();
-      await page.waitForTimeout(200);
+      await expect(notesTab).toHaveAttribute("aria-selected", "true");
 
       // Should show notes content
       await expect(slideOver.locator('[role="tabpanel"]')).toBeVisible();
@@ -306,9 +295,9 @@ test.describe("Contact Slide-Over", () => {
       const filesTab = slideOver.getByRole("tab", { name: /files/i });
       await expect(filesTab).toBeVisible();
 
-      // Click and verify content loads
+      // Click and verify content loads (condition-based wait)
       await filesTab.click();
-      await page.waitForTimeout(200);
+      await expect(filesTab).toHaveAttribute("aria-selected", "true");
 
       // Should show files content or placeholder
       await expect(slideOver.locator('[role="tabpanel"]')).toBeVisible();
@@ -326,17 +315,19 @@ test.describe("Contact Slide-Over", () => {
     await listPage.navigate();
     const firstRow = listPage.getContactRows().first();
     await firstRow.click();
-    await page.waitForTimeout(300);
 
-    // Verify slide-over is open
+    // Verify slide-over is open (condition-based wait)
     const slideOver = page.locator('[role="dialog"]');
-    await expect(slideOver).toBeVisible();
+    await expect(slideOver).toBeVisible({ timeout: 5000 });
 
     // Switch to edit mode
     const editButton = slideOver.getByRole("button", { name: /edit/i });
     await expect(editButton).toBeVisible();
     await editButton.click();
-    await page.waitForTimeout(200);
+
+    // Wait for edit mode to activate (condition-based: cancel button appears)
+    const cancelButton = slideOver.getByRole("button", { name: /cancel/i });
+    await expect(cancelButton).toBeVisible({ timeout: 5000 });
 
     // Should now show form fields (Details tab should render ContactInputs in edit mode)
     // Try to clear first name field (required field)
@@ -350,23 +341,22 @@ test.describe("Contact Slide-Over", () => {
       const saveButton = slideOver.getByRole("button", { name: /save/i });
       if (await saveButton.isVisible()) {
         await saveButton.click();
-        await page.waitForTimeout(300);
 
-        // Should show validation error (exact message depends on implementation)
-        // Check for common validation indicators
+        // Wait for validation response (condition-based: error appears OR still in edit mode)
+        // Use a short timeout to check for validation error
         const hasError =
           (await slideOver
             .getByText(/required/i)
-            .isVisible()
+            .isVisible({ timeout: 2000 })
             .catch(() => false)) ||
           (await slideOver
             .getByText(/invalid/i)
-            .isVisible()
+            .isVisible({ timeout: 1000 })
             .catch(() => false)) ||
           (await slideOver.locator('[aria-invalid="true"]').count()) > 0;
 
         // If validation worked, we should still be in edit mode or see error
-        expect(hasError || (await editButton.isVisible())).toBeTruthy();
+        expect(hasError || (await cancelButton.isVisible())).toBeTruthy();
       }
     }
 
@@ -381,27 +371,24 @@ test.describe("Contact Slide-Over", () => {
     await listPage.navigate();
     const firstRow = listPage.getContactRows().first();
     await firstRow.click();
-    await page.waitForTimeout(300);
 
-    // Verify slide-over is open
+    // Verify slide-over is open (condition-based wait)
     const slideOver = page.locator('[role="dialog"]');
-    await expect(slideOver).toBeVisible();
+    await expect(slideOver).toBeVisible({ timeout: 5000 });
 
     // Switch to edit mode
     const editButton = slideOver.getByRole("button", { name: /edit/i });
     await editButton.click();
-    await page.waitForTimeout(200);
 
-    // Should now show Cancel button instead of Edit
+    // Should now show Cancel button instead of Edit (condition-based wait)
     const cancelButton = slideOver.getByRole("button", { name: /cancel/i });
-    await expect(cancelButton).toBeVisible();
+    await expect(cancelButton).toBeVisible({ timeout: 5000 });
 
     // Click cancel
     await cancelButton.click();
-    await page.waitForTimeout(200);
 
-    // Should return to view mode (Edit button visible again)
-    await expect(editButton).toBeVisible();
+    // Should return to view mode (Edit button visible again) (condition-based wait)
+    await expect(editButton).toBeVisible({ timeout: 5000 });
 
     // Assert no console errors
     expect(consoleMonitor.hasRLSErrors()).toBe(false);
@@ -415,11 +402,10 @@ test.describe("Contact Slide-Over", () => {
     await listPage.navigate();
     const firstRow = listPage.getContactRows().first();
     await firstRow.click();
-    await page.waitForTimeout(300);
 
-    // Verify slide-over is open
+    // Verify slide-over is open (condition-based wait)
     const slideOver = page.locator('[role="dialog"]');
-    await expect(slideOver).toBeVisible();
+    await expect(slideOver).toBeVisible({ timeout: 5000 });
 
     // Switch between tabs
     const tabs = ["Activities", "Notes", "Files", "Details"];
@@ -427,7 +413,9 @@ test.describe("Contact Slide-Over", () => {
     for (const tabName of tabs) {
       const tab = slideOver.getByRole("tab", { name: new RegExp(tabName, "i") });
       await tab.click();
-      await page.waitForTimeout(200);
+
+      // Wait for tab to be selected (condition-based wait)
+      await expect(tab).toHaveAttribute("aria-selected", "true");
 
       // Slide-over should still be visible
       await expect(slideOver).toBeVisible();
@@ -455,23 +443,21 @@ test.describe("Contact Slide-Over", () => {
 
     // Open first contact
     await rows.nth(0).click();
-    await page.waitForTimeout(300);
 
+    // Wait for slide-over to open (condition-based wait)
     const slideOver = page.locator('[role="dialog"]');
-    await expect(slideOver).toBeVisible();
+    await expect(slideOver).toBeVisible({ timeout: 5000 });
 
     // Get first contact name
     const firstName = await slideOver.locator("h2").first().textContent();
 
     // Close slide-over
     await page.keyboard.press("Escape");
-    await page.waitForTimeout(300);
+    await expect(slideOver).not.toBeVisible({ timeout: 5000 });
 
     // Open second contact
     await rows.nth(1).click();
-    await page.waitForTimeout(300);
-
-    await expect(slideOver).toBeVisible();
+    await expect(slideOver).toBeVisible({ timeout: 5000 });
 
     // Get second contact name
     const secondName = await slideOver.locator("h2").first().textContent();
