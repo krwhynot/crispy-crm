@@ -47,7 +47,7 @@
                   - generic [ref=e45]: Name *
                   - textbox "Name *" [ref=e46]:
                     - /placeholder: Organization name
-                    - text: Duplicate Test Org-1764490942691
+                    - text: Minimal Org-1764491602914
                   - generic [ref=e47]: Required field
                 - group [ref=e48]:
                   - generic [ref=e50]: Organization Type *

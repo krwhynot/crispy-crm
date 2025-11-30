@@ -25,7 +25,8 @@ export const SegmentComboboxInput = (props: SegmentSelectInputProps) => {
       helperText={props.helperText}
       className={props.className}
       emptyText="Select category..."
-      emptyValue={null}
+      // Transform empty string to null for database nullable UUID fields
+      parse={(value: string) => (value === "" ? null : value)}
     />
   );
 };
