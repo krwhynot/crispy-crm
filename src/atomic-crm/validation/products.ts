@@ -66,7 +66,7 @@ export const productSchema = z.object({
 });
 
 // Validation function for React Admin
-export async function validateProductForm(data: any): Promise<void> {
+export async function validateProductForm(data: unknown): Promise<void> {
   // Use safeParse for consistent error handling
   const result = productSchema.safeParse(data);
 
@@ -103,7 +103,7 @@ export const opportunityProductSchema = z.object({
 export type OpportunityProduct = z.infer<typeof opportunityProductSchema>;
 
 // Validation function for opportunity products
-export async function validateOpportunityProduct(data: any): Promise<void> {
+export async function validateOpportunityProduct(data: unknown): Promise<void> {
   try {
     opportunityProductSchema.parse(data);
   } catch (error) {

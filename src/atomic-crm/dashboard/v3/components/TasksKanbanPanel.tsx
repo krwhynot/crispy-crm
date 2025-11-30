@@ -236,8 +236,8 @@ export function TasksKanbanPanel() {
             <div
               className="
                 flex h-full gap-3 p-4
-                overflow-x-auto lg:overflow-x-visible
-                flex-row lg:flex-row
+                flex-col lg:flex-row
+                overflow-y-auto lg:overflow-y-visible
               "
               data-testid="task-kanban-board"
             >

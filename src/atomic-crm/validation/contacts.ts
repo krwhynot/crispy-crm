@@ -326,10 +326,13 @@ export type ImportContactInput = z.input<typeof importContactSchema>;
 // This is the ONLY place where contact validation occurs
 export async function validateContactForm(data: unknown): Promise<void> {
   try {
+    // Type guard for accessing properties on unknown
+    const record = data as Record<string, unknown>;
+
     // Ensure at least one email is provided if email exists
-    if (data.email && Array.isArray(data.email) && data.email.length > 0) {
+    if (record.email && Array.isArray(record.email) && record.email.length > 0) {
       // Validate each email entry
-      data.email.forEach((entry: EmailEntry, index: number) => {
+      (record.email as EmailEntry[]).forEach((entry: EmailEntry, index: number) => {
         if (!entry.email || entry.email.trim() === "") {
           throw new z.ZodError([
             {
@@ -424,8 +427,11 @@ export const updateContactSchema = contactBaseSchema.partial().transform(transfo
 // Export validation functions for specific operations
 export async function validateCreateContact(data: unknown): Promise<void> {
   try {
+    // Type guard for accessing properties on unknown
+    const record = data as Record<string, unknown>;
+
     // Ensure at least one email is provided for new contacts
-    if (!data.email || !Array.isArray(data.email) || data.email.length === 0) {
+    if (!record.email || !Array.isArray(record.email) || record.email.length === 0) {
       throw new z.ZodError([
         {
           code: z.ZodIssueCode.custom,
@@ -472,7 +478,7 @@ export async function validateUpdateContact(data: unknown): Promise<void> {
 }
 
 // Validation for contact-organization relationships
-export async function validateContactOrganization(data: any): Promise<void> {
+export async function validateContactOrganization(data: unknown): Promise<void> {
   try {
     contactOrganizationSchema.parse(data);
   } catch (error) {

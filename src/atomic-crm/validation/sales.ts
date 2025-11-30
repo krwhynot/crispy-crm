@@ -39,7 +39,7 @@ export type Sales = z.infer<typeof salesSchema>;
 
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where sales validation occurs
-export async function validateSalesForm(data: any): Promise<void> {
+export async function validateSalesForm(data: unknown): Promise<void> {
   try {
     // Parse and validate the data
     salesSchema.parse(data);
@@ -83,7 +83,7 @@ export const updateSalesSchema = salesSchema.partial().required({
 });
 
 // Export validation functions for specific operations
-export async function validateCreateSales(data: any): Promise<void> {
+export async function validateCreateSales(data: unknown): Promise<void> {
   try {
     createSalesSchema.parse(data);
   } catch (error) {
@@ -102,7 +102,7 @@ export async function validateCreateSales(data: any): Promise<void> {
   }
 }
 
-export async function validateUpdateSales(data: any): Promise<void> {
+export async function validateUpdateSales(data: unknown): Promise<void> {
   try {
     updateSalesSchema.parse(data);
   } catch (error) {

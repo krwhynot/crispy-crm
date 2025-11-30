@@ -163,7 +163,7 @@ export type Opportunity = z.infer<typeof opportunitySchema>;
 export type LeadSource = z.infer<typeof leadSourceSchema>;
 
 // Validation function matching expected signature from unifiedDataProvider
-export async function validateOpportunityForm(data: any): Promise<void> {
+export async function validateOpportunityForm(data: unknown): Promise<void> {
   try {
     opportunitySchema.parse(data);
   } catch (error) {
@@ -347,7 +347,7 @@ export const closeOpportunitySchema = z
 export type CloseOpportunityInput = z.infer<typeof closeOpportunitySchema>;
 
 // Export validation functions for specific operations
-export async function validateCreateOpportunity(data: any): Promise<void> {
+export async function validateCreateOpportunity(data: unknown): Promise<void> {
   try {
     createOpportunitySchema.parse(data);
   } catch (error) {
@@ -366,7 +366,7 @@ export async function validateCreateOpportunity(data: any): Promise<void> {
   }
 }
 
-export async function validateUpdateOpportunity(data: any): Promise<void> {
+export async function validateUpdateOpportunity(data: unknown): Promise<void> {
   try {
     updateOpportunitySchema.parse(data);
   } catch (error) {
@@ -389,7 +389,7 @@ export async function validateUpdateOpportunity(data: any): Promise<void> {
  * Validate opportunity close action (TODO-004a)
  * Used by CloseOpportunityModal to validate before submission
  */
-export async function validateCloseOpportunity(data: any): Promise<void> {
+export async function validateCloseOpportunity(data: unknown): Promise<void> {
   try {
     closeOpportunitySchema.parse(data);
   } catch (error) {
