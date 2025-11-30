@@ -35,8 +35,8 @@ export const ContactCreate = () => {
           ]}
         />
 
-        {/* Sticky footer with actions */}
-        <div className="sticky bottom-0 bg-card border-t border-border p-4 flex justify-between">
+        {/* Sticky footer with actions - bottom-12 clears fixed layout footer */}
+        <div className="sticky bottom-12 bg-card border-t border-border p-4 flex justify-between">
           <Button variant="outline">Cancel</Button>
           <div className="flex gap-2">
             <Button type="submit">Save & Close</Button>
@@ -53,7 +53,8 @@ export const ContactCreate = () => {
 - Page background: `bg-muted` (light, airy)
 - Form card: `.create-form-card` (max-w-4xl, shadow-lg, centered)
 - Tabbed sections: `TabbedFormInputs` with error badges
-- Sticky footer: `sticky bottom-0` with Cancel | Save & Close | Save & Add
+- Sticky footer: `sticky bottom-12` with Cancel | Save & Close | Save & Add
+  - **IMPORTANT:** Use `bottom-12` (48px) NOT `bottom-0` to clear the fixed layout footer
 - Validation: Zod schemas with inline errors
 - Optional autosave: localStorage (key: `crm.draft.{resource}.{userId}`)
 
