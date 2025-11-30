@@ -93,7 +93,7 @@ export type Organization = z.infer<typeof organizationSchema>;
 
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where organization validation occurs
-export async function validateOrganizationForSubmission(data: any): Promise<void> {
+export async function validateOrganizationForSubmission(data: unknown): Promise<void> {
   try {
     // Parse and validate the data
     organizationSchema.parse(data);
@@ -139,7 +139,7 @@ export const updateOrganizationSchema = organizationSchema.partial().required({
 });
 
 // Export validation functions for specific operations
-export async function validateCreateOrganization(data: any): Promise<void> {
+export async function validateCreateOrganization(data: unknown): Promise<void> {
   try {
     createOrganizationSchema.parse(data);
   } catch (error) {
@@ -158,7 +158,7 @@ export async function validateCreateOrganization(data: any): Promise<void> {
   }
 }
 
-export async function validateUpdateOrganization(data: any): Promise<void> {
+export async function validateUpdateOrganization(data: unknown): Promise<void> {
   try {
     updateOrganizationSchema.parse(data);
   } catch (error) {
