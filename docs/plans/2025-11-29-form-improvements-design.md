@@ -1647,3 +1647,182 @@ Based on CRM industry best practices research:
 - **Form Design Best Practices:** Single column, easy-to-hard field order, inline validation
 - **CXL Research:** Remove useless fields, consolidate address to single field
 - **Adobe:** Order fields easiest to hardest, validate inline, indicate required vs optional
+
+---
+
+## Principle-by-Principle Alignment
+
+This section maps every design decision to established UI/UX principles, providing theoretical grounding and traceability.
+
+### UI Principles
+
+| Principle | My Recommendation | How It Applies |
+|-----------|-------------------|----------------|
+| **Jakob's Law** | 2-tab structure ("Main" / "More"), Save button on right, Cancel on left | Users expect this from Salesforce, HubSpot, Pipedrive. We're not inventing new patterns—we're matching muscle memory. |
+| **Hick's Law** | Main tab shows 5-6 fields, advanced fields hidden in "More" tab. Collapsible sections in Activities. | Reduces decision paralysis. User sees only what they need 90% of the time. "More" exists but doesn't compete for attention. |
+| **Fitts's Law** | 44px button heights, Save button is largest/rightmost, sticky footer keeps actions visible | Larger targets + consistent placement = faster task completion. User's cursor naturally travels to bottom-right for primary action. |
+| **Consistency Principle** | Same grid system (2-col), same field pairing logic, same button hierarchy across all forms | Contact form and Organization form feel like siblings. User learns pattern once, applies everywhere. |
+| **Feedback Principle** | Inline validation on blur, error states replace helper text, loading states during async validation | Every keystroke gets response. User never wonders "did that work?" |
+
+---
+
+### UX Principles
+
+| Principle | My Recommendation | How It Applies |
+|-----------|-------------------|----------------|
+| **User-Centered Design** | Field order follows AM workflow: "Who is this?" (Name) → "Where do they work?" (Org) → "How do I reach them?" (Email/Phone) | Not organized by database schema—organized by how salespeople think about contacts. |
+| **Clarity of IA** | Section headers ("ACTIVITY DETAILS", "RELATIONSHIPS", "FOLLOW-UP") with visual dividers | User can scan form and know exactly where to find what. No guessing. |
+| **Minimize Cognitive Load** | Progressive disclosure via tabs and collapsible sections. Follow-up section collapsed by default. | 80% of activities don't need follow-up fields. Why show them? Expand when checkbox triggers. |
+| **Accessibility & Inclusivity** | 44px touch targets (WCAG AA), `aria-required`, `aria-invalid`, `aria-describedby` for screen readers | Form works for keyboard-only users, screen reader users, and users with motor impairments. |
+| **Error Prevention & Recovery** | Required field indicators (*), conditional validation (Address required only for Customers), async duplicate checks | Prevent errors before they happen. When they do happen, tell user exactly what's wrong and where. |
+
+---
+
+### Color & Style Principles
+
+| Principle | My Recommendation | How It Applies |
+|-----------|-------------------|----------------|
+| **Contrast Principle (WCAG AAA)** | `text-foreground` for labels, `text-muted-foreground` for helper text, `text-destructive` for errors | Your OKLCH color system should ensure 7:1 for body text, 4.5:1 for large text. Error red must pass against background. |
+| **Von Restorff Effect** | Single primary color for Save button. Delete button uses `text-destructive` (red) to stand out as dangerous. | Save = safe (primary blue/green). Delete = danger (red). User's eye catches the difference instantly. |
+| **Law of Similarity** | All required indicators use same red asterisk. All optional fields use same gray "(optional)" suffix. | Visual consistency = pattern recognition. User learns "red = required" once. |
+| **Color Harmony** | Neutral form backgrounds, accent colors only on interactive elements | Forms shouldn't compete for attention—content matters. Color reserved for actions and feedback. |
+| **Signal vs. Noise** | Error messages in `text-destructive`, helper text in `text-muted-foreground`, labels in `text-foreground` | Visual hierarchy: Label (important) > Input (interactive) > Helper (supportive) > Error (urgent when present). |
+
+---
+
+### Visual Hierarchy Mapping
+
+How **Signal vs. Noise** + **Von Restorff** work together in a single field:
+
+```
+NORMAL STATE:
+┌─────────────────────────────────────────────────────────────┐
+│ Organization *                    ← SIGNAL: Label (high contrast)
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │                                                     ▼   │ │  ← INTERACTIVE: Border, icon
+│ └─────────────────────────────────────────────────────────┘ │
+│ Contact must belong to an organization  ← NOISE: Helper (muted)
+└─────────────────────────────────────────────────────────────┘
+
+ERROR STATE:
+┌─────────────────────────────────────────────────────────────┐
+│ Organization *                    ← SIGNAL: Label unchanged
+│ ┌─────────────────────────────────────────────────────────┐ │
+│ │                                                     ▼   │ │  ← VON RESTORFF: Red border
+│ └─────────────────────────────────────────────────────────┘ │
+│ Please select an organization     ← VON RESTORFF: Red text (stands out)
+└─────────────────────────────────────────────────────────────┘
+```
+
+The error state **pops** because it breaks the visual pattern. That's Von Restorff in action.
+
+---
+
+### Fitts's Law Deep Dive: Button Placement
+
+```
+User's cursor movement patterns:
+
+     ┌────────────────────────────────────────────┐
+     │                                            │
+     │    [Form content - cursor moves here]      │
+     │                                            │
+     │              ↓                             │
+     │              ↓                             │
+     │              ↓                             │
+     ├────────────────────────────────────────────┤
+     │                                            │
+     │  [Delete]                  [Cancel] [Save] │
+     │     ↑                         ↑       ↑    │
+     │     │                         │       │    │
+     │  Far left                  Natural   Primary
+     │  (intentional              flow      target
+     │   friction)                          (largest)
+     │                                            │
+     └────────────────────────────────────────────┘
+
+WHY THIS WORKS:
+- Save is CLOSEST to where cursor naturally ends (bottom-right after form)
+- Save is LARGEST (more clickable area)
+- Delete is FARTHEST (requires intentional movement - prevents accidents)
+- Cancel is MEDIUM distance (easy escape, but not as prominent as Save)
+```
+
+**Fitts's Law Formula:** `Time = a + b × log₂(1 + D/W)`
+
+Where:
+- D = distance to target
+- W = width of target
+
+**Translation:** Make Save big and close. Make Delete small and far.
+
+---
+
+### Hick's Law Deep Dive: Progressive Disclosure
+
+```
+COGNITIVE LOAD COMPARISON:
+
+BAD (All fields visible):
+┌─────────────────────────────────────────────────────────────┐
+│ 15 fields visible                                           │
+│ User must scan ALL to find what they need                   │
+│ Decision time: HIGH                                         │
+│ Abandonment risk: HIGH                                      │
+└─────────────────────────────────────────────────────────────┘
+
+GOOD (Progressive disclosure):
+┌─────────────────────────────────────────────────────────────┐
+│ MAIN TAB (6 fields)     │ MORE TAB (5 fields)               │
+│ ● Required fields       │ ○ Optional details                │
+│ ● High-frequency use    │ ○ Low-frequency use               │
+│                         │                                   │
+│ Decision time: LOW      │ Only loaded when needed           │
+│ Completion rate: HIGH   │                                   │
+└─────────────────────────────────────────────────────────────┘
+
+ACTIVITIES (Collapsible):
+┌─────────────────────────────────────────────────────────────┐
+│ DETAILS (expanded)      ← Always needed                     │
+│ RELATIONSHIPS (expanded)← Always needed                     │
+│ ▶ FOLLOW-UP (collapsed) ← Only 20% of activities            │
+│ ▶ OUTCOME (collapsed)   ← Only when relevant                │
+│                                                             │
+│ Hick's Law: User sees 2 sections, not 4                     │
+│ Cognitive load: MINIMAL                                     │
+└─────────────────────────────────────────────────────────────┘
+```
+
+---
+
+### Accessibility Compliance Matrix
+
+| WCAG Criterion | Requirement | Implementation |
+|----------------|-------------|----------------|
+| **1.4.3 Contrast (AA)** | 4.5:1 for text, 3:1 for UI | OKLCH tokens must pass. Verify with contrast checker. |
+| **1.4.6 Contrast (AAA)** | 7:1 for text, 4.5:1 for UI | Target this for labels and errors. |
+| **2.1.1 Keyboard** | All functionality via keyboard | Tab navigation, Enter to submit, Escape to cancel |
+| **2.4.6 Headings** | Headings describe content | Section headers ("ACTIVITY DETAILS") |
+| **2.5.5 Target Size (AAA)** | 44×44px minimum | All buttons, inputs at `h-11` (44px) |
+| **3.3.1 Error Identification** | Errors identified in text | Error messages describe the problem |
+| **3.3.2 Labels** | Inputs have labels | Every field has associated `<label>` |
+| **4.1.2 Name, Role, Value** | ARIA attributes present | `aria-required`, `aria-invalid`, `aria-describedby` |
+
+---
+
+### Design Decision Traceability Matrix
+
+Every recommendation traces to a principle:
+
+| Recommendation | Primary Principle | Secondary Principle |
+|----------------|-------------------|---------------------|
+| 2-tab structure | Hick's Law | Jakob's Law |
+| Field width = content length | Clarity of IA | Consistency |
+| Name + Name pairing | Minimize Cognitive Load | Law of Similarity |
+| Save button right, large | Fitts's Law | Jakob's Law |
+| Delete button left, small | Error Prevention | Fitts's Law (friction) |
+| 44px touch targets | Accessibility | Fitts's Law |
+| Collapsible Follow-up section | Hick's Law | Progressive Disclosure |
+| Red asterisk for required | Von Restorff | Law of Similarity |
+| Error replaces helper text | Signal vs. Noise | Feedback Principle |
+| Sticky action footer | Fitts's Law | Feedback Principle |
