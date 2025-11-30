@@ -165,7 +165,7 @@ export function MyPerformanceWidget() {
   const { metrics, loading } = useMyPerformance();
 
   return (
-    <Card className="h-full" data-tutorial="my-performance">
+    <Card className="h-full">
       <CardHeader className="pb-2">
         <CardTitle className="text-base font-semibold">My Performance</CardTitle>
       </CardHeader>
