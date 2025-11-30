@@ -189,14 +189,47 @@ export async function fillAutocompleteField(
 
 /**
  * Select from a dropdown/combobox
+ *
+ * Handles multiple patterns:
+ * 1. Standard labeled combobox (getByLabel)
+ * 2. Group with label text + combobox sibling (React Admin pattern)
  */
 export async function selectFromDropdown(
   page: Page,
   triggerLabel: string | RegExp,
   optionText: string | RegExp
 ): Promise<void> {
-  // Click the dropdown trigger
-  const trigger = page.getByLabel(triggerLabel);
+  // Try multiple strategies to find the dropdown trigger
+
+  // Strategy 1: Standard getByLabel
+  let trigger = page.getByLabel(triggerLabel);
+  let triggerVisible = await trigger.isVisible({ timeout: 1000 }).catch(() => false);
+
+  // Strategy 2: Find the group (role="group") containing the label text, then find the combobox
+  if (!triggerVisible) {
+    // Find the group containing the label text
+    const group = page.locator('[role="group"]').filter({ hasText: triggerLabel });
+    trigger = group.getByRole("combobox").first();
+    triggerVisible = await trigger.isVisible({ timeout: 1000 }).catch(() => false);
+  }
+
+  // Strategy 3: Find by getByText and traverse up to find sibling combobox
+  if (!triggerVisible) {
+    // Find text, go up to parent container, find combobox
+    trigger = page.getByText(triggerLabel).locator("..").locator("..").getByRole("combobox").first();
+    triggerVisible = await trigger.isVisible({ timeout: 1000 }).catch(() => false);
+  }
+
+  // Strategy 4: Direct aria-label or accessible name
+  if (!triggerVisible) {
+    trigger = page.getByRole("combobox", { name: triggerLabel });
+    triggerVisible = await trigger.isVisible({ timeout: 1000 }).catch(() => false);
+  }
+
+  if (!triggerVisible) {
+    throw new Error(`Could not find dropdown trigger for label: ${triggerLabel}`);
+  }
+
   await trigger.click();
 
   // Wait for dropdown to open
@@ -204,6 +237,7 @@ export async function selectFromDropdown(
 
   // Find and click the option
   const option = page.getByRole("option", { name: optionText });
+  await expect(option).toBeVisible({ timeout: 5000 });
   await option.click();
 }
 

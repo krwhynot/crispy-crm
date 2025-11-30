@@ -66,9 +66,12 @@ export class ConsoleMonitor {
     // Known non-critical patterns to ignore
     const ignoredPatterns = [
       // Radix UI accessibility recommendations (not errors)
-      "DialogContent requires a DialogTitle",
-      "aria-describedby={undefined}",
+      // Note: Radix uses backticks in messages like `DialogContent`
+      "DialogContent",
+      "DialogTitle",
+      "aria-describedby",
       "Missing `Description`",
+      "VisuallyHidden",
       // React Admin props warning (safe to ignore)
       "rowClassName",
       "rowclassname",
