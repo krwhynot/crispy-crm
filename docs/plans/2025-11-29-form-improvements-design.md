@@ -1272,6 +1272,350 @@ export const FormField = ({
 
 ---
 
+## Visual Layout Specification
+
+This section defines precise field widths, grid systems, and button placement to create polished, professional forms that exceed typical CRM quality.
+
+### Design Philosophy
+
+Most CRMs stack fields vertically with uniform widths, creating wasted space and poor visual hierarchy. Our approach:
+
+1. **Field width matches content length** — Short fields like "Duration" don't stretch full-width
+2. **Logical field pairing** — Related fields share a row (first name + last name, date + duration)
+3. **Consistent grid system** — 2-column base with semantic span classes
+4. **Clear action hierarchy** — Primary actions right-aligned, destructive actions isolated
+
+### Field Width Recommendations
+
+| Field Type | Width | Tailwind Class | Rationale |
+|------------|-------|----------------|-----------|
+| **Names** | 50% | `col-span-1` | First + Last pair naturally |
+| **Email** | 50% | `col-span-1` | Pairs with phone |
+| **Phone** | 50% | `col-span-1` | Pairs with email |
+| **URL** | 100% | `col-span-2` | URLs can be long |
+| **Textarea** | 100% | `col-span-2` | Needs full width |
+| **Date** | 25% | `col-span-1` (in 4-col) | Short fixed format |
+| **Duration** | 25% | `col-span-1` (in 4-col) | Short number |
+| **Select** | 50% | `col-span-1` | Standard dropdown |
+| **Autocomplete** | 50% | `col-span-1` | Dropdown + search |
+| **Address (city)** | 50% | `col-span-2` (in 4-col) | Longer city names |
+| **Address (state)** | 25% | `col-span-1` (in 4-col) | Abbreviation |
+| **Address (zip)** | 25% | `col-span-1` (in 4-col) | Fixed 5-9 digits |
+
+### Grid System Specification
+
+**Base Grid:** `grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5`
+
+- **Mobile (<768px):** Single column, all fields stack
+- **Desktop (≥768px):** 2-column grid with 24px horizontal gap, 20px vertical gap
+- **4-column subsections:** `grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-5` (for date+duration, address line 2)
+
+```typescript
+// src/components/admin/form/FormGrid.tsx
+
+interface FormGridProps {
+  children: React.ReactNode;
+  columns?: 2 | 4;
+  className?: string;
+}
+
+export const FormGrid = ({ children, columns = 2, className }: FormGridProps) => (
+  <div
+    className={cn(
+      "grid gap-x-6 gap-y-5",
+      columns === 2 && "grid-cols-1 md:grid-cols-2",
+      columns === 4 && "grid-cols-2 md:grid-cols-4",
+      className
+    )}
+  >
+    {children}
+  </div>
+);
+
+// Usage
+<FormGrid>
+  <TextInput source="first_name" /> {/* col 1 */}
+  <TextInput source="last_name" />  {/* col 2 */}
+  <TextInput source="email" />      {/* col 1 */}
+  <TextInput source="phone" />      {/* col 2 */}
+  <TextInput source="linkedin_url" className="col-span-2" /> {/* full width */}
+</FormGrid>
+```
+
+### Field Span Classes
+
+| Class | Width | Use For |
+|-------|-------|---------|
+| `col-span-1` | 50% (default) | Most fields |
+| `col-span-2` | 100% | URLs, textareas, full-width inputs |
+| `md:col-span-1` | 50% on desktop, 100% on mobile | Responsive pairing |
+
+### Logical Field Pairing Rules
+
+**Always pair these fields:**
+
+| Row | Field 1 | Field 2 | Rationale |
+|-----|---------|---------|-----------|
+| 1 | First Name | Last Name | Full name entry |
+| 2 | Email | Phone | Contact methods |
+| 3 | Date | Duration | Time context |
+| 4 | City | State + Zip (4-col) | Address line 2 |
+| 5 | Opportunity | Contact | Relationships |
+
+**Never pair these:**
+- Textarea with anything (always full width)
+- URL fields with short inputs
+- Unrelated fields (e.g., "Priority" + "LinkedIn URL")
+
+### Button Layout Pattern
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ [🗑️ Delete]                              [Cancel]   [Save ▼]    │
+│     ↑                                        ↑          ↑       │
+│   Far left                                Secondary  Primary    │
+│   (destructive)                           (ghost)    (solid)    │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Button Placement Rules:**
+1. **Primary action (Save):** Right-most position
+2. **Secondary action (Cancel):** Left of primary
+3. **Destructive action (Delete):** Far left, visually separated
+4. **Split button dropdown:** Attached to primary save
+
+```typescript
+// src/components/admin/form/FormActions.tsx
+
+interface FormActionsProps {
+  onSave: () => void;
+  onSaveAndNew?: () => void;
+  onCancel: () => void;
+  onDelete?: () => void;
+  isSubmitting?: boolean;
+  showSaveAndNew?: boolean;
+}
+
+export const FormActions = ({
+  onSave,
+  onSaveAndNew,
+  onCancel,
+  onDelete,
+  isSubmitting,
+  showSaveAndNew = true,
+}: FormActionsProps) => (
+  <div className="flex items-center justify-between pt-6 border-t border-border">
+    {/* Destructive action - far left */}
+    <div>
+      {onDelete && (
+        <Button
+          type="button"
+          variant="ghost"
+          onClick={onDelete}
+          className="text-destructive hover:text-destructive hover:bg-destructive/10"
+        >
+          <Trash2 className="h-4 w-4 mr-2" />
+          Delete
+        </Button>
+      )}
+    </div>
+
+    {/* Primary actions - right aligned */}
+    <div className="flex items-center gap-3">
+      <Button
+        type="button"
+        variant="ghost"
+        onClick={onCancel}
+        className="min-w-[100px]"
+      >
+        Cancel
+      </Button>
+
+      {showSaveAndNew && onSaveAndNew ? (
+        <SaveButtonGroup
+          onSave={onSave}
+          onSaveAndNew={onSaveAndNew}
+          isSubmitting={isSubmitting}
+        />
+      ) : (
+        <Button
+          type="submit"
+          onClick={onSave}
+          disabled={isSubmitting}
+          className="min-w-[100px]"
+        >
+          Save
+        </Button>
+      )}
+    </div>
+  </div>
+);
+```
+
+**Button Sizing:**
+- Primary buttons: `h-11 min-w-[100px]` (44px height, 100px min width)
+- Icon buttons: `h-11 w-11` (44px square)
+- Ghost buttons: Same height, natural width
+
+### Section Headers Pattern
+
+For forms with distinct sections (like Activities single-page layout):
+
+```
+SECTION NAME ──────────────────────────────────────────
+[fields]
+```
+
+```typescript
+// src/components/admin/form/FormSection.tsx
+
+interface FormSectionProps {
+  title: string;
+  children: React.ReactNode;
+  className?: string;
+}
+
+export const FormSection = ({ title, children, className }: FormSectionProps) => (
+  <section className={cn("space-y-5", className)}>
+    {/* Section header with divider */}
+    <div className="flex items-center gap-4">
+      <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground whitespace-nowrap">
+        {title}
+      </h3>
+      <div className="flex-1 h-px bg-border" />
+    </div>
+
+    {/* Section content */}
+    <div className="space-y-5">
+      {children}
+    </div>
+  </section>
+);
+
+// Usage
+<FormSection title="Activity Details">
+  <FormGrid>
+    <SelectInput source="type" />
+    <TextInput source="subject" className="col-span-2" />
+  </FormGrid>
+</FormSection>
+```
+
+### Contact Form Layout (Reference Mockup)
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│ MAIN                                                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  First Name *               Last Name *                         │
+│  ┌──────────────────────┐   ┌──────────────────────┐           │
+│  │ John                 │   │ Smith                │           │
+│  └──────────────────────┘   └──────────────────────┘           │
+│                                                                 │
+│  Organization *             Sales Rep *                         │
+│  ┌──────────────────────┐   ┌──────────────────────┐           │
+│  │ Sysco Foods       ▼  │   │ Jane Doe          ▼  │           │
+│  └──────────────────────┘   └──────────────────────┘           │
+│  Contact must belong to an organization                         │
+│                                                                 │
+│  Primary Email (optional)   Primary Phone (optional)            │
+│  ┌──────────────────────┐   ┌──────────────────────┐           │
+│  │ john@sysco.com       │   │ (555) 123-4567       │           │
+│  └──────────────────────┘   └──────────────────────┘           │
+│  Main business email        Main contact number                 │
+│                                                                 │
+├─────────────────────────────────────────────────────────────────┤
+│ MORE                                                            │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  Title (optional)           Department (optional)               │
+│  ┌──────────────────────┐   ┌──────────────────────┐           │
+│  │ VP of Procurement    │   │ Purchasing           │           │
+│  └──────────────────────┘   └──────────────────────┘           │
+│                                                                 │
+│  LinkedIn URL (optional)                                        │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │ https://linkedin.com/in/johnsmith                       │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│  LinkedIn profile link                                          │
+│                                                                 │
+│  Notes (optional)                                               │
+│  ┌─────────────────────────────────────────────────────────┐   │
+│  │ Key decision maker for seafood category.                │   │
+│  │ Prefers email over phone.                               │   │
+│  │                                                         │   │
+│  └─────────────────────────────────────────────────────────┘   │
+│  Internal notes about this contact                              │
+│                                                                 │
+├─────────────────────────────────────────────────────────────────┤
+│ [🗑️ Delete]                              [Cancel]   [Save ▼]    │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+### Edit Mode Header Pattern
+
+For edit forms, show record context above the form:
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  👤  John Smith                                                 │
+│      VP of Procurement · Sysco Foods                            │
+├─────────────────────────────────────────────────────────────────┤
+│  [MAIN]  [MORE]                                                 │
+│  ...                                                            │
+```
+
+```typescript
+// src/components/admin/form/FormHeader.tsx
+
+interface FormHeaderProps {
+  avatar?: string;
+  title: string;
+  subtitle?: string;
+  icon?: React.ReactNode;
+}
+
+export const FormHeader = ({ avatar, title, subtitle, icon }: FormHeaderProps) => (
+  <div className="flex items-center gap-4 pb-6 border-b border-border">
+    {/* Avatar or icon */}
+    <div className="h-12 w-12 rounded-full bg-muted flex items-center justify-center overflow-hidden">
+      {avatar ? (
+        <img src={avatar} alt="" className="h-full w-full object-cover" />
+      ) : (
+        icon || <User className="h-6 w-6 text-muted-foreground" />
+      )}
+    </div>
+
+    {/* Title and subtitle */}
+    <div>
+      <h2 className="text-lg font-semibold text-foreground">{title}</h2>
+      {subtitle && (
+        <p className="text-sm text-muted-foreground">{subtitle}</p>
+      )}
+    </div>
+  </div>
+);
+```
+
+### Layout Rules Summary Table
+
+| Rule | Implementation | Rationale |
+|------|----------------|-----------|
+| 2-column grid base | `grid-cols-1 md:grid-cols-2` | Balanced, not cramped |
+| 24px column gap | `gap-x-6` | Room to breathe |
+| 20px row gap | `gap-y-5` | Clear field separation |
+| Full-width URLs | `col-span-2` | Accommodate long URLs |
+| Full-width textareas | `col-span-2` | Wrapping text needs width |
+| Pair names | First + Last in same row | Natural grouping |
+| Pair contact methods | Email + Phone in same row | Contact info block |
+| Destructive left | Delete button far left | Visual isolation |
+| Primary right | Save button far right | Consistent action position |
+| 44px touch targets | `h-11`, `min-h-[44px]` | WCAG AA compliance |
+| Section dividers | Uppercase label + `h-px bg-border` | Clear visual hierarchy |
+
+---
+
 ## Research References
 
 Based on CRM industry best practices research:
