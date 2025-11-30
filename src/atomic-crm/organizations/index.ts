@@ -11,8 +11,6 @@ export { ParentOrganizationInput } from "./ParentOrganizationInput";
 export { BranchLocationsSection } from "./BranchLocationsSection";
 export { HierarchyBreadcrumb } from "./HierarchyBreadcrumb";
 export { ParentOrganizationSection } from "./ParentOrganizationSection";
-export { OrganizationHierarchyTab } from "./OrganizationHierarchyTab";
-
 // Export badge components for reuse across views
 export { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
 export type { OrganizationType, PriorityLevel } from "./OrganizationBadges";

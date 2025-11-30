@@ -12,10 +12,10 @@
  * DuplicateOrgWarningDialog appears to let the user confirm or change the name.
  */
 import { useState, useCallback, useRef } from "react";
-import { CreateBase, Form, useGetIdentity, useGetList, useCreate, useRedirect, useNotify } from "ra-core";
+import { CreateBase, Form, useGetList, useCreate, useRedirect, useNotify } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
-import { SaveButton } from "@/components/admin/form";
+import { SaveButton, FormLoadingSkeleton } from "@/components/admin/form";
 import { FormToolbar } from "@/components/admin/simple-form";
 import { useLocation } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
@@ -24,6 +24,7 @@ import { OrganizationInputs } from "./OrganizationInputs";
 import { organizationSchema } from "../validation/organizations";
 import { useDuplicateOrgCheck } from "./useDuplicateOrgCheck";
 import { DuplicateOrgWarningDialog } from "./DuplicateOrgWarningDialog";
+import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
 import type { Database } from "@/types/database.generated";
 
 type Segment = Database["public"]["Tables"]["segments"]["Row"];
@@ -84,11 +85,13 @@ const DuplicateCheckSaveButton = ({
 };
 
 const OrganizationCreate = () => {
-  const { identity } = useGetIdentity();
   const location = useLocation();
   const [create] = useCreate();
   const redirect = useRedirect();
   const notify = useNotify();
+
+  // Smart defaults hook for async identity handling
+  const { defaults: smartDefaults, isLoading: isLoadingDefaults } = useSmartDefaults();
 
   // Duplicate check hook for soft warning
   const { checkForDuplicate, duplicateOrg, clearDuplicate, bypassDuplicate, isChecking } =
@@ -115,13 +118,24 @@ const OrganizationCreate = () => {
   // Read parent_organization_id from router state (set by "Add Branch" button)
   const parentOrgId = (location.state as any)?.record?.parent_organization_id;
 
+  // Show loading skeleton while identity loads
+  if (isLoadingDefaults) {
+    return (
+      <div className="bg-muted px-6 py-6">
+        <div className="max-w-4xl mx-auto create-form-card">
+          <FormLoadingSkeleton rows={4} />
+        </div>
+      </div>
+    );
+  }
+
   // Generate defaults from schema, then merge with runtime values
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
   // Use .partial() to make all fields optional during default generation
   // This extracts fields with .default() (organization_type, priority)
   const formDefaults = {
     ...organizationSchema.partial().parse({}),
-    sales_id: identity?.id,
+    ...smartDefaults,
     segment_id: unknownSegmentId ?? undefined,
     ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch
   };
