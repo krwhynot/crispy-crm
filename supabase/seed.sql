@@ -1849,7 +1849,7 @@ VALUES
   -- CLOSED_WON (7 opportunities)
   -- ========================================
   (37, 'McCRUM Fries - Applebees National', 1, 24, 11, 2, 2,
-   'closed_won', 'won', 'high', ARRAY[48]::bigint[], CURRENT_DATE - INTERVAL '10 days',
+   'closed_won', 'active', 'high', ARRAY[48]::bigint[], CURRENT_DATE - INTERVAL '10 days',
    'National fry contract secured - 3 year agreement',
    NULL, NULL,
    'Lamb Weston (lost)', 'Price, quality, delivery reliability - all met',
@@ -1857,7 +1857,7 @@ VALUES
    NOW() - INTERVAL '90 days', NOW() - INTERVAL '10 days'),
 
   (38, 'SWAP Oat Milk - Panera Regional', 2, 27, 17, 3, 3,
-   'closed_won', 'won', 'medium', ARRAY[53]::bigint[], CURRENT_DATE - INTERVAL '5 days',
+   'closed_won', 'active', 'medium', ARRAY[53]::bigint[], CURRENT_DATE - INTERVAL '5 days',
    'Midwest region oat milk supply - pilot program',
    NULL, NULL,
    'Oatly (lost)', 'Clean label, price point, supply reliability - all met',
@@ -1865,7 +1865,7 @@ VALUES
    NOW() - INTERVAL '60 days', NOW() - INTERVAL '5 days'),
 
   (39, 'Rapid Rasoi - Aramark Campuses', 3, 35, 12, 3, 3,
-   'closed_won', 'won', 'high', ARRAY[71]::bigint[], CURRENT_DATE - INTERVAL '15 days',
+   'closed_won', 'active', 'high', ARRAY[71]::bigint[], CURRENT_DATE - INTERVAL '15 days',
    'Campus Indian station program - 25 universities',
    NULL, NULL,
    'Deep Foods (lost)', 'Authenticity, training support, pricing - all met',
@@ -1873,7 +1873,7 @@ VALUES
    NOW() - INTERVAL '120 days', NOW() - INTERVAL '15 days'),
 
   (40, 'Lakeview Dips - Sodexo National', 4, 36, 13, 4, 4,
-   'closed_won', 'won', 'medium', ARRAY[73]::bigint[], CURRENT_DATE - INTERVAL '20 days',
+   'closed_won', 'active', 'medium', ARRAY[73]::bigint[], CURRENT_DATE - INTERVAL '20 days',
    'National dip contract for campus retail',
    NULL, NULL,
    'Dean''s (lost)', 'Clean label, portion control, price - all met',
@@ -1881,7 +1881,7 @@ VALUES
    NOW() - INTERVAL '100 days', NOW() - INTERVAL '20 days'),
 
   (41, 'Frico Parmesan - Sysco National', 5, 10, NULL, 4, 4,
-   'closed_won', 'won', 'high', ARRAY[20]::bigint[], CURRENT_DATE - INTERVAL '8 days',
+   'closed_won', 'active', 'high', ARRAY[20]::bigint[], CURRENT_DATE - INTERVAL '8 days',
    'National Parmesan distribution agreement',
    NULL, NULL,
    'BelGioioso (incumbent, retained share)', 'Italian origin, pricing, logistics - all met',
@@ -1889,7 +1889,7 @@ VALUES
    NOW() - INTERVAL '75 days', NOW() - INTERVAL '8 days'),
 
   (42, 'Anchor - GFS Regional', 6, 13, NULL, 5, 5,
-   'closed_won', 'won', 'medium', ARRAY[26]::bigint[], CURRENT_DATE - INTERVAL '12 days',
+   'closed_won', 'active', 'medium', ARRAY[26]::bigint[], CURRENT_DATE - INTERVAL '12 days',
    'Midwest butter and cream distribution',
    NULL, NULL,
    'Kerrygold (lost on price)', 'Quality, grass-fed story, margin - all met',
@@ -1897,7 +1897,7 @@ VALUES
    NOW() - INTERVAL '85 days', NOW() - INTERVAL '12 days'),
 
   (43, 'Custom Culinary - HCA National', 9, 33, 11, 6, 6,
-   'closed_won', 'won', 'critical', ARRAY[67]::bigint[], CURRENT_DATE - INTERVAL '25 days',
+   'closed_won', 'active', 'critical', ARRAY[67]::bigint[], CURRENT_DATE - INTERVAL '25 days',
    'Healthcare soup base standardization program',
    NULL, NULL,
    'Minor''s (incumbent, partially retained)', 'Sodium levels, cost per serving, support - all met',
@@ -2006,7 +2006,7 @@ VALUES
 
   -- 55: FAST CLOSE - moved through stages in 7 days
   (55, 'Anchor Express - Quick Win', 6, 20, 10, 5, 5,
-   'closed_won', 'won', 'critical', ARRAY[40]::bigint[], CURRENT_DATE - INTERVAL '2 days',
+   'closed_won', 'active', 'critical', ARRAY[40]::bigint[], CURRENT_DATE - INTERVAL '2 days',
    'FAST CLOSE: Entire sales cycle in 7 days - tests velocity metrics',
    NULL, NULL,
    'Kerrygold (lost)', 'Emergency replacement needed - fast decision',
