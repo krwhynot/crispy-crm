@@ -12,6 +12,7 @@
 import { BuildingIcon, Users, Target, StickyNote, ShieldCheck } from "lucide-react";
 import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
+import { OrganizationDetailSkeleton } from "@/components/ui/list-skeleton";
 import { OrganizationDetailsTab } from "./slideOverTabs/OrganizationDetailsTab";
 import { OrganizationContactsTab } from "./slideOverTabs/OrganizationContactsTab";
 import { OrganizationOpportunitiesTab } from "./slideOverTabs/OrganizationOpportunitiesTab";
@@ -102,6 +103,7 @@ export function OrganizationSlideOver({
       onModeToggle={onModeToggle}
       tabs={tabs}
       recordRepresentation={recordRepresentation}
+      loadingSkeleton={OrganizationDetailSkeleton}
     />
   );
 }
