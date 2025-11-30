@@ -20,127 +20,145 @@ The Dashboard V3 module has been **significantly improved** since the initial au
 
 ---
 
-## 1. Critical Violation: Duplicate Schema Definitions
+## 1. Schema Consolidation Status: ✅ RESOLVED
 
-### Finding
+### Previous Finding
 
-Two separate activity validation schemas exist with **different structures**:
+Two separate activity validation schemas existed with different structures.
 
-| Location | Schema | Field Names | Activity Types |
-|----------|--------|-------------|----------------|
-| `src/atomic-crm/validation/activities.ts` | `activitiesSchema` | `activity_type`, `type` (snake_case) | `"call"`, `"email"` (lowercase) |
-| `src/atomic-crm/dashboard/v3/validation/activitySchema.ts` | `activityLogSchema` | `activityType`, `outcome` (camelCase) | `"Call"`, `"Email"` (Title Case) |
+### Current State (Verified 2025-11-29)
 
-### Impact
-
-- **Data inconsistency**: Dashboard submits Title Case values, requires mapping via `ACTIVITY_TYPE_MAP`
-- **Type drift risk**: Changes to one schema don't propagate to the other
-- **Maintenance burden**: Two places to update when business rules change
-- **API boundary violation**: Validation split between API layer and component layer
-
-### Evidence
+**The duplicate has been removed.** All activity validation now flows through `validation/activities.ts`:
 
 ```typescript
-// dashboard/v3/validation/activitySchema.ts (lines 67-74)
-export const activityLogSchema = z.object({
-  activityType: activityTypeSchema,  // "Call", "Email", etc.
+// validation/activities.ts - SINGLE SOURCE OF TRUTH
+export const quickLogFormSchema = z.object({
+  activityType: activityDisplayTypeSchema,  // Title Case for UI
   outcome: activityOutcomeSchema,
   date: z.date().default(() => new Date()),
-  // ...
+  // ... full validation with superRefine
 });
 
-// validation/activities.ts (lines 69-76)
-const baseActivitiesSchema = z.object({
-  activity_type: activityTypeSchema.default("interaction"),
-  type: interactionTypeSchema.default("call"),  // "call", "email", etc.
+// MAPPING provided for API conversion
+export const ACTIVITY_TYPE_TO_API: Record<string, string> = {
+  Call: "call",
+  Email: "email",
   // ...
-});
+};
 ```
 
-### Recommended Fix
+**Evidence of proper usage in QuickLogForm.tsx:**
+```typescript
+import {
+  activityLogSchema,  // Now from canonical location
+  type ActivityLogInput,
+  ACTIVITY_TYPE_MAP,
+} from "@/atomic-crm/validation/activities";
+```
 
-**CONSOLIDATE** to single schema in `src/atomic-crm/validation/activities.ts`:
+### Resolution
 
-1. Delete `dashboard/v3/validation/activitySchema.ts`
-2. Add a transform to `activitiesSchema` for UI-friendly display names
-3. Import schema from canonical location in `QuickLogForm.tsx`
+- ~~`dashboard/v3/validation/activitySchema.ts`~~ - DELETED
+- All imports updated to use `@/atomic-crm/validation/activities`
+- UI ↔ API mapping via `ACTIVITY_TYPE_TO_API` and `ACTIVITY_TYPE_FROM_API`
 
 ---
 
-## 2. Manual Type Definitions vs. Zod Inference
+## 2. Type Definitions: ✅ RESOLVED
 
-### Finding
+### Previous Finding
 
-`src/atomic-crm/dashboard/v3/types.ts` contains **manual interface definitions** that duplicate what Zod should infer:
+Manual type definitions in `types.ts` duplicated Zod inference.
+
+### Current State (Verified 2025-11-29)
+
+**Types are now properly derived from Zod schemas:**
 
 ```typescript
-// types.ts - Manual definitions (VIOLATION)
-export type ActivityType = "Call" | "Email" | "Meeting" | "Follow-up" | "Note";
-export interface ActivityLog {
-  activityType: ActivityType;
-  outcome: ActivityOutcome;
-  date: Date;
-  // ...
+// dashboard/v3/types.ts - NOW USES ZOD INFERENCE
+import type {
+  ActivityLogInput as ActivityLog,
+  QuickLogFormInput,
+} from "@/atomic-crm/validation/activities";
+import {
+  activityDisplayTypeSchema,
+  activityOutcomeSchema,
+} from "@/atomic-crm/validation/activities";
+
+// Re-export canonical activity types for backward compatibility
+export type { ActivityLog };
+export type ActivityLogInput = QuickLogFormInput;
+
+// Activity types derived from Zod schema (Title Case for UI)
+export type ActivityType = z.infer<typeof activityDisplayTypeSchema>;
+export type ActivityOutcome = z.infer<typeof activityOutcomeSchema>;
+```
+
+**The file header documents the consolidation:**
+```typescript
+/**
+ * SCHEMA CONSOLIDATION NOTE:
+ * - Activity types are now derived from Zod schemas in validation/activities.ts
+ * - ActivityLog and ActivityType are re-exported from the canonical schema
+ * - UI-specific types (TaskItem, PrincipalPipelineRow) remain here
+ */
+```
+
+### Status
+
+- ✅ All 13 activity types now correctly referenced
+- ✅ `z.infer<>` used for type derivation
+- ✅ Clear separation: Zod schemas for validation, interfaces for UI-only types
+
+---
+
+## 3. `any` Type Usage: ⚠️ PARTIALLY RESOLVED
+
+### Previous Finding
+
+Production hooks used `any` types extensively.
+
+### Current State (Verified 2025-11-29)
+
+**Significant improvement** - most `any` types replaced with proper interfaces:
+
+| File | Previous | Current |
+|------|----------|---------|
+| `usePrincipalPipeline.ts` | `(row: any)` | `(row: PipelineSummaryRow)` ✅ |
+| `useMyTasks.ts` | `(task: any)` | `(task: TaskApiResponse)` ✅ |
+| `useKPIMetrics.ts` | inline types | Inline types (acceptable) ✅ |
+
+**Remaining `any` usage:**
+```typescript
+// usePrincipalPipeline.ts:43 - Filter object
+const queryFilter: Record<string, any> = {};  // ⚠️ Should be typed
+```
+
+### Recommendation
+
+Replace with proper filter type:
+```typescript
+interface PipelineFilter {
+  sales_id?: number;
 }
-
-// activitySchema.ts - Zod inference (CORRECT)
-export type ActivityLogInput = z.input<typeof activityLogSchema>;
-export type ActivityLog = z.output<typeof activityLogSchema>;
+const queryFilter: PipelineFilter = {};
 ```
 
-### Impact
+### Status
 
-- **5 activity types** in `types.ts` vs **13 activity types** in schema
-- Types can drift independently
-- Changes to schema don't update manual types
-
-### Correct Pattern
-
-```typescript
-// Single source of truth - only Zod inference
-export type ActivityType = z.infer<typeof activityTypeSchema>;
-export type ActivityLog = z.output<typeof activityLogSchema>;
-```
+- ✅ 5 of 6 `any` usages resolved
+- ⚠️ 1 remaining in filter objects (low risk)
 
 ---
 
-## 3. `any` Type Usage in Production Code
+## 4. Compliant Pattern: Form Defaults from Schema ✅
 
-### Finding
-
-Production hooks use `any` types instead of proper Zod-inferred types:
-
-| File | Line | Context |
-|------|------|---------|
-| `usePrincipalPipeline.ts` | 43, 66, 71 | `queryFilter: Record<string, any>`, `(r: any)`, `(row: any)` |
-| `usePrincipalOpportunities.ts` | 76 | `data.map((opp: any) => ...)` |
-| `useMyTasks.ts` | 63 | `tasksData.map((task: any) => ...)` |
-| `useKPIMetrics.ts` | 148 | `(opp: { stage: string; ... })` - inline type (better but not ideal) |
-
-### Test Files (Acceptable)
-
-Test files in `__tests__/` directories use `any` extensively for mocks - this is **acceptable** for test code.
-
-### Recommended Fix
-
-Create typed response interfaces from database schema or Zod:
-
-```typescript
-// Instead of (task: any)
-import type { Task } from "@/atomic-crm/validation/task";
-const mappedTasks: TaskItem[] = tasksData.map((task: Task) => { ... });
-```
-
----
-
-## 4. Compliant Pattern: Form Defaults from Schema
-
-### Finding (POSITIVE)
+### Status: VERIFIED COMPLIANT
 
 `QuickLogForm.tsx` correctly derives form defaults from Zod schema:
 
 ```typescript
-// QuickLogForm.tsx (lines 136-142)
+// QuickLogForm.tsx (lines 50-56)
 const defaultValues = useMemo(() => {
   const schemaDefaults = activityLogSchema.partial().parse({});
   if (initialDraft) {
@@ -150,70 +168,120 @@ const defaultValues = useMemo(() => {
 }, [initialDraft]);
 ```
 
-**This follows the Engineering Constitution correctly.**
+**This follows the Engineering Constitution: "Form state from schema via `.partial().parse({})`"**
 
 ---
 
-## 5. Sample Status Duplication
+## 5. Task Schema Excellence
 
-### Finding
+### Verified (2025-11-29)
 
-`sampleStatusSchema` is defined in BOTH locations:
+The task validation schema (`validation/task.ts`) demonstrates best practices:
 
 ```typescript
-// validation/activities.ts (lines 33-38)
-export const sampleStatusSchema = z.enum([
-  "sent", "received", "feedback_pending", "feedback_received",
-]);
+export const taskSchema = z.object({
+  id: idSchema.optional(),
+  title: z.string().min(1, "Title is required").max(500, "Title too long"),
+  description: z.string().max(2000, "Description too long").nullable().optional(),
+  due_date: z.string().min(1, "Due date is required"),
+  priority: priorityLevelSchema.default("medium"),
+  type: taskTypeSchema,
+  sales_id: idSchema, // Required: task must be assigned to a sales rep
+  // ... audit fields
+});
 
-// dashboard/v3/validation/activitySchema.ts (lines 33-38)
-export const sampleStatusSchema = z.enum([
-  "sent", "received", "feedback_pending", "feedback_received",
-]);
+// Form defaults derived from schema
+export const getTaskDefaultValues = () =>
+  taskSchema.partial().parse({
+    completed: false,
+    priority: "medium" as const,
+    type: "Call" as const,
+    due_date: new Date().toISOString().slice(0, 10),
+  });
 ```
 
-Both export `SAMPLE_STATUS_OPTIONS` arrays with identical values.
+---
+
+## 6. Error Message Quality
+
+### Status: GOOD
+
+Custom error messages are user-friendly and specific:
+
+**QuickLogForm validation messages:**
+- `"Notes are required"`
+- `"Select a contact or organization before logging"`
+- `"Follow-up date is required when creating a follow-up task"`
+- `"Sample status is required for sample activities"`
+
+**Task schema messages:**
+- `"Title is required"`
+- `"Title too long"` (max 500)
+- `"Description too long"` (max 2000)
+- `"Due date is required"`
+
+### Recommendation for Improvement
+
+Add `.describe()` for better IDE/documentation support:
+```typescript
+notes: z.string()
+  .min(1, "Notes are required")
+  .describe("Summary of the customer interaction")
+```
 
 ---
 
-## Remediation Plan
+## 7. Runtime vs Compile-Time Validation
 
-### Priority 1: Delete Duplicate Schema (HIGH)
+### Current Pattern
 
-1. Remove `src/atomic-crm/dashboard/v3/validation/activitySchema.ts`
-2. Update `QuickLogForm.tsx` imports to use `@/atomic-crm/validation/activities`
-3. Add a `quickLogSchema` variant in `activities.ts` for the form's UI-specific needs
+| Location | Validation Type | Status |
+|----------|-----------------|--------|
+| QuickLogForm submission | Runtime (Zod) | ✅ |
+| Activities API create | Runtime (Zod) | ✅ |
+| KPI metrics response | Compile-time only | ⚠️ Acceptable for MVP |
+| Pipeline response | Compile-time only | ⚠️ Acceptable for MVP |
+| Tasks response | Compile-time only | ⚠️ Acceptable for MVP |
 
-### Priority 2: Replace Manual Types (MEDIUM)
+### Assessment
 
-1. Delete manual types in `dashboard/v3/types.ts` that duplicate Zod inference
-2. Import types from validation schemas:
-   ```typescript
-   import type { ActivityLog } from "@/atomic-crm/validation/activities";
-   ```
-3. Keep UI-specific interfaces (props, component state) in `types.ts`
+The current approach relies on Supabase's schema enforcement and TypeScript's compile-time checks. This is acceptable for MVP due to:
+- Supabase enforces schema at database level
+- TypeScript catches type errors at build time
+- Defensive coding with optional chaining handles edge cases
 
-### Priority 3: Eliminate `any` in Hooks (MEDIUM)
+### Post-MVP Recommendation
 
-1. Create typed API response interfaces
-2. Replace `any` with proper types in hooks
-3. Use `z.infer<>` for database entity types
+Add optional runtime validation for critical paths using `safeParse()`.
 
 ---
 
-## Metrics
+## Updated Metrics
 
-| Metric | Current | Target |
-|--------|---------|--------|
-| Duplicate schema files | 1 | 0 |
-| Manual type defs duplicating Zod | ~5 | 0 |
-| `any` types in production hooks | 6 | 0 |
-| Schema-derived form defaults | 100% | 100% (compliant) |
+| Metric | Initial | Current | Target |
+|--------|---------|---------|--------|
+| Duplicate schema files | 1 | **0** ✅ | 0 |
+| Manual type defs duplicating Zod | ~5 | **0** ✅ | 0 |
+| `any` types in production hooks | 6 | **1** ⚠️ | 0 |
+| Schema-derived form defaults | 100% | **100%** ✅ | 100% |
+
+---
+
+## Summary
+
+The Dashboard V3 validation patterns have been **significantly improved**:
+
+1. ✅ Single source of truth established in `validation/activities.ts`
+2. ✅ Types derived from Zod schemas via `z.infer<>`
+3. ✅ Form defaults use `schema.partial().parse({})`
+4. ✅ Error messages are user-friendly
+5. ⚠️ One remaining `any` in filter objects (low risk)
+6. ⚠️ No runtime validation of API responses (acceptable for MVP)
 
 ---
 
 ## References
 
 - Engineering Constitution: `docs/claude/engineering-constitution.md`
-- Validation Patterns: `.claude/skills/engineering-constitution/resources/validation-patterns.md`
-- Single Source of Truth Principle: Core Principle #3
+- Schema Consolidation: `docs/audits/schema-consolidation-opportunities.md`
+- Validation Remediation: `docs/audits/validation-remediation-complete.md`

@@ -7,6 +7,14 @@ import type { TaskItem, TaskStatus, TaskApiResponse } from "../types";
 // Stable empty array to avoid new reference creation on each render
 const EMPTY_TASKS: TaskItem[] = [];
 
+/**
+ * useMyTasks - Hook for managing current user's tasks
+ *
+ * PERFORMANCE OPTIMIZATIONS (Kanban Audit):
+ * 1. AbortController for cleanup - prevents state updates on unmounted components
+ * 2. Optimistic updates with rollback for all operations (complete, snooze, delete)
+ * 3. Uses cached salesId from CurrentSaleProvider context
+ */
 export function useMyTasks() {
   const dataProvider = useDataProvider();
   const { salesId, loading: salesLoading } = useCurrentSale();
@@ -17,28 +25,41 @@ export function useMyTasks() {
   // Track previous salesId to avoid unnecessary state updates
   const prevSalesIdRef = useRef<number | null>(null);
 
+  // Ref to track tasks for callbacks without causing recreations
+  const tasksRef = useRef<TaskItem[]>(tasks);
   useEffect(() => {
+    tasksRef.current = tasks;
+  }, [tasks]);
+
+  useEffect(() => {
+    // AbortController for cleanup - prevents state updates on unmounted component
+    const abortController = new AbortController();
+    let isMounted = true;
+
     const fetchTasks = async () => {
       // Manage loading state properly to avoid race conditions
       if (salesLoading) {
-        setLoading((prev) => prev ? prev : true); // Only update if not already loading
+        if (isMounted) setLoading((prev) => prev ? prev : true);
         return;
       }
 
       if (!salesId) {
         // Only clear tasks if we previously had a salesId
-        if (prevSalesIdRef.current !== null) {
+        if (prevSalesIdRef.current !== null && isMounted) {
           setTasks(EMPTY_TASKS);
           prevSalesIdRef.current = null;
         }
-        setLoading(false);
+        if (isMounted) setLoading(false);
         return;
       }
 
       prevSalesIdRef.current = salesId;
 
       try {
-        setLoading(true);
+        if (isMounted) setLoading(true);
+
+        // Check if aborted before making request
+        if (abortController.signal.aborted) return;
 
         // Fetch tasks with related entities expanded
         const { data: tasksData } = await dataProvider.getList("tasks", {
@@ -53,6 +74,9 @@ export function useMyTasks() {
             expand: ["opportunity", "contact", "organization"],
           },
         });
+
+        // Check if aborted before updating state
+        if (abortController.signal.aborted || !isMounted) return;
 
         // Map to TaskItem format with proper timezone handling
         const now = new Date();
@@ -113,33 +137,56 @@ export function useMyTasks() {
           };
         });
 
-        setTasks(mappedTasks);
+        if (isMounted) setTasks(mappedTasks);
       } catch (err) {
+        // Don't log or set error if aborted
+        if (abortController.signal.aborted) return;
         console.error("Failed to fetch tasks:", err);
-        setError(err as Error);
+        if (isMounted) setError(err as Error);
       } finally {
-        setLoading(false);
+        if (isMounted) setLoading(false);
       }
     };
 
     fetchTasks();
+
+    // Cleanup function - abort and mark unmounted
+    return () => {
+      isMounted = false;
+      abortController.abort();
+    };
   }, [dataProvider, salesId, salesLoading]);
 
-  const completeTask = async (taskId: number) => {
-    try {
-      await dataProvider.update("tasks", {
-        id: taskId,
-        data: { completed: true, completed_at: new Date().toISOString() },
-        previousData: tasks.find((t) => t.id === taskId) || {},
-      });
+  /**
+   * Complete a task
+   * OPTIMISTIC UPDATE (Kanban Audit): Now uses optimistic UI with rollback
+   * Previously waited for API response before updating UI
+   */
+  const completeTask = useCallback(
+    async (taskId: number) => {
+      const task = tasksRef.current.find((t) => t.id === taskId);
+      if (!task) return;
 
-      // Remove from local state
+      // Optimistic UI update - immediately remove task
       setTasks((prev) => prev.filter((t) => t.id !== taskId));
-    } catch (err) {
-      console.error("Failed to complete task:", err);
-      throw err; // Re-throw so UI can handle
-    }
-  };
+
+      try {
+        await dataProvider.update("tasks", {
+          id: taskId,
+          data: { completed: true, completed_at: new Date().toISOString() },
+          previousData: task,
+        });
+      } catch (err) {
+        console.error("Failed to complete task:", err);
+        // Rollback optimistic update on failure - add task back in sorted position
+        setTasks((prev) =>
+          [...prev, task].sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
+        );
+        throw err; // Re-throw so UI can handle
+      }
+    },
+    [dataProvider]
+  );
 
   /**
    * Calculate task status based on due date relative to today
@@ -167,10 +214,11 @@ export function useMyTasks() {
   /**
    * Snooze a task by 1 day (to end of following day)
    * Uses optimistic UI update for immediate feedback
+   * Uses tasksRef pattern to avoid callback recreation on task changes
    */
   const snoozeTask = useCallback(
     async (taskId: number) => {
-      const task = tasks.find((t) => t.id === taskId);
+      const task = tasksRef.current.find((t) => t.id === taskId);
       if (!task) return;
 
       // Calculate new due date: end of the following day (timezone-aware)
@@ -199,16 +247,17 @@ export function useMyTasks() {
         throw err; // Re-throw so UI can handle
       }
     },
-    [tasks, dataProvider, calculateStatus]
+    [dataProvider, calculateStatus]
   );
 
   /**
    * Delete a task
    * Uses optimistic UI update for immediate feedback
+   * Uses tasksRef pattern to avoid callback recreation on task changes
    */
   const deleteTask = useCallback(
     async (taskId: number) => {
-      const task = tasks.find((t) => t.id === taskId);
+      const task = tasksRef.current.find((t) => t.id === taskId);
       if (!task) return;
 
       // Optimistic UI update - immediately remove task
@@ -226,7 +275,7 @@ export function useMyTasks() {
         throw err; // Re-throw so UI can handle
       }
     },
-    [tasks, dataProvider]
+    [dataProvider]
   );
 
   /**
@@ -242,6 +291,7 @@ export function useMyTasks() {
   /**
    * Update task due date (for Kanban drag-drop)
    * Uses optimistic UI update for immediate feedback
+   * Uses tasksRef pattern to avoid callback recreation on task changes
    *
    * @param taskId - The task ID to update
    * @param newDueDate - The new due date
@@ -249,7 +299,7 @@ export function useMyTasks() {
    */
   const updateTaskDueDate = useCallback(
     async (taskId: number, newDueDate: Date) => {
-      const task = tasks.find((t) => t.id === taskId);
+      const task = tasksRef.current.find((t) => t.id === taskId);
       if (!task) return;
 
       const newStatus = calculateStatus(newDueDate);
@@ -278,7 +328,7 @@ export function useMyTasks() {
         throw err; // Re-throw so UI can handle
       }
     },
-    [tasks, dataProvider, calculateStatus]
+    [dataProvider, calculateStatus]
   );
 
   /**
