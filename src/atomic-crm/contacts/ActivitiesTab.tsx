@@ -1,4 +1,5 @@
-import { Check, Mail, Phone, Users, FileText, Target } from "lucide-react";
+import { useState } from "react";
+import { Check, Mail, Phone, Users, FileText, Target, Plus } from "lucide-react";
 import { useGetList, RecordContextProvider } from "ra-core";
 import { Link as RouterLink } from "react-router-dom";
 import { format } from "date-fns";
@@ -6,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ReferenceField } from "@/components/admin/reference-field";
+import { QuickLogActivityDialog } from "../activities";
 import type { ActivityRecord } from "../types";
 
 interface ActivitiesTabProps {
@@ -13,11 +15,16 @@ interface ActivitiesTabProps {
 }
 
 export const ActivitiesTab = ({ contactId }: ActivitiesTabProps) => {
-  const { data, isPending, error } = useGetList<ActivityRecord>("activities", {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const { data, isPending, error, refetch } = useGetList<ActivityRecord>("activities", {
     filter: { contact_id: contactId },
     sort: { field: "created_at", order: "DESC" },
     pagination: { page: 1, perPage: 50 },
   });
+
+  // Convert contactId to number for the dialog (handles both string and number)
+  const numericContactId = typeof contactId === "string" ? parseInt(contactId, 10) : contactId;
 
   if (isPending) {
     return (
@@ -41,10 +48,15 @@ export const ActivitiesTab = ({ contactId }: ActivitiesTabProps) => {
 
   return (
     <div className="space-y-4">
-      {/* Quick Log Activity button - placeholder for now */}
+      {/* Log Activity button - opens QuickLogActivityDialog pre-filled with contact */}
       <div className="flex justify-end">
-        <Button variant="outline" size="sm">
-          + Log Activity
+        <Button
+          variant="outline"
+          className="h-11 gap-2"
+          onClick={() => setIsDialogOpen(true)}
+        >
+          <Plus className="h-4 w-4" />
+          Log Activity
         </Button>
       </div>
 
@@ -57,6 +69,20 @@ export const ActivitiesTab = ({ contactId }: ActivitiesTabProps) => {
           ))}
         </div>
       )}
+
+      {/* Activity logging dialog - pre-fills contact */}
+      <QuickLogActivityDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        entityContext={{ contactId: numericContactId }}
+        config={{
+          enableDraftPersistence: false, // No drafts for slide-over context
+          showSaveAndNew: false, // Single activity at a time
+        }}
+        onSuccess={() => {
+          refetch(); // Refresh the activity list
+        }}
+      />
     </div>
   );
 };
