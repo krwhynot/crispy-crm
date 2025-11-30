@@ -1,18 +1,18 @@
 /**
  * Unified Keyboard Shortcut Manager
  *
- * CONSOLIDATION NOTE (2025-11-12):
- * This implementation replaces previous implementations:
- * - src/hooks/useKeyboardShortcuts.ts (deprecated)
- * - src/providers/KeyboardShortcutsProvider.tsx (deprecated)
+ * Architecture (2025-11-30):
+ * - This module provides a class-based KeyboardShortcutManager for dynamic registration
+ * - For React components, prefer using hooks from src/hooks/:
+ *   - useKeyboardShortcuts: Simple handler-based shortcuts (save, cancel, etc.)
+ *   - useListKeyboardNavigation: List navigation (arrows, enter, Cmd+N, Cmd+K)
+ * - KeyboardShortcutHints component in toolbar shows available shortcuts
  *
- * Key improvements:
+ * Key features:
  * - Single source of truth for shortcuts
  * - Map-based registry for dynamic registration
  * - Mac/Windows/Linux compatible
  * - Comprehensive input field protection
- *
- * Migration: Update imports from old paths to this module
  */
 
 /**
