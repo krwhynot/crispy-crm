@@ -49,9 +49,9 @@
 
 -- Clean up existing data (in correct order for FK constraints)
 -- Note: contact_organizations, contact_tags, contact_preferred_principals were deprecated/removed
-TRUNCATE TABLE "public"."organizationNotes" CASCADE;
-TRUNCATE TABLE "public"."contactNotes" CASCADE;
-TRUNCATE TABLE "public"."opportunityNotes" CASCADE;
+TRUNCATE TABLE "public"."organization_notes" CASCADE;
+TRUNCATE TABLE "public"."contact_notes" CASCADE;
+TRUNCATE TABLE "public"."opportunity_notes" CASCADE;
 TRUNCATE TABLE "public"."tasks" CASCADE;
 TRUNCATE TABLE "public"."activities" CASCADE;
 TRUNCATE TABLE "public"."opportunity_products" CASCADE;
@@ -1408,7 +1408,7 @@ VALUES
    'NZ grass-fed butter for signature dishes',
    'Send NZ grass-fed certification docs', CURRENT_DATE + INTERVAL '6 days',
    'Kerrygold, Plugra', 'Grass-fed certification, flavor profile, consistency',
-   ARRAY['premium', 'fine-dining', 'dairy']::text[], 'partner',
+   ARRAY['premium', 'fine-dining', 'dairy']::text[], 'referral',
    NOW() - INTERVAL '6 days', NOW()),
 
   (7, 'Custom Culinary - HCA Healthcare', 9, 33, 11, 6, 6,
@@ -1494,7 +1494,7 @@ VALUES
    'BBQ jackfruit for campus sustainability initiatives',
    'Prepare campus sustainability case study', CURRENT_DATE + INTERVAL '5 days',
    'Upton''s Naturals, The Jackfruit Company', 'Texture, flavor absorption, student appeal',
-   ARRAY['plant-based', 'education', 'sustainability']::text[], 'partner',
+   ARRAY['plant-based', 'education', 'sustainability']::text[], 'referral',
    NOW() - INTERVAL '18 days', NOW()),
 
   (17, 'Rapid Rasoi Samosas - Hyatt', 3, 32, 12, 3, 3,
@@ -1545,7 +1545,7 @@ VALUES
    'Diced potatoes for loaded dishes - positive sample feedback',
    'Schedule pricing negotiation call', CURRENT_DATE + INTERVAL '2 days',
    'Simplot, Basic American', 'Price per case, dice size consistency, cook time',
-   ARRAY['casual-dining', 'potatoes', 'tex-mex']::text[], 'partner',
+   ARRAY['casual-dining', 'potatoes', 'tex-mex']::text[], 'referral',
    NOW() - INTERVAL '30 days', NOW()),
 
   (23, 'SWAP Cauliflower - Shake Shack', 2, 29, 19, 3, 3,
@@ -1577,7 +1577,7 @@ VALUES
    'Clarified butter for steaks - quality confirmed',
    'Submit final contract for legal review', CURRENT_DATE + INTERVAL '5 days',
    'Kerrygold, Plugra', 'Smoke point, flavor, grass-fed certification',
-   ARRAY['premium', 'fine-dining', 'butter']::text[], 'partner',
+   ARRAY['premium', 'fine-dining', 'butter']::text[], 'referral',
    NOW() - INTERVAL '26 days', NOW()),
 
   (27, 'Litehouse Blue Cheese - BWW', 8, 25, 13, 5, 5,
@@ -1612,7 +1612,7 @@ VALUES
    'Complete plant-based lineup presentation',
    'Prepare sustainability credentials deck', CURRENT_DATE + INTERVAL '3 days',
    'Beyond Meat, Gardein', 'Portfolio breadth, growth projections, marketing support',
-   ARRAY['distributor', 'plant-based', 'national']::text[], 'partner',
+   ARRAY['distributor', 'plant-based', 'national']::text[], 'referral',
    NOW() - INTERVAL '38 days', NOW()),
 
   (31, 'Rapid Rasoi Menu - GFS', 3, 13, NULL, 3, 3,
@@ -1679,7 +1679,7 @@ VALUES
    'Midwest region oat milk supply - pilot program',
    NULL, NULL,
    'Oatly (lost)', 'Clean label, price point, supply reliability - all met',
-   ARRAY['plant-based', 'fast-casual', 'regional']::text[], 'partner',
+   ARRAY['plant-based', 'fast-casual', 'regional']::text[], 'referral',
    NOW() - INTERVAL '60 days', NOW() - INTERVAL '5 days'),
 
   (39, 'Rapid Rasoi - Aramark Campuses', 3, 35, 12, 3, 3,
@@ -1719,7 +1719,7 @@ VALUES
    'Healthcare soup base standardization program',
    NULL, NULL,
    'Minor''s (incumbent, partially retained)', 'Sodium levels, cost per serving, support - all met',
-   ARRAY['healthcare', 'soup-bases', 'national']::text[], 'partner',
+   ARRAY['healthcare', 'soup-bases', 'national']::text[], 'referral',
    NOW() - INTERVAL '150 days', NOW() - INTERVAL '25 days'),
 
   -- ========================================
@@ -1762,7 +1762,7 @@ VALUES
    'Budget constraints - postponed plant-based initiative',
    NULL, NULL,
    'N/A - project postponed', 'Capital budget redirected to renovations',
-   ARRAY['hotels', 'plant-based']::text[], 'partner',
+   ARRAY['hotels', 'plant-based']::text[], 'referral',
    NOW() - INTERVAL '95 days', NOW() - INTERVAL '40 days'),
 
   (49, 'Litehouse - Hyatt National', 8, 32, 12, 5, 5,
@@ -2739,7 +2739,7 @@ SELECT setval(pg_get_serial_sequence('tasks', 'id'), 40, true);
 -- ========================================
 -- CONTACT NOTES (30)
 -- ========================================
-INSERT INTO "public"."contactNotes" (
+INSERT INTO "public"."contact_notes" (
   id, contact_id, text, sales_id, date, created_at, updated_at
 )
 VALUES
@@ -2775,12 +2775,12 @@ VALUES
   (30, 46, 'Nancy is procurement director - budget authority up to $500K.', 2, NOW() - INTERVAL '14 days', NOW() - INTERVAL '14 days', NOW());
 
 -- Reset sequence
-SELECT setval(pg_get_serial_sequence('"contactNotes"', 'id'), 30, true);
+SELECT setval(pg_get_serial_sequence('"contact_notes"', 'id'), 30, true);
 
 -- ========================================
 -- OPPORTUNITY NOTES (30)
 -- ========================================
-INSERT INTO "public"."opportunityNotes" (
+INSERT INTO "public"."opportunity_notes" (
   id, opportunity_id, text, sales_id, date, created_at, updated_at
 )
 VALUES
@@ -2816,12 +2816,12 @@ VALUES
   (30, 49, 'Hyatt lost on price. Competitor came in 15% below our floor.', 5, NOW() - INTERVAL '17 days', NOW() - INTERVAL '17 days', NOW());
 
 -- Reset sequence
-SELECT setval(pg_get_serial_sequence('"opportunityNotes"', 'id'), 30, true);
+SELECT setval(pg_get_serial_sequence('"opportunity_notes"', 'id'), 30, true);
 
 -- ========================================
 -- ORGANIZATION NOTES (15)
 -- ========================================
-INSERT INTO "public"."organizationNotes" (
+INSERT INTO "public"."organization_notes" (
   id, organization_id, text, sales_id, created_at, updated_at
 )
 VALUES
@@ -2842,7 +2842,7 @@ VALUES
   (15, 39, 'Levy operates premium concessions at 200+ venues worldwide.', 5, NOW() - INTERVAL '2 days', NOW());
 
 -- Reset sequence
-SELECT setval(pg_get_serial_sequence('"organizationNotes"', 'id'), 15, true);
+SELECT setval(pg_get_serial_sequence('organization_notes', 'id'), 15, true);
 
 -- ========================================
 -- VAULT SECRETS (for pg_cron + pg_net)
