@@ -20,19 +20,37 @@ import {
   createOpportunitiesHandler,
   createActivitiesHandler,
   createProductsHandler,
+  createTasksHandler,
+  createContactNotesHandler,
+  createOpportunityNotesHandler,
+  createOrganizationNotesHandler,
+  createTagsHandler,
+  createSalesHandler,
 } from "./handlers";
 import { applySearchParams, getDatabaseResource } from "./dataProviderUtils";
 
 /**
  * List of resources with composed handlers
  * Other resources fall back to base provider
+ *
+ * Resources use snake_case to match database table names
  */
 export const HANDLED_RESOURCES = [
+  // Core CRM resources
   "contacts",
   "organizations",
   "opportunities",
   "activities",
   "products",
+  // Task management
+  "tasks",
+  // Notes (3 types)
+  "contact_notes",
+  "opportunity_notes",
+  "organization_notes",
+  // Supporting resources
+  "tags",
+  "sales",
 ] as const;
 
 export type HandledResource = (typeof HANDLED_RESOURCES)[number];
@@ -66,18 +84,31 @@ type HandlerRegistry = Record<HandledResource, DataProvider>;
  * // Contacts → goes through contactsHandler (with soft delete, JSONB, etc.)
  * await composedProvider.getList('contacts', params);
  *
- * // Tags → falls back to base provider
- * await composedProvider.getList('tags', params);
+ * // Tasks → goes through tasksHandler (with completion timestamp, snooze handling)
+ * await composedProvider.getList('tasks', params);
+ *
+ * // Unknown resources → falls back to base provider
+ * await composedProvider.getList('unknown_resource', params);
  * ```
  */
 export function createComposedDataProvider(baseProvider: DataProvider): DataProvider {
   // Create composed handlers for each resource
   const handlers: HandlerRegistry = {
+    // Core CRM resources
     contacts: createContactsHandler(baseProvider),
     organizations: createOrganizationsHandler(baseProvider),
     opportunities: createOpportunitiesHandler(baseProvider),
     activities: createActivitiesHandler(baseProvider),
     products: createProductsHandler(baseProvider),
+    // Task management
+    tasks: createTasksHandler(baseProvider),
+    // Notes (3 types)
+    contact_notes: createContactNotesHandler(baseProvider),
+    opportunity_notes: createOpportunityNotesHandler(baseProvider),
+    organization_notes: createOrganizationNotesHandler(baseProvider),
+    // Supporting resources
+    tags: createTagsHandler(baseProvider),
+    sales: createSalesHandler(baseProvider),
   };
 
   /**

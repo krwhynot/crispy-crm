@@ -5,7 +5,7 @@
  * These callbacks are composed with the base DataProvider to add resource-specific behavior.
  *
  * Architecture:
- * - Factory pattern (createResourceCallbacks) for standard resources (activities, products, contacts, organizations)
+ * - Factory pattern (createResourceCallbacks) for standard resources
  * - Inline callbacks for complex resources (opportunities with RPC-based cascading deletes)
  * - Shared transforms (commonTransforms) for reusable data transformations
  *
@@ -69,3 +69,23 @@ export { COMPUTED_FIELDS as ACTIVITIES_COMPUTED_FIELDS } from "./activitiesCallb
 
 // Products callbacks
 export { productsCallbacks } from "./productsCallbacks";
+
+// Tasks callbacks
+export { tasksCallbacks } from "./tasksCallbacks";
+export { COMPUTED_FIELDS as TASKS_COMPUTED_FIELDS } from "./tasksCallbacks";
+
+// Notes callbacks (3 types via factory)
+export {
+  createNotesCallbacks,
+  contactNotesCallbacks,
+  opportunityNotesCallbacks,
+  organizationNotesCallbacks,
+  type NoteResourceType,
+} from "./notesCallbacks";
+
+// Tags callbacks
+export { tagsCallbacks } from "./tagsCallbacks";
+
+// Sales callbacks
+export { salesCallbacks } from "./salesCallbacks";
+export { COMPUTED_FIELDS as SALES_COMPUTED_FIELDS } from "./salesCallbacks";

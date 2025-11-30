@@ -1616,9 +1616,15 @@ Polish items and technical cleanup.
   - Health Dashboard: `src/atomic-crm/admin/HealthDashboard.tsx` - Route `/admin/health`
   - Error Boundaries: `src/components/ErrorBoundary.tsx` + updated `DashboardErrorBoundary.tsx`
   - DataProvider Integration: `unifiedDataProvider.ts` tracks request success/failure
+  - **DataProvider Sentry Integration (2025-11-29):** `withErrorLogging.ts` captures all non-validation errors to Sentry with:
+    - Breadcrumbs: `DataProvider.{method}({resource}) failed` with context
+    - Tags: `dataProviderMethod`, `resource`, `errorType` (supabase/unknown)
+    - Extras: Supabase error codes, details, hints
+  - **Composed Provider Architecture:** 11 resources now have dedicated handlers (contacts, organizations, opportunities, activities, products, tasks, contact_notes, opportunity_notes, organization_notes, tags, sales)
   - Alert Thresholds: <0.5% healthy (green), 0.5-1% degraded (yellow), >1% critical (red)
   - CSP Updated: `vite.config.ts` allows Sentry domains
   - Config: Set `VITE_SENTRY_DSN` in `.env` to enable (see `.env.example`)
+  - **Staging Migration:** Set `VITE_USE_COMPOSED_PROVIDER=true` to enable composed provider (default: unified provider)
 - **Acceptance Criteria:** Errors captured in Sentry; dashboard shows key metrics; alerts configured ✅
 - **Testability:** Integration: Trigger intentional error → appears in Sentry within 1 minute
 
