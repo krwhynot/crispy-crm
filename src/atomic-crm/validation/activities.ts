@@ -290,7 +290,7 @@ export type InteractionType = z.infer<typeof interactionTypeSchema>;
 
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where activities validation occurs
-export async function validateActivitiesForm(data: any): Promise<void> {
+export async function validateActivitiesForm(data: unknown): Promise<void> {
   try {
     // Parse and validate the data
     activitiesSchema.parse(data);
@@ -316,17 +316,17 @@ export async function validateActivitiesForm(data: any): Promise<void> {
 }
 
 // Create validation function matching expected signature from unifiedDataProvider
-export async function validateCreateActivities(data: any): Promise<void> {
+export async function validateCreateActivities(data: unknown): Promise<void> {
   return validateActivitiesForm(data);
 }
 
 // Update validation function matching expected signature from unifiedDataProvider
-export async function validateUpdateActivities(data: any): Promise<void> {
+export async function validateUpdateActivities(data: unknown): Promise<void> {
   return validateActivitiesForm(data);
 }
 
 // Validation function for engagements specifically
-export async function validateEngagementsForm(data: any): Promise<void> {
+export async function validateEngagementsForm(data: unknown): Promise<void> {
   try {
     // Parse and validate the data
     engagementsSchema.parse(data);
@@ -352,17 +352,17 @@ export async function validateEngagementsForm(data: any): Promise<void> {
 }
 
 // Create validation function for engagements
-export async function validateCreateEngagements(data: any): Promise<void> {
+export async function validateCreateEngagements(data: unknown): Promise<void> {
   return validateEngagementsForm(data);
 }
 
 // Update validation function for engagements
-export async function validateUpdateEngagements(data: any): Promise<void> {
+export async function validateUpdateEngagements(data: unknown): Promise<void> {
   return validateEngagementsForm(data);
 }
 
 // Validation function for interactions specifically
-export async function validateInteractionsForm(data: any): Promise<void> {
+export async function validateInteractionsForm(data: unknown): Promise<void> {
   try {
     // Parse and validate the data
     interactionsSchema.parse(data);
@@ -388,12 +388,12 @@ export async function validateInteractionsForm(data: any): Promise<void> {
 }
 
 // Create validation function for interactions
-export async function validateCreateInteractions(data: any): Promise<void> {
+export async function validateCreateInteractions(data: unknown): Promise<void> {
   return validateInteractionsForm(data);
 }
 
 // Update validation function for interactions
-export async function validateUpdateInteractions(data: any): Promise<void> {
+export async function validateUpdateInteractions(data: unknown): Promise<void> {
   return validateInteractionsForm(data);
 }
 
