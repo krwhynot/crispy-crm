@@ -86,16 +86,25 @@ function getInitials(firstName: string | null, lastName: string | null): string 
 }
 
 /**
- * Get full name from sales user data
+ * Get display name from sales user data
+ * Falls back to email username if no name, or "Team Member" as last resort
  */
-function getFullName(
+function getDisplayName(
   firstName: string | null,
-  lastName: string | null
+  lastName: string | null,
+  email: string | null
 ): string {
   if (firstName && lastName) {
     return `${firstName} ${lastName}`;
   }
-  return firstName || lastName || "Unknown User";
+  if (firstName || lastName) {
+    return firstName || lastName || "";
+  }
+  // Extract username from email (before @)
+  if (email) {
+    return email.split("@")[0];
+  }
+  return "Team Member";
 }
 
 interface ActivityFeedPanelProps {
@@ -114,7 +123,7 @@ export function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
 
   if (loading) {
     return (
-      <Card className="card-container flex h-full flex-col" data-tutorial="activity-feed">
+      <Card className="card-container flex h-full flex-col">
         <CardHeader className="border-b border-border pb-3">
           <Skeleton className="mb-2 h-6 w-32" />
           <Skeleton className="h-4 w-48" />
@@ -138,7 +147,7 @@ export function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
 
   if (error) {
     return (
-      <Card className="card-container flex h-full flex-col" data-tutorial="activity-feed">
+      <Card className="card-container flex h-full flex-col">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Activity className="h-5 w-5" />
@@ -156,7 +165,7 @@ export function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
   }
 
   return (
-    <Card className="card-container flex h-full flex-col" data-tutorial="activity-feed">
+    <Card className="card-container flex h-full flex-col">
       <CardHeader className="border-b border-border pb-3">
         <div className="flex items-start justify-between">
           <div>

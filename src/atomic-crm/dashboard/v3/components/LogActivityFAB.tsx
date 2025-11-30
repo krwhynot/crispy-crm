@@ -12,7 +12,6 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
-import { useTutorial } from "../tutorial";
 
 // Lazy load QuickLogForm - saves ~15-20KB from main dashboard chunk
 const QuickLogForm = lazy(() =>
@@ -168,7 +167,6 @@ export function LogActivityFAB({ onRefresh }: LogActivityFABProps) {
   const [hasDraft, setHasDraft] = useState(false);
   const fabRef = useRef<HTMLButtonElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const { markActionComplete } = useTutorial();
 
   // Check for existing draft on mount
   useEffect(() => {
@@ -181,14 +179,13 @@ export function LogActivityFAB({ onRefresh }: LogActivityFABProps) {
     clearDraft();
     setHasDraft(false);
     setIsOpen(false);
-    markActionComplete("log-activity");
 
     // Return focus to FAB for accessibility
     // Small delay to allow Sheet close animation
     setTimeout(() => {
       fabRef.current?.focus();
     }, 100);
-  }, [markActionComplete]);
+  }, []);
 
   // Handle form data changes for draft persistence
   const handleDraftChange = useCallback((formData: Partial<ActivityLogInput>) => {
@@ -245,7 +242,6 @@ export function LogActivityFAB({ onRefresh }: LogActivityFABProps) {
             // Focus ring for accessibility
             "focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
           )}
-          data-tutorial="fab-log"
           aria-label={hasDraft ? "Log Activity (draft saved)" : "Log Activity"}
           aria-expanded={isOpen}
           aria-haspopup="dialog"
