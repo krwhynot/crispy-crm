@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-import { LoginPage } from "../../support/poms/LoginPage";
 import { ContactFormPage } from "../../support/poms/ContactFormPage";
 import { ContactsListPage } from "../../support/poms/ContactsListPage";
 import { ContactShowPage } from "../../support/poms/ContactShowPage";
@@ -29,29 +28,17 @@ import { consoleMonitor } from "../../support/utils/console-monitor";
  */
 
 test.describe("Contact Form - Error Scenarios", () => {
+  // Use stored auth state from setup
+  test.use({ storageState: "tests/e2e/.auth/user.json" });
+
+  let formPage: ContactFormPage;
+
   test.beforeEach(async ({ page }) => {
     // Attach console monitoring
     await consoleMonitor.attach(page);
 
-    // Login using POM
-    const loginPage = new LoginPage(page);
-    await loginPage.goto("/");
-
-    // Wait for either login form or dashboard
-    const isLoginFormVisible = await page
-      .getByLabel(/email/i)
-      .isVisible({ timeout: 2000 })
-      .catch(() => false);
-
-    if (isLoginFormVisible) {
-      await loginPage.login("admin@test.com", "password123");
-    } else {
-      // Already logged in, wait for dashboard
-      await page.waitForURL(/\/#\//, { timeout: 10000 });
-    }
-
     // Navigate to contact create form
-    const formPage = new ContactFormPage(page);
+    formPage = new ContactFormPage(page);
     await formPage.gotoCreate();
   });
 
@@ -232,27 +219,17 @@ test.describe("Contact Form - Error Scenarios", () => {
 });
 
 test.describe("Contact Form - Success Scenarios", () => {
+  // Use stored auth state from setup
+  test.use({ storageState: "tests/e2e/.auth/user.json" });
+
+  let formPage: ContactFormPage;
+
   test.beforeEach(async ({ page }) => {
     // Attach console monitoring
     await consoleMonitor.attach(page);
 
-    // Login using POM
-    const loginPage = new LoginPage(page);
-    await loginPage.goto("/");
-
-    const isLoginFormVisible = await page
-      .getByLabel(/email/i)
-      .isVisible({ timeout: 2000 })
-      .catch(() => false);
-
-    if (isLoginFormVisible) {
-      await loginPage.login("admin@test.com", "password123");
-    } else {
-      await page.waitForURL(/\/#\//, { timeout: 10000 });
-    }
-
     // Navigate to contact create form
-    const formPage = new ContactFormPage(page);
+    formPage = new ContactFormPage(page);
     await formPage.gotoCreate();
   });
 
