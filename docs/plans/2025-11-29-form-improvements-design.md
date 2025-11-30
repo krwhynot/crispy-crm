@@ -205,6 +205,776 @@ Per user preference, forms do not warn about unsaved changes. Keep it simple.
 
 ---
 
+## Acceptance Criteria: Conditional Required Rules
+
+### Contacts Form
+
+| Field | Condition | Required When |
+|-------|-----------|---------------|
+| First Name | Always | — |
+| Last Name | Always | — |
+| Organization | Always | Contact must belong to an organization (PRD rule) |
+| Sales Rep | Always | — |
+| Primary Email | Never | Optional |
+| Primary Phone | Never | Optional |
+
+**Validation Rules:**
+- At least one contact method (email OR phone) should trigger a warning (not block) if both empty
+- LinkedIn URL must be valid LinkedIn profile URL pattern: `https://linkedin.com/in/*` or `https://www.linkedin.com/in/*`
+
+### Organizations Form
+
+| Field | Condition | Required When |
+|-------|-----------|---------------|
+| Name | Always | — |
+| Organization Type | Always | — |
+| Sales Rep | Always | — |
+| Address | Conditional | Required when `organization_type === 'customer'` (delivery logistics) |
+| Segment | Never | Optional |
+| Priority | Never | Optional |
+
+**Validation Rules:**
+- Website must be valid URL (with or without protocol - auto-prepend `https://`)
+- Parent Organization cannot be self-referential (org cannot be its own parent)
+
+### Activities Form
+
+| Field | Condition | Required When |
+|-------|-----------|---------------|
+| Type | Always | — |
+| Subject | Always | — |
+| Date | Always | — |
+| Opportunity | Conditional | Required when `activity_type === 'interaction'` |
+| Follow-up Date | Conditional | Required when `follow_up_required === true` |
+| Sentiment | Conditional | Required when `follow_up_required === true` |
+| Duration | Never | Optional |
+| Contact | Never | Optional |
+| Organization | Never | Optional |
+
+**Validation Rules:**
+- Follow-up Date must be >= Activity Date (can't follow up before the activity)
+- Duration must be positive integer (0-480 minutes max)
+
+### Tasks Form (unchanged, for reference)
+
+| Field | Condition | Required When |
+|-------|-----------|---------------|
+| Title | Always | — |
+| Due Date | Always | — |
+| Priority | Never | Optional |
+| Related Entity | Never | Optional |
+
+---
+
+## Helper Text & Error Copy Dictionary
+
+### Internationalization Plan
+
+**English-only for MVP.** All strings defined in a central location for future i18n extraction.
+
+**String location:** `src/atomic-crm/constants/formCopy.ts`
+
+### Contacts Form Copy
+
+```typescript
+export const CONTACT_FORM_COPY = {
+  // Field labels
+  labels: {
+    first_name: "First Name",
+    last_name: "Last Name",
+    organization_id: "Organization",
+    email: "Primary Email",
+    phone: "Primary Phone",
+    sales_id: "Sales Rep",
+    title: "Title",
+    department: "Department",
+    linkedin_url: "LinkedIn URL",
+    notes: "Notes",
+    tags: "Tags",
+  },
+
+  // Helper text (shown below field)
+  helper: {
+    first_name: null, // No helper needed for obvious fields
+    last_name: null,
+    organization_id: "Contact must belong to an organization",
+    email: "Main business email",
+    phone: "Main contact number",
+    sales_id: "Who owns this contact?",
+    title: "Job title or role",
+    department: "Department or team",
+    linkedin_url: "LinkedIn profile link",
+    notes: "Internal notes about this contact",
+    tags: "Categories for filtering",
+  },
+
+  // Error messages (replaces helper when invalid)
+  errors: {
+    first_name: {
+      required: "First name is required",
+      maxLength: "First name cannot exceed 100 characters",
+    },
+    last_name: {
+      required: "Last name is required",
+      maxLength: "Last name cannot exceed 100 characters",
+    },
+    organization_id: {
+      required: "Please select an organization",
+    },
+    email: {
+      invalid: "Please enter a valid email address",
+      duplicate: "This email is already in use",
+    },
+    phone: {
+      invalid: "Please enter a valid phone number",
+    },
+    sales_id: {
+      required: "Please assign a sales rep",
+    },
+    linkedin_url: {
+      invalid: "Please enter a valid LinkedIn profile URL",
+      pattern: "URL must be a LinkedIn profile (linkedin.com/in/...)",
+    },
+  },
+
+  // Warnings (non-blocking)
+  warnings: {
+    no_contact_method: "Consider adding an email or phone number",
+  },
+} as const;
+```
+
+### Organizations Form Copy
+
+```typescript
+export const ORGANIZATION_FORM_COPY = {
+  labels: {
+    name: "Organization Name",
+    organization_type: "Type",
+    sales_id: "Sales Rep",
+    segment_id: "Segment",
+    priority: "Priority",
+    address: "Address",
+    website: "Website",
+    linkedin_url: "LinkedIn URL",
+    context_links: "Reference Links",
+    description: "Description",
+    logo: "Logo",
+    parent_organization_id: "Parent Organization",
+  },
+
+  helper: {
+    name: null,
+    organization_type: "Principal, Distributor, or Customer",
+    sales_id: "Who owns this account?",
+    segment_id: "Customer segment for targeting",
+    priority: "Account priority level",
+    address: "Start typing to search addresses",
+    website: "Company website",
+    linkedin_url: "Company LinkedIn page",
+    context_links: "Additional reference links",
+    description: "Notes about this organization",
+    logo: "Company logo (PNG, JPG, max 2MB)",
+    parent_organization_id: "If this is a subsidiary or branch",
+  },
+
+  errors: {
+    name: {
+      required: "Organization name is required",
+      maxLength: "Name cannot exceed 200 characters",
+      duplicate: "An organization with this name already exists",
+    },
+    organization_type: {
+      required: "Please select an organization type",
+    },
+    sales_id: {
+      required: "Please assign a sales rep",
+    },
+    address: {
+      required: "Address is required for customer organizations",
+      invalid: "Please select a valid address from the suggestions",
+    },
+    website: {
+      invalid: "Please enter a valid URL",
+    },
+    linkedin_url: {
+      invalid: "Please enter a valid LinkedIn company URL",
+    },
+    parent_organization_id: {
+      self_reference: "Organization cannot be its own parent",
+    },
+    logo: {
+      size: "Logo must be under 2MB",
+      format: "Logo must be PNG or JPG format",
+    },
+  },
+} as const;
+```
+
+### Activities Form Copy
+
+```typescript
+export const ACTIVITY_FORM_COPY = {
+  labels: {
+    type: "Interaction Type",
+    subject: "Subject",
+    activity_date: "Date",
+    duration_minutes: "Duration (minutes)",
+    description: "Notes",
+    opportunity_id: "Opportunity",
+    contact_id: "Contact",
+    organization_id: "Organization",
+    follow_up_required: "Requires follow-up",
+    follow_up_date: "Follow-up Date",
+    sentiment: "Sentiment",
+    follow_up_notes: "Follow-up Notes",
+    location: "Location",
+    outcome: "Outcome",
+  },
+
+  helper: {
+    type: "How did this interaction occur?",
+    subject: "Summarize the outcome or topic",
+    activity_date: null,
+    duration_minutes: "Length of activity in minutes",
+    description: "Detailed notes about this interaction",
+    opportunity_id: "Link to an opportunity",
+    contact_id: "Person you interacted with",
+    organization_id: "Company context",
+    follow_up_required: "Check to schedule a follow-up",
+    follow_up_date: "When to follow up",
+    sentiment: "How did the contact respond?",
+    follow_up_notes: "What to do next",
+    location: "Where did this occur?",
+    outcome: "Result or next steps",
+  },
+
+  errors: {
+    type: {
+      required: "Please select an interaction type",
+    },
+    subject: {
+      required: "Subject is required",
+      maxLength: "Subject cannot exceed 200 characters",
+    },
+    activity_date: {
+      required: "Date is required",
+      future: "Activity date cannot be in the future",
+    },
+    duration_minutes: {
+      invalid: "Duration must be a positive number",
+      max: "Duration cannot exceed 480 minutes (8 hours)",
+    },
+    opportunity_id: {
+      required: "Opportunity is required for interaction activities",
+    },
+    follow_up_date: {
+      required: "Follow-up date is required when follow-up is enabled",
+      before_activity: "Follow-up date must be on or after activity date",
+    },
+    sentiment: {
+      required: "Sentiment is required when follow-up is enabled",
+    },
+  },
+
+  // Section headers for collapsible sections
+  sections: {
+    details: "Activity Details",
+    relationships: "Relationships",
+    followup: "Follow-up",
+    outcome: "Outcome",
+  },
+} as const;
+```
+
+---
+
+## Address Autocomplete Specification
+
+### API Configuration
+
+**Provider:** Google Places API (Autocomplete)
+
+**Environment Variables:**
+```bash
+# .env.local (client-side, restricted by domain)
+VITE_GOOGLE_PLACES_API_KEY=your_api_key_here
+
+# Supabase Edge Functions (if server-side validation needed)
+GOOGLE_PLACES_API_KEY=your_server_key_here
+```
+
+**API Key Restrictions (Google Cloud Console):**
+- Application restrictions: HTTP referrers
+- Allowed domains: `localhost:*`, `*.yourdomain.com`
+- API restrictions: Places API only
+
+### Implementation
+
+```typescript
+// src/components/admin/address-autocomplete/AddressAutocomplete.tsx
+
+interface AddressAutocompleteProps {
+  source: string;
+  label?: string;
+  helperText?: string;
+  isRequired?: boolean;
+}
+
+// Rate limiting / debounce settings
+const DEBOUNCE_MS = 300; // Wait 300ms after typing stops
+const MIN_CHARS = 3;     // Don't query until 3 characters typed
+const MAX_RESULTS = 5;   // Limit suggestions shown
+```
+
+### Fallback Behavior
+
+**When Places API fails (network error, quota exceeded, invalid key):**
+
+1. **Automatic fallback to manual entry:**
+   ```typescript
+   // Show toast notification
+   notify("Address search unavailable. Please enter address manually.", { type: "warning" });
+
+   // Reveal individual address fields
+   setShowManualFields(true);
+   ```
+
+2. **Manual address fields (revealed on fallback):**
+   - Street Address (Text)
+   - City (Text)
+   - State (Select - US states dropdown)
+   - Postal Code (Text, 5 or 9 digit validation)
+
+3. **Graceful degradation:**
+   - If API works later, autocomplete resumes
+   - Manual entry always available via "Enter manually" link
+   - Form remains fully functional without API
+
+### Data Flow
+
+```typescript
+// When user selects from autocomplete:
+const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
+  // Parse place.address_components
+  const parsed = {
+    street: extractComponent(place, "street_number", "route"),
+    city: extractComponent(place, "locality"),
+    state: extractComponent(place, "administrative_area_level_1"),
+    postal_code: extractComponent(place, "postal_code"),
+    formatted_address: place.formatted_address,
+  };
+
+  // Update form fields
+  setValue("address", parsed.formatted_address); // Display field
+  setValue("street", parsed.street);             // Hidden
+  setValue("city", parsed.city);                 // Hidden
+  setValue("state", parsed.state);               // Hidden
+  setValue("postal_code", parsed.postal_code);   // Hidden
+};
+```
+
+---
+
+## Validation Model
+
+### Validation Timing
+
+| Trigger | Behavior |
+|---------|----------|
+| **On blur** | Validate field when user leaves it. Show error immediately. |
+| **On change** | Clear error as soon as input becomes valid. No new errors on change. |
+| **On submit** | Validate all fields. Focus first invalid field. Block submission. |
+| **On tab switch** | Validate current tab's fields. Show error badge on tab if invalid. |
+
+### Async Validation
+
+**Use cases:**
+- Duplicate email check (Contacts)
+- Duplicate organization name check (Organizations)
+- Parent organization circular reference check
+
+**Pattern:**
+```typescript
+// Debounced async validation
+const validateEmailUnique = useDebouncedCallback(async (email: string) => {
+  if (!email) return;
+
+  setFieldState("email", { validating: true });
+
+  try {
+    const { data } = await supabase
+      .from("contacts")
+      .select("id")
+      .eq("email", email)
+      .neq("id", currentRecordId) // Exclude current record on edit
+      .limit(1);
+
+    if (data?.length > 0) {
+      setError("email", {
+        type: "async",
+        message: CONTACT_FORM_COPY.errors.email.duplicate
+      });
+    }
+  } finally {
+    setFieldState("email", { validating: false });
+  }
+}, 500);
+```
+
+**Visual feedback during async validation:**
+- Show spinner icon in field
+- Disable submit button until validation completes
+- Keep field interactive (user can continue typing)
+
+### Error Pattern by Input Type
+
+| Input Type | Error Display |
+|------------|---------------|
+| **Text/Email/URL** | Red border + error message below (replaces helper text) |
+| **Select** | Red border + error message below |
+| **Autocomplete** | Red border + error message below + dropdown remains functional |
+| **Textarea** | Red border + error message below |
+| **Checkbox** | Error message below (no red border on checkbox itself) |
+| **Date picker** | Red border on input + error message below |
+| **File upload** | Red border on drop zone + error message below |
+| **JSONB Array (emails, phones)** | Red border on specific array item + error below item |
+
+### Error Message Component
+
+```typescript
+// src/components/admin/form/FormFieldError.tsx
+
+interface FormFieldErrorProps {
+  error?: string;
+  className?: string;
+}
+
+export const FormFieldError = ({ error, className }: FormFieldErrorProps) => {
+  if (!error) return null;
+
+  return (
+    <p
+      className={cn(
+        "text-sm text-destructive mt-1",
+        className
+      )}
+      role="alert"
+      aria-live="polite"
+    >
+      {error}
+    </p>
+  );
+};
+```
+
+---
+
+## Required Field Indicator Visual Spec
+
+### Visual Design
+
+```
+┌─────────────────────────────────────┐
+│ First Name *                        │  ← Required (red asterisk)
+│ ┌─────────────────────────────────┐ │
+│ │                                 │ │
+│ └─────────────────────────────────┘ │
+│                                     │
+│ Title (optional)                    │  ← Optional (suffix text)
+│ ┌─────────────────────────────────┐ │
+│ │                                 │ │
+│ └─────────────────────────────────┘ │
+│ Job title or role                   │  ← Helper text
+└─────────────────────────────────────┘
+```
+
+### Design Tokens
+
+```typescript
+// Required asterisk
+const requiredIndicator = {
+  content: " *",
+  color: "text-destructive",        // var(--destructive) - red
+  fontSize: "text-sm",              // 14px, same as label
+  fontWeight: "font-medium",        // 500
+  marginLeft: "ml-0.5",             // 2px gap from label text
+};
+
+// Optional suffix
+const optionalIndicator = {
+  content: " (optional)",
+  color: "text-muted-foreground",   // var(--muted-foreground) - gray
+  fontSize: "text-sm",
+  fontWeight: "font-normal",        // 400
+  marginLeft: "ml-1",               // 4px gap
+};
+
+// Label styling
+const labelStyles = {
+  color: "text-foreground",
+  fontSize: "text-sm",
+  fontWeight: "font-medium",
+  marginBottom: "mb-1.5",           // 6px gap to input
+};
+```
+
+### Accessibility Requirements
+
+```typescript
+// src/components/admin/form/FormField.tsx
+
+interface FormFieldProps {
+  source: string;
+  label: string;
+  isRequired?: boolean;
+  helperText?: string;
+  error?: string;
+  children: React.ReactNode;
+}
+
+export const FormField = ({
+  source,
+  label,
+  isRequired,
+  helperText,
+  error,
+  children
+}: FormFieldProps) => {
+  const inputId = `field-${source}`;
+  const helperId = `helper-${source}`;
+  const errorId = `error-${source}`;
+
+  return (
+    <div className="space-y-1.5">
+      {/* Label with required/optional indicator */}
+      <label
+        htmlFor={inputId}
+        className="text-sm font-medium text-foreground"
+      >
+        {label}
+        {isRequired ? (
+          <span className="text-destructive ml-0.5" aria-hidden="true"> *</span>
+        ) : (
+          <span className="text-muted-foreground font-normal ml-1">(optional)</span>
+        )}
+      </label>
+
+      {/* Input with ARIA attributes */}
+      {React.cloneElement(children as React.ReactElement, {
+        id: inputId,
+        "aria-required": isRequired,
+        "aria-invalid": !!error,
+        "aria-describedby": cn(
+          helperText && !error && helperId,
+          error && errorId
+        ),
+      })}
+
+      {/* Helper text (hidden when error shown) */}
+      {helperText && !error && (
+        <p id={helperId} className="text-sm text-muted-foreground">
+          {helperText}
+        </p>
+      )}
+
+      {/* Error message */}
+      {error && (
+        <p id={errorId} className="text-sm text-destructive" role="alert">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+};
+```
+
+### Screen Reader Announcements
+
+- Required fields announced as "required" by screen reader (via `aria-required`)
+- Invalid fields announced as "invalid" (via `aria-invalid`)
+- Error messages read automatically when focused (via `aria-describedby`)
+- Helper text read when no error (via `aria-describedby`)
+
+---
+
+## Responsive Layout Specification
+
+### Tab Behavior on Mobile
+
+**Desktop (≥1024px / `lg:` breakpoint):**
+- Standard horizontal tab bar
+- Tab content displays below tabs
+- Full padding and spacing
+
+**Tablet/Mobile (<1024px):**
+- Tabs transform to **segmented control** (pill-style buttons)
+- Horizontal scroll if more than 2 tabs
+- Reduced padding
+
+```typescript
+// src/components/admin/tabbed-form/TabbedFormInputs.tsx
+
+<div className="flex flex-col gap-section">
+  {/* Tab navigation */}
+  <div
+    className={cn(
+      // Mobile: segmented control style
+      "flex gap-1 p-1 bg-muted rounded-lg overflow-x-auto",
+      // Desktop: traditional tab bar
+      "lg:gap-0 lg:p-0 lg:bg-transparent lg:rounded-none lg:border-b lg:border-border"
+    )}
+    role="tablist"
+  >
+    {tabs.map((tab) => (
+      <button
+        key={tab.key}
+        role="tab"
+        aria-selected={activeTab === tab.key}
+        className={cn(
+          // Mobile: pill button
+          "flex-shrink-0 px-4 py-2 rounded-md text-sm font-medium transition-colors",
+          "min-h-[44px]", // Touch target
+          activeTab === tab.key
+            ? "bg-background text-foreground shadow-sm"
+            : "text-muted-foreground hover:text-foreground",
+          // Desktop: underline style
+          "lg:rounded-none lg:shadow-none lg:px-6 lg:py-3",
+          "lg:border-b-2 lg:-mb-px",
+          activeTab === tab.key
+            ? "lg:border-primary"
+            : "lg:border-transparent"
+        )}
+        onClick={() => setActiveTab(tab.key)}
+      >
+        {tab.label}
+        {tabErrors[tab.key] && (
+          <span className="ml-2 w-2 h-2 rounded-full bg-destructive" aria-label="has errors" />
+        )}
+      </button>
+    ))}
+  </div>
+
+  {/* Tab content */}
+  <div role="tabpanel" className="p-content lg:p-0">
+    {tabs.find(t => t.key === activeTab)?.content}
+  </div>
+</div>
+```
+
+### Collapsible Sections on Mobile (Activities)
+
+**Desktop:** Sections displayed with visual dividers, optional expand/collapse
+**Mobile:** Accordion-style collapsible sections
+
+```typescript
+// Use shadcn/ui Accordion for mobile, simple dividers for desktop
+
+<div className="space-y-section">
+  {/* Desktop: Always expanded with dividers */}
+  <div className="hidden lg:block space-y-section">
+    <section>
+      <h3 className="text-lg font-semibold mb-content">Activity Details</h3>
+      <ActivityDetailsFields />
+    </section>
+    <Separator />
+    <section>
+      <h3 className="text-lg font-semibold mb-content">Relationships</h3>
+      <RelationshipsFields />
+    </section>
+    {/* Optional sections */}
+    <Separator />
+    <Collapsible defaultOpen={false}>
+      <CollapsibleTrigger className="flex items-center justify-between w-full">
+        <h3 className="text-lg font-semibold">Follow-up</h3>
+        <ChevronDown className="h-5 w-5 transition-transform" />
+      </CollapsibleTrigger>
+      <CollapsibleContent>
+        <FollowUpFields />
+      </CollapsibleContent>
+    </Collapsible>
+  </div>
+
+  {/* Mobile: Accordion */}
+  <Accordion type="multiple" defaultValue={["details", "relationships"]} className="lg:hidden">
+    <AccordionItem value="details">
+      <AccordionTrigger>Activity Details</AccordionTrigger>
+      <AccordionContent><ActivityDetailsFields /></AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="relationships">
+      <AccordionTrigger>Relationships</AccordionTrigger>
+      <AccordionContent><RelationshipsFields /></AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="followup">
+      <AccordionTrigger>Follow-up</AccordionTrigger>
+      <AccordionContent><FollowUpFields /></AccordionContent>
+    </AccordionItem>
+    <AccordionItem value="outcome">
+      <AccordionTrigger>Outcome</AccordionTrigger>
+      <AccordionContent><OutcomeFields /></AccordionContent>
+    </AccordionItem>
+  </Accordion>
+</div>
+```
+
+### Spacing Tokens for 44px Touch Targets
+
+```css
+/* src/index.css - ensure these exist */
+
+:root {
+  /* Touch target minimum (WCAG AA) */
+  --touch-target-min: 44px;  /* 2.75rem */
+
+  /* Spacing scale */
+  --spacing-compact: 12px;   /* 0.75rem - tight gaps */
+  --spacing-content: 16px;   /* 1rem - standard content padding */
+  --spacing-section: 32px;   /* 2rem - between major sections */
+  --spacing-widget: 20px;    /* 1.25rem - widget internal padding */
+
+  /* Form-specific */
+  --form-field-gap: 24px;    /* 1.5rem - between form fields */
+  --form-row-gap: 16px;      /* 1rem - between fields in same row */
+}
+```
+
+### Tailwind Utility Mapping
+
+```typescript
+// Semantic spacing classes (define in tailwind.config.ts if not present)
+
+// Touch target utilities
+"min-h-touch"     // min-height: 44px
+"min-w-touch"     // min-width: 44px
+"h-11 w-11"       // 44px x 44px (Tailwind default)
+
+// Spacing utilities
+"gap-compact"     // gap: 12px
+"gap-content"     // gap: 16px
+"gap-section"     // gap: 32px
+"p-content"       // padding: 16px
+"p-widget"        // padding: 20px
+"space-y-field"   // space-y: 24px (form fields)
+
+// Form field layout
+"grid grid-cols-1 lg:grid-cols-2 gap-content"  // Single col mobile, 2-col desktop
+```
+
+### Input Component Height Standards
+
+| Component | Height | Tailwind Class |
+|-----------|--------|----------------|
+| Text Input | 44px | `h-11` |
+| Select | 44px | `h-11` |
+| Autocomplete | 44px | `h-11` |
+| Button (primary) | 44px | `h-11` |
+| Button (icon) | 44px | `h-11 w-11` |
+| Checkbox | 20px (centered in 44px hit area) | `h-5 w-5` with padding |
+| Radio | 20px (centered in 44px hit area) | `h-5 w-5` with padding |
+| Date picker trigger | 44px | `h-11` |
+
+---
+
 ## Research References
 
 Based on CRM industry best practices research:
