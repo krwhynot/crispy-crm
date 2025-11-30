@@ -36,7 +36,9 @@ describe("SaveButtonGroup", () => {
       </FormWrapper>
     );
 
-    expect(screen.getByRole("button", { name: /save/i })).toBeInTheDocument();
+    const saveButton = screen.getByRole("button", { name: /^save$/i });
+    expect(saveButton).toBeInTheDocument();
+    expect(saveButton).toHaveAttribute("type", "button");
   });
 
   test("primary Save button calls onSave with form data", async () => {
