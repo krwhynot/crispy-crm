@@ -1,0 +1,121 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e28]:
+      - button "Sort by last seen descending" [ref=e29] [cursor=pointer]:
+        - img
+        - generic [ref=e30]: Sort by last seen descending
+        - img
+      - button "Import" [ref=e31] [cursor=pointer]:
+        - img
+        - text: Import
+      - button "Template" [ref=e32] [cursor=pointer]:
+        - img
+        - text: Template
+      - button "Export" [ref=e33] [cursor=pointer]:
+        - img
+        - text: Export
+      - link "Create" [ref=e34] [cursor=pointer]:
+        - /url: "#/contacts/create"
+        - img
+        - text: Create
+    - generic [ref=e35]:
+      - generic [ref=e36]:
+        - complementary "Filter contacts" [ref=e37]:
+          - generic [ref=e38]:
+            - generic [ref=e39]:
+              - generic [ref=e40]: Filters
+              - button "Hide filters" [ref=e41] [cursor=pointer]:
+                - img
+            - generic [ref=e42]:
+              - generic [ref=e44]:
+                - group [ref=e45]:
+                  - textbox "Search contacts..." [ref=e46]
+                - img
+              - generic [ref=e48]:
+                - button "Last activity" [ref=e50] [cursor=pointer]:
+                  - generic [ref=e51]:
+                    - img [ref=e53]
+                    - heading "Last activity" [level=3] [ref=e56]
+                  - img [ref=e57]
+                - button "Tags" [ref=e60] [cursor=pointer]:
+                  - generic [ref=e61]:
+                    - img [ref=e63]
+                    - heading "Tags" [level=3] [ref=e66]
+                  - img [ref=e67]
+                - button "Organization" [ref=e70] [cursor=pointer]:
+                  - generic [ref=e71]:
+                    - img [ref=e73]
+                    - heading "Organization" [level=3] [ref=e77]
+                  - img [ref=e78]
+                - button "Account Manager" [ref=e81] [cursor=pointer]:
+                  - generic [ref=e82]:
+                    - img [ref=e84]
+                    - heading "Account Manager" [level=3] [ref=e89]
+                  - img [ref=e90]
+        - main "contacts list" [ref=e92]:
+          - status "Loading list" [ref=e94]:
+            - generic [ref=e183]: Loading content...
+      - link "Create new contacts" [ref=e184] [cursor=pointer]:
+        - /url: "#/contacts/create"
+        - img [ref=e185]
+    - generic [ref=e186]:
+      - generic [ref=e187]:
+        - paragraph [ref=e188]: "Rows per page:"
+        - combobox [ref=e189] [cursor=pointer]:
+          - generic: "25"
+          - img
+      - generic [ref=e190]: "1-%{offsetEnd} of %{total}"
+      - navigation "pagination" [ref=e191]:
+        - list [ref=e192]:
+          - listitem [ref=e193]:
+            - link "Go to previous page" [ref=e194] [cursor=pointer]:
+              - /url: "#"
+              - img
+          - listitem [ref=e195]:
+            - link "1" [ref=e196] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e197]:
+            - link "Go to next page" [ref=e198] [cursor=pointer]:
+              - /url: "#"
+              - img
+  - contentinfo [ref=e199]:
+    - generic [ref=e201]:
+      - paragraph [ref=e202]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e203] [cursor=pointer]:
+        - img [ref=e204]
+        - generic [ref=e206]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```

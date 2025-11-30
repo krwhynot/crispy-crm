@@ -1,0 +1,566 @@
+# Page snapshot
+
+```yaml
+- generic:
+  - generic:
+    - navigation:
+      - generic:
+        - generic:
+          - generic:
+            - link:
+              - /url: "#/"
+            - generic:
+              - navigation:
+                - link:
+                  - /url: "#/"
+                  - text: Dashboard
+                - link:
+                  - /url: "#/contacts"
+                  - text: Contacts
+                - link:
+                  - /url: "#/organizations"
+                  - text: Organizations
+                - link:
+                  - /url: "#/opportunities"
+                  - text: Opportunities
+                - link:
+                  - /url: "#/products"
+                  - text: Products
+                - link:
+                  - /url: "#/tasks"
+                  - text: Tasks
+                - link:
+                  - /url: "#/reports"
+                  - text: Reports
+            - generic:
+              - button:
+                - img
+                - generic: Toggle theme
+              - button:
+                - img
+              - button:
+                - img
+              - button:
+                - generic:
+                  - generic: A
+    - main:
+      - generic:
+        - generic:
+          - button:
+            - img
+            - generic: Sort by last seen descending
+            - img
+          - button:
+            - img
+            - text: Import
+          - button:
+            - img
+            - text: Template
+          - button:
+            - img
+            - text: Export
+          - link:
+            - /url: "#/contacts/create"
+            - img
+            - text: Create
+      - generic:
+        - generic:
+          - generic:
+            - button:
+              - img
+            - generic: Filters hidden
+          - generic:
+            - generic:
+              - generic:
+                - generic:
+                  - group:
+                    - textbox:
+                      - /placeholder: Search contacts...
+                  - img
+              - generic:
+                - generic:
+                  - button:
+                    - generic:
+                      - generic:
+                        - img
+                      - heading [level=3]: Last activity
+                    - img
+                - generic:
+                  - button:
+                    - generic:
+                      - generic:
+                        - img
+                      - heading [level=3]: Tags
+                    - img
+                - generic:
+                  - button:
+                    - generic:
+                      - generic:
+                        - img
+                      - heading [level=3]: Organization
+                    - img
+                - generic:
+                  - button:
+                    - generic:
+                      - generic:
+                        - img
+                      - heading [level=3]: Account Manager
+                    - img
+          - main:
+            - generic:
+              - generic:
+                - generic:
+                  - table:
+                    - rowgroup:
+                      - row:
+                        - columnheader
+                        - columnheader:
+                          - button:
+                            - generic: Name
+                        - columnheader:
+                          - button:
+                            - generic: Role
+                        - columnheader:
+                          - button:
+                            - generic: Organization
+                        - columnheader: Status
+                        - columnheader: Notes
+                        - columnheader:
+                          - button:
+                            - generic: Last Activity
+                            - img
+                    - rowgroup:
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: TT
+                        - cell: TestFirst1764517908216 TestLast1764517908216
+                        - cell: "--"
+                        - cell: Gun Lake
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: TT
+                        - cell: TestFirst1764517815245 TestLast1764517815245
+                        - cell: "--"
+                        - cell: Gun Lake
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: TT
+                        - cell: TestFirst1764517732540 TestLast1764517732540
+                        - cell: "--"
+                        - cell: Gun Lake
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: TT
+                        - cell: TestFirst1764517522822 TestLast1764517522822
+                        - cell: "--"
+                        - cell: Gun Lake
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: T
+                        - cell: TestFirst1764517498985
+                        - cell: "--"
+                        - cell: Gun Lake
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: T
+                        - cell: TestLast1764517497695
+                        - cell: "--"
+                        - cell: Gun Lake
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: TT
+                        - cell: TestFirst1764517428240 TestLast1764517428240
+                        - cell: "--"
+                        - cell: Gun Lake
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: MM
+                        - cell: MinimalFirst-1764497806665 MinimalLast-1764497806665
+                        - cell: "--"
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: MM
+                        - cell: MinimalFirst-1764497731560 MinimalLast-1764497731560
+                        - cell: "--"
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: MM
+                        - cell: MinimalFirst-1764497644056 MinimalLast-1764497644056
+                        - cell: "--"
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: MM
+                        - cell: MinimalFirst-1764497482690 MinimalLast-1764497482690
+                        - cell: "--"
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: MM
+                        - cell: MinimalFirst-1764497404899 MinimalLast-1764497404899
+                        - cell: "--"
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: MM
+                        - cell: MinimalFirst-1764495804930 MinimalLast-1764495804930
+                        - cell: "--"
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: MM
+                        - cell: MinimalFirst-1764495700392 MinimalLast-1764495700392
+                        - cell: "--"
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/30/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: MS
+                        - cell: Marcus Sterling
+                        - cell: Executive Chef, Culinary
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "1"
+                        - cell: 11/29/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: RP
+                        - cell: Raj Patel
+                        - cell: Owner, Executive
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "1"
+                        - cell: 11/29/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: SJ
+                        - cell: Sarah Johnson
+                        - cell: Founder, Executive
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "1"
+                        - cell: 11/28/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: DK
+                        - cell: Daniel Kim
+                        - cell: Culinary Director, Culinary
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "1"
+                        - cell: 11/28/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: ST
+                        - cell: Sarah Thompson
+                        - cell: Nutrition Services Director, Dietary
+                        - cell: HCA Healthcare
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "1"
+                        - cell: 11/28/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: MR
+                        - cell: Michael Roberts
+                        - cell: Category Manager, Purchasing
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "1"
+                        - cell: 11/28/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: AB
+                        - cell: Antoine Bernard
+                        - cell: Global Executive Chef, Culinary
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "1"
+                        - cell: 11/28/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: SM
+                        - cell: Sarah Mitchell
+                        - cell: Head Baker, Culinary
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/28/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: PD
+                        - cell: Pierre Dubois
+                        - cell: VP Global Culinary, Culinary
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "1"
+                        - cell: 11/27/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: DP
+                        - cell: David Park
+                        - cell: Corporate Chef, Culinary
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/27/2025
+                      - row:
+                        - cell:
+                          - generic:
+                            - generic:
+                              - generic: AM
+                        - cell: Andrea Miller
+                        - cell: Executive Chef, Culinary
+                        - cell
+                        - cell:
+                          - generic:
+                            - generic: Cold
+                        - cell: "0"
+                        - cell: 11/27/2025
+        - link:
+          - /url: "#/contacts/create"
+          - img
+      - generic:
+        - generic:
+          - paragraph: "Rows per page:"
+          - combobox:
+            - generic: "25"
+            - img
+        - generic: 1-25 of 94
+        - navigation:
+          - list:
+            - listitem:
+              - link:
+                - /url: "#"
+                - img
+            - listitem:
+              - link:
+                - /url: "#"
+                - text: "1"
+            - listitem:
+              - link:
+                - /url: "#"
+                - text: "2"
+            - listitem:
+              - link:
+                - /url: "#"
+                - text: "3"
+            - listitem:
+              - link:
+                - /url: "#"
+                - text: "4"
+            - listitem:
+              - link:
+                - /url: "#"
+                - img
+    - contentinfo:
+      - generic:
+        - generic:
+          - paragraph: © 2025 MFB Master Food Brokers. All rights reserved.
+          - button:
+            - img
+            - generic: Keyboard shortcuts
+    - region "Notifications alt+T"
+  - dialog "John McCrum" [ref=e2]:
+    - generic [ref=e4]:
+      - heading "John McCrum" [level=2] [ref=e5]
+      - button "Switch to edit mode" [active] [ref=e6] [cursor=pointer]:
+        - img
+        - text: Edit
+    - generic [ref=e7]:
+      - tablist [ref=e8]:
+        - tab "Details" [selected] [ref=e9] [cursor=pointer]:
+          - img
+        - tab "Activities" [ref=e10] [cursor=pointer]:
+          - img
+        - tab "Notes (1)" [ref=e11] [cursor=pointer]:
+          - img
+          - generic [ref=e12]: "1"
+      - tabpanel "Details" [ref=e13]:
+        - generic [ref=e14]:
+          - generic [ref=e15]:
+            - heading "Identity" [level=3] [ref=e16]
+            - generic [ref=e18]:
+              - generic [ref=e20]: JM
+              - generic [ref=e21]:
+                - heading "John McCrum" [level=3] [ref=e22]
+                - paragraph [ref=e23]: VP Sales
+          - generic [ref=e24]:
+            - heading "Position" [level=3] [ref=e25]
+            - generic [ref=e28]:
+              - img [ref=e30]
+              - generic [ref=e34]: "Department: Sales"
+              - generic [ref=e35]: "Title: VP Sales"
+          - generic [ref=e36]:
+            - heading "Contact Info" [level=3] [ref=e37]
+            - generic [ref=e39]:
+              - generic [ref=e41]:
+                - img [ref=e42]
+                - link "john@mccrum.com" [ref=e45] [cursor=pointer]:
+                  - /url: mailto:john@mccrum.com
+                - generic [ref=e46]: Work
+              - generic [ref=e48]:
+                - img [ref=e49]
+                - generic [ref=e51]: Work
+              - generic [ref=e52]:
+                - img [ref=e53]
+                - link "LinkedIn Profile" [ref=e57] [cursor=pointer]:
+                  - /url: https://linkedin.com/in/johnmccrum
+          - generic [ref=e58]:
+            - heading "Account" [level=3] [ref=e59]
+            - generic [ref=e61]:
+              - generic [ref=e62]: Added on November 30, 2023
+              - generic [ref=e63]: Last activity on November 27, 2025
+              - generic [ref=e64]: Followed by
+          - generic [ref=e65]:
+            - heading "Tags" [level=3] [ref=e66]
+            - generic [ref=e70]: Champion
+          - generic [ref=e71]:
+            - heading "Notes" [level=3] [ref=e72]
+            - paragraph [ref=e76]: Key decision maker for all foodservice accounts. Prefers phone calls over email. Golf enthusiast.
+    - button "Close" [ref=e77] [cursor=pointer]:
+      - img [ref=e78]
+      - generic [ref=e81]: Close
+  - generic [ref=e82]:
+    - text: Edit record
+    - img [ref=e84]
+    - tooltip "Edit record" [ref=e86]
+```

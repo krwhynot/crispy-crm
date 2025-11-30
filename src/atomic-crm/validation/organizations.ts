@@ -80,6 +80,7 @@ export const organizationSchema = z.object({
   // Computed fields (readonly)
   nb_contacts: z.number().optional(),
   nb_opportunities: z.number().optional(),
+  nb_notes: z.number().optional(),
 
   // System/Audit fields
   created_at: z.string().optional(),

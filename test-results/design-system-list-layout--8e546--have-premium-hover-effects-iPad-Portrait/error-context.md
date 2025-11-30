@@ -1,0 +1,374 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e28]:
+      - button "Sort by name ascending" [ref=e29] [cursor=pointer]:
+        - img
+        - generic [ref=e30]: Sort by name ascending
+        - img
+      - button "Export" [ref=e31] [cursor=pointer]:
+        - img
+        - text: Export
+      - link "Create" [ref=e32] [cursor=pointer]:
+        - /url: "#/organizations/create"
+        - img
+        - text: Create
+    - generic [ref=e33]:
+      - generic [ref=e34]:
+        - generic [ref=e35]:
+          - button "Show filters" [ref=e36] [cursor=pointer]:
+            - img
+          - generic [ref=e37]: Filters hidden
+        - generic [ref=e39]:
+          - generic [ref=e41]:
+            - group [ref=e42]:
+              - textbox [ref=e43]:
+                - /placeholder: Search organizations...
+            - img
+          - generic [ref=e45]:
+            - button [ref=e47] [cursor=pointer]:
+              - generic [ref=e48]:
+                - img [ref=e50]
+                - heading [level=3] [ref=e53]: Organization Type
+              - img [ref=e54]
+            - button [ref=e57] [cursor=pointer]:
+              - generic [ref=e58]:
+                - img [ref=e60]
+                - heading [level=3] [ref=e62]: Priority
+              - img [ref=e63]
+            - button [ref=e66] [cursor=pointer]:
+              - generic [ref=e67]:
+                - img [ref=e69]
+                - heading [level=3] [ref=e74]: Playbook Category
+              - img [ref=e75]
+            - button [ref=e78] [cursor=pointer]:
+              - generic [ref=e79]:
+                - img [ref=e81]
+                - heading [level=3] [ref=e86]: Account Manager
+              - img [ref=e87]
+        - main "organizations list" [ref=e89]:
+          - table [ref=e93]:
+            - rowgroup [ref=e94]:
+              - row "Sort by organization Name descending Sort by type ascending Sort by priority ascending Sort by parent ascending Contacts Opportunities" [ref=e95]:
+                - columnheader "Sort by organization Name descending" [ref=e96]:
+                  - button "Sort by organization Name descending" [ref=e97] [cursor=pointer]:
+                    - generic [ref=e98]: Organization Name
+                    - img [ref=e99]
+                - columnheader "Sort by type ascending" [ref=e101]:
+                  - button "Sort by type ascending" [ref=e102] [cursor=pointer]:
+                    - generic [ref=e103]: Type
+                - columnheader "Sort by priority ascending" [ref=e104]:
+                  - button "Sort by priority ascending" [ref=e105] [cursor=pointer]:
+                    - generic [ref=e106]: Priority
+                - columnheader "Sort by parent ascending" [ref=e107]:
+                  - button "Sort by parent ascending" [ref=e108] [cursor=pointer]:
+                    - generic [ref=e109]: Parent
+                - columnheader "Contacts" [ref=e110]
+                - columnheader "Opportunities" [ref=e111]
+            - rowgroup [ref=e112]:
+              - row "Whitespace Org-1764493557903 Unknown C - Medium - 0 0" [ref=e113] [cursor=pointer]:
+                - cell "Whitespace Org-1764493557903" [ref=e114]
+                - cell "Unknown" [ref=e115]:
+                  - generic [ref=e117]: Unknown
+                - cell "C - Medium" [ref=e118]:
+                  - generic [ref=e120]: C - Medium
+                - cell "-" [ref=e121]
+                - cell "0" [ref=e122]
+                - cell "0" [ref=e123]
+              - row "Whitespace Org-1764493936888 Unknown C - Medium - 0 0" [ref=e124] [cursor=pointer]:
+                - cell "Whitespace Org-1764493936888" [ref=e125]
+                - cell "Unknown" [ref=e126]:
+                  - generic [ref=e128]: Unknown
+                - cell "C - Medium" [ref=e129]:
+                  - generic [ref=e131]: C - Medium
+                - cell "-" [ref=e132]
+                - cell "0" [ref=e133]
+                - cell "0" [ref=e134]
+              - row "Whitespace Org-1764494130640 Unknown C - Medium - 0 0" [ref=e135] [cursor=pointer]:
+                - cell "Whitespace Org-1764494130640" [ref=e136]
+                - cell "Unknown" [ref=e137]:
+                  - generic [ref=e139]: Unknown
+                - cell "C - Medium" [ref=e140]:
+                  - generic [ref=e142]: C - Medium
+                - cell "-" [ref=e143]
+                - cell "0" [ref=e144]
+                - cell "0" [ref=e145]
+              - row "Whitespace Org-1764494521523 Unknown C - Medium - 0 0" [ref=e146] [cursor=pointer]:
+                - cell "Whitespace Org-1764494521523" [ref=e147]
+                - cell "Unknown" [ref=e148]:
+                  - generic [ref=e150]: Unknown
+                - cell "C - Medium" [ref=e151]:
+                  - generic [ref=e153]: C - Medium
+                - cell "-" [ref=e154]
+                - cell "0" [ref=e155]
+                - cell "0" [ref=e156]
+              - row "Whitespace Org-1764497448472 Unknown C - Medium - 0 0" [ref=e157] [cursor=pointer]:
+                - cell "Whitespace Org-1764497448472" [ref=e158]
+                - cell "Unknown" [ref=e159]:
+                  - generic [ref=e161]: Unknown
+                - cell "C - Medium" [ref=e162]:
+                  - generic [ref=e164]: C - Medium
+                - cell "-" [ref=e165]
+                - cell "0" [ref=e166]
+                - cell "0" [ref=e167]
+              - row "Whitespace Org-1764497528551 Unknown C - Medium - 0 0" [ref=e168] [cursor=pointer]:
+                - cell "Whitespace Org-1764497528551" [ref=e169]
+                - cell "Unknown" [ref=e170]:
+                  - generic [ref=e172]: Unknown
+                - cell "C - Medium" [ref=e173]:
+                  - generic [ref=e175]: C - Medium
+                - cell "-" [ref=e176]
+                - cell "0" [ref=e177]
+                - cell "0" [ref=e178]
+              - row "Whitespace Org-1764497689260 Unknown C - Medium - 0 0" [ref=e179] [cursor=pointer]:
+                - cell "Whitespace Org-1764497689260" [ref=e180]
+                - cell "Unknown" [ref=e181]:
+                  - generic [ref=e183]: Unknown
+                - cell "C - Medium" [ref=e184]:
+                  - generic [ref=e186]: C - Medium
+                - cell "-" [ref=e187]
+                - cell "0" [ref=e188]
+                - cell "0" [ref=e189]
+              - row "Whitespace Org-1764497774663 Unknown C - Medium - 0 0" [ref=e190] [cursor=pointer]:
+                - cell "Whitespace Org-1764497774663" [ref=e191]
+                - cell "Unknown" [ref=e192]:
+                  - generic [ref=e194]: Unknown
+                - cell "C - Medium" [ref=e195]:
+                  - generic [ref=e197]: C - Medium
+                - cell "-" [ref=e198]
+                - cell "0" [ref=e199]
+                - cell "0" [ref=e200]
+              - row "Whitespace Org-1764497852387 Unknown C - Medium - 0 0" [ref=e201] [cursor=pointer]:
+                - cell "Whitespace Org-1764497852387" [ref=e202]
+                - cell "Unknown" [ref=e203]:
+                  - generic [ref=e205]: Unknown
+                - cell "C - Medium" [ref=e206]:
+                  - generic [ref=e208]: C - Medium
+                - cell "-" [ref=e209]
+                - cell "0" [ref=e210]
+                - cell "0" [ref=e211]
+              - row "Whitespace Org-1764517779761 Unknown C - Medium - 0 0" [ref=e212] [cursor=pointer]:
+                - cell "Whitespace Org-1764517779761" [ref=e213]
+                - cell "Unknown" [ref=e214]:
+                  - generic [ref=e216]: Unknown
+                - cell "C - Medium" [ref=e217]:
+                  - generic [ref=e219]: C - Medium
+                - cell "-" [ref=e220]
+                - cell "0" [ref=e221]
+                - cell "0" [ref=e222]
+              - row "Whitespace Org-1764517870761 Unknown C - Medium - 0 0" [ref=e223] [cursor=pointer]:
+                - cell "Whitespace Org-1764517870761" [ref=e224]
+                - cell "Unknown" [ref=e225]:
+                  - generic [ref=e227]: Unknown
+                - cell "C - Medium" [ref=e228]:
+                  - generic [ref=e230]: C - Medium
+                - cell "-" [ref=e231]
+                - cell "0" [ref=e232]
+                - cell "0" [ref=e233]
+              - row "Whitespace Org-1764517964914 Unknown C - Medium - 0 0" [ref=e234] [cursor=pointer]:
+                - cell "Whitespace Org-1764517964914" [ref=e235]
+                - cell "Unknown" [ref=e236]:
+                  - generic [ref=e238]: Unknown
+                - cell "C - Medium" [ref=e239]:
+                  - generic [ref=e241]: C - Medium
+                - cell "-" [ref=e242]
+                - cell "0" [ref=e243]
+                - cell "0" [ref=e244]
+              - row "Anchor Food Professionals Principal A - High - 2 6" [ref=e245] [cursor=pointer]:
+                - cell "Anchor Food Professionals" [ref=e246]
+                - cell "Principal" [ref=e247]:
+                  - generic [ref=e249]: Principal
+                - cell "A - High" [ref=e250]:
+                  - generic [ref=e252]: A - High
+                - cell "-" [ref=e253]
+                - cell "2" [ref=e254]
+                - cell "6" [ref=e255]
+              - row "Applebee's Customer A - High - 2 0" [ref=e256] [cursor=pointer]:
+                - cell "Applebee's" [ref=e257]
+                - cell "Customer" [ref=e258]:
+                  - generic [ref=e260]: Customer
+                - cell "A - High" [ref=e261]:
+                  - generic [ref=e263]: A - High
+                - cell "-" [ref=e264]
+                - cell "2" [ref=e265]
+                - cell "0" [ref=e266]
+              - row "Aramark Higher Education Customer A - High - 2 0" [ref=e267] [cursor=pointer]:
+                - cell "Aramark Higher Education" [ref=e268]
+                - cell "Customer" [ref=e269]:
+                  - generic [ref=e271]: Customer
+                - cell "A - High" [ref=e272]:
+                  - generic [ref=e274]: A - High
+                - cell "-" [ref=e275]
+                - cell "2" [ref=e276]
+                - cell "0" [ref=e277]
+              - row "Ascension Health Customer B - Medium-High - 2 0" [ref=e278] [cursor=pointer]:
+                - cell "Ascension Health" [ref=e279]
+                - cell "Customer" [ref=e280]:
+                  - generic [ref=e282]: Customer
+                - cell "B - Medium-High" [ref=e283]:
+                  - generic [ref=e285]: B - Medium-High
+                - cell "-" [ref=e286]
+                - cell "2" [ref=e287]
+                - cell "0" [ref=e288]
+              - row "Ben E. Keith Foods Distributor B - Medium-High - 2 0" [ref=e289] [cursor=pointer]:
+                - cell "Ben E. Keith Foods" [ref=e290]
+                - cell "Distributor" [ref=e291]:
+                  - generic [ref=e293]: Distributor
+                - cell "B - Medium-High" [ref=e294]:
+                  - generic [ref=e296]: B - Medium-High
+                - cell "-" [ref=e297]
+                - cell "2" [ref=e298]
+                - cell "0" [ref=e299]
+              - row "Brookdale Senior Living Customer B - Medium-High - 2 0" [ref=e300] [cursor=pointer]:
+                - cell "Brookdale Senior Living" [ref=e301]
+                - cell "Customer" [ref=e302]:
+                  - generic [ref=e304]: Customer
+                - cell "B - Medium-High" [ref=e305]:
+                  - generic [ref=e307]: B - Medium-High
+                - cell "-" [ref=e308]
+                - cell "2" [ref=e309]
+                - cell "0" [ref=e310]
+              - row "Buffalo Wild Wings Customer A - High - 2 0" [ref=e311] [cursor=pointer]:
+                - cell "Buffalo Wild Wings" [ref=e312]
+                - cell "Customer" [ref=e313]:
+                  - generic [ref=e315]: Customer
+                - cell "A - High" [ref=e316]:
+                  - generic [ref=e318]: A - High
+                - cell "-" [ref=e319]
+                - cell "2" [ref=e320]
+                - cell "0" [ref=e321]
+              - row "Cancel Duplicate Test-1764493561225 Unknown C - Medium - 0 0" [ref=e322] [cursor=pointer]:
+                - cell "Cancel Duplicate Test-1764493561225" [ref=e323]
+                - cell "Unknown" [ref=e324]:
+                  - generic [ref=e326]: Unknown
+                - cell "C - Medium" [ref=e327]:
+                  - generic [ref=e329]: C - Medium
+                - cell "-" [ref=e330]
+                - cell "0" [ref=e331]
+                - cell "0" [ref=e332]
+              - row "Cancel Duplicate Test-1764493947743 Unknown C - Medium - 0 0" [ref=e333] [cursor=pointer]:
+                - cell "Cancel Duplicate Test-1764493947743" [ref=e334]
+                - cell "Unknown" [ref=e335]:
+                  - generic [ref=e337]: Unknown
+                - cell "C - Medium" [ref=e338]:
+                  - generic [ref=e340]: C - Medium
+                - cell "-" [ref=e341]
+                - cell "0" [ref=e342]
+                - cell "0" [ref=e343]
+              - row "Cancel Duplicate Test-1764494131023 Unknown C - Medium - 0 0" [ref=e344] [cursor=pointer]:
+                - cell "Cancel Duplicate Test-1764494131023" [ref=e345]
+                - cell "Unknown" [ref=e346]:
+                  - generic [ref=e348]: Unknown
+                - cell "C - Medium" [ref=e349]:
+                  - generic [ref=e351]: C - Medium
+                - cell "-" [ref=e352]
+                - cell "0" [ref=e353]
+                - cell "0" [ref=e354]
+              - row "Chili's Grill & Bar Customer A - High - 2 0" [ref=e355] [cursor=pointer]:
+                - cell "Chili's Grill & Bar" [ref=e356]
+                - cell "Customer" [ref=e357]:
+                  - generic [ref=e359]: Customer
+                - cell "A - High" [ref=e360]:
+                  - generic [ref=e362]: A - High
+                - cell "-" [ref=e363]
+                - cell "2" [ref=e364]
+                - cell "0" [ref=e365]
+              - row "Chipotle Mexican Grill Customer A - High - 2 0" [ref=e366] [cursor=pointer]:
+                - cell "Chipotle Mexican Grill" [ref=e367]
+                - cell "Customer" [ref=e368]:
+                  - generic [ref=e370]: Customer
+                - cell "A - High" [ref=e371]:
+                  - generic [ref=e373]: A - High
+                - cell "-" [ref=e374]
+                - cell "2" [ref=e375]
+                - cell "0" [ref=e376]
+              - row "Custom Culinary Principal A - High - 2 5" [ref=e377] [cursor=pointer]:
+                - cell "Custom Culinary" [ref=e378]
+                - cell "Principal" [ref=e379]:
+                  - generic [ref=e381]: Principal
+                - cell "A - High" [ref=e382]:
+                  - generic [ref=e384]: A - High
+                - cell "-" [ref=e385]
+                - cell "2" [ref=e386]
+                - cell "5" [ref=e387]
+      - link "Create new organizations" [ref=e388] [cursor=pointer]:
+        - /url: "#/organizations/create"
+        - img [ref=e389]
+    - generic [ref=e390]:
+      - generic [ref=e391]:
+        - paragraph [ref=e392]: "Rows per page:"
+        - combobox [ref=e393] [cursor=pointer]:
+          - generic: "25"
+          - img
+      - generic [ref=e394]: 1-25 of 151
+      - navigation "pagination" [ref=e395]:
+        - list [ref=e396]:
+          - listitem [ref=e397]:
+            - link "Go to previous page" [ref=e398] [cursor=pointer]:
+              - /url: "#"
+              - img
+          - listitem [ref=e399]:
+            - link "1" [ref=e400] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e401]:
+            - link "2" [ref=e402] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e403]:
+            - link "3" [ref=e404] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e405]:
+            - link "4" [ref=e406] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e407]:
+            - link "5" [ref=e408] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e409]:
+            - link "6" [ref=e410] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e411]:
+            - link "7" [ref=e412] [cursor=pointer]:
+              - /url: "#"
+          - listitem [ref=e413]:
+            - link "Go to next page" [ref=e414] [cursor=pointer]:
+              - /url: "#"
+              - img
+  - contentinfo [ref=e415]:
+    - generic [ref=e417]:
+      - paragraph [ref=e418]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e419] [cursor=pointer]:
+        - img [ref=e420]
+        - generic [ref=e422]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```
