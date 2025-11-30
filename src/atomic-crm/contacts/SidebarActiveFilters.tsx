@@ -41,10 +41,10 @@ export const SidebarActiveFilters = () => {
             </div>
             <button
               onClick={() => removeFilterValue(chip.key, chip.value)}
-              className="shrink-0 p-0.5 rounded-sm hover:bg-background transition-colors"
+              className="shrink-0 h-11 w-11 -mr-2 flex items-center justify-center rounded-md hover:bg-background transition-colors"
               aria-label={`Remove ${chip.category} filter`}
             >
-              <X className="h-3 w-3 text-muted-foreground group-hover:text-foreground" />
+              <X className="h-4 w-4 text-muted-foreground group-hover:text-foreground" />
             </button>
           </div>
         ))}

@@ -3,6 +3,7 @@ import { ResourceSlideOver, type TabConfig } from "@/components/layouts/Resource
 import { ContactDetailsTab } from "./ContactDetailsTab";
 import { ContactNotesTab } from "./ContactNotesTab";
 import { ActivitiesTab } from "./ActivitiesTab";
+import { ContactHierarchyBreadcrumb } from "./ContactHierarchyBreadcrumb";
 import type { Contact } from "../types";
 
 interface ContactSlideOverProps {
@@ -69,6 +70,7 @@ export function ContactSlideOver({
       onModeToggle={onModeToggle}
       tabs={contactTabs}
       recordRepresentation={getContactName}
+      breadcrumbComponent={ContactHierarchyBreadcrumb}
     />
   );
 }
