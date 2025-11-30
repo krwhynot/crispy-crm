@@ -63,7 +63,7 @@ test.describe("Organization Form - Error Scenarios", () => {
 
     // Should successfully save (transform added https://)
     await orgPage.expectFormSuccess();
-    await expect(page.getByText(orgName)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(orgName).first()).toBeVisible({ timeout: 5000 });
   });
 });
 
@@ -103,11 +103,12 @@ test.describe("Organization Form - Success Scenarios", () => {
       await orgPage.clickProceedAnyway();
     }
 
-    // Should redirect to show page
+    // Should redirect to show page or list-with-panel
     await orgPage.expectFormSuccess();
 
-    // Verify we're on the show page with org name visible
-    await expect(page.getByText(orgName)).toBeVisible({ timeout: 5000 });
+    // Verify the org name is visible (may appear in slide-over panel title)
+    // Use first() to handle strict mode if name appears in multiple places
+    await expect(page.getByText(orgName).first()).toBeVisible({ timeout: 5000 });
   });
 
   test("should save Principal type organization", async ({ page }) => {
@@ -131,7 +132,7 @@ test.describe("Organization Form - Success Scenarios", () => {
     await orgPage.expectFormSuccess();
 
     // Verify redirect
-    await expect(page.getByText(orgName)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(orgName).first()).toBeVisible({ timeout: 5000 });
   });
 
   test("should save Customer type with full address", async ({ page }) => {
@@ -165,7 +166,7 @@ test.describe("Organization Form - Success Scenarios", () => {
     await orgPage.expectFormSuccess();
 
     // Verify redirect
-    await expect(page.getByText(orgName)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(orgName).first()).toBeVisible({ timeout: 5000 });
   });
 
   test("should handle duplicate name warning and allow proceeding", async ({ page }) => {
@@ -204,7 +205,7 @@ test.describe("Organization Form - Success Scenarios", () => {
     await orgPage.expectFormSuccess();
 
     // Verify we're on show page
-    await expect(page.getByText(orgName)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(orgName).first()).toBeVisible({ timeout: 5000 });
   });
 });
 
@@ -238,7 +239,7 @@ test.describe("Organization Form - Validation Edge Cases", () => {
     }
 
     await orgPage.expectFormSuccess();
-    await expect(page.getByText(orgName)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(orgName).first()).toBeVisible({ timeout: 5000 });
   });
 
   test("should accept website with https protocol", async ({ page }) => {
@@ -253,7 +254,7 @@ test.describe("Organization Form - Validation Edge Cases", () => {
     }
 
     await orgPage.expectFormSuccess();
-    await expect(page.getByText(orgName)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(orgName).first()).toBeVisible({ timeout: 5000 });
   });
 
   test("should accept valid LinkedIn URL variations", async ({ page }) => {
@@ -270,7 +271,7 @@ test.describe("Organization Form - Validation Edge Cases", () => {
     }
 
     await orgPage.expectFormSuccess();
-    await expect(page.getByText(orgName)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(orgName).first()).toBeVisible({ timeout: 5000 });
   });
 
   test("should allow empty optional fields", async ({ page }) => {
@@ -288,7 +289,7 @@ test.describe("Organization Form - Validation Edge Cases", () => {
     }
 
     await orgPage.expectFormSuccess();
-    await expect(page.getByText(orgName)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(orgName).first()).toBeVisible({ timeout: 5000 });
   });
 
   test("should trim whitespace from name", async ({ page }) => {
@@ -305,7 +306,7 @@ test.describe("Organization Form - Validation Edge Cases", () => {
 
     // Should save successfully (trimming handled by form)
     await orgPage.expectFormSuccess();
-    await expect(page.getByText(orgName)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(orgName).first()).toBeVisible({ timeout: 5000 });
   });
 });
 
@@ -373,6 +374,6 @@ test.describe("Organization Form - Duplicate Dialog Behavior", () => {
     }
 
     await orgPage.expectFormSuccess();
-    await expect(page.getByText(newName)).toBeVisible({ timeout: 5000 });
+    await expect(page.getByText(newName).first()).toBeVisible({ timeout: 5000 });
   });
 });
