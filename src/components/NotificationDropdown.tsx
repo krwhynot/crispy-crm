@@ -112,7 +112,7 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="font-semibold text-sm">Notifications</h2>
           {unreadCount > 0 && (
-            <Button variant="ghost" size="sm" onClick={markAllAsRead} className="h-8 text-xs">
+            <Button variant="ghost" size="sm" onClick={markAllAsRead} className="h-11 text-xs">
               Mark all as read
             </Button>
           )}
