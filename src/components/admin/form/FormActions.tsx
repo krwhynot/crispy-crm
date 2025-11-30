@@ -1,4 +1,3 @@
-import * as React from "react";
 import { Button } from "@/components/ui/button";
 import { SaveButtonGroup } from "./SaveButtonGroup";
 import { cn } from "@/lib/utils";
@@ -7,6 +6,8 @@ import { Trash2 } from "lucide-react";
 interface FormActionsProps {
   onCancel: () => void;
   onDelete?: () => void;
+  /** Handler for regular Save action (required when showSaveAndNew is true) */
+  onSave?: (data: any) => void | Promise<void>;
   onSaveAndNew?: (data: any) => void | Promise<void>;
   showSaveAndNew?: boolean;
   className?: string;
@@ -15,14 +16,11 @@ interface FormActionsProps {
 function FormActions({
   onCancel,
   onDelete,
+  onSave,
   onSaveAndNew,
   showSaveAndNew = false,
   className,
 }: FormActionsProps) {
-  const handleSave = (data: any) => {
-    return;
-  };
-
   return (
     <div
       data-slot="form-actions"
@@ -46,8 +44,8 @@ function FormActions({
           Cancel
         </Button>
 
-        {showSaveAndNew && onSaveAndNew ? (
-          <SaveButtonGroup onSave={handleSave} onSaveAndNew={onSaveAndNew} />
+        {showSaveAndNew && onSave && onSaveAndNew ? (
+          <SaveButtonGroup onSave={onSave} onSaveAndNew={onSaveAndNew} />
         ) : (
           <Button type="submit">Save</Button>
         )}
