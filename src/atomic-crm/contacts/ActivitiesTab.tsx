@@ -117,32 +117,32 @@ const ActivityTimelineEntry = ({ activity }: { activity: ActivityRecord }) => {
             </div>
           )}
 
-          {/* Related Links */}
-          <div className="flex items-center gap-4 mt-2">
+          {/* Related Links - min-h-11 for 44px touch targets (WCAG AA) */}
+          <div className="flex items-center gap-2 mt-2 -ml-2">
             {activity.related_task_id && (
               <RouterLink
                 to={`/tasks/${activity.related_task_id}`}
-                className="flex items-center gap-1 text-xs text-primary hover:underline"
+                className="inline-flex items-center gap-1.5 min-h-11 px-2 text-xs text-primary hover:underline hover:bg-muted/50 rounded-md transition-colors"
               >
-                <Check className="h-3 w-3" />
+                <Check className="h-4 w-4" />
                 Related Task
               </RouterLink>
             )}
             {activity.opportunity_id && (
               <RouterLink
                 to={`/opportunities/${activity.opportunity_id}/show`}
-                className="flex items-center gap-1 text-xs text-primary hover:underline"
+                className="inline-flex items-center gap-1.5 min-h-11 px-2 text-xs text-primary hover:underline hover:bg-muted/50 rounded-md transition-colors"
               >
-                <Target className="h-3 w-3" />
+                <Target className="h-4 w-4" />
                 View Opportunity
               </RouterLink>
             )}
             {activity.organization_id && (
               <RouterLink
                 to={`/organizations/${activity.organization_id}/show`}
-                className="flex items-center gap-1 text-xs text-primary hover:underline"
+                className="inline-flex items-center gap-1.5 min-h-11 px-2 text-xs text-primary hover:underline hover:bg-muted/50 rounded-md transition-colors"
               >
-                <FileText className="h-3 w-3" />
+                <FileText className="h-4 w-4" />
                 View Organization
               </RouterLink>
             )}
