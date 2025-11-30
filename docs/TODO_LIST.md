@@ -604,15 +604,20 @@ Important features that can be worked in parallel.
 
 #### TODO-014: Contact Organization Filter
 - **PRD Reference:** MVP #19
-- **Status:** ⬜ TODO
+- **Status:** ✅ Done
 - **Priority:** 🟡 P2
+- **Completed:** 2025-11-29
 - **Description:** Add organization filter to ContactListFilter
 - **Tasks:**
-  - [ ] Add organization dropdown to ContactListFilter component
-  - [ ] Query organizations for dropdown options
-  - [ ] Filter contacts by selected organization
-  - [ ] Tests already exist - ensure they pass
-- **Acceptance Criteria:** Can filter contact list by organization
+  - [x] Add organization dropdown to ContactListFilter component
+  - [x] Query organizations for dropdown options
+  - [x] Filter contacts by selected organization
+  - [x] Tests already exist - ensure they pass
+- **Implementation Notes:**
+  - `ContactListFilter.tsx` lines 137-158: Full Select dropdown with "All Organizations" option
+  - Fetches organizations via `useGetList("organizations")` with pagination
+  - `useContactFilterChips.ts` displays active organization filter as chip
+- **Acceptance Criteria:** Can filter contact list by organization ✅
 
 #### TODO-015: Remove Contact Files Tab
 - **PRD Reference:** MVP #42
