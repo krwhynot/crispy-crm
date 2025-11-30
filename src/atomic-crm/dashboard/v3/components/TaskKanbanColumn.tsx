@@ -108,7 +108,7 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
     <div
       className={cn(
         "flex flex-col rounded-xl border-t-4 bg-card",
-        "min-w-[280px] lg:min-w-0 lg:flex-1",
+        "w-full lg:min-w-0 lg:flex-1",
         "shadow-sm",
         config.accentColor
       )}

@@ -157,10 +157,10 @@ export function KPICard({ type, value, loading = false, className }: KPICardProp
     >
       <CardContent className="p-0">
         <div className="flex items-center gap-3">
-          {/* Icon container - 48px minimum touch target */}
+          {/* Icon container - 44px minimum touch target (WCAG 2.1 AA) */}
           <div
             className={cn(
-              "flex h-10 w-10 lg:h-12 lg:w-12 items-center justify-center rounded-lg shrink-0",
+              "flex h-11 w-11 lg:h-12 lg:w-12 items-center justify-center rounded-lg shrink-0",
               isDestructive
                 ? "bg-destructive/10 text-destructive"
                 : isWarning

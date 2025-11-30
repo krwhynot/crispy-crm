@@ -91,6 +91,10 @@ export const organizationSchema = z.object({
 export type OrganizationInput = z.input<typeof organizationSchema>;
 export type Organization = z.infer<typeof organizationSchema>;
 
+// Enum type exports (P1 consolidation - single source of truth)
+export type OrganizationType = z.infer<typeof organizationTypeSchema>;
+export type OrganizationPriority = z.infer<typeof organizationPrioritySchema>;
+
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where organization validation occurs
 export async function validateOrganizationForSubmission(data: unknown): Promise<void> {

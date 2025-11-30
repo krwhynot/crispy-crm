@@ -7,6 +7,12 @@
  * This mapping provides contextual guidance for reps transitioning from Excel.
  */
 
+// P1 consolidation: Import type from canonical validation schema
+import type { OpportunityStageValue } from "@/atomic-crm/validation/opportunities";
+
+// Re-export for backward compatibility with existing imports
+export type { OpportunityStageValue } from "@/atomic-crm/validation/opportunities";
+
 /**
  * MFB Sales Process Phase information
  * Maps pipeline stages to the broader 7-phase methodology
@@ -18,22 +24,13 @@ export interface MfbPhaseInfo {
 }
 
 export interface OpportunityStage {
-  value: string;
+  value: OpportunityStageValue; // Now typed to canonical enum
   label: string;
   color: string;
   description: string;
   elevation: 1 | 2 | 3; // Visual depth: 1=subtle, 2=medium, 3=prominent
   mfbPhase: MfbPhaseInfo; // MFB 7-phase process mapping (PRD Section 7.4)
 }
-
-export type OpportunityStageValue =
-  | "new_lead"
-  | "initial_outreach"
-  | "sample_visit_offered"
-  | "feedback_logged"
-  | "demo_scheduled"
-  | "closed_won"
-  | "closed_lost";
 
 export const OPPORTUNITY_STAGES: OpportunityStage[] = [
   {
