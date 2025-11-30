@@ -25,6 +25,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import { useMyTasks } from "../hooks/useMyTasks";
 import type { TaskItem } from "../types";
+import { useTutorial } from "../tutorial";
 
 /**
  * Icon mapping for task types
@@ -179,6 +180,7 @@ export function TaskCompleteSheet({
   const { tasks, loading, error, completeTask } = useMyTasks();
   const notify = useNotify();
   const [completingId, setCompletingId] = useState<number | null>(null);
+  const { markActionComplete } = useTutorial();
 
   // Sort tasks: overdue first, then by priority within status
   const sortedTasks = [...tasks].sort((a, b) => {
@@ -216,6 +218,7 @@ export function TaskCompleteSheet({
       try {
         await completeTask(taskId);
         notify("Task completed!", { type: "success" });
+        markActionComplete("task-complete");
 
         // Refresh dashboard data
         onRefresh?.();
@@ -243,6 +246,7 @@ export function TaskCompleteSheet({
         className="flex max-h-[80vh] flex-col rounded-t-xl"
         aria-labelledby="complete-task-title"
         aria-describedby="complete-task-description"
+        data-tutorial="task-sheet"
       >
         <SheetHeader className="border-b border-border pb-4">
           <div className="flex items-center justify-between">

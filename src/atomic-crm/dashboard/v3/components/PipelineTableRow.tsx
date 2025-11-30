@@ -73,6 +73,7 @@ export function PipelineTableRow({ row, onRowClick }: PipelineTableRowProps) {
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role="button"
+      data-tutorial="pipeline-row"
       aria-label={`View opportunities for ${row.name}. Pipeline momentum: ${row.momentum}`}
     >
       {/* Principal name with decay indicator */}

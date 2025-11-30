@@ -7,6 +7,8 @@ import { MobileQuickActionBar } from "./components/MobileQuickActionBar";
 import { TaskCompleteSheet } from "./components/TaskCompleteSheet";
 import { KPISummaryRow } from "./components/KPISummaryRow";
 import { MyPerformanceWidget } from "./components/MyPerformanceWidget";
+import { TutorialProvider, TutorialOverlay, useTutorial } from "./tutorial";
+import { Button } from "@/components/ui/button";
 
 /**
  * PrincipalDashboardV3 - Vertically stacked dashboard with Log Activity FAB
@@ -23,10 +25,20 @@ import { MyPerformanceWidget } from "./components/MyPerformanceWidget";
  * - Team activity feed showing recent activities with avatars
  */
 export function PrincipalDashboardV3() {
+  return (
+    <TutorialProvider>
+      <DashboardBody />
+      <TutorialOverlay />
+    </TutorialProvider>
+  );
+}
+
+function DashboardBody() {
   // Refresh key to force data components to re-mount and re-fetch
   const [refreshKey, setRefreshKey] = useState(0);
   // Task completion sheet state (for mobile quick action bar)
   const [isTaskSheetOpen, setIsTaskSheetOpen] = useState(false);
+  const { startTutorial } = useTutorial();
 
   // Memoized to prevent child re-renders when passed as prop
   const handleRefresh = useCallback(() => {
@@ -40,11 +52,14 @@ export function PrincipalDashboardV3() {
   }, []);
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-screen flex-col" data-tutorial="header">
       {/* Header */}
       <header className="border-b border-border bg-card">
-        <div className="flex h-16 items-center px-6">
+        <div className="flex h-16 items-center justify-between px-6">
           <h1 className="text-xl font-semibold">Principal Dashboard</h1>
+          <Button variant="ghost" size="sm" onClick={() => startTutorial({ replay: true })}>
+            Tutorial
+          </Button>
         </div>
       </header>
 

@@ -21,6 +21,8 @@ const UrlFieldImpl = <RecordType extends Record<string, any> = Record<string, an
     sortBy: _sortBy,
     textAlign: _textAlign,
     rowClassName: _rowClassName,
+    cellClassName: _cellClassName,
+    headerClassName: _headerClassName,
     resource: _resource,
     ...rest
   } = inProps;

@@ -18,6 +18,9 @@ export const BadgeField = <RecordType extends RaRecord = RaRecord>({
   sortBy: _sortBy,
   textAlign: _textAlign,
   rowClassName: _rowClassName,
+  cellClassName: _cellClassName,
+  headerClassName: _headerClassName,
+  resource: _resource,
   ...rest
 }: BadgeFieldProps<RecordType>) => {
   const value = useFieldValue({ defaultValue, source, record });

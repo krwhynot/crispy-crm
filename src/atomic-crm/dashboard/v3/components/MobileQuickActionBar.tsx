@@ -18,6 +18,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
+import { useTutorial } from "../tutorial";
 
 // Lazy load QuickLogForm - saves ~15-20KB from main dashboard chunk
 const QuickLogForm = lazy(() =>
@@ -167,6 +168,7 @@ export function MobileQuickActionBar({
 }: MobileQuickActionBarProps) {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [selectedAction, setSelectedAction] = useState<QuickAction | null>(null);
+  const { markActionComplete } = useTutorial();
 
   // Handle quick action button click
   const handleActionClick = useCallback((action: QuickAction) => {
@@ -186,7 +188,8 @@ export function MobileQuickActionBar({
     setIsSheetOpen(false);
     setSelectedAction(null);
     onRefresh?.();
-  }, [onRefresh]);
+    markActionComplete("log-activity");
+  }, [markActionComplete, onRefresh]);
 
   // Handle sheet close
   const handleOpenChange = useCallback((open: boolean) => {
@@ -220,6 +223,7 @@ export function MobileQuickActionBar({
         )}
         aria-label="Quick actions"
         role="navigation"
+        data-tutorial="quick-bar"
       >
         <div className="flex items-center justify-around px-2 py-2">
           {QUICK_ACTIONS.map((action) => {

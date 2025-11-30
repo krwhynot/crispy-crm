@@ -47,6 +47,8 @@ const DateFieldImpl = <RecordType extends Record<string, any> = Record<string, a
     sortBy: _sortBy,
     textAlign: _textAlign,
     rowClassName: _rowClassName,
+    cellClassName: _cellClassName,
+    headerClassName: _headerClassName,
     resource: _resource,
     ...rest
   } = inProps;

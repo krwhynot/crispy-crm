@@ -17,6 +17,8 @@ const ColoredBadge = (props: any) => {
     sortBy: _sortBy,
     textAlign: _textAlign,
     rowClassName: _rowClassName,
+    cellClassName: _cellClassName,
+    headerClassName: _headerClassName,
     resource: _resource,
     ...badgeProps
   } = props;

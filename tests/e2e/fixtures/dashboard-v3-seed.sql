@@ -63,6 +63,7 @@ END $$;
 -- 2. Create Principal Organization
 -- =====================================================
 
+-- Base principal used by legacy tests
 INSERT INTO organizations (
   name,
   organization_type,
@@ -81,6 +82,23 @@ VALUES (
   NOW(),
   (SELECT sales_id FROM test_context)
 )
+ON CONFLICT DO NOTHING;
+
+-- Additional principals to cover all momentum states
+INSERT INTO organizations (
+  name,
+  organization_type,
+  priority,
+  city,
+  state,
+  created_at,
+  created_by
+)
+VALUES
+  ('E2E Momentum Increasing', 'principal', 'high', 'Oakland', 'CA', NOW(), (SELECT sales_id FROM test_context)),
+  ('E2E Momentum Decreasing', 'principal', 'medium', 'Berkeley', 'CA', NOW(), (SELECT sales_id FROM test_context)),
+  ('E2E Momentum Steady', 'principal', 'medium', 'San Jose', 'CA', NOW(), (SELECT sales_id FROM test_context)),
+  ('E2E Momentum Stale', 'principal', 'low', 'Sacramento', 'CA', NOW(), (SELECT sales_id FROM test_context))
 ON CONFLICT DO NOTHING;
 
 -- =====================================================
@@ -107,6 +125,60 @@ VALUES (
   NOW(),
   (SELECT sales_id FROM test_context)
 )
+ON CONFLICT DO NOTHING;
+
+-- Customers for each momentum principal
+INSERT INTO organizations (
+  name,
+  organization_type,
+  principal_organization_id,
+  priority,
+  city,
+  state,
+  created_at,
+  created_by
+)
+VALUES
+  (
+    'E2E Customer for Increasing',
+    'customer',
+    (SELECT id FROM organizations WHERE name = 'E2E Momentum Increasing' AND organization_type = 'principal'),
+    'medium',
+    'Oakland',
+    'CA',
+    NOW(),
+    (SELECT sales_id FROM test_context)
+  ),
+  (
+    'E2E Customer for Decreasing',
+    'customer',
+    (SELECT id FROM organizations WHERE name = 'E2E Momentum Decreasing' AND organization_type = 'principal'),
+    'medium',
+    'Berkeley',
+    'CA',
+    NOW(),
+    (SELECT sales_id FROM test_context)
+  ),
+  (
+    'E2E Customer for Steady',
+    'customer',
+    (SELECT id FROM organizations WHERE name = 'E2E Momentum Steady' AND organization_type = 'principal'),
+    'medium',
+    'San Jose',
+    'CA',
+    NOW(),
+    (SELECT sales_id FROM test_context)
+  ),
+  (
+    'E2E Customer for Stale',
+    'customer',
+    (SELECT id FROM organizations WHERE name = 'E2E Momentum Stale' AND organization_type = 'principal'),
+    'low',
+    'Sacramento',
+    'CA',
+    NOW(),
+    (SELECT sales_id FROM test_context)
+  )
 ON CONFLICT DO NOTHING;
 
 -- =====================================================
@@ -157,6 +229,64 @@ VALUES (
   (SELECT sales_id FROM test_context),
   NOW() - INTERVAL '15 days'
 )
+ON CONFLICT DO NOTHING;
+
+-- Momentum coverage opportunities (one per principal)
+INSERT INTO opportunities (
+  name,
+  stage,
+  priority,
+  estimated_close_date,
+  principal_organization_id,
+  customer_organization_id,
+  created_by,
+  created_at
+)
+VALUES
+  -- Increasing: activity this week > last week
+  (
+    'E2E Momentum Increasing Deal',
+    'qualification',
+    'high',
+    CURRENT_DATE + INTERVAL '60 days',
+    (SELECT id FROM organizations WHERE name = 'E2E Momentum Increasing' AND organization_type = 'principal'),
+    (SELECT id FROM organizations WHERE name = 'E2E Customer for Increasing'),
+    (SELECT sales_id FROM test_context),
+    NOW() - INTERVAL '10 days'
+  ),
+  -- Decreasing: activity last week only
+  (
+    'E2E Momentum Decreasing Deal',
+    'proposal',
+    'medium',
+    CURRENT_DATE + INTERVAL '45 days',
+    (SELECT id FROM organizations WHERE name = 'E2E Momentum Decreasing' AND organization_type = 'principal'),
+    (SELECT id FROM organizations WHERE name = 'E2E Customer for Decreasing'),
+    (SELECT sales_id FROM test_context),
+    NOW() - INTERVAL '20 days'
+  ),
+  -- Steady: activity both this week and last week
+  (
+    'E2E Momentum Steady Deal',
+    'discovery',
+    'medium',
+    CURRENT_DATE + INTERVAL '35 days',
+    (SELECT id FROM organizations WHERE name = 'E2E Momentum Steady' AND organization_type = 'principal'),
+    (SELECT id FROM organizations WHERE name = 'E2E Customer for Steady'),
+    (SELECT sales_id FROM test_context),
+    NOW() - INTERVAL '12 days'
+  ),
+  -- Stale: no activity in last 14 days
+  (
+    'E2E Momentum Stale Deal',
+    'qualification',
+    'low',
+    CURRENT_DATE + INTERVAL '90 days',
+    (SELECT id FROM organizations WHERE name = 'E2E Momentum Stale' AND organization_type = 'principal'),
+    (SELECT id FROM organizations WHERE name = 'E2E Customer for Stale'),
+    (SELECT sales_id FROM test_context),
+    NOW() - INTERVAL '40 days'
+  )
 ON CONFLICT DO NOTHING;
 
 -- =====================================================
@@ -264,6 +394,104 @@ VALUES
     (SELECT id FROM organizations WHERE name = 'E2E Test Customer'),
     (SELECT sales_id FROM test_context),
     NOW() - INTERVAL '8 days'
+  )
+ON CONFLICT DO NOTHING;
+
+-- Momentum coverage activities per principal
+INSERT INTO activities (
+  activity_type,
+  type,
+  subject,
+  description,
+  activity_date,
+  outcome,
+  duration_minutes,
+  opportunity_id,
+  organization_id,
+  created_by,
+  created_at
+)
+VALUES
+  -- Increasing: two activities this week, none last week
+  (
+    'interaction',
+    'call',
+    'Check-in call (inc)',
+    'Followed up with buyer',
+    CURRENT_DATE - INTERVAL '2 days',
+    'Connected',
+    15,
+    (SELECT id FROM opportunities WHERE name = 'E2E Momentum Increasing Deal'),
+    (SELECT id FROM organizations WHERE name = 'E2E Customer for Increasing'),
+    (SELECT sales_id FROM test_context),
+    CURRENT_DATE - INTERVAL '2 days'
+  ),
+  (
+    'interaction',
+    'email',
+    'Send pricing (inc)',
+    'Shared updated pricing sheet',
+    CURRENT_DATE - INTERVAL '1 day',
+    'Completed',
+    NULL,
+    (SELECT id FROM opportunities WHERE name = 'E2E Momentum Increasing Deal'),
+    (SELECT id FROM organizations WHERE name = 'E2E Customer for Increasing'),
+    (SELECT sales_id FROM test_context),
+    CURRENT_DATE - INTERVAL '1 day'
+  ),
+  -- Decreasing: two activities last week only
+  (
+    'interaction',
+    'call',
+    'Initial outreach (dec)',
+    'Introduced offering',
+    CURRENT_DATE - INTERVAL '10 days',
+    'Connected',
+    20,
+    (SELECT id FROM opportunities WHERE name = 'E2E Momentum Decreasing Deal'),
+    (SELECT id FROM organizations WHERE name = 'E2E Customer for Decreasing'),
+    (SELECT sales_id FROM test_context),
+    CURRENT_DATE - INTERVAL '10 days'
+  ),
+  (
+    'interaction',
+    'email',
+    'Follow-up (dec)',
+    'Sent follow-up email',
+    CURRENT_DATE - INTERVAL '9 days',
+    'Completed',
+    NULL,
+    (SELECT id FROM opportunities WHERE name = 'E2E Momentum Decreasing Deal'),
+    (SELECT id FROM organizations WHERE name = 'E2E Customer for Decreasing'),
+    (SELECT sales_id FROM test_context),
+    CURRENT_DATE - INTERVAL '9 days'
+  ),
+  -- Steady: one this week, one last week
+  (
+    'interaction',
+    'call',
+    'Touch base (steady)',
+    'Checked status',
+    CURRENT_DATE - INTERVAL '2 days',
+    'Connected',
+    10,
+    (SELECT id FROM opportunities WHERE name = 'E2E Momentum Steady Deal'),
+    (SELECT id FROM organizations WHERE name = 'E2E Customer for Steady'),
+    (SELECT sales_id FROM test_context),
+    CURRENT_DATE - INTERVAL '2 days'
+  ),
+  (
+    'interaction',
+    'email',
+    'Recap (steady)',
+    'Sent recap from last call',
+    CURRENT_DATE - INTERVAL '10 days',
+    'Completed',
+    NULL,
+    (SELECT id FROM opportunities WHERE name = 'E2E Momentum Steady Deal'),
+    (SELECT id FROM organizations WHERE name = 'E2E Customer for Steady'),
+    (SELECT sales_id FROM test_context),
+    CURRENT_DATE - INTERVAL '10 days'
   )
 ON CONFLICT DO NOTHING;
 

@@ -15,6 +15,8 @@ function Badge({
   sortBy: _sortBy,
   textAlign: _textAlign,
   rowClassName: _rowClassName,
+  cellClassName: _cellClassName,
+  headerClassName: _headerClassName,
   resource: _resource,
   record: _record,
   ...props

@@ -13,6 +13,8 @@ export const TextField = <RecordType extends Record<string, any> = Record<string
   sortBy: _sortBy,
   textAlign: _textAlign,
   rowClassName: _rowClassName,
+  cellClassName: _cellClassName,
+  headerClassName: _headerClassName,
   resource: _resource,
   ...rest
 }: TextFieldProps<RecordType>) => {
