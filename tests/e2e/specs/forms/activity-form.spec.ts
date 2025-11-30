@@ -106,15 +106,30 @@ test.describe("Activity Form - Success Scenarios", () => {
     consoleMonitor.clear();
   });
 
-  test.skip("SUCCESS #1 - Minimal valid activity (subject + opportunity + contact) saves successfully", async () => {
-    // SKIP: The Radix combobox pattern for opportunity/contact selection is unreliable
-    // in Playwright tests. The popover may not open or the search results may not load
-    // in time. This is a test infrastructure limitation, not an application bug.
-    //
-    // When this test was active, it used:
-    // - DEFAULT_TEST_RELATIONSHIP.opportunity.searchText ("Gun Lake")
-    // - DEFAULT_TEST_RELATIONSHIP.contact.searchText ("Nick")
-    // These are valid entities where the contact belongs to the opportunity's customer org.
+  test("SUCCESS #1 - Minimal valid activity (subject + opportunity + contact) saves successfully", async () => {
+    // Uses cmdk pattern selectors for shadcn/ui Command component
+    // - [cmdk-input] for search input
+    // - [cmdk-item] for option items
+    const testData = {
+      subject: generateTestSubject("Activity"),
+      opportunity: DEFAULT_TEST_RELATIONSHIP.opportunity.searchText, // "Ryan Wabeke"
+      contact: DEFAULT_TEST_RELATIONSHIP.contact.searchText, // "Hancotte"
+    };
+
+    // Fill required fields
+    await formPage.fillSubject(testData.subject);
+    await formPage.selectOpportunity(testData.opportunity);
+    await formPage.selectContact(testData.contact);
+
+    // Submit form
+    await formPage.clickSave();
+
+    // Wait for redirect to activities list
+    await expect(formPage.page).toHaveURL(/\/#\/activities($|\?)/, { timeout: 10000 });
+
+    // Assert no errors
+    expect(consoleMonitor.hasRLSErrors(), "RLS errors detected").toBe(false);
+    expect(consoleMonitor.hasReactErrors(), "React errors detected").toBe(false);
   });
 
   test.skip("SUCCESS #2 - Interaction with all fields saves successfully", async () => {

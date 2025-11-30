@@ -1,0 +1,267 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e1]:
+  - generic [ref=e2]:
+    - navigation [ref=e3]:
+      - generic [ref=e6]:
+        - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+          - /url: "#/"
+          - generic "MFB Master Food Brokers" [ref=e8]
+        - navigation [ref=e10]:
+          - link "Dashboard" [ref=e11] [cursor=pointer]:
+            - /url: "#/"
+          - link "Contacts" [ref=e12] [cursor=pointer]:
+            - /url: "#/contacts"
+          - link "Organizations" [ref=e13] [cursor=pointer]:
+            - /url: "#/organizations"
+          - link "Opportunities" [ref=e14] [cursor=pointer]:
+            - /url: "#/opportunities"
+          - link "Products" [ref=e15] [cursor=pointer]:
+            - /url: "#/products"
+          - link "Tasks" [ref=e16] [cursor=pointer]:
+            - /url: "#/tasks"
+          - link "Reports" [ref=e17] [cursor=pointer]:
+            - /url: "#/reports"
+        - generic [ref=e18]:
+          - button "Toggle theme" [ref=e19] [cursor=pointer]:
+            - img
+            - generic [ref=e20]: Toggle theme
+          - button [ref=e21] [cursor=pointer]:
+            - img
+          - button "Notifications" [ref=e22] [cursor=pointer]:
+            - img
+          - button "A" [ref=e23] [cursor=pointer]:
+            - generic [ref=e25]: A
+    - main [ref=e26]:
+      - generic [ref=e31]:
+        - generic [ref=e32]:
+          - generic [ref=e33]:
+            - heading "Activity Details" [level=3] [ref=e35]
+            - generic [ref=e36]:
+              - group [ref=e38]:
+                - generic [ref=e40]: Interaction Type
+                - generic [ref=e41]:
+                  - combobox [ref=e42] [cursor=pointer]:
+                    - generic: Call
+                    - button [ref=e43]:
+                      - img
+                    - img
+                  - combobox [ref=e44]
+                - generic [ref=e45]: Choose how this interaction occurred
+              - group [ref=e46]:
+                - generic [ref=e48]: Subject *
+                - textbox "Subject" [ref=e49]: Activity 1764519390020
+                - generic [ref=e50]: Summarize the outcome or topic
+              - generic [ref=e51]:
+                - group [ref=e52]:
+                  - generic [ref=e54]: Date *
+                  - textbox "Date" [ref=e55]: 2025-11-30
+                - group [ref=e56]:
+                  - generic [ref=e58]: Duration (minutes)
+                  - spinbutton "Duration (minutes)" [ref=e59]
+                  - generic [ref=e60]: Optional length of the activity
+              - group [ref=e61]:
+                - generic [ref=e63]: Notes
+                - textbox "Notes" [ref=e64]
+                - generic [ref=e65]: Optional narrative for this interaction
+          - generic [ref=e66]:
+            - heading "Relationships" [level=3] [ref=e68]
+            - generic [ref=e69]:
+              - generic [ref=e70]:
+                - group [ref=e71]:
+                  - generic [ref=e73]: Opportunity
+                  - combobox [ref=e74] [cursor=pointer]:
+                    - generic [ref=e75]: Search opportunities
+                    - img
+                  - generic [ref=e76]: Required for interaction activities
+                - group [ref=e77]:
+                  - generic [ref=e79]: Contact
+                  - combobox [expanded] [ref=e80] [cursor=pointer]:
+                    - generic [ref=e81]: Search contacts
+                    - img
+                  - generic [ref=e82]: Optional contact involved
+              - group [ref=e83]:
+                - generic [ref=e85]: Organization
+                - combobox [ref=e86] [cursor=pointer]:
+                  - generic [ref=e87]: Search organizations
+                  - img
+                - generic [ref=e88]: Optional organization context
+          - button "Follow-up" [ref=e90] [cursor=pointer]:
+            - img [ref=e91]
+            - heading "Follow-up" [level=3] [ref=e93]
+          - button "Outcome" [ref=e95] [cursor=pointer]:
+            - img [ref=e96]
+            - heading "Outcome" [level=3] [ref=e98]
+        - toolbar [ref=e99]:
+          - button "Delete" [ref=e100] [cursor=pointer]:
+            - img
+            - text: Delete
+          - generic [ref=e101]:
+            - button "Cancel" [ref=e102] [cursor=pointer]:
+              - img
+              - text: Cancel
+            - button "Save" [ref=e103] [cursor=pointer]:
+              - img
+              - text: Save
+    - contentinfo [ref=e104]:
+      - generic [ref=e106]:
+        - paragraph [ref=e107]: © 2025 MFB Master Food Brokers. All rights reserved.
+        - button "View keyboard shortcuts" [ref=e108] [cursor=pointer]:
+          - img [ref=e109]
+          - generic [ref=e111]: Keyboard shortcuts
+    - region "Notifications alt+T"
+  - dialog [ref=e113]:
+    - generic [ref=e114]:
+      - generic [ref=e116]:
+        - img [ref=e117]
+        - combobox [expanded] [active] [ref=e120]
+      - group [ref=e121]:
+        - option "TT TestFirst1764517908216 TestLast1764517908216" [ref=e122]:
+          - img
+          - generic [ref=e123]:
+            - generic [ref=e125]: TT
+            - generic [ref=e127]: TestFirst1764517908216 TestLast1764517908216
+        - option "TT TestFirst1764517815245 TestLast1764517815245" [ref=e128]:
+          - img
+          - generic [ref=e129]:
+            - generic [ref=e131]: TT
+            - generic [ref=e133]: TestFirst1764517815245 TestLast1764517815245
+        - option "TT TestFirst1764517732540 TestLast1764517732540" [ref=e134]:
+          - img
+          - generic [ref=e135]:
+            - generic [ref=e137]: TT
+            - generic [ref=e139]: TestFirst1764517732540 TestLast1764517732540
+        - option "TT TestFirst1764517522822 TestLast1764517522822" [ref=e140]:
+          - img
+          - generic [ref=e141]:
+            - generic [ref=e143]: TT
+            - generic [ref=e145]: TestFirst1764517522822 TestLast1764517522822
+        - option "T TestFirst1764517498985" [ref=e146]:
+          - img
+          - generic [ref=e147]:
+            - generic [ref=e149]: T
+            - generic [ref=e151]: TestFirst1764517498985
+        - option "T TestLast1764517497695" [ref=e152]:
+          - img
+          - generic [ref=e153]:
+            - generic [ref=e155]: T
+            - generic [ref=e157]: TestLast1764517497695
+        - option "TT TestFirst1764517428240 TestLast1764517428240" [ref=e158]:
+          - img
+          - generic [ref=e159]:
+            - generic [ref=e161]: TT
+            - generic [ref=e163]: TestFirst1764517428240 TestLast1764517428240
+        - option "MM MinimalFirst-1764497806665 MinimalLast-1764497806665" [ref=e164]:
+          - img
+          - generic [ref=e165]:
+            - generic [ref=e167]: MM
+            - generic [ref=e169]: MinimalFirst-1764497806665 MinimalLast-1764497806665
+        - option "MM MinimalFirst-1764497731560 MinimalLast-1764497731560" [ref=e170]:
+          - img
+          - generic [ref=e171]:
+            - generic [ref=e173]: MM
+            - generic [ref=e175]: MinimalFirst-1764497731560 MinimalLast-1764497731560
+        - option "MM MinimalFirst-1764497644056 MinimalLast-1764497644056" [ref=e176]:
+          - img
+          - generic [ref=e177]:
+            - generic [ref=e179]: MM
+            - generic [ref=e181]: MinimalFirst-1764497644056 MinimalLast-1764497644056
+        - option "MM MinimalFirst-1764497482690 MinimalLast-1764497482690" [ref=e182]:
+          - img
+          - generic [ref=e183]:
+            - generic [ref=e185]: MM
+            - generic [ref=e187]: MinimalFirst-1764497482690 MinimalLast-1764497482690
+        - option "MM MinimalFirst-1764497404899 MinimalLast-1764497404899" [ref=e188]:
+          - img
+          - generic [ref=e189]:
+            - generic [ref=e191]: MM
+            - generic [ref=e193]: MinimalFirst-1764497404899 MinimalLast-1764497404899
+        - option "MM MinimalFirst-1764495804930 MinimalLast-1764495804930" [ref=e194]:
+          - img
+          - generic [ref=e195]:
+            - generic [ref=e197]: MM
+            - generic [ref=e199]: MinimalFirst-1764495804930 MinimalLast-1764495804930
+        - option "MM MinimalFirst-1764495700392 MinimalLast-1764495700392" [ref=e200]:
+          - img
+          - generic [ref=e201]:
+            - generic [ref=e203]: MM
+            - generic [ref=e205]: MinimalFirst-1764495700392 MinimalLast-1764495700392
+        - option "DP David Park Corporate Chef" [ref=e206]:
+          - img
+          - generic [ref=e207]:
+            - generic [ref=e209]: DP
+            - generic [ref=e210]:
+              - generic [ref=e211]: David Park
+              - generic [ref=e212]: Corporate Chef
+        - option "MA Michelle Adams VP Purchasing" [ref=e213]:
+          - img
+          - generic [ref=e214]:
+            - generic [ref=e216]: MA
+            - generic [ref=e217]:
+              - generic [ref=e218]: Michelle Adams
+              - generic [ref=e219]: VP Purchasing
+        - option "LL Larry Levy Founder & Chairman" [ref=e220]:
+          - img
+          - generic [ref=e221]:
+            - generic [ref=e223]: LL
+            - generic [ref=e224]:
+              - generic [ref=e225]: Larry Levy
+              - generic [ref=e226]: Founder & Chairman
+        - option "SB Steven Brown Dining Services Manager" [ref=e227]:
+          - img
+          - generic [ref=e228]:
+            - generic [ref=e230]: SB
+            - generic [ref=e231]:
+              - generic [ref=e232]: Steven Brown
+              - generic [ref=e233]: Dining Services Manager
+        - option "AM Andrea Miller Executive Chef" [ref=e234]:
+          - img
+          - generic [ref=e235]:
+            - generic [ref=e237]: AM
+            - generic [ref=e238]:
+              - generic [ref=e239]: Andrea Miller
+              - generic [ref=e240]: Executive Chef
+        - option "KM Karen Martinez Dining Director" [ref=e241]:
+          - img
+          - generic [ref=e242]:
+            - generic [ref=e244]: KM
+            - generic [ref=e245]:
+              - generic [ref=e246]: Karen Martinez
+              - generic [ref=e247]: Dining Director
+        - option "RT Richard Taylor VP Culinary Services" [ref=e248]:
+          - img
+          - generic [ref=e249]:
+            - generic [ref=e251]: RT
+            - generic [ref=e252]:
+              - generic [ref=e253]: Richard Taylor
+              - generic [ref=e254]: VP Culinary Services
+        - option "RG Rachel Green Campus Dining Director" [ref=e255]:
+          - img
+          - generic [ref=e256]:
+            - generic [ref=e258]: RG
+            - generic [ref=e259]:
+              - generic [ref=e260]: Rachel Green
+              - generic [ref=e261]: Campus Dining Director
+        - option "AB Antoine Bernard Global Executive Chef" [ref=e262]:
+          - img
+          - generic [ref=e263]:
+            - generic [ref=e265]: AB
+            - generic [ref=e266]:
+              - generic [ref=e267]: Antoine Bernard
+              - generic [ref=e268]: Global Executive Chef
+        - option "NW Nancy Wilson Purchasing Director" [ref=e269]:
+          - img
+          - generic [ref=e270]:
+            - generic [ref=e272]: NW
+            - generic [ref=e273]:
+              - generic [ref=e274]: Nancy Wilson
+              - generic [ref=e275]: Purchasing Director
+        - option "CL Christopher Lee VP Culinary Higher Ed" [ref=e276]:
+          - img
+          - generic [ref=e277]:
+            - generic [ref=e279]: CL
+            - generic [ref=e280]:
+              - generic [ref=e281]: Christopher Lee
+              - generic [ref=e282]: VP Culinary Higher Ed
+```
