@@ -38,7 +38,13 @@ export class ActivityFormPage extends BasePage {
    */
   async gotoCreate(): Promise<void> {
     await this.goto("/#/activities/create");
-    await waitForFormReady(this.page);
+
+    // Wait for the hash route to be processed by React Router
+    await this.page.waitForURL(/\/#\/activities\/create/, { timeout: 10000 });
+
+    // Wait for the Subject field to be visible (form-specific indicator)
+    const subjectInput = this.page.getByLabel(/^subject$/i);
+    await expect(subjectInput).toBeVisible({ timeout: 10000 });
   }
 
   /**

@@ -166,26 +166,18 @@ test.describe("Activity Form - Error Scenarios", () => {
 });
 
 test.describe("Activity Form - Success Scenarios", () => {
+  // Use stored auth state from setup
+  test.use({ storageState: "tests/e2e/.auth/user.json" });
+
+  let formPage: ActivityFormPage;
+
   test.beforeEach(async ({ page }) => {
     // Attach console monitoring
     await consoleMonitor.attach(page);
 
-    // Login using POM
-    const loginPage = new LoginPage(page);
-    await loginPage.goto("/");
-
-    // Wait for either login form or dashboard
-    const isLoginFormVisible = await page
-      .getByLabel(/email/i)
-      .isVisible({ timeout: 2000 })
-      .catch(() => false);
-
-    if (isLoginFormVisible) {
-      await loginPage.login("admin@test.com", "password123");
-    } else {
-      // Already logged in, wait for dashboard
-      await page.waitForURL(/\/#\//, { timeout: 10000 });
-    }
+    // Navigate to activity create form (auth already handled by storageState)
+    formPage = new ActivityFormPage(page);
+    await formPage.gotoCreate();
   });
 
   test.afterEach(async () => {
@@ -196,14 +188,8 @@ test.describe("Activity Form - Success Scenarios", () => {
     consoleMonitor.clear();
   });
 
-  test("SUCCESS #1 - Minimal valid activity (subject + contact) saves successfully", async ({
-    page,
-  }) => {
-    const formPage = new ActivityFormPage(page);
+  test("SUCCESS #1 - Minimal valid activity (subject + contact) saves successfully", async () => {
     const timestamp = Date.now();
-
-    // Navigate to create form
-    await formPage.gotoCreate();
 
     // Fill minimal required fields
     await formPage.fillSubject(`Minimal Activity ${timestamp}`);
@@ -223,12 +209,8 @@ test.describe("Activity Form - Success Scenarios", () => {
     expect(consoleMonitor.hasReactErrors(), "React errors detected").toBe(false);
   });
 
-  test("SUCCESS #2 - Interaction with opportunity saves successfully", async ({ page }) => {
-    const formPage = new ActivityFormPage(page);
+  test("SUCCESS #2 - Interaction with opportunity saves successfully", async () => {
     const timestamp = Date.now();
-
-    // Navigate to create form
-    await formPage.gotoCreate();
 
     // Fill all fields for an interaction
     await formPage.fillSubject(`Call with prospect ${timestamp}`);
@@ -248,17 +230,11 @@ test.describe("Activity Form - Success Scenarios", () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test("SUCCESS #3 - Activity with follow-up section complete saves successfully", async ({
-    page,
-  }) => {
-    const formPage = new ActivityFormPage(page);
+  test("SUCCESS #3 - Activity with follow-up section complete saves successfully", async () => {
     const timestamp = Date.now();
     const followUpDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
       .toISOString()
       .slice(0, 10); // 7 days from now
-
-    // Navigate to create form
-    await formPage.gotoCreate();
 
     // Fill required fields
     await formPage.fillSubject(`Meeting with follow-up ${timestamp}`);
@@ -281,12 +257,8 @@ test.describe("Activity Form - Success Scenarios", () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test("SUCCESS #4 - Sample activity with sample_status saves successfully", async ({ page }) => {
-    const formPage = new ActivityFormPage(page);
+  test("SUCCESS #4 - Sample activity with sample_status saves successfully", async () => {
     const timestamp = Date.now();
-
-    // Navigate to create form
-    await formPage.gotoCreate();
 
     // Fill required fields for sample activity
     await formPage.fillSubject(`Product sample sent ${timestamp}`);
@@ -308,14 +280,8 @@ test.describe("Activity Form - Success Scenarios", () => {
     expect(consoleMonitor.hasReactErrors()).toBe(false);
   });
 
-  test("SUCCESS #5 - Activity with organization only (no contact) saves successfully", async ({
-    page,
-  }) => {
-    const formPage = new ActivityFormPage(page);
+  test("SUCCESS #5 - Activity with organization only (no contact) saves successfully", async () => {
     const timestamp = Date.now();
-
-    // Navigate to create form
-    await formPage.gotoCreate();
 
     // Fill required fields with organization only (no contact)
     await formPage.fillSubject(`Organization call ${timestamp}`);
@@ -352,29 +318,32 @@ test.describe("Activity Form - Success Scenarios", () => {
       "sample",
     ];
 
+    // This test uses its own formPage since it loops through all types
+    // and needs to navigate to create form multiple times
+    const loopFormPage = new ActivityFormPage(page);
+
     for (const type of interactionTypes) {
-      const formPage = new ActivityFormPage(page);
       const timestamp = Date.now();
 
-      // Navigate to create form
-      await formPage.gotoCreate();
+      // Navigate to create form (fresh for each type)
+      await loopFormPage.gotoCreate();
 
       // Fill required fields with current interaction type
-      await formPage.fillSubject(`${type} activity ${timestamp}`);
-      await formPage.selectInteractionType(type);
-      await formPage.selectOpportunity("Test");
-      await formPage.selectContact("Test");
+      await loopFormPage.fillSubject(`${type} activity ${timestamp}`);
+      await loopFormPage.selectInteractionType(type);
+      await loopFormPage.selectOpportunity("Test");
+      await loopFormPage.selectContact("Test");
 
       // If type is "sample", add sample_status
       if (type === "sample") {
-        await formPage.selectSampleStatus("sent");
+        await loopFormPage.selectSampleStatus("sent");
       }
 
       // Submit
-      await formPage.clickSave();
+      await loopFormPage.clickSave();
 
       // Verify form submitted successfully
-      await formPage.expectFormSuccess();
+      await loopFormPage.expectFormSuccess();
 
       // Assert no console errors
       expect(consoleMonitor.hasRLSErrors(), `RLS errors for ${type}`).toBe(false);
