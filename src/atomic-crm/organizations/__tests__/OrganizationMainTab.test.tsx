@@ -5,7 +5,7 @@
  * name, organization_type, sales_id, segment_id, address fields
  */
 
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { AdminContext } from "react-admin";
 import { FormProvider, useForm } from "react-hook-form";

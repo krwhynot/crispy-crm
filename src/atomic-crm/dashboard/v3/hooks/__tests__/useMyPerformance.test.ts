@@ -12,7 +12,7 @@
 
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { useMyPerformance, PerformanceMetric } from "../useMyPerformance";
+import { useMyPerformance } from "../useMyPerformance";
 
 // Create stable mock functions
 const mockGetList = vi.fn();

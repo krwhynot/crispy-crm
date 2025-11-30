@@ -29,6 +29,10 @@ export const useSmartDefaults = (options?: UseSmartDefaultsOptions): {
       hasResetRef.current = true;
       options.reset(defaults, { keepDirtyValues: true });
     }
+    // Note: 'defaults' and 'options' are intentionally omitted from deps.
+    // 'defaults' is computed fresh each render (not stable reference).
+    // 'options' should only trigger reset when its .reset function changes.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [identity, isLoading, options?.reset]);
 
   return { defaults, isLoading };

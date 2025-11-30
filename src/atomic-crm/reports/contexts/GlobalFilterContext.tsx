@@ -1,3 +1,6 @@
+/* eslint-disable react-refresh/only-export-components */
+// Context pattern: Provider component + useContext hook must co-exist in same file
+
 import type { ReactNode } from "react";
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { subDays } from "date-fns";

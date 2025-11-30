@@ -118,30 +118,8 @@ const OrganizationCreate = () => {
   // Read parent_organization_id from router state (set by "Add Branch" button)
   const parentOrgId = (location.state as any)?.record?.parent_organization_id;
 
-  // Show loading skeleton while identity loads
-  if (isLoadingDefaults) {
-    return (
-      <div className="bg-muted px-6 py-6">
-        <div className="max-w-4xl mx-auto create-form-card">
-          <FormLoadingSkeleton rows={4} />
-        </div>
-      </div>
-    );
-  }
-
-  // Generate defaults from schema, then merge with runtime values
-  // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
-  // Use .partial() to make all fields optional during default generation
-  // This extracts fields with .default() (organization_type, priority)
-  const formDefaults = {
-    ...organizationSchema.partial().parse({}),
-    ...smartDefaults,
-    segment_id: unknownSegmentId ?? undefined,
-    ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch
-  };
-  const formKey = unknownSegmentId ? `org-create-${unknownSegmentId}` : "org-create";
-
   // Transform function for URL prefixing
+  // NOTE: All useCallback hooks must be declared before any early returns (React rules-of-hooks)
   const transformValues = useCallback((values: any) => {
     if (values.website && !values.website.startsWith("http")) {
       values.website = `https://${values.website}`;
@@ -186,6 +164,29 @@ const OrganizationCreate = () => {
     clearDuplicate();
     pendingValuesRef.current = null;
   }, [clearDuplicate]);
+
+  // Show loading skeleton while identity loads
+  if (isLoadingDefaults) {
+    return (
+      <div className="bg-muted px-6 py-6">
+        <div className="max-w-4xl mx-auto create-form-card">
+          <FormLoadingSkeleton rows={4} />
+        </div>
+      </div>
+    );
+  }
+
+  // Generate defaults from schema, then merge with runtime values
+  // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
+  // Use .partial() to make all fields optional during default generation
+  // This extracts fields with .default() (organization_type, priority)
+  const formDefaults = {
+    ...organizationSchema.partial().parse({}),
+    ...smartDefaults,
+    segment_id: unknownSegmentId ?? undefined,
+    ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch
+  };
+  const formKey = unknownSegmentId ? `org-create-${unknownSegmentId}` : "org-create";
 
   return (
     <>

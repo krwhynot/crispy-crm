@@ -15,6 +15,10 @@
  * @see PRD §4.4 for sample tracking requirements
  */
 
+/* eslint-disable react-refresh/only-export-components */
+// This file intentionally exports both a component and related utilities (workflow constants,
+// status config, helper functions) as a cohesive module. Separating them would reduce cohesion.
+
 import { useState, useCallback } from "react";
 import { useUpdate, useNotify } from "react-admin";
 import { Badge } from "@/components/ui/badge";
