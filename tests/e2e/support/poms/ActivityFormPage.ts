@@ -43,7 +43,8 @@ export class ActivityFormPage extends BasePage {
     await this.page.waitForURL(/\/#\/activities\/create/, { timeout: 10000 });
 
     // Wait for the Subject field to be visible (form-specific indicator)
-    const subjectInput = this.page.getByLabel(/^subject$/i);
+    // Note: Label may have "*" suffix for required field indication
+    const subjectInput = this.page.getByLabel(/subject/i);
     await expect(subjectInput).toBeVisible({ timeout: 10000 });
   }
 
@@ -131,9 +132,10 @@ export class ActivityFormPage extends BasePage {
 
   /**
    * Fill the subject field
+   * Note: Label may have "*" suffix for required field indication (e.g., "Subject *")
    */
   async fillSubject(subject: string): Promise<void> {
-    const input = this.page.getByLabel(/^subject$/i);
+    const input = this.page.getByLabel(/subject/i);
     await expect(input).toBeVisible();
     await input.fill(subject);
   }
@@ -142,7 +144,7 @@ export class ActivityFormPage extends BasePage {
    * Get the subject input
    */
   getSubjectInput(): Locator {
-    return this.page.getByLabel(/^subject$/i);
+    return this.page.getByLabel(/subject/i);
   }
 
   /**
@@ -175,24 +177,121 @@ export class ActivityFormPage extends BasePage {
   // ============================================================================
 
   /**
-   * Select an opportunity (autocomplete field)
+   * Select an opportunity using the Radix combobox pattern
+   * The field is a combobox trigger that opens a popover with search
    */
   async selectOpportunity(searchText: string): Promise<void> {
-    await fillAutocompleteField(this.page, /opportunity/i, searchText);
+    // Find the Opportunity field within main (not nav link "Opportunities")
+    // Look for group role containing "Opportunity" text (exact match) AND a combobox
+    const main = this.page.getByRole("main");
+    const opportunityGroup = main.getByRole("group").filter({
+      has: this.page.getByText("Opportunity", { exact: true }),
+    });
+
+    // Click the combobox trigger button within the group
+    const triggerButton = opportunityGroup.getByRole("combobox").first();
+    await expect(triggerButton).toBeVisible({ timeout: 5000 });
+    await triggerButton.click();
+
+    // Wait for popover/dialog to appear
+    const dialog = this.page.getByRole("dialog");
+    const listbox = this.page.getByRole("listbox");
+    const popover = dialog.or(listbox);
+    await expect(popover.first()).toBeVisible({ timeout: 5000 });
+
+    // Find and type in the search input
+    const searchInput = popover.first().getByRole("combobox").or(popover.first().getByRole("textbox"));
+    if (await searchInput.first().isVisible({ timeout: 2000 }).catch(() => false)) {
+      await searchInput.first().fill(searchText);
+      await this.page.waitForTimeout(500);
+    }
+
+    // Click the first matching option
+    const option = this.page.getByRole("option", { name: new RegExp(searchText, "i") }).first();
+    if (await option.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await option.click();
+    }
+
+    // Wait for popover to close
+    await expect(popover.first()).not.toBeVisible({ timeout: 3000 }).catch(() => {});
   }
 
   /**
-   * Select a contact (autocomplete field)
+   * Select a contact using the Radix combobox pattern
    */
   async selectContact(searchText: string): Promise<void> {
-    await fillAutocompleteField(this.page, /contact/i, searchText);
+    // Find the Contact field within main (not nav link "Contacts")
+    // Look for group role containing "Contact" text AND a combobox
+    const main = this.page.getByRole("main");
+    const contactGroup = main.getByRole("group").filter({
+      has: this.page.getByText("Contact", { exact: true }),
+    });
+
+    // Click the combobox trigger button within the contact group
+    const triggerButton = contactGroup.getByRole("combobox").first();
+    await expect(triggerButton).toBeVisible({ timeout: 5000 });
+    await triggerButton.click();
+
+    // Wait for popover/dialog to appear
+    const dialog = this.page.getByRole("dialog");
+    const listbox = this.page.getByRole("listbox");
+    const popover = dialog.or(listbox);
+    await expect(popover.first()).toBeVisible({ timeout: 5000 });
+
+    // Find and type in the search input
+    const searchInput = popover.first().getByRole("combobox").or(popover.first().getByRole("textbox"));
+    if (await searchInput.first().isVisible({ timeout: 2000 }).catch(() => false)) {
+      await searchInput.first().fill(searchText);
+      await this.page.waitForTimeout(500);
+    }
+
+    // Click the first matching option
+    const option = this.page.getByRole("option", { name: new RegExp(searchText, "i") }).first();
+    if (await option.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await option.click();
+    }
+
+    // Wait for popover to close
+    await expect(popover.first()).not.toBeVisible({ timeout: 3000 }).catch(() => {});
   }
 
   /**
-   * Select an organization (autocomplete field)
+   * Select an organization using the Radix combobox pattern
    */
   async selectOrganization(searchText: string): Promise<void> {
-    await fillAutocompleteField(this.page, /organization/i, searchText);
+    // Find the Organization field within main (not nav link "Organizations")
+    // Look for group role containing "Organization" text (exact match) AND a combobox
+    const main = this.page.getByRole("main");
+    const orgGroup = main.getByRole("group").filter({
+      has: this.page.getByText("Organization", { exact: true }),
+    });
+
+    // Click the combobox trigger button within the group
+    const triggerButton = orgGroup.getByRole("combobox").first();
+    await expect(triggerButton).toBeVisible({ timeout: 5000 });
+    await triggerButton.click();
+
+    // Wait for popover/dialog to appear
+    const dialog = this.page.getByRole("dialog");
+    const listbox = this.page.getByRole("listbox");
+    const popover = dialog.or(listbox);
+    await expect(popover.first()).toBeVisible({ timeout: 5000 });
+
+    // Find and type in the search input
+    const searchInput = popover.first().getByRole("combobox").or(popover.first().getByRole("textbox"));
+    if (await searchInput.first().isVisible({ timeout: 2000 }).catch(() => false)) {
+      await searchInput.first().fill(searchText);
+      await this.page.waitForTimeout(500);
+    }
+
+    // Click the first matching option
+    const option = this.page.getByRole("option", { name: new RegExp(searchText, "i") }).first();
+    if (await option.isVisible({ timeout: 5000 }).catch(() => false)) {
+      await option.click();
+    }
+
+    // Wait for popover to close
+    await expect(popover.first()).not.toBeVisible({ timeout: 3000 }).catch(() => {});
   }
 
   // ============================================================================

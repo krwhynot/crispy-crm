@@ -50,7 +50,7 @@
               - generic [ref=e45]: Choose how this interaction occurred
             - group [ref=e46]:
               - generic [ref=e48]: Subject *
-              - textbox "Subject" [ref=e49]
+              - textbox "Subject" [ref=e49]: Minimal Activity 1764496720195
               - generic [ref=e50]: Summarize the outcome or topic
             - generic [ref=e51]:
               - group [ref=e52]:
@@ -100,14 +100,14 @@
           - button "Cancel" [ref=e102] [cursor=pointer]:
             - img
             - text: Cancel
-          - button "Save" [disabled]:
+          - button "Save" [ref=e103] [cursor=pointer]:
             - img
             - text: Save
-  - contentinfo [ref=e103]:
-    - generic [ref=e105]:
-      - paragraph [ref=e106]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e107] [cursor=pointer]:
-        - img [ref=e108]
-        - generic [ref=e110]: Keyboard shortcuts
+  - contentinfo [ref=e104]:
+    - generic [ref=e106]:
+      - paragraph [ref=e107]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e108] [cursor=pointer]:
+        - img [ref=e109]
+        - generic [ref=e111]: Keyboard shortcuts
   - region "Notifications alt+T"
 ```
