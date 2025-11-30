@@ -177,12 +177,14 @@ export class ActivityFormPage extends BasePage {
   // ============================================================================
 
   /**
-   * Select an opportunity using the Radix combobox pattern
-   * The field is a combobox trigger that opens a popover with search
+   * Select an opportunity using the shadcn/ui Command (cmdk) pattern
+   * The field is a combobox trigger that opens a dialog with Command search
+   *
+   * IMPORTANT: Uses [cmdk-input] and [cmdk-item] selectors, NOT ARIA roles
+   * The Command component doesn't use standard listbox/option patterns
    */
   async selectOpportunity(searchText: string): Promise<void> {
     // Find the Opportunity field within main (not nav link "Opportunities")
-    // Look for group role containing "Opportunity" text (exact match) AND a combobox
     const main = this.page.getByRole("main");
     const opportunityGroup = main.getByRole("group").filter({
       has: this.page.getByText("Opportunity", { exact: true }),
@@ -193,35 +195,44 @@ export class ActivityFormPage extends BasePage {
     await expect(triggerButton).toBeVisible({ timeout: 5000 });
     await triggerButton.click();
 
-    // Wait for popover/dialog to appear
+    // Wait for dialog to appear (Command opens in a dialog)
     const dialog = this.page.getByRole("dialog");
-    const listbox = this.page.getByRole("listbox");
-    const popover = dialog.or(listbox);
-    await expect(popover.first()).toBeVisible({ timeout: 5000 });
+    await expect(dialog).toBeVisible({ timeout: 5000 });
 
-    // Find and type in the search input
-    const searchInput = popover.first().getByRole("combobox").or(popover.first().getByRole("textbox"));
-    if (await searchInput.first().isVisible({ timeout: 2000 }).catch(() => false)) {
-      await searchInput.first().fill(searchText);
-      await this.page.waitForTimeout(500);
+    // Use cmdk-input attribute selector (Command pattern)
+    const cmdkInput = dialog.locator("[cmdk-input]");
+    await expect(cmdkInput).toBeVisible({ timeout: 2000 });
+    await cmdkInput.fill(searchText);
+
+    // Wait for search results to load
+    await this.page.waitForTimeout(500);
+
+    // Find and click matching item using cmdk-item attribute
+    const cmdkItems = dialog.locator("[cmdk-item]");
+    const itemCount = await cmdkItems.count();
+
+    if (itemCount > 0) {
+      // Find item that contains the search text
+      const matchingItem = cmdkItems.filter({ hasText: new RegExp(searchText, "i") }).first();
+      if (await matchingItem.isVisible().catch(() => false)) {
+        await matchingItem.click();
+      } else {
+        // Fallback to first item
+        await cmdkItems.first().click();
+      }
     }
 
-    // Click the first matching option
-    const option = this.page.getByRole("option", { name: new RegExp(searchText, "i") }).first();
-    if (await option.isVisible({ timeout: 5000 }).catch(() => false)) {
-      await option.click();
-    }
-
-    // Wait for popover to close
-    await expect(popover.first()).not.toBeVisible({ timeout: 3000 }).catch(() => {});
+    // Wait for dialog to close
+    await expect(dialog).not.toBeVisible({ timeout: 3000 }).catch(() => {});
   }
 
   /**
-   * Select a contact using the Radix combobox pattern
+   * Select a contact using the shadcn/ui Command (cmdk) pattern
+   *
+   * IMPORTANT: Uses [cmdk-input] and [cmdk-item] selectors, NOT ARIA roles
    */
   async selectContact(searchText: string): Promise<void> {
     // Find the Contact field within main (not nav link "Contacts")
-    // Look for group role containing "Contact" text AND a combobox
     const main = this.page.getByRole("main");
     const contactGroup = main.getByRole("group").filter({
       has: this.page.getByText("Contact", { exact: true }),
@@ -232,35 +243,44 @@ export class ActivityFormPage extends BasePage {
     await expect(triggerButton).toBeVisible({ timeout: 5000 });
     await triggerButton.click();
 
-    // Wait for popover/dialog to appear
+    // Wait for dialog to appear (Command opens in a dialog)
     const dialog = this.page.getByRole("dialog");
-    const listbox = this.page.getByRole("listbox");
-    const popover = dialog.or(listbox);
-    await expect(popover.first()).toBeVisible({ timeout: 5000 });
+    await expect(dialog).toBeVisible({ timeout: 5000 });
 
-    // Find and type in the search input
-    const searchInput = popover.first().getByRole("combobox").or(popover.first().getByRole("textbox"));
-    if (await searchInput.first().isVisible({ timeout: 2000 }).catch(() => false)) {
-      await searchInput.first().fill(searchText);
-      await this.page.waitForTimeout(500);
+    // Use cmdk-input attribute selector (Command pattern)
+    const cmdkInput = dialog.locator("[cmdk-input]");
+    await expect(cmdkInput).toBeVisible({ timeout: 2000 });
+    await cmdkInput.fill(searchText);
+
+    // Wait for search results to load
+    await this.page.waitForTimeout(500);
+
+    // Find and click matching item using cmdk-item attribute
+    const cmdkItems = dialog.locator("[cmdk-item]");
+    const itemCount = await cmdkItems.count();
+
+    if (itemCount > 0) {
+      // Find item that contains the search text
+      const matchingItem = cmdkItems.filter({ hasText: new RegExp(searchText, "i") }).first();
+      if (await matchingItem.isVisible().catch(() => false)) {
+        await matchingItem.click();
+      } else {
+        // Fallback to first item
+        await cmdkItems.first().click();
+      }
     }
 
-    // Click the first matching option
-    const option = this.page.getByRole("option", { name: new RegExp(searchText, "i") }).first();
-    if (await option.isVisible({ timeout: 5000 }).catch(() => false)) {
-      await option.click();
-    }
-
-    // Wait for popover to close
-    await expect(popover.first()).not.toBeVisible({ timeout: 3000 }).catch(() => {});
+    // Wait for dialog to close
+    await expect(dialog).not.toBeVisible({ timeout: 3000 }).catch(() => {});
   }
 
   /**
-   * Select an organization using the Radix combobox pattern
+   * Select an organization using the shadcn/ui Command (cmdk) pattern
+   *
+   * IMPORTANT: Uses [cmdk-input] and [cmdk-item] selectors, NOT ARIA roles
    */
   async selectOrganization(searchText: string): Promise<void> {
     // Find the Organization field within main (not nav link "Organizations")
-    // Look for group role containing "Organization" text (exact match) AND a combobox
     const main = this.page.getByRole("main");
     const orgGroup = main.getByRole("group").filter({
       has: this.page.getByText("Organization", { exact: true }),
@@ -271,27 +291,35 @@ export class ActivityFormPage extends BasePage {
     await expect(triggerButton).toBeVisible({ timeout: 5000 });
     await triggerButton.click();
 
-    // Wait for popover/dialog to appear
+    // Wait for dialog to appear (Command opens in a dialog)
     const dialog = this.page.getByRole("dialog");
-    const listbox = this.page.getByRole("listbox");
-    const popover = dialog.or(listbox);
-    await expect(popover.first()).toBeVisible({ timeout: 5000 });
+    await expect(dialog).toBeVisible({ timeout: 5000 });
 
-    // Find and type in the search input
-    const searchInput = popover.first().getByRole("combobox").or(popover.first().getByRole("textbox"));
-    if (await searchInput.first().isVisible({ timeout: 2000 }).catch(() => false)) {
-      await searchInput.first().fill(searchText);
-      await this.page.waitForTimeout(500);
+    // Use cmdk-input attribute selector (Command pattern)
+    const cmdkInput = dialog.locator("[cmdk-input]");
+    await expect(cmdkInput).toBeVisible({ timeout: 2000 });
+    await cmdkInput.fill(searchText);
+
+    // Wait for search results to load
+    await this.page.waitForTimeout(500);
+
+    // Find and click matching item using cmdk-item attribute
+    const cmdkItems = dialog.locator("[cmdk-item]");
+    const itemCount = await cmdkItems.count();
+
+    if (itemCount > 0) {
+      // Find item that contains the search text
+      const matchingItem = cmdkItems.filter({ hasText: new RegExp(searchText, "i") }).first();
+      if (await matchingItem.isVisible().catch(() => false)) {
+        await matchingItem.click();
+      } else {
+        // Fallback to first item
+        await cmdkItems.first().click();
+      }
     }
 
-    // Click the first matching option
-    const option = this.page.getByRole("option", { name: new RegExp(searchText, "i") }).first();
-    if (await option.isVisible({ timeout: 5000 }).catch(() => false)) {
-      await option.click();
-    }
-
-    // Wait for popover to close
-    await expect(popover.first()).not.toBeVisible({ timeout: 3000 }).catch(() => {});
+    // Wait for dialog to close
+    await expect(dialog).not.toBeVisible({ timeout: 3000 }).catch(() => {});
   }
 
   // ============================================================================

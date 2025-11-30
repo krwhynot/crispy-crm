@@ -62,19 +62,20 @@ export const TEST_RELATIONSHIPS = {
     opportunity: {
       id: 154,
       name: "Ryan Wabeke @ Gun Lake Casino",
-      searchText: "Gun Lake",
+      // Use "Ryan Wabeke" not "Gun Lake" - "Lake" matches too many results
+      searchText: "Ryan Wabeke",
     },
     organization: {
       id: 1576,
       name: "Gun Lake Casino",
-      searchText: "Gun Lake",
+      searchText: "Gun Lake Casino", // Full name for exact match
     },
     contact: {
       id: 1189,
       firstName: "Nick",
       lastName: "Hancotte",
       fullName: "Nick Hancotte",
-      searchText: "Nick",
+      searchText: "Hancotte", // Unique last name for exact match
     },
   },
 
@@ -145,7 +146,7 @@ export const TEST_ORGANIZATIONS = {
     id: 1576,
     name: "Gun Lake Casino",
     type: "customer",
-    searchText: "Gun Lake",
+    searchText: "Gun Lake Casino", // Full name for exact match
   },
   campBlodgett: {
     id: 1429,

@@ -87,6 +87,48 @@ test.describe("DEBUG - Activity Form Combobox", () => {
           }
         }
 
+        // The dialog uses Command pattern (cmdk) - find the search input
+        if (dialogVisible) {
+          // Command input has cmdk-input attribute
+          const cmdkInput = dialog.locator('[cmdk-input]');
+          const cmdkInputVisible = await cmdkInput.isVisible().catch(() => false);
+          console.log(`cmdk-input visible: ${cmdkInputVisible}`);
+
+          if (cmdkInputVisible) {
+            // Type a search term
+            await cmdkInput.fill("Gun Lake");
+            console.log("Typed 'Gun Lake' in command input");
+
+            // Wait for results
+            await page.waitForTimeout(1000);
+
+            // Command items have cmdk-item attribute
+            const cmdkItems = dialog.locator('[cmdk-item]');
+            const itemCount = await cmdkItems.count();
+            console.log(`cmdk-item count after search: ${itemCount}`);
+
+            for (let j = 0; j < Math.min(itemCount, 5); j++) {
+              const itemText = await cmdkItems.nth(j).textContent();
+              console.log(`Item ${j}: ${itemText?.substring(0, 80)}`);
+            }
+
+            // Click the first item if available
+            if (itemCount > 0) {
+              await cmdkItems.first().click();
+              console.log("Clicked first command item");
+
+              // Wait and check if dialog closed
+              await page.waitForTimeout(500);
+              const stillOpen = await dialog.isVisible().catch(() => false);
+              console.log(`Dialog still visible after click: ${stillOpen}`);
+
+              // Check if combobox now has a value
+              const newCbText = await comboboxes.first().textContent();
+              console.log(`Combobox text after selection: ${newCbText}`);
+            }
+          }
+        }
+
         // Try to find a search input
         const searchInputs = page.locator('input[type="text"], input[type="search"], [role="combobox"]');
         const inputCount = await searchInputs.count();

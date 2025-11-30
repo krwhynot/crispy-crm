@@ -78,14 +78,16 @@ const ContactListLayout = ({
     <>
       <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
         <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
-          {/* Column 1: Avatar - Visual identifier (non-sortable) */}
+          {/* Column 1: Avatar - Visual identifier (non-sortable) - hidden on mobile */}
           <FunctionField
             label=""
             sortable={false}
             render={(record: Contact) => <Avatar record={record} width={40} height={40} />}
+            cellClassName="hidden md:table-cell"
+            headerClassName="hidden md:table-cell"
           />
 
-          {/* Column 2: Name - Primary identifier (sortable by first_name) */}
+          {/* Column 2: Name - Primary identifier (sortable by first_name) - always visible */}
           <FunctionField
             label="Name"
             sortBy="first_name"
@@ -99,7 +101,7 @@ const ContactListLayout = ({
             }}
           />
 
-          {/* Column 3: Role - Merged Title + Department (sortable by title) */}
+          {/* Column 3: Role - Merged Title + Department (sortable by title) - hidden on tablet */}
           <FunctionField
             label="Role"
             sortBy="title"
@@ -111,9 +113,11 @@ const ContactListLayout = ({
               if (!department) return title;
               return `${title}, ${department}`;
             }}
+            cellClassName="hidden lg:table-cell"
+            headerClassName="hidden lg:table-cell"
           />
 
-          {/* Column 4: Organization - Relationship reference (sortable) */}
+          {/* Column 4: Organization - Relationship reference (sortable) - always visible */}
           <ReferenceField
             source="organization_id"
             reference="organizations"
@@ -124,23 +128,32 @@ const ContactListLayout = ({
             <TextField source="name" />
           </ReferenceField>
 
-          {/* Column 5: Status - Badge-based indicator (non-sortable) */}
+          {/* Column 5: Status - Badge-based indicator (non-sortable) - always visible */}
           <FunctionField
             label="Status"
             sortable={false}
             render={(record: Contact) => <ContactStatusBadge status={record.status} />}
           />
 
-          {/* Column 6: Notes - Activity count metric (non-sortable) */}
+          {/* Column 6: Notes - Activity count metric (non-sortable) - hidden on tablet */}
           <FunctionField
             label="Notes"
             sortable={false}
             render={(record: Contact) => record.nb_notes ?? 0}
             textAlign="center"
+            cellClassName="hidden lg:table-cell"
+            headerClassName="hidden lg:table-cell"
           />
 
-          {/* Column 7: Last Activity - Recency metric (sortable) */}
-          <DateField source="last_seen" label="Last Activity" sortable showTime={false} />
+          {/* Column 7: Last Activity - Recency metric (sortable) - hidden on mobile */}
+          <DateField
+            source="last_seen"
+            label="Last Activity"
+            sortable
+            showTime={false}
+            cellClassName="hidden md:table-cell"
+            headerClassName="hidden md:table-cell"
+          />
         </PremiumDatagrid>
       </StandardListLayout>
       <BulkActionsToolbar />
