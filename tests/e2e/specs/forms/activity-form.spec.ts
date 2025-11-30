@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-import { LoginPage } from "../../support/poms/LoginPage";
 import { ActivityFormPage } from "../../support/poms/ActivityFormPage";
 import { consoleMonitor } from "../../support/utils/console-monitor";
 
@@ -25,26 +24,18 @@ import { consoleMonitor } from "../../support/utils/console-monitor";
  */
 
 test.describe("Activity Form - Error Scenarios", () => {
+  // Use stored auth state from setup
+  test.use({ storageState: "tests/e2e/.auth/user.json" });
+
+  let formPage: ActivityFormPage;
+
   test.beforeEach(async ({ page }) => {
     // Attach console monitoring
     await consoleMonitor.attach(page);
 
-    // Login using POM
-    const loginPage = new LoginPage(page);
-    await loginPage.goto("/");
-
-    // Wait for either login form or dashboard
-    const isLoginFormVisible = await page
-      .getByLabel(/email/i)
-      .isVisible({ timeout: 2000 })
-      .catch(() => false);
-
-    if (isLoginFormVisible) {
-      await loginPage.login("admin@test.com", "password123");
-    } else {
-      // Already logged in, wait for dashboard
-      await page.waitForURL(/\/#\//, { timeout: 10000 });
-    }
+    // Navigate to activity create form (auth already handled by storageState)
+    formPage = new ActivityFormPage(page);
+    await formPage.gotoCreate();
   });
 
   test.afterEach(async () => {

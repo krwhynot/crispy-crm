@@ -34,9 +34,10 @@ const ContactCreate = () => {
   // Generate defaults from schema truth
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
   // contactBaseSchema is a ZodObject (not ZodEffects), so .partial().parse({}) works
+  // Note: Only spread sales_id from defaults - contacts don't have activity_date
   const formDefaults = {
     ...contactBaseSchema.partial().parse({}),
-    ...defaults,
+    sales_id: defaults.sales_id,
   };
 
   return (
