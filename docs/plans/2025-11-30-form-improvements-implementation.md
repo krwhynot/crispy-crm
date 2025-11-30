@@ -848,6 +848,8 @@ git commit -m "feat(form): add useFormShortcuts with form-scoped handlers"
 
 ### Task 6: SaveButtonGroup Component (Split Button)
 
+**Rationale:** Using `onClick` on buttons directly bypasses form validation. Using both `type="submit"` and `onClick` causes double execution. Solution: Route all actions through `handleSubmit`, use state to track intended action.
+
 **Files:**
 - Create: `src/components/admin/form/SaveButtonGroup.tsx`
 - Test: `src/components/admin/form/__tests__/SaveButtonGroup.test.tsx`
@@ -856,10 +858,17 @@ git commit -m "feat(form): add useFormShortcuts with form-scoped handlers"
 
 ```typescript
 // src/components/admin/form/__tests__/SaveButtonGroup.test.tsx
-import { describe, test, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, test, expect, vi, beforeEach } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { SaveButtonGroup } from "../SaveButtonGroup";
+import { FormProvider, useForm } from "react-hook-form";
+
+// Wrapper that provides form context
+const FormWrapper = ({ children }: { children: React.ReactNode }) => {
+  const methods = useForm({ defaultValues: { name: "test" } });
+  return <FormProvider {...methods}>{children}</FormProvider>;
+};
 
 describe("SaveButtonGroup", () => {
   const mockOnSave = vi.fn();
@@ -871,11 +880,13 @@ describe("SaveButtonGroup", () => {
 
   test("renders Save button", () => {
     render(
-      <SaveButtonGroup
-        onSave={mockOnSave}
-        onSaveAndNew={mockOnSaveAndNew}
-        isSubmitting={false}
-      />
+      <FormWrapper>
+        <SaveButtonGroup
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          isSubmitting={false}
+        />
+      </FormWrapper>
     );
 
     expect(screen.getByRole("button", { name: /save/i })).toBeInTheDocument();
@@ -883,11 +894,13 @@ describe("SaveButtonGroup", () => {
 
   test("renders dropdown trigger button", () => {
     render(
-      <SaveButtonGroup
-        onSave={mockOnSave}
-        onSaveAndNew={mockOnSaveAndNew}
-        isSubmitting={false}
-      />
+      <FormWrapper>
+        <SaveButtonGroup
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          isSubmitting={false}
+        />
+      </FormWrapper>
     );
 
     // Dropdown trigger has chevron icon
@@ -895,45 +908,103 @@ describe("SaveButtonGroup", () => {
     expect(buttons.length).toBeGreaterThanOrEqual(2);
   });
 
-  test("calls onSave when Save button clicked", async () => {
+  test("calls onSave with form data when Save clicked", async () => {
     const user = userEvent.setup();
+
     render(
-      <SaveButtonGroup
-        onSave={mockOnSave}
-        onSaveAndNew={mockOnSaveAndNew}
-        isSubmitting={false}
-      />
+      <FormWrapper>
+        <form>
+          <SaveButtonGroup
+            onSave={mockOnSave}
+            onSaveAndNew={mockOnSaveAndNew}
+            isSubmitting={false}
+          />
+        </form>
+      </FormWrapper>
     );
 
     await user.click(screen.getByRole("button", { name: /^save$/i }));
 
-    expect(mockOnSave).toHaveBeenCalledTimes(1);
+    await waitFor(() => {
+      expect(mockOnSave).toHaveBeenCalledWith({ name: "test" });
+    });
+    expect(mockOnSaveAndNew).not.toHaveBeenCalled();
   });
 
-  test("shows Save + Create Another in dropdown", async () => {
+  test("calls onSaveAndNew when dropdown option clicked", async () => {
     const user = userEvent.setup();
+
     render(
-      <SaveButtonGroup
-        onSave={mockOnSave}
-        onSaveAndNew={mockOnSaveAndNew}
-        isSubmitting={false}
-      />
+      <FormWrapper>
+        <form>
+          <SaveButtonGroup
+            onSave={mockOnSave}
+            onSaveAndNew={mockOnSaveAndNew}
+            isSubmitting={false}
+          />
+        </form>
+      </FormWrapper>
     );
 
-    // Click dropdown trigger (second button)
-    const buttons = screen.getAllByRole("button");
-    await user.click(buttons[1]);
+    // Open dropdown
+    const dropdownTrigger = screen.getAllByRole("button")[1];
+    await user.click(dropdownTrigger);
 
-    expect(screen.getByText(/save \+ create another/i)).toBeInTheDocument();
+    // Click "Save + Create Another"
+    await user.click(screen.getByText(/save \+ create another/i));
+
+    await waitFor(() => {
+      expect(mockOnSaveAndNew).toHaveBeenCalledWith({ name: "test" });
+    });
+    expect(mockOnSave).not.toHaveBeenCalled();
+  });
+
+  test("does not fire handlers when form validation fails", async () => {
+    const user = userEvent.setup();
+
+    // Form with validation that will fail
+    const FormWrapperWithValidation = ({ children }: { children: React.ReactNode }) => {
+      const methods = useForm({
+        defaultValues: { name: "" },
+        mode: "onSubmit",
+      });
+      return (
+        <FormProvider {...methods}>
+          <form>
+            <input {...methods.register("name", { required: true })} />
+            {children}
+          </form>
+        </FormProvider>
+      );
+    };
+
+    render(
+      <FormWrapperWithValidation>
+        <SaveButtonGroup
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          isSubmitting={false}
+        />
+      </FormWrapperWithValidation>
+    );
+
+    await user.click(screen.getByRole("button", { name: /^save$/i }));
+
+    // Wait a tick and verify handlers weren't called
+    await new Promise((r) => setTimeout(r, 100));
+    expect(mockOnSave).not.toHaveBeenCalled();
+    expect(mockOnSaveAndNew).not.toHaveBeenCalled();
   });
 
   test("disables buttons when isSubmitting", () => {
     render(
-      <SaveButtonGroup
-        onSave={mockOnSave}
-        onSaveAndNew={mockOnSaveAndNew}
-        isSubmitting={true}
-      />
+      <FormWrapper>
+        <SaveButtonGroup
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          isSubmitting={true}
+        />
+      </FormWrapper>
     );
 
     const buttons = screen.getAllByRole("button");
@@ -952,7 +1023,7 @@ npm test -- src/components/admin/form/__tests__/SaveButtonGroup.test.tsx
 
 Expected: FAIL with "Cannot find module '../SaveButtonGroup'"
 
-**Step 3: Write minimal implementation**
+**Step 3: Write validation-safe implementation**
 
 ```typescript
 // src/components/admin/form/SaveButtonGroup.tsx
@@ -964,50 +1035,96 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
+import { useFormContext } from "react-hook-form";
+import { useState, useCallback } from "react";
+
+type SaveAction = "save" | "saveAndNew";
 
 interface SaveButtonGroupProps {
-  onSave: () => void;
-  onSaveAndNew: () => void;
+  onSave: (data: any) => void | Promise<void>;
+  onSaveAndNew: (data: any) => void | Promise<void>;
   isSubmitting?: boolean;
 }
 
 /**
- * Split button with Save as primary action and Save + Create Another in dropdown.
+ * Split button that properly routes through form validation.
+ *
+ * CRITICAL: Does NOT use onClick that bypasses validation.
+ * Uses state to track intended action, then handleSubmit routes to correct callback.
+ *
  * Per design spec: For batch entry workflows (e.g., logging multiple activities).
  */
 export const SaveButtonGroup = ({
   onSave,
   onSaveAndNew,
   isSubmitting = false,
-}: SaveButtonGroupProps) => (
-  <div className="flex">
-    <Button
-      type="submit"
-      onClick={onSave}
-      disabled={isSubmitting}
-      className="rounded-r-none min-w-[100px]"
-    >
-      Save
-    </Button>
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button
-          type="button"
-          disabled={isSubmitting}
-          className="rounded-l-none border-l border-primary-foreground/20 px-2"
-        >
-          <ChevronDown className="h-4 w-4" />
-        </Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={onSave}>Save</DropdownMenuItem>
-        <DropdownMenuItem onClick={onSaveAndNew}>
-          Save + Create Another
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  </div>
-);
+}: SaveButtonGroupProps) => {
+  const { handleSubmit } = useFormContext();
+  const [pendingAction, setPendingAction] = useState<SaveAction>("save");
+
+  // Single submit handler that routes based on pendingAction
+  const onSubmit = useCallback(
+    (data: any) => {
+      if (pendingAction === "saveAndNew") {
+        return onSaveAndNew(data);
+      }
+      return onSave(data);
+    },
+    [pendingAction, onSave, onSaveAndNew]
+  );
+
+  // Wrapper that sets action then submits
+  const handleSaveClick = useCallback(() => {
+    setPendingAction("save");
+    // Let the form's onSubmit handle it via type="submit"
+  }, []);
+
+  const handleSaveAndNewClick = useCallback(() => {
+    setPendingAction("saveAndNew");
+    // Manually trigger submit since dropdown item isn't a submit button
+    handleSubmit(onSubmit)();
+  }, [handleSubmit, onSubmit]);
+
+  return (
+    <div className="flex">
+      {/* Primary Save button - uses native form submit */}
+      <Button
+        type="submit"
+        disabled={isSubmitting}
+        onClick={handleSaveClick}
+        className="rounded-r-none min-w-[100px]"
+      >
+        Save
+      </Button>
+
+      {/* Dropdown for Save + New */}
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button
+            type="button" // NOT submit - just opens dropdown
+            disabled={isSubmitting}
+            className="rounded-l-none border-l border-primary-foreground/20 px-2"
+          >
+            <ChevronDown className="h-4 w-4" />
+          </Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem
+            onClick={() => {
+              setPendingAction("save");
+              handleSubmit(onSubmit)();
+            }}
+          >
+            Save
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleSaveAndNewClick}>
+            Save + Create Another
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
+  );
+};
 ```
 
 **Step 4: Run test to verify it passes**
@@ -1016,13 +1133,13 @@ export const SaveButtonGroup = ({
 npm test -- src/components/admin/form/__tests__/SaveButtonGroup.test.tsx
 ```
 
-Expected: PASS (5 tests)
+Expected: PASS (6 tests)
 
 **Step 5: Commit**
 
 ```bash
 git add src/components/admin/form/SaveButtonGroup.tsx src/components/admin/form/__tests__/SaveButtonGroup.test.tsx
-git commit -m "feat(form): add SaveButtonGroup split button component"
+git commit -m "feat(form): add SaveButtonGroup with validation-safe submit"
 ```
 
 ---
@@ -2836,6 +2953,8 @@ git commit -m "feat(activities): add single-page layout with collapsible section
 
 ### Task 16: Update ActivityCreate to Use Single Page
 
+**Rationale:** `CreateBase` establishes `CreateContext` with the save mutation. When using custom save buttons (like `FormActions` with `SaveButtonGroup`), we need to wire them through `useCreateContext().save` to ensure proper mutation handling.
+
 **Files:**
 - Modify: `src/atomic-crm/activities/ActivityCreate.tsx`
 
@@ -2845,15 +2964,18 @@ git commit -m "feat(activities): add single-page layout with collapsible section
 cat src/atomic-crm/activities/ActivityCreate.tsx
 ```
 
-**Step 2: Update implementation**
+**Step 2: Update implementation with proper save pipeline**
 
 ```typescript
 // src/atomic-crm/activities/ActivityCreate.tsx
-import { useMemo } from "react";
+import { useMemo, useCallback } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { CreateBase, Form, useInput } from "ra-core";
-import { FormToolbar } from "@/components/admin/simple-form";
+import { CreateBase, Form, useCreateContext, useInput } from "ra-core";
+import { useFormContext } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import { ActivitySinglePage } from "./ActivitySinglePage";
+import { FormActions } from "@/components/admin/form/FormActions";
+import { useFormShortcuts } from "@/components/admin/form/useFormShortcuts";
 import { activitiesSchema } from "../validation/activities";
 
 const HiddenActivityTypeField = () => {
@@ -2863,6 +2985,54 @@ const HiddenActivityTypeField = () => {
   });
 
   return <input type="hidden" {...field} value={field.value ?? "interaction"} />;
+};
+
+/**
+ * Inner component that has access to both CreateContext and FormContext.
+ *
+ * CRITICAL: CreateBase provides the `save` mutation through CreateContext.
+ * SaveButtonGroup/FormActions must use this save function to trigger the mutation.
+ */
+const ActivityFormContent = () => {
+  const { save } = useCreateContext(); // Gets save from CreateBase
+  const { handleSubmit, reset } = useFormContext();
+  const navigate = useNavigate();
+
+  const handleSave = useCallback(
+    (data: any) => save(data),
+    [save]
+  );
+
+  const handleSaveAndNew = useCallback(
+    async (data: any) => {
+      await save(data, {
+        onSuccess: () => reset(), // Reset form after successful save
+      });
+    },
+    [save, reset]
+  );
+
+  const handleCancel = useCallback(() => {
+    navigate("/activities");
+  }, [navigate]);
+
+  const { handleKeyDown } = useFormShortcuts({
+    onSave: () => handleSubmit(handleSave)(),
+    onSaveAndNew: () => handleSubmit(handleSaveAndNew)(),
+    onCancel: handleCancel,
+  });
+
+  return (
+    <div onKeyDown={handleKeyDown}>
+      <HiddenActivityTypeField />
+      <ActivitySinglePage />
+      <FormActions
+        onSave={handleSave}
+        onSaveAndNew={handleSaveAndNew}
+        onCancel={handleCancel}
+      />
+    </div>
+  );
 };
 
 /**
@@ -2880,9 +3050,7 @@ export default function ActivityCreate() {
           <Form defaultValues={defaultValues}>
             <Card>
               <CardContent className="space-y-6 p-6">
-                <HiddenActivityTypeField />
-                <ActivitySinglePage />
-                <FormToolbar />
+                <ActivityFormContent />
               </CardContent>
             </Card>
           </Form>
@@ -2905,7 +3073,7 @@ Expected: PASS
 
 ```bash
 git add src/atomic-crm/activities/ActivityCreate.tsx
-git commit -m "feat(activities): convert to single-page layout in ActivityCreate"
+git commit -m "feat(activities): convert to single-page with proper save pipeline"
 ```
 
 ---
@@ -2914,33 +3082,88 @@ git commit -m "feat(activities): convert to single-page layout in ActivityCreate
 
 ### Task 17: Add Smart Defaults to Contact Create
 
+**Rationale:** `useSmartDefaults` returns `isLoading` and `defaults` to handle async identity. We can either wait for identity (Pattern 1) or reset when it arrives (Pattern 2). Pattern 1 is simpler for Create forms.
+
 **Files:**
 - Modify: `src/atomic-crm/contacts/ContactCreate.tsx`
 
-**Step 1: Update ContactCreate to use smart defaults**
+**Step 1: Update ContactCreate to use smart defaults with loading state**
 
 ```typescript
-// Add to ContactCreate.tsx
+// src/atomic-crm/contacts/ContactCreate.tsx
+import { useMemo } from "react";
+import { CreateBase, Form } from "ra-core";
+import { Card, CardContent } from "@/components/ui/card";
+import { ContactInputs } from "./ContactInputs";
+import { FormToolbar } from "@/components/admin/simple-form";
 import { useSmartDefaults } from "../hooks/useSmartDefaults";
+import { contactBaseSchema } from "../validation/contacts";
 
-// In component:
-const { sales_id } = useSmartDefaults();
-const defaultValues = useMemo(() => ({
-  ...contactBaseSchema.partial().parse({}),
-  sales_id, // Pre-fill with current user
-}), [sales_id]);
+/**
+ * Contact Create form with smart defaults.
+ *
+ * CRITICAL: useSmartDefaults.isLoading must be checked before rendering Form.
+ * React Hook Form's defaultValues only applies at mount, so we must wait
+ * for identity to resolve before rendering.
+ */
+export default function ContactCreate() {
+  const { defaults, isLoading } = useSmartDefaults();
+
+  // Wait for identity to resolve before rendering form
+  // (Alternative: render immediately and use reset pattern in inner component)
+  if (isLoading) {
+    return (
+      <div className="mt-2 flex justify-center">
+        <div className="w-full max-w-5xl">
+          <Card>
+            <CardContent className="p-6">
+              <div className="animate-pulse space-y-4">
+                <div className="h-10 bg-muted rounded" />
+                <div className="h-10 bg-muted rounded" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  // Merge Zod defaults with smart defaults (sales_id from identity)
+  const defaultValues = {
+    ...contactBaseSchema.partial().parse({}),
+    sales_id: defaults.sales_id,
+  };
+
+  return (
+    <CreateBase redirect="list">
+      <div className="mt-2 flex justify-center">
+        <div className="w-full max-w-5xl">
+          <Form defaultValues={defaultValues}>
+            <Card>
+              <CardContent className="space-y-6 p-6">
+                <ContactInputs />
+                <FormToolbar />
+              </CardContent>
+            </Card>
+          </Form>
+        </div>
+      </div>
+    </CreateBase>
+  );
+}
 ```
 
 **Step 2: Test manually**
 
 1. Open Contact Create form
-2. Verify Sales Rep field is pre-filled with current user
+2. Verify loading skeleton shows briefly
+3. Verify Sales Rep field is pre-filled with current user
 
 **Step 3: Commit**
 
 ```bash
 git add src/atomic-crm/contacts/ContactCreate.tsx
-git commit -m "feat(contacts): add smart defaults for sales_id"
+git commit -m "feat(contacts): add smart defaults with async identity handling"
 ```
 
 ---
@@ -2952,13 +3175,40 @@ git commit -m "feat(contacts): add smart defaults for sales_id"
 
 **Step 1: Update OrganizationCreate to use smart defaults**
 
-(Same pattern as Task 17)
+(Same pattern as Task 17 - wait for isLoading, merge defaults)
+
+```typescript
+// src/atomic-crm/organizations/OrganizationCreate.tsx
+import { useSmartDefaults } from "../hooks/useSmartDefaults";
+import { organizationSchema } from "../validation/organizations";
+
+export default function OrganizationCreate() {
+  const { defaults, isLoading } = useSmartDefaults();
+
+  if (isLoading) {
+    return <LoadingSkeleton />; // Same pattern as ContactCreate
+  }
+
+  const defaultValues = {
+    ...organizationSchema.partial().parse({}),
+    sales_id: defaults.sales_id,
+  };
+
+  return (
+    <CreateBase redirect="list">
+      <Form defaultValues={defaultValues}>
+        {/* ... */}
+      </Form>
+    </CreateBase>
+  );
+}
+```
 
 **Step 2: Commit**
 
 ```bash
 git add src/atomic-crm/organizations/OrganizationCreate.tsx
-git commit -m "feat(organizations): add smart defaults for sales_id"
+git commit -m "feat(organizations): add smart defaults with async identity handling"
 ```
 
 ---
