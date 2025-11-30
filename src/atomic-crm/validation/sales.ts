@@ -37,6 +37,12 @@ export const salesSchema = z.object({
 export type SalesInput = z.input<typeof salesSchema>;
 export type Sales = z.infer<typeof salesSchema>;
 
+// P2 consolidation: Export enum types and aliases
+export type SalesRole = z.infer<typeof salesSchema>["role"];
+
+// Alias for backward compatibility with types.ts interface name
+export type Sale = Sales;
+
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where sales validation occurs
 export async function validateSalesForm(data: unknown): Promise<void> {
