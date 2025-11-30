@@ -4,6 +4,18 @@ import type { ActivityRecord } from "../types";
 const ActivityList = React.lazy(() => import("./ActivityList"));
 const ActivityCreate = React.lazy(() => import("./ActivityCreate"));
 
+// Export the reusable dialog component and its types
+export {
+  QuickLogActivityDialog,
+  type QuickLogActivityDialogProps,
+  type QuickLogActivityDialogConfig,
+  type ActivityEntityContext,
+  type ActivityTypePreset,
+} from "./QuickLogActivityDialog";
+
+// Export the task-completion specific dialog
+export { QuickLogActivity } from "./QuickLogActivity";
+
 export default {
   list: ActivityList,
   create: ActivityCreate,
