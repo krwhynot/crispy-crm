@@ -152,6 +152,266 @@ Per user preference, forms do not warn about unsaved changes. Keep it simple.
 
 ---
 
+## High-Impact UX Improvements (MVP)
+
+### 1. Smart Defaults — Auto-populate Sales Rep
+
+**Problem:** User manually selects Sales Rep on every record.
+**Solution:** Pre-fill Sales Rep with the logged-in user.
+
+```typescript
+// src/atomic-crm/hooks/useSmartDefaults.ts
+
+import { useGetIdentity } from "ra-core";
+
+export const useSmartDefaults = () => {
+  const { identity } = useGetIdentity();
+
+  return {
+    sales_id: identity?.id, // Pre-filled with current user
+  };
+};
+
+// Usage in form
+const { sales_id } = useSmartDefaults();
+const defaultValues = {
+  ...schema.partial().parse({}),
+  sales_id, // Override with smart default
+};
+```
+
+**Rationale:** 90% of the time, the person creating the record is the owner. Let them override when needed.
+
+**Apply to:**
+- Contacts → `sales_id`
+- Organizations → `sales_id`
+- Tasks → `sales_id`
+- Activities → Implicit via `auth.uid()`
+
+---
+
+### 2. Save + Create Another — Split Button
+
+**Problem:** User logs 5 activities from a trade show—returns to list view between each one.
+**Solution:** Split button with dropdown for batch entry workflows.
+
+```
+┌─────────────────────────────────────────────────────┐
+│                              [Cancel] [Save ▼]      │
+│                                       ┌───────────┐ │
+│                                       │ Save      │ │
+│                                       │ Save + New│ │
+│                                       └───────────┘ │
+└─────────────────────────────────────────────────────┘
+```
+
+**Implementation:**
+
+```typescript
+// src/components/admin/form/SaveButtonGroup.tsx
+
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { ChevronDown } from "lucide-react";
+
+interface SaveButtonGroupProps {
+  onSave: () => void;
+  onSaveAndNew: () => void;
+  isSubmitting: boolean;
+}
+
+export const SaveButtonGroup = ({ onSave, onSaveAndNew, isSubmitting }: SaveButtonGroupProps) => (
+  <div className="flex">
+    <Button
+      type="submit"
+      onClick={onSave}
+      disabled={isSubmitting}
+      className="rounded-r-none"
+    >
+      Save
+    </Button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          type="button"
+          disabled={isSubmitting}
+          className="rounded-l-none border-l px-2"
+        >
+          <ChevronDown className="h-4 w-4" />
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={onSave}>
+          Save
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={onSaveAndNew}>
+          Save + Create Another
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  </div>
+);
+```
+
+**Behavior:**
+- **Save:** Submit form, redirect to list/show (current behavior)
+- **Save + New:** Submit form, reset to empty form with smart defaults, stay on create page
+
+**Apply to:** All Create forms (Contacts, Organizations, Activities, Tasks)
+
+---
+
+### 3. Keyboard Shortcuts — Power User Workflow
+
+**Problem:** AMs entering data rapidly need keyboard-first navigation.
+**Solution:** Form-level keyboard shortcuts.
+
+| Shortcut | Action | Scope |
+|----------|--------|-------|
+| `Tab` | Next field | Native |
+| `Shift+Tab` | Previous field | Native |
+| `Cmd/Ctrl+Enter` | Save and close | Custom |
+| `Cmd/Ctrl+Shift+Enter` | Save and create another | Custom |
+| `Escape` | Close form (no confirmation) | Custom |
+
+**Implementation:**
+
+```typescript
+// src/components/admin/form/useFormShortcuts.ts
+
+import { useEffect } from "react";
+
+interface UseFormShortcutsProps {
+  onSave: () => void;
+  onSaveAndNew: () => void;
+  onCancel: () => void;
+}
+
+export const useFormShortcuts = ({ onSave, onSaveAndNew, onCancel }: UseFormShortcutsProps) => {
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Cmd/Ctrl + Enter = Save
+      if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !e.shiftKey) {
+        e.preventDefault();
+        onSave();
+      }
+      // Cmd/Ctrl + Shift + Enter = Save + New
+      if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === "Enter") {
+        e.preventDefault();
+        onSaveAndNew();
+      }
+      // Escape = Cancel
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onCancel();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onSave, onSaveAndNew, onCancel]);
+};
+```
+
+**Visual hint:** Show shortcuts in tooltip on Save button: `"Save (⌘+Enter)"`
+
+---
+
+### 4. Recent Selections — Autocomplete Memory
+
+**Problem:** User frequently selects the same organizations/contacts. Autocomplete shows all options.
+**Solution:** Show last 5 used options at top of dropdown.
+
+```
+┌─────────────────────────────────────────┐
+│ Organization *                          │
+│ ┌─────────────────────────────────────┐ │
+│ │                                 ▼   │ │
+│ └─────────────────────────────────────┘ │
+│ ┌─────────────────────────────────────┐ │
+│ │ RECENT                              │ │
+│ │   🕐 Sysco Foods                    │ │
+│ │   🕐 US Foods                       │ │
+│ │ ─────────────────────────────────── │ │
+│ │ ALL ORGANIZATIONS                   │ │
+│ │   Acme Corp                         │ │
+│ │   ...                               │ │
+│ └─────────────────────────────────────┘ │
+└─────────────────────────────────────────┘
+```
+
+**Implementation:**
+
+```typescript
+// src/atomic-crm/hooks/useRecentSelections.ts
+
+const STORAGE_KEY_PREFIX = "crm_recent_";
+const MAX_RECENT = 5;
+
+export const useRecentSelections = (fieldType: "organization" | "contact" | "opportunity") => {
+  const storageKey = `${STORAGE_KEY_PREFIX}${fieldType}`;
+
+  const getRecent = (): Array<{ id: string; name: string }> => {
+    try {
+      const stored = localStorage.getItem(storageKey);
+      return stored ? JSON.parse(stored) : [];
+    } catch {
+      return [];
+    }
+  };
+
+  const addRecent = (selection: { id: string; name: string }) => {
+    const recent = getRecent().filter((item) => item.id !== selection.id);
+    const updated = [selection, ...recent].slice(0, MAX_RECENT);
+    localStorage.setItem(storageKey, JSON.stringify(updated));
+  };
+
+  return { getRecent, addRecent };
+};
+```
+
+**Integration with AutocompleteInput:**
+
+```typescript
+// Enhanced autocomplete that shows recent first
+const { getRecent, addRecent } = useRecentSelections("organization");
+
+// In render, prepend recent to choices
+const choicesWithRecent = [
+  ...getRecent().map(r => ({ ...r, _isRecent: true })),
+  ...allChoices.filter(c => !getRecent().some(r => r.id === c.id)),
+];
+
+// On selection, save to recent
+const handleSelect = (value) => {
+  addRecent({ id: value.id, name: value.name });
+  onChange(value);
+};
+```
+
+**Apply to:**
+- `OrganizationAutocomplete`
+- `ContactAutocomplete`
+- `OpportunityAutocomplete`
+
+---
+
+## Phase 2 UX Improvements (Post-MVP)
+
+The following improvements are documented for future implementation:
+
+| Feature | Description | Effort |
+|---------|-------------|--------|
+| **Inline Record Creation** | "Create New" option in autocompletes with modal | High |
+| **Relationship Preview** | Show stage, value, parties on hover in opportunity dropdown | Medium |
+| **Contextual Field Visibility** | Show/hide fields based on org type (Principal vs Customer) | Medium |
+| **Sticky Action Bar** | Keep Save/Cancel visible while scrolling long forms | Low |
+| **Empty State Guidance** | First-time user tips (dismissible, stored in localStorage) | Low |
+
+See `docs/plans/future/form-ux-phase2.md` for detailed specs.
+
+---
+
 ## Implementation Notes
 
 ### Files to Modify
