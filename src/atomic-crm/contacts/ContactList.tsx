@@ -15,6 +15,7 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { DateField } from "@/components/admin/date-field";
 import { FunctionField } from "react-admin";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
+import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { ContactListSkeleton } from "@/components/ui/list-skeleton";
 import type { Organization, Contact, Sale, Tag } from "../types";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";

@@ -4,7 +4,7 @@ import { PencilIcon, XIcon } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
+import { SlideOverSkeleton } from "@/components/ui/list-skeleton";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { useKeyboardShortcuts, formatShortcut } from "@/hooks/useKeyboardShortcuts";
@@ -61,6 +61,13 @@ export interface ResourceSlideOverProps {
    * Receives the record as a prop for dynamic breadcrumb generation.
    */
   breadcrumbComponent?: React.ComponentType<{ record: any }>;
+  /**
+   * Optional custom skeleton component for loading state.
+   * Defaults to generic SlideOverSkeleton if not provided.
+   * Use resource-specific skeletons (ContactDetailSkeleton, OrganizationDetailSkeleton)
+   * for better visual matching during load.
+   */
+  loadingSkeleton?: React.ComponentType;
 }
 
 /**
@@ -115,6 +122,7 @@ export function ResourceSlideOver({
   tabs,
   recordRepresentation,
   breadcrumbComponent: BreadcrumbComponent,
+  loadingSkeleton: LoadingSkeleton = SlideOverSkeleton,
 }: ResourceSlideOverProps) {
   const [activeTab, setActiveTab] = useState(tabs[0]?.key || "");
 
@@ -285,11 +293,7 @@ export function ResourceSlideOver({
                     {isActive && (
                       <>
                         {isLoading ? (
-                          <div className="space-y-4">
-                            <Skeleton className="h-11 w-full" />
-                            <Skeleton className="h-11 w-full" />
-                            <Skeleton className="h-11 w-full" />
-                          </div>
+                          <LoadingSkeleton />
                         ) : record ? (
                           <TabComponent
                             record={record}

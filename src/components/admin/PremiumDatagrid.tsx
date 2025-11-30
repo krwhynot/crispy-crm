@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 import type { DatagridProps } from "react-admin";
-import { Datagrid } from "react-admin";
+import { Datagrid, useListContext } from "react-admin";
+import { cn } from "@/lib/utils";
 
 /**
  * PremiumDatagrid - Enhanced Datagrid wrapper with premium hover effects
@@ -19,6 +20,7 @@ import { Datagrid } from "react-admin";
  * Features:
  * - Automatic premium hover effects (border reveal, shadow, lift animation)
  * - Custom row click handling (e.g., open slide-over instead of navigation)
+ * - Keyboard navigation support with visual focus indicator
  * - Full compatibility with all React Admin Datagrid features
  * - Sorting, filtering, bulk actions, and pagination work out of the box
  *
@@ -34,10 +36,14 @@ export interface PremiumDatagridProps extends DatagridProps {
    * @returns void
    */
   onRowClick?: (id: number | string) => void;
-}
 
-// Stable function reference for rowClassName (defined outside component to prevent re-creation)
-const getRowClassName = () => "table-row-premium";
+  /**
+   * Index of the row that should show keyboard focus styling.
+   * Use with useListKeyboardNavigation hook for arrow key navigation.
+   * Pass -1 or undefined to disable focus styling.
+   */
+  focusedIndex?: number;
+}
 
 /**
  * PremiumDatagrid Component
@@ -47,9 +53,12 @@ const getRowClassName = () => "table-row-premium";
  */
 export function PremiumDatagrid({
   onRowClick,
+  focusedIndex,
   rowClassName: _, // Extract and ignore - we always use our own getRowClassName
   ...props
 }: PremiumDatagridProps) {
+  const { data } = useListContext();
+
   // Stable row click handler using useCallback to prevent infinite re-renders
   // Only wraps onRowClick - props.rowClick is passed directly when onRowClick is not provided
   const handleRowClick = useCallback(
@@ -59,6 +68,41 @@ export function PremiumDatagrid({
     },
     [onRowClick]
   );
+
+  // Generate row className with keyboard focus indicator
+  // React Admin's rowClassName receives (record, index) as arguments
+  const getRowClassName = useCallback(
+    (_record: unknown, index: number) => {
+      const isFocused = focusedIndex !== undefined && focusedIndex >= 0 && index === focusedIndex;
+      return cn(
+        "table-row-premium",
+        isFocused && "ring-2 ring-primary ring-inset bg-primary/5"
+      );
+    },
+    [focusedIndex]
+  );
+
+  // Scroll focused row into view
+  // This effect ensures keyboard-navigated rows are visible
+  const scrollFocusedRowIntoView = useCallback(() => {
+    if (focusedIndex === undefined || focusedIndex < 0 || !data) return;
+
+    // Find the table row by index (0-based, excluding header)
+    const tableBody = document.querySelector(".RaDatagrid-tableWrapper tbody");
+    if (!tableBody) return;
+
+    const rows = tableBody.querySelectorAll("tr");
+    const focusedRow = rows[focusedIndex] as HTMLElement | undefined;
+    if (focusedRow) {
+      focusedRow.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [focusedIndex, data]);
+
+  // Trigger scroll when focused index changes
+  // Using setTimeout to ensure DOM has updated
+  if (focusedIndex !== undefined && focusedIndex >= 0) {
+    setTimeout(scrollFocusedRowIntoView, 0);
+  }
 
   return (
     <Datagrid
