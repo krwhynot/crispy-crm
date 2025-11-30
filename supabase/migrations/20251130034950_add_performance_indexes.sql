@@ -47,15 +47,15 @@ WHERE deleted_at IS NULL
 COMMENT ON INDEX idx_opportunities_stage_active IS
 'Performance index for open opportunities count. Excludes closed and soft-deleted records.';
 
--- Index for opportunity staleness calculation (last_activity_date)
--- Used by KPI stale deals count
-CREATE INDEX IF NOT EXISTS idx_opportunities_last_activity
-ON opportunities(last_activity_date)
+-- Index for opportunity staleness calculation (updated_at used as last activity proxy)
+-- Used by KPI stale deals count - opportunities table tracks activity via updated_at
+CREATE INDEX IF NOT EXISTS idx_opportunities_updated_at_active
+ON opportunities(updated_at)
 WHERE deleted_at IS NULL
   AND stage NOT IN ('closed_won', 'closed_lost');
 
-COMMENT ON INDEX idx_opportunities_last_activity IS
-'Performance index for stale deal detection based on last activity date.';
+COMMENT ON INDEX idx_opportunities_updated_at_active IS
+'Performance index for stale deal detection based on updated_at (last activity proxy).';
 
 -- ============================================================================
 -- ORGANIZATIONS INDEXES
@@ -99,7 +99,7 @@ BEGIN
       'idx_activities_activity_date_active',
       'idx_tasks_sales_due_date_incomplete',
       'idx_opportunities_stage_active',
-      'idx_opportunities_last_activity',
+      'idx_opportunities_updated_at_active',
       'idx_organizations_principal',
       'idx_sales_user_id'
     );
