@@ -3,7 +3,7 @@
 **Audit Date:** 2025-11-28
 **Auditor:** Claude (with Perplexity industry research)
 **Scope:** Dashboard V3 components vs PRD requirements
-**Status:** Complete - 7 gaps identified, 6 confirmed for implementation
+**Status:** Complete - 6 gaps remaining (1 fixed: MVP #36 Next Action styling)
 
 ---
 
@@ -18,7 +18,7 @@ This audit compares the actual Dashboard V3 implementation against PRD Section 9
 | Layout Structure | ✅ Aligned | Vertical stacking with FAB matches PRD |
 | KPI Cards | ⚠️ 2 Gaps | KPI #1 shows $ (no pricing in MVP), KPI #4 missing Stale Deals |
 | Activity Logging | ⚠️ Critical Gap | 5/13 activity types implemented |
-| Pipeline Table | ⚠️ 3 Gaps | Missing tooltips, visual decay, Next Action styling |
+| Pipeline Table | ⚠️ 2 Gaps | Missing tooltips, visual decay (Next Action styling ✅ fixed) |
 | Tasks Panel | ⚠️ 2 Gaps | Snooze needs popover, follow-up prompt missing |
 | Missing Components | ⚠️ 3 Gaps | Recent Activity Feed, My Performance, Weekly Focus |
 
@@ -243,9 +243,10 @@ The following decisions were confirmed via stakeholder questions:
    - Options: Tomorrow (9 AM), Next Week (Monday 9 AM), Custom Date
    - File: `TasksPanel.tsx`
 
-6. **Next Action Plain Text**
-   - Remove `variant="link"` from "Schedule follow-up"
-   - Apply `text-muted-foreground` styling
+6. **Next Action Plain Text** ✅ COMPLETED
+   - ~~Remove `variant="link"` from "Schedule follow-up"~~
+   - ~~Apply `text-muted-foreground` styling~~
+   - Now shows "No action scheduled" as plain text when empty
    - File: `PrincipalPipelineTable.tsx`
 
 7. **Column Tooltips**
