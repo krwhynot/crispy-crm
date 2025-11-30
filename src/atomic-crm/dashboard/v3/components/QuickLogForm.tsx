@@ -24,6 +24,21 @@ interface QuickLogFormProps {
   initialDraft?: Partial<ActivityLogInput> | null;
   /** Callback when form data changes (for draft persistence) */
   onDraftChange?: (formData: Partial<ActivityLogInput>) => void;
+  /**
+   * Pre-fill contact selection (for use from Contact slide-over/dialog)
+   * Takes precedence over initialDraft.contactId
+   */
+  initialContactId?: number;
+  /**
+   * Pre-fill organization selection (for use from Organization slide-over/dialog)
+   * Takes precedence over initialDraft.organizationId
+   */
+  initialOrganizationId?: number;
+  /**
+   * Pre-fill opportunity selection (for use from Opportunity slide-over/dialog)
+   * Takes precedence over initialDraft.opportunityId
+   */
+  initialOpportunityId?: number;
 }
 
 /**
@@ -41,19 +56,31 @@ export function QuickLogForm({
   onRefresh,
   initialDraft,
   onDraftChange,
+  initialContactId,
+  initialOrganizationId,
+  initialOpportunityId,
 }: QuickLogFormProps) {
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const { salesId, loading: salesIdLoading } = useCurrentSale();
 
   // Form initialization with schema-derived defaults (Constitution compliant)
+  // Priority: initialEntityId props > initialDraft > schema defaults
   const defaultValues = useMemo(() => {
     const schemaDefaults = activityLogSchema.partial().parse({});
-    if (initialDraft) {
-      return { ...schemaDefaults, ...initialDraft };
-    }
-    return schemaDefaults;
-  }, [initialDraft]);
+
+    // Merge in order of precedence: schema < draft < explicit props
+    const merged = {
+      ...schemaDefaults,
+      ...(initialDraft || {}),
+      // Explicit props take highest precedence (only if defined)
+      ...(initialContactId !== undefined && { contactId: initialContactId }),
+      ...(initialOrganizationId !== undefined && { organizationId: initialOrganizationId }),
+      ...(initialOpportunityId !== undefined && { opportunityId: initialOpportunityId }),
+    };
+
+    return merged;
+  }, [initialDraft, initialContactId, initialOrganizationId, initialOpportunityId]);
 
   const form = useForm<ActivityLogInput>({
     resolver: zodResolver(activityLogSchema),
