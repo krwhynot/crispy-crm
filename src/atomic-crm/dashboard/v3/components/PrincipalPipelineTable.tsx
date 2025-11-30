@@ -28,6 +28,7 @@ import type { PrincipalPipelineRow, Momentum } from "../types";
 import { usePrincipalPipeline } from "../hooks/usePrincipalPipeline";
 import { usePipelineTableState, type SortField } from "../hooks/usePipelineTableState";
 import { PipelineTableRow } from "./PipelineTableRow";
+import { useTutorial } from "../tutorial";
 
 // Lazy load PipelineDrillDownSheet - saves ~3-5KB from main dashboard chunk
 const PipelineDrillDownSheet = lazy(() =>
@@ -52,6 +53,7 @@ const PipelineDrillDownSheet = lazy(() =>
 export function PrincipalPipelineTable() {
   const [myPrincipalsOnly, setMyPrincipalsOnly] = useState(false);
   const [selectedPrincipal, setSelectedPrincipal] = useState<{ id: number; name: string } | null>(null);
+  const { markActionComplete } = useTutorial();
 
   const { data, loading, error } = usePrincipalPipeline({ myPrincipalsOnly });
 
@@ -78,9 +80,13 @@ export function PrincipalPipelineTable() {
     [sortField, sortDirection]
   );
 
-  const handleRowClick = useCallback((row: PrincipalPipelineRow) => {
-    setSelectedPrincipal({ id: row.id, name: row.name });
-  }, []);
+  const handleRowClick = useCallback(
+    (row: PrincipalPipelineRow) => {
+      setSelectedPrincipal({ id: row.id, name: row.name });
+      markActionComplete("drill-down");
+    },
+    [markActionComplete]
+  );
 
   const handleCloseSheet = useCallback(() => {
     setSelectedPrincipal(null);
@@ -116,7 +122,7 @@ export function PrincipalPipelineTable() {
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex h-full flex-col" data-tutorial="pipeline-table">
       {/* Header with title and filters */}
       <div className="border-b border-border pb-4">
         <div className="flex items-start justify-between">

@@ -114,7 +114,7 @@ export function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
 
   if (loading) {
     return (
-      <Card className="card-container flex h-full flex-col">
+      <Card className="card-container flex h-full flex-col" data-tutorial="activity-feed">
         <CardHeader className="border-b border-border pb-3">
           <Skeleton className="mb-2 h-6 w-32" />
           <Skeleton className="h-4 w-48" />
@@ -138,7 +138,7 @@ export function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
 
   if (error) {
     return (
-      <Card className="card-container flex h-full flex-col">
+      <Card className="card-container flex h-full flex-col" data-tutorial="activity-feed">
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Activity className="h-5 w-5" />
@@ -156,7 +156,7 @@ export function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
   }
 
   return (
-    <Card className="card-container flex h-full flex-col">
+    <Card className="card-container flex h-full flex-col" data-tutorial="activity-feed">
       <CardHeader className="border-b border-border pb-3">
         <div className="flex items-start justify-between">
           <div>

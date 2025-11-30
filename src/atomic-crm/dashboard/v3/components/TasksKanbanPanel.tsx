@@ -10,6 +10,7 @@ import { Plus } from "lucide-react";
 import { TaskKanbanColumn, type TaskColumnId } from "./TaskKanbanColumn";
 import type { TaskItem } from "../types";
 import { useMyTasks } from "../hooks/useMyTasks";
+import { useTutorial } from "../tutorial";
 
 /**
  * TasksKanbanPanel - Kanban board for tasks with time-horizon columns
@@ -40,6 +41,7 @@ export function TasksKanbanPanel() {
     updateTaskDueDate,
   } = useMyTasks();
   const notify = useNotify();
+  const { markActionComplete } = useTutorial();
 
   // Memoize filtered task lists by time horizon
   const tasksByColumn = useMemo(() => {
@@ -138,11 +140,12 @@ export function TasksKanbanPanel() {
       try {
         await updateTaskDueDate(taskId, newDueDate);
         notify(`Moved to ${columnLabels[destColumnId]}`, { type: "success" });
+        markActionComplete("task-move");
       } catch {
         notify("Failed to move task. Please try again.", { type: "error" });
       }
     },
-    [tasks, getTargetDueDate, updateTaskDueDate, notify]
+    [tasks, getTargetDueDate, updateTaskDueDate, notify, markActionComplete]
   );
 
   // Loading state
@@ -188,7 +191,7 @@ export function TasksKanbanPanel() {
   const totalTasks = tasksByColumn.overdue.length + tasksByColumn.today.length + tasksByColumn.thisWeek.length;
 
   return (
-    <Card className="card-container flex h-full flex-col">
+    <Card className="card-container flex h-full flex-col" data-tutorial="tasks-kanban">
       {/* Header */}
       <CardHeader className="border-b border-border pb-3 shrink-0">
         <div className="flex items-start justify-between">

@@ -16,6 +16,8 @@ export const NumberField = <RecordType extends Record<string, any> = Record<stri
   sortBy: _sortBy,
   textAlign: _textAlign,
   rowClassName: _rowClassName,
+  cellClassName: _cellClassName,
+  headerClassName: _headerClassName,
   resource: _resource,
   ...rest
 }: NumberFieldProps<RecordType>) => {

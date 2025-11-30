@@ -28,6 +28,8 @@ export const ReferenceField = <
     sortBy: _sortBy,
     textAlign: _textAlign,
     rowClassName: _rowClassName,
+    cellClassName: _cellClassName,
+    headerClassName: _headerClassName,
     ...rest
   } = props;
   const id = useFieldValue<RecordType>(props);
