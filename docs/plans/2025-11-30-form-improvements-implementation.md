@@ -243,6 +243,8 @@ git commit -m "feat(form): add FormSection component with uppercase title + divi
 
 ### Task 3: useSmartDefaults Hook
 
+**Rationale:** `useGetIdentity` is async - it returns `undefined` on first render. React Hook Form's `defaultValues` only applies once at mount. We need to handle async identity resolution with either a loading state or form reset pattern.
+
 **Files:**
 - Create: `src/atomic-crm/hooks/useSmartDefaults.ts`
 - Test: `src/atomic-crm/hooks/__tests__/useSmartDefaults.test.tsx`
@@ -251,41 +253,89 @@ git commit -m "feat(form): add FormSection component with uppercase title + divi
 
 ```typescript
 // src/atomic-crm/hooks/__tests__/useSmartDefaults.test.tsx
-import { describe, test, expect, vi } from "vitest";
-import { renderHook } from "@testing-library/react";
+import { describe, test, expect, vi, beforeEach } from "vitest";
+import { renderHook, waitFor } from "@testing-library/react";
 import { useSmartDefaults } from "../useSmartDefaults";
 
-// Mock react-admin's useGetIdentity
+// Mock with delayed identity resolution
 vi.mock("ra-core", () => ({
-  useGetIdentity: vi.fn(() => ({
-    identity: { id: "user-123", fullName: "Test User" },
-    isLoading: false,
-  })),
+  useGetIdentity: vi.fn(),
 }));
 
 describe("useSmartDefaults", () => {
-  test("returns sales_id from current user identity", () => {
-    const { result } = renderHook(() => useSmartDefaults());
+  const mockUseGetIdentity = vi.mocked(require("ra-core").useGetIdentity);
 
-    expect(result.current.sales_id).toBe("user-123");
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
-  test("returns undefined sales_id when identity is loading", () => {
-    const { useGetIdentity } = require("ra-core");
-    useGetIdentity.mockReturnValueOnce({ identity: null, isLoading: true });
+  test("returns loading state while identity resolves", () => {
+    mockUseGetIdentity.mockReturnValue({ identity: null, isLoading: true });
 
     const { result } = renderHook(() => useSmartDefaults());
 
-    expect(result.current.sales_id).toBeUndefined();
+    expect(result.current.isLoading).toBe(true);
+    expect(result.current.defaults.sales_id).toBeUndefined();
   });
 
-  test("returns undefined sales_id when no identity", () => {
-    const { useGetIdentity } = require("ra-core");
-    useGetIdentity.mockReturnValueOnce({ identity: null, isLoading: false });
+  test("returns sales_id when identity resolves", () => {
+    mockUseGetIdentity.mockReturnValue({
+      identity: { id: "user-123" },
+      isLoading: false,
+    });
 
     const { result } = renderHook(() => useSmartDefaults());
 
-    expect(result.current.sales_id).toBeUndefined();
+    expect(result.current.isLoading).toBe(false);
+    expect(result.current.defaults.sales_id).toBe("user-123");
+  });
+
+  test("calls reset with sales_id when identity arrives after mount", async () => {
+    const mockReset = vi.fn();
+
+    // Start with loading
+    mockUseGetIdentity.mockReturnValue({ identity: null, isLoading: true });
+
+    const { rerender } = renderHook(() =>
+      useSmartDefaults({
+        reset: mockReset,
+        currentValues: { first_name: "John", sales_id: undefined },
+      })
+    );
+
+    expect(mockReset).not.toHaveBeenCalled();
+
+    // Identity resolves
+    mockUseGetIdentity.mockReturnValue({
+      identity: { id: "user-123" },
+      isLoading: false,
+    });
+
+    rerender();
+
+    await waitFor(() => {
+      expect(mockReset).toHaveBeenCalledWith(
+        { first_name: "John", sales_id: "user-123" },
+        { keepDirtyValues: true }
+      );
+    });
+  });
+
+  test("does not reset if sales_id already has value", () => {
+    const mockReset = vi.fn();
+    mockUseGetIdentity.mockReturnValue({
+      identity: { id: "user-123" },
+      isLoading: false,
+    });
+
+    renderHook(() =>
+      useSmartDefaults({
+        reset: mockReset,
+        currentValues: { sales_id: "other-user" }, // Already set
+      })
+    );
+
+    expect(mockReset).not.toHaveBeenCalled();
   });
 });
 ```
@@ -298,26 +348,67 @@ npm test -- src/atomic-crm/hooks/__tests__/useSmartDefaults.test.tsx
 
 Expected: FAIL with "Cannot find module '../useSmartDefaults'"
 
-**Step 3: Write minimal implementation**
+**Step 3: Write implementation that handles async identity**
 
 ```typescript
 // src/atomic-crm/hooks/useSmartDefaults.ts
 import { useGetIdentity } from "ra-core";
+import { useEffect, useRef } from "react";
+import { UseFormReset } from "react-hook-form";
 
 interface SmartDefaults {
   sales_id: string | number | undefined;
 }
 
-/**
- * Returns smart default values for forms based on current user context.
- * Per design spec: Auto-populate Sales Rep with logged-in user (90% use case).
- */
-export const useSmartDefaults = (): SmartDefaults => {
-  const { identity } = useGetIdentity();
+interface UseSmartDefaultsOptions {
+  reset?: UseFormReset<any>;
+  currentValues?: Record<string, any>;
+}
 
-  return {
+/**
+ * Returns smart default values and handles async identity resolution.
+ *
+ * CRITICAL: useGetIdentity is async - returns undefined on first render.
+ * React Hook Form's defaultValues only applies at mount. This hook provides
+ * two patterns to handle this:
+ *
+ * Usage Pattern 1 (wait for identity):
+ *   const { defaults, isLoading } = useSmartDefaults();
+ *   if (isLoading) return <Loading />;
+ *   return <Form defaultValues={defaults}>
+ *
+ * Usage Pattern 2 (reset when identity arrives):
+ *   const { reset, getValues } = useFormContext();
+ *   useSmartDefaults({ reset, currentValues: getValues() });
+ */
+export const useSmartDefaults = (options?: UseSmartDefaultsOptions): {
+  defaults: SmartDefaults;
+  isLoading: boolean;
+} => {
+  const { identity, isLoading } = useGetIdentity();
+  const hasAppliedDefaults = useRef(false);
+
+  const defaults: SmartDefaults = {
     sales_id: identity?.id,
   };
+
+  // If reset function provided, apply defaults when identity resolves
+  useEffect(() => {
+    if (options?.reset && identity?.id && !hasAppliedDefaults.current) {
+      const currentSalesId = options.currentValues?.sales_id;
+
+      // Only reset if sales_id is still empty (user hasn't manually selected)
+      if (!currentSalesId) {
+        options.reset(
+          { ...options.currentValues, sales_id: identity.id },
+          { keepDirtyValues: true } // Don't overwrite user edits
+        );
+        hasAppliedDefaults.current = true;
+      }
+    }
+  }, [identity?.id, options?.reset, options?.currentValues]);
+
+  return { defaults, isLoading };
 };
 ```
 
@@ -327,13 +418,13 @@ export const useSmartDefaults = (): SmartDefaults => {
 npm test -- src/atomic-crm/hooks/__tests__/useSmartDefaults.test.tsx
 ```
 
-Expected: PASS (3 tests)
+Expected: PASS (4 tests)
 
 **Step 5: Commit**
 
 ```bash
 git add src/atomic-crm/hooks/useSmartDefaults.ts src/atomic-crm/hooks/__tests__/useSmartDefaults.test.tsx
-git commit -m "feat(hooks): add useSmartDefaults for auto-populating sales_id"
+git commit -m "feat(hooks): add useSmartDefaults with async identity handling"
 ```
 
 ---
@@ -509,6 +600,8 @@ git commit -m "feat(hooks): add useRecentSelections for autocomplete memory"
 
 ### Task 5: useFormShortcuts Hook
 
+**Rationale:** Global `document.addEventListener` fires regardless of focus context. Pressing Cmd+Enter in a textarea shouldn't submit the form if the user is composing multi-line text. Solution: Return a `handleKeyDown` for form-scoped attachment with target guards.
+
 **Files:**
 - Create: `src/components/admin/form/useFormShortcuts.ts`
 - Test: `src/components/admin/form/__tests__/useFormShortcuts.test.tsx`
@@ -517,9 +610,33 @@ git commit -m "feat(hooks): add useRecentSelections for autocomplete memory"
 
 ```typescript
 // src/components/admin/form/__tests__/useFormShortcuts.test.tsx
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
-import { renderHook } from "@testing-library/react";
+import { describe, test, expect, vi, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { useFormShortcuts } from "../useFormShortcuts";
+
+// Test component that uses the hook with form-scoped onKeyDown
+const TestForm = ({
+  onSave,
+  onSaveAndNew,
+  onCancel,
+  allowCancelInTextarea = false,
+}: any) => {
+  const { handleKeyDown } = useFormShortcuts({
+    onSave,
+    onSaveAndNew,
+    onCancel,
+    allowCancelInTextarea,
+  });
+
+  return (
+    <form onKeyDown={handleKeyDown} data-testid="form">
+      <input type="text" data-testid="text-input" />
+      <textarea data-testid="textarea" />
+      <button type="submit">Save</button>
+    </form>
+  );
+};
 
 describe("useFormShortcuts", () => {
   const mockOnSave = vi.fn();
@@ -530,98 +647,91 @@ describe("useFormShortcuts", () => {
     vi.clearAllMocks();
   });
 
-  afterEach(() => {
-    vi.clearAllMocks();
-  });
-
-  test("calls onSave on Cmd+Enter", () => {
-    renderHook(() =>
-      useFormShortcuts({
-        onSave: mockOnSave,
-        onSaveAndNew: mockOnSaveAndNew,
-        onCancel: mockOnCancel,
-      })
+  test("Cmd+Enter in text input triggers onSave", async () => {
+    const user = userEvent.setup();
+    render(
+      <TestForm
+        onSave={mockOnSave}
+        onSaveAndNew={mockOnSaveAndNew}
+        onCancel={mockOnCancel}
+      />
     );
 
-    const event = new KeyboardEvent("keydown", {
-      key: "Enter",
-      metaKey: true,
-      shiftKey: false,
-    });
-    document.dispatchEvent(event);
-
-    expect(mockOnSave).toHaveBeenCalledTimes(1);
-    expect(mockOnSaveAndNew).not.toHaveBeenCalled();
-  });
-
-  test("calls onSave on Ctrl+Enter", () => {
-    renderHook(() =>
-      useFormShortcuts({
-        onSave: mockOnSave,
-        onSaveAndNew: mockOnSaveAndNew,
-        onCancel: mockOnCancel,
-      })
-    );
-
-    const event = new KeyboardEvent("keydown", {
-      key: "Enter",
-      ctrlKey: true,
-      shiftKey: false,
-    });
-    document.dispatchEvent(event);
+    const input = screen.getByTestId("text-input");
+    await user.click(input);
+    await user.keyboard("{Meta>}{Enter}{/Meta}");
 
     expect(mockOnSave).toHaveBeenCalledTimes(1);
   });
 
-  test("calls onSaveAndNew on Cmd+Shift+Enter", () => {
-    renderHook(() =>
-      useFormShortcuts({
-        onSave: mockOnSave,
-        onSaveAndNew: mockOnSaveAndNew,
-        onCancel: mockOnCancel,
-      })
+  test("Cmd+Enter in textarea triggers onSave (allowed by default)", async () => {
+    const user = userEvent.setup();
+    render(
+      <TestForm
+        onSave={mockOnSave}
+        onSaveAndNew={mockOnSaveAndNew}
+        onCancel={mockOnCancel}
+      />
     );
 
-    const event = new KeyboardEvent("keydown", {
-      key: "Enter",
-      metaKey: true,
-      shiftKey: true,
-    });
-    document.dispatchEvent(event);
+    const textarea = screen.getByTestId("textarea");
+    await user.click(textarea);
+    await user.keyboard("{Meta>}{Enter}{/Meta}");
 
-    expect(mockOnSaveAndNew).toHaveBeenCalledTimes(1);
-    expect(mockOnSave).not.toHaveBeenCalled();
+    expect(mockOnSave).toHaveBeenCalledTimes(1);
   });
 
-  test("calls onCancel on Escape", () => {
-    renderHook(() =>
-      useFormShortcuts({
-        onSave: mockOnSave,
-        onSaveAndNew: mockOnSaveAndNew,
-        onCancel: mockOnCancel,
-      })
+  test("Escape in textarea does NOT trigger onCancel by default", async () => {
+    const user = userEvent.setup();
+    render(
+      <TestForm
+        onSave={mockOnSave}
+        onSaveAndNew={mockOnSaveAndNew}
+        onCancel={mockOnCancel}
+        allowCancelInTextarea={false}
+      />
     );
 
-    const event = new KeyboardEvent("keydown", { key: "Escape" });
-    document.dispatchEvent(event);
+    const textarea = screen.getByTestId("textarea");
+    await user.click(textarea);
+    await user.keyboard("{Escape}");
+
+    expect(mockOnCancel).not.toHaveBeenCalled();
+  });
+
+  test("Escape in text input triggers onCancel", async () => {
+    const user = userEvent.setup();
+    render(
+      <TestForm
+        onSave={mockOnSave}
+        onSaveAndNew={mockOnSaveAndNew}
+        onCancel={mockOnCancel}
+      />
+    );
+
+    const input = screen.getByTestId("text-input");
+    await user.click(input);
+    await user.keyboard("{Escape}");
 
     expect(mockOnCancel).toHaveBeenCalledTimes(1);
   });
 
-  test("removes event listener on unmount", () => {
-    const removeEventListenerSpy = vi.spyOn(document, "removeEventListener");
-
-    const { unmount } = renderHook(() =>
-      useFormShortcuts({
-        onSave: mockOnSave,
-        onSaveAndNew: mockOnSaveAndNew,
-        onCancel: mockOnCancel,
-      })
+  test("Cmd+Shift+Enter triggers onSaveAndNew", async () => {
+    const user = userEvent.setup();
+    render(
+      <TestForm
+        onSave={mockOnSave}
+        onSaveAndNew={mockOnSaveAndNew}
+        onCancel={mockOnCancel}
+      />
     );
 
-    unmount();
+    const input = screen.getByTestId("text-input");
+    await user.click(input);
+    await user.keyboard("{Meta>}{Shift>}{Enter}{/Shift}{/Meta}");
 
-    expect(removeEventListenerSpy).toHaveBeenCalledWith("keydown", expect.any(Function));
+    expect(mockOnSaveAndNew).toHaveBeenCalledTimes(1);
+    expect(mockOnSave).not.toHaveBeenCalled();
   });
 });
 ```
@@ -634,53 +744,88 @@ npm test -- src/components/admin/form/__tests__/useFormShortcuts.test.tsx
 
 Expected: FAIL with "Cannot find module '../useFormShortcuts'"
 
-**Step 3: Write minimal implementation**
+**Step 3: Write form-scoped implementation with target guards**
 
 ```typescript
 // src/components/admin/form/useFormShortcuts.ts
-import { useEffect } from "react";
+import { useCallback } from "react";
 
 interface UseFormShortcutsProps {
   onSave: () => void;
   onSaveAndNew: () => void;
   onCancel: () => void;
+  /** If true, Cmd+Enter works even in textareas (default: true) */
+  allowSaveInTextarea?: boolean;
+  /** If true, Escape works in textareas (default: false) */
+  allowCancelInTextarea?: boolean;
+}
+
+interface UseFormShortcutsReturn {
+  /** Attach this to your form's onKeyDown */
+  handleKeyDown: (e: React.KeyboardEvent) => void;
 }
 
 /**
- * Registers keyboard shortcuts for form actions.
- * Per design spec: Cmd/Ctrl+Enter (save), Cmd/Ctrl+Shift+Enter (save+new), Escape (cancel)
+ * Returns a keyDown handler for form-scoped keyboard shortcuts.
+ *
+ * CRITICAL: Does NOT use document.addEventListener (which ignores focus context).
+ * Returns handleKeyDown to attach to the form element directly.
+ *
+ * Usage:
+ *   const { handleKeyDown } = useFormShortcuts({ onSave, onSaveAndNew, onCancel });
+ *   return <form onKeyDown={handleKeyDown}>...</form>
+ *
+ * Shortcuts:
+ *   - Cmd/Ctrl+Enter: Save (works in textareas by default)
+ *   - Cmd/Ctrl+Shift+Enter: Save + New
+ *   - Escape: Cancel (blocked in textareas by default)
  */
 export const useFormShortcuts = ({
   onSave,
   onSaveAndNew,
   onCancel,
-}: UseFormShortcutsProps) => {
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      // Cmd/Ctrl + Shift + Enter = Save + New
+  allowSaveInTextarea = true,
+  allowCancelInTextarea = false,
+}: UseFormShortcutsProps): UseFormShortcutsReturn => {
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      const isTextarea = target instanceof HTMLTextAreaElement;
+      const isContentEditable = target.isContentEditable;
+
+      const isEditableContext = isTextarea || isContentEditable;
+
+      // Cmd/Ctrl + Shift + Enter = Save + New (most specific, check first)
       if ((e.metaKey || e.ctrlKey) && e.shiftKey && e.key === "Enter") {
-        e.preventDefault();
-        onSaveAndNew();
+        if (!isEditableContext || allowSaveInTextarea) {
+          e.preventDefault();
+          onSaveAndNew();
+        }
         return;
       }
 
       // Cmd/Ctrl + Enter = Save
       if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        onSave();
+        if (!isEditableContext || allowSaveInTextarea) {
+          e.preventDefault();
+          onSave();
+        }
         return;
       }
 
       // Escape = Cancel
+      // By default, don't cancel when in textarea (user might want to dismiss autocomplete)
       if (e.key === "Escape") {
-        e.preventDefault();
-        onCancel();
+        if (!isEditableContext || allowCancelInTextarea) {
+          e.preventDefault();
+          onCancel();
+        }
       }
-    };
+    },
+    [onSave, onSaveAndNew, onCancel, allowSaveInTextarea, allowCancelInTextarea]
+  );
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [onSave, onSaveAndNew, onCancel]);
+  return { handleKeyDown };
 };
 ```
 
@@ -696,7 +841,7 @@ Expected: PASS (5 tests)
 
 ```bash
 git add src/components/admin/form/useFormShortcuts.ts src/components/admin/form/__tests__/useFormShortcuts.test.tsx
-git commit -m "feat(form): add useFormShortcuts for keyboard shortcuts"
+git commit -m "feat(form): add useFormShortcuts with form-scoped handlers"
 ```
 
 ---
