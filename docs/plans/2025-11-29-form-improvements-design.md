@@ -364,7 +364,7 @@ export const SaveButtonWithTooltip = ({ onClick, isSubmitting, children = "Save"
 ### 4. Recent Selections — Autocomplete Memory
 
 **Problem:** User frequently selects the same organizations/contacts. Autocomplete shows all options.
-**Solution:** Show last 5 used options at top of dropdown.
+**Solution:** Show last 5 used options at top of dropdown with ability to clear.
 
 ```
 ┌─────────────────────────────────────────┐
@@ -373,7 +373,7 @@ export const SaveButtonWithTooltip = ({ onClick, isSubmitting, children = "Save"
 │ │                                 ▼   │ │
 │ └─────────────────────────────────────┘ │
 │ ┌─────────────────────────────────────┐ │
-│ │ RECENT                              │ │
+│ │ RECENT                  Clear ✕     │ │
 │ │   🕐 Sysco Foods                    │ │
 │ │   🕐 US Foods                       │ │
 │ │ ─────────────────────────────────── │ │
@@ -410,20 +410,25 @@ export const useRecentSelections = (fieldType: "organization" | "contact" | "opp
     localStorage.setItem(storageKey, JSON.stringify(updated));
   };
 
-  return { getRecent, addRecent };
+  const clearRecent = () => {
+    localStorage.removeItem(storageKey);
+  };
+
+  return { getRecent, addRecent, clearRecent };
 };
 ```
 
 **Integration with AutocompleteInput:**
 
 ```typescript
-// Enhanced autocomplete that shows recent first
-const { getRecent, addRecent } = useRecentSelections("organization");
+// Enhanced autocomplete that shows recent first with clear button
+const { getRecent, addRecent, clearRecent } = useRecentSelections("organization");
+const recentItems = getRecent();
 
 // In render, prepend recent to choices
 const choicesWithRecent = [
-  ...getRecent().map(r => ({ ...r, _isRecent: true })),
-  ...allChoices.filter(c => !getRecent().some(r => r.id === c.id)),
+  ...recentItems.map(r => ({ ...r, _isRecent: true })),
+  ...allChoices.filter(c => !recentItems.some(r => r.id === c.id)),
 ];
 
 // On selection, save to recent
@@ -431,6 +436,25 @@ const handleSelect = (value) => {
   addRecent({ id: value.id, name: value.name });
   onChange(value);
 };
+
+// Render recent section header with clear button
+{recentItems.length > 0 && (
+  <div className="flex items-center justify-between px-2 py-1.5 text-xs text-muted-foreground">
+    <span className="font-semibold uppercase tracking-wider">Recent</span>
+    <button
+      type="button"
+      onClick={(e) => {
+        e.stopPropagation();
+        clearRecent();
+      }}
+      className="flex items-center gap-1 text-muted-foreground hover:text-foreground transition-colors"
+      aria-label="Clear recent selections"
+    >
+      Clear
+      <X className="h-3 w-3" />
+    </button>
+  </div>
+)}
 ```
 
 **Apply to:**
@@ -487,8 +511,9 @@ See `docs/plans/future/form-ux-phase2.md` for detailed specs.
 **High-Impact UX (new files):**
 - `src/atomic-crm/hooks/useSmartDefaults.ts` - Auto-populate sales_id with current user
 - `src/components/admin/form/SaveButtonGroup.tsx` - Split button with Save + Create Another
+- `src/components/admin/form/SaveButtonWithTooltip.tsx` - Save button with keyboard shortcut tooltip
 - `src/components/admin/form/useFormShortcuts.ts` - Keyboard shortcuts hook (Cmd+Enter, etc.)
-- `src/atomic-crm/hooks/useRecentSelections.ts` - localStorage-backed recent selections
+- `src/atomic-crm/hooks/useRecentSelections.ts` - localStorage-backed recent selections with clear
 
 **Visual Layout (new files):**
 - `src/components/admin/form/FormGrid.tsx` - 2/4 column grid wrapper with gap tokens
@@ -1212,7 +1237,10 @@ export const FormField = ({
       >
         {tab.label}
         {tabErrors[tab.key] && (
-          <span className="ml-2 w-2 h-2 rounded-full bg-destructive" aria-label="has errors" />
+          <span
+            className="ml-2 h-2 w-2 rounded-full bg-destructive"
+            aria-label={`${tab.label} has validation errors`}
+          />
         )}
       </button>
     ))}
