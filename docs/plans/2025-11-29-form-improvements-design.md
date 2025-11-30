@@ -446,6 +446,12 @@ See `docs/plans/future/form-ux-phase2.md` for detailed specs.
 - `src/components/admin/form/useFormShortcuts.ts` - Keyboard shortcuts hook (Cmd+Enter, etc.)
 - `src/atomic-crm/hooks/useRecentSelections.ts` - localStorage-backed recent selections
 
+**Visual Layout (new files):**
+- `src/components/admin/form/FormGrid.tsx` - 2/4 column grid wrapper with gap tokens
+- `src/components/admin/form/FormSection.tsx` - Section header with uppercase label + divider
+- `src/components/admin/form/FormActions.tsx` - Button layout (delete left, cancel+save right)
+- `src/components/admin/form/FormHeader.tsx` - Edit mode header with avatar + title + subtitle
+
 ### Dependencies
 
 **No new external dependencies for MVP.**
@@ -471,6 +477,15 @@ See `docs/plans/future/form-ux-phase2.md` for detailed specs.
 - Test keyboard shortcuts (Cmd+Enter, Cmd+Shift+Enter, Escape)
 - Test Save + Create Another workflow (form resets with smart defaults)
 - Test recent selections persistence across browser sessions
+
+**Visual Layout Testing:**
+- Test 2-column grid responsiveness (single column on mobile, 2-col on desktop)
+- Test field pairing alignment (names, contact methods, dates)
+- Test full-width fields span correctly (`col-span-2` for URLs, textareas)
+- Test button placement (delete far-left, save far-right)
+- Test split button dropdown opens and selects correctly
+- Test section headers display properly (uppercase label + divider)
+- Test edit mode header shows avatar/icon + title + subtitle
 
 ---
 
@@ -499,6 +514,13 @@ See `docs/plans/future/form-ux-phase2.md` for detailed specs.
 12. Save + Create Another: Split button dropdown on all Create forms
 13. Keyboard shortcuts: Cmd+Enter (save), Cmd+Shift+Enter (save+new), Escape (cancel)
 14. Recent selections: Last 5 used orgs/contacts/opportunities shown first in autocompletes
+
+**Visual Layout (5 items):**
+15. 2-column grid base with `grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5`
+16. Field widths match content (names 50%, URLs 100%, dates 25%)
+17. Logical field pairing (first+last, email+phone, date+duration)
+18. Button layout: Delete far-left, Cancel+Save right-aligned with split dropdown
+19. Section headers with uppercase label + horizontal divider for Activities single-page
 
 ### Deferred to Post-MVP
 
