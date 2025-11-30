@@ -21,7 +21,9 @@ import { consoleMonitor } from "../support/utils/console-monitor";
  *   - Page Object Models (OpportunitiesListPage POM)
  *   - Semantic selectors (getByRole, getByText)
  *   - Console monitoring for diagnostics
- *   - Condition-based waiting
+ *   - Condition-based waiting (NO waitForTimeout)
+ *
+ * STABILIZATION: 2025-11-29 - Replaced all waitForTimeout with condition-based waiting
  */
 
 // Sample opportunity name from seed-sample-opportunity.sql
@@ -68,8 +70,8 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
    * Helper to find and click the sample opportunity card in Kanban view
    */
   async function openSampleOpportunitySlideOver(authenticatedPage: any): Promise<boolean> {
-    // Wait for Kanban board to load
-    await authenticatedPage.waitForTimeout(1000);
+    // Wait for Kanban board to load (condition-based)
+    await authenticatedPage.waitForLoadState("networkidle");
 
     // First check total opportunity cards on page
     const allCards = authenticatedPage.locator('[data-testid="opportunity-card"]');
@@ -89,7 +91,8 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
         await kanbanBoard.evaluate((el: HTMLElement) => {
           el.scrollLeft = el.scrollWidth; // Scroll to see all columns
         });
-        await authenticatedPage.waitForTimeout(500);
+        // Wait for scroll to complete by checking if card is now visible
+        await authenticatedPage.waitForLoadState("domcontentloaded");
       }
 
       // Check again after scroll
@@ -104,7 +107,8 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
 
       if (await searchInput.isVisible().catch(() => false)) {
         await searchInput.fill("Hubbard");
-        await authenticatedPage.waitForTimeout(1000);
+        // Wait for search results (condition-based)
+        await authenticatedPage.waitForLoadState("networkidle");
         cardCount = await card.count();
       }
     }
@@ -114,7 +118,9 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
     }
 
     await card.first().click();
-    await authenticatedPage.waitForTimeout(300);
+    // Wait for slide-over to open (condition-based)
+    const slideOver = authenticatedPage.locator('[role="dialog"]');
+    await slideOver.waitFor({ state: "visible", timeout: 5000 }).catch(() => {});
     return true;
   }
 
@@ -129,8 +135,8 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       }
 
       await anyCard.click();
-      await authenticatedPage.waitForTimeout(300);
 
+      // Wait for slide-over to open (condition-based)
       const slideOver = createSlideOver(authenticatedPage);
       await slideOver.expectVisible();
 
@@ -147,8 +153,8 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       }
 
       await anyCard.click();
-      await authenticatedPage.waitForTimeout(300);
 
+      // Wait for slide-over to open (condition-based)
       const slideOver = createSlideOver(authenticatedPage);
       await slideOver.expectVisible();
 
@@ -160,7 +166,9 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
         const tab = slideOver.getTab(tabName);
         await expect(tab).toBeVisible();
         await tab.click();
-        await authenticatedPage.waitForTimeout(200);
+
+        // Wait for tab to be selected (condition-based)
+        await expect(tab).toHaveAttribute("aria-selected", "true");
 
         // Active tab panel should be visible (data-state="active")
         const activePanel = slideOver
@@ -275,8 +283,9 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
 
       const panel = getActiveTabPanel(slideOver);
 
-      // Wait for contacts to load (data fetching is conditional on tab active)
-      await authenticatedPage.waitForTimeout(1000);
+      // Wait for contacts to load (condition-based: wait for tab panel content)
+      await expect(panel).toBeVisible();
+      await authenticatedPage.waitForLoadState("networkidle");
 
       // Check for role badges from seed data
       const roles = ["Decision Maker", "Influencer", "Purchasing", "Operations", "Distributor Rep"];

@@ -432,20 +432,7 @@ COMMENT ON FUNCTION public.get_current_user_sales_id() IS
   'Returns the sales ID for current user. '
   'SECURITY: SECURITY DEFINER with empty search_path to prevent hijacking.';
 
--- 2.6 get_current_user_company_id() function (if exists)
-CREATE OR REPLACE FUNCTION public.get_current_user_company_id()
-RETURNS BIGINT
-LANGUAGE SQL
-STABLE
-SECURITY DEFINER
-SET search_path = ''
-AS $$
-  SELECT company_id FROM public.sales WHERE user_id = auth.uid() LIMIT 1
-$$;
-
-COMMENT ON FUNCTION public.get_current_user_company_id() IS
-  'Returns the company ID for current user. '
-  'SECURITY: SECURITY DEFINER with empty search_path to prevent hijacking.';
+-- 2.6 get_current_user_company_id() - SKIPPED (column company_id does not exist in this project)
 
 -- 2.7 is_manager() function (if exists)
 CREATE OR REPLACE FUNCTION public.is_manager()

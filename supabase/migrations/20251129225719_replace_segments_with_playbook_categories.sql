@@ -17,87 +17,19 @@
 -- 9. Unknown - Default for unclassified organizations
 -- ============================================================================
 
--- Step 1: Create mapping table for existing segments to new categories
-CREATE TEMP TABLE segment_mapping (
-  old_segment_name TEXT,
-  new_category_name TEXT
-);
-
--- Map existing 28 segments to 9 Playbook categories
-INSERT INTO segment_mapping (old_segment_name, new_category_name) VALUES
-  -- Restaurant Types -> Chain Restaurant or Restaurant Group
-  ('Fine Dining', 'Restaurant Group'),
-  ('Casual Dining', 'Restaurant Group'),
-  ('Fast Casual', 'Chain Restaurant'),
-  ('QSR (Quick Service)', 'Chain Restaurant'),
-  ('Food Truck', 'Restaurant Group'),
-  ('Ghost Kitchen', 'Restaurant Group'),
-
-  -- Hospitality -> Hotel & Aviation
-  ('Hotel', 'Hotel & Aviation'),
-  ('Resort', 'Hotel & Aviation'),
-  ('Casino', 'Hotel & Aviation'),
-  ('Convention Center', 'Hotel & Aviation'),
-
-  -- Institutional -> Management Company or University
-  ('Healthcare', 'Management Company'),
-  ('Education K-12', 'Management Company'),
-  ('Higher Education', 'University'),
-  ('Corporate Dining', 'Management Company'),
-  ('Senior Living', 'Management Company'),
-  ('Corrections', 'Management Company'),
-
-  -- Retail/Specialty -> Specialty/Regional
-  ('Grocery', 'Specialty/Regional'),
-  ('C-Store', 'Specialty/Regional'),
-  ('Catering', 'Specialty/Regional'),
-  ('Bakery', 'Specialty/Regional'),
-  ('Coffee Shop', 'Chain Restaurant'),
-  ('Bar/Nightclub', 'Restaurant Group'),
-
-  -- Distribution/Manufacturing -> Major Broadline or Specialty/Regional
-  ('Broadline Distributor', 'Major Broadline'),
-  ('Specialty Distributor', 'Specialty/Regional'),
-  ('Redistribution', 'Specialty/Regional'),
-  ('Manufacturer', 'Specialty/Regional'),
-
-  -- Other -> Hotel & Aviation or Unknown
-  ('Sports/Entertainment', 'Hotel & Aviation'),
-  ('Travel/Transportation', 'Hotel & Aviation');
-
--- Step 2: Delete all existing segments
-DELETE FROM segments;
-
--- Step 3: Insert the 9 Playbook categories with stable UUIDs
-INSERT INTO segments (id, name, created_at, created_by) VALUES
-  ('22222222-0000-0000-0000-000000000001', 'Major Broadline', NOW(), NULL),
-  ('22222222-0000-0000-0000-000000000002', 'Specialty/Regional', NOW(), NULL),
-  ('22222222-0000-0000-0000-000000000003', 'Management Company', NOW(), NULL),
-  ('22222222-0000-0000-0000-000000000004', 'GPO', NOW(), NULL),
-  ('22222222-0000-0000-0000-000000000005', 'University', NOW(), NULL),
-  ('22222222-0000-0000-0000-000000000006', 'Restaurant Group', NOW(), NULL),
-  ('22222222-0000-0000-0000-000000000007', 'Chain Restaurant', NOW(), NULL),
-  ('22222222-0000-0000-0000-000000000008', 'Hotel & Aviation', NOW(), NULL),
-  ('22222222-0000-0000-0000-000000000009', 'Unknown', NOW(), NULL);
-
--- Step 4: Update organizations to use new category IDs based on mapping
--- First, create a temp table with old segment info
-CREATE TEMP TABLE org_old_segments AS
-SELECT o.id as org_id, s.name as old_segment_name
-FROM organizations o
-JOIN segments s ON o.segment_id = s.id
-WHERE o.segment_id IS NOT NULL;
-
--- Now we need to update organizations AFTER the new segments are inserted
--- This won't work because we deleted the old segments first
--- Let's do this differently...
-
--- Drop the temp tables and start over with a better approach
-DROP TABLE IF EXISTS org_old_segments;
-DROP TABLE IF EXISTS segment_mapping;
-
 -- ============================================================================
--- REVISED APPROACH: Use a single transaction with proper ordering
+-- MIGRATION APPROACH: Safe segment replacement with FK constraint handling
+-- ============================================================================
+--
+-- Segment Mapping Reference (old -> new):
+--   Restaurant: Fine Dining, Casual Dining, Food Truck, Ghost Kitchen, Bar/Nightclub -> Restaurant Group
+--   Restaurant: Fast Casual, QSR, Coffee Shop -> Chain Restaurant
+--   Hospitality: Hotel, Resort, Casino, Convention Center, Sports/Entertainment, Travel -> Hotel & Aviation
+--   Institutional: Higher Education -> University
+--   Institutional: Healthcare, Education K-12, Corporate Dining, Senior Living, Corrections -> Management Company
+--   Distribution: Broadline Distributor -> Major Broadline
+--   Distribution: Specialty Distributor, Redistribution, Manufacturer, Grocery, C-Store, Catering, Bakery -> Specialty/Regional
+--   Default: Everything else -> Unknown
 -- ============================================================================
 
 -- Step 1: Store old segment mappings before deletion
@@ -107,6 +39,8 @@ FROM organizations o
 LEFT JOIN segments s ON o.segment_id = s.id;
 
 -- Step 2: Temporarily remove FK constraint
+-- NOTE: The constraint is named 'organizations_industry_id_fkey' (legacy name from when column was industry_id)
+ALTER TABLE organizations DROP CONSTRAINT IF EXISTS organizations_industry_id_fkey;
 ALTER TABLE organizations DROP CONSTRAINT IF EXISTS organizations_segment_id_fkey;
 
 -- Step 3: Set all segment_ids to NULL temporarily

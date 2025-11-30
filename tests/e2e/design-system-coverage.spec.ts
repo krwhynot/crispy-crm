@@ -25,6 +25,8 @@ import { consoleMonitor } from "./support/utils/console-monitor";
  * - No horizontal scrolling
  * - Touch target sizes
  * - No console errors
+ *
+ * STABILIZATION: 2025-11-29 - Replaced all waitForTimeout with condition-based waiting
  */
 
 test.describe("Design System Coverage", () => {
@@ -46,7 +48,7 @@ test.describe("Design System Coverage", () => {
       test.beforeEach(async ({ authenticatedPage }) => {
         // Navigate to first contact
         await authenticatedPage.goto("/#/contacts");
-        await authenticatedPage.waitForTimeout(1000);
+        await authenticatedPage.waitForLoadState("networkidle");
 
         const firstContact = authenticatedPage
           .getByRole("link")
@@ -54,7 +56,8 @@ test.describe("Design System Coverage", () => {
           .first();
         await firstContact.waitFor({ state: "visible" });
         await firstContact.click();
-        await authenticatedPage.waitForTimeout(1000);
+        // Wait for contact details page to load
+        await authenticatedPage.waitForLoadState("networkidle");
       });
 
       test("has ARIA main landmark", async ({ authenticatedPage }) => {
@@ -71,12 +74,17 @@ test.describe("Design System Coverage", () => {
 
       test("displays two-column layout on desktop (1280px)", async ({ authenticatedPage }) => {
         await authenticatedPage.setViewportSize({ width: 1280, height: 720 });
-        await authenticatedPage.waitForTimeout(500);
+        // Wait for layout to stabilize after viewport change
+        await authenticatedPage.waitForLoadState("domcontentloaded");
 
         const main = authenticatedPage.getByRole("main", { name: /contact details/i });
         const aside = authenticatedPage.getByRole("complementary", {
           name: /contact information/i,
         });
+
+        // Wait for both elements to be visible before measuring
+        await expect(main).toBeVisible();
+        await expect(aside).toBeVisible();
 
         const mainBox = await main.boundingBox();
         const asideBox = await aside.boundingBox();
@@ -95,7 +103,8 @@ test.describe("Design System Coverage", () => {
 
       test("no horizontal scrolling on desktop", async ({ authenticatedPage }) => {
         await authenticatedPage.setViewportSize({ width: 1280, height: 720 });
-        await authenticatedPage.waitForTimeout(500);
+        // Wait for layout to stabilize after viewport change
+        await authenticatedPage.waitForLoadState("domcontentloaded");
 
         const bodyWidth = await authenticatedPage.evaluate(() => document.body.scrollWidth);
         const viewportWidth = 1280;
@@ -107,18 +116,20 @@ test.describe("Design System Coverage", () => {
     test.describe("ContactEdit", () => {
       test.beforeEach(async ({ authenticatedPage }) => {
         await authenticatedPage.goto("/#/contacts");
-        await authenticatedPage.waitForTimeout(1000);
+        await authenticatedPage.waitForLoadState("networkidle");
 
         const firstContact = authenticatedPage
           .getByRole("link")
           .filter({ hasText: /^[A-Z]/ })
           .first();
         await firstContact.click();
-        await authenticatedPage.waitForTimeout(1000);
+        await authenticatedPage.waitForLoadState("networkidle");
 
         const editButton = authenticatedPage.getByRole("button", { name: /edit/i });
+        await expect(editButton).toBeVisible();
         await editButton.click();
-        await authenticatedPage.waitForTimeout(1000);
+        // Wait for edit mode to activate (form fields appear)
+        await expect(authenticatedPage.getByRole("button", { name: /save|cancel/i }).first()).toBeVisible();
       });
 
       test("has ARIA main landmark", async ({ authenticatedPage }) => {
@@ -139,7 +150,7 @@ test.describe("Design System Coverage", () => {
     test.describe("OrganizationShow", () => {
       test.beforeEach(async ({ authenticatedPage }) => {
         await authenticatedPage.goto("/#/organizations");
-        await authenticatedPage.waitForTimeout(1000);
+        await authenticatedPage.waitForLoadState("networkidle");
 
         const firstOrg = authenticatedPage
           .getByRole("link")
@@ -147,7 +158,7 @@ test.describe("Design System Coverage", () => {
           .first();
         await firstOrg.waitFor({ state: "visible" });
         await firstOrg.click();
-        await authenticatedPage.waitForTimeout(1000);
+        await authenticatedPage.waitForLoadState("networkidle");
       });
 
       test("has ARIA main landmark", async ({ authenticatedPage }) => {
@@ -164,12 +175,16 @@ test.describe("Design System Coverage", () => {
 
       test("displays two-column layout on desktop", async ({ authenticatedPage }) => {
         await authenticatedPage.setViewportSize({ width: 1280, height: 720 });
-        await authenticatedPage.waitForTimeout(500);
+        await authenticatedPage.waitForLoadState("domcontentloaded");
 
         const main = authenticatedPage.getByRole("main", { name: /organization details/i });
         const aside = authenticatedPage.getByRole("complementary", {
           name: /organization information/i,
         });
+
+        // Wait for both elements to be visible before measuring
+        await expect(main).toBeVisible();
+        await expect(aside).toBeVisible();
 
         const mainBox = await main.boundingBox();
         const asideBox = await aside.boundingBox();
@@ -187,18 +202,19 @@ test.describe("Design System Coverage", () => {
     test.describe("OrganizationEdit", () => {
       test.beforeEach(async ({ authenticatedPage }) => {
         await authenticatedPage.goto("/#/organizations");
-        await authenticatedPage.waitForTimeout(1000);
+        await authenticatedPage.waitForLoadState("networkidle");
 
         const firstOrg = authenticatedPage
           .getByRole("link")
           .filter({ hasText: /^[A-Z]/ })
           .first();
         await firstOrg.click();
-        await authenticatedPage.waitForTimeout(1000);
+        await authenticatedPage.waitForLoadState("networkidle");
 
         const editButton = authenticatedPage.getByRole("button", { name: /edit/i });
+        await expect(editButton).toBeVisible();
         await editButton.click();
-        await authenticatedPage.waitForTimeout(1000);
+        await expect(authenticatedPage.getByRole("button", { name: /save|cancel/i }).first()).toBeVisible();
       });
 
       test("has ARIA main landmark", async ({ authenticatedPage }) => {
@@ -219,7 +235,7 @@ test.describe("Design System Coverage", () => {
     test.describe("ProductShow", () => {
       test.beforeEach(async ({ authenticatedPage }) => {
         await authenticatedPage.goto("/#/products");
-        await authenticatedPage.waitForTimeout(1000);
+        await authenticatedPage.waitForLoadState("networkidle");
 
         const firstProduct = authenticatedPage
           .getByRole("link")
@@ -227,7 +243,7 @@ test.describe("Design System Coverage", () => {
           .first();
         await firstProduct.waitFor({ state: "visible" });
         await firstProduct.click();
-        await authenticatedPage.waitForTimeout(1000);
+        await authenticatedPage.waitForLoadState("networkidle");
       });
 
       test("has ARIA main landmark", async ({ authenticatedPage }) => {
@@ -244,12 +260,16 @@ test.describe("Design System Coverage", () => {
 
       test("displays two-column layout on desktop", async ({ authenticatedPage }) => {
         await authenticatedPage.setViewportSize({ width: 1280, height: 720 });
-        await authenticatedPage.waitForTimeout(500);
+        await authenticatedPage.waitForLoadState("domcontentloaded");
 
         const main = authenticatedPage.getByRole("main", { name: /product details/i });
         const aside = authenticatedPage.getByRole("complementary", {
           name: /product information/i,
         });
+
+        // Wait for both elements to be visible before measuring
+        await expect(main).toBeVisible();
+        await expect(aside).toBeVisible();
 
         const mainBox = await main.boundingBox();
         const asideBox = await aside.boundingBox();
@@ -272,9 +292,9 @@ test.describe("Design System Coverage", () => {
         await expect(detailsTab).toBeVisible();
         await expect(activityTab).toBeVisible();
 
-        // Click details tab
+        // Click details tab and wait for tab selection (condition-based)
         await detailsTab.click();
-        await authenticatedPage.waitForTimeout(500);
+        await expect(detailsTab).toHaveAttribute("aria-selected", "true");
 
         // Verify URL updated
         const url = authenticatedPage.url();
@@ -289,13 +309,13 @@ test.describe("Design System Coverage", () => {
 
       // Test ContactShow
       await authenticatedPage.goto("/#/contacts");
-      await authenticatedPage.waitForTimeout(1000);
+      await authenticatedPage.waitForLoadState("networkidle");
       const firstContact = authenticatedPage
         .getByRole("link")
         .filter({ hasText: /^[A-Z]/ })
         .first();
       await firstContact.click();
-      await authenticatedPage.waitForTimeout(1000);
+      await authenticatedPage.waitForLoadState("networkidle");
 
       const main = authenticatedPage.getByRole("main", { name: /contact details/i });
       const aside = authenticatedPage.getByRole("complementary", { name: /contact information/i });
@@ -319,13 +339,13 @@ test.describe("Design System Coverage", () => {
       await authenticatedPage.setViewportSize({ width: 768, height: 1024 });
 
       await authenticatedPage.goto("/#/contacts");
-      await authenticatedPage.waitForTimeout(1000);
+      await authenticatedPage.waitForLoadState("networkidle");
       const firstContact = authenticatedPage
         .getByRole("link")
         .filter({ hasText: /^[A-Z]/ })
         .first();
       await firstContact.click();
-      await authenticatedPage.waitForTimeout(1000);
+      await authenticatedPage.waitForLoadState("networkidle");
 
       const editButton = authenticatedPage.getByRole("button", { name: /edit/i });
       await editButton.waitFor({ state: "visible" });
@@ -346,7 +366,7 @@ test.describe("Design System Coverage", () => {
 
       for (const page of pages) {
         await authenticatedPage.goto(page);
-        await authenticatedPage.waitForTimeout(1000);
+        await authenticatedPage.waitForLoadState("networkidle");
 
         // Click first item
         const firstItem = authenticatedPage
@@ -354,7 +374,7 @@ test.describe("Design System Coverage", () => {
           .filter({ hasText: /^[A-Z]/ })
           .first();
         await firstItem.click();
-        await authenticatedPage.waitForTimeout(1000);
+        await authenticatedPage.waitForLoadState("networkidle");
 
         // No RLS errors
         expect(consoleMonitor.hasRLSErrors()).toBe(false);
