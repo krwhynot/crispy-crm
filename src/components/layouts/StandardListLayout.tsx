@@ -1,9 +1,14 @@
+import { useState, useEffect, useCallback } from "react";
+import { PanelLeftClose, PanelLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
+
 /**
  * StandardListLayout - Unified layout for all resource list views
  *
- * Provides a standardized two-column layout with a filter sidebar and main content area.
- * This component enforces consistent spacing, semantic HTML structure, and accessibility
- * patterns across all resource list pages.
+ * Provides a standardized two-column layout with a collapsible filter sidebar
+ * and main content area. This component enforces consistent spacing, semantic
+ * HTML structure, and accessibility patterns across all resource list pages.
  *
  * @example
  * ```tsx
@@ -21,16 +26,19 @@
  * - ARIA labels for screen reader navigation
  * - Sticky positioning for filter sidebar on desktop (remains visible on scroll)
  * - Responsive gap spacing (24px) for comfortable visual separation
+ * - Collapsible sidebar with localStorage persistence
  *
  * Responsive Behavior (Desktop-First):
- * - Base (mobile/tablet <1024px): Stacked vertical layout (flex-col)
+ * - Base (mobile/tablet <1024px): Stacked vertical layout (flex-col), collapsed by default
  * - Desktop (≥1024px): Side-by-side two-column layout (lg:flex-row)
- * - Filter sidebar collapses above content on smaller screens
+ * - Filter sidebar collapse state persisted to localStorage
  *
  * @param filterComponent - React node containing filter UI components
  * @param children - Main content area (typically a Datagrid or table)
  * @param resource - Resource name for ARIA labels (e.g., "contacts", "opportunities")
  */
+
+const STORAGE_KEY = "crm-filter-sidebar-collapsed";
 
 interface StandardListLayoutProps {
   /** Filter sidebar content (e.g., SearchInput, FilterCategories) */
@@ -46,14 +54,114 @@ export function StandardListLayout({
   children,
   resource,
 }: StandardListLayoutProps) {
+  // Initialize collapsed state from localStorage, default to collapsed on tablet
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    if (typeof window === "undefined") return false;
+
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored !== null) {
+      return stored === "true";
+    }
+    // Default: collapsed on tablet (< 1024px), expanded on desktop
+    return window.innerWidth < 1024;
+  });
+
+  // Persist collapse state to localStorage
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, String(isCollapsed));
+  }, [isCollapsed]);
+
+  const toggleSidebar = useCallback(() => {
+    setIsCollapsed((prev) => !prev);
+  }, []);
+
   return (
     <div className="flex flex-col lg:flex-row gap-6">
+      {/* Collapse toggle button */}
+      <div className="flex items-center gap-2 lg:hidden mb-2">
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={toggleSidebar}
+              className="h-11 w-11"
+              aria-label={isCollapsed ? "Show filters" : "Hide filters"}
+              aria-expanded={!isCollapsed}
+              aria-controls="filter-sidebar"
+            >
+              {isCollapsed ? (
+                <PanelLeft className="h-5 w-5" />
+              ) : (
+                <PanelLeftClose className="h-5 w-5" />
+              )}
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent side="right">
+            {isCollapsed ? "Show filters" : "Hide filters"}
+          </TooltipContent>
+        </Tooltip>
+        {isCollapsed && (
+          <span className="text-sm text-muted-foreground">Filters hidden</span>
+        )}
+      </div>
+
+      {/* Filter sidebar with collapse animation */}
       <aside
+        id="filter-sidebar"
         aria-label={`Filter ${resource}`}
-        className="filter-sidebar w-full lg:w-auto lg:sticky lg:top-[var(--spacing-section)] lg:h-fit"
+        className={`
+          filter-sidebar w-full lg:w-auto lg:sticky lg:top-[var(--spacing-section)] lg:h-fit
+          transition-all duration-200 ease-out overflow-hidden
+          ${isCollapsed ? "max-h-0 lg:max-h-none lg:w-0 lg:opacity-0 lg:invisible" : "max-h-[500px] lg:max-h-none lg:opacity-100"}
+        `}
+        aria-hidden={isCollapsed}
       >
-        <div className="card-container p-2">{filterComponent}</div>
+        <div className="card-container p-2">
+          {/* Desktop collapse toggle inside sidebar */}
+          <div className="hidden lg:flex items-center justify-between mb-2">
+            <span className="text-sm font-medium text-muted-foreground">Filters</span>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={toggleSidebar}
+                  className="h-8 w-8"
+                  aria-label="Hide filters"
+                >
+                  <PanelLeftClose className="h-4 w-4" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">Hide filters</TooltipContent>
+            </Tooltip>
+          </div>
+          {filterComponent}
+        </div>
       </aside>
+
+      {/* Desktop expand button when sidebar is collapsed */}
+      {isCollapsed && (
+        <div className="hidden lg:block">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                onClick={toggleSidebar}
+                className="h-11 w-11 sticky top-[var(--spacing-section)]"
+                aria-label="Show filters"
+                aria-expanded={false}
+                aria-controls="filter-sidebar"
+              >
+                <PanelLeft className="h-5 w-5" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="right">Show filters</TooltipContent>
+          </Tooltip>
+        </div>
+      )}
+
       <main role="main" aria-label={`${resource} list`} className="flex-1 min-w-0">
         <div className="card-container">{children}</div>
       </main>

@@ -30,7 +30,7 @@ export function ContactSlideOver({
   onClose,
   onModeToggle,
 }: ContactSlideOverProps) {
-  // Tab configuration
+  // Tab configuration with count badges
   const contactTabs: TabConfig[] = [
     {
       key: "details",
@@ -43,12 +43,14 @@ export function ContactSlideOver({
       label: "Activities",
       component: ({ record }) => <ActivitiesTab contactId={record.id} />,
       icon: ActivityIcon,
+      // Activities count from computed field (future: add nb_activities to contacts)
     },
     {
       key: "notes",
       label: "Notes",
       component: ContactNotesTab,
       icon: FileTextIcon,
+      countFromRecord: (record: Contact) => record.nb_notes,
     },
   ];
 
