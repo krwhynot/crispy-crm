@@ -70,6 +70,7 @@ export function OrganizationSlideOver({
       label: "Notes",
       component: OrganizationNotesTab,
       icon: StickyNote,
+      countFromRecord: (record: any) => record.nb_notes,
     },
   ];
 

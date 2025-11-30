@@ -44,7 +44,7 @@ export function ContactSlideOver({
       label: "Activities",
       component: ({ record }) => <ActivitiesTab contactId={record.id} />,
       icon: ActivityIcon,
-      // Activities count from computed field (future: add nb_activities to contacts)
+      countFromRecord: (record: Contact) => record.nb_activities,
     },
     {
       key: "notes",
