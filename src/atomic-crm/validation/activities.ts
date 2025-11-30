@@ -214,7 +214,8 @@ export const engagementsSchema = baseActivitiesSchema
       });
     }
 
-    if (data.type !== "sample" && data.sample_status) {
+    // Guard: Only validate when 'type' is explicitly provided (allows partial updates)
+    if (data.type && data.type !== "sample" && data.sample_status) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["sample_status"],
@@ -267,7 +268,8 @@ export const interactionsSchema = baseActivitiesSchema
       });
     }
 
-    if (data.type !== "sample" && data.sample_status) {
+    // Guard: Only validate when 'type' is explicitly provided (allows partial updates)
+    if (data.type && data.type !== "sample" && data.sample_status) {
       ctx.addIssue({
         code: z.ZodIssueCode.custom,
         path: ["sample_status"],
