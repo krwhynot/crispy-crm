@@ -285,13 +285,13 @@ describe("PrincipalPipelineTable", () => {
       const filtersButton = screen.getByRole("button", { name: /filters/i });
       await user.click(filtersButton);
 
-      // Should show momentum filter options
+      // Should show momentum filter options (use checkbox role to avoid matching row aria-labels)
       await waitFor(() => {
         expect(screen.getByText(/filter by momentum/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/increasing/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/steady/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/decreasing/i)).toBeInTheDocument();
-        expect(screen.getByLabelText(/stale/i)).toBeInTheDocument();
+        expect(screen.getByRole("checkbox", { name: /increasing/i })).toBeInTheDocument();
+        expect(screen.getByRole("checkbox", { name: /steady/i })).toBeInTheDocument();
+        expect(screen.getByRole("checkbox", { name: /decreasing/i })).toBeInTheDocument();
+        expect(screen.getByRole("checkbox", { name: /stale/i })).toBeInTheDocument();
       });
     });
 
@@ -313,7 +313,8 @@ describe("PrincipalPipelineTable", () => {
       const filtersButton = screen.getByRole("button", { name: /filters/i });
       await user.click(filtersButton);
 
-      const increasingCheckbox = await screen.findByLabelText(/increasing/i);
+      // Use specific checkbox ID to avoid matching the row's aria-label
+      const increasingCheckbox = await screen.findByRole("checkbox", { name: /increasing/i });
       await user.click(increasingCheckbox);
 
       // Should only show rows with increasing momentum (Acme Corporation)

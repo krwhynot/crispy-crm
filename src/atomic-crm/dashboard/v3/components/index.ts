@@ -15,3 +15,4 @@ export { MyPerformanceWidget } from "./MyPerformanceWidget";
 export { EntityCombobox } from "./EntityCombobox";
 export { ActivityTypeSection } from "./ActivityTypeSection";
 export { FollowUpSection } from "./FollowUpSection";
+export { PipelineTableRow } from "./PipelineTableRow";
