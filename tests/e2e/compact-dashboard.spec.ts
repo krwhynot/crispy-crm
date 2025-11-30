@@ -1,13 +1,18 @@
 import { test, expect } from "@playwright/test";
 
+/**
+ * Compact Dashboard Layout Tests
+ *
+ * These tests use the shared auth state from tests/e2e/.auth/user.json
+ * which is automatically loaded by Playwright (configured in playwright.config.ts).
+ * No manual login is needed - the user is already authenticated.
+ */
 test.describe("Compact Dashboard Layout", () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto("http://localhost:5173/");
-    // Login if needed
-    await page.getByLabel(/email/i).fill("admin@test.com");
-    await page.getByLabel(/password/i).fill("password123");
-    await page.getByRole("button", { name: /sign in/i }).click();
-    await page.waitForSelector("text=Principal Dashboard", { timeout: 10000 });
+    // Navigate to dashboard - user is already authenticated via storage state
+    await page.goto("/");
+    // Wait for dashboard to load (authenticated state is automatic)
+    await page.waitForSelector("text=Principal Dashboard", { timeout: 15000 });
   });
 
   test("all widgets visible at 1440px without scrolling", async ({ page }) => {

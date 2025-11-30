@@ -159,6 +159,7 @@ export const filterableFields: Record<string, string[]> = {
     "campaign",
     "tags", // Array field
     "created_by",
+    "sales_id", // FK to sales (alias for filtering by owner, commonly used in dashboard queries)
     "created_at",
     "updated_at",
     "deleted_at", // Soft delete timestamp
@@ -206,6 +207,7 @@ export const filterableFields: Record<string, string[]> = {
     "updated_at",
     "deleted_at", // Soft delete timestamp
     "created_by", // FK to sales (for filtering by creator)
+    "sales_id", // FK to sales (alias for filtering by assignee, maps to created_by in some contexts)
     "q", // Special: full-text search parameter
   ],
 
