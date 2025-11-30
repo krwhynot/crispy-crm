@@ -440,13 +440,21 @@ See `docs/plans/future/form-ux-phase2.md` for detailed specs.
 - `src/atomic-crm/constants/formCopy.ts` - Centralized labels/errors/helpers
 - Update existing input components to support `isRequired` and `helperText` props
 
+**High-Impact UX (new files):**
+- `src/atomic-crm/hooks/useSmartDefaults.ts` - Auto-populate sales_id with current user
+- `src/components/admin/form/SaveButtonGroup.tsx` - Split button with Save + Create Another
+- `src/components/admin/form/useFormShortcuts.ts` - Keyboard shortcuts hook (Cmd+Enter, etc.)
+- `src/atomic-crm/hooks/useRecentSelections.ts` - localStorage-backed recent selections
+
 ### Dependencies
 
 **No new external dependencies for MVP.**
 
 - shadcn/ui `Accordion` already installed
+- shadcn/ui `DropdownMenu` already installed (for Save split button)
 - React Admin validation infrastructure already in place
 - Zod schemas already used for form validation
+- localStorage API (native browser)
 
 **Deferred to post-MVP:**
 - Google Places API (address autocomplete)
@@ -460,6 +468,9 @@ See `docs/plans/future/form-ux-phase2.md` for detailed specs.
 - Test collapsible sections in Activities (desktop + mobile accordion)
 - Test conditional required fields (e.g., address required for customers)
 - Test state dropdown selection
+- Test keyboard shortcuts (Cmd+Enter, Cmd+Shift+Enter, Escape)
+- Test Save + Create Another workflow (form resets with smart defaults)
+- Test recent selections persistence across browser sessions
 
 ---
 
@@ -467,22 +478,36 @@ See `docs/plans/future/form-ux-phase2.md` for detailed specs.
 
 ### MVP (Must Ship)
 
+**Form Layout (6 items):**
 1. Contacts and Organizations reduced from 4 tabs to 2 (Main / More)
 2. Activities form loads as single page with collapsible sections
 3. All required fields marked with asterisk (`*`)
 4. All optional fields marked with "(optional)" suffix
 5. All fields have helper text (from centralized `formCopy.ts`)
-6. Inline validation shows errors on blur
-7. Manual address fields in Organizations (street, city, state, zip)
+6. 44px touch targets on all interactive elements
+
+**Validation (3 items):**
+7. Inline validation shows errors on blur
 8. Conditional required fields work (e.g., address for customers, follow-up date when follow-up enabled)
 9. Form state management uses React Admin `validate` prop with Zod schemas
-10. 44px touch targets on all interactive elements
+
+**Address (1 item):**
+10. Manual address fields in Organizations (street, city, state dropdown, zip)
+
+**High-Impact UX (4 items):**
+11. Smart defaults: Sales Rep auto-populated with current user
+12. Save + Create Another: Split button dropdown on all Create forms
+13. Keyboard shortcuts: Cmd+Enter (save), Cmd+Shift+Enter (save+new), Escape (cancel)
+14. Recent selections: Last 5 used orgs/contacts/opportunities shown first in autocompletes
 
 ### Deferred to Post-MVP
 
 - Google Places address autocomplete
 - Client-side async duplicate validation
 - Auto-save drafts to localStorage
+- Inline record creation ("Create New" in autocompletes)
+- Relationship preview on hover
+- Contextual field visibility by org type
 
 ---
 
