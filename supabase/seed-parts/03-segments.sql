@@ -10,7 +10,7 @@
 INSERT INTO "public"."segments" (id, name, created_at, created_by)
 VALUES
   -- Major national distributors
-  ('22222222-0000-0000-0000-000000000001', 'Major Broadline', NOW(), NULL),
+  ('22222222-2222-4222-8222-000000000001', 'Major Broadline', NOW(), NULL),
 
   -- Regional or specialty-focused distributors
   ('22222222-0000-0000-0000-000000000002', 'Specialty/Regional', NOW(), NULL),
