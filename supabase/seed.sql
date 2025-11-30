@@ -297,70 +297,89 @@ VALUES
 INSERT INTO "public"."organizations" (
   id, name, organization_type, segment_id, phone, email, website,
   address, city, state, postal_code, sales_id,
-  notes, created_at, updated_at
+  is_principal, is_distributor, priority, linkedin_url, annual_revenue, employee_count, founded_year,
+  description, notes, created_at, updated_at
 )
 VALUES
   -- 1. McCRUM (Idaho potatoes/fries) - Brent manages
   (1, 'McCRUM', 'principal', '22222222-0000-0000-0000-000000000002',
    '208-555-1001', 'sales@mccrum.com', 'https://mccrum.com',
    '123 Potato Lane', 'Idaho Falls', 'ID', '83401', 2,
-   'Premium Idaho potato products including fries, hash browns, and specialty cuts. Family-owned since 1985.',
+   true, false, 'A', 'https://linkedin.com/company/mccrum', 85000000.00, 350, 1985,
+   'McCRUM is a family-owned Idaho potato processor specializing in premium foodservice fries, hash browns, and specialty potato cuts. Known for consistent quality and farm-to-foodservice traceability.',
+   'Premium Idaho potato products including fries, hash browns, and specialty cuts. Family-owned since 1985. Key relationship - work directly with owner family.',
    NOW(), NOW()),
 
   -- 2. SWAP (Specialty ingredients) - Brent manages
   (2, 'SWAP', 'principal', '22222222-0000-0000-0000-000000000002',
    '312-555-1002', 'info@swapfoods.com', 'https://swapfoods.com',
    '456 Innovation Drive', 'Chicago', 'IL', '60601', 2,
-   'Innovative plant-based and specialty food ingredients for foodservice.',
+   true, false, 'A', 'https://linkedin.com/company/swapfoods', 42000000.00, 120, 2019,
+   'SWAP Foods is an innovative food-tech company developing plant-based ingredients and sustainable protein alternatives for the foodservice industry.',
+   'Innovative plant-based and specialty food ingredients for foodservice. Fast-growing startup with strong innovation pipeline.',
    NOW(), NOW()),
 
   -- 3. Rapid Rasoi (Indian cuisine) - Michelle manages
   (3, 'Rapid Rasoi', 'principal', '22222222-0000-0000-0000-000000000002',
    '510-555-1003', 'orders@rapidrasoi.com', 'https://rapidrasoi.com',
    '789 Spice Boulevard', 'Fremont', 'CA', '94536', 3,
-   'Authentic Indian cuisine solutions - naan, curries, rice dishes, and appetizers.',
+   true, false, 'B', 'https://linkedin.com/company/rapidrasoi', 28000000.00, 85, 2008,
+   'Rapid Rasoi produces authentic Indian cuisine for foodservice including naan, curries, rice dishes, and appetizers. Family recipes adapted for commercial scale.',
+   'Authentic Indian cuisine solutions - naan, curries, rice dishes, and appetizers. Family business with authentic recipes.',
    NOW(), NOW()),
 
   -- 4. Lakeview Farms (Dairy/desserts) - Michelle manages
   (4, 'Lakeview Farms', 'principal', '22222222-0000-0000-0000-000000000002',
    '614-555-1004', 'foodservice@lakeviewfarms.com', 'https://lakeviewfarms.com',
    '321 Dairy Road', 'Columbus', 'OH', '43215', 3,
-   'Premium dairy products and desserts including dips, parfaits, and cream-based items.',
+   true, false, 'B', 'https://linkedin.com/company/lakeviewfarms', 120000000.00, 450, 1958,
+   'Lakeview Farms specializes in premium dairy products and refrigerated desserts for foodservice, including dips, parfaits, and cream-based desserts.',
+   'Premium dairy products and desserts including dips, parfaits, and cream-based items. Long-standing relationships with dairy farmers.',
    NOW(), NOW()),
 
   -- 5. Frico (Italian cheese) - Gary manages
   (5, 'Frico', 'principal', '22222222-0000-0000-0000-000000000002',
    '201-555-1005', 'usa@frico.it', 'https://frico.it',
    '555 Cheese Way', 'Newark', 'NJ', '07102', 4,
-   'Authentic Italian cheeses - Parmesan, Gorgonzola, Asiago, and specialty varieties.',
+   true, false, 'A', 'https://linkedin.com/company/frico', 350000000.00, 1200, 1879,
+   'Frico is a heritage Italian cheese producer offering authentic Parmesan, Gorgonzola, Asiago, and specialty varieties to the US foodservice market.',
+   'Authentic Italian cheeses - Parmesan, Gorgonzola, Asiago, and specialty varieties. Italian heritage brand with US distribution.',
    NOW(), NOW()),
 
   -- 6. Anchor (New Zealand dairy) - Gary manages
   (6, 'Anchor Food Professionals', 'principal', '22222222-0000-0000-0000-000000000002',
    '415-555-1006', 'foodservice@anchor.com', 'https://anchorfoodprofessionals.com',
    '888 Pacific Avenue', 'San Francisco', 'CA', '94102', 4,
-   'New Zealand dairy products - butter, cream, UHT products for professional kitchens.',
+   true, false, 'A', 'https://linkedin.com/company/anchorfoodprofessionals', 580000000.00, 2100, 1886,
+   'Anchor Food Professionals is the foodservice division of Fonterra, offering premium New Zealand grass-fed butter, cream, and UHT products.',
+   'New Zealand dairy products - butter, cream, UHT products for professional kitchens. Part of Fonterra global dairy cooperative.',
    NOW(), NOW()),
 
   -- 7. Tattooed Chef (Plant-based) - Dale manages
   (7, 'Tattooed Chef', 'principal', '22222222-0000-0000-0000-000000000002',
    '310-555-1007', 'foodservice@tattooedchef.com', 'https://tattooedchef.com',
    '777 Vegan Street', 'Los Angeles', 'CA', '90001', 5,
-   'Premium plant-based frozen meals and ingredients - bowls, burritos, and ready-to-eat options.',
+   true, false, 'B', 'https://linkedin.com/company/tattooedchef', 225000000.00, 600, 2017,
+   'Tattooed Chef creates premium plant-based frozen meals for health-conscious consumers, including bowls, burritos, and ready-to-eat options.',
+   'Premium plant-based frozen meals and ingredients - bowls, burritos, and ready-to-eat options. Publicly traded, strong brand awareness.',
    NOW(), NOW()),
 
   -- 8. Litehouse (Dressings/dips) - Dale manages
   (8, 'Litehouse', 'principal', '22222222-0000-0000-0000-000000000002',
    '208-555-1008', 'foodservice@litehousefoods.com', 'https://litehousefoods.com',
    '1109 Front Street', 'Sandpoint', 'ID', '83864', 5,
-   'Premium dressings, dips, and cheese products. Known for blue cheese and ranch.',
+   true, false, 'A', 'https://linkedin.com/company/litehouse', 180000000.00, 520, 1963,
+   'Litehouse produces premium refrigerated dressings, dips, and freeze-dried herbs for foodservice. Known for chunky blue cheese and homestyle ranch.',
+   'Premium dressings, dips, and cheese products. Known for blue cheese and ranch. Employee-owned company.',
    NOW(), NOW()),
 
   -- 9. Custom Culinary (Bases/sauces) - Sue manages
   (9, 'Custom Culinary', 'principal', '22222222-0000-0000-0000-000000000002',
    '630-555-1009', 'sales@customculinary.com', 'https://customculinary.com',
    '2555 Busse Road', 'Elk Grove Village', 'IL', '60007', 6,
-   'Professional soup bases, sauces, gravies, and seasonings for foodservice operators.',
+   true, false, 'A', 'https://linkedin.com/company/customculinary', 95000000.00, 280, 1974,
+   'Custom Culinary produces professional-grade soup bases, sauces, gravies, and seasonings designed for commercial kitchen applications.',
+   'Professional soup bases, sauces, gravies, and seasonings for foodservice operators. Strong R&D and custom formulation capabilities.',
    NOW(), NOW());
 
 -- Reset sequence
@@ -376,77 +395,98 @@ SELECT setval(pg_get_serial_sequence('organizations', 'id'), 9, true);
 INSERT INTO "public"."organizations" (
   id, name, organization_type, segment_id, phone, email, website,
   address, city, state, postal_code, sales_id,
-  notes, created_at, updated_at
+  is_principal, is_distributor, priority, linkedin_url, annual_revenue, employee_count, founded_year,
+  description, notes, created_at, updated_at
 )
 VALUES
   -- 10. Sysco (Broadline - National)
   (10, 'Sysco Corporation', 'distributor', '22222222-0000-0000-0000-000000000001',
    '281-555-2001', 'purchasing@sysco.com', 'https://sysco.com',
    '1390 Enclave Parkway', 'Houston', 'TX', '77077', 2,
-   'Largest foodservice distributor in North America. Full broadline capabilities.',
+   false, true, 'A', 'https://linkedin.com/company/sysco', 76500000000.00, 72000, 1969,
+   'Sysco Corporation is the largest foodservice distributor in North America, serving restaurants, healthcare, educational facilities, and hospitality.',
+   'Largest foodservice distributor in North America. Full broadline capabilities. Publicly traded (NYSE: SYY).',
    NOW(), NOW()),
 
   -- 11. US Foods (Broadline - National)
   (11, 'US Foods', 'distributor', '22222222-0000-0000-0000-000000000001',
    '847-555-2002', 'vendor@usfoods.com', 'https://usfoods.com',
    '9399 W Higgins Road', 'Rosemont', 'IL', '60018', 2,
-   'Second largest foodservice distributor. Strong in chain restaurant segment.',
+   false, true, 'A', 'https://linkedin.com/company/usfoods', 34500000000.00, 30000, 1853,
+   'US Foods is the second largest foodservice distributor in the US, known for exclusive brands and strong chain restaurant partnerships.',
+   'Second largest foodservice distributor. Strong in chain restaurant segment. Publicly traded (NYSE: USFD).',
    NOW(), NOW()),
 
   -- 12. Performance Food Group (Broadline)
   (12, 'Performance Food Group (PFG)', 'distributor', '22222222-0000-0000-0000-000000000001',
    '804-555-2003', 'purchasing@pfgc.com', 'https://pfgc.com',
    '12500 West Creek Parkway', 'Richmond', 'VA', '23238', 3,
-   'Third largest foodservice distributor. Strong regional presence.',
+   false, true, 'B', 'https://linkedin.com/company/pfgc', 58000000000.00, 37000, 1885,
+   'Performance Food Group is the third largest foodservice distributor, with strong regional brands and convenience store distribution.',
+   'Third largest foodservice distributor. Strong regional presence. Acquired Reinhart, Core-Mark.',
    NOW(), NOW()),
 
   -- 13. Gordon Food Service (Broadline)
   (13, 'Gordon Food Service (GFS)', 'distributor', '22222222-0000-0000-0000-000000000001',
    '616-555-2004', 'vendors@gfs.com', 'https://gfs.com',
    '1300 Gezon Parkway SW', 'Grand Rapids', 'MI', '49509', 3,
-   'Family-owned broadline distributor. Strong in Midwest and Canada.',
+   false, true, 'A', 'https://linkedin.com/company/gordon-food-service', 19000000000.00, 22000, 1897,
+   'Gordon Food Service is the largest family-owned foodservice distributor in North America, known for quality and customer service.',
+   'Family-owned broadline distributor. Strong in Midwest and Canada. Excellent service reputation.',
    NOW(), NOW()),
 
   -- 14. Shamrock Foods (Regional - Southwest)
   (14, 'Shamrock Foods', 'distributor', '22222222-0000-0000-0000-000000000001',
    '602-555-2005', 'purchasing@shamrockfoods.com', 'https://shamrockfoods.com',
    '2540 N 29th Avenue', 'Phoenix', 'AZ', '85009', 4,
-   'Regional broadline distributor focused on Southwest. Family-owned.',
+   false, true, 'B', 'https://linkedin.com/company/shamrock-foods', 6500000000.00, 6000, 1922,
+   'Shamrock Foods is a family-owned regional broadline distributor serving the Southwest US with strong dairy heritage.',
+   'Regional broadline distributor focused on Southwest. Family-owned for 100+ years.',
    NOW(), NOW()),
 
   -- 15. Ben E. Keith (Regional - South)
   (15, 'Ben E. Keith Foods', 'distributor', '22222222-0000-0000-0000-000000000001',
    '817-555-2006', 'vendors@benekeith.com', 'https://benekeith.com',
    '601 E 7th Street', 'Fort Worth', 'TX', '76102', 4,
-   'Regional distributor covering Texas and surrounding states.',
+   false, true, 'B', 'https://linkedin.com/company/ben-e-keith', 4200000000.00, 4500, 1906,
+   'Ben E. Keith Foods is a regional foodservice distributor serving Texas and surrounding states with both food and beverage distribution.',
+   'Regional distributor covering Texas and surrounding states. Also major beverage distributor.',
    NOW(), NOW()),
 
   -- 16. Reinhart Foodservice (Regional - Midwest)
   (16, 'Reinhart Foodservice', 'distributor', '22222222-0000-0000-0000-000000000001',
    '715-555-2007', 'purchasing@rfrsinc.com', 'https://rfrsinc.com',
    '2355 Oak Industrial Drive NE', 'Grand Rapids', 'MI', '49505', 5,
-   'Regional broadline serving Upper Midwest. Part of Performance Food Group.',
+   false, true, 'B', 'https://linkedin.com/company/reinhart-foodservice', 8500000000.00, 8500, 1972,
+   'Reinhart Foodservice is a broadline distributor serving the Upper Midwest, now part of Performance Food Group.',
+   'Regional broadline serving Upper Midwest. Part of Performance Food Group since 2019.',
    NOW(), NOW()),
 
   -- 17. Dot Foods (Redistribution)
   (17, 'Dot Foods', 'distributor', '22222222-0000-0000-0000-000000000002',
    '217-555-2008', 'purchasing@dotfoods.com', 'https://dotfoods.com',
    '1 Dot Way', 'Mt Sterling', 'IL', '62353', 5,
-   'Largest food redistributor in North America. Ships to other distributors.',
+   false, true, 'A', 'https://linkedin.com/company/dot-foods', 9200000000.00, 6800, 1960,
+   'Dot Foods is the largest food redistributor in North America, enabling manufacturers to reach any distributor efficiently.',
+   'Largest food redistributor in North America. Ships to other distributors. Family-owned.',
    NOW(), NOW()),
 
   -- 18. European Imports (Specialty)
   (18, 'European Imports Ltd', 'distributor', '22222222-0000-0000-0000-000000000002',
    '312-555-2009', 'sales@eiltd.com', 'https://eiltd.com',
    '600 E Brook Drive', 'Arlington Heights', 'IL', '60005', 6,
-   'Specialty distributor for European cheeses, meats, and gourmet items.',
+   false, true, 'C', 'https://linkedin.com/company/european-imports-ltd', 185000000.00, 150, 1978,
+   'European Imports Ltd is a specialty distributor of imported European cheeses, meats, and gourmet items for fine dining.',
+   'Specialty distributor for European cheeses, meats, and gourmet items. Strong fine dining focus.',
    NOW(), NOW()),
 
   -- 19. Chefs Warehouse (Specialty)
   (19, 'The Chefs Warehouse', 'distributor', '22222222-0000-0000-0000-000000000002',
    '718-555-2010', 'vendors@chefswarehouse.com', 'https://chefswarehouse.com',
    '100 East Ridge Road', 'Ridgefield', 'CT', '06877', 6,
-   'Specialty distributor for fine dining and upscale restaurants.',
+   false, true, 'B', 'https://linkedin.com/company/the-chefs-warehouse', 3200000000.00, 3200, 1985,
+   'The Chefs Warehouse is a specialty foodservice distributor serving fine dining restaurants and upscale caterers.',
+   'Specialty distributor for fine dining and upscale restaurants. Publicly traded (NASDAQ: CHEF).',
    NOW(), NOW());
 
 -- Update sequence
@@ -462,7 +502,8 @@ SELECT setval(pg_get_serial_sequence('organizations', 'id'), 19, true);
 INSERT INTO "public"."organizations" (
   id, name, organization_type, segment_id, phone, email, website,
   address, city, state, postal_code, sales_id,
-  notes, created_at, updated_at
+  is_principal, is_distributor, priority, linkedin_url, annual_revenue, employee_count, founded_year,
+  description, notes, created_at, updated_at
 )
 VALUES
   -- ============================================================================
@@ -474,128 +515,168 @@ VALUES
   (20, 'The Capital Grille', 'customer', '22222222-0000-0000-0000-000000000006',
    '312-555-3001', 'manager@capitalgrille.com', 'https://thecapitalgrille.com',
    '633 N Saint Clair Street', 'Chicago', 'IL', '60611', 2,
-   'Upscale steakhouse chain. High-end proteins and premium sides.',
+   false, false, 'A', 'https://linkedin.com/company/the-capital-grille', 450000000.00, 6500, 1990,
+   'The Capital Grille is a national fine dining restaurant specializing in dry-aged steaks, fresh seafood, and award-winning wines. Part of Darden Restaurants.',
+   'Upscale steakhouse chain. High-end proteins and premium sides. Excellent wine program. Key decision maker is GM.',
    NOW(), NOW()),
 
   (21, 'Ruth''s Chris Steak House', 'customer', '22222222-0000-0000-0000-000000000006',
    '504-555-3002', 'purchasing@ruthschris.com', 'https://ruthschris.com',
    '500 Tchoupitoulas Street', 'New Orleans', 'LA', '70130', 2,
-   'Premium steakhouse chain. USDA Prime beef and upscale appetizers.',
+   false, false, 'A', 'https://linkedin.com/company/ruths-chris-steak-house', 485000000.00, 7200, 1965,
+   'Ruth''s Chris Steak House is a premier fine dining steakhouse known for sizzling butter-finished steaks served on 500-degree plates. Founded in New Orleans.',
+   'Premium steakhouse chain. USDA Prime beef and upscale appetizers. Strong brand recognition. New Orleans heritage.',
    NOW(), NOW()),
 
   (22, 'Morton''s The Steakhouse', 'customer', '22222222-0000-0000-0000-000000000006',
    '312-555-3003', 'gm@mortons.com', 'https://mortons.com',
    '65 E Wacker Place', 'Chicago', 'IL', '60601', 2,
-   'Landry''s owned steakhouse. Premium cuts and classic sides.',
+   false, false, 'A', 'https://linkedin.com/company/mortons-the-steakhouse', 320000000.00, 4800, 1978,
+   'Morton''s The Steakhouse is an upscale steakhouse chain known for tableside presentations and prime cuts. Owned by Landry''s Inc.',
+   'Landry''s owned steakhouse. Premium cuts and classic sides. Tableside menu presentation. Chicago heritage.',
    NOW(), NOW()),
 
   -- Casual Dining (4) - Most to Brent
   (23, 'Chili''s Grill & Bar', 'customer', '22222222-0000-0000-0000-000000000006',
    '972-555-3004', 'procurement@brinker.com', 'https://chilis.com',
    '6820 LBJ Freeway', 'Dallas', 'TX', '75240', 2,
-   'Brinker International casual dining. High volume, value-focused.',
+   false, false, 'A', 'https://linkedin.com/company/chilis', 3400000000.00, 72000, 1975,
+   'Chili''s Grill & Bar is the flagship casual dining brand of Brinker International, serving Tex-Mex inspired American food at 1,600+ locations worldwide.',
+   'Brinker International casual dining. High volume, value-focused. Tex-Mex strength. Major account.',
    NOW(), NOW()),
 
   (24, 'Applebee''s', 'customer', '22222222-0000-0000-0000-000000000006',
    '913-555-3005', 'vendors@applebees.com', 'https://applebees.com',
    '8140 Ward Parkway', 'Kansas City', 'MO', '64114', 2,
-   'Dine Brands casual dining. Neighborhood bar and grill concept.',
+   false, false, 'A', 'https://linkedin.com/company/applebees', 4200000000.00, 28000, 1980,
+   'Applebee''s is the world''s largest casual dining chain with 1,700+ locations. Part of Dine Brands Global, known for affordable American fare.',
+   'Dine Brands casual dining. Neighborhood bar and grill concept. Franchise model. High volume potential.',
    NOW(), NOW()),
 
   (25, 'Buffalo Wild Wings', 'customer', '22222222-0000-0000-0000-000000000006',
    '612-555-3006', 'purchasing@buffalowildwings.com', 'https://buffalowildwings.com',
    '5500 Wayzata Blvd', 'Minneapolis', 'MN', '55416', 2,
-   'Sports bar concept. High sauce and wing volume.',
+   false, false, 'A', 'https://linkedin.com/company/buffalo-wild-wings', 3800000000.00, 35000, 1982,
+   'Buffalo Wild Wings is a sports bar franchise specializing in chicken wings with signature sauces. Known for sports viewing experience with 60+ TVs per location.',
+   'Sports bar concept. High sauce and wing volume. Strong sports partnership strategy. Arby''s (Inspire Brands) owned.',
    NOW(), NOW()),
 
   (26, 'Red Robin', 'customer', '22222222-0000-0000-0000-000000000006',
    '303-555-3007', 'foodsupply@redrobin.com', 'https://redrobin.com',
    '6312 S Fiddlers Green Circle', 'Greenwood Village', 'CO', '80111', 3,
-   'Gourmet burger casual dining. Bottomless fries concept.',
+   false, false, 'B', 'https://linkedin.com/company/red-robin-gourmet-burgers', 1100000000.00, 23000, 1969,
+   'Red Robin Gourmet Burgers and Brews is a casual dining chain known for gourmet burgers and the signature Bottomless Steak Fries.',
+   'Gourmet burger casual dining. Bottomless fries concept. Family-friendly. Colorado-based.',
    NOW(), NOW()),
 
   -- Fast Casual (3) - Most to Brent
   (27, 'Panera Bread', 'customer', '22222222-0000-0000-0000-000000000007',
    '314-555-3008', 'suppliers@panerabread.com', 'https://panerabread.com',
    '3630 S Geyer Road', 'St. Louis', 'MO', '63127', 2,
-   'JAB Holdings bakery-cafe chain. Clean ingredients focus.',
+   false, false, 'A', 'https://linkedin.com/company/panera-bread', 5900000000.00, 120000, 1987,
+   'Panera Bread is a fast-casual bakery-cafe chain with 2,100+ locations known for fresh bread, soups, salads, and clean ingredients. Part of JAB Holdings.',
+   'JAB Holdings bakery-cafe chain. Clean ingredients focus. Strong breakfast/lunch dayparts. No artificial preservatives.',
    NOW(), NOW()),
 
   (28, 'Chipotle Mexican Grill', 'customer', '22222222-0000-0000-0000-000000000007',
    '949-555-3009', 'purchasing@chipotle.com', 'https://chipotle.com',
    '610 Newport Center Drive', 'Newport Beach', 'CA', '92660', 2,
-   'Fast casual Mexican. Food with Integrity sourcing program.',
+   false, false, 'A', 'https://linkedin.com/company/chipotle-mexican-grill', 9800000000.00, 105000, 1993,
+   'Chipotle Mexican Grill is a fast-casual restaurant chain serving burritos, tacos, and bowls with a focus on fresh ingredients and responsible sourcing.',
+   'Fast casual Mexican. Food with Integrity sourcing program. Industry leader in sustainability. High growth.',
    NOW(), NOW()),
 
   (29, 'Shake Shack', 'customer', '22222222-0000-0000-0000-000000000007',
    '212-555-3010', 'supply@shakeshack.com', 'https://shakeshack.com',
    '225 Varick Street', 'New York', 'NY', '10014', 3,
-   'Premium fast casual burgers. 100% Angus beef, no hormones.',
+   false, false, 'B', 'https://linkedin.com/company/shake-shack', 850000000.00, 9500, 2004,
+   'Shake Shack is a modern fast-casual burger concept from Danny Meyer, known for premium burgers, crinkle-cut fries, and frozen custard.',
+   'Premium fast casual burgers. 100% Angus beef, no hormones. Danny Meyer concept. Strong urban presence.',
    NOW(), NOW()),
 
   -- Hotels (3) - Most to Brent
   (30, 'Marriott International', 'customer', '22222222-0000-0000-0000-000000000008',
    '301-555-3011', 'foodprocurement@marriott.com', 'https://marriott.com',
    '10400 Fernwood Road', 'Bethesda', 'MD', '20817', 2,
-   'Largest hotel company. Multiple brands and banquet operations.',
+   false, false, 'A', 'https://linkedin.com/company/marriott-international', 20970000000.00, 174000, 1927,
+   'Marriott International is the world''s largest hotel company with 8,000+ properties across 30 brands including JW Marriott, Ritz-Carlton, and Sheraton.',
+   'Largest hotel company. Multiple brands and banquet operations. Global procurement. Starwood integration complete.',
    NOW(), NOW()),
 
   (31, 'Hilton Hotels', 'customer', '22222222-0000-0000-0000-000000000008',
    '703-555-3012', 'purchasing@hilton.com', 'https://hilton.com',
    '7930 Jones Branch Drive', 'McLean', 'VA', '22102', 2,
-   'Global hotel chain. Convention and banquet focus.',
+   false, false, 'A', 'https://linkedin.com/company/hilton', 17010000000.00, 159000, 1919,
+   'Hilton Hotels Corporation is a global hospitality company with 7,000+ properties across 18 brands including Waldorf Astoria, Conrad, and DoubleTree.',
+   'Global hotel chain. Convention and banquet focus. Strong loyalty program. McLean HQ.',
    NOW(), NOW()),
 
   (32, 'Hyatt Hotels', 'customer', '22222222-0000-0000-0000-000000000008',
    '312-555-3013', 'foodsourcing@hyatt.com', 'https://hyatt.com',
    '150 N Riverside Plaza', 'Chicago', 'IL', '60606', 2,
-   'Upscale hotel chain. Strong restaurant-in-hotel concepts.',
+   false, false, 'A', 'https://linkedin.com/company/hyatt', 6700000000.00, 52000, 1957,
+   'Hyatt Hotels Corporation operates 1,200+ properties across 20+ brands including Park Hyatt, Grand Hyatt, and Thompson Hotels.',
+   'Upscale hotel chain. Strong restaurant-in-hotel concepts. Chicago heritage. Pritzker family legacy.',
    NOW(), NOW()),
 
   -- Healthcare (2) - Split
   (33, 'HCA Healthcare', 'customer', '22222222-0000-0000-0000-000000000003',
    '615-555-3014', 'dietary@hcahealthcare.com', 'https://hcahealthcare.com',
    'One Park Plaza', 'Nashville', 'TN', '37203', 2,
-   'Largest for-profit hospital chain. High volume dietary operations.',
+   false, false, 'A', 'https://linkedin.com/company/hca-healthcare', 60230000000.00, 250000, 1968,
+   'HCA Healthcare is the largest for-profit hospital operator in the US with 180+ hospitals and 2,000+ care sites across 20 states and UK.',
+   'Largest for-profit hospital chain. High volume dietary operations. Centralized purchasing. Nashville HQ.',
    NOW(), NOW()),
 
   (34, 'Ascension Health', 'customer', '22222222-0000-0000-0000-000000000003',
    '314-555-3015', 'nutrition@ascension.org', 'https://ascension.org',
    '4600 Edmundson Road', 'St. Louis', 'MO', '63134', 4,
-   'Largest non-profit hospital system. Faith-based healthcare.',
+   false, false, 'B', 'https://linkedin.com/company/ascension', 28400000000.00, 150000, 1999,
+   'Ascension is the largest non-profit Catholic health system in the US with 140+ hospitals across 19 states. Mission-driven care focus.',
+   'Largest non-profit hospital system. Faith-based healthcare. Strong community focus. Socially responsible sourcing.',
    NOW(), NOW()),
 
   -- Education (2) - Split
   (35, 'Aramark Higher Education', 'customer', '22222222-0000-0000-0000-000000000005',
    '215-555-3016', 'education@aramark.com', 'https://aramark.com',
    '2400 Market Street', 'Philadelphia', 'PA', '19103', 2,
-   'Contract foodservice for universities. Retail and residential dining.',
+   false, false, 'A', 'https://linkedin.com/company/aramark', 16500000000.00, 270000, 1936,
+   'Aramark is a global leader in food services, facilities, and uniforms. Higher Education division serves 500+ colleges and universities nationwide.',
+   'Contract foodservice for universities. Retail and residential dining. Broad client base. Philadelphia HQ.',
    NOW(), NOW()),
 
   (36, 'Sodexo Campus Services', 'customer', '22222222-0000-0000-0000-000000000005',
    '301-555-3017', 'campus@sodexo.com', 'https://sodexo.com',
    '9801 Washingtonian Blvd', 'Gaithersburg', 'MD', '20878', 5,
-   'Global contract foodservice. University and K-12 operations.',
+   false, false, 'B', 'https://linkedin.com/company/sodexo', 23900000000.00, 422000, 1966,
+   'Sodexo is a global foodservice and facilities management company serving 100 million consumers daily. Campus Services division operates at 700+ universities.',
+   'Global contract foodservice. University and K-12 operations. Strong sustainability focus. French parent company.',
    NOW(), NOW()),
 
   -- Senior Living (2) - Sue
   (37, 'Brookdale Senior Living', 'customer', '22222222-0000-0000-0000-000000000003',
    '615-555-3018', 'culinary@brookdale.com', 'https://brookdale.com',
    '111 Westwood Place', 'Brentwood', 'TN', '37027', 6,
-   'Largest senior living operator. Multiple care levels.',
+   false, false, 'B', 'https://linkedin.com/company/brookdale-senior-living', 2800000000.00, 56000, 1978,
+   'Brookdale Senior Living is the largest operator of senior living communities in the US with 675+ communities offering independent living, assisted living, and memory care.',
+   'Largest senior living operator. Multiple care levels. High dining standards. Nashville area HQ.',
    NOW(), NOW()),
 
   (38, 'Sunrise Senior Living', 'customer', '22222222-0000-0000-0000-000000000003',
    '703-555-3019', 'dining@sunriseseniorliving.com', 'https://sunriseseniorliving.com',
    '7900 Westpark Drive', 'McLean', 'VA', '22102', 6,
-   'Premium senior living communities. Chef-prepared dining.',
+   false, false, 'B', 'https://linkedin.com/company/sunrise-senior-living', 1500000000.00, 28000, 1981,
+   'Sunrise Senior Living operates 270+ senior living communities in the US, Canada, and UK offering personalized assisted living and memory care.',
+   'Premium senior living communities. Chef-prepared dining. Strong brand reputation. Quality focus.',
    NOW(), NOW()),
 
   -- Sports/Entertainment (1) - Brent
   (39, 'Levy Restaurants', 'customer', '22222222-0000-0000-0000-000000000008',
    '312-555-3020', 'procurement@levyrestaurants.com', 'https://levyrestaurants.com',
    '980 N Michigan Avenue', 'Chicago', 'IL', '60611', 2,
-   'Premium sports and entertainment foodservice. Stadiums and arenas.',
+   false, false, 'A', 'https://linkedin.com/company/levy-restaurants', 2100000000.00, 18000, 1978,
+   'Levy Restaurants is the pioneer of premium sports and entertainment dining, serving 100+ stadiums, arenas, and convention centers. Part of Compass Group.',
+   'Premium sports and entertainment foodservice. Stadiums and arenas. Compass Group owned. Chicago heritage.',
    NOW(), NOW());
 
 -- Update sequence
