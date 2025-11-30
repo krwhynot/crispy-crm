@@ -1,25 +1,18 @@
-import { CreateBase, Form, useGetIdentity, useNotify, useRedirect } from "ra-core";
+import { CreateBase, Form, useNotify, useRedirect } from "ra-core";
 import { useFormContext, useFormState } from "react-hook-form";
 import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
-import { SaveButton } from "@/components/admin/form";
+import { SaveButton, FormLoadingSkeleton } from "@/components/admin/form";
+import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
 import type { Contact } from "../types";
 import { ContactInputs } from "./ContactInputs";
 import { contactBaseSchema } from "../validation/contacts";
 
 const ContactCreate = () => {
-  const { identity } = useGetIdentity();
   const notify = useNotify();
   const redirect = useRedirect();
-
-  // Generate defaults from schema truth
-  // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
-  // contactBaseSchema is a ZodObject (not ZodEffects), so .partial().parse({}) works
-  const formDefaults = {
-    ...contactBaseSchema.partial().parse({}),
-    sales_id: identity?.id,
-  };
+  const { defaults, isLoading } = useSmartDefaults();
 
   const transformData = (data: Contact) => ({
     ...data,
@@ -27,6 +20,24 @@ const ContactCreate = () => {
     last_seen: new Date().toISOString(),
     tags: [],
   });
+
+  if (isLoading) {
+    return (
+      <div className="bg-muted px-6 py-6">
+        <div className="max-w-4xl mx-auto">
+          <FormLoadingSkeleton rows={4} />
+        </div>
+      </div>
+    );
+  }
+
+  // Generate defaults from schema truth
+  // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
+  // contactBaseSchema is a ZodObject (not ZodEffects), so .partial().parse({}) works
+  const formDefaults = {
+    ...contactBaseSchema.partial().parse({}),
+    ...defaults,
+  };
 
   return (
     <CreateBase redirect="list" transform={transformData}>

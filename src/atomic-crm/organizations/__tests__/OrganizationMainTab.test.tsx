@@ -131,7 +131,7 @@ describe("OrganizationMainTab", () => {
       </TestWrapper>
     );
 
-    expect(screen.getByText(/state/i)).toBeInTheDocument();
+    expect(screen.getByText("State")).toBeInTheDocument();
   });
 
   test("renders zip input", () => {
@@ -173,6 +173,6 @@ describe("OrganizationMainTab", () => {
       </TestWrapper>
     );
 
-    expect(screen.getByText(/state/i)).toBeInTheDocument();
+    expect(screen.getByText("State")).toBeInTheDocument();
   });
 });
