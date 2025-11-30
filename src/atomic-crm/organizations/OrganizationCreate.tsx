@@ -31,6 +31,10 @@ type Segment = Database["public"]["Tables"]["segments"]["Row"];
 
 /**
  * Custom save button that checks for duplicates before saving
+ *
+ * Uses SaveButton with type="submit" (the default) and intercepts via onClick.
+ * When onClick returns without calling event.preventDefault(), the form submits
+ * normally via React Admin's form context.
  */
 interface DuplicateCheckSaveButtonProps {
   onDuplicateFound: (name: string, values: any) => void;
@@ -44,19 +48,30 @@ const DuplicateCheckSaveButton = ({
   isChecking,
 }: DuplicateCheckSaveButtonProps) => {
   const form = useFormContext();
+  // Track if we should skip duplicate check (already approved)
+  const skipCheckRef = useRef(false);
+  // Ref to the button for programmatic clicks
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   const handleClick = useCallback(
     async (event: React.MouseEvent<HTMLButtonElement>) => {
-      // Prevent default form submission
+      // If we've already approved, allow the submission
+      if (skipCheckRef.current) {
+        skipCheckRef.current = false;
+        return; // Don't prevent - let form submit
+      }
+
+      // Prevent default submission until we've checked for duplicates
       event.preventDefault();
+      event.stopPropagation();
 
       // Get current form values
       const values = form.getValues();
       const name = values.name?.trim();
 
       if (!name) {
-        // Let regular validation handle empty names
-        form.handleSubmit(() => {})();
+        // Empty name - trigger validation to show required field error
+        form.trigger("name");
         return;
       }
 
@@ -68,18 +83,21 @@ const DuplicateCheckSaveButton = ({
         return;
       }
 
-      // No duplicate - proceed with normal form submission
-      form.handleSubmit(() => {})();
+      // No duplicate - set flag and re-click to trigger actual submission
+      skipCheckRef.current = true;
+      buttonRef.current?.click();
     },
     [form, checkForDuplicate, onDuplicateFound]
   );
 
   return (
     <SaveButton
+      ref={buttonRef}
       label={isChecking ? "Checking..." : "Create Organization"}
-      type="button"
+      type="submit"
       onClick={handleClick}
       disabled={isChecking}
+      alwaysEnable={true}
     />
   );
 };
