@@ -1166,10 +1166,44 @@ git commit -m "feat(form): add SaveButtonGroup with validation-safe submit"
 
 ```typescript
 // src/components/admin/form/__tests__/FormActions.test.tsx
-import { describe, test, expect, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { describe, test, expect, vi, beforeEach } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { FormActions } from "../FormActions";
+import { FormProvider, useForm } from "react-hook-form";
+
+/**
+ * CRITICAL: FormWrapper must wire form's onSubmit to handleSubmit.
+ * FormActions uses type="submit" for the fallback Save button.
+ */
+const FormWrapper = ({
+  children,
+  onSubmit,
+  validation,
+}: {
+  children: React.ReactNode;
+  onSubmit: (data: any) => void;
+  validation?: Record<string, any>;
+}) => {
+  const methods = useForm({
+    defaultValues: { name: "test" },
+    mode: "onSubmit",
+  });
+
+  return (
+    <FormProvider {...methods}>
+      <form onSubmit={methods.handleSubmit(onSubmit)}>
+        {validation && (
+          <input
+            {...methods.register("name", validation)}
+            data-testid="name-input"
+          />
+        )}
+        {children}
+      </form>
+    </FormProvider>
+  );
+};
 
 describe("FormActions", () => {
   const mockOnSave = vi.fn();
@@ -1183,25 +1217,80 @@ describe("FormActions", () => {
 
   test("renders Cancel and Save buttons", () => {
     render(
-      <FormActions
-        onSave={mockOnSave}
-        onSaveAndNew={mockOnSaveAndNew}
-        onCancel={mockOnCancel}
-      />
+      <FormWrapper onSubmit={mockOnSave}>
+        <FormActions
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          onCancel={mockOnCancel}
+        />
+      </FormWrapper>
     );
 
     expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
     expect(screen.getByRole("button", { name: /save/i })).toBeInTheDocument();
   });
 
+  test("Save button triggers form submit (goes through validation)", async () => {
+    const user = userEvent.setup();
+    const handleFormSubmit = vi.fn();
+
+    render(
+      <FormWrapper onSubmit={handleFormSubmit}>
+        <FormActions
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          onCancel={mockOnCancel}
+          showSaveAndNew={false} // Use simple Save button
+        />
+      </FormWrapper>
+    );
+
+    await user.click(screen.getByRole("button", { name: /save/i }));
+
+    await waitFor(() => {
+      expect(handleFormSubmit).toHaveBeenCalledWith({ name: "test" });
+    });
+  });
+
+  test("Save button does NOT call handler when validation fails", async () => {
+    const user = userEvent.setup();
+    const handleFormSubmit = vi.fn();
+
+    render(
+      <FormWrapper
+        onSubmit={handleFormSubmit}
+        validation={{ required: "Name is required", minLength: 10 }}
+      >
+        <FormActions
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          onCancel={mockOnCancel}
+          showSaveAndNew={false}
+        />
+      </FormWrapper>
+    );
+
+    // Clear the input to fail validation
+    const input = screen.getByTestId("name-input");
+    await user.clear(input);
+
+    await user.click(screen.getByRole("button", { name: /save/i }));
+
+    // Wait a tick and verify form's onSubmit wasn't called
+    await new Promise((r) => setTimeout(r, 100));
+    expect(handleFormSubmit).not.toHaveBeenCalled();
+  });
+
   test("renders Delete button when onDelete provided", () => {
     render(
-      <FormActions
-        onSave={mockOnSave}
-        onSaveAndNew={mockOnSaveAndNew}
-        onCancel={mockOnCancel}
-        onDelete={mockOnDelete}
-      />
+      <FormWrapper onSubmit={mockOnSave}>
+        <FormActions
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          onCancel={mockOnCancel}
+          onDelete={mockOnDelete}
+        />
+      </FormWrapper>
     );
 
     expect(screen.getByRole("button", { name: /delete/i })).toBeInTheDocument();
@@ -1209,40 +1298,49 @@ describe("FormActions", () => {
 
   test("does not render Delete button when onDelete not provided", () => {
     render(
-      <FormActions
-        onSave={mockOnSave}
-        onSaveAndNew={mockOnSaveAndNew}
-        onCancel={mockOnCancel}
-      />
+      <FormWrapper onSubmit={mockOnSave}>
+        <FormActions
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          onCancel={mockOnCancel}
+        />
+      </FormWrapper>
     );
 
     expect(screen.queryByRole("button", { name: /delete/i })).not.toBeInTheDocument();
   });
 
-  test("calls onCancel when Cancel clicked", async () => {
+  test("calls onCancel when Cancel clicked (no form submit)", async () => {
     const user = userEvent.setup();
+    const handleFormSubmit = vi.fn();
+
     render(
-      <FormActions
-        onSave={mockOnSave}
-        onSaveAndNew={mockOnSaveAndNew}
-        onCancel={mockOnCancel}
-      />
+      <FormWrapper onSubmit={handleFormSubmit}>
+        <FormActions
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          onCancel={mockOnCancel}
+        />
+      </FormWrapper>
     );
 
     await user.click(screen.getByRole("button", { name: /cancel/i }));
 
     expect(mockOnCancel).toHaveBeenCalledTimes(1);
+    expect(handleFormSubmit).not.toHaveBeenCalled();
   });
 
   test("calls onDelete when Delete clicked", async () => {
     const user = userEvent.setup();
     render(
-      <FormActions
-        onSave={mockOnSave}
-        onSaveAndNew={mockOnSaveAndNew}
-        onCancel={mockOnCancel}
-        onDelete={mockOnDelete}
-      />
+      <FormWrapper onSubmit={mockOnSave}>
+        <FormActions
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          onCancel={mockOnCancel}
+          onDelete={mockOnDelete}
+        />
+      </FormWrapper>
     );
 
     await user.click(screen.getByRole("button", { name: /delete/i }));
@@ -1250,20 +1348,21 @@ describe("FormActions", () => {
     expect(mockOnDelete).toHaveBeenCalledTimes(1);
   });
 
-  test("hides SaveButtonGroup when showSaveAndNew is false", () => {
+  test("uses SaveButtonGroup when showSaveAndNew is true", () => {
     render(
-      <FormActions
-        onSave={mockOnSave}
-        onSaveAndNew={mockOnSaveAndNew}
-        onCancel={mockOnCancel}
-        showSaveAndNew={false}
-      />
+      <FormWrapper onSubmit={mockOnSave}>
+        <FormActions
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          onCancel={mockOnCancel}
+          showSaveAndNew={true}
+        />
+      </FormWrapper>
     );
 
-    // Should have simple Save button, not split button
+    // SaveButtonGroup has two buttons (Save + dropdown trigger)
     const buttons = screen.getAllByRole("button");
-    const saveButtons = buttons.filter((b) => b.textContent?.toLowerCase().includes("save"));
-    expect(saveButtons).toHaveLength(1);
+    expect(buttons.length).toBeGreaterThanOrEqual(3); // Cancel + Save + Dropdown
   });
 });
 ```
@@ -1276,7 +1375,7 @@ npm test -- src/components/admin/form/__tests__/FormActions.test.tsx
 
 Expected: FAIL with "Cannot find module '../FormActions'"
 
-**Step 3: Write minimal implementation**
+**Step 3: Write implementation (NO onClick+type="submit" conflict)**
 
 ```typescript
 // src/components/admin/form/FormActions.tsx
@@ -1285,8 +1384,8 @@ import { Trash2 } from "lucide-react";
 import { SaveButtonGroup } from "./SaveButtonGroup";
 
 interface FormActionsProps {
-  onSave: () => void;
-  onSaveAndNew?: () => void;
+  onSave: (data: any) => void | Promise<void>;
+  onSaveAndNew?: (data: any) => void | Promise<void>;
   onCancel: () => void;
   onDelete?: () => void;
   isSubmitting?: boolean;
@@ -1296,6 +1395,10 @@ interface FormActionsProps {
 /**
  * Form action bar with Delete (far left), Cancel + Save (right).
  * Per design spec: Fitts's Law - primary action rightmost, destructive isolated left.
+ *
+ * CRITICAL: This component assumes it's inside a <form> with proper onSubmit handler.
+ * The fallback Save button uses type="submit" WITHOUT onClick to trigger form
+ * validation via handleSubmit. DO NOT add onClick to type="submit" buttons!
  */
 export const FormActions = ({
   onSave,
@@ -1339,9 +1442,10 @@ export const FormActions = ({
           isSubmitting={isSubmitting}
         />
       ) : (
+        // CRITICAL: type="submit" WITHOUT onClick - relies on form's onSubmit
+        // This ensures validation runs before save handler is called
         <Button
           type="submit"
-          onClick={onSave}
           disabled={isSubmitting}
           className="min-w-[100px]"
         >
@@ -1359,13 +1463,13 @@ export const FormActions = ({
 npm test -- src/components/admin/form/__tests__/FormActions.test.tsx
 ```
 
-Expected: PASS (6 tests)
+Expected: PASS (8 tests)
 
 **Step 5: Commit**
 
 ```bash
 git add src/components/admin/form/FormActions.tsx src/components/admin/form/__tests__/FormActions.test.tsx
-git commit -m "feat(form): add FormActions component with Fitts's Law layout"
+git commit -m "feat(form): add FormActions with validation-safe submit"
 ```
 
 ---
@@ -2707,13 +2811,15 @@ describe("ActivitySinglePage", () => {
     const followUpTrigger = screen.getByRole("button", { name: /follow-up/i });
     expect(followUpTrigger).toBeInTheDocument();
 
-    // Content should be hidden initially
-    expect(screen.queryByLabelText(/follow-up date/i)).not.toBeVisible();
+    // Radix CollapsibleContent unmounts children when closed (not CSS hidden)
+    // Therefore queryByLabelText returns null, NOT a hidden element
+    expect(screen.queryByLabelText(/follow-up date/i)).toBeNull();
 
-    // Click to expand
+    // Click to expand - now content is mounted
     const user = userEvent.setup();
     await user.click(followUpTrigger);
 
+    // After expansion, element is in DOM and visible
     expect(screen.getByLabelText(/follow-up date/i)).toBeVisible();
   });
 
