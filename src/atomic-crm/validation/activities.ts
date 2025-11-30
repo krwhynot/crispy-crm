@@ -161,7 +161,8 @@ export const activitiesSchema = baseActivitiesSchema.superRefine((data, ctx) => 
 
   // If type is NOT 'sample', sample_status should not be set
   // This prevents data inconsistency
-  if (data.type !== "sample" && data.sample_status) {
+  // Guard: Only validate when 'type' is explicitly provided (allows partial updates)
+  if (data.type && data.type !== "sample" && data.sample_status) {
     ctx.addIssue({
       code: z.ZodIssueCode.custom,
       path: ["sample_status"],

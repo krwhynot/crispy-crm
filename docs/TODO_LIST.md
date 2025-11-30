@@ -39,7 +39,7 @@ These items block other work or are foundational to the system.
 ### Database & Schema
 
 > **Engineering Constitution Note:** All migrations must follow `YYYYMMDDHHMMSS` format (§9).
-> Database utilities must access data via `unifiedDataProvider` pattern (§2).
+> Database utilities must access data via `composedDataProvider` pattern (§2) - see `src/atomic-crm/providers/supabase/composedDataProvider.ts`.
 > Form defaults must derive from Zod schemas (§5).
 
 #### TODO-001: Pipeline Stage Migration (PARENT - See subtasks below)
