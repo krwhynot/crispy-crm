@@ -191,12 +191,12 @@ test.describe("Activity Form - Success Scenarios", () => {
   test("SUCCESS #1 - Minimal valid activity (subject + contact) saves successfully", async () => {
     const timestamp = Date.now();
 
-    // Fill minimal required fields
+    // Fill minimal required fields (use actual seed data names)
     await formPage.fillSubject(`Minimal Activity ${timestamp}`);
-    await formPage.selectContact("Test"); // Satisfies contact_id OR organization_id requirement
+    await formPage.selectContact("John"); // John McCrum from seed data
 
     // Since activity_type defaults to "interaction", we need opportunity_id
-    await formPage.selectOpportunity("Test");
+    await formPage.selectOpportunity("McCRUM"); // McCRUM Fries - Capital Grille from seed data
 
     // Submit
     await formPage.clickSave();
