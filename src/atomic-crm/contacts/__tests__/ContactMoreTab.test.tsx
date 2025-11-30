@@ -2,7 +2,7 @@ import { describe, test, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { AdminContext } from "react-admin";
 import { FormProvider, useForm } from "react-hook-form";
-import { ContactMainTab } from "../ContactMainTab";
+import { ContactMoreTab } from "../ContactMoreTab";
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   const methods = useForm({
@@ -28,35 +28,24 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-describe("ContactMainTab", () => {
-  test("renders main tab fields", () => {
+describe("ContactMoreTab", () => {
+  test("renders more tab fields", () => {
     render(
       <TestWrapper>
-        <ContactMainTab />
+        <ContactMoreTab />
       </TestWrapper>
     );
 
-    expect(screen.getByLabelText(/First Name/i)).toBeInTheDocument();
-    expect(screen.getByLabelText(/Last Name/i)).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Organization/i })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: /Account Manager/i })).toBeInTheDocument();
-  });
-
-  test("includes email and phone fields", () => {
-    render(
-      <TestWrapper>
-        <ContactMainTab />
-      </TestWrapper>
-    );
-
-    expect(screen.getByText(/Email addresses/i)).toBeInTheDocument();
-    expect(screen.getByText(/Phone numbers/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Title/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Department/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/LinkedIn URL/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Notes/i)).toBeInTheDocument();
   });
 
   test("uses FormSection component", () => {
     const { container } = render(
       <TestWrapper>
-        <ContactMainTab />
+        <ContactMoreTab />
       </TestWrapper>
     );
 
@@ -64,19 +53,14 @@ describe("ContactMainTab", () => {
     expect(formSections.length).toBeGreaterThan(0);
   });
 
-  test("avatar is rendered", () => {
+  test("notes field is multiline", () => {
     render(
       <TestWrapper>
-        <ContactMainTab />
+        <ContactMoreTab />
       </TestWrapper>
     );
 
-    // Avatar component should be present (it returns null in test but should be in the tree)
-    const { container } = render(
-      <TestWrapper>
-        <ContactMainTab />
-      </TestWrapper>
-    );
-    expect(container).toBeInTheDocument();
+    const notesField = screen.getByLabelText(/Notes/i);
+    expect(notesField.tagName).toBe("TEXTAREA");
   });
 });

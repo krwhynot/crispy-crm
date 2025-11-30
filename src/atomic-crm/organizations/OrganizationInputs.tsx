@@ -1,45 +1,33 @@
 import { TabbedFormInputs } from "@/components/admin/tabbed-form";
-import { OrganizationGeneralTab } from "./OrganizationGeneralTab";
-import { OrganizationDetailsTab } from "./OrganizationDetailsTab";
-import { OrganizationOtherTab } from "./OrganizationOtherTab";
-import { OrganizationHierarchyTab } from "./OrganizationHierarchyTab";
+import { OrganizationMainTab } from "./OrganizationMainTab";
+import { OrganizationMoreTab } from "./OrganizationMoreTab";
 
-type TabKey = "general" | "details" | "other" | "hierarchy";
+type TabKey = "main" | "more";
 
 export const OrganizationInputs = () => {
   const tabs = [
     {
-      key: "general" as TabKey,
-      label: "General",
+      key: "main" as TabKey,
+      label: "Main",
       fields: [
         "name",
-        "logo",
         "organization_type",
-        "parent_organization_id",
-        "description",
         "sales_id",
+        "segment_id",
+        "street",
+        "city",
+        "state",
+        "zip",
       ],
-      content: <OrganizationGeneralTab />,
+      content: <OrganizationMainTab />,
     },
     {
-      key: "details" as TabKey,
-      label: "Details",
-      fields: ["segment_id", "priority", "address", "city", "postal_code", "state", "phone"],
-      content: <OrganizationDetailsTab />,
-    },
-    {
-      key: "other" as TabKey,
-      label: "Other",
-      fields: ["website", "linkedin_url", "context_links"],
-      content: <OrganizationOtherTab />,
-    },
-    {
-      key: "hierarchy" as TabKey,
-      label: "Hierarchy",
-      fields: ["parent_organization_id"],
-      content: <OrganizationHierarchyTab />,
+      key: "more" as TabKey,
+      label: "More",
+      fields: ["website", "linkedin_url", "description", "parent_organization_id"],
+      content: <OrganizationMoreTab />,
     },
   ];
 
-  return <TabbedFormInputs tabs={tabs} defaultTab="general" />;
+  return <TabbedFormInputs tabs={tabs} defaultTab="main" />;
 };

@@ -1,36 +1,22 @@
 import { TabbedFormInputs } from "@/components/admin/tabbed-form";
-import { ContactIdentityTab } from "./ContactIdentityTab";
-import { ContactPositionTab } from "./ContactPositionTab";
-import { ContactInfoTab } from "./ContactInfoTab";
-import { ContactAccountTab } from "./ContactAccountTab";
+import { ContactMainTab } from "./ContactMainTab";
+import { ContactMoreTab } from "./ContactMoreTab";
 
 export const ContactInputs = () => {
   const tabs = [
     {
-      key: "identity",
-      label: "Identity",
-      fields: ["first_name", "last_name"],
-      content: <ContactIdentityTab />,
+      key: "main",
+      label: "Main",
+      fields: ["first_name", "last_name", "organization_id", "sales_id", "email", "phone"],
+      content: <ContactMainTab />,
     },
     {
-      key: "position",
-      label: "Position",
-      fields: ["title", "department", "organization_id"],
-      content: <ContactPositionTab />,
-    },
-    {
-      key: "contact_info",
-      label: "Contact Info",
-      fields: ["email", "phone", "linkedin_url"],
-      content: <ContactInfoTab />,
-    },
-    {
-      key: "account",
-      label: "Account",
-      fields: ["sales_id", "notes"],
-      content: <ContactAccountTab />,
+      key: "more",
+      label: "More",
+      fields: ["title", "department", "linkedin_url", "notes"],
+      content: <ContactMoreTab />,
     },
   ];
 
-  return <TabbedFormInputs tabs={tabs} defaultTab="identity" />;
+  return <TabbedFormInputs tabs={tabs} defaultTab="main" />;
 };
