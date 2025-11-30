@@ -45,7 +45,7 @@ import {
   ACTIVITY_TYPE_MAP,
   ACTIVITY_TYPE_GROUPS,
   SAMPLE_STATUS_OPTIONS,
-} from "../validation/activitySchema";
+} from "@/atomic-crm/validation/activities";
 import { useCurrentSale } from "../hooks/useCurrentSale";
 
 // Cache duration for data queries (5 minutes)

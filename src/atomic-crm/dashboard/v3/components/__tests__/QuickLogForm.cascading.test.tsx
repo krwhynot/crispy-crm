@@ -81,6 +81,12 @@ vi.mock("@/components/ui/select", () => ({
       {children}
     </div>
   ),
+  // Missing exports that QuickLogForm imports - added to fix test failures
+  SelectGroup: ({ children }: any) => <div data-testid="select-group">{children}</div>,
+  SelectLabel: ({ children, className }: any) => (
+    <div data-testid="select-label" className={className}>{children}</div>
+  ),
+  SelectSeparator: ({ className }: any) => <hr data-testid="select-separator" className={className} />,
 }));
 
 // Mock Command components (cmdk - combobox)
@@ -199,8 +205,8 @@ vi.mock("date-fns", () => ({
   startOfDay: (date: Date) => new Date(date.setHours(0, 0, 0, 0)),
 }));
 
-// Mock activity schema
-vi.mock("../../validation/activitySchema", () => ({
+// Mock activity schema - must include ALL exports used by QuickLogForm
+vi.mock("@/atomic-crm/validation/activities", () => ({
   activityLogSchema: {
     partial: () => ({
       parse: () => ({
@@ -216,9 +222,30 @@ vi.mock("../../validation/activitySchema", () => ({
     Call: "call",
     Email: "email",
     Meeting: "meeting",
+    Demo: "demo",
+    Proposal: "proposal",
     "Follow-up": "follow_up",
+    "Trade Show": "trade_show",
+    "Site Visit": "site_visit",
+    "Contract Review": "contract_review",
+    "Check-in": "check_in",
+    Social: "social",
     Note: "note",
+    Sample: "sample",
   },
+  // ACTIVITY_TYPE_GROUPS - organized by dropdown section (PRD v1.18)
+  ACTIVITY_TYPE_GROUPS: {
+    Communication: ["Call", "Email", "Check-in", "Social"],
+    Meetings: ["Meeting", "Demo", "Site Visit", "Trade Show"],
+    Documentation: ["Proposal", "Contract Review", "Follow-up", "Note", "Sample"],
+  },
+  // SAMPLE_STATUS_OPTIONS for Sample activity type workflow
+  SAMPLE_STATUS_OPTIONS: [
+    { value: "sent", label: "Sent" },
+    { value: "received", label: "Received" },
+    { value: "feedback_pending", label: "Feedback Pending" },
+    { value: "feedback_received", label: "Feedback Received" },
+  ],
 }));
 
 // Mock @hookform/resolvers/zod

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDataProvider } from "react-admin";
+import type { OpportunityApiResponse } from "../types";
 
 /**
  * Opportunity summary for drill-down display
@@ -73,7 +74,7 @@ export function usePrincipalOpportunities({
 
         // Map to summary format
         // Note: Database field is estimated_close_date (not expected_close_date)
-        const mapped: OpportunitySummary[] = data.map((opp: any) => ({
+        const mapped: OpportunitySummary[] = data.map((opp: OpportunityApiResponse) => ({
           id: opp.id,
           name: opp.name || "Unnamed Opportunity",
           stage: opp.stage || "Unknown",

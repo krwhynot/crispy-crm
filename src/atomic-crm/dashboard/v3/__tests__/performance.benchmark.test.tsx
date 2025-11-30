@@ -420,7 +420,7 @@ vi.mock("date-fns", () => ({
   startOfDay: (date: Date) => new Date(date.setHours(0, 0, 0, 0)),
 }));
 
-vi.mock("../../validation/activitySchema", () => ({
+vi.mock("@/atomic-crm/validation/activities", () => ({
   activityLogSchema: {
     partial: () => ({
       parse: () => ({

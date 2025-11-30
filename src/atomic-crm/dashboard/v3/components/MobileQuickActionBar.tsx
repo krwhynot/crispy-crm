@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/sheet";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import type { ActivityLogInput } from "../validation/activitySchema";
+import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
 
 // Lazy load QuickLogForm - saves ~15-20KB from main dashboard chunk
 const QuickLogForm = lazy(() =>
