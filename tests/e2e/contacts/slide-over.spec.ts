@@ -19,8 +19,10 @@ import { consoleMonitor } from "../support/utils/console-monitor";
  * FOLLOWS: playwright-e2e-testing skill requirements
  * - Page Object Models (semantic selectors only) ✓
  * - Console monitoring for diagnostics ✓
- * - Condition-based waiting (no waitForTimeout except animations) ✓
+ * - Condition-based waiting (NO waitForTimeout) ✓
  * - Timestamp-based test data for isolation ✓
+ *
+ * STABILIZATION: 2025-11-29 - Replaced all waitForTimeout with condition-based waiting
  */
 
 test.describe("Contact Slide-Over", () => {
@@ -67,12 +69,9 @@ test.describe("Contact Slide-Over", () => {
     // Click row
     await firstRow.click();
 
-    // Wait for slide-over to appear
-    await page.waitForTimeout(300); // Animation delay
-
-    // Verify slide-over is visible
+    // Wait for slide-over to appear (condition-based, not timeout)
     const slideOver = page.locator('[role="dialog"]');
-    await expect(slideOver).toBeVisible();
+    await expect(slideOver).toBeVisible({ timeout: 5000 });
 
     // Verify it contains contact details
     await expect(slideOver).toContainText(/Details|Activities|Notes|Files/);
@@ -89,20 +88,16 @@ test.describe("Contact Slide-Over", () => {
     await listPage.navigate();
     const firstRow = listPage.getContactRows().first();
     await firstRow.click();
-    await page.waitForTimeout(300);
 
-    // Verify slide-over is open
+    // Verify slide-over is open (condition-based wait)
     const slideOver = page.locator('[role="dialog"]');
-    await expect(slideOver).toBeVisible();
+    await expect(slideOver).toBeVisible({ timeout: 5000 });
 
     // Press ESC key
     await page.keyboard.press("Escape");
 
-    // Wait for close animation
-    await page.waitForTimeout(300);
-
-    // Verify slide-over is closed
-    await expect(slideOver).not.toBeVisible();
+    // Verify slide-over is closed (condition-based wait)
+    await expect(slideOver).not.toBeVisible({ timeout: 5000 });
 
     // Assert no console errors
     expect(consoleMonitor.hasRLSErrors()).toBe(false);
