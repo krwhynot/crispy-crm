@@ -12,6 +12,7 @@
 
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { startOfDay, subDays } from "date-fns";
 import { useKPIMetrics } from "../useKPIMetrics";
 
 // Create stable mock functions
@@ -41,10 +42,11 @@ vi.mock("../useCurrentSale", () => ({
 }));
 
 // Helper to create mock opportunities with different stages and activity dates
+// IMPORTANT: Default stage "new_lead" is a valid active pipeline stage
 const createMockOpportunity = (overrides: Record<string, unknown> = {}) => ({
   id: 1,
   name: "Test Opportunity",
-  stage: "prospect",
+  stage: "new_lead", // Must be a valid active stage for staleness tests
   amount: 10000,
   last_activity_date: new Date().toISOString(),
   ...overrides,
@@ -138,10 +140,12 @@ describe("useKPIMetrics", () => {
     });
 
     it("should calculate stale deals based on stage thresholds", async () => {
-      const now = new Date();
-      const eightDaysAgo = new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000);
-      const fifteenDaysAgo = new Date(now.getTime() - 15 * 24 * 60 * 60 * 1000);
-      const twentyTwoDaysAgo = new Date(now.getTime() - 22 * 24 * 60 * 60 * 1000);
+      // Use startOfDay and subDays for consistent day calculations
+      // The staleness utility compares using startOfDay, so we must do the same
+      const today = startOfDay(new Date());
+      const eightDaysAgo = subDays(today, 8);  // 8 > 7 threshold for new_lead
+      const fifteenDaysAgo = subDays(today, 15);  // 15 > 14 threshold for initial_outreach
+      const twentyTwoDaysAgo = subDays(today, 22);  // 22 > 21 threshold for feedback_logged
 
       const opportunities = [
         // new_lead with 8 days no activity (stale - threshold is 7)
@@ -150,8 +154,8 @@ describe("useKPIMetrics", () => {
         createMockOpportunity({ id: 2, stage: "initial_outreach", last_activity_date: fifteenDaysAgo.toISOString() }),
         // feedback_logged with 22 days (stale - threshold is 21)
         createMockOpportunity({ id: 3, stage: "feedback_logged", last_activity_date: twentyTwoDaysAgo.toISOString() }),
-        // prospect with recent activity (not stale)
-        createMockOpportunity({ id: 4, stage: "prospect", last_activity_date: now.toISOString() }),
+        // demo_scheduled with recent activity (not stale - valid active stage)
+        createMockOpportunity({ id: 4, stage: "demo_scheduled", last_activity_date: today.toISOString() }),
       ];
 
       mockGetList.mockImplementation((resource: string) => {
@@ -316,12 +320,18 @@ describe("useKPIMetrics", () => {
   });
 
   describe("Stale Thresholds by Stage (PRD Section 6.3)", () => {
+    // Use startOfDay and subDays for all date calculations to match hook behavior
+    // The staleness utility uses Math.floor for day calculation, so we need exact day boundaries
+
     it("should use 7-day threshold for new_lead stage", async () => {
-      const sixDaysAgo = new Date(Date.now() - 6 * 24 * 60 * 60 * 1000);
-      const eightDaysAgo = new Date(Date.now() - 8 * 24 * 60 * 60 * 1000);
+      const today = startOfDay(new Date());
+      // 7 days ago = NOT stale (exactly at threshold, condition is > not >=)
+      const sevenDaysAgo = subDays(today, 7);
+      // 8 days ago = stale (8 > 7)
+      const eightDaysAgo = subDays(today, 8);
 
       const opportunities = [
-        createMockOpportunity({ id: 1, stage: "new_lead", last_activity_date: sixDaysAgo.toISOString() }),
+        createMockOpportunity({ id: 1, stage: "new_lead", last_activity_date: sevenDaysAgo.toISOString() }),
         createMockOpportunity({ id: 2, stage: "new_lead", last_activity_date: eightDaysAgo.toISOString() }),
       ];
 
@@ -338,16 +348,19 @@ describe("useKPIMetrics", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      // Only the 8-day old one should be stale (threshold is 7)
+      // Only the 8-day old one should be stale (threshold is 7, condition is >)
       expect(result.current.metrics.staleDealsCount).toBe(1);
     });
 
     it("should use 14-day threshold for initial_outreach stage", async () => {
-      const thirteenDaysAgo = new Date(Date.now() - 13 * 24 * 60 * 60 * 1000);
-      const fifteenDaysAgo = new Date(Date.now() - 15 * 24 * 60 * 60 * 1000);
+      const today = startOfDay(new Date());
+      // 14 days ago = NOT stale (exactly at threshold)
+      const fourteenDaysAgo = subDays(today, 14);
+      // 15 days ago = stale (15 > 14)
+      const fifteenDaysAgo = subDays(today, 15);
 
       const opportunities = [
-        createMockOpportunity({ id: 1, stage: "initial_outreach", last_activity_date: thirteenDaysAgo.toISOString() }),
+        createMockOpportunity({ id: 1, stage: "initial_outreach", last_activity_date: fourteenDaysAgo.toISOString() }),
         createMockOpportunity({ id: 2, stage: "initial_outreach", last_activity_date: fifteenDaysAgo.toISOString() }),
       ];
 
@@ -369,11 +382,14 @@ describe("useKPIMetrics", () => {
     });
 
     it("should use 21-day threshold for feedback_logged stage", async () => {
-      const twentyDaysAgo = new Date(Date.now() - 20 * 24 * 60 * 60 * 1000);
-      const twentyTwoDaysAgo = new Date(Date.now() - 22 * 24 * 60 * 60 * 1000);
+      const today = startOfDay(new Date());
+      // 21 days ago = NOT stale (exactly at threshold)
+      const twentyOneDaysAgo = subDays(today, 21);
+      // 22 days ago = stale (22 > 21)
+      const twentyTwoDaysAgo = subDays(today, 22);
 
       const opportunities = [
-        createMockOpportunity({ id: 1, stage: "feedback_logged", last_activity_date: twentyDaysAgo.toISOString() }),
+        createMockOpportunity({ id: 1, stage: "feedback_logged", last_activity_date: twentyOneDaysAgo.toISOString() }),
         createMockOpportunity({ id: 2, stage: "feedback_logged", last_activity_date: twentyTwoDaysAgo.toISOString() }),
       ];
 
