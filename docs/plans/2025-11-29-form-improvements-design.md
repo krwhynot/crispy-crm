@@ -166,42 +166,63 @@ Per user preference, forms do not warn about unsaved changes. Keep it simple.
 **Organizations:**
 - `src/atomic-crm/organizations/OrganizationInputs.tsx` - Consolidate to 2 tabs
 - `src/atomic-crm/organizations/OrganizationGeneralTab.tsx` - Becomes Main
-- `src/atomic-crm/organizations/OrganizationDetailsTab.tsx` - Merge to Main (address)
+- `src/atomic-crm/organizations/OrganizationDetailsTab.tsx` - Merge to Main (address fields)
 - `src/atomic-crm/organizations/OrganizationOtherTab.tsx` - Becomes More
 - `src/atomic-crm/organizations/OrganizationHierarchyTab.tsx` - Merge to More
-- NEW: Smart address autocomplete component
+- NEW: `AddressFields.tsx` - Manual address entry component (street, city, state, zip)
 
 **Activities:**
 - `src/atomic-crm/activities/ActivityCreate.tsx` - Replace tabs with sections
-- NEW: Collapsible section component (or use existing Accordion from shadcn/ui)
+- Use existing shadcn/ui `Accordion` component for collapsible sections
 
 **Shared Components:**
-- Form input components - Add inline validation support
-- Add required field indicator styling
-- Ensure all inputs have helper text prop
+- `src/components/admin/form/FormField.tsx` - Wrapper with label, required indicator, helper text, error
+- `src/atomic-crm/constants/formCopy.ts` - Centralized labels/errors/helpers
+- Update existing input components to support `isRequired` and `helperText` props
 
 ### Dependencies
 
-- Google Places API key (for smart address autocomplete)
-- May need `@react-google-maps/api` or similar package
+**No new external dependencies for MVP.**
+
+- shadcn/ui `Accordion` already installed
+- React Admin validation infrastructure already in place
+- Zod schemas already used for form validation
+
+**Deferred to post-MVP:**
+- Google Places API (address autocomplete)
+- Client-side async duplicate validation
 
 ### Testing Considerations
 
-- Test tab navigation with keyboard
-- Test validation error states
+- Test tab navigation with keyboard (Main/More tabs)
+- Test validation error states (blur, submit, tab switch)
 - Test on iPad (44px touch targets)
-- Test collapsible sections in Activities
+- Test collapsible sections in Activities (desktop + mobile accordion)
+- Test conditional required fields (e.g., address required for customers)
+- Test state dropdown selection
 
 ---
 
 ## Success Criteria
 
-1. Contacts and Organizations reduced from 4 tabs to 2
-2. Activities form loads as single page (no tabs)
-3. All required fields marked with asterisk
-4. All fields have helper text
-5. Inline validation shows errors on blur
-6. Address autocomplete works in Organizations
+### MVP (Must Ship)
+
+1. Contacts and Organizations reduced from 4 tabs to 2 (Main / More)
+2. Activities form loads as single page with collapsible sections
+3. All required fields marked with asterisk (`*`)
+4. All optional fields marked with "(optional)" suffix
+5. All fields have helper text (from centralized `formCopy.ts`)
+6. Inline validation shows errors on blur
+7. Manual address fields in Organizations (street, city, state, zip)
+8. Conditional required fields work (e.g., address for customers, follow-up date when follow-up enabled)
+9. Form state management uses React Admin `validate` prop with Zod schemas
+10. 44px touch targets on all interactive elements
+
+### Deferred to Post-MVP
+
+- Google Places address autocomplete
+- Client-side async duplicate validation
+- Auto-save drafts to localStorage
 
 ---
 
@@ -489,94 +510,88 @@ export const ACTIVITY_FORM_COPY = {
 
 ---
 
-## Address Autocomplete Specification
+## Address Fields Specification
 
-### API Configuration
+### MVP Approach: Manual Entry
 
-**Provider:** Google Places API (Autocomplete)
+**Decision:** Ship manual address fields for MVP. Defer Google Places API autocomplete to post-launch.
 
-**Environment Variables:**
-```bash
-# .env.local (client-side, restricted by domain)
-VITE_GOOGLE_PLACES_API_KEY=your_api_key_here
+**Rationale:**
+- Reduces external dependencies for launch
+- Avoids API key management and billing setup
+- Manual fields are sufficient for initial user base
+- Can add autocomplete as enhancement later
 
-# Supabase Edge Functions (if server-side validation needed)
-GOOGLE_PLACES_API_KEY=your_server_key_here
-```
+### MVP Implementation
 
-**API Key Restrictions (Google Cloud Console):**
-- Application restrictions: HTTP referrers
-- Allowed domains: `localhost:*`, `*.yourdomain.com`
-- API restrictions: Places API only
+**Address fields (always visible, no autocomplete):**
 
-### Implementation
+| Field | Type | Required | Helper Text |
+|-------|------|----------|-------------|
+| Street Address | Text | Conditional* | "Street address or PO Box" |
+| City | Text | Conditional* | — |
+| State | Select (US states) | Conditional* | — |
+| Postal Code | Text | Conditional* | "5 or 9 digit ZIP code" |
 
-```typescript
-// src/components/admin/address-autocomplete/AddressAutocomplete.tsx
-
-interface AddressAutocompleteProps {
-  source: string;
-  label?: string;
-  helperText?: string;
-  isRequired?: boolean;
-}
-
-// Rate limiting / debounce settings
-const DEBOUNCE_MS = 300; // Wait 300ms after typing stops
-const MIN_CHARS = 3;     // Don't query until 3 characters typed
-const MAX_RESULTS = 5;   // Limit suggestions shown
-```
-
-### Fallback Behavior
-
-**When Places API fails (network error, quota exceeded, invalid key):**
-
-1. **Automatic fallback to manual entry:**
-   ```typescript
-   // Show toast notification
-   notify("Address search unavailable. Please enter address manually.", { type: "warning" });
-
-   // Reveal individual address fields
-   setShowManualFields(true);
-   ```
-
-2. **Manual address fields (revealed on fallback):**
-   - Street Address (Text)
-   - City (Text)
-   - State (Select - US states dropdown)
-   - Postal Code (Text, 5 or 9 digit validation)
-
-3. **Graceful degradation:**
-   - If API works later, autocomplete resumes
-   - Manual entry always available via "Enter manually" link
-   - Form remains fully functional without API
-
-### Data Flow
+*Required when `organization_type === 'customer'` (per acceptance criteria)
 
 ```typescript
-// When user selects from autocomplete:
-const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
-  // Parse place.address_components
-  const parsed = {
-    street: extractComponent(place, "street_number", "route"),
-    city: extractComponent(place, "locality"),
-    state: extractComponent(place, "administrative_area_level_1"),
-    postal_code: extractComponent(place, "postal_code"),
-    formatted_address: place.formatted_address,
-  };
+// src/atomic-crm/organizations/AddressFields.tsx
 
-  // Update form fields
-  setValue("address", parsed.formatted_address); // Display field
-  setValue("street", parsed.street);             // Hidden
-  setValue("city", parsed.city);                 // Hidden
-  setValue("state", parsed.state);               // Hidden
-  setValue("postal_code", parsed.postal_code);   // Hidden
-};
+const US_STATES = [
+  { id: "AL", name: "Alabama" },
+  { id: "AK", name: "Alaska" },
+  // ... all 50 states + DC + territories
+  { id: "WY", name: "Wyoming" },
+];
+
+export const AddressFields = () => (
+  <div className="space-y-field">
+    <TextInput source="street" label="Street Address" />
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-content">
+      <TextInput source="city" label="City" className="col-span-2" />
+      <SelectInput source="state" label="State" choices={US_STATES} />
+      <TextInput source="postal_code" label="ZIP Code" />
+    </div>
+  </div>
+);
 ```
+
+### Future Enhancement: Google Places Autocomplete
+
+**Deferred to post-MVP.** When implemented:
+- Single autocomplete field that populates hidden street/city/state/postal_code
+- Fallback to manual fields on API failure
+- See `docs/plans/future/address-autocomplete.md` for full spec
 
 ---
 
 ## Validation Model
+
+### Form State Management Decision
+
+**Approach:** Use React Admin's built-in `validate` prop with Zod schemas.
+
+**Rationale:**
+- React Admin already provides validation infrastructure
+- Zod schemas are single source of truth (Engineering Constitution #4)
+- No additional state management library needed
+- Consistent with existing codebase patterns
+
+```typescript
+// Pattern: Zod schema → React Admin validate prop
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { contactSchema } from "../validation/contacts";
+
+// In form component
+<Form
+  validate={zodResolver(contactSchema)}
+  defaultValues={contactSchema.partial().parse({})}
+>
+  <ContactInputs />
+</Form>
+```
 
 ### Validation Timing
 
@@ -587,45 +602,42 @@ const handlePlaceSelect = (place: google.maps.places.PlaceResult) => {
 | **On submit** | Validate all fields. Focus first invalid field. Block submission. |
 | **On tab switch** | Validate current tab's fields. Show error badge on tab if invalid. |
 
-### Async Validation
+### Duplicate Validation
 
-**Use cases:**
-- Duplicate email check (Contacts)
-- Duplicate organization name check (Organizations)
-- Parent organization circular reference check
+**MVP Approach:** Rely on server-side database constraints. Defer client-side async validation to post-launch.
 
-**Pattern:**
-```typescript
-// Debounced async validation
-const validateEmailUnique = useDebouncedCallback(async (email: string) => {
-  if (!email) return;
+**Rationale:**
+- Database UNIQUE constraints already catch duplicates
+- Server errors surface through React Admin's error handling
+- Reduces client complexity for MVP
+- Async validation adds latency and complexity
 
-  setFieldState("email", { validating: true });
-
-  try {
-    const { data } = await supabase
-      .from("contacts")
-      .select("id")
-      .eq("email", email)
-      .neq("id", currentRecordId) // Exclude current record on edit
-      .limit(1);
-
-    if (data?.length > 0) {
-      setError("email", {
-        type: "async",
-        message: CONTACT_FORM_COPY.errors.email.duplicate
-      });
-    }
-  } finally {
-    setFieldState("email", { validating: false });
-  }
-}, 500);
+**Database constraints (already in place):**
+```sql
+-- contacts.email has UNIQUE constraint
+-- organizations.name has UNIQUE constraint
+-- Circular parent reference prevented by CHECK constraint
 ```
 
-**Visual feedback during async validation:**
-- Show spinner icon in field
-- Disable submit button until validation completes
-- Keep field interactive (user can continue typing)
+**Error handling pattern:**
+```typescript
+// React Admin surfaces constraint violations automatically
+// Customize error messages in dataProvider if needed:
+
+const handleError = (error: Error) => {
+  if (error.message.includes("duplicate key")) {
+    if (error.message.includes("email")) {
+      return "This email is already in use";
+    }
+    if (error.message.includes("name")) {
+      return "An organization with this name already exists";
+    }
+  }
+  return error.message;
+};
+```
+
+**Future Enhancement:** Client-side async validation for better UX. See `docs/plans/future/async-validation.md`.
 
 ### Error Pattern by Input Type
 
