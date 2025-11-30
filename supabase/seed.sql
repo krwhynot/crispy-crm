@@ -2275,237 +2275,441 @@ VALUES
   -- PROPOSAL Activities (12)
   -- ========================================
   -- Opp 2: customer_org 27 -> contacts 53, 54
-  (49, 'interaction', 'proposal', 'Initial pricing proposal', 'Submitted first pricing quote', NOW() - INTERVAL '7 days', 30, 53, 27, 2, true, 3, NOW() - INTERVAL '7 days', NOW()),
+  (49, 'interaction', 'proposal', 'Initial pricing proposal', 'Submitted first pricing quote', NOW() - INTERVAL '7 days', 30, 53, 27, 2, true,
+   'Proposal for 8 SKUs totaling $125K annual, awaiting budget approval', 'neutral', 'Email', ARRAY['Procurement Manager', 'CFO (CC)', 'Tom Wilson (Rep)']::text[], ARRAY['pricing', 'initial', 'budget']::text[],
+   3, NOW() - INTERVAL '7 days', NOW()),
   -- Opp 3: customer_org 30 -> contacts 59, 60, 61
-  (50, 'interaction', 'proposal', 'Volume discount proposal', 'Offered tiered pricing', NOW() - INTERVAL '11 days', 25, 59, 30, 3, false, 3, NOW() - INTERVAL '11 days', NOW()),
+  (50, 'interaction', 'proposal', 'Volume discount proposal', 'Offered tiered pricing', NOW() - INTERVAL '11 days', 25, 59, 30, 3, false,
+   'Tiered pricing accepted, moving to contract review', 'positive', 'Email', ARRAY['VP Procurement', 'Category Manager', 'Mike Chen (Rep)']::text[], ARRAY['volume', 'discount', 'pricing']::text[],
+   3, NOW() - INTERVAL '11 days', NOW()),
   -- Opp 4: customer_org 38 -> contacts 76, 77
-  (51, 'interaction', 'proposal', 'Custom product proposal', 'Proposed customized solution', NOW() - INTERVAL '15 days', 45, 76, 38, 4, true, 4, NOW() - INTERVAL '15 days', NOW()),
+  (51, 'interaction', 'proposal', 'Custom product proposal', 'Proposed customized solution', NOW() - INTERVAL '15 days', 45, 76, 38, 4, true,
+   'Custom samosa development proposal sent, R&D review in progress', 'neutral', 'Email with attachment', ARRAY['R&D Director', 'Procurement Lead', 'Sarah Davis (Rep)']::text[], ARRAY['custom', 'r&d', 'product-development']::text[],
+   4, NOW() - INTERVAL '15 days', NOW()),
   -- Opp 7: customer_org 33 -> contacts 66, 67
-  (52, 'interaction', 'proposal', 'Partnership proposal', 'Submitted partnership terms', NOW() - INTERVAL '19 days', 60, 66, 33, 7, false, 6, NOW() - INTERVAL '19 days', NOW()),
+  (52, 'interaction', 'proposal', 'Partnership proposal', 'Submitted partnership terms', NOW() - INTERVAL '19 days', 60, 66, 33, 7, false,
+   'Strategic partnership with preferred supplier status proposed', 'positive', 'Email', ARRAY['CEO', 'VP Operations', 'General Counsel', 'Jim Taylor (Rep)']::text[], ARRAY['partnership', 'strategic', 'preferred-supplier']::text[],
+   6, NOW() - INTERVAL '19 days', NOW()),
   -- Opp 8: customer_org 31 -> contacts 62, 63
-  (53, 'interaction', 'proposal', 'Revised pricing proposal', 'Updated pricing based on feedback', NOW() - INTERVAL '23 days', 30, 62, 31, 8, true, 2, NOW() - INTERVAL '23 days', NOW()),
+  (53, 'interaction', 'proposal', 'Revised pricing proposal', 'Updated pricing based on feedback', NOW() - INTERVAL '23 days', 30, 62, 31, 8, true,
+   'Reduced pricing 8% to match budget, pending final approval', 'neutral', 'Email', ARRAY['Budget Director', 'Food Services Manager', 'Amanda Clark (Rep)']::text[], ARRAY['revised', 'pricing', 'negotiation']::text[],
+   2, NOW() - INTERVAL '23 days', NOW()),
   -- Opp 12: customer_org 39 -> contacts 78, 79, 80
-  (54, 'interaction', 'proposal', 'Annual contract proposal', 'Proposed yearly agreement', NOW() - INTERVAL '27 days', 40, 78, 39, 12, false, 4, NOW() - INTERVAL '27 days', NOW()),
+  (54, 'interaction', 'proposal', 'Annual contract proposal', 'Proposed yearly agreement', NOW() - INTERVAL '27 days', 40, 78, 39, 12, false,
+   '3-year contract with annual price locks proposed', 'positive', 'Email', ARRAY['GM', 'Corporate Procurement', 'Legal', 'David Kim (Rep)']::text[], ARRAY['annual', 'contract', 'long-term']::text[],
+   4, NOW() - INTERVAL '27 days', NOW()),
   -- Opp 14: customer_org 26 -> contacts 51, 52
-  (55, 'interaction', 'proposal', 'Regional distribution proposal', 'Proposed regional rollout', NOW() - INTERVAL '31 days', 35, 51, 26, 14, true, 5, NOW() - INTERVAL '31 days', NOW()),
+  (55, 'interaction', 'proposal', 'Regional distribution proposal', 'Proposed regional rollout', NOW() - INTERVAL '31 days', 35, 51, 26, 14, true,
+   'Phase 1: Texas region, Phase 2: Southwest, pending regional approval', 'neutral', 'Email', ARRAY['Regional VP', 'Distribution Director', 'Tom Wilson (Rep)']::text[], ARRAY['regional', 'rollout', 'phased']::text[],
+   5, NOW() - INTERVAL '31 days', NOW()),
   -- Opp 19: customer_org 34 -> contacts 68, 69
-  (56, 'interaction', 'proposal', 'Pilot program proposal', 'Proposed limited trial', NOW() - INTERVAL '35 days', 45, 68, 34, 19, false, 5, NOW() - INTERVAL '35 days', NOW()),
+  (56, 'interaction', 'proposal', 'Pilot program proposal', 'Proposed limited trial', NOW() - INTERVAL '35 days', 45, 68, 34, 19, false,
+   '90-day pilot at 5 locations with success metrics defined', 'positive', 'Email', ARRAY['Operations Director', 'Marketing Manager', 'Sarah Wilson (Rep)']::text[], ARRAY['pilot', 'trial', 'metrics']::text[],
+   5, NOW() - INTERVAL '35 days', NOW()),
   -- Opp 20: customer_org 27 -> contacts 53, 54
-  (57, 'interaction', 'proposal', 'Renewal proposal', 'Proposed contract renewal terms', NOW() - INTERVAL '39 days', 30, 54, 27, 20, true, 5, NOW() - INTERVAL '39 days', NOW()),
+  (57, 'interaction', 'proposal', 'Renewal proposal', 'Proposed contract renewal terms', NOW() - INTERVAL '39 days', 30, 54, 27, 20, true,
+   'Renewal with 5% volume increase and 2% price reduction offered', 'positive', 'Email', ARRAY['Procurement Manager', 'Finance Director', 'Mike Chen (Rep)']::text[], ARRAY['renewal', 'retention', 'volume']::text[],
+   5, NOW() - INTERVAL '39 days', NOW()),
   -- Opp 21: customer_org 30 -> contacts 59, 60, 61
-  (58, 'interaction', 'proposal', 'Expansion proposal', 'Proposed additional products', NOW() - INTERVAL '43 days', 50, 60, 30, 21, false, 6, NOW() - INTERVAL '43 days', NOW()),
+  (58, 'interaction', 'proposal', 'Expansion proposal', 'Proposed additional products', NOW() - INTERVAL '43 days', 50, 60, 30, 21, false,
+   'Added 12 new SKUs to existing contract, $85K incremental value', 'positive', 'Email', ARRAY['Category Manager', 'VP Procurement', 'Chef Consultant', 'Jim Taylor (Rep)']::text[], ARRAY['expansion', 'upsell', 'new-skus']::text[],
+   6, NOW() - INTERVAL '43 days', NOW()),
   -- Opp 22: customer_org 23 -> contacts 45, 46
-  (59, 'interaction', 'proposal', 'National rollout proposal', 'Proposed nationwide distribution', NOW() - INTERVAL '47 days', 60, 45, 23, 22, true, 2, NOW() - INTERVAL '47 days', NOW()),
+  (59, 'interaction', 'proposal', 'National rollout proposal', 'Proposed nationwide distribution', NOW() - INTERVAL '47 days', 60, 45, 23, 22, true,
+   'National rollout across 2,000+ locations, $2.5M annual opportunity', 'positive', 'Formal presentation', ARRAY['CEO', 'COO', 'VP Supply Chain', 'Legal Counsel', 'Sarah Davis (Rep)']::text[], ARRAY['national', 'rollout', 'enterprise']::text[],
+   2, NOW() - INTERVAL '47 days', NOW()),
   -- Opp 23: customer_org 29 -> contacts 57, 58
-  (60, 'interaction', 'proposal', 'Exclusive partnership proposal', 'Proposed exclusive arrangement', NOW() - INTERVAL '51 days', 45, 58, 29, 23, false, 3, NOW() - INTERVAL '51 days', NOW()),
+  (60, 'interaction', 'proposal', 'Exclusive partnership proposal', 'Proposed exclusive arrangement', NOW() - INTERVAL '51 days', 45, 58, 29, 23, false,
+   'Exclusive cauliflower supplier agreement for 18 months proposed', 'neutral', 'Email', ARRAY['VP Culinary', 'Procurement Director', 'General Counsel', 'Amanda Clark (Rep)']::text[], ARRAY['exclusive', 'partnership', 'strategic']::text[],
+   3, NOW() - INTERVAL '51 days', NOW()),
 
   -- ========================================
   -- FOLLOW_UP Activities (12)
   -- ========================================
   -- Opp 25: customer_org 20 -> contacts 39, 40
-  (61, 'interaction', 'follow_up', 'Post-demo follow-up', 'Checked in after demo', NOW() - INTERVAL '3 days', 15, 40, 20, 25, true, 4, NOW() - INTERVAL '3 days', NOW()),
+  (61, 'interaction', 'follow_up', 'Post-demo follow-up', 'Checked in after demo', NOW() - INTERVAL '3 days', 15, 40, 20, 25, true,
+   'Chef confirmed positive feedback, scheduling trial order', 'positive', 'Phone', ARRAY['Maria Rodriguez (Chef)', 'Sarah Wilson (Rep)']::text[], ARRAY['post-demo', 'trial-order', 'commitment']::text[],
+   4, NOW() - INTERVAL '3 days', NOW()),
   -- Opp 26: customer_org 22 -> contacts 43, 44
-  (62, 'interaction', 'follow_up', 'Proposal follow-up', 'Followed up on submitted proposal', NOW() - INTERVAL '8 days', 20, 44, 22, 26, false, 4, NOW() - INTERVAL '8 days', NOW()),
+  (62, 'interaction', 'follow_up', 'Proposal follow-up', 'Followed up on submitted proposal', NOW() - INTERVAL '8 days', 20, 44, 22, 26, false,
+   'Proposal under review by finance, decision expected next week', 'neutral', 'Email', ARRAY['Jennifer Lee (Culinary Director)', 'Mike Chen (Rep)']::text[], ARRAY['proposal', 'finance-review', 'pending']::text[],
+   4, NOW() - INTERVAL '8 days', NOW()),
   -- Opp 27: customer_org 25 -> contacts 49, 50
-  (63, 'interaction', 'follow_up', 'Sample feedback follow-up', 'Gathered feedback on samples', NOW() - INTERVAL '12 days', 25, 50, 25, 27, true, 5, NOW() - INTERVAL '12 days', NOW()),
+  (63, 'interaction', 'follow_up', 'Sample feedback follow-up', 'Gathered feedback on samples', NOW() - INTERVAL '12 days', 25, 50, 25, 27, true,
+   'Operations team gave thumbs up, need corporate approval', 'positive', 'Phone', ARRAY['Tom Barrett (VP Ops)', 'David Kim (Rep)']::text[], ARRAY['samples', 'feedback', 'approval-pending']::text[],
+   5, NOW() - INTERVAL '12 days', NOW()),
   -- Opp 28: customer_org 21 -> contacts 41, 42
-  (64, 'interaction', 'follow_up', 'Meeting recap follow-up', 'Confirmed next steps', NOW() - INTERVAL '16 days', 15, 42, 21, 28, false, 6, NOW() - INTERVAL '16 days', NOW()),
+  (64, 'interaction', 'follow_up', 'Meeting recap follow-up', 'Confirmed next steps', NOW() - INTERVAL '16 days', 15, 42, 21, 28, false,
+   'Action items completed, ready for next phase', 'positive', 'Email', ARRAY['Robert Chen (VP Procurement)', 'Jim Taylor (Rep)']::text[], ARRAY['recap', 'action-items', 'progress']::text[],
+   6, NOW() - INTERVAL '16 days', NOW()),
   -- Opp 29: customer_org 10 -> contacts 19, 20
-  (65, 'interaction', 'follow_up', 'Decision timeline follow-up', 'Checked on decision progress', NOW() - INTERVAL '20 days', 20, 19, 10, 29, true, 2, NOW() - INTERVAL '20 days', NOW()),
+  (65, 'interaction', 'follow_up', 'Decision timeline follow-up', 'Checked on decision progress', NOW() - INTERVAL '20 days', 20, 19, 10, 29, true,
+   'Decision delayed 2 weeks due to budget cycle, still positive outlook', 'neutral', 'Phone', ARRAY['Kevin Brown (Category Manager)', 'Sarah Jones (Rep)']::text[], ARRAY['timeline', 'budget', 'delayed']::text[],
+   2, NOW() - INTERVAL '20 days', NOW()),
   -- Opp 30: customer_org 11 -> contacts 21, 22
-  (66, 'interaction', 'follow_up', 'Contract review follow-up', 'Checked on legal review status', NOW() - INTERVAL '24 days', 15, 21, 11, 30, false, 3, NOW() - INTERVAL '24 days', NOW()),
+  (66, 'interaction', 'follow_up', 'Contract review follow-up', 'Checked on legal review status', NOW() - INTERVAL '24 days', 15, 21, 11, 30, false,
+   'Legal has minor redlines, expect final version tomorrow', 'positive', 'Email', ARRAY['Legal Counsel', 'Tom Wilson (Rep)']::text[], ARRAY['contract', 'legal', 'redlines']::text[],
+   3, NOW() - INTERVAL '24 days', NOW()),
   -- Opp 31: customer_org 13 -> contacts 25, 26
-  (67, 'interaction', 'follow_up', 'Budget approval follow-up', 'Inquired about budget status', NOW() - INTERVAL '28 days', 20, 25, 13, 31, true, 3, NOW() - INTERVAL '28 days', NOW()),
+  (67, 'interaction', 'follow_up', 'Budget approval follow-up', 'Inquired about budget status', NOW() - INTERVAL '28 days', 20, 25, 13, 31, true,
+   'Budget approved for Q1, ready to proceed with order', 'positive', 'Phone', ARRAY['Linda Martinez (VP Distribution)', 'Mike Chen (Rep)']::text[], ARRAY['budget', 'approved', 'q1']::text[],
+   3, NOW() - INTERVAL '28 days', NOW()),
   -- Opp 32: customer_org 31 -> contacts 62, 63
-  (68, 'interaction', 'follow_up', 'Trial results follow-up', 'Discussed pilot outcomes', NOW() - INTERVAL '32 days', 30, 63, 31, 32, false, 4, NOW() - INTERVAL '32 days', NOW()),
+  (68, 'interaction', 'follow_up', 'Trial results follow-up', 'Discussed pilot outcomes', NOW() - INTERVAL '32 days', 30, 63, 31, 32, false,
+   'Pilot results positive, 15% waste reduction, expanding to full menu', 'positive', 'Video call', ARRAY['Dr. Emily Wong (Food Services Director)', 'Nutrition Team', 'Sarah Davis (Rep)']::text[], ARRAY['pilot', 'results', 'success']::text[],
+   4, NOW() - INTERVAL '32 days', NOW()),
   -- Opp 33: customer_org 18 -> contacts 35, 36
-  (69, 'interaction', 'follow_up', 'Competitive update follow-up', 'Checked on competitive situation', NOW() - INTERVAL '36 days', 25, 35, 18, 33, true, 4, NOW() - INTERVAL '36 days', NOW()),
+  (69, 'interaction', 'follow_up', 'Competitive update follow-up', 'Checked on competitive situation', NOW() - INTERVAL '36 days', 25, 35, 18, 33, true,
+   'Competitor proposal received but lacks our quality certifications', 'neutral', 'Phone', ARRAY['James Wilson (CEO)', 'Amanda Clark (Rep)']::text[], ARRAY['competitive', 'differentiation', 'certifications']::text[],
+   4, NOW() - INTERVAL '36 days', NOW()),
   -- Opp 34: customer_org 19 -> contacts 37, 38
-  (70, 'interaction', 'follow_up', 'Menu launch follow-up', 'Checked on menu roll-out', NOW() - INTERVAL '40 days', 20, 38, 19, 34, false, 5, NOW() - INTERVAL '40 days', NOW()),
+  (70, 'interaction', 'follow_up', 'Menu launch follow-up', 'Checked on menu roll-out', NOW() - INTERVAL '40 days', 20, 38, 19, 34, false,
+   'Menu items launched successfully, reorder coming next week', 'positive', 'Email', ARRAY['Chef Brian (R&D Chef)', 'David Kim (Rep)']::text[], ARRAY['menu-launch', 'success', 'reorder']::text[],
+   5, NOW() - INTERVAL '40 days', NOW()),
   -- Opp 35: customer_org 12 -> contacts 23, 24
-  (71, 'interaction', 'follow_up', 'Stakeholder alignment follow-up', 'Confirmed internal alignment', NOW() - INTERVAL '44 days', 25, 23, 12, 35, true, 5, NOW() - INTERVAL '44 days', NOW()),
+  (71, 'interaction', 'follow_up', 'Stakeholder alignment follow-up', 'Confirmed internal alignment', NOW() - INTERVAL '44 days', 25, 23, 12, 35, true,
+   'All stakeholders aligned, final sign-off meeting scheduled', 'positive', 'Phone', ARRAY['Regional Sales Team', 'Tom Wilson (Rep)']::text[], ARRAY['alignment', 'stakeholders', 'sign-off']::text[],
+   5, NOW() - INTERVAL '44 days', NOW()),
   -- Opp 36: customer_org 15 -> contacts 29, 30
-  (72, 'interaction', 'follow_up', 'Executive decision follow-up', 'Followed up with decision maker', NOW() - INTERVAL '48 days', 30, 29, 15, 36, false, 6, NOW() - INTERVAL '48 days', NOW()),
+  (72, 'interaction', 'follow_up', 'Executive decision follow-up', 'Followed up with decision maker', NOW() - INTERVAL '48 days', 30, 29, 15, 36, false,
+   'Executive approved, contract execution in progress', 'positive', 'Video call', ARRAY['VP Procurement', 'CEO (brief)', 'Jim Taylor (Rep)']::text[], ARRAY['executive', 'approved', 'contract']::text[],
+   6, NOW() - INTERVAL '48 days', NOW()),
 
   -- ========================================
   -- TRADE_SHOW Activities (12)
   -- ========================================
   -- Opp 1: customer_org 20 -> contacts 39, 40
-  (73, 'interaction', 'trade_show', 'NRA Show booth visit', 'Met at National Restaurant Association show', NOW() - INTERVAL '60 days', 30, 39, 20, 1, true, 2, NOW() - INTERVAL '60 days', NOW()),
+  (73, 'interaction', 'trade_show', 'NRA Show booth visit', 'Met at National Restaurant Association show', NOW() - INTERVAL '60 days', 30, 39, 20, 1, true,
+   'Excellent booth traffic, 45 qualified leads collected including Capital Grille', 'positive', 'McCormick Place, Chicago', ARRAY['John Smith (Buyer)', 'Trade Show Team (4)', 'Sarah Wilson (Rep)']::text[], ARRAY['nra', 'trade-show', 'lead-gen']::text[],
+   2, NOW() - INTERVAL '60 days', NOW()),
   -- Opp 2: customer_org 27 -> contacts 53, 54
-  (74, 'interaction', 'trade_show', 'Regional food show', 'Connected at regional industry event', NOW() - INTERVAL '65 days', 45, 53, 27, 2, false, 3, NOW() - INTERVAL '65 days', NOW()),
+  (74, 'interaction', 'trade_show', 'Regional food show', 'Connected at regional industry event', NOW() - INTERVAL '65 days', 45, 53, 27, 2, false,
+   'Strong regional presence, connected with 12 Texas operators', 'positive', 'Dallas Convention Center', ARRAY['Regional Prospects (12)', 'Marketing Team', 'Mike Chen (Rep)']::text[], ARRAY['regional', 'texas', 'networking']::text[],
+   3, NOW() - INTERVAL '65 days', NOW()),
   -- Opp 7: customer_org 33 -> contacts 66, 67
-  (75, 'interaction', 'trade_show', 'Healthcare foodservice expo', 'Met at ANFP conference', NOW() - INTERVAL '70 days', 30, 66, 33, 7, true, 6, NOW() - INTERVAL '70 days', NOW()),
+  (75, 'interaction', 'trade_show', 'Healthcare foodservice expo', 'Met at ANFP conference', NOW() - INTERVAL '70 days', 30, 66, 33, 7, true,
+   'Healthcare segment shows strong growth potential, 8 hospital systems interested', 'positive', 'Orlando Convention Center', ARRAY['Healthcare Prospects (8)', 'Nutrition Experts', 'Jim Taylor (Rep)']::text[], ARRAY['healthcare', 'anfp', 'hospital']::text[],
+   6, NOW() - INTERVAL '70 days', NOW()),
   -- Opp 29: customer_org 10 -> contacts 19, 20
-  (76, 'interaction', 'trade_show', 'Distributor show', 'Presented at distributor event', NOW() - INTERVAL '75 days', 60, 19, 10, 29, false, 2, NOW() - INTERVAL '75 days', NOW()),
+  (76, 'interaction', 'trade_show', 'Distributor show', 'Presented at distributor event', NOW() - INTERVAL '75 days', 60, 19, 10, 29, false,
+   'Sysco category managers impressed with innovation pipeline', 'positive', 'Sysco National Conference, Houston', ARRAY['Sysco Category Team (6)', 'VP Merchandising', 'Sarah Jones (Rep)']::text[], ARRAY['distributor', 'sysco', 'innovation']::text[],
+   2, NOW() - INTERVAL '75 days', NOW()),
   -- Opp 13: customer_org 28 -> contacts 55, 56
-  (77, 'interaction', 'trade_show', 'Plant-based summit', 'Exhibited at specialty show', NOW() - INTERVAL '80 days', 45, 55, 28, 13, true, 6, NOW() - INTERVAL '80 days', NOW()),
+  (77, 'interaction', 'trade_show', 'Plant-based summit', 'Exhibited at specialty show', NOW() - INTERVAL '80 days', 45, 55, 28, 13, true,
+   'Plant-based products received excellent reception, won Best New Product award', 'positive', 'Natural Products Expo, Anaheim', ARRAY['Industry Buyers (20+)', 'Media (5)', 'Amanda Clark (Rep)']::text[], ARRAY['plant-based', 'expo', 'award']::text[],
+   6, NOW() - INTERVAL '80 days', NOW()),
   -- Opp 3: customer_org 30 -> contacts 59, 60, 61
-  (78, 'interaction', 'trade_show', 'Hotel F&B conference', 'Connected at hospitality event', NOW() - INTERVAL '85 days', 30, 59, 30, 3, false, 3, NOW() - INTERVAL '85 days', NOW()),
+  (78, 'interaction', 'trade_show', 'Hotel F&B conference', 'Connected at hospitality event', NOW() - INTERVAL '85 days', 30, 59, 30, 3, false,
+   'Strong interest from hotel chains for premium potato products', 'positive', 'Hotel & Lodging Expo, Las Vegas', ARRAY['Hotel Chains (6)', 'Resort Groups (3)', 'Tom Wilson (Rep)']::text[], ARRAY['hotel', 'hospitality', 'premium']::text[],
+   3, NOW() - INTERVAL '85 days', NOW()),
   -- Opp 16: customer_org 35 -> contacts 70, 71
-  (79, 'interaction', 'trade_show', 'Campus dining expo', 'Met at higher ed foodservice show', NOW() - INTERVAL '90 days', 45, 70, 35, 16, true, 3, NOW() - INTERVAL '90 days', NOW()),
+  (79, 'interaction', 'trade_show', 'Campus dining expo', 'Met at higher ed foodservice show', NOW() - INTERVAL '90 days', 45, 70, 35, 16, true,
+   'University segment expanding, nutrition labeling resonates with students', 'positive', 'NACUFS Conference, Minneapolis', ARRAY['University Directors (15)', 'Student Reps (4)', 'David Kim (Rep)']::text[], ARRAY['campus', 'university', 'nacufs']::text[],
+   3, NOW() - INTERVAL '90 days', NOW()),
   -- Opp 18: customer_org 37 -> contacts 74, 75
-  (80, 'interaction', 'trade_show', 'Senior living conference', 'Exhibited at AHCA conference', NOW() - INTERVAL '95 days', 30, 74, 37, 18, false, 4, NOW() - INTERVAL '95 days', NOW()),
+  (80, 'interaction', 'trade_show', 'Senior living conference', 'Exhibited at AHCA conference', NOW() - INTERVAL '95 days', 30, 74, 37, 18, false,
+   'Senior living segment needs texture-modified options, planning product development', 'neutral', 'AHCA Convention, San Diego', ARRAY['Senior Care Operators (10)', 'Dietitians (5)', 'Sarah Davis (Rep)']::text[], ARRAY['senior-living', 'ahca', 'texture']::text[],
+   4, NOW() - INTERVAL '95 days', NOW()),
   -- Opp 15: customer_org 24 -> contacts 47, 48
-  (81, 'interaction', 'trade_show', 'Casual dining summit', 'Met at chain restaurant event', NOW() - INTERVAL '100 days', 45, 47, 24, 15, true, 2, NOW() - INTERVAL '100 days', NOW()),
+  (81, 'interaction', 'trade_show', 'Casual dining summit', 'Met at chain restaurant event', NOW() - INTERVAL '100 days', 45, 47, 24, 15, true,
+   'Chain restaurant executives looking for consistent quality suppliers', 'positive', 'MUFSO Conference, Dallas', ARRAY['Chain Executives (8)', 'R&D Leaders (4)', 'Mike Chen (Rep)']::text[], ARRAY['casual-dining', 'mufso', 'chains']::text[],
+   2, NOW() - INTERVAL '100 days', NOW()),
   -- Opp 12: customer_org 39 -> contacts 78, 79, 80
-  (82, 'interaction', 'trade_show', 'Sports venue expo', 'Connected at venue management show', NOW() - INTERVAL '105 days', 30, 78, 39, 12, false, 4, NOW() - INTERVAL '105 days', NOW()),
+  (82, 'interaction', 'trade_show', 'Sports venue expo', 'Connected at venue management show', NOW() - INTERVAL '105 days', 30, 78, 39, 12, false,
+   'Sports venues interested in quick-serve options for concessions', 'positive', 'IAVM Conference, Phoenix', ARRAY['Venue Managers (12)', 'Concession Operators (6)', 'Jim Taylor (Rep)']::text[], ARRAY['sports', 'venues', 'concessions']::text[],
+   4, NOW() - INTERVAL '105 days', NOW()),
   -- Opp 31: customer_org 13 -> contacts 25, 26
-  (83, 'interaction', 'trade_show', 'Distributor partner day', 'Attended partner event', NOW() - INTERVAL '110 days', 60, 25, 13, 31, true, 3, NOW() - INTERVAL '110 days', NOW()),
+  (83, 'interaction', 'trade_show', 'Distributor partner day', 'Attended partner event', NOW() - INTERVAL '110 days', 60, 25, 13, 31, true,
+   'Strengthened GFS relationship, planned joint marketing initiatives', 'positive', 'GFS Partner Summit, Grand Rapids', ARRAY['GFS Leadership (5)', 'Regional Directors (8)', 'Tom Wilson (Rep)']::text[], ARRAY['distributor', 'gfs', 'partnership']::text[],
+   3, NOW() - INTERVAL '110 days', NOW()),
   -- Opp 33: customer_org 18 -> contacts 35, 36
-  (84, 'interaction', 'trade_show', 'Specialty foods show', 'Exhibited at Fancy Food Show', NOW() - INTERVAL '115 days', 45, 35, 18, 33, false, 4, NOW() - INTERVAL '115 days', NOW()),
+  (84, 'interaction', 'trade_show', 'Specialty foods show', 'Exhibited at Fancy Food Show', NOW() - INTERVAL '115 days', 45, 35, 18, 33, false,
+   'Premium positioning well-received, media coverage generated 5 articles', 'positive', 'Summer Fancy Food Show, NYC', ARRAY['Specialty Buyers (25)', 'Food Media (8)', 'Amanda Clark (Rep)']::text[], ARRAY['fancy-food', 'premium', 'media']::text[],
+   4, NOW() - INTERVAL '115 days', NOW()),
 
   -- ========================================
   -- SITE_VISIT Activities (12)
   -- ========================================
   -- Opp 6: customer_org 21 -> contacts 41, 42
-  (85, 'interaction', 'site_visit', 'Kitchen tour and assessment', 'Visited kitchen to assess needs', NOW() - INTERVAL '4 days', 120, 41, 21, 6, true, 5, NOW() - INTERVAL '4 days', NOW()),
+  (85, 'interaction', 'site_visit', 'Kitchen tour and assessment', 'Visited kitchen to assess needs', NOW() - INTERVAL '4 days', 120, 41, 21, 6, true,
+   'Kitchen has adequate fryer capacity, recommend premium fry line', 'positive', 'Lettuce Entertain You - River North', ARRAY['Executive Chef', 'Kitchen Manager', 'Facilities', 'David Kim (Rep)']::text[], ARRAY['site-visit', 'kitchen', 'assessment']::text[],
+   5, NOW() - INTERVAL '4 days', NOW()),
   -- Opp 30: customer_org 11 -> contacts 21, 22
-  (86, 'interaction', 'site_visit', 'Distribution center visit', 'Toured warehouse facility', NOW() - INTERVAL '9 days', 180, 21, 11, 30, false, 3, NOW() - INTERVAL '9 days', NOW()),
+  (86, 'interaction', 'site_visit', 'Distribution center visit', 'Toured warehouse facility', NOW() - INTERVAL '9 days', 180, 21, 11, 30, false,
+   'Impressive cold chain infrastructure, can handle our full product range', 'positive', 'US Foods Distribution Center - Bedford Park', ARRAY['Warehouse Manager', 'Logistics Director', 'QA Lead', 'Tom Wilson (Rep)']::text[], ARRAY['distribution', 'warehouse', 'logistics']::text[],
+   3, NOW() - INTERVAL '9 days', NOW()),
   -- Opp 29: customer_org 10 -> contacts 19, 20
-  (87, 'interaction', 'site_visit', 'Plant tour for buyer', 'Showed manufacturing facility', NOW() - INTERVAL '14 days', 240, 19, 10, 29, true, 2, NOW() - INTERVAL '14 days', NOW()),
+  (87, 'interaction', 'site_visit', 'Plant tour for buyer', 'Showed manufacturing facility', NOW() - INTERVAL '14 days', 240, 19, 10, 29, true,
+   'Buyer impressed with quality controls and automation, moving to proposal', 'positive', 'McCRUM Manufacturing - Idaho', ARRAY['Sysco Buyer', 'QA Manager', 'Plant Director', 'Sarah Jones (Rep)']::text[], ARRAY['plant-tour', 'manufacturing', 'quality']::text[],
+   2, NOW() - INTERVAL '14 days', NOW()),
   -- Opp 17: customer_org 32 -> contacts 64, 65
-  (88, 'interaction', 'site_visit', 'Kitchen installation review', 'Reviewed equipment setup', NOW() - INTERVAL '19 days', 90, 64, 32, 17, false, 3, NOW() - INTERVAL '19 days', NOW()),
+  (88, 'interaction', 'site_visit', 'Kitchen installation review', 'Reviewed equipment setup', NOW() - INTERVAL '19 days', 90, 64, 32, 17, false,
+   'New equipment properly installed, ready for product trials', 'positive', 'Darden Test Kitchen - Orlando', ARRAY['Installation Tech', 'Kitchen Manager', 'Sarah Wilson (Rep)']::text[], ARRAY['equipment', 'installation', 'setup']::text[],
+   3, NOW() - INTERVAL '19 days', NOW()),
   -- Opp 11: customer_org 36 -> contacts 72, 73
-  (89, 'interaction', 'site_visit', 'Multi-unit assessment', 'Visited several locations', NOW() - INTERVAL '24 days', 300, 72, 36, 11, true, 4, NOW() - INTERVAL '24 days', NOW()),
+  (89, 'interaction', 'site_visit', 'Multi-unit assessment', 'Visited several locations', NOW() - INTERVAL '24 days', 300, 72, 36, 11, true,
+   'Visited 5 campus locations, identified standardization opportunities', 'positive', 'Various Campus Dining Locations', ARRAY['Campus Directors (5)', 'Regional Manager', 'Mike Chen (Rep)']::text[], ARRAY['multi-site', 'campus', 'standardization']::text[],
+   4, NOW() - INTERVAL '24 days', NOW()),
   -- Opp 8: customer_org 31 -> contacts 62, 63
-  (90, 'interaction', 'site_visit', 'Quality audit visit', 'Conducted quality review', NOW() - INTERVAL '29 days', 150, 62, 31, 8, false, 2, NOW() - INTERVAL '29 days', NOW()),
+  (90, 'interaction', 'site_visit', 'Quality audit visit', 'Conducted quality review', NOW() - INTERVAL '29 days', 150, 62, 31, 8, false,
+   'Passed quality audit with flying colors, HACCP compliant', 'positive', 'Northwestern Memorial Hospital Kitchen', ARRAY['QA Inspector', 'Food Services Director', 'Infection Control', 'Sarah Davis (Rep)']::text[], ARRAY['quality-audit', 'healthcare', 'compliance']::text[],
+   2, NOW() - INTERVAL '29 days', NOW()),
   -- Opp 10: customer_org 25 -> contacts 49, 50
-  (91, 'interaction', 'site_visit', 'New location opening', 'Supported new store opening', NOW() - INTERVAL '34 days', 180, 49, 25, 10, true, 3, NOW() - INTERVAL '34 days', NOW()),
+  (91, 'interaction', 'site_visit', 'New location opening', 'Supported new store opening', NOW() - INTERVAL '34 days', 180, 49, 25, 10, true,
+   'Successfully supported opening, staff trained on all products', 'positive', 'Portillos New Location - Schaumburg', ARRAY['GM', 'Kitchen Staff (8)', 'Trainer', 'Tom Wilson (Rep)']::text[], ARRAY['opening', 'training', 'support']::text[],
+   3, NOW() - INTERVAL '34 days', NOW()),
   -- Opp 9: customer_org 29 -> contacts 57, 58
-  (92, 'interaction', 'site_visit', 'Commissary visit', 'Toured central kitchen', NOW() - INTERVAL '39 days', 120, 57, 29, 9, false, 3, NOW() - INTERVAL '39 days', NOW()),
+  (92, 'interaction', 'site_visit', 'Commissary visit', 'Toured central kitchen', NOW() - INTERVAL '39 days', 120, 57, 29, 9, false,
+   'Commissary handles 800 locations, significant volume opportunity', 'positive', 'Chipotle Commissary - Chicago', ARRAY['Operations Director', 'Quality Manager', 'Logistics Lead', 'Jim Taylor (Rep)']::text[], ARRAY['commissary', 'central-kitchen', 'volume']::text[],
+   3, NOW() - INTERVAL '39 days', NOW()),
   -- Opp 34: customer_org 19 -> contacts 37, 38
-  (93, 'interaction', 'site_visit', 'Executive site tour', 'Hosted leadership visit', NOW() - INTERVAL '44 days', 180, 38, 19, 34, true, 5, NOW() - INTERVAL '44 days', NOW()),
+  (93, 'interaction', 'site_visit', 'Executive site tour', 'Hosted leadership visit', NOW() - INTERVAL '44 days', 180, 38, 19, 34, true,
+   'Executive team toured our R&D facility, impressed with innovation capabilities', 'positive', 'MFB R&D Center - Chicago', ARRAY['Reinhart CEO', 'VP Supply Chain', 'R&D Director', 'David Kim (Rep)']::text[], ARRAY['executive', 'r&d', 'innovation']::text[],
+   5, NOW() - INTERVAL '44 days', NOW()),
   -- Opp 19: customer_org 34 -> contacts 68, 69
-  (94, 'interaction', 'site_visit', 'Training facility visit', 'Conducted on-site training', NOW() - INTERVAL '49 days', 240, 68, 34, 19, false, 5, NOW() - INTERVAL '49 days', NOW()),
+  (94, 'interaction', 'site_visit', 'Training facility visit', 'Conducted on-site training', NOW() - INTERVAL '49 days', 240, 68, 34, 19, false,
+   'Trained 25 staff members, created location-specific recipe guides', 'positive', 'Cracker Barrel Training Center', ARRAY['Training Director', 'Regional Chefs (6)', 'HR Manager', 'Amanda Clark (Rep)']::text[], ARRAY['training', 'culinary', 'recipes']::text[],
+   5, NOW() - INTERVAL '49 days', NOW()),
   -- Opp 21: customer_org 30 -> contacts 59, 60, 61
-  (95, 'interaction', 'site_visit', 'Banquet kitchen visit', 'Assessed banquet operations', NOW() - INTERVAL '54 days', 120, 60, 30, 21, true, 6, NOW() - INTERVAL '54 days', NOW()),
+  (95, 'interaction', 'site_visit', 'Banquet kitchen visit', 'Assessed banquet operations', NOW() - INTERVAL '54 days', 120, 60, 30, 21, true,
+   'Banquet operations need high-volume consistent products, perfect fit', 'positive', 'Hilton Chicago Banquet Kitchen', ARRAY['Banquet Chef', 'F&B Director', 'Catering Manager', 'Sarah Wilson (Rep)']::text[], ARRAY['banquet', 'hotel', 'catering']::text[],
+   6, NOW() - INTERVAL '54 days', NOW()),
   -- Opp 35: customer_org 12 -> contacts 23, 24
-  (96, 'interaction', 'site_visit', 'Regional office visit', 'Met at regional headquarters', NOW() - INTERVAL '59 days', 90, 23, 12, 35, false, 5, NOW() - INTERVAL '59 days', NOW()),
+  (96, 'interaction', 'site_visit', 'Regional office visit', 'Met at regional headquarters', NOW() - INTERVAL '59 days', 90, 23, 12, 35, false,
+   'Met entire regional leadership, aligned on growth strategy', 'positive', 'PFG Regional Office - Indianapolis', ARRAY['Regional President', 'Sales Directors (3)', 'Marketing VP', 'Mike Chen (Rep)']::text[], ARRAY['regional', 'leadership', 'strategy']::text[],
+   5, NOW() - INTERVAL '59 days', NOW()),
 
   -- ========================================
   -- CONTRACT_REVIEW Activities (12)
   -- ========================================
   -- Opp 28: customer_org 21 -> contacts 41, 42
-  (97, 'interaction', 'contract_review', 'Initial contract review', 'Reviewed initial terms', NOW() - INTERVAL '5 days', 60, 42, 21, 28, true, 6, NOW() - INTERVAL '5 days', NOW()),
+  (97, 'interaction', 'contract_review', 'Initial contract review', 'Reviewed initial terms', NOW() - INTERVAL '5 days', 60, 42, 21, 28, true,
+   'Standard terms acceptable, negotiating volume commitments', 'neutral', 'Video call', ARRAY['Legal Counsel', 'Procurement Director', 'Jim Taylor (Rep)']::text[], ARRAY['contract', 'initial-review', 'terms']::text[],
+   6, NOW() - INTERVAL '5 days', NOW()),
   -- Opp 22: customer_org 23 -> contacts 45, 46
-  (98, 'interaction', 'contract_review', 'Pricing terms discussion', 'Negotiated pricing section', NOW() - INTERVAL '10 days', 45, 45, 23, 22, false, 2, NOW() - INTERVAL '10 days', NOW()),
+  (98, 'interaction', 'contract_review', 'Pricing terms discussion', 'Negotiated pricing section', NOW() - INTERVAL '10 days', 45, 45, 23, 22, false,
+   'Agreed on tiered pricing structure with volume discounts', 'positive', 'Phone', ARRAY['CFO', 'Procurement Lead', 'Sarah Davis (Rep)']::text[], ARRAY['pricing', 'negotiation', 'volume-discount']::text[],
+   2, NOW() - INTERVAL '10 days', NOW()),
   -- Opp 20: customer_org 27 -> contacts 53, 54
-  (99, 'interaction', 'contract_review', 'Legal review meeting', 'Discussed legal concerns', NOW() - INTERVAL '15 days', 90, 54, 27, 20, true, 5, NOW() - INTERVAL '15 days', NOW()),
+  (99, 'interaction', 'contract_review', 'Legal review meeting', 'Discussed legal concerns', NOW() - INTERVAL '15 days', 90, 54, 27, 20, true,
+   'Minor liability clause revisions requested, reviewing internally', 'neutral', 'In-person meeting', ARRAY['General Counsel', 'Risk Manager', 'Legal Team', 'David Kim (Rep)']::text[], ARRAY['legal', 'liability', 'review']::text[],
+   5, NOW() - INTERVAL '15 days', NOW()),
   -- Opp 23: customer_org 29 -> contacts 57, 58
-  (100, 'interaction', 'contract_review', 'Renewal terms review', 'Reviewed renewal conditions', NOW() - INTERVAL '20 days', 60, 58, 29, 23, false, 3, NOW() - INTERVAL '20 days', NOW()),
+  (100, 'interaction', 'contract_review', 'Renewal terms review', 'Reviewed renewal conditions', NOW() - INTERVAL '20 days', 60, 58, 29, 23, false,
+   'Renewal terms agreed, adding auto-renewal clause', 'positive', 'Video call', ARRAY['VP Procurement', 'Contract Manager', 'Amanda Clark (Rep)']::text[], ARRAY['renewal', 'auto-renewal', 'terms']::text[],
+   3, NOW() - INTERVAL '20 days', NOW()),
   -- Opp 24: customer_org 39 -> contacts 78, 79, 80
-  (101, 'interaction', 'contract_review', 'Volume commitment review', 'Discussed volume requirements', NOW() - INTERVAL '25 days', 45, 79, 39, 24, true, 3, NOW() - INTERVAL '25 days', NOW()),
+  (101, 'interaction', 'contract_review', 'Volume commitment review', 'Discussed volume requirements', NOW() - INTERVAL '25 days', 45, 79, 39, 24, true,
+   'Committed to 500 cases/month minimum, locked pricing for 12 months', 'positive', 'Phone', ARRAY['Purchasing Manager', 'Operations Director', 'Tom Wilson (Rep)']::text[], ARRAY['volume', 'commitment', 'pricing-lock']::text[],
+   3, NOW() - INTERVAL '25 days', NOW()),
   -- Opp 22: customer_org 23 -> contacts 45, 46
-  (102, 'interaction', 'contract_review', 'Payment terms negotiation', 'Negotiated payment schedule', NOW() - INTERVAL '30 days', 60, 46, 23, 22, false, 2, NOW() - INTERVAL '30 days', NOW()),
+  (102, 'interaction', 'contract_review', 'Payment terms negotiation', 'Negotiated payment schedule', NOW() - INTERVAL '30 days', 60, 46, 23, 22, false,
+   'Extended payment terms to Net 45, 2% early payment discount', 'positive', 'Video call', ARRAY['CFO', 'AP Director', 'Mike Chen (Rep)']::text[], ARRAY['payment-terms', 'net-45', 'discount']::text[],
+   2, NOW() - INTERVAL '30 days', NOW()),
   -- Opp 31: customer_org 13 -> contacts 25, 26
-  (103, 'interaction', 'contract_review', 'Distribution agreement review', 'Reviewed distributor terms', NOW() - INTERVAL '35 days', 75, 26, 13, 31, true, 3, NOW() - INTERVAL '35 days', NOW()),
+  (103, 'interaction', 'contract_review', 'Distribution agreement review', 'Reviewed distributor terms', NOW() - INTERVAL '35 days', 75, 26, 13, 31, true,
+   'Exclusive distribution rights for Midwest region agreed', 'positive', 'In-person meeting', ARRAY['Distribution VP', 'Legal', 'Regional Director', 'Sarah Wilson (Rep)']::text[], ARRAY['distribution', 'exclusive', 'midwest']::text[],
+   3, NOW() - INTERVAL '35 days', NOW()),
   -- Opp 36: customer_org 15 -> contacts 29, 30
-  (104, 'interaction', 'contract_review', 'Service level review', 'Discussed SLA terms', NOW() - INTERVAL '40 days', 45, 30, 15, 36, false, 6, NOW() - INTERVAL '40 days', NOW()),
+  (104, 'interaction', 'contract_review', 'Service level review', 'Discussed SLA terms', NOW() - INTERVAL '40 days', 45, 30, 15, 36, false,
+   '99% fill rate SLA with penalties/credits structure agreed', 'positive', 'Phone', ARRAY['Operations VP', 'Logistics Manager', 'Jim Taylor (Rep)']::text[], ARRAY['sla', 'fill-rate', 'service']::text[],
+   6, NOW() - INTERVAL '40 days', NOW()),
   -- Opp 35: customer_org 12 -> contacts 23, 24
-  (105, 'interaction', 'contract_review', 'Exclusivity terms review', 'Discussed exclusive arrangement', NOW() - INTERVAL '45 days', 60, 23, 12, 35, true, 5, NOW() - INTERVAL '45 days', NOW()),
+  (105, 'interaction', 'contract_review', 'Exclusivity terms review', 'Discussed exclusive arrangement', NOW() - INTERVAL '45 days', 60, 23, 12, 35, true,
+   'Category exclusivity for premium fries, 2-year term', 'positive', 'Video call', ARRAY['VP Procurement', 'Category Director', 'Legal', 'David Kim (Rep)']::text[], ARRAY['exclusivity', 'category', 'premium']::text[],
+   5, NOW() - INTERVAL '45 days', NOW()),
   -- Opp 29: customer_org 10 -> contacts 19, 20
-  (106, 'interaction', 'contract_review', 'Final contract review', 'Final review before signing', NOW() - INTERVAL '50 days', 90, 20, 10, 29, false, 2, NOW() - INTERVAL '50 days', NOW()),
+  (106, 'interaction', 'contract_review', 'Final contract review', 'Final review before signing', NOW() - INTERVAL '50 days', 90, 20, 10, 29, false,
+   'All terms finalized, scheduling signing ceremony for next week', 'positive', 'In-person meeting', ARRAY['CEO', 'General Counsel', 'CFO', 'VP Sales', 'Sarah Jones (Rep)']::text[], ARRAY['final', 'signing', 'executive']::text[],
+   2, NOW() - INTERVAL '50 days', NOW()),
   -- Opp 30: customer_org 11 -> contacts 21, 22
-  (107, 'interaction', 'contract_review', 'Amendment review', 'Reviewed contract changes', NOW() - INTERVAL '55 days', 45, 22, 11, 30, true, 3, NOW() - INTERVAL '55 days', NOW()),
+  (107, 'interaction', 'contract_review', 'Amendment review', 'Reviewed contract changes', NOW() - INTERVAL '55 days', 45, 22, 11, 30, true,
+   'Amendment to add 5 new SKUs approved, effective immediately', 'positive', 'Email exchange', ARRAY['Contract Administrator', 'Category Manager', 'Tom Wilson (Rep)']::text[], ARRAY['amendment', 'sku-addition', 'approved']::text[],
+   3, NOW() - INTERVAL '55 days', NOW()),
   -- Opp 35: customer_org 12 -> contacts 23, 24
-  (108, 'interaction', 'contract_review', 'Term extension review', 'Discussed term extension', NOW() - INTERVAL '60 days', 60, 24, 12, 35, false, 5, NOW() - INTERVAL '60 days', NOW()),
+  (108, 'interaction', 'contract_review', 'Term extension review', 'Discussed term extension', NOW() - INTERVAL '60 days', 60, 24, 12, 35, false,
+   'Extended contract 1 year with same terms, pricing adjustment next renewal', 'positive', 'Phone', ARRAY['Procurement Director', 'Legal', 'Mike Chen (Rep)']::text[], ARRAY['extension', 'renewal', 'pricing']::text[],
+   5, NOW() - INTERVAL '60 days', NOW()),
 
   -- ========================================
   -- CHECK_IN Activities (12)
   -- ========================================
   -- Opp 15: customer_org 24 -> contacts 47, 48
-  (109, 'interaction', 'check_in', 'Monthly account check-in', 'Regular monthly touchpoint', NOW() - INTERVAL '2 days', 20, 48, 24, 15, false, 4, NOW() - INTERVAL '2 days', NOW()),
+  (109, 'interaction', 'check_in', 'Monthly account check-in', 'Regular monthly touchpoint', NOW() - INTERVAL '2 days', 20, 48, 24, 15, false,
+   'Account healthy, no issues, planning Q2 promotions', 'positive', 'Phone', ARRAY['Account Manager', 'Sarah Davis (Rep)']::text[], ARRAY['monthly', 'check-in', 'healthy']::text[],
+   4, NOW() - INTERVAL '2 days', NOW()),
   -- Opp 14: customer_org 26 -> contacts 51, 52
-  (110, 'interaction', 'check_in', 'Relationship maintenance call', 'Nurturing key relationship', NOW() - INTERVAL '7 days', 25, 52, 26, 14, true, 5, NOW() - INTERVAL '7 days', NOW()),
+  (110, 'interaction', 'check_in', 'Relationship maintenance call', 'Nurturing key relationship', NOW() - INTERVAL '7 days', 25, 52, 26, 14, true,
+   'Strong relationship, potential for expansion to new regions', 'positive', 'Phone', ARRAY['Regional Director', 'David Kim (Rep)']::text[], ARRAY['relationship', 'expansion', 'nurturing']::text[],
+   5, NOW() - INTERVAL '7 days', NOW()),
   -- Opp 7: customer_org 33 -> contacts 66, 67
-  (111, 'interaction', 'check_in', 'Quarterly business check-in', 'Quarterly account review', NOW() - INTERVAL '12 days', 30, 67, 33, 7, false, 6, NOW() - INTERVAL '12 days', NOW()),
+  (111, 'interaction', 'check_in', 'Quarterly business check-in', 'Quarterly account review', NOW() - INTERVAL '12 days', 30, 67, 33, 7, false,
+   'Q4 exceeded targets, planning 15% growth next year', 'positive', 'Video call', ARRAY['VP Operations', 'Regional Manager', 'Amanda Clark (Rep)']::text[], ARRAY['quarterly', 'review', 'growth']::text[],
+   6, NOW() - INTERVAL '12 days', NOW()),
   -- Opp 19: customer_org 34 -> contacts 68, 69
-  (112, 'interaction', 'check_in', 'New contact introduction', 'Introduction to new team member', NOW() - INTERVAL '17 days', 20, 69, 34, 19, true, 4, NOW() - INTERVAL '17 days', NOW()),
+  (112, 'interaction', 'check_in', 'New contact introduction', 'Introduction to new team member', NOW() - INTERVAL '17 days', 20, 69, 34, 19, true,
+   'New purchasing manager introduced, scheduling demo next week', 'positive', 'Phone', ARRAY['New Purchasing Manager', 'Outgoing Manager', 'Tom Wilson (Rep)']::text[], ARRAY['introduction', 'new-contact', 'transition']::text[],
+   4, NOW() - INTERVAL '17 days', NOW()),
   -- Opp 16: customer_org 35 -> contacts 70, 71
-  (113, 'interaction', 'check_in', 'Holiday greeting call', 'Season greetings touchpoint', NOW() - INTERVAL '22 days', 15, 71, 35, 16, false, 3, NOW() - INTERVAL '22 days', NOW()),
+  (113, 'interaction', 'check_in', 'Holiday greeting call', 'Season greetings touchpoint', NOW() - INTERVAL '22 days', 15, 71, 35, 16, false,
+   'Warm holiday wishes exchanged, mentioned January budget availability', 'positive', 'Phone', ARRAY['Director Campus Dining', 'Mike Chen (Rep)']::text[], ARRAY['holiday', 'greeting', 'relationship']::text[],
+   3, NOW() - INTERVAL '22 days', NOW()),
   -- Opp 11: customer_org 36 -> contacts 72, 73
-  (114, 'interaction', 'check_in', 'Account health check', 'Verified account satisfaction', NOW() - INTERVAL '27 days', 25, 73, 36, 11, true, 4, NOW() - INTERVAL '27 days', NOW()),
+  (114, 'interaction', 'check_in', 'Account health check', 'Verified account satisfaction', NOW() - INTERVAL '27 days', 25, 73, 36, 11, true,
+   'High satisfaction scores, minor delivery timing feedback', 'positive', 'Phone', ARRAY['Operations Director', 'Sarah Wilson (Rep)']::text[], ARRAY['health-check', 'satisfaction', 'feedback']::text[],
+   4, NOW() - INTERVAL '27 days', NOW()),
   -- Opp 18: customer_org 37 -> contacts 74, 75
-  (115, 'interaction', 'check_in', 'Post-order check-in', 'Followed up after delivery', NOW() - INTERVAL '32 days', 15, 75, 37, 18, false, 6, NOW() - INTERVAL '32 days', NOW()),
+  (115, 'interaction', 'check_in', 'Post-order check-in', 'Followed up after delivery', NOW() - INTERVAL '32 days', 15, 75, 37, 18, false,
+   'First order delivered successfully, residents enjoying products', 'positive', 'Phone', ARRAY['Food Services Director', 'Jim Taylor (Rep)']::text[], ARRAY['post-order', 'delivery', 'satisfaction']::text[],
+   6, NOW() - INTERVAL '32 days', NOW()),
   -- Opp 4: customer_org 38 -> contacts 76, 77
-  (116, 'interaction', 'check_in', 'Year-end review call', 'Annual relationship review', NOW() - INTERVAL '37 days', 30, 77, 38, 4, true, 4, NOW() - INTERVAL '37 days', NOW()),
+  (116, 'interaction', 'check_in', 'Year-end review call', 'Annual relationship review', NOW() - INTERVAL '37 days', 30, 77, 38, 4, true,
+   'Strong year, $125K in revenue, planning 25% growth next year', 'positive', 'Video call', ARRAY['VP Procurement', 'CFO', 'David Kim (Rep)']::text[], ARRAY['year-end', 'review', 'growth']::text[],
+   4, NOW() - INTERVAL '37 days', NOW()),
   -- Opp 12: customer_org 39 -> contacts 78, 79, 80
-  (117, 'interaction', 'check_in', 'New year planning call', 'Discussed upcoming year plans', NOW() - INTERVAL '42 days', 25, 80, 39, 12, false, 2, NOW() - INTERVAL '42 days', NOW()),
+  (117, 'interaction', 'check_in', 'New year planning call', 'Discussed upcoming year plans', NOW() - INTERVAL '42 days', 25, 80, 39, 12, false,
+   'Aligned on 2024 goals, new product trials scheduled for Q1', 'positive', 'Phone', ARRAY['Purchasing Director', 'Amanda Clark (Rep)']::text[], ARRAY['planning', 'new-year', 'goals']::text[],
+   2, NOW() - INTERVAL '42 days', NOW()),
   -- Opp 13: customer_org 28 -> contacts 55, 56
-  (118, 'interaction', 'check_in', 'Summer season check-in', 'Seasonal planning discussion', NOW() - INTERVAL '47 days', 20, 56, 28, 13, true, 6, NOW() - INTERVAL '47 days', NOW()),
+  (118, 'interaction', 'check_in', 'Summer season check-in', 'Seasonal planning discussion', NOW() - INTERVAL '47 days', 20, 56, 28, 13, true,
+   'Summer menu planning underway, need plant-based options', 'positive', 'Phone', ARRAY['Chef', 'Category Manager', 'Tom Wilson (Rep)']::text[], ARRAY['seasonal', 'summer', 'menu-planning']::text[],
+   6, NOW() - INTERVAL '47 days', NOW()),
   -- Opp 43: customer_org 33 -> contacts 66, 67
-  (119, 'interaction', 'check_in', 'Executive relationship check', 'Executive level touchpoint', NOW() - INTERVAL '52 days', 30, 66, 33, 43, false, 6, NOW() - INTERVAL '52 days', NOW()),
+  (119, 'interaction', 'check_in', 'Executive relationship check', 'Executive level touchpoint', NOW() - INTERVAL '52 days', 30, 66, 33, 43, false,
+   'CEO appreciates partnership, wants quarterly executive touchpoints', 'positive', 'Video call', ARRAY['CEO', 'VP Sales (MFB)', 'Mike Chen (Rep)']::text[], ARRAY['executive', 'relationship', 'strategic']::text[],
+   6, NOW() - INTERVAL '52 days', NOW()),
   -- Opp 43: customer_org 33 -> contacts 66, 67
-  (120, 'interaction', 'check_in', 'Operations alignment check', 'Verified operational alignment', NOW() - INTERVAL '57 days', 25, 67, 33, 43, true, 6, NOW() - INTERVAL '57 days', NOW()),
+  (120, 'interaction', 'check_in', 'Operations alignment check', 'Verified operational alignment', NOW() - INTERVAL '57 days', 25, 67, 33, 43, true,
+   'Operations aligned, supply chain performing at 99.2% fill rate', 'positive', 'Phone', ARRAY['Operations Director', 'Logistics Manager', 'Sarah Davis (Rep)']::text[], ARRAY['operations', 'alignment', 'supply-chain']::text[],
+   6, NOW() - INTERVAL '57 days', NOW()),
 
   -- ========================================
   -- SOCIAL Activities (12)
   -- ========================================
   -- Opp 1: customer_org 20 -> contacts 39, 40
-  (121, 'interaction', 'social', 'Industry dinner event', 'Networking dinner with contacts', NOW() - INTERVAL '10 days', 180, 39, 20, 1, false, 2, NOW() - INTERVAL '10 days', NOW()),
+  (121, 'interaction', 'social', 'Industry dinner event', 'Networking dinner with contacts', NOW() - INTERVAL '10 days', 180, 39, 20, 1, false,
+   'Great dinner conversation, learned about upcoming menu changes', 'positive', 'RPM Italian - Chicago', ARRAY['Chef', 'Purchasing Manager', 'Marketing Director', 'Sarah Wilson (Rep)']::text[], ARRAY['dinner', 'networking', 'relationship']::text[],
+   2, NOW() - INTERVAL '10 days', NOW()),
   -- Opp 29: customer_org 10 -> contacts 19, 20
-  (122, 'interaction', 'social', 'Golf outing', 'Client appreciation golf', NOW() - INTERVAL '20 days', 300, 19, 10, 29, true, 2, NOW() - INTERVAL '20 days', NOW()),
+  (122, 'interaction', 'social', 'Golf outing', 'Client appreciation golf', NOW() - INTERVAL '20 days', 300, 19, 10, 29, true,
+   'Great round of golf, discussed partnership expansion informally', 'positive', 'Medinah Country Club', ARRAY['VP Procurement', 'Regional Director', 'CFO', 'Sarah Jones (Rep)', 'VP Sales (MFB)']::text[], ARRAY['golf', 'appreciation', 'executive']::text[],
+   2, NOW() - INTERVAL '20 days', NOW()),
   -- Opp 5: customer_org 22 -> contacts 43, 44
-  (123, 'interaction', 'social', 'Wine dinner event', 'Hosted wine pairing dinner', NOW() - INTERVAL '30 days', 180, 43, 22, 5, false, 4, NOW() - INTERVAL '30 days', NOW()),
+  (123, 'interaction', 'social', 'Wine dinner event', 'Hosted wine pairing dinner', NOW() - INTERVAL '30 days', 180, 43, 22, 5, false,
+   'Elegant evening, chef interested in premium Italian product line', 'positive', 'Girl and the Goat', ARRAY['Executive Chef', 'Sommelier', 'GM', 'Mike Chen (Rep)']::text[], ARRAY['wine', 'dinner', 'premium']::text[],
+   4, NOW() - INTERVAL '30 days', NOW()),
   -- Opp 12: customer_org 39 -> contacts 78, 79, 80
-  (124, 'interaction', 'social', 'Sporting event tickets', 'Hosted at baseball game', NOW() - INTERVAL '40 days', 240, 78, 39, 12, true, 4, NOW() - INTERVAL '40 days', NOW()),
+  (124, 'interaction', 'social', 'Sporting event tickets', 'Hosted at baseball game', NOW() - INTERVAL '40 days', 240, 78, 39, 12, true,
+   'Cubs game in premium suite, great bonding experience', 'positive', 'Wrigley Field - Luxury Suite', ARRAY['GM', 'Operations Director', 'Family Members', 'Jim Taylor (Rep)']::text[], ARRAY['sports', 'cubs', 'hospitality']::text[],
+   4, NOW() - INTERVAL '40 days', NOW()),
   -- Opp 3: customer_org 30 -> contacts 59, 60, 61
-  (125, 'interaction', 'social', 'Charity event', 'Connected at charity fundraiser', NOW() - INTERVAL '50 days', 180, 59, 30, 3, false, 3, NOW() - INTERVAL '50 days', NOW()),
+  (125, 'interaction', 'social', 'Charity event', 'Connected at charity fundraiser', NOW() - INTERVAL '50 days', 180, 59, 30, 3, false,
+   'Met at No Kid Hungry event, discovered shared values', 'positive', 'Chicago Hilton Ballroom', ARRAY['VP Operations', 'Foundation Director', 'Industry Peers', 'Tom Wilson (Rep)']::text[], ARRAY['charity', 'values', 'community']::text[],
+   3, NOW() - INTERVAL '50 days', NOW()),
   -- Opp 13: customer_org 28 -> contacts 55, 56
-  (126, 'interaction', 'social', 'Industry awards dinner', 'Attended awards ceremony together', NOW() - INTERVAL '60 days', 240, 55, 28, 13, true, 6, NOW() - INTERVAL '60 days', NOW()),
+  (126, 'interaction', 'social', 'Industry awards dinner', 'Attended awards ceremony together', NOW() - INTERVAL '60 days', 240, 55, 28, 13, true,
+   'Aramark won foodservice excellence award, great photo ops', 'positive', 'Navy Pier Grand Ballroom', ARRAY['CEO Aramark', 'Industry Leaders', 'Media', 'Amanda Clark (Rep)']::text[], ARRAY['awards', 'recognition', 'networking']::text[],
+   6, NOW() - INTERVAL '60 days', NOW()),
   -- Opp 7: customer_org 33 -> contacts 66, 67
-  (127, 'interaction', 'social', 'Coffee meeting', 'Informal catch-up coffee', NOW() - INTERVAL '70 days', 60, 66, 33, 7, false, 6, NOW() - INTERVAL '70 days', NOW()),
+  (127, 'interaction', 'social', 'Coffee meeting', 'Informal catch-up coffee', NOW() - INTERVAL '70 days', 60, 66, 33, 7, false,
+   'Relaxed conversation about industry trends and family', 'positive', 'Intelligentsia Coffee - Loop', ARRAY['Procurement Director', 'Mike Chen (Rep)']::text[], ARRAY['coffee', 'informal', 'relationship']::text[],
+   6, NOW() - INTERVAL '70 days', NOW()),
   -- Opp 11: customer_org 36 -> contacts 72, 73
-  (128, 'interaction', 'social', 'Happy hour networking', 'After-work networking event', NOW() - INTERVAL '80 days', 120, 72, 36, 11, true, 4, NOW() - INTERVAL '80 days', NOW()),
+  (128, 'interaction', 'social', 'Happy hour networking', 'After-work networking event', NOW() - INTERVAL '80 days', 120, 72, 36, 11, true,
+   'Met several new contacts, warm introductions made', 'positive', 'The Signature Room - 95th Floor', ARRAY['Campus Dining Team (5)', 'Industry Peers', 'Sarah Wilson (Rep)']::text[], ARRAY['happy-hour', 'networking', 'introductions']::text[],
+   4, NOW() - INTERVAL '80 days', NOW()),
   -- Opp 15: customer_org 24 -> contacts 47, 48
-  (129, 'interaction', 'social', 'Holiday party', 'Annual holiday celebration', NOW() - INTERVAL '90 days', 180, 47, 24, 15, false, 2, NOW() - INTERVAL '90 days', NOW()),
+  (129, 'interaction', 'social', 'Holiday party', 'Annual holiday celebration', NOW() - INTERVAL '90 days', 180, 47, 24, 15, false,
+   'Festive atmosphere, strengthened personal relationships', 'positive', 'MFB Holiday Party - Drake Hotel', ARRAY['Key Clients (15)', 'MFB Team (10)', 'David Kim (Rep)']::text[], ARRAY['holiday', 'celebration', 'appreciation']::text[],
+   2, NOW() - INTERVAL '90 days', NOW()),
   -- Opp 30: customer_org 11 -> contacts 21, 22
-  (130, 'interaction', 'social', 'Client appreciation lunch', 'Thank you lunch for key buyer', NOW() - INTERVAL '100 days', 90, 21, 11, 30, true, 3, NOW() - INTERVAL '100 days', NOW()),
+  (130, 'interaction', 'social', 'Client appreciation lunch', 'Thank you lunch for key buyer', NOW() - INTERVAL '100 days', 90, 21, 11, 30, true,
+   'Expressed gratitude for partnership, discussed mutual growth', 'positive', 'Alinea', ARRAY['Category Manager', 'VP Sales (MFB)', 'Tom Wilson (Rep)']::text[], ARRAY['appreciation', 'lunch', 'fine-dining']::text[],
+   3, NOW() - INTERVAL '100 days', NOW()),
   -- Opp 31: customer_org 13 -> contacts 25, 26
-  (131, 'interaction', 'social', 'Industry mixer', 'Networking at industry event', NOW() - INTERVAL '110 days', 120, 25, 13, 31, false, 3, NOW() - INTERVAL '110 days', NOW()),
+  (131, 'interaction', 'social', 'Industry mixer', 'Networking at industry event', NOW() - INTERVAL '110 days', 120, 25, 13, 31, false,
+   'IFDA mixer, connected with 5 new potential contacts', 'positive', 'Palmer House Hilton', ARRAY['Distribution Executives (20+)', 'Industry Leaders', 'Sarah Davis (Rep)']::text[], ARRAY['mixer', 'ifda', 'networking']::text[],
+   3, NOW() - INTERVAL '110 days', NOW()),
   -- Opp 33: customer_org 18 -> contacts 35, 36
-  (132, 'interaction', 'social', 'New Year celebration', 'Rang in New Year with client', NOW() - INTERVAL '120 days', 180, 35, 18, 33, true, 4, NOW() - INTERVAL '120 days', NOW()),
+  (132, 'interaction', 'social', 'New Year celebration', 'Rang in New Year with client', NOW() - INTERVAL '120 days', 180, 35, 18, 33, true,
+   'Memorable New Year celebration, toasted to partnership success', 'positive', 'Shamrock Foods Executive Suite', ARRAY['CEO Shamrock', 'Executive Team', 'MFB Leadership', 'Amanda Clark (Rep)']::text[], ARRAY['new-year', 'celebration', 'partnership']::text[],
+   4, NOW() - INTERVAL '120 days', NOW()),
 
   -- ========================================
   -- NOTE Activities (18 - general notes)
   -- ========================================
   -- Opp 25: customer_org 20 -> contacts 39, 40
-  (133, 'interaction', 'note', 'Competitive intelligence', 'Learned competitor is offering lower prices', NOW() - INTERVAL '1 day', 5, 40, 20, 25, false, 4, NOW() - INTERVAL '1 day', NOW()),
+  (133, 'interaction', 'note', 'Competitive intelligence', 'Learned competitor is offering lower prices', NOW() - INTERVAL '1 day', 5, 40, 20, 25, false,
+   'Lamb Weston offering 15% below our price, need competitive response strategy', 'neutral', 'Internal note', ARRAY[]::text[], ARRAY['competitive', 'intel', 'pricing']::text[],
+   4, NOW() - INTERVAL '1 day', NOW()),
   -- Opp 26: customer_org 22 -> contacts 43, 44
-  (134, 'interaction', 'note', 'Menu change planned', 'Chef mentioned upcoming menu revamp', NOW() - INTERVAL '3 days', 5, 44, 22, 26, true, 4, NOW() - INTERVAL '3 days', NOW()),
+  (134, 'interaction', 'note', 'Menu change planned', 'Chef mentioned upcoming menu revamp', NOW() - INTERVAL '3 days', 5, 44, 22, 26, true,
+   'Spring menu launching in March, opportunity for 3 new SKUs', 'positive', 'Internal note', ARRAY[]::text[], ARRAY['menu', 'opportunity', 'spring']::text[],
+   4, NOW() - INTERVAL '3 days', NOW()),
   -- Opp 27: customer_org 25 -> contacts 49, 50
-  (135, 'interaction', 'note', 'Budget cycle timing', 'Budget decisions made in Q3', NOW() - INTERVAL '5 days', 5, 50, 25, 27, false, 5, NOW() - INTERVAL '5 days', NOW()),
+  (135, 'interaction', 'note', 'Budget cycle timing', 'Budget decisions made in Q3', NOW() - INTERVAL '5 days', 5, 50, 25, 27, false,
+   'New vendor decisions made in August, need to be in RFP by July 15', 'neutral', 'Internal note', ARRAY[]::text[], ARRAY['budget', 'timing', 'rfp']::text[],
+   5, NOW() - INTERVAL '5 days', NOW()),
   -- Opp 28: customer_org 21 -> contacts 41, 42
-  (136, 'interaction', 'note', 'Key stakeholder identified', 'CFO has final approval authority', NOW() - INTERVAL '7 days', 5, 42, 21, 28, true, 6, NOW() - INTERVAL '7 days', NOW()),
+  (136, 'interaction', 'note', 'Key stakeholder identified', 'CFO has final approval authority', NOW() - INTERVAL '7 days', 5, 42, 21, 28, true,
+   'CFO Michael Chen has final say on all purchases >$50K, need executive meeting', 'neutral', 'Internal note', ARRAY[]::text[], ARRAY['stakeholder', 'cfo', 'executive']::text[],
+   6, NOW() - INTERVAL '7 days', NOW()),
   -- Opp 29: customer_org 10 -> contacts 19, 20
-  (137, 'interaction', 'note', 'Expansion plans shared', 'Opening 5 new locations next year', NOW() - INTERVAL '9 days', 5, 19, 10, 29, false, 2, NOW() - INTERVAL '9 days', NOW()),
+  (137, 'interaction', 'note', 'Expansion plans shared', 'Opening 5 new locations next year', NOW() - INTERVAL '9 days', 5, 19, 10, 29, false,
+   'Sysco expanding Chicago coverage with 5 new DCs, potential $500K incremental', 'positive', 'Internal note', ARRAY[]::text[], ARRAY['expansion', 'growth', 'distribution']::text[],
+   2, NOW() - INTERVAL '9 days', NOW()),
   -- Opp 30: customer_org 11 -> contacts 21, 22
-  (138, 'interaction', 'note', 'Pain point identified', 'Current supplier has quality issues', NOW() - INTERVAL '11 days', 5, 21, 11, 30, true, 3, NOW() - INTERVAL '11 days', NOW()),
+  (138, 'interaction', 'note', 'Pain point identified', 'Current supplier has quality issues', NOW() - INTERVAL '11 days', 5, 21, 11, 30, true,
+   'US Foods frustrated with McCain quality inconsistency, opening for our products', 'positive', 'Internal note', ARRAY[]::text[], ARRAY['pain-point', 'quality', 'opportunity']::text[],
+   3, NOW() - INTERVAL '11 days', NOW()),
   -- Opp 31: customer_org 13 -> contacts 25, 26
-  (139, 'interaction', 'note', 'Timeline update', 'Decision pushed to next quarter', NOW() - INTERVAL '13 days', 5, 25, 13, 31, false, 3, NOW() - INTERVAL '13 days', NOW()),
+  (139, 'interaction', 'note', 'Timeline update', 'Decision pushed to next quarter', NOW() - INTERVAL '13 days', 5, 25, 13, 31, false,
+   'GFS decision delayed due to internal reorganization, new timeline Q2', 'negative', 'Internal note', ARRAY[]::text[], ARRAY['timeline', 'delay', 'reorg']::text[],
+   3, NOW() - INTERVAL '13 days', NOW()),
   -- Opp 32: customer_org 31 -> contacts 62, 63
-  (140, 'interaction', 'note', 'Contact leaving', 'Key contact taking new job', NOW() - INTERVAL '15 days', 5, 63, 31, 32, true, 4, NOW() - INTERVAL '15 days', NOW()),
+  (140, 'interaction', 'note', 'Contact leaving', 'Key contact taking new job', NOW() - INTERVAL '15 days', 5, 63, 31, 32, true,
+   'Dr. Wong leaving for Cleveland Clinic, need to build relationship with replacement', 'negative', 'Internal note', ARRAY[]::text[], ARRAY['contact', 'transition', 'risk']::text[],
+   4, NOW() - INTERVAL '15 days', NOW()),
   -- Opp 33: customer_org 18 -> contacts 35, 36
-  (141, 'interaction', 'note', 'Vendor consolidation', 'Looking to reduce vendor count', NOW() - INTERVAL '17 days', 5, 35, 18, 33, false, 4, NOW() - INTERVAL '17 days', NOW()),
+  (141, 'interaction', 'note', 'Vendor consolidation', 'Looking to reduce vendor count', NOW() - INTERVAL '17 days', 5, 35, 18, 33, false,
+   'Shamrock consolidating from 25 to 15 suppliers, need to demonstrate full portfolio value', 'neutral', 'Internal note', ARRAY[]::text[], ARRAY['consolidation', 'vendor', 'strategic']::text[],
+   4, NOW() - INTERVAL '17 days', NOW()),
   -- Opp 34: customer_org 19 -> contacts 37, 38
-  (142, 'interaction', 'note', 'Sustainability focus', 'Increasing focus on sustainability', NOW() - INTERVAL '19 days', 5, 38, 19, 34, true, 5, NOW() - INTERVAL '19 days', NOW()),
+  (142, 'interaction', 'note', 'Sustainability focus', 'Increasing focus on sustainability', NOW() - INTERVAL '19 days', 5, 38, 19, 34, true,
+   'Reinhart prioritizing suppliers with ESG credentials, highlight our sustainability program', 'positive', 'Internal note', ARRAY[]::text[], ARRAY['sustainability', 'esg', 'priority']::text[],
+   5, NOW() - INTERVAL '19 days', NOW()),
   -- Opp 35: customer_org 12 -> contacts 23, 24
-  (143, 'interaction', 'note', 'Regional preference', 'Prefers local/regional suppliers', NOW() - INTERVAL '21 days', 5, 23, 12, 35, false, 5, NOW() - INTERVAL '21 days', NOW()),
+  (143, 'interaction', 'note', 'Regional preference', 'Prefers local/regional suppliers', NOW() - INTERVAL '21 days', 5, 23, 12, 35, false,
+   'PFG has strong preference for suppliers with local manufacturing, emphasize our Idaho facilities', 'neutral', 'Internal note', ARRAY[]::text[], ARRAY['regional', 'local', 'manufacturing']::text[],
+   5, NOW() - INTERVAL '21 days', NOW()),
   -- Opp 36: customer_org 15 -> contacts 29, 30
-  (144, 'interaction', 'note', 'Pricing sensitivity', 'Very price sensitive account', NOW() - INTERVAL '23 days', 5, 29, 15, 36, true, 6, NOW() - INTERVAL '23 days', NOW()),
+  (144, 'interaction', 'note', 'Pricing sensitivity', 'Very price sensitive account', NOW() - INTERVAL '23 days', 5, 29, 15, 36, true,
+   'Ben E Keith extremely price-driven, may need to offer promotional pricing to win', 'negative', 'Internal note', ARRAY[]::text[], ARRAY['pricing', 'sensitive', 'promotional']::text[],
+   6, NOW() - INTERVAL '23 days', NOW()),
   -- Opp 2: customer_org 27 -> contacts 53, 54
-  (145, 'interaction', 'note', 'Quality over price', 'Willing to pay premium for quality', NOW() - INTERVAL '25 days', 5, 53, 27, 2, false, 3, NOW() - INTERVAL '25 days', NOW()),
+  (145, 'interaction', 'note', 'Quality over price', 'Willing to pay premium for quality', NOW() - INTERVAL '25 days', 5, 53, 27, 2, false,
+   'Texas Roadhouse values quality highly, price secondary to consistency', 'positive', 'Internal note', ARRAY[]::text[], ARRAY['quality', 'premium', 'value']::text[],
+   3, NOW() - INTERVAL '25 days', NOW()),
   -- Opp 4: customer_org 38 -> contacts 76, 77
-  (146, 'interaction', 'note', 'Contract renewal timing', 'Contract up for renewal in June', NOW() - INTERVAL '27 days', 5, 76, 38, 4, true, 4, NOW() - INTERVAL '27 days', NOW()),
+  (146, 'interaction', 'note', 'Contract renewal timing', 'Contract up for renewal in June', NOW() - INTERVAL '27 days', 5, 76, 38, 4, true,
+   'Sodexo contract renews June 30, need proposal submitted by May 15 for consideration', 'neutral', 'Internal note', ARRAY[]::text[], ARRAY['renewal', 'deadline', 'contract']::text[],
+   4, NOW() - INTERVAL '27 days', NOW()),
   -- Opp 6: customer_org 21 -> contacts 41, 42
-  (147, 'interaction', 'note', 'Decision maker identified', 'VP Operations makes final call', NOW() - INTERVAL '29 days', 5, 41, 21, 6, false, 5, NOW() - INTERVAL '29 days', NOW()),
+  (147, 'interaction', 'note', 'Decision maker identified', 'VP Operations makes final call', NOW() - INTERVAL '29 days', 5, 41, 21, 6, false,
+   'VP Operations Susan Martinez is actual decision maker, not procurement lead', 'neutral', 'Internal note', ARRAY[]::text[], ARRAY['decision-maker', 'vp', 'authority']::text[],
+   5, NOW() - INTERVAL '29 days', NOW()),
   -- Opp 7: customer_org 33 -> contacts 66, 67
-  (148, 'interaction', 'note', 'Competitor weakness', 'Competitor having supply issues', NOW() - INTERVAL '31 days', 5, 66, 33, 7, true, 6, NOW() - INTERVAL '31 days', NOW()),
+  (148, 'interaction', 'note', 'Competitor weakness', 'Competitor having supply issues', NOW() - INTERVAL '31 days', 5, 66, 33, 7, true,
+   'Simplot experiencing production issues at their plant, opportunity to gain share', 'positive', 'Internal note', ARRAY[]::text[], ARRAY['competitive', 'supply', 'opportunity']::text[],
+   6, NOW() - INTERVAL '31 days', NOW()),
   -- Opp 8: customer_org 31 -> contacts 62, 63
-  (149, 'interaction', 'note', 'Budget approved', 'Got budget approval for new vendor', NOW() - INTERVAL '33 days', 5, 62, 31, 8, false, 2, NOW() - INTERVAL '33 days', NOW()),
+  (149, 'interaction', 'note', 'Budget approved', 'Got budget approval for new vendor', NOW() - INTERVAL '33 days', 5, 62, 31, 8, false,
+   'Northwestern Memorial approved $200K budget for new premium food vendor', 'positive', 'Internal note', ARRAY[]::text[], ARRAY['budget', 'approved', 'healthcare']::text[],
+   2, NOW() - INTERVAL '33 days', NOW()),
   -- Opp 9: customer_org 29 -> contacts 57, 58
-  (150, 'interaction', 'note', 'Trial feedback positive', 'Pilot program getting great reviews', NOW() - INTERVAL '35 days', 5, 57, 29, 9, true, 3, NOW() - INTERVAL '35 days', NOW());
+  (150, 'interaction', 'note', 'Trial feedback positive', 'Pilot program getting great reviews', NOW() - INTERVAL '35 days', 5, 57, 29, 9, true,
+   'Chipotle pilot scoring 4.8/5 in customer surveys, expansion likely', 'positive', 'Internal note', ARRAY[]::text[], ARRAY['pilot', 'feedback', 'success']::text[],
+   3, NOW() - INTERVAL '35 days', NOW());
 
 -- Reset sequence
 SELECT setval(pg_get_serial_sequence('activities', 'id'), 150, true);
