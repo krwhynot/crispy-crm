@@ -16,36 +16,48 @@
 
 ### Task 0: Resolve form.tsx Namespace Clash
 
-**Rationale:** The existing `src/components/admin/form.tsx` file (252 lines) contains core form primitives (Form, FormField, FormLabel, FormControl, FormDescription, FormError, SaveButton). Creating a `src/components/admin/form/` directory alongside it causes module resolution conflicts. We must rename the existing file first.
+**Rationale:** The existing `src/components/admin/form.tsx` file (252 lines) contains core form primitives (Form, FormField, FormLabel, FormControl, FormDescription, FormError, SaveButton). Creating a `src/components/admin/form/` directory alongside it causes module resolution conflicts. Solution: Move existing file INTO the directory and create a barrel file.
 
 **Files:**
-- Rename: `src/components/admin/form.tsx` → `src/components/admin/form-primitives.tsx`
-- Update: 26+ files that import from `@/components/admin/form`
 - Create: `src/components/admin/form/` directory
+- Move: `src/components/admin/form.tsx` → `src/components/admin/form/form-primitives.tsx`
+- Create: `src/components/admin/form/index.ts` (barrel re-exporting everything)
 
-**Step 1: Rename existing file**
+**Why this works:**
+- Existing imports `import { X } from "@/components/admin/form"` continue to work
+- Module resolution: `form/` directory → `form/index.ts` → re-exports from `form-primitives.tsx`
+- No need to update 26+ import statements!
 
-```bash
-mv src/components/admin/form.tsx src/components/admin/form-primitives.tsx
-```
-
-**Step 2: Update all imports (Linux sed)**
-
-```bash
-# Find and update imports
-find src -name "*.tsx" -o -name "*.ts" | xargs grep -l "from ['\"]@/components/admin/form['\"]" | while read file; do
-  sed -i "s|from '@/components/admin/form'|from '@/components/admin/form-primitives'|g" "$file"
-  sed -i "s|from \"@/components/admin/form\"|from \"@/components/admin/form-primitives\"|g" "$file"
-done
-```
-
-**Step 3: Create new form directory**
+**Step 1: Create the new directory**
 
 ```bash
 mkdir -p src/components/admin/form/__tests__
 ```
 
-**Step 4: Verify no broken imports**
+**Step 2: Move existing file into directory**
+
+```bash
+mv src/components/admin/form.tsx src/components/admin/form/form-primitives.tsx
+```
+
+**Step 3: Create barrel file that re-exports everything**
+
+```typescript
+// src/components/admin/form/index.ts
+
+// Re-export original form utilities (maintains backward compatibility)
+export * from "./form-primitives";
+
+// New form improvement components (uncomment as we build them)
+// export { FormGrid } from "./FormGrid";
+// export { FormSection } from "./FormSection";
+// export { FormActions } from "./FormActions";
+// export { SaveButtonGroup } from "./SaveButtonGroup";
+// export { FormLoadingSkeleton } from "./FormLoadingSkeleton";
+// export { useFormShortcuts } from "./useFormShortcuts";
+```
+
+**Step 4: Verify imports still resolve**
 
 ```bash
 npm run build
@@ -55,7 +67,178 @@ npm run build
 
 ```bash
 git add -A
-git commit -m "refactor: rename form.tsx to form-primitives.tsx for form/ directory"
+git commit -m "refactor(form): restructure form.tsx into form/ directory
+
+- Move form.tsx to form/form-primitives.tsx
+- Create barrel file for clean exports
+- Maintains backward compatibility with existing imports
+- Prepares namespace for new form components"
+```
+
+**Directory Structure After Phase 1:**
+```
+src/components/admin/form/
+├── index.ts                    # Barrel file (exports all)
+├── form-primitives.tsx         # Original form.tsx content
+├── FormGrid.tsx                # Task 1
+├── FormSection.tsx             # Task 2
+├── FormActions.tsx             # Task 7
+├── SaveButtonGroup.tsx         # Task 6
+├── FormLoadingSkeleton.tsx     # Task 0.5 (new)
+├── useFormShortcuts.ts         # Task 5
+└── __tests__/
+    ├── FormGrid.test.tsx
+    ├── FormSection.test.tsx
+    ├── FormActions.test.tsx
+    ├── SaveButtonGroup.test.tsx
+    └── useFormShortcuts.test.tsx
+```
+
+---
+
+### Task 0.5: Create FormLoadingSkeleton Component
+
+**Rationale:** When `useSmartDefaults` hook is loading identity data, we need to show a skeleton state instead of an empty form or flash of content. This is a reusable component for all Create forms.
+
+**Files:**
+- Create: `src/components/admin/form/FormLoadingSkeleton.tsx`
+- Test: `src/components/admin/form/__tests__/FormLoadingSkeleton.test.tsx`
+
+**Step 1: Write the failing test**
+
+```typescript
+// src/components/admin/form/__tests__/FormLoadingSkeleton.test.tsx
+import { describe, test, expect } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { FormLoadingSkeleton } from "../FormLoadingSkeleton";
+
+describe("FormLoadingSkeleton", () => {
+  test("renders default 4 rows", () => {
+    render(<FormLoadingSkeleton />);
+
+    // Each row has 2 skeleton fields (for 2-column layout)
+    const skeletons = document.querySelectorAll('[data-slot="skeleton"]');
+    // 4 rows × 2 columns × 2 elements (label + input) = 16 skeletons
+    expect(skeletons.length).toBeGreaterThanOrEqual(8);
+  });
+
+  test("renders specified number of rows", () => {
+    render(<FormLoadingSkeleton rows={2} />);
+
+    // 2 rows × 2 columns = 4 field groups minimum
+    const fieldGroups = document.querySelectorAll(".space-y-2");
+    expect(fieldGroups.length).toBeGreaterThanOrEqual(4);
+  });
+
+  test("renders single column when twoColumn is false", () => {
+    render(<FormLoadingSkeleton rows={2} twoColumn={false} />);
+
+    // Should NOT have grid-cols-2
+    const grids = document.querySelectorAll(".grid-cols-2");
+    expect(grids.length).toBe(0);
+  });
+
+  test("wraps in Card component", () => {
+    render(<FormLoadingSkeleton />);
+
+    // Card provides the container styling
+    expect(document.querySelector("[data-slot='card']")).toBeInTheDocument();
+  });
+
+  test("applies semantic spacing classes", () => {
+    render(<FormLoadingSkeleton />);
+
+    // Uses design system spacing
+    expect(document.querySelector(".space-y-6")).toBeInTheDocument();
+    expect(document.querySelector(".p-6")).toBeInTheDocument();
+  });
+});
+```
+
+**Step 2: Run test to verify it fails**
+
+```bash
+npm test -- src/components/admin/form/__tests__/FormLoadingSkeleton.test.tsx
+```
+
+Expected: FAIL with "Cannot find module '../FormLoadingSkeleton'"
+
+**Step 3: Write implementation**
+
+```typescript
+// src/components/admin/form/FormLoadingSkeleton.tsx
+import { Skeleton } from "@/components/ui/skeleton";
+import { Card, CardContent } from "@/components/ui/card";
+
+interface FormLoadingSkeletonProps {
+  /** Number of field rows to show (default: 4) */
+  rows?: number;
+  /** Show 2-column grid for each row (default: true) */
+  twoColumn?: boolean;
+}
+
+/**
+ * Loading skeleton for forms waiting on async data (e.g., identity).
+ * Matches the visual structure of FormGrid's 2-column layout.
+ *
+ * Usage in Create forms:
+ * ```tsx
+ * const { defaults, isLoading } = useSmartDefaults();
+ * if (isLoading) return <FormLoadingSkeleton rows={4} />;
+ * ```
+ */
+export const FormLoadingSkeleton = ({
+  rows = 4,
+  twoColumn = true,
+}: FormLoadingSkeletonProps) => (
+  <Card data-slot="card">
+    <CardContent className="space-y-6 p-6">
+      {Array.from({ length: rows }).map((_, rowIndex) => (
+        <div
+          key={rowIndex}
+          className={twoColumn ? "grid grid-cols-2 gap-6" : ""}
+        >
+          {/* First field */}
+          <div className="space-y-2">
+            <Skeleton data-slot="skeleton" className="h-4 w-20" />
+            <Skeleton data-slot="skeleton" className="h-11 w-full" />
+          </div>
+
+          {/* Second field (only in 2-column mode) */}
+          {twoColumn && (
+            <div className="space-y-2">
+              <Skeleton data-slot="skeleton" className="h-4 w-20" />
+              <Skeleton data-slot="skeleton" className="h-11 w-full" />
+            </div>
+          )}
+        </div>
+      ))}
+    </CardContent>
+  </Card>
+);
+```
+
+**Step 4: Run test to verify it passes**
+
+```bash
+npm test -- src/components/admin/form/__tests__/FormLoadingSkeleton.test.tsx
+```
+
+Expected: PASS (5 tests)
+
+**Step 5: Update barrel export**
+
+```typescript
+// src/components/admin/form/index.ts
+// Add to exports:
+export { FormLoadingSkeleton } from "./FormLoadingSkeleton";
+```
+
+**Step 6: Commit**
+
+```bash
+git add src/components/admin/form/FormLoadingSkeleton.tsx src/components/admin/form/__tests__/FormLoadingSkeleton.test.tsx
+git commit -m "feat(form): add FormLoadingSkeleton for async loading states"
 ```
 
 ---
@@ -993,7 +1176,7 @@ describe("SaveButtonGroup", () => {
     });
   });
 
-  test("calls onSaveAndNew when dropdown option clicked", async () => {
+  test("dropdown Save + Create Another calls onSaveAndNew (NOT onSave)", async () => {
     const user = userEvent.setup();
 
     render(
@@ -1015,8 +1198,39 @@ describe("SaveButtonGroup", () => {
     await user.click(screen.getByText(/save \+ create another/i));
 
     await waitFor(() => {
-      expect(mockOnSaveAndNew).toHaveBeenCalled();
+      expect(mockOnSaveAndNew).toHaveBeenCalledWith({ name: "test" });
     });
+
+    // CRITICAL: onSave must NOT be called - this is the race condition we're preventing
+    expect(mockOnSave).not.toHaveBeenCalled();
+  });
+
+  test("dropdown Save option calls onSave (not onSaveAndNew)", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <FormWrapper onSubmit={mockOnSave}>
+        <SaveButtonGroup
+          onSave={mockOnSave}
+          onSaveAndNew={mockOnSaveAndNew}
+          isSubmitting={false}
+        />
+      </FormWrapper>
+    );
+
+    // Open dropdown
+    const dropdownTrigger = screen.getAllByRole("button")[1];
+    await user.click(dropdownTrigger);
+
+    // Click "Save" in dropdown
+    const menuItems = screen.getAllByRole("menuitem");
+    await user.click(menuItems[0]); // First item is "Save"
+
+    await waitFor(() => {
+      expect(mockOnSave).toHaveBeenCalledWith({ name: "test" });
+    });
+
+    expect(mockOnSaveAndNew).not.toHaveBeenCalled();
   });
 
   test("does not fire handlers when form validation fails", async () => {
@@ -1083,7 +1297,7 @@ npm test -- src/components/admin/form/__tests__/SaveButtonGroup.test.tsx
 
 Expected: FAIL with "Cannot find module '../SaveButtonGroup'"
 
-**Step 3: Write validation-safe implementation**
+**Step 3: Write validation-safe implementation (closure pattern)**
 
 ```typescript
 // src/components/admin/form/SaveButtonGroup.tsx
@@ -1096,7 +1310,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
 import { useFormContext } from "react-hook-form";
-import { useState, useCallback } from "react";
+import { useCallback } from "react";
 
 type SaveAction = "save" | "saveAndNew";
 
@@ -1109,8 +1323,9 @@ interface SaveButtonGroupProps {
 /**
  * Split button that properly routes through form validation.
  *
- * CRITICAL: Does NOT use onClick that bypasses validation.
- * Uses state to track intended action, then handleSubmit routes to correct callback.
+ * CRITICAL: Uses closure to pass action directly - avoids async state race condition.
+ * setState is async, so setPendingAction("saveAndNew") followed by handleSubmit(onSubmit)()
+ * in the same tick reads stale state. Solution: create submit handler with action baked in.
  *
  * Per design spec: For batch entry workflows (e.g., logging multiple activities).
  */
@@ -1120,38 +1335,42 @@ export const SaveButtonGroup = ({
   isSubmitting = false,
 }: SaveButtonGroupProps) => {
   const { handleSubmit } = useFormContext();
-  const [pendingAction, setPendingAction] = useState<SaveAction>("save");
 
-  // Single submit handler that routes based on pendingAction
-  const onSubmit = useCallback(
-    (data: any) => {
-      if (pendingAction === "saveAndNew") {
-        return onSaveAndNew(data);
-      }
-      return onSave(data);
+  // Create submit handler that receives action via closure, not state
+  const createSubmitHandler = useCallback(
+    (action: SaveAction) => {
+      return handleSubmit((data) => {
+        if (action === "saveAndNew") {
+          return onSaveAndNew(data);
+        }
+        return onSave(data);
+      });
     },
-    [pendingAction, onSave, onSaveAndNew]
+    [handleSubmit, onSave, onSaveAndNew]
   );
 
-  // Wrapper that sets action then submits
-  const handleSaveClick = useCallback(() => {
-    setPendingAction("save");
-    // Let the form's onSubmit handle it via type="submit"
-  }, []);
+  // Primary save - triggered by button click
+  const handlePrimarySave = useCallback(() => {
+    createSubmitHandler("save")();
+  }, [createSubmitHandler]);
 
-  const handleSaveAndNewClick = useCallback(() => {
-    setPendingAction("saveAndNew");
-    // Manually trigger submit since dropdown item isn't a submit button
-    handleSubmit(onSubmit)();
-  }, [handleSubmit, onSubmit]);
+  // Dropdown save - explicit action
+  const handleDropdownSave = useCallback(() => {
+    createSubmitHandler("save")();
+  }, [createSubmitHandler]);
+
+  // Dropdown save + new - explicit action
+  const handleDropdownSaveAndNew = useCallback(() => {
+    createSubmitHandler("saveAndNew")();
+  }, [createSubmitHandler]);
 
   return (
     <div className="flex">
-      {/* Primary Save button - uses native form submit */}
+      {/* Primary Save button - type="button" since we call handleSubmit manually */}
       <Button
-        type="submit"
+        type="button"
+        onClick={handlePrimarySave}
         disabled={isSubmitting}
-        onClick={handleSaveClick}
         className="rounded-r-none min-w-[100px]"
       >
         Save
@@ -1161,7 +1380,7 @@ export const SaveButtonGroup = ({
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
-            type="button" // NOT submit - just opens dropdown
+            type="button"
             disabled={isSubmitting}
             className="rounded-l-none border-l border-primary-foreground/20 px-2"
           >
@@ -1169,15 +1388,10 @@ export const SaveButtonGroup = ({
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem
-            onClick={() => {
-              setPendingAction("save");
-              handleSubmit(onSubmit)();
-            }}
-          >
+          <DropdownMenuItem onClick={handleDropdownSave}>
             Save
           </DropdownMenuItem>
-          <DropdownMenuItem onClick={handleSaveAndNewClick}>
+          <DropdownMenuItem onClick={handleDropdownSaveAndNew}>
             Save + Create Another
           </DropdownMenuItem>
         </DropdownMenuContent>
@@ -1947,9 +2161,35 @@ git commit -m "feat(constants): extract US_STATES to dedicated module"
 ```typescript
 // src/atomic-crm/contacts/__tests__/ContactMainTab.test.tsx
 import { describe, test, expect, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { ContactMainTab } from "../ContactMainTab";
-import { renderWithAdminContext } from "@/tests/utils/render-admin";
+import { AdminContext } from "react-admin";
+import { FormProvider, useForm } from "react-hook-form";
+
+/**
+ * CRITICAL: ContactMainTab uses useFormContext() which requires FormProvider.
+ * renderWithAdminContext alone doesn't provide this - we need a custom wrapper.
+ */
+const TestWrapper = ({ children }: { children: React.ReactNode }) => {
+  const methods = useForm({
+    defaultValues: {
+      first_name: "",
+      last_name: "",
+      organization_id: null,
+      sales_id: null,
+      email: [],
+      phone: [],
+    },
+  });
+
+  return (
+    <AdminContext>
+      <FormProvider {...methods}>
+        <form>{children}</form>
+      </FormProvider>
+    </AdminContext>
+  );
+};
 
 // Mock the components we're composing
 vi.mock("@/components/admin/text-input", () => ({
@@ -1964,28 +2204,56 @@ vi.mock("@/components/admin/reference-input", () => ({
   ),
 }));
 
+vi.mock("@/components/admin/autocomplete-input", () => ({
+  AutocompleteInput: ({ label, source }: any) => (
+    <input data-testid={`autocomplete-${source}`} aria-label={label} />
+  ),
+}));
+
+vi.mock("@/components/admin/array-input", () => ({
+  ArrayInput: ({ source, children }: any) => (
+    <div data-testid={`input-${source}`}>{children}</div>
+  ),
+}));
+
 describe("ContactMainTab", () => {
   test("renders first name and last name fields", () => {
-    renderWithAdminContext(<ContactMainTab />);
+    render(
+      <TestWrapper>
+        <ContactMainTab />
+      </TestWrapper>
+    );
 
     expect(screen.getByTestId("input-first_name")).toBeInTheDocument();
     expect(screen.getByTestId("input-last_name")).toBeInTheDocument();
   });
 
   test("renders organization reference field", () => {
-    renderWithAdminContext(<ContactMainTab />);
+    render(
+      <TestWrapper>
+        <ContactMainTab />
+      </TestWrapper>
+    );
 
     expect(screen.getByTestId("ref-organization_id")).toBeInTheDocument();
   });
 
   test("renders sales rep field", () => {
-    renderWithAdminContext(<ContactMainTab />);
+    render(
+      <TestWrapper>
+        <ContactMainTab />
+      </TestWrapper>
+    );
 
     expect(screen.getByTestId("ref-sales_id")).toBeInTheDocument();
   });
 
   test("renders email and phone fields", () => {
-    renderWithAdminContext(<ContactMainTab />);
+    render(
+      <TestWrapper>
+        <ContactMainTab />
+      </TestWrapper>
+    );
 
     // These are JSONB arrays, so they use ArrayInput
     expect(screen.getByTestId("input-email")).toBeInTheDocument();
@@ -1993,7 +2261,11 @@ describe("ContactMainTab", () => {
   });
 
   test("uses FormGrid for 2-column layout", () => {
-    renderWithAdminContext(<ContactMainTab />);
+    render(
+      <TestWrapper>
+        <ContactMainTab />
+      </TestWrapper>
+    );
 
     // FormGrid should be present with grid classes
     const grid = document.querySelector(".grid.md\\:grid-cols-2");
