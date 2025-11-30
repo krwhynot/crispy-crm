@@ -6,7 +6,7 @@ export { OpportunitiesService } from "./opportunities.service";
 export { ActivitiesService } from "./activities.service";
 export { JunctionsService } from "./junctions.service";
 export { SegmentsService } from "./segments.service";
-export { DigestService, digestService } from "./digest.service";
+export { DigestService, createDigestService } from "./digest.service";
 
 // Re-export types for convenience
 export type { SalesFormData, Sale } from "../types";
