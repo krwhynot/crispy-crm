@@ -11,3 +11,10 @@ export {
   type MyPerformanceMetrics,
   type PerformanceMetric,
 } from "./useMyPerformance";
+export { useDebouncedSearch } from "./useDebouncedSearch";
+export {
+  useEntityData,
+  type Contact,
+  type Organization,
+  type Opportunity,
+} from "./useEntityData";

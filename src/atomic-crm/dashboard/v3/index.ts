@@ -27,9 +27,10 @@ const PrincipalDashboardV3Lazy = lazy(() =>
 export { PrincipalDashboardV3Lazy as PrincipalDashboardV3 };
 export { DashboardErrorBoundary } from "./DashboardErrorBoundary";
 
-// Note: Child components (PrincipalPipelineTable, TasksPanel, LogActivityFAB, QuickLogForm)
+// Note: Child components (PrincipalPipelineTable, TasksKanbanPanel, LogActivityFAB, QuickLogForm)
 // are internal implementation details and not exported from the public API.
 // They are imported directly within dashboard/v3 via relative paths.
+// TasksPanel is deprecated - replaced by TasksKanbanPanel (kanban board layout).
 
 // Export types for consumers that need to work with dashboard data
 export type {
