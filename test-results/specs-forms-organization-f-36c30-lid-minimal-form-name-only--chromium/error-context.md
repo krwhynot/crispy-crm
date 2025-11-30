@@ -1,113 +1,477 @@
 # Page snapshot
 
 ```yaml
-- generic [ref=e2]:
-  - navigation [ref=e3]:
+- generic:
+  - generic:
+    - navigation:
+      - generic:
+        - generic:
+          - generic:
+            - link:
+              - /url: "#/"
+            - generic:
+              - navigation:
+                - link:
+                  - /url: "#/"
+                  - text: Dashboard
+                - link:
+                  - /url: "#/contacts"
+                  - text: Contacts
+                - link:
+                  - /url: "#/organizations"
+                  - text: Organizations
+                - link:
+                  - /url: "#/opportunities"
+                  - text: Opportunities
+                - link:
+                  - /url: "#/products"
+                  - text: Products
+                - link:
+                  - /url: "#/tasks"
+                  - text: Tasks
+                - link:
+                  - /url: "#/reports"
+                  - text: Reports
+            - generic:
+              - button:
+                - img
+                - generic: Toggle theme
+              - button:
+                - img
+              - button:
+                - img
+              - button:
+                - generic:
+                  - generic: A
+    - main:
+      - generic:
+        - generic:
+          - button:
+            - img
+            - generic: Sort by name ascending
+            - img
+          - button:
+            - img
+            - text: Export
+          - link:
+            - /url: "#/organizations/create"
+            - img
+            - text: Create
+      - generic:
+        - generic:
+          - complementary:
+            - generic:
+              - generic:
+                - generic:
+                  - generic:
+                    - group:
+                      - textbox:
+                        - /placeholder: Search organizations...
+                    - img
+                - generic:
+                  - generic:
+                    - button:
+                      - generic:
+                        - generic:
+                          - img
+                        - heading [level=3]: Organization Type
+                      - img
+                  - generic:
+                    - button:
+                      - generic:
+                        - generic:
+                          - img
+                        - heading [level=3]: Priority
+                      - img
+                  - generic:
+                    - button:
+                      - generic:
+                        - generic:
+                          - img
+                        - heading [level=3]: Playbook Category
+                      - img
+                  - generic:
+                    - button:
+                      - generic:
+                        - generic:
+                          - img
+                        - heading [level=3]: Account Manager
+                      - img
+          - main:
+            - generic:
+              - generic:
+                - generic:
+                  - table:
+                    - rowgroup:
+                      - row:
+                        - columnheader:
+                          - button:
+                            - generic: Organization Name
+                            - img
+                        - columnheader:
+                          - button:
+                            - generic: Type
+                        - columnheader:
+                          - button:
+                            - generic: Priority
+                        - columnheader:
+                          - button:
+                            - generic: Parent
+                        - columnheader: Contacts
+                        - columnheader: Opportunities
+                    - rowgroup:
+                      - row:
+                        - cell: Whitespace Org-1764493557903
+                        - cell:
+                          - generic:
+                            - generic: Unknown
+                        - cell:
+                          - generic:
+                            - generic: C - Medium
+                        - cell: "-"
+                        - cell: "0"
+                        - cell: "0"
+                      - row:
+                        - cell: Anchor Food Professionals
+                        - cell:
+                          - generic:
+                            - generic: Principal
+                        - cell:
+                          - generic:
+                            - generic: A - High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "6"
+                      - row:
+                        - cell: Applebee's
+                        - cell:
+                          - generic:
+                            - generic: Customer
+                        - cell:
+                          - generic:
+                            - generic: A - High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+                      - row:
+                        - cell: Aramark Higher Education
+                        - cell:
+                          - generic:
+                            - generic: Customer
+                        - cell:
+                          - generic:
+                            - generic: A - High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+                      - row:
+                        - cell: Ascension Health
+                        - cell:
+                          - generic:
+                            - generic: Customer
+                        - cell:
+                          - generic:
+                            - generic: B - Medium-High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+                      - row:
+                        - cell: Ben E. Keith Foods
+                        - cell:
+                          - generic:
+                            - generic: Distributor
+                        - cell:
+                          - generic:
+                            - generic: B - Medium-High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+                      - row:
+                        - cell: Brookdale Senior Living
+                        - cell:
+                          - generic:
+                            - generic: Customer
+                        - cell:
+                          - generic:
+                            - generic: B - Medium-High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+                      - row:
+                        - cell: Buffalo Wild Wings
+                        - cell:
+                          - generic:
+                            - generic: Customer
+                        - cell:
+                          - generic:
+                            - generic: A - High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+                      - row:
+                        - cell: Cancel Duplicate Test-1764493561225
+                        - cell:
+                          - generic:
+                            - generic: Unknown
+                        - cell:
+                          - generic:
+                            - generic: C - Medium
+                        - cell: "-"
+                        - cell: "0"
+                        - cell: "0"
+                      - row:
+                        - cell: Chili's Grill & Bar
+                        - cell:
+                          - generic:
+                            - generic: Customer
+                        - cell:
+                          - generic:
+                            - generic: A - High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+                      - row:
+                        - cell: Chipotle Mexican Grill
+                        - cell:
+                          - generic:
+                            - generic: Customer
+                        - cell:
+                          - generic:
+                            - generic: A - High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+                      - row:
+                        - cell: Custom Culinary
+                        - cell:
+                          - generic:
+                            - generic: Principal
+                        - cell:
+                          - generic:
+                            - generic: A - High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "5"
+                      - row:
+                        - cell: Dot Foods
+                        - cell:
+                          - generic:
+                            - generic: Distributor
+                        - cell:
+                          - generic:
+                            - generic: A - High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+                      - row:
+                        - cell: Duplicate Test Org-1764493439863
+                        - cell:
+                          - generic:
+                            - generic: Unknown
+                        - cell:
+                          - generic:
+                            - generic: C - Medium
+                        - cell: "-"
+                        - cell: "0"
+                        - cell: "0"
+                      - row:
+                        - cell: Duplicate Test Org-1764493517896
+                        - cell:
+                          - generic:
+                            - generic: Unknown
+                        - cell:
+                          - generic:
+                            - generic: C - Medium
+                        - cell: "-"
+                        - cell: "0"
+                        - cell: "0"
+                      - row:
+                        - cell: European Imports Ltd
+                        - cell:
+                          - generic:
+                            - generic: Distributor
+                        - cell:
+                          - generic:
+                            - generic: C - Medium
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+                      - row:
+                        - cell: Frico
+                        - cell:
+                          - generic:
+                            - generic: Principal
+                        - cell:
+                          - generic:
+                            - generic: A - High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "6"
+                      - row:
+                        - cell: Gordon Food Service (GFS)
+                        - cell:
+                          - generic:
+                            - generic: Distributor
+                        - cell:
+                          - generic:
+                            - generic: A - High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+                      - row:
+                        - cell: HCA Healthcare
+                        - cell:
+                          - generic:
+                            - generic: Customer
+                        - cell:
+                          - generic:
+                            - generic: A - High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+                      - row:
+                        - cell: Hilton Hotels
+                        - cell:
+                          - generic:
+                            - generic: Customer
+                        - cell:
+                          - generic:
+                            - generic: A - High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+                      - row:
+                        - cell: HTTP Website Org-1764493451629
+                        - cell:
+                          - generic:
+                            - generic: Unknown
+                        - cell:
+                          - generic:
+                            - generic: C - Medium
+                        - cell: "-"
+                        - cell: "0"
+                        - cell: "0"
+                      - row:
+                        - cell: HTTP Website Org-1764493529058
+                        - cell:
+                          - generic:
+                            - generic: Unknown
+                        - cell:
+                          - generic:
+                            - generic: C - Medium
+                        - cell: "-"
+                        - cell: "0"
+                        - cell: "0"
+                      - row:
+                        - cell: HTTPS Website Org-1764493463799
+                        - cell:
+                          - generic:
+                            - generic: Unknown
+                        - cell:
+                          - generic:
+                            - generic: C - Medium
+                        - cell: "-"
+                        - cell: "0"
+                        - cell: "0"
+                      - row:
+                        - cell: HTTPS Website Org-1764493539852
+                        - cell:
+                          - generic:
+                            - generic: Unknown
+                        - cell:
+                          - generic:
+                            - generic: C - Medium
+                        - cell: "-"
+                        - cell: "0"
+                        - cell: "0"
+                      - row:
+                        - cell: Hyatt Hotels
+                        - cell:
+                          - generic:
+                            - generic: Customer
+                        - cell:
+                          - generic:
+                            - generic: A - High
+                        - cell: "-"
+                        - cell: "2"
+                        - cell: "0"
+        - link:
+          - /url: "#/organizations/create"
+          - img
+      - generic:
+        - generic:
+          - paragraph: "Rows per page:"
+          - combobox:
+            - generic: "25"
+            - img
+        - generic: 1-25 of 56
+        - navigation:
+          - list:
+            - listitem:
+              - link:
+                - /url: "#"
+                - img
+            - listitem:
+              - link:
+                - /url: "#"
+                - text: "1"
+            - listitem:
+              - link:
+                - /url: "#"
+                - text: "2"
+            - listitem:
+              - link:
+                - /url: "#"
+                - text: "3"
+            - listitem:
+              - link:
+                - /url: "#"
+                - img
+    - contentinfo:
+      - generic:
+        - generic:
+          - paragraph: © 2025 MFB Master Food Brokers. All rights reserved.
+          - button:
+            - img
+            - generic: Keyboard shortcuts
+    - region "Notifications alt+T":
+      - list:
+        - listitem:
+          - button "Close toast":
+            - img
+          - generic:
+            - img
+          - generic:
+            - generic: Element created
+  - dialog "Minimal Org-1764493638358" [ref=e2]:
+    - generic [ref=e3]:
+      - heading "Minimal Org-1764493638358" [level=2] [ref=e4]
+      - button "Switch to edit mode" [active] [ref=e5] [cursor=pointer]:
+        - img
+        - text: Edit
     - generic [ref=e6]:
-      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
-        - /url: "#/"
-        - generic "MFB Master Food Brokers" [ref=e8]
-      - navigation [ref=e10]:
-        - link "Dashboard" [ref=e11] [cursor=pointer]:
-          - /url: "#/"
-        - link "Contacts" [ref=e12] [cursor=pointer]:
-          - /url: "#/contacts"
-        - link "Organizations" [ref=e13] [cursor=pointer]:
-          - /url: "#/organizations"
-        - link "Opportunities" [ref=e14] [cursor=pointer]:
-          - /url: "#/opportunities"
-        - link "Products" [ref=e15] [cursor=pointer]:
-          - /url: "#/products"
-        - link "Tasks" [ref=e16] [cursor=pointer]:
-          - /url: "#/tasks"
-        - link "Reports" [ref=e17] [cursor=pointer]:
-          - /url: "#/reports"
-      - generic [ref=e18]:
-        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+      - tablist [ref=e7]:
+        - tab "Details" [selected] [ref=e8] [cursor=pointer]:
           - img
-          - generic [ref=e20]: Toggle theme
-        - button [ref=e21] [cursor=pointer]:
+        - tab "Contacts" [ref=e9] [cursor=pointer]:
           - img
-        - button "Notifications" [ref=e22] [cursor=pointer]:
+        - tab "Opportunities" [ref=e10] [cursor=pointer]:
           - img
-        - button "A" [ref=e23] [cursor=pointer]:
-          - generic [ref=e25]: A
-  - main [ref=e26]:
-    - generic [ref=e31]:
-      - generic [ref=e32]:
-        - tablist [ref=e33]:
-          - tab "Main tab" [selected] [ref=e34] [cursor=pointer]: Main
-          - tab "More tab" [ref=e35] [cursor=pointer]: More
-        - tabpanel "Main tab" [ref=e36]:
-          - generic [ref=e37]:
-            - generic [ref=e38]:
-              - heading "Organization Information" [level=3] [ref=e40]
-              - generic [ref=e42]:
-                - group [ref=e43]:
-                  - generic [ref=e45]: Name *
-                  - textbox "Name *" [ref=e46]:
-                    - /placeholder: Organization name
-                  - generic [ref=e47]: Required field
-                - group [ref=e48]:
-                  - generic [ref=e50]: Organization Type *
-                  - generic [ref=e51]:
-                    - combobox [ref=e52] [cursor=pointer]:
-                      - generic: Unknown
-                      - button [ref=e53]:
-                        - img
-                      - img
-                    - combobox [ref=e54]
-                  - generic [ref=e55]: Required field
-                - group [ref=e56]:
-                  - generic [ref=e58]: Account manager
-                  - generic [ref=e59]:
-                    - combobox [ref=e60] [cursor=pointer]:
-                      - generic: Admin User
-                      - button [ref=e61]:
-                        - img
-                      - img
-                    - combobox [ref=e62]
-                - group [ref=e63]:
-                  - generic [ref=e65]: Segment
-                  - generic [ref=e66]:
-                    - combobox [ref=e67] [cursor=pointer]:
-                      - generic: Unknown
-                      - button [ref=e68]:
-                        - img
-                      - img
-                    - combobox [ref=e69]
-            - generic [ref=e70]:
-              - heading "Address Information" [level=3] [ref=e72]
-              - generic [ref=e74]:
-                - group [ref=e75]:
-                  - generic [ref=e77]: Street
-                  - textbox "Street" [ref=e78]
-                - group [ref=e79]:
-                  - generic [ref=e81]: City
-                  - textbox "City" [ref=e82]
-                - group [ref=e83]:
-                  - generic [ref=e85]: State
-                  - generic [ref=e86]:
-                    - combobox [ref=e87] [cursor=pointer]:
-                      - generic: Select state
-                      - img
-                    - combobox [ref=e88]
-                - group [ref=e89]:
-                  - generic [ref=e91]: Zip
-                  - textbox "Zip" [ref=e92]
-      - toolbar [ref=e93]:
-        - generic [ref=e94]:
-          - button "Cancel" [ref=e95] [cursor=pointer]:
-            - img
-            - text: Cancel
-          - button "Create Organization" [ref=e96] [cursor=pointer]:
-            - img
-            - text: Create Organization
-  - contentinfo [ref=e97]:
-    - generic [ref=e99]:
-      - paragraph [ref=e100]: © 2025 MFB Master Food Brokers. All rights reserved.
-      - button "View keyboard shortcuts" [ref=e101] [cursor=pointer]:
-        - img [ref=e102]
-        - generic [ref=e104]: Keyboard shortcuts
-  - region "Notifications alt+T"
+        - tab "Notes" [ref=e11] [cursor=pointer]:
+          - img
+      - tabpanel "Details" [ref=e12]:
+        - generic [ref=e14]:
+          - heading "Organization Details" [level=3] [ref=e15]
+          - generic [ref=e18]:
+            - heading "Minimal Org-1764493638358" [level=3] [ref=e20]
+            - generic [ref=e21]:
+              - generic [ref=e22]: "Type:"
+              - generic [ref=e23]: Unknown
+            - generic [ref=e24]:
+              - generic [ref=e25]: "Priority:"
+              - generic [ref=e26]: C - Medium
+            - generic [ref=e28]: "Created: 11/30/2025"
+    - button "Close" [ref=e29] [cursor=pointer]:
+      - img [ref=e30]
+      - generic [ref=e33]: Close
 ```

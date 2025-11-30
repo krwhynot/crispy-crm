@@ -1,0 +1,390 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e2]:
+  - navigation [ref=e3]:
+    - generic [ref=e6]:
+      - link "MFB Master Food Brokers" [ref=e7] [cursor=pointer]:
+        - /url: "#/"
+        - generic "MFB Master Food Brokers" [ref=e8]
+      - navigation [ref=e10]:
+        - link "Dashboard" [ref=e11] [cursor=pointer]:
+          - /url: "#/"
+        - link "Contacts" [ref=e12] [cursor=pointer]:
+          - /url: "#/contacts"
+        - link "Organizations" [ref=e13] [cursor=pointer]:
+          - /url: "#/organizations"
+        - link "Opportunities" [ref=e14] [cursor=pointer]:
+          - /url: "#/opportunities"
+        - link "Products" [ref=e15] [cursor=pointer]:
+          - /url: "#/products"
+        - link "Tasks" [ref=e16] [cursor=pointer]:
+          - /url: "#/tasks"
+        - link "Reports" [ref=e17] [cursor=pointer]:
+          - /url: "#/reports"
+      - generic [ref=e18]:
+        - button "Toggle theme" [ref=e19] [cursor=pointer]:
+          - img
+          - generic [ref=e20]: Toggle theme
+        - button [ref=e21] [cursor=pointer]:
+          - img
+        - button "Notifications" [ref=e22] [cursor=pointer]:
+          - img
+        - button "A" [ref=e23] [cursor=pointer]:
+          - generic [ref=e25]: A
+  - main [ref=e26]:
+    - generic [ref=e27]:
+      - heading "Principal Dashboard" [level=1] [ref=e30]
+      - main [ref=e31]:
+        - generic [ref=e32]:
+          - region "Key Performance Indicators" [ref=e33]:
+            - 'button "Open Opportunities: 0. Click to view details." [ref=e34] [cursor=pointer]':
+              - generic [ref=e36]:
+                - img [ref=e38]
+                - generic [ref=e41]:
+                  - paragraph [ref=e42]: Open Opportunities
+                  - paragraph [ref=e43]: "0"
+            - 'button "Overdue Tasks: 0. Click to view details." [ref=e44] [cursor=pointer]':
+              - generic [ref=e46]:
+                - img [ref=e48]
+                - generic [ref=e50]:
+                  - paragraph [ref=e51]: Overdue Tasks
+                  - paragraph [ref=e52]: "0"
+            - 'button "Activities This Week: 14. Click to view details." [ref=e53] [cursor=pointer]':
+              - generic [ref=e55]:
+                - img [ref=e57]
+                - generic [ref=e59]:
+                  - paragraph [ref=e60]: Activities This Week
+                  - paragraph [ref=e61]: "14"
+            - 'button "Stale Deals: 0. Click to view details." [ref=e62] [cursor=pointer]':
+              - generic [ref=e64]:
+                - img [ref=e66]
+                - generic [ref=e68]:
+                  - paragraph [ref=e69]: Stale Deals
+                  - paragraph [ref=e70]: "0"
+          - generic [ref=e71]:
+            - generic [ref=e73]:
+              - generic [ref=e74]:
+                - heading "Pipeline by Principal" [level=2] [ref=e75]
+                - paragraph [ref=e76]: Track opportunity momentum across your customer accounts
+              - generic [ref=e77]:
+                - generic [ref=e78]:
+                  - img [ref=e79]
+                  - textbox "Search principals..." [ref=e82]
+                - generic [ref=e83]:
+                  - switch "My Principals Only" [ref=e84] [cursor=pointer]
+                  - generic [ref=e85]: My Principals Only
+                - button "Filters" [ref=e86] [cursor=pointer]:
+                  - img
+                  - text: Filters
+            - table [ref=e89]:
+              - rowgroup [ref=e90]:
+                - row "Principal Pipeline This Week Last Week Momentum Next Action" [ref=e91]:
+                  - cell "Principal" [ref=e92] [cursor=pointer]:
+                    - generic [ref=e93]:
+                      - text: Principal
+                      - img [ref=e94]
+                  - cell "Pipeline" [ref=e96] [cursor=pointer]:
+                    - generic [ref=e97]:
+                      - text: Pipeline
+                      - img [ref=e98]
+                  - cell "This Week" [ref=e101] [cursor=pointer]:
+                    - generic [ref=e102]:
+                      - generic [ref=e103]: This Week
+                      - img [ref=e104]
+                  - cell "Last Week" [ref=e107] [cursor=pointer]:
+                    - generic [ref=e108]:
+                      - generic [ref=e109]: Last Week
+                      - img [ref=e110]
+                  - cell "Momentum" [ref=e113] [cursor=pointer]:
+                    - generic [ref=e114]:
+                      - generic [ref=e115]: Momentum
+                      - img [ref=e116]
+                  - cell "Next Action" [ref=e119]
+              - rowgroup [ref=e120]:
+                - 'button "View opportunities for Anchor Food Professionals. Pipeline momentum: steady" [ref=e121] [cursor=pointer]':
+                  - cell "Anchor Food Professionals" [ref=e122]: Anchor Food Professionals
+                  - cell "4" [ref=e124]:
+                    - generic [ref=e125]: "4"
+                  - cell "2" [ref=e126]:
+                    - generic [ref=e127]: "2"
+                  - cell "2" [ref=e128]:
+                    - generic [ref=e129]: "2"
+                  - cell "steady" [ref=e130]:
+                    - generic [ref=e131]:
+                      - img [ref=e132]
+                      - generic [ref=e133]: steady
+                  - cell "No action scheduled" [ref=e134]
+                - 'button "View opportunities for Custom Culinary. Pipeline momentum: decreasing" [ref=e135] [cursor=pointer]':
+                  - cell "Custom Culinary" [ref=e136]: Custom Culinary
+                  - cell "3" [ref=e138]:
+                    - generic [ref=e139]: "3"
+                  - cell "1" [ref=e140]:
+                    - generic [ref=e141]: "1"
+                  - cell "3" [ref=e142]:
+                    - generic [ref=e143]: "3"
+                  - cell "decreasing" [ref=e144]:
+                    - generic [ref=e145]:
+                      - img [ref=e146]
+                      - generic [ref=e149]: decreasing
+                  - cell "No action scheduled" [ref=e150]
+                - 'button "View opportunities for Frico. Pipeline momentum: steady" [ref=e151] [cursor=pointer]':
+                  - cell "Frico" [ref=e152]: Frico
+                  - cell "5" [ref=e154]:
+                    - generic [ref=e155]: "5"
+                  - cell "1" [ref=e156]:
+                    - generic [ref=e157]: "1"
+                  - cell "1" [ref=e158]:
+                    - generic [ref=e159]: "1"
+                  - cell "steady" [ref=e160]:
+                    - generic [ref=e161]:
+                      - img [ref=e162]
+                      - generic [ref=e163]: steady
+                  - cell "No action scheduled" [ref=e164]
+                - 'button "View opportunities for Lakeview Farms. Pipeline momentum: increasing" [ref=e165] [cursor=pointer]':
+                  - cell "Lakeview Farms" [ref=e166]: Lakeview Farms
+                  - cell "4" [ref=e168]:
+                    - generic [ref=e169]: "4"
+                  - cell "1" [ref=e170]:
+                    - generic [ref=e171]: "1"
+                  - cell "-" [ref=e172]
+                  - cell "increasing" [ref=e173]:
+                    - generic [ref=e174]:
+                      - img [ref=e175]
+                      - generic [ref=e178]: increasing
+                  - cell "No action scheduled" [ref=e179]
+                - 'button "View opportunities for Litehouse. Pipeline momentum: increasing" [ref=e180] [cursor=pointer]':
+                  - cell "Litehouse" [ref=e181]: Litehouse
+                  - cell "4" [ref=e183]:
+                    - generic [ref=e184]: "4"
+                  - cell "2" [ref=e185]:
+                    - generic [ref=e186]: "2"
+                  - cell "1" [ref=e187]:
+                    - generic [ref=e188]: "1"
+                  - cell "increasing" [ref=e189]:
+                    - generic [ref=e190]:
+                      - img [ref=e191]
+                      - generic [ref=e194]: increasing
+                  - cell "No action scheduled" [ref=e195]
+                - 'button "View opportunities for McCRUM. Pipeline momentum: decreasing" [ref=e196] [cursor=pointer]':
+                  - cell "McCRUM" [ref=e197]: McCRUM
+                  - cell "6" [ref=e199]:
+                    - generic [ref=e200]: "6"
+                  - cell "2" [ref=e201]:
+                    - generic [ref=e202]: "2"
+                  - cell "4" [ref=e203]:
+                    - generic [ref=e204]: "4"
+                  - cell "decreasing" [ref=e205]:
+                    - generic [ref=e206]:
+                      - img [ref=e207]
+                      - generic [ref=e210]: decreasing
+                  - cell "No action scheduled" [ref=e211]
+                - 'button "View opportunities for Rapid Rasoi. Pipeline momentum: decreasing" [ref=e212] [cursor=pointer]':
+                  - cell "Rapid Rasoi" [ref=e213]: Rapid Rasoi
+                  - cell "5" [ref=e215]:
+                    - generic [ref=e216]: "5"
+                  - cell "-" [ref=e217]
+                  - cell "2" [ref=e218]:
+                    - generic [ref=e219]: "2"
+                  - cell "decreasing" [ref=e220]:
+                    - generic [ref=e221]:
+                      - img [ref=e222]
+                      - generic [ref=e225]: decreasing
+                  - cell "No action scheduled" [ref=e226]
+                - 'button "View opportunities for SWAP. Pipeline momentum: decreasing" [ref=e227] [cursor=pointer]':
+                  - cell "SWAP" [ref=e228]: SWAP
+                  - cell "6" [ref=e230]:
+                    - generic [ref=e231]: "6"
+                  - cell "1" [ref=e232]:
+                    - generic [ref=e233]: "1"
+                  - cell "2" [ref=e234]:
+                    - generic [ref=e235]: "2"
+                  - cell "decreasing" [ref=e236]:
+                    - generic [ref=e237]:
+                      - img [ref=e238]
+                      - generic [ref=e241]: decreasing
+                  - cell "No action scheduled" [ref=e242]
+                - 'button "View opportunities for Tattooed Chef. Pipeline momentum: steady" [ref=e243] [cursor=pointer]':
+                  - cell "Tattooed Chef" [ref=e244]: Tattooed Chef
+                  - cell "3" [ref=e246]:
+                    - generic [ref=e247]: "3"
+                  - cell "1" [ref=e248]:
+                    - generic [ref=e249]: "1"
+                  - cell "1" [ref=e250]:
+                    - generic [ref=e251]: "1"
+                  - cell "steady" [ref=e252]:
+                    - generic [ref=e253]:
+                      - img [ref=e254]
+                      - generic [ref=e255]: steady
+                  - cell "No action scheduled" [ref=e256]
+          - generic [ref=e257]:
+            - generic [ref=e259]:
+              - generic [ref=e261]:
+                - generic [ref=e262]:
+                  - generic [ref=e263]: My Tasks
+                  - generic [ref=e264]: Drag tasks between columns to reschedule
+                - button "New Task" [ref=e266] [cursor=pointer]:
+                  - img
+                  - text: New Task
+              - generic [ref=e269]:
+                - paragraph [ref=e270]: No tasks to show
+                - paragraph [ref=e271]: Create a task to get started
+            - generic [ref=e272]:
+              - generic [ref=e273]:
+                - generic [ref=e275]: My Performance
+                - generic [ref=e276]:
+                  - region "Personal performance metrics" [ref=e277]:
+                    - 'group "Activities This Week: 0" [ref=e278]':
+                      - img [ref=e280]
+                      - generic [ref=e282]:
+                        - paragraph [ref=e283]: Activities
+                        - generic [ref=e285]: "0"
+                    - 'group "Deals Moved: 0" [ref=e286]':
+                      - img [ref=e288]
+                      - generic [ref=e291]:
+                        - paragraph [ref=e292]: Deals Moved
+                        - generic [ref=e294]: "0"
+                    - 'group "Tasks Completed: 0" [ref=e295]':
+                      - img [ref=e297]
+                      - generic [ref=e300]:
+                        - paragraph [ref=e301]: Tasks Done
+                        - generic [ref=e303]: "0"
+                    - 'group "Open Opportunities: 0" [ref=e304]':
+                      - img [ref=e306]
+                      - generic [ref=e309]:
+                        - paragraph [ref=e310]: Open Opps
+                        - generic [ref=e312]: "0"
+                  - paragraph [ref=e313]: Compared to last week
+              - generic [ref=e314]:
+                - generic [ref=e315]:
+                  - generic [ref=e316]:
+                    - generic [ref=e317]:
+                      - generic [ref=e318]:
+                        - img [ref=e319]
+                        - text: Team Activity
+                      - generic [ref=e321]: Recent activities across the team
+                    - button "View all activities" [ref=e322] [cursor=pointer]:
+                      - text: View All
+                      - img
+                  - paragraph [ref=e323]: Showing 10 recent activities
+                - generic [ref=e325]:
+                  - 'article "Note by Unknown User: Competitive intelligence" [ref=e326]':
+                    - generic [ref=e328]: "?"
+                    - generic [ref=e329]:
+                      - generic [ref=e330]:
+                        - generic "Note" [ref=e331]:
+                          - img [ref=e332]
+                        - generic [ref=e335]: Unknown User
+                        - generic [ref=e336]: •
+                        - generic [ref=e337]: Note
+                      - paragraph [ref=e338]: Competitive intelligence
+                      - paragraph [ref=e339]: Yesterday
+                  - 'article "Check In by Unknown User: Monthly account check-in" [ref=e340]':
+                    - generic [ref=e342]: "?"
+                    - generic [ref=e343]:
+                      - generic [ref=e344]:
+                        - generic "Check In" [ref=e345]:
+                          - img [ref=e346]
+                        - generic [ref=e348]: Unknown User
+                        - generic [ref=e349]: •
+                        - generic [ref=e350]: Check In
+                      - paragraph [ref=e351]: Monthly account check-in
+                      - paragraph [ref=e352]: 2 days ago
+                  - 'article "Meeting by Unknown User: Kitchen sample presentation" [ref=e353]':
+                    - generic [ref=e355]: "?"
+                    - generic [ref=e356]:
+                      - generic [ref=e357]:
+                        - generic "Meeting" [ref=e358]:
+                          - img [ref=e359]
+                        - generic [ref=e364]: Unknown User
+                        - generic [ref=e365]: •
+                        - generic [ref=e366]: Meeting
+                      - paragraph [ref=e367]: Kitchen sample presentation
+                      - paragraph [ref=e368]: 2 days ago
+                  - 'article "Note by Unknown User: Menu change planned" [ref=e369]':
+                    - generic [ref=e371]: "?"
+                    - generic [ref=e372]:
+                      - generic [ref=e373]:
+                        - generic "Note" [ref=e374]:
+                          - img [ref=e375]
+                        - generic [ref=e378]: Unknown User
+                        - generic [ref=e379]: •
+                        - generic [ref=e380]: Note
+                      - paragraph [ref=e381]: Menu change planned
+                      - paragraph [ref=e382]: 3 days ago
+                  - 'article "Follow Up by Unknown User: Post-demo follow-up" [ref=e383]':
+                    - generic [ref=e385]: "?"
+                    - generic [ref=e386]:
+                      - generic [ref=e387]:
+                        - generic "Follow Up" [ref=e388]:
+                          - img [ref=e389]
+                        - generic [ref=e394]: Unknown User
+                        - generic [ref=e395]: •
+                        - generic [ref=e396]: Follow Up
+                      - paragraph [ref=e397]: Post-demo follow-up
+                      - paragraph [ref=e398]: 3 days ago
+                  - 'article "Call by Unknown User: Product inquiry follow-up" [ref=e399]':
+                    - generic [ref=e401]: "?"
+                    - generic [ref=e402]:
+                      - generic [ref=e403]:
+                        - generic "Call" [ref=e404]:
+                          - img [ref=e405]
+                        - generic [ref=e407]: Unknown User
+                        - generic [ref=e408]: •
+                        - generic [ref=e409]: Call
+                      - paragraph [ref=e410]: Product inquiry follow-up
+                      - paragraph [ref=e411]: 3 days ago
+                  - 'article "Site Visit by Unknown User: Kitchen tour and assessment" [ref=e412]':
+                    - generic [ref=e414]: "?"
+                    - generic [ref=e415]:
+                      - generic [ref=e416]:
+                        - generic "Site Visit" [ref=e417]:
+                          - img [ref=e418]
+                        - generic [ref=e421]: Unknown User
+                        - generic [ref=e422]: •
+                        - generic [ref=e423]: Site Visit
+                      - paragraph [ref=e424]: Kitchen tour and assessment
+                      - paragraph [ref=e425]: 4 days ago
+                  - 'article "Email by Unknown User: Product catalog sent" [ref=e426]':
+                    - generic [ref=e428]: "?"
+                    - generic [ref=e429]:
+                      - generic [ref=e430]:
+                        - generic "Email" [ref=e431]:
+                          - img [ref=e432]
+                        - generic [ref=e435]: Unknown User
+                        - generic [ref=e436]: •
+                        - generic [ref=e437]: Email
+                      - paragraph [ref=e438]: Product catalog sent
+                      - paragraph [ref=e439]: 4 days ago
+                  - 'article "Note by Unknown User: Budget cycle timing" [ref=e440]':
+                    - generic [ref=e442]: "?"
+                    - generic [ref=e443]:
+                      - generic [ref=e444]:
+                        - generic "Note" [ref=e445]:
+                          - img [ref=e446]
+                        - generic [ref=e449]: Unknown User
+                        - generic [ref=e450]: •
+                        - generic [ref=e451]: Note
+                      - paragraph [ref=e452]: Budget cycle timing
+                      - paragraph [ref=e453]: 5 days ago
+                  - 'article "Contract Review by Unknown User: Initial contract review" [ref=e454]':
+                    - generic [ref=e456]: "?"
+                    - generic [ref=e457]:
+                      - generic [ref=e458]:
+                        - generic "Contract Review" [ref=e459]:
+                          - img [ref=e460]
+                        - generic [ref=e463]: Unknown User
+                        - generic [ref=e464]: •
+                        - generic [ref=e465]: Contract Review
+                      - paragraph [ref=e466]: Initial contract review
+                      - paragraph [ref=e467]: 5 days ago
+        - button "Log Activity" [ref=e468] [cursor=pointer]:
+          - img
+  - contentinfo [ref=e469]:
+    - generic [ref=e471]:
+      - paragraph [ref=e472]: © 2025 MFB Master Food Brokers. All rights reserved.
+      - button "View keyboard shortcuts" [ref=e473] [cursor=pointer]:
+        - img [ref=e474]
+        - generic [ref=e476]: Keyboard shortcuts
+  - region "Notifications alt+T"
+```

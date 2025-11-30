@@ -198,9 +198,10 @@ const OrganizationCreate = () => {
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
   // Use .partial() to make all fields optional during default generation
   // This extracts fields with .default() (organization_type, priority)
+  // Note: Only use sales_id from smartDefaults - activity_date is for activities only
   const formDefaults = {
     ...organizationSchema.partial().parse({}),
-    ...smartDefaults,
+    sales_id: smartDefaults.sales_id, // Only take sales_id, not activity_date
     // Use null (not undefined) when no segment found - null is a valid value for nullable UUID fields
     segment_id: unknownSegmentId ?? null,
     ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch
