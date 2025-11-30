@@ -315,6 +315,50 @@ export const useFormShortcuts = ({ onSave, onSaveAndNew, onCancel }: UseFormShor
 
 **Visual hint:** Show shortcuts in tooltip on Save button: `"Save (⌘+Enter)"`
 
+**Keyboard Shortcut Discoverability:**
+
+```typescript
+// src/components/admin/form/SaveButtonWithTooltip.tsx
+
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Button } from "@/components/ui/button";
+
+interface SaveButtonWithTooltipProps {
+  onClick: () => void;
+  isSubmitting?: boolean;
+  children?: React.ReactNode;
+}
+
+export const SaveButtonWithTooltip = ({ onClick, isSubmitting, children = "Save" }: SaveButtonWithTooltipProps) => {
+  // Detect OS for correct modifier key display
+  const isMac = typeof navigator !== "undefined" && navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+  const modifierKey = isMac ? "⌘" : "Ctrl";
+
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button type="submit" onClick={onClick} disabled={isSubmitting}>
+            {children}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{children} ({modifierKey}+Enter)</p>
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+};
+```
+
+**Tooltip Content by Action:**
+
+| Button | Tooltip Text (Mac) | Tooltip Text (Windows/Linux) |
+|--------|-------------------|------------------------------|
+| Save | Save (⌘+Enter) | Save (Ctrl+Enter) |
+| Save + New | Save + New (⌘+⇧+Enter) | Save + New (Ctrl+Shift+Enter) |
+| Cancel | Cancel (Esc) | Cancel (Esc) |
+
 ---
 
 ### 4. Recent Selections — Autocomplete Memory
