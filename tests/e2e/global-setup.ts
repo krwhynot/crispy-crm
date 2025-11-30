@@ -2,13 +2,45 @@ import type { FullConfig } from "@playwright/test";
 import { chromium } from "@playwright/test";
 
 /**
+ * Wait for a server to be available by polling
+ */
+async function waitForServer(url: string, maxAttempts = 30, delayMs = 1000): Promise<boolean> {
+  for (let i = 0; i < maxAttempts; i++) {
+    try {
+      const response = await fetch(url, { method: "HEAD" });
+      if (response.ok || response.status === 200) {
+        return true;
+      }
+    } catch {
+      // Server not ready yet, continue waiting
+    }
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+  }
+  return false;
+}
+
+/**
  * Global setup to clear Supabase schema cache before test runs
  * This ensures tests always see the latest database schema including new views
+ *
+ * Note: This runs BEFORE webServer starts, so we need to wait for the server
+ * or gracefully skip if it's not available yet (the auth setup will also clear caches)
  */
 export default async function globalSetup(config: FullConfig) {
   const baseURL = config.projects[0]?.use?.baseURL || "http://127.0.0.1:5173";
 
-  console.log("Global Setup: Clearing Supabase schema cache...");
+  console.log("Global Setup: Waiting for dev server to be ready...");
+
+  // Wait for the server to be available (webServer might start it in parallel)
+  const serverReady = await waitForServer(baseURL, 60, 1000); // Wait up to 60 seconds
+
+  if (!serverReady) {
+    console.log("Global Setup: Server not ready, skipping schema cache clear");
+    console.log("Global Setup: The webServer config will start the dev server for tests");
+    return;
+  }
+
+  console.log("Global Setup: Server ready, clearing Supabase schema cache...");
 
   const browser = await chromium.launch();
   const page = await browser.newPage();

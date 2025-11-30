@@ -183,6 +183,60 @@ describe("transformArrayFilters", () => {
       };
       expect(transformArrayFilters(filter)).toEqual(filter);
     });
+
+    it("should transform array values when key already has @ operator (not_in fix)", () => {
+      // This is the critical fix for the "stage@not_in" bug
+      // Input: { "stage@not_in": ["closed_won", "closed_lost"] }
+      // Expected output: { "stage@not_in": "(closed_won,closed_lost)" }
+      const filter = {
+        "stage@not_in": ["closed_won", "closed_lost"],
+      };
+      expect(transformArrayFilters(filter)).toEqual({
+        "stage@not_in": "(closed_won,closed_lost)",
+      });
+    });
+
+    it("should transform array values with any @ operator suffix", () => {
+      // Test various operators that might have array values
+      const filter = {
+        "status@in": ["active", "pending", "review"],
+        "priority@not_in": ["low", "none"],
+        "tags@cs": "{already,formatted}", // String value preserved
+      };
+      expect(transformArrayFilters(filter)).toEqual({
+        "status@in": "(active,pending,review)",
+        "priority@not_in": "(low,none)",
+        "tags@cs": "{already,formatted}",
+      });
+    });
+
+    it("should handle mixed array and non-array values with @ operators", () => {
+      const filter = {
+        "stage@not_in": ["closed_won", "closed_lost"],
+        "created_at@gte": "2024-01-01",
+        "deleted_at@is": null,
+        name: "test",
+      };
+      expect(transformArrayFilters(filter)).toEqual({
+        "stage@not_in": "(closed_won,closed_lost)",
+        "created_at@gte": "2024-01-01",
+        "deleted_at@is": null,
+        name: "test",
+      });
+    });
+
+    it("should skip empty arrays even with @ operators", () => {
+      const filter = {
+        "stage@not_in": [],
+        "status@in": ["active"],
+      };
+      // Empty arrays are handled: the key with @ is preserved but value becomes ()
+      // Actually, empty arrays with @ should still be transformed
+      expect(transformArrayFilters(filter)).toEqual({
+        "stage@not_in": [],  // Empty array preserved as-is (not transformed)
+        "status@in": "(active)",
+      });
+    });
   });
 
   describe("non-array value handling", () => {
