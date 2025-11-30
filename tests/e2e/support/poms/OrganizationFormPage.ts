@@ -235,28 +235,41 @@ export class OrganizationFormPage extends BasePage {
 
   /**
    * Check if duplicate warning dialog is visible
+   *
+   * Looks for the specific duplicate dialog by its title text
    */
   async isDuplicateDialogVisible(): Promise<boolean> {
-    const dialog = this.page.getByRole("dialog");
-    return await dialog.isVisible({ timeout: 2000 }).catch(() => false);
+    // Wait a moment for the async duplicate check to potentially complete
+    await this.page.waitForTimeout(1000);
+
+    // Look for the specific dialog title
+    const dialogTitle = this.page.getByRole("heading", { name: /potential duplicate/i });
+    return await dialogTitle.isVisible({ timeout: 3000 }).catch(() => false);
   }
 
   /**
-   * Click "Proceed Anyway" in duplicate dialog
+   * Click "Create Anyway" in duplicate dialog
    */
   async clickProceedAnyway(): Promise<void> {
-    const button = this.page.getByRole("button", { name: /proceed|anyway/i });
-    await expect(button).toBeVisible();
+    const button = this.page.getByRole("button", { name: /create anyway/i });
+    await expect(button).toBeVisible({ timeout: 3000 });
     await button.click();
+
+    // Wait for dialog to close and action to complete
+    await this.page.waitForTimeout(500);
   }
 
   /**
-   * Click "Cancel" in duplicate dialog (to change name)
+   * Click "Change Name" in duplicate dialog (to go back and edit)
    */
   async clickCancelDuplicate(): Promise<void> {
-    const dialog = this.page.getByRole("dialog");
-    const cancelButton = dialog.getByRole("button", { name: /cancel|change/i });
+    const dialog = this.page.getByRole("alertdialog");
+    const cancelButton = dialog.getByRole("button", { name: /change name/i });
+    await expect(cancelButton).toBeVisible({ timeout: 3000 });
     await cancelButton.click();
+
+    // Wait for dialog to close
+    await this.page.waitForTimeout(500);
   }
 
   // ============================================================================
