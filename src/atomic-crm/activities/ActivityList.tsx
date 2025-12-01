@@ -38,11 +38,12 @@ import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
  * @see PRD §4.4 for sample tracking requirements
  */
 export default function ActivityList() {
-  const { identity } = useGetIdentity();
+  const { data: identity, isPending: isIdentityPending } = useGetIdentity();
 
   // Clean up stale cached filters from localStorage
   useFilterCleanup("activities");
 
+  if (isIdentityPending) return <div>Loading...</div>;
   if (!identity) return null;
 
   return (

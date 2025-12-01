@@ -36,7 +36,7 @@ export const AddTask = ({
   selectContact?: boolean;
   display?: "chip" | "icon";
 }) => {
-  const { identity } = useGetIdentity();
+  const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const dataProvider = useDataProvider();
   const [update] = useUpdate();
   const notify = useNotify();
@@ -76,7 +76,7 @@ export const AddTask = ({
     }
   };
 
-  if (!identity) return null;
+  if (isIdentityPending || !identity) return null;
 
   return (
     <>
