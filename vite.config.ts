@@ -91,12 +91,12 @@ export default defineConfig(({ mode }) => ({
               "http-equiv": "Content-Security-Policy",
               content:
                 mode === "production"
-                  ? // Production: Stricter security (includes Sentry)
+                  ? // Production: Stricter security (includes Sentry + Google Fonts)
                     "default-src 'self'; " +
                     "script-src 'self'; " +
-                    "style-src 'self' 'unsafe-inline'; " +
+                    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
                     "img-src 'self' data: https:; " +
-                    "font-src 'self' data:; " +
+                    "font-src 'self' data: https://fonts.gstatic.com; " +
                     "connect-src 'self' https://*.supabase.co https://*.supabase.in https://*.sentry.io https://*.ingest.sentry.io; " +
                     "frame-src 'none'; " +
                     "object-src 'none'; " +
