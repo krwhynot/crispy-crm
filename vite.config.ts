@@ -97,7 +97,7 @@ export default defineConfig(({ mode }) => ({
                     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
                     "img-src 'self' data: https:; " +
                     "font-src 'self' data: https://fonts.gstatic.com; " +
-                    "connect-src 'self' https://*.supabase.co https://*.supabase.in https://*.sentry.io https://*.ingest.sentry.io; " +
+                    "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co wss://*.supabase.in https://*.sentry.io https://*.ingest.sentry.io;" +
                     "frame-src 'none'; " +
                     "object-src 'none'; " +
                     "base-uri 'self'; " +
