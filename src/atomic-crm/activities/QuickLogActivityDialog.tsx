@@ -358,7 +358,7 @@ export function QuickLogActivityDialog({
   entityContext,
   config,
   onSuccess,
-  onError,
+  onError: _onError,
   onCancel,
 }: QuickLogActivityDialogProps) {
   // ═══════════════════════════════════════════════════════════════════
