@@ -30,9 +30,5 @@ import { tasksCallbacks } from "../callbacks/tasksCallbacks";
  * @returns Composed DataProvider with all tasks-specific behavior
  */
 export function createTasksHandler(baseProvider: DataProvider): DataProvider {
-  return withErrorLogging(
-    withValidation(
-      withLifecycleCallbacks(baseProvider, [tasksCallbacks])
-    )
-  );
+  return withErrorLogging(withValidation(withLifecycleCallbacks(baseProvider, [tasksCallbacks])));
 }

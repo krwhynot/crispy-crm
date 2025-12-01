@@ -197,10 +197,7 @@ describe("CampaignGroupedList - Grouping Logic", () => {
         const customerGroups = winterCampaign[principal];
         return (
           sum +
-          Object.values(customerGroups).reduce(
-            (customerSum, opps) => customerSum + opps.length,
-            0
-          )
+          Object.values(customerGroups).reduce((customerSum, opps) => customerSum + opps.length, 0)
         );
       }, 0);
 

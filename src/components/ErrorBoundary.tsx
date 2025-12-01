@@ -23,13 +23,7 @@ import { Component } from "react";
 import * as Sentry from "@sentry/react";
 import { AlertTriangle, Home, RotateCcw, Bug } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { logger } from "@/lib/logger";
 
 interface Props {
@@ -131,18 +125,14 @@ export class SentryErrorBoundary extends Component<Props, State> {
               <CardDescription>
                 {this.props.feature
                   ? `The ${this.props.feature} encountered an unexpected error.`
-                  : "An unexpected error occurred."}
-                {" "}Our team has been notified.
+                  : "An unexpected error occurred."}{" "}
+                Our team has been notified.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Action buttons */}
               <div className="flex gap-2">
-                <Button
-                  onClick={this.handleRetry}
-                  variant="outline"
-                  className="flex-1 gap-2"
-                >
+                <Button onClick={this.handleRetry} variant="outline" className="flex-1 gap-2">
                   <RotateCcw className="h-4 w-4" />
                   Try Again
                 </Button>
@@ -212,8 +202,7 @@ export function withErrorBoundary<P extends object>(
   WrappedComponent: React.ComponentType<P>,
   options?: Omit<Props, "children">
 ): React.FC<P> {
-  const displayName =
-    WrappedComponent.displayName || WrappedComponent.name || "Component";
+  const displayName = WrappedComponent.displayName || WrappedComponent.name || "Component";
 
   const WithErrorBoundary: React.FC<P> = (props) => (
     <SentryErrorBoundary {...options}>

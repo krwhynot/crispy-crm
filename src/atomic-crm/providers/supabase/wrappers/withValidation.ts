@@ -112,7 +112,10 @@ export function withValidation<T extends DataProvider>(
     try {
       // DEBUG: Log data being validated
       if (resource === "organizations") {
-        console.log("[withValidation] Creating organization with data:", JSON.stringify(params.data, null, 2));
+        console.log(
+          "[withValidation] Creating organization with data:",
+          JSON.stringify(params.data, null, 2)
+        );
         console.log("[withValidation] segment_id value:", (params.data as any)?.segment_id);
         console.log("[withValidation] segment_id type:", typeof (params.data as any)?.segment_id);
       }
@@ -157,10 +160,7 @@ export function withValidation<T extends DataProvider>(
     // Clean filter fields to prevent stale cache errors
     const processedParams = { ...params };
     if (processedParams.filter && Object.keys(processedParams.filter).length > 0) {
-      processedParams.filter = validationService.validateFilters(
-        resource,
-        processedParams.filter
-      );
+      processedParams.filter = validationService.validateFilters(resource, processedParams.filter);
     }
 
     return provider.getList<RecordType>(resource, processedParams);

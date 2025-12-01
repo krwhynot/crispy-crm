@@ -27,9 +27,7 @@ import {
  */
 export function createContactNotesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(
-      withLifecycleCallbacks(baseProvider, [contactNotesCallbacks])
-    )
+    withValidation(withLifecycleCallbacks(baseProvider, [contactNotesCallbacks]))
   );
 }
 
@@ -41,9 +39,7 @@ export function createContactNotesHandler(baseProvider: DataProvider): DataProvi
  */
 export function createOpportunityNotesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(
-      withLifecycleCallbacks(baseProvider, [opportunityNotesCallbacks])
-    )
+    withValidation(withLifecycleCallbacks(baseProvider, [opportunityNotesCallbacks]))
   );
 }
 
@@ -55,8 +51,6 @@ export function createOpportunityNotesHandler(baseProvider: DataProvider): DataP
  */
 export function createOrganizationNotesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(
-      withLifecycleCallbacks(baseProvider, [organizationNotesCallbacks])
-    )
+    withValidation(withLifecycleCallbacks(baseProvider, [organizationNotesCallbacks]))
   );
 }

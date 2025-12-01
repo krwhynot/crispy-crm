@@ -117,55 +117,51 @@ export function useKPIMetrics(): UseKPIMetricsReturn {
 
         // Fetch all metrics in parallel using Promise.allSettled
         // This ensures partial failures don't break the entire dashboard
-        const [
-          openCountResult,
-          staleOpportunitiesResult,
-          tasksResult,
-          activitiesResult,
-        ] = await Promise.allSettled([
-          // 1. Open opportunities COUNT ONLY (server-side total)
-          // OPTIMIZATION: perPage: 1 uses server-side count, avoiding full data transfer
-          dataProvider.getList("opportunities", {
-            filter: {
-              "stage@not_in": ["closed_won", "closed_lost"],
-            },
-            sort: { field: "id", order: "ASC" },
-            pagination: { page: 1, perPage: 1 }, // Server-side count only
-          }),
+        const [openCountResult, staleOpportunitiesResult, tasksResult, activitiesResult] =
+          await Promise.allSettled([
+            // 1. Open opportunities COUNT ONLY (server-side total)
+            // OPTIMIZATION: perPage: 1 uses server-side count, avoiding full data transfer
+            dataProvider.getList("opportunities", {
+              filter: {
+                "stage@not_in": ["closed_won", "closed_lost"],
+              },
+              sort: { field: "id", order: "ASC" },
+              pagination: { page: 1, perPage: 1 }, // Server-side count only
+            }),
 
-          // 2. Potentially stale opportunities (for client-side staleness calculation)
-          // OPTIMIZATION: Only fetch opportunities that MIGHT be stale (no activity in 21+ days)
-          // This reduces data transfer from ~1000 rows to ~50-100 rows typically
-          dataProvider.getList("opportunities", {
-            filter: {
-              "stage@not_in": ["closed_won", "closed_lost"],
-              "last_activity_date@lt": staleThresholdDate.toISOString(),
-            },
-            sort: { field: "id", order: "ASC" },
-            pagination: { page: 1, perPage: 500 }, // Only stale candidates
-          }),
+            // 2. Potentially stale opportunities (for client-side staleness calculation)
+            // OPTIMIZATION: Only fetch opportunities that MIGHT be stale (no activity in 21+ days)
+            // This reduces data transfer from ~1000 rows to ~50-100 rows typically
+            dataProvider.getList("opportunities", {
+              filter: {
+                "stage@not_in": ["closed_won", "closed_lost"],
+                "last_activity_date@lt": staleThresholdDate.toISOString(),
+              },
+              sort: { field: "id", order: "ASC" },
+              pagination: { page: 1, perPage: 500 }, // Only stale candidates
+            }),
 
-          // 3. Overdue tasks COUNT ONLY (server-side total)
-          dataProvider.getList("tasks", {
-            filter: {
-              sales_id: salesId,
-              completed: false,
-              "due_date@lt": today.toISOString(),
-            },
-            sort: { field: "id", order: "ASC" },
-            pagination: { page: 1, perPage: 1 }, // Server-side count only
-          }),
+            // 3. Overdue tasks COUNT ONLY (server-side total)
+            dataProvider.getList("tasks", {
+              filter: {
+                sales_id: salesId,
+                completed: false,
+                "due_date@lt": today.toISOString(),
+              },
+              sort: { field: "id", order: "ASC" },
+              pagination: { page: 1, perPage: 1 }, // Server-side count only
+            }),
 
-          // 4. Activities this week COUNT ONLY (server-side total)
-          dataProvider.getList("activities", {
-            filter: {
-              "activity_date@gte": weekStart.toISOString(),
-              "activity_date@lte": weekEnd.toISOString(),
-            },
-            sort: { field: "id", order: "ASC" },
-            pagination: { page: 1, perPage: 1 }, // Server-side count only
-          }),
-        ]);
+            // 4. Activities this week COUNT ONLY (server-side total)
+            dataProvider.getList("activities", {
+              filter: {
+                "activity_date@gte": weekStart.toISOString(),
+                "activity_date@lte": weekEnd.toISOString(),
+              },
+              sort: { field: "id", order: "ASC" },
+              pagination: { page: 1, perPage: 1 }, // Server-side count only
+            }),
+          ]);
 
         // Check if aborted before processing results
         if (abortController.signal.aborted || !isMounted) return;

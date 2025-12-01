@@ -40,7 +40,15 @@ describe("Task Validation Schemas (task.ts)", () => {
 
     it("should reject invalid task types", () => {
       // Note: "None", "Discovery", "Administrative" removed from enum
-      const invalidTypes = ["InvalidType", "call", "EMAIL", "", "None", "Discovery", "Administrative"];
+      const invalidTypes = [
+        "InvalidType",
+        "call",
+        "EMAIL",
+        "",
+        "None",
+        "Discovery",
+        "Administrative",
+      ];
 
       invalidTypes.forEach((type) => {
         const result = taskTypeSchema.safeParse(type);

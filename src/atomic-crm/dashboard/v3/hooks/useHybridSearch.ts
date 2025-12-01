@@ -74,16 +74,19 @@ export function useHybridSearch<T extends { id: number | string }>({
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
 
   // Debounce search term updates
-  const setSearchTerm = useCallback((term: string) => {
-    setSearchTermInternal(term);
+  const setSearchTerm = useCallback(
+    (term: string) => {
+      setSearchTermInternal(term);
 
-    // Clear any pending debounce
-    const handler = setTimeout(() => {
-      setDebouncedSearchTerm(term);
-    }, debounceMs);
+      // Clear any pending debounce
+      const handler = setTimeout(() => {
+        setDebouncedSearchTerm(term);
+      }, debounceMs);
 
-    return () => clearTimeout(handler);
-  }, [debounceMs]);
+      return () => clearTimeout(handler);
+    },
+    [debounceMs]
+  );
 
   // Determine if we should search server-side
   const shouldSearch = debouncedSearchTerm.length >= minSearchLength;

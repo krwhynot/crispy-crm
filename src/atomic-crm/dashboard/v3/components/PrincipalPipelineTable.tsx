@@ -1,18 +1,8 @@
 import { useState, useCallback, lazy, Suspense } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -51,7 +41,9 @@ const PipelineDrillDownSheet = lazy(() =>
  */
 export function PrincipalPipelineTable() {
   const [myPrincipalsOnly, setMyPrincipalsOnly] = useState(false);
-  const [selectedPrincipal, setSelectedPrincipal] = useState<{ id: number; name: string } | null>(null);
+  const [selectedPrincipal, setSelectedPrincipal] = useState<{ id: number; name: string } | null>(
+    null
+  );
 
   const { data, loading, error } = usePrincipalPipeline({ myPrincipalsOnly });
 
@@ -260,8 +252,7 @@ function SortableTableHead({
   renderSortIcon,
   align = "left",
 }: SortableTableHeadProps) {
-  const alignClass =
-    align === "center" ? "text-center" : align === "right" ? "text-right" : "";
+  const alignClass = align === "center" ? "text-center" : align === "right" ? "text-right" : "";
   const justifyClass =
     align === "center" ? "justify-center" : align === "right" ? "justify-end" : "";
 

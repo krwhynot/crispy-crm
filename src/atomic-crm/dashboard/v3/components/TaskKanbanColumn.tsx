@@ -72,10 +72,7 @@ function arePropsEqual(
   if (prevTasks.length !== nextTasks.length) return false;
 
   for (let i = 0; i < prevTasks.length; i++) {
-    if (
-      prevTasks[i].id !== nextTasks[i].id ||
-      prevTasks[i].status !== nextTasks[i].status
-    ) {
+    if (prevTasks[i].id !== nextTasks[i].id || prevTasks[i].status !== nextTasks[i].status) {
       return false;
     }
   }
@@ -117,9 +114,7 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
       {/* Column Header */}
       <div className="flex items-center justify-between px-4 py-3 border-b border-border">
         <h2 className="font-semibold text-foreground">{title}</h2>
-        <span className="text-sm text-muted-foreground">
-          {tasks.length}
-        </span>
+        <span className="text-sm text-muted-foreground">{tasks.length}</span>
       </div>
 
       {/* Droppable Area */}
@@ -137,12 +132,8 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
             {tasks.length === 0 ? (
               // Empty State
               <div className="flex flex-col items-center justify-center h-full min-h-[100px] text-center p-4">
-                <p className="text-sm font-medium text-muted-foreground">
-                  {config.emptyText}
-                </p>
-                <p className="text-xs text-muted-foreground/70 mt-1">
-                  {config.emptySubtext}
-                </p>
+                <p className="text-sm font-medium text-muted-foreground">{config.emptyText}</p>
+                <p className="text-xs text-muted-foreground/70 mt-1">{config.emptySubtext}</p>
               </div>
             ) : (
               // Task Cards

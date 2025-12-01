@@ -97,9 +97,7 @@ describe("ActivitySinglePage", () => {
       );
 
       // Find the Outcome section header specifically (not the helper text)
-      const outcomeHeader = screen.getAllByText(/outcome/i).find(
-        (el) => el.tagName === "H3"
-      );
+      const outcomeHeader = screen.getAllByText(/outcome/i).find((el) => el.tagName === "H3");
       expect(outcomeHeader).toBeInTheDocument();
 
       // Radix Collapsible unmounts content when closed - use toBeNull()

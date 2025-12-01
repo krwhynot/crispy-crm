@@ -64,9 +64,9 @@ describe("opportunitiesCallbacks", () => {
         previousData: { id: 1, name: "Big Deal" } as RaRecord,
       };
 
-      await expect(
-        opportunitiesCallbacks.beforeDelete!(params, mockDataProvider)
-      ).rejects.toThrow("Archive opportunity failed");
+      await expect(opportunitiesCallbacks.beforeDelete!(params, mockDataProvider)).rejects.toThrow(
+        "Archive opportunity failed"
+      );
     });
   });
 
@@ -121,7 +121,11 @@ describe("opportunitiesCallbacks", () => {
         contact_count: 5,
       };
 
-      const result = await opportunitiesCallbacks.beforeSave!(data, mockDataProvider, "opportunities");
+      const result = await opportunitiesCallbacks.beforeSave!(
+        data,
+        mockDataProvider,
+        "opportunities"
+      );
 
       expect(result).not.toHaveProperty("principal_organization_name");
       expect(result).not.toHaveProperty("total_value");
@@ -137,7 +141,11 @@ describe("opportunitiesCallbacks", () => {
         // Missing: stage, probability, contact_ids
       };
 
-      const result = await opportunitiesCallbacks.beforeSave!(data, mockDataProvider, "opportunities");
+      const result = await opportunitiesCallbacks.beforeSave!(
+        data,
+        mockDataProvider,
+        "opportunities"
+      );
 
       // Should add defaults for missing fields
       expect(result.name).toBe("New Opportunity");
@@ -156,7 +164,11 @@ describe("opportunitiesCallbacks", () => {
         products_to_sync: products,
       };
 
-      const result = await opportunitiesCallbacks.beforeSave!(data, mockDataProvider, "opportunities");
+      const result = await opportunitiesCallbacks.beforeSave!(
+        data,
+        mockDataProvider,
+        "opportunities"
+      );
 
       // products_to_sync should be preserved for the provider to handle via RPC
       expect(result.products_to_sync).toEqual(products);
@@ -174,7 +186,11 @@ describe("opportunitiesCallbacks", () => {
         next_action: "Follow up call",
       };
 
-      const result = await opportunitiesCallbacks.beforeSave!(data, mockDataProvider, "opportunities");
+      const result = await opportunitiesCallbacks.beforeSave!(
+        data,
+        mockDataProvider,
+        "opportunities"
+      );
 
       expect(result.name).toBe("Big Deal");
       expect(result.stage).toBe("prospecting");

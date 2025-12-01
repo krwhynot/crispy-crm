@@ -219,8 +219,7 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
     }
 
     // --- API Call for non-close stages ---
-    performStageUpdate(draggableId, destColId, previousState, draggedItem
-    );
+    performStageUpdate(draggableId, destColId, previousState, draggedItem);
   };
 
   if (isPending) return null;

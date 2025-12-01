@@ -50,11 +50,7 @@ export const ActivitiesTab = ({ contactId }: ActivitiesTabProps) => {
     <div className="space-y-4">
       {/* Log Activity button - opens QuickLogActivityDialog pre-filled with contact */}
       <div className="flex justify-end">
-        <Button
-          variant="outline"
-          className="h-11 gap-2"
-          onClick={() => setIsDialogOpen(true)}
-        >
+        <Button variant="outline" className="h-11 gap-2" onClick={() => setIsDialogOpen(true)}>
           <Plus className="h-4 w-4" />
           Log Activity
         </Button>

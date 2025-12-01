@@ -9,7 +9,13 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { FormControl, FormDescription, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  FormControl,
+  FormDescription,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Check, ChevronsUpDown, X, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -90,8 +96,8 @@ export function EntityCombobox({
   // Find selected option name
   const selectedName = value
     ? (options.find((o) => o.id === value)?.name ??
-       fallbackOptions.find((o) => o.id === value)?.name ??
-       placeholder)
+      fallbackOptions.find((o) => o.id === value)?.name ??
+      placeholder)
     : placeholder;
 
   return (
@@ -107,10 +113,7 @@ export function EntityCombobox({
                 aria-expanded={open}
                 aria-haspopup="listbox"
                 aria-controls={listId}
-                className={cn(
-                  "h-11 flex-1 justify-between",
-                  !value && "text-muted-foreground"
-                )}
+                className={cn("h-11 flex-1 justify-between", !value && "text-muted-foreground")}
               >
                 {selectedName}
                 {loading ? (
@@ -162,9 +165,7 @@ export function EntityCombobox({
                       <span className="flex flex-col">
                         <span>{option.name}</span>
                         {option.subtitle && (
-                          <span className="text-xs text-muted-foreground">
-                            {option.subtitle}
-                          </span>
+                          <span className="text-xs text-muted-foreground">{option.subtitle}</span>
                         )}
                       </span>
                     </CommandItem>

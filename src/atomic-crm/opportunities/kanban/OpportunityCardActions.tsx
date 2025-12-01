@@ -21,7 +21,9 @@ export function OpportunityCardActions({ opportunityId }: OpportunityCardActions
 
   // State for CloseOpportunityModal
   const [showCloseModal, setShowCloseModal] = useState(false);
-  const [closeTargetStage, setCloseTargetStage] = useState<"closed_won" | "closed_lost">("closed_won");
+  const [closeTargetStage, setCloseTargetStage] = useState<"closed_won" | "closed_lost">(
+    "closed_won"
+  );
   const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {

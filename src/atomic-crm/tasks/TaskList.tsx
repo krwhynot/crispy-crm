@@ -57,7 +57,9 @@ export default function TaskList() {
 
           <FunctionField
             label="Priority"
-            render={(record: Task) => record.priority && <PriorityBadge priority={record.priority} />}
+            render={(record: Task) =>
+              record.priority && <PriorityBadge priority={record.priority} />
+            }
           />
 
           <FunctionField
@@ -143,7 +145,6 @@ const CompletionCheckbox = React.memo(function CompletionCheckbox({ task }: { ta
     </label>
   );
 });
-
 
 // CSV exporter
 const exporter: Exporter<Task> = async (records, fetchRelatedRecords) => {

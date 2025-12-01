@@ -21,11 +21,7 @@ interface ListSkeletonProps {
   showAvatar?: boolean;
 }
 
-export function ListSkeleton({
-  rows = 5,
-  columns = 6,
-  showAvatar = false,
-}: ListSkeletonProps) {
+export function ListSkeleton({ rows = 5, columns = 6, showAvatar = false }: ListSkeletonProps) {
   return (
     <div className="w-full" role="status" aria-label="Loading list">
       {/* Header skeleton */}
@@ -46,9 +42,7 @@ export function ListSkeleton({
           className="flex items-center gap-4 p-4 border-b border-border hover:bg-muted/20 transition-colors"
         >
           {/* Avatar column (optional) */}
-          {showAvatar && (
-            <Skeleton className="h-10 w-10 rounded-full hidden md:block shrink-0" />
-          )}
+          {showAvatar && <Skeleton className="h-10 w-10 rounded-full hidden md:block shrink-0" />}
 
           {/* Data columns */}
           {Array.from({ length: columns - (showAvatar ? 1 : 0) }).map((_, colIndex) => {
@@ -58,18 +52,9 @@ export function ListSkeleton({
 
             // Hide later columns on smaller screens (mirror actual datagrid)
             const responsiveClass =
-              colIndex > 4
-                ? "hidden lg:block"
-                : colIndex > 2
-                  ? "hidden md:block"
-                  : "";
+              colIndex > 4 ? "hidden lg:block" : colIndex > 2 ? "hidden md:block" : "";
 
-            return (
-              <Skeleton
-                key={colIndex}
-                className={`h-5 ${width} ${responsiveClass}`}
-              />
-            );
+            return <Skeleton key={colIndex} className={`h-5 ${width} ${responsiveClass}`} />;
           })}
         </div>
       ))}

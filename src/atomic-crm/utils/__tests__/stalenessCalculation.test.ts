@@ -243,7 +243,11 @@ describe("filterStaleOpportunities", () => {
 
   it("should preserve original object properties", () => {
     const stale = filterStaleOpportunities(opportunities, referenceDate);
-    expect(stale[0]).toEqual({ id: 1, stage: "new_lead", last_activity_date: "2025-11-20T00:00:00Z" });
+    expect(stale[0]).toEqual({
+      id: 1,
+      stage: "new_lead",
+      last_activity_date: "2025-11-20T00:00:00Z",
+    });
   });
 });
 
@@ -315,7 +319,9 @@ describe("Edge Cases (Additional)", () => {
       const thirteenDaysAgo = "2025-11-15T12:00:00Z"; // 13 days
       const fifteenDaysAgo = "2025-11-13T12:00:00Z"; // 15 days
 
-      expect(isOpportunityStale("sample_visit_offered", thirteenDaysAgo, referenceDate)).toBe(false);
+      expect(isOpportunityStale("sample_visit_offered", thirteenDaysAgo, referenceDate)).toBe(
+        false
+      );
       expect(isOpportunityStale("sample_visit_offered", fifteenDaysAgo, referenceDate)).toBe(true);
     });
   });

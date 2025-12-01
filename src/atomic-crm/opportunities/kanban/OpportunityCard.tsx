@@ -145,13 +145,17 @@ export const OpportunityCard = React.memo(function OpportunityCard({
           {record.stage === "closed_won" && record.win_reason && (
             <div className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-success/10 text-success mb-2">
               <Trophy className="w-3 h-3" />
-              <span>{WIN_REASONS.find((r) => r.id === record.win_reason)?.name || record.win_reason}</span>
+              <span>
+                {WIN_REASONS.find((r) => r.id === record.win_reason)?.name || record.win_reason}
+              </span>
             </div>
           )}
           {record.stage === "closed_lost" && record.loss_reason && (
             <div className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-destructive/10 text-destructive mb-2">
               <XCircle className="w-3 h-3" />
-              <span>{LOSS_REASONS.find((r) => r.id === record.loss_reason)?.name || record.loss_reason}</span>
+              <span>
+                {LOSS_REASONS.find((r) => r.id === record.loss_reason)?.name || record.loss_reason}
+              </span>
             </div>
           )}
 

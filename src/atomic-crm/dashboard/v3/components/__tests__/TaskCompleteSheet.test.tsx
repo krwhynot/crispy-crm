@@ -67,10 +67,14 @@ vi.mock("@/components/ui/sheet", () => ({
     <div data-testid="sheet-header">{children}</div>
   ),
   SheetTitle: ({ children, id }: { children: React.ReactNode; id?: string }) => (
-    <h2 id={id} data-testid="sheet-title">{children}</h2>
+    <h2 id={id} data-testid="sheet-title">
+      {children}
+    </h2>
   ),
   SheetDescription: ({ children, id }: { children: React.ReactNode; id?: string }) => (
-    <p id={id} data-testid="sheet-description">{children}</p>
+    <p id={id} data-testid="sheet-description">
+      {children}
+    </p>
   ),
 }));
 
@@ -109,11 +113,7 @@ describe("TaskCompleteSheet", () => {
   describe("Rendering", () => {
     it("renders nothing when closed", () => {
       render(
-        <TaskCompleteSheet
-          open={false}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={false} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
       expect(screen.queryByTestId("sheet")).not.toBeInTheDocument();
@@ -121,11 +121,7 @@ describe("TaskCompleteSheet", () => {
 
     it("renders task list when open", () => {
       render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
       expect(screen.getByTestId("sheet-title")).toHaveTextContent("Complete Task");
@@ -136,11 +132,7 @@ describe("TaskCompleteSheet", () => {
 
     it("shows overdue badge when there are overdue tasks", () => {
       render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
       expect(screen.getByText("1 overdue")).toBeInTheDocument();
@@ -148,11 +140,7 @@ describe("TaskCompleteSheet", () => {
 
     it("shows remaining task count", () => {
       render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
       expect(screen.getByText("3 tasks remaining")).toBeInTheDocument();
@@ -162,11 +150,7 @@ describe("TaskCompleteSheet", () => {
   describe("Accessibility", () => {
     it("has proper aria attributes on sheet", () => {
       render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
       const title = screen.getByTestId("sheet-title");
@@ -178,11 +162,7 @@ describe("TaskCompleteSheet", () => {
 
     it("complete buttons have descriptive aria-labels", () => {
       render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
       expect(
@@ -195,17 +175,13 @@ describe("TaskCompleteSheet", () => {
 
     it("complete buttons meet minimum touch target size (44px)", () => {
       render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
       // Get only the complete buttons (not any other buttons)
-      const completeButtons = screen.getAllByRole("button").filter(
-        (btn) => btn.getAttribute("aria-label")?.includes("as complete")
-      );
+      const completeButtons = screen
+        .getAllByRole("button")
+        .filter((btn) => btn.getAttribute("aria-label")?.includes("as complete"));
 
       expect(completeButtons.length).toBe(3);
 
@@ -220,16 +196,10 @@ describe("TaskCompleteSheet", () => {
   describe("Interactions", () => {
     it("calls completeTask when complete button is clicked", async () => {
       render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
-      const completeButton = screen.getByLabelText(
-        'Mark "Call John about proposal" as complete'
-      );
+      const completeButton = screen.getByLabelText('Mark "Call John about proposal" as complete');
       fireEvent.click(completeButton);
 
       await waitFor(() => {
@@ -239,16 +209,10 @@ describe("TaskCompleteSheet", () => {
 
     it("calls onRefresh after successful completion", async () => {
       render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
-      const completeButton = screen.getByLabelText(
-        'Mark "Call John about proposal" as complete'
-      );
+      const completeButton = screen.getByLabelText('Mark "Call John about proposal" as complete');
       fireEvent.click(completeButton);
 
       await waitFor(() => {
@@ -260,16 +224,12 @@ describe("TaskCompleteSheet", () => {
   describe("Task Sorting", () => {
     it("shows overdue tasks first", () => {
       render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
-      const completeButtons = screen.getAllByRole("button").filter(
-        (btn) => btn.getAttribute("aria-label")?.includes("as complete")
-      );
+      const completeButtons = screen
+        .getAllByRole("button")
+        .filter((btn) => btn.getAttribute("aria-label")?.includes("as complete"));
 
       // First task should be the overdue one
       expect(completeButtons[0]).toHaveAttribute(
@@ -282,11 +242,7 @@ describe("TaskCompleteSheet", () => {
   describe("Priority Display", () => {
     it("shows priority badges for all tasks", () => {
       render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
       expect(screen.getByText("High")).toBeInTheDocument();
@@ -298,11 +254,7 @@ describe("TaskCompleteSheet", () => {
   describe("Visual Styling", () => {
     it("uses semantic color classes (no hex codes)", () => {
       const { container } = render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
       const sheetContent = screen.getByTestId("sheet-content");
@@ -337,11 +289,7 @@ describe("TaskCompleteSheet", () => {
       });
 
       render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
       expect(screen.getByText("All caught up!")).toBeInTheDocument();
@@ -366,11 +314,7 @@ describe("TaskCompleteSheet", () => {
       });
 
       render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
       expect(screen.getByTestId("task-list-skeleton")).toBeInTheDocument();
@@ -394,11 +338,7 @@ describe("TaskCompleteSheet", () => {
       });
 
       render(
-        <TaskCompleteSheet
-          open={true}
-          onOpenChange={mockOnOpenChange}
-          onRefresh={mockOnRefresh}
-        />
+        <TaskCompleteSheet open={true} onOpenChange={mockOnOpenChange} onRefresh={mockOnRefresh} />
       );
 
       expect(screen.getByText("Failed to load tasks")).toBeInTheDocument();

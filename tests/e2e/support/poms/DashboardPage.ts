@@ -250,7 +250,9 @@ export class DashboardPage extends BasePage {
    * Get specific pipeline row by principal name
    */
   getPipelineRowByPrincipal(principalName: string): Locator {
-    return this.page.getByRole("button", { name: new RegExp(`view opportunities for.*${principalName}`, "i") });
+    return this.page.getByRole("button", {
+      name: new RegExp(`view opportunities for.*${principalName}`, "i"),
+    });
   }
 
   /**
@@ -375,8 +377,12 @@ export class DashboardPage extends BasePage {
   async expectAllWidgetsVisible(): Promise<void> {
     await expect(this.getHeading()).toBeVisible({ timeout: 10000 });
     // Check for at least one widget type (V3 has pipeline, tasks, logger)
-    const pipelineVisible = await this.getPrincipalPipelineHeading().isVisible().catch(() => false);
-    const tasksVisible = await this.getTasksWidgetHeading().isVisible().catch(() => false);
+    const pipelineVisible = await this.getPrincipalPipelineHeading()
+      .isVisible()
+      .catch(() => false);
+    const tasksVisible = await this.getTasksWidgetHeading()
+      .isVisible()
+      .catch(() => false);
 
     expect(pipelineVisible || tasksVisible).toBe(true);
   }
@@ -388,9 +394,12 @@ export class DashboardPage extends BasePage {
   async waitForWidgetsLoaded(): Promise<void> {
     // Wait for any loading skeletons to disappear
     const loadingSkeletons = this.page.locator(".animate-pulse");
-    await loadingSkeletons.first().waitFor({ state: "hidden", timeout: 15000 }).catch(() => {
-      // No skeletons found - dashboard already loaded
-    });
+    await loadingSkeletons
+      .first()
+      .waitFor({ state: "hidden", timeout: 15000 })
+      .catch(() => {
+        // No skeletons found - dashboard already loaded
+      });
   }
 
   /**
@@ -419,7 +428,9 @@ export class DashboardPage extends BasePage {
    * Check if any widget has an error state
    */
   async hasWidgetError(): Promise<boolean> {
-    return this.getWidgetErrorMessage().isVisible().catch(() => false);
+    return this.getWidgetErrorMessage()
+      .isVisible()
+      .catch(() => false);
   }
 
   // ===== Task Widget Interactions =====

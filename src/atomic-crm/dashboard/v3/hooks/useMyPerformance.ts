@@ -60,8 +60,7 @@ function calculateTrend(
 
   return {
     trend: Math.round(percentChange),
-    direction:
-      percentChange > 0 ? "up" : percentChange < 0 ? "down" : "flat",
+    direction: percentChange > 0 ? "up" : percentChange < 0 ? "down" : "flat",
   };
 }
 
@@ -237,9 +236,7 @@ export function useMyPerformance(): UseMyPerformanceReturn {
         ]);
 
         // Extract counts from results, using 0 for failures
-        const getCount = (
-          result: PromiseSettledResult<{ total?: number }>
-        ): number => {
+        const getCount = (result: PromiseSettledResult<{ total?: number }>): number => {
           if (result.status === "fulfilled") {
             return result.value.total || 0;
           }

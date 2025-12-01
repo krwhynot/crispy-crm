@@ -79,10 +79,7 @@ export function PrincipalDashboardV3() {
         <LogActivityFAB onRefresh={handleRefresh} />
 
         {/* Mobile Quick Action Bar - Bottom-positioned (mobile/tablet only) */}
-        <MobileQuickActionBar
-          onRefresh={handleRefresh}
-          onCompleteTask={handleCompleteTask}
-        />
+        <MobileQuickActionBar onRefresh={handleRefresh} onCompleteTask={handleCompleteTask} />
 
         {/* Task Completion Sheet - Opens from mobile quick action bar */}
         <TaskCompleteSheet

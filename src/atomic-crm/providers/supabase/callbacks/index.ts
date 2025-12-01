@@ -33,11 +33,7 @@ export {
 } from "./createResourceCallbacks";
 
 // Common reusable transforms
-export {
-  normalizeJsonbArrays,
-  commonTransforms,
-  type Transform,
-} from "./commonTransforms";
+export { normalizeJsonbArrays, commonTransforms, type Transform } from "./commonTransforms";
 
 // Contacts callbacks
 export { contactsCallbacks } from "./contactsCallbacks";

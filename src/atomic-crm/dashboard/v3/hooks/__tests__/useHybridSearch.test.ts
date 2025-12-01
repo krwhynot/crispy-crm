@@ -96,9 +96,7 @@ describe("useHybridSearch", () => {
 
   describe("Initial Data Loading", () => {
     it("should load initial data with default page size of 100", () => {
-      const { result } = renderHook(() =>
-        useHybridSearch({ resource: "contacts" })
-      );
+      const { result } = renderHook(() => useHybridSearch({ resource: "contacts" }));
 
       expect(result.current.data).toHaveLength(3);
       expect(mockUseGetList).toHaveBeenCalledWith(
@@ -112,9 +110,7 @@ describe("useHybridSearch", () => {
     });
 
     it("should respect custom initialPageSize", () => {
-      renderHook(() =>
-        useHybridSearch({ resource: "contacts", initialPageSize: 50 })
-      );
+      renderHook(() => useHybridSearch({ resource: "contacts", initialPageSize: 50 }));
 
       expect(mockUseGetList).toHaveBeenCalledWith(
         "contacts",
@@ -126,9 +122,7 @@ describe("useHybridSearch", () => {
     });
 
     it("should respect custom sortField", () => {
-      renderHook(() =>
-        useHybridSearch({ resource: "contacts", sortField: "created_at" })
-      );
+      renderHook(() => useHybridSearch({ resource: "contacts", sortField: "created_at" }));
 
       expect(mockUseGetList).toHaveBeenCalledWith(
         "contacts",
@@ -159,9 +153,7 @@ describe("useHybridSearch", () => {
 
   describe("Search Behavior", () => {
     it("should not search when searchTerm is less than minSearchLength", () => {
-      const { result } = renderHook(() =>
-        useHybridSearch({ resource: "contacts", debounceMs: 0 })
-      );
+      const { result } = renderHook(() => useHybridSearch({ resource: "contacts", debounceMs: 0 }));
 
       act(() => {
         result.current.setSearchTerm("a");
@@ -175,9 +167,7 @@ describe("useHybridSearch", () => {
     it("should search when searchTerm meets minSearchLength (default 2)", () => {
       mockSearchData.data = [createMockRecord(10, "Search Result")];
 
-      const { result } = renderHook(() =>
-        useHybridSearch({ resource: "contacts", debounceMs: 0 })
-      );
+      const { result } = renderHook(() => useHybridSearch({ resource: "contacts", debounceMs: 0 }));
 
       act(() => {
         result.current.setSearchTerm("ac");
@@ -213,9 +203,7 @@ describe("useHybridSearch", () => {
     it("should include q parameter in search filter", () => {
       mockSearchData.data = [createMockRecord(1, "Acme")];
 
-      const { result } = renderHook(() =>
-        useHybridSearch({ resource: "contacts", debounceMs: 0 })
-      );
+      const { result } = renderHook(() => useHybridSearch({ resource: "contacts", debounceMs: 0 }));
 
       act(() => {
         result.current.setSearchTerm("acme");
@@ -223,9 +211,7 @@ describe("useHybridSearch", () => {
       });
 
       // Find the search query call (with q parameter)
-      const searchCall = mockUseGetList.mock.calls.find(
-        (call) => call[1].filter?.q === "acme"
-      );
+      const searchCall = mockUseGetList.mock.calls.find((call) => call[1].filter?.q === "acme");
       expect(searchCall).toBeDefined();
     });
   });
@@ -263,9 +249,7 @@ describe("useHybridSearch", () => {
     it("should clear search term and return to initial data", () => {
       mockSearchData.data = [createMockRecord(10, "Search Result")];
 
-      const { result } = renderHook(() =>
-        useHybridSearch({ resource: "contacts", debounceMs: 0 })
-      );
+      const { result } = renderHook(() => useHybridSearch({ resource: "contacts", debounceMs: 0 }));
 
       // Perform search
       act(() => {
@@ -290,9 +274,7 @@ describe("useHybridSearch", () => {
     it("should report isInitialLoading correctly", () => {
       mockInitialData.isPending = true;
 
-      const { result } = renderHook(() =>
-        useHybridSearch({ resource: "contacts" })
-      );
+      const { result } = renderHook(() => useHybridSearch({ resource: "contacts" }));
 
       expect(result.current.isInitialLoading).toBe(true);
     });
@@ -300,9 +282,7 @@ describe("useHybridSearch", () => {
     it("should report isSearching correctly", () => {
       mockSearchData.isPending = true;
 
-      const { result } = renderHook(() =>
-        useHybridSearch({ resource: "contacts", debounceMs: 0 })
-      );
+      const { result } = renderHook(() => useHybridSearch({ resource: "contacts", debounceMs: 0 }));
 
       act(() => {
         result.current.setSearchTerm("test");
@@ -318,9 +298,7 @@ describe("useHybridSearch", () => {
       const testError = new Error("Initial load failed");
       mockInitialData.error = testError;
 
-      const { result } = renderHook(() =>
-        useHybridSearch({ resource: "contacts" })
-      );
+      const { result } = renderHook(() => useHybridSearch({ resource: "contacts" }));
 
       expect(result.current.error).toEqual(testError);
     });
@@ -329,9 +307,7 @@ describe("useHybridSearch", () => {
       const testError = new Error("Search failed");
       mockSearchData.error = testError;
 
-      const { result } = renderHook(() =>
-        useHybridSearch({ resource: "contacts", debounceMs: 0 })
-      );
+      const { result } = renderHook(() => useHybridSearch({ resource: "contacts", debounceMs: 0 }));
 
       act(() => {
         result.current.setSearchTerm("test");
@@ -363,9 +339,7 @@ describe("useHybridSearch", () => {
     it("should handle empty initial data", () => {
       mockInitialData.data = [];
 
-      const { result } = renderHook(() =>
-        useHybridSearch({ resource: "contacts" })
-      );
+      const { result } = renderHook(() => useHybridSearch({ resource: "contacts" }));
 
       expect(result.current.data).toHaveLength(0);
       expect(result.current.error).toBeNull();
@@ -374,9 +348,7 @@ describe("useHybridSearch", () => {
     it("should handle empty search results", () => {
       mockSearchData.data = [];
 
-      const { result } = renderHook(() =>
-        useHybridSearch({ resource: "contacts", debounceMs: 0 })
-      );
+      const { result } = renderHook(() => useHybridSearch({ resource: "contacts", debounceMs: 0 }));
 
       act(() => {
         result.current.setSearchTerm("nonexistent");
@@ -403,9 +375,7 @@ describe("useHybridSearch", () => {
       });
 
       // Find search call and verify both filters are present
-      const searchCall = mockUseGetList.mock.calls.find(
-        (call) => call[1].filter?.q !== undefined
-      );
+      const searchCall = mockUseGetList.mock.calls.find((call) => call[1].filter?.q !== undefined);
       expect(searchCall?.[1].filter).toEqual({
         organization_id: 42,
         q: "test",

@@ -17,7 +17,16 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, XCircle, Layers, CircleDot, UserPlus, Download, Archive, AlertTriangle } from "lucide-react";
+import {
+  CheckCircle2,
+  XCircle,
+  Layers,
+  CircleDot,
+  UserPlus,
+  Download,
+  Archive,
+  AlertTriangle,
+} from "lucide-react";
 import type { Opportunity } from "../types";
 import {
   OPPORTUNITY_STAGES,
@@ -225,7 +234,11 @@ export const BulkActionsToolbar = ({
 
         {/* Destructive actions - right side */}
         <div className="ml-auto flex items-center gap-2">
-          <Button variant="default" onClick={handleExport} className="h-11 gap-2 touch-manipulation">
+          <Button
+            variant="default"
+            onClick={handleExport}
+            className="h-11 gap-2 touch-manipulation"
+          >
             <Download className="h-4 w-4" />
             Export CSV
           </Button>
@@ -442,7 +455,8 @@ export const BulkActionsToolbar = ({
             </DialogTitle>
             <DialogDescription>
               Are you sure you want to archive {selectedIds.length} opportunit
-              {selectedIds.length === 1 ? "y" : "ies"}? Archived opportunities can be restored later.
+              {selectedIds.length === 1 ? "y" : "ies"}? Archived opportunities can be restored
+              later.
             </DialogDescription>
           </DialogHeader>
 
@@ -480,12 +494,10 @@ export const BulkActionsToolbar = ({
             <Button variant="outline" onClick={handleCloseDialog} disabled={isProcessing}>
               Cancel
             </Button>
-            <Button
-              variant="destructive"
-              onClick={handleBulkArchive}
-              disabled={isProcessing}
-            >
-              {isProcessing ? "Archiving..." : `Archive ${selectedIds.length} Opportunit${selectedIds.length === 1 ? "y" : "ies"}`}
+            <Button variant="destructive" onClick={handleBulkArchive} disabled={isProcessing}>
+              {isProcessing
+                ? "Archiving..."
+                : `Archive ${selectedIds.length} Opportunit${selectedIds.length === 1 ? "y" : "ies"}`}
             </Button>
           </DialogFooter>
         </DialogContent>

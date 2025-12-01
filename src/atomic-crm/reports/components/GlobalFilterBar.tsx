@@ -10,14 +10,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useGlobalFilters } from "../contexts/GlobalFilterContext";
-import {
-  subDays,
-  startOfDay,
-  endOfDay,
-  startOfMonth,
-  endOfMonth,
-  subMonths,
-} from "date-fns";
+import { subDays, startOfDay, endOfDay, startOfMonth, endOfMonth, subMonths } from "date-fns";
 import type { Sale } from "../types";
 
 const DATE_PRESETS = [
@@ -158,12 +151,7 @@ export function GlobalFilterBar() {
 
       {/* Reset Filters - only show when filters are active */}
       {hasActiveFilters && (
-        <Button
-          variant="ghost"
-          size="sm"
-          onClick={handleReset}
-          className="h-11"
-        >
+        <Button variant="ghost" size="sm" onClick={handleReset} className="h-11">
           <RotateCcw className="h-4 w-4 mr-2" aria-hidden="true" />
           Reset Filters
         </Button>

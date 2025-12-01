@@ -106,9 +106,9 @@ export function FormErrorSummary({
    */
   const focusField = (fieldName: string) => {
     // Try to find the input by name attribute (react-hook-form pattern)
-    const input = document.querySelector<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(
-      `[name="${fieldName}"], [id="${fieldName}"]`
-    );
+    const input = document.querySelector<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >(`[name="${fieldName}"], [id="${fieldName}"]`);
 
     if (input) {
       input.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -121,19 +121,14 @@ export function FormErrorSummary({
       role="alert"
       aria-live="polite"
       aria-atomic="true"
-      className={cn(
-        "rounded-lg border border-destructive/50 bg-destructive/10 p-4",
-        className
-      )}
+      className={cn("rounded-lg border border-destructive/50 bg-destructive/10 p-4", className)}
     >
       {/* Header with count and expand toggle */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 text-destructive">
           <AlertCircle className="h-5 w-5 shrink-0" aria-hidden="true" />
           <span className="font-medium text-sm">
-            {errorCount === 1
-              ? "1 validation error"
-              : `${errorCount} validation errors`}
+            {errorCount === 1 ? "1 validation error" : `${errorCount} validation errors`}
           </span>
         </div>
 

@@ -275,11 +275,13 @@ describe("composedDataProvider", () => {
       const provider = createComposedDataProvider(mockBaseProvider);
 
       // All standard DataProvider methods should be callable
-      await expect(provider.getList("any", {
-        pagination: { page: 1, perPage: 10 },
-        sort: { field: "id", order: "ASC" },
-        filter: {},
-      })).resolves.toBeDefined();
+      await expect(
+        provider.getList("any", {
+          pagination: { page: 1, perPage: 10 },
+          sort: { field: "id", order: "ASC" },
+          filter: {},
+        })
+      ).resolves.toBeDefined();
     });
   });
 });

@@ -139,7 +139,11 @@ export function TaskSlideOverDetailsTab({
             </div>
 
             {/* Form toolbar with Save/Cancel - keyboard submit via Enter key */}
-            <div className="flex gap-2 pt-4 border-t border-border" role="toolbar" aria-label="Form actions">
+            <div
+              className="flex gap-2 pt-4 border-t border-border"
+              role="toolbar"
+              aria-label="Form actions"
+            >
               <Button type="submit" disabled={isSaving} className="h-11 px-4 flex-1">
                 {isSaving ? "Saving..." : "Save Changes"}
               </Button>
@@ -279,4 +283,3 @@ export function TaskSlideOverDetailsTab({
     </RecordContextProvider>
   );
 }
-

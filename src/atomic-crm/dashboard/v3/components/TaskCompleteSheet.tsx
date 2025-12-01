@@ -44,10 +44,7 @@ const TASK_TYPE_ICONS: Record<string, typeof Phone> = {
  * Priority badge variants
  * Uses semantic color tokens
  */
-const PRIORITY_VARIANTS: Record<
-  string,
-  { className: string; label: string }
-> = {
+const PRIORITY_VARIANTS: Record<string, { className: string; label: string }> = {
   critical: { className: "bg-destructive text-destructive-foreground", label: "Critical" },
   high: { className: "bg-warning text-warning-foreground", label: "High" },
   medium: { className: "bg-primary/20 text-primary", label: "Medium" },
@@ -99,9 +96,7 @@ function TaskItemCard({ task, onComplete, isCompleting }: TaskItemCardProps) {
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <Icon className="h-4 w-4 shrink-0 text-muted-foreground" aria-hidden="true" />
-          <span className="truncate font-medium text-foreground">
-            {task.subject}
-          </span>
+          <span className="truncate font-medium text-foreground">{task.subject}</span>
         </div>
 
         <div className="mt-1 flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
@@ -112,17 +107,12 @@ function TaskItemCard({ task, onComplete, isCompleting }: TaskItemCardProps) {
           </span>
 
           {/* Related entity */}
-          {task.relatedTo?.name && (
-            <span className="truncate">• {task.relatedTo.name}</span>
-          )}
+          {task.relatedTo?.name && <span className="truncate">• {task.relatedTo.name}</span>}
         </div>
       </div>
 
       {/* Priority badge */}
-      <Badge
-        variant="secondary"
-        className={cn("shrink-0 text-xs", priorityConfig.className)}
-      >
+      <Badge variant="secondary" className={cn("shrink-0 text-xs", priorityConfig.className)}>
         {priorityConfig.label}
       </Badge>
     </div>
@@ -171,11 +161,7 @@ interface TaskCompleteSheetProps {
  * - Bottom sheet slide-up on mobile
  * - Shows priority tasks first (overdue, then by priority)
  */
-export function TaskCompleteSheet({
-  open,
-  onOpenChange,
-  onRefresh,
-}: TaskCompleteSheetProps) {
+export function TaskCompleteSheet({ open, onOpenChange, onRefresh }: TaskCompleteSheetProps) {
   const { tasks, loading, error, completeTask } = useMyTasks();
   const notify = useNotify();
   const [completingId, setCompletingId] = useState<number | null>(null);
@@ -206,9 +192,7 @@ export function TaskCompleteSheet({
   });
 
   // Filter to only show actionable tasks (not "later")
-  const actionableTasks = sortedTasks.filter(
-    (t) => t.status !== "later"
-  );
+  const actionableTasks = sortedTasks.filter((t) => t.status !== "later");
 
   const handleComplete = useCallback(
     async (taskId: number) => {
@@ -276,9 +260,7 @@ export function TaskCompleteSheet({
               <div className="text-center">
                 <CheckCircle2 className="mx-auto h-12 w-12 text-success/50" />
                 <p className="mt-2 font-medium text-foreground">All caught up!</p>
-                <p className="text-sm text-muted-foreground">
-                  No pending tasks to complete
-                </p>
+                <p className="text-sm text-muted-foreground">No pending tasks to complete</p>
               </div>
             </div>
           ) : (

@@ -9,10 +9,7 @@
  * Engineering Constitution: Minimal complexity - tags are simple entities
  */
 
-import {
-  createResourceCallbacks,
-  type ResourceCallbacks,
-} from "./createResourceCallbacks";
+import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
 
 /**
  * Tags lifecycle callbacks for React Admin withLifecycleCallbacks

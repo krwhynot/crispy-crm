@@ -143,19 +143,35 @@ describe("useKPIMetrics", () => {
       // Use startOfDay and subDays for consistent day calculations
       // The staleness utility compares using startOfDay, so we must do the same
       const today = startOfDay(new Date());
-      const eightDaysAgo = subDays(today, 8);  // 8 > 7 threshold for new_lead
-      const fifteenDaysAgo = subDays(today, 15);  // 15 > 14 threshold for initial_outreach
-      const twentyTwoDaysAgo = subDays(today, 22);  // 22 > 21 threshold for feedback_logged
+      const eightDaysAgo = subDays(today, 8); // 8 > 7 threshold for new_lead
+      const fifteenDaysAgo = subDays(today, 15); // 15 > 14 threshold for initial_outreach
+      const twentyTwoDaysAgo = subDays(today, 22); // 22 > 21 threshold for feedback_logged
 
       const opportunities = [
         // new_lead with 8 days no activity (stale - threshold is 7)
-        createMockOpportunity({ id: 1, stage: "new_lead", last_activity_date: eightDaysAgo.toISOString() }),
+        createMockOpportunity({
+          id: 1,
+          stage: "new_lead",
+          last_activity_date: eightDaysAgo.toISOString(),
+        }),
         // initial_outreach with 15 days (stale - threshold is 14)
-        createMockOpportunity({ id: 2, stage: "initial_outreach", last_activity_date: fifteenDaysAgo.toISOString() }),
+        createMockOpportunity({
+          id: 2,
+          stage: "initial_outreach",
+          last_activity_date: fifteenDaysAgo.toISOString(),
+        }),
         // feedback_logged with 22 days (stale - threshold is 21)
-        createMockOpportunity({ id: 3, stage: "feedback_logged", last_activity_date: twentyTwoDaysAgo.toISOString() }),
+        createMockOpportunity({
+          id: 3,
+          stage: "feedback_logged",
+          last_activity_date: twentyTwoDaysAgo.toISOString(),
+        }),
         // demo_scheduled with recent activity (not stale - valid active stage)
-        createMockOpportunity({ id: 4, stage: "demo_scheduled", last_activity_date: today.toISOString() }),
+        createMockOpportunity({
+          id: 4,
+          stage: "demo_scheduled",
+          last_activity_date: today.toISOString(),
+        }),
       ];
 
       mockGetList.mockImplementation((resource: string) => {
@@ -331,8 +347,16 @@ describe("useKPIMetrics", () => {
       const eightDaysAgo = subDays(today, 8);
 
       const opportunities = [
-        createMockOpportunity({ id: 1, stage: "new_lead", last_activity_date: sevenDaysAgo.toISOString() }),
-        createMockOpportunity({ id: 2, stage: "new_lead", last_activity_date: eightDaysAgo.toISOString() }),
+        createMockOpportunity({
+          id: 1,
+          stage: "new_lead",
+          last_activity_date: sevenDaysAgo.toISOString(),
+        }),
+        createMockOpportunity({
+          id: 2,
+          stage: "new_lead",
+          last_activity_date: eightDaysAgo.toISOString(),
+        }),
       ];
 
       mockGetList.mockImplementation((resource: string) => {
@@ -360,8 +384,16 @@ describe("useKPIMetrics", () => {
       const fifteenDaysAgo = subDays(today, 15);
 
       const opportunities = [
-        createMockOpportunity({ id: 1, stage: "initial_outreach", last_activity_date: fourteenDaysAgo.toISOString() }),
-        createMockOpportunity({ id: 2, stage: "initial_outreach", last_activity_date: fifteenDaysAgo.toISOString() }),
+        createMockOpportunity({
+          id: 1,
+          stage: "initial_outreach",
+          last_activity_date: fourteenDaysAgo.toISOString(),
+        }),
+        createMockOpportunity({
+          id: 2,
+          stage: "initial_outreach",
+          last_activity_date: fifteenDaysAgo.toISOString(),
+        }),
       ];
 
       mockGetList.mockImplementation((resource: string) => {
@@ -389,8 +421,16 @@ describe("useKPIMetrics", () => {
       const twentyTwoDaysAgo = subDays(today, 22);
 
       const opportunities = [
-        createMockOpportunity({ id: 1, stage: "feedback_logged", last_activity_date: twentyOneDaysAgo.toISOString() }),
-        createMockOpportunity({ id: 2, stage: "feedback_logged", last_activity_date: twentyTwoDaysAgo.toISOString() }),
+        createMockOpportunity({
+          id: 1,
+          stage: "feedback_logged",
+          last_activity_date: twentyOneDaysAgo.toISOString(),
+        }),
+        createMockOpportunity({
+          id: 2,
+          stage: "feedback_logged",
+          last_activity_date: twentyTwoDaysAgo.toISOString(),
+        }),
       ];
 
       mockGetList.mockImplementation((resource: string) => {

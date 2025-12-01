@@ -7,23 +7,14 @@ export const OrganizationMoreTab = () => {
     <div className="space-y-6">
       <FormSection title="Additional Information">
         <FormGrid columns={2}>
-          <TextInput
-            source="website"
-            helperText="Format: https://example.com"
-            label="Website"
-          />
+          <TextInput source="website" helperText="Format: https://example.com" label="Website" />
           <TextInput
             source="linkedin_url"
             label="LinkedIn URL"
             helperText="Format: https://linkedin.com/company/name"
           />
           <div className="col-span-full">
-            <TextInput
-              source="description"
-              multiline
-              helperText={false}
-              label="Description"
-            />
+            <TextInput source="description" multiline helperText={false} label="Description" />
           </div>
           <div className="col-span-full">
             <ParentOrganizationInput />

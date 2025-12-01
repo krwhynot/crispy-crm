@@ -31,7 +31,7 @@ function generateTasks(count: number) {
   return Array.from({ length: count }, (_, i) => ({
     id: i + 1,
     subject: `Task ${i + 1}: ${["Follow up", "Send email", "Schedule meeting", "Review proposal"][i % 4]}`,
-    dueDate: new Date(Date.now() + (i % 3 - 1) * 86400000), // Mix of overdue/today/tomorrow
+    dueDate: new Date(Date.now() + ((i % 3) - 1) * 86400000), // Mix of overdue/today/tomorrow
     priority: priorities[i % 4],
     taskType: taskTypes[i % 4],
     relatedTo: {
@@ -163,10 +163,7 @@ describe.skipIf(!runBenchmarks)("TasksPanel Performance Benchmarks", () => {
   });
 
   it(`should render ${TASK_COUNT} tasks with acceptable total render time`, async () => {
-    const result = await measureRenderPerformance(
-      () => render(<TasksPanel />),
-      5
-    );
+    const result = await measureRenderPerformance(() => render(<TasksPanel />), 5);
 
     // NOTE: The 15ms target was for FILTERING overhead, not total render time
     // Total render includes React DOM creation for 100 tasks (~300-500ms in jsdom)
@@ -240,10 +237,7 @@ describe.skipIf(!runBenchmarks)("TasksPanel Performance Benchmarks", () => {
       snoozeTask: vi.fn(),
     });
 
-    const result = await measureRenderPerformance(
-      () => render(<TasksPanel />),
-      3
-    );
+    const result = await measureRenderPerformance(() => render(<TasksPanel />), 3);
 
     console.log(`
 ╔══════════════════════════════════════════════════════════════╗
@@ -273,9 +267,7 @@ vi.mock("@/components/ui/form", () => ({
     const field = { value: undefined, onChange: vi.fn(), name };
     return render({ field });
   },
-  FormItem: ({ children, className }: any) => (
-    <div className={className}>{children}</div>
-  ),
+  FormItem: ({ children, className }: any) => <div className={className}>{children}</div>,
   FormLabel: ({ children }: any) => <label>{children}</label>,
   FormControl: ({ children }: any) => <>{children}</>,
   FormDescription: ({ children }: any) => <p>{children}</p>,
@@ -340,9 +332,7 @@ vi.mock("@/components/ui/dropdown-menu", () => ({
   DropdownMenu: ({ children }: any) => <div>{children}</div>,
   DropdownMenuTrigger: ({ children }: any) => <div>{children}</div>,
   DropdownMenuContent: ({ children }: any) => <div>{children}</div>,
-  DropdownMenuItem: ({ children, onClick }: any) => (
-    <div onClick={onClick}>{children}</div>
-  ),
+  DropdownMenuItem: ({ children, onClick }: any) => <div onClick={onClick}>{children}</div>,
   DropdownMenuSeparator: () => <hr />,
 }));
 
@@ -356,7 +346,9 @@ vi.mock("@/components/ui/card", () => ({
 
 vi.mock("@/components/ui/badge", () => ({
   Badge: ({ children, variant, className }: any) => (
-    <span className={className} data-variant={variant}>{children}</span>
+    <span className={className} data-variant={variant}>
+      {children}
+    </span>
   ),
 }));
 

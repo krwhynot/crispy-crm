@@ -41,7 +41,8 @@ interface CampaignOpportunity {
 }
 
 /** Extended ActivityGroup with required percentage for campaign reports */
-interface CampaignActivityGroup extends Omit<ActivityGroup, "percentage" | "mostActiveOrg" | "mostActiveCount" | "activities"> {
+interface CampaignActivityGroup
+  extends Omit<ActivityGroup, "percentage" | "mostActiveOrg" | "mostActiveCount" | "activities"> {
   activities: CampaignActivity[];
   percentage: number;
   mostActiveOrg: string;
@@ -70,15 +71,13 @@ export default function CampaignActivityReport() {
   const hasInitialized = React.useRef(false);
 
   // Fetch all opportunities to get available campaigns
-  const { data: allOpportunities = [], isPending: opportunitiesPending } = useGetList<CampaignOpportunity>(
-    "opportunities",
-    {
+  const { data: allOpportunities = [], isPending: opportunitiesPending } =
+    useGetList<CampaignOpportunity>("opportunities", {
       pagination: { page: 1, perPage: 10000 },
       filter: {
         "deleted_at@is": null,
       },
-    }
-  );
+    });
 
   // Get distinct campaigns with opportunity counts
   const campaignOptions = useMemo(() => {
@@ -226,7 +225,10 @@ export default function CampaignActivityReport() {
   }, [activities]);
 
   // Helper function: Get last activity date for an opportunity
-  const getLastActivityForOpportunity = (oppId: number, activities: CampaignActivity[]): string | null => {
+  const getLastActivityForOpportunity = (
+    oppId: number,
+    activities: CampaignActivity[]
+  ): string | null => {
     const oppActivities = activities.filter((a) => a.opportunity_id === oppId);
     if (oppActivities.length === 0) return null;
 
@@ -247,42 +249,39 @@ export default function CampaignActivityReport() {
     );
     const now = new Date();
 
-    return opportunitiesForCampaign
-      .map((opp) => {
-        const lastActivityDate = getLastActivityForOpportunity(opp.id, allCampaignActivities);
-        const daysInactive = lastActivityDate
-          ? Math.floor(
-              (now.getTime() - new Date(lastActivityDate).getTime()) / (1000 * 60 * 60 * 24)
-            )
-          : 999999; // Never had activity - sort to end
+    return (
+      opportunitiesForCampaign
+        .map((opp) => {
+          const lastActivityDate = getLastActivityForOpportunity(opp.id, allCampaignActivities);
+          const daysInactive = lastActivityDate
+            ? Math.floor(
+                (now.getTime() - new Date(lastActivityDate).getTime()) / (1000 * 60 * 60 * 24)
+              )
+            : 999999; // Never had activity - sort to end
 
-        // Get per-stage threshold (undefined for closed stages)
-        const stage = opp.stage || "new_lead";
-        const stageThreshold = getStaleThreshold(stage);
+          // Get per-stage threshold (undefined for closed stages)
+          const stage = opp.stage || "new_lead";
+          const stageThreshold = getStaleThreshold(stage);
 
-        return {
-          ...opp,
-          lastActivityDate,
-          daysInactive,
-          stageThreshold, // Include threshold for display
-          isStale: isOpportunityStale(stage, lastActivityDate, now),
-        };
-      })
-      // Exclude closed stages (stageThreshold is undefined for them)
-      // Only include opportunities that are actually stale per their stage threshold
-      .filter((opp) => opp.isStale && opp.stageThreshold !== undefined)
-      .sort((a, b) => {
-        // Sort by "days over threshold" (most urgent first)
-        const aOverage = a.daysInactive - (a.stageThreshold || 0);
-        const bOverage = b.daysInactive - (b.stageThreshold || 0);
-        return bOverage - aOverage;
-      });
-  }, [
-    showStaleLeads,
-    allOpportunities,
-    selectedCampaign,
-    allCampaignActivities,
-  ]);
+          return {
+            ...opp,
+            lastActivityDate,
+            daysInactive,
+            stageThreshold, // Include threshold for display
+            isStale: isOpportunityStale(stage, lastActivityDate, now),
+          };
+        })
+        // Exclude closed stages (stageThreshold is undefined for them)
+        // Only include opportunities that are actually stale per their stage threshold
+        .filter((opp) => opp.isStale && opp.stageThreshold !== undefined)
+        .sort((a, b) => {
+          // Sort by "days over threshold" (most urgent first)
+          const aOverage = a.daysInactive - (a.stageThreshold || 0);
+          const bOverage = b.daysInactive - (b.stageThreshold || 0);
+          return bOverage - aOverage;
+        })
+    );
+  }, [showStaleLeads, allOpportunities, selectedCampaign, allCampaignActivities]);
 
   // Auto-expand top 3 activity types on load
   React.useEffect(() => {
@@ -714,7 +713,9 @@ export default function CampaignActivityReport() {
                   <div className="text-xs text-muted-foreground space-y-0.5">
                     <p>Thresholds by stage:</p>
                     <p className="pl-2">• New Lead: {STAGE_STALE_THRESHOLDS.new_lead}d</p>
-                    <p className="pl-2">• Outreach/Sample/Demo: {STAGE_STALE_THRESHOLDS.initial_outreach}d</p>
+                    <p className="pl-2">
+                      • Outreach/Sample/Demo: {STAGE_STALE_THRESHOLDS.initial_outreach}d
+                    </p>
                     <p className="pl-2">• Feedback: {STAGE_STALE_THRESHOLDS.feedback_logged}d</p>
                     <p className="pl-2 italic">Closed stages excluded</p>
                   </div>
@@ -814,10 +815,7 @@ export default function CampaignActivityReport() {
           ))}
         </div>
       ) : showStaleLeads ? (
-        <StaleLeadsView
-          campaignName={selectedCampaign}
-          staleOpportunities={staleOpportunities}
-        />
+        <StaleLeadsView campaignName={selectedCampaign} staleOpportunities={staleOpportunities} />
       ) : activityGroups.length > 0 ? (
         <div>
           <h3 className="text-lg font-semibold mb-4">Activity Type Breakdown</h3>

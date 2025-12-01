@@ -9,18 +9,13 @@
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
  */
 
-import {
-  createResourceCallbacks,
-  type ResourceCallbacks,
-} from "./createResourceCallbacks";
+import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
 
 /**
  * Computed fields from sales view (must be stripped before save)
  * - administrator: computed from role field via database function
  */
-export const COMPUTED_FIELDS = [
-  "administrator",
-] as const;
+export const COMPUTED_FIELDS = ["administrator"] as const;
 
 /**
  * Sales lifecycle callbacks for React Admin withLifecycleCallbacks

@@ -19,10 +19,7 @@ interface OpportunityNotesTabProps {
  *
  * Both view and edit modes allow note creation and editing.
  */
-export function OpportunityNotesTab({
-  record,
-  mode,
-}: OpportunityNotesTabProps) {
+export function OpportunityNotesTab({ record, mode }: OpportunityNotesTabProps) {
   return (
     <RecordContextProvider value={record}>
       <div className="space-y-4">

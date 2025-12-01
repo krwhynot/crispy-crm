@@ -135,10 +135,7 @@ describe("MobileQuickActionBar", () => {
 
     it("calls onCompleteTask callback for Complete Task button", () => {
       render(
-        <MobileQuickActionBar
-          onRefresh={mockOnRefresh}
-          onCompleteTask={mockOnCompleteTask}
-        />
+        <MobileQuickActionBar onRefresh={mockOnRefresh} onCompleteTask={mockOnCompleteTask} />
       );
 
       const completeButton = screen.getByRole("button", { name: /mark a task as complete/i });

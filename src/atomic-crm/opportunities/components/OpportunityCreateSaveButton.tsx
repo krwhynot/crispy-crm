@@ -11,12 +11,7 @@
 
 import { useCallback, useEffect, useRef, type MouseEvent } from "react";
 import { useFormContext, useFormState } from "react-hook-form";
-import {
-  setSubmissionErrors,
-  useSaveContext,
-  useTranslate,
-  useRecordFromLocation,
-} from "ra-core";
+import { setSubmissionErrors, useSaveContext, useTranslate, useRecordFromLocation } from "ra-core";
 import { Loader2, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -73,7 +68,7 @@ export function OpportunityCreateSaveButton({
   // Calculate disabled state (same logic as standard SaveButton)
   const isDirty = Object.keys(dirtyFields).length > 0;
   const recordFromLocation = useRecordFromLocation();
-  const disabled = !isDirty && recordFromLocation == null || isValidating || isSubmitting;
+  const disabled = (!isDirty && recordFromLocation == null) || isValidating || isSubmitting;
 
   /**
    * Handle form submission through React Admin's save context

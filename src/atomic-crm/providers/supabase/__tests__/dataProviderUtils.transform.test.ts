@@ -233,7 +233,7 @@ describe("transformArrayFilters", () => {
       // Empty arrays are handled: the key with @ is preserved but value becomes ()
       // Actually, empty arrays with @ should still be transformed
       expect(transformArrayFilters(filter)).toEqual({
-        "stage@not_in": [],  // Empty array preserved as-is (not transformed)
+        "stage@not_in": [], // Empty array preserved as-is (not transformed)
         "status@in": "(active)",
       });
     });

@@ -101,9 +101,7 @@ export function StandardListLayout({
             {isCollapsed ? "Show filters" : "Hide filters"}
           </TooltipContent>
         </Tooltip>
-        {isCollapsed && (
-          <span className="text-sm text-muted-foreground">Filters hidden</span>
-        )}
+        {isCollapsed && <span className="text-sm text-muted-foreground">Filters hidden</span>}
       </div>
 
       {/* Filter sidebar with collapse animation */}

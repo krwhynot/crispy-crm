@@ -233,7 +233,10 @@ export class LogActivityFABPage extends BasePage {
   /**
    * Get draft from localStorage
    */
-  async getDraftFromStorage(): Promise<{ formData: Record<string, unknown>; savedAt: number } | null> {
+  async getDraftFromStorage(): Promise<{
+    formData: Record<string, unknown>;
+    savedAt: number;
+  } | null> {
     return await this.page.evaluate((key) => {
       const stored = localStorage.getItem(key);
       return stored ? JSON.parse(stored) : null;

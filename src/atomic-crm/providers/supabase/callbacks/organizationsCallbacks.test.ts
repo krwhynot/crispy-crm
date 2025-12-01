@@ -125,7 +125,11 @@ describe("organizationsCallbacks", () => {
         total_revenue: 1000000,
       };
 
-      const result = await organizationsCallbacks.beforeSave!(data, mockDataProvider, "organizations");
+      const result = await organizationsCallbacks.beforeSave!(
+        data,
+        mockDataProvider,
+        "organizations"
+      );
 
       expect(result).not.toHaveProperty("contact_count");
       expect(result).not.toHaveProperty("opportunity_count");
@@ -147,7 +151,11 @@ describe("organizationsCallbacks", () => {
         description: "A great company",
       };
 
-      const result = await organizationsCallbacks.beforeSave!(data, mockDataProvider, "organizations");
+      const result = await organizationsCallbacks.beforeSave!(
+        data,
+        mockDataProvider,
+        "organizations"
+      );
 
       expect(result.name).toBe("Acme Corp");
       expect(result.sector).toBe("Technology");
@@ -162,7 +170,11 @@ describe("organizationsCallbacks", () => {
         logo: "data:image/png;base64,abc123",
       };
 
-      const result = await organizationsCallbacks.beforeSave!(data, mockDataProvider, "organizations");
+      const result = await organizationsCallbacks.beforeSave!(
+        data,
+        mockDataProvider,
+        "organizations"
+      );
 
       // Logo should be preserved for storage service to handle
       expect(result.logo).toBe("data:image/png;base64,abc123");

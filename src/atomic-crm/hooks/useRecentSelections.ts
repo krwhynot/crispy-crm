@@ -31,29 +31,35 @@ export const useRecentSelections = (fieldType: string): UseRecentSelectionsRetur
 
   const [recentItems, setRecentItems] = useState<RecentItem[]>(loadFromStorage);
 
-  const saveToStorage = useCallback((items: RecentItem[]) => {
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(items));
-    } catch {
-      // Silently fail if localStorage is unavailable
-    }
-  }, [storageKey]);
+  const saveToStorage = useCallback(
+    (items: RecentItem[]) => {
+      try {
+        localStorage.setItem(storageKey, JSON.stringify(items));
+      } catch {
+        // Silently fail if localStorage is unavailable
+      }
+    },
+    [storageKey]
+  );
 
-  const addRecent = useCallback((item: RecentItem) => {
-    setRecentItems((current) => {
-      // Remove existing item with same ID if present
-      const filtered = current.filter((existing) => existing.id !== item.id);
+  const addRecent = useCallback(
+    (item: RecentItem) => {
+      setRecentItems((current) => {
+        // Remove existing item with same ID if present
+        const filtered = current.filter((existing) => existing.id !== item.id);
 
-      // Add new item to front
-      const updated = [item, ...filtered];
+        // Add new item to front
+        const updated = [item, ...filtered];
 
-      // Limit to max items
-      const limited = updated.slice(0, MAX_RECENT_ITEMS);
+        // Limit to max items
+        const limited = updated.slice(0, MAX_RECENT_ITEMS);
 
-      saveToStorage(limited);
-      return limited;
-    });
-  }, [saveToStorage]);
+        saveToStorage(limited);
+        return limited;
+      });
+    },
+    [saveToStorage]
+  );
 
   const clearRecent = useCallback(() => {
     setRecentItems([]);

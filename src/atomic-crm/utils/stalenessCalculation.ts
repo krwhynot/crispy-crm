@@ -147,9 +147,7 @@ export function getDaysSinceActivity(
   }
 
   const lastActivity = new Date(lastActivityDate);
-  return Math.floor(
-    (referenceDate.getTime() - lastActivity.getTime()) / (1000 * 60 * 60 * 24)
-  );
+  return Math.floor((referenceDate.getTime() - lastActivity.getTime()) / (1000 * 60 * 60 * 24));
 }
 
 /**
@@ -161,7 +159,7 @@ export function getDaysSinceActivity(
  * @returns Count of stale opportunities
  */
 export function countStaleOpportunities<
-  T extends { stage: string; last_activity_date?: string | null; last_activity_at?: string | null }
+  T extends { stage: string; last_activity_date?: string | null; last_activity_at?: string | null },
 >(opportunities: T[], referenceDate: Date = new Date()): number {
   return opportunities.filter((opp) => {
     // Support both field names (last_activity_date and last_activity_at)
@@ -179,7 +177,7 @@ export function countStaleOpportunities<
  * @returns Filtered array of stale opportunities
  */
 export function filterStaleOpportunities<
-  T extends { stage: string; last_activity_date?: string | null; last_activity_at?: string | null }
+  T extends { stage: string; last_activity_date?: string | null; last_activity_at?: string | null },
 >(opportunities: T[], referenceDate: Date = new Date()): T[] {
   return opportunities.filter((opp) => {
     const lastActivity = opp.last_activity_date ?? opp.last_activity_at ?? null;

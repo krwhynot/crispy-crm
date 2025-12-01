@@ -2,13 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
-import {
-  AlertCircle,
-  Activity,
-  Briefcase,
-  AlertTriangle,
-  type LucideIcon,
-} from "lucide-react";
+import { AlertCircle, Activity, Briefcase, AlertTriangle, type LucideIcon } from "lucide-react";
 
 /**
  * KPI Metric Type for dashboard summary cards (PRD v1.9)
@@ -57,7 +51,8 @@ const KPI_CONFIG: Record<
     icon: Briefcase,
     label: "Open Opportunities",
     formatValue: (value) => value.toLocaleString(),
-    navigateTo: "/opportunities?filter=%7B%22stage%40not_in%22%3A%5B%22closed_won%22%2C%22closed_lost%22%5D%7D",
+    navigateTo:
+      "/opportunities?filter=%7B%22stage%40not_in%22%3A%5B%22closed_won%22%2C%22closed_lost%22%5D%7D",
   },
   // KPI #2: Overdue Tasks with red styling when > 0
   overdueTasks: {
@@ -174,18 +169,12 @@ export function KPICard({ type, value, loading = false, className }: KPICardProp
           {/* Text content */}
           <div className="flex-1 min-w-0">
             {/* Label */}
-            <p className="text-xs lg:text-sm text-muted-foreground truncate">
-              {config.label}
-            </p>
+            <p className="text-xs lg:text-sm text-muted-foreground truncate">{config.label}</p>
             {/* Value */}
             <p
               className={cn(
                 "text-lg lg:text-xl font-semibold truncate",
-                isDestructive
-                  ? "text-destructive"
-                  : isWarning
-                    ? "text-warning"
-                    : "text-foreground"
+                isDestructive ? "text-destructive" : isWarning ? "text-warning" : "text-foreground"
               )}
             >
               {config.formatValue(value)}

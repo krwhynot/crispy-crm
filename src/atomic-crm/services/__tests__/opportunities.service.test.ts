@@ -472,20 +472,22 @@ describe("OpportunitiesService", () => {
         // Product 2 is deleted (not in form)
       ];
 
-      await service.updateWithProducts(1, {
-        ...mockUpdateData,
-        products_to_sync: formProducts,
-      }, previousProducts);
+      await service.updateWithProducts(
+        1,
+        {
+          ...mockUpdateData,
+          products_to_sync: formProducts,
+        },
+        previousProducts
+      );
 
-      expect((supabase.rpc as any)).toHaveBeenCalledWith(
+      expect(supabase.rpc as any).toHaveBeenCalledWith(
         "sync_opportunity_with_products",
         expect.objectContaining({
           products_to_create: expect.arrayContaining([
             expect.objectContaining({ product_id_reference: 3 }),
           ]),
-          products_to_update: expect.arrayContaining([
-            expect.objectContaining({ id: 1 }),
-          ]),
+          products_to_update: expect.arrayContaining([expect.objectContaining({ id: 1 })]),
           product_ids_to_delete: expect.arrayContaining([2]),
         })
       );
@@ -501,12 +503,16 @@ describe("OpportunitiesService", () => {
 
       const formProducts = [{ product_id_reference: 1 }];
 
-      await service.updateWithProducts(789, {
-        ...mockUpdateData,
-        products_to_sync: formProducts,
-      }, previousProducts);
+      await service.updateWithProducts(
+        789,
+        {
+          ...mockUpdateData,
+          products_to_sync: formProducts,
+        },
+        previousProducts
+      );
 
-      expect((supabase.rpc as any)).toHaveBeenCalledWith(
+      expect(supabase.rpc as any).toHaveBeenCalledWith(
         "sync_opportunity_with_products",
         expect.objectContaining({
           opportunity_data: expect.objectContaining({ id: 789 }),

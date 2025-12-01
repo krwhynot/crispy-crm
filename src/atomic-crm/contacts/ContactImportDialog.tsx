@@ -23,10 +23,7 @@ import { useColumnMapping } from "./useColumnMapping";
 import { useImportWizard } from "./useImportWizard";
 import { assertNever } from "./useImportWizard.types";
 import { FULL_NAME_SPLIT_MARKER } from "./csvConstants";
-import {
-  validateCsvFile,
-  getSecurePapaParseConfig,
-} from "../utils/csvUploadValidator";
+import { validateCsvFile, getSecurePapaParseConfig } from "../utils/csvUploadValidator";
 import { contactImportLimiter } from "../utils/rateLimiter";
 
 import { FileInput } from "@/components/admin/file-input";
@@ -428,8 +425,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
       wizardState.step === "file_selected" ? wizardState.validationErrors : [];
     const validationWarnings =
       wizardState.step === "file_selected" ? wizardState.validationWarnings : [];
-    const selectedFile =
-      wizardState.step === "file_selected" ? wizardState.file : null;
+    const selectedFile = wizardState.step === "file_selected" ? wizardState.file : null;
     const isParsing = wizardState.step === "parsing" || previewImporter.state === "parsing";
 
     return (
@@ -544,7 +540,9 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
           <div className="space-y-2">
             <Progress value={progressPercent} className="h-3" />
             <div className="flex justify-between text-sm text-muted-foreground">
-              <span>Processing {progress.count} of {progress.total} contacts</span>
+              <span>
+                Processing {progress.count} of {progress.total} contacts
+              </span>
               <span>{Math.round(progressPercent)}% Complete</span>
             </div>
           </div>
@@ -648,9 +646,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
             <DialogHeader>
               <DialogTitle>Import</DialogTitle>
             </DialogHeader>
-            <div className="flex flex-col space-y-2">
-              {renderMainDialogContent()}
-            </div>
+            <div className="flex flex-col space-y-2">{renderMainDialogContent()}</div>
           </Form>
         </DialogContent>
       </Dialog>
@@ -687,4 +683,3 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
     </>
   );
 }
-

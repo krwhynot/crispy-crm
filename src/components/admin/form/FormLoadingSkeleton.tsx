@@ -18,17 +18,11 @@ interface FormLoadingSkeletonProps {
  * if (isLoading) return <FormLoadingSkeleton rows={4} />;
  * ```
  */
-export const FormLoadingSkeleton = ({
-  rows = 4,
-  twoColumn = true,
-}: FormLoadingSkeletonProps) => (
+export const FormLoadingSkeleton = ({ rows = 4, twoColumn = true }: FormLoadingSkeletonProps) => (
   <Card data-slot="card">
     <CardContent className="space-y-6 p-6">
       {Array.from({ length: rows }).map((_, rowIndex) => (
-        <div
-          key={rowIndex}
-          className={twoColumn ? "grid grid-cols-2 gap-6" : ""}
-        >
+        <div key={rowIndex} className={twoColumn ? "grid grid-cols-2 gap-6" : ""}>
           {/* First field */}
           <div className="space-y-2">
             <Skeleton data-slot="skeleton" className="h-4 w-20" />

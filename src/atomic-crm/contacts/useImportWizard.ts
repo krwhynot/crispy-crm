@@ -66,10 +66,7 @@ export function createInitialState(): WizardStateIdle {
  * @param action - Action to process
  * @returns New state (or same reference if action is invalid for current state)
  */
-export function importWizardReducer(
-  state: WizardState,
-  action: WizardAction
-): WizardState {
+export function importWizardReducer(state: WizardState, action: WizardAction): WizardState {
   // Handle RESET action from any state
   if (action.type === "RESET") {
     return createInitialState();
@@ -112,10 +109,7 @@ export function importWizardReducer(
  * Handles actions when in IDLE state.
  * Valid transitions: SELECT_FILE → file_selected
  */
-function reduceIdleState(
-  state: WizardStateIdle,
-  action: WizardAction
-): WizardState {
+function reduceIdleState(state: WizardStateIdle, action: WizardAction): WizardState {
   switch (action.type) {
     case "SELECT_FILE":
       return {
@@ -173,10 +167,7 @@ function reduceFileSelectedState(
  * - PARSING_FAILED → error
  * - CANCEL → idle
  */
-function reduceParsingState(
-  state: WizardStateParsing,
-  action: WizardAction
-): WizardState {
+function reduceParsingState(state: WizardStateParsing, action: WizardAction): WizardState {
   switch (action.type) {
     case "PARSING_COMPLETE":
       return {
@@ -212,10 +203,7 @@ function reduceParsingState(
  * - UPDATE_DATA_QUALITY_DECISIONS → preview (updated)
  * - CANCEL → idle
  */
-function reducePreviewState(
-  state: WizardStatePreview,
-  action: WizardAction
-): WizardState {
+function reducePreviewState(state: WizardStatePreview, action: WizardAction): WizardState {
   switch (action.type) {
     case "START_IMPORT":
       return {
@@ -261,10 +249,7 @@ function reducePreviewState(
  * - IMPORT_FAILED → error
  * - CANCEL → idle
  */
-function reduceImportingState(
-  state: WizardStateImporting,
-  action: WizardAction
-): WizardState {
+function reduceImportingState(state: WizardStateImporting, action: WizardAction): WizardState {
   switch (action.type) {
     case "UPDATE_PROGRESS":
       return {
@@ -334,10 +319,7 @@ function reduceImportingState(
  * Handles actions when in COMPLETE state.
  * Valid transitions: (only RESET, handled globally)
  */
-function reduceCompleteState(
-  state: WizardStateComplete,
-  _action: WizardAction
-): WizardState {
+function reduceCompleteState(state: WizardStateComplete, _action: WizardAction): WizardState {
   // No valid transitions from complete except RESET (handled globally)
   return state;
 }
@@ -346,10 +328,7 @@ function reduceCompleteState(
  * Handles actions when in ERROR state.
  * Valid transitions: (only RESET, handled globally)
  */
-function reduceErrorState(
-  state: WizardStateError,
-  _action: WizardAction
-): WizardState {
+function reduceErrorState(state: WizardStateError, _action: WizardAction): WizardState {
   // No valid transitions from error except RESET (handled globally)
   return state;
 }
@@ -445,7 +424,11 @@ export function createWizardActions(dispatch: React.Dispatch<WizardAction>) {
       batchSuccess: number;
       batchSkipped: number;
       batchFailed: number;
-      batchErrors: Array<{ row: number; data: unknown; errors: Array<{ field: string; message: string }> }>;
+      batchErrors: Array<{
+        row: number;
+        data: unknown;
+        errors: Array<{ field: string; message: string }>;
+      }>;
       batchSize: number;
     }) => {
       dispatch({ type: "ACCUMULATE_RESULT", payload });

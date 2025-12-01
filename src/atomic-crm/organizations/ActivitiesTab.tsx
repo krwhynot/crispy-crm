@@ -24,7 +24,8 @@ export const ActivitiesTab = ({ organizationId }: ActivitiesTabProps) => {
   });
 
   // Convert organizationId to number for the dialog (handles both string and number)
-  const numericOrganizationId = typeof organizationId === "string" ? parseInt(organizationId, 10) : organizationId;
+  const numericOrganizationId =
+    typeof organizationId === "string" ? parseInt(organizationId, 10) : organizationId;
 
   if (isPending) {
     return (
@@ -50,11 +51,7 @@ export const ActivitiesTab = ({ organizationId }: ActivitiesTabProps) => {
     <div className="space-y-4">
       {/* Log Activity button - opens QuickLogActivityDialog pre-filled with organization */}
       <div className="flex justify-end">
-        <Button
-          variant="outline"
-          className="h-11 gap-2"
-          onClick={() => setIsDialogOpen(true)}
-        >
+        <Button variant="outline" className="h-11 gap-2" onClick={() => setIsDialogOpen(true)}>
           <Plus className="h-4 w-4" />
           Log Activity
         </Button>

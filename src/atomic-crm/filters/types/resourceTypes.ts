@@ -62,7 +62,8 @@ export const resourceExtractors = {
    * Combines first_name and last_name with fallback
    */
   sales: ((s) =>
-    `${s.first_name ?? ""} ${s.last_name ?? ""}`.trim() || "Unknown") satisfies DisplayNameExtractor<Sales>,
+    `${s.first_name ?? ""} ${s.last_name ?? ""}`.trim() ||
+    "Unknown") satisfies DisplayNameExtractor<Sales>,
 
   /**
    * Extract display name from Organization resource

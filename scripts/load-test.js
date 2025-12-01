@@ -57,7 +57,7 @@ const ENDPOINTS = [
     weight: 10,
     fn: getContactWithOrganizations,
   },
-  { name: "List Organizations", weight: 10, fn: listOrganizations },  // Updated: Companies -> Organizations
+  { name: "List Organizations", weight: 10, fn: listOrganizations }, // Updated: Companies -> Organizations
   { name: "Search Opportunities", weight: 5, fn: searchOpportunities },
   { name: "Dashboard Aggregations", weight: 5, fn: getDashboardData },
   { name: "Complex Join Query", weight: 3, fn: complexJoinQuery },
@@ -80,7 +80,15 @@ function selectRandomEndpoint() {
 // Endpoint implementations
 async function listOpportunities() {
   // Updated to match PRD v1.18 pipeline stages
-  const stages = ["new_lead", "initial_outreach", "sample_visit_offered", "feedback_logged", "demo_scheduled", "closed_won", "closed_lost"];
+  const stages = [
+    "new_lead",
+    "initial_outreach",
+    "sample_visit_offered",
+    "feedback_logged",
+    "demo_scheduled",
+    "closed_won",
+    "closed_lost",
+  ];
   const randomStage = faker.helpers.arrayElement(stages);
 
   const { data, error } = await supabase
@@ -215,11 +223,7 @@ async function getDashboardData() {
     supabase.from("activities").select("*").order("activity_date", { ascending: false }).limit(10),
 
     // Top opportunities by priority (no amount field)
-    supabase
-      .from("opportunities")
-      .select("name, stage, priority")
-      .eq("priority", "high")
-      .limit(5),
+    supabase.from("opportunities").select("name, stage, priority").eq("priority", "high").limit(5),
   ]);
 
   const errors = queries.filter((q) => q.error).map((q) => q.error);
@@ -266,7 +270,21 @@ async function complexJoinQuery() {
 
 async function createActivity() {
   // Updated: use all 13 activity types from PRD v1.18
-  const types = ["call", "email", "meeting", "demo", "sample", "proposal", "follow_up", "trade_show", "site_visit", "contract_review", "check_in", "social", "note"];
+  const types = [
+    "call",
+    "email",
+    "meeting",
+    "demo",
+    "sample",
+    "proposal",
+    "follow_up",
+    "trade_show",
+    "site_visit",
+    "contract_review",
+    "check_in",
+    "social",
+    "note",
+  ];
 
   // Get random contact and organization
   const { data: contacts } = await supabase.from("contacts").select("id").limit(10);
@@ -447,7 +465,11 @@ async function runLoadTest() {
   } catch (error) {
     spinner.fail("Failed to authenticate test user");
     console.error(chalk.red(`Error: ${error.message}`));
-    console.error(chalk.yellow(`Hint: Ensure test user exists with credentials: ${TEST_USER_EMAIL} / ${TEST_USER_PASSWORD}`));
+    console.error(
+      chalk.yellow(
+        `Hint: Ensure test user exists with credentials: ${TEST_USER_EMAIL} / ${TEST_USER_PASSWORD}`
+      )
+    );
     process.exit(1);
   }
 

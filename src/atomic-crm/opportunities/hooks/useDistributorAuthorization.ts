@@ -69,18 +69,19 @@ export function useDistributorAuthorization(
   const hasBothSelected = principalId != null && distributorId != null;
 
   // Fetch authorization record for this principal-distributor pair
-  const { data: authorizations, isLoading: isLoadingAuth } = useGetList<DistributorPrincipalAuthorization>(
-    "distributor_principal_authorizations",
-    {
-      filter: {
-        principal_id: principalId,
-        distributor_id: distributorId,
-        deleted_at: null, // Only active records
+  const { data: authorizations, isLoading: isLoadingAuth } =
+    useGetList<DistributorPrincipalAuthorization>(
+      "distributor_principal_authorizations",
+      {
+        filter: {
+          principal_id: principalId,
+          distributor_id: distributorId,
+          deleted_at: null, // Only active records
+        },
+        pagination: { page: 1, perPage: 1 },
       },
-      pagination: { page: 1, perPage: 1 },
-    },
-    { enabled: hasBothSelected }
-  );
+      { enabled: hasBothSelected }
+    );
 
   // Fetch distributor name for display
   const { data: distributor, isLoading: isLoadingDistributor } = useGetOne<Organization>(
@@ -120,7 +121,8 @@ export function useDistributorAuthorization(
 
     // Check if expired
     const today = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
-    const isExpired = hasAuthorizationRecord &&
+    const isExpired =
+      hasAuthorizationRecord &&
       authorization.expiration_date != null &&
       authorization.expiration_date < today;
 
@@ -128,9 +130,7 @@ export function useDistributorAuthorization(
     // - Must have a record
     // - Record must have is_authorized = true
     // - Must not be expired
-    const isAuthorized = hasAuthorizationRecord &&
-      authorization.is_authorized &&
-      !isExpired;
+    const isAuthorized = hasAuthorizationRecord && authorization.is_authorized && !isExpired;
 
     return {
       isAuthorized,

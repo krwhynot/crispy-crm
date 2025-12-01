@@ -120,7 +120,9 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
               className={cn(
                 buttonVariants({ variant: "outline" }),
                 "text-primary",
-                disabled || isSubmitting || !newTagName.trim() ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                disabled || isSubmitting || !newTagName.trim()
+                  ? "opacity-50 cursor-not-allowed"
+                  : "cursor-pointer"
               )}
             >
               {isSubmitting ? (

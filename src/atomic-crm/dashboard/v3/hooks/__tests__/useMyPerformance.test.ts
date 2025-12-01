@@ -72,17 +72,21 @@ describe("useMyPerformance", () => {
       expect(mockGetList.mock.calls.length).toBe(8);
 
       // Verify activities query includes sales_id filter
-      expect(mockGetList).toHaveBeenCalledWith("activities", expect.objectContaining({
-        filter: expect.objectContaining({
-          sales_id: 42,
-        }),
-      }));
+      expect(mockGetList).toHaveBeenCalledWith(
+        "activities",
+        expect.objectContaining({
+          filter: expect.objectContaining({
+            sales_id: 42,
+          }),
+        })
+      );
     });
 
     it("should return correct metric structure", async () => {
       // Mock: 10 activities this week, 5 last week
       mockGetList.mockImplementation((resource: string, params: any) => {
-        const isThisWeek = params.filter["activity_date@gte"] !== undefined &&
+        const isThisWeek =
+          params.filter["activity_date@gte"] !== undefined &&
           !params.filter["activity_date@gte"].includes("subWeeks");
 
         if (resource === "activities") {
@@ -354,15 +358,24 @@ describe("useMyPerformance", () => {
         // Return different values for each metric type
         // Calls 1-4: current week, calls 5-8: previous week
         switch (callCount) {
-          case 1: return Promise.resolve(createMockResponse(10)); // activities this week
-          case 2: return Promise.resolve(createMockResponse(8));  // tasks this week
-          case 3: return Promise.resolve(createMockResponse(5));  // deals moved this week
-          case 4: return Promise.resolve(createMockResponse(20)); // open opps this week
-          case 5: return Promise.resolve(createMockResponse(5));  // activities last week
-          case 6: return Promise.resolve(createMockResponse(4));  // tasks last week
-          case 7: return Promise.resolve(createMockResponse(5));  // deals moved last week
-          case 8: return Promise.resolve(createMockResponse(15)); // open opps last week
-          default: return Promise.resolve(createMockResponse(0));
+          case 1:
+            return Promise.resolve(createMockResponse(10)); // activities this week
+          case 2:
+            return Promise.resolve(createMockResponse(8)); // tasks this week
+          case 3:
+            return Promise.resolve(createMockResponse(5)); // deals moved this week
+          case 4:
+            return Promise.resolve(createMockResponse(20)); // open opps this week
+          case 5:
+            return Promise.resolve(createMockResponse(5)); // activities last week
+          case 6:
+            return Promise.resolve(createMockResponse(4)); // tasks last week
+          case 7:
+            return Promise.resolve(createMockResponse(5)); // deals moved last week
+          case 8:
+            return Promise.resolve(createMockResponse(15)); // open opps last week
+          default:
+            return Promise.resolve(createMockResponse(0));
         }
       });
 

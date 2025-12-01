@@ -153,16 +153,8 @@ export default function ActivitySinglePage() {
         <CollapsibleContent className="pt-6">
           <div className="space-y-6">
             <FormGrid>
-              <TextInput
-                source="location"
-                label="Location"
-                helperText="Where did this occur?"
-              />
-              <TextInput
-                source="outcome"
-                label="Outcome"
-                helperText="Optional result summary"
-              />
+              <TextInput source="location" label="Location" helperText="Where did this occur?" />
+              <TextInput source="outcome" label="Outcome" helperText="Optional result summary" />
             </FormGrid>
           </div>
         </CollapsibleContent>

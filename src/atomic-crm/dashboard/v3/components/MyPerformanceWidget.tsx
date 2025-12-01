@@ -89,11 +89,7 @@ function MetricCard({ type, metric, loading }: MetricCardProps) {
 
   // Determine trend icon and styling per P8 constraint
   const TrendIcon =
-    metric.direction === "up"
-      ? ArrowUpRight
-      : metric.direction === "down"
-        ? ArrowDownRight
-        : Minus;
+    metric.direction === "up" ? ArrowUpRight : metric.direction === "down" ? ArrowDownRight : Minus;
 
   const trendColorClass =
     metric.direction === "up"
@@ -116,9 +112,7 @@ function MetricCard({ type, metric, loading }: MetricCardProps) {
       {/* Metric content */}
       <div className="flex-1 min-w-0">
         {/* Label */}
-        <p className="text-xs text-muted-foreground truncate">
-          {config.shortLabel}
-        </p>
+        <p className="text-xs text-muted-foreground truncate">{config.shortLabel}</p>
         {/* Value and trend */}
         <div className="flex items-center gap-1.5">
           <span className="text-lg font-semibold text-foreground">
@@ -181,16 +175,8 @@ export function MyPerformanceWidget() {
             metric={metrics.activitiesThisWeek}
             loading={loading}
           />
-          <MetricCard
-            type="dealsMoved"
-            metric={metrics.dealsMoved}
-            loading={loading}
-          />
-          <MetricCard
-            type="tasksCompleted"
-            metric={metrics.tasksCompleted}
-            loading={loading}
-          />
+          <MetricCard type="dealsMoved" metric={metrics.dealsMoved} loading={loading} />
+          <MetricCard type="tasksCompleted" metric={metrics.tasksCompleted} loading={loading} />
           <MetricCard
             type="openOpportunities"
             metric={metrics.openOpportunities}
@@ -199,9 +185,7 @@ export function MyPerformanceWidget() {
         </div>
 
         {/* Week comparison note */}
-        <p className="text-xs text-muted-foreground mt-3 text-center">
-          Compared to last week
-        </p>
+        <p className="text-xs text-muted-foreground mt-3 text-center">Compared to last week</p>
       </CardContent>
     </Card>
   );

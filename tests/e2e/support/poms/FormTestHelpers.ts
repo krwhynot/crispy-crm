@@ -101,10 +101,9 @@ export async function expectFormNotSubmitted(page: Page, resource: string): Prom
 export async function expectFormSubmitted(page: Page, resource: string): Promise<void> {
   // Should navigate to show page, list-with-panel, or list page
   // Matches: /resource/123, /resource/123/show, /resource?view=123
-  await expect(page).toHaveURL(
-    new RegExp(`/#/${resource}(/(\\d+(/show)?)|\\?view=\\d+|$)`),
-    { timeout: 10000 }
-  );
+  await expect(page).toHaveURL(new RegExp(`/#/${resource}(/(\\d+(/show)?)|\\?view=\\d+|$)`), {
+    timeout: 10000,
+  });
 }
 
 /**
@@ -216,7 +215,12 @@ export async function selectFromDropdown(
   // Strategy 3: Find by getByText and traverse up to find sibling combobox
   if (!triggerVisible) {
     // Find text, go up to parent container, find combobox
-    trigger = page.getByText(triggerLabel).locator("..").locator("..").getByRole("combobox").first();
+    trigger = page
+      .getByText(triggerLabel)
+      .locator("..")
+      .locator("..")
+      .getByRole("combobox")
+      .first();
     triggerVisible = await trigger.isVisible({ timeout: 1000 }).catch(() => false);
   }
 
@@ -260,11 +264,7 @@ export async function toggleCheckbox(
 /**
  * Fill a date picker field
  */
-export async function fillDateField(
-  page: Page,
-  label: string | RegExp,
-  date: Date
-): Promise<void> {
+export async function fillDateField(page: Page, label: string | RegExp, date: Date): Promise<void> {
   const dateStr = date.toISOString().split("T")[0]; // YYYY-MM-DD
   const input = page.getByLabel(label);
   await input.fill(dateStr);
@@ -277,8 +277,8 @@ export async function getToastMessage(page: Page): Promise<string | null> {
   // Try multiple toast patterns
   const toastPatterns = [
     '[role="status"]',
-    '[data-sonner-toast]',
-    '.Toastify__toast',
+    "[data-sonner-toast]",
+    ".Toastify__toast",
     '[class*="toast"]',
   ];
 

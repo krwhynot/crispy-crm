@@ -1,9 +1,5 @@
 import { Keyboard } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Button } from "@/components/ui/button";
 
 /**
@@ -57,10 +53,7 @@ export function KeyboardShortcutHints() {
               <span className="text-muted-foreground">{shortcut.description}</span>
               <div className="flex gap-1">
                 {shortcut.keys.map((key, j) => (
-                  <kbd
-                    key={j}
-                    className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono"
-                  >
+                  <kbd key={j} className="px-1.5 py-0.5 bg-muted rounded text-[10px] font-mono">
                     {key}
                   </kbd>
                 ))}

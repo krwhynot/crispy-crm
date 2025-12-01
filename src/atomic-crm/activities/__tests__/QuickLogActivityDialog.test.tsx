@@ -133,20 +133,13 @@ describe("QuickLogActivityDialog", () => {
     it("displays default description when no entity context", () => {
       render(<QuickLogActivityDialog {...defaultProps} />);
 
-      expect(
-        screen.getByText("Quick capture for calls, meetings, and notes")
-      ).toBeInTheDocument();
+      expect(screen.getByText("Quick capture for calls, meetings, and notes")).toBeInTheDocument();
     });
   });
 
   describe("Entity Context Pre-fill", () => {
     it("pre-fills contactId in initialDraft", async () => {
-      render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          entityContext={{ contactId: 123 }}
-        />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />);
 
       await waitFor(() => {
         expect(screen.getByTestId("initial-draft")).toBeInTheDocument();
@@ -159,12 +152,7 @@ describe("QuickLogActivityDialog", () => {
     });
 
     it("pre-fills organizationId in initialDraft", async () => {
-      render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          entityContext={{ organizationId: 456 }}
-        />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} entityContext={{ organizationId: 456 }} />);
 
       await waitFor(() => {
         expect(screen.getByTestId("initial-draft")).toBeInTheDocument();
@@ -177,12 +165,7 @@ describe("QuickLogActivityDialog", () => {
     });
 
     it("pre-fills opportunityId in initialDraft", async () => {
-      render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          entityContext={{ opportunityId: 789 }}
-        />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} entityContext={{ opportunityId: 789 }} />);
 
       await waitFor(() => {
         expect(screen.getByTestId("initial-draft")).toBeInTheDocument();
@@ -225,12 +208,7 @@ describe("QuickLogActivityDialog", () => {
         error: null,
       };
 
-      render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          entityContext={{ contactId: 123 }}
-        />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />);
 
       expect(screen.getByText("Contact")).toBeInTheDocument();
       expect(screen.getByText("John Doe")).toBeInTheDocument();
@@ -244,12 +222,7 @@ describe("QuickLogActivityDialog", () => {
         error: null,
       };
 
-      render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          entityContext={{ organizationId: 456 }}
-        />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} entityContext={{ organizationId: 456 }} />);
 
       expect(screen.getByText("Organization")).toBeInTheDocument();
       expect(screen.getByText("Acme Corp")).toBeInTheDocument();
@@ -262,12 +235,7 @@ describe("QuickLogActivityDialog", () => {
         error: null,
       };
 
-      render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          entityContext={{ opportunityId: 789 }}
-        />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} entityContext={{ opportunityId: 789 }} />);
 
       expect(screen.getByText("Opportunity")).toBeInTheDocument();
       expect(screen.getByText("Big Deal Q1")).toBeInTheDocument();
@@ -280,12 +248,7 @@ describe("QuickLogActivityDialog", () => {
         error: null,
       };
 
-      render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          entityContext={{ contactId: 123 }}
-        />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />);
 
       // The LockedEntityDisplay shows a skeleton when loading
       expect(screen.getByText("Contact")).toBeInTheDocument();
@@ -301,16 +264,9 @@ describe("QuickLogActivityDialog", () => {
         error: null,
       };
 
-      render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          entityContext={{ contactId: 123 }}
-        />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />);
 
-      expect(
-        screen.getByText("Log activity for contact: Jane Smith")
-      ).toBeInTheDocument();
+      expect(screen.getByText("Log activity for contact: Jane Smith")).toBeInTheDocument();
     });
 
     it("updates dialog description for organization context", () => {
@@ -320,16 +276,9 @@ describe("QuickLogActivityDialog", () => {
         error: null,
       };
 
-      render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          entityContext={{ organizationId: 456 }}
-        />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} entityContext={{ organizationId: 456 }} />);
 
-      expect(
-        screen.getByText("Log activity for organization: TechCorp")
-      ).toBeInTheDocument();
+      expect(screen.getByText("Log activity for organization: TechCorp")).toBeInTheDocument();
     });
 
     it("updates dialog description for opportunity context", () => {
@@ -339,27 +288,15 @@ describe("QuickLogActivityDialog", () => {
         error: null,
       };
 
-      render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          entityContext={{ opportunityId: 789 }}
-        />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} entityContext={{ opportunityId: 789 }} />);
 
-      expect(
-        screen.getByText("Log activity for opportunity: Enterprise Deal")
-      ).toBeInTheDocument();
+      expect(screen.getByText("Log activity for opportunity: Enterprise Deal")).toBeInTheDocument();
     });
   });
 
   describe("Activity Type Preset", () => {
     it("pre-fills activityType from config", async () => {
-      render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          config={{ activityType: "Call" }}
-        />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} config={{ activityType: "Call" }} />);
 
       await waitFor(() => {
         expect(screen.getByTestId("initial-draft")).toBeInTheDocument();
@@ -377,9 +314,7 @@ describe("QuickLogActivityDialog", () => {
       const onSuccess = vi.fn();
       const user = userEvent.setup();
 
-      render(
-        <QuickLogActivityDialog {...defaultProps} onSuccess={onSuccess} />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} onSuccess={onSuccess} />);
 
       // Wait for lazy-loaded form
       await waitFor(() => {
@@ -395,12 +330,7 @@ describe("QuickLogActivityDialog", () => {
       const onOpenChange = vi.fn();
       const user = userEvent.setup();
 
-      render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          onOpenChange={onOpenChange}
-        />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} onOpenChange={onOpenChange} />);
 
       // Wait for lazy-loaded form
       await waitFor(() => {
@@ -420,11 +350,7 @@ describe("QuickLogActivityDialog", () => {
       const user = userEvent.setup();
 
       render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          onOpenChange={onOpenChange}
-          onCancel={onCancel}
-        />
+        <QuickLogActivityDialog {...defaultProps} onOpenChange={onOpenChange} onCancel={onCancel} />
       );
 
       // Find and click the close button (X in sheet header)
@@ -449,9 +375,7 @@ describe("QuickLogActivityDialog", () => {
 
       await user.click(screen.getByTestId("mock-submit"));
 
-      expect(localStorageMock.removeItem).toHaveBeenCalledWith(
-        "quick-log-activity-draft"
-      );
+      expect(localStorageMock.removeItem).toHaveBeenCalledWith("quick-log-activity-draft");
     });
 
     it("shows Draft badge when draft exists", () => {
@@ -494,12 +418,7 @@ describe("QuickLogActivityDialog", () => {
       };
       localStorageMock.getItem.mockReturnValue(JSON.stringify(savedDraft));
 
-      render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          entityContext={{ contactId: 123 }}
-        />
-      );
+      render(<QuickLogActivityDialog {...defaultProps} entityContext={{ contactId: 123 }} />);
 
       await waitFor(() => {
         expect(screen.getByTestId("initial-draft")).toBeInTheDocument();
@@ -536,10 +455,7 @@ describe("QuickLogActivityDialog", () => {
 
     it("does not pass onDraftChange when enableDraftPersistence is false", async () => {
       render(
-        <QuickLogActivityDialog
-          {...defaultProps}
-          config={{ enableDraftPersistence: false }}
-        />
+        <QuickLogActivityDialog {...defaultProps} config={{ enableDraftPersistence: false }} />
       );
 
       await waitFor(() => {
@@ -590,10 +506,7 @@ describe("QuickLogActivityDialog", () => {
       render(<QuickLogActivityDialog {...defaultProps} />);
 
       const content = screen.getByRole("dialog");
-      expect(content).toHaveAttribute(
-        "aria-describedby",
-        "log-activity-description"
-      );
+      expect(content).toHaveAttribute("aria-describedby", "log-activity-description");
     });
   });
 

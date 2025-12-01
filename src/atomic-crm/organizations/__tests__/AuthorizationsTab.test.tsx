@@ -391,7 +391,11 @@ describe("AuthorizationsTab", () => {
 
   describe("Slide-over Tab Interface", () => {
     test("accepts record prop for slide-over usage", async () => {
-      const mockRecord = { id: mockDistributorId, name: "Test Distributor", organization_type: "distributor" };
+      const mockRecord = {
+        id: mockDistributorId,
+        name: "Test Distributor",
+        organization_type: "distributor",
+      };
 
       vi.mocked(reactAdmin.useGetList).mockImplementation((resource: string) => {
         if (resource === "distributor_principal_authorizations") {
@@ -469,7 +473,9 @@ describe("AuthorizationsTab", () => {
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 
       await waitFor(() => {
-        expect(screen.getByRole("button", { name: /expand product exceptions/i })).toBeInTheDocument();
+        expect(
+          screen.getByRole("button", { name: /expand product exceptions/i })
+        ).toBeInTheDocument();
       });
 
       const expandButton = screen.getByRole("button", { name: /expand product exceptions/i });
@@ -508,7 +514,9 @@ describe("AuthorizationsTab", () => {
 
       // First expand to trigger the product auth fetch
       await waitFor(() => {
-        expect(screen.getByRole("button", { name: /expand product exceptions/i })).toBeInTheDocument();
+        expect(
+          screen.getByRole("button", { name: /expand product exceptions/i })
+        ).toBeInTheDocument();
       });
 
       const expandButton = screen.getByRole("button", { name: /expand product exceptions/i });
@@ -545,7 +553,9 @@ describe("AuthorizationsTab", () => {
 
       renderWithAdminContext(<AuthorizationsTab distributorId={mockDistributorId} />);
 
-      const expandButton = await screen.findByRole("button", { name: /expand product exceptions/i });
+      const expandButton = await screen.findByRole("button", {
+        name: /expand product exceptions/i,
+      });
       await user.click(expandButton);
 
       await waitFor(() => {

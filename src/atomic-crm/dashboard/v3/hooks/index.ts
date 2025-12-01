@@ -12,14 +12,5 @@ export {
   type PerformanceMetric,
 } from "./useMyPerformance";
 export { useDebouncedSearch } from "./useDebouncedSearch";
-export {
-  useEntityData,
-  type Contact,
-  type Organization,
-  type Opportunity,
-} from "./useEntityData";
-export {
-  usePipelineTableState,
-  type SortField,
-  type SortDirection,
-} from "./usePipelineTableState";
+export { useEntityData, type Contact, type Organization, type Opportunity } from "./useEntityData";
+export { usePipelineTableState, type SortField, type SortDirection } from "./usePipelineTableState";

@@ -131,14 +131,10 @@ describe("withErrorLogging", () => {
       (mockProvider.getOne as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
       const wrappedProvider = withErrorLogging(mockProvider);
-      await expect(
-        wrappedProvider.getOne("contacts", { id: 1 })
-      ).rejects.toThrow();
+      await expect(wrappedProvider.getOne("contacts", { id: 1 })).rejects.toThrow();
 
       const loggedContext = consoleErrorSpy.mock.calls[0][1];
-      expect(loggedContext.timestamp).toMatch(
-        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/
-      );
+      expect(loggedContext.timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/);
     });
   });
 
@@ -156,9 +152,9 @@ describe("withErrorLogging", () => {
       (mockProvider.create as ReturnType<typeof vi.fn>).mockRejectedValue(validationError);
 
       const wrappedProvider = withErrorLogging(mockProvider);
-      await expect(
-        wrappedProvider.create("contacts", { data: {} })
-      ).rejects.toEqual(validationError);
+      await expect(wrappedProvider.create("contacts", { data: {} })).rejects.toEqual(
+        validationError
+      );
 
       // Error should be passed through unchanged for React Admin
       expect(consoleErrorSpy).toHaveBeenCalled();
@@ -210,9 +206,7 @@ describe("withErrorLogging", () => {
 
   describe("idempotent delete handling", () => {
     it("should treat already-deleted resource as success", async () => {
-      const alreadyDeletedError = new Error(
-        "Cannot coerce the result to a single JSON object"
-      );
+      const alreadyDeletedError = new Error("Cannot coerce the result to a single JSON object");
       const previousData = { id: 1, name: "Deleted Contact" } as RaRecord;
       (mockProvider.delete as ReturnType<typeof vi.fn>).mockRejectedValue(alreadyDeletedError);
 
@@ -259,9 +253,9 @@ describe("withErrorLogging", () => {
         (mockProvider[method] as ReturnType<typeof vi.fn>).mockRejectedValue(error);
 
         const wrappedProvider = withErrorLogging(mockProvider);
-        await expect(
-          (wrappedProvider[method] as any)("resource", {})
-        ).rejects.toThrow(`${method} failed`);
+        await expect((wrappedProvider[method] as any)("resource", {})).rejects.toThrow(
+          `${method} failed`
+        );
         expect(consoleErrorSpy).toHaveBeenCalled();
       });
     });

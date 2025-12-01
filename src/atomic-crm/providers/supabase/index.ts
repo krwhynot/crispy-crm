@@ -89,9 +89,7 @@ export const dataProvider: DataProvider = (() => {
     );
     return createExtendedDataProvider();
   } else {
-    console.log(
-      "[DataProvider] 📦 Using UNIFIED provider architecture (monolithic, default)"
-    );
+    console.log("[DataProvider] 📦 Using UNIFIED provider architecture (monolithic, default)");
     return unifiedDataProvider;
   }
 })();

@@ -40,7 +40,12 @@ export function TaskGroup({
         )}
       >
         <div className="flex items-center gap-2">
-          <ChevronRight className={cn("h-4 w-4 transition-transform duration-150 ease-out", !collapsed && "rotate-90")} />
+          <ChevronRight
+            className={cn(
+              "h-4 w-4 transition-transform duration-150 ease-out",
+              !collapsed && "rotate-90"
+            )}
+          />
           <h3 className="font-semibold">{title}</h3>
           <span className="text-sm text-muted-foreground">({count})</span>
         </div>

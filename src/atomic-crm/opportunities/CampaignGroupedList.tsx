@@ -125,7 +125,10 @@ export const CampaignGroupedList = ({ openSlideOver }: CampaignGroupedListProps)
             const customerGroups = principalGroups[principal];
             return (
               sum +
-              Object.values(customerGroups).reduce((customerSum, opps) => customerSum + opps.length, 0)
+              Object.values(customerGroups).reduce(
+                (customerSum, opps) => customerSum + opps.length,
+                0
+              )
             );
           }, 0);
 

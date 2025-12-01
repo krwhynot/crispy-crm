@@ -85,7 +85,7 @@ describe("QuickLogForm - Cascading Filter Implementation", () => {
 
     // h-11 = 44px in Tailwind
     expect(componentSource).toContain("h-11");
-    expect(componentSource).toContain("CommandItem className=\"h-11\"");
+    expect(componentSource).toContain('CommandItem className="h-11"');
   });
 
   it("should clear dependent fields per engineering constitution", () => {

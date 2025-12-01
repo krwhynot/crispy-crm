@@ -34,7 +34,10 @@ interface DuplicateOrgInfo {
 
 interface UseDuplicateOrgCheckResult {
   /** Check if a name has duplicates. Returns the duplicate org if found (and not bypassed). */
-  checkForDuplicate: (name: string, currentOrgId?: string | number) => Promise<DuplicateOrgInfo | null>;
+  checkForDuplicate: (
+    name: string,
+    currentOrgId?: string | number
+  ) => Promise<DuplicateOrgInfo | null>;
   /** The currently detected duplicate org (if any) */
   duplicateOrg: DuplicateOrgInfo | null;
   /** Clear the duplicate warning (user chose to change name) */
@@ -82,9 +85,7 @@ export function useDuplicateOrgCheck(): UseDuplicateOrgCheckResult {
         });
 
         // Filter out current record (for edit mode)
-        const duplicates = data.filter(
-          (org) => String(org.id) !== String(currentOrgId)
-        );
+        const duplicates = data.filter((org) => String(org.id) !== String(currentOrgId));
 
         if (duplicates.length > 0) {
           const duplicate: DuplicateOrgInfo = {

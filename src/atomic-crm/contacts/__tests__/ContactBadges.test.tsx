@@ -11,12 +11,7 @@
 
 import { describe, test, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import {
-  ContactStatusBadge,
-  RoleBadge,
-  InfluenceBadge,
-  ContactBadgeGroup,
-} from "../ContactBadges";
+import { ContactStatusBadge, RoleBadge, InfluenceBadge, ContactBadgeGroup } from "../ContactBadges";
 
 describe("ContactStatusBadge", () => {
   test("renders cold status with tag-blue class", () => {
@@ -220,9 +215,7 @@ describe("InfluenceBadge", () => {
 
 describe("ContactBadgeGroup", () => {
   test("renders all badges when all props provided", () => {
-    render(
-      <ContactBadgeGroup status="warm" role="champion" influence="high" />
-    );
+    render(<ContactBadgeGroup status="warm" role="champion" influence="high" />);
 
     expect(screen.getByText("Warm")).toBeInTheDocument();
     expect(screen.getByText("Champion")).toBeInTheDocument();
@@ -238,9 +231,7 @@ describe("ContactBadgeGroup", () => {
   });
 
   test("renders horizontal layout by default", () => {
-    const { container } = render(
-      <ContactBadgeGroup status="warm" role="champion" />
-    );
+    const { container } = render(<ContactBadgeGroup status="warm" role="champion" />);
 
     const group = container.firstChild;
     expect(group).toHaveClass("flex-row");

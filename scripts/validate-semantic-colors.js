@@ -34,13 +34,13 @@ const CONFIG = {
   // Patterns to exclude from scanning
   excludePatterns: [
     /node_modules/,
-    /\.stories\.(ts|tsx)$/,        // Storybook stories
-    /stories\//,                    // Storybook directory
-    /\.test\.(ts|tsx)$/,           // Test files
-    /\.spec\.(ts|tsx)$/,           // Spec files
-    /__tests__\//,                 // Test directories
-    /\.d\.ts$/,                    // Type declaration files
-    /color-types\.ts$/,            // Legacy color mapping (tracked separately)
+    /\.stories\.(ts|tsx)$/, // Storybook stories
+    /stories\//, // Storybook directory
+    /\.test\.(ts|tsx)$/, // Test files
+    /\.spec\.(ts|tsx)$/, // Spec files
+    /__tests__\//, // Test directories
+    /\.d\.ts$/, // Type declaration files
+    /color-types\.ts$/, // Legacy color mapping (tracked separately)
   ],
 
   // File extensions to check
@@ -48,8 +48,8 @@ const CONFIG = {
 
   // Files with allowed hex colors (legacy code tracked for migration)
   legacyFiles: [
-    "src/lib/color-types.ts",      // Color mapping constants
-    "src/index.css",               // CSS variable definitions (hex in comments OK)
+    "src/lib/color-types.ts", // Color mapping constants
+    "src/index.css", // CSS variable definitions (hex in comments OK)
   ],
 };
 
@@ -64,7 +64,8 @@ const PATTERNS = {
 
   // Inline color CSS variables: text-[color:var(--...)], bg-[var(--color)]
   inlineColorVar: {
-    regex: /(?:text|bg|border|ring|outline|fill|stroke)-\[(?:color:)?var\(--(?:text|bg|brand|accent|primary|secondary|destructive|warning|success|muted|foreground|background|border|ring)[^)]*\)\]/g,
+    regex:
+      /(?:text|bg|border|ring|outline|fill|stroke)-\[(?:color:)?var\(--(?:text|bg|brand|accent|primary|secondary|destructive|warning|success|muted|foreground|background|border|ring)[^)]*\)\]/g,
     message: "Inline CSS variable for color. Use semantic Tailwind utility instead.",
     severity: "error",
     alternatives: {
@@ -93,7 +94,7 @@ const ALLOWED_PATTERNS = [
   // JSDoc lines (start with *)
   /^\s*\*.*#[0-9a-fA-F]{3,8}/,
   // Example patterns in comments/docs (e.g., "Sales #123")
-  /#\d{1,3}(?!\d|[a-fA-F])/,  // # followed by only digits (not hex)
+  /#\d{1,3}(?!\d|[a-fA-F])/, // # followed by only digits (not hex)
   // SVG fills that are truly neutral (black/white)
   /fill=["']#(?:000|FFF|fff|000000|FFFFFF|ffffff)["']/,
   // Tailwind arbitrary values for non-color properties
@@ -112,7 +113,7 @@ const ALLOWED_PATTERNS = [
  * Check if a line should be ignored based on allowed patterns
  */
 function isAllowedPattern(line) {
-  return ALLOWED_PATTERNS.some(pattern => pattern.test(line));
+  return ALLOWED_PATTERNS.some((pattern) => pattern.test(line));
 }
 
 /**
@@ -120,7 +121,7 @@ function isAllowedPattern(line) {
  */
 function shouldExcludeFile(filePath) {
   const relativePath = relative(projectRoot, filePath);
-  return CONFIG.excludePatterns.some(pattern => pattern.test(relativePath));
+  return CONFIG.excludePatterns.some((pattern) => pattern.test(relativePath));
 }
 
 /**
@@ -128,7 +129,7 @@ function shouldExcludeFile(filePath) {
  */
 function isLegacyFile(filePath) {
   const relativePath = relative(projectRoot, filePath);
-  return CONFIG.legacyFiles.some(legacy => relativePath.includes(legacy));
+  return CONFIG.legacyFiles.some((legacy) => relativePath.includes(legacy));
 }
 
 /**
@@ -182,7 +183,7 @@ function checkFile(filePath) {
 
       // Skip if in a comment
       if (!lineBeforeMatch.includes("//") && !lineBeforeMatch.includes("/*")) {
-        hexMatches.forEach(match => {
+        hexMatches.forEach((match) => {
           violations.push({
             file: relativePath,
             line: lineNum,
@@ -199,7 +200,7 @@ function checkFile(filePath) {
     // Check for inline color CSS variables
     const inlineMatches = line.match(PATTERNS.inlineColorVar.regex);
     if (inlineMatches) {
-      inlineMatches.forEach(match => {
+      inlineMatches.forEach((match) => {
         const alternative = PATTERNS.inlineColorVar.alternatives[match];
         violations.push({
           file: relativePath,
@@ -245,8 +246,8 @@ function validate() {
   }
 
   // Separate errors from warnings (legacy)
-  const errors = allViolations.filter(v => v.severity === "error");
-  const warnings = allViolations.filter(v => v.severity === "warning");
+  const errors = allViolations.filter((v) => v.severity === "error");
+  const warnings = allViolations.filter((v) => v.severity === "warning");
 
   // Report results
   console.log(`📁 Files checked: ${filesChecked}`);
@@ -254,7 +255,7 @@ function validate() {
 
   if (errors.length > 0) {
     console.log(`\n❌ ERRORS (${errors.length}):\n`);
-    errors.forEach(v => {
+    errors.forEach((v) => {
       console.log(`  ${v.file}:${v.line}:${v.column}`);
       console.log(`    Found: ${v.match}`);
       console.log(`    ${v.message}\n`);
@@ -263,7 +264,7 @@ function validate() {
 
   if (warnings.length > 0) {
     console.log(`\n⚠️  WARNINGS - Legacy Code (${warnings.length}):\n`);
-    warnings.forEach(v => {
+    warnings.forEach((v) => {
       console.log(`  ${v.file}:${v.line}:${v.column}`);
       console.log(`    Found: ${v.match}`);
       console.log(`    ${v.message}\n`);

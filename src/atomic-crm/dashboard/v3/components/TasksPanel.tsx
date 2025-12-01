@@ -34,15 +34,19 @@ import { useMyTasks } from "../hooks/useMyTasks";
 import { showFollowUpToast } from "../utils/showFollowUpToast";
 
 export function TasksPanel() {
-  const { tasks, loading, error, completeTask, updateTaskDueDate, deleteTask, viewTask } = useMyTasks();
+  const { tasks, loading, error, completeTask, updateTaskDueDate, deleteTask, viewTask } =
+    useMyTasks();
 
   // Memoize filtered task lists to avoid recomputing on every render
   // Only recalculates when tasks array reference changes
-  const { overdueTasks, todayTasks, tomorrowTasks } = useMemo(() => ({
-    overdueTasks: tasks.filter((t) => t.status === "overdue"),
-    todayTasks: tasks.filter((t) => t.status === "today"),
-    tomorrowTasks: tasks.filter((t) => t.status === "tomorrow"),
-  }), [tasks]);
+  const { overdueTasks, todayTasks, tomorrowTasks } = useMemo(
+    () => ({
+      overdueTasks: tasks.filter((t) => t.status === "overdue"),
+      todayTasks: tasks.filter((t) => t.status === "today"),
+      tomorrowTasks: tasks.filter((t) => t.status === "tomorrow"),
+    }),
+    [tasks]
+  );
 
   if (loading) {
     return (
@@ -177,7 +181,13 @@ interface TaskItemProps {
 
 // Memoized to prevent re-renders when parent re-renders but props haven't changed
 // Each task item has local state (isSnoozing, isDeleting) that shouldn't trigger sibling re-renders
-const TaskItemComponent = memo(function TaskItemComponent({ task, onComplete, onSnoozeToDate, onDelete, onView }: TaskItemProps) {
+const TaskItemComponent = memo(function TaskItemComponent({
+  task,
+  onComplete,
+  onSnoozeToDate,
+  onDelete,
+  onView,
+}: TaskItemProps) {
   const [isSnoozing, setIsSnoozing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const notify = useNotify();

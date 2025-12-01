@@ -453,9 +453,7 @@ export interface ExtendedDataProvider extends DataProvider {
    * This method differs from removeOpportunityContact by accepting
    * the junction table ID directly instead of opportunity + contact IDs.
    */
-  removeOpportunityContactViaJunction(
-    junctionId: Identifier
-  ): Promise<{ data: { id: string } }>;
+  removeOpportunityContactViaJunction(junctionId: Identifier): Promise<{ data: { id: string } }>;
 
   // ==================== RPC Operations ====================
   // Direct Supabase client access with Zod validation

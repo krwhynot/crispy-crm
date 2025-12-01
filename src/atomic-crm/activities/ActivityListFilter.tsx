@@ -7,10 +7,7 @@ import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { SidebarActiveFilters } from "./SidebarActiveFilters";
-import {
-  INTERACTION_TYPE_OPTIONS,
-  SAMPLE_STATUS_OPTIONS,
-} from "../validation/activities";
+import { INTERACTION_TYPE_OPTIONS, SAMPLE_STATUS_OPTIONS } from "../validation/activities";
 
 /**
  * ActivityListFilter Component

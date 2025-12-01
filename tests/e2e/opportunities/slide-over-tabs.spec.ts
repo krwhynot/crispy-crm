@@ -171,9 +171,7 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
         await expect(tab).toHaveAttribute("aria-selected", "true");
 
         // Active tab panel should be visible (data-state="active")
-        const activePanel = slideOver
-          .getDialog()
-          .locator('[role="tabpanel"][data-state="active"]');
+        const activePanel = slideOver.getDialog().locator('[role="tabpanel"][data-state="active"]');
         await expect(activePanel).toBeVisible();
       }
     });
@@ -497,7 +495,10 @@ test.describe("Opportunity Slide-Over - Tab Content", () => {
       const slideOver = createSlideOver(authenticatedPage);
 
       // Slide-over should open if opportunity exists (condition-based check)
-      const _isVisible = await slideOver.getDialog().isVisible().catch(() => false);
+      const _isVisible = await slideOver
+        .getDialog()
+        .isVisible()
+        .catch(() => false);
 
       // URL param should work (may not find opportunity 1 if seed is different)
       expect(true).toBe(true); // Test passes if no error thrown

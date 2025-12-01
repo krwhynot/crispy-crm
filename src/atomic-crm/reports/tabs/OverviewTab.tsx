@@ -172,7 +172,9 @@ export default function OverviewTab() {
     let opportunityTrend: "up" | "down" | "neutral" = "neutral";
     let opportunityChange = 0;
     if (olderActiveOpps > 0) {
-      opportunityChange = Math.round(((recentActiveOpps - olderActiveOpps) / olderActiveOpps) * 100);
+      opportunityChange = Math.round(
+        ((recentActiveOpps - olderActiveOpps) / olderActiveOpps) * 100
+      );
       opportunityTrend = opportunityChange > 0 ? "up" : opportunityChange < 0 ? "down" : "neutral";
     }
 
@@ -249,10 +251,7 @@ export default function OverviewTab() {
 
   // Prepare rep performance data
   const repPerformanceData = useMemo(() => {
-    const repStats = new Map<
-      number,
-      { name: string; activities: number; opportunities: number }
-    >();
+    const repStats = new Map<number, { name: string; activities: number; opportunities: number }>();
 
     // Count activities per rep
     activities.forEach((activity) => {

@@ -20,9 +20,8 @@ import type { SupabaseClient, Session } from "@supabase/supabase-js";
 
 // Import the REAL createClient, bypassing the global mock in setup.ts
 // eslint-disable-next-line @typescript-eslint/consistent-type-imports
-const { createClient } = await vi.importActual<typeof import("@supabase/supabase-js")>(
-  "@supabase/supabase-js"
-);
+const { createClient } =
+  await vi.importActual<typeof import("@supabase/supabase-js")>("@supabase/supabase-js");
 
 describe("opportunities_summary RLS Integration Tests", () => {
   let supabase: SupabaseClient;
@@ -67,10 +66,7 @@ describe("opportunities_summary RLS Integration Tests", () => {
     it("should return empty for direct opportunities table as well", async () => {
       await supabase.auth.signOut();
 
-      const { data, error } = await supabase
-        .from("opportunities")
-        .select("id, name")
-        .limit(10);
+      const { data, error } = await supabase.from("opportunities").select("id, name").limit(10);
 
       expect(error).toBeNull();
       expect(data).toEqual([]);
@@ -121,9 +117,7 @@ describe("opportunities_summary RLS Integration Tests", () => {
       expect(data!.length).toBeGreaterThan(0);
 
       // Verify customer_organization_name is populated (not null) for records with customer_organization_id
-      const recordsWithCustomerId = data!.filter(
-        (r) => r.customer_organization_id !== null
-      );
+      const recordsWithCustomerId = data!.filter((r) => r.customer_organization_id !== null);
 
       if (recordsWithCustomerId.length > 0) {
         const firstWithCustomer = recordsWithCustomerId[0];
@@ -157,8 +151,7 @@ describe("opportunities_summary RLS Integration Tests", () => {
 
         // Grand Rapids Trade Show should have Buffalo Wild Wings and Red Robin
         expect(
-          customerNames.includes("Buffalo Wild Wings") ||
-          customerNames.includes("Red Robin")
+          customerNames.includes("Buffalo Wild Wings") || customerNames.includes("Red Robin")
         ).toBe(true);
       }
     });
@@ -166,7 +159,8 @@ describe("opportunities_summary RLS Integration Tests", () => {
     it("should include all denormalized organization names in view", async () => {
       const { data, error } = await supabase
         .from("opportunities_summary")
-        .select(`
+        .select(
+          `
           id,
           name,
           customer_organization_id,
@@ -175,7 +169,8 @@ describe("opportunities_summary RLS Integration Tests", () => {
           principal_organization_name,
           distributor_organization_id,
           distributor_organization_name
-        `)
+        `
+        )
         .not("principal_organization_id", "is", null)
         .limit(5);
 
@@ -224,10 +219,7 @@ describe("opportunities_summary RLS Integration Tests", () => {
       expect(authError).toBeNull();
 
       // If we can query the view and get results, security is working correctly
-      const { data, error } = await supabase
-        .from("opportunities_summary")
-        .select("id")
-        .limit(1);
+      const { data, error } = await supabase.from("opportunities_summary").select("id").limit(1);
 
       expect(error).toBeNull();
       expect(data!.length).toBeGreaterThan(0);

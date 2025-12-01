@@ -233,10 +233,10 @@ Deno.serve(async (req) => {
 
     if (usersError) {
       console.error("Error fetching sales users:", usersError);
-      return new Response(
-        JSON.stringify({ error: "Failed to fetch users", details: usersError }),
-        { status: 500, headers: { "Content-Type": "application/json" } }
-      );
+      return new Response(JSON.stringify({ error: "Failed to fetch users", details: usersError }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
     if (!users || users.length === 0) {
@@ -260,9 +260,7 @@ Deno.serve(async (req) => {
 
     // Step 2: Process each user independently using Promise.allSettled
     // This ensures one user's failure doesn't affect others
-    const processingPromises = users.map((user) =>
-      processUserDigest(user as SalesUser)
-    );
+    const processingPromises = users.map((user) => processUserDigest(user as SalesUser));
 
     const results = await Promise.allSettled(processingPromises);
 

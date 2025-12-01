@@ -173,8 +173,7 @@ export function InfluenceBadge({ influence }: InfluenceBadgeProps) {
   type BadgeVariant = "default" | "secondary" | "destructive" | "outline";
 
   // Convert numeric score (1-5) to semantic level
-  const normalizedInfluence =
-    typeof influence === "number" ? numericToLevel(influence) : influence;
+  const normalizedInfluence = typeof influence === "number" ? numericToLevel(influence) : influence;
 
   const config: Record<string, { label: string; variant: BadgeVariant }> = {
     critical: { label: "Critical", variant: "destructive" },
@@ -241,8 +240,7 @@ export function ContactBadgeGroup({
   influence,
   direction = "horizontal",
 }: ContactBadgeGroupProps) {
-  const gapClass =
-    direction === "horizontal" ? "flex-row gap-2" : "flex-col gap-1";
+  const gapClass = direction === "horizontal" ? "flex-row gap-2" : "flex-col gap-1";
 
   return (
     <div className={`flex flex-wrap ${gapClass}`}>

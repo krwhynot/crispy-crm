@@ -90,9 +90,7 @@ describe("useSmartDefaults", () => {
         isLoading: true,
       });
 
-      const { rerender } = renderHook(() =>
-        useSmartDefaults({ reset: mockReset })
-      );
+      const { rerender } = renderHook(() => useSmartDefaults({ reset: mockReset }));
 
       expect(mockReset).not.toHaveBeenCalled();
 
@@ -122,9 +120,7 @@ describe("useSmartDefaults", () => {
         isLoading: false,
       });
 
-      const { rerender } = renderHook(() =>
-        useSmartDefaults({ reset: mockReset })
-      );
+      const { rerender } = renderHook(() => useSmartDefaults({ reset: mockReset }));
 
       expect(mockReset).toHaveBeenCalledTimes(1);
 
@@ -143,9 +139,7 @@ describe("useSmartDefaults", () => {
       const { result } = renderHook(() => useSmartDefaults());
 
       expect(result.current.defaults.sales_id).toBe("user-123");
-      expect(result.current.defaults.activity_date).toBe(
-        format(new Date(), "yyyy-MM-dd")
-      );
+      expect(result.current.defaults.activity_date).toBe(format(new Date(), "yyyy-MM-dd"));
     });
   });
 
@@ -158,9 +152,7 @@ describe("useSmartDefaults", () => {
         isLoading: true,
       });
 
-      const { result, rerender } = renderHook(() =>
-        useSmartDefaults({ reset: mockReset })
-      );
+      const { result, rerender } = renderHook(() => useSmartDefaults({ reset: mockReset }));
 
       expect(result.current.isLoading).toBe(true);
       expect(result.current.defaults.sales_id).toBe(null);

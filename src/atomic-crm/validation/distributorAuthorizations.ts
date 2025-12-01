@@ -14,37 +14,39 @@ import { z } from "zod";
  * Schema for creating/updating a distributor-principal authorization
  * Follows Engineering Constitution: Single validation at API boundary
  */
-export const distributorAuthorizationSchema = z.object({
-  id: z.union([z.string(), z.number()]).optional(),
+export const distributorAuthorizationSchema = z
+  .object({
+    id: z.union([z.string(), z.number()]).optional(),
 
-  // Required foreign keys
-  distributor_id: z.coerce.number().int().positive("Distributor is required"),
-  principal_id: z.coerce.number().int().positive("Principal is required"),
+    // Required foreign keys
+    distributor_id: z.coerce.number().int().positive("Distributor is required"),
+    principal_id: z.coerce.number().int().positive("Principal is required"),
 
-  // Authorization metadata
-  is_authorized: z.boolean().default(true),
-  authorization_date: z.string().date().optional().nullable(),
-  expiration_date: z.string().date().optional().nullable(),
-  territory_restrictions: z.array(z.string()).optional().nullable(),
-  notes: z.string().optional().nullable(),
+    // Authorization metadata
+    is_authorized: z.boolean().default(true),
+    authorization_date: z.string().date().optional().nullable(),
+    expiration_date: z.string().date().optional().nullable(),
+    territory_restrictions: z.array(z.string()).optional().nullable(),
+    notes: z.string().optional().nullable(),
 
-  // Audit fields (system-managed)
-  created_by: z.coerce.number().int().optional().nullable(),
-  created_at: z.string().optional(),
-  updated_at: z.string().optional(),
-  deleted_at: z.string().optional().nullable(),
-}).refine(
-  (data) => data.distributor_id !== data.principal_id,
-  { message: "Distributor and Principal cannot be the same organization" }
-).refine(
-  (data) => {
-    if (data.expiration_date && data.authorization_date) {
-      return new Date(data.expiration_date) > new Date(data.authorization_date);
-    }
-    return true;
-  },
-  { message: "Expiration date must be after authorization date" }
-);
+    // Audit fields (system-managed)
+    created_by: z.coerce.number().int().optional().nullable(),
+    created_at: z.string().optional(),
+    updated_at: z.string().optional(),
+    deleted_at: z.string().optional().nullable(),
+  })
+  .refine((data) => data.distributor_id !== data.principal_id, {
+    message: "Distributor and Principal cannot be the same organization",
+  })
+  .refine(
+    (data) => {
+      if (data.expiration_date && data.authorization_date) {
+        return new Date(data.expiration_date) > new Date(data.authorization_date);
+      }
+      return true;
+    },
+    { message: "Expiration date must be after authorization date" }
+  );
 
 /**
  * Type inference from schema
@@ -136,13 +138,15 @@ export async function validateCreateDistributorAuthorization(data: unknown): Pro
  * Special pricing JSONB schema
  * Flexible structure for product-specific pricing overrides
  */
-export const specialPricingSchema = z.object({
-  unit_price: z.coerce.number().positive().optional(),
-  discount_percent: z.coerce.number().min(0).max(100).optional(),
-  min_quantity: z.coerce.number().int().positive().optional(),
-  max_quantity: z.coerce.number().int().positive().optional(),
-  notes: z.string().optional(),
-}).passthrough(); // Allow additional fields for flexibility
+export const specialPricingSchema = z
+  .object({
+    unit_price: z.coerce.number().positive().optional(),
+    discount_percent: z.coerce.number().min(0).max(100).optional(),
+    min_quantity: z.coerce.number().int().positive().optional(),
+    max_quantity: z.coerce.number().int().positive().optional(),
+    notes: z.string().optional(),
+  })
+  .passthrough(); // Allow additional fields for flexibility
 
 /**
  * Product Distributor Authorization schema
@@ -155,39 +159,41 @@ export const specialPricingSchema = z.object({
  *
  * @see supabase/migrations/20251129051625_add_product_distributor_authorizations.sql
  */
-export const productDistributorAuthorizationSchema = z.object({
-  id: z.union([z.string(), z.number()]).optional(),
+export const productDistributorAuthorizationSchema = z
+  .object({
+    id: z.union([z.string(), z.number()]).optional(),
 
-  // Required foreign keys
-  product_id: z.coerce.number().int().positive("Product is required"),
-  distributor_id: z.coerce.number().int().positive("Distributor is required"),
+    // Required foreign keys
+    product_id: z.coerce.number().int().positive("Product is required"),
+    distributor_id: z.coerce.number().int().positive("Distributor is required"),
 
-  // Authorization metadata
-  is_authorized: z.boolean().default(true),
-  authorization_date: z.string().date().optional().nullable(),
-  expiration_date: z.string().date().optional().nullable(),
+    // Authorization metadata
+    is_authorized: z.boolean().default(true),
+    authorization_date: z.string().date().optional().nullable(),
+    expiration_date: z.string().date().optional().nullable(),
 
-  // Product-specific pricing (JSONB)
-  special_pricing: specialPricingSchema.optional().nullable(),
+    // Product-specific pricing (JSONB)
+    special_pricing: specialPricingSchema.optional().nullable(),
 
-  // Territory restrictions (array)
-  territory_restrictions: z.array(z.string()).optional().nullable(),
-  notes: z.string().optional().nullable(),
+    // Territory restrictions (array)
+    territory_restrictions: z.array(z.string()).optional().nullable(),
+    notes: z.string().optional().nullable(),
 
-  // Audit fields (system-managed)
-  created_by: z.coerce.number().int().optional().nullable(),
-  created_at: z.string().optional(),
-  updated_at: z.string().optional(),
-  deleted_at: z.string().optional().nullable(),
-}).refine(
-  (data) => {
-    if (data.expiration_date && data.authorization_date) {
-      return new Date(data.expiration_date) > new Date(data.authorization_date);
-    }
-    return true;
-  },
-  { message: "Expiration date must be after authorization date" }
-);
+    // Audit fields (system-managed)
+    created_by: z.coerce.number().int().optional().nullable(),
+    created_at: z.string().optional(),
+    updated_at: z.string().optional(),
+    deleted_at: z.string().optional().nullable(),
+  })
+  .refine(
+    (data) => {
+      if (data.expiration_date && data.authorization_date) {
+        return new Date(data.expiration_date) > new Date(data.authorization_date);
+      }
+      return true;
+    },
+    { message: "Expiration date must be after authorization date" }
+  );
 
 /**
  * Type inference from schema
@@ -197,7 +203,9 @@ export type ProductDistributorAuthorization = z.infer<typeof productDistributorA
 /**
  * Input type (before parsing) for form data
  */
-export type ProductDistributorAuthorizationInput = z.input<typeof productDistributorAuthorizationSchema>;
+export type ProductDistributorAuthorizationInput = z.input<
+  typeof productDistributorAuthorizationSchema
+>;
 
 /**
  * Extended type with joined names for display

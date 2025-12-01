@@ -6,9 +6,7 @@ describe("useFormShortcuts", () => {
   it("calls onSave when Cmd+Enter is pressed", () => {
     const onSave = vi.fn();
     const onCancel = vi.fn();
-    const { result } = renderHook(() =>
-      useFormShortcuts({ onSave, onCancel })
-    );
+    const { result } = renderHook(() => useFormShortcuts({ onSave, onCancel }));
 
     const event = {
       key: "Enter",
@@ -28,9 +26,7 @@ describe("useFormShortcuts", () => {
     const onSave = vi.fn();
     const onSaveAndNew = vi.fn();
     const onCancel = vi.fn();
-    const { result } = renderHook(() =>
-      useFormShortcuts({ onSave, onSaveAndNew, onCancel })
-    );
+    const { result } = renderHook(() => useFormShortcuts({ onSave, onSaveAndNew, onCancel }));
 
     const event = {
       key: "Enter",
@@ -50,9 +46,7 @@ describe("useFormShortcuts", () => {
   it("calls onCancel when Escape is pressed outside textarea", () => {
     const onSave = vi.fn();
     const onCancel = vi.fn();
-    const { result } = renderHook(() =>
-      useFormShortcuts({ onSave, onCancel })
-    );
+    const { result } = renderHook(() => useFormShortcuts({ onSave, onCancel }));
 
     const event = {
       key: "Escape",
@@ -71,9 +65,7 @@ describe("useFormShortcuts", () => {
   it("does NOT call onCancel when Escape is pressed in textarea", () => {
     const onSave = vi.fn();
     const onCancel = vi.fn();
-    const { result } = renderHook(() =>
-      useFormShortcuts({ onSave, onCancel })
-    );
+    const { result } = renderHook(() => useFormShortcuts({ onSave, onCancel }));
 
     const textarea = document.createElement("textarea");
     const event = {
@@ -93,9 +85,7 @@ describe("useFormShortcuts", () => {
   it("does NOT call onCancel when Escape is pressed in contentEditable", () => {
     const onSave = vi.fn();
     const onCancel = vi.fn();
-    const { result } = renderHook(() =>
-      useFormShortcuts({ onSave, onCancel })
-    );
+    const { result } = renderHook(() => useFormShortcuts({ onSave, onCancel }));
 
     const div = document.createElement("div");
     div.contentEditable = "true";
@@ -116,9 +106,7 @@ describe("useFormShortcuts", () => {
   it("allows Cmd+Enter in textareas (calls onSave)", () => {
     const onSave = vi.fn();
     const onCancel = vi.fn();
-    const { result } = renderHook(() =>
-      useFormShortcuts({ onSave, onCancel })
-    );
+    const { result } = renderHook(() => useFormShortcuts({ onSave, onCancel }));
 
     const textarea = document.createElement("textarea");
     const event = {
@@ -138,9 +126,7 @@ describe("useFormShortcuts", () => {
   it("works with Ctrl+Enter on Windows/Linux", () => {
     const onSave = vi.fn();
     const onCancel = vi.fn();
-    const { result } = renderHook(() =>
-      useFormShortcuts({ onSave, onCancel })
-    );
+    const { result } = renderHook(() => useFormShortcuts({ onSave, onCancel }));
 
     const event = {
       key: "Enter",
@@ -160,9 +146,7 @@ describe("useFormShortcuts", () => {
   it("does nothing when onSaveAndNew is not provided and Shift is pressed", () => {
     const onSave = vi.fn();
     const onCancel = vi.fn();
-    const { result } = renderHook(() =>
-      useFormShortcuts({ onSave, onCancel })
-    );
+    const { result } = renderHook(() => useFormShortcuts({ onSave, onCancel }));
 
     const event = {
       key: "Enter",

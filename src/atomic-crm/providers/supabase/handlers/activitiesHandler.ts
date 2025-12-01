@@ -28,8 +28,6 @@ import { activitiesCallbacks } from "../callbacks";
  */
 export function createActivitiesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(
-      withLifecycleCallbacks(baseProvider, [activitiesCallbacks])
-    )
+    withValidation(withLifecycleCallbacks(baseProvider, [activitiesCallbacks]))
   );
 }

@@ -109,15 +109,7 @@ describe("Task Validation Schemas", () => {
     });
 
     it("should validate different task types", () => {
-      const taskTypes = [
-        "Call",
-        "Email",
-        "Meeting",
-        "Follow-up",
-        "Demo",
-        "Proposal",
-        "Other",
-      ];
+      const taskTypes = ["Call", "Email", "Meeting", "Follow-up", "Demo", "Proposal", "Other"];
 
       taskTypes.forEach((type) => {
         const task = { ...validTask, type };

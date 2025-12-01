@@ -39,11 +39,7 @@ const ContactShowContent = () => {
                   {record.department && ` - ${record.department}`}
                   {record.title && record.organization_id && " at "}
                   {record.organization_id && (
-                    <ReferenceField
-                      source="organization_id"
-                      reference="organizations"
-                      link="show"
-                    >
+                    <ReferenceField source="organization_id" reference="organizations" link="show">
                       <TextField source="name" />
                     </ReferenceField>
                   )}

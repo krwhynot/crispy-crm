@@ -26,16 +26,18 @@ import { QuickLogForm } from "../QuickLogForm";
 
 // Mock Form components (react-hook-form wrapper)
 vi.mock("@/components/ui/form", () => ({
-  Form: ({ children }: any) => <form data-testid="form-wrapper" onSubmit={(e: any) => e.preventDefault()}>{children}</form>,
+  Form: ({ children }: any) => (
+    <form data-testid="form-wrapper" onSubmit={(e: any) => e.preventDefault()}>
+      {children}
+    </form>
+  ),
   FormField: ({ render, name }: any) => {
     const field = { value: undefined, onChange: vi.fn(), name };
     const fieldState = { error: undefined, invalid: false };
     const formState = { isSubmitting: false, errors: {} };
     return render({ field, fieldState, formState });
   },
-  FormItem: ({ children, className }: any) => (
-    <div className={className}>{children}</div>
-  ),
+  FormItem: ({ children, className }: any) => <div className={className}>{children}</div>,
   FormLabel: ({ children }: any) => <label>{children}</label>,
   FormControl: ({ children }: any) => <>{children}</>,
   FormDescription: ({ children }: any) => <p>{children}</p>,
@@ -44,7 +46,16 @@ vi.mock("@/components/ui/form", () => ({
 
 // Mock Button component
 vi.mock("@/components/ui/button", () => ({
-  Button: ({ children, onClick, disabled, type, className, "aria-label": ariaLabel, role, ...props }: any) => (
+  Button: ({
+    children,
+    onClick,
+    disabled,
+    type,
+    className,
+    "aria-label": ariaLabel,
+    role,
+    ...props
+  }: any) => (
     <button
       onClick={onClick}
       disabled={disabled}
@@ -84,9 +95,13 @@ vi.mock("@/components/ui/select", () => ({
   // Missing exports that QuickLogForm imports - added to fix test failures
   SelectGroup: ({ children }: any) => <div data-testid="select-group">{children}</div>,
   SelectLabel: ({ children, className }: any) => (
-    <div data-testid="select-label" className={className}>{children}</div>
+    <div data-testid="select-label" className={className}>
+      {children}
+    </div>
   ),
-  SelectSeparator: ({ className }: any) => <hr data-testid="select-separator" className={className} />,
+  SelectSeparator: ({ className }: any) => (
+    <hr data-testid="select-separator" className={className} />
+  ),
 }));
 
 // Mock Command components (cmdk - combobox)
@@ -127,9 +142,7 @@ vi.mock("@/components/ui/popover", () => ({
       {children}
     </div>
   ),
-  PopoverTrigger: ({ children }: any) => (
-    <div data-testid="popover-trigger">{children}</div>
-  ),
+  PopoverTrigger: ({ children }: any) => <div data-testid="popover-trigger">{children}</div>,
   PopoverContent: ({ children, className }: any) => (
     <div data-testid="popover-content" className={className}>
       {children}
@@ -175,10 +188,7 @@ vi.mock("@/components/ui/input", () => ({
 vi.mock("@/components/ui/calendar", () => ({
   Calendar: ({ onSelect }: any) => (
     <div data-testid="calendar">
-      <button
-        data-testid="calendar-day"
-        onClick={() => onSelect && onSelect(new Date())}
-      >
+      <button data-testid="calendar-day" onClick={() => onSelect && onSelect(new Date())}>
         Today
       </button>
     </div>
@@ -267,13 +277,14 @@ vi.mock("react-hook-form", () => ({
       });
     },
     watch: (field?: string) => {
-      if (!field) return {
-        activityType: "Call",
-        outcome: "Connected",
-        notes: "",
-        date: new Date(),
-        createFollowUp: false,
-      };
+      if (!field)
+        return {
+          activityType: "Call",
+          outcome: "Connected",
+          notes: "",
+          date: new Date(),
+          createFollowUp: false,
+        };
       if (field === "activityType") return "Call";
       if (field === "createFollowUp") return false;
       return undefined;
@@ -350,7 +361,9 @@ vi.mock("react-admin", () => ({
         case "organizations":
           return mockOrganizations;
         case "opportunities":
-          return mockOpportunities.filter((o: any) => !["closed_won", "closed_lost"].includes(o.stage));
+          return mockOpportunities.filter(
+            (o: any) => !["closed_won", "closed_lost"].includes(o.stage)
+          );
         default:
           return [];
       }

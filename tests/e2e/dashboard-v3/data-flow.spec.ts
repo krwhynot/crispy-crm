@@ -110,9 +110,9 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       // React Admin with requireAuth shows navigation initially while checking auth,
       // then redirects to login page. Wait for the "Sign in" heading to appear.
       // The login page has an h1 with "Sign in" text.
-      await expect(
-        page.getByRole("heading", { name: /sign in/i, level: 1 })
-      ).toBeVisible({ timeout: 15000 });
+      await expect(page.getByRole("heading", { name: /sign in/i, level: 1 })).toBeVisible({
+        timeout: 15000,
+      });
 
       // Also verify the form elements are present
       await expect(page.getByLabel(/email/i)).toBeVisible();
@@ -310,8 +310,14 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       await dashboard.waitForTasksData();
 
       // At least one task group should be visible
-      const overdueVisible = await dashboard.getTaskGroup("Overdue").isVisible().catch(() => false);
-      const todayVisible = await dashboard.getTaskGroup("Today").isVisible().catch(() => false);
+      const overdueVisible = await dashboard
+        .getTaskGroup("Overdue")
+        .isVisible()
+        .catch(() => false);
+      const todayVisible = await dashboard
+        .getTaskGroup("Today")
+        .isVisible()
+        .catch(() => false);
       const tomorrowVisible = await dashboard
         .getTaskGroup("Tomorrow")
         .isVisible()
@@ -407,9 +413,7 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
     test("snooze shows loading state and disables button", async ({ authenticatedPage }) => {
       await dashboard.waitForTasksData();
 
-      const snoozeButton = authenticatedPage
-        .getByRole("button", { name: /snooze/i })
-        .first();
+      const snoozeButton = authenticatedPage.getByRole("button", { name: /snooze/i }).first();
       const buttonCount = await snoozeButton.count();
 
       if (buttonCount === 0) {
@@ -458,9 +462,7 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
         }
       });
 
-      const snoozeButton = authenticatedPage
-        .getByRole("button", { name: /snooze/i })
-        .first();
+      const snoozeButton = authenticatedPage.getByRole("button", { name: /snooze/i }).first();
       await snoozeButton.click();
 
       // Wait for error to process
@@ -520,9 +522,7 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
       // Verify all options
       const options = ["Call", "Email", "Meeting", "Follow-up", "Note"];
       for (const option of options) {
-        await expect(
-          dashboard.page.getByRole("option", { name: option })
-        ).toBeVisible();
+        await expect(dashboard.page.getByRole("option", { name: option })).toBeVisible();
       }
     });
 
@@ -913,7 +913,10 @@ test.describe("Dashboard V3 - Complete Data Flow Tests", () => {
 
       if (handleBox) {
         // Drag handle to resize
-        await authenticatedPage.mouse.move(handleBox.x + handleBox.width / 2, handleBox.y + handleBox.height / 2);
+        await authenticatedPage.mouse.move(
+          handleBox.x + handleBox.width / 2,
+          handleBox.y + handleBox.height / 2
+        );
         await authenticatedPage.mouse.down();
         await authenticatedPage.mouse.move(handleBox.x + 100, handleBox.y + handleBox.height / 2, {
           steps: 10,

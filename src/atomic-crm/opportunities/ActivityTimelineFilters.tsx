@@ -40,10 +40,7 @@ export const ActivityTimelineFilters: React.FC<ActivityTimelineFiltersProps> = (
   const [showStageChangesOnly, setShowStageChangesOnly] = useState(false);
 
   // Memoize pagination to prevent unnecessary re-fetches
-  const paginationOptions = useMemo(
-    () => ({ pagination: { page: 1, perPage: 100 } }),
-    []
-  );
+  const paginationOptions = useMemo(() => ({ pagination: { page: 1, perPage: 100 } }), []);
 
   // Fetch users for filter
   const { data: users } = useGetList<Sale>("sales", paginationOptions);

@@ -426,13 +426,7 @@ export type ActivityNoteFormData = z.infer<typeof activityNoteFormSchema>;
 export const ACTIVITY_TYPE_GROUPS = {
   Communication: ["Call", "Email", "Check-in", "Social"] as const,
   Meetings: ["Meeting", "Demo", "Site Visit", "Trade Show"] as const,
-  Documentation: [
-    "Proposal",
-    "Contract Review",
-    "Follow-up",
-    "Note",
-    "Sample",
-  ] as const,
+  Documentation: ["Proposal", "Contract Review", "Follow-up", "Note", "Sample"] as const,
 } as const;
 
 // Flatten all activity types for schema validation
