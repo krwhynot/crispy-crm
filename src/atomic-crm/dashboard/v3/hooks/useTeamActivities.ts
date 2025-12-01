@@ -30,6 +30,7 @@ export interface TeamActivity {
     id: number;
     first_name: string | null;
     last_name: string | null;
+    email: string | null;
     avatar_url: string | null;
   };
   // Related entities (for "View" link)
@@ -89,6 +90,7 @@ export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivit
               id,
               first_name,
               last_name,
+              email,
               avatar_url
             )
           `,

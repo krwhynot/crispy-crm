@@ -239,9 +239,10 @@ const ActivityItem = memo(function ActivityItem({ activity }: ActivityItemProps)
   const Icon = getActivityIcon(activity.type);
   const sales = activity.sales;
 
-  const fullName = getFullName(
+  const fullName = getDisplayName(
     sales?.first_name || null,
-    sales?.last_name || null
+    sales?.last_name || null,
+    sales?.email || null
   );
   const initials = getInitials(
     sales?.first_name || null,
