@@ -37,7 +37,7 @@ const saveViewPreference = (view: OpportunityView) => {
 };
 
 const OpportunityList = () => {
-  const { identity } = useGetIdentity();
+  const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const getResourceLabel = useGetResourceLabel();
   const resourceLabel = getResourceLabel("opportunities", 2);
   const opportunityFilters = useOpportunityFilters();
@@ -52,6 +52,7 @@ const OpportunityList = () => {
     saveViewPreference(newView);
   };
 
+  if (isIdentityPending) return <div>Loading...</div>;
   if (!identity) return null;
 
   return (

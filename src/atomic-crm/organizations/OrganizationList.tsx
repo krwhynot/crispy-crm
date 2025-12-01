@@ -104,7 +104,7 @@ const OrganizationListLayout = ({
   isSlideOverOpen: boolean;
 }) => {
   const { data, isPending, filterValues } = useListContext();
-  const { identity } = useGetIdentity();
+  const { data: identity, isPending: isIdentityPending } = useGetIdentity();
 
   // Keyboard navigation for list rows
   // Disabled when slide-over is open to prevent conflicts
@@ -115,8 +115,8 @@ const OrganizationListLayout = ({
 
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
-  // Show skeleton during initial load (identity check happens in parent)
-  if (isPending) {
+  // Show skeleton during initial load or while identity is loading
+  if (isPending || isIdentityPending) {
     return (
       <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
         <OrganizationListSkeleton />
@@ -193,7 +193,7 @@ const OrganizationListLayout = ({
 };
 
 export const OrganizationList = () => {
-  const { identity } = useGetIdentity();
+  const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
 
@@ -201,6 +201,7 @@ export const OrganizationList = () => {
   // Generic hook validates all filters against filterRegistry.ts
   useFilterCleanup("organizations");
 
+  if (isIdentityPending) return <OrganizationListSkeleton />;
   if (!identity) return null;
 
   return (

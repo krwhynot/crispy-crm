@@ -22,7 +22,7 @@ import { DigestPreferences } from "./DigestPreferences";
 
 export const SettingsPage = () => {
   const [isEditMode, setEditMode] = useState(false);
-  const { identity, refetch: refetchIdentity } = useGetIdentity();
+  const { data: identity, isPending: isIdentityPending, refetch: refetchIdentity } = useGetIdentity();
   const { data, refetch: refetchUser } = useGetOne("sales", {
     id: identity?.id,
   });
@@ -50,6 +50,7 @@ export const SettingsPage = () => {
     },
   });
 
+  if (isIdentityPending) return <div>Loading...</div>;
   if (!identity) return null;
 
   const handleOnSubmit = async (values: any) => {
