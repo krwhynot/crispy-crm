@@ -2,7 +2,6 @@
  * Structured Logging Utility
  *
  * Provides a unified logging interface that:
- * - Integrates with Sentry for error tracking
  * - Adds structured context to all log entries
  * - Tracks metrics for health monitoring
  * - Supports different log levels with appropriate routing
@@ -16,13 +15,6 @@
  * logger.metric('api_latency', 250, { endpoint: '/opportunities' });
  * ```
  */
-
-import {
-  addBreadcrumb,
-  captureException,
-  captureMessage,
-  setExtra,
-} from "./sentry";
 
 /**
  * Log levels in order of severity
@@ -146,54 +138,28 @@ class Logger {
       error,
     };
 
-    // Console output (development)
-    if (!this.isProduction) {
-      const formatted = formatLogEntry(entry);
-      switch (level) {
-        case "debug":
-          console.debug(formatted, error || "");
-          break;
-        case "info":
-          console.info(formatted);
-          break;
-        case "warn":
-          console.warn(formatted);
-          break;
-        case "error":
-        case "fatal":
-          console.error(formatted, error || "");
-          break;
-      }
+    // Console output
+    const formatted = formatLogEntry(entry);
+    switch (level) {
+      case "debug":
+        console.debug(formatted, error || "");
+        break;
+      case "info":
+        console.info(formatted);
+        break;
+      case "warn":
+        console.warn(formatted);
+        break;
+      case "error":
+      case "fatal":
+        console.error(formatted, error || "");
+        break;
     }
 
-    // Sentry integration
+    // Track error count for metrics
     if (level === "error" || level === "fatal") {
-      // Track error count
       const period = getCurrentPeriod();
       errorCountByPeriod.set(period, (errorCountByPeriod.get(period) || 0) + 1);
-
-      if (error) {
-        captureException(error, {
-          level: level === "fatal" ? "fatal" : "error",
-          extra: context,
-        });
-      } else {
-        captureMessage(message, level === "fatal" ? "fatal" : "error", context);
-      }
-    } else if (level === "warn") {
-      // Warnings as breadcrumbs + Sentry message
-      addBreadcrumb(message, "info", context, "warning");
-      if (this.isProduction) {
-        captureMessage(message, "warning", context);
-      }
-    } else {
-      // Info and debug as breadcrumbs only
-      addBreadcrumb(
-        message,
-        "info",
-        context,
-        level === "debug" ? "debug" : "info"
-      );
     }
   }
 
@@ -253,11 +219,7 @@ class Logger {
   /**
    * Track a metric for health monitoring
    */
-  metric(
-    name: string,
-    value: number,
-    tags?: Record<string, string>
-  ): void {
+  metric(name: string, value: number, tags?: Record<string, string>): void {
     const entry: MetricEntry = {
       name,
       value,
@@ -270,9 +232,6 @@ class Logger {
       metricsBuffer.shift();
     }
     metricsBuffer.push(entry);
-
-    // Set as Sentry extra for context
-    setExtra(`metric_${name}`, { value, tags });
 
     // Debug output
     if (!this.isProduction) {
