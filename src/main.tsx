@@ -27,15 +27,6 @@ if (import.meta.env.VITE_SENTRY_DSN) {
   });
 }
 
-// Build: 2024-11-30-v2 - force fresh deployment
-
-// TEMPORARY: Test Sentry error capture - REMOVE AFTER CONFIRMING
-if (import.meta.env.PROD) {
-  setTimeout(() => {
-    throw new Error("Sentry integration test - safe to ignore");
-  }, 3000);
-}
-
 // Create root
 const container = document.getElementById("root")!;
 const root = createRoot(container);
