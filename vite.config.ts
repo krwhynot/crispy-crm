@@ -59,9 +59,7 @@ export default defineConfig(({ mode }) => ({
       "react-dropzone",
       "react-cropper",
 
-      // Error tracking
-      "@sentry/react",
-    ],
+      ],
   },
   plugins: [
     react(),
@@ -97,18 +95,18 @@ export default defineConfig(({ mode }) => ({
                     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
                     "img-src 'self' data: https:; " +
                     "font-src 'self' data: https://fonts.gstatic.com; " +
-                    "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co wss://*.supabase.in https://*.sentry.io https://*.ingest.sentry.io; " +
+                    "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co wss://*.supabase.in; " +
                     "frame-src 'none'; " +
                     "object-src 'none'; " +
                     "base-uri 'self'; " +
                     "form-action 'self';"
-                  : // Development: Allow Vite HMR, inline scripts, and Sentry
+                  : // Development: Allow Vite HMR and inline scripts
                     "default-src 'self'; " +
                     "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
                     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
                     "img-src 'self' data: https:; " +
                     "font-src 'self' data: https://fonts.gstatic.com; " +
-                    "connect-src 'self' http://localhost:* http://127.0.0.1:* ws://localhost:* ws://127.0.0.1:* https://*.supabase.co https://*.supabase.in https://*.sentry.io https://*.ingest.sentry.io; " +
+                    "connect-src 'self' http://localhost:* http://127.0.0.1:* ws://localhost:* ws://127.0.0.1:* https://*.supabase.co https://*.supabase.in wss://*.supabase.co wss://*.supabase.in; " +
                     "frame-src 'none'; " +
                     "object-src 'none'; " +
                     "base-uri 'self'; " +
@@ -203,9 +201,6 @@ export default defineConfig(({ mode }) => ({
 
           // Icons - frequently used but can be separate
           icons: ["lucide-react"],
-
-          // Error tracking - loaded early but separate from main bundle
-          sentry: ["@sentry/react"],
         },
         // Optimize chunk names and size warnings
         chunkFileNames: (chunkInfo) => {

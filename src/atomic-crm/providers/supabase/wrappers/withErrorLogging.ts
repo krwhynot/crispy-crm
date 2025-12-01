@@ -11,13 +11,16 @@
  * 4. Supabase error field extraction
  * 5. Idempotent delete handling (already deleted = success)
  * 6. React Admin validation error format preservation
- * 7. Sentry error capture for production observability (P0)
  *
  * Engineering Constitution: Cross-cutting concern extracted for single responsibility
  */
 
-import type { DataProvider, Identifier, FilterPayload, RaRecord } from "ra-core";
-import { captureException, addBreadcrumb } from "@/lib/sentry";
+import type {
+  DataProvider,
+  Identifier,
+  FilterPayload,
+  RaRecord,
+} from "ra-core";
 
 /**
  * Interface for data provider method params logging
@@ -64,8 +67,7 @@ interface ExtendedError extends Error {
 }
 
 /**
- * Log error with context for debugging and send to Sentry
- * Integrated from resilientDataProvider for consolidated error logging
+ * Log error with context for debugging
  *
  * @param method - The DataProvider method that failed
  * @param resource - The resource being operated on
@@ -105,63 +107,36 @@ function logError(
   console.error(`[DataProvider Error]`, context, {
     error: errorMessage,
     stack: error instanceof Error ? error.stack : undefined,
-    validationErrors: extendedError?.body?.errors || extendedError?.errors || undefined,
+    validationErrors:
+      extendedError?.body?.errors || extendedError?.errors || undefined,
     fullError: error,
   });
 
   // Log validation errors in detail for debugging
   if (extendedError?.body?.errors) {
-    console.error("[Validation Errors Detail]", JSON.stringify(extendedError.body.errors, null, 2));
+    console.error(
+      "[Validation Errors Detail]",
+      JSON.stringify(extendedError.body.errors, null, 2)
+    );
     // DEBUG: Also log the data that caused the error
     if (params && "data" in params) {
-      console.error("[Validation Data Submitted]", JSON.stringify((params as any).data, null, 2));
+      console.error(
+        "[Validation Data Submitted]",
+        JSON.stringify((params as { data: unknown }).data, null, 2)
+      );
     }
   } else if (extendedError?.errors) {
-    console.error("[Validation Errors Detail]", JSON.stringify(extendedError.errors, null, 2));
+    console.error(
+      "[Validation Errors Detail]",
+      JSON.stringify(extendedError.errors, null, 2)
+    );
     // DEBUG: Also log the data that caused the error
     if (params && "data" in params) {
-      console.error("[Validation Data Submitted]", JSON.stringify((params as any).data, null, 2));
+      console.error(
+        "[Validation Data Submitted]",
+        JSON.stringify((params as { data: unknown }).data, null, 2)
+      );
     }
-  }
-
-  // === Sentry Integration (P0 - Observability) ===
-  // Add breadcrumb for context trail in Sentry
-  addBreadcrumb(
-    `DataProvider.${method}(${resource}) failed`,
-    "api",
-    {
-      method,
-      resource,
-      id: params?.id,
-      hasData: !!params?.data,
-    },
-    "error"
-  );
-
-  // Capture to Sentry with rich context
-  // Only capture actual errors (not validation errors which are expected user behavior)
-  const isValidationError = !!(
-    extendedError?.body?.errors ||
-    extendedError?.errors ||
-    extendedError?.issues
-  );
-
-  if (!isValidationError) {
-    const sentryError = error instanceof Error ? error : new Error(errorMessage);
-    captureException(sentryError, {
-      tags: {
-        dataProviderMethod: method,
-        resource,
-        errorType: isSupabaseError(error) ? "supabase" : "unknown",
-      },
-      extra: {
-        ...context,
-        supabaseCode: (error as SupabaseError)?.code,
-        supabaseDetails: (error as SupabaseError)?.details,
-        supabaseHint: (error as SupabaseError)?.hint,
-      },
-      level: "error",
-    });
   }
 }
 
@@ -208,7 +183,9 @@ function isSupabaseError(error: unknown): error is SupabaseError {
  */
 function isAlreadyDeletedError(error: unknown): boolean {
   const extendedError = error as ExtendedError | undefined;
-  return !!extendedError?.message?.includes("Cannot coerce the result to a single JSON object");
+  return !!extendedError?.message?.includes(
+    "Cannot coerce the result to a single JSON object"
+  );
 }
 
 /**
@@ -216,7 +193,9 @@ function isAlreadyDeletedError(error: unknown): boolean {
  */
 function isReactAdminValidationError(error: unknown): boolean {
   const extendedError = error as ExtendedError | undefined;
-  return !!(extendedError?.body?.errors && typeof extendedError.body.errors === "object");
+  return !!(
+    extendedError?.body?.errors && typeof extendedError.body.errors === "object"
+  );
 }
 
 /**
@@ -255,11 +234,9 @@ export function withErrorLogging<T extends DataProvider>(provider: T): T {
         params: DataProviderLogParams & { previousData?: RaRecord }
       ) => {
         try {
-          return await (original as (...args: unknown[]) => Promise<unknown>).call(
-            provider,
-            resource,
-            params
-          );
+          return await (
+            original as (...args: unknown[]) => Promise<unknown>
+          ).call(provider, resource, params);
         } catch (error: unknown) {
           // Log the error with context
           logError(method, resource, params, error);
