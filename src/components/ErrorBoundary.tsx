@@ -1,17 +1,17 @@
 /**
- * Sentry-Integrated Error Boundary
+ * Error Boundary Component
  *
  * A robust error boundary that:
- * - Captures React errors and sends them to Sentry
+ * - Catches React errors and logs them
  * - Provides a user-friendly fallback UI
  * - Allows error recovery via reload/navigation
  * - Preserves component stack traces for debugging
  *
  * @example
  * ```tsx
- * <SentryErrorBoundary fallback={<CustomError />}>
+ * <ErrorBoundary fallback={<CustomError />}>
  *   <MyComponent />
- * </SentryErrorBoundary>
+ * </ErrorBoundary>
  * ```
  */
 
@@ -20,10 +20,15 @@
 
 import type { ReactNode, ErrorInfo } from "react";
 import { Component } from "react";
-import * as Sentry from "@sentry/react";
-import { AlertTriangle, Home, RotateCcw, Bug } from "lucide-react";
+import { AlertTriangle, Home, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { logger } from "@/lib/logger";
 
 interface Props {
@@ -42,16 +47,14 @@ interface State {
   hasError: boolean;
   error?: Error;
   errorInfo?: ErrorInfo;
-  eventId?: string;
 }
 
 /**
- * Error Boundary with Sentry integration
+ * Error Boundary component
  *
- * Wraps components to catch rendering errors, report them to Sentry,
- * and display a graceful fallback UI.
+ * Wraps components to catch rendering errors and display a graceful fallback UI.
  */
-export class SentryErrorBoundary extends Component<Props, State> {
+export class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
     this.state = { hasError: false };
@@ -69,20 +72,7 @@ export class SentryErrorBoundary extends Component<Props, State> {
       ...this.props.context,
     });
 
-    // Capture in Sentry with full context
-    const eventId = Sentry.captureException(error, {
-      tags: {
-        errorBoundary: "true",
-        feature: this.props.feature || "unknown",
-      },
-      extra: {
-        componentStack: errorInfo.componentStack,
-        ...this.props.context,
-      },
-      level: "error",
-    });
-
-    this.setState({ errorInfo, eventId });
+    this.setState({ errorInfo });
 
     // Call optional error callback
     this.props.onError?.(error, errorInfo);
@@ -94,12 +84,6 @@ export class SentryErrorBoundary extends Component<Props, State> {
 
   handleGoHome = (): void => {
     window.location.href = "/";
-  };
-
-  handleReportFeedback = (): void => {
-    if (this.state.eventId) {
-      Sentry.showReportDialog({ eventId: this.state.eventId });
-    }
   };
 
   handleRetry = (): void => {
@@ -125,14 +109,17 @@ export class SentryErrorBoundary extends Component<Props, State> {
               <CardDescription>
                 {this.props.feature
                   ? `The ${this.props.feature} encountered an unexpected error.`
-                  : "An unexpected error occurred."}{" "}
-                Our team has been notified.
+                  : "An unexpected error occurred."}
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               {/* Action buttons */}
               <div className="flex gap-2">
-                <Button onClick={this.handleRetry} variant="outline" className="flex-1 gap-2">
+                <Button
+                  onClick={this.handleRetry}
+                  variant="outline"
+                  className="flex-1 gap-2"
+                >
                   <RotateCcw className="h-4 w-4" />
                   Try Again
                 </Button>
@@ -142,18 +129,6 @@ export class SentryErrorBoundary extends Component<Props, State> {
                 </Button>
               </div>
 
-              {/* Report feedback button (if Sentry dialog available) */}
-              {this.state.eventId && (
-                <Button
-                  onClick={this.handleReportFeedback}
-                  variant="ghost"
-                  className="w-full gap-2 text-muted-foreground"
-                >
-                  <Bug className="h-4 w-4" />
-                  Report this issue
-                </Button>
-              )}
-
               {/* Error details (development only) */}
               {import.meta.env.DEV && this.state.error && (
                 <details className="mt-4">
@@ -161,18 +136,13 @@ export class SentryErrorBoundary extends Component<Props, State> {
                     Error details (dev only)
                   </summary>
                   <div className="mt-2 space-y-2">
-                    <pre className="rounded-md bg-muted p-2 text-xs overflow-auto max-h-32">
+                    <pre className="max-h-32 overflow-auto rounded-md bg-muted p-2 text-xs">
                       {this.state.error.message}
                     </pre>
                     {this.state.errorInfo?.componentStack && (
-                      <pre className="rounded-md bg-muted p-2 text-xs overflow-auto max-h-48">
+                      <pre className="max-h-48 overflow-auto rounded-md bg-muted p-2 text-xs">
                         {this.state.errorInfo.componentStack}
                       </pre>
-                    )}
-                    {this.state.eventId && (
-                      <p className="text-xs text-muted-foreground">
-                        Event ID: {this.state.eventId}
-                      </p>
                     )}
                   </div>
                 </details>
@@ -188,7 +158,7 @@ export class SentryErrorBoundary extends Component<Props, State> {
 }
 
 /**
- * Higher-order component version of SentryErrorBoundary
+ * Higher-order component version of ErrorBoundary
  *
  * @example
  * ```tsx
@@ -202,12 +172,13 @@ export function withErrorBoundary<P extends object>(
   WrappedComponent: React.ComponentType<P>,
   options?: Omit<Props, "children">
 ): React.FC<P> {
-  const displayName = WrappedComponent.displayName || WrappedComponent.name || "Component";
+  const displayName =
+    WrappedComponent.displayName || WrappedComponent.name || "Component";
 
   const WithErrorBoundary: React.FC<P> = (props) => (
-    <SentryErrorBoundary {...options}>
+    <ErrorBoundary {...options}>
       <WrappedComponent {...props} />
-    </SentryErrorBoundary>
+    </ErrorBoundary>
   );
 
   WithErrorBoundary.displayName = `withErrorBoundary(${displayName})`;
@@ -215,4 +186,7 @@ export function withErrorBoundary<P extends object>(
   return WithErrorBoundary;
 }
 
-export default SentryErrorBoundary;
+// Legacy export for backward compatibility
+export const SentryErrorBoundary = ErrorBoundary;
+
+export default ErrorBoundary;
