@@ -26,14 +26,14 @@ test.describe("Organization Form - Error Scenarios", () => {
     await orgPage.gotoCreate();
   });
 
-  test.afterEach(async ({ page }) => {
+  test.afterEach(async () => {
     const report = consoleMonitor.getReport();
     if (consoleMonitor.getErrors().length > 0) {
       console.log(report);
     }
   });
 
-  test("should require name field (cannot submit empty form)", async ({ page }) => {
+  test("should require name field (cannot submit empty form)", async () => {
     // Attempt to submit without filling any fields
     // Note: Name is the only required field in the form
     await orgPage.attemptSubmit();
@@ -78,7 +78,7 @@ test.describe("Organization Form - Success Scenarios", () => {
     await orgPage.gotoCreate();
   });
 
-  test.afterEach(async ({ page }) => {
+  test.afterEach(async () => {
     const report = consoleMonitor.getReport();
 
     // In success tests, assert no RLS/React errors
@@ -224,7 +224,7 @@ test.describe("Organization Form - Validation Edge Cases", () => {
     await orgPage.gotoCreate();
   });
 
-  test.afterEach(async ({ page }) => {
+  test.afterEach(async () => {
     const report = consoleMonitor.getReport();
     if (consoleMonitor.getErrors().length > 0) {
       console.log(report);
@@ -325,7 +325,7 @@ test.describe("Organization Form - Duplicate Dialog Behavior", () => {
     await orgPage.gotoCreate();
   });
 
-  test.afterEach(async ({ page }) => {
+  test.afterEach(async () => {
     const report = consoleMonitor.getReport();
     if (consoleMonitor.getErrors().length > 0) {
       console.log(report);

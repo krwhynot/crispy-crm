@@ -1,7 +1,5 @@
 import { test, expect } from "@playwright/test";
 import { ContactFormPage } from "../../support/poms/ContactFormPage";
-import { ContactsListPage } from "../../support/poms/ContactsListPage";
-import { ContactShowPage } from "../../support/poms/ContactShowPage";
 import { consoleMonitor } from "../../support/utils/console-monitor";
 import {
   DEFAULT_TEST_ORGANIZATION,
@@ -166,21 +164,21 @@ test.describe("Contact Form - Success Scenarios", () => {
   // SKIP: Complex success scenarios require email type selection which has JSONB array UI
   // complexity. The basic success test above validates the form can be submitted successfully.
 
-  test.skip("SUCCESS - Full form with all tabs filled saves successfully", async ({ page }) => {
+  test.skip("SUCCESS - Full form with all tabs filled saves successfully", async ({ page: _page }) => {
     // Complex multi-tab form with LinkedIn, notes - difficult to test reliably
   });
 
   test.skip("SUCCESS - Save & Add Another resets form and stays on create page", async ({
-    page,
+    page: _page,
   }) => {
     // Save & Add Another with form reset - complex email type interactions
   });
 
-  test.skip("SUCCESS - Valid LinkedIn URL (www.linkedin.com) saves correctly", async ({ page }) => {
+  test.skip("SUCCESS - Valid LinkedIn URL (www.linkedin.com) saves correctly", async ({ page: _page }) => {
     // LinkedIn URL validation - requires email type selection to work
   });
 
-  test.skip("SUCCESS - Multiple email addresses with different types", async ({ page }) => {
+  test.skip("SUCCESS - Multiple email addresses with different types", async ({ page: _page }) => {
     // Multiple JSONB array entries - complex UI interactions
   });
 });

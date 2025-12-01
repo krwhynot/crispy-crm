@@ -366,7 +366,7 @@ export function QuickLogActivityDialog({
   // ═══════════════════════════════════════════════════════════════════
   const enableDraftPersistence = config?.enableDraftPersistence ?? true;
   const draftStorageKey = config?.draftStorageKey ?? DEFAULT_DRAFT_STORAGE_KEY;
-  const showSaveAndNew = config?.showSaveAndNew ?? true;
+  const _showSaveAndNew = config?.showSaveAndNew ?? true;
   const activityTypePreset = config?.activityType;
 
   // ═══════════════════════════════════════════════════════════════════

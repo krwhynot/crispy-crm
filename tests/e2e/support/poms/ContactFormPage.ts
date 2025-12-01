@@ -3,7 +3,6 @@ import { BasePage } from "./BasePage";
 import {
   waitForFormReady,
   clickSaveAndWait,
-  fillAutocompleteField,
   expectFieldError,
   expectFormNotSubmitted,
   expectFormSubmitted,
