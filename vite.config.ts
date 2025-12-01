@@ -92,12 +92,14 @@ export default defineConfig(({ mode }) => ({
                 mode === "production"
                   ? // Production: Stricter security (includes Sentry + Google Fonts)
                     // Note: 'wasm-unsafe-eval' required for Vite's dynamic import() used by React.lazy()
+                    // Note: blob: required for Sentry Session Replay worker
                     "default-src 'self'; " +
-                    "script-src 'self' 'wasm-unsafe-eval'; " +
+                    "script-src 'self' 'wasm-unsafe-eval' blob:; " +
                     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
-                    "img-src 'self' data: https:; " +
+                    "img-src 'self' data: blob: https:; " +
                     "font-src 'self' data: https://fonts.gstatic.com; " +
-                    "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co wss://*.supabase.in; " +
+                    "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co wss://*.supabase.in https://*.sentry.io; " +
+                    "worker-src 'self' blob:; " +
                     "frame-src 'none'; " +
                     "object-src 'none'; " +
                     "base-uri 'self'; " +
