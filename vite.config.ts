@@ -4,6 +4,7 @@ import tailwindcss from "@tailwindcss/vite";
 import react from "@vitejs/plugin-react";
 import { visualizer } from "rollup-plugin-visualizer";
 import createHtmlPlugin from "vite-plugin-simple-html";
+import { sentryVitePlugin } from "@sentry/vite-plugin";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -117,6 +118,17 @@ export default defineConfig(({ mode }) => ({
         ],
       },
     }),
+    // Sentry source map upload - only in production builds
+    // Requires SENTRY_AUTH_TOKEN and SENTRY_ORG/SENTRY_PROJECT env vars
+    ...(mode === "production" && process.env.SENTRY_AUTH_TOKEN
+      ? [
+          sentryVitePlugin({
+            org: process.env.SENTRY_ORG,
+            project: process.env.SENTRY_PROJECT,
+            authToken: process.env.SENTRY_AUTH_TOKEN,
+          }),
+        ]
+      : []),
   ],
   define:
     process.env.NODE_ENV === "production"
@@ -153,8 +165,9 @@ export default defineConfig(({ mode }) => ({
     noExternal: [],
   },
   build: {
-    // Disable source maps for production builds (7.7MB savings)
-    sourcemap: mode === "development",
+    // Enable source maps for Sentry error tracking
+    // Hidden source maps don't expose source code to users but allow Sentry to decode stack traces
+    sourcemap: mode === "production" ? "hidden" : true,
     rollupOptions: {
       output: {
         // Manual chunk splitting for optimal loading
