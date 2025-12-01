@@ -6,10 +6,12 @@
   "devCommand": "npm run dev",
   "rewrites": [
     {
-      "source": "/((?!assets/|js/).*)",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ],
+  "cleanUrls": true,
+  "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
