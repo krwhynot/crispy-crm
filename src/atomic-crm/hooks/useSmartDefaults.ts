@@ -12,7 +12,9 @@ interface SmartDefaults {
   activity_date: string;
 }
 
-export const useSmartDefaults = (options?: UseSmartDefaultsOptions): {
+export const useSmartDefaults = (
+  options?: UseSmartDefaultsOptions
+): {
   defaults: SmartDefaults;
   isLoading: boolean;
 } => {

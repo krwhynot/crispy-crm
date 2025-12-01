@@ -73,8 +73,8 @@ export function DistributorAuthorizationWarning() {
         dialogDescription: (
           <>
             The authorization for <strong>{distributorName}</strong> to distribute{" "}
-            <strong>{principalName}</strong> products has expired. This may mean the distributor
-            is no longer carrying these products, or the authorization needs to be renewed.
+            <strong>{principalName}</strong> products has expired. This may mean the distributor is
+            no longer carrying these products, or the authorization needs to be renewed.
           </>
         ),
       };
@@ -95,8 +95,8 @@ export function DistributorAuthorizationWarning() {
         dialogDescription: (
           <>
             <strong>{distributorName}</strong> has an authorization record for{" "}
-            <strong>{principalName}</strong>, but it is marked as inactive. This typically means
-            the distributor previously carried these products but no longer does.
+            <strong>{principalName}</strong>, but it is marked as inactive. This typically means the
+            distributor previously carried these products but no longer does.
           </>
         ),
       };
@@ -108,16 +108,16 @@ export function DistributorAuthorizationWarning() {
       title: "Distributor Not Authorized",
       message: (
         <>
-          <strong>{distributorName || "This distributor"}</strong> is not currently authorized
-          to carry <strong>{principalName || "this principal"}</strong>&apos;s products.
+          <strong>{distributorName || "This distributor"}</strong> is not currently authorized to
+          carry <strong>{principalName || "this principal"}</strong>&apos;s products.
         </>
       ),
       dialogTitle: "Proceed Without Authorization?",
       dialogDescription: (
         <>
           No authorization record exists between <strong>{distributorName}</strong> and{" "}
-          <strong>{principalName}</strong>. This may indicate the distributor doesn&apos;t
-          carry this principal&apos;s products, or a new authorization relationship is being pursued.
+          <strong>{principalName}</strong>. This may indicate the distributor doesn&apos;t carry
+          this principal&apos;s products, or a new authorization relationship is being pursued.
         </>
       ),
     };
@@ -128,9 +128,7 @@ export function DistributorAuthorizationWarning() {
   return (
     <Alert className="border-amber-500/50 bg-amber-50 dark:bg-amber-950/20 mt-3">
       {content.icon}
-      <AlertTitle className="text-amber-800 dark:text-amber-400">
-        {content.title}
-      </AlertTitle>
+      <AlertTitle className="text-amber-800 dark:text-amber-400">{content.title}</AlertTitle>
       <AlertDescription className="text-amber-700 dark:text-amber-300">
         <p className="mb-2">{content.message}</p>
         <p className="text-sm mb-3">

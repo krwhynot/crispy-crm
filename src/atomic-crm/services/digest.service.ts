@@ -14,10 +14,7 @@
 
 import { z } from "zod";
 import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
-import {
-  STAGE_STALE_THRESHOLDS,
-  type ActivePipelineStage,
-} from "../utils/stalenessCalculation";
+import { STAGE_STALE_THRESHOLDS, type ActivePipelineStage } from "../utils/stalenessCalculation";
 
 // =====================================================
 // Zod Schemas for Type Safety and Validation

@@ -47,9 +47,7 @@ test.describe("Dashboard V3 - Accessibility Audit (WCAG 2.1 AA)", () => {
   });
 
   test.describe("Full Page Accessibility Scan", () => {
-    test("entire dashboard passes WCAG 2.1 AA automated checks", async ({
-      authenticatedPage,
-    }) => {
+    test("entire dashboard passes WCAG 2.1 AA automated checks", async ({ authenticatedPage }) => {
       // Run axe-core on the full page
       const accessibilityResults = await new AxeBuilder({ page: authenticatedPage })
         .withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa"])
@@ -87,9 +85,7 @@ test.describe("Dashboard V3 - Accessibility Audit (WCAG 2.1 AA)", () => {
       ).toHaveLength(0);
     });
 
-    test("dashboard maintains accessibility after data loads", async ({
-      authenticatedPage,
-    }) => {
+    test("dashboard maintains accessibility after data loads", async ({ authenticatedPage }) => {
       // Wait for all panels to finish loading
       await authenticatedPage.waitForTimeout(2000);
 
@@ -131,9 +127,7 @@ test.describe("Dashboard V3 - Accessibility Audit (WCAG 2.1 AA)", () => {
       expect(results.violations).toHaveLength(0);
     });
 
-    test("table headers are properly associated with data cells", async ({
-      authenticatedPage,
-    }) => {
+    test("table headers are properly associated with data cells", async ({ authenticatedPage }) => {
       // Verify table has proper structure
       const table = authenticatedPage.getByRole("table");
       await expect(table).toBeVisible();
@@ -341,9 +335,7 @@ test.describe("Dashboard V3 - Accessibility Audit (WCAG 2.1 AA)", () => {
       await authenticatedPage.waitForTimeout(500);
 
       // Focus activity type select (first combobox)
-      const activityTypeCombobox = authenticatedPage.locator(
-        '[role="combobox"], select'
-      ).first();
+      const activityTypeCombobox = authenticatedPage.locator('[role="combobox"], select').first();
       await activityTypeCombobox.focus();
 
       // Should be able to keyboard navigate
@@ -640,9 +632,7 @@ test.describe("Dashboard V3 - Accessibility Audit (WCAG 2.1 AA)", () => {
     test("live regions announce dynamic updates", async ({ authenticatedPage }) => {
       // Check for ARIA live regions in the document
       const liveRegions = await authenticatedPage.evaluate(() => {
-        const regions = document.querySelectorAll(
-          '[aria-live], [role="alert"], [role="status"]'
-        );
+        const regions = document.querySelectorAll('[aria-live], [role="alert"], [role="status"]');
         return Array.from(regions).map((r) => ({
           role: r.getAttribute("role"),
           ariaLive: r.getAttribute("aria-live"),
@@ -715,7 +705,9 @@ test.describe("Dashboard V3 - Accessibility Audit (WCAG 2.1 AA)", () => {
 
         // Wait for sheet to open
         const dialog = authenticatedPage.getByRole("dialog");
-        await expect(dialog).toBeVisible({ timeout: 5000 }).catch(() => {});
+        await expect(dialog)
+          .toBeVisible({ timeout: 5000 })
+          .catch(() => {});
 
         if (await dialog.isVisible()) {
           // Tab through elements - should stay within dialog
@@ -734,13 +726,8 @@ test.describe("Dashboard V3 - Accessibility Audit (WCAG 2.1 AA)", () => {
           }
 
           // All focus should remain inside dialog
-          const outsideCount = focusedElementsInDialog.filter(
-            (f) => f === "outside-dialog"
-          ).length;
-          expect(
-            outsideCount,
-            "Focus should remain trapped in dialog"
-          ).toBe(0);
+          const outsideCount = focusedElementsInDialog.filter((f) => f === "outside-dialog").length;
+          expect(outsideCount, "Focus should remain trapped in dialog").toBe(0);
 
           // Clean up
           await authenticatedPage.keyboard.press("Escape");

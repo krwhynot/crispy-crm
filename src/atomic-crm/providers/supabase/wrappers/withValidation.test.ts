@@ -69,11 +69,7 @@ describe("withValidation", () => {
 
       await wrappedProvider.create("contacts", { data: createData });
 
-      expect(mockValidationService.validate).toHaveBeenCalledWith(
-        "contacts",
-        "create",
-        createData
-      );
+      expect(mockValidationService.validate).toHaveBeenCalledWith("contacts", "create", createData);
       expect(mockProvider.create).toHaveBeenCalledWith("contacts", { data: createData });
     });
 
@@ -133,11 +129,10 @@ describe("withValidation", () => {
       });
 
       // Validation should receive data with id merged (since schemas like taskUpdateSchema require id)
-      expect(mockValidationService.validate).toHaveBeenCalledWith(
-        "contacts",
-        "update",
-        { ...updateData, id: 1 }
-      );
+      expect(mockValidationService.validate).toHaveBeenCalledWith("contacts", "update", {
+        ...updateData,
+        id: 1,
+      });
       expect(mockProvider.update).toHaveBeenCalled();
     });
 
@@ -181,10 +176,10 @@ describe("withValidation", () => {
         filter: { status: "active", invalid_field: "should_be_removed" },
       });
 
-      expect(mockValidationService.validateFilters).toHaveBeenCalledWith(
-        "contacts",
-        { status: "active", invalid_field: "should_be_removed" }
-      );
+      expect(mockValidationService.validateFilters).toHaveBeenCalledWith("contacts", {
+        status: "active",
+        invalid_field: "should_be_removed",
+      });
 
       // Provider should receive cleaned filters
       expect(mockProvider.getList).toHaveBeenCalledWith("contacts", {
@@ -252,9 +247,7 @@ describe("withValidation", () => {
 
       const wrappedProvider = withValidation(mockProvider);
 
-      await expect(
-        wrappedProvider.create("organizations", { data: {} })
-      ).rejects.toMatchObject({
+      await expect(wrappedProvider.create("organizations", { data: {} })).rejects.toMatchObject({
         body: {
           errors: expect.objectContaining({
             "address.city": "City is required",
@@ -270,9 +263,9 @@ describe("withValidation", () => {
 
       const wrappedProvider = withValidation(mockProvider);
 
-      await expect(
-        wrappedProvider.create("contacts", { data: {} })
-      ).rejects.toThrow("Database connection failed");
+      await expect(wrappedProvider.create("contacts", { data: {} })).rejects.toThrow(
+        "Database connection failed"
+      );
     });
   });
 

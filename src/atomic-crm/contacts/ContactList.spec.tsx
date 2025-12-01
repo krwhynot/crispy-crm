@@ -154,7 +154,7 @@ describe("ContactList - Single Organization Model (Unified Provider)", () => {
             const query = params.filter.q.toLowerCase();
             // Get org name for search matching
             const getOrgName = (orgId: number) =>
-              mockOrganizations.find(org => org.id === orgId)?.name || "";
+              mockOrganizations.find((org) => org.id === orgId)?.name || "";
 
             filteredContacts = filteredContacts.filter(
               (contact) =>

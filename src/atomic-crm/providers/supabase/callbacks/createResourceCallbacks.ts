@@ -19,10 +19,17 @@ import type { DataProvider, RaRecord, GetListParams, DeleteParams } from "ra-cor
  */
 export interface ResourceCallbacks {
   resource: string;
-  beforeDelete?: (params: DeleteParams, dataProvider: DataProvider) => Promise<DeleteParams & { meta?: { skipDelete?: boolean } }>;
+  beforeDelete?: (
+    params: DeleteParams,
+    dataProvider: DataProvider
+  ) => Promise<DeleteParams & { meta?: { skipDelete?: boolean } }>;
   afterRead?: (record: RaRecord, dataProvider: DataProvider) => Promise<RaRecord>;
   beforeGetList?: (params: GetListParams, dataProvider: DataProvider) => Promise<GetListParams>;
-  beforeSave?: (data: Partial<RaRecord>, dataProvider: DataProvider, resource: string) => Promise<Partial<RaRecord>>;
+  beforeSave?: (
+    data: Partial<RaRecord>,
+    dataProvider: DataProvider,
+    resource: string
+  ) => Promise<Partial<RaRecord>>;
 }
 
 /**
@@ -35,9 +42,7 @@ export type TransformFn = (record: RaRecord) => RaRecord;
  * Validation function that checks if a record is valid
  * Returns object with validity status and optional error messages
  */
-export type ValidateFn = (
-  record: RaRecord
-) => { valid: boolean; errors?: string[] };
+export type ValidateFn = (record: RaRecord) => { valid: boolean; errors?: string[] };
 
 /**
  * Transform with metadata for registry and composition
@@ -251,8 +256,16 @@ export function createResourceCallbacks(config: ResourceCallbacksConfig): Resour
 
   // Compose transform pipelines
   const readPipeline = composeTransforms(readTransforms, compositionStrategy, handleTransformError);
-  const writePipeline = composeTransforms(writeTransforms, compositionStrategy, handleTransformError);
-  const deletePipeline = composeTransforms(deleteTransforms, compositionStrategy, handleTransformError);
+  const writePipeline = composeTransforms(
+    writeTransforms,
+    compositionStrategy,
+    handleTransformError
+  );
+  const deletePipeline = composeTransforms(
+    deleteTransforms,
+    compositionStrategy,
+    handleTransformError
+  );
 
   const callbacks: ResourceCallbacks = {
     resource,
@@ -281,9 +294,10 @@ export function createResourceCallbacks(config: ResourceCallbacksConfig): Resour
     // Add soft delete filter to getList
     callbacks.beforeGetList = async (params, _dataProvider) => {
       const { includeDeleted, ...otherFilters } = params.filter || {};
-      const softDeleteFilter = softDeleteConfig.filterOutDeleted && !includeDeleted
-        ? { [`${softDeleteConfig.field}@is`]: null }
-        : {};
+      const softDeleteFilter =
+        softDeleteConfig.filterOutDeleted && !includeDeleted
+          ? { [`${softDeleteConfig.field}@is`]: null }
+          : {};
 
       return {
         ...params,
@@ -296,7 +310,11 @@ export function createResourceCallbacks(config: ResourceCallbacksConfig): Resour
   }
 
   // === Before Save: Write Transforms → Computed Fields → Create Defaults ===
-  if (writeTransforms.length > 0 || computedFields.length > 0 || Object.keys(createDefaults).length > 0) {
+  if (
+    writeTransforms.length > 0 ||
+    computedFields.length > 0 ||
+    Object.keys(createDefaults).length > 0
+  ) {
     callbacks.beforeSave = async (data, _dataProvider, _resource) => {
       // 1. Apply write transform pipeline
       let processed = writePipeline(data);

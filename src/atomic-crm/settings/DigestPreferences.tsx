@@ -173,9 +173,7 @@ export function DigestPreferences() {
               <li>Overdue tasks requiring attention</li>
               <li>Stale deals that haven't been updated recently</li>
             </ul>
-            <p className="mt-2 italic">
-              Digests are only sent when you have actionable items.
-            </p>
+            <p className="mt-2 italic">Digests are only sent when you have actionable items.</p>
           </div>
         )}
       </CardContent>

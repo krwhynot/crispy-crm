@@ -25,7 +25,8 @@ interface TaskRelatedItemsTabProps {
  * No edit mode - relationships are edited in Details tab.
  */
 export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
-  const hasRelationships = record.organization_id || record.contact_id || record.opportunity_id || record.sales_id;
+  const hasRelationships =
+    record.organization_id || record.contact_id || record.opportunity_id || record.sales_id;
 
   return (
     <RecordContextProvider value={record}>

@@ -1,10 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { ActivityFormPage } from "../../support/poms/ActivityFormPage";
 import { consoleMonitor } from "../../support/utils/console-monitor";
-import {
-  DEFAULT_TEST_RELATIONSHIP,
-  generateTestSubject,
-} from "../../support/fixtures/test-data";
+import { DEFAULT_TEST_RELATIONSHIP, generateTestSubject } from "../../support/fixtures/test-data";
 
 /**
  * E2E tests for Activity Form validation and submission

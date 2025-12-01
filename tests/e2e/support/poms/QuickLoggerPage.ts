@@ -141,10 +141,7 @@ export class QuickLoggerPage extends BasePage {
    */
   async selectContact(searchTerm: string): Promise<string> {
     // Click the Contact combobox trigger
-    const contactTrigger = this.page
-      .getByLabel("Contact *")
-      .locator("..")
-      .getByRole("combobox");
+    const contactTrigger = this.page.getByLabel("Contact *").locator("..").getByRole("combobox");
     await contactTrigger.click();
 
     // Wait for popover to open
@@ -171,10 +168,7 @@ export class QuickLoggerPage extends BasePage {
    * Returns the selected organization name for verification
    */
   async selectOrganization(searchTerm: string): Promise<string> {
-    const orgTrigger = this.page
-      .getByLabel("Organization *")
-      .locator("..")
-      .getByRole("combobox");
+    const orgTrigger = this.page.getByLabel("Organization *").locator("..").getByRole("combobox");
     await orgTrigger.click();
 
     await expect(this.page.getByPlaceholder(/search organization/i)).toBeVisible();
@@ -195,10 +189,7 @@ export class QuickLoggerPage extends BasePage {
    * Get the currently selected organization name
    */
   async getSelectedOrganization(): Promise<string> {
-    const orgTrigger = this.page
-      .getByLabel("Organization *")
-      .locator("..")
-      .getByRole("combobox");
+    const orgTrigger = this.page.getByLabel("Organization *").locator("..").getByRole("combobox");
     return (await orgTrigger.textContent()) || "";
   }
 
@@ -206,10 +197,7 @@ export class QuickLoggerPage extends BasePage {
    * Get the currently selected contact name
    */
   async getSelectedContact(): Promise<string> {
-    const contactTrigger = this.page
-      .getByLabel("Contact *")
-      .locator("..")
-      .getByRole("combobox");
+    const contactTrigger = this.page.getByLabel("Contact *").locator("..").getByRole("combobox");
     return (await contactTrigger.textContent()) || "";
   }
 
@@ -289,9 +277,9 @@ export class QuickLoggerPage extends BasePage {
    * Wait for and verify success notification
    */
   async expectSuccessNotification(): Promise<void> {
-    await expect(
-      this.page.getByText(/activity logged successfully/i)
-    ).toBeVisible({ timeout: 5000 });
+    await expect(this.page.getByText(/activity logged successfully/i)).toBeVisible({
+      timeout: 5000,
+    });
   }
 
   /**
@@ -311,7 +299,10 @@ export class QuickLoggerPage extends BasePage {
     await this.selectOutcome(options.outcome);
 
     // Set duration if applicable
-    if (options.duration && (options.activityType === "Call" || options.activityType === "Meeting")) {
+    if (
+      options.duration &&
+      (options.activityType === "Call" || options.activityType === "Meeting")
+    ) {
       await this.setDuration(options.duration);
     }
 

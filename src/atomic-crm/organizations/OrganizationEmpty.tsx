@@ -21,8 +21,8 @@ export const OrganizationEmpty = () => {
       <div className="flex flex-col gap-compact items-center max-w-md">
         <h2 className="text-lg font-bold text-foreground">No organizations yet</h2>
         <p className="text-sm text-muted-foreground text-center">
-          Start building your network by adding organizations like customers, prospects,
-          principals, and distributors.
+          Start building your network by adding organizations like customers, prospects, principals,
+          and distributors.
         </p>
       </div>
 

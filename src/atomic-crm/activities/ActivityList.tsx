@@ -18,9 +18,7 @@ import { ActivityListFilter } from "./ActivityListFilter";
 import { SampleStatusBadge } from "../components/SampleStatusBadge";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import type { ActivityRecord, Contact, Opportunity, Organization, Sale } from "../types";
-import {
-  INTERACTION_TYPE_OPTIONS,
-} from "../validation/activities";
+import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
 
 /**
  * ActivityList Component
@@ -96,9 +94,7 @@ const ActivityListLayout = () => {
           label="Type"
           sortBy="type"
           render={(record: ActivityRecord) => {
-            const typeOption = INTERACTION_TYPE_OPTIONS.find(
-              (opt) => opt.value === record.type
-            );
+            const typeOption = INTERACTION_TYPE_OPTIONS.find((opt) => opt.value === record.type);
             return (
               <Badge variant="outline" className="text-xs">
                 {typeOption?.label || record.type}
@@ -203,12 +199,8 @@ const exporter: Exporter<ActivityRecord> = async (records, fetchRelatedRecords) 
 
   const dataForExport = records.map((activity) => {
     const contact = activity.contact_id ? contacts[activity.contact_id] : null;
-    const organization = activity.organization_id
-      ? organizations[activity.organization_id]
-      : null;
-    const opportunity = activity.opportunity_id
-      ? opportunities[activity.opportunity_id]
-      : null;
+    const organization = activity.organization_id ? organizations[activity.organization_id] : null;
+    const opportunity = activity.opportunity_id ? opportunities[activity.opportunity_id] : null;
     const createdBy = activity.created_by ? sales[activity.created_by] : null;
 
     return {
@@ -221,9 +213,7 @@ const exporter: Exporter<ActivityRecord> = async (records, fetchRelatedRecords) 
       duration_minutes: activity.duration_minutes || "",
       sample_status: activity.sample_status || "",
       sentiment: activity.sentiment || "",
-      contact_name: contact
-        ? `${contact.first_name || ""} ${contact.last_name || ""}`.trim()
-        : "",
+      contact_name: contact ? `${contact.first_name || ""} ${contact.last_name || ""}`.trim() : "",
       organization_name: organization?.name || "",
       opportunity_name: opportunity?.name || "",
       created_by: createdBy

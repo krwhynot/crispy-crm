@@ -99,9 +99,8 @@ export function useListKeyboardNavigation({
   const [focusedIndex, setFocusedIndex] = useState<number>(-1);
 
   // Get the ID of the currently focused record
-  const focusedId = data && focusedIndex >= 0 && focusedIndex < data.length
-    ? data[focusedIndex].id
-    : null;
+  const focusedId =
+    data && focusedIndex >= 0 && focusedIndex < data.length ? data[focusedIndex].id : null;
 
   const clearFocus = useCallback(() => {
     setFocusedIndex(-1);
@@ -202,7 +201,17 @@ export function useListKeyboardNavigation({
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [enabled, data, focusedIndex, onSelect, handleCreate, handleSearch, resource, createPath, navigate]);
+  }, [
+    enabled,
+    data,
+    focusedIndex,
+    onSelect,
+    handleCreate,
+    handleSearch,
+    resource,
+    createPath,
+    navigate,
+  ]);
 
   // Reset focus when data changes (e.g., pagination, filtering)
   useEffect(() => {

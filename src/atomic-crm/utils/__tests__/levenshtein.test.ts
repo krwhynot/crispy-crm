@@ -189,9 +189,7 @@ describe("findSimilarOpportunities", () => {
 
       if (result.matches.length > 1) {
         for (let i = 1; i < result.matches.length; i++) {
-          expect(result.matches[i].distance).toBeGreaterThanOrEqual(
-            result.matches[i - 1].distance
-          );
+          expect(result.matches[i].distance).toBeGreaterThanOrEqual(result.matches[i - 1].distance);
         }
       }
     });

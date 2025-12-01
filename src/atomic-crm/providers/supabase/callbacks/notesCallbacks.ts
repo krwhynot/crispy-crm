@@ -9,10 +9,7 @@
  * Engineering Constitution: DRY - one factory for all note types
  */
 
-import {
-  createResourceCallbacks,
-  type ResourceCallbacks,
-} from "./createResourceCallbacks";
+import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
 
 /**
  * Note resource types supported by this factory

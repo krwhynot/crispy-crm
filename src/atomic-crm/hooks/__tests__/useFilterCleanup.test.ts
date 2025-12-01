@@ -204,12 +204,8 @@ describe("useFilterCleanup", () => {
 
       // Assert - warnings logged for each invalid filter
       expect(consoleWarnSpy).toHaveBeenCalledTimes(2);
-      expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining("stale1")
-      );
-      expect(consoleWarnSpy).toHaveBeenCalledWith(
-        expect.stringContaining("stale2")
-      );
+      expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("stale1"));
+      expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining("stale2"));
     });
 
     it("should log info message after cleanup", () => {
@@ -223,12 +219,8 @@ describe("useFilterCleanup", () => {
       renderHook(() => useFilterCleanup("organizations"));
 
       // Assert
-      expect(consoleInfoSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Cleaned stale filters")
-      );
-      expect(consoleInfoSpy).toHaveBeenCalledWith(
-        expect.stringContaining("organizations")
-      );
+      expect(consoleInfoSpy).toHaveBeenCalledWith(expect.stringContaining("Cleaned stale filters"));
+      expect(consoleInfoSpy).toHaveBeenCalledWith(expect.stringContaining("organizations"));
     });
 
     it("should handle removal of all filters", () => {

@@ -13,10 +13,7 @@
  */
 
 import type { ContactImportSchema } from "./contactImport.types";
-import {
-  isOrganizationOnlyEntry,
-  isContactWithoutContactInfo,
-} from "./contactImport.logic";
+import { isOrganizationOnlyEntry, isContactWithoutContactInfo } from "./contactImport.logic";
 
 // ============================================================
 // CONSTANTS
@@ -207,9 +204,7 @@ export function findContactsWithoutContactInfo(
 
       results.push({
         name,
-        organization_name: row.organization_name
-          ? String(row.organization_name).trim()
-          : "",
+        organization_name: row.organization_name ? String(row.organization_name).trim() : "",
         row: index + CSV_DATA_START_OFFSET,
       });
     }

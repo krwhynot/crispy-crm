@@ -28,8 +28,6 @@ import { productsCallbacks } from "../callbacks";
  */
 export function createProductsHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(
-      withLifecycleCallbacks(baseProvider, [productsCallbacks])
-    )
+    withValidation(withLifecycleCallbacks(baseProvider, [productsCallbacks]))
   );
 }

@@ -104,12 +104,15 @@ describe("useMyTasks", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(mockGetList).toHaveBeenCalledWith("tasks", expect.objectContaining({
-        filter: {
-          sales_id: 42,
-          completed: false,
-        },
-      }));
+      expect(mockGetList).toHaveBeenCalledWith(
+        "tasks",
+        expect.objectContaining({
+          filter: {
+            sales_id: 42,
+            completed: false,
+          },
+        })
+      );
       expect(result.current.tasks).toHaveLength(2);
     });
 

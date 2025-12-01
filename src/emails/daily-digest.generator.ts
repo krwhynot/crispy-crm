@@ -5,17 +5,8 @@
  * Uses simple string replacement to avoid runtime dependencies.
  */
 
-import type {
-  DailyDigestData,
-  OverdueTask,
-  AtRiskDeal,
-  TodayTask,
-} from "./daily-digest.types";
-import {
-  STAGE_COLORS,
-  STALE_THRESHOLDS,
-  ROW_COLORS,
-} from "./daily-digest.types";
+import type { DailyDigestData, OverdueTask, AtRiskDeal, TodayTask } from "./daily-digest.types";
+import { STAGE_COLORS, STALE_THRESHOLDS, ROW_COLORS } from "./daily-digest.types";
 
 // Import the template at build time (Vite handles this)
 import templateHtml from "./daily-digest.template.html?raw";
@@ -62,14 +53,8 @@ export function generateDailyDigestEmail(data: DailyDigestData): string {
   }
 
   // Handle pluralization
-  html = html.replace(
-    /{{#if overdue_plural}}s{{\/if}}/g,
-    data.overdue_plural ? "s" : ""
-  );
-  html = html.replace(
-    /{{#if at_risk_plural}}s{{\/if}}/g,
-    data.at_risk_plural ? "s" : ""
-  );
+  html = html.replace(/{{#if overdue_plural}}s{{\/if}}/g, data.overdue_plural ? "s" : "");
+  html = html.replace(/{{#if at_risk_plural}}s{{\/if}}/g, data.at_risk_plural ? "s" : "");
 
   // Handle conditional sections
   html = processConditional(html, "has_overdue_tasks", data.has_overdue_tasks);
@@ -100,15 +85,8 @@ function escapeHtml(str: string): string {
  * Processes conditional blocks in the template.
  * {{#if condition}}...{{/if}}
  */
-function processConditional(
-  html: string,
-  condition: string,
-  value: boolean
-): string {
-  const regex = new RegExp(
-    `{{#if ${condition}}}([\\s\\S]*?){{/if}}`,
-    "g"
-  );
+function processConditional(html: string, condition: string, value: boolean): string {
+  const regex = new RegExp(`{{#if ${condition}}}([\\s\\S]*?){{/if}}`, "g");
 
   if (value) {
     // Keep the content, remove the markers
@@ -136,14 +114,8 @@ function processOverdueTasks(html: string, tasks: OverdueTask[]): string {
       row = row.replace(/{{due_date_formatted}}/g, task.due_date_formatted);
       row = row.replace(/{{related_entity}}/g, escapeHtml(task.related_entity));
       row = row.replace(/{{days_overdue}}/g, String(task.days_overdue));
-      row = row.replace(
-        /{{#if days_plural}}s{{\/if}}/g,
-        task.days_plural ? "s" : ""
-      );
-      row = row.replace(
-        /{{row_bg_color}}/g,
-        index % 2 === 0 ? ROW_COLORS.even : ROW_COLORS.odd
-      );
+      row = row.replace(/{{#if days_plural}}s{{\/if}}/g, task.days_plural ? "s" : "");
+      row = row.replace(/{{row_bg_color}}/g, index % 2 === 0 ? ROW_COLORS.even : ROW_COLORS.odd);
       return row;
     })
     .join("");
@@ -164,24 +136,15 @@ function processAtRiskDeals(html: string, deals: AtRiskDeal[]): string {
   const rows = deals
     .map((deal, index) => {
       let row = rowTemplate;
-      row = row.replace(
-        /{{opportunity_name}}/g,
-        escapeHtml(deal.opportunity_name)
-      );
+      row = row.replace(/{{opportunity_name}}/g, escapeHtml(deal.opportunity_name));
       row = row.replace(/{{principal_name}}/g, escapeHtml(deal.principal_name));
       row = row.replace(/{{customer_name}}/g, escapeHtml(deal.customer_name));
       row = row.replace(/{{stage_label}}/g, deal.stage_label);
       row = row.replace(/{{stage_bg_color}}/g, deal.stage_bg_color);
       row = row.replace(/{{stage_text_color}}/g, deal.stage_text_color);
       row = row.replace(/{{days_stale}}/g, String(deal.days_stale));
-      row = row.replace(
-        /{{#if days_plural}}s{{\/if}}/g,
-        deal.days_plural ? "s" : ""
-      );
-      row = row.replace(
-        /{{row_bg_color}}/g,
-        index % 2 === 0 ? ROW_COLORS.even : ROW_COLORS.odd
-      );
+      row = row.replace(/{{#if days_plural}}s{{\/if}}/g, deal.days_plural ? "s" : "");
+      row = row.replace(/{{row_bg_color}}/g, index % 2 === 0 ? ROW_COLORS.even : ROW_COLORS.odd);
       return row;
     })
     .join("");
@@ -206,14 +169,8 @@ function processTodayTasks(html: string, tasks: TodayTask[]): string {
 
       // Handle optional related_entity
       if (task.related_entity) {
-        row = row.replace(
-          /{{#if related_entity}}([\s\S]*?){{\/if}}/g,
-          "$1"
-        );
-        row = row.replace(
-          /{{related_entity}}/g,
-          escapeHtml(task.related_entity)
-        );
+        row = row.replace(/{{#if related_entity}}([\s\S]*?){{\/if}}/g, "$1");
+        row = row.replace(/{{related_entity}}/g, escapeHtml(task.related_entity));
       } else {
         row = row.replace(/{{#if related_entity}}[\s\S]*?{{\/if}}/g, "");
       }
@@ -288,8 +245,7 @@ export function createSampleDigestData(): DailyDigestData {
 
   return {
     digest_title: "Your Daily Sales Digest",
-    preheader_text:
-      "2 overdue tasks, 3 deals need attention. View your dashboard for details.",
+    preheader_text: "2 overdue tasks, 3 deals need attention. View your dashboard for details.",
     formatted_date: formatDigestDate(now),
     time_of_day: getTimeOfDay(now.getHours()),
     user_first_name: "Sarah",

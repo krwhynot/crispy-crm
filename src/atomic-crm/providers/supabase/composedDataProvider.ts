@@ -203,4 +203,3 @@ export function createComposedDataProvider(baseProvider: DataProvider): DataProv
 
   return composedProvider;
 }
-

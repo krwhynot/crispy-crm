@@ -418,9 +418,7 @@ describe("createResourceCallbacks - Transform Composition", () => {
       });
 
       const record = { id: 1 };
-      await expect(
-        callbacks.afterRead!(record, mockDataProvider)
-      ).rejects.toThrow();
+      await expect(callbacks.afterRead!(record, mockDataProvider)).rejects.toThrow();
     });
 
     it("should ignore errors when onTransformError is ignore", async () => {

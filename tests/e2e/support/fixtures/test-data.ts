@@ -202,10 +202,7 @@ export function generateTestSubject(prefix: string = "E2E Test"): string {
 /**
  * Generate unique test contact data
  */
-export function generateTestContact(overrides?: {
-  firstName?: string;
-  lastName?: string;
-}) {
+export function generateTestContact(overrides?: { firstName?: string; lastName?: string }) {
   const timestamp = Date.now();
   return {
     firstName: overrides?.firstName ?? `TestFirst${timestamp}`,

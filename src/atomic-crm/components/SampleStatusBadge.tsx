@@ -23,11 +23,7 @@ import { useState, useCallback } from "react";
 import { useUpdate, useNotify } from "react-admin";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { cn } from "@/lib/utils";
 import {
   Check,
@@ -109,9 +105,7 @@ export const SAMPLE_STATUS_CONFIG: Record<SampleStatus, StatusConfig> = {
  * Get the next status in the workflow progression
  * Returns undefined if already at final status
  */
-export function getNextStatus(
-  currentStatus: SampleStatus
-): SampleStatus | undefined {
+export function getNextStatus(currentStatus: SampleStatus): SampleStatus | undefined {
   const currentIndex = SAMPLE_STATUS_WORKFLOW.indexOf(currentStatus);
   if (currentIndex === -1 || currentIndex >= SAMPLE_STATUS_WORKFLOW.length - 1) {
     return undefined;
@@ -123,9 +117,7 @@ export function getNextStatus(
  * Get the previous status in the workflow
  * Returns undefined if already at first status
  */
-export function getPreviousStatus(
-  currentStatus: SampleStatus
-): SampleStatus | undefined {
+export function getPreviousStatus(currentStatus: SampleStatus): SampleStatus | undefined {
   const currentIndex = SAMPLE_STATUS_WORKFLOW.indexOf(currentStatus);
   if (currentIndex <= 0) {
     return undefined;
@@ -136,10 +128,7 @@ export function getPreviousStatus(
 /**
  * Check if a status transition is valid (only forward progression)
  */
-export function isValidTransition(
-  from: SampleStatus,
-  to: SampleStatus
-): boolean {
+export function isValidTransition(from: SampleStatus, to: SampleStatus): boolean {
   const fromIndex = SAMPLE_STATUS_WORKFLOW.indexOf(from);
   const toIndex = SAMPLE_STATUS_WORKFLOW.indexOf(to);
   // Allow forward progression only (or same status)
@@ -262,10 +251,9 @@ export function SampleStatusBadge({
           },
           {
             onSuccess: () => {
-              notify(
-                `Sample status updated to ${SAMPLE_STATUS_CONFIG[targetStatus].label}`,
-                { type: "success" }
-              );
+              notify(`Sample status updated to ${SAMPLE_STATUS_CONFIG[targetStatus].label}`, {
+                type: "success",
+              });
               onStatusChange?.(targetStatus);
               setIsPopoverOpen(false);
             },
@@ -290,10 +278,7 @@ export function SampleStatusBadge({
 
   if (!interactive) {
     return (
-      <Badge
-        variant={config.variant}
-        className={cn(config.className, className)}
-      >
+      <Badge variant={config.variant} className={cn(config.className, className)}>
         {!compact && <Icon className="h-3 w-3" />}
         {compact ? config.shortLabel : config.label}
       </Badge>
@@ -317,10 +302,7 @@ export function SampleStatusBadge({
           aria-label={`Sample status: ${config.label}. Click to change.`}
           disabled={isUpdating}
         >
-          <Badge
-            variant={config.variant}
-            className={cn(config.className, className)}
-          >
+          <Badge variant={config.variant} className={cn(config.className, className)}>
             {isUpdating ? (
               <Loader2 className="h-3 w-3 animate-spin" />
             ) : (
@@ -331,12 +313,7 @@ export function SampleStatusBadge({
         </button>
       </PopoverTrigger>
 
-      <PopoverContent
-        className="w-80 p-0"
-        align="start"
-        side="bottom"
-        sideOffset={4}
-      >
+      <PopoverContent className="w-80 p-0" align="start" side="bottom" sideOffset={4}>
         <div className="p-4 space-y-4">
           {/* Header */}
           <div className="space-y-1">
@@ -364,9 +341,7 @@ export function SampleStatusBadge({
                       className={cn(
                         "flex flex-col items-center gap-1 p-1 rounded transition-colors",
                         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
-                        index > currentIndex
-                          ? "cursor-pointer hover:bg-muted"
-                          : "cursor-default"
+                        index > currentIndex ? "cursor-pointer hover:bg-muted" : "cursor-default"
                       )}
                       aria-label={`${isCompleted ? "Completed: " : isCurrent ? "Current: " : ""}${stepConfig.label}`}
                     >
@@ -375,9 +350,7 @@ export function SampleStatusBadge({
                           "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
                           isCompleted && "bg-success text-success-foreground",
                           isCurrent && stepConfig.className,
-                          !isCompleted &&
-                            !isCurrent &&
-                            "bg-muted text-muted-foreground"
+                          !isCompleted && !isCurrent && "bg-muted text-muted-foreground"
                         )}
                       >
                         {isCompleted ? (
@@ -389,9 +362,7 @@ export function SampleStatusBadge({
                       <span
                         className={cn(
                           "text-[10px] font-medium",
-                          isCurrent
-                            ? "text-foreground"
-                            : "text-muted-foreground"
+                          isCurrent ? "text-foreground" : "text-muted-foreground"
                         )}
                       >
                         {stepConfig.shortLabel}
@@ -403,9 +374,7 @@ export function SampleStatusBadge({
                       <ChevronRight
                         className={cn(
                           "h-4 w-4 mx-1",
-                          index < currentIndex
-                            ? "text-success"
-                            : "text-muted-foreground/40"
+                          index < currentIndex ? "text-success" : "text-muted-foreground/40"
                         )}
                       />
                     )}
@@ -440,10 +409,7 @@ export function SampleStatusBadge({
 
             {!nextStatus && (
               <div className="text-center py-2">
-                <Badge
-                  variant="default"
-                  className="bg-success text-success-foreground"
-                >
+                <Badge variant="default" className="bg-success text-success-foreground">
                   <Check className="h-3 w-3" />
                   Workflow Complete
                 </Badge>
@@ -453,9 +419,7 @@ export function SampleStatusBadge({
 
           {/* Status Selection List (for direct jumps) */}
           <div className="border-t pt-3 mt-3">
-            <p className="text-xs text-muted-foreground mb-2">
-              Or select a status directly:
-            </p>
+            <p className="text-xs text-muted-foreground mb-2">Or select a status directly:</p>
             <div className="grid grid-cols-2 gap-2">
               {SAMPLE_STATUS_WORKFLOW.map((selectStatus) => {
                 const selectConfig = SAMPLE_STATUS_CONFIG[selectStatus];
@@ -523,9 +487,7 @@ export function SampleStatusStepper({
               <div
                 className={cn(
                   "h-0.5 w-3",
-                  index < currentIndex
-                    ? "bg-success"
-                    : "bg-muted-foreground/20"
+                  index < currentIndex ? "bg-success" : "bg-muted-foreground/20"
                 )}
               />
             )}

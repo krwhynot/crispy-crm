@@ -39,7 +39,7 @@ export function useMyTasks() {
     const fetchTasks = async () => {
       // Manage loading state properly to avoid race conditions
       if (salesLoading) {
-        if (isMounted) setLoading((prev) => prev ? prev : true);
+        if (isMounted) setLoading((prev) => (prev ? prev : true));
         return;
       }
 
@@ -271,7 +271,9 @@ export function useMyTasks() {
       } catch (err) {
         console.error("Failed to delete task:", err);
         // Rollback optimistic update on failure
-        setTasks((prev) => [...prev, task].sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime()));
+        setTasks((prev) =>
+          [...prev, task].sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
+        );
         throw err; // Re-throw so UI can handle
       }
     },
@@ -306,9 +308,7 @@ export function useMyTasks() {
 
       // Optimistic UI update - immediately move task to new column
       setTasks((prev) =>
-        prev.map((t) =>
-          t.id === taskId ? { ...t, dueDate: newDueDate, status: newStatus } : t
-        )
+        prev.map((t) => (t.id === taskId ? { ...t, dueDate: newDueDate, status: newStatus } : t))
       );
 
       try {
@@ -335,22 +335,15 @@ export function useMyTasks() {
    * Optimistic update for local state (used by Kanban for instant feedback)
    * Called before API request, allows immediate column move
    */
-  const updateTaskLocally = useCallback(
-    (taskId: number, updates: Partial<TaskItem>) => {
-      setTasks((prev) =>
-        prev.map((t) => (t.id === taskId ? { ...t, ...updates } : t))
-      );
-    },
-    []
-  );
+  const updateTaskLocally = useCallback((taskId: number, updates: Partial<TaskItem>) => {
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, ...updates } : t)));
+  }, []);
 
   /**
    * Rollback a task to previous state (for failed API calls)
    */
   const rollbackTask = useCallback((taskId: number, previousState: TaskItem) => {
-    setTasks((prev) =>
-      prev.map((t) => (t.id === taskId ? previousState : t))
-    );
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? previousState : t)));
   }, []);
 
   return {

@@ -251,7 +251,9 @@ export function validateOrganizationNoteForSubmission(data: unknown): Organizati
  * @param note - Note to check
  * @returns True if note has attachments
  */
-export function noteHasAttachments(note: ContactNote | OpportunityNote | OrganizationNote): boolean {
+export function noteHasAttachments(
+  note: ContactNote | OpportunityNote | OrganizationNote
+): boolean {
   return Array.isArray(note.attachments) && note.attachments.length > 0;
 }
 

@@ -1,10 +1,7 @@
 import { test, expect } from "@playwright/test";
 import { ContactFormPage } from "../../support/poms/ContactFormPage";
 import { consoleMonitor } from "../../support/utils/console-monitor";
-import {
-  DEFAULT_TEST_ORGANIZATION,
-  generateTestContact,
-} from "../../support/fixtures/test-data";
+import { DEFAULT_TEST_ORGANIZATION, generateTestContact } from "../../support/fixtures/test-data";
 
 /**
  * E2E tests for Contact Form validation and submission
@@ -164,7 +161,9 @@ test.describe("Contact Form - Success Scenarios", () => {
   // SKIP: Complex success scenarios require email type selection which has JSONB array UI
   // complexity. The basic success test above validates the form can be submitted successfully.
 
-  test.skip("SUCCESS - Full form with all tabs filled saves successfully", async ({ page: _page }) => {
+  test.skip("SUCCESS - Full form with all tabs filled saves successfully", async ({
+    page: _page,
+  }) => {
     // Complex multi-tab form with LinkedIn, notes - difficult to test reliably
   });
 
@@ -174,7 +173,9 @@ test.describe("Contact Form - Success Scenarios", () => {
     // Save & Add Another with form reset - complex email type interactions
   });
 
-  test.skip("SUCCESS - Valid LinkedIn URL (www.linkedin.com) saves correctly", async ({ page: _page }) => {
+  test.skip("SUCCESS - Valid LinkedIn URL (www.linkedin.com) saves correctly", async ({
+    page: _page,
+  }) => {
     // LinkedIn URL validation - requires email type selection to work
   });
 

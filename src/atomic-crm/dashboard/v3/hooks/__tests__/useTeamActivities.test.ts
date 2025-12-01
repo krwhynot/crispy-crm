@@ -54,10 +54,7 @@ describe("useTeamActivities", () => {
 
   describe("Data Fetching", () => {
     it("should fetch activities with default limit of 15", async () => {
-      const mockActivities = [
-        createMockActivity({ id: 1 }),
-        createMockActivity({ id: 2 }),
-      ];
+      const mockActivities = [createMockActivity({ id: 1 }), createMockActivity({ id: 2 })];
 
       mockGetList.mockResolvedValueOnce({ data: mockActivities, total: 2 });
 
@@ -67,11 +64,14 @@ describe("useTeamActivities", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(mockGetList).toHaveBeenCalledWith("activities", expect.objectContaining({
-        pagination: { page: 1, perPage: 15 },
-        sort: { field: "activity_date", order: "DESC" },
-        filter: { "deleted_at@is": null },
-      }));
+      expect(mockGetList).toHaveBeenCalledWith(
+        "activities",
+        expect.objectContaining({
+          pagination: { page: 1, perPage: 15 },
+          sort: { field: "activity_date", order: "DESC" },
+          filter: { "deleted_at@is": null },
+        })
+      );
       expect(result.current.activities).toHaveLength(2);
     });
 
@@ -84,9 +84,12 @@ describe("useTeamActivities", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(mockGetList).toHaveBeenCalledWith("activities", expect.objectContaining({
-        pagination: { page: 1, perPage: 25 },
-      }));
+      expect(mockGetList).toHaveBeenCalledWith(
+        "activities",
+        expect.objectContaining({
+          pagination: { page: 1, perPage: 25 },
+        })
+      );
     });
 
     it("should include meta.select for sales user join", async () => {
@@ -98,11 +101,14 @@ describe("useTeamActivities", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(mockGetList).toHaveBeenCalledWith("activities", expect.objectContaining({
-        meta: expect.objectContaining({
-          select: expect.stringContaining("sales:created_by"),
-        }),
-      }));
+      expect(mockGetList).toHaveBeenCalledWith(
+        "activities",
+        expect.objectContaining({
+          meta: expect.objectContaining({
+            select: expect.stringContaining("sales:created_by"),
+          }),
+        })
+      );
     });
   });
 

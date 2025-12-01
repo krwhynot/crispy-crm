@@ -111,13 +111,11 @@ export class OpportunitiesService {
         productsToCreate: productsToSync,
       });
 
-      const opportunity = await this.rpcSyncOpportunity(
-        opportunityData,
-        productsToSync,
-        [],
-        []
+      const opportunity = await this.rpcSyncOpportunity(opportunityData, productsToSync, [], []);
+      console.log(
+        "[OpportunitiesService] Opportunity created successfully with products",
+        opportunity
       );
-      console.log("[OpportunitiesService] Opportunity created successfully with products", opportunity);
       return opportunity;
     } catch (error: any) {
       console.error("[OpportunitiesService] Failed to create opportunity with products", {
@@ -170,13 +168,11 @@ export class OpportunitiesService {
       });
 
       // Call RPC function for atomic update with products
-      const opportunity = await this.rpcSyncOpportunity(
-        opportunityData,
-        creates,
-        updates,
-        deletes
+      const opportunity = await this.rpcSyncOpportunity(opportunityData, creates, updates, deletes);
+      console.log(
+        "[OpportunitiesService] Opportunity updated successfully with product sync",
+        opportunity
       );
-      console.log("[OpportunitiesService] Opportunity updated successfully with product sync", opportunity);
       return opportunity;
     } catch (error: any) {
       console.error("[OpportunitiesService] Failed to update opportunity with products", {

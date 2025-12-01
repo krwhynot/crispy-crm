@@ -33,8 +33,8 @@ describe("useContactOrgMismatch", () => {
       refetch: vi.fn(),
     });
 
-    const { result } = renderHook(() =>
-      useContactOrgMismatch([1, 2], 100) // Customer org is 100
+    const { result } = renderHook(
+      () => useContactOrgMismatch([1, 2], 100) // Customer org is 100
     );
 
     expect(result.current.hasMismatch).toBe(false);
@@ -59,8 +59,8 @@ describe("useContactOrgMismatch", () => {
       refetch: vi.fn(),
     });
 
-    const { result } = renderHook(() =>
-      useContactOrgMismatch([1, 2], 100) // Customer org is 100
+    const { result } = renderHook(
+      () => useContactOrgMismatch([1, 2], 100) // Customer org is 100
     );
 
     expect(result.current.hasMismatch).toBe(true);
@@ -86,8 +86,8 @@ describe("useContactOrgMismatch", () => {
       refetch: vi.fn(),
     });
 
-    const { result } = renderHook(() =>
-      useContactOrgMismatch([1, 2], 100) // Customer org is 100
+    const { result } = renderHook(
+      () => useContactOrgMismatch([1, 2], 100) // Customer org is 100
     );
 
     expect(result.current.hasMismatch).toBe(true);
@@ -106,9 +106,7 @@ describe("useContactOrgMismatch", () => {
       refetch: vi.fn(),
     });
 
-    const { result } = renderHook(() =>
-      useContactOrgMismatch([1, 2], null)
-    );
+    const { result } = renderHook(() => useContactOrgMismatch([1, 2], null));
 
     expect(result.current.hasMismatch).toBe(false);
     expect(result.current.mismatchedContacts).toHaveLength(0);
@@ -126,9 +124,7 @@ describe("useContactOrgMismatch", () => {
       refetch: vi.fn(),
     });
 
-    const { result } = renderHook(() =>
-      useContactOrgMismatch([], 100)
-    );
+    const { result } = renderHook(() => useContactOrgMismatch([], 100));
 
     expect(result.current.hasMismatch).toBe(false);
     expect(result.current.mismatchedContacts).toHaveLength(0);
@@ -146,9 +142,7 @@ describe("useContactOrgMismatch", () => {
       refetch: vi.fn(),
     });
 
-    const { result } = renderHook(() =>
-      useContactOrgMismatch([1, 2], 100)
-    );
+    const { result } = renderHook(() => useContactOrgMismatch([1, 2], 100));
 
     expect(result.current.isLoading).toBe(true);
     expect(result.current.hasMismatch).toBe(false);
@@ -172,9 +166,7 @@ describe("useContactOrgMismatch", () => {
       refetch: vi.fn(),
     });
 
-    const { result } = renderHook(() =>
-      useContactOrgMismatch([1, 2, 3], 100)
-    );
+    const { result } = renderHook(() => useContactOrgMismatch([1, 2, 3], 100));
 
     // Contacts without org_id are not considered mismatched
     expect(result.current.hasMismatch).toBe(false);
@@ -198,8 +190,8 @@ describe("useContactOrgMismatch", () => {
       refetch: vi.fn(),
     });
 
-    const { result } = renderHook(() =>
-      useContactOrgMismatch([1], 100) // Number 100 should match string "100"
+    const { result } = renderHook(
+      () => useContactOrgMismatch([1], 100) // Number 100 should match string "100"
     );
 
     expect(result.current.hasMismatch).toBe(false);

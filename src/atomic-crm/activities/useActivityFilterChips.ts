@@ -1,9 +1,6 @@
 import { useListContext } from "ra-core";
 import { format } from "date-fns";
-import {
-  INTERACTION_TYPE_OPTIONS,
-  SAMPLE_STATUS_OPTIONS,
-} from "../validation/activities";
+import { INTERACTION_TYPE_OPTIONS, SAMPLE_STATUS_OPTIONS } from "../validation/activities";
 
 interface FilterChip {
   key: string;
@@ -88,9 +85,7 @@ export const useActivityFilterChips = () => {
 
   // Activity Type (supports multiselect)
   if (filterValues?.type) {
-    const typeArray = Array.isArray(filterValues.type)
-      ? filterValues.type
-      : [filterValues.type];
+    const typeArray = Array.isArray(filterValues.type) ? filterValues.type : [filterValues.type];
     typeArray.forEach((type) => {
       chips.push({
         key: "type",
@@ -182,9 +177,7 @@ export const useActivityFilterChips = () => {
       }
     } else if (key === "sentiment" && Array.isArray(newFilters.sentiment)) {
       // Remove specific sentiment from array
-      newFilters.sentiment = newFilters.sentiment.filter(
-        (s: any) => String(s) !== String(value)
-      );
+      newFilters.sentiment = newFilters.sentiment.filter((s: any) => String(s) !== String(value));
       if (newFilters.sentiment.length === 0) {
         delete newFilters.sentiment;
       }

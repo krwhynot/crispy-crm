@@ -177,9 +177,7 @@ describe("SegmentsService", () => {
 
       PLAYBOOK_CATEGORIES.forEach((cat) => {
         expect(PLAYBOOK_CATEGORY_IDS[cat]).toBeDefined();
-        expect(PLAYBOOK_CATEGORY_IDS[cat]).toMatch(
-          /^22222222-2222-4222-8222-00000000000\d$/
-        );
+        expect(PLAYBOOK_CATEGORY_IDS[cat]).toMatch(/^22222222-2222-4222-8222-00000000000\d$/);
       });
     });
 

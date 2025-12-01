@@ -345,7 +345,6 @@ describe("ContactSlideOver", () => {
         expect(screen.getByText(/Notes for contact 123/)).toBeInTheDocument();
       });
     });
-
   });
 
   describe("View/Edit Mode", () => {

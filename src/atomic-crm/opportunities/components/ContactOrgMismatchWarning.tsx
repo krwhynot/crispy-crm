@@ -37,9 +37,7 @@ interface ContactOrgMismatchWarningProps {
   onClearMismatched?: () => void;
 }
 
-export function ContactOrgMismatchWarning({
-  onClearMismatched,
-}: ContactOrgMismatchWarningProps) {
+export function ContactOrgMismatchWarning({ onClearMismatched }: ContactOrgMismatchWarningProps) {
   const { setValue, getValues } = useFormContext();
 
   // Watch form values for reactive updates
@@ -72,9 +70,7 @@ export function ContactOrgMismatchWarning({
   const handleClearMismatched = () => {
     const currentContacts = (getValues("contact_ids") || []) as Identifier[];
     const mismatchedIds = new Set(mismatchedContacts.map((m) => String(m.contact.id)));
-    const validContacts = currentContacts.filter(
-      (id) => !mismatchedIds.has(String(id))
-    );
+    const validContacts = currentContacts.filter((id) => !mismatchedIds.has(String(id)));
     setValue("contact_ids", validContacts);
     onClearMismatched?.();
   };
@@ -89,11 +85,12 @@ export function ContactOrgMismatchWarning({
         <p className="mb-2">
           {mismatchedContacts.length === 1 ? (
             <>
-              <strong>{mismatchedNames[0]}</strong> belongs to a different
-              organization than the selected customer
+              <strong>{mismatchedNames[0]}</strong> belongs to a different organization than the
+              selected customer
               {customerOrg?.name && (
                 <>
-                  {" "}(<strong>{customerOrg.name}</strong>)
+                  {" "}
+                  (<strong>{customerOrg.name}</strong>)
                 </>
               )}
               .
@@ -102,11 +99,12 @@ export function ContactOrgMismatchWarning({
             <>
               <strong>{mismatchedContacts.length} contacts</strong> (
               {mismatchedNames.slice(0, 3).join(", ")}
-              {mismatchedNames.length > 3 && `, +${mismatchedNames.length - 3} more`})
-              belong to different organizations than the selected customer
+              {mismatchedNames.length > 3 && `, +${mismatchedNames.length - 3} more`}) belong to
+              different organizations than the selected customer
               {customerOrg?.name && (
                 <>
-                  {" "}(<strong>{customerOrg.name}</strong>)
+                  {" "}
+                  (<strong>{customerOrg.name}</strong>)
                 </>
               )}
               .
@@ -130,8 +128,8 @@ export function ContactOrgMismatchWarning({
                 <AlertDialogTitle>Keep Mismatched Contacts?</AlertDialogTitle>
                 <AlertDialogDescription>
                   <p className="mb-2">
-                    The following contacts belong to organizations different from
-                    the opportunity&apos;s customer:
+                    The following contacts belong to organizations different from the
+                    opportunity&apos;s customer:
                   </p>
                   <ul className="list-disc list-inside mb-2 text-foreground">
                     {mismatchedNames.map((name, idx) => (
@@ -139,8 +137,8 @@ export function ContactOrgMismatchWarning({
                     ))}
                   </ul>
                   <p>
-                    This may indicate a data entry error, or you may have a
-                    legitimate reason to include cross-organization contacts.
+                    This may indicate a data entry error, or you may have a legitimate reason to
+                    include cross-organization contacts.
                   </p>
                 </AlertDialogDescription>
               </AlertDialogHeader>
@@ -153,11 +151,7 @@ export function ContactOrgMismatchWarning({
             </AlertDialogContent>
           </AlertDialog>
 
-          <Button
-            variant="destructive"
-            size="sm"
-            onClick={handleClearMismatched}
-          >
+          <Button variant="destructive" size="sm" onClick={handleClearMismatched}>
             Remove Mismatched
           </Button>
         </div>

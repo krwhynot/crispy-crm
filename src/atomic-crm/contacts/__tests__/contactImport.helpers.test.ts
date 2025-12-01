@@ -143,10 +143,7 @@ describe("extractNewOrganizations", () => {
 describe("extractNewTags", () => {
   describe("basic functionality", () => {
     it("extracts unique tags from comma-separated values", () => {
-      const rows = [
-        createContact({ tags: "VIP, Customer" }),
-        createContact({ tags: "Partner" }),
-      ];
+      const rows = [createContact({ tags: "VIP, Customer" }), createContact({ tags: "Partner" })];
 
       const result = extractNewTags(rows);
 
@@ -290,17 +287,13 @@ describe("findOrganizationsWithoutContacts", () => {
     });
 
     it("excludes rows with first_name only", () => {
-      const rows = [
-        createContact({ organization_name: "Org", first_name: "John", last_name: "" }),
-      ];
+      const rows = [createContact({ organization_name: "Org", first_name: "John", last_name: "" })];
 
       expect(findOrganizationsWithoutContacts(rows)).toEqual([]);
     });
 
     it("excludes rows with last_name only", () => {
-      const rows = [
-        createContact({ organization_name: "Org", first_name: "", last_name: "Doe" }),
-      ];
+      const rows = [createContact({ organization_name: "Org", first_name: "", last_name: "Doe" })];
 
       expect(findOrganizationsWithoutContacts(rows)).toEqual([]);
     });
@@ -407,49 +400,37 @@ describe("findContactsWithoutContactInfo", () => {
 
   describe("contact info validation", () => {
     it("excludes contacts with email_work", () => {
-      const rows = [
-        createContact({ first_name: "John", email_work: "john@work.com" }),
-      ];
+      const rows = [createContact({ first_name: "John", email_work: "john@work.com" })];
 
       expect(findContactsWithoutContactInfo(rows)).toEqual([]);
     });
 
     it("excludes contacts with email_home", () => {
-      const rows = [
-        createContact({ first_name: "John", email_home: "john@home.com" }),
-      ];
+      const rows = [createContact({ first_name: "John", email_home: "john@home.com" })];
 
       expect(findContactsWithoutContactInfo(rows)).toEqual([]);
     });
 
     it("excludes contacts with email_other", () => {
-      const rows = [
-        createContact({ first_name: "John", email_other: "john@other.com" }),
-      ];
+      const rows = [createContact({ first_name: "John", email_other: "john@other.com" })];
 
       expect(findContactsWithoutContactInfo(rows)).toEqual([]);
     });
 
     it("excludes contacts with phone_work", () => {
-      const rows = [
-        createContact({ first_name: "John", phone_work: "555-1234" }),
-      ];
+      const rows = [createContact({ first_name: "John", phone_work: "555-1234" })];
 
       expect(findContactsWithoutContactInfo(rows)).toEqual([]);
     });
 
     it("excludes contacts with phone_home", () => {
-      const rows = [
-        createContact({ first_name: "John", phone_home: "555-1234" }),
-      ];
+      const rows = [createContact({ first_name: "John", phone_home: "555-1234" })];
 
       expect(findContactsWithoutContactInfo(rows)).toEqual([]);
     });
 
     it("excludes contacts with phone_other", () => {
-      const rows = [
-        createContact({ first_name: "John", phone_other: "555-1234" }),
-      ];
+      const rows = [createContact({ first_name: "John", phone_other: "555-1234" })];
 
       expect(findContactsWithoutContactInfo(rows)).toEqual([]);
     });
@@ -483,9 +464,7 @@ describe("findContactsWithoutContactInfo", () => {
     });
 
     it("trims organization_name in results", () => {
-      const rows = [
-        createContact({ first_name: "John", organization_name: "  Acme Inc  " }),
-      ];
+      const rows = [createContact({ first_name: "John", organization_name: "  Acme Inc  " })];
 
       const result = findContactsWithoutContactInfo(rows);
 

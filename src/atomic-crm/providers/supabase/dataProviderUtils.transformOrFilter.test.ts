@@ -142,10 +142,7 @@ describe("transformOrFilter", () => {
     it("should work with multi-field OR filter with additional constraints", () => {
       // Pattern: Principal drilldown with OR conditions + other filters
       const input = {
-        $or: [
-          { principal_organization_id: 456 },
-          { customer_organization_id: 789 },
-        ],
+        $or: [{ principal_organization_id: 456 }, { customer_organization_id: 789 }],
         account_manager_id: 123,
         status: "active",
       };

@@ -113,7 +113,11 @@ describe("useSlideOverState", () => {
       });
 
       // Hash-based routing preserves other params
-      expect(window.history.pushState).toHaveBeenCalledWith(null, "", "#/test?other=param&edit=200");
+      expect(window.history.pushState).toHaveBeenCalledWith(
+        null,
+        "",
+        "#/test?other=param&edit=200"
+      );
     });
   });
 

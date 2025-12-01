@@ -76,10 +76,7 @@ const getTaskIcon = (type: TaskItem["taskType"]) => {
  * Custom comparison function for React.memo optimization
  * Prevents re-renders when sibling cards change during drag-and-drop
  */
-function arePropsEqual(
-  prevProps: TaskKanbanCardProps,
-  nextProps: TaskKanbanCardProps
-): boolean {
+function arePropsEqual(prevProps: TaskKanbanCardProps, nextProps: TaskKanbanCardProps): boolean {
   // Check index (position changed)
   if (prevProps.index !== nextProps.index) return false;
 
@@ -167,8 +164,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
   };
 
   const priorityClass =
-    priorityColors[task.priority as keyof typeof priorityColors] ||
-    priorityColors.medium;
+    priorityColors[task.priority as keyof typeof priorityColors] || priorityColors.medium;
 
   return (
     <Draggable draggableId={String(task.id)} index={index}>
@@ -238,9 +234,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-1.5 mb-1">
                 {getTaskIcon(task.taskType)}
-                <h3 className="font-medium text-sm text-foreground line-clamp-2">
-                  {task.subject}
-                </h3>
+                <h3 className="font-medium text-sm text-foreground line-clamp-2">{task.subject}</h3>
               </div>
               <div className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <span className="truncate">→ {task.relatedTo.name}</span>
@@ -248,10 +242,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
             </div>
 
             {/* Actions */}
-            <div
-              data-action-button
-              className="flex items-center gap-0.5 shrink-0 -mr-1"
-            >
+            <div data-action-button className="flex items-center gap-0.5 shrink-0 -mr-1">
               <Button
                 variant="ghost"
                 size="sm"
@@ -307,9 +298,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
             <Badge className={`text-xs ${priorityClass}`}>
               {task.priority.charAt(0).toUpperCase() + task.priority.slice(1)}
             </Badge>
-            <span className="text-xs text-muted-foreground">
-              {format(task.dueDate, "MMM d")}
-            </span>
+            <span className="text-xs text-muted-foreground">{format(task.dueDate, "MMM d")}</span>
           </div>
         </div>
       )}

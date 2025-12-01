@@ -226,9 +226,7 @@ describe("extendWithCustomMethods", () => {
       } as Opportunity;
       const expectedResult: Opportunity[] = [opportunity];
 
-      vi.mocked(mockServices.opportunities.archiveOpportunity).mockResolvedValue(
-        expectedResult
-      );
+      vi.mocked(mockServices.opportunities.archiveOpportunity).mockResolvedValue(expectedResult);
 
       const result = await extendedProvider.archiveOpportunity(opportunity);
 
@@ -248,9 +246,7 @@ describe("extendWithCustomMethods", () => {
       } as Opportunity;
       const expectedResult: Opportunity[] = [opportunity];
 
-      vi.mocked(mockServices.opportunities.unarchiveOpportunity).mockResolvedValue(
-        expectedResult
-      );
+      vi.mocked(mockServices.opportunities.unarchiveOpportunity).mockResolvedValue(expectedResult);
 
       const result = await extendedProvider.unarchiveOpportunity(opportunity);
 
@@ -318,9 +314,7 @@ describe("extendWithCustomMethods", () => {
         } as ContactOrganization,
       };
 
-      vi.mocked(mockServices.junctions.addContactToOrganization).mockResolvedValue(
-        expectedResult
-      );
+      vi.mocked(mockServices.junctions.addContactToOrganization).mockResolvedValue(expectedResult);
 
       const result = await extendedProvider.addContactToOrganization(1, 2, params);
 
@@ -382,9 +376,7 @@ describe("extendWithCustomMethods", () => {
         } as OpportunityParticipant,
       };
 
-      vi.mocked(mockServices.junctions.addOpportunityParticipant).mockResolvedValue(
-        expectedResult
-      );
+      vi.mocked(mockServices.junctions.addOpportunityParticipant).mockResolvedValue(expectedResult);
 
       const result = await extendedProvider.addOpportunityParticipant(1, 2, params);
 
@@ -545,9 +537,9 @@ describe("extendWithCustomMethods", () => {
         error: mockError,
       } as any);
 
-      await expect(
-        extendedProvider.rpc("test_function", { param: "value" })
-      ).rejects.toThrow("RPC test_function failed: Permission denied");
+      await expect(extendedProvider.rpc("test_function", { param: "value" })).rejects.toThrow(
+        "RPC test_function failed: Permission denied"
+      );
 
       expect(consoleErrorSpy).toHaveBeenCalled();
     });

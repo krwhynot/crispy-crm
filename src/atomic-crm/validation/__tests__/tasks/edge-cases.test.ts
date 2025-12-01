@@ -68,15 +68,7 @@ describe("Task Edge Cases and Business Rules", () => {
     });
 
     it("should support various task types", () => {
-      const taskTypes = [
-        "Call",
-        "Email",
-        "Meeting",
-        "Follow-up",
-        "Demo",
-        "Proposal",
-        "Other",
-      ];
+      const taskTypes = ["Call", "Email", "Meeting", "Follow-up", "Demo", "Proposal", "Other"];
 
       taskTypes.forEach((type) => {
         const task = {

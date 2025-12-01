@@ -126,10 +126,7 @@ function saveDraft(formData: Partial<ActivityLogInput>): void {
 
   // Don't save empty drafts
   const hasContent =
-    formData.notes ||
-    formData.contactId ||
-    formData.organizationId ||
-    formData.opportunityId;
+    formData.notes || formData.contactId || formData.organizationId || formData.opportunityId;
 
   if (!hasContent) {
     localStorage.removeItem(DRAFT_STORAGE_KEY);

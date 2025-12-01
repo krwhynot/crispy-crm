@@ -385,9 +385,7 @@ test.describe("LogActivityFAB - Dashboard V3", () => {
       await expect(badge).toBeVisible();
 
       // Check for warning background color class
-      const hasWarningColor = await badge.evaluate((el) =>
-        el.classList.contains("bg-warning")
-      );
+      const hasWarningColor = await badge.evaluate((el) => el.classList.contains("bg-warning"));
       expect(hasWarningColor).toBe(true);
 
       // Check for pulse animation class

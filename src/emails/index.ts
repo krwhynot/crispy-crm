@@ -30,16 +30,6 @@ export {
   createSampleDigestData,
 } from "./daily-digest.generator";
 
-export type {
-  DailyDigestData,
-  OverdueTask,
-  AtRiskDeal,
-  TodayTask,
-} from "./daily-digest.types";
+export type { DailyDigestData, OverdueTask, AtRiskDeal, TodayTask } from "./daily-digest.types";
 
-export {
-  STAGE_COLORS,
-  STALE_THRESHOLDS,
-  MFB_EMAIL_COLORS,
-  ROW_COLORS,
-} from "./daily-digest.types";
+export { STAGE_COLORS, STALE_THRESHOLDS, MFB_EMAIL_COLORS, ROW_COLORS } from "./daily-digest.types";

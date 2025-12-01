@@ -42,7 +42,9 @@ vi.mock("../useCurrentSale", () => ({
 }));
 
 // Helper to create mock pipeline summary rows
-const createMockPipelineRow = (overrides: Partial<PipelineSummaryRow> = {}): PipelineSummaryRow => ({
+const createMockPipelineRow = (
+  overrides: Partial<PipelineSummaryRow> = {}
+): PipelineSummaryRow => ({
   principal_id: 1,
   principal_name: "Test Principal",
   total_pipeline: 50000,
@@ -77,11 +79,14 @@ describe("usePrincipalPipeline", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(mockGetList).toHaveBeenCalledWith("principal_pipeline_summary", expect.objectContaining({
-        filter: {},
-        sort: { field: "active_this_week", order: "DESC" },
-        pagination: { page: 1, perPage: 100 },
-      }));
+      expect(mockGetList).toHaveBeenCalledWith(
+        "principal_pipeline_summary",
+        expect.objectContaining({
+          filter: {},
+          sort: { field: "active_this_week", order: "DESC" },
+          pagination: { page: 1, perPage: 100 },
+        })
+      );
       expect(result.current.data).toHaveLength(2);
       expect(result.current.data[0].name).toBe("Acme Foods");
     });
@@ -96,9 +101,12 @@ describe("usePrincipalPipeline", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(mockGetList).toHaveBeenCalledWith("principal_pipeline_summary", expect.objectContaining({
-        filter: { sales_id: 42 },
-      }));
+      expect(mockGetList).toHaveBeenCalledWith(
+        "principal_pipeline_summary",
+        expect.objectContaining({
+          filter: { sales_id: 42 },
+        })
+      );
       expect(result.current.data).toHaveLength(1);
     });
 
@@ -231,7 +239,10 @@ describe("usePrincipalPipeline", () => {
       });
 
       expect(result.current.error).toEqual(mockError);
-      expect(consoleErrorSpy).toHaveBeenCalledWith("Failed to fetch principal pipeline:", mockError);
+      expect(consoleErrorSpy).toHaveBeenCalledWith(
+        "Failed to fetch principal pipeline:",
+        mockError
+      );
 
       consoleErrorSpy.mockRestore();
     });
@@ -261,9 +272,12 @@ describe("usePrincipalPipeline", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(mockGetList).toHaveBeenCalledWith("principal_pipeline_summary", expect.objectContaining({
-        filter: {},
-      }));
+      expect(mockGetList).toHaveBeenCalledWith(
+        "principal_pipeline_summary",
+        expect.objectContaining({
+          filter: {},
+        })
+      );
     });
 
     it("should sort by active_this_week descending", async () => {
@@ -275,9 +289,12 @@ describe("usePrincipalPipeline", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(mockGetList).toHaveBeenCalledWith("principal_pipeline_summary", expect.objectContaining({
-        sort: { field: "active_this_week", order: "DESC" },
-      }));
+      expect(mockGetList).toHaveBeenCalledWith(
+        "principal_pipeline_summary",
+        expect.objectContaining({
+          sort: { field: "active_this_week", order: "DESC" },
+        })
+      );
     });
   });
 });

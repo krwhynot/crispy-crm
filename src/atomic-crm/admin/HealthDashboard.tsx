@@ -58,13 +58,7 @@ function getStatusText(errorRate: number): string {
 /**
  * Status indicator component
  */
-function StatusIndicator({
-  status,
-  label,
-}: {
-  status: "green" | "yellow" | "red";
-  label: string;
-}) {
+function StatusIndicator({ status, label }: { status: "green" | "yellow" | "red"; label: string }) {
   const colorClasses = {
     green: "bg-green-500",
     yellow: "bg-yellow-500",
@@ -159,15 +153,10 @@ export function HealthDashboard() {
   const isAlertActive = metrics.errorRate > ERROR_RATE_THRESHOLDS.warning;
 
   // Calculate average latency from recent metrics
-  const latencyMetrics = metrics.recentMetrics.filter(
-    (m) => m.name === "api_latency"
-  );
+  const latencyMetrics = metrics.recentMetrics.filter((m) => m.name === "api_latency");
   const avgLatency =
     latencyMetrics.length > 0
-      ? Math.round(
-          latencyMetrics.reduce((sum, m) => sum + m.value, 0) /
-            latencyMetrics.length
-        )
+      ? Math.round(latencyMetrics.reduce((sum, m) => sum + m.value, 0) / latencyMetrics.length)
       : 0;
 
   return (
@@ -176,9 +165,7 @@ export function HealthDashboard() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Health Dashboard</h1>
-          <p className="text-muted-foreground">
-            Monitor application health and error rates
-          </p>
+          <p className="text-muted-foreground">Monitor application health and error rates</p>
         </div>
         <div className="flex items-center gap-4">
           {lastUpdated && (
@@ -186,15 +173,8 @@ export function HealthDashboard() {
               Updated {lastUpdated.toLocaleTimeString()}
             </span>
           )}
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={refreshMetrics}
-            disabled={isRefreshing}
-          >
-            <RefreshCw
-              className={`h-4 w-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`}
-            />
+          <Button variant="outline" size="sm" onClick={refreshMetrics} disabled={isRefreshing}>
+            <RefreshCw className={`h-4 w-4 mr-2 ${isRefreshing ? "animate-spin" : ""}`} />
             Refresh
           </Button>
         </div>
@@ -206,12 +186,10 @@ export function HealthDashboard() {
           <CardContent className="flex items-center gap-4 py-4">
             <AlertTriangle className="h-6 w-6 text-destructive" />
             <div className="flex-1">
-              <p className="font-semibold text-destructive">
-                High Error Rate Alert
-              </p>
+              <p className="font-semibold text-destructive">High Error Rate Alert</p>
               <p className="text-sm text-muted-foreground">
-                Error rate ({metrics.errorRate.toFixed(2)}%) exceeds the 1%
-                threshold. Check Sentry for details.
+                Error rate ({metrics.errorRate.toFixed(2)}%) exceeds the 1% threshold. Check Sentry
+                for details.
               </p>
             </div>
             <Button
@@ -309,8 +287,7 @@ export function HealthDashboard() {
                 Degraded
               </Badge>
               <span className="text-sm text-muted-foreground">
-                {ERROR_RATE_THRESHOLDS.healthy}% - {ERROR_RATE_THRESHOLDS.warning}%
-                errors
+                {ERROR_RATE_THRESHOLDS.healthy}% - {ERROR_RATE_THRESHOLDS.warning}% errors
               </span>
             </div>
             <div className="flex items-center gap-2">
@@ -341,28 +318,31 @@ export function HealthDashboard() {
                   </tr>
                 </thead>
                 <tbody>
-                  {metrics.recentMetrics.slice(-10).reverse().map((metric, index) => (
-                    <tr key={index} className="border-b last:border-0">
-                      <td className="py-2 font-mono text-xs">{metric.name}</td>
-                      <td className="py-2">{metric.value}</td>
-                      <td className="py-2">
-                        {metric.tags ? (
-                          <div className="flex gap-1 flex-wrap">
-                            {Object.entries(metric.tags).map(([key, value]) => (
-                              <Badge key={key} variant="outline" className="text-xs">
-                                {key}: {value}
-                              </Badge>
-                            ))}
-                          </div>
-                        ) : (
-                          <span className="text-muted-foreground">-</span>
-                        )}
-                      </td>
-                      <td className="py-2 text-muted-foreground">
-                        {new Date(metric.timestamp).toLocaleTimeString()}
-                      </td>
-                    </tr>
-                  ))}
+                  {metrics.recentMetrics
+                    .slice(-10)
+                    .reverse()
+                    .map((metric, index) => (
+                      <tr key={index} className="border-b last:border-0">
+                        <td className="py-2 font-mono text-xs">{metric.name}</td>
+                        <td className="py-2">{metric.value}</td>
+                        <td className="py-2">
+                          {metric.tags ? (
+                            <div className="flex gap-1 flex-wrap">
+                              {Object.entries(metric.tags).map(([key, value]) => (
+                                <Badge key={key} variant="outline" className="text-xs">
+                                  {key}: {value}
+                                </Badge>
+                              ))}
+                            </div>
+                          ) : (
+                            <span className="text-muted-foreground">-</span>
+                          )}
+                        </td>
+                        <td className="py-2 text-muted-foreground">
+                          {new Date(metric.timestamp).toLocaleTimeString()}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

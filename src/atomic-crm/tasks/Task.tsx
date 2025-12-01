@@ -159,12 +159,7 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="shrink-0"
-              aria-label="task actions"
-            >
+            <Button variant="ghost" size="icon" className="shrink-0" aria-label="task actions">
               <MoreVertical className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>

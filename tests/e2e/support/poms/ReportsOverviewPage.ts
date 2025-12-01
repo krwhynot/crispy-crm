@@ -158,7 +158,9 @@ export class ReportsOverviewPage extends BasePage {
   async expectChartSectionsVisible(): Promise<void> {
     await expect(this.page.getByText("Pipeline by Stage")).toBeVisible({ timeout: 30000 });
     await expect(this.page.getByText("Activity Trend (14 Days)")).toBeVisible({ timeout: 10000 });
-    await expect(this.page.getByText("Top Principals by Opportunities")).toBeVisible({ timeout: 10000 });
+    await expect(this.page.getByText("Top Principals by Opportunities")).toBeVisible({
+      timeout: 10000,
+    });
     await expect(this.page.getByText("Rep Performance")).toBeVisible({ timeout: 10000 });
   }
 

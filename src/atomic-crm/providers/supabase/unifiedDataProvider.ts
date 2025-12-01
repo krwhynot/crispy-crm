@@ -33,8 +33,8 @@ import type {
   FilterPayload,
 } from "ra-core";
 import type { FileObject } from "@supabase/storage-js";
-import type { QuickAddInput } from '../../validation/quickAdd';
-import { quickAddSchema } from '../../validation/quickAdd';
+import type { QuickAddInput } from "../../validation/quickAdd";
+import { quickAddSchema } from "../../validation/quickAdd";
 
 import { supabase } from "./supabase";
 import { getResourceName, supportsSoftDelete } from "./resources";
@@ -100,8 +100,6 @@ interface ValidationError {
   message: string;
   errors: Record<string, string>;
 }
-
-
 
 /**
  * Extended error type for error handling
@@ -301,12 +299,6 @@ async function transformData<T>(
   return (await transformService.transform(resource, data)) as Partial<T>;
 }
 
-
-
-
-
-
-
 /**
  * Process data for database operations
  * CRITICAL: Validate FIRST, Transform SECOND (Issue 0.4)
@@ -401,7 +393,7 @@ export const unifiedDataProvider: DataProvider = {
     params: GetListParams
   ): Promise<GetListResult<RecordType>> {
     // VERY VISIBLE DEBUG - should appear for EVERY getList call
-    console.warn('🔍 [DATAPROVIDER] getList called for:', resource);
+    console.warn("🔍 [DATAPROVIDER] getList called for:", resource);
 
     return wrapMethod("getList", resource, params, async () => {
       // Create a mutable copy of params to potentially modify filters
@@ -423,16 +415,18 @@ export const unifiedDataProvider: DataProvider = {
       const dbResource = getDatabaseResource(resource, "list");
 
       // DEBUG: Check auth state before API call
-      const { data: { session } } = await supabase.auth.getSession();
-      console.log('[DEBUG AUTH] Session state:', {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      console.log("[DEBUG AUTH] Session state:", {
         hasSession: !!session,
-        userId: session?.user?.id?.slice(0, 8) + '...' || 'none',
-        role: session?.user?.role || 'anon',
-        expiresAt: session?.expires_at ? new Date(session.expires_at * 1000).toISOString() : 'none',
+        userId: session?.user?.id?.slice(0, 8) + "..." || "none",
+        role: session?.user?.role || "anon",
+        expiresAt: session?.expires_at ? new Date(session.expires_at * 1000).toISOString() : "none",
       });
 
       // DEBUG: Log before baseDataProvider call
-      console.log('[DEBUG API] unifiedDataProvider.getList', {
+      console.log("[DEBUG API] unifiedDataProvider.getList", {
         originalResource: resource,
         dbResource,
         hasAuthToken: !!session?.access_token,
@@ -442,18 +436,20 @@ export const unifiedDataProvider: DataProvider = {
       const result = await baseDataProvider.getList(dbResource, searchParams);
 
       // DEBUG: Log result with customer_organization_name check for opportunities
-      if (resource === 'opportunities' && result.data?.length > 0) {
+      if (resource === "opportunities" && result.data?.length > 0) {
         const sample = result.data[0] as Record<string, unknown>;
-        console.log('[DEBUG OPPORTUNITIES] First record fields:', {
-          hasCustomerOrgName: 'customer_organization_name' in sample,
+        console.log("[DEBUG OPPORTUNITIES] First record fields:", {
+          hasCustomerOrgName: "customer_organization_name" in sample,
           customerOrgNameValue: sample.customer_organization_name,
-          hasCustomerOrgId: 'customer_organization_id' in sample,
+          hasCustomerOrgId: "customer_organization_id" in sample,
           customerOrgIdValue: sample.customer_organization_id,
-          allKeys: Object.keys(sample).filter(k => k.includes('customer') || k.includes('organization')),
+          allKeys: Object.keys(sample).filter(
+            (k) => k.includes("customer") || k.includes("organization")
+          ),
         });
       }
 
-      console.log('[DEBUG RESULT] getList completed', {
+      console.log("[DEBUG RESULT] getList completed", {
         dataCount: result.data?.length,
         total: result.total,
       });
@@ -1000,7 +996,6 @@ export const unifiedDataProvider: DataProvider = {
     const processedOptions = { ...options };
     try {
       console.log(`[DataProvider Edge] Invoking ${functionName}`, options);
-
 
       const { data, error } = await supabase.functions.invoke<T>(functionName, {
         method: processedOptions.method || "POST",

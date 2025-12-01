@@ -634,7 +634,8 @@ describe("OrganizationList exporter", () => {
         organization_type: org.organization_type,
         priority: org.priority,
         parent_organization: org.parent_organization_id
-          ? parentOrganizations[org.parent_organization_id as keyof typeof parentOrganizations]?.name
+          ? parentOrganizations[org.parent_organization_id as keyof typeof parentOrganizations]
+              ?.name
           : undefined,
         segment: org.segment_id
           ? segments[org.segment_id as keyof typeof segments]?.name

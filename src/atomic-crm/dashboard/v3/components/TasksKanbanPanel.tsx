@@ -105,10 +105,7 @@ export function TasksKanbanPanel() {
       if (!destination) return;
 
       // Dropped in same position
-      if (
-        destination.droppableId === source.droppableId &&
-        destination.index === source.index
-      ) {
+      if (destination.droppableId === source.droppableId && destination.index === source.index) {
         return;
       }
 
@@ -185,7 +182,8 @@ export function TasksKanbanPanel() {
     );
   }
 
-  const totalTasks = tasksByColumn.overdue.length + tasksByColumn.today.length + tasksByColumn.thisWeek.length;
+  const totalTasks =
+    tasksByColumn.overdue.length + tasksByColumn.today.length + tasksByColumn.thisWeek.length;
 
   return (
     <Card className="card-container flex h-full flex-col">
@@ -226,9 +224,7 @@ export function TasksKanbanPanel() {
           <div className="flex h-full items-center justify-center p-8">
             <div className="text-center">
               <p className="text-muted-foreground">No tasks to show</p>
-              <p className="text-sm text-muted-foreground/70 mt-1">
-                Create a task to get started
-              </p>
+              <p className="text-sm text-muted-foreground/70 mt-1">Create a task to get started</p>
             </div>
           </div>
         ) : (

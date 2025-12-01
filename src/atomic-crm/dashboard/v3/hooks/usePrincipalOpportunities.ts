@@ -50,7 +50,7 @@ export function usePrincipalOpportunities({
           prevPrincipalIdRef.current = null;
         }
         // Only set loading to false if it's currently true
-        setLoading((prev) => prev ? false : prev);
+        setLoading((prev) => (prev ? false : prev));
         return;
       }
 

@@ -78,8 +78,14 @@ const inferActivityTypeFromTitle = (title: string): string => {
   if (lowerTitle.includes("follow") || lowerTitle.includes("check-in")) return "follow_up";
   if (lowerTitle.includes("visit") || lowerTitle.includes("site")) return "site_visit";
   if (lowerTitle.includes("contract") || lowerTitle.includes("agreement")) return "contract_review";
-  if (lowerTitle.includes("trade") || lowerTitle.includes("show") || lowerTitle.includes("expo")) return "trade_show";
-  if (lowerTitle.includes("social") || lowerTitle.includes("linkedin") || lowerTitle.includes("network")) return "social";
+  if (lowerTitle.includes("trade") || lowerTitle.includes("show") || lowerTitle.includes("expo"))
+    return "trade_show";
+  if (
+    lowerTitle.includes("social") ||
+    lowerTitle.includes("linkedin") ||
+    lowerTitle.includes("network")
+  )
+    return "social";
   if (lowerTitle.includes("sample") || lowerTitle.includes("product")) return "sample";
   if (lowerTitle.includes("note") || lowerTitle.includes("memo")) return "note";
 

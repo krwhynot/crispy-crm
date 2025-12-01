@@ -26,9 +26,5 @@ import { salesCallbacks } from "../callbacks/salesCallbacks";
  * @returns Composed DataProvider with soft delete, validation, and error handling
  */
 export function createSalesHandler(baseProvider: DataProvider): DataProvider {
-  return withErrorLogging(
-    withValidation(
-      withLifecycleCallbacks(baseProvider, [salesCallbacks])
-    )
-  );
+  return withErrorLogging(withValidation(withLifecycleCallbacks(baseProvider, [salesCallbacks])));
 }

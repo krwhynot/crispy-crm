@@ -123,10 +123,7 @@ export interface DailyDigestData {
 }
 
 /** Stage configuration for badge styling */
-export const STAGE_COLORS: Record<
-  string,
-  { bg: string; text: string; label: string }
-> = {
+export const STAGE_COLORS: Record<string, { bg: string; text: string; label: string }> = {
   new_lead: { bg: "#E0F2FE", text: "#0369A1", label: "New Lead" },
   initial_outreach: { bg: "#F3E8FF", text: "#7C3AED", label: "Outreach" },
   sample_visit_offered: { bg: "#FEF3E2", text: "#B8640A", label: "Sample" },

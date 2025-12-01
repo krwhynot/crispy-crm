@@ -650,7 +650,9 @@ describe("CampaignActivityReport", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("Show stale leads (per-stage thresholds)")).toBeInTheDocument();
+        expect(
+          screen.getByLabelText("Show stale leads (per-stage thresholds)")
+        ).toBeInTheDocument();
       });
 
       const staleLeadsCheckbox = screen.getByLabelText("Show stale leads (per-stage thresholds)");
@@ -702,7 +704,9 @@ describe("CampaignActivityReport", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("Show stale leads (per-stage thresholds)")).toBeInTheDocument();
+        expect(
+          screen.getByLabelText("Show stale leads (per-stage thresholds)")
+        ).toBeInTheDocument();
       });
 
       const checkbox = screen.getByLabelText("Show stale leads (per-stage thresholds)");
@@ -754,7 +758,9 @@ describe("CampaignActivityReport", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("Show stale leads (per-stage thresholds)")).toBeInTheDocument();
+        expect(
+          screen.getByLabelText("Show stale leads (per-stage thresholds)")
+        ).toBeInTheDocument();
       });
 
       const checkbox = screen.getByLabelText("Show stale leads (per-stage thresholds)");
@@ -1012,7 +1018,9 @@ describe("CampaignActivityReport", () => {
       );
 
       await waitFor(() => {
-        expect(screen.getByLabelText("Show stale leads (per-stage thresholds)")).toBeInTheDocument();
+        expect(
+          screen.getByLabelText("Show stale leads (per-stage thresholds)")
+        ).toBeInTheDocument();
       });
 
       const checkbox = screen.getByLabelText("Show stale leads (per-stage thresholds)");

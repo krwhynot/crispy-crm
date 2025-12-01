@@ -3,7 +3,14 @@ import { useForm } from "react-hook-form";
 import { useDataProvider, useNotify } from "react-admin";
 import { useMemo, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { Loader2 } from "lucide-react";
 import {
@@ -111,76 +118,84 @@ export function QuickLogForm({
   });
 
   // Form submission handler
-  const onSubmit = useCallback(async (data: ActivityLogInput, closeAfterSave = true) => {
-    if (!salesId) {
-      notify("Cannot log activity: user session expired. Please refresh and try again.", {
-        type: "error",
-      });
-      return;
-    }
+  const onSubmit = useCallback(
+    async (data: ActivityLogInput, closeAfterSave = true) => {
+      if (!salesId) {
+        notify("Cannot log activity: user session expired. Please refresh and try again.", {
+          type: "error",
+        });
+        return;
+      }
 
-    try {
-      // Create the activity record
-      await dataProvider.create("activities", {
-        data: {
-          activity_type: data.opportunityId ? "interaction" : "engagement",
-          type: ACTIVITY_TYPE_MAP[data.activityType],
-          outcome: data.outcome,
-          subject: data.notes.substring(0, 100) || `${data.activityType} update`,
-          description: data.notes,
-          activity_date: data.date.toISOString(),
-          duration_minutes: data.duration,
-          contact_id: data.contactId,
-          organization_id: data.organizationId,
-          opportunity_id: data.opportunityId,
-          follow_up_required: data.createFollowUp || false,
-          follow_up_date: data.followUpDate ? data.followUpDate.toISOString().split("T")[0] : null,
-          sample_status: data.activityType === "Sample" ? data.sampleStatus : null,
-          created_by: salesId,
-        },
-      });
+      try {
+        // Create the activity record
+        await dataProvider.create("activities", {
+          data: {
+            activity_type: data.opportunityId ? "interaction" : "engagement",
+            type: ACTIVITY_TYPE_MAP[data.activityType],
+            outcome: data.outcome,
+            subject: data.notes.substring(0, 100) || `${data.activityType} update`,
+            description: data.notes,
+            activity_date: data.date.toISOString(),
+            duration_minutes: data.duration,
+            contact_id: data.contactId,
+            organization_id: data.organizationId,
+            opportunity_id: data.opportunityId,
+            follow_up_required: data.createFollowUp || false,
+            follow_up_date: data.followUpDate
+              ? data.followUpDate.toISOString().split("T")[0]
+              : null,
+            sample_status: data.activityType === "Sample" ? data.sampleStatus : null,
+            created_by: salesId,
+          },
+        });
 
-      // Create follow-up task if requested
-      if (data.createFollowUp && data.followUpDate) {
-        const taskData: Record<string, unknown> = {
-          title: `Follow-up: ${data.notes.substring(0, 50)}`,
-          due_date: data.followUpDate.toISOString(),
-          type: "Follow-up",
-          priority: "medium",
-          sales_id: salesId,
-          created_by: salesId,
-        };
-        if (typeof data.contactId === "number" && !isNaN(data.contactId)) {
-          taskData.contact_id = data.contactId;
+        // Create follow-up task if requested
+        if (data.createFollowUp && data.followUpDate) {
+          const taskData: Record<string, unknown> = {
+            title: `Follow-up: ${data.notes.substring(0, 50)}`,
+            due_date: data.followUpDate.toISOString(),
+            type: "Follow-up",
+            priority: "medium",
+            sales_id: salesId,
+            created_by: salesId,
+          };
+          if (typeof data.contactId === "number" && !isNaN(data.contactId)) {
+            taskData.contact_id = data.contactId;
+          }
+          if (typeof data.opportunityId === "number" && !isNaN(data.opportunityId)) {
+            taskData.opportunity_id = data.opportunityId;
+          }
+          await dataProvider.create("tasks", { data: taskData });
         }
-        if (typeof data.opportunityId === "number" && !isNaN(data.opportunityId)) {
-          taskData.opportunity_id = data.opportunityId;
+
+        notify("Activity logged successfully", { type: "success" });
+        form.reset();
+
+        if (closeAfterSave) {
+          onComplete();
         }
-        await dataProvider.create("tasks", { data: taskData });
-      }
 
-      notify("Activity logged successfully", { type: "success" });
-      form.reset();
-
-      if (closeAfterSave) {
-        onComplete();
+        if (onRefresh) {
+          onRefresh();
+        }
+      } catch (error) {
+        notify("Failed to log activity", { type: "error" });
+        console.error("Activity log error:", error);
       }
-
-      if (onRefresh) {
-        onRefresh();
-      }
-    } catch (error) {
-      notify("Failed to log activity", { type: "error" });
-      console.error("Activity log error:", error);
-    }
-  }, [salesId, dataProvider, notify, form, onComplete, onRefresh]);
+    },
+    [salesId, dataProvider, notify, form, onComplete, onRefresh]
+  );
 
   // Handle contact selection - auto-fill organization
-  const handleContactSelect = useCallback((contact: { id: number; name: string; organization_id?: number }) => {
-    if ((contact as Contact).organization_id) {
-      form.setValue("organizationId", (contact as Contact).organization_id);
-    }
-  }, [form]);
+  const handleContactSelect = useCallback(
+    (contact: { id: number; name: string; organization_id?: number }) => {
+      if ((contact as Contact).organization_id) {
+        form.setValue("organizationId", (contact as Contact).organization_id);
+      }
+    },
+    [form]
+  );
 
   // Handle contact clear - cascade clear org and opp
   const handleContactClear = useCallback(() => {
@@ -189,23 +204,26 @@ export function QuickLogForm({
   }, [form]);
 
   // Handle organization selection - clear mismatched entities
-  const handleOrganizationSelect = useCallback((org: { id: number; name: string }) => {
-    const currentContactId = form.getValues("contactId");
-    if (currentContactId) {
-      const contact = entityData.contacts.find((c) => c.id === currentContactId);
-      if (contact && contact.organization_id !== org.id) {
-        form.setValue("contactId", undefined);
-        notify("Contact cleared - doesn't belong to selected organization", { type: "info" });
+  const handleOrganizationSelect = useCallback(
+    (org: { id: number; name: string }) => {
+      const currentContactId = form.getValues("contactId");
+      if (currentContactId) {
+        const contact = entityData.contacts.find((c) => c.id === currentContactId);
+        if (contact && contact.organization_id !== org.id) {
+          form.setValue("contactId", undefined);
+          notify("Contact cleared - doesn't belong to selected organization", { type: "info" });
+        }
       }
-    }
-    const oppId = form.getValues("opportunityId");
-    if (oppId) {
-      const opp = entityData.opportunities.find((o) => o.id === oppId);
-      if (opp && opp.customer_organization_id !== org.id) {
-        form.setValue("opportunityId", undefined);
+      const oppId = form.getValues("opportunityId");
+      if (oppId) {
+        const opp = entityData.opportunities.find((o) => o.id === oppId);
+        if (opp && opp.customer_organization_id !== org.id) {
+          form.setValue("opportunityId", undefined);
+        }
       }
-    }
-  }, [form, entityData.contacts, entityData.opportunities, notify]);
+    },
+    [form, entityData.contacts, entityData.opportunities, notify]
+  );
 
   // Handle organization clear - cascade clear opportunity
   const handleOrganizationClear = useCallback(() => {
@@ -361,11 +379,7 @@ export function QuickLogForm({
             Cancel
           </Button>
           <div className="flex gap-2">
-            <Button
-              type="submit"
-              className="h-11"
-              disabled={form.formState.isSubmitting}
-            >
+            <Button type="submit" className="h-11" disabled={form.formState.isSubmitting}>
               {form.formState.isSubmitting ? (
                 <>
                   <Loader2 className="h-4 w-4 animate-spin" />

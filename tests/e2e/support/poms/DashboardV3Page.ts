@@ -249,7 +249,9 @@ export class DashboardV3Page extends BasePage {
     await expect(this.getPipelineLoadingSkeleton()).not.toBeVisible({ timeout: 10000 });
     // Either data rows visible or error state
     const rowCount = await this.getPipelineRows().count();
-    const errorVisible = await this.getPipelineErrorState().isVisible().catch(() => false);
+    const errorVisible = await this.getPipelineErrorState()
+      .isVisible()
+      .catch(() => false);
     expect(rowCount > 0 || errorVisible).toBe(true);
   }
 

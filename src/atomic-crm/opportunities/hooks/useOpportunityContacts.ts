@@ -22,11 +22,11 @@ export function useOpportunityContacts(contactIds: number[]) {
     [JSON.stringify(contactIds)]
   );
 
-  const { data: contacts, isLoading, error } = useGetMany<Contact>(
-    "contacts",
-    { ids: stableIds },
-    { enabled: stableIds.length > 0 }
-  );
+  const {
+    data: contacts,
+    isLoading,
+    error,
+  } = useGetMany<Contact>("contacts", { ids: stableIds }, { enabled: stableIds.length > 0 });
 
   // Memoize derived values
   const result = useMemo(() => {

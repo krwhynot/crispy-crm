@@ -183,7 +183,9 @@ export class ContactFormPage extends BasePage {
     }
 
     // Wait for dialog to close
-    await expect(dialog).not.toBeVisible({ timeout: 3000 }).catch(() => {});
+    await expect(dialog)
+      .not.toBeVisible({ timeout: 3000 })
+      .catch(() => {});
   }
 
   // ============================================================================
@@ -199,7 +201,10 @@ export class ContactFormPage extends BasePage {
     await this.clickMainTab();
 
     // Find the Email addresses section - it's a group with label "Email addresses"
-    const emailSection = this.page.locator('[role="group"]').filter({ hasText: /email addresses/i }).first();
+    const emailSection = this.page
+      .locator('[role="group"]')
+      .filter({ hasText: /email addresses/i })
+      .first();
 
     // Click the Add button inside the email section
     const addButton = emailSection.getByRole("button").first();
@@ -211,10 +216,10 @@ export class ContactFormPage extends BasePage {
 
     // Find the email input - try various strategies
     let emailInput = this.page.getByPlaceholder(/email/i).first();
-    if (!await emailInput.isVisible({ timeout: 2000 }).catch(() => false)) {
+    if (!(await emailInput.isVisible({ timeout: 2000 }).catch(() => false))) {
       emailInput = this.page.locator('input[type="email"]').first();
     }
-    if (!await emailInput.isVisible({ timeout: 2000 }).catch(() => false)) {
+    if (!(await emailInput.isVisible({ timeout: 2000 }).catch(() => false))) {
       // Try finding textbox that appeared in the email section
       emailInput = emailSection.getByRole("textbox").first();
     }
@@ -286,7 +291,10 @@ export class ContactFormPage extends BasePage {
     await this.clickMainTab();
 
     // Find the Account Manager section group containing the combobox
-    const acctSection = this.page.locator('[role="group"]').filter({ hasText: /account manager/i }).first();
+    const acctSection = this.page
+      .locator('[role="group"]')
+      .filter({ hasText: /account manager/i })
+      .first();
     const combobox = acctSection.getByRole("combobox").first();
 
     // Check if already has a value (useSmartDefaults may have pre-filled)

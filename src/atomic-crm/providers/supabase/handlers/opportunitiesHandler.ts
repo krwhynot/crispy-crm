@@ -28,8 +28,6 @@ import { opportunitiesCallbacks } from "../callbacks";
  */
 export function createOpportunitiesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(
-      withLifecycleCallbacks(baseProvider, [opportunitiesCallbacks])
-    )
+    withValidation(withLifecycleCallbacks(baseProvider, [opportunitiesCallbacks]))
   );
 }

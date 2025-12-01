@@ -28,32 +28,16 @@ export function KPISummaryRow() {
       className="grid grid-cols-2 lg:grid-cols-4 gap-3 lg:gap-4"
     >
       {/* KPI #1: Open Opportunities (count, not $ value) */}
-      <KPICard
-        type="openOpportunities"
-        value={metrics.openOpportunitiesCount}
-        loading={loading}
-      />
+      <KPICard type="openOpportunities" value={metrics.openOpportunitiesCount} loading={loading} />
 
       {/* KPI #2: Overdue Tasks (red accent when > 0) */}
-      <KPICard
-        type="overdueTasks"
-        value={metrics.overdueTasksCount}
-        loading={loading}
-      />
+      <KPICard type="overdueTasks" value={metrics.overdueTasksCount} loading={loading} />
 
       {/* KPI #3: Activities This Week */}
-      <KPICard
-        type="activitiesThisWeek"
-        value={metrics.activitiesThisWeek}
-        loading={loading}
-      />
+      <KPICard type="activitiesThisWeek" value={metrics.activitiesThisWeek} loading={loading} />
 
       {/* KPI #4: Stale Deals (amber/warning when > 0) */}
-      <KPICard
-        type="staleDeals"
-        value={metrics.staleDealsCount}
-        loading={loading}
-      />
+      <KPICard type="staleDeals" value={metrics.staleDealsCount} loading={loading} />
     </section>
   );
 }

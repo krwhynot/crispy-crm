@@ -101,10 +101,7 @@ export function useEntityData({
   }, [selectedOrganizationId, oppSearch.debouncedTerm]);
 
   // Fetch contacts with hybrid approach
-  const {
-    data: contacts = [],
-    isPending: contactsLoading,
-  } = useGetList<Contact>(
+  const { data: contacts = [], isPending: contactsLoading } = useGetList<Contact>(
     "contacts",
     {
       pagination: { page: 1, perPage: shouldSearchContacts ? 50 : INITIAL_PAGE_SIZE },
@@ -118,10 +115,7 @@ export function useEntityData({
   );
 
   // Fetch organizations with hybrid approach
-  const {
-    data: organizations = [],
-    isPending: organizationsLoading,
-  } = useGetList<Organization>(
+  const { data: organizations = [], isPending: organizationsLoading } = useGetList<Organization>(
     "organizations",
     {
       pagination: { page: 1, perPage: shouldSearchOrgs ? 50 : INITIAL_PAGE_SIZE },
@@ -135,10 +129,7 @@ export function useEntityData({
   );
 
   // Fetch opportunities with hybrid approach
-  const {
-    data: opportunities = [],
-    isPending: opportunitiesLoading,
-  } = useGetList<Opportunity>(
+  const { data: opportunities = [], isPending: opportunitiesLoading } = useGetList<Opportunity>(
     "opportunities",
     {
       pagination: { page: 1, perPage: shouldSearchOpps ? 50 : INITIAL_PAGE_SIZE },
@@ -152,8 +143,13 @@ export function useEntityData({
   );
 
   // Overall loading state (initial load only)
-  const isInitialLoading = contactsLoading && organizationsLoading && opportunitiesLoading &&
-    contacts.length === 0 && organizations.length === 0 && opportunities.length === 0;
+  const isInitialLoading =
+    contactsLoading &&
+    organizationsLoading &&
+    opportunitiesLoading &&
+    contacts.length === 0 &&
+    organizations.length === 0 &&
+    opportunities.length === 0;
 
   // Derived state for selected entities
   const selectedOpportunity = useMemo(
@@ -178,7 +174,11 @@ export function useEntityData({
       return selectedOpportunity.customer_organization_id;
     }
     return null;
-  }, [selectedOrganizationId, selectedContact?.organization_id, selectedOpportunity?.customer_organization_id]);
+  }, [
+    selectedOrganizationId,
+    selectedContact?.organization_id,
+    selectedOpportunity?.customer_organization_id,
+  ]);
 
   // Check if anchor org is missing from the fetched organizations list
   const anchorOrgMissing = useMemo(() => {
@@ -242,16 +242,16 @@ export function useEntityData({
 
     if (anchorOrganizationId) {
       const filtered = contacts.filter((c) => c.organization_id === anchorOrganizationId);
-      result = filtered.length === 0 && contactsForAnchorOrg.length > 0
-        ? contactsForAnchorOrg
-        : filtered;
+      result =
+        filtered.length === 0 && contactsForAnchorOrg.length > 0 ? contactsForAnchorOrg : filtered;
     }
 
     if (contactSearch.debouncedTerm.length > 0) {
       const searchLower = contactSearch.debouncedTerm.toLowerCase();
-      result = result.filter((c) =>
-        c.name.toLowerCase().includes(searchLower) ||
-        c.company_name?.toLowerCase().includes(searchLower)
+      result = result.filter(
+        (c) =>
+          c.name.toLowerCase().includes(searchLower) ||
+          c.company_name?.toLowerCase().includes(searchLower)
       );
     }
 
@@ -283,9 +283,7 @@ export function useEntityData({
       const filtered = opportunities.filter(
         (o) => o.customer_organization_id === anchorOrganizationId
       );
-      result = filtered.length === 0 && oppsForAnchorOrg.length > 0
-        ? oppsForAnchorOrg
-        : filtered;
+      result = filtered.length === 0 && oppsForAnchorOrg.length > 0 ? oppsForAnchorOrg : filtered;
     }
 
     if (oppSearch.debouncedTerm.length > 0) {

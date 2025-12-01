@@ -74,9 +74,7 @@ export function useColumnMapping(): UseColumnMappingReturn {
   // Core state
   const [rawHeaders, setRawHeaders] = useState<string[]>([]);
   const [rawDataRows, setRawDataRows] = useState<any[][]>([]);
-  const [userOverrides, setUserOverrides] = useState<Map<string, string | null>>(
-    new Map()
-  );
+  const [userOverrides, setUserOverrides] = useState<Map<string, string | null>>(new Map());
 
   // Track previous headers to detect new file selection
   const prevHeadersRef = useRef<string[]>([]);
@@ -129,21 +127,18 @@ export function useColumnMapping(): UseColumnMappingReturn {
    * - Pass a field name to override auto-detection
    * - Pass null or empty string to revert to auto-detection
    */
-  const setOverride = useCallback(
-    (csvHeader: string, targetField: string | null) => {
-      setUserOverrides((prev) => {
-        const next = new Map(prev);
-        if (targetField === null || targetField === "") {
-          // Clear override → revert to auto-detection
-          next.delete(csvHeader);
-        } else {
-          next.set(csvHeader, targetField);
-        }
-        return next;
-      });
-    },
-    []
-  );
+  const setOverride = useCallback((csvHeader: string, targetField: string | null) => {
+    setUserOverrides((prev) => {
+      const next = new Map(prev);
+      if (targetField === null || targetField === "") {
+        // Clear override → revert to auto-detection
+        next.delete(csvHeader);
+      } else {
+        next.set(csvHeader, targetField);
+      }
+      return next;
+    });
+  }, []);
 
   /**
    * Initialize with parsed CSV data.

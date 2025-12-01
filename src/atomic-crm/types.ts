@@ -14,7 +14,11 @@ import type { Database } from "@/types/database.generated";
 
 // Re-export enum types from canonical validation schemas (P1/P2 consolidation)
 export type { OrganizationType, OrganizationPriority } from "./validation/organizations";
-export type { LeadSource, OpportunityStageValue, OpportunityPriority } from "./validation/opportunities";
+export type {
+  LeadSource,
+  OpportunityStageValue,
+  OpportunityPriority,
+} from "./validation/opportunities";
 export type { SampleStatus, Sentiment } from "./validation/activities";
 export type { SalesRole } from "./validation/sales";
 

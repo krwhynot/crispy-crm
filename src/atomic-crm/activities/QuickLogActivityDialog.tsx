@@ -210,10 +210,7 @@ function saveDraft(storageKey: string, formData: Partial<ActivityLogInput>): voi
 
   // Don't save empty drafts
   const hasContent =
-    formData.notes ||
-    formData.contactId ||
-    formData.organizationId ||
-    formData.opportunityId;
+    formData.notes || formData.contactId || formData.organizationId || formData.opportunityId;
 
   if (!hasContent) {
     localStorage.removeItem(storageKey);
@@ -441,7 +438,11 @@ export function QuickLogActivityDialog({
     }
 
     // Merge: draft values + context overrides
-    return draft ? { ...draft, ...contextValues } : Object.keys(contextValues).length > 0 ? contextValues : null;
+    return draft
+      ? { ...draft, ...contextValues }
+      : Object.keys(contextValues).length > 0
+        ? contextValues
+        : null;
   }, [open, enableDraftPersistence, draftStorageKey, entityContext, activityTypePreset]);
 
   // ═══════════════════════════════════════════════════════════════════
@@ -504,9 +505,7 @@ export function QuickLogActivityDialog({
   // Determine which fields are locked
   // ═══════════════════════════════════════════════════════════════════
   const hasLockedFields =
-    !!entityContext?.contactId ||
-    !!entityContext?.organizationId ||
-    !!entityContext?.opportunityId;
+    !!entityContext?.contactId || !!entityContext?.organizationId || !!entityContext?.opportunityId;
 
   // ═══════════════════════════════════════════════════════════════════
   // Render
@@ -529,27 +528,19 @@ export function QuickLogActivityDialog({
               </Badge>
             )}
           </SheetTitle>
-          <SheetDescription id="log-activity-description">
-            {dialogDescription}
-          </SheetDescription>
+          <SheetDescription id="log-activity-description">{dialogDescription}</SheetDescription>
         </SheetHeader>
 
         <div className="flex-1 overflow-y-auto py-4">
           {/* Locked Entity Display Section */}
           {hasLockedFields && (
             <div className="mb-6 space-y-3 rounded-lg border border-border bg-muted/50 p-4">
-              <h3 className="text-sm font-medium text-muted-foreground">
-                Logging activity for:
-              </h3>
+              <h3 className="text-sm font-medium text-muted-foreground">Logging activity for:</h3>
 
               {entityContext?.contactId && (
                 <LockedEntityDisplay
                   label="Contact"
-                  name={
-                    contact
-                      ? `${contact.first_name} ${contact.last_name}`
-                      : undefined
-                  }
+                  name={contact ? `${contact.first_name} ${contact.last_name}` : undefined}
                   loading={contactLoading}
                 />
               )}

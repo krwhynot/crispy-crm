@@ -114,9 +114,7 @@ describe("SaveButtonGroup", () => {
 
   test("buttons are disabled when isSubmitting is true", async () => {
     const user = userEvent.setup();
-    const onSave = vi.fn(
-      () => new Promise((resolve) => setTimeout(resolve, 1000))
-    );
+    const onSave = vi.fn(() => new Promise((resolve) => setTimeout(resolve, 1000)));
     const onSaveAndNew = vi.fn();
 
     render(
@@ -141,11 +139,7 @@ describe("SaveButtonGroup", () => {
     const onSave = vi.fn();
     const onSaveAndNew = vi.fn();
 
-    const FormWrapperWithValidation = ({
-      children,
-    }: {
-      children: React.ReactNode;
-    }) => {
+    const FormWrapperWithValidation = ({ children }: { children: React.ReactNode }) => {
       const methods = useForm<TestFormData>({
         defaultValues: { name: "" },
         mode: "onSubmit",
@@ -160,9 +154,7 @@ describe("SaveButtonGroup", () => {
             )}
           >
             {children}
-            <input
-              {...methods.register("name", { required: "Name is required" })}
-            />
+            <input {...methods.register("name", { required: "Name is required" })} />
           </form>
         </FormProvider>
       );

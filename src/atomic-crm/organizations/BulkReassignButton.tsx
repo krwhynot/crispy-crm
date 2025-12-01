@@ -61,9 +61,7 @@ export const BulkReassignButton = ({ onSuccess }: BulkReassignButtonProps) => {
   });
 
   // Get the selected organizations for preview
-  const selectedOrganizations = organizations?.filter((org) =>
-    selectedIds?.includes(org.id)
-  ) ?? [];
+  const selectedOrganizations = organizations?.filter((org) => selectedIds?.includes(org.id)) ?? [];
 
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
@@ -124,10 +122,9 @@ export const BulkReassignButton = ({ onSuccess }: BulkReassignButtonProps) => {
         );
       }
       if (failureCount > 0) {
-        notify(
-          `Failed to reassign ${failureCount} organization${failureCount === 1 ? "" : "s"}`,
-          { type: "error" }
-        );
+        notify(`Failed to reassign ${failureCount} organization${failureCount === 1 ? "" : "s"}`, {
+          type: "error",
+        });
       }
 
       // Refresh list and clear selection
@@ -200,9 +197,7 @@ export const BulkReassignButton = ({ onSuccess }: BulkReassignButtonProps) => {
                 disabled={isSalesLoading}
               >
                 <SelectTrigger id="bulk-reassign-select" className="h-11">
-                  <SelectValue
-                    placeholder={isSalesLoading ? "Loading..." : "Select a sales rep"}
-                  />
+                  <SelectValue placeholder={isSalesLoading ? "Loading..." : "Select a sales rep"} />
                 </SelectTrigger>
                 <SelectContent>
                   {salesList?.map((sales) => (
@@ -219,10 +214,7 @@ export const BulkReassignButton = ({ onSuccess }: BulkReassignButtonProps) => {
             <Button variant="outline" onClick={handleCloseDialog} disabled={isProcessing}>
               Cancel
             </Button>
-            <Button
-              onClick={handleExecuteReassign}
-              disabled={!selectedSalesId || isProcessing}
-            >
+            <Button onClick={handleExecuteReassign} disabled={!selectedSalesId || isProcessing}>
               {isProcessing
                 ? "Reassigning..."
                 : `Reassign ${selectedIds.length} Organization${selectedIds.length === 1 ? "" : "s"}`}

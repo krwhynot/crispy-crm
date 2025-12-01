@@ -3,11 +3,7 @@ import { addDays, addWeeks, startOfDay, endOfDay, format } from "date-fns";
 import { AlarmClock, Calendar as CalendarIcon, Loader2, Sun, CalendarDays } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
 interface SnoozePopoverProps {
   /** Task subject for accessibility labels */
@@ -61,12 +57,9 @@ export function SnoozePopover({
     [onSnooze]
   );
 
-  const handleCustomDateSelect = useCallback(
-    (date: Date | undefined) => {
-      setSelectedDate(date);
-    },
-    []
-  );
+  const handleCustomDateSelect = useCallback((date: Date | undefined) => {
+    setSelectedDate(date);
+  }, []);
 
   const handleCustomDateConfirm = useCallback(async () => {
     if (!selectedDate) return;
@@ -129,9 +122,7 @@ export function SnoozePopover({
             {/* Header */}
             <div className="border-b border-border px-4 py-3">
               <h3 className="text-sm font-semibold">Snooze until</h3>
-              <p className="text-xs text-muted-foreground">
-                Choose when to be reminded
-              </p>
+              <p className="text-xs text-muted-foreground">Choose when to be reminded</p>
             </div>
 
             {/* Quick options */}

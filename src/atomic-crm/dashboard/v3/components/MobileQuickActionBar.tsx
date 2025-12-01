@@ -1,12 +1,5 @@
 import { useState, useCallback, lazy, Suspense } from "react";
-import {
-  MessageCircle,
-  Package,
-  Phone,
-  Users,
-  FileText,
-  CheckCircle2,
-} from "lucide-react";
+import { MessageCircle, Package, Phone, Users, FileText, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -169,17 +162,20 @@ export function MobileQuickActionBar({
   const [selectedAction, setSelectedAction] = useState<QuickAction | null>(null);
 
   // Handle quick action button click
-  const handleActionClick = useCallback((action: QuickAction) => {
-    if (action.customAction) {
-      // Handle custom actions (e.g., Complete Task)
-      onCompleteTask?.();
-      return;
-    }
+  const handleActionClick = useCallback(
+    (action: QuickAction) => {
+      if (action.customAction) {
+        // Handle custom actions (e.g., Complete Task)
+        onCompleteTask?.();
+        return;
+      }
 
-    // Open sheet with pre-filled activity type
-    setSelectedAction(action);
-    setIsSheetOpen(true);
-  }, [onCompleteTask]);
+      // Open sheet with pre-filled activity type
+      setSelectedAction(action);
+      setIsSheetOpen(true);
+    },
+    [onCompleteTask]
+  );
 
   // Handle form completion (successful save)
   const handleComplete = useCallback(() => {
@@ -245,9 +241,7 @@ export function MobileQuickActionBar({
                 aria-label={action.ariaLabel}
               >
                 <Icon className="h-5 w-5" aria-hidden="true" />
-                <span className="text-xs font-medium leading-none">
-                  {action.label}
-                </span>
+                <span className="text-xs font-medium leading-none">{action.label}</span>
               </Button>
             );
           })}
@@ -286,11 +280,7 @@ export function MobileQuickActionBar({
       </Sheet>
 
       {/* Spacer to prevent content from being hidden behind fixed bar */}
-      <div
-        className="h-20 lg:hidden"
-        aria-hidden="true"
-        role="presentation"
-      />
+      <div className="h-20 lg:hidden" aria-hidden="true" role="presentation" />
     </>
   );
 }

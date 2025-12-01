@@ -74,10 +74,7 @@ export function PremiumDatagrid({
   const getRowClassName = useCallback(
     (_record: unknown, index: number) => {
       const isFocused = focusedIndex !== undefined && focusedIndex >= 0 && index === focusedIndex;
-      return cn(
-        "table-row-premium",
-        isFocused && "ring-2 ring-primary ring-inset bg-primary/5"
-      );
+      return cn("table-row-premium", isFocused && "ring-2 ring-primary ring-inset bg-primary/5");
     },
     [focusedIndex]
   );

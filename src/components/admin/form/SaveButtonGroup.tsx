@@ -59,9 +59,7 @@ function SaveButtonGroup({ onSave, onSaveAndNew, className }: SaveButtonGroupPro
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <DropdownMenuItem onSelect={createSubmitHandler("save")}>
-            Save
-          </DropdownMenuItem>
+          <DropdownMenuItem onSelect={createSubmitHandler("save")}>Save</DropdownMenuItem>
           <DropdownMenuItem onSelect={createSubmitHandler("saveAndNew")}>
             Save + Create Another
           </DropdownMenuItem>

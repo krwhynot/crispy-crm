@@ -137,11 +137,18 @@ describe("FormActions", () => {
 
     render(
       <FormWrapper onSubmit={onSubmit}>
-        <FormActions onCancel={onCancel} onSave={onSave} onSaveAndNew={onSaveAndNew} showSaveAndNew={true} />
+        <FormActions
+          onCancel={onCancel}
+          onSave={onSave}
+          onSaveAndNew={onSaveAndNew}
+          showSaveAndNew={true}
+        />
       </FormWrapper>
     );
 
-    const saveButtonGroup = screen.getByRole("button", { name: /more save options/i }).closest('[data-slot="save-button-group"]');
+    const saveButtonGroup = screen
+      .getByRole("button", { name: /more save options/i })
+      .closest('[data-slot="save-button-group"]');
     expect(saveButtonGroup).toBeInTheDocument();
   });
 

@@ -37,16 +37,19 @@ export function usePipelineTableState({ data }: UsePipelineTableStateOptions) {
   }, []);
 
   // Handle column header click for sorting
-  const handleSort = useCallback((field: SortField) => {
-    if (sortField === field) {
-      // Toggle direction: ascending -> descending -> ascending
-      setSortDirection((prev) => (prev === "ascending" ? "descending" : "ascending"));
-    } else {
-      // New field: start with ascending for name, descending for numeric fields
-      setSortField(field);
-      setSortDirection(field === "name" ? "ascending" : "descending");
-    }
-  }, [sortField]);
+  const handleSort = useCallback(
+    (field: SortField) => {
+      if (sortField === field) {
+        // Toggle direction: ascending -> descending -> ascending
+        setSortDirection((prev) => (prev === "ascending" ? "descending" : "ascending"));
+      } else {
+        // New field: start with ascending for name, descending for numeric fields
+        setSortField(field);
+        setSortDirection(field === "name" ? "ascending" : "descending");
+      }
+    },
+    [sortField]
+  );
 
   // Filter data based on search query and momentum filters
   const filteredData = useMemo(() => {
@@ -100,10 +103,13 @@ export function usePipelineTableState({ data }: UsePipelineTableStateOptions) {
   }, [filteredData, sortField, sortDirection]);
 
   // Get aria-sort value for a column
-  const getAriaSortValue = useCallback((field: SortField): "ascending" | "descending" | "none" => {
-    if (sortField === field) return sortDirection;
-    return "none";
-  }, [sortField, sortDirection]);
+  const getAriaSortValue = useCallback(
+    (field: SortField): "ascending" | "descending" | "none" => {
+      if (sortField === field) return sortDirection;
+      return "none";
+    },
+    [sortField, sortDirection]
+  );
 
   return {
     // State

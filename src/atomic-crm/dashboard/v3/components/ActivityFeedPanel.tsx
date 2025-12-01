@@ -19,13 +19,7 @@
  */
 
 import { memo, useMemo } from "react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -202,9 +196,7 @@ export function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
           <div className="flex h-full items-center justify-center p-8">
             <div className="text-center">
               <Activity className="mx-auto h-12 w-12 text-muted-foreground/50" />
-              <p className="mt-2 text-sm text-muted-foreground">
-                No recent activities
-              </p>
+              <p className="mt-2 text-sm text-muted-foreground">No recent activities</p>
               <p className="text-xs text-muted-foreground/70">
                 Activities will appear here as your team logs them
               </p>
@@ -244,10 +236,7 @@ const ActivityItem = memo(function ActivityItem({ activity }: ActivityItemProps)
     sales?.last_name || null,
     sales?.email || null
   );
-  const initials = getInitials(
-    sales?.first_name || null,
-    sales?.last_name || null
-  );
+  const initials = getInitials(sales?.first_name || null, sales?.last_name || null);
   const relativeTime = formatRelativeTime(activity.activity_date);
   const formattedType = formatActivityType(activity.type);
 
@@ -259,10 +248,7 @@ const ActivityItem = memo(function ActivityItem({ activity }: ActivityItemProps)
     >
       {/* User Avatar */}
       <Avatar className="h-10 w-10 flex-shrink-0">
-        <AvatarImage
-          src={sales?.avatar_url || undefined}
-          alt={fullName}
-        />
+        <AvatarImage src={sales?.avatar_url || undefined} alt={fullName} />
         <AvatarFallback className="bg-primary/10 text-sm font-medium text-primary">
           {initials}
         </AvatarFallback>
@@ -278,17 +264,13 @@ const ActivityItem = memo(function ActivityItem({ activity }: ActivityItemProps)
           >
             <Icon className="h-3.5 w-3.5 text-muted-foreground" />
           </div>
-          <span className="truncate text-sm font-medium text-foreground">
-            {fullName}
-          </span>
+          <span className="truncate text-sm font-medium text-foreground">{fullName}</span>
           <span className="text-xs text-muted-foreground">•</span>
           <span className="text-xs text-muted-foreground">{formattedType}</span>
         </div>
 
         {/* Subject line */}
-        <p className="mt-0.5 truncate text-sm text-foreground/80">
-          {activity.subject}
-        </p>
+        <p className="mt-0.5 truncate text-sm text-foreground/80">{activity.subject}</p>
 
         {/* Timestamp */}
         <p className="mt-1 text-xs text-muted-foreground">{relativeTime}</p>

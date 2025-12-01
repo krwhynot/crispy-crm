@@ -19,11 +19,7 @@ export const NotesIterator = ({
         <div className="mt-4 space-y-4">
           {data.map((note, index) => (
             <React.Fragment key={index}>
-              <Note
-                note={note}
-                isLast={index === data.length - 1}
-                key={index}
-              />
+              <Note note={note} isLast={index === data.length - 1} key={index} />
               {index < data.length - 1 && <Separator />}
             </React.Fragment>
           ))}

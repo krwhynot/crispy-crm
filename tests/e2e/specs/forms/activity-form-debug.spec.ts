@@ -90,7 +90,7 @@ test.describe("DEBUG - Activity Form Combobox", () => {
         // The dialog uses Command pattern (cmdk) - find the search input
         if (dialogVisible) {
           // Command input has cmdk-input attribute
-          const cmdkInput = dialog.locator('[cmdk-input]');
+          const cmdkInput = dialog.locator("[cmdk-input]");
           const cmdkInputVisible = await cmdkInput.isVisible().catch(() => false);
           console.log(`cmdk-input visible: ${cmdkInputVisible}`);
 
@@ -103,7 +103,7 @@ test.describe("DEBUG - Activity Form Combobox", () => {
             await page.waitForTimeout(1000);
 
             // Command items have cmdk-item attribute
-            const cmdkItems = dialog.locator('[cmdk-item]');
+            const cmdkItems = dialog.locator("[cmdk-item]");
             const itemCount = await cmdkItems.count();
             console.log(`cmdk-item count after search: ${itemCount}`);
 
@@ -130,7 +130,9 @@ test.describe("DEBUG - Activity Form Combobox", () => {
         }
 
         // Try to find a search input
-        const searchInputs = page.locator('input[type="text"], input[type="search"], [role="combobox"]');
+        const searchInputs = page.locator(
+          'input[type="text"], input[type="search"], [role="combobox"]'
+        );
         const inputCount = await searchInputs.count();
         console.log(`Potential search inputs: ${inputCount}`);
 

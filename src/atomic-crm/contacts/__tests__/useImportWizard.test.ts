@@ -14,11 +14,7 @@
 
 import { describe, it, expect, beforeEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import {
-  importWizardReducer,
-  createInitialState,
-  useImportWizard,
-} from "../useImportWizard";
+import { importWizardReducer, createInitialState, useImportWizard } from "../useImportWizard";
 import type {
   WizardState,
   WizardAction,

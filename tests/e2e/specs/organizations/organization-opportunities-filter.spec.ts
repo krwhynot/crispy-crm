@@ -95,14 +95,25 @@ test.describe("Organization Opportunities Filter - $or Transformation", () => {
       await opportunitiesTab.click();
 
       // Wait for the ACTIVE tab panel (Opportunities) - use specific selector for active state
-      const opportunitiesPanel = authenticatedPage.getByRole("tabpanel", { name: /opportunities/i });
+      const opportunitiesPanel = authenticatedPage.getByRole("tabpanel", {
+        name: /opportunities/i,
+      });
       await opportunitiesPanel.waitFor({ state: "visible", timeout: 5000 });
 
       // Check for either opportunities content or empty state
-      const hasContent = await opportunitiesPanel.locator("text=/opportunity|opportunities/i").isVisible().catch(() => false);
-      const hasEmptyState = await opportunitiesPanel.locator("text=/no opportunities/i").isVisible().catch(() => false);
+      const hasContent = await opportunitiesPanel
+        .locator("text=/opportunity|opportunities/i")
+        .isVisible()
+        .catch(() => false);
+      const hasEmptyState = await opportunitiesPanel
+        .locator("text=/no opportunities/i")
+        .isVisible()
+        .catch(() => false);
 
-      expect(hasContent || hasEmptyState, "Opportunities tab should show content or empty state").toBe(true);
+      expect(
+        hasContent || hasEmptyState,
+        "Opportunities tab should show content or empty state"
+      ).toBe(true);
     } else {
       test.skip(); // No Opportunities tab in this organization slide-over
     }
@@ -144,10 +155,12 @@ test.describe("Organization Opportunities Filter - $or Transformation", () => {
     }
 
     // Click the tab and wait for network request
-    const responsePromise = authenticatedPage.waitForResponse(
-      (resp) => resp.url().includes("opportunities") && resp.url().includes("rest/v1"),
-      { timeout: 10000 }
-    ).catch(() => null);
+    const responsePromise = authenticatedPage
+      .waitForResponse(
+        (resp) => resp.url().includes("opportunities") && resp.url().includes("rest/v1"),
+        { timeout: 10000 }
+      )
+      .catch(() => null);
 
     await opportunitiesTab.click();
 

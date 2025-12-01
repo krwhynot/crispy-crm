@@ -129,7 +129,9 @@ test.describe("Design System Coverage", () => {
         await expect(editButton).toBeVisible();
         await editButton.click();
         // Wait for edit mode to activate (form fields appear)
-        await expect(authenticatedPage.getByRole("button", { name: /save|cancel/i }).first()).toBeVisible();
+        await expect(
+          authenticatedPage.getByRole("button", { name: /save|cancel/i }).first()
+        ).toBeVisible();
       });
 
       test("has ARIA main landmark", async ({ authenticatedPage }) => {
@@ -214,7 +216,9 @@ test.describe("Design System Coverage", () => {
         const editButton = authenticatedPage.getByRole("button", { name: /edit/i });
         await expect(editButton).toBeVisible();
         await editButton.click();
-        await expect(authenticatedPage.getByRole("button", { name: /save|cancel/i }).first()).toBeVisible();
+        await expect(
+          authenticatedPage.getByRole("button", { name: /save|cancel/i }).first()
+        ).toBeVisible();
       });
 
       test("has ARIA main landmark", async ({ authenticatedPage }) => {

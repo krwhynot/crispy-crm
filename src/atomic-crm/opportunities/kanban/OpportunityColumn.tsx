@@ -10,11 +10,7 @@ import {
   getOpportunityStageDescription,
   getOpportunityMfbPhase,
 } from "../constants/stageConstants";
-import {
-  Tooltip,
-  TooltipTrigger,
-  TooltipContent,
-} from "@/components/ui/tooltip";
+import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { useStageMetrics, STUCK_THRESHOLD_DAYS } from "../hooks/useStageMetrics";
 import { QuickAddOpportunity } from "./QuickAddOpportunity";
 
@@ -136,14 +132,13 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
             >
               <div className="space-y-2 p-1">
                 {/* Stage description */}
-                <p className="text-sm leading-relaxed">
-                  {getOpportunityStageDescription(stage)}
-                </p>
+                <p className="text-sm leading-relaxed">{getOpportunityStageDescription(stage)}</p>
                 {/* MFB Phase mapping (PRD Section 7.4) */}
                 {getOpportunityMfbPhase(stage) && (
                   <div className="pt-2 border-t border-border/50">
                     <p className="text-xs font-medium text-primary">
-                      📋 MFB {getOpportunityMfbPhase(stage)?.phase}: {getOpportunityMfbPhase(stage)?.name}
+                      📋 MFB {getOpportunityMfbPhase(stage)?.phase}:{" "}
+                      {getOpportunityMfbPhase(stage)?.name}
                     </p>
                     <p className="text-xs text-muted-foreground mt-0.5">
                       {getOpportunityMfbPhase(stage)?.context}

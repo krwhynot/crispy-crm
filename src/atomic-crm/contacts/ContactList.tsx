@@ -197,7 +197,11 @@ const ContactListActions = () => (
 const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
   const sales = await fetchRelatedRecords<Sale>(records, "sales_id", "sales");
   const tags = await fetchRelatedRecords<Tag>(records, "tags", "tags");
-  const organizations = await fetchRelatedRecords<Organization>(records, "organization_id", "organizations");
+  const organizations = await fetchRelatedRecords<Organization>(
+    records,
+    "organization_id",
+    "organizations"
+  );
 
   const contacts = records.map((contact) => {
     // Build the export object with canonical field names matching import expectations

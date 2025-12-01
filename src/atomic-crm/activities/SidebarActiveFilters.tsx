@@ -15,8 +15,7 @@ import { useActivityFilterChips } from "./useActivityFilterChips";
  * - Touch-friendly targets (44px minimum)
  */
 export const SidebarActiveFilters = () => {
-  const { chips, removeFilterValue, clearAllFilters, hasActiveFilters } =
-    useActivityFilterChips();
+  const { chips, removeFilterValue, clearAllFilters, hasActiveFilters } = useActivityFilterChips();
 
   // Auto-hide when no filters
   if (!hasActiveFilters) {
@@ -27,9 +26,7 @@ export const SidebarActiveFilters = () => {
     <div className="flex flex-col gap-2">
       {/* Header with count and Clear All */}
       <div className="flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-foreground">
-          Active Filters ({chips.length})
-        </h3>
+        <h3 className="text-sm font-semibold text-foreground">Active Filters ({chips.length})</h3>
         <button
           type="button"
           onClick={clearAllFilters}
@@ -52,9 +49,7 @@ export const SidebarActiveFilters = () => {
             title={`${chip.category}: ${chip.label}`}
           >
             <div className="flex-1 min-w-0 text-xs">
-              <span className="text-muted-foreground font-medium">
-                {chip.category}:
-              </span>{" "}
+              <span className="text-muted-foreground font-medium">{chip.category}:</span>{" "}
               <span className="text-foreground truncate block">{chip.label}</span>
             </div>
             <button

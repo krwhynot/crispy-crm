@@ -70,10 +70,7 @@ export function useContactOrgMismatch(
         // A contact is mismatched if it has an organization_id that differs
         // from the opportunity's customer organization
         const contactOrgId = contact.organization_id;
-        return (
-          contactOrgId != null &&
-          String(contactOrgId) !== String(customerOrganizationId)
-        );
+        return contactOrgId != null && String(contactOrgId) !== String(customerOrganizationId);
       })
       .map((contact) => ({
         contact,

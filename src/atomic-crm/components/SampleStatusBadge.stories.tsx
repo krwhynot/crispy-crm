@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import type { DataProvider} from "react-admin";
+import type { DataProvider } from "react-admin";
 import { AdminContext, defaultDataProvider } from "react-admin";
 import {
   SampleStatusBadge,
@@ -110,7 +110,8 @@ export const Sent: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Initial state - sample has been dispatched to customer. Uses muted/secondary styling.",
+        story:
+          "Initial state - sample has been dispatched to customer. Uses muted/secondary styling.",
       },
     },
   },
@@ -211,7 +212,8 @@ export const Interactive: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Interactive badge with click-to-edit popover. Click the badge to see the workflow stepper and status controls.",
+        story:
+          "Interactive badge with click-to-edit popover. Click the badge to see the workflow stepper and status controls.",
       },
     },
   },
@@ -227,7 +229,8 @@ export const InteractiveAtStart: Story = {
   parameters: {
     docs: {
       description: {
-        story: "Interactive mode at the beginning of workflow. All forward statuses are selectable.",
+        story:
+          "Interactive mode at the beginning of workflow. All forward statuses are selectable.",
       },
     },
   },
@@ -366,7 +369,8 @@ export const InActivityList: Story = {
     layout: "padded",
     docs: {
       description: {
-        story: "Sample status badges integrated into an activity list table. Shows compact badges with inline steppers.",
+        story:
+          "Sample status badges integrated into an activity list table. Shows compact badges with inline steppers.",
       },
     },
   },
@@ -383,14 +387,14 @@ export const WithCallback: Story = {
     interactive: true,
     showStepper: true,
     onStatusChange: (newStatus: SampleStatus) => {
-       
       alert(`Status changed to: ${newStatus}`);
     },
   },
   parameters: {
     docs: {
       description: {
-        story: "Interactive badge with onStatusChange callback. Alerts on status change for demo purposes.",
+        story:
+          "Interactive badge with onStatusChange callback. Alerts on status change for demo purposes.",
       },
     },
   },

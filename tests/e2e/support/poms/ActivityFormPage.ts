@@ -121,11 +121,7 @@ export class ActivityFormPage extends BasePage {
       sample: "Sample",
     };
 
-    await selectFromDropdown(
-      this.page,
-      /interaction type/i,
-      new RegExp(typeLabels[type], "i")
-    );
+    await selectFromDropdown(this.page, /interaction type/i, new RegExp(typeLabels[type], "i"));
   }
 
   /**
@@ -221,7 +217,9 @@ export class ActivityFormPage extends BasePage {
     }
 
     // Wait for dialog to close
-    await expect(dialog).not.toBeVisible({ timeout: 3000 }).catch(() => {});
+    await expect(dialog)
+      .not.toBeVisible({ timeout: 3000 })
+      .catch(() => {});
   }
 
   /**
@@ -269,7 +267,9 @@ export class ActivityFormPage extends BasePage {
     }
 
     // Wait for dialog to close
-    await expect(dialog).not.toBeVisible({ timeout: 3000 }).catch(() => {});
+    await expect(dialog)
+      .not.toBeVisible({ timeout: 3000 })
+      .catch(() => {});
   }
 
   /**
@@ -317,7 +317,9 @@ export class ActivityFormPage extends BasePage {
     }
 
     // Wait for dialog to close
-    await expect(dialog).not.toBeVisible({ timeout: 3000 }).catch(() => {});
+    await expect(dialog)
+      .not.toBeVisible({ timeout: 3000 })
+      .catch(() => {});
   }
 
   // ============================================================================
@@ -327,20 +329,14 @@ export class ActivityFormPage extends BasePage {
   /**
    * Select sentiment
    */
-  async selectSentiment(
-    sentiment: "positive" | "neutral" | "negative"
-  ): Promise<void> {
+  async selectSentiment(sentiment: "positive" | "neutral" | "negative"): Promise<void> {
     await this.openFollowUpSection();
     const sentimentLabels = {
       positive: "Positive",
       neutral: "Neutral",
       negative: "Negative",
     };
-    await selectFromDropdown(
-      this.page,
-      /sentiment/i,
-      new RegExp(sentimentLabels[sentiment], "i")
-    );
+    await selectFromDropdown(this.page, /sentiment/i, new RegExp(sentimentLabels[sentiment], "i"));
   }
 
   /**
@@ -402,11 +398,7 @@ export class ActivityFormPage extends BasePage {
       feedback_pending: "Feedback Pending",
       feedback_received: "Feedback Received",
     };
-    await selectFromDropdown(
-      this.page,
-      /sample status/i,
-      new RegExp(statusLabels[status], "i")
-    );
+    await selectFromDropdown(this.page, /sample status/i, new RegExp(statusLabels[status], "i"));
   }
 
   // ============================================================================
@@ -635,11 +627,7 @@ export class ActivityFormPage extends BasePage {
   /**
    * Fill activity form without submitting
    */
-  async fillActivityForm(data: {
-    subject: string;
-    type: string;
-    notes?: string;
-  }): Promise<void> {
+  async fillActivityForm(data: { subject: string; type: string; notes?: string }): Promise<void> {
     await this.fillSubject(data.subject);
     await this.selectInteractionType(
       data.type as

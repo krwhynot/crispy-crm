@@ -34,7 +34,9 @@ export function OpportunitySlideOverDetailsTab({
 
   // State for CloseOpportunityModal
   const [showCloseModal, setShowCloseModal] = useState(false);
-  const [closeTargetStage, setCloseTargetStage] = useState<"closed_won" | "closed_lost">("closed_won");
+  const [closeTargetStage, setCloseTargetStage] = useState<"closed_won" | "closed_lost">(
+    "closed_won"
+  );
   const pendingFormDataRef = useRef<any>(null);
 
   /**
@@ -189,7 +191,9 @@ export function OpportunitySlideOverDetailsTab({
 
         {/* Organizations section */}
         <div className="pt-2 border-t border-border">
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide block mb-2">Organizations</span>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide block mb-2">
+            Organizations
+          </span>
           <div className="space-y-2">
             <ReferenceInput source="customer_organization_id" reference="organizations">
               <AutocompleteInput
@@ -334,7 +338,10 @@ export function OpportunitySlideOverDetailsTab({
   /**
    * Get the display name for a win/loss reason
    */
-  const getReasonDisplayName = (reason: string | null | undefined, isWin: boolean): string | null => {
+  const getReasonDisplayName = (
+    reason: string | null | undefined,
+    isWin: boolean
+  ): string | null => {
     if (!reason) return null;
     const reasons = isWin ? WIN_REASONS : LOSS_REASONS;
     return reasons.find((r) => r.id === reason)?.name || reason;
@@ -342,24 +349,29 @@ export function OpportunitySlideOverDetailsTab({
 
   // Determine if this is a closed opportunity with reason data
   const isClosedOpportunity = record.stage === "closed_won" || record.stage === "closed_lost";
-  const closedReason = record.stage === "closed_won"
-    ? getReasonDisplayName(record.win_reason, true)
-    : record.stage === "closed_lost"
-    ? getReasonDisplayName(record.loss_reason, false)
-    : null;
+  const closedReason =
+    record.stage === "closed_won"
+      ? getReasonDisplayName(record.win_reason, true)
+      : record.stage === "closed_lost"
+        ? getReasonDisplayName(record.loss_reason, false)
+        : null;
 
   return (
     <div className="space-y-2">
       {/* Name */}
       <div>
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Name</span>
+        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+          Name
+        </span>
         <p className="text-sm">{record.name || "N/A"}</p>
       </div>
 
       {/* Description */}
       {record.description && (
         <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Description</span>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Description
+          </span>
           <p className="text-sm whitespace-pre-wrap">{record.description}</p>
         </div>
       )}
@@ -367,16 +379,22 @@ export function OpportunitySlideOverDetailsTab({
       {/* Stage & Priority row */}
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Stage</span>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Stage
+          </span>
           <div>
             <Badge variant={getStageBadgeVariant(record.stage || "")}>{stageName}</Badge>
           </div>
         </div>
         <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Priority</span>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Priority
+          </span>
           <div>
             <Badge variant={getPriorityBadgeVariant(record.priority || "low")}>
-              {record.priority ? record.priority.charAt(0).toUpperCase() + record.priority.slice(1) : "Low"}
+              {record.priority
+                ? record.priority.charAt(0).toUpperCase() + record.priority.slice(1)
+                : "Low"}
             </Badge>
           </div>
         </div>
@@ -415,15 +433,21 @@ export function OpportunitySlideOverDetailsTab({
       {/* Lead Source & Close Date row */}
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Lead Source</span>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Lead Source
+          </span>
           <p className="text-sm">
             {record.lead_source
-              ? record.lead_source.replace(/_/g, " ").replace(/\b\w/g, (l: string) => l.toUpperCase())
+              ? record.lead_source
+                  .replace(/_/g, " ")
+                  .replace(/\b\w/g, (l: string) => l.toUpperCase())
               : "—"}
           </p>
         </div>
         <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Est. Close</span>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Est. Close
+          </span>
           <p className="text-sm">{formatDate(record.estimated_close_date)}</p>
         </div>
       </div>
@@ -431,7 +455,9 @@ export function OpportunitySlideOverDetailsTab({
       {/* Campaign */}
       {record.campaign && (
         <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Campaign</span>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Campaign
+          </span>
           <p className="text-sm">{record.campaign}</p>
         </div>
       )}
@@ -439,7 +465,9 @@ export function OpportunitySlideOverDetailsTab({
       {/* Notes */}
       {record.notes && (
         <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Notes</span>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Notes
+          </span>
           <p className="text-sm whitespace-pre-wrap">{record.notes}</p>
         </div>
       )}
@@ -448,11 +476,15 @@ export function OpportunitySlideOverDetailsTab({
       {(record.next_action || record.next_action_date) && (
         <div className="grid grid-cols-2 gap-3">
           <div>
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Next Action</span>
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+              Next Action
+            </span>
             <p className="text-sm">{record.next_action || "—"}</p>
           </div>
           <div>
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Action Date</span>
+            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+              Action Date
+            </span>
             <p className="text-sm">{formatDate(record.next_action_date)}</p>
           </div>
         </div>
@@ -461,14 +493,18 @@ export function OpportunitySlideOverDetailsTab({
       {/* Decision Criteria */}
       {record.decision_criteria && (
         <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Decision Criteria</span>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Decision Criteria
+          </span>
           <p className="text-sm whitespace-pre-wrap">{record.decision_criteria}</p>
         </div>
       )}
 
       {/* Organizations - 3 column grid */}
       <div className="pt-2 border-t border-border">
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide block mb-1.5">Organizations</span>
+        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide block mb-1.5">
+          Organizations
+        </span>
         <div className="grid grid-cols-3 gap-1.5">
           <OrganizationCard
             organizationId={record.customer_organization_id}

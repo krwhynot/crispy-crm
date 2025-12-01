@@ -5,11 +5,7 @@ import { PrincipalDashboardV3 } from "../PrincipalDashboardV3";
 
 // Mock LogActivityFAB to avoid React Admin dependency in tests
 vi.mock("../components/LogActivityFAB", () => ({
-  LogActivityFAB: () => (
-    <button aria-label="Log Activity">
-      Log Activity FAB
-    </button>
-  ),
+  LogActivityFAB: () => <button aria-label="Log Activity">Log Activity FAB</button>,
 }));
 
 // Mock the hooks
@@ -100,8 +96,8 @@ describe("PrincipalDashboardV3", () => {
     expect(gridContainers.length).toBeGreaterThanOrEqual(1);
 
     // Verify KPI row uses 4-column grid on desktop
-    const kpiGrid = Array.from(gridContainers).find(
-      (el) => el.classList.contains("lg:grid-cols-4")
+    const kpiGrid = Array.from(gridContainers).find((el) =>
+      el.classList.contains("lg:grid-cols-4")
     );
     expect(kpiGrid).toBeInTheDocument();
   });

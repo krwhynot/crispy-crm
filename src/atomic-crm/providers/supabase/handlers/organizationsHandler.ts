@@ -25,8 +25,6 @@ import { organizationsCallbacks } from "../callbacks";
  */
 export function createOrganizationsHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(
-      withLifecycleCallbacks(baseProvider, [organizationsCallbacks])
-    )
+    withValidation(withLifecycleCallbacks(baseProvider, [organizationsCallbacks]))
   );
 }

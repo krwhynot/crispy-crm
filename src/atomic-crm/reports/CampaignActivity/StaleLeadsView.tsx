@@ -65,7 +65,8 @@ export const StaleLeadsView: React.FC<StaleLeadsViewProps> = ({
         </p>
         <p className="text-xs text-muted-foreground mt-1">
           Thresholds: New Lead {STAGE_STALE_THRESHOLDS.new_lead}d • Outreach/Sample/Demo{" "}
-          {STAGE_STALE_THRESHOLDS.initial_outreach}d • Feedback {STAGE_STALE_THRESHOLDS.feedback_logged}d • Closed stages excluded
+          {STAGE_STALE_THRESHOLDS.initial_outreach}d • Feedback{" "}
+          {STAGE_STALE_THRESHOLDS.feedback_logged}d • Closed stages excluded
         </p>
       </div>
 

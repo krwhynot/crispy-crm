@@ -38,22 +38,22 @@ export const leadSourceSchema = z.enum([
 
 // Win reasons - why deals are won
 export const winReasonSchema = z.enum([
-  "relationship",        // Strong existing relationship with customer
-  "product_quality",     // Superior product quality/fit
-  "price_competitive",   // Competitive pricing
-  "timing",              // Right timing for customer needs
-  "other",               // Free-text reason required
+  "relationship", // Strong existing relationship with customer
+  "product_quality", // Superior product quality/fit
+  "price_competitive", // Competitive pricing
+  "timing", // Right timing for customer needs
+  "other", // Free-text reason required
 ]);
 
 // Loss reasons - why deals are lost
 export const lossReasonSchema = z.enum([
-  "price_too_high",           // Price not competitive
-  "no_authorization",         // Distributor not authorized for principal
-  "competitor_relationship",  // Customer has existing competitor relationship
-  "product_fit",              // Product doesn't meet customer needs
-  "timing",                   // Bad timing (budget, seasonality, etc.)
-  "no_response",              // Customer became unresponsive
-  "other",                    // Free-text reason required
+  "price_too_high", // Price not competitive
+  "no_authorization", // Distributor not authorized for principal
+  "competitor_relationship", // Customer has existing competitor relationship
+  "product_fit", // Product doesn't meet customer needs
+  "timing", // Bad timing (budget, seasonality, etc.)
+  "no_response", // Customer became unresponsive
+  "other", // Free-text reason required
 ]);
 
 // Type exports for use in components

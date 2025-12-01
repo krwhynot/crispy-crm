@@ -26,9 +26,5 @@ import { tagsCallbacks } from "../callbacks/tagsCallbacks";
  * @returns Composed DataProvider with validation and error handling
  */
 export function createTagsHandler(baseProvider: DataProvider): DataProvider {
-  return withErrorLogging(
-    withValidation(
-      withLifecycleCallbacks(baseProvider, [tagsCallbacks])
-    )
-  );
+  return withErrorLogging(withValidation(withLifecycleCallbacks(baseProvider, [tagsCallbacks])));
 }

@@ -25,8 +25,6 @@ import { contactsCallbacks } from "../callbacks";
  */
 export function createContactsHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(
-      withLifecycleCallbacks(baseProvider, [contactsCallbacks])
-    )
+    withValidation(withLifecycleCallbacks(baseProvider, [contactsCallbacks]))
   );
 }

@@ -27,11 +27,7 @@ import type { FileObject } from "@supabase/storage-js";
 import type { ServiceContainer } from "../services";
 
 // Import extension types
-import type {
-  ExtendedDataProvider,
-  JunctionParams,
-  BoothVisitorResult,
-} from "./types";
+import type { ExtendedDataProvider, JunctionParams, BoothVisitorResult } from "./types";
 
 // Import validation schemas
 import {
@@ -81,13 +77,10 @@ function logError(
   params: Record<string, unknown>,
   error: unknown
 ): void {
-  console.error(
-    `[DataProvider ${method}] Error in ${resource}:`,
-    {
-      params,
-      error: error instanceof Error ? error.message : String(error),
-    }
-  );
+  console.error(`[DataProvider ${method}] Error in ${resource}:`, {
+    params,
+    error: error instanceof Error ? error.message : String(error),
+  });
 }
 
 /**
@@ -236,10 +229,7 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
      * @param salesId - Optional sales rep ID to filter activities
      * @returns Array of activity records
      */
-    getActivityLog: async (
-      companyId?: Identifier,
-      salesId?: Identifier
-    ): Promise<Activity[]> => {
+    getActivityLog: async (companyId?: Identifier, salesId?: Identifier): Promise<Activity[]> => {
       return services.activities.getActivityLog(companyId, salesId);
     },
 
@@ -338,11 +328,7 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
       organizationId: Identifier,
       params: Partial<OpportunityParticipant>
     ): Promise<{ data: OpportunityParticipant }> => {
-      return services.junctions.addOpportunityParticipant(
-        opportunityId,
-        organizationId,
-        params
-      );
+      return services.junctions.addOpportunityParticipant(opportunityId, organizationId, params);
     },
 
     /**
@@ -565,12 +551,10 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
             throw new Error("File size exceeds 10MB limit");
           }
 
-          const { data, error } = await supabaseClient.storage
-            .from(bucket)
-            .upload(path, file, {
-              cacheControl: "3600",
-              upsert: true,
-            });
+          const { data, error } = await supabaseClient.storage.from(bucket).upload(path, file, {
+            cacheControl: "3600",
+            upsert: true,
+          });
 
           if (error) {
             logError("storage.upload", bucket, { path, size: file.size }, error);
@@ -769,9 +753,7 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
      * // Result: { data: { organization_id, contact_id, opportunity_id } }
      * ```
      */
-    createBoothVisitor: async (
-      data: QuickAddInput
-    ): Promise<{ data: BoothVisitorResult }> => {
+    createBoothVisitor: async (data: QuickAddInput): Promise<{ data: BoothVisitorResult }> => {
       try {
         console.log("[DataProvider] Creating booth visitor", data);
 

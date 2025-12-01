@@ -85,9 +85,7 @@ const OrganizationShowContent = () => {
                     : "No Opportunities"}
                 </TabsTrigger>
                 <TabsTrigger value="activities">Activities</TabsTrigger>
-                {isDistributor && (
-                  <TabsTrigger value="authorizations">Authorizations</TabsTrigger>
-                )}
+                {isDistributor && <TabsTrigger value="authorizations">Authorizations</TabsTrigger>}
               </TabsList>
               <TabsContent value="activity" className="pt-2">
                 <ActivityLog organizationId={record.id} context="organization" />

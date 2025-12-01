@@ -20,7 +20,7 @@ export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
     const fetchData = async () => {
       // Wait for salesId to load if "my principals only" filter is active
       if (filters?.myPrincipalsOnly && salesIdLoading) {
-        setLoading((prev) => prev ? prev : true);
+        setLoading((prev) => (prev ? prev : true));
         return;
       }
 
