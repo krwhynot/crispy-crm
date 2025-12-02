@@ -1318,13 +1318,15 @@ Closes #responsive-dashboard"
 
 | Phase | Tasks | Estimated Time |
 |-------|-------|----------------|
+| Phase 0: Critical Pre-Layout Fixes | 2 tasks | 45 min |
 | Phase 1: Foundation | 2 tasks | 30 min |
 | Phase 2: Tasks Panel Components | 3 tasks | 45 min |
 | Phase 3: Dashboard Grid | 2 tasks | 45 min |
 | Phase 4: Header Integration | 1 task | 20 min |
 | Phase 5: Testing | 2 tasks | 30 min |
+| Phase 6: Post-Layout UX Polish | 5 tasks | 30 min |
 
-**Total Estimated Time:** 2.5-3 hours
+**Total Estimated Time:** ~4 hours (17 tasks)
 
 ---
 

@@ -274,4 +274,98 @@ describe("withErrorLogging", () => {
       expect(result).toEqual({ success: true });
     });
   });
+
+  describe("success audit logging", () => {
+    let consoleInfoSpy: ReturnType<typeof vi.spyOn>;
+
+    beforeEach(() => {
+      consoleInfoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
+    });
+
+    it("should log success for delete operation on any resource", async () => {
+      const expectedResult = { data: { id: 123 } };
+      (mockProvider.delete as ReturnType<typeof vi.fn>).mockResolvedValue(expectedResult);
+
+      const wrappedProvider = withErrorLogging(mockProvider);
+      await wrappedProvider.delete("contacts", { id: 123 });
+
+      expect(consoleInfoSpy).toHaveBeenCalledWith(
+        "[DataProvider Audit]",
+        expect.objectContaining({
+          method: "delete",
+          resource: "contacts",
+          recordId: 123,
+          timestamp: expect.any(String),
+        })
+      );
+    });
+
+    it("should log success for deleteMany operation on any resource", async () => {
+      const expectedResult = { data: [1, 2, 3] };
+      (mockProvider.deleteMany as ReturnType<typeof vi.fn>).mockResolvedValue(expectedResult);
+
+      const wrappedProvider = withErrorLogging(mockProvider);
+      await wrappedProvider.deleteMany("opportunities", { ids: [1, 2, 3] });
+
+      expect(consoleInfoSpy).toHaveBeenCalledWith(
+        "[DataProvider Audit]",
+        expect.objectContaining({
+          method: "deleteMany",
+          resource: "opportunities",
+          recordId: [1, 2, 3],
+          timestamp: expect.any(String),
+        })
+      );
+    });
+
+    it("should log success for operations on sales resource", async () => {
+      const expectedResult = { data: { id: 456, name: "John" } };
+      (mockProvider.update as ReturnType<typeof vi.fn>).mockResolvedValue(expectedResult);
+
+      const wrappedProvider = withErrorLogging(mockProvider);
+      await wrappedProvider.update("sales", { id: 456, data: { name: "John" } });
+
+      expect(consoleInfoSpy).toHaveBeenCalledWith(
+        "[DataProvider Audit]",
+        expect.objectContaining({
+          method: "update",
+          resource: "sales",
+          recordId: 456,
+          timestamp: expect.any(String),
+        })
+      );
+    });
+
+    it("should log success for operations on opportunities resource", async () => {
+      const expectedResult = { data: { id: 789, title: "Big Deal" } };
+      (mockProvider.create as ReturnType<typeof vi.fn>).mockResolvedValue(expectedResult);
+
+      const wrappedProvider = withErrorLogging(mockProvider);
+      await wrappedProvider.create("opportunities", { data: { title: "Big Deal" } });
+
+      expect(consoleInfoSpy).toHaveBeenCalledWith(
+        "[DataProvider Audit]",
+        expect.objectContaining({
+          method: "create",
+          resource: "opportunities",
+          recordId: 789,
+          timestamp: expect.any(String),
+        })
+      );
+    });
+
+    it("should NOT log success for read operations on non-sensitive resources", async () => {
+      const expectedResult = { data: [{ id: 1, name: "Test" }], total: 1 };
+      (mockProvider.getList as ReturnType<typeof vi.fn>).mockResolvedValue(expectedResult);
+
+      const wrappedProvider = withErrorLogging(mockProvider);
+      await wrappedProvider.getList("contacts", {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "id", order: "ASC" },
+        filter: {},
+      });
+
+      expect(consoleInfoSpy).not.toHaveBeenCalled();
+    });
+  });
 });
