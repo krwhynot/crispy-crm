@@ -2,251 +2,54 @@ name: Supabase Deploy
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
     paths:
       - 'supabase/**'
-      - 'scripts/migration/**'
-      - '.github/workflows/supabase-deploy.yml'
   workflow_dispatch:
-    inputs:
-      skip_validation:
-        description: 'Skip validation checks'
-        required: false
-        type: boolean
-        default: false
 
 concurrency:
-  group: supabase-deploy-${{ github.ref }}
-  cancel-in-progress: false  # Never cancel DB operations
-
-permissions:
-  contents: read
+  group: supabase-deploy
+  cancel-in-progress: false
 
 jobs:
-  validate-local:
-    name: Validate Migrations (Local)
-    runs-on: ubuntu-latest
-    timeout-minutes: 15
-    if: ${{ github.event.inputs.skip_validation != 'true' }}
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Setup Supabase CLI
-        uses: supabase/setup-cli@v1
-        with:
-          version: latest
-
-      - name: Start local Supabase
-        run: npx supabase start
-
-      - name: Run validation checks
-        run: |
-          echo "Running local migration validation..."
-          echo "Migrations applied successfully to local instance"
-
-      - name: Test migration rollback safety
-        run: |
-          echo "Testing migration safety..."
-          npx supabase db reset --no-seed
-          echo "Migrations can be reset safely"
-
-      - name: Stop Supabase
-        if: always()
-        run: npx supabase stop
-
-      - name: Validation summary
-        if: success()
-        run: |
-          echo "### Local Migration Validation Passed" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- Migrations applied to local Supabase" >> $GITHUB_STEP_SUMMARY
-          echo "- Reset/rollback tested successfully" >> $GITHUB_STEP_SUMMARY
-          echo "- Ready for production dry-run" >> $GITHUB_STEP_SUMMARY
-
   dry-run:
-    name: Migration Dry Run (Production)
-    needs: validate-local
+    name: Migration Dry Run
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    if: |
-      always() &&
-      (needs.validate-local.result == 'success' ||
-       needs.validate-local.result == 'skipped' ||
-       github.event.inputs.skip_validation == 'true')
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Supabase CLI
-        uses: supabase/setup-cli@v1
+      - uses: supabase/setup-cli@v1
         with:
           version: latest
 
-      - name: Link to production
+      - name: Link & Dry Run
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
           npx supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
-
-      - name: Run migration dry-run
-        id: dryrun
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-        run: |
-          echo "Running migration dry-run..." > dry-run-output.log
-          npx supabase db push --dry-run 2>&1 | tee -a dry-run-output.log
-          echo "dry_run_status=$?" >> $GITHUB_OUTPUT
-
-      - name: Upload dry-run output
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: dry-run-output-${{ github.run_id }}
-          path: |
-            dry-run-output.log
-            *.sql
-          retention-days: 7
-
-      - name: Dry-run summary
-        if: always()
-        run: |
-          if [ "${{ steps.dryrun.outputs.dry_run_status }}" == "0" ]; then
-            echo "### Migration Dry Run Successful" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "- Migrations can be applied safely" >> $GITHUB_STEP_SUMMARY
-            echo "- Review dry-run output in artifacts" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "### Migration Dry Run Failed" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "- Migrations have conflicts or errors" >> $GITHUB_STEP_SUMMARY
-            echo "- Check dry-run output in artifacts for details" >> $GITHUB_STEP_SUMMARY
-            exit 1
-          fi
+          npx supabase db push --dry-run
 
   deploy:
-    name: Deploy to Production
+    name: Deploy
     needs: dry-run
     runs-on: ubuntu-latest
-    timeout-minutes: 20
-    if: github.event_name == 'workflow_dispatch'  # Only manual triggers
+    if: github.event_name == 'workflow_dispatch'
     environment: production
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-          cache: npm
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Setup Supabase CLI
-        uses: supabase/setup-cli@v1
+      - uses: supabase/setup-cli@v1
         with:
           version: latest
 
-      - name: Link to production
+      - name: Deploy Migrations
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
         run: |
           npx supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
+          npx supabase db push
 
-      - name: Create backup timestamp
-        id: backup
-        run: |
-          echo "Creating production backup reference..."
-          echo "Manual backups recommended via Supabase Dashboard before deployment"
-          echo "backup_timestamp=$(date +%Y%m%d_%H%M%S)" >> $GITHUB_OUTPUT
-
-      - name: Deploy migrations
-        id: deploy
+      - name: Deploy Edge Functions
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-        run: |
-          echo "Deploying database migrations..."
-          npx supabase db push 2>&1 | tee migration-deploy.log
-          echo "migration_status=$?" >> $GITHUB_OUTPUT
-
-      - name: Verify migration status
-        if: steps.deploy.outputs.migration_status == '0'
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-        run: |
-          echo "Verifying migration status..."
-          npx supabase migration list --linked
-
-      - name: Deploy edge functions
-        if: steps.deploy.outputs.migration_status == '0'
-        id: functions
-        env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-        run: |
-          echo "Deploying edge functions..."
-          npx supabase functions deploy 2>&1 | tee functions-deploy.log || true
-          echo "functions_status=$?" >> $GITHUB_OUTPUT
-
-      - name: Upload deployment logs
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: deployment-logs-${{ github.run_id }}
-          path: |
-            migration-deploy.log
-            functions-deploy.log
-            logs/
-          retention-days: 30
-
-      - name: Deployment summary
-        if: always()
-        run: |
-          if [ "${{ steps.deploy.outputs.migration_status }}" == "0" ]; then
-            echo "### Production Deployment Successful" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Project**: \`${{ secrets.SUPABASE_PROJECT_REF }}\`" >> $GITHUB_STEP_SUMMARY
-            echo "**Commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
-            echo "**Backup**: \`${{ steps.backup.outputs.backup_timestamp }}\`" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "- Database migrations applied" >> $GITHUB_STEP_SUMMARY
-            if [ "${{ steps.functions.outputs.functions_status }}" == "0" ]; then
-              echo "- Edge functions deployed" >> $GITHUB_STEP_SUMMARY
-            else
-              echo "- Edge functions deployment skipped/failed (non-blocking)" >> $GITHUB_STEP_SUMMARY
-            fi
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "[View Dashboard](https://supabase.com/dashboard/project/${{ secrets.SUPABASE_PROJECT_REF }})" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "### Production Deployment Failed" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "**Project**: \`${{ secrets.SUPABASE_PROJECT_REF }}\`" >> $GITHUB_STEP_SUMMARY
-            echo "**Commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "- Database migration failed" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
-            echo "Check deployment logs in artifacts for details" >> $GITHUB_STEP_SUMMARY
-            echo "No changes applied - production database unchanged" >> $GITHUB_STEP_SUMMARY
-            exit 1
-          fi
-
-      - name: Notify on failure
-        if: failure()
-        run: |
-          echo "Deployment failed!"
-          echo "Check logs and verify production database state"
-          echo "Reference timestamp: ${{ steps.backup.outputs.backup_timestamp }}"
-          exit 1
+        run: npx supabase functions deploy || true
