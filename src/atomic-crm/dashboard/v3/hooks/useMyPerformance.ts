@@ -140,9 +140,10 @@ export function useMyPerformance(): UseMyPerformanceReturn {
           openOpportunitiesLastWeekResult,
         ] = await Promise.allSettled([
           // 1. Activities this week (by current user)
+          // Note: activities table uses created_by, not sales_id
           dataProvider.getList("activities", {
             filter: {
-              sales_id: salesId,
+              created_by: salesId,
               "activity_date@gte": thisWeekStart.toISOString(),
               "activity_date@lte": thisWeekEnd.toISOString(),
             },
