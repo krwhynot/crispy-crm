@@ -10,6 +10,7 @@ import { MCPToolError } from "./shared/errors.ts";
 
 // Import tools to register them
 import "./tools/pipeline.ts";
+import "./tools/activity.ts";
 
 let currentSession: MCPSession | null = null;
 
