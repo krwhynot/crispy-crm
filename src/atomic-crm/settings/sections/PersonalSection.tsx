@@ -64,7 +64,7 @@ export function PersonalSection() {
           <TextRender source="last_name" isEditMode={isEditMode} />
           <TextRender source="email" isEditMode={isEditMode} />
           <TimeZoneSelect
-            value={record?.timezone || "America/New_York"}
+            value={record?.timezone || "America/Chicago"}
             onChange={(value) => mutateSale({ ...record, timezone: value })}
             disabled={!isEditMode}
           />

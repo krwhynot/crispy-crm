@@ -4,7 +4,7 @@
 -- This enables users to select their preferred timezone for displaying timestamps
 -- throughout the application. Uses IANA timezone format (e.g., 'America/New_York').
 --
--- Default: America/New_York (Eastern Time)
+-- Default: America/Chicago (Central Time)
 -- Validation: CHECK constraint ensures IANA format (Area/Location)
 
 -- =============================================================================
@@ -12,7 +12,7 @@
 -- =============================================================================
 
 ALTER TABLE sales
-ADD COLUMN timezone TEXT DEFAULT 'America/New_York'
+ADD COLUMN timezone TEXT DEFAULT 'America/Chicago'
   CHECK (timezone ~ '^[A-Za-z]+/[A-Za-z_]+$');
 
 -- =============================================================================
@@ -20,5 +20,5 @@ ADD COLUMN timezone TEXT DEFAULT 'America/New_York'
 -- =============================================================================
 
 COMMENT ON COLUMN sales.timezone IS
-  'User timezone for display. Uses IANA timezone format (e.g., America/New_York). '
-  'Default is America/New_York (Eastern Time).';
+  'User timezone for display. Uses IANA timezone format (e.g., America/Chicago). '
+  'Default is America/Chicago (Central Time).';
