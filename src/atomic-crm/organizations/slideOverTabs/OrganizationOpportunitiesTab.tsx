@@ -8,6 +8,7 @@ import { Target } from "lucide-react";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";
 import { getOpportunityStageLabel } from "../../opportunities/constants/stageConstants";
+import { MAX_RELATED_ITEMS } from "../constants";
 
 interface Opportunity {
   id: Identifier;
@@ -20,8 +21,6 @@ interface Opportunity {
 
 interface OrganizationOpportunitiesTabProps {
   record: OrganizationWithHierarchy;
-  mode: "view" | "edit";
-  onModeToggle?: () => void;
 }
 
 export function OrganizationOpportunitiesTab({ record }: OrganizationOpportunitiesTabProps) {
@@ -46,7 +45,7 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
 
         const result = await dataProvider.getList("opportunities", {
           filter: filterPayload,
-          pagination: { page: 1, perPage: 100 },
+          pagination: { page: 1, perPage: MAX_RELATED_ITEMS },
           sort: { field: "created_at", order: "DESC" },
         });
         setOpportunities(result.data as Opportunity[]);

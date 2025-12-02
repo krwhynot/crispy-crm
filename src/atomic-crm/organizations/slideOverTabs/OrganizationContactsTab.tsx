@@ -6,6 +6,7 @@ import { AsideSection } from "@/components/ui";
 import { Users } from "lucide-react";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";
+import { MAX_RELATED_ITEMS } from "../constants";
 
 interface Contact {
   id: Identifier;
@@ -18,8 +19,6 @@ interface Contact {
 
 interface OrganizationContactsTabProps {
   record: OrganizationWithHierarchy;
-  mode: "view" | "edit";
-  onModeToggle?: () => void;
 }
 
 export function OrganizationContactsTab({ record }: OrganizationContactsTabProps) {
@@ -35,7 +34,7 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
       try {
         const result = await dataProvider.getList("contacts", {
           filter: { organization_id: record.id },
-          pagination: { page: 1, perPage: 100 },
+          pagination: { page: 1, perPage: MAX_RELATED_ITEMS },
           sort: { field: "last_name", order: "ASC" },
         });
         setContacts(result.data as Contact[]);

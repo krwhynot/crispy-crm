@@ -1,7 +1,5 @@
 import { Truck, Users, Tag, Star } from "lucide-react";
-import type { VariantProps } from "class-variance-authority";
 
-import type { badgeVariants } from "@/components/ui/badge.constants";
 import { Badge } from "@/components/ui/badge";
 import { FilterLiveForm, useGetIdentity } from "ra-core";
 
@@ -11,8 +9,6 @@ import { FilterCategory } from "../filters/FilterCategory";
 import { SidebarActiveFilters } from "./SidebarActiveFilters";
 import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
 import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, ORG_TYPE_COLOR_MAP, PRIORITY_VARIANT_MAP } from "./constants";
-
-type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
 export const OrganizationListFilter = () => {
   const { data: identity } = useGetIdentity();

@@ -20,6 +20,7 @@ import { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
 import { OrganizationEmpty } from "./OrganizationEmpty";
 import { TopToolbar } from "../layout/TopToolbar";
 import type { Organization, Sale, Segment } from "../types";
+import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
 
 const OrganizationListActions = () => (
   <TopToolbar>
@@ -209,7 +210,7 @@ export const OrganizationList = () => {
       <List
         title={false}
         actions={<OrganizationListActions />}
-        perPage={25}
+        perPage={DEFAULT_LIST_PAGE_SIZE}
         sort={{ field: "name", order: "ASC" }}
         exporter={exporter}
       >
