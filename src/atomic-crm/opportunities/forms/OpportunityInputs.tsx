@@ -2,7 +2,7 @@ import { TabbedFormInputs } from "@/components/admin/tabbed-form";
 import { OpportunityGeneralTab } from "./tabs/OpportunityGeneralTab";
 import { OpportunityClassificationTab } from "./tabs/OpportunityClassificationTab";
 import { OpportunityRelationshipsTab } from "./tabs/OpportunityRelationshipsTab";
-import { OpportunityDetailsTab } from "./tabs/OpportunityDetailsTab";
+import { OpportunityAdditionalInfoTab } from "./tabs/OpportunityAdditionalInfoTab";
 
 interface OpportunityInputsProps {
   mode: "create" | "edit";
@@ -19,7 +19,7 @@ export const OpportunityInputs = ({ mode }: OpportunityInputsProps) => {
     {
       key: "classification",
       label: "Classification",
-      fields: ["stage", "priority", "lead_source", "campaign", "tags"],
+      fields: ["stage", "priority", "lead_source"],
       content: <OpportunityClassificationTab />,
     },
     {
@@ -36,16 +36,18 @@ export const OpportunityInputs = ({ mode }: OpportunityInputsProps) => {
       content: <OpportunityRelationshipsTab />,
     },
     {
-      key: "details",
-      label: "Details",
+      key: "additional-info",
+      label: "Additional Info",
       fields: [
+        "campaign",
         "related_opportunity_id",
         "notes",
+        "tags",
         "next_action",
         "next_action_date",
         "decision_criteria",
       ],
-      content: <OpportunityDetailsTab />,
+      content: <OpportunityAdditionalInfoTab />,
     },
   ];
 
