@@ -43,6 +43,9 @@ export function TasksDrawer({ open, onOpenChange, variant }: TasksDrawerProps) {
       >
         <SheetHeader className="px-4 py-3 border-b border-border">
           <SheetTitle>Tasks</SheetTitle>
+          <SheetDescription className="sr-only">
+            View and manage your pending tasks
+          </SheetDescription>
         </SheetHeader>
         <div className="flex-1 overflow-auto">
           <TasksKanbanPanel />
