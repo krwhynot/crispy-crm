@@ -2,6 +2,10 @@
 
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { MCPRequest, MCPResponse, MCP_ERRORS } from "./types/mcp.ts";
+import { authenticateRequest } from "./middleware/auth.ts";
+import { MCPSession } from "./types/mcp.ts";
+
+let currentSession: MCPSession | null = null;
 
 const TOOLS: Record<string, unknown> = {};
 
@@ -68,6 +72,16 @@ Deno.serve(async (req) => {
       headers: { "Content-Type": "application/json" },
     });
   }
+
+  // Authenticate request
+  const authResult = await authenticateRequest(req);
+  if (!authResult.success) {
+    return new Response(
+      JSON.stringify(createErrorResponse(0, MCP_ERRORS.AUTH_ERROR, authResult.error || "Unauthorized")),
+      { status: 401, headers: { "Content-Type": "application/json" } }
+    );
+  }
+  currentSession = authResult.session!;
 
   try {
     const body = await req.json() as MCPRequest;
