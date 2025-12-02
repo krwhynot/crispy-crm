@@ -31,7 +31,7 @@ const ProductEdit = () => {
 
 const ProductEditForm = () => {
   const record = useRecordContext<Product>();
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
 
   // Wait for record to load before rendering form
   if (!record) return null;

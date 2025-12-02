@@ -28,7 +28,7 @@ export const NoteCreate = ({
 }) => {
   const resource = useResourceContext();
   const record = useRecordContext();
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
 
   if (!record || !identity) return null;
 
@@ -53,7 +53,7 @@ const NoteCreateButton = ({
 }) => {
   const [update] = useUpdate();
   const notify = useNotify();
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
   const { reset } = useFormContext();
   const { refetch } = useListContext();
 

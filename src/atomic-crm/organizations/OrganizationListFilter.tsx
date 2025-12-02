@@ -14,7 +14,7 @@ import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
 type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
 export const OrganizationListFilter = () => {
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
 
   const organizationTypes = [
     { id: "customer", name: "Customer" },

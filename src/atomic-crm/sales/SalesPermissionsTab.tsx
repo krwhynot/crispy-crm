@@ -34,7 +34,7 @@ interface SalesPermissionsTabProps {
 export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermissionsTabProps) {
   const [update, { isLoading }] = useUpdate();
   const notify = useNotify();
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
 
   // Form state
   const [formData, setFormData] = useState({
