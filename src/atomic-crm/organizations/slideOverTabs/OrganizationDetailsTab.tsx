@@ -177,7 +177,7 @@ function OrganizationTypeBadge({ type }: { type: string }) {
   const colorClass = ORG_TYPE_COLOR_MAP[type as keyof typeof ORG_TYPE_COLOR_MAP] || "tag-gray";
 
   return (
-    <Badge className={`text-xs px-2 py-1 ${colorClass}`}>
+    <Badge className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${colorClass}`}>
       {type.charAt(0).toUpperCase() + type.slice(1)}
     </Badge>
   );
@@ -188,7 +188,7 @@ function PriorityBadge({ priority }: { priority: string }) {
   const label = PRIORITY_CHOICES.find(p => p.id === priority)?.name || priority;
 
   return (
-    <Badge variant={variant} className="text-xs px-2 py-1">
+    <Badge variant={variant} className="text-xs px-3 py-2 min-h-[44px] flex items-center">
       {label}
     </Badge>
   );

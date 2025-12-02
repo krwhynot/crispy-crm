@@ -76,12 +76,12 @@ export function ContactOrgMismatchWarning({ onClearMismatched }: ContactOrgMisma
   };
 
   return (
-    <Alert className="border-amber-500/50 bg-amber-50 dark:bg-amber-950/20 mt-3">
-      <AlertTriangle className="h-4 w-4 text-amber-600" />
-      <AlertTitle className="text-amber-800 dark:text-amber-400">
+    <Alert className="border-warning/50 bg-warning-subtle mt-3">
+      <AlertTriangle className="h-4 w-4 text-warning" />
+      <AlertTitle className="text-warning-strong">
         Contact Organization Mismatch
       </AlertTitle>
-      <AlertDescription className="text-amber-700 dark:text-amber-300">
+      <AlertDescription className="text-warning">
         <p className="mb-2">
           {mismatchedContacts.length === 1 ? (
             <>
@@ -118,7 +118,7 @@ export function ContactOrgMismatchWarning({ onClearMismatched }: ContactOrgMisma
               <Button
                 variant="outline"
                 size="sm"
-                className="border-amber-600 text-amber-700 hover:bg-amber-100"
+                className="border-warning text-warning hover:bg-warning-subtle"
               >
                 Keep Anyway
               </Button>
@@ -144,7 +144,7 @@ export function ContactOrgMismatchWarning({ onClearMismatched }: ContactOrgMisma
               </AlertDialogHeader>
               <AlertDialogFooter>
                 <AlertDialogCancel>Go Back</AlertDialogCancel>
-                <AlertDialogAction className="bg-amber-600 hover:bg-amber-700">
+                <AlertDialogAction className="bg-warning hover:bg-warning-strong">
                   Yes, Keep These Contacts
                 </AlertDialogAction>
               </AlertDialogFooter>

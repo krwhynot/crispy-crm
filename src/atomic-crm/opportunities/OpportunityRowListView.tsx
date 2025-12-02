@@ -12,9 +12,11 @@ import { Building2, X } from "lucide-react";
 import type { Opportunity } from "../types";
 import { getOpportunityStageLabel, getOpportunityStageColor } from "./constants/stageConstants";
 import { BulkActionsToolbar } from "./BulkActionsToolbar";
+import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 
 interface OpportunityRowListViewProps {
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
+  isSlideOverOpen: boolean;
 }
 
 export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListViewProps) => {

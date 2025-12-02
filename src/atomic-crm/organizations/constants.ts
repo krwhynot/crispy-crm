@@ -64,17 +64,17 @@ export const ORG_TYPE_COLOR_MAP: Record<OrganizationType, string> = {
 
 /**
  * Priority to badge variant mapping
- * Maps priority levels to shadcn/ui badge variants for visual distinction
- * - A: destructive (red - high urgency)
- * - B: default (primary - standard importance)
- * - C: secondary (gray - routine)
- * - D: outline (minimal - low priority)
+ * Uses brand emphasis instead of error semantics for high priority
+ * - A: default (brand primary - high importance, not danger)
+ * - B: secondary (standard importance)
+ * - C: outline (routine)
+ * - D: outline (minimal - component should add text-muted-foreground)
  */
-export const PRIORITY_VARIANT_MAP: Record<PriorityLevel, "destructive" | "default" | "secondary" | "outline"> = {
-  A: "destructive",
-  B: "default",
-  C: "secondary",
-  D: "outline",
+export const PRIORITY_VARIANT_MAP: Record<PriorityLevel, "default" | "secondary" | "outline"> = {
+  A: "default",      // Brand primary - importance without alarm
+  B: "secondary",    // Standard emphasis
+  C: "outline",      // Routine
+  D: "outline",      // Minimal
 };
 
 /**
@@ -153,3 +153,10 @@ export const MAX_RELATED_ITEMS = 100;
  * Page size for activity timeline displays
  */
 export const ACTIVITY_PAGE_SIZE = 50;
+
+/**
+ * Touch target minimum height for WCAG AA compliance (Fitts's Law)
+ * 44px minimum ensures reliable touch/click interaction
+ */
+export const TOUCH_TARGET_MIN_HEIGHT = "h-11";
+export const BADGE_TOUCH_CLASSES = "text-xs px-3 py-2 min-h-[44px] flex items-center justify-center";

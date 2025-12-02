@@ -14,6 +14,7 @@ import {
 import { useMatch, useNavigate } from "react-router-dom";
 
 import { OpportunitiesService } from "../services";
+import { DETAIL_FIELD_MIN_WIDTH } from "./constants";
 
 import { ReferenceArrayField } from "@/components/admin/reference-array-field";
 import { ReferenceField } from "@/components/admin/reference-field";
@@ -117,7 +118,7 @@ const OpportunityShowContent = () => {
               </div>
 
               <div className="flex gap-8 mb-4">
-                <div className="flex flex-col min-w-[150px]">
+                <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
                   <span className="text-xs text-muted-foreground tracking-wide uppercase">
                     Expected closing date
                   </span>
@@ -150,7 +151,7 @@ const OpportunityShowContent = () => {
                   </div>
                 </div>
 
-                <div className="flex flex-col min-w-[150px]">
+                <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
                   <span className="text-xs text-muted-foreground tracking-wide uppercase">
                     Stage
                   </span>
@@ -159,7 +160,7 @@ const OpportunityShowContent = () => {
                   </span>
                 </div>
 
-                <div className="flex flex-col min-w-[150px]">
+                <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
                   <span className="text-xs text-muted-foreground tracking-wide uppercase">
                     Priority
                   </span>
@@ -187,7 +188,7 @@ const OpportunityShowContent = () => {
               {(record.opportunity_owner_id || record.account_manager_id || record.lead_source) && (
                 <div className="flex gap-8 mb-4">
                   {record.opportunity_owner_id && (
-                    <div className="flex flex-col min-w-[150px]">
+                    <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
                       <span className="text-xs text-muted-foreground tracking-wide uppercase">
                         Opportunity Owner
                       </span>
@@ -209,7 +210,7 @@ const OpportunityShowContent = () => {
                   )}
 
                   {record.account_manager_id && (
-                    <div className="flex flex-col min-w-[150px]">
+                    <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
                       <span className="text-xs text-muted-foreground tracking-wide uppercase">
                         Account Manager
                       </span>
@@ -218,7 +219,7 @@ const OpportunityShowContent = () => {
                   )}
 
                   {record.lead_source && (
-                    <div className="flex flex-col min-w-[150px]">
+                    <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
                       <span className="text-xs text-muted-foreground tracking-wide uppercase">
                         Lead Source
                       </span>
@@ -247,7 +248,7 @@ const OpportunityShowContent = () => {
 
               {/* Created Date and Creator */}
               <div className="flex gap-8 mb-4">
-                <div className="flex flex-col min-w-[150px]">
+                <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
                   <span className="text-xs text-muted-foreground tracking-wide uppercase">
                     Created
                   </span>
@@ -262,7 +263,7 @@ const OpportunityShowContent = () => {
                 </div>
 
                 {record.created_by && (
-                  <div className="flex flex-col min-w-[150px]">
+                  <div className={`flex flex-col ${DETAIL_FIELD_MIN_WIDTH}`}>
                     <span className="text-xs text-muted-foreground tracking-wide uppercase">
                       Created By
                     </span>
@@ -349,7 +350,7 @@ const OpportunityShowContent = () => {
 };
 
 const ArchivedTitle = () => (
-  <div className="bg-orange-500 px-6 py-4">
+  <div className="bg-warning px-6 py-4">
     <h3 className="text-lg font-bold text-white">Archived Opportunity</h3>
   </div>
 );
@@ -385,7 +386,7 @@ const ArchiveButton = ({ record }: { record: Opportunity }) => {
       onClick={handleClick}
       size="sm"
       variant="outline"
-      className="flex items-center gap-2 h-9"
+      className="flex items-center gap-2 min-h-[44px]"
     >
       <Archive className="w-4 h-4" />
       Archive
@@ -425,7 +426,7 @@ const UnarchiveButton = ({ record }: { record: Opportunity }) => {
       onClick={handleClick}
       size="sm"
       variant="outline"
-      className="flex items-center gap-2 h-9"
+      className="flex items-center gap-2 min-h-[44px]"
     >
       <ArchiveRestore className="w-4 h-4" />
       Send back to the board
