@@ -163,7 +163,7 @@ export function PrincipalPipelineTable() {
                 placeholder="Search principals..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-9 w-48 pl-8"
+                className="h-11 w-48 pl-8"
               />
             </div>
             <div className="flex items-center gap-2">
