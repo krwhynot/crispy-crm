@@ -336,7 +336,7 @@ function MomentumFilterDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="default" className="h-11">
           <Filter className="mr-2 h-4 w-4" />
           Filters
           {momentumFilters.size > 0 && (
