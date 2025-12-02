@@ -21,9 +21,10 @@ vi.mock("ra-core", async () => {
     ...actual,
     useListContext: vi.fn(),
     useGetList: vi.fn(),
-    useGetIdentity: vi.fn(() => ({
-      identity: { id: 1, fullName: "Test User" },
-    })),
+    useGetIdentity: () => ({
+      data: { id: 1, fullName: "Test User", sales_id: 1 },
+      isLoading: false,
+    }),
     FilterLiveForm: ({ children }: any) => <div>{children}</div>,
     downloadCSV: vi.fn(),
   };
