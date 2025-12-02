@@ -28,21 +28,19 @@ const STALE_THRESHOLDS: Record<string, number> = {
 interface PipelineStageSummary {
   stage: string;
   count: number;
-  total_value: number;
   stale_count: number;
 }
 
 interface PipelineSummaryResult {
   stages: PipelineStageSummary[];
   total_open: number;
-  total_value: number;
   total_stale: number;
 }
 
 registerTool(
   {
     name: "crm_pipeline_summary",
-    description: "Get aggregated pipeline summary by stage with counts, values, and stale opportunity indicators",
+    description: "Get aggregated pipeline summary by stage with counts and stale opportunity indicators",
     inputSchema: {
       type: "object",
       properties: {
@@ -65,12 +63,26 @@ registerTool(
       // Build query
       let query = supabaseAdmin
         .from("opportunities")
-        .select("id, stage, expected_value, updated_at, sales_id, principal_id")
+        .select("id, stage, updated_at, opportunity_owner_id, principal_organization_id")
         .is("deleted_at", null)
         .not("stage", "in", "(closed_won,closed_lost)");
 
       if (principalId) {
-        query = query.eq("principal_id", principalId);
+        query = query.eq("principal_organization_id", principalId);
+      }
+
+      if (userId) {
+        // Note: userId is string UUID, opportunity_owner_id is bigint sales.id
+        // Need to look up sales.id from user_id
+        const { data: salesData } = await supabaseAdmin
+          .from("sales")
+          .select("id")
+          .eq("user_id", userId)
+          .single();
+
+        if (salesData) {
+          query = query.eq("opportunity_owner_id", salesData.id);
+        }
       }
 
       const { data: opportunities, error } = await query;
@@ -86,7 +98,7 @@ registerTool(
       // Initialize all stages
       for (const stage of PIPELINE_STAGES) {
         if (stage !== "closed_won" && stage !== "closed_lost") {
-          stageMap.set(stage, { stage, count: 0, total_value: 0, stale_count: 0 });
+          stageMap.set(stage, { stage, count: 0, stale_count: 0 });
         }
       }
 
@@ -96,7 +108,6 @@ registerTool(
         if (!stageSummary) continue;
 
         stageSummary.count++;
-        stageSummary.total_value += opp.expected_value || 0;
 
         // Check if stale
         const threshold = STALE_THRESHOLDS[opp.stage];
@@ -111,13 +122,11 @@ registerTool(
 
       const stages = Array.from(stageMap.values());
       const totalOpen = stages.reduce((sum, s) => sum + s.count, 0);
-      const totalValue = stages.reduce((sum, s) => sum + s.total_value, 0);
       const totalStale = stages.reduce((sum, s) => sum + s.stale_count, 0);
 
       return {
         stages,
         total_open: totalOpen,
-        total_value: totalValue,
         total_stale: totalStale,
       };
     } catch (error) {
