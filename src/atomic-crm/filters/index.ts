@@ -12,7 +12,7 @@ export { useFilterManagement } from "./useFilterManagement";
 export { useOrganizationNames } from "./useOrganizationNames";
 export { useSalesNames } from "./useSalesNames";
 export { useTagNames } from "./useTagNames";
-export { useOpportunityFilters } from "./useOpportunityFilters";
+// useOpportunityFilters removed - replaced by useOpportunityFilterChips in opportunities module
 
 // Utilities
 export * from "./filterFormatters";
