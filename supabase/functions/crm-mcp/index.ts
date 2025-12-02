@@ -8,6 +8,9 @@ import { getToolDefinitions, executeTool, hasTool } from "./tools/registry.ts";
 import { startTrace, startToolSpan, endToolSpan } from "./middleware/tracing.ts";
 import { MCPToolError } from "./shared/errors.ts";
 
+// Import tools to register them
+import "./tools/pipeline.ts";
+
 let currentSession: MCPSession | null = null;
 
 function createErrorResponse(id: string | number, code: number, message: string): MCPResponse {
