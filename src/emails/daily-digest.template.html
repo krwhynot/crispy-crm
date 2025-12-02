@@ -1,338 +1,741 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="x-apple-disable-message-reformatting">
-  <meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no">
-  <title>{{digest_title}} - MFB Daily Digest</title>
-  <!--[if mso]>
-  <noscript>
-    <xml>
-      <o:OfficeDocumentSettings>
-        <o:PixelsPerInch>96</o:PixelsPerInch>
-      </o:OfficeDocumentSettings>
-    </xml>
-  </noscript>
-  <![endif]-->
-  <style>
-    /* Reset styles */
-    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
-    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
-    img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; }
-    body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; }
-    a[x-apple-data-detectors] { color: inherit !important; text-decoration: none !important; font-size: inherit !important; font-family: inherit !important; font-weight: inherit !important; line-height: inherit !important; }
+<!doctype html>
+<html
+  lang="en"
+  xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="x-apple-disable-message-reformatting" />
+    <meta name="format-detection" content="telephone=no,address=no,email=no,date=no,url=no" />
+    <title>{{digest_title}} - MFB Daily Digest</title>
+    <!--[if mso]>
+      <noscript>
+        <xml>
+          <o:OfficeDocumentSettings>
+            <o:PixelsPerInch>96</o:PixelsPerInch>
+          </o:OfficeDocumentSettings>
+        </xml>
+      </noscript>
+    <![endif]-->
+    <style>
+      /* Reset styles */
+      body,
+      table,
+      td,
+      a {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+      }
+      table,
+      td {
+        mso-table-lspace: 0pt;
+        mso-table-rspace: 0pt;
+      }
+      img {
+        -ms-interpolation-mode: bicubic;
+        border: 0;
+        height: auto;
+        line-height: 100%;
+        outline: none;
+        text-decoration: none;
+      }
+      body {
+        height: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+      }
+      a[x-apple-data-detectors] {
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+      }
 
-    /* Mobile responsive */
-    @media only screen and (max-width: 600px) {
-      .mobile-full { width: 100% !important; max-width: 100% !important; }
-      .mobile-padding { padding: 16px !important; }
-      .mobile-stack { display: block !important; width: 100% !important; }
-      .mobile-center { text-align: center !important; }
-      .mobile-hide { display: none !important; }
-      .mobile-font-sm { font-size: 14px !important; }
-      .mobile-stat { padding: 12px !important; }
-    }
-  </style>
-</head>
-<body style="margin: 0; padding: 0; background-color: #FAF9F6; font-family: 'Nunito', 'Inter', Arial, sans-serif;">
+      /* Mobile responsive */
+      @media only screen and (max-width: 600px) {
+        .mobile-full {
+          width: 100% !important;
+          max-width: 100% !important;
+        }
+        .mobile-padding {
+          padding: 16px !important;
+        }
+        .mobile-stack {
+          display: block !important;
+          width: 100% !important;
+        }
+        .mobile-center {
+          text-align: center !important;
+        }
+        .mobile-hide {
+          display: none !important;
+        }
+        .mobile-font-sm {
+          font-size: 14px !important;
+        }
+        .mobile-stat {
+          padding: 12px !important;
+        }
+      }
+    </style>
+  </head>
+  <body
+    style="
+      margin: 0;
+      padding: 0;
+      background-color: #faf9f6;
+      font-family: &quot;Nunito&quot;, &quot;Inter&quot;, Arial, sans-serif;
+    "
+  >
+    <!-- Preheader text (hidden, shows in email preview) -->
+    <div style="display: none; max-height: 0; overflow: hidden; mso-hide: all">
+      {{preheader_text}}
+      &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+    </div>
 
-  <!-- Preheader text (hidden, shows in email preview) -->
-  <div style="display: none; max-height: 0; overflow: hidden; mso-hide: all;">
-    {{preheader_text}}
-    &nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
-  </div>
+    <!-- Email wrapper table -->
+    <table
+      role="presentation"
+      cellspacing="0"
+      cellpadding="0"
+      border="0"
+      width="100%"
+      style="background-color: #faf9f6"
+    >
+      <tr>
+        <td align="center" style="padding: 24px 16px">
+          <!-- Main content container -->
+          <table
+            role="presentation"
+            cellspacing="0"
+            cellpadding="0"
+            border="0"
+            width="600"
+            class="mobile-full"
+            style="
+              max-width: 600px;
+              background-color: #ffffff;
+              border-radius: 12px;
+              box-shadow: 0 2px 8px rgba(43, 86, 0, 0.08);
+            "
+          >
+            <!-- Header with MFB branding -->
+            <tr>
+              <td
+                style="background-color: #336600; padding: 24px 32px; border-radius: 12px 12px 0 0"
+                class="mobile-padding"
+              >
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr>
+                    <td>
+                      <!-- MFB Logo placeholder -->
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                          <td
+                            style="background-color: #ffffff; border-radius: 8px; padding: 8px 16px"
+                          >
+                            <span
+                              style="
+                                font-size: 20px;
+                                font-weight: 700;
+                                color: #336600;
+                                letter-spacing: -0.5px;
+                              "
+                              >MFB</span
+                            >
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td align="right" style="color: #ffffff; font-size: 14px">
+                      {{formatted_date}}
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-  <!-- Email wrapper table -->
-  <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="background-color: #FAF9F6;">
-    <tr>
-      <td align="center" style="padding: 24px 16px;">
+            <!-- Greeting -->
+            <tr>
+              <td style="padding: 32px 32px 24px 32px" class="mobile-padding">
+                <h1
+                  style="
+                    margin: 0 0 8px 0;
+                    font-size: 24px;
+                    font-weight: 700;
+                    color: #1e3f00;
+                    line-height: 1.3;
+                  "
+                >
+                  Good {{time_of_day}}, {{user_first_name}}!
+                </h1>
+                <p style="margin: 0; font-size: 16px; color: #5c5c52; line-height: 1.5">
+                  Here's your daily digest for {{formatted_date}}.
+                </p>
+              </td>
+            </tr>
 
-        <!-- Main content container -->
-        <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="600" class="mobile-full" style="max-width: 600px; background-color: #FFFFFF; border-radius: 12px; box-shadow: 0 2px 8px rgba(43, 86, 0, 0.08);">
+            <!-- Quick Stats Row -->
+            <tr>
+              <td style="padding: 0 32px 24px 32px" class="mobile-padding">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr>
+                    <!-- Stat: Open Opportunities -->
+                    <td
+                      width="33%"
+                      class="mobile-stack mobile-stat"
+                      style="
+                        padding: 16px;
+                        background-color: #f5f9f0;
+                        border-radius: 8px 0 0 8px;
+                        text-align: center;
+                        border-right: 1px solid #e8f0e0;
+                      "
+                    >
+                      <div
+                        style="font-size: 28px; font-weight: 700; color: #336600; line-height: 1"
+                      >
+                        {{open_opportunities_count}}
+                      </div>
+                      <div
+                        style="
+                          font-size: 12px;
+                          color: #5c5c52;
+                          margin-top: 4px;
+                          text-transform: uppercase;
+                          letter-spacing: 0.5px;
+                        "
+                      >
+                        Open Deals
+                      </div>
+                    </td>
+                    <!-- Stat: Tasks Due Today -->
+                    <td
+                      width="33%"
+                      class="mobile-stack mobile-stat"
+                      style="
+                        padding: 16px;
+                        background-color: #f5f9f0;
+                        text-align: center;
+                        border-right: 1px solid #e8f0e0;
+                      "
+                    >
+                      <div
+                        style="font-size: 28px; font-weight: 700; color: #d97e1f; line-height: 1"
+                      >
+                        {{tasks_due_today_count}}
+                      </div>
+                      <div
+                        style="
+                          font-size: 12px;
+                          color: #5c5c52;
+                          margin-top: 4px;
+                          text-transform: uppercase;
+                          letter-spacing: 0.5px;
+                        "
+                      >
+                        Due Today
+                      </div>
+                    </td>
+                    <!-- Stat: Overdue -->
+                    <td
+                      width="33%"
+                      class="mobile-stack mobile-stat"
+                      style="
+                        padding: 16px;
+                        background-color: #f5f9f0;
+                        border-radius: 0 8px 8px 0;
+                        text-align: center;
+                      "
+                    >
+                      <div
+                        style="font-size: 28px; font-weight: 700; color: #c53030; line-height: 1"
+                      >
+                        {{overdue_count}}
+                      </div>
+                      <div
+                        style="
+                          font-size: 12px;
+                          color: #5c5c52;
+                          margin-top: 4px;
+                          text-transform: uppercase;
+                          letter-spacing: 0.5px;
+                        "
+                      >
+                        Overdue
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-          <!-- Header with MFB branding -->
-          <tr>
-            <td style="background-color: #336600; padding: 24px 32px; border-radius: 12px 12px 0 0;" class="mobile-padding">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                <tr>
-                  <td>
-                    <!-- MFB Logo placeholder -->
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                      <tr>
-                        <td style="background-color: #FFFFFF; border-radius: 8px; padding: 8px 16px;">
-                          <span style="font-size: 20px; font-weight: 700; color: #336600; letter-spacing: -0.5px;">MFB</span>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                  <td align="right" style="color: #FFFFFF; font-size: 14px;">
-                    {{formatted_date}}
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
+            <!-- SECTION: Overdue Tasks -->
+            {{#if has_overdue_tasks}}
+            <tr>
+              <td style="padding: 0 32px 24px 32px" class="mobile-padding">
+                <!-- Section header -->
+                <table
+                  role="presentation"
+                  cellspacing="0"
+                  cellpadding="0"
+                  border="0"
+                  width="100%"
+                  style="margin-bottom: 16px"
+                >
+                  <tr>
+                    <td>
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                          <td
+                            style="background-color: #fef2f2; border-radius: 4px; padding: 4px 10px"
+                          >
+                            <span
+                              style="
+                                font-size: 12px;
+                                font-weight: 600;
+                                color: #c53030;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                              "
+                            >
+                              Overdue Tasks
+                            </span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td align="right" style="font-size: 13px; color: #5c5c52">
+                      {{overdue_count}} item{{#if overdue_plural}}s{{/if}} requiring attention
+                    </td>
+                  </tr>
+                </table>
 
-          <!-- Greeting -->
-          <tr>
-            <td style="padding: 32px 32px 24px 32px;" class="mobile-padding">
-              <h1 style="margin: 0 0 8px 0; font-size: 24px; font-weight: 700; color: #1E3F00; line-height: 1.3;">
-                Good {{time_of_day}}, {{user_first_name}}!
-              </h1>
-              <p style="margin: 0; font-size: 16px; color: #5C5C52; line-height: 1.5;">
-                Here's your daily digest for {{formatted_date}}.
-              </p>
-            </td>
-          </tr>
+                <!-- Overdue tasks table -->
+                <table
+                  role="presentation"
+                  cellspacing="0"
+                  cellpadding="0"
+                  border="0"
+                  width="100%"
+                  style="border: 1px solid #fecaca; border-radius: 8px; overflow: hidden"
+                >
+                  <!-- Table header -->
+                  <tr style="background-color: #fef2f2">
+                    <td
+                      style="
+                        padding: 12px 16px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: #7f1d1d;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        border-bottom: 1px solid #fecaca;
+                      "
+                    >
+                      Task
+                    </td>
+                    <td
+                      style="
+                        padding: 12px 16px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: #7f1d1d;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        border-bottom: 1px solid #fecaca;
+                        width: 100px;
+                      "
+                      class="mobile-hide"
+                    >
+                      Related To
+                    </td>
+                    <td
+                      style="
+                        padding: 12px 16px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: #7f1d1d;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        border-bottom: 1px solid #fecaca;
+                        width: 90px;
+                        text-align: right;
+                      "
+                    >
+                      Days Overdue
+                    </td>
+                  </tr>
+                  <!-- Task rows (template loop) -->
+                  {{#each overdue_tasks}}
+                  <tr style="background-color: {{row_bg_color}};">
+                    <td
+                      style="
+                        padding: 14px 16px;
+                        font-size: 14px;
+                        color: #1e3f00;
+                        border-bottom: 1px solid #fee2e2;
+                      "
+                    >
+                      <strong style="display: block; margin-bottom: 2px">{{task_title}}</strong>
+                      <span style="font-size: 12px; color: #7f1d1d"
+                        >Due: {{due_date_formatted}}</span
+                      >
+                    </td>
+                    <td
+                      style="
+                        padding: 14px 16px;
+                        font-size: 13px;
+                        color: #5c5c52;
+                        border-bottom: 1px solid #fee2e2;
+                      "
+                      class="mobile-hide"
+                    >
+                      {{related_entity}}
+                    </td>
+                    <td
+                      style="
+                        padding: 14px 16px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: #c53030;
+                        border-bottom: 1px solid #fee2e2;
+                        text-align: right;
+                      "
+                    >
+                      {{days_overdue}} day{{#if days_plural}}s{{/if}}
+                    </td>
+                  </tr>
+                  {{/each}}
+                </table>
+              </td>
+            </tr>
+            {{/if}}
 
-          <!-- Quick Stats Row -->
-          <tr>
-            <td style="padding: 0 32px 24px 32px;" class="mobile-padding">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                <tr>
-                  <!-- Stat: Open Opportunities -->
-                  <td width="33%" class="mobile-stack mobile-stat" style="padding: 16px; background-color: #F5F9F0; border-radius: 8px 0 0 8px; text-align: center; border-right: 1px solid #E8F0E0;">
-                    <div style="font-size: 28px; font-weight: 700; color: #336600; line-height: 1;">{{open_opportunities_count}}</div>
-                    <div style="font-size: 12px; color: #5C5C52; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Open Deals</div>
-                  </td>
-                  <!-- Stat: Tasks Due Today -->
-                  <td width="33%" class="mobile-stack mobile-stat" style="padding: 16px; background-color: #F5F9F0; text-align: center; border-right: 1px solid #E8F0E0;">
-                    <div style="font-size: 28px; font-weight: 700; color: #D97E1F; line-height: 1;">{{tasks_due_today_count}}</div>
-                    <div style="font-size: 12px; color: #5C5C52; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Due Today</div>
-                  </td>
-                  <!-- Stat: Overdue -->
-                  <td width="33%" class="mobile-stack mobile-stat" style="padding: 16px; background-color: #F5F9F0; border-radius: 0 8px 8px 0; text-align: center;">
-                    <div style="font-size: 28px; font-weight: 700; color: #C53030; line-height: 1;">{{overdue_count}}</div>
-                    <div style="font-size: 12px; color: #5C5C52; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.5px;">Overdue</div>
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
+            <!-- SECTION: At-Risk Deals -->
+            {{#if has_at_risk_deals}}
+            <tr>
+              <td style="padding: 0 32px 24px 32px" class="mobile-padding">
+                <!-- Section header -->
+                <table
+                  role="presentation"
+                  cellspacing="0"
+                  cellpadding="0"
+                  border="0"
+                  width="100%"
+                  style="margin-bottom: 16px"
+                >
+                  <tr>
+                    <td>
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                          <td
+                            style="background-color: #fef3e2; border-radius: 4px; padding: 4px 10px"
+                          >
+                            <span
+                              style="
+                                font-size: 12px;
+                                font-weight: 600;
+                                color: #b8640a;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                              "
+                            >
+                              At-Risk Deals
+                            </span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                    <td align="right" style="font-size: 13px; color: #5c5c52">
+                      {{at_risk_count}} deal{{#if at_risk_plural}}s{{/if}} need follow-up
+                    </td>
+                  </tr>
+                </table>
 
-          <!-- SECTION: Overdue Tasks -->
-          {{#if has_overdue_tasks}}
-          <tr>
-            <td style="padding: 0 32px 24px 32px;" class="mobile-padding">
-              <!-- Section header -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 16px;">
-                <tr>
-                  <td>
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                      <tr>
-                        <td style="background-color: #FEF2F2; border-radius: 4px; padding: 4px 10px;">
-                          <span style="font-size: 12px; font-weight: 600; color: #C53030; text-transform: uppercase; letter-spacing: 0.5px;">
-                            Overdue Tasks
-                          </span>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                  <td align="right" style="font-size: 13px; color: #5C5C52;">
-                    {{overdue_count}} item{{#if overdue_plural}}s{{/if}} requiring attention
-                  </td>
-                </tr>
-              </table>
+                <!-- At-risk deals table -->
+                <table
+                  role="presentation"
+                  cellspacing="0"
+                  cellpadding="0"
+                  border="0"
+                  width="100%"
+                  style="border: 1px solid #fed7aa; border-radius: 8px; overflow: hidden"
+                >
+                  <!-- Table header -->
+                  <tr style="background-color: #fef3e2">
+                    <td
+                      style="
+                        padding: 12px 16px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: #7c2d12;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        border-bottom: 1px solid #fed7aa;
+                      "
+                    >
+                      Opportunity
+                    </td>
+                    <td
+                      style="
+                        padding: 12px 16px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: #7c2d12;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        border-bottom: 1px solid #fed7aa;
+                        width: 100px;
+                      "
+                      class="mobile-hide"
+                    >
+                      Stage
+                    </td>
+                    <td
+                      style="
+                        padding: 12px 16px;
+                        font-size: 12px;
+                        font-weight: 600;
+                        color: #7c2d12;
+                        text-transform: uppercase;
+                        letter-spacing: 0.5px;
+                        border-bottom: 1px solid #fed7aa;
+                        width: 100px;
+                        text-align: right;
+                      "
+                    >
+                      Days Stale
+                    </td>
+                  </tr>
+                  <!-- Deal rows (template loop) -->
+                  {{#each at_risk_deals}}
+                  <tr style="background-color: {{row_bg_color}};">
+                    <td style="padding: 14px 16px; border-bottom: 1px solid #ffedd5">
+                      <strong
+                        style="display: block; font-size: 14px; color: #1e3f00; margin-bottom: 4px"
+                        >{{opportunity_name}}</strong
+                      >
+                      <span style="font-size: 12px; color: #5c5c52"
+                        >{{principal_name}} &bull; {{customer_name}}</span
+                      >
+                    </td>
+                    <td
+                      style="padding: 14px 16px; border-bottom: 1px solid #ffedd5"
+                      class="mobile-hide"
+                    >
+                      <span
+                        style="display: inline-block; padding: 4px 8px; background-color: {{stage_bg_color}}; color: {{stage_text_color}}; font-size: 11px; font-weight: 600; border-radius: 4px; text-transform: uppercase;"
+                      >
+                        {{stage_label}}
+                      </span>
+                    </td>
+                    <td
+                      style="
+                        padding: 14px 16px;
+                        font-size: 14px;
+                        font-weight: 600;
+                        color: #b8640a;
+                        border-bottom: 1px solid #ffedd5;
+                        text-align: right;
+                      "
+                    >
+                      {{days_stale}} day{{#if days_plural}}s{{/if}}
+                    </td>
+                  </tr>
+                  {{/each}}
+                </table>
+              </td>
+            </tr>
+            {{/if}}
 
-              <!-- Overdue tasks table -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border: 1px solid #FECACA; border-radius: 8px; overflow: hidden;">
-                <!-- Table header -->
-                <tr style="background-color: #FEF2F2;">
-                  <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #7F1D1D; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #FECACA;">
-                    Task
-                  </td>
-                  <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #7F1D1D; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #FECACA; width: 100px;" class="mobile-hide">
-                    Related To
-                  </td>
-                  <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #7F1D1D; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #FECACA; width: 90px; text-align: right;">
-                    Days Overdue
-                  </td>
-                </tr>
-                <!-- Task rows (template loop) -->
-                {{#each overdue_tasks}}
-                <tr style="background-color: {{row_bg_color}};">
-                  <td style="padding: 14px 16px; font-size: 14px; color: #1E3F00; border-bottom: 1px solid #FEE2E2;">
-                    <strong style="display: block; margin-bottom: 2px;">{{task_title}}</strong>
-                    <span style="font-size: 12px; color: #7F1D1D;">Due: {{due_date_formatted}}</span>
-                  </td>
-                  <td style="padding: 14px 16px; font-size: 13px; color: #5C5C52; border-bottom: 1px solid #FEE2E2;" class="mobile-hide">
-                    {{related_entity}}
-                  </td>
-                  <td style="padding: 14px 16px; font-size: 14px; font-weight: 600; color: #C53030; border-bottom: 1px solid #FEE2E2; text-align: right;">
-                    {{days_overdue}} day{{#if days_plural}}s{{/if}}
-                  </td>
-                </tr>
-                {{/each}}
-              </table>
-            </td>
-          </tr>
-          {{/if}}
+            <!-- SECTION: Today's Focus (optional motivational) -->
+            {{#if has_today_tasks}}
+            <tr>
+              <td style="padding: 0 32px 24px 32px" class="mobile-padding">
+                <table
+                  role="presentation"
+                  cellspacing="0"
+                  cellpadding="0"
+                  border="0"
+                  width="100%"
+                  style="margin-bottom: 16px"
+                >
+                  <tr>
+                    <td>
+                      <table role="presentation" cellspacing="0" cellpadding="0" border="0">
+                        <tr>
+                          <td
+                            style="background-color: #f0fdf4; border-radius: 4px; padding: 4px 10px"
+                          >
+                            <span
+                              style="
+                                font-size: 12px;
+                                font-weight: 600;
+                                color: #166534;
+                                text-transform: uppercase;
+                                letter-spacing: 0.5px;
+                              "
+                            >
+                              Today's Focus
+                            </span>
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                </table>
 
-          <!-- SECTION: At-Risk Deals -->
-          {{#if has_at_risk_deals}}
-          <tr>
-            <td style="padding: 0 32px 24px 32px;" class="mobile-padding">
-              <!-- Section header -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 16px;">
-                <tr>
-                  <td>
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                      <tr>
-                        <td style="background-color: #FEF3E2; border-radius: 4px; padding: 4px 10px;">
-                          <span style="font-size: 12px; font-weight: 600; color: #B8640A; text-transform: uppercase; letter-spacing: 0.5px;">
-                            At-Risk Deals
-                          </span>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                  <td align="right" style="font-size: 13px; color: #5C5C52;">
-                    {{at_risk_count}} deal{{#if at_risk_plural}}s{{/if}} need follow-up
-                  </td>
-                </tr>
-              </table>
+                <!-- Today's tasks list -->
+                <table
+                  role="presentation"
+                  cellspacing="0"
+                  cellpadding="0"
+                  border="0"
+                  width="100%"
+                  style="
+                    border: 1px solid #bbf7d0;
+                    border-radius: 8px;
+                    overflow: hidden;
+                    background-color: #f0fdf4;
+                  "
+                >
+                  {{#each today_tasks}}
+                  <tr>
+                    <td style="padding: 12px 16px; border-bottom: 1px solid #bbf7d0">
+                      <table
+                        role="presentation"
+                        cellspacing="0"
+                        cellpadding="0"
+                        border="0"
+                        width="100%"
+                      >
+                        <tr>
+                          <td width="24" valign="top" style="padding-right: 12px">
+                            <div
+                              style="
+                                width: 20px;
+                                height: 20px;
+                                border: 2px solid #22c55e;
+                                border-radius: 4px;
+                                background-color: #ffffff;
+                              "
+                            ></div>
+                          </td>
+                          <td style="font-size: 14px; color: #1e3f00">
+                            {{task_title}} {{#if related_entity}}
+                            <span style="color: #5c5c52"> &mdash; {{related_entity}}</span>
+                            {{/if}}
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                  {{/each}}
+                </table>
+              </td>
+            </tr>
+            {{/if}}
 
-              <!-- At-risk deals table -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border: 1px solid #FED7AA; border-radius: 8px; overflow: hidden;">
-                <!-- Table header -->
-                <tr style="background-color: #FEF3E2;">
-                  <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #7C2D12; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #FED7AA;">
-                    Opportunity
-                  </td>
-                  <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #7C2D12; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #FED7AA; width: 100px;" class="mobile-hide">
-                    Stage
-                  </td>
-                  <td style="padding: 12px 16px; font-size: 12px; font-weight: 600; color: #7C2D12; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid #FED7AA; width: 100px; text-align: right;">
-                    Days Stale
-                  </td>
-                </tr>
-                <!-- Deal rows (template loop) -->
-                {{#each at_risk_deals}}
-                <tr style="background-color: {{row_bg_color}};">
-                  <td style="padding: 14px 16px; border-bottom: 1px solid #FFEDD5;">
-                    <strong style="display: block; font-size: 14px; color: #1E3F00; margin-bottom: 4px;">{{opportunity_name}}</strong>
-                    <span style="font-size: 12px; color: #5C5C52;">{{principal_name}} &bull; {{customer_name}}</span>
-                  </td>
-                  <td style="padding: 14px 16px; border-bottom: 1px solid #FFEDD5;" class="mobile-hide">
-                    <span style="display: inline-block; padding: 4px 8px; background-color: {{stage_bg_color}}; color: {{stage_text_color}}; font-size: 11px; font-weight: 600; border-radius: 4px; text-transform: uppercase;">
-                      {{stage_label}}
-                    </span>
-                  </td>
-                  <td style="padding: 14px 16px; font-size: 14px; font-weight: 600; color: #B8640A; border-bottom: 1px solid #FFEDD5; text-align: right;">
-                    {{days_stale}} day{{#if days_plural}}s{{/if}}
-                  </td>
-                </tr>
-                {{/each}}
-              </table>
-            </td>
-          </tr>
-          {{/if}}
+            <!-- Primary CTA: View Dashboard -->
+            <tr>
+              <td style="padding: 8px 32px 32px 32px" class="mobile-padding">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr>
+                    <td align="center">
+                      <!--[if mso]>
+                        <v:roundrect
+                          xmlns:v="urn:schemas-microsoft-com:vml"
+                          xmlns:w="urn:schemas-microsoft-com:office:word"
+                          href="{{dashboard_url}}"
+                          style="height: 52px; v-text-anchor: middle; width: 220px"
+                          arcsize="15%"
+                          strokecolor="#2B5600"
+                          fillcolor="#336600"
+                        >
+                          <w:anchorlock />
+                          <center
+                            style="
+                              color: #ffffff;
+                              font-family: Arial, sans-serif;
+                              font-size: 16px;
+                              font-weight: bold;
+                            "
+                          >
+                            View Dashboard
+                          </center>
+                        </v:roundrect>
+                      <![endif]-->
+                      <!--[if !mso]><!-->
+                      <a
+                        href="{{dashboard_url}}"
+                        target="_blank"
+                        style="
+                          display: inline-block;
+                          padding: 16px 48px;
+                          background-color: #336600;
+                          color: #ffffff;
+                          font-size: 16px;
+                          font-weight: 700;
+                          text-decoration: none;
+                          border-radius: 8px;
+                          border: 2px solid #2b5600;
+                          transition: background-color 0.2s;
+                        "
+                      >
+                        View Dashboard
+                      </a>
+                      <!--<![endif]-->
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-          <!-- SECTION: Today's Focus (optional motivational) -->
-          {{#if has_today_tasks}}
-          <tr>
-            <td style="padding: 0 32px 24px 32px;" class="mobile-padding">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 16px;">
-                <tr>
-                  <td>
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0">
-                      <tr>
-                        <td style="background-color: #F0FDF4; border-radius: 4px; padding: 4px 10px;">
-                          <span style="font-size: 12px; font-weight: 600; color: #166534; text-transform: uppercase; letter-spacing: 0.5px;">
-                            Today's Focus
-                          </span>
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-              </table>
+            <!-- Divider -->
+            <tr>
+              <td style="padding: 0 32px" class="mobile-padding">
+                <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
+                  <tr>
+                    <td style="border-top: 1px solid #e8e8e0"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
 
-              <!-- Today's tasks list -->
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="border: 1px solid #BBF7D0; border-radius: 8px; overflow: hidden; background-color: #F0FDF4;">
-                {{#each today_tasks}}
-                <tr>
-                  <td style="padding: 12px 16px; border-bottom: 1px solid #BBF7D0;">
-                    <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                      <tr>
-                        <td width="24" valign="top" style="padding-right: 12px;">
-                          <div style="width: 20px; height: 20px; border: 2px solid #22C55E; border-radius: 4px; background-color: #FFFFFF;"></div>
-                        </td>
-                        <td style="font-size: 14px; color: #1E3F00;">
-                          {{task_title}}
-                          {{#if related_entity}}
-                          <span style="color: #5C5C52;"> &mdash; {{related_entity}}</span>
-                          {{/if}}
-                        </td>
-                      </tr>
-                    </table>
-                  </td>
-                </tr>
-                {{/each}}
-              </table>
-            </td>
-          </tr>
-          {{/if}}
-
-          <!-- Primary CTA: View Dashboard -->
-          <tr>
-            <td style="padding: 8px 32px 32px 32px;" class="mobile-padding">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                <tr>
-                  <td align="center">
-                    <!--[if mso]>
-                    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{dashboard_url}}" style="height:52px;v-text-anchor:middle;width:220px;" arcsize="15%" strokecolor="#2B5600" fillcolor="#336600">
-                      <w:anchorlock/>
-                      <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:16px;font-weight:bold;">View Dashboard</center>
-                    </v:roundrect>
-                    <![endif]-->
-                    <!--[if !mso]><!-->
-                    <a href="{{dashboard_url}}" target="_blank" style="display: inline-block; padding: 16px 48px; background-color: #336600; color: #FFFFFF; font-size: 16px; font-weight: 700; text-decoration: none; border-radius: 8px; border: 2px solid #2B5600; transition: background-color 0.2s;">
-                      View Dashboard
-                    </a>
-                    <!--<![endif]-->
-                  </td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- Divider -->
-          <tr>
-            <td style="padding: 0 32px;" class="mobile-padding">
-              <table role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%">
-                <tr>
-                  <td style="border-top: 1px solid #E8E8E0;"></td>
-                </tr>
-              </table>
-            </td>
-          </tr>
-
-          <!-- Footer -->
-          <tr>
-            <td style="padding: 24px 32px; text-align: center;" class="mobile-padding">
-              <p style="margin: 0 0 8px 0; font-size: 13px; color: #5C5C52;">
-                This digest was sent to <a href="mailto:{{user_email}}" style="color: #336600; text-decoration: none;">{{user_email}}</a>
-              </p>
-              <p style="margin: 0 0 16px 0; font-size: 12px; color: #8C8C82;">
-                <a href="{{preferences_url}}" style="color: #5C5C52; text-decoration: underline;">Email Preferences</a>
-                &nbsp;&bull;&nbsp;
-                <a href="{{unsubscribe_url}}" style="color: #5C5C52; text-decoration: underline;">Unsubscribe</a>
-              </p>
-              <p style="margin: 0; font-size: 12px; color: #8C8C82;">
-                &copy; {{current_year}} MFB Food Brokerage. All rights reserved.
-              </p>
-            </td>
-          </tr>
-
-        </table>
-        <!-- End main content container -->
-
-      </td>
-    </tr>
-  </table>
-
-</body>
+            <!-- Footer -->
+            <tr>
+              <td style="padding: 24px 32px; text-align: center" class="mobile-padding">
+                <p style="margin: 0 0 8px 0; font-size: 13px; color: #5c5c52">
+                  This digest was sent to
+                  <a href="mailto:{{user_email}}" style="color: #336600; text-decoration: none"
+                    >{{user_email}}</a
+                  >
+                </p>
+                <p style="margin: 0 0 16px 0; font-size: 12px; color: #8c8c82">
+                  <a href="{{preferences_url}}" style="color: #5c5c52; text-decoration: underline"
+                    >Email Preferences</a
+                  >
+                  &nbsp;&bull;&nbsp;
+                  <a href="{{unsubscribe_url}}" style="color: #5c5c52; text-decoration: underline"
+                    >Unsubscribe</a
+                  >
+                </p>
+                <p style="margin: 0; font-size: 12px; color: #8c8c82">
+                  &copy; {{current_year}} MFB Food Brokerage. All rights reserved.
+                </p>
+              </td>
+            </tr>
+          </table>
+          <!-- End main content container -->
+        </td>
+      </tr>
+    </table>
+  </body>
 </html>

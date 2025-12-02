@@ -59,8 +59,7 @@ export default defineConfig(({ mode }) => ({
       "jsonexport",
       "react-dropzone",
       "react-cropper",
-
-      ],
+    ],
   },
   plugins: [
     react(),

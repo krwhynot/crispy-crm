@@ -405,6 +405,48 @@ npm run db:cloud:push
 
 ---
 
+## WSL2 CLI Troubleshooting
+
+> **Primary Guide:** `.claude/skills/supabase-crm/SKILL.md` has comprehensive troubleshooting
+
+### Password-Based Authentication (Recommended for WSL2)
+
+WSL2 has IPv6 connectivity issues that cause Supabase CLI timeouts. These timeouts trigger Fail2ban after 2 failed attempts, resulting in 30-minute IP bans.
+
+**Solution:** Use password-based authentication:
+
+```bash
+# Add to .env (already gitignored)
+SUPABASE_DB_PASSWORD=your_database_password_here
+
+# Use with CLI commands
+source .env && npx supabase db push
+source .env && npx supabase migration list --linked
+```
+
+Get your password from: Supabase Dashboard > Project Settings > Database > Reset database password
+
+### Check/Remove IP Bans
+
+If CLI hangs at "Connecting to remote database...":
+
+```bash
+# Check for bans
+npx supabase network-bans get --project-ref aaqnanddcqvfiwhshndl --experimental
+
+# Remove ban
+npx supabase network-bans remove --db-unban-ip <IP_ADDRESS> --project-ref aaqnanddcqvfiwhshndl --experimental
+```
+
+### MCP Fallback
+
+When CLI is unavailable, use MCP tools which bypass connection issues:
+- `mcp__supabase__apply_migration` - For DDL operations
+- `mcp__supabase__execute_sql` - For queries
+- `mcp__supabase__list_tables` - Check schema
+
+---
+
 ## Links
 
 - [Supabase Dashboard](https://supabase.com/dashboard)
@@ -413,5 +455,5 @@ npm run db:cloud:push
 
 ---
 
-*Last Updated: October 2024*
+*Last Updated: December 2024*
 *This document supersedes all other workflow guides.*

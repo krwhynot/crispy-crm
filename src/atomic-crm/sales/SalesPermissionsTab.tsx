@@ -315,16 +315,12 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
           <div className="p-4 border border-destructive/30 rounded-lg bg-destructive/5">
             <h3 className="text-sm font-semibold text-destructive mb-2">Danger Zone</h3>
             <p className="text-sm text-muted-foreground mb-4">
-              Removing a user will prevent them from accessing the system. This action can be undone by an administrator.
+              Removing a user will prevent them from accessing the system. This action can be undone
+              by an administrator.
             </p>
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button
-                  variant="destructive"
-                  size="sm"
-                  disabled={isDeleting}
-                  className="gap-2"
-                >
+                <Button variant="destructive" size="sm" disabled={isDeleting} className="gap-2">
                   <Trash2 className="h-4 w-4" />
                   {isDeleting ? "Removing..." : "Remove User"}
                 </Button>
@@ -333,9 +329,15 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
                 <AlertDialogHeader>
                   <AlertDialogTitle>Remove User</AlertDialogTitle>
                   <AlertDialogDescription>
-                    Are you sure you want to remove <strong>{record?.first_name} {record?.last_name}</strong> ({record?.email})?
-                    <br /><br />
-                    They will no longer be able to log in or access the system. This can be undone later if needed.
+                    Are you sure you want to remove{" "}
+                    <strong>
+                      {record?.first_name} {record?.last_name}
+                    </strong>{" "}
+                    ({record?.email})?
+                    <br />
+                    <br />
+                    They will no longer be able to log in or access the system. This can be undone
+                    later if needed.
                   </AlertDialogDescription>
                 </AlertDialogHeader>
                 <AlertDialogFooter>

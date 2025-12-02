@@ -15,12 +15,7 @@
  * Engineering Constitution: Cross-cutting concern extracted for single responsibility
  */
 
-import type {
-  DataProvider,
-  Identifier,
-  FilterPayload,
-  RaRecord,
-} from "ra-core";
+import type { DataProvider, Identifier, FilterPayload, RaRecord } from "ra-core";
 
 /**
  * Interface for data provider method params logging
@@ -107,17 +102,13 @@ function logError(
   console.error(`[DataProvider Error]`, context, {
     error: errorMessage,
     stack: error instanceof Error ? error.stack : undefined,
-    validationErrors:
-      extendedError?.body?.errors || extendedError?.errors || undefined,
+    validationErrors: extendedError?.body?.errors || extendedError?.errors || undefined,
     fullError: error,
   });
 
   // Log validation errors in detail for debugging
   if (extendedError?.body?.errors) {
-    console.error(
-      "[Validation Errors Detail]",
-      JSON.stringify(extendedError.body.errors, null, 2)
-    );
+    console.error("[Validation Errors Detail]", JSON.stringify(extendedError.body.errors, null, 2));
     // DEBUG: Also log the data that caused the error
     if (params && "data" in params) {
       console.error(
@@ -126,10 +117,7 @@ function logError(
       );
     }
   } else if (extendedError?.errors) {
-    console.error(
-      "[Validation Errors Detail]",
-      JSON.stringify(extendedError.errors, null, 2)
-    );
+    console.error("[Validation Errors Detail]", JSON.stringify(extendedError.errors, null, 2));
     // DEBUG: Also log the data that caused the error
     if (params && "data" in params) {
       console.error(
@@ -183,9 +171,7 @@ function isSupabaseError(error: unknown): error is SupabaseError {
  */
 function isAlreadyDeletedError(error: unknown): boolean {
   const extendedError = error as ExtendedError | undefined;
-  return !!extendedError?.message?.includes(
-    "Cannot coerce the result to a single JSON object"
-  );
+  return !!extendedError?.message?.includes("Cannot coerce the result to a single JSON object");
 }
 
 /**
@@ -193,9 +179,7 @@ function isAlreadyDeletedError(error: unknown): boolean {
  */
 function isReactAdminValidationError(error: unknown): boolean {
   const extendedError = error as ExtendedError | undefined;
-  return !!(
-    extendedError?.body?.errors && typeof extendedError.body.errors === "object"
-  );
+  return !!(extendedError?.body?.errors && typeof extendedError.body.errors === "object");
 }
 
 /**
@@ -234,9 +218,11 @@ export function withErrorLogging<T extends DataProvider>(provider: T): T {
         params: DataProviderLogParams & { previousData?: RaRecord }
       ) => {
         try {
-          return await (
-            original as (...args: unknown[]) => Promise<unknown>
-          ).call(provider, resource, params);
+          return await (original as (...args: unknown[]) => Promise<unknown>).call(
+            provider,
+            resource,
+            params
+          );
         } catch (error: unknown) {
           // Log the error with context
           logError(method, resource, params, error);

@@ -85,12 +85,13 @@ function createExtendedDataProvider(): DataProvider {
  */
 export const dataProvider: DataProvider = (() => {
   if (USE_COMPOSED_PROVIDER) {
-    console.log(
-      "[DataProvider] 🚀 Using COMPOSED provider architecture (handler-based with extensions)"
+    devLog(
+      "DataProvider",
+      "🚀 Using COMPOSED provider architecture (handler-based with extensions)"
     );
     return createExtendedDataProvider();
   } else {
-    console.log("[DataProvider] 📦 Using UNIFIED provider architecture (monolithic, default)");
+    devLog("DataProvider", "📦 Using UNIFIED provider architecture (monolithic, default)");
     return unifiedDataProvider;
   }
 })();

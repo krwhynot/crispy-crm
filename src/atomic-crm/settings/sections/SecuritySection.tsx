@@ -50,9 +50,7 @@ export function SecuritySection({ onPasswordChange }: SecuritySectionProps) {
         <div className="border-t pt-4">
           <div className="space-y-2 mb-4">
             <Label>Role Permissions</Label>
-            <p className="text-sm text-muted-foreground">
-              What you can do with your current role
-            </p>
+            <p className="text-sm text-muted-foreground">What you can do with your current role</p>
           </div>
           <RolePermissionsMatrix currentRole={identity?.role || "rep"} />
         </div>

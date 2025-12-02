@@ -54,7 +54,7 @@ export class OpportunitiesService {
         opp_id: opportunity.id,
       });
     } catch (error: any) {
-      console.error(`[OpportunitiesService] Failed to archive opportunity`, {
+      devError("OpportunitiesService", "Failed to archive opportunity", {
         opportunityId: opportunity.id,
         error,
       });
@@ -75,7 +75,7 @@ export class OpportunitiesService {
         opp_id: opportunity.id,
       });
     } catch (error: any) {
-      console.error(`[OpportunitiesService] Failed to unarchive opportunity`, {
+      devError("OpportunitiesService", "Failed to unarchive opportunity", {
         opportunityId: opportunity.id,
         error,
       });
@@ -101,25 +101,22 @@ export class OpportunitiesService {
 
       // If no products to sync, use standard create
       if (productsToSync.length === 0) {
-        console.log("[OpportunitiesService] Creating opportunity without products");
+        devLog("OpportunitiesService", "Creating opportunity without products");
         const result = await this.dataProvider.create("opportunities", { data: opportunityData });
         return result.data as Opportunity;
       }
 
       // Call RPC function for atomic creation with products
-      console.log("[OpportunitiesService] Creating opportunity with products via RPC", {
+      devLog("OpportunitiesService", "Creating opportunity with products via RPC", {
         opportunityData,
         productsToCreate: productsToSync,
       });
 
       const opportunity = await this.rpcSyncOpportunity(opportunityData, productsToSync, [], []);
-      console.log(
-        "[OpportunitiesService] Opportunity created successfully with products",
-        opportunity
-      );
+      devLog("OpportunitiesService", "Opportunity created successfully with products", opportunity);
       return opportunity;
     } catch (error: any) {
-      console.error("[OpportunitiesService] Failed to create opportunity with products", {
+      devError("OpportunitiesService", "Failed to create opportunity with products", {
         error,
       });
       throw error;
@@ -150,7 +147,7 @@ export class OpportunitiesService {
 
       // If no products in form, use standard update
       if (productsToSync.length === 0) {
-        console.log("[OpportunitiesService] Updating opportunity without product changes");
+        devLog("OpportunitiesService", "Updating opportunity without product changes");
         const result = await this.dataProvider.update("opportunities", {
           id,
           data: opportunityData as any,
@@ -161,7 +158,7 @@ export class OpportunitiesService {
       // Diff products to determine creates, updates, deletes
       const { creates, updates, deletes } = diffProducts(previousProducts, productsToSync);
 
-      console.log("[OpportunitiesService] Updating opportunity with product sync via RPC", {
+      devLog("OpportunitiesService", "Updating opportunity with product sync via RPC", {
         opportunityData,
         productsToCreate: creates,
         productsToUpdate: updates,
@@ -170,13 +167,14 @@ export class OpportunitiesService {
 
       // Call RPC function for atomic update with products
       const opportunity = await this.rpcSyncOpportunity(opportunityData, creates, updates, deletes);
-      console.log(
-        "[OpportunitiesService] Opportunity updated successfully with product sync",
+      devLog(
+        "OpportunitiesService",
+        "Opportunity updated successfully with product sync",
         opportunity
       );
       return opportunity;
     } catch (error: any) {
-      console.error("[OpportunitiesService] Failed to update opportunity with products", {
+      devError("OpportunitiesService", "Failed to update opportunity with products", {
         opportunityId: id,
         error,
       });
