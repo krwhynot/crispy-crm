@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useUpdate, useNotify, useGetIdentity } from "react-admin";
+import { useUpdate, useNotify, useGetIdentity, useRedirect, useRefresh } from "react-admin";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
@@ -10,8 +10,20 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Trash2 } from "lucide-react";
 import { validateUpdateSales } from "../validation/sales";
 
 interface SalesPermissionsTabProps {
