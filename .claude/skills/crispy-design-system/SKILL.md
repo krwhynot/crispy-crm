@@ -15,6 +15,50 @@ Enforce Atomic CRM's unified design system when implementing UI components. This
 
 **Core principle:** Follow established patterns from CLAUDE.md and the unified design system rollout plan to maintain visual consistency across all resources.
 
+## Cognitive Foundation
+
+For **UX theory and cognitive principles** (Jakob's Law, Hick's Law, Fitts's Law, decision matrices, 60-30-10 rule), use the `ui-ux-design-principles` skill.
+
+This skill focuses on **Atomic CRM implementation specifics**: Tailwind v4 utilities, OKLCH colors, component patterns, and responsive strategies.
+
+## UX Laws Applied to Atomic CRM
+
+| Law | Principle | Atomic CRM Implementation |
+|-----|-----------|---------------------------|
+| **Jakob's Law** | Users expect familiar patterns | StandardListLayout mimics Excel/Salesforce; slide-overs follow modal conventions |
+| **Hick's Law** | More choices = slower decisions | Filter sidebar groups options; 5-7 nav items max; progressive disclosure |
+| **Fitts's Law** | Larger + closer = easier to hit | 44px min touch targets (`h-11 w-11`); FloatingCreateButton is 56px (`h-14 w-14`) |
+| **Doherty Threshold** | <400ms feedback maintains flow | Skeleton loaders; optimistic updates; toast notifications |
+| **Miller's Law** | ~7 items in working memory | Dashboard shows 3-5 KPIs; tabs group related fields |
+| **Peak-End Rule** | Users remember endings | Success toasts on save; slide-over confirms changes |
+| **Aesthetic-Usability** | Beautiful = perceived as usable | Garden to Table theme; warm shadows; OKLCH colors |
+
+### Implementation Patterns
+
+```tsx
+// Fitts's Law: Large touch target
+<Button className="h-11 min-w-[44px] px-4">Save</Button>
+
+// Hick's Law: Progressive disclosure
+<Accordion>
+  <AccordionItem value="advanced">
+    <AccordionTrigger>Advanced Options</AccordionTrigger>
+    <AccordionContent>{/* Hidden until needed */}</AccordionContent>
+  </AccordionItem>
+</Accordion>
+
+// Doherty Threshold: Immediate feedback
+<Button onClick={async () => {
+  toast.loading("Saving...");  // Instant feedback
+  await save();
+  toast.success("Saved!");     // Closure
+}}>
+  Save
+</Button>
+```
+
+**Full cognitive framework:** See `ui-ux-design-principles` skill.
+
 ## When to Use
 
 Use this skill when:
@@ -387,7 +431,7 @@ Comprehensive design system documentation with real code examples:
 
 ## Cross-Reference
 
-**See also:** `atomic-crm-constitution` skill for:
+**See also:** `engineering-constitution` skill for:
 - Error handling patterns (fail-fast, Promise.allSettled)
 - Validation patterns (Zod schemas, API boundary validation)
 - Form state management (schema-derived defaults)
