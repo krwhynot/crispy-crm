@@ -266,6 +266,9 @@
   .text-error {
     color: hsl(var(--destructive));
   }
+  .text-success-foreground {
+    color: var(--success-foreground);
+  }
   .bg-success {
     background-color: hsl(var(--success));
   }
@@ -918,6 +921,7 @@
   --success-hover: oklch(50% 0.13 155);
   --success-active: oklch(60% 0.12 155);
   --success-disabled: oklch(35% 0.05 155);
+  --success-foreground: oklch(100% 0 0); /* White text on success backgrounds */
 
   /* Warning states - dark mode */
   --warning-subtle: oklch(25% 0.09 85);
