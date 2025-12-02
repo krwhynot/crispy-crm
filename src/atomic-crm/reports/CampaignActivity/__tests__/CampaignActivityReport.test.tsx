@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
@@ -413,7 +413,6 @@ describe("CampaignActivityReport", () => {
 
     it("filters by date range (end date)", async () => {
       const { useGetList } = await import("ra-core");
-      const user = userEvent.setup();
 
       vi.mocked(useGetList).mockReturnValue({
         data: [],
@@ -434,8 +433,11 @@ describe("CampaignActivityReport", () => {
         expect(screen.getByLabelText("End Date")).toBeInTheDocument();
       });
 
+      const startDateInput = screen.getByLabelText("Start Date");
       const endDateInput = screen.getByLabelText("End Date");
-      await user.type(endDateInput, "2025-11-30");
+
+      fireEvent.change(startDateInput, { target: { value: "2025-11-01" } });
+      fireEvent.change(endDateInput, { target: { value: "2025-11-30" } });
 
       await waitFor(() => {
         expect(endDateInput).toHaveValue("2025-11-30");

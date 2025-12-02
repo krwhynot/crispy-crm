@@ -10,7 +10,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { Phone, Mail, Calendar, FileText } from "lucide-react";
+import { Phone, Mail, Users, FileText } from "lucide-react";
 import { getActivityIcon } from "../getActivityIcon";
 
 describe("getActivityIcon", () => {
@@ -23,8 +23,8 @@ describe("getActivityIcon", () => {
       expect(getActivityIcon("Email")).toBe(Mail);
     });
 
-    it("should return Calendar icon for 'Meeting'", () => {
-      expect(getActivityIcon("Meeting")).toBe(Calendar);
+    it("should return Users icon for 'Meeting'", () => {
+      expect(getActivityIcon("Meeting")).toBe(Users);
     });
 
     it("should return FileText icon for 'Note'", () => {
@@ -42,7 +42,7 @@ describe("getActivityIcon", () => {
     });
 
     it("should handle mixed case 'MeEtInG'", () => {
-      expect(getActivityIcon("MeEtInG")).toBe(Calendar);
+      expect(getActivityIcon("MeEtInG")).toBe(Users);
     });
 
     it("should handle mixed case 'nOtE'", () => {
@@ -104,7 +104,7 @@ describe("getActivityIcon", () => {
     it("should return correct icon components for each type", () => {
       expect(getActivityIcon("Call")).toBe(Phone);
       expect(getActivityIcon("Email")).toBe(Mail);
-      expect(getActivityIcon("Meeting")).toBe(Calendar);
+      expect(getActivityIcon("Meeting")).toBe(Users);
       expect(getActivityIcon("Note")).toBe(FileText);
       expect(getActivityIcon("Unknown")).toBe(FileText);
     });

@@ -3,12 +3,18 @@ import { OpportunityCardActions } from "../kanban/OpportunityCardActions";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { BrowserRouter } from "react-router-dom";
 
+const mockRecord = {
+  id: 1,
+  name: "Test Opportunity",
+};
+
 // Mock React Admin hooks
 vi.mock("react-admin", () => ({
   useUpdate: () => [vi.fn()],
   useDelete: () => [vi.fn()],
   useNotify: () => vi.fn(),
   useRefresh: () => vi.fn(),
+  useRecordContext: () => mockRecord,
 }));
 
 const renderWithRouter = (component: React.ReactElement) => {
