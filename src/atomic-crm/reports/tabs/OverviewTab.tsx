@@ -1,11 +1,11 @@
-import { useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { useGetList } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { TrendingUp, Activity, AlertCircle, Clock } from "lucide-react";
 import { KPICard } from "../components/KPICard";
 import { ChartWrapper } from "../components/ChartWrapper";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useGlobalFilters } from "../contexts/GlobalFilterContext";
+import { TabFilterBar } from "../components/TabFilterBar";
 import { PipelineChart } from "../charts/PipelineChart";
 import { ActivityTrendChart } from "../charts/ActivityTrendChart";
 import { TopPrincipalsChart } from "../charts/TopPrincipalsChart";
@@ -39,8 +39,22 @@ interface ActivityRecord {
 }
 
 export default function OverviewTab() {
-  const { filters } = useGlobalFilters();
   const navigate = useNavigate();
+
+  // Local filter state (replaces GlobalFilterContext)
+  const [dateRange, setDateRange] = useState({
+    preset: "last30",
+    start: null as string | null,
+    end: null as string | null,
+  });
+  const [salesRepId, setSalesRepId] = useState<number | null>(null);
+
+  const hasActiveFilters = dateRange.preset !== "last30" || salesRepId !== null;
+
+  const handleReset = useCallback(() => {
+    setDateRange({ preset: "last30", start: null, end: null });
+    setSalesRepId(null);
+  }, []);
 
   // KPI click handlers - navigate to filtered list views (PRD Section 9.2.1)
   const handleTotalOpportunitiesClick = useCallback(() => {
@@ -85,7 +99,7 @@ export default function OverviewTab() {
       pagination: { page: 1, perPage: 10000 },
       filter: {
         "deleted_at@is": null,
-        ...(filters.salesRepId && { opportunity_owner_id: filters.salesRepId }),
+        ...(salesRepId && { opportunity_owner_id: salesRepId }),
       },
     }
   );
@@ -104,7 +118,7 @@ export default function OverviewTab() {
       filter: {
         "created_at@gte": sixtyDaysAgo, // Get 60 days for comparison
         "created_at@lte": now,
-        ...(filters.salesRepId && { created_by: filters.salesRepId }),
+        ...(salesRepId && { created_by: salesRepId }),
       },
     }
   );
@@ -285,15 +299,26 @@ export default function OverviewTab() {
   const isLoading = opportunitiesPending || activitiesPending;
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-section">
+      <TabFilterBar
+        showDateRange
+        dateRange={dateRange}
+        onDateRangeChange={setDateRange}
+        showSalesRep
+        salesRepId={salesRepId}
+        onSalesRepChange={setSalesRepId}
+        hasActiveFilters={hasActiveFilters}
+        onReset={handleReset}
+      />
+
       {isLoading ? (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-content" data-testid="kpi-grid">
           {[...Array(4)].map((_, i) => (
             <Skeleton key={i} className="h-32" />
           ))}
         </div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-content" data-testid="kpi-grid">
           <KPICard
             title="Total Opportunities"
             value={kpis.totalOpportunities}
@@ -335,7 +360,7 @@ export default function OverviewTab() {
         </div>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-section">
         <ChartWrapper title="Pipeline by Stage" isLoading={isLoading}>
           <PipelineChart data={pipelineData} />
         </ChartWrapper>

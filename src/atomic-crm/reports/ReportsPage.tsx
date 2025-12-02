@@ -1,21 +1,37 @@
 import { useSearchParams } from "react-router-dom";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { GlobalFilterProvider } from "./contexts/GlobalFilterContext";
-import { GlobalFilterBar } from "./components/GlobalFilterBar";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Suspense, lazy, useEffect } from "react";
 import { cleanupOldReportKeys } from "./utils/cleanupMigration";
+import { ReportPageShell } from "./components/ReportPageShell";
 
 const OverviewTab = lazy(() => import("./tabs/OverviewTab"));
 const OpportunitiesTab = lazy(() => import("./tabs/OpportunitiesTab"));
 const WeeklyActivityTab = lazy(() => import("./tabs/WeeklyActivityTab"));
 const CampaignActivityTab = lazy(() => import("./tabs/CampaignActivityTab"));
 
+function TabSkeleton() {
+  return (
+    <div className="space-y-section">
+      <Skeleton className="h-14 w-full rounded-lg" />
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-content">
+        {[...Array(4)].map((_, i) => (
+          <Skeleton key={i} className="h-32 rounded-lg" />
+        ))}
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-section">
+        <Skeleton className="h-80 rounded-lg" />
+        <Skeleton className="h-80 rounded-lg" />
+      </div>
+    </div>
+  );
+}
+
 export default function ReportsPage() {
   const [searchParams, setSearchParams] = useSearchParams();
   const activeTab = searchParams.get("tab") || "overview";
 
   useEffect(() => {
-    // Clean up old localStorage keys on first mount
     cleanupOldReportKeys();
   }, []);
 
@@ -23,64 +39,62 @@ export default function ReportsPage() {
     setSearchParams({ tab: value });
   };
 
+  const tabLabels: Record<string, string> = {
+    overview: "Overview",
+    opportunities: "Opportunities by Principal",
+    weekly: "Weekly Activity",
+    campaign: "Campaign Activity",
+  };
+
+  const breadcrumbs = [
+    { label: "Reports", href: "/reports?tab=overview" },
+    { label: tabLabels[activeTab] || "Overview" },
+  ];
+
   return (
-    <GlobalFilterProvider>
-      <div className="p-6 space-y-4">
-        <h1 className="text-3xl font-bold">Reports & Analytics</h1>
+    <ReportPageShell title="Reports & Analytics" breadcrumbs={breadcrumbs}>
+      <Tabs value={activeTab} onValueChange={handleTabChange}>
+        <TabsList className="grid w-full grid-cols-2 lg:grid-cols-4 h-auto">
+          <TabsTrigger value="overview" className="h-11">
+            Overview
+          </TabsTrigger>
+          <TabsTrigger value="opportunities" className="h-11">
+            Opportunities
+          </TabsTrigger>
+          <TabsTrigger value="weekly" className="h-11">
+            Weekly Activity
+          </TabsTrigger>
+          <TabsTrigger value="campaign" className="h-11">
+            Campaign
+          </TabsTrigger>
+        </TabsList>
 
-        {/* Global filters apply to Overview tab */}
-        <GlobalFilterBar />
-
-        <Tabs value={activeTab} onValueChange={handleTabChange}>
-          <TabsList className="grid w-full grid-cols-4">
-            <TabsTrigger
-              value="overview"
-              data-state={activeTab === "overview" ? "active" : "inactive"}
-            >
-              Overview
-            </TabsTrigger>
-            <TabsTrigger
-              value="opportunities"
-              data-state={activeTab === "opportunities" ? "active" : "inactive"}
-            >
-              Opportunities by Principal
-            </TabsTrigger>
-            <TabsTrigger value="weekly" data-state={activeTab === "weekly" ? "active" : "inactive"}>
-              Weekly Activity
-            </TabsTrigger>
-            <TabsTrigger
-              value="campaign"
-              data-state={activeTab === "campaign" ? "active" : "inactive"}
-            >
-              Campaign Activity
-            </TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="overview">
-            <Suspense fallback={<div>Loading...</div>}>
+        <div className="mt-section">
+          <TabsContent value="overview" className="mt-0">
+            <Suspense fallback={<TabSkeleton />}>
               <OverviewTab />
             </Suspense>
           </TabsContent>
 
-          <TabsContent value="opportunities">
-            <Suspense fallback={<div>Loading...</div>}>
+          <TabsContent value="opportunities" className="mt-0">
+            <Suspense fallback={<TabSkeleton />}>
               <OpportunitiesTab />
             </Suspense>
           </TabsContent>
 
-          <TabsContent value="weekly">
-            <Suspense fallback={<div>Loading...</div>}>
+          <TabsContent value="weekly" className="mt-0">
+            <Suspense fallback={<TabSkeleton />}>
               <WeeklyActivityTab />
             </Suspense>
           </TabsContent>
 
-          <TabsContent value="campaign">
-            <Suspense fallback={<div>Loading...</div>}>
+          <TabsContent value="campaign" className="mt-0">
+            <Suspense fallback={<TabSkeleton />}>
               <CampaignActivityTab />
             </Suspense>
           </TabsContent>
-        </Tabs>
-      </div>
-    </GlobalFilterProvider>
+        </div>
+      </Tabs>
+    </ReportPageShell>
   );
 }
