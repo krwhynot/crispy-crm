@@ -27,7 +27,8 @@ vi.mock("ra-core", async () => {
     useListContext: vi.fn(),
     useGetList: vi.fn(),
     useGetIdentity: vi.fn(() => ({
-      identity: { id: 1, fullName: "Test User" },
+      data: { id: 1, fullName: "Test User", sales_id: 1 },
+      isPending: false,
     })),
     downloadCSV: vi.fn(),
   };
@@ -311,12 +312,9 @@ describe("OrganizationList", () => {
     renderWithAdminContext(<OrganizationList />);
 
     await waitFor(() => {
-      // The mock PremiumDatagrid renders with data-testid="premium-datagrid"
-      const datagrid = screen.queryByTestId("premium-datagrid");
+      const datagrid = screen.getByTestId("premium-datagrid");
       expect(datagrid).toBeInTheDocument();
-      if (datagrid) {
-        expect(datagrid).toHaveClass("table-row-premium");
-      }
+      expect(datagrid).toHaveClass("table-row-premium");
     });
   });
 
