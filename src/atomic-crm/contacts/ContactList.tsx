@@ -1,10 +1,7 @@
-import { useEffect } from "react";
 import jsonExport from "jsonexport/dist";
 import type { Exporter } from "ra-core";
 import { downloadCSV, useGetIdentity, useListContext } from "ra-core";
-import * as Sentry from "@sentry/react";
 
-import { TextField, ReferenceField, DateField, FunctionField } from "react-admin";
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
@@ -13,6 +10,10 @@ import { SortButton } from "@/components/admin/sort-button";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
+import { TextField } from "@/components/admin/text-field";
+import { ReferenceField } from "@/components/admin/reference-field";
+import { DateField } from "@/components/admin/date-field";
+import { FunctionField } from "react-admin";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { ContactListSkeleton } from "@/components/ui/list-skeleton";
@@ -28,18 +29,9 @@ import { Avatar } from "./Avatar";
 import { ContactStatusBadge } from "./ContactBadges";
 
 export const ContactList = () => {
-  const { data: identity, isPending: isIdentityPending, error: identityError } = useGetIdentity();
+  const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
-
-  // Surface identity failures instead of rendering a blank screen
-  useEffect(() => {
-    if (identityError) {
-      Sentry.captureException(identityError, {
-        tags: { scope: "contact-list", type: "identity" },
-      });
-    }
-  }, [identityError]);
 
   // Clean up stale cached filters from localStorage
   // Generic hook validates all filters against filterRegistry.ts
@@ -48,23 +40,8 @@ export const ContactList = () => {
   if (isIdentityPending) {
     return <ContactListSkeleton />;
   }
-
-  if (identityError) {
-    return (
-      <IdentityError
-        title="We couldn't load your profile"
-        message={identityError.message || "Identity request failed."}
-      />
-    );
-  }
-
   if (!identity) {
-    return (
-      <IdentityError
-        title="No user identity found"
-        message="Please refresh the page or sign out and back in."
-      />
-    );
+    return null;
   }
 
   return (
@@ -97,7 +74,8 @@ const ContactListLayout = ({
   openSlideOver: (id: number, mode: "view" | "edit") => void;
   isSlideOverOpen: boolean;
 }) => {
-  const { data, isPending, filterValues } = useListContext();
+  const { data, isPending, filterValues, error, total } = useListContext();
+  const { data: identity } = useGetIdentity();
 
   // Keyboard navigation for list rows
   // Disabled when slide-over is open to prevent conflicts
@@ -115,6 +93,10 @@ const ContactListLayout = ({
         <ContactListSkeleton />
       </StandardListLayout>
     );
+  }
+
+  if (!identity) {
+    return null;
   }
 
   if (!data?.length && !hasFilters) {
@@ -263,7 +245,9 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
       linkedin_url: contact.linkedin_url,
 
       // Additional fields that may be useful but aren't in import schema
-      sales: `${sales[contact.sales_id].first_name} ${sales[contact.sales_id].last_name}`,
+      sales: contact.sales_id && sales[contact.sales_id]
+        ? `${sales[contact.sales_id].first_name} ${sales[contact.sales_id].last_name}`
+        : "",
       department: contact.department || "",
 
       // ID fields for reference
@@ -281,18 +265,3 @@ const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
 };
 
 export default ContactList;
-
-const IdentityError = ({ title, message }: { title: string; message: string }) => (
-  <div className="min-h-[60vh] flex items-center justify-center">
-    <div className="max-w-lg space-y-3 text-center p-6 border rounded-md bg-card">
-      <h2 className="text-xl font-semibold text-foreground">{title}</h2>
-      <p className="text-sm text-muted-foreground">{message}</p>
-      <button
-        className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-        onClick={() => window.location.reload()}
-      >
-        Reload
-      </button>
-    </div>
-  </div>
-);

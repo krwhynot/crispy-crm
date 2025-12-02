@@ -1,35 +1,22 @@
-import * as Sentry from "@sentry/react";
 import type { AuthProvider } from "ra-core";
 import { supabaseAuthProvider } from "ra-supabase-core";
 import { canAccess } from "../commons/canAccess";
 import { supabase } from "./supabase";
-import { logger } from "@/lib/logger";
 
 const baseAuthProvider = supabaseAuthProvider(supabase, {
   getIdentity: async () => {
     const sale = await getSaleFromCache();
 
     if (sale == null) {
-      const error = new Error("Missing sale record for authenticated user");
-      Sentry.captureException(error, { tags: { scope: "authProvider.getIdentity" } });
-      throw error;
+      throw new Error();
     }
 
-    const identity = {
+    return {
       id: sale.id,
       fullName: `${sale.first_name} ${sale.last_name}`,
       avatar: sale.avatar_url,
       role: sale.role || "rep", // Default to 'rep' if not set
     };
-
-    // Set Sentry user context for all future error reports
-    logger.setUser({
-      id: String(sale.id),
-      username: identity.fullName,
-      role: identity.role,
-    });
-
-    return identity;
   },
 });
 
@@ -41,15 +28,7 @@ export const authProvider: AuthProvider = {
     const result = await baseAuthProvider.login(params);
     // clear cached sale
     cachedSale = undefined;
-    logger.breadcrumb("User logged in", {}, "user");
     return result;
-  },
-  logout: async (params) => {
-    // Clear Sentry user context on logout
-    logger.setUser(null);
-    logger.breadcrumb("User logged out", {}, "user");
-    cachedSale = undefined;
-    return baseAuthProvider.logout(params);
   },
   /**
    * Check authentication status
@@ -70,15 +49,6 @@ export const authProvider: AuthProvider = {
       if (isPublicPath(window.location.pathname)) {
         return; // Allow access to public pages without session
       }
-      // Add breadcrumb for auth redirect (helps trace redirects leading to issues)
-      logger.breadcrumb(
-        "Auth redirect - no session",
-        {
-          blockedPath: window.location.pathname,
-          hasError: !!error,
-        },
-        "navigation"
-      );
       throw new Error("Not authenticated");
     }
 
@@ -120,11 +90,6 @@ const getSaleFromCache = async () => {
 
   // Shouldn't happen after login but just in case
   if (dataSession?.session?.user == null || errorSession) {
-    if (errorSession) {
-      Sentry.captureException(errorSession, {
-        tags: { scope: "authProvider.getIdentity", stage: "session" },
-      });
-    }
     return undefined;
   }
 
@@ -136,11 +101,6 @@ const getSaleFromCache = async () => {
 
   // Shouldn't happen either as all users are sales but just in case
   if (dataSale == null || errorSale) {
-    if (errorSale) {
-      Sentry.captureException(errorSale, {
-        tags: { scope: "authProvider.getIdentity", stage: "sale-fetch" },
-      });
-    }
     return undefined;
   }
 
