@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
-import { FilterButton } from "@/components/admin/filter-form";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/breadcrumb";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { QuickAddButton } from "./quick-add/QuickAddButton";
+import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 
 import { Translate, useGetIdentity, useListContext, useGetResourceLabel } from "ra-core";
 import { Link } from "react-router-dom";
@@ -17,13 +17,11 @@ import { OpportunityListContent } from "./kanban";
 import { OpportunityRowListView } from "./OpportunityRowListView";
 import { CampaignGroupedList } from "./CampaignGroupedList";
 import { OpportunityViewSwitcher, type OpportunityView } from "./OpportunityViewSwitcher";
-import { FilterChipsPanel } from "../filters/FilterChipsPanel";
-import { FilterPresetsBar } from "./FilterPresetsBar";
-import { useOpportunityFilters } from "../filters/useOpportunityFilters";
 import { saveStagePreferences } from "../filters/opportunityStagePreferences";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { OpportunitySlideOver } from "./OpportunitySlideOver";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
+import { OpportunityListFilter } from "./OpportunityListFilter";
 
 // Helper functions for view preference persistence
 const OPPORTUNITY_VIEW_KEY = "opportunity.view.preference";
@@ -41,7 +39,6 @@ const OpportunityList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const getResourceLabel = useGetResourceLabel();
   const resourceLabel = getResourceLabel("opportunities", 2);
-  const opportunityFilters = useOpportunityFilters();
   const [view, setView] = useState<OpportunityView>(getViewPreference);
 
   // Clean up stale cached filters from localStorage
@@ -61,30 +58,29 @@ const OpportunityList = () => {
 
   return (
     <>
-      <List
-        perPage={100}
-        filter={{
-          "deleted_at@is": null,
-        }}
-        title={false}
-        sort={{ field: "created_at", order: "DESC" }}
-        filters={opportunityFilters}
-        actions={<OpportunityActions view={view} onViewChange={handleViewChange} />}
-        pagination={null}
-      >
-        <Breadcrumb>
-          <BreadcrumbItem>
-            <Link to="/">
-              <Translate i18nKey="ra.page.dashboard">Home</Translate>
-            </Link>
-          </BreadcrumbItem>
-          <BreadcrumbPage>{resourceLabel}</BreadcrumbPage>
-        </Breadcrumb>
-        <FilterPresetsBar />
-        <FilterChipsPanel className="mb-4" />
-        <OpportunityLayout view={view} openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-        <FloatingCreateButton />
-      </List>
+      <StandardListLayout filterComponent={<OpportunityListFilter />}>
+        <List
+          perPage={100}
+          filter={{
+            "deleted_at@is": null,
+          }}
+          title={false}
+          sort={{ field: "created_at", order: "DESC" }}
+          actions={<OpportunityActions view={view} onViewChange={handleViewChange} />}
+          pagination={null}
+        >
+          <Breadcrumb>
+            <BreadcrumbItem>
+              <Link to="/">
+                <Translate i18nKey="ra.page.dashboard">Home</Translate>
+              </Link>
+            </BreadcrumbItem>
+            <BreadcrumbPage>{resourceLabel}</BreadcrumbPage>
+          </Breadcrumb>
+          <OpportunityLayout view={view} openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
+          <FloatingCreateButton />
+        </List>
+      </StandardListLayout>
 
       {/* Slide-over panel */}
       <OpportunitySlideOver
@@ -151,7 +147,6 @@ const OpportunityActions = ({
   return (
     <TopToolbar>
       <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
-      <FilterButton />
       <ExportButton />
       <QuickAddButton />
       <CreateButton label="New Opportunity" />

@@ -16,11 +16,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { ResponsiveGrid } from "@/components/design-system";
 import { NoteCreate, NotesIterator } from "../notes";
 import type { Opportunity } from "../types";
 import { ContactList } from "./ContactList";
 import { findOpportunityLabel } from "./opportunity";
 import { OpportunityHeader } from "./OpportunityHeader";
+import { OpportunityAside } from "./OpportunityAside";
 import { ActivityNoteForm } from "./ActivityNoteForm";
 import { ActivitiesList } from "./ActivitiesList";
 import { ChangeLogTab } from "./ChangeLogTab";
@@ -76,22 +78,23 @@ const OpportunityShowContent = () => {
   if (isPending || !record) return null;
 
   return (
-    <div className="mt-2">
-      {record.deleted_at ? <ArchivedBanner /> : null}
-      <Card>
-        <CardContent className="p-6">
-          <OpportunityHeader
-            mode="show"
-            ArchiveButton={ArchiveButton}
-            UnarchiveButton={UnarchiveButton}
-          />
+    <ResponsiveGrid variant="dashboard" className="mt-2 mb-2">
+      <main role="main" aria-label="Opportunity details">
+        {record.deleted_at ? <ArchivedBanner /> : null}
+        <Card>
+          <CardContent className="p-6">
+            <OpportunityHeader
+              mode="show"
+              ArchiveButton={ArchiveButton}
+              UnarchiveButton={UnarchiveButton}
+            />
 
-          <Tabs defaultValue={currentTab} onValueChange={handleTabChange}>
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="details">Details</TabsTrigger>
-              <TabsTrigger value="notes">Notes & Activity</TabsTrigger>
-              <TabsTrigger value="history">Change Log</TabsTrigger>
-            </TabsList>
+            <Tabs defaultValue={currentTab} onValueChange={handleTabChange}>
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="details">Details</TabsTrigger>
+                <TabsTrigger value="notes">Notes & Activity</TabsTrigger>
+                <TabsTrigger value="history">Change Log</TabsTrigger>
+              </TabsList>
 
             {/* Details Tab */}
             <TabsContent value="details" className="pt-4">
@@ -338,7 +341,12 @@ const OpportunityShowContent = () => {
           </Tabs>
         </CardContent>
       </Card>
-    </div>
+    </main>
+
+    <aside aria-label="Opportunity information">
+      <OpportunityAside />
+    </aside>
+  </ResponsiveGrid>
   );
 };
 
