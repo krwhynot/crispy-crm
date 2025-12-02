@@ -63,9 +63,7 @@ const mockSalesReps = [
 ];
 
 const Wrapper = ({ children }: { children: React.ReactNode }) => (
-  <MemoryRouter>
-    <GlobalFilterProvider>{children}</GlobalFilterProvider>
-  </MemoryRouter>
+  <MemoryRouter>{children}</MemoryRouter>
 );
 
 describe("OverviewTab", () => {
@@ -75,9 +73,10 @@ describe("OverviewTab", () => {
 
   it("renders KPI cards", () => {
     (useGetList as any)
-      .mockReturnValueOnce({ data: mockOpportunities, isPending: false })
-      .mockReturnValueOnce({ data: mockActivities, isPending: false })
-      .mockReturnValueOnce({ data: mockSalesReps, isPending: false });
+      .mockReturnValueOnce({ data: mockOpportunities, isPending: false }) // opportunities
+      .mockReturnValueOnce({ data: mockActivities, isPending: false }) // activities
+      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }) // sales reps for rep performance
+      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }); // sales reps for TabFilterBar
 
     render(<OverviewTab />, { wrapper: Wrapper });
 
@@ -88,9 +87,10 @@ describe("OverviewTab", () => {
 
   it("renders chart sections", () => {
     (useGetList as any)
-      .mockReturnValueOnce({ data: mockOpportunities, isPending: false })
-      .mockReturnValueOnce({ data: mockActivities, isPending: false })
-      .mockReturnValueOnce({ data: mockSalesReps, isPending: false });
+      .mockReturnValueOnce({ data: mockOpportunities, isPending: false }) // opportunities
+      .mockReturnValueOnce({ data: mockActivities, isPending: false }) // activities
+      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }) // sales reps for rep performance
+      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }); // sales reps for TabFilterBar
 
     render(<OverviewTab />, { wrapper: Wrapper });
 
@@ -98,5 +98,46 @@ describe("OverviewTab", () => {
     expect(screen.getByText("Activity Trend (14 Days)")).toBeInTheDocument();
     expect(screen.getByText("Top Principals by Opportunities")).toBeInTheDocument();
     expect(screen.getByText("Rep Performance")).toBeInTheDocument();
+  });
+
+  it("renders embedded TabFilterBar", () => {
+    (useGetList as any)
+      .mockReturnValueOnce({ data: mockOpportunities, isPending: false }) // opportunities
+      .mockReturnValueOnce({ data: mockActivities, isPending: false }) // activities
+      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }) // sales reps for rep performance
+      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }); // sales reps for TabFilterBar
+
+    render(<OverviewTab />, { wrapper: Wrapper });
+
+    // Filter bar should be inside the tab, not global
+    expect(screen.getByLabelText(/date range/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/sales rep/i)).toBeInTheDocument();
+  });
+
+  it("uses lg: breakpoint for desktop-first grid", () => {
+    (useGetList as any)
+      .mockReturnValueOnce({ data: mockOpportunities, isPending: false }) // opportunities
+      .mockReturnValueOnce({ data: mockActivities, isPending: false }) // activities
+      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }) // sales reps for rep performance
+      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }); // sales reps for TabFilterBar
+
+    const { container } = render(<OverviewTab />, { wrapper: Wrapper });
+    const kpiGrid = container.querySelector('[data-testid="kpi-grid"]');
+    expect(kpiGrid).toHaveClass("grid-cols-1");
+    expect(kpiGrid).toHaveClass("lg:grid-cols-4");
+    // Should NOT have md: breakpoint
+    expect(kpiGrid?.className).not.toMatch(/md:grid-cols-2/);
+  });
+
+  it("uses semantic spacing tokens", () => {
+    (useGetList as any)
+      .mockReturnValueOnce({ data: mockOpportunities, isPending: false }) // opportunities
+      .mockReturnValueOnce({ data: mockActivities, isPending: false }) // activities
+      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }) // sales reps for rep performance
+      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }); // sales reps for TabFilterBar
+
+    const { container } = render(<OverviewTab />, { wrapper: Wrapper });
+    const wrapper = container.firstChild;
+    expect(wrapper).toHaveClass("space-y-section");
   });
 });
