@@ -13,6 +13,7 @@ import { SaleName } from "../sales/SaleName";
 import type { Company } from "../types";
 import { sizes as _sizes } from "./sizes";
 import { ParentOrganizationSection } from "./ParentOrganizationSection";
+import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES } from "./constants";
 
 interface OrganizationAsideProps {
   link?: string;
@@ -88,21 +89,6 @@ const OrganizationInfo = ({ record }: { record: Company }) => {
 };
 
 const ContextInfo = ({ record }: { record: Company }) => {
-  const organizationTypeChoices = [
-    { id: "customer", name: "Customer" },
-    { id: "prospect", name: "Prospect" },
-    { id: "principal", name: "Principal" },
-    { id: "distributor", name: "Distributor" },
-    { id: "unknown", name: "Unknown" },
-  ];
-
-  const priorityChoices = [
-    { id: "A", name: "A - High Priority" },
-    { id: "B", name: "B - Medium-High Priority" },
-    { id: "C", name: "C - Medium Priority" },
-    { id: "D", name: "D - Low Priority" },
-  ];
-
   if (!record.id) {
     return null;
   }
@@ -111,12 +97,12 @@ const ContextInfo = ({ record }: { record: Company }) => {
     <AsideSection title="Context">
       {record.organization_type && (
         <span>
-          Type: <SelectField source="organization_type" choices={organizationTypeChoices} />
+          Type: <SelectField source="organization_type" choices={ORGANIZATION_TYPE_CHOICES} />
         </span>
       )}
       {record.priority && (
         <span>
-          Priority: <SelectField source="priority" choices={priorityChoices} />
+          Priority: <SelectField source="priority" choices={PRIORITY_CHOICES} />
         </span>
       )}
       {record.segment_id && (

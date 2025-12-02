@@ -137,7 +137,7 @@ export function OrganizationImportPreview({
               </div>
             )}
             {duplicateCount > 0 && (
-              <div className="flex items-center gap-4 text-sm text-orange-600">
+              <div className="flex items-center gap-4 text-sm text-warning">
                 <span className="flex items-center gap-1">
                   <Copy className="h-3 w-3" />
                   {dataQualityDecisions.skipDuplicates
@@ -274,7 +274,7 @@ export function OrganizationImportPreview({
               <CardHeader className="cursor-pointer" onClick={() => toggleSection("duplicates")}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4 text-orange-600" />
+                    <AlertTriangle className="h-4 w-4 text-warning" />
                     <CardTitle>Duplicate Organizations</CardTitle>
                     <Badge variant="secondary">
                       {preview.duplicates.length} name{preview.duplicates.length > 1 ? "s" : ""},{" "}
@@ -303,7 +303,7 @@ export function OrganizationImportPreview({
                       className="flex items-center justify-between p-2 bg-muted rounded"
                     >
                       <div className="flex items-center gap-2">
-                        <Copy className="h-4 w-4 text-orange-600" />
+                        <Copy className="h-4 w-4 text-warning" />
                         <span className="font-medium">{group.name}</span>
                       </div>
                       <Badge variant="secondary">
@@ -390,7 +390,7 @@ export function OrganizationImportPreview({
                         <TableCell>
                           <div className="flex items-center gap-2">
                             {index + 1}
-                            <CheckCircle className="h-3 w-3 text-green-500" />
+                            <CheckCircle className="h-3 w-3 text-success" />
                           </div>
                         </TableCell>
                         <TableCell className="font-medium">{row.name}</TableCell>

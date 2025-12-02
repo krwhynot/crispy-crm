@@ -11,6 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { AsideSection } from "@/components/ui";
 import { ArrayInput, SimpleFormIterator } from "react-admin";
 import type { OrganizationWithHierarchy } from "../../types";
+import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, ORG_TYPE_COLOR_MAP, PRIORITY_VARIANT_MAP } from "../constants";
 
 interface OrganizationDetailsTabProps {
   record: OrganizationWithHierarchy;
@@ -46,21 +47,6 @@ export function OrganizationDetailsTab({
   };
 
   if (mode === "edit") {
-    const organizationTypes = [
-      { id: "customer", name: "Customer" },
-      { id: "prospect", name: "Prospect" },
-      { id: "principal", name: "Principal" },
-      { id: "distributor", name: "Distributor" },
-      { id: "unknown", name: "Unknown" },
-    ];
-
-    const priorities = [
-      { id: "A", name: "A - High" },
-      { id: "B", name: "B - Medium-High" },
-      { id: "C", name: "C - Medium" },
-      { id: "D", name: "D - Low" },
-    ];
-
     return (
       <RecordContextProvider value={record}>
         <Form onSubmit={handleSave} record={record}>
@@ -68,9 +54,9 @@ export function OrganizationDetailsTab({
             <div className="space-y-4">
               <TextInput source="name" label="Organization Name" />
 
-              <SelectInput source="organization_type" label="Type" choices={organizationTypes} />
+              <SelectInput source="organization_type" label="Type" choices={ORGANIZATION_TYPE_CHOICES} />
 
-              <SelectInput source="priority" label="Priority" choices={priorities} />
+              <SelectInput source="priority" label="Priority" choices={PRIORITY_CHOICES} />
 
               <TextInput source="email" label="Email" type="email" />
 
@@ -188,14 +174,7 @@ export function OrganizationDetailsTab({
 }
 
 function OrganizationTypeBadge({ type }: { type: string }) {
-  const colorClass =
-    {
-      customer: "tag-warm",
-      prospect: "tag-sage",
-      principal: "tag-purple",
-      distributor: "tag-teal",
-      unknown: "tag-gray",
-    }[type] || "tag-gray";
+  const colorClass = ORG_TYPE_COLOR_MAP[type as keyof typeof ORG_TYPE_COLOR_MAP] || "tag-gray";
 
   return (
     <Badge className={`text-xs px-2 py-1 ${colorClass}`}>
@@ -205,30 +184,8 @@ function OrganizationTypeBadge({ type }: { type: string }) {
 }
 
 function PriorityBadge({ priority }: { priority: string }) {
-  let variant: "default" | "secondary" | "destructive" | "outline" = "default";
-
-  switch (priority) {
-    case "A":
-      variant = "destructive";
-      break;
-    case "B":
-      variant = "default";
-      break;
-    case "C":
-      variant = "secondary";
-      break;
-    case "D":
-      variant = "outline";
-      break;
-  }
-
-  const label =
-    {
-      A: "A - High",
-      B: "B - Medium-High",
-      C: "C - Medium",
-      D: "D - Low",
-    }[priority] || priority;
+  const variant = PRIORITY_VARIANT_MAP[priority as keyof typeof PRIORITY_VARIANT_MAP] || "default";
+  const label = PRIORITY_CHOICES.find(p => p.id === priority)?.name || priority;
 
   return (
     <Badge variant={variant} className="text-xs px-2 py-1">

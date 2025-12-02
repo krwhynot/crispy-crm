@@ -11,6 +11,7 @@
  */
 
 import { Badge } from "@/components/ui/badge";
+import { ORG_TYPE_COLOR_MAP, PRIORITY_VARIANT_MAP, PRIORITY_CHOICES } from "./constants";
 
 /** Valid organization types matching database enum */
 export type OrganizationType = "customer" | "prospect" | "principal" | "distributor" | "unknown";
@@ -39,14 +40,7 @@ interface PriorityBadgeProps {
  * - unknown: tag-gray (Mushroom - neutral)
  */
 export function OrganizationTypeBadge({ type }: OrganizationTypeBadgeProps) {
-  const colorClass =
-    {
-      customer: "tag-warm",
-      prospect: "tag-sage",
-      principal: "tag-purple",
-      distributor: "tag-teal",
-      unknown: "tag-gray",
-    }[type] || "tag-gray";
+  const colorClass = ORG_TYPE_COLOR_MAP[type as OrganizationType] || "tag-gray";
 
   return (
     <Badge className={`text-xs px-2 py-1 ${colorClass}`}>
@@ -65,30 +59,8 @@ export function OrganizationTypeBadge({ type }: OrganizationTypeBadgeProps) {
  * - D (Low): outline (minimal emphasis)
  */
 export function PriorityBadge({ priority }: PriorityBadgeProps) {
-  let variant: "default" | "secondary" | "destructive" | "outline" = "default";
-
-  switch (priority) {
-    case "A":
-      variant = "destructive";
-      break;
-    case "B":
-      variant = "default";
-      break;
-    case "C":
-      variant = "secondary";
-      break;
-    case "D":
-      variant = "outline";
-      break;
-  }
-
-  const label =
-    {
-      A: "A - High",
-      B: "B - Medium-High",
-      C: "C - Medium",
-      D: "D - Low",
-    }[priority] || priority;
+  const variant = PRIORITY_VARIANT_MAP[priority as PriorityLevel] || "default";
+  const label = PRIORITY_CHOICES.find(p => p.id === priority)?.name || priority;
 
   return (
     <Badge variant={variant} className="text-xs px-2 py-1">
