@@ -168,15 +168,10 @@ vi.mock("./filterRegistry", () => ({
   isValidFilterField: vi.fn().mockReturnValue(true),
 }));
 
-vi.mock("./dataProviderUtils", () => ({
-  getDatabaseResource: vi.fn((resource: string) => `${resource}_summary`),
-  applySearchParams: vi.fn((resource: string, params: any) => params),
-  normalizeResponseData: vi.fn((resource: string, data: any) => data),
-  transformArrayFilters: vi.fn((filters: any) => filters),
-  escapeForPostgREST: vi.fn((value: any) => String(value)),
-}));
+// NOTE: DO NOT mock dataProviderUtils for this test - we're testing the actual transformations!
 
 // Import the provider after all mocks are set up
+import { supabase } from "./supabase";
 import { unifiedDataProvider } from "./unifiedDataProvider";
 
 describe("UnifiedDataProvider Array Filter Transformation", () => {
@@ -184,6 +179,17 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
     vi.clearAllMocks();
     mockGetList.mockResolvedValue({ data: [], total: 0 });
     mockGetManyReference.mockResolvedValue({ data: [], total: 0 });
+
+    // Set up default auth mocks for each test
+    vi.mocked(supabase.auth.getSession).mockResolvedValue({
+      data: { session: { user: { id: "test-user" }, access_token: "test-token" } },
+      error: null,
+    } as any);
+
+    vi.mocked(supabase.auth.getUser).mockResolvedValue({
+      data: { user: { id: "test-user" } },
+      error: null,
+    } as any);
   });
 
   describe("getList with array filters", () => {
