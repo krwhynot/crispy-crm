@@ -1,8 +1,22 @@
 import * as React from "react";
 import type { ActivityRecord } from "../types";
+import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
 
-const ActivityList = React.lazy(() => import("./ActivityList"));
-const ActivityCreate = React.lazy(() => import("./ActivityCreate"));
+const ActivityListLazy = React.lazy(() => import("./ActivityList"));
+const ActivityCreateLazy = React.lazy(() => import("./ActivityCreate"));
+
+// Wrap lazy components with resource-specific error boundaries
+const ActivityList = () => (
+  <ResourceErrorBoundary resource="activities" page="list">
+    <ActivityListLazy />
+  </ResourceErrorBoundary>
+);
+
+const ActivityCreate = () => (
+  <ResourceErrorBoundary resource="activities" page="create">
+    <ActivityCreateLazy />
+  </ResourceErrorBoundary>
+);
 
 // Export the reusable dialog component and its types
 export {

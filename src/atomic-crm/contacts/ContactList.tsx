@@ -4,6 +4,7 @@ import type { Exporter } from "ra-core";
 import { downloadCSV, useGetIdentity, useListContext } from "ra-core";
 import * as Sentry from "@sentry/react";
 
+import { TextField, ReferenceField, DateField, FunctionField } from "react-admin";
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
@@ -12,10 +13,6 @@ import { SortButton } from "@/components/admin/sort-button";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
-import { TextField } from "@/components/admin/text-field";
-import { ReferenceField } from "@/components/admin/reference-field";
-import { DateField } from "@/components/admin/date-field";
-import { FunctionField } from "react-admin";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { ContactListSkeleton } from "@/components/ui/list-skeleton";
@@ -178,6 +175,7 @@ const ContactListLayout = ({
           <ReferenceField
             source="organization_id"
             reference="organizations"
+            label="Organization"
             link={false}
             sortable
           >
@@ -204,6 +202,7 @@ const ContactListLayout = ({
           {/* Column 7: Last Activity - Recency metric (sortable) - hidden on mobile */}
           <DateField
             source="last_seen"
+            label="Last Activity"
             sortable
             showTime={false}
             cellClassName="hidden md:table-cell"

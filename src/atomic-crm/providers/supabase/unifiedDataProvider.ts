@@ -160,7 +160,7 @@ const segmentsService = new SegmentsService(baseDataProvider);
 /**
  * Log error with context for debugging
  * Integrated from resilientDataProvider for consolidated error logging
- * Now also sends to Sentry via structured logger
+ * Now also sends to Sentry via structured logger with rich tags for filtering
  */
 function logError(
   method: string,
@@ -168,34 +168,46 @@ function logError(
   params: DataProviderLogParams,
   error: unknown
 ): void {
+  const extendedError = error as ExtendedError | undefined;
+
+  // Build context with Sentry-friendly tag fields
+  // Fields named 'method', 'resource', 'operation', 'feature', 'service' get promoted to tags
   const context = {
+    // These become Sentry tags for filtering
     method,
     resource,
+    operation: method, // Duplicate for clarity in Sentry UI
+    service: "dataProvider",
+    // These become Sentry extras for detail
     params: {
       id: params?.id,
-      ids: params?.ids,
-      filter: params?.filter,
+      ids: params?.ids ? `[${params.ids.length} items]` : undefined,
+      filter: params?.filter ? JSON.stringify(params.filter).slice(0, 200) : undefined,
       sort: params?.sort,
       pagination: params?.pagination,
       target: params?.target,
-      data: params?.data ? "[Data Present]" : undefined,
+      hasData: !!params?.data,
     },
     timestamp: new Date().toISOString(),
+    // Include validation errors for debugging
+    validationErrors: extendedError?.body?.errors || extendedError?.errors || undefined,
+    // Supabase error details
+    supabaseCode: extendedError?.code,
+    supabaseDetails: extendedError?.details,
   };
-
-  const extendedError = error as ExtendedError | undefined;
 
   // Track request failure for error rate calculation
   logger.trackRequest(`${method}:${resource}`, false);
 
   // Use structured logger to send to Sentry
+  // The logger.error will automatically:
+  // 1. Forward to Sentry.captureException with tags
+  // 2. Promote 'method', 'resource', 'service' to Sentry tags
+  // 3. Put remaining context into Sentry extras
   logger.error(
     `DataProvider error: ${method} ${resource}`,
     error instanceof Error ? error : new Error(String(error)),
-    {
-      ...context,
-      validationErrors: extendedError?.body?.errors || extendedError?.errors || undefined,
-    }
+    context
   );
 
   // Keep console.error for development debugging
@@ -207,7 +219,6 @@ function logError(
           ? extendedError.message
           : String(error),
     stack: error instanceof Error ? error.stack : undefined,
-    validationErrors: extendedError?.body?.errors || extendedError?.errors || undefined,
     fullError: error,
   });
 

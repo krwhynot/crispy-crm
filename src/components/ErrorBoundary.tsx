@@ -20,6 +20,7 @@
 
 import type { ReactNode, ErrorInfo } from "react";
 import { Component } from "react";
+import * as Sentry from "@sentry/react";
 import { AlertTriangle, Home, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -65,11 +66,23 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
-    // Log to our structured logger
+    // Log to our structured logger (which forwards to Sentry)
     logger.error("React component error caught by boundary", error, {
       componentStack: errorInfo.componentStack,
       feature: this.props.feature,
       ...this.props.context,
+    });
+
+    // Also capture directly to Sentry with React-specific context
+    Sentry.captureException(error, {
+      tags: {
+        feature: this.props.feature || "unknown",
+        errorBoundary: "true",
+      },
+      extra: {
+        componentStack: errorInfo.componentStack,
+        ...this.props.context,
+      },
     });
 
     this.setState({ errorInfo });
