@@ -1,7 +1,13 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { PrincipalDashboardV3 } from "../PrincipalDashboardV3";
+
+// Mock useBreakpoint with controllable return value
+const mockUseBreakpoint = vi.fn(() => "desktop");
+vi.mock("@/hooks/useBreakpoint", () => ({
+  useBreakpoint: () => mockUseBreakpoint(),
+}));
 
 // Mock LogActivityFAB to avoid React Admin dependency in tests
 vi.mock("../components/LogActivityFAB", () => ({
@@ -78,6 +84,11 @@ vi.mock("../hooks/useKPIMetrics", () => ({
 }));
 
 describe("PrincipalDashboardV3", () => {
+  beforeEach(() => {
+    // Reset to desktop breakpoint before each test
+    mockUseBreakpoint.mockReturnValue("desktop");
+  });
+
   it("should render both panels (Pipeline and Tasks)", () => {
     render(
       <MemoryRouter>
@@ -221,5 +232,68 @@ describe("PrincipalDashboardV3", () => {
     expect(
       screen.getByRole("button", { name: /Stale Deals: 2/i })
     ).toBeInTheDocument();
+  });
+
+  describe("responsive Tasks header button", () => {
+    it("should NOT show Tasks button in header on desktop (inline panel visible)", () => {
+      mockUseBreakpoint.mockReturnValue("desktop");
+      render(
+        <MemoryRouter>
+          <PrincipalDashboardV3 />
+        </MemoryRouter>
+      );
+
+      // Desktop shows inline Tasks panel, no header button needed
+      expect(screen.queryByRole("button", { name: /open tasks panel/i })).not.toBeInTheDocument();
+    });
+
+    it("should NOT show Tasks button in header on laptop (icon rail visible)", () => {
+      mockUseBreakpoint.mockReturnValue("laptop");
+      render(
+        <MemoryRouter>
+          <PrincipalDashboardV3 />
+        </MemoryRouter>
+      );
+
+      // Laptop shows icon rail, no header button needed
+      expect(screen.queryByRole("button", { name: /open tasks panel/i })).not.toBeInTheDocument();
+    });
+
+    it("should show Tasks button in header on tablet-landscape", () => {
+      mockUseBreakpoint.mockReturnValue("tablet-landscape");
+      render(
+        <MemoryRouter>
+          <PrincipalDashboardV3 />
+        </MemoryRouter>
+      );
+
+      // Tablet landscape needs header button to open drawer
+      expect(screen.getByRole("button", { name: /open tasks panel/i })).toBeInTheDocument();
+      expect(screen.getByText("Tasks")).toBeInTheDocument();
+    });
+
+    it("should show Tasks button in header on tablet-portrait", () => {
+      mockUseBreakpoint.mockReturnValue("tablet-portrait");
+      render(
+        <MemoryRouter>
+          <PrincipalDashboardV3 />
+        </MemoryRouter>
+      );
+
+      // Tablet portrait needs header button to open drawer
+      expect(screen.getByRole("button", { name: /open tasks panel/i })).toBeInTheDocument();
+    });
+
+    it("should NOT show Tasks button on mobile (handled by MobileQuickActionBar)", () => {
+      mockUseBreakpoint.mockReturnValue("mobile");
+      render(
+        <MemoryRouter>
+          <PrincipalDashboardV3 />
+        </MemoryRouter>
+      );
+
+      // Mobile uses MobileQuickActionBar instead
+      expect(screen.queryByRole("button", { name: /open tasks panel/i })).not.toBeInTheDocument();
+    });
   });
 });
