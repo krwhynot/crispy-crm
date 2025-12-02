@@ -27,6 +27,8 @@ const columnConfig: Record<
   {
     accentColor: string;
     bgColor: string;
+    headerBg: string;
+    headerTextColor: string;
     emptyText: string;
     emptySubtext: string;
   }
@@ -34,18 +36,24 @@ const columnConfig: Record<
   overdue: {
     accentColor: "border-destructive",
     bgColor: "bg-destructive/5",
+    headerBg: "bg-destructive/10",
+    headerTextColor: "text-destructive font-bold",
     emptyText: "No overdue tasks",
     emptySubtext: "Great job staying on top of things!",
   },
   today: {
     accentColor: "border-primary",
     bgColor: "bg-primary/5",
+    headerBg: "",
+    headerTextColor: "text-foreground font-semibold",
     emptyText: "No tasks due today",
     emptySubtext: "Drag tasks here to focus on them today",
   },
   thisWeek: {
     accentColor: "border-muted-foreground",
     bgColor: "bg-muted/30",
+    headerBg: "",
+    headerTextColor: "text-foreground font-semibold",
     emptyText: "No upcoming tasks",
     emptySubtext: "Plan your week by adding tasks here",
   },
@@ -112,8 +120,11 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
       data-testid={`task-kanban-column-${columnId}`}
     >
       {/* Column Header */}
-      <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-        <h2 className="font-semibold text-foreground">{title}</h2>
+      <div className={cn(
+        "flex items-center justify-between px-4 py-3 border-b border-border",
+        config.headerBg
+      )}>
+        <h2 className={config.headerTextColor}>{title}</h2>
         <span className="text-sm text-muted-foreground">{tasks.length}</span>
       </div>
 
