@@ -1060,11 +1060,307 @@ Manually test:
 
 ---
 
+---
+
+## Phase 5: UI/UX Compliance (Fitts's Law, Hick's Law, Von Restorff)
+
+> Added after Sienna "The Lens" Kovic UI/UX audit identified cognitive psychology violations
+
+### Task 5.1: Badge Touch Target Compliance (Fitts's Law)
+
+**Issue:** Badges at 24px height violate WCAG AA 44px minimum touch target requirement.
+
+**Files:**
+- Modify: `src/atomic-crm/organizations/constants.ts`
+- Modify: `src/atomic-crm/organizations/OrganizationListFilter.tsx`
+- Modify: `src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx`
+
+**Step 1: Add touch target constant to constants.ts**
+
+After `ACTIVITY_PAGE_SIZE`, add:
+```typescript
+/**
+ * Touch target minimum height for WCAG AA compliance (Fitts's Law)
+ * 44px minimum ensures reliable touch/click interaction
+ */
+export const TOUCH_TARGET_MIN_HEIGHT = "h-11"; // 44px
+```
+
+**Step 2: Update OrganizationListFilter badges**
+
+Change all Badge classes from `text-xs px-1 py-0` to `text-xs px-3 py-2 min-h-[44px] flex items-center`.
+
+**Step 3: Update OrganizationDetailsTab badges**
+
+In both `OrganizationTypeBadge` and `PriorityBadge` components, update:
+```typescript
+<Badge className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${colorClass}`}>
+```
+
+**Step 4: Verify touch targets visually**
+
+Run dev server and confirm badges are touch-friendly.
+
+---
+
+### Task 5.2: Priority Color Rebalancing (Von Restorff Effect)
+
+**Issue:** Priority A using "destructive" red conflates urgency with danger/error states.
+
+**Files:**
+- Modify: `src/atomic-crm/organizations/constants.ts`
+
+**Step 1: Update PRIORITY_VARIANT_MAP**
+
+Replace:
+```typescript
+export const PRIORITY_VARIANT_MAP: Record<PriorityLevel, "destructive" | "default" | "secondary" | "outline"> = {
+  A: "destructive",
+  B: "default",
+  C: "secondary",
+  D: "outline",
+};
+```
+
+With:
+```typescript
+/**
+ * Priority to badge variant mapping
+ * Uses brand emphasis instead of error semantics for high priority
+ * - A: default (brand primary - high importance, not danger)
+ * - B: secondary (standard importance)
+ * - C: outline (routine)
+ * - D: outline with muted text (minimal)
+ */
+export const PRIORITY_VARIANT_MAP: Record<PriorityLevel, "default" | "secondary" | "outline"> = {
+  A: "default",      // Brand primary - importance without alarm
+  B: "secondary",    // Standard emphasis
+  C: "outline",      // Routine
+  D: "outline",      // Minimal (use muted text in component)
+};
+```
+
+**Step 2: Update PriorityBadge component to handle D priority styling**
+
+In `OrganizationDetailsTab.tsx`, update PriorityBadge:
+```typescript
+function PriorityBadge({ priority }: { priority: string }) {
+  const variant = PRIORITY_VARIANT_MAP[priority as keyof typeof PRIORITY_VARIANT_MAP] || "outline";
+  const label = PRIORITY_CHOICES.find(p => p.id === priority)?.name || priority;
+  const isMuted = priority === "D";
+
+  return (
+    <Badge
+      variant={variant}
+      className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${isMuted ? "text-muted-foreground" : ""}`}
+    >
+      {label}
+    </Badge>
+  );
+}
+```
+
+---
+
+### Task 5.3: US States Searchable Combobox (Hick's Law)
+
+**Issue:** 50-item flat dropdown violates Hick's Law - decision time increases logarithmically with choices.
+
+**Files:**
+- Modify: `src/atomic-crm/organizations/OrganizationMainTab.tsx`
+- Create: `src/components/admin/state-combobox-input.tsx` (if not exists)
+
+**Step 1: Create StateComboboxInput component**
+
+Create `src/components/admin/state-combobox-input.tsx`:
+```typescript
+import { useState } from "react";
+import { useInput, InputProps } from "ra-core";
+import { Command, CommandInput, CommandEmpty, CommandGroup, CommandItem } from "@/components/ui/command";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "@/components/ui/button";
+import { Check, ChevronsUpDown } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { US_STATES } from "@/atomic-crm/organizations/constants";
+
+interface StateComboboxInputProps extends Omit<InputProps, 'source'> {
+  source: string;
+  label?: string;
+}
+
+export function StateComboboxInput({ source, label = "State", ...props }: StateComboboxInputProps) {
+  const [open, setOpen] = useState(false);
+  const { field, fieldState } = useInput({ source, ...props });
+
+  const selectedState = US_STATES.find(s => s.id === field.value);
+
+  return (
+    <div className="space-y-2">
+      {label && <label className="text-sm font-medium">{label}</label>}
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <Button
+            variant="outline"
+            role="combobox"
+            aria-expanded={open}
+            className="w-full justify-between min-h-[44px]"
+          >
+            {selectedState?.name || "Select state..."}
+            <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-full p-0" align="start">
+          <Command>
+            <CommandInput placeholder="Search states..." />
+            <CommandEmpty>No state found.</CommandEmpty>
+            <CommandGroup className="max-h-64 overflow-auto">
+              {US_STATES.map((state) => (
+                <CommandItem
+                  key={state.id}
+                  value={state.name}
+                  onSelect={() => {
+                    field.onChange(state.id);
+                    setOpen(false);
+                  }}
+                >
+                  <Check
+                    className={cn(
+                      "mr-2 h-4 w-4",
+                      field.value === state.id ? "opacity-100" : "opacity-0"
+                    )}
+                  />
+                  {state.name} ({state.id})
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          </Command>
+        </PopoverContent>
+      </Popover>
+      {fieldState.error && (
+        <p className="text-sm text-destructive">{fieldState.error.message}</p>
+      )}
+    </div>
+  );
+}
+```
+
+**Step 2: Update OrganizationMainTab to use combobox**
+
+Replace:
+```typescript
+<SelectInput
+  source="state"
+  label="State"
+  helperText={false}
+  choices={US_STATES}
+  emptyText="Select state"
+/>
+```
+
+With:
+```typescript
+<StateComboboxInput source="state" label="State" />
+```
+
+And add import:
+```typescript
+import { StateComboboxInput } from "@/components/admin/state-combobox-input";
+```
+
+Remove US_STATES from imports since it's now used internally by the combobox.
+
+---
+
+### Task 5.4: OrganizationShow Deprecation Roadmap (Jakob's Law)
+
+**Issue:** Two competing detail view patterns (OrganizationShow page vs SlideOver) violates consistency expectations.
+
+**Files:**
+- Create: `docs/decisions/ADR-005-organization-detail-view.md`
+
+**Step 1: Create Architecture Decision Record**
+
+Document the decision to consolidate on SlideOver pattern:
+
+```markdown
+# ADR-005: Organization Detail View Pattern
+
+## Status
+Accepted
+
+## Context
+The Organizations module currently has two competing detail view patterns:
+1. `OrganizationShow.tsx` - Full page detail view
+2. `OrganizationSlideOver.tsx` - Sheet/drawer pattern
+
+This violates Jakob's Law: users expect consistency across similar interfaces.
+
+## Decision
+Consolidate on the **SlideOver pattern** as the primary detail view because:
+1. Maintains list context (user can see organization list while viewing details)
+2. Consistent with modern CRM patterns (Salesforce Lightning, HubSpot)
+3. Faster navigation between records
+4. Already implemented and tested
+
+## Deprecation Plan
+1. **Phase A (Current Sprint)**: Add deprecation notice to OrganizationShow
+2. **Phase B (Next Sprint)**: Redirect /organizations/:id/show to list with SlideOver open
+3. **Phase C (Future)**: Remove OrganizationShow.tsx entirely
+
+## Consequences
+- Users currently using direct links to /organizations/:id/show will be redirected
+- Bookmark and external link behavior changes
+- Reduced code maintenance burden
+
+## Implementation Notes
+- Add `@deprecated` JSDoc to OrganizationShow component
+- Create redirect handler in routes
+- Update navigation to use SlideOver pattern
+```
+
+**Step 2: Add deprecation notice to OrganizationShow**
+
+At top of `src/atomic-crm/organizations/OrganizationShow.tsx`:
+```typescript
+/**
+ * @deprecated Use OrganizationSlideOver instead.
+ * This component will be removed in a future release.
+ * See ADR-005 for migration details.
+ */
+```
+
+---
+
+### Task 5.5: Phase 5 Verification
+
+**Step 1: Visual inspection**
+
+Run dev server and verify:
+- [ ] Badge touch targets are visibly larger (44px height)
+- [ ] Priority A badges use brand color, not red
+- [ ] US States dropdown is searchable
+- [ ] OrganizationShow has deprecation comment
+
+**Step 2: Accessibility check**
+
+Run: `npm run test:a11y` (if available) or manually verify:
+- [ ] Badges are clickable with touch
+- [ ] Combobox is keyboard navigable
+- [ ] Screen reader announces state selection
+
+**Step 3: Build verification**
+
+Run: `npm run build && npm run lint`
+Expected: No errors
+
+---
+
 ## Estimated Time
 
 - Phase 1 (Constants): ~45 minutes
 - Phase 2 (Colors): ~60 minutes
 - Phase 3 (Dead Code): ~30 minutes
 - Phase 4 (Verification): ~15 minutes
+- Phase 5 (UI/UX Compliance): ~90 minutes
 
-**Total: ~2.5 hours**
+**Total: ~4 hours**
