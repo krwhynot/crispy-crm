@@ -78,18 +78,49 @@ export function PrincipalPipelineTable() {
     setSelectedPrincipal(null);
   }, []);
 
-  // Loading state
+  // Loading state - matches production layout structure
   if (loading) {
     return (
       <div className="flex h-full flex-col">
+        {/* Header skeleton matching production header */}
         <div className="border-b border-border pb-4">
-          <Skeleton className="mb-2 h-6 w-48" />
-          <Skeleton className="h-4 w-96" />
+          <div className="flex items-start justify-between">
+            <div>
+              <Skeleton className="mb-2 h-6 w-48" />
+              <Skeleton className="h-4 w-80" />
+            </div>
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-9 w-48" />
+              <Skeleton className="h-5 w-10" />
+              <Skeleton className="h-4 w-28" />
+              <Skeleton className="h-9 w-20" />
+            </div>
+          </div>
         </div>
-        <div className="flex-1 space-y-2 pt-4">
-          {[1, 2, 3, 4, 5].map((i) => (
-            <Skeleton key={i} className="h-12 w-full" />
-          ))}
+        {/* Table skeleton with header and rows */}
+        <div className="flex-1 overflow-auto pt-2">
+          {/* Table header */}
+          <div className="flex gap-4 px-2 py-3 border-b border-border">
+            <Skeleton className="h-4 w-32" />
+            <Skeleton className="h-4 w-16 ml-auto" />
+            <Skeleton className="h-4 w-20" />
+            <Skeleton className="h-4 w-20 hidden lg:block" />
+            <Skeleton className="h-4 w-24" />
+            <Skeleton className="h-4 w-32" />
+          </div>
+          {/* Table rows */}
+          <div className="space-y-1 pt-1">
+            {[1, 2, 3, 4, 5].map((i) => (
+              <div key={i} className="flex items-center gap-4 px-2 py-3 border-b border-border/50">
+                <Skeleton className="h-4 w-28" />
+                <Skeleton className="h-5 w-8 ml-auto" />
+                <Skeleton className="h-5 w-8" />
+                <Skeleton className="h-5 w-8 hidden lg:block" />
+                <Skeleton className="h-4 w-20" />
+                <Skeleton className="h-4 w-36" />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
