@@ -104,7 +104,7 @@ const ContactListLayout = ({
   openSlideOver: (id: number, mode: "view" | "edit") => void;
   isSlideOverOpen: boolean;
 }) => {
-  const { data, isPending, filterValues, error, total } = useListContext();
+  const { data, isPending, filterValues } = useListContext();
 
   // Keyboard navigation for list rows
   // Disabled when slide-over is open to prevent conflicts
@@ -178,7 +178,6 @@ const ContactListLayout = ({
           <ReferenceField
             source="organization_id"
             reference="organizations"
-            label="Organization"
             link={false}
             sortable
           >
@@ -205,7 +204,6 @@ const ContactListLayout = ({
           {/* Column 7: Last Activity - Recency metric (sortable) - hidden on mobile */}
           <DateField
             source="last_seen"
-            label="Last Activity"
             sortable
             showTime={false}
             cellClassName="hidden md:table-cell"

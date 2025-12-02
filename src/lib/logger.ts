@@ -1,10 +1,11 @@
 /**
- * Structured Logging Utility
+ * Structured Logging Utility with Sentry Integration
  *
  * Provides a unified logging interface that:
  * - Adds structured context to all log entries
  * - Tracks metrics for health monitoring
  * - Supports different log levels with appropriate routing
+ * - Forwards errors and warnings to Sentry for production monitoring
  *
  * @example
  * ```ts
@@ -13,8 +14,11 @@
  * logger.info('User logged in', { userId: '123', role: 'admin' });
  * logger.error('Failed to save opportunity', new Error('Network error'), { opportunityId: '456' });
  * logger.metric('api_latency', 250, { endpoint: '/opportunities' });
+ * logger.breadcrumb('Opened contact slide-over', { contactId: '789' });
  * ```
  */
+
+import * as Sentry from "@sentry/react";
 
 /**
  * Log levels in order of severity
@@ -121,6 +125,7 @@ class Logger {
 
   /**
    * Core logging method
+   * Now forwards errors/warnings to Sentry for production monitoring
    */
   private log(
     level: LogLevel,
@@ -160,6 +165,77 @@ class Logger {
     if (level === "error" || level === "fatal") {
       const period = getCurrentPeriod();
       errorCountByPeriod.set(period, (errorCountByPeriod.get(period) || 0) + 1);
+    }
+
+    // Forward to Sentry based on level
+    this.sendToSentry(level, message, context, error);
+  }
+
+  /**
+   * Forward log entries to Sentry
+   * - error/fatal: captureException with full context
+   * - warn: captureMessage at warning level
+   * - info: breadcrumb only (no event)
+   */
+  private sendToSentry(
+    level: LogLevel,
+    message: string,
+    context?: Record<string, unknown>,
+    error?: Error
+  ): void {
+    // Extract tags and extras from context
+    const tags: Record<string, string> = {};
+    const extras: Record<string, unknown> = {};
+
+    if (context) {
+      for (const [key, value] of Object.entries(context)) {
+        // Known tag fields get promoted to tags for filtering
+        if (["resource", "method", "operation", "feature", "service"].includes(key)) {
+          tags[key] = String(value);
+        } else {
+          extras[key] = value;
+        }
+      }
+    }
+
+    switch (level) {
+      case "error":
+      case "fatal":
+        if (error) {
+          Sentry.captureException(error, {
+            tags: { ...tags, logger: "app", severity: level },
+            extra: { ...extras, message },
+          });
+        } else {
+          Sentry.captureMessage(message, {
+            level: level === "fatal" ? "fatal" : "error",
+            tags: { ...tags, logger: "app" },
+            extra: extras,
+          });
+        }
+        break;
+
+      case "warn":
+        Sentry.captureMessage(message, {
+          level: "warning",
+          tags: { ...tags, logger: "app" },
+          extra: extras,
+        });
+        break;
+
+      case "info":
+        // Info messages become breadcrumbs for context, not events
+        Sentry.addBreadcrumb({
+          category: "logger",
+          message,
+          level: "info",
+          data: extras,
+        });
+        break;
+
+      case "debug":
+        // Debug messages are console-only, not sent to Sentry
+        break;
     }
   }
 
@@ -318,6 +394,69 @@ class Logger {
    */
   isErrorRateHigh(threshold: number = 1): boolean {
     return this.getErrorRate() > threshold;
+  }
+
+  /**
+   * Add a breadcrumb for user action tracking
+   * Breadcrumbs provide context leading up to an error
+   *
+   * @example
+   * logger.breadcrumb('Opened contact slide-over', { contactId: '123', mode: 'edit' });
+   * logger.breadcrumb('Drag started', { opportunityId: '456', fromStage: 'new_lead' }, 'ui');
+   */
+  breadcrumb(
+    message: string,
+    data?: Record<string, unknown>,
+    category: "ui" | "navigation" | "user" | "data" | "http" = "user"
+  ): void {
+    Sentry.addBreadcrumb({
+      category,
+      message,
+      level: "info",
+      data,
+    });
+
+    // Also log to console in development
+    if (!this.isProduction) {
+      console.debug(`[BREADCRUMB:${category}] ${message}`, data || "");
+    }
+  }
+
+  /**
+   * Set the current user for Sentry tracking
+   * Call after successful authentication
+   */
+  setUser(user: { id: string; email?: string; username?: string; role?: string } | null): void {
+    if (user) {
+      Sentry.setUser({
+        id: user.id,
+        email: user.email,
+        username: user.username,
+        // Custom data
+        role: user.role,
+      });
+      this.info("User context set", { userId: user.id, role: user.role });
+    } else {
+      Sentry.setUser(null);
+      this.info("User context cleared");
+    }
+  }
+
+  /**
+   * Set a tag that will be attached to all future events
+   * Useful for tenant/org context
+   */
+  setTag(key: string, value: string): void {
+    Sentry.setTag(key, value);
+  }
+
+  /**
+   * Set multiple tags at once
+   */
+  setTags(tags: Record<string, string>): void {
+    for (const [key, value] of Object.entries(tags)) {
+      Sentry.setTag(key, value);
+    }
   }
 }
 

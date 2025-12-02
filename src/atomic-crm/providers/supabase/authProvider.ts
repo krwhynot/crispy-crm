@@ -3,6 +3,7 @@ import type { AuthProvider } from "ra-core";
 import { supabaseAuthProvider } from "ra-supabase-core";
 import { canAccess } from "../commons/canAccess";
 import { supabase } from "./supabase";
+import { logger } from "@/lib/logger";
 
 const baseAuthProvider = supabaseAuthProvider(supabase, {
   getIdentity: async () => {
@@ -14,12 +15,21 @@ const baseAuthProvider = supabaseAuthProvider(supabase, {
       throw error;
     }
 
-    return {
+    const identity = {
       id: sale.id,
       fullName: `${sale.first_name} ${sale.last_name}`,
       avatar: sale.avatar_url,
       role: sale.role || "rep", // Default to 'rep' if not set
     };
+
+    // Set Sentry user context for all future error reports
+    logger.setUser({
+      id: String(sale.id),
+      username: identity.fullName,
+      role: identity.role,
+    });
+
+    return identity;
   },
 });
 
@@ -31,7 +41,15 @@ export const authProvider: AuthProvider = {
     const result = await baseAuthProvider.login(params);
     // clear cached sale
     cachedSale = undefined;
+    logger.breadcrumb("User logged in", {}, "user");
     return result;
+  },
+  logout: async (params) => {
+    // Clear Sentry user context on logout
+    logger.setUser(null);
+    logger.breadcrumb("User logged out", {}, "user");
+    cachedSale = undefined;
+    return baseAuthProvider.logout(params);
   },
   /**
    * Check authentication status
@@ -52,6 +70,11 @@ export const authProvider: AuthProvider = {
       if (isPublicPath(window.location.pathname)) {
         return; // Allow access to public pages without session
       }
+      // Add breadcrumb for auth redirect (helps trace redirects leading to issues)
+      logger.breadcrumb("Auth redirect - no session", {
+        blockedPath: window.location.pathname,
+        hasError: !!error,
+      }, "navigation");
       throw new Error("Not authenticated");
     }
 
