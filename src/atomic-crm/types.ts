@@ -47,6 +47,7 @@ export interface Sale extends Pick<RaRecord, "id"> {
   disabled?: boolean;
   user_id: string;
   digest_opt_in?: boolean; // Email digest preference (default true)
+  timezone?: string; // IANA timezone (e.g., 'America/New_York')
 
   /**
    * This is a copy of the user's email, to make it easier to handle by react admin

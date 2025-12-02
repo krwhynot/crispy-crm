@@ -19,6 +19,7 @@ import { ImageEditorField } from "@/components/ui";
 import type { CrmDataProvider } from "../providers/types";
 import type { Sale, SalesFormData } from "../types";
 import { DigestPreferences } from "./DigestPreferences";
+import { TimeZoneSelect } from "./TimeZoneSelect";
 
 export const SettingsPage = () => {
   const [isEditMode, setEditMode] = useState(false);
@@ -141,6 +142,11 @@ const SettingsForm = ({
             <TextRender source="first_name" isEditMode={isEditMode} />
             <TextRender source="last_name" isEditMode={isEditMode} />
             <TextRender source="email" isEditMode={isEditMode} />
+            <TimeZoneSelect
+              value={record?.timezone || 'America/New_York'}
+              onChange={(value) => mutateSale({ ...record, timezone: value })}
+              disabled={!isEditMode}
+            />
           </div>
 
           <div className="flex flex-row justify-end gap-2">
