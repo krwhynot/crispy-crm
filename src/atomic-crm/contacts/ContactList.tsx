@@ -84,8 +84,8 @@ const ContactListLayout = ({
   openSlideOver: (id: number, mode: "view" | "edit") => void;
   isSlideOverOpen: boolean;
 }) => {
-  const { data, isPending, filterValues } = useListContext();
-  const { identity } = useGetIdentity();
+  const { data, isPending, filterValues, error, total } = useListContext();
+  const { data: identity } = useGetIdentity();
 
   // Keyboard navigation for list rows
   // Disabled when slide-over is open to prevent conflicts
@@ -96,8 +96,20 @@ const ContactListLayout = ({
 
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
+  // DEBUG: Log list context state
+  console.log("🔍 [ContactListLayout] List context:", {
+    dataLength: data?.length,
+    total,
+    isPending,
+    error,
+    hasFilters,
+    filterValues,
+    hasIdentity: !!identity,
+  });
+
   // Show skeleton during initial load (identity check happens in parent)
   if (isPending) {
+    console.log("🔍 [ContactListLayout] Showing skeleton - data pending");
     return (
       <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
         <ContactListSkeleton />
@@ -105,9 +117,15 @@ const ContactListLayout = ({
     );
   }
 
-  if (!identity) return null;
+  if (!identity) {
+    console.log("🔍 [ContactListLayout] Returning null - no identity in layout!");
+    return null;
+  }
 
-  if (!data?.length && !hasFilters) return <ContactEmpty />;
+  if (!data?.length && !hasFilters) {
+    console.log("🔍 [ContactListLayout] Showing ContactEmpty - no data and no filters");
+    return <ContactEmpty />;
+  }
 
   return (
     <>
