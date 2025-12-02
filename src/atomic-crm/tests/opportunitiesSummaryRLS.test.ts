@@ -19,7 +19,7 @@ import { describe, it, expect, beforeAll, afterAll, vi } from "vitest";
 import type { SupabaseClient, Session } from "@supabase/supabase-js";
 
 // Import the REAL createClient, bypassing the global mock in setup.ts
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+ 
 const { createClient } =
   await vi.importActual<typeof import("@supabase/supabase-js")>("@supabase/supabase-js");
 
