@@ -66,8 +66,8 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
             <span className="text-xs text-muted-foreground">Status</span>
             <div className="mt-1 text-sm">
               {record.status
-                .replace(/_/g, " ")
-                .replace(/\b\w/g, (l) => l.toUpperCase())}
+                ? record.status.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())
+                : "Unknown"}
             </div>
           </div>
         </div>

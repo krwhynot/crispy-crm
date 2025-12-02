@@ -51,8 +51,8 @@ vi.mock("ra-supabase-core", () => ({
 vi.mock("./supabase", () => ({
   supabase: {
     auth: {
-      getUser: (...args: any[]) =>
-        mocks.mockGetUser(...args) || Promise.resolve({ data: { user: { id: "user-123" } } }),
+      getSession: vi.fn(),
+      getUser: vi.fn(),
     },
   },
 }));
@@ -105,6 +105,28 @@ vi.mock("../../validation/rpc", () => ({
   edgeFunctionSchemas: {},
 }));
 
+vi.mock("./filterRegistry", () => ({
+  filterableFields: {
+    contacts: ["id", "first_name", "last_name", "email", "tags", "q"],
+    contacts_summary: ["id", "first_name", "last_name", "email", "tags", "q"],
+    opportunities: ["id", "name", "stage", "amount"],
+    opportunities_summary: ["id", "name", "stage", "amount"],
+    organizations: ["id", "name"],
+    tags: ["id", "name"],
+    activities: ["id", "activity_type", "contact_id"],
+  },
+  isValidFilterField: vi.fn().mockReturnValue(true),
+}));
+
+vi.mock("./dataProviderUtils", () => ({
+  getDatabaseResource: vi.fn((resource: string) => `${resource}_summary`),
+  applySearchParams: vi.fn((resource: string, params: any) => params),
+  normalizeResponseData: vi.fn((resource: string, data: any) => data),
+  transformArrayFilters: vi.fn((filters: any) => filters),
+  escapeForPostgREST: vi.fn((value: any) => String(value)),
+}));
+
+import { supabase } from "./supabase";
 import { unifiedDataProvider } from "./unifiedDataProvider";
 
 describe("unifiedDataProvider - Error Handling", () => {
@@ -113,6 +135,17 @@ describe("unifiedDataProvider - Error Handling", () => {
     // clearAllMocks() only clears call history, NOT mock implementations
     // resetAllMocks() clears BOTH, preventing state leakage between tests
     vi.resetAllMocks();
+
+    // Set up default auth mocks for each test
+    vi.mocked(supabase.auth.getSession).mockResolvedValue({
+      data: { session: { user: { id: "user-123" }, access_token: "test-token" } },
+      error: null,
+    } as any);
+
+    vi.mocked(supabase.auth.getUser).mockResolvedValue({
+      data: { user: { id: "user-123" } },
+      error: null,
+    } as any);
   });
 
   describe("network errors", () => {

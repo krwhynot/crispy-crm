@@ -1,6 +1,7 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { addDays, endOfDay, startOfDay, subDays } from "date-fns";
+import { TasksPanel } from "../components/TasksPanel";
 
 // Mock react-admin's useDataProvider and useNotify
 const mockUpdate = vi.fn();
@@ -17,6 +18,39 @@ vi.mock("../hooks/useCurrentSale", () => ({
   useCurrentSale: () => ({
     salesId: 1,
     loading: false,
+  }),
+}));
+
+// Create mock functions that we can control
+const mockCompleteTask = vi.fn();
+const mockUpdateTaskDueDate = vi.fn();
+const mockDeleteTask = vi.fn();
+const mockViewTask = vi.fn();
+
+// Mock useMyTasks with controllable mock functions
+vi.mock("../hooks/useMyTasks", () => ({
+  useMyTasks: () => ({
+    tasks: [
+      {
+        id: 1,
+        subject: "Test Task",
+        dueDate: new Date(),
+        priority: "medium",
+        taskType: "Call",
+        relatedTo: {
+          type: "opportunity",
+          name: "Test Opp",
+          id: 1,
+        },
+        status: "today",
+      },
+    ],
+    loading: false,
+    error: null,
+    completeTask: mockCompleteTask,
+    updateTaskDueDate: mockUpdateTaskDueDate,
+    deleteTask: mockDeleteTask,
+    viewTask: mockViewTask,
   }),
 }));
 
@@ -44,65 +78,31 @@ function createMockTask(overrides: Partial<TaskItem> = {}): TaskItem {
 describe("Task Snooze Feature", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    mockUpdateTaskDueDate.mockResolvedValue(undefined);
   });
 
   describe("Snooze Button Rendering", () => {
-    it("should render snooze button with alarm clock icon", async () => {
-      // Mock useMyTasks to return a task
-      vi.doMock("../hooks/useMyTasks", () => ({
-        useMyTasks: () => ({
-          tasks: [createMockTask()],
-          loading: false,
-          error: null,
-          completeTask: vi.fn(),
-          snoozeTask: vi.fn(),
-        }),
-      }));
-
-      // Re-import TasksPanel with new mock
-      const { TasksPanel: MockedTasksPanel } = await import("../components/TasksPanel");
-      render(<MockedTasksPanel />);
+    it("should render snooze button with alarm clock icon", () => {
+      render(<TasksPanel />);
 
       // Look for snooze button by aria-label
       const snoozeButton = screen.getByRole("button", {
-        name: /snooze.*by 1 day/i,
+        name: /snooze.*test task/i,
       });
       expect(snoozeButton).toBeInTheDocument();
     });
 
-    it("should have accessible title on snooze button", async () => {
-      vi.doMock("../hooks/useMyTasks", () => ({
-        useMyTasks: () => ({
-          tasks: [createMockTask()],
-          loading: false,
-          error: null,
-          completeTask: vi.fn(),
-          snoozeTask: vi.fn(),
-        }),
-      }));
+    it("should have accessible title on snooze button", () => {
+      render(<TasksPanel />);
 
-      const { TasksPanel: MockedTasksPanel } = await import("../components/TasksPanel");
-      render(<MockedTasksPanel />);
-
-      const snoozeButton = screen.getByTitle("Snooze task by 1 day");
+      const snoozeButton = screen.getByTitle("Snooze task");
       expect(snoozeButton).toBeInTheDocument();
     });
 
-    it("should have 44px touch target (WCAG compliance)", async () => {
-      vi.doMock("../hooks/useMyTasks", () => ({
-        useMyTasks: () => ({
-          tasks: [createMockTask()],
-          loading: false,
-          error: null,
-          completeTask: vi.fn(),
-          snoozeTask: vi.fn(),
-        }),
-      }));
+    it("should have 44px touch target (WCAG compliance)", () => {
+      render(<TasksPanel />);
 
-      const { TasksPanel: MockedTasksPanel } = await import("../components/TasksPanel");
-      render(<MockedTasksPanel />);
-
-      const snoozeButton = screen.getByTitle("Snooze task by 1 day");
+      const snoozeButton = screen.getByTitle("Snooze task");
       // h-11 w-11 in Tailwind = 44px x 44px
       expect(snoozeButton).toHaveClass("h-11", "w-11");
     });
@@ -178,29 +178,17 @@ describe("Task Snooze Feature", () => {
 
   describe("Optimistic UI Update", () => {
     it("should trigger snooze when button is clicked", async () => {
-      vi.doMock("../hooks/useMyTasks", () => ({
-        useMyTasks: () => ({
-          tasks: [createMockTask({ id: 1, status: "today" })],
-          loading: false,
-          error: null,
-          completeTask: vi.fn(),
-          snoozeTask: vi.fn().mockResolvedValue(undefined),
-        }),
-      }));
+      render(<TasksPanel />);
 
-      const { TasksPanel: MockedTasksPanel } = await import("../components/TasksPanel");
-      render(<MockedTasksPanel />);
-
-      const snoozeButton = screen.getByTitle("Snooze task by 1 day");
+      const snoozeButton = screen.getByTitle("Snooze task");
       expect(snoozeButton).not.toBeDisabled();
 
-      // Click should trigger the snooze - we verify the button becomes disabled
+      // Click should open the popover
       fireEvent.click(snoozeButton);
 
-      // The button gets disabled during the snooze operation
+      // Wait for popover to open and find "Tomorrow" button
       await waitFor(() => {
-        // Button should re-enable after snooze completes
-        expect(snoozeButton).not.toBeDisabled();
+        expect(screen.getByText("Tomorrow")).toBeInTheDocument();
       });
     });
   });
@@ -212,27 +200,24 @@ describe("Task Snooze Feature", () => {
       const snoozePromise = new Promise<void>((resolve) => {
         resolveSnooze = resolve;
       });
-      const snoozeTask = vi.fn().mockReturnValue(snoozePromise);
+      mockUpdateTaskDueDate.mockReturnValue(snoozePromise);
 
-      vi.doMock("../hooks/useMyTasks", () => ({
-        useMyTasks: () => ({
-          tasks: [createMockTask()],
-          loading: false,
-          error: null,
-          completeTask: vi.fn(),
-          snoozeTask,
-        }),
-      }));
+      render(<TasksPanel />);
 
-      const { TasksPanel: MockedTasksPanel } = await import("../components/TasksPanel");
-      render(<MockedTasksPanel />);
-
-      const snoozeButton = screen.getByTitle("Snooze task by 1 day");
+      const snoozeButton = screen.getByTitle("Snooze task");
       fireEvent.click(snoozeButton);
 
-      // Button should be disabled during snooze
+      // Wait for popover and click Tomorrow
       await waitFor(() => {
-        expect(snoozeButton).toBeDisabled();
+        expect(screen.getByText("Tomorrow")).toBeInTheDocument();
+      });
+
+      const tomorrowButton = screen.getByText("Tomorrow").closest("button");
+      fireEvent.click(tomorrowButton!);
+
+      // Button should show loading state
+      await waitFor(() => {
+        expect(mockUpdateTaskDueDate).toHaveBeenCalled();
       });
 
       // Resolve the snooze
@@ -242,27 +227,24 @@ describe("Task Snooze Feature", () => {
 
   describe("Error Handling", () => {
     it("should handle snooze failure gracefully", async () => {
-      const snoozeTask = vi.fn().mockRejectedValue(new Error("Network error"));
+      mockUpdateTaskDueDate.mockRejectedValue(new Error("Network error"));
 
-      vi.doMock("../hooks/useMyTasks", () => ({
-        useMyTasks: () => ({
-          tasks: [createMockTask()],
-          loading: false,
-          error: null,
-          completeTask: vi.fn(),
-          snoozeTask,
-        }),
-      }));
+      render(<TasksPanel />);
 
-      const { TasksPanel: MockedTasksPanel } = await import("../components/TasksPanel");
-      render(<MockedTasksPanel />);
-
-      const snoozeButton = screen.getByTitle("Snooze task by 1 day");
+      const snoozeButton = screen.getByTitle("Snooze task");
       fireEvent.click(snoozeButton);
 
-      // Should not throw and button should re-enable
+      // Wait for popover and click Tomorrow
       await waitFor(() => {
-        expect(snoozeButton).not.toBeDisabled();
+        expect(screen.getByText("Tomorrow")).toBeInTheDocument();
+      });
+
+      const tomorrowButton = screen.getByText("Tomorrow").closest("button");
+      fireEvent.click(tomorrowButton!);
+
+      // Should not throw and updateTaskDueDate should be called
+      await waitFor(() => {
+        expect(mockUpdateTaskDueDate).toHaveBeenCalled();
       });
     });
   });

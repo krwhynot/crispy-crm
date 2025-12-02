@@ -144,9 +144,9 @@ describe("useFilterCleanup", () => {
       };
       localStorage.setItem("RaStoreCRM.contacts.listParams", JSON.stringify(params));
 
-      // Mock: q and valid_field are valid, others are invalid
+      // Mock: q, valid_field, and name are valid, others are invalid
       vi.mocked(isValidFilterField).mockImplementation((resource, key) => {
-        return key === "q" || key === "valid_field";
+        return key === "q" || key === "valid_field" || key === "name";
       });
 
       // Act

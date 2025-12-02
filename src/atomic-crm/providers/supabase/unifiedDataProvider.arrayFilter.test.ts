@@ -44,7 +44,8 @@ vi.mock("./supabase", () => ({
       then: vi.fn((resolve) => resolve({ data: [], error: null, count: 0 })),
     })),
     auth: {
-      getUser: vi.fn().mockResolvedValue({ data: { user: null }, error: null }),
+      getSession: vi.fn(),
+      getUser: vi.fn(),
     },
   },
 }));
@@ -155,6 +156,24 @@ vi.mock("../../utils/storage.utils", () => ({
 vi.mock("../../utils/avatar.utils", () => ({
   processContactAvatar: vi.fn().mockImplementation((data) => data),
   processOrganizationLogo: vi.fn().mockImplementation((data) => data),
+}));
+
+vi.mock("./filterRegistry", () => ({
+  filterableFields: {
+    contacts: ["id", "first_name", "last_name", "email", "phone", "tags", "q"],
+    contacts_summary: ["id", "first_name", "last_name", "email", "phone", "tags", "q"],
+    opportunities: ["id", "name", "stage", "amount"],
+    opportunities_summary: ["id", "name", "stage", "amount"],
+  },
+  isValidFilterField: vi.fn().mockReturnValue(true),
+}));
+
+vi.mock("./dataProviderUtils", () => ({
+  getDatabaseResource: vi.fn((resource: string) => `${resource}_summary`),
+  applySearchParams: vi.fn((resource: string, params: any) => params),
+  normalizeResponseData: vi.fn((resource: string, data: any) => data),
+  transformArrayFilters: vi.fn((filters: any) => filters),
+  escapeForPostgREST: vi.fn((value: any) => String(value)),
 }));
 
 // Import the provider after all mocks are set up
