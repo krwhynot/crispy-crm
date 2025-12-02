@@ -6,6 +6,7 @@ import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/b
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { QuickAddButton } from "./quick-add/QuickAddButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
+import { ListSkeleton } from "@/components/ui/list-skeleton";
 
 import { Translate, useGetIdentity, useListContext, useGetResourceLabel } from "ra-core";
 import { Link } from "react-router-dom";

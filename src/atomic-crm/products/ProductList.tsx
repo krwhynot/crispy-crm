@@ -19,7 +19,6 @@ import { COLUMN_VISIBILITY, SORT_FIELDS } from "../utils/listPatterns";
 import { ProductListFilter } from "./ProductListFilter";
 import { ProductSlideOver } from "./ProductSlideOver";
 import { ProductEmpty } from "./ProductEmpty";
-import type { Product } from "../types";
 
 /**
  * ProductList - Standard list page for Product records
@@ -126,7 +125,7 @@ const ProductListLayout = ({
           <FunctionField
             label="Category"
             sortBy="category"
-            render={(record: Product) => <CategoryBadge category={record.category} />}
+            render={(record: any) => <CategoryBadge category={record.category} />}
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
@@ -134,7 +133,7 @@ const ProductListLayout = ({
           <FunctionField
             label="Status"
             sortBy="status"
-            render={(record: Product) => <StatusBadge status={record.status} />}
+            render={(record: any) => <StatusBadge status={record.status} />}
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
@@ -154,7 +153,7 @@ const ProductListLayout = ({
           <FunctionField
             label="Certifications"
             sortable={false}
-            render={(record: Product) => <CertificationBadges certifications={record.certifications} />}
+            render={(record: any) => <CertificationBadges certifications={record.certifications} />}
             {...COLUMN_VISIBILITY.desktopOnly}
           />
         </PremiumDatagrid>
