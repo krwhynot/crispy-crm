@@ -99,30 +99,22 @@ export class ResourceErrorBoundary extends Component<Props, State> {
                 <AlertTriangle className="h-6 w-6 text-destructive" />
               </div>
               <CardTitle className="text-lg">
-                {resourceLabel}{pageLabel} Error
+                {resourceLabel}
+                {pageLabel} Error
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-center text-sm text-muted-foreground">
-                Something went wrong loading {resourceLabel.toLowerCase()}.
-                This error has been reported automatically.
+                Something went wrong loading {resourceLabel.toLowerCase()}. This error has been
+                reported automatically.
               </p>
 
               <div className="flex gap-2 justify-center">
-                <Button
-                  onClick={this.handleRetry}
-                  variant="outline"
-                  size="sm"
-                  className="gap-2"
-                >
+                <Button onClick={this.handleRetry} variant="outline" size="sm" className="gap-2">
                   <RefreshCw className="h-4 w-4" />
                   Try Again
                 </Button>
-                <Button
-                  onClick={this.handleGoHome}
-                  size="sm"
-                  className="gap-2"
-                >
+                <Button onClick={this.handleGoHome} size="sm" className="gap-2">
                   <Home className="h-4 w-4" />
                   Dashboard
                 </Button>
@@ -162,8 +154,7 @@ export function withResourceErrorBoundary<P extends object>(
   resource: string,
   page?: "list" | "show" | "edit" | "create"
 ): React.FC<P> {
-  const displayName =
-    WrappedComponent.displayName || WrappedComponent.name || "Component";
+  const displayName = WrappedComponent.displayName || WrappedComponent.name || "Component";
 
   const WithResourceErrorBoundary: React.FC<P> = (props) => (
     <ResourceErrorBoundary resource={resource} page={page}>

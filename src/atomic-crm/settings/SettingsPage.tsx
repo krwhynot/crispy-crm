@@ -10,7 +10,11 @@ import { SecuritySection } from "./sections/SecuritySection";
 import { AuditLogSection } from "./sections/AuditLogSection";
 
 export const SettingsPage = () => {
-  const { data: identity, isPending: isIdentityPending, refetch: refetchIdentity } = useGetIdentity();
+  const {
+    data: identity,
+    isPending: isIdentityPending,
+    refetch: refetchIdentity,
+  } = useGetIdentity();
   const { data, refetch: refetchUser } = useGetOne("sales", {
     id: identity?.id,
   });

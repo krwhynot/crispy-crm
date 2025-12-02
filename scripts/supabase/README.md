@@ -288,6 +288,7 @@ npm run db:clean-orphans
 
 | Variable | Description | Default | Example |
 |----------|-------------|---------|---------|
+| `SUPABASE_DB_PASSWORD` | CLI password auth (WSL2 required) | None | `your-db-password` |
 | `SUPABASE_SERVICE_ROLE_KEY` | Service role key for admin operations | None | `eyJhbGc...` |
 | `TEST_ADMIN_EMAIL` | Admin test user email | `admin@test.local` | `admin@mycompany.com` |
 | `TEST_DIRECTOR_EMAIL` | Director test user email | `director@test.local` | `director@mycompany.com` |

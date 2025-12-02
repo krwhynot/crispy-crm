@@ -9,12 +9,16 @@ export function AuditLogSection() {
   const { data: identity } = useGetIdentity();
 
   // Always call hooks unconditionally (React hooks rules)
-  const { data: auditEntries, isLoading } = useGetList("audit_trail", {
-    pagination: { page: 1, perPage: 50 },
-    sort: { field: "changed_at", order: "DESC" },
-  }, {
-    enabled: identity?.role === "admin", // Only fetch if admin
-  });
+  const { data: auditEntries, isLoading } = useGetList(
+    "audit_trail",
+    {
+      pagination: { page: 1, perPage: 50 },
+      sort: { field: "changed_at", order: "DESC" },
+    },
+    {
+      enabled: identity?.role === "admin", // Only fetch if admin
+    }
+  );
 
   if (identity?.role !== "admin") {
     return (

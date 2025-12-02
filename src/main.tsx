@@ -50,7 +50,10 @@ if (import.meta.env.VITE_SENTRY_DSN) {
           return null;
         }
         // Filter out chunk load failures (usually network issues, not bugs)
-        if (error.message?.includes("Loading chunk") || error.message?.includes("Failed to fetch dynamically imported module")) {
+        if (
+          error.message?.includes("Loading chunk") ||
+          error.message?.includes("Failed to fetch dynamically imported module")
+        ) {
           return null;
         }
         // Filter out network abort errors (user navigated away)

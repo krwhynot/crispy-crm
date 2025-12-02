@@ -28,11 +28,7 @@ import { Avatar } from "./Avatar";
 import { ContactStatusBadge } from "./ContactBadges";
 
 export const ContactList = () => {
-  const {
-    data: identity,
-    isPending: isIdentityPending,
-    error: identityError,
-  } = useGetIdentity();
+  const { data: identity, isPending: isIdentityPending, error: identityError } = useGetIdentity();
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
 

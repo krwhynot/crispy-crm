@@ -46,6 +46,9 @@ import { ValidationService, TransformService, StorageService } from "./services"
 // Import structured logger for Sentry integration
 import { logger } from "@/lib/logger";
 
+// Import development-only logger
+import { devLog, devWarn, DEV } from "@/lib/devLogger";
+
 // Import service classes
 import {
   SalesService,
@@ -211,22 +214,32 @@ function logError(
   );
 
   // Keep console.error for development debugging
-  console.error(`[DataProvider Error]`, context, {
-    error:
-      error instanceof Error
-        ? error.message
-        : extendedError?.message
-          ? extendedError.message
-          : String(error),
-    stack: error instanceof Error ? error.stack : undefined,
-    fullError: error,
-  });
+  if (DEV) {
+    console.error(`[DataProvider Error]`, context, {
+      error:
+        error instanceof Error
+          ? error.message
+          : extendedError?.message
+            ? extendedError.message
+            : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      fullError: error,
+    });
+  }
 
   // Log validation errors in detail for debugging
-  if (extendedError?.body?.errors) {
-    console.error("[Validation Errors Detail]", JSON.stringify(extendedError.body.errors, null, 2));
-  } else if (extendedError?.errors) {
-    console.error("[Validation Errors Detail]", JSON.stringify(extendedError.errors, null, 2));
+  if (DEV) {
+    if (extendedError?.body?.errors) {
+      console.error(
+        "[DataProvider Error] Validation Errors Detail",
+        JSON.stringify(extendedError.body.errors, null, 2)
+      );
+    } else if (extendedError?.errors) {
+      console.error(
+        "[DataProvider Error] Validation Errors Detail",
+        JSON.stringify(extendedError.errors, null, 2)
+      );
+    }
   }
 }
 
@@ -404,7 +417,7 @@ export const unifiedDataProvider: DataProvider = {
     params: GetListParams
   ): Promise<GetListResult<RecordType>> {
     // VERY VISIBLE DEBUG - should appear for EVERY getList call
-    console.warn("🔍 [DATAPROVIDER] getList called for:", resource);
+    devWarn("DataProvider", "🔍 getList called for:", resource);
 
     return wrapMethod("getList", resource, params, async () => {
       // Create a mutable copy of params to potentially modify filters
@@ -426,44 +439,50 @@ export const unifiedDataProvider: DataProvider = {
       const dbResource = getDatabaseResource(resource, "list");
 
       // DEBUG: Check auth state before API call
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      console.log("[DEBUG AUTH] Session state:", {
-        hasSession: !!session,
-        userId: session?.user?.id?.slice(0, 8) + "..." || "none",
-        role: session?.user?.role || "anon",
-        expiresAt: session?.expires_at ? new Date(session.expires_at * 1000).toISOString() : "none",
-      });
+      if (DEV) {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        console.log("[DataProvider] DEBUG AUTH Session state:", {
+          hasSession: !!session,
+          userId: session?.user?.id?.slice(0, 8) + "..." || "none",
+          role: session?.user?.role || "anon",
+          expiresAt: session?.expires_at
+            ? new Date(session.expires_at * 1000).toISOString()
+            : "none",
+        });
 
-      // DEBUG: Log before baseDataProvider call
-      console.log("[DEBUG API] unifiedDataProvider.getList", {
-        originalResource: resource,
-        dbResource,
-        hasAuthToken: !!session?.access_token,
-      });
+        // DEBUG: Log before baseDataProvider call
+        console.log("[DataProvider] DEBUG API unifiedDataProvider.getList", {
+          originalResource: resource,
+          dbResource,
+          hasAuthToken: !!session?.access_token,
+        });
+      }
 
       // Execute query
       const result = await baseDataProvider.getList(dbResource, searchParams);
 
       // DEBUG: Log result with customer_organization_name check for opportunities
-      if (resource === "opportunities" && result.data?.length > 0) {
-        const sample = result.data[0] as Record<string, unknown>;
-        console.log("[DEBUG OPPORTUNITIES] First record fields:", {
-          hasCustomerOrgName: "customer_organization_name" in sample,
-          customerOrgNameValue: sample.customer_organization_name,
-          hasCustomerOrgId: "customer_organization_id" in sample,
-          customerOrgIdValue: sample.customer_organization_id,
-          allKeys: Object.keys(sample).filter(
-            (k) => k.includes("customer") || k.includes("organization")
-          ),
+      if (DEV) {
+        if (resource === "opportunities" && result.data?.length > 0) {
+          const sample = result.data[0] as Record<string, unknown>;
+          console.log("[DataProvider] DEBUG OPPORTUNITIES First record fields:", {
+            hasCustomerOrgName: "customer_organization_name" in sample,
+            customerOrgNameValue: sample.customer_organization_name,
+            hasCustomerOrgId: "customer_organization_id" in sample,
+            customerOrgIdValue: sample.customer_organization_id,
+            allKeys: Object.keys(sample).filter(
+              (k) => k.includes("customer") || k.includes("organization")
+            ),
+          });
+        }
+
+        console.log("[DataProvider] DEBUG RESULT getList completed", {
+          dataCount: result.data?.length,
+          total: result.total,
         });
       }
-
-      console.log("[DEBUG RESULT] getList completed", {
-        dataCount: result.data?.length,
-        total: result.total,
-      });
 
       // Apply data normalization to ensure JSONB fields are arrays
       return {
@@ -832,10 +851,12 @@ export const unifiedDataProvider: DataProvider = {
       return { data: { id: String(junctionId) } };
     } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      console.error(`[DataProvider] Failed to remove opportunity contact via junction`, {
-        junctionId,
-        error,
-      });
+      if (DEV) {
+        console.error(`[DataProvider] Failed to remove opportunity contact via junction`, {
+          junctionId,
+          error,
+        });
+      }
       throw new Error(`Remove opportunity contact failed: ${errorMessage}`);
     }
   },
@@ -854,7 +875,7 @@ export const unifiedDataProvider: DataProvider = {
     let validatedParams = params;
     try {
       // Log the operation for debugging
-      console.log(`[DataProvider RPC] Calling ${functionName}`, params);
+      devLog("DataProvider RPC", `Calling ${functionName}`, params);
 
       // Validate params if schema exists for this RPC function
       if (functionName in RPC_SCHEMAS) {
@@ -878,7 +899,7 @@ export const unifiedDataProvider: DataProvider = {
         throw new Error(`RPC ${functionName} failed: ${error.message}`);
       }
 
-      console.log(`[DataProvider RPC] ${functionName} succeeded`, data);
+      devLog("DataProvider RPC", `${functionName} succeeded`, data);
       return data as T;
     } catch (error) {
       logError("rpc", functionName, { data: validatedParams }, error);
@@ -900,10 +921,12 @@ export const unifiedDataProvider: DataProvider = {
      */
     async upload(bucket: string, path: string, file: File | Blob): Promise<{ path: string }> {
       try {
-        console.log(`[DataProvider Storage] Uploading to ${bucket}/${path}`, {
-          size: file.size,
-          type: file.type,
-        });
+        if (DEV) {
+          console.log(`[DataProvider Storage] Uploading to ${bucket}/${path}`, {
+            size: file.size,
+            type: file.type,
+          });
+        }
 
         // Validate file size (10MB limit)
         if (file.size > 10 * 1024 * 1024) {
@@ -920,7 +943,7 @@ export const unifiedDataProvider: DataProvider = {
           throw new Error(`Upload failed: ${error.message}`);
         }
 
-        console.log(`[DataProvider Storage] Upload succeeded`, data);
+        devLog("DataProvider Storage", "Upload succeeded", data);
         return data;
       } catch (error) {
         logError("storage.upload", bucket, { data: { path } }, error);
@@ -936,7 +959,7 @@ export const unifiedDataProvider: DataProvider = {
      */
     getPublicUrl(bucket: string, path: string): string {
       const { data } = supabase.storage.from(bucket).getPublicUrl(path);
-      console.log(`[DataProvider Storage] Generated public URL for ${bucket}/${path}`);
+      devLog("DataProvider Storage", `Generated public URL for ${bucket}/${path}`);
       return data.publicUrl;
     },
 
@@ -947,7 +970,7 @@ export const unifiedDataProvider: DataProvider = {
      */
     async remove(bucket: string, paths: string[]): Promise<void> {
       try {
-        console.log(`[DataProvider Storage] Removing from ${bucket}`, paths);
+        devLog("DataProvider Storage", `Removing from ${bucket}`, paths);
 
         const { error } = await supabase.storage.from(bucket).remove(paths);
 
@@ -956,7 +979,7 @@ export const unifiedDataProvider: DataProvider = {
           throw new Error(`Remove failed: ${error.message}`);
         }
 
-        console.log(`[DataProvider Storage] Remove succeeded`);
+        devLog("DataProvider Storage", "Remove succeeded");
       } catch (error) {
         logError("storage.remove", bucket, { data: { paths } }, error);
         throw error;
@@ -971,7 +994,7 @@ export const unifiedDataProvider: DataProvider = {
      */
     async list(bucket: string, path?: string): Promise<FileObject[]> {
       try {
-        console.log(`[DataProvider Storage] Listing ${bucket}/${path || ""}`);
+        devLog("DataProvider Storage", `Listing ${bucket}/${path || ""}`);
 
         const { data, error } = await supabase.storage.from(bucket).list(path);
 
@@ -980,7 +1003,7 @@ export const unifiedDataProvider: DataProvider = {
           throw new Error(`List failed: ${error.message}`);
         }
 
-        console.log(`[DataProvider Storage] Listed ${data?.length || 0} files`);
+        devLog("DataProvider Storage", `Listed ${data?.length || 0} files`);
         return (data as FileObject[]) || [];
       } catch (error) {
         logError("storage.list", bucket, { data: { path } }, error);
@@ -1006,7 +1029,7 @@ export const unifiedDataProvider: DataProvider = {
   ): Promise<T> {
     const processedOptions = { ...options };
     try {
-      console.log(`[DataProvider Edge] Invoking ${functionName}`, options);
+      devLog("DataProvider Edge", `Invoking ${functionName}`, options);
 
       const { data, error } = await supabase.functions.invoke<T>(functionName, {
         method: processedOptions.method || "POST",
@@ -1023,7 +1046,7 @@ export const unifiedDataProvider: DataProvider = {
         throw new Error(`Edge function ${functionName} returned no data`);
       }
 
-      console.log(`[DataProvider Edge] ${functionName} succeeded`, data);
+      devLog("DataProvider Edge", `${functionName} succeeded`, data);
       return data;
     } catch (error) {
       logError("invoke", functionName, { data: processedOptions }, error);
@@ -1040,7 +1063,7 @@ export const unifiedDataProvider: DataProvider = {
    */
   async createBoothVisitor(data: QuickAddInput): Promise<{ data: BoothVisitorResult }> {
     try {
-      console.log("[DataProvider] Creating booth visitor", data);
+      devLog("DataProvider", "Creating booth visitor", data);
 
       const validationResult = quickAddSchema.safeParse(data);
       if (!validationResult.success) {
@@ -1056,7 +1079,7 @@ export const unifiedDataProvider: DataProvider = {
         throw new Error(`Create booth visitor failed: ${error.message}`);
       }
 
-      console.log("[DataProvider] Booth visitor created successfully", result);
+      devLog("DataProvider", "Booth visitor created successfully", result);
       return { data: result as BoothVisitorResult };
     } catch (error) {
       logError("createBoothVisitor", "booth_visitor", { data }, error);
@@ -1097,11 +1120,11 @@ export const unifiedDataProvider: DataProvider = {
     };
 
     try {
-      console.log("[DataProvider] Checking authorization", params);
+      devLog("DataProvider", "Checking authorization", params);
 
       const result = await this.rpc<CheckAuthorizationResponse>("check_authorization", params);
 
-      console.log("[DataProvider] Authorization check result", result);
+      devLog("DataProvider", "Authorization check result", result);
       return result;
     } catch (error) {
       logError("checkAuthorization", "authorization", { data: params }, error);
@@ -1138,14 +1161,14 @@ export const unifiedDataProvider: DataProvider = {
     };
 
     try {
-      console.log("[DataProvider] Checking authorization batch", params);
+      devLog("DataProvider", "Checking authorization batch", params);
 
       const result = await this.rpc<CheckAuthorizationBatchResponse>(
         "check_authorization_batch",
         params
       );
 
-      console.log("[DataProvider] Authorization batch result", result);
+      devLog("DataProvider", "Authorization batch result", result);
       return result;
     } catch (error) {
       logError("checkAuthorizationBatch", "authorization", { data: params }, error);

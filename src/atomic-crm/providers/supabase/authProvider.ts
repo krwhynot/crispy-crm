@@ -71,10 +71,14 @@ export const authProvider: AuthProvider = {
         return; // Allow access to public pages without session
       }
       // Add breadcrumb for auth redirect (helps trace redirects leading to issues)
-      logger.breadcrumb("Auth redirect - no session", {
-        blockedPath: window.location.pathname,
-        hasError: !!error,
-      }, "navigation");
+      logger.breadcrumb(
+        "Auth redirect - no session",
+        {
+          blockedPath: window.location.pathname,
+          hasError: !!error,
+        },
+        "navigation"
+      );
       throw new Error("Not authenticated");
     }
 

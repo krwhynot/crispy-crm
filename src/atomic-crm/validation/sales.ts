@@ -28,7 +28,10 @@ export const salesSchema = z.object({
   digest_opt_in: z.boolean().default(true), // Default true for backward compatibility
 
   // User preferences
-  timezone: z.string().regex(/^[A-Za-z]+\/[A-Za-z_]+$/).default('America/Chicago'),
+  timezone: z
+    .string()
+    .regex(/^[A-Za-z]+\/[A-Za-z_]+$/)
+    .default("America/Chicago"),
 
   // System fields
   created_at: z.string().optional(),
