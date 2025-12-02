@@ -54,7 +54,7 @@ const OpportunityList = () => {
     saveViewPreference(newView);
   };
 
-  if (isIdentityPending) return <div>Loading...</div>;
+  if (isIdentityPending) return <ListSkeleton rows={8} columns={5} />;
   if (!identity) return null;
 
   return (

@@ -12,19 +12,26 @@ import { TextField } from "@/components/admin/text-field";
 import { DateField } from "@/components/admin/date-field";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { Badge } from "@/components/ui/badge";
+import { ActivityListSkeleton } from "@/components/ui/list-skeleton";
 import { SaleName } from "../sales/SaleName";
 import { TopToolbar } from "../layout/TopToolbar";
 import { ActivityListFilter } from "./ActivityListFilter";
 import { SampleStatusBadge } from "../components/SampleStatusBadge";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
+import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
+import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import type { ActivityRecord, Contact, Opportunity, Organization, Sale } from "../types";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
 
 /**
- * ActivityList Component
+ * ActivityList - Standard list page for Activity records
  *
- * Displays all activities in a StandardListLayout with PremiumDatagrid.
+ * Follows ContactList reference pattern:
+ * - Identity-aware rendering with skeleton loading
+ * - Keyboard navigation (no slide-over - activities edited inline/modal)
+ * - BulkActionsToolbar for selection operations
+ * - Responsive columns using COLUMN_VISIBILITY semantic presets
  *
  * Features:
  * - Filter by activity type (13 types including samples)
@@ -34,8 +41,6 @@ import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
  * - Sentiment filters
  * - Export to CSV
  *
- * Design Pattern: Unified design system (StandardListLayout + PremiumDatagrid)
- *
  * @see PRD §4.4 for sample tracking requirements
  */
 export default function ActivityList() {
@@ -44,12 +49,12 @@ export default function ActivityList() {
   // Clean up stale cached filters from localStorage
   useFilterCleanup("activities");
 
-  if (isIdentityPending) return <div>Loading...</div>;
+  if (isIdentityPending) return <ActivityListSkeleton />;
   if (!identity) return null;
 
   return (
     <List
-      title="Activities"
+      title={false}
       perPage={50}
       sort={{ field: "activity_date", order: "DESC" }}
       exporter={exporter}
@@ -65,15 +70,27 @@ export default function ActivityList() {
 }
 
 /**
- * Activity List Layout Component
- *
- * Renders the StandardListLayout with filter sidebar and PremiumDatagrid.
+ * ActivityListLayout - Handles loading, empty states, and datagrid rendering
  */
 const ActivityListLayout = () => {
   const { data, isPending, filterValues } = useListContext();
+
+  // Keyboard navigation for list rows
+  // Note: Activities don't use slide-over pattern, so no enabled toggle needed
+  const { focusedIndex } = useListKeyboardNavigation({
+    onSelect: () => {}, // Activities use inline editing or modal
+    enabled: true,
+  });
+
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
-  if (isPending) return null;
+  if (isPending) {
+    return (
+      <StandardListLayout resource="activities" filterComponent={<ActivityListFilter />}>
+        <ActivityListSkeleton />
+      </StandardListLayout>
+    );
+  }
 
   if (!data?.length && !hasFilters) {
     return (
@@ -91,8 +108,8 @@ const ActivityListLayout = () => {
   return (
     <>
       <StandardListLayout resource="activities" filterComponent={<ActivityListFilter />}>
-        <PremiumDatagrid>
-          {/* Activity Type Badge */}
+        <PremiumDatagrid focusedIndex={focusedIndex}>
+          {/* Column 1: Activity Type - Classification badge (sortable) - always visible */}
           <FunctionField
             label="Type"
             sortBy="type"
@@ -104,30 +121,42 @@ const ActivityListLayout = () => {
                 </Badge>
               );
             }}
+            {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
-          {/* Subject */}
-          <TextField source="subject" label="Subject" />
+          {/* Column 2: Subject - Primary identifier (sortable) - always visible */}
+          <TextField
+            source="subject"
+            label="Subject"
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
 
-          {/* Activity Date */}
-          <DateField source="activity_date" label="Date" showTime={false} />
+          {/* Column 3: Activity Date - Time field (sortable) - always visible */}
+          <DateField
+            source="activity_date"
+            label="Date"
+            showTime={false}
+            sortable
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
 
-          {/* Sample Status - Only shown for sample activities - hidden on tablet */}
+          {/* Column 4: Sample Status - Only for sample activities (non-sortable) - hidden on tablet/mobile */}
           <FunctionField
             label="Sample Status"
+            sortable={false}
             render={(record: ActivityRecord) => {
               if (record.type !== "sample" || !record.sample_status) {
                 return <span className="text-muted-foreground">—</span>;
               }
               return <SampleStatusBadge status={record.sample_status} readonly />;
             }}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
+            {...COLUMN_VISIBILITY.desktopOnly}
           />
 
-          {/* Sentiment Badge - hidden on tablet */}
+          {/* Column 5: Sentiment - Feedback indicator (non-sortable) - hidden on tablet/mobile */}
           <FunctionField
             label="Sentiment"
+            sortable={false}
             render={(record: ActivityRecord) => {
               if (!record.sentiment) {
                 return <span className="text-muted-foreground">—</span>;
@@ -143,40 +172,41 @@ const ActivityListLayout = () => {
                 </Badge>
               );
             }}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
+            {...COLUMN_VISIBILITY.desktopOnly}
           />
 
-          {/* Organization Reference */}
+          {/* Column 6: Organization - Reference field (sortable) - always visible */}
           <ReferenceField
             source="organization_id"
             reference="organizations"
             label="Organization"
             link={false}
+            sortable
+            {...COLUMN_VISIBILITY.alwaysVisible}
           >
             <TextField source="name" />
           </ReferenceField>
 
-          {/* Opportunity Reference - hidden on tablet */}
+          {/* Column 7: Opportunity - Reference field (non-sortable) - hidden on tablet/mobile */}
           <ReferenceField
             source="opportunity_id"
             reference="opportunities"
             label="Opportunity"
             link={false}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
+            sortable={false}
+            {...COLUMN_VISIBILITY.desktopOnly}
           >
             <TextField source="name" />
           </ReferenceField>
 
-          {/* Created By - hidden on tablet */}
+          {/* Column 8: Created By - Sales reference (non-sortable) - hidden on tablet/mobile */}
           <ReferenceField
             source="created_by"
             reference="sales"
             label="Created By"
             link={false}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
+            sortable={false}
+            {...COLUMN_VISIBILITY.desktopOnly}
           >
             <SaleName />
           </ReferenceField>
@@ -188,7 +218,7 @@ const ActivityListLayout = () => {
 };
 
 /**
- * Activity List Actions Toolbar
+ * ActivityListActions - TopToolbar with export and create actions
  */
 const ActivityListActions = () => (
   <TopToolbar>
@@ -198,7 +228,7 @@ const ActivityListActions = () => (
 );
 
 /**
- * CSV Exporter for Activities
+ * CSV exporter for Activity records
  */
 const exporter: Exporter<ActivityRecord> = async (records, fetchRelatedRecords) => {
   // Fetch related data
@@ -263,8 +293,7 @@ const exporter: Exporter<ActivityRecord> = async (records, fetchRelatedRecords) 
     },
     (err, csv) => {
       if (err) {
-        console.error("Export error:", err);
-        return;
+        throw new Error(`CSV export failed: ${err.message}`);
       }
       downloadCSV(csv, "activities");
     }
