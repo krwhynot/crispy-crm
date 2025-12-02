@@ -17,3 +17,29 @@ export {
   type FindSimilarParams,
   type SimilarityCheckResult,
 } from "./levenshtein";
+
+// Text formatting
+export {
+  formatFullName,
+  formatRoleAndDept,
+  formatSalesName,
+  formatTagsForExport,
+  formatCount,
+  EMPTY_PLACEHOLDER,
+} from "./formatters";
+
+// CSV export utilities
+export {
+  extractEmailByType,
+  extractPhoneByType,
+  flattenEmailsForExport,
+  flattenPhonesForExport,
+} from "./exportHelpers";
+
+// List page patterns
+export {
+  COLUMN_VISIBILITY,
+  SORT_FIELDS,
+  DEFAULT_PER_PAGE,
+  getColumnVisibility,
+} from "./listPatterns";

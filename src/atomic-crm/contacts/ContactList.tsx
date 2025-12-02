@@ -75,7 +75,6 @@ const ContactListLayout = ({
   isSlideOverOpen: boolean;
 }) => {
   const { data, isPending, filterValues } = useListContext();
-  const { data: identity } = useGetIdentity();
 
   // Keyboard navigation for list rows
   // Disabled when slide-over is open to prevent conflicts
@@ -95,10 +94,6 @@ const ContactListLayout = ({
     );
   }
 
-  if (!identity) {
-    return null;
-  }
-
   if (!data?.length && !hasFilters) {
     return <ContactEmpty />;
   }
@@ -115,8 +110,8 @@ const ContactListLayout = ({
             label=""
             sortable={false}
             render={(record: Contact) => <Avatar record={record} width={40} height={40} />}
-            cellClassName="hidden md:table-cell"
-            headerClassName="hidden md:table-cell"
+            cellClassName="hidden lg:table-cell"
+            headerClassName="hidden lg:table-cell"
           />
 
           {/* Column 2: Name - Primary identifier (sortable by first_name) - always visible */}
@@ -183,8 +178,8 @@ const ContactListLayout = ({
             label="Last Activity"
             sortable
             showTime={false}
-            cellClassName="hidden md:table-cell"
-            headerClassName="hidden md:table-cell"
+            cellClassName="hidden lg:table-cell"
+            headerClassName="hidden lg:table-cell"
           />
         </PremiumDatagrid>
       </StandardListLayout>
