@@ -373,6 +373,7 @@ export function QuickLogForm({
           <Button
             type="button"
             variant="outline"
+            className="h-11"
             onClick={onComplete}
             disabled={form.formState.isSubmitting}
           >

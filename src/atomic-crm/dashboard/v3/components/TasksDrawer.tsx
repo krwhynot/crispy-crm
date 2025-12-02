@@ -10,7 +10,7 @@ import { TasksKanbanPanel } from "./TasksKanbanPanel";
 interface TasksDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  variant: "laptop" | "tablet";
+  variant: "laptop" | "tablet-landscape" | "tablet-portrait";
 }
 
 /**
@@ -19,9 +19,10 @@ interface TasksDrawerProps {
  * Used on laptop and tablet breakpoints to show Tasks in an overlay
  * rather than inline, preserving horizontal space for the main content.
  *
- * Variants:
+ * Variants (per PRD Section 9.2.6):
  * - laptop: 320px fixed width (matches --dashboard-tasks-width)
- * - tablet: 70% viewport width for larger touch targets
+ * - tablet-landscape: 320px fixed width (consistent with laptop for larger screens)
+ * - tablet-portrait: 70% viewport width for larger touch targets on narrow screens
  *
  * Features:
  * - Slides in from right edge
@@ -30,9 +31,9 @@ interface TasksDrawerProps {
  * - ESC to close
  */
 export function TasksDrawer({ open, onOpenChange, variant }: TasksDrawerProps) {
-  const widthClass = variant === "laptop"
-    ? "w-full sm:max-w-[320px]"
-    : "w-[70%] sm:max-w-none";
+  const widthClass = variant === "tablet-portrait"
+    ? "w-[70%] sm:max-w-none"
+    : "w-full sm:max-w-[320px]"; // laptop and tablet-landscape use 320px
 
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
