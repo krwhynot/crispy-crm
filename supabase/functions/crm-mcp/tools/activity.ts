@@ -36,7 +36,7 @@ interface ActivityLogResult {
 registerTool(
   {
     name: "crm_activity_log",
-    description: "Log an activity against an opportunity. Creates an activity record and updates the opportunity's updated_at timestamp to reset the stale timer. Activity types: call, email, sample, meeting, demo, proposal, follow_up, trade_show, site_visit, contract_review, check_in, social, note",
+    description: "Log an activity against an opportunity. Creates an activity record and updates the opportunity's updated_at timestamp to reset the stale timer. IMPORTANT: opportunity_id is required because activities must be logged against a specific opportunity. Activity types: call, email, sample, meeting, demo, proposal, follow_up, trade_show, site_visit, contract_review, check_in, social, note",
     inputSchema: {
       type: "object",
       properties: {
@@ -47,7 +47,7 @@ registerTool(
         },
         opportunity_id: {
           type: "number",
-          description: "ID of the opportunity this activity is related to (optional, but recommended)",
+          description: "ID of the opportunity this activity is related to (required)",
         },
         contact_id: {
           type: "number",
@@ -66,7 +66,7 @@ registerTool(
           description: "Outcome or result of the activity (optional)",
         },
       },
-      required: ["type", "subject"],
+      required: ["type", "opportunity_id", "subject"],
     },
   },
   async (args: Record<string, unknown>, session: MCPSession): Promise<ActivityLogResult> => {
