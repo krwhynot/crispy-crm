@@ -1,8 +1,18 @@
-# Project Index: Atomic CRM
+# Project Index: Crispy-CRM (Atomic CRM)
 
-**Generated:** 2025-11-22
+**Generated:** 2025-12-02
 **Version:** 0.1.0
-**Status:** Pre-launch
+**Status:** MVP In Progress (57 features TODO)
+**Token Estimate:** ~2,500 tokens (94% reduction from full codebase)
+
+---
+
+## Overview
+
+**Crispy-CRM** - Full-featured CRM for MFB (Master Food Brokers), a food distribution brokerage managing relationships between **Principals** (manufacturers), **Distributors**, and **Operators** (restaurants).
+
+**Stack:** React 19 + Vite 7 + TypeScript 5.8 + Supabase + React Admin 5 + Tailwind CSS v4
+**PRD Version:** v1.18 (2025-11-28)
 
 ---
 
@@ -13,18 +23,21 @@
 npm run dev
 
 # Development (local Docker)
-npm run dev:local
+npm run dev:local        # Resets + seeds DB
 
 # Run tests
-npm test                # Unit tests (Vitest)
-npm run test:e2e        # E2E tests (Playwright)
+npm test                 # Unit tests (Vitest)
+npm run test:e2e         # E2E tests (Playwright)
 
 # Build
 npm run build
 
 # Database
-npm run db:cloud:push   # Deploy migrations to cloud
+npm run db:cloud:push    # Deploy migrations to cloud
+npm run db:local:reset   # Reset local only (safe)
 ```
+
+**Test login:** `admin@test.com / password123`
 
 ---
 
@@ -32,35 +45,36 @@ npm run db:cloud:push   # Deploy migrations to cloud
 
 ```
 crispy-crm/
-├── src/                        # Frontend source (683 files)
-│   ├── App.tsx                 # Entry point
-│   ├── main.tsx                # React root
+├── src/                        # Frontend source (891 files)
+│   ├── main.tsx                # Entry point + Sentry init
+│   ├── App.tsx                 # Root component (Sentry ErrorBoundary)
 │   ├── atomic-crm/             # CRM domain modules
-│   │   ├── root/               # App shell (CRM.tsx, ConfigurationContext)
+│   │   ├── root/CRM.tsx        # React Admin setup + routes
 │   │   ├── dashboard/v3/       # Principal Dashboard (default)
 │   │   ├── contacts/           # Contact management
 │   │   ├── organizations/      # Organization/Principal management
 │   │   ├── opportunities/      # Opportunity pipeline + Kanban
 │   │   ├── tasks/              # Task management
-│   │   ├── activities/         # Activity logging
+│   │   ├── activities/         # Activity logging (13 types)
 │   │   ├── products/           # Product catalog
 │   │   ├── sales/              # User/Rep management
+│   │   ├── notifications/      # In-app notifications
 │   │   ├── reports/            # Weekly/Campaign reports
 │   │   ├── validation/         # Zod schemas per resource
 │   │   ├── providers/supabase/ # Data + Auth providers
+│   │   ├── services/           # Business logic services
 │   │   └── layout/             # App layout components
 │   ├── components/
 │   │   ├── ui/                 # shadcn/ui atoms
-│   │   ├── admin/              # React Admin wrappers
-│   │   └── layouts/            # Layout shells
-│   └── lib/                    # Utilities
+│   │   └── admin/              # React Admin wrappers
+│   └── lib/                    # Utilities (sanitization, i18n)
 ├── supabase/                   # Backend
-│   ├── migrations/             # 102 SQL migrations
-│   ├── functions/              # Edge Functions
+│   ├── migrations/             # 151 SQL migrations (32K LOC)
+│   ├── functions/              # Edge Functions (Deno)
 │   ├── seed.sql                # Dev seed data
 │   └── config.toml             # Supabase config
 ├── tests/
-│   ├── e2e/                    # Playwright E2E (64 files)
+│   ├── e2e/                    # Playwright E2E (54 specs)
 │   │   ├── dashboard-v3/       # Dashboard tests
 │   │   ├── specs/              # Resource CRUD specs
 │   │   └── support/poms/       # Page Object Models
@@ -78,10 +92,10 @@ crispy-crm/
 
 | File | Purpose |
 |------|---------|
-| `src/main.tsx` | React DOM entry |
-| `src/App.tsx` | Providers + CRM wrapper |
+| `src/main.tsx` | React DOM entry + Sentry monitoring |
+| `src/App.tsx` | ErrorBoundary + CRM wrapper |
 | `src/atomic-crm/root/CRM.tsx` | React Admin setup, routes, resources |
-| `src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx` | Default dashboard |
+| `src/atomic-crm/providers/supabase/index.ts` | Data + Auth provider factory |
 
 ---
 
@@ -89,39 +103,58 @@ crispy-crm/
 
 | Resource | Path | Description |
 |----------|------|-------------|
-| contacts | `src/atomic-crm/contacts/` | Contact CRUD with slide-over |
-| organizations | `src/atomic-crm/organizations/` | Principals + subsidiaries |
-| opportunities | `src/atomic-crm/opportunities/` | Pipeline + Kanban board |
-| tasks | `src/atomic-crm/tasks/` | Task management |
-| activities | `src/atomic-crm/activities/` | Activity logging |
-| products | `src/atomic-crm/products/` | Product catalog |
-| sales | `src/atomic-crm/sales/` | User management |
+| opportunities | `atomic-crm/opportunities/` | 7-stage pipeline + Kanban |
+| contacts | `atomic-crm/contacts/` | Contact CRUD + CSV import |
+| organizations | `atomic-crm/organizations/` | Principal/Distributor/Customer |
+| products | `atomic-crm/products/` | Product catalog by principal |
+| tasks | `atomic-crm/tasks/` | Task management with deadlines |
+| activities | `atomic-crm/activities/` | 13 activity types |
+| sales | `atomic-crm/sales/` | User/Rep management |
+| notifications | `atomic-crm/notifications/` | In-app notifications |
+
+---
+
+## Business Domain
+
+### Three-Party Model
+- **Principal** = Food manufacturer (e.g., McCRUM, Rapid Rasoi)
+- **Distributor** = Distribution company (e.g., Sysco, USF, GFS)
+- **Customer/Operator** = Restaurant or foodservice business
+
+### Pipeline Stages (7)
+`new_lead` → `initial_outreach` → `sample_visit_offered` → `feedback_logged` → `demo_scheduled` → `closed_won` | `closed_lost`
+
+### Activity Types (13)
+call, email, sample, meeting, demo, proposal, follow_up, trade_show, site_visit, contract_review, check_in, social, note
 
 ---
 
 ## Key Components
 
-### Dashboard V3
-- `PrincipalDashboardV3.tsx` - 3-column layout
-- `PrincipalPipelineTable.tsx` - Aggregated pipeline view
-- `TasksPanel.tsx` - Time-bucketed tasks
-- `QuickLoggerPanel.tsx` - Activity quick logging
+### Dashboard V3 (`dashboard/v3/`)
+- `PrincipalDashboardV3.tsx` - 2-column CSS Grid (40% | 60%) + FAB
+- `PrincipalPipelineTable.tsx` - Aggregated pipeline with momentum
+- `TasksPanel.tsx` - Time-bucketed tasks (Overdue → Today → Tomorrow)
+- `LogActivityFAB.tsx` - Floating action button
+- `QuickLogForm.tsx` - Activity logging with draft persistence
 
-### Data Layer
-- `unifiedDataProvider.ts` - Supabase data provider
-- `authProvider.ts` - Supabase auth
+### Data Layer (`providers/supabase/`)
+- `unifiedDataProvider.ts` - Monolithic provider (1090 LOC, default)
+- `composedDataProvider.ts` - Handler-based (feature-flagged)
+- `authProvider.ts` - Supabase Auth integration
 - `filterRegistry.ts` - Prevent stale filter errors
 
-### Validation
-- `src/atomic-crm/validation/` - Zod schemas
-- Pattern: `resource.schema.ts` exports `createSchema`, `updateSchema`
+### Validation (`validation/`)
+- Zod schemas for all resources
+- Pattern: `schema.partial().parse({})` for form defaults
+- JSONB array patterns for multi-value fields
 
 ---
 
 ## Database
 
 **Platform:** Supabase (PostgreSQL)
-**Migrations:** 102 files in `supabase/migrations/`
+**Migrations:** 151 files (32K LOC)
 **Security:** RLS policies + GRANT statements
 
 ### Key Views
@@ -130,22 +163,25 @@ crispy-crm/
 - `opportunities_summary` - Opportunity aggregation
 - `principal_pipeline_summary` - Dashboard V3 data
 
-### Key Tables
-- `contacts`, `organizations`, `opportunities`
-- `tasks`, `activities`, `products`
-- `sales` (users), `tags`, `notifications`
+### Security Pattern
+```sql
+-- Both GRANT and RLS required
+GRANT SELECT, INSERT, UPDATE, DELETE ON table TO authenticated;
+ALTER TABLE table ENABLE ROW LEVEL SECURITY;
+CREATE POLICY policy ON table FOR SELECT TO authenticated USING (true);
+```
 
 ---
 
 ## Testing
 
-| Type | Tool | Command | Coverage |
-|------|------|---------|----------|
-| Unit | Vitest | `npm test` | 70% min |
-| E2E | Playwright | `npm run test:e2e` | - |
-| Integration | Vitest | `tests/integration/` | - |
+| Type | Files | Command | Coverage |
+|------|-------|---------|----------|
+| Unit | 190 | `npm test` | 70% min |
+| E2E | 54 | `npm run test:e2e` | - |
+| Integration | 6 | `tests/integration/` | - |
 
-### E2E Page Objects
+### Page Object Models
 ```
 tests/e2e/support/poms/
 ├── DashboardPage.ts
@@ -167,6 +203,7 @@ tests/e2e/support/poms/
 - shadcn/ui (Radix primitives)
 - Zod 4 (validation)
 - TanStack Query (server state)
+- Sentry (error monitoring)
 
 ### Backend
 - Supabase (PostgreSQL + Auth + Realtime)
@@ -174,19 +211,16 @@ tests/e2e/support/poms/
 
 ---
 
-## Configuration Files
+## Key Dependencies
 
-| File | Purpose |
-|------|---------|
-| `package.json` | Dependencies, scripts |
-| `vite.config.ts` | Vite bundler config |
-| `tsconfig.json` | TypeScript config |
-| `tailwind.config.ts` | Tailwind v4 theme |
-| `playwright.config.ts` | E2E test config |
-| `vitest.config.ts` | Unit test config |
-| `supabase/config.toml` | Supabase local config |
-| `.env` / `.env.local` / `.env.cloud` | Environment vars |
-| `CLAUDE.md` | Claude Code instructions |
+| Package | Version | Purpose |
+|---------|---------|---------|
+| react-admin | ^5.10.0 | Admin framework |
+| @supabase/supabase-js | ^2.75.1 | Database client |
+| zod | ^4.1.12 | Schema validation |
+| tailwindcss | ^4.1.11 | CSS framework |
+| @sentry/react | ^10.27.0 | Error monitoring |
+| @hello-pangea/dnd | ^18.0.1 | Drag and drop |
 
 ---
 
@@ -209,9 +243,10 @@ npm run test:e2e:ui      # Playwright UI mode
 
 ### Database
 ```bash
-npm run db:local:reset   # Reset local only
+npm run db:local:reset   # Reset local only (safe)
 npm run db:cloud:push    # Deploy to production
 npm run db:cloud:status  # Migration history
+npx supabase migration new <name>  # Create migration
 ```
 
 ### Quality
@@ -222,36 +257,36 @@ npm run validate:colors  # Check semantic colors
 
 ---
 
-## Documentation
+## Essential Documentation
 
 | Doc | Purpose |
 |-----|---------|
 | `CLAUDE.md` | Claude Code project instructions |
+| `docs/PRD.md` | Product requirements |
 | `docs/claude/engineering-constitution.md` | Core principles |
-| `docs/architecture/` | ADRs, design decisions |
-| `docs/development/common-tasks.md` | How-to guides |
-| `docs/dashboard/PRINCIPAL-DASHBOARD-COMPLETE-GUIDE.md` | Dashboard architecture |
+| `docs/supabase/WORKFLOW.md` | Database operations |
+| `docs/architecture/design-system.md` | UI patterns |
+| `docs/development/common-tasks.md` | Step-by-step guides |
 
 ---
 
-## Recent Changes (2025-11)
+## Recent Changes (2025-11/12)
 
-- **V3 Dashboard** - 3-column principal-centric dashboard (default)
-- **V1/V2 Cleanup** - Removed 34 legacy dashboard files
-- **Security Hardening** - RLS policies, CSV validation
-- **Cloud-First Dev** - Migrated from local Docker to Supabase Cloud
-
----
-
-## Serena MCP Memories
-
-Available memories for cross-session context:
-- `project_overview` - Tech stack, architecture
-- `code_style_conventions` - Coding standards
-- `task_completion_checklist` - Workflow checklist
-- `database_security` - RLS/GRANT patterns
-- `session_2025-11-22_v1v2_cleanup` - V1/V2 cleanup record
+- **PRD v1.18 (2025-11-28)**: Activities Feature Matrix audit - 13 types, timeline CRUD
+- **Pipeline (2025-11-28)**: Reduced from 8 to 7 stages (removed `awaiting_response`)
+- **V3 Dashboard (2025-11-18)**: Default dashboard with pipeline table, tasks panel
+- **V1/V2 Cleanup (2025-11-22)**: Removed 34 legacy dashboard files
+- **Security (2025-11-08)**: RLS admin-only policies, CSV validation, WCAG 2.1 AA
 
 ---
 
-*Index generated by Claude Code. ~3KB compressed for efficient context loading.*
+## MCP Tools Available
+
+- `mcp__sequential-thinking__*` - Complex reasoning chains
+- `mcp__Ref__*` - Documentation lookup
+- `mcp__ide__*` - VS Code integration
+
+---
+
+*This index provides 94% token reduction for AI context loading.*
+*Full codebase: ~58K tokens. This index: ~2.5K tokens.*
