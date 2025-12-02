@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useCreate, useNotify, useRefresh } from "react-admin";
+import { useCreate, useNotify, useRefresh, useGetIdentity } from "react-admin";
 import { Loader2 } from "lucide-react";
 import { createOpportunitySchema } from "../../validation/opportunities";
 import type { OpportunityStageValue } from "../../types";
@@ -14,6 +14,7 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
   const [create, { isLoading }] = useCreate();
   const notify = useNotify();
   const refresh = useRefresh();
+  const { identity } = useGetIdentity();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,6 +29,9 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
         name: name.trim(),
         stage,
         status: "active",
+        // Set current user as owner - ensures opportunity shows in "My Opportunities"
+        opportunity_owner_id: identity?.id,
+        account_manager_id: identity?.id,
       });
 
       await create("opportunities", { data: validatedData });
