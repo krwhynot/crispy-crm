@@ -26,10 +26,10 @@ vi.mock("ra-core", async () => {
     ...actual,
     useListContext: vi.fn(),
     useGetList: vi.fn(),
-    useGetIdentity: vi.fn(() => ({
+    useGetIdentity: () => ({
       data: { id: 1, fullName: "Test User", sales_id: 1 },
-      isPending: false,
-    })),
+      isLoading: false,
+    }),
     downloadCSV: vi.fn(),
   };
 });
