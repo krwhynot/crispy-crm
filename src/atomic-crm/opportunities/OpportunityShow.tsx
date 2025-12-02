@@ -1,20 +1,13 @@
-import { useMutation } from "@tanstack/react-query";
 import { useState, useMemo } from "react";
 import { format, isValid, formatDistanceToNow, isPast } from "date-fns";
-import { Archive, ArchiveRestore } from "lucide-react";
 import {
   ShowBase,
-  useDataProvider,
-  useNotify,
-  useRedirect,
-  useRefresh,
   useShowContext,
-  useUpdate,
 } from "ra-core";
 import { useMatch, useNavigate } from "react-router-dom";
 
-import { OpportunitiesService } from "../services";
 import { DETAIL_FIELD_MIN_WIDTH } from "./constants";
+import { ArchivedBanner, ArchiveButton, UnarchiveButton } from "./components";
 
 import { ReferenceArrayField } from "@/components/admin/reference-array-field";
 import { ReferenceField } from "@/components/admin/reference-field";
@@ -84,7 +77,7 @@ const OpportunityShowContent = () => {
 
   return (
     <div className="mt-2">
-      {record.deleted_at ? <ArchivedTitle /> : null}
+      {record.deleted_at ? <ArchivedBanner /> : null}
       <Card>
         <CardContent className="p-6">
           <OpportunityHeader
@@ -346,91 +339,6 @@ const OpportunityShowContent = () => {
         </CardContent>
       </Card>
     </div>
-  );
-};
-
-const ArchivedTitle = () => (
-  <div className="bg-warning px-6 py-4">
-    <h3 className="text-lg font-bold text-white">Archived Opportunity</h3>
-  </div>
-);
-
-const ArchiveButton = ({ record }: { record: Opportunity }) => {
-  const [update] = useUpdate();
-  const redirect = useRedirect();
-  const notify = useNotify();
-  const refresh = useRefresh();
-  const handleClick = () => {
-    update(
-      "opportunities",
-      {
-        id: record.id,
-        data: { deleted_at: new Date().toISOString() },
-        previousData: record,
-      },
-      {
-        onSuccess: () => {
-          redirect("list", "opportunities");
-          notify("Opportunity archived", { type: "info", undoable: false });
-          refresh();
-        },
-        onError: () => {
-          notify("Error: opportunity not archived", { type: "error" });
-        },
-      }
-    );
-  };
-
-  return (
-    <Button
-      onClick={handleClick}
-      size="sm"
-      variant="outline"
-      className="flex items-center gap-2 min-h-[44px]"
-    >
-      <Archive className="w-4 h-4" />
-      Archive
-    </Button>
-  );
-};
-
-const UnarchiveButton = ({ record }: { record: Opportunity }) => {
-  const dataProvider = useDataProvider();
-  const redirect = useRedirect();
-  const notify = useNotify();
-  const refresh = useRefresh();
-
-  const opportunitiesService = new OpportunitiesService(dataProvider);
-
-  const { mutate } = useMutation({
-    mutationFn: () => opportunitiesService.unarchiveOpportunity(record),
-    onSuccess: () => {
-      redirect("list", "opportunities");
-      notify("Opportunity unarchived", {
-        type: "info",
-        undoable: false,
-      });
-      refresh();
-    },
-    onError: () => {
-      notify("Error: opportunity not unarchived", { type: "error" });
-    },
-  });
-
-  const handleClick = () => {
-    mutate();
-  };
-
-  return (
-    <Button
-      onClick={handleClick}
-      size="sm"
-      variant="outline"
-      className="flex items-center gap-2 min-h-[44px]"
-    >
-      <ArchiveRestore className="w-4 h-4" />
-      Send back to the board
-    </Button>
   );
 };
 

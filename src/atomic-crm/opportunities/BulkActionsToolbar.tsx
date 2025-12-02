@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNotify, useRefresh, useDataProvider, useGetList } from "ra-core";
+import { useGetList } from "ra-core";
 import { Button } from "@/components/ui/button";
+import { useBulkActionsState } from "./hooks";
 import {
   Dialog,
   DialogContent,
@@ -34,8 +34,7 @@ import {
   getOpportunityStageColor,
 } from "./constants/stageConstants";
 import { useExportOpportunities } from "./hooks/useExportOpportunities";
-
-type BulkAction = "change_stage" | "change_status" | "assign_owner" | "archive" | null;
+import type { BulkAction } from "./hooks";
 
 interface BulkActionsToolbarProps {
   selectedIds: (string | number)[];
@@ -56,15 +55,25 @@ export const BulkActionsToolbar = ({
   opportunities,
   onUnselectItems,
 }: BulkActionsToolbarProps) => {
-  const [activeAction, setActiveAction] = useState<BulkAction>(null);
-  const [selectedStage, setSelectedStage] = useState<string>("");
-  const [selectedStatus, setSelectedStatus] = useState<string>("");
-  const [selectedOwner, setSelectedOwner] = useState<string>("");
-  const [isProcessing, setIsProcessing] = useState(false);
-
-  const notify = useNotify();
-  const refresh = useRefresh();
-  const dataProvider = useDataProvider();
+  const {
+    activeAction,
+    selectedStage,
+    setSelectedStage,
+    selectedStatus,
+    setSelectedStatus,
+    selectedOwner,
+    setSelectedOwner,
+    isProcessing,
+    handleOpenDialog,
+    handleCloseDialog,
+    handleExecuteBulkAction,
+    handleBulkArchive,
+    canExecute,
+  } = useBulkActionsState({
+    selectedIds,
+    opportunities,
+    onUnselectItems,
+  });
   const { exportToCSV } = useExportOpportunities();
 
   // Fetch sales list for owner assignment
@@ -76,126 +85,8 @@ export const BulkActionsToolbar = ({
   // Get selected opportunities
   const selectedOpportunities = opportunities.filter((opp) => selectedIds.includes(opp.id));
 
-  const handleOpenDialog = (action: BulkAction) => {
-    setActiveAction(action);
-    setSelectedStage("");
-    setSelectedStatus("");
-    setSelectedOwner("");
-  };
-
-  const handleCloseDialog = () => {
-    setActiveAction(null);
-    setSelectedStage("");
-    setSelectedStatus("");
-    setSelectedOwner("");
-  };
-
-  const handleExecuteBulkAction = async () => {
-    if (!activeAction) return;
-
-    setIsProcessing(true);
-    let successCount = 0;
-    let failureCount = 0;
-
-    try {
-      // Determine what field to update based on action
-      let updateData: Partial<Opportunity> = {};
-
-      if (activeAction === "change_stage" && selectedStage) {
-        updateData = { stage: selectedStage as any, stage_manual: true };
-      } else if (activeAction === "change_status" && selectedStatus) {
-        updateData = { status: selectedStatus as any, status_manual: true };
-      } else if (activeAction === "assign_owner" && selectedOwner) {
-        updateData = { opportunity_owner_id: parseInt(selectedOwner) };
-      }
-
-      // Execute bulk update for each selected opportunity
-      for (const id of selectedIds) {
-        try {
-          await dataProvider.update("opportunities", {
-            id,
-            data: updateData,
-            previousData: opportunities.find((opp) => opp.id === id),
-          });
-          successCount++;
-        } catch (error) {
-          console.error(`Failed to update opportunity ${id}:`, error);
-          failureCount++;
-        }
-      }
-
-      // Show results
-      if (successCount > 0) {
-        notify(
-          `Successfully updated ${successCount} opportunit${successCount === 1 ? "y" : "ies"}`,
-          {
-            type: "success",
-          }
-        );
-      }
-      if (failureCount > 0) {
-        notify(`Failed to update ${failureCount} opportunit${failureCount === 1 ? "y" : "ies"}`, {
-          type: "error",
-        });
-      }
-
-      // Refresh list and clear selection
-      refresh();
-      onUnselectItems();
-      handleCloseDialog();
-    } catch (error) {
-      notify("Bulk action failed", { type: "error" });
-      console.error("Bulk action error:", error);
-    } finally {
-      setIsProcessing(false);
-    }
-  };
-
-  const canExecute = () => {
-    if (activeAction === "change_stage") return !!selectedStage;
-    if (activeAction === "change_status") return !!selectedStatus;
-    if (activeAction === "assign_owner") return !!selectedOwner;
-    return false;
-  };
-
   const handleExport = () => {
     exportToCSV(selectedOpportunities);
-  };
-
-  /**
-   * Handle bulk archive (soft delete) of selected opportunities
-   * Uses dataProvider.deleteMany which sets deleted_at timestamp
-   * Audit logging is handled automatically by database triggers
-   */
-  const handleBulkArchive = async () => {
-    setIsProcessing(true);
-
-    try {
-      // Log the archive action for debugging
-      console.log(`[BulkArchive] Archiving ${selectedIds.length} opportunities:`, selectedIds);
-
-      // Use deleteMany which internally performs soft delete (sets deleted_at)
-      // This is handled by unifiedDataProvider.deleteMany for soft-delete resources
-      await dataProvider.deleteMany("opportunities", { ids: selectedIds });
-
-      notify(
-        `Successfully archived ${selectedIds.length} opportunit${selectedIds.length === 1 ? "y" : "ies"}`,
-        { type: "success" }
-      );
-
-      // Refresh list and clear selection
-      refresh();
-      onUnselectItems();
-      handleCloseDialog();
-    } catch (error) {
-      console.error("[BulkArchive] Failed to archive opportunities:", error);
-      notify(
-        `Failed to archive opportunities: ${error instanceof Error ? error.message : "Unknown error"}`,
-        { type: "error" }
-      );
-    } finally {
-      setIsProcessing(false);
-    }
   };
 
   if (selectedIds.length === 0) return null;

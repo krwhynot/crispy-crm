@@ -4,7 +4,7 @@ import { SelectInput } from "@/components/admin/select-input";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
 
-export const OpportunityDetailsTab = () => {
+export const OpportunityAdditionalInfoTab = () => {
   return (
     <div className="space-y-2">
       <TextInput
