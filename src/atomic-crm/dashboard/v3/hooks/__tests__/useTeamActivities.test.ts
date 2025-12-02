@@ -5,27 +5,39 @@
  * Critical behaviors tested:
  * - Activity fetching with joined sales user data
  * - Default limit and custom limit behavior
- * - Soft-delete filtering (deleted_at@is: null)
+ * - Soft-delete filtering (deleted_at is null)
  * - Loading states and error handling
  * - Refetch functionality
  * - Edge cases: empty data, missing sales user
+ *
+ * NOTE: Tests mock the Supabase client directly since the hook uses
+ * supabase.from().select() instead of the React Admin data provider.
  */
 
 import { renderHook, waitFor, act } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { TeamActivity } from "../useTeamActivities";
-import { useTeamActivities } from "../useTeamActivities";
 
-// Create stable mock functions
-const mockGetList = vi.fn();
+// Use vi.hoisted() to ensure mocks are available when vi.mock is hoisted
+// This solves the "Cannot access 'mockFrom' before initialization" error
+const { mockFrom, mockSelect, mockIs, mockOrder, mockLimit } = vi.hoisted(() => {
+  const mockLimit = vi.fn();
+  const mockOrder = vi.fn();
+  const mockIs = vi.fn();
+  const mockSelect = vi.fn();
+  const mockFrom = vi.fn();
+  return { mockFrom, mockSelect, mockIs, mockOrder, mockLimit };
+});
 
-const stableDataProvider = {
-  getList: mockGetList,
-};
-
-vi.mock("react-admin", () => ({
-  useDataProvider: () => stableDataProvider,
+// Mock the Supabase client - this gets hoisted but now can access the hoisted mocks
+vi.mock("@/atomic-crm/providers/supabase/supabase", () => ({
+  supabase: {
+    from: mockFrom,
+  },
 }));
+
+// Import after mock setup
+import { useTeamActivities } from "../useTeamActivities";
 
 // Helper to create mock activity
 const createMockActivity = (overrides: Partial<TeamActivity> = {}): TeamActivity => ({
@@ -39,6 +51,7 @@ const createMockActivity = (overrides: Partial<TeamActivity> = {}): TeamActivity
     id: 42,
     first_name: "John",
     last_name: "Doe",
+    email: "john@example.com",
     avatar_url: "https://example.com/avatar.jpg",
   },
   contact_id: 100,
@@ -50,13 +63,17 @@ const createMockActivity = (overrides: Partial<TeamActivity> = {}): TeamActivity
 describe("useTeamActivities", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    // Reset chain
+    mockFrom.mockReturnValue({ select: mockSelect });
+    mockSelect.mockReturnValue({ is: mockIs });
+    mockIs.mockReturnValue({ order: mockOrder });
+    mockOrder.mockReturnValue({ limit: mockLimit });
   });
 
   describe("Data Fetching", () => {
     it("should fetch activities with default limit of 15", async () => {
       const mockActivities = [createMockActivity({ id: 1 }), createMockActivity({ id: 2 })];
-
-      mockGetList.mockResolvedValueOnce({ data: mockActivities, total: 2 });
+      mockLimit.mockResolvedValueOnce({ data: mockActivities, error: null });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -64,19 +81,13 @@ describe("useTeamActivities", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(mockGetList).toHaveBeenCalledWith(
-        "activities",
-        expect.objectContaining({
-          pagination: { page: 1, perPage: 15 },
-          sort: { field: "activity_date", order: "DESC" },
-          filter: { "deleted_at@is": null },
-        })
-      );
+      expect(mockFrom).toHaveBeenCalledWith("activities");
+      expect(mockLimit).toHaveBeenCalledWith(15);
       expect(result.current.activities).toHaveLength(2);
     });
 
     it("should respect custom limit parameter", async () => {
-      mockGetList.mockResolvedValueOnce({ data: [], total: 0 });
+      mockLimit.mockResolvedValueOnce({ data: [], error: null });
 
       const { result } = renderHook(() => useTeamActivities(25));
 
@@ -84,16 +95,11 @@ describe("useTeamActivities", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(mockGetList).toHaveBeenCalledWith(
-        "activities",
-        expect.objectContaining({
-          pagination: { page: 1, perPage: 25 },
-        })
-      );
+      expect(mockLimit).toHaveBeenCalledWith(25);
     });
 
-    it("should include meta.select for sales user join", async () => {
-      mockGetList.mockResolvedValueOnce({ data: [], total: 0 });
+    it("should request sales user join in select query", async () => {
+      mockLimit.mockResolvedValueOnce({ data: [], error: null });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -101,14 +107,34 @@ describe("useTeamActivities", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(mockGetList).toHaveBeenCalledWith(
-        "activities",
-        expect.objectContaining({
-          meta: expect.objectContaining({
-            select: expect.stringContaining("sales:created_by"),
-          }),
-        })
+      // Verify select was called with the join syntax
+      expect(mockSelect).toHaveBeenCalledWith(
+        expect.stringContaining("sales:created_by")
       );
+    });
+
+    it("should filter out soft-deleted activities", async () => {
+      mockLimit.mockResolvedValueOnce({ data: [], error: null });
+
+      const { result } = renderHook(() => useTeamActivities());
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(mockIs).toHaveBeenCalledWith("deleted_at", null);
+    });
+
+    it("should order by activity_date descending", async () => {
+      mockLimit.mockResolvedValueOnce({ data: [], error: null });
+
+      const { result } = renderHook(() => useTeamActivities());
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(mockOrder).toHaveBeenCalledWith("activity_date", { ascending: false });
     });
   });
 
@@ -122,11 +148,12 @@ describe("useTeamActivities", () => {
           id: 42,
           first_name: "Jane",
           last_name: "Smith",
+          email: "jane@example.com",
           avatar_url: "https://example.com/jane.jpg",
         },
       });
 
-      mockGetList.mockResolvedValueOnce({ data: [mockActivity], total: 1 });
+      mockLimit.mockResolvedValueOnce({ data: [mockActivity], error: null });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -145,10 +172,10 @@ describe("useTeamActivities", () => {
     it("should handle activity without sales user (created_by is null)", async () => {
       const mockActivity = createMockActivity({
         created_by: null,
-        sales: undefined,
+        sales: null,
       });
 
-      mockGetList.mockResolvedValueOnce({ data: [mockActivity], total: 1 });
+      mockLimit.mockResolvedValueOnce({ data: [mockActivity], error: null });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -157,7 +184,7 @@ describe("useTeamActivities", () => {
       });
 
       expect(result.current.activities[0].created_by).toBeNull();
-      expect(result.current.activities[0].sales).toBeUndefined();
+      expect(result.current.activities[0].sales).toBeNull();
     });
 
     it("should include related entity IDs", async () => {
@@ -167,7 +194,7 @@ describe("useTeamActivities", () => {
         opportunity_id: 301,
       });
 
-      mockGetList.mockResolvedValueOnce({ data: [mockActivity], total: 1 });
+      mockLimit.mockResolvedValueOnce({ data: [mockActivity], error: null });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -183,7 +210,7 @@ describe("useTeamActivities", () => {
 
   describe("Loading States", () => {
     it("should show loading state initially", async () => {
-      mockGetList.mockImplementation(() => new Promise(() => {})); // Never resolves
+      mockLimit.mockImplementation(() => new Promise(() => {})); // Never resolves
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -192,7 +219,7 @@ describe("useTeamActivities", () => {
     });
 
     it("should set loading to false after fetch completes", async () => {
-      mockGetList.mockResolvedValueOnce({ data: [], total: 0 });
+      mockLimit.mockResolvedValueOnce({ data: [], error: null });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -203,9 +230,11 @@ describe("useTeamActivities", () => {
   });
 
   describe("Error Handling", () => {
-    it("should handle fetch errors gracefully", async () => {
-      const mockError = new Error("Network error");
-      mockGetList.mockRejectedValueOnce(mockError);
+    it("should handle Supabase query errors gracefully", async () => {
+      mockLimit.mockResolvedValueOnce({
+        data: null,
+        error: { message: "Network error" },
+      });
 
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
@@ -217,16 +246,29 @@ describe("useTeamActivities", () => {
 
       expect(result.current.error).toBeInstanceOf(Error);
       expect(result.current.error?.message).toBe("Network error");
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "[useTeamActivities] Failed to fetch activities:",
-        mockError
-      );
+
+      consoleErrorSpy.mockRestore();
+    });
+
+    it("should handle thrown exceptions", async () => {
+      mockLimit.mockRejectedValueOnce(new Error("Unexpected error"));
+
+      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+
+      const { result } = renderHook(() => useTeamActivities());
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(result.current.error).toBeInstanceOf(Error);
+      expect(result.current.error?.message).toBe("Unexpected error");
 
       consoleErrorSpy.mockRestore();
     });
 
     it("should convert non-Error exceptions to Error objects", async () => {
-      mockGetList.mockRejectedValueOnce("String error");
+      mockLimit.mockRejectedValueOnce("String error");
 
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
@@ -245,7 +287,7 @@ describe("useTeamActivities", () => {
 
   describe("Refetch Functionality", () => {
     it("should refetch activities when refetch is called", async () => {
-      mockGetList.mockResolvedValue({ data: [], total: 0 });
+      mockLimit.mockResolvedValue({ data: [], error: null });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -253,18 +295,21 @@ describe("useTeamActivities", () => {
         expect(result.current.loading).toBe(false);
       });
 
-      const initialCallCount = mockGetList.mock.calls.length;
+      const initialCallCount = mockFrom.mock.calls.length;
 
       await act(async () => {
         await result.current.refetch();
       });
 
-      expect(mockGetList.mock.calls.length).toBeGreaterThan(initialCallCount);
+      expect(mockFrom.mock.calls.length).toBeGreaterThan(initialCallCount);
     });
 
     it("should clear error on successful refetch", async () => {
-      // First call fails
-      mockGetList.mockRejectedValueOnce(new Error("First error"));
+      // First call returns error
+      mockLimit.mockResolvedValueOnce({
+        data: null,
+        error: { message: "First error" },
+      });
 
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
@@ -275,7 +320,7 @@ describe("useTeamActivities", () => {
       });
 
       // Second call succeeds
-      mockGetList.mockResolvedValueOnce({ data: [], total: 0 });
+      mockLimit.mockResolvedValueOnce({ data: [], error: null });
 
       await act(async () => {
         await result.current.refetch();
@@ -289,7 +334,20 @@ describe("useTeamActivities", () => {
 
   describe("Edge Cases", () => {
     it("should handle empty activities array", async () => {
-      mockGetList.mockResolvedValueOnce({ data: [], total: 0 });
+      mockLimit.mockResolvedValueOnce({ data: [], error: null });
+
+      const { result } = renderHook(() => useTeamActivities());
+
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
+      expect(result.current.activities).toHaveLength(0);
+      expect(result.current.error).toBeNull();
+    });
+
+    it("should handle null data response", async () => {
+      mockLimit.mockResolvedValueOnce({ data: null, error: null });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -306,7 +364,7 @@ describe("useTeamActivities", () => {
         description: null,
       });
 
-      mockGetList.mockResolvedValueOnce({ data: [mockActivity], total: 1 });
+      mockLimit.mockResolvedValueOnce({ data: [mockActivity], error: null });
 
       const { result } = renderHook(() => useTeamActivities());
 
@@ -323,11 +381,12 @@ describe("useTeamActivities", () => {
           id: 42,
           first_name: null,
           last_name: null,
+          email: null,
           avatar_url: null,
         },
       });
 
-      mockGetList.mockResolvedValueOnce({ data: [mockActivity], total: 1 });
+      mockLimit.mockResolvedValueOnce({ data: [mockActivity], error: null });
 
       const { result } = renderHook(() => useTeamActivities());
 

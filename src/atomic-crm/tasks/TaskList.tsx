@@ -12,6 +12,9 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { Badge } from "@/components/ui/badge";
 import { PriorityBadge } from "@/components/ui/priority-badge";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
+import { useFilterCleanup } from "../hooks/useFilterCleanup";
+import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
+import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { TaskListFilter } from "./TaskListFilter";
 import { TaskSlideOver } from "./TaskSlideOver";
 import { SaleName } from "../sales/SaleName";
@@ -36,60 +39,88 @@ export default function TaskList() {
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
 
+  // Clean up stale cached filters from localStorage
+  useFilterCleanup("tasks");
+
+  // Keyboard navigation for list rows
+  const { focusedIndex } = useListKeyboardNavigation({
+    onSelect: (id) => openSlideOver(Number(id), "edit"),
+    enabled: !isOpen,
+  });
+
   return (
-    <List
-      title="Tasks"
-      perPage={100}
-      sort={{ field: "due_date", order: "ASC" }}
-      exporter={exporter}
-    >
-      <StandardListLayout resource="tasks" filterComponent={<TaskListFilter />}>
-        <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "edit")}>
-          {/* Inline completion checkbox - CRITICAL: prevent row click */}
-          <FunctionField
-            label="Done"
-            render={(record: Task) => <CompletionCheckbox task={record} />}
-          />
-
-          <TextField source="title" label="Title" />
-
-          <DateField source="due_date" label="Due Date" />
-
-          <FunctionField
-            label="Priority"
-            render={(record: Task) =>
-              record.priority && <PriorityBadge priority={record.priority} />
-            }
-          />
-
-          <FunctionField
-            label="Type"
-            render={(record: Task) => record.type && <Badge variant="outline">{record.type}</Badge>}
-          />
-
-          <ReferenceField source="sales_id" reference="sales" label="Assigned To" link={false}>
-            <SaleName />
-          </ReferenceField>
-
-          <ReferenceField
-            source="contact_id"
-            reference="contacts_summary"
-            label="Contact"
-            link={false}
+    <>
+      <List
+        title="Tasks"
+        perPage={100}
+        sort={{ field: "due_date", order: "ASC" }}
+        exporter={exporter}
+      >
+        <StandardListLayout resource="tasks" filterComponent={<TaskListFilter />}>
+          <PremiumDatagrid
+            onRowClick={(id) => openSlideOver(Number(id), "edit")}
+            focusedIndex={focusedIndex}
           >
-            <TextField source={contactOptionText} />
-          </ReferenceField>
+            {/* Inline completion checkbox - CRITICAL: prevent row click */}
+            <FunctionField
+              label="Done"
+              render={(record: Task) => <CompletionCheckbox task={record} />}
+            />
 
-          <ReferenceField
-            source="opportunity_id"
-            reference="opportunities"
-            label="Opportunity"
-            link={false}
-          >
-            <TextField source="title" />
-          </ReferenceField>
-        </PremiumDatagrid>
-      </StandardListLayout>
+            <TextField source="title" label="Title" />
+
+            <DateField source="due_date" label="Due Date" />
+
+            <FunctionField
+              label="Priority"
+              render={(record: Task) =>
+                record.priority && <PriorityBadge priority={record.priority} />
+              }
+            />
+
+            <FunctionField
+              label="Type"
+              render={(record: Task) => record.type && <Badge variant="outline">{record.type}</Badge>}
+              cellClassName="hidden lg:table-cell"
+              headerClassName="hidden lg:table-cell"
+            />
+
+            <ReferenceField
+              source="sales_id"
+              reference="sales"
+              label="Assigned To"
+              link={false}
+              cellClassName="hidden lg:table-cell"
+              headerClassName="hidden lg:table-cell"
+            >
+              <SaleName />
+            </ReferenceField>
+
+            <ReferenceField
+              source="contact_id"
+              reference="contacts_summary"
+              label="Contact"
+              link={false}
+              cellClassName="hidden lg:table-cell"
+              headerClassName="hidden lg:table-cell"
+            >
+              <TextField source={contactOptionText} />
+            </ReferenceField>
+
+            <ReferenceField
+              source="opportunity_id"
+              reference="opportunities"
+              label="Opportunity"
+              link={false}
+              cellClassName="hidden lg:table-cell"
+              headerClassName="hidden lg:table-cell"
+            >
+              <TextField source="title" />
+            </ReferenceField>
+          </PremiumDatagrid>
+        </StandardListLayout>
+        <FloatingCreateButton />
+      </List>
 
       <TaskSlideOver
         recordId={slideOverId}
@@ -98,7 +129,7 @@ export default function TaskList() {
         onClose={closeSlideOver}
         onModeToggle={toggleMode}
       />
-    </List>
+    </>
   );
 }
 

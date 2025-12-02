@@ -9,6 +9,8 @@ import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
 import { TopToolbar } from "../layout/TopToolbar";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
+import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
+import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { Badge } from "@/components/ui/badge";
 import { ProductListFilter } from "./ProductListFilter";
 import { ProductSlideOver } from "./ProductSlideOver";
@@ -28,11 +30,23 @@ export const ProductList = () => {
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
 
+  // Clean up stale cached filters from localStorage
+  useFilterCleanup("products");
+
+  // Keyboard navigation for list rows
+  const { focusedIndex } = useListKeyboardNavigation({
+    onSelect: (id) => openSlideOver(Number(id), "view"),
+    enabled: !isOpen,
+  });
+
   return (
     <>
       <List actions={<ProductListActions />}>
         <StandardListLayout resource="products" filterComponent={<ProductListFilter />}>
-          <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id), "view")}>
+          <PremiumDatagrid
+            onRowClick={(id) => openSlideOver(Number(id), "view")}
+            focusedIndex={focusedIndex}
+          >
             <TextField source="name" label="Product Name" />
             <TextField source="sku" label="SKU" />
 
@@ -78,6 +92,8 @@ export const ProductList = () => {
                   )}
                 </div>
               )}
+              cellClassName="hidden lg:table-cell"
+              headerClassName="hidden lg:table-cell"
             />
           </PremiumDatagrid>
         </StandardListLayout>

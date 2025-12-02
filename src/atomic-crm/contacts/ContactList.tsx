@@ -1,6 +1,4 @@
-import jsonExport from "jsonexport/dist";
-import type { Exporter } from "ra-core";
-import { downloadCSV, useGetIdentity, useListContext } from "ra-core";
+import { useGetIdentity, useListContext } from "ra-core";
 
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { CreateButton } from "@/components/admin/create-button";
@@ -17,7 +15,7 @@ import { FunctionField } from "react-admin";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { ContactListSkeleton } from "@/components/ui/list-skeleton";
-import type { Organization, Contact, Sale, Tag } from "../types";
+import type { Contact } from "../types";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ContactEmpty } from "./ContactEmpty";
 import { ContactImportButton } from "./ContactImportButton";
@@ -27,6 +25,8 @@ import { ContactSlideOver } from "./ContactSlideOver";
 import { TopToolbar } from "../layout/TopToolbar";
 import { Avatar } from "./Avatar";
 import { ContactStatusBadge } from "./ContactBadges";
+import { formatFullName, formatRoleAndDept } from "./formatters";
+import { contactExporter } from "./contactExporter";
 
 export const ContactList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
@@ -51,7 +51,7 @@ export const ContactList = () => {
         actions={<ContactListActions />}
         perPage={25}
         sort={{ field: "last_seen", order: "DESC" }}
-        exporter={exporter}
+        exporter={contactExporter}
       >
         <ContactListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
         <FloatingCreateButton />
@@ -118,28 +118,14 @@ const ContactListLayout = ({
           <FunctionField
             label="Name"
             sortBy="first_name"
-            render={(record: Contact) => {
-              const firstName = record.first_name?.trim();
-              const lastName = record.last_name?.trim();
-              if (!firstName && !lastName) return "--";
-              if (!firstName) return lastName;
-              if (!lastName) return firstName;
-              return `${firstName} ${lastName}`;
-            }}
+            render={(record: Contact) => formatFullName(record.first_name, record.last_name)}
           />
 
           {/* Column 3: Role - Merged Title + Department (sortable by title) - hidden on tablet */}
           <FunctionField
             label="Role"
             sortBy="title"
-            render={(record: Contact) => {
-              const title = record.title?.trim();
-              const department = record.department?.trim();
-              if (!title && !department) return "--";
-              if (!title) return department;
-              if (!department) return title;
-              return `${title}, ${department}`;
-            }}
+            render={(record: Contact) => formatRoleAndDept(record.title, record.department)}
             cellClassName="hidden lg:table-cell"
             headerClassName="hidden lg:table-cell"
           />
@@ -193,70 +179,9 @@ const ContactListActions = () => (
     <SortButton fields={["first_name", "last_name", "last_seen"]} />
     <ContactImportButton />
     <ContactExportTemplateButton />
-    <ExportButton exporter={exporter} />
+    <ExportButton exporter={contactExporter} />
     <CreateButton />
   </TopToolbar>
 );
-
-const exporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
-  const sales = await fetchRelatedRecords<Sale>(records, "sales_id", "sales");
-  const tags = await fetchRelatedRecords<Tag>(records, "tags", "tags");
-  const organizations = await fetchRelatedRecords<Organization>(
-    records,
-    "organization_id",
-    "organizations"
-  );
-
-  const contacts = records.map((contact) => {
-    // Build the export object with canonical field names matching import expectations
-    const exportedContact: Record<string, unknown> = {
-      // Core identity fields
-      first_name: contact.first_name,
-      last_name: contact.last_name,
-      gender: contact.gender,
-      title: contact.title,
-
-      // Organization fields - using canonical names from columnAliases.ts
-      // Each contact has exactly one organization (organization_id is required per PRD)
-      organization_name: contact.organization_id
-        ? organizations[contact.organization_id]?.name
-        : undefined,
-
-      // Email fields - flattened for import compatibility
-      email_work: contact.email?.find((email) => email.type === "Work")?.email,
-      email_home: contact.email?.find((email) => email.type === "Home")?.email,
-      email_other: contact.email?.find((email) => email.type === "Other")?.email,
-
-      // Phone fields - flattened for import compatibility
-      phone_work: contact.phone?.find((phone) => phone.type === "Work")?.number,
-      phone_home: contact.phone?.find((phone) => phone.type === "Home")?.number,
-      phone_other: contact.phone?.find((phone) => phone.type === "Other")?.number,
-
-      // Other standard fields
-      avatar: contact.avatar,
-      first_seen: contact.first_seen,
-      last_seen: contact.last_seen,
-      tags: contact.tags.map((tagId) => tags[tagId].name).join(", "),
-      linkedin_url: contact.linkedin_url,
-
-      // Additional fields that may be useful but aren't in import schema
-      sales: contact.sales_id && sales[contact.sales_id]
-        ? `${sales[contact.sales_id].first_name} ${sales[contact.sales_id].last_name}`
-        : "",
-      department: contact.department || "",
-
-      // ID fields for reference
-      id: contact.id,
-      sales_id: contact.sales_id,
-      organization_id: contact.organization_id,
-    };
-
-    return exportedContact;
-  });
-
-  return jsonExport(contacts, {}, (_err: any, csv: string) => {
-    downloadCSV(csv, "contacts");
-  });
-};
 
 export default ContactList;
