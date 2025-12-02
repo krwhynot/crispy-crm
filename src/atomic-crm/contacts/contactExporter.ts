@@ -5,6 +5,11 @@ import jsonExport from "jsonexport/dist";
 import type { Exporter } from "ra-core";
 import { downloadCSV } from "ra-core";
 import type { Contact, Sale, Tag, Organization } from "../types";
+import {
+  flattenEmailsForExport,
+  flattenPhonesForExport,
+} from "../utils/exportHelpers";
+import { formatSalesName, formatTagsForExport } from "../utils/formatters";
 
 export interface ContactExportRow {
   first_name: string | undefined;
@@ -47,24 +52,14 @@ export const contactExporter: Exporter<Contact> = async (records, fetchRelatedRe
     organization_name: contact.organization_id
       ? organizations[contact.organization_id]?.name
       : undefined,
-    email_work: contact.email?.find((e) => e.type === "Work")?.email,
-    email_home: contact.email?.find((e) => e.type === "Home")?.email,
-    email_other: contact.email?.find((e) => e.type === "Other")?.email,
-    phone_work: contact.phone?.find((p) => p.type === "Work")?.number,
-    phone_home: contact.phone?.find((p) => p.type === "Home")?.number,
-    phone_other: contact.phone?.find((p) => p.type === "Other")?.number,
+    ...flattenEmailsForExport(contact.email),
+    ...flattenPhonesForExport(contact.phone),
     avatar: contact.avatar,
     first_seen: contact.first_seen,
     last_seen: contact.last_seen,
-    tags: contact.tags
-      .map((tagId) => tags[tagId]?.name)
-      .filter(Boolean)
-      .join(", "),
+    tags: formatTagsForExport(contact.tags, tags),
     linkedin_url: contact.linkedin_url,
-    sales:
-      contact.sales_id && sales[contact.sales_id]
-        ? `${sales[contact.sales_id].first_name} ${sales[contact.sales_id].last_name}`
-        : "",
+    sales: formatSalesName(contact.sales_id ? sales[contact.sales_id] : null),
     department: contact.department || "",
     id: contact.id,
     sales_id: contact.sales_id,
@@ -73,8 +68,7 @@ export const contactExporter: Exporter<Contact> = async (records, fetchRelatedRe
 
   return jsonExport(contacts, {}, (err: Error | null, csv: string) => {
     if (err) {
-      console.error("CSV export failed:", err);
-      return;
+      throw new Error(`CSV export failed: ${err.message}`);
     }
     downloadCSV(csv, "contacts");
   });
