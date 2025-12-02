@@ -1,6 +1,7 @@
 import { useState, useCallback, lazy, Suspense } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
@@ -81,9 +82,9 @@ export function PrincipalPipelineTable() {
   // Loading state - matches production layout structure
   if (loading) {
     return (
-      <div className="flex h-full flex-col">
+      <Card className="card-container flex h-full flex-col">
         {/* Header skeleton matching production header */}
-        <div className="border-b border-border pb-4">
+        <CardHeader className="border-b border-border pb-3 shrink-0">
           <div className="flex items-start justify-between">
             <div>
               <Skeleton className="mb-2 h-6 w-48" />
@@ -96,9 +97,9 @@ export function PrincipalPipelineTable() {
               <Skeleton className="h-9 w-20" />
             </div>
           </div>
-        </div>
+        </CardHeader>
         {/* Table skeleton with header and rows */}
-        <div className="flex-1 overflow-auto pt-2">
+        <CardContent className="flex-1 overflow-auto p-0">
           {/* Table header */}
           <div className="flex gap-4 px-2 py-3 border-b border-border">
             <Skeleton className="h-4 w-32" />
@@ -121,33 +122,38 @@ export function PrincipalPipelineTable() {
               </div>
             ))}
           </div>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     );
   }
 
   // Error state
   if (error) {
     return (
-      <div className="flex h-full items-center justify-center">
-        <div className="text-center">
-          <p className="text-destructive">Failed to load pipeline data</p>
-          <p className="text-sm text-muted-foreground">{error.message}</p>
-        </div>
-      </div>
+      <Card className="card-container flex h-full flex-col">
+        <CardHeader>
+          <CardTitle>Pipeline by Principal</CardTitle>
+        </CardHeader>
+        <CardContent className="flex h-full items-center justify-center">
+          <div className="text-center">
+            <p className="text-destructive">Failed to load pipeline data</p>
+            <p className="text-sm text-muted-foreground">{error.message}</p>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <Card className="card-container flex h-full flex-col">
       {/* Header with title and filters */}
-      <div className="border-b border-border pb-4">
+      <CardHeader className="border-b border-border pb-3 shrink-0">
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="text-lg font-semibold">Pipeline by Principal</h2>
-            <p className="text-sm text-muted-foreground">
+            <CardTitle>Pipeline by Principal</CardTitle>
+            <CardDescription>
               Track opportunity momentum across your customer accounts
-            </p>
+            </CardDescription>
           </div>
           <div className="flex items-center gap-2">
             {/* Search input */}
@@ -176,10 +182,10 @@ export function PrincipalPipelineTable() {
             />
           </div>
         </div>
-      </div>
+      </CardHeader>
 
       {/* Table */}
-      <div className="flex-1 overflow-auto">
+      <CardContent className="flex-1 overflow-auto p-0">
         {sortedData?.length === 0 ? (
           <EmptyState searchQuery={searchQuery} />
         ) : (
@@ -243,7 +249,7 @@ export function PrincipalPipelineTable() {
             </TableBody>
           </Table>
         )}
-      </div>
+      </CardContent>
 
       {/* Drill-Down Sheet - lazy loaded */}
       {selectedPrincipal !== null && (
@@ -256,7 +262,7 @@ export function PrincipalPipelineTable() {
           />
         </Suspense>
       )}
-    </div>
+    </Card>
   );
 }
 
