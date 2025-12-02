@@ -1,13 +1,14 @@
 import { useMutation } from "@tanstack/react-query";
 import { Form, useDataProvider, useGetIdentity, useGetOne, useNotify } from "ra-core";
 import { useState } from "react";
-import { User, Bell, Shield } from "lucide-react";
+import { User, Bell, Shield, History } from "lucide-react";
 import type { CrmDataProvider } from "../providers/types";
 import type { SalesFormData } from "../types";
 import { SettingsLayout } from "./SettingsLayout";
 import { PersonalSection } from "./sections/PersonalSection";
 import { NotificationsSection } from "./sections/NotificationsSection";
 import { SecuritySection } from "./sections/SecuritySection";
+import { AuditLogSection } from "./sections/AuditLogSection";
 
 export const SettingsPage = () => {
   const { data: identity, isPending: isIdentityPending, refetch: refetchIdentity } = useGetIdentity();
@@ -89,6 +90,16 @@ export const SettingsPage = () => {
       icon: <Shield className="h-4 w-4" />,
       component: <SecuritySection onPasswordChange={handleClickOpenPasswordChange} />,
     },
+    ...(identity?.role === "admin"
+      ? [
+          {
+            id: "audit",
+            label: "Activity Log",
+            icon: <History className="h-4 w-4" />,
+            component: <AuditLogSection />,
+          },
+        ]
+      : []),
   ];
 
   return <SettingsLayout sections={sections} />;

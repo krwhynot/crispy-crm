@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Label } from "@/components/ui/label";
 import { Key, Shield } from "lucide-react";
 import { useGetIdentity } from "ra-core";
+import { RolePermissionsMatrix } from "../RolePermissionsMatrix";
 
 interface SecuritySectionProps {
   onPasswordChange: () => void;
@@ -44,6 +45,16 @@ export function SecuritySection({ onPasswordChange }: SecuritySectionProps) {
               {identity?.role || "rep"}
             </Badge>
           </div>
+        </div>
+
+        <div className="border-t pt-4">
+          <div className="space-y-2 mb-4">
+            <Label>Role Permissions</Label>
+            <p className="text-sm text-muted-foreground">
+              What you can do with your current role
+            </p>
+          </div>
+          <RolePermissionsMatrix currentRole={identity?.role || "rep"} />
         </div>
       </CardContent>
     </Card>
