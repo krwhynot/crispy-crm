@@ -338,9 +338,9 @@ export default function OpportunitiesByPrincipalReport() {
       onExport={handleExport}
       actions={<FilterToolbar filters={filters} onFiltersChange={setFilters} />}
     >
-      <div className="space-y-6">
+      <div className="space-y-section">
         {/* Summary Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-content">
           <Card>
             <CardContent className="p-4">
               <p className="text-sm text-muted-foreground">Total Opportunities</p>
@@ -369,7 +369,7 @@ export default function OpportunitiesByPrincipalReport() {
             No opportunities found matching the selected filters
           </p>
         ) : (
-          <div className="space-y-4">
+          <div className="space-y-content">
             {principalGroups.map((group) => (
               <PrincipalGroupCard
                 key={group.principalId || "null"}

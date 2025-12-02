@@ -190,9 +190,9 @@ export default function WeeklyActivitySummary() {
         </div>
       }
     >
-      <div className="space-y-6">
+      <div className="space-y-section">
         {/* Summary Stats */}
-        <div className="grid grid-cols-3 gap-4">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-content">
           <Card>
             <CardContent className="p-4">
               <p className="text-sm text-muted-foreground">Total Activities</p>

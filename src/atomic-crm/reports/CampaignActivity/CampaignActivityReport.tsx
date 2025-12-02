@@ -502,7 +502,7 @@ export default function CampaignActivityReport() {
       </div>
 
       {/* Campaign Selector and Filters */}
-      <div className="mb-6">
+      <div className="mb-section">
         <div className="flex flex-col sm:flex-row sm:items-end gap-4 mb-4">
           <div className="flex-1 sm:max-w-xs">
             <Label htmlFor="campaign-select" className="block text-sm font-medium mb-2">
@@ -552,7 +552,7 @@ export default function CampaignActivityReport() {
         {/* Filter Panel */}
         <Card>
           <CardContent className="pt-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-section">
               {/* Date Range Filter */}
               <div>
                 <h4 className="text-sm font-medium mb-3">Date Range</h4>
@@ -733,7 +733,7 @@ export default function CampaignActivityReport() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-content mb-section">
         {isLoadingActivities ? (
           <>
             {[1, 2, 3, 4].map((i) => (
