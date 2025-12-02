@@ -28,11 +28,19 @@ describe("TasksDrawer", () => {
     });
   });
 
-  it("uses 70% width for tablet variant", async () => {
-    render(<TasksDrawer open={true} onOpenChange={vi.fn()} variant="tablet" />);
+  it("uses 70% width for tablet-portrait variant", async () => {
+    render(<TasksDrawer open={true} onOpenChange={vi.fn()} variant="tablet-portrait" />);
     await waitFor(() => {
       const drawer = screen.getByRole("dialog");
       expect(drawer).toHaveClass("w-[70%]");
+    });
+  });
+
+  it("uses 320px width for tablet-landscape variant (same as laptop)", async () => {
+    render(<TasksDrawer open={true} onOpenChange={vi.fn()} variant="tablet-landscape" />);
+    await waitFor(() => {
+      const drawer = screen.getByRole("dialog");
+      expect(drawer).toHaveClass("sm:max-w-[320px]");
     });
   });
 

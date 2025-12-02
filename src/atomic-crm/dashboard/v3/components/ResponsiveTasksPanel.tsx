@@ -62,24 +62,24 @@ export function ResponsiveTasksPanel({
     );
   }
 
-  // Tablet landscape: Drawer only (triggered from header)
+  // Tablet landscape: Drawer only (triggered from header) - 320px width per PRD
   if (breakpoint === "tablet-landscape") {
     return (
       <TasksDrawer
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
-        variant="tablet"
+        variant="tablet-landscape"
       />
     );
   }
 
-  // Tablet portrait: Drawer only (triggered from header)
+  // Tablet portrait: Drawer only (triggered from header) - 70% width for larger touch targets
   if (breakpoint === "tablet-portrait") {
     return (
       <TasksDrawer
         open={drawerOpen}
         onOpenChange={setDrawerOpen}
-        variant="tablet"
+        variant="tablet-portrait"
       />
     );
   }
