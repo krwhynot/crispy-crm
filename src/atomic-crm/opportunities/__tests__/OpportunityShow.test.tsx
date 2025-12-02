@@ -129,6 +129,11 @@ vi.mock("../sales/SaleAvatar", () => ({
   SaleAvatar: () => <div data-testid="sale-avatar">Avatar</div>,
 }));
 
+// Mock OpportunityAside to avoid useRecordContext issues in test isolation
+vi.mock("../OpportunityAside", () => ({
+  OpportunityAside: () => <div data-testid="opportunity-aside">Aside Panel</div>,
+}));
+
 vi.mock("../opportunity", () => ({
   findOpportunityLabel: (stages: any[], value: string) => {
     const stage = stages.find((s: any) => s.value === value);
@@ -421,8 +426,9 @@ describe("OpportunityShow", () => {
       }
     );
 
+    // ArchivedBanner component renders when deleted_at is set
     await waitFor(() => {
-      expect(screen.getByText("Archived Opportunity")).toBeInTheDocument();
+      expect(screen.getByText("This opportunity has been archived")).toBeInTheDocument();
     });
   });
 

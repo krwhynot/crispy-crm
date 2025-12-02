@@ -55,8 +55,10 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
           <div>
             <span className="text-xs text-muted-foreground">Priority</span>
             <div className="mt-1">
-              <Badge variant={getPriorityBadgeVariant(record.priority)}>
-                {record.priority.charAt(0).toUpperCase() + record.priority.slice(1)}
+              <Badge variant={getPriorityBadgeVariant(record.priority ?? "low")}>
+                {record.priority
+                  ? record.priority.charAt(0).toUpperCase() + record.priority.slice(1)
+                  : "Unknown"}
               </Badge>
             </div>
           </div>
