@@ -100,8 +100,8 @@ export function PipelineTableRow({ row, onRowClick }: PipelineTableRowProps) {
         )}
       </TableCell>
 
-      {/* Last week activity */}
-      <TableCell className="text-center">
+      {/* Last week activity - hidden on mobile to save space */}
+      <TableCell className="text-center hidden lg:table-cell">
         {row.activeLastWeek > 0 ? (
           <Badge variant="secondary">{row.activeLastWeek}</Badge>
         ) : (
@@ -117,12 +117,14 @@ export function PipelineTableRow({ row, onRowClick }: PipelineTableRowProps) {
         </div>
       </TableCell>
 
-      {/* Next action */}
-      <TableCell>
+      {/* Next action - truncate with tooltip for long text */}
+      <TableCell className="max-w-[200px] lg:max-w-[280px]">
         {row.nextAction ? (
-          <span className="text-sm text-foreground">{row.nextAction}</span>
+          <span className="text-sm text-foreground block truncate" title={row.nextAction}>
+            {row.nextAction}
+          </span>
         ) : (
-          <span className="text-sm text-muted-foreground">No action scheduled</span>
+          <span className="text-sm text-muted-foreground italic">No action scheduled</span>
         )}
       </TableCell>
     </TableRow>

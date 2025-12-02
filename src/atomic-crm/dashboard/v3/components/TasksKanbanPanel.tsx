@@ -142,21 +142,37 @@ export function TasksKanbanPanel() {
     [tasks, getTargetDueDate, updateTaskDueDate, notify]
   );
 
-  // Loading state
+  // Loading state - matches production flex layout
   if (loading) {
     return (
       <Card className="card-container flex h-full flex-col">
-        <CardHeader className="border-b border-border pb-3">
-          <Skeleton className="mb-2 h-6 w-32" />
-          <Skeleton className="h-4 w-64" />
+        <CardHeader className="border-b border-border pb-3 shrink-0">
+          <div className="flex items-start justify-between">
+            <div>
+              <Skeleton className="mb-2 h-6 w-32" />
+              <Skeleton className="h-4 w-64" />
+            </div>
+            <Skeleton className="h-11 w-28" />
+          </div>
         </CardHeader>
-        <CardContent className="flex-1 p-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 h-full">
+        <CardContent className="flex-1 overflow-hidden p-0">
+          <div className="flex h-full gap-3 p-4 flex-col lg:flex-row">
+            {/* Three column skeletons matching Overdue/Today/This Week */}
             {[1, 2, 3].map((i) => (
-              <div key={i} className="space-y-3">
-                <Skeleton className="h-8 w-24" />
-                <Skeleton className="h-24 w-full" />
-                <Skeleton className="h-24 w-full" />
+              <div
+                key={i}
+                className="flex flex-col rounded-xl border-t-4 border-muted bg-card w-full lg:min-w-0 lg:flex-1 shadow-sm"
+              >
+                {/* Column header skeleton */}
+                <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+                  <Skeleton className="h-5 w-20" />
+                  <Skeleton className="h-4 w-6" />
+                </div>
+                {/* Column content skeleton */}
+                <div className="flex-1 p-3 space-y-2 min-h-[120px]">
+                  <Skeleton className="h-20 w-full rounded-lg" />
+                  <Skeleton className="h-20 w-full rounded-lg" />
+                </div>
               </div>
             ))}
           </div>
