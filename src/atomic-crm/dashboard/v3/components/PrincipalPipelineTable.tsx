@@ -239,7 +239,7 @@ export function PrincipalPipelineTable() {
                   getAriaSortValue={getAriaSortValue}
                   renderSortIcon={renderSortIcon}
                 />
-                <TableHead className="max-w-[200px] lg:max-w-[280px]">Next Action</TableHead>
+                <TableHead scope="col" className="max-w-[200px] lg:max-w-[280px]">Next Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
