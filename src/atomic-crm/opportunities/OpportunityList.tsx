@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
+import { opportunityExporter } from "./opportunityExporter";
 import { List } from "@/components/admin/list";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/breadcrumb";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
@@ -68,6 +69,7 @@ const OpportunityList = () => {
           title={false}
           sort={{ field: "created_at", order: "DESC" }}
           actions={<OpportunityActions view={view} onViewChange={handleViewChange} />}
+          exporter={opportunityExporter}
           pagination={null}
         >
           <Breadcrumb>
