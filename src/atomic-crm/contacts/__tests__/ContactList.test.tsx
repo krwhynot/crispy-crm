@@ -43,6 +43,9 @@ vi.mock("react-admin", async () => {
       </div>
     ),
     TextField: ({ source }: any) => <span data-testid={`text-field-${source}`}>{source}</span>,
+    DateField: ({ source, label }: any) => (
+      <span data-testid={`date-field-${source}`}>{label || source}</span>
+    ),
   };
 });
 
