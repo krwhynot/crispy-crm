@@ -50,6 +50,8 @@ const CONFIG = {
   legacyFiles: [
     "src/lib/color-types.ts", // Color mapping constants
     "src/index.css", // CSS variable definitions (hex in comments OK)
+    "src/emails/daily-digest.types.ts", // Email templates (email clients don't support CSS variables)
+    "src/emails/daily-digest.generator.ts", // Email generator (email clients don't support CSS variables)
   ],
 };
 
