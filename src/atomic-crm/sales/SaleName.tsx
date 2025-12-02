@@ -3,7 +3,7 @@ import type { Sale } from "../types";
 import { formatName } from "../utils/formatName";
 
 export const SaleName = ({ sale }: { sale?: Sale }) => {
-  const { identity, isPending } = useGetIdentity();
+  const { data: identity, isPending } = useGetIdentity();
   const saleFromContext = useRecordContext<Sale>();
   const finalSale = sale || saleFromContext;
   if (isPending || !finalSale) return null;

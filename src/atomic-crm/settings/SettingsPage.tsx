@@ -75,7 +75,7 @@ const SettingsForm = ({
 }) => {
   const notify = useNotify();
   const record = useRecordContext<Sale>();
-  const { identity, refetch } = useGetIdentity();
+  const { data: identity, refetch } = useGetIdentity();
   const { isDirty } = useFormState();
   const dataProvider = useDataProvider<CrmDataProvider>();
 

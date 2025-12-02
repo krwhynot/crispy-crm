@@ -9,7 +9,7 @@ export const AutocompleteOrganizationInput = ({
   organizationType?: string;
 }) => {
   const [create] = useCreate();
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
   const notify = useNotify();
   const handleCreateOrganization = async (name?: string) => {
     if (!name) return;

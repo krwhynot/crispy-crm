@@ -16,7 +16,7 @@ import { useConfigurationContext } from "../root/ConfigurationContext";
  * Filters: opportunity, due date, completion status, priority, type, assigned to
  */
 export const TaskListFilter = () => {
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
   const { taskTypes } = useConfigurationContext();
 
   const priorityColors: Record<string, string> = {

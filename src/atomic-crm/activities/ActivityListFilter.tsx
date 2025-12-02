@@ -22,7 +22,7 @@ import { INTERACTION_TYPE_OPTIONS, SAMPLE_STATUS_OPTIONS } from "../validation/a
  * - Created By: Me filter
  */
 export const ActivityListFilter = () => {
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
 
   // Sample status badge colors for visual consistency
   const sampleStatusColors: Record<string, string> = {

@@ -8,7 +8,7 @@ import { ProductInputs } from "./ProductInputs";
 import { productSchema } from "../validation/products";
 
 const ProductCreate = () => {
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
 
   // Constitution Rule #4: Form state from schema
   const defaultValues = {

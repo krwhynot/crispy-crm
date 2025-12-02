@@ -54,7 +54,7 @@ export interface ImportOptions {
 
 export function useOrganizationImport() {
   const today = new Date().toISOString();
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
   const dataProvider = useDataProvider();
 
   // Tags cache to avoid creating the same tag multiple times

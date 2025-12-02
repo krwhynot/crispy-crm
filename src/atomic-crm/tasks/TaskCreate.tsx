@@ -23,7 +23,7 @@ import { getTaskDefaultValues } from "../validation/task";
  * Pre-fills: today's due date, current user, medium priority
  */
 export default function TaskCreate() {
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
   const { taskTypes } = useConfigurationContext();
   const notify = useNotify();
   const redirect = useRedirect();

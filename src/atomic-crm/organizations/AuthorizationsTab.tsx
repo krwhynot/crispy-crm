@@ -613,7 +613,7 @@ function AddPrincipalDialog({
   const [notes, setNotes] = useState("");
   const [create, { isPending }] = useCreate();
   const notify = useNotify();
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
 
   const handleSubmit = async () => {
     if (!selectedPrincipalId) {
@@ -741,7 +741,7 @@ function AddProductExceptionDialog({
   const [notes, setNotes] = useState("");
   const [create, { isPending }] = useCreate();
   const notify = useNotify();
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
 
   const handleSubmit = async () => {
     if (!selectedProductId) {
