@@ -6,14 +6,12 @@ interface ChartWrapperProps {
   title: string;
   children: ReactNode;
   isLoading?: boolean;
-  height?: string;
 }
 
 export function ChartWrapper({
   title,
   children,
   isLoading = false,
-  height = "300px",
 }: ChartWrapperProps) {
   return (
     <Card>
@@ -21,7 +19,7 @@ export function ChartWrapper({
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div style={{ height }}>
+        <div className="h-[300px]">
           {isLoading ? <Skeleton className="w-full h-full" /> : children}
         </div>
       </CardContent>
