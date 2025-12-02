@@ -252,6 +252,55 @@
     line-height: var(--leading-relaxed);
     color: var(--text-subtle);
   }
+
+  /* Status semantic colors for badges, alerts, indicators */
+  .text-success {
+    color: hsl(var(--success));
+  }
+  .text-warning {
+    color: hsl(var(--warning));
+  }
+  .text-error {
+    color: hsl(var(--destructive));
+  }
+  .bg-success {
+    background-color: hsl(var(--success));
+  }
+  .bg-warning {
+    background-color: hsl(var(--warning));
+  }
+  .bg-error {
+    background-color: hsl(var(--destructive));
+  }
+  .border-success {
+    border-color: hsl(var(--success));
+  }
+  .border-warning {
+    border-color: hsl(var(--warning));
+  }
+  .border-error {
+    border-color: hsl(var(--destructive));
+  }
+
+  /* Semantic backgrounds with opacity for cards */
+  .bg-success-subtle {
+    background-color: hsl(var(--success) / 0.1);
+  }
+  .bg-warning-subtle {
+    background-color: hsl(var(--warning) / 0.1);
+  }
+  .bg-error-subtle {
+    background-color: hsl(var(--destructive) / 0.1);
+  }
+  .border-success-subtle {
+    border-color: hsl(var(--success) / 0.2);
+  }
+  .border-warning-subtle {
+    border-color: hsl(var(--warning) / 0.2);
+  }
+  .border-error-subtle {
+    border-color: hsl(var(--destructive) / 0.2);
+  }
 }
 
 @layer components {

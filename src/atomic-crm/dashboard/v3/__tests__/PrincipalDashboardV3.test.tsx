@@ -42,19 +42,6 @@ vi.mock("../hooks/usePrincipalOpportunities", () => ({
   }),
 }));
 
-// Mock the useMyPerformance hook (used by MyPerformanceWidget)
-vi.mock("../hooks/useMyPerformance", () => ({
-  useMyPerformance: () => ({
-    metrics: {
-      activitiesThisWeek: { value: 5, previousValue: 3, trend: 67, direction: "up" as const },
-      dealsMoved: { value: 2, previousValue: 2, trend: 0, direction: "flat" as const },
-      tasksCompleted: { value: 8, previousValue: 10, trend: -20, direction: "down" as const },
-      openOpportunities: { value: 12, previousValue: 10, trend: 20, direction: "up" as const },
-    },
-    loading: false,
-  }),
-}));
-
 // Mock the useTeamActivities hook (used by ActivityFeedPanel)
 vi.mock("../hooks/useTeamActivities", () => ({
   useTeamActivities: () => ({
@@ -148,16 +135,20 @@ describe("PrincipalDashboardV3", () => {
     expect(kpiSection).toBeInTheDocument();
   });
 
-  it("should have 2-column grid for Performance + Activity bottom row", () => {
+  it("should use semantic spacing tokens", () => {
     const { container } = render(
       <MemoryRouter>
         <PrincipalDashboardV3 />
       </MemoryRouter>
     );
 
-    // Bottom row uses grid-cols-1 (mobile) lg:grid-cols-2 (desktop)
-    const bottomGrid = container.querySelector(".grid.grid-cols-1.lg\\:grid-cols-2");
-    expect(bottomGrid).toBeInTheDocument();
+    // Main content should use semantic spacing
+    const mainElement = container.querySelector("main");
+    expect(mainElement).toHaveClass("p-content");
+
+    // Sections should use gap-section for vertical spacing
+    const sectionContainer = mainElement?.querySelector(".gap-section");
+    expect(sectionContainer).toBeInTheDocument();
   });
 
   it("should render all dashboard sections in vertical stack order", () => {
@@ -167,21 +158,18 @@ describe("PrincipalDashboardV3", () => {
       </MemoryRouter>
     );
 
-    // Verify all sections are present (order is implicit by DOM structure)
+    // Verify all sections are present with proper landmarks (order is implicit by DOM structure)
     // 1. KPI Summary Row
     expect(screen.getByLabelText("Key Performance Indicators")).toBeInTheDocument();
 
-    // 2. Pipeline Table
-    expect(screen.getByText("Pipeline by Principal")).toBeInTheDocument();
+    // 2. Pipeline Table (section landmark)
+    expect(screen.getByLabelText("Pipeline by Principal")).toBeInTheDocument();
 
-    // 3. Tasks Kanban
-    expect(screen.getByText("My Tasks")).toBeInTheDocument();
+    // 3. Tasks Kanban (section landmark)
+    expect(screen.getByLabelText("My Tasks")).toBeInTheDocument();
 
-    // 4. My Performance Widget
-    expect(screen.getByText("My Performance")).toBeInTheDocument();
-
-    // 5. Activity Feed Panel
-    expect(screen.getByText("Team Activity")).toBeInTheDocument();
+    // 4. Activity Feed Panel (section landmark, full-width)
+    expect(screen.getByLabelText("Team Activity")).toBeInTheDocument();
   });
 
   it("should render dashboard header", () => {
