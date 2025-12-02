@@ -170,9 +170,9 @@ const ActivityTimelineEntry = ({ activity }: { activity: ActivityRecord }) => {
                   variant="outline"
                   className={
                     activity.sentiment === "positive"
-                      ? "border-green-500 text-green-700"
+                      ? "border-success text-success"
                       : activity.sentiment === "negative"
-                        ? "border-red-500 text-red-700"
+                        ? "border-error text-error"
                         : ""
                   }
                 >
@@ -180,7 +180,7 @@ const ActivityTimelineEntry = ({ activity }: { activity: ActivityRecord }) => {
                 </Badge>
               )}
               {activity.follow_up_required && (
-                <Badge variant="outline" className="border-orange-500 text-orange-700">
+                <Badge variant="outline" className="border-warning text-warning">
                   Follow-up Required
                 </Badge>
               )}

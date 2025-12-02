@@ -17,37 +17,6 @@ type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 export const OrganizationListFilter = () => {
   const { data: identity } = useGetIdentity();
 
-  const organizationTypes = [
-    { id: "customer", name: "Customer" },
-    { id: "prospect", name: "Prospect" },
-    { id: "principal", name: "Principal" },
-    { id: "distributor", name: "Distributor" },
-    { id: "unknown", name: "Unknown" },
-  ];
-
-  // Organization type colors using MFB Garden to Table theme
-  const _organizationTypeColors: Record<string, string> = {
-    customer: "secondary", // Warm tan - welcoming
-    prospect: "secondary", // Sage/olive - growth
-    principal: "default", // Eggplant/purple - important/primary
-    distributor: "secondary", // Teal - active/connected
-    unknown: "outline", // Mushroom gray - neutral
-  };
-
-  const priorities = [
-    { id: "A", name: "A - High" },
-    { id: "B", name: "B - Medium-High" },
-    { id: "C", name: "C - Medium" },
-    { id: "D", name: "D - Low" },
-  ];
-
-  const priorityColors: Record<string, BadgeVariant> = {
-    A: "destructive",
-    B: "default",
-    C: "secondary",
-    D: "outline",
-  };
-
   return (
     <div className="flex flex-col gap-4">
       {/* Search - Always visible */}
@@ -64,15 +33,8 @@ export const OrganizationListFilter = () => {
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">
         <FilterCategory icon={<Tag className="h-4 w-4" />} label="Organization Type">
-          {organizationTypes.map((type) => {
-            const colorClass =
-              {
-                customer: "tag-warm",
-                prospect: "tag-sage",
-                principal: "tag-purple",
-                distributor: "tag-teal",
-                unknown: "tag-gray",
-              }[type.id] || "tag-gray";
+          {ORGANIZATION_TYPE_CHOICES.map((type) => {
+            const colorClass = ORG_TYPE_COLOR_MAP[type.id] || "tag-gray";
 
             return (
               <ToggleFilterButton
@@ -87,13 +49,13 @@ export const OrganizationListFilter = () => {
         </FilterCategory>
 
         <FilterCategory icon={<Star className="h-4 w-4" />} label="Priority">
-          {priorities.map((priority) => (
+          {PRIORITY_CHOICES.map((priority) => (
             <ToggleFilterButton
               multiselect
               key={priority.id}
               className="w-full justify-between"
               label={
-                <Badge variant={priorityColors[priority.id]} className="text-xs px-1 py-0">
+                <Badge variant={PRIORITY_VARIANT_MAP[priority.id]} className="text-xs px-1 py-0">
                   {priority.name}
                 </Badge>
               }

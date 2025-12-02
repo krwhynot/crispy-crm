@@ -138,17 +138,17 @@ export function ContactImportResult({
           <DialogTitle className="flex items-center gap-2">
             {isComplete ? (
               <>
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
+                <CheckCircle2 className="h-5 w-5 text-success" />
                 Import Completed Successfully
               </>
             ) : hasErrors ? (
               <>
-                <AlertTriangle className="h-5 w-5 text-yellow-600" />
+                <AlertTriangle className="h-5 w-5 text-warning" />
                 Import Completed with Issues
               </>
             ) : (
               <>
-                <CheckCircle2 className="h-5 w-5 text-green-600" />
+                <CheckCircle2 className="h-5 w-5 text-success" />
                 Import Completed
               </>
             )}
@@ -166,11 +166,11 @@ export function ContactImportResult({
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Successful</p>
-                  <p className="text-2xl font-semibold text-green-600">
+                  <p className="text-2xl font-semibold text-success">
                     {result.successCount.toLocaleString()}
                   </p>
                 </div>
-                <CheckCircle2 className="h-8 w-8 text-green-600 opacity-20" />
+                <CheckCircle2 className="h-8 w-8 text-success opacity-20" />
               </div>
             </div>
 
@@ -178,11 +178,11 @@ export function ContactImportResult({
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Skipped</p>
-                  <p className="text-2xl font-semibold text-yellow-600">
+                  <p className="text-2xl font-semibold text-warning">
                     {result.skippedCount.toLocaleString()}
                   </p>
                 </div>
-                <AlertTriangle className="h-8 w-8 text-yellow-600 opacity-20" />
+                <AlertTriangle className="h-8 w-8 text-warning opacity-20" />
               </div>
             </div>
 
@@ -190,11 +190,11 @@ export function ContactImportResult({
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-sm text-muted-foreground">Failed</p>
-                  <p className="text-2xl font-semibold text-red-600">
+                  <p className="text-2xl font-semibold text-error">
                     {result.failedCount.toLocaleString()}
                   </p>
                 </div>
-                <X className="h-8 w-8 text-red-600 opacity-20" />
+                <X className="h-8 w-8 text-error opacity-20" />
               </div>
             </div>
           </div>
@@ -205,14 +205,14 @@ export function ContactImportResult({
               <span className="text-sm font-medium">Success Rate</span>
               <span className="text-sm text-muted-foreground">{successRate}%</span>
             </div>
-            <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
+            <div className="h-2 bg-muted rounded-full overflow-hidden">
               <div
                 className={`h-full transition-all ${
                   successRate >= 90
-                    ? "bg-green-600"
+                    ? "bg-success"
                     : successRate >= 70
-                      ? "bg-yellow-600"
-                      : "bg-red-600"
+                      ? "bg-warning"
+                      : "bg-error"
                 }`}
                 style={{ width: `${successRate}%` }}
               />
@@ -282,7 +282,7 @@ export function ContactImportResult({
                 {result.errors.map((error) => (
                   <div
                     key={error.row}
-                    className="flex flex-col gap-2 p-3 bg-muted/40 rounded border border-red-200"
+                    className="flex flex-col gap-2 p-3 bg-muted/40 rounded border border-error-subtle"
                   >
                     <div className="flex items-center gap-2">
                       <Badge variant="outline" className="text-xs">
@@ -293,7 +293,7 @@ export function ContactImportResult({
                         {error.data.last_name || "(no last name)"}
                       </span>
                     </div>
-                    <ul className="text-xs text-red-700 space-y-1 ml-4 list-disc list-inside">
+                    <ul className="text-xs text-error space-y-1 ml-4 list-disc list-inside">
                       {error.errors.map((fieldError, index) => (
                         <li key={index}>
                           <span className="font-semibold capitalize">

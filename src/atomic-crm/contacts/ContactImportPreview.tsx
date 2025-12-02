@@ -118,9 +118,9 @@ export function ContactImportPreview({
   // Get confidence icon for mapping
   const _getConfidenceIcon = (confidence: number) => {
     if (confidence >= 0.8) {
-      return <CheckCircle className="h-4 w-4 text-green-500" />;
+      return <CheckCircle className="h-4 w-4 text-success" />;
     } else if (confidence >= 0.5) {
-      return <AlertCircle className="h-4 w-4 text-yellow-500" />;
+      return <AlertCircle className="h-4 w-4 text-warning" />;
     } else {
       return <HelpCircle className="h-4 w-4 text-gray-400" />;
     }
@@ -202,7 +202,7 @@ export function ContactImportPreview({
                 <strong>{preview.validCount}</strong> contacts will be imported
               </span>
               {preview.skipCount > 0 && (
-                <span className="flex items-center gap-1 text-yellow-600">
+                <span className="flex items-center gap-1 text-warning">
                   <AlertCircle className="h-3 w-3" />
                   <strong>{preview.skipCount}</strong> rows will be skipped
                 </span>
@@ -288,7 +288,7 @@ export function ContactImportPreview({
                       : mapping.target || "__no_mapping__";
 
                   return (
-                    <TableRow key={index} className={isUserOverride ? "bg-blue-50" : ""}>
+                    <TableRow key={index} className={isUserOverride ? "bg-primary-subtle" : ""}>
                       <TableCell className="font-mono text-sm text-gray-600">
                         {mapping.source}
                         {isUserOverride && (
@@ -438,9 +438,9 @@ export function ContactImportPreview({
                             <div className="flex items-center gap-2">
                               {index + 1}
                               {validation?.valid ? (
-                                <CheckCircle className="h-3 w-3 text-green-500" />
+                                <CheckCircle className="h-3 w-3 text-success" />
                               ) : (
-                                <AlertCircle className="h-3 w-3 text-red-500" />
+                                <AlertCircle className="h-3 w-3 text-error" />
                               )}
                             </div>
                           </TableCell>
@@ -540,13 +540,13 @@ export function ContactImportPreview({
       {/* Validation Errors */}
       {preview.errors.length > 0 && (
         <Collapsible open={expandedSections.errors}>
-          <Card className="border-red-200">
+          <Card className="border-error-subtle">
             <CollapsibleTrigger asChild>
               <CardHeader className="cursor-pointer" onClick={() => toggleSection("errors")}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <AlertCircle className="h-4 w-4 text-red-500" />
-                    <CardTitle className="text-red-700">Validation Errors</CardTitle>
+                    <AlertCircle className="h-4 w-4 text-error" />
+                    <CardTitle className="text-error">Validation Errors</CardTitle>
                     <Badge variant="destructive">{preview.errors.length}</Badge>
                   </div>
                   {expandedSections.errors ? (
@@ -566,9 +566,9 @@ export function ContactImportPreview({
                   {preview.errors.slice(0, 10).map((error, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-2 text-sm p-2 bg-red-50 rounded"
+                      className="flex items-start gap-2 text-sm p-2 bg-error-subtle rounded"
                     >
-                      <AlertCircle className="h-4 w-4 text-red-500 mt-0.5 flex-shrink-0" />
+                      <AlertCircle className="h-4 w-4 text-error mt-0.5 flex-shrink-0" />
                       <div>
                         <span className="font-medium">Row {error.row}</span>
                         {error.field && (
@@ -592,14 +592,14 @@ export function ContactImportPreview({
       {/* Validation Warnings */}
       {preview.warnings.length > 0 && (
         <Collapsible open={expandedSections.warnings}>
-          <Card className="border-yellow-200">
+          <Card className="border-warning-subtle">
             <CollapsibleTrigger asChild>
               <CardHeader className="cursor-pointer" onClick={() => toggleSection("warnings")}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <AlertTriangle className="h-4 w-4 text-yellow-500" />
-                    <CardTitle className="text-yellow-700">Warnings</CardTitle>
-                    <Badge variant="outline" className="border-yellow-500 text-yellow-700">
+                    <AlertTriangle className="h-4 w-4 text-warning" />
+                    <CardTitle className="text-warning">Warnings</CardTitle>
+                    <Badge variant="outline" className="border-warning text-warning">
                       {preview.warnings.length}
                     </Badge>
                   </div>
@@ -620,9 +620,9 @@ export function ContactImportPreview({
                   {preview.warnings.slice(0, 10).map((warning, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-2 text-sm p-2 bg-yellow-50 rounded"
+                      className="flex items-start gap-2 text-sm p-2 bg-warning-subtle rounded"
                     >
-                      <AlertTriangle className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
+                      <AlertTriangle className="h-4 w-4 text-warning mt-0.5 flex-shrink-0" />
                       <div>
                         <span className="font-medium">Row {warning.row}</span>
                         {warning.field && <span className="text-gray-600"> ({warning.field})</span>}
@@ -645,7 +645,7 @@ export function ContactImportPreview({
       {/* Data Quality Decision: Organizations Without Contacts */}
       {preview.organizationsWithoutContacts && preview.organizationsWithoutContacts.length > 0 && (
         <Collapsible open={expandedSections.organizationsWithoutContacts}>
-          <Card className="border-blue-200">
+          <Card className="border-primary-subtle">
             <CollapsibleTrigger asChild>
               <CardHeader
                 className="cursor-pointer"
@@ -653,11 +653,11 @@ export function ContactImportPreview({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <Building2 className="h-4 w-4 text-blue-500" />
-                    <CardTitle className="text-blue-700">
+                    <Building2 className="h-4 w-4 text-primary" />
+                    <CardTitle className="text-primary">
                       Organizations Without Contact Person
                     </CardTitle>
-                    <Badge variant="outline" className="border-blue-500 text-blue-700">
+                    <Badge variant="outline" className="border-primary text-primary">
                       {preview.organizationsWithoutContacts.length}
                     </Badge>
                   </div>
@@ -708,9 +708,9 @@ export function ContactImportPreview({
                   {preview.organizationsWithoutContacts.slice(0, 20).map((org, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-2 text-sm p-2 bg-blue-50 rounded"
+                      className="flex items-start gap-2 text-sm p-2 bg-primary-subtle rounded"
                     >
-                      <Building2 className="h-4 w-4 text-blue-500 mt-0.5 flex-shrink-0" />
+                      <Building2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                       <div>
                         <span className="font-medium">{org.organization_name}</span>
                         <span className="text-gray-600"> (Row {org.row})</span>
@@ -732,7 +732,7 @@ export function ContactImportPreview({
       {/* Data Quality Decision: Contacts Without Contact Info */}
       {preview.contactsWithoutContactInfo && preview.contactsWithoutContactInfo.length > 0 && (
         <Collapsible open={expandedSections.contactsWithoutContactInfo}>
-          <Card className="border-yellow-200">
+          <Card className="border-warning-subtle">
             <CollapsibleTrigger asChild>
               <CardHeader
                 className="cursor-pointer"
@@ -740,11 +740,11 @@ export function ContactImportPreview({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <User className="h-4 w-4 text-yellow-500" />
-                    <CardTitle className="text-yellow-700">
+                    <User className="h-4 w-4 text-warning" />
+                    <CardTitle className="text-warning">
                       Contacts Without Email or Phone
                     </CardTitle>
-                    <Badge variant="outline" className="border-yellow-500 text-yellow-700">
+                    <Badge variant="outline" className="border-warning text-warning">
                       {preview.contactsWithoutContactInfo.length}
                     </Badge>
                   </div>
@@ -792,9 +792,9 @@ export function ContactImportPreview({
                   {preview.contactsWithoutContactInfo.slice(0, 20).map((contact, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-2 text-sm p-2 bg-yellow-50 rounded"
+                      className="flex items-start gap-2 text-sm p-2 bg-warning-subtle rounded"
                     >
-                      <User className="h-4 w-4 text-yellow-500 mt-0.5 flex-shrink-0" />
+                      <User className="h-4 w-4 text-warning mt-0.5 flex-shrink-0" />
                       <div>
                         <span className="font-medium">{contact.name}</span>
                         {contact.organization_name && (
