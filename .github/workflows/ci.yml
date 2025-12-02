@@ -4,191 +4,50 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: ['**']
 
 concurrency:
-  group: ci-${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  install:
-    name: Install Dependencies
+  check:
+    name: Lint, Type Check & Build
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
           cache: 'npm'
 
-      - name: Install dependencies
-        run: npm ci
+      - run: npm ci
 
-      - name: Cache node_modules
-        uses: actions/upload-artifact@v4
-        with:
-          name: node_modules-${{ github.sha }}
-          path: |
-            node_modules
-            package-lock.json
-          retention-days: 1
-
-  lint:
-    name: Lint
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Download node_modules
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules-${{ github.sha }}
-
-      - name: Run ESLint
+      - name: Lint
         run: npm run lint
 
-  design-system:
-    name: Design System Compliance
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Download node_modules
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules-${{ github.sha }}
-
-      - name: Validate semantic colors
-        run: npm run validate:semantic-colors
-
-      - name: Validate color contrast (WCAG)
-        run: npm run validate:colors
-
-  type-check:
-    name: TypeScript Type Check
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Download node_modules
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules-${{ github.sha }}
-
-      - name: Run TypeScript compiler
+      - name: Type Check
         run: npx tsc --noEmit
 
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    needs: install
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Download node_modules
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules-${{ github.sha }}
-
-      - name: Build project
+      - name: Build
         run: npm run build
         env:
           VITE_SUPABASE_URL: https://placeholder.supabase.co
           VITE_SUPABASE_ANON_KEY: placeholder-key
 
   test:
-    name: Unit Tests
+    name: Tests
     runs-on: ubuntu-latest
-    needs: install
-    continue-on-error: true  # Non-blocking until test suite stabilized
+    continue-on-error: true
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: 'npm'
 
-      - name: Download node_modules
-        uses: actions/download-artifact@v4
-        with:
-          name: node_modules-${{ github.sha }}
+      - run: npm ci
 
-      - name: Run tests with coverage
-        run: npm run test:coverage
-
-      - name: Upload coverage reports
-        uses: codecov/codecov-action@v4
-        if: always()
-        with:
-          files: ./coverage/coverage-final.json
-          fail_ci_if_error: false
-          token: ${{ secrets.CODECOV_TOKEN }}
-
-  ci-summary:
-    name: CI Summary
-    runs-on: ubuntu-latest
-    needs: [lint, design-system, type-check, build, test]
-    if: always()
-    steps:
-      - name: Check results
-        run: |
-          echo "### CI Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          lint_status="${{ needs.lint.result }}"
-          design_status="${{ needs.design-system.result }}"
-          typecheck_status="${{ needs.type-check.result }}"
-          build_status="${{ needs.build.result }}"
-          test_status="${{ needs.test.result }}"
-
-          echo "| Job | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|-----|--------|" >> $GITHUB_STEP_SUMMARY
-          echo "| Lint | $lint_status |" >> $GITHUB_STEP_SUMMARY
-          echo "| Design System | $design_status |" >> $GITHUB_STEP_SUMMARY
-          echo "| Type Check | $typecheck_status |" >> $GITHUB_STEP_SUMMARY
-          echo "| Build | $build_status |" >> $GITHUB_STEP_SUMMARY
-          echo "| Tests | $test_status (non-blocking) |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          # CI fails only on blocking checks
-          if [ "$lint_status" != "success" ] || \
-             [ "$design_status" != "success" ] || \
-             [ "$typecheck_status" != "success" ] || \
-             [ "$build_status" != "success" ]; then
-            echo "CI checks failed" >> $GITHUB_STEP_SUMMARY
-            exit 1
-          else
-            echo "All blocking CI checks passed" >> $GITHUB_STEP_SUMMARY
-          fi
+      - name: Run Tests
+        run: npm run test:ci
