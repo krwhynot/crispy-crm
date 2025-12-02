@@ -1,6 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
 import { Form, useDataProvider, useGetIdentity, useGetOne, useNotify } from "ra-core";
-import { useState } from "react";
 import { User, Bell, Shield, History } from "lucide-react";
 import type { CrmDataProvider } from "../providers/types";
 import type { SalesFormData } from "../types";
