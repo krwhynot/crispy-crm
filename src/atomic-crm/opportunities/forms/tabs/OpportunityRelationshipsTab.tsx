@@ -17,7 +17,7 @@ import { ContactOrgMismatchWarning } from "../../components/ContactOrgMismatchWa
 import { DistributorAuthorizationWarning } from "../../components/DistributorAuthorizationWarning";
 
 export const OpportunityRelationshipsTab = () => {
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
   const { setValue, getValues } = useFormContext();
   const customerOrganizationId = useWatch({ name: "customer_organization_id" });
   const principalOrganizationId = useWatch({ name: "principal_organization_id" });

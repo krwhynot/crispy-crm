@@ -63,6 +63,19 @@ storybook-static
 # Debug scripts (may contain credentials)
 debug-*.js
 debug-*.ts
+troubleshoot-*.cjs
+troubleshoot-*.js
+
+# Screenshot artifacts (debugging)
+*.png
+!public/**/*.png
+!docs/**/*.png
+
+# Temporary/one-time documentation
+*-ANALYSIS.md
+*-GUIDE.md
+*-SUMMARY.md
+*_TEST.md
 
 # Backup and sync operation files
 backups/

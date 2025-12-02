@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/react";
 import type { AuthProvider } from "ra-core";
 import { supabaseAuthProvider } from "ra-supabase-core";
 import { canAccess } from "../commons/canAccess";
@@ -8,7 +9,9 @@ const baseAuthProvider = supabaseAuthProvider(supabase, {
     const sale = await getSaleFromCache();
 
     if (sale == null) {
-      throw new Error();
+      const error = new Error("Missing sale record for authenticated user");
+      Sentry.captureException(error, { tags: { scope: "authProvider.getIdentity" } });
+      throw error;
     }
 
     return {
@@ -90,6 +93,11 @@ const getSaleFromCache = async () => {
 
   // Shouldn't happen after login but just in case
   if (dataSession?.session?.user == null || errorSession) {
+    if (errorSession) {
+      Sentry.captureException(errorSession, {
+        tags: { scope: "authProvider.getIdentity", stage: "session" },
+      });
+    }
     return undefined;
   }
 
@@ -101,6 +109,11 @@ const getSaleFromCache = async () => {
 
   // Shouldn't happen either as all users are sales but just in case
   if (dataSale == null || errorSale) {
+    if (errorSale) {
+      Sentry.captureException(errorSale, {
+        tags: { scope: "authProvider.getIdentity", stage: "sale-fetch" },
+      });
+    }
     return undefined;
   }
 
