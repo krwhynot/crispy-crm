@@ -29,7 +29,7 @@ import { Avatar } from "./Avatar";
 import { ContactStatusBadge } from "./ContactBadges";
 
 export const ContactList = () => {
-  const { data: identity, isPending: isIdentityPending } = useGetIdentity();
+  const { data: identity, isPending: isIdentityPending, error: identityError } = useGetIdentity();
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
 
@@ -37,8 +37,22 @@ export const ContactList = () => {
   // Generic hook validates all filters against filterRegistry.ts
   useFilterCleanup("contacts");
 
-  if (isIdentityPending) return <ContactListSkeleton />;
-  if (!identity) return null;
+  // DEBUG: Log identity state to understand what's happening
+  console.log("🔍 [ContactList] Identity state:", {
+    identity,
+    isIdentityPending,
+    identityError,
+    hasIdentity: !!identity,
+  });
+
+  if (isIdentityPending) {
+    console.log("🔍 [ContactList] Showing skeleton - identity pending");
+    return <ContactListSkeleton />;
+  }
+  if (!identity) {
+    console.log("🔍 [ContactList] Returning null - no identity!");
+    return null;
+  }
 
   return (
     <>
