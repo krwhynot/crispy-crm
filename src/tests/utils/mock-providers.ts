@@ -195,6 +195,9 @@ export const createMockOpportunity = (overrides?: any) => ({
     "closed_won",
     "closed_lost",
   ]),
+  // Required fields per Opportunity type (src/atomic-crm/types.ts:228-232)
+  status: faker.helpers.arrayElement(["active", "on_hold", "nurturing", "stalled", "expired"]),
+  priority: faker.helpers.arrayElement(["low", "medium", "high", "critical"]),
   probability: faker.number.int({ min: 0, max: 100 }),
   expected_closing_date: faker.date.future().toISOString().split("T")[0],
   customer_organization_id: faker.number.int({ min: 1, max: 100 }),
