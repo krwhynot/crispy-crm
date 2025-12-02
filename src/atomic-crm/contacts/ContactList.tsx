@@ -74,7 +74,7 @@ const ContactListLayout = ({
   openSlideOver: (id: number, mode: "view" | "edit") => void;
   isSlideOverOpen: boolean;
 }) => {
-  const { data, isPending, filterValues, error, total } = useListContext();
+  const { data, isPending, filterValues } = useListContext();
   const { data: identity } = useGetIdentity();
 
   // Keyboard navigation for list rows

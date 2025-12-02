@@ -66,6 +66,14 @@ export interface ReferenceFieldProps<
   translateChoice?: ((record: ReferenceRecordType) => string) | boolean;
   link?: LinkToType;
   source: ExtractRecordPaths<RecordType>;
+  // Datagrid column props - passed by Datagrid, filtered internally
+  label?: ReactNode;
+  sortable?: boolean;
+  sortBy?: string;
+  textAlign?: "left" | "center" | "right";
+  cellClassName?: string;
+  headerClassName?: string;
+  rowClassName?: string;
 }
 
 // useful to prevent click bubbling in a datagrid with rowClick
