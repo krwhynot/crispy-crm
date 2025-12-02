@@ -28,6 +28,117 @@
 
 ---
 
+## Phase 0: Critical Pre-Layout Fixes
+
+> **Rationale:** These fixes address HIGH severity issues from the UI/UX audit that are independent of the responsive layout work. They should be completed first to establish a solid foundation.
+
+### Task 0.1: Add Draft Persistence to MobileQuickActionBar
+
+**Files:**
+- Modify: `src/atomic-crm/dashboard/v3/components/MobileQuickActionBar.tsx`
+- Reference: `src/atomic-crm/dashboard/v3/components/LogActivityFAB.tsx` (existing pattern)
+
+**Rationale:** Desktop FAB has draft persistence but MobileQuickActionBar doesn't. Users who navigate away mid-form lose their input.
+
+**Severity:** HIGH | **Impact:** User data loss on mobile
+
+**Step 1: Examine the existing pattern in LogActivityFAB**
+
+```bash
+grep -A 30 "useDraftPersistence\|onDraftChange" src/atomic-crm/dashboard/v3/components/LogActivityFAB.tsx
+```
+
+**Step 2: Add draft persistence to MobileQuickActionBar**
+
+```typescript
+// Add to MobileQuickActionBar.tsx
+import { useDraftPersistence } from "@/hooks/useDraftPersistence";
+
+// Inside the component:
+const { draft, saveDraft, clearDraft } = useDraftPersistence("mobile-quick-log", {
+  debounceMs: 500,
+  expiryHours: 24,
+});
+
+// Pass to QuickLogForm:
+<QuickLogForm
+  defaultValues={draft}
+  onDraftChange={saveDraft}
+  onSuccess={clearDraft}
+/>
+```
+
+**Step 3: Verify functionality**
+
+```bash
+npm run dev
+# Test: Start filling mobile form → navigate away → return → form should restore
+```
+
+**Step 4: Commit**
+
+```bash
+git add src/atomic-crm/dashboard/v3/components/MobileQuickActionBar.tsx
+git commit -m "fix(dashboard): add draft persistence to MobileQuickActionBar
+
+Matches desktop LogActivityFAB behavior - prevents data loss when users
+navigate away from partially filled activity forms on mobile.
+
+- Uses 500ms debounce to avoid excessive localStorage writes
+- 24-hour expiry on drafts
+- Audit fix: HIGH severity"
+```
+
+---
+
+### Task 0.2: Add Table Header Scope Attributes
+
+**Files:**
+- Modify: `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx`
+
+**Rationale:** WCAG 2.1 AA requires table headers to have `scope` attributes for screen readers.
+
+**Severity:** HIGH | **Impact:** Accessibility compliance
+
+**Step 1: Identify TableHead elements**
+
+```bash
+grep -n "TableHead\|<th" src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx
+```
+
+**Step 2: Add scope="col" to all column headers**
+
+```typescript
+// Before:
+<TableHead className="...">Principal</TableHead>
+<TableHead className="...">Status</TableHead>
+
+// After:
+<TableHead scope="col" className="...">Principal</TableHead>
+<TableHead scope="col" className="...">Status</TableHead>
+```
+
+**Step 3: Verify with accessibility check**
+
+```bash
+npm run dev
+# Use axe DevTools or NVDA to verify header associations
+```
+
+**Step 4: Commit**
+
+```bash
+git add src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx
+git commit -m "a11y(dashboard): add scope attributes to pipeline table headers
+
+WCAG 2.1 AA compliance - adds scope='col' to all TableHead elements
+for proper screen reader association.
+
+Audit fix: HIGH severity"
+```
+
+---
+
 ## Phase 1: Foundation (Hooks & Utilities)
 
 ### Task 1.1: Create useBreakpoint Hook
@@ -1332,6 +1443,10 @@ Closes #responsive-dashboard"
 
 ## Files Created/Modified
 
+### Phase 0 Modified Files
+- `src/atomic-crm/dashboard/v3/components/MobileQuickActionBar.tsx` (add draft persistence)
+- `src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx` (add scope attributes)
+
 ### New Files (8)
 - `src/hooks/useBreakpoint.ts`
 - `src/hooks/__tests__/useBreakpoint.test.ts`
@@ -1342,16 +1457,46 @@ Closes #responsive-dashboard"
 - `src/atomic-crm/dashboard/v3/components/__tests__/*.test.tsx` (4 files)
 - `tests/e2e/dashboard/responsive-layout.spec.ts`
 
-### Modified Files (4)
+### Modified Files (5)
 - `src/index.css` (CSS variables)
 - `src/hooks/index.ts` (exports)
 - `src/atomic-crm/dashboard/v3/components/index.ts` (exports)
 - `src/atomic-crm/dashboard/v3/components/DashboardHeader.tsx`
 - `src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx`
 
+### Phase 6 Modified Files
+- `src/atomic-crm/dashboard/v3/components/PipelineTableRow.tsx` (increase touch targets)
+- `src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx` (increase button height)
+- `src/atomic-crm/dashboard/v3/components/TasksPanel.tsx` (overdue visual hierarchy)
+- `src/atomic-crm/dashboard/v3/components/PipelineDrillDownSheet.tsx` (keyboard access)
+- `src/atomic-crm/dashboard/v3/components/KPICard.tsx` (improve glanceability)
+
+---
+
+## Audit Compliance Checklist
+
+This plan ensures full compliance with all findings from the parallel UI/UX audit:
+
+- [ ] **Mobile draft persistence** - Phase 0, Task 0.1: Update MobileQuickActionBar to persist form state
+- [ ] **Table header scope attributes** - Phase 0, Task 0.2: Add scope attributes to PrincipalPipelineTable headers
+- [ ] **5-breakpoint responsive grid** - Phases 1-5: Implements desktop/laptop/tablet-landscape/tablet-portrait/mobile layouts
+- [ ] **Table row touch targets** - Phase 6, Task 6.1: Increase row height to ensure ≥44px touch targets
+- [ ] **Cancel button touch target** - Phase 6, Task 6.2: Increase QuickLogForm button heights to 44px
+- [ ] **Overdue section visual hierarchy** - Phase 6, Task 6.3: Enhance TasksPanel overdue visual styling
+- [ ] **Hidden action keyboard access** - Phase 6, Task 6.4: Improve PipelineDrillDownSheet keyboard navigation
+- [ ] **KPI glanceability** - Phase 6, Task 6.5: Increase KPICard font sizes for better readability
+
 ---
 
 ## Changelog
+
+### v1.1 (2025-12-02)
+- Added Phase 0: Critical pre-layout fixes from UI/UX audit findings
+- Added Phase 6: Post-layout UX polish from UI/UX audit findings
+- Total implementation time increased from 2.5-3 hours to ~4 hours
+- Full compliance with parallel UI/UX audit results
+- Phase 0 addresses: draft persistence, table header accessibility
+- Phase 6 addresses: touch targets, visual hierarchy, keyboard access, glanceability
 
 ### v1.0 (2025-12-02)
 - Initial plan created from parallel agent audit
