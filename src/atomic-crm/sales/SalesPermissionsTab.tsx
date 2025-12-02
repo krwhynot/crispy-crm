@@ -46,7 +46,10 @@ interface SalesPermissionsTabProps {
 export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermissionsTabProps) {
   const [update, { isLoading }] = useUpdate();
   const notify = useNotify();
+  const redirect = useRedirect();
+  const refresh = useRefresh();
   const { data: identity } = useGetIdentity();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   // Form state
   const [formData, setFormData] = useState({
@@ -58,6 +61,34 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
 
   // Prevent editing own account
   const isSelfEdit = record?.id === identity?.id;
+
+  // Remove user (soft-delete by setting deleted_at)
+  const handleRemoveUser = async () => {
+    if (isSelfEdit) {
+      notify("You cannot remove your own account", { type: "warning" });
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      await update(
+        "sales",
+        { id: record.id, data: { deleted_at: new Date().toISOString() } },
+        {
+          onSuccess: () => {
+            notify("User removed successfully", { type: "success" });
+            refresh();
+            redirect("/sales");
+          },
+          onError: (error: any) => {
+            notify(error.message || "Failed to remove user", { type: "error" });
+          },
+        }
+      );
+    } finally {
+      setIsDeleting(false);
+    }
+  };
 
   // Update form field
   const handleChange = (field: string, value: any) => {
@@ -275,6 +306,50 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
           <Button variant="outline" onClick={handleCancel} disabled={isLoading} className="flex-1">
             Cancel
           </Button>
+        </div>
+      )}
+
+      {/* Danger Zone - Remove User (admin only, not self) */}
+      {!isSelfEdit && identity?.role === "admin" && (
+        <div className="mt-8 pt-6 border-t border-destructive/30">
+          <div className="p-4 border border-destructive/30 rounded-lg bg-destructive/5">
+            <h3 className="text-sm font-semibold text-destructive mb-2">Danger Zone</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Removing a user will prevent them from accessing the system. This action can be undone by an administrator.
+            </p>
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  disabled={isDeleting}
+                  className="gap-2"
+                >
+                  <Trash2 className="h-4 w-4" />
+                  {isDeleting ? "Removing..." : "Remove User"}
+                </Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Remove User</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Are you sure you want to remove <strong>{record?.first_name} {record?.last_name}</strong> ({record?.email})?
+                    <br /><br />
+                    They will no longer be able to log in or access the system. This can be undone later if needed.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={handleRemoveUser}
+                    className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                  >
+                    Remove User
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          </div>
         </div>
       )}
     </div>
