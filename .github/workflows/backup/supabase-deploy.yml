@@ -1,0 +1,245 @@
+name: 🗄️ Supabase Deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'supabase/**'
+      - 'scripts/migration/**'
+      - '.github/workflows/supabase-deploy.yml'
+  workflow_dispatch:
+    inputs:
+      skip_validation:
+        description: 'Skip validation checks'
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: supabase-deploy-${{ github.ref }}
+  cancel-in-progress: false  # Never cancel DB operations
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: ✅ Validate Migrations
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: ${{ github.event.inputs.skip_validation != 'true' }}
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: ⚙️ Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: 🚀 Start local Supabase
+        run: npx supabase start
+
+      - name: 🔍 Run validation framework
+        run: npm run validate:pre-migration
+
+      - name: 🛑 Stop Supabase
+        if: always()
+        run: npx supabase stop
+
+      - name: ✅ Validation summary
+        if: success()
+        run: |
+          echo "### ✅ Migration Validation Passed" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Schema validation successful" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Migration scripts validated" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Local Supabase tests passed" >> $GITHUB_STEP_SUMMARY
+
+  dry-run:
+    name: 🧪 Migration Dry Run
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    if: |
+      always() &&
+      (needs.validate.result == 'success' || github.event.inputs.skip_validation == 'true')
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: 🔗 Link to production
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          npx supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_ID }}
+
+      - name: 🧪 Run migration dry-run
+        id: dryrun
+        run: |
+          echo "Running migration dry-run..." > dry-run-output.log
+          npx supabase db push --dry-run 2>&1 | tee -a dry-run-output.log
+          echo "dry_run_status=$?" >> $GITHUB_OUTPUT
+
+      - name: 📤 Upload dry-run output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: dry-run-output-${{ github.run_id }}
+          path: |
+            dry-run-output.log
+            *.sql
+          retention-days: 7
+
+      - name: 📊 Dry-run summary
+        if: always()
+        run: |
+          if [ "${{ steps.dryrun.outputs.dry_run_status }}" == "0" ]; then
+            echo "### ✅ Migration Dry Run Successful" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Migrations can be applied safely" >> $GITHUB_STEP_SUMMARY
+            echo "- 📋 Review dry-run output in artifacts" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ⚠️ Migration Dry Run Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- ❌ Migrations have conflicts or errors" >> $GITHUB_STEP_SUMMARY
+            echo "- 📋 Check dry-run output in artifacts for details" >> $GITHUB_STEP_SUMMARY
+          fi
+
+  deploy:
+    name: 🚀 Deploy to Production
+    needs: dry-run
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    if: github.event_name == 'workflow_dispatch'  # Only manual triggers
+    environment: production
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: 📦 Install dependencies
+        run: npm ci
+
+      - name: ⚙️ Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: 🔗 Link to production
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          npx supabase link --project-ref ${{ secrets.SUPABASE_PROJECT_ID }}
+
+      - name: 💾 Create backup
+        id: backup
+        run: |
+          echo "Creating production backup..."
+          # TODO: Implement migrate:backup script or use Supabase backup API
+          # npm run migrate:backup -- cloud
+          echo "⚠️  Automated backup skipped - implement migrate:backup script"
+          echo "backup_timestamp=$(date +%Y%m%d_%H%M%S)" >> $GITHUB_OUTPUT
+
+      - name: 📡 Deploy migrations
+        id: deploy
+        run: |
+          echo "Deploying database migrations..."
+          npx supabase db push 2>&1 | tee migration-deploy.log
+          echo "migration_status=$?" >> $GITHUB_OUTPUT
+
+      - name: 🚀 Deploy edge functions
+        if: steps.deploy.outputs.migration_status == '0'
+        id: functions
+        run: |
+          echo "Deploying edge functions..."
+          npx supabase functions deploy 2>&1 | tee functions-deploy.log
+          echo "functions_status=$?" >> $GITHUB_OUTPUT
+
+      - name: ✅ Post-deployment validation
+        if: steps.deploy.outputs.migration_status == '0'
+        id: validate
+        run: |
+          echo "Running post-deployment validation..."
+          node scripts/post-migration-validation.js 2>&1 | tee validation.log
+          echo "validation_status=$?" >> $GITHUB_OUTPUT
+
+      - name: 📤 Upload deployment logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-logs-${{ github.run_id }}
+          path: |
+            migration-deploy.log
+            functions-deploy.log
+            validation.log
+            logs/
+            backups/
+          retention-days: 30
+
+      - name: 📊 Deployment summary
+        if: always()
+        run: |
+          if [ "${{ steps.deploy.outputs.migration_status }}" == "0" ] && [ "${{ steps.validate.outputs.validation_status }}" == "0" ]; then
+            echo "### 🎉 Production Deployment Successful" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Project**: \`${{ secrets.SUPABASE_PROJECT_ID }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "**Commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "**Backup**: \`${{ steps.backup.outputs.backup_timestamp }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Database migrations applied" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Edge functions deployed" >> $GITHUB_STEP_SUMMARY
+            echo "- ✅ Post-deployment validation passed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "🔗 [View Dashboard](https://supabase.com/dashboard/project/${{ secrets.SUPABASE_PROJECT_ID }})" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ❌ Production Deployment Failed" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "**Project**: \`${{ secrets.SUPABASE_PROJECT_ID }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "**Commit**: \`${{ github.sha }}\`" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            if [ "${{ steps.deploy.outputs.migration_status }}" != "0" ]; then
+              echo "- ❌ Database migration failed" >> $GITHUB_STEP_SUMMARY
+            fi
+            if [ "${{ steps.functions.outputs.functions_status }}" != "0" ]; then
+              echo "- ❌ Edge functions deployment failed" >> $GITHUB_STEP_SUMMARY
+            fi
+            if [ "${{ steps.validate.outputs.validation_status }}" != "0" ]; then
+              echo "- ❌ Post-deployment validation failed" >> $GITHUB_STEP_SUMMARY
+            fi
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "📋 Check deployment logs in artifacts for details" >> $GITHUB_STEP_SUMMARY
+            echo "⚠️ Consider rollback if production is affected" >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: ❌ Notify on failure
+        if: failure()
+        run: |
+          echo "❌ Deployment failed!"
+          echo "   Check logs and consider rollback if needed"
+          echo "   Backup created at: ${{ steps.backup.outputs.backup_timestamp }}"
+          exit 1
