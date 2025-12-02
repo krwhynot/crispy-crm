@@ -183,10 +183,40 @@ function isReactAdminValidationError(error: unknown): boolean {
 }
 
 /**
+ * Log success for sensitive operations
+ * Provides audit trail for critical operations without exposing sensitive data
+ *
+ * @param method - The DataProvider method that succeeded
+ * @param resource - The resource being operated on
+ * @param params - The parameters passed to the method
+ * @param result - The result returned by the operation
+ */
+function logSuccess(
+  method: string,
+  resource: string,
+  params: DataProviderLogParams,
+  result: unknown
+): void {
+  const SENSITIVE_OPERATIONS = ["delete", "deleteMany"];
+  const SENSITIVE_RESOURCES = ["sales", "opportunities"];
+
+  if (SENSITIVE_OPERATIONS.includes(method) || SENSITIVE_RESOURCES.includes(resource)) {
+    const resultData = result as { data?: { id?: Identifier } };
+    console.info("[DataProvider Audit]", {
+      method,
+      resource,
+      recordId: params?.id || params?.ids || resultData?.data?.id,
+      timestamp: new Date().toISOString(),
+    });
+  }
+}
+
+/**
  * Wrap a DataProvider with comprehensive error logging
  *
  * This wrapper:
  * - Logs all errors with structured context
+ * - Logs success for sensitive operations (audit trail)
  * - Preserves React Admin validation error format
  * - Transforms Supabase errors to validation format
  * - Handles idempotent delete (already deleted = success)
@@ -218,11 +248,16 @@ export function withErrorLogging<T extends DataProvider>(provider: T): T {
         params: DataProviderLogParams & { previousData?: RaRecord }
       ) => {
         try {
-          return await (original as (...args: unknown[]) => Promise<unknown>).call(
+          const result = await (original as (...args: unknown[]) => Promise<unknown>).call(
             provider,
             resource,
             params
           );
+
+          // Log success for sensitive operations
+          logSuccess(method, resource, params, result);
+
+          return result;
         } catch (error: unknown) {
           // Log the error with context
           logError(method, resource, params, error);

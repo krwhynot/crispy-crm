@@ -2,6 +2,7 @@ import type { AuthProvider } from "ra-core";
 import { supabaseAuthProvider } from "ra-supabase-core";
 import { canAccess } from "../commons/canAccess";
 import { supabase } from "./supabase";
+import { escapeCacheManager } from "./dataProviderCache";
 
 const baseAuthProvider = supabaseAuthProvider(supabase, {
   getIdentity: async () => {
@@ -26,8 +27,15 @@ export const authProvider: AuthProvider = {
   ...baseAuthProvider,
   login: async (params) => {
     const result = await baseAuthProvider.login(params);
-    // clear cached sale
     cachedSale = undefined;
+    cacheTimestamp = 0;
+    return result;
+  },
+  logout: async (params) => {
+    const result = await baseAuthProvider.logout(params);
+    cachedSale = undefined;
+    cacheTimestamp = 0;
+    escapeCacheManager.clear();
     return result;
   },
   /**
@@ -83,8 +91,14 @@ function isPublicPath(pathname: string): boolean {
 }
 
 let cachedSale: any;
+let cacheTimestamp: number = 0;
+const CACHE_TTL_MS = 15 * 60 * 1000;
+
 const getSaleFromCache = async () => {
-  if (cachedSale != null) return cachedSale;
+  const now = Date.now();
+  const isCacheExpired = now - cacheTimestamp > CACHE_TTL_MS;
+
+  if (cachedSale != null && !isCacheExpired) return cachedSale;
 
   const { data: dataSession, error: errorSession } = await supabase.auth.getSession();
 
@@ -105,5 +119,6 @@ const getSaleFromCache = async () => {
   }
 
   cachedSale = dataSale;
+  cacheTimestamp = Date.now();
   return dataSale;
 };
