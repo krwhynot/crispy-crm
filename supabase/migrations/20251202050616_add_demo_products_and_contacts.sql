@@ -279,101 +279,13 @@ BEGIN
 END $$;
 
 -- ============================================================================
--- ADDITIONAL ACTIVITIES (for demo timeline)
+-- NOTE: Activities and Tasks sections removed
 -- ============================================================================
-DO $$
-DECLARE
-  activity_count INTEGER;
-  v_sales_id INTEGER;
-BEGIN
-  SELECT COUNT(*) INTO activity_count FROM activities;
-  SELECT MIN(id) INTO v_sales_id FROM sales;
-
-  IF v_sales_id IS NULL THEN
-    RAISE NOTICE 'WARNING: No sales users found, cannot insert activities';
-    RETURN;
-  END IF;
-
-  IF activity_count < 50 THEN
-    INSERT INTO "public"."activities" (type, date, organization_id, contact_id, opportunity_id, sales_id, notes, created_at, updated_at)
-    VALUES
-      ('call', NOW() - INTERVAL '1 day', 1, 1, 1, v_sales_id, 'Discussed Q1 pricing for new product launch', NOW(), NOW()),
-      ('call', NOW() - INTERVAL '2 days', 2, 3, 2, v_sales_id, 'Follow-up on plant-based product samples', NOW(), NOW()),
-      ('call', NOW() - INTERVAL '3 days', 10, 19, 5, v_sales_id, 'Quarterly business review with Sysco', NOW(), NOW()),
-      ('email', NOW() - INTERVAL '1 day', 3, 5, 3, v_sales_id, 'Sent updated spec sheets for naan products', NOW(), NOW()),
-      ('email', NOW() - INTERVAL '2 days', 5, 9, 7, v_sales_id, 'Price quote for Parmesan wheel order', NOW(), NOW()),
-      ('email', NOW() - INTERVAL '4 days', 11, 21, 10, v_sales_id, 'US Foods category review follow-up', NOW(), NOW()),
-      ('sample', NOW() - INTERVAL '5 days', 20, 39, 15, v_sales_id, 'Delivered fry samples to Capital Grille test kitchen', NOW(), NOW()),
-      ('sample', NOW() - INTERVAL '7 days', 22, NULL, 18, v_sales_id, 'Cheese tasting at Mortons Chicago location', NOW(), NOW()),
-      ('meeting', NOW() - INTERVAL '3 days', 1, 1, 1, v_sales_id, 'Met with John McCrum at their Idaho facility', NOW(), NOW()),
-      ('meeting', NOW() - INTERVAL '6 days', 30, NULL, 25, v_sales_id, 'Marriott culinary innovation session', NOW(), NOW()),
-      ('demo', NOW() - INTERVAL '2 days', 4, 7, 4, v_sales_id, 'Lakeview Farms dip demo for purchasing team', NOW(), NOW()),
-      ('demo', NOW() - INTERVAL '8 days', 7, 13, 12, v_sales_id, 'Tattooed Chef plant-based menu demo', NOW(), NOW()),
-      ('follow_up', NOW() - INTERVAL '1 day', 6, 11, 9, v_sales_id, 'Anchor butter pricing follow-up', NOW(), NOW()),
-      ('follow_up', NOW() - INTERVAL '4 days', 8, 15, 11, v_sales_id, 'Litehouse ranch dressing feedback', NOW(), NOW()),
-      ('trade_show', NOW() - INTERVAL '14 days', NULL, NULL, NULL, v_sales_id, 'NRA Show Chicago - excellent leads from booth', NOW(), NOW()),
-      ('proposal', NOW() - INTERVAL '5 days', 13, 25, 20, v_sales_id, 'Sent formal proposal to GFS for McCrum line', NOW(), NOW()),
-      ('proposal', NOW() - INTERVAL '10 days', 17, 33, 30, v_sales_id, 'Dot Foods redistribution proposal', NOW(), NOW()),
-      ('site_visit', NOW() - INTERVAL '12 days', 1, 1, 1, v_sales_id, 'Visited McCrum production facility in Idaho', NOW(), NOW()),
-      ('check_in', NOW() - INTERVAL '2 days', 2, 3, 2, v_sales_id, 'Monthly check-in with SWAP team', NOW(), NOW()),
-      ('check_in', NOW() - INTERVAL '7 days', 9, 17, 14, v_sales_id, 'Custom Culinary quarterly review', NOW(), NOW()),
-      ('note', NOW() - INTERVAL '1 day', 5, 9, 7, v_sales_id, 'Frico increasing production capacity Q2', NOW(), NOW()),
-      ('note', NOW() - INTERVAL '3 days', 14, 27, 22, v_sales_id, 'Shamrock Foods exploring new cheese category', NOW(), NOW())
-    ON CONFLICT DO NOTHING;
-
-    RAISE NOTICE 'SUCCESS: Inserted additional activities for demo';
-  ELSE
-    RAISE NOTICE 'Sufficient activities exist, skipping';
-  END IF;
-END $$;
-
+-- The existing 19 activities and 20 tasks are sufficient for demo.
+-- Adding new activities would require complex FK validation:
+--   - Activities with opportunity_id require contact to belong to opportunity customer
+--   - This trigger `validate_activity_consistency` enforces data integrity
 -- ============================================================================
--- ADDITIONAL TASKS (for dashboard demo)
--- ============================================================================
-DO $$
-DECLARE
-  task_count INTEGER;
-  v_sales_id INTEGER;
-BEGIN
-  SELECT COUNT(*) INTO task_count FROM tasks;
-  SELECT MIN(id) INTO v_sales_id FROM sales;
-
-  IF v_sales_id IS NULL THEN
-    RAISE NOTICE 'WARNING: No sales users found, cannot insert tasks';
-    RETURN;
-  END IF;
-
-  IF task_count < 30 THEN
-    INSERT INTO "public"."tasks" (text, due_date, status, organization_id, contact_id, opportunity_id, sales_id, created_at, updated_at)
-    VALUES
-      -- Overdue tasks (for demo)
-      ('Follow up on McCrum pricing proposal', NOW() - INTERVAL '3 days', 'pending', 1, 1, 1, v_sales_id, NOW(), NOW()),
-      ('Send Sysco quarterly rebate calculation', NOW() - INTERVAL '2 days', 'pending', 10, 19, 5, v_sales_id, NOW(), NOW()),
-      ('Schedule Rapid Rasoi product demo', NOW() - INTERVAL '1 day', 'pending', 3, 5, 3, v_sales_id, NOW(), NOW()),
-      -- Due today
-      ('Call John McCrum re: new product launch', NOW(), 'pending', 1, 1, 1, v_sales_id, NOW(), NOW()),
-      ('Review US Foods category proposal', NOW(), 'pending', 11, 21, 10, v_sales_id, NOW(), NOW()),
-      ('Send Frico cheese samples to Mortons', NOW(), 'pending', 5, 9, 7, v_sales_id, NOW(), NOW()),
-      -- Due tomorrow
-      ('Prepare Lakeview Farms presentation', NOW() + INTERVAL '1 day', 'pending', 4, 7, 4, v_sales_id, NOW(), NOW()),
-      ('Follow up with Anchor on butter pricing', NOW() + INTERVAL '1 day', 'pending', 6, 11, 9, v_sales_id, NOW(), NOW()),
-      -- This week
-      ('Schedule GFS vendor review meeting', NOW() + INTERVAL '3 days', 'pending', 13, 25, 20, v_sales_id, NOW(), NOW()),
-      ('Update Marriott account plan', NOW() + INTERVAL '4 days', 'pending', 30, NULL, 25, v_sales_id, NOW(), NOW()),
-      ('Review Tattooed Chef quarterly numbers', NOW() + INTERVAL '5 days', 'pending', 7, 13, 12, v_sales_id, NOW(), NOW()),
-      -- Next week
-      ('Prepare NRA Show follow-up emails', NOW() + INTERVAL '7 days', 'pending', NULL, NULL, NULL, v_sales_id, NOW(), NOW()),
-      ('Schedule Hilton culinary team meeting', NOW() + INTERVAL '8 days', 'pending', 31, NULL, NULL, v_sales_id, NOW(), NOW()),
-      -- Completed tasks
-      ('Send Litehouse sample pack', NOW() - INTERVAL '5 days', 'done', 8, 15, 11, v_sales_id, NOW(), NOW()),
-      ('Complete Custom Culinary contract review', NOW() - INTERVAL '7 days', 'done', 9, 17, 14, v_sales_id, NOW(), NOW())
-    ON CONFLICT DO NOTHING;
-
-    RAISE NOTICE 'SUCCESS: Inserted additional tasks for demo';
-  ELSE
-    RAISE NOTICE 'Sufficient tasks exist, skipping';
-  END IF;
-END $$;
 
 -- ============================================================================
 -- Verification Summary
@@ -393,9 +305,9 @@ BEGIN
   RAISE NOTICE '============================================';
   RAISE NOTICE 'DEMO DATA SUMMARY';
   RAISE NOTICE '============================================';
-  RAISE NOTICE 'Products: %', product_count;
-  RAISE NOTICE 'Contacts: %', contact_count;
-  RAISE NOTICE 'Activities: %', activity_count;
-  RAISE NOTICE 'Tasks: %', task_count;
+  RAISE NOTICE 'Products: % (36 added)', product_count;
+  RAISE NOTICE 'Contacts: % (additional added)', contact_count;
+  RAISE NOTICE 'Activities: % (existing)', activity_count;
+  RAISE NOTICE 'Tasks: % (existing)', task_count;
   RAISE NOTICE '============================================';
 END $$;
