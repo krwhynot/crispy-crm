@@ -57,21 +57,16 @@ export function PrincipalDashboardV3() {
           {/* Pipeline Table - Full width */}
           <PrincipalPipelineTable key={`pipeline-${refreshKey}`} />
 
-          {/* Tasks + Activity Feed + Performance - Three columns on desktop, stacked on mobile */}
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
-            {/* Tasks Kanban Board - spans 2 columns on desktop */}
-            <div className="lg:col-span-2">
-              <TasksKanbanPanel key={`tasks-${refreshKey}`} />
-            </div>
+          {/* Tasks Kanban Board - Full width */}
+          <TasksKanbanPanel key={`tasks-${refreshKey}`} />
 
-            {/* Right column: Performance Widget + Activity Feed stacked */}
-            <div className="flex flex-col gap-4">
-              {/* My Performance Widget */}
-              <MyPerformanceWidget key={`performance-${refreshKey}`} />
+          {/* Performance + Activity - Two columns on desktop, stacked on mobile */}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            {/* My Performance Widget */}
+            <MyPerformanceWidget key={`performance-${refreshKey}`} />
 
-              {/* Activity Feed Panel */}
-              <ActivityFeedPanel key={`activities-${refreshKey}`} limit={10} />
-            </div>
+            {/* Activity Feed Panel */}
+            <ActivityFeedPanel key={`activities-${refreshKey}`} limit={10} />
           </div>
         </div>
 
