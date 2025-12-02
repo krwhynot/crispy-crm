@@ -80,6 +80,34 @@ export function OrganizationListSkeleton() {
 }
 
 /**
+ * ProductListSkeleton - Pre-configured skeleton for ProductList
+ */
+export function ProductListSkeleton() {
+  return <ListSkeleton rows={10} columns={6} showAvatar={false} />;
+}
+
+/**
+ * TaskListSkeleton - Pre-configured skeleton for TaskList
+ */
+export function TaskListSkeleton() {
+  return <ListSkeleton rows={10} columns={5} showAvatar={false} />;
+}
+
+/**
+ * ActivityListSkeleton - Pre-configured skeleton for ActivityList
+ */
+export function ActivityListSkeleton() {
+  return <ListSkeleton rows={10} columns={5} showAvatar={false} />;
+}
+
+/**
+ * SalesListSkeleton - Pre-configured skeleton for SalesList
+ */
+export function SalesListSkeleton() {
+  return <ListSkeleton rows={10} columns={5} showAvatar />;
+}
+
+/**
  * SlideOverSkeleton - Loading placeholder for slide-over detail views
  *
  * Matches the shape of field groups in detail tabs.

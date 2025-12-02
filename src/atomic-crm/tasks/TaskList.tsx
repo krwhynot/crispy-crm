@@ -1,124 +1,67 @@
 import React from "react";
-import { useUpdate, useNotify, downloadCSV, type Exporter } from "ra-core";
+import { useUpdate, useNotify, useGetIdentity, useListContext, downloadCSV, type Exporter } from "ra-core";
 import jsonExport from "jsonexport/dist";
 
 import { FunctionField } from "react-admin";
 import { List } from "@/components/admin/list";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
+import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { TextField } from "@/components/admin/text-field";
 import { DateField } from "@/components/admin/date-field";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { Badge } from "@/components/ui/badge";
 import { PriorityBadge } from "@/components/ui/priority-badge";
+import { TaskListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
+import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { TaskListFilter } from "./TaskListFilter";
 import { TaskSlideOver } from "./TaskSlideOver";
+import { TaskEmpty } from "./TaskEmpty";
 import { SaleName } from "../sales/SaleName";
 import { contactOptionText } from "../contacts/ContactOption";
 import type { Task, Opportunity, Organization } from "../types";
 
 /**
- * TaskList Component
+ * TaskList - Standard list page for Task records
  *
- * Displays all tasks in a StandardListLayout with PremiumDatagrid.
+ * Follows ContactList reference pattern:
+ * - Identity-aware rendering with skeleton loading
+ * - Keyboard navigation with slide-over integration
+ * - BulkActionsToolbar for selection operations
+ * - Responsive columns using COLUMN_VISIBILITY semantic presets
  *
- * Features:
- * - Inline completion checkbox (prevents row click)
- * - Row click opens slide-over (not full page)
- * - Filter by principal, due date, status, priority, type
- * - Export to CSV
- * - Deep linking via ?view=:id
- *
- * Design Pattern: Unified design system (StandardListLayout + PremiumDatagrid)
+ * Special features:
+ * - Inline completion checkbox (prevents row click propagation)
+ * - Edit mode by default in slide-over (tasks are action items)
  */
 export default function TaskList() {
+  const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
 
   // Clean up stale cached filters from localStorage
   useFilterCleanup("tasks");
 
-  // Keyboard navigation for list rows
-  const { focusedIndex } = useListKeyboardNavigation({
-    onSelect: (id) => openSlideOver(Number(id), "edit"),
-    enabled: !isOpen,
-  });
+  if (isIdentityPending) {
+    return <TaskListSkeleton />;
+  }
+  if (!identity) {
+    return null;
+  }
 
   return (
     <>
       <List
-        title="Tasks"
+        title={false}
         perPage={100}
         sort={{ field: "due_date", order: "ASC" }}
         exporter={exporter}
       >
-        <StandardListLayout resource="tasks" filterComponent={<TaskListFilter />}>
-          <PremiumDatagrid
-            onRowClick={(id) => openSlideOver(Number(id), "edit")}
-            focusedIndex={focusedIndex}
-          >
-            {/* Inline completion checkbox - CRITICAL: prevent row click */}
-            <FunctionField
-              label="Done"
-              render={(record: Task) => <CompletionCheckbox task={record} />}
-            />
-
-            <TextField source="title" label="Title" />
-
-            <DateField source="due_date" label="Due Date" />
-
-            <FunctionField
-              label="Priority"
-              render={(record: Task) =>
-                record.priority && <PriorityBadge priority={record.priority} />
-              }
-            />
-
-            <FunctionField
-              label="Type"
-              render={(record: Task) => record.type && <Badge variant="outline">{record.type}</Badge>}
-              cellClassName="hidden lg:table-cell"
-              headerClassName="hidden lg:table-cell"
-            />
-
-            <ReferenceField
-              source="sales_id"
-              reference="sales"
-              label="Assigned To"
-              link={false}
-              cellClassName="hidden lg:table-cell"
-              headerClassName="hidden lg:table-cell"
-            >
-              <SaleName />
-            </ReferenceField>
-
-            <ReferenceField
-              source="contact_id"
-              reference="contacts_summary"
-              label="Contact"
-              link={false}
-              cellClassName="hidden lg:table-cell"
-              headerClassName="hidden lg:table-cell"
-            >
-              <TextField source={contactOptionText} />
-            </ReferenceField>
-
-            <ReferenceField
-              source="opportunity_id"
-              reference="opportunities"
-              label="Opportunity"
-              link={false}
-              cellClassName="hidden lg:table-cell"
-              headerClassName="hidden lg:table-cell"
-            >
-              <TextField source="title" />
-            </ReferenceField>
-          </PremiumDatagrid>
-        </StandardListLayout>
+        <TaskListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
         <FloatingCreateButton />
       </List>
 
@@ -133,8 +76,138 @@ export default function TaskList() {
   );
 }
 
-// Inline completion checkbox component - prevents row click propagation
-// Memoized to prevent re-renders when other rows update
+/**
+ * TaskListLayout - Handles loading, empty states, and datagrid rendering
+ */
+const TaskListLayout = ({
+  openSlideOver,
+  isSlideOverOpen,
+}: {
+  openSlideOver: (id: number, mode: "view" | "edit") => void;
+  isSlideOverOpen: boolean;
+}) => {
+  const { data, isPending, filterValues } = useListContext();
+
+  // Keyboard navigation for list rows
+  // Disabled when slide-over is open to prevent conflicts
+  const { focusedIndex } = useListKeyboardNavigation({
+    onSelect: (id) => openSlideOver(Number(id), "edit"),
+    enabled: !isSlideOverOpen,
+  });
+
+  const hasFilters = filterValues && Object.keys(filterValues).length > 0;
+
+  // Show skeleton during initial load
+  if (isPending) {
+    return (
+      <StandardListLayout resource="tasks" filterComponent={<TaskListFilter />}>
+        <TaskListSkeleton />
+      </StandardListLayout>
+    );
+  }
+
+  if (!data?.length && !hasFilters) {
+    return <TaskEmpty />;
+  }
+
+  return (
+    <>
+      <StandardListLayout resource="tasks" filterComponent={<TaskListFilter />}>
+        <PremiumDatagrid
+          onRowClick={(id) => openSlideOver(Number(id), "edit")}
+          focusedIndex={focusedIndex}
+        >
+          {/* Column 1: Completion - Inline checkbox (non-sortable) - always visible */}
+          <FunctionField
+            label="Done"
+            sortable={false}
+            render={(record: Task) => <CompletionCheckbox task={record} />}
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
+
+          {/* Column 2: Title - Primary identifier (sortable) - always visible */}
+          <TextField
+            source="title"
+            label="Title"
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
+
+          {/* Column 3: Due Date - Time-sensitive field (sortable) - always visible */}
+          <DateField
+            source="due_date"
+            label="Due Date"
+            sortable
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
+
+          {/* Column 4: Priority - Visual indicator (sortable) - always visible */}
+          <FunctionField
+            label="Priority"
+            sortBy="priority"
+            render={(record: Task) =>
+              record.priority && <PriorityBadge priority={record.priority} />
+            }
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
+
+          {/* Column 5: Type - Classification badge (sortable) - hidden on tablet/mobile */}
+          <FunctionField
+            label="Type"
+            sortBy="type"
+            render={(record: Task) =>
+              record.type && <Badge variant="outline">{record.type}</Badge>
+            }
+            {...COLUMN_VISIBILITY.desktopOnly}
+          />
+
+          {/* Column 6: Assigned To - Sales reference (sortable) - hidden on tablet/mobile */}
+          <ReferenceField
+            source="sales_id"
+            reference="sales"
+            label="Assigned To"
+            link={false}
+            sortable
+            {...COLUMN_VISIBILITY.desktopOnly}
+          >
+            <SaleName />
+          </ReferenceField>
+
+          {/* Column 7: Contact - Contact reference (non-sortable) - hidden on tablet/mobile */}
+          <ReferenceField
+            source="contact_id"
+            reference="contacts_summary"
+            label="Contact"
+            link={false}
+            sortable={false}
+            {...COLUMN_VISIBILITY.desktopOnly}
+          >
+            <TextField source={contactOptionText} />
+          </ReferenceField>
+
+          {/* Column 8: Opportunity - Opportunity reference (non-sortable) - hidden on tablet/mobile */}
+          <ReferenceField
+            source="opportunity_id"
+            reference="opportunities"
+            label="Opportunity"
+            link={false}
+            sortable={false}
+            {...COLUMN_VISIBILITY.desktopOnly}
+          >
+            <TextField source="title" />
+          </ReferenceField>
+        </PremiumDatagrid>
+      </StandardListLayout>
+      <BulkActionsToolbar />
+    </>
+  );
+};
+
+/**
+ * CompletionCheckbox - Inline task completion toggle
+ *
+ * CRITICAL: Prevents row click propagation to allow independent checkbox interaction.
+ * Memoized to prevent re-renders when other rows update.
+ */
 const CompletionCheckbox = React.memo(function CompletionCheckbox({ task }: { task: Task }) {
   const [update] = useUpdate();
   const notify = useNotify();
@@ -157,7 +230,7 @@ const CompletionCheckbox = React.memo(function CompletionCheckbox({ task }: { ta
       notify(checked ? "Task completed" : "Task reopened", { type: "success" });
     } catch (error) {
       notify("Error updating task", { type: "error" });
-      console.error("Completion toggle error:", error);
+      throw new Error(`Failed to update task ${task.id}: ${error}`);
     }
   };
 
@@ -177,7 +250,9 @@ const CompletionCheckbox = React.memo(function CompletionCheckbox({ task }: { ta
   );
 });
 
-// CSV exporter
+/**
+ * CSV exporter for Task records
+ */
 const exporter: Exporter<Task> = async (records, fetchRelatedRecords) => {
   const opportunities = await fetchRelatedRecords<Opportunity>(
     records,
@@ -243,8 +318,7 @@ const exporter: Exporter<Task> = async (records, fetchRelatedRecords) => {
     },
     (err, csv) => {
       if (err) {
-        console.error("Export error:", err);
-        return;
+        throw new Error(`CSV export failed: ${err.message}`);
       }
       downloadCSV(csv, "tasks");
     }
