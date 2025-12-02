@@ -43,12 +43,13 @@ export function PrincipalDashboardV3() {
   }, []);
 
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex min-h-[calc(100vh-8rem)] flex-col">
       {/* Header */}
       <DashboardHeader title="Principal Dashboard" />
 
       {/* Main Content - Vertically stacked layout */}
-      <main className="relative flex-1 overflow-auto p-content lg:p-widget">
+      {/* Note: Using <div> instead of <main> because Layout.tsx already wraps in <main> */}
+      <div className="relative flex-1 overflow-auto p-content lg:p-widget">
         <div className="flex flex-col gap-section">
           {/* KPI Summary Row */}
           <KPISummaryRow key={`kpi-${refreshKey}`} />
@@ -81,7 +82,7 @@ export function PrincipalDashboardV3() {
           onOpenChange={setIsTaskSheetOpen}
           onRefresh={handleRefresh}
         />
-      </main>
+      </div>
     </div>
   );
 }
