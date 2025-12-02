@@ -37,6 +37,12 @@ vi.mock("react-admin", async () => {
     ...actual,
     Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,
     FunctionField: ({ label }: any) => <div data-testid={`function-field-${label}`}>{label}</div>,
+    ReferenceField: ({ children, source, reference }: any) => (
+      <div data-testid={`reference-field-${source}`} data-reference={reference}>
+        {children}
+      </div>
+    ),
+    TextField: ({ source }: any) => <span data-testid={`text-field-${source}`}>{source}</span>,
   };
 });
 
