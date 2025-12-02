@@ -66,7 +66,7 @@ export function PrincipalDashboardV3() {
   }, []);
 
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] flex-col">
+    <div className="flex min-h-[calc(100vh-8rem)] flex-col" data-testid="dashboard">
       {/* Header - with optional Tasks button for tablet breakpoints */}
       <DashboardHeader title="Principal Dashboard">
         {showTasksButtonInHeader && (
