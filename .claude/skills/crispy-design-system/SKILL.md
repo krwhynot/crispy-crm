@@ -59,6 +59,58 @@ This skill focuses on **Atomic CRM implementation specifics**: Tailwind v4 utili
 
 **Full cognitive framework:** See `ui-ux-design-principles` skill.
 
+## UI/UX Decision Matrix
+
+When evaluating design choices, use this weighted matrix to ensure consistency:
+
+### Evaluation Criteria
+
+| Criterion | Weight | Target | What to Check |
+|-----------|--------|--------|---------------|
+| **Usability** | ×3 | ≥4 | Can users complete task without training? |
+| **Speed** | ×3 | ≥4 | Task completion time acceptable? |
+| **Accessibility** | ×3 | ≥4 | Touch targets ≥44px? Contrast ≥4.5:1? |
+| **Familiarity** | ×2 | ≥4 | Follows CRM/Excel conventions? |
+| **Cognitive Load** | ×2 | ≥4 | ≤7 choices visible? Progressive disclosure? |
+| **Visual Clarity** | ×2 | ≥4 | Clear hierarchy? Semantic colors? |
+| **Feedback** | ×2 | ≥4 | Actions have visible response <400ms? |
+| **Adaptability** | ×2 | ≥4 | Works on desktop AND tablet? |
+
+**Scoring:** 1 (poor) to 5 (excellent)
+
+### Quick Decision Rules
+
+**If ANY of these fail, redesign is required:**
+- Accessibility < 4 (WCAG violations are blockers)
+- Usability < 3 (users can't complete core tasks)
+- Speed < 3 (workflow is unacceptably slow)
+
+**If 3+ criteria score < 4:** Review against UX Laws table above.
+
+### Example Evaluation
+
+```
+Component: New filter sidebar design
+
+Usability:     4 × 3 = 12  ✅ (intuitive filter groups)
+Speed:         5 × 3 = 15  ✅ (instant filter application)
+Accessibility: 5 × 3 = 15  ✅ (44px targets, good contrast)
+Familiarity:   4 × 2 = 8   ✅ (matches Salesforce pattern)
+Cognitive:     3 × 2 = 6   ⚠️ (12 filters visible - consider grouping)
+Visual:        4 × 2 = 8   ✅ (clear section headers)
+Feedback:      4 × 2 = 8   ✅ (count badges update live)
+Adaptability:  4 × 2 = 8   ✅ (collapses on tablet)
+
+Total: 80/95 (84%) - GOOD, but consider reducing visible filters
+```
+
+### When to Use This Matrix
+
+- **Before implementation:** Validate design approach
+- **During code review:** Check new components meet criteria
+- **After user feedback:** Identify which criteria need improvement
+- **Comparing options:** Score multiple approaches objectively
+
 ## When to Use
 
 Use this skill when:

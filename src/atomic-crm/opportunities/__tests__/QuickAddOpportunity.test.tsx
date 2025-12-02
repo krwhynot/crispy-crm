@@ -6,6 +6,7 @@ vi.mock("react-admin", () => ({
   useCreate: () => [vi.fn().mockResolvedValue({ data: { id: 1 } }), { isLoading: false }],
   useNotify: () => vi.fn(),
   useRefresh: () => vi.fn(),
+  useGetIdentity: () => ({ identity: { id: 1 }, isLoading: false }),
 }));
 
 describe("QuickAddOpportunity", () => {
