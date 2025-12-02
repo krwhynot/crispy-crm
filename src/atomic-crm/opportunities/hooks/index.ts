@@ -18,3 +18,9 @@ export type {
   DistributorPrincipalAuthorization,
   UseDistributorAuthorizationResult,
 } from "./useDistributorAuthorization";
+export { useBulkActionsState } from "./useBulkActionsState";
+export type {
+  BulkAction,
+  UseBulkActionsStateOptions,
+  UseBulkActionsStateResult,
+} from "./useBulkActionsState";

@@ -19,7 +19,10 @@ interface OpportunityRowListViewProps {
   isSlideOverOpen: boolean;
 }
 
-export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListViewProps) => {
+export const OpportunityRowListView = ({
+  openSlideOver,
+  isSlideOverOpen,
+}: OpportunityRowListViewProps) => {
   const {
     data: opportunities,
     error,
@@ -29,6 +32,12 @@ export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListView
     onSelect,
     onUnselectItems,
   } = useListContext<Opportunity>();
+
+  // Keyboard navigation for list rows
+  const { focusedIndex } = useListKeyboardNavigation({
+    onSelect: (id) => openSlideOver(Number(id), "view"),
+    enabled: !isSlideOverOpen,
+  });
 
   if (isPending) {
     return <Skeleton className="w-full h-9" />;
@@ -102,9 +111,15 @@ export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListView
 
       <Card className="bg-card border border-border shadow-sm rounded-xl p-2">
         <div className="space-y-2">
-          {opportunities.map((opportunity) => (
+          {opportunities.map((opportunity, index) => (
             <RecordContextProvider key={opportunity.id} value={opportunity}>
-              <div className="group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 rounded-lg border border-transparent bg-card px-3 py-2 sm:py-1.5 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2">
+              <div
+                className={`group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 rounded-lg border bg-card px-3 py-2 sm:py-1.5 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
+                  focusedIndex === index
+                    ? "border-primary ring-2 ring-primary ring-offset-2"
+                    : "border-transparent"
+                }`}
+              >
                 {/* Left cluster: Checkbox + Main Info */}
                 <div className="flex items-center gap-3 min-w-0 flex-1 w-full sm:w-auto">
                   <Checkbox
@@ -197,7 +212,7 @@ export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListView
                     {getOpportunityStageLabel(opportunity.stage)}
                   </Badge>
 
-                  {/* Priority */}
+                  {/* Priority - Hidden on mobile, shown on md+ */}
                   {opportunity.priority && (
                     <Badge
                       variant={
@@ -209,7 +224,7 @@ export const OpportunityRowListView = ({ openSlideOver }: OpportunityRowListView
                               ? "secondary"
                               : "outline"
                       }
-                      className="text-xs relative z-10"
+                      className="hidden md:inline-flex text-xs relative z-10"
                     >
                       {opportunity.priority}
                     </Badge>
