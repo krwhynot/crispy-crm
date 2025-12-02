@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { CreateBase, Form, useInput } from "ra-core";
+import { CreateBase, Form, useInput, useGetIdentity } from "ra-core";
 import { FormToolbar } from "@/atomic-crm/layout/FormToolbar";
 import { activitiesSchema } from "../validation/activities";
 import ActivitySinglePage from "./ActivitySinglePage";
@@ -15,7 +15,15 @@ const HiddenActivityTypeField = () => {
 };
 
 export default function ActivityCreate() {
-  const defaultValues = useMemo(() => activitiesSchema.partial().parse({}), []);
+  const { identity } = useGetIdentity();
+  const defaultValues = useMemo(
+    () => ({
+      ...activitiesSchema.partial().parse({}),
+      // Set current user as creator - ensures proper audit trail
+      created_by: identity?.id,
+    }),
+    [identity?.id]
+  );
 
   return (
     <CreateBase redirect="list">

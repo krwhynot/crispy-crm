@@ -111,8 +111,8 @@ export interface Contact extends Pick<RaRecord, "id"> {
   department?: string;
   deleted_at?: string;
 
-  // Sales assignment
-  sales_id: Identifier;
+  // Sales assignment (optional - matches database schema where sales_id is nullable)
+  sales_id?: Identifier | null;
 
   // Calculated fields from contacts_summary view
   nb_notes?: number;
@@ -200,11 +200,26 @@ export interface ContactNote extends Pick<RaRecord, "id"> {
   opportunity_owner_id: Identifier;
   status: string;
   attachments?: AttachmentNote[];
+  sales_id?: Identifier; // Note author (matches database schema)
 }
 
 // Deal type removed - use Opportunity instead
 // LeadSource type removed - now imported from validation/opportunities.ts (P1 consolidation)
 
+/**
+ * Opportunity entity - represents a sales deal in the CRM.
+ *
+ * OWNERSHIP PATTERN (3 fields, intentionally different from other entities):
+ * - `opportunity_owner_id` - Sales rep who owns/drives this deal (closes it)
+ * - `account_manager_id` - Sales rep who manages the customer relationship (may differ from owner)
+ * - `created_by` - Audit trail: who originally created this opportunity
+ *
+ * This split ownership model supports enterprise sales scenarios where the deal owner
+ * and account manager may be different people. Other entities (contacts, tasks, etc.)
+ * use a simpler `sales_id` field for single ownership.
+ *
+ * RLS policies check ALL THREE fields for UPDATE access.
+ */
 export interface Opportunity extends Pick<RaRecord, "id"> {
   name: string;
   customer_organization_id: Identifier;
@@ -263,6 +278,7 @@ export interface OpportunityNote extends Pick<RaRecord, "id"> {
   updated_at: string;
   opportunity_owner_id: Identifier;
   attachments?: AttachmentNote[];
+  sales_id?: Identifier; // Note author (matches database schema)
 
   // This is defined for compatibility with `ContactNote`
   status?: undefined;
