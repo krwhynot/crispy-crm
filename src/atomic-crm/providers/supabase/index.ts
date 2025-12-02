@@ -10,6 +10,7 @@
 
 import { supabaseDataProvider } from "ra-supabase-core";
 import type { DataProvider } from "ra-core";
+import { devLog } from "@/lib/devLogger";
 
 // Auth provider (same for both architectures)
 export { authProvider } from "./authProvider";
