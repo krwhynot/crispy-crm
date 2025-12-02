@@ -28,10 +28,10 @@ export const ActivitiesList = () => {
                   variant="outline"
                   className={
                     activity.sentiment === "positive"
-                      ? "border-green-500 text-green-700"
+                      ? "border-success text-success"
                       : activity.sentiment === "negative"
-                        ? "border-red-500 text-red-700"
-                        : "border-gray-500 text-gray-700"
+                        ? "border-destructive text-destructive"
+                        : "border-muted text-muted-foreground"
                   }
                 >
                   {activity.sentiment}
@@ -57,7 +57,7 @@ export const ActivitiesList = () => {
 
           {activity.follow_up_required && (
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300">
+              <Badge variant="outline" className="bg-warning-subtle text-warning border-warning">
                 Follow-up Required
               </Badge>
               {activity.follow_up_date && (

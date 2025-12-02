@@ -1,3 +1,14 @@
+/**
+ * @deprecated Use OrganizationSlideOver instead.
+ * This component will be removed in a future release.
+ * See docs/decisions/ADR-005-organization-detail-view.md for migration details.
+ *
+ * Deprecation Timeline:
+ * - Phase A (Current): This deprecation notice
+ * - Phase B: Redirect to list with SlideOver
+ * - Phase C: Remove this file
+ */
+
 import { formatDistance } from "date-fns";
 import { UserPlus, Briefcase } from "lucide-react";
 import {

@@ -2,10 +2,11 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { SegmentComboboxInput } from "@/components/admin/SegmentComboboxInput";
+import { StateComboboxInput } from "@/components/admin/state-combobox-input";
 import { FormGrid, FormSection } from "@/components/admin/form";
 import type { Sale } from "../types";
 import { formatName } from "../utils/formatName";
-import { US_STATES, ORGANIZATION_TYPE_CHOICES } from "./constants";
+import { ORGANIZATION_TYPE_CHOICES } from "./constants";
 
 export const OrganizationMainTab = () => {
   return (
@@ -47,13 +48,7 @@ export const OrganizationMainTab = () => {
         <FormGrid columns={2}>
           <TextInput source="street" helperText={false} label="Street" />
           <TextInput source="city" helperText={false} label="City" />
-          <SelectInput
-            source="state"
-            label="State"
-            helperText={false}
-            choices={US_STATES}
-            emptyText="Select state"
-          />
+          <StateComboboxInput source="state" label="State" />
           <TextInput source="zip" label="Zip" helperText={false} />
         </FormGrid>
       </FormSection>

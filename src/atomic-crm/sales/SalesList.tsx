@@ -7,6 +7,9 @@ import { Badge } from "@/components/ui/badge";
 import { useRecordContext, EmailField, TextField } from "react-admin";
 import { TopToolbar } from "../layout/TopToolbar";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
+import { useFilterCleanup } from "../hooks/useFilterCleanup";
+import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
+import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { SalesSlideOver } from "./SalesSlideOver";
 
 const SalesListActions = () => (
@@ -79,6 +82,13 @@ export default function SalesList() {
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
 
+  useFilterCleanup("sales");
+
+  const { focusedIndex } = useListKeyboardNavigation({
+    onSelect: (id) => openSlideOver(Number(id), "view"),
+    enabled: !isOpen,
+  });
+
   return (
     <>
       <List
@@ -88,14 +98,19 @@ export default function SalesList() {
       >
         {/* Sales has no filters, so no StandardListLayout wrapper needed - just inline search */}
         <div className="card-container">
-          <PremiumDatagrid onRowClick={(id) => openSlideOver(Number(id))} bulkActionButtons={false}>
+          <PremiumDatagrid
+            onRowClick={(id) => openSlideOver(Number(id), "view")}
+            focusedIndex={focusedIndex}
+            bulkActionButtons={false}
+          >
             <TextField source="first_name" label="First Name" />
             <TextField source="last_name" label="Last Name" />
-            <EmailField source="email" label="Email" />
+            <EmailField source="email" label="Email" cellClassName="hidden lg:table-cell" headerClassName="hidden lg:table-cell" />
             <RoleBadgeField label="Role" />
-            <StatusField label="Status" />
+            <StatusField label="Status" cellClassName="hidden lg:table-cell" headerClassName="hidden lg:table-cell" />
           </PremiumDatagrid>
         </div>
+        <FloatingCreateButton />
       </List>
 
       {/* Slide-over panel */}

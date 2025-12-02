@@ -17,6 +17,7 @@ import { TopToolbar } from "../layout/TopToolbar";
 import { ActivityListFilter } from "./ActivityListFilter";
 import { SampleStatusBadge } from "../components/SampleStatusBadge";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
+import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import type { ActivityRecord, Contact, Opportunity, Organization, Sale } from "../types";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
 
@@ -88,85 +89,101 @@ const ActivityListLayout = () => {
   }
 
   return (
-    <StandardListLayout resource="activities" filterComponent={<ActivityListFilter />}>
-      <PremiumDatagrid>
-        {/* Activity Type Badge */}
-        <FunctionField
-          label="Type"
-          sortBy="type"
-          render={(record: ActivityRecord) => {
-            const typeOption = INTERACTION_TYPE_OPTIONS.find((opt) => opt.value === record.type);
-            return (
-              <Badge variant="outline" className="text-xs">
-                {typeOption?.label || record.type}
-              </Badge>
-            );
-          }}
-        />
+    <>
+      <StandardListLayout resource="activities" filterComponent={<ActivityListFilter />}>
+        <PremiumDatagrid>
+          {/* Activity Type Badge */}
+          <FunctionField
+            label="Type"
+            sortBy="type"
+            render={(record: ActivityRecord) => {
+              const typeOption = INTERACTION_TYPE_OPTIONS.find((opt) => opt.value === record.type);
+              return (
+                <Badge variant="outline" className="text-xs">
+                  {typeOption?.label || record.type}
+                </Badge>
+              );
+            }}
+          />
 
-        {/* Subject */}
-        <TextField source="subject" label="Subject" />
+          {/* Subject */}
+          <TextField source="subject" label="Subject" />
 
-        {/* Activity Date */}
-        <DateField source="activity_date" label="Date" showTime={false} />
+          {/* Activity Date */}
+          <DateField source="activity_date" label="Date" showTime={false} />
 
-        {/* Sample Status - Only shown for sample activities */}
-        <FunctionField
-          label="Sample Status"
-          render={(record: ActivityRecord) => {
-            if (record.type !== "sample" || !record.sample_status) {
-              return <span className="text-muted-foreground">—</span>;
-            }
-            return <SampleStatusBadge status={record.sample_status} readonly />;
-          }}
-        />
+          {/* Sample Status - Only shown for sample activities - hidden on tablet */}
+          <FunctionField
+            label="Sample Status"
+            render={(record: ActivityRecord) => {
+              if (record.type !== "sample" || !record.sample_status) {
+                return <span className="text-muted-foreground">—</span>;
+              }
+              return <SampleStatusBadge status={record.sample_status} readonly />;
+            }}
+            cellClassName="hidden lg:table-cell"
+            headerClassName="hidden lg:table-cell"
+          />
 
-        {/* Sentiment Badge */}
-        <FunctionField
-          label="Sentiment"
-          render={(record: ActivityRecord) => {
-            if (!record.sentiment) {
-              return <span className="text-muted-foreground">—</span>;
-            }
-            const sentimentColors: Record<string, string> = {
-              positive: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-              neutral: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200",
-              negative: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
-            };
-            return (
-              <Badge className={sentimentColors[record.sentiment] || ""} variant="outline">
-                {record.sentiment.charAt(0).toUpperCase() + record.sentiment.slice(1)}
-              </Badge>
-            );
-          }}
-        />
+          {/* Sentiment Badge - hidden on tablet */}
+          <FunctionField
+            label="Sentiment"
+            render={(record: ActivityRecord) => {
+              if (!record.sentiment) {
+                return <span className="text-muted-foreground">—</span>;
+              }
+              const sentimentColors: Record<string, string> = {
+                positive: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+                neutral: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200",
+                negative: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+              };
+              return (
+                <Badge className={sentimentColors[record.sentiment] || ""} variant="outline">
+                  {record.sentiment.charAt(0).toUpperCase() + record.sentiment.slice(1)}
+                </Badge>
+              );
+            }}
+            cellClassName="hidden lg:table-cell"
+            headerClassName="hidden lg:table-cell"
+          />
 
-        {/* Organization Reference */}
-        <ReferenceField
-          source="organization_id"
-          reference="organizations"
-          label="Organization"
-          link={false}
-        >
-          <TextField source="name" />
-        </ReferenceField>
+          {/* Organization Reference */}
+          <ReferenceField
+            source="organization_id"
+            reference="organizations"
+            label="Organization"
+            link={false}
+          >
+            <TextField source="name" />
+          </ReferenceField>
 
-        {/* Opportunity Reference */}
-        <ReferenceField
-          source="opportunity_id"
-          reference="opportunities"
-          label="Opportunity"
-          link={false}
-        >
-          <TextField source="name" />
-        </ReferenceField>
+          {/* Opportunity Reference - hidden on tablet */}
+          <ReferenceField
+            source="opportunity_id"
+            reference="opportunities"
+            label="Opportunity"
+            link={false}
+            cellClassName="hidden lg:table-cell"
+            headerClassName="hidden lg:table-cell"
+          >
+            <TextField source="name" />
+          </ReferenceField>
 
-        {/* Created By */}
-        <ReferenceField source="created_by" reference="sales" label="Created By" link={false}>
-          <SaleName />
-        </ReferenceField>
-      </PremiumDatagrid>
-    </StandardListLayout>
+          {/* Created By - hidden on tablet */}
+          <ReferenceField
+            source="created_by"
+            reference="sales"
+            label="Created By"
+            link={false}
+            cellClassName="hidden lg:table-cell"
+            headerClassName="hidden lg:table-cell"
+          >
+            <SaleName />
+          </ReferenceField>
+        </PremiumDatagrid>
+      </StandardListLayout>
+      <BulkActionsToolbar />
+    </>
   );
 };
 

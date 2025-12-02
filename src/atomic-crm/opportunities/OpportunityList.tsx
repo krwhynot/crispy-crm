@@ -23,6 +23,7 @@ import { useOpportunityFilters } from "../filters/useOpportunityFilters";
 import { saveStagePreferences } from "../filters/opportunityStagePreferences";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { OpportunitySlideOver } from "./OpportunitySlideOver";
+import { useFilterCleanup } from "../hooks/useFilterCleanup";
 
 // Helper functions for view preference persistence
 const OPPORTUNITY_VIEW_KEY = "opportunity.view.preference";
@@ -42,6 +43,9 @@ const OpportunityList = () => {
   const resourceLabel = getResourceLabel("opportunities", 2);
   const opportunityFilters = useOpportunityFilters();
   const [view, setView] = useState<OpportunityView>(getViewPreference);
+
+  // Clean up stale cached filters from localStorage
+  useFilterCleanup("opportunities");
 
   // Slide-over state
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
@@ -78,7 +82,7 @@ const OpportunityList = () => {
         </Breadcrumb>
         <FilterPresetsBar />
         <FilterChipsPanel className="mb-4" />
-        <OpportunityLayout view={view} openSlideOver={openSlideOver} />
+        <OpportunityLayout view={view} openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
         <FloatingCreateButton />
       </List>
 
@@ -97,9 +101,11 @@ const OpportunityList = () => {
 const OpportunityLayout = ({
   view,
   openSlideOver,
+  isSlideOverOpen,
 }: {
   view: OpportunityView;
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
+  isSlideOverOpen: boolean;
 }) => {
   const { data, isPending, filterValues } = useListContext();
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
@@ -128,7 +134,7 @@ const OpportunityLayout = ({
       ) : view === "campaign" ? (
         <CampaignGroupedList openSlideOver={openSlideOver} />
       ) : (
-        <OpportunityRowListView openSlideOver={openSlideOver} />
+        <OpportunityRowListView openSlideOver={openSlideOver} isSlideOverOpen={isSlideOverOpen} />
       )}
       <OpportunityArchivedList />
     </div>

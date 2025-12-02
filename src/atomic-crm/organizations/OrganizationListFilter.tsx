@@ -37,7 +37,7 @@ export const OrganizationListFilter = () => {
                 multiselect
                 key={type.id}
                 className="w-full justify-between"
-                label={<Badge className={`text-xs px-1 py-0 ${colorClass}`}>{type.name}</Badge>}
+                label={<Badge className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${colorClass}`}>{type.name}</Badge>}
                 value={{ organization_type: type.id }}
               />
             );
@@ -51,7 +51,7 @@ export const OrganizationListFilter = () => {
               key={priority.id}
               className="w-full justify-between"
               label={
-                <Badge variant={PRIORITY_VARIANT_MAP[priority.id]} className="text-xs px-1 py-0">
+                <Badge variant={PRIORITY_VARIANT_MAP[priority.id]} className="text-xs px-3 py-2 min-h-[44px] flex items-center">
                   {priority.name}
                 </Badge>
               }

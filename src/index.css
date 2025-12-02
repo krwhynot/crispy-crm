@@ -260,6 +260,9 @@
   .text-warning {
     color: hsl(var(--warning));
   }
+  .text-warning-strong {
+    color: hsl(var(--warning-strong));
+  }
   .text-error {
     color: hsl(var(--destructive));
   }

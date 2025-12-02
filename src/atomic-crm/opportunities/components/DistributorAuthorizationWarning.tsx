@@ -61,7 +61,7 @@ export function DistributorAuthorizationWarning() {
   const getWarningContent = () => {
     if (isExpired) {
       return {
-        icon: <Clock className="h-4 w-4 text-amber-600" />,
+        icon: <Clock className="h-4 w-4 text-warning" />,
         title: "Authorization Expired",
         message: (
           <>
@@ -83,7 +83,7 @@ export function DistributorAuthorizationWarning() {
     if (hasAuthorizationRecord) {
       // Record exists but is_authorized = false
       return {
-        icon: <FileWarning className="h-4 w-4 text-amber-600" />,
+        icon: <FileWarning className="h-4 w-4 text-warning" />,
         title: "Authorization Inactive",
         message: (
           <>
@@ -104,7 +104,7 @@ export function DistributorAuthorizationWarning() {
 
     // No authorization record at all
     return {
-      icon: <AlertTriangle className="h-4 w-4 text-amber-600" />,
+      icon: <AlertTriangle className="h-4 w-4 text-warning" />,
       title: "Distributor Not Authorized",
       message: (
         <>
@@ -126,10 +126,10 @@ export function DistributorAuthorizationWarning() {
   const content = getWarningContent();
 
   return (
-    <Alert className="border-amber-500/50 bg-amber-50 dark:bg-amber-950/20 mt-3">
+    <Alert className="border-warning/50 bg-warning-subtle mt-3">
       {content.icon}
-      <AlertTitle className="text-amber-800 dark:text-amber-400">{content.title}</AlertTitle>
-      <AlertDescription className="text-amber-700 dark:text-amber-300">
+      <AlertTitle className="text-warning-strong">{content.title}</AlertTitle>
+      <AlertDescription className="text-warning">
         <p className="mb-2">{content.message}</p>
         <p className="text-sm mb-3">
           You can still create this opportunity, but the distribution channel may need to be
@@ -141,7 +141,7 @@ export function DistributorAuthorizationWarning() {
             <Button
               variant="outline"
               size="sm"
-              className="border-amber-600 text-amber-700 hover:bg-amber-100"
+              className="border-warning text-warning hover:bg-warning-subtle"
             >
               I Understand, Continue
             </Button>
@@ -165,7 +165,7 @@ export function DistributorAuthorizationWarning() {
             </AlertDialogHeader>
             <AlertDialogFooter>
               <AlertDialogCancel>Go Back</AlertDialogCancel>
-              <AlertDialogAction className="bg-amber-600 hover:bg-amber-700">
+              <AlertDialogAction className="bg-warning hover:bg-warning-strong">
                 Yes, Create Anyway
               </AlertDialogAction>
             </AlertDialogFooter>

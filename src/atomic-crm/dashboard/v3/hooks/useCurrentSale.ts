@@ -7,9 +7,9 @@ import { supabase } from "@/atomic-crm/providers/supabase/supabase";
  * PERFORMANCE OPTIMIZATION (KPI Query Audit):
  * This context caches the salesId at the dashboard level, eliminating
  * redundant queries from multiple components (useKPIMetrics, useMyTasks,
- * useMyPerformance, usePrincipalPipeline all need salesId).
+ * usePrincipalPipeline all need salesId).
  *
- * Expected improvement: 4+ fewer queries, ~100-200ms faster initial load.
+ * Expected improvement: 3+ fewer queries, ~100-200ms faster initial load.
  */
 interface CurrentSaleContextValue {
   salesId: number | null;
