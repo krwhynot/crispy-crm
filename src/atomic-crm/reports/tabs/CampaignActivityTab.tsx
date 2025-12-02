@@ -1,21 +1,35 @@
 import { lazy, Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const CampaignActivityReport = lazy(() => import("../CampaignActivity/CampaignActivityReport"));
+const CampaignActivityReport = lazy(
+  () => import("../CampaignActivity/CampaignActivityReport")
+);
 
+/**
+ * Campaign Activity Tab
+ *
+ * Wrapper for the CampaignActivityReport.
+ * The sub-report handles its own campaign/date filters.
+ */
 export default function CampaignActivityTab() {
   return (
-    <div className="space-y-4">
-      {/* Tab-specific filters placeholder */}
-      <div className="bg-secondary/30 p-4 rounded-lg">
-        <h3 className="text-sm font-medium mb-2">Report Filters</h3>
-        <div className="flex gap-4">
-          <div className="text-sm text-muted-foreground">Tab-specific filters coming soon</div>
-        </div>
-      </div>
-
-      {/* Render existing report */}
-      <Suspense fallback={<Skeleton className="h-[600px]" />}>
+    <div className="space-y-section">
+      <Suspense
+        fallback={
+          <div className="space-y-section">
+            {/* Filter bar skeleton */}
+            <Skeleton className="h-14 rounded-lg" />
+            {/* Summary cards skeleton */}
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-content">
+              {[...Array(4)].map((_, i) => (
+                <Skeleton key={i} className="h-24 rounded-lg" />
+              ))}
+            </div>
+            {/* Chart skeleton */}
+            <Skeleton className="h-80 rounded-lg" />
+          </div>
+        }
+      >
         <CampaignActivityReport />
       </Suspense>
     </div>
