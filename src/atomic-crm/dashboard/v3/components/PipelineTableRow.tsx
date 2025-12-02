@@ -68,7 +68,7 @@ export function PipelineTableRow({ row, onRowClick }: PipelineTableRowProps) {
 
   return (
     <TableRow
-      className="table-row-premium cursor-pointer relative"
+      className="table-row-premium cursor-pointer relative h-11 min-h-[44px]"
       onClick={() => onRowClick(row)}
       onKeyDown={handleKeyDown}
       tabIndex={0}
