@@ -8,7 +8,7 @@ import type { Opportunity } from "../types";
 import { getOpportunityStageLabel } from "./constants/stageConstants";
 
 export const OpportunityArchivedList = () => {
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
   const {
     data: archivedLists,
     total,

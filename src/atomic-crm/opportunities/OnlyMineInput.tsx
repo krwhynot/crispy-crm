@@ -4,7 +4,7 @@ import { useGetIdentity, useListFilterContext } from "ra-core";
 
 export const OnlyMineInput = (_: { alwaysOn: boolean; source: string }) => {
   const { filterValues, displayedFilters, setFilters } = useListFilterContext();
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
 
   const handleChange = () => {
     const newFilterValues = { ...filterValues };

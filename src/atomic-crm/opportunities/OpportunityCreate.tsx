@@ -9,7 +9,7 @@ import { SimilarOpportunitiesDialog } from "./components/SimilarOpportunitiesDia
 import { useSimilarOpportunityCheck } from "./hooks/useSimilarOpportunityCheck";
 
 const OpportunityCreate = () => {
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
 
   // Fuzzy match warning system (Levenshtein threshold: 3)
   const {
