@@ -1,24 +1,44 @@
 /**
  * listPatterns.ts - Common patterns for list page configuration
+ *
+ * Design System: Desktop-first responsive (iPad 1024px as primary target)
+ * @see docs/architecture/design-system.md
  */
 
+/**
+ * Semantic column visibility presets for responsive list pages.
+ *
+ * Usage:
+ * ```tsx
+ * <TextField source="email" {...COLUMN_VISIBILITY.desktopOnly} />
+ * ```
+ *
+ * @property desktopOnly - Only visible on desktop (1024px+), hidden on tablet/mobile
+ * @property tabletUp - Visible on tablet (768px+) and desktop, hidden on mobile only
+ * @property alwaysVisible - Always visible on all screen sizes (use for critical columns)
+ */
 export const COLUMN_VISIBILITY = {
-  /** Hide on mobile (< 768px), show on tablet and up */
-  hideMobile: {
-    cellClassName: "hidden md:table-cell",
-    headerClassName: "hidden md:table-cell",
-  },
-  /** Hide on mobile and tablet (< 1024px), show on desktop */
-  hideTablet: {
+  /** Only visible on desktop (1024px+). Use for secondary information. */
+  desktopOnly: {
     cellClassName: "hidden lg:table-cell",
     headerClassName: "hidden lg:table-cell",
   },
-  /** Always visible */
+  /** Visible on tablet and desktop (768px+). Use for important but not critical columns. */
+  tabletUp: {
+    cellClassName: "hidden md:table-cell",
+    headerClassName: "hidden md:table-cell",
+  },
+  /** Always visible on all screen sizes. Use for primary identifying columns (name, status). */
   alwaysVisible: {
     cellClassName: "",
     headerClassName: "",
   },
 } as const;
+
+/** @deprecated Use COLUMN_VISIBILITY.tabletUp instead */
+export const hideMobile = COLUMN_VISIBILITY.tabletUp;
+/** @deprecated Use COLUMN_VISIBILITY.desktopOnly instead */
+export const hideTablet = COLUMN_VISIBILITY.desktopOnly;
 
 export const SORT_FIELDS = {
   contacts: ["first_name", "last_name", "last_seen"],
@@ -36,6 +56,10 @@ export const DEFAULT_PER_PAGE = {
   activities: 50,
 } as const;
 
+/**
+ * Helper function to get column visibility classes by semantic name.
+ * Prefer direct object spread: `{...COLUMN_VISIBILITY.desktopOnly}` for better type inference.
+ */
 export function getColumnVisibility(
   visibility: keyof typeof COLUMN_VISIBILITY
 ): { cellClassName: string; headerClassName: string } {

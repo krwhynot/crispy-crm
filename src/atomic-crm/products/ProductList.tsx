@@ -1,3 +1,4 @@
+import { useGetIdentity, useListContext } from "ra-core";
 import { FunctionField } from "react-admin";
 import { List } from "@/components/admin/list";
 import { TextField } from "@/components/admin/text-field";
@@ -5,98 +6,54 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { CreateButton } from "@/components/admin/create-button";
 import { SortButton } from "@/components/admin/sort-button";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
+import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
+import { ProductListSkeleton } from "@/components/ui/list-skeleton";
 import { TopToolbar } from "../layout/TopToolbar";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { Badge } from "@/components/ui/badge";
+import { COLUMN_VISIBILITY, SORT_FIELDS } from "../utils/listPatterns";
 import { ProductListFilter } from "./ProductListFilter";
 import { ProductSlideOver } from "./ProductSlideOver";
+import { ProductEmpty } from "./ProductEmpty";
+import type { Product } from "../types";
 
 /**
- * ProductListActions - TopToolbar with sort and create actions
- * Follows established pattern from ContactList and OrganizationList
+ * ProductList - Standard list page for Product records
+ *
+ * Follows ContactList reference pattern:
+ * - Identity-aware rendering with skeleton loading
+ * - Keyboard navigation with slide-over integration
+ * - BulkActionsToolbar for selection operations
+ * - Responsive columns using COLUMN_VISIBILITY semantic presets
  */
-const ProductListActions = () => (
-  <TopToolbar>
-    <SortButton fields={["name", "sku", "category", "status"]} />
-    <CreateButton />
-  </TopToolbar>
-);
-
 export const ProductList = () => {
+  const { data: identity, isPending: isIdentityPending } = useGetIdentity();
   const { slideOverId, isOpen, mode, openSlideOver, closeSlideOver, toggleMode } =
     useSlideOverState();
 
   // Clean up stale cached filters from localStorage
   useFilterCleanup("products");
 
-  // Keyboard navigation for list rows
-  const { focusedIndex } = useListKeyboardNavigation({
-    onSelect: (id) => openSlideOver(Number(id), "view"),
-    enabled: !isOpen,
-  });
+  if (isIdentityPending) {
+    return <ProductListSkeleton />;
+  }
+  if (!identity) {
+    return null;
+  }
 
   return (
     <>
-      <List actions={<ProductListActions />}>
-        <StandardListLayout resource="products" filterComponent={<ProductListFilter />}>
-          <PremiumDatagrid
-            onRowClick={(id) => openSlideOver(Number(id), "view")}
-            focusedIndex={focusedIndex}
-          >
-            <TextField source="name" label="Product Name" />
-            <TextField source="sku" label="SKU" />
-
-            <FunctionField
-              label="Category"
-              render={(record: any) => (
-                <Badge variant="outline">
-                  {record.category
-                    .split("_")
-                    .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ")}
-                </Badge>
-              )}
-            />
-
-            <FunctionField
-              label="Status"
-              render={(record: any) => <StatusBadge status={record.status} />}
-            />
-
-            <ReferenceField
-              source="principal_id"
-              reference="organizations"
-              label="Principal"
-              link={false}
-            >
-              <TextField source="name" />
-            </ReferenceField>
-
-            <FunctionField
-              label="Certifications"
-              render={(record: any) => (
-                <div className="flex gap-1 flex-wrap">
-                  {record.certifications?.slice(0, 3).map((cert: string, index: number) => (
-                    <Badge key={index} variant="outline" className="text-xs">
-                      {cert}
-                    </Badge>
-                  ))}
-                  {record.certifications && record.certifications.length > 3 && (
-                    <Badge variant="secondary" className="text-xs">
-                      +{record.certifications.length - 3}
-                    </Badge>
-                  )}
-                </div>
-              )}
-              cellClassName="hidden lg:table-cell"
-              headerClassName="hidden lg:table-cell"
-            />
-          </PremiumDatagrid>
-        </StandardListLayout>
+      <List
+        title={false}
+        actions={<ProductListActions />}
+        perPage={25}
+        sort={{ field: "name", order: "ASC" }}
+      >
+        <ProductListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
         <FloatingCreateButton />
       </List>
       <ProductSlideOver
@@ -109,6 +66,124 @@ export const ProductList = () => {
     </>
   );
 };
+
+/**
+ * ProductListLayout - Handles loading, empty states, and datagrid rendering
+ */
+const ProductListLayout = ({
+  openSlideOver,
+  isSlideOverOpen,
+}: {
+  openSlideOver: (id: number, mode: "view" | "edit") => void;
+  isSlideOverOpen: boolean;
+}) => {
+  const { data, isPending, filterValues } = useListContext();
+
+  // Keyboard navigation for list rows
+  // Disabled when slide-over is open to prevent conflicts
+  const { focusedIndex } = useListKeyboardNavigation({
+    onSelect: (id) => openSlideOver(Number(id), "view"),
+    enabled: !isSlideOverOpen,
+  });
+
+  const hasFilters = filterValues && Object.keys(filterValues).length > 0;
+
+  // Show skeleton during initial load
+  if (isPending) {
+    return (
+      <StandardListLayout resource="products" filterComponent={<ProductListFilter />}>
+        <ProductListSkeleton />
+      </StandardListLayout>
+    );
+  }
+
+  if (!data?.length && !hasFilters) {
+    return <ProductEmpty />;
+  }
+
+  return (
+    <>
+      <StandardListLayout resource="products" filterComponent={<ProductListFilter />}>
+        <PremiumDatagrid
+          onRowClick={(id) => openSlideOver(Number(id), "view")}
+          focusedIndex={focusedIndex}
+        >
+          {/* Column 1: Product Name - Primary identifier (sortable) - always visible */}
+          <TextField
+            source="name"
+            label="Product Name"
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
+
+          {/* Column 2: SKU - Unique identifier (sortable) - always visible */}
+          <TextField
+            source="sku"
+            label="SKU"
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
+
+          {/* Column 3: Category - Classification badge (sortable) - always visible */}
+          <FunctionField
+            label="Category"
+            sortBy="category"
+            render={(record: Product) => <CategoryBadge category={record.category} />}
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
+
+          {/* Column 4: Status - Lifecycle badge (sortable) - always visible */}
+          <FunctionField
+            label="Status"
+            sortBy="status"
+            render={(record: Product) => <StatusBadge status={record.status} />}
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
+
+          {/* Column 5: Principal - Organization reference (sortable) - hidden on tablet/mobile */}
+          <ReferenceField
+            source="principal_id"
+            reference="organizations"
+            label="Principal"
+            link={false}
+            sortable
+            {...COLUMN_VISIBILITY.desktopOnly}
+          >
+            <TextField source="name" />
+          </ReferenceField>
+
+          {/* Column 6: Certifications - Badges list (non-sortable) - hidden on tablet/mobile */}
+          <FunctionField
+            label="Certifications"
+            sortable={false}
+            render={(record: Product) => <CertificationBadges certifications={record.certifications} />}
+            {...COLUMN_VISIBILITY.desktopOnly}
+          />
+        </PremiumDatagrid>
+      </StandardListLayout>
+      <BulkActionsToolbar />
+    </>
+  );
+};
+
+/**
+ * ProductListActions - TopToolbar with sort and create actions
+ */
+const ProductListActions = () => (
+  <TopToolbar>
+    <SortButton fields={["name", "sku", "category", "status"]} />
+    <CreateButton />
+  </TopToolbar>
+);
+
+/**
+ * CategoryBadge - Display product category with proper formatting
+ */
+function CategoryBadge({ category }: { category: string }) {
+  return (
+    <Badge variant="outline">
+      {formatSnakeCase(category)}
+    </Badge>
+  );
+}
 
 /**
  * StatusBadge - Display product status with semantic colors
@@ -130,14 +205,41 @@ function StatusBadge({ status }: { status: string }) {
       variant = "outline";
   }
 
+  return <Badge variant={variant}>{formatSnakeCase(status)}</Badge>;
+}
+
+/**
+ * CertificationBadges - Display up to 3 certifications with overflow indicator
+ */
+function CertificationBadges({ certifications }: { certifications?: string[] }) {
+  if (!certifications || certifications.length === 0) {
+    return <span className="text-muted-foreground">—</span>;
+  }
+
   return (
-    <Badge variant={variant}>
-      {status
-        .split("_")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ")}
-    </Badge>
+    <div className="flex gap-1 flex-wrap">
+      {certifications.slice(0, 3).map((cert, index) => (
+        <Badge key={index} variant="outline" className="text-xs">
+          {cert}
+        </Badge>
+      ))}
+      {certifications.length > 3 && (
+        <Badge variant="secondary" className="text-xs">
+          +{certifications.length - 3}
+        </Badge>
+      )}
+    </div>
   );
+}
+
+/**
+ * Format snake_case string to Title Case
+ */
+function formatSnakeCase(value: string): string {
+  return value
+    .split("_")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }
 
 export default ProductList;
