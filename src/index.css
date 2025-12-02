@@ -785,6 +785,13 @@
   --avatar-shadow: 0 0 0 1px oklch(93% 0.004 92), 0 1px 2px 0 var(--shadow-ink) / 0.1;
   --avatar-highlight: inset 0 1px 0 0 oklch(100% 0 0 / 0.3);
 
+  /* Dashboard Layout Tokens */
+  --dashboard-tasks-width: 320px;
+  --dashboard-icon-rail-width: 48px;
+  --dashboard-tasks-drawer-width: 70%;
+  --dashboard-transition-duration: 200ms;
+  --dashboard-transition-easing: ease-out;
+
   /*
    * Usage Guide:
    *
