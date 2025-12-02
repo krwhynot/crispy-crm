@@ -402,8 +402,13 @@ Comprehensive design system documentation with real code examples:
 - [State Management](resources/state-management.md) - Local state, Context, server state with React Admin hooks, URL state, form state
 
 ### Design System
-- [Design Tokens](resources/design-tokens.md) - Spacing scale, touch targets, border radius, shadows, grid system
-- [Color System](resources/color-system.md) - OKLCH colors, brand colors (forest green), semantic mappings, status colors, warm-tinted shadows
+- [Design Tokens](resources/design-tokens.md) - Spacing scale, CSS variables overview
+  - [Spacing & Grid](resources/tokens-spacing-grid.md) - Grid system, breakpoints, density
+  - [Touch & Animation](resources/tokens-touch-animation.md) - Touch targets, shadows, transitions
+- [Color System](resources/color-system.md) - OKLCH overview, semantic mappings, best practices
+  - [Brand & Accent](resources/color-brand-accent.md) - Forest green, clay scales, neutrals, shadows
+  - [Status Colors](resources/color-status-semantic.md) - Success, warning, error, info, overlays
+  - [Charts & Tags](resources/color-charts-tags.md) - Data viz and tag palettes
 - [Typography](resources/typography.md) - Font families, sizing scale, weights, semantic text colors, hierarchy patterns
 - [Elevation](resources/elevation.md) - Three-tier shadow system, stroke patterns, divider system, rounded corners, avatar micro-elevation
 
