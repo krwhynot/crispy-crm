@@ -39,13 +39,12 @@ export function ResponsiveTasksPanel({
   // Desktop: Inline full panel
   if (breakpoint === "desktop") {
     return (
-      <aside
-        role="complementary"
-        aria-label="Tasks panel"
+      <section
+        aria-label="My Tasks"
         className="w-[var(--dashboard-tasks-width)] flex flex-col border-l border-border bg-muted overflow-hidden"
       >
         <TasksKanbanPanel />
-      </aside>
+      </section>
     );
   }
 

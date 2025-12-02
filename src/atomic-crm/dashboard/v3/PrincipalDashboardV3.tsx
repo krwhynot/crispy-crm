@@ -1,5 +1,8 @@
 import { useState, useCallback } from "react";
+import { CheckSquare } from "lucide-react";
 import { useBreakpoint } from "@/hooks/useBreakpoint";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { PrincipalPipelineTable } from "./components/PrincipalPipelineTable";
 import { ActivityFeedPanel } from "./components/ActivityFeedPanel";
 import { LogActivityFAB } from "./components/LogActivityFAB";
@@ -45,6 +48,9 @@ export function PrincipalDashboardV3() {
   // Determine if activity feed should show in main column
   const showActivityFeedInMain = breakpoint === "mobile" || breakpoint === "tablet-portrait";
 
+  // Show Tasks button in header for tablet breakpoints (no icon rail)
+  const showTasksButtonInHeader = breakpoint === "tablet-landscape" || breakpoint === "tablet-portrait";
+
   // Placeholder task count (TODO: integrate with actual tasks data)
   const taskCount = 5;
 
@@ -61,8 +67,26 @@ export function PrincipalDashboardV3() {
 
   return (
     <div className="flex min-h-[calc(100vh-8rem)] flex-col">
-      {/* Header */}
-      <DashboardHeader title="Principal Dashboard" />
+      {/* Header - with optional Tasks button for tablet breakpoints */}
+      <DashboardHeader title="Principal Dashboard">
+        {showTasksButtonInHeader && (
+          <Button
+            variant="outline"
+            size="default"
+            onClick={() => setTasksDrawerOpen(true)}
+            aria-label={`Open tasks panel (${taskCount} tasks)`}
+            className="relative h-11 gap-2"
+          >
+            <CheckSquare className="h-5 w-5" />
+            <span>Tasks</span>
+            {taskCount > 0 && (
+              <Badge variant="secondary" className="ml-1 h-5 min-w-[20px] px-1.5 text-xs">
+                {taskCount > 99 ? "99+" : taskCount}
+              </Badge>
+            )}
+          </Button>
+        )}
+      </DashboardHeader>
 
       {/* Main Content - Vertically stacked layout */}
       {/* Note: Using <div> instead of <main> because Layout.tsx already wraps in <main> */}
