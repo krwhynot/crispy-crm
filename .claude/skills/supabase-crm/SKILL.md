@@ -341,105 +341,102 @@ supabase db push
 
 ## Troubleshooting
 
-### Supabase CLI Connection Issues
+### Supabase CLI Connection Issues (WSL2)
 
-#### IPv6 Not Supported (WSL2)
-**Symptoms:** `dial tcp [2600:...]:5432: connect: network is unreachable`
+#### PRIMARY SOLUTION: Password-Based Authentication
 
-**Cause:** WSL2 uses NAT networking which doesn't pass through IPv6 by default. Supabase direct DB connections require IPv6.
+**Why this is required for WSL2:**
+The Supabase CLI's default passwordless auth uses an internal `cli_login_postgres` role via the connection pooler (Supavisor). In WSL2, connection hangs/timeouts are counted as failed auth attempts, triggering Fail2ban after just **2 failed attempts** (30-minute ban). Password-based auth uses a more stable authentication path.
 
-**Solutions:**
+**Setup (one-time):**
 
-1. **Use Session Pooler URL (IPv4 compatible)** - RECOMMENDED:
+1. **Add to `.env` file** (already gitignored):
    ```bash
-   # Crispy-CRM Project Connection String (Session Mode - port 5432)
-   npx supabase db push --db-url "postgresql://postgres.aaqnanddcqvfiwhshndl:[YOUR-PASSWORD]@aws-1-us-east-2.pooler.supabase.com:5432/postgres"
-
-   # Transaction Mode (port 6543) - for serverless/edge functions
-   npx supabase db push --db-url "postgresql://postgres.aaqnanddcqvfiwhshndl:[YOUR-PASSWORD]@aws-1-us-east-2.pooler.supabase.com:6543/postgres"
+   # Supabase CLI password auth (prevents IP bans from passwordless auth failures)
+   SUPABASE_DB_PASSWORD=your-database-password
    ```
 
-   **URL Format Breakdown:**
-   - `postgres.PROJECT_REF` = Username (note the dot, not colon!)
-   - `aws-1-us-east-2` = Region-specific pooler (check Dashboard for yours)
-   - Port `5432` = Session mode (persistent connections)
-   - Port `6543` = Transaction mode (serverless)
-
-   **⚠️ Common Mistake:** Using `aws-0-` instead of `aws-1-` - always verify in Dashboard → Connect
-
-2. **Enable IPv6 mirroring in WSL2** (Windows 11 22H2+):
-   Create `C:\Users\<Username>\.wslconfig`:
-   ```ini
-   [wsl2]
-   networkingMode=mirrored
-   ```
-   Then restart: `wsl --shutdown`
-
-   **Note:** This only works if your ISP provides IPv6. Check with `ping -6 ipv6.google.com`
-
-#### Tenant or User Not Found
-**Symptoms:** `FATAL: Tenant or user not found (SQLSTATE XX000)`
-
-**Cause:** Incorrect pooler region or username format.
-
-**Solution:**
-1. Go to Supabase Dashboard → Click **Connect** button (top right)
-2. Copy the exact "Session pooler" or "Transaction pooler" URL
-3. The region varies by project (e.g., `aws-0-`, `aws-1-`, `eu-central-1`)
-4. Username format is `postgres.PROJECT_REF` (with a dot, not underscore)
-
-#### IP Temporarily Banned
-**Symptoms:** `failed SASL auth (unexpected EOF)` or connection hangs
-
-**Cause:** Repeated failed auth attempts trigger temporary network ban.
-
-**Solution:**
-1. Go to [Supabase Dashboard](https://supabase.com/dashboard) → Project Settings → Database
-2. Scroll to **Network Bans** section
-3. Find and remove your IP (check with `curl ifconfig.me`)
-
-#### Password Authentication Failed
-**Symptoms:** `password authentication failed for user "postgres"`
-
-**Cause:** Database password not set or incorrect.
-
-**Solution:**
-1. Reset password in Dashboard → Project Settings → Database → Reset database password
-2. Link with password:
+2. **Source before running CLI commands:**
    ```bash
-   npx supabase link --project-ref PROJECT_REF --password "YOUR_PASSWORD"
+   source .env && npx supabase db push
+   source .env && npx supabase migration list --linked
    ```
+
+3. **Or export in your shell session:**
+   ```bash
+   export SUPABASE_DB_PASSWORD='your-database-password'
+   npx supabase db push
+   ```
+
+**The CLI automatically reads `SUPABASE_DB_PASSWORD` from environment.**
+
+---
+
+#### Check/Remove IP Bans (When Timeouts Occur)
+
+**Symptoms:** Connection hangs at "Initialising login role..." or "Connecting to remote database..."
+
+**Check for bans:**
+```bash
+npx supabase network-bans get --project-ref aaqnanddcqvfiwhshndl --experimental
+```
+
+**Remove ban:**
+```bash
+npx supabase network-bans remove --db-unban-ip <IP_ADDRESS> --project-ref aaqnanddcqvfiwhshndl --experimental
+```
+
+**Ban triggers:**
+- 2 failed password attempts → 30-minute ban (Fail2ban)
+- WSL2 connection timeouts count as failed attempts
+- Supavisor credential caching bugs cause false failures
+
+---
+
+#### Alternative: MCP Tool (Bypasses CLI Issues)
+
+When CLI is unavailable, use the Supabase MCP tool which uses REST API:
+```
+mcp__supabase__apply_migration  # For DDL operations
+mcp__supabase__execute_sql      # For queries
+mcp__supabase__list_tables      # Check schema
+```
+
+---
 
 #### Migration History Mismatch
+
 **Symptoms:** `remote migration versions not found in local migrations directory`
 
-**Cause:** Migrations applied directly to cloud (via Dashboard SQL Editor) without syncing locally.
+**Cause:** Migrations applied directly to cloud (via MCP or Dashboard) without syncing locally.
 
 **Solution:**
 ```bash
-# Mark remote-only as reverted
-npx supabase migration repair --status reverted TIMESTAMP1 TIMESTAMP2 ... --db-url "..."
+# Mark remote-only as reverted (removes from remote history)
+source .env && npx supabase migration repair --status reverted TIMESTAMP1 TIMESTAMP2 --linked
 
-# Mark local-only as applied
-npx supabase migration repair --status applied TIMESTAMP1 TIMESTAMP2 ... --db-url "..."
+# Mark local-only as applied (adds to remote history without running SQL)
+source .env && npx supabase migration repair --status applied TIMESTAMP1 TIMESTAMP2 --linked
 ```
 
-#### Invalid UTF-8 in Migration Files
-**Symptoms:** `invalid byte sequence for encoding "UTF8": 0x92`
+---
 
-**Cause:** Migration file contains Windows smart quotes or other non-ASCII characters.
+#### IPv6 Not Supported Error
+
+**Symptoms:** `dial tcp [2600:...]:5432: connect: network is unreachable`
+
+**This is normal for WSL2** - it uses NAT networking without IPv6. The password-based auth (above) works around this by using the pooler which supports IPv4.
+
+---
+
+#### Password Not Set
+
+**Symptoms:** `password authentication failed for user "postgres"`
 
 **Solution:**
-```bash
-# Find the bad file
-file supabase/migrations/*.sql | grep -v ASCII
-
-# Find the characters
-cat -v <file> | grep "M-"
-
-# Fix (replace 0x92 with arrow)
-sed -i 's/\x92/->/g' supabase/migrations/<file>.sql
-```
+1. Go to Dashboard → Project Settings → Database → Reset database password
+2. Update your `.env` file with the new password
+3. Re-link: `npx supabase link --project-ref aaqnanddcqvfiwhshndl`
 
 ### RLS Policy Not Working
 1. Check if RLS is enabled: `ALTER TABLE ... ENABLE ROW LEVEL SECURITY`
