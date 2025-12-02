@@ -191,6 +191,7 @@ export function PrincipalPipelineTable() {
                   getAriaSortValue={getAriaSortValue}
                   renderSortIcon={renderSortIcon}
                   align="center"
+                  className="hidden lg:table-cell"
                 />
                 <SortableTableHead
                   field="momentum"
@@ -201,7 +202,7 @@ export function PrincipalPipelineTable() {
                   getAriaSortValue={getAriaSortValue}
                   renderSortIcon={renderSortIcon}
                 />
-                <TableHead>Next Action</TableHead>
+                <TableHead className="max-w-[200px] lg:max-w-[280px]">Next Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -241,6 +242,7 @@ interface SortableTableHeadProps {
   getAriaSortValue: (field: SortField) => "ascending" | "descending" | "none";
   renderSortIcon: (field: SortField) => React.ReactNode;
   align?: "left" | "center" | "right";
+  className?: string;
 }
 
 function SortableTableHead({
@@ -251,6 +253,7 @@ function SortableTableHead({
   getAriaSortValue,
   renderSortIcon,
   align = "left",
+  className = "",
 }: SortableTableHeadProps) {
   const alignClass = align === "center" ? "text-center" : align === "right" ? "text-right" : "";
   const justifyClass =
@@ -271,7 +274,7 @@ function SortableTableHead({
 
   return (
     <TableHead
-      className={`cursor-pointer select-none hover:bg-muted/50 ${alignClass}`}
+      className={`cursor-pointer select-none hover:bg-muted/50 ${alignClass} ${className}`}
       onClick={() => onSort(field)}
       aria-sort={getAriaSortValue(field)}
     >

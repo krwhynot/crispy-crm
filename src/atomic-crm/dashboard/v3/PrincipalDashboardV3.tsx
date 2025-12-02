@@ -11,13 +11,14 @@ import { MyPerformanceWidget } from "./components/MyPerformanceWidget";
 /**
  * PrincipalDashboardV3 - Vertically stacked dashboard with Log Activity FAB
  *
- * Layout:
+ * Layout (all sections stack vertically):
  * - KPI Summary Row (4-column on desktop, 2x2 on mobile)
  * - Pipeline Table (full width)
- * - Two-column row: Tasks Kanban (left) + Activity Feed (right) on desktop
+ * - Tasks Kanban Board (full width)
+ * - Performance + Activity Feed (2-column on desktop, stacked on mobile)
  *
  * Features:
- * - Vertical stacking for better data visibility
+ * - Pure vertical stacking for maximum data visibility
  * - FAB opens Sheet slide-over for activity logging
  * - Draft persistence in localStorage
  * - Team activity feed showing recent activities with avatars
