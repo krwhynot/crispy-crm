@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 import { AsideSection } from "@/components/ui";
 import { ArrayInput, SimpleFormIterator } from "react-admin";
 import type { OrganizationWithHierarchy } from "../../types";
-import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, ORG_TYPE_COLOR_MAP, PRIORITY_VARIANT_MAP } from "../constants";
+import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES } from "../constants";
 
 interface OrganizationDetailsTabProps {
   record: OrganizationWithHierarchy;
