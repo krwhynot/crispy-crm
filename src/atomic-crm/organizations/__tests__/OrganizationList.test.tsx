@@ -311,9 +311,12 @@ describe("OrganizationList", () => {
     renderWithAdminContext(<OrganizationList />);
 
     await waitFor(() => {
-      const datagrid = screen.getByTestId("premium-datagrid");
+      // The mock PremiumDatagrid renders with data-testid="premium-datagrid"
+      const datagrid = screen.queryByTestId("premium-datagrid");
       expect(datagrid).toBeInTheDocument();
-      expect(datagrid).toHaveClass("table-row-premium");
+      if (datagrid) {
+        expect(datagrid).toHaveClass("table-row-premium");
+      }
     });
   });
 

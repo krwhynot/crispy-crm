@@ -131,7 +131,7 @@ describe("OrganizationInputs - Tabbed Form", () => {
     });
   });
 
-  it("should render all three tabs (General, Details, Other)", async () => {
+  it("should render all two tabs (Main, More)", async () => {
     render(
       <TestWrapper defaultValues={{ name: "Test Org" }}>
         <OrganizationInputs />
@@ -139,13 +139,12 @@ describe("OrganizationInputs - Tabbed Form", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByRole("tab", { name: /general/i })).toBeInTheDocument();
-      expect(screen.getByRole("tab", { name: /details/i })).toBeInTheDocument();
-      expect(screen.getByRole("tab", { name: /other/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /main/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /more/i })).toBeInTheDocument();
     });
   });
 
-  it("should display General tab content by default", async () => {
+  it("should display Main tab content by default", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
@@ -153,55 +152,54 @@ describe("OrganizationInputs - Tabbed Form", () => {
     );
 
     await waitFor(() => {
-      // Check for field labels in General tab - getAllByText to handle multiple matches
+      // Check for field labels in Main tab - getAllByText to handle multiple matches
       const nameLabels = screen.getAllByText(/name/i);
       expect(nameLabels.length).toBeGreaterThan(0);
 
       const orgTypeLabels = screen.getAllByText(/organization type/i);
       expect(orgTypeLabels.length).toBeGreaterThan(0);
-
-      const descLabels = screen.getAllByText(/description/i);
-      expect(descLabels.length).toBeGreaterThan(0);
     });
   });
 
-  it("should navigate to Details tab when clicked", async () => {
+  it("should navigate to More tab when clicked", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>
     );
 
-    // Click Details tab
-    const detailsTab = screen.getByRole("tab", { name: /details/i });
+    // Click More tab
+    const moreTab = screen.getByRole("tab", { name: /more/i });
 
     // Verify tab exists and is clickable
-    expect(detailsTab).toBeInTheDocument();
-    expect(detailsTab).not.toBeDisabled();
+    expect(moreTab).toBeInTheDocument();
+    expect(moreTab).not.toBeDisabled();
 
     // Tab switching is handled by Radix UI Tabs component
     // This test verifies the tab structure is correct
   });
 
-  it("should navigate to Other tab when clicked", async () => {
+  it("should have both Main and More tabs available", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>
     );
 
-    // Click Other tab
-    const otherTab = screen.getByRole("tab", { name: /other/i });
+    // Verify both tabs exist and are clickable
+    const mainTab = screen.getByRole("tab", { name: /main/i });
+    const moreTab = screen.getByRole("tab", { name: /more/i });
 
-    // Verify tab exists and is clickable
-    expect(otherTab).toBeInTheDocument();
-    expect(otherTab).not.toBeDisabled();
+    expect(mainTab).toBeInTheDocument();
+    expect(mainTab).not.toBeDisabled();
+    expect(moreTab).toBeInTheDocument();
+    expect(moreTab).not.toBeDisabled();
 
     // Tab switching is handled by Radix UI Tabs component
     // This test verifies the tab structure is correct
   });
 
-  it("should show error count badge on General tab when validation fails", async () => {
+  it("should show error count badge on Main tab when validation fails", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
@@ -211,8 +209,8 @@ describe("OrganizationInputs - Tabbed Form", () => {
     // This test verifies the structure exists for error badges
     // The actual validation logic would need to be triggered through React Admin's form context
     await waitFor(() => {
-      const generalTab = screen.getByRole("tab", { name: /general/i });
-      expect(generalTab).toBeInTheDocument();
+      const mainTab = screen.getByRole("tab", { name: /main/i });
+      expect(mainTab).toBeInTheDocument();
 
       // The component structure supports error badges via the Badge component
       // which uses semantic colors (variant="destructive")
@@ -250,58 +248,47 @@ describe("OrganizationInputs - Tabbed Form", () => {
     );
 
     await waitFor(() => {
-      // Check General tab grid
-      const generalContent = screen.getByRole("tabpanel", { hidden: false });
-      const generalGrid = generalContent.querySelector(".grid");
-      expect(generalGrid).toHaveClass("grid-cols-1", "lg:grid-cols-2");
+      // Check Main tab grid
+      const mainContent = screen.getByRole("tabpanel", { hidden: false });
+      const mainGrid = mainContent.querySelector(".grid");
+      expect(mainGrid).toHaveClass("grid-cols-1");
+      expect(mainGrid).toHaveClass("md:grid-cols-2");
     });
 
-    // Check Details tab grid
-    const detailsTab = screen.getByRole("tab", { name: /details/i });
-    fireEvent.click(detailsTab);
+    // Check More tab grid
+    const moreTab = screen.getByRole("tab", { name: /more/i });
+    fireEvent.click(moreTab);
 
     await waitFor(() => {
-      const detailsContent = screen.getByRole("tabpanel", { hidden: false });
-      const detailsGrid = detailsContent.querySelector(".grid");
-      expect(detailsGrid).toHaveClass("grid-cols-1", "lg:grid-cols-2");
-    });
-
-    // Check Other tab grid
-    const otherTab = screen.getByRole("tab", { name: /other/i });
-    fireEvent.click(otherTab);
-
-    await waitFor(() => {
-      const otherContent = screen.getByRole("tabpanel", { hidden: false });
-      const otherGrid = otherContent.querySelector(".grid");
-      expect(otherGrid).toHaveClass("grid-cols-1", "lg:grid-cols-2");
+      const moreContent = screen.getByRole("tabpanel", { hidden: false });
+      const moreGrid = moreContent.querySelector(".grid");
+      expect(moreGrid).toHaveClass("grid-cols-1");
+      expect(moreGrid).toHaveClass("md:grid-cols-2");
     });
   });
 
-  it("should render all 15 organization fields across tabs", async () => {
+  it("should render organization fields across tabs", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>
     );
 
-    // Check that all three tabs exist
-    const generalTab = screen.getByRole("tab", { name: /general/i });
-    const detailsTab = screen.getByRole("tab", { name: /details/i });
-    const otherTab = screen.getByRole("tab", { name: /other/i });
+    // Check that both tabs exist
+    const mainTab = screen.getByRole("tab", { name: /main/i });
+    const moreTab = screen.getByRole("tab", { name: /more/i });
 
     // Verify all tabs are present
-    expect(generalTab).toBeInTheDocument();
-    expect(detailsTab).toBeInTheDocument();
-    expect(otherTab).toBeInTheDocument();
+    expect(mainTab).toBeInTheDocument();
+    expect(moreTab).toBeInTheDocument();
 
     // Verify that the component renders input fields
     const textboxes = screen.getAllByRole("textbox");
     expect(textboxes.length).toBeGreaterThan(0);
 
-    // The component includes fields distributed across 3 tabs
-    // General tab: name, organization type, description, logo, sales
-    // Details tab: segment, priority, phone, address, city, postal code, state
-    // Other tab: website, linkedin url, context links
+    // The component includes fields distributed across 2 tabs
+    // Main tab: name, organization_type, sales_id, segment_id, street, city, state, zip
+    // More tab: website, linkedin_url, description, parent_organization_id
   });
 
   it("should use semantic colors for error badges", async () => {
@@ -313,8 +300,8 @@ describe("OrganizationInputs - Tabbed Form", () => {
 
     await waitFor(() => {
       // Check that tabs exist
-      const generalTab = screen.getByRole("tab", { name: /general/i });
-      expect(generalTab).toBeInTheDocument();
+      const mainTab = screen.getByRole("tab", { name: /main/i });
+      expect(mainTab).toBeInTheDocument();
 
       // Error badges should use variant="destructive" (semantic color)
       // This is verified through the implementation in OrganizationInputs.tsx
