@@ -110,13 +110,13 @@ describe("PrincipalDashboardV3", () => {
     const flexColContainers = container.querySelectorAll(".flex-col");
     expect(flexColContainers.length).toBeGreaterThanOrEqual(1);
 
-    // Root container should be flex h-screen flex-col
-    const rootDiv = container.querySelector(".flex.h-screen.flex-col");
+    // Root container should use flex + flex-col (min-height varies by layout context)
+    const rootDiv = container.querySelector(".flex.flex-col");
     expect(rootDiv).toBeInTheDocument();
 
-    // Main element should have flex-1 for remaining height
-    const mainElement = container.querySelector("main.flex-1");
-    expect(mainElement).toBeInTheDocument();
+    // Content area should have flex-1 for remaining height (uses div, not main - Layout.tsx wraps in main)
+    const contentDiv = container.querySelector(".flex-1.overflow-auto");
+    expect(contentDiv).toBeInTheDocument();
   });
 
   it("should have KPI row with 4-column desktop grid", () => {
@@ -142,12 +142,12 @@ describe("PrincipalDashboardV3", () => {
       </MemoryRouter>
     );
 
-    // Main content should use semantic spacing
-    const mainElement = container.querySelector("main");
-    expect(mainElement).toHaveClass("p-content");
+    // Content area should use semantic spacing (uses div, not main - Layout.tsx wraps in main)
+    const contentDiv = container.querySelector(".p-content");
+    expect(contentDiv).toBeInTheDocument();
 
     // Sections should use gap-section for vertical spacing
-    const sectionContainer = mainElement?.querySelector(".gap-section");
+    const sectionContainer = container.querySelector(".gap-section");
     expect(sectionContainer).toBeInTheDocument();
   });
 
