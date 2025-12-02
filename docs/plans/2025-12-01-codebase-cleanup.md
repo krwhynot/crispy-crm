@@ -23,6 +23,16 @@ The following checks were performed on 2025-12-01:
 3. **Glob patterns** to verify existence of files marked for deletion
 4. **Code review** of flagged architectural patterns
 
+### Plan Review (Second Pass)
+
+Additional verification on 2025-12-01 identified 5 more corrections:
+
+1. **React Admin guessers already deleted** - Task 1 removed (files don't exist)
+2. **ripgrep `--type tsx` not defined** - Commands updated to use `-g "*.{ts,tsx}"`
+3. **`node --check` can't parse TypeScript** - Commands updated to use `npx tsc --noEmit`
+4. **`csv-parse` not needed** - npm script uses `.js` version with manual parsing
+5. **devLogger needs compile-time elimination** - Implementation updated for true DCE
+
 ---
 
 ## False Positives Removed (DO NOT IMPLEMENT)
@@ -33,7 +43,7 @@ The following checks were performed on 2025-12-01:
 
 **Verification Performed:**
 ```bash
-rg "useIsMobile" src/ --type ts --type tsx -l
+rg "useIsMobile" src/ -g "*.{ts,tsx}" -l
 ```
 
 **Actual Result:** Found 7 files actively importing this hook:
@@ -156,30 +166,52 @@ Additionally:
 
 ---
 
-## Validated Findings (IMPLEMENT THESE)
+### ❌ FALSE POSITIVE 7: React Admin Guessers ALREADY DELETED
 
-### ✅ VALID: React Admin Guessers are Unused
+**Original Claim:** "Remove unused React Admin guessers"
 
-**Verification:**
+**Verification Performed (Second Pass):**
 ```bash
-rg "list-guesser|edit-guesser|show-guesser" src/ --type ts --type tsx -l
+ls src/components/admin/*-guesser.tsx 2>/dev/null || echo "Not found"
+ls src/lib/field.type.ts 2>/dev/null || echo "Not found"
 ```
 
-**Result:** Only found in `docs/plans/archive/` - no source code imports.
+**Actual Result:** Neither the guesser files nor `field.type.ts` exist. They were already deleted.
 
-**Files to delete:**
-- `src/components/admin/list-guesser.tsx`
-- `src/components/admin/edit-guesser.tsx`
-- `src/components/admin/show-guesser.tsx`
-- `src/lib/field.type.ts` (only used by guessers)
+**Conclusion:** Task 1 from the original plan is a no-op. Files already removed.
 
 ---
+
+### ❌ FALSE POSITIVE 8: `csv-parse` NOT NEEDED
+
+**Original Claim:** "scripts/migrate-opportunities-csv.ts needs csv-parse"
+
+**Verification Performed:**
+```bash
+grep "migrate:csv" package.json
+```
+
+**Actual Result:**
+```json
+"migrate:csv": "node ./scripts/migrate-opportunities-csv.js"
+```
+
+The npm script runs the `.js` version, which explicitly states:
+```javascript
+// NO OVER-ENGINEERING: Simple fs.readFileSync + manual parsing (no csv-parse dependency)
+```
+
+**Conclusion:** The `.js` version uses manual CSV parsing. `csv-parse` is only needed if you run the `.ts` version directly, which is not the standard workflow.
+
+---
+
+## Validated Findings (IMPLEMENT THESE)
 
 ### ✅ VALID: Design System Utilities are Orphaned
 
 **Verification:**
 ```bash
-rg "from ['\"]@/lib/design-system" src/ --type ts --type tsx -l
+rg "from ['\"]@/lib/design-system" src/ -g "*.{ts,tsx}" -l
 ```
 
 **Result:** No source imports. Only referenced in documentation files.
@@ -193,17 +225,16 @@ rg "from ['\"]@/lib/design-system" src/ --type ts --type tsx -l
 
 ---
 
-### ✅ VALID: Script Dependencies are Missing
+### ✅ VALID: Some Script Dependencies are Missing
 
 **Verification:** These scripts import packages not in package.json:
 
 | Script | Missing Package | Impact |
 |--------|-----------------|--------|
-| `scripts/migrate-opportunities-csv.ts` | `csv-parse` | Script fails on run |
 | `scripts/supabase-remote-init.mjs` | `@inquirer/prompts`, `execa` | Remote init broken |
 | `scripts/validation/run-pre-validation.js` | `pg` | Pre-migration validation fails |
 
-These work locally if you've installed them globally or in another project, but fail in CI or clean installs.
+**Note:** `csv-parse` is NOT needed (see False Positive 8 above).
 
 ---
 
@@ -230,82 +261,21 @@ rg "console\.(log|warn|error)" src/atomic-crm/providers/supabase/unifiedDataProv
 
 | Original Severity | Corrected | Reason |
 |-------------------|-----------|--------|
-| 🔴 High: 9 items | 🔴 High: 3 items | Most "missing deps" are transitive |
+| 🔴 High: 9 items | 🔴 High: 2 items | Most "missing deps" are transitive or not needed |
 | 🟡 Medium: 13 items | 🟡 Medium: 5 items | Removed non-existent files, valid patterns |
-| 🟢 Low: 7 items | 🟢 Low: 3 items | Removed false positives |
-| **Total: 29** | **Total: 11** | 62% reduction after verification |
+| 🟢 Low: 7 items | 🟢 Low: 2 items | Removed false positives, already-deleted files |
+| **Total: 29** | **Total: 9** | 69% reduction after verification |
 
 ---
 
 ## Phase 1: Safe Deletions (Zero Risk)
-**Estimated Time:** 45 minutes
+**Estimated Time:** 30 minutes
 **Prerequisites:** None
-**Why This Phase First:** Zero dependencies on other code. Can be reverted trivially. Immediate bundle size reduction.
+**Why This Phase First:** Zero dependencies on other code. Can be reverted trivially. Immediate cleanup.
 
 ---
 
-### Task 1: Remove Unused React Admin Guessers
-
-**Why:** These are legacy scaffolding utilities from early React Admin prototyping. They use runtime type inference to auto-generate forms—a pattern we abandoned in favor of explicit Zod schemas. Keeping them adds ~15KB to the bundle and cognitive overhead when exploring `/components/admin/`.
-
-**Files:**
-- Delete: `src/components/admin/list-guesser.tsx`
-- Delete: `src/components/admin/edit-guesser.tsx`
-- Delete: `src/components/admin/show-guesser.tsx`
-- Delete: `src/lib/field.type.ts` (only used by guessers)
-
-**Step 1: Verify no imports exist**
-
-Run:
-```bash
-rg "list-guesser|edit-guesser|show-guesser|field\.type" src/ --type ts --type tsx -l
-```
-
-Expected: No results (only archived docs reference these)
-
-**Step 2: Delete the guesser files**
-
-Run:
-```bash
-rm src/components/admin/list-guesser.tsx
-rm src/components/admin/edit-guesser.tsx
-rm src/components/admin/show-guesser.tsx
-rm src/lib/field.type.ts
-```
-
-**Step 3: Verify build still works**
-
-Run:
-```bash
-npm run build
-```
-
-Expected: Build succeeds with no errors
-
-**Step 4: Run tests to confirm no regressions**
-
-Run:
-```bash
-npm run test:ci
-```
-
-Expected: All tests pass
-
-**Step 5: Commit**
-
-```bash
-git add -A
-git commit -m "chore: remove unused React Admin guesser components
-
-These inference utilities were from early prototyping and have no consumers.
-Reduces bundle size and maintenance surface.
-
-🤖 Generated with Claude Code"
-```
-
----
-
-### Task 2: Remove Orphaned Design System Utilities
+### Task 1: Remove Orphaned Design System Utilities
 
 **Why:** These TypeScript utilities were created during a design system planning phase but never integrated. The actual design tokens live in CSS custom properties (`src/index.css` and Tailwind config). Having parallel TypeScript exports creates confusion about which is the source of truth.
 
@@ -319,7 +289,7 @@ Reduces bundle size and maintenance surface.
 
 Run:
 ```bash
-rg "from ['\"]@/lib/design-system" src/ --type ts --type tsx -l
+rg "from ['\"]@/lib/design-system" src/ -g "*.{ts,tsx}" -l
 ```
 
 Expected: No results (only docs reference these)
@@ -354,7 +324,7 @@ Design tokens live in CSS custom properties (src/index.css) instead.
 
 ---
 
-### Task 3: Clean Up Stale Page Export
+### Task 2: Clean Up Stale Page Export
 
 **Why:** Minor hygiene. Commented-out exports in barrel files create confusion about what's actually available.
 
@@ -390,20 +360,22 @@ git commit -m "chore: clean up stale page exports
 ---
 
 ## Phase 2: Add Missing Script Dependencies (Low Risk)
-**Estimated Time:** 30 minutes
+**Estimated Time:** 20 minutes
 **Prerequisites:** Phase 1 complete
 **Why This Phase Second:** These are devDependencies that don't affect production bundle. They enable scripts that are currently broken in CI.
 
 ---
 
-### Task 4: Add Missing Dev Dependencies for Scripts
+### Task 3: Add Missing Dev Dependencies for Scripts
 
-**Why:** Three utility scripts import packages that aren't declared in package.json. They work locally if you happen to have these packages installed globally or from another project's node_modules, but fail in:
+**Why:** Two utility scripts import packages that aren't declared in package.json. They work locally if you happen to have these packages installed globally or from another project's node_modules, but fail in:
 - Fresh `git clone` + `npm ci`
 - CI/CD pipelines
 - Docker builds
 
 This is a reliability issue that causes mysterious "module not found" errors.
+
+**Note:** `csv-parse` is NOT needed—the npm script uses the `.js` version which has manual CSV parsing.
 
 **Files:**
 - Modify: `package.json`
@@ -411,25 +383,23 @@ This is a reliability issue that causes mysterious "module not found" errors.
 **Step 1: Add missing dependencies**
 
 These scripts import packages not declared in package.json:
-- `scripts/migrate-opportunities-csv.ts` needs `csv-parse`
 - `scripts/supabase-remote-init.mjs` needs `@inquirer/prompts` and `execa`
 - `scripts/validation/run-pre-validation.js` needs `pg`
 
 Run:
 ```bash
-npm install --save-dev csv-parse @inquirer/prompts execa pg @types/pg
+npm install --save-dev @inquirer/prompts execa pg @types/pg
 ```
 
 **Step 2: Verify scripts can be parsed**
 
 Run:
 ```bash
-node --check scripts/migrate-opportunities-csv.ts 2>/dev/null || echo "TS file - check with tsc"
 node --check scripts/supabase-remote-init.mjs
 node --check scripts/validation/run-pre-validation.js
 ```
 
-Expected: No syntax errors (TS file may need tsc check)
+Expected: No syntax errors
 
 **Step 3: Verify lockfile is clean**
 
@@ -446,7 +416,7 @@ Expected: Install succeeds with no warnings
 git add package.json package-lock.json
 git commit -m "chore: add missing script dependencies
 
-Adds csv-parse, @inquirer/prompts, execa, pg for utility scripts.
+Adds @inquirer/prompts, execa, pg for utility scripts.
 These were implicitly available but caused failures in clean installs.
 
 🤖 Generated with Claude Code"
@@ -461,13 +431,15 @@ These were implicitly available but caused failures in clean installs.
 
 ---
 
-### Task 5: Create Centralized Dev Logger Utility
+### Task 4: Create Compile-Time Dev Logger Utility
 
-**Why:** Currently, console.log/warn calls are scattered across the codebase with inconsistent env-gating. Some check `import.meta.env.DEV`, others don't. Creating a centralized utility ensures:
-1. Consistent behavior (all dev-only)
-2. Single point to modify if we add telemetry later
-3. Better tree-shaking (Vite can eliminate the calls entirely in prod)
-4. Consistent log formatting with context prefixes
+**Why:** Currently, console.log/warn calls are scattered across the codebase with inconsistent env-gating. Some check `import.meta.env.DEV`, others don't.
+
+**IMPORTANT:** For true dead-code elimination (DCE), the `import.meta.env.DEV` check must wrap the entire call site, not just the console output. Otherwise, argument expressions are still evaluated in production.
+
+**Implementation Choice:** We provide both:
+1. A simple `devLog` for cases where argument evaluation is cheap
+2. Inline `if (import.meta.env.DEV)` guards for expensive evaluations
 
 **Files:**
 - Create: `src/lib/devLogger.ts`
@@ -479,42 +451,66 @@ Create file `src/lib/devLogger.ts`:
 
 ```typescript
 /**
- * Development-only logging utility.
- * All output is stripped in production builds via dead code elimination.
+ * Development-only logging utilities.
+ *
+ * DEAD CODE ELIMINATION NOTES:
+ * - Vite/esbuild will eliminate `if (import.meta.env.DEV)` blocks in production
+ * - For simple logging, use devLog/devWarn/devError (argument eval is negligible)
+ * - For expensive argument computation, use inline guards:
+ *
+ *   // GOOD - entire block eliminated in prod, including expensive call
+ *   if (import.meta.env.DEV) {
+ *     console.log('Result:', expensiveSerialize(data));
+ *   }
+ *
+ *   // ACCEPTABLE - simple args, minimal prod overhead
+ *   devLog('Context', 'message', simpleValue);
+ *
+ *   // BAD - expensiveSerialize runs in prod even though log is gated
+ *   devLog('Context', 'message', expensiveSerialize(data));
  *
  * Usage:
- *   import { devLog, devWarn, devError } from '@/lib/devLogger';
- *   devLog('MyComponent', 'fetched data', { count: items.length });
+ *   import { devLog, devWarn, devError, DEV } from '@/lib/devLogger';
+ *
+ *   // Simple logging
+ *   devLog('MyComponent', 'loaded');
+ *
+ *   // With compile-time elimination for expensive args
+ *   if (DEV) {
+ *     console.log('[MyComponent]', 'data:', JSON.stringify(largeObject, null, 2));
+ *   }
  */
 
-const isDev = import.meta.env.DEV;
+/** Re-export for convenient inline guards */
+export const DEV = import.meta.env.DEV;
 
+/**
+ * Development-only console.log wrapper.
+ * Use for simple logging where argument evaluation cost is negligible.
+ */
 export function devLog(context: string, message: string, data?: unknown): void {
-  if (isDev) {
-    console.log(`[${context}]`, message, data ?? '');
-  }
-}
-
-export function devWarn(context: string, message: string, data?: unknown): void {
-  if (isDev) {
-    console.warn(`[${context}]`, message, data ?? '');
-  }
-}
-
-export function devError(context: string, message: string, data?: unknown): void {
-  if (isDev) {
-    console.error(`[${context}]`, message, data ?? '');
+  if (import.meta.env.DEV) {
+    console.log(`[${context}]`, message, data !== undefined ? data : '');
   }
 }
 
 /**
- * For performance-sensitive paths, use this to avoid string interpolation
- * in production. The callback is only executed in dev mode.
+ * Development-only console.warn wrapper.
  */
-export function devLogLazy(context: string, messageFn: () => [string, unknown?]): void {
-  if (isDev) {
-    const [message, data] = messageFn();
-    console.log(`[${context}]`, message, data ?? '');
+export function devWarn(context: string, message: string, data?: unknown): void {
+  if (import.meta.env.DEV) {
+    console.warn(`[${context}]`, message, data !== undefined ? data : '');
+  }
+}
+
+/**
+ * Development-only console.error wrapper.
+ * Note: For actual error handling, use proper error boundaries/reporting.
+ * This is only for debug output that should not appear in production.
+ */
+export function devError(context: string, message: string, data?: unknown): void {
+  if (import.meta.env.DEV) {
+    console.error(`[${context}]`, message, data !== undefined ? data : '');
   }
 }
 ```
@@ -528,26 +524,36 @@ npx tsc --noEmit src/lib/devLogger.ts
 
 Expected: No errors
 
-**Step 3: Commit**
+**Step 3: Verify DCE works in production build**
+
+Run:
+```bash
+npm run build
+grep -r "devLog\|devWarn\|devError" dist/ || echo "Functions stripped (good)"
+```
+
+Expected: Functions should be tree-shaken if unused, or inlined with dead branches removed.
+
+**Step 4: Commit**
 
 ```bash
 git add src/lib/devLogger.ts
-git commit -m "feat: add dev-only logging utility
+git commit -m "feat: add dev-only logging utility with DCE guidance
 
-Provides devLog/devWarn/devError that are stripped in production.
-Replaces scattered console.* calls with env-gated alternatives.
+Provides devLog/devWarn/devError that are gated in production.
+Includes documentation on when to use inline guards for expensive args.
 
 🤖 Generated with Claude Code"
 ```
 
 ---
 
-### Task 6: Gate Logging in unifiedDataProvider
+### Task 5: Gate Logging in unifiedDataProvider
 
 **Why:** The unified data provider is the most log-heavy file in the codebase (~20 console statements). These logs were essential during development but now:
 - Pollute production consoles
 - May expose user data (resource names, IDs, filter values)
-- Add ~50ms overhead from string interpolation on every data operation
+- Add overhead from string interpolation on every data operation
 
 **Files:**
 - Modify: `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`
@@ -556,20 +562,29 @@ Replaces scattered console.* calls with env-gated alternatives.
 
 Add after existing imports:
 ```typescript
-import { devLog, devWarn, devError } from '@/lib/devLogger';
+import { devLog, devWarn, devError, DEV } from '@/lib/devLogger';
 ```
 
 **Step 2: Replace console.log calls**
 
-Search for `console.log` and replace with `devLog`:
-
-Example transformations:
+For simple logging:
 ```typescript
 // Before:
 console.log('[DataProvider] Fetching', resource);
 
 // After:
 devLog('DataProvider', 'Fetching', resource);
+```
+
+For expensive argument evaluation (like JSON.stringify):
+```typescript
+// Before:
+console.log('[DataProvider] Query result:', JSON.stringify(data, null, 2));
+
+// After (use inline guard for true DCE):
+if (DEV) {
+  console.log('[DataProvider] Query result:', JSON.stringify(data, null, 2));
+}
 ```
 
 **Step 3: Replace console.warn calls**
@@ -582,10 +597,12 @@ console.warn('No filter handler for', resource);
 devWarn('DataProvider', 'No filter handler', resource);
 ```
 
-**Step 4: Replace console.error calls**
+**Step 4: Replace console.error calls (debug only)**
+
+Only replace debug-oriented errors. Keep actual error handling intact.
 
 ```typescript
-// Before:
+// Before (debug output):
 console.error('Query failed:', error);
 
 // After:
@@ -601,14 +618,14 @@ npm run build
 
 Expected: Build succeeds
 
-**Step 6: Verify no console.* remains (except intentional)**
+**Step 6: Verify no ungated console.* remains**
 
 Run:
 ```bash
 rg "console\.(log|warn)" src/atomic-crm/providers/supabase/unifiedDataProvider.ts
 ```
 
-Expected: No results (or only error boundary fallbacks)
+Expected: No results, OR only inside `if (DEV)` blocks
 
 **Step 7: Run tests**
 
@@ -626,6 +643,7 @@ git add src/atomic-crm/providers/supabase/unifiedDataProvider.ts
 git commit -m "refactor: gate data provider logging with devLogger
 
 Replaces raw console.* with env-gated devLog/devWarn/devError.
+Uses inline DEV guards for expensive argument evaluation.
 Prevents log noise and potential PII exposure in production.
 
 🤖 Generated with Claude Code"
@@ -633,7 +651,7 @@ Prevents log noise and potential PII exposure in production.
 
 ---
 
-### Task 7: Gate Logging in OrganizationImportDialog
+### Task 6: Gate Logging in OrganizationImportDialog
 
 **Why:** The CSV import dialog logs extensively during file parsing. In production, this could expose:
 - File contents being parsed
@@ -646,12 +664,12 @@ Prevents log noise and potential PII exposure in production.
 **Step 1: Add import**
 
 ```typescript
-import { devLog, devWarn } from '@/lib/devLogger';
+import { devLog, devWarn, DEV } from '@/lib/devLogger';
 ```
 
 **Step 2: Replace console statements**
 
-Apply same pattern as Task 6.
+Apply same pattern as Task 5. Use inline `if (DEV)` guards for any logging that stringifies imported data.
 
 **Step 3: Verify and commit**
 
@@ -669,7 +687,7 @@ git commit -m "refactor: gate import dialog logging with devLogger
 
 ---
 
-### Task 8: Gate Logging in opportunities.service
+### Task 7: Gate Logging in opportunities.service
 
 **Why:** The opportunities service logs on every create/update operation. In production, this creates noise proportional to user activity.
 
@@ -692,7 +710,7 @@ git commit -m "refactor: gate opportunity service logging with devLogger
 
 ---
 
-### Task 9: Gate Logging in Provider Index
+### Task 8: Gate Logging in Provider Index
 
 **Why:** The provider index logs architecture selection on every app startup. While useful during development, this is noise in production.
 
@@ -701,7 +719,7 @@ git commit -m "refactor: gate opportunity service logging with devLogger
 
 **Step 1: Add import and replace startup logs**
 
-Lines 87-92 contain architecture selection logs. Gate with devLog.
+Gate with devLog.
 
 **Step 2: Verify and commit**
 
@@ -722,7 +740,7 @@ git commit -m "refactor: gate provider startup logging
 
 ---
 
-### Task 10: Resolve Circular Dependencies (OPTIONAL)
+### Task 9: Resolve Circular Dependencies (OPTIONAL)
 
 **Why Consider:** Circular dependencies can cause:
 - Unpredictable module initialization order
@@ -754,7 +772,7 @@ Run dev server and make edits to cyclic files. Confirm hot reload works.
 
 ---
 
-### Task 11: Add Explicit Transitive Dependencies (OPTIONAL)
+### Task 10: Add Explicit Transitive Dependencies (OPTIONAL)
 
 **Why Consider:** Explicit dependencies are more resilient to lockfile drift. If react-admin changes its dependency tree, your direct imports could break.
 
@@ -776,9 +794,9 @@ After completing all phases:
 - [ ] `npm run build` succeeds
 - [ ] `npm run test:ci` passes
 - [ ] `npm run lint:check` passes
-- [ ] No console.log/warn in production bundle (verify with `npm run build && grep -r "console\." dist/`)
+- [ ] No ungated console.log/warn in source (verify with `rg "console\.(log|warn)" src/ -g "*.{ts,tsx}" | grep -v "if (DEV)\|if (import.meta.env.DEV)"`)
 - [ ] Dev server shows expected logs in development mode
-- [ ] Bundle size reduced (check with `npx vite-bundle-visualizer`)
+- [ ] Production build has minimal/no debug output
 
 ---
 
@@ -786,13 +804,13 @@ After completing all phases:
 
 | Phase | Tasks | Risk | Time | Impact |
 |-------|-------|------|------|--------|
-| 1: Safe Deletions | 3 | Zero | 45 min | ~15KB bundle reduction |
-| 2: Dependencies | 1 | Low | 30 min | Fix CI/CD failures |
+| 1: Safe Deletions | 2 | Zero | 30 min | Remove orphaned code |
+| 2: Dependencies | 1 | Low | 20 min | Fix CI/CD failures |
 | 3: Logging | 5 | Medium | 1.5 hr | Prevent PII exposure |
 | 4: Optional | 2 | Low | 2 hr | Stricter hygiene |
 
-**Total (required):** ~2.75 hours
-**Total (with optional):** ~4.75 hours
+**Total (required):** ~2.25 hours
+**Total (with optional):** ~4.25 hours
 
 ---
 
@@ -801,23 +819,36 @@ After completing all phases:
 | Original Item | Why Removed | Evidence |
 |---------------|-------------|----------|
 | Delete `use-mobile.ts` | Actually used in 6+ components | `rg "useIsMobile" src/` returns 7 files |
+| Delete React Admin guessers | Files already deleted | `ls src/components/admin/*-guesser.tsx` returns nothing |
 | Add `@mui/material` | Transitive dep from react-admin | `npm ls @mui/material` shows v7.3.5 |
 | Add `cropperjs` | Transitive dep from react-cropper | `npm ls cropperjs` shows v1.6.2 |
+| Add `csv-parse` | Not needed - .js version uses manual parsing | Comment in script: "no csv-parse dependency" |
 | Add `@storybook/react` | Available via @storybook/react-vite | Type imports resolve correctly |
 | Delete `.spec.tsx` duplicates | Files don't exist | `find src/atomic-crm -name "*.spec.tsx"` returns nothing |
 | Refactor `useCurrentSale` | Intentional perf optimization | Code comments explain 100-200ms improvement |
 
 ---
 
+## Appendix: Command Syntax Fixes
+
+The original audit and first plan revision used incorrect command syntax:
+
+| Original Command | Issue | Corrected Command |
+|------------------|-------|-------------------|
+| `rg ... --type tsx` | ripgrep has no `tsx` type | `rg ... -g "*.{ts,tsx}"` |
+| `node --check script.ts` | Node can't parse TypeScript | `npx tsc --noEmit script.ts` |
+
+---
+
 ## Appendix: Original Audit vs Corrected Assessment
 
-| Metric | Original Audit | After Verification |
-|--------|----------------|-------------------|
-| Total Issues | 29 | 11 |
-| 🔴 High Severity | 9 | 3 |
-| 🟡 Medium Severity | 13 | 5 |
-| 🟢 Low Severity | 7 | 3 |
-| Estimated Effort | 10.5 hours | 2.75 hours (required) |
-| False Positive Rate | N/A | 62% of items removed |
+| Metric | Original Audit | After First Review | After Second Review |
+|--------|----------------|-------------------|---------------------|
+| Total Issues | 29 | 11 | 9 |
+| 🔴 High Severity | 9 | 3 | 2 |
+| 🟡 Medium Severity | 13 | 5 | 5 |
+| 🟢 Low Severity | 7 | 3 | 2 |
+| Estimated Effort | 10.5 hours | 2.75 hours | 2.25 hours |
+| False Positive Rate | N/A | 62% | 69% |
 
-The original audit used automated tooling (depcheck, grep patterns) without manual verification. This plan corrects those findings with actual codebase evidence.
+The original audit used automated tooling (depcheck, grep patterns) without manual verification. This plan corrects those findings with actual codebase evidence and command syntax fixes.

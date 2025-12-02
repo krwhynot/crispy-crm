@@ -463,11 +463,12 @@ source .env && npx supabase migration repair --status applied TIMESTAMP1 TIMESTA
 
 ## Version
 
-- Skill Version: 1.2
-- Last Updated: 2025-11-29
+- Skill Version: 1.3
+- Last Updated: 2025-12-02
 - Crispy-CRM Target: MVP (Phase 1-3)
 
 ### Changelog
+- **1.3** (2025-12-02): **MAJOR** - Password-based auth is now PRIMARY solution for WSL2. Simplified troubleshooting, added MCP fallback, removed obsolete pooler URL method
 - **1.2** (2025-11-29): Added project-specific pooler URL (`aws-1-us-east-2`), "Tenant not found" troubleshooting, URL format breakdown
 - **1.1** (2025-11-29): Added CLI Troubleshooting section for IPv6/WSL2, IP bans, migration repair, UTF-8 issues
 - **1.0** (2025-11-13): Initial skill with service layer, RLS, Edge Functions, and migration patterns
