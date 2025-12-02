@@ -10,6 +10,7 @@ import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { SidebarActiveFilters } from "./SidebarActiveFilters";
 import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
+import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, ORG_TYPE_COLOR_MAP, PRIORITY_VARIANT_MAP } from "./constants";
 
 type BadgeVariant = VariantProps<typeof badgeVariants>["variant"];
 
