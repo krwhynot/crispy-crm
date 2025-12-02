@@ -1425,6 +1425,235 @@ Closes #responsive-dashboard"
 
 ---
 
+## Phase 6: Post-Layout UX Polish
+
+> **Rationale:** These fixes address MEDIUM and LOW severity issues from the UI/UX audit that should be applied after the responsive layout is complete. They polish the user experience without blocking the core layout work.
+
+### Task 6.1: Increase Table Row Touch Targets
+
+**Files:**
+- Modify: `src/atomic-crm/dashboard/v3/components/PipelineTableRow.tsx`
+
+**Rationale:** Current row height (~32px) is below WCAG's 44px minimum for touch targets.
+
+**Severity:** HIGH | **Impact:** Touch accessibility on iPad
+
+**Step 1: Examine current row styles**
+
+```bash
+grep -n "className\|height\|h-" src/atomic-crm/dashboard/v3/components/PipelineTableRow.tsx
+```
+
+**Step 2: Increase row height**
+
+```typescript
+// Before:
+<TableRow className="hover:bg-muted/50">
+
+// After:
+<TableRow className="h-12 min-h-[48px] hover:bg-muted/50">
+```
+
+**Step 3: Test touch interaction**
+
+```bash
+npm run dev
+# Test on iPad or touch simulator - rows should be easy to tap
+```
+
+**Step 4: Commit**
+
+```bash
+git add src/atomic-crm/dashboard/v3/components/PipelineTableRow.tsx
+git commit -m "a11y(dashboard): increase pipeline table row height to 48px
+
+WCAG 2.1 AA compliance - ensures table rows meet 44px minimum
+touch target requirement for iPad users.
+
+Audit fix: HIGH severity"
+```
+
+---
+
+### Task 6.2: Increase Cancel Button Touch Target
+
+**Files:**
+- Modify: `src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx`
+
+**Rationale:** Cancel button uses default size which may be below 44px minimum.
+
+**Severity:** MEDIUM | **Impact:** Touch accessibility
+
+**Step 1: Find cancel button**
+
+```bash
+grep -n "Cancel\|variant.*outline" src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx
+```
+
+**Step 2: Add h-11 class (44px)**
+
+```typescript
+// Before:
+<Button variant="outline" onClick={onCancel}>Cancel</Button>
+
+// After:
+<Button variant="outline" onClick={onCancel} className="h-11">Cancel</Button>
+```
+
+**Step 3: Commit**
+
+```bash
+git add src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx
+git commit -m "a11y(dashboard): increase QuickLogForm cancel button to 44px
+
+Ensures cancel button meets WCAG 2.1 AA touch target minimum.
+
+Audit fix: MEDIUM severity"
+```
+
+---
+
+### Task 6.3: Enhance Overdue Section Visual Hierarchy
+
+**Files:**
+- Modify: `src/atomic-crm/dashboard/v3/components/TasksPanel.tsx`
+- Modify: `src/atomic-crm/dashboard/v3/components/TaskGroup.tsx`
+
+**Rationale:** Overdue tasks need stronger visual differentiation to grab attention.
+
+**Severity:** MEDIUM | **Impact:** Cognitive load, urgency perception
+
+**Step 1: Enhance TaskGroup header for overdue**
+
+```typescript
+// In TaskGroup.tsx, add conditional styling:
+const headerClasses = cn(
+  "flex items-center gap-2 px-3 py-2 bg-muted rounded-t-lg",
+  isOverdue && "bg-destructive/10 border-l-4 border-destructive"
+);
+
+// For the count badge:
+const badgeVariant = isOverdue ? "destructive" : "secondary";
+```
+
+**Step 2: Add animation for overdue count**
+
+```typescript
+// Add subtle pulse animation for overdue count > 0
+{overdueCount > 0 && (
+  <Badge variant="destructive" className="animate-pulse">
+    {overdueCount}
+  </Badge>
+)}
+```
+
+**Step 3: Commit**
+
+```bash
+git add src/atomic-crm/dashboard/v3/components/TasksPanel.tsx \
+        src/atomic-crm/dashboard/v3/components/TaskGroup.tsx
+git commit -m "ux(dashboard): enhance overdue task visual hierarchy
+
+- Add destructive background tint and left border
+- Pulse animation on overdue count badge
+- Improves urgency perception per Fitts's Law
+
+Audit fix: MEDIUM severity"
+```
+
+---
+
+### Task 6.4: Add Keyboard Access to Hidden Action
+
+**Files:**
+- Modify: `src/atomic-crm/dashboard/v3/components/PipelineDrillDownSheet.tsx`
+- Modify: `src/atomic-crm/dashboard/v3/components/OpportunityCard.tsx`
+
+**Rationale:** "View Details" button is only visible on hover, inaccessible via keyboard.
+
+**Severity:** MEDIUM | **Impact:** Keyboard accessibility
+
+**Step 1: Add focus-visible styles**
+
+```typescript
+// In OpportunityCard.tsx:
+<Button
+  variant="ghost"
+  size="sm"
+  className="opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity"
+  onClick={() => onViewDetails(opportunity.id)}
+>
+  View Details
+</Button>
+```
+
+**Step 2: Add keyboard shortcut hint**
+
+```typescript
+// Add aria-describedby with keyboard hint
+<span id="view-details-hint" className="sr-only">
+  Press Enter to view opportunity details
+</span>
+```
+
+**Step 3: Commit**
+
+```bash
+git add src/atomic-crm/dashboard/v3/components/PipelineDrillDownSheet.tsx \
+        src/atomic-crm/dashboard/v3/components/OpportunityCard.tsx
+git commit -m "a11y(dashboard): add keyboard access to opportunity card actions
+
+- Shows action button on focus-visible (not just hover)
+- Adds screen reader hint for keyboard navigation
+- Ensures keyboard-only users can access all actions
+
+Audit fix: MEDIUM severity"
+```
+
+---
+
+### Task 6.5: Improve KPI Glanceability
+
+**Files:**
+- Modify: `src/atomic-crm/dashboard/v3/components/KPICard.tsx`
+
+**Rationale:** KPI values could use larger font size for better glanceability in warehouse/car environments.
+
+**Severity:** LOW | **Impact:** Readability at distance
+
+**Step 1: Increase KPI value font size**
+
+```typescript
+// Before:
+<span className="text-xl font-bold">{value}</span>
+
+// After:
+<span className="text-2xl lg:text-3xl font-bold tabular-nums">{value}</span>
+```
+
+**Step 2: Ensure proper text contrast**
+
+```typescript
+// Use semantic text colors
+<span className="text-foreground">{value}</span>
+<span className="text-muted-foreground">{label}</span>
+```
+
+**Step 3: Commit**
+
+```bash
+git add src/atomic-crm/dashboard/v3/components/KPICard.tsx
+git commit -m "ux(dashboard): increase KPI font size for glanceability
+
+- Increases KPI values to text-2xl (lg:text-3xl)
+- Uses tabular-nums for consistent number alignment
+- Improves readability in warehouse/car environments
+
+Audit fix: LOW severity"
+```
+
+---
+
 ## Summary
 
 | Phase | Tasks | Estimated Time |

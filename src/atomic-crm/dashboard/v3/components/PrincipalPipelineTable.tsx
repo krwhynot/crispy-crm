@@ -311,6 +311,7 @@ function SortableTableHead({
 
   return (
     <TableHead
+      scope="col"
       className={`cursor-pointer select-none hover:bg-muted/50 ${alignClass} ${className}`}
       onClick={() => onSort(field)}
       aria-sort={getAriaSortValue(field)}
