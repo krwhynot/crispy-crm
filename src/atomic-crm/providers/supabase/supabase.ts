@@ -13,7 +13,6 @@ if (import.meta.env.DEV) {
   const url = import.meta.env.VITE_SUPABASE_URL;
   const projectId = url?.split(".")[0]?.split("//")[1] || "unknown";
   console.debug("[SUPABASE] Initializing project:", projectId);
-  console.debug("[SUPABASE] Full URL:", url); // TEMPORARY DEBUG
   // Never log API keys, even partially
 }
 
