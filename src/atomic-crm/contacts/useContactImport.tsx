@@ -29,7 +29,7 @@ import type {
 
 export function useContactImport() {
   const today = new Date().toISOString();
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
   const dataProvider = useDataProvider();
 
   // organization cache to avoid creating the same organization multiple times and costly roundtrips

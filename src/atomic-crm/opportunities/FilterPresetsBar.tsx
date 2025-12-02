@@ -24,7 +24,7 @@ const iconMap: Record<string, LucideIcon> = {
 };
 
 export const FilterPresetsBar: React.FC = () => {
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
   const { data: opportunities } = useListContext<Opportunity>();
   const { filterValues, setFilters, displayedFilters } = useListFilterContext();
 

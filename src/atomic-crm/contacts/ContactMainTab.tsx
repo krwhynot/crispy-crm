@@ -18,7 +18,7 @@ const personalInfoTypes = [{ id: "Work" }, { id: "Home" }, { id: "Other" }];
 const saleOptionRenderer = (choice: Sale) => `${choice.first_name} ${choice.last_name}`;
 
 export const ContactMainTab = () => {
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
   const { setValue, getValues } = useFormContext();
 
   const handleEmailChange = (email: string) => {

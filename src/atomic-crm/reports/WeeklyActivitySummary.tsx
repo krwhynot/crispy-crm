@@ -19,7 +19,7 @@ import type { ActivityRecord, Organization, Sale } from "../types";
  * CSV Export: rep_name, principal_name, calls, emails, meetings, notes, total
  */
 export default function WeeklyActivitySummary() {
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
   const notify = useNotify();
   const [dateRange, setDateRange] = useState(() => ({
     start: format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd"),
