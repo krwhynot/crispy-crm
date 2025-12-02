@@ -74,3 +74,8 @@
 1764648181:/home/krwhynot/projects/crispy-crm/.env:root
 1764649066:/home/krwhynot/projects/crispy-crm/.env.example:root
 1764649068:/home/krwhynot/projects/crispy-crm/.env.cloud:root
+1764650526:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/useMyPerformance.ts:src
+1764650558:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/useMyPerformance.ts:src
+1764650648:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/useMyPerformance.ts:src
+1764650762:/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/hooks/useMyPerformance.ts:src
+1764650853:/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/filterRegistry.ts:src

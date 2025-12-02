@@ -165,9 +165,10 @@ export function useMyPerformance(): UseMyPerformanceReturn {
 
           // 3. Deals moved this week (stage changes by current user)
           // We check for opportunities updated this week that aren't closed
+          // Note: opportunities table uses opportunity_owner_id, not sales_id
           dataProvider.getList("opportunities", {
             filter: {
-              sales_id: salesId,
+              opportunity_owner_id: salesId,
               "updated_at@gte": thisWeekStart.toISOString(),
               "updated_at@lte": thisWeekEnd.toISOString(),
               "stage@not_in": ["closed_won", "closed_lost"],
@@ -177,9 +178,10 @@ export function useMyPerformance(): UseMyPerformanceReturn {
           }),
 
           // 4. Open opportunities (by current user)
+          // Note: opportunities table uses opportunity_owner_id, not sales_id
           dataProvider.getList("opportunities", {
             filter: {
-              sales_id: salesId,
+              opportunity_owner_id: salesId,
               "stage@not_in": ["closed_won", "closed_lost"],
             },
             sort: { field: "id", order: "ASC" },
@@ -188,9 +190,10 @@ export function useMyPerformance(): UseMyPerformanceReturn {
 
           // Previous week comparisons
           // 5. Activities last week
+          // Note: activities table uses created_by, not sales_id
           dataProvider.getList("activities", {
             filter: {
-              sales_id: salesId,
+              created_by: salesId,
               "activity_date@gte": lastWeekStart.toISOString(),
               "activity_date@lte": lastWeekEnd.toISOString(),
             },
@@ -211,9 +214,10 @@ export function useMyPerformance(): UseMyPerformanceReturn {
           }),
 
           // 7. Deals moved last week
+          // Note: opportunities table uses opportunity_owner_id, not sales_id
           dataProvider.getList("opportunities", {
             filter: {
-              sales_id: salesId,
+              opportunity_owner_id: salesId,
               "updated_at@gte": lastWeekStart.toISOString(),
               "updated_at@lte": lastWeekEnd.toISOString(),
               "stage@not_in": ["closed_won", "closed_lost"],
@@ -225,9 +229,10 @@ export function useMyPerformance(): UseMyPerformanceReturn {
           // 8. Open opportunities last week snapshot
           // For simplicity, we use current count as last week baseline
           // A more accurate approach would require historical snapshots
+          // Note: opportunities table uses opportunity_owner_id, not sales_id
           dataProvider.getList("opportunities", {
             filter: {
-              sales_id: salesId,
+              opportunity_owner_id: salesId,
               "created_at@lte": lastWeekEnd.toISOString(),
               "stage@not_in": ["closed_won", "closed_lost"],
             },
