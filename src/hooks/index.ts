@@ -12,3 +12,7 @@ export { useSlideOverState } from "./useSlideOverState";
 export { useKeyboardShortcuts, formatShortcut } from "./useKeyboardShortcuts";
 export { useListKeyboardNavigation } from "./useListKeyboardNavigation";
 export { useIsMobile } from "./use-mobile";
+
+// Responsive Breakpoints
+export { useBreakpoint, useIsDesktop, useIsLaptopOrLarger, useIsMobileOrTablet } from "./useBreakpoint";
+export type { Breakpoint } from "./useBreakpoint";
