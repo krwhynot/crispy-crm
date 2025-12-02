@@ -71,7 +71,7 @@ registerTool(
   },
   async (args: Record<string, unknown>, session: MCPSession): Promise<ActivityLogResult> => {
     const type = args.type as string;
-    const opportunityId = args.opportunity_id as number | undefined;
+    const opportunityId = args.opportunity_id as number;
     const contactId = args.contact_id as number | undefined;
     const subject = args.subject as string;
     const notes = args.notes as string | undefined;
@@ -90,6 +90,11 @@ registerTool(
       throw validationError("Subject cannot be empty");
     }
 
+    // Validate opportunity_id is provided
+    if (!opportunityId) {
+      throw validationError("opportunity_id is required");
+    }
+
     try {
       // Look up the sales.id for the current user
       const { data: salesData, error: salesError } = await supabaseAdmin
@@ -104,28 +109,16 @@ registerTool(
 
       const createdBy = salesData.id;
 
-      // If opportunity_id is provided, verify it exists and update its updated_at
-      if (opportunityId) {
-        const { data: oppData, error: oppError } = await supabaseAdmin
-          .from("opportunities")
-          .select("id")
-          .eq("id", opportunityId)
-          .is("deleted_at", null)
-          .single();
+      // Verify opportunity exists
+      const { data: oppData, error: oppError } = await supabaseAdmin
+        .from("opportunities")
+        .select("id")
+        .eq("id", opportunityId)
+        .is("deleted_at", null)
+        .single();
 
-        if (oppError || !oppData) {
-          throw notFoundError("Opportunity", opportunityId);
-        }
-
-        // Update opportunity's updated_at to reset stale timer
-        const { error: updateError } = await supabaseAdmin
-          .from("opportunities")
-          .update({ updated_at: new Date().toISOString() })
-          .eq("id", opportunityId);
-
-        if (updateError) {
-          throw internalError("Failed to update opportunity timestamp", updateError);
-        }
+      if (oppError || !oppData) {
+        throw notFoundError("Opportunity", opportunityId);
       }
 
       // If contact_id is provided, verify it exists
@@ -142,7 +135,7 @@ registerTool(
         }
       }
 
-      // Insert activity record
+      // Insert activity record FIRST (before updating opportunity)
       const { data: activity, error: insertError } = await supabaseAdmin
         .from("activities")
         .insert({
@@ -151,7 +144,7 @@ registerTool(
           subject: subject.trim(),
           description: notes?.trim() || null,
           outcome: outcome?.trim() || null,
-          opportunity_id: opportunityId || null,
+          opportunity_id: opportunityId,
           contact_id: contactId || null,
           created_by: createdBy,
         })
@@ -160,6 +153,16 @@ registerTool(
 
       if (insertError || !activity) {
         throw internalError("Failed to create activity", insertError);
+      }
+
+      // ONLY after successful activity insert, update opportunity's updated_at to reset stale timer
+      const { error: updateError } = await supabaseAdmin
+        .from("opportunities")
+        .update({ updated_at: new Date().toISOString() })
+        .eq("id", opportunityId);
+
+      if (updateError) {
+        throw internalError("Failed to update opportunity timestamp", updateError);
       }
 
       return {
