@@ -18,7 +18,7 @@ import { getTagColorClass } from "../tags/tag-colors";
 import { SidebarActiveFilters } from "./SidebarActiveFilters";
 
 export const ContactListFilter = () => {
-  const { identity } = useGetIdentity();
+  const { data: identity } = useGetIdentity();
   const { filterValues, setFilters } = useListContext();
 
   const { data: tagsData } = useGetList("tags", {
