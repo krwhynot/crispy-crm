@@ -7,6 +7,8 @@ import { MobileQuickActionBar } from "./components/MobileQuickActionBar";
 import { TaskCompleteSheet } from "./components/TaskCompleteSheet";
 import { KPISummaryRow } from "./components/KPISummaryRow";
 import { MyPerformanceWidget } from "./components/MyPerformanceWidget";
+// TEMPORARY: Sentry test triggers - DELETE after confirming Sentry works
+import { SentryTestTriggers } from "@/components/SentryTestTriggers";
 
 /**
  * PrincipalDashboardV3 - Vertically stacked dashboard with Log Activity FAB
@@ -51,6 +53,9 @@ export function PrincipalDashboardV3() {
       {/* Main Content - Vertically stacked layout */}
       <main className="relative flex-1 overflow-auto p-4">
         <div className="flex flex-col gap-4">
+          {/* TEMPORARY: Sentry Test Triggers - DELETE after confirming Sentry works */}
+          <SentryTestTriggers />
+
           {/* KPI Summary Row */}
           <KPISummaryRow key={`kpi-${refreshKey}`} />
 
