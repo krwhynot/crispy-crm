@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { QuickLogActivityDialog } from "../activities";
 import type { ActivityRecord } from "../types";
+import { ACTIVITY_PAGE_SIZE } from "./constants";
 
 interface ActivitiesTabProps {
   organizationId: string | number;
@@ -20,7 +21,7 @@ export const ActivitiesTab = ({ organizationId }: ActivitiesTabProps) => {
   const { data, isPending, error, refetch } = useGetList<ActivityRecord>("activities", {
     filter: { organization_id: organizationId },
     sort: { field: "created_at", order: "DESC" },
-    pagination: { page: 1, perPage: 50 },
+    pagination: { page: 1, perPage: ACTIVITY_PAGE_SIZE },
   });
 
   // Convert organizationId to number for the dialog (handles both string and number)
