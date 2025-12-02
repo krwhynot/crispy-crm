@@ -104,7 +104,7 @@ describe("AuthorizationsTab", () => {
     vi.mocked(reactAdmin.useNotify).mockReturnValue(mockNotify);
     vi.mocked(reactAdmin.useCreate).mockReturnValue([mockCreateFn, { isPending: false }] as any);
     vi.mocked(reactAdmin.useDelete).mockReturnValue([mockDeleteFn, { isPending: false }] as any);
-    vi.mocked(reactAdmin.useGetIdentity).mockReturnValue({ identity: { id: 1 } } as any);
+    vi.mocked(reactAdmin.useGetIdentity).mockReturnValue({ data: { id: 1 }, isLoading: false } as any);
   });
 
   describe("Loading State", () => {
