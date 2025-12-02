@@ -1,12 +1,29 @@
-# List Page Standardization Implementation Plan
+# List Page Standardization Implementation Plan (REVISED)
 
 > **For Claude:** REQUIRED SUB-SKILL: Use superpowers:executing-plans to implement this plan task-by-task.
 
 **Goal:** Standardize all 7 list pages to follow ContactList.tsx patterns, ensuring consistent UX, accessibility, and maintainability across the CRM.
 
-**Architecture:** Extract shared utilities (formatters, export helpers, list patterns) first, then systematically upgrade each list page. ContactList serves as the gold standard reference. Apply TDD for all new utilities.
+**Architecture:** Shared utilities (formatters, export helpers, list patterns) are **already implemented**. This plan focuses on upgrading remaining list pages and refactoring existing code to use shared utilities. ContactList serves as the gold standard reference.
 
 **Tech Stack:** React 19, React Admin 5, Tailwind CSS 4, Vitest, TypeScript
+
+---
+
+## Strategic Context
+
+**MVP Priority Tier:** TIER 2 (Quality improvement + 1 MVP blocker)
+
+| Tier | Focus | Status |
+|------|-------|--------|
+| **TIER 1** (Blocking) | Contact enforcement, Pipeline migration, Win/Loss Reasons, QuickLogForm, Dashboard KPI | Top 5 Critical |
+| **TIER 2** (This Plan) | List Standardization (includes MVP #22) | After Tier 1 |
+| **TIER 3** | Remaining 52 MVP features | Post-launch |
+
+**MVP Blocker Included:** #22 (ProductList FloatingCreateButton)
+**MVP Blockers NOT Included:** #19 (Contact org filter) - separate work
+
+**Launch Dependency:** MVP #22 must be completed. Full standardization can be deferred if schedule is tight.
 
 ---
 
@@ -14,849 +31,230 @@
 
 | Phase | Focus | Files | Effort |
 |-------|-------|-------|--------|
-| **Phase 1** | ContactList Cleanup | 4 files | 1-2 hours |
-| **Phase 2** | Shared Utilities | 4 files | 1-2 hours |
-| **Phase 3** | List Page Upgrades | 12+ files | 3-4 hours |
-| **Phase 4** | Testing & Verification | 6+ files | 1-2 hours |
+| **Phase 1** | ContactList Refinement | 2 files | 30 min |
+| **Phase 2** | Verify Shared Utilities | 0 files (verification only) | 10 min |
+| **Phase 3** | List Page Upgrades | 8+ files | 1.5-2 hours |
+| **Phase 4** | Testing & Verification | 6+ files | 45 min |
 
-**Total Estimated Effort:** 6-10 hours
+**Total Estimated Effort:** 2.5-4 hours
+
+> **Note:** Original estimate was 6-10 hours. Reduced because Phase 1 Tasks 1.1-1.4 and Phase 2 are already complete. Gap analysis shows TaskList/ProductList are 90%+ done.
 
 ---
 
-## Gap Analysis Summary
+## Gap Analysis Summary (VERIFIED 2025-12-02)
 
 | Resource | Layout | Keyboard | FilterCleanup | BulkActions | Responsive | Exporter | SlideOver | Skeleton |
 |----------|--------|----------|---------------|-------------|------------|----------|-----------|----------|
-| Contacts (Gold) | ✅ | ✅ | ✅ | ✅ | ⚠️ | ✅ | ✅ | ✅ |
+| Contacts (Gold) | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
 | Organizations | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| Activities | ✅ | ❌ | ✅ | ❌ | ❌ | ✅ | ❌ | ❌ |
-| Tasks | ✅ | ❌ | ❌ | ❌ | ❌ | ✅ | ✅ | ❌ |
-| Products | ✅ | ❌ | ❌ | ❌ | ❌ | ❌ | ✅ | ❌ |
-| Sales | ❌ | ❌ | ❌ | Disabled | ❌ | ❌ | ✅ | ❌ |
+| **Products** | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ✅ | ❌ |
+| Tasks | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | ✅ | ❌ |
+| Activities | ✅ | ❌ | ✅ | ✅ | ❌ | ✅ | ❌ | ❌ |
+| Sales | ❌ | ✅ | ✅ | Disabled | ❌ | ❌ | ✅ | ❌ |
 | Opportunities | Custom | ❌ | ❌ | Partial | Partial | ❌ | ✅ | ❌ |
 
----
-
-# Phase 1: ContactList Cleanup (Gold Standard)
-
-## Task 1.1: Fix Responsive Breakpoints
-
-**Files:**
-- Modify: `src/atomic-crm/contacts/ContactList.tsx:118-119, 186-187`
-
-**Step 1: Edit Avatar column breakpoint**
-
-Change line 118-119 from `md:` to `lg:`:
-
-```typescript
-// BEFORE (line 118-119)
-cellClassName="hidden md:table-cell"
-headerClassName="hidden md:table-cell"
-
-// AFTER
-cellClassName="hidden lg:table-cell"
-headerClassName="hidden lg:table-cell"
-```
-
-**Step 2: Edit Last Activity column breakpoint**
-
-Change line 186-187 from `md:` to `lg:`:
-
-```typescript
-// BEFORE (line 186-187)
-cellClassName="hidden md:table-cell"
-headerClassName="hidden md:table-cell"
-
-// AFTER
-cellClassName="hidden lg:table-cell"
-headerClassName="hidden lg:table-cell"
-```
-
-**Step 3: Verify changes**
-
-Run: `npm run lint`
-Expected: No errors
-
-**Step 4: Commit**
-
-```bash
-git add src/atomic-crm/contacts/ContactList.tsx
-git commit -m "fix(contacts): use lg breakpoint for Avatar and Last Activity columns
-
-Changed responsive visibility from md:table-cell to lg:table-cell for:
-- Avatar column (line 118-119)
-- Last Activity column (line 186-187)
-
-Aligns with iPad-first design system (lg: 1024px for desktop)."
-```
+**Key Changes from Original:**
+- TaskList: Keyboard ✅ (was ❌), FilterCleanup ✅ (was ❌)
+- ProductList: Keyboard ✅ (was ❌), FilterCleanup ✅ (was ❌)
+- Contacts: Responsive ✅ (was ⚠️) - lg: breakpoints now correct
 
 ---
 
-## Task 1.2: Remove Redundant Identity Check
+## Column Visibility Strategy (Desktop-First)
 
-**Files:**
-- Modify: `src/atomic-crm/contacts/ContactList.tsx:78, 98-100`
+**IMPORTANT:** Use these semantic presets instead of hardcoding breakpoints.
 
-**Step 1: Remove useGetIdentity from ContactListLayout**
-
-Delete line 78:
 ```typescript
-// DELETE THIS LINE
-const { data: identity } = useGetIdentity();
+// src/atomic-crm/utils/listPatterns.ts - ALREADY EXISTS, needs update
+export const COLUMN_VISIBILITY = {
+  // Show on desktop (1024px+) only - most columns use this
+  desktopOnly: {
+    cellClassName: "hidden lg:table-cell",
+    headerClassName: "hidden lg:table-cell",
+  },
+  // Show on tablet (768px+) and desktop - important secondary columns
+  tabletUp: {
+    cellClassName: "hidden md:table-cell",
+    headerClassName: "hidden md:table-cell",
+  },
+  // Always visible - critical identity columns
+  alwaysVisible: {
+    cellClassName: "",
+    headerClassName: "",
+  },
+} as const;
 ```
 
-**Step 2: Remove redundant identity guard**
+### Column Assignment Guide:
 
-Delete lines 98-100:
-```typescript
-// DELETE THESE LINES
-if (!identity) {
-  return null;
-}
-```
-
-**Step 3: Verify changes**
-
-Run: `npm run test:ci -- --testPathPattern="contacts"`
-Expected: All tests pass
-
-**Step 4: Commit**
-
-```bash
-git add src/atomic-crm/contacts/ContactList.tsx
-git commit -m "refactor(contacts): remove redundant identity check from ContactListLayout
-
-Parent ContactList already guards against missing identity (lines 32, 40-45).
-Nested check was redundant and added unnecessary hook overhead."
-```
+| Column Type | Visibility | Examples |
+|-------------|------------|----------|
+| **Core Identity** | `alwaysVisible` | Name, Title, Organization, Due Date |
+| **Important Secondary** | `tabletUp` | Email, Phone, Department |
+| **Supplementary** | `desktopOnly` | Avatar, Last Activity, Created Date, Notes |
 
 ---
 
-## Task 1.3: Create Formatters Module
+# Phase 1: ContactList Refinement
+
+> **Status:** Tasks 1.1-1.4 ALREADY COMPLETE. Only Task 1.5 remains.
+
+## Task 1.5: Refactor contactExporter to Use Shared Utilities (NEW)
 
 **Files:**
-- Create: `src/atomic-crm/contacts/formatters.ts`
-- Create: `src/atomic-crm/contacts/__tests__/formatters.test.ts`
-- Modify: `src/atomic-crm/contacts/ContactList.tsx`
+- Modify: `src/atomic-crm/contacts/contactExporter.ts`
 
-**Step 1: Write the failing tests**
+**Rationale:** Current contactExporter has inline extraction logic that duplicates shared utilities. Per Engineering Constitution (DRY principle), refactor to use centralized helpers.
 
-Create `src/atomic-crm/contacts/__tests__/formatters.test.ts`:
+**Step 1: Update imports**
 
 ```typescript
-/**
- * @vitest-environment node
- */
-import { describe, it, expect } from "vitest";
-import { formatFullName, formatRoleAndDept } from "../formatters";
+// src/atomic-crm/contacts/contactExporter.ts
 
-describe("formatFullName", () => {
-  it("returns full name when both parts present", () => {
-    expect(formatFullName("John", "Doe")).toBe("John Doe");
-  });
-
-  it("returns first name only when last name missing", () => {
-    expect(formatFullName("John", "")).toBe("John");
-    expect(formatFullName("John", null)).toBe("John");
-    expect(formatFullName("John", undefined)).toBe("John");
-  });
-
-  it("returns last name only when first name missing", () => {
-    expect(formatFullName("", "Doe")).toBe("Doe");
-    expect(formatFullName(null, "Doe")).toBe("Doe");
-  });
-
-  it("returns placeholder when both missing", () => {
-    expect(formatFullName("", "")).toBe("--");
-    expect(formatFullName(null, null)).toBe("--");
-    expect(formatFullName("   ", "   ")).toBe("--");
-  });
-
-  it("trims whitespace from names", () => {
-    expect(formatFullName("  John  ", "  Doe  ")).toBe("John Doe");
-  });
-});
-
-describe("formatRoleAndDept", () => {
-  it("returns title and department when both present", () => {
-    expect(formatRoleAndDept("CEO", "Executive")).toBe("CEO, Executive");
-  });
-
-  it("returns title only when department missing", () => {
-    expect(formatRoleAndDept("CEO", "")).toBe("CEO");
-    expect(formatRoleAndDept("CEO", null)).toBe("CEO");
-  });
-
-  it("returns department only when title missing", () => {
-    expect(formatRoleAndDept("", "Executive")).toBe("Executive");
-    expect(formatRoleAndDept(null, "Executive")).toBe("Executive");
-  });
-
-  it("returns placeholder when both missing", () => {
-    expect(formatRoleAndDept("", "")).toBe("--");
-    expect(formatRoleAndDept(null, null)).toBe("--");
-  });
-
-  it("trims whitespace from values", () => {
-    expect(formatRoleAndDept("  CEO  ", "  Executive  ")).toBe("CEO, Executive");
-  });
-});
+// ADD these imports
+import {
+  flattenEmailsForExport,
+  flattenPhonesForExport,
+  formatSalesName,
+  formatTagsForExport,
+} from "@/atomic-crm/utils";
 ```
 
-**Step 2: Run tests to verify they fail**
-
-Run: `npm test -- --testPathPattern="formatters" --run`
-Expected: FAIL - module not found
-
-**Step 3: Create formatters.ts**
-
-Create `src/atomic-crm/contacts/formatters.ts`:
+**Step 2: Refactor email/phone extraction (lines 50-58)**
 
 ```typescript
-/**
- * Contact display formatters
- *
- * Reusable formatting functions for contact display fields.
- * Handles null/undefined values gracefully with fallback to "--".
- */
+// BEFORE (inline logic)
+email_work: contact.email?.find((e) => e.type === "Work")?.email,
+email_home: contact.email?.find((e) => e.type === "Home")?.email,
+email_other: contact.email?.find((e) => e.type === "Other")?.email,
+phone_work: contact.phone?.find((p) => p.type === "Work")?.number,
+phone_home: contact.phone?.find((p) => p.type === "Home")?.number,
+phone_other: contact.phone?.find((p) => p.type === "Other")?.number,
 
-/**
- * Formats a contact's full name from first and last name parts.
- */
-export function formatFullName(
-  firstName: string | null | undefined,
-  lastName: string | null | undefined
-): string {
-  const first = firstName?.trim();
-  const last = lastName?.trim();
-
-  if (!first && !last) return "--";
-  if (!first) return last!;
-  if (!last) return first;
-  return `${first} ${last}`;
-}
-
-/**
- * Formats a contact's role display from title and department.
- */
-export function formatRoleAndDept(
-  title: string | null | undefined,
-  department: string | null | undefined
-): string {
-  const titleTrimmed = title?.trim();
-  const deptTrimmed = department?.trim();
-
-  if (!titleTrimmed && !deptTrimmed) return "--";
-  if (!titleTrimmed) return deptTrimmed!;
-  if (!deptTrimmed) return titleTrimmed;
-  return `${titleTrimmed}, ${deptTrimmed}`;
-}
+// AFTER (using shared utilities)
+...flattenEmailsForExport(contact.email),
+...flattenPhonesForExport(contact.phone),
 ```
 
-**Step 4: Run tests to verify they pass**
-
-Run: `npm test -- --testPathPattern="formatters" --run`
-Expected: PASS (all 10 tests)
-
-**Step 5: Update ContactList.tsx imports**
-
-Add import at top of file:
-```typescript
-import { formatFullName, formatRoleAndDept } from "./formatters";
-```
-
-**Step 6: Update Name column render (lines 122-134)**
+**Step 3: Refactor tags formatting (lines 59-63)**
 
 ```typescript
 // BEFORE
-<FunctionField
-  label="Name"
-  sortBy="first_name"
-  render={(record: Contact) => {
-    const firstName = record.first_name?.trim();
-    const lastName = record.last_name?.trim();
-    if (!firstName && !lastName) return "--";
-    if (!firstName) return lastName;
-    if (!lastName) return firstName;
-    return `${firstName} ${lastName}`;
-  }}
-/>
+tags: contact.tags
+  .map((tagId) => tags[tagId]?.name)
+  .filter(Boolean)
+  .join(", "),
 
 // AFTER
-<FunctionField
-  label="Name"
-  sortBy="first_name"
-  render={(record: Contact) => formatFullName(record.first_name, record.last_name)}
-/>
+tags: formatTagsForExport(contact.tags, tags),
 ```
 
-**Step 7: Update Role column render (lines 137-150)**
+**Step 4: Refactor sales name formatting (lines 64-67)**
 
 ```typescript
 // BEFORE
-<FunctionField
-  label="Role"
-  sortBy="title"
-  render={(record: Contact) => {
-    const title = record.title?.trim();
-    const department = record.department?.trim();
-    if (!title && !department) return "--";
-    if (!title) return department;
-    if (!department) return title;
-    return `${title}, ${department}`;
-  }}
-  cellClassName="hidden lg:table-cell"
-  headerClassName="hidden lg:table-cell"
-/>
+sales:
+  contact.sales_id && sales[contact.sales_id]
+    ? `${sales[contact.sales_id].first_name} ${sales[contact.sales_id].last_name}`
+    : "",
 
 // AFTER
-<FunctionField
-  label="Role"
-  sortBy="title"
-  render={(record: Contact) => formatRoleAndDept(record.title, record.department)}
-  cellClassName="hidden lg:table-cell"
-  headerClassName="hidden lg:table-cell"
-/>
+sales: formatSalesName(contact.sales_id ? sales[contact.sales_id] : null),
 ```
 
-**Step 8: Run all contact tests**
-
-Run: `npm run test:ci -- --testPathPattern="contacts"`
-Expected: All tests pass
-
-**Step 9: Commit**
-
-```bash
-git add src/atomic-crm/contacts/formatters.ts \
-        src/atomic-crm/contacts/__tests__/formatters.test.ts \
-        src/atomic-crm/contacts/ContactList.tsx
-git commit -m "refactor(contacts): extract formatFullName and formatRoleAndDept to formatters.ts
-
-- Created formatters.ts with fully tested formatting functions
-- Added comprehensive unit tests (10 test cases)
-- Updated ContactList.tsx to use extracted formatters
-- Removed 14 lines of inline formatting logic"
-```
-
----
-
-## Task 1.4: Extract CSV Exporter
-
-**Files:**
-- Create: `src/atomic-crm/contacts/contactExporter.ts`
-- Modify: `src/atomic-crm/contacts/ContactList.tsx`
-
-**Step 1: Create contactExporter.ts**
-
-Create `src/atomic-crm/contacts/contactExporter.ts`:
+**Step 5: Fix error handling (Engineering Constitution Rule #1: Fail Fast)**
 
 ```typescript
-/**
- * CSV Exporter for Contact records
- */
-import jsonExport from "jsonexport/dist";
-import type { Exporter } from "ra-core";
-import { downloadCSV } from "ra-core";
-import type { Contact, Sale, Tag, Organization } from "../types";
+// BEFORE (silent failure)
+return jsonExport(contacts, {}, (err: Error | null, csv: string) => {
+  if (err) {
+    console.error("CSV export failed:", err);
+    return;
+  }
+  downloadCSV(csv, "contacts");
+});
 
-export interface ContactExportRow {
-  first_name: string | undefined;
-  last_name: string | undefined;
-  gender: string | undefined;
-  title: string | undefined;
-  organization_name: string | undefined;
-  email_work: string | undefined;
-  email_home: string | undefined;
-  email_other: string | undefined;
-  phone_work: string | undefined;
-  phone_home: string | undefined;
-  phone_other: string | undefined;
-  avatar: string | undefined;
-  first_seen: string | undefined;
-  last_seen: string | undefined;
-  tags: string;
-  linkedin_url: string | null | undefined;
-  sales: string;
-  department: string;
-  id: number | string;
-  sales_id: number | string | null | undefined;
-  organization_id: number | string | null | undefined;
-}
-
-export const contactExporter: Exporter<Contact> = async (records, fetchRelatedRecords) => {
-  const sales = await fetchRelatedRecords<Sale>(records, "sales_id", "sales");
-  const tags = await fetchRelatedRecords<Tag>(records, "tags", "tags");
-  const organizations = await fetchRelatedRecords<Organization>(
-    records,
-    "organization_id",
-    "organizations"
-  );
-
-  const contacts: ContactExportRow[] = records.map((contact) => ({
-    first_name: contact.first_name,
-    last_name: contact.last_name,
-    gender: contact.gender,
-    title: contact.title,
-    organization_name: contact.organization_id
-      ? organizations[contact.organization_id]?.name
-      : undefined,
-    email_work: contact.email?.find((e) => e.type === "Work")?.email,
-    email_home: contact.email?.find((e) => e.type === "Home")?.email,
-    email_other: contact.email?.find((e) => e.type === "Other")?.email,
-    phone_work: contact.phone?.find((p) => p.type === "Work")?.number,
-    phone_home: contact.phone?.find((p) => p.type === "Home")?.number,
-    phone_other: contact.phone?.find((p) => p.type === "Other")?.number,
-    avatar: contact.avatar,
-    first_seen: contact.first_seen,
-    last_seen: contact.last_seen,
-    tags: contact.tags
-      .map((tagId) => tags[tagId]?.name)
-      .filter(Boolean)
-      .join(", "),
-    linkedin_url: contact.linkedin_url,
-    sales:
-      contact.sales_id && sales[contact.sales_id]
-        ? `${sales[contact.sales_id].first_name} ${sales[contact.sales_id].last_name}`
-        : "",
-    department: contact.department || "",
-    id: contact.id,
-    sales_id: contact.sales_id,
-    organization_id: contact.organization_id,
-  }));
-
-  return jsonExport(contacts, {}, (err: Error | null, csv: string) => {
-    if (err) {
-      console.error("CSV export failed:", err);
-      return;
-    }
-    downloadCSV(csv, "contacts");
-  });
-};
+// AFTER (fail fast)
+return jsonExport(contacts, {}, (err: Error | null, csv: string) => {
+  if (err) {
+    throw new Error(`CSV export failed: ${err.message}`);
+  }
+  downloadCSV(csv, "contacts");
+});
 ```
-
-**Step 2: Update ContactList.tsx imports**
-
-```typescript
-// REMOVE these imports
-import jsonExport from "jsonexport/dist";
-import type { Exporter } from "ra-core";
-import { downloadCSV, useGetIdentity, useListContext } from "ra-core";
-
-// REPLACE with
-import { useGetIdentity, useListContext } from "ra-core";
-import { contactExporter } from "./contactExporter";
-```
-
-**Step 3: Update List component usage**
-
-```typescript
-// Change exporter={exporter} to exporter={contactExporter}
-<List
-  title={false}
-  actions={<ContactListActions />}
-  perPage={25}
-  sort={{ field: "last_seen", order: "DESC" }}
-  exporter={contactExporter}  // Changed from exporter
->
-```
-
-**Step 4: Update ContactListActions**
-
-```typescript
-// Change ExportButton exporter prop
-<ExportButton exporter={contactExporter} />  // Changed from exporter
-```
-
-**Step 5: Delete inline exporter function**
-
-Remove lines 206-265 (the entire `const exporter: Exporter<Contact>` function).
 
 **Step 6: Verify changes**
 
-Run: `npm run test:ci -- --testPathPattern="contacts"`
-Run: `npx tsc --noEmit`
-Expected: All pass
+```bash
+npm run test:ci -- --testPathPattern="contacts"
+npx tsc --noEmit
+```
 
 **Step 7: Commit**
 
 ```bash
-git add src/atomic-crm/contacts/contactExporter.ts \
-        src/atomic-crm/contacts/ContactList.tsx
-git commit -m "refactor(contacts): extract CSV exporter to contactExporter.ts
+git add src/atomic-crm/contacts/contactExporter.ts
+git commit -m "refactor(contacts): use shared utilities in contactExporter
 
-- Created contactExporter.ts with ContactExportRow interface
-- Fixed any type on error callback (now Error | null)
-- Removed 60 lines of inline exporter code from ContactList.tsx
-- ContactList.tsx now ~200 lines (down from 267)"
+- Replaced inline email/phone extraction with flattenEmailsForExport/flattenPhonesForExport
+- Replaced inline tags formatting with formatTagsForExport
+- Replaced inline sales name formatting with formatSalesName
+- Fixed error handling to fail fast (Engineering Constitution Rule #1)
+- Removed ~20 lines of duplicate logic"
 ```
 
 ---
 
-# Phase 2: Shared Utilities
+# Phase 2: Verify Shared Utilities (VERIFICATION ONLY)
 
-## Task 2.1: Create Shared Formatters Module
+> **Status:** All utilities ALREADY EXIST. This phase confirms they're working.
 
-**Files:**
-- Create: `src/atomic-crm/utils/formatters.ts`
-- Create: `src/atomic-crm/utils/__tests__/formatters.test.ts`
-- Modify: `src/atomic-crm/utils/index.ts`
+## Task 2.1: Verify Shared Utilities Exist and Pass Tests
 
-**Step 1: Write failing tests**
+**Purpose:** Confirm utilities created in previous session are intact.
 
-Create `src/atomic-crm/utils/__tests__/formatters.test.ts`:
-
-```typescript
-/**
- * @vitest-environment node
- */
-import { describe, it, expect } from "vitest";
-import {
-  formatFullName,
-  formatRoleAndDept,
-  formatSalesName,
-  formatTagsForExport,
-  formatCount,
-  EMPTY_PLACEHOLDER,
-} from "../formatters";
-
-describe("formatters", () => {
-  describe("EMPTY_PLACEHOLDER", () => {
-    it("should be '--'", () => {
-      expect(EMPTY_PLACEHOLDER).toBe("--");
-    });
-  });
-
-  describe("formatFullName", () => {
-    it("formats both names", () => {
-      expect(formatFullName("John", "Doe")).toBe("John Doe");
-    });
-
-    it("handles missing last name", () => {
-      expect(formatFullName("John", null)).toBe("John");
-    });
-
-    it("handles missing first name", () => {
-      expect(formatFullName(null, "Doe")).toBe("Doe");
-    });
-
-    it("returns placeholder for both missing", () => {
-      expect(formatFullName(null, null)).toBe("--");
-    });
-  });
-
-  describe("formatSalesName", () => {
-    it("formats sales record", () => {
-      expect(formatSalesName({ first_name: "John", last_name: "Doe" })).toBe("John Doe");
-    });
-
-    it("returns empty for null", () => {
-      expect(formatSalesName(null)).toBe("");
-    });
-  });
-
-  describe("formatTagsForExport", () => {
-    it("joins tag names", () => {
-      const tagsMap = { 1: { name: "VIP" }, 2: { name: "Hot" } };
-      expect(formatTagsForExport([1, 2], tagsMap)).toBe("VIP, Hot");
-    });
-
-    it("handles empty array", () => {
-      expect(formatTagsForExport([], {})).toBe("");
-    });
-
-    it("filters missing tags", () => {
-      const tagsMap = { 1: { name: "VIP" } };
-      expect(formatTagsForExport([1, 999], tagsMap)).toBe("VIP");
-    });
-  });
-
-  describe("formatCount", () => {
-    it("returns count as-is", () => {
-      expect(formatCount(5)).toBe(5);
-    });
-
-    it("returns 0 for null", () => {
-      expect(formatCount(null)).toBe(0);
-    });
-
-    it("returns 0 for undefined", () => {
-      expect(formatCount(undefined)).toBe(0);
-    });
-  });
-});
-```
-
-**Step 2: Run tests to verify they fail**
-
-Run: `npm test -- --testPathPattern="utils/.*formatters" --run`
-Expected: FAIL
-
-**Step 3: Create formatters.ts**
-
-Create `src/atomic-crm/utils/formatters.ts`:
-
-```typescript
-/**
- * formatters.ts - Unified text formatting utilities for list pages
- */
-import type { Sale, Tag } from "../types";
-
-export const EMPTY_PLACEHOLDER = "--";
-
-export function formatFullName(
-  firstName?: string | null,
-  lastName?: string | null
-): string {
-  const first = firstName?.trim();
-  const last = lastName?.trim();
-
-  if (!first && !last) return EMPTY_PLACEHOLDER;
-  if (first && last) return `${first} ${last}`;
-  return first || last || EMPTY_PLACEHOLDER;
-}
-
-export function formatRoleAndDept(
-  title?: string | null,
-  department?: string | null
-): string {
-  const titleTrimmed = title?.trim();
-  const deptTrimmed = department?.trim();
-
-  if (!titleTrimmed && !deptTrimmed) return EMPTY_PLACEHOLDER;
-  if (!titleTrimmed) return deptTrimmed!;
-  if (!deptTrimmed) return titleTrimmed;
-  return `${titleTrimmed}, ${deptTrimmed}`;
-}
-
-export function formatSalesName(
-  sales?: Pick<Sale, "first_name" | "last_name"> | null
-): string {
-  if (!sales) return "";
-  return formatFullName(sales.first_name, sales.last_name);
-}
-
-export function formatTagsForExport(
-  tagIds: (number | string)[] | undefined,
-  tagsMap: Record<number | string, Pick<Tag, "name">>
-): string {
-  if (!tagIds || tagIds.length === 0) return "";
-  return tagIds
-    .map((id) => tagsMap[id]?.name)
-    .filter(Boolean)
-    .join(", ");
-}
-
-export function formatCount(count?: number | null): number {
-  return count ?? 0;
-}
-```
-
-**Step 4: Run tests to verify they pass**
-
-Run: `npm test -- --testPathPattern="utils/.*formatters" --run`
-Expected: PASS
-
-**Step 5: Update barrel export**
-
-Add to `src/atomic-crm/utils/index.ts`:
-
-```typescript
-export {
-  formatFullName,
-  formatRoleAndDept,
-  formatSalesName,
-  formatTagsForExport,
-  formatCount,
-  EMPTY_PLACEHOLDER,
-} from "./formatters";
-```
-
-**Step 6: Commit**
+**Step 1: Verify files exist**
 
 ```bash
-git add src/atomic-crm/utils/formatters.ts \
-        src/atomic-crm/utils/__tests__/formatters.test.ts \
-        src/atomic-crm/utils/index.ts
-git commit -m "feat(utils): add shared formatters module
-
-- formatFullName, formatRoleAndDept for display
-- formatSalesName, formatTagsForExport for CSV export
-- formatCount for metric columns
-- Full test coverage"
+ls -la src/atomic-crm/utils/formatters.ts
+ls -la src/atomic-crm/utils/exportHelpers.ts
+ls -la src/atomic-crm/utils/listPatterns.ts
 ```
 
----
+Expected: All three files exist
 
-## Task 2.2: Create Export Helpers Module
-
-**Files:**
-- Create: `src/atomic-crm/utils/exportHelpers.ts`
-- Create: `src/atomic-crm/utils/__tests__/exportHelpers.test.ts`
-
-**Step 1: Write failing tests**
-
-Create `src/atomic-crm/utils/__tests__/exportHelpers.test.ts`:
-
-```typescript
-/**
- * @vitest-environment node
- */
-import { describe, it, expect } from "vitest";
-import {
-  extractEmailByType,
-  extractPhoneByType,
-  flattenEmailsForExport,
-  flattenPhonesForExport,
-} from "../exportHelpers";
-
-describe("exportHelpers", () => {
-  describe("extractEmailByType", () => {
-    const emails = [
-      { email: "work@test.com", type: "Work" as const },
-      { email: "home@test.com", type: "Home" as const },
-    ];
-
-    it("extracts email by type", () => {
-      expect(extractEmailByType(emails, "Work")).toBe("work@test.com");
-      expect(extractEmailByType(emails, "Home")).toBe("home@test.com");
-    });
-
-    it("returns undefined for missing type", () => {
-      expect(extractEmailByType(emails, "Other")).toBeUndefined();
-    });
-
-    it("handles undefined array", () => {
-      expect(extractEmailByType(undefined, "Work")).toBeUndefined();
-    });
-  });
-
-  describe("flattenEmailsForExport", () => {
-    it("flattens emails to separate keys", () => {
-      const emails = [{ email: "work@test.com", type: "Work" as const }];
-      const result = flattenEmailsForExport(emails);
-      expect(result.email_work).toBe("work@test.com");
-      expect(result.email_home).toBeUndefined();
-    });
-  });
-
-  describe("extractPhoneByType", () => {
-    const phones = [{ number: "555-1234", type: "Work" as const }];
-
-    it("extracts phone by type", () => {
-      expect(extractPhoneByType(phones, "Work")).toBe("555-1234");
-    });
-
-    it("returns undefined for missing type", () => {
-      expect(extractPhoneByType(phones, "Home")).toBeUndefined();
-    });
-  });
-});
-```
-
-**Step 2: Run tests to verify they fail**
-
-Run: `npm test -- --testPathPattern="exportHelpers" --run`
-Expected: FAIL
-
-**Step 3: Create exportHelpers.ts**
-
-Create `src/atomic-crm/utils/exportHelpers.ts`:
-
-```typescript
-/**
- * exportHelpers.ts - CSV export utility functions
- */
-import type { EmailAndType, PhoneNumberAndType } from "../types";
-
-export type EmailType = "Work" | "Home" | "Other";
-export type PhoneType = "Work" | "Home" | "Other" | "Mobile";
-
-export function extractEmailByType(
-  emails: EmailAndType[] | undefined,
-  type: EmailType
-): string | undefined {
-  return emails?.find((e) => e.type === type)?.email;
-}
-
-export function extractPhoneByType(
-  phones: PhoneNumberAndType[] | undefined,
-  type: PhoneType
-): string | undefined {
-  return phones?.find((p) => p.type === type)?.number;
-}
-
-export function flattenEmailsForExport(emails: EmailAndType[] | undefined): {
-  email_work?: string;
-  email_home?: string;
-  email_other?: string;
-} {
-  return {
-    email_work: extractEmailByType(emails, "Work"),
-    email_home: extractEmailByType(emails, "Home"),
-    email_other: extractEmailByType(emails, "Other"),
-  };
-}
-
-export function flattenPhonesForExport(phones: PhoneNumberAndType[] | undefined): {
-  phone_work?: string;
-  phone_home?: string;
-  phone_other?: string;
-} {
-  return {
-    phone_work: extractPhoneByType(phones, "Work"),
-    phone_home: extractPhoneByType(phones, "Home"),
-    phone_other: extractPhoneByType(phones, "Other"),
-  };
-}
-```
-
-**Step 4: Run tests to verify they pass**
-
-Run: `npm test -- --testPathPattern="exportHelpers" --run`
-Expected: PASS
-
-**Step 5: Update barrel export**
-
-Add to `src/atomic-crm/utils/index.ts`:
-
-```typescript
-export {
-  extractEmailByType,
-  extractPhoneByType,
-  flattenEmailsForExport,
-  flattenPhonesForExport,
-} from "./exportHelpers";
-```
-
-**Step 6: Commit**
+**Step 2: Run utility tests**
 
 ```bash
-git add src/atomic-crm/utils/exportHelpers.ts \
-        src/atomic-crm/utils/__tests__/exportHelpers.test.ts \
-        src/atomic-crm/utils/index.ts
-git commit -m "feat(utils): add CSV export helper utilities
-
-- extractEmailByType, extractPhoneByType for JSONB array access
-- flattenEmailsForExport, flattenPhonesForExport for CSV columns
-- Full test coverage"
+npm test -- --testPathPattern="utils/.*formatters" --run
+npm test -- --testPathPattern="exportHelpers" --run
 ```
+
+Expected: All tests pass
+
+**Step 3: Verify barrel exports**
+
+Check `src/atomic-crm/utils/index.ts` contains:
+- `formatFullName`, `formatRoleAndDept`, `formatSalesName`, `formatTagsForExport`, `formatCount`, `EMPTY_PLACEHOLDER`
+- `extractEmailByType`, `extractPhoneByType`, `flattenEmailsForExport`, `flattenPhonesForExport`
+- `COLUMN_VISIBILITY`, `SORT_FIELDS`, `DEFAULT_PER_PAGE`, `getColumnVisibility`
+
+**Step 4: No commit needed** (verification only)
 
 ---
 
-## Task 2.3: Create List Patterns Module
+## Task 2.2: Update COLUMN_VISIBILITY Constants
 
 **Files:**
-- Create: `src/atomic-crm/utils/listPatterns.ts`
+- Modify: `src/atomic-crm/utils/listPatterns.ts`
 
-**Step 1: Create listPatterns.ts**
-
-Create `src/atomic-crm/utils/listPatterns.ts`:
+**Step 1: Update constants for desktop-first**
 
 ```typescript
-/**
- * listPatterns.ts - Common patterns for list page configuration
- */
+// src/atomic-crm/utils/listPatterns.ts
 
+// BEFORE (wrong breakpoints, confusing names)
 export const COLUMN_VISIBILITY = {
   hideMobile: {
     cellClassName: "hidden md:table-cell",
@@ -872,22 +270,29 @@ export const COLUMN_VISIBILITY = {
   },
 } as const;
 
-export const SORT_FIELDS = {
-  contacts: ["first_name", "last_name", "last_seen"],
-  organizations: ["name", "organization_type", "priority"],
-  opportunities: ["created_at", "stage", "estimated_close_date"],
-  activities: ["activity_date", "type"],
-  tasks: ["due_date", "priority", "title"],
-  sales: ["first_name", "last_name", "role"],
+// AFTER (desktop-first, clear names)
+export const COLUMN_VISIBILITY = {
+  /** Show on desktop (1024px+) only - use for supplementary columns */
+  desktopOnly: {
+    cellClassName: "hidden lg:table-cell",
+    headerClassName: "hidden lg:table-cell",
+  },
+  /** Show on tablet (768px+) and desktop - use for important secondary columns */
+  tabletUp: {
+    cellClassName: "hidden md:table-cell",
+    headerClassName: "hidden md:table-cell",
+  },
+  /** Always visible - use for core identity columns */
+  alwaysVisible: {
+    cellClassName: "",
+    headerClassName: "",
+  },
 } as const;
+```
 
-export const DEFAULT_PER_PAGE = {
-  default: 25,
-  opportunities: 100,
-  tasks: 100,
-  activities: 50,
-} as const;
+**Step 2: Update getColumnVisibility type**
 
+```typescript
 export function getColumnVisibility(
   visibility: keyof typeof COLUMN_VISIBILITY
 ): { cellClassName: string; headerClassName: string } {
@@ -895,87 +300,311 @@ export function getColumnVisibility(
 }
 ```
 
-**Step 2: Update barrel export**
-
-Add to `src/atomic-crm/utils/index.ts`:
+**Step 3: Create/update tests**
 
 ```typescript
-export {
-  COLUMN_VISIBILITY,
-  SORT_FIELDS,
-  DEFAULT_PER_PAGE,
-  getColumnVisibility,
-} from "./listPatterns";
+// src/atomic-crm/utils/__tests__/listPatterns.test.ts
+import { describe, it, expect } from "vitest";
+import { COLUMN_VISIBILITY, getColumnVisibility } from "../listPatterns";
+
+describe("COLUMN_VISIBILITY", () => {
+  it("desktopOnly uses lg: breakpoint for desktop-first", () => {
+    expect(COLUMN_VISIBILITY.desktopOnly.cellClassName).toBe("hidden lg:table-cell");
+    expect(COLUMN_VISIBILITY.desktopOnly.headerClassName).toBe("hidden lg:table-cell");
+  });
+
+  it("tabletUp uses md: breakpoint for tablet+", () => {
+    expect(COLUMN_VISIBILITY.tabletUp.cellClassName).toBe("hidden md:table-cell");
+  });
+
+  it("alwaysVisible has empty classNames", () => {
+    expect(COLUMN_VISIBILITY.alwaysVisible.cellClassName).toBe("");
+  });
+});
+
+describe("getColumnVisibility", () => {
+  it("returns correct classes for desktopOnly", () => {
+    const result = getColumnVisibility("desktopOnly");
+    expect(result.cellClassName).toContain("lg:");
+  });
+});
 ```
 
-**Step 3: Commit**
+**Step 4: Run tests**
 
 ```bash
-git add src/atomic-crm/utils/listPatterns.ts src/atomic-crm/utils/index.ts
-git commit -m "feat(utils): add list patterns constants
+npm test -- --testPathPattern="listPatterns" --run
+```
 
-- COLUMN_VISIBILITY for responsive column hiding
-- SORT_FIELDS for resource-specific sort options
-- DEFAULT_PER_PAGE for pagination defaults
-- getColumnVisibility helper function"
+**Step 5: Commit**
+
+```bash
+git add src/atomic-crm/utils/listPatterns.ts \
+        src/atomic-crm/utils/__tests__/listPatterns.test.ts
+git commit -m "fix(utils): rename COLUMN_VISIBILITY for desktop-first clarity
+
+BREAKING CHANGE: Renamed visibility presets for clarity
+- hideMobile -> desktopOnly (lg: breakpoint, 1024px+)
+- hideTablet -> tabletUp (md: breakpoint, 768px+)
+- Added JSDoc comments explaining when to use each
+- Added unit tests for listPatterns"
 ```
 
 ---
 
 # Phase 3: List Page Upgrades
 
-## Task 3.1: Upgrade TaskList
+## Priority Order (Business-Aligned)
 
-**Priority:** HIGH (daily usage, missing essential hooks)
+| Priority | Resource | Rationale | Remaining Work |
+|----------|----------|-----------|----------------|
+| **3.1** | ProductList | MVP blocker #22, daily use | FloatingCreateButton, Exporter, Responsive |
+| **3.2** | TaskList | Daily workflow | BulkActions, Responsive, Skeleton |
+| **3.3** | OpportunityList | Core revenue entity | Keyboard, Filter, Exporter |
+| **3.4** | ActivityList | 75% complete | Keyboard nav, SlideOver, Skeleton |
+| **3.5** | SalesList | Admin-only (6 users) | Layout, Responsive, Exporter |
+
+---
+
+## Task 3.1: Upgrade ProductList (MVP #22)
+
+**Priority:** CRITICAL - Contains MVP blocker #22 (FloatingCreateButton)
+
+**Files:**
+- Modify: `src/atomic-crm/products/ProductList.tsx`
+- Create: `src/atomic-crm/products/productExporter.ts`
+- Create: `src/atomic-crm/products/ProductEmpty.tsx`
+- Create: `src/atomic-crm/products/ProductListSkeleton.tsx`
+
+**Current State (Verified):**
+- ✅ StandardListLayout
+- ✅ PremiumDatagrid
+- ✅ useFilterCleanup("products") - line 33
+- ✅ useListKeyboardNavigation - line 36
+- ✅ ProductSlideOver
+- ❌ FloatingCreateButton (MVP #22!)
+- ❌ CSV Exporter
+- ❌ Responsive column hiding
+- ❌ Skeleton loading state
+
+### Step 1: Add FloatingCreateButton (MVP #22 - 5 minutes!)
+
+```typescript
+// Add import
+import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
+
+// Add after PremiumDatagrid closing tag (before StandardListLayout close)
+<FloatingCreateButton />
+```
+
+### Step 2: Add responsive column visibility
+
+```typescript
+import { COLUMN_VISIBILITY } from "@/atomic-crm/utils";
+
+// For Certifications column:
+<TextField
+  source="certifications"
+  label="Certifications"
+  {...COLUMN_VISIBILITY.desktopOnly}
+/>
+
+// For Description column:
+<TextField
+  source="description"
+  label="Description"
+  {...COLUMN_VISIBILITY.desktopOnly}
+/>
+```
+
+### Step 3: Create ProductEmpty.tsx
+
+```typescript
+// src/atomic-crm/products/ProductEmpty.tsx
+export const ProductEmpty = () => (
+  <div className="flex flex-col items-center justify-center py-16 text-center">
+    <h3 className="text-lg font-medium text-foreground">No products yet</h3>
+    <p className="mt-1 text-sm text-muted-foreground">
+      Add your first product to start building your catalog.
+    </p>
+  </div>
+);
+```
+
+### Step 4: Create productExporter.ts
+
+```typescript
+// src/atomic-crm/products/productExporter.ts
+import jsonExport from "jsonexport/dist";
+import type { Exporter } from "ra-core";
+import { downloadCSV } from "ra-core";
+import type { Product } from "../types";
+
+export interface ProductExportRow {
+  id: number | string;
+  name: string | undefined;
+  principal_name: string | undefined;
+  category: string | undefined;
+  certifications: string | undefined;
+  description: string | undefined;
+  created_at: string | undefined;
+}
+
+export const productExporter: Exporter<Product> = async (records, fetchRelatedRecords) => {
+  const principals = await fetchRelatedRecords(records, "principal_id", "organizations");
+
+  const products: ProductExportRow[] = records.map((product) => ({
+    id: product.id,
+    name: product.name,
+    principal_name: product.principal_id
+      ? principals[product.principal_id]?.name
+      : undefined,
+    category: product.category,
+    certifications: product.certifications,
+    description: product.description,
+    created_at: product.created_at,
+  }));
+
+  return jsonExport(products, {}, (err: Error | null, csv: string) => {
+    if (err) {
+      throw new Error(`CSV export failed: ${err.message}`);
+    }
+    downloadCSV(csv, "products");
+  });
+};
+```
+
+### Step 5: Create ProductListSkeleton.tsx
+
+```typescript
+// src/atomic-crm/products/ProductListSkeleton.tsx
+import { Skeleton } from "@/components/ui/skeleton";
+
+export const ProductListSkeleton = () => (
+  <div className="space-y-4 p-4">
+    <div className="flex justify-between items-center">
+      <Skeleton className="h-8 w-48" />
+      <Skeleton className="h-10 w-32" />
+    </div>
+    <div className="space-y-2">
+      {Array.from({ length: 10 }).map((_, i) => (
+        <Skeleton key={i} className="h-12 w-full" />
+      ))}
+    </div>
+  </div>
+);
+```
+
+### Step 6: Wire up components in ProductList.tsx
+
+```typescript
+// Add imports
+import { ProductEmpty } from "./ProductEmpty";
+import { ProductListSkeleton } from "./ProductListSkeleton";
+import { productExporter } from "./productExporter";
+import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
+import { COLUMN_VISIBILITY } from "@/atomic-crm/utils";
+
+// Add to List component
+<List
+  empty={<ProductEmpty />}
+  exporter={productExporter}
+  // ... other props
+>
+
+// Add ExportButton to toolbar
+<ExportButton exporter={productExporter} />
+
+// Add FloatingCreateButton before closing StandardListLayout
+<FloatingCreateButton />
+```
+
+### Step 7: Add identity guard with skeleton
+
+```typescript
+const { data: identity, isPending: isIdentityPending } = useGetIdentity();
+
+if (isIdentityPending) return <ProductListSkeleton />;
+if (!identity) return null;
+```
+
+### Step 8: Verify and commit
+
+```bash
+npm run test:ci -- --testPathPattern="products"
+npx tsc --noEmit
+npm run lint
+
+git add src/atomic-crm/products/
+git commit -m "feat(products): complete ProductList standardization (MVP #22)
+
+- Added FloatingCreateButton (closes MVP blocker #22)
+- Created productExporter.ts for CSV export
+- Created ProductEmpty.tsx component
+- Created ProductListSkeleton.tsx for loading state
+- Added responsive column visibility (desktopOnly for Certifications, Description)
+- Added ExportButton to toolbar"
+```
+
+---
+
+## Task 3.2: Upgrade TaskList
+
+**Priority:** HIGH - Daily workflow
 
 **Files:**
 - Modify: `src/atomic-crm/tasks/TaskList.tsx`
 - Create: `src/atomic-crm/tasks/TaskEmpty.tsx`
-- Create: `src/atomic-crm/tasks/__tests__/TaskList.test.tsx`
+- Create: `src/atomic-crm/tasks/TaskListSkeleton.tsx`
 
-**Required Changes:**
-1. Add `useFilterCleanup("tasks")` hook
-2. Add `useListKeyboardNavigation` hook
-3. Add responsive column hiding (lg: breakpoints)
-4. Create `TaskEmpty.tsx` component
-5. Add `FloatingCreateButton`
-6. Add identity guard pattern
+**Current State (Verified):**
+- ✅ StandardListLayout + PremiumDatagrid
+- ✅ useFilterCleanup("tasks") - line 43
+- ✅ useListKeyboardNavigation - line 46
+- ✅ FloatingCreateButton - line 122
+- ✅ TaskSlideOver
+- ✅ Inline exporter (lines 181-252)
+- ❌ BulkActionsToolbar
+- ❌ Responsive column hiding
+- ❌ Skeleton loading state
 
-**Step 1: Add useFilterCleanup import and call**
+### Step 1: Add BulkActionsToolbar
 
 ```typescript
-import { useFilterCleanup } from "../hooks/useFilterCleanup";
+import { BulkActionsToolbar } from "@/components/admin/BulkActionsToolbar";
 
-// Inside TaskList component, before return:
-useFilterCleanup("tasks");
+// Add to PremiumDatagrid
+<PremiumDatagrid
+  bulkActionButtons={<BulkActionsToolbar />}
+  // ... other props
+>
 ```
 
-**Step 2: Add useListKeyboardNavigation**
+### Step 2: Add responsive column visibility
 
 ```typescript
-import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
+import { COLUMN_VISIBILITY } from "@/atomic-crm/utils";
 
-// Inside TaskListLayout:
-const { focusedIndex } = useListKeyboardNavigation({
-  onSelect: (id) => openSlideOver(Number(id), "view"),
-  enabled: !isSlideOverOpen,
-});
+// For Type column:
+<TextField source="type" {...COLUMN_VISIBILITY.tabletUp} />
 
-// Pass to PremiumDatagrid:
-<PremiumDatagrid focusedIndex={focusedIndex} onRowClick={...}>
+// For Sales Rep column:
+<ReferenceField source="sales_id" {...COLUMN_VISIBILITY.desktopOnly} />
+
+// For Contact column:
+<ReferenceField source="contact_id" {...COLUMN_VISIBILITY.desktopOnly} />
+
+// For Opportunity column:
+<ReferenceField source="opportunity_id" {...COLUMN_VISIBILITY.desktopOnly} />
+
+// For Notes column:
+<TextField source="notes" {...COLUMN_VISIBILITY.desktopOnly} />
 ```
 
-**Step 3: Add responsive column classes**
+### Step 3: Create TaskEmpty.tsx
 
 ```typescript
-// For less critical columns like Notes, Created:
-cellClassName="hidden lg:table-cell"
-headerClassName="hidden lg:table-cell"
-```
-
-**Step 4: Create TaskEmpty.tsx**
-
-```typescript
+// src/atomic-crm/tasks/TaskEmpty.tsx
 export const TaskEmpty = () => (
   <div className="flex flex-col items-center justify-center py-16 text-center">
     <h3 className="text-lg font-medium text-foreground">No tasks yet</h3>
@@ -986,109 +615,204 @@ export const TaskEmpty = () => (
 );
 ```
 
-**Step 5: Add FloatingCreateButton**
+### Step 4: Create TaskListSkeleton.tsx
 
 ```typescript
-import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
+// src/atomic-crm/tasks/TaskListSkeleton.tsx
+import { Skeleton } from "@/components/ui/skeleton";
 
-// After PremiumDatagrid:
-<FloatingCreateButton />
+export const TaskListSkeleton = () => (
+  <div className="space-y-4 p-4">
+    <div className="flex justify-between items-center">
+      <Skeleton className="h-8 w-48" />
+      <Skeleton className="h-10 w-32" />
+    </div>
+    <div className="space-y-2">
+      {Array.from({ length: 10 }).map((_, i) => (
+        <Skeleton key={i} className="h-12 w-full" />
+      ))}
+    </div>
+  </div>
+);
 ```
 
-**Step 6: Commit**
+### Step 5: Wire up and commit
 
 ```bash
 git add src/atomic-crm/tasks/
-git commit -m "feat(tasks): standardize TaskList to match ContactList patterns
+git commit -m "feat(tasks): complete TaskList standardization
 
-- Added useFilterCleanup hook
-- Added useListKeyboardNavigation hook
-- Added responsive column hiding
+- Added BulkActionsToolbar
+- Added responsive column visibility using COLUMN_VISIBILITY constants
 - Created TaskEmpty component
-- Added FloatingCreateButton"
+- Created TaskListSkeleton component"
 ```
 
 ---
 
-## Task 3.2: Upgrade ProductList
+## Task 3.3: Upgrade OpportunityList
 
-**Priority:** MEDIUM (good foundation, needs patterns)
+**Priority:** HIGH - Core revenue entity
 
-**Required Changes:**
-1. Add `useFilterCleanup("products")` hook
-2. Add `useListKeyboardNavigation` hook
-3. Add responsive column hiding
-4. Wire up existing `ProductEmpty` component
-5. Add typed CSV exporter
-6. Add `ExportButton` to toolbar
+**Files:**
+- Modify: `src/atomic-crm/opportunities/OpportunityList.tsx`
+- Create: `src/atomic-crm/opportunities/opportunityExporter.ts`
+- Create: `src/atomic-crm/opportunities/OpportunityListSkeleton.tsx`
 
-*[Similar detailed steps as Task 3.1]*
+**Current State:**
+- ✅ Custom multi-view layout
+- ✅ OpportunitySlideOver
+- ❌ useFilterCleanup
+- ❌ useListKeyboardNavigation
+- ❌ CSV Exporter
+- ❌ Skeleton loading state
+
+### Step 1: Add useFilterCleanup
+
+```typescript
+import { useFilterCleanup } from "../hooks/useFilterCleanup";
+
+// Inside OpportunityList component
+useFilterCleanup("opportunities");
+```
+
+### Step 2: Add useListKeyboardNavigation
+
+```typescript
+import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
+
+// Inside the list view component
+const { focusedIndex } = useListKeyboardNavigation({
+  onSelect: (id) => openSlideOver(Number(id), "view"),
+  enabled: !isSlideOverOpen,
+});
+
+// Pass to PremiumDatagrid
+<PremiumDatagrid focusedIndex={focusedIndex} />
+```
+
+### Step 3: Create opportunityExporter.ts
+
+```typescript
+// src/atomic-crm/opportunities/opportunityExporter.ts
+import jsonExport from "jsonexport/dist";
+import type { Exporter } from "ra-core";
+import { downloadCSV } from "ra-core";
+import type { Opportunity } from "../types";
+import { formatSalesName } from "@/atomic-crm/utils";
+
+export const opportunityExporter: Exporter<Opportunity> = async (
+  records,
+  fetchRelatedRecords
+) => {
+  const sales = await fetchRelatedRecords(records, "sales_id", "sales");
+  const principals = await fetchRelatedRecords(records, "principal_id", "organizations");
+  const distributors = await fetchRelatedRecords(records, "distributor_id", "organizations");
+  const customers = await fetchRelatedRecords(records, "customer_id", "organizations");
+
+  const opportunities = records.map((opp) => ({
+    id: opp.id,
+    name: opp.name,
+    stage: opp.stage,
+    expected_value: opp.expected_value,
+    estimated_close_date: opp.estimated_close_date,
+    principal: opp.principal_id ? principals[opp.principal_id]?.name : "",
+    distributor: opp.distributor_id ? distributors[opp.distributor_id]?.name : "",
+    customer: opp.customer_id ? customers[opp.customer_id]?.name : "",
+    sales_rep: formatSalesName(opp.sales_id ? sales[opp.sales_id] : null),
+    win_reason: opp.win_reason,
+    loss_reason: opp.loss_reason,
+    created_at: opp.created_at,
+  }));
+
+  return jsonExport(opportunities, {}, (err: Error | null, csv: string) => {
+    if (err) {
+      throw new Error(`CSV export failed: ${err.message}`);
+    }
+    downloadCSV(csv, "opportunities");
+  });
+};
+```
+
+### Step 4: Create skeleton and wire up
+
+Follow same pattern as ProductList/TaskList.
+
+### Step 5: Commit
+
+```bash
+git add src/atomic-crm/opportunities/
+git commit -m "feat(opportunities): add keyboard nav, filter cleanup, and exporter
+
+- Added useFilterCleanup('opportunities')
+- Added useListKeyboardNavigation to row view
+- Created opportunityExporter.ts for CSV export
+- Created OpportunityListSkeleton component"
+```
 
 ---
 
-## Task 3.3: Upgrade ActivityList
+## Task 3.4: Upgrade ActivityList
 
-**Priority:** HIGH (needs slide-over architecture)
+**Priority:** MEDIUM - Already 75% complete
 
-**Required Changes:**
-1. Add `useListKeyboardNavigation` hook
-2. Add responsive column hiding
-3. Create `ActivityEmpty.tsx` (extract inline JSX)
-4. Create `ActivityListSkeleton` component
-5. Add `BulkActionsToolbar`
-6. Add `ActivitySlideOver` component (major work)
+**Files:**
+- Modify: `src/atomic-crm/activities/ActivityList.tsx`
+- Create: `src/atomic-crm/activities/ActivitySlideOver.tsx` (if needed)
+- Create: `src/atomic-crm/activities/ActivityListSkeleton.tsx`
+- Create: `src/atomic-crm/activities/ActivityEmpty.tsx`
 
-*[Detailed steps for slide-over implementation]*
+**Current State:**
+- ✅ StandardListLayout + PremiumDatagrid
+- ✅ useFilterCleanup("activities") - line 45
+- ✅ FloatingCreateButton - line 62
+- ✅ BulkActionsToolbar - line 185
+- ✅ Inline exporter
+- ❌ useListKeyboardNavigation
+- ❌ ActivitySlideOver (uses ActivitySinglePage instead)
+- ❌ Responsive column visibility
+- ❌ Skeleton
+
+**Note:** ActivityList uses `ActivitySinglePage` for detail view, not slide-over pattern. Consider if this should change or remain as-is for UX consistency.
+
+### Steps:
+
+1. Add useListKeyboardNavigation (navigate to ActivitySinglePage instead of slide-over)
+2. Add responsive column visibility using COLUMN_VISIBILITY constants
+3. Create ActivityEmpty.tsx and ActivityListSkeleton.tsx
+4. Decision: Keep ActivitySinglePage or migrate to ActivitySlideOver?
 
 ---
 
-## Task 3.4: Upgrade SalesList
+## Task 3.5: Upgrade SalesList
 
-**Priority:** MEDIUM (admin-only, consider exceptions)
+**Priority:** LOW - Admin-only (6 users)
 
-**Required Changes:**
-1. Add `StandardListLayout` wrapper
-2. Add `useFilterCleanup("sales")` hook
-3. Add `useListKeyboardNavigation` hook
-4. Add responsive column hiding
-5. Create `SalesEmpty.tsx` component
-6. Add typed CSV exporter
+**Files:**
+- Modify: `src/atomic-crm/sales/SalesList.tsx`
+- Create: `src/atomic-crm/sales/salesExporter.ts`
+- Create: `src/atomic-crm/sales/SalesListSkeleton.tsx`
 
-*[Detailed steps]*
+**Current State:**
+- ❌ No StandardListLayout (admin-only exception)
+- ✅ useFilterCleanup("sales") - line 85
+- ✅ useListKeyboardNavigation - lines 87-90
+- ✅ SalesSlideOver
+- ❌ BulkActionsToolbar (disabled - admin only)
+- ❌ Responsive column visibility
+- ❌ Custom exporter (uses default)
+- ❌ Skeleton
 
----
-
-## Task 3.5: Upgrade OpportunityList (Row View)
-
-**Priority:** MEDIUM (complex multi-view)
-
-**Required Changes:**
-1. Add `useFilterCleanup("opportunities")` hook to main component
-2. Add `useListKeyboardNavigation` to `OpportunityRowListView.tsx`
-3. Add typed CSV exporter
-4. Create `OpportunityListSkeleton` component
-
-*[Detailed steps - focus on row view only]*
+**Decision:** Since SalesList is admin-only with 6 users, consider keeping minimal changes. Focus on:
+1. Responsive column visibility
+2. Skeleton loading state
+3. Optional: Custom exporter
 
 ---
 
 # Phase 4: Testing & Verification
 
-## Task 4.1: Create Missing List Tests
-
-**Files to Create:**
-- `src/atomic-crm/tasks/__tests__/TaskList.test.tsx`
-- `src/atomic-crm/sales/__tests__/SalesList.test.tsx`
-- `src/atomic-crm/products/__tests__/ProductList.test.tsx`
-
-Follow pattern from `OrganizationList.test.tsx`:
-- Mock `useListContext`, `useGetIdentity`
-- Mock `PremiumDatagrid`, `useSlideOverState`
-- Test rendering, row clicks, slide-over integration
-
----
-
-## Task 4.2: Run Full Test Suite
+## Task 4.1: Run Full Test Suite
 
 ```bash
 # Unit tests with coverage
@@ -1116,19 +840,48 @@ npm run validate:colors
 
 ---
 
-## Task 4.3: Manual Verification Checklist
+## Task 4.2: Manual Verification Checklist (Enhanced)
 
 For each upgraded list page:
 
+### Layout Structure
+- [ ] StandardListLayout wrapper present (or documented exception)
+- [ ] PremiumDatagrid used (not plain Datagrid)
+- [ ] `.table-row-premium` applied via rowClassName
+
+### Responsive Behavior (Desktop-First)
+- [ ] **Test on 1440px viewport FIRST** (primary target)
+- [ ] Desktop (1024px+) shows all intended columns
+- [ ] Tablet (768px) shows reduced columns gracefully
+- [ ] Mobile (375px) shows core identity columns only
+- [ ] Column visibility uses COLUMN_VISIBILITY constants (not hardcoded)
+
+### Touch Targets (All Screen Sizes - 44px Minimum)
+- [ ] Row height ≥ 44px (`h-11` minimum)
+- [ ] FloatingCreateButton ≥ 56px (`h-14 w-14`)
+- [ ] Bulk action checkboxes: wrapper ≥ 44px total
+- [ ] Export button: `h-10` minimum with `p-2` wrapper (44px)
+- [ ] Keyboard focus indicators visible and ≥ 44px
+
+### Semantic Colors
+- [ ] Run `npm run validate:colors` - no violations
+- [ ] No inline CSS variables in className
+- [ ] All text uses semantic utilities (`text-foreground`, `text-muted-foreground`)
+
+### Keyboard & Accessibility
+- [ ] Arrow keys navigate rows
+- [ ] Enter opens slide-over (or detail page for Activities)
+- [ ] ESC closes slide-over and returns focus
+- [ ] Tab order logical
+- [ ] Screen reader announces slide-over state changes
+
+### Data & Export
 - [ ] Page loads without errors
-- [ ] PremiumDatagrid renders with hover effects
-- [ ] Row click opens slide-over
-- [ ] Keyboard navigation works (Arrow keys, Enter)
-- [ ] Responsive columns hide at correct breakpoints
 - [ ] Export button downloads valid CSV
+- [ ] CSV includes all visible columns + metadata
 - [ ] Empty state shows when no data
 - [ ] Filter cleanup doesn't cause console errors
-- [ ] BulkActionsToolbar appears on selection
+- [ ] BulkActionsToolbar appears on selection (where applicable)
 
 ---
 
@@ -1138,14 +891,50 @@ For each upgraded list page:
 - `src/atomic-crm/contacts/ContactList.tsx` - Reference implementation
 - `src/atomic-crm/organizations/OrganizationList.tsx` - Secondary reference
 
+## Shared Utilities (Already Exist)
+- `src/atomic-crm/utils/formatters.ts` - Display formatters
+- `src/atomic-crm/utils/exportHelpers.ts` - CSV export helpers
+- `src/atomic-crm/utils/listPatterns.ts` - Column visibility, sort fields
+
+## Hooks (Already Exist)
+- `src/hooks/useListKeyboardNavigation.ts` - Keyboard nav
+- `src/atomic-crm/hooks/useFilterCleanup.ts` - Filter state cleanup
+- `src/hooks/useSlideOverState.ts` - Slide-over state management
+
 ## Test Utilities
 - `src/tests/utils/render-admin.tsx` - Admin context wrapper
 - `src/tests/utils/mock-providers.ts` - Mock factories
 
-## Hooks
-- `src/hooks/useListKeyboardNavigation.ts` - Already universal
-- `src/atomic-crm/hooks/useFilterCleanup.ts` - Already universal
-- `src/hooks/useSlideOverState.ts` - Slide-over state management
-
 ## E2E Fixtures
 - `tests/e2e/design-system/list-layout.spec.ts` - Layout validation
+
+---
+
+# Changelog
+
+## v2.0 (2025-12-02) - REVISED
+
+**Critical Fixes:**
+- Removed Phase 2 utility creation (already implemented)
+- Converted Phase 2 to verification + COLUMN_VISIBILITY update
+- Added Task 1.5: contactExporter refactoring (DRY compliance)
+- Fixed COLUMN_VISIBILITY naming: `hideMobile` → `desktopOnly`, `hideTablet` → `tabletUp`
+- Updated gap analysis with verified current state
+
+**Priority Reordering:**
+- ProductList moved to 3.1 (contains MVP blocker #22)
+- OpportunityList moved to 3.3 (core revenue entity)
+- SalesList moved to 3.5 (admin-only, lowest priority)
+
+**Effort Adjustment:**
+- Total reduced from 6-10 hours to 2.5-4 hours
+- Phase 3 reduced from 3-4 hours to 1.5-2 hours (most patterns already implemented)
+
+**Enhanced Verification:**
+- Added touch target checks (44px minimum)
+- Added desktop-first testing order
+- Added semantic color validation
+- Added COLUMN_VISIBILITY usage verification
+
+## v1.0 (2025-12-02) - ORIGINAL
+- Initial plan (superseded)
