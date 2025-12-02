@@ -43,6 +43,7 @@ describe("Contact Validation Functions - UI as Source of Truth", () => {
         first_name: "John",
         last_name: "Doe",
         sales_id: "1",
+        organization_id: "1", // Required per PRD: contacts cannot exist without organization
       };
 
       await expect(validateCreateContact(invalidData)).rejects.toMatchObject({
@@ -55,6 +56,22 @@ describe("Contact Validation Functions - UI as Source of Truth", () => {
         first_name: "John",
         last_name: "Doe",
         email: [{ email: "john@example.com", type: "Work" }],
+        organization_id: "1", // Required per PRD
+      };
+
+      await expect(validateCreateContact(invalidData)).rejects.toMatchObject({
+        message: "Validation failed",
+      });
+    });
+
+    it("should require organization_id for creation", async () => {
+      // PRD: "Contact requires organization" - no orphan contacts allowed
+      const invalidData = {
+        first_name: "John",
+        last_name: "Doe",
+        email: [{ email: "john@example.com", type: "Work" }],
+        sales_id: "1",
+        // Missing organization_id
       };
 
       await expect(validateCreateContact(invalidData)).rejects.toMatchObject({
@@ -68,6 +85,7 @@ describe("Contact Validation Functions - UI as Source of Truth", () => {
         last_name: "Doe",
         email: [{ email: "john@example.com", type: "Work" }],
         sales_id: "1",
+        organization_id: "1", // Required per PRD: contacts cannot exist without organization
       };
 
       await expect(validateCreateContact(validData)).resolves.toBeUndefined();
