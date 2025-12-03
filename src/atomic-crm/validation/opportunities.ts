@@ -189,7 +189,16 @@ export async function validateOpportunityForm(data: unknown): Promise<void> {
   }
 }
 
-// Create-specific schema (stricter requirements)
+/**
+ * Create-specific schema (Industry Standard - HubSpot/Salesforce pattern)
+ *
+ * Per industry research (2025-12):
+ * - HubSpot Deals: requires only dealname + dealstage + pipeline
+ * - Salesforce: requires only name + prospect link
+ *
+ * Our approach: Only name and stage required, everything else optional with sensible defaults.
+ * This enables "capture now, enrich later" workflow for both Kanban quick-add AND full Create form.
+ */
 export const createOpportunitySchema = opportunityBaseSchema
   .omit({
     id: true,
@@ -198,29 +207,74 @@ export const createOpportunitySchema = opportunityBaseSchema
     deleted_at: true,
   })
   .extend({
-    // Require at least one contact for new opportunities
+    // Contact_ids optional for quick-add (can be enriched later via slide-over)
     contact_ids: z
       .array(z.union([z.string(), z.number()]))
-      .min(1, "At least one contact is required"),
+      .optional()
+      .default([]),
 
-    // Remove default from estimated_close_date for create - must be explicitly provided
-    estimated_close_date: z.string().min(1, "Expected closing date is required"),
+    // Auto-default: 30 days from now (industry standard placeholder)
+    estimated_close_date: z
+      .string()
+      .optional()
+      .default(() => {
+        const date = new Date();
+        date.setDate(date.getDate() + 30);
+        return date.toISOString().split("T")[0];
+      }),
 
     // Products are optional for opportunity creation
-    // They can be added later via the UI
     products_to_sync: z
       .array(
         z.object({
           product_id_reference: z.union([z.string(), z.number()]).optional(),
-          notes: z.string().optional().nullable(), // Allow null from form inputs
+          notes: z.string().optional().nullable(),
         })
       )
       .optional(),
+
+    // Customer/principal optional for quick-add (core HubSpot pattern)
+    customer_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
+    principal_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
   })
   .required({
-    name: true,
-    estimated_close_date: true,
+    name: true, // Only name is truly required (matches HubSpot)
   });
+
+/**
+ * Quick-Create Schema (Industry Standard - HubSpot/Salesforce pattern)
+ *
+ * Minimal schema for Kanban quick-add buttons. Per industry research:
+ * - HubSpot Deals: requires only dealname + dealstage + pipeline
+ * - Salesforce: requires only name + prospect link
+ *
+ * This enables "capture now, enrich later" workflow for fast opportunity entry.
+ * Users can add customer, principal, contacts via slide-over edit panel.
+ */
+export const quickCreateOpportunitySchema = z.object({
+  // Required fields (minimal - matches HubSpot pattern)
+  name: z.string().min(1, "Opportunity name is required"),
+  stage: opportunityStageSchema,
+
+  // Auto-populated fields
+  status: z.literal("active").default("active"),
+  priority: opportunityPrioritySchema.default("medium"),
+
+  // Owner assignment (current user)
+  opportunity_owner_id: z.union([z.string(), z.number()]).optional(),
+  account_manager_id: z.union([z.string(), z.number()]).optional(),
+
+  // Auto-default: 30 days from now (business standard)
+  estimated_close_date: z
+    .string()
+    .default(() => {
+      const date = new Date();
+      date.setDate(date.getDate() + 30);
+      return date.toISOString().split("T")[0];
+    }),
+});
+
+export type QuickCreateOpportunityInput = z.infer<typeof quickCreateOpportunitySchema>;
 
 // Update-specific schema (more flexible for partial updates)
 // IMPORTANT: React Admin v5 sends ALL form fields during update, not just dirty fields.
