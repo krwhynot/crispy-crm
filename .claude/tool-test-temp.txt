@@ -1,3 +1,0 @@
-This is a test file created by Claude Code system tool test.
-Timestamp: 2025-12-03
-Purpose: Verify Write tool functionality
