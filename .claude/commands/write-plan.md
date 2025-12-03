@@ -7,7 +7,7 @@ description: Creates detailed implementation plans for AI agent execution - inte
 
 > **SKILL ACTIVATION:** I'm using the `writing-plans` skill.
 
-**Full guidance:** `.claude/skills/writing-plans/SKILL.md`
+**Required skills:** `writing-plans`, `enforcing-principles`
 
 ---
 
@@ -21,26 +21,6 @@ description: Creates detailed implementation plans for AI agent execution - inte
 - Has never seen this repo
 - Has NOT read the constitution
 - Takes instructions literally
-
----
-
-## Resources Appendix (include in every plan)
-
-```markdown
-## Resources
-
-**Required Reading:**
-- `docs/claude/engineering-constitution.md`: Core principles - READ FIRST
-
-**Related Commands:**
-- `/atomic-crm-constitution`: Verify implementation compliance
-
-**Constitution Pattern Files:**
-- `resources/error-handling.md`: Fail-fast patterns
-- `resources/validation-patterns.md`: Zod at API boundary
-- `resources/form-state-management.md`: Schema-derived defaults
-- `resources/database-patterns.md`: GRANT + RLS
-```
 
 ---
 
