@@ -5,16 +5,6 @@ description: Use when receiving or giving code review feedback, implementing rev
 
 # Technical Feedback Protocol
 
-## ℹ️ MCP Note
-
-**This skill references Zen MCP but does not require it.**
-
-This skill is a methodology/protocol for handling feedback. It mentions Zen MCP as an example of external AI tools whose feedback should be verified, but the skill itself works fully without any MCP dependencies.
-
-**No pause needed - proceeding with skill content.**
-
----
-
 ## Purpose
 
 Bidirectional code review discipline that maintains technical rigor while respecting project principles. Applies to ALL feedback sources: you (the developer), AI tools (Zen MCP, Copilot), and human team members.

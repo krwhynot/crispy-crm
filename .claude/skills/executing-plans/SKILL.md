@@ -5,24 +5,6 @@ description: Use when executing implementation plans, running plan tasks, workin
 
 # Executing Plans Skill
 
-## ⚠️ MCP Dependency Check
-
-**This skill works best with the Zen MCP server for blocker investigation.**
-
-| Required Tool | Purpose | Status |
-|---------------|---------|--------|
-| `mcp__zen__debug` | Structured blocker investigation | Check if available |
-| `mcp__zen__thinkdeep` | Deep architectural analysis | Check if available |
-
-### ⏸️ PAUSED - Please Choose:
-
-1. **"Continue with MCP"** - I'll wait while you activate the Zen MCP server
-2. **"Continue without MCP"** - I'll proceed with manual blocker investigation (reduced capability)
-
-> **Without Zen MCP:** Blocker investigation will use manual analysis instead of structured AI-assisted debugging. The skill remains functional but escalation protocol will be limited.
-
----
-
 ## Purpose
 
 Execute implementation plans through **smart batch grouping** with review checkpoints, blocker investigation via Zen MCP, and constitution compliance verification.
