@@ -40,21 +40,35 @@ From the screenshot provided:
 
 ---
 
-## Solution: Use `items-end` Alignment
+## Solution: Use `items-baseline` Alignment
 
-The correct fix is to align items to the **bottom** of the flex container, not the top. This ensures the button aligns with the input field regardless of label presence.
+~~The correct fix is to align items to the **bottom** of the flex container.~~
+
+**UPDATED after Zen review:** Use `items-baseline` instead of `items-end`.
+
+### Why NOT `items-end`?
+
+`items-end` aligns to the bottom of the entire input block **including helper/error text**. If validation errors appear, the button will shift downward - creating a jarring layout shift.
+
+### Why `items-baseline`?
+
+`items-baseline` aligns elements by their **text baseline** - the invisible line text sits on. This means:
+- Button text aligns with input field text
+- Helper/error text below doesn't affect alignment
+- Label above doesn't affect alignment
+- **No layout shift when errors appear**
 
 ### Target Pattern
 
 ```tsx
-// ✅ CORRECT: Button aligns with input bottom edge
-<div className="flex items-end gap-2">
+// ✅ CORRECT: Button aligns with input text baseline (stable)
+<div className="flex items-baseline gap-2">
   <ReferenceInput source="customer_organization_id" className="flex-1">
     <AutocompleteOrganizationInput label="Customer Organization *" />
   </ReferenceInput>
   <CreateInDialogButton
     label="New Customer"
-    // No margin needed!
+    // No margin needed - remove className prop entirely
   />
 </div>
 ```

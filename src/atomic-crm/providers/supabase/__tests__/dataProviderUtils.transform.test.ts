@@ -187,12 +187,12 @@ describe("transformArrayFilters", () => {
     it("should transform array values when key already has @ operator (not_in fix)", () => {
       // This is the critical fix for the "stage@not_in" bug
       // Input: { "stage@not_in": ["closed_won", "closed_lost"] }
-      // Expected output: { "stage@not_in": "(closed_won,closed_lost)" }
+      // Expected output: { "stage@not.in": "(closed_won,closed_lost)" } (note: not_in → not.in for PostgREST)
       const filter = {
         "stage@not_in": ["closed_won", "closed_lost"],
       };
       expect(transformArrayFilters(filter)).toEqual({
-        "stage@not_in": "(closed_won,closed_lost)",
+        "stage@not.in": "(closed_won,closed_lost)",
       });
     });
 
@@ -205,7 +205,7 @@ describe("transformArrayFilters", () => {
       };
       expect(transformArrayFilters(filter)).toEqual({
         "status@in": "(active,pending,review)",
-        "priority@not_in": "(low,none)",
+        "priority@not.in": "(low,none)", // not_in → not.in for PostgREST
         "tags@cs": "{already,formatted}",
       });
     });
@@ -218,7 +218,7 @@ describe("transformArrayFilters", () => {
         name: "test",
       };
       expect(transformArrayFilters(filter)).toEqual({
-        "stage@not_in": "(closed_won,closed_lost)",
+        "stage@not.in": "(closed_won,closed_lost)", // not_in → not.in for PostgREST
         "created_at@gte": "2024-01-01",
         "deleted_at@is": null,
         name: "test",
@@ -232,8 +232,9 @@ describe("transformArrayFilters", () => {
       };
       // Empty arrays are handled: the key with @ is preserved but value becomes ()
       // Actually, empty arrays with @ should still be transformed
+      // Note: not_in → not.in even for empty arrays
       expect(transformArrayFilters(filter)).toEqual({
-        "stage@not_in": [], // Empty array preserved as-is (not transformed)
+        "stage@not.in": [], // Empty array preserved as-is (not transformed), but key is normalized
         "status@in": "(active)",
       });
     });
