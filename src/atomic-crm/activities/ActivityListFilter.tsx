@@ -147,7 +147,7 @@ export const ActivityListFilter = () => {
             multiselect
             className="w-full justify-between"
             label={
-              <Badge variant="default" className="text-xs px-1 py-0 bg-green-600">
+              <Badge variant="default" className="text-xs px-1 py-0 bg-success text-success-foreground">
                 Positive
               </Badge>
             }

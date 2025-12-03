@@ -148,8 +148,8 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
 
   return (
     <form className="flex flex-col gap-6">
-      {/* Pre-filled Section - Light green background */}
-      <div className="rounded-lg bg-green-50 p-4 space-y-4">
+      {/* Pre-filled Section - Light success background */}
+      <div className="rounded-lg bg-success/10 p-4 space-y-4">
         <h3 className="text-sm font-medium text-foreground">Pre-filled Information</h3>
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
           <div className="space-y-2">

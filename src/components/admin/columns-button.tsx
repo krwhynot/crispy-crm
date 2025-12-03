@@ -158,6 +158,9 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
               placeholder={translate("ra.action.search_columns", {
                 _: "Search columns",
               })}
+              aria-label={translate("ra.action.search_columns", {
+                _: "Search columns",
+              })}
               className="pr-8"
             />
             <Search className="absolute right-2 top-2 h-4 w-4 text-muted-foreground" />

@@ -1,72 +1,35 @@
 import { Bell } from "lucide-react";
-import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { supabase } from "@/atomic-crm/providers/supabase/supabase";
-import { useGetIdentity } from "ra-core";
+import { useGetIdentity, useGetList } from "ra-core";
 import { NotificationDropdown } from "./NotificationDropdown";
 
+interface Notification {
+  id: number;
+  read: boolean;
+  user_id: string;
+}
+
 export const NotificationBell = () => {
-  const [unreadCount, setUnreadCount] = useState(0);
   const { data: identity, isLoading } = useGetIdentity();
 
-  // Fetch initial unread count
-  useEffect(() => {
-    if (!identity?.user_id || isLoading) return;
+  const { total: unreadCount = 0, refetch } = useGetList<Notification>(
+    "notifications",
+    {
+      pagination: { page: 1, perPage: 1 },
+      filter: identity?.user_id
+        ? { user_id: identity.user_id, read: false }
+        : {},
+    },
+    {
+      enabled: !!identity?.user_id && !isLoading,
+      refetchInterval: 30000,
+    }
+  );
 
-    const fetchUnreadCount = async () => {
-      const { count, error } = await supabase
-        .from("notifications")
-        .select("*", { count: "exact", head: true })
-        .eq("user_id", identity.user_id)
-        .eq("read", false);
-
-      if (!error && count !== null) {
-        setUnreadCount(count);
-      }
-    };
-
-    fetchUnreadCount();
-  }, [identity?.user_id, isLoading]);
-
-  // Subscribe to real-time updates
-  useEffect(() => {
-    if (!identity?.user_id || isLoading) return;
-
-    const channel = supabase
-      .channel("notifications_changes")
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "notifications",
-          filter: `user_id=eq.${identity.user_id}`,
-        },
-        async () => {
-          // Refetch count when notifications change
-          const { count, error } = await supabase
-            .from("notifications")
-            .select("*", { count: "exact", head: true })
-            .eq("user_id", identity.user_id)
-            .eq("read", false);
-
-          if (!error && count !== null) {
-            setUnreadCount(count);
-          }
-        }
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [identity?.user_id, isLoading]);
-
-  // Accessible label
   const ariaLabel = unreadCount > 0 ? `Notifications (${unreadCount} unread)` : "Notifications";
 
   return (
-    <NotificationDropdown>
+    <NotificationDropdown onOpenChange={(open) => open && refetch()}>
       <Button
         variant="ghost"
         size="icon"

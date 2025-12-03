@@ -24,7 +24,7 @@ export const ProductListFilter = () => {
     {
       // Categories and principals don't change often - cache for 5 minutes
       staleTime: 5 * 60 * 1000,
-      cacheTime: 15 * 60 * 1000,
+      gcTime: 15 * 60 * 1000,
       refetchOnWindowFocus: false,
     }
   );
@@ -40,7 +40,7 @@ export const ProductListFilter = () => {
     {
       // Categories change infrequently, so we can cache for longer
       staleTime: 5 * 60 * 1000,
-      cacheTime: 15 * 60 * 1000,
+      gcTime: 15 * 60 * 1000,
       refetchOnWindowFocus: false,
     }
   );

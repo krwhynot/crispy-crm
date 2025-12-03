@@ -162,9 +162,9 @@ const ActivityListLayout = () => {
                 return <span className="text-muted-foreground">—</span>;
               }
               const sentimentColors: Record<string, string> = {
-                positive: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
-                neutral: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200",
-                negative: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+                positive: "bg-success/10 text-success",
+                neutral: "bg-muted text-muted-foreground",
+                negative: "bg-destructive/10 text-destructive",
               };
               return (
                 <Badge className={sentimentColors[record.sentiment] || ""} variant="outline">

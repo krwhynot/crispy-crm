@@ -106,4 +106,16 @@ describe("FormSection", () => {
     const description = screen.getByText("Test description");
     expect(description).toHaveClass("text-muted-foreground");
   });
+
+  test("renders title as h2 heading for proper document hierarchy", () => {
+    render(
+      <FormSection title="Test Section">
+        <div>Content</div>
+      </FormSection>
+    );
+
+    const heading = screen.getByRole("heading", { level: 2, name: "Test Section" });
+    expect(heading).toBeInTheDocument();
+    expect(heading.tagName).toBe("H2");
+  });
 });

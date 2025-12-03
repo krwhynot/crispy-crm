@@ -222,15 +222,15 @@ export const WhatsNew = () => {
   const getCategoryColor = (category: FeatureTour["category"]) => {
     switch (category) {
       case "opportunities":
-        return "bg-blue-100 text-blue-800";
+        return "bg-primary/10 text-primary";
       case "contacts":
         return "bg-success-subtle text-success-default";
       case "organizations":
-        return "bg-purple-100 text-purple-800";
+        return "bg-primary/10 text-primary";
       case "activities":
-        return "bg-orange-100 text-orange-800";
+        return "bg-primary/10 text-primary";
       case "b2b":
-        return "bg-red-100 text-red-800";
+        return "bg-primary/10 text-primary";
       default:
         return "bg-muted text-foreground";
     }
@@ -310,7 +310,7 @@ export const WhatsNew = () => {
                 <>
                   <div className="w-full bg-muted rounded-full h-2">
                     <div
-                      className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                      className="bg-primary h-2 rounded-full transition-all duration-300"
                       style={{
                         width: `${((currentStep + 1) / selectedFeature.steps.length) * 100}%`,
                       }}
@@ -326,16 +326,16 @@ export const WhatsNew = () => {
                     </p>
 
                     {selectedFeature.steps[currentStep].action && (
-                      <div className="bg-blue-50 p-4 rounded-lg">
-                        <h4 className="font-medium text-blue-900 mb-2">Try it now:</h4>
-                        <p className="text-blue-800">{selectedFeature.steps[currentStep].action}</p>
+                      <div className="bg-primary/10 p-4 rounded-lg">
+                        <h4 className="font-medium text-primary mb-2">Try it now:</h4>
+                        <p className="text-primary">{selectedFeature.steps[currentStep].action}</p>
                       </div>
                     )}
 
                     {selectedFeature.steps[currentStep].tip && (
-                      <div className="bg-yellow-50 p-4 rounded-lg">
-                        <h4 className="font-medium text-yellow-900 mb-2">💡 Pro Tip:</h4>
-                        <p className="text-yellow-800">{selectedFeature.steps[currentStep].tip}</p>
+                      <div className="bg-warning/10 p-4 rounded-lg">
+                        <h4 className="font-medium text-warning mb-2">💡 Pro Tip:</h4>
+                        <p className="text-warning">{selectedFeature.steps[currentStep].tip}</p>
                       </div>
                     )}
                   </div>
@@ -349,7 +349,7 @@ export const WhatsNew = () => {
                       {currentStep === selectedFeature.steps.length - 1 ? (
                         <Button
                           onClick={() => handleFeatureComplete(selectedFeature.id)}
-                          className="bg-green-600 hover:bg-green-700"
+                          className="bg-success text-success-foreground hover:bg-success/90"
                         >
                           <CheckCircle className="h-4 w-4 mr-2" />
                           Complete Tour
