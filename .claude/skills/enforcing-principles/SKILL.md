@@ -1,6 +1,6 @@
 ---
-name: atomic-crm-constitution
-description: Use when implementing features in Atomic CRM - enforces Engineering Constitution principles including fail-fast error handling, single composable entry point for data access, form state from Zod schemas, and pre-launch velocity over resilience
+name: enforcing-principles
+description: Use when implementing features, handling errors, adding validation, creating forms, writing database migrations. Enforces fail-fast (NO retry logic, circuit breakers, exponential backoff), single entry point (unified data provider, Zod at API boundary), form defaults from schema (zodSchema.partial().parse), TypeScript (interface vs type), React Admin patterns. BLOCKS anti-patterns (CircuitBreaker, maxRetries), SUGGESTS best practices.
 ---
 
 # Atomic CRM Engineering Constitution
