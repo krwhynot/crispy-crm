@@ -255,6 +255,86 @@
         ]
       }
     },
+    "executing-plans": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Use when executing implementation plans, running plan tasks, working through planned work. Provides batch execution with smart dependency grouping, Zen MCP integration for blockers, and constitution compliance checkpoints. Pairs with writing-plans skill.",
+      "requiredSkills": ["enforcing-principles"],
+      "promptTriggers": {
+        "keywords": [
+          "execute plan",
+          "run plan",
+          "implement plan",
+          "work through tasks",
+          "follow plan",
+          "plan execution",
+          "batch execution",
+          "checkpoint",
+          "blocker",
+          "run the plan",
+          "execute the plan",
+          "start execution",
+          "continue plan",
+          "resume plan",
+          "next batch",
+          "proceed with plan"
+        ],
+        "intentPatterns": [
+          "(execute|run|implement|start|begin|continue|resume).*?plan",
+          "(work|go) through.*?(plan|tasks?)",
+          "(follow|use).*?plan.*?(step|task)",
+          "plan.*?(execution|implementation)",
+          "(next|continue|proceed).*?batch",
+          "checkpoint.*?(report|review|approval)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "docs/plans/**/*.md"
+        ],
+        "contentPatterns": [
+          "Implementation Plan",
+          "Task Dependencies",
+          "For Executing Agent",
+          "Batch [A-Z]:",
+          "Tasks \\[\\d"
+        ]
+      }
+    },
+    "subagent-driven-development": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Execute implementation plans by dispatching fresh subagents per task with code review between feature areas. TDD-first, quality gates, full test verification.",
+      "requiredSkills": ["writing-plans", "enforcing-principles"],
+      "promptTriggers": {
+        "keywords": [
+          "subagent",
+          "dispatch subagent",
+          "fresh agent",
+          "execute plan with subagents",
+          "subagent-driven",
+          "quality gates",
+          "task execution",
+          "dispatch task",
+          "implement with subagent",
+          "fresh context",
+          "context pollution",
+          "TDD execution",
+          "execute tasks sequentially"
+        ],
+        "intentPatterns": [
+          "(dispatch|spawn|launch).*?(subagent|fresh agent|new agent).*?task",
+          "(execute|implement|run).*?plan.*?(subagent|fresh agent|quality)",
+          "subagent.*?(per|each|every).*?task",
+          "(fresh|clean|new).*?(context|agent).*?(task|implementation)",
+          "(avoid|prevent).*?context.*?pollution",
+          "(review|check).*?(between|after).*?(task|feature)",
+          "quality.*?gate.*?(task|implementation)"
+        ]
+      }
+    },
     "supabase-crm": {
       "type": "domain",
       "enforcement": "suggest",
