@@ -1,3 +1,9 @@
+// Configure Zod BEFORE any imports that use Zod schemas
+// This disables JIT compilation which uses new Function() and triggers CSP violations
+// See: https://github.com/colinhacks/zod/issues/4360
+import { z } from "zod";
+z.config({ jitless: true });
+
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import * as Sentry from "@sentry/react";
@@ -57,6 +63,15 @@ if (import.meta.env.VITE_SENTRY_DSN) {
         }
         // Filter out network abort errors (user navigated away)
         if (error.name === "AbortError" || error.message?.includes("The operation was aborted")) {
+          return null;
+        }
+        // Filter out CSP eval errors from feature detection (Zod jitless mode should prevent these)
+        // See: https://github.com/colinhacks/zod/issues/4360
+        if (
+          error.name === "EvalError" ||
+          error.message?.includes("unsafe-eval") ||
+          error.message?.includes("Content Security Policy")
+        ) {
           return null;
         }
       }
