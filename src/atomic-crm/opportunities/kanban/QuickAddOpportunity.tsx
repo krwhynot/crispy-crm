@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { useCreate, useNotify, useRefresh, useGetIdentity } from "react-admin";
+import { useCreate, useNotify, useRefresh, useGetIdentity, useGetList } from "react-admin";
 import { Loader2 } from "lucide-react";
 import { quickCreateOpportunitySchema } from "../../validation/opportunities";
-import type { OpportunityStageValue } from "../../types";
+import type { OpportunityStageValue, Organization } from "../../types";
 
 interface QuickAddOpportunityProps {
   stage: OpportunityStageValue;
@@ -11,10 +11,21 @@ interface QuickAddOpportunityProps {
 export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
+  const [customerId, setCustomerId] = useState<string>("");
   const [create, { isLoading }] = useCreate();
   const notify = useNotify();
   const refresh = useRefresh();
   const { identity } = useGetIdentity();
+
+  // Fetch customer organizations (Salesforce standard: Account required for Opportunity)
+  const { data: customers, isLoading: customersLoading } = useGetList<Organization>(
+    "organizations",
+    {
+      pagination: { page: 1, perPage: 100 },
+      sort: { field: "name", order: "ASC" },
+      filter: { organization_type: "customer", deleted_at: null },
+    }
+  );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,12 +35,17 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
       return;
     }
 
+    if (!customerId) {
+      notify("Customer is required", { type: "error" });
+      return;
+    }
+
     try {
-      // Use minimal quick-create schema (industry standard: HubSpot/Salesforce pattern)
-      // Only name + stage required, other fields have sensible defaults
+      // Salesforce standard: Name + Customer + Stage required
       const validatedData = quickCreateOpportunitySchema.parse({
         name: name.trim(),
         stage,
+        customer_organization_id: Number(customerId),
         // Set current user as owner - ensures opportunity shows in "My Opportunities"
         opportunity_owner_id: identity?.id,
         account_manager_id: identity?.id,
@@ -39,6 +55,7 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
       notify("Opportunity created! Add details via the card menu.", { type: "success" });
       setIsOpen(false);
       setName("");
+      setCustomerId("");
       refresh();
     } catch (error) {
       // Fail-fast: show actual validation error for debugging
