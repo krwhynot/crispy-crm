@@ -60,9 +60,9 @@ function getStatusText(errorRate: number): string {
  */
 function StatusIndicator({ status, label }: { status: "green" | "yellow" | "red"; label: string }) {
   const colorClasses = {
-    green: "bg-green-500",
-    yellow: "bg-yellow-500",
-    red: "bg-red-500",
+    green: "bg-success",
+    yellow: "bg-warning",
+    red: "bg-destructive",
   };
 
   return (
@@ -99,8 +99,8 @@ function MetricCard({
         <div className="text-2xl font-bold">{value}</div>
         {subtitle && (
           <p className="text-xs text-muted-foreground flex items-center gap-1">
-            {trend === "up" && <TrendingUp className="h-3 w-3 text-green-500" />}
-            {trend === "down" && <TrendingUp className="h-3 w-3 text-red-500 rotate-180" />}
+            {trend === "up" && <TrendingUp className="h-3 w-3 text-success" />}
+            {trend === "down" && <TrendingUp className="h-3 w-3 text-destructive rotate-180" />}
             {subtitle}
           </p>
         )}
