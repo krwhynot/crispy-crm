@@ -1,6 +1,6 @@
 import { TabbedFormInputs } from "@/components/admin/tabbed-form";
 import { ProductGeneralTab } from "./ProductGeneralTab";
-import { ProductRelationshipsTab } from "./ProductRelationshipsTab";
+import { ProductRelationshipsInputTab } from "./ProductRelationshipsInputTab";
 import { ProductClassificationTab } from "./ProductClassificationTab";
 
 export const ProductInputs = () => {
@@ -15,7 +15,7 @@ export const ProductInputs = () => {
       key: "relationships",
       label: "Relationships",
       fields: ["principal_id", "distributor_id"],
-      content: <ProductRelationshipsTab />,
+      content: <ProductRelationshipsInputTab />,
     },
     {
       key: "classification",
