@@ -4,7 +4,7 @@
  * Resource-specific logic for opportunities using React Admin's withLifecycleCallbacks pattern.
  * More complex than contacts/organizations due to:
  * 1. Cascading soft delete via RPC (archive_opportunity_with_relations)
- * 2. Product sync handled at provider level (products_to_sync → RPC)
+ * 2. Virtual field stripping (products_to_sync is UI-only, handled via OpportunitiesService)
  * 3. Default value merging for create validation
  *
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
@@ -32,6 +32,15 @@ const COMPUTED_FIELDS = [
   "product_count",
   "last_activity_date",
   "days_in_stage",
+] as const;
+
+/**
+ * Virtual fields that should be stripped before database save
+ * These are UI-only fields not present in the database schema
+ */
+const VIRTUAL_FIELDS = [
+  "products_to_sync", // UI field for product sync (handled via RPC in OpportunitiesService)
+  "products", // Legacy field name, may come from some forms
 ] as const;
 
 /**
@@ -102,15 +111,21 @@ export function transformQToIlikeSearch(params: GetListParams): GetListParams {
 }
 
 /**
- * Strip computed fields that shouldn't be sent to database
+ * Strip computed and virtual fields that shouldn't be sent to database
  *
  * @param data - The data being saved
- * @returns Data without computed fields
+ * @returns Data without computed/virtual fields
  */
 function stripComputedFields(data: Partial<RaRecord>): Partial<RaRecord> {
   const cleaned = { ...data };
 
+  // Strip computed fields (from views/aggregations)
   for (const field of COMPUTED_FIELDS) {
+    delete cleaned[field];
+  }
+
+  // Strip virtual fields (UI-only, not in database schema)
+  for (const field of VIRTUAL_FIELDS) {
     delete cleaned[field];
   }
 
@@ -215,9 +230,9 @@ export const opportunitiesCallbacks: ResourceCallbacks = {
 
   /**
    * Process data before save (create/update)
-   * - Strip computed fields
+   * - Strip computed fields (from views/aggregations)
+   * - Strip virtual fields (products_to_sync, products - UI-only fields)
    * - Merge defaults for create
-   * - Preserve products_to_sync for RPC handling at provider level
    */
   beforeSave: async (data, _dataProvider, _resource) => {
     // Strip computed fields first

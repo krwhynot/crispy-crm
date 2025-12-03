@@ -153,7 +153,7 @@ describe("opportunitiesCallbacks", () => {
       expect(result.contact_ids).toEqual([]);
     });
 
-    it("should preserve products_to_sync for RPC handling", async () => {
+    it("should strip products_to_sync virtual field before database save", async () => {
       const products = [
         { product_id: 1, quantity: 10, unit_price: 100 },
         { product_id: 2, quantity: 5, unit_price: 200 },
@@ -170,8 +170,11 @@ describe("opportunitiesCallbacks", () => {
         "opportunities"
       );
 
-      // products_to_sync should be preserved for the provider to handle via RPC
-      expect(result.products_to_sync).toEqual(products);
+      // products_to_sync is a UI-only field and should be stripped before database save
+      // Product sync is handled via OpportunitiesService.createWithProducts() which uses RPC
+      expect(result.products_to_sync).toBeUndefined();
+      expect(result.name).toBe("Big Deal");
+      expect(result.stage).toBe("proposal");
     });
 
     it("should preserve required opportunity fields", async () => {
