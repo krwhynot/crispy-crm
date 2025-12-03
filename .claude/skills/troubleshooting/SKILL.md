@@ -1,251 +1,329 @@
 ---
 name: troubleshooting
-description: "Diagnose and resolve build failures, performance issues, and deployment problems. Triggers on: build error, compile error, TypeScript error, webpack, bundle, dependency, npm error, performance, slow, latency, bottleneck, memory leak, deployment, production, staging, Edge Function, environment, service not starting, timeout. Parallel specialist to fail-fast-debugging (handles bugs) and root-cause-tracing (handles code investigation)."
+description: "React 19 + Supabase troubleshooting playbook. Diagnose auth, RLS, data provider, Realtime, CSP, and deployment issues. Triggers on: Sentry, incident, triage, auth error, JWT, RLS policy, 401, 403, permission denied, Realtime, subscription, CSP, build error, deploy, Vercel, Edge Function, TanStack Query, data provider, correlation-id. Uses 2-step incident flow with Claude Code MCP tools."
 ---
 
-# Troubleshooting
+# Troubleshooting Playbook
 
-## Purpose
+## Stack Context
 
-Systematic diagnosis and resolution for **build failures, performance issues, and deployment problems** - the operational issues that existing debugging skills don't cover well.
+| Layer | Technologies |
+|-------|-------------|
+| **Frontend** | React 19, TypeScript, Vite, React Admin, React Router, Tailwind v4, shadcn/Radix |
+| **State/Forms** | TanStack Query, React Hook Form + Zod (API boundary validation), CVA |
+| **Backend** | Supabase (PostgreSQL 17, Auth, RLS, Realtime), ra-supabase-core data provider |
+| **Observability** | Sentry (errors, tracing, session replay), Playwright E2E, Storybook + Chromatic |
+| **Deploy** | Vercel with chunk-splitting, source maps to Sentry, strict CSP |
 
-**Scope Boundary:**
-- Code bugs → Use `fail-fast-debugging` skill
-- Call chain tracing → Use `root-cause-tracing` skill
-- Build/Performance/Deployment → **This skill**
+**Why this playbook?** Incidents commonly span **client ↔ data provider ↔ Supabase (RLS/policies)** boundaries. This shortens MTTR and keeps fixes aligned with the Engineering Constitution.
 
-## When This Skill Activates
+---
+
+## 2-Step Incident Flow (Solo-Friendly)
+
+### Step 1: Triage in Sentry
+
+Capture these before investigating:
+
+| Data Point | Where to Find | Why It Matters |
+|------------|---------------|----------------|
+| Event link | Sentry issue URL | Shareable reference |
+| URL/Route | Breadcrumbs → Navigation | Identifies affected feature |
+| User ID | Tags → `user.id` | RLS context |
+| JWT claims | Custom context or `/api/whoami` | `sub`, `role`, `exp` for auth issues |
+| Console breadcrumbs | Breadcrumbs tab | Client-side errors |
+| Network breadcrumbs | Breadcrumbs tab | API failures, status codes |
+| Correlation ID | Headers or tags | Links FE ↔ BE logs |
+
+### Step 2: Create Incident Ticket
+
+```bash
+# Creates GitHub issue from template, pulls Sentry data
+pnpm incident:new <sentry-id>
+```
+
+**Required fields** (from `.github/ISSUE_TEMPLATE/incident.md`):
+- [ ] Feature flag state
+- [ ] Commit SHA / Release version
+- [ ] Repro steps (numbered)
+- [ ] HAR file (if network-related)
+- [ ] Sentry link
+- [ ] Data migration involved? (yes/no)
+
+---
+
+## Critical Journey Diagnostics
+
+### Auth Issues
+
+**Symptoms:** 401, 403, "permission denied", redirect loops, stale session
+
+**Diagnostic endpoints:**
+```typescript
+// /api/whoami - returns JWT claims for debugging
+{
+  sub: "user-uuid",
+  role: "authenticated",
+  exp: 1699999999,
+  iat: 1699900000,
+  email: "user@example.com",
+  app_metadata: { ... }
+}
+```
+
+**Quick checks:**
+```bash
+# Check token expiry (clock skew warning if exp - now < 120s)
+# Force refresh: authProvider.refreshToken()
+
+# Decode JWT locally
+echo "$SUPABASE_JWT" | cut -d'.' -f2 | base64 -d | jq
+```
+
+**Common causes:**
+
+| Symptom | Likely Cause | Fix |
+|---------|--------------|-----|
+| 401 on all requests | Expired/missing token | Force refresh, check storage |
+| 403 on specific resource | RLS policy denying | Check policy with user's role |
+| Works locally, fails prod | Different JWT secret | Verify `SUPABASE_JWT_SECRET` |
+| Intermittent auth failures | Clock skew | Check server/client time sync |
+
+See [AUTH-DIAGNOSTICS.md](AUTH-DIAGNOSTICS.md) for detailed JWT debugging.
+
+### RLS/Policy Issues
+
+**Symptoms:** Empty results, "permission denied", data visible to wrong users
+
+**Local RLS testing harness:**
+```sql
+-- Simulate authenticated user with specific role
+SELECT set_config('request.jwt.claims', '{
+  "sub": "test-user-uuid",
+  "role": "authenticated",
+  "email": "test@example.com"
+}', true);
+
+-- Now run your query
+SELECT * FROM contacts WHERE deleted_at IS NULL;
+```
+
+**Policy debugging:**
+```sql
+-- List all policies on a table
+SELECT * FROM pg_policies WHERE tablename = 'contacts';
+
+-- Check if policy would allow operation
+EXPLAIN (ANALYZE, VERBOSE)
+SELECT * FROM contacts WHERE id = 'some-uuid';
+```
+
+See [RLS-HARNESS.md](RLS-HARNESS.md) for golden queries and policy templates.
+
+### Data Provider Issues
+
+**Symptoms:** Stale data, missing records, wrong filters, N+1 queries
+
+**Visibility via `unifiedDataProvider`:**
+```typescript
+// Logs: method, resource, params, HTTP status, correlation-id
+// Enable verbose: VITE_DEBUG_QUERIES=true
+
+// Check TanStack Query state
+// React Query DevTools → Queries tab → stale/fetching/error states
+```
+
+**Common patterns:**
+
+| Symptom | Check | Fix |
+|---------|-------|-----|
+| Stale after mutation | Query invalidation | Add `queryClient.invalidateQueries(['resource'])` |
+| Missing soft-deleted | Filter chain | Verify `deleted_at IS NULL` in provider |
+| Wrong pagination | getList params | Check `pagination.page` vs `pagination.perPage` |
+| N+1 queries | Network tab | Use `.select('*, relation(*)') ` for joins |
+
+### Realtime Issues
+
+**Symptoms:** Updates not appearing, subscription drops, duplicate events
+
+**Baseline test:**
+```typescript
+// subscribe → heartbeat → unsubscribe smoke test
+const channel = supabase.channel('test')
+  .on('presence', { event: 'sync' }, () => console.log('sync'))
+  .subscribe((status) => {
+    console.log('Subscription status:', status);
+    if (status === 'SUBSCRIBED') {
+      // Success - unsubscribe after 5s
+      setTimeout(() => channel.unsubscribe(), 5000);
+    }
+  });
+```
+
+**Auto-resubscribe pattern:**
+```typescript
+// Jittered backoff on disconnect
+const backoff = Math.min(1000 * Math.pow(2, retryCount), 30000);
+const jitter = Math.random() * 1000;
+setTimeout(resubscribe, backoff + jitter);
+```
+
+### CSP Violations
+
+**Symptoms:** Blank page, blocked scripts/fonts, console CSP errors
+
+**Quick-fix checklist:**
+- [ ] Inline script? → Move to external file or add hash to CSP
+- [ ] External font? → Add domain to `font-src`
+- [ ] Data URI? → Add `data:` to appropriate directive
+- [ ] Eval? → Refactor code (never add `unsafe-eval`)
+
+**Report analysis:**
+```bash
+# CSP reports flow to Sentry via report-to/report-uri
+# Check Sentry → Issues → Filter: "CSP"
+```
+
+---
+
+## Build & Deployment
 
 ### Build Failures
-- TypeScript compilation errors
-- Webpack/Vite bundle failures
-- Dependency conflicts (`npm install` issues)
-- Package version mismatches
-
-### Performance Issues
-- Slow API responses or queries
-- Rendering bottlenecks
-- Memory leaks
-- N+1 query patterns
-- Large bundle sizes
-
-### Deployment Problems
-- Environment configuration issues
-- Service startup failures
-- Supabase Edge Function errors
-- Production-only bugs
-- Staging/production parity issues
-
----
-
-## The RAPID Framework
-
-### R - Reproduce & Record
-
-**Goal:** Capture the exact failure state
 
 ```bash
-# Build failures - capture full output
+# Capture full output
 npm run build 2>&1 | tee build-error.log
 
-# Performance - capture metrics baseline
-# (use browser DevTools, Supabase dashboard, or profiling tools)
-
-# Deployment - capture logs
-npx supabase functions logs daily-digest --tail
-```
-
-**Checklist:**
-- [ ] Exact error message captured (full text, not summary)
-- [ ] Environment identified (local/staging/production)
-- [ ] Recent changes identified (`git log -5 --oneline`)
-- [ ] Reproduction steps documented
-
-### A - Analyze Systematically
-
-**Goal:** Categorize and understand the issue type
-
-| Issue Type | Key Indicators | First Check |
-|------------|----------------|-------------|
-| Build - TypeScript | `TS\d{4}:` errors | `npx tsc --noEmit` |
-| Build - Dependencies | `ERESOLVE`, `peer dep` | `npm ls`, `package-lock.json` |
-| Build - Bundle | `chunk`, `module not found` | Webpack/Vite config |
-| Perf - Query | Slow dashboard, N+1 | Supabase query logs |
-| Perf - Render | Janky UI, high CPU | React DevTools Profiler |
-| Perf - Memory | Growing heap, crashes | Chrome Memory tab |
-| Deploy - Config | Works locally, fails remote | Environment variables |
-| Deploy - Edge Fn | Deno errors, timeout | Function logs, imports |
-
-### P - Propose Hypothesis
-
-**Goal:** Form testable hypothesis before making changes
-
-Use `mcp__zen__debug` for structured hypothesis:
-
-```typescript
-mcp__zen__debug({
-  step: "Build failing with TS2345. Hypothesis: Type mismatch after
-        upgrading react-admin from 4.x to 5.x. Evidence: error only
-        in files using useRecordContext hook.",
-  hypothesis: "react-admin 5.x changed useRecordContext return type",
-  confidence: "likely",
-  relevant_files: ["package.json", "src/atomic-crm/contacts/ContactEdit.tsx"]
-})
-```
-
-### I - Investigate & Isolate
-
-**Goal:** Narrow down to specific cause
-
-**Build Issues:**
-```bash
-# Isolate TypeScript errors by file
+# Isolate TypeScript errors
 npx tsc --noEmit 2>&1 | grep "error TS" | cut -d'(' -f1 | sort -u
 
-# Check dependency tree for conflicts
-npm ls react-admin
-npm ls @types/react
-
-# Verify lockfile integrity
-npm ci --dry-run
+# Check dependency conflicts
+npm ls react-admin @types/react
 ```
 
-**Performance Issues:**
-```bash
-# Database query analysis (Supabase)
-# Check query plans, RLS policy evaluation time
+| Error Pattern | Cause | Fix |
+|--------------|-------|-----|
+| `TS2307: Cannot find module` | Missing types | `npm i -D @types/[pkg]` |
+| `TS2345: Argument type` | API change | Check migration guide |
+| `ERESOLVE peer dep` | Version conflict | Check `npm ls`, update lockfile |
 
-# Bundle size analysis
-npm run build -- --analyze  # if configured
-npx source-map-explorer dist/**/*.js
+### Vercel Deployment
+
+**Rollback:** Vercel Dashboard → Deployments → "..." → Rollback (one-click)
+
+**Feature disable:** Edge Config flag → Set to `false` → Instant propagation
+
+**Environment parity check:**
+```bash
+# Compare local vs production env
+diff <(grep -v '^#' .env.local | sort) <(vercel env pull --environment=production && sort .env.production)
 ```
 
-**Deployment Issues:**
-```bash
-# Environment variable comparison
-diff <(env | sort) <(cat .env.production | sort)
+### Edge Functions
 
-# Edge Function local test
+```bash
+# Local test
 npx supabase functions serve daily-digest --env-file .env.local
 
-# Check Supabase status
-npx supabase status
-```
+# Check logs
+npx supabase functions logs daily-digest --tail
 
-### D - Deploy Fix & Verify
-
-**Goal:** Apply targeted fix and confirm resolution
-
-**Before applying:**
-- [ ] Hypothesis confirmed by investigation
-- [ ] Fix targets root cause (not symptom)
-- [ ] Change is minimal and isolated
-
-**After applying:**
-```bash
-# Build verification
-npm run build && npx tsc --noEmit
-
-# Performance verification
-# Re-run same scenario, compare metrics
-
-# Deployment verification
+# Deploy
 npx supabase functions deploy daily-digest
-curl -X POST https://[project].supabase.co/functions/v1/daily-digest
 ```
 
----
-
-## Crispy CRM Specific Patterns
-
-### Common Build Failures
-
-| Error Pattern | Likely Cause | Solution |
-|--------------|--------------|----------|
-| `TS2307: Cannot find module` | Missing type definitions | `npm i -D @types/[package]` |
-| `TS2345: Argument type` | React Admin API change | Check RA migration guide |
-| `TS2339: Property does not exist` | Zod schema mismatch | Sync schema with API |
-| `Module not found: supabase` | Import path issue | Use `@supabase/supabase-js` |
-
-### Common Performance Issues
-
-| Symptom | Investigation | Typical Fix |
-|---------|--------------|-------------|
-| Slow list views | Check `unifiedDataProvider` queries | Add pagination, select specific columns |
-| Slow dashboard | Check aggregate queries | Create database views |
-| Memory growth | React DevTools → Profiler | Fix unmount cleanup, memo expensive components |
-| Bundle > 500KB | `source-map-explorer` | Code splitting, lazy imports |
-
-### Common Deployment Issues
-
-| Symptom | Check First | Resolution |
-|---------|-------------|------------|
-| Edge Function timeout | Function logs | Optimize query, increase timeout |
-| 401 Unauthorized | RLS policies, JWT | Verify `anon`/`service_role` key |
-| CORS errors | Supabase config | Add origin to allowed list |
-| Works local, fails prod | Environment variables | Verify all vars in Supabase dashboard |
+| Symptom | Check | Fix |
+|---------|-------|-----|
+| Timeout | Function logs | Optimize query, increase `--max-duration` |
+| Import error | Deno imports | Use `npm:` prefix or esm.sh |
+| 500 error | Logs → stack trace | Fix error, add structured logging |
 
 ---
 
-## Tool Integration
+## Claude Code MCP Integration
 
-| Tool | Purpose | When to Use |
-|------|---------|-------------|
-| `mcp__zen__debug` | Structure investigation | Every troubleshooting session |
-| `TodoWrite` | Track diagnosis steps | Complex multi-step issues |
-| `Bash` | Run diagnostic commands | Build errors, log analysis |
-| `Grep` | Search error patterns | Finding related errors |
-| `Read` | Examine configs | Package.json, tsconfig, vite.config |
+### Prompt Library
+
+Use these with `mcp__perplexity-ask__*` or direct Claude:
+
+**Sentry triage:**
+```
+Summarize this Sentry issue and propose repro steps:
+- Event ID: [paste]
+- Error: [paste]
+- Breadcrumbs: [paste relevant]
+```
+
+**RLS reasoning:**
+```
+Given these RLS policies and JWT claims, explain why this query is denied:
+- Policies: [paste from pg_policies]
+- Claims: [paste JWT decoded]
+- Query: [paste SQL]
+Propose minimal fix aligned with least-privilege.
+```
+
+**E2E generation:**
+```
+Generate a Playwright test for this user journey:
+- Start: [page]
+- Actions: [steps]
+- Assertions: [expected outcomes]
+Use semantic selectors (getByRole, getByLabel).
+```
+
+### MCP Tools for Troubleshooting
+
+| Tool | Use Case |
+|------|----------|
+| `mcp__supabase__execute_sql` | Run diagnostic queries, check RLS |
+| `mcp__supabase__list_tables` | Verify schema, check policies |
+| `mcp__perplexity-ask__*` | Research error messages, find solutions |
+| `mcp__zen__debug` | Structure hypothesis, track investigation |
+
+---
+
+## SLOs & Alerts
+
+| Metric | Target | Alert Threshold |
+|--------|--------|-----------------|
+| p95 route load | < 2.5s | > 3s for 5 min |
+| API 5xx rate | < 0.5% | > 1% for 5 min |
+| Unhandled FE errors | < 1% sessions | > 2% for 1 hour |
+| CSP violations | 0 (new) | Any new violation type |
+
+**Alert channels:** Sentry → Email (primary), Slack (if configured)
+
+---
+
+## Quick Reference
+
+### RAPID Framework
+
+1. **R**eproduce & Record → Capture exact error, env, recent changes
+2. **A**nalyze → Categorize issue type (auth/RLS/data/realtime/CSP/build/deploy)
+3. **P**ropose hypothesis → Use `mcp__zen__debug` for structured thinking
+4. **I**nvestigate → Narrow to specific cause with diagnostic tools
+5. **D**eploy fix → Verify resolution, check related functionality
 
 ### Handoff to Other Skills
 
-| Situation | Handoff To |
-|-----------|------------|
-| Build error reveals code bug | `fail-fast-debugging` |
-| Need to trace data flow | `root-cause-tracing` |
-| Fix requires code changes | `enforcing-principles` |
-| Ready to claim complete | `verification-before-completion` |
+| Situation | Skill |
+|-----------|-------|
+| Code bug investigation | `fail-fast-debugging` |
+| Call chain tracing | `root-cause-tracing` |
+| Code changes | `enforcing-principles` |
+| Ready to claim done | `verification-before-completion` |
 
 ---
 
-## Enforcement (Contextual)
+## Reference Files
 
-| File Pattern | Enforcement | Reason |
-|--------------|-------------|--------|
-| `supabase/functions/**` | BLOCK | Edge Functions affect production |
-| `vite.config.ts`, `tsconfig.json` | BLOCK | Build config changes cascade |
-| `package.json`, `package-lock.json` | BLOCK | Dependency changes are high-risk |
-| `*.tsx`, `*.ts` (general) | SUGGEST | Code changes lower risk |
+- [AUTH-DIAGNOSTICS.md](AUTH-DIAGNOSTICS.md) - JWT debugging, token refresh, clock skew
+- [RLS-HARNESS.md](RLS-HARNESS.md) - Policy testing queries, golden SQL
+- [INCIDENT-TEMPLATE.md](INCIDENT-TEMPLATE.md) - GitHub issue template
+- [CLAUDE-PROMPTS.md](CLAUDE-PROMPTS.md) - Full prompt library for Claude Code
 
 ---
 
-## Quick Reference Checklist
-
-**Before claiming issue resolved:**
-
-- [ ] Exact error captured and understood
-- [ ] Hypothesis formed and tested (not guessed)
-- [ ] Root cause identified (not symptom treated)
-- [ ] Fix is minimal and targeted
-- [ ] Verification command run successfully
-- [ ] Related functionality still works
-
-**Red Flags (restart RAPID):**
-
-- "Let me try updating all dependencies"
-- "I'll add some error handling"
-- "Maybe if I change this config..."
-- Bundling multiple unrelated changes
-
----
-
-## Related Skills
-
-- `fail-fast-debugging` → Code bug investigation
-- `root-cause-tracing` → Call chain analysis
-- `verification-before-completion` → Verify fixes
-- `enforcing-principles` → Code change guidelines
-
----
-
-**Philosophy:** Operational issues (build/perf/deploy) require different diagnostic tools than code bugs. This skill provides the systematic framework for infrastructure-level troubleshooting.
+**Philosophy:** Incidents span client ↔ data provider ↔ Supabase boundaries. This playbook provides systematic diagnostics for each layer while keeping fixes aligned with the Engineering Constitution.
