@@ -593,6 +593,112 @@
         ]
       }
     },
+    "root-cause-tracing": {
+      "type": "guardrail",
+      "enforcement": "block",
+      "priority": "critical",
+      "description": "Systematic backward tracing through call chains to find where bugs originate. BLOCKS symptom-fixing edits without root cause investigation. Integrates with mcp__zen__debug for hypothesis-driven investigation. Includes find-polluter.sh for test pollution bisection.",
+      "promptTriggers": {
+        "keywords": [
+          "debug",
+          "debugging",
+          "trace",
+          "tracing",
+          "root cause",
+          "call stack",
+          "stack trace",
+          "where does this come from",
+          "why is this failing",
+          "track down",
+          "find the source",
+          "investigate",
+          "error",
+          "exception",
+          "bug",
+          "issue",
+          "problem",
+          "test pollution",
+          "flaky test",
+          "test isolation",
+          "which test",
+          "bisect",
+          "bisection",
+          "polluter",
+          "null pointer",
+          "undefined",
+          "NaN",
+          "type error",
+          "runtime error",
+          "fails intermittently",
+          "sometimes fails",
+          "trace back",
+          "work backward",
+          "where is this set",
+          "who calls this",
+          "what calls this"
+        ],
+        "intentPatterns": [
+          "(debug|trace|investigate|find).*?(error|bug|issue|problem|cause)",
+          "(why|where|how).*?(is|does|did).*?(this|it).*?(fail|error|break|null|undefined)",
+          "(track|trace|find).*?(down|back|source|origin)",
+          "(root|original|underlying).*?cause",
+          "(call|execution).*?(stack|chain|trace)",
+          "(where|what|who).*?(calls?|sets?|creates?|passes?).*?this",
+          "(test|spec).*?(pollution|polluter|isolation|flaky|intermittent)",
+          "(bisect|binary search).*?(test|failure)",
+          "(fix|patch).*?(symptom|where it appears)",
+          "the error (is|appears) (in|at).*?(but|however)",
+          "(null|undefined|NaN).*?(where|why|how)",
+          "(investigate|look into|dig into).*?(failure|crash|error)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/**/*.tsx",
+          "src/**/*.ts",
+          "tests/**/*.ts",
+          "tests/**/*.spec.ts",
+          "src/**/*.test.ts"
+        ],
+        "contentPatterns": [
+          "throw new Error",
+          "console\\.error",
+          "catch\\s*\\(",
+          "\\?\\.\\s*\\w+",
+          "\\|\\|\\s*\\{\\}",
+          "\\|\\|\\s*\\[\\]",
+          "\\|\\|\\s*''",
+          "\\?\\?\\s*",
+          "if\\s*\\(\\s*!",
+          "\\.catch\\(",
+          "try\\s*\\{"
+        ]
+      },
+      "blockPatterns": {
+        "description": "Anti-patterns that should BLOCK and require root cause tracing first",
+        "patterns": [
+          "\\?\\.",
+          "\\|\\|\\s*\\{\\}",
+          "\\|\\|\\s*\\[\\]",
+          "\\|\\|\\s*''",
+          "\\|\\|\\s*null",
+          "\\|\\|\\s*undefined",
+          "catch\\s*\\([^)]*\\)\\s*\\{[^}]*console",
+          "try\\s*\\{[^}]*\\}\\s*catch\\s*\\{[^}]*\\}",
+          "if\\s*\\(!\\w+\\)\\s*return",
+          "if\\s*\\(\\w+\\s*===?\\s*null\\)",
+          "if\\s*\\(\\w+\\s*===?\\s*undefined\\)",
+          "typeof\\s+\\w+\\s*!==?\\s*['\"]undefined['\"]"
+        ]
+      },
+      "integrations": {
+        "zenDebug": {
+          "tool": "mcp__zen__debug",
+          "purpose": "Structured hypothesis-driven investigation",
+          "requiredFields": ["step", "hypothesis", "confidence", "relevant_files"]
+        }
+      }
+    },
     "supabase-crm": {
       "type": "domain",
       "enforcement": "suggest",
