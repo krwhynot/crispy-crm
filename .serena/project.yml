@@ -78,7 +78,25 @@ excluded_tools: []
 
 # initial prompt for the project. It will always be given to the LLM upon activating the project
 # (contrary to the memories, which are loaded on demand).
-initial_prompt: ""
+initial_prompt: |
+  Crispy CRM (Atomic CRM) - React 19 + TypeScript + React Admin + Supabase CRM
+
+  CRITICAL ENGINEERING RULES:
+  - All DB access through src/atomic-crm/providers/supabase/unifiedDataProvider.ts ONLY
+  - Zod validation at API boundary (in data provider), NOT in forms
+  - Form defaults: zodSchema.partial().parse({}) - derive from schema
+  - Fail-fast: NO retry logic, circuit breakers, or graceful fallbacks
+  - Use `interface` for object shapes, `type` for unions/intersections
+
+  DESIGN SYSTEM RULES:
+  - Tailwind v4 semantic colors ONLY (text-primary, bg-muted, etc.)
+  - NEVER use color-### classes (no text-gray-500, bg-green-600)
+  - Touch targets: 44x44px minimum (h-11 w-11)
+
+  DEPRECATED PATTERNS (NEVER USE):
+  - Contact.company_id → Use contact_organizations junction table
+  - Opportunity.archived_at → Use deleted_at
+  - Direct Supabase imports → Use data provider
 
 project_name: "crispy-crm"
 included_optional_tools: []
