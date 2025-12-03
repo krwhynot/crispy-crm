@@ -144,25 +144,33 @@ git commit -m "fix(a11y): add aria-label to RefreshButton for screen readers"
 - [x] Not applicable
 
 **Files:**
-- Modify: `src/atomic-crm/products/ProductListFilter.tsx` (line 27)
+- Modify: `src/atomic-crm/products/ProductListFilter.tsx` (lines 27 AND 43)
 
-**Step 1: Search for deprecated cacheTime**
+**Step 1: Search for ALL deprecated cacheTime occurrences**
 
 ```bash
 grep -rn "cacheTime" src/
 ```
 
-**Step 2: Fix each occurrence**
+**Step 2: Fix BOTH occurrences (preserve existing 15-minute duration)**
 
 Edit `src/atomic-crm/products/ProductListFilter.tsx`:
 
 ```typescript
-// BEFORE (line 27 area)
-cacheTime: 5 * 60 * 1000,
+// BEFORE (line 27) - principals query
+cacheTime: 15 * 60 * 1000,
 
 // AFTER
-gcTime: 5 * 60 * 1000,
+gcTime: 15 * 60 * 1000,
+
+// BEFORE (line 43) - categories query
+cacheTime: 15 * 60 * 1000,
+
+// AFTER
+gcTime: 15 * 60 * 1000,
 ```
+
+**IMPORTANT:** There are TWO cacheTime occurrences, both set to 15 minutes. Preserve the 15-minute duration - do NOT change to 5 minutes.
 
 **Step 3: Verify no console warnings**
 
@@ -175,7 +183,10 @@ npm run dev
 
 ```bash
 git add src/atomic-crm/products/ProductListFilter.tsx
-git commit -m "fix(deps): rename cacheTime to gcTime for React Query v5 compatibility"
+git commit -m "fix(deps): rename cacheTime to gcTime for React Query v5 compatibility
+
+Updates both useGetList calls in ProductListFilter to use gcTime
+instead of deprecated cacheTime. Preserves existing 15-minute TTL."
 ```
 
 ---
