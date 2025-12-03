@@ -302,6 +302,43 @@ describe("FormError", () => {
     const errorMessage = document.querySelector(".error-message");
     expect(errorMessage).not.toBeInTheDocument();
   });
+
+  test("has role='alert' for screen reader announcements (WCAG 3.3.1)", async () => {
+    const user = userEvent.setup();
+
+    const TestFormWithError = () => {
+      const form = useForm({
+        defaultValues: { email: "" },
+      });
+
+      return (
+        <Form {...form}>
+          <form>
+            <FormField id="email" name="email">
+              <input {...form.register("email", { required: "Email is required" })} />
+              <FormError />
+            </FormField>
+            <button type="button" onClick={() => form.trigger("email")}>
+              Validate
+            </button>
+          </form>
+        </Form>
+      );
+    };
+
+    renderWithAdminContext(<TestFormWithError />);
+
+    const validateButton = screen.getByText("Validate");
+    await user.click(validateButton);
+
+    await waitFor(() => {
+      // Error message should be announced to screen readers via role="alert"
+      const errorMessage = screen.getByRole("alert");
+      expect(errorMessage).toHaveTextContent("Email is required");
+      // Also verify aria-live is set for dynamic updates
+      expect(errorMessage).toHaveAttribute("aria-live", "polite");
+    });
+  });
 });
 
 describe("SaveButton", () => {
