@@ -179,6 +179,47 @@
         "contentPatterns": ["className=", "tailwind", "bg-", "text-", "aria-", "role="]
       }
     },
+    "writing-plans": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Use when creating implementation plans, execution plans, task plans, or agent plans. Applies TDD principles to planning - write plans that guide AI agents with zero context. Integrates with engineering constitution, uses persuasion principles for compliance, includes process visualization via Graphviz.",
+      "promptTriggers": {
+        "keywords": [
+          "plan",
+          "planning",
+          "implementation plan",
+          "execution plan",
+          "task breakdown",
+          "write plan",
+          "create plan",
+          "agent instructions",
+          "zero context",
+          "parallel agents",
+          "task dependencies",
+          "dependency map"
+        ],
+        "intentPatterns": [
+          "(write|create|build|draft).*?plan",
+          "(implementation|execution|task).*?plan",
+          "plan.*?(feature|task|implementation)",
+          "(break down|decompose).*?(task|feature|work)",
+          "how.*?(plan|break down|decompose)",
+          "agent.*?(instructions|execution|plan)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "docs/plans/**/*.md"
+        ],
+        "contentPatterns": [
+          "Implementation Plan",
+          "Task Dependencies",
+          "Constitution Principles In Play",
+          "For Executing Agent"
+        ]
+      }
+    },
     "supabase-crm": {
       "type": "domain",
       "enforcement": "suggest",
