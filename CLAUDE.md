@@ -1,131 +1,178 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
-
-## Project Overview
-
-Crispy CRM (Atomic CRM) is a full-stack CRM application built with React 19, TypeScript, React Admin, and Supabase. It's a pre-launch product optimized for desktop (1440px+) with iPad tablet support.
+Guidance for Claude Code working with Crispy CRM (Atomic CRM) - a React 19 + TypeScript + React Admin + Supabase CRM. Pre-launch product, desktop-first (1440px+) with iPad support.
 
 ## Commands
 
-### Development
 ```bash
-npm run dev                 # Start Vite dev server
-npm run dev:local           # Start local Supabase + reset DB + Vite
-npm run dev:cloud           # Connect to cloud Supabase
-```
+# Development
+npm run dev                 # Vite dev server
+npm run dev:local           # Local Supabase + reset DB + Vite
+npm run dev:cloud           # Cloud Supabase
 
-### Build & Deploy
-```bash
-npm run build               # TypeScript check + Vite production build
-npm run prod:deploy         # Build + deploy DB + deploy Edge Functions
-```
+# Build & Deploy
+npm run build               # TypeScript check + Vite build
+npm run prod:deploy         # Build + deploy DB + Edge Functions
 
-### Testing
-```bash
-npm run test                # Unit tests (Vitest watch mode)
-npm run test:coverage       # Coverage report (70% threshold)
+# Testing
+npm run test                # Unit tests (Vitest)
 npm run test:e2e            # E2E tests (Playwright)
-npm run test:e2e:ui         # E2E interactive UI mode
-```
+npm run test:e2e:ui         # E2E interactive mode
 
-### Code Quality
-```bash
+# Code Quality
 npm run lint                # ESLint + Prettier check
-npm run lint:apply          # Auto-fix lint issues
-npm run typecheck           # TypeScript type checking
-```
+npm run lint:apply          # Auto-fix
+npm run typecheck           # TypeScript check
 
-### Database
-```bash
-npm run db:local:start      # Start local Supabase Docker
-npm run db:local:reset      # Reset local database
+# Database
+npm run db:local:start      # Start local Supabase
+npm run db:local:reset      # Reset local DB
 npm run db:cloud:push       # Push migrations to cloud
 ```
 
 ## Architecture
 
-### Data Provider Pattern (Critical)
-All database access goes through a single composable entry point:
-- **`src/atomic-crm/providers/supabase/unifiedDataProvider.ts`** - The ONLY data access layer
-- Never import Supabase directly in components; always use the data provider
-- Zod validation happens at the API boundary in this provider, not in forms
+### Data Provider (Critical)
+**All DB access through ONE entry point:** `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`
+- Never import Supabase directly in components
+- Zod validation at API boundary in this provider, NOT in forms
 
-### Feature Organization
-Each feature in `src/atomic-crm/` follows this pattern:
+### Feature Structure
 ```
-feature/
-├── index.tsx           # Entry point with error boundaries
+src/atomic-crm/feature/
+├── index.tsx           # Entry + error boundaries
 ├── FeatureList.tsx     # List view
 ├── FeatureCreate.tsx   # Create form
 ├── FeatureEdit.tsx     # Edit form
-└── FeatureSlideOver.tsx # Side panel detail view
+└── FeatureSlideOver.tsx # Side panel (40vw, URL: ?view=123)
 ```
 
 ### Key Directories
-- `src/atomic-crm/` - Main CRM features (contacts, organizations, opportunities, etc.)
-- `src/components/admin/` - React Admin form wrapper components
-- `src/atomic-crm/validation/` - Zod schemas for each resource
-- `supabase/migrations/` - Database migrations
+- `src/atomic-crm/` - CRM features (contacts, organizations, opportunities)
+- `src/components/admin/` - React Admin form wrappers
+- `src/atomic-crm/validation/` - Zod schemas
+- `supabase/migrations/` - DB migrations
 - `supabase/functions/` - Edge Functions (Deno)
 
-## Engineering Principles (Pre-Launch Phase)
+## Engineering Principles
 
-### 1. Fail Fast - No Over-Engineering
+### Fail Fast (Pre-Launch)
 - NO retry logic, circuit breakers, or graceful fallbacks
-- Let errors throw and investigate immediately
-- Velocity over resilience during pre-launch
+- Let errors throw - velocity over resilience
 
-### 2. Single Source of Truth
-- All data access through `unifiedDataProvider`
-- All validation through Zod schemas at API boundary
-- Form state derived from Zod: `zodSchema.partial().parse({})`
+### Single Source of Truth
+- Data: `unifiedDataProvider` only
+- Validation: Zod at API boundary only
+- Form state: `zodSchema.partial().parse({})`
 
-### 3. TypeScript Conventions
-- Use `interface` for object shapes
-- Use `type` for unions and intersections
+### TypeScript
+- `interface` for object shapes
+- `type` for unions/intersections
 
-### 4. Deprecated Patterns (Never Use)
+### Deprecated Patterns (NEVER USE)
 - `Contact.company_id` → Use `contact_organizations` junction table
-- `Opportunity.archived_at` → Use `deleted_at` for soft deletes
-- Direct Supabase imports in components → Use data provider
+- `Opportunity.archived_at` → Use `deleted_at`
+- Direct Supabase imports → Use data provider
 - Form-level validation → Zod at API boundary only
 
 ## Design System
 
-### Tailwind v4 Semantic Colors Only
+**Tailwind v4 semantic colors ONLY:**
 ```tsx
-// CORRECT - Semantic utilities
-className="text-muted-foreground bg-primary text-destructive"
-
-// WRONG - Legacy colors
-className="text-gray-500 bg-green-600 text-red-500"
+// ✓ CORRECT          // ✗ WRONG
+text-muted-foreground  text-gray-500
+bg-primary            bg-green-600
+text-destructive      text-red-500
 ```
 
-### Touch Targets
-All interactive elements must be minimum 44x44px (`h-11 w-11`) on all screen sizes.
+**Touch targets:** 44x44px minimum (`h-11 w-11`)
 
-### Layout Patterns
-1. **List Shell**: Filter sidebar + `PremiumDatagrid` table
-2. **Slide-Over**: Right panel (40vw) for view/edit with URL sync (`?view=123`)
-3. **Create Forms**: Full-page with tabbed sections
+**Layouts:** List Shell (sidebar + PremiumDatagrid) | Slide-Over (40vw right panel) | Create Forms (full-page tabbed)
 
 ## Testing
 
-### Unit Tests (Vitest)
-- Use `renderWithAdminContext()` from `src/tests/utils/render-admin.tsx`
-- Supabase is globally mocked in `src/tests/setup.ts`
-- Tests colocated with source in `__tests__/` directories
+**Unit (Vitest):** Use `renderWithAdminContext()` from `src/tests/utils/render-admin.tsx`. Supabase mocked in `src/tests/setup.ts`. Tests in `__tests__/` directories.
 
-### E2E Tests (Playwright)
-- Page Object Models in `tests/e2e/support/poms/`
-- Use semantic selectors: `getByRole()`, `getByLabel()`, `getByText()`
-- Never use CSS selectors
-- Auth state saved to `tests/e2e/.auth/user.json`
+**E2E (Playwright):** POMs in `tests/e2e/support/poms/`. Semantic selectors only (`getByRole`, `getByLabel`, `getByText`) - never CSS. Auth: `tests/e2e/.auth/user.json`.
 
-## Database (Supabase)
+## Database
 
-- PostgreSQL 17 with Row-Level Security (RLS)
-- Soft deletes via `deleted_at` timestamps
-- Multi-tenant isolation per organization
-- Edge Functions for async operations (daily-digest, check-overdue-tasks)
+PostgreSQL 17 + RLS | Soft deletes via `deleted_at` | Multi-tenant per organization | Edge Functions: daily-digest, check-overdue-tasks
+
+---
+
+# Project Mission
+
+**Goal:** Replace Excel-based sales pipeline for MFB, a food distribution broker.
+
+## Domain Model
+
+**MFB's Role:** Broker between Principals (manufacturers) → Distributors → Operators (restaurants)
+
+**Scale:** 6 account managers | 9 principals | 50+ distributors
+
+### Terminology
+| Term | Definition |
+|------|------------|
+| **Principal** | Food manufacturer MFB represents |
+| **Distributor** | Buys from principals, sells to operators |
+| **Operator** | Restaurant/foodservice (end customer) |
+| **Opportunity** | Deal in pipeline (one principal each) |
+| **Authorization** | Distributor agrees to carry principal's products |
+
+### Data Relationships
+```
+Principal → Opportunities, Products
+Distributor → Contacts, Authorizations ↔ Principals, Territory
+Opportunity → Principal, Activities, Samples
+```
+
+## Pipeline Stages (7)
+
+1. `new_lead` - New Lead
+2. `initial_outreach` - Initial Outreach
+3. `sample_visit_offered` - Sample/Visit Offered
+4. `feedback_logged` - Feedback Logged
+5. `demo_scheduled` - Demo Scheduled
+6. `closed_won` - Closed Won
+7. `closed_lost` - Closed Lost
+
+## User Roles
+
+| Role | Access |
+|------|--------|
+| **Admin** | Full access, user management |
+| **Manager** | All reps' data, reports |
+| **Rep** | Own opportunities, activities |
+
+## MVP Must-Haves
+
+| Feature | Why |
+|---------|-----|
+| Principal-filtered views | See one principal's pipeline |
+| Quick activity logging | <30 sec per entry |
+| Excel export | Reports for principals |
+| Sample tracking | Log samples + follow-ups |
+| Mobile/tablet access | Field sales critical |
+| Task management | Panel, snooze, daily digest |
+
+**NOT MVP:** PDF export, volume/price tracking, external integrations, territory management
+
+## Activity Types
+
+- **Calls** - Phone conversations
+- **Emails** - Correspondence
+- **Samples** - Sent for evaluation (with follow-up)
+
+## Win/Loss Reasons
+
+**Win:** Relationship, Product quality
+**Loss:** Price too high, No distributor authorization, Competitor relationship
+
+## Success Criteria
+
+100% team adoption (60 days) | <5% data errors | 40% admin time reduction
+
+---
+
+**Status:** MVP in Progress (Pre-launch)
