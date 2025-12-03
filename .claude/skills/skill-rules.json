@@ -943,6 +943,122 @@
           "-- ====="
         ]
       }
+    },
+    "troubleshooting": {
+      "type": "domain",
+      "enforcement": "contextual",
+      "priority": "high",
+      "description": "Diagnose and resolve build failures, performance issues, and deployment problems using the RAPID framework. Parallel specialist to fail-fast-debugging (bugs) and root-cause-tracing (code investigation). Covers TypeScript/build errors, performance bottlenecks, Edge Functions, environment configs.",
+      "promptTriggers": {
+        "keywords": [
+          "build error",
+          "build failure",
+          "build failed",
+          "compile error",
+          "compilation error",
+          "TypeScript error",
+          "TS error",
+          "tsc error",
+          "webpack",
+          "vite",
+          "bundle",
+          "bundler",
+          "dependency",
+          "dependencies",
+          "npm error",
+          "npm install",
+          "package",
+          "performance",
+          "slow",
+          "latency",
+          "bottleneck",
+          "memory leak",
+          "memory",
+          "N+1",
+          "query slow",
+          "deployment",
+          "deploy",
+          "production",
+          "staging",
+          "Edge Function",
+          "edge function",
+          "environment",
+          "env var",
+          "service not starting",
+          "not starting",
+          "timeout",
+          "CORS",
+          "401",
+          "403",
+          "500 error",
+          "module not found",
+          "cannot find module",
+          "peer dependency",
+          "version mismatch",
+          "bundle size",
+          "chunk"
+        ],
+        "intentPatterns": [
+          "(build|compile|bundle).*?(fail|error|broken|issue)",
+          "(npm|yarn|pnpm).*?(error|fail|issue|problem)",
+          "(TypeScript|tsc|TS).*?(error|fail|issue)",
+          "(slow|performance|latency|bottleneck).*?(query|api|render|load)",
+          "(deploy|deployment|production|staging).*?(fail|error|issue|problem)",
+          "(Edge Function|edge function|supabase function).*?(fail|error|timeout)",
+          "(environment|env|config).*?(missing|wrong|issue|mismatch)",
+          "(memory|heap).*?(leak|grow|issue)",
+          "(bundle|chunk).*?(size|large|too big)",
+          "why.*?(build|deploy|performance).*?(fail|slow|broken)",
+          "(service|app|function).*?(not starting|crash|timeout)",
+          "(module|dependency|package).*?(not found|missing|conflict)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "package.json",
+          "package-lock.json",
+          "tsconfig.json",
+          "vite.config.ts",
+          "webpack.config.js",
+          "supabase/functions/**/*.ts",
+          ".env*"
+        ],
+        "contentPatterns": [
+          "\"dependencies\"",
+          "\"devDependencies\"",
+          "\"scripts\"",
+          "compilerOptions",
+          "Deno\\.serve",
+          "EdgeFunction",
+          "SUPABASE_URL",
+          "SUPABASE_ANON_KEY"
+        ]
+      },
+      "contextualEnforcement": {
+        "block": {
+          "pathPatterns": [
+            "supabase/functions/**/*.ts",
+            "package.json",
+            "package-lock.json",
+            "tsconfig.json",
+            "vite.config.ts"
+          ],
+          "reason": "Build/deploy config changes are high-risk - require systematic diagnosis first"
+        },
+        "suggest": {
+          "pathPatterns": [
+            "src/**/*.ts",
+            "src/**/*.tsx"
+          ],
+          "reason": "Code changes for performance fixes are lower risk"
+        }
+      },
+      "requiredSkills": ["verification-before-completion"],
+      "handoffSkills": {
+        "codeBugs": "fail-fast-debugging",
+        "callChainTracing": "root-cause-tracing",
+        "codeChanges": "enforcing-principles"
+      }
     }
   }
 }
