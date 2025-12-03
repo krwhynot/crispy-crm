@@ -108,15 +108,19 @@ export class TransformService {
       transform: async (data: TransformableData) => {
         const opportunityData = data as Partial<Opportunity>;
 
-        // Extract products for service layer sync (similar to contacts/organizations pattern)
-        // The products field comes from form input and needs to be handled by OpportunitiesService
-        const { products, ...cleanedData } = opportunityData as any;
+        // Extract BOTH possible field names for products to prevent schema cache errors
+        // - 'products' is the legacy field name (may come from some forms)
+        // - 'products_to_sync' is sent directly by current OpportunityCreate form (ArrayInput source)
+        // Destructuring both removes them from cleanedData, preventing PostgREST column errors
+        const { products, products_to_sync, ...cleanedData } = opportunityData as any;
 
-        // Preserve products for sync (rename to avoid column error, handled by service layer)
-        // products_to_sync is extracted in OpportunitiesService.createWithProducts() and
-        // OpportunitiesService.updateWithProducts() for atomic RPC operations
-        if (products) {
-          (cleanedData as any).products_to_sync = products;
+        // Determine which products array to use (prefer products_to_sync if present)
+        const productsArray = products_to_sync ?? products;
+
+        // Preserve products for service layer sync
+        // Service layer will extract and delete this before database operations
+        if (productsArray && Array.isArray(productsArray)) {
+          (cleanedData as any).products_to_sync = productsArray;
         }
 
         // Add timestamp for create operations
