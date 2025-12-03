@@ -64,11 +64,6 @@ export const ProductCard = (props: { record?: Product }) => {
                     {record.principal_name}
                   </Badge>
                 )}
-                {record.brand && (
-                  <Badge variant="outline" className="text-xs px-1 py-0">
-                    {record.brand}
-                  </Badge>
-                )}
               </div>
             </div>
           </div>

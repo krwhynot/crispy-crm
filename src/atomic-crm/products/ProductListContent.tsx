@@ -45,7 +45,7 @@ export const ProductListContent = () => {
                 </div>
 
                 <div className="flex items-center gap-6 mt-2 text-sm text-muted-foreground">
-                  <span>Brand: {product.brand || "N/A"}</span>
+                  <span>Principal: {product.principal_name || "N/A"}</span>
                   <span>Status: {product.status || "Active"}</span>
                 </div>
 
