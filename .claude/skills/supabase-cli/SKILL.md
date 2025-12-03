@@ -299,10 +299,25 @@ supabase start --ignore-health-check # Force start
 ## Reference Files
 
 For detailed information, see:
-- [COMMANDS_REFERENCE.md](resources/COMMANDS_REFERENCE.md) - Complete command documentation
-- [CONFIG_REFERENCE.md](resources/CONFIG_REFERENCE.md) - config.toml configuration
-- [WORKFLOWS.md](resources/WORKFLOWS.md) - Step-by-step workflow guides
+- [COMMANDS_REFERENCE.md](resources/COMMANDS_REFERENCE.md) - Complete command documentation with all flags
+- [CONFIG_REFERENCE.md](resources/CONFIG_REFERENCE.md) - config.toml configuration options
+- [WORKFLOWS.md](resources/WORKFLOWS.md) - Step-by-step workflow guides + mistake prevention
+- [TROUBLESHOOTING.md](resources/TROUBLESHOOTING.md) - Common errors and solutions
+- [CI_CD_PATTERNS.md](resources/CI_CD_PATTERNS.md) - GitHub Actions workflows for migrations/deployment
+- [MCP_INTEGRATION.md](resources/MCP_INTEGRATION.md) - Using MCP tools alongside CLI
 
 ---
 
-**Line Count:** ~200 (well under 500-line limit)
+## Hook Protection
+
+This skill includes a **PreToolUse hook** that BLOCKS invalid commands:
+- `supabase db execute` → Use Docker + psql
+- `supabase run/sql/query` → Don't exist
+- `docker exec -it` in non-TTY → Remove `-t` flag
+
+The hook auto-detects your project ID from `supabase/config.toml` for correct container name suggestions.
+
+---
+
+**Skill Type:** Guardrail (blocks invalid commands)
+**Line Count:** ~320 (under 500-line limit)
