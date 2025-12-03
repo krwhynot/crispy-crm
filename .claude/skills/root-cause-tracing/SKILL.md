@@ -5,6 +5,23 @@ description: Systematic backward tracing through call chains to find where bugs 
 
 # Root Cause Tracing
 
+## ⚠️ MCP Dependency Check
+
+**This skill works best with the Zen MCP server for hypothesis-driven investigation.**
+
+| Required Tool | Purpose | Status |
+|---------------|---------|--------|
+| `mcp__zen__debug` | Structured hypothesis testing & investigation | Check if available |
+
+### ⏸️ PAUSED - Please Choose:
+
+1. **"Continue with MCP"** - I'll wait while you activate the Zen MCP server
+2. **"Continue without MCP"** - I'll proceed with manual backward tracing (reduced capability)
+
+> **Without Zen MCP:** The 5-step trace process remains the same, but hypothesis documentation and confidence tracking will be done manually instead of through structured MCP calls.
+
+---
+
 ## Purpose
 
 Enforce the debugging principle: **"Trace backward through the call chain until you find the original trigger, then fix at the source."**
