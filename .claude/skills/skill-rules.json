@@ -945,10 +945,10 @@
       }
     },
     "supabase-cli": {
-      "type": "domain",
-      "enforcement": "suggest",
-      "priority": "high",
-      "description": "Comprehensive Supabase CLI reference - prevents common mistakes like using non-existent commands (supabase db execute), incorrect Docker flags (-it in non-TTY), and wrong container names. Covers migrations, Edge Functions, type generation, local development.",
+      "type": "guardrail",
+      "enforcement": "block",
+      "priority": "critical",
+      "description": "BLOCKS invalid Supabase CLI commands (supabase db execute doesn't exist!) and incorrect Docker flags (-it in non-TTY). Auto-detects project container names from config.toml. Covers migrations, Edge Functions, type generation, local development.",
       "promptTriggers": {
         "keywords": [
           "supabase",
@@ -1017,15 +1017,31 @@
           "Deno\\.serve"
         ]
       },
-      "antiPatterns": {
-        "description": "Commands that DON'T exist - trigger warning",
+      "blockPatterns": {
+        "description": "Commands that DON'T exist or will fail - BLOCK and require skill review",
         "patterns": [
-          "supabase db execute",
-          "supabase run",
-          "supabase sql",
-          "supabase query",
-          "docker exec -it.*supabase"
+          "supabase\\s+db\\s+execute",
+          "supabase\\s+run\\s+",
+          "supabase\\s+sql\\s+",
+          "supabase\\s+query\\s+",
+          "docker\\s+exec\\s+-it\\s+supabase",
+          "docker\\s+exec\\s+-ti\\s+supabase",
+          "npx\\s+supabase\\s+db\\s+execute"
         ]
+      },
+      "autoDetect": {
+        "containerName": {
+          "source": "supabase/config.toml",
+          "pattern": "^id\\s*=\\s*[\"']?([^\"'\\s]+)[\"']?",
+          "template": "supabase_db_{project_id}"
+        }
+      },
+      "hooks": {
+        "PreToolUse": {
+          "matcher": "Bash",
+          "script": ".claude/hooks/supabase-cli-guard.ts",
+          "purpose": "Block invalid supabase/docker commands before execution"
+        }
       }
     },
     "troubleshooting": {
