@@ -699,6 +699,132 @@
         }
       }
     },
+    "fail-fast-debugging": {
+      "type": "guardrail",
+      "enforcement": "contextual",
+      "priority": "critical",
+      "description": "Systematic debugging discipline - ENFORCES root cause investigation BEFORE fixes. Integrates with Zen MCP (mcp__zen__debug), TodoWrite, and verification-before-completion. 2-attempt rule for architecture escalation. Aligns with fail-fast engineering principle.",
+      "promptTriggers": {
+        "keywords": [
+          "bug",
+          "error",
+          "failing",
+          "broken",
+          "fix",
+          "not working",
+          "crash",
+          "issue",
+          "debug",
+          "investigate",
+          "diagnose",
+          "trace",
+          "root cause",
+          "why is",
+          "undefined",
+          "null",
+          "500 error",
+          "RLS",
+          "timeout",
+          "infinite loop",
+          "exception",
+          "stack trace",
+          "doesn't work",
+          "stopped working",
+          "fails",
+          "throws",
+          "unexpected",
+          "wrong value",
+          "incorrect",
+          "type error",
+          "runtime error",
+          "network error",
+          "query error"
+        ],
+        "intentPatterns": [
+          "(fix|debug|investigate|diagnose|trace).*?(bug|error|issue|problem|failure)",
+          "(why|how come|what's wrong).*?(is|does|did).*?(fail|error|break|crash|not work)",
+          "(not|isn't|doesn't|won't).*?(work|working|loading|rendering|showing)",
+          "(getting|seeing|have|got).*?(error|exception|bug|issue)",
+          "(something|it).*?(broke|broken|wrong|incorrect)",
+          "(null|undefined|NaN).*?(error|exception|value)",
+          "(stack|error).*?trace",
+          "(root|underlying|real).*?cause",
+          "(investigate|look into|dig into|find).*?(why|what|cause)",
+          "quick.*?fix",
+          "just.*?try",
+          "maybe.*?(this|that).*?will",
+          "let me.*?(add|try|change)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/atomic-crm/providers/**/*.ts",
+          "src/atomic-crm/validation/**/*.ts",
+          "supabase/migrations/**/*.sql",
+          "supabase/functions/**/*.ts"
+        ],
+        "contentPatterns": [
+          "throw new Error",
+          "console\\.error",
+          "\\.catch\\(",
+          "try\\s*\\{",
+          "Error\\(",
+          "reject\\(",
+          "fail\\("
+        ]
+      },
+      "contextualEnforcement": {
+        "block": {
+          "pathPatterns": [
+            "src/atomic-crm/providers/**/*.ts",
+            "src/atomic-crm/validation/**/*.ts",
+            "supabase/migrations/**/*.sql"
+          ],
+          "reason": "Data layer, validation, and database changes are critical - require investigation first"
+        },
+        "suggest": {
+          "pathPatterns": [
+            "src/components/**/*.tsx",
+            "src/**/__tests__/**/*.ts",
+            "tests/**/*.ts"
+          ],
+          "reason": "UI and test files are less critical - investigation recommended but not enforced"
+        }
+      },
+      "antiPatterns": {
+        "description": "Patterns that indicate skipping investigation - trigger warning",
+        "patterns": [
+          "let me just",
+          "quick fix",
+          "try this",
+          "maybe this",
+          "should fix",
+          "might work",
+          "worth a try"
+        ]
+      },
+      "integrations": {
+        "zenDebug": {
+          "tool": "mcp__zen__debug",
+          "purpose": "Structure investigation thinking",
+          "requiredBefore": "any fix attempt"
+        },
+        "todoWrite": {
+          "tool": "TodoWrite",
+          "purpose": "Track investigation steps",
+          "requiredBefore": "any fix attempt"
+        },
+        "verification": {
+          "skill": "verification-before-completion",
+          "purpose": "Verify fix after implementation"
+        }
+      },
+      "escalation": {
+        "attempts": 2,
+        "action": "question architecture",
+        "tool": "mcp__zen__thinkdeep"
+      }
+    },
     "supabase-crm": {
       "type": "domain",
       "enforcement": "suggest",
