@@ -34,11 +34,6 @@
             "type": "command",
             "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/verification-before-git.sh",
             "timeout": 5
-          },
-          {
-            "type": "command",
-            "command": "npx tsx ${CLAUDE_PROJECT_DIR}/.claude/hooks/supabase-cli-guard.ts",
-            "timeout": 5
           }
         ]
       },
