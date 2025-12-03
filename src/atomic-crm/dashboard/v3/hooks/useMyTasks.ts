@@ -124,12 +124,14 @@ export function useMyTasks() {
                 ? "opportunity"
                 : task.contact_id
                   ? "contact"
-                  : "organization",
+                  : task.organization_id
+                    ? "organization"
+                    : "personal",
               name:
                 task.opportunity?.name ||
                 task.contact?.name ||
                 task.organization?.name ||
-                "Unknown",
+                "Personal Task",
               id: task.opportunity_id || task.contact_id || task.organization_id || 0,
             },
             status,
