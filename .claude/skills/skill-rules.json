@@ -1,6 +1,30 @@
 {
   "version": "1.0",
   "description": "Skill activation triggers for Crispy-CRM",
+  "agents": {
+    "sienna-ux": {
+      "description": "UI/UX Auditor agent - audits components for accessibility, design system compliance, and UX violations",
+      "requiredSkills": ["ui-ux-design-principles", "enforcing-principles"],
+      "promptTriggers": {
+        "keywords": [
+          "sienna",
+          "sienna-ux",
+          "ui audit",
+          "ux audit",
+          "accessibility audit",
+          "design audit",
+          "component audit",
+          "review component",
+          "audit component"
+        ],
+        "intentPatterns": [
+          "(use|invoke|ask|have).*?sienna",
+          "(audit|review|check|analyze).*?(component|ui|ux|accessibility|design)",
+          "sienna.*?(audit|review|check)"
+        ]
+      }
+    }
+  },
   "skills": {
     "enforcing-principles": {
       "type": "guardrail",
