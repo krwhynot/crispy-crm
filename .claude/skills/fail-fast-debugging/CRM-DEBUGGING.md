@@ -37,6 +37,60 @@
 - Data provider returning wrong format (`{ data: [], total: 0 }` required)
 - Filter params not matching expected schema
 
+### "useListContext must be used inside a ListContextProvider"
+
+**Investigation Steps:**
+1. Check if component using `useListContext` is inside `<List>`, `<ListBase>`, or `<ListContextProvider>`
+2. Verify the component hierarchy - context hooks only work within their provider
+3. Check if component was extracted and used standalone outside the List
+4. Look for conditional rendering that might unmount the provider
+
+**Common Causes:**
+- Component using `useListContext()` rendered outside of `<List>`
+- Custom component extracted from List and reused in non-list context
+- Slide-over or modal rendering list child components without wrapping in `<ListContextProvider>`
+- Using list-specific components (like `<Datagrid>`, `<FilterForm>`) outside List
+
+**Fixes:**
+```tsx
+// ❌ WRONG: Using list component outside List context
+const MyPage = () => (
+  <div>
+    <Datagrid> {/* Fails - no ListContext! */}
+      <TextField source="name" />
+    </Datagrid>
+  </div>
+);
+
+// ✅ CORRECT: Wrap with ListContextProvider or use inside List
+import { ListContextProvider, useList } from 'react-admin';
+
+const MyPage = () => {
+  const listContext = useList({ data: myData, isLoading: false });
+  return (
+    <ListContextProvider value={listContext}>
+      <Datagrid>
+        <TextField source="name" />
+      </Datagrid>
+    </ListContextProvider>
+  );
+};
+
+// ✅ ALTERNATIVE: Use inside a proper List component
+const MyList = () => (
+  <List resource="contacts">
+    <Datagrid> {/* Works - List provides context */}
+      <TextField source="name" />
+    </Datagrid>
+  </List>
+);
+```
+
+**Related Context Errors:**
+- `useRecordContext` → needs `<RecordContextProvider>` or record-aware parent
+- `useEditContext` → needs `<Edit>` or `<EditBase>`
+- `useShowContext` → needs `<Show>` or `<ShowBase>`
+
 ### Edit Form Not Populating
 
 **Investigation Steps:**
