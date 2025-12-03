@@ -1,5 +1,5 @@
 import isEqual from "lodash/isEqual";
-import { useListContext, useUpdate, useNotify } from "ra-core";
+import { useListContext, useUpdate, useNotify, useRefresh } from "ra-core";
 import { useEffect, useState, useCallback } from "react";
 import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
 
@@ -36,6 +36,7 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
 
   const [update] = useUpdate();
   const notify = useNotify();
+  const refresh = useRefresh();
 
   // State for CloseOpportunityModal
   const [showCloseModal, setShowCloseModal] = useState(false);
@@ -159,6 +160,32 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
     [pendingCloseData, notify]
   );
 
+  /**
+   * Handle opportunity deletion - optimistically remove from local state
+   * This ensures the card is immediately removed from the Kanban board
+   * without waiting for a full data refresh
+   */
+  const handleDeleteOpportunity = useCallback(
+    (opportunityId: number) => {
+      setOpportunitiesByStage((prevState) => {
+        const newState = { ...prevState };
+        // Find and remove the opportunity from whichever stage it's in
+        for (const stage of Object.keys(newState)) {
+          const stageOpps = newState[stage];
+          const filteredOpps = stageOpps.filter((opp) => opp.id !== opportunityId);
+          if (filteredOpps.length !== stageOpps.length) {
+            newState[stage] = filteredOpps;
+            break; // Found and removed, no need to check other stages
+          }
+        }
+        return newState;
+      });
+      // Also trigger a refresh to ensure data consistency
+      refresh();
+    },
+    [refresh]
+  );
+
   const handleDragEnd = (result: DropResult) => {
     const { destination, source, draggableId } = result;
 
@@ -247,6 +274,7 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
               isCollapsed={collapsedStages.includes(stage.value)}
               onToggleCollapse={() => toggleCollapse(stage.value)}
               openSlideOver={openSlideOver}
+              onDeleteOpportunity={handleDeleteOpportunity}
             />
           ))}
         </div>

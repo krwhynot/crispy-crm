@@ -24,6 +24,7 @@ interface OpportunityColumnProps {
   isCollapsed?: boolean;
   onToggleCollapse?: () => void;
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
+  onDeleteOpportunity?: (opportunityId: number) => void;
 }
 
 /**
@@ -40,6 +41,7 @@ function arePropsEqual(
   if (prevProps.isCollapsed !== nextProps.isCollapsed) return false;
   if (prevProps.onToggleCollapse !== nextProps.onToggleCollapse) return false;
   if (prevProps.openSlideOver !== nextProps.openSlideOver) return false;
+  if (prevProps.onDeleteOpportunity !== nextProps.onDeleteOpportunity) return false;
 
   // Deep comparison for opportunities array
   // Only re-render if the actual opportunity data changed
@@ -79,6 +81,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
   isCollapsed = false,
   onToggleCollapse,
   openSlideOver,
+  onDeleteOpportunity,
 }: OpportunityColumnProps) {
   const metrics = useStageMetrics(opportunities);
 
@@ -181,7 +184,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
               >
                 {opportunities.map((opportunity, index) => (
                   <RecordContextProvider key={opportunity.id} value={opportunity}>
-                    <OpportunityCard index={index} openSlideOver={openSlideOver} />
+                    <OpportunityCard index={index} openSlideOver={openSlideOver} onDelete={onDeleteOpportunity} />
                   </RecordContextProvider>
                 ))}
                 {provided.placeholder}

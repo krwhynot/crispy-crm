@@ -10,7 +10,7 @@ interface OpportunityCardActionsProps {
   onDelete?: (opportunityId: number) => void;
 }
 
-export function OpportunityCardActions({ opportunityId }: OpportunityCardActionsProps) {
+export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityCardActionsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -112,7 +112,13 @@ export function OpportunityCardActions({ opportunityId }: OpportunityCardActions
       try {
         await deleteOne("opportunities", { id: opportunityId, previousData: {} });
         notify("Opportunity deleted", { type: "success" });
-        refresh();
+        // Optimistically remove from local state if callback provided (Kanban)
+        // Otherwise fall back to refresh (other contexts like List view)
+        if (onDelete) {
+          onDelete(opportunityId);
+        } else {
+          refresh();
+        }
       } catch {
         notify("Error deleting opportunity", { type: "error" });
       }

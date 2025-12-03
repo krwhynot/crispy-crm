@@ -12,6 +12,7 @@ import type { Opportunity } from "../../types";
 interface OpportunityCardProps {
   index: number;
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
+  onDelete?: (opportunityId: number) => void;
 }
 
 const priorityColors = {
@@ -33,6 +34,7 @@ const priorityColors = {
 export const OpportunityCard = React.memo(function OpportunityCard({
   index,
   openSlideOver,
+  onDelete,
 }: OpportunityCardProps) {
   const record = useRecordContext<Opportunity>();
   const { primaryContact, isLoading: contactsLoading } = useOpportunityContacts(
@@ -105,7 +107,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
               >
                 {priorityLabel}
               </span>
-              <OpportunityCardActions opportunityId={record.id as number} />
+              <OpportunityCardActions opportunityId={record.id as number} onDelete={onDelete} />
             </div>
           </div>
 
