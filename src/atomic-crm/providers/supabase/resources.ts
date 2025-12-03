@@ -80,6 +80,7 @@ export const SOFT_DELETE_RESOURCES = [
   "opportunities",
   // "contact_organizations", - REMOVED: table deprecated
   "opportunity_participants",
+  "opportunity_contacts", // FIX: Was missing - junction table has deleted_at
   "activities",
   "products",
   "sales",
@@ -88,6 +89,7 @@ export const SOFT_DELETE_RESOURCES = [
   // Added per Constitution audit - now have deleted_at columns:
   "segments",
   "contactNotes",
+  "opportunityNotes", // FIX: Was missing - VIEW over opportunity_notes table
   "organizationNotes",
   "interaction_participants",
   "tags",
