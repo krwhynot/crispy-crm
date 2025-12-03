@@ -825,6 +825,63 @@
         "tool": "mcp__zen__thinkdeep"
       }
     },
+    "stuck-process-detection": {
+      "type": "guardrail",
+      "enforcement": "block",
+      "priority": "critical",
+      "description": "Prevents infinite polling loops when monitoring background shells. Enforces timeout limits, max poll attempts (5), and foreground preference. BLOCKS after 5 consecutive empty BashOutput calls. Integrates with KillShell for stuck process recovery.",
+      "promptTriggers": {
+        "keywords": [
+          "run_in_background",
+          "background",
+          "BashOutput",
+          "wait for",
+          "waiting for",
+          "check output",
+          "poll",
+          "polling",
+          "monitoring",
+          "long-running",
+          "tests running",
+          "build running",
+          "server starting",
+          "still running",
+          "wait a bit",
+          "wait longer",
+          "check again",
+          "no content",
+          "empty output",
+          "no output yet"
+        ],
+        "intentPatterns": [
+          "(run|execute|start).*?(in background|background)",
+          "(wait|waiting).*?(for|on).*?(output|process|test|build)",
+          "(check|poll|monitor).*?(output|status|progress)",
+          "(let me|i'll).*?(wait|check).*?(again|longer|bit)",
+          "(no|empty|nothing).*?(output|content|result)",
+          "still.*?(running|waiting|polling)",
+          "process.*?(running|started|launched)",
+          "background.*?(task|process|shell|command)"
+        ]
+      },
+      "hooks": {
+        "PreToolUse": {
+          "matcher": "BashOutput",
+          "script": "bash-output-poll-guard.sh",
+          "purpose": "Detect and block infinite polling loops"
+        },
+        "PostToolUse": {
+          "matcher": "BashOutput",
+          "script": "bash-output-success-reset.sh",
+          "purpose": "Reset counter when output is received"
+        }
+      },
+      "thresholds": {
+        "warningAfter": 3,
+        "blockAfter": 5,
+        "resetIntervalSeconds": 30
+      }
+    },
     "supabase-crm": {
       "type": "domain",
       "enforcement": "suggest",
