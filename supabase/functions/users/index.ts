@@ -52,6 +52,17 @@ async function inviteUser(req: Request, currentUserSale: any, corsHeaders: Recor
     return createErrorResponse(401, "Not Authorized", corsHeaders);
   }
 
+  // Validate required fields - guardrail to prevent empty names
+  if (!first_name?.trim()) {
+    return createErrorResponse(400, "First name is required", corsHeaders);
+  }
+  if (!last_name?.trim()) {
+    return createErrorResponse(400, "Last name is required", corsHeaders);
+  }
+  if (!email?.trim()) {
+    return createErrorResponse(400, "Email is required", corsHeaders);
+  }
+
   const { data, error: userError } = await supabaseAdmin.auth.admin.createUser({
     email,
     password,

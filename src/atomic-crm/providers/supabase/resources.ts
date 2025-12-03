@@ -83,6 +83,7 @@ export const SOFT_DELETE_RESOURCES = [
   "activities",
   "products",
   "sales",
+  "tasks", // FIX: Was missing - caused hard DELETE triggering RLS denial and logout
   "contact_preferred_principals",
   // Added per Constitution audit - now have deleted_at columns:
   "segments",
