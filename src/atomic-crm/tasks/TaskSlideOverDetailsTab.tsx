@@ -126,7 +126,7 @@ export function TaskSlideOverDetailsTab({
               <BooleanInput source="completed" label="Completed" />
 
               <ReferenceInput source="sales_id" reference="sales">
-                <AutocompleteInput label="Assigned To" optionText="first_name" />
+                <AutocompleteInput label="Assigned To" />
               </ReferenceInput>
 
               <ReferenceInput source="contact_id" reference="contacts_summary">

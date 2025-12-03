@@ -87,12 +87,11 @@ export const OpportunityRelationshipsTab = () => {
 
       {/* Principal Organization */}
       <div>
-        <div className="flex items-baseline gap-2">
+        <div className="grid grid-cols-[1fr_auto] items-end gap-2">
           <ReferenceInput
             source="principal_organization_id"
             reference="organizations"
             filter={{ organization_type: "principal" }}
-            className="flex-1"
           >
             <AutocompleteOrganizationInput
               label="Principal Organization *"
@@ -126,12 +125,11 @@ export const OpportunityRelationshipsTab = () => {
 
       {/* Distributor Organization */}
       <div>
-        <div className="flex items-baseline gap-2">
+        <div className="grid grid-cols-[1fr_auto] items-end gap-2">
           <ReferenceInput
             source="distributor_organization_id"
             reference="organizations"
             filter={{ organization_type: "distributor" }}
-            className="flex-1"
           >
             <AutocompleteOrganizationInput
               label="Distributor Organization"

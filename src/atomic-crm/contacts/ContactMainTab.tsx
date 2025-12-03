@@ -52,7 +52,7 @@ export const ContactMainTab = () => {
       </FormSection>
 
       <FormSection title="Organization">
-        <div className="space-y-2">
+        <div className="grid grid-cols-[1fr_auto] items-end gap-2">
           <ReferenceInput
             source="organization_id"
             reference="organizations"
