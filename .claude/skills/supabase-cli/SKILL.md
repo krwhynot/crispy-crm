@@ -21,6 +21,50 @@ Activate this skill when:
 
 ---
 
+## CRITICAL: Common Mistakes to AVOID
+
+### `supabase db execute` DOES NOT EXIST!
+
+```bash
+# WRONG - This command doesn't exist!
+supabase db execute --local "SELECT * FROM users;"
+
+# The actual supabase db commands are:
+# diff, dump, lint, pull, push, reset, start
+```
+
+**To run SQL queries, use Docker + psql instead:**
+
+```bash
+# CORRECT - Use Docker to run SQL
+docker exec supabase_db_crispy-crm psql -U postgres -d postgres -c \
+  "SELECT column_name FROM information_schema.columns WHERE table_name = 'users';"
+```
+
+### Docker `-it` flags fail in non-TTY environments
+
+```bash
+# WRONG - Fails with "the input device is not a TTY"
+docker exec -it supabase_db_crispy-crm psql -U postgres -c "SELECT 1;"
+
+# CORRECT - Remove -t flag (or both -i and -t)
+docker exec supabase_db_crispy-crm psql -U postgres -c "SELECT 1;"
+```
+
+### Wrong container name
+
+```bash
+# Find your container name first:
+docker ps --filter "name=supabase_db"
+
+# Then use the full name (includes project suffix):
+docker exec supabase_db_crispy-crm psql -U postgres -c "..."
+```
+
+See [WORKFLOWS.md](resources/WORKFLOWS.md) for complete SQL execution guide.
+
+---
+
 ## Installation & Authentication
 
 ```bash

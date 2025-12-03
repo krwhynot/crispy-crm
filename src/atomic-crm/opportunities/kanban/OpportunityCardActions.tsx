@@ -7,6 +7,7 @@ import type { Opportunity } from "../../types";
 
 interface OpportunityCardActionsProps {
   opportunityId: number;
+  onDelete?: (opportunityId: number) => void;
 }
 
 export function OpportunityCardActions({ opportunityId }: OpportunityCardActionsProps) {
