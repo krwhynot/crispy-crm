@@ -221,10 +221,10 @@ export function HealthDashboard() {
               value={Math.min(metrics.errorRate * 10, 100)}
               className={`h-2 ${
                 status === "green"
-                  ? "[&>div]:bg-green-500"
+                  ? "[&>div]:bg-success"
                   : status === "yellow"
-                    ? "[&>div]:bg-yellow-500"
-                    : "[&>div]:bg-red-500"
+                    ? "[&>div]:bg-warning"
+                    : "[&>div]:bg-destructive"
               }`}
             />
             <div className="flex items-center justify-between text-xs text-muted-foreground">
@@ -275,7 +275,7 @@ export function HealthDashboard() {
         <CardContent>
           <div className="flex flex-wrap gap-4">
             <div className="flex items-center gap-2">
-              <Badge variant="default" className="bg-green-500">
+              <Badge variant="default" className="bg-success text-success-foreground">
                 Healthy
               </Badge>
               <span className="text-sm text-muted-foreground">
@@ -283,7 +283,7 @@ export function HealthDashboard() {
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <Badge variant="default" className="bg-yellow-500">
+              <Badge variant="default" className="bg-warning text-warning-foreground">
                 Degraded
               </Badge>
               <span className="text-sm text-muted-foreground">

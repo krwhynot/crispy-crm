@@ -122,7 +122,7 @@ export function ContactImportPreview({
     } else if (confidence >= 0.5) {
       return <AlertCircle className="h-4 w-4 text-warning" />;
     } else {
-      return <HelpCircle className="h-4 w-4 text-gray-400" />;
+      return <HelpCircle className="h-4 w-4 text-muted-foreground" />;
     }
   };
 
@@ -289,7 +289,7 @@ export function ContactImportPreview({
 
                   return (
                     <TableRow key={index} className={isUserOverride ? "bg-primary-subtle" : ""}>
-                      <TableCell className="font-mono text-sm text-gray-600">
+                      <TableCell className="font-mono text-sm text-muted-foreground">
                         {mapping.source}
                         {isUserOverride && (
                           <Badge variant="secondary" className="ml-2 text-xs">
@@ -298,7 +298,7 @@ export function ContactImportPreview({
                         )}
                       </TableCell>
                       <TableCell className="text-center">
-                        <ArrowRight className="h-3 w-3 mx-auto text-gray-400" />
+                        <ArrowRight className="h-3 w-3 mx-auto text-muted-foreground" />
                       </TableCell>
                       <TableCell>
                         {onMappingChange ? (
@@ -330,8 +330,8 @@ export function ContactImportPreview({
                           </Badge>
                         )}
                       </TableCell>
-                      <TableCell className="text-sm text-gray-600 max-w-[200px] truncate">
-                        {mapping.sampleValue || <span className="text-gray-400">-</span>}
+                      <TableCell className="text-sm text-muted-foreground max-w-[200px] truncate">
+                        {mapping.sampleValue || <span className="text-muted-foreground">-</span>}
                       </TableCell>
                     </TableRow>
                   );
@@ -345,7 +345,7 @@ export function ContactImportPreview({
       {/* Skipped Columns - Collapsible */}
       {skippedColumns.length > 0 && (
         <Collapsible open={expandedSections.skippedColumns}>
-          <Card className="border-gray-200">
+          <Card className="border-muted">
             <CollapsibleTrigger asChild>
               <CardHeader
                 className="cursor-pointer"
@@ -353,8 +353,8 @@ export function ContactImportPreview({
               >
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <AlertCircle className="h-4 w-4 text-gray-400" />
-                    <CardTitle className="text-gray-600">Skipped Columns</CardTitle>
+                    <AlertCircle className="h-4 w-4 text-muted-foreground" />
+                    <CardTitle className="text-muted-foreground">Skipped Columns</CardTitle>
                     <Badge variant="secondary">{skippedColumns.length}</Badge>
                   </div>
                   {expandedSections.skippedColumns ? (
@@ -380,10 +380,10 @@ export function ContactImportPreview({
                   <TableBody>
                     {skippedColumns.map((mapping, index) => (
                       <TableRow key={index}>
-                        <TableCell className="font-mono text-sm text-gray-500">
+                        <TableCell className="font-mono text-sm text-muted-foreground">
                           {mapping.source}
                         </TableCell>
-                        <TableCell className="text-sm text-gray-400 max-w-[300px] truncate">
+                        <TableCell className="text-sm text-muted-foreground max-w-[300px] truncate">
                           {mapping.sampleValue || "-"}
                         </TableCell>
                       </TableRow>
@@ -440,7 +440,7 @@ export function ContactImportPreview({
                               {validation?.valid ? (
                                 <CheckCircle className="h-3 w-3 text-success" />
                               ) : (
-                                <AlertCircle className="h-3 w-3 text-error" />
+                                <AlertCircle className="h-3 w-3 text-destructive" />
                               )}
                             </div>
                           </TableCell>
@@ -540,13 +540,13 @@ export function ContactImportPreview({
       {/* Validation Errors */}
       {preview.errors.length > 0 && (
         <Collapsible open={expandedSections.errors}>
-          <Card className="border-error-subtle">
+          <Card className="border-destructive/50">
             <CollapsibleTrigger asChild>
               <CardHeader className="cursor-pointer" onClick={() => toggleSection("errors")}>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
-                    <AlertCircle className="h-4 w-4 text-error" />
-                    <CardTitle className="text-error">Validation Errors</CardTitle>
+                    <AlertCircle className="h-4 w-4 text-destructive" />
+                    <CardTitle className="text-destructive">Validation Errors</CardTitle>
                     <Badge variant="destructive">{preview.errors.length}</Badge>
                   </div>
                   {expandedSections.errors ? (
@@ -566,19 +566,19 @@ export function ContactImportPreview({
                   {preview.errors.slice(0, 10).map((error, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-2 text-sm p-2 bg-error-subtle rounded"
+                      className="flex items-start gap-2 text-sm p-2 bg-destructive/10 rounded"
                     >
-                      <AlertCircle className="h-4 w-4 text-error mt-0.5 flex-shrink-0" />
+                      <AlertCircle className="h-4 w-4 text-destructive mt-0.5 flex-shrink-0" />
                       <div>
                         <span className="font-medium">Row {error.row}</span>
                         {error.field && (
-                          <span className="text-gray-600"> ({error.field})</span>
+                          <span className="text-muted-foreground"> ({error.field})</span>
                         )}: {error.message}
                       </div>
                     </div>
                   ))}
                   {preview.errors.length > 10 && (
-                    <div className="text-sm text-gray-600 text-center pt-2">
+                    <div className="text-sm text-muted-foreground text-center pt-2">
                       ... and {preview.errors.length - 10} more errors
                     </div>
                   )}
@@ -592,7 +592,7 @@ export function ContactImportPreview({
       {/* Validation Warnings */}
       {preview.warnings.length > 0 && (
         <Collapsible open={expandedSections.warnings}>
-          <Card className="border-warning-subtle">
+          <Card className="border-warning/50">
             <CollapsibleTrigger asChild>
               <CardHeader className="cursor-pointer" onClick={() => toggleSection("warnings")}>
                 <div className="flex items-center justify-between">
@@ -620,18 +620,18 @@ export function ContactImportPreview({
                   {preview.warnings.slice(0, 10).map((warning, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-2 text-sm p-2 bg-warning-subtle rounded"
+                      className="flex items-start gap-2 text-sm p-2 bg-warning/10 rounded"
                     >
                       <AlertTriangle className="h-4 w-4 text-warning mt-0.5 flex-shrink-0" />
                       <div>
                         <span className="font-medium">Row {warning.row}</span>
-                        {warning.field && <span className="text-gray-600"> ({warning.field})</span>}
+                        {warning.field && <span className="text-muted-foreground"> ({warning.field})</span>}
                         : {warning.message}
                       </div>
                     </div>
                   ))}
                   {preview.warnings.length > 10 && (
-                    <div className="text-sm text-gray-600 text-center pt-2">
+                    <div className="text-sm text-muted-foreground text-center pt-2">
                       ... and {preview.warnings.length - 10} more warnings
                     </div>
                   )}
@@ -645,7 +645,7 @@ export function ContactImportPreview({
       {/* Data Quality Decision: Organizations Without Contacts */}
       {preview.organizationsWithoutContacts && preview.organizationsWithoutContacts.length > 0 && (
         <Collapsible open={expandedSections.organizationsWithoutContacts}>
-          <Card className="border-primary-subtle">
+          <Card className="border-primary/50">
             <CollapsibleTrigger asChild>
               <CardHeader
                 className="cursor-pointer"
@@ -708,17 +708,17 @@ export function ContactImportPreview({
                   {preview.organizationsWithoutContacts.slice(0, 20).map((org, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-2 text-sm p-2 bg-primary-subtle rounded"
+                      className="flex items-start gap-2 text-sm p-2 bg-primary/10 rounded"
                     >
                       <Building2 className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
                       <div>
                         <span className="font-medium">{org.organization_name}</span>
-                        <span className="text-gray-600"> (Row {org.row})</span>
+                        <span className="text-muted-foreground"> (Row {org.row})</span>
                       </div>
                     </div>
                   ))}
                   {preview.organizationsWithoutContacts.length > 20 && (
-                    <div className="text-sm text-gray-600 text-center pt-2">
+                    <div className="text-sm text-muted-foreground text-center pt-2">
                       ... and {preview.organizationsWithoutContacts.length - 20} more
                     </div>
                   )}
@@ -732,7 +732,7 @@ export function ContactImportPreview({
       {/* Data Quality Decision: Contacts Without Contact Info */}
       {preview.contactsWithoutContactInfo && preview.contactsWithoutContactInfo.length > 0 && (
         <Collapsible open={expandedSections.contactsWithoutContactInfo}>
-          <Card className="border-warning-subtle">
+          <Card className="border-warning/50">
             <CollapsibleTrigger asChild>
               <CardHeader
                 className="cursor-pointer"
@@ -792,20 +792,20 @@ export function ContactImportPreview({
                   {preview.contactsWithoutContactInfo.slice(0, 20).map((contact, index) => (
                     <div
                       key={index}
-                      className="flex items-start gap-2 text-sm p-2 bg-warning-subtle rounded"
+                      className="flex items-start gap-2 text-sm p-2 bg-warning/10 rounded"
                     >
                       <User className="h-4 w-4 text-warning mt-0.5 flex-shrink-0" />
                       <div>
                         <span className="font-medium">{contact.name}</span>
                         {contact.organization_name && (
-                          <span className="text-gray-600"> at {contact.organization_name}</span>
+                          <span className="text-muted-foreground"> at {contact.organization_name}</span>
                         )}
-                        <span className="text-gray-600"> (Row {contact.row})</span>
+                        <span className="text-muted-foreground"> (Row {contact.row})</span>
                       </div>
                     </div>
                   ))}
                   {preview.contactsWithoutContactInfo.length > 20 && (
-                    <div className="text-sm text-gray-600 text-center pt-2">
+                    <div className="text-sm text-muted-foreground text-center pt-2">
                       ... and {preview.contactsWithoutContactInfo.length - 20} more
                     </div>
                   )}

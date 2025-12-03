@@ -33,8 +33,7 @@ if (import.meta.env.VITE_SENTRY_DSN) {
     // Performance monitoring sample rate (1.0 = 100% of transactions)
     tracesSampleRate: import.meta.env.PROD ? 0.1 : 1.0, // 10% in prod, 100% in dev
     // Session replay sample rates
-    // Temporarily higher (0.3) while debugging blank screen issues, reduce to 0.1 after
-    replaysSessionSampleRate: import.meta.env.PROD ? 0.3 : 0.1,
+    replaysSessionSampleRate: import.meta.env.PROD ? 0.1 : 0.1,
     replaysOnErrorSampleRate: 1.0, // 100% of sessions with errors
 
     /**

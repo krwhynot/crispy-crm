@@ -1,4 +1,3 @@
-import { useEffect, useState, useCallback } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Eye, ExternalLink, Inbox } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -9,8 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { supabase } from "@/atomic-crm/providers/supabase/supabase";
-import { useGetIdentity } from "ra-core";
+import { useGetIdentity, useGetList, useUpdate, useNotify } from "ra-core";
 import { Link } from "react-router-dom";
 
 interface Notification {
@@ -21,6 +19,7 @@ interface Notification {
   entity_id: number | null;
   read: boolean;
   created_at: string;
+  user_id: string;
 }
 
 interface NotificationDropdownProps {
@@ -29,65 +28,56 @@ interface NotificationDropdownProps {
 }
 
 export const NotificationDropdown = ({ children, onOpenChange }: NotificationDropdownProps) => {
-  const [notifications, setNotifications] = useState<Notification[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const { data: identity } = useGetIdentity();
+  const notify = useNotify();
 
-  // Fetch notifications - memoized to avoid dependency issues
-  const fetchNotifications = useCallback(async () => {
-    if (!identity?.user_id) return;
+  const { data: notifications = [], isLoading, refetch } = useGetList<Notification>(
+    "notifications",
+    {
+      pagination: { page: 1, perPage: 20 },
+      sort: { field: "created_at", order: "DESC" },
+      filter: identity?.user_id ? { user_id: identity.user_id } : {},
+    },
+    { enabled: !!identity?.user_id }
+  );
 
-    setIsLoading(true);
-    const { data, error } = await supabase
-      .from("notifications")
-      .select("*")
-      .eq("user_id", identity.user_id)
-      .order("created_at", { ascending: false })
-      .limit(20);
+  const [update] = useUpdate();
 
-    if (!error && data) {
-      setNotifications(data);
-    }
-    setIsLoading(false);
-  }, [identity?.user_id]);
-
-  useEffect(() => {
-    fetchNotifications();
-  }, [fetchNotifications]);
-
-  // Mark single notification as read
   const markAsRead = async (notificationId: number) => {
     if (!identity?.user_id) return;
 
-    const { error } = await supabase
-      .from("notifications")
-      .update({ read: true })
-      .eq("id", notificationId)
-      .eq("user_id", identity.user_id);
-
-    if (!error) {
-      setNotifications((prev) =>
-        prev.map((n) => (n.id === notificationId ? { ...n, read: true } : n))
-      );
-    }
+    update(
+      "notifications",
+      { id: notificationId, data: { read: true }, previousData: notifications.find(n => n.id === notificationId) },
+      {
+        onSuccess: () => {
+          refetch();
+        },
+        onError: () => {
+          notify("Error marking notification as read", { type: "error" });
+        },
+      }
+    );
   };
 
-  // Mark all notifications as read
   const markAllAsRead = async () => {
     if (!identity?.user_id) return;
 
-    const { error } = await supabase
-      .from("notifications")
-      .update({ read: true })
-      .eq("user_id", identity.user_id)
-      .eq("read", false);
+    const unreadNotifications = notifications.filter(n => !n.read);
 
-    if (!error) {
-      setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
-    }
+    await Promise.allSettled(
+      unreadNotifications.map(notification =>
+        update("notifications", {
+          id: notification.id,
+          data: { read: true },
+          previousData: notification,
+        })
+      )
+    );
+
+    refetch();
   };
 
-  // Get entity link
   const getEntityLink = (entityType: string | null, entityId: number | null) => {
     if (!entityType || !entityId) return null;
 
@@ -108,7 +98,6 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
     <DropdownMenu onOpenChange={onOpenChange}>
       <DropdownMenuTrigger asChild>{children}</DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[400px] p-0" sideOffset={8}>
-        {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
           <h2 className="font-semibold text-sm">Notifications</h2>
           {unreadCount > 0 && (
@@ -118,7 +107,6 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
           )}
         </div>
 
-        {/* Notifications List */}
         <ScrollArea className="h-[400px]">
           {isLoading ? (
             <div className="flex items-center justify-center h-32 text-sm text-muted-foreground">
@@ -143,7 +131,6 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
           )}
         </ScrollArea>
 
-        {/* Footer */}
         <DropdownMenuSeparator />
         <div className="p-2">
           <Link to="/notifications">
@@ -176,14 +163,11 @@ const NotificationItem = ({ notification, onMarkAsRead, getEntityLink }: Notific
         !notification.read ? "bg-muted/30" : ""
       }`}
     >
-      {/* Notification Icon */}
       <div
         className={`flex-shrink-0 w-2 h-2 rounded-full mt-2 ${
           !notification.read ? "bg-primary" : "bg-muted-foreground/30"
         }`}
       />
-
-      {/* Content */}
       <div className="flex-1 min-w-0">
         <p className="text-sm mb-1">{notification.message}</p>
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
@@ -202,8 +186,6 @@ const NotificationItem = ({ notification, onMarkAsRead, getEntityLink }: Notific
           )}
         </div>
       </div>
-
-      {/* Mark as Read Button - 44px minimum touch target (WCAG 2.5.5) */}
       {!notification.read && (
         <Button
           variant="ghost"

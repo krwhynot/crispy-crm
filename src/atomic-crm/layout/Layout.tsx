@@ -15,10 +15,25 @@ import Header from "./Header";
  * - Toolbar: KeyboardShortcutHints component (tooltip showing available shortcuts)
  */
 export const Layout = ({ children }: { children: ReactNode }) => {
+  const handleSkipToContent = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const mainContent = document.getElementById("main-content");
+    if (mainContent) {
+      mainContent.focus();
+    }
+  };
+
   return (
     <>
+      <a
+        href="#main-content"
+        onClick={handleSkipToContent}
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-primary-foreground focus:rounded-md focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+      >
+        Skip to main content
+      </a>
       <Header />
-      <main className="max-w-screen-xl mx-auto pt-4 px-4 pb-16" id="main-content">
+      <main className="max-w-screen-xl mx-auto pt-4 px-4 pb-16" id="main-content" tabIndex={-1}>
         <ErrorBoundary FallbackComponent={Error}>
           <Suspense fallback={<Skeleton className="h-12 w-12 rounded-full" />}>{children}</Suspense>
         </ErrorBoundary>

@@ -973,20 +973,20 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
             {/* Import Complete */}
             {importState === "complete" && importResult && (
               <div className="space-y-4">
-                <div className="flex items-center gap-2 text-green-600">
+                <div className="flex items-center gap-2 text-success">
                   <CheckCircle2 className="h-5 w-5" />
                   <span className="font-medium">Import Complete</span>
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                   <div>
-                    <div className="text-2xl font-bold text-green-600">
+                    <div className="text-2xl font-bold text-success">
                       {importResult.successCount}
                     </div>
                     <div className="text-sm text-muted-foreground">Successful</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold text-red-600">
+                    <div className="text-2xl font-bold text-destructive">
                       {importResult.failedCount}
                     </div>
                     <div className="text-sm text-muted-foreground">Failed</div>
