@@ -371,10 +371,15 @@ Starting implementation task?
 │     anti-patterns-database.md → Avoid common DB mistakes
 │
 ├─ Security concerns?
-│  └─ security-patterns.md → CSV validation, RLS policies
+│  └─ security-csv.md → CSV upload, formula injection
+│     security-sql.md → SQL injection prevention
+│     security-rls.md → RLS policies, authentication
+│     security-xss.md → XSS prevention, URL validation
 │
 ├─ Writing tests?
-│  └─ testing-patterns.md → Unit/E2E patterns
+│  └─ testing-unit.md → Vitest, validation, components
+│     testing-e2e.md → Playwright, critical journeys
+│     testing-reference.md → Coverage, organization
 │     anti-patterns-testing.md → Avoid testing implementation
 │
 └─ Unsure what to do?
@@ -411,9 +416,16 @@ Comprehensive patterns with real code examples from Atomic CRM:
 - [database-advanced.md](resources/database-advanced.md) - Triggers, JSONB, indexes, views
 - [database-reference.md](resources/database-reference.md) - Decision tree, best practices
 
-### Security & Testing
-- [security-patterns.md](resources/security-patterns.md) - CSV validation, formula injection, RLS policies
-- [testing-patterns.md](resources/testing-patterns.md) - Unit tests, E2E tests, coverage requirements
+### Security (Split for Focus)
+- [security-csv.md](resources/security-csv.md) - CSV upload validation, formula injection, binary detection
+- [security-sql.md](resources/security-sql.md) - SQL injection prevention, parameterized queries
+- [security-rls.md](resources/security-rls.md) - RLS policies, authentication, role-based access
+- [security-xss.md](resources/security-xss.md) - XSS prevention, URL validation, React escaping
+
+### Testing (Split for Focus)
+- [testing-unit.md](resources/testing-unit.md) - Vitest, validation testing, component testing, mocking
+- [testing-e2e.md](resources/testing-e2e.md) - Playwright, critical journeys, accessibility
+- [testing-reference.md](resources/testing-reference.md) - Coverage, organization, database testing
 
 ### Anti-Patterns (Split by Domain)
 - [anti-patterns-engineering.md](resources/anti-patterns-engineering.md) - Over-engineering, circuit breakers, Promise.all

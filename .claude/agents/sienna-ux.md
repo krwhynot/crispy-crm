@@ -1,23 +1,8 @@
 ---
 name: sienna-ux
 description: |
-  Sienna UI/UX Auditor - Specialized agent for auditing React components, reviewing
-  accessibility, checking design system compliance, and evaluating UX patterns. Use when:
-  - Auditing UI components for accessibility violations
-  - Reviewing code for design system compliance (Tailwind v4 semantic colors)
-  - Evaluating UX patterns (touch targets, cognitive load, feedback)
-  - Scoring components with the Decision Matrix
-  - Designing new components with the Sienna Protocol
-tools:
-  - Read
-  - Glob
-  - Grep
-  - Bash
-  - Skill
-model: claude-sonnet-4-5-20250929
-required_skills:
-  - ui-ux-design-principles
-  - enforcing-principles
+tools: 
+model: inherit
 ---
 
 ## MANDATORY: Load Required Skills First
