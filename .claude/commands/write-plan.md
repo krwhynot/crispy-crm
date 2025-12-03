@@ -124,6 +124,122 @@ Only after confirmation, write the plan following the `writing-plans` skill stru
 
 ---
 
+## STEP 4: Zen MCP Review
+
+**AFTER writing the plan, use `mcp__zen__thinkdeep` or `mcp__zen__chat` to review for issues and gaps.**
+
+### Review Prompt Template
+
+Use this prompt with Zen MCP:
+
+```
+Review this implementation plan for a Crispy CRM feature.
+
+**Context:**
+- React 19 + TypeScript + React Admin + Supabase CRM
+- Pre-launch product (fail-fast, no retry logic)
+- Must follow: Zod validation at API boundary only, unifiedDataProvider for all data access
+- Touch targets: 44x44px minimum
+
+**Plan to Review:**
+[Paste or reference the plan file path]
+
+**Check for:**
+1. **Gaps:** Missing steps, unclear dependencies, incomplete tasks
+2. **Principle Violations:** Retry logic, validation in wrong layer, direct Supabase imports
+3. **Ambiguity:** Vague instructions that could be misinterpreted by zero-context agents
+4. **Risk Areas:** Tasks that could introduce bugs or break existing functionality
+5. **Parallelization:** Missed opportunities for parallel execution
+6. **Testing Gaps:** Missing test coverage for critical paths
+
+**Output:**
+- List of issues found (Critical / High / Medium / Low)
+- Suggested fixes for each issue
+- Overall plan quality score (1-10)
+- Recommendation: Ready to execute / Needs revision
+```
+
+### Zen Tool Selection
+
+| Use This Tool | When |
+|---------------|------|
+| `mcp__zen__thinkdeep` | Deep analysis, complex plans, multi-step investigation |
+| `mcp__zen__chat` | Quick review, simple plans, clarifying questions |
+| `mcp__zen__debug` | If plan involves fixing bugs, trace dependencies |
+
+### Review Workflow (Loop Until Clean)
+
+```
+Plan Written → Save to docs/plans/
+                    ↓
+    ┌───────────────────────────────────┐
+    │         ZEN MCP REVIEW            │
+    │  (Loop until no issues found)     │
+    └───────────────────────────────────┘
+                    ↓
+              Issues Found?
+                    │
+         ┌─────────┴─────────┐
+         │ YES               │ NO
+         ↓                   ↓
+    ┌─────────────┐    ┌─────────────┐
+    │ Show Issues │    │   PASSED!   │
+    │ Revise Plan │    │ Ready for   │
+    │ Save Update │    │/execute-plan│
+    └─────────────┘    └─────────────┘
+         │
+         └──────→ Loop back to Zen Review
+```
+
+### Loop Behavior
+
+**IMPORTANT:** Continue the review loop until Zen returns:
+- **Quality Score:** 8+ out of 10
+- **Critical Issues:** 0
+- **High Issues:** 0
+- **Recommendation:** "Ready to execute"
+
+**Each iteration:**
+1. Run Zen review on current plan
+2. If issues found → Display issues to user
+3. Revise plan based on feedback
+4. Save updated plan
+5. Re-run Zen review
+6. Repeat until clean
+
+### Maximum Iterations
+
+- **Soft limit:** 3 iterations (ask user if should continue)
+- **Hard limit:** 5 iterations (escalate - plan may need rethinking)
+
+If hitting iteration limits:
+```
+⚠️ Plan has been revised 3 times but still has issues.
+Options:
+1. Continue iterating
+2. Accept current plan with known issues
+3. Rethink approach entirely
+```
+
+### Example Review Call
+
+```typescript
+mcp__zen__thinkdeep({
+  step: "Reviewing implementation plan for [Feature Name]",
+  step_number: 1,
+  total_steps: 1,
+  next_step_required: false,
+  findings: "Analyzing plan for gaps, principle violations, and ambiguity",
+  hypothesis: "Plan may have issues with [specific concern]",
+  confidence: "medium",
+  relevant_files: ["docs/plans/2025-12-03-feature-name.md"],
+  model: "gemini-2.5-pro",
+  thinking_mode: "high"
+})
+```
+
+---
+
 ## Quick Reference
 
 **Principles:** Zero context. TDD mandatory. Constitution compliance. Exact paths.

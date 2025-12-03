@@ -16,6 +16,107 @@ Write implementation plans for AI agents that have **zero context** about this c
 - Writing step-by-step instructions for parallel agents
 - Documenting task dependencies and execution order
 
+---
+
+## CRITICAL: Ask Questions First
+
+**BEFORE writing ANY plan, use `AskUserQuestion` to gather context through multiple-choice questions.**
+
+### Workflow Overview
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  STEP 1: GATHER CONTEXT                                     │
+│  Ask multi-choice questions (3 rounds)                      │
+│  ───────────────────────────────────────────────────────── │
+│  STEP 2: SUMMARIZE                                          │
+│  Present understanding, confirm with user                   │
+│  ───────────────────────────────────────────────────────── │
+│  STEP 3: WRITE PLAN                                         │
+│  Only after confirmation, generate the plan                 │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### Question Round 1: Type & Scope
+
+Use `AskUserQuestion` with these questions:
+
+| Question | Header | Options |
+|----------|--------|---------|
+| "What type of work is this plan for?" | Plan Type | New Feature, Refactoring, Bug Fix, Integration |
+| "What is the scope of this work?" | Scope | Single file, Single feature, Cross-feature, Full stack |
+| "Which CRM areas are involved?" | Areas | Contacts/Orgs, Opportunities/Pipeline, Activities/Tasks, Data Provider/Validation |
+
+### Question Round 2: Execution Preferences
+
+| Question | Header | Options |
+|----------|--------|---------|
+| "What task granularity do you prefer?" | Granularity | Atomic (2-5 min), Standard (5-15 min), Chunked (15-30 min) |
+| "How should this plan be executed?" | Execution | Sequential, Parallel groups, Hybrid |
+| "What level of code examples do you need?" | Examples | Full code, Skeletons + key parts, Minimal |
+
+### Question Round 3: Constraints (if applicable)
+
+| Question | Header | Options |
+|----------|--------|---------|
+| "Are there any database changes involved?" | Database | No DB changes, New migrations, RLS policies, Edge Functions |
+| "What testing approach?" | Testing | TDD strict, Tests after, E2E focus, Minimal |
+
+### After Questions: Summarize & Confirm
+
+```markdown
+## Plan Summary
+
+**Type:** [answer]
+**Scope:** [answer]
+**Areas:** [answer]
+**Granularity:** [answer]
+**Execution:** [answer]
+**Database:** [answer]
+**Testing:** [answer]
+
+Does this look correct? Any adjustments before I write the plan?
+```
+
+---
+
+## STEP 4: Zen MCP Review (After Writing)
+
+**After the plan is written, use Zen MCP to review for issues and gaps.**
+
+### Review Checklist
+
+| Check | Description |
+|-------|-------------|
+| **Gaps** | Missing steps, unclear dependencies, incomplete tasks |
+| **Principle Violations** | Retry logic, validation in wrong layer, direct Supabase imports |
+| **Ambiguity** | Vague instructions that zero-context agents could misinterpret |
+| **Risk Areas** | Tasks that could introduce bugs or break existing functionality |
+| **Parallelization** | Missed opportunities for parallel execution |
+| **Testing Gaps** | Missing test coverage for critical paths |
+
+### Tool Selection
+
+| Tool | Use When |
+|------|----------|
+| `mcp__zen__thinkdeep` | Complex plans, deep analysis needed |
+| `mcp__zen__chat` | Simple plans, quick sanity check |
+| `mcp__zen__debug` | Plans involving bug fixes |
+
+### Review → Revise Loop
+
+```
+Plan Written → Zen Review → Issues? → Revise → Re-review → Ready
+```
+
+**Output from Zen should include:**
+- Issues found (prioritized)
+- Suggested fixes
+- Quality score (1-10)
+- Recommendation: Ready / Needs revision
+
+---
+
 ## The Iron Law
 
 > **NO PLAN WITHOUT A FAILING SCENARIO FIRST**
