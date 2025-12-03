@@ -1,66 +1,50 @@
-# ADR: Intentional Color Exceptions to Semantic Token System
+# ADR: UI Color Exceptions
 
-## Status
-
-Accepted
-
-## Context
-
-Crispy CRM enforces the use of semantic color tokens (e.g., `text-destructive`, `bg-success`, `text-muted-foreground`) instead of hardcoded Tailwind utility classes or hex values (e.g., `text-red-500`, `#ef4444`). This promotes consistency, theming support, and maintainability across the application.
-
-However, certain technical constraints and backward compatibility requirements necessitate exceptions to this rule. This ADR documents files that intentionally use hex color values and the justification for each exception.
+**Status:** Accepted
+**Date:** 2025-12-03
+**Context:** UI & Styling Best Practices Audit
 
 ## Decision
 
-We accept the use of literal hex color values in the following scenarios:
+The following files are **intentionally exempt** from the semantic color token requirement:
 
-### 1. Email Templates (ACCEPTABLE)
+### 1. Email Templates
 
 **Files:**
 - `src/emails/daily-digest.generator.ts`
 - `src/emails/daily-digest.types.ts`
 - `supabase/functions/digest-opt-out/index.ts`
 
-**Justification:** Email templates require inline styles with literal hex values because CSS variables and external stylesheets are not reliably supported across email clients. Email rendering engines have limited CSS support, necessitating inline styles with hardcoded color values for consistent cross-client rendering.
+**Reason:** Email clients do not support CSS variables. Inline styles with literal hex values are required for email compatibility.
 
-**Example:**
-```typescript
-style="color: #059669; background-color: #f0fdf4;"
-```
+### 2. Color Types Mapping
 
-### 2. Color Types Mapping (ACCEPTABLE)
+**File:** `src/lib/color-types.ts`
 
-**File:**
-- `src/lib/color-types.ts`
+**Reason:** This file maps legacy hex colors to semantic color names for data migration and backward compatibility with existing records.
 
-**Justification:** This file serves as a mapping layer between legacy hex color values stored in the database and semantic color names. It exists to support data migration and maintain backward compatibility with existing data that was created before the semantic token system was implemented. The hex values here are reference constants used for translation, not UI rendering.
+### 3. Theme-Defined Variables (NOT Exceptions)
 
-**Example:**
-```typescript
-const colorMap = {
-  '#ef4444': 'destructive',
-  '#059669': 'success',
-  // ...
-};
-```
+The following are **compliant** because they're defined in `src/index.css`:
+
+| Class Pattern | Theme Definition |
+|---------------|------------------|
+| `brand-100` to `brand-800` | Lines 576-583 |
+| `neutral-50` to `neutral-950` | Lines 563-573 |
+
+Files using these (e.g., `text-brand-600`, `bg-neutral-800`) are following the design system correctly.
 
 ## Consequences
 
 ### Positive
-
-- Email templates render consistently across email clients by using inline styles with hex values
-- Legacy data can be migrated to semantic colors without breaking existing functionality
-- The semantic token system remains enforced throughout the rest of the application
-- Exceptions are documented and traceable
+- Email templates work across all email clients
+- Legacy data migration is supported
+- Clear documentation of what's allowed and why
 
 ### Negative
+- Email template colors must be manually kept in sync with theme
+- Developers must check this ADR when unsure about color usage
 
-- Email template colors must be manually updated if the design system changes
-- The `color-types.ts` mapping must be maintained as long as legacy data exists
-- Developers must understand which contexts allow hex values versus requiring semantic tokens
-
-### Mitigation
-
-- All exceptions are documented in this ADR
-- Code comments in exception files should reference this ADR
-- Future audits should verify no new hex values are introduced outside these approved contexts
+## Mitigation
+- ESLint rule configured to ignore email template directories
+- Color constants in `daily-digest.types.ts` are centralized (EMAIL_COLORS)

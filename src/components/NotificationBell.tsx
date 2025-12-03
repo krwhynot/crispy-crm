@@ -36,7 +36,7 @@ export const NotificationBell = () => {
         aria-label={ariaLabel}
         className="relative min-h-[44px] min-w-[44px]"
       >
-        <Bell className="h-5 w-5" />
+        <Bell className="h-5 w-5" aria-hidden="true" />
         {unreadCount > 0 && (
           <span
             className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-destructive text-destructive-foreground text-xs font-medium"

@@ -326,9 +326,9 @@ export const UrgentAlert: Story = {
 export const CustomStyled: Story = {
   render: () => (
     <div className="w-[400px] space-y-4">
-      <Alert className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
-        <AlertTitle className="text-purple-900">Special Offer</AlertTitle>
-        <AlertDescription className="text-purple-700">
+      <Alert className="bg-gradient-to-r from-accent/20 to-accent/10 border-accent/30">
+        <AlertTitle className="text-accent-foreground">Special Offer</AlertTitle>
+        <AlertDescription className="text-muted-foreground">
           Get 20% off your first purchase with code WELCOME20
         </AlertDescription>
       </Alert>
