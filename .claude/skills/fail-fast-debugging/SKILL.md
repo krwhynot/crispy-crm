@@ -5,6 +5,25 @@ description: Systematic debugging discipline that enforces root cause investigat
 
 # Fail-Fast Debugging
 
+## ⚠️ MCP Dependency Check
+
+**This skill works best with the Zen MCP server for structured investigation.**
+
+| Required Tool | Purpose | Status |
+|---------------|---------|--------|
+| `mcp__zen__debug` | Structured hypothesis-driven debugging | Check if available |
+| `mcp__zen__thinkdeep` | Architectural analysis after failures | Check if available |
+| `mcp__zen__planner` | Complex multi-step bug planning | Check if available |
+
+### ⏸️ PAUSED - Please Choose:
+
+1. **"Continue with MCP"** - I'll wait while you activate the Zen MCP server
+2. **"Continue without MCP"** - I'll proceed with manual debugging methodology (reduced capability)
+
+> **Without Zen MCP:** Investigation will use manual structured thinking instead of AI-assisted debugging tools. The 4-phase methodology remains the same, but hypothesis testing will be less rigorous.
+
+---
+
 ## Purpose
 
 Enforce disciplined debugging that finds root causes BEFORE attempting fixes. This skill prevents wasted effort from symptom-chasing and aligns with the fail-fast engineering principle.

@@ -5,6 +5,23 @@ description: Prevents infinite polling loops when monitoring background shells. 
 
 # Stuck Process Detection & Recovery
 
+## ⚠️ MCP Dependency Check
+
+**This skill optionally uses Zen MCP for approach analysis after repeated failures.**
+
+| Optional Tool | Purpose | Status |
+|---------------|---------|--------|
+| `mcp__zen__thinkdeep` | Question approach after 2 failed attempts | Check if available |
+
+### ⏸️ PAUSED - Please Choose:
+
+1. **"Continue with MCP"** - I'll wait while you activate the Zen MCP server
+2. **"Continue without MCP"** - I'll proceed with manual stuck process recovery (minimal impact)
+
+> **Without Zen MCP:** This skill is mostly self-contained. The only MCP dependency is for escalation after 2 failures. Manual investigation will be used instead.
+
+---
+
 ## Purpose
 
 Prevent the agent from entering infinite polling loops when waiting for background shell output that never arrives. This is a common failure mode when:
