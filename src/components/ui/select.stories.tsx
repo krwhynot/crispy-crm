@@ -281,25 +281,25 @@ export const StatusSelector: Story = {
       <SelectContent>
         <SelectItem value="active">
           <span className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-green-500" />
+            <span className="size-2 rounded-full bg-success" />
             Active
           </span>
         </SelectItem>
         <SelectItem value="pending">
           <span className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-yellow-500" />
+            <span className="size-2 rounded-full bg-warning" />
             Pending
           </span>
         </SelectItem>
         <SelectItem value="inactive">
           <span className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-gray-500" />
+            <span className="size-2 rounded-full bg-muted-foreground" />
             Inactive
           </span>
         </SelectItem>
         <SelectItem value="error">
           <span className="flex items-center gap-2">
-            <span className="size-2 rounded-full bg-red-500" />
+            <span className="size-2 rounded-full bg-destructive" />
             Error
           </span>
         </SelectItem>

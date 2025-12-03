@@ -320,13 +320,14 @@ export const Success: Story = {
           <DialogDescription>Your action was completed successfully.</DialogDescription>
         </DialogHeader>
         <div className="py-4 flex justify-center">
-          <div className="h-16 w-16 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center">
+          <div className="h-16 w-16 rounded-full bg-success/10 flex items-center justify-center">
             <svg
-              className="h-8 w-8 text-green-600 dark:text-green-500"
+              className="h-8 w-8 text-success"
               fill="none"
               strokeWidth="2"
               stroke="currentColor"
               viewBox="0 0 24 24"
+              aria-hidden="true"
             >
               <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
             </svg>
