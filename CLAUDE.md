@@ -2,33 +2,12 @@
 
 Guidance for Claude Code working with Crispy CRM (Atomic CRM) - a React 19 + TypeScript + React Admin + Supabase CRM. Pre-launch product, desktop-first (1440px+) with iPad support.
 
-## Commands
-
-```bash
-# Development
-npm run dev                 # Vite dev server
-npm run dev:local           # Local Supabase + reset DB + Vite
-npm run dev:cloud           # Cloud Supabase
-
-# Build & Deploy
-npm run build               # TypeScript check + Vite build
-npm run prod:deploy         # Build + deploy DB + Edge Functions
-
-# Testing
-npm run test                # Unit tests (Vitest)
-npm run test:e2e            # E2E tests (Playwright)
-npm run test:e2e:ui         # E2E interactive mode
-
-# Code Quality
-npm run lint                # ESLint + Prettier check
-npm run lint:apply          # Auto-fix
-npm run typecheck           # TypeScript check
-
-# Database
-npm run db:local:start      # Start local Supabase
-npm run db:local:reset      # Reset local DB
-npm run db:cloud:push       # Push migrations to cloud
-```
+## Key Objectives:
+- **Centralize Sales Data:** create a single source of truth to replace multiple spreadsheets.    
+- **Principal-First Visibility:** Allow Account Managers to answer the question, _"What is the ONE thing I have to do this week for each principal?"_ in under 2 seconds.    
+- **Activity Tracking:** Facilitate the logging of 10+ activities (calls, emails, meetings) per week per principal.
+- **Tablet Accessibility:** Optimize the experience for iPad use by field sales reps.    
+- **Team Adoption:** Achieve 100% adoption and cessation of Excel usage within 30 days.
 
 ## Architecture
 
@@ -168,11 +147,6 @@ Opportunity → Principal, Activities, Samples
 
 **Win:** Relationship, Product quality
 **Loss:** Price too high, No distributor authorization, Competitor relationship
-
-## Success Criteria
-
-100% team adoption (60 days) | <5% data errors | 40% admin time reduction
-
 ---
 
 **Status:** MVP in Progress (Pre-launch)
