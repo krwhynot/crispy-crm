@@ -15,6 +15,7 @@ Document form state management patterns for Atomic CRM that derive defaults from
 - ✅ Business logic in one place
 - ✅ Easy to test and maintain
 
+
 **Critical Rule:** If form defaults are hardcoded in components, it's WRONG.
 
 ## Pattern 1: Form Defaults from Schema

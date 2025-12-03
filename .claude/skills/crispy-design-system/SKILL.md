@@ -1,497 +1,299 @@
 ---
-name: crispy-design-system
-description: Use when implementing UI features in Atomic CRM - enforces design system consistency with Tailwind v4 semantic utilities, desktop-first responsive design, JSONB array patterns, and accessibility standards before writing component code
+name: ui-ux-design-principles
+description: Use when designing UI, auditing UI/UX, choosing colors, implementing buttons/forms, or making layout decisions - prevents hardcoded hex values, pure black/white, too many accents, accessibility violations, and convention breaking through systematic color and UX frameworks
 ---
 
-# Atomic CRM UI Design Consistency
+# UI/UX Design Principles
 
 ## Overview
 
-Enforce Atomic CRM's unified design system when implementing UI components. This skill ensures compliance with three flagship layout patterns from the unified design system rollout (docs/plans/2025-11-16-unified-design-system-rollout.md):
+Systematic framework for making UI/UX decisions grounded in cognitive science and user experience laws. This skill provides **universal principles** that apply to any project, with project-specific implementation details in resource files.
 
-1. **Standardized List Shell** - Filter sidebar + table-based lists with premium hover effects
-2. **Resource Slide-Over** - Right panel for view/edit operations with focus management
-3. **Create Form Patterns** - Full-page forms with tabbed sections and sticky footers
+**Core Mission:** Design experiences that are fast under pressure, effortless under fatigue, predictable by pattern, and emotionally confident.
 
-**Core principle:** Follow established patterns from CLAUDE.md and the unified design system rollout plan to maintain visual consistency across all resources.
+## The Sienna Protocol
 
-## Cognitive Foundation
+Every UI/UX decision follows this structured approach:
 
-For **UX theory and cognitive principles** (Jakob's Law, Hick's Law, Fitts's Law, decision matrices, 60-30-10 rule), use the `ui-ux-design-principles` skill.
+### 1. Cognitive Audit (Before Design)
 
-This skill focuses on **Atomic CRM implementation specifics**: Tailwind v4 utilities, OKLCH colors, component patterns, and responsive strategies.
+Identify context and friction:
+- **Who:** User role, expertise level, frequency of use
+- **Where:** Device (desktop/tablet/mobile), environment (office/field/dim lighting)
+- **What:** Task goals, current pain points, cognitive load
+- **Which laws:** Identify violated UX principles (see table below)
 
-## UX Laws Applied to Atomic CRM
+### 2. Strategy Selection
 
-| Law | Principle | Atomic CRM Implementation |
-|-----|-----------|---------------------------|
-| **Jakob's Law** | Users expect familiar patterns | StandardListLayout mimics Excel/Salesforce; slide-overs follow modal conventions |
-| **Hick's Law** | More choices = slower decisions | Filter sidebar groups options; 5-7 nav items max; progressive disclosure |
-| **Fitts's Law** | Larger + closer = easier to hit | 44px min touch targets (`h-11 w-11`); FloatingCreateButton is 56px (`h-14 w-14`) |
-| **Doherty Threshold** | <400ms feedback maintains flow | Skeleton loaders; optimistic updates; toast notifications |
-| **Miller's Law** | ~7 items in working memory | Dashboard shows 3-5 KPIs; tabs group related fields |
-| **Peak-End Rule** | Users remember endings | Success toasts on save; slide-over confirms changes |
-| **Aesthetic-Usability** | Beautiful = perceived as usable | Garden to Table theme; warm shadows; OKLCH colors |
+| Strategy | Focus | Best For |
+|----------|-------|----------|
+| **A - Familiar Efficiency** | Low learning curve, speed | Power users, CRM/Excel veterans |
+| **B - Progressive Clarity** | Reduced cognitive load | New users, complex onboarding |
+| **C - Hybrid Field Resilience** | High contrast, large targets, feedback-rich | Field use, tablets, challenging environments |
+| **D - Behavioral Momentum** | Habit loops, emotional reinforcement | Repetitive workflows, gamification |
 
-### Implementation Patterns
+**Default recommendation:** Strategy C (Hybrid Field Resilience) balances accessibility, speed, and adaptability.
+
+### 3. Decision Matrix Evaluation
+
+Score each criterion (1-5), multiply by weight:
+
+| Criterion | Weight | Target | Quick Check |
+|-----------|--------|--------|-------------|
+| **Usability** | ×3 | ≥4 | Can complete task without training? |
+| **Speed** | ×3 | ≥4 | Task time acceptable? |
+| **Accessibility** | ×3 | ≥4 | Touch ≥44px? Contrast ≥4.5:1? |
+| **Familiarity** | ×2 | ≥4 | Follows platform conventions? |
+| **Cognitive Load** | ×2 | ≥4 | ≤7 visible choices? |
+| **Visual Clarity** | ×2 | ≥4 | Clear hierarchy? |
+| **Feedback** | ×2 | ≥4 | Response <400ms? |
+| **Adaptability** | ×2 | ≥4 | Works across devices? |
+
+**Redesign triggers:**
+- Accessibility < 4 → WCAG blocker
+- Usability < 3 → Users can't complete tasks
+- Speed < 3 → Workflow unacceptably slow
+- 3+ criteria < 4 → Review against UX Laws
+
+### 4. Implementation Spec
+
+Output concrete, actionable code with:
+- Exact CSS/Tailwind classes
+- ARIA attributes for accessibility
+- Responsive breakpoints
+- Feedback patterns (loading states, success confirmation)
+
+---
+
+## UX Laws Reference
+
+### Interaction Laws
+
+| Law | Principle | Implementation |
+|-----|-----------|----------------|
+| **Jakob's Law** | Users spend most time on OTHER sites; expect familiar patterns | Use standard nav positions, button styles, form layouts |
+| **Hick's Law** | Decision time increases with choices | Limit visible options to 5-7; use progressive disclosure |
+| **Fitts's Law** | Larger + closer targets = faster/easier to hit | Min 44px touch targets; important actions largest |
+| **Tesler's Law** | Complexity can't be eliminated, only moved | Push complexity to system logic, not user workflows |
+| **Miller's Law** | Working memory holds ~7 items | Chunk information; avoid forcing mental juggling |
+| **Doherty Threshold** | <400ms response maintains flow state | Show immediate feedback; use optimistic updates |
+
+### Visual & Cognitive Laws
+
+| Law | Principle | Implementation |
+|-----|-----------|----------------|
+| **Aesthetic-Usability** | Beautiful interfaces seem easier to use | Consistent styling increases perceived reliability |
+| **Peak-End Rule** | Users remember most intense moment + ending | End flows with clear confirmation, positive closure |
+| **Von Restorff Effect** | Different items stand out | Use accent colors sparingly for CTAs |
+| **Serial Position Effect** | First and last items remembered best | Put key actions at start/end of lists |
+| **Gestalt: Proximity** | Close items appear grouped | Use spacing to show relationships |
+| **Gestalt: Similarity** | Similar items appear related | Consistent button styles, text treatments |
+| **Gestalt: Continuity** | Eye follows smooth paths | Align elements; guide natural reading flow |
+
+### Code Patterns for UX Laws
 
 ```tsx
-// Fitts's Law: Large touch target
-<Button className="h-11 min-w-[44px] px-4">Save</Button>
+// Fitts's Law: Large touch target (44px minimum)
+<Button className="h-11 min-w-[44px] px-4">
+  Save
+</Button>
 
 // Hick's Law: Progressive disclosure
 <Accordion>
   <AccordionItem value="advanced">
     <AccordionTrigger>Advanced Options</AccordionTrigger>
-    <AccordionContent>{/* Hidden until needed */}</AccordionContent>
+    <AccordionContent>
+      {/* Hidden until explicitly requested */}
+    </AccordionContent>
   </AccordionItem>
 </Accordion>
 
 // Doherty Threshold: Immediate feedback
 <Button onClick={async () => {
-  toast.loading("Saving...");  // Instant feedback
+  toast.loading("Saving...");  // Instant feedback (<100ms)
   await save();
-  toast.success("Saved!");     // Closure
+  toast.success("Saved!");     // Closure (Peak-End)
 }}>
   Save
 </Button>
+
+// Miller's Law: Chunked information
+<Tabs defaultValue="basics">
+  <TabsList>
+    <TabsTrigger value="basics">Basics</TabsTrigger>
+    <TabsTrigger value="details">Details</TabsTrigger>
+    <TabsTrigger value="advanced">Advanced</TabsTrigger>
+  </TabsList>
+  {/* Max 5-7 fields per tab */}
+</Tabs>
 ```
 
-**Full cognitive framework:** See `ui-ux-design-principles` skill.
+---
 
-## UI/UX Decision Matrix
+## Accessibility Non-Negotiables
 
-When evaluating design choices, use this weighted matrix to ensure consistency:
+These are **blockers** - no exceptions:
 
-### Evaluation Criteria
+| Requirement | Standard | Implementation |
+|-------------|----------|----------------|
+| **Touch targets** | 44×44px minimum | `h-11 w-11` or `min-h-[44px] min-w-[44px]` |
+| **Color contrast** | WCAG AA (4.5:1 text) | Use semantic colors, never pure gray on white |
+| **Semantic HTML** | Native elements | `<button>` not `<div onClick>` |
+| **Labels** | All inputs labeled | Visible label or `aria-label` / `sr-only` |
+| **Keyboard nav** | Full functionality | Tab order logical, Enter/Space work |
+| **Focus visible** | Clear indicator | `:focus-visible` with visible ring |
+| **Motion** | Respect preferences | `prefers-reduced-motion` support |
 
-| Criterion | Weight | Target | What to Check |
-|-----------|--------|--------|---------------|
-| **Usability** | ×3 | ≥4 | Can users complete task without training? |
-| **Speed** | ×3 | ≥4 | Task completion time acceptable? |
-| **Accessibility** | ×3 | ≥4 | Touch targets ≥44px? Contrast ≥4.5:1? |
-| **Familiarity** | ×2 | ≥4 | Follows CRM/Excel conventions? |
-| **Cognitive Load** | ×2 | ≥4 | ≤7 choices visible? Progressive disclosure? |
-| **Visual Clarity** | ×2 | ≥4 | Clear hierarchy? Semantic colors? |
-| **Feedback** | ×2 | ≥4 | Actions have visible response <400ms? |
-| **Adaptability** | ×2 | ≥4 | Works on desktop AND tablet? |
+### ARIA Patterns
 
-**Scoring:** 1 (poor) to 5 (excellent)
-
-### Quick Decision Rules
-
-**If ANY of these fail, redesign is required:**
-- Accessibility < 4 (WCAG violations are blockers)
-- Usability < 3 (users can't complete core tasks)
-- Speed < 3 (workflow is unacceptably slow)
-
-**If 3+ criteria score < 4:** Review against UX Laws table above.
-
-### Example Evaluation
-
-```
-Component: New filter sidebar design
-
-Usability:     4 × 3 = 12  ✅ (intuitive filter groups)
-Speed:         5 × 3 = 15  ✅ (instant filter application)
-Accessibility: 5 × 3 = 15  ✅ (44px targets, good contrast)
-Familiarity:   4 × 2 = 8   ✅ (matches Salesforce pattern)
-Cognitive:     3 × 2 = 6   ⚠️ (12 filters visible - consider grouping)
-Visual:        4 × 2 = 8   ✅ (clear section headers)
-Feedback:      4 × 2 = 8   ✅ (count badges update live)
-Adaptability:  4 × 2 = 8   ✅ (collapses on tablet)
-
-Total: 80/95 (84%) - GOOD, but consider reducing visible filters
-```
-
-### When to Use This Matrix
-
-- **Before implementation:** Validate design approach
-- **During code review:** Check new components meet criteria
-- **After user feedback:** Identify which criteria need improvement
-- **Comparing options:** Score multiple approaches objectively
-
-## When to Use
-
-Use this skill when:
-- Implementing list pages (must use StandardListLayout + PremiumDatagrid)
-- Creating view/edit functionality (must use ResourceSlideOver pattern)
-- Building create forms (must use full-page pattern with .create-form-card)
-- Starting new UI feature work in Atomic CRM
-- Creating React components with styling
-- Adding form inputs (especially JSONB arrays)
-- Implementing responsive layouts
-- Fixing inconsistent UI patterns
-- Working with colors, spacing, or typography
-
-Do NOT use for:
-- Backend/database-only changes
-- Documentation updates
-- Non-UI bug fixes
-
-## Pre-Implementation Checklist
-
-**Before writing any UI code, verify:**
-
-- [ ] Read CLAUDE.md sections: Color System, JSONB Array Handling, Core Principles
-- [ ] Prototype on desktop viewport (1440px+) - this is the primary target
-- [ ] List all colors needed: map to semantic utilities (`text-muted-foreground`, not `text-[color:var(...)]`)
-- [ ] Touch targets: ensure all interactive elements are ≥ 44px (`w-11 h-11` minimum) across ALL screen sizes
-- [ ] Form inputs: any JSONB arrays needing sub-schemas?
-- [ ] Test responsive breakpoints: base (mobile) → `lg:` (desktop 1024px+)
-
-## Critical Rules
-
-### 1. Tailwind v4 Semantic Utilities ONLY
-
-**❌ WRONG - Inline CSS Variable Syntax:**
-```typescript
-className="text-[color:var(--text-subtle)] bg-[var(--warning-default)] border-[color:var(--stroke-card)]"
-```
-
-**✅ CORRECT - Semantic Utility Classes:**
-```typescript
-className="text-muted-foreground bg-warning border-border"
-```
-
-**Common Mappings:**
-
-| Inline CSS Variable | Semantic Utility |
-|---------------------|------------------|
-| `text-[color:var(--text-subtle)]` | `text-muted-foreground` |
-| `text-[color:var(--text-primary)]` | `text-foreground` |
-| `bg-[var(--warning-default)]` | `bg-warning` |
-| `bg-[var(--destructive)]` | `bg-destructive` |
-| `bg-[var(--brand-500)]` | `bg-primary` |
-| `border-[color:var(--stroke-card)]` | `border-border` |
-| `shadow-[var(--elevation-2)]` | `shadow-md` |
-
-**If semantic utility doesn't exist:** Check `tailwind.config.ts` or ask before adding inline syntax.
-
-### 2. Desktop-First Responsive Design
-
-**Requirement:** Atomic CRM is used primarily on desktops (1440px+). Design and test on desktop viewport first, then adapt for tablet and mobile while maintaining touch-friendly targets.
-
-**Important:** Tailwind is inherently mobile-first (base styles apply at 0px). "Desktop-first" means **design thinking**, not Tailwind syntax.
-
-**✅ CORRECT - Desktop-First Pattern:**
-```typescript
-// Mobile base → Desktop optimized (lg:)
-// Desktop gets the full experience, mobile/tablet gets streamlined version
-className="grid-cols-1 lg:grid-cols-3"
-```
-
-**Desktop-First Strategy:**
-
-1. **Design on desktop viewport** - Prototype at 1440px+ width (primary business tool)
-2. **Optimize `lg:` breakpoint** - Desktop (1024px+) is primary target
-3. **Adapt tablet/mobile** - Base styles provide simplified, stacked layouts
-4. **Maintain touch targets** - 44px minimum across ALL screen sizes (desktop, tablet, mobile)
-5. **Progressive enhancement** - Desktop gets full features, mobile gets essential features
-
-**Key Difference from Mobile-First:**
-- Mobile-first: optimize for phones, adapt up
-- Desktop-first: optimize for `lg:` breakpoint, adapt down gracefully
-
-**Touch-Friendly Requirements (ALL Screen Sizes):**
-- Minimum tap/click target: `w-11 h-11` (44px) on desktop, tablet, AND mobile
-- Text base size: 14px minimum (`text-sm`)
-- Padding: `p-content lg:p-widget` (16px mobile → 20px desktop)
-- Use semantic spacing tokens (`gap-section`, `space-y-compact`)
-
-**Example: Desktop-First Dashboard Card**
-```typescript
-// Mobile: stacked, compact, touch-friendly
-// Desktop (1024px+): grid layout, spacious, optimized for mouse+keyboard
-
-<Card className="p-content lg:p-widget h-48 lg:h-64">
-  {/* 44px touch targets on all screen sizes */}
-  <button className="h-11 w-11">
-    <Icon className="h-6 w-6" />
-  </button>
-</Card>
-
-// Grid layout example
-<div className="grid grid-cols-1 lg:grid-cols-2 gap-section">
-  {/* Mobile: Stacked vertically */}
-  {/* Desktop (1024px+): Side-by-side PRIMARY VIEW */}
-  <Widget1 />
-  <Widget2 />
+```tsx
+// Dialog/Modal
+<div role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+  <h2 id="dialog-title">Edit Contact</h2>
+  {/* Focus trap required */}
 </div>
+
+// Live regions for updates
+<div aria-live="polite" aria-atomic="true">
+  {statusMessage}
+</div>
+
+// Form errors
+<input aria-invalid={hasError} aria-describedby="error-msg" />
+<span id="error-msg" role="alert">{errorText}</span>
 ```
 
-**Breakpoint Strategy:**
-- Base (0px-1023px): Mobile + tablet get stacked layouts, touch-friendly
-- `lg:` (1024px+): Desktop gets full multi-column layouts, optimized spacing
-- Always test: Desktop (1440px) FIRST → Tablet (768px) → Mobile (375px)
+---
 
-### 3. JSONB Array Pattern (Atomic CRM Specific)
+## Color System Principles
 
-**When adding array fields** (emails, phones, websites, tags):
+### The 60-30-10 Rule
 
-**Database Migration:**
-```sql
-ALTER TABLE contacts ADD COLUMN websites JSONB DEFAULT '[]'::jsonb;
-```
+| Role | Percentage | Usage |
+|------|------------|-------|
+| **Dominant (60%)** | Background, large surfaces | `bg-background`, `bg-card` |
+| **Secondary (30%)** | Supporting elements, sections | `bg-muted`, `border-border` |
+| **Accent (10%)** | CTAs, highlights, focus states | `bg-primary`, `text-primary` |
 
-**Zod Sub-Schema:**
-```typescript
-// src/atomic-crm/validation/contacts.ts
+### Semantic Color Categories
 
-export const websiteTypeSchema = z.enum(["Personal", "Company", "Portfolio"]);
+| Category | Purpose | Examples |
+|----------|---------|----------|
+| **Brand** | Identity, primary actions | Primary button, logo, key CTAs |
+| **Neutral** | Text, backgrounds, borders | Body text, cards, dividers |
+| **Status** | Feedback states | Success (green), Warning (amber), Error (red), Info (blue) |
+| **Interactive** | Hover, focus, active states | Button hover, focus rings, selected items |
 
-export const websiteAndTypeSchema = z.object({
-  url: z.string().url("Invalid URL"),
-  type: websiteTypeSchema.default("Company"), // Default in schema
-});
+### Color Anti-Patterns
 
-const contactBaseSchema = z.object({
-  websites: z.array(websiteAndTypeSchema).default([]), // Empty array default
-  // ... other fields
-});
-```
+| Problem | Why It Fails | Fix |
+|---------|--------------|-----|
+| Hardcoded hex values | Bypasses design system | Use semantic tokens |
+| Pure black `#000` | Too harsh, poor readability | Use `slate-900` or similar |
+| Pure white `#FFF` | Glare, accessibility issues | Use `slate-50` or warm white |
+| Too many accent colors | Cognitive overload, no hierarchy | Max 2 accent colors |
+| Color-only meaning | Fails colorblind users | Add icons, text, patterns |
 
-**Form Component:**
-```typescript
-<ArrayInput source="websites" label="Websites" helperText={false}>
-  <SimpleFormIterator inline disableReordering disableClear>
-    <TextInput source="url" placeholder="Website URL" />
-    <SelectInput source="type" choices={websiteTypes} />
-    {/* NO defaultValue prop - Zod handles defaults */}
-  </SimpleFormIterator>
-</ArrayInput>
+---
 
-const websiteTypes = [
-  { id: "Personal" },
-  { id: "Company" },
-  { id: "Portfolio" }
-];
-```
+## Response Format
 
-**Key Pattern:**
-- Sub-schema for array items (`websiteAndTypeSchema`)
-- Defaults in Zod (`.default()`), NOT in form
-- `ArrayInput` + `SimpleFormIterator` from React Admin
-- Form state: `zodSchema.partial().parse({})` for initialization
+When answering UI/UX questions, structure responses as:
 
-### 4. Visual Styling & Spacing
+### 1) Cognitive Audit (2-4 sentences)
+- Context: role, device, environment
+- Friction points identified
+- UX laws at stake
 
-**Strict semantic colors** (docs/plans/2025-11-16-unified-design-system-rollout.md:295-308):
-- Backgrounds: `bg-muted` (page), `bg-card` (content), `bg-background` (nested)
-- Borders: `border-border` (default), `border-primary` (focus), `border-destructive` (error)
-- Never use hex values or inline CSS variables
+### 2) Strategy Recommendation
+- Choose A/B/C/D with rationale
+- Brief pros/cons
 
-**Spacing tokens** (docs/plans/2025-11-16-unified-design-system-rollout.md:306-344):
-```css
---spacing-edge-desktop: 24px     /* Screen borders */
---spacing-section: 32px          /* Between sections */
---spacing-content: 16px          /* Content gaps */
---spacing-compact: 12px          /* Tight spacing */
-```
+### 3) Implementation Spec
+- Concrete code/CSS
+- ARIA attributes
+- Responsive considerations
+- Feedback patterns
 
-**Required utility classes** (docs/plans/2025-11-16-unified-design-system-rollout.md:346-398):
-- `.card-container` - Standard card wrapper
-- `.create-form-card` - Create forms (includes shadow-lg)
-- `.interactive-card` - Premium hover effects
-- `.table-row-premium` - Applied by PremiumDatagrid rowClassName
-- `.filter-sidebar` - Left sidebar filter panel
-- `.btn-premium` - Button hover states
-- `.focus-ring` - Focus indicators
+**Example:**
 
-**List rows MUST** use `.table-row-premium` (via PremiumDatagrid)
-**Create forms MUST** use `.create-form-card` for shadow-lg elevation
+> **Audit:** Field sales rep on iPad in warehouse (dim lighting, possible gloves). Current filter panel has 15 visible options (Hick's Law violation) with 38px buttons (Fitts's Law violation).
+>
+> **Strategy:** C - Hybrid Field Resilience. High contrast, large targets essential for environment.
+>
+> **Implementation:**
+> ```tsx
+> <FilterPanel className="bg-card p-4">
+>   {/* Grouped to reduce visible choices */}
+>   <FilterGroup label="Status">
+>     <FilterButton className="h-11 min-w-[44px] text-base">
+>       Active
+>     </FilterButton>
+>   </FilterGroup>
+> </FilterPanel>
+> ```
 
-### 5. Accessibility Non-Negotiables
+---
 
-**Minimum requirements:**
-- Touch targets: **44x44px minimum** (no "acceptable at 40px")
-- Color contrast: WCAG AA (4.5:1 for text)
-- Semantic HTML: `<button>` not `<div onClick>`
-- Labels: All form inputs have labels (visible or sr-only)
-- Keyboard nav: Tab order logical, Enter/Space work
+## Quick Checklists
 
-**Slide-over specific** (docs/plans/2025-11-16-unified-design-system-rollout.md:144-205):
-- Focus trap when open (focus stays within)
-- `role="dialog"` and `aria-modal="true"`
-- Initial focus to first interactive element
-- ESC key closes slide-over
-- Tab/Shift+Tab cycles within slide-over only
-- Screen reader announces mode changes (view/edit)
-- Focus returns to trigger element on close
+### Pre-Design Checklist
+- [ ] Identified user context (who, where, what device)
+- [ ] Listed UX laws that apply
+- [ ] Chosen strategy (A/B/C/D)
+- [ ] Mapped colors to semantic tokens
 
-**React Admin provides:** FormField (role="group"), FormLabel (htmlFor), FormError (aria-invalid)
+### Pre-Commit Checklist
+- [ ] Touch targets ≥ 44px on ALL screen sizes
+- [ ] No hardcoded colors (hex, rgb, hsl)
+- [ ] ARIA labels on interactive elements
+- [ ] Keyboard navigation works
+- [ ] Feedback on all actions (<400ms)
+- [ ] Tested on primary target device
 
-## Layout Requirements
+### Optimization Triggers
 
-Per unified design system (docs/plans/2025-11-16-unified-design-system-rollout.md:45-288):
+| Trigger | Problem | Action |
+|---------|---------|--------|
+| **Performance** | Feedback >400ms | Add skeleton/shimmer loader |
+| **Visual** | Contrast <4.5:1 | Use semantic colors with higher contrast |
+| **Ergonomic** | Targets <44px | Increase padding/hit area |
+| **Cognitive** | >7 visible choices | Progressive disclosure, grouping |
+| **Feedback** | Missing states | Add loading, success, error states |
+| **Emotional** | Abrupt flow endings | Add microcopy, confirmation |
 
-### List Views (docs/plans/2025-11-16-unified-design-system-rollout.md:45-104)
-**MUST** wrap content in `StandardListLayout`:
-- `.filter-sidebar` (256px left panel) + `.card-container` (main content)
-- Apply `PremiumDatagrid` wrapper with `.table-row-premium` rowClassName
-- Row clicks open slide-over (NOT full page navigation)
-- Floating create button (bottom-right) or header toolbar
-
-### View/Edit Interactions (docs/plans/2025-11-16-unified-design-system-rollout.md:95-205)
-**MUST** use `ResourceSlideOver` shell:
-- Width: 40vw (min 480px, max 720px)
-- Animation: slide from right (200ms ease-out)
-- Tabs: Resource-specific (Details | History | Files | Notes)
-- Focus trap required (role="dialog", aria-modal="true")
-- URL sync: `?view=123` or `?edit=123` query params
-
-### Create Forms (docs/plans/2025-11-16-unified-design-system-rollout.md:211-288)
-**MUST** stay full-page (no slide-overs):
-- Breadcrumb navigation at top
-- Centered `.create-form-card` (max-w-4xl, shadow-lg)
-- Tabbed sections with error badges
-- Sticky footer with Cancel | Save & Close | Save & Add Another
-- Validation: Zod schemas with inline errors
-- Optional autosave to localStorage (complex forms only)
-
-## Color System Quick Reference
-
-**Brand (Garden to Table Theme):**
-- Primary: Lime Green (`bg-primary`, `text-primary`)
-- Accent: Clay Orange (`bg-accent-clay-600`)
-- Background: Warm cream (`bg-background`)
-
-**Semantic:**
-- Success: `bg-success`, `text-success`
-- Warning: `bg-warning`, `text-warning`
-- Destructive/Error: `bg-destructive`, `text-destructive`
-- Muted: `text-muted-foreground`
-
-**Never use:**
-- Hex codes: `#FF6600`, `#FEFEF9`
-- Direct OKLCH: `oklch(68% 0.140 85)`
-- Inline variables: `bg-[var(--warning)]`
-
-## Common Mistakes
-
-| Mistake | Fix |
-|---------|-----|
-| "Slightly under 44px is acceptable" | NO. 44px is minimum on ALL screen sizes. Use `h-11 w-11`. |
-| "Mobile-first works fine" | Optimize `lg:` breakpoint for desktop (1440px+), not just make it "work". |
-| Only testing on mobile | Test on desktop viewport (1440px+) FIRST. |
-| `text-[color:var(--text-subtle)]` | Use `text-muted-foreground` semantic utility. |
-| `defaultValue` in form component | Defaults go in Zod schema (`.default()`). |
-| Hardcoded dropdown choices | Use `ConfigurationContext` for customizable values. |
-| Research instead of implement | "Create X" means build it, not document existing X. |
-| `md:` as primary breakpoint | Use `lg:` (1024px+) for desktop-first design. |
-
-## Implementation Checklist
-
-Per resource migration (docs/plans/2025-11-16-unified-design-system-rollout.md:488-502):
-
-- [ ] List view uses `StandardListLayout` with filter sidebar
-- [ ] Table styled with `PremiumDatagrid` wrapper
-- [ ] Row clicks open slide-over (NOT full page navigation)
-- [ ] Slide-over component created with view/edit modes
-- [ ] URL routing updated (`?view=123` or `?edit=123`)
-- [ ] Create form uses full-page pattern with `.create-form-card`
-- [ ] All semantic colors applied (no hex/inline vars)
-- [ ] Spacing uses CSS variables (`--spacing-*`)
-- [ ] Old components deleted (no legacy code)
-- [ ] Accessibility audit passed (focus trap, ARIA attributes)
-- [ ] E2E tests updated for new patterns
-
-## Implementation Workflow
-
-**1. Verify Requirements**
-- Desktop-first design (1440px+ primary)
-- What colors/spacing needed? (use semantic tokens)
-- JSONB arrays involved?
-- Which flagship layout pattern applies? (list/slide-over/create)
-
-**2. Check CLAUDE.md Patterns**
-- Color System section
-- JSONB Array Handling Pattern
-- Validation Layer section
-- Spacing System section
-- Unified Design System Rollout plan
-
-**3. Write Code Following Patterns**
-- Tailwind semantic utilities (no inline CSS variables)
-- Desktop-first breakpoints (`lg:` for 1024px+)
-- Zod schemas for validation
-- React Admin components
-- Semantic spacing (`gap-section`, `space-y-compact`)
-- **Direct Migration** (docs/plans/2025-11-16-unified-design-system-rollout.md:436-487):
-  - No feature flags or gradual rollout
-  - Delete old components immediately
-  - Breaking changes are expected and encouraged
-  - Fix forward if issues arise (don't revert)
-
-**4. Verify Before Committing**
-- Touch targets ≥ 44px on ALL screen sizes (desktop, tablet, mobile)
-- No inline CSS variables (`text-[color:var(...)]`)
-- Test responsive: Desktop (1440px) FIRST → Tablet (768px) → Mobile (375px)
-- Accessibility: keyboard nav works, aria-labels present
-- All checklist items above completed
-
-## Red Flags - STOP and Verify
-
-If you find yourself:
-- Using `className="text-[color:var(...)]"` → Wrong Tailwind syntax
-- Not testing on desktop viewport (1440px+) first → Wrong design target
-- Using `md:` as primary breakpoint → Should be `lg:` for desktop-first
-- Accepting under 44px touch targets → Below minimum (applies to ALL screens)
-- Setting `defaultValue` in form → Defaults go in Zod
-- Using hardcoded pixel spacing → Use semantic tokens (`gap-section`, `p-content`)
-- Researching existing code instead of implementing → Wrong mode
-
-**All of these mean:** Review this skill and CLAUDE.md before proceeding.
+---
 
 ## Resource Files
 
-Comprehensive design system documentation with real code examples:
+### Universal Principles
+- [UX Laws Deep Dive](resources/ux-laws-reference.md) - Extended explanations and research citations
+- [Decision Matrix Guide](resources/decision-matrix-guide.md) - Scoring examples and case studies
+- [Color Theory](resources/color-system.md) - OKLCH, semantic mappings, accessibility
 
-### React Patterns
-- [Component Architecture](resources/component-architecture.md) - Compound components, presentational/container patterns, CVA variants, custom hooks
-- [React Performance](resources/react-performance.md) - Memoization, lazy loading, code splitting, virtual scrolling, GPU acceleration
-- [TypeScript Patterns](resources/typescript-patterns.md) - Interface vs type, Zod schema inference, generics, utility types, discriminated unions
-- [State Management](resources/state-management.md) - Local state, Context, server state with React Admin hooks, URL state, form state
+### Project-Specific Implementation
+- [Design Tokens](resources/design-tokens.md) - Spacing, CSS variables
+- [Typography](resources/typography.md) - Font scales, hierarchy
+- [Elevation](resources/elevation.md) - Shadows, depth, layering
+- [Form Patterns](resources/form-patterns.md) - Validation, arrays, accessibility
+- [Data Tables](resources/data-tables.md) - Sorting, pagination, responsive
 
-### Design System
-- [Design Tokens](resources/design-tokens.md) - Spacing scale, CSS variables overview
-  - [Spacing & Grid](resources/tokens-spacing-grid.md) - Grid system, breakpoints, density
-  - [Touch & Animation](resources/tokens-touch-animation.md) - Touch targets, shadows, transitions
-- [Color System](resources/color-system.md) - OKLCH overview, semantic mappings, best practices
-  - [Brand & Accent](resources/color-brand-accent.md) - Forest green, clay scales, neutrals, shadows
-  - [Status Colors](resources/color-status-semantic.md) - Success, warning, error, info, overlays
-  - [Charts & Tags](resources/color-charts-tags.md) - Data viz and tag palettes
-- [Typography](resources/typography.md) - Font families, sizing scale, weights, semantic text colors, hierarchy patterns
-- [Elevation](resources/elevation.md) - Three-tier shadow system, stroke patterns, divider system, rounded corners, avatar micro-elevation
+---
 
-### CRM UI Patterns
-- [Data Tables](resources/data-tables.md) - Sortable columns, hover states, sticky headers, pagination, responsive tables
-- [Form Patterns](resources/form-patterns.md) - Zod validation, React Hook Form integration, JSONB arrays, tabbed forms, accessibility
-- [Dashboard Layouts](resources/dashboard-layouts.md) - Grid systems, widget patterns, spacing tokens, responsive breakpoints
+## Core Beliefs
 
-## Real-World Impact
+- **Design is a system, not an aesthetic**
+- **Every pixel must serve cognition or confidence**
+- **Accessibility and speed are fundamentals, not features**
+- **We don't redesign for beauty; we redesign for measurable improvement**
+- **Familiarity reduces friction; innovation must earn its cost**
 
-**Following these patterns:**
-- Consistent design system (users recognize Atomic CRM UI)
-- Maintainable code (future devs find patterns quickly)
-- Accessible (meets WCAG AA on all screen sizes, works with assistive tech)
-- Desktop-first with mobile support (primary business tool optimized for 1440px+, adapts gracefully to tablet/mobile)
-- Type-safe (Zod validation catches errors early)
-- Touch-friendly everywhere (44px minimum targets across desktop, tablet, mobile)
-
-**Violations create:**
-- Visual inconsistency (hex codes bypass design tokens)
-- Poor UX (using `md:` instead of `lg:` as primary breakpoint)
-- Accessibility failures (touch targets under 44px, poor contrast)
-- Bugs (missing validation, wrong form initialization)
-- Maintenance nightmares (hardcoded spacing instead of semantic tokens)
+---
 
 ## Cross-Reference
 
 **See also:** `engineering-constitution` skill for:
-- Error handling patterns (fail-fast, Promise.allSettled)
-- Validation patterns (Zod schemas, API boundary validation)
-- Form state management (schema-derived defaults)
-- Database patterns (GRANT + RLS, migrations)
-- Security patterns (CSV validation, RLS policies)
-- Testing patterns (unit tests, E2E tests, coverage)
+- Error handling patterns
+- Validation (Zod schemas)
+- Form state management
+- Testing patterns
