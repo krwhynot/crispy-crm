@@ -2,9 +2,9 @@
 
 **Date:** 2025-12-03
 **Author:** Claude (AI Assistant)
-**Status:** Ready for Approval
-**Estimated Files:** 2 files
-**Parallel Execution:** No (sequential dependency)
+**Status:** Ready for Approval (Updated after Zen review)
+**Estimated Files:** 1 file (OpportunityRelationshipsTab.tsx)
+**Parallel Execution:** N/A (single file)
 
 ---
 
@@ -84,12 +84,14 @@ From the screenshot provided:
 
 | Line | Current | Fix |
 |------|---------|-----|
-| 39 | `flex items-start gap-2` | `flex items-end gap-2` |
-| 70 | `className="mt-7"` | Remove `mt-7` |
-| 92 | `flex items-start gap-2` | `flex items-end gap-2` |
-| 123 | `className="mt-7"` | Remove `mt-7` |
-| 132 | `flex items-start gap-2` | `flex items-end gap-2` |
-| 163 | `className="mt-7"` | Remove `mt-7` |
+| 39 | `flex items-start gap-2` | `flex items-baseline gap-2` |
+| 70 | `className="mt-7"` | Remove entire prop |
+| 92 | `flex items-start gap-2` | `flex items-baseline gap-2` |
+| 123 | `className="mt-7"` | Remove entire prop |
+| 132 | `flex items-start gap-2` | `flex items-baseline gap-2` |
+| 163 | `className="mt-7"` | Remove entire prop |
+
+**Line numbers verified:** 2025-12-03 (file state confirmed)
 
 ### File 2: `src/atomic-crm/contacts/ContactMainTab.tsx`
 
@@ -112,6 +114,24 @@ Current pattern (lines 54-86):
 
 **Decision:** This is intentional stacked layout, not inline. No changes needed.
 
+### Note: "New Contact" Button (Line 175)
+
+The Contacts section at line 175 uses `flex justify-between items-start mb-2` with the button next to a **text header**, not an input field:
+
+```tsx
+<div className="flex justify-between items-start mb-2">
+  <div>
+    <h4 className="text-sm font-medium">Contacts *</h4>
+    <p className="text-xs text-muted-foreground">...</p>
+  </div>
+  {customerOrganizationId && (
+    <CreateInDialogButton label="New Contact" ... />
+  )}
+</div>
+```
+
+**Decision:** This is a **header + action button** pattern, not an input + inline button pattern. The `items-start` is correct here - the button should align with the top of the header text. **No changes needed.**
+
 ---
 
 ## Implementation Tasks
@@ -122,7 +142,8 @@ Current pattern (lines 54-86):
 
 **Preconditions:**
 - [ ] Read the file to confirm line numbers are accurate
-- [ ] Build passes before changes: `npm run build`
+
+**Note:** Pre-change build verification is optional for CSS-only changes. Post-change verification is sufficient.
 
 **Changes:**
 
@@ -130,39 +151,33 @@ Current pattern (lines 54-86):
 
 ```diff
 -        <div className="flex items-start gap-2">
-+        <div className="flex items-end gap-2">
++        <div className="flex items-baseline gap-2">
 ```
 
+Remove the entire `className` prop from CreateInDialogButton (don't leave empty string):
 ```diff
+             }}
 -            className="mt-7"
-+            className=""
+           >
 ```
-
-Or remove the className prop entirely if empty.
 
 #### 1.2 Principal Organization Section (Lines 92, 123)
 
 ```diff
 -        <div className="flex items-start gap-2">
-+        <div className="flex items-end gap-2">
++        <div className="flex items-baseline gap-2">
 ```
 
-```diff
--            className="mt-7"
-+            className=""
-```
+Remove entire `className="mt-7"` prop.
 
 #### 1.3 Distributor Organization Section (Lines 132, 163)
 
 ```diff
 -        <div className="flex items-start gap-2">
-+        <div className="flex items-end gap-2">
++        <div className="flex items-baseline gap-2">
 ```
 
-```diff
--            className="mt-7"
-+            className=""
-```
+Remove entire `className="mt-7"` prop.
 
 **Postconditions:**
 - [ ] TypeScript compiles: `npx tsc --noEmit`
@@ -217,8 +232,45 @@ After changes, verify in browser:
 | Risk | Likelihood | Impact | Mitigation |
 |------|------------|--------|------------|
 | Other forms have same issue | Medium | Low | Search for `mt-7` pattern after this fix |
-| `items-end` breaks other layouts | Low | Medium | Only changing specific inline button patterns |
-| Input height varies | Low | Low | `items-end` handles variable heights correctly |
+| `items-baseline` doesn't work with complex inputs | Low | Medium | Visual verification step included |
+| Button appears too high/low | Low | Low | `items-baseline` aligns to text baseline - most intuitive |
+| Layout shift on error | None | N/A | `items-baseline` immune to helper/error text changes |
+
+---
+
+## Full Codebase Audit Results
+
+**Audit performed:** 2025-12-03
+
+### `CreateInDialogButton` Usage Across Codebase
+
+| File | Pattern | Action |
+|------|---------|--------|
+| `OpportunityRelationshipsTab.tsx` | `flex items-start` + `mt-7` | **FIX** (3 instances) |
+| `ContactMainTab.tsx` | Stacked layout (below input) | No change needed |
+
+### Other `mt-7` Occurrences (NOT Alignment Hacks)
+
+| File | Purpose | Action |
+|------|---------|--------|
+| `SettingsLayout.tsx:24` | Page top margin | No change |
+| `SalesEdit.tsx:60` | Page top margin | No change |
+| `SalesCreate.tsx:38` | Page top margin | No change |
+| `SalesPermissionsTab.tsx:314` | Danger zone separator | No change |
+| `simple-form.tsx:29` | Form toolbar spacing | No change |
+
+### Other `flex items-start gap-*` Patterns (Content Layouts)
+
+These are **content display patterns**, not input+button combinations:
+- `NotificationsList.tsx` - Notification items
+- `Task.tsx` - Checkbox + task text
+- `OpportunityCard.tsx` - Card headers
+- `ChangeLogTab.tsx` - Log entries
+- `TaskKanbanCard.tsx` - Card content
+- `ActivityFeedPanel.tsx` - Feed items
+- `ContactImportPreview.tsx` - Error/warning displays
+
+**None of these require changes.**
 
 ---
 
@@ -230,6 +282,7 @@ The following are explicitly **NOT** in scope for this plan:
 2. **Form toolbar buttons**: Different pattern (Delete/Cancel/Save at bottom)
 3. **Empty state buttons**: Different context (centered call-to-action)
 4. **Creating a reusable component**: Would be over-engineering for 1 file
+5. **Other `flex items-start` patterns**: Verified as content layouts, not input+button alignment
 
 ---
 

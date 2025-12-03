@@ -36,7 +36,7 @@ export const OpportunityRelationshipsTab = () => {
     <div className="space-y-6">
       {/* Customer Organization */}
       <div>
-        <div className="flex items-start gap-2">
+        <div className="flex items-baseline gap-2">
           <ReferenceInput
             source="customer_organization_id"
             reference="organizations"
@@ -67,7 +67,6 @@ export const OpportunityRelationshipsTab = () => {
               }
               return values;
             }}
-            className="mt-7"
           >
             <OrganizationInputs />
           </CreateInDialogButton>
@@ -89,7 +88,7 @@ export const OpportunityRelationshipsTab = () => {
 
       {/* Principal Organization */}
       <div>
-        <div className="flex items-start gap-2">
+        <div className="flex items-baseline gap-2">
           <ReferenceInput
             source="principal_organization_id"
             reference="organizations"
@@ -120,7 +119,6 @@ export const OpportunityRelationshipsTab = () => {
               }
               return values;
             }}
-            className="mt-7"
           >
             <OrganizationInputs />
           </CreateInDialogButton>
@@ -129,7 +127,7 @@ export const OpportunityRelationshipsTab = () => {
 
       {/* Distributor Organization */}
       <div>
-        <div className="flex items-start gap-2">
+        <div className="flex items-baseline gap-2">
           <ReferenceInput
             source="distributor_organization_id"
             reference="organizations"
@@ -160,7 +158,6 @@ export const OpportunityRelationshipsTab = () => {
               }
               return values;
             }}
-            className="mt-7"
           >
             <OrganizationInputs />
           </CreateInDialogButton>
