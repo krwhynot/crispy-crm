@@ -36,12 +36,11 @@ export const OpportunityRelationshipsTab = () => {
     <div className="space-y-6">
       {/* Customer Organization */}
       <div>
-        <div className="flex items-baseline gap-2">
+        <div className="grid grid-cols-[1fr_auto] items-end gap-2">
           <ReferenceInput
             source="customer_organization_id"
             reference="organizations"
             filter={{ organization_type: "customer" }}
-            className="flex-1"
           >
             <AutocompleteOrganizationInput
               label="Customer Organization *"

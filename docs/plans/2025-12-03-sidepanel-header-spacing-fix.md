@@ -2,7 +2,7 @@
 
 **Date:** 2025-12-03
 **Author:** Claude (AI Assistant) with Sienna UX Review
-**Status:** Ready for Approval
+**Status:** ✅ Completed (2025-12-03)
 **Estimated Files:** 2 files
 **Parallel Execution:** N/A (single fix point, cascades to all slide-overs)
 
@@ -209,10 +209,20 @@ git checkout HEAD~1 -- src/components/layouts/ResourceSlideOver.tsx
 
 ## Constitution Checklist
 
-- [ ] Fail-fast: N/A (no retry logic added)
-- [ ] Single source of truth: ✅ Fixing one component fixes all slide-overs
-- [ ] Zod validation: N/A (no data handling)
-- [ ] Form defaults: N/A (no forms)
-- [ ] TypeScript: ✅ No type changes needed
-- [ ] Semantic colors: ✅ Uses `bg-muted`, `text-foreground`
-- [ ] Touch targets: ✅ Addresses 44px requirement
+- [x] Fail-fast: N/A (no retry logic added)
+- [x] Single source of truth: ✅ Fixing one component fixes all slide-overs
+- [x] Zod validation: N/A (no data handling)
+- [x] Form defaults: N/A (no forms)
+- [x] TypeScript: ✅ No type changes needed
+- [x] Semantic colors: ✅ Uses `bg-muted`, `text-foreground`
+- [x] Touch targets: ✅ Addresses 44px requirement
+
+---
+
+## Implementation Notes
+
+**Completed:** 2025-12-03
+
+Both tasks were implemented:
+- **Task 1:** `pr-10` added to `ResourceSlideOver.tsx:197`
+- **Task 2:** Close button enhanced in `sheet.tsx:67-68` with `p-2`, `size-5`, `hover:bg-muted`
