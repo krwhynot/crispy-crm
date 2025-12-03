@@ -19,6 +19,10 @@ export const badgeVariants = cva(
           "border-transparent bg-secondary text-secondary-foreground ring-secondary-foreground/10 [a&]:hover:bg-secondary/90",
         destructive:
           "border-transparent bg-destructive text-destructive-foreground ring-destructive/20 [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+        success:
+          "border-transparent bg-success text-success-foreground ring-success/20 [a&]:hover:bg-success/90",
+        warning:
+          "border-transparent bg-warning text-warning-foreground ring-warning/20 [a&]:hover:bg-warning/90",
         outline:
           "text-foreground ring-border [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
         // Organization type variants (MFB Garden to Table theme) - with matching ring colors

@@ -634,6 +634,7 @@
   --success-foreground: oklch(100% 0 0); /* White text on success backgrounds */
 
   /* Warning states (golden amber) - kept at warm hue 85° */
+  --warning-foreground: oklch(20% 0.02 85); /* Dark text on warning backgrounds for contrast */
   --warning-subtle: oklch(94% 0.055 85);
   --warning-default: oklch(68% 0.14 85);
   --warning-strong: oklch(58% 0.145 85);

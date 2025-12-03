@@ -92,7 +92,7 @@ export function PipelineTableRow({ row, onRowClick }: PipelineTableRowProps) {
       {/* This week activity */}
       <TableCell className="text-center">
         {row.activeThisWeek > 0 ? (
-          <Badge variant="default" className="bg-success">
+          <Badge variant="success">
             {row.activeThisWeek}
           </Badge>
         ) : (
