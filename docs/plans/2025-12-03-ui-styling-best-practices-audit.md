@@ -2,290 +2,260 @@
 
 **Date:** 2025-12-03
 **Author:** Claude (AI Assistant)
-**Status:** Ready for Approval
-**Estimated Files:** 12 files requiring changes
-**Parallel Execution:** Yes - 4 independent task groups
+**Status:** REVISED - Accurate Inventory
+**Estimated Files:** 6 files requiring changes
+**Parallel Execution:** Yes - 3 independent task groups
 
 ---
 
-## Problem Statement
+## Audit Methodology
 
-After auditing the codebase against the UI & Styling Best Practices Guide, the following violations were identified:
+Searched for violations using:
+```bash
+# Hardcoded Tailwind color classes NOT in theme
+grep -rn "amber-|purple-|pink-|orange-|cyan-|lime-" src --include="*.tsx" | grep -v "stories.tsx"
 
-### Summary of Violations
+# Touch target overrides
+grep -rn "size-[0-9]" src/components/ui --include="*.tsx"
 
-| Category | Count | Severity | Location |
-|----------|-------|----------|----------|
-| Hardcoded Tailwind color classes | 27 | Medium | Storybook files + 2 production files |
-| Hardcoded hex colors | 60+ | Low | Email templates (acceptable) + color-types.ts |
-| Missing `aria-hidden` on decorative icons | ~50 | Medium | Various components |
-| Touch targets below 44px | 0 | N/A | **COMPLIANT** - Button size="icon" = 48px (size-12) |
-| Missing `sr-only` labels on icon buttons | ~5 | Medium | Some icon buttons |
+# Icons missing aria-hidden in buttons with labels
+# Manual review of icon-containing buttons
+```
 
 ---
 
-## What's Already Compliant
+## What's Actually Compliant (Verified)
+
+### Theme-Defined Color Variables
+These classes ARE in the design system (`src/index.css` lines 563-583):
+
+| Class Pattern | Definition | Status |
+|---------------|------------|--------|
+| `brand-100` to `brand-800` | Lines 576-583 | ✅ COMPLIANT |
+| `neutral-50` to `neutral-950` | Lines 563-573 | ✅ COMPLIANT |
+
+**Files using these correctly (NOT violations):**
+- `src/atomic-crm/opportunities/OpportunityRowListView.tsx` - `text-brand-600`, `text-brand-700`
+- `src/atomic-crm/opportunities/WorkflowManagementSection.tsx` - `hover:bg-brand-100`
+- `src/components/supabase/layout.tsx` - `bg-neutral-800`
+- `src/components/admin/login-page.tsx` - `bg-neutral-800`
 
 ### Button Touch Targets
-The `button.constants.ts` correctly defines touch-friendly sizes:
-```typescript
-size: {
-  default: "h-12 px-6 py-2 has-[>svg]:px-4",  // 48px height
-  sm: "h-12 rounded-md gap-1.5 px-4 has-[>svg]:px-3",  // 48px height
-  lg: "h-12 rounded-md px-8 has-[>svg]:px-6",  // 48px height
-  icon: "size-12",  // 48x48px - EXCEEDS 44px minimum
-}
-```
+Default `size="icon"` in `button.constants.ts` is `size-12` (48px) - **EXCEEDS 44px minimum**.
 
 ### CVA Patterns
-CVA is used correctly with:
-- Proper `defaultVariants` configuration
-- `compoundVariants` where needed
-- Separation of variants into `.constants.ts` files for Fast Refresh
+Correctly using `defaultVariants`, `compoundVariants`, `.constants.ts` separation.
 
-### tailwind-merge Usage
-The `cn()` utility is correctly implemented:
-```typescript
-// src/lib/utils.ts
-import { clsx, type ClassValue } from "clsx"
-import { twMerge } from "tailwind-merge"
-
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs))
-}
-```
-
-### sr-only Labels
-Good usage in:
-- `src/components/ui/dialog.tsx` - Close button
-- `src/components/ui/sheet.tsx` - Close button
-- `src/components/ui/pagination.tsx` - More pages
-- `src/components/ui/breadcrumb.tsx` - More items
-- Many skeleton loaders
+### tailwind-merge
+`cn()` utility correctly implemented in `src/lib/utils.ts`.
 
 ---
 
-## Violations Requiring Fixes
+## ACTUAL Violations Requiring Fixes
 
-### Group 1: Production Code Color Violations (CRITICAL)
+### Group 1: Production Color Violations
 
-**File:** `src/components/admin/simple-form-iterator.tsx`
-**Lines:** 417, 444
-**Issue:** Using `text-red-500` instead of semantic `text-destructive`
+#### File: `src/atomic-crm/organizations/PrincipalChangeWarning.tsx`
+**Line:** 91
+**Issue:** Using `amber-500` which is NOT in theme
 
 ```tsx
-// ❌ CURRENT (Line 417)
-<Trash className="h-5 w-5 text-red-500" />
+// ❌ CURRENT
+<div className="bg-amber-500/10 border border-amber-500/20 rounded-md p-3">
+
+// ✅ FIX - Use semantic warning colors
+<div className="bg-warning/10 border border-warning/20 rounded-md p-3">
+```
+
+---
+
+### Group 2: Storybook Color Violations
+
+#### File: `src/components/ui/alert.stories.tsx`
+**Lines:** 329-331
+**Issue:** Using `purple-*` and `pink-*` which are NOT in theme
+
+```tsx
+// ❌ CURRENT
+<Alert className="bg-gradient-to-r from-purple-50 to-pink-50 border-purple-200">
+  <AlertTitle className="text-purple-900">Special Offer</AlertTitle>
+  <AlertDescription className="text-purple-700">
+
+// ✅ FIX - Use semantic accent colors
+<Alert className="bg-gradient-to-r from-accent/20 to-accent/10 border-accent/30">
+  <AlertTitle className="text-accent-foreground">Special Offer</AlertTitle>
+  <AlertDescription className="text-muted-foreground">
+```
+
+---
+
+### Group 3: Touch Target Violations
+
+#### File: `src/components/ui/sidebar.tsx`
+**Line:** 237
+**Issue:** `size-7` (28px) is BELOW 44px WCAG minimum for touch targets
+
+```tsx
+// ❌ CURRENT
+<Button
+  data-sidebar="trigger"
+  variant="ghost"
+  size="icon"
+  className={cn("size-7", className)}  // 28px < 44px
+
+// ✅ FIX - Minimum 44px touch target
+<Button
+  data-sidebar="trigger"
+  variant="ghost"
+  size="icon"
+  className={cn("size-11", className)}  // 44px minimum
+```
+
+**Note:** This may affect sidebar layout. Visual verification required.
+
+---
+
+### Group 4: aria-hidden Gaps
+
+#### File: `src/components/NotificationBell.tsx`
+**Line:** 39
+**Issue:** Bell icon in button with aria-label should have aria-hidden
+
+```tsx
+// ❌ CURRENT
+<Button aria-label={ariaLabel} ...>
+  <Bell className="h-5 w-5" />
 
 // ✅ FIX
-<Trash className="h-5 w-5 text-destructive" aria-hidden="true" />
+<Button aria-label={ariaLabel} ...>
+  <Bell className="h-5 w-5" aria-hidden="true" />
 ```
 
+#### File: `src/atomic-crm/filters/FilterChip.tsx`
+**Line:** 30
+**Issue:** X icon in button with aria-label should have aria-hidden
+
 ```tsx
-// ❌ CURRENT (Line 444)
-<XCircle className="h-5 w-5 text-red-500" />
+// ❌ CURRENT
+<Button aria-label={`Remove ${label} filter`} ...>
+  <X className="h-4 w-4" />
 
 // ✅ FIX
-<XCircle className="h-5 w-5 text-destructive" aria-hidden="true" />
+<Button aria-label={`Remove ${label} filter`} ...>
+  <X className="h-4 w-4" aria-hidden="true" />
 ```
 
----
-
-### Group 2: Storybook Color Violations (LOW PRIORITY)
-
-These are in Storybook files and don't affect production, but should be fixed for consistency:
-
-**Files:**
-- `src/components/ui/progress.stories.tsx` (lines 288, 296)
-- `src/components/ui/avatar.stories.tsx` (lines 119, 137, 146, 166-176)
-- `src/components/ui/sonner.stories.tsx` (lines 41, 74, 158, 167)
-- `src/components/ui/select.stories.tsx` (lines 284, 296, 302)
-- `src/components/ui/dialog.stories.tsx` (lines 323, 325)
-- `src/components/ui/alert.stories.tsx` (lines 64, 232, 237, 352, 366)
-- `src/components/ui/tooltip.stories.tsx` (lines 408, 426, 435)
-
-**Pattern for fixes:**
-```tsx
-// ❌ WRONG
-className="bg-green-500"
-className="bg-red-500"
-className="bg-gray-500"
-className="text-green-600"
-className="text-red-500"
-
-// ✅ CORRECT
-className="bg-success"
-className="bg-destructive"
-className="bg-muted"
-className="text-success"
-className="text-destructive"
-```
-
----
-
-### Group 3: Icon Accessibility Improvements (MEDIUM)
-
-Many icons in interactive elements are missing `aria-hidden="true"`. Icons inside buttons with text labels should be decorative.
-
-**Pattern to apply across codebase:**
+#### File: `src/components/ResourceErrorBoundary.tsx`
+**Lines:** 99, 114, 118
+**Issue:** Icons next to text labels should have aria-hidden
 
 ```tsx
-// ❌ WRONG - Icon without aria-hidden in button with visible text
-<Button>
-  <Plus className="h-4 w-4 mr-2" />
-  Add Item
-</Button>
+// ❌ CURRENT (Line 99 - decorative icon)
+<AlertTriangle className="h-6 w-6 text-destructive" />
 
-// ✅ CORRECT - Icon marked as decorative
-<Button>
-  <Plus className="h-4 w-4 mr-2" aria-hidden="true" />
-  Add Item
-</Button>
+// ✅ FIX
+<AlertTriangle className="h-6 w-6 text-destructive" aria-hidden="true" />
+
+// ❌ CURRENT (Lines 114, 118 - icons with text labels)
+<RefreshCw className="h-4 w-4" />
+Try Again
+...
+<Home className="h-4 w-4" />
+Dashboard
+
+// ✅ FIX
+<RefreshCw className="h-4 w-4" aria-hidden="true" />
+Try Again
+...
+<Home className="h-4 w-4" aria-hidden="true" />
+Dashboard
 ```
-
-**For icon-only buttons:**
-```tsx
-// ❌ WRONG - No accessible name
-<Button size="icon">
-  <Settings className="h-5 w-5" />
-</Button>
-
-// ✅ CORRECT - With sr-only label
-<Button size="icon">
-  <Settings className="h-5 w-5" aria-hidden="true" />
-  <span className="sr-only">Settings</span>
-</Button>
-
-// ✅ ALSO CORRECT - With aria-label on button
-<Button size="icon" aria-label="Settings">
-  <Settings className="h-5 w-5" aria-hidden="true" />
-</Button>
-```
-
----
-
-### Group 4: Email Template Colors (ACCEPTABLE)
-
-**Files:**
-- `src/emails/daily-digest.generator.ts`
-- `src/emails/daily-digest.types.ts`
-- `supabase/functions/digest-opt-out/index.ts`
-
-**Verdict:** These hex colors are **ACCEPTABLE** because:
-1. Email templates don't support CSS variables
-2. They must use inline styles with literal values
-3. The colors are defined in a centralized `EMAIL_COLORS` constant
-
-**No action required** - Document as intentional exception.
-
----
-
-### Group 5: Color Types Mapping (ACCEPTABLE)
-
-**File:** `src/lib/color-types.ts`
-
-**Verdict:** These hex colors are **ACCEPTABLE** because:
-1. They serve as fallbacks for legacy data
-2. The file maps hex → semantic color names
-3. Used for data migration/compatibility
-
-**No action required** - Document as intentional exception.
 
 ---
 
 ## Implementation Tasks
 
-### Task 1: Fix Production Color Violations
-**File:** `src/components/admin/simple-form-iterator.tsx`
-**Dependencies:** None
-**Parallel:** Yes
+### Task 1: Fix Production Color Violation
+**File:** `src/atomic-crm/organizations/PrincipalChangeWarning.tsx`
+**Change:** `amber-500` → `warning`
 
 ```bash
-# Verification command
-grep -n "text-red-500" src/components/admin/simple-form-iterator.tsx
-# Expected before: 2 matches
-# Expected after: 0 matches
+# Verify
+grep -n "amber-" src/atomic-crm/organizations/PrincipalChangeWarning.tsx
 ```
 
-**Changes:**
-1. Line 417: Replace `text-red-500` with `text-destructive`
-2. Line 444: Replace `text-red-500` with `text-destructive`
-3. Add `aria-hidden="true"` to both icons
-
 ---
 
-### Task 2: Fix Storybook Color Violations (Optional)
-**Files:** 7 Storybook files
-**Dependencies:** None
-**Parallel:** Yes (can run simultaneously with Task 1)
+### Task 2: Fix Storybook Color Violation
+**File:** `src/components/ui/alert.stories.tsx`
+**Change:** `purple-*`, `pink-*` → semantic colors
 
-**Constitution Checklist:**
-- [ ] Using semantic color tokens (not color-### classes)
-- [ ] Icons have aria-hidden when decorative
-
-**Files to update:**
-1. `src/components/ui/progress.stories.tsx`
-2. `src/components/ui/avatar.stories.tsx`
-3. `src/components/ui/sonner.stories.tsx`
-4. `src/components/ui/select.stories.tsx`
-5. `src/components/ui/dialog.stories.tsx`
-6. `src/components/ui/alert.stories.tsx`
-7. `src/components/ui/tooltip.stories.tsx`
-
----
-
-### Task 3: Add aria-hidden to Decorative Icons
-**Files:** Multiple across codebase
-**Dependencies:** None
-**Parallel:** Yes
-
-**Search command to find candidates:**
 ```bash
-# Find icons in buttons without aria-hidden
-grep -rn "className=\"h-[0-9] w-[0-9]\"" src --include="*.tsx" | grep -v "aria-hidden"
+# Verify
+grep -n "purple-\|pink-" src/components/ui/alert.stories.tsx
 ```
-
-**Priority files (production code):**
-1. `src/atomic-crm/filters/FilterChip.tsx`
-2. `src/atomic-crm/activities/ActivityListFilter.tsx`
-3. `src/atomic-crm/settings/SettingsLayout.tsx`
-4. `src/atomic-crm/components/SampleStatusBadge.tsx`
 
 ---
 
-### Task 4: Document Intentional Exceptions
-**File:** Create `docs/decisions/adr-ui-color-exceptions.md`
-**Dependencies:** None
-**Parallel:** Yes
+### Task 3: Fix Touch Target Violation
+**File:** `src/components/ui/sidebar.tsx`
+**Change:** `size-7` → `size-11`
 
-Document that email templates and color-types.ts are intentional exceptions.
+```bash
+# Verify
+grep -n "size-7" src/components/ui/sidebar.tsx
+```
+
+**⚠️ VISUAL VERIFICATION REQUIRED** - May affect sidebar layout.
+
+---
+
+### Task 4: Fix aria-hidden Gaps
+**Files:**
+1. `src/components/NotificationBell.tsx` (line 39)
+2. `src/atomic-crm/filters/FilterChip.tsx` (line 30)
+3. `src/components/ResourceErrorBoundary.tsx` (lines 99, 114, 118)
 
 ---
 
 ## Verification Commands
 
-### Pre-Implementation Checks
+### Pre-Implementation
 ```bash
-# Count current violations
-echo "=== Production color violations ==="
-grep -rn "text-red-500\|text-green-500\|text-gray-500\|bg-red-500\|bg-green-500\|bg-gray-500" src --include="*.tsx" | grep -v "stories.tsx" | wc -l
+# Count actual violations
+echo "=== amber/purple/pink violations ==="
+grep -rn "amber-\|purple-\|pink-" src --include="*.tsx" | wc -l
 
-echo "=== Storybook color violations ==="
-grep -rn "text-red-|text-green-|text-gray-|text-blue-|bg-red-|bg-green-|bg-gray-|bg-blue-" src --include="*.stories.tsx" | wc -l
+echo "=== Touch target violations ==="
+grep -rn "size-[0-8]" src/components/ui/sidebar.tsx
+
+echo "=== aria-hidden candidates ==="
+grep -rn "className=\"h-[0-9] w-[0-9]\"" src/components/NotificationBell.tsx src/atomic-crm/filters/FilterChip.tsx src/components/ResourceErrorBoundary.tsx
 ```
 
-### Post-Implementation Checks
+### Post-Implementation
 ```bash
-# Verify production code is clean
-grep -rn "text-red-500\|text-green-500\|text-gray-500\|bg-red-500\|bg-green-500\|bg-gray-500" src --include="*.tsx" | grep -v "stories.tsx"
-# Expected: 0 matches
+# Verify fixes
+npm run build  # Must exit 0
+npx tsc --noEmit  # Must show 0 errors
 
-# Run ESLint (has semantic color rule)
-npm run lint
-
-# Build to verify no TypeScript errors
-npm run build
+# Visual verification for sidebar
+npm run storybook  # Check SidebarTrigger component
 ```
+
+---
+
+## Documentation
+
+### ADR Location
+Create: `docs/decisions/adr-ui-color-exceptions.md`
+
+**Prerequisite:** Create `docs/decisions/` directory if it doesn't exist.
+
+### Acceptable Exceptions to Document
+1. **Email templates** - Require inline hex for email client compatibility
+2. **Color types mapping** (`src/lib/color-types.ts`) - Legacy data migration
+3. **brand-* and neutral-* classes** - ARE in theme, NOT violations
 
 ---
 
@@ -293,76 +263,44 @@ npm run build
 
 | Risk | Likelihood | Impact | Mitigation |
 |------|------------|--------|------------|
-| Breaking visual design | Low | Medium | Colors are semantically equivalent |
-| Build failures | Low | Low | Only changing class names |
-| Accessibility regression | Very Low | Low | Adding aria-hidden improves accessibility |
+| Sidebar layout breaks from touch target fix | Medium | Medium | Visual verification in Storybook |
+| Build failures | Low | Low | Run `npm run build` |
+| Missing warning semantic color | Low | Medium | Verify `--warning` exists in theme |
 
 ---
 
-## Task Dependencies Graph
+## Task Dependencies
 
 ```
 ┌─────────────────┐     ┌─────────────────┐
 │   Task 1        │     │   Task 2        │
-│ Production      │     │ Storybook       │
-│ Color Fixes     │     │ Color Fixes     │
+│ PrincipalChange │     │ Storybook       │
+│ Warning.tsx     │     │ alert.stories   │
 └────────┬────────┘     └────────┬────────┘
          │                       │
-         │     ┌─────────────────┤
-         │     │                 │
-         v     v                 v
+         │                       │
+         v                       v
 ┌─────────────────┐     ┌─────────────────┐
 │   Task 3        │     │   Task 4        │
-│ aria-hidden     │     │ Documentation   │
-│ Improvements    │     │ ADR             │
+│ Sidebar touch   │     │ aria-hidden     │
+│ target          │     │ (3 files)       │
 └─────────────────┘     └─────────────────┘
 
-All tasks can run in parallel (no dependencies)
+Tasks 1, 2, 4 can run in parallel.
+Task 3 requires visual verification.
 ```
 
 ---
 
-## Recommended Execution Order
+## Summary of ACTUAL Changes Needed
 
-**If sequential:**
-1. Task 1 (Production) - Critical, 5 minutes
-2. Task 3 (aria-hidden) - Important, 15 minutes
-3. Task 2 (Storybook) - Nice-to-have, 20 minutes
-4. Task 4 (Documentation) - 5 minutes
+| File | Line(s) | Issue | Fix |
+|------|---------|-------|-----|
+| `PrincipalChangeWarning.tsx` | 91 | `amber-500` | `warning` |
+| `alert.stories.tsx` | 329-331 | `purple-*`, `pink-*` | Semantic |
+| `sidebar.tsx` | 237 | `size-7` (28px) | `size-11` (44px) |
+| `NotificationBell.tsx` | 39 | Missing aria-hidden | Add |
+| `FilterChip.tsx` | 30 | Missing aria-hidden | Add |
+| `ResourceErrorBoundary.tsx` | 99, 114, 118 | Missing aria-hidden | Add |
 
-**If parallel:**
-- All 4 tasks can be executed simultaneously by separate agents
-
----
-
-## Constitution Compliance Checklist
-
-- [x] **NO OVER-ENGINEERING** - Simple string replacements only
-- [x] **SEMANTIC COLORS** - Using design system tokens
-- [x] **ACCESSIBILITY** - Adding proper ARIA attributes
-- [x] **BOY SCOUT RULE** - Fixing issues in files being edited
-- [x] **FAIL FAST** - No error handling changes
-- [x] **SINGLE SOURCE OF TRUTH** - Colors defined in CSS variables
-
----
-
-## Approval Required
-
-**Reviewer:** User
-**Scope:**
-- 1 production file (REQUIRED)
-- 7 storybook files (OPTIONAL)
-- Multiple icon accessibility improvements (RECOMMENDED)
-- 1 ADR document (RECOMMENDED)
-
-**Estimated Time:** 30-45 minutes total
-
----
-
-## Post-Implementation
-
-After all fixes:
-1. Run `npm run lint` - Verify ESLint passes
-2. Run `npm run build` - Verify build succeeds
-3. Run `npm run test` - Verify tests pass
-4. Visual review in Storybook - Verify colors look correct
+**Total: 6 files, ~10 line changes**
