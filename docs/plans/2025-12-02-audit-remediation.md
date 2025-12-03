@@ -498,14 +498,35 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 };
 ```
 
-**Step 3: Add h1 to list pages that lack them (separate sub-task)**
+**Step 3: Add h1 to list pages that lack them**
 
-Check if list pages need visible h1s. If a list page doesn't have an h1, add one to the list header:
+The following list pages need an h1 added to their headers. Check each file and add if missing:
 
-```typescript
-// Example for ContactList if missing h1:
-<h1 className="text-2xl font-bold">Contacts</h1>
+| File | h1 Text to Add |
+|------|----------------|
+| `src/atomic-crm/contacts/ContactList.tsx` | "Contacts" |
+| `src/atomic-crm/organizations/OrganizationList.tsx` | "Organizations" |
+| `src/atomic-crm/opportunities/OpportunityList.tsx` | "Opportunities" |
+| `src/atomic-crm/activities/ActivityList.tsx` | "Activities" |
+| `src/atomic-crm/products/ProductList.tsx` | "Products" |
+| `src/atomic-crm/tasks/TaskList.tsx` | "Tasks" |
+
+**Verification command:**
+```bash
+# Check which list files are missing h1
+for f in src/atomic-crm/*/List.tsx src/atomic-crm/*/*List.tsx; do
+  if [ -f "$f" ] && ! grep -q "<h1" "$f"; then
+    echo "Missing h1: $f"
+  fi
+done
 ```
+
+**Pattern to add** (at top of list component, before datagrid):
+```typescript
+<h1 className="text-2xl font-bold mb-4">Contacts</h1>
+```
+
+**Note:** Only add h1 to files that are missing it. Some pages already have visible h1s.
 
 **Step 4: Run E2E test**
 
