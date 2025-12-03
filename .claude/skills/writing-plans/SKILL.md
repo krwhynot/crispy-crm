@@ -103,11 +103,40 @@ Does this look correct? Any adjustments before I write the plan?
 | `mcp__zen__chat` | Simple plans, quick sanity check |
 | `mcp__zen__debug` | Plans involving bug fixes |
 
-### Review → Revise Loop
+### Review → Revise Loop (Until Clean)
 
 ```
-Plan Written → Zen Review → Issues? → Revise → Re-review → Ready
+┌─────────────────────────────────────────┐
+│           ZEN REVIEW LOOP               │
+│                                         │
+│  Plan → Review → Issues? ──┐            │
+│                   │        │            │
+│                  YES       NO           │
+│                   │        │            │
+│                   ↓        ↓            │
+│              Revise    ✅ PASSED        │
+│                │       Ready to         │
+│                │       /execute-plan    │
+│                │                        │
+│                └────→ Loop back         │
+└─────────────────────────────────────────┘
 ```
+
+### Exit Criteria (ALL must be true)
+
+| Criteria | Threshold |
+|----------|-----------|
+| Quality Score | 8+ / 10 |
+| Critical Issues | 0 |
+| High Issues | 0 |
+| Recommendation | "Ready to execute" |
+
+### Iteration Limits
+
+| Limit | Action |
+|-------|--------|
+| 3 iterations | Ask user: continue, accept, or rethink? |
+| 5 iterations | Hard stop - plan needs fundamental rethinking |
 
 **Output from Zen should include:**
 - Issues found (prioritized)

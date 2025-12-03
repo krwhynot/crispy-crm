@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useCreate, useNotify, useRefresh, useGetIdentity } from "react-admin";
 import { Loader2 } from "lucide-react";
-import { createOpportunitySchema } from "../../validation/opportunities";
+import { quickCreateOpportunitySchema } from "../../validation/opportunities";
 import type { OpportunityStageValue } from "../../types";
 
 interface QuickAddOpportunityProps {
@@ -25,22 +25,26 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
     }
 
     try {
-      const validatedData = createOpportunitySchema.parse({
+      // Use minimal quick-create schema (industry standard: HubSpot/Salesforce pattern)
+      // Only name + stage required, other fields have sensible defaults
+      const validatedData = quickCreateOpportunitySchema.parse({
         name: name.trim(),
         stage,
-        status: "active",
         // Set current user as owner - ensures opportunity shows in "My Opportunities"
         opportunity_owner_id: identity?.id,
         account_manager_id: identity?.id,
       });
 
       await create("opportunities", { data: validatedData });
-      notify("Opportunity created", { type: "success" });
+      notify("Opportunity created! Add details via the card menu.", { type: "success" });
       setIsOpen(false);
       setName("");
       refresh();
-    } catch {
-      notify("Error creating opportunity", { type: "error" });
+    } catch (error) {
+      // Fail-fast: show actual validation error for debugging
+      const message = error instanceof Error ? error.message : "Error creating opportunity";
+      notify(message, { type: "error" });
+      console.error("QuickAddOpportunity validation error:", error);
     }
   };
 
