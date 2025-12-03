@@ -53,17 +53,20 @@ The following decisions were made based on code review feedback:
 | 5    | None       | 1, 2, 3, 4, 6, 7    |
 | 6    | None       | 1, 2, 3, 4, 5, 7    |
 | 7    | None       | 1, 2, 3, 4, 5, 6    |
-| 8    | None       | 9, 10, 11           |
-| 9    | None       | 8, 10, 11           |
-| 10   | None       | 8, 9, 11            |
-| 11   | None       | 8, 9, 10            |
+| 8    | None       | 9, 10, 11, 11a, 11b, 11c |
+| 9    | None       | 8, 10, 11, 11a, 11b, 11c |
+| 10   | None       | 8, 9, 11, 11a, 11b, 11c |
+| 11   | None       | 8, 9, 10, 11a, 11b, 11c |
+| 11a  | None       | 8, 9, 10, 11, 11b, 11c |
+| 11b  | None       | 8, 9, 10, 11, 11a, 11c |
+| 11c  | None       | 8, 9, 10, 11, 11a, 11b |
 | 12   | None       | 13                  |
 | 13   | None       | 12                  |
 | 14   | All above  | None                |
 
 **Parallel Groups:**
 - **Group A (Quick Wins):** Tasks 1-7 - All independent
-- **Group B (Design System):** Tasks 8-11 - All independent
+- **Group B (Design System):** Tasks 8-11c - All independent
 - **Group C (Architecture):** Tasks 12-13 - Independent of each other
 - **Group D (Verification):** Task 14 - Depends on all above
 
@@ -85,6 +88,12 @@ The following decisions were made based on code review feedback:
 **Files:**
 - Modify: `src/components/admin/refresh-button.tsx` (line 14)
 - Test: `src/components/admin/__tests__/refresh-button.test.tsx` (create)
+
+**Current State (verified):**
+```typescript
+// Line 14 - missing aria-label
+<Button onClick={handleRefresh} variant="ghost" size="icon" className="hidden sm:inline-flex">
+```
 
 **Step 1: Write the failing test**
 
@@ -164,11 +173,22 @@ git commit -m "fix(a11y): add aria-label to RefreshButton for screen readers"
 **Files:**
 - Modify: `src/atomic-crm/products/ProductListFilter.tsx` (lines 27 AND 43)
 
-**Step 1: Search for ALL deprecated cacheTime occurrences**
+**Current State (verified via grep):**
+```
+src/atomic-crm/products/ProductListFilter.tsx:27:      cacheTime: 15 * 60 * 1000,
+src/atomic-crm/products/ProductListFilter.tsx:43:      cacheTime: 15 * 60 * 1000,
+```
+
+**NOTE:** `cacheTimestamp` in `authProvider.ts` is a DIFFERENT variable (internal cache tracking) - do NOT modify.
+
+**Step 1: Verify ONLY ProductListFilter needs changes**
 
 ```bash
-grep -rn "cacheTime" src/
+grep -rn "cacheTime:" src/
 ```
+
+Expected output should show ONLY two lines in ProductListFilter.tsx (27 and 43).
+The `cacheTimestamp` in authProvider.ts is a different variable for internal cache tracking.
 
 **Step 2: Fix BOTH occurrences (preserve existing 15-minute duration)**
 
@@ -323,9 +343,21 @@ git commit -m "fix(a11y): add aria-label to column search input"
 
 **Files:**
 - Modify: `src/components/admin/form/FormSection.tsx` (line 15)
-- Test: Already exists at `src/components/admin/form/__tests__/FormSection.test.tsx`
+- Test: Check if test exists at `src/components/admin/form/__tests__/FormSection.test.tsx`
 
-**Step 1: Update the test to verify proper heading level**
+**Current State (verified):**
+```typescript
+// Line 15
+<h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+```
+
+**Step 1: Check if test file exists**
+
+```bash
+ls -la src/components/admin/form/__tests__/FormSection.test.tsx 2>/dev/null || echo "Test file does not exist"
+```
+
+**Step 2a: If test exists, update it to verify proper heading level**
 
 Add to `src/components/admin/form/__tests__/FormSection.test.tsx`:
 
@@ -338,7 +370,40 @@ it("renders section title as h2 for proper heading hierarchy", () => {
 });
 ```
 
-**Step 2: Implement fix**
+**Step 2b: If test does NOT exist, create it**
+
+Create `src/components/admin/form/__tests__/FormSection.test.tsx`:
+
+```typescript
+import { describe, it, expect } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { FormSection } from "../FormSection";
+
+describe("FormSection", () => {
+  it("renders section title as h2 for proper heading hierarchy", () => {
+    render(<FormSection title="Test Section">Content</FormSection>);
+
+    const heading = screen.getByRole("heading", { level: 2, name: /test section/i });
+    expect(heading).toBeInTheDocument();
+  });
+
+  it("renders children content", () => {
+    render(<FormSection title="Test">Child content here</FormSection>);
+    expect(screen.getByText("Child content here")).toBeInTheDocument();
+  });
+
+  it("renders optional description", () => {
+    render(
+      <FormSection title="Test" description="Section description">
+        Content
+      </FormSection>
+    );
+    expect(screen.getByText("Section description")).toBeInTheDocument();
+  });
+});
+```
+
+**Step 3: Implement fix**
 
 Edit `src/components/admin/form/FormSection.tsx` line 15:
 
@@ -354,13 +419,13 @@ Edit `src/components/admin/form/FormSection.tsx` line 15:
 </h2>
 ```
 
-**Step 3: Run tests**
+**Step 4: Run tests**
 
 ```bash
 npm test -- src/components/admin/form/__tests__/FormSection.test.tsx
 ```
 
-**Step 4: Commit**
+**Step 5: Commit**
 
 ```bash
 git add src/components/admin/form/FormSection.tsx src/components/admin/form/__tests__/FormSection.test.tsx
@@ -384,20 +449,33 @@ git commit -m "fix(a11y): change FormSection h3 to h2 for proper heading hierarc
 - Modify: `src/atomic-crm/layout/Layout.tsx`
 - Test: `tests/e2e/accessibility/skip-link.spec.ts` (create)
 
+**Current State (verified):**
+```typescript
+// Layout.tsx currently has NO skip link
+// main element exists with id="main-content" but no tabIndex
+```
+
 **IMPORTANT DESIGN DECISIONS:**
 
 1. **Skip link requires JavaScript focus()** - Anchor links (`#main-content`) navigate but don't move keyboard focus. We must call `focus()` on the target element.
 
 2. **Do NOT add hidden h1 in Layout** - The codebase already has visible h1s in:
-   - `HealthDashboard.tsx` - "Health Dashboard"
-   - `WhatsNew.tsx` - "What's New in Atomic CRM"
-   - `SettingsLayout.tsx` - "Settings"
-   - `ReportLayout.tsx` - Report titles
-   - `DashboardHeader.tsx` - Dashboard title
+   - `src/atomic-crm/dashboard/v3/components/DashboardHeader.tsx`
+   - `src/atomic-crm/reports/components/ReportPageShell.tsx`
+   - `src/atomic-crm/settings/SettingsLayout.tsx`
+   - `src/atomic-crm/admin/HealthDashboard.tsx`
+   - `src/atomic-crm/pages/WhatsNew.tsx`
+   - `src/atomic-crm/reports/ReportLayout.tsx`
 
-   Adding a second hidden h1 would violate "exactly one h1 per page". Instead, ensure list pages (contacts, organizations, etc.) have their own h1 via their components.
+   Adding a second hidden h1 would violate "exactly one h1 per page". Instead, ensure list pages have their own h1 via their components.
 
-**Step 1: Write E2E test**
+**Step 1: Create E2E test directory if it doesn't exist**
+
+```bash
+mkdir -p tests/e2e/accessibility
+```
+
+**Step 2: Write E2E test**
 
 Create `tests/e2e/accessibility/skip-link.spec.ts`:
 
@@ -438,7 +516,7 @@ test.describe("Accessibility: Skip Link", () => {
 });
 ```
 
-**Step 2: Implement fix with focus management**
+**Step 3: Implement fix with focus management**
 
 Edit `src/atomic-crm/layout/Layout.tsx`:
 
@@ -451,6 +529,14 @@ import { Suspense, useCallback } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Header from "./Header";
 
+/**
+ * Root layout component for the CRM application.
+ *
+ * Keyboard shortcuts are now handled at the component level:
+ * - List views: useListKeyboardNavigation hook (Arrow keys, Enter, Cmd+N, Cmd+K)
+ * - Slide-overs: useSlideOverState hook (ESC to close)
+ * - Toolbar: KeyboardShortcutHints component (tooltip showing available shortcuts)
+ */
 export const Layout = ({ children }: { children: ReactNode }) => {
   // Handle skip link click - must programmatically focus the target
   // because anchor navigation doesn't move keyboard focus
@@ -498,43 +584,27 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 };
 ```
 
-**Step 3: Add h1 to list pages that lack them**
+**Step 4: Verify list pages have h1 elements**
 
-The following list pages need an h1 added to their headers. Check each file and add if missing:
+Run this verification command to check which list files need h1s:
 
-| File | h1 Text to Add |
-|------|----------------|
-| `src/atomic-crm/contacts/ContactList.tsx` | "Contacts" |
-| `src/atomic-crm/organizations/OrganizationList.tsx` | "Organizations" |
-| `src/atomic-crm/opportunities/OpportunityList.tsx` | "Opportunities" |
-| `src/atomic-crm/activities/ActivityList.tsx` | "Activities" |
-| `src/atomic-crm/products/ProductList.tsx` | "Products" |
-| `src/atomic-crm/tasks/TaskList.tsx` | "Tasks" |
-
-**Verification command:**
 ```bash
-# Check which list files are missing h1
-for f in src/atomic-crm/*/List.tsx src/atomic-crm/*/*List.tsx; do
+for f in src/atomic-crm/contacts/ContactList.tsx src/atomic-crm/organizations/OrganizationList.tsx src/atomic-crm/opportunities/OpportunityList.tsx src/atomic-crm/activities/ActivityList.tsx src/atomic-crm/products/ProductList.tsx src/atomic-crm/tasks/TaskList.tsx; do
   if [ -f "$f" ] && ! grep -q "<h1" "$f"; then
     echo "Missing h1: $f"
   fi
 done
 ```
 
-**Pattern to add** (at top of list component, before datagrid):
-```typescript
-<h1 className="text-2xl font-bold mb-4">Contacts</h1>
-```
+**NOTE:** List pages using `StandardListLayout` or similar components may get their h1 from those components. Check StandardListLayout first before adding h1 to individual list files.
 
-**Note:** Only add h1 to files that are missing it. Some pages already have visible h1s.
-
-**Step 4: Run E2E test**
+**Step 5: Run E2E test**
 
 ```bash
 npx playwright test tests/e2e/accessibility/skip-link.spec.ts
 ```
 
-**Step 5: Commit**
+**Step 6: Commit**
 
 ```bash
 git add src/atomic-crm/layout/Layout.tsx tests/e2e/accessibility/skip-link.spec.ts
@@ -559,7 +629,21 @@ git commit -m "fix(a11y): add skip-to-content link with focus management for WCA
 - [x] Not applicable
 
 **Files:**
-- Modify: `src/atomic-crm/contacts/Avatar.tsx` (lines 21-25, 33)
+- Modify: `src/atomic-crm/contacts/Avatar.tsx` (lines 20-25, 33)
+
+**Current State (verified):**
+```typescript
+// Lines 20-25 - uses arbitrary [20px] and [25px] values
+const sizeClass =
+  props.width === 20
+    ? `w-[20px] h-[20px]`      // ❌ arbitrary value
+    : props.width === 25
+      ? "w-[25px] h-[25px]"    // ❌ arbitrary value
+      : "w-10 h-10";
+
+// Line 33 - uses arbitrary text-[10px]
+<AvatarFallback className={size && size < 40 ? "text-[10px]" : "text-sm"}>
+```
 
 **Step 1: Implement fix**
 
@@ -578,6 +662,8 @@ export const Avatar = (props: {
   title?: string;
 }) => {
   const record = useRecordContext<Contact>(props);
+  // If we come from company page, the record is defined (to pass the company as a prop),
+  // but neither of those fields are and this lead to an error when creating contact.
   if (!record?.avatar && !record?.first_name && !record?.last_name) {
     return null;
   }
@@ -594,7 +680,7 @@ export const Avatar = (props: {
         : "w-10 h-10";
 
   // Text size using Tailwind scale
-  // text-[10px] approx = text-xs (12px) is acceptable, or use 2xs if defined
+  // text-xs (12px) is acceptable substitute for text-[10px]
   const textSizeClass = size && size < 40 ? "text-xs" : "text-sm";
 
   const fullName = [record.first_name, record.last_name].filter(Boolean).join(" ");
@@ -617,6 +703,7 @@ export const Avatar = (props: {
 ```bash
 npm run dev
 # Navigate to contacts list, verify avatars render correctly at all sizes
+# Check: Avatar in contact rows (small), Avatar in slide-over (large)
 ```
 
 **Step 3: Commit**
@@ -642,14 +729,36 @@ git commit -m "fix(design): replace arbitrary pixel sizes with Tailwind scale in
 - [x] Not applicable
 
 **Files:**
-- Modify: `src/atomic-crm/admin/HealthDashboard.tsx` (lines 62-66, 102-103, 222-228, 278-294)
+- Modify: `src/atomic-crm/admin/HealthDashboard.tsx` (multiple locations)
 
-**Step 1: Implement fix**
+**Current State (verified):**
+```typescript
+// Lines 62-66 - hardcoded color classes
+const colorClasses = {
+  green: "bg-green-500",
+  yellow: "bg-yellow-500",
+  red: "bg-red-500",
+};
+```
+
+**Step 1: Find all violations**
+
+```bash
+grep -n "bg-green\|bg-yellow\|bg-red\|text-green\|text-red" src/atomic-crm/admin/HealthDashboard.tsx
+```
+
+Expected locations:
+- Lines 62-66: StatusIndicator colorClasses
+- Lines ~102-103: MetricCard trend colors
+- Lines ~222-228: Progress bar colors
+- Lines ~278-294: Alert threshold badges
+
+**Step 2: Implement fixes**
 
 Edit `src/atomic-crm/admin/HealthDashboard.tsx`:
 
+**Fix 1 - StatusIndicator (lines 62-66):**
 ```typescript
-// Line 62-66: StatusIndicator colorClasses
 // BEFORE
 const colorClasses = {
   green: "bg-green-500",
@@ -663,8 +772,10 @@ const colorClasses = {
   yellow: "bg-warning",
   red: "bg-destructive",
 };
+```
 
-// Lines 102-103: MetricCard trend colors
+**Fix 2 - MetricCard trend colors (lines ~102-103):**
+```typescript
 // BEFORE
 {trend === "up" && <TrendingUp className="h-3 w-3 text-green-500" />}
 {trend === "down" && <TrendingUp className="h-3 w-3 text-red-500 rotate-180" />}
@@ -672,8 +783,10 @@ const colorClasses = {
 // AFTER
 {trend === "up" && <TrendingUp className="h-3 w-3 text-success" />}
 {trend === "down" && <TrendingUp className="h-3 w-3 text-destructive rotate-180" />}
+```
 
-// Lines 222-228: Progress bar colors
+**Fix 3 - Progress bar colors (lines ~222-228):**
+```typescript
 // BEFORE
 className={`h-2 ${
   status === "green"
@@ -691,8 +804,10 @@ className={`h-2 ${
       ? "[&>div]:bg-warning"
       : "[&>div]:bg-destructive"
 }`}
+```
 
-// Lines 278-294: Alert threshold badges
+**Fix 4 - Alert threshold badges (lines ~278-294):**
+```typescript
 // BEFORE
 <Badge variant="default" className="bg-green-500">
 <Badge variant="default" className="bg-yellow-500">
@@ -702,29 +817,27 @@ className={`h-2 ${
 <Badge variant="default" className="bg-warning text-warning-foreground">
 ```
 
-**Step 2: Verify colors exist in theme**
+**Step 3: Verify colors exist in theme**
 
-Check `src/index.css` or `tailwind.config.ts` for `--success` and `--warning` CSS variables. If missing, add to CSS variables:
+Check `src/index.css` for `--success` and `--warning` CSS variables:
 
-```css
-/* Add to :root in src/index.css if not present */
---success: oklch(0.65 0.15 145);
---success-foreground: oklch(0.98 0.01 145);
---warning: oklch(0.75 0.15 85);
---warning-foreground: oklch(0.25 0.05 85);
+```bash
+grep -n "success\|warning" src/index.css | head -20
 ```
 
-**Step 3: Visual verification**
+**Verified:** `--success-default` and `--warning-default` exist in src/index.css. The Tailwind utilities `bg-success`, `text-success`, `bg-warning`, `text-warning` are defined in the `@layer utilities` section.
+
+**Step 4: Visual verification**
 
 ```bash
 npm run dev
 # Navigate to /admin/health and verify colors in both light and dark mode
 ```
 
-**Step 4: Commit**
+**Step 5: Commit**
 
 ```bash
-git add src/atomic-crm/admin/HealthDashboard.tsx src/index.css
+git add src/atomic-crm/admin/HealthDashboard.tsx
 git commit -m "fix(design): replace hardcoded colors with semantic tokens in HealthDashboard"
 ```
 
@@ -743,6 +856,16 @@ git commit -m "fix(design): replace hardcoded colors with semantic tokens in Hea
 
 **Files:**
 - Modify: `src/atomic-crm/activities/ActivityList.tsx` (lines 164-168)
+
+**Current State (verified):**
+```typescript
+// Lines 164-168
+const sentimentColors: Record<string, string> = {
+  positive: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200",
+  neutral: "bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200",
+  negative: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+};
+```
 
 **Step 1: Implement fix**
 
@@ -769,6 +892,7 @@ const sentimentColors: Record<string, string> = {
 ```bash
 npm run dev
 # Navigate to /activities and verify sentiment badges in light and dark mode
+# Check: Positive (green), Neutral (gray), Negative (red) sentiment indicators
 ```
 
 **Step 3: Commit**
@@ -821,13 +945,14 @@ grep -n "text-gray\|bg-gray\|text-green\|bg-green\|text-red\|bg-red" src/atomic-
 ```bash
 npm run dev
 # Navigate to /contacts, click Import, verify preview renders correctly
+# Check: Import dialog styling, success/error indicators
 ```
 
 **Step 4: Commit**
 
 ```bash
 git add src/atomic-crm/contacts/ContactImportPreview.tsx
-git commit -m "fix(design): replace 15 hardcoded colors with semantic tokens in ContactImportPreview"
+git commit -m "fix(design): replace hardcoded colors with semantic tokens in ContactImportPreview"
 ```
 
 ---
@@ -878,6 +1003,166 @@ git commit -m "fix(design): replace hardcoded blue theme colors with semantic to
 
 ---
 
+### Task 11a: Fix OrganizationImportDialog Semantic Colors (NEW)
+
+**Depends on:** None - can start immediately
+
+**Note:** This file was discovered during grep but not in original plan.
+
+**Constitution Check:**
+- [x] No retry logic / circuit breakers
+- [x] Not applicable
+- [x] Not applicable
+- [x] Not applicable
+- [x] Not applicable
+
+**Files:**
+- Modify: `src/atomic-crm/organizations/OrganizationImportDialog.tsx`
+
+**Current State (verified via grep):**
+```
+976:                <div className="flex items-center gap-2 text-green-600">
+983:                    <div className="text-2xl font-bold text-green-600">
+989:                    <div className="text-2xl font-bold text-red-600">
+```
+
+**Step 1: Find all violations**
+
+```bash
+grep -n "text-green\|text-red\|bg-green\|bg-red" src/atomic-crm/organizations/OrganizationImportDialog.tsx
+```
+
+**Step 2: Replace with semantic colors**
+
+| Pattern | Replacement |
+|---------|-------------|
+| `text-green-600` | `text-success` |
+| `text-red-600` | `text-destructive` |
+| `bg-green-*` | `bg-success/10` |
+| `bg-red-*` | `bg-destructive/10` |
+
+**Step 3: Visual verification**
+
+```bash
+npm run dev
+# Navigate to /organizations, click Import, verify import results styling
+```
+
+**Step 4: Commit**
+
+```bash
+git add src/atomic-crm/organizations/OrganizationImportDialog.tsx
+git commit -m "fix(design): replace hardcoded colors with semantic tokens in OrganizationImportDialog"
+```
+
+---
+
+### Task 11b: Fix ActivityListFilter Semantic Colors (NEW)
+
+**Depends on:** None - can start immediately
+
+**Note:** This file was discovered during grep but not in original plan.
+
+**Constitution Check:**
+- [x] No retry logic / circuit breakers
+- [x] Not applicable
+- [x] Not applicable
+- [x] Not applicable
+- [x] Not applicable
+
+**Files:**
+- Modify: `src/atomic-crm/activities/ActivityListFilter.tsx`
+
+**Current State (verified via grep):**
+```
+150:              <Badge variant="default" className="text-xs px-1 py-0 bg-green-600">
+```
+
+**Step 1: Find all violations**
+
+```bash
+grep -n "bg-green\|text-green" src/atomic-crm/activities/ActivityListFilter.tsx
+```
+
+**Step 2: Replace with semantic colors**
+
+```typescript
+// BEFORE
+<Badge variant="default" className="text-xs px-1 py-0 bg-green-600">
+
+// AFTER
+<Badge variant="default" className="text-xs px-1 py-0 bg-success text-success-foreground">
+```
+
+**Step 3: Visual verification**
+
+```bash
+npm run dev
+# Navigate to /activities and check filter badge styling
+```
+
+**Step 4: Commit**
+
+```bash
+git add src/atomic-crm/activities/ActivityListFilter.tsx
+git commit -m "fix(design): replace hardcoded green with semantic token in ActivityListFilter"
+```
+
+---
+
+### Task 11c: Fix QuickAddForm Semantic Colors (NEW)
+
+**Depends on:** None - can start immediately
+
+**Note:** This file was discovered during grep but not in original plan.
+
+**Constitution Check:**
+- [x] No retry logic / circuit breakers
+- [x] Not applicable
+- [x] Not applicable
+- [x] Not applicable
+- [x] Not applicable
+
+**Files:**
+- Modify: `src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx`
+
+**Current State (verified via grep):**
+```
+152:      <div className="rounded-lg bg-green-50 p-4 space-y-4">
+```
+
+**Step 1: Find all violations**
+
+```bash
+grep -n "bg-green\|text-green" src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx
+```
+
+**Step 2: Replace with semantic colors**
+
+```typescript
+// BEFORE
+<div className="rounded-lg bg-green-50 p-4 space-y-4">
+
+// AFTER
+<div className="rounded-lg bg-success/10 p-4 space-y-4">
+```
+
+**Step 3: Visual verification**
+
+```bash
+npm run dev
+# Navigate to opportunities quick add and verify styling
+```
+
+**Step 4: Commit**
+
+```bash
+git add src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx
+git commit -m "fix(design): replace hardcoded bg-green-50 with semantic token in QuickAddForm"
+```
+
+---
+
 ## GROUP C: ARCHITECTURE FIXES (15-20 min each)
 
 ### Task 12: Refactor NotificationDropdown Through Data Provider
@@ -893,7 +1178,21 @@ git commit -m "fix(design): replace hardcoded blue theme colors with semantic to
 
 **Files:**
 - Modify: `src/components/NotificationDropdown.tsx`
-- Modify: `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` (if custom method needed)
+
+**Current State (verified):**
+```typescript
+// Line 1 - imports React hooks that will be removed
+import { useEffect, useState, useCallback } from "react";
+
+// Line 12 - DIRECT SUPABASE IMPORT (VIOLATION)
+import { supabase } from "@/atomic-crm/providers/supabase/supabase";
+
+// Lines 41-51 - direct supabase.from() calls
+const { data, error } = await supabase
+  .from("notifications")
+  .select("*")
+  ...
+```
 
 **Step 1: Understand current violation**
 
@@ -906,7 +1205,7 @@ This bypasses the unified data provider.
 
 **Step 2: Implement fix using React Admin hooks**
 
-Edit `src/components/NotificationDropdown.tsx`:
+Replace entire file `src/components/NotificationDropdown.tsx`:
 
 ```typescript
 // NOTE: Removed unused imports (useEffect, useState, useCallback)
@@ -969,7 +1268,7 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
         onSuccess: () => {
           refetch();
         },
-        onError: (error) => {
+        onError: () => {
           notify("Error marking notification as read", { type: "error" });
         },
       }
@@ -1178,7 +1477,14 @@ describe("NotificationDropdown", () => {
 npm test -- src/components/__tests__/NotificationDropdown.test.tsx
 ```
 
-**Step 5: Commit**
+**Step 5: Verify no direct Supabase imports remain**
+
+```bash
+grep -n "from.*supabase" src/components/NotificationDropdown.tsx
+# Should return no results
+```
+
+**Step 6: Commit**
 
 ```bash
 git add src/components/NotificationDropdown.tsx src/components/__tests__/NotificationDropdown.test.tsx
@@ -1205,9 +1511,18 @@ the unified data provider pattern."
 **Files:**
 - Modify: `src/components/NotificationBell.tsx`
 
+**Current State (verified):**
+```typescript
+// Line 4 - DIRECT SUPABASE IMPORT (VIOLATION)
+import { supabase } from "@/atomic-crm/providers/supabase/supabase";
+
+// Lines 16-26 - direct supabase.from() for initial count
+// Lines 35-62 - Supabase real-time subscription (will replace with polling)
+```
+
 **Step 1: Implement fix**
 
-Edit `src/components/NotificationBell.tsx`:
+Replace entire file `src/components/NotificationBell.tsx`:
 
 ```typescript
 import { Bell } from "lucide-react";
@@ -1277,6 +1592,7 @@ export const NotificationBell = () => {
 1. **Single query** - Removed duplicate query that was double-firing every interval
 2. **refetch on open** - Only refetch when dropdown opens (`open && refetch()`)
 3. **Polling at 30s** - Provides near-real-time without Supabase subscriptions
+4. **Removed real-time subscription** - Replaced with polling (acceptable for notifications)
 
 **Note:** Real-time subscriptions removed. For true real-time, consider:
 1. Adding subscription support at the data provider level
@@ -1328,7 +1644,7 @@ npx playwright test
 
 Expected: All tests pass
 
-**Step 3: Run accessibility audit**
+**Step 3: Run accessibility-specific tests**
 
 ```bash
 npx playwright test tests/e2e/accessibility/
@@ -1336,7 +1652,15 @@ npx playwright test tests/e2e/accessibility/
 
 Expected: All accessibility tests pass
 
-**Step 4: Visual verification checklist**
+**Step 4: Run TypeScript type check**
+
+```bash
+npx tsc --noEmit
+```
+
+Expected: No type errors
+
+**Step 5: Visual verification checklist**
 
 - [ ] Navigate to all pages, verify no console errors
 - [ ] Test light mode and dark mode
@@ -1346,8 +1670,12 @@ Expected: All accessibility tests pass
 - [ ] Test NotificationDropdown opens and displays notifications
 - [ ] Verify HealthDashboard colors in both themes
 - [ ] Verify ActivityList sentiment badges
+- [ ] Verify ContactImportPreview styling
+- [ ] Verify OrganizationImportDialog styling
+- [ ] Verify QuickAddForm success styling
+- [ ] Verify WhatsNew page theme colors
 
-**Step 5: Build verification**
+**Step 6: Build verification**
 
 ```bash
 npm run build
@@ -1355,7 +1683,7 @@ npm run build
 
 Expected: Build succeeds with no TypeScript errors
 
-**Step 6: Final commit (if any fixes needed)**
+**Step 7: Final commit (if any fixes needed)**
 
 ```bash
 git add .
@@ -1374,7 +1702,7 @@ git commit -m "fix: address issues found during verification"
 
 **Constitution Pattern Files:**
 - `resources/error-handling.md`: Fail-fast patterns
-- `resources/database-patterns.md`: GRANT + RLS (if RLS verification needed for Task 16)
+- `resources/database-patterns.md`: GRANT + RLS (if RLS verification needed)
 
 **Reference Files:**
 - `src/atomic-crm/contacts/ContactList.tsx`: Pattern for list components
@@ -1382,7 +1710,7 @@ git commit -m "fix: address issues found during verification"
 
 **Design System:**
 - `src/index.css`: CSS variable definitions for semantic colors
-- `tailwind.config.ts`: Tailwind configuration for semantic classes
+- Semantic color utilities: `bg-success`, `text-success`, `bg-warning`, `text-warning`, `bg-destructive`, `text-destructive`
 
 ---
 
@@ -1393,10 +1721,43 @@ git commit -m "fix: address issues found during verification"
 | Skip link | Tab from page load focuses skip link; Enter moves focus to #main-content; focus() called programmatically |
 | Page h1 | Every page has **at least one** h1 (relaxed from "exactly one" - existing visible h1s are valid) |
 | Heading hierarchy | No h3 without preceding h2; axe-core passes |
-| Semantic colors | No text-gray-*, bg-green-*, bg-red-* in changed files; Dark mode correct |
+| Semantic colors | No text-gray-*, bg-green-*, bg-red-*, bg-blue-* in changed files; Dark mode correct |
 | Data provider | NotificationDropdown/Bell use React Admin hooks, not direct Supabase; Single query for NotificationBell |
 | aria-labels | Screen reader announces button purpose; axe-core button-name passes |
 | gcTime rename | No console deprecation warnings; Both occurrences fixed; 15-minute TTL preserved |
+| Avatar sizes | No arbitrary [20px], [25px], [10px] values; Uses Tailwind scale |
+
+---
+
+## Files Modified Summary
+
+### Group A: Quick Wins (7 tasks)
+1. `src/components/admin/refresh-button.tsx` - aria-label
+2. `src/atomic-crm/products/ProductListFilter.tsx` - gcTime rename
+3. `src/main.tsx` - Sentry rate
+4. `src/components/admin/columns-button.tsx` - aria-label
+5. `src/components/admin/form/FormSection.tsx` - h3→h2
+6. `src/atomic-crm/layout/Layout.tsx` - skip link
+7. `src/atomic-crm/contacts/Avatar.tsx` - Tailwind sizes
+
+### Group B: Design System (7 tasks)
+8. `src/atomic-crm/admin/HealthDashboard.tsx` - semantic colors
+9. `src/atomic-crm/activities/ActivityList.tsx` - sentiment colors
+10. `src/atomic-crm/contacts/ContactImportPreview.tsx` - semantic colors
+11. `src/atomic-crm/pages/WhatsNew.tsx` - theme colors
+11a. `src/atomic-crm/organizations/OrganizationImportDialog.tsx` - semantic colors (NEW)
+11b. `src/atomic-crm/activities/ActivityListFilter.tsx` - badge color (NEW)
+11c. `src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx` - bg color (NEW)
+
+### Group C: Architecture (2 tasks)
+12. `src/components/NotificationDropdown.tsx` - data provider
+13. `src/components/NotificationBell.tsx` - data provider
+
+### New Test Files
+- `src/components/admin/__tests__/refresh-button.test.tsx`
+- `src/components/admin/form/__tests__/FormSection.test.tsx` (create or update)
+- `src/components/__tests__/NotificationDropdown.test.tsx`
+- `tests/e2e/accessibility/skip-link.spec.ts`
 
 ---
 

@@ -220,6 +220,41 @@
         ]
       }
     },
+    "dispatching-parallel-agents": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Use when facing 3+ independent tasks, failures, or file changes that can be worked on without shared state - dispatches multiple Claude agents to work concurrently",
+      "promptTriggers": {
+        "keywords": [
+          "parallel",
+          "concurrent",
+          "dispatch agents",
+          "multiple agents",
+          "parallel agents",
+          "independent tasks",
+          "batch fix",
+          "fix all tests",
+          "multiple failures",
+          "multiple bugs",
+          "several failures",
+          "3 tests",
+          "multiple test files",
+          "all failing",
+          "independent problems"
+        ],
+        "intentPatterns": [
+          "(dispatch|run|launch|spawn).*?(agents?|tasks?).*?(parallel|concurrent)",
+          "(parallel|concurrent).*?(agents?|tasks?|work|fix)",
+          "(fix|investigate|implement).*?(all|multiple|several|3\\+?).*?(tests?|files?|bugs?|issues?|features?)",
+          "(multiple|several|3\\+?).*?(independent|unrelated).*?(tasks?|problems?|issues?)",
+          "work.*?on.*?(multiple|several).*?(things?|tasks?|files?).*?(at once|simultaneously|concurrently)",
+          "(tests?|files?).*?failing.*?(independently|separately|unrelated)",
+          "(have|got|there are|seeing).*?(\\d+|multiple|several).*?(tests?|files?).*?failing",
+          "(\\d+).*?(tests?|errors?|failures?).*?(different|separate|various).*?files?"
+        ]
+      }
+    },
     "supabase-crm": {
       "type": "domain",
       "enforcement": "suggest",
