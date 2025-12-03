@@ -53,7 +53,7 @@ export const ActivityListFilter = () => {
             className="w-full justify-between"
             label={
               <span className="flex items-center gap-2">
-                <Package className="h-4 w-4" />
+                <Package className="h-4 w-4" aria-hidden="true" />
                 Samples Only
               </span>
             }
@@ -77,7 +77,7 @@ export const ActivityListFilter = () => {
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">
         {/* Activity Type Filter */}
-        <FilterCategory label="Activity Type" icon={<Tag className="h-4 w-4" />}>
+        <FilterCategory label="Activity Type" icon={<Tag className="h-4 w-4" aria-hidden="true" />}>
           {INTERACTION_TYPE_OPTIONS.map((option) => (
             <ToggleFilterButton
               multiselect
@@ -92,7 +92,7 @@ export const ActivityListFilter = () => {
         {/* Sample Status Filter - Only relevant for sample activities */}
         <FilterCategory
           label="Sample Status"
-          icon={<Package className="h-4 w-4" />}
+          icon={<Package className="h-4 w-4" aria-hidden="true" />}
           defaultExpanded={false}
         >
           {SAMPLE_STATUS_OPTIONS.map((option) => (
@@ -114,7 +114,7 @@ export const ActivityListFilter = () => {
         </FilterCategory>
 
         {/* Activity Date Filter */}
-        <FilterCategory label="Activity Date" icon={<Calendar className="h-4 w-4" />}>
+        <FilterCategory label="Activity Date" icon={<Calendar className="h-4 w-4" aria-hidden="true" />}>
           <ToggleFilterButton
             className="w-full justify-between"
             label="Today"
@@ -142,7 +142,7 @@ export const ActivityListFilter = () => {
         </FilterCategory>
 
         {/* Sentiment Filter */}
-        <FilterCategory label="Sentiment" icon={<Filter className="h-4 w-4" />}>
+        <FilterCategory label="Sentiment" icon={<Filter className="h-4 w-4" aria-hidden="true" />}>
           <ToggleFilterButton
             multiselect
             className="w-full justify-between"
@@ -176,7 +176,7 @@ export const ActivityListFilter = () => {
         </FilterCategory>
 
         {/* Created By Filter */}
-        <FilterCategory icon={<Users className="h-4 w-4" />} label="Created By">
+        <FilterCategory icon={<Users className="h-4 w-4" aria-hidden="true" />} label="Created By">
           <ToggleFilterButton
             className="w-full justify-between"
             label="Me"
