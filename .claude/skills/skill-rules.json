@@ -944,6 +944,90 @@
         ]
       }
     },
+    "supabase-cli": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Comprehensive Supabase CLI reference - prevents common mistakes like using non-existent commands (supabase db execute), incorrect Docker flags (-it in non-TTY), and wrong container names. Covers migrations, Edge Functions, type generation, local development.",
+      "promptTriggers": {
+        "keywords": [
+          "supabase",
+          "npx supabase",
+          "supabase start",
+          "supabase stop",
+          "supabase status",
+          "supabase link",
+          "supabase init",
+          "supabase login",
+          "db push",
+          "db pull",
+          "db reset",
+          "db diff",
+          "migration new",
+          "migration up",
+          "migration list",
+          "gen types",
+          "functions deploy",
+          "functions serve",
+          "functions new",
+          "edge function",
+          "edge functions",
+          "secrets set",
+          "storage ls",
+          "storage cp",
+          "inspect db",
+          "local development",
+          "local stack",
+          "supabase docker",
+          "supabase container",
+          "run sql",
+          "execute sql",
+          "psql",
+          "supabase_db",
+          "config.toml"
+        ],
+        "intentPatterns": [
+          "(run|execute|use).*?supabase.*?(cli|command)",
+          "supabase.*?(start|stop|status|init|link|login)",
+          "(push|pull|reset|diff).*?(database|db|migration)",
+          "(create|new|add).*?(migration|edge function|function)",
+          "(deploy|serve|test).*?(function|edge function)",
+          "(generate|gen).*?types?",
+          "(run|execute).*?sql.*?(supabase|local|docker)",
+          "(docker|container).*?supabase",
+          "supabase.*?docker",
+          "how.*?(supabase|migration|edge function)",
+          "what.*?supabase.*?command",
+          "(local|dev).*?(stack|environment|database)",
+          "config\\.toml"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "supabase/config.toml",
+          "supabase/migrations/**/*.sql",
+          "supabase/functions/**/*.ts",
+          "supabase/seed.sql"
+        ],
+        "contentPatterns": [
+          "supabase",
+          "CREATE TABLE",
+          "CREATE VIEW",
+          "ALTER TABLE",
+          "Deno\\.serve"
+        ]
+      },
+      "antiPatterns": {
+        "description": "Commands that DON'T exist - trigger warning",
+        "patterns": [
+          "supabase db execute",
+          "supabase run",
+          "supabase sql",
+          "supabase query",
+          "docker exec -it.*supabase"
+        ]
+      }
+    },
     "troubleshooting": {
       "type": "domain",
       "enforcement": "contextual",
