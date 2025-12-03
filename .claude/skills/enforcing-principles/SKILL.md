@@ -349,15 +349,25 @@ Starting implementation task?
 │     error-handling-validation.md → Structured logging
 │
 ├─ Adding validation?
-│  └─ validation-patterns.md → Zod at API boundary only
+│  └─ validation-basics.md → Zod at API boundary, core patterns
+│     validation-arrays.md → JSONB arrays, sub-schemas
+│     validation-schemas.md → Create/Update schemas
+│     validation-advanced.md → Custom validators, transform
 │     anti-patterns-validation.md → Avoid multiple sources
 │
 ├─ Creating forms?
-│  └─ form-state-management.md → Defaults from schema
+│  └─ form-defaults.md → Defaults from schema
+│     form-arrays.md → JSONB array inputs
+│     form-patterns.md → Tabbed forms, submission
+│     form-advanced.md → Reset, debugging, conditional
 │     anti-patterns-validation.md → Avoid hardcoded defaults
 │
 ├─ Database changes?
-│  └─ database-patterns.md → GRANT + RLS, migrations
+│  └─ database-security.md → GRANT + RLS (two-layer)
+│     database-migrations.md → Migration structure, enums
+│     database-roles.md → Role-based permissions
+│     database-advanced.md → Triggers, JSONB, views
+│     database-reference.md → Decision tree, best practices
 │     anti-patterns-database.md → Avoid common DB mistakes
 │
 ├─ Security concerns?
@@ -376,16 +386,30 @@ Starting implementation task?
 
 Comprehensive patterns with real code examples from Atomic CRM:
 
-### Error Handling (Split for Focus)
+### Error Handling
 - [error-handling-basics.md](resources/error-handling-basics.md) - Fail-fast core patterns, forbidden retry/circuit breaker
 - [error-handling-bulk.md](resources/error-handling-bulk.md) - Promise.allSettled for bulk operations
 - [error-handling-validation.md](resources/error-handling-validation.md) - Structured logging, Zod error formatting
 - [error-handling-reference.md](resources/error-handling-reference.md) - Decision tree, rationalizations, testing
 
-### Core Patterns
-- [validation-patterns.md](resources/validation-patterns.md) - Zod schemas, centralized validation, error formatting
-- [form-state-management.md](resources/form-state-management.md) - Schema-driven forms, ArrayInput, defaults
-- [database-patterns.md](resources/database-patterns.md) - GRANT + RLS, migrations, helper functions
+### Validation (Split for Focus)
+- [validation-basics.md](resources/validation-basics.md) - Core principles, basic schema, enum schemas
+- [validation-arrays.md](resources/validation-arrays.md) - JSONB arrays, sub-schemas, superRefine
+- [validation-schemas.md](resources/validation-schemas.md) - Create/Update schemas, error formatting
+- [validation-advanced.md](resources/validation-advanced.md) - Custom validators, transform, import schemas
+
+### Form State Management (Split for Focus)
+- [form-defaults.md](resources/form-defaults.md) - Core principle, defaults from schema
+- [form-arrays.md](resources/form-arrays.md) - JSONB array inputs, SimpleFormIterator
+- [form-patterns.md](resources/form-patterns.md) - Tabbed forms, submission, error display
+- [form-advanced.md](resources/form-advanced.md) - Reset, debugging, conditional fields
+
+### Database (Split for Focus)
+- [database-security.md](resources/database-security.md) - GRANT + RLS two-layer security
+- [database-migrations.md](resources/database-migrations.md) - Migration structure, enum types
+- [database-roles.md](resources/database-roles.md) - Role-based permissions, helper functions
+- [database-advanced.md](resources/database-advanced.md) - Triggers, JSONB, indexes, views
+- [database-reference.md](resources/database-reference.md) - Decision tree, best practices
 
 ### Security & Testing
 - [security-patterns.md](resources/security-patterns.md) - CSV validation, formula injection, RLS policies
