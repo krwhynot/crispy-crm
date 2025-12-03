@@ -57,12 +57,14 @@ src/atomic-crm/feature/
 ## Design System
 
 **Tailwind v4 semantic colors ONLY:**
-```tsx
-// ✓ CORRECT          // ✗ WRONG
-text-muted-foreground  text-gray-500
-bg-primary            bg-green-600
-text-destructive      text-red-500
-```
+
+| ✅ CORRECT                 | ❌ WRONG              |
+|---------------------------|----------------------|
+| text-muted-foreground     | text-gray-500        |
+| bg-primary                | bg-green-600         |
+| text-destructive          | text-red-500         |
+| h-11 w-11 (touch targets) | h-8 w-8              |
+| Semantic color tokens     | Raw hex/oklch values |
 
 **Touch targets:** 44x44px minimum (`h-11 w-11`)
 

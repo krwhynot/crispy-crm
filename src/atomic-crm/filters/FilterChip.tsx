@@ -27,7 +27,7 @@ export const FilterChip: React.FC<FilterChipProps> = ({ label, onRemove }) => {
         onClick={handleRemove}
         aria-label={`Remove ${label} filter`}
       >
-        <X className="h-4 w-4" />
+        <X className="h-4 w-4" aria-hidden="true" />
       </Button>
     </div>
   );

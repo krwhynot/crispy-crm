@@ -88,7 +88,7 @@ export const PrincipalChangeWarning = ({ open, onClose, newType }: PrincipalChan
               <div className="text-center py-4 text-muted-foreground">No products found</div>
             )}
 
-            <div className="bg-amber-500/10 border border-amber-500/20 rounded-md p-3">
+            <div className="bg-warning/10 border border-warning/20 rounded-md p-3">
               <p className="text-sm font-medium">💡 To change this organization type:</p>
               <ol className="text-sm text-muted-foreground mt-2 ml-4 list-decimal space-y-1">
                 <li>Go to the Products page</li>
