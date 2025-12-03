@@ -80,7 +80,7 @@ function FilterToolbar({ filters, onFiltersChange }: FilterToolbarProps) {
         <ReferenceInput
           source="principal_organization_id"
           reference="organizations"
-          filter={{ type: "principal" }}
+          filter={{ organization_type: "principal" }}
         >
           <AutocompleteArrayInput
             label={false}

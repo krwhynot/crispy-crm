@@ -38,14 +38,14 @@ export const OpportunityListFilter = () => {
   const { data: principalsData } = useGetList("organizations", {
     pagination: { page: 1, perPage: 50 },
     sort: { field: "name", order: "ASC" },
-    filter: { type: "principal", deleted_at: null },
+    filter: { organization_type: "principal", deleted_at: null },
   });
 
   // Fetch customers (organizations with type customer)
   const { data: customersData } = useGetList("organizations", {
     pagination: { page: 1, perPage: 50 },
     sort: { field: "name", order: "ASC" },
-    filter: { type: "customer", deleted_at: null },
+    filter: { organization_type: "customer", deleted_at: null },
   });
 
   // Handle principal filter change via Select dropdown

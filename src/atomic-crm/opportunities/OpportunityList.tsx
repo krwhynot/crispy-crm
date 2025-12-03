@@ -60,30 +60,25 @@ const OpportunityList = () => {
 
   return (
     <>
-      <StandardListLayout filterComponent={<OpportunityListFilter />}>
-        <List
-          perPage={100}
-          filter={{
-            "deleted_at@is": null,
-          }}
-          title={false}
-          sort={{ field: "created_at", order: "DESC" }}
-          actions={<OpportunityActions view={view} onViewChange={handleViewChange} />}
-          exporter={opportunityExporter}
-          pagination={null}
-        >
-          <Breadcrumb>
-            <BreadcrumbItem>
-              <Link to="/">
-                <Translate i18nKey="ra.page.dashboard">Home</Translate>
-              </Link>
-            </BreadcrumbItem>
-            <BreadcrumbPage>{resourceLabel}</BreadcrumbPage>
-          </Breadcrumb>
-          <OpportunityLayout view={view} openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-          <FloatingCreateButton />
-        </List>
-      </StandardListLayout>
+      <List
+        perPage={100}
+        filter={{
+          "deleted_at@is": null,
+        }}
+        title={false}
+        sort={{ field: "created_at", order: "DESC" }}
+        actions={<OpportunityActions view={view} onViewChange={handleViewChange} />}
+        exporter={opportunityExporter}
+        pagination={null}
+      >
+        <OpportunityListLayout
+          view={view}
+          openSlideOver={openSlideOver}
+          isSlideOverOpen={isOpen}
+          resourceLabel={resourceLabel}
+        />
+        <FloatingCreateButton />
+      </List>
 
       {/* Slide-over panel */}
       <OpportunitySlideOver
@@ -97,14 +92,20 @@ const OpportunityList = () => {
   );
 };
 
-const OpportunityLayout = ({
+/**
+ * OpportunityListLayout - Renders inside List context to access ListContext
+ * Must be a child of <List> to use useListContext() for filter state
+ */
+const OpportunityListLayout = ({
   view,
   openSlideOver,
   isSlideOverOpen,
+  resourceLabel,
 }: {
   view: OpportunityView;
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
   isSlideOverOpen: boolean;
+  resourceLabel: string;
 }) => {
   const { data, isPending, filterValues } = useListContext();
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
@@ -116,27 +117,47 @@ const OpportunityLayout = ({
     }
   }, [filterValues?.stage]);
 
-  if (isPending) return null;
-  if (!data?.length && !hasFilters)
+  // Show skeleton during loading
+  if (isPending) {
     return (
-      <>
+      <StandardListLayout resource="opportunities" filterComponent={<OpportunityListFilter />}>
+        <ListSkeleton rows={8} columns={5} />
+      </StandardListLayout>
+    );
+  }
+
+  // Empty state when no data and no filters applied
+  if (!data?.length && !hasFilters) {
+    return (
+      <StandardListLayout resource="opportunities" filterComponent={<OpportunityListFilter />}>
         <OpportunityEmpty>
           <OpportunityArchivedList />
         </OpportunityEmpty>
-      </>
+      </StandardListLayout>
     );
+  }
 
   return (
-    <div className="w-full">
-      {view === "kanban" ? (
-        <OpportunityListContent openSlideOver={openSlideOver} />
-      ) : view === "campaign" ? (
-        <CampaignGroupedList openSlideOver={openSlideOver} />
-      ) : (
-        <OpportunityRowListView openSlideOver={openSlideOver} isSlideOverOpen={isSlideOverOpen} />
-      )}
-      <OpportunityArchivedList />
-    </div>
+    <StandardListLayout resource="opportunities" filterComponent={<OpportunityListFilter />}>
+      <Breadcrumb>
+        <BreadcrumbItem>
+          <Link to="/">
+            <Translate i18nKey="ra.page.dashboard">Home</Translate>
+          </Link>
+        </BreadcrumbItem>
+        <BreadcrumbPage>{resourceLabel}</BreadcrumbPage>
+      </Breadcrumb>
+      <div className="w-full">
+        {view === "kanban" ? (
+          <OpportunityListContent openSlideOver={openSlideOver} />
+        ) : view === "campaign" ? (
+          <CampaignGroupedList openSlideOver={openSlideOver} />
+        ) : (
+          <OpportunityRowListView openSlideOver={openSlideOver} isSlideOverOpen={isSlideOverOpen} />
+        )}
+        <OpportunityArchivedList />
+      </div>
+    </StandardListLayout>
   );
 };
 
