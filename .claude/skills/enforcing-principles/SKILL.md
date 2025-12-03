@@ -344,53 +344,45 @@ If you find yourself:
 Starting implementation task?
 │
 ├─ Handling errors?
-│  └─ Use error-handling.md
-│     - Fail fast (no retry)
-│     - Promise.allSettled for bulk
-│     - Structured logging
+│  └─ error-handling-basics.md → Fail fast (no retry)
+│     error-handling-bulk.md → Promise.allSettled for bulk
+│     error-handling-validation.md → Structured logging
 │
 ├─ Adding validation?
-│  └─ Use validation-patterns.md
-│     - Zod at API boundary only
-│     - Sub-schemas for arrays
-│     - Error formatting
+│  └─ validation-patterns.md → Zod at API boundary only
+│     anti-patterns-validation.md → Avoid multiple sources
 │
 ├─ Creating forms?
-│  └─ Use form-state-management.md
-│     - Defaults from schema
-│     - ArrayInput patterns
-│     - Transform prop
+│  └─ form-state-management.md → Defaults from schema
+│     anti-patterns-validation.md → Avoid hardcoded defaults
 │
 ├─ Database changes?
-│  └─ Use database-patterns.md
-│     - GRANT + RLS
-│     - Helper functions
-│     - Migration format
+│  └─ database-patterns.md → GRANT + RLS, migrations
+│     anti-patterns-database.md → Avoid common DB mistakes
 │
 ├─ Security concerns?
-│  └─ Use security-patterns.md
-│     - CSV validation
-│     - RLS policies
-│     - XSS prevention
+│  └─ security-patterns.md → CSV validation, RLS policies
 │
 ├─ Writing tests?
-│  └─ Use testing-patterns.md
-│     - Unit for logic
-│     - E2E for journeys
-│     - 70% coverage
+│  └─ testing-patterns.md → Unit/E2E patterns
+│     anti-patterns-testing.md → Avoid testing implementation
 │
 └─ Unsure what to do?
-   └─ Use anti-patterns.md
-      - Learn from mistakes
-      - Avoid common errors
+   └─ anti-patterns-engineering.md → Avoid over-engineering
+      error-handling-reference.md → Decision tree & rationalizations
 ```
 
 ## Resource Files
 
 Comprehensive patterns with real code examples from Atomic CRM:
 
+### Error Handling (Split for Focus)
+- [error-handling-basics.md](resources/error-handling-basics.md) - Fail-fast core patterns, forbidden retry/circuit breaker
+- [error-handling-bulk.md](resources/error-handling-bulk.md) - Promise.allSettled for bulk operations
+- [error-handling-validation.md](resources/error-handling-validation.md) - Structured logging, Zod error formatting
+- [error-handling-reference.md](resources/error-handling-reference.md) - Decision tree, rationalizations, testing
+
 ### Core Patterns
-- [error-handling.md](resources/error-handling.md) - Fail-fast patterns, Promise.allSettled, error logging
 - [validation-patterns.md](resources/validation-patterns.md) - Zod schemas, centralized validation, error formatting
 - [form-state-management.md](resources/form-state-management.md) - Schema-driven forms, ArrayInput, defaults
 - [database-patterns.md](resources/database-patterns.md) - GRANT + RLS, migrations, helper functions
@@ -399,8 +391,11 @@ Comprehensive patterns with real code examples from Atomic CRM:
 - [security-patterns.md](resources/security-patterns.md) - CSV validation, formula injection, RLS policies
 - [testing-patterns.md](resources/testing-patterns.md) - Unit tests, E2E tests, coverage requirements
 
-### Anti-Patterns
-- [anti-patterns.md](resources/anti-patterns.md) - Common mistakes and how to avoid them
+### Anti-Patterns (Split by Domain)
+- [anti-patterns-engineering.md](resources/anti-patterns-engineering.md) - Over-engineering, circuit breakers, Promise.all
+- [anti-patterns-validation.md](resources/anti-patterns-validation.md) - Multiple validation sources, form defaults
+- [anti-patterns-database.md](resources/anti-patterns-database.md) - RLS/GRANT, enums, migration verification
+- [anti-patterns-testing.md](resources/anti-patterns-testing.md) - Testing implementation details, error context
 
 ## Constitution Principles Summary
 

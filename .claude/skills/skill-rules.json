@@ -2,6 +2,79 @@
   "version": "1.0",
   "description": "Skill activation triggers for Crispy-CRM",
   "skills": {
+    "enforcing-principles": {
+      "type": "guardrail",
+      "enforcement": "hybrid",
+      "priority": "critical",
+      "description": "Engineering Constitution enforcement - BLOCKS anti-patterns (retry logic, circuit breakers), SUGGESTS best practices (fail-fast, Zod validation, form defaults from schema)",
+      "promptTriggers": {
+        "keywords": [
+          "implement",
+          "feature",
+          "error handling",
+          "validation",
+          "form",
+          "defaults",
+          "zod",
+          "schema",
+          "migration",
+          "database",
+          "retry",
+          "circuit breaker",
+          "resilience",
+          "fallback",
+          "data provider",
+          "unified provider",
+          "react admin",
+          "interface",
+          "type"
+        ],
+        "intentPatterns": [
+          "(implement|create|build|add).*?(feature|form|validation|migration)",
+          "(handle|add|implement).*?(error|resilience|retry|fallback)",
+          "(create|add|modify).*?(schema|validation|zod)",
+          "(set|define|add).*?(default|form)",
+          "how.*?(validate|handle error|create form)",
+          "(database|db|migration).*?(change|update|create)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/atomic-crm/**/*.tsx",
+          "src/atomic-crm/**/*.ts",
+          "src/atomic-crm/providers/**/*.ts",
+          "src/atomic-crm/validation/**/*.ts",
+          "supabase/migrations/**/*.sql"
+        ],
+        "contentPatterns": [
+          "CircuitBreaker",
+          "maxRetries",
+          "MAX_RETRIES",
+          "exponential.*backoff",
+          "retry.*logic",
+          "class.*CircuitBreaker",
+          "graceful.*fallback",
+          "catch.*return.*cached",
+          "defaultValue=",
+          "defaultValues:\\s*\\{",
+          "validate=\\{",
+          "\\.safeParse\\(",
+          "z\\.object\\(",
+          "import.*from.*react-admin"
+        ]
+      },
+      "blockPatterns": {
+        "description": "Anti-patterns that should BLOCK and require skill review",
+        "patterns": [
+          "class\\s+CircuitBreaker",
+          "for\\s*\\(.*MAX_RETRIES",
+          "exponential.*backoff",
+          "Math\\.pow\\(2,.*\\).*\\*.*1000",
+          "catch.*\\{[^}]*return.*cached",
+          "state:\\s*['\"]OPEN['\"]\\s*\\|\\s*['\"]CLOSED['\"]"
+        ]
+      }
+    },
     "skill-developer": {
       "type": "domain",
       "enforcement": "suggest",
