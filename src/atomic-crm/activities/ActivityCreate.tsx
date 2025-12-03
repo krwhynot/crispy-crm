@@ -1,6 +1,8 @@
 import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { CreateBase, Form, useInput, useGetIdentity } from "ra-core";
+import { useFormState } from "react-hook-form";
+import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { FormToolbar } from "@/atomic-crm/layout/FormToolbar";
 import { activitiesSchema } from "../validation/activities";
 import ActivitySinglePage from "./ActivitySinglePage";
@@ -32,9 +34,7 @@ export default function ActivityCreate() {
           <Form defaultValues={defaultValues}>
             <Card>
               <CardContent className="space-y-6 p-6">
-                <HiddenActivityTypeField />
-                <ActivitySinglePage />
-                <FormToolbar />
+                <ActivityFormContent />
               </CardContent>
             </Card>
           </Form>
@@ -43,3 +43,16 @@ export default function ActivityCreate() {
     </CreateBase>
   );
 }
+
+const ActivityFormContent = () => {
+  const { errors } = useFormState();
+
+  return (
+    <>
+      <FormErrorSummary errors={errors} />
+      <HiddenActivityTypeField />
+      <ActivitySinglePage />
+      <FormToolbar />
+    </>
+  );
+};

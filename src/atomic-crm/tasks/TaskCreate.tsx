@@ -6,6 +6,7 @@ import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { SaveButton } from "@/components/admin/form";
+import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { Button } from "@/components/ui/button";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 import { contactOptionText } from "../contacts/ContactOption";
@@ -38,77 +39,96 @@ export default function TaskCreate() {
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
           <Form defaultValues={defaultValues}>
-            <div className="space-y-6">
-              <TextInput
-                source="title"
-                label="Task Title"
-                isRequired
-                helperText="What needs to be done?"
-              />
-
-              <TextInput
-                source="description"
-                label="Description"
-                multiline
-                rows={2}
-                helperText="Optional details"
-              />
-
-              <div className="grid grid-cols-2 gap-4">
-                <TextInput
-                  source="due_date"
-                  label="Due Date"
-                  type="date"
-                  isRequired
-                  helperText="When is this due?"
-                />
-
-                <SelectInput
-                  source="type"
-                  label="Type"
-                  choices={taskTypes.map((type) => ({ id: type, name: type }))}
-                  helperText="Category of task"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <SelectInput
-                  source="priority"
-                  label="Priority"
-                  choices={[
-                    { id: "low", name: "Low" },
-                    { id: "medium", name: "Medium" },
-                    { id: "high", name: "High" },
-                    { id: "critical", name: "Critical" },
-                  ]}
-                  helperText="How urgent?"
-                />
-
-                <ReferenceInput source="opportunity_id" reference="opportunities">
-                  <AutocompleteInput
-                    label="Opportunity"
-                    optionText="title"
-                    helperText="Link to opportunity (optional)"
-                  />
-                </ReferenceInput>
-              </div>
-
-              <ReferenceInput source="contact_id" reference="contacts_summary">
-                <AutocompleteInput
-                  label="Contact"
-                  optionText={contactOptionText}
-                  helperText="Link to contact (optional)"
-                />
-              </ReferenceInput>
-            </div>
-
-            <TaskCreateFooter notify={notify} redirect={redirect} />
+            <TaskFormContent notify={notify} redirect={redirect} taskTypes={taskTypes} />
           </Form>
         </div>
       </div>
     </CreateBase>
   );
 }
+
+const TaskFormContent = ({
+  notify,
+  redirect,
+  taskTypes,
+}: {
+  notify: ReturnType<typeof useNotify>;
+  redirect: ReturnType<typeof useRedirect>;
+  taskTypes: string[];
+}) => {
+  const { errors } = useFormState();
+
+  return (
+    <>
+      <FormErrorSummary errors={errors} />
+      <div className="space-y-6">
+        <TextInput
+          source="title"
+          label="Task Title"
+          isRequired
+          helperText="What needs to be done?"
+        />
+
+        <TextInput
+          source="description"
+          label="Description"
+          multiline
+          rows={2}
+          helperText="Optional details"
+        />
+
+        <div className="grid grid-cols-2 gap-4">
+          <TextInput
+            source="due_date"
+            label="Due Date"
+            type="date"
+            isRequired
+            helperText="When is this due?"
+          />
+
+          <SelectInput
+            source="type"
+            label="Type"
+            choices={taskTypes.map((type) => ({ id: type, name: type }))}
+            helperText="Category of task"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
+          <SelectInput
+            source="priority"
+            label="Priority"
+            choices={[
+              { id: "low", name: "Low" },
+              { id: "medium", name: "Medium" },
+              { id: "high", name: "High" },
+              { id: "critical", name: "Critical" },
+            ]}
+            helperText="How urgent?"
+          />
+
+          <ReferenceInput source="opportunity_id" reference="opportunities">
+            <AutocompleteInput
+              label="Opportunity"
+              optionText="title"
+              helperText="Link to opportunity (optional)"
+            />
+          </ReferenceInput>
+        </div>
+
+        <ReferenceInput source="contact_id" reference="contacts_summary">
+          <AutocompleteInput
+            label="Contact"
+            optionText={contactOptionText}
+            helperText="Link to contact (optional)"
+          />
+        </ReferenceInput>
+      </div>
+
+      <TaskCreateFooter notify={notify} redirect={redirect} />
+    </>
+  );
+};
 
 const TaskCreateFooter = ({
   notify,

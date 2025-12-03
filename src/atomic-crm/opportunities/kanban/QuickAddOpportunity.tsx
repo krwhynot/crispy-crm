@@ -86,7 +86,7 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label htmlFor="name" className="block text-sm font-medium mb-1">
-                  Name
+                  Name <span className="text-destructive">*</span>
                 </label>
                 <input
                   id="name"
@@ -96,7 +96,30 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
                   className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
                   placeholder="Enter opportunity name"
                   disabled={isLoading}
+                  autoFocus
                 />
+              </div>
+
+              <div className="mb-4">
+                <label htmlFor="customer" className="block text-sm font-medium mb-1">
+                  Customer <span className="text-destructive">*</span>
+                </label>
+                <select
+                  id="customer"
+                  value={customerId}
+                  onChange={(e) => setCustomerId(e.target.value)}
+                  className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-colors bg-background"
+                  disabled={isLoading || customersLoading}
+                >
+                  <option value="">
+                    {customersLoading ? "Loading customers..." : "Select a customer"}
+                  </option>
+                  {customers?.map((customer) => (
+                    <option key={customer.id} value={customer.id}>
+                      {customer.name}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="mb-4">
