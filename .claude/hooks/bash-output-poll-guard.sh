@@ -67,7 +67,7 @@ if [[ $EMPTY_COUNT -ge $MAX_BLOCK ]]; then
     cat << EOF
 {
   "decision": "block",
-  "message": "🛑 STUCK PROCESS DETECTED - BLOCKING FURTHER POLLS\n\nYou have polled shell \"${BASH_ID}\" ${EMPTY_COUNT} times with no output.\nThis indicates the process is likely stuck, crashed, or finished without output.\n\nREQUIRED ACTIONS:\n1. Kill this shell: KillShell({ shell_id: \"${BASH_ID}\" })\n2. Check if process is alive: Bash(\"ps aux | grep <process-name>\")\n3. Try running in FOREGROUND with timeout instead of background\n4. If the process should have output, investigate why it's silent\n\nDO NOT continue polling. See stuck-process-detection skill for guidance.\n\nTo reset: Use a different approach or wait 30 seconds before retrying."
+  "reason": "STUCK PROCESS DETECTED - Shell ${BASH_ID} polled ${EMPTY_COUNT} times with no output. Kill with KillShell({ shell_id: \"${BASH_ID}\" }) and try foreground execution instead."
 }
 EOF
     exit 0
