@@ -335,6 +335,111 @@
         ]
       }
     },
+    "brainstorming": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Use when creating or developing features, before writing code - refines rough ideas into fully-formed designs through collaborative multiple-choice questioning, alternative exploration (3-5 options), and incremental validation. MFB CRM domain-aware. Hands off to /write-plan.",
+      "requiredSkills": ["enforcing-principles"],
+      "promptTriggers": {
+        "keywords": [
+          "brainstorm",
+          "brainstorming",
+          "ideate",
+          "ideation",
+          "design feature",
+          "explore options",
+          "thinking about",
+          "want to build",
+          "want to add",
+          "new feature",
+          "feature idea",
+          "how should we",
+          "what if we",
+          "consider alternatives",
+          "rough idea",
+          "concept",
+          "before coding",
+          "before implementing"
+        ],
+        "intentPatterns": [
+          "(brainstorm|ideate|explore|think about).*?(feature|idea|concept|approach)",
+          "(i'm|i am|we're|we are).*?thinking about.*?(adding|building|creating)",
+          "(want|need|should) to (build|add|create|implement).*?(feature|capability)",
+          "(how|what) (should|could|would) we.*?(implement|build|design|approach)",
+          "(explore|consider|evaluate).*?(options|alternatives|approaches)",
+          "before (coding|implementing|writing code).*?(want|need|should)",
+          "(new|rough|initial).*?(idea|concept|feature).*?(for|about)",
+          "(design|plan|architect).*?before.*?(implement|code|build)"
+        ]
+      }
+    },
+    "data-integrity-guards": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Defense-in-depth validation pattern - validates data at EVERY layer: API boundary (Zod), form state (schema defaults), database (RLS/soft-delete), and logging. Makes bugs structurally impossible.",
+      "promptTriggers": {
+        "keywords": [
+          "validation",
+          "data flow",
+          "integrity",
+          "security",
+          "guards",
+          "layers",
+          "defense in depth",
+          "multi-layer",
+          "Zod",
+          "RLS",
+          "form defaults",
+          "soft delete",
+          "audit",
+          "data corruption",
+          "sanitize",
+          "boundary",
+          "checkpoint"
+        ],
+        "intentPatterns": [
+          "(validate|check|verify).*?(data|input|form|request)",
+          "(add|implement|create).*?(validation|guard|check)",
+          "(data|input).*?(flow|path|journey)",
+          "(where|how).*?(validate|check|verify)",
+          "(prevent|stop|catch).*?(invalid|bad|corrupt).*?data",
+          "(ensure|guarantee|enforce).*?(integrity|valid|correct)",
+          "defense.*?in.*?depth",
+          "(multiple|multi).*?layer.*?(validation|check)",
+          "(zod|schema).*?(validate|boundary|api)",
+          "(rls|row level security).*?(policy|check)",
+          "(soft|hard).*?delete"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/atomic-crm/providers/**/*.ts",
+          "src/atomic-crm/validation/**/*.ts",
+          "src/atomic-crm/**/*Create.tsx",
+          "src/atomic-crm/**/*Edit.tsx",
+          "src/atomic-crm/**/*Form.tsx",
+          "supabase/functions/**/*.ts",
+          "supabase/migrations/**/*.sql"
+        ],
+        "contentPatterns": [
+          "z\\.object\\(",
+          "\\.safeParse\\(",
+          "\\.parse\\(",
+          "superRefine",
+          "ValidationService",
+          "validateContactForm",
+          "validateOrganization",
+          "partial\\(\\)\\.parse",
+          "defaultValues",
+          "CREATE POLICY",
+          "ROW LEVEL SECURITY",
+          "deleted_at",
+          "logger\\.error"
+        ]
+      }
+    },
     "supabase-crm": {
       "type": "domain",
       "enforcement": "suggest",
