@@ -116,7 +116,7 @@ export const WithStatus: Story = {
           <AvatarImage src="https://github.com/shadcn.png" alt="Online user" />
           <AvatarFallback>ON</AvatarFallback>
         </Avatar>
-        <span className="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-background rounded-full" />
+        <span className="absolute bottom-0 right-0 size-3 bg-success border-2 border-background rounded-full" />
       </div>
 
       {/* Away */}
@@ -125,7 +125,7 @@ export const WithStatus: Story = {
           <AvatarImage src="https://github.com/vercel.png" alt="Away user" />
           <AvatarFallback>AW</AvatarFallback>
         </Avatar>
-        <span className="absolute bottom-0 right-0 size-3 bg-yellow-500 border-2 border-background rounded-full" />
+        <span className="absolute bottom-0 right-0 size-3 bg-warning border-2 border-background rounded-full" />
       </div>
 
       {/* Busy */}
@@ -134,7 +134,7 @@ export const WithStatus: Story = {
           <AvatarImage src="https://github.com/zeit.png" alt="Busy user" />
           <AvatarFallback>BS</AvatarFallback>
         </Avatar>
-        <span className="absolute bottom-0 right-0 size-3 bg-red-500 border-2 border-background rounded-full" />
+        <span className="absolute bottom-0 right-0 size-3 bg-destructive border-2 border-background rounded-full" />
       </div>
 
       {/* Offline */}
@@ -143,7 +143,7 @@ export const WithStatus: Story = {
           <AvatarImage src="/broken.jpg" alt="Offline user" />
           <AvatarFallback>OF</AvatarFallback>
         </Avatar>
-        <span className="absolute bottom-0 right-0 size-3 bg-gray-500 border-2 border-background rounded-full" />
+        <span className="absolute bottom-0 right-0 size-3 bg-muted-foreground border-2 border-background rounded-full" />
       </div>
     </div>
   ),
@@ -158,32 +158,32 @@ export const Loading: Story = {
   ),
 };
 
-// Different fallback colors
+// Different fallback colors (using semantic tokens)
 export const FallbackColors: Story = {
   render: () => (
     <div className="flex gap-4">
       <Avatar>
-        <AvatarFallback className="bg-red-100 dark:bg-red-900/20 text-red-600 dark:text-red-400">
+        <AvatarFallback className="bg-destructive/10 text-destructive">
           RD
         </AvatarFallback>
       </Avatar>
       <Avatar>
-        <AvatarFallback className="bg-green-100 dark:bg-green-900/20 text-green-600 dark:text-green-400">
+        <AvatarFallback className="bg-success/10 text-success">
           GR
         </AvatarFallback>
       </Avatar>
       <Avatar>
-        <AvatarFallback className="bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400">
+        <AvatarFallback className="bg-primary/10 text-primary">
           BL
         </AvatarFallback>
       </Avatar>
       <Avatar>
-        <AvatarFallback className="bg-purple-100 dark:bg-purple-900/20 text-purple-600 dark:text-purple-400">
+        <AvatarFallback className="bg-accent text-accent-foreground">
           PR
         </AvatarFallback>
       </Avatar>
       <Avatar>
-        <AvatarFallback className="bg-orange-100 dark:bg-orange-900/20 text-orange-600 dark:text-orange-400">
+        <AvatarFallback className="bg-warning/10 text-warning">
           OR
         </AvatarFallback>
       </Avatar>

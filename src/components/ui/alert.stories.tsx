@@ -61,7 +61,7 @@ export const WithInfoIcon: Story = {
 export const WithSuccessIcon: Story = {
   render: () => (
     <div className="w-[400px]">
-      <Alert className="border-green-200 text-green-800 [&>svg]:text-green-600">
+      <Alert className="border-success/30 text-success [&>svg]:text-success">
         <CheckCircle2 />
         <AlertTitle>Success!</AlertTitle>
         <AlertDescription>Your changes have been saved successfully.</AlertDescription>
@@ -73,7 +73,7 @@ export const WithSuccessIcon: Story = {
 export const WithWarningIcon: Story = {
   render: () => (
     <div className="w-[400px]">
-      <Alert className="border-yellow-200 text-yellow-800 [&>svg]:text-yellow-600">
+      <Alert className="border-warning/30 text-warning [&>svg]:text-warning">
         <AlertTriangle />
         <AlertTitle>Warning</AlertTitle>
         <AlertDescription>
@@ -229,17 +229,17 @@ export const WithList: Story = {
 export const MultipleAlerts: Story = {
   render: () => (
     <div className="w-[400px] space-y-4">
-      <Alert className="border-blue-200 text-blue-800 [&>svg]:text-blue-600">
+      <Alert className="border-primary/30 text-primary [&>svg]:text-primary">
         <Info />
         <AlertTitle>Info</AlertTitle>
         <AlertDescription>This is an informational message.</AlertDescription>
       </Alert>
-      <Alert className="border-green-200 text-green-800 [&>svg]:text-green-600">
+      <Alert className="border-success/30 text-success [&>svg]:text-success">
         <CheckCircle2 />
         <AlertTitle>Success</AlertTitle>
         <AlertDescription>Operation completed successfully.</AlertDescription>
       </Alert>
-      <Alert className="border-yellow-200 text-yellow-800 [&>svg]:text-yellow-600">
+      <Alert className="border-warning/30 text-warning [&>svg]:text-warning">
         <AlertTriangle />
         <AlertTitle>Warning</AlertTitle>
         <AlertDescription>Please review before proceeding.</AlertDescription>
@@ -349,21 +349,21 @@ export const StatusExamples: Story = {
     <div className="w-[400px] space-y-4">
       <Alert>
         <div className="flex items-center gap-2">
-          <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
+          <div className="h-2 w-2 bg-success rounded-full animate-pulse" />
           <AlertTitle>System Status: Online</AlertTitle>
         </div>
         <AlertDescription>All systems are operational.</AlertDescription>
       </Alert>
-      <Alert className="border-yellow-200">
+      <Alert className="border-warning/30">
         <div className="flex items-center gap-2">
-          <div className="h-2 w-2 bg-yellow-500 rounded-full animate-pulse" />
+          <div className="h-2 w-2 bg-warning rounded-full animate-pulse" />
           <AlertTitle>System Status: Degraded</AlertTitle>
         </div>
         <AlertDescription>Some features may be slower than usual.</AlertDescription>
       </Alert>
       <Alert variant="destructive">
         <div className="flex items-center gap-2">
-          <div className="h-2 w-2 bg-red-500 rounded-full animate-pulse" />
+          <div className="h-2 w-2 bg-destructive-foreground rounded-full animate-pulse" />
           <AlertTitle>System Status: Offline</AlertTitle>
         </div>
         <AlertDescription>

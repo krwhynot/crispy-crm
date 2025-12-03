@@ -38,7 +38,7 @@ export const Success: Story = {
   render: () => (
     <Button
       onClick={() => toast.success("Your changes have been saved successfully!")}
-      className="bg-green-600 hover:bg-green-700"
+      className="bg-success hover:bg-success/90 text-success-foreground"
     >
       Show Success Toast
     </Button>
@@ -60,7 +60,7 @@ export const Warning: Story = {
   render: () => (
     <Button
       onClick={() => toast.warning("Your session will expire in 5 minutes")}
-      className="bg-yellow-600 hover:bg-yellow-700"
+      className="bg-warning hover:bg-warning/90 text-warning-foreground"
     >
       Show Warning Toast
     </Button>
@@ -71,7 +71,7 @@ export const Info: Story = {
   render: () => (
     <Button
       onClick={() => toast.info("New features are available. Check them out!")}
-      className="bg-blue-600 hover:bg-blue-700"
+      className="bg-primary hover:bg-primary/90"
     >
       Show Info Toast
     </Button>
@@ -155,7 +155,7 @@ export const WithCustomIcon: Story = {
       <Button
         onClick={() =>
           toast("Download complete", {
-            icon: <CheckCircle2 className="text-green-500" />,
+            icon: <CheckCircle2 className="text-success" />,
           })
         }
       >
@@ -164,7 +164,7 @@ export const WithCustomIcon: Story = {
       <Button
         onClick={() =>
           toast("Upload failed", {
-            icon: <AlertCircle className="text-red-500" />,
+            icon: <AlertCircle className="text-destructive" />,
           })
         }
       >

@@ -405,7 +405,7 @@ export const StatusIndicators: Story = {
     <div className="flex gap-4">
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className="h-3 w-3 rounded-full bg-green-500 cursor-help" />
+          <div className="h-3 w-3 rounded-full bg-success cursor-help" />
         </TooltipTrigger>
         <TooltipContent>
           <p>Online - All systems operational</p>
@@ -414,7 +414,7 @@ export const StatusIndicators: Story = {
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className="h-3 w-3 rounded-full bg-yellow-500 cursor-help" />
+          <div className="h-3 w-3 rounded-full bg-warning cursor-help" />
         </TooltipTrigger>
         <TooltipContent>
           <p>Warning - Minor issues detected</p>
@@ -423,7 +423,7 @@ export const StatusIndicators: Story = {
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className="h-3 w-3 rounded-full bg-red-500 cursor-help" />
+          <div className="h-3 w-3 rounded-full bg-destructive cursor-help" />
         </TooltipTrigger>
         <TooltipContent>
           <p>Error - System offline</p>
@@ -432,7 +432,7 @@ export const StatusIndicators: Story = {
 
       <Tooltip>
         <TooltipTrigger asChild>
-          <div className="h-3 w-3 rounded-full bg-gray-500 cursor-help" />
+          <div className="h-3 w-3 rounded-full bg-muted-foreground cursor-help" />
         </TooltipTrigger>
         <TooltipContent>
           <p>Unknown status</p>

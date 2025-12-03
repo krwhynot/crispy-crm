@@ -279,21 +279,21 @@ export const Large: Story = {
   ),
 };
 
-// Custom colors (using CSS variables)
+// Custom colors (using semantic CSS variables)
 export const CustomColor: Story = {
   render: () => (
     <div className="w-[300px] space-y-4">
       <div className="space-y-2">
         <p className="text-sm text-muted-foreground">Success</p>
-        <Progress value={75} className="[&>div]:bg-green-500" />
+        <Progress value={75} className="[&>div]:bg-success" />
       </div>
       <div className="space-y-2">
         <p className="text-sm text-muted-foreground">Warning</p>
-        <Progress value={50} className="[&>div]:bg-yellow-500" />
+        <Progress value={50} className="[&>div]:bg-warning" />
       </div>
       <div className="space-y-2">
         <p className="text-sm text-muted-foreground">Error</p>
-        <Progress value={25} className="[&>div]:bg-red-500" />
+        <Progress value={25} className="[&>div]:bg-destructive" />
       </div>
     </div>
   ),
