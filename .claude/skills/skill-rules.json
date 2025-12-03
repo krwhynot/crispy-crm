@@ -1044,6 +1044,63 @@
         }
       }
     },
+    "deep-audit": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Comprehensive full-stack codebase audit for Crispy CRM. Phased approach: Phase 1 (Critical: security, data integrity, runtime errors), Phase 2 (Improvements: code quality, UI/UX, performance), Phase 3 (Polish: tests, docs, DX). Generates markdown report and auto-creates todos.",
+      "requiredSkills": ["enforcing-principles", "ui-ux-design-principles"],
+      "promptTriggers": {
+        "keywords": [
+          "audit",
+          "deep audit",
+          "codebase audit",
+          "code audit",
+          "quality check",
+          "quality audit",
+          "codebase review",
+          "full review",
+          "comprehensive review",
+          "security audit",
+          "security review",
+          "after refactoring",
+          "refactoring complete",
+          "feature complete",
+          "new feature done",
+          "ready for review",
+          "pre-release",
+          "before release",
+          "health check",
+          "codebase health"
+        ],
+        "intentPatterns": [
+          "(audit|review|check).*?(codebase|code|project|feature|security|quality)",
+          "(deep|full|comprehensive|thorough).*?(audit|review|check|analysis)",
+          "(run|do|perform|start).*?audit",
+          "(feature|refactoring|changes?).*?(complete|done|finished).*?(review|audit|check)",
+          "(before|pre).*?(release|deploy|ship).*?(audit|review|check)",
+          "(check|review|audit).*?(everything|all|full)",
+          "how.*?(healthy|quality|secure).*?(codebase|code|project)",
+          "(security|data|ui|ux|performance).*?audit"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "src/atomic-crm/**/*.tsx",
+          "src/atomic-crm/**/*.ts",
+          "src/atomic-crm/providers/**/*.ts",
+          "src/atomic-crm/validation/**/*.ts",
+          "supabase/migrations/**/*.sql",
+          "supabase/functions/**/*.ts"
+        ]
+      },
+      "outputConfig": {
+        "reportPath": "docs/audits/",
+        "reportFormat": "YYYY-MM-DD-audit.md",
+        "autoCreateTodos": true,
+        "todoScope": "all"
+      }
+    },
     "troubleshooting": {
       "type": "domain",
       "enforcement": "contextual",
