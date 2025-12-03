@@ -50,7 +50,7 @@ export type TaskStatus = "overdue" | "today" | "tomorrow" | "upcoming" | "later"
 export type TaskType = "Call" | "Email" | "Meeting" | "Follow-up" | "Demo" | "Proposal" | "Other";
 
 export interface RelatedEntity {
-  type: "opportunity" | "contact" | "organization";
+  type: "opportunity" | "contact" | "organization" | "personal";
   name: string;
   id: number;
 }
