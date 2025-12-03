@@ -7,6 +7,24 @@
 
 **Goal:** Remediate 20 findings from the comprehensive audit, achieving 90+ score from current 79/100.
 
+---
+
+## Design Decisions (Code Review Incorporated)
+
+The following decisions were made based on code review feedback:
+
+| Issue | Decision |
+|-------|----------|
+| **Skip link focus** | Anchor links don't move keyboard focus. Added `onClick` handler that calls `focus()` programmatically. |
+| **Multiple h1s** | Codebase already has 7+ visible h1s (HealthDashboard, WhatsNew, Settings, Reports, Dashboard). Policy relaxed to "at least one h1" instead of "exactly one". Do NOT add hidden h1 in Layout. |
+| **cacheTime occurrences** | Two `cacheTime` at 15 minutes (not one at 5). Both updated to `gcTime`, preserving 15-minute TTL. |
+| **Unused imports** | NotificationDropdown snippet cleaned - removed `useEffect`, `useState`, `useCallback` (not needed with React Admin hooks). |
+| **Async test race** | Unit test wraps assertion in `waitFor()` since `useGetList` triggers asynchronously. |
+| **Duplicate queries** | NotificationBell consolidated from 2 queries to 1. Badge count comes from `total`, refetch triggered on dropdown open. |
+| **Real-time updates** | Polling (30s interval) replaces Supabase subscriptions. Acceptable for notifications. True real-time can be added at provider level later. |
+
+---
+
 **Architecture:** Quick-win fixes targeting accessibility (WCAG 2.2 AA), design system violations (semantic colors), and architecture violations (data provider bypass). No new features - only fixing existing violations.
 
 **Tech Stack:** React 19, TypeScript, Tailwind v4, React Admin, Supabase, Playwright (E2E)
@@ -351,7 +369,7 @@ git commit -m "fix(a11y): change FormSection h3 to h2 for proper heading hierarc
 
 ---
 
-### Task 6: Add Skip-to-Content Link and Page h1
+### Task 6: Add Skip-to-Content Link with Focus Management
 
 **Depends on:** None - can start immediately
 
@@ -366,6 +384,19 @@ git commit -m "fix(a11y): change FormSection h3 to h2 for proper heading hierarc
 - Modify: `src/atomic-crm/layout/Layout.tsx`
 - Test: `tests/e2e/accessibility/skip-link.spec.ts` (create)
 
+**IMPORTANT DESIGN DECISIONS:**
+
+1. **Skip link requires JavaScript focus()** - Anchor links (`#main-content`) navigate but don't move keyboard focus. We must call `focus()` on the target element.
+
+2. **Do NOT add hidden h1 in Layout** - The codebase already has visible h1s in:
+   - `HealthDashboard.tsx` - "Health Dashboard"
+   - `WhatsNew.tsx` - "What's New in Atomic CRM"
+   - `SettingsLayout.tsx` - "Settings"
+   - `ReportLayout.tsx` - Report titles
+   - `DashboardHeader.tsx` - Dashboard title
+
+   Adding a second hidden h1 would violate "exactly one h1 per page". Instead, ensure list pages (contacts, organizations, etc.) have their own h1 via their components.
+
 **Step 1: Write E2E test**
 
 Create `tests/e2e/accessibility/skip-link.spec.ts`:
@@ -374,7 +405,7 @@ Create `tests/e2e/accessibility/skip-link.spec.ts`:
 import { test, expect } from "@playwright/test";
 
 test.describe("Accessibility: Skip Link", () => {
-  test("skip link navigates to main content on Tab + Enter", async ({ page }) => {
+  test("skip link navigates to main content and moves focus on Tab + Enter", async ({ page }) => {
     await page.goto("/");
 
     // First Tab should focus skip link
@@ -382,22 +413,32 @@ test.describe("Accessibility: Skip Link", () => {
     const skipLink = page.getByRole("link", { name: /skip to main/i });
     await expect(skipLink).toBeFocused();
 
-    // Enter should move focus to main content
+    // Enter should activate link AND move focus to main content
     await page.keyboard.press("Enter");
+
+    // Wait for focus to move (the click handler calls focus())
+    await page.waitForFunction(() => {
+      return document.activeElement?.id === "main-content";
+    });
+
     const mainContent = page.locator("#main-content");
     await expect(mainContent).toBeFocused();
   });
 
-  test("page has exactly one h1 element", async ({ page }) => {
+  test("page has at least one h1 element", async ({ page }) => {
     await page.goto("/contacts");
 
     const h1Elements = page.locator("h1");
-    await expect(h1Elements).toHaveCount(1);
+    const count = await h1Elements.count();
+
+    // At least one h1 required (WCAG 2.4.2)
+    // Some pages may have exactly one visible h1, others may have list title
+    expect(count).toBeGreaterThanOrEqual(1);
   });
 });
 ```
 
-**Step 2: Implement fix**
+**Step 2: Implement fix with focus management**
 
 Edit `src/atomic-crm/layout/Layout.tsx`:
 
@@ -406,38 +447,29 @@ import { Notification } from "@/components/admin/notification";
 import { Error } from "@/components/admin/error";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { ReactNode } from "react";
-import { Suspense } from "react";
+import { Suspense, useCallback } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { useLocation } from "react-router-dom";
 import Header from "./Header";
 
-// Helper to derive page title from route
-function getPageTitle(pathname: string): string {
-  const segment = pathname.split("/")[1] || "";
-  const titles: Record<string, string> = {
-    "": "Dashboard",
-    contacts: "Contacts",
-    organizations: "Organizations",
-    opportunities: "Opportunities",
-    products: "Products",
-    tasks: "Tasks",
-    activities: "Activities",
-    reports: "Reports",
-    settings: "Settings",
-    admin: "Admin",
-  };
-  return titles[segment] || "Atomic CRM";
-}
-
 export const Layout = ({ children }: { children: ReactNode }) => {
-  const location = useLocation();
-  const pageTitle = getPageTitle(location.pathname);
+  // Handle skip link click - must programmatically focus the target
+  // because anchor navigation doesn't move keyboard focus
+  const handleSkipLinkClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+    e.preventDefault();
+    const mainContent = document.getElementById("main-content");
+    if (mainContent) {
+      mainContent.focus();
+      // Also scroll into view for visual users
+      mainContent.scrollIntoView({ behavior: "smooth" });
+    }
+  }, []);
 
   return (
     <>
       {/* Skip link - visible on focus for keyboard users (WCAG 2.4.1) */}
       <a
         href="#main-content"
+        onClick={handleSkipLinkClick}
         className="sr-only focus:not-sr-only focus:absolute focus:z-50 focus:bg-background focus:px-4 focus:py-2 focus:text-foreground focus:ring-2 focus:ring-primary"
       >
         Skip to main content
@@ -449,9 +481,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         id="main-content"
         tabIndex={-1}
       >
-        {/* Page-level h1 - visually hidden but accessible (WCAG 2.4.2) */}
-        <h1 className="sr-only">{pageTitle}</h1>
-
         <ErrorBoundary FallbackComponent={Error}>
           <Suspense fallback={<Skeleton className="h-12 w-12 rounded-full" />}>{children}</Suspense>
         </ErrorBoundary>
@@ -469,17 +498,30 @@ export const Layout = ({ children }: { children: ReactNode }) => {
 };
 ```
 
-**Step 3: Run E2E test**
+**Step 3: Add h1 to list pages that lack them (separate sub-task)**
+
+Check if list pages need visible h1s. If a list page doesn't have an h1, add one to the list header:
+
+```typescript
+// Example for ContactList if missing h1:
+<h1 className="text-2xl font-bold">Contacts</h1>
+```
+
+**Step 4: Run E2E test**
 
 ```bash
 npx playwright test tests/e2e/accessibility/skip-link.spec.ts
 ```
 
-**Step 4: Commit**
+**Step 5: Commit**
 
 ```bash
 git add src/atomic-crm/layout/Layout.tsx tests/e2e/accessibility/skip-link.spec.ts
-git commit -m "fix(a11y): add skip-to-content link and page-level h1 for WCAG 2.4.1/2.4.2"
+git commit -m "fix(a11y): add skip-to-content link with focus management for WCAG 2.4.1
+
+- Skip link now calls focus() on click to move keyboard focus
+- Uses tabIndex={-1} on main element to allow programmatic focus
+- Does NOT add duplicate hidden h1 (pages already have visible h1s)"
 ```
 
 ---
@@ -846,7 +888,8 @@ This bypasses the unified data provider.
 Edit `src/components/NotificationDropdown.tsx`:
 
 ```typescript
-import { useEffect, useState, useCallback } from "react";
+// NOTE: Removed unused imports (useEffect, useState, useCallback)
+// React Admin hooks handle state internally
 import { formatDistanceToNow } from "date-fns";
 import { Eye, ExternalLink, Inbox } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -1067,7 +1110,7 @@ Create `src/components/__tests__/NotificationDropdown.test.tsx`:
 
 ```typescript
 import { describe, it, expect, vi } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { NotificationDropdown } from "../NotificationDropdown";
 
@@ -1078,7 +1121,7 @@ describe("NotificationDropdown", () => {
       getOne: vi.fn(),
       getMany: vi.fn(),
       getManyReference: vi.fn(),
-      update: vi.fn(),
+      update: vi.fn().mockResolvedValue({ data: {} }),
       updateMany: vi.fn(),
       create: vi.fn(),
       delete: vi.fn(),
@@ -1092,11 +1135,13 @@ describe("NotificationDropdown", () => {
       { dataProvider: mockDataProvider }
     );
 
-    // DataProvider should be called, not direct Supabase
-    expect(mockDataProvider.getList).toHaveBeenCalledWith(
-      "notifications",
-      expect.any(Object)
-    );
+    // IMPORTANT: useGetList triggers asynchronously - must wait
+    await waitFor(() => {
+      expect(mockDataProvider.getList).toHaveBeenCalledWith(
+        "notifications",
+        expect.any(Object)
+      );
+    });
   });
 });
 ```
@@ -1140,7 +1185,6 @@ Edit `src/components/NotificationBell.tsx`:
 
 ```typescript
 import { Bell } from "lucide-react";
-import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useGetIdentity, useGetList } from "ra-core";
 import { NotificationDropdown } from "./NotificationDropdown";
@@ -1154,9 +1198,9 @@ interface Notification {
 export const NotificationBell = () => {
   const { data: identity, isLoading } = useGetIdentity();
 
-  // Use React Admin's useGetList hook - routes through unified data provider
-  // Only count unread notifications
-  const { data: notifications = [], refetch } = useGetList<Notification>(
+  // SINGLE query for unread count - routes through unified data provider
+  // Uses head: true to get only the count without fetching data
+  const { total: unreadCount = 0, refetch } = useGetList<Notification>(
     "notifications",
     {
       pagination: { page: 1, perPage: 1 },
@@ -1171,23 +1215,16 @@ export const NotificationBell = () => {
     }
   );
 
-  // Get unread count from the total (more efficient than fetching all)
-  const { total: unreadCount = 0 } = useGetList<Notification>(
-    "notifications",
-    {
-      pagination: { page: 1, perPage: 1 },
-      filter: identity?.user_id
-        ? { user_id: identity.user_id, read: false }
-        : {},
-    },
-    { enabled: !!identity?.user_id && !isLoading }
-  );
+  // NOTE: Consolidated to SINGLE query. Previous implementation had two
+  // identical queries - one for data (unused) and one for count.
+  // Now we use the `total` from one query for the badge count,
+  // and pass `refetch` to NotificationDropdown to refresh on open.
 
   // Accessible label
   const ariaLabel = unreadCount > 0 ? `Notifications (${unreadCount} unread)` : "Notifications";
 
   return (
-    <NotificationDropdown onOpenChange={() => refetch()}>
+    <NotificationDropdown onOpenChange={(open) => open && refetch()}>
       <Button
         variant="ghost"
         size="icon"
@@ -1209,10 +1246,15 @@ export const NotificationBell = () => {
 };
 ```
 
-**Note:** The real-time subscription is removed. For real-time updates, consider:
-1. Using polling (already added with `refetchInterval`)
-2. Adding a real-time subscription layer at the data provider level
-3. Using React Admin's real-time features if configured
+**Key changes from original:**
+1. **Single query** - Removed duplicate query that was double-firing every interval
+2. **refetch on open** - Only refetch when dropdown opens (`open && refetch()`)
+3. **Polling at 30s** - Provides near-real-time without Supabase subscriptions
+
+**Note:** Real-time subscriptions removed. For true real-time, consider:
+1. Adding subscription support at the data provider level
+2. Using React Admin's real-time features if configured
+3. Current polling (30s) is acceptable for notifications
 
 **Step 2: Verify no direct Supabase imports**
 
@@ -1321,12 +1363,13 @@ git commit -m "fix: address issues found during verification"
 
 | Fix | Acceptance Criteria |
 |-----|---------------------|
-| Skip link + h1 | Tab from page load focuses skip link; Enter moves to main; Every page has one h1 |
+| Skip link | Tab from page load focuses skip link; Enter moves focus to #main-content; focus() called programmatically |
+| Page h1 | Every page has **at least one** h1 (relaxed from "exactly one" - existing visible h1s are valid) |
 | Heading hierarchy | No h3 without preceding h2; axe-core passes |
 | Semantic colors | No text-gray-*, bg-green-*, bg-red-* in changed files; Dark mode correct |
-| Data provider | NotificationDropdown/Bell use React Admin hooks, not direct Supabase |
+| Data provider | NotificationDropdown/Bell use React Admin hooks, not direct Supabase; Single query for NotificationBell |
 | aria-labels | Screen reader announces button purpose; axe-core button-name passes |
-| gcTime rename | No console deprecation warnings |
+| gcTime rename | No console deprecation warnings; Both occurrences fixed; 15-minute TTL preserved |
 
 ---
 
