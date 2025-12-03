@@ -102,12 +102,16 @@ export function transformArrayFilters(filter: FilterRecord | undefined | null): 
     // IMPORTANT: Check this BEFORE null check because @is operator needs null values
     // e.g., "deleted_at@is": null translates to PostgREST's "deleted_at=is.null"
     if (key.includes("@")) {
+      // Convert underscore-separated operators to dot-separated for PostgREST
+      // e.g., "stage@not_in" → "stage@not.in" (PostgREST uses dot notation)
+      const normalizedKey = key.replace(/@not_in$/, "@not.in");
+
       // If the value is an array, transform it to PostgREST format
-      // e.g., "stage@not_in": ["closed_won", "closed_lost"] → "stage@not_in": "(closed_won,closed_lost)"
+      // e.g., "stage@not.in": ["closed_won", "closed_lost"] → "stage@not.in": "(closed_won,closed_lost)"
       if (Array.isArray(value) && value.length > 0) {
-        transformed[key] = `(${value.map(escapeForPostgREST).join(",")})`;
+        transformed[normalizedKey] = `(${value.map(escapeForPostgREST).join(",")})`;
       } else {
-        transformed[key] = value;
+        transformed[normalizedKey] = value;
       }
       continue;
     }
