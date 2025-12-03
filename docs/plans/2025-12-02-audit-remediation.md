@@ -977,10 +977,15 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
   };
 
   // Mark all notifications as read
+  // TODO: Refactor to bulk update via Supabase RPC for better performance
+  // Current N+1 pattern (one request per notification) is acceptable for pre-launch
+  // but should be optimized post-MVP to use a single database call.
+  // See: https://supabase.com/docs/guides/database/functions
   const markAllAsRead = async () => {
     if (!identity?.user_id) return;
 
     // For bulk update, we need to update each unread notification
+    // NOTE: This sends N requests for N unread notifications
     const unreadNotifications = notifications.filter(n => !n.read);
 
     await Promise.allSettled(
@@ -1220,7 +1225,8 @@ export const NotificationBell = () => {
   const { data: identity, isLoading } = useGetIdentity();
 
   // SINGLE query for unread count - routes through unified data provider
-  // Uses head: true to get only the count without fetching data
+  // Fetches only one record (perPage: 1) to minimize data transfer while
+  // getting the total count from the response metadata
   const { total: unreadCount = 0, refetch } = useGetList<Notification>(
     "notifications",
     {
