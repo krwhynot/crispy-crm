@@ -170,10 +170,10 @@ export function KPICard({ type, value, loading = false, className }: KPICardProp
           <div className="flex-1 min-w-0">
             {/* Label */}
             <p className="text-xs lg:text-sm text-muted-foreground truncate">{config.label}</p>
-            {/* Value - Larger for glanceability in warehouse/car environments */}
+            {/* Value */}
             <p
               className={cn(
-                "text-xl lg:text-2xl font-bold tabular-nums truncate",
+                "text-lg lg:text-xl font-semibold truncate",
                 isDestructive ? "text-destructive" : isWarning ? "text-warning" : "text-foreground"
               )}
             >

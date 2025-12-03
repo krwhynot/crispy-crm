@@ -218,15 +218,10 @@ function OpportunityCard({
         )}
       </div>
 
-      {/* View link (visible on hover and keyboard focus) */}
-      <div className="mt-3 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
-        <Button
-          variant="link"
-          size="sm"
-          className="h-auto p-0 text-primary focus-visible:opacity-100 focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
-          aria-label="View opportunity details"
-        >
-          <ExternalLink className="h-3 w-3 mr-1" aria-hidden="true" />
+      {/* View link (visible on hover) */}
+      <div className="mt-3 opacity-0 group-hover:opacity-100 transition-opacity">
+        <Button variant="link" size="sm" className="h-auto p-0 text-primary">
+          <ExternalLink className="h-3 w-3 mr-1" />
           View Details
         </Button>
       </div>
