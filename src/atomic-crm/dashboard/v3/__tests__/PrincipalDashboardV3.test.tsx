@@ -1,13 +1,7 @@
 import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
 import { PrincipalDashboardV3 } from "../PrincipalDashboardV3";
-
-// Mock useBreakpoint with controllable return value
-const mockUseBreakpoint = vi.fn(() => "desktop");
-vi.mock("@/hooks/useBreakpoint", () => ({
-  useBreakpoint: () => mockUseBreakpoint(),
-}));
 
 // Mock LogActivityFAB to avoid React Admin dependency in tests
 vi.mock("../components/LogActivityFAB", () => ({
@@ -48,6 +42,19 @@ vi.mock("../hooks/usePrincipalOpportunities", () => ({
   }),
 }));
 
+// Mock the useMyPerformance hook (used by MyPerformanceWidget)
+vi.mock("../hooks/useMyPerformance", () => ({
+  useMyPerformance: () => ({
+    metrics: {
+      activitiesThisWeek: { value: 5, previousValue: 3, trend: 67, direction: "up" as const },
+      dealsMoved: { value: 2, previousValue: 2, trend: 0, direction: "flat" as const },
+      tasksCompleted: { value: 8, previousValue: 10, trend: -20, direction: "down" as const },
+      openOpportunities: { value: 12, previousValue: 10, trend: 20, direction: "up" as const },
+    },
+    loading: false,
+  }),
+}));
+
 // Mock the useTeamActivities hook (used by ActivityFeedPanel)
 vi.mock("../hooks/useTeamActivities", () => ({
   useTeamActivities: () => ({
@@ -84,11 +91,6 @@ vi.mock("../hooks/useKPIMetrics", () => ({
 }));
 
 describe("PrincipalDashboardV3", () => {
-  beforeEach(() => {
-    // Reset to desktop breakpoint before each test
-    mockUseBreakpoint.mockReturnValue("desktop");
-  });
-
   it("should render both panels (Pipeline and Tasks)", () => {
     render(
       <MemoryRouter>
@@ -121,13 +123,13 @@ describe("PrincipalDashboardV3", () => {
     const flexColContainers = container.querySelectorAll(".flex-col");
     expect(flexColContainers.length).toBeGreaterThanOrEqual(1);
 
-    // Root container should use flex + flex-col (min-height varies by layout context)
-    const rootDiv = container.querySelector(".flex.flex-col");
+    // Root container should be flex h-screen flex-col
+    const rootDiv = container.querySelector(".flex.h-screen.flex-col");
     expect(rootDiv).toBeInTheDocument();
 
-    // Content area should have flex-1 for remaining height (uses div, not main - Layout.tsx wraps in main)
-    const contentDiv = container.querySelector(".flex-1.overflow-auto");
-    expect(contentDiv).toBeInTheDocument();
+    // Main element should have flex-1 for remaining height
+    const mainElement = container.querySelector("main.flex-1");
+    expect(mainElement).toBeInTheDocument();
   });
 
   it("should have KPI row with 4-column desktop grid", () => {
@@ -146,20 +148,16 @@ describe("PrincipalDashboardV3", () => {
     expect(kpiSection).toBeInTheDocument();
   });
 
-  it("should use semantic spacing tokens", () => {
+  it("should have 2-column grid for Performance + Activity bottom row", () => {
     const { container } = render(
       <MemoryRouter>
         <PrincipalDashboardV3 />
       </MemoryRouter>
     );
 
-    // Content area should use semantic spacing (uses div, not main - Layout.tsx wraps in main)
-    const contentDiv = container.querySelector(".p-content");
-    expect(contentDiv).toBeInTheDocument();
-
-    // Sections should use gap-section for vertical spacing
-    const sectionContainer = container.querySelector(".gap-section");
-    expect(sectionContainer).toBeInTheDocument();
+    // Bottom row uses grid-cols-1 (mobile) lg:grid-cols-2 (desktop)
+    const bottomGrid = container.querySelector(".grid.grid-cols-1.lg\\:grid-cols-2");
+    expect(bottomGrid).toBeInTheDocument();
   });
 
   it("should render all dashboard sections in vertical stack order", () => {
@@ -169,18 +167,21 @@ describe("PrincipalDashboardV3", () => {
       </MemoryRouter>
     );
 
-    // Verify all sections are present with proper landmarks (order is implicit by DOM structure)
+    // Verify all sections are present (order is implicit by DOM structure)
     // 1. KPI Summary Row
     expect(screen.getByLabelText("Key Performance Indicators")).toBeInTheDocument();
 
-    // 2. Pipeline Table (section landmark)
-    expect(screen.getByLabelText("Pipeline by Principal")).toBeInTheDocument();
+    // 2. Pipeline Table
+    expect(screen.getByText("Pipeline by Principal")).toBeInTheDocument();
 
-    // 3. Tasks Kanban (section landmark)
-    expect(screen.getByLabelText("My Tasks")).toBeInTheDocument();
+    // 3. Tasks Kanban
+    expect(screen.getByText("My Tasks")).toBeInTheDocument();
 
-    // 4. Activity Feed Panel (section landmark, full-width)
-    expect(screen.getByLabelText("Team Activity")).toBeInTheDocument();
+    // 4. My Performance Widget
+    expect(screen.getByText("My Performance")).toBeInTheDocument();
+
+    // 5. Activity Feed Panel
+    expect(screen.getByText("Team Activity")).toBeInTheDocument();
   });
 
   it("should render dashboard header", () => {
@@ -232,68 +233,5 @@ describe("PrincipalDashboardV3", () => {
     expect(
       screen.getByRole("button", { name: /Stale Deals: 2/i })
     ).toBeInTheDocument();
-  });
-
-  describe("responsive Tasks header button", () => {
-    it("should NOT show Tasks button in header on desktop (inline panel visible)", () => {
-      mockUseBreakpoint.mockReturnValue("desktop");
-      render(
-        <MemoryRouter>
-          <PrincipalDashboardV3 />
-        </MemoryRouter>
-      );
-
-      // Desktop shows inline Tasks panel, no header button needed
-      expect(screen.queryByRole("button", { name: /open tasks panel/i })).not.toBeInTheDocument();
-    });
-
-    it("should NOT show Tasks button in header on laptop (icon rail visible)", () => {
-      mockUseBreakpoint.mockReturnValue("laptop");
-      render(
-        <MemoryRouter>
-          <PrincipalDashboardV3 />
-        </MemoryRouter>
-      );
-
-      // Laptop shows icon rail, no header button needed
-      expect(screen.queryByRole("button", { name: /open tasks panel/i })).not.toBeInTheDocument();
-    });
-
-    it("should show Tasks button in header on tablet-landscape", () => {
-      mockUseBreakpoint.mockReturnValue("tablet-landscape");
-      render(
-        <MemoryRouter>
-          <PrincipalDashboardV3 />
-        </MemoryRouter>
-      );
-
-      // Tablet landscape needs header button to open drawer
-      expect(screen.getByRole("button", { name: /open tasks panel/i })).toBeInTheDocument();
-      expect(screen.getByText("Tasks")).toBeInTheDocument();
-    });
-
-    it("should show Tasks button in header on tablet-portrait", () => {
-      mockUseBreakpoint.mockReturnValue("tablet-portrait");
-      render(
-        <MemoryRouter>
-          <PrincipalDashboardV3 />
-        </MemoryRouter>
-      );
-
-      // Tablet portrait needs header button to open drawer
-      expect(screen.getByRole("button", { name: /open tasks panel/i })).toBeInTheDocument();
-    });
-
-    it("should NOT show Tasks button on mobile (handled by MobileQuickActionBar)", () => {
-      mockUseBreakpoint.mockReturnValue("mobile");
-      render(
-        <MemoryRouter>
-          <PrincipalDashboardV3 />
-        </MemoryRouter>
-      );
-
-      // Mobile uses MobileQuickActionBar instead
-      expect(screen.queryByRole("button", { name: /open tasks panel/i })).not.toBeInTheDocument();
-    });
   });
 });

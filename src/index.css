@@ -254,58 +254,60 @@
   }
 
   /* Status semantic colors for badges, alerts, indicators */
+  /* NOTE: These use OKLCH values directly - do NOT wrap in hsl() */
   .text-success {
-    color: hsl(var(--success));
+    color: var(--success);
   }
   .text-warning {
-    color: hsl(var(--warning));
+    color: var(--warning);
   }
   .text-warning-strong {
-    color: hsl(var(--warning-strong));
+    color: var(--warning-strong);
   }
   .text-error {
-    color: hsl(var(--destructive));
+    color: var(--destructive);
   }
   .text-success-foreground {
     color: var(--success-foreground);
   }
   .bg-success {
-    background-color: hsl(var(--success));
+    background-color: var(--success);
   }
   .bg-warning {
-    background-color: hsl(var(--warning));
+    background-color: var(--warning);
   }
   .bg-error {
-    background-color: hsl(var(--destructive));
+    background-color: var(--destructive);
   }
   .border-success {
-    border-color: hsl(var(--success));
+    border-color: var(--success);
   }
   .border-warning {
-    border-color: hsl(var(--warning));
+    border-color: var(--warning);
   }
   .border-error {
-    border-color: hsl(var(--destructive));
+    border-color: var(--destructive);
   }
 
   /* Semantic backgrounds with opacity for cards */
+  /* Using oklch() color-mix for opacity since OKLCH supports alpha channel */
   .bg-success-subtle {
-    background-color: hsl(var(--success) / 0.1);
+    background-color: color-mix(in oklch, var(--success) 10%, transparent);
   }
   .bg-warning-subtle {
-    background-color: hsl(var(--warning) / 0.1);
+    background-color: color-mix(in oklch, var(--warning) 10%, transparent);
   }
   .bg-error-subtle {
-    background-color: hsl(var(--destructive) / 0.1);
+    background-color: color-mix(in oklch, var(--destructive) 10%, transparent);
   }
   .border-success-subtle {
-    border-color: hsl(var(--success) / 0.2);
+    border-color: color-mix(in oklch, var(--success) 20%, transparent);
   }
   .border-warning-subtle {
-    border-color: hsl(var(--warning) / 0.2);
+    border-color: color-mix(in oklch, var(--warning) 20%, transparent);
   }
   .border-error-subtle {
-    border-color: hsl(var(--destructive) / 0.2);
+    border-color: color-mix(in oklch, var(--destructive) 20%, transparent);
   }
 }
 

@@ -1,7 +1,6 @@
 import { useState, useCallback, lazy, Suspense } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import {
@@ -82,9 +81,9 @@ export function PrincipalPipelineTable() {
   // Loading state - matches production layout structure
   if (loading) {
     return (
-      <Card className="card-container flex h-full flex-col">
+      <div className="flex h-full flex-col">
         {/* Header skeleton matching production header */}
-        <CardHeader className="border-b border-border pb-3 shrink-0">
+        <div className="border-b border-border pb-4">
           <div className="flex items-start justify-between">
             <div>
               <Skeleton className="mb-2 h-6 w-48" />
@@ -97,9 +96,9 @@ export function PrincipalPipelineTable() {
               <Skeleton className="h-9 w-20" />
             </div>
           </div>
-        </CardHeader>
+        </div>
         {/* Table skeleton with header and rows */}
-        <CardContent className="flex-1 overflow-auto p-0">
+        <div className="flex-1 overflow-auto pt-2">
           {/* Table header */}
           <div className="flex gap-4 px-2 py-3 border-b border-border">
             <Skeleton className="h-4 w-32" />
@@ -122,38 +121,33 @@ export function PrincipalPipelineTable() {
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     );
   }
 
   // Error state
   if (error) {
     return (
-      <Card className="card-container flex h-full flex-col">
-        <CardHeader>
-          <CardTitle>Pipeline by Principal</CardTitle>
-        </CardHeader>
-        <CardContent className="flex h-full items-center justify-center">
-          <div className="text-center">
-            <p className="text-destructive">Failed to load pipeline data</p>
-            <p className="text-sm text-muted-foreground">{error.message}</p>
-          </div>
-        </CardContent>
-      </Card>
+      <div className="flex h-full items-center justify-center">
+        <div className="text-center">
+          <p className="text-destructive">Failed to load pipeline data</p>
+          <p className="text-sm text-muted-foreground">{error.message}</p>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Card className="card-container flex h-full flex-col">
+    <div className="flex h-full flex-col">
       {/* Header with title and filters */}
-      <CardHeader className="border-b border-border pb-3 shrink-0">
+      <div className="border-b border-border pb-4">
         <div className="flex items-start justify-between">
           <div>
-            <CardTitle>Pipeline by Principal</CardTitle>
-            <CardDescription>
+            <h2 className="text-lg font-semibold">Pipeline by Principal</h2>
+            <p className="text-sm text-muted-foreground">
               Track opportunity momentum across your customer accounts
-            </CardDescription>
+            </p>
           </div>
           <div className="flex items-center gap-2">
             {/* Search input */}
@@ -163,7 +157,7 @@ export function PrincipalPipelineTable() {
                 placeholder="Search principals..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-11 w-48 pl-8"
+                className="h-9 w-48 pl-8"
               />
             </div>
             <div className="flex items-center gap-2">
@@ -182,10 +176,10 @@ export function PrincipalPipelineTable() {
             />
           </div>
         </div>
-      </CardHeader>
+      </div>
 
       {/* Table */}
-      <CardContent className="flex-1 overflow-auto p-0">
+      <div className="flex-1 overflow-auto">
         {sortedData?.length === 0 ? (
           <EmptyState searchQuery={searchQuery} />
         ) : (
@@ -239,7 +233,7 @@ export function PrincipalPipelineTable() {
                   getAriaSortValue={getAriaSortValue}
                   renderSortIcon={renderSortIcon}
                 />
-                <TableHead scope="col" className="max-w-[200px] lg:max-w-[280px]">Next Action</TableHead>
+                <TableHead className="max-w-[200px] lg:max-w-[280px]">Next Action</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -249,7 +243,7 @@ export function PrincipalPipelineTable() {
             </TableBody>
           </Table>
         )}
-      </CardContent>
+      </div>
 
       {/* Drill-Down Sheet - lazy loaded */}
       {selectedPrincipal !== null && (
@@ -262,7 +256,7 @@ export function PrincipalPipelineTable() {
           />
         </Suspense>
       )}
-    </Card>
+    </div>
   );
 }
 
@@ -311,7 +305,6 @@ function SortableTableHead({
 
   return (
     <TableHead
-      scope="col"
       className={`cursor-pointer select-none hover:bg-muted/50 ${alignClass} ${className}`}
       onClick={() => onSort(field)}
       aria-sort={getAriaSortValue(field)}
@@ -336,7 +329,7 @@ function MomentumFilterDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" size="default" className="h-11">
+        <Button variant="outline" size="sm">
           <Filter className="mr-2 h-4 w-4" />
           Filters
           {momentumFilters.size > 0 && (

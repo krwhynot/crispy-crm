@@ -68,7 +68,7 @@ export function PipelineTableRow({ row, onRowClick }: PipelineTableRowProps) {
 
   return (
     <TableRow
-      className="table-row-premium cursor-pointer relative h-11 min-h-[44px]"
+      className="table-row-premium cursor-pointer relative"
       onClick={() => onRowClick(row)}
       onKeyDown={handleKeyDown}
       tabIndex={0}
@@ -92,7 +92,7 @@ export function PipelineTableRow({ row, onRowClick }: PipelineTableRowProps) {
       {/* This week activity */}
       <TableCell className="text-center">
         {row.activeThisWeek > 0 ? (
-          <Badge variant="default" className="bg-success text-success-foreground">
+          <Badge variant="default" className="bg-success">
             {row.activeThisWeek}
           </Badge>
         ) : (

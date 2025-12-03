@@ -1,58 +1,33 @@
 import { useState, useCallback } from "react";
-import { CheckSquare } from "lucide-react";
-import { useBreakpoint } from "@/hooks/useBreakpoint";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { PrincipalPipelineTable } from "./components/PrincipalPipelineTable";
+import { TasksKanbanPanel } from "./components/TasksKanbanPanel";
 import { ActivityFeedPanel } from "./components/ActivityFeedPanel";
 import { LogActivityFAB } from "./components/LogActivityFAB";
 import { MobileQuickActionBar } from "./components/MobileQuickActionBar";
 import { TaskCompleteSheet } from "./components/TaskCompleteSheet";
 import { KPISummaryRow } from "./components/KPISummaryRow";
-import { DashboardHeader } from "./components/DashboardHeader";
-import { DashboardGrid } from "./components/DashboardGrid";
-import { ResponsiveTasksPanel } from "./components/ResponsiveTasksPanel";
+import { MyPerformanceWidget } from "./components/MyPerformanceWidget";
 
 /**
- * PrincipalDashboardV3 - Responsive dashboard with 5-breakpoint grid layout
+ * PrincipalDashboardV3 - Vertically stacked dashboard with Log Activity FAB
  *
- * Layout (PRD Section 9.2.6 compliant):
- * - Desktop (1440px+): 2-column grid with inline 320px tasks panel
- * - Laptop (1280-1439px): 2-column grid with 48px icon rail + drawer
- * - Tablet landscape (1024-1279px): Single column with header tasks button + drawer
- * - Tablet portrait (768-1023px): Single column with header tasks button + drawer
- * - Mobile (<768px): Single column with MobileQuickActionBar
- *
- * Structure:
- * - DashboardHeader with optional tasks button (tablet)
- * - KPI Summary Row (always full width above grid)
- * - DashboardGrid containing Pipeline + ResponsiveTasksPanel
- * - Activity Feed (in main column on mobile/tablet-portrait)
+ * Layout (all sections stack vertically):
+ * - KPI Summary Row (4-column on desktop, 2x2 on mobile)
+ * - Pipeline Table (full width)
+ * - Tasks Kanban Board (full width)
+ * - Performance + Activity Feed (2-column on desktop, stacked on mobile)
  *
  * Features:
- * - Responsive CSS Grid layout
- * - FAB opens Sheet slide-over for activity logging (desktop)
+ * - Pure vertical stacking for maximum data visibility
+ * - FAB opens Sheet slide-over for activity logging
  * - Draft persistence in localStorage
- * - Section landmarks for accessibility
+ * - Team activity feed showing recent activities with avatars
  */
 export function PrincipalDashboardV3() {
-  const breakpoint = useBreakpoint();
-
   // Refresh key to force data components to re-mount and re-fetch
   const [refreshKey, setRefreshKey] = useState(0);
   // Task completion sheet state (for mobile quick action bar)
   const [isTaskSheetOpen, setIsTaskSheetOpen] = useState(false);
-  // Tasks drawer state (for header button on tablet)
-  const [tasksDrawerOpen, setTasksDrawerOpen] = useState(false);
-
-  // Determine if activity feed should show in main column
-  const showActivityFeedInMain = breakpoint === "mobile" || breakpoint === "tablet-portrait";
-
-  // Show Tasks button in header for tablet breakpoints (no icon rail)
-  const showTasksButtonInHeader = breakpoint === "tablet-landscape" || breakpoint === "tablet-portrait";
-
-  // Placeholder task count (TODO: integrate with actual tasks data)
-  const taskCount = 5;
 
   // Memoized to prevent child re-renders when passed as prop
   const handleRefresh = useCallback(() => {
@@ -66,67 +41,34 @@ export function PrincipalDashboardV3() {
   }, []);
 
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] flex-col" data-testid="dashboard">
-      {/* Header - with optional Tasks button for tablet breakpoints */}
-      <DashboardHeader title="Principal Dashboard">
-        {showTasksButtonInHeader && (
-          <Button
-            variant="outline"
-            size="default"
-            onClick={() => setTasksDrawerOpen(true)}
-            aria-label={`Open tasks panel (${taskCount} tasks)`}
-            className="relative h-11 gap-2"
-          >
-            <CheckSquare className="h-5 w-5" />
-            <span>Tasks</span>
-            {taskCount > 0 && (
-              <Badge variant="secondary" className="ml-1 h-5 min-w-[20px] px-1.5 text-xs">
-                {taskCount > 99 ? "99+" : taskCount}
-              </Badge>
-            )}
-          </Button>
-        )}
-      </DashboardHeader>
+    <div className="flex h-screen flex-col">
+      {/* Header */}
+      <header className="border-b border-border bg-card">
+        <div className="flex h-16 items-center px-6">
+          <h1 className="text-xl font-semibold">Principal Dashboard</h1>
+        </div>
+      </header>
 
       {/* Main Content - Vertically stacked layout */}
-      {/* Note: Using <div> instead of <main> because Layout.tsx already wraps in <main> */}
-      <div className="relative flex-1 overflow-auto p-content lg:p-widget">
-        <div className="flex flex-col gap-section">
-          {/* KPI Summary Row - Always full width above grid */}
+      <main className="relative flex-1 overflow-auto p-4">
+        <div className="flex flex-col gap-4">
+          {/* KPI Summary Row */}
           <KPISummaryRow key={`kpi-${refreshKey}`} />
 
-          {/* Main Content Grid - Responsive columns based on breakpoint */}
-          <DashboardGrid>
-            {/* Main Column - Pipeline + conditionally Activity Feed */}
-            <div className="flex flex-col gap-section">
-              {/* Pipeline Table */}
-              <section aria-label="Pipeline by Principal">
-                <PrincipalPipelineTable key={`pipeline-${refreshKey}`} />
-              </section>
+          {/* Pipeline Table - Full width */}
+          <PrincipalPipelineTable key={`pipeline-${refreshKey}`} />
 
-              {/* Activity Feed - In main column on mobile/tablet-portrait */}
-              {showActivityFeedInMain && (
-                <section aria-label="Team Activity">
-                  <ActivityFeedPanel key={`activities-${refreshKey}`} limit={15} />
-                </section>
-              )}
-            </div>
+          {/* Tasks Kanban Board - Full width */}
+          <TasksKanbanPanel key={`tasks-${refreshKey}`} />
 
-            {/* Tasks Panel - Responsive: inline panel, icon rail, or drawer */}
-            <ResponsiveTasksPanel
-              key={`tasks-${refreshKey}`}
-              taskCount={taskCount}
-              externalDrawerOpen={tasksDrawerOpen}
-              onExternalDrawerChange={setTasksDrawerOpen}
-            />
-          </DashboardGrid>
+          {/* Performance + Activity - Two columns on desktop, stacked on mobile */}
+          <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
+            {/* My Performance Widget */}
+            <MyPerformanceWidget key={`performance-${refreshKey}`} />
 
-          {/* Activity Feed - Below grid on desktop/laptop/tablet-landscape */}
-          {!showActivityFeedInMain && (
-            <section aria-label="Team Activity">
-              <ActivityFeedPanel key={`activities-${refreshKey}`} limit={15} />
-            </section>
-          )}
+            {/* Activity Feed Panel */}
+            <ActivityFeedPanel key={`activities-${refreshKey}`} limit={10} />
+          </div>
         </div>
 
         {/* FAB - Fixed position, opens Log Activity Sheet (desktop only) */}
@@ -141,7 +83,7 @@ export function PrincipalDashboardV3() {
           onOpenChange={setIsTaskSheetOpen}
           onRefresh={handleRefresh}
         />
-      </div>
+      </main>
     </div>
   );
 }
