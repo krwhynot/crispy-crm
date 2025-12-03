@@ -23,33 +23,63 @@
         ]
       }
     },
-    "crispy-design-system": {
+    "ui-ux-design-principles": {
       "type": "guardrail",
       "enforcement": "suggest",
       "priority": "high",
-      "description": "Design tokens, Tailwind patterns, OKLCH colors, CRM UI components",
+      "description": "UI/UX design principles, UX laws (Jakob's, Hick's, Fitts's), accessibility, color theory, cognitive load, touch targets, decision matrix, Sienna protocol",
       "promptTriggers": {
         "keywords": [
           "design",
-          "component",
-          "styling",
-          "layout",
-          "tailwind",
+          "UX",
+          "UI",
+          "user experience",
+          "usability",
+          "accessibility",
+          "a11y",
           "color",
-          "typography",
+          "contrast",
+          "touch target",
+          "44px",
+          "cognitive load",
+          "Hick's Law",
+          "Fitts's Law",
+          "Jakob's Law",
+          "Miller's Law",
+          "decision matrix",
+          "audit",
+          "component",
+          "button",
+          "form",
+          "layout",
+          "responsive",
+          "mobile",
+          "tablet",
+          "desktop",
+          "WCAG",
+          "ARIA",
+          "semantic",
           "spacing",
+          "typography",
           "elevation",
-          "theme"
+          "feedback",
+          "loading state",
+          "toast"
         ],
         "intentPatterns": [
-          "(create|build|design).*?(component|ui|interface)",
-          "(style|styling|css).*",
-          "how.*?(look|appear|design)"
+          "(create|build|design|implement).*?(component|ui|interface|button|form|layout)",
+          "(audit|review|evaluate|assess).*?(ui|ux|design|usability|accessibility)",
+          "(improve|fix|optimize).*?(accessibility|usability|ux|ui)",
+          "(check|verify|ensure).*?(contrast|touch|target|accessible)",
+          "(style|styling|css|tailwind).*",
+          "how.*?(look|appear|design|accessible)",
+          "(tablet|ipad|mobile|responsive).*?(design|layout|view)",
+          "what.*?(color|spacing|size|font)"
         ]
       },
       "fileTriggers": {
-        "pathPatterns": ["src/components/**/*.tsx", "src/pages/**/*.tsx", "src/layouts/**/*.tsx"],
-        "contentPatterns": ["className=", "tailwind", "bg-\\[oklch", "design-token"]
+        "pathPatterns": ["src/components/**/*.tsx", "src/pages/**/*.tsx", "src/layouts/**/*.tsx", "src/atomic-crm/**/*.tsx"],
+        "contentPatterns": ["className=", "tailwind", "bg-", "text-", "aria-", "role="]
       }
     },
     "supabase-crm": {
