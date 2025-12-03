@@ -73,6 +73,16 @@
             "timeout": 10
           }
         ]
+      },
+      {
+        "matcher": "BashOutput",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/bash-output-success-reset.sh",
+            "timeout": 5
+          }
+        ]
       }
     ]
   },
