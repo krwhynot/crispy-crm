@@ -190,14 +190,14 @@ export async function validateOpportunityForm(data: unknown): Promise<void> {
 }
 
 /**
- * Create-specific schema (Industry Standard - HubSpot/Salesforce pattern)
+ * Create-specific schema (Salesforce standard + business rule Q12)
  *
  * Per industry research (2025-12):
- * - HubSpot Deals: requires only dealname + dealstage + pipeline
- * - Salesforce: requires only name + prospect link
+ * - Salesforce: Opportunities REQUIRE an Account (hard requirement)
+ * - HubSpot: Deals don't require Company (but many orgs enforce it)
  *
- * Our approach: Only name and stage required, everything else optional with sensible defaults.
- * This enables "capture now, enrich later" workflow for both Kanban quick-add AND full Create form.
+ * Our approach: Follow Salesforce standard - require customer_organization_id
+ * This enforces business rule Q12: "Every opportunity must have exactly one customer"
  */
 export const createOpportunitySchema = opportunityBaseSchema
   .omit({
@@ -233,28 +233,31 @@ export const createOpportunitySchema = opportunityBaseSchema
       )
       .optional(),
 
-    // Customer/principal optional for quick-add (core HubSpot pattern)
-    customer_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
+    // Customer REQUIRED (Salesforce standard + business rule Q12)
+    customer_organization_id: z.union([z.string(), z.number()]),
+    // Principal optional (can be enriched later)
     principal_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
   })
   .required({
-    name: true, // Only name is truly required (matches HubSpot)
+    name: true,
+    customer_organization_id: true, // Salesforce standard: Account required
   });
 
 /**
- * Quick-Create Schema (Industry Standard - HubSpot/Salesforce pattern)
+ * Quick-Create Schema (Salesforce standard + business rule Q12)
  *
- * Minimal schema for Kanban quick-add buttons. Per industry research:
- * - HubSpot Deals: requires only dealname + dealstage + pipeline
- * - Salesforce: requires only name + prospect link
+ * Minimal schema for Kanban quick-add buttons.
+ * Per industry research (2025-12):
+ * - Salesforce: Opportunities REQUIRE an Account (hard requirement)
  *
- * This enables "capture now, enrich later" workflow for fast opportunity entry.
- * Users can add customer, principal, contacts via slide-over edit panel.
+ * Required: name + customer + stage (matches Salesforce pattern)
+ * Optional: principal, contacts (can be enriched later via slide-over)
  */
 export const quickCreateOpportunitySchema = z.object({
-  // Required fields (minimal - matches HubSpot pattern)
+  // Required fields (Salesforce standard)
   name: z.string().min(1, "Opportunity name is required"),
   stage: opportunityStageSchema,
+  customer_organization_id: z.union([z.string(), z.number()]), // Business rule Q12
 
   // Auto-populated fields
   status: z.literal("active").default("active"),

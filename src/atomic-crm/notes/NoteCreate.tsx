@@ -9,11 +9,12 @@ import {
   useResourceContext,
   useUpdate,
 } from "ra-core";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useFormState } from "react-hook-form";
 
 import { SaveButton } from "@/components/admin/form";
+import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { NoteInputs } from "./NoteInputs";
-import { getCurrentDate } from "../validation/notes";
+import { baseNoteSchema, getCurrentDate } from "../validation/notes";
 
 const foreignKeyMapping = {
   contacts: "contact_id",
@@ -32,15 +33,36 @@ export const NoteCreate = ({
 
   if (!record || !identity) return null;
 
+  const formDefaults = {
+    ...baseNoteSchema.partial().parse({}),
+  };
+
   return (
     <CreateBase resource={resource} redirect={false}>
-      <Form>
+      <Form defaultValues={formDefaults}>
         <div className="space-y-3">
-          <NoteInputs />
-          <NoteCreateButton reference={reference} record={record} />
+          <NoteFormContent reference={reference} record={record} />
         </div>
       </Form>
     </CreateBase>
+  );
+};
+
+const NoteFormContent = ({
+  reference,
+  record,
+}: {
+  reference: "contacts" | "opportunities" | "organizations";
+  record: RaRecord<Identifier>;
+}) => {
+  const { errors } = useFormState();
+
+  return (
+    <>
+      <FormErrorSummary errors={errors} />
+      <NoteInputs />
+      <NoteCreateButton reference={reference} record={record} />
+    </>
   );
 };
 
@@ -59,13 +81,8 @@ const NoteCreateButton = ({
 
   if (!record || !identity) return null;
 
-  const resetValues = {
-    text: null,
-    date: null,
-  };
-
   const handleSuccess = () => {
-    reset(resetValues, { keepValues: false });
+    reset(baseNoteSchema.partial().parse({}), { keepValues: false });
     refetch();
 
     // Only update last_seen for contacts (opportunities don't have last_seen)

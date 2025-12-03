@@ -16,9 +16,10 @@ import { CreateBase, Form, useGetList, useCreate, useRedirect, useNotify } from 
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { SaveButton, FormLoadingSkeleton } from "@/components/admin/form";
+import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { FormToolbar } from "@/components/admin/simple-form";
 import { useLocation } from "react-router-dom";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useFormState } from "react-hook-form";
 
 import { OrganizationInputs } from "./OrganizationInputs";
 import { organizationSchema } from "../validation/organizations";
@@ -216,17 +217,11 @@ const OrganizationCreate = () => {
             <Form key={formKey} defaultValues={formDefaults}>
               <Card>
                 <CardContent>
-                  <OrganizationInputs />
-                  <FormToolbar>
-                    <div className="flex flex-row gap-2 justify-end">
-                      <CancelButton />
-                      <DuplicateCheckSaveButton
-                        onDuplicateFound={handleDuplicateFound}
-                        checkForDuplicate={checkForDuplicate}
-                        isChecking={isChecking}
-                      />
-                    </div>
-                  </FormToolbar>
+                  <OrganizationFormContent
+                    onDuplicateFound={handleDuplicateFound}
+                    checkForDuplicate={checkForDuplicate}
+                    isChecking={isChecking}
+                  />
                 </CardContent>
               </Card>
             </Form>
@@ -242,6 +237,35 @@ const OrganizationCreate = () => {
         onProceed={handleProceedAnyway}
         isLoading={isCreating}
       />
+    </>
+  );
+};
+
+const OrganizationFormContent = ({
+  onDuplicateFound,
+  checkForDuplicate,
+  isChecking,
+}: {
+  onDuplicateFound: (name: string, values: any) => void;
+  checkForDuplicate: (name: string) => Promise<{ id: string | number; name: string } | null>;
+  isChecking: boolean;
+}) => {
+  const { errors } = useFormState();
+
+  return (
+    <>
+      <FormErrorSummary errors={errors} />
+      <OrganizationInputs />
+      <FormToolbar>
+        <div className="flex flex-row gap-2 justify-end">
+          <CancelButton />
+          <DuplicateCheckSaveButton
+            onDuplicateFound={onDuplicateFound}
+            checkForDuplicate={checkForDuplicate}
+            isChecking={isChecking}
+          />
+        </div>
+      </FormToolbar>
     </>
   );
 };

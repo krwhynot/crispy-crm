@@ -1,6 +1,8 @@
 import { CreateBase, Form, useGetIdentity } from "ra-core";
+import { useFormState } from "react-hook-form";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
+import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { FormToolbar } from "../layout/FormToolbar";
 import { OpportunityInputs } from "./forms/OpportunityInputs";
 import { opportunitySchema } from "../validation/opportunities";
@@ -43,17 +45,11 @@ const OpportunityCreate = () => {
           <Form defaultValues={formDefaults}>
             <Card>
               <CardContent>
-                <OpportunityInputs mode="create" />
-                <FormToolbar>
-                  <div className="flex flex-row gap-2 justify-end">
-                    <CancelButton />
-                    <OpportunityCreateSaveButton
-                      checkForSimilar={checkForSimilar}
-                      hasConfirmed={hasConfirmed}
-                      resetConfirmation={resetConfirmation}
-                    />
-                  </div>
-                </FormToolbar>
+                <OpportunityFormContent
+                  checkForSimilar={checkForSimilar}
+                  hasConfirmed={hasConfirmed}
+                  resetConfirmation={resetConfirmation}
+                />
               </CardContent>
             </Card>
           </Form>
@@ -69,6 +65,35 @@ const OpportunityCreate = () => {
         similarOpportunities={similarOpportunities}
       />
     </CreateBase>
+  );
+};
+
+const OpportunityFormContent = ({
+  checkForSimilar,
+  hasConfirmed,
+  resetConfirmation,
+}: {
+  checkForSimilar: (name: string) => Promise<void>;
+  hasConfirmed: boolean;
+  resetConfirmation: () => void;
+}) => {
+  const { errors } = useFormState();
+
+  return (
+    <>
+      <FormErrorSummary errors={errors} />
+      <OpportunityInputs mode="create" />
+      <FormToolbar>
+        <div className="flex flex-row gap-2 justify-end">
+          <CancelButton />
+          <OpportunityCreateSaveButton
+            checkForSimilar={checkForSimilar}
+            hasConfirmed={hasConfirmed}
+            resetConfirmation={resetConfirmation}
+          />
+        </div>
+      </FormToolbar>
+    </>
   );
 };
 

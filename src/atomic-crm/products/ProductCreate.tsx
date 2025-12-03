@@ -1,7 +1,9 @@
 import { CreateBase, Form, useGetIdentity } from "ra-core";
+import { useFormState } from "react-hook-form";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { SaveButton } from "@/components/admin/form";
+import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { FormToolbar } from "@/components/admin/simple-form";
 
 import { ProductInputs } from "./ProductInputs";
@@ -23,19 +25,30 @@ const ProductCreate = () => {
           <Form defaultValues={defaultValues}>
             <Card>
               <CardContent>
-                <ProductInputs />
-                <FormToolbar>
-                  <div className="flex flex-row gap-2 justify-end">
-                    <CancelButton />
-                    <SaveButton label="Create Product" />
-                  </div>
-                </FormToolbar>
+                <ProductFormContent />
               </CardContent>
             </Card>
           </Form>
         </div>
       </div>
     </CreateBase>
+  );
+};
+
+const ProductFormContent = () => {
+  const { errors } = useFormState();
+
+  return (
+    <>
+      <FormErrorSummary errors={errors} />
+      <ProductInputs />
+      <FormToolbar>
+        <div className="flex flex-row gap-2 justify-end">
+          <CancelButton />
+          <SaveButton label="Create Product" />
+        </div>
+      </FormToolbar>
+    </>
   );
 };
 

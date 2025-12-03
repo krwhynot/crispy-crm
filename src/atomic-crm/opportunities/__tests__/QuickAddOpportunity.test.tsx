@@ -7,6 +7,13 @@ vi.mock("react-admin", () => ({
   useNotify: () => vi.fn(),
   useRefresh: () => vi.fn(),
   useGetIdentity: () => ({ identity: { id: 1 }, isLoading: false }),
+  useGetList: () => ({
+    data: [
+      { id: 1, name: "Acme Corp" },
+      { id: 2, name: "TechStart Inc" },
+    ],
+    isLoading: false,
+  }),
 }));
 
 describe("QuickAddOpportunity", () => {
@@ -22,7 +29,8 @@ describe("QuickAddOpportunity", () => {
     fireEvent.click(screen.getByText("+ New Opportunity"));
 
     expect(screen.getByText("Create Opportunity")).toBeInTheDocument();
-    expect(screen.getByLabelText("Name")).toBeInTheDocument();
+    expect(screen.getByLabelText(/Name/)).toBeInTheDocument();
+    expect(screen.getByLabelText(/Customer/)).toBeInTheDocument();
   });
 
   it("pre-fills stage field with column stage", () => {

@@ -4,6 +4,7 @@ import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 import { SaveButton, FormLoadingSkeleton } from "@/components/admin/form";
+import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
 import type { Contact } from "../types";
 import { ContactInputs } from "./ContactInputs";
@@ -45,12 +46,29 @@ const ContactCreate = () => {
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
           <Form defaultValues={formDefaults}>
-            <ContactInputs />
-            <ContactCreateFooter notify={notify} redirect={redirect} />
+            <ContactFormContent notify={notify} redirect={redirect} />
           </Form>
         </div>
       </div>
     </CreateBase>
+  );
+};
+
+const ContactFormContent = ({
+  notify,
+  redirect,
+}: {
+  notify: ReturnType<typeof useNotify>;
+  redirect: ReturnType<typeof useRedirect>;
+}) => {
+  const { errors } = useFormState();
+
+  return (
+    <>
+      <FormErrorSummary errors={errors} />
+      <ContactInputs />
+      <ContactCreateFooter notify={notify} redirect={redirect} />
+    </>
   );
 };
 

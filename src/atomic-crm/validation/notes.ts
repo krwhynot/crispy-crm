@@ -21,7 +21,7 @@ const attachmentSchema = z.object({
 /**
  * Base note schema with common fields
  */
-const baseNoteSchema = z.object({
+export const baseNoteSchema = z.object({
   // Required fields
   text: z.string().min(1, "Note text is required"),
   date: z.string().min(1, "Date is required"),
