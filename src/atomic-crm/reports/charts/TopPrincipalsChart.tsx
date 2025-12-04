@@ -39,6 +39,7 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
       labels: topData.map((d) => truncateLabel(d.name, 20)),
       datasets: [
         {
+          id: "opportunities",
           label: "Opportunities",
           data: topData.map((d) => d.count),
           backgroundColor: topData.map((_, i) => colorPalette[i % colorPalette.length]),
@@ -48,12 +49,22 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
     };
   }, [topData, colors]);
 
+  const ariaLabel = useMemo(() => {
+    const total = topData.reduce((sum, d) => sum + d.count, 0);
+    const breakdown = topData.map(d => `${d.name}: ${d.count}`).join(', ');
+    return `Top principals chart showing ${total} opportunities across ${topData.length} principals. ${breakdown}`;
+  }, [topData]);
+
   // Memoize chart options to prevent recalculation on every render
   const options = useMemo(() => {
     return {
       responsive: true,
       maintainAspectRatio: false,
       indexAxis: "y" as const,
+      interaction: {
+        mode: "nearest" as const,
+        intersect: false,
+      },
       plugins: {
         legend: {
           display: false,
@@ -108,5 +119,13 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
     );
   }
 
-  return <Bar data={chartData} options={options} />;
+  return (
+    <Bar
+      data={chartData}
+      options={options}
+      datasetIdKey="id"
+      aria-label={ariaLabel}
+      role="img"
+    />
+  );
 }

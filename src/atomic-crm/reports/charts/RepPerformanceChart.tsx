@@ -31,12 +31,14 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
       labels: topData.map((d) => truncateLabel(d.name, 15)),
       datasets: [
         {
+          id: "activities",
           label: "Activities",
           data: topData.map((d) => d.activities),
           backgroundColor: colors.primary,
           borderRadius: 4,
         },
         {
+          id: "opportunities",
           label: "Opportunities",
           data: topData.map((d) => d.opportunities),
           backgroundColor: colors.success,
@@ -46,18 +48,29 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
     };
   }, [topData, colors.primary, colors.success]);
 
+  const ariaLabel = useMemo(() => {
+    const totalActivities = topData.reduce((sum, d) => sum + d.activities, 0);
+    const totalOpportunities = topData.reduce((sum, d) => sum + d.opportunities, 0);
+    const breakdown = topData.map(d => `${d.name}: ${d.activities} activities, ${d.opportunities} opportunities`).join('; ');
+    return `Rep performance chart showing ${topData.length} reps with ${totalActivities} total activities and ${totalOpportunities} total opportunities. ${breakdown}`;
+  }, [topData]);
+
   // Memoize chart options to prevent recalculation on every render
   const options = useMemo(() => {
     return {
       responsive: true,
       maintainAspectRatio: false,
+      interaction: {
+        mode: "nearest" as const,
+        intersect: false,
+      },
       plugins: {
         legend: {
           position: "top" as const,
           labels: {
             font: {
               family: font.family,
-              size: font.size,
+              size: 14,
             },
             usePointStyle: true,
             padding: 16,
@@ -109,5 +122,13 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
     );
   }
 
-  return <Bar data={chartData} options={options} />;
+  return (
+    <Bar
+      data={chartData}
+      options={options}
+      datasetIdKey="id"
+      aria-label={ariaLabel}
+      role="img"
+    />
+  );
 }

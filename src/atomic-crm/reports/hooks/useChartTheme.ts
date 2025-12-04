@@ -47,13 +47,14 @@ function throwMissingCssVarError(varName: string): never {
  */
 const DEFAULT_THEME: ChartTheme = {
   colors: {
-    primary: "hsl(var(--primary))",
-    brand700: "hsl(var(--brand-700))",
-    brand600: "hsl(var(--brand-600))",
-    success: "hsl(var(--success))",
-    warning: "hsl(var(--warning))",
-    destructive: "hsl(var(--destructive))",
-    muted: "hsl(var(--muted))",
+    // Use var() directly - CSS variables contain OKLCH values, not HSL channels
+    primary: "var(--primary)",
+    brand700: "var(--brand-700)",
+    brand600: "var(--brand-600)",
+    success: "var(--success)",
+    warning: "var(--warning)",
+    destructive: "var(--destructive)",
+    muted: "var(--muted)",
   },
   font: {
     family: "var(--font-sans, system-ui)",

@@ -12,10 +12,10 @@
   transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em oklch(var(--primary) / 0.67));
+  filter: drop-shadow(0 0 2em color-mix(in oklch, var(--primary) 67%, transparent));
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em oklch(var(--info-default) / 0.67));
+  filter: drop-shadow(0 0 2em color-mix(in oklch, var(--info-default) 67%, transparent));
 }
 
 @keyframes logo-spin {

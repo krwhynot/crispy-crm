@@ -1,5 +1,6 @@
 import * as Sentry from "@sentry/react";
 import { CRM } from "@/atomic-crm/root/CRM";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 /**
  * Application entry point
@@ -31,29 +32,31 @@ import { CRM } from "@/atomic-crm/root/CRM";
  * );
  */
 const App = () => (
-  <Sentry.ErrorBoundary
-    fallback={
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center space-y-4 p-8">
-          <h1 className="text-2xl font-bold text-foreground">Something went wrong</h1>
-          <p className="text-muted-foreground">We've been notified and are looking into it.</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-          >
-            Reload Page
-          </button>
+  <TooltipProvider delayDuration={400} skipDelayDuration={300}>
+    <Sentry.ErrorBoundary
+      fallback={
+        <div className="min-h-screen flex items-center justify-center bg-background">
+          <div className="text-center space-y-4 p-8">
+            <h1 className="text-2xl font-bold text-foreground">Something went wrong</h1>
+            <p className="text-muted-foreground">We've been notified and are looking into it.</p>
+            <button
+              onClick={() => window.location.reload()}
+              className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
+            >
+              Reload Page
+            </button>
+          </div>
         </div>
-      </div>
-    }
-    showDialog
-  >
-    <CRM
-      lightModeLogo="/logos/mfb-logo.webp"
-      darkModeLogo="/logos/mfb-logo.webp"
-      title="MFB Master Food Brokers"
-    />
-  </Sentry.ErrorBoundary>
+      }
+      showDialog
+    >
+      <CRM
+        lightModeLogo="/logos/mfb-logo.webp"
+        darkModeLogo="/logos/mfb-logo.webp"
+        title="MFB Master Food Brokers"
+      />
+    </Sentry.ErrorBoundary>
+  </TooltipProvider>
 );
 
 export default App;

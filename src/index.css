@@ -1,7 +1,7 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
@@ -369,7 +369,7 @@
 
   .card-interactive:hover {
     box-shadow: var(--elevation-2);
-    border-color: oklch(90% 0.005 92);
+    border-color: var(--stroke-card-hover);
     transform: translateY(-1px);
   }
 
@@ -529,6 +529,9 @@
  */
 
 :root {
+  /* Browser UI theming - styles native scrollbars, inputs, etc. */
+  color-scheme: light;
+
   --radius: 0.5rem; /* 8px - MFB organic aesthetic */
 
   /* === AESTHETIC POLISH TOKENS === */
@@ -850,6 +853,9 @@
 }
 
 .dark {
+  /* Browser UI theming - styles native scrollbars, inputs, etc. */
+  color-scheme: dark;
+
   /* Inverted Neutrals - OKLCH format */
   --neutral-50: oklch(23.4% 0.021 288); /* Darkest (was 900) */
   --neutral-100: oklch(31.5% 0.019 287.6); /* Dark (was 800) */
@@ -860,7 +866,7 @@
   --neutral-600: oklch(72.1% 0.009 285.6); /* (was 300) */
   --neutral-700: oklch(80.2% 0.007 285.2); /* (was 200) */
   --neutral-800: oklch(88.4% 0.005 284.8); /* (was 100) */
-  --neutral-900: oklch(97.1% 0.002 284.5); /* Lightest (was 50) */
+  --neutral-900: oklch(98% 0.002 284.5); /* Lightest - WCAG AA compliant (was 50) */
 
   /* Adjusted Brand Colors for Dark Mode - Forest Green */
   --brand-50: oklch(20% 0.05 142); /* Extra dark for high-contrast backgrounds */
@@ -894,7 +900,7 @@
   --secondary: var(--neutral-200); /* Secondary buttons */
   --secondary-foreground: var(--neutral-900); /* Light text */
   --muted: var(--neutral-200); /* Muted surfaces */
-  --muted-foreground: var(--neutral-700); /* Muted text - 8:1 contrast (was neutral-600) */
+  --muted-foreground: var(--neutral-800); /* Muted text - WCAG AA compliant, 10:1+ contrast */
   --accent: var(--accent-clay-600-dark); /* Clay accent for brand consistency */
   --accent-foreground: oklch(12% 0.02 72); /* Very dark text for accessibility */
   --destructive: var(--destructive-dark);
@@ -1069,11 +1075,15 @@
   --shadow-col: 0 3px 10px var(--shadow-ink-dark) / 0.4;
   --shadow-col-inner: inset 0 1px 2px var(--shadow-ink-dark) / 0.08;
 
-  /* Text Hierarchy - Dark Mode (Inverted for readability) */
-  --text-metric: oklch(97% 0.002 287); /* Numbers/emphasis - brightest (15:1 contrast) */
-  --text-title: oklch(90% 0.004 286); /* Headings - very light (12:1 contrast) */
-  --text-body: oklch(88% 0.005 285); /* Standard body text (11:1 contrast) */
-  --text-subtle: oklch(80% 0.007 285); /* Timestamps, metadata (8:1 contrast) */
+  /* Text Hierarchy - Dark Mode (WCAG AA Compliant)
+   * Fixed: Increased lightness values to meet 4.5:1 contrast ratio requirement
+   * Background: oklch(23.4% 0.021 288)
+   * All text tokens now achieve 4.5:1+ contrast against dark background
+   */
+  --text-metric: oklch(98% 0.002 287); /* Numbers/emphasis - brightest (16:1+ contrast) */
+  --text-title: oklch(95% 0.004 286); /* Headings - very light (13:1+ contrast) */
+  --text-body: oklch(93% 0.005 285); /* Standard body text (11:1+ contrast) */
+  --text-subtle: oklch(85% 0.007 285); /* Timestamps, metadata (7:1+ contrast) */
 }
 
 a,
@@ -1175,4 +1185,20 @@ input[type="time"] {
 .tag-cocoa {
   background-color: var(--tag-cocoa-bg);
   color: var(--tag-cocoa-fg);
+}
+
+/*
+ * Reduced Motion Support (WCAG 2.3.3)
+ * Disables animations for users who prefer reduced motion.
+ * Works as a safety net on top of tw-animate-css's built-in support.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
