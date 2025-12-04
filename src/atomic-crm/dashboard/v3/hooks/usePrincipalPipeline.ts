@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
-import { useDataProvider } from "react-admin";
+import { useMemo } from "react";
+import { useGetList } from "react-admin";
 import { useCurrentSale } from "./useCurrentSale";
 import type { PrincipalPipelineRow, PipelineSummaryRow } from "../types";
 
@@ -7,87 +7,74 @@ import type { PrincipalPipelineRow, PipelineSummaryRow } from "../types";
 const EMPTY_PIPELINE: PrincipalPipelineRow[] = [];
 
 export function usePrincipalPipeline(filters?: { myPrincipalsOnly?: boolean }) {
-  const dataProvider = useDataProvider();
   const { salesId, loading: salesIdLoading } = useCurrentSale();
-  const [data, setData] = useState<PrincipalPipelineRow[]>(EMPTY_PIPELINE);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
 
-  // Track previous filter state to avoid unnecessary resets
-  const prevFilterStateRef = useRef<string | null>(null);
+  // Build query filter
+  const queryFilter = useMemo(() => {
+    const filter: Record<string, unknown> = {};
+    if (filters?.myPrincipalsOnly && salesId) {
+      filter.sales_id = salesId;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      // Wait for salesId to load if "my principals only" filter is active
-      if (filters?.myPrincipalsOnly && salesIdLoading) {
-        setLoading((prev) => (prev ? prev : true));
-        return;
+      // Debug logging for B1 filtering investigation
+      if (import.meta.env.DEV) {
+        console.log("[usePrincipalPipeline] Filtering by sales_id:", salesId);
       }
+    }
+    return filter;
+  }, [filters?.myPrincipalsOnly, salesId]);
 
-      // If "my principals only" but no salesId, show empty
-      const currentFilterState = filters?.myPrincipalsOnly && !salesId ? "empty" : null;
-      if (currentFilterState === "empty") {
-        // Only update if filter state changed
-        if (prevFilterStateRef.current !== "empty") {
-          setData(EMPTY_PIPELINE);
-          prevFilterStateRef.current = "empty";
-        }
-        setLoading(false);
-        return;
-      }
-      prevFilterStateRef.current = null;
+  // Determine if query should be enabled
+  // Wait for salesId to load if "my principals only" filter is active
+  // If "my principals only" but no salesId, disable query (show empty)
+  const enabled = !salesIdLoading && (!filters?.myPrincipalsOnly || !!salesId);
 
-      try {
-        setLoading(true);
+  // Fetch principal pipeline summary with React Admin's useGetList
+  const {
+    data: rawSummary = [],
+    isPending: loading,
+    error: queryError,
+  } = useGetList<PipelineSummaryRow>(
+    "principal_pipeline_summary",
+    {
+      filter: queryFilter,
+      sort: { field: "active_this_week", order: "DESC" },
+      pagination: { page: 1, perPage: 100 },
+    },
+    {
+      enabled,
+      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+    }
+  );
 
-        const queryFilter: Record<string, any> = {};
+  // Transform data to PrincipalPipelineRow format
+  const data = useMemo(() => {
+    // If "my principals only" but no salesId, show empty
+    if (filters?.myPrincipalsOnly && !salesId) {
+      return EMPTY_PIPELINE;
+    }
 
-        // Apply sales_id filter if "my principals only" is enabled
-        if (filters?.myPrincipalsOnly && salesId) {
-          queryFilter.sales_id = salesId;
+    // Debug logging for B1 filtering investigation
+    if (import.meta.env.DEV && filters?.myPrincipalsOnly) {
+      console.log("[usePrincipalPipeline] Filter results:", {
+        salesId,
+        resultCount: rawSummary.length,
+        firstFewSalesIds: rawSummary.slice(0, 5).map((r) => r.sales_id),
+      });
+    }
 
-          // Debug logging for B1 filtering investigation
-          if (import.meta.env.DEV) {
-            console.log("[usePrincipalPipeline] Filtering by sales_id:", salesId);
-          }
-        }
+    return rawSummary.map((row) => ({
+      id: row.principal_id,
+      name: row.principal_name,
+      totalPipeline: row.total_pipeline,
+      activeThisWeek: row.active_this_week,
+      activeLastWeek: row.active_last_week,
+      momentum: row.momentum as PrincipalPipelineRow["momentum"],
+      nextAction: row.next_action_summary,
+    }));
+  }, [rawSummary, salesId, filters?.myPrincipalsOnly]);
 
-        const { data: summary } = await dataProvider.getList("principal_pipeline_summary", {
-          filter: queryFilter,
-          sort: { field: "active_this_week", order: "DESC" },
-          pagination: { page: 1, perPage: 100 },
-        });
-
-        // Debug logging for B1 filtering investigation
-        if (import.meta.env.DEV && filters?.myPrincipalsOnly) {
-          console.log("[usePrincipalPipeline] Filter results:", {
-            salesId,
-            resultCount: summary.length,
-            firstFewSalesIds: summary.slice(0, 5).map((r: PipelineSummaryRow) => r.sales_id),
-          });
-        }
-
-        setData(
-          summary.map((row: PipelineSummaryRow) => ({
-            id: row.principal_id,
-            name: row.principal_name,
-            totalPipeline: row.total_pipeline,
-            activeThisWeek: row.active_this_week,
-            activeLastWeek: row.active_last_week,
-            momentum: row.momentum as PrincipalPipelineRow["momentum"],
-            nextAction: row.next_action_summary,
-          }))
-        );
-      } catch (err) {
-        console.error("Failed to fetch principal pipeline:", err);
-        setError(err as Error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [dataProvider, salesId, salesIdLoading, filters?.myPrincipalsOnly]);
+  // Convert error to Error type for consistent interface
+  const error = queryError ? new Error(String(queryError)) : null;
 
   return { data, loading, error };
 }

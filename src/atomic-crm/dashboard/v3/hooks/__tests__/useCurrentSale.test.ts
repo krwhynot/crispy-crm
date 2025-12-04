@@ -1,6 +1,7 @@
 import { renderHook, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useCurrentSale } from "../useCurrentSale";
+import type { DataProvider } from "react-admin";
 
 // Mock Supabase - define inside factory to avoid hoisting issues
 vi.mock("@/atomic-crm/providers/supabase/supabase", () => {
@@ -8,7 +9,6 @@ vi.mock("@/atomic-crm/providers/supabase/supabase", () => {
     auth: {
       getUser: vi.fn(),
     },
-    from: vi.fn(),
   };
 
   return {
@@ -16,16 +16,31 @@ vi.mock("@/atomic-crm/providers/supabase/supabase", () => {
   };
 });
 
-// Import the mock after vi.mock is set up
+// Mock React Admin's useDataProvider
+vi.mock("react-admin", () => ({
+  useDataProvider: vi.fn(),
+}));
+
+// Import the mocks after vi.mock is set up
 import { supabase } from "@/atomic-crm/providers/supabase/supabase";
+import { useDataProvider } from "react-admin";
 const mockSupabase = supabase as any;
+const mockUseDataProvider = useDataProvider as ReturnType<typeof vi.fn>;
 
 describe("useCurrentSale", () => {
+  let mockDataProvider: Partial<DataProvider>;
+
   beforeEach(() => {
     vi.clearAllMocks();
+
+    // Set up mock data provider
+    mockDataProvider = {
+      getList: vi.fn(),
+    };
+    mockUseDataProvider.mockReturnValue(mockDataProvider);
   });
 
-  it("should fetch sales ID using user.id only", async () => {
+  it("should fetch sales ID using data provider", async () => {
     const mockUser = { id: "user-uuid-123", email: "test@example.com" };
     const mockSale = { id: 42, user_id: "user-uuid-123", email: "test@example.com" };
 
@@ -34,12 +49,9 @@ describe("useCurrentSale", () => {
       error: null,
     });
 
-    mockSupabase.from.mockReturnValue({
-      select: vi.fn().mockReturnValue({
-        or: vi.fn().mockReturnValue({
-          maybeSingle: vi.fn().mockResolvedValue({ data: mockSale, error: null }),
-        }),
-      }),
+    (mockDataProvider.getList as ReturnType<typeof vi.fn>).mockResolvedValue({
+      data: [mockSale],
+      total: 1,
     });
 
     const { result } = renderHook(() => useCurrentSale());
@@ -51,8 +63,14 @@ describe("useCurrentSale", () => {
       expect(result.current.salesId).toBe(42);
     });
 
-    // Verify it used user.id, not identity.id
-    expect(mockSupabase.from).toHaveBeenCalledWith("sales");
+    // Verify it used data provider
+    expect(mockDataProvider.getList).toHaveBeenCalledWith("sales", {
+      filter: {
+        or: [`user_id.eq.${mockUser.id}`, `email.eq.${mockUser.email}`],
+      },
+      sort: { field: "id", order: "ASC" },
+      pagination: { page: 1, perPage: 1 },
+    });
   });
 
   it("should handle legacy users with NULL user_id by matching email", async () => {
@@ -64,12 +82,9 @@ describe("useCurrentSale", () => {
       error: null,
     });
 
-    mockSupabase.from.mockReturnValue({
-      select: vi.fn().mockReturnValue({
-        or: vi.fn().mockReturnValue({
-          maybeSingle: vi.fn().mockResolvedValue({ data: mockSale, error: null }),
-        }),
-      }),
+    (mockDataProvider.getList as ReturnType<typeof vi.fn>).mockResolvedValue({
+      data: [mockSale],
+      total: 1,
     });
 
     const consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});

@@ -11,7 +11,7 @@ import type { OpportunitySummary } from "../hooks/usePrincipalOpportunities";
 describe("usePrincipalOpportunities", () => {
   /**
    * Extracts the mapping logic from the hook for testing.
-   * This mirrors exactly what the hook does in lines 62-70.
+   * This mirrors exactly what the hook does in lines 60-67.
    */
   const mapOpportunityData = (opp: any): OpportunitySummary => ({
     id: opp.id,
