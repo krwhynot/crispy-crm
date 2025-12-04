@@ -657,8 +657,8 @@ Deno.serve(async (req) => {
       );
     }
 
-    // Redirect back to CRM settings page
-    const successUrl = `${Deno.env.get("APP_URL")}/settings/email?connected=true`;
+    // Redirect back to CRM settings page (section-based routing)
+    const successUrl = `${Deno.env.get("APP_URL")}/settings?section=email&connected=true`;
     return Response.redirect(successUrl, 302);
   } catch (error) {
     console.error("Unexpected error:", error);
@@ -947,10 +947,14 @@ SELECT cron.schedule(
 
 ### Stage 3: Core UI Components (Parallel)
 
-#### Task 3.1: Create EmailConnectionSettings component
-**File:** `src/atomic-crm/settings/EmailConnectionSettings.tsx`
+#### Task 3.1: Create EmailConnectionSettings component and integrate with Settings
+**Files:**
+- `src/atomic-crm/settings/EmailConnectionSettings.tsx` (NEW)
+- `src/atomic-crm/settings/SettingsPage.tsx` (MODIFY)
 **Time:** 5-10 min
 **Dependencies:** Stage 2 complete
+
+**IMPORTANT:** Settings uses section-based layout, NOT URL routing. See Plan Review section for details.
 
 ```typescript
 import { useGetIdentity, useDataProvider, useNotify } from "react-admin";
@@ -1371,6 +1375,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Download, Mail, Phone, Calendar } from "lucide-react";
 import { format, subDays, startOfWeek, endOfWeek } from "date-fns";
 import { EmailTimelineItem } from "../activities/EmailTimelineItem";
+import { ActivityTimelineItem } from "../activities/ActivityTimelineItem";
 
 export function PrincipalCommunicationsDashboard() {
   const dataProvider = useDataProvider();
@@ -1523,13 +1528,13 @@ export function PrincipalCommunicationsDashboard() {
 
       {selectedPrincipal && (
         <>
-          {/* Stats Cards */}
+          {/* Stats Cards - Using semantic Tailwind colors */}
           <div className="grid grid-cols-3 gap-4 mb-6">
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
-                    <Phone className="h-5 w-5 text-blue-600" />
+                  <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Phone className="h-5 w-5 text-primary" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold">{stats.callCount}</p>
@@ -1541,8 +1546,8 @@ export function PrincipalCommunicationsDashboard() {
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
-                    <Mail className="h-5 w-5 text-green-600" />
+                  <div className="h-10 w-10 rounded-full bg-accent/10 flex items-center justify-center">
+                    <Mail className="h-5 w-5 text-accent" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold">{stats.emailCount}</p>
@@ -1554,8 +1559,8 @@ export function PrincipalCommunicationsDashboard() {
             <Card>
               <CardContent className="pt-6">
                 <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-full bg-purple-100 flex items-center justify-center">
-                    <Calendar className="h-5 w-5 text-purple-600" />
+                  <div className="h-10 w-10 rounded-full bg-secondary/10 flex items-center justify-center">
+                    <Calendar className="h-5 w-5 text-secondary" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold">{stats.meetingCount}</p>
