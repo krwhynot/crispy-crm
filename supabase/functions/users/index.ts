@@ -2,12 +2,68 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "jsr:@supabase/supabase-js@2";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 import { createCorsHeaders } from "../_shared/cors-config.ts";
+import { z } from "npm:zod@3.22.4";
 
 function createErrorResponse(status: number, message: string, corsHeaders: Record<string, string>) {
   return new Response(JSON.stringify({ status, message }), {
     headers: { "Content-Type": "application/json", ...corsHeaders },
     status,
   });
+}
+
+// Zod schemas following engineering constitution:
+// - z.strictObject() at API boundary (mass assignment prevention)
+// - .max() on all strings (DoS prevention)
+// - z.coerce for type conversion
+
+const inviteUserSchema = z.strictObject({
+  email: z.string().email("Invalid email format").max(254, "Email too long"),
+  password: z.string().min(8, "Password must be at least 8 characters").max(128, "Password too long"),
+  first_name: z.string().min(1, "First name required").max(100, "First name too long"),
+  last_name: z.string().min(1, "Last name required").max(100, "Last name too long"),
+  disabled: z.coerce.boolean().optional().default(false),
+  administrator: z.coerce.boolean().optional().default(false),
+});
+
+const patchUserSchema = z.strictObject({
+  sales_id: z.coerce.number().int().positive("Invalid sales ID"),
+  email: z.string().email("Invalid email format").max(254).optional(),
+  first_name: z.string().min(1).max(100).optional(),
+  last_name: z.string().min(1).max(100).optional(),
+  avatar: z.string().url("Invalid avatar URL").max(500).optional(),
+  administrator: z.coerce.boolean().optional(),
+  disabled: z.coerce.boolean().optional(),
+});
+
+// Maximum request body size (1MB)
+const MAX_REQUEST_SIZE = 1048576;
+
+/**
+ * Validate request body size and parse with Zod
+ */
+async function parseAndValidateBody<T>(
+  req: Request,
+  schema: z.ZodSchema<T>
+): Promise<T> {
+  // Check content length
+  const contentLength = req.headers.get("content-length");
+  if (contentLength && parseInt(contentLength) > MAX_REQUEST_SIZE) {
+    throw new Error("Request body too large (max 1MB)");
+  }
+
+  // Parse JSON
+  const body = await req.json();
+
+  // Validate with Zod
+  const result = schema.safeParse(body);
+  if (!result.success) {
+    const errors = result.error.errors
+      .map(e => `${e.path.join('.')}: ${e.message}`)
+      .join(', ');
+    throw new Error(`Validation failed: ${errors}`);
+  }
+
+  return result.data;
 }
 
 async function updateSaleDisabled(user_id: string, disabled: boolean) {
@@ -46,22 +102,21 @@ async function updateSaleAvatar(user_id: string, avatar: string) {
 }
 
 async function inviteUser(req: Request, currentUserSale: any, corsHeaders: Record<string, string>) {
-  const { email, password, first_name, last_name, disabled, administrator } = await req.json();
-
+  // Check admin authorization first (fast path)
   if (!currentUserSale.administrator) {
     return createErrorResponse(401, "Not Authorized", corsHeaders);
   }
 
-  // Validate required fields - guardrail to prevent empty names
-  if (!first_name?.trim()) {
-    return createErrorResponse(400, "First name is required", corsHeaders);
+  // Validate request body with Zod schema
+  let validatedData;
+  try {
+    validatedData = await parseAndValidateBody(req, inviteUserSchema);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Invalid request";
+    return createErrorResponse(400, message, corsHeaders);
   }
-  if (!last_name?.trim()) {
-    return createErrorResponse(400, "Last name is required", corsHeaders);
-  }
-  if (!email?.trim()) {
-    return createErrorResponse(400, "Email is required", corsHeaders);
-  }
+
+  const { email, password, first_name, last_name, disabled, administrator } = validatedData;
 
   const { data, error: userError } = await supabaseAdmin.auth.admin.createUser({
     email,
@@ -100,8 +155,17 @@ async function inviteUser(req: Request, currentUserSale: any, corsHeaders: Recor
 }
 
 async function patchUser(req: Request, currentUserSale: any, corsHeaders: Record<string, string>) {
-  const { sales_id, email, first_name, last_name, avatar, administrator, disabled } =
-    await req.json();
+  // Validate request body with Zod schema
+  let validatedData;
+  try {
+    validatedData = await parseAndValidateBody(req, patchUserSchema);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "Invalid request";
+    return createErrorResponse(400, message, corsHeaders);
+  }
+
+  const { sales_id, email, first_name, last_name, avatar, administrator, disabled } = validatedData;
+
   const { data: sale } = await supabaseAdmin.from("sales").select("*").eq("id", sales_id).single();
 
   if (!sale) {

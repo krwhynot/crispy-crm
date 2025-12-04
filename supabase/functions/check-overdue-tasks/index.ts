@@ -21,8 +21,22 @@ interface Sales {
   user_id: string;
 }
 
-Deno.serve(async (_req) => {
+// Cron authentication secret (set in Supabase dashboard)
+const CRON_SECRET = Deno.env.get("CRON_SECRET");
+
+Deno.serve(async (req) => {
   try {
+    // Verify request is from authorized source (cron only)
+    const authHeader = req.headers.get("Authorization");
+
+    if (!authHeader || authHeader !== `Bearer ${CRON_SECRET}`) {
+      console.warn("Unauthorized access attempt to check-overdue-tasks");
+      return new Response(
+        JSON.stringify({ error: "Unauthorized - Cron functions require authentication" }),
+        { status: 401, headers: { "Content-Type": "application/json" } }
+      );
+    }
+
     console.log("Starting overdue tasks check...");
 
     // Get today's date at midnight (server time)

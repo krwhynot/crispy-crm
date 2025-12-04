@@ -1,4 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "jsr:@supabase/supabase-js@2";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 
 /**
@@ -71,6 +72,9 @@ interface DigestResult {
   executedAt: string;
   version: string;
 }
+
+// Cron authentication secret (set in Supabase dashboard)
+const CRON_SECRET = Deno.env.get("CRON_SECRET");
 
 /**
  * Process a single user's digest - FAIL-FAST pattern
@@ -176,6 +180,50 @@ Deno.serve(async (req) => {
     // Check for manual trigger with specific user (for testing)
     let specificSalesId: number | null = null;
     if (req.method === "POST") {
+      // Manual triggers require authentication
+      const authHeader = req.headers.get("Authorization");
+
+      // Check for cron secret (internal cron jobs)
+      if (authHeader === `Bearer ${CRON_SECRET}`) {
+        console.log("Authenticated via cron secret");
+      } else if (authHeader?.startsWith("Bearer ")) {
+        // Verify JWT for manual API calls
+        const localClient = createClient(
+          Deno.env.get("SUPABASE_URL") ?? "",
+          Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+          { global: { headers: { Authorization: authHeader } } }
+        );
+        const { data: authData } = await localClient.auth.getUser();
+
+        if (!authData?.user) {
+          return new Response(
+            JSON.stringify({ error: "Unauthorized - Valid JWT required for manual triggers" }),
+            { status: 401, headers: { "Content-Type": "application/json" } }
+          );
+        }
+
+        // Verify admin role for manual triggers
+        const { data: sale } = await supabaseAdmin
+          .from("sales")
+          .select("administrator")
+          .eq("user_id", authData.user.id)
+          .single();
+
+        if (!sale?.administrator) {
+          return new Response(
+            JSON.stringify({ error: "Forbidden - Admin role required for manual triggers" }),
+            { status: 403, headers: { "Content-Type": "application/json" } }
+          );
+        }
+
+        console.log(`Manual trigger by admin user: ${authData.user.id}`);
+      } else {
+        return new Response(
+          JSON.stringify({ error: "Unauthorized - Authentication required" }),
+          { status: 401, headers: { "Content-Type": "application/json" } }
+        );
+      }
+
       try {
         const body = await req.json();
         if (body.sales_id && typeof body.sales_id === "number") {
