@@ -13,9 +13,10 @@
 | Metric | Value |
 |--------|-------|
 | Total Issues | 20 |
-| Total Tasks | 38 |
-| Parallelizable | 24 (63%) |
-| Sequential (Phase 1) | 8 |
+| Total Tasks | 39 |
+| Parallelizable | 24 (62%) |
+| Sequential (Phase 1) | 9 |
+| Phase 4 (Optional) | 8 |
 | Estimated Agents | 6-8 parallel |
 
 ---
@@ -299,6 +300,49 @@ git add .env.test-hook
 # Pre-commit hook should block this
 # Clean up: git reset HEAD .env.test-hook && rm .env.test-hook
 ```
+
+---
+
+### Task 1.9: Revoke Old Credentials (CRITICAL - Do After Verification)
+
+**File:** Supabase Dashboard + GitHub Settings (manual)
+**Time:** 5 min
+**Dependencies:** Task 1.7 (after verifying NEW credentials work)
+
+> ⚠️ **WARNING:** Only do this AFTER confirming new credentials work in production!
+
+**Supabase:**
+1. Go to: https://supabase.com/dashboard/project/_/settings/api-keys
+2. Note: Supabase anon/service_role keys CANNOT be individually rotated
+3. If keys were exposed:
+   - Option A: Contact Supabase support for key rotation
+   - Option B: Create new Supabase project and migrate data
+4. For `SUPABASE_ACCESS_TOKEN`:
+   - Go to: https://supabase.com/dashboard/account/tokens
+   - Revoke the old token
+   - Generate new token and update in GitHub Secrets
+
+**GitHub Token (if any were exposed):**
+1. Go to: Settings → Developer settings → Personal access tokens
+2. Revoke any exposed tokens
+3. Create new fine-grained tokens with minimal required permissions
+
+**Verification:**
+```bash
+# Test that OLD credentials no longer work (they should fail)
+# This confirms the revocation was successful
+curl -X GET "https://[OLD_PROJECT_REF].supabase.co/rest/v1/" \
+  -H "apikey: [OLD_ANON_KEY]" \
+  -H "Authorization: Bearer [OLD_ANON_KEY]"
+# Expected: 401 Unauthorized or connection refused
+```
+
+**Checklist:**
+- [ ] New credentials work in Vercel production
+- [ ] New credentials work in GitHub Actions
+- [ ] New credentials work locally
+- [ ] Old credentials have been revoked/invalidated
+- [ ] Team notified to update their local .env files
 
 ---
 
@@ -830,6 +874,14 @@ grep -n "speedInsights" vercel.json
 - [ ] Database migrations applied
 - [ ] Backups configured
 
+### Repository Protection
+- [ ] Branch protection enabled on `main`
+- [ ] Require pull request before merging
+- [ ] Require status checks to pass (CI, Security, E2E)
+- [ ] Require conversation resolution before merging
+- [ ] Disable force pushes to `main`
+- [ ] CODEOWNERS file in place
+
 ### Monitoring
 - [ ] Sentry configured for error tracking
 - [ ] Vercel Analytics enabled
@@ -1046,7 +1098,19 @@ grep -A3 "Build" .github/workflows/ci.yml | grep "secrets.VITE"
 
 ## Phase 4: Git History Cleanup (SEQUENTIAL - Team Coordination Required)
 
-> ⚠️ **CRITICAL:** This phase rewrites git history. All team members must re-clone after completion.
+> ⚠️ **CRITICAL DECISION POINT:** This phase is HIGH-COST, LOW-BENEFIT if credentials are already rotated.
+>
+> **Cost of this phase:**
+> - Invalidates all open PRs
+> - Invalidates all forks
+> - Requires ALL developers to delete and re-clone
+> - High risk of repository corruption
+>
+> **Benefit:** Removes informational leakage (infrastructure patterns), but the secrets themselves are useless after rotation.
+>
+> **Recommendation:** If credentials have been rotated (Phase 1), consider **SKIPPING Phase 4** unless required by compliance policy. The risk is mitigated ~95% by credential rotation alone.
+>
+> **If you choose to proceed:** This phase rewrites git history. All team members must re-clone after completion.
 
 ### Task 4.1: Notify Team of Upcoming History Rewrite
 
@@ -1234,8 +1298,10 @@ test -d /tmp/crispy-crm-cleanup && echo "FAIL: cleanup dir exists" || echo "PASS
 ## Execution Dependencies Graph
 
 ```
-Phase 1 (Sequential):
-1.1 → 1.2 → 1.3 → 1.4 → 1.5 → 1.6 → 1.7 → 1.8
+Phase 1 (Sequential - "Make-Before-Break" Pattern):
+1.1 → 1.2 → 1.3 → 1.4 → 1.5 → 1.6 → 1.7 → 1.8 → 1.9 (revoke old creds)
+                                                    ↑
+                                        ONLY after verifying new creds work!
 
 Phase 2 (Parallel Group A):      Phase 2 (Parallel Group B):
 ┌──────────────────────────┐     ┌──────────────────────────┐
@@ -1255,7 +1321,8 @@ Phase 3 (Parallel Group C):
 │                  │                     │ 3.10 Build Secrets │
 └─────────────────────────────────────────────────────────────┘
 
-Phase 4 (Sequential - Team Coordination):
+Phase 4 (OPTIONAL - Team Coordination Required):
+⚠️ DECISION: Skip if credentials rotated in Phase 1 (95% risk mitigated)
 4.1 → 4.2 → 4.3 → 4.4 → 4.5 → 4.6 → 4.7 → 4.8
 ```
 
@@ -1265,20 +1332,20 @@ Phase 4 (Sequential - Team Coordination):
 
 | Agent # | Tasks | Estimated Time |
 |---------|-------|----------------|
-| Agent 1 | 1.1-1.8 (Phase 1 - Sequential) | 25 min |
+| Agent 1 | 1.1-1.9 (Phase 1 - Sequential) | 30 min |
 | Agent 2 | 2.1, 2.2, 2.3 | 6 min |
 | Agent 3 | 2.4, 2.5, 2.6 | 6 min |
 | Agent 4 | 2.7, 2.8, 2.9 | 15 min |
 | Agent 5 | 3.1, 3.2, 3.3 | 11 min |
 | Agent 6 | 3.4, 3.5, 3.6 | 12 min |
 | Agent 7 | 3.7, 3.8, 3.9, 3.10 | 9 min |
-| Agent 8 | 4.1-4.8 (Phase 4 - Sequential) | 22 min |
+| Agent 8 | 4.1-4.8 (Phase 4 - OPTIONAL) | 22 min |
 
 **Parallel Execution Strategy:**
-- Phase 1: Single agent (security-critical, must be sequential)
+- Phase 1: Single agent (security-critical, must be sequential, includes revocation)
 - Phase 2: Agents 2-4 run in parallel
 - Phase 3: Agents 5-7 run in parallel
-- Phase 4: Single agent (history rewrite, must be sequential)
+- Phase 4: Single agent (OPTIONAL - only if compliance requires history cleanup)
 
 ---
 
