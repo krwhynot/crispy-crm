@@ -2,8 +2,12 @@
 
 **Date:** 2025-12-04
 **Scope:** CI/CD pipelines, Vercel config, environment files vs deployment-best-practices.md
-**Method:** 3 parallel review agents (Security, Architecture, Completeness)
+**Method:** 3 parallel review agents (Security, Architecture, Completeness) + Industry Standards Validation
 **Overall Grade:** D+ (Critical issues require immediate attention)
+
+> 🚨 **EMERGENCY: PUBLIC REPOSITORY WITH EXPOSED CREDENTIALS**
+>
+> This repository is PUBLIC and contains committed Supabase credentials. This is a **critical security incident** requiring immediate remediation per [GitHub's credential security guidelines](https://docs.github.com/en/rest/authentication/keeping-your-api-credentials-secure) and [Supabase's compromised key procedures](https://supabase.com/docs/guides/api/api-keys#what-to-do-if-a-secret-key-or-servicerole-has-been-leaked-or-compromised).
 
 ---
 
@@ -81,25 +85,97 @@ This review compared Crispy CRM's CI/CD and deployment configuration against the
 
 ---
 
+---
+
+## Industry Standards Gap Analysis
+
+This section compares findings against official documentation from GitHub, Vercel, Supabase, and security best practices.
+
+### 🔴 Critical Gaps (Immediate Action Required)
+
+| Gap | Industry Standard | Current State | Source |
+|-----|------------------|---------------|--------|
+| **Credentials in Git** | "Don't push unencrypted authentication credentials like tokens or keys to any repository, even if the repository is private" | `.env`, `.env.cloud`, `.env.local` committed with real Supabase keys | [GitHub Credential Security](https://docs.github.com/en/rest/authentication/keeping-your-api-credentials-secure) |
+| **Compromised Key Response** | "Generate new credential → Replace everywhere → Delete old" with OWASP risk assessment | No incident response executed; keys still active and exposed | [Supabase Key Compromise Guide](https://supabase.com/docs/guides/api/api-keys#what-to-do-if-a-secret-key-or-servicerole-has-been-leaked-or-compromised) |
+| **Git History Contains Secrets** | Use `git-filter-repo` (recommended) or BFG to purge secrets from history | Secrets exist in all historical commits | [git-filter-repo](https://github.com/newren/git-filter-repo) |
+
+### 🟠 High Gaps (Fix Before Production)
+
+| Gap | Industry Standard | Current State | Source |
+|-----|------------------|---------------|--------|
+| **CSP Not Enforcing** | "Start with Report-Only during testing, **change to enforcing mode** once you know policy won't break features" | Using `Content-Security-Policy-Report-Only` in production config | [Vercel CSP Best Practices](https://vercel.com/docs/headers/security-headers#content-security-policy) |
+| **Missing Workflow Permissions** | "Use `permissions` to modify default permissions... only allow minimum required access" | No `permissions` block in CI workflow; defaults to broad access | [GitHub Actions Permissions](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions) |
+| **No Artifact Attestations** | Use `actions/attest-build-provenance@v3` for SLSA supply chain security | No attestations in build pipeline | [GitHub Artifact Attestations](https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations) |
+| **No CODEOWNERS for Workflows** | "Add `.github/workflows` to CODEOWNERS... any proposed changes require approval from designated reviewer" | No CODEOWNERS file exists | [GitHub CODEOWNERS Security](https://github.com/github/docs/blob/main/content/actions/reference/security/secure-use.md) |
+| **No Secret Scanning** | "Use secret scanning to discover tokens, private keys, and other secrets that were pushed" | Secret scanning not enabled; would have caught this issue | [GitHub Secret Scanning](https://docs.github.com/en/code-security/secret-scanning/introduction/about-secret-scanning) |
+
+### 🟡 Medium Gaps (Should Fix)
+
+| Gap | Industry Standard | Current State | Source |
+|-----|------------------|---------------|--------|
+| **No Dependabot** | Automated dependency updates with security patches | No `.github/dependabot.yml` | [Dependabot Configuration](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuring-dependabot-version-updates) |
+| **Test Failures Don't Block** | Fail-fast principle; tests must pass before deployment | `continue-on-error: true` in test job | Project CLAUDE.md + Industry standard |
+| **Edge Functions Suppress Errors** | Deployments should fail visibly on errors | `|| true` suppresses Edge Function deploy failures | CI/CD best practices |
+
+### ✅ Compliant with Industry Standards
+
+| Check | Standard | Evidence |
+|-------|----------|----------|
+| **Package-lock.json committed** | Supply chain security via locked dependencies | File exists and tracked |
+| **GitHub Secrets pattern** | Use `${{ secrets.VAR_NAME }}` for sensitive values | Correct pattern in all workflows |
+| **Security headers** | HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy | All configured in vercel.json |
+| **Manual production approval** | Require `workflow_dispatch` or environment approval for prod | `environment: production` configured |
+| **Dry-run before deploy** | Validate migrations before execution | `npx supabase db push --dry-run` in workflow |
+| **npm ci usage** | Reproducible builds with lockfile | Used in all workflows and vercel.json |
+
+---
+
 ## Immediate Action Plan
 
-### Phase 1: Emergency Security (TODAY)
+### Phase 1: Emergency Security (TODAY) — CRITICAL
 
+> **Per [Supabase Guidance](https://supabase.com/docs/guides/api/api-keys#what-to-do-if-a-secret-key-or-servicerole-has-been-leaked-or-compromised):** "Don't rush... Make sure you have fully considered the situation and have remediated the root cause of the vulnerability **first**."
+
+#### Step 1: Assess Impact (5 minutes)
 ```bash
-# 1. Remove sensitive files from git tracking
+# Check if anyone has accessed your Supabase project
+# Go to: https://supabase.com/dashboard/project/aaqnanddcqvfiwhshndl/logs
+# Review API logs for unauthorized access
+```
+
+#### Step 2: Remove from Git Tracking (Do this NOW)
+```bash
+# Remove sensitive files from git tracking
 git rm --cached .env .env.cloud .env.local .env.memory-optimized
 
-# 2. Fix .gitignore (remove .env.local exception)
-# Edit .gitignore line 37: remove "!.env.local"
+# Fix .gitignore - remove the .env.local exception
+# Edit line 37: remove "!.env.local"
 
-# 3. Commit removal
-git commit -m "security: remove committed environment files"
+# Commit the removal
+git commit -m "security: remove committed environment files with credentials"
+git push origin main
+```
 
-# 4. ROTATE ALL CREDENTIALS
-# - Supabase Dashboard > Settings > API > Regenerate anon key
-# - Reset database password
-# - Update GitHub Secrets
-# - Update Vercel Environment Variables
+#### Step 3: Rotate Supabase Credentials
+```
+Per Supabase docs: "Generate new credential → Replace everywhere → Delete old"
+
+1. Go to: https://supabase.com/dashboard/project/_/settings/api-keys
+2. Create NEW secret API key (don't delete old one yet)
+3. For anon key: Consider switching to publishable key model
+4. Update credentials in:
+   - GitHub Secrets (SUPABASE_ANON_KEY, etc.)
+   - Vercel Environment Variables
+   - Local .env files (gitignored)
+5. Test all systems work with new credentials
+6. DELETE the compromised old credentials
+```
+
+#### Step 4: Enable GitHub Secret Scanning
+```
+Go to: Repository Settings > Code security and analysis
+- Enable "Secret scanning"
+- Enable "Push protection" (blocks future secret commits)
 ```
 
 ### Phase 2: CI/CD Hardening (This Week)
