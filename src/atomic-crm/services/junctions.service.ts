@@ -1,6 +1,7 @@
 import type { DataProvider, Identifier, RaRecord } from "ra-core";
 import type { OpportunityParticipant, OpportunityContact, Contact } from "../types";
 import type { Organization } from "../validation/organizations";
+import { devError } from "@/lib/devLogger";
 
 /**
  * Extended DataProvider with optional RPC capability
@@ -112,7 +113,7 @@ export class JunctionsService {
           );
           orgMap = new Map(orgs.map((o) => [o.id, o]));
         } catch (error: unknown) {
-          console.error(`[JunctionsService] Failed to fetch participant organizations in batch`, {
+          devError("JunctionsService", "Failed to fetch participant organizations in batch", {
             orgIds,
             error,
           });
@@ -129,7 +130,7 @@ export class JunctionsService {
 
       return { data: participantsWithDetails };
     } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to get opportunity participants`, {
+      devError("JunctionsService", "Failed to get opportunity participants", {
         opportunityId,
         error,
       });
@@ -167,7 +168,7 @@ export class JunctionsService {
 
       return { data: response.data };
     } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to add opportunity participant`, {
+      devError("JunctionsService", "Failed to add opportunity participant", {
         opportunityId,
         organizationId,
         params,
@@ -209,7 +210,7 @@ export class JunctionsService {
 
       return { data: { id: `${opportunityId}-${organizationId}` } };
     } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to remove opportunity participant`, {
+      devError("JunctionsService", "Failed to remove opportunity participant", {
         opportunityId,
         organizationId,
         error,
@@ -251,7 +252,7 @@ export class JunctionsService {
           );
           contactMap = new Map(contacts.map((c) => [c.id, c]));
         } catch (error: unknown) {
-          console.error(`[JunctionsService] Failed to fetch contacts in batch`, {
+          devError("JunctionsService", "Failed to fetch contacts in batch", {
             contactIds,
             error,
           });
@@ -268,7 +269,7 @@ export class JunctionsService {
 
       return { data: contactsWithDetails };
     } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to get opportunity contacts`, {
+      devError("JunctionsService", "Failed to get opportunity contacts", {
         opportunityId,
         error,
       });
@@ -302,7 +303,7 @@ export class JunctionsService {
 
       return { data: response.data };
     } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to add opportunity contact`, {
+      devError("JunctionsService", "Failed to add opportunity contact", {
         opportunityId,
         contactId,
         params,
@@ -341,7 +342,7 @@ export class JunctionsService {
 
       return { data: { id: `${opportunityId}-${contactId}` } };
     } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to remove opportunity contact`, {
+      devError("JunctionsService", "Failed to remove opportunity contact", {
         opportunityId,
         contactId,
         error,
@@ -390,7 +391,7 @@ export class JunctionsService {
           // 4. Create map for efficient lookup
           contactMap = new Map(contactsResult.data.map((contact) => [contact.id, contact]));
         } catch (error: unknown) {
-          console.error(`[JunctionsService] Failed to fetch contacts in batch`, {
+          devError("JunctionsService", "Failed to fetch contacts in batch", {
             contactIds,
             error,
           });
@@ -406,7 +407,7 @@ export class JunctionsService {
 
       return { data: result };
     } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to get opportunity contacts via junction`, {
+      devError("JunctionsService", "Failed to get opportunity contacts via junction", {
         opportunityId,
         error,
       });
@@ -439,7 +440,7 @@ export class JunctionsService {
         },
       });
     } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to add opportunity contact via junction`, {
+      devError("JunctionsService", "Failed to add opportunity contact via junction", {
         opportunityId,
         contactId,
         metadata,
@@ -465,7 +466,7 @@ export class JunctionsService {
 
       return { data: { id: junctionId } };
     } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to remove opportunity contact via junction ID`, {
+      devError("JunctionsService", "Failed to remove opportunity contact via junction ID", {
         junctionId,
         error,
       });
@@ -501,7 +502,7 @@ export class JunctionsService {
         previousData: currentRecord.data,
       });
     } catch (error: unknown) {
-      console.error(`[JunctionsService] Failed to update opportunity contact metadata`, {
+      devError("JunctionsService", "Failed to update opportunity contact metadata", {
         junctionId,
         updates,
         error,

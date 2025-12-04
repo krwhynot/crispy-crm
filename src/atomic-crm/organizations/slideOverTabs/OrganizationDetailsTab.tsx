@@ -11,7 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { AsideSection } from "@/components/ui";
 import { ArrayInput, SimpleFormIterator } from "react-admin";
 import type { OrganizationWithHierarchy } from "../../types";
-import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES } from "../constants";
+import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, ORG_TYPE_COLOR_MAP, PRIORITY_VARIANT_MAP } from "../constants";
+import { parseDateSafely } from "@/lib/date-utils";
 
 interface OrganizationDetailsTabProps {
   record: OrganizationWithHierarchy;
@@ -153,7 +154,7 @@ export function OrganizationDetailsTab({
               {record.created_at && (
                 <div className="pt-2 border-t border-border">
                   <span className="text-xs text-muted-foreground">
-                    Created: {new Date(record.created_at).toLocaleDateString()}
+                    Created: {parseDateSafely(record.created_at)?.toLocaleDateString() ?? "N/A"}
                   </span>
                 </div>
               )}
@@ -161,7 +162,7 @@ export function OrganizationDetailsTab({
               {record.updated_at && (
                 <div>
                   <span className="text-xs text-muted-foreground">
-                    Updated: {new Date(record.updated_at).toLocaleDateString()}
+                    Updated: {parseDateSafely(record.updated_at)?.toLocaleDateString() ?? "N/A"}
                   </span>
                 </div>
               )}

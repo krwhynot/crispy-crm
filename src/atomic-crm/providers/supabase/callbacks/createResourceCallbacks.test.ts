@@ -421,26 +421,6 @@ describe("createResourceCallbacks - Transform Composition", () => {
       await expect(callbacks.afterRead!(record, mockDataProvider)).rejects.toThrow();
     });
 
-    it("should ignore errors when onTransformError is ignore", async () => {
-      const errorTransform: TransformFn = () => {
-        throw new Error("Transform failed");
-      };
-
-      const callbacks = createResourceCallbacks({
-        resource: "contacts",
-        readTransforms: [errorTransform],
-        onTransformError: "ignore",
-      });
-
-      const record = { id: 1 };
-      expect(async () => {
-        await callbacks.afterRead!(record, mockDataProvider);
-      }).not.toThrow();
-
-      // console.error should not have been called
-      expect(console.error).not.toHaveBeenCalled();
-    });
-
     it("should include transform name in error message for Transform objects", async () => {
       const errorTransform: Transform = {
         name: "my-transform",

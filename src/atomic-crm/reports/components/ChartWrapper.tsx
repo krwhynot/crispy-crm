@@ -19,7 +19,7 @@ export function ChartWrapper({
         <CardTitle className="text-base">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="h-[300px]">
+        <div className="relative h-[300px] w-full">
           {isLoading ? <Skeleton className="w-full h-full" /> : children}
         </div>
       </CardContent>

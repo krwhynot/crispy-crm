@@ -38,7 +38,7 @@ export const FilterCategory = ({
         </div>
         <ChevronDown
           className={cn(
-            "h-4 w-4 text-muted-foreground transition-transform duration-200",
+            "size-4 text-muted-foreground transition-transform duration-200",
             !isExpanded && "-rotate-90"
           )}
         />

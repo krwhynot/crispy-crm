@@ -10,6 +10,8 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useGetIdentity, useGetList, useUpdate, useNotify } from "ra-core";
 import { Link } from "react-router-dom";
+import { cn } from "@/lib/utils";
+import { parseDateSafely } from "@/lib/date-utils";
 
 interface Notification {
   id: number;
@@ -135,7 +137,7 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
         <div className="p-2">
           <Link to="/notifications">
             <Button variant="ghost" size="sm" className="w-full justify-start">
-              <ExternalLink className="h-4 w-4 mr-2" />
+              <ExternalLink className="size-4 mr-2" />
               View all notifications
             </Button>
           </Link>
@@ -153,20 +155,22 @@ interface NotificationItemProps {
 
 const NotificationItem = ({ notification, onMarkAsRead, getEntityLink }: NotificationItemProps) => {
   const entityLink = getEntityLink(notification.entity_type, notification.entity_id);
-  const timeAgo = formatDistanceToNow(new Date(notification.created_at), {
+  const timeAgo = formatDistanceToNow(parseDateSafely(notification.created_at) ?? new Date(), {
     addSuffix: true,
   });
 
   return (
     <div
-      className={`flex items-start gap-3 p-4 hover:bg-muted/50 transition-colors ${
-        !notification.read ? "bg-muted/30" : ""
-      }`}
+      className={cn(
+        "flex items-start gap-3 p-4 hover:bg-muted/50 transition-colors",
+        !notification.read && "bg-muted/30"
+      )}
     >
       <div
-        className={`flex-shrink-0 w-2 h-2 rounded-full mt-2 ${
+        className={cn(
+          "flex-shrink-0 w-2 h-2 rounded-full mt-2",
           !notification.read ? "bg-primary" : "bg-muted-foreground/30"
-        }`}
+        )}
       />
       <div className="flex-1 min-w-0">
         <p className="text-sm mb-1">{notification.message}</p>
@@ -180,7 +184,7 @@ const NotificationItem = ({ notification, onMarkAsRead, getEntityLink }: Notific
                 className="hover:text-foreground transition-colors inline-flex items-center gap-1"
               >
                 View {notification.entity_type}
-                <ExternalLink className="h-3 w-3" />
+                <ExternalLink className="size-3" />
               </Link>
             </>
           )}
@@ -194,7 +198,7 @@ const NotificationItem = ({ notification, onMarkAsRead, getEntityLink }: Notific
           onClick={() => onMarkAsRead(notification.id)}
           aria-label="Mark as read"
         >
-          <Eye className="h-4 w-4" />
+          <Eye className="size-4" />
         </Button>
       )}
     </div>

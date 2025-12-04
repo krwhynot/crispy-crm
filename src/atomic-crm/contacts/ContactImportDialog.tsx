@@ -497,7 +497,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
    */
   const renderParsingStep = () => (
     <div className="flex flex-col items-center justify-center py-8 space-y-4">
-      <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      <Loader2 className="h-11 w-11 animate-spin text-primary" />
       <p className="text-muted-foreground">Parsing CSV file...</p>
       <Button variant="ghost" onClick={handleClose}>
         Cancel

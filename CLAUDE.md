@@ -54,6 +54,21 @@ src/atomic-crm/feature/
 - Direct Supabase imports → Use data provider
 - Form-level validation → Zod at API boundary only
 
+### Zod Validation (Details)
+- **Coercion:** `z.coerce` for all non-string form inputs (dates, numbers, booleans)
+- **Length Limits:** All strings must have `.max()` constraint (DoS prevention)
+- **Strict Objects:** `z.strictObject()` at API boundary (mass assignment prevention)
+- **Allowlist:** `z.enum()` for constrained values (never denylist patterns)
+
+### Form Performance
+- **Mode:** `onSubmit` (default) or `onBlur` — never `onChange` (prevents re-render storms)
+- **Watching:** `useWatch()` for subscriptions, not `watch()` (isolated re-renders)
+
+### Accessibility (A11y)
+- `aria-invalid={!!error}` on inputs with validation errors
+- `aria-describedby={errorId}` linking input to error message
+- `role="alert"` on error messages for screen reader announcements
+
 ## Design System
 
 **Tailwind v4 semantic colors ONLY:**

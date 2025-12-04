@@ -170,7 +170,7 @@ export function ContactImportResult({
                     {result.successCount.toLocaleString()}
                   </p>
                 </div>
-                <CheckCircle2 className="h-8 w-8 text-success opacity-20" />
+                <CheckCircle2 className="h-11 w-11 text-success opacity-20" />
               </div>
             </div>
 
@@ -182,7 +182,7 @@ export function ContactImportResult({
                     {result.skippedCount.toLocaleString()}
                   </p>
                 </div>
-                <AlertTriangle className="h-8 w-8 text-warning opacity-20" />
+                <AlertTriangle className="h-11 w-11 text-warning opacity-20" />
               </div>
             </div>
 
@@ -194,7 +194,7 @@ export function ContactImportResult({
                     {result.failedCount.toLocaleString()}
                   </p>
                 </div>
-                <X className="h-8 w-8 text-error opacity-20" />
+                <X className="h-11 w-11 text-error opacity-20" />
               </div>
             </div>
           </div>
@@ -241,17 +241,13 @@ export function ContactImportResult({
               {result.startTime && (
                 <div>
                   <span className="text-muted-foreground">Started at:</span>{" "}
-                  <span className="font-medium">
-                    {new Date(result.startTime).toLocaleTimeString()}
-                  </span>
+                  <span className="font-medium">{result.startTime.toLocaleTimeString()}</span>
                 </div>
               )}
               {result.endTime && (
                 <div>
                   <span className="text-muted-foreground">Completed at:</span>{" "}
-                  <span className="font-medium">
-                    {new Date(result.endTime).toLocaleTimeString()}
-                  </span>
+                  <span className="font-medium">{result.endTime.toLocaleTimeString()}</span>
                 </div>
               )}
             </div>

@@ -96,7 +96,7 @@ export class ResourceErrorBoundary extends Component<Props, State> {
           <Card className="w-full max-w-md">
             <CardHeader className="text-center">
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
-                <AlertTriangle className="h-6 w-6 text-destructive" aria-hidden="true" />
+                <AlertTriangle className="size-6 text-destructive" aria-hidden="true" />
               </div>
               <CardTitle className="text-lg">
                 {resourceLabel}
@@ -111,11 +111,11 @@ export class ResourceErrorBoundary extends Component<Props, State> {
 
               <div className="flex gap-2 justify-center">
                 <Button onClick={this.handleRetry} variant="outline" size="sm" className="gap-2">
-                  <RefreshCw className="h-4 w-4" aria-hidden="true" />
+                  <RefreshCw className="size-4" aria-hidden="true" />
                   Try Again
                 </Button>
                 <Button onClick={this.handleGoHome} size="sm" className="gap-2">
-                  <Home className="h-4 w-4" aria-hidden="true" />
+                  <Home className="size-4" aria-hidden="true" />
                   Dashboard
                 </Button>
               </div>

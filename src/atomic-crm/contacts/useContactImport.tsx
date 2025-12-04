@@ -8,6 +8,7 @@ import {
   validateTransformedContacts,
   isContactWithoutContactInfo,
 } from "./contactImport.logic";
+import { parseDateSafely } from "@/lib/date-utils";
 
 // Re-export types from centralized types file for backward compatibility
 export type {
@@ -122,8 +123,7 @@ export function useContactImport() {
       }
 
       // 3. Fetch related records (organizations, tags) for valid contacts only
-      // Phase 3: Use Promise.allSettled() to handle partial failures gracefully
-      const fetchResults = await Promise.allSettled([
+      const [organizations, tags] = await Promise.all([
         getOrganizations(
           contactsToProcess
             .map((contact) => contact.organization_name?.trim())
@@ -135,19 +135,6 @@ export function useContactImport() {
           preview
         ),
       ]);
-
-      // Handle partial failures - use empty map if fetch failed
-      const organizations =
-        fetchResults[0].status === "fulfilled" ? fetchResults[0].value : new Map();
-      const tags = fetchResults[1].status === "fulfilled" ? fetchResults[1].value : new Map();
-
-      // Log warnings if fetches failed (non-critical for import process)
-      if (fetchResults[0].status === "rejected") {
-        console.warn("Failed to fetch organizations:", fetchResults[0].reason);
-      }
-      if (fetchResults[1].status === "rejected") {
-        console.warn("Failed to fetch tags:", fetchResults[1].reason);
-      }
 
       // 4. Process all valid contacts with Promise.allSettled
       const results = await Promise.allSettled(
@@ -218,8 +205,8 @@ export function useContactImport() {
               title,
               email,
               phone,
-              first_seen: first_seen ? new Date(first_seen).toISOString() : today,
-              last_seen: last_seen ? new Date(last_seen).toISOString() : today,
+              first_seen: first_seen ? (parseDateSafely(first_seen)?.toISOString() ?? today) : today,
+              last_seen: last_seen ? (parseDateSafely(last_seen)?.toISOString() ?? today) : today,
               tags: preview ? [] : tagList.map((tag) => tag.id),
               sales_id: identity?.id,
               linkedin_url,
@@ -341,26 +328,16 @@ const fetchRecordsWithCache = async function <T>(
     }
   }
 
-  // Phase 3: Use Promise.allSettled() to create missing records with partial failure handling
-  const createResults = await Promise.allSettled(
+  // Create missing records - errors will propagate
+  await Promise.all(
     uncachedRecordNames.map(async (name) => {
-      if (cache.has(name)) return { name, success: true, cached: true };
+      if (cache.has(name)) return;
       const response = await dataProvider.create(resource, {
         data: getCreateData(name),
       });
       cache.set(name, response.data);
-      return { name, success: true, data: response.data };
     })
   );
-
-  // Log any failures (non-blocking - contacts can still be created without these records)
-  const failures = createResults.filter((r) => r.status === "rejected");
-  if (failures.length > 0) {
-    console.warn(
-      `Failed to create ${failures.length} ${resource} records:`,
-      failures.map((f: any) => f.reason?.message || f.reason)
-    );
-  }
 
   // now all records are in cache, return a map of all records
   return trimmedNames.reduce((acc, name) => {

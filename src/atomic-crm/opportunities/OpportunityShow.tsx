@@ -5,6 +5,7 @@ import {
   useShowContext,
 } from "ra-core";
 import { useMatch, useNavigate } from "react-router-dom";
+import { parseDateSafely } from "@/lib/date-utils";
 
 import { DETAIL_FIELD_MIN_WIDTH } from "./constants";
 import { ArchivedBanner, ArchiveButton, UnarchiveButton } from "./components";
@@ -120,15 +121,15 @@ const OpportunityShowContent = () => {
                   </span>
                   <div className="flex items-center gap-2">
                     <span className="text-sm">
-                      {isValid(new Date(record.estimated_close_date))
-                        ? format(new Date(record.estimated_close_date), "PP")
+                      {parseDateSafely(record.estimated_close_date)
+                        ? format(parseDateSafely(record.estimated_close_date)!, "PP")
                         : "Invalid date"}
                     </span>
-                    {isValid(new Date(record.estimated_close_date)) && (
+                    {parseDateSafely(record.estimated_close_date) && (
                       <>
-                        {isPast(new Date(record.estimated_close_date)) ? (
+                        {isPast(parseDateSafely(record.estimated_close_date)!) ? (
                           <Badge variant="destructive">
-                            {formatDistanceToNow(new Date(record.estimated_close_date), {
+                            {formatDistanceToNow(parseDateSafely(record.estimated_close_date)!, {
                               addSuffix: true,
                             })}
                           </Badge>
@@ -137,7 +138,7 @@ const OpportunityShowContent = () => {
                             variant="secondary"
                             className="bg-primary/10 text-primary border-primary/30"
                           >
-                            {formatDistanceToNow(new Date(record.estimated_close_date), {
+                            {formatDistanceToNow(parseDateSafely(record.estimated_close_date)!, {
                               addSuffix: true,
                             })}
                           </Badge>
@@ -249,12 +250,12 @@ const OpportunityShowContent = () => {
                     Created
                   </span>
                   <span className="text-sm">
-                    {isValid(new Date(record.created_at))
-                      ? format(new Date(record.created_at), "PPp")
+                    {parseDateSafely(record.created_at)
+                      ? format(parseDateSafely(record.created_at)!, "PPp")
                       : "Unknown"}
                   </span>
                   <span className="text-xs text-muted-foreground">
-                    {formatDistanceToNow(new Date(record.created_at), { addSuffix: true })}
+                    {parseDateSafely(record.created_at) && formatDistanceToNow(parseDateSafely(record.created_at)!, { addSuffix: true })}
                   </span>
                 </div>
 

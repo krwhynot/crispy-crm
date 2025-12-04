@@ -8,6 +8,7 @@ import { STUCK_THRESHOLD_DAYS } from "../hooks/useStageMetrics";
 import { OpportunityCardActions } from "./OpportunityCardActions";
 import { WIN_REASONS, LOSS_REASONS } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "../../types";
+import { parseDateSafely } from "@/lib/date-utils";
 
 interface OpportunityCardProps {
   index: number;
@@ -53,8 +54,8 @@ export const OpportunityCard = React.memo(function OpportunityCard({
     openSlideOver(record.id as number, "view");
   };
 
-  const closeDate = record.estimated_close_date
-    ? format(new Date(record.estimated_close_date), "MMM d, yyyy")
+  const closeDate = record.estimated_close_date && parseDateSafely(record.estimated_close_date)
+    ? format(parseDateSafely(record.estimated_close_date)!, "MMM d, yyyy")
     : "No date set";
 
   const daysInStage = record.days_in_stage || 0;

@@ -110,7 +110,7 @@ export class ErrorBoundary extends Component<Props, State> {
           <Card className="w-full max-w-md">
             <CardHeader className="text-center">
               <div className="mx-auto mb-4 flex h-12 w-12 items-center justify-center rounded-full bg-destructive/10">
-                <AlertTriangle className="h-6 w-6 text-destructive" />
+                <AlertTriangle className="size-6 text-destructive" />
               </div>
               <CardTitle>Something went wrong</CardTitle>
               <CardDescription>
@@ -123,11 +123,11 @@ export class ErrorBoundary extends Component<Props, State> {
               {/* Action buttons */}
               <div className="flex gap-2">
                 <Button onClick={this.handleRetry} variant="outline" className="flex-1 gap-2">
-                  <RotateCcw className="h-4 w-4" />
+                  <RotateCcw className="size-4" />
                   Try Again
                 </Button>
                 <Button onClick={this.handleGoHome} className="flex-1 gap-2">
-                  <Home className="h-4 w-4" />
+                  <Home className="size-4" />
                   Go Home
                 </Button>
               </div>

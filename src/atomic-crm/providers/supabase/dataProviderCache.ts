@@ -45,18 +45,14 @@ export class CacheManager {
 }
 
 /**
- * Singleton instance for data provider escape value caching
- * Replaces the Map-based cache with proper LRU eviction
+ * Singleton instance for PostgREST escape value caching
+ * Used by dataProviderUtils.escapeForPostgREST() to cache frequently escaped values
+ *
+ * Config: 1000 max entries, 5 minute TTL
  */
 export const escapeCacheManager = new CacheManager({
   max: 1000,
   ttl: 300000, // 5 minutes TTL for escape values
 });
 
-/**
- * Singleton instance for general data provider caching
- */
-export const dataProviderCache = new CacheManager({
-  max: 500,
-  ttl: 60000, // 1 minute default TTL
-});
+// NOTE: General dataProviderCache removed - React Admin handles query caching via TanStack Query

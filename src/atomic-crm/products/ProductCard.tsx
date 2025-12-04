@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { useCreatePath, useRecordContext, useListContext } from "ra-core";
 import { formatDistanceToNow } from "date-fns";
 import type { VariantProps } from "class-variance-authority";
+import { parseDateSafely } from "@/lib/date-utils";
 
 import { Card } from "@/components/ui/card";
 import type { badgeVariants } from "@/components/ui/badge.constants";
@@ -69,11 +70,11 @@ export const ProductCard = (props: { record?: Product }) => {
           </div>
 
           <div className="flex flex-col gap-1">
-            {record.last_promoted_at && (
+            {record.last_promoted_at && parseDateSafely(record.last_promoted_at) && (
               <div className="flex items-center justify-center gap-0.5">
                 <TrendingUp className="w-3 h-3 text-muted-foreground" />
                 <span className="text-xs text-muted-foreground">
-                  {formatDistanceToNow(new Date(record.last_promoted_at), {
+                  {formatDistanceToNow(parseDateSafely(record.last_promoted_at)!, {
                     addSuffix: true,
                   })}
                 </span>

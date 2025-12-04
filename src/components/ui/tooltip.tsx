@@ -18,12 +18,13 @@ function TooltipProvider({
   );
 }
 
+/**
+ * Tooltip root component.
+ * IMPORTANT: Requires <TooltipProvider> at app root for consistent timing.
+ * @see App.tsx for provider setup
+ */
 function Tooltip({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Root>) {
-  return (
-    <TooltipProvider>
-      <TooltipPrimitive.Root data-slot="tooltip" {...props} />
-    </TooltipProvider>
-  );
+  return <TooltipPrimitive.Root data-slot="tooltip" {...props} />;
 }
 
 function TooltipTrigger({ ...props }: React.ComponentProps<typeof TooltipPrimitive.Trigger>) {

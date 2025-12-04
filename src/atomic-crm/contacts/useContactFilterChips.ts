@@ -1,6 +1,7 @@
 import { useListContext } from "ra-core";
 import { useGetList } from "ra-core";
 import { format } from "date-fns";
+import { parseDateSafely } from "@/lib/date-utils";
 
 interface FilterChip {
   key: string;
@@ -67,32 +68,19 @@ export const useContactFilterChips = () => {
 
   const formatDateRange = (gte?: string, lte?: string): string => {
     if (gte && !lte) {
-      // After a date
-      try {
-        const date = new Date(gte);
-        return `After ${format(date, "MMM d, yyyy")}`;
-      } catch {
-        return "Recent activity";
-      }
+      const date = parseDateSafely(gte);
+      return date ? `After ${format(date, "MMM d, yyyy")}` : "Recent activity";
     }
     if (lte && !gte) {
-      // Before a date
-      try {
-        const date = new Date(lte);
-        return `Before ${format(date, "MMM d, yyyy")}`;
-      } catch {
-        return "Older activity";
-      }
+      const date = parseDateSafely(lte);
+      return date ? `Before ${format(date, "MMM d, yyyy")}` : "Older activity";
     }
     if (gte && lte) {
-      // Date range
-      try {
-        const startDate = new Date(gte);
-        const endDate = new Date(lte);
-        return `${format(startDate, "MMM d")} - ${format(endDate, "MMM d, yyyy")}`;
-      } catch {
-        return "Date range";
-      }
+      const startDate = parseDateSafely(gte);
+      const endDate = parseDateSafely(lte);
+      return startDate && endDate
+        ? `${format(startDate, "MMM d")} - ${format(endDate, "MMM d, yyyy")}`
+        : "Date range";
     }
     return "Unknown date";
   };

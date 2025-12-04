@@ -99,9 +99,10 @@ export default defineConfig(({ mode }) => ({
                     "font-src 'self' data: https://fonts.gstatic.com; " +
                     "connect-src 'self' https://*.supabase.co https://*.supabase.in wss://*.supabase.co wss://*.supabase.in https://*.sentry.io; " +
                     "worker-src 'self' blob:; " +
+                    "child-src 'self' blob:; " +
                     "frame-src 'none'; " +
                     "object-src 'none'; " +
-                    "base-uri 'self'; " +
+                    "base-uri 'none'; " +
                     "form-action 'self';"
                   : // Development: Allow Vite HMR and inline scripts
                     "default-src 'self'; " +
@@ -110,9 +111,10 @@ export default defineConfig(({ mode }) => ({
                     "img-src 'self' data: https:; " +
                     "font-src 'self' data: https://fonts.gstatic.com; " +
                     "connect-src 'self' http://localhost:* http://127.0.0.1:* ws://localhost:* ws://127.0.0.1:* https://*.supabase.co https://*.supabase.in wss://*.supabase.co wss://*.supabase.in; " +
+                    "child-src 'self' blob:; " +
                     "frame-src 'none'; " +
                     "object-src 'none'; " +
-                    "base-uri 'self'; " +
+                    "base-uri 'none'; " +
                     "form-action 'self';",
             },
           },

@@ -1,5 +1,6 @@
 import type { DataProvider, Identifier } from "ra-core";
 import type { Sale, SalesFormData } from "../types";
+import { devError } from "@/lib/devLogger";
 
 /**
  * Sales service handles sales user management operations through Edge functions
@@ -23,7 +24,7 @@ export class SalesService {
   async salesCreate(body: SalesFormData): Promise<Sale> {
     // Use the extended invoke capability from unifiedDataProvider
     if (!this.dataProvider.invoke) {
-      console.error(`[SalesService] DataProvider missing invoke capability`, {
+      devError("SalesService", "DataProvider missing invoke capability", {
         operation: "salesCreate",
         body,
       });
@@ -39,7 +40,7 @@ export class SalesService {
       });
 
       if (!data) {
-        console.error(`[SalesService] Create account manager returned no data`, {
+        devError("SalesService", "Create account manager returned no data", {
           body,
         });
         throw new Error(`Sales creation failed: No data returned from Edge Function`);
@@ -47,7 +48,7 @@ export class SalesService {
 
       return data;
     } catch (error: any) {
-      console.error(`[SalesService] Failed to create account manager`, {
+      devError("SalesService", "Failed to create account manager", {
         body,
         error,
       });
@@ -68,7 +69,7 @@ export class SalesService {
     const { email, first_name, last_name, administrator, avatar, disabled } = data;
 
     if (!this.dataProvider.invoke) {
-      console.error(`[SalesService] DataProvider missing invoke capability`, {
+      devError("SalesService", "DataProvider missing invoke capability", {
         operation: "salesUpdate",
         id,
         data,
@@ -93,7 +94,7 @@ export class SalesService {
       });
 
       if (!sale) {
-        console.error(`[SalesService] Update account manager returned no data`, {
+        devError("SalesService", "Update account manager returned no data", {
           id,
           data,
         });
@@ -102,7 +103,7 @@ export class SalesService {
 
       return data;
     } catch (error: any) {
-      console.error(`[SalesService] Failed to update account manager`, {
+      devError("SalesService", "Failed to update account manager", {
         id,
         data,
         error,
@@ -118,7 +119,7 @@ export class SalesService {
    */
   async updatePassword(id: Identifier): Promise<boolean> {
     if (!this.dataProvider.invoke) {
-      console.error(`[SalesService] DataProvider missing invoke capability`, {
+      devError("SalesService", "DataProvider missing invoke capability", {
         operation: "updatePassword",
         id,
       });
@@ -136,7 +137,7 @@ export class SalesService {
       });
 
       if (!passwordUpdated) {
-        console.error(`[SalesService] Update password returned false`, {
+        devError("SalesService", "Update password returned false", {
           id,
         });
         throw new Error(`Password update failed: Edge Function returned false`);
@@ -144,7 +145,7 @@ export class SalesService {
 
       return passwordUpdated;
     } catch (error: any) {
-      console.error(`[SalesService] Failed to update password`, {
+      devError("SalesService", "Failed to update password", {
         id,
         error,
       });

@@ -13,6 +13,11 @@ function Tabs({ className, ...props }: React.ComponentProps<typeof TabsPrimitive
   );
 }
 
+/**
+ * TabsList container for tab triggers.
+ * @param aria-label - REQUIRED for accessibility. Describes the tab group purpose.
+ * @example <TabsList aria-label="Account settings">
+ */
 function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.List>) {
   return (
     <TabsPrimitive.List

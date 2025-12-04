@@ -8,6 +8,7 @@ import {
 } from "ra-core";
 import type { ReactElement, ReactNode } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { cn } from "@/lib/utils";
 
 export const SimpleListItem = <RecordType extends RaRecord = any>(
   props: SimpleListItemProps<RecordType>
@@ -53,7 +54,7 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
 
   if (isFunctionLink) {
     return (
-      <li className={`w-full ${dividerClass}`}>
+      <li className={cn("w-full", dividerClass)}>
         <button
           onClick={handleClick}
           style={style}
@@ -67,7 +68,7 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
 
   if (pathForRecord) {
     return (
-      <li className={`w-full ${dividerClass}`}>
+      <li className={cn("w-full", dividerClass)}>
         <Link
           to={pathForRecord}
           style={style}
@@ -79,7 +80,7 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
     );
   }
 
-  return <li className={`w-full ${dividerClass}`}>{children}</li>;
+  return <li className={cn("w-full", dividerClass)}>{children}</li>;
 };
 
 export type FunctionToElement<RecordType extends RaRecord = any> = (

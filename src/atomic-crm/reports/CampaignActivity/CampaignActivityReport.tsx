@@ -24,6 +24,7 @@ import {
   getStaleThreshold,
 } from "@/atomic-crm/utils/stalenessCalculation";
 import { format, subDays, startOfMonth } from "date-fns";
+import { parseDateSafely } from "@/lib/date-utils";
 import type { Sale, Activity as BaseActivity, ActivityGroup } from "../types";
 
 /** Extended activity with required organization_name for campaign reporting */
@@ -232,9 +233,12 @@ export default function CampaignActivityReport() {
     const oppActivities = activities.filter((a) => a.opportunity_id === oppId);
     if (oppActivities.length === 0) return null;
 
-    const sortedActivities = oppActivities.sort(
-      (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-    );
+    const sortedActivities = oppActivities.sort((a, b) => {
+      const dateA = parseDateSafely(a.created_at);
+      const dateB = parseDateSafely(b.created_at);
+      if (!dateA || !dateB) return 0;
+      return dateB.getTime() - dateA.getTime();
+    });
 
     return sortedActivities[0].created_at;
   };
@@ -253,9 +257,10 @@ export default function CampaignActivityReport() {
       opportunitiesForCampaign
         .map((opp) => {
           const lastActivityDate = getLastActivityForOpportunity(opp.id, allCampaignActivities);
-          const daysInactive = lastActivityDate
+          const lastActivityDateObj = lastActivityDate ? parseDateSafely(lastActivityDate) : null;
+          const daysInactive = lastActivityDateObj
             ? Math.floor(
-                (now.getTime() - new Date(lastActivityDate).getTime()) / (1000 * 60 * 60 * 24)
+                (now.getTime() - lastActivityDateObj.getTime()) / (1000 * 60 * 60 * 24)
               )
             : 999999; // Never had activity - sort to end
 
@@ -418,16 +423,19 @@ export default function CampaignActivityReport() {
         return;
       }
 
-      const exportData = staleOpportunities.map((opp) => ({
-        campaign: sanitizeCsvValue(selectedCampaign),
-        opportunity_name: sanitizeCsvValue(opp.name),
-        organization: sanitizeCsvValue(opp.customer_organization_name || ""),
-        last_activity_date: opp.lastActivityDate
-          ? format(new Date(opp.lastActivityDate), "yyyy-MM-dd")
-          : "Never",
-        days_inactive: opp.daysInactive >= 999999 ? "Never contacted" : opp.daysInactive.toString(),
-        notes: "", // Not available in current data structure
-      }));
+      const exportData = staleOpportunities.map((opp) => {
+        const lastActivityDateObj = opp.lastActivityDate ? parseDateSafely(opp.lastActivityDate) : null;
+        return {
+          campaign: sanitizeCsvValue(selectedCampaign),
+          opportunity_name: sanitizeCsvValue(opp.name),
+          organization: sanitizeCsvValue(opp.customer_organization_name || ""),
+          last_activity_date: lastActivityDateObj
+            ? format(lastActivityDateObj, "yyyy-MM-dd")
+            : "Never",
+          days_inactive: opp.daysInactive >= 999999 ? "Never contacted" : opp.daysInactive.toString(),
+          notes: "", // Not available in current data structure
+        };
+      });
 
       jsonExport(exportData, (err, csv) => {
         if (err) {
@@ -457,9 +465,10 @@ export default function CampaignActivityReport() {
           const opportunity = activity.opportunity_id
             ? opportunityMap.get(activity.opportunity_id)
             : null;
-          const daysSinceActivity = Math.floor(
-            (Date.now() - new Date(activity.created_at).getTime()) / (1000 * 60 * 60 * 24)
-          );
+          const createdAtDate = parseDateSafely(activity.created_at);
+          const daysSinceActivity = createdAtDate
+            ? Math.floor((Date.now() - createdAtDate.getTime()) / (1000 * 60 * 60 * 24))
+            : 0;
 
           return {
             campaign: sanitizeCsvValue(selectedCampaign),
@@ -468,7 +477,7 @@ export default function CampaignActivityReport() {
             subject: sanitizeCsvValue(activity.subject),
             organization: sanitizeCsvValue(activity.organization_name),
             contact_name: sanitizeCsvValue(activity.contact_name || ""),
-            date: format(new Date(activity.created_at), "yyyy-MM-dd"),
+            date: createdAtDate ? format(createdAtDate, "yyyy-MM-dd") : "",
             sales_rep: sanitizeCsvValue(salesMap.get(activity.created_by!) || "Unassigned"),
             days_since_activity: daysSinceActivity,
             opportunity_name: sanitizeCsvValue(opportunity?.name || ""),

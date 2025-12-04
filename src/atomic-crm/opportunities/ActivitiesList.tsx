@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { useListContext } from "ra-core";
 import { Badge } from "@/components/ui/badge";
 import type { ActivityRecord } from "../types";
+import { parseDateSafely } from "@/lib/date-utils";
 
 export const ActivitiesList = () => {
   const { data, isPending } = useListContext<ActivityRecord>();
@@ -39,7 +40,7 @@ export const ActivitiesList = () => {
               )}
             </div>
             <span className="text-sm text-muted-foreground">
-              {format(new Date(activity.activity_date), "MMM d, yyyy")}
+              {parseDateSafely(activity.activity_date) ? format(parseDateSafely(activity.activity_date)!, "MMM d, yyyy") : "No date"}
             </span>
           </div>
 
@@ -60,9 +61,9 @@ export const ActivitiesList = () => {
               <Badge variant="outline" className="bg-warning-subtle text-warning border-warning">
                 Follow-up Required
               </Badge>
-              {activity.follow_up_date && (
+              {activity.follow_up_date && parseDateSafely(activity.follow_up_date) && (
                 <span className="text-xs text-muted-foreground">
-                  by {format(new Date(activity.follow_up_date), "MMM d, yyyy")}
+                  by {format(parseDateSafely(activity.follow_up_date)!, "MMM d, yyyy")}
                 </span>
               )}
             </div>

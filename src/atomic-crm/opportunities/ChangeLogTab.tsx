@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useDataProvider, useShowContext } from "ra-core";
+import { useState, useMemo } from "react";
+import { useShowContext, useGetList } from "react-admin";
 import { format } from "date-fns";
 import { History, User, Calendar, Filter, Download, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -15,6 +15,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { Opportunity } from "../types";
+import { parseDateSafely } from "@/lib/date-utils";
 
 interface AuditTrailEntry {
   audit_id: number;
@@ -43,9 +44,29 @@ interface AuditTrailEntry {
  */
 export const ChangeLogTab = () => {
   const { record } = useShowContext<Opportunity>();
-  const dataProvider = useDataProvider();
-  const [auditEntries, setAuditEntries] = useState<AuditTrailEntry[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+
+  // Replace manual fetching with useGetList
+  const { data: rawEntries = [], isLoading } = useGetList<AuditTrailEntry>(
+    "audit_trail",
+    {
+      filter: {
+        table_name: "opportunities",
+        record_id: record?.id,
+      },
+      sort: { field: "changed_at", order: "DESC" },
+      pagination: { page: 1, perPage: 100 },
+    },
+    {
+      enabled: !!record?.id, // Only fetch when record.id is available
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    }
+  );
+
+  // Transform entries to add id field (memoized)
+  const auditEntries = useMemo(
+    () => rawEntries.map((entry) => ({ ...entry, id: entry.audit_id })),
+    [rawEntries]
+  );
 
   // Filter state
   const [showFilters, setShowFilters] = useState(false);
@@ -53,40 +74,6 @@ export const ChangeLogTab = () => {
   const [filterUser, setFilterUser] = useState<string>("all");
   const [filterDateFrom, setFilterDateFrom] = useState<string>("");
   const [filterDateTo, setFilterDateTo] = useState<string>("");
-
-  useEffect(() => {
-    if (!record?.id) return;
-
-    const fetchAuditTrail = async () => {
-      setIsLoading(true);
-      try {
-        // Fetch audit trail entries for this opportunity
-        // Note: Using raw SQL via execute_sql since audit_trail may not be exposed as standard resource
-        const result = await dataProvider.getList("audit_trail", {
-          filter: {
-            table_name: "opportunities",
-            record_id: record.id,
-          },
-          sort: { field: "changed_at", order: "DESC" },
-          pagination: { page: 1, perPage: 100 }, // Show last 100 changes
-        });
-
-        const entries = (result.data as AuditTrailEntry[]).map((entry) => ({
-          ...entry,
-          id: entry.audit_id,
-        }));
-
-        setAuditEntries(entries);
-      } catch (error) {
-        console.error("Failed to fetch audit trail:", error);
-        setAuditEntries([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchAuditTrail();
-  }, [record?.id, dataProvider]);
 
   // Apply client-side filters to audit entries
   const filteredEntries = auditEntries.filter((entry) => {
@@ -104,7 +91,8 @@ export const ChangeLogTab = () => {
     }
 
     // Filter by date range
-    const entryDate = new Date(entry.changed_at);
+    const entryDate = parseDateSafely(entry.changed_at);
+    if (!entryDate) return false;
     if (filterDateFrom) {
       const fromDate = new Date(filterDateFrom);
       if (entryDate < fromDate) {
@@ -142,7 +130,7 @@ export const ChangeLogTab = () => {
     const csvHeaders = ["Timestamp", "Field", "Old Value", "New Value", "Changed By"];
 
     const csvRows = filteredEntries.map((entry) => [
-      format(new Date(entry.changed_at), "yyyy-MM-dd HH:mm:ss"),
+      parseDateSafely(entry.changed_at) ? format(parseDateSafely(entry.changed_at)!, "yyyy-MM-dd HH:mm:ss") : "Unknown",
       formatFieldName(entry.field_name),
       formatValue(entry.old_value),
       formatValue(entry.new_value),
@@ -215,7 +203,9 @@ export const ChangeLogTab = () => {
   // Group filtered entries by date for better readability
   const groupedByDate = filteredEntries.reduce(
     (acc, entry) => {
-      const date = format(new Date(entry.changed_at), "yyyy-MM-dd");
+      const parsedDate = parseDateSafely(entry.changed_at);
+      if (!parsedDate) return acc;
+      const date = format(parsedDate, "yyyy-MM-dd");
       if (!acc[date]) acc[date] = [];
       acc[date].push(entry);
       return acc;
@@ -356,7 +346,7 @@ export const ChangeLogTab = () => {
           <div className="flex items-center gap-2 sticky top-0 bg-background py-2 z-10">
             <Calendar className="w-4 h-4 text-muted-foreground" />
             <span className="text-sm font-medium text-muted-foreground">
-              {format(new Date(date), "MMMM d, yyyy")}
+              {parseDateSafely(date) ? format(parseDateSafely(date)!, "MMMM d, yyyy") : date}
             </span>
           </div>
 
@@ -438,7 +428,7 @@ const ChangeLogEntry = ({
               <User className="w-3 h-3" />
               <span>{entry.sales_name || `User #${entry.changed_by}` || "System"}</span>
             </div>
-            <span>{format(new Date(entry.changed_at), "h:mm a")}</span>
+            <span>{parseDateSafely(entry.changed_at) ? format(parseDateSafely(entry.changed_at)!, "h:mm a") : "Unknown"}</span>
           </div>
         </div>
       </CardContent>

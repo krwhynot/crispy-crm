@@ -107,11 +107,12 @@ export const Note = ({
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="icon"
                   onClick={handleEnterEditMode}
-                  className="p-1 h-auto cursor-pointer"
+                  className="cursor-pointer"
+                  aria-label="Edit note"
                 >
-                  <Edit className="w-4 h-4" />
+                  <Edit className="size-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -124,11 +125,12 @@ export const Note = ({
               <TooltipTrigger asChild>
                 <Button
                   variant="ghost"
-                  size="sm"
+                  size="icon"
                   onClick={handleDelete}
-                  className="p-1 h-auto cursor-pointer"
+                  className="cursor-pointer"
+                  aria-label="Delete note"
                 >
-                  <Trash2 className="w-4 h-4" />
+                  <Trash2 className="size-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent>
@@ -152,7 +154,7 @@ export const Note = ({
               type="button"
               className="cursor-pointer"
             >
-              <CircleX className="w-4 h-4" />
+              <CircleX className="size-4" />
               Cancel
             </Button>
             <Button
@@ -160,7 +162,7 @@ export const Note = ({
               disabled={isPending}
               className="flex items-center gap-2 cursor-pointer"
             >
-              <Save className="w-4 h-4" />
+              <Save className="size-4" />
               Update note
             </Button>
           </div>

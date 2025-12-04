@@ -184,7 +184,7 @@ export const ElevationComparison: Story = {
           <div className="text-xs font-semibold text-muted-foreground mb-2">
             MEDIUM (--shadow-card-2)
           </div>
-          <div className="rounded-lg border border-transparent bg-card px-4 py-3 transition-all duration-150 hover:border-primary shadow-[0_4px_8px_rgba(0,0,0,0.1)] hover:shadow-[0_8px_16px_rgba(0,0,0,0.15)] motion-safe:hover:-translate-y-0.5 motion-safe:hover:scale-[1.01] cursor-pointer">
+          <div className="rounded-lg border border-transparent bg-card px-4 py-3 transition-all duration-150 hover:border-primary shadow-elevation-1 hover:shadow-elevation-2 motion-safe:hover:-translate-y-0.5 motion-safe:hover:scale-[1.01] cursor-pointer">
             <p className="text-sm font-medium">Opportunity Card</p>
             <p className="text-xs text-muted-foreground">
               Enhanced elevation with border color change

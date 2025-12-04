@@ -30,6 +30,7 @@ export interface CSPConfig {
     fontSrc: string[];
     objectSrc: string[];
     frameSrc: string[];
+    childSrc: string[];
     baseUri: string[];
     formAction: string[];
     frameAncestors: string[];
@@ -80,7 +81,8 @@ export const developmentCSP: CSPConfig = {
     fontSrc: ["'self'", "data:", "https://fonts.gstatic.com"],
     objectSrc: ["'none'"],
     frameSrc: ["'none'"],
-    baseUri: ["'self'"],
+    childSrc: ["'self'", "blob:"],
+    baseUri: ["'none'"],
     formAction: ["'self'"],
     frameAncestors: ["'none'"],
   },
@@ -124,7 +126,8 @@ export const productionCSP: CSPConfig = {
     fontSrc: ["'self'", "data:", "https://fonts.gstatic.com"],
     objectSrc: ["'none'"],
     frameSrc: ["'none'"],
-    baseUri: ["'self'"],
+    childSrc: ["'self'", "blob:"],
+    baseUri: ["'none'"],
     formAction: ["'self'"],
     frameAncestors: ["'none'"],
     upgradeInsecureRequests: true, // Force HTTPS

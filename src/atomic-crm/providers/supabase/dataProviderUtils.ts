@@ -9,7 +9,6 @@
  */
 
 import type { GetListParams } from "ra-core";
-import { head } from "lodash";
 import { getSearchableFields, supportsSoftDelete, getResourceName } from "./resources";
 import { escapeCacheManager } from "./dataProviderCache";
 
@@ -216,7 +215,7 @@ export const transformOrFilter = (filter: FilterPayload): FilterPayload => {
   // then recursively processes the object value to build the PostgREST query.
   const orObject: FilterPayload = {};
   for (const condition of orFilter) {
-    const key = head(Object.keys(condition));
+    const key = Object.keys(condition)[0];
     if (key) {
       orObject[key] = condition[key];
     }

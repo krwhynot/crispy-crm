@@ -30,9 +30,11 @@ export {
 // Export the task-completion specific dialog
 export { QuickLogActivity } from "./QuickLogActivity";
 
+import { parseDateSafely } from "@/lib/date-utils";
+
 export default {
   list: ActivityList,
   create: ActivityCreate,
   recordRepresentation: (record: ActivityRecord) =>
-    `${record?.type || "Activity"} - ${record?.activity_date ? new Date(record.activity_date).toLocaleDateString() : "Unknown date"}`,
+    `${record?.type || "Activity"} - ${record?.activity_date ? parseDateSafely(record.activity_date)?.toLocaleDateString() || "Unknown date" : "Unknown date"}`,
 };

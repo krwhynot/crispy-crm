@@ -73,7 +73,7 @@ export const IconTrigger: Story = {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon">
-          <Info className="h-4 w-4" />
+          <Info className="size-4" />
           <span className="sr-only">More information</span>
         </Button>
       </PopoverTrigger>
@@ -209,7 +209,7 @@ export const ComplexContent: Story = {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline">
-          <Settings className="mr-2 h-4 w-4" />
+          <Settings className="mr-2 size-4" />
           Settings
         </Button>
       </PopoverTrigger>
@@ -254,14 +254,14 @@ export const UserProfile: Story = {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" className="relative h-10 w-10 rounded-full">
-          <User className="h-6 w-6" />
+          <User className="size-6" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-64" align="end">
         <div className="flex flex-col space-y-4">
           <div className="flex items-center space-x-2">
             <div className="h-10 w-10 rounded-full bg-muted flex items-center justify-center">
-              <User className="h-5 w-5" />
+              <User className="size-5" />
             </div>
             <div>
               <p className="text-sm font-medium">John Doe</p>
@@ -291,7 +291,7 @@ export const HelpPopover: Story = {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="ghost" size="icon">
-          <HelpCircle className="h-4 w-4" />
+          <HelpCircle className="size-4" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-80">
@@ -328,7 +328,7 @@ const DatePickerPopover = () => {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" className="w-[240px] justify-start text-left">
-          <Calendar className="mr-2 h-4 w-4" />
+          <Calendar className="mr-2 size-4" />
           {date || "Pick a date"}
         </Button>
       </PopoverTrigger>
@@ -375,7 +375,7 @@ const TimePickerPopover = () => {
     <Popover>
       <PopoverTrigger asChild>
         <Button variant="outline" className="w-[180px] justify-start text-left">
-          <Clock className="mr-2 h-4 w-4" />
+          <Clock className="mr-2 size-4" />
           {time || "Select time"}
         </Button>
       </PopoverTrigger>

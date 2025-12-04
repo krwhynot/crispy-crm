@@ -15,6 +15,7 @@
  */
 
 import { z } from "zod";
+import { parseDateSafely } from "@/lib/date-utils";
 
 /**
  * Valid pipeline stages that can have stale thresholds.
@@ -123,7 +124,11 @@ export function isOpportunityStale(
     return true;
   }
 
-  const lastActivity = new Date(lastActivityDate);
+  const lastActivity = parseDateSafely(lastActivityDate);
+  if (!lastActivity) {
+    return true;
+  }
+
   const daysSinceActivity = Math.floor(
     (referenceDate.getTime() - lastActivity.getTime()) / (1000 * 60 * 60 * 24)
   );
@@ -146,7 +151,11 @@ export function getDaysSinceActivity(
     return Infinity;
   }
 
-  const lastActivity = new Date(lastActivityDate);
+  const lastActivity = parseDateSafely(lastActivityDate);
+  if (!lastActivity) {
+    return Infinity;
+  }
+
   return Math.floor((referenceDate.getTime() - lastActivity.getTime()) / (1000 * 60 * 60 * 24));
 }
 

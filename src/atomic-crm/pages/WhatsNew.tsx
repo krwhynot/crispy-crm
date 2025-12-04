@@ -17,6 +17,7 @@ import {
   Play,
   BookOpen,
 } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface FeatureTour {
   id: string;
@@ -264,7 +265,7 @@ export const WhatsNew = () => {
                     </div>
                     <div className="flex gap-2">
                       {feature.isNew && <Badge variant="default">NEW</Badge>}
-                      <Badge className={getCategoryColor(feature.category)}>
+                      <Badge className={cn(getCategoryColor(feature.category))}>
                         {feature.category.toUpperCase()}
                       </Badge>
                     </div>
@@ -296,7 +297,7 @@ export const WhatsNew = () => {
                   {selectedFeature.icon}
                   {selectedFeature.title}
                 </div>
-                <Badge className={getCategoryColor(selectedFeature.category)}>
+                <Badge className={cn(getCategoryColor(selectedFeature.category))}>
                   {selectedFeature.steps && (
                     <span>
                       Step {currentStep + 1} of {selectedFeature.steps.length}

@@ -40,6 +40,7 @@ import {
 } from "../../../validation/activities";
 import { validateCreateSegment, validateUpdateSegment } from "../../../validation/segments";
 import { filterableFields, isValidFilterField } from "../filterRegistry";
+import { DEV } from "@/lib/devLogger";
 
 // Type for validation functions
 type ValidationFunction<T = unknown> = (data: T) => Promise<void> | void;
@@ -211,10 +212,12 @@ export class ValidationService {
     const allowedFields = filterableFields[resource];
 
     if (!allowedFields) {
-      console.warn(
-        `[ValidationService] No filterable fields defined for resource: "${resource}". ` +
-          `Skipping filter validation. Consider adding this resource to filterRegistry.ts`
-      );
+      if (DEV) {
+        console.warn(
+          `[ValidationService] No filterable fields defined for resource: "${resource}". ` +
+            `Skipping filter validation. Consider adding this resource to filterRegistry.ts`
+        );
+      }
       return filters; // No validation possible, return as-is
     }
 
@@ -228,24 +231,28 @@ export class ValidationService {
           cleanedFilters[filterKey] = filters[filterKey];
         } else {
           // Invalid filter - log warning and remove it
-          console.warn(
-            `[ValidationService] Resource "${resource}" received invalid filter field: "${filterKey}". ` +
-              `This field does not exist in the database schema. Removing it to prevent API errors. ` +
-              `If this field should be filterable, add it to filterRegistry.ts`
-          );
+          if (DEV) {
+            console.warn(
+              `[ValidationService] Resource "${resource}" received invalid filter field: "${filterKey}". ` +
+                `This field does not exist in the database schema. Removing it to prevent API errors. ` +
+                `If this field should be filterable, add it to filterRegistry.ts`
+            );
+          }
           modified = true;
         }
       }
     }
 
     if (modified) {
-      console.info(
-        `[ValidationService] Filters cleaned for resource "${resource}".`,
-        `\nOriginal:`,
-        filters,
-        `\nCleaned:`,
-        cleanedFilters
-      );
+      if (DEV) {
+        console.info(
+          `[ValidationService] Filters cleaned for resource "${resource}".`,
+          `\nOriginal:`,
+          filters,
+          `\nCleaned:`,
+          cleanedFilters
+        );
+      }
     }
 
     return cleanedFilters;

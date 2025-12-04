@@ -19,6 +19,7 @@ import {
   countStaleOpportunities,
   STAGE_STALE_THRESHOLDS,
 } from "@/atomic-crm/utils/stalenessCalculation";
+import { parseDateSafely } from "@/lib/date-utils";
 
 /** Pipeline opportunity for overview reporting */
 interface Opportunity {
@@ -143,14 +144,14 @@ export default function OverviewTab() {
 
     // Current week activities
     const currentWeekActivities = activities.filter((a) => {
-      const date = new Date(a.created_at);
-      return date >= weekAgo;
+      const date = parseDateSafely(a.created_at);
+      return date && date >= weekAgo;
     }).length;
 
     // Previous week activities (for comparison)
     const previousWeekActivities = activities.filter((a) => {
-      const date = new Date(a.created_at);
-      return date >= twoWeeksAgo && date < weekAgo;
+      const date = parseDateSafely(a.created_at);
+      return date && date >= twoWeeksAgo && date < weekAgo;
     }).length;
 
     // Calculate activity trend
@@ -173,14 +174,14 @@ export default function OverviewTab() {
     // For now, we'll base trend on activity in last 30 days
     const recentActiveOpps = opportunities.filter((opp) => {
       if (!opp.last_activity_at) return false;
-      const activityDate = new Date(opp.last_activity_at);
-      return activityDate >= thirtyDaysAgoDate;
+      const activityDate = parseDateSafely(opp.last_activity_at);
+      return activityDate && activityDate >= thirtyDaysAgoDate;
     }).length;
 
     const olderActiveOpps = opportunities.filter((opp) => {
       if (!opp.last_activity_at) return false;
-      const activityDate = new Date(opp.last_activity_at);
-      return activityDate >= sixtyDaysAgoDate && activityDate < thirtyDaysAgoDate;
+      const activityDate = parseDateSafely(opp.last_activity_at);
+      return activityDate && activityDate >= sixtyDaysAgoDate && activityDate < thirtyDaysAgoDate;
     }).length;
 
     let opportunityTrend: "up" | "down" | "neutral" = "neutral";
@@ -235,8 +236,8 @@ export default function OverviewTab() {
     return days.map((day) => {
       const dayStr = format(day, "yyyy-MM-dd");
       const count = activities.filter((a) => {
-        const activityDate = format(new Date(a.created_at), "yyyy-MM-dd");
-        return activityDate === dayStr;
+        const activityDate = parseDateSafely(a.created_at);
+        return activityDate && format(activityDate, "yyyy-MM-dd") === dayStr;
       }).length;
 
       return {

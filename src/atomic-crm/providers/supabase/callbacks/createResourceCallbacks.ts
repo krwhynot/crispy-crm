@@ -113,7 +113,7 @@ export interface ResourceCallbacksConfig {
   /** Strategy for composing multiple transforms */
   compositionStrategy?: CompositionStrategy;
   /** Error handling strategy for transforms */
-  onTransformError?: "throw" | "log" | "ignore";
+  onTransformError?: "throw" | "log";
 }
 
 /**
@@ -247,9 +247,6 @@ export function createResourceCallbacks(config: ResourceCallbacksConfig): Resour
         throw new Error(message);
       case "log":
         console.error(message, error);
-        break;
-      case "ignore":
-        // Silently ignore
         break;
     }
   };

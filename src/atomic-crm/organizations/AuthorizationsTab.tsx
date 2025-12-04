@@ -40,6 +40,7 @@ import {
   useGetIdentity,
 } from "react-admin";
 import { format } from "date-fns";
+import { parseDateSafely } from "@/lib/date-utils";
 
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -313,8 +314,10 @@ function AuthorizationCard({ authorization, distributorId, onRemove }: Authoriza
   );
 
   const principalName = principal?.[0]?.name || `Principal #${authorization.principal_id}`;
-  const isExpired =
-    authorization.expiration_date && new Date(authorization.expiration_date) < new Date();
+  const expirationDate = authorization.expiration_date
+    ? parseDateSafely(authorization.expiration_date)
+    : null;
+  const isExpired = expirationDate && expirationDate < new Date();
   const isActive = authorization.is_authorized && !isExpired;
 
   // Filter product authorizations for this principal's products
@@ -386,16 +389,19 @@ function AuthorizationCard({ authorization, distributorId, onRemove }: Authoriza
                 <div className="flex items-center gap-1">
                   <Calendar className="h-3.5 w-3.5" />
                   <span>
-                    Since {format(new Date(authorization.authorization_date), "MMM d, yyyy")}
+                    Since{" "}
+                    {format(
+                      parseDateSafely(authorization.authorization_date) ?? new Date(),
+                      "MMM d, yyyy"
+                    )}
                   </span>
                 </div>
               )}
-              {authorization.expiration_date && (
+              {authorization.expiration_date && expirationDate && (
                 <div className="flex items-center gap-1">
                   <Calendar className="h-3.5 w-3.5" />
                   <span className={isExpired ? "text-destructive" : ""}>
-                    {isExpired ? "Expired" : "Expires"}{" "}
-                    {format(new Date(authorization.expiration_date), "MMM d, yyyy")}
+                    {isExpired ? "Expired" : "Expires"} {format(expirationDate, "MMM d, yyyy")}
                   </span>
                 </div>
               )}
@@ -508,8 +514,10 @@ function ProductExceptionsSection({
           {productsWithExceptions.map((product) => {
             const productAuth = productAuthMap.get(Number(product.id))!;
             const isAuthorized = productAuth.is_authorized;
-            const isExceptionExpired =
-              productAuth.expiration_date && new Date(productAuth.expiration_date) < new Date();
+            const expirationDate = productAuth.expiration_date
+              ? parseDateSafely(productAuth.expiration_date)
+              : null;
+            const isExceptionExpired = expirationDate && expirationDate < new Date();
 
             return (
               <div

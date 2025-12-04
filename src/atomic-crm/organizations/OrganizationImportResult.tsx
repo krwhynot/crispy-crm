@@ -225,17 +225,13 @@ export function OrganizationImportResult({ open, onClose, result }: Organization
               {result.startTime && (
                 <div>
                   <span className="text-muted-foreground">Started at:</span>{" "}
-                  <span className="font-medium">
-                    {new Date(result.startTime).toLocaleTimeString()}
-                  </span>
+                  <span className="font-medium">{result.startTime.toLocaleTimeString()}</span>
                 </div>
               )}
               {result.endTime && (
                 <div>
                   <span className="text-muted-foreground">Completed at:</span>{" "}
-                  <span className="font-medium">
-                    {new Date(result.endTime).toLocaleTimeString()}
-                  </span>
+                  <span className="font-medium">{result.endTime.toLocaleTimeString()}</span>
                 </div>
               )}
             </div>

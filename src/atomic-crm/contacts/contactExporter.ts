@@ -11,6 +11,20 @@ import {
 } from "../utils/exportHelpers";
 import { formatSalesName, formatTagsForExport } from "../utils/formatters";
 
+/**
+ * Sanitize value for CSV export to prevent formula injection
+ * @see docs/decisions/file-handling-best-practices.md
+ */
+const sanitizeForCSV = (value: unknown): string => {
+  if (value === null || value === undefined) return '';
+  const str = String(value);
+  const formulaTriggers = ['=', '-', '+', '@', '\t', '\r'];
+  if (formulaTriggers.some(char => str.startsWith(char))) {
+    return `\t${str}`;  // Tab prefix neutralizes formulas
+  }
+  return str;
+};
+
 export interface ContactExportRow {
   first_name: string | undefined;
   last_name: string | undefined;
@@ -66,7 +80,16 @@ export const contactExporter: Exporter<Contact> = async (records, fetchRelatedRe
     organization_id: contact.organization_id,
   }));
 
-  return jsonExport(contacts, {}, (err: Error | null, csv: string) => {
+  const safeContacts = contacts.map(row =>
+    Object.fromEntries(
+      Object.entries(row).map(([key, value]) => [key, sanitizeForCSV(value)])
+    )
+  );
+
+  return jsonExport(safeContacts, {
+    rowDelimiter: ',',
+    endOfLine: '\r\n',  // Windows/Excel compatibility
+  }, (err: Error | null, csv: string) => {
     if (err) {
       throw new Error(`CSV export failed: ${err.message}`);
     }

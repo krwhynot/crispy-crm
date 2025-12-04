@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Trophy, XCircle, AlertCircle } from "lucide-react";
 
@@ -91,15 +91,15 @@ export const CloseOpportunityModal = ({
   const form = useForm<CloseOpportunityInput>({
     resolver: zodResolver(closeOpportunitySchema),
     defaultValues,
-    mode: "onChange", // Validate on change for immediate feedback
+    mode: "onBlur", // Validate on blur for better performance
   });
 
-  const { watch, reset, handleSubmit, formState } = form;
+  const { control, reset, handleSubmit, formState } = form;
   const { errors, isValid } = formState;
 
   // Watch reason fields for conditional "Other" field
-  const winReason = watch("win_reason") as WinReason | null | undefined;
-  const lossReason = watch("loss_reason") as LossReason | null | undefined;
+  const winReason = useWatch({ control, name: "win_reason" }) as WinReason | null | undefined;
+  const lossReason = useWatch({ control, name: "loss_reason" }) as LossReason | null | undefined;
 
   // Show notes field when "other" is selected
   const showNotesField = winReason === "other" || lossReason === "other";

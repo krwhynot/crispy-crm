@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { QuickLogActivityDialog } from "../activities";
 import type { ActivityRecord } from "../types";
+import { parseDateSafely } from "@/lib/date-utils";
 
 interface ActivitiesTabProps {
   contactId: string | number;
@@ -104,7 +105,7 @@ const ActivityTimelineEntry = ({ activity }: { activity: ActivityRecord }) => {
       <div className="flex gap-4 p-4 border border-border rounded-lg hover:bg-muted/50 transition-colors">
         {/* Icon */}
         <div className="flex-shrink-0 mt-1">
-          <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+          <div className="w-11 h-11 rounded-full bg-primary/10 flex items-center justify-center">
             {getActivityIcon(activity.type)}
           </div>
         </div>
@@ -125,7 +126,7 @@ const ActivityTimelineEntry = ({ activity }: { activity: ActivityRecord }) => {
             </div>
             <span className="text-xs text-muted-foreground ml-2">
               {format(
-                new Date(activity.activity_date || activity.created_at),
+                parseDateSafely(activity.activity_date || activity.created_at) ?? new Date(),
                 "MMM d, yyyy h:mm a"
               )}
             </span>

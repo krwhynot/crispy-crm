@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useDataProvider, RecordContextProvider } from "ra-core";
+import { useGetList, RecordContextProvider } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { AsideSection } from "@/components/ui";
@@ -22,31 +21,20 @@ interface OrganizationContactsTabProps {
 }
 
 export function OrganizationContactsTab({ record }: OrganizationContactsTabProps) {
-  const dataProvider = useDataProvider();
-  const [contacts, setContacts] = useState<Contact[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: contacts = [], isLoading, error } = useGetList<Contact>(
+    "contacts",
+    {
+      filter: { organization_id: record.id },
+      pagination: { page: 1, perPage: MAX_RELATED_ITEMS },
+      sort: { field: "last_name", order: "ASC" },
+    },
+    {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    }
+  );
 
-  useEffect(() => {
-    const fetchContacts = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        const result = await dataProvider.getList("contacts", {
-          filter: { organization_id: record.id },
-          pagination: { page: 1, perPage: MAX_RELATED_ITEMS },
-          sort: { field: "last_name", order: "ASC" },
-        });
-        setContacts(result.data as Contact[]);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load contacts");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchContacts();
-  }, [record.id, dataProvider]);
+  // Convert error to string for display
+  const errorMessage = error ? String(error) : null;
 
   if (isLoading) {
     return (
@@ -58,11 +46,11 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
     );
   }
 
-  if (error) {
+  if (errorMessage) {
     return (
       <Card>
         <CardContent className="p-4">
-          <p className="text-sm text-destructive">{error}</p>
+          <p className="text-sm text-destructive">{errorMessage}</p>
         </CardContent>
       </Card>
     );
