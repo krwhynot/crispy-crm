@@ -23,7 +23,9 @@ import { saveStagePreferences } from "../filters/opportunityStagePreferences";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { OpportunitySlideOver } from "./OpportunitySlideOver";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
+import { FilterChipBar } from "../filters";
 import { OpportunityListFilter } from "./OpportunityListFilter";
+import { OPPORTUNITY_FILTER_CONFIG } from "./opportunityFilterConfig";
 
 // Helper functions for view preference persistence
 const OPPORTUNITY_VIEW_KEY = "opportunity.view.preference";
@@ -147,6 +149,7 @@ const OpportunityListLayout = ({
         </BreadcrumbItem>
         <BreadcrumbPage>{resourceLabel}</BreadcrumbPage>
       </Breadcrumb>
+      <FilterChipBar filterConfig={OPPORTUNITY_FILTER_CONFIG} />
       <div className="w-full">
         {view === "kanban" ? (
           <OpportunityListContent openSlideOver={openSlideOver} />

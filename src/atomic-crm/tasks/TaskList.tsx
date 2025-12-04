@@ -15,6 +15,7 @@ import { PriorityBadge } from "@/components/ui/priority-badge";
 import { TaskListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
+import { FilterChipBar } from "../filters";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
@@ -23,6 +24,7 @@ import { TaskSlideOver } from "./TaskSlideOver";
 import { TaskEmpty } from "./TaskEmpty";
 import { SaleName } from "../sales/SaleName";
 import { contactOptionText } from "../contacts/ContactOption";
+import { TASK_FILTER_CONFIG } from "./taskFilterConfig";
 import type { Task, Opportunity, Organization } from "../types";
 
 /**
@@ -113,6 +115,7 @@ const TaskListLayout = ({
   return (
     <>
       <StandardListLayout resource="tasks" filterComponent={<TaskListFilter />}>
+        <FilterChipBar filterConfig={TASK_FILTER_CONFIG} />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "edit")}
           focusedIndex={focusedIndex}

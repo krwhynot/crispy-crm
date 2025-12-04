@@ -14,11 +14,13 @@ import { TopToolbar } from "../layout/TopToolbar";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
+import { FilterChipBar } from "../filters";
 import { Badge } from "@/components/ui/badge";
 import { COLUMN_VISIBILITY, SORT_FIELDS } from "../utils/listPatterns";
 import { ProductListFilter } from "./ProductListFilter";
 import { ProductSlideOver } from "./ProductSlideOver";
 import { ProductEmpty } from "./ProductEmpty";
+import { PRODUCT_FILTER_CONFIG } from "./productFilterConfig";
 
 /**
  * ProductList - Standard list page for Product records
@@ -103,6 +105,7 @@ const ProductListLayout = ({
   return (
     <>
       <StandardListLayout resource="products" filterComponent={<ProductListFilter />}>
+        <FilterChipBar filterConfig={PRODUCT_FILTER_CONFIG} />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}

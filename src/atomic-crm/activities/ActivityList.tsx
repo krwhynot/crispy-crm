@@ -18,11 +18,13 @@ import { TopToolbar } from "../layout/TopToolbar";
 import { ActivityListFilter } from "./ActivityListFilter";
 import { SampleStatusBadge } from "../components/SampleStatusBadge";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
+import { FilterChipBar } from "../filters";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import type { ActivityRecord, Contact, Opportunity, Organization, Sale } from "../types";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
+import { ACTIVITY_FILTER_CONFIG } from "./activityFilterConfig";
 
 /**
  * ActivityList - Standard list page for Activity records
@@ -108,6 +110,7 @@ const ActivityListLayout = () => {
   return (
     <>
       <StandardListLayout resource="activities" filterComponent={<ActivityListFilter />}>
+        <FilterChipBar filterConfig={ACTIVITY_FILTER_CONFIG} />
         <PremiumDatagrid focusedIndex={focusedIndex}>
           {/* Column 1: Activity Type - Classification badge (sortable) - always visible */}
           <FunctionField
