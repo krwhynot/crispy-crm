@@ -14,11 +14,13 @@ import { OrganizationListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
+import { FilterChipBar } from "../filters";
 import { OrganizationListFilter } from "./OrganizationListFilter";
 import { OrganizationSlideOver } from "./OrganizationSlideOver";
 import { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
 import { OrganizationEmpty } from "./OrganizationEmpty";
 import { TopToolbar } from "../layout/TopToolbar";
+import { ORGANIZATION_FILTER_CONFIG } from "./organizationFilterConfig";
 import type { Organization, Sale, Segment } from "../types";
 import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
 
@@ -132,6 +134,7 @@ const OrganizationListLayout = ({
   return (
     <>
       <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
+        <FilterChipBar filterConfig={ORGANIZATION_FILTER_CONFIG} />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}

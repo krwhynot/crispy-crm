@@ -17,6 +17,7 @@ import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { ContactListSkeleton } from "@/components/ui/list-skeleton";
 import type { Contact } from "../types";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
+import { FilterChipBar } from "../filters";
 import { ContactEmpty } from "./ContactEmpty";
 import { ContactImportButton } from "./ContactImportButton";
 import { ContactExportTemplateButton } from "./ContactExportTemplateButton";
@@ -27,6 +28,7 @@ import { Avatar } from "./Avatar";
 import { ContactStatusBadge } from "./ContactBadges";
 import { formatFullName, formatRoleAndDept } from "./formatters";
 import { contactExporter } from "./contactExporter";
+import { CONTACT_FILTER_CONFIG } from "./contactFilterConfig";
 
 export const ContactList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
@@ -101,6 +103,7 @@ const ContactListLayout = ({
   return (
     <>
       <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
+        <FilterChipBar filterConfig={CONTACT_FILTER_CONFIG} />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
