@@ -191,6 +191,11 @@ export interface UseFilterChipBarReturn {
 // NOTE: 'q' (search) is NOT excluded - we show search chips for user clarity
 const SYSTEM_FILTERS = ['deleted_at', 'deleted_at@is'];
 
+// DESIGN DECISIONS (Round 6):
+// 1. Search chips: Shown with format `Search: "term"` - provides clear indicator/clear control
+// 2. Identity labels: Show full name (not "Me") - consistent UX, simpler code
+// 3. Date ranges: Combined into single chip ("Jan 1 – Jan 31") using removalGroup
+
 export function useFilterChipBar(filterConfig: ChipFilterConfig[], context?: unknown): UseFilterChipBarReturn {
   const { filterValues, setFilters, displayedFilters } = useListContext();
 
@@ -334,6 +339,9 @@ export function useFilterChipBar(filterConfig: ChipFilterConfig[], context?: unk
         } else if (config?.reference === 'organizations' || key === 'organization_id') {
           label = getOrganizationName(String(v));
         } else if (config?.reference === 'sales' || key === 'sales_id') {
+          // NOTE: Shows full name, not "Me" even when value matches current user.
+          // This is intentional - consistent with other reference lookups and simpler code.
+          // Old hooks showed "Me" but that added complexity without clear UX benefit.
           label = getSalesName(String(v));
         } else if (config?.reference === 'tags' || key === 'tags') {
           label = getTagName(String(v));
@@ -350,7 +358,7 @@ export function useFilterChipBar(filterConfig: ChipFilterConfig[], context?: unk
     });
 
     return result;
-  }, [filterValues, filterConfig, getOrganizationName, getSalesName, getTagName, getSegmentName, getCategoryName]);
+  }, [filterValues, filterConfig, resolveChoices, getOrganizationName, getSalesName, getTagName, getSegmentName, getCategoryName]);
 
   const removeFilter = useCallback(
     (key: string, value?: string | number) => {
@@ -2024,6 +2032,14 @@ PHASE 6 (Sequential): Testing
 ```
 
 **Total Tasks:** 37 (added Task 1.8: useCategoryNames)
+**Changes from review (Round 6):**
+- Type collision: Renamed `FilterConfig` to `ChipFilterConfig` to avoid collision with types.ts
+- Dynamic choices: Added `resolveChoices` helper + `context` parameter for ConfigurationContext callbacks
+- Search chips: Removed `q` from SYSTEM_FILTERS, added special handling with "Search: 'term'" format
+- Identity labels: Documented that full name (not "Me") is intentional - simpler, consistent UX
+- Date ranges: Added chip combination logic using removalGroup - shows "Jan 1 – Jan 31" instead of two chips
+- Removal logic: Updated `removeFilter` to handle removalGroup as chip key
+
 **Changes from review (Round 5):**
 - Activity config: Changed keys to `@gte/@lte`, imports from `../validation/activities`
 - Task config: Changed keys to `@gte/@lte`, inline priorities, callback choices for dynamic types
