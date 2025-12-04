@@ -1563,19 +1563,49 @@ grep -r "SidebarActiveFilters" src/atomic-crm/**/__tests__/ && echo "FAIL: Test 
 
 ---
 
-### Task 5.2: Remove Deprecated Feature-Specific Filter Chip Hooks
+### Task 5.2: Remove ALL Deprecated Feature-Specific Filter Chip Hooks
 
-**Files to DELETE (if no longer used):**
+**⚠️ EXPANDED SCOPE:** All 5 feature areas have custom filter chip hooks that must be removed now that FilterChipBar provides unified functionality.
+
+**Files to DELETE (all 5):**
 - `src/atomic-crm/organizations/useOrganizationFilterChips.ts`
 - `src/atomic-crm/contacts/useContactFilterChips.ts`
+- `src/atomic-crm/opportunities/useOpportunityFilterChips.ts`
+- `src/atomic-crm/activities/useActivityFilterChips.ts`
+- `src/atomic-crm/tasks/useTaskFilterChips.ts`
 
 **Before deleting, verify no imports exist:**
 ```bash
+# Check for any remaining references to these hooks
 grep -r "useOrganizationFilterChips" src/ --include="*.tsx" --include="*.ts"
 grep -r "useContactFilterChips" src/ --include="*.tsx" --include="*.ts"
+grep -r "useOpportunityFilterChips" src/ --include="*.tsx" --include="*.ts"
+grep -r "useActivityFilterChips" src/ --include="*.tsx" --include="*.ts"
+grep -r "useTaskFilterChips" src/ --include="*.tsx" --include="*.ts"
 ```
 
-**Time:** 3 min
+**If no references found, delete all 5 files:**
+```bash
+rm src/atomic-crm/organizations/useOrganizationFilterChips.ts
+rm src/atomic-crm/contacts/useContactFilterChips.ts
+rm src/atomic-crm/opportunities/useOpportunityFilterChips.ts
+rm src/atomic-crm/activities/useActivityFilterChips.ts
+rm src/atomic-crm/tasks/useTaskFilterChips.ts
+```
+
+**Verification:**
+```bash
+# Ensure ALL chip hook files are deleted
+ls src/atomic-crm/*/use*FilterChips.ts 2>/dev/null && echo "FAIL: Files remain" || echo "PASS: All deleted"
+
+# Ensure no references remain in source files
+grep -r "FilterChips" src/atomic-crm/ --include="*.tsx" --include="*.ts" | grep -v "FilterChipsPanel" && echo "FAIL: References remain" || echo "PASS: Cleaned up"
+
+# TypeScript compile check
+npx tsc --noEmit 2>&1 | grep -i "filterchips" && echo "FAIL: Type errors" || echo "PASS: Types OK"
+```
+
+**Time:** 8-10 min (expanded scope)
 **Dependencies:** Task 5.1
 
 ---
@@ -1764,19 +1794,106 @@ Write tests covering:
 
 ---
 
-### Task 6.3: E2E Test for Filter Chip Bar
+### Task 6.3: E2E Test for Filter Chip Bar (All 6 Lists)
 
 **File:** `tests/e2e/filters/filter-chip-bar.spec.ts` (NEW)
-**Time:** 15 min
+**Time:** 20-25 min (expanded to 6 pages)
 **Dependencies:** Tasks 6.1, 6.2
 
+**Purpose:** Comprehensive E2E testing ensuring FilterChipBar works consistently across all 6 CRM list views.
+
+**Test Coverage:**
+
 Write Playwright tests covering:
-- Chip bar hidden when no filters
+
+**Core Functionality (all 6 pages):**
+- Chip bar hidden when no filters applied
 - Chip bar appears when filter applied
-- Removing chip updates datagrid
-- Clear all removes all filters
-- Filter persists in URL
-- Consistent behavior across Orgs/Contacts/Products
+- Chip label displays correctly (not raw IDs)
+- Removing chip updates datagrid/view
+- Filter persists in URL query params
+- Clear all removes all filters (when 2+ active)
+
+**Reference Resolution (all 6 pages):**
+- Organization names resolve (not UUIDs)
+- Sales rep names resolve (not IDs)
+- Tag names resolve on Contacts page
+- Segment names resolve on Organizations page
+- Category names resolve on Products page
+- Principal/Customer names resolve on Opportunities page
+
+**Date Range Behavior (Contacts, Opportunities, Activities, Tasks):**
+- Date range filters show human-readable labels ("Today", "This week", not ISO strings)
+- Removing one date range chip clears both @gte and @lte (removalGroup working)
+
+**Page-Specific Tests:**
+
+1. **Organizations** (`/organizations`)
+   - Type filter shows as chip
+   - Priority filter shows as chip
+   - Segment (Playbook) filter shows segment name, not UUID
+
+2. **Contacts** (`/contacts`)
+   - Tag filter shows as chip
+   - Organization filter shows org name
+   - Last seen date range shows as two chips
+   - Removing either date chip clears both
+
+3. **Products** (`/products`)
+   - Status filter shows as chip
+   - Category filter shows category name (from distinct_product_categories view)
+   - Principal filter shows org name
+
+4. **Opportunities** (`/opportunities`)
+   - Stage filter shows as chip
+   - Principal/Customer filters show org names
+   - Campaign filter shows as chip
+   - Owner filter shows sales rep name
+   - Chip bar visible in kanban, list, and campaign views
+
+5. **Activities** (`/activities`)
+   - Type filter shows as chip (using INTERACTION_TYPE_OPTIONS labels)
+   - Sample status filter shows as chip
+   - Activity date range shows human-readable labels
+   - Sentiment filter shows as chip
+
+6. **Tasks** (`/tasks`)
+   - Completed status shows as "Completed" or "Incomplete"
+   - Priority filter shows as chip
+   - Type filter shows dynamic types from ConfigurationContext
+   - Due date range shows human-readable labels
+
+**Accessibility Tests:**
+- Chip bar has role="toolbar"
+- Chips have proper aria-labels
+- Keyboard navigation works (arrow keys move between chips)
+- Touch targets are 44px minimum (tablet-friendly)
+
+**Example Test:**
+```typescript
+test.describe('Filter Chip Bar - All Lists', () => {
+  test('Organizations: resolves segment names', async ({ page }) => {
+    await page.goto('/organizations');
+    // Apply segment filter
+    await page.getByLabel('Playbook').selectOption({ index: 1 });
+
+    // Verify chip shows name, not UUID
+    const chip = page.getByRole('toolbar').locator('[role="listitem"]');
+    const text = await chip.textContent();
+    expect(text).not.toMatch(/[0-9a-f]{8}-[0-9a-f]{4}/); // Not UUID
+  });
+
+  test('Tasks: date range chips remove together', async ({ page }) => {
+    await page.goto('/tasks?due_date@gte=2025-01-01&due_date@lte=2025-12-31');
+
+    // Remove one chip
+    await page.getByRole('button', { name: /Remove.*Due after/i }).click();
+
+    // Both chips removed (removalGroup)
+    await expect(page.getByRole('toolbar')).not.toBeVisible();
+  });
+});
+```
 
 ---
 
@@ -1789,6 +1906,7 @@ PHASE 1 (Sequential): Foundation
   1.5 useSegmentNames (parallel with 1.2-1.4, uses useResourceNamesBase)
   1.6 FilterSidebar (parallel with 1.2-1.4)
   1.7 (after all above)
+  1.8 useCategoryNames (parallel with 1.5, same pattern)
 
 PHASE 2 (Parallel Group A): Primary Configs
   2.1 Organizations ┐
@@ -1829,15 +1947,23 @@ PHASE 6 (Sequential): Testing
   6.1 → 6.2 → 6.3
 ```
 
-**Total Tasks:** 36
+**Total Tasks:** 37 (added Task 1.8: useCategoryNames)
+**Changes from review (Round 5):**
+- Activity config: Changed keys to `@gte/@lte`, imports from `../validation/activities`
+- Task config: Changed keys to `@gte/@lte`, inline priorities, callback choices for dynamic types
+- Opportunity config: Fixed import casing (`priorityChoices` not `PRIORITY_CHOICES`)
+- Added Task 1.8: `useCategoryNames` hook for product category name resolution
+- Schema: Added callback support for dynamic choices (ConfigurationContext pattern)
+- Task 5.2 expanded: Now deletes all 5 feature chip hooks (not just 2)
+- Task 6.3 expanded: E2E tests cover all 6 lists with page-specific tests
+
 **Changes from review (Round 4):**
-- Opportunity config: added `stage`, `updated_at_gte` (Recent Wins), fixed key format (`_gte`/`_lte`)
-- Task config: added `due_date_gte/lte` as PRIMARY FILTERS with removalGroup
-- Activity config: changed `sample_status` to multiselect, added date formatter
-- Task 3.7: clarified placement for kanban/list/campaign views (not datagrid)
-- Phase 4 expanded: now includes all 6 sidebars (added 4.4, 4.5, 4.6)
-- Loading state: clarified identity skeleton vs in-context loading (don't mount chip bar outside List context)
-- All date filters now have `formatLabel: formatDateLabel` for human-readable chips
+- Opportunity config: added `stage`, `updated_at_gte` (Recent Wins)
+- Task config: added `due_date@gte/@lte` as PRIMARY FILTERS with removalGroup
+- Activity config: changed `sample_status` to multiselect
+- Task 3.7: clarified placement for kanban/list/campaign views
+- Phase 4 expanded: now includes all 6 sidebars
+- Loading state: clarified identity skeleton vs in-context loading
 
 ---
 
