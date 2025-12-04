@@ -6,7 +6,6 @@ import { FilterLiveForm, useGetIdentity } from "ra-core";
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
-import { SidebarActiveFilters } from "./SidebarActiveFilters";
 import { INTERACTION_TYPE_OPTIONS, SAMPLE_STATUS_OPTIONS } from "../validation/activities";
 
 /**
@@ -38,12 +37,6 @@ export const ActivityListFilter = () => {
       <FilterLiveForm>
         <SearchInput source="q" placeholder="Search activities..." />
       </FilterLiveForm>
-
-      {/* Active Filters - Conditional */}
-      <SidebarActiveFilters />
-
-      {/* Divider */}
-      <div className="border-b border-border" />
 
       {/* Quick Filters - Most commonly used */}
       <div className="flex flex-col gap-2">
