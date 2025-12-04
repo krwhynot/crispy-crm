@@ -15,8 +15,8 @@
  * serialization delay from dashboard initial load.
  */
 
-import { useEffect, useState, type ReactNode } from "react";
-import { supabase } from "@/atomic-crm/providers/supabase/supabase";
+import { type ReactNode } from "react";
+import { useGetIdentity } from "react-admin";
 import { CurrentSaleContext } from "../hooks/useCurrentSale";
 
 interface CurrentSaleProviderProps {
@@ -37,98 +37,36 @@ interface CurrentSaleProviderProps {
  * All child components using useCurrentSale() will get the cached value.
  */
 export function CurrentSaleProvider({ children }: CurrentSaleProviderProps) {
-  const [salesId, setSalesId] = useState<number | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-  const [fetchTrigger, setFetchTrigger] = useState(0);
+  // Use React Admin's useGetIdentity to get the current user
+  // This leverages authProvider.getIdentity() which already handles:
+  // - Auth state management
+  // - Caching (15-minute TTL)
+  // - User lookup via user_id or email fallback
+  const { data: identity, isLoading, error: identityError } = useGetIdentity();
 
-  useEffect(() => {
-    let isMounted = true;
+  // Extract sales ID from identity
+  // The authProvider.getIdentity() returns { id: sale.id, fullName, avatar, role }
+  const salesId = identity?.id ? Number(identity.id) : null;
+  const error = identityError instanceof Error ? identityError : null;
 
-    const fetchSaleId = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  // Debug logging for development
+  if (import.meta.env.DEV && identity) {
+    console.log("[CurrentSaleProvider] Using cached identity from authProvider:", {
+      salesId,
+      hasIdentity: !!identity,
+    });
+  }
 
-        // Get current user from Supabase auth
-        const {
-          data: { user },
-          error: userError,
-        } = await supabase.auth.getUser();
-
-        if (userError) throw userError;
-
-        if (!user) {
-          if (isMounted) {
-            setSalesId(null);
-            setLoading(false);
-          }
-          return;
-        }
-
-        // Query sales table using user.id (UUID)
-        // Handle legacy users with NULL user_id by falling back to email match
-        const { data: sale, error: saleError } = await supabase
-          .from("sales")
-          .select("id, user_id, email")
-          .or(`user_id.eq.${user.id},email.eq.${user.email}`)
-          .maybeSingle();
-
-        if (saleError) throw saleError;
-
-        if (isMounted) {
-          if (sale?.id) {
-            setSalesId(sale.id);
-
-            // Debug logging for development
-            if (import.meta.env.DEV) {
-              console.log("[CurrentSaleProvider] Cached sales record:", {
-                salesId: sale.id,
-                hasUserId: !!sale.user_id,
-              });
-            }
-
-            // Warn about legacy users
-            if (!sale.user_id) {
-              console.warn(
-                `Sales record ${sale.id} matched by email but has NULL user_id. Consider running migration to populate user_id.`
-              );
-            }
-          } else {
-            setSalesId(null);
-            if (import.meta.env.DEV) {
-              console.log("[CurrentSaleProvider] No sales record found for user:", {
-                userId: user.id,
-                email: user.email,
-              });
-            }
-          }
-        }
-      } catch (err) {
-        console.error("[CurrentSaleProvider] Failed to fetch sales ID:", err);
-        if (isMounted) {
-          setError(err as Error);
-        }
-      } finally {
-        if (isMounted) {
-          setLoading(false);
-        }
-      }
-    };
-
-    fetchSaleId();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [fetchTrigger]);
-
+  // No-op refetch since React Admin manages the cache
+  // Identity cache is cleared on login/logout via authProvider
   const refetch = () => {
-    setFetchTrigger((prev) => prev + 1);
+    if (import.meta.env.DEV) {
+      console.log("[CurrentSaleProvider] refetch called but no-op (managed by authProvider)");
+    }
   };
 
   return (
-    <CurrentSaleContext.Provider value={{ salesId, loading, error, refetch }}>
+    <CurrentSaleContext.Provider value={{ salesId, loading: isLoading, error, refetch }}>
       {children}
     </CurrentSaleContext.Provider>
   );

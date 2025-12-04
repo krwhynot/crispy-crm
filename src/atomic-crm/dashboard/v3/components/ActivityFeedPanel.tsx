@@ -26,6 +26,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ArrowRight, Activity } from "lucide-react";
 import { useTeamActivities, type TeamActivity } from "../hooks/useTeamActivities";
 import { getActivityIcon } from "@/atomic-crm/utils/getActivityIcon";
+import { parseDateSafely } from "@/lib/date-utils";
 
 /**
  * Format activity type for display
@@ -43,7 +44,8 @@ function formatActivityType(type: string): string {
  * Returns human-readable strings like "2 hours ago", "Yesterday", "3 days ago"
  */
 function formatRelativeTime(dateString: string): string {
-  const date = new Date(dateString);
+  const date = parseDateSafely(dateString);
+  if (!date) return "Unknown";
   const now = new Date();
   const diffMs = now.getTime() - date.getTime();
   const diffSecs = Math.floor(diffMs / 1000);

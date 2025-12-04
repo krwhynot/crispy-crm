@@ -1,4 +1,5 @@
 import { useEffect, useState, useContext, createContext } from "react";
+import { useDataProvider } from "react-admin";
 import { supabase } from "@/atomic-crm/providers/supabase/supabase";
 
 /**
@@ -62,8 +63,15 @@ export function useCurrentSale() {
 /**
  * Direct query implementation (used as fallback or standalone)
  * Kept separate to allow context-based hook to call it when needed.
+ *
+ * ARCHITECTURE NOTE: Uses data provider for sales table query (single entry point),
+ * but still requires direct Supabase auth.getUser() call because:
+ * 1. React Admin's useGetIdentity returns the sales record (not auth user)
+ * 2. We need the auth user's UUID to query the sales table
+ * 3. Auth state is outside the data provider's scope
  */
 function useCurrentSaleDirect() {
+  const dataProvider = useDataProvider();
   const [salesId, setSalesId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
@@ -76,6 +84,8 @@ function useCurrentSaleDirect() {
         setLoading(true);
 
         // Get current user from Supabase auth
+        // NOTE: This is the ONLY acceptable direct Supabase import in this hook
+        // because auth state is outside the data provider's responsibility
         const {
           data: { user },
           error: userError,
@@ -87,16 +97,20 @@ function useCurrentSaleDirect() {
           return;
         }
 
-        // Query sales table using user.id (UUID)
+        // Query sales table using data provider (single entry point)
         // This is the ONLY correct way to get sales.id
         // Handle legacy users with NULL user_id by falling back to email match
-        const { data: sale, error: saleError } = await supabase
-          .from("sales")
-          .select("id, user_id, email")
-          .or(`user_id.eq.${user.id},email.eq.${user.email}`)
-          .maybeSingle();
+        const { data: salesRecords } = await dataProvider.getList("sales", {
+          filter: {
+            or: [`user_id.eq.${user.id}`, `email.eq.${user.email}`],
+          },
+          sort: { field: "id", order: "ASC" },
+          pagination: { page: 1, perPage: 1 },
+        });
 
-        if (saleError) throw saleError;
+        const sale = salesRecords?.[0] as
+          | { id: number; user_id?: string | null; email: string }
+          | undefined;
 
         if (isMounted) {
           if (sale?.id) {
@@ -140,7 +154,7 @@ function useCurrentSaleDirect() {
     return () => {
       isMounted = false;
     };
-  }, []); // Run once on mount
+  }, [dataProvider]); // Run once on mount (dataProvider is stable)
 
   return { salesId, loading, error };
 }

@@ -1,29 +1,125 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { useDataProvider } from "react-admin";
+import { useState, useMemo, useCallback, useRef, useEffect } from "react";
+import { useGetList, useDataProvider } from "react-admin";
 import { isSameDay, isBefore, startOfDay, addDays, endOfDay } from "date-fns";
 import { useCurrentSale } from "./useCurrentSale";
 import type { TaskItem, TaskStatus, TaskApiResponse } from "../types";
-
-// Stable empty array to avoid new reference creation on each render
-const EMPTY_TASKS: TaskItem[] = [];
+import { parseDateSafely } from "@/lib/date-utils";
 
 /**
  * useMyTasks - Hook for managing current user's tasks
  *
  * PERFORMANCE OPTIMIZATIONS (Kanban Audit):
- * 1. AbortController for cleanup - prevents state updates on unmounted components
+ * 1. useGetList with staleTime caching - prevents unnecessary refetches
  * 2. Optimistic updates with rollback for all operations (complete, snooze, delete)
  * 3. Uses cached salesId from CurrentSaleProvider context
  */
 export function useMyTasks() {
   const dataProvider = useDataProvider();
   const { salesId, loading: salesLoading } = useCurrentSale();
-  const [tasks, setTasks] = useState<TaskItem[]>(EMPTY_TASKS);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
 
-  // Track previous salesId to avoid unnecessary state updates
-  const prevSalesIdRef = useRef<number | null>(null);
+  // Fetch tasks from server using React Admin's useGetList
+  const {
+    data: rawTasks = [],
+    isLoading: loading,
+    error: fetchError,
+    refetch,
+  } = useGetList<TaskApiResponse>(
+    "tasks",
+    {
+      filter: {
+        sales_id: salesId,
+        completed: false,
+        "deleted_at@is": null,
+      },
+      sort: { field: "due_date", order: "ASC" },
+      pagination: { page: 1, perPage: 100 },
+      meta: {
+        expand: ["opportunity", "contact", "organization"],
+      },
+    },
+    {
+      enabled: !salesLoading && !!salesId,
+      staleTime: 5 * 60 * 1000,
+    }
+  );
+
+  // Transform server data to TaskItem format
+  const serverTasks = useMemo(() => {
+    const now = new Date();
+    const today = startOfDay(now);
+    const tomorrow = addDays(today, 1);
+    const nextWeek = addDays(today, 7);
+
+    return rawTasks.map((task: TaskApiResponse) => {
+      const dueDate = parseDateSafely(task.due_date) ?? new Date();
+      const dueDateStart = startOfDay(dueDate);
+
+      // Determine status using date-fns for proper timezone handling
+      let status: TaskItem["status"];
+      if (isBefore(dueDateStart, today)) {
+        status = "overdue";
+      } else if (isSameDay(dueDateStart, today)) {
+        status = "today";
+      } else if (isSameDay(dueDateStart, tomorrow)) {
+        status = "tomorrow";
+      } else if (isBefore(dueDateStart, nextWeek)) {
+        status = "upcoming";
+      } else {
+        status = "later";
+      }
+
+      // Map task type with proper handling (aligned with task_type enum)
+      const taskTypeMap: Record<string, TaskItem["taskType"]> = {
+        call: "Call",
+        email: "Email",
+        meeting: "Meeting",
+        "follow-up": "Follow-up",
+        demo: "Demo",
+        proposal: "Proposal",
+        other: "Other",
+      };
+
+      return {
+        id: task.id,
+        subject: task.title || "Untitled Task",
+        dueDate,
+        priority: (task.priority || "medium") as TaskItem["priority"],
+        taskType: taskTypeMap[task.type?.toLowerCase()] || "Other",
+        relatedTo: {
+          type: task.opportunity_id
+            ? "opportunity"
+            : task.contact_id
+              ? "contact"
+              : task.organization_id
+                ? "organization"
+                : "personal",
+          name:
+            task.opportunity?.name ||
+            task.contact?.name ||
+            task.organization?.name ||
+            "Personal Task",
+          id: task.opportunity_id || task.contact_id || task.organization_id || 0,
+        },
+        status,
+        notes: task.description,
+      };
+    });
+  }, [rawTasks]);
+
+  // Local optimistic state for immediate UI updates
+  const [optimisticUpdates, setOptimisticUpdates] = useState<
+    Map<number, Partial<TaskItem> & { deleted?: boolean }>
+  >(new Map());
+
+  // Merge server data with optimistic updates
+  const tasks = useMemo(() => {
+    return serverTasks
+      .map((task) => ({
+        ...task,
+        ...(optimisticUpdates.get(task.id) || {}),
+      }))
+      .filter((task) => !optimisticUpdates.get(task.id)?.deleted);
+  }, [serverTasks, optimisticUpdates]);
 
   // Ref to track tasks for callbacks without causing recreations
   const tasksRef = useRef<TaskItem[]>(tasks);
@@ -31,137 +127,12 @@ export function useMyTasks() {
     tasksRef.current = tasks;
   }, [tasks]);
 
-  useEffect(() => {
-    // AbortController for cleanup - prevents state updates on unmounted component
-    const abortController = new AbortController();
-    let isMounted = true;
-
-    const fetchTasks = async () => {
-      // Manage loading state properly to avoid race conditions
-      if (salesLoading) {
-        if (isMounted) setLoading((prev) => (prev ? prev : true));
-        return;
-      }
-
-      if (!salesId) {
-        // Only clear tasks if we previously had a salesId
-        if (prevSalesIdRef.current !== null && isMounted) {
-          setTasks(EMPTY_TASKS);
-          prevSalesIdRef.current = null;
-        }
-        if (isMounted) setLoading(false);
-        return;
-      }
-
-      prevSalesIdRef.current = salesId;
-
-      try {
-        if (isMounted) setLoading(true);
-
-        // Check if aborted before making request
-        if (abortController.signal.aborted) return;
-
-        // Fetch tasks with related entities expanded
-        const { data: tasksData } = await dataProvider.getList("tasks", {
-          filter: {
-            sales_id: salesId,
-            completed: false,
-          },
-          sort: { field: "due_date", order: "ASC" },
-          pagination: { page: 1, perPage: 100 },
-          // Request expansion of related entities
-          meta: {
-            expand: ["opportunity", "contact", "organization"],
-          },
-        });
-
-        // Check if aborted before updating state
-        if (abortController.signal.aborted || !isMounted) return;
-
-        // Map to TaskItem format with proper timezone handling
-        const now = new Date();
-        const today = startOfDay(now);
-        const tomorrow = addDays(today, 1);
-        const nextWeek = addDays(today, 7);
-
-        const mappedTasks: TaskItem[] = tasksData.map((task: TaskApiResponse) => {
-          const dueDate = new Date(task.due_date);
-          const dueDateStart = startOfDay(dueDate);
-
-          // Determine status using date-fns for proper timezone handling
-          let status: TaskItem["status"];
-          if (isBefore(dueDateStart, today)) {
-            status = "overdue";
-          } else if (isSameDay(dueDateStart, today)) {
-            status = "today";
-          } else if (isSameDay(dueDateStart, tomorrow)) {
-            status = "tomorrow";
-          } else if (isBefore(dueDateStart, nextWeek)) {
-            status = "upcoming";
-          } else {
-            status = "later";
-          }
-
-          // Map task type with proper handling (aligned with task_type enum)
-          const taskTypeMap: Record<string, TaskItem["taskType"]> = {
-            call: "Call",
-            email: "Email",
-            meeting: "Meeting",
-            "follow-up": "Follow-up",
-            demo: "Demo",
-            proposal: "Proposal",
-            other: "Other",
-          };
-
-          return {
-            id: task.id,
-            subject: task.title || "Untitled Task",
-            dueDate,
-            priority: (task.priority || "medium") as TaskItem["priority"],
-            taskType: taskTypeMap[task.type?.toLowerCase()] || "Other",
-            relatedTo: {
-              type: task.opportunity_id
-                ? "opportunity"
-                : task.contact_id
-                  ? "contact"
-                  : task.organization_id
-                    ? "organization"
-                    : "personal",
-              name:
-                task.opportunity?.name ||
-                task.contact?.name ||
-                task.organization?.name ||
-                "Personal Task",
-              id: task.opportunity_id || task.contact_id || task.organization_id || 0,
-            },
-            status,
-            notes: task.description,
-          };
-        });
-
-        if (isMounted) setTasks(mappedTasks);
-      } catch (err) {
-        // Don't log or set error if aborted
-        if (abortController.signal.aborted) return;
-        console.error("Failed to fetch tasks:", err);
-        if (isMounted) setError(err as Error);
-      } finally {
-        if (isMounted) setLoading(false);
-      }
-    };
-
-    fetchTasks();
-
-    // Cleanup function - abort and mark unmounted
-    return () => {
-      isMounted = false;
-      abortController.abort();
-    };
-  }, [dataProvider, salesId, salesLoading]);
+  // Error state (from fetch error)
+  const error = fetchError ? (fetchError as Error) : null;
 
   /**
    * Complete a task
-   * OPTIMISTIC UPDATE (Kanban Audit): Now uses optimistic UI with rollback
+   * OPTIMISTIC UPDATE (Kanban Audit): Uses optimistic UI with rollback
    * Previously waited for API response before updating UI
    */
   const completeTask = useCallback(
@@ -169,8 +140,12 @@ export function useMyTasks() {
       const task = tasksRef.current.find((t) => t.id === taskId);
       if (!task) return;
 
-      // Optimistic UI update - immediately remove task
-      setTasks((prev) => prev.filter((t) => t.id !== taskId));
+      // Optimistic UI update - mark as deleted immediately
+      setOptimisticUpdates((prev) => {
+        const next = new Map(prev);
+        next.set(taskId, { deleted: true });
+        return next;
+      });
 
       try {
         await dataProvider.update("tasks", {
@@ -178,13 +153,22 @@ export function useMyTasks() {
           data: { completed: true, completed_at: new Date().toISOString() },
           previousData: task,
         });
+
+        // Clear optimistic update on success (task stays hidden as it's now completed on server)
+        setOptimisticUpdates((prev) => {
+          const next = new Map(prev);
+          next.delete(taskId);
+          return next;
+        });
       } catch (err) {
         console.error("Failed to complete task:", err);
-        // Rollback optimistic update on failure - add task back in sorted position
-        setTasks((prev) =>
-          [...prev, task].sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
-        );
-        throw err; // Re-throw so UI can handle
+        // Rollback optimistic update on failure
+        setOptimisticUpdates((prev) => {
+          const next = new Map(prev);
+          next.delete(taskId);
+          return next;
+        });
+        throw err;
       }
     },
     [dataProvider]
@@ -228,9 +212,11 @@ export function useMyTasks() {
       const newStatus = calculateStatus(newDueDate);
 
       // Optimistic UI update - immediately move task to new bucket
-      setTasks((prev) =>
-        prev.map((t) => (t.id === taskId ? { ...t, dueDate: newDueDate, status: newStatus } : t))
-      );
+      setOptimisticUpdates((prev) => {
+        const next = new Map(prev);
+        next.set(taskId, { dueDate: newDueDate, status: newStatus });
+        return next;
+      });
 
       try {
         await dataProvider.update("tasks", {
@@ -238,15 +224,22 @@ export function useMyTasks() {
           data: { due_date: newDueDate.toISOString() },
           previousData: task,
         });
+
+        // Clear optimistic update on success
+        setOptimisticUpdates((prev) => {
+          const next = new Map(prev);
+          next.delete(taskId);
+          return next;
+        });
       } catch (err) {
         console.error("Failed to snooze task:", err);
         // Rollback optimistic update on failure
-        setTasks((prev) =>
-          prev.map((t) =>
-            t.id === taskId ? { ...t, dueDate: task.dueDate, status: task.status } : t
-          )
-        );
-        throw err; // Re-throw so UI can handle
+        setOptimisticUpdates((prev) => {
+          const next = new Map(prev);
+          next.delete(taskId);
+          return next;
+        });
+        throw err;
       }
     },
     [dataProvider, calculateStatus]
@@ -262,21 +255,34 @@ export function useMyTasks() {
       const task = tasksRef.current.find((t) => t.id === taskId);
       if (!task) return;
 
-      // Optimistic UI update - immediately remove task
-      setTasks((prev) => prev.filter((t) => t.id !== taskId));
+      // Optimistic UI update - mark as deleted immediately
+      setOptimisticUpdates((prev) => {
+        const next = new Map(prev);
+        next.set(taskId, { deleted: true });
+        return next;
+      });
 
       try {
         await dataProvider.delete("tasks", {
           id: taskId,
           previousData: task,
         });
+
+        // Clear optimistic update on success
+        setOptimisticUpdates((prev) => {
+          const next = new Map(prev);
+          next.delete(taskId);
+          return next;
+        });
       } catch (err) {
         console.error("Failed to delete task:", err);
         // Rollback optimistic update on failure
-        setTasks((prev) =>
-          [...prev, task].sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime())
-        );
-        throw err; // Re-throw so UI can handle
+        setOptimisticUpdates((prev) => {
+          const next = new Map(prev);
+          next.delete(taskId);
+          return next;
+        });
+        throw err;
       }
     },
     [dataProvider]
@@ -309,9 +315,11 @@ export function useMyTasks() {
       const newStatus = calculateStatus(newDueDate);
 
       // Optimistic UI update - immediately move task to new column
-      setTasks((prev) =>
-        prev.map((t) => (t.id === taskId ? { ...t, dueDate: newDueDate, status: newStatus } : t))
-      );
+      setOptimisticUpdates((prev) => {
+        const next = new Map(prev);
+        next.set(taskId, { dueDate: newDueDate, status: newStatus });
+        return next;
+      });
 
       try {
         await dataProvider.update("tasks", {
@@ -319,15 +327,22 @@ export function useMyTasks() {
           data: { due_date: newDueDate.toISOString() },
           previousData: task,
         });
+
+        // Clear optimistic update on success
+        setOptimisticUpdates((prev) => {
+          const next = new Map(prev);
+          next.delete(taskId);
+          return next;
+        });
       } catch (err) {
         console.error("Failed to update task due date:", err);
         // Rollback optimistic update on failure
-        setTasks((prev) =>
-          prev.map((t) =>
-            t.id === taskId ? { ...t, dueDate: task.dueDate, status: task.status } : t
-          )
-        );
-        throw err; // Re-throw so UI can handle
+        setOptimisticUpdates((prev) => {
+          const next = new Map(prev);
+          next.delete(taskId);
+          return next;
+        });
+        throw err;
       }
     },
     [dataProvider, calculateStatus]
@@ -338,14 +353,23 @@ export function useMyTasks() {
    * Called before API request, allows immediate column move
    */
   const updateTaskLocally = useCallback((taskId: number, updates: Partial<TaskItem>) => {
-    setTasks((prev) => prev.map((t) => (t.id === taskId ? { ...t, ...updates } : t)));
+    setOptimisticUpdates((prev) => {
+      const next = new Map(prev);
+      const existing = next.get(taskId) || {};
+      next.set(taskId, { ...existing, ...updates });
+      return next;
+    });
   }, []);
 
   /**
    * Rollback a task to previous state (for failed API calls)
    */
   const rollbackTask = useCallback((taskId: number, previousState: TaskItem) => {
-    setTasks((prev) => prev.map((t) => (t.id === taskId ? previousState : t)));
+    setOptimisticUpdates((prev) => {
+      const next = new Map(prev);
+      next.delete(taskId);
+      return next;
+    });
   }, []);
 
   return {

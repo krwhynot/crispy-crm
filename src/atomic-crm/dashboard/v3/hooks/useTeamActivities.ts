@@ -14,8 +14,8 @@
  * activities JOIN sales ON created_by = sales.id
  */
 
-import { useState, useEffect } from "react";
-import { useDataProvider } from "react-admin";
+import { useCallback } from "react";
+import { useGetList } from "react-admin";
 
 // Activity record with joined sales user data
 export interface TeamActivity {
@@ -55,66 +55,61 @@ const DEFAULT_LIMIT = 15;
  * @returns Activities array, loading state, error state, and refetch function
  */
 export function useTeamActivities(limit: number = DEFAULT_LIMIT): UseTeamActivitiesResult {
-  const dataProvider = useDataProvider();
-  const [activities, setActivities] = useState<TeamActivity[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<Error | null>(null);
-
-  const fetchActivities = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      // Fetch activities with sales user data via React Admin data provider
-      // The unifiedDataProvider handles the join via Supabase
-      const { data } = await dataProvider.getList<TeamActivity>("activities", {
-        pagination: { page: 1, perPage: limit },
-        sort: { field: "activity_date", order: "DESC" },
-        filter: {
-          // Only non-deleted activities
-          "deleted_at@is": null,
-        },
-        meta: {
-          // Request sales user data via select query
-          select: `
+  // Fetch activities with sales user data via React Admin's useGetList
+  // The unifiedDataProvider handles the join via Supabase
+  const {
+    data: activities = [],
+    isPending: loading,
+    error: queryError,
+    refetch,
+  } = useGetList<TeamActivity>(
+    "activities",
+    {
+      pagination: { page: 1, perPage: limit },
+      sort: { field: "activity_date", order: "DESC" },
+      filter: {
+        // Only non-deleted activities
+        "deleted_at@is": null,
+      },
+      meta: {
+        // Request sales user data via select query
+        select: `
+          id,
+          type,
+          subject,
+          activity_date,
+          description,
+          created_by,
+          contact_id,
+          organization_id,
+          opportunity_id,
+          sales:created_by (
             id,
-            type,
-            subject,
-            activity_date,
-            description,
-            created_by,
-            contact_id,
-            organization_id,
-            opportunity_id,
-            sales:created_by (
-              id,
-              first_name,
-              last_name,
-              email,
-              avatar_url
-            )
-          `,
-        },
-      });
-
-      setActivities(data);
-    } catch (err) {
-      console.error("[useTeamActivities] Failed to fetch activities:", err);
-      setError(err instanceof Error ? err : new Error("Failed to fetch activities"));
-    } finally {
-      setLoading(false);
+            first_name,
+            last_name,
+            email,
+            avatar_url
+          )
+        `,
+      },
+    },
+    {
+      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
     }
-  };
+  );
 
-  useEffect(() => {
-    fetchActivities();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [limit]);
+  // Convert error to Error type for consistent interface
+  const error = queryError ? new Error(String(queryError)) : null;
+
+  // Create a stable refetch function that matches the expected signature
+  const refetchActivities = useCallback(async () => {
+    await refetch();
+  }, [refetch]);
 
   return {
     activities,
     loading,
     error,
-    refetch: fetchActivities,
+    refetch: refetchActivities,
   };
 }

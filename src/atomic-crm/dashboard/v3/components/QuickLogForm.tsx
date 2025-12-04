@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useDataProvider, useNotify } from "react-admin";
 import { useMemo, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
@@ -95,12 +95,17 @@ export function QuickLogForm({
   });
 
   // Watch form values for conditional rendering and draft persistence
-  const formValues = form.watch();
-  const selectedOpportunityId = form.watch("opportunityId");
-  const selectedContactId = form.watch("contactId");
-  const selectedOrganizationId = form.watch("organizationId");
-  const activityType = form.watch("activityType");
-  const createFollowUp = form.watch("createFollowUp");
+  const formValues = useWatch({ control: form.control });
+  const [
+    selectedOpportunityId,
+    selectedContactId,
+    selectedOrganizationId,
+    activityType,
+    createFollowUp,
+  ] = useWatch({
+    control: form.control,
+    name: ["opportunityId", "contactId", "organizationId", "activityType", "createFollowUp"],
+  });
 
   // Notify parent of form changes for draft persistence
   useEffect(() => {
