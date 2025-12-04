@@ -7,6 +7,7 @@
 ## Decision
 
 The following files are **intentionally exempt** from the semantic color token requirement:
+use ref mcp tool  to find industry standards and best practice, must follows, etc for the following then make a md file of this report:
 
 ### 1. Email Templates
 
