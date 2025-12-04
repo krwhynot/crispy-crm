@@ -85,7 +85,7 @@ export const ListPagination = ({
             setPerPage(Number(value));
           }}
         >
-          <SelectTrigger className="h-8 w-[70px]">
+          <SelectTrigger className="h-11 w-[70px]">
             <SelectValue placeholder={perPage} />
           </SelectTrigger>
           <SelectContent side="top">

@@ -20,6 +20,9 @@ import { InputHelperText } from "@/components/admin/input-helper-text";
 import { Button } from "@/components/ui/button";
 import { sanitizeInputRestProps } from "@/lib/sanitizeInputRestProps";
 
+/** Default max file size: 5MB - prevents DoS attacks */
+const DEFAULT_MAX_FILE_SIZE = 5 * 1024 * 1024;
+
 export const FileInput = (props: FileInputProps) => {
   const {
     alwaysOn,
@@ -153,12 +156,22 @@ export const FileInput = (props: FileInputProps) => {
       ? (Children.only(children) as ReactElement)
       : undefined;
 
-  const { getRootProps, getInputProps } = useDropzone({
+  const { getRootProps, getInputProps, fileRejections } = useDropzone({
     accept,
-    maxSize,
+    maxSize: maxSize ?? DEFAULT_MAX_FILE_SIZE,
     minSize,
     multiple,
     disabled: disabled || readOnly,
+    // Filename validation for security
+    validator: (file) => {
+      if (file.name.length > 255) {
+        return { code: 'name-too-long', message: 'Filename exceeds 255 characters' };
+      }
+      if (/[<>:"/\\|?*]/.test(file.name)) {
+        return { code: 'invalid-chars', message: 'Filename contains invalid characters' };
+      }
+      return null;
+    },
     ...options,
     onDrop,
   });
@@ -181,11 +194,14 @@ export const FileInput = (props: FileInputProps) => {
         {...getRootProps({
           className: cn(
             "border-2 border-dashed border-muted rounded-lg p-6 text-center transition-colors",
-            "hover:border-sidebar-ring focus:outline-none",
+            "hover:border-sidebar-ring focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
             disabled || readOnly
               ? "bg-muted cursor-not-allowed"
               : "bg-muted text-muted-foreground cursor-pointer"
           ),
+          role: 'button',
+          'aria-label': multiple ? translate(labelMultiple) : translate(labelSingle),
+          tabIndex: disabled || readOnly ? -1 : 0,
         })}
       >
         <input
@@ -204,6 +220,16 @@ export const FileInput = (props: FileInputProps) => {
           <p className="text-sm">{translate(labelSingle)}</p>
         )}
       </div>
+
+      {fileRejections.length > 0 && (
+        <ul role="alert" aria-live="polite" className="text-sm text-destructive mt-2 list-disc pl-5">
+          {fileRejections.map(({ file, errors }) => (
+            <li key={file.name}>
+              {file.name}: {errors.map(e => e.message).join(', ')}
+            </li>
+          ))}
+        </ul>
+      )}
 
       <InputHelperText helperText={helperText} />
       <FormError />
@@ -280,7 +306,7 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
       <Button
         variant="ghost"
         size="icon"
-        className="h-6 w-6 rounded-full shadow-sm cursor-pointer"
+        className="h-11 w-11 rounded-full shadow-sm cursor-pointer"
         onClick={onRemove}
         aria-label={translate("ra.action.delete")}
         title={translate("ra.action.delete")}

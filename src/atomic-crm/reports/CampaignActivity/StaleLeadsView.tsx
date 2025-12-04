@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useNavigate } from "react-router-dom";
 import { format } from "date-fns";
 import { STAGE_STALE_THRESHOLDS } from "@/atomic-crm/utils/stalenessCalculation";
+import { parseDateSafely } from "@/lib/date-utils";
 
 /**
  * Stale opportunity with per-stage threshold info
@@ -36,7 +37,9 @@ export const StaleLeadsView: React.FC<StaleLeadsViewProps> = ({
 
   const formatLastActivity = (date: string | null): string => {
     if (!date) return "Never";
-    return format(new Date(date), "MMM d, yyyy");
+    const dateObj = parseDateSafely(date);
+    if (!dateObj) return "Never";
+    return format(dateObj, "MMM d, yyyy");
   };
 
   /** Format stage name for display (e.g., "new_lead" -> "New Lead") */

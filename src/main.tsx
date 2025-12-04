@@ -30,8 +30,8 @@ if (import.meta.env.VITE_SENTRY_DSN) {
       }),
       // Session replay - records user sessions when errors occur
       Sentry.replayIntegration({
-        maskAllText: false, // Set to true to mask all text for privacy
-        blockAllMedia: false, // Set to true to block all media (images, videos)
+        maskAllText: true, // Set to true to mask all text for privacy
+        blockAllMedia: true, // Set to true to block all media (images, videos)
         // Sticky sessions help debug persistent UI issues
         stickySession: true,
       }),

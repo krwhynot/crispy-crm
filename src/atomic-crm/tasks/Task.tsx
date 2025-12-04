@@ -25,15 +25,17 @@ import { useEffect, useState } from "react";
 import type { Contact, Task as TData } from "../types";
 import TaskEdit from "./TaskEdit";
 import { QuickLogActivity } from "../activities/QuickLogActivity";
+import { cn } from "@/lib/utils";
+import { parseDateSafely } from "@/lib/date-utils";
 
 export const Task = ({ task, showContact }: { task: TData; showContact?: boolean }) => {
   const notify = useNotify();
   const queryClient = useQueryClient();
 
-  // Date helper functions for intelligent postpone menu using date-fns
   const today = startOfToday();
-  // Handle both ISO strings and date-only strings like "2025-10-12"
-  const taskDueDate = startOfDay(new Date(task.due_date));
+  const taskDueDate = parseDateSafely(task.due_date)
+    ? startOfDay(parseDateSafely(task.due_date)!)
+    : today;
   const tomorrow = addDays(today, 1);
 
   // Calculate next Monday (start of next week). weekStartsOn: 1 ensures Monday is the start.
@@ -118,7 +120,7 @@ export const Task = ({ task, showContact }: { task: TData; showContact?: boolean
             disabled={isUpdatePending}
             className="mt-1"
           />
-          <div className={`flex-grow ${task.completed_at ? "line-through" : ""}`}>
+          <div className={cn("flex-grow", task.completed_at && "line-through")}>
             <div className="text-sm">
               {task.type && task.type !== "Other" && (
                 <>

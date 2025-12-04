@@ -238,11 +238,12 @@ export const CustomDuration: Story = {
       <Button
         onClick={() =>
           toast("Quick notification", {
-            duration: 1000,
+            // WCAG 2.2.1: Minimum 4 seconds for readable toasts
+            duration: 4000,
           })
         }
       >
-        1 Second
+        4 Seconds (Minimum)
       </Button>
       <Button
         onClick={() =>

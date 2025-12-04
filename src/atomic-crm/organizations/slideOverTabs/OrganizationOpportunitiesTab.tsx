@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useDataProvider, RecordContextProvider } from "ra-core";
+import { useGetList, RecordContextProvider } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -9,6 +8,7 @@ import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";
 import { getOpportunityStageLabel } from "../../opportunities/constants/stageConstants";
 import { MAX_RELATED_ITEMS } from "../constants";
+import { parseDateSafely } from "@/lib/date-utils";
 
 interface Opportunity {
   id: Identifier;
@@ -24,40 +24,25 @@ interface OrganizationOpportunitiesTabProps {
 }
 
 export function OrganizationOpportunitiesTab({ record }: OrganizationOpportunitiesTabProps) {
-  const dataProvider = useDataProvider();
-  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const { data: opportunities = [], isLoading, error } = useGetList<Opportunity>(
+    "opportunities",
+    {
+      filter: {
+        $or: [
+          { customer_organization_id: record.id },
+          { principal_organization_id: record.id },
+          { distributor_organization_id: record.id },
+        ],
+      },
+      pagination: { page: 1, perPage: MAX_RELATED_ITEMS },
+      sort: { field: "created_at", order: "DESC" },
+    },
+    {
+      staleTime: 5 * 60 * 1000,
+    }
+  );
 
-  useEffect(() => {
-    const fetchOpportunities = async () => {
-      setIsLoading(true);
-      setError(null);
-      try {
-        // DEBUG: Log filter before dataProvider call
-        const filterPayload = {
-          $or: [
-            { customer_organization_id: record.id },
-            { principal_organization_id: record.id },
-            { distributor_organization_id: record.id },
-          ],
-        };
-
-        const result = await dataProvider.getList("opportunities", {
-          filter: filterPayload,
-          pagination: { page: 1, perPage: MAX_RELATED_ITEMS },
-          sort: { field: "created_at", order: "DESC" },
-        });
-        setOpportunities(result.data as Opportunity[]);
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Failed to load opportunities");
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchOpportunities();
-  }, [record.id, dataProvider]);
+  const errorMessage = error ? String(error) : null;
 
   if (isLoading) {
     return (
@@ -69,11 +54,11 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
     );
   }
 
-  if (error) {
+  if (errorMessage) {
     return (
       <Card>
         <CardContent className="p-4">
-          <p className="text-sm text-destructive">{error}</p>
+          <p className="text-sm text-destructive">{errorMessage}</p>
         </CardContent>
       </Card>
     );
@@ -129,7 +114,9 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
                       )}
                       {opportunity.estimated_close_date && (
                         <span>
-                          Close: {new Date(opportunity.estimated_close_date).toLocaleDateString()}
+                          Close:{" "}
+                          {parseDateSafely(opportunity.estimated_close_date)?.toLocaleDateString() ??
+                            "N/A"}
                         </span>
                       )}
                       {opportunity.status && (

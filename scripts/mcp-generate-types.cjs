@@ -5,7 +5,7 @@
  *
  * Generates TypeScript types from Supabase database schema using MCP tools.
  * Maintains hash-based change detection and comprehensive validation from original implementation.
- * Provides enhanced error handling with network retry logic and progress indicators.
+ * Provides enhanced error handling and progress indicators.
  */
 
 const fs = require('fs');
@@ -231,57 +231,23 @@ function getProjectId() {
 }
 
 /**
- * Generate types using MCP Supabase tool with retry logic
+ * Generate types using MCP Supabase tool
  */
-async function generateTypesWithMCP(options = {}) {
-  const { retryCount = 3, retryDelay = 2000 } = options;
+async function generateTypesWithMCP() {
+  const projectId = getProjectId();
 
-  let lastError = null;
+  // Show progress indicator for network operations
+  const progress = new ProgressIndicator('Generating types from database schema');
 
-  for (let attempt = 1; attempt <= retryCount; attempt++) {
-    try {
-      const projectId = getProjectId();
+  progress.start();
 
-      // Show progress indicator for network operations
-      const progress = new ProgressIndicator(
-        attempt > 1 ? `Generating types (attempt ${attempt}/${retryCount})` : 'Generating types from database schema'
-      );
+  // Simulate MCP call - In real implementation, this would use the actual MCP tool
+  // For now, we'll use a placeholder that demonstrates the expected behavior
+  const typesContent = await callMCPGenerateTypes(projectId);
 
-      progress.start();
+  progress.stop('✓ Types generated successfully from database');
 
-      // Simulate MCP call - In real implementation, this would use the actual MCP tool
-      // For now, we'll use a placeholder that demonstrates the expected behavior
-      const typesContent = await callMCPGenerateTypes(projectId);
-
-      progress.stop('✓ Types generated successfully from database');
-
-      return typesContent;
-
-    } catch (error) {
-      lastError = error;
-
-      // Distinguish between different error types
-      if (isNetworkError(error)) {
-        console.warn(`⚠ Network error on attempt ${attempt}/${retryCount}:`, error.message);
-
-        if (attempt < retryCount) {
-          console.log(`⏳ Retrying in ${retryDelay/1000} seconds...`);
-          await new Promise(resolve => setTimeout(resolve, retryDelay));
-          continue;
-        }
-      } else {
-        // Non-network errors shouldn't be retried
-        throw error;
-      }
-    }
-  }
-
-  // All retries failed
-  throw new Error(
-    `Network error: Failed to generate types after ${retryCount} attempts.\n` +
-    `Last error: ${lastError.message}\n` +
-    'Please check your internet connection and Supabase project status.'
-  );
+  return typesContent;
 }
 
 /**
@@ -293,13 +259,8 @@ async function callMCPGenerateTypes(projectId) {
   // const result = await mcpClient.call('mcp__supabase__generate_typescript_types', { project_id: projectId });
   // return result.types;
 
-  // For now, simulate network delay and potential errors
+  // For now, simulate network delay
   await new Promise(resolve => setTimeout(resolve, 1500));
-
-  // Simulate occasional network failures for testing
-  if (Math.random() < 0.1) {
-    throw new NetworkError('Connection timeout');
-  }
 
   // Return a minimal valid TypeScript types structure for testing
   return `export type Database = {
@@ -429,27 +390,6 @@ export type Tables<T extends keyof Database['public']['Tables']> = Database['pub
 export type Enums<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T]`;
 }
 
-/**
- * Check if error is a network-related error that should be retried
- */
-function isNetworkError(error) {
-  return error instanceof NetworkError ||
-         error.message.includes('ECONNREFUSED') ||
-         error.message.includes('ETIMEDOUT') ||
-         error.message.includes('Connection timeout') ||
-         error.message.includes('Network error') ||
-         error.message.includes('fetch failed');
-}
-
-/**
- * Custom error class for network errors
- */
-class NetworkError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = 'NetworkError';
-  }
-}
 
 /**
  * Generate types from Supabase using MCP tools
@@ -466,7 +406,7 @@ async function generateTypes(options = {}) {
 
     console.log('ℹ Generating TypeScript types from Supabase schema using MCP...');
 
-    // Generate types using MCP with retry logic
+    // Generate types using MCP
     const output = await generateTypesWithMCP();
 
     // Validate generated types structure (preserve all validation logic)
@@ -519,52 +459,8 @@ async function generateTypes(options = {}) {
     return true;
 
   } catch (error) {
-    if (isNetworkError(error)) {
-      console.error('✗ Network error during type generation:', error.message);
-      console.log('→ Please check your internet connection and try again');
-
-      // Create a placeholder file when network is unavailable (preserve from original)
-      if (!fs.existsSync(TYPES_OUTPUT)) {
-        const placeholder = `/**
- * Database Types - PLACEHOLDER
- *
- * This is a placeholder file created because MCP type generation failed.
- * To generate actual types:
- * 1. Ensure internet connection is available
- * 2. Verify VITE_SUPABASE_URL environment variable
- * 3. Run: npm run generate:types
- *
- * Generated at: ${new Date().toISOString()}
- */
-
-export interface Database {
-  public: {
-    Tables: Record<string, never>
-    Views: Record<string, never>
-    Functions: Record<string, never>
-    Enums: Record<string, never>
-    CompositeTypes: Record<string, never>
-  }
-}
-
-export type Tables<T extends keyof Database['public']['Tables']> = Database['public']['Tables'][T]['Row']
-export type Enums<T extends keyof Database['public']['Enums']> = Database['public']['Enums'][T]
-`;
-        fs.writeFileSync(TYPES_OUTPUT, placeholder);
-        saveMigrationHash();
-        console.log('ℹ Created placeholder types file');
-      }
-    } else {
-      console.error('✗ Failed to generate types:', error.message);
-    }
-
-    // In CI/CD environment, we might want to continue even if generation fails
-    if (process.env.CI === 'true') {
-      console.warn('⚠ Running in CI mode, continuing despite error');
-      return true;
-    }
-
-    return false;
+    console.error('✗ Failed to generate types:', error.message);
+    throw error;
   }
 }
 
@@ -603,11 +499,6 @@ Schema Validation:
   - Required views: organizations_summary, contacts_summary, opportunities_summary
   - Required columns and types for key tables
   - Checks for deprecated backward compatibility views
-
-Network Resilience:
-  - Automatic retry on network failures (3 attempts by default)
-  - Progress indicators for long-running operations
-  - Graceful fallback with placeholder types on persistent failures
 
 Examples:
   node mcp-generate-types.cjs                  # Generate from MCP if needed

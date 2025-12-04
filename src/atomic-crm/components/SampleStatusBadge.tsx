@@ -347,7 +347,7 @@ export function SampleStatusBadge({
                     >
                       <div
                         className={cn(
-                          "h-8 w-8 rounded-full flex items-center justify-center transition-colors",
+                          "h-11 w-11 rounded-full flex items-center justify-center transition-colors",
                           isCompleted && "bg-success text-success-foreground",
                           isCurrent && stepConfig.className,
                           !isCompleted && !isCurrent && "bg-muted text-muted-foreground"

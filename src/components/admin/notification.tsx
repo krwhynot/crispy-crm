@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useCallback, useEffect } from "react";
 import { Toaster, type ToasterProps, toast } from "sonner";
-import { useTheme } from "@/components/admin/theme-provider.utils";
+import { useTheme } from "next-themes";
 import {
   CloseNotificationContext,
   useNotificationContext,
@@ -80,7 +80,15 @@ export const Notification = (props: ToasterProps) => {
 
   return (
     <CloseNotificationContext.Provider value={handleRequestClose}>
-      <Toaster richColors theme={theme} closeButton position="bottom-center" {...props} />
+      <Toaster
+        richColors
+        theme={theme}
+        closeButton
+        position="bottom-center"
+        containerAriaLabel="Notifications"
+        toastOptions={{ closeButtonAriaLabel: 'Close notification' }}
+        {...props}
+      />
     </CloseNotificationContext.Provider>
   );
 };

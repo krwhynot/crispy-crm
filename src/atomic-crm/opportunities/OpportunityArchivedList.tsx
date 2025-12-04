@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import type { Opportunity } from "../types";
 import { getOpportunityStageLabel } from "./constants/stageConstants";
+import { parseDateSafely } from "@/lib/date-utils";
 
 export const OpportunityArchivedList = () => {
   const { data: identity } = useGetIdentity();
@@ -35,7 +36,9 @@ export const OpportunityArchivedList = () => {
   // Group archived lists by date
   const archivedListsByDate: { [date: string]: Opportunity[] } = archivedLists.reduce(
     (acc, opportunity) => {
-      const date = new Date(opportunity.deleted_at).toDateString();
+      const parsedDate = parseDateSafely(opportunity.deleted_at);
+      if (!parsedDate) return acc;
+      const date = parsedDate.toDateString();
       if (!acc[date]) {
         acc[date] = [];
       }
@@ -68,15 +71,15 @@ export const OpportunityArchivedList = () => {
                       </h3>
                       <div className="text-xs text-muted-foreground space-y-1">
                         <div>Stage: {getOpportunityStageLabel(opportunity.stage)}</div>
-                        {opportunity.estimated_close_date && (
+                        {opportunity.estimated_close_date && parseDateSafely(opportunity.estimated_close_date) && (
                           <div>
                             Close Date:{" "}
-                            {format(new Date(opportunity.estimated_close_date), "MMM d, yyyy")}
+                            {format(parseDateSafely(opportunity.estimated_close_date)!, "MMM d, yyyy")}
                           </div>
                         )}
-                        {opportunity.deleted_at && (
+                        {opportunity.deleted_at && parseDateSafely(opportunity.deleted_at) && (
                           <div className="text-destructive mt-2">
-                            Archived: {format(new Date(opportunity.deleted_at), "MMM d, yyyy")}
+                            Archived: {format(parseDateSafely(opportunity.deleted_at)!, "MMM d, yyyy")}
                           </div>
                         )}
                       </div>

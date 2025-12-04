@@ -13,6 +13,7 @@ import type { Opportunity } from "../types";
 import { getOpportunityStageLabel, getOpportunityStageColor } from "./constants/stageConstants";
 import { BulkActionsToolbar } from "./BulkActionsToolbar";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
+import { parseDateSafely } from "@/lib/date-utils";
 
 interface OpportunityRowListViewProps {
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
@@ -165,10 +166,10 @@ export const OpportunityRowListView = ({
                           link="show"
                         >
                           <div className="flex items-center gap-1 relative z-10">
-                            <Building2 className="w-3 h-3 text-brand-600" />
+                            <Building2 className="size-3 text-primary/80" />
                             <TextField
                               source="name"
-                              className="font-bold text-brand-700 hover:underline cursor-pointer"
+                              className="font-bold text-primary hover:underline cursor-pointer"
                             />
                           </div>
                         </ReferenceField>
@@ -185,13 +186,13 @@ export const OpportunityRowListView = ({
                             </span>
                           </>
                         )}
-                      {opportunity.last_interaction_date && (
+                      {opportunity.last_interaction_date && parseDateSafely(opportunity.last_interaction_date) && (
                         <>
                           <span className="opacity-50 mx-0.5">·</span>
                           <span className="opacity-75">
                             Last{" "}
                             {formatDistance(
-                              new Date(opportunity.last_interaction_date),
+                              parseDateSafely(opportunity.last_interaction_date)!,
                               new Date(),
                               { addSuffix: true }
                             )}
@@ -231,11 +232,11 @@ export const OpportunityRowListView = ({
                   )}
 
                   {/* Close Date - Hidden on mobile, shown on sm+ */}
-                  {opportunity.estimated_close_date && (
+                  {opportunity.estimated_close_date && parseDateSafely(opportunity.estimated_close_date) && (
                     <div className="hidden sm:block text-xs text-muted-foreground relative z-10">
                       <span className="opacity-75">Close:</span>{" "}
                       <span className="font-medium">
-                        {format(new Date(opportunity.estimated_close_date), "MMM d, yyyy")}
+                        {format(parseDateSafely(opportunity.estimated_close_date)!, "MMM d, yyyy")}
                       </span>
                     </div>
                   )}

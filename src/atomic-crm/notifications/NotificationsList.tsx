@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import { parseDateSafely } from "@/lib/date-utils";
 
 interface Notification {
   id: number;
@@ -138,7 +139,7 @@ const NotificationRow = ({ notification }: { notification: Notification }) => {
     );
   };
 
-  const timeAgo = formatDistanceToNow(new Date(notification.created_at), {
+  const timeAgo = formatDistanceToNow(parseDateSafely(notification.created_at) ?? new Date(), {
     addSuffix: true,
   });
 

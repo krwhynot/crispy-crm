@@ -38,8 +38,8 @@ export function UserMenu({ children }: UserMenuProps) {
     <UserMenuContext.Provider value={{ onClose: handleClose }}>
       <DropdownMenu open={open} onOpenChange={handleToggleOpen}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-8 w-8 ml-2 rounded-full">
-            <Avatar className="h-8 w-8">
+          <Button variant="ghost" className="relative h-11 w-11 ml-2 rounded-full">
+            <Avatar className="h-11 w-11">
               <AvatarImage src={identity?.avatar} role="presentation" />
               <AvatarFallback>{identity?.fullName?.charAt(0)}</AvatarFallback>
             </Avatar>

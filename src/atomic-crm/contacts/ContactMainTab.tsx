@@ -11,6 +11,7 @@ import { OrganizationInputs } from "../organizations/OrganizationInputs";
 import { useFormContext } from "react-hook-form";
 import { useGetIdentity } from "ra-core";
 import type { Sale } from "../types";
+import { organizationSchema } from "../validation/organizations";
 import * as React from "react";
 
 const personalInfoTypes = [{ id: "Work" }, { id: "Home" }, { id: "Other" }];
@@ -65,9 +66,8 @@ export const ContactMainTab = () => {
             resource="organizations"
             label="New Organization"
             defaultValues={{
-              organization_type: "customer",
+              ...organizationSchema.partial().parse({}),
               sales_id: identity?.id,
-              segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
             }}
             onSave={(newOrg) => {
               setValue("organization_id", newOrg.id);

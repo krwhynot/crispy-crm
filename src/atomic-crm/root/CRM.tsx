@@ -1,6 +1,7 @@
 import { Admin } from "@/components/admin/admin";
 import { ForgotPasswordPage } from "@/components/supabase/forgot-password-page";
 import { SetPasswordPage } from "@/components/supabase/set-password-page";
+import { QueryClient } from '@tanstack/react-query';
 import type { AuthProvider, DataProvider } from "ra-core";
 import { CustomRoutes, localStorageStore, Resource } from "ra-core";
 import React, { useEffect } from "react";
@@ -70,6 +71,16 @@ const OpportunityShowRedirect = () => {
   const { id } = useParams();
   return <Navigate to={`/opportunities?view=${id}`} replace />;
 };
+
+// Configure QueryClient with appropriate stale times for CRM data
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 30 * 1000, // 30 seconds - CRM data changes frequently
+      refetchOnWindowFocus: true,
+    },
+  },
+});
 
 export interface CRMProps extends Partial<ConfigurationContextValue> {
   dataProvider?: DataProvider;
@@ -159,6 +170,7 @@ export const CRM = ({
       <Admin
         dataProvider={dataProvider}
         authProvider={authProvider}
+        queryClient={queryClient}
         store={localStorageStore(undefined, "CRM")}
         layout={Layout}
         loginPage={StartPage}

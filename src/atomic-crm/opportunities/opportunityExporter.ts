@@ -11,6 +11,20 @@ import type { Opportunity, Organization, Sale } from "../types";
 import { formatSalesName } from "../utils/formatters";
 import { getOpportunityStageLabel } from "./constants/stageConstants";
 
+/**
+ * Sanitize value for CSV export to prevent formula injection
+ * @see docs/decisions/file-handling-best-practices.md
+ */
+const sanitizeForCSV = (value: unknown): string => {
+  if (value === null || value === undefined) return '';
+  const str = String(value);
+  const formulaTriggers = ['=', '-', '+', '@', '\t', '\r'];
+  if (formulaTriggers.some(char => str.startsWith(char))) {
+    return `\t${str}`;
+  }
+  return str;
+};
+
 export interface OpportunityExportRow {
   id: number | string;
   name: string;
@@ -106,7 +120,16 @@ export const opportunityExporter: Exporter<Opportunity> = async (
     stage_changed_at: opp.stage_changed_at,
   }));
 
-  return jsonExport(opportunities, {}, (err: Error | null, csv: string) => {
+  const safeOpportunities = opportunities.map(row =>
+    Object.fromEntries(
+      Object.entries(row).map(([key, value]) => [key, sanitizeForCSV(value)])
+    )
+  );
+
+  return jsonExport(safeOpportunities, {
+    rowDelimiter: ',',
+    endOfLine: '\r\n',
+  }, (err: Error | null, csv: string) => {
     if (err) {
       throw new Error(`CSV export failed: ${err.message}`);
     }

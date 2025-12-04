@@ -1,4 +1,5 @@
 import { Skeleton } from "./skeleton";
+import { cn } from "@/lib/utils";
 
 /**
  * ListSkeleton - Loading placeholder for list views
@@ -30,7 +31,7 @@ export function ListSkeleton({ rows = 5, columns = 6, showAvatar = false }: List
         {Array.from({ length: columns - (showAvatar ? 1 : 0) }).map((_, i) => (
           <Skeleton
             key={i}
-            className={`h-5 ${i === 0 ? "w-32" : "w-24"} ${i > 3 ? "hidden lg:block" : ""}`}
+            className={cn("h-5", i === 0 ? "w-32" : "w-24", i > 3 && "hidden lg:block")}
           />
         ))}
       </div>
@@ -54,7 +55,7 @@ export function ListSkeleton({ rows = 5, columns = 6, showAvatar = false }: List
             const responsiveClass =
               colIndex > 4 ? "hidden lg:block" : colIndex > 2 ? "hidden md:block" : "";
 
-            return <Skeleton key={colIndex} className={`h-5 ${width} ${responsiveClass}`} />;
+            return <Skeleton key={colIndex} className={cn("h-5", width, responsiveClass)} />;
           })}
         </div>
       ))}

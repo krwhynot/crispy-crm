@@ -91,9 +91,9 @@ export function StandardListLayout({
               aria-controls="filter-sidebar"
             >
               {isCollapsed ? (
-                <PanelLeft className="h-5 w-5" />
+                <PanelLeft className="size-5" />
               ) : (
-                <PanelLeftClose className="h-5 w-5" />
+                <PanelLeftClose className="size-5" />
               )}
             </Button>
           </TooltipTrigger>
@@ -128,7 +128,7 @@ export function StandardListLayout({
                   className="h-11 w-11"
                   aria-label="Hide filters"
                 >
-                  <PanelLeftClose className="h-5 w-5" />
+                  <PanelLeftClose className="size-5" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="right">Hide filters</TooltipContent>
@@ -152,7 +152,7 @@ export function StandardListLayout({
                 aria-expanded={false}
                 aria-controls="filter-sidebar"
               >
-                <PanelLeft className="h-5 w-5" />
+                <PanelLeft className="size-5" />
               </Button>
             </TooltipTrigger>
             <TooltipContent side="right">Show filters</TooltipContent>

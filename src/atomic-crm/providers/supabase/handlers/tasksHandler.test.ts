@@ -91,20 +91,24 @@ describe("tasksHandler", () => {
 
     it("should strip computed fields before save", async () => {
       const handler = createTasksHandler(mockBaseProvider);
+      // Computed fields come from database views when reading existing records
+      // They appear on UPDATE (editing existing task), not CREATE (new task from form)
       const dataWithComputedFields = {
+        id: 1,
         title: "Follow up",
-        due_date: "2024-12-31",
-        type: "Call",
-        sales_id: 1,
-        assignee_name: "John Smith", // computed field - should be stripped
-        contact_name: "Jane Doe", // computed field - should be stripped
+        assignee_name: "John Smith", // computed field from view - should be stripped
+        contact_name: "Jane Doe", // computed field from view - should be stripped
       };
 
-      await handler.create("tasks", { data: dataWithComputedFields });
+      await handler.update("tasks", {
+        id: 1,
+        data: dataWithComputedFields,
+        previousData: { id: 1, title: "Original" },
+      });
 
-      // Computed fields should be stripped
-      const createCall = mockBaseProvider.create as ReturnType<typeof vi.fn>;
-      const passedData = createCall.mock.calls[0][1].data;
+      // Computed fields should be stripped before save
+      const updateCall = mockBaseProvider.update as ReturnType<typeof vi.fn>;
+      const passedData = updateCall.mock.calls[0][1].data;
       expect(passedData.assignee_name).toBeUndefined();
       expect(passedData.contact_name).toBeUndefined();
       expect(passedData.title).toBe("Follow up");

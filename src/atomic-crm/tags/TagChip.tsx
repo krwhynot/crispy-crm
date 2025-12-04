@@ -49,7 +49,7 @@ export function TagChip({ tag, onUnlink }: TagChipProps) {
             e.stopPropagation();
             onUnlink();
           }}
-          className="relative -my-2 -mr-1 ml-0.5 h-11 w-8 flex items-center justify-center transition-colors cursor-pointer hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
+          className="relative -my-2 -mr-1 ml-0.5 h-11 w-11 flex items-center justify-center transition-colors cursor-pointer hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1 rounded-sm"
           aria-label={`Remove ${tag.name} tag`}
         >
           <X className="w-3 h-3" />

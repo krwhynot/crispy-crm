@@ -13,6 +13,7 @@ import { LeadSourceInput } from "../LeadSourceInput";
 import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import { WIN_REASONS, LOSS_REASONS } from "@/atomic-crm/validation/opportunities";
+import { parseDateSafely } from "@/lib/date-utils";
 
 interface OpportunitySlideOverDetailsTabProps {
   record: any;
@@ -254,11 +255,8 @@ export function OpportunitySlideOverDetailsTab({
   // View mode
   const formatDate = (date: string | null | undefined) => {
     if (!date) return "Not set";
-    try {
-      return format(new Date(date), "MMM d, yyyy");
-    } catch {
-      return "Invalid date";
-    }
+    const parsed = parseDateSafely(date);
+    return parsed ? format(parsed, "MMM d, yyyy") : "Invalid date";
   };
 
   const getStageBadgeVariant = (stage: string) => {

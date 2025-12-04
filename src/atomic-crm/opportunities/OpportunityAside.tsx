@@ -12,6 +12,7 @@ import { SaleName } from "../sales/SaleName";
 import { SaleAvatar } from "../sales/SaleAvatar";
 import type { Opportunity } from "../types";
 import { getOpportunityStageLabel } from "./constants/stageConstants";
+import { parseDateSafely } from "@/lib/date-utils";
 
 export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
   const record = useRecordContext<Opportunity>();
@@ -79,15 +80,15 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
             <span className="text-xs text-muted-foreground">Expected close</span>
             <div className="flex items-center gap-2 mt-1">
               <span className="text-sm">
-                {isValid(new Date(record.estimated_close_date))
-                  ? format(new Date(record.estimated_close_date), "PP")
+                {parseDateSafely(record.estimated_close_date)
+                  ? format(parseDateSafely(record.estimated_close_date)!, "PP")
                   : "Invalid date"}
               </span>
-              {isValid(new Date(record.estimated_close_date)) && (
+              {parseDateSafely(record.estimated_close_date) && (
                 <>
-                  {isPast(new Date(record.estimated_close_date)) ? (
+                  {isPast(parseDateSafely(record.estimated_close_date)!) ? (
                     <Badge variant="destructive" className="text-xs">
-                      {formatDistanceToNow(new Date(record.estimated_close_date), {
+                      {formatDistanceToNow(parseDateSafely(record.estimated_close_date)!, {
                         addSuffix: true,
                       })}
                     </Badge>
@@ -96,7 +97,7 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
                       variant="secondary"
                       className="bg-primary/10 text-primary border-primary/30 text-xs"
                     >
-                      {formatDistanceToNow(new Date(record.estimated_close_date), {
+                      {formatDistanceToNow(parseDateSafely(record.estimated_close_date)!, {
                         addSuffix: true,
                       })}
                     </Badge>

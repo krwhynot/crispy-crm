@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useRef, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { quickAddSchema, type QuickAddInput } from "@/atomic-crm/validation/quickAdd";
 import { useQuickAdd } from "../hooks/useQuickAdd";
@@ -41,7 +41,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     handleSubmit,
     formState: { errors },
     setValue,
-    watch,
+    control,
     reset,
     clearErrors,
   } = useForm<QuickAddInput>({
@@ -61,8 +61,11 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     },
   });
 
-  // Watch principal selection for product filtering
-  const principalId = watch("principal_id");
+  // Watch values for dependent fields using useWatch
+  const [principalId, cityValue, phoneValue, emailValue, productIds] = useWatch({
+    control,
+    name: ["principal_id", "city", "phone", "email", "product_ids"],
+  });
 
   // Fetch products filtered by selected principal
   const {
@@ -70,11 +73,6 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     isLoading: productsLoading,
     isReady: productsReady,
   } = useFilteredProducts(principalId);
-
-  // Watch values for dependent fields
-  const cityValue = watch("city");
-  const phoneValue = watch("phone");
-  const emailValue = watch("email");
 
   // Clear phone/email validation error when either field has content
   useEffect(() => {
@@ -194,7 +192,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
           {productsReady ? (
             <MultiSelectCombobox
               options={productOptions}
-              value={watch("product_ids")?.map((id) => id.toString()) || []}
+              value={productIds?.map((id) => id.toString()) || []}
               onValueChange={(values) =>
                 setValue(
                   "product_ids",

@@ -1,3 +1,5 @@
+import { parseDateSafely } from "@/lib/date-utils";
+
 /**
  * Format a date as relative time (e.g., "2h ago", "3d ago")
  * Desktop-optimized: compact format suitable for table displays
@@ -5,12 +7,19 @@
 export function formatRelativeTime(date: Date | string | null | undefined): string {
   if (!date) return "unknown";
 
-  try {
-    const targetDate = typeof date === "string" ? new Date(date) : date;
+  let targetDate: Date | null;
+  if (typeof date === "string") {
+    targetDate = parseDateSafely(date);
+    if (!targetDate) return "unknown";
+  } else {
+    targetDate = date;
+  }
 
-    if (isNaN(targetDate.getTime())) {
-      return "unknown";
-    }
+  if (isNaN(targetDate.getTime())) {
+    return "unknown";
+  }
+
+  try {
 
     const now = new Date();
     const diffMs = now.getTime() - targetDate.getTime();

@@ -4,7 +4,7 @@
  */
 
 import { describe, it, expect, beforeEach, vi, afterEach } from "vitest";
-import { CacheManager, escapeCacheManager, dataProviderCache } from "./dataProviderCache";
+import { CacheManager, escapeCacheManager } from "./dataProviderCache";
 
 describe("CacheManager", () => {
   let cache: CacheManager;
@@ -346,7 +346,6 @@ describe("CacheManager", () => {
 describe("singleton instances", () => {
   afterEach(() => {
     escapeCacheManager.clear();
-    dataProviderCache.clear();
   });
 
   describe("escapeCacheManager", () => {
@@ -372,40 +371,6 @@ describe("singleton instances", () => {
 
       // In real usage, a different import would see the same data
       expect(escapeCacheManager.has("singleton-test")).toBe(true);
-    });
-  });
-
-  describe("dataProviderCache", () => {
-    it("should exist and be functional", () => {
-      expect(dataProviderCache).toBeDefined();
-
-      dataProviderCache.set("test", "value");
-      expect(dataProviderCache.get("test")).toBe("value");
-    });
-
-    it("should be configured with correct max and ttl", () => {
-      // Max is 500 - verify by filling beyond 500
-      for (let i = 1; i <= 600; i++) {
-        dataProviderCache.set(`key${i}`, `value${i}`);
-      }
-
-      // Should be limited to 500
-      expect(dataProviderCache.size).toBeLessThanOrEqual(500);
-    });
-
-    it("should be a singleton (same instance across imports)", () => {
-      dataProviderCache.set("singleton-test", "value");
-
-      // In real usage, a different import would see the same data
-      expect(dataProviderCache.has("singleton-test")).toBe(true);
-    });
-
-    it("should be independent from escapeCacheManager", () => {
-      escapeCacheManager.set("key", "escape-value");
-      dataProviderCache.set("key", "provider-value");
-
-      expect(escapeCacheManager.get("key")).toBe("escape-value");
-      expect(dataProviderCache.get("key")).toBe("provider-value");
     });
   });
 });

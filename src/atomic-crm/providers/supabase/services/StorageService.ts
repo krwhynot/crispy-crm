@@ -1,3 +1,4 @@
+import { HttpError } from "react-admin";
 import { supabase } from "../supabase";
 import type { RAFile } from "../../../types";
 
@@ -54,7 +55,7 @@ export class StorageService {
 
     if (uploadError) {
       console.error("uploadError", uploadError);
-      throw new Error("Failed to upload attachment");
+      throw new HttpError("Failed to upload attachment", 500);
     }
 
     const { data: urlData } = supabase.storage.from("attachments").getPublicUrl(filePath);
@@ -76,7 +77,7 @@ export class StorageService {
   async upload(bucket: string, path: string, file: File | Blob): Promise<{ path: string }> {
     // Validate file size (10MB limit)
     if (file.size > 10 * 1024 * 1024) {
-      throw new Error("File size exceeds 10MB limit");
+      throw new HttpError("File size exceeds 10MB limit", 413);
     }
 
     const { data, error } = await supabase.storage.from(bucket).upload(path, file, {
@@ -86,7 +87,7 @@ export class StorageService {
 
     if (error) {
       console.error(`[StorageService] Upload failed`, error);
-      throw new Error(`Upload failed: ${error.message}`);
+      throw new HttpError(`Upload failed: ${error.message}`, 500);
     }
 
     return data;
@@ -113,7 +114,7 @@ export class StorageService {
 
     if (error) {
       console.error(`[StorageService] Remove failed`, error);
-      throw new Error(`Remove failed: ${error.message}`);
+      throw new HttpError(`Remove failed: ${error.message}`, 500);
     }
   }
 
@@ -128,7 +129,7 @@ export class StorageService {
 
     if (error) {
       console.error(`[StorageService] List failed`, error);
-      throw new Error(`List failed: ${error.message}`);
+      throw new HttpError(`List failed: ${error.message}`, 500);
     }
 
     return data || [];

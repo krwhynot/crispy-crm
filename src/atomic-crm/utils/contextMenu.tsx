@@ -4,6 +4,7 @@
 import { createPortal } from "react-dom";
 import { useEffect, useRef, useState, useCallback } from "react";
 import { ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export interface ContextMenuItem {
   label: string;
@@ -90,10 +91,10 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, items, onClose }
         return (
           <div
             key={index}
-            className={`
-              relative px-3 py-1.5 flex items-center justify-between text-sm
-              ${item.disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-accent cursor-pointer"}
-            `}
+            className={cn(
+              "relative px-3 py-3 flex items-center justify-between text-sm",
+              item.disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-accent cursor-pointer"
+            )}
             tabIndex={item.disabled ? -1 : 0}
             onClick={() => {
               if (!item.disabled && item.action) {
@@ -133,10 +134,10 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, items, onClose }
                 {item.submenu.map((subItem, subIndex) => (
                   <div
                     key={subIndex}
-                    className={`
-                      px-3 py-1.5 text-sm
-                      ${subItem.disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-accent cursor-pointer"}
-                    `}
+                    className={cn(
+                      "px-3 py-1.5 text-sm",
+                      subItem.disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-accent cursor-pointer"
+                    )}
                     tabIndex={subItem.disabled ? -1 : 0}
                     onClick={(e) => {
                       e.stopPropagation();

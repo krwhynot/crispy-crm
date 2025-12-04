@@ -3,6 +3,7 @@ import { useNotify } from "ra-core";
 import type { Opportunity } from "../../types";
 import { getOpportunityStageLabel } from "../constants/stageConstants";
 import { format } from "date-fns";
+import { parseDateSafely } from "@/lib/date-utils";
 
 export const useExportOpportunities = () => {
   const notify = useNotify();
@@ -44,17 +45,17 @@ export const useExportOpportunities = () => {
           getOpportunityStageLabel(opp.stage) || "",
           opp.status || "",
           opp.priority || "",
-          opp.estimated_close_date ? format(new Date(opp.estimated_close_date), "yyyy-MM-dd") : "",
+          opp.estimated_close_date && parseDateSafely(opp.estimated_close_date) ? format(parseDateSafely(opp.estimated_close_date)!, "yyyy-MM-dd") : "",
           opp.description || "",
           opp.campaign || "",
           opp.related_opportunity_id ? `ID: ${opp.related_opportunity_id}` : "",
           opp.tags ? opp.tags.join("; ") : "",
           opp.nb_interactions?.toString() || "0",
-          opp.last_interaction_date
-            ? format(new Date(opp.last_interaction_date), "yyyy-MM-dd")
+          opp.last_interaction_date && parseDateSafely(opp.last_interaction_date)
+            ? format(parseDateSafely(opp.last_interaction_date)!, "yyyy-MM-dd")
             : "",
           opp.days_in_stage?.toString() || "",
-          opp.created_at ? format(new Date(opp.created_at), "yyyy-MM-dd") : "",
+          opp.created_at && parseDateSafely(opp.created_at) ? format(parseDateSafely(opp.created_at)!, "yyyy-MM-dd") : "",
         ]);
 
         // Combine headers and rows

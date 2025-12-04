@@ -61,6 +61,7 @@ const ImageEditorField = (props: ImageEditorFieldProps) => {
             type="button"
             onClick={() => setIsDialogOpen(true)}
             className="text-xs underline hover:no-underline cursor-pointer text-center"
+            aria-label="Change image"
           >
             Change
           </button>
@@ -85,7 +86,16 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
 
   const updateImage = () => {
     const cropper = cropperRef.current?.cropper;
-    const croppedImage = cropper?.getCroppedCanvas().toDataURL();
+    if (!cropper) return;
+
+    const canvas = cropper.getCroppedCanvas({
+      maxWidth: 1024,
+      maxHeight: 1024,
+      imageSmoothingEnabled: true,
+      imageSmoothingQuality: 'high',
+    });
+
+    const croppedImage = canvas.toDataURL('image/jpeg', 0.85);
     if (croppedImage) {
       setImageSrc(croppedImage);
 
@@ -120,6 +130,7 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
     accept: { "image/jpeg": [".jpeg", ".png"] },
     onDrop,
     maxFiles: 1,
+    maxSize: 5 * 1024 * 1024,
   });
 
   return (
@@ -141,20 +152,29 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
         <div className="flex flex-col gap-2 justify-center">
           <div
             className="flex flex-row justify-center bg-muted cursor-pointer p-4 border-2 border-dashed border-border rounded-lg hover:bg-accent transition-colors"
-            {...getRootProps()}
+            {...getRootProps({
+              role: 'button',
+              'aria-label': 'Upload image for cropping',
+              tabIndex: 0,
+            })}
           >
             <input {...getInputProps()} />
             <p className="text-muted-foreground">Drop a file to upload, or click to select it.</p>
           </div>
 
           {imageSrc && (
-            <Cropper
-              ref={cropperRef}
-              src={imageSrc}
-              aspectRatio={1}
-              guides={false}
-              cropBoxResizable={false}
-            />
+            <div role="application" aria-label="Image cropper - drag to adjust crop area">
+              <Cropper
+                ref={cropperRef}
+                src={imageSrc}
+                aspectRatio={1}
+                guides={true}
+                cropBoxResizable={false}
+                viewMode={1}
+                checkOrientation={true}
+                responsive={true}
+              />
+            </div>
           )}
         </div>
 

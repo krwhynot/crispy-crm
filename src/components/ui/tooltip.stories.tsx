@@ -108,7 +108,7 @@ export const WithIcons: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="ghost" size="icon">
-            <Plus className="h-4 w-4" />
+            <Plus className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -119,7 +119,7 @@ export const WithIcons: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="ghost" size="icon">
-            <Edit className="h-4 w-4" />
+            <Edit className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -130,7 +130,7 @@ export const WithIcons: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="ghost" size="icon">
-            <Copy className="h-4 w-4" />
+            <Copy className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -141,7 +141,7 @@ export const WithIcons: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="ghost" size="icon">
-            <Share className="h-4 w-4" />
+            <Share className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -152,7 +152,7 @@ export const WithIcons: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="ghost" size="icon">
-            <Download className="h-4 w-4" />
+            <Download className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -163,7 +163,7 @@ export const WithIcons: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="ghost" size="icon">
-            <Trash className="h-4 w-4" />
+            <Trash className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -244,7 +244,7 @@ export const WithKeyboardShortcuts: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="outline" size="icon">
-            <Save className="h-4 w-4" />
+            <Save className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -255,7 +255,7 @@ export const WithKeyboardShortcuts: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="outline" size="icon">
-            <Copy className="h-4 w-4" />
+            <Copy className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -266,7 +266,7 @@ export const WithKeyboardShortcuts: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="outline" size="icon">
-            <X className="h-4 w-4" />
+            <X className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -283,7 +283,7 @@ export const LongContent: Story = {
     <Tooltip>
       <TooltipTrigger asChild>
         <Button variant="outline">
-          <Info className="mr-2 h-4 w-4" />
+          <Info className="mr-2 size-4" />
           More info
         </Button>
       </TooltipTrigger>
@@ -373,7 +373,7 @@ export const WithFormFields: Story = {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="ghost" size="icon">
-              <HelpCircle className="h-4 w-4" />
+              <HelpCircle className="size-4" />
             </Button>
           </TooltipTrigger>
           <TooltipContent>
@@ -387,7 +387,7 @@ export const WithFormFields: Story = {
         <Tooltip>
           <TooltipTrigger asChild>
             <Button variant="ghost" size="icon">
-              <HelpCircle className="h-4 w-4" />
+              <HelpCircle className="size-4" />
             </Button>
           </TooltipTrigger>
           <TooltipContent>
@@ -488,7 +488,7 @@ export const Toolbar: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="ghost" size="icon">
-            <Settings className="h-4 w-4" />
+            <Settings className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -501,7 +501,7 @@ export const Toolbar: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="ghost" size="icon">
-            <Plus className="h-4 w-4" />
+            <Plus className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -512,7 +512,7 @@ export const Toolbar: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="ghost" size="icon">
-            <Edit className="h-4 w-4" />
+            <Edit className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -523,7 +523,7 @@ export const Toolbar: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="ghost" size="icon">
-            <Copy className="h-4 w-4" />
+            <Copy className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>
@@ -536,7 +536,7 @@ export const Toolbar: Story = {
       <Tooltip>
         <TooltipTrigger asChild>
           <Button variant="ghost" size="icon">
-            <Trash className="h-4 w-4" />
+            <Trash className="size-4" />
           </Button>
         </TooltipTrigger>
         <TooltipContent>

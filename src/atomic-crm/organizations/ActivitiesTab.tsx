@@ -10,6 +10,7 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { QuickLogActivityDialog } from "../activities";
 import type { ActivityRecord } from "../types";
 import { ACTIVITY_PAGE_SIZE } from "./constants";
+import { parseDateSafely } from "@/lib/date-utils";
 
 interface ActivitiesTabProps {
   organizationId: string | number;
@@ -127,7 +128,7 @@ const ActivityTimelineEntry = ({ activity }: { activity: ActivityRecord }) => {
             </div>
             <span className="text-xs text-muted-foreground ml-2">
               {format(
-                new Date(activity.activity_date || activity.created_at),
+                parseDateSafely(activity.activity_date || activity.created_at) ?? new Date(),
                 "MMM d, yyyy h:mm a"
               )}
             </span>

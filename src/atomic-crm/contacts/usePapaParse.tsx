@@ -141,7 +141,8 @@ export function usePapaParse<T>({
                 }
                 return previous;
               });
-            } catch {
+            } catch (error) {
+              console.error("Batch processing error:", error);
               setImporter((previous) =>
                 previous.state === "running"
                   ? {

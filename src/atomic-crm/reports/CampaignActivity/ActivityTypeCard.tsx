@@ -2,6 +2,7 @@ import React from "react";
 import { ChevronRight, ChevronDown } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import type { ActivityGroup } from "../types";
+import { parseDateSafely } from "@/lib/date-utils";
 
 interface ActivityTypeCardProps {
   group: ActivityGroup;
@@ -145,7 +146,7 @@ export const ActivityTypeCard: React.FC<ActivityTypeCardProps> = ({
                       {activity.contact_name ? activity.contact_name : "—"}
                     </td>
                     <td className="py-2 px-3 whitespace-nowrap">
-                      {new Date(activity.created_at).toLocaleDateString()}
+                      {parseDateSafely(activity.created_at)?.toLocaleDateString() || "—"}
                     </td>
                     <td className="py-2 px-3 whitespace-nowrap">
                       {salesMap.get(activity.created_by) || "Unassigned"}

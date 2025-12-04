@@ -15,6 +15,7 @@ import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-in
 import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/constants/stageConstants";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
 import type { Opportunity, Sale } from "../types";
+import { parseDateSafely } from "@/lib/date-utils";
 
 interface PrincipalGroup {
   principalId: string | null;
@@ -283,14 +284,13 @@ export default function OpportunitiesByPrincipalReport() {
 
     principalGroups.forEach((group) => {
       group.opportunities.forEach((opp) => {
+        const closeDateObj = opp.estimated_close_date ? parseDateSafely(opp.estimated_close_date) : null;
         exportData.push({
           principal: sanitizeCsvValue(group.principalName),
           opportunity: sanitizeCsvValue(opp.name),
           organization: sanitizeCsvValue(opp.customer_organization_name || ""),
           stage: sanitizeCsvValue(opp.stage),
-          close_date: opp.estimated_close_date
-            ? format(new Date(opp.estimated_close_date), "yyyy-MM-dd")
-            : "",
+          close_date: closeDateObj ? format(closeDateObj, "yyyy-MM-dd") : "",
           sales_rep: sanitizeCsvValue(salesMap.get(opp.opportunity_owner_id!) || "Unassigned"),
           priority: sanitizeCsvValue(opp.priority || "medium"),
           status: sanitizeCsvValue(opp.status),
@@ -479,8 +479,8 @@ function PrincipalGroupCard({
                       <Badge variant="outline">{opp.stage}</Badge>
                     </td>
                     <td className="py-2 px-2">
-                      {opp.estimated_close_date
-                        ? format(new Date(opp.estimated_close_date), "MMM dd, yyyy")
+                      {opp.estimated_close_date && parseDateSafely(opp.estimated_close_date)
+                        ? format(parseDateSafely(opp.estimated_close_date)!, "MMM dd, yyyy")
                         : "-"}
                     </td>
                     <td className="py-2 px-2">

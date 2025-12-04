@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
 import { formatDistanceToNow } from "date-fns";
 import type { Product } from "../types";
+import { parseDateSafely } from "@/lib/date-utils";
 
 export const ProductListContent = () => {
   const { data: products, error, isPending } = useListContext<Product>();
@@ -54,10 +55,10 @@ export const ProductListContent = () => {
                 )}
 
                 <div className="flex items-center gap-4 mt-3 text-xs text-muted-foreground">
-                  {product.last_promoted_at && (
+                  {product.last_promoted_at && parseDateSafely(product.last_promoted_at) && (
                     <span>
                       Last promoted{" "}
-                      {formatDistanceToNow(new Date(product.last_promoted_at), {
+                      {formatDistanceToNow(parseDateSafely(product.last_promoted_at)!, {
                         addSuffix: true,
                       })}
                     </span>

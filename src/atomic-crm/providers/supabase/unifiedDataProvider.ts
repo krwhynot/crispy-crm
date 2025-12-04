@@ -32,6 +32,7 @@ import type {
   RaRecord,
   FilterPayload,
 } from "ra-core";
+import { HttpError } from "react-admin";
 import type { FileObject } from "@supabase/storage-js";
 import type { QuickAddInput } from "../../validation/quickAdd";
 import { quickAddSchema } from "../../validation/quickAdd";
@@ -365,13 +366,25 @@ async function wrapMethod<T>(
     logError(method, resource, params, error);
     const extendedError = error as ExtendedError | undefined;
 
-    // Handle idempotent delete - if resource doesn't exist, treat as success
-    // This happens with React Admin's undoable mode where UI updates before API call
+    /**
+     * INTENTIONAL EXCEPTION TO FAIL-FAST PRINCIPLE
+     *
+     * Handle idempotent delete: if resource doesn't exist, treat as success.
+     *
+     * This supports React Admin's undoable mode where:
+     * 1. User clicks delete → UI updates immediately (optimistic)
+     * 2. Undo window appears (5 seconds)
+     * 3. If no undo, API call fires
+     * 4. If resource was already deleted (e.g., by another user), treat as success
+     *
+     * Without this, users would see confusing error messages for successful deletes.
+     *
+     * @see Engineering Constitution - documented UX exception to fail-fast
+     */
     if (
       method === "delete" &&
       extendedError?.message?.includes("Cannot coerce the result to a single JSON object")
     ) {
-      // Return successful delete response - resource was already deleted
       return { data: params.previousData } as T;
     }
 
@@ -443,20 +456,12 @@ export const unifiedDataProvider: DataProvider = {
         const {
           data: { session },
         } = await supabase.auth.getSession();
-        console.log("[DataProvider] DEBUG AUTH Session state:", {
-          hasSession: !!session,
-          userId: session?.user?.id?.slice(0, 8) + "..." || "none",
-          role: session?.user?.role || "anon",
-          expiresAt: session?.expires_at
-            ? new Date(session.expires_at * 1000).toISOString()
-            : "none",
-        });
+        devLog("DataProvider", "Auth state", { authenticated: !!session });
 
         // DEBUG: Log before baseDataProvider call
         console.log("[DataProvider] DEBUG API unifiedDataProvider.getList", {
           originalResource: resource,
           dbResource,
-          hasAuthToken: !!session?.access_token,
         });
       }
 
@@ -857,7 +862,7 @@ export const unifiedDataProvider: DataProvider = {
           error,
         });
       }
-      throw new Error(`Remove opportunity contact failed: ${errorMessage}`);
+      throw new HttpError(`Remove opportunity contact failed: ${errorMessage}`, 500);
     }
   },
 
@@ -883,8 +888,9 @@ export const unifiedDataProvider: DataProvider = {
         const validationResult = schema.safeParse(params);
 
         if (!validationResult.success) {
-          throw new Error(
-            `Invalid RPC parameters for ${functionName}: ${validationResult.error.message}`
+          throw new HttpError(
+            `Invalid RPC parameters for ${functionName}: ${validationResult.error.message}`,
+            400
           );
         }
 
@@ -896,7 +902,7 @@ export const unifiedDataProvider: DataProvider = {
 
       if (error) {
         logError("rpc", functionName, { data: validatedParams }, error);
-        throw new Error(`RPC ${functionName} failed: ${error.message}`);
+        throw new HttpError(`RPC ${functionName} failed: ${error.message}`, 500);
       }
 
       devLog("DataProvider RPC", `${functionName} succeeded`, data);
@@ -930,7 +936,7 @@ export const unifiedDataProvider: DataProvider = {
 
         // Validate file size (10MB limit)
         if (file.size > 10 * 1024 * 1024) {
-          throw new Error("File size exceeds 10MB limit");
+          throw new HttpError("File size exceeds 10MB limit", 413);
         }
 
         const { data, error } = await supabase.storage.from(bucket).upload(path, file, {
@@ -940,7 +946,7 @@ export const unifiedDataProvider: DataProvider = {
 
         if (error) {
           logError("storage.upload", bucket, { data: { path, size: file.size } }, error);
-          throw new Error(`Upload failed: ${error.message}`);
+          throw new HttpError(`Upload failed: ${error.message}`, 500);
         }
 
         devLog("DataProvider Storage", "Upload succeeded", data);
@@ -976,7 +982,7 @@ export const unifiedDataProvider: DataProvider = {
 
         if (error) {
           logError("storage.remove", bucket, { data: { paths } }, error);
-          throw new Error(`Remove failed: ${error.message}`);
+          throw new HttpError(`Remove failed: ${error.message}`, 500);
         }
 
         devLog("DataProvider Storage", "Remove succeeded");
@@ -1000,7 +1006,7 @@ export const unifiedDataProvider: DataProvider = {
 
         if (error) {
           logError("storage.list", bucket, { data: { path } }, error);
-          throw new Error(`List failed: ${error.message}`);
+          throw new HttpError(`List failed: ${error.message}`, 500);
         }
 
         devLog("DataProvider Storage", `Listed ${data?.length || 0} files`);
@@ -1039,11 +1045,11 @@ export const unifiedDataProvider: DataProvider = {
 
       if (error) {
         logError("invoke", functionName, { data: processedOptions }, error);
-        throw new Error(`Edge function ${functionName} failed: ${error.message}`);
+        throw new HttpError(`Edge function ${functionName} failed: ${error.message}`, 500);
       }
 
       if (!data) {
-        throw new Error(`Edge function ${functionName} returned no data`);
+        throw new HttpError(`Edge function ${functionName} returned no data`, 500);
       }
 
       devLog("DataProvider Edge", `${functionName} succeeded`, data);
@@ -1067,7 +1073,7 @@ export const unifiedDataProvider: DataProvider = {
 
       const validationResult = quickAddSchema.safeParse(data);
       if (!validationResult.success) {
-        throw new Error(`Invalid booth visitor data: ${validationResult.error.message}`);
+        throw new HttpError(`Invalid booth visitor data: ${validationResult.error.message}`, 400);
       }
 
       const { data: result, error } = await supabase.rpc("create_booth_visitor_opportunity", {
@@ -1076,7 +1082,7 @@ export const unifiedDataProvider: DataProvider = {
 
       if (error) {
         logError("createBoothVisitor", "booth_visitor", { data }, error);
-        throw new Error(`Create booth visitor failed: ${error.message}`);
+        throw new HttpError(`Create booth visitor failed: ${error.message}`, 500);
       }
 
       devLog("DataProvider", "Booth visitor created successfully", result);

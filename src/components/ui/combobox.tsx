@@ -59,7 +59,7 @@ export function Combobox({
           disabled={disabled}
         >
           {selectedOption ? selectedOption.label : placeholder}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
@@ -84,7 +84,7 @@ export function Combobox({
                 >
                   <Check
                     className={cn(
-                      "mr-2 h-4 w-4",
+                      "mr-2 size-4",
                       value === option.value ? "opacity-100" : "opacity-0"
                     )}
                   />
@@ -152,7 +152,7 @@ export function MultiSelectCombobox({
           disabled={disabled}
         >
           {displayText}
-          <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+          <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
@@ -173,7 +173,7 @@ export function MultiSelectCombobox({
                 >
                   <Check
                     className={cn(
-                      "mr-2 h-4 w-4",
+                      "mr-2 size-4",
                       value.includes(option.value) ? "opacity-100" : "opacity-0"
                     )}
                   />
