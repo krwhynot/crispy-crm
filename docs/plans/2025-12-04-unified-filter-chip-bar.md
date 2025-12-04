@@ -41,6 +41,11 @@
 | Cleanup misses chip hooks | Medium | Expanded Task 5.2 to all 5 feature chip hooks |
 | E2E tests scope narrow | Low | Expanded Task 6.3 to cover all 6 lists |
 | Schema lacks dynamic choices | Medium | Added callback support for `choices` property |
+| Dynamic choices break at runtime | Critical | Added runtime callback resolution + ConfigurationContext param |
+| Type export collision (FilterConfig) | High | Renamed to `ChipFilterConfig` to avoid collision with types.ts |
+| Search chips disappear | Medium | Removed `q` from SYSTEM_FILTERS, added search chip handling |
+| Identity labels regress ("Me" → name) | Low | Documented as intentional: full name is consistent UX |
+| Date ranges split into two chips | Medium | Added chip combination logic using removalGroup |
 
 ---
 
@@ -121,13 +126,14 @@ export const filterConfigSchema = z.array(z.object({
 }));
 
 export type FilterChoice = z.infer<typeof filterChoiceSchema>;
-export type FilterConfig = z.infer<typeof filterConfigSchema>[number];
+// RENAMED from FilterConfig to avoid collision with existing filters/types.ts export
+export type ChipFilterConfig = z.infer<typeof filterConfigSchema>[number];
 
 /**
  * Validate filter config at module initialization (fail-fast).
  * @throws {ZodError} if config is malformed
  */
-export function validateFilterConfig(config: unknown): FilterConfig[] {
+export function validateFilterConfig(config: unknown): ChipFilterConfig[] {
   return filterConfigSchema.parse(config);
 }
 ```
@@ -158,7 +164,7 @@ grep -q "validateFilterConfig" src/atomic-crm/filters/filterConfigSchema.ts && e
 // src/atomic-crm/filters/useFilterChipBar.ts
 import { useCallback, useMemo } from 'react';
 import { useListContext } from 'react-admin';
-import type { FilterConfig } from './filterConfigSchema';
+import type { ChipFilterConfig } from './filterConfigSchema';
 import { useOrganizationNames } from './useOrganizationNames';
 import { useSalesNames } from './useSalesNames';
 import { useTagNames } from './useTagNames';
@@ -182,9 +188,10 @@ export interface UseFilterChipBarReturn {
 
 // System filters that should never show as chips
 // Includes soft-delete variants used by various lists
-const SYSTEM_FILTERS = ['deleted_at', 'deleted_at@is', 'q'];
+// NOTE: 'q' (search) is NOT excluded - we show search chips for user clarity
+const SYSTEM_FILTERS = ['deleted_at', 'deleted_at@is'];
 
-export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBarReturn {
+export function useFilterChipBar(filterConfig: ChipFilterConfig[], context?: unknown): UseFilterChipBarReturn {
   const { filterValues, setFilters, displayedFilters } = useListContext();
 
   // Fail-fast: context must exist
@@ -245,27 +252,84 @@ export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBar
     return groups;
   }, [filterConfig]);
 
+  // Helper: resolve choices (supports both static arrays and callbacks)
+  const resolveChoices = useCallback(
+    (config: ChipFilterConfig): FilterChoice[] | undefined => {
+      if (!config.choices) return undefined;
+      // If choices is a function, call it with context (e.g., ConfigurationContext)
+      if (typeof config.choices === 'function') {
+        return config.choices(context);
+      }
+      return config.choices;
+    },
+    [context]
+  );
+
   // Transform filterValues into chip data
+  // UPDATED: Combines date range chips using removalGroup
   const chips = useMemo(() => {
     const result: ChipData[] = [];
+    const processedGroups = new Set<string>(); // Track rendered removalGroups
 
     Object.entries(filterValues).forEach(([key, value]) => {
-      // Skip system filters
+      // Skip system filters (but NOT 'q' - we want search chips)
       if (SYSTEM_FILTERS.includes(key) || value === undefined || value === null) {
         return;
       }
 
       const config = filterConfig.find((c) => c.key === key);
       const category = config?.label ?? key;
+
+      // COMBINED DATE RANGE CHIPS: If this filter has a removalGroup, combine with others in group
+      if (config?.removalGroup) {
+        // Skip if we already rendered this group
+        if (processedGroups.has(config.removalGroup)) return;
+        processedGroups.add(config.removalGroup);
+
+        // Find all configs in this removalGroup
+        const groupConfigs = filterConfig.filter((c) => c.removalGroup === config.removalGroup);
+        const groupLabels: string[] = [];
+
+        groupConfigs.forEach((gc) => {
+          const gValue = filterValues[gc.key];
+          if (gValue !== undefined && gValue !== null) {
+            const formatted = gc.formatLabel ? gc.formatLabel(gValue) : String(gValue);
+            groupLabels.push(formatted);
+          }
+        });
+
+        if (groupLabels.length > 0) {
+          // Combined label: "Jan 1 - Jan 31" or just "Jan 1" if only one endpoint
+          const combinedLabel = groupLabels.join(' – ');
+          // Use removalGroup as key so removal clears all
+          result.push({
+            key: config.removalGroup,
+            value: config.removalGroup, // Special value for grouped removal
+            label: combinedLabel,
+            category: config.label.replace(/(After|Before|@gte|@lte)/gi, '').trim() || 'Date',
+          });
+        }
+        return; // Don't process individual filter
+      }
+
       const values = Array.isArray(value) ? value : [value];
 
       values.forEach((v) => {
         let label: string;
 
+        // Special handling for search filter (q)
+        if (key === 'q') {
+          label = `"${String(v)}"`;
+          result.push({ key, value: v as string | number, label, category: 'Search' });
+          return; // Skip other label logic
+        }
+
         if (config?.formatLabel) {
           label = config.formatLabel(v);
         } else if (config?.choices) {
-          const choice = config.choices.find((c) => c.id === v);
+          // FIXED: Resolve callback choices before calling .find()
+          const resolvedChoices = resolveChoices(config);
+          const choice = resolvedChoices?.find((c) => c.id === v);
           label = choice?.name ?? String(v);
         } else if (config?.reference === 'organizations' || key === 'organization_id') {
           label = getOrganizationName(String(v));
@@ -293,10 +357,19 @@ export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBar
       // Find the config for this key to check for removal groups
       const config = filterConfig.find((c) => c.key === key);
 
-      // Get all keys to remove (supports grouped removal for date ranges, etc.)
-      const keysToRemove: string[] = config?.removalGroup
-        ? removalGroups.get(config.removalGroup) || [key]
-        : [key];
+      // UPDATED: Also check if key IS a removalGroup name (for combined chips)
+      // Combined date range chips use removalGroup as their key
+      let keysToRemove: string[];
+      if (removalGroups.has(key)) {
+        // Key is a removalGroup - remove all filters in that group
+        keysToRemove = removalGroups.get(key) || [key];
+      } else if (config?.removalGroup) {
+        // Key is an individual filter with a removalGroup
+        keysToRemove = removalGroups.get(config.removalGroup) || [key];
+      } else {
+        // Regular filter, just remove this key
+        keysToRemove = [key];
+      }
 
       const currentValue = filterValues[key];
 
@@ -446,12 +519,13 @@ grep -q "min-h-\[2.75rem\]" src/atomic-crm/filters/FilterChip.tsx && echo "PASS:
 import { useCallback, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-import type { FilterConfig } from './filterConfigSchema';
+import type { ChipFilterConfig } from './filterConfigSchema';
 import { useFilterChipBar } from './useFilterChipBar';
 import { FilterChip } from './FilterChip';
 
 interface FilterChipBarProps {
-  filterConfig: FilterConfig[];
+  filterConfig: ChipFilterConfig[];
+  context?: unknown; // For dynamic choices (e.g., ConfigurationContext)
   className?: string;
 }
 
@@ -701,7 +775,8 @@ export { useFilterChipBar } from './useFilterChipBar';
 export { useSegmentNames } from './useSegmentNames';
 export { useCategoryNames } from './useCategoryNames';
 export { validateFilterConfig } from './filterConfigSchema';
-export type { FilterConfig, FilterChoice } from './filterConfigSchema';
+export type { ChipFilterConfig, FilterChoice } from './filterConfigSchema';
+// NOTE: ChipFilterConfig is renamed to avoid collision with existing FilterConfig in types.ts
 export type { ChipData, UseFilterChipBarReturn } from './useFilterChipBar';
 ```
 
@@ -1643,7 +1718,7 @@ Existing opportunity filter configs (`src/atomic-crm/opportunities/constants/fil
 **Action:**
 1. Review both files for overlapping types
 2. **DO NOT replace existing exports if they differ** - add new types alongside
-3. If existing `FilterConfig` type has different properties, rename new type to `ChipBarFilterConfig`
+3. ✅ DONE: New type renamed to `ChipFilterConfig` to avoid collision
 4. Export BOTH types from index.ts to avoid breaking changes
 5. Add deprecation comments to old types if planning future migration
 
@@ -1688,7 +1763,8 @@ export { useSegmentNames } from "./useSegmentNames";
 
 // Schema & Types
 export { validateFilterConfig } from "./filterConfigSchema";
-export type { FilterConfig, FilterChoice } from "./filterConfigSchema";
+export type { ChipFilterConfig, FilterChoice } from "./filterConfigSchema";
+// NOTE: ChipFilterConfig renamed to avoid collision with existing FilterConfig in types.ts
 export type { ChipData, UseFilterChipBarReturn } from "./useFilterChipBar";
 
 // Utilities

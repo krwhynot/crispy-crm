@@ -180,44 +180,158 @@ Go to: Repository Settings > Code security and analysis
 
 ### Phase 2: CI/CD Hardening (This Week)
 
-1. **Enable CSP enforcement** - Change `Content-Security-Policy-Report-Only` to `Content-Security-Policy` in `vercel.json`
+#### 1. Enable CSP Enforcement
+Per [Vercel CSP Best Practices](https://vercel.com/docs/headers/security-headers#content-security-policy):
+```json
+// vercel.json - Change line 19 from:
+"key": "Content-Security-Policy-Report-Only"
+// To:
+"key": "Content-Security-Policy"
+```
 
-2. **Fix fail-fast violations** in CI:
-   ```yaml
-   # ci.yml - Remove line 41:
-   # continue-on-error: true
+#### 2. Fix Fail-Fast Violations
+```yaml
+# ci.yml - Remove line 41:
+# continue-on-error: true  <-- DELETE THIS LINE
 
-   # supabase-deploy.yml - Line 55, remove || true:
-   run: npx supabase functions deploy
-   ```
+# supabase-deploy.yml - Line 55, remove || true:
+run: npx supabase functions deploy  # Remove the || true
+```
 
-3. **Add permissions to CI workflow**:
-   ```yaml
-   jobs:
-     check:
-       permissions:
-         contents: read
-   ```
+#### 3. Add Workflow Permissions (Per [GitHub Docs](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions))
+```yaml
+# ci.yml - Add to each job:
+jobs:
+  check:
+    permissions:
+      contents: read
+    # ... rest of job
 
-4. **Restore backup workflow features**:
-   - Merge coverage reporting from `backup/ci.yml`
-   - Merge Gitleaks scanning from `backup/security.yml`
+  test:
+    permissions:
+      contents: read
+    # ... rest of job
+```
+
+#### 4. Add Artifact Attestations (Per [GitHub Supply Chain Security](https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations))
+```yaml
+# ci.yml - Add after build step:
+jobs:
+  check:
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+    steps:
+      # ... existing build steps ...
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: 'dist/**/*'
+```
+
+#### 5. Restore Backup Workflow Features
+- Merge coverage reporting from `backup/ci.yml`
+- Merge Gitleaks scanning from `backup/security.yml`
 
 ### Phase 3: Production Readiness (Before Launch)
 
-1. Add E2E tests to CI pipeline
-2. Create `.github/dependabot.yml`
-3. Create `.github/CODEOWNERS`
-4. Enable Vercel Speed Insights
-5. Create production launch checklist
-6. Create incident runbooks
+#### 1. Add E2E Tests to CI Pipeline
+```yaml
+# ci.yml - Add new job:
+  e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npm run test:e2e
+```
 
-### Phase 4: Git History Cleanup (If Public Repo)
+#### 2. Create CODEOWNERS (Per [GitHub Security Guidance](https://github.com/github/docs/blob/main/content/actions/reference/security/secure-use.md))
+```bash
+# Create .github/CODEOWNERS
+cat > .github/CODEOWNERS << 'EOF'
+# Security-sensitive files require security team review
+/.github/workflows/ @your-username
+/supabase/migrations/ @your-username
+/.env* @your-username
+/src/atomic-crm/providers/ @your-username
+EOF
+```
+
+#### 3. Create Dependabot Configuration (Per [GitHub Dependabot Docs](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuring-dependabot-version-updates))
+```yaml
+# Create .github/dependabot.yml
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 10
+    groups:
+      production-dependencies:
+        dependency-type: "production"
+      development-dependencies:
+        dependency-type: "development"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+```
+
+#### 4. Enable Vercel Speed Insights
+```json
+// Add to vercel.json:
+{
+  "analytics": { "enabled": true },
+  "speedInsights": { "enabled": true }
+}
+```
+
+#### 5. Create Production Launch Checklist
+- Create `docs/checklists/production-launch.md`
+
+#### 6. Create Incident Runbooks
+- Create `docs/runbooks/credential-rotation.md`
+- Create `docs/runbooks/database-rollback.md`
+
+### Phase 4: Git History Cleanup (PUBLIC REPO - REQUIRED)
+
+> **Per [git-filter-repo documentation](https://github.com/newren/git-filter-repo):** "git-filter-repo is recommended over BFG Repo-Cleaner and filter-branch (which is deprecated)."
 
 ```bash
-# Use BFG Repo-Cleaner to purge secrets from history
-bfg --delete-files .env.cloud
-bfg --delete-files .env.local
+# Install git-filter-repo (recommended tool)
+pip install git-filter-repo
+
+# Clone a fresh copy (required for filter-repo)
+git clone --mirror git@github.com:YOUR_ORG/crispy-crm.git crispy-crm-cleanup
+cd crispy-crm-cleanup
+
+# Remove sensitive files from ALL history
+git filter-repo --path .env --path .env.cloud --path .env.local --path .env.memory-optimized --invert-paths
+
+# Force push to remote (coordinate with team!)
+git push origin --force --all
+git push origin --force --tags
+
+# All collaborators must re-clone the repository
+# Old clones will have the secrets in their local history
+```
+
+**Alternative: BFG Repo-Cleaner** (if git-filter-repo unavailable)
+```bash
+java -jar bfg.jar --delete-files .env.cloud crispy-crm.git
+java -jar bfg.jar --delete-files .env.local crispy-crm.git
 git reflog expire --expire=now --all
 git gc --prune=now --aggressive
 git push origin --force --all
@@ -238,12 +352,38 @@ git push origin --force --all
 
 ---
 
-## References
+## Industry Standards References
 
-- **Standards Document:** `docs/standards/deployment-best-practices.md`
-- **Vercel Production Checklist:** https://vercel.com/docs/production-checklist
-- **Supabase Production Checklist:** https://supabase.com/docs/guides/deployment/going-into-prod
-- **GitHub Secrets Best Practices:** https://docs.github.com/en/rest/authentication/keeping-your-api-credentials-secure
+### Credential & Secret Management
+| Standard | Source | Key Requirement |
+|----------|--------|-----------------|
+| Never commit secrets | [GitHub Credential Security](https://docs.github.com/en/rest/authentication/keeping-your-api-credentials-secure) | "Don't push unencrypted authentication credentials to any repository, even private" |
+| Compromised key response | [Supabase Key Compromise](https://supabase.com/docs/guides/api/api-keys#what-to-do-if-a-secret-key-or-servicerole-has-been-leaked-or-compromised) | "Generate new → Replace everywhere → Delete old" |
+| Secret rotation | [Infisical Secrets Rotation](https://infisical.com/docs/documentation/platform/secrets-mgmt/concepts/secrets-rotation) | 90-day rotation for API keys |
+| Git history cleanup | [git-filter-repo](https://github.com/newren/git-filter-repo) | Recommended over BFG and filter-branch |
+
+### GitHub Actions Security
+| Standard | Source | Key Requirement |
+|----------|--------|-----------------|
+| Workflow permissions | [GitHub Actions Permissions](https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#permissions) | "Only allow minimum required access" |
+| Artifact attestations | [GitHub Artifact Attestations](https://docs.github.com/en/actions/how-tos/secure-your-work/use-artifact-attestations/use-artifact-attestations) | SLSA supply chain provenance |
+| CODEOWNERS | [GitHub CODEOWNERS Security](https://github.com/github/docs/blob/main/content/actions/reference/security/secure-use.md) | "Add `.github/workflows` to CODEOWNERS" |
+| Dependabot | [Dependabot Configuration](https://docs.github.com/en/code-security/dependabot/dependabot-version-updates/configuring-dependabot-version-updates) | Automated security patches |
+
+### Vercel & Deployment
+| Standard | Source | Key Requirement |
+|----------|--------|-----------------|
+| CSP enforcement | [Vercel CSP Best Practices](https://vercel.com/docs/headers/security-headers#content-security-policy) | "Change to enforcing mode once policy tested" |
+| Production checklist | [Vercel Production Checklist](https://vercel.com/docs/production-checklist) | Pre-launch security review |
+
+### Supabase
+| Standard | Source | Key Requirement |
+|----------|--------|-----------------|
+| Production checklist | [Supabase Going to Prod](https://supabase.com/docs/guides/deployment/going-into-prod) | RLS, SSL, network restrictions |
+| API key types | [Supabase API Keys](https://supabase.com/docs/guides/api/api-keys) | anon (safe) vs service_role (NEVER expose) |
+
+### Project Standards
+- **Internal Standards:** `docs/standards/deployment-best-practices.md`
 
 ---
 
