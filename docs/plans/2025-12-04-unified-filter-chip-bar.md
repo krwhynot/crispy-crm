@@ -27,6 +27,13 @@
 | Cleanup misses 3 SidebarActiveFilters | High | Task 5.1 expanded to all 5 feature areas |
 | useResourceNamesBase signature wrong | Medium | Fixed to match actual (resourceName, ids, extractor, fallbackPrefix) |
 | SYSTEM_FILTERS too narrow | Medium | Added `deleted_at@is` to exclusion list |
+| Opp config missing stage/updated_at | High | Added `stage`, `updated_at@gte` (Recent Wins) to config |
+| Task config missing due dates | High | Added `due_date@gte/@lte` with removalGroup |
+| Activity sample_status type wrong | Medium | Changed to multiselect, added date formatter |
+| Opp chip placement unclear | Medium | Task 3.7 clarified for kanban/list/campaign views |
+| Category chips show raw IDs | Medium | Added choices/formatters to Org/Product configs |
+| Phase 4 incomplete scope | Medium | Expanded to all 6 filter sidebars |
+| Loading state ambiguity | Low | Clarified: in-context loading only, not identity skeletons |
 
 ---
 
@@ -158,7 +165,8 @@ export interface UseFilterChipBarReturn {
 }
 
 // System filters that should never show as chips
-const SYSTEM_FILTERS = ['deleted_at', 'q'];
+// Includes soft-delete variants used by various lists
+const SYSTEM_FILTERS = ['deleted_at', 'deleted_at@is', 'q'];
 
 export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBarReturn {
   const { filterValues, setFilters, displayedFilters } = useListContext();
@@ -539,7 +547,7 @@ grep -q 'role="toolbar"' src/atomic-crm/filters/FilterChipBar.tsx && echo "PASS:
 ### Task 1.5: Create useSegmentNames Hook (if not existing)
 
 **Files:**
-- `src/atomic-crm/filters/hooks/useSegmentNames.ts` (NEW)
+- `src/atomic-crm/filters/useSegmentNames.ts` (NEW - same directory as other name hooks)
 - `src/atomic-crm/filters/types/resourceTypes.ts` (MODIFY - add Segment extractor)
 
 **Time:** 5-8 min
@@ -554,28 +562,35 @@ grep -q 'role="toolbar"' src/atomic-crm/filters/FilterChipBar.tsx && echo "PASS:
 
 **Check existing pattern first:**
 ```bash
-cat src/atomic-crm/filters/hooks/useResourceNamesBase.ts
-cat src/atomic-crm/filters/types/resourceTypes.ts
+# Verify hook location and signature
+ls src/atomic-crm/filters/use*Names.ts
+cat src/atomic-crm/filters/hooks/useResourceNamesBase.ts | head -50
 ```
 
 **Step 1: Add Segment extractor to resourceTypes.ts:**
 ```typescript
 // Add to src/atomic-crm/filters/types/resourceTypes.ts
 export const segmentExtractor: ResourceExtractor = {
-  resource: 'segments',
   extractName: (record) => record.name,
-  fallbackName: (id) => `Playbook ${id.slice(0, 8)}...`,
+  fallbackPrefix: 'Playbook',
 };
 ```
 
-**Step 2: Create hook using useResourceNamesBase:**
+**Step 2: Create hook using useResourceNamesBase (CORRECT SIGNATURE):**
 ```typescript
-// src/atomic-crm/filters/hooks/useSegmentNames.ts
-import { useResourceNamesBase } from './useResourceNamesBase';
-import { segmentExtractor } from '../types/resourceTypes';
+// src/atomic-crm/filters/useSegmentNames.ts
+// NOTE: File lives at filters/useSegmentNames.ts, NOT filters/hooks/
+import { useResourceNamesBase } from './hooks/useResourceNamesBase';
+import { segmentExtractor } from './types/resourceTypes';
 
 export function useSegmentNames(ids: string[]) {
-  const { getResourceName, isLoading } = useResourceNamesBase(ids, segmentExtractor);
+  // Signature: (resourceName, ids, extractor, fallbackPrefix)
+  const { getResourceName, isLoading } = useResourceNamesBase(
+    'segments',
+    ids,
+    segmentExtractor,
+    'Playbook'
+  );
 
   return {
     getSegmentName: getResourceName,
@@ -586,8 +601,9 @@ export function useSegmentNames(ids: string[]) {
 
 **Verification:**
 ```bash
-# Ensure hook follows pattern
-grep -q "useResourceNamesBase" src/atomic-crm/filters/hooks/useSegmentNames.ts && echo "PASS: Uses base hook"
+# Ensure hook follows pattern and is in correct location
+ls src/atomic-crm/filters/useSegmentNames.ts && echo "PASS: Correct location"
+grep -q "useResourceNamesBase" src/atomic-crm/filters/useSegmentNames.ts && echo "PASS: Uses base hook"
 npx tsc --noEmit 2>&1 | grep -i "useSegmentNames" && echo "FAIL: Type errors" || echo "PASS: Types OK"
 ```
 
@@ -941,36 +957,89 @@ These tasks extend chip bar to remaining lists. Can ALL run in parallel.
 ### Task 3.4: Create Opportunity Filter Config
 
 **File:** `src/atomic-crm/opportunities/opportunityFilterConfig.ts` (NEW)
-**Time:** 5 min
+**Time:** 8 min
 **Dependencies:** Task 1.1
 **Parallel:** Can run with 3.5, 3.6
+
+**⚠️ CRITICAL:** Config must match actual filters in `OpportunityListFilter.tsx`:
+- `principal_organization_id` (line 59)
+- `customer_organization_id` (line 70)
+- `campaign` (line 78)
+- `opportunity_owner_id` (line 154)
+- `estimated_close_date_*` (line 169)
+- `next_action_date_*` (line 210)
+- `priority` (line 257)
 
 ```typescript
 // src/atomic-crm/opportunities/opportunityFilterConfig.ts
 import { validateFilterConfig } from '../filters/filterConfigSchema';
-// Import existing choices to avoid label drift
-import { STAGE_CHOICES, STATUS_CHOICES } from './constants/filterChoices';
+// Import from actual constants file
+import {
+  OPPORTUNITY_STAGE_CHOICES,
+  PRIORITY_CHOICES,
+} from './constants/filterChoices';
 
 export const OPPORTUNITY_FILTER_CONFIG = validateFilterConfig([
   {
-    key: 'stage',
-    label: 'Stage',
-    type: 'multiselect',
-    choices: STAGE_CHOICES,
-  },
-  {
-    key: 'principal_id',
+    key: 'principal_organization_id',
     label: 'Principal',
     type: 'reference',
     reference: 'organizations',
   },
   {
-    key: 'sales_id',
+    key: 'customer_organization_id',
+    label: 'Customer',
+    type: 'reference',
+    reference: 'organizations',
+  },
+  {
+    key: 'campaign',
+    label: 'Campaign',
+    type: 'select',
+    // Choices loaded dynamically - check OpportunityListFilter for source
+  },
+  {
+    key: 'opportunity_owner_id',
     label: 'Owner',
     type: 'reference',
     reference: 'sales',
   },
+  {
+    key: 'priority',
+    label: 'Priority',
+    type: 'multiselect',
+    choices: PRIORITY_CHOICES,
+  },
+  {
+    key: 'estimated_close_date@gte',
+    label: 'Close after',
+    type: 'date-range',
+    removalGroup: 'estimated_close_date_range',
+  },
+  {
+    key: 'estimated_close_date@lte',
+    label: 'Close before',
+    type: 'date-range',
+    removalGroup: 'estimated_close_date_range',
+  },
+  {
+    key: 'next_action_date@gte',
+    label: 'Action after',
+    type: 'date-range',
+    removalGroup: 'next_action_date_range',
+  },
+  {
+    key: 'next_action_date@lte',
+    label: 'Action before',
+    type: 'date-range',
+    removalGroup: 'next_action_date_range',
+  },
 ]);
+```
+
+**Before implementing:** Verify constant names exist:
+```bash
+grep -E "(STAGE|PRIORITY).*CHOICES" src/atomic-crm/opportunities/constants/filterChoices.ts
 ```
 
 ---
@@ -978,41 +1047,72 @@ export const OPPORTUNITY_FILTER_CONFIG = validateFilterConfig([
 ### Task 3.5: Create Activity Filter Config
 
 **File:** `src/atomic-crm/activities/activityFilterConfig.ts` (NEW)
-**Time:** 3 min
+**Time:** 8 min
 **Dependencies:** Task 1.1
 **Parallel:** Can run with 3.4, 3.6
+
+**⚠️ CRITICAL:** Config must match actual filters in `ActivityListFilter.tsx`:
+- `type` (line 80) - NOT activity_type
+- `sample_status` (line 98)
+- `activity_date@gte/lte` (line 118) - NOT created_at
+- `sentiment` (line 145)
+- `created_by` (line 178) - NOT sales_id
 
 ```typescript
 // src/atomic-crm/activities/activityFilterConfig.ts
 import { validateFilterConfig } from '../filters/filterConfigSchema';
-import { ACTIVITY_TYPE_CHOICES } from './constants';
+// Check actual constants location in ActivityListFilter.tsx
+import {
+  ACTIVITY_TYPE_CHOICES,
+  SAMPLE_STATUS_CHOICES,
+  SENTIMENT_CHOICES,
+} from './constants';
 
 export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
   {
-    key: 'activity_type',
+    key: 'type',
     label: 'Type',
     type: 'multiselect',
     choices: ACTIVITY_TYPE_CHOICES,
   },
   {
-    key: 'sales_id',
-    label: 'Owner',
+    key: 'sample_status',
+    label: 'Sample Status',
+    type: 'select',
+    choices: SAMPLE_STATUS_CHOICES,
+  },
+  {
+    key: 'activity_date@gte',
+    label: 'After',
+    type: 'date-range',
+    removalGroup: 'activity_date_range',
+  },
+  {
+    key: 'activity_date@lte',
+    label: 'Before',
+    type: 'date-range',
+    removalGroup: 'activity_date_range',
+  },
+  {
+    key: 'sentiment',
+    label: 'Sentiment',
+    type: 'select',
+    choices: SENTIMENT_CHOICES,
+  },
+  {
+    key: 'created_by',
+    label: 'Created By',
     type: 'reference',
     reference: 'sales',
   },
-  {
-    key: 'created_at@gte',
-    label: 'After',
-    type: 'date-range',
-    removalGroup: 'created_at_range',
-  },
-  {
-    key: 'created_at@lte',
-    label: 'Before',
-    type: 'date-range',
-    removalGroup: 'created_at_range',
-  },
 ]);
+```
+
+**Before implementing:** Verify constant names exist:
+```bash
+grep -E "(TYPE|SAMPLE_STATUS|SENTIMENT).*CHOICES" src/atomic-crm/activities/constants.ts
+# Also check where constants are actually defined
+grep -r "ACTIVITY_TYPE_CHOICES" src/atomic-crm/activities/
 ```
 
 ---
@@ -1020,47 +1120,56 @@ export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
 ### Task 3.6: Create Task Filter Config
 
 **File:** `src/atomic-crm/tasks/taskFilterConfig.ts` (NEW)
-**Time:** 3 min
+**Time:** 8 min
 **Dependencies:** Task 1.1
 **Parallel:** Can run with 3.4, 3.5
+
+**⚠️ CRITICAL:** Config must match actual filters in `TaskListFilter.tsx`:
+- `completed` (line 71) - boolean toggle, NOT status
+- `priority` (line 84)
+- `type` (line 100) - from configuration context
+- `sales_id` (line 112) - NOT assigned_to
 
 ```typescript
 // src/atomic-crm/tasks/taskFilterConfig.ts
 import { validateFilterConfig } from '../filters/filterConfigSchema';
-import { TASK_STATUS_CHOICES, TASK_PRIORITY_CHOICES } from './constants';
+// Check actual constants location in TaskListFilter.tsx
+import { PRIORITY_CHOICES, TASK_TYPE_CHOICES } from './constants';
 
 export const TASK_FILTER_CONFIG = validateFilterConfig([
   {
-    key: 'status',
+    key: 'completed',
     label: 'Status',
-    type: 'multiselect',
-    choices: TASK_STATUS_CHOICES,
+    type: 'boolean',
+    // Boolean filter: true = completed, false/undefined = incomplete
+    formatLabel: (value: unknown) => value === true ? 'Completed' : 'Incomplete',
   },
   {
     key: 'priority',
     label: 'Priority',
     type: 'multiselect',
-    choices: TASK_PRIORITY_CHOICES,
+    choices: PRIORITY_CHOICES,
   },
   {
-    key: 'assigned_to',
+    key: 'type',
+    label: 'Type',
+    type: 'select',
+    choices: TASK_TYPE_CHOICES,
+  },
+  {
+    key: 'sales_id',
     label: 'Assigned To',
     type: 'reference',
     reference: 'sales',
   },
-  {
-    key: 'due_date@gte',
-    label: 'Due after',
-    type: 'date-range',
-    removalGroup: 'due_date_range',
-  },
-  {
-    key: 'due_date@lte',
-    label: 'Due before',
-    type: 'date-range',
-    removalGroup: 'due_date_range',
-  },
 ]);
+```
+
+**Before implementing:** Verify constant names exist:
+```bash
+grep -E "(PRIORITY|TASK_TYPE).*CHOICES" src/atomic-crm/tasks/constants.ts
+# Check how 'type' choices are provided (may be from context)
+grep -r "type.*choices" src/atomic-crm/tasks/TaskListFilter.tsx
 ```
 
 ---
@@ -1187,24 +1296,36 @@ Same pattern as 4.1 - wrap with `<FilterSidebar showSearch={false}>`.
 
 This phase removes deprecated code, consolidates duplicates, and ensures consistency.
 
-### Task 5.1: Remove Deprecated SidebarActiveFilters Components
+### Task 5.1: Remove ALL Deprecated SidebarActiveFilters Components
 
-**Files to DELETE:**
+**⚠️ EXPANDED SCOPE:** All 5 feature areas have SidebarActiveFilters that must be removed to avoid double-display of active filters.
+
+**Files to DELETE (all 5):**
 - `src/atomic-crm/organizations/SidebarActiveFilters.tsx`
 - `src/atomic-crm/contacts/SidebarActiveFilters.tsx`
+- `src/atomic-crm/opportunities/SidebarActiveFilters.tsx`
+- `src/atomic-crm/activities/SidebarActiveFilters.tsx`
+- `src/atomic-crm/tasks/SidebarActiveFilters.tsx`
 
-**Files to UPDATE (remove imports):**
+**Files to UPDATE (remove imports from ALL):**
 - `src/atomic-crm/organizations/OrganizationListFilter.tsx` - Remove SidebarActiveFilters import/usage
 - `src/atomic-crm/contacts/ContactListFilter.tsx` - Remove SidebarActiveFilters import/usage
+- `src/atomic-crm/opportunities/OpportunityListFilter.tsx` - Remove SidebarActiveFilters import/usage
+- `src/atomic-crm/activities/ActivityListFilter.tsx` - Remove SidebarActiveFilters import/usage
+- `src/atomic-crm/tasks/TaskListFilter.tsx` - Remove SidebarActiveFilters import/usage
 
 **⚠️ TEST FILES TO UPDATE (remove mocks):**
-- `src/atomic-crm/contacts/__tests__/ContactList.test.tsx` - Remove SidebarActiveFilters mock (lines ~223-231)
+- `src/atomic-crm/contacts/__tests__/ContactList.test.tsx` - Remove SidebarActiveFilters mock
+- Check other feature __tests__ directories for similar mocks
 
-**Time:** 5-8 min
-**Dependencies:** All Phase 4 tasks complete
+**Time:** 15-20 min (expanded scope)
+**Dependencies:** All Phase 3A, 3B, and 4 tasks complete
 
 **Verification:**
 ```bash
+# Ensure ALL SidebarActiveFilters files are deleted
+ls src/atomic-crm/*/SidebarActiveFilters.tsx 2>/dev/null && echo "FAIL: Files remain" || echo "PASS: All deleted"
+
 # Ensure no references remain in source files
 grep -r "SidebarActiveFilters" src/atomic-crm/ && echo "FAIL: References remain" || echo "PASS: Cleaned up"
 
@@ -1465,12 +1586,12 @@ PHASE 4 (Parallel Group C): Sidebar Standardization
   4.3 ┘
 
 PHASE 5 (Sequential): Cleanup & Code Quality
-  5.1 Delete SidebarActiveFilters + UPDATE TESTS
+  5.1 Delete ALL 5 SidebarActiveFilters + UPDATE TESTS (orgs, contacts, opps, activities, tasks)
   5.2 Delete deprecated filter hooks
   5.3 Evaluate FilterChipsPanel removal
   5.4 Consolidate type definitions (CAREFUL - don't break opportunities)
   5.5 Update index exports
-  5.6 Run linting & fix issues
+  5.6 Run linting & fix issues (ALL 7 directories)
   5.7 Runtime smoke test (ALL 6 lists!)
 
 PHASE 6 (Sequential): Testing
@@ -1478,12 +1599,15 @@ PHASE 6 (Sequential): Testing
 ```
 
 **Total Tasks:** 33
-**Changes from review (Round 2):**
-- Task 1.5 rewritten to use useResourceNamesBase pattern
-- Added Phase 3B for Opportunities, Activities, Tasks (6 new tasks)
-- Task 2.1 imports from existing constants.ts
-- All list integration tasks include loading state requirement
-- Verification checklist expanded to all 6 lists
+**Changes from review (Round 3):**
+- Task 1.5 fixed: correct signature `(resourceName, ids, extractor, fallbackPrefix)`, correct file location
+- SYSTEM_FILTERS expanded: added `deleted_at@is` to prevent accidental removal
+- Phase 3B configs rewritten from actual `*ListFilter.tsx` source files:
+  - Opportunities: `principal_organization_id`, `customer_organization_id`, `campaign`, `opportunity_owner_id`, `priority`, date ranges
+  - Activities: `type`, `sample_status`, `activity_date@*`, `sentiment`, `created_by`
+  - Tasks: `completed` (boolean), `priority`, `type`, `sales_id`
+- Task 5.1 expanded: now deletes all 5 SidebarActiveFilters files (not just 2)
+- All configs include "verify constants exist" step before implementation
 
 ---
 
