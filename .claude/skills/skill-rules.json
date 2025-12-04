@@ -94,7 +94,7 @@
       "type": "guardrail",
       "enforcement": "hybrid",
       "priority": "critical",
-      "description": "Engineering Constitution enforcement - BLOCKS anti-patterns (retry logic, circuit breakers), SUGGESTS best practices (fail-fast, Zod validation, form defaults from schema)",
+      "description": "Engineering Constitution enforcement - BLOCKS anti-patterns (retry logic, circuit breakers), SUGGESTS best practices (fail-fast, Zod validation, form defaults from schema). NEW: Zod security (strictObject, string limits, coercion), form performance (onSubmit/onBlur mode, useWatch).",
       "promptTriggers": {
         "keywords": [
           "implement",
@@ -115,7 +115,25 @@
           "unified provider",
           "react admin",
           "interface",
-          "type"
+          "type",
+          "strictObject",
+          "strict object",
+          "string limit",
+          "max length",
+          "coerce",
+          "coercion",
+          "allowlist",
+          "enum",
+          "useWatch",
+          "watch",
+          "onSubmit",
+          "onBlur",
+          "onChange",
+          "validation mode",
+          "form mode",
+          "mass assignment",
+          "DoS",
+          "OWASP"
         ],
         "intentPatterns": [
           "(implement|create|build|add).*?(feature|form|validation|migration)",
@@ -123,7 +141,12 @@
           "(create|add|modify).*?(schema|validation|zod)",
           "(set|define|add).*?(default|form)",
           "how.*?(validate|handle error|create form)",
-          "(database|db|migration).*?(change|update|create)"
+          "(database|db|migration).*?(change|update|create)",
+          "(add|set|use).*?(string|length).*?(limit|max)",
+          "(use|create).*?strict.*?object",
+          "(form|input).*?(coerce|coercion|number|date)",
+          "(watch|useWatch).*?(form|value|field)",
+          "(validation|form).*?mode"
         ]
       },
       "fileTriggers": {
@@ -148,7 +171,14 @@
           "validate=\\{",
           "\\.safeParse\\(",
           "z\\.object\\(",
-          "import.*from.*react-admin"
+          "import.*from.*react-admin",
+          "z\\.strictObject\\(",
+          "z\\.coerce\\.",
+          "\\.max\\(\\d+\\)",
+          "z\\.enum\\(",
+          "useWatch\\(",
+          "mode:\\s*['\"]onChange['\"]",
+          "watch\\(\\)"
         ]
       },
       "blockPatterns": {
@@ -188,7 +218,7 @@
       "type": "guardrail",
       "enforcement": "suggest",
       "priority": "high",
-      "description": "UI/UX design principles, UX laws (Jakob's, Hick's, Fitts's), accessibility, color theory, cognitive load, touch targets, decision matrix, Sienna protocol",
+      "description": "UI/UX design principles, UX laws (Jakob's, Hick's, Fitts's), accessibility, color theory, cognitive load, touch targets. NEW: Form accessibility (aria-invalid, role='alert', aria-describedby, focus management).",
       "promptTriggers": {
         "keywords": [
           "design",
@@ -225,7 +255,17 @@
           "elevation",
           "feedback",
           "loading state",
-          "toast"
+          "toast",
+          "aria-invalid",
+          "aria-describedby",
+          "role alert",
+          "screen reader",
+          "form error",
+          "validation error",
+          "error message",
+          "focus management",
+          "label",
+          "htmlFor"
         ],
         "intentPatterns": [
           "(create|build|design|implement).*?(component|ui|interface|button|form|layout)",
@@ -235,7 +275,10 @@
           "(style|styling|css|tailwind).*",
           "how.*?(look|appear|design|accessible)",
           "(tablet|ipad|mobile|responsive).*?(design|layout|view)",
-          "what.*?(color|spacing|size|font)"
+          "what.*?(color|spacing|size|font)",
+          "(form|input|field).*?(accessibility|accessible|aria|screen reader)",
+          "(error|validation).*?(message|display|announce|accessible)",
+          "(focus|keyboard).*?(management|navigation|trap)"
         ]
       },
       "fileTriggers": {
@@ -442,7 +485,7 @@
       "type": "domain",
       "enforcement": "suggest",
       "priority": "high",
-      "description": "Defense-in-depth validation pattern - validates data at EVERY layer: API boundary (Zod), form state (schema defaults), database (RLS/soft-delete), and logging. Makes bugs structurally impossible.",
+      "description": "Defense-in-depth validation pattern - validates data at EVERY layer: API boundary (Zod with strictObject, .max() limits, coercion), form state (schema defaults, useWatch), database (RLS/soft-delete), and logging. Makes bugs structurally impossible.",
       "promptTriggers": {
         "keywords": [
           "validation",
@@ -461,7 +504,17 @@
           "data corruption",
           "sanitize",
           "boundary",
-          "checkpoint"
+          "checkpoint",
+          "strictObject",
+          "string limit",
+          "max length",
+          "coerce",
+          "coercion",
+          "mass assignment",
+          "DoS",
+          "OWASP",
+          "allowlist",
+          "denylist"
         ],
         "intentPatterns": [
           "(validate|check|verify).*?(data|input|form|request)",
@@ -474,7 +527,9 @@
           "(multiple|multi).*?layer.*?(validation|check)",
           "(zod|schema).*?(validate|boundary|api)",
           "(rls|row level security).*?(policy|check)",
-          "(soft|hard).*?delete"
+          "(soft|hard).*?delete",
+          "(prevent|avoid).*?(mass assignment|DoS|injection)",
+          "(add|use).*?(strict|length limit|coercion)"
         ]
       },
       "fileTriggers": {
