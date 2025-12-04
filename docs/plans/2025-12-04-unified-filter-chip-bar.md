@@ -7,6 +7,25 @@
 
 ---
 
+## ⚠️ Review Notes (2025-12-04)
+
+**Issues identified and fixed:**
+
+| Issue | Severity | Fix Applied |
+|-------|----------|-------------|
+| Missing segment name resolution | High | Added `useSegmentNames` hook (Task 1.5) |
+| Date range removal changes behavior | High | Added `removalGroup` schema field for grouped removal |
+| Type schema breaks opportunities | Breaking | Expanded enum to include `search`, `toggle`, `boolean` |
+| Double search input in sidebars | Medium | All Phase 4 tasks use `showSearch={false}` |
+| Test mocks not cleaned up | Build-breaking | Task 5.1 now includes test file cleanup |
+| Type consolidation may break code | Breaking | Task 5.4 marked CAREFUL with compatibility guidance |
+| useSegmentNames wrong hook pattern | High | Task 1.5 rewritten to use useResourceNamesBase |
+| Scope gap (Opps/Activities/Tasks) | High | Added Phase 3B tasks + explicit scope note |
+| Task 2.1 redefines constants | Medium | Updated to import from existing constants.ts |
+| Chip bar missing in loading states | Medium | Task 3.x updated to mount during loading |
+
+---
+
 ## Overview
 
 This plan implements a unified filter UX across all CRM list views by:
@@ -104,6 +123,7 @@ import type { FilterConfig } from './filterConfigSchema';
 import { useOrganizationNames } from './useOrganizationNames';
 import { useSalesNames } from './useSalesNames';
 import { useTagNames } from './useTagNames';
+import { useSegmentNames } from './useSegmentNames';
 
 export interface ChipData {
   key: string;
@@ -136,10 +156,11 @@ export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBar
 
   // Extract reference IDs for lazy loading names
   const referenceIds = useMemo(() => {
-    const ids: { organizations: string[]; sales: string[]; tags: string[] } = {
+    const ids: { organizations: string[]; sales: string[]; tags: string[]; segments: string[] } = {
       organizations: [],
       sales: [],
       tags: [],
+      segments: [],
     };
 
     filterConfig.forEach((config) => {
@@ -154,6 +175,8 @@ export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBar
         ids.sales.push(...values.map(String));
       } else if (config.reference === 'tags' || config.key === 'tags') {
         ids.tags.push(...values.map(String));
+      } else if (config.reference === 'segments' || config.key === 'segment_id') {
+        ids.segments.push(...values.map(String));
       }
     });
 
@@ -163,6 +186,19 @@ export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBar
   const { getOrganizationName } = useOrganizationNames(referenceIds.organizations);
   const { getSalesName } = useSalesNames(referenceIds.sales);
   const { getTagName } = useTagNames(referenceIds.tags);
+  const { getSegmentName } = useSegmentNames(referenceIds.segments);
+
+  // Build removal groups map from config
+  const removalGroups = useMemo(() => {
+    const groups = new Map<string, string[]>();
+    filterConfig.forEach((config) => {
+      if (config.removalGroup) {
+        const existing = groups.get(config.removalGroup) || [];
+        groups.set(config.removalGroup, [...existing, config.key]);
+      }
+    });
+    return groups;
+  }, [filterConfig]);
 
   // Transform filterValues into chip data
   const chips = useMemo(() => {
@@ -192,6 +228,8 @@ export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBar
           label = getSalesName(String(v));
         } else if (config?.reference === 'tags' || key === 'tags') {
           label = getTagName(String(v));
+        } else if (config?.reference === 'segments' || key === 'segment_id') {
+          label = getSegmentName(String(v));
         } else {
           label = String(v);
         }
@@ -201,24 +239,37 @@ export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBar
     });
 
     return result;
-  }, [filterValues, filterConfig, getOrganizationName, getSalesName, getTagName]);
+  }, [filterValues, filterConfig, getOrganizationName, getSalesName, getTagName, getSegmentName]);
 
   const removeFilter = useCallback(
     (key: string, value?: string | number) => {
+      // Find the config for this key to check for removal groups
+      const config = filterConfig.find((c) => c.key === key);
+
+      // Get all keys to remove (supports grouped removal for date ranges, etc.)
+      const keysToRemove: string[] = config?.removalGroup
+        ? removalGroups.get(config.removalGroup) || [key]
+        : [key];
+
       const currentValue = filterValues[key];
 
-      if (Array.isArray(currentValue) && value !== undefined) {
+      if (Array.isArray(currentValue) && value !== undefined && keysToRemove.length === 1) {
+        // Single key, array value - remove just that value
         const newArray = currentValue.filter((v) => v !== value);
         setFilters(
           { ...filterValues, [key]: newArray.length ? newArray : undefined },
           displayedFilters
         );
       } else {
-        const { [key]: _, ...rest } = filterValues;
-        setFilters(rest, displayedFilters);
+        // Remove all keys in the group
+        const newFilters = { ...filterValues };
+        keysToRemove.forEach((k) => {
+          delete newFilters[k];
+        });
+        setFilters(newFilters, displayedFilters);
       }
     },
-    [filterValues, setFilters, displayedFilters]
+    [filterValues, setFilters, displayedFilters, filterConfig, removalGroups]
   );
 
   const clearAllFilters = useCallback(() => {
@@ -468,7 +519,47 @@ grep -q 'role="toolbar"' src/atomic-crm/filters/FilterChipBar.tsx && echo "PASS:
 
 ---
 
-### Task 1.5: Create FilterSidebar Wrapper
+### Task 1.5: Create useSegmentNames Hook (if not existing)
+
+**File:** `src/atomic-crm/filters/useSegmentNames.ts` (NEW or VERIFY EXISTS)
+**Time:** 3-5 min
+**Dependencies:** None
+
+**Purpose:** Lazy-load segment names for chip display.
+
+**Check first:**
+```bash
+ls src/atomic-crm/filters/useSegmentNames.ts 2>/dev/null && echo "EXISTS - skip creation" || echo "NEEDS CREATION"
+```
+
+**If creation needed:**
+```typescript
+// src/atomic-crm/filters/useSegmentNames.ts
+import { useGetManyReference } from 'react-admin';
+import { useMemo } from 'react';
+
+export function useSegmentNames(ids: string[]) {
+  const { data: segments } = useGetManyReference(
+    'segments',
+    { ids, target: 'id', pagination: { page: 1, perPage: 100 } },
+    { enabled: ids.length > 0 }
+  );
+
+  const nameMap = useMemo(() => {
+    const map = new Map<string, string>();
+    segments?.forEach((s) => map.set(s.id, s.name));
+    return map;
+  }, [segments]);
+
+  const getSegmentName = (id: string) => nameMap.get(id) ?? `Playbook ${id.slice(0, 8)}...`;
+
+  return { getSegmentName };
+}
+```
+
+---
+
+### Task 1.6: Create FilterSidebar Wrapper
 
 **File:** `src/atomic-crm/filters/FilterSidebar.tsx` (NEW)
 **Time:** 3 min
@@ -519,11 +610,11 @@ grep -q "FilterSidebar" src/atomic-crm/filters/FilterSidebar.tsx && echo "PASS"
 
 ---
 
-### Task 1.6: Update Filter Exports
+### Task 1.7: Update Filter Exports
 
 **File:** `src/atomic-crm/filters/index.ts` (MODIFY)
 **Time:** 2 min
-**Dependencies:** Tasks 1.1-1.5
+**Dependencies:** Tasks 1.1-1.6
 
 **Purpose:** Export new components from the filters module.
 
@@ -535,6 +626,7 @@ export { FilterChipBar } from './FilterChipBar';
 export { FilterChip } from './FilterChip';
 export { FilterSidebar } from './FilterSidebar';
 export { useFilterChipBar } from './useFilterChipBar';
+export { useSegmentNames } from './useSegmentNames';
 export { validateFilterConfig } from './filterConfigSchema';
 export type { FilterConfig, FilterChoice } from './filterConfigSchema';
 export type { ChipData, UseFilterChipBarReturn } from './useFilterChipBar';
@@ -647,12 +739,16 @@ export const CONTACT_FILTER_CONFIG = validateFilterConfig([
     label: 'Activity after',
     type: 'date-range',
     formatLabel: formatDateLabel,
+    // Group with @lte so removing either clears both (preserves existing behavior)
+    removalGroup: 'last_seen_range',
   },
   {
     key: 'last_seen@lte',
     label: 'Activity before',
     type: 'date-range',
     formatLabel: formatDateLabel,
+    // Group with @gte so removing either clears both (preserves existing behavior)
+    removalGroup: 'last_seen_range',
   },
   {
     key: 'sales_id',
@@ -819,10 +915,11 @@ import { PRODUCT_FILTER_CONFIG } from './productFilterConfig';
 import { FilterSidebar } from '../filters';
 
 // Replace root wrapper:
+// NOTE: showSearch={false} because existing filter already has SearchInput
 export function OrganizationListFilter() {
   return (
-    <FilterSidebar searchPlaceholder="Search organizations...">
-      {/* Keep existing FilterCategory components */}
+    <FilterSidebar showSearch={false}>
+      {/* Keep existing FilterCategory components - they already include search */}
       <FilterCategory icon={<Building2 />} label="Organization Type">
         {/* existing content */}
       </FilterCategory>
@@ -831,6 +928,8 @@ export function OrganizationListFilter() {
   );
 }
 ```
+
+**IMPORTANT:** Set `showSearch={false}` to avoid rendering duplicate search inputs. The existing filter components already include their own search blocks.
 
 ---
 
@@ -841,7 +940,9 @@ export function OrganizationListFilter() {
 **Dependencies:** Task 1.5
 **Parallel:** Can run with 4.1, 4.3
 
-Same pattern as 4.1 - wrap with `<FilterSidebar>`, remove old active filters display.
+Same pattern as 4.1 - wrap with `<FilterSidebar showSearch={false}>`, remove old active filters display.
+
+**IMPORTANT:** Use `showSearch={false}` - existing filter already has search block.
 
 ---
 
@@ -852,7 +953,9 @@ Same pattern as 4.1 - wrap with `<FilterSidebar>`, remove old active filters dis
 **Dependencies:** Task 1.5
 **Parallel:** Can run with 4.1, 4.2
 
-Same pattern as 4.1 - wrap with `<FilterSidebar>`.
+Same pattern as 4.1 - wrap with `<FilterSidebar showSearch={false}>`.
+
+**IMPORTANT:** Use `showSearch={false}` - existing filter already has search block.
 
 ---
 
@@ -870,13 +973,19 @@ This phase removes deprecated code, consolidates duplicates, and ensures consist
 - `src/atomic-crm/organizations/OrganizationListFilter.tsx` - Remove SidebarActiveFilters import/usage
 - `src/atomic-crm/contacts/ContactListFilter.tsx` - Remove SidebarActiveFilters import/usage
 
-**Time:** 5 min
+**⚠️ TEST FILES TO UPDATE (remove mocks):**
+- `src/atomic-crm/contacts/__tests__/ContactList.test.tsx` - Remove SidebarActiveFilters mock (lines ~223-231)
+
+**Time:** 5-8 min
 **Dependencies:** All Phase 4 tasks complete
 
 **Verification:**
 ```bash
-# Ensure no references remain
+# Ensure no references remain in source files
 grep -r "SidebarActiveFilters" src/atomic-crm/ && echo "FAIL: References remain" || echo "PASS: Cleaned up"
+
+# Ensure no mocks remain in test files
+grep -r "SidebarActiveFilters" src/atomic-crm/**/__tests__/ && echo "FAIL: Test mocks remain" || echo "PASS: Test mocks cleaned"
 ```
 
 ---
@@ -917,22 +1026,32 @@ grep -r "FilterChipsPanel" src/ --include="*.tsx" --include="*.ts" | grep -v "Fi
 
 ---
 
-### Task 5.4: Consolidate Filter Type Definitions
+### Task 5.4: Consolidate Filter Type Definitions (CAREFUL)
 
-**Purpose:** Ensure no duplicate type definitions exist.
+**Purpose:** Ensure no duplicate type definitions exist WITHOUT breaking existing code.
 
 **Files to check:**
 - `src/atomic-crm/filters/types.ts` - Existing types
 - `src/atomic-crm/filters/filterConfigSchema.ts` - New Zod-inferred types
 
+**⚠️ COMPATIBILITY WARNING:**
+Existing opportunity filter configs (`src/atomic-crm/opportunities/constants/filterChoices.ts`) may use types not covered by the new schema. Do NOT blindly replace exports.
+
 **Action:**
 1. Review both files for overlapping types
-2. Keep Zod-inferred types as source of truth
-3. Update `types.ts` to re-export from `filterConfigSchema.ts` if needed
-4. Remove any duplicate `FilterConfig`, `FilterChoice` definitions
+2. **DO NOT replace existing exports if they differ** - add new types alongside
+3. If existing `FilterConfig` type has different properties, rename new type to `ChipBarFilterConfig`
+4. Export BOTH types from index.ts to avoid breaking changes
+5. Add deprecation comments to old types if planning future migration
 
-**Time:** 5 min
+**Time:** 8 min
 **Dependencies:** Task 5.3
+
+**Verification:**
+```bash
+# Check that existing opportunity imports still work
+npx tsc --noEmit 2>&1 | grep -i "filterConfig" && echo "FAIL: Type errors" || echo "PASS: Types compatible"
+```
 
 ---
 
@@ -962,6 +1081,7 @@ export { useFilterManagement } from "./useFilterManagement";
 export { useOrganizationNames } from "./useOrganizationNames";
 export { useSalesNames } from "./useSalesNames";
 export { useTagNames } from "./useTagNames";
+export { useSegmentNames } from "./useSegmentNames";
 
 // Schema & Types
 export { validateFilterConfig } from "./filterConfigSchema";
@@ -1084,8 +1204,9 @@ Write Playwright tests covering:
 PHASE 1 (Sequential): Foundation
   1.1 → 1.2 → 1.4
   1.3 (parallel with 1.2)
-  1.5 (parallel with 1.2-1.4)
-  1.6 (after all above)
+  1.5 useSegmentNames (parallel with 1.2-1.4)
+  1.6 FilterSidebar (parallel with 1.2-1.4)
+  1.7 (after all above)
 
 PHASE 2 (Parallel Group A): Configs
   2.1 ┐
@@ -1099,14 +1220,14 @@ PHASE 3 (Parallel Group B): List Integration
 
 PHASE 4 (Parallel Group C): Sidebar Standardization
   4.1 ┐
-  4.2 ├─ All parallel
+  4.2 ├─ All parallel (all use showSearch={false})
   4.3 ┘
 
 PHASE 5 (Sequential): Cleanup & Code Quality
-  5.1 Delete SidebarActiveFilters
+  5.1 Delete SidebarActiveFilters + UPDATE TESTS
   5.2 Delete deprecated filter hooks
   5.3 Evaluate FilterChipsPanel removal
-  5.4 Consolidate type definitions
+  5.4 Consolidate type definitions (CAREFUL - don't break opportunities)
   5.5 Update index exports
   5.6 Run linting & fix issues
   5.7 Runtime smoke test
@@ -1115,8 +1236,14 @@ PHASE 6 (Sequential): Testing
   6.1 → 6.2 → 6.3
 ```
 
-**Total Tasks:** 26 (was 19)
-**Cleanup Tasks Added:** 7 (comprehensive code cleanup)
+**Total Tasks:** 27 (was 26)
+**Changes from review:**
+- Added Task 1.5 (useSegmentNames hook)
+- Added removalGroup support for grouped date filter removal
+- Updated type enum to include search/toggle/boolean
+- All Phase 4 tasks use showSearch={false}
+- Task 5.1 includes test mock cleanup
+- Task 5.4 marked CAREFUL - don't break existing types
 
 ---
 
