@@ -10,7 +10,7 @@
  */
 
 import { useCallback, useEffect, useRef, type MouseEvent } from "react";
-import { useFormContext, useFormState } from "react-hook-form";
+import { useFormContext, useFormState, useWatch } from "react-hook-form";
 import { setSubmissionErrors, useSaveContext, useTranslate, useRecordFromLocation } from "ra-core";
 import { Loader2, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
