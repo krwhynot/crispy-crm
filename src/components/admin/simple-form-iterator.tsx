@@ -1,4 +1,5 @@
-import get from "lodash/get";
+// es-toolkit: Deep property access with dynamic paths (lodash-compatible)
+import { get } from "es-toolkit/compat";
 import {
   FormDataConsumer,
   type RaRecord,

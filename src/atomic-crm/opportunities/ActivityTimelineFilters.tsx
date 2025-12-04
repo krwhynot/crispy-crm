@@ -13,7 +13,8 @@
 import * as React from "react";
 import { useState, useRef, useMemo } from "react";
 import { useGetList } from "ra-core";
-import isEqual from "lodash/isEqual";
+// es-toolkit: Deep object equality comparison
+import { isEqual } from "es-toolkit";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

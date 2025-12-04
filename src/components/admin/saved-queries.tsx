@@ -1,7 +1,8 @@
 import { useListContext, useTranslate } from "ra-core";
 import type { ChangeEvent, FormEvent, ReactElement } from "react";
 import { useState } from "react";
-import isEqual from "lodash/isEqual";
+// es-toolkit: Deep object equality comparison
+import { isEqual } from "es-toolkit";
 
 import { Button } from "@/components/ui/button";
 import {

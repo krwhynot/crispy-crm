@@ -28,7 +28,8 @@ import {
 } from "ra-core";
 import { useNavigate } from "react-router-dom";
 import { ArrowDownAZ, ArrowUpZA } from "lucide-react";
-import get from "lodash/get";
+// es-toolkit: Deep property access with dynamic paths (lodash-compatible)
+import { get } from "es-toolkit/compat";
 import { cn } from "@/lib/utils";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import {

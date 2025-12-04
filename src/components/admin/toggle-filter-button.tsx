@@ -2,8 +2,8 @@ import React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { useListContext, useTranslate } from "ra-core";
-import matches from "lodash/matches";
-import pickBy from "lodash/pickBy";
+// es-toolkit: Partial object matching (note: isMatch, not matches)
+import { isMatch, pickBy } from "es-toolkit/compat";
 import { CircleX, Check } from "lucide-react";
 
 export const ToggleFilterButton = ({
@@ -64,7 +64,8 @@ const toggleFilter = (value: any, filters: any) => {
   // Ensure filters is an object
   const safeFilters = filters || {};
 
-  const isSelected = matches(pickBy(value, (val) => typeof val !== "undefined"))(safeFilters);
+  // es-toolkit isMatch takes (object, source) directly - arguments swapped from lodash matches
+  const isSelected = isMatch(safeFilters, pickBy(value, (val) => typeof val !== "undefined"));
 
   if (isSelected) {
     const keysToRemove = Object.keys(value);
@@ -79,7 +80,7 @@ const toggleFilter = (value: any, filters: any) => {
 
 const getIsSelected = (value: any, filters: any) => {
   const safeFilters = filters || {};
-  return matches(pickBy(value, (val) => typeof val !== "undefined"))(safeFilters);
+  return isMatch(safeFilters, pickBy(value, (val) => typeof val !== "undefined"));
 };
 
 /**
