@@ -1,12 +1,6 @@
 import { useState } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { taskUpdateSchema } from "../validation/task";
-
-// Form-specific schema: omit 'id' since we get it from record.id prop
-// The taskUpdateSchema requires id, but form inputs don't include it
-const taskEditFormSchema = taskUpdateSchema.omit({ id: true });
 import { ReferenceField } from "@/components/admin/reference-field";
 import { DateField } from "@/components/admin/date-field";
 import { TextInput } from "@/components/admin/text-input";
@@ -98,7 +92,7 @@ export function TaskSlideOverDetailsTab({
   if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
-        <Form onSubmit={handleSave} record={record} resolver={zodResolver(taskEditFormSchema)}>
+        <Form onSubmit={handleSave} record={record}>
           <div className="space-y-6" role="form" aria-label="Edit task form">
             <div className="space-y-4">
               <TextInput source="title" label="Task Title" />

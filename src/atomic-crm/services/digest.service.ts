@@ -161,12 +161,10 @@ export class DigestService {
       // Validate and parse response
       const parsed = z.array(OverdueTaskSchema).safeParse(data);
       if (!parsed.success) {
-        console.warn("[DigestService] Overdue tasks validation warning", {
-          salesId,
-          errors: parsed.error.errors,
-        });
-        // Return raw data if validation fails (graceful degradation)
-        return (data || []) as OverdueTask[];
+        const errorDetails = parsed.error.errors
+          .map(e => `${e.path.join('.')}: ${e.message}`)
+          .join(', ');
+        throw new Error(`Overdue tasks validation failed: ${errorDetails}`);
       }
 
       return parsed.data;
@@ -197,12 +195,10 @@ export class DigestService {
       // Validate and parse response
       const parsed = z.array(TodayTaskSchema).safeParse(data);
       if (!parsed.success) {
-        console.warn("[DigestService] Tasks due today validation warning", {
-          salesId,
-          errors: parsed.error.errors,
-        });
-        // Return raw data if validation fails (graceful degradation)
-        return (data || []) as TodayTask[];
+        const errorDetails = parsed.error.errors
+          .map(e => `${e.path.join('.')}: ${e.message}`)
+          .join(', ');
+        throw new Error(`Tasks due today validation failed: ${errorDetails}`);
       }
 
       return parsed.data;
@@ -238,11 +234,10 @@ export class DigestService {
       // Validate and parse response
       const parsed = z.array(StaleDealSchema).safeParse(data);
       if (!parsed.success) {
-        console.warn("[DigestService] Stale deals validation warning", {
-          salesId,
-          errors: parsed.error.errors,
-        });
-        return (data || []) as StaleDeal[];
+        const errorDetails = parsed.error.errors
+          .map(e => `${e.path.join('.')}: ${e.message}`)
+          .join(', ');
+        throw new Error(`Stale deals validation failed: ${errorDetails}`);
       }
 
       return parsed.data;
