@@ -21,15 +21,17 @@ interface Sales {
   user_id: string;
 }
 
-// Cron authentication secret (set in Supabase dashboard)
+// Authentication secrets
 const CRON_SECRET = Deno.env.get("CRON_SECRET");
+const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
 Deno.serve(async (req) => {
   try {
-    // Verify request is from authorized source (cron only)
+    // Verify request is from authorized source (cron or service role)
     const authHeader = req.headers.get("Authorization");
+    const token = authHeader?.replace("Bearer ", "");
 
-    if (!authHeader || authHeader !== `Bearer ${CRON_SECRET}`) {
+    if (!token || (token !== CRON_SECRET && token !== SERVICE_ROLE_KEY)) {
       console.warn("Unauthorized access attempt to check-overdue-tasks");
       return new Response(
         JSON.stringify({ error: "Unauthorized - Cron functions require authentication" }),
