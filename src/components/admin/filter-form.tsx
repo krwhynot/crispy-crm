@@ -1,7 +1,9 @@
 import * as React from "react";
 import { type HtmlHTMLAttributes, useCallback, useEffect, useState, useMemo } from "react";
-import get from "lodash/get";
-import isEqual from "lodash/isEqual";
+// es-toolkit: Deep property access with dynamic paths (lodash-compatible)
+import { get } from "es-toolkit/compat";
+// es-toolkit: Deep object equality comparison
+import { isEqual } from "es-toolkit";
 import queryString from "query-string";
 import {
   FieldTitle,
@@ -153,7 +155,7 @@ export const FilterFormInput = (inProps: FilterFormInputProps) => {
           type="button"
           variant="ghost"
           size="sm"
-          className="hide-filter h-9 w-9 cursor-pointer mt-auto"
+          className="hide-filter h-11 w-11 cursor-pointer mt-auto"
           onClick={handleHide}
           data-key={filterElement.props.source}
           title={translate("ra.action.remove_filter")}

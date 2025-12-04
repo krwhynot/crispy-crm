@@ -1,7 +1,8 @@
-import isEqual from "lodash/isEqual";
+// es-toolkit: Deep object equality comparison
+import { isEqual } from "es-toolkit";
 import { useListContext, useUpdate, useNotify, useRefresh } from "ra-core";
 import { useEffect, useState, useCallback } from "react";
-import { DragDropContext, type DropResult } from "@hello-pangea/dnd";
+import { DragDropContext, type DropResult, type DragStart, type DragUpdate, type ResponderProvided } from "@hello-pangea/dnd";
 
 import type { Opportunity } from "../../types";
 import { OpportunityColumn } from "./OpportunityColumn";
@@ -186,16 +187,47 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
     [refresh]
   );
 
-  const handleDragEnd = (result: DropResult) => {
+  const handleDragStart = useCallback(
+    (start: DragStart, provided: ResponderProvided) => {
+      const sourceStage = start.source.droppableId;
+      const draggedItem = opportunitiesByStage[sourceStage]?.find(
+        (opp) => opp.id.toString() === start.draggableId
+      );
+
+      if (draggedItem) {
+        const stageName = getOpportunityStageLabel(sourceStage);
+        provided.announce(
+          `Picked up ${draggedItem.name}. Currently in ${stageName} stage.`
+        );
+      }
+    },
+    [opportunitiesByStage]
+  );
+
+  const handleDragUpdate = useCallback(
+    (update: DragUpdate, provided: ResponderProvided) => {
+      if (update.destination) {
+        const stageName = getOpportunityStageLabel(update.destination.droppableId);
+        provided.announce(
+          `Moving to ${stageName} stage, position ${update.destination.index + 1}`
+        );
+      }
+    },
+    []
+  );
+
+  const handleDragEnd = (result: DropResult, provided: ResponderProvided) => {
     const { destination, source, draggableId } = result;
 
     // Dropped outside a valid droppable
     if (!destination) {
+      provided.announce('Drag cancelled. Returned to original position.');
       return;
     }
 
     // Dropped in the same position
     if (destination.droppableId === source.droppableId && destination.index === source.index) {
+      provided.announce('Dropped in original position.');
       return;
     }
 
@@ -231,6 +263,12 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
     setOpportunitiesByStage(newOpportunitiesByStage);
     // --- End Optimistic UI Update ---
 
+    // Announce successful drop
+    const stageName = getOpportunityStageLabel(destColId);
+    provided.announce(
+      `Dropped in ${stageName} stage at position ${destination.index + 1}`
+    );
+
     // Check if dropping into a closed stage - show modal to collect reason
     if (destColId === "closed_won" || destColId === "closed_lost") {
       setPendingCloseData({
@@ -261,7 +299,11 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
           expandAll={expandAll}
         />
       </div>
-      <DragDropContext onDragEnd={handleDragEnd}>
+      <DragDropContext
+        onDragStart={handleDragStart}
+        onDragUpdate={handleDragUpdate}
+        onDragEnd={handleDragEnd}
+      >
         <div
           className="flex gap-4 overflow-x-auto p-6 bg-muted rounded-3xl border border-border shadow-inner"
           data-testid="kanban-board"

@@ -3,7 +3,8 @@ import type { ChangeEvent, ReactElement } from "react";
 import { createContext, isValidElement, useContext, useRef, useState } from "react";
 import type { Identifier, OptionText } from "ra-core";
 import { useTranslate } from "ra-core";
-import set from "lodash/set";
+// es-toolkit: Deep property mutation with auto-creation (lodash-compatible)
+import { set } from "es-toolkit/compat";
 
 /**
  * This hook provides support for suggestion creation in inputs which have choices.

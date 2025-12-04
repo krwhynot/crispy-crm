@@ -1,5 +1,6 @@
 import type { HTMLAttributes } from "react";
-import get from "lodash/get";
+// es-toolkit: Deep property access with dynamic paths (lodash-compatible)
+import { get } from "es-toolkit/compat";
 import { type ExtractRecordPaths, type HintedString, useFieldValue, useTranslate } from "ra-core";
 import { cn } from "@/lib/utils";
 import type { FieldProps } from "@/lib/field.type";
