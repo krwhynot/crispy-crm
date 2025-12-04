@@ -132,18 +132,18 @@ describe("Tag Validation Schemas", () => {
       expect(() => createTagSchema.parse({ color: "blue" })).toThrow(z.ZodError);
     });
 
-    it("should not allow id field on creation", () => {
+    it("should reject id field on creation (z.strictObject security)", () => {
       const dataWithId = {
         id: "should-not-be-here",
         name: "New Tag",
         color: "blue",
       };
 
-      const result = createTagSchema.parse(dataWithId);
-      expect("id" in result).toBe(false);
+      // z.strictObject() rejects unrecognized keys (mass assignment prevention)
+      expect(() => createTagSchema.parse(dataWithId)).toThrow(z.ZodError);
     });
 
-    it("should not include timestamp fields on creation", () => {
+    it("should reject timestamp fields on creation (z.strictObject security)", () => {
       const dataWithTimestamps = {
         name: "New Tag",
         color: "purple",
@@ -151,9 +151,8 @@ describe("Tag Validation Schemas", () => {
         updatedAt: "2024-01-01T00:00:00Z",
       };
 
-      const result = createTagSchema.parse(dataWithTimestamps);
-      expect("createdAt" in result).toBe(false);
-      expect("updatedAt" in result).toBe(false);
+      // z.strictObject() rejects unrecognized keys (mass assignment prevention)
+      expect(() => createTagSchema.parse(dataWithTimestamps)).toThrow(z.ZodError);
     });
 
     it("should trim name on creation", () => {
@@ -209,7 +208,7 @@ describe("Tag Validation Schemas", () => {
       ).toThrow(z.ZodError);
     });
 
-    it("should not allow timestamp updates", () => {
+    it("should reject timestamp updates (z.strictObject security)", () => {
       const updateWithTimestamps = {
         id: "tag-1",
         name: "Updated",
@@ -217,9 +216,8 @@ describe("Tag Validation Schemas", () => {
         updatedAt: "2024-01-02T00:00:00Z",
       };
 
-      const result = updateTagSchema.parse(updateWithTimestamps);
-      expect("createdAt" in result).toBe(false);
-      expect("updatedAt" in result).toBe(false);
+      // z.strictObject() rejects unrecognized keys (mass assignment prevention)
+      expect(() => updateTagSchema.parse(updateWithTimestamps)).toThrow(z.ZodError);
     });
   });
 

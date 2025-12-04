@@ -52,7 +52,7 @@ const semanticColorSchema = z
 /**
  * Base tag schema with all fields
  */
-export const tagSchema = z.object({
+export const tagSchema = z.strictObject({
   // Required fields
   name: z
     .string()
@@ -97,7 +97,7 @@ export const tagWithCountSchema = tagSchema.extend({
 /**
  * Schema for tag filter options
  */
-export const tagFilterSchema = z.object({
+export const tagFilterSchema = z.strictObject({
   colors: z.array(z.enum(VALID_TAG_COLORS as [TagColorName, ...TagColorName[]])).optional(),
   searchTerm: z.string().optional(),
 });

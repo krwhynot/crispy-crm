@@ -4,6 +4,7 @@
  */
 
 import { describe, it, expect } from "vitest";
+import { z } from "zod";
 import {
   contactNoteSchema,
   validateCreateContactNote,
@@ -11,18 +12,17 @@ import {
 } from "../../notes";
 
 describe("Note API Boundary Integration", () => {
-  it("should validate at creation boundary", () => {
+  it("should reject unrecognized fields at creation boundary (z.strictObject security)", () => {
+    // z.strictObject() prevents mass assignment attacks by rejecting unknown keys
     const apiPayload = {
       text: "API created note",
       date: "2024-01-15T10:00:00Z",
       contact_id: "contact-123",
       sales_id: "user-456",
-      malicious_field: "should be stripped",
+      malicious_field: "should be rejected",
     };
 
-    const result = validateCreateContactNote(apiPayload);
-    expect(result.text).toBe("API created note");
-    expect("malicious_field" in result).toBe(false);
+    expect(() => validateCreateContactNote(apiPayload)).toThrow(z.ZodError);
   });
 
   it("should handle type coercion at boundary", () => {

@@ -14,7 +14,6 @@ export {
   renderWithAdminContext,
   renderWithRecordContext,
   waitForMutation,
-  flushPromises,
   type RenderAdminOptions,
   type RenderAdminResult,
 } from "./render-admin";

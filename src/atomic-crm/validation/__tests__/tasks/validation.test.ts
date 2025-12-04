@@ -149,7 +149,7 @@ describe("Task Validation Schemas", () => {
       ).toThrow(z.ZodError);
     });
 
-    it("should not allow id field on creation", () => {
+    it("should reject id field on creation (z.strictObject security)", () => {
       const dataWithId = {
         id: 999,
         title: "New Task",
@@ -159,8 +159,8 @@ describe("Task Validation Schemas", () => {
         sales_id: 456,
       };
 
-      const result = createTaskSchema.parse(dataWithId);
-      expect("id" in result).toBe(false);
+      // z.strictObject() rejects unrecognized keys (mass assignment prevention)
+      expect(() => createTaskSchema.parse(dataWithId)).toThrow(z.ZodError);
     });
 
     it("should allow completed_at on creation", () => {

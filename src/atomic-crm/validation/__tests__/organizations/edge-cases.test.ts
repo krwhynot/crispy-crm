@@ -12,7 +12,7 @@ describe("Organization Business Rules and Edge Cases", () => {
       const childOrganization = {
         name: "Child Organization",
         parent_organization_id: "parent-123",
-        type: "customer",
+        organization_type: "customer",
       };
 
       const result = organizationSchema.parse(childOrganization);
@@ -32,11 +32,9 @@ describe("Organization Business Rules and Edge Cases", () => {
     it("should handle international organizations", () => {
       const internationalOrg = {
         name: "Global Corp Ltd.",
-        type: "customer",
-        country: "United Kingdom",
-        timezone: "Europe/London",
-        currency: "GBP",
-        language: "en-GB",
+        organization_type: "customer",
+        // Note: z.strictObject() rejects unrecognized keys for mass assignment prevention
+        // Country/timezone/currency/language would be additional fields not in current schema
       };
 
       expect(() => organizationSchema.parse(internationalOrg)).not.toThrow();
@@ -48,9 +46,9 @@ describe("Organization Business Rules and Edge Cases", () => {
     it("should handle organization relationships", () => {
       const orgWithRelationships = {
         name: "Connected Org",
-        type: "principal",
-        referral_source: "existing_customer",
-        account_manager: "user-123",
+        organization_type: "principal",
+        // Note: z.strictObject() rejects unrecognized keys for mass assignment prevention
+        // Relationships like referral_source and account_manager would be separate tables/fields
       };
 
       expect(() => organizationSchema.parse(orgWithRelationships)).not.toThrow();

@@ -15,7 +15,7 @@ import { z } from "zod";
  * - Products and notes are optional
  */
 export const quickAddSchema = z
-  .object({
+  .strictObject({
     // Contact fields (required)
     first_name: z.string({ required_error: "First name required" }).min(1, "First name required"),
     last_name: z.string({ required_error: "Last name required" }).min(1, "Last name required"),

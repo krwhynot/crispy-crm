@@ -11,26 +11,44 @@ describe("Tag API Boundary Integration", () => {
     const apiPayload = {
       name: "  API Tag  ",
       color: "purple",
-      extra_field: "should be ignored",
     };
 
     const result = validateCreateTag(apiPayload);
     expect(result.name).toBe("API Tag");
     expect(result.color).toBe("purple");
-    expect("extra_field" in result).toBe(false);
+  });
+
+  it("should reject extra fields at creation (z.strictObject security)", () => {
+    const apiPayload = {
+      name: "API Tag",
+      color: "purple",
+      extra_field: "should be rejected",
+    };
+
+    // z.strictObject() rejects unrecognized keys (mass assignment prevention)
+    expect(() => validateCreateTag(apiPayload)).toThrow();
   });
 
   it("should validate at update boundary", () => {
     const apiPayload = {
       id: "tag-123",
       color: "green",
-      malicious_field: "should be ignored",
     };
 
     const result = validateUpdateTag(apiPayload);
     expect(result.id).toBe("tag-123");
     expect(result.color).toBe("green");
-    expect("malicious_field" in result).toBe(false);
+  });
+
+  it("should reject malicious fields at update (z.strictObject security)", () => {
+    const apiPayload = {
+      id: "tag-123",
+      color: "green",
+      malicious_field: "should be rejected",
+    };
+
+    // z.strictObject() rejects unrecognized keys (mass assignment prevention)
+    expect(() => validateUpdateTag(apiPayload)).toThrow();
   });
 
   it("should handle type coercion at boundary", () => {

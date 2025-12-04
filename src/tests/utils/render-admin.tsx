@@ -226,11 +226,3 @@ export async function waitForMutation(timeout = 1000): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 }
 
-/**
- * Flush all pending promises and timers
- *
- * Useful for testing pessimistic mode mutations that use setTimeout
- */
-export async function flushPromises(): Promise<void> {
-  return new Promise((resolve) => setImmediate(resolve));
-}

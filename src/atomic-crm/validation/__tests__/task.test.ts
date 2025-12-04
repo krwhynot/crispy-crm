@@ -159,12 +159,13 @@ describe("Task Validation Schemas (task.ts)", () => {
 
     it("should reject empty due_date", () => {
       // Per Engineering Constitution: fail fast, no complex transforms
-      // Schema validates non-empty string only (format validation belongs elsewhere)
+      // z.coerce.date() rejects empty strings (creates invalid Date)
       const invalidTask = { ...validTask, due_date: "" };
       const result = taskSchema.safeParse(invalidTask);
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.issues[0].message).toContain("Due date is required");
+        // z.coerce.date() produces "Invalid input" for empty string -> invalid Date
+        expect(result.error.issues[0].message).toContain("Invalid");
       }
     });
 
@@ -355,7 +356,8 @@ describe("Task Validation Schemas (task.ts)", () => {
       expect(result.success).toBe(false);
     });
 
-    it("should omit id field on creation", () => {
+    it("should reject id field on creation (z.strictObject security)", () => {
+      // z.strictObject() rejects unrecognized keys (mass assignment prevention)
       const dataWithId = {
         id: 999,
         title: "New task",
@@ -365,14 +367,11 @@ describe("Task Validation Schemas (task.ts)", () => {
         sales_id: 1,
       };
 
-      const result = taskCreateSchema.safeParse(dataWithId);
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect("id" in result.data).toBe(false);
-      }
+      expect(() => taskCreateSchema.parse(dataWithId)).toThrow();
     });
 
-    it("should omit created_at on creation", () => {
+    it("should reject created_at on creation (z.strictObject security)", () => {
+      // z.strictObject() rejects unrecognized keys (mass assignment prevention)
       const dataWithTimestamp = {
         title: "New task",
         due_date: "2025-01-20",
@@ -382,14 +381,11 @@ describe("Task Validation Schemas (task.ts)", () => {
         created_at: "2025-01-01T00:00:00Z",
       };
 
-      const result = taskCreateSchema.safeParse(dataWithTimestamp);
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect("created_at" in result.data).toBe(false);
-      }
+      expect(() => taskCreateSchema.parse(dataWithTimestamp)).toThrow();
     });
 
-    it("should omit updated_at on creation", () => {
+    it("should reject updated_at on creation (z.strictObject security)", () => {
+      // z.strictObject() rejects unrecognized keys (mass assignment prevention)
       const dataWithTimestamp = {
         title: "New task",
         due_date: "2025-01-20",
@@ -399,17 +395,14 @@ describe("Task Validation Schemas (task.ts)", () => {
         updated_at: "2025-01-01T00:00:00Z",
       };
 
-      const result = taskCreateSchema.safeParse(dataWithTimestamp);
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect("updated_at" in result.data).toBe(false);
-      }
+      expect(() => taskCreateSchema.parse(dataWithTimestamp)).toThrow();
     });
 
     // =========================================================================
     // Tests for new audit fields (per migrations 20251127054700/55705)
     // =========================================================================
-    it("should omit created_by on creation (auto-set by DB trigger)", () => {
+    it("should reject created_by on creation (z.strictObject security)", () => {
+      // z.strictObject() rejects unrecognized keys (mass assignment prevention)
       // Per migration: created_by is set by trigger_set_task_created_by
       const dataWithCreatedBy = {
         title: "New task",
@@ -417,17 +410,14 @@ describe("Task Validation Schemas (task.ts)", () => {
         type: "Call" as const,
         contact_id: 1,
         sales_id: 1,
-        created_by: 999, // Should be stripped - DB trigger handles this
+        created_by: 999, // Should be rejected - DB trigger handles this
       };
 
-      const result = taskCreateSchema.safeParse(dataWithCreatedBy);
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect("created_by" in result.data).toBe(false);
-      }
+      expect(() => taskCreateSchema.parse(dataWithCreatedBy)).toThrow();
     });
 
-    it("should omit deleted_at on creation (soft-delete managed by app)", () => {
+    it("should reject deleted_at on creation (z.strictObject security)", () => {
+      // z.strictObject() rejects unrecognized keys (mass assignment prevention)
       // Per soft-delete pattern: deleted_at should never be set at creation
       const dataWithDeletedAt = {
         title: "New task",
@@ -435,14 +425,10 @@ describe("Task Validation Schemas (task.ts)", () => {
         type: "Call" as const,
         contact_id: 1,
         sales_id: 1,
-        deleted_at: "2025-01-01T00:00:00Z", // Should be stripped
+        deleted_at: "2025-01-01T00:00:00Z", // Should be rejected
       };
 
-      const result = taskCreateSchema.safeParse(dataWithDeletedAt);
-      expect(result.success).toBe(true);
-      if (result.success) {
-        expect("deleted_at" in result.data).toBe(false);
-      }
+      expect(() => taskCreateSchema.parse(dataWithDeletedAt)).toThrow();
     });
 
     it("should allow all optional fields on creation", () => {
@@ -573,9 +559,12 @@ describe("Task Validation Schemas (task.ts)", () => {
 
     it("should set due_date to today", () => {
       const defaults = getTaskDefaultValues();
-      const today = new Date().toISOString().slice(0, 10);
+      const today = new Date();
 
-      expect(defaults.due_date).toBe(today);
+      // z.coerce.date() returns a Date object, not a string
+      expect(defaults.due_date).toBeInstanceOf(Date);
+      // Check it's today (same date, ignoring time)
+      expect(defaults.due_date?.toISOString().slice(0, 10)).toBe(today.toISOString().slice(0, 10));
     });
 
     it("should return object that passes partial schema validation", () => {
@@ -617,7 +606,9 @@ describe("Task Validation Schemas (task.ts)", () => {
       expect(formDefaults.completed).toBe(false);
       expect(formDefaults.priority).toBe("medium");
       expect(formDefaults.type).toBe("Call");
-      expect(formDefaults.due_date).toBe("2025-01-15");
+      // z.coerce.date() converts string to Date object
+      expect(formDefaults.due_date).toBeInstanceOf(Date);
+      expect(formDefaults.due_date?.toISOString()).toBe("2025-01-15T00:00:00.000Z");
     });
 
     it("should validate form submission with full schema", () => {

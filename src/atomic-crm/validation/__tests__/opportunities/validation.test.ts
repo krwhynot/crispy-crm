@@ -52,17 +52,17 @@ describe("Opportunity Validation - UI as Source of Truth", () => {
       expect(() => opportunitySchema.parse(invalidOpportunity)).toThrow(z.ZodError);
     });
 
-    it("should require at least one contact for creation", () => {
-      const invalidOpportunity = {
+    it("should allow empty contact_ids for creation (can be enriched later)", () => {
+      const validOpportunity = {
         name: "Test",
         customer_organization_id: "1",
         principal_organization_id: "2",
         contact_ids: [],
       };
 
-      // Base schema allows empty contact_ids for partial updates
-      // Only createOpportunitySchema enforces minimum requirement
-      expect(() => createOpportunitySchema.parse(invalidOpportunity)).toThrow(z.ZodError);
+      // Contacts are optional for quick-add (can be enriched later via slide-over)
+      const result = createOpportunitySchema.parse(validOpportunity);
+      expect(result.contact_ids).toEqual([]);
     });
   });
 
