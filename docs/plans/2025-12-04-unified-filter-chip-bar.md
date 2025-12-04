@@ -53,10 +53,13 @@ export const filterChoiceSchema = z.object({
 export const filterConfigSchema = z.array(z.object({
   key: z.string().min(1).max(100),
   label: z.string().min(1).max(50),
-  type: z.enum(['select', 'multiselect', 'reference', 'date-range']),
+  // Expanded to include all existing filter types in codebase
+  type: z.enum(['select', 'multiselect', 'reference', 'date-range', 'search', 'toggle', 'boolean']),
   reference: z.string().optional(),
   choices: z.array(filterChoiceSchema).optional(),
   formatLabel: z.function().args(z.unknown()).returns(z.string()).optional(),
+  // NEW: Group related filters for removal (e.g., date ranges)
+  removalGroup: z.string().optional(),
 }));
 
 export type FilterChoice = z.infer<typeof filterChoiceSchema>;
@@ -245,19 +248,29 @@ grep -q "useFilterChipBar" src/atomic-crm/filters/useFilterChipBar.ts && echo "P
 
 ---
 
-### Task 1.3: Create FilterChip Component
+### Task 1.3: Enhance FilterChip Component for 44px Touch Targets
 
-**File:** `src/atomic-crm/filters/FilterChip.tsx` (MODIFY existing or CREATE)
+**File:** `src/atomic-crm/filters/FilterChip.tsx` (MODIFY EXISTING)
 **Time:** 3-5 min
 **Dependencies:** None (can run parallel with 1.2)
 
-**Purpose:** Individual removable filter chip with 44px touch target.
+**Purpose:** Enhance existing FilterChip with 44px touch targets for iPad accessibility.
 
+**EXISTING CODE (before):**
+```typescript
+// Current implementation lacks 44px touch targets
+<div className="inline-flex items-center gap-1 pl-3 text-xs rounded-full bg-muted">
+  <span className="truncate max-w-[200px]">{label}</span>
+  <Button variant="ghost" size="icon" className="rounded-full hover:bg-accent/50" ...>
+```
+
+**ENHANCED CODE (after):**
 ```typescript
 // src/atomic-crm/filters/FilterChip.tsx
-import { X } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { X } from "lucide-react";
+import { Button } from "../../components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface FilterChipProps {
   label: string;
@@ -266,36 +279,48 @@ interface FilterChipProps {
 }
 
 /**
- * Individual removable filter chip.
- * Touch-friendly: 44px minimum touch target.
+ * Individual filter chip component with remove functionality.
+ * ENHANCED: 44px minimum touch targets for iPad accessibility.
  */
-export function FilterChip({ label, onRemove, className }: FilterChipProps) {
+export const FilterChip: React.FC<FilterChipProps> = ({ label, onRemove, className }) => {
+  const handleRemove = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onRemove();
+  };
+
   return (
-    <Badge
-      variant="secondary"
+    <div
       className={cn(
-        'pl-3 pr-1.5 py-1.5 gap-1.5 text-sm font-normal cursor-default',
-        'flex items-center min-h-[2.75rem]', // 44px touch target
+        "inline-flex items-center gap-1.5 pl-3 pr-1 text-sm rounded-full",
+        "bg-muted hover:bg-muted/90 transition-colors",
+        "min-h-[2.75rem]", // 44px touch target height
         className
       )}
     >
       <span className="truncate max-w-[150px]">{label}</span>
-      <button
-        type="button"
-        onClick={onRemove}
+      <Button
+        variant="ghost"
+        size="icon"
         className={cn(
-          'rounded-full p-1 hover:bg-background/50',
-          'h-6 w-6 flex items-center justify-center',
-          'focus:outline-none focus:ring-2 focus:ring-ring'
+          "rounded-full hover:bg-accent/50",
+          "h-9 w-9", // Larger button for touch
+          "focus:outline-none focus:ring-2 focus:ring-ring"
         )}
+        onClick={handleRemove}
         aria-label={`Remove ${label} filter`}
       >
-        <X className="h-3.5 w-3.5" aria-hidden="true" />
-      </button>
-    </Badge>
+        <X className="size-4" aria-hidden="true" />
+      </Button>
+    </div>
   );
-}
+};
 ```
+
+**Key Changes:**
+1. Added `min-h-[2.75rem]` for 44px height
+2. Increased button size to `h-9 w-9` (36px, close to 44px target)
+3. Added optional `className` prop for customization
+4. Updated text from `text-xs` to `text-sm` for readability
 
 **Verification:**
 ```bash
@@ -692,18 +717,37 @@ These tasks can ALL run in parallel - they modify different files.
 **Dependencies:** Tasks 1.4, 2.1
 **Parallel:** Can run with 3.2, 3.3
 
+**CRITICAL ARCHITECTURE NOTE:**
+The list views use `StandardListLayout` which provides a two-column layout (sidebar + main).
+The `FilterChipBar` must go INSIDE `StandardListLayout` but ABOVE `PremiumDatagrid`.
+
 **Changes:**
 1. Import `FilterChipBar` and `ORGANIZATION_FILTER_CONFIG`
-2. Add `<FilterChipBar>` above the datagrid inside the `<List>` component
+2. Add `<FilterChipBar>` INSIDE `StandardListLayout`, BEFORE `PremiumDatagrid`
 
 ```typescript
-// Add imports
+// Add imports at top of file
 import { FilterChipBar } from '../filters';
 import { ORGANIZATION_FILTER_CONFIG } from './organizationFilterConfig';
 
-// Inside the List component, add before PremiumDatagrid:
-<FilterChipBar filterConfig={ORGANIZATION_FILTER_CONFIG} />
+// Inside OrganizationListLayout component, modify the return statement:
+// BEFORE:
+<StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
+  <PremiumDatagrid ...>
+    ...
+  </PremiumDatagrid>
+</StandardListLayout>
+
+// AFTER:
+<StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
+  <FilterChipBar filterConfig={ORGANIZATION_FILTER_CONFIG} />
+  <PremiumDatagrid ...>
+    ...
+  </PremiumDatagrid>
+</StandardListLayout>
 ```
+
+**Note:** The FilterChipBar renders inside `<main className="card-container">` which wraps children in StandardListLayout. This places it visually above the datagrid, inside the main content card.
 
 **Verification:**
 ```bash
@@ -812,28 +856,177 @@ Same pattern as 4.1 - wrap with `<FilterSidebar>`.
 
 ---
 
-## Phase 5: Cleanup (Sequential)
+## Phase 5: Cleanup & Code Quality (Sequential)
 
-### Task 5.1: Remove Deprecated SidebarActiveFilters
+This phase removes deprecated code, consolidates duplicates, and ensures consistency.
 
-**Files to check/modify:**
-- `src/atomic-crm/organizations/SidebarActiveFilters.tsx` - DELETE or deprecate
-- `src/atomic-crm/contacts/SidebarActiveFilters.tsx` - DELETE or deprecate
-- Any imports of these files - REMOVE
+### Task 5.1: Remove Deprecated SidebarActiveFilters Components
+
+**Files to DELETE:**
+- `src/atomic-crm/organizations/SidebarActiveFilters.tsx`
+- `src/atomic-crm/contacts/SidebarActiveFilters.tsx`
+
+**Files to UPDATE (remove imports):**
+- `src/atomic-crm/organizations/OrganizationListFilter.tsx` - Remove SidebarActiveFilters import/usage
+- `src/atomic-crm/contacts/ContactListFilter.tsx` - Remove SidebarActiveFilters import/usage
 
 **Time:** 5 min
 **Dependencies:** All Phase 4 tasks complete
 
+**Verification:**
+```bash
+# Ensure no references remain
+grep -r "SidebarActiveFilters" src/atomic-crm/ && echo "FAIL: References remain" || echo "PASS: Cleaned up"
+```
+
 ---
 
-### Task 5.2: Remove Deprecated Filter Chip Hooks
+### Task 5.2: Remove Deprecated Feature-Specific Filter Chip Hooks
 
-**Files to check:**
-- `src/atomic-crm/organizations/useOrganizationFilterChips.ts` - May be removable
-- `src/atomic-crm/contacts/useContactFilterChips.ts` - May be removable
+**Files to DELETE (if no longer used):**
+- `src/atomic-crm/organizations/useOrganizationFilterChips.ts`
+- `src/atomic-crm/contacts/useContactFilterChips.ts`
+
+**Before deleting, verify no imports exist:**
+```bash
+grep -r "useOrganizationFilterChips" src/ --include="*.tsx" --include="*.ts"
+grep -r "useContactFilterChips" src/ --include="*.tsx" --include="*.ts"
+```
 
 **Time:** 3 min
 **Dependencies:** Task 5.1
+
+---
+
+### Task 5.3: Remove Deprecated FilterChipsPanel (if replaced)
+
+**File to evaluate:**
+- `src/atomic-crm/filters/FilterChipsPanel.tsx` - May be redundant with FilterChipBar
+
+**Decision criteria:**
+- If FilterChipsPanel is only used by SidebarActiveFilters → DELETE
+- If used elsewhere → KEEP
+
+**Verification:**
+```bash
+grep -r "FilterChipsPanel" src/ --include="*.tsx" --include="*.ts" | grep -v "FilterChipsPanel.tsx"
+```
+
+**Time:** 3 min
+**Dependencies:** Task 5.2
+
+---
+
+### Task 5.4: Consolidate Filter Type Definitions
+
+**Purpose:** Ensure no duplicate type definitions exist.
+
+**Files to check:**
+- `src/atomic-crm/filters/types.ts` - Existing types
+- `src/atomic-crm/filters/filterConfigSchema.ts` - New Zod-inferred types
+
+**Action:**
+1. Review both files for overlapping types
+2. Keep Zod-inferred types as source of truth
+3. Update `types.ts` to re-export from `filterConfigSchema.ts` if needed
+4. Remove any duplicate `FilterConfig`, `FilterChoice` definitions
+
+**Time:** 5 min
+**Dependencies:** Task 5.3
+
+---
+
+### Task 5.5: Update Filter Index Exports
+
+**File:** `src/atomic-crm/filters/index.ts` (MODIFY)
+**Time:** 3 min
+**Dependencies:** Tasks 5.1-5.4
+
+**Actions:**
+1. Remove exports for deleted files (SidebarActiveFilters, deprecated hooks)
+2. Add exports for new files (FilterChipBar, FilterSidebar, filterConfigSchema)
+3. Ensure no broken imports
+
+**Updated exports should include:**
+```typescript
+// Components
+export { FilterChip } from "./FilterChip";
+export { FilterChipBar } from "./FilterChipBar";
+export { FilterSidebar } from "./FilterSidebar";
+export { FilterCategory } from "./FilterCategory";
+// Remove: FilterChipsPanel (if deleted)
+
+// Hooks
+export { useFilterChipBar } from "./useFilterChipBar";
+export { useFilterManagement } from "./useFilterManagement";
+export { useOrganizationNames } from "./useOrganizationNames";
+export { useSalesNames } from "./useSalesNames";
+export { useTagNames } from "./useTagNames";
+
+// Schema & Types
+export { validateFilterConfig } from "./filterConfigSchema";
+export type { FilterConfig, FilterChoice } from "./filterConfigSchema";
+export type { ChipData, UseFilterChipBarReturn } from "./useFilterChipBar";
+
+// Utilities
+export * from "./filterFormatters";
+export * from "./filterPrecedence";
+```
+
+**Verification:**
+```bash
+# Check for broken imports after cleanup
+npm run build 2>&1 | grep -i "error" && echo "FAIL: Build errors" || echo "PASS: Build clean"
+```
+
+---
+
+### Task 5.6: Run Linting & Fix Issues
+
+**Purpose:** Ensure code quality and consistency.
+
+**Commands:**
+```bash
+# Run ESLint on modified files
+npx eslint src/atomic-crm/filters/ --fix
+npx eslint src/atomic-crm/organizations/ --fix
+npx eslint src/atomic-crm/contacts/ --fix
+npx eslint src/atomic-crm/products/ --fix
+
+# Run TypeScript compiler check
+npx tsc --noEmit
+```
+
+**Time:** 5 min
+**Dependencies:** Task 5.5
+
+**Fix any issues:**
+- Unused imports
+- Missing type annotations
+- Inconsistent formatting
+
+---
+
+### Task 5.7: Verify No Console Errors at Runtime
+
+**Purpose:** Smoke test the implementation.
+
+**Steps:**
+1. Start dev server: `npm run dev`
+2. Navigate to Organizations list → Apply a filter → Verify chip appears
+3. Navigate to Contacts list → Apply a filter → Verify chip appears
+4. Navigate to Products list → Apply a filter → Verify chip appears
+5. Check browser console for errors
+
+**Time:** 5 min
+**Dependencies:** Task 5.6
+
+**Pass criteria:**
+- [ ] No console errors
+- [ ] No React warnings
+- [ ] FilterChipBar renders on all three pages
+- [ ] Removing chips works correctly
+- [ ] "Clear all" works when 2+ filters active
 
 ---
 
@@ -909,12 +1102,21 @@ PHASE 4 (Parallel Group C): Sidebar Standardization
   4.2 ├─ All parallel
   4.3 ┘
 
-PHASE 5 (Sequential): Cleanup
-  5.1 → 5.2
+PHASE 5 (Sequential): Cleanup & Code Quality
+  5.1 Delete SidebarActiveFilters
+  5.2 Delete deprecated filter hooks
+  5.3 Evaluate FilterChipsPanel removal
+  5.4 Consolidate type definitions
+  5.5 Update index exports
+  5.6 Run linting & fix issues
+  5.7 Runtime smoke test
 
 PHASE 6 (Sequential): Testing
   6.1 → 6.2 → 6.3
 ```
+
+**Total Tasks:** 26 (was 19)
+**Cleanup Tasks Added:** 7 (comprehensive code cleanup)
 
 ---
 
