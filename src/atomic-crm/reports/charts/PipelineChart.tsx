@@ -22,6 +22,7 @@ export function PipelineChart({ data }: PipelineChartProps) {
       labels: data.map((d) => d.stage),
       datasets: [
         {
+          id: "pipeline-stages",
           data: data.map((d) => d.count),
           backgroundColor: [
             colors.primary,
@@ -37,19 +38,30 @@ export function PipelineChart({ data }: PipelineChartProps) {
     };
   }, [data, colors]);
 
+  const ariaLabel = useMemo(() => {
+    const total = data.reduce((sum, d) => sum + d.count, 0);
+    const breakdown = data.map(d => `${d.stage}: ${d.count}`).join(', ');
+    return `Pipeline chart showing ${total} opportunities across ${data.length} stages. ${breakdown}`;
+  }, [data]);
+
   // Memoize chart options to prevent recalculation on every render
   const options = useMemo(() => {
     return {
       responsive: true,
       maintainAspectRatio: false,
+      interaction: {
+        mode: "nearest" as const,
+        intersect: false,
+      },
       plugins: {
         legend: {
           position: "right" as const,
           labels: {
             font: {
               family: font.family,
-              size: font.size,
+              size: 14,
             },
+            padding: 16,
           },
         },
         tooltip: {
@@ -73,5 +85,13 @@ export function PipelineChart({ data }: PipelineChartProps) {
     );
   }
 
-  return <Doughnut data={chartData} options={options} />;
+  return (
+    <Doughnut
+      data={chartData}
+      options={options}
+      datasetIdKey="id"
+      aria-label={ariaLabel}
+      role="img"
+    />
+  );
 }

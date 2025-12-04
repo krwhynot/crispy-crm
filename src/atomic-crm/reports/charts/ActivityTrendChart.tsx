@@ -23,24 +23,37 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
       labels: data.map((d) => d.date),
       datasets: [
         {
+          id: "activities",
           label: "Activities",
           data: data.map((d) => d.count),
           borderColor: colors.primary,
           backgroundColor: `${colors.primary}20`,
           fill: true,
           tension: 0.3,
-          pointRadius: 4,
-          pointHoverRadius: 6,
+          pointRadius: 6,
+          pointHoverRadius: 8,
+          pointHitRadius: 12,
         },
       ],
     };
   }, [data, colors.primary]);
+
+  const ariaLabel = useMemo(() => {
+    const total = data.reduce((sum, d) => sum + d.count, 0);
+    const dateRange = data.length > 0 ? `from ${data[0].date} to ${data[data.length - 1].date}` : '';
+    return `Activity trend chart showing ${total} activities over ${data.length} time periods ${dateRange}`;
+  }, [data]);
 
   // Memoize chart options to prevent recalculation on every render
   const options = useMemo(() => {
     return {
       responsive: true,
       maintainAspectRatio: false,
+      interaction: {
+        mode: "nearest" as const,
+        axis: "x" as const,
+        intersect: false,
+      },
       plugins: {
         legend: {
           display: false,
@@ -90,5 +103,13 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
     );
   }
 
-  return <Line data={chartData} options={options} />;
+  return (
+    <Line
+      data={chartData}
+      options={options}
+      datasetIdKey="id"
+      aria-label={ariaLabel}
+      role="img"
+    />
+  );
 }

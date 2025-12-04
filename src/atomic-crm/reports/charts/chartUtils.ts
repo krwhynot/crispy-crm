@@ -4,6 +4,8 @@
  * Shared utilities for chart components to maintain DRY principle.
  */
 
+import type { TooltipItem } from 'chart.js';
+
 /**
  * Truncates a label to a maximum length, appending "..." if truncated.
  * Useful for chart axis labels that need to fit in limited space.
@@ -14,22 +16,9 @@ export function truncateLabel(label: string, maxLength: number): string {
 }
 
 /**
- * Chart.js tooltip context types for improved type safety
+ * Chart.js tooltip types re-exported for convenience.
+ * Using official Chart.js types for better type safety and IDE support.
  */
-export interface TooltipContextY {
-  parsed: {
-    y: number;
-  };
-  label?: string;
-}
-
-export interface TooltipContextX {
-  parsed: {
-    x: number | null;
-  };
-  label?: string;
-}
-
-export interface TooltipTitleContext {
-  dataIndex: number;
-}
+export type TooltipContextY = TooltipItem<'line' | 'bar'>;
+export type TooltipContextX = TooltipItem<'bar'>;
+export type TooltipTitleContext = TooltipItem<'bar' | 'line' | 'doughnut'>;
