@@ -168,7 +168,7 @@ grep -q "validateFilterConfig" src/atomic-crm/filters/filterConfigSchema.ts && e
 // src/atomic-crm/filters/useFilterChipBar.ts
 import { useCallback, useMemo } from 'react';
 import { useListContext } from 'react-admin';
-import type { ChipFilterConfig } from './filterConfigSchema';
+import type { ChipFilterConfig, FilterChoice } from './filterConfigSchema';
 import { useOrganizationNames } from './useOrganizationNames';
 import { useSalesNames } from './useSalesNames';
 import { useTagNames } from './useTagNames';
@@ -545,7 +545,7 @@ interface FilterChipBarProps {
  * Horizontal bar displaying active filters as removable chips.
  * Placed ABOVE the datagrid for maximum visibility.
  */
-export function FilterChipBar({ filterConfig, className }: FilterChipBarProps) {
+export function FilterChipBar({ filterConfig, context, className }: FilterChipBarProps) {
   const chipBarRef = useRef<HTMLDivElement>(null);
 
   // Fail-fast: config required
@@ -557,7 +557,7 @@ export function FilterChipBar({ filterConfig, className }: FilterChipBarProps) {
   }
 
   const { chips, removeFilter, clearAllFilters, hasActiveFilters, activeCount } =
-    useFilterChipBar(filterConfig);
+    useFilterChipBar(filterConfig, context);
 
   const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     const buttons = chipBarRef.current?.querySelectorAll('button[aria-label^="Remove"]');
@@ -1185,7 +1185,8 @@ export const OPPORTUNITY_FILTER_CONFIG = validateFilterConfig([
     type: 'multiselect',
     choices: priorityChoices,
   },
-  // NOTE: Key format must match what filterRegistry emits - check if _gte or @gte
+  // ⚠️ IMPORTANT: Opportunities use UNDERSCORE format (_gte/_lte) - matches OpportunityListFilter.tsx
+  // This differs from Activities/Tasks which use @gte/@lte - codebase inconsistency
   {
     key: 'estimated_close_date_gte',
     label: 'Close after',
@@ -1494,13 +1495,24 @@ import { ACTIVITY_FILTER_CONFIG } from './activityFilterConfig';
 **Dependencies:** Tasks 1.4, 3.6
 **Parallel:** Can run with 3.7, 3.8
 
-**Changes:** Same pattern as Task 3.1.
+**Changes:** Similar to Task 3.1 BUT requires ConfigurationContext for dynamic task types.
+
+**⚠️ IMPORTANT:** TaskList needs to pass ConfigurationContext because Task filter config uses callback choices for dynamic task types.
 
 ```typescript
+import { useContext } from 'react';
 import { FilterChipBar } from '../filters';
 import { TASK_FILTER_CONFIG } from './taskFilterConfig';
+import { ConfigurationContext } from '../root/ConfigurationContext';
 
-<FilterChipBar filterConfig={TASK_FILTER_CONFIG} />
+// Inside TaskList component:
+const configContext = useContext(ConfigurationContext);
+
+// In the render:
+<FilterChipBar
+  filterConfig={TASK_FILTER_CONFIG}
+  context={configContext}  // Required for dynamic task type choices
+/>
 ```
 
 ---
