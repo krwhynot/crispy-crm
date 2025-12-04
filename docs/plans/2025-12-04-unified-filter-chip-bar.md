@@ -802,45 +802,99 @@ grep -q "FilterChipBar" src/atomic-crm/filters/index.ts && echo "PASS"
 
 ---
 
-### Task 1.8: Create useCategoryNames Hook
+### Task 1.8: Create Category Validation Schema and useCategoryNames Hook
 
-**File:** `src/atomic-crm/filters/useCategoryNames.ts` (NEW)
-**Time:** 5 min
+**Files:**
+- `src/atomic-crm/validation/categories.ts` (NEW - Zod schema)
+- `src/atomic-crm/filters/useCategoryNames.ts` (NEW - hook)
+- `src/atomic-crm/filters/types/resourceTypes.ts` (MODIFY - add extractor)
+
+**Time:** 8-10 min
 **Dependencies:** None
 
 **Purpose:** Lazy-load product category names from `distinct_product_categories` view for chip display.
 
+**⚠️ IMPORTANT:** Follow existing pattern (segments.ts, useSalesNames) for consistency:
+1. Create Zod schema in validation/ directory
+2. Add extractor to resourceTypes.ts
+3. Create hook using typed extractor
+
+**Step 1: Create validation/categories.ts (Zod schema):**
+```typescript
+// src/atomic-crm/validation/categories.ts
+import { z } from 'zod';
+
+/**
+ * Category schema for distinct_product_categories view
+ * Database view returns nullable fields, but we validate as required
+ * to ensure UI components receive clean data
+ */
+export const categorySchema = z.object({
+  id: z.string(),
+  name: z.string(),
+});
+
+export type Category = z.infer<typeof categorySchema>;
+
+/**
+ * Validate category data from database view
+ * Filters out any records with null id/name
+ */
+export function validateCategory(data: unknown): Category {
+  return categorySchema.parse(data);
+}
+```
+
+**Step 2: Add Category extractor to resourceTypes.ts:**
+```typescript
+// Add to src/atomic-crm/filters/types/resourceTypes.ts
+import type { Category } from "../../validation/categories";
+
+// Add to resourceExtractors object:
+export const resourceExtractors = {
+  // existing extractors...
+  categories: ((c) => c.name) satisfies DisplayNameExtractor<Category>,
+} as const;
+```
+
+**Step 3: Create useCategoryNames hook:**
 ```typescript
 // src/atomic-crm/filters/useCategoryNames.ts
+import type { Category } from '../validation/categories';
 import { useResourceNamesBase } from './hooks/useResourceNamesBase';
+import { resourceExtractors } from './types/resourceTypes';
 
-// Category extractor for distinct_product_categories view
-// View returns { id: string, name: string } - name is the display label
-const categoryExtractor = {
-  extractName: (record: { name?: string }) => record.name ?? 'Unknown',
-  fallbackPrefix: 'Category',
-};
-
+/**
+ * Fetch and cache category names for FilterChipBar display
+ * Categories come from distinct_product_categories database view
+ */
 export function useCategoryNames(ids: string[]) {
-  // Signature: (resourceName, ids, extractor, fallbackPrefix)
-  const { getResourceName, isLoading } = useResourceNamesBase(
+  const { namesMap, getName, loading } = useResourceNamesBase<Category>(
     'distinct_product_categories',
     ids,
-    categoryExtractor,
+    resourceExtractors.categories,
     'Category'
   );
 
   return {
-    getCategoryName: getResourceName,
-    isLoading,
+    categoryMap: namesMap,
+    getCategoryName: getName,
+    loading,
   };
 }
 ```
 
 **Verification:**
 ```bash
-ls src/atomic-crm/filters/useCategoryNames.ts && echo "PASS: File created"
-grep -q "distinct_product_categories" src/atomic-crm/filters/useCategoryNames.ts && echo "PASS: Uses correct view"
+# Check validation file exists
+ls src/atomic-crm/validation/categories.ts && echo "PASS: Schema created"
+
+# Check hook follows pattern
+grep -q "useResourceNamesBase<Category>" src/atomic-crm/filters/useCategoryNames.ts && echo "PASS: Typed pattern"
+grep -q "resourceExtractors.categories" src/atomic-crm/filters/useCategoryNames.ts && echo "PASS: Uses extractor"
+
+# TypeScript check
+npx tsc --noEmit 2>&1 | grep -i "category" && echo "FAIL: Type errors" || echo "PASS: Types OK"
 ```
 
 ---

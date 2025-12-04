@@ -167,3 +167,4 @@ Opportunity → Principal, Activities, Samples
 ---
 
 **Status:** MVP in Progress (Pre-launch)
+- use ref mcp tool for industry standards and/or ask multiple choice questions for additonal context if needed on plans or any tasks
