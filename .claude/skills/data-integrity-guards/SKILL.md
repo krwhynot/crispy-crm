@@ -1,6 +1,6 @@
 ---
 name: data-integrity-guards
-description: Defense-in-depth validation pattern for Crispy CRM. Validates data at EVERY layer - API boundary (Zod), form state (schema defaults), database (RLS/soft-delete). Triggers on validation, data flow, integrity, security, guards, layers, Zod, RLS, form defaults, error handling, data provider, schema, defense, multi-layer.
+description: Defense-in-depth validation pattern for Crispy CRM. Validates data at EVERY layer - API boundary (Zod with strictObject, .max() limits, coercion), form state (schema defaults, useWatch), database (RLS/soft-delete). Triggers on validation, data flow, integrity, security, guards, layers, Zod, RLS, form defaults, strictObject, string limits, coerce, allowlist, mass assignment, DoS.
 ---
 
 # Data Integrity Guards
@@ -16,7 +16,7 @@ This pattern addresses data corruption and validation gaps by implementing check
 ### Layer 1: API Boundary (Zod Validation)
 
 **Where:** `unifiedDataProvider.ts` via `ValidationService`
-**Purpose:** Reject obviously invalid input before database operations
+**Purpose:** Reject invalid input before database operations; prevent security vulnerabilities
 
 ```typescript
 // ✓ CORRECT: Validation at API boundary only
@@ -35,6 +35,31 @@ const ContactCreate = () => {
   const validate = (values) => { /* DON'T DO THIS */ };
   return <SimpleForm validate={validate}>...</SimpleForm>;
 };
+```
+
+**Security Requirements (OWASP Compliant):**
+
+| Requirement | Implementation | Risk if Missing |
+|-------------|---------------|-----------------|
+| **String limits** | `.max(100)` on ALL strings | DoS via 10MB payloads |
+| **Strict objects** | `z.strictObject()` for create/update | Mass assignment attacks |
+| **Coercion** | `z.coerce.number()` for form inputs | Type validation failures |
+| **Allowlist** | `z.enum(['a','b'])` for options | Denylist bypass |
+
+```typescript
+// ✓ CORRECT: Secure schema at API boundary
+export const createContactSchema = z.strictObject({
+  name: z.string().min(1).max(100),        // Length limit
+  email: z.string().email().max(254),       // Email limit
+  age: z.coerce.number().min(0).max(150),   // Coerced from form
+  role: z.enum(['admin', 'user', 'guest']), // Allowlist
+}); // strictObject rejects unknown keys
+
+// ✗ WRONG: Vulnerable schema
+const badSchema = z.object({
+  name: z.string(),  // No max = DoS risk
+  role: z.string(),  // No enum = injection risk
+}); // object allows unknown keys = mass assignment
 ```
 
 **Key Files:**
@@ -154,6 +179,12 @@ if (DEV) {
 | `DELETE FROM table` | Use `UPDATE SET deleted_at = NOW()` |
 | No RLS policy on table | Add policy in migration |
 | Silent catch block | Add logger.error() before re-throw |
+| **`z.string()` without `.max()`** | Add `.max(100)` for names, `.max(2000)` for text |
+| **`z.object()` at API boundary** | Use `z.strictObject()` for create/update schemas |
+| **`z.number()` for form input** | Use `z.coerce.number()` (forms return strings) |
+| **`z.string().refine(!includes)` denylist** | Use `z.enum([...])` allowlist instead |
+| **`mode: 'onChange'` in useForm** | Use `mode: 'onSubmit'` or `'onBlur'` (performance) |
+| **`watch()` at form root** | Use `useWatch({ name })` for isolated re-renders |
 
 ## Real Examples from Crispy CRM
 

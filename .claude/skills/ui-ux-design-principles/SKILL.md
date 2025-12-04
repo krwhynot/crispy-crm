@@ -1,6 +1,6 @@
 ---
 name: ui-ux-design-principles
-description: Use when designing UI, auditing UI/UX, choosing colors, implementing buttons/forms, or making layout decisions - prevents hardcoded hex values, pure black/white, too many accents, accessibility violations, and convention breaking through systematic color and UX frameworks
+description: Use when designing UI, auditing UI/UX, choosing colors, implementing buttons/forms, or making layout decisions. Covers WCAG 2.1 AA form accessibility (aria-invalid, role="alert", aria-describedby, focus management), UX laws (Fitts, Hick, Jakob), color theory (60-30-10), touch targets (44px). Prevents hardcoded hex, accessibility violations, missing ARIA attributes.
 ---
 
 # UI/UX Design Principles
@@ -158,9 +158,86 @@ These are **blockers** - no exceptions:
   {statusMessage}
 </div>
 
-// Form errors
+// Form errors (basic)
 <input aria-invalid={hasError} aria-describedby="error-msg" />
 <span id="error-msg" role="alert">{errorText}</span>
+```
+
+### Form Accessibility Patterns (WCAG 2.1 AA)
+
+**Required for ALL form inputs:**
+
+```tsx
+// ✅ CORRECT: Accessible form field with React Hook Form
+function AccessibleInput({ name, label, errors, register }) {
+  const hasError = !!errors[name];
+  const errorId = `${name}-error`;
+
+  return (
+    <div>
+      {/* 1. Visible label with htmlFor */}
+      <label htmlFor={name}>{label}</label>
+
+      {/* 2. Input with ARIA attributes */}
+      <input
+        id={name}
+        aria-invalid={hasError ? 'true' : 'false'}
+        aria-describedby={hasError ? errorId : undefined}
+        {...register(name)}
+      />
+
+      {/* 3. Error with role="alert" for screen readers */}
+      {hasError && (
+        <span id={errorId} role="alert" className="text-destructive">
+          {errors[name]?.message}
+        </span>
+      )}
+    </div>
+  );
+}
+
+// ❌ WRONG: Inaccessible form field
+<input {...register('email')} />
+{errors.email && <span>{errors.email.message}</span>}
+// Missing: label, aria-invalid, aria-describedby, role="alert"
+```
+
+**Form Accessibility Checklist:**
+
+| Requirement | Implementation | Screen Reader Behavior |
+|-------------|---------------|----------------------|
+| **Label association** | `<label htmlFor={id}>` | "Email, edit text" |
+| **Invalid state** | `aria-invalid="true"` | "Invalid entry" announced |
+| **Error description** | `aria-describedby={errorId}` | Error message read with field |
+| **Error announcement** | `role="alert"` | Immediate announcement on error |
+| **Required indication** | `aria-required="true"` | "Required" announced |
+
+**Focus Management on Validation Failure:**
+
+```tsx
+// ✅ CORRECT: Focus first invalid field after submit
+const { handleSubmit, setFocus } = useForm();
+
+const onSubmit = handleSubmit(
+  (data) => { /* success */ },
+  (errors) => {
+    // Focus first errored field
+    const firstError = Object.keys(errors)[0];
+    if (firstError) setFocus(firstError);
+  }
+);
+```
+
+**Live Validation Feedback:**
+
+```tsx
+// ✅ CORRECT: Live region for validation status
+<div aria-live="polite" aria-atomic="true" className="sr-only">
+  {isSubmitting && "Validating form..."}
+  {isSubmitSuccessful && "Form submitted successfully"}
+  {Object.keys(errors).length > 0 &&
+    `Form has ${Object.keys(errors).length} errors`}
+</div>
 ```
 
 ---
@@ -250,6 +327,15 @@ When answering UI/UX questions, structure responses as:
 - [ ] Keyboard navigation works
 - [ ] Feedback on all actions (<400ms)
 - [ ] Tested on primary target device
+
+### Form-Specific Accessibility Checklist
+- [ ] All inputs have associated `<label htmlFor={id}>`
+- [ ] Invalid fields have `aria-invalid="true"`
+- [ ] Error messages have `role="alert"`
+- [ ] Errors linked via `aria-describedby`
+- [ ] Required fields have `aria-required="true"`
+- [ ] Focus moves to first error on submit failure
+- [ ] Live region announces validation status
 
 ### Optimization Triggers
 

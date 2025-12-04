@@ -1,6 +1,6 @@
 ---
 name: enforcing-principles
-description: Use when implementing features, handling errors, adding validation, creating forms, writing database migrations. Enforces fail-fast (NO retry logic, circuit breakers, exponential backoff), single entry point (unified data provider, Zod at API boundary), form defaults from schema (zodSchema.partial().parse), TypeScript (interface vs type), React Admin patterns. BLOCKS anti-patterns (CircuitBreaker, maxRetries), SUGGESTS best practices.
+description: Use when implementing features, handling errors, adding validation, creating forms, writing database migrations. Enforces fail-fast (NO retry logic, circuit breakers), single entry point (unified data provider, Zod at API boundary), form defaults from schema (zodSchema.partial().parse), TypeScript (interface vs type), React Admin patterns. NEW (2024-12): Zod security (z.strictObject, string .max() limits, z.coerce for forms, z.enum allowlist), form performance (onSubmit/onBlur mode, useWatch not watch). BLOCKS anti-patterns, SUGGESTS best practices.
 ---
 
 # Atomic CRM Engineering Constitution
@@ -164,6 +164,69 @@ const form = useForm({
 
 **Why:** Prevents drift between validation and UI.
 
+### 3b. ZOD SECURITY PATTERNS (OWASP Compliant)
+
+**Rule:** All Zod schemas at API boundary must follow security best practices.
+
+**String Length Limits (Prevent DoS):**
+```typescript
+// ✅ CORRECT: Always set max length
+const schema = z.object({
+  name: z.string().max(100),           // Names
+  title: z.string().max(200),          // Titles/labels
+  description: z.string().max(2000),   // Long text
+  url: z.string().url().max(2048),     // URLs (browser limit)
+});
+
+// ❌ WRONG: No length limit = DoS vulnerability
+const schema = z.object({
+  name: z.string(), // Attacker can send 10MB string
+});
+```
+
+**Strict Objects at API Boundary (Prevent Mass Assignment):**
+```typescript
+// ✅ CORRECT: Reject unknown keys at API boundary
+export const createContactSchema = z.strictObject({
+  name: z.string().max(100),
+  email: z.string().email(),
+}); // Unknown keys throw error
+
+// ⚠️ INTERNAL ONLY: z.object() for composition/partial updates
+const contactBaseSchema = z.object({
+  name: z.string().max(100),
+}); // Can extend, allows unknown keys
+```
+
+**Coercion for Form Inputs:**
+```typescript
+// ✅ CORRECT: HTML inputs return strings, coerce to type
+const schema = z.object({
+  age: z.coerce.number().min(0).max(150),
+  price: z.coerce.number().positive(),
+  isActive: z.coerce.boolean(),
+  dueDate: z.coerce.date(),
+});
+
+// ❌ WRONG: Will fail on form input "42" (string, not number)
+const schema = z.object({
+  age: z.number(), // z.number().parse("42") throws!
+});
+```
+
+**Allowlist Validation (OWASP):**
+```typescript
+// ✅ CORRECT: Allowlist with z.enum()
+const stageSchema = z.enum(['new_lead', 'closed_won', 'closed_lost']);
+const roleSchema = z.enum(['admin', 'manager', 'rep']);
+
+// ❌ WRONG: Denylist (easily bypassed)
+const badSchema = z.string().refine(
+  (val) => !val.includes('<script>'), // Attacker uses <SCRIPT>
+  'Invalid input'
+);
+```
+
 ### 4. BOY SCOUT RULE
 
 **Rule:** Fix inconsistencies when editing files. Leave code better than you found it.
@@ -319,6 +382,11 @@ If you find yourself:
 | Business defaults | `.default()` in Zod | Hardcode in component |
 | Type inference | `z.infer<typeof schema>` | Manual type definition |
 | Error format | `{ message, errors: {} }` | Throw raw Zod error |
+| **String fields** | `.max(100)` on ALL strings | No length limit |
+| **API boundary objects** | `z.strictObject()` | `z.object()` (allows unknown keys) |
+| **Form number inputs** | `z.coerce.number()` | `z.number()` (fails on string "42") |
+| **Form date inputs** | `z.coerce.date()` | `z.date()` (fails on ISO strings) |
+| **Constrained values** | `z.enum(['a','b'])` (allowlist) | Regex denylist |
 
 ### Form State
 
@@ -328,6 +396,9 @@ If you find yourself:
 | Array defaults | Sub-schema with `.default()` | `defaultValue` prop |
 | JSONB arrays | `ArrayInput` + `SimpleFormIterator` | Manual array state |
 | Submit transform | `transform` prop on CreateBase | Transform in component |
+| **Validation mode** | `mode: 'onSubmit'` or `'onBlur'` | `mode: 'onChange'` (perf issue) |
+| **Watch values** | `useWatch({ control, name })` | `watch()` (re-renders whole form) |
+| **RHF + resolver** | `zodResolver(schema)` ONLY | Mix resolver + `register` validation |
 
 ### Database
 
@@ -444,6 +515,19 @@ Comprehensive patterns with real code examples from Atomic CRM:
 7. **FORMS** - React Admin components only
 8. **COLORS** - Semantic CSS variables only
 9. **MIGRATIONS** - Timestamp format via Supabase CLI
+
+### Zod Validation Rules (NEW - OWASP Compliant)
+
+10. **STRING LIMITS** - All strings must have `.max()` constraint (100/200/2000 chars)
+11. **STRICT OBJECTS** - Use `z.strictObject()` at API boundary (prevents mass assignment)
+12. **COERCION** - Use `z.coerce` for all non-string form inputs (number, date, boolean)
+13. **ALLOWLIST** - Use `z.enum()` for constrained values (never denylist regex)
+
+### Form Performance Rules (NEW)
+
+14. **VALIDATION MODE** - Use `onSubmit` or `onBlur` mode (never `onChange`)
+15. **WATCH ISOLATION** - Use `useWatch()` for subscriptions (not `watch()`)
+16. **RESOLVER ONLY** - Use `zodResolver(schema)` exclusively (don't mix with `register` validation)
 
 **Full details:** `docs/claude/engineering-constitution.md`
 
