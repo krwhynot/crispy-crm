@@ -18,7 +18,8 @@ export { useSalesNames } from "./useSalesNames";
 export { useTagNames } from "./useTagNames";
 export { useSegmentNames } from "./useSegmentNames";
 export { useCategoryNames } from "./useCategoryNames";
-// useOpportunityFilters removed - replaced by useOpportunityFilterChips in opportunities module
+// NOTE: Per-feature filter chip hooks (useOrganizationFilterChips, etc.) have been replaced
+// by the unified useFilterChipBar hook and FilterChipBar component.
 
 // Schema & Validation
 export { validateFilterConfig } from "./filterConfigSchema";

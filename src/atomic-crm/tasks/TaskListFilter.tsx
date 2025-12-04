@@ -6,7 +6,6 @@ import { FilterLiveForm, useGetIdentity } from "ra-core";
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
-import { SidebarActiveFilters } from "./SidebarActiveFilters";
 import { useConfigurationContext } from "../root/ConfigurationContext";
 
 /**
@@ -32,12 +31,6 @@ export const TaskListFilter = () => {
       <FilterLiveForm>
         <SearchInput source="q" placeholder="Search tasks..." />
       </FilterLiveForm>
-
-      {/* Active Filters - Conditional */}
-      <SidebarActiveFilters />
-
-      {/* Divider */}
-      <div className="border-b border-border" />
 
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">

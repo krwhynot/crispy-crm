@@ -225,9 +225,9 @@ vi.mock("../hooks/useFilterCleanup", () => ({
   useFilterCleanup: vi.fn(),
 }));
 
-// Mock SidebarActiveFilters to avoid useContactFilterChips dependency
-vi.mock("../SidebarActiveFilters", () => ({
-  SidebarActiveFilters: () => <div data-testid="sidebar-active-filters" />,
+// Mock FilterChipBar (active filters now displayed via FilterChipBar above datagrid)
+vi.mock("../filters", () => ({
+  FilterChipBar: () => <div data-testid="filter-chip-bar" />,
 }));
 
 // Import mocked functions after mock definition

@@ -26,7 +26,6 @@ import { addDays } from "date-fns";
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
-import { SidebarActiveFilters } from "./SidebarActiveFilters";
 import { OPPORTUNITY_STAGES } from "./constants/stageConstants";
 import { priorityChoices } from "./constants/priorityChoices";
 
@@ -138,12 +137,6 @@ export const OpportunityListFilter = () => {
       <FilterLiveForm>
         <SearchInput source="q" placeholder="Search opportunities..." />
       </FilterLiveForm>
-
-      {/* Active Filters - Conditional */}
-      <SidebarActiveFilters />
-
-      {/* Divider */}
-      <div className="border-b border-border" />
 
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">

@@ -15,8 +15,12 @@ import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { getTagColorClass } from "../tags/tag-colors";
-import { SidebarActiveFilters } from "./SidebarActiveFilters";
 
+/**
+ * ContactListFilter - Sidebar filter UI for Contacts list
+ *
+ * NOTE: Active filter chips are now displayed via FilterChipBar above the datagrid.
+ */
 export const ContactListFilter = () => {
   const { data: identity } = useGetIdentity();
   const { filterValues, setFilters } = useListContext();
@@ -59,12 +63,6 @@ export const ContactListFilter = () => {
       <FilterLiveForm>
         <SearchInput source="q" placeholder="Search contacts..." />
       </FilterLiveForm>
-
-      {/* Active Filters - Conditional */}
-      <SidebarActiveFilters />
-
-      {/* Divider */}
-      <div className="border-b border-border" />
 
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">
