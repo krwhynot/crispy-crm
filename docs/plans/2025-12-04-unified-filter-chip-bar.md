@@ -100,13 +100,21 @@ export const filterChoiceSchema = z.object({
   name: z.string().max(100),
 });
 
+// Support both static array and dynamic callback for choices
+// Callback receives context (e.g., ConfigurationContext values) at runtime
+export type ChoicesOrCallback = FilterChoice[] | ((context: unknown) => FilterChoice[]);
+
 export const filterConfigSchema = z.array(z.object({
   key: z.string().min(1).max(100),
   label: z.string().min(1).max(50),
   // Expanded to include all existing filter types in codebase
   type: z.enum(['select', 'multiselect', 'reference', 'date-range', 'search', 'toggle', 'boolean']),
   reference: z.string().optional(),
-  choices: z.array(filterChoiceSchema).optional(),
+  // UPDATED: Support static array OR callback function for dynamic choices
+  choices: z.union([
+    z.array(filterChoiceSchema),
+    z.function().args(z.unknown()).returns(z.array(filterChoiceSchema)),
+  ]).optional(),
   formatLabel: z.function().args(z.unknown()).returns(z.string()).optional(),
   // NEW: Group related filters for removal (e.g., date ranges)
   removalGroup: z.string().optional(),
@@ -155,6 +163,7 @@ import { useOrganizationNames } from './useOrganizationNames';
 import { useSalesNames } from './useSalesNames';
 import { useTagNames } from './useTagNames';
 import { useSegmentNames } from './useSegmentNames';
+import { useCategoryNames } from './useCategoryNames';
 
 export interface ChipData {
   key: string;
@@ -188,11 +197,12 @@ export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBar
 
   // Extract reference IDs for lazy loading names
   const referenceIds = useMemo(() => {
-    const ids: { organizations: string[]; sales: string[]; tags: string[]; segments: string[] } = {
+    const ids: { organizations: string[]; sales: string[]; tags: string[]; segments: string[]; categories: string[] } = {
       organizations: [],
       sales: [],
       tags: [],
       segments: [],
+      categories: [],
     };
 
     filterConfig.forEach((config) => {
@@ -209,6 +219,8 @@ export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBar
         ids.tags.push(...values.map(String));
       } else if (config.reference === 'segments' || config.key === 'segment_id') {
         ids.segments.push(...values.map(String));
+      } else if (config.reference === 'categories' || config.key === 'category') {
+        ids.categories.push(...values.map(String));
       }
     });
 
@@ -219,6 +231,7 @@ export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBar
   const { getSalesName } = useSalesNames(referenceIds.sales);
   const { getTagName } = useTagNames(referenceIds.tags);
   const { getSegmentName } = useSegmentNames(referenceIds.segments);
+  const { getCategoryName } = useCategoryNames(referenceIds.categories);
 
   // Build removal groups map from config
   const removalGroups = useMemo(() => {
@@ -262,6 +275,8 @@ export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBar
           label = getTagName(String(v));
         } else if (config?.reference === 'segments' || key === 'segment_id') {
           label = getSegmentName(String(v));
+        } else if (config?.reference === 'categories' || key === 'category') {
+          label = getCategoryName(String(v));
         } else {
           label = String(v);
         }
@@ -271,7 +286,7 @@ export function useFilterChipBar(filterConfig: FilterConfig[]): UseFilterChipBar
     });
 
     return result;
-  }, [filterValues, filterConfig, getOrganizationName, getSalesName, getTagName, getSegmentName]);
+  }, [filterValues, filterConfig, getOrganizationName, getSalesName, getTagName, getSegmentName, getCategoryName]);
 
   const removeFilter = useCallback(
     (key: string, value?: string | number) => {
@@ -684,6 +699,7 @@ export { FilterChip } from './FilterChip';
 export { FilterSidebar } from './FilterSidebar';
 export { useFilterChipBar } from './useFilterChipBar';
 export { useSegmentNames } from './useSegmentNames';
+export { useCategoryNames } from './useCategoryNames';
 export { validateFilterConfig } from './filterConfigSchema';
 export type { FilterConfig, FilterChoice } from './filterConfigSchema';
 export type { ChipData, UseFilterChipBarReturn } from './useFilterChipBar';
@@ -692,6 +708,49 @@ export type { ChipData, UseFilterChipBarReturn } from './useFilterChipBar';
 **Verification:**
 ```bash
 grep -q "FilterChipBar" src/atomic-crm/filters/index.ts && echo "PASS"
+```
+
+---
+
+### Task 1.8: Create useCategoryNames Hook
+
+**File:** `src/atomic-crm/filters/useCategoryNames.ts` (NEW)
+**Time:** 5 min
+**Dependencies:** None
+
+**Purpose:** Lazy-load product category names from `distinct_product_categories` view for chip display.
+
+```typescript
+// src/atomic-crm/filters/useCategoryNames.ts
+import { useResourceNamesBase } from './hooks/useResourceNamesBase';
+
+// Category extractor for distinct_product_categories view
+// View returns { id: string, name: string } - name is the display label
+const categoryExtractor = {
+  extractName: (record: { name?: string }) => record.name ?? 'Unknown',
+  fallbackPrefix: 'Category',
+};
+
+export function useCategoryNames(ids: string[]) {
+  // Signature: (resourceName, ids, extractor, fallbackPrefix)
+  const { getResourceName, isLoading } = useResourceNamesBase(
+    'distinct_product_categories',
+    ids,
+    categoryExtractor,
+    'Category'
+  );
+
+  return {
+    getCategoryName: getResourceName,
+    isLoading,
+  };
+}
+```
+
+**Verification:**
+```bash
+ls src/atomic-crm/filters/useCategoryNames.ts && echo "PASS: File created"
+grep -q "distinct_product_categories" src/atomic-crm/filters/useCategoryNames.ts && echo "PASS: Uses correct view"
 ```
 
 ---
@@ -838,7 +897,8 @@ export const PRODUCT_FILTER_CONFIG = validateFilterConfig([
     key: 'category',
     label: 'Category',
     type: 'select',
-    // Choices loaded dynamically from distinct_product_categories view
+    // Uses useCategoryNames hook to resolve names from distinct_product_categories view
+    reference: 'categories',
   },
   {
     key: 'principal_id',
@@ -985,10 +1045,10 @@ These tasks extend chip bar to remaining lists. Can ALL run in parallel.
 // src/atomic-crm/opportunities/opportunityFilterConfig.ts
 import { validateFilterConfig } from '../filters/filterConfigSchema';
 import { format, isToday, isThisWeek, isThisMonth } from 'date-fns';
-// Import from actual constants file
+// Import from actual constants file - NOTE: exports are camelCase!
 import {
-  OPPORTUNITY_STAGE_CHOICES,
-  PRIORITY_CHOICES,
+  stageChoices,    // NOT OPPORTUNITY_STAGE_CHOICES
+  priorityChoices, // NOT PRIORITY_CHOICES
 } from './constants/filterChoices';
 
 // Shared date formatter for chip labels
@@ -1006,7 +1066,7 @@ export const OPPORTUNITY_FILTER_CONFIG = validateFilterConfig([
     key: 'stage',
     label: 'Stage',
     type: 'multiselect',
-    choices: OPPORTUNITY_STAGE_CHOICES,
+    choices: stageChoices,
   },
   {
     key: 'principal_organization_id',
@@ -1036,7 +1096,7 @@ export const OPPORTUNITY_FILTER_CONFIG = validateFilterConfig([
     key: 'priority',
     label: 'Priority',
     type: 'multiselect',
-    choices: PRIORITY_CHOICES,
+    choices: priorityChoices,
   },
   // NOTE: Key format must match what filterRegistry emits - check if _gte or @gte
   {
@@ -1102,14 +1162,30 @@ grep -E "(STAGE|PRIORITY).*CHOICES" src/atomic-crm/opportunities/constants/filte
 // src/atomic-crm/activities/activityFilterConfig.ts
 import { validateFilterConfig } from '../filters/filterConfigSchema';
 import { format, isToday, isThisWeek, isThisMonth } from 'date-fns';
-// Check actual constants location in ActivityListFilter.tsx
+// ⚠️ CORRECT IMPORTS: From validation/activities, NOT ./constants
 import {
-  ACTIVITY_TYPE_CHOICES,
-  SAMPLE_STATUS_CHOICES,
-  SENTIMENT_CHOICES,
-} from './constants';
+  INTERACTION_TYPE_OPTIONS,
+  SAMPLE_STATUS_OPTIONS,
+  sentimentSchema,
+} from '../validation/activities';
 
-// Date formatter for ISO string chip labels (same pattern as contacts)
+// Convert options to choices format expected by schema
+const INTERACTION_TYPE_CHOICES = INTERACTION_TYPE_OPTIONS.map(opt => ({
+  id: opt.value,
+  name: opt.label,
+}));
+
+const SAMPLE_STATUS_CHOICES = SAMPLE_STATUS_OPTIONS.map(opt => ({
+  id: opt.value,
+  name: opt.label,
+}));
+
+const SENTIMENT_CHOICES = sentimentSchema.options.map(value => ({
+  id: value,
+  name: value.charAt(0).toUpperCase() + value.slice(1),
+}));
+
+// Date formatter for ISO string chip labels
 function formatDateLabel(value: unknown): string {
   if (!value || typeof value !== 'string') return String(value);
   const date = new Date(value);
@@ -1124,25 +1200,24 @@ export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
     key: 'type',
     label: 'Type',
     type: 'multiselect',
-    choices: ACTIVITY_TYPE_CHOICES,
+    choices: INTERACTION_TYPE_CHOICES,
   },
   {
-    // Changed to multiselect to match UI badge rendering
     key: 'sample_status',
     label: 'Sample Status',
     type: 'multiselect',
     choices: SAMPLE_STATUS_CHOICES,
   },
-  // NOTE: Check actual key format - _gte/_lte vs @gte/@lte
+  // ⚠️ CORRECT KEY FORMAT: @gte/@lte (NOT _gte/_lte)
   {
-    key: 'activity_date_gte',
+    key: 'activity_date@gte',
     label: 'After',
     type: 'date-range',
     formatLabel: formatDateLabel,
     removalGroup: 'activity_date_range',
   },
   {
-    key: 'activity_date_lte',
+    key: 'activity_date@lte',
     label: 'Before',
     type: 'date-range',
     formatLabel: formatDateLabel,
@@ -1151,7 +1226,7 @@ export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
   {
     key: 'sentiment',
     label: 'Sentiment',
-    type: 'select',
+    type: 'multiselect',
     choices: SENTIMENT_CHOICES,
   },
   {
@@ -1163,11 +1238,10 @@ export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
 ]);
 ```
 
-**Before implementing:** Verify constant names exist:
+**Verification:**
 ```bash
-grep -E "(TYPE|SAMPLE_STATUS|SENTIMENT).*CHOICES" src/atomic-crm/activities/constants.ts
-# Also check where constants are actually defined
-grep -r "ACTIVITY_TYPE_CHOICES" src/atomic-crm/activities/
+# Verify imports exist in validation file
+grep -E "INTERACTION_TYPE_OPTIONS|SAMPLE_STATUS_OPTIONS|sentimentSchema" src/atomic-crm/validation/activities.ts
 ```
 
 ---
@@ -1189,9 +1263,17 @@ grep -r "ACTIVITY_TYPE_CHOICES" src/atomic-crm/activities/
 ```typescript
 // src/atomic-crm/tasks/taskFilterConfig.ts
 import { validateFilterConfig } from '../filters/filterConfigSchema';
-import { format, isToday, isThisWeek, isThisMonth, isPast } from 'date-fns';
-// Check actual constants location in TaskListFilter.tsx
-import { PRIORITY_CHOICES, TASK_TYPE_CHOICES } from './constants';
+import { format, isToday, isThisWeek, isThisMonth } from 'date-fns';
+import type { ConfigurationContextValue } from '../root/ConfigurationContext';
+
+// ⚠️ INLINE CHOICES: Priority is defined inline in TaskListFilter.tsx (line 85)
+// NOT imported from a constants file
+const PRIORITY_CHOICES = [
+  { id: 'low', name: 'Low' },
+  { id: 'medium', name: 'Medium' },
+  { id: 'high', name: 'High' },
+  { id: 'critical', name: 'Critical' },
+];
 
 // Date formatter for chip labels
 function formatDateLabel(value: unknown): string {
@@ -1203,12 +1285,33 @@ function formatDateLabel(value: unknown): string {
   return format(date, 'MMM d, yyyy');
 }
 
+// ⚠️ DYNAMIC CHOICES: Task types come from ConfigurationContext
+// This callback will be resolved at runtime by useFilterChipBar
+function getTaskTypeChoices(context: ConfigurationContextValue) {
+  return context.taskTypes.map((type) => ({ id: type, name: type }));
+}
+
 export const TASK_FILTER_CONFIG = validateFilterConfig([
+  // PRIMARY FILTERS: Due date ranges first (lines 44-68 in TaskListFilter)
+  // ⚠️ CORRECT KEY FORMAT: @gte/@lte (NOT _gte/_lte)
+  {
+    key: 'due_date@gte',
+    label: 'Due after',
+    type: 'date-range',
+    formatLabel: formatDateLabel,
+    removalGroup: 'due_date_range',
+  },
+  {
+    key: 'due_date@lte',
+    label: 'Due before',
+    type: 'date-range',
+    formatLabel: formatDateLabel,
+    removalGroup: 'due_date_range',
+  },
   {
     key: 'completed',
     label: 'Status',
     type: 'boolean',
-    // Boolean filter: true = completed, false/undefined = incomplete
     formatLabel: (value: unknown) => value === true ? 'Completed' : 'Incomplete',
   },
   {
@@ -1220,8 +1323,9 @@ export const TASK_FILTER_CONFIG = validateFilterConfig([
   {
     key: 'type',
     label: 'Type',
-    type: 'select',
-    choices: TASK_TYPE_CHOICES,
+    type: 'multiselect',
+    // Dynamic choices from ConfigurationContext - callback pattern
+    choices: getTaskTypeChoices as (context: unknown) => { id: string; name: string }[],
   },
   {
     key: 'sales_id',
@@ -1229,29 +1333,13 @@ export const TASK_FILTER_CONFIG = validateFilterConfig([
     type: 'reference',
     reference: 'sales',
   },
-  // PRIMARY FILTERS: Due date ranges (lines 44-68 in TaskListFilter)
-  {
-    key: 'due_date_gte',
-    label: 'Due after',
-    type: 'date-range',
-    formatLabel: formatDateLabel,
-    removalGroup: 'due_date_range',
-  },
-  {
-    key: 'due_date_lte',
-    label: 'Due before',
-    type: 'date-range',
-    formatLabel: formatDateLabel,
-    removalGroup: 'due_date_range',
-  },
 ]);
 ```
 
-**Before implementing:** Verify constant names exist:
+**Verification:**
 ```bash
-grep -E "(PRIORITY|TASK_TYPE).*CHOICES" src/atomic-crm/tasks/constants.ts
-# Check how 'type' choices are provided (may be from context)
-grep -r "type.*choices" src/atomic-crm/tasks/TaskListFilter.tsx
+# Verify ConfigurationContext provides taskTypes
+grep -q "taskTypes" src/atomic-crm/root/ConfigurationContext.tsx && echo "PASS"
 ```
 
 ---
