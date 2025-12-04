@@ -39,6 +39,10 @@
 | Task 3.9 missing context prop | Medium | Added ConfigurationContext usage example |
 | E2E expects "two chips" for date range | Medium | Fixed to "ONE combined chip" (removalGroup behavior) |
 | Search chip missing "Search:" prefix | Medium | Added prefix in label since FilterChip doesn't render category |
+| Task 1.8 missing Category type | High | Added validation/categories.ts Zod schema for consistency |
+| Phase 5 deletion too aggressive | Medium | Changed to per-feature deletion with tests between each |
+| Segment type verified | ✅ Resolved | validation/segments.ts exists with proper exports |
+| distinct_product_categories verified | ✅ Resolved | View exists in migrations and database.generated.ts |
 | Loading state ambiguity | Low | Clarified: in-context loading only, not identity skeletons |
 | Activity config keys wrong | High | Changed to `@gte/@lte`, imports from `../validation/activities` |
 | Task config keys wrong | High | Changed to `@gte/@lte`, inline priorities, callback choices |
@@ -1676,93 +1680,166 @@ Same pattern as 4.1 - wrap with `<FilterSidebar showSearch={false}>`, remove Sid
 
 ---
 
-## Phase 5: Cleanup & Code Quality (Sequential)
+## Phase 5: Cleanup & Code Quality (Per-Feature Sequential)
 
-This phase removes deprecated code, consolidates duplicates, and ensures consistency.
+This phase removes deprecated code using a **per-feature deletion strategy** for safer rollback.
 
-### Task 5.1: Remove ALL Deprecated SidebarActiveFilters Components
+**⚠️ STRATEGY:** Delete one feature's deprecated files at a time, run tests between each to catch issues early.
 
-**⚠️ EXPANDED SCOPE:** All 5 feature areas have SidebarActiveFilters that must be removed to avoid double-display of active filters.
+---
 
-**Files to DELETE (all 5):**
+### Task 5.1a: Remove Organizations Deprecated Files
+
+**Files to DELETE:**
 - `src/atomic-crm/organizations/SidebarActiveFilters.tsx`
-- `src/atomic-crm/contacts/SidebarActiveFilters.tsx`
-- `src/atomic-crm/opportunities/SidebarActiveFilters.tsx`
-- `src/atomic-crm/activities/SidebarActiveFilters.tsx`
-- `src/atomic-crm/tasks/SidebarActiveFilters.tsx`
+- `src/atomic-crm/organizations/useOrganizationFilterChips.ts`
 
-**Files to UPDATE (remove imports from ALL):**
+**File to UPDATE:**
 - `src/atomic-crm/organizations/OrganizationListFilter.tsx` - Remove SidebarActiveFilters import/usage
+
+**Time:** 3-5 min
+**Dependencies:** Phase 4 complete
+
+**Verification:**
+```bash
+# Delete files and verify
+rm src/atomic-crm/organizations/SidebarActiveFilters.tsx
+rm src/atomic-crm/organizations/useOrganizationFilterChips.ts
+
+# Run tests for this feature
+npm test -- --testPathPattern="organizations" --passWithNoTests
+
+# TypeScript check
+npx tsc --noEmit
+```
+
+---
+
+### Task 5.1b: Remove Contacts Deprecated Files
+
+**Files to DELETE:**
+- `src/atomic-crm/contacts/SidebarActiveFilters.tsx`
+- `src/atomic-crm/contacts/useContactFilterChips.ts`
+
+**Files to UPDATE:**
 - `src/atomic-crm/contacts/ContactListFilter.tsx` - Remove SidebarActiveFilters import/usage
+- `src/atomic-crm/contacts/__tests__/ContactList.test.tsx` - Remove SidebarActiveFilters mock (line 228)
+
+**Time:** 3-5 min
+**Dependencies:** Task 5.1a
+
+**Verification:**
+```bash
+rm src/atomic-crm/contacts/SidebarActiveFilters.tsx
+rm src/atomic-crm/contacts/useContactFilterChips.ts
+npm test -- --testPathPattern="contacts" --passWithNoTests
+npx tsc --noEmit
+```
+
+---
+
+### Task 5.1c: Remove Products Deprecated Files (if any)
+
+**Check first:**
+```bash
+ls src/atomic-crm/products/SidebarActiveFilters.tsx 2>/dev/null && echo "EXISTS" || echo "NOT FOUND"
+ls src/atomic-crm/products/useProductFilterChips.ts 2>/dev/null && echo "EXISTS" || echo "NOT FOUND"
+```
+
+**Time:** 2 min (verify only if files don't exist)
+**Dependencies:** Task 5.1b
+
+---
+
+### Task 5.1d: Remove Opportunities Deprecated Files
+
+**Files to DELETE:**
+- `src/atomic-crm/opportunities/SidebarActiveFilters.tsx`
+- `src/atomic-crm/opportunities/useOpportunityFilterChips.ts`
+
+**File to UPDATE:**
 - `src/atomic-crm/opportunities/OpportunityListFilter.tsx` - Remove SidebarActiveFilters import/usage
+
+**Time:** 3-5 min
+**Dependencies:** Task 5.1c
+
+**Verification:**
+```bash
+rm src/atomic-crm/opportunities/SidebarActiveFilters.tsx
+rm src/atomic-crm/opportunities/useOpportunityFilterChips.ts
+npm test -- --testPathPattern="opportunities" --passWithNoTests
+npx tsc --noEmit
+```
+
+---
+
+### Task 5.1e: Remove Activities Deprecated Files
+
+**Files to DELETE:**
+- `src/atomic-crm/activities/SidebarActiveFilters.tsx`
+- `src/atomic-crm/activities/useActivityFilterChips.ts`
+
+**File to UPDATE:**
 - `src/atomic-crm/activities/ActivityListFilter.tsx` - Remove SidebarActiveFilters import/usage
+
+**Time:** 3-5 min
+**Dependencies:** Task 5.1d
+
+**Verification:**
+```bash
+rm src/atomic-crm/activities/SidebarActiveFilters.tsx
+rm src/atomic-crm/activities/useActivityFilterChips.ts
+npm test -- --testPathPattern="activities" --passWithNoTests
+npx tsc --noEmit
+```
+
+---
+
+### Task 5.1f: Remove Tasks Deprecated Files
+
+**Files to DELETE:**
+- `src/atomic-crm/tasks/SidebarActiveFilters.tsx`
+- `src/atomic-crm/tasks/useTaskFilterChips.ts`
+
+**File to UPDATE:**
 - `src/atomic-crm/tasks/TaskListFilter.tsx` - Remove SidebarActiveFilters import/usage
 
-**⚠️ TEST FILES TO UPDATE (remove mocks):**
-- `src/atomic-crm/contacts/__tests__/ContactList.test.tsx` - Remove SidebarActiveFilters mock
-- Check other feature __tests__ directories for similar mocks
+**Time:** 3-5 min
+**Dependencies:** Task 5.1e
 
-**Time:** 15-20 min (expanded scope)
-**Dependencies:** All Phase 3A, 3B, and 4 tasks complete
+**Verification:**
+```bash
+rm src/atomic-crm/tasks/SidebarActiveFilters.tsx
+rm src/atomic-crm/tasks/useTaskFilterChips.ts
+npm test -- --testPathPattern="tasks" --passWithNoTests
+npx tsc --noEmit
+```
+
+---
+
+### Task 5.2: Final Cleanup Verification
+
+**Purpose:** Confirm all deprecated files removed across all features.
+
+**Time:** 3 min
+**Dependencies:** Tasks 5.1a-5.1f
 
 **Verification:**
 ```bash
 # Ensure ALL SidebarActiveFilters files are deleted
 ls src/atomic-crm/*/SidebarActiveFilters.tsx 2>/dev/null && echo "FAIL: Files remain" || echo "PASS: All deleted"
 
-# Ensure no references remain in source files
-grep -r "SidebarActiveFilters" src/atomic-crm/ && echo "FAIL: References remain" || echo "PASS: Cleaned up"
-
-# Ensure no mocks remain in test files
-grep -r "SidebarActiveFilters" src/atomic-crm/**/__tests__/ && echo "FAIL: Test mocks remain" || echo "PASS: Test mocks cleaned"
-```
-
----
-
-### Task 5.2: Remove ALL Deprecated Feature-Specific Filter Chip Hooks
-
-**⚠️ EXPANDED SCOPE:** All 5 feature areas have custom filter chip hooks that must be removed now that FilterChipBar provides unified functionality.
-
-**Files to DELETE (all 5):**
-- `src/atomic-crm/organizations/useOrganizationFilterChips.ts`
-- `src/atomic-crm/contacts/useContactFilterChips.ts`
-- `src/atomic-crm/opportunities/useOpportunityFilterChips.ts`
-- `src/atomic-crm/activities/useActivityFilterChips.ts`
-- `src/atomic-crm/tasks/useTaskFilterChips.ts`
-
-**Before deleting, verify no imports exist:**
-```bash
-# Check for any remaining references to these hooks
-grep -r "useOrganizationFilterChips" src/ --include="*.tsx" --include="*.ts"
-grep -r "useContactFilterChips" src/ --include="*.tsx" --include="*.ts"
-grep -r "useOpportunityFilterChips" src/ --include="*.tsx" --include="*.ts"
-grep -r "useActivityFilterChips" src/ --include="*.tsx" --include="*.ts"
-grep -r "useTaskFilterChips" src/ --include="*.tsx" --include="*.ts"
-```
-
-**If no references found, delete all 5 files:**
-```bash
-rm src/atomic-crm/organizations/useOrganizationFilterChips.ts
-rm src/atomic-crm/contacts/useContactFilterChips.ts
-rm src/atomic-crm/opportunities/useOpportunityFilterChips.ts
-rm src/atomic-crm/activities/useActivityFilterChips.ts
-rm src/atomic-crm/tasks/useTaskFilterChips.ts
-```
-
-**Verification:**
-```bash
 # Ensure ALL chip hook files are deleted
 ls src/atomic-crm/*/use*FilterChips.ts 2>/dev/null && echo "FAIL: Files remain" || echo "PASS: All deleted"
 
-# Ensure no references remain in source files
-grep -r "FilterChips" src/atomic-crm/ --include="*.tsx" --include="*.ts" | grep -v "FilterChipsPanel" && echo "FAIL: References remain" || echo "PASS: Cleaned up"
+# Ensure no references remain
+grep -r "SidebarActiveFilters" src/atomic-crm/ && echo "FAIL: References remain" || echo "PASS: Cleaned up"
+grep -r "useOrganizationFilterChips\|useContactFilterChips\|useOpportunityFilterChips\|useActivityFilterChips\|useTaskFilterChips" src/ && echo "FAIL" || echo "PASS"
 
-# TypeScript compile check
-npx tsc --noEmit 2>&1 | grep -i "filterchips" && echo "FAIL: Type errors" || echo "PASS: Types OK"
+# Full test suite
+npm test
+npx tsc --noEmit
 ```
-
-**Time:** 8-10 min (expanded scope)
-**Dependencies:** Task 5.1
 
 ---
 
