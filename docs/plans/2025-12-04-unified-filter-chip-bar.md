@@ -33,10 +33,12 @@
 | Opp chip placement unclear | Medium | Task 3.7 clarified for kanban/list/campaign views |
 | Category chips show raw IDs | Medium | Added choices/formatters to Org/Product configs |
 | Phase 4 incomplete scope | Medium | Expanded to all 6 filter sidebars |
-| Opp filter keys use underscore | Critical | Changed `_gte/_lte` to `@gte/@lte` (matches codebase) |
+| Filter key format inconsistency | Critical | Opps use `_gte/_lte`, Activities/Tasks use `@gte/@lte` - plan matches each feature's UI |
 | FilterChipBar missing context | High | Added `context` prop pass-through to hook call |
 | Missing FilterChoice import | High | Added to Task 1.2 imports |
 | Task 3.9 missing context prop | Medium | Added ConfigurationContext usage example |
+| E2E expects "two chips" for date range | Medium | Fixed to "ONE combined chip" (removalGroup behavior) |
+| Search chip missing "Search:" prefix | Medium | Added prefix in label since FilterChip doesn't render category |
 | Loading state ambiguity | Low | Clarified: in-context loading only, not identity skeletons |
 | Activity config keys wrong | High | Changed to `@gte/@lte`, imports from `../validation/activities` |
 | Task config keys wrong | High | Changed to `@gte/@lte`, inline priorities, callback choices |
@@ -327,8 +329,9 @@ export function useFilterChipBar(filterConfig: ChipFilterConfig[], context?: unk
         let label: string;
 
         // Special handling for search filter (q)
+        // Include "Search: " prefix in label since FilterChip only renders label, not category
         if (key === 'q') {
-          label = `"${String(v)}"`;
+          label = `Search: "${String(v)}"`;
           result.push({ key, value: v as string | number, label, category: 'Search' });
           return; // Skip other label logic
         }
@@ -1936,8 +1939,8 @@ Write Playwright tests covering:
 2. **Contacts** (`/contacts`)
    - Tag filter shows as chip
    - Organization filter shows org name
-   - Last seen date range shows as two chips
-   - Removing either date chip clears both
+   - Last seen date range shows as ONE combined chip (e.g., "Jan 1 – Jan 31")
+   - Removing the date chip clears both @gte and @lte filters (removalGroup behavior)
 
 3. **Products** (`/products`)
    - Status filter shows as chip

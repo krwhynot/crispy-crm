@@ -1940,6 +1940,962 @@ Replace raw Tailwind colors with design system tokens:
 | Security | 8/10 | RLS complete, tokens noted for encryption |
 | Testability | 7/10 | Unit tests present, E2E coverage light |
 
-### Recommendation: ✅ READY TO EXECUTE
+### Recommendation: ⚠️ CRITICAL FIXES REQUIRED
 
-The plan is comprehensive and executable by zero-context agents after applying the fixes documented above.
+See **Addendum: Critical Security & Robustness Fixes** below before execution.
+
+---
+
+## Addendum: Critical Security & Robustness Fixes (2025-12-04)
+
+### User Requirements Clarification
+
+| Question | Answer |
+|----------|--------|
+| Initial backfill window | **7 days** |
+| Email visibility scope | **Owner only** (strictest) |
+| Attachment metadata | **Drop feature** (remove column) |
+| MVP scope | **Full robustness** (pagination, delta sync, logging, alerts) |
+
+---
+
+### Fix 1: OAuth Security (PKCE + Signed State + Nonce)
+
+**Problem:** Current plan uses raw `salesId` as OAuth state parameter - vulnerable to CSRF/account misbinding attacks.
+
+**Solution:** Implement PKCE flow with signed state containing nonce.
+
+#### Task 2.4 Replacement: Secure OAuth Flow
+
+**File:** `supabase/functions/email-oauth-init/index.ts` (NEW - replaces direct redirect)
+
+```typescript
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "jsr:@supabase/supabase-js@2";
+
+const MICROSOFT_CLIENT_ID = Deno.env.get("MICROSOFT_CLIENT_ID")!;
+const REDIRECT_URI = Deno.env.get("EMAIL_OAUTH_REDIRECT_URI")!;
+const STATE_SECRET = Deno.env.get("OAUTH_STATE_SECRET")!; // Add to secrets
+
+interface OAuthState {
+  salesId: number;
+  nonce: string;
+  timestamp: number;
+}
+
+// PKCE utilities
+function generateCodeVerifier(): string {
+  const array = new Uint8Array(32);
+  crypto.getRandomValues(array);
+  return base64URLEncode(array);
+}
+
+async function generateCodeChallenge(verifier: string): Promise<string> {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(verifier);
+  const hash = await crypto.subtle.digest("SHA-256", data);
+  return base64URLEncode(new Uint8Array(hash));
+}
+
+function base64URLEncode(buffer: Uint8Array): string {
+  return btoa(String.fromCharCode(...buffer))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=/g, "");
+}
+
+// Sign state to prevent tampering
+async function signState(state: OAuthState): Promise<string> {
+  const encoder = new TextEncoder();
+  const key = await crypto.subtle.importKey(
+    "raw",
+    encoder.encode(STATE_SECRET),
+    { name: "HMAC", hash: "SHA-256" },
+    false,
+    ["sign"]
+  );
+  const payload = JSON.stringify(state);
+  const signature = await crypto.subtle.sign("HMAC", key, encoder.encode(payload));
+  return `${btoa(payload)}.${base64URLEncode(new Uint8Array(signature))}`;
+}
+
+Deno.serve(async (req) => {
+  try {
+    // Verify user is authenticated
+    const authHeader = req.headers.get("Authorization");
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+    }
+
+    const supabase = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_ANON_KEY")!,
+      { global: { headers: { Authorization: authHeader } } }
+    );
+
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+    }
+
+    // Get sales_id for this user
+    const { data: salesData } = await supabase
+      .from("sales")
+      .select("id")
+      .eq("user_id", user.id)
+      .single();
+
+    if (!salesData) {
+      return new Response(JSON.stringify({ error: "Sales record not found" }), { status: 404 });
+    }
+
+    // Generate PKCE parameters
+    const codeVerifier = generateCodeVerifier();
+    const codeChallenge = await generateCodeChallenge(codeVerifier);
+
+    // Generate signed state with nonce
+    const nonce = crypto.randomUUID();
+    const state: OAuthState = {
+      salesId: salesData.id,
+      nonce,
+      timestamp: Date.now(),
+    };
+    const signedState = await signState(state);
+
+    // Store code_verifier and nonce in DB (temporary, expires in 10 min)
+    const supabaseAdmin = createClient(
+      Deno.env.get("SUPABASE_URL")!,
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
+    );
+
+    await supabaseAdmin.from("oauth_pending").upsert({
+      sales_id: salesData.id,
+      code_verifier: codeVerifier,
+      nonce,
+      expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
+    });
+
+    // Build authorization URL
+    const authUrl = new URL("https://login.microsoftonline.com/common/oauth2/v2.0/authorize");
+    authUrl.searchParams.set("client_id", MICROSOFT_CLIENT_ID);
+    authUrl.searchParams.set("response_type", "code");
+    authUrl.searchParams.set("redirect_uri", REDIRECT_URI);
+    authUrl.searchParams.set("scope", "https://graph.microsoft.com/Mail.Read offline_access");
+    authUrl.searchParams.set("state", signedState);
+    authUrl.searchParams.set("code_challenge", codeChallenge);
+    authUrl.searchParams.set("code_challenge_method", "S256");
+
+    return new Response(JSON.stringify({ authUrl: authUrl.toString() }), {
+      headers: { "Content-Type": "application/json" },
+    });
+  } catch (error) {
+    console.error("OAuth init error:", error);
+    return new Response(JSON.stringify({ error: "Internal server error" }), { status: 500 });
+  }
+});
+```
+
+#### New Migration: oauth_pending table
+
+**File:** `supabase/migrations/[timestamp]_create_oauth_pending.sql`
+
+```sql
+-- Temporary storage for PKCE verifiers during OAuth flow
+CREATE TABLE "public"."oauth_pending" (
+    "sales_id" bigint PRIMARY KEY REFERENCES sales(id) ON DELETE CASCADE,
+    "code_verifier" text NOT NULL,
+    "nonce" text NOT NULL,
+    "expires_at" timestamptz NOT NULL,
+    "created_at" timestamptz DEFAULT now()
+);
+
+-- Auto-cleanup expired entries
+CREATE INDEX idx_oauth_pending_expires ON oauth_pending(expires_at);
+
+-- RLS: Only service role can access
+ALTER TABLE oauth_pending ENABLE ROW LEVEL SECURITY;
+-- No user policies - only service_role access
+```
+
+#### Updated Task 2.4: OAuth Callback with PKCE Validation
+
+Update the callback to verify signed state and use code_verifier:
+
+```typescript
+// In email-oauth-callback/index.ts - add these validations:
+
+async function verifyState(signedState: string): Promise<OAuthState | null> {
+  try {
+    const [payloadB64, signatureB64] = signedState.split(".");
+    const payload = JSON.parse(atob(payloadB64));
+
+    // Verify signature
+    const encoder = new TextEncoder();
+    const key = await crypto.subtle.importKey(
+      "raw",
+      encoder.encode(STATE_SECRET),
+      { name: "HMAC", hash: "SHA-256" },
+      false,
+      ["verify"]
+    );
+
+    const signature = Uint8Array.from(atob(signatureB64.replace(/-/g, "+").replace(/_/g, "/")), c => c.charCodeAt(0));
+    const valid = await crypto.subtle.verify("HMAC", key, signature, encoder.encode(JSON.stringify(payload)));
+
+    if (!valid) return null;
+
+    // Check timestamp (10 min max)
+    if (Date.now() - payload.timestamp > 10 * 60 * 1000) return null;
+
+    return payload;
+  } catch {
+    return null;
+  }
+}
+
+// In the handler:
+const state = await verifyState(stateParam);
+if (!state) {
+  return new Response(JSON.stringify({ error: "Invalid or expired state" }), { status: 400 });
+}
+
+// Retrieve and validate code_verifier
+const { data: pending } = await supabaseAdmin
+  .from("oauth_pending")
+  .select("code_verifier, nonce")
+  .eq("sales_id", state.salesId)
+  .eq("nonce", state.nonce)
+  .gt("expires_at", new Date().toISOString())
+  .single();
+
+if (!pending) {
+  return new Response(JSON.stringify({ error: "OAuth session expired" }), { status: 400 });
+}
+
+// Exchange code with code_verifier (PKCE)
+const tokenResponse = await fetch(
+  "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+  {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_id: MICROSOFT_CLIENT_ID,
+      client_secret: MICROSOFT_CLIENT_SECRET,
+      code,
+      redirect_uri: REDIRECT_URI,
+      grant_type: "authorization_code",
+      code_verifier: pending.code_verifier, // PKCE verification
+    }),
+  }
+);
+
+// Clean up pending record after use
+await supabaseAdmin.from("oauth_pending").delete().eq("sales_id", state.salesId);
+```
+
+---
+
+### Fix 2: Cron Setup Documentation
+
+**Problem:** Task 2.6 omits required database configuration for pg_net and app settings.
+
+#### New Task 2.6.1: Configure pg_net and App Settings
+
+**File:** `docs/email-integration-setup.md` (add section)
+
+```markdown
+## Database Configuration for Scheduled Sync
+
+### 1. Enable pg_net Extension
+
+In Supabase Dashboard → Database → Extensions, enable:
+- `pg_net` - For HTTP requests from SQL
+
+Or via migration:
+```sql
+CREATE EXTENSION IF NOT EXISTS pg_net WITH SCHEMA extensions;
+```
+
+### 2. Set App Configuration
+
+```sql
+-- Set these in Supabase Dashboard → Database → Postgres Settings → Custom
+-- Or via SQL:
+ALTER DATABASE postgres SET "app.settings.supabase_url" = 'https://your-project.supabase.co';
+ALTER DATABASE postgres SET "app.settings.cron_secret" = 'your-secure-random-secret-here';
+```
+
+### 3. Set Edge Function Secrets
+
+```bash
+# Generate a secure random secret
+openssl rand -base64 32
+
+# Set secrets
+supabase secrets set CRON_SECRET=<generated-secret>
+supabase secrets set OAUTH_STATE_SECRET=<another-generated-secret>
+supabase secrets set MICROSOFT_CLIENT_ID=<your-client-id>
+supabase secrets set MICROSOFT_CLIENT_SECRET=<your-client-secret>
+supabase secrets set EMAIL_OAUTH_REDIRECT_URI=https://your-project.supabase.co/functions/v1/email-oauth-callback
+supabase secrets set APP_URL=https://your-app-domain.com
+```
+
+### 4. Secret Rotation
+
+Rotate `CRON_SECRET` monthly:
+1. Generate new secret
+2. Update `app.settings.cron_secret` in database
+3. Update `CRON_SECRET` Edge Function secret
+4. Verify cron job executes successfully
+```
+
+#### Updated Task 2.6: pg_cron Setup
+
+```sql
+-- Ensure pg_cron is enabled
+CREATE EXTENSION IF NOT EXISTS pg_cron WITH SCHEMA extensions;
+
+-- Grant usage
+GRANT USAGE ON SCHEMA cron TO postgres;
+
+-- Setup cron job for email sync (every 5 minutes)
+SELECT cron.schedule(
+    'email-sync-poll',
+    '*/5 * * * *',
+    $$
+    SELECT extensions.http_post(
+        url := current_setting('app.settings.supabase_url') || '/functions/v1/email-sync-poll',
+        headers := jsonb_build_object(
+            'Authorization', 'Bearer ' || current_setting('app.settings.cron_secret'),
+            'Content-Type', 'application/json'
+        ),
+        body := '{}'::jsonb
+    );
+    $$
+);
+
+-- Verify job is scheduled
+SELECT * FROM cron.job WHERE jobname = 'email-sync-poll';
+```
+
+---
+
+### Fix 3: Delta Sync with Pagination & 7-Day Backfill
+
+**Problem:** Current sync fetches only 50 emails with no pagination, drops anything over limit.
+
+**Solution:** Implement Microsoft Graph delta query with proper pagination.
+
+#### Updated Task 2.5: Robust Delta Sync
+
+**File:** `supabase/functions/email-sync-poll/index.ts` (replacement)
+
+```typescript
+import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
+
+const MICROSOFT_CLIENT_ID = Deno.env.get("MICROSOFT_CLIENT_ID")!;
+const MICROSOFT_CLIENT_SECRET = Deno.env.get("MICROSOFT_CLIENT_SECRET")!;
+const CRON_SECRET = Deno.env.get("CRON_SECRET")!;
+const MAX_EMAILS_PER_SYNC = 500; // Safety limit per connection per run
+
+interface EmailConnection {
+  id: number;
+  sales_id: number;
+  access_token: string;
+  refresh_token: string;
+  token_expires_at: string;
+  email_address: string;
+  delta_link: string | null; // Store delta link for incremental sync
+  last_sync_at: string | null;
+}
+
+interface SyncResult {
+  connectionId: number;
+  emailsProcessed: number;
+  success: boolean;
+  error?: string;
+}
+
+async function refreshTokenIfNeeded(connection: EmailConnection): Promise<string> {
+  const expiresAt = new Date(connection.token_expires_at);
+  if (expiresAt.getTime() - Date.now() > 5 * 60 * 1000) {
+    return connection.access_token;
+  }
+
+  const response = await fetch(
+    "https://login.microsoftonline.com/common/oauth2/v2.0/token",
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        client_id: MICROSOFT_CLIENT_ID,
+        client_secret: MICROSOFT_CLIENT_SECRET,
+        refresh_token: connection.refresh_token,
+        grant_type: "refresh_token",
+      }),
+    }
+  );
+
+  if (!response.ok) {
+    throw new Error(`Token refresh failed: ${response.status}`);
+  }
+
+  const tokens = await response.json();
+
+  await supabaseAdmin
+    .from("email_connections")
+    .update({
+      access_token: tokens.access_token,
+      refresh_token: tokens.refresh_token || connection.refresh_token,
+      token_expires_at: new Date(Date.now() + tokens.expires_in * 1000).toISOString(),
+    })
+    .eq("id", connection.id);
+
+  return tokens.access_token;
+}
+
+async function syncEmailsWithDelta(connection: EmailConnection): Promise<SyncResult> {
+  const accessToken = await refreshTokenIfNeeded(connection);
+  let emailsProcessed = 0;
+  let nextLink: string | null = null;
+  let deltaLink: string | null = connection.delta_link;
+
+  // Build initial URL
+  let url: string;
+  if (deltaLink) {
+    // Incremental sync using stored delta link
+    url = deltaLink;
+  } else {
+    // Initial sync: 7-day backfill with filter
+    const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+    url = `https://graph.microsoft.com/v1.0/me/mailFolders/inbox/messages/delta?$filter=receivedDateTime ge ${sevenDaysAgo}&$select=id,conversationId,subject,bodyPreview,body,from,toRecipients,ccRecipients,receivedDateTime,isRead,hasAttachments,importance&$top=50`;
+  }
+
+  // Paginate through all results
+  while (url && emailsProcessed < MAX_EMAILS_PER_SYNC) {
+    const response = await fetch(url, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Graph API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    const messages = data.value || [];
+
+    // Process messages
+    for (const msg of messages) {
+      // Skip deleted messages (delta returns @removed for deletions)
+      if (msg["@removed"]) continue;
+
+      await processAndStoreEmail(connection, msg);
+      emailsProcessed++;
+    }
+
+    // Check for more pages or delta link
+    nextLink = data["@odata.nextLink"] || null;
+    deltaLink = data["@odata.deltaLink"] || null;
+
+    url = nextLink || ""; // Continue if more pages
+  }
+
+  // Store delta link for next sync
+  await supabaseAdmin
+    .from("email_connections")
+    .update({
+      delta_link: deltaLink,
+      last_sync_at: new Date().toISOString(),
+    })
+    .eq("id", connection.id);
+
+  // Log sync result
+  await supabaseAdmin.from("sync_log").insert({
+    email_connection_id: connection.id,
+    emails_processed: emailsProcessed,
+    success: true,
+    sync_type: connection.delta_link ? "incremental" : "initial",
+  });
+
+  return { connectionId: connection.id, emailsProcessed, success: true };
+}
+
+async function processAndStoreEmail(connection: EmailConnection, msg: any): Promise<void> {
+  const senderEmail = msg.from?.emailAddress?.address?.toLowerCase();
+  const isOutbound = senderEmail === connection.email_address.toLowerCase();
+  const direction = isOutbound ? "outbound" : "inbound";
+
+  // Multi-recipient matching: check all recipients
+  const allRecipients = [
+    ...(msg.toRecipients || []).map((r: any) => r.emailAddress?.address),
+    ...(msg.ccRecipients || []).map((r: any) => r.emailAddress?.address),
+    senderEmail,
+  ].filter(Boolean);
+
+  // Match to contacts (tenant-scoped)
+  let contactId: number | null = null;
+  let organizationId: number | null = null;
+  let opportunityId: number | null = null;
+  let principalId: number | null = null;
+
+  for (const email of allRecipients) {
+    const { data: match } = await supabaseAdmin.rpc("match_email_to_contact_scoped", {
+      p_email_address: email,
+      p_sales_id: connection.sales_id,
+    });
+
+    if (match?.[0]) {
+      contactId = match[0].contact_id;
+      organizationId = match[0].organization_id;
+      opportunityId = match[0].opportunity_id;
+      principalId = match[0].principal_id;
+      break; // Use first match
+    }
+  }
+
+  // Only store if we have a CRM match
+  if (!contactId && !organizationId) return;
+
+  await supabaseAdmin.from("synced_emails").upsert(
+    {
+      email_connection_id: connection.id,
+      message_id: msg.id,
+      thread_id: msg.conversationId,
+      subject: (msg.subject || "").substring(0, 1000),
+      body_preview: (msg.bodyPreview || "").substring(0, 500),
+      body_html: (msg.body?.content || "").substring(0, 100000),
+      sender_email: senderEmail,
+      sender_name: msg.from?.emailAddress?.name,
+      recipient_emails: msg.toRecipients?.map((r: any) => r.emailAddress?.address) || [],
+      cc_emails: msg.ccRecipients?.map((r: any) => r.emailAddress?.address) || [],
+      received_at: msg.receivedDateTime,
+      is_read: msg.isRead,
+      has_attachments: msg.hasAttachments,
+      importance: msg.importance?.toLowerCase() || "normal",
+      direction,
+      contact_id: contactId,
+      organization_id: organizationId,
+      opportunity_id: opportunityId,
+      principal_id: principalId,
+    },
+    { onConflict: "email_connection_id,message_id" }
+  );
+}
+
+Deno.serve(async (req) => {
+  const authHeader = req.headers.get("Authorization");
+  if (authHeader?.replace("Bearer ", "") !== CRON_SECRET) {
+    return new Response(JSON.stringify({ error: "Unauthorized" }), { status: 401 });
+  }
+
+  const { data: connections } = await supabaseAdmin
+    .from("email_connections")
+    .select("*")
+    .eq("sync_enabled", true)
+    .is("deleted_at", null);
+
+  const results: SyncResult[] = [];
+
+  for (const conn of connections || []) {
+    try {
+      const result = await syncEmailsWithDelta(conn as EmailConnection);
+      results.push(result);
+    } catch (error) {
+      const errorMsg = (error as Error).message;
+      results.push({ connectionId: conn.id, emailsProcessed: 0, success: false, error: errorMsg });
+
+      // Log failure
+      await supabaseAdmin.from("sync_log").insert({
+        email_connection_id: conn.id,
+        emails_processed: 0,
+        success: false,
+        error_message: errorMsg,
+        sync_type: conn.delta_link ? "incremental" : "initial",
+      });
+    }
+  }
+
+  return new Response(JSON.stringify({ results, executedAt: new Date().toISOString() }), {
+    headers: { "Content-Type": "application/json" },
+  });
+});
+```
+
+---
+
+### Fix 4: Multi-Recipient Tenant-Scoped Email Matching
+
+**Problem:** Current matching only checks first recipient, no tenant scoping, no opportunity linking.
+
+#### Updated Task 1.3: Secure Contact Matching Function
+
+```sql
+-- Drop old function
+DROP FUNCTION IF EXISTS public.match_email_to_contact(text);
+
+-- New tenant-scoped matching function with opportunity/principal resolution
+CREATE OR REPLACE FUNCTION public.match_email_to_contact_scoped(
+    p_email_address text,
+    p_sales_id bigint
+) RETURNS TABLE (
+    contact_id bigint,
+    organization_id bigint,
+    opportunity_id bigint,
+    principal_id bigint,
+    match_type text
+) LANGUAGE plpgsql SECURITY DEFINER AS $$
+DECLARE
+    v_contact_id bigint;
+    v_organization_id bigint;
+    v_opportunity_id bigint;
+    v_principal_id bigint;
+BEGIN
+    -- Search contacts where email JSONB array contains matching email
+    -- Scoped to contacts the sales rep can access (their opportunities or public contacts)
+    SELECT c.id, c.organization_id
+    INTO v_contact_id, v_organization_id
+    FROM contacts c
+    WHERE c.deleted_at IS NULL
+      AND EXISTS (
+          SELECT 1 FROM jsonb_array_elements(c.email) AS e
+          WHERE lower(e->>'email') = lower(p_email_address)
+      )
+      AND (
+          -- Contact is linked to an opportunity owned by this sales rep
+          EXISTS (
+              SELECT 1 FROM opportunities o
+              WHERE o.contact_id = c.id
+                AND o.sales_id = p_sales_id
+                AND o.deleted_at IS NULL
+          )
+          -- Or contact's organization has opportunities owned by this sales rep
+          OR EXISTS (
+              SELECT 1 FROM opportunities o
+              WHERE o.organization_id = c.organization_id
+                AND o.sales_id = p_sales_id
+                AND o.deleted_at IS NULL
+          )
+      )
+    LIMIT 1;
+
+    IF v_contact_id IS NOT NULL THEN
+        -- Find the most recent active opportunity for this contact
+        SELECT o.id, o.principal_id
+        INTO v_opportunity_id, v_principal_id
+        FROM opportunities o
+        WHERE (o.contact_id = v_contact_id OR o.organization_id = v_organization_id)
+          AND o.sales_id = p_sales_id
+          AND o.deleted_at IS NULL
+          AND o.stage NOT IN ('closed_won', 'closed_lost')
+        ORDER BY o.updated_at DESC
+        LIMIT 1;
+
+        RETURN QUERY SELECT v_contact_id, v_organization_id, v_opportunity_id, v_principal_id, 'contact_email'::text;
+        RETURN;
+    END IF;
+
+    -- Fallback: Try organization email
+    SELECT o.id
+    INTO v_organization_id
+    FROM organizations o
+    WHERE o.deleted_at IS NULL
+      AND lower(o.email) = lower(p_email_address)
+      AND EXISTS (
+          SELECT 1 FROM opportunities opp
+          WHERE opp.organization_id = o.id
+            AND opp.sales_id = p_sales_id
+            AND opp.deleted_at IS NULL
+      )
+    LIMIT 1;
+
+    IF v_organization_id IS NOT NULL THEN
+        SELECT opp.id, opp.principal_id
+        INTO v_opportunity_id, v_principal_id
+        FROM opportunities opp
+        WHERE opp.organization_id = v_organization_id
+          AND opp.sales_id = p_sales_id
+          AND opp.deleted_at IS NULL
+        ORDER BY opp.updated_at DESC
+        LIMIT 1;
+
+        RETURN QUERY SELECT NULL::bigint, v_organization_id, v_opportunity_id, v_principal_id, 'organization_email'::text;
+        RETURN;
+    END IF;
+
+    -- No match found
+    RETURN;
+END;
+$$;
+
+-- Add GIN index for JSONB email array searching
+CREATE INDEX IF NOT EXISTS idx_contacts_email_gin ON contacts USING GIN (email jsonb_path_ops);
+
+GRANT EXECUTE ON FUNCTION public.match_email_to_contact_scoped(text, bigint) TO service_role;
+```
+
+---
+
+### Fix 5: RLS Soft Delete Enforcement
+
+**Problem:** SELECT policies don't exclude soft-deleted records.
+
+#### Updated Task 1.1 & 1.2: RLS with deleted_at filtering
+
+```sql
+-- email_connections: Update SELECT policy
+DROP POLICY IF EXISTS email_connections_select ON email_connections;
+CREATE POLICY email_connections_select ON email_connections
+    FOR SELECT TO authenticated
+    USING (
+        deleted_at IS NULL
+        AND (sales_id = public.current_sales_id() OR public.is_admin())
+    );
+
+-- synced_emails: Update SELECT policy
+DROP POLICY IF EXISTS synced_emails_select ON synced_emails;
+CREATE POLICY synced_emails_select ON synced_emails
+    FOR SELECT TO authenticated
+    USING (
+        deleted_at IS NULL
+        AND email_connection_id IN (
+            SELECT id FROM email_connections
+            WHERE sales_id = public.current_sales_id()
+              AND deleted_at IS NULL
+        )
+    );
+```
+
+---
+
+### Fix 6: Schema Cleanup & Constraints
+
+**Problem:** No CHECK constraints, attachment_names never populated, Edge Function bypasses Zod.
+
+#### Updated Task 1.2: Schema with Constraints
+
+```sql
+-- Remove attachment_names (dropped feature)
+-- Add CHECK constraints for enum-like fields
+
+CREATE TABLE "public"."synced_emails" (
+    "id" bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "email_connection_id" bigint NOT NULL REFERENCES email_connections(id) ON DELETE CASCADE,
+    "message_id" text NOT NULL CHECK (char_length(message_id) <= 500),
+    "thread_id" text CHECK (char_length(thread_id) <= 500),
+    "subject" text NOT NULL CHECK (char_length(subject) <= 1000),
+    "body_preview" text CHECK (char_length(body_preview) <= 500),
+    "body_html" text CHECK (char_length(body_html) <= 100000),
+    "sender_email" text NOT NULL CHECK (char_length(sender_email) <= 254),
+    "sender_name" text CHECK (char_length(sender_name) <= 200),
+    "recipient_emails" text[] NOT NULL,
+    "cc_emails" text[],
+    "received_at" timestamptz NOT NULL,
+    "is_read" boolean DEFAULT false,
+    "has_attachments" boolean DEFAULT false,
+    -- REMOVED: "attachment_names" text[],
+    "importance" text DEFAULT 'normal' CHECK (importance IN ('low', 'normal', 'high')),
+    "direction" text NOT NULL CHECK (direction IN ('inbound', 'outbound')),
+    "contact_id" bigint REFERENCES contacts(id) ON DELETE SET NULL,
+    "organization_id" bigint REFERENCES organizations(id) ON DELETE SET NULL,
+    "opportunity_id" bigint REFERENCES opportunities(id) ON DELETE SET NULL,
+    "principal_id" bigint REFERENCES organizations(id) ON DELETE SET NULL,
+    "created_at" timestamptz DEFAULT now(),
+    "updated_at" timestamptz DEFAULT now(),
+    "deleted_at" timestamptz DEFAULT NULL,
+    CONSTRAINT synced_emails_message_unique UNIQUE (email_connection_id, message_id)
+);
+
+-- email_connections: Add delta_link column for incremental sync
+ALTER TABLE email_connections ADD COLUMN IF NOT EXISTS delta_link text;
+```
+
+---
+
+### Fix 7: Observability (Sync Log + UI Status)
+
+**Problem:** Errors only console-logged, no persistent logging or UI visibility.
+
+#### New Task 1.4: Create sync_log table
+
+```sql
+CREATE TABLE "public"."sync_log" (
+    "id" bigint PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    "email_connection_id" bigint NOT NULL REFERENCES email_connections(id) ON DELETE CASCADE,
+    "emails_processed" integer NOT NULL DEFAULT 0,
+    "success" boolean NOT NULL,
+    "error_message" text,
+    "sync_type" text NOT NULL CHECK (sync_type IN ('initial', 'incremental')),
+    "created_at" timestamptz DEFAULT now()
+);
+
+CREATE INDEX idx_sync_log_connection ON sync_log(email_connection_id);
+CREATE INDEX idx_sync_log_created ON sync_log(created_at DESC);
+
+-- RLS: Users see their own sync logs
+ALTER TABLE sync_log ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY sync_log_select ON sync_log
+    FOR SELECT TO authenticated
+    USING (
+        email_connection_id IN (
+            SELECT id FROM email_connections
+            WHERE sales_id = public.current_sales_id()
+        )
+    );
+```
+
+#### Task 3.1 Addition: Sync Status in UI
+
+Add to `EmailConnectionSettings.tsx`:
+
+```typescript
+// Fetch recent sync logs
+const { data: syncLogs } = useQuery({
+  queryKey: ["sync_log", connection?.id],
+  queryFn: async () => {
+    const { data } = await dataProvider.getList("sync_log", {
+      filter: { email_connection_id: connection?.id },
+      pagination: { page: 1, perPage: 5 },
+      sort: { field: "created_at", order: "DESC" },
+    });
+    return data;
+  },
+  enabled: !!connection?.id,
+});
+
+// In JSX:
+{syncLogs && syncLogs.length > 0 && (
+  <div className="mt-4 space-y-2">
+    <p className="text-sm font-medium">Recent Sync Activity</p>
+    {syncLogs.map((log) => (
+      <div key={log.id} className="flex items-center gap-2 text-xs">
+        {log.success ? (
+          <Check className="h-3 w-3 text-success" />
+        ) : (
+          <X className="h-3 w-3 text-destructive" />
+        )}
+        <span className="text-muted-foreground">
+          {log.sync_type === 'initial' ? 'Initial sync' : 'Sync'}: {log.emails_processed} emails
+        </span>
+        <span className="text-muted-foreground">
+          {formatDistanceToNow(new Date(log.created_at), { addSuffix: true })}
+        </span>
+        {log.error_message && (
+          <span className="text-destructive">{log.error_message}</span>
+        )}
+      </div>
+    ))}
+  </div>
+)}
+```
+
+---
+
+### Fix 8: Comprehensive Testing
+
+**Problem:** Only Zod unit tests, no coverage for SQL/RLS, Edge Functions, or UI flows.
+
+#### New Task 5.3: SQL & RLS Tests
+
+**File:** `supabase/tests/email_sync_test.sql`
+
+```sql
+-- Test RLS policies
+BEGIN;
+
+-- Setup test data
+INSERT INTO sales (id, first_name, email) VALUES (999, 'Test', 'test@example.com');
+INSERT INTO email_connections (sales_id, provider, access_token, refresh_token, token_expires_at, email_address)
+VALUES (999, 'microsoft', 'token', 'refresh', now() + interval '1 hour', 'test@example.com');
+
+-- Test: User can only see their own connections
+SET LOCAL ROLE authenticated;
+SET LOCAL "request.jwt.claims" TO '{"sub": "test-user-id"}';
+-- Mock current_sales_id() to return 999
+
+SELECT * FROM email_connections; -- Should return 1 row
+
+-- Test: Soft-deleted records are hidden
+UPDATE email_connections SET deleted_at = now() WHERE sales_id = 999;
+SELECT * FROM email_connections; -- Should return 0 rows
+
+-- Test: Contact matching is tenant-scoped
+SELECT * FROM match_email_to_contact_scoped('external@example.com', 999);
+-- Should return empty if no matching contact in user's opportunities
+
+ROLLBACK;
+```
+
+#### New Task 5.4: E2E Test for OAuth Flow
+
+**File:** `tests/e2e/email-connection.spec.ts`
+
+```typescript
+import { test, expect } from "@playwright/test";
+import { SettingsPOM } from "./support/poms/SettingsPOM";
+
+test.describe("Email Connection", () => {
+  test("shows connect button when not connected", async ({ page }) => {
+    const settings = new SettingsPOM(page);
+    await settings.goto();
+    await settings.navigateToSection("email");
+
+    await expect(page.getByRole("button", { name: /connect microsoft 365/i })).toBeVisible();
+  });
+
+  test("initiates OAuth flow on connect click", async ({ page }) => {
+    const settings = new SettingsPOM(page);
+    await settings.goto();
+    await settings.navigateToSection("email");
+
+    // Mock the OAuth init endpoint
+    await page.route("**/functions/v1/email-oauth-init", (route) => {
+      route.fulfill({
+        json: { authUrl: "https://login.microsoftonline.com/test" },
+      });
+    });
+
+    const [popup] = await Promise.all([
+      page.waitForEvent("popup"),
+      page.getByRole("button", { name: /connect microsoft 365/i }).click(),
+    ]);
+
+    expect(popup.url()).toContain("login.microsoftonline.com");
+  });
+
+  test("shows sync status after connection", async ({ page }) => {
+    // Pre-seed a connection via API
+    const settings = new SettingsPOM(page);
+    await settings.goto();
+    await settings.navigateToSection("email");
+
+    await expect(page.getByText(/connected/i)).toBeVisible();
+    await expect(page.getByText(/last synced/i)).toBeVisible();
+  });
+});
+```
+
+---
+
+### Updated Quality Assessment
+
+| Criteria | Before | After Fixes |
+|----------|--------|-------------|
+| **Security** | 5/10 (CSRF vuln) | **9/10** (PKCE + signed state) |
+| **Robustness** | 4/10 (no pagination) | **8/10** (delta sync + logging) |
+| **Data Integrity** | 5/10 (weak linking) | **8/10** (multi-recipient + tenant-scoped) |
+| **Observability** | 2/10 (console only) | **8/10** (sync_log + UI status) |
+| **Testability** | 4/10 (Zod only) | **8/10** (SQL + E2E tests) |
+| **Overall** | **4/10** | **8.5/10** |
+
+### Final Recommendation: ✅ READY TO EXECUTE (after applying all fixes)
+
+---
+
+## Sources
+
+- [Supabase OAuth PKCE Flow Documentation](https://github.com/supabase/supabase/blob/master/apps/docs/content/guides/auth/oauth-server/oauth-flows.mdx)
+- [Microsoft Graph Delta Query Overview](https://learn.microsoft.com/en-us/graph/delta-query-overview)
+- [Microsoft Graph Delta Query for Messages](https://learn.microsoft.com/en-us/graph/delta-query-messages)
+- [Microsoft Graph message:delta API Reference](https://learn.microsoft.com/en-us/graph/api/message-delta?view=graph-rest-1.0)
