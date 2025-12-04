@@ -73,8 +73,9 @@ interface DigestResult {
   version: string;
 }
 
-// Cron authentication secret (set in Supabase dashboard)
+// Authentication secrets
 const CRON_SECRET = Deno.env.get("CRON_SECRET");
+const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
 /**
  * Process a single user's digest - FAIL-FAST pattern
@@ -183,9 +184,10 @@ Deno.serve(async (req) => {
       // Manual triggers require authentication
       const authHeader = req.headers.get("Authorization");
 
-      // Check for cron secret (internal cron jobs)
-      if (authHeader === `Bearer ${CRON_SECRET}`) {
-        console.log("Authenticated via cron secret");
+      // Check for cron secret OR service role key (internal cron jobs)
+      const token = authHeader?.replace("Bearer ", "");
+      if (token === CRON_SECRET || token === SERVICE_ROLE_KEY) {
+        console.log("Authenticated via cron/service key");
       } else if (authHeader?.startsWith("Bearer ")) {
         // Verify JWT for manual API calls
         const localClient = createClient(
