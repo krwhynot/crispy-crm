@@ -33,6 +33,10 @@
 | Opp chip placement unclear | Medium | Task 3.7 clarified for kanban/list/campaign views |
 | Category chips show raw IDs | Medium | Added choices/formatters to Org/Product configs |
 | Phase 4 incomplete scope | Medium | Expanded to all 6 filter sidebars |
+| Opp filter keys use underscore | Critical | Changed `_gte/_lte` to `@gte/@lte` (matches codebase) |
+| FilterChipBar missing context | High | Added `context` prop pass-through to hook call |
+| Missing FilterChoice import | High | Added to Task 1.2 imports |
+| Task 3.9 missing context prop | Medium | Added ConfigurationContext usage example |
 | Loading state ambiguity | Low | Clarified: in-context loading only, not identity skeletons |
 | Activity config keys wrong | High | Changed to `@gte/@lte`, imports from `../validation/activities` |
 | Task config keys wrong | High | Changed to `@gte/@lte`, inline priorities, callback choices |
