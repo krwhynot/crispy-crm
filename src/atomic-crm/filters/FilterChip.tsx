@@ -1,29 +1,67 @@
+/**
+ * FilterChip Component
+ *
+ * Individual filter chip component with remove functionality.
+ * ENHANCED: 44px minimum touch targets for iPad accessibility.
+ *
+ * @module filters/FilterChip
+ */
+
 import React from "react";
 import { X } from "lucide-react";
 import { Button } from "../../components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface FilterChipProps {
+  /** Display text for the chip */
   label: string;
+  /** Callback when the chip's remove button is clicked */
   onRemove: () => void;
+  /** Additional CSS classes */
+  className?: string;
 }
 
 /**
- * Individual filter chip component with remove functionality
- * Follows the TagChip pattern but specialized for filters
+ * Individual filter chip component with remove functionality.
+ *
+ * Design decisions:
+ * - 44px minimum height for touch accessibility (iPad requirement)
+ * - Truncated label with max-width to prevent layout issues
+ * - Semantic colors from Tailwind v4 design system
+ * - ARIA label for screen reader accessibility
+ *
+ * @example
+ * ```tsx
+ * <FilterChip
+ *   label="Active"
+ *   onRemove={() => removeFilter("status", "active")}
+ * />
+ * ```
  */
-export const FilterChip: React.FC<FilterChipProps> = ({ label, onRemove }) => {
+export const FilterChip: React.FC<FilterChipProps> = ({ label, onRemove, className }) => {
   const handleRemove = (e: React.MouseEvent) => {
     e.stopPropagation();
     onRemove();
   };
 
   return (
-    <div className="inline-flex items-center gap-1 pl-3 text-xs rounded-full bg-muted hover:bg-muted/90 transition-colors">
-      <span className="truncate max-w-[200px]">{label}</span>
+    <div
+      className={cn(
+        "inline-flex items-center gap-1.5 pl-3 pr-1 text-sm rounded-full",
+        "bg-muted hover:bg-muted/90 transition-colors",
+        "min-h-[2.75rem]", // 44px touch target height
+        className
+      )}
+    >
+      <span className="truncate max-w-[150px]">{label}</span>
       <Button
         variant="ghost"
         size="icon"
-        className="rounded-full hover:bg-accent/50"
+        className={cn(
+          "rounded-full hover:bg-accent/50",
+          "h-9 w-9", // 36px button, larger for touch
+          "focus:outline-none focus:ring-2 focus:ring-ring"
+        )}
         onClick={handleRemove}
         aria-label={`Remove ${label} filter`}
       >
