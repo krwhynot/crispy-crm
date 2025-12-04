@@ -23,9 +23,9 @@ export const distributorAuthorizationSchema = z
     principal_id: z.coerce.number().int().positive("Principal is required"),
 
     // Authorization metadata
-    is_authorized: z.boolean().default(true),
-    authorization_date: z.string().date().optional().nullable(),
-    expiration_date: z.string().date().optional().nullable(),
+    is_authorized: z.coerce.boolean().default(true),
+    authorization_date: z.coerce.date().optional().nullable(),
+    expiration_date: z.coerce.date().optional().nullable(),
     territory_restrictions: z.array(z.string()).optional().nullable(),
     notes: z.string().optional().nullable(),
 
@@ -168,9 +168,9 @@ export const productDistributorAuthorizationSchema = z
     distributor_id: z.coerce.number().int().positive("Distributor is required"),
 
     // Authorization metadata
-    is_authorized: z.boolean().default(true),
-    authorization_date: z.string().date().optional().nullable(),
-    expiration_date: z.string().date().optional().nullable(),
+    is_authorized: z.coerce.boolean().default(true),
+    authorization_date: z.coerce.date().optional().nullable(),
+    expiration_date: z.coerce.date().optional().nullable(),
 
     // Product-specific pricing (JSONB)
     special_pricing: specialPricingSchema.optional().nullable(),

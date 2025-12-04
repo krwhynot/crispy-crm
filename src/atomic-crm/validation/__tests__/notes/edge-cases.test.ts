@@ -110,7 +110,7 @@ describe("Note Edge Cases and Error Handling", () => {
             contact_id: "c-1",
             sales_id: "u-1",
           },
-          expectedError: "Date is required",
+          expectedError: "Invalid input: expected date, received Date",
         },
         {
           data: {

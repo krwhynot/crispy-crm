@@ -31,7 +31,9 @@ describe("Note Transformation Utilities", () => {
         expect(() => createContactNoteSchema.parse(validCreate)).not.toThrow();
       });
 
-      it("should not allow id on creation", () => {
+      it("should reject id field on creation (z.strictObject security)", () => {
+        // z.strictObject() rejects the 'id' field on creation schema
+        // because createContactNoteSchema omits it, making it an unrecognized key
         const dataWithId = {
           id: "should-not-be-here",
           text: "New note",
@@ -40,8 +42,7 @@ describe("Note Transformation Utilities", () => {
           sales_id: "user-456",
         };
 
-        const result = createContactNoteSchema.parse(dataWithId);
-        expect("id" in result).toBe(false);
+        expect(() => createContactNoteSchema.parse(dataWithId)).toThrow(z.ZodError);
       });
 
       it("should handle attachments on creation", () => {
@@ -102,7 +103,7 @@ describe("Note Transformation Utilities", () => {
         expect(() => updateContactNoteSchema.parse(invalidUpdate)).toThrow(z.ZodError);
       });
 
-      it("should allow partial updates", () => {
+      it("should allow partial updates with valid fields only", () => {
         expect(() => updateContactNoteSchema.parse({ id: "n-1", text: "New text" })).not.toThrow();
         expect(() =>
           updateContactNoteSchema.parse({
@@ -110,10 +111,14 @@ describe("Note Transformation Utilities", () => {
             date: "2024-01-20T10:00:00Z",
           })
         ).not.toThrow();
+        expect(() => updateContactNoteSchema.parse({ id: "n-1" })).not.toThrow();
+      });
+
+      it("should reject unrecognized fields in partial updates (z.strictObject security)", () => {
+        // z.strictObject() prevents adding arbitrary fields even in partial updates
         expect(() =>
           updateContactNoteSchema.parse({ id: "n-1", status: "completed" })
-        ).not.toThrow();
-        expect(() => updateContactNoteSchema.parse({ id: "n-1" })).not.toThrow(); // Just id
+        ).toThrow(z.ZodError);
       });
     });
 

@@ -4,15 +4,15 @@ import { z } from "zod";
  * get_or_create_segment(p_name text) RETURNS SETOF segments
  * Get or create a segment by name. Case-insensitive lookup.
  */
-export const getOrCreateSegmentParamsSchema = z.object({
-  p_name: z.string().min(1, "Segment name is required"),
+export const getOrCreateSegmentParamsSchema = z.strictObject({
+  p_name: z.string().min(1, "Segment name is required").max(255, "Segment name too long"),
 });
 
 /**
  * set_primary_organization(p_contact_id bigint, p_organization_id bigint) RETURNS void
  * Sets the primary organization for a contact, ensuring only one primary organization exists.
  */
-export const setPrimaryOrganizationParamsSchema = z.object({
+export const setPrimaryOrganizationParamsSchema = z.strictObject({
   p_contact_id: z.number().int().positive("Contact ID must be a positive integer"),
   p_organization_id: z.number().int().positive("Organization ID must be a positive integer"),
 });
@@ -22,7 +22,7 @@ export const setPrimaryOrganizationParamsSchema = z.object({
  * Archive an opportunity and all related records by setting deleted_at.
  * Cascades to: activities, opportunityNotes, opportunity_participants, tasks
  */
-export const archiveOpportunityWithRelationsParamsSchema = z.object({
+export const archiveOpportunityWithRelationsParamsSchema = z.strictObject({
   opp_id: z.number().int().positive("Opportunity ID must be a positive integer"),
 });
 
@@ -31,7 +31,7 @@ export const archiveOpportunityWithRelationsParamsSchema = z.object({
  * Unarchive an opportunity and all related records by setting deleted_at to null.
  * Cascades to: activities, opportunityNotes, opportunity_participants, tasks
  */
-export const unarchiveOpportunityWithRelationsParamsSchema = z.object({
+export const unarchiveOpportunityWithRelationsParamsSchema = z.strictObject({
   opp_id: z.number().int().positive("Opportunity ID must be a positive integer"),
 });
 
@@ -44,12 +44,12 @@ export const unarchiveOpportunityWithRelationsParamsSchema = z.object({
  * ) RETURNS jsonb
  * Atomically synchronize opportunity and its product associations.
  */
-const opportunityProductItemSchema = z.object({
+const opportunityProductItemSchema = z.strictObject({
   product_id: z.number().int().positive("Product ID must be a positive integer"),
-  notes: z.string().optional().nullable(),
+  notes: z.string().max(2000, "Notes too long").optional().nullable(),
 });
 
-export const syncOpportunityWithProductsParamsSchema = z.object({
+export const syncOpportunityWithProductsParamsSchema = z.strictObject({
   opportunity_data: z.unknown(),
   products_to_create: z.array(opportunityProductItemSchema).default([]),
   products_to_update: z.array(opportunityProductItemSchema).default([]),
@@ -65,7 +65,7 @@ export const syncOpportunityWithProductsParamsSchema = z.object({
  * Check if a principal is authorized to sell through a distributor.
  * Supports Product→Org fallback: if product_id provided, looks up principal from product.
  */
-export const checkAuthorizationParamsSchema = z.object({
+export const checkAuthorizationParamsSchema = z.strictObject({
   _distributor_id: z.number().int().positive("Distributor ID must be a positive integer"),
   _principal_id: z
     .number()
@@ -85,21 +85,23 @@ export const checkAuthorizationParamsSchema = z.object({
  * Response schema for check_authorization RPC
  * Used for type inference and response validation
  */
+// Response schemas use z.object() (not strictObject) to tolerate
+// additional fields the database might return in future versions
 export const checkAuthorizationResponseSchema = z.object({
   authorized: z.boolean(),
-  reason: z.string().optional(),
-  error: z.string().optional(),
+  reason: z.string().max(500, "Reason too long").optional(),
+  error: z.string().max(1000, "Error message too long").optional(),
   authorization_id: z.number().optional(),
   distributor_id: z.number(),
-  distributor_name: z.string().optional(),
+  distributor_name: z.string().max(255, "Distributor name too long").optional(),
   principal_id: z.number().optional(),
-  principal_name: z.string().optional(),
-  authorization_date: z.string().optional(),
-  expiration_date: z.string().nullable().optional(),
-  territory_restrictions: z.array(z.string()).nullable().optional(),
-  notes: z.string().nullable().optional(),
+  principal_name: z.string().max(255, "Principal name too long").optional(),
+  authorization_date: z.string().max(50, "Authorization date too long").optional(),
+  expiration_date: z.string().max(50, "Expiration date too long").nullable().optional(),
+  territory_restrictions: z.array(z.string().max(255, "Territory restriction too long")).nullable().optional(),
+  notes: z.string().max(2000, "Notes too long").nullable().optional(),
   product_id: z.number().optional(),
-  product_name: z.string().optional(),
+  product_name: z.string().max(255, "Product name too long").optional(),
   resolved_via: z.literal("product_lookup").optional(),
 });
 
@@ -114,7 +116,7 @@ export type CheckAuthorizationResponse = z.infer<typeof checkAuthorizationRespon
  * ) RETURNS JSONB
  * Batch authorization check for multiple products or principals.
  */
-export const checkAuthorizationBatchParamsSchema = z.object({
+export const checkAuthorizationBatchParamsSchema = z.strictObject({
   _distributor_id: z.number().int().positive("Distributor ID must be a positive integer"),
   _product_ids: z.array(z.number().int().positive()).optional().nullable(),
   _principal_ids: z.array(z.number().int().positive()).optional().nullable(),
@@ -122,6 +124,7 @@ export const checkAuthorizationBatchParamsSchema = z.object({
 
 /**
  * Response schema for check_authorization_batch RPC
+ * Uses z.object() to tolerate additional fields from database
  */
 export const checkAuthorizationBatchResponseSchema = z.object({
   distributor_id: z.number(),

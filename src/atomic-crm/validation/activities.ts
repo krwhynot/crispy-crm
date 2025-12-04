@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { sanitizeHtml } from "@/lib/sanitization";
 
 /**
  * Activities validation schemas and functions
@@ -66,13 +67,17 @@ export const SAMPLE_STATUS_OPTIONS = [
 ] as const;
 
 // Base schema without refinements - can be extended
-const baseActivitiesSchema = z.object({
+const baseActivitiesSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
   activity_type: activityTypeSchema.default("interaction"), // Default to interaction
   type: interactionTypeSchema.default("call"), // Default to call
-  subject: z.string().min(1, "Subject is required"),
-  description: z.string().optional().nullable(),
-  activity_date: z.string().default(() => new Date().toISOString().split("T")[0]), // Default to today's date
+  subject: z.string().min(1, "Subject is required").max(255, "Subject too long"),
+  description: z
+    .string()
+    .optional()
+    .nullable()
+    .transform((val) => (val ? sanitizeHtml(val) : val)),
+  activity_date: z.coerce.date().default(() => new Date()), // Default to today's date
   duration_minutes: z.number().int().positive().optional().nullable(),
 
   // Entity relationships
@@ -81,14 +86,22 @@ const baseActivitiesSchema = z.object({
   opportunity_id: z.union([z.string(), z.number()]).optional().nullable(),
 
   // Follow-up fields
-  follow_up_required: z.boolean().default(false),
-  follow_up_date: z.string().optional().nullable(),
-  follow_up_notes: z.string().optional().nullable(),
+  follow_up_required: z.coerce.boolean().default(false),
+  follow_up_date: z.coerce.date().optional().nullable(),
+  follow_up_notes: z
+    .string()
+    .optional()
+    .nullable()
+    .transform((val) => (val ? sanitizeHtml(val) : val)),
 
   // Activity details
-  outcome: z.string().optional().nullable(),
+  outcome: z
+    .string()
+    .optional()
+    .nullable()
+    .transform((val) => (val ? sanitizeHtml(val) : val)),
   sentiment: sentimentSchema.optional().nullable(),
-  attachments: z.array(z.string()).optional().nullable(),
+  attachments: z.array(z.string().max(2048)).max(20).optional().nullable(),
   location: z.string().optional().nullable(),
   attendees: z.array(z.string()).optional().nullable(),
   tags: z
@@ -404,12 +417,12 @@ export async function validateUpdateInteractions(data: unknown): Promise<void> {
 
 // Activity note form schema - simplified schema for quick note capture
 // Used for adding notes directly from opportunity stages
-export const activityNoteFormSchema = z.object({
+export const activityNoteFormSchema = z.strictObject({
   activity_date: z.coerce.date(),
   type: interactionTypeSchema,
   contact_id: z.coerce.number().nullable().optional(),
   stage: z.string(),
-  subject: z.string().min(1, "Subject is required"),
+  subject: z.string().min(1, "Subject is required").max(255, "Subject too long"),
 });
 
 // Type inference for activity note form
@@ -515,8 +528,11 @@ export const quickLogFormSchema = z
     contactId: z.number().optional(),
     organizationId: z.number().optional(),
     opportunityId: z.number().optional(),
-    notes: z.string().min(1, "Notes are required"),
-    createFollowUp: z.boolean().default(false),
+    notes: z
+      .string()
+      .min(1, "Notes are required")
+      .transform((val) => sanitizeHtml(val)),
+    createFollowUp: z.coerce.boolean().default(false),
     followUpDate: z.date().optional(),
     // Sample tracking field (PRD §4.4)
     sampleStatus: sampleStatusSchema.optional(),

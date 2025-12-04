@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { sanitizeHtml } from "@/lib/sanitization";
 
 /**
  * Contact validation schemas and functions
@@ -28,13 +29,13 @@ const isLinkedinUrl = z
   .nullable();
 
 // Email and phone sub-schemas for JSONB arrays
-export const emailAndTypeSchema = z.object({
-  email: z.string().email("Invalid email address"),
+export const emailAndTypeSchema = z.strictObject({
+  email: z.string().email("Invalid email address").max(254, "Email too long"),
   type: personalInfoTypeSchema.default("Work"),
 });
 
-export const phoneNumberAndTypeSchema = z.object({
-  number: z.string(),
+export const phoneNumberAndTypeSchema = z.strictObject({
+  number: z.string().max(30, "Phone number too long"),
   type: personalInfoTypeSchema.default("Work"),
 });
 
@@ -43,37 +44,39 @@ export const phoneNumberAndTypeSchema = z.object({
 
 // Contact-Organization relationship schema
 export const contactOrganizationSchema = z
-  .object({
+  .strictObject({
     id: z.union([z.string(), z.number()]).optional(),
     contact_id: z.union([z.string(), z.number()]).optional(),
     organization_id: z.union([z.string(), z.number()]).optional(),
-    is_primary: z.boolean().default(false),
+    is_primary: z.coerce.boolean().default(false),
     created_at: z.string().optional(),
     updated_at: z.string().optional(),
     deleted_at: z.string().optional().nullable(),
   })
-  .refine((data) => {
+  .superRefine((data, ctx) => {
     // Check for removed legacy fields and provide helpful error messages
     if ("is_primary_contact" in data) {
-      throw new Error(
-        "Field 'is_primary_contact' is no longer supported. Use is_primary in contact_organizations relationship instead."
-      );
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message:
+          "Field 'is_primary_contact' is no longer supported. Use is_primary in contact_organizations relationship instead.",
+        path: ["is_primary_contact"],
+      });
     }
-    return true;
   });
 
 // Base contact schema - validates only fields that have UI inputs in ContactInputs.tsx
 // Per "UI as source of truth" principle: we only validate what users can actually input
 // EXPORTED: Enables form default generation via contactBaseSchema.partial().parse({})
 // per Engineering Constitution #5: FORM STATE DERIVED FROM TRUTH
-export const contactBaseSchema = z.object({
+export const contactBaseSchema = z.strictObject({
   // Primary key
   id: z.union([z.string(), z.number()]).optional(),
 
   // Name fields - ContactIdentityInputs (required in UI)
-  name: z.string().optional(), // Computed from first + last
-  first_name: z.string().optional().nullable(),
-  last_name: z.string().optional().nullable(),
+  name: z.string().max(255, "Name too long").optional(), // Computed from first + last
+  first_name: z.string().max(100, "First name too long").optional().nullable(),
+  last_name: z.string().max(100, "Last name too long").optional().nullable(),
 
   // Contact information - ContactPersonalInformationInputs
   // JSONB arrays in database: email and phone
@@ -81,8 +84,8 @@ export const contactBaseSchema = z.object({
   phone: z.array(phoneNumberAndTypeSchema).default([]),
 
   // Professional information - ContactPositionInputs
-  title: z.string().optional().nullable(),
-  department: z.string().optional().nullable(),
+  title: z.string().max(100, "Title too long").optional().nullable(),
+  department: z.string().max(100, "Department too long").optional().nullable(),
 
   // Social media - ContactMiscInputs
   linkedin_url: isLinkedinUrl,
@@ -108,11 +111,16 @@ export const contactBaseSchema = z.object({
 
   // Calculated/readonly fields (not user input)
   nb_tasks: z.number().optional(),
-  company_name: z.string().optional().nullable(),
+  company_name: z.string().max(255, "Company name too long").optional().nullable(),
   search_tsv: z.any().optional(),
 
   // Notes field - text field for additional contact information
-  notes: z.string().optional().nullable(),
+  notes: z
+    .string()
+    .max(5000, "Notes too long")
+    .optional()
+    .nullable()
+    .transform((val) => (val ? sanitizeHtml(val) : val)),
 
   // Note: The following fields exist in database but are NOT validated
   // because they have no UI input fields in ContactInputs.tsx (per "UI as truth" principle):
@@ -325,28 +333,51 @@ export type ImportContactInput = z.input<typeof importContactSchema>;
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where contact validation occurs
 export async function validateContactForm(data: unknown): Promise<void> {
-  try {
-    // Type guard for accessing properties on unknown
-    const record = data as Record<string, unknown>;
+  // Create a schema that includes the email entry validation
+  const formSchema = contactBaseSchema
+    .transform(transformContactData)
+    .superRefine((data, ctx) => {
+      // Validate that at least name or first_name/last_name is provided
+      if (!data.name && !data.first_name && !data.last_name) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["name"],
+          message: "Either name or first_name/last_name must be provided",
+        });
+      }
 
-    // Ensure at least one email is provided if email exists
-    if (record.email && Array.isArray(record.email) && record.email.length > 0) {
-      // Validate each email entry
-      (record.email as EmailEntry[]).forEach((entry: EmailEntry, index: number) => {
-        if (!entry.email || entry.email.trim() === "") {
-          throw new z.ZodError([
-            {
+      // Contact-level email validation
+      if (data.email && Array.isArray(data.email)) {
+        const emailValidator = z.string().email("Invalid email address");
+        data.email.forEach((entry: EmailEntry, index: number) => {
+          if (entry.email && !emailValidator.safeParse(entry.email).success) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ["email", index, "email"],
+              message: "Must be a valid email address",
+            });
+          }
+        });
+      }
+
+      // Ensure at least one email is provided if email exists
+      if (data.email && Array.isArray(data.email) && data.email.length > 0) {
+        // Validate each email entry
+        (data.email as EmailEntry[]).forEach((entry: EmailEntry, index: number) => {
+          if (!entry.email || entry.email.trim() === "") {
+            ctx.addIssue({
               code: z.ZodIssueCode.custom,
               message: "Email address is required",
               path: ["email", index, "email"],
-            },
-          ]);
-        }
-      });
-    }
+            });
+          }
+        });
+      }
+    });
 
+  try {
     // Parse and validate the data
-    contactSchema.parse(data);
+    formSchema.parse(data);
   } catch (error) {
     if (error instanceof z.ZodError) {
       // Format validation errors for React Admin
@@ -426,22 +457,71 @@ export const updateContactSchema = contactBaseSchema.partial().transform(transfo
 
 // Export validation functions for specific operations
 export async function validateCreateContact(data: unknown): Promise<void> {
-  try {
-    // Type guard for accessing properties on unknown
-    const record = data as Record<string, unknown>;
+  // Create a schema that includes the email requirement validation
+  const createSchemaWithEmail = contactBaseSchema
+    .omit({
+      id: true,
+      first_seen: true,
+      last_seen: true,
+      deleted_at: true,
+      nb_tasks: true,
+      company_name: true,
+      created_at: true,
+      updated_at: true,
+      created_by: true,
+      search_tsv: true,
+    })
+    .transform(transformContactData)
+    .superRefine((data, ctx) => {
+      // For creation, we need at least first_name and last_name OR name
+      if (!data.name && (!data.first_name || !data.last_name)) {
+        if (!data.first_name) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["first_name"],
+            message: "First name is required",
+          });
+        }
+        if (!data.last_name) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["last_name"],
+            message: "Last name is required",
+          });
+        }
+      }
 
-    // Ensure at least one email is provided for new contacts
-    if (!record.email || !Array.isArray(record.email) || record.email.length === 0) {
-      throw new z.ZodError([
-        {
+      // Sales ID is required for creation
+      if (!data.sales_id) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["sales_id"],
+          message: "Account manager is required",
+        });
+      }
+
+      // Organization ID is required for creation (no orphan contacts)
+      // See PRD: "Contact requires organization" business rule
+      if (!data.organization_id) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          path: ["organization_id"],
+          message: "Organization is required - contacts cannot exist without an organization",
+        });
+      }
+
+      // Ensure at least one email is provided for new contacts
+      if (!data.email || !Array.isArray(data.email) || data.email.length === 0) {
+        ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: "At least one email address is required",
           path: ["email"],
-        },
-      ]);
-    }
+        });
+      }
+    });
 
-    createContactSchema.parse(data);
+  try {
+    createSchemaWithEmail.parse(data);
   } catch (error) {
     if (error instanceof z.ZodError) {
       const formattedErrors: Record<string, string> = {};

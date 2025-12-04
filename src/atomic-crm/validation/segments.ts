@@ -66,7 +66,7 @@ export const playbookCategorySchema = z.enum(PLAYBOOK_CATEGORIES);
  * Base segment schema with all fields
  * Name is now constrained to Playbook categories
  */
-export const segmentSchema = z.object({
+export const segmentSchema = z.strictObject({
   id: z.string().uuid().optional(),
   name: playbookCategorySchema,
   created_at: z.string().optional(),

@@ -8,10 +8,10 @@ import { z } from "zod";
 // Main sales schema with comprehensive validation
 // This schema serves as the single source of truth for all sales validation
 // per Engineering Constitution - all validation happens at API boundary only
-export const salesSchema = z.object({
+export const salesSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
-  first_name: z.string().min(1, "First name is required"),
-  last_name: z.string().min(1, "Last name is required"),
+  first_name: z.string().min(1, "First name is required").max(100, "First name too long"),
+  last_name: z.string().min(1, "Last name is required").max(100, "Last name too long"),
   email: z.string().email("Must be a valid email address"),
   phone: z.string().nullish(),
   avatar_url: z.string().url("Must be a valid URL").optional().nullable(),
@@ -19,13 +19,13 @@ export const salesSchema = z.object({
 
   // Permission fields (role is primary, others are computed/deprecated)
   role: z.enum(["admin", "manager", "rep"]).default("rep"),
-  is_admin: z.boolean().optional(), // Deprecated - synced from role via trigger
-  administrator: z.boolean().optional(), // Computed column - read-only
+  is_admin: z.coerce.boolean().optional(), // Deprecated - synced from role via trigger
+  administrator: z.coerce.boolean().optional(), // Computed column - read-only
 
-  disabled: z.boolean().default(false),
+  disabled: z.coerce.boolean().default(false),
 
   // Notification preferences
-  digest_opt_in: z.boolean().default(true), // Default true for backward compatibility
+  digest_opt_in: z.coerce.boolean().default(true), // Default true for backward compatibility
 
   // User preferences
   timezone: z

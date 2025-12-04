@@ -79,8 +79,9 @@ function buildPurifyConfig(config: SanitizationConfig = {}): DOMPurify.Config {
     tags.push('p', 'br', 'div');
   }
 
-  // Always allow safe styling attributes
-  attributes.push('style', 'class');
+  // Note: 'style' attribute intentionally excluded to prevent CSS injection attacks
+  // Use class-based styling instead
+  attributes.push('class');
 
   return {
     ALLOWED_TAGS: tags,
@@ -144,16 +145,3 @@ export function sanitizeBasicHtml(htmlContent: string): string {
   });
 }
 
-/**
- * React hook-friendly sanitization function that returns safe HTML props
- *
- * @param htmlContent - HTML content to sanitize
- * @param config - Sanitization options
- * @returns Object with sanitized HTML ready for dangerouslySetInnerHTML replacement
- */
-export function useSanitizedHtml(htmlContent: string, config?: SanitizationConfig) {
-  const sanitized = sanitizeHtml(htmlContent, config);
-  return {
-    __html: sanitized,
-  };
-}

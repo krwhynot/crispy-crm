@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { sanitizeHtml } from "@/lib/sanitization";
 
 /**
  * Organization validation schemas and functions
@@ -17,16 +18,11 @@ export const organizationTypeSchema = z.enum([
 // Organization priority enum
 export const organizationPrioritySchema = z.enum(["A", "B", "C", "D"]);
 
-// URL validation regex from OrganizationInputs
-// Protocol (http:// or https://) is REQUIRED for valid URLs
-const URL_REGEX =
-  /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)[a-z0-9]+([-.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/i;
+// LinkedIn URL validation - domain-specific regex required
 const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin.com\//;
 
 // Custom validators
-const isValidUrl = z.string().refine((url) => !url || URL_REGEX.test(url), {
-  message: "Must be a valid URL",
-});
+const isValidUrl = z.string().url({ message: "Must be a valid URL" }).or(z.literal(""));
 
 const isLinkedinUrl = z.string().refine(
   (url) => {
@@ -44,31 +40,40 @@ const isLinkedinUrl = z.string().refine(
 // Main organization schema with comprehensive validation
 // This schema serves as the single source of truth for all organization validation
 // per Engineering Constitution - all validation happens at API boundary only
-export const organizationSchema = z.object({
+export const organizationSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
-  name: z.string().min(1, "Organization name is required"),
+  name: z.string().min(1, "Organization name is required").max(255, "Organization name too long"),
   logo: z.any().optional().nullable(), // RAFile type
   parent_organization_id: z.union([z.string(), z.number()]).optional().nullable(), // Parent organization reference
   // Updated field names to match database schema
   segment_id: z.string().uuid().optional().nullable(), // was: industry (text field) - optional field, can be null or undefined
   linkedin_url: isLinkedinUrl.nullish(),
   website: isValidUrl.nullish(),
-  phone: z.string().nullish(), // was: phone_number
-  address: z.string().nullish(),
-  postal_code: z.string().nullish(), // was: zipcode
-  city: z.string().nullish(),
-  state: z.string().nullish(), // was: stateAbbr
+  phone: z.string().max(30, "Phone number too long").nullish(), // was: phone_number
+  address: z.string().max(500, "Address too long").nullish(),
+  postal_code: z.string().max(20, "Postal code too long").nullish(), // was: zipcode
+  city: z.string().max(100, "City name too long").nullish(),
+  state: z.string().max(100, "State name too long").nullish(), // was: stateAbbr
   sales_id: z.union([z.string(), z.number()]).nullish(),
-  description: z.string().optional().nullable(),
+  description: z
+    .string()
+    .max(5000, "Description too long")
+    .optional()
+    .nullable()
+    .transform((val) => (val ? sanitizeHtml(val) : val)),
   context_links: z.array(isValidUrl).nullish(),
-  tags: z.string().optional(), // Comma-separated tag names for CSV import
+  tags: z.string().max(1000, "Tags too long").optional(), // Comma-separated tag names for CSV import
 
   // Business fields (DB columns added for completeness)
   email: z.string().email().nullish(), // Organization contact email
-  notes: z.string().nullish(), // General notes about organization
+  notes: z
+    .string()
+    .max(5000, "Notes too long")
+    .nullish()
+    .transform((val) => (val ? sanitizeHtml(val) : val)), // General notes about organization
   employee_count: z.coerce.number().int().positive().nullish(), // Number of employees
   founded_year: z.coerce.number().int().min(1800).max(new Date().getFullYear()).nullish(), // Year founded
-  tax_identifier: z.string().nullish(), // Tax ID / EIN
+  tax_identifier: z.string().max(50, "Tax identifier too long").nullish(), // Tax ID / EIN
   logo_url: z.string().url().nullish(), // Direct URL to logo (separate from logo RAFile)
   updated_at: z.string().optional(), // System-managed timestamp
   updated_by: z.union([z.string(), z.number()]).nullish(), // Audit: who last updated

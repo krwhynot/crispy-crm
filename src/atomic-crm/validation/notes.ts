@@ -6,25 +6,30 @@
  */
 
 import { z } from "zod";
+import { sanitizeHtml } from "@/lib/sanitization";
 
 /**
  * Attachment validation schema
  * Validates file attachments for notes
  */
-const attachmentSchema = z.object({
+const attachmentSchema = z.strictObject({
   src: z.string().url("Invalid attachment URL"),
-  title: z.string().min(1, "Attachment title is required"),
-  type: z.string().optional(),
+  title: z.string().min(1, "Attachment title is required").max(255, "Attachment title too long"),
+  type: z.string().max(100, "MIME type too long").optional(),
   size: z.number().positive().optional(),
 });
 
 /**
  * Base note schema with common fields
  */
-export const baseNoteSchema = z.object({
+export const baseNoteSchema = z.strictObject({
   // Required fields
-  text: z.string().min(1, "Note text is required"),
-  date: z.string().min(1, "Date is required"),
+  text: z
+    .string()
+    .min(1, "Note text is required")
+    .max(10000, "Note text too long")
+    .transform((val) => sanitizeHtml(val)),
+  date: z.coerce.date({ required_error: "Date is required" }),
   sales_id: z.union([
     z.string().min(1, "Sales ID is required"),
     z.number().min(1, "Sales ID is required"),

@@ -212,26 +212,27 @@ describe("Organization Validation Schemas", () => {
       expect(() => createOrganizationSchema.parse({ name: "" })).toThrow(z.ZodError);
     });
 
-    it("should not allow id field on creation", () => {
+    it("should reject id field on creation for mass assignment prevention", () => {
+      // z.strictObject() rejects unrecognized keys - id is omitted from createOrganizationSchema
       const dataWithId = {
         id: "should-not-be-here",
         name: "New Organization",
       };
 
-      const result = createOrganizationSchema.parse(dataWithId);
-      expect("id" in result).toBe(false);
+      // .omit() on z.strictObject() makes 'id' an unrecognized key, causing rejection
+      expect(() => createOrganizationSchema.parse(dataWithId)).toThrow(z.ZodError);
     });
 
-    it("should not include system fields on creation", () => {
+    it("should reject system fields on creation for mass assignment prevention", () => {
+      // z.strictObject() rejects unrecognized keys - system fields omitted from createOrganizationSchema
       const dataWithSystemFields = {
         name: "New Organization",
         created_at: "2024-01-01T00:00:00Z",
         updated_at: "2024-01-01T00:00:00Z",
       };
 
-      const result = createOrganizationSchema.parse(dataWithSystemFields);
-      expect("created_at" in result).toBe(false);
-      expect("updated_at" in result).toBe(false);
+      // .omit() on z.strictObject() makes system fields unrecognized keys, causing rejection
+      expect(() => createOrganizationSchema.parse(dataWithSystemFields)).toThrow(z.ZodError);
     });
 
     it("should apply defaults on creation", () => {

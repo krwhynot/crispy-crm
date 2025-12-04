@@ -105,16 +105,19 @@ describe("Organization Validation Functions", () => {
       });
     });
 
-    it("should strip extra fields during submission", async () => {
+    it("should reject unrecognized fields for mass assignment prevention", async () => {
+      // z.strictObject() provides defense-in-depth security by rejecting unrecognized keys
       const dataWithExtras = {
         name: "Clean Org",
         organization_type: "customer",
-        extra_field: "should be removed",
-        malicious: "also removed",
+        extra_field: "should be rejected",
+        malicious: "also rejected",
       };
 
-      // Since validateOrganizationForSubmission returns void, we just check it doesn't throw
-      await expect(validateOrganizationForSubmission(dataWithExtras)).resolves.toBeUndefined();
+      // z.strictObject() throws ZodError for unrecognized keys instead of silently stripping
+      await expect(validateOrganizationForSubmission(dataWithExtras)).rejects.toMatchObject({
+        message: "Validation failed",
+      });
     });
   });
 

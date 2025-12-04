@@ -27,7 +27,7 @@ export const FB_CONSUMABLE_CATEGORIES = [
 ] as const;
 
 // Product category schema - now accepts any non-empty string
-export const productCategorySchema = z.string().min(1, "Category is required").default("beverages");
+export const productCategorySchema = z.string().min(1, "Category is required").max(100, "Category too long").default("beverages");
 
 // Export suggested categories for form components (Constitution Rule #5)
 export const PRODUCT_CATEGORIES = FB_CONSUMABLE_CATEGORIES;
@@ -40,10 +40,10 @@ export const productStatusSchema = z.enum(["active", "discontinued", "coming_soo
 export const PRODUCT_STATUSES = productStatusSchema.options;
 
 // Main product schema matching database structure
-export const productSchema = z.object({
+export const productSchema = z.strictObject({
   // Required fields
-  name: z.string().min(1, "Product name is required"),
-  sku: z.string().min(1, "SKU is required"),
+  name: z.string().min(1, "Product name is required").max(255, "Product name too long"),
+  sku: z.string().min(1, "SKU is required").max(50, "SKU too long"),
   principal_id: z.number().int().positive("Principal/Supplier is required"),
   category: productCategorySchema,
 
@@ -91,10 +91,10 @@ export type ProductFormData = z.infer<typeof productSchema>;
 
 // Opportunity Product schema for line items (added for opportunity-products junction)
 // SIMPLIFIED: Only tracks product associations, no pricing/quantity (matches database schema)
-export const opportunityProductSchema = z.object({
+export const opportunityProductSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
   product_id_reference: z.coerce.number().int().positive("Product is required"),
-  product_name: z.string().min(1, "Product name is required"),
+  product_name: z.string().min(1, "Product name is required").max(255, "Product name too long"),
   product_category: z.string().optional(),
   notes: z.string().optional(),
 });

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import type { DataProvider, Identifier, RaRecord } from "ra-core";
+import { sanitizeHtml } from "@/lib/sanitization";
 
 /**
  * Opportunity validation schemas and functions
@@ -80,7 +81,7 @@ export const LOSS_REASONS: Array<{ id: LossReason; name: string }> = [
 ];
 
 // Base schema - validates only fields that have UI inputs in OpportunityInputs.tsx
-const opportunityBaseSchema = z.object({
+const opportunityBaseSchema = z.strictObject({
   // System fields
   id: z.union([z.string(), z.number()]).optional(),
   created_at: z.string().optional(),
@@ -88,16 +89,22 @@ const opportunityBaseSchema = z.object({
   deleted_at: z.string().optional().nullable(),
 
   // OpportunityInfoInputs fields
-  name: z.string().min(1, "Opportunity name is required"),
-  description: z.string().optional().nullable(),
-  estimated_close_date: z
+  name: z.string().min(1, "Opportunity name is required").max(255, "Opportunity name too long"),
+  description: z
     .string()
-    .min(1, "Expected closing date is required")
+    .optional()
+    .nullable()
+    .transform((val) => (val ? sanitizeHtml(val) : val)),
+  estimated_close_date: z.coerce
+    .date({
+      required_error: "Expected closing date is required",
+      invalid_type_error: "Expected closing date must be a valid date",
+    })
     .default(() => {
       // Default to 30 days from now
       const date = new Date();
       date.setDate(date.getDate() + 30);
-      return date.toISOString().split("T")[0];
+      return date;
     }),
 
   // OpportunityClassificationInputs fields
@@ -124,11 +131,19 @@ const opportunityBaseSchema = z.object({
     .optional()
     .nullable(),
   related_opportunity_id: z.union([z.string(), z.number()]).optional().nullable(),
-  notes: z.string().optional().nullable(), // General notes about the opportunity (separate from activity log)
+  notes: z
+    .string()
+    .optional()
+    .nullable()
+    .transform((val) => (val ? sanitizeHtml(val) : val)), // General notes about the opportunity (separate from activity log)
   tags: z.array(z.string()).optional().default([]),
   next_action: z.string().optional().nullable(),
-  next_action_date: z.string().optional().nullable(), // ISO date string
-  decision_criteria: z.string().optional().nullable(),
+  next_action_date: z.coerce.date().optional().nullable(),
+  decision_criteria: z
+    .string()
+    .optional()
+    .nullable()
+    .transform((val) => (val ? sanitizeHtml(val) : val)),
 
   // Win/Loss Reason Fields (TODO-004a)
   // Required when stage is closed_won or closed_lost respectively
@@ -139,7 +154,8 @@ const opportunityBaseSchema = z.object({
     .string()
     .max(500, "Close reason notes must be 500 characters or less")
     .optional()
-    .nullable(), // Required when reason is "other"
+    .nullable()
+    .transform((val) => (val ? sanitizeHtml(val) : val)), // Required when reason is "other"
 
   // Note: The following fields exist in database but are NOT validated
   // because they have no UI input fields in OpportunityInputs.tsx (per "UI as truth" principle):
@@ -214,19 +230,19 @@ export const createOpportunitySchema = opportunityBaseSchema
       .default([]),
 
     // Auto-default: 30 days from now (industry standard placeholder)
-    estimated_close_date: z
-      .string()
+    estimated_close_date: z.coerce
+      .date()
       .optional()
       .default(() => {
         const date = new Date();
         date.setDate(date.getDate() + 30);
-        return date.toISOString().split("T")[0];
+        return date;
       }),
 
     // Products are optional for opportunity creation
     products_to_sync: z
       .array(
-        z.object({
+        z.strictObject({
           product_id_reference: z.union([z.string(), z.number()]).optional(),
           notes: z.string().optional().nullable(),
         })
@@ -253,9 +269,9 @@ export const createOpportunitySchema = opportunityBaseSchema
  * Required: name + customer + stage (matches Salesforce pattern)
  * Optional: principal, contacts (can be enriched later via slide-over)
  */
-export const quickCreateOpportunitySchema = z.object({
+export const quickCreateOpportunitySchema = z.strictObject({
   // Required fields (Salesforce standard)
-  name: z.string().min(1, "Opportunity name is required"),
+  name: z.string().min(1, "Opportunity name is required").max(255, "Opportunity name too long"),
   stage: opportunityStageSchema,
   customer_organization_id: z.union([z.string(), z.number()]), // Business rule Q12
 
@@ -268,12 +284,12 @@ export const quickCreateOpportunitySchema = z.object({
   account_manager_id: z.union([z.string(), z.number()]).optional(),
 
   // Auto-default: 30 days from now (business standard)
-  estimated_close_date: z
-    .string()
+  estimated_close_date: z.coerce
+    .date()
     .default(() => {
       const date = new Date();
       date.setDate(date.getDate() + 30);
-      return date.toISOString().split("T")[0];
+      return date;
     }),
 });
 
@@ -358,7 +374,7 @@ export const updateOpportunitySchema = opportunityBaseSchema
  * Enforces win/loss reason based on target stage
  */
 export const closeOpportunitySchema = z
-  .object({
+  .strictObject({
     id: z.union([z.string(), z.number()]),
     stage: z.enum(["closed_won", "closed_lost"]),
     win_reason: winReasonSchema.optional().nullable(),
