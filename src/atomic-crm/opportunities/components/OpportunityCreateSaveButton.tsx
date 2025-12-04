@@ -55,7 +55,7 @@ export function OpportunityCreateSaveButton({
   const previousNameRef = useRef<string | null>(null);
 
   // Watch the name field for changes
-  const currentName = form.watch("name");
+  const currentName = useWatch({ control: form.control, name: "name" });
 
   // Reset confirmation when name changes significantly
   useEffect(() => {

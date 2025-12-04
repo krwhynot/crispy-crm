@@ -16,6 +16,12 @@ import { ContactInputs } from "../../../contacts/ContactInputs";
 import { ContactOrgMismatchWarning } from "../../components/ContactOrgMismatchWarning";
 import { DistributorAuthorizationWarning } from "../../components/DistributorAuthorizationWarning";
 
+/**
+ * Default segment ID for quick-creating organizations from opportunity forms
+ * This is the "General" segment used when creating customers/distributors inline
+ */
+const DEFAULT_SEGMENT_ID = "562062be-c15b-417f-b2a1-d4a643d69d52";
+
 export const OpportunityRelationshipsTab = () => {
   const { data: identity } = useGetIdentity();
   const { setValue, getValues } = useFormContext();
@@ -55,7 +61,7 @@ export const OpportunityRelationshipsTab = () => {
             defaultValues={{
               organization_type: "customer",
               sales_id: identity?.id,
-              segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
+              segment_id: DEFAULT_SEGMENT_ID,
             }}
             onSave={(record) => {
               setValue("customer_organization_id", record.id);
@@ -106,7 +112,7 @@ export const OpportunityRelationshipsTab = () => {
             defaultValues={{
               organization_type: "principal",
               sales_id: identity?.id,
-              segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
+              segment_id: DEFAULT_SEGMENT_ID,
             }}
             onSave={(record) => {
               setValue("principal_organization_id", record.id);
@@ -144,7 +150,7 @@ export const OpportunityRelationshipsTab = () => {
             defaultValues={{
               organization_type: "distributor",
               sales_id: identity?.id,
-              segment_id: "562062be-c15b-417f-b2a1-d4a643d69d52",
+              segment_id: DEFAULT_SEGMENT_ID,
             }}
             onSave={(record) => {
               setValue("distributor_organization_id", record.id);

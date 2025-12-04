@@ -160,7 +160,7 @@ export const WorkflowManagementSection: React.FC = () => {
                 }
               }}
               placeholder="Add tag..."
-              className="h-8 text-sm"
+              className="text-sm"
             />
             <Button onClick={handleAddTag} size="sm" variant="outline" className="h-11">
               Add
