@@ -34,6 +34,13 @@
 | Category chips show raw IDs | Medium | Added choices/formatters to Org/Product configs |
 | Phase 4 incomplete scope | Medium | Expanded to all 6 filter sidebars |
 | Loading state ambiguity | Low | Clarified: in-context loading only, not identity skeletons |
+| Activity config keys wrong | High | Changed to `@gte/@lte`, imports from `../validation/activities` |
+| Task config keys wrong | High | Changed to `@gte/@lte`, inline priorities, callback choices |
+| Opportunity imports casing | Medium | Changed to `priorityChoices` (camelCase) |
+| Product category raw IDs | Medium | Added `useCategoryNames` hook (Task 1.8) |
+| Cleanup misses chip hooks | Medium | Expanded Task 5.2 to all 5 feature chip hooks |
+| E2E tests scope narrow | Low | Expanded Task 6.3 to cover all 6 lists |
+| Schema lacks dynamic choices | Medium | Added callback support for `choices` property |
 
 ---
 
@@ -848,7 +855,11 @@ export const PRODUCT_FILTER_CONFIG = validateFilterConfig([
 
 These tasks can ALL run in parallel - they modify different files.
 
-**⚠️ Loading State Requirement:** Mount FilterChipBar in BOTH loading and loaded states to maintain filter visibility during data refetch.
+**⚠️ Loading State Clarification:**
+- **DO mount** FilterChipBar in in-context loading branches (inside `StandardListLayout`, during data refetch)
+- **DO NOT mount** FilterChipBar in identity skeleton branches (top-level guards outside List context)
+- Identity skeletons (e.g., `OrganizationList.tsx:33-49`, `ContactList.tsx:16-34`) render BEFORE the List context exists, so FilterChipBar would throw there
+- Only mount chip bar where `useListContext()` is available
 
 ### Task 3.1: Integrate FilterChipBar into OrganizationList
 
@@ -973,13 +984,30 @@ These tasks extend chip bar to remaining lists. Can ALL run in parallel.
 ```typescript
 // src/atomic-crm/opportunities/opportunityFilterConfig.ts
 import { validateFilterConfig } from '../filters/filterConfigSchema';
+import { format, isToday, isThisWeek, isThisMonth } from 'date-fns';
 // Import from actual constants file
 import {
   OPPORTUNITY_STAGE_CHOICES,
   PRIORITY_CHOICES,
 } from './constants/filterChoices';
 
+// Shared date formatter for chip labels
+function formatDateLabel(value: unknown): string {
+  if (!value || typeof value !== 'string') return String(value);
+  const date = new Date(value);
+  if (isToday(date)) return 'Today';
+  if (isThisWeek(date)) return 'This week';
+  if (isThisMonth(date)) return 'This month';
+  return format(date, 'MMM d, yyyy');
+}
+
 export const OPPORTUNITY_FILTER_CONFIG = validateFilterConfig([
+  {
+    key: 'stage',
+    label: 'Stage',
+    type: 'multiselect',
+    choices: OPPORTUNITY_STAGE_CHOICES,
+  },
   {
     key: 'principal_organization_id',
     label: 'Principal',
@@ -1010,29 +1038,41 @@ export const OPPORTUNITY_FILTER_CONFIG = validateFilterConfig([
     type: 'multiselect',
     choices: PRIORITY_CHOICES,
   },
+  // NOTE: Key format must match what filterRegistry emits - check if _gte or @gte
   {
-    key: 'estimated_close_date@gte',
+    key: 'estimated_close_date_gte',
     label: 'Close after',
     type: 'date-range',
+    formatLabel: formatDateLabel,
     removalGroup: 'estimated_close_date_range',
   },
   {
-    key: 'estimated_close_date@lte',
+    key: 'estimated_close_date_lte',
     label: 'Close before',
     type: 'date-range',
+    formatLabel: formatDateLabel,
     removalGroup: 'estimated_close_date_range',
   },
   {
-    key: 'next_action_date@gte',
+    key: 'next_action_date_gte',
     label: 'Action after',
     type: 'date-range',
+    formatLabel: formatDateLabel,
     removalGroup: 'next_action_date_range',
   },
   {
-    key: 'next_action_date@lte',
+    key: 'next_action_date_lte',
     label: 'Action before',
     type: 'date-range',
+    formatLabel: formatDateLabel,
     removalGroup: 'next_action_date_range',
+  },
+  // "Recent Wins" preset (lines 150-170 in OpportunityListFilter)
+  {
+    key: 'updated_at_gte',
+    label: 'Updated after',
+    type: 'date-range',
+    formatLabel: formatDateLabel,
   },
 ]);
 ```
@@ -1061,12 +1101,23 @@ grep -E "(STAGE|PRIORITY).*CHOICES" src/atomic-crm/opportunities/constants/filte
 ```typescript
 // src/atomic-crm/activities/activityFilterConfig.ts
 import { validateFilterConfig } from '../filters/filterConfigSchema';
+import { format, isToday, isThisWeek, isThisMonth } from 'date-fns';
 // Check actual constants location in ActivityListFilter.tsx
 import {
   ACTIVITY_TYPE_CHOICES,
   SAMPLE_STATUS_CHOICES,
   SENTIMENT_CHOICES,
 } from './constants';
+
+// Date formatter for ISO string chip labels (same pattern as contacts)
+function formatDateLabel(value: unknown): string {
+  if (!value || typeof value !== 'string') return String(value);
+  const date = new Date(value);
+  if (isToday(date)) return 'Today';
+  if (isThisWeek(date)) return 'This week';
+  if (isThisMonth(date)) return 'This month';
+  return format(date, 'MMM d, yyyy');
+}
 
 export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
   {
@@ -1076,21 +1127,25 @@ export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
     choices: ACTIVITY_TYPE_CHOICES,
   },
   {
+    // Changed to multiselect to match UI badge rendering
     key: 'sample_status',
     label: 'Sample Status',
-    type: 'select',
+    type: 'multiselect',
     choices: SAMPLE_STATUS_CHOICES,
   },
+  // NOTE: Check actual key format - _gte/_lte vs @gte/@lte
   {
-    key: 'activity_date@gte',
+    key: 'activity_date_gte',
     label: 'After',
     type: 'date-range',
+    formatLabel: formatDateLabel,
     removalGroup: 'activity_date_range',
   },
   {
-    key: 'activity_date@lte',
+    key: 'activity_date_lte',
     label: 'Before',
     type: 'date-range',
+    formatLabel: formatDateLabel,
     removalGroup: 'activity_date_range',
   },
   {
@@ -1125,6 +1180,7 @@ grep -r "ACTIVITY_TYPE_CHOICES" src/atomic-crm/activities/
 **Parallel:** Can run with 3.4, 3.5
 
 **⚠️ CRITICAL:** Config must match actual filters in `TaskListFilter.tsx`:
+- `due_date_gte/lte` (lines 44-68) - PRIMARY FILTERS including "Overdue" preset
 - `completed` (line 71) - boolean toggle, NOT status
 - `priority` (line 84)
 - `type` (line 100) - from configuration context
@@ -1133,8 +1189,19 @@ grep -r "ACTIVITY_TYPE_CHOICES" src/atomic-crm/activities/
 ```typescript
 // src/atomic-crm/tasks/taskFilterConfig.ts
 import { validateFilterConfig } from '../filters/filterConfigSchema';
+import { format, isToday, isThisWeek, isThisMonth, isPast } from 'date-fns';
 // Check actual constants location in TaskListFilter.tsx
 import { PRIORITY_CHOICES, TASK_TYPE_CHOICES } from './constants';
+
+// Date formatter for chip labels
+function formatDateLabel(value: unknown): string {
+  if (!value || typeof value !== 'string') return String(value);
+  const date = new Date(value);
+  if (isToday(date)) return 'Today';
+  if (isThisWeek(date)) return 'This week';
+  if (isThisMonth(date)) return 'This month';
+  return format(date, 'MMM d, yyyy');
+}
 
 export const TASK_FILTER_CONFIG = validateFilterConfig([
   {
@@ -1162,6 +1229,21 @@ export const TASK_FILTER_CONFIG = validateFilterConfig([
     type: 'reference',
     reference: 'sales',
   },
+  // PRIMARY FILTERS: Due date ranges (lines 44-68 in TaskListFilter)
+  {
+    key: 'due_date_gte',
+    label: 'Due after',
+    type: 'date-range',
+    formatLabel: formatDateLabel,
+    removalGroup: 'due_date_range',
+  },
+  {
+    key: 'due_date_lte',
+    label: 'Due before',
+    type: 'date-range',
+    formatLabel: formatDateLabel,
+    removalGroup: 'due_date_range',
+  },
 ]);
 ```
 
@@ -1177,18 +1259,37 @@ grep -r "type.*choices" src/atomic-crm/tasks/TaskListFilter.tsx
 ### Task 3.7: Integrate FilterChipBar into OpportunityList
 
 **File:** `src/atomic-crm/opportunities/OpportunityList.tsx` (MODIFY)
-**Time:** 3-5 min
+**Time:** 5-8 min
 **Dependencies:** Tasks 1.4, 3.4
 **Parallel:** Can run with 3.8, 3.9
 
-**Changes:** Same pattern as Task 3.1 - import, add above datagrid, include in loading state.
+**⚠️ SPECIAL CASE:** OpportunityList renders kanban/list/campaign views, NOT a standard datagrid.
+
+**Placement:** Inside `StandardListLayout`, ABOVE the view switcher/breadcrumb area.
+Check the actual render structure - likely need to place in a wrapper that persists across all 3 view modes.
+
+**Changes:**
+1. Import `FilterChipBar` and `OPPORTUNITY_FILTER_CONFIG`
+2. Find common parent wrapper above kanban/list/campaign views
+3. Place FilterChipBar there (NOT in each view branch)
+4. **Do NOT place in identity skeleton branch** (outside List context)
 
 ```typescript
 import { FilterChipBar } from '../filters';
 import { OPPORTUNITY_FILTER_CONFIG } from './opportunityFilterConfig';
 
-// Add before datagrid (and in loading branch):
-<FilterChipBar filterConfig={OPPORTUNITY_FILTER_CONFIG} />
+// Place inside StandardListLayout, above the view mode content
+// Location must be inside List context but above view-specific rendering
+<StandardListLayout ...>
+  <FilterChipBar filterConfig={OPPORTUNITY_FILTER_CONFIG} />
+  {/* View switcher, kanban/list/campaign content */}
+</StandardListLayout>
+```
+
+**Verification:**
+```bash
+# Check render structure to find correct placement
+grep -n "StandardListLayout\|kanban\|view.*mode" src/atomic-crm/opportunities/OpportunityList.tsx
 ```
 
 ---
@@ -1287,6 +1388,45 @@ Same pattern as 4.1 - wrap with `<FilterSidebar showSearch={false}>`, remove old
 **Parallel:** Can run with 4.1, 4.2
 
 Same pattern as 4.1 - wrap with `<FilterSidebar showSearch={false}>`.
+
+**IMPORTANT:** Use `showSearch={false}` - existing filter already has search block.
+
+---
+
+### Task 4.4: Update OpportunityListFilter to use FilterSidebar
+
+**File:** `src/atomic-crm/opportunities/OpportunityListFilter.tsx` (MODIFY)
+**Time:** 3-5 min
+**Dependencies:** Task 1.5
+**Parallel:** Can run with 4.1-4.3, 4.5, 4.6
+
+Same pattern as 4.1 - wrap with `<FilterSidebar showSearch={false}>`, remove SidebarActiveFilters.
+
+**IMPORTANT:** Use `showSearch={false}` - existing filter already has search block.
+
+---
+
+### Task 4.5: Update ActivityListFilter to use FilterSidebar
+
+**File:** `src/atomic-crm/activities/ActivityListFilter.tsx` (MODIFY)
+**Time:** 3-5 min
+**Dependencies:** Task 1.5
+**Parallel:** Can run with 4.1-4.4, 4.6
+
+Same pattern as 4.1 - wrap with `<FilterSidebar showSearch={false}>`, remove SidebarActiveFilters.
+
+**IMPORTANT:** Use `showSearch={false}` - existing filter already has search block.
+
+---
+
+### Task 4.6: Update TaskListFilter to use FilterSidebar
+
+**File:** `src/atomic-crm/tasks/TaskListFilter.tsx` (MODIFY)
+**Time:** 3-5 min
+**Dependencies:** Task 1.5
+**Parallel:** Can run with 4.1-4.5
+
+Same pattern as 4.1 - wrap with `<FilterSidebar showSearch={false}>`, remove SidebarActiveFilters.
 
 **IMPORTANT:** Use `showSearch={false}` - existing filter already has search block.
 
@@ -1580,10 +1720,13 @@ PHASE 3B (Parallel Group B2): Extended List Integration
   3.8 ActivityList    ├─ All parallel (include in loading states!)
   3.9 TaskList        ┘
 
-PHASE 4 (Parallel Group C): Sidebar Standardization
-  4.1 ┐
-  4.2 ├─ All parallel (all use showSearch={false})
-  4.3 ┘
+PHASE 4 (Parallel Group C): Sidebar Standardization (ALL 6 FILTERS)
+  4.1 OrganizationListFilter ┐
+  4.2 ContactListFilter      │
+  4.3 ProductListFilter      ├─ All parallel (all use showSearch={false})
+  4.4 OpportunityListFilter  │
+  4.5 ActivityListFilter     │
+  4.6 TaskListFilter         ┘
 
 PHASE 5 (Sequential): Cleanup & Code Quality
   5.1 Delete ALL 5 SidebarActiveFilters + UPDATE TESTS (orgs, contacts, opps, activities, tasks)
@@ -1598,16 +1741,15 @@ PHASE 6 (Sequential): Testing
   6.1 → 6.2 → 6.3
 ```
 
-**Total Tasks:** 33
-**Changes from review (Round 3):**
-- Task 1.5 fixed: correct signature `(resourceName, ids, extractor, fallbackPrefix)`, correct file location
-- SYSTEM_FILTERS expanded: added `deleted_at@is` to prevent accidental removal
-- Phase 3B configs rewritten from actual `*ListFilter.tsx` source files:
-  - Opportunities: `principal_organization_id`, `customer_organization_id`, `campaign`, `opportunity_owner_id`, `priority`, date ranges
-  - Activities: `type`, `sample_status`, `activity_date@*`, `sentiment`, `created_by`
-  - Tasks: `completed` (boolean), `priority`, `type`, `sales_id`
-- Task 5.1 expanded: now deletes all 5 SidebarActiveFilters files (not just 2)
-- All configs include "verify constants exist" step before implementation
+**Total Tasks:** 36
+**Changes from review (Round 4):**
+- Opportunity config: added `stage`, `updated_at_gte` (Recent Wins), fixed key format (`_gte`/`_lte`)
+- Task config: added `due_date_gte/lte` as PRIMARY FILTERS with removalGroup
+- Activity config: changed `sample_status` to multiselect, added date formatter
+- Task 3.7: clarified placement for kanban/list/campaign views (not datagrid)
+- Phase 4 expanded: now includes all 6 sidebars (added 4.4, 4.5, 4.6)
+- Loading state: clarified identity skeleton vs in-context loading (don't mount chip bar outside List context)
+- All date filters now have `formatLabel: formatDateLabel` for human-readable chips
 
 ---
 
