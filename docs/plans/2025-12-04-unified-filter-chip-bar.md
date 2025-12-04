@@ -23,6 +23,10 @@
 | Scope gap (Opps/Activities/Tasks) | High | Added Phase 3B tasks + explicit scope note |
 | Task 2.1 redefines constants | Medium | Updated to import from existing constants.ts |
 | Chip bar missing in loading states | Medium | Task 3.x updated to mount during loading |
+| Phase 3B configs don't match UI | High | Configs rewritten from actual *ListFilter.tsx files |
+| Cleanup misses 3 SidebarActiveFilters | High | Task 5.1 expanded to all 5 feature areas |
+| useResourceNamesBase signature wrong | Medium | Fixed to match actual (resourceName, ids, extractor, fallbackPrefix) |
+| SYSTEM_FILTERS too narrow | Medium | Added `deleted_at@is` to exclusion list |
 
 ---
 
@@ -36,6 +40,19 @@ This plan implements a unified filter UX across all CRM list views by:
 **Execution Model:** Hybrid (parallel groups + sequential dependencies)
 **Task Granularity:** Atomic (2-5 min each)
 **Testing:** Tests written after implementation
+
+### Scope
+
+| List | In Scope | Notes |
+|------|----------|-------|
+| Organizations | ✅ Phase 3A | Primary implementation |
+| Contacts | ✅ Phase 3A | Primary implementation |
+| Products | ✅ Phase 3A | Primary implementation |
+| Opportunities | ✅ Phase 3B | Extended scope |
+| Activities | ✅ Phase 3B | Extended scope |
+| Tasks | ✅ Phase 3B | Extended scope |
+
+**Goal:** Users see consistent chip bar UX regardless of which list they're viewing.
 
 ---
 
@@ -521,40 +538,57 @@ grep -q 'role="toolbar"' src/atomic-crm/filters/FilterChipBar.tsx && echo "PASS:
 
 ### Task 1.5: Create useSegmentNames Hook (if not existing)
 
-**File:** `src/atomic-crm/filters/useSegmentNames.ts` (NEW or VERIFY EXISTS)
-**Time:** 3-5 min
+**Files:**
+- `src/atomic-crm/filters/hooks/useSegmentNames.ts` (NEW)
+- `src/atomic-crm/filters/types/resourceTypes.ts` (MODIFY - add Segment extractor)
+
+**Time:** 5-8 min
 **Dependencies:** None
 
-**Purpose:** Lazy-load segment names for chip display.
+**Purpose:** Lazy-load segment names for chip display using established pattern.
 
-**Check first:**
+**⚠️ IMPORTANT:** Must follow the existing `useResourceNamesBase` pattern for:
+- Type safety
+- Caching
+- Consistency with other name hooks
+
+**Check existing pattern first:**
 ```bash
-ls src/atomic-crm/filters/useSegmentNames.ts 2>/dev/null && echo "EXISTS - skip creation" || echo "NEEDS CREATION"
+cat src/atomic-crm/filters/hooks/useResourceNamesBase.ts
+cat src/atomic-crm/filters/types/resourceTypes.ts
 ```
 
-**If creation needed:**
+**Step 1: Add Segment extractor to resourceTypes.ts:**
 ```typescript
-// src/atomic-crm/filters/useSegmentNames.ts
-import { useGetManyReference } from 'react-admin';
-import { useMemo } from 'react';
+// Add to src/atomic-crm/filters/types/resourceTypes.ts
+export const segmentExtractor: ResourceExtractor = {
+  resource: 'segments',
+  extractName: (record) => record.name,
+  fallbackName: (id) => `Playbook ${id.slice(0, 8)}...`,
+};
+```
+
+**Step 2: Create hook using useResourceNamesBase:**
+```typescript
+// src/atomic-crm/filters/hooks/useSegmentNames.ts
+import { useResourceNamesBase } from './useResourceNamesBase';
+import { segmentExtractor } from '../types/resourceTypes';
 
 export function useSegmentNames(ids: string[]) {
-  const { data: segments } = useGetManyReference(
-    'segments',
-    { ids, target: 'id', pagination: { page: 1, perPage: 100 } },
-    { enabled: ids.length > 0 }
-  );
+  const { getResourceName, isLoading } = useResourceNamesBase(ids, segmentExtractor);
 
-  const nameMap = useMemo(() => {
-    const map = new Map<string, string>();
-    segments?.forEach((s) => map.set(s.id, s.name));
-    return map;
-  }, [segments]);
-
-  const getSegmentName = (id: string) => nameMap.get(id) ?? `Playbook ${id.slice(0, 8)}...`;
-
-  return { getSegmentName };
+  return {
+    getSegmentName: getResourceName,
+    isLoading,
+  };
 }
+```
+
+**Verification:**
+```bash
+# Ensure hook follows pattern
+grep -q "useResourceNamesBase" src/atomic-crm/filters/hooks/useSegmentNames.ts && echo "PASS: Uses base hook"
+npx tsc --noEmit 2>&1 | grep -i "useSegmentNames" && echo "FAIL: Type errors" || echo "PASS: Types OK"
 ```
 
 ---
@@ -653,21 +687,11 @@ These tasks can ALL run in parallel - they have no dependencies on each other.
 ```typescript
 // src/atomic-crm/organizations/organizationFilterConfig.ts
 import { validateFilterConfig } from '../filters/filterConfigSchema';
-
-// Import existing choices from your constants
-const ORGANIZATION_TYPE_CHOICES = [
-  { id: 'customer', name: 'Customer' },
-  { id: 'prospect', name: 'Prospect' },
-  { id: 'principal', name: 'Principal' },
-  { id: 'distributor', name: 'Distributor' },
-];
-
-const PRIORITY_CHOICES = [
-  { id: 'A', name: 'A - High' },
-  { id: 'B', name: 'B - Medium' },
-  { id: 'C', name: 'C - Low' },
-  { id: 'D', name: 'D - Minimal' },
-];
+// ⚠️ IMPORTANT: Import from existing constants to avoid label drift
+import {
+  ORGANIZATION_TYPE_CHOICES,
+  PRIORITY_CHOICES,
+} from './constants';
 
 export const ORGANIZATION_FILTER_CONFIG = validateFilterConfig([
   {
@@ -696,6 +720,8 @@ export const ORGANIZATION_FILTER_CONFIG = validateFilterConfig([
   },
 ]);
 ```
+
+**⚠️ CRITICAL:** Always import choices from existing constants files to prevent label drift between chip bar and sidebar. Check `src/atomic-crm/organizations/constants.ts` for canonical definitions.
 
 ---
 
@@ -802,9 +828,11 @@ export const PRODUCT_FILTER_CONFIG = validateFilterConfig([
 
 ---
 
-## Phase 3: Feature Integration (Parallel Group B)
+## Phase 3A: Primary Feature Integration (Parallel Group B)
 
 These tasks can ALL run in parallel - they modify different files.
+
+**⚠️ Loading State Requirement:** Mount FilterChipBar in BOTH loading and loaded states to maintain filter visibility during data refetch.
 
 ### Task 3.1: Integrate FilterChipBar into OrganizationList
 
@@ -820,6 +848,7 @@ The `FilterChipBar` must go INSIDE `StandardListLayout` but ABOVE `PremiumDatagr
 **Changes:**
 1. Import `FilterChipBar` and `ORGANIZATION_FILTER_CONFIG`
 2. Add `<FilterChipBar>` INSIDE `StandardListLayout`, BEFORE `PremiumDatagrid`
+3. **IMPORTANT:** Also add FilterChipBar in loading/skeleton branch to maintain visibility during refetch
 
 ```typescript
 // Add imports at top of file
@@ -841,9 +870,16 @@ import { ORGANIZATION_FILTER_CONFIG } from './organizationFilterConfig';
     ...
   </PremiumDatagrid>
 </StandardListLayout>
+
+// ⚠️ ALSO update loading/skeleton branch (if separate):
+// If there's a loading state that returns early with skeleton, add:
+<FilterChipBar filterConfig={ORGANIZATION_FILTER_CONFIG} />
+// before the skeleton to maintain filter context during loading
 ```
 
 **Note:** The FilterChipBar renders inside `<main className="card-container">` which wraps children in StandardListLayout. This places it visually above the datagrid, inside the main content card.
+
+**Loading State UX:** Users see active filters persist during data refetch, reducing confusion about "why did my filters disappear?"
 
 **Verification:**
 ```bash
@@ -892,6 +928,194 @@ import { PRODUCT_FILTER_CONFIG } from './productFilterConfig';
 
 // Inside the List component, add before the datagrid:
 <FilterChipBar filterConfig={PRODUCT_FILTER_CONFIG} />
+```
+
+---
+
+## Phase 3B: Extended Feature Integration (Parallel Group B2)
+
+These tasks extend chip bar to remaining lists. Can ALL run in parallel.
+
+**⚠️ Loading State Requirement:** Mount FilterChipBar in BOTH loading and loaded states.
+
+### Task 3.4: Create Opportunity Filter Config
+
+**File:** `src/atomic-crm/opportunities/opportunityFilterConfig.ts` (NEW)
+**Time:** 5 min
+**Dependencies:** Task 1.1
+**Parallel:** Can run with 3.5, 3.6
+
+```typescript
+// src/atomic-crm/opportunities/opportunityFilterConfig.ts
+import { validateFilterConfig } from '../filters/filterConfigSchema';
+// Import existing choices to avoid label drift
+import { STAGE_CHOICES, STATUS_CHOICES } from './constants/filterChoices';
+
+export const OPPORTUNITY_FILTER_CONFIG = validateFilterConfig([
+  {
+    key: 'stage',
+    label: 'Stage',
+    type: 'multiselect',
+    choices: STAGE_CHOICES,
+  },
+  {
+    key: 'principal_id',
+    label: 'Principal',
+    type: 'reference',
+    reference: 'organizations',
+  },
+  {
+    key: 'sales_id',
+    label: 'Owner',
+    type: 'reference',
+    reference: 'sales',
+  },
+]);
+```
+
+---
+
+### Task 3.5: Create Activity Filter Config
+
+**File:** `src/atomic-crm/activities/activityFilterConfig.ts` (NEW)
+**Time:** 3 min
+**Dependencies:** Task 1.1
+**Parallel:** Can run with 3.4, 3.6
+
+```typescript
+// src/atomic-crm/activities/activityFilterConfig.ts
+import { validateFilterConfig } from '../filters/filterConfigSchema';
+import { ACTIVITY_TYPE_CHOICES } from './constants';
+
+export const ACTIVITY_FILTER_CONFIG = validateFilterConfig([
+  {
+    key: 'activity_type',
+    label: 'Type',
+    type: 'multiselect',
+    choices: ACTIVITY_TYPE_CHOICES,
+  },
+  {
+    key: 'sales_id',
+    label: 'Owner',
+    type: 'reference',
+    reference: 'sales',
+  },
+  {
+    key: 'created_at@gte',
+    label: 'After',
+    type: 'date-range',
+    removalGroup: 'created_at_range',
+  },
+  {
+    key: 'created_at@lte',
+    label: 'Before',
+    type: 'date-range',
+    removalGroup: 'created_at_range',
+  },
+]);
+```
+
+---
+
+### Task 3.6: Create Task Filter Config
+
+**File:** `src/atomic-crm/tasks/taskFilterConfig.ts` (NEW)
+**Time:** 3 min
+**Dependencies:** Task 1.1
+**Parallel:** Can run with 3.4, 3.5
+
+```typescript
+// src/atomic-crm/tasks/taskFilterConfig.ts
+import { validateFilterConfig } from '../filters/filterConfigSchema';
+import { TASK_STATUS_CHOICES, TASK_PRIORITY_CHOICES } from './constants';
+
+export const TASK_FILTER_CONFIG = validateFilterConfig([
+  {
+    key: 'status',
+    label: 'Status',
+    type: 'multiselect',
+    choices: TASK_STATUS_CHOICES,
+  },
+  {
+    key: 'priority',
+    label: 'Priority',
+    type: 'multiselect',
+    choices: TASK_PRIORITY_CHOICES,
+  },
+  {
+    key: 'assigned_to',
+    label: 'Assigned To',
+    type: 'reference',
+    reference: 'sales',
+  },
+  {
+    key: 'due_date@gte',
+    label: 'Due after',
+    type: 'date-range',
+    removalGroup: 'due_date_range',
+  },
+  {
+    key: 'due_date@lte',
+    label: 'Due before',
+    type: 'date-range',
+    removalGroup: 'due_date_range',
+  },
+]);
+```
+
+---
+
+### Task 3.7: Integrate FilterChipBar into OpportunityList
+
+**File:** `src/atomic-crm/opportunities/OpportunityList.tsx` (MODIFY)
+**Time:** 3-5 min
+**Dependencies:** Tasks 1.4, 3.4
+**Parallel:** Can run with 3.8, 3.9
+
+**Changes:** Same pattern as Task 3.1 - import, add above datagrid, include in loading state.
+
+```typescript
+import { FilterChipBar } from '../filters';
+import { OPPORTUNITY_FILTER_CONFIG } from './opportunityFilterConfig';
+
+// Add before datagrid (and in loading branch):
+<FilterChipBar filterConfig={OPPORTUNITY_FILTER_CONFIG} />
+```
+
+---
+
+### Task 3.8: Integrate FilterChipBar into ActivityList
+
+**File:** `src/atomic-crm/activities/ActivityList.tsx` (MODIFY)
+**Time:** 3-5 min
+**Dependencies:** Tasks 1.4, 3.5
+**Parallel:** Can run with 3.7, 3.9
+
+**Changes:** Same pattern as Task 3.1.
+
+```typescript
+import { FilterChipBar } from '../filters';
+import { ACTIVITY_FILTER_CONFIG } from './activityFilterConfig';
+
+<FilterChipBar filterConfig={ACTIVITY_FILTER_CONFIG} />
+```
+
+---
+
+### Task 3.9: Integrate FilterChipBar into TaskList
+
+**File:** `src/atomic-crm/tasks/TaskList.tsx` (MODIFY)
+**Time:** 3-5 min
+**Dependencies:** Tasks 1.4, 3.6
+**Parallel:** Can run with 3.7, 3.8
+
+**Changes:** Same pattern as Task 3.1.
+
+```typescript
+import { FilterChipBar } from '../filters';
+import { TASK_FILTER_CONFIG } from './taskFilterConfig';
+
+<FilterChipBar filterConfig={TASK_FILTER_CONFIG} />
 ```
 
 ---
@@ -1107,17 +1331,20 @@ npm run build 2>&1 | grep -i "error" && echo "FAIL: Build errors" || echo "PASS:
 
 **Commands:**
 ```bash
-# Run ESLint on modified files
+# Run ESLint on ALL modified directories
 npx eslint src/atomic-crm/filters/ --fix
 npx eslint src/atomic-crm/organizations/ --fix
 npx eslint src/atomic-crm/contacts/ --fix
 npx eslint src/atomic-crm/products/ --fix
+npx eslint src/atomic-crm/opportunities/ --fix
+npx eslint src/atomic-crm/activities/ --fix
+npx eslint src/atomic-crm/tasks/ --fix
 
 # Run TypeScript compiler check
 npx tsc --noEmit
 ```
 
-**Time:** 5 min
+**Time:** 5-8 min
 **Dependencies:** Task 5.5
 
 **Fix any issues:**
@@ -1127,26 +1354,32 @@ npx tsc --noEmit
 
 ---
 
-### Task 5.7: Verify No Console Errors at Runtime
+### Task 5.7: Verify No Console Errors at Runtime (ALL 6 LISTS)
 
-**Purpose:** Smoke test the implementation.
+**Purpose:** Smoke test the implementation across all list pages.
 
 **Steps:**
 1. Start dev server: `npm run dev`
 2. Navigate to Organizations list → Apply a filter → Verify chip appears
 3. Navigate to Contacts list → Apply a filter → Verify chip appears
 4. Navigate to Products list → Apply a filter → Verify chip appears
-5. Check browser console for errors
+5. Navigate to Opportunities list → Apply a filter → Verify chip appears
+6. Navigate to Activities list → Apply a filter → Verify chip appears
+7. Navigate to Tasks list → Apply a filter → Verify chip appears
+8. Check browser console for errors
 
-**Time:** 5 min
+**Time:** 10 min
 **Dependencies:** Task 5.6
 
 **Pass criteria:**
 - [ ] No console errors
 - [ ] No React warnings
-- [ ] FilterChipBar renders on all three pages
+- [ ] FilterChipBar renders on ALL SIX pages
 - [ ] Removing chips works correctly
 - [ ] "Clear all" works when 2+ filters active
+- [ ] Date range filters remove together (verify removalGroup)
+- [ ] Segment names display correctly (not UUIDs)
+- [ ] Chip bar persists during loading/refetch
 
 ---
 
@@ -1204,19 +1437,27 @@ Write Playwright tests covering:
 PHASE 1 (Sequential): Foundation
   1.1 → 1.2 → 1.4
   1.3 (parallel with 1.2)
-  1.5 useSegmentNames (parallel with 1.2-1.4)
+  1.5 useSegmentNames (parallel with 1.2-1.4, uses useResourceNamesBase)
   1.6 FilterSidebar (parallel with 1.2-1.4)
   1.7 (after all above)
 
-PHASE 2 (Parallel Group A): Configs
-  2.1 ┐
-  2.2 ├─ All parallel
-  2.3 ┘
+PHASE 2 (Parallel Group A): Primary Configs
+  2.1 Organizations ┐
+  2.2 Contacts      ├─ All parallel (import from existing constants!)
+  2.3 Products      ┘
 
-PHASE 3 (Parallel Group B): List Integration
-  3.1 ┐
-  3.2 ├─ All parallel
-  3.3 ┘
+PHASE 3A (Parallel Group B): Primary List Integration
+  3.1 OrganizationList ┐
+  3.2 ContactList      ├─ All parallel (include in loading states!)
+  3.3 ProductList      ┘
+
+PHASE 3B (Parallel Group B2): Extended List Integration
+  3.4 Opportunity Config ┐
+  3.5 Activity Config    ├─ All parallel
+  3.6 Task Config        ┘
+  3.7 OpportunityList ┐
+  3.8 ActivityList    ├─ All parallel (include in loading states!)
+  3.9 TaskList        ┘
 
 PHASE 4 (Parallel Group C): Sidebar Standardization
   4.1 ┐
@@ -1230,20 +1471,19 @@ PHASE 5 (Sequential): Cleanup & Code Quality
   5.4 Consolidate type definitions (CAREFUL - don't break opportunities)
   5.5 Update index exports
   5.6 Run linting & fix issues
-  5.7 Runtime smoke test
+  5.7 Runtime smoke test (ALL 6 lists!)
 
 PHASE 6 (Sequential): Testing
   6.1 → 6.2 → 6.3
 ```
 
-**Total Tasks:** 27 (was 26)
-**Changes from review:**
-- Added Task 1.5 (useSegmentNames hook)
-- Added removalGroup support for grouped date filter removal
-- Updated type enum to include search/toggle/boolean
-- All Phase 4 tasks use showSearch={false}
-- Task 5.1 includes test mock cleanup
-- Task 5.4 marked CAREFUL - don't break existing types
+**Total Tasks:** 33
+**Changes from review (Round 2):**
+- Task 1.5 rewritten to use useResourceNamesBase pattern
+- Added Phase 3B for Opportunities, Activities, Tasks (6 new tasks)
+- Task 2.1 imports from existing constants.ts
+- All list integration tasks include loading state requirement
+- Verification checklist expanded to all 6 lists
 
 ---
 
@@ -1251,16 +1491,31 @@ PHASE 6 (Sequential): Testing
 
 Before marking complete, verify:
 
+**All 6 Lists:**
 - [ ] FilterChipBar appears above datagrid on Organizations page
 - [ ] FilterChipBar appears above datagrid on Contacts page
 - [ ] FilterChipBar appears above datagrid on Products page
+- [ ] FilterChipBar appears above datagrid on Opportunities page
+- [ ] FilterChipBar appears above datagrid on Activities page
+- [ ] FilterChipBar appears above datagrid on Tasks page
+
+**Chip Bar Functionality:**
 - [ ] Clicking × on a chip removes that filter
 - [ ] "Clear all" removes all filters (when 2+ active)
+- [ ] Date range filters remove together (removalGroup working)
 - [ ] Filters sync to URL (can share filtered views)
+- [ ] ChipBar persists during loading states (no flicker)
+
+**Accessibility:**
 - [ ] 44px touch targets work on iPad/tablet
 - [ ] Keyboard navigation works (arrow keys, Home, End)
+- [ ] Screen reader announces chip labels correctly
+
+**Quality:**
 - [ ] No console errors
 - [ ] All tests pass
+- [ ] Segment names resolve (not raw UUIDs)
+- [ ] Labels match sidebar (no constant drift)
 
 ---
 
