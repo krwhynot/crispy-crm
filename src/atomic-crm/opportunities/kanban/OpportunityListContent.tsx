@@ -299,20 +299,11 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
       >
         {/* Tighter layout: reduced padding p-3, smaller gap-3 between columns */}
         <div
-          className="relative flex min-h-0 flex-1 gap-3 overflow-x-auto overflow-y-hidden p-3 bg-muted rounded-2xl border border-border shadow-inner"
+          className="flex min-h-0 flex-1 gap-3 overflow-x-auto overflow-y-hidden p-3 bg-muted rounded-2xl border border-border shadow-inner"
           data-testid="kanban-board"
           role="region"
           aria-label="Opportunities pipeline board"
         >
-          {/* Customize button positioned inside board, top-right corner */}
-          <div className="absolute top-2 right-2 z-10">
-            <ColumnCustomizationMenu
-              visibleStages={userVisibleStages}
-              toggleVisibility={toggleVisibility}
-              collapseAll={collapseAll}
-              expandAll={expandAll}
-            />
-          </div>
           {visibleStages.map((stage) => (
             <OpportunityColumn
               stage={stage.value}
@@ -324,6 +315,15 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
               onDeleteOpportunity={handleDeleteOpportunity}
             />
           ))}
+          {/* Settings button at end of columns - scroll right to access */}
+          <div className="flex items-start pt-1 shrink-0">
+            <ColumnCustomizationMenu
+              visibleStages={userVisibleStages}
+              toggleVisibility={toggleVisibility}
+              collapseAll={collapseAll}
+              expandAll={expandAll}
+            />
+          </div>
         </div>
       </DragDropContext>
 

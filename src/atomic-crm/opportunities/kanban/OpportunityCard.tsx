@@ -102,32 +102,31 @@ export const OpportunityCard = React.memo(function OpportunityCard({
           }}
           className={`
             bg-card rounded-lg border border-border
-            p-[var(--spacing-widget-padding)]
-            mb-[var(--spacing-content)]
+            p-3
             transition-all duration-200
-            hover:shadow-md hover:-translate-y-1
+            hover:shadow-md hover:-translate-y-0.5
             cursor-pointer
             ${snapshot.isDragging ? "opacity-50 rotate-2" : "opacity-100"}
           `}
           data-testid="opportunity-card"
         >
           {/* Header: Drag Handle + Activity Pulse + Name + Expand + Actions (always visible) */}
-          <div className="flex items-center gap-2">
-            {/* Dedicated drag handle - 44px touch target (WCAG AA) */}
+          <div className="flex items-center gap-1">
+            {/* Drag handle - 44px touch target (WCAG AA) but compact visual */}
             <div
               {...provided.dragHandleProps}
               data-testid="drag-handle"
               data-drag-handle
               aria-label="Drag to reorder"
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded cursor-grab active:cursor-grabbing transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              className="min-h-[44px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded cursor-grab active:cursor-grabbing transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 -ml-1"
             >
-              <GripVertical className="w-4 h-4" />
+              <GripVertical className="w-3.5 h-3.5" />
             </div>
             <ActivityPulseDot daysSinceLastActivity={record.days_since_last_activity} />
 
             <h3 className={`
-              font-medium text-sm text-foreground flex-1 min-w-0
-              ${isExpanded ? "" : "line-clamp-1"}
+              font-medium text-xs text-foreground flex-1 min-w-0 leading-tight
+              ${isExpanded ? "" : "line-clamp-2"}
             `}>
               {record.name}
             </h3>
@@ -135,18 +134,16 @@ export const OpportunityCard = React.memo(function OpportunityCard({
             <button
               data-expand-toggle
               onClick={handleExpandClick}
-              // CRITICAL: Prevent mousedown from starting a drag when clicking expand toggle
-              // Without this, clicking the toggle will initiate a drag instead of expanding
               onMouseDown={(e) => e.stopPropagation()}
               onTouchStart={(e) => e.stopPropagation()}
               aria-expanded={isExpanded}
               aria-label={isExpanded ? "Collapse card" : "Expand card"}
-              className="p-1 text-muted-foreground hover:text-foreground rounded transition-colors"
+              className="min-h-[44px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded transition-colors"
             >
               {isExpanded ? (
-                <ChevronUp className="w-4 h-4" />
+                <ChevronUp className="w-3.5 h-3.5" />
               ) : (
-                <ChevronDown className="w-4 h-4" />
+                <ChevronDown className="w-3.5 h-3.5" />
               )}
             </button>
 
@@ -159,7 +156,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
             ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}
           `}>
             <div className="overflow-hidden">
-              <div className="pt-3 mt-3 border-t border-border space-y-2">
+              <div className="pt-2 mt-2 border-t border-border space-y-1.5">
                 {/* Description */}
                 {record.description && (
                   <p className="text-xs text-muted-foreground line-clamp-2">

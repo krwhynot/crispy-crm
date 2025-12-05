@@ -116,17 +116,17 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
   return (
     <div
       className={`
-  flex flex-col pb-8 bg-card border border-border rounded-2xl shadow-col-inner
+  flex flex-col pb-4 bg-card border border-border rounded-xl shadow-col-inner
   ${shadowConfig.rest} ${shadowConfig.hover}
-  transition-[box-shadow,border-color] duration-200 ease-in-out px-3
-  min-w-[260px] max-w-[300px]
-  md:min-w-[280px] md:max-w-[320px]
-  lg:min-w-[300px] lg:max-w-[340px]
+  transition-[box-shadow,border-color] duration-200 ease-in-out px-2
+  min-w-[220px] max-w-[260px]
+  md:min-w-[240px] md:max-w-[280px]
+  lg:min-w-[260px] lg:max-w-[300px]
   h-full max-h-full overflow-hidden shrink-0
 `}
       data-testid="kanban-column"
     >
-      <div className="flex items-center justify-between mb-4 pb-3 border-b border-border px-3 py-2">
+      <div className="flex items-center justify-between mb-2 pb-2 border-b border-border px-2 py-1.5">
         <div className="flex items-center gap-2">
           {onToggleCollapse && (
             <button
@@ -188,7 +188,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
       </div>
       {!isCollapsed && (
         <>
-          <div className="mb-3 px-3">
+          <div className="mb-2 px-1">
             <QuickAddOpportunity stage={stage} />
           </div>
           <Droppable droppableId={stage}>
@@ -196,7 +196,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className={`flex flex-col flex-1 rounded-2xl mt-2 gap-2 pb-3 min-h-[100px] overflow-y-auto overflow-x-hidden transition-colors ${
+                className={`flex flex-col flex-1 rounded-xl mt-1 gap-1.5 pb-2 min-h-[80px] overflow-y-auto overflow-x-hidden transition-colors px-1 ${
                   snapshot.isDraggingOver ? "bg-accent" : ""
                 }`}
               >
