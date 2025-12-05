@@ -46,9 +46,9 @@ export function DashboardTabPanel() {
   const { pendingCount, isLoading } = useTaskCount();
 
   return (
-    <Card className="flex min-h-0 flex-1 flex-col overflow-hidden">
+    <Card className="flex min-h-0 flex-1 flex-col gap-0 overflow-hidden">
       <Tabs defaultValue="pipeline" className="flex min-h-0 flex-1 flex-col gap-0">
-        <div className="shrink-0 border-b border-border px-4 pt-4">
+        <div className="shrink-0 border-b border-border px-4 py-3">
           <TabsList className="h-11 w-full justify-start gap-2 bg-transparent p-0">
             {/* Pipeline Tab - 44px touch target */}
             <TabsTrigger
@@ -96,30 +96,30 @@ export function DashboardTabPanel() {
           </TabsList>
         </div>
 
-        <CardContent className="min-h-0 flex-1 overflow-auto p-0">
+        <CardContent className="relative min-h-0 flex-1 p-0">
           {/* Pipeline Tab Content - forceMount preserves filter state */}
-          <TabsContent value="pipeline" className="m-0 h-full focus-visible:ring-0" forceMount>
+          <TabsContent value="pipeline" className="absolute inset-0 m-0 overflow-auto focus-visible:ring-0" forceMount>
             <Suspense fallback={<TabSkeleton />}>
               <PrincipalPipelineTable />
             </Suspense>
           </TabsContent>
 
           {/* Tasks Tab Content - forceMount preserves kanban state */}
-          <TabsContent value="tasks" className="m-0 h-full focus-visible:ring-0" forceMount>
+          <TabsContent value="tasks" className="absolute inset-0 m-0 overflow-auto focus-visible:ring-0" forceMount>
             <Suspense fallback={<TabSkeleton />}>
               <TasksKanbanPanel />
             </Suspense>
           </TabsContent>
 
           {/* Performance Tab Content - forceMount prevents refetch */}
-          <TabsContent value="performance" className="m-0 h-full focus-visible:ring-0" forceMount>
+          <TabsContent value="performance" className="absolute inset-0 m-0 overflow-auto focus-visible:ring-0" forceMount>
             <Suspense fallback={<TabSkeleton />}>
               <MyPerformanceWidget />
             </Suspense>
           </TabsContent>
 
           {/* Team Activity Tab Content - forceMount preserves scroll */}
-          <TabsContent value="activity" className="m-0 h-full focus-visible:ring-0" forceMount>
+          <TabsContent value="activity" className="absolute inset-0 m-0 overflow-auto focus-visible:ring-0" forceMount>
             <Suspense fallback={<TabSkeleton />}>
               <ActivityFeedPanel />
             </Suspense>
