@@ -289,9 +289,11 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
 
   if (isPending) return null;
 
+  // Use flex column with min-h-0 and flex-1 to fill remaining height
+  // Kanban container scrolls horizontally only
   return (
-    <>
-      <div className="flex justify-end mb-4">
+    <div className="flex min-h-0 flex-1 flex-col">
+      <div className="mb-4 flex shrink-0 justify-end">
         <ColumnCustomizationMenu
           visibleStages={userVisibleStages}
           toggleVisibility={toggleVisibility}
@@ -305,7 +307,7 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
         onDragEnd={handleDragEnd}
       >
         <div
-          className="flex gap-5 overflow-x-auto p-6 bg-muted rounded-3xl border border-border shadow-inner"
+          className="flex min-h-0 flex-1 gap-5 overflow-x-auto p-6 bg-muted rounded-3xl border border-border shadow-inner"
           data-testid="kanban-board"
         >
           {visibleStages.map((stage) => (
@@ -334,6 +336,6 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
           isSubmitting={isClosing}
         />
       )}
-    </>
+    </div>
   );
 };
