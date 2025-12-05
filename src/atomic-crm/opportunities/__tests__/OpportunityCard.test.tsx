@@ -99,15 +99,19 @@ describe("OpportunityCard", () => {
       expect(expandButton).toHaveAttribute("aria-expanded", "false");
     });
 
-    it("does NOT show description when collapsed", () => {
+    it("has collapsed expanded section by default", () => {
       renderCard({ description: "Hidden description" });
-      expect(screen.queryByText("Hidden description")).not.toBeInTheDocument();
+      // With CSS grid animation, content is in DOM but collapsed (0fr)
+      // Check that the container has grid-rows-[0fr] class
+      const expandedSection = screen.getByText("Hidden description").closest('[class*="grid-rows"]');
+      expect(expandedSection).toHaveClass("grid-rows-[0fr]");
     });
 
-    it("does NOT show priority badge when collapsed", () => {
+    it("does NOT visually show priority badge when collapsed", () => {
       renderCard({ priority: "high" });
-      // Priority badge is in expanded section
-      expect(screen.queryByText(/High/i)).not.toBeInTheDocument();
+      // Priority badge is in expanded section with collapsed grid
+      const expandedSection = screen.getByText(/High/i).closest('[class*="grid-rows"]');
+      expect(expandedSection).toHaveClass("grid-rows-[0fr]");
     });
   });
 
@@ -232,13 +236,17 @@ describe("OpportunityCard", () => {
 
       const expandButton = screen.getByRole("button", { name: /expand/i });
 
+      // Initially collapsed
+      const expandedSection = screen.getByText("Toggle test").closest('[class*="grid-rows"]');
+      expect(expandedSection).toHaveClass("grid-rows-[0fr]");
+
       // Expand
       fireEvent.click(expandButton);
-      expect(screen.getByText("Toggle test")).toBeInTheDocument();
+      expect(expandedSection).toHaveClass("grid-rows-[1fr]");
 
       // Collapse
       fireEvent.click(expandButton);
-      expect(screen.queryByText("Toggle test")).not.toBeInTheDocument();
+      expect(expandedSection).toHaveClass("grid-rows-[0fr]");
     });
   });
 
