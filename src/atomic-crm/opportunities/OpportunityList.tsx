@@ -100,10 +100,14 @@ const OpportunityListLayout = ({
   view,
   openSlideOver,
   isSlideOverOpen,
+  slideOverId,
+  closeSlideOver,
 }: {
   view: OpportunityView;
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
   isSlideOverOpen: boolean;
+  slideOverId: number | null;
+  closeSlideOver: () => void;
 }) => {
   const { data, isPending, filterValues } = useListContext();
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
@@ -143,7 +147,11 @@ const OpportunityListLayout = ({
       <FilterChipBar filterConfig={OPPORTUNITY_FILTER_CONFIG} />
       <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
         {view === "kanban" ? (
-          <OpportunityListContent openSlideOver={openSlideOver} />
+          <OpportunityListContent
+            openSlideOver={openSlideOver}
+            slideOverId={slideOverId}
+            closeSlideOver={closeSlideOver}
+          />
         ) : view === "campaign" ? (
           <CampaignGroupedList openSlideOver={openSlideOver} />
         ) : (

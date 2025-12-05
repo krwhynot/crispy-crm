@@ -383,17 +383,34 @@ export function getPrincipalColor(principalId: number | string | null | undefine
 
 ---
 
-## Summary of Corrections
+## Summary of Corrections (COMPREHENSIVE - Rev 2)
 
-| Original Task | Issue | Correction |
-|---------------|-------|------------|
-| 1.1 Types | `id: string` conflicts with color mapping | Change to `id: number`, add type coercion |
-| 1.5 Data Layer | Custom staleness query bypasses views | Use `dashboard_principal_summary` view directly |
-| 3.1 TaskKanbanCard | `onDateChange` not wired through | Add prop to Column, pass `updateTaskDueDate` from Panel |
-| 3.2/3.3 Forms | FormToolbar has no onSuccess | Replace with explicit SaveButton + mutationOptions |
-| 3.5 Nav Buttons | CreateButton doesn't support state | Use custom button with `useNavigate()` |
-| 4.1 Unit Tests | `--testPathPattern` wrong | Use `--testNamePattern` |
-| 4.2 E2E Tests | `role="article"` wrong | Use `.interactive-card` selector |
+### BLOCKERS FIXED
+
+| Issue | Root Cause | Correction |
+|-------|------------|------------|
+| **B1: Principals 404** | Plan queries `principals` resource that doesn't exist | Use `dashboard_principal_summary` resource (already registered) |
+| **B2: Type shape mismatch** | `PrincipalWithStaleness` uses wrong field names | Align to exact view columns: `principal_name`, `opportunity_count`, etc. |
+| **B3: Staleness thresholds** | Plan uses 5/10 or 7/14 days | View uses **3/7 days**: good≤3d, warning 3-7d, urgent>7d |
+| **B4: Duplicate query** | Custom staleness query in Task 1.5 duplicates view | DELETE entire custom query block - use view directly |
+
+### HIGH PRIORITY FIXED
+
+| Issue | Root Cause | Correction |
+|-------|------------|------------|
+| **H1: No principal in TaskItem** | `RelatedEntity` lacks `principal` field | Add `principal?: { id: number; name: string }` to RelatedEntity |
+| **H2: useMyTasks no principal expand** | Query only expands opportunity/contact/org | Expand `opportunity.principal_organization` in meta |
+| **H3: AttentionCard wrong fields** | Uses `name`/`active_opportunity_count` | Use `principal_name`/`opportunity_count` |
+| **H4: Activity nav doesn't exist** | Plan assumes router navigation to /activities/create | Reality: ALL activity creation uses dialogs (QuickLogActivityDialog) |
+
+### MEDIUM PRIORITY FIXED
+
+| Issue | Root Cause | Correction |
+|-------|------------|------------|
+| **M1: Form minimal fields** | Plan doesn't specify which fields | Activity: Type+Subject+Date+Opportunity. Task: Title+DueDate+Priority |
+| **M2: TaskCreate no collapsibles** | Current form has no ShowMore pattern | Add collapsible section for description/references |
+| **M3: E2E selectors wrong** | Uses `role="article"`, hidden notes | Cards are `role="button"`, notes visible. Use `.interactive-card` |
+| **M4: Test command wrong** | `--testPathPattern` is Jest | Use `--testNamePattern` (Vitest) |
 
 ---
 
