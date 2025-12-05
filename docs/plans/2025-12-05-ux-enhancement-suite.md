@@ -35,7 +35,7 @@ Three complementary UX improvements merged into one efficient implementation pla
 **DO NOT:** Create custom staleness queries or client-side calculations
 
 The view already computes:
-- `status_indicator`: 'good' | 'warning' | 'urgent' (thresholds: ≤3d, 3-7d, >7d)
+- `status_indicator`: 'good' | 'warning' | 'urgent' (thresholds: ≤7d, 7-14d, >14d)
 - `days_since_last_activity`: number
 - `priority_score`: number (for sorting)
 
@@ -156,7 +156,7 @@ mkdir -p src/atomic-crm/onboarding/__tests__
  *
  * IMPORTANT: Staleness thresholds are NOT defined here.
  * The dashboard_principal_summary view computes status_indicator directly.
- * Thresholds: good ≤3d, warning 3-7d, urgent >7d (defined in SQL view)
+ * Thresholds: good ≤7d, warning 7-14d, urgent >14d (defined in SQL view)
  */
 
 export const ONBOARDING_LIMITS = {
@@ -211,7 +211,7 @@ export interface DashboardPrincipalSummary {
   last_activity_date: string | null;
   last_activity_type: string | null;
   days_since_last_activity: number | null;
-  /** View-computed: 'good' (≤3d), 'warning' (3-7d), 'urgent' (>7d) */
+  /** View-computed: 'good' (≤7d), 'warning' (7-14d), 'urgent' (>14d) */
   status_indicator: StalenessLevel;
   max_days_in_stage: number | null;
   is_stuck: boolean | null;
@@ -273,6 +273,9 @@ export {
   type StalenessLevel,
 } from './constants';
 
+// Principal colors (for ribbons and visual identification)
+export { PRINCIPAL_COLORS, getPrincipalColor } from './principalColors';
+
 // Types - view-aligned
 export type {
   DashboardPrincipalSummary,
@@ -282,15 +285,17 @@ export type {
   NavigationContext,
 } from './types';
 
-// Hooks (added in Wave 1)
-// export { useOnboardingProgress } from './useOnboardingProgress';
-// export { useNavigationContext } from './useNavigationContext';
+// Hooks
+export { useOnboardingProgress } from './useOnboardingProgress';
+export { useNavigationContext } from './useNavigationContext';
 
-// Components (added in Wave 2)
-// export { AttentionCard } from './AttentionCard';
-// export { StalenessIndicator } from './StalenessIndicator';
-// export { showWorkflowToast } from './WorkflowToast';
+// Components
+export { AttentionCard } from './AttentionCard';
+export { StalenessIndicator } from './StalenessIndicator';
+export { showWorkflowToast } from './WorkflowToast';
 ```
+
+**NOTE:** Barrel exports are NOT commented out. Each module is exported as soon as it's created in its respective Wave task.
 
 **Constitution Checklist:**
 - [x] No retry logic
@@ -410,108 +415,124 @@ export function getPrincipalColor(principalId: number | undefined | null): strin
 
 ---
 
-### Task 1.3: useNavigationContext Hook (Tasks Only)
+### Task 1.3: useQueryParams Hook (Hash-Based URL Parsing)
 
-**File:** `src/atomic-crm/onboarding/useNavigationContext.ts` (NEW)
+**File:** `src/atomic-crm/onboarding/useQueryParams.ts` (NEW)
 
 **Time:** 5 min | **TDD:** Yes
 
-**NOTE:** This hook is used ONLY by TaskCreate. Activities use dialog props.
+**IMPORTANT:** This app uses hash-based routing with `window.location.href` (NOT React Router state).
+All navigation uses patterns like `/#/tasks/create?opportunity_id=123`.
+This hook parses query params from the hash URL.
 
-**Test First: `src/atomic-crm/onboarding/__tests__/useNavigationContext.test.ts`**
+**Test First: `src/atomic-crm/onboarding/__tests__/useQueryParams.test.ts`**
 
 ```typescript
 import { renderHook } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { useNavigationContext } from '../useNavigationContext';
+import { describe, it, expect, beforeEach } from 'vitest';
+import { useQueryParams } from '../useQueryParams';
 
-// Mock react-router-dom
-const mockLocation = { state: null as unknown };
-vi.mock('react-router-dom', () => ({
-  useLocation: () => mockLocation,
-}));
+describe('useQueryParams', () => {
+  const originalLocation = window.location;
 
-describe('useNavigationContext', () => {
   beforeEach(() => {
-    mockLocation.state = null;
+    // Reset hash before each test
+    Object.defineProperty(window, 'location', {
+      value: { ...originalLocation, hash: '' },
+      writable: true,
+    });
   });
 
-  it('returns empty record when no state', () => {
-    const { result } = renderHook(() => useNavigationContext());
-    expect(result.current.record).toEqual({});
-    expect(result.current.source_resource).toBeUndefined();
+  it('returns empty object when no query params', () => {
+    window.location.hash = '#/tasks/create';
+    const { result } = renderHook(() => useQueryParams());
+    expect(result.current).toEqual({});
   });
 
-  it('extracts opportunity context from route state', () => {
-    mockLocation.state = {
-      record: { opportunity_id: 123 },
-      source_resource: 'opportunities',
-    };
-
-    const { result } = renderHook(() => useNavigationContext());
-    expect(result.current.record.opportunity_id).toBe(123);
-    expect(result.current.source_resource).toBe('opportunities');
+  it('parses opportunity_id from hash URL', () => {
+    window.location.hash = '#/tasks/create?opportunity_id=123';
+    const { result } = renderHook(() => useQueryParams());
+    expect(result.current.opportunity_id).toBe('123');
   });
 
-  it('extracts contact context from route state', () => {
-    mockLocation.state = {
-      record: { contact_id: 456 },
-      source_resource: 'contacts',
-    };
+  it('parses multiple params from hash URL', () => {
+    window.location.hash = '#/tasks/create?opportunity_id=123&contact_id=456';
+    const { result } = renderHook(() => useQueryParams());
+    expect(result.current.opportunity_id).toBe('123');
+    expect(result.current.contact_id).toBe('456');
+  });
 
-    const { result } = renderHook(() => useNavigationContext());
-    expect(result.current.record.contact_id).toBe(456);
-    expect(result.current.source_resource).toBe('contacts');
+  it('handles empty hash', () => {
+    window.location.hash = '';
+    const { result } = renderHook(() => useQueryParams());
+    expect(result.current).toEqual({});
   });
 });
 ```
 
-**Implementation:** `src/atomic-crm/onboarding/useNavigationContext.ts`
+**Implementation:** `src/atomic-crm/onboarding/useQueryParams.ts`
 
 ```typescript
-import { useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
-import type { NavigationContext, NavigationContextRecord } from './types';
+import { useMemo, useSyncExternalStore } from 'react';
 
 /**
- * Hook to extract navigation context from router state
+ * Parse URL query params from hash-based routing
  *
- * USAGE: TaskCreate only. Activities use QuickLogActivityDialog props.
+ * This app uses React Admin's hash router (window.location.href + hash).
+ * URLs look like: /#/tasks/create?opportunity_id=123
  *
- * Example:
+ * DO NOT use React Router hooks - they won't work with hash routing.
+ *
+ * @example
  * ```tsx
- * // In OpportunityShow.tsx - navigate to TaskCreate with context
- * navigate('/tasks/create', {
- *   state: {
- *     record: { opportunity_id: record.id },
- *     source_resource: 'opportunities'
- *   }
- * });
+ * // In TaskKanbanCard.tsx - navigate with query params
+ * const params = new URLSearchParams();
+ * params.set('opportunity_id', String(task.relatedTo.id));
+ * window.location.href = `/#/tasks/create?${params.toString()}`;
  *
- * // In TaskCreate.tsx
- * const { record } = useNavigationContext();
- * const defaultValues = { ...schema.partial().parse({}), ...record };
+ * // In TaskCreate.tsx - read query params
+ * const queryParams = useQueryParams();
+ * const defaultValues = {
+ *   ...getTaskDefaultValues(),
+ *   opportunity_id: queryParams.opportunity_id ? Number(queryParams.opportunity_id) : undefined,
+ * };
  * ```
  */
-export function useNavigationContext(): NavigationContext {
-  const location = useLocation();
+export function useQueryParams(): Record<string, string> {
+  // Subscribe to hash changes for reactivity
+  const hash = useSyncExternalStore(
+    (callback) => {
+      window.addEventListener('hashchange', callback);
+      return () => window.removeEventListener('hashchange', callback);
+    },
+    () => window.location.hash
+  );
 
   return useMemo(() => {
-    const state = location.state as NavigationContext | null;
+    const queryIndex = hash.indexOf('?');
+    if (queryIndex === -1) return {};
 
-    if (!state?.record) {
-      return { record: {} as NavigationContextRecord };
-    }
+    const queryString = hash.slice(queryIndex + 1);
+    const params = new URLSearchParams(queryString);
+    return Object.fromEntries(params.entries());
+  }, [hash]);
+}
 
-    return {
-      record: state.record,
-      source_resource: state.source_resource,
-    };
-  }, [location.state]);
+/**
+ * Type-safe helper to get numeric ID from query params
+ */
+export function getNumericParam(
+  params: Record<string, string>,
+  key: string
+): number | undefined {
+  const value = params[key];
+  if (!value) return undefined;
+  const num = Number(value);
+  return Number.isNaN(num) ? undefined : num;
 }
 ```
 
-**Run:** `npm test -- --run src/atomic-crm/onboarding/__tests__/useNavigationContext.test.ts`
+**Run:** `npm test -- --run src/atomic-crm/onboarding/__tests__/useQueryParams.test.ts`
 
 ---
 
@@ -628,6 +649,42 @@ describe('useOnboardingProgress', () => {
       });
 
       expect(result.current.isCardDismissed).toBe(true);
+    });
+  });
+
+  describe('dismissPrincipal', () => {
+    it('adds principal ID to dismissed list', () => {
+      const { result } = renderHook(() => useOnboardingProgress());
+
+      act(() => {
+        result.current.dismissPrincipal(123);
+      });
+
+      expect(result.current.getDismissedPrincipals()).toContain(123);
+      expect(result.current.isPrincipalDismissed(123)).toBe(true);
+    });
+
+    it('persists dismissed principals to localStorage', () => {
+      const { result } = renderHook(() => useOnboardingProgress());
+
+      act(() => {
+        result.current.dismissPrincipal(456);
+      });
+
+      const stored = JSON.parse(localStorage.getItem(LOCALSTORAGE_KEY) || '{}');
+      expect(stored.attention_card_dismissed_principals).toContain(456);
+    });
+
+    it('does not duplicate principal IDs', () => {
+      const { result } = renderHook(() => useOnboardingProgress());
+
+      act(() => {
+        result.current.dismissPrincipal(123);
+        result.current.dismissPrincipal(123);
+      });
+
+      const dismissed = result.current.getDismissedPrincipals();
+      expect(dismissed.filter((id: number) => id === 123)).toHaveLength(1);
     });
   });
 });
@@ -756,6 +813,27 @@ export function useOnboardingProgress() {
     return progress.attention_card_dismissed_principals;
   }, [progress.attention_card_dismissed_principals]);
 
+  /**
+   * Dismiss a specific principal from AttentionCard
+   * Persisted so user doesn't see same principal again after refresh
+   */
+  const dismissPrincipal = useCallback((principalId: number): void => {
+    setProgress((prev) => ({
+      ...prev,
+      attention_card_dismissed_principals: [
+        ...prev.attention_card_dismissed_principals.filter((id) => id !== principalId),
+        principalId,
+      ],
+    }));
+  }, []);
+
+  /**
+   * Check if a specific principal has been dismissed
+   */
+  const isPrincipalDismissed = useCallback((principalId: number): boolean => {
+    return progress.attention_card_dismissed_principals.includes(principalId);
+  }, [progress.attention_card_dismissed_principals]);
+
   const resetProgress = useCallback((): void => {
     setProgress(DEFAULT_PROGRESS);
   }, []);
@@ -769,6 +847,8 @@ export function useOnboardingProgress() {
     dismissCard,
     expandCard,
     getDismissedPrincipals,
+    dismissPrincipal,
+    isPrincipalDismissed,
     resetProgress,
   };
 }
@@ -895,9 +975,9 @@ npm run dev
 **Time:** 5 min | **TDD:** Yes
 
 **IMPORTANT:** Uses view's `status_indicator` field directly. Thresholds are:
-- `good`: ≤3 days (renders nothing)
-- `warning`: 3-7 days (yellow badge)
-- `urgent`: >7 days (red badge)
+- `good`: ≤7 days (renders nothing)
+- `warning`: 7-14 days (yellow badge)
+- `urgent`: >14 days (red badge)
 
 **Test:** `src/atomic-crm/onboarding/__tests__/StalenessIndicator.test.tsx`
 
@@ -907,7 +987,7 @@ import { describe, it, expect } from 'vitest';
 import { StalenessIndicator } from '../StalenessIndicator';
 
 describe('StalenessIndicator', () => {
-  describe('Good staleness (≤3 days)', () => {
+  describe('Good staleness (≤7 days)', () => {
     it('returns null for status_indicator="good"', () => {
       const { container } = render(
         <StalenessIndicator statusIndicator="good" daysSinceActivity={2} />
@@ -916,7 +996,7 @@ describe('StalenessIndicator', () => {
     });
   });
 
-  describe('Warning staleness (3-7 days)', () => {
+  describe('Warning staleness (7-14 days)', () => {
     it('shows warning badge for status_indicator="warning"', () => {
       render(<StalenessIndicator statusIndicator="warning" daysSinceActivity={5} />);
       const badge = screen.getByText('5d');
@@ -925,7 +1005,7 @@ describe('StalenessIndicator', () => {
     });
   });
 
-  describe('Urgent staleness (>7 days)', () => {
+  describe('Urgent staleness (>14 days)', () => {
     it('shows urgent badge for status_indicator="urgent"', () => {
       render(<StalenessIndicator statusIndicator="urgent" daysSinceActivity={12} />);
       const badge = screen.getByText('12d');
@@ -963,7 +1043,7 @@ interface StalenessIndicatorProps {
  * Visual indicator for principal activity staleness
  *
  * Uses dashboard_principal_summary view's pre-computed status_indicator.
- * Renders nothing for 'good' status (≤3 days).
+ * Renders nothing for 'good' status (≤7 days).
  */
 export function StalenessIndicator({
   statusIndicator,
@@ -975,12 +1055,18 @@ export function StalenessIndicator({
     return null;
   }
 
-  const days = daysSinceActivity ?? 0;
   const isUrgent = statusIndicator === 'urgent';
+  const hasData = daysSinceActivity !== null && daysSinceActivity !== undefined;
 
-  const accessibleLabel = isUrgent
-    ? `${days} days since last activity - urgent attention needed`
-    : `${days} days since last activity - needs attention`;
+  // Display "—" for unknown data, actual days otherwise
+  const displayText = hasData ? `${daysSinceActivity}d` : '—';
+  const accessibleLabel = hasData
+    ? isUrgent
+      ? `${daysSinceActivity} days since last activity - urgent attention needed`
+      : `${daysSinceActivity} days since last activity - needs attention`
+    : isUrgent
+      ? 'Unknown days since last activity - urgent attention needed'
+      : 'Unknown days since last activity - needs attention';
 
   return (
     <Badge
@@ -994,7 +1080,7 @@ export function StalenessIndicator({
         className
       )}
     >
-      {days}d
+      {displayText}
     </Badge>
   );
 }
@@ -1136,13 +1222,202 @@ export function ShowMoreSection({
 
 **File:** `src/atomic-crm/components/LinkedRecordChip.tsx` (NEW)
 
-**Time:** 5 min | **TDD:** Yes
+**Time:** 8 min | **TDD:** Yes
+
+**Purpose:** Display linked entity context in forms, showing resource type + name in a compact chip. Clicking opens entity in slide-over panel.
+
+**Test:** `src/atomic-crm/components/__tests__/LinkedRecordChip.test.tsx`
 
 ```typescript
-// Implementation similar to previous plan - displays entity context
-// Shows resource type + name in a compact chip format
-// Clicking opens entity in slide-over panel
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
+import { LinkedRecordChip } from '../LinkedRecordChip';
+
+describe('LinkedRecordChip', () => {
+  it('renders resource type icon and name', () => {
+    render(
+      <LinkedRecordChip
+        resourceType="opportunity"
+        resourceId={123}
+        resourceName="Acme Corp Deal"
+      />
+    );
+
+    expect(screen.getByText('Acme Corp Deal')).toBeInTheDocument();
+    expect(screen.getByRole('button')).toBeInTheDocument();
+  });
+
+  it('shows opportunity icon for opportunity type', () => {
+    render(
+      <LinkedRecordChip
+        resourceType="opportunity"
+        resourceId={123}
+        resourceName="Deal"
+      />
+    );
+
+    // Briefcase icon for opportunities
+    expect(screen.getByTestId('chip-icon')).toHaveClass('lucide-briefcase');
+  });
+
+  it('shows contact icon for contact type', () => {
+    render(
+      <LinkedRecordChip
+        resourceType="contact"
+        resourceId={456}
+        resourceName="John Doe"
+      />
+    );
+
+    expect(screen.getByTestId('chip-icon')).toHaveClass('lucide-user');
+  });
+
+  it('calls onNavigate with correct URL on click', async () => {
+    const user = userEvent.setup();
+    const onNavigate = vi.fn();
+
+    render(
+      <LinkedRecordChip
+        resourceType="opportunity"
+        resourceId={123}
+        resourceName="Deal"
+        onNavigate={onNavigate}
+      />
+    );
+
+    await user.click(screen.getByRole('button'));
+
+    expect(onNavigate).toHaveBeenCalledWith('/opportunities?view=123');
+  });
+
+  it('is accessible with proper button role', () => {
+    render(
+      <LinkedRecordChip
+        resourceType="contact"
+        resourceId={456}
+        resourceName="John Doe"
+      />
+    );
+
+    const button = screen.getByRole('button');
+    expect(button).toHaveAccessibleName(/john doe/i);
+  });
+
+  it('supports clearable mode', async () => {
+    const user = userEvent.setup();
+    const onClear = vi.fn();
+
+    render(
+      <LinkedRecordChip
+        resourceType="opportunity"
+        resourceId={123}
+        resourceName="Deal"
+        clearable
+        onClear={onClear}
+      />
+    );
+
+    await user.click(screen.getByRole('button', { name: /clear/i }));
+
+    expect(onClear).toHaveBeenCalled();
+  });
+});
 ```
+
+**Implementation:** `src/atomic-crm/components/LinkedRecordChip.tsx`
+
+```typescript
+import { Briefcase, User, Building2, X } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
+type ResourceType = 'opportunity' | 'contact' | 'organization';
+
+interface LinkedRecordChipProps {
+  resourceType: ResourceType;
+  resourceId: number;
+  resourceName: string;
+  /** Called when chip clicked - navigates to slide-over view */
+  onNavigate?: (path: string) => void;
+  /** Show clear button */
+  clearable?: boolean;
+  /** Called when clear button clicked */
+  onClear?: () => void;
+  className?: string;
+}
+
+const RESOURCE_CONFIG: Record<ResourceType, { icon: typeof Briefcase; label: string; basePath: string }> = {
+  opportunity: { icon: Briefcase, label: 'Opportunity', basePath: '/opportunities' },
+  contact: { icon: User, label: 'Contact', basePath: '/contacts' },
+  organization: { icon: Building2, label: 'Organization', basePath: '/organizations' },
+};
+
+/**
+ * Compact chip displaying linked entity context
+ *
+ * Used in minimal forms to show pre-filled context.
+ * Clicking navigates to entity slide-over panel.
+ */
+export function LinkedRecordChip({
+  resourceType,
+  resourceId,
+  resourceName,
+  onNavigate,
+  clearable = false,
+  onClear,
+  className,
+}: LinkedRecordChipProps) {
+  const config = RESOURCE_CONFIG[resourceType];
+  const Icon = config.icon;
+
+  const handleClick = () => {
+    if (onNavigate) {
+      onNavigate(`${config.basePath}?view=${resourceId}`);
+    }
+  };
+
+  return (
+    <div
+      className={cn(
+        'inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full',
+        'bg-muted text-sm',
+        className
+      )}
+    >
+      <Button
+        type="button"
+        variant="ghost"
+        size="sm"
+        onClick={handleClick}
+        className="h-auto p-0 hover:bg-transparent hover:underline"
+        aria-label={`View ${resourceName}`}
+      >
+        <Icon
+          data-testid="chip-icon"
+          className={cn('h-3.5 w-3.5 mr-1', `lucide-${resourceType === 'opportunity' ? 'briefcase' : resourceType === 'contact' ? 'user' : 'building-2'}`)}
+        />
+        <span className="max-w-[150px] truncate">{resourceName}</span>
+      </Button>
+
+      {clearable && onClear && (
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          onClick={onClear}
+          className="h-4 w-4 p-0 ml-1 hover:bg-destructive/10"
+          aria-label="Clear linked record"
+        >
+          <X className="h-3 w-3" />
+        </Button>
+      )}
+    </div>
+  );
+}
+```
+
+**Run:** `npm test -- --run src/atomic-crm/components/__tests__/LinkedRecordChip.test.tsx`
 
 ---
 
@@ -1550,7 +1825,7 @@ export function AttentionCard({
   }
 
   return (
-    <Card className="border-amber-200 bg-amber-50/50 dark:border-amber-900 dark:bg-amber-950/20">
+    <Card data-testid="attention-card" className="border-amber-200 bg-amber-50/50 dark:border-amber-900 dark:bg-amber-950/20">
       <CardHeader className="pb-2 flex flex-row items-center justify-between">
         <CardTitle className="text-base flex items-center gap-2">
           <AlertTriangle className="h-5 w-5 text-amber-500" />
