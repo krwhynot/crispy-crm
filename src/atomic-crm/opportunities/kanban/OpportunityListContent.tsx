@@ -292,25 +292,27 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
   // Kanban board: horizontal scroll for columns, each column scrolls vertically for cards
   return (
     <div className="flex min-h-0 flex-1 flex-col h-full">
-      <div className="mb-4 flex shrink-0 justify-end">
-        <ColumnCustomizationMenu
-          visibleStages={userVisibleStages}
-          toggleVisibility={toggleVisibility}
-          collapseAll={collapseAll}
-          expandAll={expandAll}
-        />
-      </div>
       <DragDropContext
         onDragStart={handleDragStart}
         onDragUpdate={handleDragUpdate}
         onDragEnd={handleDragEnd}
       >
+        {/* Tighter layout: reduced padding p-3, smaller gap-3 between columns */}
         <div
-          className="flex min-h-0 flex-1 gap-5 overflow-x-auto overflow-y-hidden p-6 bg-muted rounded-3xl border border-border shadow-inner"
+          className="relative flex min-h-0 flex-1 gap-3 overflow-x-auto overflow-y-hidden p-3 bg-muted rounded-2xl border border-border shadow-inner"
           data-testid="kanban-board"
           role="region"
           aria-label="Opportunities pipeline board"
         >
+          {/* Customize button positioned inside board, top-right corner */}
+          <div className="absolute top-2 right-2 z-10">
+            <ColumnCustomizationMenu
+              visibleStages={userVisibleStages}
+              toggleVisibility={toggleVisibility}
+              collapseAll={collapseAll}
+              expandAll={expandAll}
+            />
+          </div>
           {visibleStages.map((stage) => (
             <OpportunityColumn
               stage={stage.value}
