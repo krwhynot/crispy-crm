@@ -25,6 +25,26 @@ export type FilterChoice = z.infer<typeof filterChoiceSchema>;
 export type ChoicesOrCallback = FilterChoice[] | ((context: unknown) => FilterChoice[]);
 
 /**
+ * Zod 4 custom schema for validating callback functions.
+ * In Zod 4, z.function() is no longer a schema - it's a "function factory".
+ * We use z.custom() to validate that a value is a function returning FilterChoice[].
+ *
+ * @see https://zod.dev/v4/changelog#zfunction
+ */
+const choicesCallbackSchema = z.custom<(context: unknown) => FilterChoice[]>(
+  (val) => typeof val === "function",
+  { message: "Expected a function returning FilterChoice[]" }
+);
+
+/**
+ * Zod 4 custom schema for validating formatLabel callback functions.
+ */
+const formatLabelCallbackSchema = z.custom<(value: unknown) => string>(
+  (val) => typeof val === "function",
+  { message: "Expected a function returning string" }
+);
+
+/**
  * Schema for a single filter configuration entry
  *
  * NOTE: ChipFilterConfig is named to avoid collision with existing FilterConfig in types.ts
@@ -52,17 +72,10 @@ export const chipFilterConfigSchema = z.object({
    * Can be static array OR callback function for dynamic choices (e.g., from ConfigurationContext)
    */
   choices: z
-    .union([
-      z.array(filterChoiceSchema),
-      z.function().args(z.unknown()).returns(z.array(filterChoiceSchema)),
-    ])
+    .union([z.array(filterChoiceSchema), choicesCallbackSchema])
     .optional(),
   /** Custom formatter function to transform filter value into chip label */
-  formatLabel: z
-    .function()
-    .args(z.unknown())
-    .returns(z.string())
-    .optional(),
+  formatLabel: formatLabelCallbackSchema.optional(),
   /**
    * Group related filters for removal (e.g., date ranges)
    * When one filter in a group is removed, all filters in that group are removed
