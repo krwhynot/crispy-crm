@@ -80,6 +80,8 @@ import type {
   Activity,
 } from "../../types";
 
+import type { UserInvite, UserUpdate } from "../../admin/users/schemas";
+
 // Type for potentially wrapped RPC responses
 type _RpcWrappedResponse<T> = T | { data: T };
 
