@@ -1,5 +1,4 @@
 import { useState, useCallback } from "react";
-import { PrincipalPipelineTable } from "./components/PrincipalPipelineTable";
 import { DashboardTabPanel } from "./components/DashboardTabPanel";
 import { LogActivityFAB } from "./components/LogActivityFAB";
 import { MobileQuickActionBar } from "./components/MobileQuickActionBar";

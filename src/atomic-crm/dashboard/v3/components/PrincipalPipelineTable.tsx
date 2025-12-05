@@ -382,3 +382,6 @@ function EmptyState({ searchQuery }: EmptyStateProps) {
     </div>
   );
 }
+
+// Default export for lazy loading
+export default PrincipalPipelineTable;
