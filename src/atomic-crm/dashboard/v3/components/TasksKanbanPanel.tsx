@@ -14,7 +14,7 @@ import { useMyTasks } from "../hooks/useMyTasks";
 /**
  * TasksKanbanPanel - Kanban board for tasks with time-horizon columns
  *
- * Replaces the list-based TasksPanel with a drag-and-drop kanban board.
+ * Provides a drag-and-drop kanban board for task management.
  *
  * Three Columns:
  * - Overdue: Tasks past due date (destructive accent)

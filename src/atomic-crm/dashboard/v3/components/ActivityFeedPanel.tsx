@@ -9,7 +9,7 @@
  * - "View All" link to activities list
  *
  * Design:
- * - Card-based layout matching TasksPanel pattern
+ * - Card-based layout matching kanban panel pattern
  * - Desktop-first responsive design (lg: breakpoint)
  * - Semantic colors only (no hex values)
  * - 44px minimum touch targets

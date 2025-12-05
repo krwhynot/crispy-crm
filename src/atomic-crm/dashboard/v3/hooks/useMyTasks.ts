@@ -22,7 +22,7 @@ export function useMyTasks() {
     data: rawTasks = [],
     isLoading: loading,
     error: fetchError,
-    refetch,
+    refetch: _refetch,
   } = useGetList<TaskApiResponse>(
     "tasks",
     {
@@ -364,7 +364,7 @@ export function useMyTasks() {
   /**
    * Rollback a task to previous state (for failed API calls)
    */
-  const rollbackTask = useCallback((taskId: number, previousState: TaskItem) => {
+  const rollbackTask = useCallback((taskId: number, _previousState: TaskItem) => {
     setOptimisticUpdates((prev) => {
       const next = new Map(prev);
       next.delete(taskId);
