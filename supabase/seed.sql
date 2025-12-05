@@ -7,7 +7,7 @@
 -- Contents:
 --   - 6 Users (Full MFB team)
 --   - 9 Principals (manufacturers)
---   - 10 Distributors
+--   - 10 Distributors + 12 Branches (6 Sysco, 6 GFS with parent_organization_id)
 --   - 20 Customers (operators/restaurants)
 --   - ~80 Contacts (2-4 per org, 6 with MULTI-TAGS)
 --   - 36 Products (4 per principal)
@@ -681,6 +681,144 @@ VALUES
 
 -- Update sequence
 SELECT setval(pg_get_serial_sequence('organizations', 'id'), 39, true);
+
+-- ============================================================================
+-- PART 6A: DISTRIBUTOR BRANCHES (12 regional locations)
+-- ============================================================================
+-- Regional branches of major broadline distributors (Sysco & GFS)
+-- These link back to parent organizations via parent_organization_id
+-- Organization IDs: 40-51
+-- ============================================================================
+
+-- Sysco Corporation Branches (Parent ID: 10)
+-- Sysco has 68+ operating companies; we include key regional ones
+INSERT INTO "public"."organizations" (
+  id, name, organization_type, segment_id, phone, email, website,
+  address, city, state, postal_code, sales_id, parent_organization_id,
+  priority, linkedin_url, employee_count, founded_year, description,
+  notes, created_at, updated_at
+)
+VALUES
+  -- Sysco Chicago (Major Midwest hub)
+  (40, 'Sysco Chicago', 'distributor', '22222222-2222-4222-8222-000000000001',
+   '708-555-4001', 'chicago@sysco.com', 'https://sysco.com',
+   '250 Wieboldt Drive', 'Des Plaines', 'IL', '60018', 2, 10,
+   'B', 'https://linkedin.com/company/sysco', 1200, 1969,
+   'Sysco Chicago is a major Midwest distribution center serving the Chicago metro and Northern Illinois.',
+   'Major Midwest distribution center. Serves Chicago metro and Northern Illinois.',
+   NOW(), NOW()),
+
+  -- Sysco Houston (Headquarters area)
+  (41, 'Sysco Houston', 'distributor', '22222222-2222-4222-8222-000000000001',
+   '281-555-4002', 'houston@sysco.com', 'https://sysco.com',
+   '10710 Greens Crossing Blvd', 'Houston', 'TX', '77038', 2, 10,
+   'A', 'https://linkedin.com/company/sysco', 1500, 1969,
+   'Sysco Houston is the Texas flagship operation near corporate HQ, handling major Gulf Coast distribution.',
+   'Texas flagship operation near corporate HQ. Major Gulf Coast distribution.',
+   NOW(), NOW()),
+
+  -- Sysco Los Angeles (West Coast hub)
+  (42, 'Sysco Los Angeles', 'distributor', '22222222-2222-4222-8222-000000000001',
+   '323-555-4003', 'losangeles@sysco.com', 'https://sysco.com',
+   '20701 Currier Road', 'Walnut', 'CA', '91789', 3, 10,
+   'A', 'https://linkedin.com/company/sysco', 1400, 1969,
+   'Sysco Los Angeles is a major West Coast distribution center serving the Southern California market.',
+   'Major West Coast distribution center. Serves Southern California market.',
+   NOW(), NOW()),
+
+  -- Sysco Atlanta (Southeast hub)
+  (43, 'Sysco Atlanta', 'distributor', '22222222-2222-4222-8222-000000000001',
+   '770-555-4004', 'atlanta@sysco.com', 'https://sysco.com',
+   '5900 Fulton Industrial Blvd', 'Atlanta', 'GA', '30336', 3, 10,
+   'B', 'https://linkedin.com/company/sysco', 1100, 1969,
+   'Sysco Atlanta is the Southeast regional hub serving Georgia, Alabama, and surrounding states.',
+   'Southeast regional hub. Serves Georgia, Alabama, and surrounding states.',
+   NOW(), NOW()),
+
+  -- Sysco Denver (Mountain region)
+  (44, 'Sysco Denver', 'distributor', '22222222-2222-4222-8222-000000000001',
+   '303-555-4005', 'denver@sysco.com', 'https://sysco.com',
+   '5801 E 58th Avenue', 'Commerce City', 'CO', '80022', 4, 10,
+   'B', 'https://linkedin.com/company/sysco', 800, 1969,
+   'Sysco Denver handles Mountain region distribution serving Colorado, Wyoming, and mountain states.',
+   'Mountain region distribution. Serves Colorado, Wyoming, and mountain states.',
+   NOW(), NOW()),
+
+  -- Sysco Boston (Northeast)
+  (45, 'Sysco Boston', 'distributor', '22222222-2222-4222-8222-000000000001',
+   '508-555-4006', 'boston@sysco.com', 'https://sysco.com',
+   '99 Spring Street', 'Plympton', 'MA', '02367', 4, 10,
+   'B', 'https://linkedin.com/company/sysco', 900, 1969,
+   'Sysco Boston is the New England regional distribution center serving Massachusetts and the Northeast.',
+   'New England regional distribution center. Serves Massachusetts and Northeast.',
+   NOW(), NOW());
+
+-- Gordon Food Service Branches (Parent ID: 13)
+-- GFS is family-owned with strong Midwest/Canada presence
+INSERT INTO "public"."organizations" (
+  id, name, organization_type, segment_id, phone, email, website,
+  address, city, state, postal_code, sales_id, parent_organization_id,
+  priority, linkedin_url, employee_count, founded_year, description,
+  notes, created_at, updated_at
+)
+VALUES
+  -- GFS Detroit (Major Midwest market)
+  (46, 'Gordon Food Service - Detroit', 'distributor', '22222222-2222-4222-8222-000000000001',
+   '313-555-4601', 'detroit@gfs.com', 'https://gfs.com',
+   '2555 Enterprise Drive', 'Brighton', 'MI', '48114', 3, 13,
+   'B', 'https://linkedin.com/company/gordon-food-service', 650, 1897,
+   'Gordon Food Service Detroit is a major Michigan distribution hub serving Detroit metro and Southeast Michigan.',
+   'Major Michigan distribution hub. Serves Detroit metro and Southeast Michigan.',
+   NOW(), NOW()),
+
+  -- GFS Minneapolis (Upper Midwest)
+  (47, 'Gordon Food Service - Minneapolis', 'distributor', '22222222-2222-4222-8222-000000000001',
+   '612-555-4602', 'minneapolis@gfs.com', 'https://gfs.com',
+   '7700 68th Avenue N', 'Brooklyn Park', 'MN', '55428', 3, 13,
+   'B', 'https://linkedin.com/company/gordon-food-service', 550, 1897,
+   'Gordon Food Service Minneapolis is the Upper Midwest regional center serving Minnesota, Wisconsin, and Dakotas.',
+   'Upper Midwest regional center. Serves Minnesota, Wisconsin, and Dakotas.',
+   NOW(), NOW()),
+
+  -- GFS Columbus (Ohio Valley)
+  (48, 'Gordon Food Service - Columbus', 'distributor', '22222222-2222-4222-8222-000000000001',
+   '614-555-4603', 'columbus@gfs.com', 'https://gfs.com',
+   '4700 Cemetery Road', 'Hilliard', 'OH', '43026', 4, 13,
+   'B', 'https://linkedin.com/company/gordon-food-service', 480, 1897,
+   'Gordon Food Service Columbus is the Ohio Valley distribution center serving Ohio, Indiana, and Kentucky.',
+   'Ohio Valley distribution center. Serves Ohio, Indiana, and Kentucky.',
+   NOW(), NOW()),
+
+  -- GFS Florida (Southeast expansion)
+  (49, 'Gordon Food Service - Florida', 'distributor', '22222222-2222-4222-8222-000000000001',
+   '407-555-4604', 'florida@gfs.com', 'https://gfs.com',
+   '1500 Tradeport Drive', 'Jacksonville', 'FL', '32218', 5, 13,
+   'C', 'https://linkedin.com/company/gordon-food-service', 420, 1897,
+   'Gordon Food Service Florida is the Southeast regional hub for GFS expansion into Florida market.',
+   'Southeast regional hub. GFS expansion into Florida market.',
+   NOW(), NOW()),
+
+  -- GFS Texas (Southwest expansion)
+  (50, 'Gordon Food Service - Texas', 'distributor', '22222222-2222-4222-8222-000000000001',
+   '214-555-4605', 'texas@gfs.com', 'https://gfs.com',
+   '4100 Diplomacy Row', 'Fort Worth', 'TX', '76155', 5, 13,
+   'C', 'https://linkedin.com/company/gordon-food-service', 380, 1897,
+   'Gordon Food Service Texas is the Texas regional distribution center for GFS expansion into Southwest market.',
+   'Texas regional distribution. GFS expansion into Southwest market.',
+   NOW(), NOW()),
+
+  -- GFS Pennsylvania (Mid-Atlantic)
+  (51, 'Gordon Food Service - Pennsylvania', 'distributor', '22222222-2222-4222-8222-000000000001',
+   '717-555-4606', 'pennsylvania@gfs.com', 'https://gfs.com',
+   '600 Crossroads Drive', 'Lewisberry', 'PA', '17339', 6, 13,
+   'C', 'https://linkedin.com/company/gordon-food-service', 340, 1897,
+   'Gordon Food Service Pennsylvania is the Mid-Atlantic distribution center serving Pennsylvania, New Jersey, Delaware.',
+   'Mid-Atlantic distribution center. Serves Pennsylvania, New Jersey, Delaware.',
+   NOW(), NOW());
+
+-- Update sequence to account for new branch organizations
+SELECT setval(pg_get_serial_sequence('organizations', 'id'), 51, true);
+
 -- ============================================================================
 -- PART 7: PRODUCTS (36 products - 4 per principal)
 -- ============================================================================
