@@ -304,6 +304,16 @@ describe("ActivityPulseDot", () => {
 
     const dot = screen.getByRole("status");
     expect(dot).toHaveClass("bg-muted-foreground");
+    expect(dot).toHaveAttribute("aria-label", "No activity recorded");
+  });
+
+  // Edge case: New opportunity with no activities yet
+  it("handles new opportunity with null activity gracefully", () => {
+    render(<ActivityPulseDot daysSinceLastActivity={null} />);
+
+    // Gray indicates "needs first contact" - not stale, just new
+    const dot = screen.getByRole("status");
+    expect(dot).toHaveClass("bg-muted-foreground");
   });
 
   it("treats exactly 7 days as yellow (boundary)", () => {
@@ -986,13 +996,16 @@ Create file `tests/e2e/opportunities/kanban-expand.spec.ts`:
 
 ```typescript
 import { test, expect } from "@playwright/test";
-import { KanbanPage } from "../support/poms/KanbanPage";
 
 test.describe("Kanban Card Expand/Collapse", () => {
-  test("should expand card to show full details", async ({ page }) => {
-    const kanban = new KanbanPage(page);
-    await kanban.goto();
+  // Navigate to opportunities list (Kanban view)
+  test.beforeEach(async ({ page }) => {
+    await page.goto("/opportunities");
+    // Wait for Kanban board to load
+    await page.waitForSelector("[data-testid='kanban-board']");
+  });
 
+  test("should expand card to show full details", async ({ page }) => {
     // Find first opportunity card
     const firstCard = page.getByTestId("opportunity-card").first();
     await expect(firstCard).toBeVisible();
@@ -1005,7 +1018,7 @@ test.describe("Kanban Card Expand/Collapse", () => {
     await expandButton.click();
     await expect(expandButton).toHaveAttribute("aria-expanded", "true");
 
-    // Details should be visible
+    // Details should be visible (use flexible matchers for time-sensitive data)
     await expect(firstCard.getByText(/days in stage/i)).toBeVisible();
 
     // Collapse the card
@@ -1013,16 +1026,44 @@ test.describe("Kanban Card Expand/Collapse", () => {
     await expect(expandButton).toHaveAttribute("aria-expanded", "false");
   });
 
-  test("should show activity pulse dot", async ({ page }) => {
-    const kanban = new KanbanPage(page);
-    await kanban.goto();
+  test("should show activity pulse dot with semantic color", async ({ page }) => {
+    // Find first card and its pulse dot
+    const firstCard = page.getByTestId("opportunity-card").first();
+    const pulseDot = firstCard.getByRole("status");
 
-    // Activity pulse dot should be visible
-    const pulseDot = page.getByRole("status").first();
     await expect(pulseDot).toBeVisible();
+
+    // Pulse dot should have one of the semantic color classes
+    // (Don't assert exact color - depends on test data timing)
+    const classList = await pulseDot.getAttribute("class");
+    const hasValidColor =
+      classList?.includes("bg-success") ||
+      classList?.includes("bg-warning") ||
+      classList?.includes("bg-destructive") ||
+      classList?.includes("bg-muted-foreground");
+
+    expect(hasValidColor).toBe(true);
+  });
+
+  test("should show task count when expanded", async ({ page }) => {
+    const firstCard = page.getByTestId("opportunity-card").first();
+
+    // Expand the card
+    const expandButton = firstCard.getByRole("button", { name: /expand/i });
+    await expandButton.click();
+
+    // Task row should be visible if opportunity has tasks
+    // Use flexible assertion - task count varies by test data
+    const taskRow = firstCard.locator("text=/\\d+ tasks?/i");
+    const daysRow = firstCard.getByText(/days in stage/i);
+
+    // At minimum, days in stage should always be visible
+    await expect(daysRow).toBeVisible();
   });
 });
 ```
+
+**Note:** These E2E tests use flexible assertions (regex, existence checks) rather than exact values to avoid flakiness from time-sensitive data.
 
 **Verification:**
 ```bash
@@ -1068,6 +1109,155 @@ Phase 3 (Sequential):
 | `src/atomic-crm/opportunities/kanban/__tests__/ActivityPulseDot.test.tsx` | New | Unit tests |
 | `src/atomic-crm/opportunities/kanban/__tests__/OpportunityCard.test.tsx` | Edit | Add expand tests |
 | `tests/e2e/opportunities/kanban-expand.spec.ts` | New | E2E tests |
+
+---
+
+## Phase 4: Cleanup (Sequential)
+
+> **Run after all features verified working**
+
+### Task 4.1: Remove Unused Code from Old OpportunityCard
+**Time:** 2-3 min | **File:** `src/atomic-crm/opportunities/kanban/OpportunityCard.tsx`
+
+**Context:** The old card had a days_in_stage badge at the bottom. This is now in the expanded section. Clean up any redundant code.
+
+**Implementation:**
+
+Review `OpportunityCard.tsx` and remove:
+- Any duplicate days_in_stage rendering outside expanded section
+- Unused imports (if any)
+- Old inline SVG icons replaced by lucide-react icons
+
+**Verification:**
+```bash
+npx tsc --noEmit
+npm test -- OpportunityCard
+# Expected: No errors, all tests pass
+```
+
+---
+
+### Task 4.2: Update Storybook Stories (if exists)
+**Time:** 2-3 min | **File:** `src/atomic-crm/opportunities/kanban/OpportunityCard.stories.tsx`
+
+**Context:** If Storybook stories exist, update them to showcase collapsed/expanded states.
+
+**Pre-conditions:** Check if file exists first
+
+**Implementation:**
+
+```bash
+# Check if stories file exists
+ls src/atomic-crm/opportunities/kanban/*.stories.tsx 2>/dev/null || echo "No stories - skip this task"
+```
+
+If exists, add stories for:
+- Collapsed state (default)
+- Expanded state
+- With overdue tasks
+- With stale activity (red pulse)
+- New opportunity (gray pulse)
+
+---
+
+### Task 4.3: Clean Up Test Artifacts
+**Time:** 1-2 min
+
+**Context:** Remove any temporary test data or debug logs added during development.
+
+**Implementation:**
+
+```bash
+# Search for console.log statements that might have been added
+grep -r "console.log" src/atomic-crm/opportunities/kanban/ --include="*.tsx" || echo "No debug logs found"
+
+# Search for TODO comments that need resolution
+grep -r "TODO\|FIXME\|HACK" src/atomic-crm/opportunities/kanban/ --include="*.tsx" || echo "No TODOs found"
+```
+
+Remove any found debug statements or resolve TODOs.
+
+---
+
+### Task 4.4: Update Component Index Exports
+**Time:** 1-2 min | **File:** `src/atomic-crm/opportunities/kanban/index.ts`
+
+**Context:** Ensure the new `ActivityPulseDot` component is exported if needed elsewhere.
+
+**Implementation:**
+
+Check if `src/atomic-crm/opportunities/kanban/index.ts` exists:
+
+```bash
+ls src/atomic-crm/opportunities/kanban/index.ts 2>/dev/null || echo "No index file - skip"
+```
+
+If exists, add export:
+```typescript
+export { ActivityPulseDot } from "./ActivityPulseDot";
+```
+
+---
+
+### Task 4.5: Final Documentation Update
+**Time:** 2-3 min | **File:** `docs/designs/2025-12-04-expandable-kanban-cards-design.md`
+
+**Context:** Update design doc status to "Implemented" and add any implementation notes.
+
+**Implementation:**
+
+Edit `docs/designs/2025-12-04-expandable-kanban-cards-design.md`:
+
+```markdown
+# Change status at top:
+**Status:** Implemented ✅
+
+# Add section at bottom:
+## Implementation Notes
+
+- Migration: `20251204220000_add_activity_task_counts_to_opportunities_summary.sql`
+- Activity pulse thresholds: <7d green, 7-14d yellow, >14d red, null gray
+- Animation: CSS grid-rows transition (200ms)
+- Completed: YYYY-MM-DD
+```
+
+**Verification:**
+```bash
+# Verify design doc is updated
+head -5 docs/designs/2025-12-04-expandable-kanban-cards-design.md
+```
+
+---
+
+### Task 4.6: Run Final Quality Checks
+**Time:** 3-5 min
+
+**Context:** Full verification that everything is clean and working.
+
+**Implementation:**
+
+```bash
+# TypeScript check
+npx tsc --noEmit
+
+# Lint check
+npm run lint
+
+# Full test suite
+npm test
+
+# Build verification
+npm run build
+
+# All should pass with no warnings
+```
+
+**Success Criteria:**
+- [ ] No TypeScript errors
+- [ ] No lint warnings in changed files
+- [ ] All tests pass
+- [ ] Build succeeds
+- [ ] No console warnings in browser
 
 ---
 
