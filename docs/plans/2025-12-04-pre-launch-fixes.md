@@ -23,6 +23,19 @@
 
 ---
 
+## Task Status Summary (2025-12-05)
+
+| Task Group | Status | Evidence |
+|------------|--------|----------|
+| Task 2.1-2.2: Daily Digest Auth | ✅ COMPLETE | `CRON_SECRET` at daily-digest/index.ts:77, auth check at line 189 |
+| Task 3.1-3.2: Overdue Tasks Auth | ✅ COMPLETE | `CRON_SECRET` at check-overdue-tasks/index.ts:25, auth check at line 34 |
+| Task 1.1-1.3: Silent Failures | ⚠️ PARTIAL | Throws found at lines 167, 201, 240 - verify fallback behavior |
+| Task 4.x: User Management Zod | NOT VERIFIED | Need to check users Edge Function |
+| Task 5.1: Task form resolver | NOT VERIFIED | |
+| Task 6.x: Verification | NOT VERIFIED | |
+
+---
+
 ## Architecture: Task Dependencies
 
 ```
