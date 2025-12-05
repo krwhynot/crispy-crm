@@ -244,7 +244,7 @@ VALUES
   (5, 'e0000000-0000-0000-0000-000000000001', 'Dale', 'Anderson', 'dale@mfbroker.com', '555-000-0005', false, 'rep', NULL, NOW(), NOW()),
 
   -- Sue - Sales Rep (id=6)
-  (6, 'f0000000-0000-0000-0000-000000000001', 'Sue', 'Martinez', 'sue@mfbroker.com', '555-000-0006', false, NULL, NOW(), NOW());
+  (6, 'f0000000-0000-0000-0000-000000000001', 'Sue', 'Martinez', 'sue@mfbroker.com', '555-000-0006', false, 'rep', NULL, NOW(), NOW());
 
 -- Reset the sequence to continue after our inserts
 SELECT setval(pg_get_serial_sequence('sales', 'id'), 6, true);
