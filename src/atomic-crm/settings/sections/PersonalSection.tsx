@@ -2,7 +2,7 @@ import { RecordField } from "@/components/admin/record-field";
 import { TextInput } from "@/components/admin/text-input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { CircleX, Pencil, Save } from "lucide-react";
+import { CircleX, Loader2, Pencil, Save } from "lucide-react";
 import { useGetIdentity, useRecordContext } from "ra-core";
 import { useState } from "react";
 import { useFormState } from "react-hook-form";
