@@ -247,6 +247,26 @@ npx tsc --noEmit
 # Expected: No errors
 ```
 
+---
+
+### Task 1.2b: Regenerate Database Types
+**Time:** 1-2 min
+
+**Context:** Keep `src/types/database.generated.ts` in sync with new view columns.
+
+**Implementation:**
+```bash
+# Regenerate Supabase types to include new view columns
+npx supabase gen types typescript --local > src/types/database.generated.ts
+
+# Verify new columns appear in types
+grep -A 5 "opportunities_summary" src/types/database.generated.ts | grep -E "days_since_last_activity|pending_task_count|overdue_task_count"
+# Expected: All three columns should appear
+```
+
+**Constitution Checklist:**
+- [x] Single source of truth (types match database)
+
 **Constitution Checklist:**
 - [x] interface for object shape (not type)
 - [x] Optional fields (view may not always return them)
@@ -368,13 +388,43 @@ npm test -- ActivityPulseDot
 
 Edit `src/atomic-crm/opportunities/kanban/__tests__/OpportunityCard.test.tsx` (or create if doesn't exist):
 
+**IMPORTANT:** The OpportunityCard uses `Draggable` from @hello-pangea/dnd, which requires DragDropContext and Droppable wrappers. Use the existing test helper pattern.
+
 Add these test cases:
 
 ```tsx
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
+import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { OpportunityCard } from "../OpportunityCard";
+
+/**
+ * Wrapper component for testing Draggable components
+ * Required because OpportunityCard uses Draggable internally
+ */
+const DndTestWrapper = ({ children }: { children: React.ReactNode }) => (
+  <DragDropContext onDragEnd={() => {}}>
+    <Droppable droppableId="test-droppable">
+      {(provided) => (
+        <div ref={provided.innerRef} {...provided.droppableProps}>
+          {children}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
+  </DragDropContext>
+);
+
+// Helper to render OpportunityCard with required wrappers
+const renderCard = (record: typeof mockOpportunity, props = {}) => {
+  return renderWithAdminContext(
+    <DndTestWrapper>
+      <OpportunityCard index={0} openSlideOver={vi.fn()} {...props} />
+    </DndTestWrapper>,
+    { record }
+  );
+};
 
 // Mock opportunity data with new fields
 const mockOpportunity = {
@@ -396,10 +446,7 @@ const mockOpportunity = {
 
 describe("OpportunityCard - Expand/Collapse", () => {
   it("renders collapsed by default", () => {
-    renderWithAdminContext(
-      <OpportunityCard index={0} openSlideOver={vi.fn()} />,
-      { record: mockOpportunity }
-    );
+    renderCard(mockOpportunity);
 
     // Collapsed: name should be truncated
     const name = screen.getByText(/Rapid Rasoi/);
@@ -410,10 +457,7 @@ describe("OpportunityCard - Expand/Collapse", () => {
   });
 
   it("expands when expand button is clicked", () => {
-    renderWithAdminContext(
-      <OpportunityCard index={0} openSlideOver={vi.fn()} />,
-      { record: mockOpportunity }
-    );
+    renderCard(mockOpportunity);
 
     const expandButton = screen.getByRole("button", { name: /expand/i });
     fireEvent.click(expandButton);
@@ -428,10 +472,7 @@ describe("OpportunityCard - Expand/Collapse", () => {
   });
 
   it("collapses when collapse button is clicked", () => {
-    renderWithAdminContext(
-      <OpportunityCard index={0} openSlideOver={vi.fn()} />,
-      { record: mockOpportunity }
-    );
+    renderCard(mockOpportunity);
 
     // First expand
     const expandButton = screen.getByRole("button", { name: /expand/i });
@@ -446,20 +487,14 @@ describe("OpportunityCard - Expand/Collapse", () => {
   });
 
   it("shows activity pulse dot with correct color", () => {
-    renderWithAdminContext(
-      <OpportunityCard index={0} openSlideOver={vi.fn()} />,
-      { record: { ...mockOpportunity, days_since_last_activity: 5 } }
-    );
+    renderCard({ ...mockOpportunity, days_since_last_activity: 5 });
 
     const pulseDot = screen.getByRole("status");
     expect(pulseDot).toHaveClass("bg-success"); // Green for <7 days
   });
 
   it("shows overdue task warning when tasks are overdue", () => {
-    renderWithAdminContext(
-      <OpportunityCard index={0} openSlideOver={vi.fn()} />,
-      { record: { ...mockOpportunity, overdue_task_count: 2 } }
-    );
+    renderCard({ ...mockOpportunity, overdue_task_count: 2 });
 
     // Expand to see tasks
     const expandButton = screen.getByRole("button", { name: /expand/i });
@@ -469,10 +504,7 @@ describe("OpportunityCard - Expand/Collapse", () => {
   });
 
   it("has correct aria-expanded state", () => {
-    renderWithAdminContext(
-      <OpportunityCard index={0} openSlideOver={vi.fn()} />,
-      { record: mockOpportunity }
-    );
+    renderCard(mockOpportunity);
 
     const expandButton = screen.getByRole("button", { name: /expand/i });
     expect(expandButton).toHaveAttribute("aria-expanded", "false");
@@ -481,6 +513,20 @@ describe("OpportunityCard - Expand/Collapse", () => {
     expect(expandButton).toHaveAttribute("aria-expanded", "true");
   });
 });
+
+// ============================================
+// EXISTING TEST UPDATES (behavior changes)
+// ============================================
+// NOTE: The following existing tests need updating because priority badge
+// and days-in-stage are now in the EXPANDED section, not always visible.
+//
+// Update these assertions in existing tests:
+// - OLD: expect(screen.getByText(/High/)).toBeInTheDocument(); // always visible
+// - NEW: First call expandButton.click(), THEN check for priority badge
+//
+// Tests to update in existing file:
+// - "renders priority badge" → expand first, then check
+// - "renders days in stage" → expand first, then check
 ```
 
 **Verification:**
@@ -604,13 +650,11 @@ Edit `src/atomic-crm/opportunities/kanban/OpportunityColumn.tsx`, find line ~108
 // FIND (around line 108):
 className={`flex-1 pb-8 min-w-[240px] max-w-[280px] bg-card border border-border rounded-2xl shadow-col-inner ${shadowConfig.rest} ${shadowConfig.hover} transition-[box-shadow,border-color] duration-200 ease-in-out px-3`}
 
-// REPLACE WITH:
+// REPLACE WITH (responsive column widths - wider for expanded cards):
 className={`
   flex-1 pb-8 bg-card border border-border rounded-2xl shadow-col-inner
   ${shadowConfig.rest} ${shadowConfig.hover}
   transition-[box-shadow,border-color] duration-200 ease-in-out px-3
-
-  // Responsive column widths (wider for expanded cards)
   min-w-[260px] max-w-[300px]
   md:min-w-[280px] md:max-w-[320px]
   lg:min-w-[300px] lg:max-w-[340px]
@@ -943,6 +987,62 @@ npx tsc --noEmit
 
 ---
 
+### Task 2.5: Update Existing OpportunityCard Tests for Behavior Change
+**Time:** 3-5 min | **File:** `src/atomic-crm/opportunities/__tests__/OpportunityCard.test.tsx`
+
+**Context:** The existing tests assert that priority badge and days-in-stage are always visible. With the new expandable card, these are only visible when expanded.
+
+**Pre-conditions:** Task 2.4 card component updated
+
+**Implementation:**
+
+Find and update these existing test patterns in `src/atomic-crm/opportunities/__tests__/OpportunityCard.test.tsx`:
+
+```tsx
+// BEFORE (will fail - badges now in expanded section):
+it("renders priority badge", () => {
+  renderCard(mockOpportunity);
+  expect(screen.getByText(/High/)).toBeInTheDocument();
+});
+
+// AFTER (expand first, then check):
+it("renders priority badge when expanded", () => {
+  renderCard(mockOpportunity);
+
+  // Badge is in expanded section - expand first
+  const expandButton = screen.getByRole("button", { name: /expand/i });
+  fireEvent.click(expandButton);
+
+  expect(screen.getByText(/High/)).toBeInTheDocument();
+});
+
+// BEFORE (will fail):
+it("renders days in stage badge", () => {
+  renderCard(mockOpportunity);
+  expect(screen.getByText(/days in stage/i)).toBeInTheDocument();
+});
+
+// AFTER (expand first):
+it("renders days in stage when expanded", () => {
+  renderCard(mockOpportunity);
+
+  const expandButton = screen.getByRole("button", { name: /expand/i });
+  fireEvent.click(expandButton);
+
+  expect(screen.getByText(/days in stage/i)).toBeInTheDocument();
+});
+```
+
+**Note:** Also update any tests that check for priority colors or stuck warnings - these are now in the expanded section.
+
+**Verification:**
+```bash
+npm test -- OpportunityCard
+# Expected: All tests pass (including updated ones)
+```
+
+---
+
 ## Phase 3: Integration & Verification (Sequential)
 
 ### Task 3.1: Run Full Test Suite
@@ -974,9 +1074,9 @@ npm run build
 # Reset database with new migration
 npx supabase db reset
 
-# Re-seed development data (REQUIRED for manual/E2E verification)
+# Re-seed development/E2E data (REQUIRED for manual/E2E verification)
 # This populates opportunities, activities, and tasks for testing
-npm run db:local:seed-orgs
+npm run db:local:seed:e2e
 
 # Verify seed data exists
 npx supabase db execute --sql "SELECT COUNT(*) as opp_count FROM opportunities WHERE deleted_at IS NULL;"
@@ -1138,6 +1238,10 @@ test.describe("Kanban Card Expand/Collapse", () => {
   test.beforeEach(async ({ page }) => {
     opportunitiesPage = new OpportunitiesListPage(page);
     await opportunitiesPage.goto();
+
+    // IMPORTANT: Ensure we're in Kanban view (user's localStorage may have "list" preference)
+    // The POM's waitForPageLoad handles both views, but we need Kanban specifically
+    await opportunitiesPage.switchToKanbanView();
   });
 
   test("should expand card to show full details", async () => {
@@ -1207,12 +1311,12 @@ Phase 1 (Sequential):
 Phase 2 (Parallel):                     ↓                    ↓
                                ┌────────┴────────┐   ┌───────┴───────┐
                                │ 2.1 PulseDot    │   │ 2.4 Card      │
-                               │     Component   │   │    Component  │
-                               └─────────────────┘   └───────────────┘
+                               │     Component   │   │    Component  │──→ 2.5 Update
+                               └─────────────────┘   └───────────────┘    Existing Tests
 
   2.2 Column Widths ────┐
                         │
-  2.3 Container Gap ────┼──→ (All run in parallel)
+  2.3 Container Gap ────┼──→ (2.1-2.4 parallel, 2.5 after 2.4)
                         │
 
 Phase 3 (Sequential):

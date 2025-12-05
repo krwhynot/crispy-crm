@@ -22,7 +22,7 @@ export const SettingsPage = () => {
   const dataProvider = useDataProvider<CrmDataProvider>();
 
   const { mutate } = useMutation({
-    mutationKey: ["signup"],
+    mutationKey: ["updateProfile"],
     mutationFn: async (data: SalesFormData) => {
       if (!identity) {
         throw new Error("Record not found");
@@ -52,17 +52,25 @@ export const SettingsPage = () => {
     onSuccess: () => {
       notify("A reset password email has been sent to your email address");
     },
-    onError: (e) => {
-      notify(`${e}`, {
+    onError: (error) => {
+      console.error('Password update failed:', error);
+      notify("An error occurred. Please try again.", {
         type: "error",
       });
     },
   });
 
-  if (isIdentityPending) return <div>Loading...</div>;
+  if (isIdentityPending) {
+    return (
+      <div role="status" aria-live="polite" className="p-4">
+        <span className="sr-only">Loading settings...</span>
+        Loading...
+      </div>
+    );
+  }
   if (!identity) return null;
 
-  const handleOnSubmit = async (values: any) => {
+  const handleOnSubmit = async (values: SalesFormData) => {
     mutate(values);
   };
 
