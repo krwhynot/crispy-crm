@@ -111,7 +111,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
           data-testid="opportunity-card"
         >
           {/* Header: Drag Handle + Activity Pulse + Name + Expand + Actions (always visible) */}
-          <div className="flex items-center gap-1">
+          <div className="flex items-center gap-1.5">
             {/* Drag handle - 44px touch target (WCAG AA) but compact visual */}
             <div
               {...provided.dragHandleProps}
@@ -125,8 +125,8 @@ export const OpportunityCard = React.memo(function OpportunityCard({
             <ActivityPulseDot daysSinceLastActivity={record.days_since_last_activity} />
 
             <h3 className={`
-              font-medium text-xs text-foreground flex-1 min-w-0 leading-tight
-              ${isExpanded ? "" : "line-clamp-2"}
+              font-semibold text-base text-foreground flex-1 min-w-0 leading-normal
+              ${isExpanded ? "" : "line-clamp-3"}
             `}>
               {record.name}
             </h3>
@@ -156,7 +156,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
             ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}
           `}>
             <div className="overflow-hidden">
-              <div className="pt-2 mt-2 border-t border-border space-y-1.5">
+              <div className="pt-3 mt-2 border-t border-border space-y-2">
                 {/* Description */}
                 {record.description && (
                   <p className="text-xs text-muted-foreground line-clamp-2">

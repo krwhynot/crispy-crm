@@ -119,9 +119,9 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
   flex flex-col pb-4 bg-card border border-border rounded-xl shadow-col-inner
   ${shadowConfig.rest} ${shadowConfig.hover}
   transition-[box-shadow,border-color] duration-200 ease-in-out px-2
-  min-w-[220px] max-w-[260px]
-  md:min-w-[240px] md:max-w-[280px]
-  lg:min-w-[260px] lg:max-w-[300px]
+  min-w-[260px] max-w-[300px]
+  md:min-w-[280px] md:max-w-[320px]
+  lg:min-w-[300px] lg:max-w-[340px]
   h-full max-h-full overflow-hidden shrink-0
 `}
       data-testid="kanban-column"
