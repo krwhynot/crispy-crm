@@ -73,6 +73,8 @@ const OpportunityList = () => {
           view={view}
           openSlideOver={openSlideOver}
           isSlideOverOpen={isOpen}
+          slideOverId={slideOverId}
+          closeSlideOver={closeSlideOver}
         />
         <FloatingCreateButton />
       </List>

@@ -397,6 +397,166 @@ export function getPrincipalColor(principalId: number | string | null | undefine
 
 ---
 
+## Industry Standards for Corrections
+
+### 1. React Admin useGetList Pattern
+
+**Source:** [React Admin useGetList Documentation](https://github.com/marmelab/react-admin/blob/master/docs/useGetList.md)
+
+The corrections follow React Admin's official pattern for fetching list data:
+
+```tsx
+// Official pattern from React Admin docs
+const { data, total, isPending, error } = useGetList(
+  'posts',  // resource name - maps to view or table
+  {
+    pagination: { page: 1, perPage: 10 },
+    sort: { field: 'published_at', order: 'DESC' }
+  }
+);
+```
+
+**Applied in Correction 1 & 3:**
+- Resource name `dashboard_principal_summary` maps directly to PostgreSQL view
+- No custom data provider modifications needed
+- Sort by `priority_score` for staleness ordering
+- Filter by `account_manager_id` for user-specific data
+
+### 2. React Router v6+ State Passing
+
+**Source:** [React Router useNavigate Documentation](https://github.com/remix-run/react-router/blob/main/docs/api/hooks/useNavigate.md)
+
+Official pattern for passing state between routes:
+
+```tsx
+// Official React Router pattern
+navigate({
+  pathname: "/some/route",
+  search: "?search=param",
+  hash: "#hash",
+  state: { some: "state" },  // ← State passed here
+});
+
+// Accessed on destination via useLocation().state
+```
+
+**Applied in Correction 5:**
+- `CreateButton` doesn't support `state` prop (React Admin limitation)
+- Use `useNavigate()` directly with state object
+- Access via `useLocation().state` in destination component
+- This is the official React Router v6+ pattern
+
+### 3. Vitest Test Filtering
+
+**Source:** [Vitest Test Filtering Guide](https://vitest.dev/guide/filtering)
+
+Official CLI options for filtering tests:
+
+```bash
+# Filter by filename (matches path)
+$ vitest basic
+
+# Filter by test name (matches describe/it names)
+$ vitest -t "should handle click"
+$ vitest --testNamePattern="should handle click"
+
+# Run specific file by path
+$ vitest basic/foo.test.ts
+
+# Run specific file + line (Vitest 3+)
+$ vitest basic/foo.test.ts:10
+```
+
+**Applied in Correction 6:**
+- Use `--testNamePattern` not `--testPathPattern` (Jest flag)
+- Or specify full file path: `npm test -- --run src/path/to/test.tsx`
+- Vitest CLI differs from Jest CLI
+
+### 4. TanStack Query Optimistic Updates
+
+**Source:** [TanStack Query Optimistic Updates Guide](https://github.com/TanStack/query/blob/main/docs/framework/react/guides/optimistic-updates.md)
+
+Official pattern for optimistic updates with rollback:
+
+```tsx
+useMutation({
+  mutationFn: updateTodo,
+  onMutate: async (newTodo, context) => {
+    // 1. Cancel outgoing refetches
+    await context.client.cancelQueries({ queryKey: ['todos'] })
+
+    // 2. Snapshot previous value
+    const previousTodos = context.client.getQueryData(['todos'])
+
+    // 3. Optimistically update
+    context.client.setQueryData(['todos'], (old) => [...old, newTodo])
+
+    // 4. Return rollback data
+    return { previousTodos }
+  },
+  onError: (err, newTodo, onMutateResult, context) => {
+    // 5. Rollback on error
+    context.client.setQueryData(['todos'], onMutateResult.previousTodos)
+  },
+  onSettled: (data, error, variables, onMutateResult, context) => {
+    // 6. Always refetch to sync with server
+    context.client.invalidateQueries({ queryKey: ['todos'] })
+  },
+})
+```
+
+**Applied in Correction 4:**
+- `useMyTasks.updateTaskDueDate` already implements this pattern
+- Uses `optimisticUpdates` Map for immediate UI feedback
+- Rollback on error via previous state restoration
+- Refetch on settlement to sync with server
+
+### 5. Database View Pattern (PostgreSQL Best Practice)
+
+**Industry Standard:** Precomputed views for dashboard aggregations
+
+```sql
+-- Compute once in view, not N times in application
+CREATE VIEW dashboard_principal_summary AS
+SELECT
+  o.id,
+  o.name AS principal_name,
+  EXTRACT(DAY FROM (NOW() - MAX(a.activity_date)))::INTEGER AS days_since_last_activity,
+  CASE
+    WHEN days > 14 THEN 'urgent'
+    WHEN days > 7 THEN 'warning'
+    ELSE 'good'
+  END AS status_indicator
+FROM organizations o
+LEFT JOIN activities a ON ...
+WHERE o.organization_type = 'principal'
+GROUP BY o.id;
+```
+
+**Why this matters:**
+- Single computation point (DRY)
+- Query optimizer can use indexes
+- No N+1 queries
+- RLS policies enforced at view level
+- Application code stays simple
+
+**Applied in Correction 3:**
+- DELETE custom Supabase query from data provider
+- Use existing `dashboard_principal_summary` view
+- View already handles soft deletes, grouping, date math
+
+### Compliance Summary (Corrections)
+
+| Correction | Industry Standard | Source |
+|------------|-------------------|--------|
+| Principals data source | React Admin resource → view mapping | React Admin Docs |
+| Navigation state | `useNavigate({ state })` pattern | React Router v6 Docs |
+| Test filtering | `--testNamePattern` CLI flag | Vitest Docs |
+| Optimistic updates | onMutate → snapshot → rollback | TanStack Query Docs |
+| Dashboard aggregation | Precomputed PostgreSQL views | PostgreSQL Best Practices |
+
+---
+
 ## WAVE 1: Shared Foundation (PARALLEL)
 
 **All tasks in Wave 1 can run simultaneously.**
