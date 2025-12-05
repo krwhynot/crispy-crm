@@ -59,7 +59,7 @@ export const FilterChip: React.FC<FilterChipProps> = ({ label, onRemove, classNa
         size="icon"
         className={cn(
           "rounded-full hover:bg-accent/50",
-          "h-9 w-9", // 36px button, larger for touch
+          "h-11 w-11", // 44px button for iPad touch target
           "focus:outline-none focus:ring-2 focus:ring-ring"
         )}
         onClick={handleRemove}
