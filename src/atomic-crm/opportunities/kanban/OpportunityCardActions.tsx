@@ -120,7 +120,7 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
             aria-label="Actions menu"
             onMouseDown={(e) => e.stopPropagation()} // Prevent drag
             onClick={(e) => e.stopPropagation()} // Prevent card click
-            className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded hover:bg-muted transition-colors touch-manipulation"
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded hover:bg-muted transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           >
             <MoreVertical className="w-5 h-5 text-muted-foreground" />
           </button>

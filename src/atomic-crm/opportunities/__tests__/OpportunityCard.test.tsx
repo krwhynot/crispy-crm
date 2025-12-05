@@ -305,4 +305,42 @@ describe("OpportunityCard", () => {
       expect(screen.getByText(/Price too high/i)).toBeInTheDocument();
     });
   });
+
+  describe("iPad Drag Handle", () => {
+    it("renders explicit drag handle icon", () => {
+      renderCard({});
+
+      const dragHandle = screen.getByTestId("drag-handle");
+      expect(dragHandle).toBeInTheDocument();
+      expect(dragHandle).toHaveAttribute("aria-label", "Drag to reorder");
+    });
+
+    it("drag handle meets 44px touch target", () => {
+      renderCard({});
+
+      const dragHandle = screen.getByTestId("drag-handle");
+      // Check for min-h-[44px] and min-w-[44px] classes
+      expect(dragHandle.className).toMatch(/min-h-\[44px\]|min-h-11|h-11/);
+      expect(dragHandle.className).toMatch(/min-w-\[44px\]|min-w-11|w-11/);
+    });
+
+    it("card body does NOT have dragHandleProps", () => {
+      renderCard({});
+
+      const cardBody = screen.getByTestId("opportunity-card");
+      // Card should have draggableProps but NOT dragHandleProps
+      // dragHandleProps adds data-rbd-drag-handle-draggable-id attribute
+      expect(cardBody).not.toHaveAttribute("data-rbd-drag-handle-draggable-id");
+    });
+
+    it("does not trigger openSlideOver when drag handle is clicked", () => {
+      const openSlideOver = vi.fn();
+      renderCard({}, { openSlideOver });
+
+      const dragHandle = screen.getByTestId("drag-handle");
+      fireEvent.click(dragHandle);
+
+      expect(openSlideOver).not.toHaveBeenCalled();
+    });
+  });
 });
