@@ -131,7 +131,7 @@ test.describe("Kanban Card Expand/Collapse", () => {
     expect(isExpanded).toBe(true);
   });
 
-  test("should show priority badge when expanded", async ({ page }) => {
+  test("should show priority badge when expanded", async () => {
     const cardName = await opportunitiesPage.getFirstCardName();
     expect(cardName).toBeTruthy();
 
@@ -144,7 +144,7 @@ test.describe("Kanban Card Expand/Collapse", () => {
     await expect(priorityBadge).toBeVisible();
   });
 
-  test("should show close date when expanded", async ({ page }) => {
+  test("should show close date when expanded", async () => {
     const cardName = await opportunitiesPage.getFirstCardName();
     expect(cardName).toBeTruthy();
 

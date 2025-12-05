@@ -1,7 +1,7 @@
 # Expandable Kanban Cards Design
 
 **Date:** 2025-12-04
-**Status:** Validated
+**Status:** Implemented ✅
 
 ## Problem Statement
 
@@ -161,3 +161,34 @@ None - design validated through brainstorming session.
 - **Supabase Computed Relationships:** PostgREST inlines SQL functions efficiently
 - **Ant Design Cards:** "Max 4 lines" guideline for card content
 - **Salesforce Badges:** Semantic color patterns (success/warning/error)
+
+---
+
+## Implementation Notes
+
+**Implemented:** 2025-12-04
+
+### Key Implementation Details
+
+- **Migration:** `20251204220000_add_activity_task_counts_to_opportunities_summary.sql`
+- **Activity Pulse Thresholds:** <7d green, 7-14d yellow, >14d red, null gray
+- **Animation:** CSS grid-rows transition (200ms ease-out)
+- **Touch Target:** Expand button prevents drag via `onMouseDown`/`onTouchStart` stopPropagation
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `supabase/migrations/20251204220000_*.sql` | Added 3 computed columns to opportunities_summary |
+| `src/atomic-crm/types.ts` | Added `days_since_last_activity`, `pending_task_count`, `overdue_task_count` |
+| `src/atomic-crm/opportunities/kanban/ActivityPulseDot.tsx` | New component for activity indicator |
+| `src/atomic-crm/opportunities/kanban/OpportunityCard.tsx` | Refactored to expandable card |
+| `src/atomic-crm/opportunities/kanban/OpportunityColumn.tsx` | Responsive column widths (260-340px) |
+| `src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx` | Gap increased from gap-4 to gap-5 |
+| `tests/e2e/support/poms/OpportunitiesListPage.ts` | Added expand/collapse POM methods |
+| `tests/e2e/opportunities/kanban-expand.spec.ts` | E2E tests for expand/collapse behavior |
+
+### Test Coverage
+
+- **Unit Tests:** 36 tests (9 ActivityPulseDot + 27 OpportunityCard)
+- **E2E Tests:** 6 tests covering expand/collapse, pulse colors, and visual cues
