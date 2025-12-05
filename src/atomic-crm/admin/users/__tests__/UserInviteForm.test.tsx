@@ -55,8 +55,9 @@ describe('UserInviteForm', () => {
       wrapper: createWrapper(),
     });
 
-    // The select should display "Rep" as default
-    expect(screen.getByText('Rep')).toBeInTheDocument();
+    // The select trigger should display "Rep" as default
+    const selectTrigger = screen.getByRole('combobox', { name: /role/i });
+    expect(selectTrigger).toHaveTextContent('Rep');
   });
 
   it('submits form data to inviteUser', async () => {

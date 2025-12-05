@@ -21,6 +21,7 @@ import {
 } from "../providers/supabase";
 import sales from "../sales";
 import { SettingsPage } from "../settings/SettingsPage";
+import { UserList, UserSlideOver } from "../admin";
 import type { ConfigurationContextValue } from "./ConfigurationContext";
 import { ConfigurationProvider } from "./ConfigurationContext";
 import {
@@ -193,6 +194,10 @@ export const CRM = ({
           <Route path={SettingsPage.path} element={<SettingsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/admin/health" element={<HealthDashboard />} />
+          {/* Admin User Management - uses resource="sales" internally */}
+          <Route path="/admin/users" element={<UserList />} />
+          <Route path="/admin/users/:id" element={<UserSlideOver />} />
+          {/* Legacy redirects */}
           <Route path="/contacts/:id/show" element={<ContactShowRedirect />} />
           <Route path="/tasks/:id/show" element={<TaskShowRedirect />} />
           <Route path="/products/:id/show" element={<ProductShowRedirect />} />

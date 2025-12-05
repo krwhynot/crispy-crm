@@ -3,7 +3,7 @@ import { ThemeModeToggle } from "@/components/admin/theme-mode-toggle";
 import { UserMenu } from "@/components/admin/user-menu";
 import { useUserMenu } from "@/hooks/user-menu-context";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
-import { Settings, User } from "lucide-react";
+import { Settings, Users } from "lucide-react";
 import { CanAccess } from "ra-core";
 import { Link, matchPath, useLocation } from "react-router-dom";
 import { useConfigurationContext } from "../root/ConfigurationContext";
@@ -128,8 +128,8 @@ const UsersMenu = () => {
   const { onClose } = useUserMenu() ?? {};
   return (
     <DropdownMenuItem asChild onClick={onClose}>
-      <Link to="/sales" className="flex items-center gap-2">
-        <User /> Users
+      <Link to="/admin/users" className="flex items-center gap-2">
+        <Users className="h-4 w-4" /> Team Management
       </Link>
     </DropdownMenuItem>
   );
