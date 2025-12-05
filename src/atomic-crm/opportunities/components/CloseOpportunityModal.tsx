@@ -94,12 +94,23 @@ export const CloseOpportunityModal = ({
     mode: "onBlur", // Validate on blur for better performance
   });
 
-  const { control, reset, handleSubmit, formState } = form;
+  const { control, reset, handleSubmit, formState, trigger } = form;
   const { errors, isValid } = formState;
 
-  // Watch reason fields for conditional "Other" field
+  // Watch reason fields for conditional "Other" field and to trigger validation
   const winReason = useWatch({ control, name: "win_reason" }) as WinReason | null | undefined;
   const lossReason = useWatch({ control, name: "loss_reason" }) as LossReason | null | undefined;
+  const closeReasonNotes = useWatch({ control, name: "close_reason_notes" }) as string | null | undefined;
+
+  // Trigger validation when relevant fields change
+  // This is necessary because mode: "onBlur" doesn't auto-validate on change,
+  // but Zod refinements require full form validation to determine isValid
+  useEffect(() => {
+    // Only trigger validation after initial form setup (when a reason is selected)
+    if (winReason || lossReason) {
+      trigger();
+    }
+  }, [winReason, lossReason, closeReasonNotes, trigger]);
 
   // Show notes field when "other" is selected
   const showNotesField = winReason === "other" || lossReason === "other";
