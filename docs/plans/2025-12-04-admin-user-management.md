@@ -203,7 +203,9 @@ npx tsc --noEmit src/atomic-crm/admin/users/schemas.ts
    }).transform((data) => {
      // Derive role from administrator if role not provided
      const role = data.role ?? (data.administrator ? 'admin' : 'rep');
-     return { ...data, role };
+     // Strip deprecated administrator field to avoid dual truth sources
+     const { administrator: _deprecated, ...rest } = data;
+     return { ...rest, role };
    });
    ```
 
@@ -234,10 +236,13 @@ npx tsc --noEmit src/atomic-crm/admin/users/schemas.ts
      disabled: z.coerce.boolean().optional(),
    }).transform((data) => {
      // Derive role from administrator if role not provided but administrator is
+     let derivedRole = data.role;
      if (data.role === undefined && data.administrator !== undefined) {
-       return { ...data, role: data.administrator ? 'admin' : 'rep' };
+       derivedRole = data.administrator ? 'admin' : 'rep';
      }
-     return data;
+     // Strip deprecated administrator field to avoid dual truth sources
+     const { administrator: _deprecated, ...rest } = data;
+     return { ...rest, role: derivedRole };
    });
    ```
 
@@ -391,8 +396,13 @@ npx tsc --noEmit src/atomic-crm/providers/types.ts
      );
 
      if (!response.ok) {
-       const error = await response.json().catch(() => ({ message: 'Invite failed' }));
-       throw new Error(error.message || 'Failed to invite user');
+       // Handle multiple error formats: { message }, { error: { message } }, or text
+       const errorData = await response.json().catch(() => null);
+       const message =
+         errorData?.message ||
+         errorData?.error?.message ||
+         `Invite failed (${response.status})`;
+       throw new Error(message);
      }
 
      return response.json();
@@ -416,8 +426,13 @@ npx tsc --noEmit src/atomic-crm/providers/types.ts
      );
 
      if (!response.ok) {
-       const error = await response.json().catch(() => ({ message: 'Update failed' }));
-       throw new Error(error.message || 'Failed to update user');
+       // Handle multiple error formats: { message }, { error: { message } }, or text
+       const errorData = await response.json().catch(() => null);
+       const message =
+         errorData?.message ||
+         errorData?.error?.message ||
+         `Update failed (${response.status})`;
+       throw new Error(message);
      }
 
      return response.json();
@@ -452,8 +467,8 @@ npx tsc --noEmit src/atomic-crm/providers/supabase/unifiedDataProvider.ts
    const mockFetch = vi.fn();
    global.fetch = mockFetch;
 
-   // Mock supabase auth
-   vi.mock('../supabase', () => ({
+   // Mock supabase auth - use correct import path
+   vi.mock('@/atomic-crm/providers/supabase/supabase', () => ({
      supabase: {
        auth: {
          getSession: vi.fn().mockResolvedValue({
@@ -1374,47 +1389,30 @@ npm test -- src/atomic-crm/admin/users/__tests__/UserInviteForm.test.tsx
 
 ## Phase 5: Integration (Mixed Parallel/Sequential)
 
-### Task 5.0: Update canAccess for Admin Routes (CRITICAL)
+### Task 5.0: Verify canAccess Configuration (No Code Change Needed)
 
 **File:** `src/atomic-crm/providers/commons/canAccess.ts`
 
-**Prerequisites:** None (can run first in Phase 5)
+**Prerequisites:** None
+
+**Note:** The existing `canAccess` already blocks non-admins from `sales` resource (line 54-57). Since our UserList uses `resource="sales"`, **no code change is required**.
 
 **Steps:**
-1. Open `src/atomic-crm/providers/commons/canAccess.ts`
-
-2. Add explicit handling for `admin/users` resource:
-   ```typescript
-   export const canAccess = <RecordType extends Record<string, any> = Record<string, any>>(
-     role: string,
-     params: CanAccessParams<RecordType>
-   ): boolean => {
-     const { action, resource } = params;
-     const userRole = role as UserRole;
-
-     // Admin has full access to everything
-     if (userRole === "admin") {
-       return true;
-     }
-
-     // NEW: Admin-only resources (explicit block for non-admins)
-     const adminOnlyResources = ['sales', 'admin/users'];
-     if (adminOnlyResources.includes(resource)) {
-       return false;
-     }
-
-     // ... rest of existing logic ...
-   };
+1. Verify existing behavior by reading `canAccess.ts`:
+   ```bash
+   grep -A 5 "Sales resource is admin-only" src/atomic-crm/providers/commons/canAccess.ts
    ```
+   Expected output shows `sales` is already blocked for non-admins.
+
+2. **No code change needed** - the existing logic handles this.
 
 **Verification:**
-- Log in as `manager` → Navigate to `/admin/users` → Should redirect to Access Denied
+- Log in as `manager` → Navigate to `/admin/users` → Should redirect to Access Denied (because UserList uses `resource="sales"`)
 - Log in as `rep` → Navigate to `/admin/users` → Should redirect to Access Denied
 - Log in as `admin` → Navigate to `/admin/users` → Should show Team Management
 
-**Constitution Checklist:**
-- [x] Fail-fast (explicit deny, no complex fallback)
-- [x] Allowlist pattern (explicit admin-only resources)
+**Why No Change:**
+The UserList component uses `resource="sales"` which is already admin-only. The `/admin/users` URL path is just routing - React Admin's access control checks the resource name, not the URL.
 
 ---
 
@@ -1482,55 +1480,105 @@ npm test -- src/atomic-crm/admin/users/__tests__/UserInviteForm.test.tsx
 
 ---
 
-### Task 5.3: Register Admin Routes
+### Task 5.3: Register Admin Routes (CustomRoutes, NOT Resource)
 
 **File:** `src/App.tsx` (or main router file)
 
-**Prerequisites:** Task 5.1
+**Prerequisites:** Task 5.0, Task 5.1
+
+**IMPORTANT:** Use `<CustomRoutes>` NOT `<Resource>`. The UserList/UserSlideOver components internally use `resource="sales"` for data operations. Adding a separate `admin/users` Resource would create confusion and require duplicate data provider handlers.
 
 **Steps:**
-1. Import admin components:
+1. Import admin components and routing:
    ```typescript
+   import { CustomRoutes } from 'react-admin';
+   import { Route } from 'react-router-dom';
    import { UserList, UserSlideOver } from './atomic-crm/admin';
    ```
 
-2. Add resource registration (within `<Admin>` component):
+2. Add custom routes (within `<Admin>` component, AFTER Resources):
    ```typescript
-   <Resource
-     name="admin/users"
-     list={UserList}
-     edit={UserSlideOver}
-     options={{ label: 'Team' }}
-   />
-   ```
-
-   OR if using custom routes:
-   ```typescript
+   {/* Admin routes - use CustomRoutes, NOT Resource */}
+   {/* These components use resource="sales" internally */}
    <CustomRoutes>
      <Route path="/admin/users" element={<UserList />} />
      <Route path="/admin/users/:id" element={<UserSlideOver />} />
    </CustomRoutes>
    ```
 
-3. Ensure canAccess guards the route (in authProvider, already configured for `sales` resource).
+3. **Why CustomRoutes instead of Resource:**
+   - UserList uses `resource="sales"` → canAccess checks `sales` → admin-only ✅
+   - No need for separate `admin/users` data provider handlers
+   - No resource naming conflicts
+   - URL path `/admin/users` is independent of React Admin resource
 
 **Verification:**
 ```bash
 npm run dev
-# Navigate to /admin/users as admin
-# Should see Team Management page
-# Navigate as non-admin → should redirect to Access Denied
+# Navigate to /admin/users as admin → Should see Team Management page
+# Navigate as non-admin → Should redirect to Access Denied (canAccess blocks sales resource)
+```
+
+**❌ DO NOT use this pattern:**
+```typescript
+// WRONG - creates resource naming confusion
+<Resource name="admin/users" list={UserList} />
 ```
 
 ---
 
 ## Phase 6: E2E Tests (Sequential, Final)
 
+### Task 6.0: Ensure E2E Auth Fixtures Exist
+
+**File:** `tests/e2e/auth.setup.ts`
+
+**Prerequisites:** Task 5.3
+
+**Steps:**
+1. Check if rep user fixture exists:
+   ```bash
+   ls -la tests/e2e/.auth/
+   ```
+
+2. If `rep-user.json` doesn't exist, update `tests/e2e/auth.setup.ts` to create it:
+   ```typescript
+   // Add after admin user setup
+   test('authenticate as rep user', async ({ page }) => {
+     await page.goto('/login');
+     await page.getByLabel('Email').fill(process.env.E2E_REP_EMAIL!);
+     await page.getByLabel('Password').fill(process.env.E2E_REP_PASSWORD!);
+     await page.getByRole('button', { name: /sign in/i }).click();
+     await page.waitForURL('/');
+
+     // Save auth state
+     await page.context().storageState({ path: 'tests/e2e/.auth/rep-user.json' });
+   });
+   ```
+
+3. Add rep credentials to `.env.test`:
+   ```env
+   E2E_REP_EMAIL=rep@mfb.com
+   E2E_REP_PASSWORD=<rep_password>
+   ```
+
+4. Run auth setup:
+   ```bash
+   npx playwright test --project=setup
+   ```
+
+**Verification:**
+```bash
+ls tests/e2e/.auth/rep-user.json  # Should exist
+```
+
+---
+
 ### Task 6.1: Create E2E Test Suite
 
 **File:** `tests/e2e/specs/admin/user-management.spec.ts`
 
-**Prerequisites:** Task 5.3
+**Prerequisites:** Task 5.3, Task 6.0
 
 **Steps:**
 1. Create test directory:
@@ -1695,7 +1743,7 @@ npx playwright test tests/e2e/specs/admin/user-management.spec.ts
 - Task 5.3 (sequential, after 5.0 + 5.1)
 
 ### Sequential Final
-- Task 6.1: E2E Tests
+- Task 6.0: Auth fixtures → Task 6.1: E2E Tests
 
 ---
 
@@ -1708,15 +1756,15 @@ npx playwright test tests/e2e/specs/admin/user-management.spec.ts
 | 3. UI Tests (TDD) | 5 | Yes (3.1-3.2, 3.3-3.5) |
 | 4. UI Implementation | 3 | Yes |
 | 5. Integration | 4 | Partial (5.0 ⟷ 5.1 ⟷ 5.2) |
-| 6. E2E Tests | 1 | No |
-| **Total** | **18** | |
+| 6. E2E Tests | 2 | No (sequential) |
+| **Total** | **19** | |
 
 ---
 
 ## Estimated Time
 
 With atomic tasks (2-5 min each) and parallel execution:
-- **Sequential minimum:** ~40-55 minutes
+- **Sequential minimum:** ~45-60 minutes
 - **With parallelization:** ~25-35 minutes
 
 ---
@@ -1725,6 +1773,18 @@ With atomic tasks (2-5 min each) and parallel execution:
 
 | Risk | Mitigation |
 |------|------------|
-| Edge Function breaking change | Backward compatible schema with `.transform()` |
-| Non-admin access to admin routes | Explicit `canAccess` guard (Task 5.0) |
-| E2E auth fixture missing | Use existing `rep-user.json` or create in auth.setup.ts |
+| Edge Function breaking change | Backward compatible schema with `.transform()`, strips deprecated `administrator` field |
+| Non-admin access to admin routes | Uses `sales` resource which is already admin-only in `canAccess` |
+| E2E auth fixture missing | Task 6.0 creates `rep-user.json` fixture |
+| Error format inconsistency | Data provider handles `{ message }`, `{ error: { message } }`, and status codes |
+| Mock path mismatch | Tests use `@/atomic-crm/providers/supabase/supabase` path |
+
+---
+
+## Open Questions Resolved
+
+| Question | Answer |
+|----------|--------|
+| Should managers retain access to sales? | No - `sales` is already admin-only per existing `canAccess` |
+| Where is role persisted? | `sales.role` column (exists since migration `20251111121526`) |
+| Which resource name? | `sales` - the `/admin/users` path is just routing |
