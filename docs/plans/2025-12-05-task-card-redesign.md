@@ -426,15 +426,22 @@ export function InlineDatePicker({
           ))}
         </div>
 
-        {/* Calendar */}
+        {/* Calendar - with accessibility props per react-day-picker docs */}
         <DayPicker
           mode="single"
           selected={value}
           onSelect={handleDaySelect}
+          autoFocus  // Improves keyboard navigation when picker opens
           className="p-2"
           classNames={{
             day_selected: 'bg-primary text-primary-foreground',
             day_today: 'bg-accent text-accent-foreground',
+          }}
+          labels={{
+            labelMonthDropdown: () => 'Select month',
+            labelYearDropdown: () => 'Select year',
+            labelNext: () => 'Go to next month',
+            labelPrevious: () => 'Go to previous month',
           }}
         />
       </PopoverContent>
@@ -1122,23 +1129,87 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
 }, arePropsEqual);
 ```
 
-**Update TasksKanbanPanel to pass onDateChange:**
+**Update TaskKanbanColumn.tsx to pass onDateChange:**
 
 ```typescript
-// In src/atomic-crm/dashboard/v3/components/TasksKanbanPanel.tsx
-// Add updateTaskDueDate to the useMyTasks destructure and pass to cards
+// src/atomic-crm/dashboard/v3/components/TaskKanbanColumn.tsx
 
-const { tasks, loading, error, completeTask, snoozeTask, deleteTask, viewTask, updateTaskDueDate } = useMyTasks();
+// 1. Add to interface (line ~17):
+interface TaskKanbanColumnProps {
+  columnId: TaskColumnId;
+  title: string;
+  tasks: TaskItem[];
+  onComplete: (taskId: number) => Promise<void>;
+  onSnooze: (taskId: number) => Promise<void>;
+  onDelete: (taskId: number) => Promise<void>;
+  onView: (taskId: number) => void;
+  onDateChange: (taskId: number, newDate: Date) => Promise<void>;  // ADD THIS
+}
 
-// Then in TaskKanbanCard usage:
+// 2. Add to arePropsEqual (line ~66):
+if (prevProps.onDateChange !== nextProps.onDateChange) return false;
+
+// 3. Add to component destructure (line ~100):
+export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
+  columnId,
+  title,
+  tasks,
+  onComplete,
+  onSnooze,
+  onDelete,
+  onView,
+  onDateChange,  // ADD THIS
+}: TaskKanbanColumnProps) {
+
+// 4. Pass to TaskKanbanCard (line ~141):
 <TaskKanbanCard
   key={task.id}
   task={task}
   index={index}
+  onComplete={onComplete}
+  onSnooze={onSnooze}
+  onDelete={onDelete}
+  onView={onView}
+  onDateChange={onDateChange}  // ADD THIS
+/>
+```
+
+**Update TasksKanbanPanel.tsx to pass onDateChange to columns:**
+
+```typescript
+// src/atomic-crm/dashboard/v3/components/TasksKanbanPanel.tsx
+
+// updateTaskDueDate is ALREADY destructured from useMyTasks (line 47)
+// Just need to pass it to each TaskKanbanColumn (lines 288-314):
+
+<TaskKanbanColumn
+  columnId="overdue"
+  title="Overdue"
+  tasks={tasksByColumn.overdue}
   onComplete={completeTask}
   onSnooze={snoozeTask}
   onDelete={deleteTask}
-  onView={handleViewTask}
+  onView={viewTask}
+  onDateChange={updateTaskDueDate}  // ADD THIS
+/>
+<TaskKanbanColumn
+  columnId="today"
+  title="Today"
+  tasks={tasksByColumn.today}
+  onComplete={completeTask}
+  onSnooze={snoozeTask}
+  onDelete={deleteTask}
+  onView={viewTask}
+  onDateChange={updateTaskDueDate}  // ADD THIS
+/>
+<TaskKanbanColumn
+  columnId="thisWeek"
+  title="This Week"
+  tasks={tasksByColumn.thisWeek}
+  onComplete={completeTask}
+  onSnooze={snoozeTask}
+  onDelete={deleteTask}
+  onView={viewTask}
   onDateChange={updateTaskDueDate}  // ADD THIS
 />
 ```
@@ -1305,9 +1376,32 @@ If issues arise:
 | `src/atomic-crm/dashboard/v3/components/__tests__/InlineDatePicker.test.tsx` | CREATE | ~100 |
 | `src/atomic-crm/dashboard/v3/components/TaskKanbanCard.tsx` | MODIFY | ~80 changed |
 | `src/atomic-crm/dashboard/v3/components/__tests__/TaskKanbanCard.test.tsx` | MODIFY | ~60 added |
+| `src/atomic-crm/dashboard/v3/components/TaskKanbanColumn.tsx` | MODIFY | ~10 changed |
+| `src/atomic-crm/dashboard/v3/components/TasksKanbanPanel.tsx` | MODIFY | ~6 changed |
 | `src/atomic-crm/dashboard/v3/types.ts` | MODIFY | ~10 changed |
 | `src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts` | MODIFY | ~5 changed |
-| `src/atomic-crm/dashboard/v3/components/TasksKanbanPanel.tsx` | MODIFY | ~3 changed |
 | `tests/e2e/tasks/inline-date-picker.spec.ts` | CREATE | ~80 |
 
-**Total Estimated Changes:** ~550 lines
+**Total Estimated Changes:** ~560 lines
+
+---
+
+## Industry Standards References
+
+This plan incorporates best practices from:
+
+1. **react-day-picker Accessibility Guide** - `autoFocus`, ARIA labels, keyboard navigation
+   - Source: https://github.com/gpbl/react-day-picker/blob/main/website/docs/guides/accessibility.mdx
+
+2. **Pareto Principle (80/20 Rule)** - Quick shortcuts (Today/Tomorrow/Next Week) cover 80% of reschedule actions
+
+3. **Fitts's Law** - Inline date picker reduces interaction time by minimizing distance to target (1 click vs 3+ clicks)
+
+4. **WCAG 2.1 AA Compliance**
+   - `aria-haspopup="dialog"` on trigger button
+   - `role="dialog"` on popover content
+   - `aria-label` for screen reader context
+   - Keyboard navigation (Escape to close)
+   - Focus management with `autoFocus`
+
+5. **Touch Target Guidelines** - 44x44px minimum per Apple HIG and Material Design
