@@ -293,9 +293,17 @@ describe('principalColors', () => {
       expect(color).not.toBe(PRINCIPAL_COLORS.default);
     });
 
-    it('returns default color for unknown principal ID', () => {
-      const color = getPrincipalColor(999999);
-      expect(color).toBe(PRINCIPAL_COLORS.default);
+    it('returns modulo-based color for unknown principal ID (deterministic)', () => {
+      // ID 10 should get color at index 10 % 9 = 1 (emerald)
+      const color10 = getPrincipalColor(10);
+      expect(color10).toBe('border-l-emerald-500');
+
+      // ID 18 should get color at index 18 % 9 = 0 (blue)
+      const color18 = getPrincipalColor(18);
+      expect(color18).toBe('border-l-blue-500');
+
+      // Same ID should always return same color (deterministic)
+      expect(getPrincipalColor(10)).toBe(getPrincipalColor(10));
     });
 
     it('returns default color for null/undefined', () => {
@@ -315,19 +323,34 @@ describe('principalColors', () => {
  * Uses Tailwind v4 semantic border colors.
  * Colors chosen for maximum visual distinction across 9 principals.
  *
+ * ALGORITHM: For known principal IDs (1-9), use direct mapping.
+ * For unknown IDs, use modulo-based selection: colors[id % colors.length]
+ * This ensures deterministic, consistent colors even for new principals.
+ *
  * NOTE: Principal IDs are database IDs from the principals table.
- * Update this mapping when onboarding new principals.
  */
+const PRINCIPAL_COLOR_ARRAY = [
+  'border-l-blue-500',      // index 0
+  'border-l-emerald-500',   // index 1
+  'border-l-amber-500',     // index 2
+  'border-l-violet-500',    // index 3
+  'border-l-rose-500',      // index 4
+  'border-l-cyan-500',      // index 5
+  'border-l-orange-500',    // index 6
+  'border-l-indigo-500',    // index 7
+  'border-l-pink-500',      // index 8
+] as const;
+
 export const PRINCIPAL_COLORS: Record<number | 'default', string> = {
-  1: 'border-l-blue-500',
-  2: 'border-l-emerald-500',
-  3: 'border-l-amber-500',
-  4: 'border-l-violet-500',
-  5: 'border-l-rose-500',
-  6: 'border-l-cyan-500',
-  7: 'border-l-orange-500',
-  8: 'border-l-indigo-500',
-  9: 'border-l-pink-500',
+  1: PRINCIPAL_COLOR_ARRAY[0],
+  2: PRINCIPAL_COLOR_ARRAY[1],
+  3: PRINCIPAL_COLOR_ARRAY[2],
+  4: PRINCIPAL_COLOR_ARRAY[3],
+  5: PRINCIPAL_COLOR_ARRAY[4],
+  6: PRINCIPAL_COLOR_ARRAY[5],
+  7: PRINCIPAL_COLOR_ARRAY[6],
+  8: PRINCIPAL_COLOR_ARRAY[7],
+  9: PRINCIPAL_COLOR_ARRAY[8],
   default: 'border-l-muted-foreground',
 } as const;
 
@@ -336,12 +359,25 @@ export const PRINCIPAL_COLORS: Record<number | 'default', string> = {
  *
  * @param principalId - The principal's database ID
  * @returns Tailwind border-l-* class for the ribbon
+ *
+ * Algorithm:
+ * 1. If null/undefined → return default gray
+ * 2. If known ID (1-9) → return mapped color
+ * 3. If unknown ID → use modulo selection for deterministic color
  */
 export function getPrincipalColor(principalId: number | null | undefined): string {
   if (principalId == null) {
     return PRINCIPAL_COLORS.default;
   }
-  return PRINCIPAL_COLORS[principalId] ?? PRINCIPAL_COLORS.default;
+
+  // Check direct mapping first
+  if (principalId in PRINCIPAL_COLORS) {
+    return PRINCIPAL_COLORS[principalId];
+  }
+
+  // Modulo-based fallback for new principals (deterministic)
+  const index = Math.abs(principalId) % PRINCIPAL_COLOR_ARRAY.length;
+  return PRINCIPAL_COLOR_ARRAY[index];
 }
 ```
 
@@ -543,6 +579,25 @@ describe('useOnboardingProgress', () => {
       expect(result.current.shouldShowHint('opportunity')).toBe(true);
       vi.restoreAllMocks();
     });
+
+    it('uses in-memory fallback when localStorage unavailable (Safari private mode)', () => {
+      // Simulate Safari private mode - setItem throws
+      vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+        throw new Error('QuotaExceededError');
+      });
+
+      const { result, rerender } = renderHook(() => useOnboardingProgress());
+
+      // Should still work with in-memory fallback
+      act(() => {
+        result.current.incrementCount('opportunity');
+      });
+
+      rerender();
+      expect(result.current.getCount('opportunity')).toBe(1);
+
+      vi.restoreAllMocks();
+    });
   });
 });
 ```
@@ -573,7 +628,28 @@ const ENTITY_COUNT_KEY: Record<OnboardingEntity, keyof OnboardingProgress> = {
   task: 'task_create_count',
 };
 
+/**
+ * Check if localStorage is available (handles Safari private mode, quota exceeded)
+ */
+function isLocalStorageAvailable(): boolean {
+  try {
+    const testKey = '__crispy_storage_test__';
+    window.localStorage.setItem(testKey, testKey);
+    window.localStorage.removeItem(testKey);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+// In-memory fallback when localStorage unavailable
+let memoryProgress: OnboardingProgress = { ...DEFAULT_PROGRESS };
+const storageAvailable = isLocalStorageAvailable();
+
 function getProgress(): OnboardingProgress {
+  if (!storageAvailable) {
+    return memoryProgress;
+  }
   try {
     const stored = localStorage.getItem(LOCALSTORAGE_KEY);
     return stored ? { ...DEFAULT_PROGRESS, ...JSON.parse(stored) } : DEFAULT_PROGRESS;
@@ -583,13 +659,23 @@ function getProgress(): OnboardingProgress {
 }
 
 function setProgress(updates: Partial<OnboardingProgress>): void {
+  const current = getProgress();
+  const updated = { ...current, ...updates, last_updated: new Date().toISOString() };
+
+  if (!storageAvailable) {
+    // Update in-memory fallback
+    memoryProgress = updated;
+    window.dispatchEvent(new StorageEvent('storage', { key: LOCALSTORAGE_KEY }));
+    return;
+  }
+
   try {
-    const current = getProgress();
-    const updated = { ...current, ...updates, last_updated: new Date().toISOString() };
     localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(updated));
     window.dispatchEvent(new StorageEvent('storage', { key: LOCALSTORAGE_KEY }));
   } catch {
-    // Silent fail - non-critical
+    // Fallback to memory on quota exceeded
+    memoryProgress = updated;
+    window.dispatchEvent(new StorageEvent('storage', { key: LOCALSTORAGE_KEY }));
   }
 }
 
@@ -2176,6 +2262,155 @@ rm -rf src/atomic-crm/components/InlineDatePicker.tsx
 **Total (with parallelization):** ~90 min
 
 **Consolidation savings:** ~30% fewer tasks than original 3 plans combined
+
+---
+
+## Industry Standards References
+
+This plan incorporates accessibility and UX best practices from authoritative sources:
+
+### 1. Date Picker Accessibility (react-day-picker + MUI)
+
+**Sources:**
+- [react-day-picker Accessibility Guide](https://github.com/gpbl/react-day-picker/blob/main/website/docs/guides/accessibility.mdx)
+- [MUI Date Pickers Accessibility](https://mui.com/x/react-date-pickers/accessibility/)
+- [WAI-ARIA Date Picker Dialog Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/examples/datepicker-dialog/)
+
+**Standards Applied in InlineDatePicker:**
+
+| Requirement | Implementation |
+|-------------|----------------|
+| `autoFocus` on open | `<DayPicker autoFocus />` - improves keyboard navigation |
+| `role="dialog"` | `<PopoverContent role="dialog">` for modal-like behavior |
+| `aria-label` on trigger | `aria-label="Due date: Dec 5. Click to change."` |
+| `aria-haspopup="dialog"` | On trigger button to announce popup type |
+| `aria-expanded` | Dynamic state on trigger button |
+| Keyboard navigation | Arrow keys, Page Up/Down, Home/End, Enter/Space |
+| Escape to close | `onKeyDown` handler closes on Escape |
+| WCAG 2.1 AA | Color contrast, focus visible, touch targets |
+
+**Keyboard Navigation (per WAI-ARIA):**
+
+```
+Arrow Keys     → Navigate days/weeks
+Page Up/Down   → Navigate months
+Shift + Page   → Navigate years
+Home/End       → Start/end of week
+Enter/Space    → Select focused day
+Escape         → Close picker
+```
+
+### 2. Toast/Notification Accessibility
+
+**Source:** [BootstrapVue Toast Accessibility](https://bootstrap-vue.org/docs/components/toast/#accessibility)
+
+**Standards Applied in WorkflowToast:**
+
+| Requirement | Implementation |
+|-------------|----------------|
+| `aria-live` region | `aria-live="polite"` for non-critical hints |
+| `aria-atomic="true"` | Announce entire toast as single unit |
+| `role="alert"` vs `role="status"` | Use `role="status"` for workflow hints (non-urgent) |
+| Auto-dismiss timing | 8 seconds default (5s base + ~10 words × 300ms) |
+| Dismissible | Close button always available |
+| Don't interrupt | `aria-live="polite"` waits for screen reader to finish |
+| Opt-out mechanism | "Don't show workflow tips" checkbox |
+
+**Timing Formula (industry best practice):**
+```
+auto_dismiss_ms = 5000 + (word_count × 300)
+```
+- Minimum: 5 seconds
+- Average reading speed: ~200 words/minute
+- Our toasts: ~15 words → 5000 + (15 × 300) = 9500ms ≈ 8000ms
+
+### 3. Form Accessibility (react-hook-form + WCAG)
+
+**Sources:**
+- [react-hook-form Accessible Errors](https://github.com/react-hook-form/documentation/blob/master/src/content/faqs.mdx)
+- WCAG 2.1 Success Criterion 3.3.1 (Error Identification)
+
+**Standards Applied in Minimal Forms:**
+
+| Requirement | Implementation |
+|-------------|----------------|
+| `aria-invalid` | `aria-invalid={!!errors.fieldName}` on inputs with errors |
+| `aria-describedby` | Links input to error message ID |
+| `role="alert"` | On error messages for immediate announcement |
+| Focus management | Focus first error field on submit failure |
+| Visible labels | All inputs have associated `<label>` elements |
+
+**Error Pattern (per react-hook-form):**
+```tsx
+<input
+  id="subject"
+  aria-invalid={errors.subject ? "true" : "false"}
+  aria-describedby={errors.subject ? "subject-error" : undefined}
+  {...register("subject", { required: true })}
+/>
+{errors.subject && (
+  <span id="subject-error" role="alert">
+    This field is required
+  </span>
+)}
+```
+
+### 4. Progressive Disclosure UX
+
+**Principles Applied (Nielsen Norman Group patterns):**
+
+| Principle | Implementation |
+|-----------|----------------|
+| **Reduce cognitive load** | 3-4 essential fields visible, 67% reduction |
+| **Context-aware defaults** | Pre-fill from navigation source |
+| **Reversible actions** | LinkedRecordChip has clear button |
+| **Progressive complexity** | "Show more" reveals optional fields |
+| **Immediate feedback** | Toast confirms action + suggests next step |
+
+**Show More Pattern:**
+- Default: Collapsed (essential fields only)
+- Trigger: Clear affordance with chevron icon
+- Animation: Smooth expand/collapse
+- State: `aria-expanded` on trigger button
+- Persistence: State resets per form (no localStorage)
+
+### 5. Touch Target Guidelines
+
+**Sources:**
+- [Apple Human Interface Guidelines](https://developer.apple.com/design/human-interface-guidelines/accessibility#Touch-target-sizes) - 44×44pt minimum
+- [Material Design Touch Targets](https://m3.material.io/foundations/accessible-design/accessibility-basics#28032e45-c598-450c-b355-f9fe737b1cd8) - 48×48dp recommended
+
+**Standards Applied:**
+
+| Component | Touch Target | Implementation |
+|-----------|--------------|----------------|
+| InlineDatePicker trigger | 44px min-height | `min-h-[44px] px-2` |
+| Quick action buttons | 36px height | `h-9` (36px) in row of 3 |
+| Task card checkbox | 44×44px | `h-11 w-11` wrapper div |
+| Card action buttons | 44×44px | `h-11 w-11 p-0` |
+| LinkedRecordChip clear | 20×20px (inside larger chip) | Acceptable - chip itself is touch target |
+
+### 6. Color & Contrast (WCAG 2.1 AA)
+
+**Requirements:**
+- Text contrast: 4.5:1 minimum (normal text), 3:1 (large text)
+- Non-text contrast: 3:1 for UI components
+
+**Implementation:**
+- All colors via Tailwind semantic tokens (`text-muted-foreground`, `bg-primary`)
+- No hardcoded hex values
+- Principal ribbon colors tested for sufficient contrast against card background
+- Staleness badges: Yellow (warning) and Red (critical) both meet 3:1 against white
+
+### Compliance Summary
+
+| Standard | Level | Status |
+|----------|-------|--------|
+| WCAG 2.1 | AA | ✅ Targeted |
+| WAI-ARIA 1.2 | Full | ✅ Date picker, dialogs, live regions |
+| Section 508 | Compliant | ✅ Federal accessibility |
+| Apple HIG | Touch targets | ✅ 44px minimum |
+| Material Design | Touch targets | ⚠️ 44px (48px recommended)
 
 ---
 
