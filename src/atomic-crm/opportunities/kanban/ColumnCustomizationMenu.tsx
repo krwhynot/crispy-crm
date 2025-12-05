@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from "react";
+import { Settings2 } from "lucide-react";
 import { OPPORTUNITY_STAGES } from "../constants/stageConstants";
 import type { OpportunityStageValue } from "../../types";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -40,9 +41,9 @@ export function ColumnCustomizationMenu({
         type="button"
         aria-label="Customize columns"
         onClick={() => setIsOpen(!isOpen)}
-        className="min-h-[44px] px-4 text-sm border border-border rounded hover:bg-accent transition-colors touch-manipulation"
+        className="h-8 w-8 flex items-center justify-center text-muted-foreground hover:text-foreground bg-card/80 backdrop-blur-sm border border-border rounded-md hover:bg-accent transition-colors shadow-sm"
       >
-        Customize Columns
+        <Settings2 className="w-4 h-4" />
       </button>
 
       {isOpen && (

@@ -116,21 +116,22 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
   return (
     <div
       className={`
-  flex-1 pb-8 bg-card border border-border rounded-2xl shadow-col-inner
+  flex flex-col pb-4 bg-card border border-border rounded-xl shadow-col-inner
   ${shadowConfig.rest} ${shadowConfig.hover}
-  transition-[box-shadow,border-color] duration-200 ease-in-out px-3
+  transition-[box-shadow,border-color] duration-200 ease-in-out px-2
   min-w-[260px] max-w-[300px]
   md:min-w-[280px] md:max-w-[320px]
   lg:min-w-[300px] lg:max-w-[340px]
+  h-full max-h-full overflow-hidden shrink-0
 `}
       data-testid="kanban-column"
     >
-      <div className="flex items-center justify-between mb-4 pb-3 border-b border-border px-3 py-2">
+      <div className="flex items-center justify-between mb-2 pb-2 border-b border-border px-2 py-1.5">
         <div className="flex items-center gap-2">
           {onToggleCollapse && (
             <button
               onClick={onToggleCollapse}
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded transition-colors touch-manipulation"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               aria-label={isCollapsed ? "Expand column" : "Collapse column"}
               type="button"
             >
@@ -187,7 +188,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
       </div>
       {!isCollapsed && (
         <>
-          <div className="mb-3 px-3">
+          <div className="mb-2 px-1">
             <QuickAddOpportunity stage={stage} />
           </div>
           <Droppable droppableId={stage}>
@@ -195,7 +196,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className={`flex flex-col rounded-2xl mt-2 gap-2 pb-3 min-h-[100px] transition-colors ${
+                className={`flex flex-col flex-1 rounded-xl mt-1 gap-1.5 pb-2 min-h-[80px] overflow-y-auto overflow-x-hidden transition-colors px-1 ${
                   snapshot.isDraggingOver ? "bg-accent" : ""
                 }`}
               >

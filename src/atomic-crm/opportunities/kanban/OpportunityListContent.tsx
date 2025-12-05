@@ -242,7 +242,6 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
     const draggedItem = sourceCol.find((opp) => opp.id.toString() === draggableId);
 
     if (!draggedItem) {
-      console.error("Could not find dragged opportunity to move.");
       return;
     }
 
@@ -290,25 +289,20 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
   if (isPending) return null;
 
   // Use flex column with min-h-0 and flex-1 to fill remaining height
-  // Kanban container scrolls horizontally only
+  // Kanban board: horizontal scroll for columns, each column scrolls vertically for cards
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
-      <div className="mb-4 flex shrink-0 justify-end">
-        <ColumnCustomizationMenu
-          visibleStages={userVisibleStages}
-          toggleVisibility={toggleVisibility}
-          collapseAll={collapseAll}
-          expandAll={expandAll}
-        />
-      </div>
+    <div className="flex min-h-0 flex-1 flex-col h-full">
       <DragDropContext
         onDragStart={handleDragStart}
         onDragUpdate={handleDragUpdate}
         onDragEnd={handleDragEnd}
       >
+        {/* Tighter layout: reduced padding p-3, smaller gap-3 between columns */}
         <div
-          className="flex min-h-0 flex-1 gap-5 overflow-x-auto p-6 bg-muted rounded-3xl border border-border shadow-inner"
+          className="flex min-h-0 flex-1 gap-3 overflow-x-auto overflow-y-hidden p-3 bg-muted rounded-2xl border border-border shadow-inner"
           data-testid="kanban-board"
+          role="region"
+          aria-label="Opportunities pipeline board"
         >
           {visibleStages.map((stage) => (
             <OpportunityColumn
@@ -321,6 +315,15 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
               onDeleteOpportunity={handleDeleteOpportunity}
             />
           ))}
+          {/* Settings button at end of columns - scroll right to access */}
+          <div className="flex items-start pt-1 shrink-0">
+            <ColumnCustomizationMenu
+              visibleStages={userVisibleStages}
+              toggleVisibility={toggleVisibility}
+              collapseAll={collapseAll}
+              expandAll={expandAll}
+            />
+          </div>
         </div>
       </DragDropContext>
 
