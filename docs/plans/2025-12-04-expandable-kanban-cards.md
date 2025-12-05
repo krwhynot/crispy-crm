@@ -107,19 +107,21 @@ SELECT
        AND a.deleted_at IS NULL
     ) AS days_since_last_activity,
 
-    -- NEW: Pending task count
+    -- NEW: Pending task count (excludes soft-deleted tasks)
     (SELECT COUNT(*)::integer
      FROM tasks t
      WHERE t.opportunity_id = o.id
        AND t.completed = false
+       AND t.deleted_at IS NULL
     ) AS pending_task_count,
 
-    -- NEW: Overdue task count
+    -- NEW: Overdue task count (excludes soft-deleted tasks)
     (SELECT COUNT(*)::integer
      FROM tasks t
      WHERE t.opportunity_id = o.id
        AND t.completed = false
        AND t.due_date < CURRENT_DATE
+       AND t.deleted_at IS NULL
     ) AS overdue_task_count,
 
     -- Joined organization names
