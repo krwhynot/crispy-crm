@@ -19,7 +19,7 @@
  */
 
 import { memo, useMemo } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+// Card wrapper removed - parent DashboardTabPanel provides container
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -111,7 +111,7 @@ interface ActivityFeedPanelProps {
 /**
  * ActivityFeedPanel - Main component for team activity feed
  */
-export function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
+function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
   const { activities, loading, error } = useTeamActivities(limit);
 
   // Memoize activity count to avoid recalculation
@@ -119,12 +119,12 @@ export function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
 
   if (loading) {
     return (
-      <Card className="card-container flex h-full flex-col">
-        <CardHeader className="border-b border-border pb-3">
+      <div className="flex h-full flex-col">
+        <div className="border-b border-border px-4 py-3">
           <Skeleton className="mb-2 h-6 w-32" />
           <Skeleton className="h-4 w-48" />
-        </CardHeader>
-        <CardContent className="flex-1 p-4">
+        </div>
+        <div className="flex-1 p-4">
           <div className="space-y-3">
             {[1, 2, 3, 4, 5].map((i) => (
               <div key={i} className="flex items-start gap-3">
@@ -136,42 +136,40 @@ export function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
               </div>
             ))}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     );
   }
 
   if (error) {
     return (
-      <Card className="card-container flex h-full flex-col">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Activity className="h-5 w-5" />
-            Team Activity
-          </CardTitle>
-        </CardHeader>
-        <CardContent className="flex h-full items-center justify-center">
+      <div className="flex h-full flex-col p-4">
+        <h3 className="flex items-center gap-2 text-lg font-semibold">
+          <Activity className="h-5 w-5" />
+          Team Activity
+        </h3>
+        <div className="flex h-full items-center justify-center">
           <div className="text-center">
             <p className="text-destructive">Failed to load activities</p>
             <p className="text-sm text-muted-foreground">{error.message}</p>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     );
   }
 
   return (
-    <Card className="card-container flex h-full flex-col">
-      <CardHeader className="border-b border-border pb-3">
+    <div className="flex h-full flex-col">
+      <div className="border-b border-border px-4 py-3">
         <div className="flex items-start justify-between">
           <div>
-            <CardTitle className="flex items-center gap-2 text-lg font-semibold">
+            <h3 className="flex items-center gap-2 text-lg font-semibold">
               <Activity className="h-5 w-5 text-primary" />
               Team Activity
-            </CardTitle>
-            <CardDescription className="text-sm text-muted-foreground">
+            </h3>
+            <p className="text-sm text-muted-foreground">
               Recent activities across the team
-            </CardDescription>
+            </p>
           </div>
           <Button
             variant="ghost"
@@ -191,9 +189,9 @@ export function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
             Showing {activityCount} recent activities
           </p>
         )}
-      </CardHeader>
+      </div>
 
-      <CardContent className="flex-1 overflow-auto p-0">
+      <div className="flex-1 overflow-auto">
         {activities.length === 0 ? (
           <div className="flex h-full items-center justify-center p-8">
             <div className="text-center">
@@ -211,10 +209,14 @@ export function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
             ))}
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
+
+// Named export for barrel, default export for lazy loading
+export { ActivityFeedPanel };
+export default ActivityFeedPanel;
 
 interface ActivityItemProps {
   activity: TeamActivity;

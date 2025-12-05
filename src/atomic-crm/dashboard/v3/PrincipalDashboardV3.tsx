@@ -1,12 +1,10 @@
 import { useState, useCallback } from "react";
 import { PrincipalPipelineTable } from "./components/PrincipalPipelineTable";
-import { TasksKanbanPanel } from "./components/TasksKanbanPanel";
-import { ActivityFeedPanel } from "./components/ActivityFeedPanel";
+import { DashboardTabPanel } from "./components/DashboardTabPanel";
 import { LogActivityFAB } from "./components/LogActivityFAB";
 import { MobileQuickActionBar } from "./components/MobileQuickActionBar";
 import { TaskCompleteSheet } from "./components/TaskCompleteSheet";
 import { KPISummaryRow } from "./components/KPISummaryRow";
-import { MyPerformanceWidget } from "./components/MyPerformanceWidget";
 
 /**
  * PrincipalDashboardV3 - Vertically stacked dashboard with Log Activity FAB

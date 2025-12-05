@@ -2,7 +2,7 @@ import { useMemo, useCallback } from "react";
 import { DragDropContext, type DropResult, type DragStart, type DragUpdate, type ResponderProvided } from "@hello-pangea/dnd";
 import { useNotify } from "react-admin";
 import { startOfDay, addDays, setHours, setMinutes } from "date-fns";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+// Card wrapper removed - parent DashboardTabPanel provides container
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
@@ -35,7 +35,7 @@ const columnLabels: Record<TaskColumnId, string> = {
   thisWeek: "This Week",
 };
 
-export function TasksKanbanPanel() {
+function TasksKanbanPanel() {
   const {
     tasks,
     loading,
@@ -180,56 +180,50 @@ export function TasksKanbanPanel() {
   // Loading state - matches production flex layout
   if (loading) {
     return (
-      <Card className="card-container flex h-full flex-col">
-        <CardHeader className="border-b border-border pb-3 shrink-0">
-          <div className="flex items-start justify-between">
-            <div>
-              <Skeleton className="mb-2 h-6 w-32" />
-              <Skeleton className="h-4 w-64" />
-            </div>
-            <Skeleton className="h-11 w-28" />
+      <div className="flex h-full flex-col p-4">
+        <div className="mb-4 flex items-start justify-between">
+          <div>
+            <Skeleton className="mb-2 h-6 w-32" />
+            <Skeleton className="h-4 w-64" />
           </div>
-        </CardHeader>
-        <CardContent className="flex-1 overflow-hidden p-0">
-          <div className="flex h-full gap-3 p-4 flex-col lg:flex-row">
-            {/* Three column skeletons matching Overdue/Today/This Week */}
-            {[1, 2, 3].map((i) => (
-              <div
-                key={i}
-                className="flex flex-col rounded-xl border-t-4 border-muted bg-card w-full lg:min-w-0 lg:flex-1 shadow-sm"
-              >
-                {/* Column header skeleton */}
-                <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-                  <Skeleton className="h-5 w-20" />
-                  <Skeleton className="h-4 w-6" />
-                </div>
-                {/* Column content skeleton */}
-                <div className="flex-1 p-3 space-y-2 min-h-[120px]">
-                  <Skeleton className="h-20 w-full rounded-lg" />
-                  <Skeleton className="h-20 w-full rounded-lg" />
-                </div>
+          <Skeleton className="h-11 w-28" />
+        </div>
+        <div className="flex h-full gap-3 flex-col lg:flex-row">
+          {/* Three column skeletons matching Overdue/Today/This Week */}
+          {[1, 2, 3].map((i) => (
+            <div
+              key={i}
+              className="flex flex-col rounded-xl border-t-4 border-muted bg-card w-full lg:min-w-0 lg:flex-1 shadow-sm"
+            >
+              {/* Column header skeleton */}
+              <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+                <Skeleton className="h-5 w-20" />
+                <Skeleton className="h-4 w-6" />
               </div>
-            ))}
-          </div>
-        </CardContent>
-      </Card>
+              {/* Column content skeleton */}
+              <div className="flex-1 p-3 space-y-2 min-h-[120px]">
+                <Skeleton className="h-20 w-full rounded-lg" />
+                <Skeleton className="h-20 w-full rounded-lg" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     );
   }
 
   // Error state
   if (error) {
     return (
-      <Card className="card-container flex h-full flex-col">
-        <CardHeader>
-          <CardTitle>My Tasks</CardTitle>
-        </CardHeader>
-        <CardContent className="flex h-full items-center justify-center">
+      <div className="flex h-full flex-col p-4">
+        <h3 className="text-lg font-semibold">My Tasks</h3>
+        <div className="flex h-full items-center justify-center">
           <div className="text-center">
             <p className="text-destructive">Failed to load tasks</p>
             <p className="text-sm text-muted-foreground">{error.message}</p>
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     );
   }
 
@@ -237,15 +231,15 @@ export function TasksKanbanPanel() {
     tasksByColumn.overdue.length + tasksByColumn.today.length + tasksByColumn.thisWeek.length;
 
   return (
-    <Card className="card-container flex h-full flex-col">
+    <div className="flex h-full flex-col">
       {/* Header */}
-      <CardHeader className="border-b border-border pb-3 shrink-0">
+      <div className="border-b border-border px-4 py-3 shrink-0">
         <div className="flex items-start justify-between">
           <div>
-            <CardTitle className="text-lg font-semibold">My Tasks</CardTitle>
-            <CardDescription className="text-sm text-muted-foreground">
+            <h3 className="text-lg font-semibold">My Tasks</h3>
+            <p className="text-sm text-muted-foreground">
               Drag tasks between columns to reschedule
-            </CardDescription>
+            </p>
           </div>
           <div className="flex items-center gap-2">
             {tasksByColumn.overdue.length > 0 && (
@@ -266,10 +260,10 @@ export function TasksKanbanPanel() {
             </Button>
           </div>
         </div>
-      </CardHeader>
+      </div>
 
       {/* Kanban Board */}
-      <CardContent className="flex-1 overflow-hidden p-0">
+      <div className="flex-1 overflow-hidden">
         {totalTasks === 0 ? (
           // Empty state
           <div className="flex h-full items-center justify-center p-8">
@@ -322,7 +316,11 @@ export function TasksKanbanPanel() {
             </div>
           </DragDropContext>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
+
+// Named export for barrel, default export for lazy loading
+export { TasksKanbanPanel };
+export default TasksKanbanPanel;

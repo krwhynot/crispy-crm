@@ -16,3 +16,4 @@ export { EntityCombobox } from "./EntityCombobox";
 export { ActivityTypeSection } from "./ActivityTypeSection";
 export { FollowUpSection } from "./FollowUpSection";
 export { PipelineTableRow } from "./PipelineTableRow";
+export { DashboardTabPanel } from "./DashboardTabPanel";
