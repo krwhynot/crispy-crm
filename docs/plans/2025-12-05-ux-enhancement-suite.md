@@ -97,9 +97,303 @@ git checkout -b feature/ux-enhancement-suite
 npm list sonner react-admin react-day-picker
 # Should show: sonner, react-admin, react-day-picker@9.11.1
 
-# 4. Verify test runner
-npm test -- --run --testPathPattern="dummy" 2>/dev/null || echo "Test runner OK"
+# 4. Verify test runner (CORRECTED: use --testNamePattern, not --testPathPattern)
+npm test -- --testNamePattern="dummy" 2>/dev/null || echo "Test runner OK"
 ```
+
+---
+
+## ⚠️ IMPLEMENTATION CORRECTIONS (Post-Review)
+
+**These corrections address gaps identified during codebase verification. Original plan sections should be read with these corrections applied.**
+
+### Correction 1: Principals Data Source
+
+**Problem:** Plan assumed a `principals` React Admin resource exists. It doesn't.
+
+**Reality:**
+- Principals are stored in `organizations` table with `organization_type = 'principal'`
+- Two precomputed views exist:
+  - `dashboard_principal_summary` - Has staleness fields!
+  - `principal_pipeline_summary` - Has momentum/activity counts
+
+**Fix for Task 1.5 & 3.4:**
+```typescript
+// WRONG - Plan's original approach
+const { data } = useGetList('principals', { meta: { includeStaleness: true } });
+
+// CORRECT - Use existing dashboard_principal_summary view
+const { data: principalsWithStaleness } = useGetList<DashboardPrincipalSummary>(
+  'dashboard_principal_summary',
+  {
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: 'priority_score', order: 'DESC' },
+    filter: salesId ? { account_manager_id: salesId } : {},
+  }
+);
+
+// View already provides these fields - NO custom query needed:
+// - days_since_last_activity (integer)
+// - status_indicator ('good' | 'warning' | 'urgent')
+// - priority_score (for sorting)
+// - last_activity_date, last_activity_type
+```
+
+### Correction 2: Staleness Types (Task 1.1)
+
+**Problem:** `PrincipalWithStaleness.id` was `string`, but `getPrincipalColor` expects `number`.
+
+**Fix - Update types.ts:**
+```typescript
+// CORRECTED PrincipalWithStaleness interface
+export interface PrincipalWithStaleness {
+  id: number;  // CHANGED from string - matches database bigint
+  principal_name: string;  // CHANGED: view uses principal_name, not name
+  days_since_last_activity: number | null;
+  status_indicator: 'good' | 'warning' | 'urgent';  // From view directly
+  priority_score: number;
+  opportunity_count: number;
+  last_activity_date: string | null;
+  last_activity_type: string | null;
+  account_manager_id: number | null;
+}
+
+// Map status_indicator to StalenessLevel for UI consistency
+export function toStalenessLevel(status: 'good' | 'warning' | 'urgent'): StalenessLevel {
+  if (status === 'urgent') return 'critical';
+  if (status === 'warning') return 'warning';
+  return 'ok';
+}
+```
+
+### Correction 3: Remove Custom Staleness Query (Task 1.5)
+
+**Problem:** Plan proposed adding a complex nested Supabase query to `unifiedDataProvider.ts` that would bypass existing views and cause full-table scans.
+
+**Fix:** DELETE the entire custom query block from Task 1.5. Instead, use the existing view:
+
+```typescript
+// In AttentionCard or Dashboard component - just use the view resource
+const { data } = useGetList<DashboardPrincipalSummary>(
+  'dashboard_principal_summary',
+  { /* filters */ }
+);
+
+// The view already computes staleness via SQL:
+// days_since_last_activity = EXTRACT(DAY FROM (NOW() - MAX(po.last_activity_date)))::INTEGER
+// status_indicator = CASE WHEN days > 14 THEN 'urgent' WHEN days > 7 THEN 'warning' ELSE 'good'
+```
+
+### Correction 4: TaskKanbanCard Date Flow (Task 3.1)
+
+**Problem:** Plan adds `onDateChange` prop but doesn't show full wiring through column to panel.
+
+**Reality Found:**
+- `updateTaskDueDate` ALREADY EXISTS in `useMyTasks.ts` (lines 310-349)
+- TaskKanbanColumn does NOT currently pass it to cards
+- Cards use `role="button"` (not `role="article"`)
+
+**Fix - Complete wiring chain:**
+
+```typescript
+// 1. TaskKanbanCard.tsx - Add prop (this was correct in plan)
+interface TaskKanbanCardProps {
+  // ... existing props
+  onDateChange: (taskId: number, newDate: Date) => Promise<void>;  // ADD
+}
+
+// 2. TaskKanbanColumn.tsx - Add prop and pass through
+interface TaskKanbanColumnProps {
+  // ... existing props
+  onDateChange: (taskId: number, newDate: Date) => Promise<void>;  // ADD
+}
+
+// In component:
+{tasks.map((task, index) => (
+  <TaskKanbanCard
+    key={task.id}
+    task={task}
+    index={index}
+    onComplete={onComplete}
+    onSnooze={onSnooze}
+    onDelete={onDelete}
+    onView={onView}
+    onDateChange={onDateChange}  // ADD
+  />
+))}
+
+// 3. TasksKanbanPanel.tsx - Pass existing updateTaskDueDate to columns
+const { updateTaskDueDate } = useMyTasks();  // Already destructured
+
+<TaskKanbanColumn
+  columnId="today"
+  title="Today"
+  tasks={tasksByColumn.today}
+  onComplete={completeTask}
+  onSnooze={snoozeTask}
+  onDelete={deleteTask}
+  onView={viewTask}
+  onDateChange={updateTaskDueDate}  // ADD - function already exists!
+/>
+```
+
+### Correction 5: Form onSuccess Patterns (Tasks 3.2, 3.3)
+
+**Problem:** Plan shows workflow toast in ActivityCreate but ActivityCreate uses plain `FormToolbar` with no onSuccess hook.
+
+**Reality Found:**
+- `FormToolbar` renders plain `<SaveButton />` with NO props
+- TaskCreate has explicit SaveButtons WITH `mutationOptions`
+- `CreateButton` does NOT support `state` prop
+
+**Fix for ActivityCreate.tsx:**
+```typescript
+// WRONG - Plan's approach assumes FormToolbar accepts callbacks
+<FormToolbar />  // This passes NO props to SaveButton
+
+// CORRECT - Replace FormToolbar with explicit SaveButton
+import { SaveButton, useRedirect, useNotify } from 'react-admin';
+import { showWorkflowToast } from '@/atomic-crm/onboarding';
+
+const ActivityFormContent = ({ navContext }) => {
+  const redirect = useRedirect();
+  const notify = useNotify();
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <FormErrorSummary errors={errors} />
+      <ActivitySinglePage navContext={navContext} />
+
+      {/* REPLACED FormToolbar with explicit buttons */}
+      <div className="flex justify-end gap-2 pt-4">
+        <CancelButton />
+        <SaveButton
+          label="Save"
+          mutationOptions={{
+            onSuccess: (data) => {
+              showWorkflowToast({
+                action: 'create',
+                entity: 'activity',
+                entityName: data.subject,
+                onNavigate: (path) => navigate(path),
+              });
+              notify('Activity logged', { type: 'success' });
+              redirect('list');
+            },
+          }}
+        />
+      </div>
+    </>
+  );
+};
+```
+
+**Fix for Navigation Buttons (Task 3.5):**
+```typescript
+// WRONG - CreateButton doesn't support state prop
+<CreateButton
+  resource="activities"
+  state={{ record: { opportunity_id: record?.id } }}  // NOT SUPPORTED
+/>
+
+// CORRECT - Use custom button with useNavigate
+import { useNavigate } from 'react-router-dom';
+
+const LogActivityButton = ({ opportunityId, organizationId }) => {
+  const navigate = useNavigate();
+
+  return (
+    <Button
+      onClick={() => navigate('/activities/create', {
+        state: {
+          record: { opportunity_id: opportunityId, organization_id: organizationId },
+          source_resource: 'opportunities',
+        },
+      })}
+    >
+      Log Activity
+    </Button>
+  );
+};
+```
+
+### Correction 6: Test Commands & Selectors (Task 4.1, 4.2)
+
+**Problem:** Plan uses wrong Vitest flag and incorrect ARIA roles.
+
+**Fixes:**
+```bash
+# WRONG
+npm test -- --run --testPathPattern="useNavigationContext"
+
+# CORRECT - Vitest uses --testNamePattern
+npm test -- --testNamePattern="useNavigationContext"
+
+# Or run specific file:
+npm test -- --run src/atomic-crm/onboarding/__tests__/useNavigationContext.test.tsx
+```
+
+**E2E Selector Fixes:**
+```typescript
+// WRONG - Plan assumes role="article"
+const taskCard = page.getByRole('article').first();
+
+// CORRECT - Cards use role="button"
+const taskCard = page.locator('.interactive-card').first();
+// Or by content:
+const taskCard = page.locator('.interactive-card').filter({ hasText: 'Task subject' });
+
+// WRONG - Plan assumes notes field is hidden
+await expect(page.getByRole('textbox', { name: /notes/i })).not.toBeVisible();
+
+// CORRECT - Notes field IS visible by default in QuickLogForm
+await expect(page.getByLabel(/notes/i)).toBeVisible();
+```
+
+### Correction 7: Principal ID Type in getPrincipalColor
+
+**Problem:** `getPrincipalColor` expects numeric IDs but database uses bigint.
+
+**Fix:**
+```typescript
+// getPrincipalColor signature - accept both string and number
+export function getPrincipalColor(principalId: number | string | null | undefined): string {
+  if (principalId == null) {
+    return PRINCIPAL_COLORS.default;
+  }
+
+  // Coerce to number for mapping lookup
+  const numericId = typeof principalId === 'string' ? parseInt(principalId, 10) : principalId;
+
+  if (isNaN(numericId)) {
+    return PRINCIPAL_COLORS.default;
+  }
+
+  // Check direct mapping first
+  if (numericId in PRINCIPAL_COLORS) {
+    return PRINCIPAL_COLORS[numericId];
+  }
+
+  // Modulo-based fallback for new principals
+  const index = Math.abs(numericId) % PRINCIPAL_COLOR_ARRAY.length;
+  return PRINCIPAL_COLOR_ARRAY[index];
+}
+```
+
+---
+
+## Summary of Corrections
+
+| Original Task | Issue | Correction |
+|---------------|-------|------------|
+| 1.1 Types | `id: string` conflicts with color mapping | Change to `id: number`, add type coercion |
+| 1.5 Data Layer | Custom staleness query bypasses views | Use `dashboard_principal_summary` view directly |
+| 3.1 TaskKanbanCard | `onDateChange` not wired through | Add prop to Column, pass `updateTaskDueDate` from Panel |
+| 3.2/3.3 Forms | FormToolbar has no onSuccess | Replace with explicit SaveButton + mutationOptions |
+| 3.5 Nav Buttons | CreateButton doesn't support state | Use custom button with `useNavigate()` |
+| 4.1 Unit Tests | `--testPathPattern` wrong | Use `--testNamePattern` |
+| 4.2 E2E Tests | `role="article"` wrong | Use `.interactive-card` selector |
 
 ---
 
@@ -1443,6 +1737,12 @@ describe('WorkflowToastContent', () => {
     expect(screen.getByText(/opportunity created/i)).toBeInTheDocument();
   });
 
+  it('uses role="status" for non-critical hints (not role="alert")', () => {
+    // Per BootstrapVue accessibility guidelines: use role="status" for non-urgent messages
+    render(<WorkflowToastContent {...defaultProps} />);
+    expect(screen.getByRole('status')).toBeInTheDocument();
+  });
+
   it('shows next step hint', () => {
     render(<WorkflowToastContent {...defaultProps} />);
     expect(screen.getByText(/next step/i)).toBeInTheDocument();
@@ -1531,9 +1831,11 @@ export function WorkflowToastContent({
     }
   };
 
+  // Use role="status" + aria-live="polite" for non-critical workflow hints
+  // (per BootstrapVue accessibility guidelines - only use role="alert" for errors)
   return (
     <div
-      role="alert"
+      role="status"
       aria-live="polite"
       aria-atomic="true"
       className="bg-card border border-border rounded-lg p-4 shadow-lg max-w-sm"
