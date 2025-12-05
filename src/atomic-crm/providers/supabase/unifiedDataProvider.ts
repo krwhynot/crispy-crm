@@ -164,6 +164,18 @@ const junctionsService = new JunctionsService(baseDataProvider);
 const segmentsService = new SegmentsService(baseDataProvider);
 
 /**
+ * Get current auth token for Edge Function calls
+ * Used by inviteUser and updateUser methods
+ */
+const getAuthToken = async (): Promise<string> => {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (!session?.access_token) {
+    throw new Error('Not authenticated');
+  }
+  return session.access_token;
+};
+
+/**
  * Log error with context for debugging
  * Integrated from resilientDataProvider for consolidated error logging
  * Now also sends to Sentry via structured logger with rich tags for filtering
@@ -1180,6 +1192,93 @@ export const unifiedDataProvider: DataProvider = {
       return result;
     } catch (error) {
       logError("checkAuthorizationBatch", "authorization", { data: params }, error);
+      throw error;
+    }
+  },
+
+  // =====================================================
+  // User Management Methods
+  // =====================================================
+
+  /**
+   * Invite a new user via Edge Function
+   * Creates user account and sends invitation email
+   * @param data UserInvite data with email, password, name, and role
+   * @returns The created sales record
+   */
+  async inviteUser(data: UserInvite): Promise<{ data: Sale }> {
+    try {
+      devLog("DataProvider", "Inviting user", { email: data.email, role: data.role });
+
+      const token = await getAuthToken();
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/users`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!response.ok) {
+        // Handle multiple error formats: { message }, { error: { message } }, or text
+        const errorData = await response.json().catch(() => null);
+        const message =
+          errorData?.message ||
+          errorData?.error?.message ||
+          `Invite failed (${response.status})`;
+        throw new Error(message);
+      }
+
+      const result = await response.json();
+      devLog("DataProvider", "User invited successfully", result);
+      return result;
+    } catch (error) {
+      logError("inviteUser", "users", { data }, error);
+      throw error;
+    }
+  },
+
+  /**
+   * Update an existing user via Edge Function
+   * @param data UserUpdate data with sales_id and fields to update
+   * @returns The updated sales record
+   */
+  async updateUser(data: UserUpdate): Promise<{ data: Sale }> {
+    try {
+      devLog("DataProvider", "Updating user", { sales_id: data.sales_id, role: data.role });
+
+      const token = await getAuthToken();
+      const response = await fetch(
+        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/users`,
+        {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+          body: JSON.stringify(data),
+        }
+      );
+
+      if (!response.ok) {
+        // Handle multiple error formats: { message }, { error: { message } }, or text
+        const errorData = await response.json().catch(() => null);
+        const message =
+          errorData?.message ||
+          errorData?.error?.message ||
+          `Update failed (${response.status})`;
+        throw new Error(message);
+      }
+
+      const result = await response.json();
+      devLog("DataProvider", "User updated successfully", result);
+      return result;
+    } catch (error) {
+      logError("updateUser", "users", { data }, error);
       throw error;
     }
   },

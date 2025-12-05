@@ -101,6 +101,41 @@ export const filterableFields: Record<string, string[]> = {
     "q", // Special: full-text search parameter
   ],
 
+  // Organizations Summary View (database view with computed fields)
+  // Used automatically by getDatabaseResource() for organizations list queries
+  organizations_summary: [
+    "id",
+    "name",
+    "type", // Alias for organization_type used in some filters
+    "organization_type",
+    "parent_organization_id",
+    "parent_organization_name", // Computed: parent org name
+    "priority",
+    "website",
+    "city",
+    "state",
+    "postal_code",
+    "phone",
+    "email",
+    "linkedin_url",
+    "sales_id",
+    "segment_id",
+    "employee_count",
+    "description",
+    "created_at",
+    "updated_at",
+    "deleted_at", // Soft delete timestamp
+    // Additional computed/aggregated fields from the view
+    "child_branch_count",
+    "total_contacts_across_branches",
+    "total_opportunities_across_branches",
+    "nb_opportunities",
+    "nb_contacts",
+    "last_opportunity_activity",
+    "nb_notes",
+    "q", // Special: full-text search parameter
+  ],
+
   // Opportunities resource
   opportunities: [
     "id",

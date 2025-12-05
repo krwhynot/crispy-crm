@@ -310,6 +310,17 @@ export const updateOpportunitySchema = opportunityBaseSchema
   .extend({
     // Override contact_ids to remove the default([]) that causes issues with partial updates
     contact_ids: z.array(z.union([z.string(), z.number()])).optional(), // No .default([]) here!
+
+    // Virtual field: products_to_sync (stripped by TransformService before DB save)
+    // Must be declared here since opportunityBaseSchema uses strictObject()
+    products_to_sync: z
+      .array(
+        z.strictObject({
+          product_id_reference: z.union([z.string(), z.number()]).optional(),
+          notes: z.string().optional().nullable(),
+        })
+      )
+      .optional(),
   })
   .required({
     id: true,
