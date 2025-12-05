@@ -116,12 +116,13 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
   return (
     <div
       className={`
-  flex-1 pb-8 bg-card border border-border rounded-2xl shadow-col-inner
+  flex flex-col pb-8 bg-card border border-border rounded-2xl shadow-col-inner
   ${shadowConfig.rest} ${shadowConfig.hover}
   transition-[box-shadow,border-color] duration-200 ease-in-out px-3
   min-w-[260px] max-w-[300px]
   md:min-w-[280px] md:max-w-[320px]
   lg:min-w-[300px] lg:max-w-[340px]
+  h-full max-h-full overflow-hidden shrink-0
 `}
       data-testid="kanban-column"
     >
@@ -195,7 +196,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className={`flex flex-col rounded-2xl mt-2 gap-2 pb-3 min-h-[100px] transition-colors ${
+                className={`flex flex-col flex-1 rounded-2xl mt-2 gap-2 pb-3 min-h-[100px] overflow-y-auto overflow-x-hidden transition-colors ${
                   snapshot.isDraggingOver ? "bg-accent" : ""
                 }`}
               >
