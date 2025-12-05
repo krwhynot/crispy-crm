@@ -267,6 +267,16 @@ export interface Opportunity extends Pick<RaRecord, "id"> {
     principal_name?: string;
     notes?: string;
   }>;
+
+  // Visual cue computed fields for Kanban cards (from opportunities_summary view)
+  days_since_last_activity?: number | null;
+  pending_task_count?: number;
+  overdue_task_count?: number;
+
+  // Close outcome tracking (for closed_won/closed_lost stages)
+  win_reason?: string;
+  loss_reason?: string;
+  close_reason_notes?: string;
 }
 
 // DealNote type removed - use OpportunityNote instead
