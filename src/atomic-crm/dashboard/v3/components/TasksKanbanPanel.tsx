@@ -180,7 +180,7 @@ function TasksKanbanPanel() {
   // Loading state - matches production flex layout
   if (loading) {
     return (
-      <div className="flex h-full flex-col p-4">
+      <div className="flex flex-col p-4">
         <div className="mb-4 flex items-start justify-between">
           <div>
             <Skeleton className="mb-2 h-6 w-32" />
@@ -188,7 +188,7 @@ function TasksKanbanPanel() {
           </div>
           <Skeleton className="h-11 w-28" />
         </div>
-        <div className="flex h-full gap-3 flex-col lg:flex-row">
+        <div className="flex gap-3 flex-col lg:flex-row">
           {/* Three column skeletons matching Overdue/Today/This Week */}
           {[1, 2, 3].map((i) => (
             <div
@@ -215,9 +215,9 @@ function TasksKanbanPanel() {
   // Error state
   if (error) {
     return (
-      <div className="flex h-full flex-col p-4">
+      <div className="flex flex-col p-4">
         <h3 className="text-lg font-semibold">My Tasks</h3>
-        <div className="flex h-full items-center justify-center">
+        <div className="flex items-center justify-center py-8">
           <div className="text-center">
             <p className="text-destructive">Failed to load tasks</p>
             <p className="text-sm text-muted-foreground">{error.message}</p>
@@ -231,7 +231,7 @@ function TasksKanbanPanel() {
     tasksByColumn.overdue.length + tasksByColumn.today.length + tasksByColumn.thisWeek.length;
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex flex-col">
       {/* Header */}
       <div className="border-b border-border px-4 py-3 shrink-0">
         <div className="flex items-start justify-between">
@@ -263,10 +263,10 @@ function TasksKanbanPanel() {
       </div>
 
       {/* Kanban Board */}
-      <div className="flex-1 overflow-hidden">
+      <div>
         {totalTasks === 0 ? (
           // Empty state
-          <div className="flex h-full items-center justify-center p-8">
+          <div className="flex items-center justify-center p-8">
             <div className="text-center">
               <p className="text-muted-foreground">No tasks to show</p>
               <p className="text-sm text-muted-foreground/70 mt-1">Create a task to get started</p>
@@ -280,9 +280,8 @@ function TasksKanbanPanel() {
           >
             <div
               className="
-                flex h-full gap-3 p-4
+                flex gap-3 p-4
                 flex-col lg:flex-row
-                overflow-y-auto lg:overflow-y-visible
               "
               data-testid="task-kanban-board"
             >

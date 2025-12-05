@@ -81,9 +81,9 @@ export function PrincipalPipelineTable() {
   // Loading state - matches production layout structure
   if (loading) {
     return (
-      <div className="flex h-full flex-col">
+      <div className="flex flex-col p-4">
         {/* Header skeleton matching production header */}
-        <div className="border-b border-border pb-4">
+        <div className="border-b border-border pb-3">
           <div className="flex items-start justify-between">
             <div>
               <Skeleton className="mb-2 h-6 w-48" />
@@ -98,7 +98,7 @@ export function PrincipalPipelineTable() {
           </div>
         </div>
         {/* Table skeleton with header and rows */}
-        <div className="flex-1 overflow-auto pt-2">
+        <div className="pt-2">
           {/* Table header */}
           <div className="flex gap-4 px-2 py-3 border-b border-border">
             <Skeleton className="h-4 w-32" />
@@ -139,9 +139,9 @@ export function PrincipalPipelineTable() {
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex flex-col p-4">
       {/* Header with title and filters */}
-      <div className="border-b border-border pb-4">
+      <div className="border-b border-border pb-3">
         <div className="flex items-start justify-between">
           <div>
             <h2 className="text-lg font-semibold">Pipeline by Principal</h2>
@@ -178,8 +178,8 @@ export function PrincipalPipelineTable() {
         </div>
       </div>
 
-      {/* Table */}
-      <div className="flex-1 overflow-auto">
+      {/* Table - parent TabsContent handles scroll */}
+      <div className="pt-2">
         {sortedData?.length === 0 ? (
           <EmptyState searchQuery={searchQuery} />
         ) : (

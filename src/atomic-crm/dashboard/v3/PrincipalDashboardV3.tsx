@@ -37,17 +37,12 @@ export function PrincipalDashboardV3() {
     setIsTaskSheetOpen(true);
   }, []);
 
+  // Calculate available height: viewport - Layout header (~64px) - Layout padding (80px) - footer space
+  // Using CSS calc for precise control at 1024x768
   return (
-    <div className="flex h-dvh flex-col overflow-hidden">
-      {/* Header - fixed 64px */}
-      <header className="shrink-0 border-b border-border bg-card">
-        <div className="flex h-16 items-center px-6">
-          <h1 className="text-xl font-semibold">Principal Dashboard</h1>
-        </div>
-      </header>
-
-      {/* Main Content - fills remaining viewport height */}
-      <main className="relative flex min-h-0 flex-1 flex-col gap-3 p-3">
+    <div className="flex h-[calc(100vh-160px)] flex-col overflow-hidden">
+      {/* Main Content - fills calculated height, no internal header (Layout provides one) */}
+      <main className="relative flex min-h-0 flex-1 flex-col gap-3">
         {/* KPI Summary Row - compact, shrinks to content */}
         <div className="shrink-0">
           <KPISummaryRow key={`kpi-${refreshKey}`} />
