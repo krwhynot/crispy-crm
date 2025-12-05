@@ -1072,6 +1072,11 @@ export function StalenessIndicator({ days, size = 'sm' }: StalenessIndicatorProp
   const isCritical = days >= STALENESS_THRESHOLDS.CRITICAL;
   const variant = isCritical ? 'destructive' : 'warning';
 
+  // WCAG: Color alone doesn't convey meaning - include severity in aria-label
+  const severityText = isCritical
+    ? 'urgent attention needed'
+    : 'needs attention soon';
+
   return (
     <Badge
       variant={variant}
@@ -1081,7 +1086,7 @@ export function StalenessIndicator({ days, size = 'sm' }: StalenessIndicatorProp
         isCritical ? 'bg-destructive' : 'bg-warning'
       )}
       role="status"
-      aria-label={`${days} days since last activity`}
+      aria-label={`${days} days since last activity - ${severityText}`}
     >
       {days}d
     </Badge>

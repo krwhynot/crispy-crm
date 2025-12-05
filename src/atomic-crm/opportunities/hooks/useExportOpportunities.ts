@@ -96,7 +96,6 @@ export const useExportOpportunities = () => {
           }
         );
       } catch (error) {
-        console.error("CSV export error:", error);
         notify("Failed to export opportunities", { type: "error" });
       }
     },

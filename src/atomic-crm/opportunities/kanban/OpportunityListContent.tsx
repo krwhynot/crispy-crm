@@ -242,7 +242,6 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
     const draggedItem = sourceCol.find((opp) => opp.id.toString() === draggableId);
 
     if (!draggedItem) {
-      console.error("Could not find dragged opportunity to move.");
       return;
     }
 
@@ -309,6 +308,8 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
         <div
           className="flex min-h-0 flex-1 gap-5 overflow-x-auto p-6 bg-muted rounded-3xl border border-border shadow-inner"
           data-testid="kanban-board"
+          role="region"
+          aria-label="Opportunities pipeline board"
         >
           {visibleStages.map((stage) => (
             <OpportunityColumn

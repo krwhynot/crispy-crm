@@ -19,6 +19,7 @@ import {
 import { Combobox, MultiSelectCombobox } from "@/components/ui/combobox";
 import { US_CITIES } from "../data/us-cities";
 import { cn } from "@/lib/utils";
+import { getLocalStorageString } from "@/lib/storage-utils";
 
 interface QuickAddFormProps {
   onSuccess: () => void;
@@ -35,7 +36,17 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     sort: { field: "name", order: "ASC" },
   });
 
-  // Initialize form with defaults from localStorage
+  // Derive defaults from schema first (single source of truth)
+  const schemaDefaults = quickAddSchema.partial().parse({});
+
+  // Then merge with validated localStorage for persistence
+  const defaultValues = {
+    ...schemaDefaults,
+    campaign: getLocalStorageString("last_campaign", schemaDefaults.campaign || ""),
+    principal_id: Number(getLocalStorageString("last_principal", schemaDefaults.principal_id?.toString() || "")) || undefined,
+  };
+
+  // Initialize form with defaults from schema and localStorage
   const {
     register,
     handleSubmit,
@@ -46,19 +57,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
     clearErrors,
   } = useForm<QuickAddInput>({
     resolver: zodResolver(quickAddSchema),
-    defaultValues: {
-      campaign: localStorage.getItem("last_campaign") || "",
-      principal_id: Number(localStorage.getItem("last_principal")) || undefined,
-      product_ids: [],
-      first_name: "",
-      last_name: "",
-      phone: "",
-      email: "",
-      org_name: "",
-      city: "",
-      state: "",
-      quick_note: "",
-    },
+    defaultValues,
   });
 
   // Watch values for dependent fields using useWatch

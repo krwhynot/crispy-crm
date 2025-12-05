@@ -130,7 +130,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
           {onToggleCollapse && (
             <button
               onClick={onToggleCollapse}
-              className="min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded transition-colors touch-manipulation"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               aria-label={isCollapsed ? "Expand column" : "Collapse column"}
               type="button"
             >
