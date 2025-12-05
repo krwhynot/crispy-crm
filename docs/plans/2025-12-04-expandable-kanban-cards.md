@@ -199,11 +199,20 @@ BEGIN
 END $$;
 ```
 
-**Verification:**
+**Verification (NON-DESTRUCTIVE - uses migration apply, not reset):**
 ```bash
-npx supabase db reset
-# Expected: "SUCCESS: All three new columns added to opportunities_summary"
+# Apply ONLY this new migration (does not wipe data)
+npx supabase migration up
+
+# Verify columns exist
+npx supabase db execute --sql "SELECT column_name FROM information_schema.columns WHERE table_name = 'opportunities_summary' AND column_name IN ('days_since_last_activity', 'pending_task_count', 'overdue_task_count');"
+# Expected: 3 rows returned
+
+# If migration fails due to dependencies, check what depends on the view:
+npx supabase db execute --sql "SELECT dependent_ns.nspname AS dependent_schema, dependent_view.relname AS dependent_view FROM pg_depend JOIN pg_rewrite ON pg_depend.objid = pg_rewrite.oid JOIN pg_class AS dependent_view ON pg_rewrite.ev_class = dependent_view.oid JOIN pg_namespace AS dependent_ns ON dependent_view.relnamespace = dependent_ns.oid WHERE pg_depend.refobjid = 'opportunities_summary'::regclass;"
 ```
+
+**⚠️ WARNING:** Do NOT run `npx supabase db reset` during development - it wipes all local data including test seeds. Use `migration up` to apply incrementally.
 
 **Constitution Checklist:**
 - [x] No retry logic
@@ -714,6 +723,71 @@ npx tsc --noEmit
 
 ---
 
+### Task 2.3b: Update OpportunityColumn Memo Comparator
+**Time:** 2-3 min | **File:** `src/atomic-crm/opportunities/kanban/OpportunityColumn.tsx`
+
+**Context:** The column's `arePropsEqual` memo comparator must include new fields, otherwise cards won't re-render when activity/task counts change.
+
+**Pre-conditions:** None (can run in parallel)
+
+**Implementation:**
+
+Edit `src/atomic-crm/opportunities/kanban/OpportunityColumn.tsx`, find the `arePropsEqual` function (around line 35-70):
+
+```tsx
+// FIND (around line 54-66):
+  // Compare opportunity IDs and key fields that affect rendering
+  for (let i = 0; i < prevOpps.length; i++) {
+    const prev = prevOpps[i];
+    const next = nextOpps[i];
+    if (
+      prev.id !== next.id ||
+      prev.name !== next.name ||
+      prev.stage !== next.stage ||
+      prev.priority !== next.priority ||
+      prev.estimated_close_date !== next.estimated_close_date ||
+      prev.days_in_stage !== next.days_in_stage
+    ) {
+      return false;
+    }
+  }
+
+// REPLACE WITH (add new visual cue fields):
+  // Compare opportunity IDs and key fields that affect rendering
+  for (let i = 0; i < prevOpps.length; i++) {
+    const prev = prevOpps[i];
+    const next = nextOpps[i];
+    if (
+      prev.id !== next.id ||
+      prev.name !== next.name ||
+      prev.stage !== next.stage ||
+      prev.priority !== next.priority ||
+      prev.estimated_close_date !== next.estimated_close_date ||
+      prev.days_in_stage !== next.days_in_stage ||
+      // NEW: Visual cue fields that trigger card re-render
+      prev.days_since_last_activity !== next.days_since_last_activity ||
+      prev.pending_task_count !== next.pending_task_count ||
+      prev.overdue_task_count !== next.overdue_task_count
+    ) {
+      return false;
+    }
+  }
+```
+
+**Why this matters:** Without this change, if a user logs an activity or completes a task, the activity pulse and task badges won't update until a full page refresh.
+
+**Verification:**
+```bash
+npx tsc --noEmit
+# Expected: No errors
+```
+
+**Constitution Checklist:**
+- [x] Single source of truth (comparator matches data fields)
+- [x] Performance optimization preserved
+
+---
+
 ### Task 2.4: Implement Expandable OpportunityCard
 **Time:** 5-8 min | **File:** `src/atomic-crm/opportunities/kanban/OpportunityCard.tsx`
 
@@ -996,59 +1070,244 @@ npx tsc --noEmit
 
 ---
 
-### Task 2.5: Update Existing OpportunityCard Tests for Behavior Change
-**Time:** 3-5 min | **File:** `src/atomic-crm/opportunities/__tests__/OpportunityCard.test.tsx`
+### Task 2.5: Rewrite Existing OpportunityCard Test File
+**Time:** 8-10 min | **File:** `src/atomic-crm/opportunities/__tests__/OpportunityCard.test.tsx`
 
-**Context:** The existing tests assert that priority badge and days-in-stage are always visible. With the new expandable card, these are only visible when expanded.
+**Context:** The existing test file has fundamental incompatibilities with the new expandable card:
+1. Uses `useRecordContext` mock pattern that doesn't provide `openSlideOver` prop
+2. Expects priority badge and days-in-stage to be always visible (now in expanded section)
+3. Missing DnD wrapper required by Draggable component
+
+This is a **complete rewrite**, not just assertion updates.
 
 **Pre-conditions:** Task 2.4 card component updated
 
 **Implementation:**
 
-Find and update these existing test patterns in `src/atomic-crm/opportunities/__tests__/OpportunityCard.test.tsx`:
-
-```tsx
-// BEFORE (will fail - badges now in expanded section):
-it("renders priority badge", () => {
-  renderCard(mockOpportunity);
-  expect(screen.getByText(/High/)).toBeInTheDocument();
-});
-
-// AFTER (expand first, then check):
-it("renders priority badge when expanded", () => {
-  renderCard(mockOpportunity);
-
-  // Badge is in expanded section - expand first
-  const expandButton = screen.getByRole("button", { name: /expand/i });
-  fireEvent.click(expandButton);
-
-  expect(screen.getByText(/High/)).toBeInTheDocument();
-});
-
-// BEFORE (will fail):
-it("renders days in stage badge", () => {
-  renderCard(mockOpportunity);
-  expect(screen.getByText(/days in stage/i)).toBeInTheDocument();
-});
-
-// AFTER (expand first):
-it("renders days in stage when expanded", () => {
-  renderCard(mockOpportunity);
-
-  const expandButton = screen.getByRole("button", { name: /expand/i });
-  fireEvent.click(expandButton);
-
-  expect(screen.getByText(/days in stage/i)).toBeInTheDocument();
-});
+**Step 1:** First, read the existing test file to understand current coverage:
+```bash
+cat src/atomic-crm/opportunities/__tests__/OpportunityCard.test.tsx
 ```
 
-**Note:** Also update any tests that check for priority colors or stuck warnings - these are now in the expanded section.
+**Step 2:** Replace the entire test file with the updated version that includes:
+
+```tsx
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { DragDropContext, Droppable } from "@hello-pangea/dnd";
+import { RecordContextProvider } from "react-admin";
+import { OpportunityCard } from "../kanban/OpportunityCard";
+import type { Opportunity } from "../../types";
+
+/**
+ * DnD wrapper required for testing Draggable components
+ */
+const DndTestWrapper = ({ children }: { children: React.ReactNode }) => (
+  <DragDropContext onDragEnd={() => {}}>
+    <Droppable droppableId="test-droppable">
+      {(provided) => (
+        <div ref={provided.innerRef} {...provided.droppableProps}>
+          {children}
+          {provided.placeholder}
+        </div>
+      )}
+    </Droppable>
+  </DragDropContext>
+);
+
+/**
+ * Helper to render OpportunityCard with all required wrappers
+ */
+const renderCard = (
+  record: Partial<Opportunity>,
+  props: { openSlideOver?: (id: number, mode?: "view" | "edit") => void; onDelete?: (id: number) => void } = {}
+) => {
+  const defaultRecord: Opportunity = {
+    id: 1,
+    name: "Test Opportunity",
+    description: "Test description",
+    stage: "initial_outreach",
+    status: "active",
+    priority: "medium",
+    estimated_close_date: "2026-03-05",
+    customer_organization_id: 1,
+    contact_ids: [],
+    stage_manual: false,
+    status_manual: false,
+    created_at: "2025-01-01",
+    updated_at: "2025-01-01",
+    days_in_stage: 5,
+    days_since_last_activity: 3,
+    pending_task_count: 0,
+    overdue_task_count: 0,
+    ...record,
+  };
+
+  return render(
+    <DndTestWrapper>
+      <RecordContextProvider value={defaultRecord}>
+        <OpportunityCard
+          index={0}
+          openSlideOver={props.openSlideOver ?? vi.fn()}
+          onDelete={props.onDelete}
+        />
+      </RecordContextProvider>
+    </DndTestWrapper>
+  );
+};
+
+describe("OpportunityCard", () => {
+  describe("Collapsed State (default)", () => {
+    it("renders opportunity name", () => {
+      renderCard({ name: "My Test Deal" });
+      expect(screen.getByText("My Test Deal")).toBeInTheDocument();
+    });
+
+    it("shows activity pulse dot", () => {
+      renderCard({ days_since_last_activity: 5 });
+      const pulseDot = screen.getByRole("status");
+      expect(pulseDot).toBeInTheDocument();
+      expect(pulseDot).toHaveClass("bg-success"); // Green for <7 days
+    });
+
+    it("shows expand button with aria-expanded=false", () => {
+      renderCard({});
+      const expandButton = screen.getByRole("button", { name: /expand/i });
+      expect(expandButton).toHaveAttribute("aria-expanded", "false");
+    });
+
+    it("does NOT show description when collapsed", () => {
+      renderCard({ description: "Hidden description" });
+      expect(screen.queryByText("Hidden description")).not.toBeInTheDocument();
+    });
+
+    it("does NOT show priority badge when collapsed", () => {
+      renderCard({ priority: "high" });
+      // Priority badge is in expanded section
+      expect(screen.queryByText(/High/i)).not.toBeInTheDocument();
+    });
+  });
+
+  describe("Expanded State", () => {
+    it("shows description when expanded", () => {
+      renderCard({ description: "Visible description" });
+
+      fireEvent.click(screen.getByRole("button", { name: /expand/i }));
+
+      expect(screen.getByText("Visible description")).toBeInTheDocument();
+    });
+
+    it("shows priority badge when expanded", () => {
+      renderCard({ priority: "high" });
+
+      fireEvent.click(screen.getByRole("button", { name: /expand/i }));
+
+      expect(screen.getByText(/High/i)).toBeInTheDocument();
+    });
+
+    it("shows days in stage when expanded", () => {
+      renderCard({ days_in_stage: 12 });
+
+      fireEvent.click(screen.getByRole("button", { name: /expand/i }));
+
+      expect(screen.getByText(/12 days in stage/)).toBeInTheDocument();
+    });
+
+    it("shows stuck warning for >14 days in stage", () => {
+      renderCard({ days_in_stage: 20 });
+
+      fireEvent.click(screen.getByRole("button", { name: /expand/i }));
+
+      expect(screen.getByText(/20 days in stage/)).toBeInTheDocument();
+      expect(screen.getByText("⚠️")).toBeInTheDocument();
+    });
+
+    it("shows task count when expanded", () => {
+      renderCard({ pending_task_count: 3, overdue_task_count: 1 });
+
+      fireEvent.click(screen.getByRole("button", { name: /expand/i }));
+
+      expect(screen.getByText(/3 tasks/)).toBeInTheDocument();
+      expect(screen.getByText(/1 overdue/)).toBeInTheDocument();
+    });
+
+    it("updates aria-expanded to true when expanded", () => {
+      renderCard({});
+
+      const expandButton = screen.getByRole("button", { name: /expand/i });
+      fireEvent.click(expandButton);
+
+      expect(expandButton).toHaveAttribute("aria-expanded", "true");
+    });
+  });
+
+  describe("Activity Pulse Colors", () => {
+    it("shows green pulse for <7 days since activity", () => {
+      renderCard({ days_since_last_activity: 3 });
+      expect(screen.getByRole("status")).toHaveClass("bg-success");
+    });
+
+    it("shows yellow pulse for 7-14 days since activity", () => {
+      renderCard({ days_since_last_activity: 10 });
+      expect(screen.getByRole("status")).toHaveClass("bg-warning");
+    });
+
+    it("shows red pulse for >14 days since activity", () => {
+      renderCard({ days_since_last_activity: 20 });
+      expect(screen.getByRole("status")).toHaveClass("bg-destructive");
+    });
+
+    it("shows gray pulse for null activity", () => {
+      renderCard({ days_since_last_activity: null });
+      expect(screen.getByRole("status")).toHaveClass("bg-muted-foreground");
+    });
+  });
+
+  describe("Interactions", () => {
+    it("calls openSlideOver when card body is clicked", () => {
+      const openSlideOver = vi.fn();
+      renderCard({ id: 123 }, { openSlideOver });
+
+      // Click the card (not the expand button)
+      const card = screen.getByTestId("opportunity-card");
+      fireEvent.click(card);
+
+      expect(openSlideOver).toHaveBeenCalledWith(123, "view");
+    });
+
+    it("does NOT call openSlideOver when expand button is clicked", () => {
+      const openSlideOver = vi.fn();
+      renderCard({}, { openSlideOver });
+
+      fireEvent.click(screen.getByRole("button", { name: /expand/i }));
+
+      expect(openSlideOver).not.toHaveBeenCalled();
+    });
+
+    it("toggles expanded state on expand button click", () => {
+      renderCard({ description: "Toggle test" });
+
+      const expandButton = screen.getByRole("button", { name: /expand/i });
+
+      // Expand
+      fireEvent.click(expandButton);
+      expect(screen.getByText("Toggle test")).toBeInTheDocument();
+
+      // Collapse
+      fireEvent.click(expandButton);
+      expect(screen.queryByText("Toggle test")).not.toBeInTheDocument();
+    });
+  });
+});
+```
 
 **Verification:**
 ```bash
 npm test -- OpportunityCard
-# Expected: All tests pass (including updated ones)
+# Expected: All tests pass
 ```
+
+**Note:** This is a complete replacement of the test file. The old tests are incompatible with the new component structure.
 
 ---
 
@@ -1073,24 +1332,39 @@ npm run build
 
 ---
 
-### Task 3.2: Apply Migration, Seed Data, and Visual Verification
+### Task 3.2: Verify Migration Applied and Seed E2E Data
 **Time:** 5-7 min
 
 **Pre-conditions:** Task 3.1 passes
 
-**Implementation:**
+**⚠️ DATA SAFETY NOTE:** This task uses `db reset` which WIPES ALL LOCAL DATA. This is intentional for clean E2E verification. If you have important local data, back it up first or skip to the "migration up" alternative below.
+
+**Implementation (Option A - Clean slate for E2E):**
 ```bash
-# Reset database with new migration
+# DESTRUCTIVE: Reset database and apply all migrations from scratch
+# Only do this if you're ready to lose local dev data
 npx supabase db reset
 
-# Re-seed development/E2E data (REQUIRED for manual/E2E verification)
-# This populates opportunities, activities, and tasks for testing
+# Re-seed E2E test data (REQUIRED for visual/E2E verification)
 npm run db:local:seed:e2e
 
 # Verify seed data exists
 npx supabase db execute --sql "SELECT COUNT(*) as opp_count FROM opportunities WHERE deleted_at IS NULL;"
 # Expected: opp_count > 0
+```
 
+**Implementation (Option B - Preserve existing data):**
+```bash
+# NON-DESTRUCTIVE: Apply only new migration
+npx supabase migration up
+
+# Check if you already have seed data
+npx supabase db execute --sql "SELECT COUNT(*) as opp_count FROM opportunities WHERE deleted_at IS NULL;"
+# If opp_count = 0, run seed:
+npm run db:local:seed:e2e
+```
+
+```bash
 # Start dev server
 npm run dev
 
