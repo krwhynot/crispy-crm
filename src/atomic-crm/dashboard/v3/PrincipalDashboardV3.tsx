@@ -47,18 +47,16 @@ export function PrincipalDashboardV3() {
         </div>
       </header>
 
-      {/* Main Content - Vertically stacked layout */}
-      <main className="relative flex-1 overflow-auto p-4">
-        <div className="flex flex-col gap-4">
-          {/* KPI Summary Row */}
-          <KPISummaryRow key={`kpi-${refreshKey}`} />
+      {/* Main Content - Flex layout with tabs filling remaining space */}
+      <main className="relative flex flex-1 flex-col gap-4 overflow-hidden p-4">
+        {/* KPI Summary Row - shrinks to content */}
+        <KPISummaryRow key={`kpi-${refreshKey}`} />
 
-          {/* Pipeline Table - Full width */}
-          <PrincipalPipelineTable key={`pipeline-${refreshKey}`} />
+        {/* Pipeline Table - shrinks to content */}
+        <PrincipalPipelineTable key={`pipeline-${refreshKey}`} />
 
-          {/* Tabbed interface for Tasks, Performance, Activity */}
-          <DashboardTabPanel key={`tabs-${refreshKey}`} />
-        </div>
+        {/* Tabbed interface - fills remaining height */}
+        <DashboardTabPanel key={`tabs-${refreshKey}`} />
 
         {/* FAB - Fixed position, opens Log Activity Sheet (desktop only) */}
         <LogActivityFAB onRefresh={handleRefresh} />
