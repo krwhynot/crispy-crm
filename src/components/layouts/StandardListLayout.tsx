@@ -76,7 +76,7 @@ export function StandardListLayout({
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6">
+    <div className="flex h-full min-h-0 flex-1 flex-col lg:flex-row gap-6">
       {/* Collapse toggle button */}
       <div className="flex items-center gap-2 lg:hidden mb-2 shrink-0">
         <Tooltip>

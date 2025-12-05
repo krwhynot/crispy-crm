@@ -289,9 +289,9 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
   if (isPending) return null;
 
   // Use flex column with min-h-0 and flex-1 to fill remaining height
-  // Kanban container scrolls horizontally only
+  // Kanban board: horizontal scroll for columns, each column scrolls vertically for cards
   return (
-    <div className="flex min-h-0 flex-1 flex-col">
+    <div className="flex min-h-0 flex-1 flex-col h-full">
       <div className="mb-4 flex shrink-0 justify-end">
         <ColumnCustomizationMenu
           visibleStages={userVisibleStages}
