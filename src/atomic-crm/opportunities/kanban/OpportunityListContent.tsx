@@ -16,6 +16,10 @@ import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunitie
 
 interface OpportunityListContentProps {
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
+  /** Currently open slide-over ID (to close on delete) */
+  slideOverId?: number | null;
+  /** Callback to close the slide-over */
+  closeSlideOver?: () => void;
 }
 
 /**
@@ -30,7 +34,11 @@ interface PendingCloseData {
   draggedItem: Opportunity;
 }
 
-export const OpportunityListContent = ({ openSlideOver }: OpportunityListContentProps) => {
+export const OpportunityListContent = ({
+  openSlideOver,
+  slideOverId,
+  closeSlideOver,
+}: OpportunityListContentProps) => {
   const allOpportunityStages = OPPORTUNITY_STAGES_LEGACY;
 
   const { data: unorderedOpportunities, isPending, filterValues } = useListContext<Opportunity>();
@@ -164,10 +172,18 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
   /**
    * Handle opportunity deletion - optimistically remove from local state
    * This ensures the card is immediately removed from the Kanban board
-   * without waiting for a full data refresh
+   * without waiting for a full data refresh.
+   *
+   * Also closes the slide-over if the deleted opportunity was being viewed
+   * to prevent stale popovers from appearing.
    */
   const handleDeleteOpportunity = useCallback(
     (opportunityId: number) => {
+      // Close slide-over if viewing the deleted opportunity
+      if (slideOverId === opportunityId && closeSlideOver) {
+        closeSlideOver();
+      }
+
       setOpportunitiesByStage((prevState) => {
         const newState = { ...prevState };
         // Find and remove the opportunity from whichever stage it's in
@@ -184,7 +200,7 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
       // Also trigger a refresh to ensure data consistency
       refresh();
     },
-    [refresh]
+    [refresh, slideOverId, closeSlideOver]
   );
 
   const handleDragStart = useCallback(
