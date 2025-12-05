@@ -51,10 +51,7 @@ export function PrincipalDashboardV3() {
         {/* KPI Summary Row - shrinks to content */}
         <KPISummaryRow key={`kpi-${refreshKey}`} />
 
-        {/* Pipeline Table - shrinks to content */}
-        <PrincipalPipelineTable key={`pipeline-${refreshKey}`} />
-
-        {/* Tabbed interface - fills remaining height */}
+        {/* Tabbed interface - Pipeline, Tasks, Performance, Activity - fills remaining height */}
         <DashboardTabPanel key={`tabs-${refreshKey}`} />
 
         {/* FAB - Fixed position, opens Log Activity Sheet (desktop only) */}
