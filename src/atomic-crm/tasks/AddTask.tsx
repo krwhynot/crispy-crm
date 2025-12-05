@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
@@ -122,6 +123,9 @@ export const AddTask = ({
                   {!selectContact ? "Create a new task for " : "Create a new task"}
                   {!selectContact && <RecordRepresentation record={contact} resource="contacts" />}
                 </DialogTitle>
+                <DialogDescription>
+                  Add a new task with title, description, due date, and priority.
+                </DialogDescription>
               </DialogHeader>
               <div className="flex flex-col gap-4">
                 <TextInput

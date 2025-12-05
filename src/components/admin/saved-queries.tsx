@@ -59,6 +59,11 @@ export const AddSavedQueryDialog = ({ open, onClose }: AddSavedQueryDialogProps)
               _: "Save current query as",
             })}
           </DialogTitle>
+          <DialogDescription>
+            {translate("ra.saved_queries.new_dialog_description", {
+              _: "Enter a name to save your current filter configuration for quick access later.",
+            })}
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleFormSubmit} className="space-y-4">
           <div className="space-y-2">

@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { buttonVariants } from "@/components/ui/button.constants";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
@@ -77,6 +77,9 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
         <form onSubmit={handleSubmit}>
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
+            <DialogDescription>
+              Enter a name and choose a color for your tag.
+            </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4 py-4">
