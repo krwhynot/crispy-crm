@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+// Card wrapper removed - parent DashboardTabPanel provides container
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import {
@@ -155,38 +155,40 @@ function MetricCard({ type, metric, loading }: MetricCardProps) {
  * - Screen reader labels for trends
  * - Keyboard navigable (inherits from Card)
  */
-export function MyPerformanceWidget() {
+function MyPerformanceWidget() {
   const { metrics, loading } = useMyPerformance();
 
   return (
-    <Card className="h-full">
-      <CardHeader className="pb-2">
-        <CardTitle className="text-base font-semibold">My Performance</CardTitle>
-      </CardHeader>
-      <CardContent className="pt-0">
-        {/* 2x2 grid on mobile, 2x2 on desktop for compact widget */}
-        <div
-          className="grid grid-cols-2 gap-1"
-          role="region"
-          aria-label="Personal performance metrics"
-        >
-          <MetricCard
-            type="activitiesThisWeek"
-            metric={metrics.activitiesThisWeek}
-            loading={loading}
-          />
-          <MetricCard type="dealsMoved" metric={metrics.dealsMoved} loading={loading} />
-          <MetricCard type="tasksCompleted" metric={metrics.tasksCompleted} loading={loading} />
-          <MetricCard
-            type="openOpportunities"
-            metric={metrics.openOpportunities}
-            loading={loading}
-          />
-        </div>
+    <div className="h-full p-4">
+      <div className="mb-3">
+        <h3 className="text-base font-semibold">My Performance</h3>
+      </div>
+      {/* 2x2 grid on mobile, 2x2 on desktop for compact widget */}
+      <div
+        className="grid grid-cols-2 gap-1"
+        role="region"
+        aria-label="Personal performance metrics"
+      >
+        <MetricCard
+          type="activitiesThisWeek"
+          metric={metrics.activitiesThisWeek}
+          loading={loading}
+        />
+        <MetricCard type="dealsMoved" metric={metrics.dealsMoved} loading={loading} />
+        <MetricCard type="tasksCompleted" metric={metrics.tasksCompleted} loading={loading} />
+        <MetricCard
+          type="openOpportunities"
+          metric={metrics.openOpportunities}
+          loading={loading}
+        />
+      </div>
 
-        {/* Week comparison note */}
-        <p className="text-xs text-muted-foreground mt-3 text-center">Compared to last week</p>
-      </CardContent>
-    </Card>
+      {/* Week comparison note */}
+      <p className="text-xs text-muted-foreground mt-3 text-center">Compared to last week</p>
+    </div>
   );
 }
+
+// Named export for barrel, default export for lazy loading
+export { MyPerformanceWidget };
+export default MyPerformanceWidget;
