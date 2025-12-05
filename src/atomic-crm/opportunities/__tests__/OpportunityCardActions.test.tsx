@@ -1,4 +1,5 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { OpportunityCardActions } from "../kanban/OpportunityCardActions";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { BrowserRouter } from "react-router-dom";
@@ -26,27 +27,36 @@ describe("OpportunityCardActions", () => {
     vi.clearAllMocks();
   });
 
-  it("shows actions menu on button click", () => {
+  it("renders trigger button with correct attributes", () => {
     renderWithRouter(<OpportunityCardActions opportunityId={1} />);
 
     const button = screen.getByRole("button", { name: /actions/i });
-    fireEvent.click(button);
-
-    expect(screen.getByText("View Details")).toBeInTheDocument();
-    expect(screen.getByText("Edit")).toBeInTheDocument();
-    expect(screen.getByText("Mark as Won")).toBeInTheDocument();
-    expect(screen.getByText("Delete")).toBeInTheDocument();
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveAttribute("type", "button");
+    expect(button).toHaveAttribute("aria-haspopup", "menu");
   });
 
-  it("prevents drag when clicking actions button", () => {
-    const stopPropagation = vi.fn();
+  it("opens dropdown menu on click", async () => {
+    const user = userEvent.setup();
     renderWithRouter(<OpportunityCardActions opportunityId={1} />);
 
     const button = screen.getByRole("button", { name: /actions/i });
+    await user.click(button);
 
-    fireEvent.mouseDown(button, { stopPropagation });
+    // Radix DropdownMenu renders in a portal, so we query the whole document
+    expect(await screen.findByRole("menu")).toBeInTheDocument();
+    expect(screen.getByRole("menuitem", { name: /view details/i })).toBeInTheDocument();
+    expect(screen.getByRole("menuitem", { name: /edit/i })).toBeInTheDocument();
+    expect(screen.getByRole("menuitem", { name: /mark as won/i })).toBeInTheDocument();
+    expect(screen.getByRole("menuitem", { name: /delete/i })).toBeInTheDocument();
+  });
 
-    // Verify the button has onMouseDown handler
-    expect(button).toHaveAttribute("type", "button");
+  it("has correct touch target size for mobile", () => {
+    renderWithRouter(<OpportunityCardActions opportunityId={1} />);
+
+    const button = screen.getByRole("button", { name: /actions/i });
+    // Button should have 44px minimum touch target
+    expect(button).toHaveClass("min-h-[44px]");
+    expect(button).toHaveClass("min-w-[44px]");
   });
 });
