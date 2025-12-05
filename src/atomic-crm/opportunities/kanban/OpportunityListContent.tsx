@@ -305,7 +305,7 @@ export const OpportunityListContent = ({ openSlideOver }: OpportunityListContent
         onDragEnd={handleDragEnd}
       >
         <div
-          className="flex gap-4 overflow-x-auto p-6 bg-muted rounded-3xl border border-border shadow-inner"
+          className="flex gap-5 overflow-x-auto p-6 bg-muted rounded-3xl border border-border shadow-inner"
           data-testid="kanban-board"
         >
           {visibleStages.map((stage) => (

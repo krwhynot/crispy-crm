@@ -50,17 +50,27 @@ function arePropsEqual(
 
   if (prevOpps.length !== nextOpps.length) return false;
 
-  // Compare opportunity IDs and key fields that affect rendering
+  // Compare opportunity IDs and ALL fields that affect card rendering
+  // (both collapsed header AND expanded details section)
   for (let i = 0; i < prevOpps.length; i++) {
     const prev = prevOpps[i];
     const next = nextOpps[i];
     if (
+      // Header (always visible)
       prev.id !== next.id ||
       prev.name !== next.name ||
       prev.stage !== next.stage ||
+      prev.days_since_last_activity !== next.days_since_last_activity ||
+      // Expanded details section
+      prev.description !== next.description ||
       prev.priority !== next.priority ||
+      prev.principal_organization_name !== next.principal_organization_name ||
       prev.estimated_close_date !== next.estimated_close_date ||
-      prev.days_in_stage !== next.days_in_stage
+      prev.days_in_stage !== next.days_in_stage ||
+      prev.pending_task_count !== next.pending_task_count ||
+      prev.overdue_task_count !== next.overdue_task_count ||
+      // Products count (compare array length, not deep equality)
+      (prev.products?.length ?? 0) !== (next.products?.length ?? 0)
     ) {
       return false;
     }
