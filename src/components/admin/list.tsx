@@ -121,7 +121,7 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
       <FilterContext.Provider value={filters}>
         <div
           className={cn(
-            "min-h-0 flex-1",
+            "h-full min-h-0 flex-1 overflow-hidden",
             // Only add vertical scroll when pagination exists (standard Datagrid lists)
             // When pagination={null} (e.g., Kanban), let content fill remaining height
             pagination && "overflow-y-auto",

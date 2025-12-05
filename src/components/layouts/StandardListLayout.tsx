@@ -76,7 +76,7 @@ export function StandardListLayout({
   }, []);
 
   return (
-    <div className="flex flex-col lg:flex-row gap-6">
+    <div className="flex h-full min-h-0 flex-1 flex-col lg:flex-row gap-6">
       {/* Collapse toggle button */}
       <div className="flex items-center gap-2 lg:hidden mb-2 shrink-0">
         <Tooltip>
@@ -160,8 +160,8 @@ export function StandardListLayout({
         </div>
       )}
 
-      <main role="main" aria-label={`${resource} list`} className="flex min-h-0 min-w-0 flex-1 flex-col">
-        <div className="card-container flex min-h-0 flex-1 flex-col">{children}</div>
+      <main role="main" aria-label={`${resource} list`} className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+        <div className="card-container flex h-full min-h-0 flex-1 flex-col overflow-hidden">{children}</div>
       </main>
     </div>
   );

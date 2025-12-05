@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useRecordContext } from "react-admin";
 import { Draggable } from "@hello-pangea/dnd";
 import { format, differenceInDays } from "date-fns";
-import { Trophy, XCircle, ChevronDown, ChevronUp, User, Calendar, Clock, CheckSquare, Package } from "lucide-react";
+import { Trophy, XCircle, ChevronDown, ChevronUp, User, Calendar, Clock, CheckSquare, Package, GripVertical } from "lucide-react";
 import { useOpportunityContacts } from "../hooks/useOpportunityContacts";
 import { STUCK_THRESHOLD_DAYS } from "../hooks/useStageMetrics";
 import { OpportunityCardActions } from "./OpportunityCardActions";
@@ -44,10 +44,11 @@ export const OpportunityCard = React.memo(function OpportunityCard({
   if (!record) return null;
 
   const handleCardClick = (e: React.MouseEvent) => {
-    // Only open slide-over if not clicking on action buttons or expand toggle
+    // Only open slide-over if not clicking on action buttons, expand toggle, or drag handle
     if (
       (e.target as HTMLElement).closest("[data-action-button]") ||
-      (e.target as HTMLElement).closest("[data-expand-toggle]")
+      (e.target as HTMLElement).closest("[data-expand-toggle]") ||
+      (e.target as HTMLElement).closest("[data-drag-handle]")
     ) {
       return;
     }
@@ -90,7 +91,6 @@ export const OpportunityCard = React.memo(function OpportunityCard({
         <div
           ref={provided.innerRef}
           {...provided.draggableProps}
-          {...provided.dragHandleProps}
           role="button"
           tabIndex={0}
           onClick={handleCardClick}
@@ -102,22 +102,31 @@ export const OpportunityCard = React.memo(function OpportunityCard({
           }}
           className={`
             bg-card rounded-lg border border-border
-            p-[var(--spacing-widget-padding)]
-            mb-[var(--spacing-content)]
+            p-3
             transition-all duration-200
-            hover:shadow-md hover:-translate-y-1
+            hover:shadow-md hover:-translate-y-0.5
             cursor-pointer
             ${snapshot.isDragging ? "opacity-50 rotate-2" : "opacity-100"}
           `}
           data-testid="opportunity-card"
         >
-          {/* Header: Activity Pulse + Name + Expand + Actions (always visible) */}
-          <div className="flex items-center gap-2">
+          {/* Header: Drag Handle + Activity Pulse + Name + Expand + Actions (always visible) */}
+          <div className="flex items-center gap-1.5">
+            {/* Drag handle - 44px touch target (WCAG AA) but compact visual */}
+            <div
+              {...provided.dragHandleProps}
+              data-testid="drag-handle"
+              data-drag-handle
+              aria-label="Drag to reorder"
+              className="min-h-[44px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded cursor-grab active:cursor-grabbing transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 -ml-1"
+            >
+              <GripVertical className="w-3.5 h-3.5" />
+            </div>
             <ActivityPulseDot daysSinceLastActivity={record.days_since_last_activity} />
 
             <h3 className={`
-              font-medium text-sm text-foreground flex-1 min-w-0
-              ${isExpanded ? "" : "line-clamp-1"}
+              font-semibold text-base text-foreground flex-1 min-w-0 leading-normal
+              ${isExpanded ? "" : "line-clamp-3"}
             `}>
               {record.name}
             </h3>
@@ -125,18 +134,16 @@ export const OpportunityCard = React.memo(function OpportunityCard({
             <button
               data-expand-toggle
               onClick={handleExpandClick}
-              // CRITICAL: Prevent mousedown from starting a drag when clicking expand toggle
-              // Without this, clicking the toggle will initiate a drag instead of expanding
               onMouseDown={(e) => e.stopPropagation()}
               onTouchStart={(e) => e.stopPropagation()}
               aria-expanded={isExpanded}
               aria-label={isExpanded ? "Collapse card" : "Expand card"}
-              className="p-1 text-muted-foreground hover:text-foreground rounded transition-colors"
+              className="min-h-[44px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded transition-colors"
             >
               {isExpanded ? (
-                <ChevronUp className="w-4 h-4" />
+                <ChevronUp className="w-3.5 h-3.5" />
               ) : (
-                <ChevronDown className="w-4 h-4" />
+                <ChevronDown className="w-3.5 h-3.5" />
               )}
             </button>
 
@@ -149,7 +156,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
             ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}
           `}>
             <div className="overflow-hidden">
-              <div className="pt-3 mt-3 border-t border-border space-y-2">
+              <div className="pt-3 mt-2 border-t border-border space-y-2">
                 {/* Description */}
                 {record.description && (
                   <p className="text-xs text-muted-foreground line-clamp-2">

@@ -135,10 +135,11 @@ const OpportunityListLayout = ({
 
   // Note: Breadcrumb is now handled by the List component wrapper (list.tsx)
   // Use flex column layout so kanban can fill remaining height
+  // CRITICAL: h-full + min-h-0 + overflow-hidden enables scroll in child components
   return (
     <StandardListLayout resource="opportunities" filterComponent={<OpportunityListFilter />}>
       <FilterChipBar filterConfig={OPPORTUNITY_FILTER_CONFIG} />
-      <div className="flex min-h-0 w-full flex-1 flex-col">
+      <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
         {view === "kanban" ? (
           <OpportunityListContent openSlideOver={openSlideOver} />
         ) : view === "campaign" ? (
