@@ -117,14 +117,26 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
         </FilterContext.Provider>
       </div>
 
-      {/* Scrollable content area - takes remaining height */}
+      {/* Content area - scrolls vertically for paginated lists, fills height for kanban */}
       <FilterContext.Provider value={filters}>
-        <div className={cn("min-h-0 flex-1 overflow-y-auto", props.className)}>{children}</div>
-
-        {/* Fixed pagination at bottom */}
-        <div className="shrink-0 border-t border-border bg-background pt-2">
-          {pagination}
+        <div
+          className={cn(
+            "min-h-0 flex-1",
+            // Only add vertical scroll when pagination exists (standard Datagrid lists)
+            // When pagination={null} (e.g., Kanban), let content fill remaining height
+            pagination && "overflow-y-auto",
+            props.className
+          )}
+        >
+          {children}
         </div>
+
+        {/* Fixed pagination at bottom - only render if pagination is provided */}
+        {pagination && (
+          <div className="shrink-0 border-t border-border bg-background pt-2">
+            {pagination}
+          </div>
+        )}
       </FilterContext.Provider>
     </div>
   );
