@@ -41,7 +41,10 @@ export function AuditLogSection() {
       </CardHeader>
       <CardContent>
         {isLoading ? (
-          <p>Loading...</p>
+          <div role="status" aria-live="polite" className="py-4">
+            <span className="sr-only">Loading activity log...</span>
+            <p className="text-muted-foreground">Loading...</p>
+          </div>
         ) : (
           <ScrollArea className="h-[400px]">
             <div className="space-y-3">

@@ -21,7 +21,7 @@ export function PersonalSection() {
   const dataProvider = useDataProvider<CrmDataProvider>();
 
   const { mutate: mutateSale } = useMutation({
-    mutationKey: ["signup"],
+    mutationKey: ["updateProfile"],
     mutationFn: async (data: SalesFormData) => {
       if (!record) {
         throw new Error("Record not found");
@@ -42,7 +42,7 @@ export function PersonalSection() {
 
   if (!identity) return null;
 
-  const handleAvatarUpdate = async (values: any) => {
+  const handleAvatarUpdate = async (values: SalesFormData) => {
     mutateSale(values);
   };
 
