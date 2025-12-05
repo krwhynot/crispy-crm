@@ -119,7 +119,7 @@ function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
 
   if (loading) {
     return (
-      <div className="flex h-full flex-col">
+      <div className="flex flex-col">
         <div className="border-b border-border px-4 py-3">
           <Skeleton className="mb-2 h-6 w-32" />
           <Skeleton className="h-4 w-48" />
@@ -143,12 +143,12 @@ function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
 
   if (error) {
     return (
-      <div className="flex h-full flex-col p-4">
+      <div className="flex flex-col p-4">
         <h3 className="flex items-center gap-2 text-lg font-semibold">
           <Activity className="h-5 w-5" />
           Team Activity
         </h3>
-        <div className="flex h-full items-center justify-center">
+        <div className="flex items-center justify-center py-8">
           <div className="text-center">
             <p className="text-destructive">Failed to load activities</p>
             <p className="text-sm text-muted-foreground">{error.message}</p>
@@ -159,7 +159,7 @@ function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
   }
 
   return (
-    <div className="flex h-full flex-col">
+    <div className="flex flex-col">
       <div className="border-b border-border px-4 py-3">
         <div className="flex items-start justify-between">
           <div>
@@ -191,7 +191,7 @@ function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
         )}
       </div>
 
-      <div className="flex-1 overflow-auto">
+      <div>
         {activities.length === 0 ? (
           <div className="flex h-full items-center justify-center p-8">
             <div className="text-center">
