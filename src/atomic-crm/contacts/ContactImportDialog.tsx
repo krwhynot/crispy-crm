@@ -644,7 +644,10 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
         <DialogContent className="max-w-2xl">
           <Form className="flex flex-col gap-4">
             <DialogHeader>
-              <DialogTitle>Import</DialogTitle>
+              <DialogTitle>Import Contacts</DialogTitle>
+              <DialogDescription>
+                Upload a CSV file to import contacts into your CRM.
+              </DialogDescription>
             </DialogHeader>
             <div className="flex flex-col space-y-2">{renderMainDialogContent()}</div>
           </Form>
@@ -657,6 +660,9 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
           <DialogContent className="sm:max-w-7xl h-[90vh] flex flex-col p-0">
             <DialogHeader className="px-6 pt-6 pb-4 border-b">
               <DialogTitle>Import Preview</DialogTitle>
+              <DialogDescription>
+                Review and map columns before importing your contacts.
+              </DialogDescription>
             </DialogHeader>
             <div className="flex-1 overflow-y-auto px-6">
               <ContactImportPreview

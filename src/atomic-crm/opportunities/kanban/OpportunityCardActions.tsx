@@ -1,6 +1,14 @@
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUpdate, useDelete, useNotify, useRefresh, useRecordContext } from "react-admin";
+import { MoreVertical, Eye, Pencil, Trophy, XCircle, Trash2 } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "../../types";
@@ -11,8 +19,6 @@ interface OpportunityCardActionsProps {
 }
 
 export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityCardActionsProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
   const [update] = useUpdate();
   const [deleteOne] = useDelete();
@@ -27,40 +33,21 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
   );
   const [isClosing, setIsClosing] = useState(false);
 
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    }
-
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    }
-
-    // Always cleanup, even if component unmounts while closed
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [isOpen]);
-
-  const handleViewDetails = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleViewDetails = useCallback(() => {
     navigate(`/opportunities/${opportunityId}/show`);
-  };
+  }, [navigate, opportunityId]);
 
-  const handleEdit = (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleEdit = useCallback(() => {
     navigate(`/opportunities/${opportunityId}`);
-  };
+  }, [navigate, opportunityId]);
 
   /**
    * Open the close modal with the specified target stage
    */
   const handleOpenCloseModal = useCallback(
-    (e: React.MouseEvent, targetStage: "closed_won" | "closed_lost") => {
-      e.stopPropagation();
+    (targetStage: "closed_won" | "closed_lost") => {
       setCloseTargetStage(targetStage);
       setShowCloseModal(true);
-      setIsOpen(false);
     },
     []
   );
@@ -106,8 +93,7 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
     setShowCloseModal(open);
   }, []);
 
-  const handleDelete = async (e: React.MouseEvent) => {
-    e.stopPropagation();
+  const handleDelete = useCallback(async () => {
     if (window.confirm("Are you sure you want to delete this opportunity?")) {
       try {
         await deleteOne("opportunities", { id: opportunityId, previousData: {} });
@@ -123,64 +109,53 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
         notify("Error deleting opportunity", { type: "error" });
       }
     }
-    setIsOpen(false);
-  };
+  }, [deleteOne, opportunityId, notify, onDelete, refresh]);
 
   return (
-    <div className="relative" ref={menuRef} data-action-button>
-      <button
-        type="button"
-        aria-label="Actions menu"
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsOpen(!isOpen);
-        }}
-        onMouseDown={(e) => e.stopPropagation()} // Prevent drag
-        className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded hover:bg-muted transition-colors touch-manipulation"
-      >
-        <svg className="w-5 h-5 text-muted-foreground" fill="currentColor" viewBox="0 0 20 20">
-          <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-        </svg>
-      </button>
-
-      {isOpen && (
-        <div className="absolute right-0 top-full mt-1 w-48 bg-popover border border-border rounded-md shadow-lg z-50">
-          <div className="py-1">
-            <button
-              onClick={handleViewDetails}
-              className="w-full px-4 py-2 text-left text-sm hover:bg-accent transition-colors"
-            >
-              View Details
-            </button>
-            <button
-              onClick={handleEdit}
-              className="w-full px-4 py-2 text-left text-sm hover:bg-accent transition-colors"
-            >
-              Edit
-            </button>
-            <hr className="my-1 border-border" />
-            <button
-              onClick={(e) => handleOpenCloseModal(e, "closed_won")}
-              className="w-full px-4 py-2 text-left text-sm text-success-strong hover:bg-accent transition-colors"
-            >
-              Mark as Won
-            </button>
-            <button
-              onClick={(e) => handleOpenCloseModal(e, "closed_lost")}
-              className="w-full px-4 py-2 text-left text-sm text-destructive hover:bg-accent transition-colors"
-            >
-              Mark as Lost
-            </button>
-            <hr className="my-1 border-border" />
-            <button
-              onClick={handleDelete}
-              className="w-full px-4 py-2 text-left text-sm text-destructive hover:bg-accent transition-colors"
-            >
-              Delete
-            </button>
-          </div>
-        </div>
-      )}
+    <div data-action-button>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            type="button"
+            aria-label="Actions menu"
+            onMouseDown={(e) => e.stopPropagation()} // Prevent drag
+            onClick={(e) => e.stopPropagation()} // Prevent card click
+            className="min-h-[44px] min-w-[44px] flex items-center justify-center rounded hover:bg-muted transition-colors touch-manipulation"
+          >
+            <MoreVertical className="w-5 h-5 text-muted-foreground" />
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuItem onClick={handleViewDetails}>
+            <Eye className="mr-2 h-4 w-4" />
+            View Details
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleEdit}>
+            <Pencil className="mr-2 h-4 w-4" />
+            Edit
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem
+            onClick={() => handleOpenCloseModal("closed_won")}
+            className="text-success-strong focus:text-success-strong"
+          >
+            <Trophy className="mr-2 h-4 w-4" />
+            Mark as Won
+          </DropdownMenuItem>
+          <DropdownMenuItem
+            onClick={() => handleOpenCloseModal("closed_lost")}
+            variant="destructive"
+          >
+            <XCircle className="mr-2 h-4 w-4" />
+            Mark as Lost
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={handleDelete} variant="destructive">
+            <Trash2 className="mr-2 h-4 w-4" />
+            Delete
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       {/* CloseOpportunityModal - shown when clicking Mark as Won/Lost */}
       <CloseOpportunityModal

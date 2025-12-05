@@ -1,6 +1,6 @@
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { Loader2, CheckCircle2, Building2, Upload } from "lucide-react";
 import { useRefresh, useNotify, useDataProvider } from "ra-core";
@@ -872,6 +872,9 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
               <Building2 className="h-5 w-5" />
               Import Organizations
             </DialogTitle>
+            <DialogDescription>
+              Upload a CSV file to import organizations into your CRM.
+            </DialogDescription>
           </DialogHeader>
 
           <div className="space-y-4">
@@ -1051,6 +1054,9 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
                 <Building2 className="h-5 w-5" />
                 Organization Import Preview
               </DialogTitle>
+              <DialogDescription>
+                Review and map columns before importing your organizations.
+              </DialogDescription>
             </DialogHeader>
             <div className="flex-1 overflow-y-auto px-6">
               <OrganizationImportPreview
