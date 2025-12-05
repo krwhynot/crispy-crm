@@ -17,7 +17,7 @@ export function PersonalSection() {
   const { data: identity, refetch } = useGetIdentity();
   const { isDirty } = useFormState();
 
-  const { mutate: mutateSale } = useSalesUpdate({
+  const { mutate: mutateSale, isPending } = useSalesUpdate({
     userId: record?.id,
     onSuccess: () => {
       refetch();
@@ -51,7 +51,7 @@ export function PersonalSection() {
           <TimeZoneSelect
             value={record?.timezone || "America/Chicago"}
             onChange={(value) => mutateSale({ ...record, timezone: value })}
-            disabled={!isEditMode}
+            disabled={!isEditMode || isPending}
           />
         </div>
 
@@ -60,6 +60,7 @@ export function PersonalSection() {
             type="button"
             variant={isEditMode ? "ghost" : "outline"}
             onClick={() => setEditMode(!isEditMode)}
+            disabled={isPending}
             className="flex items-center min-h-[44px]"
           >
             {isEditMode ? <CircleX /> : <Pencil />}
@@ -67,9 +68,18 @@ export function PersonalSection() {
           </Button>
 
           {isEditMode && (
-            <Button type="submit" disabled={!isDirty} variant="outline" className="min-h-[44px]">
-              <Save />
-              Save
+            <Button
+              type="submit"
+              disabled={!isDirty || isPending}
+              variant="outline"
+              className="min-h-[44px]"
+            >
+              {isPending ? (
+                <Loader2 className="animate-spin" />
+              ) : (
+                <Save />
+              )}
+              {isPending ? "Saving..." : "Save"}
             </Button>
           )}
         </div>
