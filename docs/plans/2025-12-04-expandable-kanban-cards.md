@@ -19,6 +19,8 @@ Transform Kanban opportunity cards from static compact cards to expandable cards
 - [ ] Column widths responsive (260-340px based on breakpoint)
 - [ ] All tests pass
 - [ ] No TypeScript errors
+- [ ] No debug logs or TODOs left in code
+- [ ] Design doc updated to "Implemented"
 
 ---
 
@@ -960,8 +962,8 @@ npm run build
 
 ---
 
-### Task 3.2: Apply Migration and Visual Verification
-**Time:** 3-5 min
+### Task 3.2: Apply Migration, Seed Data, and Visual Verification
+**Time:** 5-7 min
 
 **Pre-conditions:** Task 3.1 passes
 
@@ -969,6 +971,14 @@ npm run build
 ```bash
 # Reset database with new migration
 npx supabase db reset
+
+# Re-seed development data (REQUIRED for manual/E2E verification)
+# This populates opportunities, activities, and tasks for testing
+npm run db:local:seed-orgs
+
+# Verify seed data exists
+npx supabase db execute --sql "SELECT COUNT(*) as opp_count FROM opportunities WHERE deleted_at IS NULL;"
+# Expected: opp_count > 0
 
 # Start dev server
 npm run dev
@@ -983,59 +993,102 @@ npm run dev
 # [ ] Animation is smooth on expand/collapse
 ```
 
+**Note:** The seed step is critical - without it, the Kanban board will be empty and visual verification will fail.
+
 ---
 
-### Task 3.3: Write E2E Test for Expand/Collapse
-**Time:** 5 min | **File:** `tests/e2e/opportunities/kanban-expand.spec.ts`
+### Task 3.3: Extend POM with Expand/Collapse Methods
+**Time:** 3-5 min | **File:** `tests/e2e/support/poms/OpportunitiesListPage.ts`
 
 **Pre-conditions:** Task 3.2 visual verification passes
 
+**Context:** The existing `OpportunitiesListPage` POM has Kanban methods but needs expand/collapse support.
+
 **Implementation:**
 
-Create file `tests/e2e/opportunities/kanban-expand.spec.ts`:
+Add these methods to `tests/e2e/support/poms/OpportunitiesListPage.ts` (after the existing Kanban methods, around line 310):
 
 ```typescript
-import { test, expect } from "@playwright/test";
+  // ============================================
+  // EXPANDABLE CARD METHODS (added for visual cues feature)
+  // ============================================
 
-test.describe("Kanban Card Expand/Collapse", () => {
-  // Navigate to opportunities list (Kanban view)
-  test.beforeEach(async ({ page }) => {
-    await page.goto("/opportunities");
-    // Wait for Kanban board to load
-    await page.waitForSelector("[data-testid='kanban-board']");
-  });
+  /**
+   * Get expand/collapse toggle button for a card
+   */
+  getCardExpandButton(opportunityName: string) {
+    const card = this.getOpportunityCard(opportunityName);
+    return card.getByRole("button", { name: /expand|collapse/i });
+  }
 
-  test("should expand card to show full details", async ({ page }) => {
-    // Find first opportunity card
-    const firstCard = page.getByTestId("opportunity-card").first();
-    await expect(firstCard).toBeVisible();
+  /**
+   * Get activity pulse dot for a card
+   */
+  getCardActivityPulse(opportunityName: string) {
+    const card = this.getOpportunityCard(opportunityName);
+    return card.getByRole("status");
+  }
 
-    // Card should be collapsed initially
-    const expandButton = firstCard.getByRole("button", { name: /expand/i });
-    await expect(expandButton).toHaveAttribute("aria-expanded", "false");
+  /**
+   * Expand an opportunity card to show full details
+   */
+  async expandCard(opportunityName: string): Promise<void> {
+    const expandButton = this.getCardExpandButton(opportunityName);
+    const isExpanded = await expandButton.getAttribute("aria-expanded");
 
-    // Expand the card
-    await expandButton.click();
-    await expect(expandButton).toHaveAttribute("aria-expanded", "true");
+    if (isExpanded === "false") {
+      await expandButton.click();
+      // Wait for animation to complete
+      await this.page.waitForTimeout(250);
+    }
+  }
 
-    // Details should be visible (use flexible matchers for time-sensitive data)
-    await expect(firstCard.getByText(/days in stage/i)).toBeVisible();
+  /**
+   * Collapse an opportunity card
+   */
+  async collapseCard(opportunityName: string): Promise<void> {
+    const expandButton = this.getCardExpandButton(opportunityName);
+    const isExpanded = await expandButton.getAttribute("aria-expanded");
 
-    // Collapse the card
-    await expandButton.click();
-    await expect(expandButton).toHaveAttribute("aria-expanded", "false");
-  });
+    if (isExpanded === "true") {
+      await expandButton.click();
+      await this.page.waitForTimeout(250);
+    }
+  }
 
-  test("should show activity pulse dot with semantic color", async ({ page }) => {
-    // Find first card and its pulse dot
-    const firstCard = page.getByTestId("opportunity-card").first();
-    const pulseDot = firstCard.getByRole("status");
+  /**
+   * Check if a card is expanded
+   */
+  async isCardExpanded(opportunityName: string): Promise<boolean> {
+    const expandButton = this.getCardExpandButton(opportunityName);
+    const isExpanded = await expandButton.getAttribute("aria-expanded");
+    return isExpanded === "true";
+  }
 
-    await expect(pulseDot).toBeVisible();
+  /**
+   * Get the first visible opportunity card
+   */
+  getFirstOpportunityCard() {
+    return this.page.locator('[data-testid="opportunity-card"]').first();
+  }
 
-    // Pulse dot should have one of the semantic color classes
-    // (Don't assert exact color - depends on test data timing)
-    const classList = await pulseDot.getAttribute("class");
+  /**
+   * Get the name from the first visible card
+   */
+  async getFirstCardName(): Promise<string | null> {
+    const firstCard = this.getFirstOpportunityCard();
+    const nameElement = firstCard.locator("h3");
+    return await nameElement.textContent();
+  }
+
+  /**
+   * Verify activity pulse has valid semantic color
+   */
+  async expectActivityPulseValid(opportunityName: string): Promise<void> {
+    const pulse = this.getCardActivityPulse(opportunityName);
+    await expect(pulse).toBeVisible();
+
+    const classList = await pulse.getAttribute("class");
     const hasValidColor =
       classList?.includes("bg-success") ||
       classList?.includes("bg-warning") ||
@@ -1043,27 +1096,97 @@ test.describe("Kanban Card Expand/Collapse", () => {
       classList?.includes("bg-muted-foreground");
 
     expect(hasValidColor).toBe(true);
+  }
+
+  /**
+   * Verify expanded card shows days in stage
+   */
+  async expectExpandedDetailsVisible(opportunityName: string): Promise<void> {
+    const card = this.getOpportunityCard(opportunityName);
+    await expect(card.getByText(/days in stage/i)).toBeVisible();
+  }
+```
+
+**Verification:**
+```bash
+npx tsc --noEmit
+# Expected: No TypeScript errors in POM file
+```
+
+---
+
+### Task 3.4: Write E2E Test Using POM
+**Time:** 5 min | **File:** `tests/e2e/opportunities/kanban-expand.spec.ts`
+
+**Pre-conditions:** Task 3.3 POM methods added
+
+**Context:** E2E tests MUST use Page Object Models per `tests/e2e/README.md` standards.
+
+**Implementation:**
+
+Create file `tests/e2e/opportunities/kanban-expand.spec.ts`:
+
+```typescript
+import { test, expect } from "@playwright/test";
+import { OpportunitiesListPage } from "../support/poms/OpportunitiesListPage";
+
+test.describe("Kanban Card Expand/Collapse", () => {
+  let opportunitiesPage: OpportunitiesListPage;
+
+  test.beforeEach(async ({ page }) => {
+    opportunitiesPage = new OpportunitiesListPage(page);
+    await opportunitiesPage.goto();
   });
 
-  test("should show task count when expanded", async ({ page }) => {
-    const firstCard = page.getByTestId("opportunity-card").first();
+  test("should expand card to show full details", async () => {
+    // Get name of first card to interact with
+    const cardName = await opportunitiesPage.getFirstCardName();
+    expect(cardName).toBeTruthy();
+
+    // Card should be collapsed initially
+    const isExpandedBefore = await opportunitiesPage.isCardExpanded(cardName!);
+    expect(isExpandedBefore).toBe(false);
 
     // Expand the card
-    const expandButton = firstCard.getByRole("button", { name: /expand/i });
-    await expandButton.click();
+    await opportunitiesPage.expandCard(cardName!);
 
-    // Task row should be visible if opportunity has tasks
-    // Use flexible assertion - task count varies by test data
-    const taskRow = firstCard.locator("text=/\\d+ tasks?/i");
-    const daysRow = firstCard.getByText(/days in stage/i);
+    // Verify expanded
+    const isExpandedAfter = await opportunitiesPage.isCardExpanded(cardName!);
+    expect(isExpandedAfter).toBe(true);
+
+    // Details should be visible
+    await opportunitiesPage.expectExpandedDetailsVisible(cardName!);
+
+    // Collapse the card
+    await opportunitiesPage.collapseCard(cardName!);
+
+    // Verify collapsed
+    const isExpandedFinal = await opportunitiesPage.isCardExpanded(cardName!);
+    expect(isExpandedFinal).toBe(false);
+  });
+
+  test("should show activity pulse dot with semantic color", async () => {
+    const cardName = await opportunitiesPage.getFirstCardName();
+    expect(cardName).toBeTruthy();
+
+    // Verify pulse dot has valid color class
+    await opportunitiesPage.expectActivityPulseValid(cardName!);
+  });
+
+  test("should show task count when expanded", async () => {
+    const cardName = await opportunitiesPage.getFirstCardName();
+    expect(cardName).toBeTruthy();
+
+    // Expand the card
+    await opportunitiesPage.expandCard(cardName!);
 
     // At minimum, days in stage should always be visible
-    await expect(daysRow).toBeVisible();
+    await opportunitiesPage.expectExpandedDetailsVisible(cardName!);
   });
 });
 ```
 
-**Note:** These E2E tests use flexible assertions (regex, existence checks) rather than exact values to avoid flakiness from time-sensitive data.
+**Note:** These E2E tests use the `OpportunitiesListPage` POM as required by `tests/e2e/README.md` standards.
 
 **Verification:**
 ```bash
@@ -1091,7 +1214,12 @@ Phase 2 (Parallel):                     ↓                    ↓
                         │
 
 Phase 3 (Sequential):
-  3.1 Full Test Suite ──→ 3.2 Visual Verification ──→ 3.3 E2E Test
+  3.1 Full Test Suite ──→ 3.2 Seed + Verify ──→ 3.3 Extend POM ──→ 3.4 E2E Test
+                                                                        │
+Phase 4 (Sequential - after verification):                              ↓
+  4.1 Remove Unused Code ──→ 4.2 Storybook ──→ 4.3 Clean Artifacts
+                                                      │
+  4.4 Index Exports ──→ 4.5 Doc Update ──→ 4.6 Final Quality Checks
 ```
 
 ---
@@ -1108,7 +1236,8 @@ Phase 3 (Sequential):
 | `src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx` | Edit | Gap adjustment |
 | `src/atomic-crm/opportunities/kanban/__tests__/ActivityPulseDot.test.tsx` | New | Unit tests |
 | `src/atomic-crm/opportunities/kanban/__tests__/OpportunityCard.test.tsx` | Edit | Add expand tests |
-| `tests/e2e/opportunities/kanban-expand.spec.ts` | New | E2E tests |
+| `tests/e2e/support/poms/OpportunitiesListPage.ts` | Edit | Add expand/collapse POM methods |
+| `tests/e2e/opportunities/kanban-expand.spec.ts` | New | E2E tests using POM |
 
 ---
 
