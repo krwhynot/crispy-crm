@@ -726,7 +726,7 @@ npx tsc --noEmit
 ### Task 2.3b: Update OpportunityColumn Memo Comparator
 **Time:** 2-3 min | **File:** `src/atomic-crm/opportunities/kanban/OpportunityColumn.tsx`
 
-**Context:** The column's `arePropsEqual` memo comparator must include new fields, otherwise cards won't re-render when activity/task counts change.
+**Context:** The column's `arePropsEqual` memo comparator must include ALL fields rendered in the card (including expanded section), otherwise cards won't re-render when those fields change.
 
 **Pre-conditions:** None (can run in parallel)
 
@@ -752,29 +752,41 @@ Edit `src/atomic-crm/opportunities/kanban/OpportunityColumn.tsx`, find the `areP
     }
   }
 
-// REPLACE WITH (add new visual cue fields):
-  // Compare opportunity IDs and key fields that affect rendering
+// REPLACE WITH (add ALL fields that affect card rendering):
+  // Compare opportunity IDs and ALL fields that affect card rendering
+  // (both collapsed header AND expanded details section)
   for (let i = 0; i < prevOpps.length; i++) {
     const prev = prevOpps[i];
     const next = nextOpps[i];
     if (
+      // Header (always visible)
       prev.id !== next.id ||
       prev.name !== next.name ||
       prev.stage !== next.stage ||
+      prev.days_since_last_activity !== next.days_since_last_activity ||
+      // Expanded details section
+      prev.description !== next.description ||
       prev.priority !== next.priority ||
+      prev.principal_organization_name !== next.principal_organization_name ||
       prev.estimated_close_date !== next.estimated_close_date ||
       prev.days_in_stage !== next.days_in_stage ||
-      // NEW: Visual cue fields that trigger card re-render
-      prev.days_since_last_activity !== next.days_since_last_activity ||
       prev.pending_task_count !== next.pending_task_count ||
-      prev.overdue_task_count !== next.overdue_task_count
+      prev.overdue_task_count !== next.overdue_task_count ||
+      // Products count (compare array length, not deep equality)
+      (prev.products?.length ?? 0) !== (next.products?.length ?? 0)
     ) {
       return false;
     }
   }
 ```
 
-**Why this matters:** Without this change, if a user logs an activity or completes a task, the activity pulse and task badges won't update until a full page refresh.
+**Why this matters:** Without this change, if a user:
+- Edits description → expanded card shows stale text
+- Changes principal → badge shows wrong org
+- Adds/removes products → product count is wrong
+- Logs activity/completes task → pulse/badges don't update
+
+**Note:** `contact_ids` is NOT included because contact data comes from a separate hook (`useOpportunityContacts`), not from the record context.
 
 **Verification:**
 ```bash
