@@ -60,6 +60,22 @@ export interface ListProps<RecordType extends RaRecord = RaRecord>
   extends ListBaseProps<RecordType>,
     ListViewProps<RecordType> {}
 
+/**
+ * ListView - Fixed page layout with scrollable list content
+ *
+ * Implements the fixed-page/scrollable-list pattern for iPad optimization:
+ * - Header (breadcrumb, toolbar) stays fixed at top
+ * - List content scrolls within a constrained container
+ * - Pagination stays fixed at bottom
+ *
+ * Height calculation: 100dvh - 140px accounts for:
+ * - Header: ~56px (logo h-8 + py-3 padding)
+ * - Layout padding: 16px top + 64px bottom (pb-16 for footer clearance)
+ * - Safety margin: ~4px
+ *
+ * Using `dvh` (dynamic viewport height) for Safari mobile/iPad where
+ * the address bar affects viewport height dynamically.
+ */
 export const ListView = <RecordType extends RaRecord = RaRecord>(
   props: ListViewProps<RecordType>
 ) => {
@@ -74,33 +90,43 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
   const hasDashboard = useHasDashboard();
 
   return (
-    <>
-      <Breadcrumb>
-        {hasDashboard && (
-          <BreadcrumbItem>
-            <Link to="/">
-              <Translate i18nKey="ra.page.dashboard">Home</Translate>
-            </Link>
-          </BreadcrumbItem>
-        )}
-        <BreadcrumbPage>{resourceLabel}</BreadcrumbPage>
-      </Breadcrumb>
-
-      <FilterContext.Provider value={filters}>
-        <div className="flex justify-between items-center flex-wrap gap-2 my-2">
-          <FilterForm />
-          {actions ?? (
-            <div className="flex items-center gap-2">
-              {hasCreate ? <CreateButton /> : null}
-              {<ExportButton />}
-            </div>
+    <div className="flex h-[calc(100dvh-140px)] flex-col overflow-hidden">
+      {/* Fixed header area - breadcrumb + toolbar */}
+      <div className="shrink-0">
+        <Breadcrumb>
+          {hasDashboard && (
+            <BreadcrumbItem>
+              <Link to="/">
+                <Translate i18nKey="ra.page.dashboard">Home</Translate>
+              </Link>
+            </BreadcrumbItem>
           )}
-        </div>
+          <BreadcrumbPage>{resourceLabel}</BreadcrumbPage>
+        </Breadcrumb>
 
-        <div className={cn("my-2", props.className)}>{children}</div>
-        {pagination}
+        <FilterContext.Provider value={filters}>
+          <div className="flex justify-between items-center flex-wrap gap-2 my-2">
+            <FilterForm />
+            {actions ?? (
+              <div className="flex items-center gap-2">
+                {hasCreate ? <CreateButton /> : null}
+                {<ExportButton />}
+              </div>
+            )}
+          </div>
+        </FilterContext.Provider>
+      </div>
+
+      {/* Scrollable content area - takes remaining height */}
+      <FilterContext.Provider value={filters}>
+        <div className={cn("min-h-0 flex-1 overflow-y-auto", props.className)}>{children}</div>
+
+        {/* Fixed pagination at bottom */}
+        <div className="shrink-0 border-t border-border bg-background pt-2">
+          {pagination}
+        </div>
       </FilterContext.Provider>
-    </>
+    </div>
   );
 };
 

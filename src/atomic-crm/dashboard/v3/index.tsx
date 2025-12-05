@@ -35,13 +35,8 @@ const PrincipalDashboardV3Lazy = lazy(() =>
  */
 function DashboardSkeleton() {
   return (
-    <div className="flex h-dvh flex-col overflow-hidden">
-      <header className="border-b border-border bg-card">
-        <div className="flex h-16 items-center px-6">
-          <Skeleton className="h-6 w-48" />
-        </div>
-      </header>
-      <main className="flex-1 p-4">
+    <div className="flex h-[calc(100dvh-140px)] flex-col overflow-hidden">
+      <main className="flex-1">
         <div className="flex flex-col gap-4">
           <div className="grid grid-cols-4 gap-4">
             {[1, 2, 3, 4].map((i) => (
