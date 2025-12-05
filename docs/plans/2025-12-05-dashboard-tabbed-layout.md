@@ -40,6 +40,17 @@ Replace the vertically stacked bottom sections (My Tasks, My Performance, Team A
 
 ---
 
+## Zen MCP Review Findings (Applied)
+
+| Finding | Severity | Resolution |
+|---------|----------|------------|
+| **forceMount for state preservation** | Medium | Added `forceMount` to all TabsContent - preserves kanban drag state, prevents data refetch |
+| **Async test handling** | Low | Updated tests to use `waitFor` and `findBy*` for Suspense boundaries |
+| **Keyboard navigation test** | Low | Added test for arrow key + Enter navigation |
+| **URL state sync** | Optional | Deferred - can add later if deep linking is needed |
+
+---
+
 ## Architecture Decision
 
 ### Why Radix Tabs (Existing Component)
@@ -61,7 +72,7 @@ STAGE 1 (Parallel - No Dependencies)
 ├── Task 2: Create useTaskCount hook for badge
 └── Task 3: Add barrel export
 
-STAGE 2 (Sequential - Depends on Stage 1)
+STAGE 2 (Parallel - Depends on Stage 1)
 ├── Task 4: Update TasksKanbanPanel (remove Card wrapper)
 ├── Task 5: Update MyPerformanceWidget (remove Card wrapper)
 └── Task 6: Update ActivityFeedPanel (remove Card wrapper)
@@ -69,6 +80,11 @@ STAGE 2 (Sequential - Depends on Stage 1)
 STAGE 3 (Sequential - Depends on Stage 2)
 ├── Task 7: Integrate DashboardTabPanel into PrincipalDashboardV3
 └── Task 8: Add component test
+
+STAGE 4 (Sequential - Cleanup after verification)
+├── Task 9: Remove unused imports from PrincipalDashboardV3
+├── Task 10: Delete deprecated TasksPanel.tsx and TaskGroup.tsx
+└── Task 11: Run lint, type-check, and verify build
 ```
 
 ---
@@ -158,22 +174,22 @@ export function DashboardTabPanel({ salesId }: DashboardTabPanelProps) {
         </div>
 
         <CardContent className="p-0">
-          {/* Tasks Tab Content */}
-          <TabsContent value="tasks" className="m-0 focus-visible:ring-0">
+          {/* Tasks Tab Content - forceMount preserves kanban state */}
+          <TabsContent value="tasks" className="m-0 focus-visible:ring-0" forceMount>
             <Suspense fallback={<TabSkeleton />}>
               <TasksKanbanPanel salesId={salesId} />
             </Suspense>
           </TabsContent>
 
-          {/* Performance Tab Content */}
-          <TabsContent value="performance" className="m-0 focus-visible:ring-0">
+          {/* Performance Tab Content - forceMount prevents refetch */}
+          <TabsContent value="performance" className="m-0 focus-visible:ring-0" forceMount>
             <Suspense fallback={<TabSkeleton />}>
               <MyPerformanceWidget />
             </Suspense>
           </TabsContent>
 
-          {/* Team Activity Tab Content */}
-          <TabsContent value="activity" className="m-0 focus-visible:ring-0">
+          {/* Team Activity Tab Content - forceMount preserves scroll */}
+          <TabsContent value="activity" className="m-0 focus-visible:ring-0" forceMount>
             <Suspense fallback={<TabSkeleton />}>
               <ActivityFeedPanel />
             </Suspense>
@@ -466,7 +482,7 @@ import { DashboardTabPanel } from './components/DashboardTabPanel';
 **Code:**
 ```tsx
 import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { DashboardTabPanel } from '../DashboardTabPanel';
 
@@ -507,21 +523,37 @@ describe('DashboardTabPanel', () => {
     expect(screen.getByText('3')).toBeInTheDocument();
   });
 
-  it('defaults to tasks tab', () => {
+  it('defaults to tasks tab and loads content', async () => {
     render(<DashboardTabPanel {...defaultProps} />);
 
     const tasksTab = screen.getByRole('tab', { name: /my tasks/i });
     expect(tasksTab).toHaveAttribute('data-state', 'active');
+
+    // Wait for lazy-loaded content (Suspense boundary)
+    await waitFor(() => {
+      expect(screen.getByTestId('tasks-panel')).toBeInTheDocument();
+    });
   });
 
   it('switches to performance tab on click', async () => {
     const user = userEvent.setup();
     render(<DashboardTabPanel {...defaultProps} />);
 
+    // Wait for initial content
+    await screen.findByTestId('tasks-panel');
+
     await user.click(screen.getByRole('tab', { name: /performance/i }));
 
     const performanceTab = screen.getByRole('tab', { name: /performance/i });
     expect(performanceTab).toHaveAttribute('data-state', 'active');
+
+    // Wait for lazy-loaded performance content
+    await waitFor(() => {
+      expect(screen.getByTestId('performance-widget')).toBeInTheDocument();
+    });
+
+    // With forceMount, tasks content should still be in DOM (hidden)
+    expect(screen.getByTestId('tasks-panel')).toBeInTheDocument();
   });
 
   it('has accessible touch targets (44px)', () => {
@@ -533,8 +565,126 @@ describe('DashboardTabPanel', () => {
       expect(tab).toHaveClass('h-11');
     });
   });
+
+  it('supports keyboard navigation', async () => {
+    const user = userEvent.setup();
+    render(<DashboardTabPanel {...defaultProps} />);
+
+    // Focus first tab
+    const tasksTab = screen.getByRole('tab', { name: /my tasks/i });
+    tasksTab.focus();
+
+    // Arrow right to next tab
+    await user.keyboard('{ArrowRight}');
+    expect(screen.getByRole('tab', { name: /performance/i })).toHaveFocus();
+
+    // Enter to activate
+    await user.keyboard('{Enter}');
+    expect(screen.getByRole('tab', { name: /performance/i })).toHaveAttribute('data-state', 'active');
+  });
 });
 ```
+
+---
+
+## Stage 4: Cleanup (SEQUENTIAL)
+
+### Task 9: Remove Unused Imports from PrincipalDashboardV3
+
+**File:** `src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx`
+
+**Time:** 2 min
+
+**Action:** Remove direct imports that are now lazy-loaded inside DashboardTabPanel
+
+**Remove these imports:**
+```tsx
+// DELETE these lines - components are now lazy-loaded in DashboardTabPanel
+import { TasksKanbanPanel } from './components/TasksKanbanPanel';
+import { MyPerformanceWidget } from './components/MyPerformanceWidget';
+import { ActivityFeedPanel } from './components/ActivityFeedPanel';
+```
+
+**Also remove if present:**
+```tsx
+// DELETE - no longer needed if only used by removed sections
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+// Keep Card imports ONLY if used elsewhere in the file (e.g., KPI section)
+```
+
+**Verification:**
+```bash
+# Run ESLint to catch any remaining unused imports
+npx eslint src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx --fix
+```
+
+---
+
+### Task 10: Delete Deprecated Components
+
+**Files to DELETE:**
+- `src/atomic-crm/dashboard/v3/components/TasksPanel.tsx` (old list view, replaced by kanban)
+- `src/atomic-crm/dashboard/v3/components/TaskGroup.tsx` (used by TasksPanel)
+
+**Time:** 2 min
+
+**Commands:**
+```bash
+# Delete deprecated files
+rm src/atomic-crm/dashboard/v3/components/TasksPanel.tsx
+rm src/atomic-crm/dashboard/v3/components/TaskGroup.tsx
+```
+
+**Also update barrel export:**
+
+**File:** `src/atomic-crm/dashboard/v3/components/index.ts`
+
+**Remove these exports if present:**
+```tsx
+// DELETE these lines
+export { TasksPanel } from './TasksPanel';
+export { TaskGroup } from './TaskGroup';
+```
+
+**Verification:**
+```bash
+# Ensure no files import the deleted components
+grep -r "TasksPanel\|TaskGroup" src/atomic-crm/dashboard/v3/ --include="*.tsx" --include="*.ts"
+# Should return empty (no matches)
+```
+
+---
+
+### Task 11: Verify Build and Lint
+
+**Time:** 3 min
+
+**Commands:**
+```bash
+# 1. TypeScript type check
+npx tsc --noEmit
+
+# 2. ESLint check
+npx eslint src/atomic-crm/dashboard/v3/ --ext .ts,.tsx
+
+# 3. Build verification
+npm run build
+
+# 4. Run tests
+npm test -- --testPathPattern="dashboard/v3"
+```
+
+**Expected Output:**
+- TypeScript: No errors
+- ESLint: No errors (warnings acceptable)
+- Build: Successful
+- Tests: All passing
+
+**If errors occur:**
+- TypeScript errors → Fix type imports/exports
+- ESLint errors → Run `--fix` flag
+- Build errors → Check for circular dependencies
+- Test errors → Update mocks if component signatures changed
 
 ---
 
@@ -545,17 +695,38 @@ describe('DashboardTabPanel', () => {
 | **1** | Tasks 1, 2, 3 | PARALLEL | None |
 | **2** | Tasks 4, 5, 6 | PARALLEL | Stage 1 |
 | **3** | Tasks 7, 8 | SEQUENTIAL | Stage 2 |
+| **4** | Tasks 9, 10, 11 | SEQUENTIAL | Stage 3 (verified working) |
 
-**Total Estimated Time:** 25-30 minutes
+**Total Estimated Time:** 30-35 minutes
 
 ---
 
 ## Rollback Plan
 
 If issues arise:
+
+**Before Stage 4 (cleanup not started):**
 1. Revert Task 7 changes to `PrincipalDashboardV3.tsx`
 2. Revert Card wrappers in Tasks 4, 5, 6
 3. New files (Tasks 1, 2) can be deleted without impact
+
+**After Stage 4 (cleanup completed):**
+1. Use git to restore deleted files:
+   ```bash
+   git checkout HEAD~1 -- src/atomic-crm/dashboard/v3/components/TasksPanel.tsx
+   git checkout HEAD~1 -- src/atomic-crm/dashboard/v3/components/TaskGroup.tsx
+   ```
+2. Revert `PrincipalDashboardV3.tsx` to use stacked layout
+3. Restore Card wrappers in individual components
+4. Remove `DashboardTabPanel.tsx` and `useTaskCount.ts`
+
+**Quick Rollback (git):**
+```bash
+# If on a feature branch, reset to before changes
+git stash
+git checkout main
+git branch -D feature/dashboard-tabs  # if needed
+```
 
 ---
 
