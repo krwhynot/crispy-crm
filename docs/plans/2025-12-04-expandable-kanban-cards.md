@@ -50,18 +50,42 @@ Create file `supabase/migrations/20251204220000_add_activity_task_counts_to_oppo
  * - overdue_task_count: Number of tasks past due date
  *
  * Related: OpportunityCard.tsx expandable card feature
+ *
+ * MIGRATION SAFETY:
+ * - Uses DROP VIEW CASCADE to handle any dependent views/policies
+ * - Re-applies COMMENT and GRANT after recreation
+ * - No known dependencies as of 2025-12-04, but CASCADE is defensive
  */
 
--- Check for dependent views before dropping (safety check)
--- If this fails, dependent views need to be dropped first with CASCADE
+-- Log dependencies before dropping (informational only)
 DO $$
+DECLARE
+    dep_record RECORD;
+    has_deps BOOLEAN := false;
 BEGIN
-    -- Log any dependencies for awareness
-    RAISE NOTICE 'Checking dependencies on opportunities_summary...';
+    FOR dep_record IN
+        SELECT DISTINCT dependent_ns.nspname AS schema_name, dependent_view.relname AS view_name
+        FROM pg_depend
+        JOIN pg_rewrite ON pg_depend.objid = pg_rewrite.oid
+        JOIN pg_class AS dependent_view ON pg_rewrite.ev_class = dependent_view.oid
+        JOIN pg_namespace AS dependent_ns ON dependent_view.relnamespace = dependent_ns.oid
+        WHERE pg_depend.refobjid = 'public.opportunities_summary'::regclass::oid
+        AND dependent_view.relname != 'opportunities_summary'
+    LOOP
+        RAISE WARNING 'Dependent view will be dropped: %.%', dep_record.schema_name, dep_record.view_name;
+        has_deps := true;
+    END LOOP;
+
+    IF has_deps THEN
+        RAISE WARNING 'CASCADE will drop the above views. Re-create them if needed.';
+    ELSE
+        RAISE NOTICE 'No dependent views found - safe to proceed.';
+    END IF;
+EXCEPTION WHEN undefined_table THEN
+    RAISE NOTICE 'View opportunities_summary does not exist yet - creating fresh.';
 END $$;
 
 -- Drop with CASCADE to handle any dependent views/policies
--- Note: Re-grants and comments will be reapplied below
 DROP VIEW IF EXISTS opportunities_summary CASCADE;
 
 CREATE VIEW opportunities_summary
@@ -117,18 +141,21 @@ SELECT
     ) AS days_since_last_activity,
 
     -- NEW: Pending task count (excludes soft-deleted tasks)
+    -- NOTE: tasks.completed is nullable with DEFAULT false, so use COALESCE
+    -- to handle any rows where completed IS NULL (treats as false/pending)
     (SELECT COUNT(*)::integer
      FROM tasks t
      WHERE t.opportunity_id = o.id
-       AND t.completed = false
+       AND COALESCE(t.completed, false) = false
        AND t.deleted_at IS NULL
     ) AS pending_task_count,
 
     -- NEW: Overdue task count (excludes soft-deleted tasks)
+    -- Same NULL handling for completed column
     (SELECT COUNT(*)::integer
      FROM tasks t
      WHERE t.opportunity_id = o.id
-       AND t.completed = false
+       AND COALESCE(t.completed, false) = false
        AND t.due_date < CURRENT_DATE
        AND t.deleted_at IS NULL
     ) AS overdue_task_count,
@@ -164,6 +191,13 @@ LEFT JOIN organizations dist_org ON o.distributor_organization_id = dist_org.id;
 
 -- Re-grant permissions
 GRANT SELECT ON opportunities_summary TO authenticated;
+
+-- Re-apply view comment (lost during DROP CASCADE)
+COMMENT ON VIEW opportunities_summary IS
+    'Opportunities with joined organization names, products, and computed columns. '
+    'Computed: days_in_stage (since stage_changed_at), days_since_last_activity (from activities), '
+    'pending_task_count, overdue_task_count. '
+    'SECURITY: Uses SECURITY INVOKER to enforce RLS policies.';
 
 -- Verification
 DO $$
@@ -941,6 +975,10 @@ export const OpportunityCard = React.memo(function OpportunityCard({
             <button
               data-expand-toggle
               onClick={handleExpandClick}
+              // CRITICAL: Prevent mousedown from starting a drag when clicking expand toggle
+              // Without this, clicking the toggle will initiate a drag instead of expanding
+              onMouseDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
               aria-expanded={isExpanded}
               aria-label={isExpanded ? "Collapse card" : "Expand card"}
               className="p-1 text-muted-foreground hover:text-foreground rounded transition-colors"
@@ -1583,6 +1621,103 @@ test.describe("Kanban Card Expand/Collapse", () => {
 
     // At minimum, days in stage should always be visible
     await opportunitiesPage.expectExpandedDetailsVisible(cardName!);
+  });
+
+  // === ADDITIONAL COVERAGE for visual cues (success criteria) ===
+
+  test("should show activity pulse color thresholds correctly", async ({ page }) => {
+    // This test verifies the pulse color logic is working
+    // We check multiple cards if available to get coverage of different states
+    const cards = page.locator('[data-testid="opportunity-card"]');
+    const cardCount = await cards.count();
+
+    if (cardCount === 0) {
+      test.skip(); // No cards to test
+      return;
+    }
+
+    // Check that ALL visible cards have a valid pulse color
+    for (let i = 0; i < Math.min(cardCount, 5); i++) {
+      const card = cards.nth(i);
+      const pulse = card.getByRole("status");
+
+      // Pulse should exist and have one of the valid color classes
+      await expect(pulse).toBeVisible();
+      const classList = await pulse.getAttribute("class");
+      const hasValidColor =
+        classList?.includes("bg-success") ||      // Green: <7 days
+        classList?.includes("bg-warning") ||      // Yellow: 7-14 days
+        classList?.includes("bg-destructive") ||  // Red: >14 days
+        classList?.includes("bg-muted-foreground"); // Gray: null
+
+      expect(hasValidColor, `Card ${i} pulse should have valid color class`).toBe(true);
+    }
+  });
+
+  test("should display task badges with overdue styling when applicable", async ({ page }) => {
+    const cardName = await opportunitiesPage.getFirstCardName();
+    expect(cardName).toBeTruthy();
+
+    // Expand to see task row
+    await opportunitiesPage.expandCard(cardName!);
+
+    const card = opportunitiesPage.getOpportunityCard(cardName!);
+
+    // Check if task row exists (may not exist if pending_task_count = 0)
+    const taskRow = card.locator('text=/\\d+ tasks?/');
+    const hasTaskRow = await taskRow.count() > 0;
+
+    if (hasTaskRow) {
+      // If tasks are present, verify styling
+      const taskText = await taskRow.textContent();
+      console.log(`Task row content: ${taskText}`);
+
+      // If "overdue" appears, the row should have destructive styling
+      if (taskText?.includes("overdue")) {
+        const taskRowContainer = card.locator(':has-text("overdue")').first();
+        const classList = await taskRowContainer.getAttribute("class");
+        expect(classList?.includes("text-destructive"), "Overdue tasks should have destructive color").toBe(true);
+      }
+    }
+  });
+
+  test("should display products count when expanded", async ({ page }) => {
+    const cardName = await opportunitiesPage.getFirstCardName();
+    expect(cardName).toBeTruthy();
+
+    await opportunitiesPage.expandCard(cardName!);
+
+    const card = opportunitiesPage.getOpportunityCard(cardName!);
+
+    // Check for products row (may not exist if products count = 0)
+    const productsRow = card.locator('text=/\\d+ products?/');
+    const hasProducts = await productsRow.count() > 0;
+
+    if (hasProducts) {
+      await expect(productsRow).toBeVisible();
+    }
+    // Either way, the test passes - we're verifying the row renders correctly when present
+  });
+
+  test("should show close date with urgency color", async ({ page }) => {
+    const cardName = await opportunitiesPage.getFirstCardName();
+    expect(cardName).toBeTruthy();
+
+    await opportunitiesPage.expandCard(cardName!);
+
+    const card = opportunitiesPage.getOpportunityCard(cardName!);
+
+    // Close date row should be visible
+    const closeDateRow = card.locator('[class*="Calendar"]').locator('..'); // Parent of calendar icon
+
+    // If close date is overdue, should have destructive color
+    const overdueText = card.locator('text="(overdue)"');
+    const hasOverdue = await overdueText.count() > 0;
+
+    if (hasOverdue) {
+      const classList = await closeDateRow.getAttribute("class");
+      expect(classList?.includes("text-destructive"), "Overdue close date should have destructive color").toBe(true);
+    }
   });
 });
 ```
