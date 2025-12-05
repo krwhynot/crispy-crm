@@ -88,7 +88,6 @@ export function useBulkActionsState({
           });
           successCount++;
         } catch (error) {
-          console.error(`Failed to update opportunity ${id}:`, error);
           failureCount++;
         }
       }
@@ -135,8 +134,6 @@ export function useBulkActionsState({
     setIsProcessing(true);
 
     try {
-      console.log(`[BulkArchive] Archiving ${selectedIds.length} opportunities:`, selectedIds);
-
       await dataProvider.deleteMany(resource, { ids: selectedIds });
 
       notify(
@@ -148,7 +145,6 @@ export function useBulkActionsState({
       onUnselectItems();
       handleCloseDialog();
     } catch (error) {
-      console.error("[BulkArchive] Failed to archive opportunities:", error);
       notify(
         `Failed to archive opportunities: ${error instanceof Error ? error.message : "Unknown error"}`,
         { type: "error" }
