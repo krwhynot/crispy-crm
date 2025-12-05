@@ -1,9 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { OpportunityCard } from "../kanban/OpportunityCard";
 import { describe, it, expect, vi } from "vitest";
 import { useOpportunityContacts } from "../hooks/useOpportunityContacts";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { BrowserRouter } from "react-router-dom";
+import { RecordContextProvider } from "react-admin";
+import type { Opportunity } from "../../types";
 
 vi.mock("../hooks/useOpportunityContacts");
 
@@ -24,6 +26,7 @@ vi.mock("react-admin", () => ({
   useDelete: () => [vi.fn()],
   useNotify: () => vi.fn(),
   useRefresh: () => vi.fn(),
+  RecordContextProvider: ({ children, value }: any) => children,
 }));
 
 const renderWithDragContext = (component: React.ReactElement) => {
@@ -40,6 +43,71 @@ const renderWithDragContext = (component: React.ReactElement) => {
         </Droppable>
       </DragDropContext>
     </BrowserRouter>
+  );
+};
+
+/**
+ * DnD wrapper required for testing Draggable components (for TDD expand/collapse tests)
+ */
+const DndTestWrapper = ({ children }: { children: React.ReactNode }) => (
+  <BrowserRouter>
+    <DragDropContext onDragEnd={() => {}}>
+      <Droppable droppableId="test-droppable">
+        {(provided) => (
+          <div ref={provided.innerRef} {...provided.droppableProps}>
+            {children}
+            {provided.placeholder}
+          </div>
+        )}
+      </Droppable>
+    </DragDropContext>
+  </BrowserRouter>
+);
+
+/**
+ * Helper to render OpportunityCard with all required wrappers (for TDD expand/collapse tests)
+ */
+const renderCard = (
+  record: Partial<Opportunity>,
+  props: { openSlideOver?: (id: number, mode?: "view" | "edit") => void; onDelete?: (id: number) => void } = {}
+) => {
+  const defaultRecord: Opportunity = {
+    id: 1,
+    name: "Test Opportunity",
+    description: "Test description",
+    stage: "initial_outreach",
+    status: "active",
+    priority: "medium",
+    estimated_close_date: "2026-03-05",
+    customer_organization_id: 1,
+    contact_ids: [],
+    stage_manual: false,
+    status_manual: false,
+    created_at: "2025-01-01",
+    updated_at: "2025-01-01",
+    days_in_stage: 5,
+    days_since_last_activity: 3,
+    pending_task_count: 0,
+    overdue_task_count: 0,
+    ...record,
+  };
+
+  // Mock the useOpportunityContacts hook for this render
+  (useOpportunityContacts as any).mockReturnValue({
+    primaryContact: null,
+    isLoading: false,
+  });
+
+  return render(
+    <DndTestWrapper>
+      <RecordContextProvider value={defaultRecord}>
+        <OpportunityCard
+          index={0}
+          openSlideOver={props.openSlideOver ?? vi.fn()}
+          onDelete={props.onDelete}
+        />
+      </RecordContextProvider>
+    </DndTestWrapper>
   );
 };
 
@@ -164,5 +232,120 @@ describe("OpportunityCard", () => {
 
     // Reset
     mockRecord.priority = "high";
+  });
+});
+
+describe("OpportunityCard - Expand/Collapse", () => {
+  it("renders collapsed by default", () => {
+    renderCard({ name: "My Test Deal", description: "Hidden description" });
+
+    // Name should be visible
+    expect(screen.getByText("My Test Deal")).toBeInTheDocument();
+
+    // Description should NOT be visible when collapsed
+    expect(screen.queryByText("Hidden description")).not.toBeInTheDocument();
+  });
+
+  it("expands when expand button is clicked", () => {
+    renderCard({
+      description: "National hotel chain expansion",
+      principal_organization_name: "McCRUM Foods",
+      days_in_stage: 12,
+      pending_task_count: 2
+    });
+
+    const expandButton = screen.getByRole("button", { name: /expand/i });
+    fireEvent.click(expandButton);
+
+    // Expanded: description should be visible
+    expect(screen.getByText("National hotel chain expansion")).toBeInTheDocument();
+
+    // Expanded: full details visible
+    expect(screen.getByText(/McCRUM Foods/)).toBeInTheDocument();
+    expect(screen.getByText(/12 days in stage/)).toBeInTheDocument();
+    expect(screen.getByText(/2 task/)).toBeInTheDocument();
+  });
+
+  it("collapses when collapse button is clicked", () => {
+    renderCard({ description: "Toggle test description" });
+
+    // First expand
+    const expandButton = screen.getByRole("button", { name: /expand/i });
+    fireEvent.click(expandButton);
+    expect(screen.getByText("Toggle test description")).toBeInTheDocument();
+
+    // Then collapse
+    fireEvent.click(expandButton);
+
+    // Description should be hidden again
+    expect(screen.queryByText("Toggle test description")).not.toBeInTheDocument();
+  });
+
+  it("shows activity pulse dot with correct color", () => {
+    renderCard({ days_since_last_activity: 5 });
+
+    const pulseDot = screen.getByRole("status");
+    expect(pulseDot).toHaveClass("bg-success"); // Green for <7 days
+  });
+
+  it("shows overdue task warning when tasks are overdue", () => {
+    renderCard({ pending_task_count: 3, overdue_task_count: 2 });
+
+    // Expand to see tasks
+    const expandButton = screen.getByRole("button", { name: /expand/i });
+    fireEvent.click(expandButton);
+
+    expect(screen.getByText(/overdue/i)).toBeInTheDocument();
+  });
+
+  it("has correct aria-expanded state", () => {
+    renderCard({});
+
+    const expandButton = screen.getByRole("button", { name: /expand/i });
+    expect(expandButton).toHaveAttribute("aria-expanded", "false");
+
+    fireEvent.click(expandButton);
+    expect(expandButton).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("calls openSlideOver when card body is clicked", () => {
+    const openSlideOver = vi.fn();
+    renderCard({ id: 123 }, { openSlideOver });
+
+    const card = screen.getByTestId("opportunity-card");
+    fireEvent.click(card);
+
+    expect(openSlideOver).toHaveBeenCalledWith(123, "view");
+  });
+
+  it("does NOT call openSlideOver when expand button is clicked", () => {
+    const openSlideOver = vi.fn();
+    renderCard({}, { openSlideOver });
+
+    fireEvent.click(screen.getByRole("button", { name: /expand/i }));
+
+    expect(openSlideOver).not.toHaveBeenCalled();
+  });
+});
+
+describe("OpportunityCard - Activity Pulse Colors", () => {
+  it("shows green pulse for <7 days since activity", () => {
+    renderCard({ days_since_last_activity: 3 });
+    expect(screen.getByRole("status")).toHaveClass("bg-success");
+  });
+
+  it("shows yellow pulse for 7-14 days since activity", () => {
+    renderCard({ days_since_last_activity: 10 });
+    expect(screen.getByRole("status")).toHaveClass("bg-warning");
+  });
+
+  it("shows red pulse for >14 days since activity", () => {
+    renderCard({ days_since_last_activity: 20 });
+    expect(screen.getByRole("status")).toHaveClass("bg-destructive");
+  });
+
+  it("shows gray pulse for null activity", () => {
+    renderCard({ days_since_last_activity: null });
+    expect(screen.getByRole("status")).toHaveClass("bg-muted-foreground");
   });
 });

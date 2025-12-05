@@ -105,7 +105,14 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
 
   return (
     <div
-      className={`flex-1 pb-8 min-w-[240px] max-w-[280px] bg-card border border-border rounded-2xl shadow-col-inner ${shadowConfig.rest} ${shadowConfig.hover} transition-[box-shadow,border-color] duration-200 ease-in-out px-3`}
+      className={`
+  flex-1 pb-8 bg-card border border-border rounded-2xl shadow-col-inner
+  ${shadowConfig.rest} ${shadowConfig.hover}
+  transition-[box-shadow,border-color] duration-200 ease-in-out px-3
+  min-w-[260px] max-w-[300px]
+  md:min-w-[280px] md:max-w-[320px]
+  lg:min-w-[300px] lg:max-w-[340px]
+`}
       data-testid="kanban-column"
     >
       <div className="flex items-center justify-between mb-4 pb-3 border-b border-border px-3 py-2">
