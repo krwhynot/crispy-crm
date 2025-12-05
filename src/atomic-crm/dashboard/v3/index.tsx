@@ -35,7 +35,7 @@ const PrincipalDashboardV3Lazy = lazy(() =>
  */
 function DashboardSkeleton() {
   return (
-    <div className="flex h-screen flex-col">
+    <div className="flex h-dvh flex-col overflow-hidden">
       <header className="border-b border-border bg-card">
         <div className="flex h-16 items-center px-6">
           <Skeleton className="h-6 w-48" />
