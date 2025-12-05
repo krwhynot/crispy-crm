@@ -308,4 +308,103 @@ export class OpportunitiesListPage extends BasePage {
     const column = this.getKanbanColumn(stageName);
     return await column.isVisible();
   }
+
+  // ============================================
+  // EXPANDABLE CARD METHODS (added for visual cues feature)
+  // ============================================
+
+  /**
+   * Get expand/collapse toggle button for a card
+   */
+  getCardExpandButton(opportunityName: string) {
+    const card = this.getOpportunityCard(opportunityName);
+    return card.getByRole("button", { name: /expand|collapse/i });
+  }
+
+  /**
+   * Get activity pulse dot for a card
+   */
+  getCardActivityPulse(opportunityName: string) {
+    const card = this.getOpportunityCard(opportunityName);
+    return card.getByRole("status");
+  }
+
+  /**
+   * Expand an opportunity card to show full details
+   */
+  async expandCard(opportunityName: string): Promise<void> {
+    const expandButton = this.getCardExpandButton(opportunityName);
+    const isExpanded = await expandButton.getAttribute("aria-expanded");
+
+    if (isExpanded === "false") {
+      await expandButton.click();
+      // Wait for animation to complete
+      await this.page.waitForTimeout(250);
+    }
+  }
+
+  /**
+   * Collapse an opportunity card
+   */
+  async collapseCard(opportunityName: string): Promise<void> {
+    const expandButton = this.getCardExpandButton(opportunityName);
+    const isExpanded = await expandButton.getAttribute("aria-expanded");
+
+    if (isExpanded === "true") {
+      await expandButton.click();
+      await this.page.waitForTimeout(250);
+    }
+  }
+
+  /**
+   * Check if a card is expanded
+   */
+  async isCardExpanded(opportunityName: string): Promise<boolean> {
+    const expandButton = this.getCardExpandButton(opportunityName);
+    const isExpanded = await expandButton.getAttribute("aria-expanded");
+    return isExpanded === "true";
+  }
+
+  /**
+   * Get the first visible opportunity card
+   */
+  getFirstOpportunityCard() {
+    return this.page.locator('[data-testid="opportunity-card"]').first();
+  }
+
+  /**
+   * Get the name from the first visible card
+   */
+  async getFirstCardName(): Promise<string | null> {
+    const firstCard = this.getFirstOpportunityCard();
+    const nameElement = firstCard.locator("h3");
+    return await nameElement.textContent();
+  }
+
+  /**
+   * Verify expanded details are visible (days in stage, etc.)
+   */
+  async expectExpandedDetailsVisible(opportunityName: string): Promise<void> {
+    const card = this.getOpportunityCard(opportunityName);
+    // Days in stage should always be visible when expanded
+    await expect(card.getByText(/days in stage/i)).toBeVisible();
+  }
+
+  /**
+   * Verify activity pulse dot has a valid color class
+   */
+  async expectActivityPulseValid(opportunityName: string): Promise<void> {
+    const pulseDot = this.getCardActivityPulse(opportunityName);
+    await expect(pulseDot).toBeVisible();
+
+    // Check that it has one of the valid color classes
+    const classList = await pulseDot.getAttribute("class");
+    const hasValidColor =
+      classList?.includes("bg-success") ||
+      classList?.includes("bg-warning") ||
+      classList?.includes("bg-destructive") ||
+      classList?.includes("bg-muted-foreground");
+
+    expect(hasValidColor).toBe(true);
+  }
 }
