@@ -105,11 +105,9 @@ export const CloseOpportunityModal = ({
   // Trigger validation when relevant fields change
   // This is necessary because mode: "onBlur" doesn't auto-validate on change,
   // but Zod refinements require full form validation to determine isValid
+  // We validate on ANY change (including clearing) to keep isValid accurate
   useEffect(() => {
-    // Only trigger validation after initial form setup (when a reason is selected)
-    if (winReason || lossReason) {
-      trigger();
-    }
+    trigger();
   }, [winReason, lossReason, closeReasonNotes, trigger]);
 
   // Show notes field when "other" is selected
