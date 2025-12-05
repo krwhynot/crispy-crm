@@ -107,82 +107,233 @@ npm test -- --testNamePattern="dummy" 2>/dev/null || echo "Test runner OK"
 
 **These corrections address gaps identified during codebase verification. Original plan sections should be read with these corrections applied.**
 
-### Correction 1: Principals Data Source
+### DETAILED CORRECTION: B1-B4 - Principals & Staleness
 
-**Problem:** Plan assumed a `principals` React Admin resource exists. It doesn't.
+**PROBLEM:** Multiple issues with principals data:
+1. Plan queries nonexistent `principals` resource
+2. Type shape doesn't match view
+3. Staleness thresholds wrong (plan: 5/10 or 7/14, view: 3/7)
+4. Custom query duplicates view logic
 
-**Reality:**
-- Principals are stored in `organizations` table with `organization_type = 'principal'`
-- Two precomputed views exist:
-  - `dashboard_principal_summary` - Has staleness fields!
-  - `principal_pipeline_summary` - Has momentum/activity counts
-
-**Fix for Task 1.5 & 3.4:**
-```typescript
-// WRONG - Plan's original approach
-const { data } = useGetList('principals', { meta: { includeStaleness: true } });
-
-// CORRECT - Use existing dashboard_principal_summary view
-const { data: principalsWithStaleness } = useGetList<DashboardPrincipalSummary>(
-  'dashboard_principal_summary',
-  {
-    pagination: { page: 1, perPage: 100 },
-    sort: { field: 'priority_score', order: 'DESC' },
-    filter: salesId ? { account_manager_id: salesId } : {},
-  }
-);
-
-// View already provides these fields - NO custom query needed:
-// - days_since_last_activity (integer)
-// - status_indicator ('good' | 'warning' | 'urgent')
-// - priority_score (for sorting)
-// - last_activity_date, last_activity_type
+**EXACT VIEW SCHEMA** (from `dashboard_principal_summary`):
+```sql
+-- Thresholds: good ≤3d, warning 3-7d, urgent >7d
+status_indicator = CASE
+  WHEN days_since_last_activity IS NULL THEN 'urgent'
+  WHEN days_since_last_activity > 7 THEN 'urgent'
+  WHEN days_since_last_activity > 3 THEN 'warning'
+  ELSE 'good'
+END
 ```
 
-### Correction 2: Staleness Types (Task 1.1)
-
-**Problem:** `PrincipalWithStaleness.id` was `string`, but `getPrincipalColor` expects `number`.
-
-**Fix - Update types.ts:**
+**FIX - Replace types.ts PrincipalWithStaleness:**
 ```typescript
-// CORRECTED PrincipalWithStaleness interface
-export interface PrincipalWithStaleness {
-  id: number;  // CHANGED from string - matches database bigint
-  principal_name: string;  // CHANGED: view uses principal_name, not name
-  days_since_last_activity: number | null;
-  status_indicator: 'good' | 'warning' | 'urgent';  // From view directly
-  priority_score: number;
-  opportunity_count: number;
+// src/atomic-crm/onboarding/types.ts
+
+// DELETE the old PrincipalWithStaleness interface
+// DELETE STALENESS_THRESHOLDS constant (5/10 days - WRONG)
+
+/**
+ * Matches dashboard_principal_summary view EXACTLY
+ * Thresholds: good ≤3d, warning 3-7d, urgent >7d
+ */
+export interface DashboardPrincipalSummary {
+  id: number | null;
+  principal_name: string | null;  // NOT 'name'
+  opportunity_count: number | null;  // NOT 'active_opportunity_count'
+  weekly_activity_count: number | null;
+  assigned_reps: string[] | null;
   last_activity_date: string | null;
   last_activity_type: string | null;
-  account_manager_id: number | null;
+  days_since_last_activity: number | null;
+  status_indicator: 'good' | 'warning' | 'urgent';  // View computes this
+  max_days_in_stage: number | null;
+  is_stuck: boolean | null;
+  next_action: string | null;
+  priority_score: number | null;
 }
 
-// Map status_indicator to StalenessLevel for UI consistency
-export function toStalenessLevel(status: 'good' | 'warning' | 'urgent'): StalenessLevel {
+// Use view's status_indicator directly - NO custom thresholds
+export type StalenessLevel = 'good' | 'warning' | 'urgent';
+
+// Helper to map view's status to UI severity
+export function getStalenessFromIndicator(status: StalenessLevel): 'ok' | 'warning' | 'critical' {
   if (status === 'urgent') return 'critical';
   if (status === 'warning') return 'warning';
   return 'ok';
 }
 ```
 
-### Correction 3: Remove Custom Staleness Query (Task 1.5)
-
-**Problem:** Plan proposed adding a complex nested Supabase query to `unifiedDataProvider.ts` that would bypass existing views and cause full-table scans.
-
-**Fix:** DELETE the entire custom query block from Task 1.5. Instead, use the existing view:
-
+**FIX - Delete Task 1.5 custom query entirely:**
 ```typescript
-// In AttentionCard or Dashboard component - just use the view resource
-const { data } = useGetList<DashboardPrincipalSummary>(
-  'dashboard_principal_summary',
-  { /* filters */ }
-);
+// DELETE from unifiedDataProvider.ts - this entire block should NOT exist:
+// ❌ if (params.meta?.includeStaleness) { ... }
 
-// The view already computes staleness via SQL:
-// days_since_last_activity = EXTRACT(DAY FROM (NOW() - MAX(po.last_activity_date)))::INTEGER
-// status_indicator = CASE WHEN days > 14 THEN 'urgent' WHEN days > 7 THEN 'warning' ELSE 'good'
+// The view already computes everything. Just query it:
+// ✅ useGetList('dashboard_principal_summary', { ... })
 ```
+
+**FIX - AttentionCard correct field access:**
+```typescript
+// src/atomic-crm/onboarding/AttentionCard.tsx
+
+// WRONG field names:
+// principal.name → principal.principal_name
+// principal.active_opportunity_count → principal.opportunity_count
+
+const stalePrincipals = useMemo(() => {
+  return principals
+    .filter((p) => p.status_indicator === 'warning' || p.status_indicator === 'urgent')
+    .sort((a, b) => (b.priority_score ?? 0) - (a.priority_score ?? 0))
+    .slice(0, 3);
+}, [principals]);
+
+// In render:
+<p className="font-medium">{principal.principal_name}</p>
+<p className="text-xs text-muted-foreground">
+  {principal.days_since_last_activity ?? '∞'} days · {principal.opportunity_count ?? 0} opps
+</p>
+```
+
+### DETAILED CORRECTION: H1-H2 - TaskItem Principal Data
+
+**PROBLEM:** Task cards can't show principal ribbons because:
+1. `RelatedEntity` interface has NO `principal` field
+2. `useMyTasks` doesn't expand `opportunity.principal_organization`
+3. Ribbon code assumes `task.relatedTo.principal?.id` which is always undefined
+
+**CURRENT RelatedEntity (WRONG for ribbons):**
+```typescript
+export interface RelatedEntity {
+  type: "opportunity" | "contact" | "organization" | "personal";
+  name: string;
+  id: number;
+  // NO principal field!
+}
+```
+
+**FIX - Update types.ts RelatedEntity:**
+```typescript
+// src/atomic-crm/dashboard/v3/types.ts
+
+export interface RelatedEntity {
+  type: "opportunity" | "contact" | "organization" | "personal";
+  name: string;
+  id: number;
+  // ADD: Principal info from opportunity's principal_organization
+  principal?: {
+    id: number;
+    name: string;
+  };
+}
+```
+
+**FIX - Update useMyTasks.ts expand + mapping:**
+```typescript
+// src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts
+
+// Line 36-38: Add principal_organization to opportunity expand
+meta: {
+  expand: [
+    "opportunity.principal_organization",  // ADDED - nested expand
+    "contact",
+    "organization"
+  ],
+},
+
+// Line 88-102: Update relatedTo mapping to include principal
+relatedTo: {
+  type: task.opportunity_id
+    ? "opportunity"
+    : task.contact_id
+      ? "contact"
+      : task.organization_id
+        ? "organization"
+        : "personal",
+  name:
+    task.opportunity?.name ||
+    task.contact?.name ||
+    task.organization?.name ||
+    "Personal Task",
+  id: task.opportunity_id || task.contact_id || task.organization_id || 0,
+  // ADDED: Extract principal from opportunity's principal_organization
+  principal: task.opportunity?.principal_organization
+    ? {
+        id: task.opportunity.principal_organization.id,
+        name: task.opportunity.principal_organization.name,
+      }
+    : undefined,
+},
+```
+
+**FIX - Update TaskApiResponse type:**
+```typescript
+// In useMyTasks.ts or types.ts
+
+interface TaskApiResponse {
+  // ... existing fields ...
+  opportunity?: {
+    id: number;
+    name: string;
+    // ADDED: Nested principal_organization from expand
+    principal_organization?: {
+      id: number;
+      name: string;
+    };
+  };
+  // ... rest ...
+}
+```
+
+---
+
+### DETAILED CORRECTION: H4 - Activity Navigation Reality
+
+**PROBLEM:** Plan assumes router navigation to `/activities/create` with state. Reality:
+- **ZERO router-based entries** to `/activities/create`
+- ALL activity creation uses dialogs:
+  - `QuickLogActivityDialog` (contacts, organizations)
+  - `ActivityNoteForm` (opportunity inline)
+  - `QuickLogActivity` (task completion)
+
+**IMPACT:** `useNavigationContext` hook is USELESS for activities because no one navigates there!
+
+**FIX - Two options:**
+
+**Option A: Skip minimal Activity form feature entirely**
+- Activities are already created via dialogs with context pre-filled
+- `QuickLogActivityDialog` receives `entityContext={{ contactId, organizationId }}`
+- No router state needed - props work fine
+
+**Option B: Add context to QuickLogActivityDialog (if minimal form still wanted)**
+```typescript
+// src/atomic-crm/activities/QuickLogActivityDialog.tsx
+
+interface QuickLogActivityDialogProps {
+  // EXISTING
+  entityContext?: {
+    contactId?: number;
+    organizationId?: number;
+  };
+  // ADD: opportunity context for pre-fill
+  opportunityContext?: {
+    opportunityId: number;
+    principalName?: string;
+  };
+}
+
+// In form defaults:
+const defaultValues = useMemo(() => ({
+  ...activitiesSchema.partial().parse({}),
+  contact_id: entityContext?.contactId,
+  organization_id: entityContext?.organizationId,
+  opportunity_id: opportunityContext?.opportunityId,  // ADDED
+}), [entityContext, opportunityContext]);
+```
+
+**RECOMMENDATION:** Option A - Skip router-based activity minimal forms. The dialog approach already provides context via props.
+
+---
 
 ### Correction 4: TaskKanbanCard Date Flow (Task 3.1)
 
