@@ -3,14 +3,12 @@ import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { opportunityExporter } from "./opportunityExporter";
 import { List } from "@/components/admin/list";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbPage } from "@/components/admin/breadcrumb";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { QuickAddButton } from "./quick-add/QuickAddButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { ListSkeleton } from "@/components/ui/list-skeleton";
 
-import { Translate, useGetIdentity, useListContext, useGetResourceLabel } from "ra-core";
-import { Link } from "react-router-dom";
+import { useGetIdentity, useListContext } from "ra-core";
 
 import { TopToolbar } from "../layout/TopToolbar";
 import { OpportunityArchivedList } from "./OpportunityArchivedList";
@@ -41,8 +39,6 @@ const saveViewPreference = (view: OpportunityView) => {
 
 const OpportunityList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
-  const getResourceLabel = useGetResourceLabel();
-  const resourceLabel = getResourceLabel("opportunities", 2);
   const [view, setView] = useState<OpportunityView>(getViewPreference);
 
   // Clean up stale cached filters from localStorage
@@ -77,7 +73,6 @@ const OpportunityList = () => {
           view={view}
           openSlideOver={openSlideOver}
           isSlideOverOpen={isOpen}
-          resourceLabel={resourceLabel}
         />
         <FloatingCreateButton />
       </List>
@@ -97,17 +92,16 @@ const OpportunityList = () => {
 /**
  * OpportunityListLayout - Renders inside List context to access ListContext
  * Must be a child of <List> to use useListContext() for filter state
+ * Note: Breadcrumb is handled by List wrapper (list.tsx) - no longer needed here
  */
 const OpportunityListLayout = ({
   view,
   openSlideOver,
   isSlideOverOpen,
-  resourceLabel,
 }: {
   view: OpportunityView;
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
   isSlideOverOpen: boolean;
-  resourceLabel: string;
 }) => {
   const { data, isPending, filterValues } = useListContext();
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
@@ -139,16 +133,9 @@ const OpportunityListLayout = ({
     );
   }
 
+  // Note: Breadcrumb is now handled by the List component wrapper (list.tsx)
   return (
     <StandardListLayout resource="opportunities" filterComponent={<OpportunityListFilter />}>
-      <Breadcrumb>
-        <BreadcrumbItem>
-          <Link to="/">
-            <Translate i18nKey="ra.page.dashboard">Home</Translate>
-          </Link>
-        </BreadcrumbItem>
-        <BreadcrumbPage>{resourceLabel}</BreadcrumbPage>
-      </Breadcrumb>
       <FilterChipBar filterConfig={OPPORTUNITY_FILTER_CONFIG} />
       <div className="w-full">
         {view === "kanban" ? (

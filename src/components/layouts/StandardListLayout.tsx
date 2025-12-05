@@ -78,7 +78,7 @@ export function StandardListLayout({
   return (
     <div className="flex flex-col lg:flex-row gap-6">
       {/* Collapse toggle button */}
-      <div className="flex items-center gap-2 lg:hidden mb-2">
+      <div className="flex items-center gap-2 lg:hidden mb-2 shrink-0">
         <Tooltip>
           <TooltipTrigger asChild>
             <Button
@@ -104,13 +104,13 @@ export function StandardListLayout({
         {isCollapsed && <span className="text-sm text-muted-foreground">Filters hidden</span>}
       </div>
 
-      {/* Filter sidebar with collapse animation */}
+      {/* Filter sidebar with collapse animation - sticky within scroll container */}
       <aside
         id="filter-sidebar"
         aria-label={`Filter ${resource}`}
         className={`
-          filter-sidebar w-full lg:w-auto lg:sticky lg:top-[var(--spacing-section)] lg:h-fit
-          transition-all duration-200 ease-out overflow-hidden
+          filter-sidebar w-full lg:w-auto lg:sticky lg:top-0 lg:h-fit lg:self-start
+          transition-all duration-200 ease-out overflow-hidden shrink-0
           ${isCollapsed ? "max-h-0 lg:max-h-none lg:w-0 lg:opacity-0 lg:invisible" : "max-h-[500px] lg:max-h-none lg:opacity-100"}
         `}
         aria-hidden={isCollapsed}
@@ -140,14 +140,14 @@ export function StandardListLayout({
 
       {/* Desktop expand button when sidebar is collapsed */}
       {isCollapsed && (
-        <div className="hidden lg:block">
+        <div className="hidden lg:block shrink-0">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
                 variant="outline"
                 size="icon"
                 onClick={toggleSidebar}
-                className="h-11 w-11 sticky top-[var(--spacing-section)]"
+                className="h-11 w-11 sticky top-0"
                 aria-label="Show filters"
                 aria-expanded={false}
                 aria-controls="filter-sidebar"
