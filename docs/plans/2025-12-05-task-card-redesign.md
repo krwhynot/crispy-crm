@@ -21,14 +21,10 @@ Implement the Contextual Ribbon Card layout with inline date picker for the My T
 
 ## Prerequisites Check
 
-Before starting, verify:
-```bash
-# Check react-day-picker is installed
-npm ls react-day-picker
-
-# If not installed:
-npm install react-day-picker
-```
+**Already verified:**
+- ✅ `react-day-picker@9.11.1` is installed
+- ✅ `updateTaskDueDate` already exists in `useMyTasks` hook
+- ✅ Optimistic updates with rollback already implemented
 
 ---
 
