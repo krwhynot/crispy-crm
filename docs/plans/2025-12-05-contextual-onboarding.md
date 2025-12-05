@@ -19,6 +19,21 @@ Build a contextual onboarding system that helps MFB Account Managers understand 
 
 ---
 
+## Industry Standards Applied
+
+This plan incorporates patterns from industry leaders:
+
+| Standard | Source | Application |
+|----------|--------|-------------|
+| **Empty State: Clarity + Invitation** | Ant Design, Salesforce Lightning | AttentionCard provides reason + action |
+| **Three-Part Guide** | Ant Design | State prompt → Help guide → Suggested action |
+| **Toast ARIA Live Region** | Bootstrap Vue, WCAG | `aria-live="polite"` + `aria-atomic="true"` |
+| **Color + Text Redundancy** | WCAG 2.1 | Severity text in aria-labels, not color alone |
+| **useSyncExternalStore** | React 18 Official | Correct pattern for localStorage reactivity |
+| **Contact Activity Tracking** | OroCRM ActivityContactBundle | Validates "staleness" concept for CRMs |
+
+---
+
 ## Dependency Graph
 
 ```
@@ -1017,11 +1032,19 @@ describe('StalenessIndicator', () => {
   });
 
   describe('accessibility', () => {
-    it('has accessible label describing staleness', () => {
+    it('has accessible label with severity for critical staleness', () => {
       render(<StalenessIndicator days={12} />);
 
       const badge = screen.getByRole('status');
-      expect(badge).toHaveAccessibleName(/12 days since last activity/i);
+      // WCAG: Color alone doesn't convey meaning - label includes severity
+      expect(badge).toHaveAccessibleName(/12 days since last activity - urgent attention needed/i);
+    });
+
+    it('has accessible label with severity for warning staleness', () => {
+      render(<StalenessIndicator days={7} />);
+
+      const badge = screen.getByRole('status');
+      expect(badge).toHaveAccessibleName(/7 days since last activity - needs attention soon/i);
     });
   });
 });
@@ -1118,6 +1141,7 @@ npm test -- --run src/atomic-crm/onboarding/__tests__/StalenessIndicator.test.ts
 - [x] Uses semantic colors
 - [x] ARIA role="status" for screen readers
 - [x] No retry logic
+- [x] WCAG: Severity text in aria-label (color alone doesn't convey meaning)
 
 ---
 
@@ -1340,7 +1364,14 @@ export function WorkflowToastContent({
   };
 
   return (
-    <div className="bg-card border border-border rounded-lg p-4 shadow-lg max-w-sm">
+    // WCAG: Toast wrapped in aria-live region for screen reader announcement
+    // aria-atomic ensures entire toast announced as single unit
+    <div
+      role="alert"
+      aria-live="polite"
+      aria-atomic="true"
+      className="bg-card border border-border rounded-lg p-4 shadow-lg max-w-sm"
+    >
       {/* Success message */}
       <div className="flex items-center gap-2 mb-2">
         <CheckCircle className="h-5 w-5 text-success" />
@@ -1495,6 +1526,7 @@ npm test -- --run src/atomic-crm/onboarding/__tests__/WorkflowToast.test.tsx
 - [x] No retry logic
 - [x] Uses semantic colors
 - [x] ARIA labels on checkbox
+- [x] WCAG: `aria-live="polite"` + `aria-atomic="true"` for screen reader announcement (Bootstrap Vue pattern)
 
 ---
 
