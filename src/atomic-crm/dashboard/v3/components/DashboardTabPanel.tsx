@@ -6,9 +6,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { useTaskCount } from '../hooks/useTaskCount';
-import { CheckSquare, TrendingUp, Users } from 'lucide-react';
+import { LayoutGrid, CheckSquare, TrendingUp, Users } from 'lucide-react';
 
 // Lazy load tab content for performance
+const PrincipalPipelineTable = lazy(() => import('./PrincipalPipelineTable'));
 const TasksKanbanPanel = lazy(() => import('./TasksKanbanPanel'));
 const MyPerformanceWidget = lazy(() => import('./MyPerformanceWidget'));
 const ActivityFeedPanel = lazy(() => import('./ActivityFeedPanel'));
@@ -24,13 +25,14 @@ function TabSkeleton() {
 }
 
 /**
- * DashboardTabPanel - Tabbed interface for dashboard bottom sections
+ * DashboardTabPanel - Tabbed interface for all dashboard sections
  *
- * Replaces vertically stacked layout with tabs to reduce scrolling
+ * Replaces vertically stacked layout with tabs to eliminate scrolling
  * and improve focus on iPad devices.
  *
- * Three tabs:
- * - My Tasks (default) - Kanban board with pending task count badge
+ * Four tabs:
+ * - Pipeline (default) - Principal pipeline table with drill-down
+ * - My Tasks - Kanban board with pending task count badge
  * - Performance - Personal performance metrics
  * - Team Activity - Recent activities across the team
  *
@@ -44,11 +46,20 @@ export function DashboardTabPanel() {
   const { pendingCount, isLoading } = useTaskCount();
 
   return (
-    <Card className="flex-1">
-      <Tabs defaultValue="tasks" className="w-full">
-        <div className="border-b border-border px-4 pt-4">
+    <Card className="flex min-h-0 flex-1 flex-col">
+      <Tabs defaultValue="pipeline" className="flex min-h-0 flex-1 flex-col">
+        <div className="shrink-0 border-b border-border px-4 pt-4">
           <TabsList className="h-11 w-full justify-start gap-2 bg-transparent p-0">
-            {/* My Tasks Tab - 44px touch target */}
+            {/* Pipeline Tab - 44px touch target */}
+            <TabsTrigger
+              value="pipeline"
+              className="h-11 min-w-[120px] gap-2 rounded-t-lg rounded-b-none border-b-2 border-transparent px-4 data-[state=active]:border-primary data-[state=active]:bg-transparent"
+            >
+              <LayoutGrid className="h-4 w-4" />
+              <span>Pipeline</span>
+            </TabsTrigger>
+
+            {/* My Tasks Tab */}
             <TabsTrigger
               value="tasks"
               className="h-11 min-w-[120px] gap-2 rounded-t-lg rounded-b-none border-b-2 border-transparent px-4 data-[state=active]:border-primary data-[state=active]:bg-transparent"
@@ -85,23 +96,30 @@ export function DashboardTabPanel() {
           </TabsList>
         </div>
 
-        <CardContent className="p-0">
+        <CardContent className="min-h-0 flex-1 overflow-auto p-0">
+          {/* Pipeline Tab Content - forceMount preserves filter state */}
+          <TabsContent value="pipeline" className="m-0 h-full focus-visible:ring-0" forceMount>
+            <Suspense fallback={<TabSkeleton />}>
+              <PrincipalPipelineTable />
+            </Suspense>
+          </TabsContent>
+
           {/* Tasks Tab Content - forceMount preserves kanban state */}
-          <TabsContent value="tasks" className="m-0 focus-visible:ring-0" forceMount>
+          <TabsContent value="tasks" className="m-0 h-full focus-visible:ring-0" forceMount>
             <Suspense fallback={<TabSkeleton />}>
               <TasksKanbanPanel />
             </Suspense>
           </TabsContent>
 
           {/* Performance Tab Content - forceMount prevents refetch */}
-          <TabsContent value="performance" className="m-0 focus-visible:ring-0" forceMount>
+          <TabsContent value="performance" className="m-0 h-full focus-visible:ring-0" forceMount>
             <Suspense fallback={<TabSkeleton />}>
               <MyPerformanceWidget />
             </Suspense>
           </TabsContent>
 
           {/* Team Activity Tab Content - forceMount preserves scroll */}
-          <TabsContent value="activity" className="m-0 focus-visible:ring-0" forceMount>
+          <TabsContent value="activity" className="m-0 h-full focus-visible:ring-0" forceMount>
             <Suspense fallback={<TabSkeleton />}>
               <ActivityFeedPanel />
             </Suspense>
