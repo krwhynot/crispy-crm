@@ -46,8 +46,8 @@ export function DashboardTabPanel() {
   const { pendingCount, isLoading } = useTaskCount();
 
   return (
-    <Card className="flex min-h-0 flex-1 flex-col">
-      <Tabs defaultValue="pipeline" className="flex min-h-0 flex-1 flex-col">
+    <Card className="flex min-h-0 flex-1 flex-col overflow-hidden">
+      <Tabs defaultValue="pipeline" className="flex min-h-0 flex-1 flex-col gap-0">
         <div className="shrink-0 border-b border-border px-4 pt-4">
           <TabsList className="h-11 w-full justify-start gap-2 bg-transparent p-0">
             {/* Pipeline Tab - 44px touch target */}
