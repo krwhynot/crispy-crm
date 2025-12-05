@@ -61,8 +61,8 @@ Reality: ZERO router entries to `/activities/create` exist. All activity creatio
 ┌─────────────────────────────────────────────────────────────────────────────┐
 │                        WAVE 1: Shared Foundation                             │
 │  ┌────────────────┐  ┌────────────────┐  ┌─────────────────────────────────┐│
-│  │ 1.1 Types &    │  │ 1.2 Principal  │  │ 1.3 useNavigationContext       ││
-│  │ Constants      │  │ Colors         │  │ (TaskCreate only)              ││
+│  │ 1.1 Types &    │  │ 1.2 Principal  │  │ 1.3 useQueryParams             ││
+│  │ Constants      │  │ Colors         │  │ (hash URL parsing)             ││
 │  └────────────────┘  └────────────────┘  └─────────────────────────────────┘│
 │  ┌────────────────┐  ┌─────────────────────────────────────────────────────┐│
 │  │ 1.4 Onboarding │  │ 1.5 Task Principal Expansion (useMyTasks update)   ││
@@ -128,6 +128,91 @@ npm test -- --testNamePattern="dummy" 2>/dev/null || echo "Test runner OK"
 # 5. Verify dashboard_principal_summary view exists
 npm run db:local:reset -- --dry-run 2>&1 | grep -q "dashboard_principal_summary" && echo "View exists"
 ```
+
+---
+
+## WAVE 0: Database Prerequisites (BLOCKING)
+
+**Must complete before Wave 1. Creates denormalized view for task principal data.**
+
+---
+
+### Task 0.1: Create `tasks_with_principal` SQL View
+
+**File:** `supabase/migrations/YYYYMMDDHHMMSS_create_tasks_with_principal_view.sql` (NEW)
+
+**Time:** 5 min | **TDD:** No (SQL)
+
+**CRITICAL:** The existing `useMyTasks` hook uses `meta.expand` which the Supabase provider doesn't support.
+To get principal data for task ribbons, we need a denormalized view that joins tasks → opportunities → principal_organization.
+
+**Why a view (not provider changes):**
+- Lower risk - no provider code changes
+- Better performance - single query vs N+1
+- Maintains existing API contract
+
+**Migration:**
+
+```sql
+-- Migration: Create tasks_with_principal view for Kanban ribbons
+-- This view denormalizes principal data so task cards can show color ribbons
+-- without requiring unsupported meta.expand in the data provider
+
+CREATE OR REPLACE VIEW tasks_with_principal
+WITH (security_invoker = on)
+AS
+SELECT
+  t.id,
+  t.title,           -- NOTE: DB field is 'title', UI maps to 'subject'
+  t.description,     -- NOTE: DB field is 'description', UI maps to 'notes'
+  t.due_date,
+  t.priority,
+  t.type,
+  t.completed,
+  t.completed_at,
+  t.sales_id,
+  t.opportunity_id,
+  t.contact_id,
+  t.organization_id,
+  t.created_at,
+  t.updated_at,
+  t.deleted_at,
+  -- Denormalized opportunity data
+  o.name AS opportunity_name,
+  -- Denormalized principal data (for ribbon colors)
+  po.id AS principal_id,
+  po.name AS principal_name,
+  -- Denormalized contact data
+  c.first_name || ' ' || c.last_name AS contact_name,
+  -- Denormalized organization data
+  org.name AS organization_name
+FROM tasks t
+LEFT JOIN opportunities o ON t.opportunity_id = o.id AND o.deleted_at IS NULL
+LEFT JOIN organizations po ON o.principal_organization_id = po.id
+LEFT JOIN contacts c ON t.contact_id = c.id AND c.deleted_at IS NULL
+LEFT JOIN organizations org ON t.organization_id = org.id
+WHERE t.deleted_at IS NULL;
+
+-- Grant permissions
+GRANT SELECT ON tasks_with_principal TO authenticated, anon;
+
+-- Add comment
+COMMENT ON VIEW tasks_with_principal IS
+  'Denormalized task view with principal data for Kanban ribbon colors. '
+  'Eliminates need for unsupported meta.expand in data provider.';
+```
+
+**Apply migration:**
+
+```bash
+npx supabase migration new create_tasks_with_principal_view
+# Paste SQL into the generated file
+npx supabase db reset  # Or deploy to staging
+```
+
+**Update Task 1.5 to use this view:**
+
+The `useMyTasks` hook should query `tasks_with_principal` resource instead of `tasks` with `meta.expand`.
 
 ---
 
@@ -287,7 +372,7 @@ export type {
 
 // Hooks
 export { useOnboardingProgress } from './useOnboardingProgress';
-export { useNavigationContext } from './useNavigationContext';
+export { useQueryParams, getNumericParam } from './useQueryParams';
 
 // Components
 export { AttentionCard } from './AttentionCard';
@@ -858,19 +943,24 @@ export function useOnboardingProgress() {
 
 ---
 
-### Task 1.5: Task Principal Expansion (useMyTasks Update)
+### Task 1.5: Task Principal Data via Denormalized View
 
 **File:** `src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts` (MODIFY)
 **File:** `src/atomic-crm/dashboard/v3/types.ts` (MODIFY)
 
 **Time:** 10 min | **TDD:** Manual verification
 
-**Purpose:** Enable TaskKanbanCard to show principal color ribbons by:
-1. Expanding `opportunity.principal_organization` in the query
-2. Adding `principal` field to `RelatedEntity` type
-3. Mapping the expanded data in the transform
+**DEPENDS ON:** Task 0.1 (`tasks_with_principal` view must exist)
 
-**Step 1: Update types.ts - Add principal to RelatedEntity**
+**Purpose:** Enable TaskKanbanCard to show principal color ribbons by:
+1. Querying `tasks_with_principal` view (NOT `tasks` table with `meta.expand`)
+2. Using flat denormalized columns (`principal_id`, `principal_name`, etc.)
+3. Mapping the flat data to `RelatedEntity.principal`
+
+**IMPORTANT:** Remove `meta.expand` - the Supabase provider doesn't support it.
+Use the `tasks_with_principal` view which denormalizes all related data.
+
+**Step 1: Update types.ts - Match view columns**
 
 ```typescript
 // src/atomic-crm/dashboard/v3/types.ts
@@ -879,54 +969,67 @@ export interface RelatedEntity {
   type: "opportunity" | "contact" | "organization" | "personal";
   name: string;
   id: number;
-  /** Principal info from opportunity's principal_organization (for ribbon color) */
+  /** Principal info from denormalized view (for ribbon color) */
   principal?: {
     id: number;
     name: string;
   };
 }
 
-// Also update TaskApiResponse to include nested principal_organization
+/**
+ * Response shape from tasks_with_principal view
+ * Uses flat denormalized columns instead of nested objects
+ */
 export interface TaskApiResponse {
   id: number;
-  title: string;  // NOTE: Field is 'title', not 'subject'
+  title: string;        // DB field - mapped to 'subject' in UI
   due_date: string;
   priority: string;
   type: string;
   completed: boolean;
-  description?: string;  // NOTE: Field is 'description', not 'notes'
+  description?: string; // DB field - mapped to 'notes' in UI
   sales_id: number;
   opportunity_id?: number;
   contact_id?: number;
   organization_id?: number;
-  // Expanded relations (when meta.expand is used)
-  opportunity?: {
-    id: number;
-    name: string;
-    // Nested expansion from principal_organization
-    principal_organization?: {
-      id: number;
-      name: string;
-    };
-  };
-  contact?: { id: number; name: string };
-  organization?: { id: number; name: string };
+  // Denormalized columns from tasks_with_principal view (NOT nested objects)
+  opportunity_name?: string;
+  principal_id?: number;
+  principal_name?: string;
+  contact_name?: string;
+  organization_name?: string;
 }
 ```
 
-**Step 2: Update useMyTasks.ts - Expand principal_organization**
+**Step 2: Update useMyTasks.ts - Query view, remove meta.expand**
 
 ```typescript
-// In useGetList call, update meta.expand:
-meta: {
-  expand: [
-    "opportunity.principal_organization",  // ADDED - nested expand for ribbons
-    "contact",
-    "organization"
-  ],
-},
+// Change resource from "tasks" to "tasks_with_principal"
+// REMOVE meta.expand - not supported by Supabase provider
+const {
+  data: rawTasks = [],
+  isLoading: loading,
+  error: fetchError,
+  refetch: _refetch,
+} = useGetList<TaskApiResponse>(
+  "tasks_with_principal",  // CHANGED: Use denormalized view
+  {
+    filter: {
+      sales_id: salesId,
+      completed: false,
+      // Note: deleted_at IS NULL is already in view WHERE clause
+    },
+    sort: { field: "due_date", order: "ASC" },
+    pagination: { page: 1, perPage: 100 },
+    // REMOVED: meta.expand - not supported, view provides all data
+  },
+  {
+    enabled: !salesLoading && !!salesId,
+    staleTime: 5 * 60 * 1000,
+  }
+);
 
-// In the transform (serverTasks mapping), update relatedTo:
+// In the transform (serverTasks mapping), use flat columns:
 relatedTo: {
   type: task.opportunity_id
     ? "opportunity"
@@ -936,16 +1039,16 @@ relatedTo: {
         ? "organization"
         : "personal",
   name:
-    task.opportunity?.name ||
-    task.contact?.name ||
-    task.organization?.name ||
+    task.opportunity_name ||  // Flat column from view
+    task.contact_name ||      // Flat column from view
+    task.organization_name || // Flat column from view
     "Personal Task",
   id: task.opportunity_id || task.contact_id || task.organization_id || 0,
-  // ADDED: Extract principal from opportunity's principal_organization
-  principal: task.opportunity?.principal_organization
+  // Principal from flat denormalized columns
+  principal: task.principal_id
     ? {
-        id: task.opportunity.principal_organization.id,
-        name: task.opportunity.principal_organization.name,
+        id: task.principal_id,
+        name: task.principal_name || 'Unknown Principal',
       }
     : undefined,
 },
@@ -956,7 +1059,8 @@ relatedTo: {
 npm run dev
 # Open DevTools Network tab
 # Navigate to Tasks panel
-# Verify tasks API response includes principal_organization nested in opportunity
+# Verify API calls "tasks_with_principal" (not "tasks")
+# Verify response includes principal_id, principal_name as flat columns
 # Verify task cards show principal color ribbons
 ```
 
@@ -1677,9 +1781,9 @@ interface WorkflowToastOptions {
   entityName: string;
   /** Called for 'navigate' action type */
   onNavigate?: (path: string) => void;
-  /** Called for 'dialog' action type (e.g., open QuickLogActivityDialog) */
-  onOpenDialog?: (dialogId: string) => void;
-  /** Context to pass to dialog (e.g., opportunityId for activity dialog) */
+  /** Called for 'dialog' action type - receives dialogId AND context for prefilling */
+  onOpenDialog?: (dialogId: string, context: Record<string, unknown>) => void;
+  /** Context to pass to dialog (e.g., { opportunityId: 123 } for activity dialog) */
   dialogContext?: Record<string, unknown>;
 }
 
@@ -1899,6 +2003,39 @@ export function AttentionCard({
 3. Add principal color ribbon to card left edge
 4. Replace date display with InlineDatePicker
 5. Wire onDateChange through column to panel
+6. **FIX `arePropsEqual` memo guard** - add missing comparisons
+
+**CRITICAL FIX: Update `arePropsEqual` function**
+
+The existing memo guard only checks `relatedTo.name`, ignoring `id`, `type`, and new `principal` field.
+This causes stale UI when related entities change or principal ribbons need updating.
+
+```typescript
+// TaskKanbanCard.tsx - Update arePropsEqual to include all relevant fields
+function arePropsEqual(prevProps: TaskKanbanCardProps, nextProps: TaskKanbanCardProps): boolean {
+  const prevTask = prevProps.task;
+  const nextTask = nextProps.task;
+
+  return (
+    prevTask.id === nextTask.id &&
+    prevTask.subject === nextTask.subject &&
+    prevTask.dueDate.getTime() === nextTask.dueDate.getTime() &&
+    prevTask.priority === nextTask.priority &&
+    prevTask.status === nextTask.status &&
+    // FIX: Include all relatedTo fields (was only checking name)
+    prevTask.relatedTo.id === nextTask.relatedTo.id &&
+    prevTask.relatedTo.type === nextTask.relatedTo.type &&
+    prevTask.relatedTo.name === nextTask.relatedTo.name &&
+    // FIX: Include principal for ribbon updates
+    prevTask.relatedTo.principal?.id === nextTask.relatedTo.principal?.id &&
+    // FIX: Include callback reference for date picker
+    prevProps.onDateChange === nextProps.onDateChange
+  );
+}
+
+// Apply memo with fixed comparator
+export const TaskKanbanCard = memo(TaskKanbanCardComponent, arePropsEqual);
+```
 
 ```typescript
 // Add imports
@@ -1969,65 +2106,81 @@ const { updateTaskDueDate } = useMyTasks();  // Already destructured
 
 ---
 
-### Task 3.2: TaskCreate Minimal Form
+### Task 3.2: TaskCreate Minimal Form Enhancement
 
 **File:** `src/atomic-crm/tasks/TaskCreate.tsx` (MODIFY)
 
 **Time:** 10 min
 
+**IMPORTANT:** Keep existing `CreateBase`/`Form` pattern - do NOT replace with `SimpleForm`.
+The existing form uses `getTaskDefaultValues()`, identity for `sales_id`, and custom inputs.
+We're adding context pre-fill from URL query params and progressive disclosure.
+
 **Changes:**
-1. Import `useNavigationContext` and `showWorkflowToast`
+1. Import `useQueryParams`, `getNumericParam`, `showWorkflowToast` from `@/atomic-crm/onboarding`
 2. Import `ShowMoreSection` for optional fields
-3. Merge navContext into form defaults
-4. Hide optional fields (description, priority) in ShowMoreSection
+3. Merge query params into form defaults (existing `getTaskDefaultValues()` pattern)
+4. Hide optional fields (notes, priority) in ShowMoreSection
 5. Add workflow toast in onSuccess
 
 **Minimal Fields (3):**
-- Title (required)
+- Subject (required) - **NOTE: Field is `subject`, NOT `title`**
 - Due Date (required, defaults to tomorrow)
-- Related Entity (pre-filled from context if available)
+- Related Entity (pre-filled from URL query params)
 
 **Hidden Fields:**
-- Description
-- Priority (defaults to 'medium')
-- Type (defaults to 'follow-up')
+- Notes - **NOTE: Field is `notes`, NOT `description`**
+- Priority (defaults to 'Medium') - **NOTE: Title Case**
+- Type (defaults to 'Follow-up') - **NOTE: Title Case**
 
 ```typescript
-import { useNavigationContext, showWorkflowToast } from '@/atomic-crm/onboarding';
+import { useQueryParams, getNumericParam, showWorkflowToast } from '@/atomic-crm/onboarding';
 import { ShowMoreSection } from '@/atomic-crm/components/ShowMoreSection';
 
-// In component
-const navContext = useNavigationContext();
+// In component - parse hash URL query params
+const queryParams = useQueryParams();
+const opportunityIdFromUrl = getNumericParam(queryParams, 'opportunity_id');
+const contactIdFromUrl = getNumericParam(queryParams, 'contact_id');
 
+// Merge URL params into existing defaults pattern
 const defaultValues = useMemo(() => ({
-  ...tasksSchema.partial().parse({}),
+  ...getTaskDefaultValues(),  // Keep existing defaults
   due_date: addDays(new Date(), 1),  // Default to tomorrow
-  priority: 'medium',
-  type: 'follow_up',
-  ...navContext.record,  // Pre-fill from context
-}), [navContext.record]);
+  priority: 'Medium',      // Title Case per schema
+  type: 'Follow-up',       // Title Case per schema
+  // Pre-fill from URL query params (hash-based routing)
+  opportunity_id: opportunityIdFromUrl,
+  contact_id: contactIdFromUrl,
+}), [opportunityIdFromUrl, contactIdFromUrl]);
 
-// Form structure
-<SimpleForm defaultValues={defaultValues}>
-  {/* Minimal fields - always visible */}
-  <TextInput source="title" label="Task Title" fullWidth />
-  <DateInput source="due_date" label="Due Date" />
+// In form - keep CreateBase/Form pattern, add ShowMoreSection
+// NOTE: Existing TaskCreate already uses CreateBase + Form, not SimpleForm
+{/* Minimal fields - always visible */}
+<TextInput source="subject" label="Task Subject" fullWidth />
+<DateInput source="due_date" label="Due Date" />
 
-  {/* Context indicator */}
-  {navContext.record.opportunity_id && (
-    <LinkedRecordChip
-      resource="opportunities"
-      id={navContext.record.opportunity_id}
-    />
-  )}
+{/* Context indicator - show linked entity from URL params */}
+{opportunityIdFromUrl && (
+  <LinkedRecordChip
+    opportunityId={opportunityIdFromUrl}
+    opportunityName={queryParams.opportunity_name}  // Optional name from URL
+  />
+)}
 
-  {/* Optional fields */}
-  <ShowMoreSection label="More options">
-    <TextInput source="description" multiline rows={3} />
-    <SelectInput source="priority" choices={PRIORITY_CHOICES} />
-    <SelectInput source="type" choices={TASK_TYPE_CHOICES} />
-  </ShowMoreSection>
-</SimpleForm>
+{/* Optional fields - progressive disclosure */}
+<ShowMoreSection label="More options">
+  <TextInput source="notes" multiline rows={3} label="Notes" />
+  <SelectInput source="priority" choices={PRIORITY_CHOICES} />
+  <SelectInput source="type" choices={TASK_TYPE_CHOICES} />
+</ShowMoreSection>
+
+// In onSuccess handler
+showWorkflowToast({
+  action: 'create',
+  entity: 'task',
+  entityName: data.subject,
+  onNavigate: (path) => { window.location.href = `/#${path}`; },
+});
 ```
 
 ---
@@ -2078,11 +2231,15 @@ const handleLogActivity = (principalId: number) => {
 )}
 
 {/* Activity dialog - receives principal context via props */}
+{/* NOTE: QuickLogActivityDialog uses onOpenChange (NOT onClose) per actual component API */}
 <QuickLogActivityDialog
   open={activityDialogPrincipalId !== null}
-  onClose={() => setActivityDialogPrincipalId(null)}
+  onOpenChange={(open) => {
+    if (!open) setActivityDialogPrincipalId(null);
+  }}
   entityContext={{
-    // Find organization_id for principal
+    // principal.id from dashboard_principal_summary IS the organization FK
+    // (view defines: pa.principal_organization_id AS id)
     organizationId: activityDialogPrincipalId ?? undefined,
   }}
 />
