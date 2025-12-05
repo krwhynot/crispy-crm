@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader } from "@/components/ui/dialog";
 import { useGetIdentity, useGetList } from "ra-core";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
@@ -55,7 +55,12 @@ export const OpportunityArchivedList = () => {
       </Button>
       <Dialog open={openDialog} onOpenChange={() => setOpenDialog(false)}>
         <DialogContent className="lg:max-w-4xl overflow-y-auto max-h-9/10 top-1/20 translate-y-0">
-          <DialogTitle>Archived Opportunities</DialogTitle>
+          <DialogHeader>
+            <DialogTitle>Archived Opportunities</DialogTitle>
+            <DialogDescription>
+              View opportunities that have been archived. These are grouped by archive date.
+            </DialogDescription>
+          </DialogHeader>
           <div className="flex flex-col gap-8">
             {Object.entries(archivedListsByDate).map(([date, opportunities]) => (
               <div key={date} className="flex flex-col gap-4">
