@@ -22,7 +22,16 @@ const inviteUserSchema = z.strictObject({
   first_name: z.string().min(1, "First name required").max(100, "First name too long"),
   last_name: z.string().min(1, "Last name required").max(100, "Last name too long"),
   disabled: z.coerce.boolean().optional().default(false),
-  administrator: z.coerce.boolean().optional().default(false),
+  // NEW: role field (preferred)
+  role: z.enum(['admin', 'manager', 'rep']).optional(),
+  // DEPRECATED: Keep for backward compatibility
+  administrator: z.coerce.boolean().optional(),
+}).transform((data) => {
+  // Derive role from administrator if role not provided
+  const role = data.role ?? (data.administrator ? 'admin' : 'rep');
+  // Strip deprecated administrator field to avoid dual truth sources
+  const { administrator: _deprecated, ...rest } = data;
+  return { ...rest, role };
 });
 
 const patchUserSchema = z.strictObject({
@@ -31,8 +40,20 @@ const patchUserSchema = z.strictObject({
   first_name: z.string().min(1).max(100).optional(),
   last_name: z.string().min(1).max(100).optional(),
   avatar: z.string().url("Invalid avatar URL").max(500).optional(),
+  // NEW: role field (preferred)
+  role: z.enum(['admin', 'manager', 'rep']).optional(),
+  // DEPRECATED: Keep for backward compatibility
   administrator: z.coerce.boolean().optional(),
   disabled: z.coerce.boolean().optional(),
+}).transform((data) => {
+  // Derive role from administrator if role not provided but administrator is
+  let derivedRole = data.role;
+  if (data.role === undefined && data.administrator !== undefined) {
+    derivedRole = data.administrator ? 'admin' : 'rep';
+  }
+  // Strip deprecated administrator field to avoid dual truth sources
+  const { administrator: _deprecated, ...rest } = data;
+  return { ...rest, role: derivedRole };
 });
 
 // Maximum request body size (1MB)
@@ -73,16 +94,16 @@ async function updateSaleDisabled(user_id: string, disabled: boolean) {
     .eq("user_id", user_id);
 }
 
-async function updateSaleAdministrator(user_id: string, administrator: boolean) {
+async function updateSaleRole(user_id: string, role: 'admin' | 'manager' | 'rep') {
   const { data: sales, error: salesError } = await supabaseAdmin
     .from("sales")
-    .update({ administrator })
+    .update({ role })
     .eq("user_id", user_id)
     .select("*");
 
   if (!sales?.length || salesError) {
-    console.error("Error updating user:", salesError);
-    throw salesError ?? new Error("Failed to update sale");
+    console.error("Error updating user role:", salesError);
+    throw salesError ?? new Error("Failed to update sale role");
   }
   return sales.at(0);
 }
@@ -116,7 +137,7 @@ async function inviteUser(req: Request, currentUserSale: any, corsHeaders: Recor
     return createErrorResponse(400, message, corsHeaders);
   }
 
-  const { email, password, first_name, last_name, disabled, administrator } = validatedData;
+  const { email, password, first_name, last_name, disabled, role } = validatedData;
 
   const { data, error: userError } = await supabaseAdmin.auth.admin.createUser({
     email,
@@ -138,7 +159,7 @@ async function inviteUser(req: Request, currentUserSale: any, corsHeaders: Recor
 
   try {
     await updateSaleDisabled(data.user.id, disabled);
-    const sale = await updateSaleAdministrator(data.user.id, administrator);
+    const sale = await updateSaleRole(data.user.id, role);
 
     return new Response(
       JSON.stringify({
@@ -164,7 +185,7 @@ async function patchUser(req: Request, currentUserSale: any, corsHeaders: Record
     return createErrorResponse(400, message, corsHeaders);
   }
 
-  const { sales_id, email, first_name, last_name, avatar, administrator, disabled } = validatedData;
+  const { sales_id, email, first_name, last_name, avatar, role, disabled } = validatedData;
 
   const { data: sale } = await supabaseAdmin.from("sales").select("*").eq("id", sales_id).single();
 
@@ -214,10 +235,17 @@ async function patchUser(req: Request, currentUserSale: any, corsHeaders: Record
 
   try {
     await updateSaleDisabled(data.user.id, disabled);
-    const sale = await updateSaleAdministrator(data.user.id, administrator);
+    if (role) {
+      await updateSaleRole(data.user.id, role);
+    }
+    const { data: updatedSale } = await supabaseAdmin
+      .from("sales")
+      .select("*")
+      .eq("id", sales_id)
+      .single();
     return new Response(
       JSON.stringify({
-        data: sale,
+        data: updatedSale,
       }),
       {
         headers: {
