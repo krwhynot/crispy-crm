@@ -10,6 +10,7 @@
  *   - OpportunityColumn (stage column with droppable area)
  *     - QuickAddOpportunity (inline create form)
  *     - OpportunityCard (draggable card)
+ *       - ActivityPulseDot (activity recency indicator)
  *       - OpportunityCardActions (action menu)
  */
 
@@ -19,3 +20,4 @@ export { OpportunityCard } from "./OpportunityCard";
 export { OpportunityCardActions } from "./OpportunityCardActions";
 export { QuickAddOpportunity } from "./QuickAddOpportunity";
 export { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
+export { ActivityPulseDot } from "./ActivityPulseDot";
