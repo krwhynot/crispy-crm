@@ -1378,36 +1378,59 @@ export function InlineDatePicker({
 
 ```typescript
 import { toast } from 'sonner';
-import { ArrowRight } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import type { OnboardingEntity } from './constants';
+
+/**
+ * Workflow hint configuration
+ *
+ * IMPORTANT: Activities use 'dialog' action type (opens QuickLogActivityDialog),
+ * other entities use 'navigate' action type (router navigation).
+ * This aligns with Decision 2: Activity Creation Pattern.
+ */
+interface WorkflowHintConfig {
+  message: string;
+  nextAction: string;
+  /** 'dialog' = trigger callback, 'navigate' = router push */
+  actionType: 'dialog' | 'navigate';
+  /** Path for navigate action, or dialog identifier for dialog action */
+  target: string;
+}
 
 interface WorkflowToastOptions {
   action: 'create' | 'update';
   entity: OnboardingEntity;
   entityName: string;
-  onNavigate: (path: string) => void;
+  /** Called for 'navigate' action type */
+  onNavigate?: (path: string) => void;
+  /** Called for 'dialog' action type (e.g., open QuickLogActivityDialog) */
+  onOpenDialog?: (dialogId: string) => void;
+  /** Context to pass to dialog (e.g., opportunityId for activity dialog) */
+  dialogContext?: Record<string, unknown>;
 }
 
-const WORKFLOW_HINTS: Record<OnboardingEntity, { message: string; nextPath: string; nextAction: string }> = {
+const WORKFLOW_HINTS: Record<OnboardingEntity, WorkflowHintConfig> = {
   opportunity: {
     message: 'Great! Now log your first activity for this opportunity.',
-    nextPath: '/activities/create',  // NOTE: This actually opens dialog, not route
+    actionType: 'dialog',  // Opens QuickLogActivityDialog (NOT router navigation)
+    target: 'activity',
     nextAction: 'Log Activity',
   },
   activity: {
     message: 'Activity logged! Consider creating a follow-up task.',
-    nextPath: '/tasks/create',
+    actionType: 'navigate',
+    target: '/tasks/create',
     nextAction: 'Create Task',
   },
   contact: {
     message: 'Contact added! Link them to an opportunity.',
-    nextPath: '/opportunities/create',
+    actionType: 'navigate',
+    target: '/opportunities/create',
     nextAction: 'Create Opportunity',
   },
   task: {
     message: 'Task created! You can view all tasks in My Tasks.',
-    nextPath: '/#tasks',
+    actionType: 'navigate',
+    target: '/#tasks',
     nextAction: 'View Tasks',
   },
 };
@@ -1416,13 +1439,18 @@ const WORKFLOW_HINTS: Record<OnboardingEntity, { message: string; nextPath: stri
  * Show workflow guidance toast after entity creation
  *
  * Uses sonner for accessible, dismissible toasts.
- * Includes CTA button to suggested next action.
+ * CTA triggers either dialog (for activities) or navigation (for other entities).
+ *
+ * IMPORTANT: Activity logging uses dialog callback, NOT router navigation.
+ * See Decision 2: Activity Creation Pattern.
  */
 export function showWorkflowToast({
   action,
   entity,
   entityName,
   onNavigate,
+  onOpenDialog,
+  dialogContext,
 }: WorkflowToastOptions) {
   const hint = WORKFLOW_HINTS[entity];
   if (!hint) return;
@@ -1431,12 +1459,20 @@ export function showWorkflowToast({
     ? `${entityName} created!`
     : `${entityName} updated!`;
 
+  const handleAction = () => {
+    if (hint.actionType === 'dialog' && onOpenDialog) {
+      onOpenDialog(hint.target);
+    } else if (hint.actionType === 'navigate' && onNavigate) {
+      onNavigate(hint.target);
+    }
+  };
+
   toast.success(title, {
     description: hint.message,
     duration: 8000,
     action: {
       label: hint.nextAction,
-      onClick: () => onNavigate(hint.nextPath),
+      onClick: handleAction,
     },
     // Accessibility: role="status" is default for sonner
   });
