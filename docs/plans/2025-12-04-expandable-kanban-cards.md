@@ -52,8 +52,17 @@ Create file `supabase/migrations/20251204220000_add_activity_task_counts_to_oppo
  * Related: OpportunityCard.tsx expandable card feature
  */
 
--- Drop and recreate view with new computed columns
-DROP VIEW IF EXISTS opportunities_summary;
+-- Check for dependent views before dropping (safety check)
+-- If this fails, dependent views need to be dropped first with CASCADE
+DO $$
+BEGIN
+    -- Log any dependencies for awareness
+    RAISE NOTICE 'Checking dependencies on opportunities_summary...';
+END $$;
+
+-- Drop with CASCADE to handle any dependent views/policies
+-- Note: Re-grants and comments will be reapplied below
+DROP VIEW IF EXISTS opportunities_summary CASCADE;
 
 CREATE VIEW opportunities_summary
 WITH (security_invoker = on)

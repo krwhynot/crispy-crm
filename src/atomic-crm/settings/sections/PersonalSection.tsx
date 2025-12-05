@@ -2,41 +2,26 @@ import { RecordField } from "@/components/admin/record-field";
 import { TextInput } from "@/components/admin/text-input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useMutation } from "@tanstack/react-query";
 import { CircleX, Pencil, Save } from "lucide-react";
-import { useDataProvider, useGetIdentity, useNotify, useRecordContext } from "ra-core";
+import { useGetIdentity, useRecordContext } from "ra-core";
 import { useState } from "react";
 import { useFormState } from "react-hook-form";
 import { ImageEditorField } from "@/components/ui";
-import type { CrmDataProvider } from "../../providers/types";
 import type { Sale, SalesFormData } from "../../types";
+import { useSalesUpdate } from "../hooks";
 import { TimeZoneSelect } from "../TimeZoneSelect";
 
 export function PersonalSection() {
   const [isEditMode, setEditMode] = useState(false);
-  const notify = useNotify();
   const record = useRecordContext<Sale>();
   const { data: identity, refetch } = useGetIdentity();
   const { isDirty } = useFormState();
-  const dataProvider = useDataProvider<CrmDataProvider>();
 
-  const { mutate: mutateSale } = useMutation({
-    mutationKey: ["updateProfile"],
-    mutationFn: async (data: SalesFormData) => {
-      if (!record) {
-        throw new Error("Record not found");
-      }
-      return dataProvider.salesUpdate(record.id, data);
-    },
+  const { mutate: mutateSale } = useSalesUpdate({
+    userId: record?.id,
     onSuccess: () => {
       refetch();
       setEditMode(false);
-      notify("Your profile has been updated");
-    },
-    onError: () => {
-      notify("An error occurred. Please try again.", {
-        type: "error",
-      });
     },
   });
 

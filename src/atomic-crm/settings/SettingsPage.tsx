@@ -4,6 +4,7 @@ import { User, Bell, Shield, History } from "lucide-react";
 import type { CrmDataProvider } from "../providers/types";
 import type { SalesFormData } from "../types";
 import { SettingsLayout } from "./SettingsLayout";
+import { useSalesUpdate } from "./hooks";
 import { PersonalSection } from "./sections/PersonalSection";
 import { NotificationsSection } from "./sections/NotificationsSection";
 import { SecuritySection } from "./sections/SecuritySection";
@@ -21,23 +22,11 @@ export const SettingsPage = () => {
   const notify = useNotify();
   const dataProvider = useDataProvider<CrmDataProvider>();
 
-  const { mutate } = useMutation({
-    mutationKey: ["updateProfile"],
-    mutationFn: async (data: SalesFormData) => {
-      if (!identity) {
-        throw new Error("Record not found");
-      }
-      return dataProvider.salesUpdate(identity.id, data);
-    },
+  const { mutate } = useSalesUpdate({
+    userId: identity?.id,
     onSuccess: () => {
       refetchIdentity();
       refetchUser();
-      notify("Your profile has been updated");
-    },
-    onError: (_) => {
-      notify("An error occurred. Please try again", {
-        type: "error",
-      });
     },
   });
 
