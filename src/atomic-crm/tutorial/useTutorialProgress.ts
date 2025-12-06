@@ -7,6 +7,7 @@ const DEFAULT_PROGRESS: TutorialProgress = {
   currentChapter: null,
   currentStepIndex: 0,
   completedChapters: [],
+  visitedPages: [],
   lastUpdated: new Date().toISOString(),
 };
 
@@ -14,7 +15,12 @@ function loadProgress(): TutorialProgress {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
-      return JSON.parse(stored) as TutorialProgress;
+      const parsed = JSON.parse(stored);
+      // Handle migration for existing users without visitedPages
+      return {
+        ...parsed,
+        visitedPages: parsed.visitedPages ?? [],
+      } as TutorialProgress;
     }
   } catch {
     // Fail silently, return default
@@ -74,11 +80,36 @@ export function useTutorialProgress() {
     });
   }, []);
 
+  // Check if a page has been visited (for first-visit detection)
+  const hasVisitedPage = useCallback(
+    (chapter: TutorialChapter) => {
+      return progress.visitedPages.includes(chapter);
+    },
+    [progress.visitedPages]
+  );
+
+  // Mark a page as visited (prevents auto-trigger on subsequent visits)
+  const markPageVisited = useCallback((chapter: TutorialChapter) => {
+    setProgress((prev) => {
+      // Prevent duplicates
+      if (prev.visitedPages.includes(chapter)) {
+        return prev;
+      }
+      return {
+        ...prev,
+        visitedPages: [...prev.visitedPages, chapter],
+        lastUpdated: new Date().toISOString(),
+      };
+    });
+  }, []);
+
   return {
     progress,
     setCurrentChapter,
     setCurrentStep,
     markChapterComplete,
     resetProgress,
+    hasVisitedPage,
+    markPageVisited,
   };
 }

@@ -1,0 +1,98 @@
+import { useEffect, useRef } from 'react';
+import { HelpCircle } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { useTutorial } from './TutorialProvider';
+import { useTutorialProgress } from './useTutorialProgress';
+import type { TutorialChapter } from './types';
+
+interface PageTutorialTriggerProps {
+  /** Tutorial chapter for this page (e.g., 'organizations', 'contacts') */
+  chapter: TutorialChapter;
+  /** Position of the help button (default: bottom-right) */
+  position?: 'bottom-right' | 'bottom-left' | 'top-right';
+}
+
+const POSITION_CLASSES = {
+  'bottom-right': 'bottom-4 right-4',
+  'bottom-left': 'bottom-4 left-4',
+  'top-right': 'top-20 right-4', // Below header
+} as const;
+
+// Human-readable chapter names
+const CHAPTER_LABELS: Record<TutorialChapter, string> = {
+  organizations: 'Organizations',
+  contacts: 'Contacts',
+  opportunities: 'Opportunities',
+  activities: 'Activities',
+  tasks: 'Tasks',
+  products: 'Products',
+  notes: 'Notes',
+  users: 'Users',
+};
+
+/**
+ * Page-specific tutorial trigger component.
+ *
+ * Behavior:
+ * - On first visit: Auto-starts tutorial after 500ms delay
+ * - On subsequent visits: Shows a floating "?" help button
+ * - Hidden during active tutorial
+ */
+export function PageTutorialTrigger({
+  chapter,
+  position = 'bottom-right',
+}: PageTutorialTriggerProps) {
+  const { startTutorial, isActive } = useTutorial();
+  const { hasVisitedPage, markPageVisited } = useTutorialProgress();
+  const hasAutoTriggered = useRef(false);
+
+  // First-visit auto-trigger
+  useEffect(() => {
+    // Only trigger once per mount
+    if (hasAutoTriggered.current) return;
+    // Don't auto-trigger if tutorial is already active
+    if (isActive) return;
+
+    const wasVisited = hasVisitedPage(chapter);
+    // Mark as visited immediately to prevent race conditions
+    markPageVisited(chapter);
+
+    if (!wasVisited) {
+      hasAutoTriggered.current = true;
+      // Delay to let the page render first
+      const timer = setTimeout(() => {
+        startTutorial(chapter);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [chapter, hasVisitedPage, markPageVisited, startTutorial, isActive]);
+
+  // Don't show button during active tutorial
+  if (isActive) return null;
+
+  return (
+    <div className={`fixed ${POSITION_CLASSES[position]} z-50`}>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <Button
+            variant="default"
+            size="icon"
+            onClick={() => startTutorial(chapter)}
+            className="h-11 w-11 rounded-full shadow-lg bg-primary text-primary-foreground hover:scale-105 transition-transform"
+            aria-label={`Start ${CHAPTER_LABELS[chapter]} tutorial`}
+          >
+            <HelpCircle className="h-5 w-5" />
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent side="left">
+          <p>Learn about {CHAPTER_LABELS[chapter]}</p>
+        </TooltipContent>
+      </Tooltip>
+    </div>
+  );
+}

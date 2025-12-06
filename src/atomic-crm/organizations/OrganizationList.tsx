@@ -21,6 +21,7 @@ import { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
 import { OrganizationEmpty } from "./OrganizationEmpty";
 import { TopToolbar } from "../layout/TopToolbar";
 import { ORGANIZATION_FILTER_CONFIG } from "./organizationFilterConfig";
+import { PageTutorialTrigger } from "../tutorial";
 import type { Organization, Sale, Segment } from "../types";
 import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
 
@@ -227,6 +228,7 @@ export const OrganizationList = () => {
         onClose={closeSlideOver}
         onModeToggle={toggleMode}
       />
+      <PageTutorialTrigger chapter="organizations" position="bottom-left" />
     </>
   );
 };

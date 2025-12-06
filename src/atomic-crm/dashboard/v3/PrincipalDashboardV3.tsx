@@ -4,7 +4,6 @@ import { LogActivityFAB } from "./components/LogActivityFAB";
 import { MobileQuickActionBar } from "./components/MobileQuickActionBar";
 import { TaskCompleteSheet } from "./components/TaskCompleteSheet";
 import { KPISummaryRow } from "./components/KPISummaryRow";
-import { TutorialAutoStart } from "../../tutorial/TutorialAutoStart";
 
 /**
  * PrincipalDashboardV3 - Vertically stacked dashboard with Log Activity FAB
@@ -45,9 +44,6 @@ export function PrincipalDashboardV3() {
   // - Total chrome: ~136px, using 140px for safety margin
   return (
     <div className="flex h-[calc(100dvh-140px)] flex-col overflow-hidden">
-      {/* Auto-start tutorial on every login */}
-      <TutorialAutoStart />
-
       {/* Main Content - fills calculated height, no internal header (Layout provides one) */}
       <main className="relative flex min-h-0 flex-1 flex-col gap-3">
         {/* KPI Summary Row - compact, shrinks to content */}
