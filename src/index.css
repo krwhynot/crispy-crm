@@ -1202,3 +1202,23 @@ input[type="time"] {
     scroll-behavior: auto !important;
   }
 }
+
+/* ============================
+   Tutorial / Driver.js Overrides
+   ============================ */
+
+/* Custom popover styling - uses semantic colors */
+.tutorial-popover {
+  /* Override Driver.js defaults to match design system */
+  --driver-overlay-opacity: 0.75;
+}
+
+/* Ensure highlighted elements are above overlay */
+.driver-active-element {
+  z-index: 10001 !important;
+}
+
+/* Smooth transitions for overlay */
+.driver-overlay {
+  transition: opacity 0.2s ease-in-out;
+}
