@@ -7,7 +7,6 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useTutorial } from './TutorialProvider';
-import { useTutorialProgress } from './useTutorialProgress';
 import type { TutorialChapter } from './types';
 
 interface PageTutorialTriggerProps {
@@ -47,8 +46,7 @@ export function PageTutorialTrigger({
   chapter,
   position = 'bottom-right',
 }: PageTutorialTriggerProps) {
-  const { startTutorial, isActive } = useTutorial();
-  const { hasVisitedPage, markPageVisited } = useTutorialProgress();
+  const { startTutorial, isActive, hasVisitedPage, markPageVisited } = useTutorial();
   const hasAutoTriggered = useRef(false);
 
   // First-visit auto-trigger
