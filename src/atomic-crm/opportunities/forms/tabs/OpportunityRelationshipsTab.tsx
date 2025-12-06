@@ -48,6 +48,7 @@ export const OpportunityRelationshipsTab = () => {
             source="customer_organization_id"
             reference="organizations"
             filter={{ organization_type: "customer" }}
+            data-tutorial="opp-customer"
           >
             <AutocompleteOrganizationInput
               label="Customer Organization *"
@@ -100,6 +101,7 @@ export const OpportunityRelationshipsTab = () => {
             source="principal_organization_id"
             reference="organizations"
             filter={{ organization_type: "principal" }}
+            data-tutorial="opp-principal"
           >
             <AutocompleteOrganizationInput
               label="Principal Organization *"
@@ -212,6 +214,7 @@ export const OpportunityRelationshipsTab = () => {
             source="contact_ids"
             reference="contacts_summary"
             filter={contactFilter}
+            data-tutorial="opp-contacts"
           >
             <AutocompleteArrayInput
               label={false}
@@ -228,6 +231,7 @@ export const OpportunityRelationshipsTab = () => {
             disabled
             placeholder="Select Customer Organization first"
             choices={[]}
+            data-tutorial="opp-contacts"
           />
         )}
 

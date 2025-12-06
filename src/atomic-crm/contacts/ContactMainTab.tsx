@@ -47,8 +47,8 @@ export const ContactMainTab = () => {
       <FormSection title="Identity">
         <div className="space-y-2">
           <Avatar />
-          <TextInput source="first_name" label="First Name *" helperText="Required field" />
-          <TextInput source="last_name" label="Last Name *" helperText="Required field" />
+          <TextInput source="first_name" label="First Name *" helperText="Required field" data-tutorial="contact-first-name" />
+          <TextInput source="last_name" label="Last Name *" helperText="Required field" data-tutorial="contact-last-name" />
         </div>
       </FormSection>
 
@@ -59,6 +59,7 @@ export const ContactMainTab = () => {
             reference="organizations"
             label="Organization *"
             isRequired
+            data-tutorial="contact-organization"
           >
             <AutocompleteOrganizationInput />
           </ReferenceInput>
@@ -106,7 +107,7 @@ export const ContactMainTab = () => {
 
       <FormSection title="Contact Information">
         <div className="space-y-2">
-          <ArrayInput source="email" label="Email addresses" helperText={false}>
+          <ArrayInput source="email" label="Email addresses" helperText={false} data-tutorial="contact-email">
             <SimpleFormIterator
               inline
               disableReordering
@@ -132,7 +133,7 @@ export const ContactMainTab = () => {
               />
             </SimpleFormIterator>
           </ArrayInput>
-          <ArrayInput source="phone" label="Phone numbers" helperText={false}>
+          <ArrayInput source="phone" label="Phone numbers" helperText={false} data-tutorial="contact-phone">
             <SimpleFormIterator
               inline
               disableReordering

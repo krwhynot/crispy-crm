@@ -29,7 +29,12 @@ function loadProgress(): TutorialProgress {
 }
 
 function saveProgress(progress: TutorialProgress): void {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  } catch (error) {
+    // Safari private mode, quota exceeded, or disabled localStorage
+    console.warn('Failed to save tutorial progress:', error);
+  }
 }
 
 export function useTutorialProgress() {

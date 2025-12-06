@@ -17,7 +17,7 @@ export const TaskEmpty = () => {
           Your task list is empty. Create a task to get started.
         </p>
       </div>
-      <CreateButton label="New Task" />
+      <CreateButton label="New Task" data-tutorial="create-task-btn" />
     </div>
   );
 };

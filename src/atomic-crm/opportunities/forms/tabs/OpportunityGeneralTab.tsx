@@ -19,6 +19,7 @@ export const OpportunityGeneralTab = ({ mode }: OpportunityGeneralTabProps) => {
           source="name"
           label="Opportunity name *"
           helperText={false}
+          data-tutorial="opp-name"
           InputProps={{
             endAdornment: (
               <TooltipProvider>
@@ -52,6 +53,7 @@ export const OpportunityGeneralTab = ({ mode }: OpportunityGeneralTabProps) => {
         label="Expected Closing Date *"
         helperText={false}
         type="date"
+        data-tutorial="opp-close-date"
       />
     </div>
   );

@@ -66,6 +66,7 @@ export default function ActivityList() {
           "deleted_at@is": null,
         }}
         actions={<ActivityListActions />}
+        data-tutorial="activities-list"
       >
         <ActivityListLayout />
         <FloatingCreateButton />
@@ -230,7 +231,7 @@ const ActivityListLayout = () => {
 const ActivityListActions = () => (
   <TopToolbar>
     <ExportButton exporter={exporter} />
-    <CreateButton label="Log Activity" />
+    <CreateButton label="Log Activity" data-tutorial="create-activity-btn" />
   </TopToolbar>
 );
 

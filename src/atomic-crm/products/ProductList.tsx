@@ -54,6 +54,7 @@ export const ProductList = () => {
         actions={<ProductListActions />}
         perPage={25}
         sort={{ field: "name", order: "ASC" }}
+        data-tutorial="products-list"
       >
         <ProductListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
         <FloatingCreateButton />
@@ -174,7 +175,7 @@ const ProductListLayout = ({
 const ProductListActions = () => (
   <TopToolbar>
     <SortButton fields={["name", "sku", "category", "status"]} />
-    <CreateButton />
+    <CreateButton data-tutorial="create-product-btn" />
   </TopToolbar>
 );
 

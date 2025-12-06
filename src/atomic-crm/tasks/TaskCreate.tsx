@@ -67,6 +67,7 @@ const TaskFormContent = ({
           label="Task Title"
           isRequired
           helperText="What needs to be done?"
+          data-tutorial="task-title"
         />
 
         <TextInput
@@ -84,6 +85,7 @@ const TaskFormContent = ({
             type="date"
             isRequired
             helperText="When is this due?"
+            data-tutorial="task-due-date"
           />
 
           <SelectInput

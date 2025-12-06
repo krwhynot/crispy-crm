@@ -69,6 +69,7 @@ const OpportunityList = () => {
         actions={<OpportunityActions view={view} onViewChange={handleViewChange} />}
         exporter={opportunityExporter}
         pagination={null}
+        data-tutorial="opportunities-list"
       >
         <OpportunityListLayout
           view={view}
@@ -177,7 +178,7 @@ const OpportunityActions = ({
       <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
       <ExportButton />
       <QuickAddButton />
-      <CreateButton label="New Opportunity" />
+      <CreateButton label="New Opportunity" data-tutorial="create-opportunity-btn" />
     </TopToolbar>
   );
 };

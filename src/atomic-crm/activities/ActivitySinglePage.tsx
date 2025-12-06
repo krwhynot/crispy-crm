@@ -32,6 +32,7 @@ export default function ActivitySinglePage() {
             }))}
             helperText="Choose how this interaction occurred"
             isRequired
+            data-tutorial="activity-type"
           />
         </FormGrid>
 
@@ -58,12 +59,13 @@ export default function ActivitySinglePage() {
           multiline
           rows={4}
           helperText="Optional narrative for this interaction"
+          data-tutorial="activity-description"
         />
       </FormSection>
 
       <FormSection title="Relationships">
         <FormGrid>
-          <ReferenceInput source="opportunity_id" reference="opportunities">
+          <ReferenceInput source="opportunity_id" reference="opportunities" data-tutorial="activity-opportunity">
             <AutocompleteInput
               label="Opportunity"
               optionText="name"
