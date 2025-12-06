@@ -7,14 +7,14 @@ import {
   useEffect,
   type ReactNode,
 } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { driver, type Driver, type Config } from 'driver.js';
 import 'driver.js/dist/driver.css';
 
 import { useTutorialProgress } from './useTutorialProgress';
 import { waitForElement } from './waitForElement';
 import { getAllSteps, getChapterSteps } from './steps';
-import type { TutorialChapter, TutorialProgress } from './types';
+import type { TutorialChapter, TutorialProgress, TutorialStep } from './types';
 
 interface TutorialContextType {
   startTutorial: (chapter?: TutorialChapter) => void;
@@ -33,11 +33,11 @@ interface TutorialProviderProps {
 
 export function TutorialProvider({ children }: TutorialProviderProps) {
   const navigate = useNavigate();
-  const location = useLocation();
   const driverRef = useRef<Driver | null>(null);
   const [isActive, setIsActive] = useState(false);
   const currentStepIndexRef = useRef(0);
   const totalStepsRef = useRef(0);
+  const stepsRef = useRef<TutorialStep[]>([]);
 
   const {
     progress,
@@ -57,8 +57,39 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
     setCurrentChapter(null);
   }, [setCurrentChapter]);
 
+  /**
+   * Navigate to a step's target page and wait for its element to appear.
+   * Returns true if element is ready, false if not found.
+   */
+  const prepareStep = useCallback(
+    async (step: TutorialStep): Promise<boolean> => {
+      const currentPath = window.location.pathname;
+
+      // Navigate if needed
+      if (step.navigateTo && currentPath !== step.navigateTo) {
+        navigate(step.navigateTo);
+        // Give React Router time to start the transition
+        await new Promise((resolve) => setTimeout(resolve, 150));
+      }
+
+      // Wait for the element if this step has one
+      if (step.element) {
+        try {
+          await waitForElement(step.element, 8000); // 8 second timeout
+          return true;
+        } catch (error) {
+          console.warn(`Tutorial: Element not found: ${step.element}`);
+          return false;
+        }
+      }
+
+      return true; // Steps without elements (like completion screens) are always ready
+    },
+    [navigate]
+  );
+
   const startTutorial = useCallback(
-    (chapter?: TutorialChapter) => {
+    async (chapter?: TutorialChapter) => {
       // Stop any existing tour
       stopTutorial();
 
@@ -72,9 +103,17 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
 
       totalStepsRef.current = steps.length;
       currentStepIndexRef.current = 0;
+      stepsRef.current = steps;
 
       // Set current chapter in progress
       setCurrentChapter(chapter ?? 'organizations');
+
+      // Prepare the FIRST step before starting (navigate + wait for element)
+      const firstStepReady = await prepareStep(steps[0]);
+      if (!firstStepReady) {
+        console.warn('Tutorial: First step element not found, aborting');
+        return;
+      }
 
       // Configure Driver.js
       const config: Config = {
@@ -85,14 +124,66 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
         allowKeyboardControl: true,
         overlayColor: 'rgba(0, 0, 0, 0.75)',
         popoverClass: 'tutorial-popover',
-        // Explicitly configure buttons - MUST include all button types
         showButtons: ['next', 'previous', 'close'],
         nextBtnText: 'Next →',
         prevBtnText: '← Back',
         doneBtnText: 'Done ✓',
-        // Customize popover for last step to ensure Done button is clickable
+
+        // Handle navigation BEFORE step advances
+        onNextClick: async () => {
+          const currentIndex = currentStepIndexRef.current;
+          const nextIndex = currentIndex + 1;
+
+          // If we're on the last step, destroy the tour
+          if (nextIndex >= steps.length) {
+            if (driverRef.current) {
+              driverRef.current.destroy();
+            }
+            return;
+          }
+
+          const nextStep = steps[nextIndex];
+
+          // Prepare the next step (navigate + wait for element)
+          const stepReady = await prepareStep(nextStep);
+
+          if (stepReady && driverRef.current) {
+            // Update tracking
+            currentStepIndexRef.current = nextIndex;
+            setCurrentStep(nextIndex);
+
+            // Now move to the next step - element should be ready
+            driverRef.current.moveNext();
+          } else {
+            // Element not found - skip this step and try the next
+            console.warn(`Skipping step ${nextIndex}: element not ready`);
+            currentStepIndexRef.current = nextIndex;
+            if (driverRef.current) {
+              driverRef.current.moveNext();
+            }
+          }
+        },
+
+        // Handle back button similarly
+        onPrevClick: async () => {
+          const currentIndex = currentStepIndexRef.current;
+          const prevIndex = currentIndex - 1;
+
+          if (prevIndex < 0) return;
+
+          const prevStep = steps[prevIndex];
+          await prepareStep(prevStep);
+
+          currentStepIndexRef.current = prevIndex;
+          setCurrentStep(prevIndex);
+
+          if (driverRef.current) {
+            driverRef.current.movePrevious();
+          }
+        },
+
+        // Customize popover for last step
         onPopoverRender: (popover, { state }) => {
-          // On the last step, manually wire up the Done button
           const isLastStep = state.activeIndex === steps.length - 1;
           if (isLastStep) {
             const nextBtn = popover.wrapper.querySelector('.driver-popover-next-btn');
@@ -106,7 +197,8 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
             }
           }
         },
-        steps: steps.map((step, index) => ({
+
+        steps: steps.map((step) => ({
           element: step.element,
           popover: {
             title: step.popover.title,
@@ -114,35 +206,15 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
             side: step.popover.side,
             align: step.popover.align,
           },
-          onHighlightStarted: async () => {
-            // Get current path fresh (not stale from closure)
-            const currentPath = window.location.pathname;
-
-            // Navigate if needed
-            if (step.navigateTo && currentPath !== step.navigateTo) {
-              navigate(step.navigateTo);
-            }
-
-            // Always wait for the element (handles both navigation and slow React renders)
-            if (step.element) {
-              try {
-                await waitForElement(step.element);
-              } catch (error) {
-                console.warn(`Tutorial step ${index}: Element not found`, step.element);
-              }
-            }
-
-            setCurrentStep(index);
-            currentStepIndexRef.current = index;
-          },
         })),
+
         onDestroyStarted: () => {
           const reachedFinalStep = currentStepIndexRef.current >= totalStepsRef.current - 1;
-
           if (chapter && driverRef.current && reachedFinalStep) {
             markChapterComplete(chapter);
           }
         },
+
         onDestroyed: () => {
           setIsActive(false);
           driverRef.current = null;
@@ -160,14 +232,7 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
         driverRef.current = null;
       }
     },
-    [
-      stopTutorial,
-      setCurrentChapter,
-      setCurrentStep,
-      markChapterComplete,
-      navigate,
-      location.pathname,
-    ]
+    [stopTutorial, setCurrentChapter, setCurrentStep, markChapterComplete, prepareStep]
   );
 
   // Cleanup on unmount
