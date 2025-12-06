@@ -18,6 +18,7 @@ export const OrganizationMainTab = () => {
             helperText="Required field"
             placeholder="Organization name"
             label="Name *"
+            data-tutorial="org-name"
           />
           <SelectInput
             source="organization_type"
@@ -25,6 +26,7 @@ export const OrganizationMainTab = () => {
             choices={ORGANIZATION_TYPE_CHOICES}
             helperText="Required field"
             emptyText="Select organization type"
+            data-tutorial="org-type"
           />
           <ReferenceInput
             source="sales_id"

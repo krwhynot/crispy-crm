@@ -63,6 +63,7 @@ export default function TaskList() {
         perPage={100}
         sort={{ field: "due_date", order: "ASC" }}
         exporter={exporter}
+        data-tutorial="tasks-list"
       >
         <TaskListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
         <FloatingCreateButton />

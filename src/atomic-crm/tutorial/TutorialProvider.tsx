@@ -36,6 +36,8 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
   const location = useLocation();
   const driverRef = useRef<Driver | null>(null);
   const [isActive, setIsActive] = useState(false);
+  const currentStepIndexRef = useRef(0);
+  const totalStepsRef = useRef(0);
 
   const {
     progress,
@@ -68,6 +70,9 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
         return;
       }
 
+      totalStepsRef.current = steps.length;
+      currentStepIndexRef.current = 0;
+
       // Set current chapter in progress
       setCurrentChapter(chapter ?? 'organizations');
 
@@ -75,6 +80,9 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
       const config: Config = {
         showProgress: true,
         animate: true,
+        smoothScroll: true,
+        allowClose: true,
+        allowKeyboardControl: true,
         overlayColor: 'rgba(0, 0, 0, 0.75)',
         popoverClass: 'tutorial-popover',
         steps: steps.map((step, index) => ({
@@ -94,11 +102,13 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
               }
             }
             setCurrentStep(index);
+            currentStepIndexRef.current = index;
           },
         })),
         onDestroyStarted: () => {
-          // Check if tour was completed (last step)
-          if (chapter && driverRef.current) {
+          const reachedFinalStep = currentStepIndexRef.current >= totalStepsRef.current - 1;
+
+          if (chapter && driverRef.current && reachedFinalStep) {
             markChapterComplete(chapter);
           }
         },
@@ -109,9 +119,15 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
       };
 
       // Create and start driver
-      driverRef.current = driver(config);
-      setIsActive(true);
-      driverRef.current.drive();
+      try {
+        driverRef.current = driver(config);
+        setIsActive(true);
+        driverRef.current.drive();
+      } catch (error) {
+        console.error('Failed to initialize tutorial:', error);
+        setIsActive(false);
+        driverRef.current = null;
+      }
     },
     [
       stopTutorial,

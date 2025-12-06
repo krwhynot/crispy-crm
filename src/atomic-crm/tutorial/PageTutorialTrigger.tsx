@@ -44,31 +44,29 @@ const CHAPTER_LABELS: Record<TutorialChapter, string> = {
  */
 export function PageTutorialTrigger({
   chapter,
-  position = 'bottom-right',
+  position = 'bottom-left',
 }: PageTutorialTriggerProps) {
   const { startTutorial, isActive, hasVisitedPage, markPageVisited } = useTutorial();
   const hasAutoTriggered = useRef(false);
 
   // First-visit auto-trigger
   useEffect(() => {
-    // Only trigger once per mount
     if (hasAutoTriggered.current) return;
-    // Don't auto-trigger if tutorial is already active
     if (isActive) return;
 
-    const wasVisited = hasVisitedPage(chapter);
-    // Mark as visited immediately to prevent race conditions
-    markPageVisited(chapter);
+    const alreadyVisited = hasVisitedPage(chapter);
+    if (alreadyVisited) return;
 
-    if (!wasVisited) {
-      hasAutoTriggered.current = true;
-      // Delay to let the page render first
-      const timer = setTimeout(() => {
-        startTutorial(chapter);
-      }, 500);
-      return () => clearTimeout(timer);
-    }
-  }, [chapter, hasVisitedPage, markPageVisited, startTutorial, isActive]);
+    hasAutoTriggered.current = true;
+
+    const timer = window.setTimeout(() => {
+      // Mark visited ONLY when tutorial actually starts
+      markPageVisited(chapter);
+      startTutorial(chapter);
+    }, 500);
+
+    return () => window.clearTimeout(timer);
+  }, [chapter, hasVisitedPage, isActive, markPageVisited, startTutorial]);
 
   // Don't show button during active tutorial
   if (isActive) return null;

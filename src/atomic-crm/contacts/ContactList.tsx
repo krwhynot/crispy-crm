@@ -55,6 +55,7 @@ export const ContactList = () => {
         perPage={25}
         sort={{ field: "last_seen", order: "DESC" }}
         exporter={contactExporter}
+        data-tutorial="contacts-list"
       >
         <ContactListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
         <FloatingCreateButton />
@@ -185,7 +186,9 @@ const ContactListActions = () => (
     <ContactImportButton />
     <ContactExportTemplateButton />
     <ExportButton exporter={contactExporter} />
-    <CreateButton />
+    <span data-tutorial="create-contact-btn">
+      <CreateButton />
+    </span>
   </TopToolbar>
 );
 

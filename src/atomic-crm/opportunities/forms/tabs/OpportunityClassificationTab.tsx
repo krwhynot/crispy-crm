@@ -10,6 +10,7 @@ export const OpportunityClassificationTab = () => {
         label="Stage *"
         choices={OPPORTUNITY_STAGE_CHOICES}
         helperText={false}
+        data-tutorial="opp-stage"
       />
       <SelectInput
         source="priority"
@@ -21,6 +22,7 @@ export const OpportunityClassificationTab = () => {
           { id: "critical", name: "Critical" },
         ]}
         helperText={false}
+        data-tutorial="opp-priority"
       />
       <LeadSourceInput />
     </div>
