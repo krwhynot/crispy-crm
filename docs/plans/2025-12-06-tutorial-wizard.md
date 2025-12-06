@@ -13,11 +13,11 @@
 
 **Parallelization:**
 - **Group A:** Tasks 1-3 (Foundation) - sequential within group
-- **Group B:** Tasks 4-6 (Core Components) - sequential, after Group A
-- **Group C:** Tasks 7-9 (UI Components) - parallel within group, after Task 5
-- **Group D:** Tasks 10-14 (Step Forms) - parallel within group, after Task 8
-- **Group E:** Tasks 15-17 (Integration) - sequential, after Groups C+D
-- **Group F:** Tasks 18-19 (Testing) - parallel, after Group E
+- **Group B:** Tasks 4-7 (Core Components) - sequential, after Group A
+- **Group C:** Tasks 8-10 (UI Components) - parallel within group, after Task 6
+- **Group D:** Tasks 11-15 (Step Forms) - parallel within group, after Task 9
+- **Group E:** Tasks 16-18 (Integration) - sequential, after Groups C+D
+- **Group F:** Tasks 19-20 (Testing) - parallel, after Group E
 
 **Constitution Principles In Play:**
 - [x] Error handling (fail fast - NO retry logic)
@@ -36,21 +36,22 @@
 | 2 | Zod validation schema | 1 | None |
 | 3 | Data provider resource | 2 | None |
 | 4 | useTutorialProgress hook | 3 | None |
-| 5 | TutorialProvider context | 4 | None |
-| 6 | TutorialWizard modal | 5 | None |
-| 7 | TutorialStepIndicator | 5 | 8, 9 |
-| 8 | TutorialStepContent | 5 | 7, 9 |
-| 9 | TutorialDismissCheckbox | 5 | 7, 8 |
-| 10 | OrganizationStep | 8 | 11, 12, 13, 14 |
-| 11 | ContactStep | 8 | 10, 12, 13, 14 |
-| 12 | OpportunityStep | 8 | 10, 11, 13, 14 |
-| 13 | ActivityStep | 8 | 10, 11, 12, 14 |
-| 14 | TaskStep | 8 | 10, 11, 12, 13 |
-| 15 | TutorialSuccessMessage | 10-14 | None |
-| 16 | Module index.tsx | 15 | None |
-| 17 | Layout.tsx integration | 16 | None |
-| 18 | Unit tests | 17 | 19 |
-| 19 | E2E test | 17 | 18 |
+| 5 | Wizard configuration | 4 | None |
+| 6 | TutorialProvider context | 5 | None |
+| 7 | TutorialWizard modal | 6 | None |
+| 8 | TutorialStepIndicator | 6 | 9, 10 |
+| 9 | TutorialStepContent | 6 | 8, 10 |
+| 10 | TutorialDismissCheckbox | 6 | 8, 9 |
+| 11 | OrganizationStep | 9 | 12, 13, 14, 15 |
+| 12 | ContactStep | 9 | 11, 13, 14, 15 |
+| 13 | OpportunityStep | 9 | 11, 12, 14, 15 |
+| 14 | ActivityStep | 9 | 11, 12, 13, 15 |
+| 15 | TaskStep | 9 | 11, 12, 13, 14 |
+| 16 | TutorialSuccessMessage | 11-15 | None |
+| 17 | Module index.tsx | 16 | None |
+| 18 | Layout.tsx integration | 17 | None |
+| 19 | Unit tests | 18 | 20 |
+| 20 | E2E test | 18 | 19 |
 
 ---
 
@@ -599,9 +600,85 @@ npm test -- src/atomic-crm/tutorial/__tests__/useTutorialProgress.test.ts
 
 ---
 
-### Task 5: TutorialProvider Context
+### Task 5: Wizard Configuration
 
 **Depends on:** Task 4
+
+**Constitution Check:**
+- [x] Using `interface` for step config shape
+- [x] Declarative configuration (recommended by Gemini review)
+
+**Files:**
+- Create: `src/atomic-crm/tutorial/wizardConfig.ts`
+
+```typescript
+// src/atomic-crm/tutorial/wizardConfig.ts
+import type { TutorialStepId } from './validation/tutorial';
+
+/**
+ * Step configuration interface (Constitution: interface for objects)
+ */
+interface StepConfig {
+  id: TutorialStepId;
+  label: string;
+  description: string;
+}
+
+/**
+ * Declarative wizard step configuration
+ * Order matters - this defines the wizard flow
+ */
+export const WIZARD_STEPS: readonly StepConfig[] = [
+  {
+    id: 'organization',
+    label: 'Organization',
+    description: 'Create your first organization - a company you work with.',
+  },
+  {
+    id: 'contact',
+    label: 'Contact',
+    description: 'Add a contact at the organization you just created.',
+  },
+  {
+    id: 'opportunity',
+    label: 'Opportunity',
+    description: 'Create a sales opportunity for this organization.',
+  },
+  {
+    id: 'activity',
+    label: 'Activity',
+    description: 'Log your first activity on this opportunity.',
+  },
+  {
+    id: 'task',
+    label: 'Task',
+    description: 'Create a follow-up task to stay on track.',
+  },
+] as const;
+
+/**
+ * Get step index by ID
+ */
+export const getStepIndex = (stepId: TutorialStepId): number =>
+  WIZARD_STEPS.findIndex((s) => s.id === stepId);
+
+/**
+ * Get step config by ID
+ */
+export const getStepConfig = (stepId: TutorialStepId): StepConfig | undefined =>
+  WIZARD_STEPS.find((s) => s.id === stepId);
+
+/**
+ * Total number of steps
+ */
+export const TOTAL_STEPS = WIZARD_STEPS.length;
+```
+
+---
+
+### Task 6: TutorialProvider Context
+
+**Depends on:** Task 5
 
 **Constitution Check:**
 - [x] Using `interface` for context value shape
@@ -1323,15 +1400,17 @@ test.describe('Tutorial Wizard', () => {
 
 **Plan saved to:** `docs/plans/2025-12-06-tutorial-wizard.md`
 
+**Total Tasks:** 20
+
 ### Parallel Execution Strategy
 
 ```
 GROUP A (Sequential): Tasks 1 → 2 → 3
-GROUP B (Sequential): Tasks 4 → 5 → 6
-GROUP C (Parallel):   Tasks 7, 8, 9 (after Task 5)
-GROUP D (Parallel):   Tasks 10, 11, 12, 13, 14 (after Task 8)
-GROUP E (Sequential): Tasks 15 → 16 → 17
-GROUP F (Parallel):   Tasks 18, 19 (after Task 17)
+GROUP B (Sequential): Tasks 4 → 5 → 6 → 7
+GROUP C (Parallel):   Tasks 8, 9, 10 (after Task 6)
+GROUP D (Parallel):   Tasks 11, 12, 13, 14, 15 (after Task 9)
+GROUP E (Sequential): Tasks 16 → 17 → 18
+GROUP F (Parallel):   Tasks 19, 20 (after Task 18)
 ```
 
 ### To Execute
