@@ -7,7 +7,9 @@ export const OrganizationMoreTab = () => {
     <div className="space-y-6">
       <FormSection title="Additional Information">
         <FormGrid columns={2}>
-          <TextInput source="website" helperText="Format: https://example.com" label="Website" data-tutorial="org-website" />
+          <div data-tutorial="org-website">
+            <TextInput source="website" helperText="Format: https://example.com" label="Website" />
+          </div>
           <TextInput
             source="linkedin_url"
             label="LinkedIn URL"

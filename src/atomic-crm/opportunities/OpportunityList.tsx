@@ -59,27 +59,28 @@ const OpportunityList = () => {
 
   return (
     <>
-      <List
-        perPage={100}
-        filter={{
-          "deleted_at@is": null,
-        }}
-        title={false}
-        sort={{ field: "created_at", order: "DESC" }}
-        actions={<OpportunityActions view={view} onViewChange={handleViewChange} />}
-        exporter={opportunityExporter}
-        pagination={null}
-        data-tutorial="opportunities-list"
-      >
-        <OpportunityListLayout
-          view={view}
-          openSlideOver={openSlideOver}
-          isSlideOverOpen={isOpen}
-          slideOverId={slideOverId}
-          closeSlideOver={closeSlideOver}
-        />
-        <FloatingCreateButton />
-      </List>
+      <div data-tutorial="opportunities-list">
+        <List
+          perPage={100}
+          filter={{
+            "deleted_at@is": null,
+          }}
+          title={false}
+          sort={{ field: "created_at", order: "DESC" }}
+          actions={<OpportunityActions view={view} onViewChange={handleViewChange} />}
+          exporter={opportunityExporter}
+          pagination={null}
+        >
+          <OpportunityListLayout
+            view={view}
+            openSlideOver={openSlideOver}
+            isSlideOverOpen={isOpen}
+            slideOverId={slideOverId}
+            closeSlideOver={closeSlideOver}
+          />
+          <FloatingCreateButton />
+        </List>
+      </div>
 
       {/* Slide-over panel */}
       <OpportunitySlideOver
@@ -178,7 +179,9 @@ const OpportunityActions = ({
       <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
       <ExportButton />
       <QuickAddButton />
-      <CreateButton label="New Opportunity" data-tutorial="create-opportunity-btn" />
+      <span data-tutorial="create-opportunity-btn">
+        <CreateButton label="New Opportunity" />
+      </span>
     </TopToolbar>
   );
 };

@@ -15,12 +15,12 @@ export const OpportunityGeneralTab = ({ mode }: OpportunityGeneralTabProps) => {
   return (
     <div className="space-y-2">
       <div className="relative">
-        <TextInput
-          source="name"
-          label="Opportunity name *"
-          helperText={false}
-          data-tutorial="opp-name"
-          InputProps={{
+        <div data-tutorial="opp-name">
+          <TextInput
+            source="name"
+            label="Opportunity name *"
+            helperText={false}
+            InputProps={{
             endAdornment: (
               <TooltipProvider>
                 <Tooltip>
@@ -42,19 +42,21 @@ export const OpportunityGeneralTab = ({ mode }: OpportunityGeneralTabProps) => {
               </TooltipProvider>
             ),
           }}
-        />
+          />
+        </div>
         <div className="mt-2">
           <NamingConventionHelp />
         </div>
       </div>
       <TextInput source="description" label="Description" multiline rows={2} helperText={false} />
-      <TextInput
-        source="estimated_close_date"
-        label="Expected Closing Date *"
-        helperText={false}
-        type="date"
-        data-tutorial="opp-close-date"
-      />
+      <div data-tutorial="opp-close-date">
+        <TextInput
+          source="estimated_close_date"
+          label="Expected Closing Date *"
+          helperText={false}
+          type="date"
+        />
+      </div>
     </div>
   );
 };

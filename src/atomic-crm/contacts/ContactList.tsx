@@ -49,17 +49,18 @@ export const ContactList = () => {
 
   return (
     <>
-      <List
-        title={false}
-        actions={<ContactListActions />}
-        perPage={25}
-        sort={{ field: "last_seen", order: "DESC" }}
-        exporter={contactExporter}
-        data-tutorial="contacts-list"
-      >
-        <ContactListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-        <FloatingCreateButton />
-      </List>
+      <div data-tutorial="contacts-list">
+        <List
+          title={false}
+          actions={<ContactListActions />}
+          perPage={25}
+          sort={{ field: "last_seen", order: "DESC" }}
+          exporter={contactExporter}
+        >
+          <ContactListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
+          <FloatingCreateButton />
+        </List>
+      </div>
       <ContactSlideOver
         recordId={slideOverId}
         isOpen={isOpen}

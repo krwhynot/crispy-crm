@@ -23,17 +23,18 @@ export default function ActivitySinglePage() {
     <div className="space-y-6">
       <FormSection title="Activity Details">
         <FormGrid>
-          <SelectInput
-            source="type"
-            label="Interaction Type"
-            choices={INTERACTION_TYPE_OPTIONS.map((option) => ({
-              id: option.value,
-              name: option.label,
-            }))}
-            helperText="Choose how this interaction occurred"
-            isRequired
-            data-tutorial="activity-type"
-          />
+          <div data-tutorial="activity-type">
+            <SelectInput
+              source="type"
+              label="Interaction Type"
+              choices={INTERACTION_TYPE_OPTIONS.map((option) => ({
+                id: option.value,
+                name: option.label,
+              }))}
+              helperText="Choose how this interaction occurred"
+              isRequired
+            />
+          </div>
         </FormGrid>
 
         <TextInput
@@ -53,26 +54,29 @@ export default function ActivitySinglePage() {
           />
         </FormGrid>
 
-        <TextInput
-          source="description"
-          label="Notes"
-          multiline
-          rows={4}
-          helperText="Optional narrative for this interaction"
-          data-tutorial="activity-description"
-        />
+        <div data-tutorial="activity-description">
+          <TextInput
+            source="description"
+            label="Notes"
+            multiline
+            rows={4}
+            helperText="Optional narrative for this interaction"
+          />
+        </div>
       </FormSection>
 
       <FormSection title="Relationships">
         <FormGrid>
-          <ReferenceInput source="opportunity_id" reference="opportunities" data-tutorial="activity-opportunity">
-            <AutocompleteInput
-              label="Opportunity"
-              optionText="name"
-              helperText="Required for interaction activities"
-              placeholder="Search opportunities"
-            />
-          </ReferenceInput>
+          <div data-tutorial="activity-opportunity">
+            <ReferenceInput source="opportunity_id" reference="opportunities">
+              <AutocompleteInput
+                label="Opportunity"
+                optionText="name"
+                helperText="Required for interaction activities"
+                placeholder="Search opportunities"
+              />
+            </ReferenceInput>
+          </div>
           <ReferenceInput source="contact_id" reference="contacts_summary">
             <AutocompleteInput
               label="Contact"
