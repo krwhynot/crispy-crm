@@ -42,6 +42,8 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
     setCurrentChapter,
     setCurrentStep,
     markChapterComplete,
+    hasVisitedPage,
+    markPageVisited,
   } = useTutorialProgress();
 
   const stopTutorial = useCallback(() => {
@@ -132,7 +134,14 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
 
   return (
     <TutorialContext.Provider
-      value={{ startTutorial, stopTutorial, isActive, progress }}
+      value={{
+        startTutorial,
+        stopTutorial,
+        isActive,
+        progress,
+        hasVisitedPage,
+        markPageVisited,
+      }}
     >
       {children}
     </TutorialContext.Provider>
