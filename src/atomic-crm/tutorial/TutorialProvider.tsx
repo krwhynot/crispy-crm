@@ -85,11 +85,27 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
         allowKeyboardControl: true,
         overlayColor: 'rgba(0, 0, 0, 0.75)',
         popoverClass: 'tutorial-popover',
-        // Explicitly configure buttons
+        // Explicitly configure buttons - MUST include all button types
         showButtons: ['next', 'previous', 'close'],
         nextBtnText: 'Next →',
         prevBtnText: '← Back',
         doneBtnText: 'Done ✓',
+        // Customize popover for last step to ensure Done button is clickable
+        onPopoverRender: (popover, { state }) => {
+          // On the last step, manually wire up the Done button
+          const isLastStep = state.activeIndex === steps.length - 1;
+          if (isLastStep) {
+            const nextBtn = popover.wrapper.querySelector('.driver-popover-next-btn');
+            if (nextBtn) {
+              nextBtn.textContent = 'Done ✓';
+              (nextBtn as HTMLButtonElement).onclick = () => {
+                if (driverRef.current) {
+                  driverRef.current.destroy();
+                }
+              };
+            }
+          }
+        },
         steps: steps.map((step, index) => ({
           element: step.element,
           popover: {
