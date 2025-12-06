@@ -5,6 +5,7 @@ import type { ReactNode } from "react";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import Header from "./Header";
+import { TutorialProvider } from "../tutorial/TutorialProvider";
 
 /**
  * Root layout component for the CRM application.

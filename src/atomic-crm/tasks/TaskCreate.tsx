@@ -164,6 +164,7 @@ const TaskCreateFooter = ({
         <SaveButton
           type="button"
           label="Save & Close"
+          data-tutorial="task-save-btn"
           mutationOptions={{
             onSuccess: () => {
               notify("Task created successfully", { type: "success" });

@@ -1,15 +1,22 @@
 import type { TutorialStep, TutorialChapter } from '../types';
+import { organizationSteps } from './organizationSteps';
+import { contactSteps } from './contactSteps';
+import { opportunitySteps } from './opportunitySteps';
+import { activitySteps } from './activitySteps';
+import { taskSteps } from './taskSteps';
+import { productSteps } from './productSteps';
+import { noteSteps } from './noteSteps';
+import { userSteps } from './userSteps';
 
-// Stub implementations - will be filled in Phase 3
 const CHAPTER_STEPS: Record<TutorialChapter, TutorialStep[]> = {
-  organizations: [],
-  contacts: [],
-  opportunities: [],
-  activities: [],
-  tasks: [],
-  products: [],
-  notes: [],
-  users: [],
+  organizations: organizationSteps,
+  contacts: contactSteps,
+  opportunities: opportunitySteps,
+  activities: activitySteps,
+  tasks: taskSteps,
+  products: productSteps,
+  notes: noteSteps,
+  users: userSteps,
 };
 
 const CHAPTER_ORDER: TutorialChapter[] = [

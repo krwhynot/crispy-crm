@@ -106,6 +106,7 @@ const ContactCreateFooter = ({
         <SaveButton
           type="button"
           label="Save & Close"
+          data-tutorial="contact-save-btn"
           mutationOptions={{
             onSuccess: () => {
               notify("Contact created successfully", { type: "success" });

@@ -98,6 +98,7 @@ const DuplicateCheckSaveButton = ({
         onClick={handleClick}
         disabled={isChecking}
         alwaysEnable={true}
+        data-tutorial="org-save-btn"
       />
     </>
   );
