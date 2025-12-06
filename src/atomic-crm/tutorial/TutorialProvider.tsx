@@ -21,6 +21,8 @@ interface TutorialContextType {
   stopTutorial: () => void;
   isActive: boolean;
   progress: TutorialProgress;
+  hasVisitedPage: (chapter: TutorialChapter) => boolean;
+  markPageVisited: (chapter: TutorialChapter) => void;
 }
 
 const TutorialContext = createContext<TutorialContextType | null>(null);

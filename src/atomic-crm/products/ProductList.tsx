@@ -21,6 +21,7 @@ import { ProductListFilter } from "./ProductListFilter";
 import { ProductSlideOver } from "./ProductSlideOver";
 import { ProductEmpty } from "./ProductEmpty";
 import { PRODUCT_FILTER_CONFIG } from "./productFilterConfig";
+import { PageTutorialTrigger } from "../tutorial";
 
 /**
  * ProductList - Standard list page for Product records
@@ -64,6 +65,7 @@ export const ProductList = () => {
         onClose={closeSlideOver}
         onModeToggle={toggleMode}
       />
+      <PageTutorialTrigger chapter="products" position="bottom-left" />
     </>
   );
 };

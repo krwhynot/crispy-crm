@@ -22,6 +22,7 @@ import { FilterChipBar } from "../filters";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
+import { PageTutorialTrigger } from "../tutorial";
 import type { ActivityRecord, Contact, Opportunity, Organization, Sale } from "../types";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
 import { ACTIVITY_FILTER_CONFIG } from "./activityFilterConfig";
@@ -55,19 +56,22 @@ export default function ActivityList() {
   if (!identity) return null;
 
   return (
-    <List
-      title={false}
-      perPage={50}
-      sort={{ field: "activity_date", order: "DESC" }}
-      exporter={exporter}
-      filter={{
-        "deleted_at@is": null,
-      }}
-      actions={<ActivityListActions />}
-    >
-      <ActivityListLayout />
-      <FloatingCreateButton />
-    </List>
+    <>
+      <List
+        title={false}
+        perPage={50}
+        sort={{ field: "activity_date", order: "DESC" }}
+        exporter={exporter}
+        filter={{
+          "deleted_at@is": null,
+        }}
+        actions={<ActivityListActions />}
+      >
+        <ActivityListLayout />
+        <FloatingCreateButton />
+      </List>
+      <PageTutorialTrigger chapter="activities" position="bottom-left" />
+    </>
   );
 }
 

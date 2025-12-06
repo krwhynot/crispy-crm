@@ -88,6 +88,7 @@ const OpportunityList = () => {
         mode={mode}
         onModeToggle={toggleMode}
       />
+      <PageTutorialTrigger chapter="opportunities" position="bottom-left" />
     </>
   );
 };
