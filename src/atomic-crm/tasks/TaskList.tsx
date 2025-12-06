@@ -58,16 +58,17 @@ export default function TaskList() {
 
   return (
     <>
-      <List
-        title={false}
-        perPage={100}
-        sort={{ field: "due_date", order: "ASC" }}
-        exporter={exporter}
-        data-tutorial="tasks-list"
-      >
-        <TaskListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-        <FloatingCreateButton />
-      </List>
+      <div data-tutorial="tasks-list">
+        <List
+          title={false}
+          perPage={100}
+          sort={{ field: "due_date", order: "ASC" }}
+          exporter={exporter}
+        >
+          <TaskListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
+          <FloatingCreateButton />
+        </List>
+      </div>
 
       <TaskSlideOver
         recordId={slideOverId}

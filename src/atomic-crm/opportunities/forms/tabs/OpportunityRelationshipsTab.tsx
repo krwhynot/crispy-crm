@@ -44,17 +44,18 @@ export const OpportunityRelationshipsTab = () => {
       {/* Customer Organization */}
       <div>
         <div className="grid grid-cols-[1fr_auto] items-end gap-2">
-          <ReferenceInput
-            source="customer_organization_id"
-            reference="organizations"
-            filter={{ organization_type: "customer" }}
-            data-tutorial="opp-customer"
-          >
-            <AutocompleteOrganizationInput
-              label="Customer Organization *"
-              organizationType="customer"
-            />
-          </ReferenceInput>
+          <div data-tutorial="opp-customer">
+            <ReferenceInput
+              source="customer_organization_id"
+              reference="organizations"
+              filter={{ organization_type: "customer" }}
+            >
+              <AutocompleteOrganizationInput
+                label="Customer Organization *"
+                organizationType="customer"
+              />
+            </ReferenceInput>
+          </div>
           <CreateInDialogButton
             resource="organizations"
             label="New Customer"
@@ -97,17 +98,18 @@ export const OpportunityRelationshipsTab = () => {
       {/* Principal Organization */}
       <div>
         <div className="grid grid-cols-[1fr_auto] items-end gap-2">
-          <ReferenceInput
-            source="principal_organization_id"
-            reference="organizations"
-            filter={{ organization_type: "principal" }}
-            data-tutorial="opp-principal"
-          >
-            <AutocompleteOrganizationInput
-              label="Principal Organization *"
-              organizationType="principal"
-            />
-          </ReferenceInput>
+          <div data-tutorial="opp-principal">
+            <ReferenceInput
+              source="principal_organization_id"
+              reference="organizations"
+              filter={{ organization_type: "principal" }}
+            >
+              <AutocompleteOrganizationInput
+                label="Principal Organization *"
+                organizationType="principal"
+              />
+            </ReferenceInput>
+          </div>
           <CreateInDialogButton
             resource="organizations"
             label="New Principal"
@@ -209,31 +211,31 @@ export const OpportunityRelationshipsTab = () => {
             </CreateInDialogButton>
           )}
         </div>
-        {customerOrganizationId ? (
-          <ReferenceArrayInput
-            source="contact_ids"
-            reference="contacts_summary"
-            filter={contactFilter}
-            data-tutorial="opp-contacts"
-          >
+        <div data-tutorial="opp-contacts">
+          {customerOrganizationId ? (
+            <ReferenceArrayInput
+              source="contact_ids"
+              reference="contacts_summary"
+              filter={contactFilter}
+            >
+              <AutocompleteArrayInput
+                label={false}
+                optionText={contactOptionText}
+                helperText={false}
+              />
+            </ReferenceArrayInput>
+          ) : (
             <AutocompleteArrayInput
+              source="contact_ids"
               label={false}
               optionText={contactOptionText}
               helperText={false}
+              disabled
+              placeholder="Select Customer Organization first"
+              choices={[]}
             />
-          </ReferenceArrayInput>
-        ) : (
-          <AutocompleteArrayInput
-            source="contact_ids"
-            label={false}
-            optionText={contactOptionText}
-            helperText={false}
-            disabled
-            placeholder="Select Customer Organization first"
-            choices={[]}
-            data-tutorial="opp-contacts"
-          />
-        )}
+          )}
+        </div>
 
         {/* Soft warning when contacts belong to different org than customer */}
         <ContactOrgMismatchWarning />

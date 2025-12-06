@@ -29,7 +29,9 @@ const OrganizationListActions = () => (
   <TopToolbar>
     <SortButton fields={["name", "organization_type", "priority"]} />
     <ExportButton exporter={exporter} />
-    <CreateButton data-tutorial="create-organization-btn" />
+    <span data-tutorial="create-organization-btn">
+      <CreateButton />
+    </span>
   </TopToolbar>
 );
 
@@ -211,17 +213,18 @@ export const OrganizationList = () => {
 
   return (
     <>
-      <List
-        title={false}
-        actions={<OrganizationListActions />}
-        perPage={DEFAULT_LIST_PAGE_SIZE}
-        sort={{ field: "name", order: "ASC" }}
-        exporter={exporter}
-        data-tutorial="organizations-list"
-      >
-        <OrganizationListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-        <FloatingCreateButton />
-      </List>
+      <div data-tutorial="organizations-list">
+        <List
+          title={false}
+          actions={<OrganizationListActions />}
+          perPage={DEFAULT_LIST_PAGE_SIZE}
+          sort={{ field: "name", order: "ASC" }}
+          exporter={exporter}
+        >
+          <OrganizationListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
+          <FloatingCreateButton />
+        </List>
+      </div>
       <OrganizationSlideOver
         recordId={slideOverId}
         isOpen={isOpen}

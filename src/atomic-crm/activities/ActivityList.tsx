@@ -57,20 +57,21 @@ export default function ActivityList() {
 
   return (
     <>
-      <List
-        title={false}
-        perPage={50}
-        sort={{ field: "activity_date", order: "DESC" }}
-        exporter={exporter}
-        filter={{
-          "deleted_at@is": null,
-        }}
-        actions={<ActivityListActions />}
-        data-tutorial="activities-list"
-      >
-        <ActivityListLayout />
-        <FloatingCreateButton />
-      </List>
+      <div data-tutorial="activities-list">
+        <List
+          title={false}
+          perPage={50}
+          sort={{ field: "activity_date", order: "DESC" }}
+          exporter={exporter}
+          filter={{
+            "deleted_at@is": null,
+          }}
+          actions={<ActivityListActions />}
+        >
+          <ActivityListLayout />
+          <FloatingCreateButton />
+        </List>
+      </div>
       <PageTutorialTrigger chapter="activities" position="bottom-left" />
     </>
   );
@@ -231,7 +232,9 @@ const ActivityListLayout = () => {
 const ActivityListActions = () => (
   <TopToolbar>
     <ExportButton exporter={exporter} />
-    <CreateButton label="Log Activity" data-tutorial="create-activity-btn" />
+    <span data-tutorial="create-activity-btn">
+      <CreateButton label="Log Activity" />
+    </span>
   </TopToolbar>
 );
 

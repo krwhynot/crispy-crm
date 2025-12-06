@@ -85,6 +85,11 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
         allowKeyboardControl: true,
         overlayColor: 'rgba(0, 0, 0, 0.75)',
         popoverClass: 'tutorial-popover',
+        // Explicitly configure buttons
+        showButtons: ['next', 'previous', 'close'],
+        nextBtnText: 'Next →',
+        prevBtnText: '← Back',
+        doneBtnText: 'Done ✓',
         steps: steps.map((step, index) => ({
           element: step.element,
           popover: {
@@ -94,13 +99,23 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
             align: step.popover.align,
           },
           onHighlightStarted: async () => {
+            // Get current path fresh (not stale from closure)
+            const currentPath = window.location.pathname;
+
             // Navigate if needed
-            if (step.navigateTo && location.pathname !== step.navigateTo) {
+            if (step.navigateTo && currentPath !== step.navigateTo) {
               navigate(step.navigateTo);
-              if (step.element) {
+            }
+
+            // Always wait for the element (handles both navigation and slow React renders)
+            if (step.element) {
+              try {
                 await waitForElement(step.element);
+              } catch (error) {
+                console.warn(`Tutorial step ${index}: Element not found`, step.element);
               }
             }
+
             setCurrentStep(index);
             currentStepIndexRef.current = index;
           },

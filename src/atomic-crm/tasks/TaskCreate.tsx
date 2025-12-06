@@ -62,13 +62,14 @@ const TaskFormContent = ({
     <>
       <FormErrorSummary errors={errors} />
       <div className="space-y-6">
-        <TextInput
-          source="title"
-          label="Task Title"
-          isRequired
-          helperText="What needs to be done?"
-          data-tutorial="task-title"
-        />
+        <div data-tutorial="task-title">
+          <TextInput
+            source="title"
+            label="Task Title"
+            isRequired
+            helperText="What needs to be done?"
+          />
+        </div>
 
         <TextInput
           source="description"
@@ -79,14 +80,15 @@ const TaskFormContent = ({
         />
 
         <div className="grid grid-cols-2 gap-4">
-          <TextInput
-            source="due_date"
-            label="Due Date"
-            type="date"
-            isRequired
-            helperText="When is this due?"
-            data-tutorial="task-due-date"
-          />
+          <div data-tutorial="task-due-date">
+            <TextInput
+              source="due_date"
+              label="Due Date"
+              type="date"
+              isRequired
+              helperText="When is this due?"
+            />
+          </div>
 
           <SelectInput
             source="type"

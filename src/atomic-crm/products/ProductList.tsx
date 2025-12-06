@@ -49,16 +49,17 @@ export const ProductList = () => {
 
   return (
     <>
-      <List
-        title={false}
-        actions={<ProductListActions />}
-        perPage={25}
-        sort={{ field: "name", order: "ASC" }}
-        data-tutorial="products-list"
-      >
-        <ProductListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-        <FloatingCreateButton />
-      </List>
+      <div data-tutorial="products-list">
+        <List
+          title={false}
+          actions={<ProductListActions />}
+          perPage={25}
+          sort={{ field: "name", order: "ASC" }}
+        >
+          <ProductListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
+          <FloatingCreateButton />
+        </List>
+      </div>
       <ProductSlideOver
         recordId={slideOverId}
         isOpen={isOpen}
@@ -175,7 +176,9 @@ const ProductListLayout = ({
 const ProductListActions = () => (
   <TopToolbar>
     <SortButton fields={["name", "sku", "category", "status"]} />
-    <CreateButton data-tutorial="create-product-btn" />
+    <span data-tutorial="create-product-btn">
+      <CreateButton />
+    </span>
   </TopToolbar>
 );
 

@@ -47,22 +47,27 @@ export const ContactMainTab = () => {
       <FormSection title="Identity">
         <div className="space-y-2">
           <Avatar />
-          <TextInput source="first_name" label="First Name *" helperText="Required field" data-tutorial="contact-first-name" />
-          <TextInput source="last_name" label="Last Name *" helperText="Required field" data-tutorial="contact-last-name" />
+          <div data-tutorial="contact-first-name">
+            <TextInput source="first_name" label="First Name *" helperText="Required field" />
+          </div>
+          <div data-tutorial="contact-last-name">
+            <TextInput source="last_name" label="Last Name *" helperText="Required field" />
+          </div>
         </div>
       </FormSection>
 
       <FormSection title="Organization">
         <div className="grid grid-cols-[1fr_auto] items-end gap-2">
-          <ReferenceInput
-            source="organization_id"
-            reference="organizations"
-            label="Organization *"
-            isRequired
-            data-tutorial="contact-organization"
-          >
-            <AutocompleteOrganizationInput />
-          </ReferenceInput>
+          <div data-tutorial="contact-organization">
+            <ReferenceInput
+              source="organization_id"
+              reference="organizations"
+              label="Organization *"
+              isRequired
+            >
+              <AutocompleteOrganizationInput />
+            </ReferenceInput>
+          </div>
           <CreateInDialogButton
             resource="organizations"
             label="New Organization"
@@ -107,7 +112,8 @@ export const ContactMainTab = () => {
 
       <FormSection title="Contact Information">
         <div className="space-y-2">
-          <ArrayInput source="email" label="Email addresses" helperText={false} data-tutorial="contact-email">
+          <div data-tutorial="contact-email">
+            <ArrayInput source="email" label="Email addresses" helperText={false}>
             <SimpleFormIterator
               inline
               disableReordering
@@ -132,8 +138,10 @@ export const ContactMainTab = () => {
                 className="w-24 min-w-24"
               />
             </SimpleFormIterator>
-          </ArrayInput>
-          <ArrayInput source="phone" label="Phone numbers" helperText={false} data-tutorial="contact-phone">
+            </ArrayInput>
+          </div>
+          <div data-tutorial="contact-phone">
+            <ArrayInput source="phone" label="Phone numbers" helperText={false}>
             <SimpleFormIterator
               inline
               disableReordering
@@ -156,7 +164,8 @@ export const ContactMainTab = () => {
                 className="w-24 min-w-24"
               />
             </SimpleFormIterator>
-          </ArrayInput>
+            </ArrayInput>
+          </div>
         </div>
       </FormSection>
     </div>

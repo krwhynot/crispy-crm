@@ -13,21 +13,23 @@ export const OrganizationMainTab = () => {
     <div className="space-y-6">
       <FormSection title="Organization Information">
         <FormGrid columns={2}>
-          <TextInput
-            source="name"
-            helperText="Required field"
-            placeholder="Organization name"
-            label="Name *"
-            data-tutorial="org-name"
-          />
-          <SelectInput
-            source="organization_type"
-            label="Organization Type *"
-            choices={ORGANIZATION_TYPE_CHOICES}
-            helperText="Required field"
-            emptyText="Select organization type"
-            data-tutorial="org-type"
-          />
+          <div data-tutorial="org-name">
+            <TextInput
+              source="name"
+              helperText="Required field"
+              placeholder="Organization name"
+              label="Name *"
+            />
+          </div>
+          <div data-tutorial="org-type">
+            <SelectInput
+              source="organization_type"
+              label="Organization Type *"
+              choices={ORGANIZATION_TYPE_CHOICES}
+              helperText="Required field"
+              emptyText="Select organization type"
+            />
+          </div>
           <ReferenceInput
             source="sales_id"
             reference="sales"
