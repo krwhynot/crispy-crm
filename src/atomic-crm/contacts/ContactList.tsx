@@ -29,6 +29,7 @@ import { ContactStatusBadge } from "./ContactBadges";
 import { formatFullName, formatRoleAndDept } from "./formatters";
 import { contactExporter } from "./contactExporter";
 import { CONTACT_FILTER_CONFIG } from "./contactFilterConfig";
+import { PageTutorialTrigger } from "../tutorial";
 
 export const ContactList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
@@ -65,6 +66,7 @@ export const ContactList = () => {
         onClose={closeSlideOver}
         onModeToggle={toggleMode}
       />
+      <PageTutorialTrigger chapter="contacts" position="bottom-left" />
     </>
   );
 };

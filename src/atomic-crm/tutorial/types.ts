@@ -12,6 +12,7 @@ export interface TutorialProgress {
   currentChapter: TutorialChapter | null;
   currentStepIndex: number;
   completedChapters: TutorialChapter[];
+  visitedPages: TutorialChapter[]; // Pages user has seen (for first-visit detection)
   lastUpdated: string; // ISO date
 }
 

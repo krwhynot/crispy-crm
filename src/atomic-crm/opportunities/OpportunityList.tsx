@@ -24,6 +24,7 @@ import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { FilterChipBar } from "../filters";
 import { OpportunityListFilter } from "./OpportunityListFilter";
 import { OPPORTUNITY_FILTER_CONFIG } from "./opportunityFilterConfig";
+import { PageTutorialTrigger } from "../tutorial";
 
 // Helper functions for view preference persistence
 const OPPORTUNITY_VIEW_KEY = "opportunity.view.preference";
