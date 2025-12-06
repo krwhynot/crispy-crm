@@ -25,7 +25,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
   };
 
   return (
-    <>
+    <TutorialProvider>
       <a
         href="#main-content"
         onClick={handleSkipToContent}
@@ -47,6 +47,6 @@ export const Layout = ({ children }: { children: ReactNode }) => {
         </div>
       </footer>
       <Notification />
-    </>
+    </TutorialProvider>
   );
 };
