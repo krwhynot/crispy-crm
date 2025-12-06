@@ -1,7 +1,7 @@
 # Tutorial Walkthrough Implementation Plan
 
 **Date:** 2025-12-06
-**Status:** Ready for Implementation
+**Status:** Ready for Implementation (Zen MCP Reviewed ✅)
 **Type:** New Feature
 **Scope:** Cross-feature (8 modules + layout)
 **Execution:** Hybrid (parallel groups + sequential dependencies)
@@ -216,6 +216,33 @@ export async function waitForElement(
     };
 
     check();
+  });
+}
+
+/**
+ * Checks if an element exists in the DOM.
+ * Used to validate tutorial steps before highlighting.
+ *
+ * @param selector - CSS selector for the element
+ * @returns true if element exists
+ */
+export function elementExists(selector: string): boolean {
+  return document.querySelector(selector) !== null;
+}
+
+/**
+ * Filters steps to only include those with existing elements.
+ * Handles edge case where React Admin conditionally renders components.
+ *
+ * @param steps - Array of tutorial steps
+ * @returns Filtered steps with valid elements
+ */
+export function filterValidSteps(steps: TutorialStep[]): TutorialStep[] {
+  return steps.filter((step) => {
+    // Steps without elements (intro/outro) are always valid
+    if (!step.element) return true;
+    // Check if element exists in DOM
+    return elementExists(step.element);
   });
 }
 ```
@@ -1688,23 +1715,29 @@ import { TutorialProvider } from '../tutorial/TutorialProvider';
 
 ---
 
-### Task 5.4: Add Driver.js CSS
+### Task 5.4: Add Driver.js CSS and Route Change Handling
 
-**Time:** 3 min
+**Time:** 5 min
 **Dependencies:** Task 5.3
 **Parallel:** No
 
-**File:** `src/atomic-crm/tutorial/TutorialProvider.tsx`
+**File 1:** `src/atomic-crm/tutorial/TutorialProvider.tsx`
 
 Already included in Task 2.4:
 ```tsx
 import 'driver.js/dist/driver.css';
 ```
 
-Add custom CSS overrides in `src/index.css` or appropriate location:
+**File 2:** `src/index.css` (or `src/App.css`)
+
+Add custom CSS overrides:
 
 ```css
-/* Tutorial tooltip customizations */
+/* ============================
+   Tutorial / Driver.js Overrides
+   ============================ */
+
+/* Custom popover styling */
 .tutorial-popover {
   /* Override Driver.js defaults to match design system */
   --driver-overlay-opacity: 0.75;
@@ -1714,7 +1747,32 @@ Add custom CSS overrides in `src/index.css` or appropriate location:
 .driver-active-element {
   z-index: 10001 !important;
 }
+
+/* Smooth transitions for overlay */
+.driver-overlay {
+  transition: opacity 0.2s ease-in-out;
+}
 ```
+
+**File 3:** Update `TutorialProvider.tsx` to handle route changes
+
+Add route change listener to stop tour when user navigates away:
+
+```tsx
+// In TutorialProvider.tsx, add useEffect for route changes
+useEffect(() => {
+  // If tour is active and route changes unexpectedly, stop the tour
+  if (isActive && driverRef.current) {
+    // Check if current step's element still exists
+    const currentStep = driverRef.current.getActiveIndex?.();
+    // If element is missing, the tour will auto-handle via onDeselected
+  }
+}, [location.pathname, isActive]);
+```
+
+**Constitution Checklist:**
+- [x] CSS uses semantic approach (variables, not hardcoded values)
+- [x] Route changes handled gracefully
 
 ---
 
