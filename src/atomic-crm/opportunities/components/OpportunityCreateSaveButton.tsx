@@ -123,6 +123,7 @@ export function OpportunityCreateSaveButton({
       variant="default"
       disabled={disabled}
       onClick={handleClick}
+      data-tutorial="opp-save-btn"
       className={cn(
         "h-11 min-w-[160px]", // 44px height for touch target
         disabled ? "opacity-50 cursor-not-allowed" : "cursor-pointer",

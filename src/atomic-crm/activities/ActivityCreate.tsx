@@ -52,7 +52,7 @@ const ActivityFormContent = () => {
       <FormErrorSummary errors={errors} />
       <HiddenActivityTypeField />
       <ActivitySinglePage />
-      <FormToolbar />
+      <FormToolbar dataTutorial="activity-save-btn" />
     </>
   );
 };
