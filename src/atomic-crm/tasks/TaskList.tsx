@@ -25,6 +25,7 @@ import { TaskEmpty } from "./TaskEmpty";
 import { SaleName } from "../sales/SaleName";
 import { contactOptionText } from "../contacts/ContactOption";
 import { TASK_FILTER_CONFIG } from "./taskFilterConfig";
+import { PageTutorialTrigger } from "../tutorial";
 import type { Task, Opportunity, Organization } from "../types";
 
 /**
@@ -74,6 +75,7 @@ export default function TaskList() {
         onClose={closeSlideOver}
         onModeToggle={toggleMode}
       />
+      <PageTutorialTrigger chapter="tasks" position="bottom-left" />
     </>
   );
 }
