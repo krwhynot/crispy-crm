@@ -52,94 +52,94 @@ export const ContactCompactForm = () => {
         </div>
       </CompactFormRow>
 
-      <CompactFormRow columns="md:grid-cols-[1fr_1fr_auto]" alignItems="end">
-        <div data-tutorial="contact-organization">
-          <ReferenceInput
-            source="organization_id"
-            reference="organizations"
-            label="Organization *"
-            isRequired
-          >
-            <AutocompleteOrganizationInput />
-          </ReferenceInput>
-        </div>
-        <div>
-          <ReferenceInput
-            reference="sales"
-            source="sales_id"
-            sort={{ field: "last_name", order: "ASC" }}
-            filter={{
-              "disabled@neq": true,
-              "user_id@not.is": null,
-            }}
-          >
-            <SelectInput
-              helperText="Required field"
-              label="Account manager *"
-              optionText={saleOptionRenderer}
-            />
-          </ReferenceInput>
-        </div>
-        {/* Spacer to align with Avatar column above */}
-        <div className="hidden md:block w-11" aria-hidden="true" />
-      </CompactFormRow>
+      {/* Organization - full width row */}
+      <div data-tutorial="contact-organization">
+        <ReferenceInput
+          source="organization_id"
+          reference="organizations"
+          label="Organization *"
+          isRequired
+        >
+          <AutocompleteOrganizationInput />
+        </ReferenceInput>
+      </div>
 
-      <CompactFormRow columns="md:grid-cols-2">
-        <div data-tutorial="contact-email">
-          <ArrayInput source="email" label="Email addresses" helperText={false}>
-            <SimpleFormIterator
-              inline
-              disableReordering
-              disableClear
-              className="[&>ul>li]:border-b-0 [&>ul>li]:pb-0"
-            >
-              <TextInput
-                source="email"
-                className="w-full"
-                helperText={false}
-                label={false}
-                placeholder="Email (valid email required)"
-                onPaste={handleEmailPaste}
-                onBlur={handleEmailBlur}
-              />
-              <SelectInput
-                source="type"
-                helperText={false}
-                label={false}
-                optionText="id"
-                choices={personalInfoTypes}
-                className="w-24 min-w-24"
-              />
-            </SimpleFormIterator>
-          </ArrayInput>
-        </div>
-        <div data-tutorial="contact-phone">
-          <ArrayInput source="phone" label="Phone numbers" helperText={false}>
-            <SimpleFormIterator
-              inline
-              disableReordering
-              disableClear
-              className="[&>ul>li]:border-b-0 [&>ul>li]:pb-0"
-            >
-              <TextInput
-                source="number"
-                className="w-full"
-                helperText={false}
-                label={false}
-                placeholder="Phone number"
-              />
-              <SelectInput
-                source="type"
-                helperText={false}
-                label={false}
-                optionText="id"
-                choices={personalInfoTypes}
-                className="w-24 min-w-24"
-              />
-            </SimpleFormIterator>
-          </ArrayInput>
-        </div>
-      </CompactFormRow>
+      {/* Account Manager - full width row */}
+      <div>
+        <ReferenceInput
+          reference="sales"
+          source="sales_id"
+          sort={{ field: "last_name", order: "ASC" }}
+          filter={{
+            "disabled@neq": true,
+            "user_id@not.is": null,
+          }}
+        >
+          <SelectInput
+            helperText="Required field"
+            label="Account manager *"
+            optionText={saleOptionRenderer}
+          />
+        </ReferenceInput>
+      </div>
+
+      {/* Email - full width row */}
+      <div data-tutorial="contact-email">
+        <ArrayInput source="email" label="Email addresses" helperText={false}>
+          <SimpleFormIterator
+            inline
+            disableReordering
+            disableClear
+            className="[&>ul>li]:border-b-0 [&>ul>li]:pb-0"
+          >
+            <TextInput
+              source="email"
+              className="w-full"
+              helperText={false}
+              label={false}
+              placeholder="Email (valid email required)"
+              onPaste={handleEmailPaste}
+              onBlur={handleEmailBlur}
+            />
+            <SelectInput
+              source="type"
+              helperText={false}
+              label={false}
+              optionText="id"
+              choices={personalInfoTypes}
+              className="w-24 min-w-24"
+            />
+          </SimpleFormIterator>
+        </ArrayInput>
+      </div>
+
+      {/* Phone - full width row */}
+      <div data-tutorial="contact-phone">
+        <ArrayInput source="phone" label="Phone numbers" helperText={false}>
+          <SimpleFormIterator
+            inline
+            disableReordering
+            disableClear
+            className="[&>ul>li]:border-b-0 [&>ul>li]:pb-0"
+          >
+            <TextInput
+              source="number"
+              className="w-full"
+              helperText={false}
+              label={false}
+              placeholder="Phone number"
+            />
+            <SelectInput
+              source="type"
+              helperText={false}
+              label={false}
+              optionText="id"
+              choices={personalInfoTypes}
+              className="w-24 min-w-24"
+            />
+          </SimpleFormIterator>
+        </ArrayInput>
+      </div>
 
       <ContactAdditionalDetails />
     </div>
