@@ -2,119 +2,14 @@
  * OpportunityEdit Unit Tests
  *
  * Focused unit tests for critical functionality:
- * - Transform function (products → products_to_sync)
  * - Cache invalidation logic
  * - Pessimistic mode behavior
  * - Error handling
+ * - Form state management
  */
 
 import { describe, it, expect, vi } from "vitest";
 import { createMockOpportunity } from "@/tests/utils";
-
-describe("OpportunityEdit - Transform Function", () => {
-  it("should extract products to products_to_sync", () => {
-    // Test the transform logic directly
-    const transform = (data: any) => {
-      const { products, ...opportunityData } = data;
-      return {
-        ...opportunityData,
-        products_to_sync: products || [],
-      };
-    };
-
-    const input = {
-      id: 123,
-      name: "Updated Opportunity",
-      amount: 75000,
-      products: [
-        { product_id_reference: 3, notes: "Test product 3" },
-        { product_id_reference: 4, notes: "Test product 4" },
-      ],
-    };
-
-    const result = transform(input);
-
-    expect(result).toHaveProperty("products_to_sync");
-    expect(result.products_to_sync).toEqual(input.products);
-    expect(result).not.toHaveProperty("products");
-    expect(result.id).toBe(123); // ID should be preserved
-  });
-
-  it("should handle empty products array", () => {
-    const transform = (data: any) => {
-      const { products, ...opportunityData } = data;
-      return {
-        ...opportunityData,
-        products_to_sync: products || [],
-      };
-    };
-
-    const input = {
-      id: 123,
-      name: "Updated Opportunity",
-      products: [],
-    };
-
-    const result = transform(input);
-
-    expect(result.products_to_sync).toEqual([]);
-    expect(result).not.toHaveProperty("products");
-  });
-
-  it("should handle undefined products", () => {
-    const transform = (data: any) => {
-      const { products, ...opportunityData } = data;
-      return {
-        ...opportunityData,
-        products_to_sync: products || [],
-      };
-    };
-
-    const input = {
-      id: 123,
-      name: "Updated Opportunity",
-      // No products field
-    };
-
-    const result = transform(input);
-
-    expect(result.products_to_sync).toEqual([]);
-    expect(result).not.toHaveProperty("products");
-  });
-
-  it("should preserve all other fields during transform", () => {
-    const transform = (data: any) => {
-      const { products, ...opportunityData } = data;
-      return {
-        ...opportunityData,
-        products_to_sync: products || [],
-      };
-    };
-
-    const input = {
-      id: 123,
-      name: "Updated Opportunity",
-      amount: 75000,
-      probability: 80,
-      stage: "qualified",
-      expected_closing_date: "2024-12-31",
-      customer_organization_id: 10,
-      products: [{ product_id_reference: 1, notes: "Test product" }],
-    };
-
-    const result = transform(input);
-
-    // All fields except products should be preserved
-    expect(result.id).toBe(123);
-    expect(result.name).toBe("Updated Opportunity");
-    expect(result.amount).toBe(75000);
-    expect(result.probability).toBe(80);
-    expect(result.stage).toBe("qualified");
-    expect(result.expected_closing_date).toBe("2024-12-31");
-    expect(result.customer_organization_id).toBe(10);
-    expect(result.products_to_sync).toHaveLength(1);
-  });
-});
 
 describe("OpportunityEdit - Cache Invalidation", () => {
   it("should invalidate correct cache keys", () => {
@@ -328,40 +223,35 @@ describe("OpportunityEdit - Error Handling", () => {
 });
 
 describe("OpportunityEdit - Record Loading", () => {
-  it("should handle existing record with products", () => {
+  it("should handle existing record with products_to_sync", () => {
     const record = createMockOpportunity({
       id: 123,
       name: "Existing Opportunity",
-      products: [
+      products_to_sync: [
         { product_id_reference: 1, notes: "Test product 1" },
         { product_id_reference: 2, notes: "Test product 2" },
       ],
     });
 
-    // Default values should include products array
-    const defaultValues = {
-      ...record,
-      products: record.products || [],
-    };
-
-    expect(defaultValues.products).toHaveLength(2);
-    expect(defaultValues.products[0].product_id_reference).toBe(1);
+    // Record should include products_to_sync array
+    expect(record.products_to_sync).toHaveLength(2);
+    expect(record.products_to_sync[0].product_id_reference).toBe(1);
   });
 
   it("should handle existing record without products", () => {
     const record = createMockOpportunity({
       id: 123,
       name: "Existing Opportunity",
-      products: undefined,
+      products_to_sync: undefined,
     });
 
-    // Default values should provide empty array for undefined products
+    // Form should handle undefined products_to_sync
     const defaultValues = {
       ...record,
-      products: record.products || [],
+      products_to_sync: record.products_to_sync || [],
     };
 
-    expect(defaultValues.products).toEqual([]);
+    expect(defaultValues.products_to_sync).toEqual([]);
   });
 
   it("should use record ID as form key for remounting", () => {

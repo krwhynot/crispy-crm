@@ -38,7 +38,7 @@ export const OpportunityInputs = ({ mode }: OpportunityInputsProps) => {
           defaultExpanded={Object.keys(errors).length <= 3}
         />
       )}
-      <OpportunityCompactForm />
+      <OpportunityCompactForm mode={mode} />
     </div>
   );
 };
