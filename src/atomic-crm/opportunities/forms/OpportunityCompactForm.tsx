@@ -6,7 +6,7 @@ import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-in
 import { SelectInput } from "@/components/admin/select-input";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
-import { CompactFormRow, CollapsibleSection } from "@/components/admin/form";
+import { CompactFormRow, CollapsibleSection, CompactFormFieldWithButton } from "@/components/admin/form";
 import { CreateInDialogButton } from "@/components/admin/create-in-dialog-button";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -107,18 +107,8 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
 
       {/* Row 2: Customer | Principal with inline create buttons */}
       <CompactFormRow>
-        <div data-tutorial="opp-customer">
-          <div className="grid grid-cols-[1fr_auto] items-end gap-2">
-            <ReferenceInput
-              source="customer_organization_id"
-              reference="organizations"
-              filter={{ organization_type: "customer" }}
-            >
-              <AutocompleteOrganizationInput
-                label="Customer Organization *"
-                organizationType="customer"
-              />
-            </ReferenceInput>
+        <CompactFormFieldWithButton
+          button={
             <CreateInDialogButton
               resource="organizations"
               label="New Customer"
@@ -142,20 +132,23 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
             >
               <OrganizationInputs />
             </CreateInDialogButton>
-          </div>
-        </div>
-        <div data-tutorial="opp-principal">
-          <div className="grid grid-cols-[1fr_auto] items-end gap-2">
+          }
+        >
+          <div data-tutorial="opp-customer">
             <ReferenceInput
-              source="principal_organization_id"
+              source="customer_organization_id"
               reference="organizations"
-              filter={{ organization_type: "principal" }}
+              filter={{ organization_type: "customer" }}
             >
               <AutocompleteOrganizationInput
-                label="Principal Organization *"
-                organizationType="principal"
+                label="Customer Organization *"
+                organizationType="customer"
               />
             </ReferenceInput>
+          </div>
+        </CompactFormFieldWithButton>
+        <CompactFormFieldWithButton
+          button={
             <CreateInDialogButton
               resource="organizations"
               label="New Principal"
@@ -179,8 +172,21 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
             >
               <OrganizationInputs />
             </CreateInDialogButton>
+          }
+        >
+          <div data-tutorial="opp-principal">
+            <ReferenceInput
+              source="principal_organization_id"
+              reference="organizations"
+              filter={{ organization_type: "principal" }}
+            >
+              <AutocompleteOrganizationInput
+                label="Principal Organization *"
+                organizationType="principal"
+              />
+            </ReferenceInput>
           </div>
-        </div>
+        </CompactFormFieldWithButton>
       </CompactFormRow>
 
       {/* Row 3: Stage | Priority | Close Date */}
@@ -213,30 +219,23 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
 
       {/* Row 4: Account Manager | Distributor with inline create button */}
       <CompactFormRow>
-        <ReferenceInput
-          source="account_manager_id"
-          reference="sales"
-          sort={{ field: "last_name", order: "ASC" }}
-          filter={{ "disabled@neq": true }}
-        >
-          <SelectInput
-            label="Account Manager"
-            optionText={saleOptionRenderer}
-            helperText={false}
-          />
-        </ReferenceInput>
-        <div>
-          <div className="grid grid-cols-[1fr_auto] items-end gap-2">
-            <ReferenceInput
-              source="distributor_organization_id"
-              reference="organizations"
-              filter={{ organization_type: "distributor" }}
-            >
-              <AutocompleteOrganizationInput
-                label="Distributor Organization"
-                organizationType="distributor"
-              />
-            </ReferenceInput>
+        <CompactFormFieldWithButton>
+          {/* No button prop = auto placeholder for alignment */}
+          <ReferenceInput
+            source="account_manager_id"
+            reference="sales"
+            sort={{ field: "last_name", order: "ASC" }}
+            filter={{ "disabled@neq": true }}
+          >
+            <SelectInput
+              label="Account Manager"
+              optionText={saleOptionRenderer}
+              helperText={false}
+            />
+          </ReferenceInput>
+        </CompactFormFieldWithButton>
+        <CompactFormFieldWithButton
+          button={
             <CreateInDialogButton
               resource="organizations"
               label="New Distributor"
@@ -260,9 +259,20 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
             >
               <OrganizationInputs />
             </CreateInDialogButton>
-          </div>
-          <DistributorAuthorizationWarning />
-        </div>
+          }
+          footer={<DistributorAuthorizationWarning />}
+        >
+          <ReferenceInput
+            source="distributor_organization_id"
+            reference="organizations"
+            filter={{ organization_type: "distributor" }}
+          >
+            <AutocompleteOrganizationInput
+              label="Distributor Organization"
+              organizationType="distributor"
+            />
+          </ReferenceInput>
+        </CompactFormFieldWithButton>
       </CompactFormRow>
 
       {/* Collapsible: Contacts & Products (always open - contains required fields) */}
