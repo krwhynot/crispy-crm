@@ -13,9 +13,9 @@ export const ProductGeneralTab = () => {
       <TextInput
         source="sku"
         className="w-full"
-        helperText="Required field"
+        helperText="Optional product identifier"
         placeholder="SKU-123"
-        label="SKU *"
+        label="SKU"
       />
       <TextInput
         source="description"

@@ -43,7 +43,7 @@ export const PRODUCT_STATUSES = productStatusSchema.options;
 export const productSchema = z.strictObject({
   // Required fields
   name: z.string().min(1, "Product name is required").max(255, "Product name too long"),
-  sku: z.string().min(1, "SKU is required").max(50, "SKU too long"),
+  sku: z.string().max(50, "SKU too long").nullish(),
   principal_id: z.number().int().positive("Principal/Supplier is required"),
   category: productCategorySchema,
 
