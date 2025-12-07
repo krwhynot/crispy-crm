@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { CreateBase, Form, useNotify, useRefresh } from "ra-core";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { cn } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,

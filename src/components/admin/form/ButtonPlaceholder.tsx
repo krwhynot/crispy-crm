@@ -10,13 +10,13 @@ interface ButtonPlaceholderProps {
  *
  * Dimensions match CreateInDialogButton with size="sm":
  * - h-9 (36px) = sm button height
- * - w-[152px] = matches longest button "New Organization" (icon + text + padding)
+ * - w-9 (36px) = square, icon-only button size
  */
 export const ButtonPlaceholder = ({ className }: ButtonPlaceholderProps) => {
   return (
     <div
       className={cn(
-        "h-9 w-[152px] shrink-0", // Match button height and longest button width
+        "h-9 w-9 shrink-0", // Match icon-only button size
         "invisible", // Take space but don't display
         className
       )}

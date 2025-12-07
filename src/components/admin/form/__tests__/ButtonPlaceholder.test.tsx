@@ -9,7 +9,7 @@ describe("ButtonPlaceholder", () => {
 
     expect(element).toHaveClass("invisible");
     expect(element).toHaveClass("h-9"); // 36px button height
-    expect(element).toHaveClass("w-[120px]");
+    expect(element).toHaveClass("w-9"); // 36px square icon button size
   });
 
   it("has aria-hidden for accessibility", () => {
