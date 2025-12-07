@@ -11,9 +11,7 @@ describe("CollapsibleSection", () => {
 
     expect(screen.getByRole("button", { name: /additional details/i })).toBeInTheDocument();
     // When collapsed, Radix Collapsible removes content from DOM entirely
-    // So we check the element is either absent OR not visible
-    const hiddenInput = screen.queryByTestId("hidden-input");
-    expect(hiddenInput === null || !hiddenInput.checkVisibility()).toBe(true);
+    expect(screen.queryByTestId("hidden-input")).not.toBeInTheDocument();
   });
 
   it("expands when trigger clicked", () => {

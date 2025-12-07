@@ -107,7 +107,7 @@ const TestWrapper = ({
   );
 };
 
-describe("OrganizationInputs - Tabbed Form", () => {
+describe("OrganizationInputs - Compact Form", () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -131,7 +131,7 @@ describe("OrganizationInputs - Tabbed Form", () => {
     });
   });
 
-  it("should render all two tabs (Main, More)", async () => {
+  it("should render organization name field", async () => {
     render(
       <TestWrapper defaultValues={{ name: "Test Org" }}>
         <OrganizationInputs />
@@ -139,85 +139,27 @@ describe("OrganizationInputs - Tabbed Form", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByRole("tab", { name: /main/i })).toBeInTheDocument();
-      expect(screen.getByRole("tab", { name: /more/i })).toBeInTheDocument();
-    });
-  });
-
-  it("should display Main tab content by default", async () => {
-    render(
-      <TestWrapper>
-        <OrganizationInputs />
-      </TestWrapper>
-    );
-
-    await waitFor(() => {
-      // Check for field labels in Main tab - getAllByText to handle multiple matches
-      const nameLabels = screen.getAllByText(/name/i);
+      // Check for field labels - getAllByText to handle multiple matches
+      const nameLabels = screen.getAllByText(/organization name/i);
       expect(nameLabels.length).toBeGreaterThan(0);
-
-      const orgTypeLabels = screen.getAllByText(/organization type/i);
-      expect(orgTypeLabels.length).toBeGreaterThan(0);
     });
   });
 
-  it("should navigate to More tab when clicked", async () => {
+  it("should render type field", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>
     );
 
-    // Click More tab
-    const moreTab = screen.getByRole("tab", { name: /more/i });
-
-    // Verify tab exists and is clickable
-    expect(moreTab).toBeInTheDocument();
-    expect(moreTab).not.toBeDisabled();
-
-    // Tab switching is handled by Radix UI Tabs component
-    // This test verifies the tab structure is correct
-  });
-
-  it("should have both Main and More tabs available", async () => {
-    render(
-      <TestWrapper>
-        <OrganizationInputs />
-      </TestWrapper>
-    );
-
-    // Verify both tabs exist and are clickable
-    const mainTab = screen.getByRole("tab", { name: /main/i });
-    const moreTab = screen.getByRole("tab", { name: /more/i });
-
-    expect(mainTab).toBeInTheDocument();
-    expect(mainTab).not.toBeDisabled();
-    expect(moreTab).toBeInTheDocument();
-    expect(moreTab).not.toBeDisabled();
-
-    // Tab switching is handled by Radix UI Tabs component
-    // This test verifies the tab structure is correct
-  });
-
-  it("should show error count badge on Main tab when validation fails", async () => {
-    render(
-      <TestWrapper>
-        <OrganizationInputs />
-      </TestWrapper>
-    );
-
-    // This test verifies the structure exists for error badges
-    // The actual validation logic would need to be triggered through React Admin's form context
     await waitFor(() => {
-      const mainTab = screen.getByRole("tab", { name: /main/i });
-      expect(mainTab).toBeInTheDocument();
-
-      // The component structure supports error badges via the Badge component
-      // which uses semantic colors (variant="destructive")
+      // Check for type label
+      const typeLabels = screen.getAllByText(/type/i);
+      expect(typeLabels.length).toBeGreaterThan(0);
     });
   });
 
-  it("should preserve form data when switching between tabs", async () => {
+  it("should preserve form data on field change", async () => {
     render(
       <TestWrapper defaultValues={{ name: "Initial Name" }}>
         <OrganizationInputs />
@@ -235,12 +177,9 @@ describe("OrganizationInputs - Tabbed Form", () => {
     await waitFor(() => {
       expect(nameInput).toHaveValue("Test Organization");
     });
-
-    // The form data is preserved across tab switches by React Hook Form
-    // This test verifies that the input accepts changes
   });
 
-  it("should have responsive grid layout in all tabs", async () => {
+  it("should have collapsible section for additional details", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
@@ -248,50 +187,50 @@ describe("OrganizationInputs - Tabbed Form", () => {
     );
 
     await waitFor(() => {
-      // Check Main tab grid
-      const mainContent = screen.getByRole("tabpanel", { hidden: false });
-      const mainGrid = mainContent.querySelector(".grid");
-      expect(mainGrid).toHaveClass("grid-cols-1");
-      expect(mainGrid).toHaveClass("md:grid-cols-2");
-    });
-
-    // Check More tab grid
-    const moreTab = screen.getByRole("tab", { name: /more/i });
-    fireEvent.click(moreTab);
-
-    await waitFor(() => {
-      const moreContent = screen.getByRole("tabpanel", { hidden: false });
-      const moreGrid = moreContent.querySelector(".grid");
-      expect(moreGrid).toHaveClass("grid-cols-1");
-      expect(moreGrid).toHaveClass("md:grid-cols-2");
+      // Check for collapsible trigger
+      const collapsibleTrigger = screen.getByRole("button", { name: /additional details/i });
+      expect(collapsibleTrigger).toBeInTheDocument();
     });
   });
 
-  it("should render organization fields across tabs", async () => {
+  it("should expand collapsible section when clicked", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
       </TestWrapper>
     );
 
-    // Check that both tabs exist
-    const mainTab = screen.getByRole("tab", { name: /main/i });
-    const moreTab = screen.getByRole("tab", { name: /more/i });
+    // Find and click collapsible trigger
+    const collapsibleTrigger = screen.getByRole("button", { name: /additional details/i });
+    fireEvent.click(collapsibleTrigger);
 
-    // Verify all tabs are present
-    expect(mainTab).toBeInTheDocument();
-    expect(moreTab).toBeInTheDocument();
-
-    // Verify that the component renders input fields
-    const textboxes = screen.getAllByRole("textbox");
-    expect(textboxes.length).toBeGreaterThan(0);
-
-    // The component includes fields distributed across 2 tabs
-    // Main tab: name, organization_type, sales_id, segment_id, street, city, state, zip
-    // More tab: website, linkedin_url, description, parent_organization_id
+    // Check for fields in the expanded section
+    await waitFor(() => {
+      expect(screen.getByText(/website/i)).toBeInTheDocument();
+    });
   });
 
-  it("should use semantic colors for error badges", async () => {
+  it("should have responsive grid layout", async () => {
+    const { container } = render(
+      <TestWrapper>
+        <OrganizationInputs />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      // Check for grid classes (CompactFormRow uses these)
+      const grids = container.querySelectorAll(".grid");
+      expect(grids.length).toBeGreaterThan(0);
+
+      // Should have responsive grid columns
+      const hasResponsiveGrid = Array.from(grids).some(
+        (grid) => grid.classList.contains("md:grid-cols-2")
+      );
+      expect(hasResponsiveGrid).toBe(true);
+    });
+  });
+
+  it("should render all visible fields", async () => {
     render(
       <TestWrapper>
         <OrganizationInputs />
@@ -299,13 +238,40 @@ describe("OrganizationInputs - Tabbed Form", () => {
     );
 
     await waitFor(() => {
-      // Check that tabs exist
-      const mainTab = screen.getByRole("tab", { name: /main/i });
-      expect(mainTab).toBeInTheDocument();
+      // Verify that the component renders input fields
+      const textboxes = screen.getAllByRole("textbox");
+      expect(textboxes.length).toBeGreaterThan(0);
 
-      // Error badges should use variant="destructive" (semantic color)
-      // This is verified through the implementation in OrganizationInputs.tsx
-      // The Badge component uses semantic CSS variables via variant prop
+      // Core visible fields: name, street, city, state, zip
+      // Plus select inputs for type, account manager, segment
+    });
+  });
+
+  it("should use 44px touch targets on collapsible trigger", async () => {
+    render(
+      <TestWrapper>
+        <OrganizationInputs />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      const trigger = screen.getByRole("button", { name: /additional details/i });
+      expect(trigger).toHaveClass("h-11");
+    });
+  });
+
+  it("should display address fields", async () => {
+    render(
+      <TestWrapper>
+        <OrganizationInputs />
+      </TestWrapper>
+    );
+
+    await waitFor(() => {
+      // Check for address-related fields
+      expect(screen.getByText(/street/i)).toBeInTheDocument();
+      expect(screen.getByText(/city/i)).toBeInTheDocument();
+      expect(screen.getByText(/state/i)).toBeInTheDocument();
     });
   });
 });
