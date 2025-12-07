@@ -57,8 +57,32 @@ export const ContactCompactForm = () => {
         </div>
       </CompactFormRow>
 
-      <CompactFormRow columns="md:grid-cols-[3fr_2fr]">
-        <div className="grid grid-cols-[1fr_auto] items-end gap-2">
+      <CompactFormRow>
+        <CompactFormFieldWithButton
+          button={
+            <CreateInDialogButton
+              resource="organizations"
+              label="New Organization"
+              defaultValues={{
+                ...organizationSchema.partial().parse({}),
+                sales_id: identity?.id,
+              }}
+              onSave={(newOrg) => {
+                setValue("organization_id", newOrg.id);
+              }}
+              transform={(values) => {
+                if (values.website && !values.website.startsWith("http")) {
+                  values.website = `https://${values.website}`;
+                }
+                return values;
+              }}
+              title="Create New Organization"
+              description="Create a new organization and associate it with this contact"
+            >
+              <OrganizationInputs />
+            </CreateInDialogButton>
+          }
+        >
           <div data-tutorial="contact-organization">
             <ReferenceInput
               source="organization_id"
@@ -69,43 +93,25 @@ export const ContactCompactForm = () => {
               <AutocompleteOrganizationInput />
             </ReferenceInput>
           </div>
-          <CreateInDialogButton
-            resource="organizations"
-            label="New Organization"
-            defaultValues={{
-              ...organizationSchema.partial().parse({}),
-              sales_id: identity?.id,
+        </CompactFormFieldWithButton>
+        <CompactFormFieldWithButton>
+          {/* No button prop = auto placeholder for alignment */}
+          <ReferenceInput
+            reference="sales"
+            source="sales_id"
+            sort={{ field: "last_name", order: "ASC" }}
+            filter={{
+              "disabled@neq": true,
+              "user_id@not.is": null,
             }}
-            onSave={(newOrg) => {
-              setValue("organization_id", newOrg.id);
-            }}
-            transform={(values) => {
-              if (values.website && !values.website.startsWith("http")) {
-                values.website = `https://${values.website}`;
-              }
-              return values;
-            }}
-            title="Create New Organization"
-            description="Create a new organization and associate it with this contact"
           >
-            <OrganizationInputs />
-          </CreateInDialogButton>
-        </div>
-        <ReferenceInput
-          reference="sales"
-          source="sales_id"
-          sort={{ field: "last_name", order: "ASC" }}
-          filter={{
-            "disabled@neq": true,
-            "user_id@not.is": null,
-          }}
-        >
-          <SelectInput
-            helperText="Required field"
-            label="Account manager *"
-            optionText={saleOptionRenderer}
-          />
-        </ReferenceInput>
+            <SelectInput
+              helperText="Required field"
+              label="Account manager *"
+              optionText={saleOptionRenderer}
+            />
+          </ReferenceInput>
+        </CompactFormFieldWithButton>
       </CompactFormRow>
 
       <CompactFormRow columns="md:grid-cols-2">
