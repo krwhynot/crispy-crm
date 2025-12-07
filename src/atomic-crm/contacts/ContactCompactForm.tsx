@@ -39,7 +39,7 @@ export const ContactCompactForm = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-3">
       <CompactFormRow columns="md:grid-cols-[1fr_1fr_auto]" alignItems="start">
         <div data-tutorial="contact-first-name">
           <TextInput source="first_name" label="First Name *" helperText="Required field" />
