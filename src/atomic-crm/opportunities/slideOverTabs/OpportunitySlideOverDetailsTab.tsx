@@ -132,7 +132,7 @@ export function OpportunitySlideOverDetailsTab({
 
   if (mode === "edit") {
     return (
-      <Form defaultValues={record} onSubmit={handleSave} className="space-y-2">
+      <Form id="slide-over-edit-form" defaultValues={record} onSubmit={handleSave} className="space-y-2">
         <TextInput source="name" label="Opportunity Name" helperText={false} fullWidth />
         <TextInput
           source="description"
@@ -226,16 +226,6 @@ export function OpportunitySlideOverDetailsTab({
               />
             </ReferenceInput>
           </div>
-        </div>
-
-        {/* Action buttons */}
-        <div className="flex gap-2 pt-2">
-          <Button type="submit" disabled={isSaving} className="flex-1">
-            {isSaving ? "Saving..." : "Save Changes"}
-          </Button>
-          <Button type="button" variant="outline" onClick={handleCancel} disabled={isSaving}>
-            Cancel
-          </Button>
         </div>
 
         {/* CloseOpportunityModal - shown when changing stage to closed_won/closed_lost */}

@@ -313,12 +313,16 @@ export function ResourceSlideOver({
 
             {/* Footer message (edit mode only) */}
             {mode === "edit" && (
-              <SheetFooter className="border-t border-border p-4 flex flex-row gap-2 justify-between items-center">
-                <p className="text-sm text-muted-foreground">
-                  Currently in edit mode. Tab components handle their own save logic.
-                </p>
+              <SheetFooter className="border-t border-border p-4 flex flex-row gap-2 justify-end items-center">
                 <Button variant="outline" onClick={onModeToggle} className="h-11 px-4">
                   Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  form="slide-over-edit-form"
+                  className="h-11 px-4"
+                >
+                  Save Changes
                 </Button>
               </SheetFooter>
             )}

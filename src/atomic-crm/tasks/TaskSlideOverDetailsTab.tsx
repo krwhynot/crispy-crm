@@ -92,7 +92,7 @@ export function TaskSlideOverDetailsTab({
   if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
-        <Form onSubmit={handleSave} record={record}>
+        <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
           <div className="space-y-6" role="form" aria-label="Edit task form">
             <div className="space-y-4">
               <TextInput source="title" label="Task Title" />
@@ -130,26 +130,6 @@ export function TaskSlideOverDetailsTab({
               <ReferenceInput source="opportunity_id" reference="opportunities">
                 <AutocompleteInput label="Opportunity" optionText="title" />
               </ReferenceInput>
-            </div>
-
-            {/* Form toolbar with Save/Cancel - keyboard submit via Enter key */}
-            <div
-              className="flex gap-2 pt-4 border-t border-border"
-              role="toolbar"
-              aria-label="Form actions"
-            >
-              <Button type="submit" disabled={isSaving} className="h-11 px-4 flex-1">
-                {isSaving ? "Saving..." : "Save Changes"}
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                onClick={handleCancel}
-                disabled={isSaving}
-                className="h-11 px-4"
-              >
-                Cancel
-              </Button>
             </div>
           </div>
         </Form>

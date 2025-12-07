@@ -100,7 +100,7 @@ export function ProductDetailsTab({ record, mode, onModeToggle }: ProductDetails
 
     return (
       <RecordContextProvider value={record}>
-        <Form onSubmit={handleSave} record={record}>
+        <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
           <div className="space-y-6">
             <div className="space-y-4">
               <TextInput source="name" label="Product Name" />
@@ -125,13 +125,6 @@ export function ProductDetailsTab({ record, mode, onModeToggle }: ProductDetails
               >
                 <AutocompleteInput optionText="name" />
               </ReferenceInput>
-            </div>
-
-            {/* Save button - Cancel handled by slide-over header */}
-            <div className="flex gap-2 justify-end pt-4 border-t border-border">
-              <Button type="submit" disabled={isSaving} className="h-11 px-4">
-                {isSaving ? "Saving..." : "Save Changes"}
-              </Button>
             </div>
           </div>
         </Form>
