@@ -50,7 +50,7 @@ export function OrganizationDetailsTab({
   if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
-        <Form onSubmit={handleSave} record={record}>
+        <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
           <div className="space-y-6">
             <div className="space-y-4">
               <TextInput source="name" label="Organization Name" />
@@ -71,12 +71,6 @@ export function OrganizationDetailsTab({
                   <TextInput source="url" label="URL" />
                 </SimpleFormIterator>
               </ArrayInput>
-            </div>
-
-            <div className="flex gap-2 justify-end pt-4 border-t border-border">
-              <Button type="submit" disabled={isSaving} className="h-11 px-4">
-                {isSaving ? "Saving..." : "Save Changes"}
-              </Button>
             </div>
           </div>
         </Form>

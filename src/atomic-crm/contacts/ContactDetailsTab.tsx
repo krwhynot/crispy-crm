@@ -63,16 +63,9 @@ export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetails
   if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
-        <Form onSubmit={handleSave} record={record}>
+        <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
           <div className="space-y-6">
             <ContactInputs />
-
-            {/* Save button - Cancel handled by slide-over header */}
-            <div className="flex gap-2 justify-end pt-4 border-t border-border">
-              <Button type="submit" disabled={isSaving} className="h-11 px-4">
-                {isSaving ? "Saving..." : "Save Changes"}
-              </Button>
-            </div>
           </div>
         </Form>
       </RecordContextProvider>
