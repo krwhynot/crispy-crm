@@ -3,16 +3,12 @@ import { ReferenceInput } from "@/components/admin/reference-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
-import { CreateInDialogButton } from "@/components/admin/create-in-dialog-button";
-import { CompactFormRow, CompactFormFieldWithButton } from "@/components/admin/form";
+import { CompactFormRow } from "@/components/admin/form";
 import { Avatar } from "./Avatar";
 import { ContactAdditionalDetails } from "./ContactAdditionalDetails";
 import { AutocompleteOrganizationInput } from "../organizations/AutocompleteOrganizationInput";
-import { OrganizationInputs } from "../organizations/OrganizationInputs";
 import { useFormContext } from "react-hook-form";
-import { useGetIdentity } from "ra-core";
 import type { Sale } from "../types";
-import { organizationSchema } from "../validation/organizations";
 import * as React from "react";
 
 const personalInfoTypes = [{ id: "Work" }, { id: "Home" }, { id: "Other" }];
@@ -20,7 +16,6 @@ const personalInfoTypes = [{ id: "Work" }, { id: "Home" }, { id: "Other" }];
 const saleOptionRenderer = (choice: Sale) => `${choice.first_name} ${choice.last_name}`;
 
 export const ContactCompactForm = () => {
-  const { data: identity } = useGetIdentity();
   const { setValue, getValues } = useFormContext();
 
   const handleEmailChange = (email: string) => {
