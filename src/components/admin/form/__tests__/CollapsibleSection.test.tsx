@@ -78,4 +78,13 @@ describe("CollapsibleSection", () => {
     fireEvent.click(button);
     expect(button).toHaveAttribute("aria-expanded", "true");
   });
+
+  it("has aria-controls linked to content id", () => {
+    render(<CollapsibleSection title="Details"><p>Content</p></CollapsibleSection>);
+    const button = screen.getByRole("button", { name: /details/i });
+    fireEvent.click(button); // Expand to render content
+    const contentId = button.getAttribute("aria-controls");
+    expect(contentId).toBeTruthy();
+    expect(document.getElementById(contentId!)).toBeInTheDocument();
+  });
 });
