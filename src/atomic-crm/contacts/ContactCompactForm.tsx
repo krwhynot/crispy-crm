@@ -4,7 +4,7 @@ import { SelectInput } from "@/components/admin/select-input";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
 import { CreateInDialogButton } from "@/components/admin/create-in-dialog-button";
-import { CompactFormRow } from "@/components/admin/form";
+import { CompactFormRow, CompactFormFieldWithButton } from "@/components/admin/form";
 import { Avatar } from "./Avatar";
 import { ContactAdditionalDetails } from "./ContactAdditionalDetails";
 import { AutocompleteOrganizationInput } from "../organizations/AutocompleteOrganizationInput";
