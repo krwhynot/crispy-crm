@@ -1,9 +1,30 @@
+import { useMemo } from "react";
 import { TextInput } from "@/components/admin/text-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
+import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
+import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
 import { SelectInput } from "@/components/admin/select-input";
+import { ArrayInput } from "@/components/admin/array-input";
+import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
 import { CompactFormRow, CollapsibleSection } from "@/components/admin/form";
+import { CreateInDialogButton } from "@/components/admin/create-in-dialog-button";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { RefreshCw } from "lucide-react";
+import { useWatch, useFormContext } from "react-hook-form";
+import { useGetIdentity } from "ra-core";
 import { AutocompleteOrganizationInput } from "../../organizations/AutocompleteOrganizationInput";
+import { OrganizationInputs } from "../../organizations/OrganizationInputs";
+import { ContactInputs } from "../../contacts/ContactInputs";
+import { contactOptionText } from "../../contacts/ContactOption";
+import { ContactOrgMismatchWarning } from "../components/ContactOrgMismatchWarning";
+import { DistributorAuthorizationWarning } from "../components/DistributorAuthorizationWarning";
+import { NamingConventionHelp } from "./NamingConventionHelp";
+import { useAutoGenerateName } from "../hooks/useAutoGenerateName";
 import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
+import { DEFAULT_SEGMENT_ID } from "../../constants";
+import { organizationSchema } from "../../validation/organizations";
+import { contactBaseSchema } from "../../validation/contacts";
 import type { Sale } from "../../types";
 
 const saleOptionRenderer = (choice: Sale) =>
@@ -18,41 +39,147 @@ const priorityChoices = [
   { id: "critical", name: "Critical" },
 ];
 
-export const OpportunityCompactForm = () => {
+const organizationDefaults = organizationSchema.partial().parse({});
+const contactDefaults = contactBaseSchema.partial().parse({});
+
+interface OpportunityCompactFormProps {
+  mode?: "create" | "edit";
+}
+
+export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFormProps) => {
+  const { data: identity } = useGetIdentity();
+  const { setValue, getValues } = useFormContext();
+  const { regenerate, isLoading, canGenerate } = useAutoGenerateName(mode);
+
+  const customerOrganizationId = useWatch({ name: "customer_organization_id" });
+  const principalOrganizationId = useWatch({ name: "principal_organization_id" });
+
+  const contactFilter = useMemo(
+    () => (customerOrganizationId ? { organization_id: customerOrganizationId } : {}),
+    [customerOrganizationId]
+  );
+
+  const productFilter = useMemo(
+    () => (principalOrganizationId ? { principal_id: principalOrganizationId } : {}),
+    [principalOrganizationId]
+  );
   return (
     <div className="space-y-4">
-      {/* Row 1: Name (full width) */}
-      <TextInput
-        source="name"
-        label="Opportunity Name *"
-        helperText="Auto-generated from Customer + Principal"
-      />
+      {/* Row 1: Name (full width) with regenerate button in edit mode */}
+      <div className="relative">
+        <div data-tutorial="opp-name">
+          <TextInput
+            source="name"
+            label="Opportunity Name *"
+            helperText={false}
+            InputProps={
+              mode === "edit"
+                ? {
+                    endAdornment: (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              type="button"
+                              variant="ghost"
+                              size="sm"
+                              onClick={regenerate}
+                              disabled={!canGenerate || isLoading}
+                            >
+                              <RefreshCw className="w-4 h-4" />
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Generate name from customer and principal</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    ),
+                  }
+                : undefined
+            }
+          />
+        </div>
+        <div className="mt-2">
+          <NamingConventionHelp />
+        </div>
+      </div>
 
-      {/* Row 2: Customer | Principal */}
+      {/* Row 2: Customer | Principal with inline create buttons */}
       <CompactFormRow>
         <div data-tutorial="opp-customer">
-          <ReferenceInput
-            source="customer_organization_id"
-            reference="organizations"
-            filter={{ organization_type: "customer" }}
-          >
-            <AutocompleteOrganizationInput
-              label="Customer Organization *"
-              organizationType="customer"
-            />
-          </ReferenceInput>
+          <div className="grid grid-cols-[1fr_auto] items-end gap-2">
+            <ReferenceInput
+              source="customer_organization_id"
+              reference="organizations"
+              filter={{ organization_type: "customer" }}
+            >
+              <AutocompleteOrganizationInput
+                label="Customer Organization *"
+                organizationType="customer"
+              />
+            </ReferenceInput>
+            <CreateInDialogButton
+              resource="organizations"
+              label="New Customer"
+              title="Create new Customer Organization"
+              description="Create a new customer organization and select it automatically"
+              defaultValues={{
+                ...organizationDefaults,
+                organization_type: "customer",
+                sales_id: identity?.id,
+                segment_id: DEFAULT_SEGMENT_ID,
+              }}
+              onSave={(record) => {
+                setValue("customer_organization_id", record.id);
+              }}
+              transform={(values) => {
+                if (values.website && !values.website.startsWith("http")) {
+                  values.website = `https://${values.website}`;
+                }
+                return values;
+              }}
+            >
+              <OrganizationInputs />
+            </CreateInDialogButton>
+          </div>
         </div>
         <div data-tutorial="opp-principal">
-          <ReferenceInput
-            source="principal_organization_id"
-            reference="organizations"
-            filter={{ organization_type: "principal" }}
-          >
-            <AutocompleteOrganizationInput
-              label="Principal Organization *"
-              organizationType="principal"
-            />
-          </ReferenceInput>
+          <div className="grid grid-cols-[1fr_auto] items-end gap-2">
+            <ReferenceInput
+              source="principal_organization_id"
+              reference="organizations"
+              filter={{ organization_type: "principal" }}
+            >
+              <AutocompleteOrganizationInput
+                label="Principal Organization *"
+                organizationType="principal"
+              />
+            </ReferenceInput>
+            <CreateInDialogButton
+              resource="organizations"
+              label="New Principal"
+              title="Create new Principal Organization"
+              description="Create a new principal organization and select it automatically"
+              defaultValues={{
+                ...organizationDefaults,
+                organization_type: "principal",
+                sales_id: identity?.id,
+                segment_id: DEFAULT_SEGMENT_ID,
+              }}
+              onSave={(record) => {
+                setValue("principal_organization_id", record.id);
+              }}
+              transform={(values) => {
+                if (values.website && !values.website.startsWith("http")) {
+                  values.website = `https://${values.website}`;
+                }
+                return values;
+              }}
+            >
+              <OrganizationInputs />
+            </CreateInDialogButton>
+          </div>
         </div>
       </CompactFormRow>
 
@@ -84,7 +211,7 @@ export const OpportunityCompactForm = () => {
         </div>
       </CompactFormRow>
 
-      {/* Row 4: Account Manager */}
+      {/* Row 4: Account Manager | Distributor with inline create button */}
       <CompactFormRow>
         <ReferenceInput
           source="account_manager_id"
@@ -98,13 +225,8 @@ export const OpportunityCompactForm = () => {
             helperText={false}
           />
         </ReferenceInput>
-        <div />
-      </CompactFormRow>
-
-      {/* Collapsible: Relationships (EXPANDED by default) */}
-      <CollapsibleSection title="Relationships & Products" defaultOpen>
-        <div className="space-y-3">
-          <CompactFormRow>
+        <div>
+          <div className="grid grid-cols-[1fr_auto] items-end gap-2">
             <ReferenceInput
               source="distributor_organization_id"
               reference="organizations"
@@ -115,18 +237,138 @@ export const OpportunityCompactForm = () => {
                 organizationType="distributor"
               />
             </ReferenceInput>
-            <div data-tutorial="opp-contacts">
-              <ReferenceInput source="contact_ids" reference="contacts">
-                <SelectInput optionText="full_name" helperText={false} label="Contacts" />
-              </ReferenceInput>
+            <CreateInDialogButton
+              resource="organizations"
+              label="New Distributor"
+              title="Create new Distributor Organization"
+              description="Create a new distributor organization and select it automatically"
+              defaultValues={{
+                ...organizationDefaults,
+                organization_type: "distributor",
+                sales_id: identity?.id,
+                segment_id: DEFAULT_SEGMENT_ID,
+              }}
+              onSave={(record) => {
+                setValue("distributor_organization_id", record.id);
+              }}
+              transform={(values) => {
+                if (values.website && !values.website.startsWith("http")) {
+                  values.website = `https://${values.website}`;
+                }
+                return values;
+              }}
+            >
+              <OrganizationInputs />
+            </CreateInDialogButton>
+          </div>
+          <DistributorAuthorizationWarning />
+        </div>
+      </CompactFormRow>
+
+      {/* Collapsible: Contacts & Products (defaultOpen in edit mode) */}
+      <CollapsibleSection title="Contacts & Products" defaultOpen={mode === "edit"}>
+        <div className="space-y-4">
+          {/* Contacts */}
+          <div>
+            <div className="flex justify-between items-start mb-2">
+              <div>
+                <h4 className="text-sm font-medium">Contacts *</h4>
+                <p className="text-xs text-muted-foreground">
+                  {customerOrganizationId
+                    ? "At least one contact is required"
+                    : "Please select a Customer Organization first"}
+                </p>
+              </div>
+              {customerOrganizationId && (
+                <CreateInDialogButton
+                  resource="contacts"
+                  label="New Contact"
+                  title="Create new Contact"
+                  description="Create a new contact for the selected customer organization"
+                  defaultValues={{
+                    ...contactDefaults,
+                    organization_id: customerOrganizationId,
+                    sales_id: identity?.id,
+                    first_seen: new Date().toISOString(),
+                    last_seen: new Date().toISOString(),
+                  }}
+                  onSave={(record) => {
+                    const currentContacts = getValues("contact_ids") || [];
+                    setValue("contact_ids", [...currentContacts, record.id]);
+                  }}
+                >
+                  <ContactInputs />
+                </CreateInDialogButton>
+              )}
             </div>
-          </CompactFormRow>
+            <div data-tutorial="opp-contacts">
+              {customerOrganizationId ? (
+                <ReferenceArrayInput
+                  source="contact_ids"
+                  reference="contacts_summary"
+                  filter={contactFilter}
+                >
+                  <AutocompleteArrayInput
+                    label={false}
+                    optionText={contactOptionText}
+                    helperText={false}
+                  />
+                </ReferenceArrayInput>
+              ) : (
+                <AutocompleteArrayInput
+                  source="contact_ids"
+                  label={false}
+                  optionText={contactOptionText}
+                  helperText={false}
+                  disabled
+                  placeholder="Select Customer Organization first"
+                  choices={[]}
+                />
+              )}
+            </div>
+            <ContactOrgMismatchWarning />
+          </div>
+
+          {/* Products */}
+          <div>
+            <div className="mb-2">
+              <h4 className="text-sm font-medium">Products *</h4>
+              <p className="text-xs text-muted-foreground">
+                {principalOrganizationId
+                  ? "At least one product is required (filtered by selected Principal)"
+                  : "At least one product is required (select Principal Organization to filter)"}
+              </p>
+            </div>
+            <ArrayInput source="products_to_sync" label={false}>
+              <SimpleFormIterator inline disableReordering>
+                <ReferenceInput
+                  source="product_id_reference"
+                  reference="products"
+                  filter={productFilter}
+                >
+                  <SelectInput
+                    optionText="name"
+                    label="Product"
+                    helperText={false}
+                    className="w-full"
+                  />
+                </ReferenceInput>
+                <TextInput
+                  source="notes"
+                  label="Notes"
+                  helperText={false}
+                  placeholder="Optional notes"
+                  className="w-full"
+                />
+              </SimpleFormIterator>
+            </ArrayInput>
+          </div>
         </div>
       </CollapsibleSection>
 
       {/* Collapsible: Classification */}
       <CollapsibleSection title="Classification">
-        <div className="space-y-3">
+        <div className="space-y-4">
           <CompactFormRow>
             <TextInput source="lead_source" label="Lead Source" helperText={false} />
             <TextInput
@@ -136,12 +378,17 @@ export const OpportunityCompactForm = () => {
               placeholder="e.g., Q4 2025 Trade Show"
             />
           </CompactFormRow>
+          <ArrayInput source="tags" label="Tags">
+            <SimpleFormIterator inline disableReordering>
+              <TextInput source="" label={false} helperText={false} placeholder="Add tag" />
+            </SimpleFormIterator>
+          </ArrayInput>
         </div>
       </CollapsibleSection>
 
       {/* Collapsible: Additional Details */}
       <CollapsibleSection title="Additional Details">
-        <div className="space-y-3">
+        <div className="space-y-4">
           <TextInput source="description" label="Description" multiline rows={2} helperText={false} />
           <CompactFormRow>
             <TextInput
@@ -165,6 +412,11 @@ export const OpportunityCompactForm = () => {
             helperText={false}
             placeholder="Key factors influencing the decision..."
           />
+          {mode === "edit" && (
+            <ReferenceInput source="related_opportunity_id" reference="opportunities">
+              <SelectInput optionText="name" label="Related Opportunity" helperText={false} />
+            </ReferenceInput>
+          )}
           <TextInput
             source="notes"
             label="Notes"

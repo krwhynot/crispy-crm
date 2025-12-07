@@ -45,7 +45,7 @@ export const ContactCompactForm = () => {
 
   return (
     <div className="space-y-4">
-      <CompactFormRow columns="grid-cols-[1fr_1fr_auto]" alignItems="start">
+      <CompactFormRow columns="md:grid-cols-[1fr_1fr_auto]" alignItems="start">
         <div data-tutorial="contact-first-name">
           <TextInput source="first_name" label="First Name *" helperText="Required field" />
         </div>
@@ -57,7 +57,7 @@ export const ContactCompactForm = () => {
         </div>
       </CompactFormRow>
 
-      <CompactFormRow columns="grid-cols-[3fr_2fr]">
+      <CompactFormRow columns="md:grid-cols-[3fr_2fr]">
         <div className="grid grid-cols-[1fr_auto] items-end gap-2">
           <div data-tutorial="contact-organization">
             <ReferenceInput
@@ -108,7 +108,7 @@ export const ContactCompactForm = () => {
         </ReferenceInput>
       </CompactFormRow>
 
-      <CompactFormRow columns="lg:grid-cols-2">
+      <CompactFormRow columns="md:grid-cols-2">
         <div data-tutorial="contact-email">
           <ArrayInput source="email" label="Email addresses" helperText={false}>
             <SimpleFormIterator

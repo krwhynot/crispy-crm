@@ -4,7 +4,7 @@ import { CollapsibleSection, CompactFormRow } from "@/components/admin/form";
 export const ContactAdditionalDetails = () => {
   return (
     <CollapsibleSection title="Additional Details">
-      <div className="space-y-3">
+      <div className="space-y-4">
         <CompactFormRow>
           <TextInput source="title" label="Job Title" helperText={false} />
           <TextInput source="department" label="Department" helperText={false} />
