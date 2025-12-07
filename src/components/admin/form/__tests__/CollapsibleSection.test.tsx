@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { CollapsibleSection } from "../CollapsibleSection";
 
 describe("CollapsibleSection", () => {
@@ -50,5 +51,31 @@ describe("CollapsibleSection", () => {
 
     fireEvent.click(screen.getByRole("button"));
     expect(chevron).toHaveClass("rotate-180");
+  });
+
+  it("toggles on Enter key", async () => {
+    const user = userEvent.setup();
+    render(<CollapsibleSection title="Details"><p>Content</p></CollapsibleSection>);
+    const button = screen.getByRole("button", { name: /details/i });
+    button.focus();
+    await user.keyboard("{Enter}");
+    expect(screen.getByText("Content")).toBeInTheDocument();
+  });
+
+  it("toggles on Space key", async () => {
+    const user = userEvent.setup();
+    render(<CollapsibleSection title="Details"><p>Content</p></CollapsibleSection>);
+    const button = screen.getByRole("button", { name: /details/i });
+    button.focus();
+    await user.keyboard(" ");
+    expect(screen.getByText("Content")).toBeInTheDocument();
+  });
+
+  it("has correct aria-expanded state", () => {
+    render(<CollapsibleSection title="Details"><p>Content</p></CollapsibleSection>);
+    const button = screen.getByRole("button", { name: /details/i });
+    expect(button).toHaveAttribute("aria-expanded", "false");
+    fireEvent.click(button);
+    expect(button).toHaveAttribute("aria-expanded", "true");
   });
 });

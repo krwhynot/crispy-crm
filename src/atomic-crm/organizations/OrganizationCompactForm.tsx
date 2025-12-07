@@ -57,7 +57,7 @@ export const OrganizationCompactForm = () => {
       </CompactFormRow>
 
       <CollapsibleSection title="Additional Details">
-        <div className="space-y-3">
+        <div className="space-y-4">
           <div data-tutorial="org-website">
             <TextInput source="website" label="Website" helperText="Format: https://example.com" />
           </div>
