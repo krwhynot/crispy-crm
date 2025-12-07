@@ -185,7 +185,7 @@ export function ResourceSlideOver({
         ) : (
           <>
             {/* Header with optional breadcrumb, title, mode toggle, and close button */}
-            <SheetHeader className="border-b border-border px-6 py-3 flex flex-col shrink-0">
+            <SheetHeader className="!p-0 border-b border-border px-4 py-2 gap-1 flex flex-col shrink-0">
               {/* Breadcrumb row (optional) */}
               {BreadcrumbComponent && record && !isLoading && (
                 <div className="mb-1">

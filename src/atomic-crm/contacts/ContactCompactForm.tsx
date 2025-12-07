@@ -60,7 +60,7 @@ export const ContactCompactForm = () => {
           label="Organization *"
           isRequired
         >
-          <AutocompleteOrganizationInput />
+          <AutocompleteOrganizationInput helperText="Required field" />
         </ReferenceInput>
       </div>
 
