@@ -21,6 +21,7 @@ export const CollapsibleSection = ({
   className,
 }: CollapsibleSectionProps) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
+  const contentId = useId();
 
   return (
     <Collapsible
@@ -29,6 +30,7 @@ export const CollapsibleSection = ({
       className={cn("border border-border rounded-md", className)}
     >
       <CollapsibleTrigger
+        aria-controls={contentId}
         className={cn(
           "flex w-full items-center justify-between px-3",
           "text-sm font-medium text-muted-foreground",
@@ -46,7 +48,7 @@ export const CollapsibleSection = ({
           )}
         />
       </CollapsibleTrigger>
-      <CollapsibleContent className="px-3 pb-3">
+      <CollapsibleContent id={contentId} className="px-3 pb-3">
         <div className="pt-2">{children}</div>
       </CollapsibleContent>
     </Collapsible>

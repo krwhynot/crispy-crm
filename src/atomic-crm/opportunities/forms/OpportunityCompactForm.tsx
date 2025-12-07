@@ -265,8 +265,8 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
         </div>
       </CompactFormRow>
 
-      {/* Collapsible: Contacts & Products (defaultOpen in edit mode) */}
-      <CollapsibleSection title="Contacts & Products" defaultOpen={mode === "edit"}>
+      {/* Collapsible: Contacts & Products (always open - contains required fields) */}
+      <CollapsibleSection title="Contacts & Products" defaultOpen>
         <div className="space-y-4">
           {/* Contacts */}
           <div>
