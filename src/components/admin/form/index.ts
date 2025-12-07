@@ -8,3 +8,7 @@ export { FormActions } from "./FormActions";
 export { SaveButtonGroup } from "./SaveButtonGroup";
 export { FormLoadingSkeleton } from "./FormLoadingSkeleton";
 export { useFormShortcuts } from "./useFormShortcuts";
+
+// Compact form components
+export { CollapsibleSection } from "./CollapsibleSection";
+export { CompactFormRow } from "./CompactFormRow";
