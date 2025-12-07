@@ -57,7 +57,7 @@ export const ContactCompactForm = () => {
         </div>
       </CompactFormRow>
 
-      <CompactFormRow columns="md:grid-cols-[1fr_1fr_auto]" alignItems="end">
+      <CompactFormRow columns="md:grid-cols-2" alignItems="end">
         <div data-tutorial="contact-organization">
           <ReferenceInput
             source="organization_id"
@@ -83,27 +83,6 @@ export const ContactCompactForm = () => {
             optionText={saleOptionRenderer}
           />
         </ReferenceInput>
-        <CreateInDialogButton
-          resource="organizations"
-          label="+ New"
-          defaultValues={{
-            ...organizationSchema.partial().parse({}),
-            sales_id: identity?.id,
-          }}
-          onSave={(newOrg) => {
-            setValue("organization_id", newOrg.id);
-          }}
-          transform={(values) => {
-            if (values.website && !values.website.startsWith("http")) {
-              values.website = `https://${values.website}`;
-            }
-            return values;
-          }}
-          title="Create New Organization"
-          description="Create a new organization and associate it with this contact"
-        >
-          <OrganizationInputs />
-        </CreateInDialogButton>
       </CompactFormRow>
 
       <CompactFormRow columns="md:grid-cols-2">
