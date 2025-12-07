@@ -4,7 +4,6 @@ import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
 import { SaveButton, FormLoadingSkeleton } from "@/components/admin/form";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
 import type { Contact } from "../types";
 import { ContactInputs } from "./ContactInputs";
@@ -61,11 +60,8 @@ const ContactFormContent = ({
   notify: ReturnType<typeof useNotify>;
   redirect: ReturnType<typeof useRedirect>;
 }) => {
-  const { errors } = useFormState();
-
   return (
     <>
-      <FormErrorSummary errors={errors} />
       <ContactInputs />
       <ContactCreateFooter notify={notify} redirect={redirect} />
     </>

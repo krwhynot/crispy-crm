@@ -16,10 +16,9 @@ import { CreateBase, Form, useGetList, useCreate, useRedirect, useNotify } from 
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { SaveButton, FormLoadingSkeleton } from "@/components/admin/form";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { FormToolbar } from "@/components/admin/simple-form";
 import { useLocation } from "react-router-dom";
-import { useFormContext, useFormState } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import { OrganizationInputs } from "./OrganizationInputs";
 import { organizationSchema } from "../validation/organizations";
@@ -251,11 +250,8 @@ const OrganizationFormContent = ({
   checkForDuplicate: (name: string) => Promise<{ id: string | number; name: string } | null>;
   isChecking: boolean;
 }) => {
-  const { errors } = useFormState();
-
   return (
     <>
-      <FormErrorSummary errors={errors} />
       <OrganizationInputs />
       <FormToolbar>
         <div className="flex flex-row gap-2 justify-end">

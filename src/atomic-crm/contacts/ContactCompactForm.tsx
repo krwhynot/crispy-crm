@@ -4,8 +4,9 @@ import { SelectInput } from "@/components/admin/select-input";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
 import { CreateInDialogButton } from "@/components/admin/create-in-dialog-button";
-import { FormSection } from "@/components/admin/form";
+import { CompactFormRow } from "@/components/admin/form";
 import { Avatar } from "./Avatar";
+import { ContactAdditionalDetails } from "./ContactAdditionalDetails";
 import { AutocompleteOrganizationInput } from "../organizations/AutocompleteOrganizationInput";
 import { OrganizationInputs } from "../organizations/OrganizationInputs";
 import { useFormContext } from "react-hook-form";
@@ -18,7 +19,7 @@ const personalInfoTypes = [{ id: "Work" }, { id: "Home" }, { id: "Other" }];
 
 const saleOptionRenderer = (choice: Sale) => `${choice.first_name} ${choice.last_name}`;
 
-export const ContactMainTab = () => {
+export const ContactCompactForm = () => {
   const { data: identity } = useGetIdentity();
   const { setValue, getValues } = useFormContext();
 
@@ -43,20 +44,20 @@ export const ContactMainTab = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <FormSection title="Identity">
-        <div className="space-y-2">
-          <Avatar />
-          <div data-tutorial="contact-first-name">
-            <TextInput source="first_name" label="First Name *" helperText="Required field" />
-          </div>
-          <div data-tutorial="contact-last-name">
-            <TextInput source="last_name" label="Last Name *" helperText="Required field" />
-          </div>
+    <div className="space-y-4">
+      <CompactFormRow columns="grid-cols-[1fr_1fr_auto]" alignItems="start">
+        <div data-tutorial="contact-first-name">
+          <TextInput source="first_name" label="First Name *" helperText="Required field" />
         </div>
-      </FormSection>
+        <div data-tutorial="contact-last-name">
+          <TextInput source="last_name" label="Last Name *" helperText="Required field" />
+        </div>
+        <div className="pt-6">
+          <Avatar />
+        </div>
+      </CompactFormRow>
 
-      <FormSection title="Organization">
+      <CompactFormRow columns="grid-cols-[3fr_2fr]">
         <div className="grid grid-cols-[1fr_auto] items-end gap-2">
           <div data-tutorial="contact-organization">
             <ReferenceInput
@@ -90,9 +91,6 @@ export const ContactMainTab = () => {
             <OrganizationInputs />
           </CreateInDialogButton>
         </div>
-      </FormSection>
-
-      <FormSection title="Account Manager">
         <ReferenceInput
           reference="sales"
           source="sales_id"
@@ -108,12 +106,11 @@ export const ContactMainTab = () => {
             optionText={saleOptionRenderer}
           />
         </ReferenceInput>
-      </FormSection>
+      </CompactFormRow>
 
-      <FormSection title="Contact Information">
-        <div className="space-y-2">
-          <div data-tutorial="contact-email">
-            <ArrayInput source="email" label="Email addresses" helperText={false}>
+      <CompactFormRow columns="lg:grid-cols-2">
+        <div data-tutorial="contact-email">
+          <ArrayInput source="email" label="Email addresses" helperText={false}>
             <SimpleFormIterator
               inline
               disableReordering
@@ -138,10 +135,10 @@ export const ContactMainTab = () => {
                 className="w-24 min-w-24"
               />
             </SimpleFormIterator>
-            </ArrayInput>
-          </div>
-          <div data-tutorial="contact-phone">
-            <ArrayInput source="phone" label="Phone numbers" helperText={false}>
+          </ArrayInput>
+        </div>
+        <div data-tutorial="contact-phone">
+          <ArrayInput source="phone" label="Phone numbers" helperText={false}>
             <SimpleFormIterator
               inline
               disableReordering
@@ -164,10 +161,11 @@ export const ContactMainTab = () => {
                 className="w-24 min-w-24"
               />
             </SimpleFormIterator>
-            </ArrayInput>
-          </div>
+          </ArrayInput>
         </div>
-      </FormSection>
+      </CompactFormRow>
+
+      <ContactAdditionalDetails />
     </div>
   );
 };

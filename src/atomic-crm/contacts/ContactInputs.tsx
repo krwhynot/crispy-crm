@@ -1,10 +1,7 @@
-import { TabbedFormInputs } from "@/components/admin/tabbed-form";
-import { ContactMainTab } from "./ContactMainTab";
-import { ContactMoreTab } from "./ContactMoreTab";
+import { useFormState } from "react-hook-form";
+import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import { ContactCompactForm } from "./ContactCompactForm";
 
-/**
- * Field labels for user-friendly error messages in the validation summary banner
- */
 const CONTACT_FIELD_LABELS: Record<string, string> = {
   first_name: "First Name",
   last_name: "Last Name",
@@ -19,20 +16,19 @@ const CONTACT_FIELD_LABELS: Record<string, string> = {
 };
 
 export const ContactInputs = () => {
-  const tabs = [
-    {
-      key: "main",
-      label: "Main",
-      fields: ["first_name", "last_name", "organization_id", "sales_id", "email", "phone"],
-      content: <ContactMainTab />,
-    },
-    {
-      key: "more",
-      label: "More",
-      fields: ["title", "department", "linkedin_url", "notes"],
-      content: <ContactMoreTab />,
-    },
-  ];
+  const { errors } = useFormState();
+  const hasErrors = Object.keys(errors || {}).length > 0;
 
-  return <TabbedFormInputs tabs={tabs} defaultTab="main" fieldLabels={CONTACT_FIELD_LABELS} />;
+  return (
+    <div className="flex flex-col gap-4">
+      {hasErrors && (
+        <FormErrorSummary
+          errors={errors}
+          fieldLabels={CONTACT_FIELD_LABELS}
+          defaultExpanded={Object.keys(errors).length <= 3}
+        />
+      )}
+      <ContactCompactForm />
+    </div>
+  );
 };
