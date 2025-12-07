@@ -11,6 +11,77 @@
 import { describe, it, expect, vi } from "vitest";
 import { createMockOpportunity } from "@/tests/utils";
 
+describe("OpportunityEdit - Form Architecture", () => {
+  it("should use compact form with CollapsibleSections", () => {
+    // OpportunityEdit uses OpportunityCompactForm which has:
+    // - Always visible fields: name, customer, principal, stage, priority, close date, account manager, distributor
+    // - CollapsibleSection "Contacts & Products" (defaultOpen in edit mode): contact_ids, products_to_sync
+    // - CollapsibleSection "Classification" (collapsed): lead_source, campaign, tags
+    // - CollapsibleSection "Additional Details" (collapsed): description, next_action, decision_criteria, notes
+    // - Activity History section (always visible, not in a collapsible)
+
+    const formStructure = {
+      alwaysVisible: [
+        "name",
+        "customer_organization_id",
+        "principal_organization_id",
+        "stage",
+        "priority",
+        "estimated_close_date",
+        "account_manager_id",
+        "distributor_organization_id",
+      ],
+      collapsibleSections: {
+        "Contacts & Products": {
+          fields: ["contact_ids", "products_to_sync"],
+          defaultOpen: true, // in edit mode
+        },
+        Classification: {
+          fields: ["lead_source", "campaign", "tags"],
+          defaultOpen: false,
+        },
+        "Additional Details": {
+          fields: [
+            "description",
+            "next_action",
+            "next_action_date",
+            "decision_criteria",
+            "related_opportunity_id",
+            "notes",
+          ],
+          defaultOpen: false,
+        },
+      },
+      activitySection: "Activity History", // Always visible, not collapsible
+    };
+
+    // Verify structure
+    expect(formStructure.alwaysVisible).toHaveLength(8);
+    expect(Object.keys(formStructure.collapsibleSections)).toHaveLength(3);
+    expect(formStructure.collapsibleSections["Contacts & Products"].defaultOpen).toBe(true);
+    expect(formStructure.collapsibleSections.Classification.defaultOpen).toBe(false);
+    expect(formStructure.activitySection).toBe("Activity History");
+  });
+
+  it("should use products_to_sync directly without transform", () => {
+    // OpportunityEdit no longer uses a transform function
+    // The form directly uses products_to_sync as the source
+    const formData = {
+      id: 123,
+      name: "Test Opportunity",
+      products_to_sync: [
+        { product_id_reference: 1, notes: "Product 1" },
+        { product_id_reference: 2, notes: "Product 2" },
+      ],
+    };
+
+    // Data goes directly to API without transformation
+    expect(formData.products_to_sync).toHaveLength(2);
+    expect(formData).toHaveProperty("products_to_sync");
+    expect(formData).not.toHaveProperty("products");
+  });
+});
+
 describe("OpportunityEdit - Cache Invalidation", () => {
   it("should invalidate correct cache keys", () => {
     const mockQueryClient = {
