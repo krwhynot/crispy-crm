@@ -52,7 +52,7 @@ export const ContactCompactForm = () => {
         </div>
       </CompactFormRow>
 
-      <CompactFormRow columns="md:grid-cols-2" alignItems="end">
+      <CompactFormRow columns="md:grid-cols-[1fr_1fr_auto]" alignItems="end">
         <div data-tutorial="contact-organization">
           <ReferenceInput
             source="organization_id"
@@ -63,21 +63,25 @@ export const ContactCompactForm = () => {
             <AutocompleteOrganizationInput />
           </ReferenceInput>
         </div>
-        <ReferenceInput
-          reference="sales"
-          source="sales_id"
-          sort={{ field: "last_name", order: "ASC" }}
-          filter={{
-            "disabled@neq": true,
-            "user_id@not.is": null,
-          }}
-        >
-          <SelectInput
-            helperText="Required field"
-            label="Account manager *"
-            optionText={saleOptionRenderer}
-          />
-        </ReferenceInput>
+        <div>
+          <ReferenceInput
+            reference="sales"
+            source="sales_id"
+            sort={{ field: "last_name", order: "ASC" }}
+            filter={{
+              "disabled@neq": true,
+              "user_id@not.is": null,
+            }}
+          >
+            <SelectInput
+              helperText="Required field"
+              label="Account manager *"
+              optionText={saleOptionRenderer}
+            />
+          </ReferenceInput>
+        </div>
+        {/* Spacer to align with Avatar column above */}
+        <div className="hidden md:block w-11" aria-hidden="true" />
       </CompactFormRow>
 
       <CompactFormRow columns="md:grid-cols-2">
