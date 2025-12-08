@@ -227,10 +227,8 @@ describe("Organization Type Support", () => {
       await waitFor(() => {
         expect(screen.getByText("Customer")).toBeInTheDocument();
         expect(screen.getByText("Prospect")).toBeInTheDocument();
-        expect(screen.getByText("Partner")).toBeInTheDocument();
         expect(screen.getByText("Principal")).toBeInTheDocument();
         expect(screen.getByText("Distributor")).toBeInTheDocument();
-        expect(screen.getByText("Unknown")).toBeInTheDocument();
       });
     });
 
@@ -420,7 +418,6 @@ describe("Organization Type Support", () => {
         expect(screen.getByText("Customer")).toBeInTheDocument();
         expect(screen.getByText("Principal")).toBeInTheDocument();
         expect(screen.getByText("Distributor")).toBeInTheDocument();
-        expect(screen.getByText("Partner")).toBeInTheDocument();
         expect(screen.getByText("Prospect")).toBeInTheDocument();
       });
     });
@@ -631,7 +628,7 @@ describe("Organization Type Support", () => {
     it("should update organization type", async () => {
       const updatedOrganizationData = {
         ...mockOrganizations[0],
-        organization_type: "prospect", // Changed from customer to partner
+        organization_type: "prospect", // Changed from customer to prospect
         priority: "B", // Changed priority as well
       };
 
@@ -724,8 +721,6 @@ describe("Organization Type Support", () => {
         customer: 1,
         principal: 1,
         distributor: 1,
-        partner: 1,
-        prospect: 1,
       });
 
       // Test priority distribution

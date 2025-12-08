@@ -8,7 +8,6 @@ const organizationTypeLabels: Record<OrganizationType, string> = {
   prospect: "Prospect",
   principal: "Principal",
   distributor: "Distributor",
-  unknown: "Unknown",
 };
 
 // Organization type colors using MFB Garden to Table theme
@@ -17,7 +16,6 @@ const organizationTypeColors: Record<OrganizationType, string> = {
   prospect: "tag-sage",
   principal: "tag-purple",
   distributor: "tag-teal",
-  unknown: "tag-gray",
 };
 
 // Priority colors for visual distinction using semantic state colors
@@ -38,7 +36,7 @@ export const OrganizationType = () => {
       {/* Organization Type */}
       {record.organization_type && (
         <Badge
-          className={`text-xs px-2 py-0.5 ${organizationTypeColors[record.organization_type] || organizationTypeColors.unknown}`}
+          className={`text-xs px-2 py-0.5 ${organizationTypeColors[record.organization_type] || "tag-gray"}`}
         >
           {organizationTypeLabels[record.organization_type] || record.organization_type}
         </Badge>
@@ -64,7 +62,7 @@ export const OrganizationTypeChip = () => {
 
   return (
     <Badge
-      className={`text-xs px-1 py-0 ${organizationTypeColors[record.organization_type] || organizationTypeColors.unknown}`}
+      className={`text-xs px-1 py-0 ${organizationTypeColors[record.organization_type] || "tag-gray"}`}
     >
       {organizationTypeLabels[record.organization_type]}
     </Badge>

@@ -11,7 +11,7 @@ import { uniqueTestData } from "../../support/poms/FormTestHelpers";
  * - name: Required (min 1 char)
  * - website: Must be valid URL with protocol (http/https) - OPTIONAL
  * - linkedin_url: Must be valid LinkedIn URL - OPTIONAL
- * - organization_type: enum (customer, prospect, principal, distributor, unknown) - defaults to "unknown"
+ * - organization_type: enum (customer, prospect, principal, distributor) - defaults to "prospect"
  * - priority: enum (A, B, C, D) - defaults to "C"
  */
 

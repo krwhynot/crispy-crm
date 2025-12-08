@@ -22,7 +22,7 @@ import {
  * - name: Required (min 1 char)
  * - website: Must be valid URL with protocol (http/https) - OPTIONAL
  * - linkedin_url: Must be valid LinkedIn URL - OPTIONAL
- * - organization_type: enum (customer, prospect, principal, distributor, unknown) - defaults to "unknown"
+ * - organization_type: enum (customer, prospect, principal, distributor) - defaults to "prospect"
  *
  * Required by playwright-e2e-testing skill
  */
@@ -91,7 +91,7 @@ export class OrganizationFormPage extends BasePage {
    * Select organization type
    */
   async selectOrganizationType(
-    type: "customer" | "prospect" | "principal" | "distributor" | "unknown"
+    type: "customer" | "prospect" | "principal" | "distributor"
   ): Promise<void> {
     await this.clickMainTab();
     await selectFromDropdown(this.page, /organization type/i, new RegExp(type, "i"));
@@ -338,7 +338,7 @@ export class OrganizationFormPage extends BasePage {
    */
   async createOrganization(data: {
     name: string;
-    type?: "customer" | "prospect" | "principal" | "distributor" | "unknown";
+    type?: "customer" | "prospect" | "principal" | "distributor";
     website?: string;
     street?: string;
     city?: string;
@@ -382,7 +382,7 @@ export class OrganizationFormPage extends BasePage {
    */
   async fillOrganizationForm(data: {
     name: string;
-    type?: "customer" | "prospect" | "principal" | "distributor" | "unknown";
+    type?: "customer" | "prospect" | "principal" | "distributor";
     website?: string;
   }): Promise<void> {
     await this.fillName(data.name);

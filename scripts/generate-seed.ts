@@ -373,7 +373,7 @@ const orgValues = orgsForSQL.map((org, idx) => {
   const values = [
     org.id,
     escapeSQLString(org.name),
-    escapeSQLString(org.organization_type || "unknown"),
+    escapeSQLString(org.organization_type || "prospect"),
     escapeSQLString(org.priority || "C"),
     org.segment_id ? `'${org.segment_id}'` : "NULL",
     escapeSQLString(org.phone),
