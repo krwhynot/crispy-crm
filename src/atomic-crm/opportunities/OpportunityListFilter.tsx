@@ -132,7 +132,7 @@ export const OpportunityListFilter = () => {
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" data-tutorial="opp-filters">
       {/* Search - Always visible */}
       <FilterLiveForm>
         <SearchInput source="q" placeholder="Search opportunities..." />
@@ -140,7 +140,7 @@ export const OpportunityListFilter = () => {
 
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">
-        <FilterCategory label="Quick Filters" icon={<Zap className="h-4 w-4" />} defaultExpanded>
+        <FilterCategory label="Quick Filters" icon={<Zap className="h-4 w-4" />} defaultExpanded data-tutorial="opp-quick-filters">
           <Button
             type="button"
             variant={
@@ -234,7 +234,7 @@ export const OpportunityListFilter = () => {
           </Button>
         </FilterCategory>
 
-        <FilterCategory label="Stage" icon={<Layers className="h-4 w-4" />}>
+        <FilterCategory label="Stage" icon={<Layers className="h-4 w-4" />} data-tutorial="opp-stage-filters">
           {OPPORTUNITY_STAGES.map((stage) => (
             <ToggleFilterButton
               multiselect

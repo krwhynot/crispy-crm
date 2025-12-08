@@ -8,13 +8,9 @@ import {
   getSegmentTypeForOrganization,
 } from "../validation/segments";
 import {
-  SEGMENT_TYPES,
   type SegmentType,
   OPERATOR_SEGMENT_CHOICES,
   OPERATOR_SEGMENT_PARENT_CHOICES,
-  OPERATOR_SEGMENT_IDS,
-  getOperatorSegmentChildren,
-  isOperatorParentSegment,
 } from "../validation/operatorSegments";
 import type { OrganizationType } from "../validation/organizations";
 import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";

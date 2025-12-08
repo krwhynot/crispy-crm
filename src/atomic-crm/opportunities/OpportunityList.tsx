@@ -24,7 +24,7 @@ import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { FilterChipBar } from "../filters";
 import { OpportunityListFilter } from "./OpportunityListFilter";
 import { OPPORTUNITY_FILTER_CONFIG } from "./opportunityFilterConfig";
-import { PageTutorialTrigger } from "../tutorial";
+import { OpportunityListTutorial } from "./OpportunityListTutorial";
 
 // Helper functions for view preference persistence
 const OPPORTUNITY_VIEW_KEY = "opportunity.view.preference";
@@ -90,7 +90,7 @@ const OpportunityList = () => {
         mode={mode}
         onModeToggle={toggleMode}
       />
-      <PageTutorialTrigger chapter="opportunities" position="bottom-left" />
+      <OpportunityListTutorial />
     </>
   );
 };
@@ -176,9 +176,15 @@ const OpportunityActions = ({
 }) => {
   return (
     <TopToolbar>
-      <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
-      <ExportButton />
-      <QuickAddButton />
+      <span data-tutorial="opp-view-switcher">
+        <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
+      </span>
+      <span data-tutorial="opp-export">
+        <ExportButton />
+      </span>
+      <span data-tutorial="opp-quick-add">
+        <QuickAddButton />
+      </span>
       <span data-tutorial="create-opportunity-btn">
         <CreateButton label="New Opportunity" />
       </span>
