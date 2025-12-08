@@ -333,6 +333,13 @@
     @apply focus-within:ring-2 focus-within:ring-ring/40 focus-within:ring-offset-1;
   }
 
+  /* Consistent row height for all datagrid tables - matches Contact list (40px avatar + padding) */
+  .table-row-premium td {
+    @apply py-3;
+    min-height: 52px; /* 40px content + 12px padding (py-3 * 2) */
+    height: 52px;
+  }
+
   /* Standard card container */
   .card-container {
     @apply bg-card border border-border shadow-sm rounded-xl p-6;
