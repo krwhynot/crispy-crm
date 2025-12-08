@@ -59,6 +59,10 @@ function SelectContent({
           className
         )}
         position={position}
+        side="bottom"
+        sideOffset={4}
+        align="start"
+        collisionPadding={16}
         {...props}
       >
         <SelectScrollUpButton />
