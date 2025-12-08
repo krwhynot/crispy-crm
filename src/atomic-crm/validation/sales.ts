@@ -67,7 +67,7 @@ export async function validateSalesForm(data: unknown): Promise<void> {
       // Throw error in React Admin expected format
       throw {
         message: "Validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },
       };
     }
     throw error;
@@ -107,7 +107,7 @@ export async function validateCreateSales(data: unknown): Promise<void> {
       });
       throw {
         message: "Validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },
       };
     }
     throw error;
@@ -126,7 +126,7 @@ export async function validateUpdateSales(data: unknown): Promise<void> {
       });
       throw {
         message: "Validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },
       };
     }
     throw error;

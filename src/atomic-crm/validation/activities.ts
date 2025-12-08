@@ -324,7 +324,7 @@ export async function validateActivitiesForm(data: unknown): Promise<void> {
       // Throw error in React Admin expected format
       throw {
         message: "Validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },
       };
     }
 
@@ -360,7 +360,7 @@ export async function validateEngagementsForm(data: unknown): Promise<void> {
       // Throw error in React Admin expected format
       throw {
         message: "Validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },
       };
     }
 
@@ -396,7 +396,7 @@ export async function validateInteractionsForm(data: unknown): Promise<void> {
       // Throw error in React Admin expected format
       throw {
         message: "Validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },
       };
     }
 

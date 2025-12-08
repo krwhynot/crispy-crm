@@ -105,7 +105,7 @@ export async function validateDistributorAuthorization(data: unknown): Promise<v
 
     throw {
       message: "Validation failed",
-      errors: formattedErrors,
+      body: { errors: formattedErrors },
     };
   }
 }
@@ -125,7 +125,7 @@ export async function validateCreateDistributorAuthorization(data: unknown): Pro
 
     throw {
       message: "Validation failed",
-      errors: formattedErrors,
+      body: { errors: formattedErrors },
     };
   }
 }
@@ -251,7 +251,7 @@ export async function validateProductDistributorAuthorization(data: unknown): Pr
 
     throw {
       message: "Validation failed",
-      errors: formattedErrors,
+      body: { errors: formattedErrors },
     };
   }
 }
