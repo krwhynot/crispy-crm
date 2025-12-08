@@ -396,7 +396,7 @@ export function OrganizationImportPreview({
                         <TableCell className="font-medium">{row.name}</TableCell>
                         <TableCell>
                           <Badge variant="outline" className="text-xs">
-                            {row.organization_type || "unknown"}
+                            {row.organization_type || "prospect"}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-sm">{row.website || "-"}</TableCell>

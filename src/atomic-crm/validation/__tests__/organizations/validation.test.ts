@@ -19,10 +19,8 @@ describe("Organization Validation Schemas", () => {
         const validTypes = [
           "customer",
           "prospect",
-          "prospect",
           "principal",
           "distributor",
-          "unknown",
         ];
 
         validTypes.forEach((type) => {
@@ -40,6 +38,8 @@ describe("Organization Validation Schemas", () => {
           "competitor",
           "investor",
           "other",
+          "partner",  // Removed type
+          "unknown",  // Removed type
         ];
 
         invalidTypes.forEach((type) => {
@@ -72,7 +72,7 @@ describe("Organization Validation Schemas", () => {
       };
 
       const result = organizationSchema.parse(minimalOrganization);
-      expect(result.organization_type).toBe("unknown"); // Database default
+      expect(result.organization_type).toBe("prospect"); // Default for new organizations
       expect(result.priority).toBe("C"); // Database default
     });
 
@@ -241,7 +241,7 @@ describe("Organization Validation Schemas", () => {
       };
 
       const result = createOrganizationSchema.parse(minimalCreate);
-      expect(result.organization_type).toBe("unknown"); // Database default
+      expect(result.organization_type).toBe("prospect"); // Default for new organizations
       expect(result.priority).toBe("C"); // Database default
     });
   });

@@ -27,7 +27,7 @@ export interface OrganizationImportSchema {
   linkedin_url?: string | null;
   description?: string | null;
   website?: string | null;
-  organization_type?: "customer" | "prospect" | "principal" | "distributor" | "unknown";
+  organization_type?: "customer" | "prospect" | "principal" | "distributor";
   parent_organization_id?: string | number | null; // Parent organization for hierarchies
   sales_id?: string | number | null;
   tags?: string; // Comma-separated tag names (e.g., "VIP,Enterprise,West Coast")

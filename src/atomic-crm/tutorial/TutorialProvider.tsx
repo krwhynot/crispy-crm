@@ -13,11 +13,11 @@ import 'driver.js/dist/driver.css';
 
 import { useTutorialProgress } from './useTutorialProgress';
 import { waitForElement } from './waitForElement';
-import { getAllSteps, getChapterSteps } from './steps';
+import { getChapterSteps } from './steps';
 import type { TutorialChapter, TutorialProgress, TutorialStep } from './types';
 
 interface TutorialContextType {
-  startTutorial: (chapter?: TutorialChapter) => void;
+  startTutorial: (chapter: TutorialChapter) => void;
   stopTutorial: () => void;
   isActive: boolean;
   progress: TutorialProgress;
@@ -89,12 +89,12 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
   );
 
   const startTutorial = useCallback(
-    async (chapter?: TutorialChapter) => {
+    async (chapter: TutorialChapter) => {
       // Stop any existing tour
       stopTutorial();
 
-      // Get steps for chapter or full tour
-      const steps = chapter ? getChapterSteps(chapter) : getAllSteps();
+      // Get steps for the specified chapter
+      const steps = getChapterSteps(chapter);
 
       if (steps.length === 0) {
         console.warn('No tutorial steps found');
@@ -106,7 +106,7 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
       stepsRef.current = steps;
 
       // Set current chapter in progress
-      setCurrentChapter(chapter ?? 'organizations');
+      setCurrentChapter(chapter);
 
       // Prepare the FIRST step before starting (navigate + wait for element)
       const firstStepReady = await prepareStep(steps[0]);
@@ -217,7 +217,7 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
 
         onDestroyStarted: () => {
           const reachedFinalStep = currentStepIndexRef.current >= totalStepsRef.current - 1;
-          if (chapter && driverRef.current && reachedFinalStep) {
+          if (driverRef.current && reachedFinalStep) {
             markChapterComplete(chapter);
           }
         },

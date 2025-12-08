@@ -166,7 +166,7 @@ export function useOrganizationImport() {
 
             const organizationPayload = {
               name,
-              organization_type: organization_type || "unknown",
+              organization_type: organization_type || "prospect",
               priority: priority || "C",
               segment_id: segment_id || null,
               linkedin_url: linkedin_url || null,

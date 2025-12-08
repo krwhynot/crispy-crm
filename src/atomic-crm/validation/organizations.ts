@@ -79,7 +79,7 @@ export const organizationSchema = z.strictObject({
   updated_by: z.union([z.string(), z.number()]).nullish(), // Audit: who last updated
 
   // Organization-specific fields
-  organization_type: organizationTypeSchema.default("unknown"), // Default matches database
+  organization_type: organizationTypeSchema.default("prospect"), // Default for new organizations
   priority: organizationPrioritySchema.default("C"), // Default matches database
 
   // Computed fields (readonly)

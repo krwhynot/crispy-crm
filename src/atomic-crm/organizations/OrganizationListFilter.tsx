@@ -34,16 +34,12 @@ export const OrganizationListFilter = () => {
 
   // Show operator filters if:
   // - No type filter active, OR
-  // - Customer, Prospect, or Unknown is in the filter
+  // - Customer or Prospect is in the filter
   const showOperatorFilters =
     !typeFilter ||
     (Array.isArray(typeFilter)
-      ? typeFilter.includes("customer") ||
-        typeFilter.includes("prospect") ||
-        typeFilter.includes("unknown")
-      : typeFilter === "customer" ||
-        typeFilter === "prospect" ||
-        typeFilter === "unknown");
+      ? typeFilter.includes("customer") || typeFilter.includes("prospect")
+      : typeFilter === "customer" || typeFilter === "prospect");
 
   return (
     <div className="flex flex-col gap-4" data-tutorial="org-filters">

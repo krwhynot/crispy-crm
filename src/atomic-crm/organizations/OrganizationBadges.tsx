@@ -14,7 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { ORG_TYPE_COLOR_MAP, PRIORITY_VARIANT_MAP, PRIORITY_CHOICES } from "./constants";
 
 /** Valid organization types matching database enum */
-export type OrganizationType = "customer" | "prospect" | "principal" | "distributor" | "unknown";
+export type OrganizationType = "customer" | "prospect" | "principal" | "distributor";
 
 /** Valid priority levels matching database enum */
 export type PriorityLevel = "A" | "B" | "C" | "D";
@@ -37,7 +37,6 @@ interface PriorityBadgeProps {
  * - prospect: tag-sage (Olive Green - growth potential)
  * - principal: tag-purple (Eggplant - important/primary)
  * - distributor: tag-teal (Active/connected)
- * - unknown: tag-gray (Mushroom - neutral)
  */
 export function OrganizationTypeBadge({ type }: OrganizationTypeBadgeProps) {
   const colorClass = ORG_TYPE_COLOR_MAP[type as OrganizationType] || "tag-gray";

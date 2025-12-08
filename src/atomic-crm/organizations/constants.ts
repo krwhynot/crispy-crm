@@ -8,11 +8,9 @@
  * - customer: Active paying customer
  * - prospect: Potential customer in sales pipeline
  * - principal: Food manufacturer whose products MFB represents
- * - distributor: Company that buys from principals and distributes
- * - partner: Strategic business partner
- * - unknown: Unclassified organization
+ * - distributor: Company that buys from principals and distributes (Sysco, USF, etc.)
  */
-export type OrganizationType = "customer" | "prospect" | "principal" | "distributor" | "partner" | "unknown";
+export type OrganizationType = "customer" | "prospect" | "principal" | "distributor";
 
 /**
  * Priority level for organizations
@@ -29,8 +27,6 @@ export const ORGANIZATION_TYPE_CHOICES = [
   { id: "prospect", name: "Prospect" },
   { id: "principal", name: "Principal" },
   { id: "distributor", name: "Distributor" },
-  { id: "partner", name: "Partner" },
-  { id: "unknown", name: "Unknown" },
 ] as const;
 
 /**
@@ -54,15 +50,12 @@ export const PRIORITY_CHOICES = [
  * - prospect: tag-sage (Olive Green - growth potential)
  * - principal: tag-purple (Eggplant - important/primary)
  * - distributor: tag-teal (Active/connected in supply chain)
- * - unknown: tag-gray (Mushroom - neutral/unclassified)
  */
 export const ORG_TYPE_COLOR_MAP: Record<OrganizationType, string> = {
   customer: "tag-warm",
   prospect: "tag-sage",
   principal: "tag-purple",
   distributor: "tag-teal",
-  partner: "tag-blue",
-  unknown: "tag-gray",
 };
 
 /**

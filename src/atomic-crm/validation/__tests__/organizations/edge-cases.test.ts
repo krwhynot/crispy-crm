@@ -86,7 +86,7 @@ describe("Organization Business Rules and Edge Cases", () => {
 
       const result = organizationSchema.parse(minimalOrg);
       expect(result.name).toBe("Minimal");
-      expect(result.organization_type).toBe("unknown"); // Should have default
+      expect(result.organization_type).toBe("prospect"); // Should have default
       expect(result.priority).toBe("C"); // Should have default
     });
 
