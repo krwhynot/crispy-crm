@@ -1,0 +1,375 @@
+%% Crispy CRM Database ERD
+%% Generated: 2025-12-07
+%% Tables: 24 | Enums: 14 | Foreign Keys: 68
+
+erDiagram
+    %% ==========================================
+    %% CORE ENTITIES
+    %% ==========================================
+
+    organizations {
+        bigint id PK "auto-increment"
+        text name "NOT NULL"
+        organization_type organization_type "DEFAULT 'unknown'"
+        varchar priority "DEFAULT 'C'"
+        text website
+        text address
+        text city
+        text state
+        text postal_code
+        text phone
+        text email
+        text logo_url
+        text linkedin_url
+        integer employee_count
+        integer founded_year
+        text notes
+        bigint sales_id FK
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        bigint created_by FK
+        timestamptz deleted_at "soft delete"
+        uuid import_session_id
+        tsvector search_tsv
+        jsonb context_links
+        text description
+        text tax_identifier
+        uuid segment_id FK
+        bigint updated_by FK
+        bigint parent_organization_id FK "self-ref"
+    }
+
+    segments {
+        uuid id PK "gen_random_uuid()"
+        text name "NOT NULL"
+        timestamptz created_at "NOT NULL, DEFAULT now()"
+        uuid created_by
+        timestamptz deleted_at "soft delete"
+        text segment_type "DEFAULT 'playbook'"
+        uuid parent_id FK "self-ref"
+        integer display_order "DEFAULT 0"
+    }
+
+    contacts {
+        bigint id PK "auto-increment"
+        text name "NOT NULL"
+        text first_name
+        text last_name
+        jsonb email "DEFAULT '[]'"
+        jsonb phone "DEFAULT '[]'"
+        text title
+        text department
+        text address
+        text city
+        text state
+        text postal_code
+        text country "DEFAULT 'USA'"
+        date birthday
+        text linkedin_url
+        text twitter_handle
+        text notes
+        bigint sales_id FK
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        bigint created_by FK
+        timestamptz deleted_at "soft delete"
+        tsvector search_tsv
+        timestamptz first_seen "DEFAULT now()"
+        timestamptz last_seen "DEFAULT now()"
+        text gender
+        bigint_array tags "DEFAULT '{}'"
+        bigint organization_id FK "NOT NULL"
+        bigint updated_by FK
+        text status "DEFAULT 'cold'"
+    }
+
+    organization_distributors {
+        bigint id PK
+        bigint organization_id FK "NOT NULL"
+        bigint distributor_id FK "NOT NULL"
+        boolean is_primary "NOT NULL, DEFAULT false"
+        text notes
+        timestamptz created_at "NOT NULL, DEFAULT now()"
+        timestamptz updated_at "NOT NULL, DEFAULT now()"
+        bigint created_by FK
+        timestamptz deleted_at "soft delete"
+    }
+
+    %% ==========================================
+    %% SALES & CRM
+    %% ==========================================
+
+    opportunities {
+        bigint id PK
+        text name "NOT NULL"
+        opportunity_stage stage
+        opportunity_status status
+        text description
+        numeric amount
+        date expected_close_date
+        bigint customer_organization_id FK "NOT NULL"
+        bigint principal_organization_id FK
+        bigint distributor_organization_id FK
+        bigint account_manager_id FK
+        bigint opportunity_owner_id FK
+        bigint founding_interaction_id FK
+        bigint related_opportunity_id FK
+        timestamptz created_at
+        timestamptz updated_at
+        bigint created_by FK
+        bigint updated_by FK
+        timestamptz deleted_at
+    }
+
+    activities {
+        bigint id PK
+        activity_type type
+        interaction_type interaction_type
+        text subject
+        text description
+        timestamptz due_date
+        boolean completed
+        bigint contact_id FK
+        bigint organization_id FK
+        bigint opportunity_id FK
+        bigint related_task_id FK
+        bigint created_by FK
+        timestamptz created_at
+        timestamptz deleted_at
+    }
+
+    tasks {
+        bigint id PK
+        text title
+        text description
+        task_type type
+        priority_level priority
+        date due_date
+        timestamptz snooze_until
+        boolean completed
+        bigint sales_id FK
+        bigint contact_id FK
+        bigint organization_id FK
+        bigint opportunity_id FK
+        bigint created_by FK
+        timestamptz created_at
+        timestamptz deleted_at
+    }
+
+    sales {
+        bigint id PK
+        uuid auth_user_id "Supabase auth"
+        text first_name
+        text last_name
+        text email
+        user_role role
+        timestamptz created_at
+        timestamptz deleted_at
+    }
+
+    products {
+        bigint id PK
+        text name "NOT NULL"
+        text sku
+        text description
+        product_category category
+        product_status status
+        bigint distributor_id FK
+        bigint created_by FK
+        bigint updated_by FK
+        timestamptz created_at
+        timestamptz deleted_at
+    }
+
+    %% ==========================================
+    %% JUNCTION TABLES
+    %% ==========================================
+
+    opportunity_contacts {
+        bigint id PK
+        bigint opportunity_id FK
+        bigint contact_id FK
+    }
+
+    opportunity_products {
+        bigint id PK
+        bigint opportunity_id FK
+        bigint product_id_reference FK
+    }
+
+    opportunity_participants {
+        bigint id PK
+        bigint opportunity_id FK
+        bigint created_by FK
+    }
+
+    interaction_participants {
+        bigint id PK
+        bigint activity_id FK
+        bigint contact_id FK
+        bigint created_by FK
+    }
+
+    distributor_principal_authorizations {
+        bigint id PK
+        bigint distributor_id FK
+        bigint principal_id FK
+        bigint created_by FK
+    }
+
+    product_distributor_authorizations {
+        bigint id PK
+        bigint product_id FK
+        bigint distributor_id FK
+        bigint created_by FK
+    }
+
+    %% ==========================================
+    %% NOTES & AUDIT
+    %% ==========================================
+
+    contact_notes {
+        bigint id PK
+        bigint contact_id FK
+        bigint sales_id FK
+        text content
+        bigint created_by FK
+        bigint updated_by FK
+    }
+
+    organization_notes {
+        bigint id PK
+        bigint organization_id FK
+        bigint sales_id FK
+        text content
+        bigint updated_by FK
+    }
+
+    opportunity_notes {
+        bigint id PK
+        bigint opportunity_id FK
+        bigint sales_id FK
+        text content
+        bigint created_by FK
+        bigint updated_by FK
+    }
+
+    audit_trail {
+        bigint id PK
+        text table_name
+        bigint record_id
+        text action
+        jsonb old_values
+        jsonb new_values
+        bigint changed_by FK
+        timestamptz changed_at
+    }
+
+    notifications {
+        bigint id PK
+        text message
+        boolean read
+        timestamptz created_at
+    }
+
+    tags {
+        bigint id PK
+        text name
+        text color
+    }
+
+    tutorial_progress {
+        bigint id PK
+        bigint sales_id FK
+        bigint created_organization_id FK
+        bigint created_contact_id FK
+        bigint created_opportunity_id FK
+        bigint created_activity_id FK
+        bigint created_task_id FK
+    }
+
+    %% ==========================================
+    %% RELATIONSHIPS
+    %% ==========================================
+
+    %% Segments (self-referencing)
+    segments ||--o{ segments : "parent_id"
+
+    %% Organizations core relationships
+    segments ||--o{ organizations : "segment_id"
+    organizations ||--o{ organizations : "parent_organization_id"
+    sales ||--o{ organizations : "sales_id"
+    sales ||--o{ organizations : "created_by"
+    sales ||--o{ organizations : "updated_by"
+
+    %% Contacts
+    organizations ||--o{ contacts : "organization_id (RESTRICT)"
+    sales ||--o{ contacts : "sales_id"
+    sales ||--o{ contacts : "created_by"
+    sales ||--o{ contacts : "updated_by"
+
+    %% Organization Distributors (M:M via junction)
+    organizations ||--o{ organization_distributors : "organization_id (CASCADE)"
+    organizations ||--o{ organization_distributors : "distributor_id (CASCADE)"
+    sales ||--o{ organization_distributors : "created_by"
+
+    %% Opportunities
+    organizations ||--o{ opportunities : "customer_organization_id (RESTRICT)"
+    organizations ||--o{ opportunities : "principal_organization_id"
+    organizations ||--o{ opportunities : "distributor_organization_id"
+    sales ||--o{ opportunities : "account_manager_id"
+    sales ||--o{ opportunities : "opportunity_owner_id"
+    sales ||--o{ opportunities : "created_by"
+    sales ||--o{ opportunities : "updated_by"
+    activities ||--o| opportunities : "founding_interaction_id"
+    opportunities ||--o{ opportunities : "related_opportunity_id"
+
+    %% Activities
+    contacts ||--o{ activities : "contact_id (CASCADE)"
+    organizations ||--o{ activities : "organization_id"
+    opportunities ||--o{ activities : "opportunity_id"
+    tasks ||--o{ activities : "related_task_id"
+    sales ||--o{ activities : "created_by"
+
+    %% Tasks
+    sales ||--o{ tasks : "sales_id"
+    contacts ||--o{ tasks : "contact_id (CASCADE)"
+    organizations ||--o{ tasks : "organization_id"
+    opportunities ||--o{ tasks : "opportunity_id"
+    sales ||--o{ tasks : "created_by"
+
+    %% Products
+    organizations ||--o{ products : "distributor_id"
+    sales ||--o{ products : "created_by"
+    sales ||--o{ products : "updated_by"
+
+    %% Junction tables
+    opportunities ||--o{ opportunity_contacts : "CASCADE"
+    contacts ||--o{ opportunity_contacts : "CASCADE"
+    opportunities ||--o{ opportunity_products : "CASCADE"
+    products ||--o{ opportunity_products : "CASCADE"
+    opportunities ||--o{ opportunity_participants : "CASCADE"
+    activities ||--o{ interaction_participants : "CASCADE"
+    contacts ||--o{ interaction_participants : ""
+    organizations ||--o{ distributor_principal_authorizations : "distributor_id (CASCADE)"
+    organizations ||--o{ distributor_principal_authorizations : "principal_id (CASCADE)"
+    products ||--o{ product_distributor_authorizations : "CASCADE"
+    organizations ||--o{ product_distributor_authorizations : "distributor_id (CASCADE)"
+
+    %% Notes
+    contacts ||--o{ contact_notes : "CASCADE"
+    sales ||--o{ contact_notes : "sales_id (CASCADE)"
+    organizations ||--o{ organization_notes : "CASCADE"
+    opportunities ||--o{ opportunity_notes : "CASCADE"
+    sales ||--o{ opportunity_notes : "sales_id (CASCADE)"
+
+    %% Audit
+    sales ||--o{ audit_trail : "changed_by"
+
+    %% Tutorial
+    sales ||--o{ tutorial_progress : "sales_id (CASCADE)"
+    organizations ||--o{ tutorial_progress : "created_organization_id"
+    contacts ||--o{ tutorial_progress : "created_contact_id"
+    opportunities ||--o{ tutorial_progress : "created_opportunity_id"
+    activities ||--o{ tutorial_progress : "created_activity_id"
+    tasks ||--o{ tutorial_progress : "created_task_id"
