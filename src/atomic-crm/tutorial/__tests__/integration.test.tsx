@@ -17,12 +17,6 @@ vi.mock('driver.js', () => ({
 
 // Mock steps module to return test steps
 vi.mock('../steps', () => ({
-  getAllSteps: vi.fn(() => [
-    {
-      element: '[data-tutorial="test"]',
-      popover: { title: 'Test Step', description: 'Test description' },
-    },
-  ]),
   getChapterSteps: vi.fn(() => [
     {
       element: '[data-tutorial="test"]',
