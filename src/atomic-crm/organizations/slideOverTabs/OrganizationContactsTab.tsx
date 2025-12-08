@@ -119,7 +119,7 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
                         Array.isArray(contact.email) &&
                         contact.email.length > 0 && (
                           <p className="text-xs text-muted-foreground truncate">
-                            {contact.email[0].email || contact.email[0]}
+                            {contact.email[0]?.email || ""}
                           </p>
                         )}
                     </div>
