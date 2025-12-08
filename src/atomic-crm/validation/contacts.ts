@@ -390,7 +390,7 @@ export async function validateContactForm(data: unknown): Promise<void> {
       // Throw error in React Admin expected format
       throw {
         message: "Validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },
       };
     }
     throw error;
