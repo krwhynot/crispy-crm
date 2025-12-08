@@ -182,6 +182,13 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
           }
         },
 
+        // Handle close button - required when custom handlers are defined
+        onCloseClick: () => {
+          if (driverRef.current) {
+            driverRef.current.destroy();
+          }
+        },
+
         // Customize popover for last step
         onPopoverRender: (popover, { state }) => {
           const isLastStep = state.activeIndex === steps.length - 1;

@@ -1,16 +1,23 @@
 import type { TutorialStep } from './types';
 
+/** Selector for skeleton loading states - uses data-slot from Skeleton component */
+const LOADING_SELECTOR = '[data-slot="skeleton"]';
+
+/** Extended timeout when loading state is detected (15 seconds) */
+const LOADING_EXTENDED_TIMEOUT = 15000;
+
 /**
  * Polls the DOM for an element to appear.
  * Used after React Router navigation to wait for target elements.
+ * Automatically extends timeout when loading skeletons are detected.
  *
  * @param selector - CSS selector for the element
- * @param timeout - Max wait time in ms (default 5000)
+ * @param timeout - Max wait time in ms (default 8000)
  * @returns Promise that resolves when element exists or rejects on timeout
  */
 export async function waitForElement(
   selector: string,
-  timeout = 5000
+  timeout = 8000
 ): Promise<Element> {
   const startTime = Date.now();
 
@@ -23,8 +30,15 @@ export async function waitForElement(
         return;
       }
 
-      if (Date.now() - startTime >= timeout) {
-        reject(new Error(`Element "${selector}" not found within ${timeout}ms`));
+      // Check if still loading (skeleton visible) - extend timeout if so
+      const isLoading = document.querySelector(LOADING_SELECTOR) !== null;
+      const elapsed = Date.now() - startTime;
+      const effectiveTimeout = isLoading
+        ? Math.max(timeout, LOADING_EXTENDED_TIMEOUT)
+        : timeout;
+
+      if (elapsed >= effectiveTimeout) {
+        reject(new Error(`Element "${selector}" not found within ${elapsed}ms`));
         return;
       }
 
