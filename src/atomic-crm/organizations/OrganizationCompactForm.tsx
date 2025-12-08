@@ -47,13 +47,13 @@ export const OrganizationCompactForm = () => {
       </CompactFormRow>
 
       <CompactFormRow>
-        <TextInput source="street" label="Street" helperText={false} />
+        <TextInput source="address" label="Street" helperText={false} />
         <TextInput source="city" label="City" helperText={false} />
       </CompactFormRow>
 
       <CompactFormRow>
         <StateComboboxInput source="state" label="State" />
-        <TextInput source="zip" label="Zip Code" helperText={false} />
+        <TextInput source="postal_code" label="Zip Code" helperText={false} />
       </CompactFormRow>
 
       <CollapsibleSection title="Additional Details">
