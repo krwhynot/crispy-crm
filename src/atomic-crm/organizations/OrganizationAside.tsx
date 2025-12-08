@@ -80,7 +80,9 @@ const OrganizationInfo = ({ record }: { record: Company }) => {
       {record.phone && (
         <div className="flex flex-row items-center gap-1 min-h-[24px]">
           <Phone className="w-4 h-4" />
-          <TextField source="phone" />
+          <a href={`tel:${record.phone}`} className="underline hover:no-underline">
+            {record.phone}
+          </a>
         </div>
       )}
     </AsideSection>

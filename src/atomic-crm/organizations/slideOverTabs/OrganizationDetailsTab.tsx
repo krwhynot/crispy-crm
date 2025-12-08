@@ -61,6 +61,13 @@ export function OrganizationDetailsTab({
 
               <TextInput source="email" label="Email" type="email" />
 
+              <TextInput source="phone" label="Phone" />
+              <TextInput source="website" label="Website" />
+              <TextInput source="address" label="Street Address" />
+              <TextInput source="city" label="City" />
+              <TextInput source="state" label="State" />
+              <TextInput source="postal_code" label="ZIP Code" />
+
               <ReferenceArrayInput source="tags" reference="tags" label="Tags">
                 <AutocompleteArrayInput optionText="name" />
               </ReferenceArrayInput>
@@ -107,6 +114,48 @@ export function OrganizationDetailsTab({
                   >
                     {record.email}
                   </a>
+                </div>
+              )}
+
+              {/* Phone & Website */}
+              {(record.phone || record.website) && (
+                <div className="space-y-2">
+                  {record.phone && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground">Phone:</span>
+                      <a href={`tel:${record.phone}`} className="text-sm text-primary hover:underline">
+                        {record.phone}
+                      </a>
+                    </div>
+                  )}
+                  {record.website && (
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm text-muted-foreground">Website:</span>
+                      <a
+                        href={record.website}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm text-primary hover:underline"
+                      >
+                        {record.website.replace(/^https?:\/\//, '')}
+                      </a>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Address */}
+              {(record.address || record.city || record.state || record.postal_code) && (
+                <div className="space-y-1">
+                  <span className="text-sm text-muted-foreground">Address:</span>
+                  <div className="text-sm">
+                    {record.address && <div>{record.address}</div>}
+                    {(record.city || record.state || record.postal_code) && (
+                      <div>
+                        {[record.city, record.state, record.postal_code].filter(Boolean).join(', ')}
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
 

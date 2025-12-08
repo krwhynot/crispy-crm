@@ -84,7 +84,7 @@ const exporter: Exporter<Organization> = async (records, fetchRelatedRecords) =>
       address: org.address,
       city: org.city,
       state: org.state,
-      zipcode: org.zipcode,
+      postal_code: org.postal_code,
       country: org.country,
 
       // Metrics

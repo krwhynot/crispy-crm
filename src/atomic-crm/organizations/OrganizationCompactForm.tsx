@@ -61,6 +61,7 @@ export const OrganizationCompactForm = () => {
           <div data-tutorial="org-website">
             <TextInput source="website" label="Website" helperText="Format: https://example.com" />
           </div>
+          <TextInput source="phone" label="Phone" helperText="Format: (555) 123-4567" />
           <TextInput
             source="linkedin_url"
             label="LinkedIn URL"
