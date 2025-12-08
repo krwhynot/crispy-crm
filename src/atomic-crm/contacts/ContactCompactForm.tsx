@@ -65,7 +65,7 @@ export const ContactCompactForm = () => {
       </div>
 
       {/* Account Manager - full width row */}
-      <div>
+      <div data-tutorial="contact-account-manager">
         <ReferenceInput
           reference="sales"
           source="sales_id"
