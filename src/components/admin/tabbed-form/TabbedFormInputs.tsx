@@ -10,6 +10,8 @@ export interface TabDefinition {
   label: string;
   fields: string[];
   content: React.ReactNode;
+  /** Optional data-tutorial attribute for tutorial highlighting */
+  dataTutorial?: string;
 }
 
 export interface TabbedFormInputsProps {
@@ -69,6 +71,7 @@ export const TabbedFormInputs = ({
               value={tab.key}
               label={tab.label}
               errorCount={errorCounts[tab.key] || 0}
+              dataTutorial={tab.dataTutorial}
             />
           ))}
         </TabsList>

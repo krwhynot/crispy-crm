@@ -26,15 +26,19 @@ export const ProductClassificationTab = () => {
 
   return (
     <div className="space-y-2">
-      <AutocompleteInput
-        source="category"
-        label="Category *"
-        choices={productCategories}
-        onCreate={handleCreateCategory}
-        createItemLabel="Add custom category: %{item}"
-        helperText="Select F&B category or type to create custom"
-      />
-      <SelectInput source="status" label="Status *" choices={productStatuses} />
+      <div data-tutorial="product-category">
+        <AutocompleteInput
+          source="category"
+          label="Category *"
+          choices={productCategories}
+          onCreate={handleCreateCategory}
+          createItemLabel="Add custom category: %{item}"
+          helperText="Select F&B category or type to create custom"
+        />
+      </div>
+      <div data-tutorial="product-status">
+        <SelectInput source="status" label="Status *" choices={productStatuses} />
+      </div>
     </div>
   );
 };

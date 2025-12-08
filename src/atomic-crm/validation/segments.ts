@@ -17,6 +17,8 @@
  */
 
 import { z } from "zod";
+import { SEGMENT_TYPES, type SegmentType } from "./operatorSegments";
+import type { OrganizationType } from "./organizations";
 
 /**
  * Fixed Playbook category names - these are the ONLY valid segment names
@@ -64,13 +66,25 @@ export const playbookCategorySchema = z.enum(PLAYBOOK_CATEGORIES);
 
 /**
  * Base segment schema with all fields
- * Name is now constrained to Playbook categories
+ * Supports both playbook and operator segment types
  */
 export const segmentSchema = z.strictObject({
   id: z.string().uuid().optional(),
-  name: playbookCategorySchema,
+  name: z.string().min(1).max(100),
+  segment_type: z.enum(SEGMENT_TYPES).default("playbook"),
+  parent_id: z.string().uuid().nullable().optional(),
+  display_order: z.coerce.number().int().min(0).max(9999).default(0),
   created_at: z.string().optional(),
   created_by: z.string().uuid().optional(),
+});
+
+/**
+ * Schema for validating playbook-specific segments
+ * Restricts name to enum and segment_type to 'playbook'
+ */
+export const playbookSegmentSchema = segmentSchema.extend({
+  name: playbookCategorySchema,
+  segment_type: z.literal("playbook"),
 });
 
 /**

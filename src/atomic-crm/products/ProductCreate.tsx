@@ -8,6 +8,7 @@ import { FormToolbar } from "@/components/admin/simple-form";
 
 import { ProductInputs } from "./ProductInputs";
 import { productSchema } from "../validation/products";
+import { ProductFormTutorial } from "./ProductFormTutorial";
 
 // Human-readable field labels for error messages
 const PRODUCT_FIELD_LABELS: Record<string, string> = {
@@ -42,6 +43,7 @@ const ProductCreate = () => {
           </Form>
         </div>
       </div>
+      <ProductFormTutorial />
     </CreateBase>
   );
 };
@@ -60,7 +62,7 @@ const ProductFormContent = () => {
       <FormToolbar>
         <div className="flex flex-row gap-2 justify-end">
           <CancelButton />
-          <SaveButton label="Create Product" />
+          <SaveButton label="Create Product" data-tutorial="product-save-btn" />
         </div>
       </FormToolbar>
     </>

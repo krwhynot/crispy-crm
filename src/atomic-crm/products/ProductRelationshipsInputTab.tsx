@@ -14,29 +14,33 @@ import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 export const ProductRelationshipsInputTab = () => {
   return (
     <div className="space-y-2">
-      <ReferenceInput
-        source="principal_id"
-        reference="organizations"
-        label="Principal/Supplier *"
-        filter={{ organization_type: "principal" }}
-      >
-        <AutocompleteInput
-          optionText="name"
-          helperText="Required - Select the manufacturing principal"
-        />
-      </ReferenceInput>
+      <div data-tutorial="product-principal">
+        <ReferenceInput
+          source="principal_id"
+          reference="organizations"
+          label="Principal/Supplier *"
+          filter={{ organization_type: "principal" }}
+        >
+          <AutocompleteInput
+            optionText="name"
+            helperText="Required - Select the manufacturing principal"
+          />
+        </ReferenceInput>
+      </div>
 
-      <ReferenceInput
-        source="distributor_id"
-        reference="organizations"
-        label="Distributor"
-        filter={{ organization_type: "distributor" }}
-      >
-        <AutocompleteInput
-          optionText="name"
-          helperText="Optional - Select a distributor if applicable"
-        />
-      </ReferenceInput>
+      <div data-tutorial="product-distributor">
+        <ReferenceInput
+          source="distributor_id"
+          reference="organizations"
+          label="Distributor"
+          filter={{ organization_type: "distributor" }}
+        >
+          <AutocompleteInput
+            optionText="name"
+            helperText="Optional - Select a distributor if applicable"
+          />
+        </ReferenceInput>
+      </div>
     </div>
   );
 };
