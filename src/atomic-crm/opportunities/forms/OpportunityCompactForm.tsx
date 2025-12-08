@@ -264,16 +264,18 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
           }
           footer={<DistributorAuthorizationWarning />}
         >
-          <ReferenceInput
-            source="distributor_organization_id"
-            reference="organizations"
-            filter={{ organization_type: "distributor" }}
-          >
-            <AutocompleteOrganizationInput
-              label="Distributor Organization"
-              organizationType="distributor"
-            />
-          </ReferenceInput>
+          <div data-tutorial="opp-distributor">
+            <ReferenceInput
+              source="distributor_organization_id"
+              reference="organizations"
+              filter={{ organization_type: "distributor" }}
+            >
+              <AutocompleteOrganizationInput
+                label="Distributor Organization"
+                organizationType="distributor"
+              />
+            </ReferenceInput>
+          </div>
         </CompactFormFieldWithButton>
       </CompactFormRow>
 
@@ -351,35 +353,37 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
                   : "At least one product is required (select Principal Organization to filter)"}
               </p>
             </div>
-            <ArrayInput source="products_to_sync" label={false}>
-              <SimpleFormIterator inline disableReordering>
-                <ReferenceInput
-                  source="product_id_reference"
-                  reference="products"
-                  filter={productFilter}
-                >
-                  <SelectInput
-                    optionText="name"
-                    label="Product"
+            <div data-tutorial="opp-products">
+              <ArrayInput source="products_to_sync" label={false}>
+                <SimpleFormIterator inline disableReordering>
+                  <ReferenceInput
+                    source="product_id_reference"
+                    reference="products"
+                    filter={productFilter}
+                  >
+                    <SelectInput
+                      optionText="name"
+                      label="Product"
+                      helperText={false}
+                      className="w-full"
+                    />
+                  </ReferenceInput>
+                  <TextInput
+                    source="notes"
+                    label="Notes"
                     helperText={false}
+                    placeholder="Optional notes"
                     className="w-full"
                   />
-                </ReferenceInput>
-                <TextInput
-                  source="notes"
-                  label="Notes"
-                  helperText={false}
-                  placeholder="Optional notes"
-                  className="w-full"
-                />
-              </SimpleFormIterator>
-            </ArrayInput>
+                </SimpleFormIterator>
+              </ArrayInput>
+            </div>
           </div>
         </div>
       </CollapsibleSection>
 
       {/* Collapsible: Classification */}
-      <CollapsibleSection title="Classification">
+      <CollapsibleSection title="Classification" data-tutorial="opp-section-classification">
         <div className="space-y-4">
           <CompactFormRow>
             <TextInput source="lead_source" label="Lead Source" helperText={false} />
@@ -399,7 +403,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
       </CollapsibleSection>
 
       {/* Collapsible: Additional Details */}
-      <CollapsibleSection title="Additional Details">
+      <CollapsibleSection title="Additional Details" data-tutorial="opp-section-details">
         <div className="space-y-4">
           <TextInput source="description" label="Description" multiline rows={2} helperText={false} />
           <CompactFormRow>
