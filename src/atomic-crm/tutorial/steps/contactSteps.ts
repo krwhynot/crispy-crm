@@ -30,24 +30,6 @@ export const contactSteps: TutorialStep[] = [
     },
   },
   {
-    element: '[data-tutorial="contact-import-btn"]',
-    popover: {
-      title: 'Import Contacts',
-      description:
-        'Bulk import contacts from a CSV file. Great for migrating data from spreadsheets.',
-      side: 'bottom',
-    },
-  },
-  {
-    element: '[data-tutorial="contact-template-btn"]',
-    popover: {
-      title: 'Download Template',
-      description:
-        'Download a CSV template with the correct column headers for importing contacts.',
-      side: 'bottom',
-    },
-  },
-  {
     element: '[data-tutorial="contact-export-btn"]',
     popover: {
       title: 'Export Contacts',
