@@ -9,6 +9,7 @@
  * - prospect: Potential customer in sales pipeline
  * - principal: Food manufacturer whose products MFB represents
  * - distributor: Company that buys from principals and distributes
+ * - partner: Strategic business partner
  * - unknown: Unclassified organization
  */
 export type OrganizationType = "customer" | "prospect" | "principal" | "distributor" | "partner" | "unknown";
@@ -28,6 +29,7 @@ export const ORGANIZATION_TYPE_CHOICES = [
   { id: "prospect", name: "Prospect" },
   { id: "principal", name: "Principal" },
   { id: "distributor", name: "Distributor" },
+  { id: "partner", name: "Partner" },
   { id: "unknown", name: "Unknown" },
 ] as const;
 
@@ -59,6 +61,7 @@ export const ORG_TYPE_COLOR_MAP: Record<OrganizationType, string> = {
   prospect: "tag-sage",
   principal: "tag-purple",
   distributor: "tag-teal",
+  partner: "tag-blue",
   unknown: "tag-gray",
 };
 
