@@ -694,12 +694,22 @@ ON CONFLICT (id) DO NOTHING;
 -- ============================================================================
 -- ORGANIZATIONS (${orgs.length} records)
 -- ============================================================================
--- Uses ON CONFLICT to handle organizations that may exist from migrations
--- Updates existing records with seed data values
+-- Pre-step: Soft-delete any organizations from migrations that have names
+-- matching our seed data. This ensures our explicit IDs are used for FK refs.
 
 `;
 
-  // Generate organization inserts in batches WITH ON CONFLICT
+  // Generate soft-delete UPDATE for conflicting names (in batches to avoid huge IN clause)
+  const nameChunks = chunkArray(orgs, 200);
+  nameChunks.forEach((chunk, idx) => {
+    const names = chunk.map((o) => escapeSQLString(o.name.toLowerCase())).join(", ");
+    sql += `-- Soft-delete batch ${idx + 1}/${nameChunks.length}\n`;
+    sql += `UPDATE organizations SET deleted_at = NOW()\nWHERE deleted_at IS NULL AND LOWER(name) IN (${names});\n\n`;
+  });
+
+  sql += `-- Now insert organizations with explicit IDs (no conflicts due to soft-delete above)\n\n`;
+
+  // Generate organization inserts in batches (no ON CONFLICT needed now)
   const orgChunks = chunkArray(orgs, 100);
   orgChunks.forEach((chunk, chunkIdx) => {
     sql += `-- Batch ${chunkIdx + 1}/${orgChunks.length}\n`;
@@ -722,24 +732,10 @@ ON CONFLICT (id) DO NOTHING;
         escapeSQLString(org.cuisine),
         escapeSQLString(org.needs_review),
       ].join(", ");
-      return `  (${vals})${idx < chunk.length - 1 ? "," : ""}`;
+      return `  (${vals})${idx < chunk.length - 1 ? "," : ";"}`;
     });
 
-    sql += values.join("\n");
-    // Add ON CONFLICT clause for unique name constraint
-    sql += `\nON CONFLICT ((LOWER(name))) WHERE deleted_at IS NULL DO UPDATE SET
-  organization_type = EXCLUDED.organization_type,
-  playbook_category_id = EXCLUDED.playbook_category_id,
-  priority = EXCLUDED.priority,
-  phone = EXCLUDED.phone,
-  address = EXCLUDED.address,
-  city = EXCLUDED.city,
-  state = EXCLUDED.state,
-  postal_code = EXCLUDED.postal_code,
-  linkedin_url = EXCLUDED.linkedin_url,
-  notes = EXCLUDED.notes,
-  cuisine = EXCLUDED.cuisine,
-  needs_review = EXCLUDED.needs_review;\n\n`;
+    sql += values.join("\n") + "\n\n";
   });
 
   // Generate contact inserts
