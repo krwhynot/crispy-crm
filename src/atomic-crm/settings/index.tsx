@@ -1,6 +1,5 @@
 import { ErrorBoundary } from "@/components/ErrorBoundary";
 import { SettingsPage } from "./SettingsPage";
-import { SettingsLayout } from "./SettingsLayout";
 
 /**
  * Settings Feature Entry Point

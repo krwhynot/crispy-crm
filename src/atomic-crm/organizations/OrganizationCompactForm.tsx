@@ -5,11 +5,8 @@ import { CompactFormRow, CollapsibleSection } from "@/components/admin/form";
 import { SegmentComboboxInput } from "@/components/admin/SegmentComboboxInput";
 import { StateComboboxInput } from "@/components/admin/state-combobox-input";
 import { ParentOrganizationInput } from "./ParentOrganizationInput";
-import type { Sale } from "../types";
-import { formatName } from "../utils/formatName";
 import { ORGANIZATION_TYPE_CHOICES } from "./constants";
-
-const saleOptionRenderer = (choice: Sale) => formatName(choice.first_name, choice.last_name);
+import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 
 export const OrganizationCompactForm = () => {
   return (

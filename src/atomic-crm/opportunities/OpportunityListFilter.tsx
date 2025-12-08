@@ -20,7 +20,6 @@ import {
   Trophy,
 } from "lucide-react";
 import { FilterLiveForm, useGetIdentity, useGetList, useListContext } from "ra-core";
-import { cn } from "@/lib/utils";
 import { addDays } from "date-fns";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";

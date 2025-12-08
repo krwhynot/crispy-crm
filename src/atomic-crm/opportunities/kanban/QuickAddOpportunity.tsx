@@ -78,9 +78,14 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
       </button>
 
       {isOpen && (
-        <div className="fixed inset-0 bg-background/80 flex items-center justify-center z-50 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-150">
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="quick-add-opportunity-title"
+          className="fixed inset-0 bg-background/80 flex items-center justify-center z-50 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-150"
+        >
           <div className="bg-card rounded-lg shadow-xl p-6 w-full max-w-md motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-200">
-            <h2 className="text-lg font-semibold mb-4">Create Opportunity</h2>
+            <h2 id="quick-add-opportunity-title" className="text-lg font-semibold mb-4">Create Opportunity</h2>
 
             <form onSubmit={handleSubmit}>
               <div className="mb-4">

@@ -1,5 +1,5 @@
 import { useGetList } from "react-admin";
-import { Control, FieldValues, Path } from "react-hook-form";
+import type { Control, FieldValues, Path } from "react-hook-form";
 import {
   FormField,
   FormItem,

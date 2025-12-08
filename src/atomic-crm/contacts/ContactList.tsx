@@ -19,8 +19,6 @@ import type { Contact } from "../types";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { FilterChipBar } from "../filters";
 import { ContactEmpty } from "./ContactEmpty";
-import { ContactImportButton } from "./ContactImportButton";
-import { ContactExportTemplateButton } from "./ContactExportTemplateButton";
 import { ContactListFilter } from "./ContactListFilter";
 import { ContactSlideOver } from "./ContactSlideOver";
 import { TopToolbar } from "../layout/TopToolbar";

@@ -195,7 +195,7 @@ test.describe("Dashboard V3 - Responsive Layout", () => {
 
   test.describe("Layout Consistency", () => {
     test("KPI Summary Row should span full width at all breakpoints", async ({ authenticatedPage }) => {
-      for (const [name, viewport] of Object.entries(viewports)) {
+      for (const [_name, viewport] of Object.entries(viewports)) {
         await authenticatedPage.setViewportSize(viewport);
         await authenticatedPage.goto("/");
         await authenticatedPage.waitForLoadState("networkidle");
@@ -211,7 +211,7 @@ test.describe("Dashboard V3 - Responsive Layout", () => {
     });
 
     test("Pipeline table should be present at all breakpoints", async ({ authenticatedPage }) => {
-      for (const [name, viewport] of Object.entries(viewports)) {
+      for (const [_name, viewport] of Object.entries(viewports)) {
         await authenticatedPage.setViewportSize(viewport);
         await authenticatedPage.goto("/");
         await authenticatedPage.waitForLoadState("networkidle");

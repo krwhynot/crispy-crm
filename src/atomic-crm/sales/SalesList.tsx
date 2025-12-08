@@ -161,7 +161,7 @@ const SalesListActions = () => (
 /**
  * RoleBadgeField - Display role badge with semantic colors
  */
-const RoleBadgeField = ({ label, ...props }: { label: string; cellClassName?: string; headerClassName?: string }) => {
+const RoleBadgeField = ({ label: _label, ...props }: { label: string; cellClassName?: string; headerClassName?: string }) => {
   const record = useRecordContext();
   if (!record) return null;
 
@@ -196,7 +196,7 @@ const RoleBadgeField = ({ label, ...props }: { label: string; cellClassName?: st
 /**
  * StatusField - Display account status (Active/Disabled)
  */
-const StatusField = ({ label, ...props }: { label: string; cellClassName?: string; headerClassName?: string }) => {
+const StatusField = ({ label: _label, ..._props }: { label: string; cellClassName?: string; headerClassName?: string }) => {
   const record = useRecordContext();
   if (!record) return null;
 

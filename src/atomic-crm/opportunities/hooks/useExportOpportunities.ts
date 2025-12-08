@@ -95,7 +95,7 @@ export const useExportOpportunities = () => {
             type: "success",
           }
         );
-      } catch (error) {
+      } catch (_error) {
         notify("Failed to export opportunities", { type: "error" });
       }
     },

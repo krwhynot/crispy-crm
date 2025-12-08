@@ -60,7 +60,7 @@ describe("CompactFormFieldWithButton", () => {
   });
 
   it("wraps field in min-w-0 container to prevent overflow", () => {
-    const { container } = render(
+    const { container: _container } = render(
       <CompactFormFieldWithButton>
         <input data-testid="field" />
       </CompactFormFieldWithButton>

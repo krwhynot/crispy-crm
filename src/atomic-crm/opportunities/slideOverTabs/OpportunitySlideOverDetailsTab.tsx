@@ -7,7 +7,6 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
 import { LeadSourceInput } from "../LeadSourceInput";
 import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
@@ -123,12 +122,6 @@ export function OpportunitySlideOverDetailsTab({
       pendingFormDataRef.current = null;
     }
   }, []);
-
-  const handleCancel = () => {
-    if (onModeToggle) {
-      onModeToggle();
-    }
-  };
 
   if (mode === "edit") {
     return (

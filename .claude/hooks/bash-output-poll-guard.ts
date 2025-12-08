@@ -104,7 +104,7 @@ function main(): void {
       const hookInput: HookInput = JSON.parse(input);
       const result = processHook(hookInput);
       console.log(JSON.stringify(result));
-    } catch (error) {
+    } catch (_error) {
       // On error, approve by default to not block the agent
       console.log(JSON.stringify({ decision: 'approve' }));
     }
