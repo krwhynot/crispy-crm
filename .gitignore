@@ -97,3 +97,4 @@ supabase/cloud_users.sql
 .claude/checkpoint-state
 .claude/memory-capture.log
 .env.test
+.env.cloud
