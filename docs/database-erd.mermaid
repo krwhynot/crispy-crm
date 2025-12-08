@@ -1,6 +1,6 @@
 %% Crispy CRM Database ERD
-%% Generated: 2025-12-07 (Updated after migration 20251207214606)
-%% Tables: 24 | Enums: 14 | Foreign Keys: 69
+%% Generated: 2025-12-08 (via Supabase MCP)
+%% Tables: 24 | Enums: 14 | Foreign Keys: 69+
 
 erDiagram
     %% ==========================================
@@ -10,8 +10,8 @@ erDiagram
     organizations {
         bigint id PK "auto-increment"
         text name "NOT NULL"
-        organization_type organization_type "DEFAULT 'unknown'"
-        varchar priority "DEFAULT 'C'"
+        organization_type organization_type "customer|principal|distributor|prospect"
+        varchar priority "A|B|C|D, DEFAULT 'C'"
         text website
         text address
         text city
@@ -28,30 +28,30 @@ erDiagram
         timestamptz created_at "DEFAULT now()"
         timestamptz updated_at "DEFAULT now()"
         bigint created_by FK
+        bigint updated_by FK
         timestamptz deleted_at "soft delete"
         uuid import_session_id
         tsvector search_tsv
         jsonb context_links
         text description
         text tax_identifier
-        uuid segment_id FK
-        uuid playbook_category_id FK "NEW - playbook segment"
-        text cuisine "NEW - restaurant cuisine type"
-        text needs_review "NEW - review flag with reason"
-        bigint updated_by FK
-        bigint parent_organization_id FK "self-ref"
+        uuid segment_id FK "operator segment"
+        uuid playbook_category_id FK "playbook segment"
+        text cuisine "restaurant cuisine type"
+        text needs_review "review flag with reason"
+        bigint parent_organization_id FK "self-ref hierarchy"
     }
 
     segments {
         uuid id PK "gen_random_uuid()"
         text name "NOT NULL"
-        timestamptz created_at "NOT NULL, DEFAULT now()"
-        uuid created_by
-        timestamptz deleted_at "soft delete"
-        text segment_type "DEFAULT 'playbook'"
-        uuid parent_id FK "self-ref"
+        text segment_type "playbook|operator"
         integer display_order "DEFAULT 0"
-        text ui_group "NEW - Commercial or Institutional"
+        uuid parent_id FK "self-ref hierarchy"
+        text ui_group "Commercial|Institutional"
+        timestamptz created_at "DEFAULT now()"
+        uuid created_by FK
+        timestamptz deleted_at "soft delete"
     }
 
     contacts {
@@ -72,30 +72,37 @@ erDiagram
         text linkedin_url
         text twitter_handle
         text notes
-        bigint sales_id FK
-        timestamptz created_at "DEFAULT now()"
-        timestamptz updated_at "DEFAULT now()"
-        bigint created_by FK
-        timestamptz deleted_at "soft delete"
-        tsvector search_tsv
-        timestamptz first_seen "DEFAULT now()"
-        timestamptz last_seen "DEFAULT now()"
+        text status "cold|warm|hot|in-contract"
         text gender
         bigint_array tags "DEFAULT '{}'"
-        bigint organization_id FK "NOT NULL"
+        bigint organization_id FK "NOT NULL, RESTRICT"
+        bigint sales_id FK
+        bigint created_by FK
         bigint updated_by FK
-        text status "DEFAULT 'cold'"
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz first_seen "DEFAULT now()"
+        timestamptz last_seen "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
+        tsvector search_tsv
     }
 
-    organization_distributors {
-        bigint id PK
-        bigint organization_id FK "NOT NULL"
-        bigint distributor_id FK "NOT NULL"
-        boolean is_primary "NOT NULL, DEFAULT false"
-        text notes
-        timestamptz created_at "NOT NULL, DEFAULT now()"
-        timestamptz updated_at "NOT NULL, DEFAULT now()"
-        bigint created_by FK
+    sales {
+        bigint id PK "auto-increment"
+        uuid user_id UK "FK auth.users"
+        text first_name
+        text last_name
+        text email
+        text phone
+        text avatar_url
+        user_role role "admin|manager|rep"
+        boolean administrator "computed from role"
+        boolean is_admin "DEPRECATED"
+        boolean disabled "account disabled flag"
+        boolean digest_opt_in "DEFAULT true"
+        text timezone "DEFAULT 'America/Chicago'"
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
         timestamptz deleted_at "soft delete"
     }
 
@@ -104,199 +111,333 @@ erDiagram
     %% ==========================================
 
     opportunities {
-        bigint id PK
+        bigint id PK "auto-increment"
         text name "NOT NULL"
-        opportunity_stage stage
-        opportunity_status status
         text description
-        numeric amount
-        date expected_close_date
-        bigint customer_organization_id FK "NOT NULL"
+        opportunity_stage stage "7 stages"
+        opportunity_status status "active|on_hold|nurturing|stalled|expired"
+        priority_level priority "low|medium|high|critical"
+        integer index
+        date estimated_close_date "DEFAULT +90 days"
+        date actual_close_date
+        timestamptz stage_changed_at "DEFAULT now()"
+        bigint customer_organization_id FK "NOT NULL, RESTRICT"
         bigint principal_organization_id FK
         bigint distributor_organization_id FK
+        bigint opportunity_owner_id FK "NOT NULL"
         bigint account_manager_id FK
-        bigint opportunity_owner_id FK
         bigint founding_interaction_id FK
-        bigint related_opportunity_id FK
-        timestamptz created_at
-        timestamptz updated_at
+        bigint related_opportunity_id FK "self-ref"
+        bigint_array contact_ids "DEPRECATED - use junction"
+        text next_action
+        date next_action_date
+        text competition
+        text decision_criteria
+        text notes
+        text campaign
+        text_array tags "DEFAULT '{}'"
+        text lead_source "referral|trade_show|website|cold_call|..."
+        win_reason win_reason "required when closed_won"
+        loss_reason loss_reason "required when closed_lost"
+        text close_reason_notes "max 500 chars"
         bigint created_by FK
         bigint updated_by FK
-        timestamptz deleted_at
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
+        tsvector search_tsv
     }
 
     activities {
-        bigint id PK
-        activity_type type
-        interaction_type interaction_type
-        text subject
+        bigint id PK "auto-increment"
+        activity_type activity_type "engagement|interaction"
+        interaction_type type "call|email|meeting|demo|sample|..."
+        text subject "NOT NULL"
         text description
-        timestamptz due_date
-        boolean completed
-        bigint contact_id FK
+        timestamptz activity_date "DEFAULT now()"
+        integer duration_minutes
+        text outcome
+        varchar sentiment "positive|neutral|negative"
+        text location
+        text_array attendees
+        text_array attachments
+        text_array tags
+        boolean follow_up_required "DEFAULT false"
+        date follow_up_date
+        text follow_up_notes
+        sample_status sample_status "for type=sample"
+        bigint contact_id FK "CASCADE"
         bigint organization_id FK
         bigint opportunity_id FK
         bigint related_task_id FK
         bigint created_by FK
-        timestamptz created_at
-        timestamptz deleted_at
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
     }
 
     tasks {
-        bigint id PK
-        text title
+        bigint id PK "auto-increment"
+        text title "NOT NULL"
         text description
-        task_type type
-        priority_level priority
+        task_type type "Call|Email|Meeting|Follow-up|Demo|Proposal|Other"
+        priority_level priority "DEFAULT 'medium'"
         date due_date
+        date reminder_date
         timestamptz snooze_until
-        boolean completed
-        bigint sales_id FK
-        bigint contact_id FK
+        boolean completed "DEFAULT false"
+        timestamptz completed_at
+        timestamptz overdue_notified_at
+        bigint sales_id FK "NOT NULL - task owner"
+        bigint contact_id FK "CASCADE"
         bigint organization_id FK
         bigint opportunity_id FK
-        bigint created_by FK
-        timestamptz created_at
-        timestamptz deleted_at
-    }
-
-    sales {
-        bigint id PK
-        uuid auth_user_id "Supabase auth"
-        text first_name
-        text last_name
-        text email
-        user_role role
-        timestamptz created_at
-        timestamptz deleted_at
+        bigint created_by FK "DEFAULT get_current_sales_id()"
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
     }
 
     products {
-        bigint id PK
+        bigint id PK "auto-increment"
         text name "NOT NULL"
+        text category "NOT NULL, CHECK not empty"
         text sku
         text description
-        product_category category
-        product_status status
+        text manufacturer_part_number
+        product_status status "active|discontinued|seasonal|..."
+        bigint principal_id FK "NOT NULL"
         bigint distributor_id FK
         bigint created_by FK
         bigint updated_by FK
-        timestamptz created_at
-        timestamptz deleted_at
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
+        tsvector search_tsv
     }
 
     %% ==========================================
     %% JUNCTION TABLES
     %% ==========================================
 
+    organization_distributors {
+        bigint id PK "IDENTITY ALWAYS"
+        bigint organization_id FK "NOT NULL, CASCADE"
+        bigint distributor_id FK "NOT NULL, CASCADE"
+        boolean is_primary "DEFAULT false"
+        text notes
+        bigint created_by FK
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
+    }
+
     opportunity_contacts {
-        bigint id PK
-        bigint opportunity_id FK
-        bigint contact_id FK
+        bigint id PK "IDENTITY ALWAYS"
+        bigint opportunity_id FK "CASCADE"
+        bigint contact_id FK "CASCADE"
+        varchar role
+        boolean is_primary "DEFAULT false"
+        text notes
+        timestamptz created_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
     }
 
     opportunity_products {
-        bigint id PK
-        bigint opportunity_id FK
-        bigint product_id_reference FK
+        bigint id PK "auto-increment"
+        bigint opportunity_id FK "CASCADE"
+        bigint product_id_reference FK "CASCADE"
+        text product_name
+        text product_category
+        text notes
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
     }
 
     opportunity_participants {
-        bigint id PK
-        bigint opportunity_id FK
+        bigint id PK "auto-increment"
+        bigint opportunity_id FK "CASCADE"
+        bigint organization_id FK
+        varchar role "customer|principal|distributor|competitor"
+        boolean is_primary "DEFAULT false"
+        text notes
         bigint created_by FK
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
     }
 
     interaction_participants {
-        bigint id PK
-        bigint activity_id FK
+        bigint id PK "auto-increment"
+        bigint activity_id FK "CASCADE"
         bigint contact_id FK
+        bigint organization_id FK
+        varchar role "DEFAULT 'participant'"
+        text notes
         bigint created_by FK
+        timestamptz created_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
     }
 
     distributor_principal_authorizations {
-        bigint id PK
-        bigint distributor_id FK
-        bigint principal_id FK
+        bigint id PK "IDENTITY ALWAYS"
+        bigint distributor_id FK "CASCADE"
+        bigint principal_id FK "CASCADE"
+        boolean is_authorized "DEFAULT true"
+        date authorization_date "DEFAULT CURRENT_DATE"
+        date expiration_date
+        text_array territory_restrictions
+        text notes
         bigint created_by FK
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
     }
 
     product_distributor_authorizations {
-        bigint id PK
-        bigint product_id FK
-        bigint distributor_id FK
+        bigint id PK "IDENTITY ALWAYS"
+        bigint product_id FK "CASCADE"
+        bigint distributor_id FK "CASCADE"
+        boolean is_authorized "DEFAULT true"
+        date authorization_date "DEFAULT CURRENT_DATE"
+        date expiration_date
+        jsonb special_pricing
+        text_array territory_restrictions
+        text notes
         bigint created_by FK
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
     }
 
     %% ==========================================
-    %% NOTES & AUDIT
+    %% NOTES & SUPPORTING
     %% ==========================================
 
     contact_notes {
-        bigint id PK
-        bigint contact_id FK
+        bigint id PK "auto-increment"
+        bigint contact_id FK "CASCADE"
+        text text "NOT NULL"
+        text_array attachments
+        timestamptz date "DEFAULT now()"
         bigint sales_id FK
-        text content
-        bigint created_by FK
+        bigint created_by FK "DEFAULT get_current_sales_id()"
         bigint updated_by FK
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
     }
 
     organization_notes {
-        bigint id PK
-        bigint organization_id FK
+        bigint id PK "auto-increment"
+        bigint organization_id FK "CASCADE"
+        text text "NOT NULL"
+        jsonb attachments "DEFAULT '[]'"
+        timestamptz date "DEFAULT now()"
         bigint sales_id FK
-        text content
         bigint updated_by FK
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
     }
 
     opportunity_notes {
-        bigint id PK
-        bigint opportunity_id FK
+        bigint id PK "auto-increment"
+        bigint opportunity_id FK "CASCADE"
+        text text "NOT NULL"
+        text_array attachments
+        timestamptz date "DEFAULT now()"
         bigint sales_id FK
-        text content
-        bigint created_by FK
+        bigint created_by FK "DEFAULT get_current_sales_id()"
         bigint updated_by FK
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
     }
 
     audit_trail {
-        bigint id PK
-        text table_name
-        bigint record_id
-        text action
-        jsonb old_values
-        jsonb new_values
+        bigint audit_id PK "IDENTITY ALWAYS"
+        text table_name "NOT NULL"
+        bigint record_id "NOT NULL"
+        text field_name "NOT NULL"
+        text old_value
+        text new_value
         bigint changed_by FK
-        timestamptz changed_at
+        timestamptz changed_at "DEFAULT now()"
     }
 
     notifications {
-        bigint id PK
-        text message
-        boolean read
-        timestamptz created_at
+        bigint id PK "IDENTITY ALWAYS"
+        uuid user_id FK "auth.users"
+        text type "task_overdue|task_assigned|mention|daily_digest|..."
+        text message "NOT NULL"
+        text entity_type "task|opportunity|contact|organization|product|digest"
+        bigint entity_id
+        jsonb metadata
+        boolean read "DEFAULT false"
+        timestamptz created_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
     }
 
     tags {
-        bigint id PK
-        text name
-        text color
+        bigint id PK "auto-increment"
+        text name "UNIQUE, NOT NULL"
+        text color "DEFAULT 'blue-500'"
+        text description
+        integer usage_count "DEFAULT 0"
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+        timestamptz deleted_at "soft delete"
     }
 
     tutorial_progress {
-        bigint id PK
-        bigint sales_id FK
+        bigint id PK "IDENTITY BY DEFAULT"
+        bigint sales_id FK UK "one per user"
+        boolean organization_completed "DEFAULT false"
+        boolean contact_completed "DEFAULT false"
+        boolean opportunity_completed "DEFAULT false"
+        boolean activity_completed "DEFAULT false"
+        boolean task_completed "DEFAULT false"
+        boolean dismissed "DEFAULT false"
+        timestamptz dismissed_at
         bigint created_organization_id FK
         bigint created_contact_id FK
         bigint created_opportunity_id FK
         bigint created_activity_id FK
         bigint created_task_id FK
+        timestamptz created_at "DEFAULT now()"
+        timestamptz updated_at "DEFAULT now()"
+    }
+
+    test_user_metadata {
+        uuid id PK "gen_random_uuid()"
+        uuid user_id FK UK "auth.users"
+        text role "admin|sales_director|account_manager"
+        text created_by "DEFAULT 'automated_script'"
+        jsonb test_data_counts
+        timestamptz created_at "DEFAULT now()"
+        timestamptz last_sync_at
+    }
+
+    migration_history {
+        bigint id PK "auto-increment"
+        text phase_number "NOT NULL"
+        text phase_name "NOT NULL"
+        text status "DEFAULT 'pending'"
+        timestamptz started_at
+        timestamptz completed_at
+        text error_message
+        text rollback_sql
+        bigint rows_affected
+        timestamptz created_at "DEFAULT now()"
     }
 
     %% ==========================================
     %% RELATIONSHIPS
     %% ==========================================
 
-    %% Segments (self-referencing)
+    %% Segments (self-referencing hierarchy)
     segments ||--o{ segments : "parent_id"
 
     %% Organizations core relationships
@@ -307,7 +448,7 @@ erDiagram
     sales ||--o{ organizations : "created_by"
     sales ||--o{ organizations : "updated_by"
 
-    %% Contacts
+    %% Contacts (required org relationship)
     organizations ||--o{ contacts : "organization_id (RESTRICT)"
     sales ||--o{ contacts : "sales_id"
     sales ||--o{ contacts : "created_by"
@@ -322,8 +463,8 @@ erDiagram
     organizations ||--o{ opportunities : "customer_organization_id (RESTRICT)"
     organizations ||--o{ opportunities : "principal_organization_id"
     organizations ||--o{ opportunities : "distributor_organization_id"
-    sales ||--o{ opportunities : "account_manager_id"
     sales ||--o{ opportunities : "opportunity_owner_id"
+    sales ||--o{ opportunities : "account_manager_id"
     sales ||--o{ opportunities : "created_by"
     sales ||--o{ opportunities : "updated_by"
     activities ||--o| opportunities : "founding_interaction_id"
@@ -337,7 +478,7 @@ erDiagram
     sales ||--o{ activities : "created_by"
 
     %% Tasks
-    sales ||--o{ tasks : "sales_id"
+    sales ||--o{ tasks : "sales_id (owner)"
     contacts ||--o{ tasks : "contact_id (CASCADE)"
     organizations ||--o{ tasks : "organization_id"
     opportunities ||--o{ tasks : "opportunity_id"
@@ -363,16 +504,16 @@ erDiagram
 
     %% Notes
     contacts ||--o{ contact_notes : "CASCADE"
-    sales ||--o{ contact_notes : "sales_id (CASCADE)"
+    sales ||--o{ contact_notes : "sales_id"
     organizations ||--o{ organization_notes : "CASCADE"
     opportunities ||--o{ opportunity_notes : "CASCADE"
-    sales ||--o{ opportunity_notes : "sales_id (CASCADE)"
+    sales ||--o{ opportunity_notes : "sales_id"
 
-    %% Audit
+    %% Audit & Notifications
     sales ||--o{ audit_trail : "changed_by"
 
     %% Tutorial
-    sales ||--o{ tutorial_progress : "sales_id (CASCADE)"
+    sales ||--o| tutorial_progress : "sales_id (one per user)"
     organizations ||--o{ tutorial_progress : "created_organization_id"
     contacts ||--o{ tutorial_progress : "created_contact_id"
     opportunities ||--o{ tutorial_progress : "created_opportunity_id"
