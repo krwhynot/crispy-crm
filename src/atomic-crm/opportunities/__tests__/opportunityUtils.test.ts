@@ -198,11 +198,8 @@ describe("Opportunity Utils", () => {
       const validOrgTypes = [
         "customer",
         "prospect",
-        "vendor",
-        "partner",
         "principal",
         "distributor",
-        "unknown",
       ];
 
       const isValidOrgType = (type: string): boolean => {
