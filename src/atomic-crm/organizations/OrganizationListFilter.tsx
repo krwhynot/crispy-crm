@@ -19,7 +19,7 @@ export const OrganizationListFilter = () => {
   const { data: identity } = useGetIdentity();
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" data-tutorial="org-filters">
       {/* Search - Always visible */}
       <FilterLiveForm>
         <SearchInput source="q" placeholder="Search organizations..." />

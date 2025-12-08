@@ -1,73 +1,69 @@
 import type { TutorialStep } from '../types';
 
+/**
+ * Organization List Tutorial Steps
+ *
+ * Focuses on LIST exploration (not CREATE workflow).
+ * Matches the pattern used in Contacts list tutorial.
+ */
 export const organizationSteps: TutorialStep[] = [
-  {
-    element: '[data-tutorial="nav-organizations"]',
-    popover: {
-      title: 'Organizations',
-      description:
-        'This is where you manage all organizations - Principals (manufacturers), Distributors, and Operators (restaurants).',
-      side: 'bottom',
-    },
-  },
+  // Step 1: List overview
   {
     element: '[data-tutorial="organizations-list"]',
     popover: {
       title: 'Organization List',
       description:
-        'View all your organizations here. Use the filters to find specific types like Principals or Distributors.',
+        'View all your organizations here - Principals, Distributors, and Operators. Click any row to see details.',
       side: 'left',
     },
     navigateTo: '/organizations',
   },
+  // Step 2: Filter sidebar
+  {
+    element: '[data-tutorial="org-filters"]',
+    popover: {
+      title: 'Filter Organizations',
+      description:
+        'Use filters to narrow down your view. Filter by Type (Principal, Distributor, Operator), Priority (A-D), Playbook Category, or your own accounts.',
+      side: 'right',
+    },
+  },
+  // Step 3: Sort button
+  {
+    element: '[data-tutorial="org-sort-btn"]',
+    popover: {
+      title: 'Sort Results',
+      description:
+        'Sort organizations by Name, Type, or Priority. Click again to reverse the order.',
+      side: 'bottom',
+    },
+  },
+  // Step 4: Export button
+  {
+    element: '[data-tutorial="org-export-btn"]',
+    popover: {
+      title: 'Export to CSV',
+      description:
+        'Download your organizations as a CSV file for reports or Excel analysis.',
+      side: 'bottom',
+    },
+  },
+  // Step 5: Create button
   {
     element: '[data-tutorial="create-organization-btn"]',
     popover: {
       title: 'Add New Organization',
-      description: "Click here to add a new organization. Let's create one now!",
+      description:
+        'Click here to add a new Principal, Distributor, or Operator to your CRM.',
       side: 'bottom',
     },
   },
+  // Step 6: Completion
   {
-    element: '[data-tutorial="org-name"]',
     popover: {
-      title: 'Organization Name',
-      description: 'Enter the company name. We check for duplicates automatically.',
-      side: 'right',
-    },
-    navigateTo: '/organizations/create',
-  },
-  {
-    element: '[data-tutorial="org-type"]',
-    popover: {
-      title: 'Organization Type',
+      title: '✅ Organization List Tutorial Complete!',
       description:
-        'Select the type: Principal (manufacturer you represent), Distributor, or Operator (restaurant/foodservice).',
-      side: 'right',
-    },
-  },
-  {
-    element: '[data-tutorial="org-website"]',
-    popover: {
-      title: 'Website (Optional)',
-      description: "Add their website URL. We'll auto-add https:// if you forget.",
-      side: 'right',
-    },
-  },
-  {
-    element: '[data-tutorial="org-save-btn"]',
-    popover: {
-      title: 'Save Organization',
-      description:
-        "Click Save to create the organization. You'll see a confirmation message.",
-      side: 'top',
-    },
-  },
-  {
-    popover: {
-      title: '✅ Organizations Complete!',
-      description:
-        "You've learned how to add organizations. Next, let's add contacts to these organizations.",
+        "You've learned how to navigate, filter, and manage your organizations. Click any row to view or edit details in the slide-over panel.",
     },
   },
 ];
