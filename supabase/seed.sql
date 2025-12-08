@@ -2301,7 +2301,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (97, 'Szombatfalvy Nicholas', 'Szombatfalvy', 'Nicholas', 296, '[{"value":"nszombat@epic.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (98, 'Jenner Tomaska and wife Katrina Bravo', 'Jenner', 'Tomaska and wife Katrina Bravo', 297, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (99, 'MacNeil', 'MacNeil', NULL, 300, '[{"value":"cog@etailerinc.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (100, 'Jamroch Christopher', 'Jamroch', 'Christopher', 302, '[{"value":"christopher.jamroch@compass-usa.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+  (100, 'Jamroch Christopher', 'Jamroch', 'Christopher', 302, '[{"value":"christopher.jamroch@compass-usa.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 2/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -2404,7 +2405,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (197, 'Jackson Josephine', 'Jackson', 'Josephine', 568, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (198, 'Edsall jean', 'Edsall', 'jean', 571, '[{"value":"jedsall87@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (199, 'Rudner alyssa', 'Rudner', 'alyssa', 575, '[{"value":"acrudner@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (200, 'Executive Chef moreno', 'Executive', 'Chef moreno', 579, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+  (200, 'Executive Chef moreno', 'Executive', 'Chef moreno', 579, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 3/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -2507,7 +2509,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (297, 'Chef Joe Flamm', 'Chef', 'Joe Flamm', 767, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (298, 'Jim Drewenski alberto', 'Jim', 'Drewenski alberto', 769, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (299, 'Exec Chef John Rudolph', 'Exec', 'Chef John Rudolph', 771, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, '66 W. Kinsey Street, Chicago, Illinois', 'Chicago', NULL, NULL, NULL),
-  (300, 'Rashid', 'Rashid', NULL, 774, '[{"value":"Rumifalafel@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+  (300, 'Rashid', 'Rashid', NULL, 774, '[{"value":"Rumifalafel@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 4/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -2610,7 +2613,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (397, 'Chef Jim Charlie', 'Chef', 'Jim Charlie', 957, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (398, 'USF, Testa, GFS', 'USF,', 'Testa, GFS', 957, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (399, 'Beske John', 'Beske', 'John', 961, '[{"value":"johnbeske@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (400, 'Rose Maria', 'Rose', 'Maria', 962, '[{"value":"marla@veganstreet.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+  (400, 'Rose Maria', 'Rose', 'Maria', 962, '[{"value":"marla@veganstreet.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 5/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -2713,7 +2717,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (497, 'Syreeta Hawkins', 'Syreeta', 'Hawkins', 475, '[]'::jsonb, '[]'::jsonb, 'Sous Chef', NULL, '9722 Parkway Drive', 'highland', 'IN', '46322', 'hps'),
   (498, 'angel Perry', 'angel', 'Perry', 475, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, '9722 Parkway Drive', 'highland', 'IN', '46322', 'hos'),
   (499, 'tianna johnson', 'tianna', 'johnson', 475, '[]'::jsonb, '[]'::jsonb, 'Executive', NULL, '9722 Parkway Drive', 'highland', 'IN', '46322', 'hos'),
-  (500, 'nicole ward', 'nicole', 'ward', 475, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, '9722 Parkway Drive', 'highland', 'IN', '46322', 'hos');
+  (500, 'nicole ward', 'nicole', 'ward', 475, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, '9722 Parkway Drive', 'highland', 'IN', '46322', 'hos')
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 6/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -2816,7 +2821,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (597, 'Ryan Bennink', 'Ryan', 'Bennink', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (598, 'Michael Gunderson', 'Michael', 'Gunderson', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (599, 'Jene Braden', 'Jene', 'Braden', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
-  (600, 'Sam Butler', 'Sam', 'Butler', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL);
+  (600, 'Sam Butler', 'Sam', 'Butler', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 7/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -2919,7 +2925,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (697, 'Joe Smith', 'Joe', 'Smith', 813, '[]'::jsonb, '[{"value":"(513) 489-7044","type":"work"}]'::jsonb, 'Owner', NULL, '8322 E Kemper Rd', 'Cincinnati', 'OH', '45249', NULL),
   (698, 'Matt Dalicandro', 'Matt', 'Dalicandro', 1922, '[{"value":"matt.Dalicandro@gfs.com","type":"work"}]'::jsonb, '[{"value":"(513) 259-7032","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (699, 'Joan Bauman', 'Joan', 'Bauman', 943, '[{"value":"jbauman1@udayton.edu","type":"work"}]'::jsonb, '[{"value":"(937) 229-2446","type":"work"}]'::jsonb, 'Director Of Operations', 'Mike and Gary', 'Powerhouse 300 College Park', 'Dayton', 'OH', '45469', NULL),
-  (700, 'Ben Flores', 'Ben', 'Flores', 896, '[{"value":"flores.552@osu.edu","type":"work"}]'::jsonb, '[{"value":"(251) 656-5540","type":"work"}]'::jsonb, 'Exec Chef', 'Gary and Mike', 'Office of Student Life. Dinning Serves. The Ohio Union 1739 North High Street', 'Columbus', 'OH', '43210', NULL);
+  (700, 'Ben Flores', 'Ben', 'Flores', 896, '[{"value":"flores.552@osu.edu","type":"work"}]'::jsonb, '[{"value":"(251) 656-5540","type":"work"}]'::jsonb, 'Exec Chef', 'Gary and Mike', 'Office of Student Life. Dinning Serves. The Ohio Union 1739 North High Street', 'Columbus', 'OH', '43210', NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 8/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3022,7 +3029,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (797, 'Jennifer  Murray', 'Jennifer', 'Murray', 1062, '[{"value":"jmurray@wls4kids.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD'),
   (798, 'Rhonda Harper', 'Rhonda', 'Harper', 1066, '[]'::jsonb, '[{"value":"(270) 606-1273","type":"work"}]'::jsonb, 'Owner', NULL, '2339 Claudis Harris Rd', 'Adolphus', 'KY', '42120', 'Showed interest in Cheese curds not open yet'),
   (799, 'Blake Kollker', 'Blake', 'Kollker', 1067, '[{"value":"blake.Kollker@azzippizza.com","type":"work"}]'::jsonb, '[{"value":"(812) 909-4144","type":"work"}]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL),
-  (800, 'Victor', 'Victor', NULL, 1069, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL);
+  (800, 'Victor', 'Victor', NULL, 1069, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 9/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3125,7 +3133,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (897, 'Brandon Smithson', 'Brandon', 'Smithson', 1228, '[{"value":"Bsmithson@fourwindscasino.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL),
   (898, 'Jacob Giese', 'Jacob', 'Giese', 1229, '[]'::jsonb, '[]'::jsonb, 'Sous Chef', NULL, NULL, NULL, NULL, NULL, NULL),
   (899, 'Samantha Zastrow', 'Samantha', 'Zastrow', 1230, '[{"value":"Smzastrow@wisc.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL),
-  (900, 'Channie McCall', 'Channie', 'McCall', 1231, '[{"value":"Cihomich@d.umn.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL);
+  (900, 'Channie McCall', 'Channie', 'McCall', 1231, '[{"value":"Cihomich@d.umn.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 10/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3228,7 +3237,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (997, 'Mark Pruett', 'Mark', 'Pruett', 1796, '[{"value":"mark.pruett@oakviewgroup.com","type":"work"}]'::jsonb, '[{"value":"(270) 687-8922","type":"work"}]'::jsonb, 'Executive', NULL, NULL, 'Owensboro', 'KY', NULL, 'got Marks contact info will follow up'),
   (998, 'Ashley Maldonado', 'Ashley', 'Maldonado', 1888, '[{"value":"amaldonado@crsonesource.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Executive', NULL, NULL, 'Bowling green', 'KY', NULL, 'Valerie Sharber is Dry and Frozen Senior Catergory Manager'),
   (999, 'Valerie Sharber', 'Valerie', 'Sharber', 1967, '[{"value":"Valerie.sharber@pfgc.com","type":"work"}]'::jsonb, '[{"value":"(270) 846-7093","type":"work"}]'::jsonb, 'Executive', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1000, 'Steve Horwich', 'Steve', 'Horwich', 2004, '[{"value":"steveh@testaproduce.com","type":"work"}]'::jsonb, '[{"value":"(312) 545-7417","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL);
+  (1000, 'Steve Horwich', 'Steve', 'Horwich', 2004, '[{"value":"steveh@testaproduce.com","type":"work"}]'::jsonb, '[{"value":"(312) 545-7417","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 11/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3331,7 +3341,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1097, 'Nielsen', 'Nielsen', NULL, 1377, '[{"value":"ksnfsc@rit.edu","type":"work"}]'::jsonb, '[{"value":"(585) 475-5403","type":"work"}]'::jsonb, 'Assistant Manager', NULL, NULL, NULL, 'NY', NULL, 'NRA ANNASEA LEAD'),
   (1098, 'Vitelli', 'Vitelli', NULL, 1377, '[{"value":"ewvfsd@rit.edu","type":"work"}]'::jsonb, '[{"value":"(585) 475-2721","type":"work"}]'::jsonb, 'Assistant Dining Manager', NULL, NULL, NULL, 'NY', NULL, 'NRA ANNASEA LEAD'),
   (1099, 'Gunasinghe', 'Gunasinghe', NULL, 1378, '[{"value":"KasunGunasinghe@volcora.com","type":"work"}]'::jsonb, '[{"value":"(646) 627-4015","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, 'NY', NULL, 'NRA ANNASEA LEAD'),
-  (1100, 'Ahmed', 'Ahmed', NULL, 1379, '[{"value":"jasminmj86@yahoo.com","type":"work"}]'::jsonb, '[{"value":"(614) 515-8013","type":"work"}]'::jsonb, 'Owner', NULL, NULL, NULL, 'OH', NULL, 'NRA ANNASEA LEAD');
+  (1100, 'Ahmed', 'Ahmed', NULL, 1379, '[{"value":"jasminmj86@yahoo.com","type":"work"}]'::jsonb, '[{"value":"(614) 515-8013","type":"work"}]'::jsonb, 'Owner', NULL, NULL, NULL, 'OH', NULL, 'NRA ANNASEA LEAD')
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 12/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3434,7 +3445,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1197, 'Kathy Eising', 'Kathy', 'Eising', 1922, '[{"value":"kathy.eising@gfs.com","type":"work"}]'::jsonb, '[{"value":"(616) 530-7000","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (1198, 'Amy Gautraud', 'Amy', 'Gautraud', 1922, '[{"value":"amy.gautraud@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (1199, 'Dan Goeglein', 'Dan', 'Goeglein', 1922, '[{"value":"dan.goeglein@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1200, 'Alex Grantham', 'Alex', 'Grantham', 1922, '[]'::jsonb, '[{"value":"(616) 530-7000","type":"work"}]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL);
+  (1200, 'Alex Grantham', 'Alex', 'Grantham', 1922, '[]'::jsonb, '[{"value":"(616) 530-7000","type":"work"}]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 13/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3537,7 +3549,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1297, 'nbowe@heritageal.com', 'nbowe@heritageal.com', NULL, 1460, '[{"value":"nbowe@heritageal.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1298, 'adreifke@heritageal.com', 'adreifke@heritageal.com', NULL, 1461, '[{"value":"adreifke@heritageal.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1299, 'jlewandowski@heritageal.com', 'jlewandowski@heritageal.com', NULL, 1123, '[{"value":"jlewandowski@heritageal.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1300, 'jeffrey.schoening@independencevillages.com', 'jeffrey.schoening@independencevillages.com', NULL, 1071, '[{"value":"jeffrey.schoening@independencevillages.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL);
+  (1300, 'jeffrey.schoening@independencevillages.com', 'jeffrey.schoening@independencevillages.com', NULL, 1071, '[{"value":"jeffrey.schoening@independencevillages.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 14/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3640,7 +3653,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1397, 'olivera.bezanovic@trinity-health.org', 'olivera.bezanovic@trinity-health.org', NULL, 1490, '[{"value":"olivera.bezanovic@trinity-health.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1398, 'sofia.quirk@trinity-health.org', 'sofia.quirk@trinity-health.org', NULL, 1105, '[{"value":"sofia.quirk@trinity-health.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1399, 'sofia.quirk@trinity-health.org', 'sofia.quirk@trinity-health.org', NULL, 1105, '[{"value":"sofia.quirk@trinity-health.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1400, 'Andi.White@saintalphonsus.org', 'Andi.White@saintalphonsus.org', NULL, 1491, '[{"value":"Andi.White@saintalphonsus.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL);
+  (1400, 'Andi.White@saintalphonsus.org', 'Andi.White@saintalphonsus.org', NULL, 1491, '[{"value":"Andi.White@saintalphonsus.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 15/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3743,7 +3757,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1497, 'Unknown', NULL, NULL, 1235, '[]'::jsonb, '[{"value":"(847) 518-1234","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1498, 'Unknown', NULL, NULL, 1071, '[]'::jsonb, '[{"value":"(515) 292-2858","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1499, 'Unknown', NULL, NULL, 1128, '[]'::jsonb, '[{"value":"(317) 745-2766","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
-  (1500, 'Unknown', NULL, NULL, 1129, '[]'::jsonb, '[{"value":"(515) 987-4100","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]');
+  (1500, 'Unknown', NULL, NULL, 1129, '[]'::jsonb, '[{"value":"(515) 987-4100","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]')
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 16/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3846,7 +3861,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1597, 'Unknown', NULL, NULL, 1844, '[]'::jsonb, '[{"value":"(414) 763-2180","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1598, 'Unknown', NULL, NULL, 1118, '[]'::jsonb, '[{"value":"(616) 738-6000","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1599, 'Unknown', NULL, NULL, 1845, '[]'::jsonb, '[{"value":"(312) 999-9760","type":"work"}]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
-  (1600, 'Tom Lynhome', 'Tom', 'Lynhome', 1502, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL);
+  (1600, 'Tom Lynhome', 'Tom', 'Lynhome', 1502, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 17/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3949,7 +3965,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1697, 'Leigh Sherburne', 'Leigh', 'Sherburne', 1592, '[{"value":"murphysbarllc@hotmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'TRAVERSE CITY', 'MI', NULL, NULL),
   (1698, 'Josh Simmer', 'Josh', 'Simmer', 1593, '[{"value":"josh.simmer@robbinswoodalc.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'MIDDLEVILLE', 'MI', NULL, NULL),
   (1699, 'Nicholas Allen', 'Nicholas', 'Allen', 1594, '[{"value":"ungybob@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'GLADWIN', 'MI', NULL, NULL),
-  (1700, 'Harold Klukowski', 'Harold', 'Klukowski', 1595, '[{"value":"tk5bowl@northfieldlanes.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'SWARTZ CREEK', 'MI', NULL, NULL);
+  (1700, 'Harold Klukowski', 'Harold', 'Klukowski', 1595, '[{"value":"tk5bowl@northfieldlanes.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'SWARTZ CREEK', 'MI', NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- Batch 18/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -4028,7 +4045,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1773, 'Augie', 'Augie', NULL, 48, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (1774, 'Chef Ashley Chef Johm', 'Chef', 'Ashley Chef Johm', 49, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (1775, 'Jeremy Skiles Chef', 'Jeremy', 'Skiles Chef', 130, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (1776, 'Harry Greene', 'Harry', 'Greene', 1968, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL);
+  (1776, 'Harry Greene', 'Harry', 'Greene', 1968, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT (organization_id, name) DO NOTHING;
 
 -- ============================================================================
 -- ORGANIZATION DISTRIBUTORS (715 records)

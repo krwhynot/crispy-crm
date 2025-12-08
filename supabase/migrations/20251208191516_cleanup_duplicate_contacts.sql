@@ -32,7 +32,7 @@ WITH contact_scores AS (
     SELECT
         c.id,
         c.organization_id,
-        LOWER(TRIM(c.name)) as norm_name,
+        c.name,
         -- Score: count of non-empty fields (higher = more complete)
         (CASE WHEN c.email IS NOT NULL AND c.email::text != '[]' AND c.email::text != '' THEN 1 ELSE 0 END) +
         (CASE WHEN c.phone IS NOT NULL AND c.phone::text != '[]' AND c.phone::text != '' THEN 1 ELSE 0 END) +
@@ -46,10 +46,10 @@ ranked AS (
     SELECT
         id,
         organization_id,
-        norm_name,
+        name,
         completeness_score,
         ROW_NUMBER() OVER (
-            PARTITION BY organization_id, norm_name
+            PARTITION BY organization_id, name
             ORDER BY completeness_score DESC, id ASC  -- Higher score wins, lowest ID breaks ties
         ) as rn
     FROM contact_scores
