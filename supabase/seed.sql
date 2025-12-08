@@ -4817,6 +4817,7 @@ AND organization_id IN (
 );
 
 -- Step 2: Reassign contacts to active organizations with matching names
+-- NOTE: Skip if target org already has a contact with same name (avoids unique constraint violation)
 UPDATE contacts c
 SET organization_id = active_org.id
 FROM organizations deleted_org
@@ -4824,7 +4825,22 @@ JOIN organizations active_org ON LOWER(deleted_org.name) = LOWER(active_org.name
   AND active_org.deleted_at IS NULL
 WHERE c.organization_id = deleted_org.id
 AND c.deleted_at IS NULL
-AND deleted_org.deleted_at IS NOT NULL;
+AND deleted_org.deleted_at IS NOT NULL
+AND NOT EXISTS (
+    SELECT 1 FROM contacts existing
+    WHERE existing.organization_id = active_org.id
+    AND LOWER(TRIM(existing.name)) = LOWER(TRIM(c.name))
+    AND existing.deleted_at IS NULL
+);
+
+-- Step 2b: Soft-delete contacts that couldn't be reassigned (would cause duplicates)
+UPDATE contacts c
+SET deleted_at = NOW(),
+    notes = COALESCE(notes || E'\n', '') || '[SEED-DUPLICATE-SKIP] Soft-deleted to avoid duplicate'
+WHERE c.deleted_at IS NULL
+AND c.organization_id IN (
+    SELECT id FROM organizations WHERE deleted_at IS NOT NULL
+);
 
 -- Step 3: Verify and report
 DO $$
