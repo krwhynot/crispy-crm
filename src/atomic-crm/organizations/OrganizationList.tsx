@@ -27,8 +27,12 @@ import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
 
 const OrganizationListActions = () => (
   <TopToolbar>
-    <SortButton fields={["name", "organization_type", "priority"]} />
-    <ExportButton exporter={exporter} />
+    <span data-tutorial="org-sort-btn">
+      <SortButton fields={["name", "organization_type", "priority"]} />
+    </span>
+    <span data-tutorial="org-export-btn">
+      <ExportButton exporter={exporter} />
+    </span>
     <span data-tutorial="create-organization-btn">
       <CreateButton />
     </span>
