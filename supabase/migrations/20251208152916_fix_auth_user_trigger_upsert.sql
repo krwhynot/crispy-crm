@@ -49,6 +49,5 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Add comment explaining the trigger behavior
-COMMENT ON TRIGGER on_auth_user_created ON auth.users IS
-  'Creates/updates sales record when auth user is inserted or updated. Uses UPSERT for idempotency.';
+-- NOTE: Cannot add COMMENT on auth.users trigger (Supabase-owned table)
+-- Trigger behavior: Creates/updates sales record on auth user INSERT or UPDATE
