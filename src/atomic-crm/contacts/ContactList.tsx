@@ -183,10 +183,18 @@ const ContactListLayout = ({
 
 const ContactListActions = () => (
   <TopToolbar>
-    <SortButton fields={["first_name", "last_name", "last_seen"]} />
-    <ContactImportButton />
-    <ContactExportTemplateButton />
-    <ExportButton exporter={contactExporter} />
+    <span data-tutorial="contact-sort-btn">
+      <SortButton fields={["first_name", "last_name", "last_seen"]} />
+    </span>
+    <span data-tutorial="contact-import-btn">
+      <ContactImportButton />
+    </span>
+    <span data-tutorial="contact-template-btn">
+      <ContactExportTemplateButton />
+    </span>
+    <span data-tutorial="contact-export-btn">
+      <ExportButton exporter={contactExporter} />
+    </span>
     <span data-tutorial="create-contact-btn">
       <CreateButton />
     </span>

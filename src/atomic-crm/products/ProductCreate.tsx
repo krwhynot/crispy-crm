@@ -9,6 +9,17 @@ import { FormToolbar } from "@/components/admin/simple-form";
 import { ProductInputs } from "./ProductInputs";
 import { productSchema } from "../validation/products";
 
+// Human-readable field labels for error messages
+const PRODUCT_FIELD_LABELS: Record<string, string> = {
+  name: "Product Name",
+  sku: "SKU",
+  description: "Description",
+  principal_id: "Principal/Supplier",
+  distributor_id: "Distributor",
+  category: "Category",
+  status: "Status",
+};
+
 const ProductCreate = () => {
   const { data: identity } = useGetIdentity();
 
@@ -40,7 +51,11 @@ const ProductFormContent = () => {
 
   return (
     <>
-      <FormErrorSummary errors={errors} />
+      <FormErrorSummary
+        errors={errors}
+        fieldLabels={PRODUCT_FIELD_LABELS}
+        defaultExpanded={Object.keys(errors).length <= 3}
+      />
       <ProductInputs />
       <FormToolbar>
         <div className="flex flex-row gap-2 justify-end">
