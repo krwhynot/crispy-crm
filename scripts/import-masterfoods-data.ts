@@ -804,6 +804,63 @@ SELECT setval('contacts_id_seq', (SELECT COALESCE(MAX(id), 1) FROM contacts));
 -- organization_distributors uses GENERATED ALWAYS AS IDENTITY, sequence is auto-managed
 
 -- ============================================================================
+-- ORPHAN CONTACT FIX (post-soft-delete remediation)
+-- ============================================================================
+-- The soft-delete above may have orphaned contacts from migrations.
+-- This section reassigns them to their matching active organizations.
+
+-- Step 1: Add audit note to affected contacts
+UPDATE contacts
+SET notes = COALESCE(notes || E'\\n', '') || '[SEED-ORPHAN-FIX] Reassigned from deleted org ID ' || organization_id::text
+WHERE deleted_at IS NULL
+AND organization_id IN (
+  SELECT id FROM organizations WHERE deleted_at IS NOT NULL
+);
+
+-- Step 2: Reassign contacts to active organizations with matching names
+UPDATE contacts c
+SET organization_id = active_org.id
+FROM organizations deleted_org
+JOIN organizations active_org ON LOWER(deleted_org.name) = LOWER(active_org.name)
+  AND active_org.deleted_at IS NULL
+WHERE c.organization_id = deleted_org.id
+AND c.deleted_at IS NULL
+AND deleted_org.deleted_at IS NOT NULL;
+
+-- Step 3: Verify and report
+DO $$
+DECLARE
+  orphan_count INTEGER;
+  reassigned_count INTEGER;
+BEGIN
+  SELECT COUNT(*) INTO orphan_count
+  FROM contacts c
+  WHERE c.deleted_at IS NULL
+  AND NOT EXISTS (
+    SELECT 1 FROM organizations o
+    WHERE o.id = c.organization_id AND o.deleted_at IS NULL
+  );
+
+  SELECT COUNT(*) INTO reassigned_count
+  FROM contacts
+  WHERE notes LIKE '%[SEED-ORPHAN-FIX]%'
+  AND deleted_at IS NULL;
+
+  RAISE NOTICE '============================================';
+  RAISE NOTICE 'ORPHAN CONTACT REMEDIATION COMPLETE';
+  RAISE NOTICE '============================================';
+  RAISE NOTICE 'Contacts reassigned: %', reassigned_count;
+  RAISE NOTICE 'Orphans remaining: %', orphan_count;
+
+  IF orphan_count > 0 THEN
+    RAISE WARNING 'WARNING: % orphan contacts remain - manual review needed', orphan_count;
+  ELSE
+    RAISE NOTICE 'SUCCESS: All contacts have valid organization references';
+  END IF;
+  RAISE NOTICE '============================================';
+END $$;
+
+-- ============================================================================
 -- VALIDATION QUERIES
 -- ============================================================================
 -- Run these to verify import:
