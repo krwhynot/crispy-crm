@@ -9,6 +9,7 @@ import { opportunitySchema } from "../validation/opportunities";
 import { OpportunityCreateSaveButton } from "./components/OpportunityCreateSaveButton";
 import { SimilarOpportunitiesDialog } from "./components/SimilarOpportunitiesDialog";
 import { useSimilarOpportunityCheck } from "./hooks/useSimilarOpportunityCheck";
+import { OpportunityCreateFormTutorial } from "../tutorial/OpportunityCreateFormTutorial";
 
 const OpportunityCreate = () => {
   const { data: identity } = useGetIdentity();
@@ -64,6 +65,9 @@ const OpportunityCreate = () => {
         proposedName={proposedName}
         similarOpportunities={similarOpportunities}
       />
+
+      {/* Standalone Form Tutorial - bottom-left floating button */}
+      <OpportunityCreateFormTutorial />
     </CreateBase>
   );
 };
@@ -86,11 +90,13 @@ const OpportunityFormContent = ({
       <FormToolbar>
         <div className="flex flex-row gap-2 justify-end">
           <CancelButton />
-          <OpportunityCreateSaveButton
-            checkForSimilar={checkForSimilar}
-            hasConfirmed={hasConfirmed}
-            resetConfirmation={resetConfirmation}
-          />
+          <div data-tutorial="opp-save-btn">
+            <OpportunityCreateSaveButton
+              checkForSimilar={checkForSimilar}
+              hasConfirmed={hasConfirmed}
+              resetConfirmation={resetConfirmation}
+            />
+          </div>
         </div>
       </FormToolbar>
     </>
