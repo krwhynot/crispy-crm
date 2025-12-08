@@ -8,6 +8,7 @@ import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
 import type { Contact } from "../types";
 import { ContactInputs } from "./ContactInputs";
 import { contactBaseSchema } from "../validation/contacts";
+import { ContactFormTutorial } from "./ContactFormTutorial";
 
 const ContactCreate = () => {
   const notify = useNotify();
@@ -49,6 +50,7 @@ const ContactCreate = () => {
           </Form>
         </div>
       </div>
+      <ContactFormTutorial />
     </CreateBase>
   );
 };
