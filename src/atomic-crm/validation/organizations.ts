@@ -6,13 +6,13 @@ import { sanitizeHtml } from "@/lib/sanitization";
  * Implements validation rules from OrganizationInputs.tsx
  */
 
-// Organization type enum
+// Organization type enum - must match database enum and constants.ts
+// Valid types: customer, prospect, principal, distributor
 export const organizationTypeSchema = z.enum([
   "customer",
   "prospect",
   "principal",
   "distributor",
-  "unknown",
 ]);
 
 // Organization priority enum
