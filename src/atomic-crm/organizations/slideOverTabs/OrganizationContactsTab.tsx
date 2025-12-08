@@ -9,11 +9,37 @@ import { MAX_RELATED_ITEMS } from "../constants";
 
 interface Contact {
   id: Identifier;
-  first_name: string;
-  last_name: string;
+  name?: string;
+  first_name?: string;
+  last_name?: string;
   title?: string;
   email?: any[];
   avatar?: { src?: string };
+}
+
+/** Get display name with fallback to `name` field */
+function getContactDisplayName(contact: Contact): string {
+  const first = contact.first_name?.trim();
+  const last = contact.last_name?.trim();
+  if (first || last) {
+    return [first, last].filter(Boolean).join(" ");
+  }
+  return contact.name?.trim() || "Unknown Contact";
+}
+
+/** Get initials with fallback to `name` field */
+function getContactInitials(contact: Contact): string {
+  const first = contact.first_name?.trim();
+  const last = contact.last_name?.trim();
+  if (first || last) {
+    return `${first?.[0] || ""}${last?.[0] || ""}`;
+  }
+  // Fallback: use first letter of name or "?"
+  const nameParts = contact.name?.trim().split(" ") || [];
+  if (nameParts.length >= 2) {
+    return `${nameParts[0]?.[0] || ""}${nameParts[1]?.[0] || ""}`;
+  }
+  return nameParts[0]?.[0] || "?";
 }
 
 interface OrganizationContactsTabProps {
@@ -89,14 +115,13 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
                     {contact.avatar?.src ? (
                       <img
                         src={contact.avatar.src}
-                        alt={`${contact.first_name} ${contact.last_name}`}
+                        alt={getContactDisplayName(contact)}
                         className="size-10 rounded-full object-cover"
                       />
                     ) : (
                       <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center">
                         <span className="text-sm font-semibold text-primary">
-                          {contact.first_name?.[0]}
-                          {contact.last_name?.[0]}
+                          {getContactInitials(contact)}
                         </span>
                       </div>
                     )}
@@ -110,7 +135,7 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
                         }}
                         className="text-sm font-medium text-primary hover:underline block truncate"
                       >
-                        {contact.first_name} {contact.last_name}
+                        {getContactDisplayName(contact)}
                       </a>
                       {contact.title && (
                         <p className="text-xs text-muted-foreground truncate">{contact.title}</p>
