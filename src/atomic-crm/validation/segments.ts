@@ -172,3 +172,17 @@ export const PLAYBOOK_CATEGORY_CHOICES = PLAYBOOK_CATEGORIES.map((name) => ({
   id: PLAYBOOK_CATEGORY_IDS[name],
   name,
 }));
+
+/**
+ * Determine which segment type to use for an organization
+ * @param orgType - The organization type
+ * @returns 'playbook' for distributors/principals, 'operator' for customers/prospects/unknown
+ */
+export function getSegmentTypeForOrganization(orgType: OrganizationType): SegmentType {
+  if (orgType === "distributor" || orgType === "principal") {
+    return "playbook";
+  }
+  return "operator";
+}
+
+export type { SegmentType };

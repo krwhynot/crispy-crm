@@ -5,7 +5,18 @@ import {
   type PlaybookCategory,
   type Segment,
   isValidPlaybookCategory,
+  getSegmentTypeForOrganization,
 } from "../validation/segments";
+import {
+  SEGMENT_TYPES,
+  type SegmentType,
+  OPERATOR_SEGMENT_CHOICES,
+  OPERATOR_SEGMENT_PARENT_CHOICES,
+  OPERATOR_SEGMENT_IDS,
+  getOperatorSegmentChildren,
+  isOperatorParentSegment,
+} from "../validation/operatorSegments";
+import type { OrganizationType } from "../validation/organizations";
 import type { ExtendedDataProvider } from "../providers/supabase/extensions/types";
 
 /**
@@ -113,5 +124,59 @@ export class SegmentsService {
     }
 
     return segment;
+  }
+
+  /**
+   * Get all segment choices filtered by type
+   * @param type - 'playbook' for distributors, 'operator' for customers
+   */
+  getSegmentsByType(type: SegmentType): Array<{ id: string; name: string }> {
+    if (type === "playbook") {
+      return PLAYBOOK_CATEGORY_CHOICES;
+    }
+    return OPERATOR_SEGMENT_CHOICES;
+  }
+
+  /**
+   * Get parent-level segment choices (for filter toggles)
+   */
+  getParentSegmentsByType(type: SegmentType): Array<{ id: string; name: string }> {
+    if (type === "playbook") {
+      return PLAYBOOK_CATEGORY_CHOICES; // All playbook are top-level
+    }
+    return OPERATOR_SEGMENT_PARENT_CHOICES;
+  }
+
+  /**
+   * Determine which segment type to use based on organization type
+   */
+  getSegmentTypeForOrganization(orgType: OrganizationType): SegmentType {
+    return getSegmentTypeForOrganization(orgType);
+  }
+
+  /**
+   * Get appropriate segment choices for a given organization type
+   * This is a convenience method combining type lookup and choices
+   */
+  getSegmentChoicesForOrganization(orgType: OrganizationType): Array<{ id: string; name: string }> {
+    const segmentType = this.getSegmentTypeForOrganization(orgType);
+    return this.getSegmentsByType(segmentType);
+  }
+
+  /**
+   * Get operator segment by UUID
+   */
+  getOperatorSegmentById(id: string): { id: string; name: string } | undefined {
+    return OPERATOR_SEGMENT_CHOICES.find((s) => s.id === id);
+  }
+
+  /**
+   * Get operator segment by name (case-insensitive)
+   */
+  getOperatorSegmentByName(name: string): { id: string; name: string } | undefined {
+    const normalizedName = name.toLowerCase().trim();
+    return OPERATOR_SEGMENT_CHOICES.find(
+      (s) => s.name.toLowerCase().trim() === normalizedName
+    );
   }
 }
