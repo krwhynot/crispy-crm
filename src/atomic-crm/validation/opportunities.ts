@@ -98,8 +98,7 @@ const opportunityBaseSchema = z.strictObject({
     .transform((val) => (val ? sanitizeHtml(val) : val)),
   estimated_close_date: z.coerce
     .date({
-      required_error: "Expected closing date is required",
-      invalid_type_error: "Expected closing date must be a valid date",
+      error: "Expected closing date is required",
     })
     .default(() => {
       // Default to 30 days from now

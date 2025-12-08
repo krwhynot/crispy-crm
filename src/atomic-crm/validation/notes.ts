@@ -29,7 +29,7 @@ export const baseNoteSchema = z.strictObject({
     .min(1, "Note text is required")
     .max(10000, "Note text too long")
     .transform((val) => sanitizeHtml(val)),
-  date: z.coerce.date({ required_error: "Date is required" }),
+  date: z.coerce.date({ error: "Date is required" }),
   sales_id: z.union([
     z.string().min(1, "Sales ID is required"),
     z.number().min(1, "Sales ID is required"),

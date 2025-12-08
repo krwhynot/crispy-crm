@@ -111,7 +111,7 @@ export const importContactSchema = z
     first_name: z.string().optional().nullable(),
     last_name: z.string().optional().nullable(),
     organization_name: z
-      .string({ required_error: "Organization name is required" })
+      .string({ error: "Organization name is required" })
       .trim()
       .min(1, { message: "Organization name is required" }),
 

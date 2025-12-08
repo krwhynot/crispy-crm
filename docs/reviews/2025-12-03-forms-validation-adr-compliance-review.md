@@ -134,7 +134,7 @@ estimated_close_date: z.string().min(1, "Expected closing date is required")
 
 **After:**
 ```typescript
-estimated_close_date: z.coerce.date({ required_error: "Expected closing date is required" })
+estimated_close_date: z.coerce.date({ error: "Expected closing date is required" })
 ```
 
 ### Critical Fix 3: Add Boolean Coercion
