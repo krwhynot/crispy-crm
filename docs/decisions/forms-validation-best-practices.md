@@ -471,11 +471,10 @@ import { ErrorMessage } from '@hookform/error-message';
   render={({ message }) => <p className="error">{message}</p>}
 />
 
-// ✅ CORRECT: Custom error messages in Zod
+// ✅ CORRECT: Custom error messages in Zod v4
 const schema = z.object({
   email: z.string({
-    required_error: 'Email is required',
-    invalid_type_error: 'Email must be a string',
+    error: 'Email is required',
   }).email('Please enter a valid email address'),
 });
 ```
