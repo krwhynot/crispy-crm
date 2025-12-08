@@ -41,10 +41,21 @@ export const PRODUCT_STATUSES = productStatusSchema.options;
 
 // Main product schema matching database structure
 export const productSchema = z.strictObject({
-  // Required fields
-  name: z.string().min(1, "Product name is required").max(255, "Product name too long"),
+  // Required fields - with proper required_error messages for missing values
+  name: z
+    .string({
+      required_error: "Product name is required",
+    })
+    .min(1, "Product name is required")
+    .max(255, "Product name too long"),
   sku: z.string().max(50, "SKU too long").nullish(),
-  principal_id: z.number().int().positive("Principal/Supplier is required"),
+  principal_id: z
+    .number({
+      required_error: "Principal/Supplier is required",
+      invalid_type_error: "Principal/Supplier is required",
+    })
+    .int()
+    .positive("Principal/Supplier is required"),
   category: productCategorySchema,
 
   // Optional fields with defaults
