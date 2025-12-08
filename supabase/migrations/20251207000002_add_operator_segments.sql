@@ -43,6 +43,15 @@ ALTER TABLE segments ADD COLUMN IF NOT EXISTS display_order INTEGER DEFAULT 0;
 CREATE INDEX IF NOT EXISTS idx_segments_type ON segments(segment_type);
 CREATE INDEX IF NOT EXISTS idx_segments_parent ON segments(parent_id) WHERE parent_id IS NOT NULL;
 
+-- Step 2b: Update unique constraint to allow same name in different segment types
+-- Drop old constraints that only checked name
+ALTER TABLE segments DROP CONSTRAINT IF EXISTS industries_name_unique;
+DROP INDEX IF EXISTS industries_name_case_insensitive_idx;
+
+-- Add new constraints that check (name, segment_type) combination
+ALTER TABLE segments ADD CONSTRAINT segments_name_type_unique UNIQUE (name, segment_type);
+CREATE UNIQUE INDEX IF NOT EXISTS segments_name_type_case_insensitive_idx ON segments (lower(name), segment_type);
+
 -- Step 3: Mark existing segments as playbook type
 UPDATE segments SET segment_type = 'playbook' WHERE segment_type IS NULL;
 

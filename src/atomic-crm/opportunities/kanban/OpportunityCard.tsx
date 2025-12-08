@@ -109,6 +109,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
             ${snapshot.isDragging ? "opacity-50 rotate-2" : "opacity-100"}
           `}
           data-testid="opportunity-card"
+          data-tutorial="opp-card"
         >
           {/* Header: Drag Handle + Activity Pulse + Name + Expand + Actions (always visible) */}
           <div className="flex items-center gap-1.5">
@@ -116,6 +117,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
             <div
               {...provided.dragHandleProps}
               data-testid="drag-handle"
+              data-tutorial="opp-drag-handle"
               data-drag-handle
               aria-label="Drag to reorder"
               className="min-h-[44px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded cursor-grab active:cursor-grabbing transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 -ml-1"

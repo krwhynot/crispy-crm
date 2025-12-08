@@ -317,6 +317,7 @@ export const OpportunityListContent = ({
         <div
           className="flex min-h-0 flex-1 gap-3 overflow-x-auto overflow-y-hidden p-3 bg-muted rounded-2xl border border-border shadow-inner"
           data-testid="kanban-board"
+          data-tutorial="opp-kanban-board"
           role="region"
           aria-label="Opportunities pipeline board"
         >
