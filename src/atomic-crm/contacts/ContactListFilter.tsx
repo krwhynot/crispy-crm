@@ -58,7 +58,7 @@ export const ContactListFilter = () => {
     : "all";
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4" data-tutorial="contact-filters">
       {/* Search - Always visible */}
       <FilterLiveForm>
         <SearchInput source="q" placeholder="Search contacts..." />
