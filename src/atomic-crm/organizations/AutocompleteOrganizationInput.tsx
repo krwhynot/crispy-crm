@@ -4,9 +4,11 @@ import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 export const AutocompleteOrganizationInput = ({
   label,
   organizationType,
+  helperText,
 }: {
   label?: string;
   organizationType?: string;
+  helperText?: string | false;
 }) => {
   const [create] = useCreate();
   const { data: identity } = useGetIdentity();
@@ -37,7 +39,7 @@ export const AutocompleteOrganizationInput = ({
   return (
     <AutocompleteInput
       optionText="name"
-      helperText={false}
+      helperText={helperText}
       onCreate={handleCreateOrganization}
       createItemLabel="Create %{item}"
       label={label}
