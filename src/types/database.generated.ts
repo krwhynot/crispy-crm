@@ -1732,6 +1732,7 @@ export type Database = {
           context_links: Json | null
           created_at: string | null
           created_by: number | null
+          cuisine: string | null
           deleted_at: string | null
           description: string | null
           email: string | null
@@ -1742,12 +1743,14 @@ export type Database = {
           linkedin_url: string | null
           logo_url: string | null
           name: string
+          needs_review: string | null
           notes: string | null
           organization_type:
             | Database["public"]["Enums"]["organization_type"]
             | null
           parent_organization_id: number | null
           phone: string | null
+          playbook_category_id: string | null
           postal_code: string | null
           priority: string | null
           sales_id: number | null
@@ -1765,6 +1768,7 @@ export type Database = {
           context_links?: Json | null
           created_at?: string | null
           created_by?: number | null
+          cuisine?: string | null
           deleted_at?: string | null
           description?: string | null
           email?: string | null
@@ -1775,12 +1779,14 @@ export type Database = {
           linkedin_url?: string | null
           logo_url?: string | null
           name: string
+          needs_review?: string | null
           notes?: string | null
           organization_type?:
             | Database["public"]["Enums"]["organization_type"]
             | null
           parent_organization_id?: number | null
           phone?: string | null
+          playbook_category_id?: string | null
           postal_code?: string | null
           priority?: string | null
           sales_id?: number | null
@@ -1798,6 +1804,7 @@ export type Database = {
           context_links?: Json | null
           created_at?: string | null
           created_by?: number | null
+          cuisine?: string | null
           deleted_at?: string | null
           description?: string | null
           email?: string | null
@@ -1808,12 +1815,14 @@ export type Database = {
           linkedin_url?: string | null
           logo_url?: string | null
           name?: string
+          needs_review?: string | null
           notes?: string | null
           organization_type?:
             | Database["public"]["Enums"]["organization_type"]
             | null
           parent_organization_id?: number | null
           phone?: string | null
+          playbook_category_id?: string | null
           postal_code?: string | null
           priority?: string | null
           sales_id?: number | null
@@ -1881,6 +1890,13 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "principal_pipeline_summary"
             referencedColumns: ["principal_id"]
+          },
+          {
+            foreignKeyName: "organizations_playbook_category_id_fkey"
+            columns: ["playbook_category_id"]
+            isOneToOne: false
+            referencedRelation: "segments"
+            referencedColumns: ["id"]
           },
           {
             foreignKeyName: "organizations_sales_id_fkey"
@@ -2201,24 +2217,44 @@ export type Database = {
           created_at: string
           created_by: string | null
           deleted_at: string | null
+          display_order: number | null
           id: string
           name: string
+          parent_id: string | null
+          segment_type: string | null
+          ui_group: string | null
         }
         Insert: {
           created_at?: string
           created_by?: string | null
           deleted_at?: string | null
+          display_order?: number | null
           id?: string
           name: string
+          parent_id?: string | null
+          segment_type?: string | null
+          ui_group?: string | null
         }
         Update: {
           created_at?: string
           created_by?: string | null
           deleted_at?: string | null
+          display_order?: number | null
           id?: string
           name?: string
+          parent_id?: string | null
+          segment_type?: string | null
+          ui_group?: string | null
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "segments_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "segments"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       tags: {
         Row: {

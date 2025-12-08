@@ -1,6 +1,6 @@
 %% Crispy CRM Database ERD
-%% Generated: 2025-12-07
-%% Tables: 24 | Enums: 14 | Foreign Keys: 68
+%% Generated: 2025-12-07 (Updated after migration 20251207214606)
+%% Tables: 24 | Enums: 14 | Foreign Keys: 69
 
 erDiagram
     %% ==========================================
@@ -35,6 +35,9 @@ erDiagram
         text description
         text tax_identifier
         uuid segment_id FK
+        uuid playbook_category_id FK "NEW - playbook segment"
+        text cuisine "NEW - restaurant cuisine type"
+        text needs_review "NEW - review flag with reason"
         bigint updated_by FK
         bigint parent_organization_id FK "self-ref"
     }
@@ -48,6 +51,7 @@ erDiagram
         text segment_type "DEFAULT 'playbook'"
         uuid parent_id FK "self-ref"
         integer display_order "DEFAULT 0"
+        text ui_group "NEW - Commercial or Institutional"
     }
 
     contacts {
@@ -297,6 +301,7 @@ erDiagram
 
     %% Organizations core relationships
     segments ||--o{ organizations : "segment_id"
+    segments ||--o{ organizations : "playbook_category_id"
     organizations ||--o{ organizations : "parent_organization_id"
     sales ||--o{ organizations : "sales_id"
     sales ||--o{ organizations : "created_by"
