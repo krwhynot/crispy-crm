@@ -41,6 +41,53 @@ INSERT INTO auth.users (
   email_confirmed_at = EXCLUDED.email_confirmed_at;
 
 -- ============================================================================
+-- ⚠️  SALES RECORD (explicit - trigger doesn't fire on UPDATE path)
+-- ============================================================================
+-- The handle_new_user trigger on auth.users only fires on INSERT.
+-- When using ON CONFLICT DO UPDATE, the trigger does NOT fire.
+-- We must explicitly INSERT into sales after auth.users upsert.
+-- Without a sales record, all FK references (17 tables) fail silently.
+-- ============================================================================
+
+INSERT INTO sales (user_id, first_name, last_name, email, role)
+SELECT
+    u.id,
+    COALESCE(u.raw_user_meta_data->>'first_name', 'Admin'),
+    COALESCE(u.raw_user_meta_data->>'last_name', 'User'),
+    u.email,
+    'admin'::user_role
+FROM auth.users u
+WHERE u.id = 'd3129876-b1fe-40eb-9980-64f5f73c64d6'
+ON CONFLICT (user_id) DO UPDATE SET
+    first_name = EXCLUDED.first_name,
+    last_name = EXCLUDED.last_name,
+    email = EXCLUDED.email,
+    role = EXCLUDED.role,
+    updated_at = NOW();
+
+-- ============================================================================
+-- VERIFICATION: Fail fast if sales record missing
+-- ============================================================================
+
+DO $$
+DECLARE
+    sales_count INTEGER;
+    auth_count INTEGER;
+BEGIN
+    SELECT COUNT(*) INTO auth_count FROM auth.users;
+    SELECT COUNT(*) INTO sales_count FROM sales;
+
+    IF auth_count > 0 AND sales_count = 0 THEN
+        RAISE EXCEPTION 'SEED ABORT: auth.users has % records but sales has 0. The handle_new_user trigger did not fire (likely ON CONFLICT took UPDATE path). Fix: Ensure explicit sales INSERT runs.', auth_count;
+    END IF;
+
+    RAISE NOTICE 'Verification passed: auth.users=%, sales=%', auth_count, sales_count;
+END $$;
+
+-- Ensure sales_id_seq is correct after explicit INSERT
+SELECT setval('sales_id_seq', COALESCE((SELECT MAX(id) FROM sales), 0) + 1, false);
+
+-- ============================================================================
 -- PLAYBOOK CATEGORIES (9 fixed segments)
 -- ============================================================================
 -- These are the 9 playbook categories with fixed UUIDs
