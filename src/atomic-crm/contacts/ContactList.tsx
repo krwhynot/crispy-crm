@@ -186,12 +186,16 @@ const ContactListActions = () => (
     <span data-tutorial="contact-sort-btn">
       <SortButton fields={["first_name", "last_name", "last_seen"]} />
     </span>
+    {/* MVP: Import feature hidden - re-enable post-launch
     <span data-tutorial="contact-import-btn">
       <ContactImportButton />
     </span>
+    */}
+    {/* MVP: Template export hidden - re-enable post-launch
     <span data-tutorial="contact-template-btn">
       <ContactExportTemplateButton />
     </span>
+    */}
     <span data-tutorial="contact-export-btn">
       <ExportButton exporter={contactExporter} />
     </span>
