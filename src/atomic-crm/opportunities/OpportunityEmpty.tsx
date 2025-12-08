@@ -1,15 +1,11 @@
 import { CreateButton } from "@/components/admin/create-button";
 import { Progress } from "@/components/ui/progress";
 import { useGetList } from "ra-core";
-import { matchPath, useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import useAppBarHeight from "../hooks/useAppBarHeight";
 import type { Contact } from "../types";
-import { OpportunityCreate } from "./OpportunityCreate";
 
 export const OpportunityEmpty = ({ children }: { children?: React.ReactNode }) => {
-  const location = useLocation();
-  const matchCreate = matchPath("/opportunities/create", location.pathname);
   const appbarHeight = useAppBarHeight();
 
   // get Contact data
@@ -38,7 +34,6 @@ export const OpportunityEmpty = ({ children }: { children?: React.ReactNode }) =
           <div className="flex space-x-8">
             <CreateButton label="Create opportunity" />
           </div>
-          <OpportunityCreate open={!!matchCreate} />
           {children}
         </>
       ) : (

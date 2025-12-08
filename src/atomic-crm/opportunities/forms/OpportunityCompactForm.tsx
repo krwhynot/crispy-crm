@@ -221,18 +221,20 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
       <CompactFormRow>
         <CompactFormFieldWithButton>
           {/* No button prop = auto placeholder for alignment */}
-          <ReferenceInput
-            source="account_manager_id"
-            reference="sales"
-            sort={{ field: "last_name", order: "ASC" }}
-            filter={{ "disabled@neq": true }}
-          >
-            <SelectInput
-              label="Account Manager"
-              optionText={saleOptionRenderer}
-              helperText={false}
-            />
-          </ReferenceInput>
+          <div data-tutorial="opp-account-manager">
+            <ReferenceInput
+              source="account_manager_id"
+              reference="sales"
+              sort={{ field: "last_name", order: "ASC" }}
+              filter={{ "disabled@neq": true }}
+            >
+              <SelectInput
+                label="Account Manager"
+                optionText={saleOptionRenderer}
+                helperText={false}
+              />
+            </ReferenceInput>
+          </div>
         </CompactFormFieldWithButton>
         <CompactFormFieldWithButton
           button={
