@@ -348,6 +348,23 @@
     @apply w-64 shrink-0 space-y-4;
   }
 
+  /* Filter sidebar scrollbar styling */
+  .filter-sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .filter-sidebar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .filter-sidebar::-webkit-scrollbar-thumb {
+    @apply bg-border rounded-full;
+  }
+
+  .filter-sidebar::-webkit-scrollbar-thumb:hover {
+    @apply bg-muted-foreground/50;
+  }
+
   /* Premium button hover */
   .btn-premium {
     @apply transition-all duration-150;

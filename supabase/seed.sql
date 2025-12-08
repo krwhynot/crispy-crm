@@ -2201,7 +2201,10 @@ INSERT INTO organizations (id, name, organization_type, playbook_category_id, pr
 -- ============================================================================
 
 -- Batch 1/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (1, 'Yu', 'Yu', NULL, 2, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (2, 'Kidwell', 'Kidwell', NULL, 9, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (3, 'Rose', 'Rose', NULL, 11, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, '4601 Lincoln Highway', 'Matteson', 'IL', NULL, NULL),
@@ -2301,10 +2304,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (98, 'Jenner Tomaska and wife Katrina Bravo', 'Jenner', 'Tomaska and wife Katrina Bravo', 297, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (99, 'MacNeil', 'MacNeil', NULL, 300, '[{"value":"cog@etailerinc.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (100, 'Jamroch Christopher', 'Jamroch', 'Christopher', 302, '[{"value":"christopher.jamroch@compass-usa.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 2/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (101, 'King Ryan', 'King', 'Ryan', 302, '[{"value":"ryan.king@compass-usa.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (102, 'Wengel Tomme', 'Wengel', 'Tomme', 304, '[{"value":"Tomme@eopizza.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (103, 'Chef Diguido', 'Chef', 'Diguido', 311, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2404,10 +2417,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (198, 'Edsall jean', 'Edsall', 'jean', 571, '[{"value":"jedsall87@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (199, 'Rudner alyssa', 'Rudner', 'alyssa', 575, '[{"value":"acrudner@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (200, 'Executive Chef moreno', 'Executive', 'Chef moreno', 579, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 3/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (201, 'Venue Management urquiza', 'Venue', 'Management urquiza', 580, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (202, 'Jesse Rogers Sara Brad', 'Jesse', 'Rogers Sara Brad', 584, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (203, 'Patrick  Gibson 231.410.8730 jordan', 'Patrick', 'Gibson 231.410.8730 jordan', 585, '[{"value":"durkinj3@msu.edu","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2508,10 +2531,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (298, 'Jim Drewenski alberto', 'Jim', 'Drewenski alberto', 769, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (299, 'Exec Chef John Rudolph', 'Exec', 'Chef John Rudolph', 771, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, '66 W. Kinsey Street, Chicago, Illinois', 'Chicago', NULL, NULL, NULL),
   (300, 'Rashid', 'Rashid', NULL, 774, '[{"value":"Rumifalafel@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 4/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (301, 'Johnson', 'Johnson', NULL, 781, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (302, 'Latman', 'Latman', NULL, 781, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (303, 'Barakat suheir', 'Barakat', 'suheir', 782, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2612,10 +2645,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (398, 'USF, Testa, GFS', 'USF,', 'Testa, GFS', 957, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (399, 'Beske John', 'Beske', 'John', 961, '[{"value":"johnbeske@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (400, 'Rose Maria', 'Rose', 'Maria', 962, '[{"value":"marla@veganstreet.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 5/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (401, 'GFS/abdale beckley gm', 'GFS/abdale', 'beckley gm', 963, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (402, 'Thanopoulos marianthi', 'Thanopoulos', 'marianthi', 966, '[{"value":"mthanopoulos@wheelingil.gov","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (403, 'Greco bob Kara''s', 'Greco', 'bob Kara''s', 967, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2714,10 +2757,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (498, 'angel Perry', 'angel', 'Perry', 475, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, '9722 Parkway Drive', 'highland', 'IN', '46322', 'hos'),
   (499, 'tianna johnson', 'tianna', 'johnson', 475, '[]'::jsonb, '[]'::jsonb, 'Executive', NULL, '9722 Parkway Drive', 'highland', 'IN', '46322', 'hos'),
   (500, 'nicole ward', 'nicole', 'ward', 475, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, '9722 Parkway Drive', 'highland', 'IN', '46322', 'hos')
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 6/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (501, 'Jorge Esparza', 'Jorge', 'Esparza', 839, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, '924 Green Bay Rd', 'Wilmette', 'IL', NULL, NULL),
   (502, 'Stephan Grey', 'Stephan', 'Grey', 887, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, '3137 W Logan Blvd', 'Chicago', 'IL', '60647', NULL),
   (503, 'Antonio Herrera', 'Antonio', 'Herrera', 397, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, '5503 W Cermak Rd', 'Cicero', 'IL', '60804', NULL),
@@ -2810,10 +2863,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (595, 'Curt Kittel', 'Curt', 'Kittel', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (596, 'Colleen Barrett', 'Colleen', 'Barrett', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (597, 'Ryan Bennink', 'Ryan', 'Bennink', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 7/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (601, 'Dean Rapp', 'Dean', 'Rapp', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (603, 'Kristen Hettinga', 'Kristen', 'Hettinga', 2004, '[{"value":"kristenH@testaproduce.com","type":"work"}]'::jsonb, '[{"value":"(312) 735-4069","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (604, 'Chef Trevor', 'Chef', 'Trevor', 43, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2907,10 +2970,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (698, 'Matt Dalicandro', 'Matt', 'Dalicandro', 1922, '[{"value":"matt.Dalicandro@gfs.com","type":"work"}]'::jsonb, '[{"value":"(513) 259-7032","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (699, 'Joan Bauman', 'Joan', 'Bauman', 943, '[{"value":"jbauman1@udayton.edu","type":"work"}]'::jsonb, '[{"value":"(937) 229-2446","type":"work"}]'::jsonb, 'Director Of Operations', 'Mike and Gary', 'Powerhouse 300 College Park', 'Dayton', 'OH', '45469', NULL),
   (700, 'Ben Flores', 'Ben', 'Flores', 896, '[{"value":"flores.552@osu.edu","type":"work"}]'::jsonb, '[{"value":"(251) 656-5540","type":"work"}]'::jsonb, 'Exec Chef', 'Gary and Mike', 'Office of Student Life. Dinning Serves. The Ohio Union 1739 North High Street', 'Columbus', 'OH', '43210', NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 8/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (701, 'John Lathrop', 'John', 'Lathrop', 880, '[{"value":"lathrop.36@osu.edu","type":"work"}]'::jsonb, '[{"value":"(614) 247-2710","type":"work"}]'::jsonb, 'Manager', 'Gary', '2110 Tuttle Park Place', 'Columbus', 'OH', '43210', NULL),
   (702, 'Jack Gridley', 'Jack', 'Gridley', 268, '[{"value":"jgridley@dorothylane.com","type":"work"}]'::jsonb, '[{"value":"(866) 748-1391","type":"work"}]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
   (703, 'Larry Adkisson', 'Larry', 'Adkisson', 590, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -3011,10 +3084,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (798, 'Rhonda Harper', 'Rhonda', 'Harper', 1066, '[]'::jsonb, '[{"value":"(270) 606-1273","type":"work"}]'::jsonb, 'Owner', NULL, '2339 Claudis Harris Rd', 'Adolphus', 'KY', '42120', 'Showed interest in Cheese curds not open yet'),
   (799, 'Blake Kollker', 'Blake', 'Kollker', 1067, '[{"value":"blake.Kollker@azzippizza.com","type":"work"}]'::jsonb, '[{"value":"(812) 909-4144","type":"work"}]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL),
   (800, 'Victor', 'Victor', NULL, 1069, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 9/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (801, 'Jason Kuykendall', 'Jason', 'Kuykendall', 1070, '[{"value":"jkuykendall@ralphiesfuncenter.com","type":"work"}]'::jsonb, '[{"value":"(270) 629-4263","type":"work"}]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL),
   (802, 'Graham Garrett', 'Graham', 'Garrett', 1922, '[{"value":"graham.garrett@gfs.com","type":"work"}]'::jsonb, '[{"value":"(616) 717-4914","type":"work"}]'::jsonb, 'Executive', NULL, NULL, NULL, NULL, NULL, 'MW REGIONALMERCHANDISING MANAGER -5 DC''S'),
   (803, 'Ethan Weinberger', 'Ethan', 'Weinberger', 1922, '[{"value":"ethan.weinberger@gfs.com","type":"work"}]'::jsonb, '[{"value":"(419) 779-4822","type":"work"}]'::jsonb, 'Executive', NULL, NULL, 'Southfield', 'MI', NULL, 'GLAKES MULTI-UNIT MANAGER'),
@@ -3106,10 +3189,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (898, 'Jacob Giese', 'Jacob', 'Giese', 1229, '[]'::jsonb, '[]'::jsonb, 'Sous Chef', NULL, NULL, NULL, NULL, NULL, NULL),
   (899, 'Samantha Zastrow', 'Samantha', 'Zastrow', 1230, '[{"value":"Smzastrow@wisc.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL),
   (900, 'Channie McCall', 'Channie', 'McCall', 1231, '[{"value":"Cihomich@d.umn.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 10/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (901, 'Joesph Skeene', 'Joesph', 'Skeene', 1232, '[{"value":"SkeeneJ@missouri.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
   (902, 'Travis Johnson', 'Travis', 'Johnson', 1233, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL),
   (903, 'Kamlesh Bhai', 'Kamlesh', 'Bhai', 1250, '[]'::jsonb, '[{"value":"(708) 663-1656","type":"work"}]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -3132,10 +3225,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (998, 'Ashley Maldonado', 'Ashley', 'Maldonado', 1888, '[{"value":"amaldonado@crsonesource.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Executive', NULL, NULL, 'Bowling green', 'KY', NULL, 'Valerie Sharber is Dry and Frozen Senior Catergory Manager'),
   (999, 'Valerie Sharber', 'Valerie', 'Sharber', 1967, '[{"value":"Valerie.sharber@pfgc.com","type":"work"}]'::jsonb, '[{"value":"(270) 846-7093","type":"work"}]'::jsonb, 'Executive', NULL, NULL, NULL, NULL, NULL, NULL),
   (1000, 'Steve Horwich', 'Steve', 'Horwich', 2004, '[{"value":"steveh@testaproduce.com","type":"work"}]'::jsonb, '[{"value":"(312) 545-7417","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 11/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (1001, 'Kristine Campbell', 'Kristine', 'Campbell', 2004, '[{"value":"Krisc@testaproduce.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (1002, 'Megan Carmarigg', 'Megan', 'Carmarigg', 2004, '[{"value":"Megabc@testaproduce.com","type":"work"}]'::jsonb, '[{"value":"(312) 523-5070","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (1003, 'Michael Hanser', 'Michael', 'Hanser', 2004, '[{"value":"Mikeh@testaproduce.com","type":"work"}]'::jsonb, '[{"value":"(312) 735-4075","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -3236,10 +3339,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1098, 'Vitelli', 'Vitelli', NULL, 1377, '[{"value":"ewvfsd@rit.edu","type":"work"}]'::jsonb, '[{"value":"(585) 475-2721","type":"work"}]'::jsonb, 'Assistant Dining Manager', NULL, NULL, NULL, 'NY', NULL, 'NRA ANNASEA LEAD'),
   (1099, 'Gunasinghe', 'Gunasinghe', NULL, 1378, '[{"value":"KasunGunasinghe@volcora.com","type":"work"}]'::jsonb, '[{"value":"(646) 627-4015","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, 'NY', NULL, 'NRA ANNASEA LEAD'),
   (1100, 'Ahmed', 'Ahmed', NULL, 1379, '[{"value":"jasminmj86@yahoo.com","type":"work"}]'::jsonb, '[{"value":"(614) 515-8013","type":"work"}]'::jsonb, 'Owner', NULL, NULL, NULL, 'OH', NULL, 'NRA ANNASEA LEAD')
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 12/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (1101, 'Brahler', 'Brahler', NULL, 1380, '[{"value":"avbrahler@outlook.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, 'OH', NULL, 'NRA ANNASEA LEAD'),
   (1102, 'Sommer', 'Sommer', NULL, 1381, '[{"value":"Pam.sommer@hotheadburritos.com","type":"work"}]'::jsonb, '[{"value":"(937) 475-1128","type":"work"}]'::jsonb, 'Presidwnt', NULL, NULL, NULL, 'OH', NULL, 'NRA ANNASEA LEAD'),
   (1103, 'Shook', 'Shook', NULL, 1382, '[{"value":"grizz@curiositeaemporium.com","type":"work"}]'::jsonb, '[{"value":"(419) 360-3746","type":"work"}]'::jsonb, 'Owner', NULL, NULL, NULL, 'OH', NULL, 'NRA ANNASEA LEAD'),
@@ -3340,10 +3453,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1198, 'Amy Gautraud', 'Amy', 'Gautraud', 1922, '[{"value":"amy.gautraud@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (1199, 'Dan Goeglein', 'Dan', 'Goeglein', 1922, '[{"value":"dan.goeglein@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL),
   (1200, 'Alex Grantham', 'Alex', 'Grantham', 1922, '[]'::jsonb, '[{"value":"(616) 530-7000","type":"work"}]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 13/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (1201, 'Derrick J. Haight', 'Derrick', 'J. Haight', 1922, '[{"value":"derrick.haight@gfs.com","type":"work"}]'::jsonb, '[{"value":"(616) 530-7000","type":"work"}]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
   (1202, 'Jennifer Hinkle', 'Jennifer', 'Hinkle', 1922, '[]'::jsonb, '[{"value":"(773) 717-6004","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (1203, 'Matthew Hobkirk', 'Matthew', 'Hobkirk', 1922, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -3434,10 +3557,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1298, 'adreifke@heritageal.com', 'adreifke@heritageal.com', NULL, 1461, '[{"value":"adreifke@heritageal.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1299, 'jlewandowski@heritageal.com', 'jlewandowski@heritageal.com', NULL, 1123, '[{"value":"jlewandowski@heritageal.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1300, 'jeffrey.schoening@independencevillages.com', 'jeffrey.schoening@independencevillages.com', NULL, 1071, '[{"value":"jeffrey.schoening@independencevillages.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 14/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (1301, 'daniel.neidlinger@independencevillages.com', 'daniel.neidlinger@independencevillages.com', NULL, 1128, '[{"value":"daniel.neidlinger@independencevillages.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1302, 'Lsiriphan@independencevillages.com', 'Lsiriphan@independencevillages.com', NULL, 1129, '[{"value":"Lsiriphan@independencevillages.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1303, 'aclayton53@ivytech.edu', 'aclayton53@ivytech.edu', NULL, 1462, '[{"value":"aclayton53@ivytech.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '410 E COLUMBUS DR', NULL, NULL, NULL, NULL),
@@ -3521,10 +3654,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1397, 'olivera.bezanovic@trinity-health.org', 'olivera.bezanovic@trinity-health.org', NULL, 1490, '[{"value":"olivera.bezanovic@trinity-health.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1398, 'sofia.quirk@trinity-health.org', 'sofia.quirk@trinity-health.org', NULL, 1105, '[{"value":"sofia.quirk@trinity-health.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1400, 'Andi.White@saintalphonsus.org', 'Andi.White@saintalphonsus.org', NULL, 1491, '[{"value":"Andi.White@saintalphonsus.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 15/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (1401, 'Jody.mcghee@timber-lee.com', 'Jody.mcghee@timber-lee.com', NULL, 1127, '[{"value":"Jody.mcghee@timber-lee.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1403, 'info@tinyscoffeebar.com', 'info@tinyscoffeebar.com', NULL, 1492, '[{"value":"info@tinyscoffeebar.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1404, 'dsprocurement@housing.illinois.edu', 'dsprocurement@housing.illinois.edu', NULL, 1106, '[{"value":"dsprocurement@housing.illinois.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -3624,10 +3767,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1498, 'Unknown', NULL, NULL, 1071, '[]'::jsonb, '[{"value":"(515) 292-2858","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1499, 'Unknown', NULL, NULL, 1128, '[]'::jsonb, '[{"value":"(317) 745-2766","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1500, 'Unknown', NULL, NULL, 1129, '[]'::jsonb, '[{"value":"(515) 987-4100","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]')
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 16/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (1501, 'Unknown', NULL, NULL, 1745, '[]'::jsonb, '[{"value":"(219) 392-3600","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1502, 'Unknown', NULL, NULL, 1747, '[]'::jsonb, '[{"value":"(630) 573-8180","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1503, 'Unknown', NULL, NULL, 1749, '[]'::jsonb, '[{"value":"(608) 322-6564","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
@@ -3728,10 +3881,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1598, 'Unknown', NULL, NULL, 1118, '[]'::jsonb, '[{"value":"(616) 738-6000","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1599, 'Unknown', NULL, NULL, 1845, '[]'::jsonb, '[{"value":"(312) 999-9760","type":"work"}]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1600, 'Tom Lynhome', 'Tom', 'Lynhome', 1502, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 17/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (1601, 'MATTHEW VOSS', 'MATTHEW', 'VOSS', 1503, '[{"value":"FILASTNAME@VIFOODSYSTEMS.COM","type":"work"}]'::jsonb, '[{"value":"(330) 372-0431","type":"work"}]'::jsonb, 'Buyer', NULL, '2590 Elm Rd. NE.', 'warren', 'OH', NULL, NULL),
   (1602, 'WENDY KAPSAL', 'WENDY', 'KAPSAL', 1503, '[{"value":"FILASTNAME@VIFOODSYSTEMS.COM","type":"work"}]'::jsonb, '[{"value":"(330) 372-0431","type":"work"}]'::jsonb, 'Buyer', NULL, '2590 Elm Rd. NE.', 'warren', 'OH', NULL, NULL),
   (1603, 'JAMES FALCONE', 'JAMES', 'FALCONE', 1503, '[{"value":"FILASTNAME@VIFOODSYSTEMS.COM","type":"work"}]'::jsonb, '[{"value":"(330) 372-0431","type":"work"}]'::jsonb, 'Buyer', NULL, '2590 Elm Rd. NE.', 'warren', 'OH', NULL, NULL),
@@ -3832,10 +3995,20 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1698, 'Josh Simmer', 'Josh', 'Simmer', 1593, '[{"value":"josh.simmer@robbinswoodalc.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'MIDDLEVILLE', 'MI', NULL, NULL),
   (1699, 'Nicholas Allen', 'Nicholas', 'Allen', 1594, '[{"value":"ungybob@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'GLADWIN', 'MI', NULL, NULL),
   (1700, 'Harold Klukowski', 'Harold', 'Klukowski', 1595, '[{"value":"tk5bowl@northfieldlanes.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'SWARTZ CREEK', 'MI', NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- Batch 18/18
-INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
+INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+SELECT DISTINCT ON (organization_id, LOWER(TRIM(name)))
+    id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes
+FROM (VALUES
   (1701, 'Karim Tinoco', 'Karim', 'Tinoco', 1596, '[{"value":"ktinoco@nd.edu","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'OKEMOS', 'MI', NULL, NULL),
   (1702, 'Tracy  Dinsmore', 'Tracy', 'Dinsmore', 1597, '[{"value":"nutrition@ogemawcoa.org","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'Grass Lake', 'MI', NULL, NULL),
   (1703, 'Brian Lonberg', 'Brian', 'Lonberg', 1598, '[{"value":"acct@oldmillbrew.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'Fort Wayne', 'MI', NULL, NULL),
@@ -3911,7 +4084,14 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1773, 'Augie', 'Augie', NULL, 48, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (1774, 'Chef Ashley Chef Johm', 'Chef', 'Ashley Chef Johm', 49, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (1775, 'Jeremy Skiles Chef', 'Jeremy', 'Skiles Chef', 130, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT DO NOTHING;
+) AS v(id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes)
+WHERE NOT EXISTS (
+    SELECT 1 FROM contacts c
+    WHERE c.organization_id = v.organization_id
+    AND LOWER(TRIM(c.name)) = LOWER(TRIM(v.name))
+    AND c.deleted_at IS NULL
+)
+ORDER BY organization_id, LOWER(TRIM(name)), id;
 
 -- ============================================================================
 -- ORGANIZATION DISTRIBUTORS (715 records)

@@ -110,8 +110,8 @@ export function StandardListLayout({
         aria-label={`Filter ${resource}`}
         className={`
           filter-sidebar w-full lg:w-auto lg:sticky lg:top-0 lg:h-fit lg:self-start
-          transition-all duration-200 ease-out overflow-hidden shrink-0
-          ${isCollapsed ? "max-h-0 lg:max-h-none lg:w-0 lg:opacity-0 lg:invisible" : "max-h-[500px] lg:max-h-none lg:opacity-100"}
+          transition-all duration-200 ease-out overflow-y-auto shrink-0
+          ${isCollapsed ? "max-h-0 lg:max-h-none lg:w-0 lg:opacity-0 lg:invisible" : "max-h-[60vh] lg:max-h-[calc(100vh-6rem)] lg:opacity-100"}
         `}
         aria-hidden={isCollapsed}
       >
