@@ -386,13 +386,17 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
       <CollapsibleSection title="Classification" data-tutorial="opp-section-classification">
         <div className="space-y-4">
           <CompactFormRow>
-            <TextInput source="lead_source" label="Lead Source" helperText={false} />
-            <TextInput
-              source="campaign"
-              label="Campaign"
-              helperText={false}
-              placeholder="e.g., Q4 2025 Trade Show"
-            />
+            <div data-tutorial="opp-lead-source">
+              <TextInput source="lead_source" label="Lead Source" helperText={false} />
+            </div>
+            <div data-tutorial="opp-campaign">
+              <TextInput
+                source="campaign"
+                label="Campaign"
+                helperText={false}
+                placeholder="e.g., Q4 2025 Trade Show"
+              />
+            </div>
           </CompactFormRow>
           <ArrayInput source="tags" label="Tags">
             <SimpleFormIterator inline disableReordering>
@@ -405,20 +409,26 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
       {/* Collapsible: Additional Details */}
       <CollapsibleSection title="Additional Details" data-tutorial="opp-section-details">
         <div className="space-y-4">
-          <TextInput source="description" label="Description" multiline rows={2} helperText={false} />
+          <div data-tutorial="opp-description">
+            <TextInput source="description" label="Description" multiline rows={2} helperText={false} />
+          </div>
           <CompactFormRow>
-            <TextInput
-              source="next_action"
-              label="Next Action"
-              helperText={false}
-              placeholder="e.g., Follow up with decision maker"
-            />
-            <TextInput
-              source="next_action_date"
-              label="Next Action Date"
-              helperText={false}
-              type="date"
-            />
+            <div data-tutorial="opp-next-action">
+              <TextInput
+                source="next_action"
+                label="Next Action"
+                helperText={false}
+                placeholder="e.g., Follow up with decision maker"
+              />
+            </div>
+            <div data-tutorial="opp-next-action-date">
+              <TextInput
+                source="next_action_date"
+                label="Next Action Date"
+                helperText={false}
+                type="date"
+              />
+            </div>
           </CompactFormRow>
           <TextInput
             source="decision_criteria"

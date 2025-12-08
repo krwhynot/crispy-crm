@@ -116,27 +116,77 @@ export const opportunityCreateFormSteps: TutorialStep[] = [
       side: 'top',
     },
   },
-  // Step 12: Classification Section
+  // Step 12: Classification Section Header
   {
     element: '[data-tutorial="opp-section-classification"]',
     popover: {
       title: 'Classification Section',
       description:
-        'Optional: Track lead source, campaign, and tags for reporting and segmentation.',
+        'Optional fields for tracking how opportunities are sourced and categorized.',
       side: 'top',
     },
   },
-  // Step 13: Additional Details Section
+  // Step 13: Lead Source
+  {
+    element: '[data-tutorial="opp-lead-source"]',
+    popover: {
+      title: 'Lead Source',
+      description:
+        'Where did this lead come from? Examples: "Referral", "Trade Show", "Cold Call", "Website Inquiry".',
+      side: 'right',
+    },
+  },
+  // Step 14: Campaign
+  {
+    element: '[data-tutorial="opp-campaign"]',
+    popover: {
+      title: 'Campaign',
+      description:
+        'Link this opportunity to a marketing campaign for tracking ROI. Example: "Q4 2025 Trade Show".',
+      side: 'left',
+    },
+  },
+  // Step 15: Additional Details Section Header
   {
     element: '[data-tutorial="opp-section-details"]',
     popover: {
       title: 'Additional Details',
       description:
-        'Optional: Add description, next actions, decision criteria, and notes for context.',
+        'Optional fields for context, planning, and notes.',
       side: 'top',
     },
   },
-  // Step 14: Save Button
+  // Step 16: Description
+  {
+    element: '[data-tutorial="opp-description"]',
+    popover: {
+      title: 'Description',
+      description:
+        'Summarize what this opportunity is about - the products, customer needs, or deal context.',
+      side: 'bottom',
+    },
+  },
+  // Step 17: Next Action
+  {
+    element: '[data-tutorial="opp-next-action"]',
+    popover: {
+      title: 'Next Action',
+      description:
+        'What\'s the next step to move this deal forward? Keep it specific and actionable.',
+      side: 'right',
+    },
+  },
+  // Step 18: Next Action Date
+  {
+    element: '[data-tutorial="opp-next-action-date"]',
+    popover: {
+      title: 'Next Action Date',
+      description:
+        'When should the next action be completed? This helps with task planning and follow-ups.',
+      side: 'left',
+    },
+  },
+  // Step 19: Save Button
   {
     element: '[data-tutorial="opp-save-btn"]',
     popover: {
@@ -146,7 +196,7 @@ export const opportunityCreateFormSteps: TutorialStep[] = [
       side: 'top',
     },
   },
-  // Step 15: Completion
+  // Step 20: Completion
   {
     popover: {
       title: 'Ready to Create!',
