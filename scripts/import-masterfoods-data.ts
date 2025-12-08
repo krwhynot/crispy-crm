@@ -521,11 +521,15 @@ function transformOrganizations(orgs: OrganizationRow[], orgMap: Map<string, Org
     const entry = orgMap.get(normalizedName);
     if (!entry) return;
 
+    // Determine organization_type: if is_distributor=true, use 'distributor', otherwise use CSV value or default
+    const orgType = entry.isDistributor
+      ? "distributor"
+      : (org.organization_type || "prospect").trim().toLowerCase();
+
     transformed.push({
       id: entry.id,
       name: name,
-      organization_type: (org.organization_type || "prospect").trim().toLowerCase(),
-      is_distributor: entry.isDistributor,
+      organization_type: orgType,
       playbook_category_id: resolvePlaybookCategoryId(org.segment_name, org.playbook_category_name),
       priority: parsePriority(org.priority),
       phone: org.phone?.trim() || null,
@@ -690,21 +694,22 @@ ON CONFLICT (id) DO NOTHING;
 -- ============================================================================
 -- ORGANIZATIONS (${orgs.length} records)
 -- ============================================================================
+-- Uses ON CONFLICT to handle organizations that may exist from migrations
+-- Updates existing records with seed data values
 
 `;
 
-  // Generate organization inserts in batches
+  // Generate organization inserts in batches WITH ON CONFLICT
   const orgChunks = chunkArray(orgs, 100);
   orgChunks.forEach((chunk, chunkIdx) => {
     sql += `-- Batch ${chunkIdx + 1}/${orgChunks.length}\n`;
-    sql += `INSERT INTO organizations (id, name, organization_type, is_distributor, playbook_category_id, priority, phone, address, city, state, postal_code, linkedin_url, notes, cuisine, needs_review) VALUES\n`;
+    sql += `INSERT INTO organizations (id, name, organization_type, playbook_category_id, priority, phone, address, city, state, postal_code, linkedin_url, notes, cuisine, needs_review) VALUES\n`;
 
     const values = chunk.map((org, idx) => {
       const vals = [
         org.id,
         escapeSQLString(org.name),
         escapeSQLString(org.organization_type),
-        org.is_distributor,
         org.playbook_category_id ? `'${org.playbook_category_id}'` : "NULL",
         escapeSQLString(org.priority),
         escapeSQLString(org.phone),
@@ -717,10 +722,24 @@ ON CONFLICT (id) DO NOTHING;
         escapeSQLString(org.cuisine),
         escapeSQLString(org.needs_review),
       ].join(", ");
-      return `  (${vals})${idx < chunk.length - 1 ? "," : ";"}`;
+      return `  (${vals})${idx < chunk.length - 1 ? "," : ""}`;
     });
 
-    sql += values.join("\n") + "\n\n";
+    sql += values.join("\n");
+    // Add ON CONFLICT clause for unique name constraint
+    sql += `\nON CONFLICT ((LOWER(name))) WHERE deleted_at IS NULL DO UPDATE SET
+  organization_type = EXCLUDED.organization_type,
+  playbook_category_id = EXCLUDED.playbook_category_id,
+  priority = EXCLUDED.priority,
+  phone = EXCLUDED.phone,
+  address = EXCLUDED.address,
+  city = EXCLUDED.city,
+  state = EXCLUDED.state,
+  postal_code = EXCLUDED.postal_code,
+  linkedin_url = EXCLUDED.linkedin_url,
+  notes = EXCLUDED.notes,
+  cuisine = EXCLUDED.cuisine,
+  needs_review = EXCLUDED.needs_review;\n\n`;
   });
 
   // Generate contact inserts
@@ -768,10 +787,11 @@ ON CONFLICT (id) DO NOTHING;
   const distChunks = chunkArray(distributors, 100);
   distChunks.forEach((chunk, chunkIdx) => {
     sql += `-- Batch ${chunkIdx + 1}/${distChunks.length}\n`;
-    sql += `INSERT INTO organization_distributors (id, organization_id, distributor_id, is_primary) VALUES\n`;
+    // Note: id column is GENERATED ALWAYS AS IDENTITY, so we omit it
+    sql += `INSERT INTO organization_distributors (organization_id, distributor_id, is_primary) VALUES\n`;
 
     const values = chunk.map((dist, idx) => {
-      const vals = [dist.id, dist.organization_id, dist.distributor_id, dist.is_primary].join(", ");
+      const vals = [dist.organization_id, dist.distributor_id, dist.is_primary].join(", ");
       return `  (${vals})${idx < chunk.length - 1 ? "," : ";"}`;
     });
 
@@ -785,7 +805,7 @@ ON CONFLICT (id) DO NOTHING;
 
 SELECT setval('organizations_id_seq', (SELECT COALESCE(MAX(id), 1) FROM organizations));
 SELECT setval('contacts_id_seq', (SELECT COALESCE(MAX(id), 1) FROM contacts));
-SELECT setval('organization_distributors_id_seq', (SELECT COALESCE(MAX(id), 1) FROM organization_distributors));
+-- organization_distributors uses GENERATED ALWAYS AS IDENTITY, sequence is auto-managed
 
 -- ============================================================================
 -- VALIDATION QUERIES
@@ -838,7 +858,6 @@ async function importToCloud(
         id: org.id,
         name: org.name,
         organization_type: org.organization_type,
-        is_distributor: org.is_distributor,
         playbook_category_id: org.playbook_category_id,
         priority: org.priority,
         phone: org.phone,
@@ -902,9 +921,9 @@ async function importToCloud(
 
   for (let i = 0; i < distChunks.length; i++) {
     const chunk = distChunks[i];
+    // Note: id column is GENERATED ALWAYS AS IDENTITY, so we omit it
     const { error } = await supabase.from("organization_distributors").insert(
       chunk.map((dist) => ({
-        id: dist.id,
         organization_id: dist.organization_id,
         distributor_id: dist.distributor_id,
         is_primary: dist.is_primary,
