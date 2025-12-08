@@ -85,9 +85,10 @@ export async function validateProductForm(data: unknown): Promise<void> {
     });
 
     // Throw error in React Admin expected format
+    // React Admin expects { message, body: { errors } } - see opportunities.ts:203
     throw {
       message: "Validation failed",
-      errors: formattedErrors,
+      body: { errors: formattedErrors },
     };
   }
 }
@@ -121,7 +122,7 @@ export async function validateOpportunityProduct(data: unknown): Promise<void> {
       });
       throw {
         message: "Product validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },
       };
     }
     throw error;
