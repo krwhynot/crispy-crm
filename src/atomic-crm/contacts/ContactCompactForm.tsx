@@ -8,12 +8,10 @@ import { Avatar } from "./Avatar";
 import { ContactAdditionalDetails } from "./ContactAdditionalDetails";
 import { AutocompleteOrganizationInput } from "../organizations/AutocompleteOrganizationInput";
 import { useFormContext } from "react-hook-form";
-import type { Sale } from "../types";
+import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import * as React from "react";
 
 const personalInfoTypes = [{ id: "Work" }, { id: "Home" }, { id: "Other" }];
-
-const saleOptionRenderer = (choice: Sale) => `${choice.first_name} ${choice.last_name}`;
 
 export const ContactCompactForm = () => {
   const { setValue, getValues } = useFormContext();

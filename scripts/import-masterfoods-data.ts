@@ -28,7 +28,8 @@ import { readFileSync, writeFileSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 import Papa from "papaparse";
-import { createClient, SupabaseClient } from "@supabase/supabase-js";
+import { createClient } from "@supabase/supabase-js";
+import type { SupabaseClient } from "@supabase/supabase-js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -258,6 +259,7 @@ function parseArgs(): ImportConfig {
 
 function escapeSQLString(str: string | null | undefined): string {
   if (str === null || str === undefined || str === "") return "NULL";
+  // eslint-disable-next-line no-control-regex
   const cleaned = String(str)
     .replace(/\x00/g, "") // Remove null bytes
     // eslint-disable-next-line no-control-regex

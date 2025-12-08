@@ -87,7 +87,7 @@ export function useBulkActionsState({
             previousData: opportunities.find((opp) => opp.id === id),
           });
           successCount++;
-        } catch (error) {
+        } catch (_error) {
           failureCount++;
         }
       }

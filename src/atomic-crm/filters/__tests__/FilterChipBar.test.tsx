@@ -13,7 +13,7 @@
  */
 
 import { describe, test, expect, vi, beforeEach } from "vitest";
-import { screen, fireEvent, within } from "@testing-library/react";
+import { screen, fireEvent } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { FilterChipBar } from "../FilterChipBar";
 import type { ChipFilterConfig } from "../filterConfigSchema";

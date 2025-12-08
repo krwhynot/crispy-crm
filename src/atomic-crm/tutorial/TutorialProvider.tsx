@@ -77,7 +77,7 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
         try {
           await waitForElement(step.element, 8000); // 8 second timeout
           return true;
-        } catch (error) {
+        } catch (_error) {
           console.warn(`Tutorial: Element not found: ${step.element}`);
           return false;
         }

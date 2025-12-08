@@ -5,7 +5,6 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AsideSection } from "@/components/ui";
@@ -27,10 +26,8 @@ export function OrganizationDetailsTab({
 }: OrganizationDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
-  const [isSaving, setIsSaving] = useState(false);
 
   const handleSave = async (data: Partial<OrganizationWithHierarchy>) => {
-    setIsSaving(true);
     try {
       await update("organizations", {
         id: record.id,
@@ -42,8 +39,6 @@ export function OrganizationDetailsTab({
     } catch (error) {
       notify("Error updating organization", { type: "error" });
       console.error("Save error:", error);
-    } finally {
-      setIsSaving(false);
     }
   };
 

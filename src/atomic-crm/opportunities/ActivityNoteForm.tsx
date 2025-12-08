@@ -110,7 +110,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
       });
       setValue("stage", newStage);
       notify("Stage updated successfully", { type: "success" });
-    } catch (error) {
+    } catch (_error) {
       notify("Error updating stage", { type: "error" });
     }
   };
@@ -132,7 +132,7 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
       notify("Activity created successfully", { type: "success" });
       reset();
       onSuccess?.();
-    } catch (error) {
+    } catch (_error) {
       notify("Error creating activity", { type: "error" });
     }
   };

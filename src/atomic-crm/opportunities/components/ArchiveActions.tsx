@@ -65,12 +65,14 @@ export const UnarchiveButton = ({ record }: ArchiveActionsProps) => {
   const notify = useNotify();
   const refresh = useRefresh();
 
-  if (!record) return null;
-
+  // Create service instance for mutation (React Hooks must be called unconditionally)
   const opportunitiesService = new OpportunitiesService(dataProvider);
 
   const { mutate } = useMutation({
-    mutationFn: () => opportunitiesService.unarchiveOpportunity(record),
+    mutationFn: () => {
+      if (!record) throw new Error("No record to unarchive");
+      return opportunitiesService.unarchiveOpportunity(record);
+    },
     onSuccess: () => {
       redirect("list", "opportunities");
       notify("Opportunity unarchived", {
@@ -83,6 +85,8 @@ export const UnarchiveButton = ({ record }: ArchiveActionsProps) => {
       notify("Error: opportunity not unarchived", { type: "error" });
     },
   });
+
+  if (!record) return null;
 
   const handleClick = () => {
     mutate();

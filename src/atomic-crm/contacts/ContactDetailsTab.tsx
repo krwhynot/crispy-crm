@@ -7,7 +7,6 @@ import { DateField } from "@/components/admin/date-field";
 import { ArrayField } from "@/components/admin/array-field";
 import { EmailField } from "@/components/admin/email-field";
 import { SingleFieldList } from "@/components/admin/single-field-list";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { AsideSection } from "@/components/ui";
@@ -39,11 +38,9 @@ interface ContactDetailsTabProps {
 export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
-  const [isSaving, setIsSaving] = useState(false);
 
   // Handle save in edit mode
   const handleSave = async (data: Partial<Contact>) => {
-    setIsSaving(true);
     try {
       await update("contacts", {
         id: record.id,
@@ -55,8 +52,6 @@ export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetails
     } catch (error) {
       notify("Error updating contact", { type: "error" });
       console.error("Save error:", error);
-    } finally {
-      setIsSaving(false);
     }
   };
 

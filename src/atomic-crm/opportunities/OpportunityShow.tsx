@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { format, isValid, formatDistanceToNow, isPast } from "date-fns";
+import { format, formatDistanceToNow, isPast } from "date-fns";
 import {
   ShowBase,
   useShowContext,

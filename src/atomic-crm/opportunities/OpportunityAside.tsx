@@ -1,4 +1,4 @@
-import { format, formatDistanceToNow, isValid, isPast } from "date-fns";
+import { format, formatDistanceToNow, isPast } from "date-fns";
 import { useRecordContext, useShowContext } from "react-admin";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { ReferenceManyField } from "@/components/admin/reference-many-field";
@@ -16,7 +16,6 @@ import { parseDateSafely } from "@/lib/date-utils";
 
 export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) => {
   const record = useRecordContext<Opportunity>();
-  const { resource } = useShowContext();
 
   if (!record) return null;
 

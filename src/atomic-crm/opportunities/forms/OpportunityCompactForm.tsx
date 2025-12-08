@@ -25,12 +25,7 @@ import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
 import { DEFAULT_SEGMENT_ID } from "../../constants";
 import { organizationSchema } from "../../validation/organizations";
 import { contactBaseSchema } from "../../validation/contacts";
-import type { Sale } from "../../types";
-
-const saleOptionRenderer = (choice: Sale) =>
-  choice?.first_name || choice?.last_name
-    ? `${choice.first_name || ""} ${choice.last_name || ""} (${choice.email})`.trim()
-    : choice?.email || "";
+import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
 
 const priorityChoices = [
   { id: "low", name: "Low" },

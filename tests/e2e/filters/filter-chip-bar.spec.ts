@@ -147,7 +147,7 @@ test.describe("Filter Chip Bar - Core Functionality", () => {
       if (await toolbar.isVisible()) {
         // Should show ONE combined chip for date range, not two separate chips
         const chips = toolbar.getByRole("listitem");
-        const chipCount = await chips.count();
+        const _chipCount = await chips.count();
 
         // Date range should be combined into one chip due to removalGroup
         // May also have other chips, so just verify date range is combined

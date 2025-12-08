@@ -16,7 +16,7 @@ import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { FilterChipBar } from "../filters";
 import { Badge } from "@/components/ui/badge";
-import { COLUMN_VISIBILITY, SORT_FIELDS } from "../utils/listPatterns";
+import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { ProductListFilter } from "./ProductListFilter";
 import { ProductSlideOver } from "./ProductSlideOver";
 import { ProductEmpty } from "./ProductEmpty";

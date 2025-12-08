@@ -34,7 +34,6 @@ import {
   getOpportunityStageColor,
 } from "./constants/stageConstants";
 import { useExportOpportunities } from "./hooks/useExportOpportunities";
-import type { BulkAction } from "./hooks";
 
 interface BulkActionsToolbarProps {
   selectedIds: (string | number)[];
