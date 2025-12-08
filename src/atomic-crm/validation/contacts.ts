@@ -531,7 +531,7 @@ export async function validateCreateContact(data: unknown): Promise<void> {
       });
       throw {
         message: "Validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },
       };
     }
     throw error;
@@ -550,7 +550,7 @@ export async function validateUpdateContact(data: unknown): Promise<void> {
       });
       throw {
         message: "Validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },
       };
     }
     throw error;
@@ -570,7 +570,7 @@ export async function validateContactOrganization(data: unknown): Promise<void> 
       });
       throw {
         message: "Validation failed",
-        errors: formattedErrors,
+        body: { errors: formattedErrors },
       };
     }
     throw error;
