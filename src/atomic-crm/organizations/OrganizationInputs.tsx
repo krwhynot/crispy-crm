@@ -7,14 +7,15 @@ const ORGANIZATION_FIELD_LABELS: Record<string, string> = {
   organization_type: "Type",
   sales_id: "Account Manager",
   segment_id: "Segment",
-  street: "Street",
+  address: "Street",
   city: "City",
   state: "State",
-  zip: "Zip Code",
+  postal_code: "Zip Code",
   website: "Website",
   linkedin_url: "LinkedIn URL",
   parent_organization_id: "Parent Organization",
   description: "Description",
+  phone: "Phone",
 };
 
 export const OrganizationInputs = () => {
