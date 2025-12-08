@@ -2273,7 +2273,6 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (69, 'Derheim', 'Derheim', NULL, 228, '[{"value":"luke@craftncrew.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (70, 'Juarez', 'Juarez', NULL, 231, '[{"value":"jjuarez71289@outlook.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, 'Phone: direct'),
   (71, 'Chef owner anthony sitek', 'Chef', 'owner anthony sitek', 234, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (72, 'Chef owner anthony sitek', 'Chef', 'owner anthony sitek', 234, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (73, 'Namdari', 'Namdari', NULL, 237, '[{"value":"darabm1963@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (74, 'Bryant', 'Bryant', NULL, 242, '[{"value":"cynthialbryant@outlook.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (75, 'Chef JOE FRILLMAN', 'Chef', 'JOE FRILLMAN', 244, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2302,7 +2301,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (98, 'Jenner Tomaska and wife Katrina Bravo', 'Jenner', 'Tomaska and wife Katrina Bravo', 297, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (99, 'MacNeil', 'MacNeil', NULL, 300, '[{"value":"cog@etailerinc.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (100, 'Jamroch Christopher', 'Jamroch', 'Christopher', 302, '[{"value":"christopher.jamroch@compass-usa.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 2/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -2368,7 +2367,6 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (160, 'Zenk John', 'Zenk', 'John', 473, '[{"value":"john.zenk@frischs.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (161, 'Contreras Alexis', 'Contreras', 'Alexis', 479, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (162, 'Thompson Quint', 'Thompson', 'Quint', 479, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (163, 'Thompson quint', 'Thompson', 'quint', 479, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (164, 'Bruder Dan', 'Bruder', 'Dan', 480, '[{"value":"danb@kelber.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (165, 'Streitz', 'Streitz', NULL, 481, '[{"value":"shanes@kelber.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (166, 'Quinn', 'Quinn', NULL, 484, '[{"value":"Paul.quinn@ketteringhealth.org","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2406,7 +2404,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (198, 'Edsall jean', 'Edsall', 'jean', 571, '[{"value":"jedsall87@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (199, 'Rudner alyssa', 'Rudner', 'alyssa', 575, '[{"value":"acrudner@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (200, 'Executive Chef moreno', 'Executive', 'Chef moreno', 579, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 3/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -2510,7 +2508,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (298, 'Jim Drewenski alberto', 'Jim', 'Drewenski alberto', 769, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (299, 'Exec Chef John Rudolph', 'Exec', 'Chef John Rudolph', 771, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, '66 W. Kinsey Street, Chicago, Illinois', 'Chicago', NULL, NULL, NULL),
   (300, 'Rashid', 'Rashid', NULL, 774, '[{"value":"Rumifalafel@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 4/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -2614,7 +2612,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (398, 'USF, Testa, GFS', 'USF,', 'Testa, GFS', 957, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (399, 'Beske John', 'Beske', 'John', 961, '[{"value":"johnbeske@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (400, 'Rose Maria', 'Rose', 'Maria', 962, '[{"value":"marla@veganstreet.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 5/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -2667,7 +2665,6 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (447, 'Max Molinaro', 'Max', 'Molinaro', 768, '[{"value":"Mmolinaro@chefswarehouse.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (448, 'Chris Eliopulis', 'Chris', 'Eliopulis', 869, '[{"value":"Chris.Eliopulis@sysco.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Slot Decisionmaker', NULL, NULL, NULL, NULL, NULL, NULL),
   (449, 'Megan', 'Megan', NULL, 2004, '[{"value":"MeganC@testaproduce.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Slot Decisionmaker', NULL, NULL, NULL, NULL, NULL, NULL),
-  (450, 'Joe Fitzgerald', 'Joe', 'Fitzgerald', 1957, '[{"value":"Joef@midwestfoods.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Poc (Point Of Contact)', NULL, NULL, NULL, NULL, NULL, NULL),
   (451, 'David Tallent', 'David', 'Tallent', 1746, '[{"value":"Jotallen@iu.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL),
   (452, 'Harry Greene', 'Harry', 'Greene', 1968, '[{"value":"Hgreene@piazzaproduce.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Slot Decisionmaker', NULL, NULL, NULL, NULL, NULL, NULL),
   (453, 'Paul Bova', 'Paul', 'Bova', 1968, '[{"value":"Pbova@piazzaproduce.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Poc (Point Of Contact)', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2701,7 +2698,6 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (481, 'Rob Renninger', 'Rob', 'Renninger', 1922, '[{"value":"Rob.renninger@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (482, 'Rachel Sohovich', 'Rachel', 'Sohovich', 1922, '[{"value":"Rachel.sohovich@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
   (483, 'Matt Stielow', 'Matt', 'Stielow', 1922, '[{"value":"Matt.stielow@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
-  (484, 'Mike Hiskes', 'Mike', 'Hiskes', 1922, '[{"value":"Stephen.hess@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (485, 'Dennis Mitchell', 'Dennis', 'Mitchell', 1967, '[{"value":"Dennis.Mitchell@pfgc.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, 'Recieved a response from Deniss Mitchell that a "sales" or "district" meeting on Feb 7th.'),
   (486, 'Alissa Jeffery', 'Alissa', 'Jeffery', 1878, '[]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (487, 'Jennifer Fried', 'Jennifer', 'Fried', 2004, '[{"value":"JenniferF@testaproduce.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2718,7 +2714,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (498, 'angel Perry', 'angel', 'Perry', 475, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, '9722 Parkway Drive', 'highland', 'IN', '46322', 'hos'),
   (499, 'tianna johnson', 'tianna', 'johnson', 475, '[]'::jsonb, '[]'::jsonb, 'Executive', NULL, '9722 Parkway Drive', 'highland', 'IN', '46322', 'hos'),
   (500, 'nicole ward', 'nicole', 'ward', 475, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, '9722 Parkway Drive', 'highland', 'IN', '46322', 'hos')
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 6/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -2769,13 +2765,9 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (545, 'Andrew Francisco', 'Andrew', 'Francisco', 981, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, 'MI', NULL, 'presented annasea, Frites St., Kaufholds, Kenja, and land lovers and better balance'),
   (546, 'emily hazel mitchell', 'emily', 'hazel mitchell', 981, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, 'MI', NULL, 'presented annasea, Frites St., Kaufholds, Kenja, and land lovers and better balance'),
   (547, 'larry flynn', 'larry', 'flynn', 981, '[]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, 'MI', NULL, 'presented annasea, Frites St., Kaufholds, Kenja, and land lovers and better balance'),
-  (548, 'Paul Choker', 'Paul', 'Choker', 981, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, 'MI', NULL, 'presented annasea, Frites St., Kaufholds, Kenja, and land lovers and better balance'),
-  (549, 'Kevin Green', 'Kevin', 'Green', 1922, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL),
-  (550, 'Sam Butler', 'Sam', 'Butler', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (551, 'Dave Hampel', 'Dave', 'Hampel', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (552, 'Ryan Treharne', 'Ryan', 'Treharne', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (553, 'chad bruinsslot', 'chad', 'bruinsslot', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
-  (554, 'Eric prall', 'Eric', 'prall', 2001, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (555, 'Tim Gernaat', 'Tim', 'Gernaat', 2001, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (556, 'dave Pestrak', 'dave', 'Pestrak', 1974, '[]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (557, 'Chef Tim', 'Chef', 'Tim', 916, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2787,7 +2779,6 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (563, 'Brad Tracy', 'Brad', 'Tracy', 1993, '[{"value":"brad.tracy@sofofoods.com","type":"work"}]'::jsonb, '[{"value":"(502) 640-1512","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (564, 'Mike Saltzstein', 'Mike', 'Saltzstein', 1993, '[{"value":"mike.saltzstein@sofofoods.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (565, 'Ken Siegers', 'Ken', 'Siegers', 1964, '[{"value":"Ken@panchofoods.com","type":"work"}]'::jsonb, '[{"value":"(708) 429-3260","type":"work"}]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL),
-  (566, 'Matt Regula', 'Matt', 'Regula', 61, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, 'Brea', 'OH', NULL, NULL),
   (567, 'Mark Burkhalter', 'Mark', 'Burkhalter', 1922, '[{"value":"mark.burkhalter@gfs.com","type":"work"}]'::jsonb, '[{"value":"(270) 996-5195","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (568, 'Tiffany Baxter', 'Tiffany', 'Baxter', 837, '[{"value":"spillwaybg@yahoo.com","type":"work"}]'::jsonb, '[{"value":"(270) 842-9397","type":"work"}]'::jsonb, 'Owner', NULL, '2195 River St', 'Bowling Green', 'KY', NULL, NULL),
   (569, 'Clint Logan', 'Clint', 'Logan', 2018, '[]'::jsonb, '[{"value":"(502) 471-0439","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2818,16 +2809,12 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (594, 'Sabrina Ball', 'Sabrina', 'Ball', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (595, 'Curt Kittel', 'Curt', 'Kittel', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (596, 'Colleen Barrett', 'Colleen', 'Barrett', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
-  (597, 'Ryan Bennink', 'Ryan', 'Bennink', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
-  (598, 'Michael Gunderson', 'Michael', 'Gunderson', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
-  (599, 'Jene Braden', 'Jene', 'Braden', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
-  (600, 'Sam Butler', 'Sam', 'Butler', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+  (597, 'Ryan Bennink', 'Ryan', 'Bennink', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT DO NOTHING;
 
 -- Batch 7/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
   (601, 'Dean Rapp', 'Dean', 'Rapp', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
-  (602, 'Jennifer Fried', 'Jennifer', 'Fried', 2004, '[{"value":"JenniferF@testaproduce.com","type":"work"}]'::jsonb, '[{"value":"(312) 388-1936","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (603, 'Kristen Hettinga', 'Kristen', 'Hettinga', 2004, '[{"value":"kristenH@testaproduce.com","type":"work"}]'::jsonb, '[{"value":"(312) 735-4069","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (604, 'Chef Trevor', 'Chef', 'Trevor', 43, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL),
   (605, 'Adam Bliter', 'Adam', 'Bliter', 43, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2841,7 +2828,6 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (613, 'John Foster', 'John', 'Foster', 2010, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, 'OH', NULL, NULL),
   (614, 'Chef Paul', 'Chef', 'Paul', 859, '[]'::jsonb, '[]'::jsonb, 'Sous Chef', NULL, NULL, NULL, NULL, NULL, NULL),
   (615, 'Rachel', 'Rachel', NULL, 690, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL),
-  (616, 'Kristen Hettinga', 'Kristen', 'Hettinga', 2004, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (617, 'Chef Quoc', 'Chef', 'Quoc', 511, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL),
   (618, 'Chef Jason', 'Chef', 'Jason', 366, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL),
   (619, 'Chef Brendon', 'Chef', 'Brendon', 366, '[]'::jsonb, '[]'::jsonb, 'Sous Chef', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2898,7 +2884,6 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (670, 'Matt, Eddie', 'Matt,', 'Eddie', 909, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL),
   (671, 'josh Lundvell', 'josh', 'Lundvell', 992, '[]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (672, 'Chef Curd', 'Chef', 'Curd', 873, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (673, 'Andrew Hubbell', 'Andrew', 'Hubbell', 996, '[{"value":"Andrew@Yancysky.com","type":"work"}]'::jsonb, '[{"value":"(270) 629-2739","type":"work"}]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL),
   (674, 'Danny Williams', 'Danny', 'Williams', 317, '[{"value":"fineartbistroglasowky@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL),
   (675, 'Chef Marcus', 'Chef', 'Marcus', 989, '[]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL),
   (676, 'Chef Jarrod', 'Chef', 'Jarrod', 656, '[]'::jsonb, '[{"value":"(270) 792-5807","type":"work"}]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2910,14 +2895,10 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (682, 'Edgar Maldonado', 'Edgar', 'Maldonado', 1888, '[{"value":"emaldonado@crsonesource.com","type":"work"}]'::jsonb, '[{"value":"(270) 684-1469","type":"work"}]'::jsonb, 'Executive', NULL, NULL, NULL, NULL, NULL, NULL),
   (683, 'Robert(Bo) Ghee', 'Robert(Bo)', 'Ghee', 869, '[{"value":"robert.gheejr@sysco.com","type":"work"}]'::jsonb, '[{"value":"(270) 791-3553","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (684, 'Gary Shelton', 'Gary', 'Shelton', 1967, '[{"value":"gary.shelton@pfgc.com","type":"work"}]'::jsonb, '[{"value":"(270) 784-7940","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
-  (685, 'Mark Burkhalter', 'Mark', 'Burkhalter', 1922, '[{"value":"mark.burkhalter@gfs.com","type":"work"}]'::jsonb, '[{"value":"(270) 996-5195","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
-  (686, 'Shawn Duggan', 'Shawn', 'Duggan', 1967, '[{"value":"shawn.duggan@pfgc.com","type":"work"}]'::jsonb, '[{"value":"(502) 445-0574","type":"work"}]'::jsonb, 'Executive', NULL, NULL, NULL, NULL, NULL, NULL),
   (687, 'Jason Roller', 'Jason', 'Roller', 730, '[]'::jsonb, '[]'::jsonb, 'Executive', NULL, NULL, NULL, NULL, NULL, NULL),
   (688, 'Virginia Quintanilla', 'Virginia', 'Quintanilla', 1898, '[{"value":"virginiaquintanilla@DTMdistributors.com","type":"work"}]'::jsonb, '[{"value":"(270) 393-0160","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (689, 'jack Gilbertson', 'jack', 'Gilbertson', 1852, '[]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (690, 'Joe Ihl', 'Joe', 'Ihl', 1922, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
-  (691, 'Freddy Sheir', 'Freddy', 'Sheir', 1922, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
-  (692, 'Chad Bruinslott', 'Chad', 'Bruinslott', 1922, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
   (693, 'Erin Rogers', 'Erin', 'Rogers', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (694, 'Brittany Bradley', 'Brittany', 'Bradley', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (695, 'Kevin Skukalek', 'Kevin', 'Skukalek', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -2926,7 +2907,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (698, 'Matt Dalicandro', 'Matt', 'Dalicandro', 1922, '[{"value":"matt.Dalicandro@gfs.com","type":"work"}]'::jsonb, '[{"value":"(513) 259-7032","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (699, 'Joan Bauman', 'Joan', 'Bauman', 943, '[{"value":"jbauman1@udayton.edu","type":"work"}]'::jsonb, '[{"value":"(937) 229-2446","type":"work"}]'::jsonb, 'Director Of Operations', 'Mike and Gary', 'Powerhouse 300 College Park', 'Dayton', 'OH', '45469', NULL),
   (700, 'Ben Flores', 'Ben', 'Flores', 896, '[{"value":"flores.552@osu.edu","type":"work"}]'::jsonb, '[{"value":"(251) 656-5540","type":"work"}]'::jsonb, 'Exec Chef', 'Gary and Mike', 'Office of Student Life. Dinning Serves. The Ohio Union 1739 North High Street', 'Columbus', 'OH', '43210', NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 8/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3030,7 +3011,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (798, 'Rhonda Harper', 'Rhonda', 'Harper', 1066, '[]'::jsonb, '[{"value":"(270) 606-1273","type":"work"}]'::jsonb, 'Owner', NULL, '2339 Claudis Harris Rd', 'Adolphus', 'KY', '42120', 'Showed interest in Cheese curds not open yet'),
   (799, 'Blake Kollker', 'Blake', 'Kollker', 1067, '[{"value":"blake.Kollker@azzippizza.com","type":"work"}]'::jsonb, '[{"value":"(812) 909-4144","type":"work"}]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL),
   (800, 'Victor', 'Victor', NULL, 1069, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 9/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3040,12 +3021,9 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (804, 'Dave Ryan', 'Dave', 'Ryan', 1687, '[{"value":"DaveRyan@Berkott.net","type":"work"}]'::jsonb, '[{"value":"(708) 231-1623","type":"work"}]'::jsonb, 'Buyer', NULL, '1913 S Briggs', 'Joliet', 'IL', '60433', 'Dave Ryan is Corporate Deli Buyer.'),
   (805, 'Steve Mcmillen', 'Steve', 'Mcmillen', 1142, '[{"value":"steve.mcmillen@greatlakesch.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (806, 'Pamela Kopplenger', 'Pamela', 'Kopplenger', 1056, '[{"value":"kopplebergerp@michigan.gov","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (807, 'Maranda Thompson', 'Maranda', 'Thompson', 1922, '[]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (808, 'Chris Tanner', 'Chris', 'Tanner', 1058, '[{"value":"chritan@umich.edu","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
-  (809, 'Frank Turchan', 'Frank', 'Turchan', 1058, '[{"value":"turchan@umich.edu","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (810, 'Peggy Anderson', 'Peggy', 'Anderson', 1144, '[{"value":"pja1a@yahoo.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (811, 'Evan Scheller', 'Evan', 'Scheller', 1145, '[{"value":"evan@battlealleybrewingcompany.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
-  (812, 'Abby  Smith', 'Abby', 'Smith', 1046, '[{"value":"asmith@baycliff.org","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (813, 'Todd Forsythe', 'Todd', 'Forsythe', 1146, '[{"value":"toddforsythe75@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (814, 'Bev Stange', 'Bev', 'Stange', 1147, '[{"value":"kkinney@benssupercenter.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (815, 'Skip  Telgard', 'Skip', 'Telgard', 1148, '[{"value":"bluebirdleland@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
@@ -3075,13 +3053,11 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (839, 'Lisa Davis', 'Lisa', 'Davis', 1169, '[{"value":"Davis.donaven@yahoo.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (840, 'Paul Veen', 'Paul', 'Veen', 1170, '[{"value":"pveen@haciendafiesta.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (841, 'Keith Ingrassia', 'Keith', 'Ingrassia', 1171, '[{"value":"keith.ingrassia@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
-  (842, 'Johnathon Thompson', 'Johnathon', 'Thompson', 1052, '[{"value":"jrthompson1@hfcc.edu","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (843, 'Dave Meyer', 'Dave', 'Meyer', 1172, '[{"value":"henrysrestaurantottawa@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (844, 'Carolyn Peruski', 'Carolyn', 'Peruski', 1173, '[{"value":"jg2900m53@aol.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (845, 'Dave Leidlein', 'Dave', 'Leidlein', 1174, '[{"value":"infojayell@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (846, 'Chef Brad', 'Chef', 'Brad', 190, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'chesterton', 'IN', NULL, 'VAF BLITZ'),
   (847, 'Bret Klun', 'Bret', 'Klun', 1175, '[{"value":"bretklun@hotmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
-  (848, 'Olivia Pelton', 'Olivia', 'Pelton', 1044, '[{"value":"opelton@usbnc.org","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (849, 'Mellisa Spinella', 'Mellisa', 'Spinella', 1176, '[{"value":"spinagcmlgc@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (850, 'Dave  Coker', 'Dave', 'Coker', 1177, '[{"value":"mrscsgrilledcheese@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (851, 'Joe Bristol', 'Joe', 'Bristol', 1178, '[{"value":"jbdance@sbcglobal.net","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
@@ -3091,9 +3067,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (855, 'Amanda', 'Amanda', NULL, 93, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'VALPARAISO', 'IN', NULL, 'ANNASEA VAF'),
   (856, 'Crystal Pierce', 'Crystal', 'Pierce', 1182, '[{"value":"riverfrontgrillechesaning@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (857, 'Chef Mario', 'Chef', 'Mario', 973, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'Merrrillville', 'IN', NULL, 'VAF BLITZ'),
-  (858, 'Chris McLeish', 'Chris', 'McLeish', 1042, '[{"value":"grillmanager@riverwalkplace.net","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (859, 'DORIS RUMFELT', 'DORIS', 'RUMFELT', 1183, '[{"value":"DORISPOST253@GMAIL.COM","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
-  (860, 'John Beem', 'John', 'Beem', 1041, '[{"value":"jjbeemiii@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (861, 'Dawn Shafer', 'Dawn', 'Shafer', 1184, '[{"value":"dshafer4@outlook.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (862, 'Jesse samsal', 'Jesse', 'samsal', 1185, '[{"value":"jsamsal@shawneecountryclub.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (863, 'LAURETTA REISS', 'LAURETTA', 'REISS', 1186, '[{"value":"LAURETTA@SMALLBATCHHS.COM","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
@@ -3107,12 +3081,10 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (871, 'Brandi Sarver', 'Brandi', 'Sarver', 1193, '[{"value":"AGMTPSAnnArbor@arborlodging.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (872, 'Shawn Ruddock', 'Shawn', 'Ruddock', 1194, '[{"value":"tracksideeatery@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (873, 'Kathleen Bridgewater', 'Kathleen', 'Bridgewater', 1195, '[{"value":"kathleenrn50@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
-  (874, 'Jesse Mullens', 'Jesse', 'Mullens', 1036, '[{"value":"jesse.mullens@eatsandcrafts.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (875, 'Kelley Hohl', 'Kelley', 'Hohl', 1196, '[{"value":"krorick19@yahoo.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (876, 'Nevin Nannoshi', 'Nevin', 'Nannoshi', 1197, '[{"value":"greekjalapenodixie@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (877, 'Zachariah Polasky', 'Zachariah', 'Polasky', 1198, '[{"value":"zchocolateshop@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (878, 'Chef Paul Harmony', 'Chef', 'Paul Harmony', 1199, '[{"value":"ppharmony72@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
-  (879, 'Lauren Green', 'Lauren', 'Green', 1056, '[{"value":"Greenl18@michigan.gov","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (880, 'Brian Perrone', 'Brian', 'Perrone', 1200, '[{"value":"brian@slowsbarbq.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (881, 'Brian Smith', 'Brian', 'Smith', 1027, '[{"value":"bsmith@treetops.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
   (882, 'David Kniffen', 'David', 'Kniffen', 1201, '[{"value":"conniern77@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, 'MI', NULL, 'GFS NOVI SHOW LEAD 4/25 kaufholds\'),
@@ -3134,7 +3106,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (898, 'Jacob Giese', 'Jacob', 'Giese', 1229, '[]'::jsonb, '[]'::jsonb, 'Sous Chef', NULL, NULL, NULL, NULL, NULL, NULL),
   (899, 'Samantha Zastrow', 'Samantha', 'Zastrow', 1230, '[{"value":"Smzastrow@wisc.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL),
   (900, 'Channie McCall', 'Channie', 'McCall', 1231, '[{"value":"Cihomich@d.umn.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 10/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3146,8 +3118,6 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (906, 'Luke Holleb', 'Luke', 'Holleb', 1891, '[]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (907, 'FAITH Thomas', 'FAITH', 'Thomas', 1922, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (908, 'Mitchell Burnett', 'Mitchell', 'Burnett', 1922, '[]'::jsonb, '[]'::jsonb, 'Executive', NULL, NULL, NULL, NULL, NULL, NULL),
-  (909, 'Ethan Weinberger', 'Ethan', 'Weinberger', 1922, '[]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
-  (910, 'Terry Comer', 'Terry', 'Comer', 1906, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
   (911, 'Mike Sakshaug', 'Mike', 'Sakshaug', 2003, '[]'::jsonb, '[]'::jsonb, 'Manager', NULL, '220 E North Ave.', 'Villa Park', 'IL', '60181', NULL),
   (912, 'Sarah Robinson', 'Sarah', 'Robinson', 1259, '[{"value":"sarah@obryansobky.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL),
   (913, 'Rick Blasey', 'Rick', 'Blasey', 2010, '[{"value":"rick.blasey@usfoods.com","type":"work"}]'::jsonb, '[{"value":"(330) 687-5041","type":"work"}]'::jsonb, 'Poc (Point Of Contact)', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -3155,82 +3125,6 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (915, 'Nicholas Hanneken', 'Nicholas', 'Hanneken', 2010, '[]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, '2nd email on OSU Cincy Annasea and first on McCrum coorsonation'),
   (916, 'Sam Dickstein', 'Sam', 'Dickstein', 517, '[{"value":"sdickstein12@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Exec Chef', NULL, NULL, NULL, NULL, NULL, NULL),
   (917, 'Neal Hummitsch', 'Neal', 'Hummitsch', 1269, '[{"value":"nealhummitsch@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Executive', NULL, NULL, NULL, NULL, NULL, NULL),
-  (918, 'Peggy Anderson', 'Peggy', 'Anderson', 1144, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (919, 'Evan Scheller', 'Evan', 'Scheller', 1145, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (920, 'Abby  Smith', 'Abby', 'Smith', 1046, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (921, 'Todd Forsythe', 'Todd', 'Forsythe', 1146, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (922, 'Bev Stange', 'Bev', 'Stange', 1147, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (923, 'Skip  Telgard', 'Skip', 'Telgard', 1148, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (924, 'Ericson Booker', 'Ericson', 'Booker', 1149, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (925, 'Igor Ilijovski', 'Igor', 'Ilijovski', 1150, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (926, 'Andrew Wright', 'Andrew', 'Wright', 1151, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (927, 'Omri Robinson', 'Omri', 'Robinson', 1152, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (928, 'Gretchen Olds', 'Gretchen', 'Olds', 1153, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (929, 'Alexander Ausley', 'Alexander', 'Ausley', 1154, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (930, 'Ted Klonaris', 'Ted', 'Klonaris', 1155, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (931, 'Jim  Chico', 'Jim', 'Chico', 1156, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (932, 'Melissa Coy', 'Melissa', 'Coy', 1157, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (933, 'Julia Tyrrell', 'Julia', 'Tyrrell', 1158, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (934, 'Matthew Losiewicz', 'Matthew', 'Losiewicz', 1159, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (935, 'Bill Wilson', 'Bill', 'Wilson', 1160, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (936, 'Kay Morgan', 'Kay', 'Morgan', 1161, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (937, 'Jehad Majed', 'Jehad', 'Majed', 1162, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (938, 'Ruben Meneses', 'Ruben', 'Meneses', 1163, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (939, 'Brent  Overmyer', 'Brent', 'Overmyer', 1032, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (940, 'Josh Layne', 'Josh', 'Layne', 1164, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (941, 'Sinisa Cirovski', 'Sinisa', 'Cirovski', 1165, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (942, 'Adam MacMillan', 'Adam', 'MacMillan', 1166, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (943, 'Paris Hoisington', 'Paris', 'Hoisington', 1167, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (944, 'Sue Ann Braley', 'Sue', 'Ann Braley', 1168, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (945, 'Lisa Davis', 'Lisa', 'Davis', 1169, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (946, 'Paul Veen', 'Paul', 'Veen', 1170, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (947, 'Keith Ingrassia', 'Keith', 'Ingrassia', 1171, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (948, 'Johnathon Thompson', 'Johnathon', 'Thompson', 1052, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (949, 'Dave Meyer', 'Dave', 'Meyer', 1172, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (950, 'Carolyn Peruski', 'Carolyn', 'Peruski', 1173, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (951, 'Dave Leidlein', 'Dave', 'Leidlein', 1174, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (952, 'Bret Klun', 'Bret', 'Klun', 1175, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (953, 'Olivia Pelton', 'Olivia', 'Pelton', 1044, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (954, 'Mellisa Spinella', 'Mellisa', 'Spinella', 1176, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (955, 'Dave  Coker', 'Dave', 'Coker', 1177, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (956, 'Joe Bristol', 'Joe', 'Bristol', 1178, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (957, 'Matthew Leeland', 'Matthew', 'Leeland', 1179, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (958, 'Jack Alexander', 'Jack', 'Alexander', 1180, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (959, 'Dana Saurman', 'Dana', 'Saurman', 1181, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (960, 'Crystal Pierce', 'Crystal', 'Pierce', 1182, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (961, 'Chris McLeish', 'Chris', 'McLeish', 1042, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (962, 'DORIS RUMFELT', 'DORIS', 'RUMFELT', 1183, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (963, 'John Beem', 'John', 'Beem', 1041, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (964, 'Dawn Shafer', 'Dawn', 'Shafer', 1184, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (965, 'Jesse samsal', 'Jesse', 'samsal', 1185, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (966, 'LAURETTA REISS', 'LAURETTA', 'REISS', 1186, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (967, 'Sarah Williams', 'Sarah', 'Williams', 1187, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (968, 'Christina Bentley', 'Christina', 'Bentley', 1059, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (969, 'Tammy Holsworth', 'Tammy', 'Holsworth', 1188, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (970, 'Kerry Emelander', 'Kerry', 'Emelander', 1189, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (971, 'Chris Zawila', 'Chris', 'Zawila', 1190, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (972, 'Dave Wilder', 'Dave', 'Wilder', 1191, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (973, 'Kailyn Switzer', 'Kailyn', 'Switzer', 1192, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (974, 'Brandi Sarver', 'Brandi', 'Sarver', 1193, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (975, 'Shawn Ruddock', 'Shawn', 'Ruddock', 1194, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (976, 'Kathleen Bridgewater', 'Kathleen', 'Bridgewater', 1195, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (977, 'Jesse Mullens', 'Jesse', 'Mullens', 1036, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (978, 'Kelley Hohl', 'Kelley', 'Hohl', 1196, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (979, 'Nevin Nannoshi', 'Nevin', 'Nannoshi', 1197, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (980, 'Zachariah Polasky', 'Zachariah', 'Polasky', 1198, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (981, 'Chef Paul Harmony', 'Chef', 'Paul Harmony', 1199, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (982, 'Lauren Green', 'Lauren', 'Green', 1056, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (983, 'Brian Perrone', 'Brian', 'Perrone', 1200, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (984, 'Brian Smith', 'Brian', 'Smith', 1027, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (985, 'David Kniffen', 'David', 'Kniffen', 1201, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (986, 'Robin Smith', 'Robin', 'Smith', 1202, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (987, 'Brian Paul', 'Brian', 'Paul', 1203, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (988, 'Caden  Fulkerson', 'Caden', 'Fulkerson', 1204, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (989, 'Ronald Cox', 'Ronald', 'Cox', 1205, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (990, 'Katlyn McLeod', 'Katlyn', 'McLeod', 1049, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (991, 'Rhonda Howard', 'Rhonda', 'Howard', 1206, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (992, 'Teresa Biller', 'Teresa', 'Biller', 1207, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (993, 'Brady Cohen', 'Brady', 'Cohen', 701, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (994, 'steve Coppolillo', 'steve', 'Coppolillo', 1700, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, 'Crown point', 'IN', NULL, 'Dale to pirsue in June-'),
   (995, 'Jeff Gibson', 'Jeff', 'Gibson', 1802, '[]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (996, 'Douglas Hunter', 'Douglas', 'Hunter', 1748, '[{"value":"customerservice@jacobspub.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, 'Evansville', 'IN', NULL, NULL),
@@ -3238,7 +3132,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (998, 'Ashley Maldonado', 'Ashley', 'Maldonado', 1888, '[{"value":"amaldonado@crsonesource.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Executive', NULL, NULL, 'Bowling green', 'KY', NULL, 'Valerie Sharber is Dry and Frozen Senior Catergory Manager'),
   (999, 'Valerie Sharber', 'Valerie', 'Sharber', 1967, '[{"value":"Valerie.sharber@pfgc.com","type":"work"}]'::jsonb, '[{"value":"(270) 846-7093","type":"work"}]'::jsonb, 'Executive', NULL, NULL, NULL, NULL, NULL, NULL),
   (1000, 'Steve Horwich', 'Steve', 'Horwich', 2004, '[{"value":"steveh@testaproduce.com","type":"work"}]'::jsonb, '[{"value":"(312) 545-7417","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 11/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3342,7 +3236,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1098, 'Vitelli', 'Vitelli', NULL, 1377, '[{"value":"ewvfsd@rit.edu","type":"work"}]'::jsonb, '[{"value":"(585) 475-2721","type":"work"}]'::jsonb, 'Assistant Dining Manager', NULL, NULL, NULL, 'NY', NULL, 'NRA ANNASEA LEAD'),
   (1099, 'Gunasinghe', 'Gunasinghe', NULL, 1378, '[{"value":"KasunGunasinghe@volcora.com","type":"work"}]'::jsonb, '[{"value":"(646) 627-4015","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, 'NY', NULL, 'NRA ANNASEA LEAD'),
   (1100, 'Ahmed', 'Ahmed', NULL, 1379, '[{"value":"jasminmj86@yahoo.com","type":"work"}]'::jsonb, '[{"value":"(614) 515-8013","type":"work"}]'::jsonb, 'Owner', NULL, NULL, NULL, 'OH', NULL, 'NRA ANNASEA LEAD')
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 12/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3446,7 +3340,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1198, 'Amy Gautraud', 'Amy', 'Gautraud', 1922, '[{"value":"amy.gautraud@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (1199, 'Dan Goeglein', 'Dan', 'Goeglein', 1922, '[{"value":"dan.goeglein@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL),
   (1200, 'Alex Grantham', 'Alex', 'Grantham', 1922, '[]'::jsonb, '[{"value":"(616) 530-7000","type":"work"}]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 13/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3461,7 +3355,6 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1209, 'Brad Postema', 'Brad', 'Postema', 1922, '[{"value":"brad.postema@gfs.com","type":"work"}]'::jsonb, '[{"value":"(614) 360-8602","type":"work"}]'::jsonb, 'Director Of Operations', NULL, NULL, NULL, NULL, NULL, NULL),
   (1210, 'Cindy Quarles', 'Cindy', 'Quarles', 1922, '[{"value":"cynthia.quarles@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (1211, 'Jeff Rohm', 'Jeff', 'Rohm', 1922, '[{"value":"jrohmeo@gmail.com","type":"work"}]'::jsonb, '[{"value":"(800) 968-7500","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1212, 'Patrick Shaw', 'Patrick', 'Shaw', 1922, '[{"value":"patrick.shaw@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
   (1213, 'Amy Shearer', 'Amy', 'Shearer', 1922, '[{"value":"amy.shearer@gfs.com","type":"work"}]'::jsonb, '[{"value":"(616) 530-7000","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (1214, 'Leslie Sneed', 'Leslie', 'Sneed', 1922, '[{"value":"leslie.sneed@gfs.com","type":"work"}]'::jsonb, '[{"value":"(618) 629-2301","type":"work"}]'::jsonb, 'Distributor Rep', NULL, NULL, NULL, NULL, NULL, NULL),
   (1215, 'Mark Sulka', 'Mark', 'Sulka', 1922, '[{"value":"mark.sulka@gfs.com","type":"work"}]'::jsonb, '[{"value":"(616) 717-6677","type":"work"}]'::jsonb, 'Manager', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -3482,16 +3375,13 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1230, 'HECTOR VALDEZ', 'HECTOR', 'VALDEZ', 1922, '[{"value":"hector.valdez1@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, 'CHICAGOLAND', NULL, NULL, NULL),
   (1231, 'JOHN JEFFCOTT', 'JOHN', 'JEFFCOTT', 1922, '[{"value":"john.jeffcott@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, 'CHICAGOLAND', NULL, NULL, NULL),
   (1232, 'DAVID BIALLAS', 'DAVID', 'BIALLAS', 1922, '[{"value":"DAVID.BIALLAS@GFS.COM","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, 'CHICAGOLAND', NULL, NULL, NULL),
-  (1233, 'COLLEEN BARRETT', 'COLLEEN', 'BARRETT', 1922, '[{"value":"colleen.barrett@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, 'CHICAGOLAND', NULL, NULL, NULL),
   (1234, 'GRACE BINELLI', 'GRACE', 'BINELLI', 1922, '[{"value":"grace.binelli@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, 'CHICAGOLAND', NULL, NULL, NULL),
   (1235, 'AMANDALUECK', 'AMANDALUECK', NULL, 1922, '[{"value":"amanda.leuck@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, 'CHICAGOLAND', NULL, NULL, NULL),
   (1236, 'JIM TOBIN', 'JIM', 'TOBIN', 1922, '[{"value":"jim.tobin@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, 'CHICAGOLAND', NULL, NULL, NULL),
   (1237, 'BRYN HALSTROM', 'BRYN', 'HALSTROM', 1922, '[{"value":"brynn.hallstrom@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, 'CHICAGOLAND', NULL, NULL, NULL),
   (1238, 'PATTY SULLIVAN', 'PATTY', 'SULLIVAN', 1922, '[{"value":"patty.sullivan@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, 'CHICAGOLAND', NULL, NULL, NULL),
-  (1239, 'BARRY BROWN', 'BARRY', 'BROWN', 1922, '[{"value":"barry.brown@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, 'CHICAGOLAND', NULL, NULL, NULL),
   (1240, 'ROBERT DOHERTY', 'ROBERT', 'DOHERTY', 1922, '[{"value":"robert.doherty@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, 'CHICAGOLAND', NULL, NULL, NULL),
   (1241, 'TERRI SORG', 'TERRI', 'SORG', 1922, '[{"value":"terri.sorg@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, 'CHICAGOLAND', NULL, NULL, NULL),
-  (1242, 'PATTY SULLIVAN', 'PATTY', 'SULLIVAN', 1922, '[{"value":"patty.sullivan@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Distributor Rep', NULL, NULL, 'CHICAGOLAND', NULL, NULL, NULL),
   (1243, 'joseph.cecchini@abbott.com', 'joseph.cecchini@abbott.com', NULL, 1440, '[{"value":"joseph.cecchini@abbott.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1244, 'Scott Padbury', 'Scott', 'Padbury', 1440, '[{"value":"scott.padbury@abbott.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1245, 'Jovani.gomez@abbvie.com', 'Jovani.gomez@abbvie.com', NULL, 1072, '[{"value":"Jovani.gomez@abbvie.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -3518,10 +3408,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1266, 'cremeofthecropcatering@gmail.com', 'cremeofthecropcatering@gmail.com', NULL, 1080, '[{"value":"cremeofthecropcatering@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '4460 Main Street', NULL, NULL, NULL, NULL),
   (1267, 'contact@mosswashing.com', 'contact@mosswashing.com', NULL, 1449, '[{"value":"contact@mosswashing.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1268, 'daniel.may@drinkswithdabney.com', 'daniel.may@drinkswithdabney.com', NULL, 1450, '[{"value":"daniel.may@drinkswithdabney.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '344 N Rose St', NULL, NULL, NULL, NULL),
-  (1269, 'daniel.may@drinkswithdabney.com', 'daniel.may@drinkswithdabney.com', NULL, 1450, '[{"value":"daniel.may@drinkswithdabney.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '344 N Rose St', NULL, NULL, NULL, NULL),
   (1270, 'Missy@daydreamerdomes.com', 'Missy@daydreamerdomes.com', NULL, 1116, '[{"value":"Missy@daydreamerdomes.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1271, 'anthony.lacroix@warnerhospital.org', 'anthony.lacroix@warnerhospital.org', NULL, 1081, '[{"value":"anthony.lacroix@warnerhospital.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '422 W WHITE ST', NULL, NULL, NULL, NULL),
-  (1272, 'anthony.lacroix@warnerhospital.org', 'anthony.lacroix@warnerhospital.org', NULL, 1081, '[{"value":"anthony.lacroix@warnerhospital.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '422 W WHITE ST', NULL, NULL, NULL, NULL),
   (1273, 'ale.licea11@gmail.com', 'ale.licea11@gmail.com', NULL, 1451, '[{"value":"ale.licea11@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '1036 N KILBOURNE AVE', NULL, NULL, NULL, NULL),
   (1274, 'hefedegreat@gmail.com', 'hefedegreat@gmail.com', NULL, 1452, '[{"value":"hefedegreat@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1275, 'rccoffey@eiu.edu', 'rccoffey@eiu.edu', NULL, 1453, '[{"value":"rccoffey@eiu.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -3531,16 +3419,12 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1279, 'jgronske@epicburger.com', 'jgronske@epicburger.com', NULL, 1082, '[{"value":"jgronske@epicburger.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1280, 'ruth.bassett1959@gmail.com', 'ruth.bassett1959@gmail.com', NULL, 1083, '[{"value":"ruth.bassett1959@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1281, 'findfaklandia@gmail.com', 'findfaklandia@gmail.com', NULL, 1121, '[{"value":"findfaklandia@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1282, 'findfaklandia@gmail.com', 'findfaklandia@gmail.com', NULL, 1121, '[{"value":"findfaklandia@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '3807 S Packard Ave', NULL, NULL, NULL, NULL),
-  (1283, 'findfaklandia@gmail.com', 'findfaklandia@gmail.com', NULL, 1121, '[{"value":"findfaklandia@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1284, 'Tkelly@franciscancommunities.org', 'Tkelly@franciscancommunities.org', NULL, 1456, '[{"value":"Tkelly@franciscancommunities.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '1501 MERCY CREEK DR', NULL, NULL, NULL, NULL),
-  (1285, 'Tkelly@franciscancommunities.org', 'Tkelly@franciscancommunities.org', NULL, 1456, '[{"value":"Tkelly@franciscancommunities.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1286, 'burimo@hotmail.com', 'burimo@hotmail.com', NULL, 1122, '[{"value":"burimo@hotmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1287, 'gameonpeotone@gmail.com', 'gameonpeotone@gmail.com', NULL, 1084, '[{"value":"gameonpeotone@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1288, 'adam@gejascafe.com', 'adam@gejascafe.com', NULL, 1457, '[{"value":"adam@gejascafe.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1289, 'allie@me.com', 'allie@me.com', NULL, 1110, '[{"value":"allie@me.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1290, 'baldsilentbob70@yahoo.com', 'baldsilentbob70@yahoo.com', NULL, 1110, '[{"value":"baldsilentbob70@yahoo.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '1 W DUNES HWY', NULL, NULL, NULL, NULL),
-  (1291, 'baldsilentbob70@yahoo.com', 'baldsilentbob70@yahoo.com', NULL, 1110, '[{"value":"baldsilentbob70@yahoo.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '644 E Rand Rd', NULL, NULL, NULL, NULL),
   (1292, 'gina@golfvx.com', 'gina@golfvx.com', NULL, 379, '[{"value":"gina@golfvx.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '644 E Rand Rd', NULL, NULL, NULL, NULL),
   (1293, 'jun@golfvx.com', 'jun@golfvx.com', NULL, 379, '[{"value":"jun@golfvx.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '644 E Rand Rd', NULL, NULL, NULL, NULL),
   (1294, 'todd@hairycowbrewing.com', 'todd@hairycowbrewing.com', NULL, 1458, '[{"value":"todd@hairycowbrewing.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '410 E COLUMBUS DR', NULL, NULL, NULL, NULL),
@@ -3550,7 +3434,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1298, 'adreifke@heritageal.com', 'adreifke@heritageal.com', NULL, 1461, '[{"value":"adreifke@heritageal.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1299, 'jlewandowski@heritageal.com', 'jlewandowski@heritageal.com', NULL, 1123, '[{"value":"jlewandowski@heritageal.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1300, 'jeffrey.schoening@independencevillages.com', 'jeffrey.schoening@independencevillages.com', NULL, 1071, '[{"value":"jeffrey.schoening@independencevillages.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 14/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3571,7 +3455,6 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1315, 'ksteffes@kirbyhealth.org', 'ksteffes@kirbyhealth.org', NULL, 1086, '[{"value":"ksteffes@kirbyhealth.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1316, 'kirk530@gmail.com', 'kirk530@gmail.com', NULL, 1087, '[{"value":"kirk530@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1317, 'fritsch_indy@yahoo.com', 'fritsch_indy@yahoo.com', NULL, 1088, '[{"value":"fritsch_indy@yahoo.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1318, 'fritsch_indy@yahoo.com', 'fritsch_indy@yahoo.com', NULL, 1088, '[{"value":"fritsch_indy@yahoo.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1319, 'Janette.solana@lgyc.org', 'Janette.solana@lgyc.org', NULL, 1124, '[{"value":"Janette.solana@lgyc.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1320, 'thouke@larabida.org', 'thouke@larabida.org', NULL, 1089, '[{"value":"thouke@larabida.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1321, 'Lmarcial@anthemmemorycare.com', 'Lmarcial@anthemmemorycare.com', NULL, 1464, '[{"value":"Lmarcial@anthemmemorycare.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -3579,35 +3462,26 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1323, 'madisonpatch97@gmail.com', 'madisonpatch97@gmail.com', NULL, 1117, '[{"value":"madisonpatch97@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1324, 'robin@lutherdale.org', 'robin@lutherdale.org', NULL, 1465, '[{"value":"robin@lutherdale.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1325, 'grace@lutherdale.org', 'grace@lutherdale.org', NULL, 1465, '[{"value":"grace@lutherdale.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1326, 'robin@lutherdale.org', 'robin@lutherdale.org', NULL, 1465, '[{"value":"robin@lutherdale.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, 'N7891 US Highway 12', NULL, NULL, NULL, NULL),
   (1327, 'caitlyn@macandcheeseshop.com', 'caitlyn@macandcheeseshop.com', NULL, 1125, '[{"value":"caitlyn@macandcheeseshop.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1328, 'caitlyn@macandcheeseshop.com', 'caitlyn@macandcheeseshop.com', NULL, 1125, '[{"value":"caitlyn@macandcheeseshop.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '2654 South Oneida', NULL, NULL, NULL, NULL),
   (1329, 'RFamFoods@gmail.com', 'RFamFoods@gmail.com', NULL, 1135, '[{"value":"RFamFoods@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '18849 Dixie Hwy', NULL, NULL, NULL, NULL),
   (1330, 'morgan@mapletreeinnrestaurant.com', 'morgan@mapletreeinnrestaurant.com', NULL, 553, '[{"value":"morgan@mapletreeinnrestaurant.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '8555 TAFT ST', NULL, NULL, NULL, NULL),
-  (1331, 'morgan@mapletreeinnrestaurant.com', 'morgan@mapletreeinnrestaurant.com', NULL, 553, '[{"value":"morgan@mapletreeinnrestaurant.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '18849 Dixie Hwy', NULL, NULL, NULL, NULL),
   (1332, 'krismcdonald74@icloud.com', 'krismcdonald74@icloud.com', NULL, 1466, '[{"value":"krismcdonald74@icloud.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1333, 'saboreskitchen@gmail.com', 'saboreskitchen@gmail.com', NULL, 1467, '[{"value":"saboreskitchen@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1334, 'saboreskitchen@gmail.com', 'saboreskitchen@gmail.com', NULL, 1467, '[{"value":"saboreskitchen@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1335, 'troy.thorne@gfs.com', 'troy.thorne@gfs.com', NULL, 1091, '[{"value":"troy.thorne@gfs.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1336, 'danna.coleman@rhs.care', 'danna.coleman@rhs.care', NULL, 1111, '[{"value":"danna.coleman@rhs.care","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1337, 'danna.coleman@rhs.care', 'danna.coleman@rhs.care', NULL, 1111, '[{"value":"danna.coleman@rhs.care","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '8555 TAFT ST', NULL, NULL, NULL, NULL),
   (1338, 'larhonda.lindsey@rhs.care', 'larhonda.lindsey@rhs.care', NULL, 1111, '[{"value":"larhonda.lindsey@rhs.care","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '8555 TAFT ST', NULL, NULL, NULL, NULL),
-  (1339, 'danna.coleman@rhs.care', 'danna.coleman@rhs.care', NULL, 1111, '[{"value":"danna.coleman@rhs.care","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1340, 'Ryan@heardhosp.com', 'Ryan@heardhosp.com', NULL, 1468, '[{"value":"Ryan@heardhosp.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1341, 'cateringandevents@thefigandthepheasant.com', 'cateringandevents@thefigandthepheasant.com', NULL, 1126, '[{"value":"cateringandevents@thefigandthepheasant.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1342, 'Laurie.nomellini@central301.net', 'Laurie.nomellini@central301.net', NULL, 1469, '[{"value":"Laurie.nomellini@central301.net","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1343, 'Tabitha.Gibson@central301.net', 'Tabitha.Gibson@central301.net', NULL, 1469, '[{"value":"Tabitha.Gibson@central301.net","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1344, 'hortont@district65.net', 'hortont@district65.net', NULL, 1470, '[{"value":"hortont@district65.net","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '1500 MCDANIEL AVE', NULL, NULL, NULL, NULL),
   (1345, 'chefcelena1@yahoo.com', 'chefcelena1@yahoo.com', NULL, 1092, '[{"value":"chefcelena1@yahoo.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1346, 'chefcelena1@yahoo.com', 'chefcelena1@yahoo.com', NULL, 1092, '[{"value":"chefcelena1@yahoo.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '2055 W BALMORAL AVE', NULL, NULL, NULL, NULL),
   (1347, 'sophielima@gmail.com', 'sophielima@gmail.com', NULL, 1093, '[{"value":"sophielima@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1348, 'ktinoco@nd.edu', 'ktinoco@nd.edu', NULL, 1112, '[{"value":"ktinoco@nd.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1349, 'ktinoco@nd.edu', 'ktinoco@nd.edu', NULL, 1112, '[{"value":"ktinoco@nd.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1350, 'jdavis@oakcrestdekalb.org', 'jdavis@oakcrestdekalb.org', NULL, 1471, '[{"value":"jdavis@oakcrestdekalb.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1351, 'andrea.diaz@psd150.org', 'andrea.diaz@psd150.org', NULL, 1472, '[{"value":"andrea.diaz@psd150.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1352, 'miguel.plata@noahsarkwaterpark.com', 'miguel.plata@noahsarkwaterpark.com', NULL, 1473, '[{"value":"miguel.plata@noahsarkwaterpark.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1353, 'tonyaj@paramountarts.com', 'tonyaj@paramountarts.com', NULL, 1094, '[{"value":"tonyaj@paramountarts.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1354, 'tonyaj@paramountarts.com', 'tonyaj@paramountarts.com', NULL, 1094, '[{"value":"tonyaj@paramountarts.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1355, 'pauliesscheduling@gmail.com', 'pauliesscheduling@gmail.com', NULL, 1136, '[{"value":"pauliesscheduling@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1356, 'bwylie@sblhs.org', 'bwylie@sblhs.org', NULL, 1095, '[{"value":"bwylie@sblhs.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1357, 'info@myperiperi.com', 'info@myperiperi.com', NULL, 1474, '[{"value":"info@myperiperi.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -3624,13 +3498,11 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1368, 'Christine_A_Hartney@rush.edu', 'Christine_A_Hartney@rush.edu', NULL, 1098, '[{"value":"Christine_A_Hartney@rush.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1369, 'donald@hoohaven.org', 'donald@hoohaven.org', NULL, 1099, '[{"value":"donald@hoohaven.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1370, 'rockfalls@live.com', 'rockfalls@live.com', NULL, 1099, '[{"value":"rockfalls@live.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1371, 'donald@hoohaven.org', 'donald@hoohaven.org', NULL, 1099, '[{"value":"donald@hoohaven.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1372, 'pmiller1706@gmail.com', 'pmiller1706@gmail.com', NULL, 1480, '[{"value":"pmiller1706@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1373, 'tsorrentino@sos.org', 'tsorrentino@sos.org', NULL, 1481, '[{"value":"tsorrentino@sos.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '4105 Naperville Rd', NULL, NULL, NULL, NULL),
   (1374, 'sherri.broadnax@yahoo.com', 'sherri.broadnax@yahoo.com', NULL, 1482, '[{"value":"sherri.broadnax@yahoo.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1375, 'Mikes@spring-brook.com', 'Mikes@spring-brook.com', NULL, 1483, '[{"value":"Mikes@spring-brook.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1376, 'Trudyp@spring-brook.com', 'Trudyp@spring-brook.com', NULL, 1483, '[{"value":"Trudyp@spring-brook.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1377, 'Mikes@spring-brook.com', 'Mikes@spring-brook.com', NULL, 1483, '[{"value":"Mikes@spring-brook.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '242 LAKE SHORE DR', NULL, NULL, NULL, NULL),
   (1378, 'cbennett@squarerootscp.com', 'cbennett@squarerootscp.com', NULL, 843, '[{"value":"cbennett@squarerootscp.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1379, 'kellyrmarks@gmail.com', 'kellyrmarks@gmail.com', NULL, 1113, '[{"value":"kellyrmarks@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1380, 'eli.ramos@storypoint.com', 'eli.ramos@storypoint.com', NULL, 1100, '[{"value":"eli.ramos@storypoint.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -3638,28 +3510,22 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1382, 'gm.surestaylombard@gmail.com', 'gm.surestaylombard@gmail.com', NULL, 1485, '[{"value":"gm.surestaylombard@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1383, 'mr2007.mf@gmail.com', 'mr2007.mf@gmail.com', NULL, 1114, '[{"value":"mr2007.mf@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1384, 'faraz@tandoorchicago.com', 'faraz@tandoorchicago.com', NULL, 1486, '[{"value":"faraz@tandoorchicago.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1385, 'faraz@tandoorchicago.com', 'faraz@tandoorchicago.com', NULL, 1486, '[{"value":"faraz@tandoorchicago.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1386, 'tacostaqueromucho@gmail.com', 'tacostaqueromucho@gmail.com', NULL, 1487, '[{"value":"tacostaqueromucho@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '3517 N Spaulding Ave', NULL, NULL, NULL, NULL),
   (1387, 'spencer@cellardoorbar.com', 'spencer@cellardoorbar.com', NULL, 1488, '[{"value":"spencer@cellardoorbar.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '1901 Franklin St', NULL, NULL, NULL, NULL),
   (1388, 'alyssahartness@gmail.com', 'alyssahartness@gmail.com', NULL, 1101, '[{"value":"alyssahartness@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1389, 'alonso@matrixvenue.com', 'alonso@matrixvenue.com', NULL, 1102, '[{"value":"alonso@matrixvenue.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1390, 'alonso@matrixvenue.com', 'alonso@matrixvenue.com', NULL, 1102, '[{"value":"alonso@matrixvenue.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, '808 S Route 59', NULL, NULL, NULL, NULL),
   (1391, 'sabrina32620@hotmail.com', 'sabrina32620@hotmail.com', NULL, 1103, '[{"value":"sabrina32620@hotmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1392, 'sabrina32620@hotmail.com', 'sabrina32620@hotmail.com', NULL, 1103, '[{"value":"sabrina32620@hotmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1393, 'patti.fairmont@gmail.com', 'patti.fairmont@gmail.com', NULL, 1104, '[{"value":"patti.fairmont@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1394, 'patti.fairmont@gmail.com', 'patti.fairmont@gmail.com', NULL, 1104, '[{"value":"patti.fairmont@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1395, 'dluna@southholland.org', 'dluna@southholland.org', NULL, 1489, '[{"value":"dluna@southholland.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1396, 'kshannon@woodsofcaledonia.com', 'kshannon@woodsofcaledonia.com', NULL, 1137, '[{"value":"kshannon@woodsofcaledonia.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1397, 'olivera.bezanovic@trinity-health.org', 'olivera.bezanovic@trinity-health.org', NULL, 1490, '[{"value":"olivera.bezanovic@trinity-health.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1398, 'sofia.quirk@trinity-health.org', 'sofia.quirk@trinity-health.org', NULL, 1105, '[{"value":"sofia.quirk@trinity-health.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1399, 'sofia.quirk@trinity-health.org', 'sofia.quirk@trinity-health.org', NULL, 1105, '[{"value":"sofia.quirk@trinity-health.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1400, 'Andi.White@saintalphonsus.org', 'Andi.White@saintalphonsus.org', NULL, 1491, '[{"value":"Andi.White@saintalphonsus.org","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 15/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
   (1401, 'Jody.mcghee@timber-lee.com', 'Jody.mcghee@timber-lee.com', NULL, 1127, '[{"value":"Jody.mcghee@timber-lee.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
-  (1402, 'Jody.mcghee@timber-lee.com', 'Jody.mcghee@timber-lee.com', NULL, 1127, '[{"value":"Jody.mcghee@timber-lee.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, 'N8705 Scout Rd', NULL, NULL, NULL, NULL),
   (1403, 'info@tinyscoffeebar.com', 'info@tinyscoffeebar.com', NULL, 1492, '[{"value":"info@tinyscoffeebar.com","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1404, 'dsprocurement@housing.illinois.edu', 'dsprocurement@housing.illinois.edu', NULL, 1106, '[{"value":"dsprocurement@housing.illinois.edu","type":"work"}]'::jsonb, '[]'::jsonb, 'Buyer', NULL, NULL, NULL, NULL, NULL, NULL),
   (1405, 'BRETT STEIN', 'BRETT', 'STEIN', 1499, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL),
@@ -3758,7 +3624,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1498, 'Unknown', NULL, NULL, 1071, '[]'::jsonb, '[{"value":"(515) 292-2858","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1499, 'Unknown', NULL, NULL, 1128, '[]'::jsonb, '[{"value":"(317) 745-2766","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1500, 'Unknown', NULL, NULL, 1129, '[]'::jsonb, '[{"value":"(515) 987-4100","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]')
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 16/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3862,7 +3728,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1598, 'Unknown', NULL, NULL, 1118, '[]'::jsonb, '[{"value":"(616) 738-6000","type":"work"}]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1599, 'Unknown', NULL, NULL, 1845, '[]'::jsonb, '[{"value":"(312) 999-9760","type":"work"}]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, '[NO NAME - needs entry]'),
   (1600, 'Tom Lynhome', 'Tom', 'Lynhome', 1502, '[]'::jsonb, '[]'::jsonb, 'Owner', NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 17/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -3966,7 +3832,7 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1698, 'Josh Simmer', 'Josh', 'Simmer', 1593, '[{"value":"josh.simmer@robbinswoodalc.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'MIDDLEVILLE', 'MI', NULL, NULL),
   (1699, 'Nicholas Allen', 'Nicholas', 'Allen', 1594, '[{"value":"ungybob@gmail.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'GLADWIN', 'MI', NULL, NULL),
   (1700, 'Harold Klukowski', 'Harold', 'Klukowski', 1595, '[{"value":"tk5bowl@northfieldlanes.com","type":"work"}]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, 'SWARTZ CREEK', 'MI', NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+ON CONFLICT DO NOTHING;
 
 -- Batch 18/18
 INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, phone, title, linkedin_url, address, city, state, postal_code, notes) VALUES
@@ -4044,9 +3910,8 @@ INSERT INTO contacts (id, name, first_name, last_name, organization_id, email, p
   (1772, 'Brandon', 'Brandon', NULL, 47, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (1773, 'Augie', 'Augie', NULL, 48, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
   (1774, 'Chef Ashley Chef Johm', 'Chef', 'Ashley Chef Johm', 49, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (1775, 'Jeremy Skiles Chef', 'Jeremy', 'Skiles Chef', 130, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL),
-  (1776, 'Harry Greene', 'Harry', 'Greene', 1968, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
-ON CONFLICT (organization_id, name) DO NOTHING;
+  (1775, 'Jeremy Skiles Chef', 'Jeremy', 'Skiles Chef', 130, '[]'::jsonb, '[]'::jsonb, NULL, NULL, NULL, NULL, NULL, NULL, NULL)
+ON CONFLICT DO NOTHING;
 
 -- ============================================================================
 -- ORGANIZATION DISTRIBUTORS (715 records)
@@ -4189,7 +4054,6 @@ INSERT INTO organization_distributors (organization_id, distributor_id, is_prima
   (675, 869, true),
   (679, 2010, true),
   (680, 2010, true),
-  (686, 1925, true),
   (687, 1925, true),
   (690, 2004, true),
   (693, 1922, true),
@@ -4214,8 +4078,6 @@ INSERT INTO organization_distributors (organization_id, distributor_id, is_prima
   (797, 1922, true),
   (804, 1922, true),
   (806, 1922, true),
-  (807, 1922, true),
-  (812, 1922, true),
   (814, 1922, true),
   (819, 2010, true),
   (837, 1922, true),
@@ -4223,7 +4085,6 @@ INSERT INTO organization_distributors (organization_id, distributor_id, is_prima
   (840, 2010, true),
   (851, 1922, true),
   (854, 1922, true),
-  (858, 1922, true),
   (859, 2004, true),
   (866, 869, true),
   (869, 1925, true),
@@ -4244,40 +4105,10 @@ INSERT INTO organization_distributors (organization_id, distributor_id, is_prima
   (906, 1925, true),
   (907, 869, true),
   (908, 1922, true),
-  (909, 2004, true),
-  (916, 2010, true),
-  (918, 2010, true),
-  (924, 2004, true),
-  (928, 1922, true),
-  (934, 869, true),
-  (935, 2004, true),
-  (937, 869, true),
-  (938, 2004, true),
-  (940, 2004, true),
-  (942, 1922, true),
-  (943, 1922, true),
-  (946, 869, true);
+  (916, 2010, true);
 
 -- Batch 3/8
 INSERT INTO organization_distributors (organization_id, distributor_id, is_primary) VALUES
-  (949, 1922, true),
-  (951, 2010, true),
-  (965, 1925, true),
-  (971, 2018, true),
-  (972, 1925, true),
-  (973, 1925, true),
-  (974, 2010, true),
-  (977, 1967, true),
-  (978, 1922, true),
-  (980, 1922, true),
-  (981, 1922, true),
-  (982, 2004, true),
-  (984, 2010, true),
-  (986, 1922, true),
-  (989, 1922, true),
-  (990, 2010, true),
-  (992, 1922, true),
-  (993, 1922, true),
   (994, 1922, true),
   (996, 1922, true),
   (997, 869, true),
@@ -4486,7 +4317,6 @@ INSERT INTO organization_distributors (organization_id, distributor_id, is_prima
   (1207, 1922, true),
   (1208, 1922, true),
   (1211, 2004, true),
-  (1212, 2004, true),
   (1213, 2004, true),
   (1214, 2004, true),
   (1215, 2004, true),
@@ -4501,10 +4331,8 @@ INSERT INTO organization_distributors (organization_id, distributor_id, is_prima
   (1236, 2004, true),
   (1237, 2004, true),
   (1238, 2004, true),
-  (1239, 2004, true),
   (1240, 2004, true),
   (1241, 2004, true),
-  (1242, 2004, true),
   (1243, 2004, true),
   (1244, 2004, true),
   (1245, 2004, true),
@@ -4522,7 +4350,6 @@ INSERT INTO organization_distributors (organization_id, distributor_id, is_prima
   (1267, 1967, true),
   (1270, 869, true),
   (1271, 1967, true),
-  (1272, 2010, true),
   (1273, 1925, true),
   (1274, 1922, true),
   (1276, 1967, true),
@@ -4530,15 +4357,11 @@ INSERT INTO organization_distributors (organization_id, distributor_id, is_prima
   (1278, 1925, true),
   (1279, 1890, true),
   (1280, 2010, true),
-  (1282, 2010, true),
-  (1283, 2010, true),
   (1284, 869, true),
-  (1285, 869, true),
   (1286, 1967, true),
   (1288, 869, true),
   (1289, 2001, true),
   (1290, 2001, true),
-  (1291, 1922, true),
   (1292, 2001, true),
   (1293, 1922, true),
   (1294, 1922, true),
