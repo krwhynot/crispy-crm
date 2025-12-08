@@ -74,7 +74,7 @@ const exporter: Exporter<Organization> = async (records, fetchRelatedRecords) =>
       address: org.address,
       city: org.city,
       state: org.state,
-      zipcode: org.zipcode,
+      postal_code: org.postal_code,
       country: org.country,
 
       // Metrics
@@ -111,7 +111,7 @@ const createMockOrganization = (overrides: Partial<Organization> = {}): Organiza
   address: "123 Main St",
   city: "Austin",
   state: "TX",
-  zipcode: "78701",
+  postal_code: "78701",
   country: "USA",
   nb_contacts: 5,
   nb_opportunities: 3,
@@ -344,7 +344,7 @@ describe("OrganizationList Exporter", () => {
           address: undefined,
           city: undefined,
           state: undefined,
-          zipcode: undefined,
+          postal_code: undefined,
           country: undefined,
         }),
       ];
@@ -358,7 +358,7 @@ describe("OrganizationList Exporter", () => {
       expect(exportedData[0].address).toBeUndefined();
       expect(exportedData[0].city).toBeUndefined();
       expect(exportedData[0].state).toBeUndefined();
-      expect(exportedData[0].zipcode).toBeUndefined();
+      expect(exportedData[0].postal_code).toBeUndefined();
       expect(exportedData[0].country).toBeUndefined();
     });
 
@@ -416,7 +416,7 @@ describe("OrganizationList Exporter", () => {
         "address",
         "city",
         "state",
-        "zipcode",
+        "postal_code",
         "country",
         // Metrics
         "nb_contacts",
@@ -463,7 +463,7 @@ describe("OrganizationList Exporter", () => {
         address: "456 Oak Ave",
         city: "Dallas",
         state: "TX",
-        zipcode: "75001",
+        postal_code: "75001",
         country: "USA",
         nb_contacts: 10,
         nb_opportunities: 5,
@@ -485,7 +485,7 @@ describe("OrganizationList Exporter", () => {
       expect(exported.address).toBe("456 Oak Ave");
       expect(exported.city).toBe("Dallas");
       expect(exported.state).toBe("TX");
-      expect(exported.zipcode).toBe("75001");
+      expect(exported.postal_code).toBe("75001");
       expect(exported.country).toBe("USA");
       expect(exported.nb_contacts).toBe(10);
       expect(exported.nb_opportunities).toBe(5);
@@ -528,7 +528,7 @@ describe("OrganizationList Exporter", () => {
           address: null,
           city: null,
           state: null,
-          zipcode: null,
+          postal_code: null,
           country: null,
           nb_contacts: null,
           nb_opportunities: null,

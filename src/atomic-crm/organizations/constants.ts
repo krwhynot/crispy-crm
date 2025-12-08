@@ -11,7 +11,7 @@
  * - distributor: Company that buys from principals and distributes
  * - unknown: Unclassified organization
  */
-export type OrganizationType = "customer" | "prospect" | "principal" | "distributor" | "unknown";
+export type OrganizationType = "customer" | "prospect" | "principal" | "distributor" | "partner" | "unknown";
 
 /**
  * Priority level for organizations
