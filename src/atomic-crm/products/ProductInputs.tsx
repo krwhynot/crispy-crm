@@ -10,18 +10,21 @@ export const ProductInputs = () => {
       label: "General",
       fields: ["name", "sku", "description"],
       content: <ProductGeneralTab />,
+      dataTutorial: "product-tab-general",
     },
     {
       key: "relationships",
       label: "Relationships",
       fields: ["principal_id", "distributor_id"],
       content: <ProductRelationshipsInputTab />,
+      dataTutorial: "product-tab-relationships",
     },
     {
       key: "classification",
       label: "Classification",
       fields: ["category", "status"],
       content: <ProductClassificationTab />,
+      dataTutorial: "product-tab-classification",
     },
   ];
 

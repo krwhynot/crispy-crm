@@ -312,7 +312,15 @@ export const filterableFields: Record<string, string[]> = {
   ],
 
   // Segments resource
-  segments: ["id", "name", "created_at", "created_by"],
+  segments: [
+    "id",
+    "name",
+    "segment_type", // Filter by 'playbook' or 'operator'
+    "parent_id", // Filter by parent segment
+    "display_order", // For ordering
+    "created_at",
+    "created_by",
+  ],
 
   // Products resource
   products: [
