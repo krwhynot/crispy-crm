@@ -455,7 +455,7 @@ describe("OrganizationList Exporter", () => {
       const org = createMockOrganization({
         id: 42,
         name: "Acme Corp",
-        organization_type: "partner",
+        organization_type: "distributor",
         priority: "medium",
         website: "https://acme.com",
         phone: "555-9999",
@@ -464,7 +464,6 @@ describe("OrganizationList Exporter", () => {
         city: "Dallas",
         state: "TX",
         postal_code: "75001",
-        country: "USA",
         nb_contacts: 10,
         nb_opportunities: 5,
         created_at: "2024-06-01T12:00:00Z",
@@ -477,7 +476,7 @@ describe("OrganizationList Exporter", () => {
 
       expect(exported.id).toBe(42);
       expect(exported.name).toBe("Acme Corp");
-      expect(exported.organization_type).toBe("partner");
+      expect(exported.organization_type).toBe("distributor");
       expect(exported.priority).toBe("medium");
       expect(exported.website).toBe("https://acme.com");
       expect(exported.phone).toBe("555-9999");
@@ -486,7 +485,6 @@ describe("OrganizationList Exporter", () => {
       expect(exported.city).toBe("Dallas");
       expect(exported.state).toBe("TX");
       expect(exported.postal_code).toBe("75001");
-      expect(exported.country).toBe("USA");
       expect(exported.nb_contacts).toBe(10);
       expect(exported.nb_opportunities).toBe(5);
       expect(exported.created_at).toBe("2024-06-01T12:00:00Z");

@@ -38,13 +38,6 @@ export function getChapterSteps(chapter: TutorialChapter): TutorialStep[] {
 }
 
 /**
- * Get all steps for full tutorial (all chapters in order)
- */
-export function getAllSteps(): TutorialStep[] {
-  return CHAPTER_ORDER.flatMap((chapter) => CHAPTER_STEPS[chapter]);
-}
-
-/**
  * Get ordered list of chapters
  */
 export function getChapterOrder(): TutorialChapter[] {

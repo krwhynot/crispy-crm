@@ -4,7 +4,6 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { useTutorial } from './TutorialProvider';
 import type { TutorialChapter } from './types';
@@ -30,16 +29,6 @@ export function TutorialLauncher() {
         <span>Tutorial</span>
       </DropdownMenuSubTrigger>
       <DropdownMenuSubContent>
-        {/* Full tour option */}
-        <DropdownMenuItem
-          onClick={() => startTutorial()}
-          className="h-11 font-medium"
-        >
-          ▶ Start Full Tour
-        </DropdownMenuItem>
-
-        <DropdownMenuSeparator />
-
         {/* Individual chapters */}
         {CHAPTERS.map(({ key, label }) => (
           <DropdownMenuItem
