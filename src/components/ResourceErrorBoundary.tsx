@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- Component and HOC are tightly coupled */
 /**
  * Resource Error Boundary
  *
@@ -149,7 +150,6 @@ export class ResourceErrorBoundary extends Component<Props, State> {
  * const SafeContactList = withResourceErrorBoundary(ContactList, 'contacts', 'list');
  * ```
  */
-// eslint-disable-next-line react-refresh/only-export-components -- HOC is tightly coupled with the error boundary component
 export function withResourceErrorBoundary<P extends object>(
   WrappedComponent: React.ComponentType<P>,
   resource: string,

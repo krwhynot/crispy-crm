@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- Provider and hook re-export are tightly coupled */
 /**
  * Theme Provider using next-themes
  *
@@ -39,5 +40,4 @@ export function ThemeProvider({
 }
 
 // Re-export useTheme from next-themes for convenience
-// eslint-disable-next-line react-refresh/only-export-components -- Re-export is intentional for API convenience
 export { useTheme } from "next-themes";
