@@ -3,4 +3,4 @@ export { UserSlideOver } from "./UserSlideOver";
 export { UserInviteForm } from "./UserInviteForm";
 export { RoleBadgeField } from "./components/RoleBadgeField";
 export { StatusField } from "./components/StatusField";
-export * from "./schemas";
+// Note: schemas exported directly from ./schemas.ts (not re-exported here to satisfy react-refresh)
