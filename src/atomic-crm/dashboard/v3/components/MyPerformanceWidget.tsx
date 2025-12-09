@@ -159,7 +159,7 @@ function MyPerformanceWidget() {
   const { metrics, loading } = useMyPerformance();
 
   return (
-    <div className="p-4">
+    <div className="p-4" data-tutorial="dashboard-performance-widget">
       <div className="mb-3">
         <h3 className="text-base font-semibold">My Performance</h3>
       </div>

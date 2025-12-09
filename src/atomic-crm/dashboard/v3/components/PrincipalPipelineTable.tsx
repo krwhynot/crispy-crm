@@ -139,7 +139,7 @@ export function PrincipalPipelineTable() {
   }
 
   return (
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col p-4" data-tutorial="dashboard-pipeline-table">
       {/* Header with title and filters */}
       <div className="border-b border-border pb-3">
         <div className="flex items-start justify-between">

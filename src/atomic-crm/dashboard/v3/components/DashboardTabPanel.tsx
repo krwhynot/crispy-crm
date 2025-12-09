@@ -49,11 +49,12 @@ export function DashboardTabPanel() {
     <Card className="flex min-h-0 flex-1 flex-col gap-0 overflow-hidden">
       <Tabs defaultValue="pipeline" className="flex min-h-0 flex-1 flex-col gap-0">
         <div className="shrink-0 border-b border-border px-4 py-3">
-          <TabsList className="h-11 w-full justify-start gap-2 bg-transparent p-0">
+          <TabsList className="h-11 w-full justify-start gap-2 bg-transparent p-0" data-tutorial="dashboard-tabs">
             {/* Pipeline Tab - 44px touch target */}
             <TabsTrigger
               value="pipeline"
               className="h-11 min-w-[120px] gap-2 rounded-t-lg rounded-b-none border-b-2 border-transparent px-4 data-[state=active]:border-primary data-[state=active]:bg-transparent"
+              data-tutorial="dashboard-tab-pipeline"
             >
               <LayoutGrid className="h-4 w-4" />
               <span>Pipeline</span>
@@ -63,6 +64,7 @@ export function DashboardTabPanel() {
             <TabsTrigger
               value="tasks"
               className="h-11 min-w-[120px] gap-2 rounded-t-lg rounded-b-none border-b-2 border-transparent px-4 data-[state=active]:border-primary data-[state=active]:bg-transparent"
+              data-tutorial="dashboard-tab-tasks"
             >
               <CheckSquare className="h-4 w-4" />
               <span>My Tasks</span>
@@ -77,6 +79,7 @@ export function DashboardTabPanel() {
             <TabsTrigger
               value="performance"
               className="h-11 min-w-[120px] gap-2 rounded-t-lg rounded-b-none border-b-2 border-transparent px-4 data-[state=active]:border-primary data-[state=active]:bg-transparent"
+              data-tutorial="dashboard-tab-performance"
             >
               <TrendingUp className="h-4 w-4" />
               <span>Performance</span>
@@ -86,6 +89,7 @@ export function DashboardTabPanel() {
             <TabsTrigger
               value="activity"
               className="h-11 min-w-[120px] gap-2 rounded-t-lg rounded-b-none border-b-2 border-transparent px-4 data-[state=active]:border-primary data-[state=active]:bg-transparent"
+              data-tutorial="dashboard-tab-activity"
             >
               <Users className="h-4 w-4" />
               <span>Team Activity</span>

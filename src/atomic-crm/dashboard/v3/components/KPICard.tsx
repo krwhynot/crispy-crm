@@ -28,6 +28,8 @@ interface KPICardProps {
   loading?: boolean;
   /** Custom class names */
   className?: string;
+  /** Tutorial step identifier */
+  "data-tutorial"?: string;
 }
 
 /**
@@ -93,7 +95,13 @@ const KPI_CONFIG: Record<
  * - Desktop: Part of 4-column grid
  * - Mobile: Part of 2x2 grid
  */
-export function KPICard({ type, value, loading = false, className }: KPICardProps) {
+export function KPICard({
+  type,
+  value,
+  loading = false,
+  className,
+  "data-tutorial": dataTutorial
+}: KPICardProps) {
   const navigate = useNavigate();
   const config = KPI_CONFIG[type];
   const Icon = config.icon;
@@ -118,6 +126,7 @@ export function KPICard({ type, value, loading = false, className }: KPICardProp
         className={cn("p-3 lg:p-4", className)}
         aria-busy="true"
         aria-label={`Loading ${config.label}`}
+        data-tutorial={dataTutorial}
       >
         <CardContent className="p-0">
           <div className="flex items-center gap-3">
@@ -149,6 +158,7 @@ export function KPICard({ type, value, loading = false, className }: KPICardProp
       role="button"
       tabIndex={0}
       aria-label={`${config.label}: ${config.formatValue(value)}. Click to view details.`}
+      data-tutorial={dataTutorial}
     >
       <CardContent className="p-0">
         <div className="flex items-center gap-3">
