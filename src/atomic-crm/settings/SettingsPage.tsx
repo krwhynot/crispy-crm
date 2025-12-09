@@ -42,7 +42,7 @@ export const SettingsPage = () => {
       notify("A reset password email has been sent to your email address");
     },
     onError: (error) => {
-      console.error('Password update failed:', error);
+      console.error("Password update failed:", error);
       notify("An error occurred. Please try again.", {
         type: "error",
       });

@@ -1,9 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const OpportunitiesByPrincipalReport = lazy(
-  () => import("../OpportunitiesByPrincipalReport")
-);
+const OpportunitiesByPrincipalReport = lazy(() => import("../OpportunitiesByPrincipalReport"));
 
 /**
  * Opportunities by Principal Tab

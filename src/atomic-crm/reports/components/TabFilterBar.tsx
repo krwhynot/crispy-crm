@@ -118,10 +118,7 @@ export function TabFilterBar({
         {showSalesRep && (
           <div className="flex items-center gap-compact">
             <User className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-            <Select
-              value={salesRepId?.toString() || "all"}
-              onValueChange={handleSalesRepChange}
-            >
+            <Select value={salesRepId?.toString() || "all"} onValueChange={handleSalesRepChange}>
               <SelectTrigger className="w-[180px] h-11" aria-label="Sales Rep">
                 <SelectValue />
               </SelectTrigger>

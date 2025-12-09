@@ -16,45 +16,52 @@ function createErrorResponse(status: number, message: string, corsHeaders: Recor
 // - .max() on all strings (DoS prevention)
 // - z.coerce for type conversion
 
-const inviteUserSchema = z.strictObject({
-  email: z.string().email("Invalid email format").max(254, "Email too long"),
-  password: z.string().min(8, "Password must be at least 8 characters").max(128, "Password too long"),
-  first_name: z.string().min(1, "First name required").max(100, "First name too long"),
-  last_name: z.string().min(1, "Last name required").max(100, "Last name too long"),
-  disabled: z.coerce.boolean().optional().default(false),
-  // NEW: role field (preferred)
-  role: z.enum(['admin', 'manager', 'rep']).optional(),
-  // DEPRECATED: Keep for backward compatibility
-  administrator: z.coerce.boolean().optional(),
-}).transform((data) => {
-  // Derive role from administrator if role not provided
-  const role = data.role ?? (data.administrator ? 'admin' : 'rep');
-  // Strip deprecated administrator field to avoid dual truth sources
-  const { administrator: _deprecated, ...rest } = data;
-  return { ...rest, role };
-});
+const inviteUserSchema = z
+  .strictObject({
+    email: z.string().email("Invalid email format").max(254, "Email too long"),
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters")
+      .max(128, "Password too long"),
+    first_name: z.string().min(1, "First name required").max(100, "First name too long"),
+    last_name: z.string().min(1, "Last name required").max(100, "Last name too long"),
+    disabled: z.coerce.boolean().optional().default(false),
+    // NEW: role field (preferred)
+    role: z.enum(["admin", "manager", "rep"]).optional(),
+    // DEPRECATED: Keep for backward compatibility
+    administrator: z.coerce.boolean().optional(),
+  })
+  .transform((data) => {
+    // Derive role from administrator if role not provided
+    const role = data.role ?? (data.administrator ? "admin" : "rep");
+    // Strip deprecated administrator field to avoid dual truth sources
+    const { administrator: _deprecated, ...rest } = data;
+    return { ...rest, role };
+  });
 
-const patchUserSchema = z.strictObject({
-  sales_id: z.coerce.number().int().positive("Invalid sales ID"),
-  email: z.string().email("Invalid email format").max(254).optional(),
-  first_name: z.string().min(1).max(100).optional(),
-  last_name: z.string().min(1).max(100).optional(),
-  avatar: z.string().url("Invalid avatar URL").max(500).optional(),
-  // NEW: role field (preferred)
-  role: z.enum(['admin', 'manager', 'rep']).optional(),
-  // DEPRECATED: Keep for backward compatibility
-  administrator: z.coerce.boolean().optional(),
-  disabled: z.coerce.boolean().optional(),
-}).transform((data) => {
-  // Derive role from administrator if role not provided but administrator is
-  let derivedRole = data.role;
-  if (data.role === undefined && data.administrator !== undefined) {
-    derivedRole = data.administrator ? 'admin' : 'rep';
-  }
-  // Strip deprecated administrator field to avoid dual truth sources
-  const { administrator: _deprecated, ...rest } = data;
-  return { ...rest, role: derivedRole };
-});
+const patchUserSchema = z
+  .strictObject({
+    sales_id: z.coerce.number().int().positive("Invalid sales ID"),
+    email: z.string().email("Invalid email format").max(254).optional(),
+    first_name: z.string().min(1).max(100).optional(),
+    last_name: z.string().min(1).max(100).optional(),
+    avatar: z.string().url("Invalid avatar URL").max(500).optional(),
+    // NEW: role field (preferred)
+    role: z.enum(["admin", "manager", "rep"]).optional(),
+    // DEPRECATED: Keep for backward compatibility
+    administrator: z.coerce.boolean().optional(),
+    disabled: z.coerce.boolean().optional(),
+  })
+  .transform((data) => {
+    // Derive role from administrator if role not provided but administrator is
+    let derivedRole = data.role;
+    if (data.role === undefined && data.administrator !== undefined) {
+      derivedRole = data.administrator ? "admin" : "rep";
+    }
+    // Strip deprecated administrator field to avoid dual truth sources
+    const { administrator: _deprecated, ...rest } = data;
+    return { ...rest, role: derivedRole };
+  });
 
 // Maximum request body size (1MB)
 const MAX_REQUEST_SIZE = 1048576;
@@ -62,10 +69,7 @@ const MAX_REQUEST_SIZE = 1048576;
 /**
  * Validate request body size and parse with Zod
  */
-async function parseAndValidateBody<T>(
-  req: Request,
-  schema: z.ZodSchema<T>
-): Promise<T> {
+async function parseAndValidateBody<T>(req: Request, schema: z.ZodSchema<T>): Promise<T> {
   // Check content length
   const contentLength = req.headers.get("content-length");
   if (contentLength && parseInt(contentLength) > MAX_REQUEST_SIZE) {
@@ -78,9 +82,7 @@ async function parseAndValidateBody<T>(
   // Validate with Zod
   const result = schema.safeParse(body);
   if (!result.success) {
-    const errors = result.error.errors
-      .map(e => `${e.path.join('.')}: ${e.message}`)
-      .join(', ');
+    const errors = result.error.errors.map((e) => `${e.path.join(".")}: ${e.message}`).join(", ");
     throw new Error(`Validation failed: ${errors}`);
   }
 
@@ -94,7 +96,7 @@ async function updateSaleDisabled(user_id: string, disabled: boolean) {
     .eq("user_id", user_id);
 }
 
-async function updateSaleRole(user_id: string, role: 'admin' | 'manager' | 'rep') {
+async function updateSaleRole(user_id: string, role: "admin" | "manager" | "rep") {
   const { data: sales, error: salesError } = await supabaseAdmin
     .from("sales")
     .update({ role })

@@ -40,7 +40,9 @@ export const ActivitiesList = () => {
               )}
             </div>
             <span className="text-sm text-muted-foreground">
-              {parseDateSafely(activity.activity_date) ? format(parseDateSafely(activity.activity_date)!, "MMM d, yyyy") : "No date"}
+              {parseDateSafely(activity.activity_date)
+                ? format(parseDateSafely(activity.activity_date)!, "MMM d, yyyy")
+                : "No date"}
             </span>
           </div>
 

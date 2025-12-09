@@ -14,5 +14,10 @@ export { useListKeyboardNavigation } from "./useListKeyboardNavigation";
 export { useIsMobile } from "./use-mobile";
 
 // Responsive Breakpoints
-export { useBreakpoint, useIsDesktop, useIsLaptopOrLarger, useIsMobileOrTablet } from "./useBreakpoint";
+export {
+  useBreakpoint,
+  useIsDesktop,
+  useIsLaptopOrLarger,
+  useIsMobileOrTablet,
+} from "./useBreakpoint";
 export type { Breakpoint } from "./useBreakpoint";

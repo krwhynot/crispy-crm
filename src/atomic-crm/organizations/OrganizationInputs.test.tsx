@@ -223,8 +223,8 @@ describe("OrganizationInputs - Compact Form", () => {
       expect(grids.length).toBeGreaterThan(0);
 
       // Should have responsive grid columns
-      const hasResponsiveGrid = Array.from(grids).some(
-        (grid) => grid.classList.contains("md:grid-cols-2")
+      const hasResponsiveGrid = Array.from(grids).some((grid) =>
+        grid.classList.contains("md:grid-cols-2")
       );
       expect(hasResponsiveGrid).toBe(true);
     });

@@ -1,41 +1,41 @@
-import { describe, it, expect, vi } from 'vitest';
-import { screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { renderWithAdminContext } from '@/tests/utils/render-admin';
-import { UserSlideOver } from '../UserSlideOver';
+import { describe, it, expect, vi } from "vitest";
+import { screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
+import { UserSlideOver } from "../UserSlideOver";
 
 const mockUser = {
   id: 1,
-  first_name: 'John',
-  last_name: 'Doe',
-  email: 'john@mfb.com',
-  role: 'rep',
+  first_name: "John",
+  last_name: "Doe",
+  email: "john@mfb.com",
+  role: "rep",
   disabled: false,
 };
 
-describe('UserSlideOver', () => {
-  it('renders edit form with user data', async () => {
+describe("UserSlideOver", () => {
+  it("renders edit form with user data", async () => {
     renderWithAdminContext(<UserSlideOver />, {
       dataProvider: {
         getOne: vi.fn().mockResolvedValue({ data: mockUser }),
       },
-      resource: 'sales',
+      resource: "sales",
       record: mockUser,
-      initialEntries: ['/admin/users/1'],
+      initialEntries: ["/admin/users/1"],
     });
 
     await waitFor(() => {
-      expect(screen.getByLabelText(/first name/i)).toHaveValue('John');
-      expect(screen.getByLabelText(/last name/i)).toHaveValue('Doe');
+      expect(screen.getByLabelText(/first name/i)).toHaveValue("John");
+      expect(screen.getByLabelText(/last name/i)).toHaveValue("Doe");
     });
   });
 
-  it('displays email as read-only', async () => {
+  it("displays email as read-only", async () => {
     renderWithAdminContext(<UserSlideOver />, {
       dataProvider: {
         getOne: vi.fn().mockResolvedValue({ data: mockUser }),
       },
-      resource: 'sales',
+      resource: "sales",
       record: mockUser,
     });
 
@@ -45,13 +45,13 @@ describe('UserSlideOver', () => {
     });
   });
 
-  it('allows role selection', async () => {
+  it("allows role selection", async () => {
     const user = userEvent.setup();
     renderWithAdminContext(<UserSlideOver />, {
       dataProvider: {
         getOne: vi.fn().mockResolvedValue({ data: mockUser }),
       },
-      resource: 'sales',
+      resource: "sales",
       record: mockUser,
     });
 
@@ -63,17 +63,17 @@ describe('UserSlideOver', () => {
     const roleSelect = screen.getByLabelText(/role/i);
     await user.click(roleSelect);
 
-    expect(screen.getByText('Admin')).toBeInTheDocument();
-    expect(screen.getByText('Manager')).toBeInTheDocument();
-    expect(screen.getByText('Rep')).toBeInTheDocument();
+    expect(screen.getByText("Admin")).toBeInTheDocument();
+    expect(screen.getByText("Manager")).toBeInTheDocument();
+    expect(screen.getByText("Rep")).toBeInTheDocument();
   });
 
-  it('has disable account toggle', async () => {
+  it("has disable account toggle", async () => {
     renderWithAdminContext(<UserSlideOver />, {
       dataProvider: {
         getOne: vi.fn().mockResolvedValue({ data: mockUser }),
       },
-      resource: 'sales',
+      resource: "sales",
       record: mockUser,
     });
 

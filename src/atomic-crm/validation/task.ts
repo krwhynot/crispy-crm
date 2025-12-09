@@ -49,8 +49,10 @@ export const taskSchema = z.strictObject({
 
   // Snooze functionality (per migration 20251203191347_add_snooze_until_to_tasks.sql)
   // Uses preprocess to handle empty string from forms → null
-  snooze_until: z
-    .preprocess((val) => (val === "" ? null : val), z.coerce.date().nullable().optional()), // NULL = active, future timestamp = snoozed
+  snooze_until: z.preprocess(
+    (val) => (val === "" ? null : val),
+    z.coerce.date().nullable().optional()
+  ), // NULL = active, future timestamp = snoozed
 
   // Audit fields (per migration 20251127054700_fix_critical_rls_security_tasks.sql)
   created_by: z.union([z.string(), z.number()]).optional().nullable(), // Sales rep who created this task (different from assignee)

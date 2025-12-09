@@ -5,10 +5,7 @@ import type { Sale, Tag } from "../types";
 
 export const EMPTY_PLACEHOLDER = "--";
 
-export function formatFullName(
-  firstName?: string | null,
-  lastName?: string | null
-): string {
+export function formatFullName(firstName?: string | null, lastName?: string | null): string {
   const first = firstName?.trim();
   const last = lastName?.trim();
 
@@ -17,10 +14,7 @@ export function formatFullName(
   return first || last || EMPTY_PLACEHOLDER;
 }
 
-export function formatRoleAndDept(
-  title?: string | null,
-  department?: string | null
-): string {
+export function formatRoleAndDept(title?: string | null, department?: string | null): string {
   const titleTrimmed = title?.trim();
   const deptTrimmed = department?.trim();
 
@@ -30,9 +24,7 @@ export function formatRoleAndDept(
   return `${titleTrimmed}, ${deptTrimmed}`;
 }
 
-export function formatSalesName(
-  sales?: Pick<Sale, "first_name" | "last_name"> | null
-): string {
+export function formatSalesName(sales?: Pick<Sale, "first_name" | "last_name"> | null): string {
   if (!sales) return "";
   return formatFullName(sales.first_name, sales.last_name);
 }

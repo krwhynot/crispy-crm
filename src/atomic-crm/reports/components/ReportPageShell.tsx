@@ -14,12 +14,7 @@ interface ReportPageShellProps {
   children: ReactNode;
 }
 
-export function ReportPageShell({
-  title,
-  breadcrumbs,
-  actions,
-  children,
-}: ReportPageShellProps) {
+export function ReportPageShell({ title, breadcrumbs, actions, children }: ReportPageShellProps) {
   return (
     <div className="p-content lg:p-widget space-y-section">
       {breadcrumbs.length > 0 && (

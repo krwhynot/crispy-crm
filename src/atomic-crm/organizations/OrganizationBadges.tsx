@@ -59,7 +59,7 @@ export function OrganizationTypeBadge({ type }: OrganizationTypeBadgeProps) {
  */
 export function PriorityBadge({ priority }: PriorityBadgeProps) {
   const variant = PRIORITY_VARIANT_MAP[priority as PriorityLevel] || "default";
-  const label = PRIORITY_CHOICES.find(p => p.id === priority)?.name || priority;
+  const label = PRIORITY_CHOICES.find((p) => p.id === priority)?.name || priority;
 
   return (
     <Badge variant={variant} className="text-xs px-2 py-1">

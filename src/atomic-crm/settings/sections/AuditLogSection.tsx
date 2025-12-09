@@ -54,7 +54,9 @@ export function AuditLogSection() {
                     <Badge variant="outline">{entry.table_name}</Badge>
                     <span className="font-medium">{entry.field_name}</span>
                     <span className="text-muted-foreground">
-                      {formatDistanceToNow(parseDateSafely(entry.changed_at) ?? new Date(), { addSuffix: true })}
+                      {formatDistanceToNow(parseDateSafely(entry.changed_at) ?? new Date(), {
+                        addSuffix: true,
+                      })}
                     </span>
                   </div>
                   <div className="text-xs text-muted-foreground mt-1">

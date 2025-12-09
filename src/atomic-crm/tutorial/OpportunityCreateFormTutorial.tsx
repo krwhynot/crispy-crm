@@ -1,16 +1,12 @@
-import { useRef, useCallback, useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
-import { HelpCircle } from 'lucide-react';
-import { driver, type Driver, type Config } from 'driver.js';
-import 'driver.js/dist/driver.css';
-import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { opportunityCreateFormSteps } from './steps/opportunityCreateFormSteps';
-import { waitForElement, filterValidSteps } from './waitForElement';
+import { useRef, useCallback, useState, useEffect } from "react";
+import { useLocation } from "react-router-dom";
+import { HelpCircle } from "lucide-react";
+import { driver, type Driver, type Config } from "driver.js";
+import "driver.js/dist/driver.css";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { opportunityCreateFormSteps } from "./steps/opportunityCreateFormSteps";
+import { waitForElement, filterValidSteps } from "./waitForElement";
 
 /**
  * Standalone floating tutorial button for the Opportunity Create form.
@@ -28,7 +24,7 @@ export function OpportunityCreateFormTutorial() {
   const [isActive, setIsActive] = useState(false);
 
   // Only render on /opportunities/create
-  const isCreatePage = location.pathname === '/opportunities/create';
+  const isCreatePage = location.pathname === "/opportunities/create";
 
   // Cleanup on unmount
   useEffect(() => {
@@ -56,7 +52,7 @@ export function OpportunityCreateFormTutorial() {
       try {
         await waitForElement(firstElementStep.element, 3000);
       } catch {
-        console.warn('Tutorial: First element not found, starting anyway');
+        console.warn("Tutorial: First element not found, starting anyway");
       }
     }
 
@@ -66,12 +62,12 @@ export function OpportunityCreateFormTutorial() {
       smoothScroll: true,
       allowClose: true,
       allowKeyboardControl: true,
-      overlayColor: 'rgba(0, 0, 0, 0.75)',
-      popoverClass: 'tutorial-popover',
-      showButtons: ['next', 'previous', 'close'],
-      nextBtnText: 'Next',
-      prevBtnText: 'Back',
-      doneBtnText: 'Got it!',
+      overlayColor: "rgba(0, 0, 0, 0.75)",
+      popoverClass: "tutorial-popover",
+      showButtons: ["next", "previous", "close"],
+      nextBtnText: "Next",
+      prevBtnText: "Back",
+      doneBtnText: "Got it!",
 
       steps: validSteps.map((step) => ({
         element: step.element,
@@ -94,7 +90,7 @@ export function OpportunityCreateFormTutorial() {
       setIsActive(true);
       driverRef.current.drive();
     } catch (error) {
-      console.error('Failed to start create form tutorial:', error);
+      console.error("Failed to start create form tutorial:", error);
       setIsActive(false);
       driverRef.current = null;
     }

@@ -165,10 +165,10 @@ export const FileInput = (props: FileInputProps) => {
     // Filename validation for security
     validator: (file) => {
       if (file.name.length > 255) {
-        return { code: 'name-too-long', message: 'Filename exceeds 255 characters' };
+        return { code: "name-too-long", message: "Filename exceeds 255 characters" };
       }
       if (/[<>:"/\\|?*]/.test(file.name)) {
-        return { code: 'invalid-chars', message: 'Filename contains invalid characters' };
+        return { code: "invalid-chars", message: "Filename contains invalid characters" };
       }
       return null;
     },
@@ -199,8 +199,8 @@ export const FileInput = (props: FileInputProps) => {
               ? "bg-muted cursor-not-allowed"
               : "bg-muted text-muted-foreground cursor-pointer"
           ),
-          role: 'button',
-          'aria-label': multiple ? translate(labelMultiple) : translate(labelSingle),
+          role: "button",
+          "aria-label": multiple ? translate(labelMultiple) : translate(labelSingle),
           tabIndex: disabled || readOnly ? -1 : 0,
         })}
       >
@@ -222,10 +222,14 @@ export const FileInput = (props: FileInputProps) => {
       </div>
 
       {fileRejections.length > 0 && (
-        <ul role="alert" aria-live="polite" className="text-sm text-destructive mt-2 list-disc pl-5">
+        <ul
+          role="alert"
+          aria-live="polite"
+          className="text-sm text-destructive mt-2 list-disc pl-5"
+        >
           {fileRejections.map(({ file, errors }) => (
             <li key={file.name}>
-              {file.name}: {errors.map(e => e.message).join(', ')}
+              {file.name}: {errors.map((e) => e.message).join(", ")}
             </li>
           ))}
         </ul>

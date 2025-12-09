@@ -18,12 +18,7 @@ describe("KPIDrillDown", () => {
 
   it("has focus trap when open", () => {
     render(
-      <KPIDrillDown
-        open={true}
-        onClose={vi.fn()}
-        title="Test"
-        children={<button>First</button>}
-      />
+      <KPIDrillDown open={true} onClose={vi.fn()} title="Test" children={<button>First</button>} />
     );
 
     expect(screen.getByRole("dialog")).toHaveAttribute("data-focus-trap", "true");
@@ -32,12 +27,7 @@ describe("KPIDrillDown", () => {
   it("closes on ESC key", () => {
     const onClose = vi.fn();
     render(
-      <KPIDrillDown
-        open={true}
-        onClose={onClose}
-        title="Test"
-        children={<div>Content</div>}
-      />
+      <KPIDrillDown open={true} onClose={onClose} title="Test" children={<div>Content</div>} />
     );
 
     fireEvent.keyDown(screen.getByRole("dialog"), { key: "Escape" });
@@ -46,12 +36,7 @@ describe("KPIDrillDown", () => {
 
   it("renders close button with accessible label", () => {
     render(
-      <KPIDrillDown
-        open={true}
-        onClose={vi.fn()}
-        title="Test"
-        children={<div>Content</div>}
-      />
+      <KPIDrillDown open={true} onClose={vi.fn()} title="Test" children={<div>Content</div>} />
     );
 
     const closeButton = screen.getByRole("button", { name: /close/i });
@@ -100,12 +85,7 @@ describe("KPIDrillDown", () => {
 
   it("does not render when closed", () => {
     render(
-      <KPIDrillDown
-        open={false}
-        onClose={vi.fn()}
-        title="Test"
-        children={<div>Content</div>}
-      />
+      <KPIDrillDown open={false} onClose={vi.fn()} title="Test" children={<div>Content</div>} />
     );
 
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();

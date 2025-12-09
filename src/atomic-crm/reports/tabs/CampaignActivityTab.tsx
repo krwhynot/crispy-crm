@@ -1,9 +1,7 @@
 import { lazy, Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 
-const CampaignActivityReport = lazy(
-  () => import("../CampaignActivity/CampaignActivityReport")
-);
+const CampaignActivityReport = lazy(() => import("../CampaignActivity/CampaignActivityReport"));
 
 /**
  * Campaign Activity Tab

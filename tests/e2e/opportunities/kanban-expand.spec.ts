@@ -154,9 +154,7 @@ test.describe("Kanban Card Expand/Collapse", () => {
     // Close date should be visible (format: "MMM d, yyyy" or "No date set")
     const card = opportunitiesPage.getOpportunityCard(cardName!);
     // Look for either a date or "No date set"
-    const hasCloseDate = await card
-      .locator("text=/\\w{3} \\d{1,2}, \\d{4}|No date set/")
-      .count();
+    const hasCloseDate = await card.locator("text=/\\w{3} \\d{1,2}, \\d{4}|No date set/").count();
     expect(hasCloseDate).toBeGreaterThan(0);
   });
 });

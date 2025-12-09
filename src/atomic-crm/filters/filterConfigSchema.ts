@@ -71,9 +71,7 @@ export const chipFilterConfigSchema = z.object({
    * Choices for select/multiselect filters
    * Can be static array OR callback function for dynamic choices (e.g., from ConfigurationContext)
    */
-  choices: z
-    .union([z.array(filterChoiceSchema), choicesCallbackSchema])
-    .optional(),
+  choices: z.union([z.array(filterChoiceSchema), choicesCallbackSchema]).optional(),
   /** Custom formatter function to transform filter value into chip label */
   formatLabel: formatLabelCallbackSchema.optional(),
   /**

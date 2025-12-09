@@ -168,9 +168,11 @@ const segmentsService = new SegmentsService(baseDataProvider);
  * Used by inviteUser and updateUser methods
  */
 const getAuthToken = async (): Promise<string> => {
-  const { data: { session } } = await supabase.auth.getSession();
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
   if (!session?.access_token) {
-    throw new Error('Not authenticated');
+    throw new Error("Not authenticated");
   }
   return session.access_token;
 };
@@ -1211,25 +1213,20 @@ export const unifiedDataProvider: DataProvider = {
       devLog("DataProvider", "Inviting user", { email: data.email, role: data.role });
 
       const token = await getAuthToken();
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/users`,
-        {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/users`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      });
 
       if (!response.ok) {
         // Handle multiple error formats: { message }, { error: { message } }, or text
         const errorData = await response.json().catch(() => null);
         const message =
-          errorData?.message ||
-          errorData?.error?.message ||
-          `Invite failed (${response.status})`;
+          errorData?.message || errorData?.error?.message || `Invite failed (${response.status})`;
         throw new Error(message);
       }
 
@@ -1252,25 +1249,20 @@ export const unifiedDataProvider: DataProvider = {
       devLog("DataProvider", "Updating user", { sales_id: data.sales_id, role: data.role });
 
       const token = await getAuthToken();
-      const response = await fetch(
-        `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/users`,
-        {
-          method: 'PATCH',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
-          },
-          body: JSON.stringify(data),
-        }
-      );
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/users`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      });
 
       if (!response.ok) {
         // Handle multiple error formats: { message }, { error: { message } }, or text
         const errorData = await response.json().catch(() => null);
         const message =
-          errorData?.message ||
-          errorData?.error?.message ||
-          `Update failed (${response.status})`;
+          errorData?.message || errorData?.error?.message || `Update failed (${response.status})`;
         throw new Error(message);
       }
 

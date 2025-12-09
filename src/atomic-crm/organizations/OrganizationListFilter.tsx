@@ -8,7 +8,12 @@ import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
 import { OPERATOR_SEGMENT_PARENT_CHOICES } from "@/atomic-crm/validation/operatorSegments";
-import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, ORG_TYPE_COLOR_MAP, PRIORITY_VARIANT_MAP } from "./constants";
+import {
+  ORGANIZATION_TYPE_CHOICES,
+  PRIORITY_CHOICES,
+  ORG_TYPE_COLOR_MAP,
+  PRIORITY_VARIANT_MAP,
+} from "./constants";
 
 /**
  * OrganizationListFilter - Sidebar filter UI for Organizations list
@@ -59,7 +64,13 @@ export const OrganizationListFilter = () => {
                 multiselect
                 key={type.id}
                 className="w-full justify-between"
-                label={<Badge className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${colorClass}`}>{type.name}</Badge>}
+                label={
+                  <Badge
+                    className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${colorClass}`}
+                  >
+                    {type.name}
+                  </Badge>
+                }
                 value={{ organization_type: type.id }}
               />
             );
@@ -73,7 +84,10 @@ export const OrganizationListFilter = () => {
               key={priority.id}
               className="w-full justify-between"
               label={
-                <Badge variant={PRIORITY_VARIANT_MAP[priority.id]} className="text-xs px-3 py-2 min-h-[44px] flex items-center">
+                <Badge
+                  variant={PRIORITY_VARIANT_MAP[priority.id]}
+                  className="text-xs px-3 py-2 min-h-[44px] flex items-center"
+                >
                   {priority.name}
                 </Badge>
               }
@@ -84,10 +98,7 @@ export const OrganizationListFilter = () => {
 
         {/* Playbook Categories - for Distributors/Principals */}
         {showPlaybookFilters && (
-          <FilterCategory
-            icon={<Truck className="h-4 w-4" />}
-            label="Playbook Category"
-          >
+          <FilterCategory icon={<Truck className="h-4 w-4" />} label="Playbook Category">
             {PLAYBOOK_CATEGORY_CHOICES.map((category) => (
               <ToggleFilterButton
                 multiselect
@@ -106,10 +117,7 @@ export const OrganizationListFilter = () => {
 
         {/* Operator Segments - for Customers/Prospects */}
         {showOperatorFilters && (
-          <FilterCategory
-            icon={<Store className="h-4 w-4" />}
-            label="Operator Segment"
-          >
+          <FilterCategory icon={<Store className="h-4 w-4" />} label="Operator Segment">
             {OPERATOR_SEGMENT_PARENT_CHOICES.map((segment) => (
               <ToggleFilterButton
                 multiselect

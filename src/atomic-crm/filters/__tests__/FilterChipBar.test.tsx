@@ -116,9 +116,7 @@ describe("FilterChipBar", () => {
     test("renders chip bar when filters are active", () => {
       mockFilterValues = { status: "active" };
 
-      renderWithAdminContext(
-        <FilterChipBar filterConfig={TEST_FILTER_CONFIG} />
-      );
+      renderWithAdminContext(<FilterChipBar filterConfig={TEST_FILTER_CONFIG} />);
 
       expect(screen.getByRole("toolbar")).toBeInTheDocument();
       expect(screen.getByText("Active filters:")).toBeInTheDocument();
@@ -127,9 +125,7 @@ describe("FilterChipBar", () => {
     test("renders chips with correct labels from choices", () => {
       mockFilterValues = { status: "active", priority: ["high", "medium"] };
 
-      renderWithAdminContext(
-        <FilterChipBar filterConfig={TEST_FILTER_CONFIG} />
-      );
+      renderWithAdminContext(<FilterChipBar filterConfig={TEST_FILTER_CONFIG} />);
 
       // Status chip should show "Active" (from choices)
       expect(screen.getByText("Active")).toBeInTheDocument();
@@ -141,9 +137,7 @@ describe("FilterChipBar", () => {
     test("renders reference chips with resolved names", () => {
       mockFilterValues = { organization_id: "org-123" };
 
-      renderWithAdminContext(
-        <FilterChipBar filterConfig={TEST_FILTER_CONFIG} />
-      );
+      renderWithAdminContext(<FilterChipBar filterConfig={TEST_FILTER_CONFIG} />);
 
       // Should show resolved organization name
       expect(screen.getByText("Org org-123")).toBeInTheDocument();
@@ -168,9 +162,7 @@ describe("FilterChipBar", () => {
     test("removes single filter when chip X is clicked", () => {
       mockFilterValues = { status: "active", priority: ["high"] };
 
-      renderWithAdminContext(
-        <FilterChipBar filterConfig={TEST_FILTER_CONFIG} />
-      );
+      renderWithAdminContext(<FilterChipBar filterConfig={TEST_FILTER_CONFIG} />);
 
       // Click remove on status chip
       const removeButton = screen.getByLabelText("Remove Active filter");
@@ -185,9 +177,7 @@ describe("FilterChipBar", () => {
     test("removes all filters when Clear all is clicked", () => {
       mockFilterValues = { status: "active", priority: ["high", "medium"] };
 
-      renderWithAdminContext(
-        <FilterChipBar filterConfig={TEST_FILTER_CONFIG} />
-      );
+      renderWithAdminContext(<FilterChipBar filterConfig={TEST_FILTER_CONFIG} />);
 
       fireEvent.click(screen.getByText("Clear all"));
 
@@ -200,9 +190,7 @@ describe("FilterChipBar", () => {
     test("has correct ARIA roles", () => {
       mockFilterValues = { status: "active" };
 
-      renderWithAdminContext(
-        <FilterChipBar filterConfig={TEST_FILTER_CONFIG} />
-      );
+      renderWithAdminContext(<FilterChipBar filterConfig={TEST_FILTER_CONFIG} />);
 
       const toolbar = screen.getByRole("toolbar");
       expect(toolbar).toHaveAttribute("aria-label", "Active filters");
@@ -216,33 +204,25 @@ describe("FilterChipBar", () => {
     test("remove buttons have accessible labels", () => {
       mockFilterValues = { status: "active" };
 
-      renderWithAdminContext(
-        <FilterChipBar filterConfig={TEST_FILTER_CONFIG} />
-      );
+      renderWithAdminContext(<FilterChipBar filterConfig={TEST_FILTER_CONFIG} />);
 
-      expect(
-        screen.getByRole("button", { name: /Remove Active filter/i })
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Remove Active filter/i })).toBeInTheDocument();
     });
 
     test("Clear all button has accessible label with count", () => {
       mockFilterValues = { status: "active", priority: ["high", "medium"] };
 
-      renderWithAdminContext(
-        <FilterChipBar filterConfig={TEST_FILTER_CONFIG} />
-      );
+      renderWithAdminContext(<FilterChipBar filterConfig={TEST_FILTER_CONFIG} />);
 
-      expect(
-        screen.getByRole("button", { name: /Clear all 3 filters/i })
-      ).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /Clear all 3 filters/i })).toBeInTheDocument();
     });
   });
 
   describe("Error Handling", () => {
     test("throws if filterConfig is empty", () => {
-      expect(() =>
-        renderWithAdminContext(<FilterChipBar filterConfig={[]} />)
-      ).toThrow("FilterChipBar requires a non-empty filterConfig");
+      expect(() => renderWithAdminContext(<FilterChipBar filterConfig={[]} />)).toThrow(
+        "FilterChipBar requires a non-empty filterConfig"
+      );
     });
   });
 });

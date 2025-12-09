@@ -37,8 +37,7 @@ interface SessionState {
 }
 
 const STATE_DIR = join(__dirname, "state");
-const getStatePath = (sessionId: string) =>
-  join(STATE_DIR, `verification-${sessionId}.json`);
+const getStatePath = (sessionId: string) => join(STATE_DIR, `verification-${sessionId}.json`);
 
 function ensureStateDir(): void {
   if (!existsSync(STATE_DIR)) {
@@ -61,7 +60,7 @@ function loadSessionState(sessionId: string): SessionState {
   return {
     buildVerified: false,
     typesVerified: false,
-    testsVerified: false
+    testsVerified: false,
   };
 }
 
@@ -80,14 +79,22 @@ function isVerificationCommand(command: string): { type: "build" | "types" | "te
   }
 
   // TypeScript verification
-  if (lowerCmd.includes("tsc --noEmit") || lowerCmd.includes("tsc -noEmit") ||
-      lowerCmd.includes("npx tsc") || lowerCmd.includes("npm run typecheck")) {
+  if (
+    lowerCmd.includes("tsc --noEmit") ||
+    lowerCmd.includes("tsc -noEmit") ||
+    lowerCmd.includes("npx tsc") ||
+    lowerCmd.includes("npm run typecheck")
+  ) {
     return { type: "types" };
   }
 
   // Test verification
-  if (lowerCmd.includes("npm test") || lowerCmd.includes("npm run test") ||
-      lowerCmd.includes("vitest") || lowerCmd.includes("jest")) {
+  if (
+    lowerCmd.includes("npm test") ||
+    lowerCmd.includes("npm run test") ||
+    lowerCmd.includes("vitest") ||
+    lowerCmd.includes("jest")
+  ) {
     return { type: "tests" };
   }
 
@@ -175,7 +182,7 @@ async function main() {
 You are attempting: ${command.substring(0, 50)}...
 
 MISSING VERIFICATION:
-${missing.map(cmd => `  ✗ ${cmd}`).join("\n")}
+${missing.map((cmd) => `  ✗ ${cmd}`).join("\n")}
 
 REQUIRED ACTION:
 Run the verification commands first and confirm they pass.
@@ -192,7 +199,6 @@ Use skill: verification-before-completion
 
     // Allow all other commands
     process.exit(0);
-
   } catch (err) {
     // On error, allow the tool to proceed (fail-open for hooks)
     console.error("Error in verification-before-git hook:", err);

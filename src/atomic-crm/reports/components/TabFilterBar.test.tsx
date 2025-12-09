@@ -34,13 +34,7 @@ describe("TabFilterBar", () => {
 
   it("renders sales rep selector when enabled", () => {
     const onChange = vi.fn();
-    render(
-      <TabFilterBar
-        showSalesRep
-        salesRepId={null}
-        onSalesRepChange={onChange}
-      />
-    );
+    render(<TabFilterBar showSalesRep salesRepId={null} onSalesRepChange={onChange} />);
 
     expect(screen.getByLabelText(/sales rep/i)).toBeInTheDocument();
   });

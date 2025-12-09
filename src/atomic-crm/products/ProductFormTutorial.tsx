@@ -1,13 +1,9 @@
-import { useRef, useCallback } from 'react';
-import { driver, type DriveStep } from 'driver.js';
-import 'driver.js/dist/driver.css';
-import { HelpCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { useRef, useCallback } from "react";
+import { driver, type DriveStep } from "driver.js";
+import "driver.js/dist/driver.css";
+import { HelpCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 /**
  * Tutorial steps for the Product Create form.
@@ -16,7 +12,7 @@ import {
 const FORM_TUTORIAL_STEPS: DriveStep[] = [
   {
     popover: {
-      title: '📦 Create a Product',
+      title: "📦 Create a Product",
       description:
         "Let's add a new product. Required fields are marked with *. We'll go through each tab.",
     },
@@ -24,98 +20,89 @@ const FORM_TUTORIAL_STEPS: DriveStep[] = [
   {
     element: '[data-tutorial="product-tab-general"]',
     popover: {
-      title: 'General Information',
-      description:
-        'This tab contains basic product details. Let\'s start here.',
-      side: 'bottom',
-      align: 'start',
+      title: "General Information",
+      description: "This tab contains basic product details. Let's start here.",
+      side: "bottom",
+      align: "start",
     },
   },
   {
     element: '[data-tutorial="product-name"]',
     popover: {
-      title: 'Product Name *',
-      description:
-        'Enter the product name. This is how it will appear in searches and reports.',
-      side: 'right',
-      align: 'start',
+      title: "Product Name *",
+      description: "Enter the product name. This is how it will appear in searches and reports.",
+      side: "right",
+      align: "start",
     },
   },
   {
     element: '[data-tutorial="product-sku"]',
     popover: {
-      title: 'SKU (Optional)',
-      description:
-        'Add a Stock Keeping Unit code if you have one. Useful for inventory tracking.',
-      side: 'right',
-      align: 'start',
+      title: "SKU (Optional)",
+      description: "Add a Stock Keeping Unit code if you have one. Useful for inventory tracking.",
+      side: "right",
+      align: "start",
     },
   },
   {
     element: '[data-tutorial="product-tab-relationships"]',
     popover: {
-      title: 'Relationships',
-      description:
-        'Click this tab to link the product to organizations.',
-      side: 'bottom',
-      align: 'start',
+      title: "Relationships",
+      description: "Click this tab to link the product to organizations.",
+      side: "bottom",
+      align: "start",
     },
   },
   {
     element: '[data-tutorial="product-principal"]',
     popover: {
-      title: 'Principal/Supplier *',
-      description:
-        'Select which principal manufactures this product. Start typing to search.',
-      side: 'right',
-      align: 'start',
+      title: "Principal/Supplier *",
+      description: "Select which principal manufactures this product. Start typing to search.",
+      side: "right",
+      align: "start",
     },
   },
   {
     element: '[data-tutorial="product-tab-classification"]',
     popover: {
-      title: 'Classification',
-      description:
-        'Click this tab to categorize the product.',
-      side: 'bottom',
-      align: 'start',
+      title: "Classification",
+      description: "Click this tab to categorize the product.",
+      side: "bottom",
+      align: "start",
     },
   },
   {
     element: '[data-tutorial="product-category"]',
     popover: {
-      title: 'Category *',
-      description:
-        'Choose an F&B category or type to create a custom one.',
-      side: 'right',
-      align: 'start',
+      title: "Category *",
+      description: "Choose an F&B category or type to create a custom one.",
+      side: "right",
+      align: "start",
     },
   },
   {
     element: '[data-tutorial="product-status"]',
     popover: {
-      title: 'Status',
-      description:
-        'Set product availability: Active, Coming Soon, or Discontinued.',
-      side: 'right',
-      align: 'start',
+      title: "Status",
+      description: "Set product availability: Active, Coming Soon, or Discontinued.",
+      side: "right",
+      align: "start",
     },
   },
   {
     element: '[data-tutorial="product-save-btn"]',
     popover: {
-      title: 'Create Product',
-      description:
-        "Click to save the product. You'll be taken to the product detail page.",
-      side: 'top',
-      align: 'end',
+      title: "Create Product",
+      description: "Click to save the product. You'll be taken to the product detail page.",
+      side: "top",
+      align: "end",
     },
   },
   {
     popover: {
-      title: '✅ Ready to Go!',
+      title: "✅ Ready to Go!",
       description:
-        'You now know how to create a product. Fill in the required fields across all tabs and click Create Product.',
+        "You now know how to create a product. Fill in the required fields across all tabs and click Create Product.",
     },
   },
 ];
@@ -142,10 +129,10 @@ export function ProductFormTutorial() {
       animate: true,
       smoothScroll: true,
       overlayOpacity: 0.75,
-      popoverClass: 'tutorial-popover',
-      nextBtnText: 'Next →',
-      prevBtnText: '← Back',
-      doneBtnText: 'Done ✓',
+      popoverClass: "tutorial-popover",
+      nextBtnText: "Next →",
+      prevBtnText: "← Back",
+      doneBtnText: "Done ✓",
       steps: FORM_TUTORIAL_STEPS,
       onDestroyStarted: () => {
         // Cleanup on close

@@ -47,7 +47,11 @@ interface OrganizationContactsTabProps {
 }
 
 export function OrganizationContactsTab({ record }: OrganizationContactsTabProps) {
-  const { data: contacts = [], isLoading, error } = useGetList<Contact>(
+  const {
+    data: contacts = [],
+    isLoading,
+    error,
+  } = useGetList<Contact>(
     "contacts",
     {
       filter: { organization_id: record.id },

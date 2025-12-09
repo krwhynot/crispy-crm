@@ -1,12 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { Archive, ArchiveRestore } from "lucide-react";
-import {
-  useDataProvider,
-  useNotify,
-  useRedirect,
-  useRefresh,
-  useUpdate,
-} from "react-admin";
+import { useDataProvider, useNotify, useRedirect, useRefresh, useUpdate } from "react-admin";
 
 import { Button } from "@/components/ui/button";
 import { OpportunitiesService } from "../../services";

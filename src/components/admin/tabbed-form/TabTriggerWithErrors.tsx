@@ -9,7 +9,12 @@ export interface TabTriggerWithErrorsProps {
   dataTutorial?: string;
 }
 
-export const TabTriggerWithErrors = ({ value, label, errorCount, dataTutorial }: TabTriggerWithErrorsProps) => {
+export const TabTriggerWithErrors = ({
+  value,
+  label,
+  errorCount,
+  dataTutorial,
+}: TabTriggerWithErrorsProps) => {
   const ariaLabel =
     errorCount > 0
       ? `${label} tab, ${errorCount} error${errorCount > 1 ? "s" : ""}`

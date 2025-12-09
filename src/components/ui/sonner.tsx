@@ -10,7 +10,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
       theme={theme as ToasterProps["theme"]}
       className="toaster group"
       containerAriaLabel="Notifications"
-      toastOptions={{ closeButtonAriaLabel: 'Close notification' }}
+      toastOptions={{ closeButtonAriaLabel: "Close notification" }}
       style={
         {
           "--normal-bg": "var(--popover)",

@@ -1,12 +1,12 @@
 export type TutorialChapter =
-  | 'organizations'
-  | 'contacts'
-  | 'opportunities'
-  | 'activities'
-  | 'tasks'
-  | 'products'
-  | 'notes'
-  | 'users';
+  | "organizations"
+  | "contacts"
+  | "opportunities"
+  | "activities"
+  | "tasks"
+  | "products"
+  | "notes"
+  | "users";
 
 export interface TutorialProgress {
   currentChapter: TutorialChapter | null;
@@ -21,8 +21,8 @@ export interface TutorialStep {
   popover: {
     title: string;
     description: string;
-    side?: 'top' | 'bottom' | 'left' | 'right';
-    align?: 'start' | 'center' | 'end';
+    side?: "top" | "bottom" | "left" | "right";
+    align?: "start" | "center" | "end";
   };
   navigateTo?: string; // Route to navigate before this step
 }

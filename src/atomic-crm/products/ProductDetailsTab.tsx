@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { ReferenceField } from "@/components/admin/reference-field";
@@ -53,11 +52,9 @@ interface ProductDetailsTabProps {
 export function ProductDetailsTab({ record, mode, onModeToggle }: ProductDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
-  const [isSaving, setIsSaving] = useState(false);
 
   // Handle save in edit mode
   const handleSave = async (data: Partial<Product>) => {
-    setIsSaving(true);
     try {
       await update("products", {
         id: record.id,
@@ -69,8 +66,6 @@ export function ProductDetailsTab({ record, mode, onModeToggle }: ProductDetails
     } catch (error) {
       notify("Error updating product", { type: "error" });
       console.error("Save error:", error);
-    } finally {
-      setIsSaving(false);
     }
   };
 

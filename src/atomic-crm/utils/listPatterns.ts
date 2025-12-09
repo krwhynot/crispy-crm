@@ -60,8 +60,9 @@ export const DEFAULT_PER_PAGE = {
  * Helper function to get column visibility classes by semantic name.
  * Prefer direct object spread: `{...COLUMN_VISIBILITY.desktopOnly}` for better type inference.
  */
-export function getColumnVisibility(
-  visibility: keyof typeof COLUMN_VISIBILITY
-): { cellClassName: string; headerClassName: string } {
+export function getColumnVisibility(visibility: keyof typeof COLUMN_VISIBILITY): {
+  cellClassName: string;
+  headerClassName: string;
+} {
   return COLUMN_VISIBILITY[visibility];
 }

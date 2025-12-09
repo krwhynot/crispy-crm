@@ -16,10 +16,10 @@ import { getOpportunityStageLabel } from "./constants/stageConstants";
  * @see docs/decisions/file-handling-best-practices.md
  */
 const sanitizeForCSV = (value: unknown): string => {
-  if (value === null || value === undefined) return '';
+  if (value === null || value === undefined) return "";
   const str = String(value);
-  const formulaTriggers = ['=', '-', '+', '@', '\t', '\r'];
-  if (formulaTriggers.some(char => str.startsWith(char))) {
+  const formulaTriggers = ["=", "-", "+", "@", "\t", "\r"];
+  if (formulaTriggers.some((char) => str.startsWith(char))) {
     return `\t${str}`;
   }
   return str;
@@ -54,17 +54,10 @@ export interface OpportunityExportRow {
   stage_changed_at: string | undefined;
 }
 
-export const opportunityExporter: Exporter<Opportunity> = async (
-  records,
-  fetchRelatedRecords
-) => {
+export const opportunityExporter: Exporter<Opportunity> = async (records, fetchRelatedRecords) => {
   // Fetch related records for display names
   const sales = await fetchRelatedRecords<Sale>(records, "opportunity_owner_id", "sales");
-  const accountManagers = await fetchRelatedRecords<Sale>(
-    records,
-    "account_manager_id",
-    "sales"
-  );
+  const accountManagers = await fetchRelatedRecords<Sale>(records, "account_manager_id", "sales");
   const customers = await fetchRelatedRecords<Organization>(
     records,
     "customer_organization_id",
@@ -120,19 +113,21 @@ export const opportunityExporter: Exporter<Opportunity> = async (
     stage_changed_at: opp.stage_changed_at,
   }));
 
-  const safeOpportunities = opportunities.map(row =>
-    Object.fromEntries(
-      Object.entries(row).map(([key, value]) => [key, sanitizeForCSV(value)])
-    )
+  const safeOpportunities = opportunities.map((row) =>
+    Object.fromEntries(Object.entries(row).map(([key, value]) => [key, sanitizeForCSV(value)]))
   );
 
-  return jsonExport(safeOpportunities, {
-    rowDelimiter: ',',
-    endOfLine: '\r\n',
-  }, (err: Error | null, csv: string) => {
-    if (err) {
-      throw new Error(`CSV export failed: ${err.message}`);
+  return jsonExport(
+    safeOpportunities,
+    {
+      rowDelimiter: ",",
+      endOfLine: "\r\n",
+    },
+    (err: Error | null, csv: string) => {
+      if (err) {
+        throw new Error(`CSV export failed: ${err.message}`);
+      }
+      downloadCSV(csv, "opportunities");
     }
-    downloadCSV(csv, "opportunities");
-  });
+  );
 };

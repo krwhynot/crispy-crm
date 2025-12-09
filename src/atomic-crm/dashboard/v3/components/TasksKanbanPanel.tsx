@@ -1,5 +1,11 @@
 import { useMemo, useCallback } from "react";
-import { DragDropContext, type DropResult, type DragStart, type DragUpdate, type ResponderProvided } from "@hello-pangea/dnd";
+import {
+  DragDropContext,
+  type DropResult,
+  type DragStart,
+  type DragUpdate,
+  type ResponderProvided,
+} from "@hello-pangea/dnd";
 import { useNotify } from "react-admin";
 import { startOfDay, addDays, setHours, setMinutes } from "date-fns";
 // Card wrapper removed - parent DashboardTabPanel provides container
@@ -108,25 +114,18 @@ function TasksKanbanPanel() {
 
       if (task) {
         const columnLabel = columnLabels[start.source.droppableId as TaskColumnId];
-        provided.announce(
-          `Picked up task: ${task.subject}. Currently in ${columnLabel}.`
-        );
+        provided.announce(`Picked up task: ${task.subject}. Currently in ${columnLabel}.`);
       }
     },
     [tasks]
   );
 
-  const handleDragUpdate = useCallback(
-    (update: DragUpdate, provided: ResponderProvided) => {
-      if (update.destination) {
-        const columnLabel = columnLabels[update.destination.droppableId as TaskColumnId];
-        provided.announce(
-          `Moving to ${columnLabel}, position ${update.destination.index + 1}`
-        );
-      }
-    },
-    []
-  );
+  const handleDragUpdate = useCallback((update: DragUpdate, provided: ResponderProvided) => {
+    if (update.destination) {
+      const columnLabel = columnLabels[update.destination.droppableId as TaskColumnId];
+      provided.announce(`Moving to ${columnLabel}, position ${update.destination.index + 1}`);
+    }
+  }, []);
 
   /**
    * Handle drag end - update task due_date based on destination column
@@ -137,13 +136,13 @@ function TasksKanbanPanel() {
 
       // Dropped outside a valid droppable
       if (!destination) {
-        provided.announce('Drag cancelled. Task returned to original position.');
+        provided.announce("Drag cancelled. Task returned to original position.");
         return;
       }
 
       // Dropped in same position
       if (destination.droppableId === source.droppableId && destination.index === source.index) {
-        provided.announce('Dropped in original position.');
+        provided.announce("Dropped in original position.");
         return;
       }
 
@@ -170,7 +169,7 @@ function TasksKanbanPanel() {
         );
         notify(`Moved to ${columnLabels[destColumnId]}`, { type: "success" });
       } catch {
-        provided.announce('Failed to move task. Returned to original position.');
+        provided.announce("Failed to move task. Returned to original position.");
         notify("Failed to move task. Please try again.", { type: "error" });
       }
     },

@@ -160,8 +160,14 @@ export function StandardListLayout({
         </div>
       )}
 
-      <main role="main" aria-label={`${resource} list`} className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
-        <div className="card-container flex h-full min-h-0 flex-1 flex-col overflow-hidden pb-2">{children}</div>
+      <main
+        role="main"
+        aria-label={`${resource} list`}
+        className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden"
+      >
+        <div className="card-container flex h-full min-h-0 flex-1 flex-col overflow-hidden pb-2">
+          {children}
+        </div>
       </main>
     </div>
   );

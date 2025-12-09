@@ -33,7 +33,11 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
   const { data: identity } = useGetIdentity();
   const notify = useNotify();
 
-  const { data: notifications = [], isLoading, refetch } = useGetList<Notification>(
+  const {
+    data: notifications = [],
+    isLoading,
+    refetch,
+  } = useGetList<Notification>(
     "notifications",
     {
       pagination: { page: 1, perPage: 20 },
@@ -50,7 +54,11 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
 
     update(
       "notifications",
-      { id: notificationId, data: { read: true }, previousData: notifications.find(n => n.id === notificationId) },
+      {
+        id: notificationId,
+        data: { read: true },
+        previousData: notifications.find((n) => n.id === notificationId),
+      },
       {
         onSuccess: () => {
           refetch();
@@ -65,10 +73,10 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
   const markAllAsRead = async () => {
     if (!identity?.user_id) return;
 
-    const unreadNotifications = notifications.filter(n => !n.read);
+    const unreadNotifications = notifications.filter((n) => !n.read);
 
     await Promise.allSettled(
-      unreadNotifications.map(notification =>
+      unreadNotifications.map((notification) =>
         update("notifications", {
           id: notification.id,
           data: { read: true },

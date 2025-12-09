@@ -40,7 +40,8 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
 
   const ariaLabel = useMemo(() => {
     const total = data.reduce((sum, d) => sum + d.count, 0);
-    const dateRange = data.length > 0 ? `from ${data[0].date} to ${data[data.length - 1].date}` : '';
+    const dateRange =
+      data.length > 0 ? `from ${data[0].date} to ${data[data.length - 1].date}` : "";
     return `Activity trend chart showing ${total} activities over ${data.length} time periods ${dateRange}`;
   }, [data]);
 
@@ -104,12 +105,6 @@ export function ActivityTrendChart({ data }: ActivityTrendChartProps) {
   }
 
   return (
-    <Line
-      data={chartData}
-      options={options}
-      datasetIdKey="id"
-      aria-label={ariaLabel}
-      role="img"
-    />
+    <Line data={chartData} options={options} datasetIdKey="id" aria-label={ariaLabel} role="img" />
   );
 }

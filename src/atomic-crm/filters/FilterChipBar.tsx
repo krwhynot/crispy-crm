@@ -52,8 +52,10 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
     );
   }
 
-  const { chips, removeFilter, clearAllFilters, hasActiveFilters, activeCount } =
-    useFilterChipBar(filterConfig, context);
+  const { chips, removeFilter, clearAllFilters, hasActiveFilters, activeCount } = useFilterChipBar(
+    filterConfig,
+    context
+  );
 
   /**
    * Keyboard navigation handler for chip bar
@@ -63,9 +65,7 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
     const buttons = chipBarRef.current?.querySelectorAll('button[aria-label^="Remove"]');
     if (!buttons?.length) return;
 
-    const currentIndex = Array.from(buttons).findIndex(
-      (btn) => btn === document.activeElement
-    );
+    const currentIndex = Array.from(buttons).findIndex((btn) => btn === document.activeElement);
 
     switch (e.key) {
       case "ArrowRight":
@@ -104,10 +104,7 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
         className
       )}
     >
-      <span
-        id="filter-chip-bar-label"
-        className="text-sm text-muted-foreground whitespace-nowrap"
-      >
+      <span id="filter-chip-bar-label" className="text-sm text-muted-foreground whitespace-nowrap">
         Active filters:
       </span>
       <div
@@ -117,10 +114,7 @@ export function FilterChipBar({ filterConfig, context, className }: FilterChipBa
       >
         {chips.map((chip) => (
           <div key={`${chip.key}-${chip.value}`} role="listitem">
-            <FilterChip
-              label={chip.label}
-              onRemove={() => removeFilter(chip.key, chip.value)}
-            />
+            <FilterChip label={chip.label} onRemove={() => removeFilter(chip.key, chip.value)} />
           </div>
         ))}
       </div>

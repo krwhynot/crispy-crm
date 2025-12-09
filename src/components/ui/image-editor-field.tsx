@@ -93,10 +93,10 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
       maxWidth: 1024,
       maxHeight: 1024,
       imageSmoothingEnabled: true,
-      imageSmoothingQuality: 'high',
+      imageSmoothingQuality: "high",
     });
 
-    const croppedImage = canvas.toDataURL('image/jpeg', 0.85);
+    const croppedImage = canvas.toDataURL("image/jpeg", 0.85);
     if (croppedImage) {
       setImageSrc(croppedImage);
 
@@ -157,8 +157,8 @@ const ImageEditorDialog = (props: ImageEditorDialogProps) => {
           <div
             className="flex flex-row justify-center bg-muted cursor-pointer p-4 border-2 border-dashed border-border rounded-lg hover:bg-accent transition-colors"
             {...getRootProps({
-              role: 'button',
-              'aria-label': 'Upload image for cropping',
+              role: "button",
+              "aria-label": "Upload image for cropping",
               tabIndex: 0,
             })}
           >

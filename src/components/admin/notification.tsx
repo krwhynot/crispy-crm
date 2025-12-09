@@ -86,7 +86,7 @@ export const Notification = (props: ToasterProps) => {
         closeButton
         position="bottom-center"
         containerAriaLabel="Notifications"
-        toastOptions={{ closeButtonAriaLabel: 'Close notification' }}
+        toastOptions={{ closeButtonAriaLabel: "Close notification" }}
         {...props}
       />
     </CloseNotificationContext.Provider>

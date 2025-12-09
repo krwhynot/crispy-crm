@@ -205,7 +205,9 @@ export function useContactImport() {
               title,
               email,
               phone,
-              first_seen: first_seen ? (parseDateSafely(first_seen)?.toISOString() ?? today) : today,
+              first_seen: first_seen
+                ? (parseDateSafely(first_seen)?.toISOString() ?? today)
+                : today,
               last_seen: last_seen ? (parseDateSafely(last_seen)?.toISOString() ?? today) : today,
               tags: preview ? [] : tagList.map((tag) => tag.id),
               sales_id: identity?.id,

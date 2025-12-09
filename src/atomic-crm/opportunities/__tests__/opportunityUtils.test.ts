@@ -195,12 +195,7 @@ describe("Opportunity Utils", () => {
 
   describe("Company Organization Type Logic", () => {
     it("should validate organization type values", () => {
-      const validOrgTypes = [
-        "customer",
-        "prospect",
-        "principal",
-        "distributor",
-      ];
+      const validOrgTypes = ["customer", "prospect", "principal", "distributor"];
 
       const isValidOrgType = (type: string): boolean => {
         return validOrgTypes.includes(type);

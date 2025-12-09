@@ -1,37 +1,33 @@
-import { useEffect, useRef } from 'react';
-import { HelpCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { useTutorial } from './TutorialProvider';
-import type { TutorialChapter } from './types';
+import { useEffect, useRef } from "react";
+import { HelpCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { useTutorial } from "./TutorialProvider";
+import type { TutorialChapter } from "./types";
 
 interface PageTutorialTriggerProps {
   /** Tutorial chapter for this page (e.g., 'organizations', 'contacts') */
   chapter: TutorialChapter;
   /** Position of the help button (default: bottom-right) */
-  position?: 'bottom-right' | 'bottom-left' | 'top-right';
+  position?: "bottom-right" | "bottom-left" | "top-right";
 }
 
 const POSITION_CLASSES = {
-  'bottom-right': 'bottom-4 right-4',
-  'bottom-left': 'bottom-4 left-4',
-  'top-right': 'top-20 right-4', // Below header
+  "bottom-right": "bottom-4 right-4",
+  "bottom-left": "bottom-4 left-4",
+  "top-right": "top-20 right-4", // Below header
 } as const;
 
 // Human-readable chapter names
 const CHAPTER_LABELS: Record<TutorialChapter, string> = {
-  organizations: 'Organizations',
-  contacts: 'Contacts',
-  opportunities: 'Opportunities',
-  activities: 'Activities',
-  tasks: 'Tasks',
-  products: 'Products',
-  notes: 'Notes',
-  users: 'Users',
+  organizations: "Organizations",
+  contacts: "Contacts",
+  opportunities: "Opportunities",
+  activities: "Activities",
+  tasks: "Tasks",
+  products: "Products",
+  notes: "Notes",
+  users: "Users",
 };
 
 /**
@@ -44,7 +40,7 @@ const CHAPTER_LABELS: Record<TutorialChapter, string> = {
  */
 export function PageTutorialTrigger({
   chapter,
-  position = 'bottom-left',
+  position = "bottom-left",
 }: PageTutorialTriggerProps) {
   const { startTutorial, isActive, hasVisitedPage, markPageVisited } = useTutorial();
   const hasAutoTriggered = useRef(false);

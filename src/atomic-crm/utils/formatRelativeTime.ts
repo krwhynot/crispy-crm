@@ -20,7 +20,6 @@ export function formatRelativeTime(date: Date | string | null | undefined): stri
   }
 
   try {
-
     const now = new Date();
     const diffMs = now.getTime() - targetDate.getTime();
     const diffSec = Math.floor(diffMs / 1000);

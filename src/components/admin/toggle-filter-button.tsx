@@ -65,7 +65,10 @@ const toggleFilter = (value: any, filters: any) => {
   const safeFilters = filters || {};
 
   // es-toolkit isMatch takes (object, source) directly - arguments swapped from lodash matches
-  const isSelected = isMatch(safeFilters, pickBy(value, (val) => typeof val !== "undefined"));
+  const isSelected = isMatch(
+    safeFilters,
+    pickBy(value, (val) => typeof val !== "undefined")
+  );
 
   if (isSelected) {
     const keysToRemove = Object.keys(value);
@@ -80,7 +83,10 @@ const toggleFilter = (value: any, filters: any) => {
 
 const getIsSelected = (value: any, filters: any) => {
   const safeFilters = filters || {};
-  return isMatch(safeFilters, pickBy(value, (val) => typeof val !== "undefined"));
+  return isMatch(
+    safeFilters,
+    pickBy(value, (val) => typeof val !== "undefined")
+  );
 };
 
 /**

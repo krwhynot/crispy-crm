@@ -16,12 +16,18 @@
  */
 
 import { describe, it, expect, beforeAll, afterAll, vi } from "vitest";
-import type { SupabaseClient, Session } from "@supabase/supabase-js";
+import type {
+  SupabaseClient,
+  Session,
+  createClient as CreateClientType,
+} from "@supabase/supabase-js";
 
 // Import the REAL createClient, bypassing the global mock in setup.ts
 
-const { createClient } =
-  await vi.importActual<typeof import("@supabase/supabase-js")>("@supabase/supabase-js");
+const actualSupabase = await vi.importActual<{ createClient: typeof CreateClientType }>(
+  "@supabase/supabase-js"
+);
+const { createClient } = actualSupabase;
 
 describe("opportunities_summary RLS Integration Tests", () => {
   let supabase: SupabaseClient;

@@ -115,18 +115,10 @@ const ProductListLayout = ({
           focusedIndex={focusedIndex}
         >
           {/* Column 1: Product Name - Primary identifier (sortable) - always visible */}
-          <TextField
-            source="name"
-            label="Product Name"
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
+          <TextField source="name" label="Product Name" {...COLUMN_VISIBILITY.alwaysVisible} />
 
           {/* Column 2: SKU - Unique identifier (sortable) - always visible */}
-          <TextField
-            source="sku"
-            label="SKU"
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
+          <TextField source="sku" label="SKU" {...COLUMN_VISIBILITY.alwaysVisible} />
 
           {/* Column 3: Category - Classification badge (sortable) - always visible */}
           <FunctionField
@@ -186,11 +178,7 @@ const ProductListActions = () => (
  * CategoryBadge - Display product category with proper formatting
  */
 function CategoryBadge({ category }: { category: string }) {
-  return (
-    <Badge variant="outline">
-      {formatSnakeCase(category)}
-    </Badge>
-  );
+  return <Badge variant="outline">{formatSnakeCase(category)}</Badge>;
 }
 
 /**

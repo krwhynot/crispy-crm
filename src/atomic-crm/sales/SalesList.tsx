@@ -112,37 +112,19 @@ const SalesListLayout = ({
         bulkActionButtons={false}
       >
         {/* Column 1: First Name - Primary identifier (sortable) - always visible */}
-        <TextField
-          source="first_name"
-          label="First Name"
-          {...COLUMN_VISIBILITY.alwaysVisible}
-        />
+        <TextField source="first_name" label="First Name" {...COLUMN_VISIBILITY.alwaysVisible} />
 
         {/* Column 2: Last Name - Secondary identifier (sortable) - always visible */}
-        <TextField
-          source="last_name"
-          label="Last Name"
-          {...COLUMN_VISIBILITY.alwaysVisible}
-        />
+        <TextField source="last_name" label="Last Name" {...COLUMN_VISIBILITY.alwaysVisible} />
 
         {/* Column 3: Email - Contact info (sortable) - hidden on tablet/mobile */}
-        <EmailField
-          source="email"
-          label="Email"
-          {...COLUMN_VISIBILITY.desktopOnly}
-        />
+        <EmailField source="email" label="Email" {...COLUMN_VISIBILITY.desktopOnly} />
 
         {/* Column 4: Role - Permission level badge (non-sortable) - always visible */}
-        <RoleBadgeField
-          label="Role"
-          {...COLUMN_VISIBILITY.alwaysVisible}
-        />
+        <RoleBadgeField label="Role" {...COLUMN_VISIBILITY.alwaysVisible} />
 
         {/* Column 5: Status - Account status (non-sortable) - hidden on tablet/mobile */}
-        <StatusField
-          label="Status"
-          {...COLUMN_VISIBILITY.desktopOnly}
-        />
+        <StatusField label="Status" {...COLUMN_VISIBILITY.desktopOnly} />
       </PremiumDatagrid>
     </div>
   );
@@ -161,7 +143,14 @@ const SalesListActions = () => (
 /**
  * RoleBadgeField - Display role badge with semantic colors
  */
-const RoleBadgeField = ({ label: _label, ...props }: { label: string; cellClassName?: string; headerClassName?: string }) => {
+const RoleBadgeField = ({
+  label: _label,
+  ..._props
+}: {
+  label: string;
+  cellClassName?: string;
+  headerClassName?: string;
+}) => {
   const record = useRecordContext();
   if (!record) return null;
 
@@ -196,7 +185,14 @@ const RoleBadgeField = ({ label: _label, ...props }: { label: string; cellClassN
 /**
  * StatusField - Display account status (Active/Disabled)
  */
-const StatusField = ({ label: _label, ..._props }: { label: string; cellClassName?: string; headerClassName?: string }) => {
+const StatusField = ({
+  label: _label,
+  ..._props
+}: {
+  label: string;
+  cellClassName?: string;
+  headerClassName?: string;
+}) => {
   const record = useRecordContext();
   if (!record) return null;
 

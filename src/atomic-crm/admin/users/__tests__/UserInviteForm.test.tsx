@@ -1,11 +1,11 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { UserInviteForm } from '../UserInviteForm';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { UserInviteForm } from "../UserInviteForm";
 
 // Create a simple mock for React Admin hooks
-vi.mock('react-admin', () => ({
+vi.mock("react-admin", () => ({
   useDataProvider: () => ({
     inviteUser: mockInviteUser,
   }),
@@ -30,7 +30,7 @@ const createWrapper = () => {
   );
 };
 
-describe('UserInviteForm', () => {
+describe("UserInviteForm", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mockInviteUser.mockReset();
@@ -38,7 +38,7 @@ describe('UserInviteForm', () => {
     mockRefresh.mockReset();
   });
 
-  it('renders all required fields', () => {
+  it("renders all required fields", () => {
     render(<UserInviteForm open onClose={vi.fn()} />, {
       wrapper: createWrapper(),
     });
@@ -50,17 +50,17 @@ describe('UserInviteForm', () => {
     expect(screen.getByLabelText(/role/i)).toBeInTheDocument();
   });
 
-  it('defaults role to rep', () => {
+  it("defaults role to rep", () => {
     render(<UserInviteForm open onClose={vi.fn()} />, {
       wrapper: createWrapper(),
     });
 
     // The select trigger should display "Rep" as default
-    const selectTrigger = screen.getByRole('combobox', { name: /role/i });
-    expect(selectTrigger).toHaveTextContent('Rep');
+    const selectTrigger = screen.getByRole("combobox", { name: /role/i });
+    expect(selectTrigger).toHaveTextContent("Rep");
   });
 
-  it('submits form data to inviteUser', async () => {
+  it("submits form data to inviteUser", async () => {
     const user = userEvent.setup();
     mockInviteUser.mockResolvedValue({ data: { id: 1 } });
     const mockOnClose = vi.fn();
@@ -69,46 +69,46 @@ describe('UserInviteForm', () => {
       wrapper: createWrapper(),
     });
 
-    await user.type(screen.getByLabelText(/email/i), 'new@mfb.com');
-    await user.type(screen.getByLabelText(/first name/i), 'New');
-    await user.type(screen.getByLabelText(/last name/i), 'User');
-    await user.type(screen.getByLabelText(/password/i), 'SecurePass123!');
+    await user.type(screen.getByLabelText(/email/i), "new@mfb.com");
+    await user.type(screen.getByLabelText(/first name/i), "New");
+    await user.type(screen.getByLabelText(/last name/i), "User");
+    await user.type(screen.getByLabelText(/password/i), "SecurePass123!");
 
-    await user.click(screen.getByRole('button', { name: /send invite/i }));
+    await user.click(screen.getByRole("button", { name: /send invite/i }));
 
     await waitFor(() => {
       expect(mockInviteUser).toHaveBeenCalledWith(
         expect.objectContaining({
-          email: 'new@mfb.com',
-          first_name: 'New',
-          last_name: 'User',
-          role: 'rep',
+          email: "new@mfb.com",
+          first_name: "New",
+          last_name: "User",
+          role: "rep",
         })
       );
     });
   });
 
-  it('displays error message on invite failure', async () => {
+  it("displays error message on invite failure", async () => {
     const user = userEvent.setup();
-    mockInviteUser.mockRejectedValue(new Error('Email already exists'));
+    mockInviteUser.mockRejectedValue(new Error("Email already exists"));
 
     render(<UserInviteForm open onClose={vi.fn()} />, {
       wrapper: createWrapper(),
     });
 
-    await user.type(screen.getByLabelText(/email/i), 'existing@mfb.com');
-    await user.type(screen.getByLabelText(/first name/i), 'Test');
-    await user.type(screen.getByLabelText(/last name/i), 'User');
-    await user.type(screen.getByLabelText(/password/i), 'SecurePass123!');
+    await user.type(screen.getByLabelText(/email/i), "existing@mfb.com");
+    await user.type(screen.getByLabelText(/first name/i), "Test");
+    await user.type(screen.getByLabelText(/last name/i), "User");
+    await user.type(screen.getByLabelText(/password/i), "SecurePass123!");
 
-    await user.click(screen.getByRole('button', { name: /send invite/i }));
+    await user.click(screen.getByRole("button", { name: /send invite/i }));
 
     await waitFor(() => {
       expect(screen.getByText(/email already exists/i)).toBeInTheDocument();
     });
   });
 
-  it('closes dialog on cancel', async () => {
+  it("closes dialog on cancel", async () => {
     const user = userEvent.setup();
     const mockOnClose = vi.fn();
 
@@ -116,7 +116,7 @@ describe('UserInviteForm', () => {
       wrapper: createWrapper(),
     });
 
-    await user.click(screen.getByRole('button', { name: /cancel/i }));
+    await user.click(screen.getByRole("button", { name: /cancel/i }));
 
     expect(mockOnClose).toHaveBeenCalled();
   });

@@ -44,13 +44,10 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
   /**
    * Open the close modal with the specified target stage
    */
-  const handleOpenCloseModal = useCallback(
-    (targetStage: "closed_won" | "closed_lost") => {
-      setCloseTargetStage(targetStage);
-      setShowCloseModal(true);
-    },
-    []
-  );
+  const handleOpenCloseModal = useCallback((targetStage: "closed_won" | "closed_lost") => {
+    setCloseTargetStage(targetStage);
+    setShowCloseModal(true);
+  }, []);
 
   /**
    * Handle confirmation from CloseOpportunityModal

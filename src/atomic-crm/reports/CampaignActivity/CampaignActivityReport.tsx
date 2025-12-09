@@ -259,9 +259,7 @@ export default function CampaignActivityReport() {
           const lastActivityDate = getLastActivityForOpportunity(opp.id, allCampaignActivities);
           const lastActivityDateObj = lastActivityDate ? parseDateSafely(lastActivityDate) : null;
           const daysInactive = lastActivityDateObj
-            ? Math.floor(
-                (now.getTime() - lastActivityDateObj.getTime()) / (1000 * 60 * 60 * 24)
-              )
+            ? Math.floor((now.getTime() - lastActivityDateObj.getTime()) / (1000 * 60 * 60 * 24))
             : 999999; // Never had activity - sort to end
 
           // Get per-stage threshold (undefined for closed stages)
@@ -424,7 +422,9 @@ export default function CampaignActivityReport() {
       }
 
       const exportData = staleOpportunities.map((opp) => {
-        const lastActivityDateObj = opp.lastActivityDate ? parseDateSafely(opp.lastActivityDate) : null;
+        const lastActivityDateObj = opp.lastActivityDate
+          ? parseDateSafely(opp.lastActivityDate)
+          : null;
         return {
           campaign: sanitizeCsvValue(selectedCampaign),
           opportunity_name: sanitizeCsvValue(opp.name),
@@ -432,7 +432,8 @@ export default function CampaignActivityReport() {
           last_activity_date: lastActivityDateObj
             ? format(lastActivityDateObj, "yyyy-MM-dd")
             : "Never",
-          days_inactive: opp.daysInactive >= 999999 ? "Never contacted" : opp.daysInactive.toString(),
+          days_inactive:
+            opp.daysInactive >= 999999 ? "Never contacted" : opp.daysInactive.toString(),
           notes: "", // Not available in current data structure
         };
       });

@@ -171,8 +171,6 @@ export class SegmentsService {
    */
   getOperatorSegmentByName(name: string): { id: string; name: string } | undefined {
     const normalizedName = name.toLowerCase().trim();
-    return OPERATOR_SEGMENT_CHOICES.find(
-      (s) => s.name.toLowerCase().trim() === normalizedName
-    );
+    return OPERATOR_SEGMENT_CHOICES.find((s) => s.name.toLowerCase().trim() === normalizedName);
   }
 }

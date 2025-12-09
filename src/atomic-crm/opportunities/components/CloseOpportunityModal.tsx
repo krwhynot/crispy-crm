@@ -100,7 +100,10 @@ export const CloseOpportunityModal = ({
   // Watch reason fields for conditional "Other" field and to trigger validation
   const winReason = useWatch({ control, name: "win_reason" }) as WinReason | null | undefined;
   const lossReason = useWatch({ control, name: "loss_reason" }) as LossReason | null | undefined;
-  const closeReasonNotes = useWatch({ control, name: "close_reason_notes" }) as string | null | undefined;
+  const closeReasonNotes = useWatch({ control, name: "close_reason_notes" }) as
+    | string
+    | null
+    | undefined;
 
   // Trigger validation when relevant fields change
   // This is necessary because mode: "onBlur" doesn't auto-validate on change,

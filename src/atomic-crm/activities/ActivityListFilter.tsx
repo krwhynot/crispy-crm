@@ -107,7 +107,10 @@ export const ActivityListFilter = () => {
         </FilterCategory>
 
         {/* Activity Date Filter */}
-        <FilterCategory label="Activity Date" icon={<Calendar className="h-4 w-4" aria-hidden="true" />}>
+        <FilterCategory
+          label="Activity Date"
+          icon={<Calendar className="h-4 w-4" aria-hidden="true" />}
+        >
           <ToggleFilterButton
             className="w-full justify-between"
             label="Today"
@@ -140,7 +143,10 @@ export const ActivityListFilter = () => {
             multiselect
             className="w-full justify-between"
             label={
-              <Badge variant="default" className="text-xs px-1 py-0 bg-success text-success-foreground">
+              <Badge
+                variant="default"
+                className="text-xs px-1 py-0 bg-success text-success-foreground"
+              >
                 Positive
               </Badge>
             }

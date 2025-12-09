@@ -1,5 +1,5 @@
 import { format, formatDistanceToNow, isPast } from "date-fns";
-import { useRecordContext, useShowContext } from "react-admin";
+import { useRecordContext } from "react-admin";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { ReferenceManyField } from "@/components/admin/reference-many-field";
 import { DateField } from "@/components/admin/date-field";
@@ -130,18 +130,10 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
             <div>
               <span className="text-xs text-muted-foreground">Owner</span>
               <div className="flex items-center gap-2 mt-1">
-                <ReferenceField
-                  source="opportunity_owner_id"
-                  reference="sales"
-                  link={false}
-                >
+                <ReferenceField source="opportunity_owner_id" reference="sales" link={false}>
                   <SaleAvatar size="sm" />
                 </ReferenceField>
-                <ReferenceField
-                  source="opportunity_owner_id"
-                  reference="sales"
-                  link={false}
-                >
+                <ReferenceField source="opportunity_owner_id" reference="sales" link={false}>
                   <SaleName />
                 </ReferenceField>
               </div>
@@ -151,18 +143,10 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
             <div>
               <span className="text-xs text-muted-foreground">Account Manager</span>
               <div className="flex items-center gap-2 mt-1">
-                <ReferenceField
-                  source="account_manager_id"
-                  reference="sales"
-                  link={false}
-                >
+                <ReferenceField source="account_manager_id" reference="sales" link={false}>
                   <SaleAvatar size="sm" />
                 </ReferenceField>
-                <ReferenceField
-                  source="account_manager_id"
-                  reference="sales"
-                  link={false}
-                >
+                <ReferenceField source="account_manager_id" reference="sales" link={false}>
                   <SaleName />
                 </ReferenceField>
               </div>
@@ -187,9 +171,7 @@ export const OpportunityAside = ({ link = "edit" }: { link?: "edit" | "show" }) 
       {record.lead_source && (
         <AsideSection title="Lead Source">
           <div className="text-sm text-foreground">
-            {record.lead_source
-              .replace(/_/g, " ")
-              .replace(/\b\w/g, (l) => l.toUpperCase())}
+            {record.lead_source.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase())}
           </div>
         </AsideSection>
       )}

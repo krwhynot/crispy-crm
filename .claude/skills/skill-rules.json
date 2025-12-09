@@ -282,7 +282,12 @@
         ]
       },
       "fileTriggers": {
-        "pathPatterns": ["src/components/**/*.tsx", "src/pages/**/*.tsx", "src/layouts/**/*.tsx", "src/atomic-crm/**/*.tsx"],
+        "pathPatterns": [
+          "src/components/**/*.tsx",
+          "src/pages/**/*.tsx",
+          "src/layouts/**/*.tsx",
+          "src/atomic-crm/**/*.tsx"
+        ],
         "contentPatterns": ["className=", "tailwind", "bg-", "text-", "aria-", "role="]
       }
     },
@@ -316,9 +321,7 @@
         ]
       },
       "fileTriggers": {
-        "pathPatterns": [
-          "docs/plans/**/*.md"
-        ],
+        "pathPatterns": ["docs/plans/**/*.md"],
         "contentPatterns": [
           "Implementation Plan",
           "Task Dependencies",
@@ -397,9 +400,7 @@
         ]
       },
       "fileTriggers": {
-        "pathPatterns": [
-          "docs/plans/**/*.md"
-        ],
+        "pathPatterns": ["docs/plans/**/*.md"],
         "contentPatterns": [
           "Implementation Plan",
           "Task Dependencies",
@@ -838,11 +839,7 @@
           "reason": "Data layer, validation, and database changes are critical - require investigation first"
         },
         "suggest": {
-          "pathPatterns": [
-            "src/components/**/*.tsx",
-            "src/**/__tests__/**/*.ts",
-            "tests/**/*.ts"
-          ],
+          "pathPatterns": ["src/components/**/*.tsx", "src/**/__tests__/**/*.ts", "tests/**/*.ts"],
           "reason": "UI and test files are less critical - investigation recommended but not enforced"
         }
       },
@@ -1258,10 +1255,7 @@
           "reason": "Build/deploy config changes are high-risk - require systematic diagnosis first"
         },
         "suggest": {
-          "pathPatterns": [
-            "src/**/*.ts",
-            "src/**/*.tsx"
-          ],
+          "pathPatterns": ["src/**/*.ts", "src/**/*.tsx"],
           "reason": "Code changes for performance fixes are lower risk"
         }
       },

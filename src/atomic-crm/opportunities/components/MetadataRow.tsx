@@ -6,7 +6,5 @@ export interface MetadataRowProps {
 }
 
 export const MetadataRow = ({ children, className }: MetadataRowProps) => (
-  <div className={cn("flex gap-8 mb-4", className)}>
-    {children}
-  </div>
+  <div className={cn("flex gap-8 mb-4", className)}>{children}</div>
 );

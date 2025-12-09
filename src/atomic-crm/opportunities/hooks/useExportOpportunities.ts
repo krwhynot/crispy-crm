@@ -45,7 +45,9 @@ export const useExportOpportunities = () => {
           getOpportunityStageLabel(opp.stage) || "",
           opp.status || "",
           opp.priority || "",
-          opp.estimated_close_date && parseDateSafely(opp.estimated_close_date) ? format(parseDateSafely(opp.estimated_close_date)!, "yyyy-MM-dd") : "",
+          opp.estimated_close_date && parseDateSafely(opp.estimated_close_date)
+            ? format(parseDateSafely(opp.estimated_close_date)!, "yyyy-MM-dd")
+            : "",
           opp.description || "",
           opp.campaign || "",
           opp.related_opportunity_id ? `ID: ${opp.related_opportunity_id}` : "",
@@ -55,7 +57,9 @@ export const useExportOpportunities = () => {
             ? format(parseDateSafely(opp.last_interaction_date)!, "yyyy-MM-dd")
             : "",
           opp.days_in_stage?.toString() || "",
-          opp.created_at && parseDateSafely(opp.created_at) ? format(parseDateSafely(opp.created_at)!, "yyyy-MM-dd") : "",
+          opp.created_at && parseDateSafely(opp.created_at)
+            ? format(parseDateSafely(opp.created_at)!, "yyyy-MM-dd")
+            : "",
         ]);
 
         // Combine headers and rows

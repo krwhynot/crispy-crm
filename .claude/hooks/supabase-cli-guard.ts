@@ -58,38 +58,39 @@ function getBlockPatterns(projectId: string | null): BlockPattern[] {
     {
       pattern: /supabase\s+db\s+execute/i,
       message: "❌ BLOCKED: 'supabase db execute' does NOT exist!",
-      suggestion: `Use Docker + psql instead:\n  docker exec ${containerName} psql -U postgres -d postgres -c "YOUR SQL HERE"`
+      suggestion: `Use Docker + psql instead:\n  docker exec ${containerName} psql -U postgres -d postgres -c "YOUR SQL HERE"`,
     },
     {
       pattern: /supabase\s+run\s+/i,
       message: "❌ BLOCKED: 'supabase run' does NOT exist!",
-      suggestion: "For Edge Functions, use: supabase functions serve <name>\nFor SQL, use Docker + psql"
+      suggestion:
+        "For Edge Functions, use: supabase functions serve <name>\nFor SQL, use Docker + psql",
     },
     {
       pattern: /supabase\s+sql\s+/i,
       message: "❌ BLOCKED: 'supabase sql' does NOT exist!",
-      suggestion: `Use Docker + psql instead:\n  docker exec ${containerName} psql -U postgres -d postgres -c "YOUR SQL HERE"`
+      suggestion: `Use Docker + psql instead:\n  docker exec ${containerName} psql -U postgres -d postgres -c "YOUR SQL HERE"`,
     },
     {
       pattern: /supabase\s+query\s+/i,
       message: "❌ BLOCKED: 'supabase query' does NOT exist!",
-      suggestion: `Use Docker + psql instead:\n  docker exec ${containerName} psql -U postgres -d postgres -c "YOUR SQL HERE"`
+      suggestion: `Use Docker + psql instead:\n  docker exec ${containerName} psql -U postgres -d postgres -c "YOUR SQL HERE"`,
     },
     {
       pattern: /npx\s+supabase\s+db\s+execute/i,
       message: "❌ BLOCKED: 'npx supabase db execute' does NOT exist!",
-      suggestion: `Use Docker + psql instead:\n  docker exec ${containerName} psql -U postgres -d postgres -c "YOUR SQL HERE"`
+      suggestion: `Use Docker + psql instead:\n  docker exec ${containerName} psql -U postgres -d postgres -c "YOUR SQL HERE"`,
     },
     {
       pattern: /docker\s+exec\s+-it\s+supabase/i,
       message: "❌ BLOCKED: 'docker exec -it' will fail in non-TTY environment!",
-      suggestion: `Remove the -t flag for non-interactive use:\n  docker exec ${containerName} psql -U postgres -c "YOUR SQL HERE"\n\nOr remove both -i and -t flags.`
+      suggestion: `Remove the -t flag for non-interactive use:\n  docker exec ${containerName} psql -U postgres -c "YOUR SQL HERE"\n\nOr remove both -i and -t flags.`,
     },
     {
       pattern: /docker\s+exec\s+-ti\s+supabase/i,
       message: "❌ BLOCKED: 'docker exec -ti' will fail in non-TTY environment!",
-      suggestion: `Remove the -t flag for non-interactive use:\n  docker exec ${containerName} psql -U postgres -c "YOUR SQL HERE"`
-    }
+      suggestion: `Remove the -t flag for non-interactive use:\n  docker exec ${containerName} psql -U postgres -c "YOUR SQL HERE"`,
+    },
   ];
 }
 
@@ -149,7 +150,6 @@ Find your container: docker ps --filter "name=supabase_db"
 
     // Allow the command
     process.exit(0);
-
   } catch (error) {
     // On error, allow the command (fail open)
     console.error(`Hook error: ${error}`);

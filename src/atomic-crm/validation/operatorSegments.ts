@@ -15,7 +15,7 @@ import { z } from "zod";
 /**
  * Segment type discriminator
  */
-export const SEGMENT_TYPES = ['playbook', 'operator'] as const;
+export const SEGMENT_TYPES = ["playbook", "operator"] as const;
 export type SegmentType = (typeof SEGMENT_TYPES)[number];
 
 /**
@@ -23,22 +23,22 @@ export type SegmentType = (typeof SEGMENT_TYPES)[number];
  * These are the primary foodservice industry classifications
  */
 export const OPERATOR_PARENT_SEGMENTS = [
-  'Full-Service Restaurant',
-  'Limited-Service Restaurant',
-  'Bars & Lounges',
-  'Entertainment',
-  'Hotels & Lodging',
-  'Catering',
-  'Travel',
-  'Restaurant Group',
-  'Meal Prep Service',
-  'Education - K-12',
-  'Education - Higher Ed',
-  'Healthcare',
-  'Business & Industry',
-  'Military/Government',
-  'Recreation/Clubs',
-  'Vending Services',
+  "Full-Service Restaurant",
+  "Limited-Service Restaurant",
+  "Bars & Lounges",
+  "Entertainment",
+  "Hotels & Lodging",
+  "Catering",
+  "Travel",
+  "Restaurant Group",
+  "Meal Prep Service",
+  "Education - K-12",
+  "Education - Higher Ed",
+  "Healthcare",
+  "Business & Industry",
+  "Military/Government",
+  "Recreation/Clubs",
+  "Vending Services",
 ] as const;
 
 /**
@@ -46,30 +46,27 @@ export const OPERATOR_PARENT_SEGMENTS = [
  * These are sub-classifications that roll up to parent categories
  */
 export const OPERATOR_CHILD_SEGMENTS = [
-  'Fine Dining',
-  'Casual Dining',
-  'Family Dining',
-  'Gastropub',
-  'Fast Food/QSR',
-  'Fast Casual',
-  'Pizza',
-  'Food Truck',
-  'Casinos',
-  'Theaters',
-  'Stadiums',
-  'Country Clubs',
-  'Golf Courses',
-  'Fitness Centers',
+  "Fine Dining",
+  "Casual Dining",
+  "Family Dining",
+  "Gastropub",
+  "Fast Food/QSR",
+  "Fast Casual",
+  "Pizza",
+  "Food Truck",
+  "Casinos",
+  "Theaters",
+  "Stadiums",
+  "Country Clubs",
+  "Golf Courses",
+  "Fitness Centers",
 ] as const;
 
 /**
  * All operator segments (parents + children)
  * DO NOT modify without a database migration
  */
-export const OPERATOR_SEGMENTS = [
-  ...OPERATOR_PARENT_SEGMENTS,
-  ...OPERATOR_CHILD_SEGMENTS,
-] as const;
+export const OPERATOR_SEGMENTS = [...OPERATOR_PARENT_SEGMENTS, ...OPERATOR_CHILD_SEGMENTS] as const;
 
 /**
  * Type aliases for operator segments
@@ -90,46 +87,46 @@ export type OperatorChildSegment = (typeof OPERATOR_CHILD_SEGMENTS)[number];
  */
 export const OPERATOR_SEGMENT_IDS = {
   // Commercial - Parent Categories
-  'Full-Service Restaurant': '33333333-3333-4333-8333-000000000001',
-  'Limited-Service Restaurant': '33333333-3333-4333-8333-000000000002',
-  'Bars & Lounges': '33333333-3333-4333-8333-000000000003',
-  'Entertainment': '33333333-3333-4333-8333-000000000004',
-  'Hotels & Lodging': '33333333-3333-4333-8333-000000000005',
-  'Catering': '33333333-3333-4333-8333-000000000006',
-  'Travel': '33333333-3333-4333-8333-000000000007',
-  'Restaurant Group': '33333333-3333-4333-8333-000000000008',
-  'Meal Prep Service': '33333333-3333-4333-8333-000000000009',
+  "Full-Service Restaurant": "33333333-3333-4333-8333-000000000001",
+  "Limited-Service Restaurant": "33333333-3333-4333-8333-000000000002",
+  "Bars & Lounges": "33333333-3333-4333-8333-000000000003",
+  Entertainment: "33333333-3333-4333-8333-000000000004",
+  "Hotels & Lodging": "33333333-3333-4333-8333-000000000005",
+  Catering: "33333333-3333-4333-8333-000000000006",
+  Travel: "33333333-3333-4333-8333-000000000007",
+  "Restaurant Group": "33333333-3333-4333-8333-000000000008",
+  "Meal Prep Service": "33333333-3333-4333-8333-000000000009",
 
   // Institutional - Parent Categories
-  'Education - K-12': '33333333-3333-4333-8333-000000000010',
-  'Education - Higher Ed': '33333333-3333-4333-8333-000000000011',
-  'Healthcare': '33333333-3333-4333-8333-000000000012',
-  'Business & Industry': '33333333-3333-4333-8333-000000000013',
-  'Military/Government': '33333333-3333-4333-8333-000000000014',
-  'Recreation/Clubs': '33333333-3333-4333-8333-000000000015',
-  'Vending Services': '33333333-3333-4333-8333-000000000016',
+  "Education - K-12": "33333333-3333-4333-8333-000000000010",
+  "Education - Higher Ed": "33333333-3333-4333-8333-000000000011",
+  Healthcare: "33333333-3333-4333-8333-000000000012",
+  "Business & Industry": "33333333-3333-4333-8333-000000000013",
+  "Military/Government": "33333333-3333-4333-8333-000000000014",
+  "Recreation/Clubs": "33333333-3333-4333-8333-000000000015",
+  "Vending Services": "33333333-3333-4333-8333-000000000016",
 
   // Full-Service Restaurant - Children
-  'Fine Dining': '33333333-3333-4333-8333-000000000101',
-  'Casual Dining': '33333333-3333-4333-8333-000000000102',
-  'Family Dining': '33333333-3333-4333-8333-000000000103',
-  'Gastropub': '33333333-3333-4333-8333-000000000104',
+  "Fine Dining": "33333333-3333-4333-8333-000000000101",
+  "Casual Dining": "33333333-3333-4333-8333-000000000102",
+  "Family Dining": "33333333-3333-4333-8333-000000000103",
+  Gastropub: "33333333-3333-4333-8333-000000000104",
 
   // Limited-Service Restaurant - Children
-  'Fast Food/QSR': '33333333-3333-4333-8333-000000000201',
-  'Fast Casual': '33333333-3333-4333-8333-000000000202',
-  'Pizza': '33333333-3333-4333-8333-000000000203',
-  'Food Truck': '33333333-3333-4333-8333-000000000204',
+  "Fast Food/QSR": "33333333-3333-4333-8333-000000000201",
+  "Fast Casual": "33333333-3333-4333-8333-000000000202",
+  Pizza: "33333333-3333-4333-8333-000000000203",
+  "Food Truck": "33333333-3333-4333-8333-000000000204",
 
   // Entertainment - Children
-  'Casinos': '33333333-3333-4333-8333-000000000401',
-  'Theaters': '33333333-3333-4333-8333-000000000402',
-  'Stadiums': '33333333-3333-4333-8333-000000000403',
+  Casinos: "33333333-3333-4333-8333-000000000401",
+  Theaters: "33333333-3333-4333-8333-000000000402",
+  Stadiums: "33333333-3333-4333-8333-000000000403",
 
   // Recreation/Clubs - Children
-  'Country Clubs': '33333333-3333-4333-8333-000000001501',
-  'Golf Courses': '33333333-3333-4333-8333-000000001502',
-  'Fitness Centers': '33333333-3333-4333-8333-000000001503',
+  "Country Clubs": "33333333-3333-4333-8333-000000001501",
+  "Golf Courses": "33333333-3333-4333-8333-000000001502",
+  "Fitness Centers": "33333333-3333-4333-8333-000000001503",
 } as const;
 
 /**
@@ -140,22 +137,22 @@ export const OPERATOR_SEGMENT_HIERARCHY: Record<
   OperatorParentSegment,
   readonly OperatorChildSegment[]
 > = {
-  'Full-Service Restaurant': ['Fine Dining', 'Casual Dining', 'Family Dining', 'Gastropub'],
-  'Limited-Service Restaurant': ['Fast Food/QSR', 'Fast Casual', 'Pizza', 'Food Truck'],
-  'Bars & Lounges': [],
-  'Entertainment': ['Casinos', 'Theaters', 'Stadiums'],
-  'Hotels & Lodging': [],
-  'Catering': [],
-  'Travel': [],
-  'Restaurant Group': [],
-  'Meal Prep Service': [],
-  'Education - K-12': [],
-  'Education - Higher Ed': [],
-  'Healthcare': [],
-  'Business & Industry': [],
-  'Military/Government': [],
-  'Recreation/Clubs': ['Country Clubs', 'Golf Courses', 'Fitness Centers'],
-  'Vending Services': [],
+  "Full-Service Restaurant": ["Fine Dining", "Casual Dining", "Family Dining", "Gastropub"],
+  "Limited-Service Restaurant": ["Fast Food/QSR", "Fast Casual", "Pizza", "Food Truck"],
+  "Bars & Lounges": [],
+  Entertainment: ["Casinos", "Theaters", "Stadiums"],
+  "Hotels & Lodging": [],
+  Catering: [],
+  Travel: [],
+  "Restaurant Group": [],
+  "Meal Prep Service": [],
+  "Education - K-12": [],
+  "Education - Higher Ed": [],
+  Healthcare: [],
+  "Business & Industry": [],
+  "Military/Government": [],
+  "Recreation/Clubs": ["Country Clubs", "Golf Courses", "Fitness Centers"],
+  "Vending Services": [],
 };
 
 /**
@@ -230,183 +227,183 @@ export const OPERATOR_SEGMENT_PARENT_CHOICES = OPERATOR_PARENT_SEGMENTS.map((nam
 export const OPERATOR_SEGMENT_CHOICES = [
   // Full-Service Restaurant
   {
-    id: OPERATOR_SEGMENT_IDS['Full-Service Restaurant'],
-    name: 'Full-Service Restaurant',
+    id: OPERATOR_SEGMENT_IDS["Full-Service Restaurant"],
+    name: "Full-Service Restaurant",
     isParent: true,
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Fine Dining'],
-    name: '  Fine Dining',
-    parentId: OPERATOR_SEGMENT_IDS['Full-Service Restaurant'],
+    id: OPERATOR_SEGMENT_IDS["Fine Dining"],
+    name: "  Fine Dining",
+    parentId: OPERATOR_SEGMENT_IDS["Full-Service Restaurant"],
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Casual Dining'],
-    name: '  Casual Dining',
-    parentId: OPERATOR_SEGMENT_IDS['Full-Service Restaurant'],
+    id: OPERATOR_SEGMENT_IDS["Casual Dining"],
+    name: "  Casual Dining",
+    parentId: OPERATOR_SEGMENT_IDS["Full-Service Restaurant"],
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Family Dining'],
-    name: '  Family Dining',
-    parentId: OPERATOR_SEGMENT_IDS['Full-Service Restaurant'],
+    id: OPERATOR_SEGMENT_IDS["Family Dining"],
+    name: "  Family Dining",
+    parentId: OPERATOR_SEGMENT_IDS["Full-Service Restaurant"],
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Gastropub'],
-    name: '  Gastropub',
-    parentId: OPERATOR_SEGMENT_IDS['Full-Service Restaurant'],
+    id: OPERATOR_SEGMENT_IDS["Gastropub"],
+    name: "  Gastropub",
+    parentId: OPERATOR_SEGMENT_IDS["Full-Service Restaurant"],
   },
 
   // Limited-Service Restaurant
   {
-    id: OPERATOR_SEGMENT_IDS['Limited-Service Restaurant'],
-    name: 'Limited-Service Restaurant',
+    id: OPERATOR_SEGMENT_IDS["Limited-Service Restaurant"],
+    name: "Limited-Service Restaurant",
     isParent: true,
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Fast Food/QSR'],
-    name: '  Fast Food/QSR',
-    parentId: OPERATOR_SEGMENT_IDS['Limited-Service Restaurant'],
+    id: OPERATOR_SEGMENT_IDS["Fast Food/QSR"],
+    name: "  Fast Food/QSR",
+    parentId: OPERATOR_SEGMENT_IDS["Limited-Service Restaurant"],
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Fast Casual'],
-    name: '  Fast Casual',
-    parentId: OPERATOR_SEGMENT_IDS['Limited-Service Restaurant'],
+    id: OPERATOR_SEGMENT_IDS["Fast Casual"],
+    name: "  Fast Casual",
+    parentId: OPERATOR_SEGMENT_IDS["Limited-Service Restaurant"],
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Pizza'],
-    name: '  Pizza',
-    parentId: OPERATOR_SEGMENT_IDS['Limited-Service Restaurant'],
+    id: OPERATOR_SEGMENT_IDS["Pizza"],
+    name: "  Pizza",
+    parentId: OPERATOR_SEGMENT_IDS["Limited-Service Restaurant"],
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Food Truck'],
-    name: '  Food Truck',
-    parentId: OPERATOR_SEGMENT_IDS['Limited-Service Restaurant'],
+    id: OPERATOR_SEGMENT_IDS["Food Truck"],
+    name: "  Food Truck",
+    parentId: OPERATOR_SEGMENT_IDS["Limited-Service Restaurant"],
   },
 
   // Bars & Lounges (no children)
   {
-    id: OPERATOR_SEGMENT_IDS['Bars & Lounges'],
-    name: 'Bars & Lounges',
+    id: OPERATOR_SEGMENT_IDS["Bars & Lounges"],
+    name: "Bars & Lounges",
     isParent: true,
   },
 
   // Entertainment
   {
-    id: OPERATOR_SEGMENT_IDS['Entertainment'],
-    name: 'Entertainment',
+    id: OPERATOR_SEGMENT_IDS["Entertainment"],
+    name: "Entertainment",
     isParent: true,
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Casinos'],
-    name: '  Casinos',
-    parentId: OPERATOR_SEGMENT_IDS['Entertainment'],
+    id: OPERATOR_SEGMENT_IDS["Casinos"],
+    name: "  Casinos",
+    parentId: OPERATOR_SEGMENT_IDS["Entertainment"],
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Theaters'],
-    name: '  Theaters',
-    parentId: OPERATOR_SEGMENT_IDS['Entertainment'],
+    id: OPERATOR_SEGMENT_IDS["Theaters"],
+    name: "  Theaters",
+    parentId: OPERATOR_SEGMENT_IDS["Entertainment"],
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Stadiums'],
-    name: '  Stadiums',
-    parentId: OPERATOR_SEGMENT_IDS['Entertainment'],
+    id: OPERATOR_SEGMENT_IDS["Stadiums"],
+    name: "  Stadiums",
+    parentId: OPERATOR_SEGMENT_IDS["Entertainment"],
   },
 
   // Hotels & Lodging (no children)
   {
-    id: OPERATOR_SEGMENT_IDS['Hotels & Lodging'],
-    name: 'Hotels & Lodging',
+    id: OPERATOR_SEGMENT_IDS["Hotels & Lodging"],
+    name: "Hotels & Lodging",
     isParent: true,
   },
 
   // Catering (no children)
   {
-    id: OPERATOR_SEGMENT_IDS['Catering'],
-    name: 'Catering',
+    id: OPERATOR_SEGMENT_IDS["Catering"],
+    name: "Catering",
     isParent: true,
   },
 
   // Travel (no children)
   {
-    id: OPERATOR_SEGMENT_IDS['Travel'],
-    name: 'Travel',
+    id: OPERATOR_SEGMENT_IDS["Travel"],
+    name: "Travel",
     isParent: true,
   },
 
   // Restaurant Group (no children)
   {
-    id: OPERATOR_SEGMENT_IDS['Restaurant Group'],
-    name: 'Restaurant Group',
+    id: OPERATOR_SEGMENT_IDS["Restaurant Group"],
+    name: "Restaurant Group",
     isParent: true,
   },
 
   // Meal Prep Service (no children)
   {
-    id: OPERATOR_SEGMENT_IDS['Meal Prep Service'],
-    name: 'Meal Prep Service',
+    id: OPERATOR_SEGMENT_IDS["Meal Prep Service"],
+    name: "Meal Prep Service",
     isParent: true,
   },
 
   // Education - K-12 (no children)
   {
-    id: OPERATOR_SEGMENT_IDS['Education - K-12'],
-    name: 'Education - K-12',
+    id: OPERATOR_SEGMENT_IDS["Education - K-12"],
+    name: "Education - K-12",
     isParent: true,
   },
 
   // Education - Higher Ed (no children)
   {
-    id: OPERATOR_SEGMENT_IDS['Education - Higher Ed'],
-    name: 'Education - Higher Ed',
+    id: OPERATOR_SEGMENT_IDS["Education - Higher Ed"],
+    name: "Education - Higher Ed",
     isParent: true,
   },
 
   // Healthcare (no children)
   {
-    id: OPERATOR_SEGMENT_IDS['Healthcare'],
-    name: 'Healthcare',
+    id: OPERATOR_SEGMENT_IDS["Healthcare"],
+    name: "Healthcare",
     isParent: true,
   },
 
   // Business & Industry (no children)
   {
-    id: OPERATOR_SEGMENT_IDS['Business & Industry'],
-    name: 'Business & Industry',
+    id: OPERATOR_SEGMENT_IDS["Business & Industry"],
+    name: "Business & Industry",
     isParent: true,
   },
 
   // Military/Government (no children)
   {
-    id: OPERATOR_SEGMENT_IDS['Military/Government'],
-    name: 'Military/Government',
+    id: OPERATOR_SEGMENT_IDS["Military/Government"],
+    name: "Military/Government",
     isParent: true,
   },
 
   // Recreation/Clubs
   {
-    id: OPERATOR_SEGMENT_IDS['Recreation/Clubs'],
-    name: 'Recreation/Clubs',
+    id: OPERATOR_SEGMENT_IDS["Recreation/Clubs"],
+    name: "Recreation/Clubs",
     isParent: true,
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Country Clubs'],
-    name: '  Country Clubs',
-    parentId: OPERATOR_SEGMENT_IDS['Recreation/Clubs'],
+    id: OPERATOR_SEGMENT_IDS["Country Clubs"],
+    name: "  Country Clubs",
+    parentId: OPERATOR_SEGMENT_IDS["Recreation/Clubs"],
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Golf Courses'],
-    name: '  Golf Courses',
-    parentId: OPERATOR_SEGMENT_IDS['Recreation/Clubs'],
+    id: OPERATOR_SEGMENT_IDS["Golf Courses"],
+    name: "  Golf Courses",
+    parentId: OPERATOR_SEGMENT_IDS["Recreation/Clubs"],
   },
   {
-    id: OPERATOR_SEGMENT_IDS['Fitness Centers'],
-    name: '  Fitness Centers',
-    parentId: OPERATOR_SEGMENT_IDS['Recreation/Clubs'],
+    id: OPERATOR_SEGMENT_IDS["Fitness Centers"],
+    name: "  Fitness Centers",
+    parentId: OPERATOR_SEGMENT_IDS["Recreation/Clubs"],
   },
 
   // Vending Services (no children)
   {
-    id: OPERATOR_SEGMENT_IDS['Vending Services'],
-    name: 'Vending Services',
+    id: OPERATOR_SEGMENT_IDS["Vending Services"],
+    name: "Vending Services",
     isParent: true,
   },
 ];
@@ -434,7 +431,9 @@ export function getOperatorSegmentId(name: OperatorSegment): string {
  * @param parent - Parent segment name
  * @returns Array of child segments (empty if parent has no children)
  */
-export function getOperatorSegmentChildren(parent: OperatorParentSegment): readonly OperatorChildSegment[] {
+export function getOperatorSegmentChildren(
+  parent: OperatorParentSegment
+): readonly OperatorChildSegment[] {
   return OPERATOR_SEGMENT_HIERARCHY[parent];
 }
 

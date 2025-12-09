@@ -14,7 +14,6 @@ import { SaleName } from "../sales/SaleName";
 import { ContactInputs } from "./ContactInputs";
 import { Avatar } from "./Avatar";
 import type { Contact } from "../types";
-import { useState } from "react";
 
 interface ContactDetailsTabProps {
   record: Contact;

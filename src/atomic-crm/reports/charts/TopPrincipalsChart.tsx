@@ -51,7 +51,7 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
 
   const ariaLabel = useMemo(() => {
     const total = topData.reduce((sum, d) => sum + d.count, 0);
-    const breakdown = topData.map(d => `${d.name}: ${d.count}`).join(', ');
+    const breakdown = topData.map((d) => `${d.name}: ${d.count}`).join(", ");
     return `Top principals chart showing ${total} opportunities across ${topData.length} principals. ${breakdown}`;
   }, [topData]);
 
@@ -120,12 +120,6 @@ export function TopPrincipalsChart({ data }: TopPrincipalsChartProps) {
   }
 
   return (
-    <Bar
-      data={chartData}
-      options={options}
-      datasetIdKey="id"
-      aria-label={ariaLabel}
-      role="img"
-    />
+    <Bar data={chartData} options={options} datasetIdKey="id" aria-label={ariaLabel} role="img" />
   );
 }

@@ -1,6 +1,12 @@
 /* eslint-disable react-refresh/only-export-components */
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogTitle, DialogDescription, DialogHeader } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+  DialogHeader,
+} from "@/components/ui/dialog";
 import { useGetIdentity, useGetList } from "ra-core";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
@@ -76,15 +82,20 @@ export const OpportunityArchivedList = () => {
                       </h3>
                       <div className="text-xs text-muted-foreground space-y-1">
                         <div>Stage: {getOpportunityStageLabel(opportunity.stage)}</div>
-                        {opportunity.estimated_close_date && parseDateSafely(opportunity.estimated_close_date) && (
-                          <div>
-                            Close Date:{" "}
-                            {format(parseDateSafely(opportunity.estimated_close_date)!, "MMM d, yyyy")}
-                          </div>
-                        )}
+                        {opportunity.estimated_close_date &&
+                          parseDateSafely(opportunity.estimated_close_date) && (
+                            <div>
+                              Close Date:{" "}
+                              {format(
+                                parseDateSafely(opportunity.estimated_close_date)!,
+                                "MMM d, yyyy"
+                              )}
+                            </div>
+                          )}
                         {opportunity.deleted_at && parseDateSafely(opportunity.deleted_at) && (
                           <div className="text-destructive mt-2">
-                            Archived: {format(parseDateSafely(opportunity.deleted_at)!, "MMM d, yyyy")}
+                            Archived:{" "}
+                            {format(parseDateSafely(opportunity.deleted_at)!, "MMM d, yyyy")}
                           </div>
                         )}
                       </div>
