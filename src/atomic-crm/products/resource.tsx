@@ -1,4 +1,3 @@
-/* eslint-disable react-refresh/only-export-components -- React Admin resource config requires mixed exports */
 import * as React from "react";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
 
