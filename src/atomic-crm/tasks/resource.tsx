@@ -25,8 +25,7 @@ export const TaskCreateView = () => (
   </ResourceErrorBoundary>
 );
 
-export const taskRecordRepresentation = (record: Task) =>
-  record?.title || `Task #${record?.id}`;
+const taskRecordRepresentation = (record: Task) => record?.title || `Task #${record?.id}`;
 
 export default {
   list: TaskListView,

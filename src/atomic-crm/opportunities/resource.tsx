@@ -24,8 +24,7 @@ export const OpportunityEditView = () => (
   </ResourceErrorBoundary>
 );
 
-export const opportunityRecordRepresentation = (record: Opportunity) =>
-  record?.name || "Opportunity";
+const opportunityRecordRepresentation = (record: Opportunity) => record?.name || "Opportunity";
 
 // React Admin resource config
 export default {

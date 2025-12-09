@@ -39,4 +39,5 @@ export function ThemeProvider({
 }
 
 // Re-export useTheme from next-themes for convenience
+// eslint-disable-next-line react-refresh/only-export-components -- Re-export is intentional for API convenience
 export { useTheme } from "next-themes";
