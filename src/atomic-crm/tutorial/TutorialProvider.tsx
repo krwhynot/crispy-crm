@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components -- Provider and hook are tightly coupled */
 import {
   createContext,
   useContext,
@@ -267,7 +268,6 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
   );
 }
 
-// eslint-disable-next-line react-refresh/only-export-components -- Hook is tightly coupled with its Provider component
 export function useTutorial(): TutorialContextType {
   const context = useContext(TutorialContext);
   if (!context) {
