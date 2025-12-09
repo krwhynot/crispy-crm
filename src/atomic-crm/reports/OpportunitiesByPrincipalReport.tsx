@@ -284,7 +284,9 @@ export default function OpportunitiesByPrincipalReport() {
 
     principalGroups.forEach((group) => {
       group.opportunities.forEach((opp) => {
-        const closeDateObj = opp.estimated_close_date ? parseDateSafely(opp.estimated_close_date) : null;
+        const closeDateObj = opp.estimated_close_date
+          ? parseDateSafely(opp.estimated_close_date)
+          : null;
         exportData.push({
           principal: sanitizeCsvValue(group.principalName),
           opportunity: sanitizeCsvValue(opp.name),

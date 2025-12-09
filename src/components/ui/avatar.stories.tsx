@@ -163,29 +163,19 @@ export const FallbackColors: Story = {
   render: () => (
     <div className="flex gap-4">
       <Avatar>
-        <AvatarFallback className="bg-destructive/10 text-destructive">
-          RD
-        </AvatarFallback>
+        <AvatarFallback className="bg-destructive/10 text-destructive">RD</AvatarFallback>
       </Avatar>
       <Avatar>
-        <AvatarFallback className="bg-success/10 text-success">
-          GR
-        </AvatarFallback>
+        <AvatarFallback className="bg-success/10 text-success">GR</AvatarFallback>
       </Avatar>
       <Avatar>
-        <AvatarFallback className="bg-primary/10 text-primary">
-          BL
-        </AvatarFallback>
+        <AvatarFallback className="bg-primary/10 text-primary">BL</AvatarFallback>
       </Avatar>
       <Avatar>
-        <AvatarFallback className="bg-accent text-accent-foreground">
-          PR
-        </AvatarFallback>
+        <AvatarFallback className="bg-accent text-accent-foreground">PR</AvatarFallback>
       </Avatar>
       <Avatar>
-        <AvatarFallback className="bg-warning/10 text-warning">
-          OR
-        </AvatarFallback>
+        <AvatarFallback className="bg-warning/10 text-warning">OR</AvatarFallback>
       </Avatar>
     </div>
   ),

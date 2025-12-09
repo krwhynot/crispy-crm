@@ -51,7 +51,9 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
   const ariaLabel = useMemo(() => {
     const totalActivities = topData.reduce((sum, d) => sum + d.activities, 0);
     const totalOpportunities = topData.reduce((sum, d) => sum + d.opportunities, 0);
-    const breakdown = topData.map(d => `${d.name}: ${d.activities} activities, ${d.opportunities} opportunities`).join('; ');
+    const breakdown = topData
+      .map((d) => `${d.name}: ${d.activities} activities, ${d.opportunities} opportunities`)
+      .join("; ");
     return `Rep performance chart showing ${topData.length} reps with ${totalActivities} total activities and ${totalOpportunities} total opportunities. ${breakdown}`;
   }, [topData]);
 
@@ -123,12 +125,6 @@ export function RepPerformanceChart({ data }: RepPerformanceChartProps) {
   }
 
   return (
-    <Bar
-      data={chartData}
-      options={options}
-      datasetIdKey="id"
-      aria-label={ariaLabel}
-      role="img"
-    />
+    <Bar data={chartData} options={options} datasetIdKey="id" aria-label={ariaLabel} role="img" />
   );
 }

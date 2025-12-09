@@ -31,17 +31,15 @@ describe("ReportPageShell", () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole("heading", { level: 1, name: "Campaign Activity" })).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "Campaign Activity" })
+    ).toBeInTheDocument();
   });
 
   it("renders actions slot when provided", () => {
     render(
       <MemoryRouter>
-        <ReportPageShell
-          title="Test"
-          breadcrumbs={[]}
-          actions={<button>Export</button>}
-        >
+        <ReportPageShell title="Test" breadcrumbs={[]} actions={<button>Export</button>}>
           <div>Content</div>
         </ReportPageShell>
       </MemoryRouter>

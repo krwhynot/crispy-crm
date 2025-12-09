@@ -23,7 +23,9 @@ describe("NotificationDropdown", () => {
       checkAuth: vi.fn().mockResolvedValue({}),
       checkError: vi.fn().mockResolvedValue({}),
       getPermissions: vi.fn().mockResolvedValue({}),
-      getIdentity: vi.fn().mockResolvedValue({ id: "user-123", user_id: "user-123", fullName: "Test User" }),
+      getIdentity: vi
+        .fn()
+        .mockResolvedValue({ id: "user-123", user_id: "user-123", fullName: "Test User" }),
     };
 
     renderWithAdminContext(
@@ -37,10 +39,7 @@ describe("NotificationDropdown", () => {
     );
 
     await waitFor(() => {
-      expect(mockDataProvider.getList).toHaveBeenCalledWith(
-        "notifications",
-        expect.any(Object)
-      );
+      expect(mockDataProvider.getList).toHaveBeenCalledWith("notifications", expect.any(Object));
     });
   });
 });

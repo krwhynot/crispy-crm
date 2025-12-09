@@ -27,13 +27,9 @@ export const SegmentSelectInput = (props: SegmentSelectInputProps) => {
   const usePlaybookCategories =
     organizationType === "distributor" || organizationType === "principal";
 
-  const choices = usePlaybookCategories
-    ? PLAYBOOK_CATEGORY_CHOICES
-    : OPERATOR_SEGMENT_CHOICES;
+  const choices = usePlaybookCategories ? PLAYBOOK_CATEGORY_CHOICES : OPERATOR_SEGMENT_CHOICES;
 
-  const defaultLabel = usePlaybookCategories
-    ? "Playbook Category"
-    : "Operator Segment";
+  const defaultLabel = usePlaybookCategories ? "Playbook Category" : "Operator Segment";
 
   return (
     <SelectInput

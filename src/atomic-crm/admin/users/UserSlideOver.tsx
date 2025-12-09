@@ -7,10 +7,10 @@ import {
   useNotify,
   useRedirect,
   useDataProvider,
-} from 'react-admin';
-import { useMutation } from '@tanstack/react-query';
-import { ROLE_CHOICES } from './schemas';
-import type { CrmDataProvider } from '../../providers/types';
+} from "react-admin";
+import { useMutation } from "@tanstack/react-query";
+import { ROLE_CHOICES } from "./schemas";
+import type { CrmDataProvider } from "../../providers/types";
 
 export const UserSlideOver = () => {
   const notify = useNotify();
@@ -28,11 +28,11 @@ export const UserSlideOver = () => {
       });
     },
     onSuccess: () => {
-      notify('User updated successfully');
-      redirect('/admin/users');
+      notify("User updated successfully");
+      redirect("/admin/users");
     },
     onError: (error: Error) => {
-      notify(error.message || 'Failed to update user', { type: 'error' });
+      notify(error.message || "Failed to update user", { type: "error" });
     },
   });
 
@@ -48,18 +48,8 @@ export const UserSlideOver = () => {
       mutationMode="pessimistic"
     >
       <SimpleForm onSubmit={handleSubmit}>
-        <TextInput
-          source="first_name"
-          label="First Name"
-          fullWidth
-          required
-        />
-        <TextInput
-          source="last_name"
-          label="Last Name"
-          fullWidth
-          required
-        />
+        <TextInput source="first_name" label="First Name" fullWidth required />
+        <TextInput source="last_name" label="Last Name" fullWidth required />
         <TextInput
           source="email"
           label="Email"
@@ -67,13 +57,7 @@ export const UserSlideOver = () => {
           disabled
           helperText="Email cannot be changed"
         />
-        <SelectInput
-          source="role"
-          label="Role"
-          choices={ROLE_CHOICES}
-          fullWidth
-          required
-        />
+        <SelectInput source="role" label="Role" choices={ROLE_CHOICES} fullWidth required />
         <BooleanInput
           source="disabled"
           label="Account Disabled"

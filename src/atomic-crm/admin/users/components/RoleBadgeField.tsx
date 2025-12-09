@@ -1,12 +1,12 @@
-import { useRecordContext } from 'react-admin';
-import { Badge } from '@/components/ui/badge';
-import { ROLE_COLORS, type UserRole } from '../schemas';
+import { useRecordContext } from "react-admin";
+import { Badge } from "@/components/ui/badge";
+import { ROLE_COLORS, type UserRole } from "../schemas";
 
 interface RoleBadgeFieldProps {
   source?: string;
 }
 
-export const RoleBadgeField = ({ source = 'role' }: RoleBadgeFieldProps) => {
+export const RoleBadgeField = ({ source = "role" }: RoleBadgeFieldProps) => {
   const record = useRecordContext();
   if (!record) return null;
 
@@ -21,5 +21,5 @@ export const RoleBadgeField = ({ source = 'role' }: RoleBadgeFieldProps) => {
 };
 
 RoleBadgeField.defaultProps = {
-  label: 'Role',
+  label: "Role",
 };

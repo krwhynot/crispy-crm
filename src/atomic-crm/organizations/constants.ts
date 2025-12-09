@@ -67,10 +67,10 @@ export const ORG_TYPE_COLOR_MAP: Record<OrganizationType, string> = {
  * - D: outline (minimal - component should add text-muted-foreground)
  */
 export const PRIORITY_VARIANT_MAP: Record<PriorityLevel, "default" | "secondary" | "outline"> = {
-  A: "default",      // Brand primary - importance without alarm
-  B: "secondary",    // Standard emphasis
-  C: "outline",      // Routine
-  D: "outline",      // Minimal
+  A: "default", // Brand primary - importance without alarm
+  B: "secondary", // Standard emphasis
+  C: "outline", // Routine
+  D: "outline", // Minimal
 };
 
 /**
@@ -155,4 +155,5 @@ export const ACTIVITY_PAGE_SIZE = 50;
  * 44px minimum ensures reliable touch/click interaction
  */
 export const TOUCH_TARGET_MIN_HEIGHT = "h-11";
-export const BADGE_TOUCH_CLASSES = "text-xs px-3 py-2 min-h-[44px] flex items-center justify-center";
+export const BADGE_TOUCH_CLASSES =
+  "text-xs px-3 py-2 min-h-[44px] flex items-center justify-center";

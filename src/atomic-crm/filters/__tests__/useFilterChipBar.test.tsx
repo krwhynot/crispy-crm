@@ -138,10 +138,7 @@ describe("useFilterChipBar", () => {
     test("returns empty chips when no filters active", () => {
       mockFilterValues = {};
 
-      const { result } = renderHook(
-        () => useFilterChipBar(BASIC_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(BASIC_CONFIG), { wrapper });
 
       expect(result.current.chips).toHaveLength(0);
       expect(result.current.hasActiveFilters).toBe(false);
@@ -151,10 +148,7 @@ describe("useFilterChipBar", () => {
     test("transforms single filter value into chip", () => {
       mockFilterValues = { status: "active" };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(BASIC_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(BASIC_CONFIG), { wrapper });
 
       expect(result.current.chips).toHaveLength(1);
       expect(result.current.chips[0]).toEqual({
@@ -168,10 +162,7 @@ describe("useFilterChipBar", () => {
     test("flattens array values into individual chips", () => {
       mockFilterValues = { priority: ["high", "low"] };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(BASIC_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(BASIC_CONFIG), { wrapper });
 
       expect(result.current.chips).toHaveLength(2);
       expect(result.current.chips.map((c) => c.label)).toEqual(["High", "Low"]);
@@ -180,10 +171,7 @@ describe("useFilterChipBar", () => {
     test("calculates activeCount correctly", () => {
       mockFilterValues = { status: "active", priority: ["high", "low"] };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(BASIC_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(BASIC_CONFIG), { wrapper });
 
       expect(result.current.activeCount).toBe(3); // 1 status + 2 priorities
       expect(result.current.hasActiveFilters).toBe(true);
@@ -194,10 +182,7 @@ describe("useFilterChipBar", () => {
     test("resolves organization names", () => {
       mockFilterValues = { organization_id: "org-123" };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(REFERENCE_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(REFERENCE_CONFIG), { wrapper });
 
       expect(result.current.chips[0].label).toBe("Org org-123");
     });
@@ -205,10 +190,7 @@ describe("useFilterChipBar", () => {
     test("resolves sales rep names", () => {
       mockFilterValues = { sales_id: "user-456" };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(REFERENCE_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(REFERENCE_CONFIG), { wrapper });
 
       expect(result.current.chips[0].label).toBe("User user-456");
     });
@@ -216,10 +198,7 @@ describe("useFilterChipBar", () => {
     test("resolves segment names", () => {
       mockFilterValues = { segment_id: "seg-789" };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(REFERENCE_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(REFERENCE_CONFIG), { wrapper });
 
       expect(result.current.chips[0].label).toBe("Playbook seg-789");
     });
@@ -232,10 +211,7 @@ describe("useFilterChipBar", () => {
         deleted_at: null, // System filter
       };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(BASIC_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(BASIC_CONFIG), { wrapper });
 
       expect(result.current.chips).toHaveLength(1);
       expect(result.current.chips[0].key).toBe("status");
@@ -247,10 +223,7 @@ describe("useFilterChipBar", () => {
         "deleted_at@is": "null",
       };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(BASIC_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(BASIC_CONFIG), { wrapper });
 
       expect(result.current.chips).toHaveLength(1);
     });
@@ -260,10 +233,7 @@ describe("useFilterChipBar", () => {
     test("shows search filter with 'Search:' prefix", () => {
       mockFilterValues = { q: "test query" };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(BASIC_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(BASIC_CONFIG), { wrapper });
 
       expect(result.current.chips).toHaveLength(1);
       expect(result.current.chips[0].label).toBe('Search: "test query"');
@@ -278,10 +248,7 @@ describe("useFilterChipBar", () => {
         "created_at@lte": "2025-12-31",
       };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(DATE_RANGE_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(DATE_RANGE_CONFIG), { wrapper });
 
       // Should be ONE combined chip, not two
       expect(result.current.chips).toHaveLength(1);
@@ -295,10 +262,7 @@ describe("useFilterChipBar", () => {
         "created_at@lte": "2025-12-31",
       };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(DATE_RANGE_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(DATE_RANGE_CONFIG), { wrapper });
 
       expect(result.current.chips[0].key).toBe("created_at_range");
     });
@@ -308,10 +272,7 @@ describe("useFilterChipBar", () => {
     test("removes single filter value", () => {
       mockFilterValues = { status: "active" };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(BASIC_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(BASIC_CONFIG), { wrapper });
 
       result.current.removeFilter("status");
 
@@ -324,10 +285,7 @@ describe("useFilterChipBar", () => {
     test("removes single value from array filter", () => {
       mockFilterValues = { priority: ["high", "low"] };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(BASIC_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(BASIC_CONFIG), { wrapper });
 
       result.current.removeFilter("priority", "high");
 
@@ -343,10 +301,7 @@ describe("useFilterChipBar", () => {
         "created_at@lte": "2025-12-31",
       };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(DATE_RANGE_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(DATE_RANGE_CONFIG), { wrapper });
 
       // Remove using the group key
       result.current.removeFilter("created_at_range");
@@ -370,18 +325,12 @@ describe("useFilterChipBar", () => {
         deleted_at: null, // System filter - should be preserved
       };
 
-      const { result } = renderHook(
-        () => useFilterChipBar(BASIC_CONFIG),
-        { wrapper }
-      );
+      const { result } = renderHook(() => useFilterChipBar(BASIC_CONFIG), { wrapper });
 
       result.current.clearAllFilters();
 
       // Should only keep system filters
-      expect(mockSetFilters).toHaveBeenCalledWith(
-        { deleted_at: null },
-        expect.anything()
-      );
+      expect(mockSetFilters).toHaveBeenCalledWith({ deleted_at: null }, expect.anything());
     });
   });
 });

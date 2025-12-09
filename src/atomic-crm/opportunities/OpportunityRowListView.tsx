@@ -186,19 +186,20 @@ export const OpportunityRowListView = ({
                             </span>
                           </>
                         )}
-                      {opportunity.last_interaction_date && parseDateSafely(opportunity.last_interaction_date) && (
-                        <>
-                          <span className="opacity-50 mx-0.5">·</span>
-                          <span className="opacity-75">
-                            Last{" "}
-                            {formatDistance(
-                              parseDateSafely(opportunity.last_interaction_date)!,
-                              new Date(),
-                              { addSuffix: true }
-                            )}
-                          </span>
-                        </>
-                      )}
+                      {opportunity.last_interaction_date &&
+                        parseDateSafely(opportunity.last_interaction_date) && (
+                          <>
+                            <span className="opacity-50 mx-0.5">·</span>
+                            <span className="opacity-75">
+                              Last{" "}
+                              {formatDistance(
+                                parseDateSafely(opportunity.last_interaction_date)!,
+                                new Date(),
+                                { addSuffix: true }
+                              )}
+                            </span>
+                          </>
+                        )}
                     </div>
                   </div>
                 </div>
@@ -232,14 +233,18 @@ export const OpportunityRowListView = ({
                   )}
 
                   {/* Close Date - Hidden on mobile, shown on sm+ */}
-                  {opportunity.estimated_close_date && parseDateSafely(opportunity.estimated_close_date) && (
-                    <div className="hidden sm:block text-xs text-muted-foreground relative z-10">
-                      <span className="opacity-75">Close:</span>{" "}
-                      <span className="font-medium">
-                        {format(parseDateSafely(opportunity.estimated_close_date)!, "MMM d, yyyy")}
-                      </span>
-                    </div>
-                  )}
+                  {opportunity.estimated_close_date &&
+                    parseDateSafely(opportunity.estimated_close_date) && (
+                      <div className="hidden sm:block text-xs text-muted-foreground relative z-10">
+                        <span className="opacity-75">Close:</span>{" "}
+                        <span className="font-medium">
+                          {format(
+                            parseDateSafely(opportunity.estimated_close_date)!,
+                            "MMM d, yyyy"
+                          )}
+                        </span>
+                      </div>
+                    )}
 
                   {/* Owner - Hidden on mobile, shown on md+ */}
                   {opportunity.opportunity_owner_id && (

@@ -110,7 +110,9 @@ test.describe("Dashboard V3 - Responsive Layout", () => {
       await expect(tasksButton.locator("text=Tasks")).toBeVisible();
     });
 
-    test("should open drawer when header tasks button is clicked", async ({ authenticatedPage }) => {
+    test("should open drawer when header tasks button is clicked", async ({
+      authenticatedPage,
+    }) => {
       await authenticatedPage.goto("/");
       await authenticatedPage.waitForLoadState("networkidle");
 
@@ -152,7 +154,9 @@ test.describe("Dashboard V3 - Responsive Layout", () => {
       await authenticatedPage.waitForLoadState("networkidle");
 
       // Pipeline section should span full width (minus padding)
-      const pipelineSection = authenticatedPage.locator('section[aria-label="Pipeline by Principal"]');
+      const pipelineSection = authenticatedPage.locator(
+        'section[aria-label="Pipeline by Principal"]'
+      );
       const boundingBox = await pipelineSection.boundingBox();
 
       // Should be nearly full viewport width (allowing for padding)
@@ -194,14 +198,18 @@ test.describe("Dashboard V3 - Responsive Layout", () => {
   });
 
   test.describe("Layout Consistency", () => {
-    test("KPI Summary Row should span full width at all breakpoints", async ({ authenticatedPage }) => {
+    test("KPI Summary Row should span full width at all breakpoints", async ({
+      authenticatedPage,
+    }) => {
       for (const [_name, viewport] of Object.entries(viewports)) {
         await authenticatedPage.setViewportSize(viewport);
         await authenticatedPage.goto("/");
         await authenticatedPage.waitForLoadState("networkidle");
 
         // KPI section should be present and span full width
-        const kpiSection = authenticatedPage.locator('section[aria-label="Key Performance Indicators"]');
+        const kpiSection = authenticatedPage.locator(
+          'section[aria-label="Key Performance Indicators"]'
+        );
         await expect(kpiSection).toBeVisible();
 
         const boundingBox = await kpiSection.boundingBox();
@@ -217,7 +225,9 @@ test.describe("Dashboard V3 - Responsive Layout", () => {
         await authenticatedPage.waitForLoadState("networkidle");
 
         // Pipeline section should always be present
-        const pipelineSection = authenticatedPage.locator('section[aria-label="Pipeline by Principal"]');
+        const pipelineSection = authenticatedPage.locator(
+          'section[aria-label="Pipeline by Principal"]'
+        );
         await expect(pipelineSection).toBeVisible();
       }
     });

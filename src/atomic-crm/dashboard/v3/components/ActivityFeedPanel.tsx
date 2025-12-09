@@ -167,9 +167,7 @@ function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
               <Activity className="h-5 w-5 text-primary" />
               Team Activity
             </h3>
-            <p className="text-sm text-muted-foreground">
-              Recent activities across the team
-            </p>
+            <p className="text-sm text-muted-foreground">Recent activities across the team</p>
           </div>
           <Button
             variant="ghost"

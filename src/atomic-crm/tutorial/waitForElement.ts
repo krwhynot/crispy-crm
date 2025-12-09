@@ -1,4 +1,4 @@
-import type { TutorialStep } from './types';
+import type { TutorialStep } from "./types";
 
 /** Selector for skeleton loading states - uses data-slot from Skeleton component */
 const LOADING_SELECTOR = '[data-slot="skeleton"]';
@@ -15,10 +15,7 @@ const LOADING_EXTENDED_TIMEOUT = 15000;
  * @param timeout - Max wait time in ms (default 8000)
  * @returns Promise that resolves when element exists or rejects on timeout
  */
-export async function waitForElement(
-  selector: string,
-  timeout = 8000
-): Promise<Element> {
+export async function waitForElement(selector: string, timeout = 8000): Promise<Element> {
   const startTime = Date.now();
 
   return new Promise((resolve, reject) => {
@@ -33,9 +30,7 @@ export async function waitForElement(
       // Check if still loading (skeleton visible) - extend timeout if so
       const isLoading = document.querySelector(LOADING_SELECTOR) !== null;
       const elapsed = Date.now() - startTime;
-      const effectiveTimeout = isLoading
-        ? Math.max(timeout, LOADING_EXTENDED_TIMEOUT)
-        : timeout;
+      const effectiveTimeout = isLoading ? Math.max(timeout, LOADING_EXTENDED_TIMEOUT) : timeout;
 
       if (elapsed >= effectiveTimeout) {
         reject(new Error(`Element "${selector}" not found within ${elapsed}ms`));

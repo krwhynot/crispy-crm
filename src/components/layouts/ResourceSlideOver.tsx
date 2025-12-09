@@ -317,11 +317,7 @@ export function ResourceSlideOver({
                 <Button variant="outline" onClick={onModeToggle} className="h-11 px-4">
                   Cancel
                 </Button>
-                <Button
-                  type="submit"
-                  form="slide-over-edit-form"
-                  className="h-11 px-4"
-                >
+                <Button type="submit" form="slide-over-edit-form" className="h-11 px-4">
                   Save Changes
                 </Button>
               </SheetFooter>

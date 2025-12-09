@@ -40,7 +40,7 @@ export function PipelineChart({ data }: PipelineChartProps) {
 
   const ariaLabel = useMemo(() => {
     const total = data.reduce((sum, d) => sum + d.count, 0);
-    const breakdown = data.map(d => `${d.stage}: ${d.count}`).join(', ');
+    const breakdown = data.map((d) => `${d.stage}: ${d.count}`).join(", ");
     return `Pipeline chart showing ${total} opportunities across ${data.length} stages. ${breakdown}`;
   }, [data]);
 

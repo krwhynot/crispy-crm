@@ -220,10 +220,10 @@ Deno.serve(async (req) => {
 
         console.log(`Manual trigger by admin user: ${authData.user.id}`);
       } else {
-        return new Response(
-          JSON.stringify({ error: "Unauthorized - Authentication required" }),
-          { status: 401, headers: { "Content-Type": "application/json" } }
-        );
+        return new Response(JSON.stringify({ error: "Unauthorized - Authentication required" }), {
+          status: 401,
+          headers: { "Content-Type": "application/json" },
+        });
       }
 
       try {

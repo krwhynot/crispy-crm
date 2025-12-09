@@ -125,7 +125,12 @@ export function OpportunitySlideOverDetailsTab({
 
   if (mode === "edit") {
     return (
-      <Form id="slide-over-edit-form" defaultValues={record} onSubmit={handleSave} className="space-y-2">
+      <Form
+        id="slide-over-edit-form"
+        defaultValues={record}
+        onSubmit={handleSave}
+        className="space-y-2"
+      >
         <TextInput source="name" label="Opportunity Name" helperText={false} fullWidth />
         <TextInput
           source="description"

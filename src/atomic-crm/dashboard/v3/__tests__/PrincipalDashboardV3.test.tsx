@@ -221,17 +221,9 @@ describe("PrincipalDashboardV3", () => {
 
     // Check KPI values using aria-labels for specificity (avoids collision with Performance widget)
     // KPIs have aria-label like "Open Opportunities: 8. Click to view details."
-    expect(
-      screen.getByRole("button", { name: /Open Opportunities: 8/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /Overdue Tasks: 3/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /Activities This Week: 12/i })
-    ).toBeInTheDocument();
-    expect(
-      screen.getByRole("button", { name: /Stale Deals: 2/i })
-    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Open Opportunities: 8/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Overdue Tasks: 3/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Activities This Week: 12/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /Stale Deals: 2/i })).toBeInTheDocument();
   });
 });

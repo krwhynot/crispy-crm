@@ -139,7 +139,9 @@ test.describe("Filter Chip Bar - Core Functionality", () => {
   test.describe("Date Range Behavior", () => {
     test("Contacts: date range shows as combined chip", async ({ authenticatedPage }) => {
       // Apply date range filter via URL
-      await authenticatedPage.goto("/contacts?last_seen%40gte=2025-01-01&last_seen%40lte=2025-12-31");
+      await authenticatedPage.goto(
+        "/contacts?last_seen%40gte=2025-01-01&last_seen%40lte=2025-12-31"
+      );
       await authenticatedPage.waitForLoadState("networkidle");
 
       const toolbar = authenticatedPage.getByRole("toolbar", { name: "Active filters" });
@@ -229,7 +231,9 @@ test.describe("Filter Chip Bar - Core Functionality", () => {
   });
 
   test.describe("Reference Resolution", () => {
-    test("Organizations: segment filter shows playbook name, not UUID", async ({ authenticatedPage }) => {
+    test("Organizations: segment filter shows playbook name, not UUID", async ({
+      authenticatedPage,
+    }) => {
       await authenticatedPage.goto("/organizations");
       await authenticatedPage.waitForLoadState("networkidle");
 
@@ -240,7 +244,9 @@ test.describe("Filter Chip Bar - Core Functionality", () => {
       if (await toolbar.isVisible()) {
         const content = await toolbar.textContent();
         // UUID pattern should not appear
-        expect(content).not.toMatch(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i);
+        expect(content).not.toMatch(
+          /[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i
+        );
       }
     });
 

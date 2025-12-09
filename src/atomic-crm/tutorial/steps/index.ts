@@ -1,12 +1,12 @@
-import type { TutorialStep, TutorialChapter } from '../types';
-import { organizationSteps } from './organizationSteps';
-import { contactSteps } from './contactSteps';
-import { opportunitySteps } from './opportunitySteps';
-import { activitySteps } from './activitySteps';
-import { taskSteps } from './taskSteps';
-import { productSteps } from './productSteps';
-import { noteSteps } from './noteSteps';
-import { userSteps } from './userSteps';
+import type { TutorialStep, TutorialChapter } from "../types";
+import { organizationSteps } from "./organizationSteps";
+import { contactSteps } from "./contactSteps";
+import { opportunitySteps } from "./opportunitySteps";
+import { activitySteps } from "./activitySteps";
+import { taskSteps } from "./taskSteps";
+import { productSteps } from "./productSteps";
+import { noteSteps } from "./noteSteps";
+import { userSteps } from "./userSteps";
 
 const CHAPTER_STEPS: Record<TutorialChapter, TutorialStep[]> = {
   organizations: organizationSteps,
@@ -20,14 +20,14 @@ const CHAPTER_STEPS: Record<TutorialChapter, TutorialStep[]> = {
 };
 
 const CHAPTER_ORDER: TutorialChapter[] = [
-  'organizations',
-  'contacts',
-  'opportunities',
-  'activities',
-  'tasks',
-  'products',
-  'notes',
-  'users',
+  "organizations",
+  "contacts",
+  "opportunities",
+  "activities",
+  "tasks",
+  "products",
+  "notes",
+  "users",
 ];
 
 /**

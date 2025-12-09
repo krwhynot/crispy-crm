@@ -98,7 +98,10 @@ export const checkAuthorizationResponseSchema = z.object({
   principal_name: z.string().max(255, "Principal name too long").optional(),
   authorization_date: z.string().max(50, "Authorization date too long").optional(),
   expiration_date: z.string().max(50, "Expiration date too long").nullable().optional(),
-  territory_restrictions: z.array(z.string().max(255, "Territory restriction too long")).nullable().optional(),
+  territory_restrictions: z
+    .array(z.string().max(255, "Territory restriction too long"))
+    .nullable()
+    .optional(),
   notes: z.string().max(2000, "Notes too long").nullable().optional(),
   product_id: z.number().optional(),
   product_name: z.string().max(255, "Product name too long").optional(),

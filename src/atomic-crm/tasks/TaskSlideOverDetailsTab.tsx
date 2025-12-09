@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { ReferenceField } from "@/components/admin/reference-field";
@@ -8,7 +7,6 @@ import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { BooleanInput } from "@/components/admin/boolean-input";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PriorityBadge } from "@/components/ui/priority-badge";
@@ -45,12 +43,10 @@ export function TaskSlideOverDetailsTab({
 }: TaskSlideOverDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
-  const [isSaving, setIsSaving] = useState(false);
   const { taskTypes } = useConfigurationContext();
 
   // Handle save in edit mode
   const handleSave = async (data: Partial<Task>) => {
-    setIsSaving(true);
     try {
       await update("tasks", {
         id: record.id,
@@ -62,8 +58,6 @@ export function TaskSlideOverDetailsTab({
     } catch (error) {
       notify("Error updating task", { type: "error" });
       console.error("Save error:", error);
-    } finally {
-      setIsSaving(false);
     }
   };
 
@@ -83,10 +77,6 @@ export function TaskSlideOverDetailsTab({
       notify("Error updating task", { type: "error" });
       console.error("Completion toggle error:", error);
     }
-  };
-
-  const handleCancel = () => {
-    onModeToggle?.();
   };
 
   if (mode === "edit") {

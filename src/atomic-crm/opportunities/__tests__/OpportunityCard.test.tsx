@@ -31,7 +31,10 @@ const DndWrapper = ({ children }: { children: React.ReactNode }) => (
  */
 const renderCard = (
   record: Partial<Opportunity>,
-  props: { openSlideOver?: (id: number, mode?: "view" | "edit") => void; onDelete?: (id: number) => void } = {}
+  props: {
+    openSlideOver?: (id: number, mode?: "view" | "edit") => void;
+    onDelete?: (id: number) => void;
+  } = {}
 ) => {
   const defaultRecord: Opportunity = {
     id: 1,
@@ -103,7 +106,9 @@ describe("OpportunityCard", () => {
       renderCard({ description: "Hidden description" });
       // With CSS grid animation, content is in DOM but collapsed (0fr)
       // Check that the container has grid-rows-[0fr] class
-      const expandedSection = screen.getByText("Hidden description").closest('[class*="grid-rows"]');
+      const expandedSection = screen
+        .getByText("Hidden description")
+        .closest('[class*="grid-rows"]');
       expect(expandedSection).toHaveClass("grid-rows-[0fr]");
     });
 
@@ -179,8 +184,8 @@ describe("OpportunityCard", () => {
       renderCard({
         products: [
           { id: 1, product_id_reference: 1, product_name: "Product A" },
-          { id: 2, product_id_reference: 2, product_name: "Product B" }
-        ]
+          { id: 2, product_id_reference: 2, product_name: "Product B" },
+        ],
       });
 
       fireEvent.click(screen.getByRole("button", { name: /expand/i }));
@@ -286,7 +291,7 @@ describe("OpportunityCard", () => {
     it("shows win reason for closed_won stage", () => {
       renderCard({
         stage: "closed_won",
-        win_reason: "relationship"
+        win_reason: "relationship",
       });
 
       fireEvent.click(screen.getByRole("button", { name: /expand/i }));
@@ -297,7 +302,7 @@ describe("OpportunityCard", () => {
     it("shows loss reason for closed_lost stage", () => {
       renderCard({
         stage: "closed_lost",
-        loss_reason: "price_too_high"
+        loss_reason: "price_too_high",
       });
 
       fireEvent.click(screen.getByRole("button", { name: /expand/i }));

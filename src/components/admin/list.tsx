@@ -133,9 +133,7 @@ export const ListView = <RecordType extends RaRecord = RaRecord>(
 
         {/* Fixed pagination at bottom - only render if pagination is provided */}
         {pagination && (
-          <div className="shrink-0 border-t border-border bg-background pt-2">
-            {pagination}
-          </div>
+          <div className="shrink-0 border-t border-border bg-background pt-2">{pagination}</div>
         )}
       </FilterContext.Provider>
     </div>

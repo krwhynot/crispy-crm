@@ -162,9 +162,7 @@
       "title": "Add login rate limiting",
       "description": "Add client-side rate limiting to login form (5 attempts per 15 minutes) as defense-in-depth",
       "implementation": "Create loginRateLimiter using ClientRateLimiter class, check before calling authProvider.login()",
-      "files_to_modify": [
-        "src/components/admin/login-page.tsx"
-      ],
+      "files_to_modify": ["src/components/admin/login-page.tsx"],
       "code_example": "const loginLimiter = new ClientRateLimiter({ maxRequests: 5, windowMs: 15*60*1000, storageKey: 'rate_limit_login' });\nif (!loginLimiter.canProceed()) { notify('Too many login attempts'); return; }"
     },
     {
@@ -173,9 +171,7 @@
       "title": "Reduce sale cache TTL",
       "description": "Reduce cached sale TTL from 15 minutes to 5 minutes for faster role change propagation",
       "implementation": "Change CACHE_TTL_MS from 15*60*1000 to 5*60*1000",
-      "files_to_modify": [
-        "src/atomic-crm/providers/supabase/authProvider.ts:95"
-      ],
+      "files_to_modify": ["src/atomic-crm/providers/supabase/authProvider.ts:95"],
       "trade_off": "Reduces cache efficiency slightly, increases database queries"
     },
     {
@@ -192,9 +188,7 @@
       "title": "Add session monitoring",
       "description": "Track session creation, refresh, and expiration events for security monitoring",
       "implementation": "Add event listeners for supabase.auth.onAuthStateChange() to log session lifecycle",
-      "files_to_modify": [
-        "src/atomic-crm/providers/supabase/authProvider.ts"
-      ]
+      "files_to_modify": ["src/atomic-crm/providers/supabase/authProvider.ts"]
     },
     {
       "priority": "P3 - Testing",

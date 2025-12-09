@@ -137,8 +137,16 @@ const opportunityBaseSchema = z.strictObject({
     .optional()
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)), // General notes about the opportunity (separate from activity log)
-  tags: z.array(z.string().max(50, "Tag must be 50 characters or less")).max(20, "Maximum 20 tags allowed").optional().default([]),
-  next_action: z.string().max(500, "Next action must be 500 characters or less").optional().nullable(),
+  tags: z
+    .array(z.string().max(50, "Tag must be 50 characters or less"))
+    .max(20, "Maximum 20 tags allowed")
+    .optional()
+    .default([]),
+  next_action: z
+    .string()
+    .max(500, "Next action must be 500 characters or less")
+    .optional()
+    .nullable(),
   next_action_date: z.coerce.date().optional().nullable(),
   decision_criteria: z
     .string()
@@ -286,13 +294,11 @@ export const quickCreateOpportunitySchema = z.strictObject({
   account_manager_id: z.union([z.string(), z.number()]).optional(),
 
   // Auto-default: 30 days from now (business standard)
-  estimated_close_date: z.coerce
-    .date()
-    .default(() => {
-      const date = new Date();
-      date.setDate(date.getDate() + 30);
-      return date;
-    }),
+  estimated_close_date: z.coerce.date().default(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 30);
+    return date;
+  }),
 });
 
 export type QuickCreateOpportunityInput = z.infer<typeof quickCreateOpportunitySchema>;

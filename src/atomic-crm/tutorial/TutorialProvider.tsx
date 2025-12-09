@@ -6,15 +6,15 @@ import {
   useState,
   useEffect,
   type ReactNode,
-} from 'react';
-import { useNavigate } from 'react-router-dom';
-import { driver, type Driver, type Config } from 'driver.js';
-import 'driver.js/dist/driver.css';
+} from "react";
+import { useNavigate } from "react-router-dom";
+import { driver, type Driver, type Config } from "driver.js";
+import "driver.js/dist/driver.css";
 
-import { useTutorialProgress } from './useTutorialProgress';
-import { waitForElement } from './waitForElement';
-import { getChapterSteps } from './steps';
-import type { TutorialChapter, TutorialProgress, TutorialStep } from './types';
+import { useTutorialProgress } from "./useTutorialProgress";
+import { waitForElement } from "./waitForElement";
+import { getChapterSteps } from "./steps";
+import type { TutorialChapter, TutorialProgress, TutorialStep } from "./types";
 
 interface TutorialContextType {
   startTutorial: (chapter: TutorialChapter) => void;
@@ -97,7 +97,7 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
       const steps = getChapterSteps(chapter);
 
       if (steps.length === 0) {
-        console.warn('No tutorial steps found');
+        console.warn("No tutorial steps found");
         return;
       }
 
@@ -111,7 +111,7 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
       // Prepare the FIRST step before starting (navigate + wait for element)
       const firstStepReady = await prepareStep(steps[0]);
       if (!firstStepReady) {
-        console.warn('Tutorial: First step element not found, aborting');
+        console.warn("Tutorial: First step element not found, aborting");
         return;
       }
 
@@ -122,12 +122,12 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
         smoothScroll: true,
         allowClose: true,
         allowKeyboardControl: true,
-        overlayColor: 'rgba(0, 0, 0, 0.75)',
-        popoverClass: 'tutorial-popover',
-        showButtons: ['next', 'previous', 'close'],
-        nextBtnText: 'Next →',
-        prevBtnText: '← Back',
-        doneBtnText: 'Done ✓',
+        overlayColor: "rgba(0, 0, 0, 0.75)",
+        popoverClass: "tutorial-popover",
+        showButtons: ["next", "previous", "close"],
+        nextBtnText: "Next →",
+        prevBtnText: "← Back",
+        doneBtnText: "Done ✓",
 
         // Handle navigation BEFORE step advances
         onNextClick: async () => {
@@ -193,9 +193,9 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
         onPopoverRender: (popover, { state }) => {
           const isLastStep = state.activeIndex === steps.length - 1;
           if (isLastStep) {
-            const nextBtn = popover.wrapper.querySelector('.driver-popover-next-btn');
+            const nextBtn = popover.wrapper.querySelector(".driver-popover-next-btn");
             if (nextBtn) {
-              nextBtn.textContent = 'Done ✓';
+              nextBtn.textContent = "Done ✓";
               (nextBtn as HTMLButtonElement).onclick = () => {
                 if (driverRef.current) {
                   driverRef.current.destroy();
@@ -234,7 +234,7 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
         setIsActive(true);
         driverRef.current.drive();
       } catch (error) {
-        console.error('Failed to initialize tutorial:', error);
+        console.error("Failed to initialize tutorial:", error);
         setIsActive(false);
         driverRef.current = null;
       }
@@ -270,7 +270,7 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
 export function useTutorial(): TutorialContextType {
   const context = useContext(TutorialContext);
   if (!context) {
-    throw new Error('useTutorial must be used within TutorialProvider');
+    throw new Error("useTutorial must be used within TutorialProvider");
   }
   return context;
 }

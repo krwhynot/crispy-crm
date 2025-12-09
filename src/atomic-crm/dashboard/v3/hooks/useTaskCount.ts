@@ -1,5 +1,5 @@
-import { useGetList } from 'react-admin';
-import { useCurrentSale } from './useCurrentSale';
+import { useGetList } from "react-admin";
+import { useCurrentSale } from "./useCurrentSale";
 
 interface UseTaskCountResult {
   pendingCount: number;
@@ -17,13 +17,13 @@ export function useTaskCount(): UseTaskCountResult {
   const { salesId, loading: salesLoading } = useCurrentSale();
 
   const { total, isLoading } = useGetList(
-    'tasks',
+    "tasks",
     {
       pagination: { page: 1, perPage: 1 },
       filter: {
         sales_id: salesId,
         completed: false,
-        'deleted_at@is': null,
+        "deleted_at@is": null,
       },
     },
     {

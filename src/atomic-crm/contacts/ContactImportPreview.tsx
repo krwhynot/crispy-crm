@@ -573,7 +573,8 @@ export function ContactImportPreview({
                         <span className="font-medium">Row {error.row}</span>
                         {error.field && (
                           <span className="text-muted-foreground"> ({error.field})</span>
-                        )}: {error.message}
+                        )}
+                        : {error.message}
                       </div>
                     </div>
                   ))}
@@ -625,7 +626,9 @@ export function ContactImportPreview({
                       <AlertTriangle className="h-4 w-4 text-warning mt-0.5 flex-shrink-0" />
                       <div>
                         <span className="font-medium">Row {warning.row}</span>
-                        {warning.field && <span className="text-muted-foreground"> ({warning.field})</span>}
+                        {warning.field && (
+                          <span className="text-muted-foreground"> ({warning.field})</span>
+                        )}
                         : {warning.message}
                       </div>
                     </div>
@@ -741,9 +744,7 @@ export function ContactImportPreview({
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-2">
                     <User className="h-4 w-4 text-warning" />
-                    <CardTitle className="text-warning">
-                      Contacts Without Email or Phone
-                    </CardTitle>
+                    <CardTitle className="text-warning">Contacts Without Email or Phone</CardTitle>
                     <Badge variant="outline" className="border-warning text-warning">
                       {preview.contactsWithoutContactInfo.length}
                     </Badge>
@@ -798,7 +799,10 @@ export function ContactImportPreview({
                       <div>
                         <span className="font-medium">{contact.name}</span>
                         {contact.organization_name && (
-                          <span className="text-muted-foreground"> at {contact.organization_name}</span>
+                          <span className="text-muted-foreground">
+                            {" "}
+                            at {contact.organization_name}
+                          </span>
                         )}
                         <span className="text-muted-foreground"> (Row {contact.row})</span>
                       </div>

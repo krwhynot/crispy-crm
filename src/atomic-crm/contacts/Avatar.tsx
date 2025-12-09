@@ -17,12 +17,7 @@ export const Avatar = (props: {
   }
 
   const size = props.width || props.height;
-  const sizeClass =
-    props.width === 20
-      ? "w-5 h-5"
-      : props.width === 25
-        ? "w-8 h-8"
-        : "w-11 h-11";
+  const sizeClass = props.width === 20 ? "w-5 h-5" : props.width === 25 ? "w-8 h-8" : "w-11 h-11";
 
   const fullName = [record.first_name, record.last_name].filter(Boolean).join(" ");
   const altText = fullName ? `${fullName} avatar` : "Contact avatar";

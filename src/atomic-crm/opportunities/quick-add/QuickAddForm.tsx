@@ -43,7 +43,10 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
   const defaultValues = {
     ...schemaDefaults,
     campaign: getLocalStorageString("last_campaign", schemaDefaults.campaign || ""),
-    principal_id: Number(getLocalStorageString("last_principal", schemaDefaults.principal_id?.toString() || "")) || undefined,
+    principal_id:
+      Number(
+        getLocalStorageString("last_principal", schemaDefaults.principal_id?.toString() || "")
+      ) || undefined,
   };
 
   // Initialize form with defaults from schema and localStorage

@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
 
-export type Breakpoint =
-  | "mobile"
-  | "tablet-portrait"
-  | "tablet-landscape"
-  | "laptop"
-  | "desktop";
+export type Breakpoint = "mobile" | "tablet-portrait" | "tablet-landscape" | "laptop" | "desktop";
 
 const BREAKPOINT_QUERIES: Record<Breakpoint, string> = {
   mobile: "(max-width: 767px)",
@@ -38,12 +33,10 @@ export function useBreakpoint(): Breakpoint {
   );
 
   useEffect(() => {
-    const mediaQueries = Object.entries(BREAKPOINT_QUERIES).map(
-      ([bp, query]) => ({
-        breakpoint: bp as Breakpoint,
-        mql: window.matchMedia(query),
-      })
-    );
+    const mediaQueries = Object.entries(BREAKPOINT_QUERIES).map(([bp, query]) => ({
+      breakpoint: bp as Breakpoint,
+      mql: window.matchMedia(query),
+    }));
 
     const handleChange = () => {
       setBreakpoint(getCurrentBreakpoint());

@@ -136,7 +136,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, items, onClose }
                     key={subIndex}
                     className={cn(
                       "px-3 py-1.5 text-sm",
-                      subItem.disabled ? "opacity-50 cursor-not-allowed" : "hover:bg-accent cursor-pointer"
+                      subItem.disabled
+                        ? "opacity-50 cursor-not-allowed"
+                        : "hover:bg-accent cursor-pointer"
                     )}
                     tabIndex={subItem.disabled ? -1 : 0}
                     onClick={(e) => {

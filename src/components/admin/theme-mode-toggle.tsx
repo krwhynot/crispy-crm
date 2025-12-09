@@ -68,7 +68,8 @@ export function ThemeModeToggle() {
             )}
           />
           <span className="sr-only">
-            Toggle theme (current: {theme === "system" ? `system preference (${resolvedTheme})` : theme})
+            Toggle theme (current:{" "}
+            {theme === "system" ? `system preference (${resolvedTheme})` : theme})
           </span>
         </Button>
       </DropdownMenuTrigger>
@@ -87,9 +88,7 @@ export function ThemeModeToggle() {
           <Monitor className="mr-2 h-4 w-4" />
           System
           {theme === "system" && (
-            <span className="ml-1 text-xs text-muted-foreground">
-              ({resolvedTheme})
-            </span>
+            <span className="ml-1 text-xs text-muted-foreground">({resolvedTheme})</span>
           )}
           <Check className={cn("ml-auto h-4 w-4", theme !== "system" && "opacity-0")} />
         </DropdownMenuItem>

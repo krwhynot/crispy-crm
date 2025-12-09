@@ -67,14 +67,12 @@ export interface OrganizationDistributorWithNames extends OrganizationDistributo
  * Create-specific schema (stricter requirements)
  * Omits system-managed fields
  */
-export const createOrganizationDistributorSchema = organizationDistributorSchema
-  .innerType()
-  .omit({
-    id: true,
-    created_at: true,
-    updated_at: true,
-    deleted_at: true,
-  });
+export const createOrganizationDistributorSchema = organizationDistributorSchema.innerType().omit({
+  id: true,
+  created_at: true,
+  updated_at: true,
+  deleted_at: true,
+});
 
 /**
  * Update-specific schema (more flexible)

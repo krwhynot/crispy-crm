@@ -202,7 +202,11 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
               >
                 {opportunities.map((opportunity, index) => (
                   <RecordContextProvider key={opportunity.id} value={opportunity}>
-                    <OpportunityCard index={index} openSlideOver={openSlideOver} onDelete={onDeleteOpportunity} />
+                    <OpportunityCard
+                      index={index}
+                      openSlideOver={openSlideOver}
+                      onDelete={onDeleteOpportunity}
+                    />
                   </RecordContextProvider>
                 ))}
                 {provided.placeholder}

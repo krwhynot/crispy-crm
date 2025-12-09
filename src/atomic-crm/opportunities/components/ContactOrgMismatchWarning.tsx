@@ -78,9 +78,7 @@ export function ContactOrgMismatchWarning({ onClearMismatched }: ContactOrgMisma
   return (
     <Alert className="border-warning/50 bg-warning-subtle mt-3">
       <AlertTriangle className="h-4 w-4 text-warning" />
-      <AlertTitle className="text-warning-strong">
-        Contact Organization Mismatch
-      </AlertTitle>
+      <AlertTitle className="text-warning-strong">Contact Organization Mismatch</AlertTitle>
       <AlertDescription className="text-warning">
         <p className="mb-2">
           {mismatchedContacts.length === 1 ? (

@@ -6,7 +6,11 @@ import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-in
 import { SelectInput } from "@/components/admin/select-input";
 import { ArrayInput } from "@/components/admin/array-input";
 import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
-import { CompactFormRow, CollapsibleSection, CompactFormFieldWithButton } from "@/components/admin/form";
+import {
+  CompactFormRow,
+  CollapsibleSection,
+  CompactFormFieldWithButton,
+} from "@/components/admin/form";
 import { CreateInDialogButton } from "@/components/admin/create-in-dialog-button";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
@@ -405,7 +409,13 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
       <CollapsibleSection title="Additional Details" data-tutorial="opp-section-details">
         <div className="space-y-4">
           <div data-tutorial="opp-description">
-            <TextInput source="description" label="Description" multiline rows={2} helperText={false} />
+            <TextInput
+              source="description"
+              label="Description"
+              multiline
+              rows={2}
+              helperText={false}
+            />
           </div>
           <CompactFormRow>
             <div data-tutorial="opp-next-action">

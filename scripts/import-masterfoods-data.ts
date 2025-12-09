@@ -236,7 +236,9 @@ function parseArgs(): ImportConfig {
   if (args.includes("--import-cloud")) {
     if (!process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
       console.error("ERROR: SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY required for cloud import");
-      console.error("   Get service role key from: npx supabase status (local) or Supabase dashboard (cloud)");
+      console.error(
+        "   Get service role key from: npx supabase status (local) or Supabase dashboard (cloud)"
+      );
       process.exit(1);
     }
     return {
@@ -248,7 +250,9 @@ function parseArgs(): ImportConfig {
     };
   }
 
-  console.error("Usage: npx tsx scripts/import-masterfoods-data.ts [--generate-sql|--import-cloud] [--dry-run]");
+  console.error(
+    "Usage: npx tsx scripts/import-masterfoods-data.ts [--generate-sql|--import-cloud] [--dry-run]"
+  );
   console.error("");
   console.error("Options:");
   console.error("  --generate-sql   Generate supabase/seed.sql for local development");
@@ -259,8 +263,8 @@ function parseArgs(): ImportConfig {
 
 function escapeSQLString(str: string | null | undefined): string {
   if (str === null || str === undefined || str === "") return "NULL";
-  // eslint-disable-next-line no-control-regex
   const cleaned = String(str)
+    // eslint-disable-next-line no-control-regex
     .replace(/\x00/g, "") // Remove null bytes
     // eslint-disable-next-line no-control-regex
     .replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, ""); // Remove control characters
@@ -291,7 +295,10 @@ function parsePriority(value: string): string {
   return "C"; // Default
 }
 
-function resolvePlaybookCategoryId(segmentName: string, playbookCategoryName: string): string | null {
+function resolvePlaybookCategoryId(
+  segmentName: string,
+  playbookCategoryName: string
+): string | null {
   // Priority: playbook_category_name > segment_name > null (unknown will be handled later)
   const playbookTrimmed = (playbookCategoryName || "").trim();
   const segmentTrimmed = (segmentName || "").trim();
@@ -509,7 +516,10 @@ function validateAllData(
 // TRANSFORMATION
 // ============================================================================
 
-function transformOrganizations(orgs: OrganizationRow[], orgMap: Map<string, OrgMapEntry>): TransformedOrg[] {
+function transformOrganizations(
+  orgs: OrganizationRow[],
+  orgMap: Map<string, OrgMapEntry>
+): TransformedOrg[] {
   const transformed: TransformedOrg[] = [];
   const seenNames = new Set<string>();
 
@@ -549,7 +559,10 @@ function transformOrganizations(orgs: OrganizationRow[], orgMap: Map<string, Org
   return transformed;
 }
 
-function transformContacts(contacts: ContactRow[], orgMap: Map<string, OrgMapEntry>): TransformedContact[] {
+function transformContacts(
+  contacts: ContactRow[],
+  orgMap: Map<string, OrgMapEntry>
+): TransformedContact[] {
   const transformed: TransformedContact[] = [];
   let nextId = 1;
 
@@ -1126,9 +1139,13 @@ async function main() {
     console.log(`   Written to: ${config.outputPath}`);
   } else {
     console.log("\n4️⃣  Importing to cloud...");
-    const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_SERVICE_ROLE_KEY!, {
-      auth: { autoRefreshToken: false, persistSession: false },
-    });
+    const supabase = createClient(
+      process.env.SUPABASE_URL!,
+      process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      {
+        auth: { autoRefreshToken: false, persistSession: false },
+      }
+    );
     await importToCloud(supabase, orgs, contacts, distributors, config);
   }
 

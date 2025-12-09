@@ -1,11 +1,11 @@
-import { useRecordContext } from 'react-admin';
-import { Badge } from '@/components/ui/badge';
+import { useRecordContext } from "react-admin";
+import { Badge } from "@/components/ui/badge";
 
 interface StatusFieldProps {
   source?: string;
 }
 
-export const StatusField = ({ source = 'disabled' }: StatusFieldProps) => {
+export const StatusField = ({ source = "disabled" }: StatusFieldProps) => {
   const record = useRecordContext();
   if (!record) return null;
 
@@ -13,18 +13,18 @@ export const StatusField = ({ source = 'disabled' }: StatusFieldProps) => {
 
   return (
     <Badge
-      variant={isDisabled ? 'secondary' : 'default'}
+      variant={isDisabled ? "secondary" : "default"}
       className={
         isDisabled
-          ? 'bg-muted text-muted-foreground'
-          : 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+          ? "bg-muted text-muted-foreground"
+          : "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
       }
     >
-      {isDisabled ? 'Disabled' : 'Active'}
+      {isDisabled ? "Disabled" : "Active"}
     </Badge>
   );
 };
 
 StatusField.defaultProps = {
-  label: 'Status',
+  label: "Status",
 };

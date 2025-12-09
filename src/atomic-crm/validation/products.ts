@@ -27,7 +27,11 @@ export const FB_CONSUMABLE_CATEGORIES = [
 ] as const;
 
 // Product category schema - now accepts any non-empty string
-export const productCategorySchema = z.string().min(1, "Category is required").max(100, "Category too long").default("beverages");
+export const productCategorySchema = z
+  .string()
+  .min(1, "Category is required")
+  .max(100, "Category too long")
+  .default("beverages");
 
 // Export suggested categories for form components (Constitution Rule #5)
 export const PRODUCT_CATEGORIES = FB_CONSUMABLE_CATEGORIES;

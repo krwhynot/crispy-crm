@@ -9,9 +9,7 @@ export interface MetadataFieldProps {
 
 export const MetadataField = ({ label, children, className }: MetadataFieldProps) => (
   <div className={cn("flex flex-col", DETAIL_FIELD_MIN_WIDTH, className)}>
-    <span className="text-xs text-muted-foreground tracking-wide uppercase">
-      {label}
-    </span>
+    <span className="text-xs text-muted-foreground tracking-wide uppercase">{label}</span>
     {children}
   </div>
 );

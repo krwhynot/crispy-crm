@@ -24,7 +24,11 @@ interface OrganizationOpportunitiesTabProps {
 }
 
 export function OrganizationOpportunitiesTab({ record }: OrganizationOpportunitiesTabProps) {
-  const { data: opportunities = [], isLoading, error } = useGetList<Opportunity>(
+  const {
+    data: opportunities = [],
+    isLoading,
+    error,
+  } = useGetList<Opportunity>(
     "opportunities",
     {
       filter: {
@@ -115,8 +119,9 @@ export function OrganizationOpportunitiesTab({ record }: OrganizationOpportuniti
                       {opportunity.estimated_close_date && (
                         <span>
                           Close:{" "}
-                          {parseDateSafely(opportunity.estimated_close_date)?.toLocaleDateString() ??
-                            "N/A"}
+                          {parseDateSafely(
+                            opportunity.estimated_close_date
+                          )?.toLocaleDateString() ?? "N/A"}
                         </span>
                       )}
                       {opportunity.status && (

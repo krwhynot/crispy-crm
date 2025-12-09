@@ -1,10 +1,6 @@
 import { useState, useId } from "react";
 import { ChevronDown } from "lucide-react";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
 
 interface CollapsibleSectionProps {
@@ -42,10 +38,7 @@ export const CollapsibleSection = ({
         <span>{title}</span>
         <ChevronDown
           data-testid="collapsible-chevron"
-          className={cn(
-            "h-4 w-4 transition-transform duration-200",
-            isOpen && "rotate-180"
-          )}
+          className={cn("h-4 w-4 transition-transform duration-200", isOpen && "rotate-180")}
         />
       </CollapsibleTrigger>
       <CollapsibleContent id={contentId} className="px-3 pb-3">

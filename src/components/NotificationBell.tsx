@@ -16,9 +16,7 @@ export const NotificationBell = () => {
     "notifications",
     {
       pagination: { page: 1, perPage: 1 },
-      filter: identity?.user_id
-        ? { user_id: identity.user_id, read: false }
-        : {},
+      filter: identity?.user_id ? { user_id: identity.user_id, read: false } : {},
     },
     {
       enabled: !!identity?.user_id && !isLoading,

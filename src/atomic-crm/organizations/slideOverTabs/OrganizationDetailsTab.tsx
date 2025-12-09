@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { TextInput } from "@/components/admin/text-input";
@@ -10,7 +9,12 @@ import { Badge } from "@/components/ui/badge";
 import { AsideSection } from "@/components/ui";
 import { ArrayInput, SimpleFormIterator } from "react-admin";
 import type { OrganizationWithHierarchy } from "../../types";
-import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, ORG_TYPE_COLOR_MAP, PRIORITY_VARIANT_MAP } from "../constants";
+import {
+  ORGANIZATION_TYPE_CHOICES,
+  PRIORITY_CHOICES,
+  ORG_TYPE_COLOR_MAP,
+  PRIORITY_VARIANT_MAP,
+} from "../constants";
 import { parseDateSafely } from "@/lib/date-utils";
 
 interface OrganizationDetailsTabProps {
@@ -50,7 +54,11 @@ export function OrganizationDetailsTab({
             <div className="space-y-4">
               <TextInput source="name" label="Organization Name" />
 
-              <SelectInput source="organization_type" label="Type" choices={ORGANIZATION_TYPE_CHOICES} />
+              <SelectInput
+                source="organization_type"
+                label="Type"
+                choices={ORGANIZATION_TYPE_CHOICES}
+              />
 
               <SelectInput source="priority" label="Priority" choices={PRIORITY_CHOICES} />
 
@@ -118,7 +126,10 @@ export function OrganizationDetailsTab({
                   {record.phone && (
                     <div className="flex items-center gap-2">
                       <span className="text-sm text-muted-foreground">Phone:</span>
-                      <a href={`tel:${record.phone}`} className="text-sm text-primary hover:underline">
+                      <a
+                        href={`tel:${record.phone}`}
+                        className="text-sm text-primary hover:underline"
+                      >
                         {record.phone}
                       </a>
                     </div>
@@ -132,7 +143,7 @@ export function OrganizationDetailsTab({
                         rel="noopener noreferrer"
                         className="text-sm text-primary hover:underline"
                       >
-                        {record.website.replace(/^https?:\/\//, '')}
+                        {record.website.replace(/^https?:\/\//, "")}
                       </a>
                     </div>
                   )}
@@ -147,7 +158,7 @@ export function OrganizationDetailsTab({
                     {record.address && <div>{record.address}</div>}
                     {(record.city || record.state || record.postal_code) && (
                       <div>
-                        {[record.city, record.state, record.postal_code].filter(Boolean).join(', ')}
+                        {[record.city, record.state, record.postal_code].filter(Boolean).join(", ")}
                       </div>
                     )}
                   </div>
@@ -224,7 +235,7 @@ function OrganizationTypeBadge({ type }: { type: string }) {
 
 function PriorityBadge({ priority }: { priority: string }) {
   const variant = PRIORITY_VARIANT_MAP[priority as keyof typeof PRIORITY_VARIANT_MAP] || "default";
-  const label = PRIORITY_CHOICES.find(p => p.id === priority)?.name || priority;
+  const label = PRIORITY_CHOICES.find((p) => p.id === priority)?.name || priority;
 
   return (
     <Badge variant={variant} className="text-xs px-3 py-2 min-h-[44px] flex items-center">

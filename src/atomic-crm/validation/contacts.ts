@@ -334,46 +334,44 @@ export type ImportContactInput = z.input<typeof importContactSchema>;
 // This is the ONLY place where contact validation occurs
 export async function validateContactForm(data: unknown): Promise<void> {
   // Create a schema that includes the email entry validation
-  const formSchema = contactBaseSchema
-    .transform(transformContactData)
-    .superRefine((data, ctx) => {
-      // Validate that at least name or first_name/last_name is provided
-      if (!data.name && !data.first_name && !data.last_name) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          path: ["name"],
-          message: "Either name or first_name/last_name must be provided",
-        });
-      }
+  const formSchema = contactBaseSchema.transform(transformContactData).superRefine((data, ctx) => {
+    // Validate that at least name or first_name/last_name is provided
+    if (!data.name && !data.first_name && !data.last_name) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        path: ["name"],
+        message: "Either name or first_name/last_name must be provided",
+      });
+    }
 
-      // Contact-level email validation
-      if (data.email && Array.isArray(data.email)) {
-        const emailValidator = z.string().email("Invalid email address");
-        data.email.forEach((entry: EmailEntry, index: number) => {
-          if (entry.email && !emailValidator.safeParse(entry.email).success) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              path: ["email", index, "email"],
-              message: "Must be a valid email address",
-            });
-          }
-        });
-      }
+    // Contact-level email validation
+    if (data.email && Array.isArray(data.email)) {
+      const emailValidator = z.string().email("Invalid email address");
+      data.email.forEach((entry: EmailEntry, index: number) => {
+        if (entry.email && !emailValidator.safeParse(entry.email).success) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            path: ["email", index, "email"],
+            message: "Must be a valid email address",
+          });
+        }
+      });
+    }
 
-      // Ensure at least one email is provided if email exists
-      if (data.email && Array.isArray(data.email) && data.email.length > 0) {
-        // Validate each email entry
-        (data.email as EmailEntry[]).forEach((entry: EmailEntry, index: number) => {
-          if (!entry.email || entry.email.trim() === "") {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: "Email address is required",
-              path: ["email", index, "email"],
-            });
-          }
-        });
-      }
-    });
+    // Ensure at least one email is provided if email exists
+    if (data.email && Array.isArray(data.email) && data.email.length > 0) {
+      // Validate each email entry
+      (data.email as EmailEntry[]).forEach((entry: EmailEntry, index: number) => {
+        if (!entry.email || entry.email.trim() === "") {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "Email address is required",
+            path: ["email", index, "email"],
+          });
+        }
+      });
+    }
+  });
 
   try {
     // Parse and validate the data

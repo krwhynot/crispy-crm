@@ -37,14 +37,22 @@ describe("CollapsibleSection", () => {
   });
 
   it("has 44px minimum touch target", () => {
-    render(<CollapsibleSection title="Test"><div /></CollapsibleSection>);
+    render(
+      <CollapsibleSection title="Test">
+        <div />
+      </CollapsibleSection>
+    );
 
     const trigger = screen.getByRole("button");
     expect(trigger).toHaveClass("h-11");
   });
 
   it("rotates chevron when expanded", () => {
-    render(<CollapsibleSection title="Test"><div /></CollapsibleSection>);
+    render(
+      <CollapsibleSection title="Test">
+        <div />
+      </CollapsibleSection>
+    );
 
     const chevron = screen.getByTestId("collapsible-chevron");
     expect(chevron).not.toHaveClass("rotate-180");
@@ -55,7 +63,11 @@ describe("CollapsibleSection", () => {
 
   it("toggles on Enter key", async () => {
     const user = userEvent.setup();
-    render(<CollapsibleSection title="Details"><p>Content</p></CollapsibleSection>);
+    render(
+      <CollapsibleSection title="Details">
+        <p>Content</p>
+      </CollapsibleSection>
+    );
     const button = screen.getByRole("button", { name: /details/i });
     button.focus();
     await user.keyboard("{Enter}");
@@ -64,7 +76,11 @@ describe("CollapsibleSection", () => {
 
   it("toggles on Space key", async () => {
     const user = userEvent.setup();
-    render(<CollapsibleSection title="Details"><p>Content</p></CollapsibleSection>);
+    render(
+      <CollapsibleSection title="Details">
+        <p>Content</p>
+      </CollapsibleSection>
+    );
     const button = screen.getByRole("button", { name: /details/i });
     button.focus();
     await user.keyboard(" ");
@@ -72,7 +88,11 @@ describe("CollapsibleSection", () => {
   });
 
   it("has correct aria-expanded state", () => {
-    render(<CollapsibleSection title="Details"><p>Content</p></CollapsibleSection>);
+    render(
+      <CollapsibleSection title="Details">
+        <p>Content</p>
+      </CollapsibleSection>
+    );
     const button = screen.getByRole("button", { name: /details/i });
     expect(button).toHaveAttribute("aria-expanded", "false");
     fireEvent.click(button);
@@ -80,7 +100,11 @@ describe("CollapsibleSection", () => {
   });
 
   it("has aria-controls linked to content id", () => {
-    render(<CollapsibleSection title="Details"><p>Content</p></CollapsibleSection>);
+    render(
+      <CollapsibleSection title="Details">
+        <p>Content</p>
+      </CollapsibleSection>
+    );
     const button = screen.getByRole("button", { name: /details/i });
     fireEvent.click(button); // Expand to render content
     const contentId = button.getAttribute("aria-controls");

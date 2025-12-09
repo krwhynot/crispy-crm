@@ -85,7 +85,9 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
           className="fixed inset-0 bg-background/80 flex items-center justify-center z-50 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-150"
         >
           <div className="bg-card rounded-lg shadow-xl p-6 w-full max-w-md motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-200">
-            <h2 id="quick-add-opportunity-title" className="text-lg font-semibold mb-4">Create Opportunity</h2>
+            <h2 id="quick-add-opportunity-title" className="text-lg font-semibold mb-4">
+              Create Opportunity
+            </h2>
 
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
@@ -100,6 +102,7 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
                   className="w-full px-3 py-2 border border-border rounded-md focus:outline-none focus:ring-2 focus:ring-primary transition-colors"
                   placeholder="Enter opportunity name"
                   disabled={isLoading}
+                  // eslint-disable-next-line jsx-a11y/no-autofocus -- Modal has role="dialog" + aria-modal, autoFocus is appropriate
                   autoFocus
                 />
               </div>

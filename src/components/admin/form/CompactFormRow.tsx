@@ -21,12 +21,7 @@ export const CompactFormRow = ({
 
   return (
     <div
-      className={cn(
-        "grid grid-cols-1 gap-3",
-        columns ?? "md:grid-cols-2",
-        alignClass,
-        className
-      )}
+      className={cn("grid grid-cols-1 gap-3", columns ?? "md:grid-cols-2", alignClass, className)}
     >
       {children}
     </div>

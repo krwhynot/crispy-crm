@@ -162,8 +162,8 @@ export class DigestService {
       const parsed = z.array(OverdueTaskSchema).safeParse(data);
       if (!parsed.success) {
         const errorDetails = parsed.error.errors
-          .map(e => `${e.path.join('.')}: ${e.message}`)
-          .join(', ');
+          .map((e) => `${e.path.join(".")}: ${e.message}`)
+          .join(", ");
         throw new Error(`Overdue tasks validation failed: ${errorDetails}`);
       }
 
@@ -196,8 +196,8 @@ export class DigestService {
       const parsed = z.array(TodayTaskSchema).safeParse(data);
       if (!parsed.success) {
         const errorDetails = parsed.error.errors
-          .map(e => `${e.path.join('.')}: ${e.message}`)
-          .join(', ');
+          .map((e) => `${e.path.join(".")}: ${e.message}`)
+          .join(", ");
         throw new Error(`Tasks due today validation failed: ${errorDetails}`);
       }
 
@@ -235,8 +235,8 @@ export class DigestService {
       const parsed = z.array(StaleDealSchema).safeParse(data);
       if (!parsed.success) {
         const errorDetails = parsed.error.errors
-          .map(e => `${e.path.join('.')}: ${e.message}`)
-          .join(', ');
+          .map((e) => `${e.path.join(".")}: ${e.message}`)
+          .join(", ");
         throw new Error(`Stale deals validation failed: ${errorDetails}`);
       }
 

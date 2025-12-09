@@ -1,22 +1,22 @@
-import { BookOpen, CheckCircle } from 'lucide-react';
+import { BookOpen, CheckCircle } from "lucide-react";
 import {
   DropdownMenuSub,
   DropdownMenuSubTrigger,
   DropdownMenuSubContent,
   DropdownMenuItem,
-} from '@/components/ui/dropdown-menu';
-import { useTutorial } from './TutorialProvider';
-import type { TutorialChapter } from './types';
+} from "@/components/ui/dropdown-menu";
+import { useTutorial } from "./TutorialProvider";
+import type { TutorialChapter } from "./types";
 
 const CHAPTERS: { key: TutorialChapter; label: string }[] = [
-  { key: 'organizations', label: 'Organizations' },
-  { key: 'contacts', label: 'Contacts' },
-  { key: 'opportunities', label: 'Opportunities' },
-  { key: 'activities', label: 'Activities' },
-  { key: 'tasks', label: 'Tasks' },
-  { key: 'products', label: 'Products' },
-  { key: 'notes', label: 'Notes' },
-  { key: 'users', label: 'Team Members' },
+  { key: "organizations", label: "Organizations" },
+  { key: "contacts", label: "Contacts" },
+  { key: "opportunities", label: "Opportunities" },
+  { key: "activities", label: "Activities" },
+  { key: "tasks", label: "Tasks" },
+  { key: "products", label: "Products" },
+  { key: "notes", label: "Notes" },
+  { key: "users", label: "Team Members" },
 ];
 
 export function TutorialLauncher() {

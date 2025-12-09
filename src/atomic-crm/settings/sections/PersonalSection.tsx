@@ -74,11 +74,7 @@ export function PersonalSection() {
               variant="outline"
               className="min-h-[44px]"
             >
-              {isPending ? (
-                <Loader2 className="animate-spin" />
-              ) : (
-                <Save />
-              )}
+              {isPending ? <Loader2 className="animate-spin" /> : <Save />}
               {isPending ? "Saving..." : "Save"}
             </Button>
           )}

@@ -8,11 +8,7 @@ interface ChartWrapperProps {
   isLoading?: boolean;
 }
 
-export function ChartWrapper({
-  title,
-  children,
-  isLoading = false,
-}: ChartWrapperProps) {
+export function ChartWrapper({ title, children, isLoading = false }: ChartWrapperProps) {
   return (
     <Card>
       <CardHeader>

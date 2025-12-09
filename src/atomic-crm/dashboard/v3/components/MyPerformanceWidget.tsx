@@ -176,11 +176,7 @@ function MyPerformanceWidget() {
         />
         <MetricCard type="dealsMoved" metric={metrics.dealsMoved} loading={loading} />
         <MetricCard type="tasksCompleted" metric={metrics.tasksCompleted} loading={loading} />
-        <MetricCard
-          type="openOpportunities"
-          metric={metrics.openOpportunities}
-          loading={loading}
-        />
+        <MetricCard type="openOpportunities" metric={metrics.openOpportunities} loading={loading} />
       </div>
 
       {/* Week comparison note */}

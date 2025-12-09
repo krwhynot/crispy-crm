@@ -1,13 +1,9 @@
-import { useRef, useCallback } from 'react';
-import { driver, type DriveStep } from 'driver.js';
-import 'driver.js/dist/driver.css';
-import { HelpCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { useRef, useCallback } from "react";
+import { driver, type DriveStep } from "driver.js";
+import "driver.js/dist/driver.css";
+import { HelpCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 /**
  * Tutorial steps for the Opportunities Pipeline.
@@ -17,127 +13,123 @@ const PIPELINE_TUTORIAL_STEPS: DriveStep[] = [
   // 1. Intro
   {
     popover: {
-      title: '🎯 Welcome to the Pipeline',
+      title: "🎯 Welcome to the Pipeline",
       description:
-        'This is your sales pipeline - track deals from lead to close. Let me show you around!',
+        "This is your sales pipeline - track deals from lead to close. Let me show you around!",
     },
   },
   // 2. View Switcher
   {
     element: '[data-tutorial="opp-view-switcher"]',
     popover: {
-      title: 'View Options',
+      title: "View Options",
       description:
-        'Switch between Kanban board (drag & drop), List view (table), or Campaign view (grouped).',
-      side: 'bottom',
-      align: 'start',
+        "Switch between Kanban board (drag & drop), List view (table), or Campaign view (grouped).",
+      side: "bottom",
+      align: "start",
     },
   },
   // 3. Filter Sidebar
   {
     element: '[data-tutorial="opp-filters"]',
     popover: {
-      title: 'Filter Your Pipeline',
+      title: "Filter Your Pipeline",
       description:
-        'Use Quick Filters for common views, or filter by Stage, Priority, Principal, Customer, Campaign, or Owner.',
-      side: 'right',
-      align: 'start',
+        "Use Quick Filters for common views, or filter by Stage, Priority, Principal, Customer, Campaign, or Owner.",
+      side: "right",
+      align: "start",
     },
   },
   // 4. Quick Filters
   {
     element: '[data-tutorial="opp-quick-filters"]',
     popover: {
-      title: 'Quick Filters',
+      title: "Quick Filters",
       description:
         '"My Opportunities", "Closing This Month", "High Priority", "Needs Action", and "Recent Wins" - one click away.',
-      side: 'right',
-      align: 'start',
+      side: "right",
+      align: "start",
     },
   },
   // 5. Stage Filters
   {
     element: '[data-tutorial="opp-stage-filters"]',
     popover: {
-      title: 'Filter by Stage',
-      description:
-        'Toggle stages on/off to focus on specific parts of your pipeline.',
-      side: 'right',
-      align: 'start',
+      title: "Filter by Stage",
+      description: "Toggle stages on/off to focus on specific parts of your pipeline.",
+      side: "right",
+      align: "start",
     },
   },
   // 6. Pipeline Columns
   {
     element: '[data-tutorial="opp-kanban-board"]',
     popover: {
-      title: 'Pipeline Stages',
+      title: "Pipeline Stages",
       description:
-        '7 stages from New Lead to Closed. Each column shows count, avg days, and stuck deals.',
-      side: 'top',
-      align: 'center',
+        "7 stages from New Lead to Closed. Each column shows count, avg days, and stuck deals.",
+      side: "top",
+      align: "center",
     },
   },
   // 7. Opportunity Card
   {
     element: '[data-tutorial="opp-card"]',
     popover: {
-      title: 'Opportunity Cards',
+      title: "Opportunity Cards",
       description:
-        'Each card shows deal name, activity status (green/yellow/red dot), and key details. Click to expand.',
-      side: 'left',
-      align: 'start',
+        "Each card shows deal name, activity status (green/yellow/red dot), and key details. Click to expand.",
+      side: "left",
+      align: "start",
     },
   },
   // 8. Card Drag Handle
   {
     element: '[data-tutorial="opp-drag-handle"]',
     popover: {
-      title: 'Drag & Drop',
+      title: "Drag & Drop",
       description:
-        'Grab the handle to drag deals between stages. Moving to Closed stages prompts for win/loss reason.',
-      side: 'right',
-      align: 'start',
+        "Grab the handle to drag deals between stages. Moving to Closed stages prompts for win/loss reason.",
+      side: "right",
+      align: "start",
     },
   },
   // 9. Quick Add Button
   {
     element: '[data-tutorial="opp-quick-add"]',
     popover: {
-      title: 'Quick Add',
-      description:
-        'Rapidly add new opportunities without leaving the pipeline.',
-      side: 'bottom',
-      align: 'end',
+      title: "Quick Add",
+      description: "Rapidly add new opportunities without leaving the pipeline.",
+      side: "bottom",
+      align: "end",
     },
   },
   // 10. Export Button
   {
     element: '[data-tutorial="opp-export"]',
     popover: {
-      title: 'Export Data',
-      description:
-        'Export your pipeline to CSV for reports or principal reviews.',
-      side: 'bottom',
-      align: 'end',
+      title: "Export Data",
+      description: "Export your pipeline to CSV for reports or principal reviews.",
+      side: "bottom",
+      align: "end",
     },
   },
   // 11. Create Button
   {
     element: '[data-tutorial="create-opportunity-btn"]',
     popover: {
-      title: 'New Opportunity',
-      description:
-        'Open the full form to create a detailed opportunity with all fields.',
-      side: 'bottom',
-      align: 'end',
+      title: "New Opportunity",
+      description: "Open the full form to create a detailed opportunity with all fields.",
+      side: "bottom",
+      align: "end",
     },
   },
   // 12. Completion
   {
     popover: {
-      title: '✅ Ready to Sell!',
+      title: "✅ Ready to Sell!",
       description:
-        'You now know how to navigate the pipeline. Click the ? button anytime to replay this tour.',
+        "You now know how to navigate the pipeline. Click the ? button anytime to replay this tour.",
     },
   },
 ];
@@ -165,10 +157,10 @@ export function OpportunityListTutorial() {
       animate: true,
       smoothScroll: true,
       overlayOpacity: 0.75,
-      popoverClass: 'tutorial-popover',
-      nextBtnText: 'Next →',
-      prevBtnText: '← Back',
-      doneBtnText: 'Done ✓',
+      popoverClass: "tutorial-popover",
+      nextBtnText: "Next →",
+      prevBtnText: "← Back",
+      doneBtnText: "Done ✓",
       steps: PIPELINE_TUTORIAL_STEPS,
       onDestroyStarted: () => {
         // Cleanup on close

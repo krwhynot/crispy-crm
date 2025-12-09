@@ -15,13 +15,7 @@ interface KPIDrillDownProps {
   children: ReactNode;
 }
 
-export function KPIDrillDown({
-  open,
-  onClose,
-  title,
-  description,
-  children,
-}: KPIDrillDownProps) {
+export function KPIDrillDown({ open, onClose, title, description, children }: KPIDrillDownProps) {
   return (
     <Sheet open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
       <SheetContent

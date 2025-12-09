@@ -5,7 +5,10 @@
  * and can be used directly in FunctionField render props.
  */
 
-import { formatFullName as sharedFormatFullName, formatRoleAndDept as sharedFormatRoleAndDept } from "../utils/formatters";
+import {
+  formatFullName as sharedFormatFullName,
+  formatRoleAndDept as sharedFormatRoleAndDept,
+} from "../utils/formatters";
 
 // Re-export for local use
 export const formatFullName = sharedFormatFullName;

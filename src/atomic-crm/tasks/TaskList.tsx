@@ -1,5 +1,12 @@
 import React from "react";
-import { useUpdate, useNotify, useGetIdentity, useListContext, downloadCSV, type Exporter } from "ra-core";
+import {
+  useUpdate,
+  useNotify,
+  useGetIdentity,
+  useListContext,
+  downloadCSV,
+  type Exporter,
+} from "ra-core";
 import jsonExport from "jsonexport/dist";
 
 import { FunctionField } from "react-admin";
@@ -133,11 +140,7 @@ const TaskListLayout = ({
           />
 
           {/* Column 2: Title - Primary identifier (sortable) - always visible */}
-          <TextField
-            source="title"
-            label="Title"
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
+          <TextField source="title" label="Title" {...COLUMN_VISIBILITY.alwaysVisible} />
 
           {/* Column 3: Due Date - Time-sensitive field (sortable) - always visible */}
           <DateField
@@ -161,9 +164,7 @@ const TaskListLayout = ({
           <FunctionField
             label="Type"
             sortBy="type"
-            render={(record: Task) =>
-              record.type && <Badge variant="outline">{record.type}</Badge>
-            }
+            render={(record: Task) => record.type && <Badge variant="outline">{record.type}</Badge>}
             {...COLUMN_VISIBILITY.desktopOnly}
           />
 

@@ -2,7 +2,18 @@ import React, { useState } from "react";
 import { useRecordContext } from "react-admin";
 import { Draggable } from "@hello-pangea/dnd";
 import { format, differenceInDays } from "date-fns";
-import { Trophy, XCircle, ChevronDown, ChevronUp, User, Calendar, Clock, CheckSquare, Package, GripVertical } from "lucide-react";
+import {
+  Trophy,
+  XCircle,
+  ChevronDown,
+  ChevronUp,
+  User,
+  Calendar,
+  Clock,
+  CheckSquare,
+  Package,
+  GripVertical,
+} from "lucide-react";
 import { useOpportunityContacts } from "../hooks/useOpportunityContacts";
 import { STUCK_THRESHOLD_DAYS } from "../hooks/useStageMetrics";
 import { OpportunityCardActions } from "./OpportunityCardActions";
@@ -67,16 +78,23 @@ export const OpportunityCard = React.memo(function OpportunityCard({
   const daysInStage = record.days_in_stage || 0;
   const isStuck = daysInStage > STUCK_THRESHOLD_DAYS;
   const priority = record.priority || "medium";
-  const priorityClass = priorityColors[priority as keyof typeof priorityColors] || priorityColors.medium;
+  const priorityClass =
+    priorityColors[priority as keyof typeof priorityColors] || priorityColors.medium;
   const priorityLabel = priority.charAt(0).toUpperCase() + priority.slice(1);
 
   // Close date formatting and urgency
-  const closeDateParsed = record.estimated_close_date && parseDateSafely(record.estimated_close_date);
+  const closeDateParsed =
+    record.estimated_close_date && parseDateSafely(record.estimated_close_date);
   const closeDate = closeDateParsed ? format(closeDateParsed, "MMM d, yyyy") : "No date set";
   const daysUntilClose = closeDateParsed ? differenceInDays(closeDateParsed, new Date()) : null;
-  const closeDateUrgency = daysUntilClose !== null
-    ? daysUntilClose < 0 ? "overdue" : daysUntilClose < 7 ? "soon" : "normal"
-    : "normal";
+  const closeDateUrgency =
+    daysUntilClose !== null
+      ? daysUntilClose < 0
+        ? "overdue"
+        : daysUntilClose < 7
+          ? "soon"
+          : "normal"
+      : "normal";
 
   // Task counts
   const pendingTasks = record.pending_task_count || 0;
@@ -126,10 +144,12 @@ export const OpportunityCard = React.memo(function OpportunityCard({
             </div>
             <ActivityPulseDot daysSinceLastActivity={record.days_since_last_activity} />
 
-            <h3 className={`
+            <h3
+              className={`
               font-semibold text-base text-foreground flex-1 min-w-0 leading-normal
               ${isExpanded ? "" : "line-clamp-3"}
-            `}>
+            `}
+            >
               {record.name}
             </h3>
 
@@ -153,17 +173,17 @@ export const OpportunityCard = React.memo(function OpportunityCard({
           </div>
 
           {/* Expandable Details Section */}
-          <div className={`
+          <div
+            className={`
             grid transition-[grid-template-rows] duration-200 ease-out
             ${isExpanded ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}
-          `}>
+          `}
+          >
             <div className="overflow-hidden">
               <div className="pt-3 mt-2 border-t border-border space-y-2">
                 {/* Description */}
                 {record.description && (
-                  <p className="text-xs text-muted-foreground line-clamp-2">
-                    {record.description}
-                  </p>
+                  <p className="text-xs text-muted-foreground line-clamp-2">{record.description}</p>
                 )}
 
                 {/* Badges Row: Priority + Principal */}
@@ -191,11 +211,15 @@ export const OpportunityCard = React.memo(function OpportunityCard({
                 ) : null}
 
                 {/* Close Date with urgency color */}
-                <div className={`flex items-center gap-2 text-xs ${
-                  closeDateUrgency === "overdue" ? "text-destructive" :
-                  closeDateUrgency === "soon" ? "text-warning" :
-                  "text-muted-foreground"
-                }`}>
+                <div
+                  className={`flex items-center gap-2 text-xs ${
+                    closeDateUrgency === "overdue"
+                      ? "text-destructive"
+                      : closeDateUrgency === "soon"
+                        ? "text-warning"
+                        : "text-muted-foreground"
+                  }`}
+                >
                   <Calendar className="w-3.5 h-3.5" />
                   <span>{closeDate}</span>
                   {closeDateUrgency === "overdue" && <span>(overdue)</span>}
@@ -205,9 +229,11 @@ export const OpportunityCard = React.memo(function OpportunityCard({
                 </div>
 
                 {/* Days in Stage */}
-                <div className={`flex items-center gap-2 text-xs ${
-                  isStuck ? "text-warning" : "text-muted-foreground"
-                }`}>
+                <div
+                  className={`flex items-center gap-2 text-xs ${
+                    isStuck ? "text-warning" : "text-muted-foreground"
+                  }`}
+                >
                   <Clock className="w-3.5 h-3.5" />
                   <span>{daysInStage} days in stage</span>
                   {isStuck && <span className="text-warning">⚠️</span>}
@@ -215,9 +241,11 @@ export const OpportunityCard = React.memo(function OpportunityCard({
 
                 {/* Tasks */}
                 {pendingTasks > 0 && (
-                  <div className={`flex items-center gap-2 text-xs ${
-                    overdueTasks > 0 ? "text-destructive" : "text-muted-foreground"
-                  }`}>
+                  <div
+                    className={`flex items-center gap-2 text-xs ${
+                      overdueTasks > 0 ? "text-destructive" : "text-muted-foreground"
+                    }`}
+                  >
                     <CheckSquare className="w-3.5 h-3.5" />
                     <span>
                       {pendingTasks} task{pendingTasks !== 1 ? "s" : ""}
@@ -230,7 +258,9 @@ export const OpportunityCard = React.memo(function OpportunityCard({
                 {productsCount > 0 && (
                   <div className="flex items-center gap-2 text-xs text-muted-foreground">
                     <Package className="w-3.5 h-3.5" />
-                    <span>{productsCount} product{productsCount !== 1 ? "s" : ""}</span>
+                    <span>
+                      {productsCount} product{productsCount !== 1 ? "s" : ""}
+                    </span>
                   </div>
                 )}
 
@@ -239,7 +269,8 @@ export const OpportunityCard = React.memo(function OpportunityCard({
                   <div className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-success/10 text-success">
                     <Trophy className="w-3 h-3" />
                     <span>
-                      {WIN_REASONS.find((r) => r.id === record.win_reason)?.name || record.win_reason}
+                      {WIN_REASONS.find((r) => r.id === record.win_reason)?.name ||
+                        record.win_reason}
                     </span>
                   </div>
                 )}
@@ -247,7 +278,8 @@ export const OpportunityCard = React.memo(function OpportunityCard({
                   <div className="inline-flex items-center gap-1 text-xs px-2 py-1 rounded bg-destructive/10 text-destructive">
                     <XCircle className="w-3 h-3" />
                     <span>
-                      {LOSS_REASONS.find((r) => r.id === record.loss_reason)?.name || record.loss_reason}
+                      {LOSS_REASONS.find((r) => r.id === record.loss_reason)?.name ||
+                        record.loss_reason}
                     </span>
                   </div>
                 )}

@@ -130,7 +130,9 @@ export const ChangeLogTab = () => {
     const csvHeaders = ["Timestamp", "Field", "Old Value", "New Value", "Changed By"];
 
     const csvRows = filteredEntries.map((entry) => [
-      parseDateSafely(entry.changed_at) ? format(parseDateSafely(entry.changed_at)!, "yyyy-MM-dd HH:mm:ss") : "Unknown",
+      parseDateSafely(entry.changed_at)
+        ? format(parseDateSafely(entry.changed_at)!, "yyyy-MM-dd HH:mm:ss")
+        : "Unknown",
       formatFieldName(entry.field_name),
       formatValue(entry.old_value),
       formatValue(entry.new_value),
@@ -428,7 +430,11 @@ const ChangeLogEntry = ({
               <User className="w-3 h-3" />
               <span>{entry.sales_name || `User #${entry.changed_by}` || "System"}</span>
             </div>
-            <span>{parseDateSafely(entry.changed_at) ? format(parseDateSafely(entry.changed_at)!, "h:mm a") : "Unknown"}</span>
+            <span>
+              {parseDateSafely(entry.changed_at)
+                ? format(parseDateSafely(entry.changed_at)!, "h:mm a")
+                : "Unknown"}
+            </span>
           </div>
         </div>
       </CardContent>

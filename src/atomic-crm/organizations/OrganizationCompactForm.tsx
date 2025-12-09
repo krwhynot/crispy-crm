@@ -65,7 +65,13 @@ export const OrganizationCompactForm = () => {
             helperText="Format: https://linkedin.com/company/name"
           />
           <ParentOrganizationInput />
-          <TextInput source="description" label="Description" multiline rows={3} helperText={false} />
+          <TextInput
+            source="description"
+            label="Description"
+            multiline
+            rows={3}
+            helperText={false}
+          />
         </div>
       </CollapsibleSection>
     </div>

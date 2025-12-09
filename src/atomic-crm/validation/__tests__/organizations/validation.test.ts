@@ -16,12 +16,7 @@ describe("Organization Validation Schemas", () => {
   describe("Enum Schemas", () => {
     describe("organizationTypeSchema", () => {
       it("should accept valid organization types", () => {
-        const validTypes = [
-          "customer",
-          "prospect",
-          "principal",
-          "distributor",
-        ];
+        const validTypes = ["customer", "prospect", "principal", "distributor"];
 
         validTypes.forEach((type) => {
           expect(() => organizationTypeSchema.parse(type)).not.toThrow();
@@ -38,8 +33,8 @@ describe("Organization Validation Schemas", () => {
           "competitor",
           "investor",
           "other",
-          "partner",  // Removed type
-          "unknown",  // Removed type
+          "partner", // Removed type
+          "unknown", // Removed type
         ];
 
         invalidTypes.forEach((type) => {

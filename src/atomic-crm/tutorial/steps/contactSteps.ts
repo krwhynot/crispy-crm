@@ -1,63 +1,62 @@
-import type { TutorialStep } from '../types';
+import type { TutorialStep } from "../types";
 
 export const contactSteps: TutorialStep[] = [
   {
     element: '[data-tutorial="nav-contacts"]',
     popover: {
-      title: 'Contacts',
+      title: "Contacts",
       description:
-        'Manage all your contacts - buyers, decision makers, and key people at organizations.',
-      side: 'bottom',
+        "Manage all your contacts - buyers, decision makers, and key people at organizations.",
+      side: "bottom",
     },
   },
   {
     element: '[data-tutorial="contacts-list"]',
     popover: {
-      title: 'Contact List',
+      title: "Contact List",
       description:
-        'View all contacts here. Click any row to open the contact details in a slide-over panel.',
-      side: 'left',
+        "View all contacts here. Click any row to open the contact details in a slide-over panel.",
+      side: "left",
     },
-    navigateTo: '/contacts',
+    navigateTo: "/contacts",
   },
   {
     element: '[data-tutorial="contact-sort-btn"]',
     popover: {
-      title: 'Sort Contacts',
+      title: "Sort Contacts",
       description:
-        'Sort by last seen (default), first name, or last name. Contacts are sorted by most recent activity by default.',
-      side: 'bottom',
+        "Sort by last seen (default), first name, or last name. Contacts are sorted by most recent activity by default.",
+      side: "bottom",
     },
   },
   {
     element: '[data-tutorial="contact-export-btn"]',
     popover: {
-      title: 'Export Contacts',
-      description:
-        'Export your contacts to a CSV file for reporting or backup purposes.',
-      side: 'bottom',
+      title: "Export Contacts",
+      description: "Export your contacts to a CSV file for reporting or backup purposes.",
+      side: "bottom",
     },
   },
   {
     element: '[data-tutorial="contact-filters"]',
     popover: {
-      title: 'Filter Contacts',
+      title: "Filter Contacts",
       description:
-        'Use filters to narrow down your list. Filter by last activity, tags, organization, or account manager.',
-      side: 'right',
+        "Use filters to narrow down your list. Filter by last activity, tags, organization, or account manager.",
+      side: "right",
     },
   },
   {
     element: '[data-tutorial="create-contact-btn"]',
     popover: {
-      title: 'Add New Contact',
-      description: 'Click here to add a new contact when you need to track someone.',
-      side: 'bottom',
+      title: "Add New Contact",
+      description: "Click here to add a new contact when you need to track someone.",
+      side: "bottom",
     },
   },
   {
     popover: {
-      title: '✅ Contacts Complete!',
+      title: "✅ Contacts Complete!",
       description:
         "You now know how to navigate, filter, and manage contacts. Click any contact to view their details.",
     },

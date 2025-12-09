@@ -8,11 +8,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -23,10 +19,7 @@ interface StateComboboxInputProps {
   label?: string;
 }
 
-export function StateComboboxInput({
-  source,
-  label = "State",
-}: StateComboboxInputProps) {
+export function StateComboboxInput({ source, label = "State" }: StateComboboxInputProps) {
   const [open, setOpen] = useState(false);
   const { field } = useInput({ source });
 

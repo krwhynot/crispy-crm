@@ -116,9 +116,9 @@ describe("Note Transformation Utilities", () => {
 
       it("should reject unrecognized fields in partial updates (z.strictObject security)", () => {
         // z.strictObject() prevents adding arbitrary fields even in partial updates
-        expect(() =>
-          updateContactNoteSchema.parse({ id: "n-1", status: "completed" })
-        ).toThrow(z.ZodError);
+        expect(() => updateContactNoteSchema.parse({ id: "n-1", status: "completed" })).toThrow(
+          z.ZodError
+        );
       });
     });
 

@@ -40,7 +40,9 @@ export function SettingsLayout({ sections }: SettingsLayoutProps) {
                 >
                   {section.icon}
                   {section.label}
-                  {activeSection === section.id && <ChevronRight className="ml-auto h-4 w-4" aria-hidden="true" />}
+                  {activeSection === section.id && (
+                    <ChevronRight className="ml-auto h-4 w-4" aria-hidden="true" />
+                  )}
                 </Button>
               ))}
             </nav>

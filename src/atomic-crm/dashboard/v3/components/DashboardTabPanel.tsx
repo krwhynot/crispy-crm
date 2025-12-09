@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { Suspense, lazy } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Card, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Badge } from '@/components/ui/badge';
-import { useTaskCount } from '../hooks/useTaskCount';
-import { LayoutGrid, CheckSquare, TrendingUp, Users } from 'lucide-react';
+import { Suspense, lazy } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
+import { useTaskCount } from "../hooks/useTaskCount";
+import { LayoutGrid, CheckSquare, TrendingUp, Users } from "lucide-react";
 
 // Lazy load tab content for performance
-const PrincipalPipelineTable = lazy(() => import('./PrincipalPipelineTable'));
-const TasksKanbanPanel = lazy(() => import('./TasksKanbanPanel'));
-const MyPerformanceWidget = lazy(() => import('./MyPerformanceWidget'));
-const ActivityFeedPanel = lazy(() => import('./ActivityFeedPanel'));
+const PrincipalPipelineTable = lazy(() => import("./PrincipalPipelineTable"));
+const TasksKanbanPanel = lazy(() => import("./TasksKanbanPanel"));
+const MyPerformanceWidget = lazy(() => import("./MyPerformanceWidget"));
+const ActivityFeedPanel = lazy(() => import("./ActivityFeedPanel"));
 
 function TabSkeleton() {
   return (
@@ -67,10 +67,7 @@ export function DashboardTabPanel() {
               <CheckSquare className="h-4 w-4" />
               <span>My Tasks</span>
               {!isLoading && pendingCount > 0 && (
-                <Badge
-                  variant="secondary"
-                  className="ml-1 h-5 min-w-[20px] px-1.5 text-xs"
-                >
+                <Badge variant="secondary" className="ml-1 h-5 min-w-[20px] px-1.5 text-xs">
                   {pendingCount}
                 </Badge>
               )}
@@ -98,28 +95,44 @@ export function DashboardTabPanel() {
 
         <CardContent className="relative min-h-0 flex-1 p-0">
           {/* Pipeline Tab Content - forceMount preserves filter state */}
-          <TabsContent value="pipeline" className="absolute inset-0 m-0 overflow-auto focus-visible:ring-0" forceMount>
+          <TabsContent
+            value="pipeline"
+            className="absolute inset-0 m-0 overflow-auto focus-visible:ring-0"
+            forceMount
+          >
             <Suspense fallback={<TabSkeleton />}>
               <PrincipalPipelineTable />
             </Suspense>
           </TabsContent>
 
           {/* Tasks Tab Content - forceMount preserves kanban state */}
-          <TabsContent value="tasks" className="absolute inset-0 m-0 overflow-auto focus-visible:ring-0" forceMount>
+          <TabsContent
+            value="tasks"
+            className="absolute inset-0 m-0 overflow-auto focus-visible:ring-0"
+            forceMount
+          >
             <Suspense fallback={<TabSkeleton />}>
               <TasksKanbanPanel />
             </Suspense>
           </TabsContent>
 
           {/* Performance Tab Content - forceMount prevents refetch */}
-          <TabsContent value="performance" className="absolute inset-0 m-0 overflow-auto focus-visible:ring-0" forceMount>
+          <TabsContent
+            value="performance"
+            className="absolute inset-0 m-0 overflow-auto focus-visible:ring-0"
+            forceMount
+          >
             <Suspense fallback={<TabSkeleton />}>
               <MyPerformanceWidget />
             </Suspense>
           </TabsContent>
 
           {/* Team Activity Tab Content - forceMount preserves scroll */}
-          <TabsContent value="activity" className="absolute inset-0 m-0 overflow-auto focus-visible:ring-0" forceMount>
+          <TabsContent
+            value="activity"
+            className="absolute inset-0 m-0 overflow-auto focus-visible:ring-0"
+            forceMount
+          >
             <Suspense fallback={<TabSkeleton />}>
               <ActivityFeedPanel />
             </Suspense>

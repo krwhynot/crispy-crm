@@ -192,11 +192,7 @@ export function OrganizationImportResult({ open, onClose, result }: Organization
             <div className="h-2 bg-muted rounded-full overflow-hidden">
               <div
                 className={`h-full transition-all ${
-                  successRate >= 90
-                    ? "bg-success"
-                    : successRate >= 70
-                      ? "bg-warning"
-                      : "bg-error"
+                  successRate >= 90 ? "bg-success" : successRate >= 70 ? "bg-warning" : "bg-error"
                 }`}
                 style={{ width: `${successRate}%` }}
               />

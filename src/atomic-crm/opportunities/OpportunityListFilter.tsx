@@ -139,12 +139,15 @@ export const OpportunityListFilter = () => {
 
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">
-        <FilterCategory label="Quick Filters" icon={<Zap className="h-4 w-4" />} defaultExpanded data-tutorial="opp-quick-filters">
+        <FilterCategory
+          label="Quick Filters"
+          icon={<Zap className="h-4 w-4" />}
+          defaultExpanded
+          data-tutorial="opp-quick-filters"
+        >
           <Button
             type="button"
-            variant={
-              isPresetActive({ opportunity_owner_id: identity?.id }) ? "default" : "outline"
-            }
+            variant={isPresetActive({ opportunity_owner_id: identity?.id }) ? "default" : "outline"}
             size="sm"
             onClick={() => handlePresetClick({ opportunity_owner_id: identity?.id })}
             className="w-full justify-start"
@@ -233,7 +236,11 @@ export const OpportunityListFilter = () => {
           </Button>
         </FilterCategory>
 
-        <FilterCategory label="Stage" icon={<Layers className="h-4 w-4" />} data-tutorial="opp-stage-filters">
+        <FilterCategory
+          label="Stage"
+          icon={<Layers className="h-4 w-4" />}
+          data-tutorial="opp-stage-filters"
+        >
           {OPPORTUNITY_STAGES.map((stage) => (
             <ToggleFilterButton
               multiselect

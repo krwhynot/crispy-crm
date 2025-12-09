@@ -1,7 +1,7 @@
-import { useState, useEffect, useCallback } from 'react';
-import type { TutorialChapter, TutorialProgress } from './types';
+import { useState, useEffect, useCallback } from "react";
+import type { TutorialChapter, TutorialProgress } from "./types";
 
-const STORAGE_KEY = 'tutorial-progress';
+const STORAGE_KEY = "tutorial-progress";
 
 const DEFAULT_PROGRESS: TutorialProgress = {
   currentChapter: null,
@@ -33,7 +33,7 @@ function saveProgress(progress: TutorialProgress): void {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
   } catch (error) {
     // Safari private mode, quota exceeded, or disabled localStorage
-    console.warn('Failed to save tutorial progress:', error);
+    console.warn("Failed to save tutorial progress:", error);
   }
 }
 

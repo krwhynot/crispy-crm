@@ -12,8 +12,8 @@
  * State is stored in .claude/hooks/state/bash-output-polls.json
  */
 
-import * as fs from 'fs';
-import * as path from 'path';
+import * as fs from "fs";
+import * as path from "path";
 
 interface PollState {
   [shellId: string]: {
@@ -33,7 +33,7 @@ interface HookInput {
 }
 
 interface HookOutput {
-  decision: 'approve' | 'block' | 'modify';
+  decision: "approve" | "block" | "modify";
   message?: string;
   modified_params?: Record<string, unknown>;
 }
@@ -45,14 +45,14 @@ const POLL_RESET_INTERVAL_MS = 30000; // Reset count if 30s between polls
 
 function getStateFilePath(): string {
   const projectDir = process.env.CLAUDE_PROJECT_DIR || process.cwd();
-  const stateDir = path.join(projectDir, '.claude', 'hooks', 'state');
+  const stateDir = path.join(projectDir, ".claude", "hooks", "state");
 
   // Ensure state directory exists
   if (!fs.existsSync(stateDir)) {
     fs.mkdirSync(stateDir, { recursive: true });
   }
 
-  return path.join(stateDir, 'bash-output-polls.json');
+  return path.join(stateDir, "bash-output-polls.json");
 }
 
 function loadState(): PollState {
@@ -60,7 +60,7 @@ function loadState(): PollState {
 
   if (fs.existsSync(statePath)) {
     try {
-      const content = fs.readFileSync(statePath, 'utf-8');
+      const content = fs.readFileSync(statePath, "utf-8");
       return JSON.parse(content);
     } catch {
       return {};
@@ -92,35 +92,35 @@ function cleanupOldEntries(state: PollState): PollState {
 
 function main(): void {
   // Read input from stdin
-  let input = '';
+  let input = "";
 
-  process.stdin.setEncoding('utf-8');
-  process.stdin.on('data', (chunk) => {
+  process.stdin.setEncoding("utf-8");
+  process.stdin.on("data", (chunk) => {
     input += chunk;
   });
 
-  process.stdin.on('end', () => {
+  process.stdin.on("end", () => {
     try {
       const hookInput: HookInput = JSON.parse(input);
       const result = processHook(hookInput);
       console.log(JSON.stringify(result));
     } catch (_error) {
       // On error, approve by default to not block the agent
-      console.log(JSON.stringify({ decision: 'approve' }));
+      console.log(JSON.stringify({ decision: "approve" }));
     }
   });
 }
 
 function processHook(input: HookInput): HookOutput {
   // Only process BashOutput calls
-  if (input.tool_name !== 'BashOutput') {
-    return { decision: 'approve' };
+  if (input.tool_name !== "BashOutput") {
+    return { decision: "approve" };
   }
 
   const shellId = input.tool_input.bash_id || input.tool_input.shell_id;
 
   if (!shellId) {
-    return { decision: 'approve' };
+    return { decision: "approve" };
   }
 
   // Load and cleanup state
@@ -134,7 +134,7 @@ function processHook(input: HookInput): HookOutput {
     state[shellId] = {
       emptyCount: 0,
       lastPollTime: now,
-      totalPolls: 0
+      totalPolls: 0,
     };
   }
 
@@ -156,7 +156,7 @@ function processHook(input: HookInput): HookOutput {
   // Check thresholds
   if (entry.emptyCount >= MAX_EMPTY_POLLS_BLOCK) {
     return {
-      decision: 'block',
+      decision: "block",
       message: `
 🛑 STUCK PROCESS DETECTED - BLOCKING FURTHER POLLS
 
@@ -172,13 +172,13 @@ REQUIRED ACTIONS:
 DO NOT continue polling. The stuck-process-detection skill has more guidance.
 
 To reset: Use a different approach or wait 30 seconds before retrying.
-`
+`,
     };
   }
 
   if (entry.emptyCount >= MAX_EMPTY_POLLS_WARNING) {
     return {
-      decision: 'approve',
+      decision: "approve",
       message: `
 ⚠️ WARNING: Possible stuck process detected
 
@@ -191,11 +191,11 @@ Consider:
 - Is there a configuration issue preventing output?
 
 Use KillShell to terminate if needed.
-`
+`,
     };
   }
 
-  return { decision: 'approve' };
+  return { decision: "approve" };
 }
 
 // Note: This file would need a companion PostToolUse hook to reset the
