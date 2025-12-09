@@ -4,6 +4,7 @@ import { LogActivityFAB } from "./components/LogActivityFAB";
 import { MobileQuickActionBar } from "./components/MobileQuickActionBar";
 import { TaskCompleteSheet } from "./components/TaskCompleteSheet";
 import { KPISummaryRow } from "./components/KPISummaryRow";
+import { DashboardTutorial } from "./DashboardTutorial";
 
 /**
  * PrincipalDashboardV3 - Vertically stacked dashboard with Log Activity FAB
@@ -66,6 +67,9 @@ export function PrincipalDashboardV3() {
           onOpenChange={setIsTaskSheetOpen}
           onRefresh={handleRefresh}
         />
+
+        {/* Dashboard Tutorial Button - Fixed bottom-left */}
+        <DashboardTutorial />
       </main>
     </div>
   );
