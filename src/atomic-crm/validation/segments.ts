@@ -55,6 +55,14 @@ export const PLAYBOOK_CATEGORY_IDS = {
 } as const;
 
 /**
+ * Reverse lookup: Playbook category UUID → category name
+ * Used for synchronous name resolution in filter chips (no async fetch needed)
+ */
+export const PLAYBOOK_CATEGORY_NAMES_BY_ID: Record<string, PlaybookCategory> = Object.fromEntries(
+  Object.entries(PLAYBOOK_CATEGORY_IDS).map(([name, id]) => [id, name])
+) as Record<string, PlaybookCategory>;
+
+/**
  * Type for valid Playbook category names
  */
 export type PlaybookCategory = (typeof PLAYBOOK_CATEGORIES)[number];
