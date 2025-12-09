@@ -283,6 +283,7 @@ function TasksKanbanPanel() {
                 flex-col lg:flex-row
               "
               data-testid="task-kanban-board"
+              data-tutorial="dashboard-tasks-kanban"
             >
               <TaskKanbanColumn
                 columnId="overdue"

@@ -159,7 +159,7 @@ function ActivityFeedPanel({ limit = 15 }: ActivityFeedPanelProps) {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col" data-tutorial="dashboard-activity-feed">
       <div className="border-b border-border px-4 py-3">
         <div className="flex items-start justify-between">
           <div>

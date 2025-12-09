@@ -242,6 +242,7 @@ export function LogActivityFAB({ onRefresh }: LogActivityFABProps) {
           aria-label={hasDraft ? "Log Activity (draft saved)" : "Log Activity"}
           aria-expanded={isOpen}
           aria-haspopup="dialog"
+          data-tutorial="dashboard-log-activity"
         >
           <PencilLine className="h-6 w-6" />
 
