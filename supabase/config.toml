@@ -138,6 +138,19 @@ redirect_uri = ""
 # or any other third-party OIDC providers.
 url = ""
 
+# ============================================================================
+# EDGE FUNCTIONS CONFIGURATION
+# ============================================================================
+# verify_jwt = false allows our Edge Functions to handle their own JWT validation
+# using the two-client pattern (user-context client for auth, service role for DB)
+# This is required because we do custom auth handling in the function code.
+
+[functions.users]
+verify_jwt = false
+
+[functions.updatePassword]
+verify_jwt = false
+
 [analytics]
 # Disabled to reduce port footprint
 enabled = false

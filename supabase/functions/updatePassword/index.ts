@@ -1,4 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "jsr:@supabase/supabase-js@2";
 import { createCorsHeaders } from "../_shared/cors-config.ts";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 
@@ -49,8 +50,20 @@ Deno.serve(async (req: Request) => {
     return createErrorResponse(401, "Unauthorized - Invalid auth format", corsHeaders);
   }
 
-  // Validate JWT using supabaseAdmin (service role can validate any token)
-  const { data, error: authError } = await supabaseAdmin.auth.getUser(token);
+  // CORRECT PATTERN (per Supabase docs): Create user-context client with ANON_KEY
+  // This client has the user's auth context set via the Authorization header
+  const supabaseClient = createClient(
+    Deno.env.get("SUPABASE_URL") ?? "",
+    Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+    {
+      global: {
+        headers: { Authorization: authHeader },
+      },
+    }
+  );
+
+  // Validate JWT using user-context client (NOT supabaseAdmin)
+  const { data, error: authError } = await supabaseClient.auth.getUser(token);
   if (!data?.user || authError) {
     return createErrorResponse(401, "Unauthorized - getUser failed", corsHeaders);
   }
