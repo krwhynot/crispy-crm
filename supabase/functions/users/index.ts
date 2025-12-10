@@ -273,25 +273,50 @@ Deno.serve(async (req: Request) => {
     });
   }
 
-  const authHeader = req.headers.get("Authorization")!;
-  const localClient = createClient(
-    Deno.env.get("SUPABASE_URL") ?? "",
-    Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-    { global: { headers: { Authorization: authHeader } } }
-  );
-  const { data } = await localClient.auth.getUser();
-  if (!data?.user) {
-    return createErrorResponse(401, "Unauthorized", corsHeaders);
+  // Extract and validate Authorization header
+  const authHeader = req.headers.get("Authorization");
+  console.log("[DEBUG] Auth header present:", !!authHeader);
+
+  if (!authHeader) {
+    console.log("[DEBUG] ERROR: No Authorization header provided");
+    return createErrorResponse(401, "Unauthorized - No auth header", corsHeaders);
   }
+
+  // Extract JWT token from "Bearer <token>" format
+  const token = authHeader.replace("Bearer ", "");
+  if (!token || token === authHeader) {
+    console.log("[DEBUG] ERROR: Invalid Authorization header format");
+    return createErrorResponse(401, "Unauthorized - Invalid auth format", corsHeaders);
+  }
+
+  // Validate JWT using supabaseAdmin (service role can validate any token)
+  // This is the correct pattern for Edge Functions - pass token explicitly
+  const { data, error: authError } = await supabaseAdmin.auth.getUser(token);
+  console.log("[DEBUG] getUser result:", { hasUser: !!data?.user, error: authError?.message });
+
+  if (!data?.user) {
+    console.log("[DEBUG] ERROR: getUser failed -", authError?.message || "No user returned");
+    return createErrorResponse(401, "Unauthorized - getUser failed", corsHeaders);
+  }
+
+  console.log("[DEBUG] User ID from token:", data.user.id);
+  console.log("[DEBUG] User email:", data.user.email);
+
+  // DEBUG: Log sales lookup
   const currentUserSale = await supabaseAdmin
     .from("sales")
     .select("*")
     .eq("user_id", data.user.id)
     .single();
 
+  console.log("[DEBUG] Sales lookup:", { found: !!currentUserSale?.data, error: currentUserSale?.error?.message });
+
   if (!currentUserSale?.data) {
-    return createErrorResponse(401, "Unauthorized", corsHeaders);
+    console.log("[DEBUG] ERROR: User not found in sales table for user_id:", data.user.id);
+    return createErrorResponse(401, "Unauthorized - Not in sales table", corsHeaders);
   }
+
+  console.log("[DEBUG] Sales record found - id:", currentUserSale.data.id, "admin:", currentUserSale.data.administrator);
   if (req.method === "POST") {
     return inviteUser(req, currentUserSale.data, corsHeaders);
   }
