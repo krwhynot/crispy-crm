@@ -314,7 +314,9 @@ Deno.serve(async (req: Request) => {
   });
 
   // Validate JWT using user-context client (NOT supabaseAdmin)
-  const { data, error: authError } = await supabaseClient.auth.getUser(token);
+  // IMPORTANT: Call getUser() without arguments - it uses the Authorization header
+  // from the client's global config. Passing token explicitly can cause validation issues.
+  const { data, error: authError } = await supabaseClient.auth.getUser();
 
   if (authError) {
     return createErrorResponse(401, `AUTH_STEP_4: getUser error - ${authError.message}`, corsHeaders);
