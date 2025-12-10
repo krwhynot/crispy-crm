@@ -266,7 +266,20 @@ Deno.serve(async (req: Request) => {
   // Generate secure CORS headers based on request origin
   const corsHeaders = createCorsHeaders(req.headers.get("origin"));
 
+  // === COMPREHENSIVE LOGGING FOR DEBUGGING ===
+  console.log("=== EDGE FUNCTION REQUEST ===");
+  console.log("Timestamp:", new Date().toISOString());
+  console.log("Method:", req.method);
+  console.log("URL:", req.url);
+  console.log("Origin:", req.headers.get("origin"));
+  console.log("Auth header present:", !!req.headers.get("Authorization"));
+  console.log("Auth header length:", req.headers.get("Authorization")?.length ?? 0);
+  console.log("Content-Type:", req.headers.get("Content-Type"));
+  console.log("All headers:", JSON.stringify(Object.fromEntries(req.headers.entries())));
+  console.log("=== END REQUEST INFO ===");
+
   if (req.method === "OPTIONS") {
+    console.log("Handling CORS preflight request");
     return new Response(null, {
       status: 204,
       headers: corsHeaders,

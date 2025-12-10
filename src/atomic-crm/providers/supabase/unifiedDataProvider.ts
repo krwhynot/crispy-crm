@@ -1044,7 +1044,7 @@ export const unifiedDataProvider: DataProvider = {
   async invoke<T = unknown>(
     functionName: string,
     options: {
-      method?: "GET" | "POST" | "PUT" | "DELETE";
+      method?: "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
       body?: Record<string, unknown>;
       headers?: Record<string, string>;
     } = {}
@@ -1053,10 +1053,20 @@ export const unifiedDataProvider: DataProvider = {
     try {
       devLog("DataProvider Edge", `Invoking ${functionName}`, options);
 
+      // EXPLICIT: Get auth token and add Authorization header
+      // Supabase SDK auto-auth doesn't work reliably in browser context
+      const token = await getAuthToken();
+      const headers = {
+        ...processedOptions.headers,
+        Authorization: `Bearer ${token}`,
+      };
+
+      devLog("DataProvider Edge", `Auth header added for ${functionName}`);
+
       const { data, error } = await supabase.functions.invoke<T>(functionName, {
         method: processedOptions.method || "POST",
         body: processedOptions.body,
-        headers: processedOptions.headers,
+        headers,
       });
 
       if (error) {
