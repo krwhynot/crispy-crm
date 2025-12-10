@@ -1,5 +1,4 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
-import { createClient } from "jsr:@supabase/supabase-js@2";
 import { createCorsHeaders } from "../_shared/cors-config.ts";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 
@@ -38,16 +37,22 @@ Deno.serve(async (req: Request) => {
     });
   }
 
-  const authHeader = req.headers.get("Authorization")!;
-  const localClient = createClient(
-    Deno.env.get("SUPABASE_URL") ?? "",
-    Deno.env.get("SUPABASE_ANON_KEY") ?? "",
-    { global: { headers: { Authorization: authHeader } } }
-  );
+  // Extract and validate Authorization header
+  const authHeader = req.headers.get("Authorization");
+  if (!authHeader) {
+    return createErrorResponse(401, "Unauthorized - No auth header", corsHeaders);
+  }
 
-  const { data } = await localClient.auth.getUser();
-  if (!data?.user) {
-    return createErrorResponse(401, "Unauthorized", corsHeaders);
+  // Extract JWT token from "Bearer <token>" format
+  const token = authHeader.replace("Bearer ", "");
+  if (!token || token === authHeader) {
+    return createErrorResponse(401, "Unauthorized - Invalid auth format", corsHeaders);
+  }
+
+  // Validate JWT using supabaseAdmin (service role can validate any token)
+  const { data, error: authError } = await supabaseAdmin.auth.getUser(token);
+  if (!data?.user || authError) {
+    return createErrorResponse(401, "Unauthorized - getUser failed", corsHeaders);
   }
 
   if (req.method === "PATCH") {
