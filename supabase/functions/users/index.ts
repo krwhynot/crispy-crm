@@ -1,4 +1,5 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
+import { createClient } from "jsr:@supabase/supabase-js@2";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 import { createCorsHeaders } from "../_shared/cors-config.ts";
 import { z } from "npm:zod@3.22.4";
@@ -274,48 +275,56 @@ Deno.serve(async (req: Request) => {
 
   // Extract and validate Authorization header
   const authHeader = req.headers.get("Authorization");
-  console.log("[DEBUG] Auth header present:", !!authHeader);
-
   if (!authHeader) {
-    console.log("[DEBUG] ERROR: No Authorization header provided");
-    return createErrorResponse(401, "Unauthorized - No auth header", corsHeaders);
+    return createErrorResponse(401, "AUTH_STEP_1: No Authorization header", corsHeaders);
   }
 
   // Extract JWT token from "Bearer <token>" format
   const token = authHeader.replace("Bearer ", "");
   if (!token || token === authHeader) {
-    console.log("[DEBUG] ERROR: Invalid Authorization header format");
-    return createErrorResponse(401, "Unauthorized - Invalid auth format", corsHeaders);
+    return createErrorResponse(401, "AUTH_STEP_2: Invalid Bearer format", corsHeaders);
   }
 
-  // Validate JWT using supabaseAdmin (service role can validate any token)
-  // This is the correct pattern for Edge Functions - pass token explicitly
-  const { data, error: authError } = await supabaseAdmin.auth.getUser(token);
-  console.log("[DEBUG] getUser result:", { hasUser: !!data?.user, error: authError?.message });
+  // CORRECT PATTERN (per Supabase docs): Create user-context client with ANON_KEY
+  // This client has the user's auth context set via the Authorization header
+  const supabaseUrl = Deno.env.get("SUPABASE_URL");
+  const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return createErrorResponse(500, `AUTH_STEP_3: Missing env vars - URL:${!!supabaseUrl} ANON:${!!supabaseAnonKey}`, corsHeaders);
+  }
+
+  const supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
+    global: {
+      headers: { Authorization: authHeader },
+    },
+  });
+
+  // Validate JWT using user-context client (NOT supabaseAdmin)
+  const { data, error: authError } = await supabaseClient.auth.getUser(token);
+
+  if (authError) {
+    return createErrorResponse(401, `AUTH_STEP_4: getUser error - ${authError.message}`, corsHeaders);
+  }
 
   if (!data?.user) {
-    console.log("[DEBUG] ERROR: getUser failed -", authError?.message || "No user returned");
-    return createErrorResponse(401, "Unauthorized - getUser failed", corsHeaders);
+    return createErrorResponse(401, "AUTH_STEP_5: getUser returned no user", corsHeaders);
   }
 
-  console.log("[DEBUG] User ID from token:", data.user.id);
-  console.log("[DEBUG] User email:", data.user.email);
-
-  // DEBUG: Log sales lookup
+  // Use SERVICE ROLE client (supabaseAdmin) for DB operations to bypass RLS
   const currentUserSale = await supabaseAdmin
     .from("sales")
     .select("*")
     .eq("user_id", data.user.id)
     .single();
 
-  console.log("[DEBUG] Sales lookup:", { found: !!currentUserSale?.data, error: currentUserSale?.error?.message });
-
-  if (!currentUserSale?.data) {
-    console.log("[DEBUG] ERROR: User not found in sales table for user_id:", data.user.id);
-    return createErrorResponse(401, "Unauthorized - Not in sales table", corsHeaders);
+  if (currentUserSale.error) {
+    return createErrorResponse(401, `AUTH_STEP_6: Sales lookup error - ${currentUserSale.error.message}`, corsHeaders);
   }
 
-  console.log("[DEBUG] Sales record found - id:", currentUserSale.data.id, "admin:", currentUserSale.data.administrator);
+  if (!currentUserSale?.data) {
+    return createErrorResponse(401, `AUTH_STEP_7: User ${data.user.id} not in sales table`, corsHeaders);
+  }
   if (req.method === "POST") {
     return inviteUser(req, currentUserSale.data, corsHeaders);
   }
