@@ -172,6 +172,14 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
     }
   };
 
+  // Form submit handler for the footer button
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!isSelfEdit) {
+      handleSave();
+    }
+  };
+
   if (!record) {
     return (
       <div className="space-y-4">
@@ -182,7 +190,7 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
     );
   }
 
-  return (
+  const content = (
     <div className="space-y-6">
       {/* Self-edit warning */}
       {isSelfEdit && mode === "edit" && (
@@ -297,18 +305,6 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
         </div>
       )}
 
-      {/* Action buttons (edit mode only) */}
-      {mode === "edit" && !isSelfEdit && (
-        <div className="flex gap-3 pt-4 border-t border-border">
-          <Button onClick={handleSave} disabled={isLoading} className="flex-1">
-            {isLoading ? "Saving..." : "Save Changes"}
-          </Button>
-          <Button variant="outline" onClick={handleCancel} disabled={isLoading} className="flex-1">
-            Cancel
-          </Button>
-        </div>
-      )}
-
       {/* Danger Zone - Remove User (admin only, not self) */}
       {!isSelfEdit && identity?.role === "admin" && (
         <div className="mt-8 pt-6 border-t border-destructive/30">
@@ -356,4 +352,15 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
       )}
     </div>
   );
+
+  // In edit mode, wrap with form so footer "Save Changes" button works
+  if (mode === "edit") {
+    return (
+      <form id="slide-over-edit-form" onSubmit={handleFormSubmit}>
+        {content}
+      </form>
+    );
+  }
+
+  return content;
 }
