@@ -19,8 +19,9 @@ test.describe("Team Management (Sales Resource)", () => {
   test.beforeEach(async ({ page }) => {
     // Uses admin auth fixture
     await page.goto("/");
-    // Wait for dashboard to load
-    await expect(page.getByRole("navigation")).toBeVisible();
+    // Wait for dashboard to load - use first() to avoid strict mode violation
+    // (page has two nav elements: sidebar nav and header nav)
+    await expect(page.getByRole("navigation").first()).toBeVisible();
   });
 
   test("admin can access team management via profile dropdown", async ({ page }) => {
