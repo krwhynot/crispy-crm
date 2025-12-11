@@ -5,13 +5,14 @@
 -- =====================================================================
 
 -- Function 1: Get user's sales profile (for auth validation in Edge Function)
+-- Returns single row (not SETOF) for compatibility with Supabase JS .single()
 CREATE OR REPLACE FUNCTION get_sale_by_user_id(target_user_id UUID)
-RETURNS SETOF sales
+RETURNS sales
 LANGUAGE SQL
 SECURITY DEFINER
 SET search_path = public
 AS $$
-  SELECT * FROM sales WHERE user_id = target_user_id AND deleted_at IS NULL;
+  SELECT * FROM sales WHERE user_id = target_user_id AND deleted_at IS NULL LIMIT 1;
 $$;
 
 COMMENT ON FUNCTION get_sale_by_user_id IS
