@@ -358,4 +358,4 @@ Deno.serve(async (req: Request) => {
 
   return createErrorResponse(405, "Method Not Allowed", corsHeaders);
 });
-// Force deploy 1765416400 - SERVICE_ROLE_KEY fallback
+// Force deploy 1765417500 - Added Authorization Bearer header to supabaseAdmin
