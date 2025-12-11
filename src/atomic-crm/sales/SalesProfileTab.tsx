@@ -117,7 +117,14 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
     );
   }
 
-  return (
+  // Form submit handler for the footer button
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSave();
+  };
+
+  // Wrap content in form when in edit mode so footer button works
+  const content = (
     <div className="space-y-6">
       {/* Avatar */}
       <div className="flex flex-col items-center gap-4">
@@ -228,18 +235,17 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
           </>
         )}
       </div>
-
-      {/* Action buttons (edit mode only) */}
-      {mode === "edit" && (
-        <div className="flex gap-3 pt-4 border-t border-border">
-          <Button onClick={handleSave} disabled={isLoading} className="flex-1">
-            {isLoading ? "Saving..." : "Save Changes"}
-          </Button>
-          <Button variant="outline" onClick={handleCancel} disabled={isLoading} className="flex-1">
-            Cancel
-          </Button>
-        </div>
-      )}
     </div>
   );
+
+  // In edit mode, wrap with form so footer "Save Changes" button works
+  if (mode === "edit") {
+    return (
+      <form id="slide-over-edit-form" onSubmit={handleFormSubmit}>
+        {content}
+      </form>
+    );
+  }
+
+  return content;
 }
