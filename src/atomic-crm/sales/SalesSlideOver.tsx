@@ -51,9 +51,9 @@ export function SalesSlideOver({
     },
   ];
 
-  // Record representation function
+  // Record representation function (with null safety for refetch cycles)
   const recordRepresentation = (record: Sale) => {
-    return `${record.first_name} ${record.last_name}`;
+    return `${record?.first_name || ""} ${record?.last_name || ""}`.trim() || "User";
   };
 
   return (

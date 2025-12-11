@@ -59,10 +59,10 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
       // Validate form data
       await validateUpdateSales({ id: record.id, ...formData });
 
-      // Update record
+      // Update record - CRITICAL: previousData required by ra-data-postgrest's getChanges()
       await update(
         "sales",
-        { id: record.id, data: formData },
+        { id: record.id, data: formData, previousData: record },
         {
           onSuccess: () => {
             notify("Profile updated successfully", { type: "success" });
