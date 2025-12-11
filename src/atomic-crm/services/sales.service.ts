@@ -66,7 +66,7 @@ export class SalesService {
     id: Identifier,
     data: Partial<Omit<SalesFormData, "password">>
   ): Promise<Partial<Omit<SalesFormData, "password">>> {
-    const { email, first_name, last_name, administrator, avatar, disabled } = data;
+    const { email, first_name, last_name, role, avatar, disabled } = data;
 
     if (!this.dataProvider.invoke) {
       devError("SalesService", "DataProvider missing invoke capability", {
@@ -87,7 +87,7 @@ export class SalesService {
           email,
           first_name,
           last_name,
-          administrator,
+          role,
           disabled,
           avatar,
         },
