@@ -20,6 +20,9 @@ export function getSupabaseAdmin(): SupabaseClient {
     }
 
     _supabaseAdmin = createClient(url, serviceKey, {
+      global: {
+        headers: { Authorization: `Bearer ${serviceKey}` },
+      },
       auth: {
         autoRefreshToken: false,
         persistSession: false,

@@ -328,10 +328,12 @@ Deno.serve(async (req: Request) => {
 
   // Use SERVICE ROLE client (supabaseAdmin) for DB operations to bypass RLS
   // DEBUG: Log service role key presence (first 10 chars only for security)
-  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  console.log("SERVICE_ROLE_KEY present:", !!serviceKey);
-  console.log("SERVICE_ROLE_KEY length:", serviceKey?.length ?? 0);
-  console.log("SERVICE_ROLE_KEY prefix:", serviceKey?.substring(0, 10) ?? "MISSING");
+  const customKey = Deno.env.get("SERVICE_ROLE_KEY");
+  const autoKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  const serviceKey = customKey || autoKey;
+  console.log("SERVICE_ROLE_KEY (custom) present:", !!customKey, "length:", customKey?.length ?? 0);
+  console.log("SUPABASE_SERVICE_ROLE_KEY (auto) present:", !!autoKey, "length:", autoKey?.length ?? 0);
+  console.log("Using key prefix:", serviceKey?.substring(0, 10) ?? "MISSING");
 
   const currentUserSale = await supabaseAdmin
     .from("sales")
@@ -356,4 +358,4 @@ Deno.serve(async (req: Request) => {
 
   return createErrorResponse(405, "Method Not Allowed", corsHeaders);
 });
-// Force deploy 1765407616
+// Force deploy 1765416400 - SERVICE_ROLE_KEY fallback
