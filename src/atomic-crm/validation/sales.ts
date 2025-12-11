@@ -167,3 +167,36 @@ export async function validateUpdateSales(data: unknown): Promise<void> {
     throw error;
   }
 }
+
+// =====================================================================
+// User Invite Schema (for Settings → Team invite flow)
+// =====================================================================
+
+/**
+ * Schema for inviting a new user
+ * Used by UserInviteForm in the /sales create flow
+ * Validation happens at Edge Function (API boundary), NOT in form
+ */
+export const userInviteSchema = z.strictObject({
+  email: z.string().email("Invalid email format").max(254, "Email too long"),
+  password: z.string().min(8, "Password must be at least 8 characters").max(128, "Password too long"),
+  first_name: z.string().min(1, "First name is required").max(100, "First name too long"),
+  last_name: z.string().min(1, "Last name is required").max(100, "Last name too long"),
+  role: UserRoleEnum.default("rep"),
+});
+
+export type UserInvite = z.infer<typeof userInviteSchema>;
+
+/**
+ * Schema for updating an existing user via sales_id
+ * Used by UserSlideOver edit flow (now consolidated into /sales)
+ */
+export const userUpdateSchema = z.strictObject({
+  sales_id: z.coerce.number().int().positive("Invalid sales ID"),
+  first_name: z.string().min(1, "First name is required").max(100, "First name too long").optional(),
+  last_name: z.string().min(1, "Last name is required").max(100, "Last name too long").optional(),
+  role: UserRoleEnum.optional(),
+  disabled: z.coerce.boolean().optional(),
+});
+
+export type UserUpdate = z.infer<typeof userUpdateSchema>;

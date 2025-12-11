@@ -21,7 +21,6 @@ import {
 } from "../providers/supabase";
 import sales from "../sales";
 import { SettingsPage } from "../settings/SettingsPage";
-import { UserList, UserSlideOver } from "../admin";
 import type { ConfigurationContextValue } from "./ConfigurationContext";
 import { ConfigurationProvider } from "./ConfigurationContext";
 import {
@@ -42,6 +41,12 @@ const ReportsPage = React.lazy(() => import("../reports/ReportsPage"));
 
 // Lazy load HealthDashboard (admin only)
 const HealthDashboard = React.lazy(() => import("../admin/HealthDashboard"));
+
+// Redirect component for /admin/users/:id to /sales?view=:id (consolidation)
+const AdminUserRedirect = () => {
+  const { id } = useParams();
+  return <Navigate to={`/sales?view=${id}`} replace />;
+};
 
 // Redirect component for legacy /contacts/:id/show URLs
 const ContactShowRedirect = () => {
@@ -194,9 +199,9 @@ export const CRM = ({
           <Route path={SettingsPage.path} element={<SettingsPage />} />
           <Route path="/reports" element={<ReportsPage />} />
           <Route path="/admin/health" element={<HealthDashboard />} />
-          {/* Admin User Management - uses resource="sales" internally */}
-          <Route path="/admin/users" element={<UserList />} />
-          <Route path="/admin/users/:id" element={<UserSlideOver />} />
+          {/* CONSOLIDATED: /admin/users now redirects to /sales */}
+          <Route path="/admin/users" element={<Navigate to="/sales" replace />} />
+          <Route path="/admin/users/:id" element={<AdminUserRedirect />} />
           {/* Legacy redirects */}
           <Route path="/contacts/:id/show" element={<ContactShowRedirect />} />
           <Route path="/tasks/:id/show" element={<TaskShowRedirect />} />
