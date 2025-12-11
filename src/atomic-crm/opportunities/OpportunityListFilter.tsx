@@ -43,7 +43,7 @@ export const OpportunityListFilter = () => {
   const { data: customersData } = useGetList("organizations", {
     pagination: { page: 1, perPage: 50 },
     sort: { field: "name", order: "ASC" },
-    filter: { organization_type: "customer", deleted_at: null },
+    filter: { "organization_type@in": "(prospect,customer)", deleted_at: null },
   });
 
   // Handle principal filter change via Select dropdown
