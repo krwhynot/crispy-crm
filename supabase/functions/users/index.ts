@@ -30,23 +30,16 @@ function createErrorResponse(status: number, message: string, corsHeaders: Recor
 const inviteUserSchema = z
   .strictObject({
     email: z.string().email("Invalid email format").max(254, "Email too long"),
-    password: z
-      .string()
-      .min(8, "Password must be at least 8 characters")
-      .max(128, "Password too long"),
+    password: z.string().min(8, "Password must be at least 8 characters").max(128, "Password too long"),
     first_name: z.string().min(1, "First name required").max(100, "First name too long"),
     last_name: z.string().min(1, "Last name required").max(100, "Last name too long"),
     disabled: z.coerce.boolean().optional().default(false),
-    // NEW: role field (preferred)
     role: z.enum(["admin", "manager", "rep"]).optional(),
-    // DEPRECATED: Keep for backward compatibility
-    administrator: z.coerce.boolean().optional(),
+    administrator: z.coerce.boolean().optional(), // Deprecated: use role instead
   })
   .transform((data) => {
-    // Derive role from administrator if role not provided
     const role = data.role ?? (data.administrator ? "admin" : "rep");
-    // Strip deprecated administrator field to avoid dual truth sources
-    const { administrator: _deprecated, ...rest } = data;
+    const { administrator: _, ...rest } = data;
     return { ...rest, role };
   });
 
@@ -122,9 +115,9 @@ async function updateSaleViaRPC(
   return updatedSale as Sale;
 }
 
-async function inviteUser(req: Request, currentUserSale: any, corsHeaders: Record<string, string>) {
+async function inviteUser(req: Request, currentUserSale: Sale, corsHeaders: Record<string, string>, supabaseClient: ReturnType<typeof createClient>) {
   // Check admin authorization first (fast path)
-  if (!currentUserSale.administrator) {
+  if (currentUserSale.role !== 'admin') {
     return createErrorResponse(401, "Not Authorized", corsHeaders);
   }
 
@@ -158,8 +151,10 @@ async function inviteUser(req: Request, currentUserSale: any, corsHeaders: Recor
   }
 
   try {
-    await updateSaleDisabled(data.user.id, disabled);
-    const sale = await updateSaleRole(data.user.id, role);
+    const sale = await updateSaleViaRPC(supabaseClient, data.user.id, {
+      role,
+      disabled
+    });
 
     return new Response(
       JSON.stringify({
@@ -175,7 +170,7 @@ async function inviteUser(req: Request, currentUserSale: any, corsHeaders: Recor
   }
 }
 
-async function patchUser(req: Request, currentUserSale: any, corsHeaders: Record<string, string>) {
+async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Record<string, string>, supabaseClient: ReturnType<typeof createClient>) {
   // Validate request body with Zod schema
   let validatedData;
   try {
@@ -187,18 +182,22 @@ async function patchUser(req: Request, currentUserSale: any, corsHeaders: Record
 
   const { sales_id, email, first_name, last_name, avatar, role, disabled } = validatedData;
 
-  const { data: sale } = await supabaseAdmin.from("sales").select("*").eq("id", sales_id).single();
+  const { data: saleToUpdate } = await supabaseAdmin
+    .from("sales")
+    .select("user_id, id")
+    .eq("id", sales_id)
+    .single();
 
-  if (!sale) {
+  if (!saleToUpdate) {
     return createErrorResponse(404, "Not Found", corsHeaders);
   }
 
   // Users can only update their own profile unless they are an administrator
-  if (!currentUserSale.administrator && currentUserSale.id !== sale.id) {
+  if (currentUserSale.role !== 'admin' && currentUserSale.id !== saleToUpdate.id) {
     return createErrorResponse(401, "Not Authorized", corsHeaders);
   }
 
-  const { data, error: userError } = await supabaseAdmin.auth.admin.updateUserById(sale.user_id, {
+  const { data, error: userError } = await supabaseAdmin.auth.admin.updateUserById(saleToUpdate.user_id, {
     email,
     ban_duration: disabled ? "87600h" : "none",
     user_metadata: { first_name, last_name },
@@ -209,40 +208,37 @@ async function patchUser(req: Request, currentUserSale: any, corsHeaders: Record
     return createErrorResponse(500, "Internal Server Error", corsHeaders);
   }
 
-  if (avatar) {
-    await updateSaleAvatar(data.user.id, avatar);
-  }
+  // Only administrators can update the role and disabled status
+  if (currentUserSale.role !== 'admin') {
+    try {
+      const updatedSale = await updateSaleViaRPC(supabaseClient, saleToUpdate.user_id, {
+        avatar: avatar ?? undefined
+      });
 
-  // Only administrators can update the administrator and disabled status
-  if (!currentUserSale.administrator) {
-    const { data: new_sale } = await supabaseAdmin
-      .from("sales")
-      .select("*")
-      .eq("id", sales_id)
-      .single();
-    return new Response(
-      JSON.stringify({
-        data: new_sale,
-      }),
-      {
-        headers: {
-          "Content-Type": "application/json",
-          ...corsHeaders,
-        },
-      }
-    );
+      return new Response(
+        JSON.stringify({
+          data: updatedSale,
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json",
+            ...corsHeaders,
+          },
+        }
+      );
+    } catch (e) {
+      console.error("Error patching sale:", e);
+      return createErrorResponse(500, "Internal Server Error", corsHeaders);
+    }
   }
 
   try {
-    await updateSaleDisabled(data.user.id, disabled);
-    if (role) {
-      await updateSaleRole(data.user.id, role);
-    }
-    const { data: updatedSale } = await supabaseAdmin
-      .from("sales")
-      .select("*")
-      .eq("id", sales_id)
-      .single();
+    const updatedSale = await updateSaleViaRPC(supabaseClient, saleToUpdate.user_id, {
+      role: role ?? undefined,
+      disabled: disabled ?? undefined,
+      avatar: avatar ?? undefined
+    });
+
     return new Response(
       JSON.stringify({
         data: updatedSale,
@@ -324,37 +320,34 @@ Deno.serve(async (req: Request) => {
     return createErrorResponse(401, "AUTH_STEP_5: getUser returned no user", corsHeaders);
   }
 
-  // Use supabaseAdmin (service_role client) for DB operations
-  // RLS policy "service_role_full_access" grants access to service_role
-  console.log("=== QUERYING SALES TABLE (supabaseAdmin) ===");
+  // Use supabaseClient with RPC for DB operations
+  console.log("=== QUERYING SALES TABLE (RPC) ===");
   console.log("User ID:", data.user.id);
 
-  const { data: saleData, error: saleError } = await supabaseAdmin
-    .from("sales")
-    .select("*")
-    .eq("user_id", data.user.id)
+  const { data: saleData, error: saleError } = await supabaseClient
+    .rpc('get_sale_by_user_id', { target_user_id: data.user.id })
     .single();
 
   console.log("Sale query result:", { hasData: !!saleData, error: saleError?.message });
 
   if (saleError) {
     console.error("Sales lookup error:", saleError);
-    return createErrorResponse(401, `AUTH_STEP_6: Sales lookup error - ${saleError.message}`, corsHeaders);
+    return createErrorResponse(401, "User profile not found", corsHeaders);
   }
 
   if (!saleData) {
-    return createErrorResponse(401, `AUTH_STEP_7: User ${data.user.id} not in sales table`, corsHeaders);
+    console.error("User not in sales table:", data.user.id);
+    return createErrorResponse(401, "User profile not found", corsHeaders);
   }
 
-  const currentUserSale = { data: saleData, error: null };
+  const currentUserSale = saleData as Sale;
   if (req.method === "POST") {
-    return inviteUser(req, currentUserSale.data, corsHeaders);
+    return inviteUser(req, currentUserSale, corsHeaders, supabaseClient);
   }
 
   if (req.method === "PATCH") {
-    return patchUser(req, currentUserSale.data, corsHeaders);
+    return patchUser(req, currentUserSale, corsHeaders, supabaseClient);
   }
 
   return createErrorResponse(405, "Method Not Allowed", corsHeaders);
 });
-// Force deploy 1765417500 - Added Authorization Bearer header to supabaseAdmin
