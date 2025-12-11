@@ -25,6 +25,8 @@ BEGIN
     sue_user_id := gen_random_uuid();
     
     -- Insert into auth.users (requires elevated privileges)
+    -- IMPORTANT: Token columns MUST be empty strings, NOT NULL!
+    -- GoTrue's Go code crashes on NULL varchar columns (sql.Scan error)
     INSERT INTO auth.users (
       id,
       instance_id,
@@ -36,7 +38,18 @@ BEGIN
       raw_app_meta_data,
       raw_user_meta_data,
       aud,
-      role
+      role,
+      -- GoTrue token columns - MUST be empty strings to avoid Go scan errors
+      confirmation_token,
+      recovery_token,
+      email_change,
+      email_change_token_new,
+      email_change_token_current,
+      phone_change,
+      phone_change_token,
+      reauthentication_token,
+      is_sso_user,
+      is_anonymous
     ) VALUES (
       sue_user_id,
       '00000000-0000-0000-0000-000000000000',
@@ -48,7 +61,11 @@ BEGIN
       '{"provider":"email","providers":["email"]}'::jsonb,
       '{"full_name":"Sue Martinez"}'::jsonb,
       'authenticated',
-      'authenticated'
+      'authenticated',
+      -- Empty strings for GoTrue token columns (prevents NULL scan error)
+      '', '', '', '', '', '', '', '',
+      false,
+      false
     );
     RAISE NOTICE 'Created auth user for sue@mfbroker.com: %', sue_user_id;
   END IF;
