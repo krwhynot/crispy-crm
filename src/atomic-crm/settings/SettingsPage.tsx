@@ -1,6 +1,6 @@
 import { useMutation } from "@tanstack/react-query";
 import { Form, useDataProvider, useGetIdentity, useGetOne, useNotify } from "ra-core";
-import { User, Bell, Shield, History } from "lucide-react";
+import { User, Bell, Shield, History, Users } from "lucide-react";
 import type { CrmDataProvider } from "../providers/types";
 import type { SalesFormData } from "../types";
 import { SettingsLayout } from "./SettingsLayout";
@@ -9,6 +9,7 @@ import { PersonalSection } from "./sections/PersonalSection";
 import { NotificationsSection } from "./sections/NotificationsSection";
 import { SecuritySection } from "./sections/SecuritySection";
 import { AuditLogSection } from "./sections/AuditLogSection";
+import { UsersSection } from "./sections/UsersSection";
 
 export const SettingsPage = () => {
   const {
@@ -92,6 +93,12 @@ export const SettingsPage = () => {
     },
     ...(identity?.role === "admin"
       ? [
+          {
+            id: "users",
+            label: "Team",
+            icon: <Users className="h-4 w-4" />,
+            component: <UsersSection />,
+          },
           {
             id: "audit",
             label: "Activity Log",

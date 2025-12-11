@@ -4,17 +4,6 @@ import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
 import { createCorsHeaders } from "../_shared/cors-config.ts";
 import { z } from "npm:zod@3.22.4";
 
-interface Sale {
-  id: number;
-  user_id: string;
-  email: string;
-  first_name: string;
-  last_name: string;
-  role: 'admin' | 'manager' | 'rep';
-  disabled: boolean;
-  avatar_url?: string;
-}
-
 function createErrorResponse(status: number, message: string, corsHeaders: Record<string, string>) {
   return new Response(JSON.stringify({ status, message }), {
     headers: { "Content-Type": "application/json", ...corsHeaders },
@@ -100,26 +89,39 @@ async function parseAndValidateBody<T>(req: Request, schema: z.ZodSchema<T>): Pr
   return result.data;
 }
 
-async function updateSaleViaRPC(
-  supabaseClient: ReturnType<typeof createClient>,
-  user_id: string,
-  updates: { role?: 'admin' | 'manager' | 'rep'; disabled?: boolean; avatar?: string }
-): Promise<Sale> {
-  const { data: updatedSale, error } = await supabaseClient
-    .rpc('admin_update_sale', {
-      target_user_id: user_id,
-      new_role: updates.role ?? null,
-      new_disabled: updates.disabled ?? null,
-      new_avatar: updates.avatar ?? null
-    })
-    .single();
+async function updateSaleDisabled(user_id: string, disabled: boolean) {
+  return await supabaseAdmin
+    .from("sales")
+    .update({ disabled: disabled ?? false })
+    .eq("user_id", user_id);
+}
 
-  if (error || !updatedSale) {
-    console.error("Error updating sale via RPC:", error);
-    throw error ?? new Error("Failed to update sale");
+async function updateSaleRole(user_id: string, role: "admin" | "manager" | "rep") {
+  const { data: sales, error: salesError } = await supabaseAdmin
+    .from("sales")
+    .update({ role })
+    .eq("user_id", user_id)
+    .select("*");
+
+  if (!sales?.length || salesError) {
+    console.error("Error updating user role:", salesError);
+    throw salesError ?? new Error("Failed to update sale role");
   }
+  return sales.at(0);
+}
 
-  return updatedSale as Sale;
+async function updateSaleAvatar(user_id: string, avatar: string) {
+  const { data: sales, error: salesError } = await supabaseAdmin
+    .from("sales")
+    .update({ avatar })
+    .eq("user_id", user_id)
+    .select("*");
+
+  if (!sales?.length || salesError) {
+    console.error("Error updating user:", salesError);
+    throw salesError ?? new Error("Failed to update sale");
+  }
+  return sales.at(0);
 }
 
 async function inviteUser(req: Request, currentUserSale: any, corsHeaders: Record<string, string>) {
