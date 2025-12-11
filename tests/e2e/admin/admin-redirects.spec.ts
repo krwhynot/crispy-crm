@@ -40,8 +40,11 @@ test.describe("Admin Route Redirects", () => {
     const firstRow = page.getByRole("row").nth(1);
     await firstRow.click();
 
-    // Extract the ID from the URL (hash router format: /#/sales?view=123)
-    await expect(page).toHaveURL(/\/#\/sales\?view=(\d+)/);
+    // Wait for SlideOver to open first (pushState doesn't trigger navigation events)
+    await expect(page.getByRole("dialog")).toBeVisible({ timeout: 10000 });
+
+    // Now extract the ID from the URL (hash router format: /#/sales?view=123)
+    await page.waitForURL(/\/#\/sales\?view=(\d+)/, { timeout: 5000 });
     const url = page.url();
     const idMatch = url.match(/view=(\d+)/);
     const salesId = idMatch ? idMatch[1] : "1";
@@ -50,10 +53,11 @@ test.describe("Admin Route Redirects", () => {
     await page.goto(`/#/admin/users/${salesId}`);
 
     // Should redirect to /sales?view=:id (hash router format)
-    await expect(page).toHaveURL(new RegExp(`#/sales\\?view=${salesId}`));
+    // Wait for redirect and SlideOver to load
+    await page.waitForURL(new RegExp(`#/sales\\?view=${salesId}`), { timeout: 10000 });
 
     // SlideOver should be visible
-    await expect(page.getByRole("dialog")).toBeVisible();
+    await expect(page.getByRole("dialog")).toBeVisible({ timeout: 10000 });
   });
 
   test("Settings Team tab redirects to /sales", async ({ page }) => {

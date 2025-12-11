@@ -77,16 +77,21 @@ test.describe("Team Management (Sales Resource)", () => {
     // Wait for data to load (table-based list)
     await expect(page.getByRole("table")).toBeVisible({ timeout: 10000 });
 
-    // Click on first data row (skip header row)
-    const firstRow = page.getByRole("row").nth(1);
-    await expect(firstRow).toBeVisible();
-    await firstRow.click();
-
-    // Should open SlideOver with ?view= query param (hash router format)
-    await expect(page).toHaveURL(/\/#\/sales\?view=\d+/);
+    // Click on first data row's first cell (First Name column)
+    // IMPORTANT: Must click on a cell without interactive elements (links)
+    // The Email column contains mailto: links that intercept clicks
+    const firstDataRow = page.getByRole("row").nth(1);
+    await expect(firstDataRow).toBeVisible();
+    const firstNameCell = firstDataRow.getByRole("cell").first();
+    await firstNameCell.click();
 
     // SlideOver should be visible with edit form
-    await expect(page.getByRole("dialog")).toBeVisible();
+    // Note: Check dialog visibility FIRST since pushState doesn't trigger navigation events
+    await expect(page.getByRole("dialog")).toBeVisible({ timeout: 10000 });
+
+    // URL should have ?view= query param (hash router format)
+    // Use waitForURL since pushState updates don't trigger standard navigation
+    await page.waitForURL(/\/#\/sales\?view=\d+/, { timeout: 5000 });
   });
 
   /**
