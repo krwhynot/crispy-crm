@@ -27,14 +27,14 @@ test.describe("Admin Route Redirects", () => {
     // Should redirect to consolidated /sales route
     await expect(page).toHaveURL(/#\/sales$/);
 
-    // Verify content loads correctly
-    await expect(page.getByRole("grid")).toBeVisible({ timeout: 10000 });
+    // Verify content loads correctly (SalesList uses <table>)
+    await expect(page.getByRole("table")).toBeVisible({ timeout: 10000 });
   });
 
   test("/admin/users/:id redirects to /sales?view=:id", async ({ page }) => {
     // First get a valid sales ID from the list (React Admin uses hash router)
     await page.goto("/#/sales");
-    await expect(page.getByRole("grid")).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole("table")).toBeVisible({ timeout: 10000 });
 
     // Click first row to get a valid ID
     const firstRow = page.getByRole("row").nth(1);
@@ -57,8 +57,8 @@ test.describe("Admin Route Redirects", () => {
   });
 
   test("Settings Team tab redirects to /sales", async ({ page }) => {
-    // Navigate to Settings page
-    await page.goto("/settings");
+    // Navigate to Settings page (hash router format)
+    await page.goto("/#/settings");
 
     // Look for Team tab and click it
     const teamTab = page.getByRole("tab", { name: /team/i });
@@ -67,8 +67,8 @@ test.describe("Admin Route Redirects", () => {
     if (await teamTab.isVisible()) {
       await teamTab.click();
 
-      // Should redirect to /sales
-      await expect(page).toHaveURL("/sales");
+      // Should redirect to /sales (hash router format)
+      await expect(page).toHaveURL(/#\/sales$/);
     }
   });
 });
