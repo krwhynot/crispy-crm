@@ -1,41 +1,46 @@
 /**
  * CORS Configuration for Supabase Edge Functions
  *
- * This configuration replaces the security-vulnerable wildcard CORS policy
- * with a secure domain allowlist that validates origins dynamically based
- * on environment configuration.
+ * This configuration validates origins dynamically based on environment.
+ * Production domains are explicitly allowlisted for security.
  */
 
-// Default allowed origins for development and production environments
-const DEFAULT_DEVELOPMENT_ORIGINS = [
+// Allowed origins for development environments
+const DEVELOPMENT_ORIGINS = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   "http://localhost:3000",
   "http://127.0.0.1:3000",
 ];
 
-const DEFAULT_PRODUCTION_ORIGINS = [
-  // Production domains will be added via environment variables
+// Allowed origins for production environments
+// IMPORTANT: Add all production domains here
+const PRODUCTION_ORIGINS = [
+  "https://crispy-crm.vercel.app",
+  "https://www.crispy-crm.vercel.app",
 ];
 
 /**
- * Parse allowed origins from environment variable
- * Expected format: comma-separated list of origins
+ * Get all allowed origins (both dev and prod, plus any from env var)
+ * Expected env format: comma-separated list of origins
  * Example: "https://app.atomic-crm.com,https://staging.atomic-crm.com"
  */
-function parseAllowedOrigins(): string[] {
+function getAllAllowedOrigins(): string[] {
   const envOrigins = Deno.env.get("ALLOWED_ORIGINS");
 
-  if (!envOrigins) {
-    // Default to development origins in local environment
-    const isProduction = Deno.env.get("DENO_ENV") === "production";
-    return isProduction ? DEFAULT_PRODUCTION_ORIGINS : DEFAULT_DEVELOPMENT_ORIGINS;
+  // Start with built-in origins (both dev and prod for flexibility)
+  const origins = [...DEVELOPMENT_ORIGINS, ...PRODUCTION_ORIGINS];
+
+  // Add any additional origins from environment variable
+  if (envOrigins) {
+    const additionalOrigins = envOrigins
+      .split(",")
+      .map((origin) => origin.trim())
+      .filter((origin) => origin.length > 0);
+    origins.push(...additionalOrigins);
   }
 
-  return envOrigins
-    .split(",")
-    .map((origin) => origin.trim())
-    .filter((origin) => origin.length > 0);
+  return origins;
 }
 
 /**
@@ -45,34 +50,34 @@ function isOriginAllowed(origin: string | null, allowedOrigins: string[]): boole
   if (!origin) {
     return false;
   }
-
   return allowedOrigins.includes(origin);
 }
 
 /**
  * Generate CORS headers with dynamic origin validation
- * This replaces the insecure "*" wildcard with proper origin validation
+ * Returns the request origin if allowed, otherwise falls back to first allowed origin
  */
 export function createCorsHeaders(requestOrigin?: string | null): Record<string, string> {
-  const allowedOrigins = parseAllowedOrigins();
+  const allowedOrigins = getAllAllowedOrigins();
 
   // Determine the allowed origin for this request
-  let allowOrigin = "null"; // Default fallback
+  let allowOrigin: string;
 
   if (requestOrigin && isOriginAllowed(requestOrigin, allowedOrigins)) {
+    // Request origin is in allowlist - echo it back
     allowOrigin = requestOrigin;
   } else if (allowedOrigins.length > 0) {
-    // For development, allow the first origin as fallback
-    const isDevelopment = Deno.env.get("DENO_ENV") !== "production";
-    if (isDevelopment && allowedOrigins.includes("http://localhost:5173")) {
-      allowOrigin = "http://localhost:5173";
-    }
+    // Fallback to first allowed origin (for development)
+    allowOrigin = allowedOrigins[0];
+  } else {
+    // Ultimate fallback
+    allowOrigin = "http://localhost:5173";
   }
 
   return {
     "Access-Control-Allow-Origin": allowOrigin,
     "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
-    "Access-Control-Allow-Methods": "POST, PATCH, DELETE",
+    "Access-Control-Allow-Methods": "POST, PATCH, DELETE, OPTIONS",
     "Access-Control-Allow-Credentials": "true",
   };
 }
@@ -87,5 +92,5 @@ export const corsHeaders = createCorsHeaders();
  * Get allowed origins for debugging/logging purposes
  */
 export function getAllowedOrigins(): string[] {
-  return parseAllowedOrigins();
+  return getAllAllowedOrigins();
 }
