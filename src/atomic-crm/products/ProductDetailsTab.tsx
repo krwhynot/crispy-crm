@@ -11,6 +11,17 @@ import { Badge } from "@/components/ui/badge";
 import { AsideSection } from "@/components/ui";
 import { PRODUCT_STATUSES, PRODUCT_CATEGORIES } from "../validation/products";
 
+const DISTRIBUTOR_CODE_LABELS: Record<string, string> = {
+  usf_code: "US Foods",
+  sysco_code: "Sysco",
+  gfs_code: "GFS",
+  pfg_code: "PFG",
+  greco_code: "Greco",
+  gofo_code: "GOFO",
+  rdp_code: "RDP",
+  wilkens_code: "Wilkens",
+};
+
 interface Product {
   id: number;
   name: string;
@@ -25,6 +36,14 @@ interface Product {
   ingredients?: string | null;
   nutritional_info?: Record<string, any> | null;
   marketing_description?: string | null;
+  usf_code?: string | null;
+  sysco_code?: string | null;
+  gfs_code?: string | null;
+  pfg_code?: string | null;
+  greco_code?: string | null;
+  gofo_code?: string | null;
+  rdp_code?: string | null;
+  wilkens_code?: string | null;
   created_at?: string | null;
   updated_at?: string | null;
   created_by?: number | null;
@@ -35,6 +54,12 @@ interface ProductDetailsTabProps {
   record: Product;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+}
+
+function hasDistributorCodes(record: any): boolean {
+  return Object.keys(DISTRIBUTOR_CODE_LABELS).some(
+    (key) => record[key as keyof typeof record]
+  );
 }
 
 /**
@@ -173,6 +198,28 @@ export function ProductDetailsTab({ record, mode, onModeToggle }: ProductDetails
             </CardContent>
           </Card>
         </AsideSection>
+
+        {/* Distributor Codes Section */}
+        {hasDistributorCodes(record) && (
+          <AsideSection title="Distributor Codes">
+            <Card>
+              <CardContent className="p-4">
+                <div className="grid grid-cols-2 gap-2 p-3 bg-muted/50 rounded-md">
+                  {Object.entries(DISTRIBUTOR_CODE_LABELS).map(([field, label]) => {
+                    const value = record[field as keyof typeof record];
+                    if (!value) return null;
+                    return (
+                      <div key={field} className="flex justify-between">
+                        <span className="text-sm text-muted-foreground">{label}:</span>
+                        <span className="text-sm font-mono">{value}</span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+          </AsideSection>
+        )}
       </div>
     </RecordContextProvider>
   );

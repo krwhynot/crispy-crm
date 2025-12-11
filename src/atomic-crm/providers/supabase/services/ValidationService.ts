@@ -30,7 +30,7 @@ import {
 } from "../../../validation/notes";
 import type { OrganizationNote } from "../../../validation/notes";
 import { validateTaskForSubmission } from "../../../validation/task";
-import { validateProductForm } from "../../../validation/products";
+import { validateProductForm, validateProductUpdate } from "../../../validation/products";
 import { validateCreateTag, validateUpdateTag } from "../../../validation/tags";
 import { validateSalesForm } from "../../../validation/sales";
 import {
@@ -91,7 +91,7 @@ export class ValidationService {
     },
     products: {
       create: async (data: unknown) => validateProductForm(data),
-      update: async (data: unknown) => validateProductForm(data),
+      update: async (data: unknown) => validateProductUpdate(data),
     },
     tags: {
       create: async (data: unknown) => {

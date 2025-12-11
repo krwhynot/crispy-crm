@@ -70,10 +70,22 @@ export const productSchema = z.strictObject({
   nutritional_info: z.record(z.any()).nullish(),
   marketing_description: z.string().nullish(),
 
+  // Distributor-specific product codes (all optional, max 50 chars)
+  usf_code: z.string().max(50, "USF code too long").nullish(),
+  sysco_code: z.string().max(50, "Sysco code too long").nullish(),
+  gfs_code: z.string().max(50, "GFS code too long").nullish(),
+  pfg_code: z.string().max(50, "PFG code too long").nullish(),
+  greco_code: z.string().max(50, "Greco code too long").nullish(),
+  gofo_code: z.string().max(50, "GOFO code too long").nullish(),
+  rdp_code: z.string().max(50, "RDP code too long").nullish(),
+  wilkens_code: z.string().max(50, "Wilkens code too long").nullish(),
+
   // System fields (handled automatically)
   created_by: z.number().int().nullish(),
   updated_by: z.number().int().nullish(),
 });
+
+export const productUpdateSchema = productSchema.strip();
 
 // Validation function for React Admin
 export async function validateProductForm(data: unknown): Promise<void> {
@@ -90,6 +102,22 @@ export async function validateProductForm(data: unknown): Promise<void> {
 
     // Throw error in React Admin expected format
     // React Admin expects { message, body: { errors } } - see opportunities.ts:203
+    throw {
+      message: "Validation failed",
+      body: { errors: formattedErrors },
+    };
+  }
+}
+
+export async function validateProductUpdate(data: unknown): Promise<void> {
+  const result = productUpdateSchema.safeParse(data);
+
+  if (!result.success) {
+    const formattedErrors: Record<string, string> = {};
+    result.error.issues.forEach((err) => {
+      const path = err.path.join(".");
+      formattedErrors[path] = err.message;
+    });
     throw {
       message: "Validation failed",
       body: { errors: formattedErrors },

@@ -115,7 +115,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
               description="Create a new customer organization and select it automatically"
               defaultValues={{
                 ...organizationDefaults,
-                organization_type: "customer",
+                organization_type: "prospect",
                 sales_id: identity?.id,
                 segment_id: DEFAULT_SEGMENT_ID,
               }}
@@ -137,7 +137,7 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
             <ReferenceInput
               source="customer_organization_id"
               reference="organizations"
-              filter={{ organization_type: "customer" }}
+              filter={{ "organization_type@in": "(prospect,customer)" }}
             >
               <AutocompleteOrganizationInput
                 label="Customer Organization *"

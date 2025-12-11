@@ -23,7 +23,7 @@ export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
     {
       pagination: { page: 1, perPage: 100 },
       sort: { field: "name", order: "ASC" },
-      filter: { organization_type: "customer", deleted_at: null },
+      filter: { "organization_type@in": "(prospect,customer)", deleted_at: null },
     }
   );
 
