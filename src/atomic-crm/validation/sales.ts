@@ -3,7 +3,42 @@ import { z } from "zod";
 /**
  * Sales validation schemas and functions
  * Implements validation rules for salespeople/users
+ *
+ * CONSOLIDATED: This is the single source of truth for all sales/user validation
+ * Previously duplicated in src/atomic-crm/admin/users/schemas.ts (now deprecated)
  */
+
+// =====================================================================
+// Role Configuration (UI + Validation)
+// =====================================================================
+
+/**
+ * User role enum - matches database user_role type
+ */
+export const UserRoleEnum = z.enum(["admin", "manager", "rep"]);
+export type UserRole = z.infer<typeof UserRoleEnum>;
+
+/**
+ * Role display configuration for UI (React Admin SelectInput choices)
+ */
+export const ROLE_CHOICES = [
+  { id: "admin", name: "Admin" },
+  { id: "manager", name: "Manager" },
+  { id: "rep", name: "Rep" },
+] as const;
+
+/**
+ * Role badge color mapping (semantic tokens for badges)
+ */
+export const ROLE_COLORS: Record<UserRole, string> = {
+  admin: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
+  manager: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
+  rep: "bg-muted text-muted-foreground",
+};
+
+// =====================================================================
+// Main Sales Schema
+// =====================================================================
 
 // Main sales schema with comprehensive validation
 // This schema serves as the single source of truth for all sales validation

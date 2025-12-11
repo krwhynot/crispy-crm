@@ -143,12 +143,42 @@ If there's a reason to maintain both interfaces:
 
 ---
 
+## Runtime Investigation Findings (2025-12-11)
+
+### Edge Function Logs Show Timeouts
+
+```
+wall clock duration warning: isolate: 06a66a11-80a3-4ed9-9820-b108f55cb409
+early termination has been triggered: isolate: 06a66a11-80a3-4ed9-9820-b108f55cb409
+```
+
+**Analysis:** The Edge Function is being terminated before completion. This is likely caused by:
+1. **Local dev environment cold starts** - Deno isolates take time to initialize
+2. **Supabase Admin API calls** - `auth.admin.createUser()` and `auth.admin.updateUserById()` may be slow
+3. **Default timeout settings** - Edge Functions have a 2-second default timeout locally
+
+**PostgreSQL logs show no errors** - The database operations complete successfully when they reach the database.
+
+### Root Cause Hypothesis
+
+The 500 errors are likely **Edge Function timeouts**, not code bugs. The functions time out waiting for:
+- Supabase Auth Admin API responses
+- Cold start initialization
+
+### Recommended Fix
+
+1. Test with a warm Edge Function (make a simple request first, then the actual operation)
+2. Consider increasing local timeout or optimizing Auth API calls
+3. In production, this is less of an issue due to better networking and warm instances
+
+---
+
 ## Next Steps (Recommended Action Plan)
 
 ### Immediate (Testing)
 1. **Test Interface A** (`/sales/:id`): Edit a user, check browser console & network tab for 500 errors
 2. **Test Interface B** (Settings → Team): Edit same user, compare behavior
-3. **Check Edge Function logs**: `npx supabase functions logs users` for server-side errors
+3. **Check Edge Function logs**: `docker logs supabase_edge_runtime_crispy-crm`
 
 ### Short-term (Bug Fix)
 4. If 500 error found, trace to Edge Function or RPC function
