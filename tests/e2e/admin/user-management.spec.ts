@@ -1,7 +1,10 @@
 import { test, expect } from "@playwright/test";
 
 /**
- * Admin User Management E2E Tests
+ * Team Management E2E Tests (Consolidated to /sales)
+ *
+ * UPDATED 2025-12-11: Tests now target /sales resource after consolidation.
+ * Previously targeted /admin/users which now redirects to /sales.
  *
  * Follows playwright-e2e-testing skill requirements:
  * - Semantic selectors (getByRole, getByLabel, getByText)
@@ -12,7 +15,7 @@ import { test, expect } from "@playwright/test";
  * - Admin user auth fixture at tests/e2e/.auth/user.json
  * - Local Supabase running with seed data
  */
-test.describe("Admin User Management", () => {
+test.describe("Team Management (Sales Resource)", () => {
   test.beforeEach(async ({ page }) => {
     // Uses admin auth fixture
     await page.goto("/");
@@ -24,18 +27,18 @@ test.describe("Admin User Management", () => {
     // Open profile dropdown
     await page.getByRole("button", { name: /profile|avatar|user menu/i }).click();
 
-    // Click Team Management link
-    const teamLink = page.getByRole("menuitem", { name: /team management/i });
+    // Click Team Management link (may be labeled "Team" or "Sales")
+    const teamLink = page.getByRole("menuitem", { name: /team|sales/i });
     await expect(teamLink).toBeVisible();
     await teamLink.click();
 
-    // Verify navigation
-    await expect(page).toHaveURL("/admin/users");
-    await expect(page.getByRole("heading", { name: /team management/i })).toBeVisible();
+    // Verify navigation to consolidated /sales route
+    await expect(page).toHaveURL("/sales");
   });
 
   test("admin can view list of team members", async ({ page }) => {
-    await page.goto("/admin/users");
+    // Navigate directly to /sales (consolidated team management)
+    await page.goto("/sales");
 
     // Verify datagrid is visible (wait for data to load)
     await expect(page.getByRole("grid")).toBeVisible({ timeout: 10000 });
@@ -46,39 +49,23 @@ test.describe("Admin User Management", () => {
     await expect(page.getByText("Role")).toBeVisible();
   });
 
-  test("admin can open invite team member dialog", async ({ page }) => {
-    await page.goto("/admin/users");
+  test("admin can navigate to create team member form", async ({ page }) => {
+    await page.goto("/sales");
 
-    // Click invite button
-    await page.getByRole("button", { name: /invite/i }).click();
+    // Click create/invite button
+    await page.getByRole("link", { name: /create|invite|add/i }).click();
 
-    // Verify dialog opens
-    await expect(page.getByRole("dialog").getByText("Invite Team Member")).toBeVisible();
+    // Verify navigation to create form
+    await expect(page).toHaveURL("/sales/create");
 
     // Verify form fields exist
-    await expect(page.getByLabel("Email")).toBeVisible();
-    await expect(page.getByLabel("First Name")).toBeVisible();
-    await expect(page.getByLabel("Last Name")).toBeVisible();
-    await expect(page.getByLabel(/password/i)).toBeVisible();
-    await expect(page.getByLabel("Role")).toBeVisible();
+    await expect(page.getByLabel(/email/i)).toBeVisible();
+    await expect(page.getByLabel(/first name/i)).toBeVisible();
+    await expect(page.getByLabel(/last name/i)).toBeVisible();
   });
 
-  test("admin can cancel invite dialog", async ({ page }) => {
-    await page.goto("/admin/users");
-
-    // Open dialog
-    await page.getByRole("button", { name: /invite/i }).click();
-    await expect(page.getByRole("dialog")).toBeVisible();
-
-    // Cancel
-    await page.getByRole("button", { name: /cancel/i }).click();
-
-    // Verify dialog closes
-    await expect(page.getByRole("dialog")).not.toBeVisible();
-  });
-
-  test("admin can click on user row to edit", async ({ page }) => {
-    await page.goto("/admin/users");
+  test("admin can click on user row to open SlideOver", async ({ page }) => {
+    await page.goto("/sales");
 
     // Wait for data to load
     await expect(page.getByRole("grid")).toBeVisible({ timeout: 10000 });
@@ -88,9 +75,11 @@ test.describe("Admin User Management", () => {
     await expect(firstRow).toBeVisible();
     await firstRow.click();
 
-    // Should navigate to edit view
-    await expect(page).toHaveURL(/\/admin\/users\/\d+/);
-    await expect(page.getByText("Edit Team Member")).toBeVisible();
+    // Should open SlideOver with ?view= query param
+    await expect(page).toHaveURL(/\/sales\?view=\d+/);
+
+    // SlideOver should be visible with edit form
+    await expect(page.getByRole("dialog")).toBeVisible();
   });
 
   /**
