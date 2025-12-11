@@ -71,9 +71,10 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
 
     setIsDeleting(true);
     try {
+      // CRITICAL: previousData required by ra-data-postgrest's getChanges()
       await update(
         "sales",
-        { id: record.id, data: { deleted_at: new Date().toISOString() } },
+        { id: record.id, data: { deleted_at: new Date().toISOString() }, previousData: record },
         {
           onSuccess: () => {
             notify("User removed successfully", { type: "success" });
@@ -108,10 +109,10 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
       // Validate form data
       await validateUpdateSales({ id: record.id, ...formData });
 
-      // Update record
+      // Update record - CRITICAL: previousData required by ra-data-postgrest's getChanges()
       await update(
         "sales",
-        { id: record.id, data: formData },
+        { id: record.id, data: formData, previousData: record },
         {
           onSuccess: () => {
             notify("Permissions updated successfully", { type: "success" });
