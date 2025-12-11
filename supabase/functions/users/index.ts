@@ -326,51 +326,29 @@ Deno.serve(async (req: Request) => {
     return createErrorResponse(401, "AUTH_STEP_5: getUser returned no user", corsHeaders);
   }
 
-  // Use direct PostgREST fetch with explicit Authorization header
-  // CRITICAL: Supabase JS client ignores global.headers for PostgREST queries
-  // Direct fetch ensures proper role switching from authenticator → service_role
-  const customKey = Deno.env.get("SERVICE_ROLE_KEY");
-  const autoKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
-  const serviceKey = customKey || autoKey;
+  // Use supabaseAdmin (service_role client) for DB operations
+  // RLS policy "service_role_full_access" grants access to service_role
+  console.log("=== QUERYING SALES TABLE (supabaseAdmin) ===");
+  console.log("User ID:", data.user.id);
 
-  console.log("=== DIRECT POSTGREST FETCH (Bypassing Supabase JS) ===");
-  console.log("SERVICE_ROLE_KEY present:", !!serviceKey, "length:", serviceKey?.length ?? 0);
+  const { data: saleData, error: saleError } = await supabaseAdmin
+    .from("sales")
+    .select("*")
+    .eq("user_id", data.user.id)
+    .single();
 
-  if (!serviceKey) {
-    return createErrorResponse(500, "AUTH_STEP_6a: Missing service role key", corsHeaders);
+  console.log("Sale query result:", { hasData: !!saleData, error: saleError?.message });
+
+  if (saleError) {
+    console.error("Sales lookup error:", saleError);
+    return createErrorResponse(401, `AUTH_STEP_6: Sales lookup error - ${saleError.message}`, corsHeaders);
   }
 
-  // Direct PostgREST call with explicit Authorization header
-  const salesUrl = `${supabaseUrl}/rest/v1/sales?user_id=eq.${data.user.id}&select=*`;
-  console.log("Fetching from:", salesUrl);
-
-  const salesResponse = await fetch(salesUrl, {
-    method: "GET",
-    headers: {
-      "Authorization": `Bearer ${serviceKey}`,
-      "apikey": serviceKey,
-      "Content-Type": "application/json",
-      "Accept": "application/json",
-      "Prefer": "return=representation"
-    }
-  });
-
-  console.log("PostgREST response status:", salesResponse.status);
-
-  if (!salesResponse.ok) {
-    const errorText = await salesResponse.text();
-    console.error("PostgREST error:", errorText);
-    return createErrorResponse(401, `AUTH_STEP_6: Sales lookup error - ${salesResponse.status}: ${errorText}`, corsHeaders);
-  }
-
-  const salesData = await salesResponse.json();
-  console.log("Sales data retrieved:", salesData?.length ?? 0, "records");
-
-  if (!salesData || salesData.length === 0) {
+  if (!saleData) {
     return createErrorResponse(401, `AUTH_STEP_7: User ${data.user.id} not in sales table`, corsHeaders);
   }
 
-  const currentUserSale = { data: salesData[0], error: null };
+  const currentUserSale = { data: saleData, error: null };
   if (req.method === "POST") {
     return inviteUser(req, currentUserSale.data, corsHeaders);
   }
