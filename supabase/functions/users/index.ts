@@ -50,21 +50,14 @@ const patchUserSchema = z
     first_name: z.string().min(1).max(100).optional(),
     last_name: z.string().min(1).max(100).optional(),
     avatar: z.string().url("Invalid avatar URL").max(500).optional(),
-    // NEW: role field (preferred)
     role: z.enum(["admin", "manager", "rep"]).optional(),
-    // DEPRECATED: Keep for backward compatibility
-    administrator: z.coerce.boolean().optional(),
+    administrator: z.coerce.boolean().optional(), // Deprecated: use role instead
     disabled: z.coerce.boolean().optional(),
   })
   .transform((data) => {
-    // Derive role from administrator if role not provided but administrator is
-    let derivedRole = data.role;
-    if (data.role === undefined && data.administrator !== undefined) {
-      derivedRole = data.administrator ? "admin" : "rep";
-    }
-    // Strip deprecated administrator field to avoid dual truth sources
-    const { administrator: _deprecated, ...rest } = data;
-    return { ...rest, role: derivedRole };
+    const role = data.role ?? (data.administrator !== undefined ? (data.administrator ? "admin" : "rep") : undefined);
+    const { administrator: _, ...rest } = data;
+    return { ...rest, role };
   });
 
 // Maximum request body size (1MB)
@@ -138,16 +131,16 @@ async function inviteUser(req: Request, currentUserSale: Sale, corsHeaders: Reco
     user_metadata: { first_name, last_name },
   });
 
-  const { error: emailError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
-
   if (!data?.user || userError) {
-    console.error(`Error inviting user: user_error=${userError}`);
+    console.error("Error creating user:", userError);
     return createErrorResponse(500, "Internal Server Error", corsHeaders);
   }
 
-  if (!data?.user || userError || emailError) {
-    console.error(`Error inviting user, email_error=${emailError}`);
-    return createErrorResponse(500, "Failed to send invitation mail", corsHeaders);
+  const { error: emailError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
+
+  if (emailError) {
+    console.error("Error sending invitation email:", emailError);
+    return createErrorResponse(500, "Failed to send invitation email", corsHeaders);
   }
 
   try {
@@ -182,13 +175,13 @@ async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Recor
 
   const { sales_id, email, first_name, last_name, avatar, role, disabled } = validatedData;
 
-  const { data: saleToUpdate } = await supabaseAdmin
-    .from("sales")
-    .select("user_id, id")
-    .eq("id", sales_id)
+  // Use SECURITY DEFINER RPC function instead of direct table access
+  const { data: saleToUpdate, error: saleError } = await supabaseClient
+    .rpc('get_sale_by_id', { target_sale_id: sales_id })
     .single();
 
-  if (!saleToUpdate) {
+  if (saleError || !saleToUpdate) {
+    console.error("Sales lookup error:", saleError?.message ?? "User not found");
     return createErrorResponse(404, "Not Found", corsHeaders);
   }
 
@@ -257,48 +250,23 @@ async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Recor
 }
 
 Deno.serve(async (req: Request) => {
-  // Generate secure CORS headers based on request origin
   const corsHeaders = createCorsHeaders(req.headers.get("origin"));
 
-  // === COMPREHENSIVE LOGGING FOR DEBUGGING ===
-  console.log("=== EDGE FUNCTION REQUEST ===");
-  console.log("Timestamp:", new Date().toISOString());
-  console.log("Method:", req.method);
-  console.log("URL:", req.url);
-  console.log("Origin:", req.headers.get("origin"));
-  console.log("Auth header present:", !!req.headers.get("Authorization"));
-  console.log("Auth header length:", req.headers.get("Authorization")?.length ?? 0);
-  console.log("Content-Type:", req.headers.get("Content-Type"));
-  console.log("All headers:", JSON.stringify(Object.fromEntries(req.headers.entries())));
-  console.log("=== END REQUEST INFO ===");
-
   if (req.method === "OPTIONS") {
-    console.log("Handling CORS preflight request");
-    return new Response(null, {
-      status: 204,
-      headers: corsHeaders,
-    });
+    return new Response(null, { status: 204, headers: corsHeaders });
   }
 
-  // Extract and validate Authorization header
   const authHeader = req.headers.get("Authorization");
-  if (!authHeader) {
-    return createErrorResponse(401, "AUTH_STEP_1: No Authorization header", corsHeaders);
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return createErrorResponse(401, "Missing or invalid Authorization header", corsHeaders);
   }
 
-  // Extract JWT token from "Bearer <token>" format
-  const token = authHeader.replace("Bearer ", "");
-  if (!token || token === authHeader) {
-    return createErrorResponse(401, "AUTH_STEP_2: Invalid Bearer format", corsHeaders);
-  }
-
-  // CORRECT PATTERN (per Supabase docs): Create user-context client with ANON_KEY
-  // This client has the user's auth context set via the Authorization header
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
 
   if (!supabaseUrl || !supabaseAnonKey) {
-    return createErrorResponse(500, `AUTH_STEP_3: Missing env vars - URL:${!!supabaseUrl} ANON:${!!supabaseAnonKey}`, corsHeaders);
+    console.error("Missing environment variables");
+    return createErrorResponse(500, "Server configuration error", corsHeaders);
   }
 
   const supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
@@ -307,36 +275,19 @@ Deno.serve(async (req: Request) => {
     },
   });
 
-  // Validate JWT using user-context client (NOT supabaseAdmin)
-  // IMPORTANT: Call getUser() without arguments - it uses the Authorization header
-  // from the client's global config. Passing token explicitly can cause validation issues.
   const { data, error: authError } = await supabaseClient.auth.getUser();
 
-  if (authError) {
-    return createErrorResponse(401, `AUTH_STEP_4: getUser error - ${authError.message}`, corsHeaders);
+  if (authError || !data?.user) {
+    console.error("Auth error:", authError?.message);
+    return createErrorResponse(401, "Invalid or expired token", corsHeaders);
   }
-
-  if (!data?.user) {
-    return createErrorResponse(401, "AUTH_STEP_5: getUser returned no user", corsHeaders);
-  }
-
-  // Use supabaseClient with RPC for DB operations
-  console.log("=== QUERYING SALES TABLE (RPC) ===");
-  console.log("User ID:", data.user.id);
 
   const { data: saleData, error: saleError } = await supabaseClient
     .rpc('get_sale_by_user_id', { target_user_id: data.user.id })
     .single();
 
-  console.log("Sale query result:", { hasData: !!saleData, error: saleError?.message });
-
-  if (saleError) {
-    console.error("Sales lookup error:", saleError);
-    return createErrorResponse(401, "User profile not found", corsHeaders);
-  }
-
-  if (!saleData) {
-    console.error("User not in sales table:", data.user.id);
+  if (saleError || !saleData) {
+    console.error("Sales lookup error:", saleError?.message ?? "User not found");
     return createErrorResponse(401, "User profile not found", corsHeaders);
   }
 
