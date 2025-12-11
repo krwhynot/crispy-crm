@@ -327,6 +327,12 @@ Deno.serve(async (req: Request) => {
   }
 
   // Use SERVICE ROLE client (supabaseAdmin) for DB operations to bypass RLS
+  // DEBUG: Log service role key presence (first 10 chars only for security)
+  const serviceKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+  console.log("SERVICE_ROLE_KEY present:", !!serviceKey);
+  console.log("SERVICE_ROLE_KEY length:", serviceKey?.length ?? 0);
+  console.log("SERVICE_ROLE_KEY prefix:", serviceKey?.substring(0, 10) ?? "MISSING");
+
   const currentUserSale = await supabaseAdmin
     .from("sales")
     .select("*")
