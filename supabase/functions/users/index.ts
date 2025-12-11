@@ -326,28 +326,51 @@ Deno.serve(async (req: Request) => {
     return createErrorResponse(401, "AUTH_STEP_5: getUser returned no user", corsHeaders);
   }
 
-  // Use SERVICE ROLE client (supabaseAdmin) for DB operations to bypass RLS
-  // DEBUG: Log service role key presence (first 10 chars only for security)
+  // Use direct PostgREST fetch with explicit Authorization header
+  // CRITICAL: Supabase JS client ignores global.headers for PostgREST queries
+  // Direct fetch ensures proper role switching from authenticator → service_role
   const customKey = Deno.env.get("SERVICE_ROLE_KEY");
   const autoKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   const serviceKey = customKey || autoKey;
-  console.log("SERVICE_ROLE_KEY (custom) present:", !!customKey, "length:", customKey?.length ?? 0);
-  console.log("SUPABASE_SERVICE_ROLE_KEY (auto) present:", !!autoKey, "length:", autoKey?.length ?? 0);
-  console.log("Using key prefix:", serviceKey?.substring(0, 10) ?? "MISSING");
 
-  const currentUserSale = await supabaseAdmin
-    .from("sales")
-    .select("*")
-    .eq("user_id", data.user.id)
-    .single();
+  console.log("=== DIRECT POSTGREST FETCH (Bypassing Supabase JS) ===");
+  console.log("SERVICE_ROLE_KEY present:", !!serviceKey, "length:", serviceKey?.length ?? 0);
 
-  if (currentUserSale.error) {
-    return createErrorResponse(401, `AUTH_STEP_6: Sales lookup error - ${currentUserSale.error.message}`, corsHeaders);
+  if (!serviceKey) {
+    return createErrorResponse(500, "AUTH_STEP_6a: Missing service role key", corsHeaders);
   }
 
-  if (!currentUserSale?.data) {
+  // Direct PostgREST call with explicit Authorization header
+  const salesUrl = `${supabaseUrl}/rest/v1/sales?user_id=eq.${data.user.id}&select=*`;
+  console.log("Fetching from:", salesUrl);
+
+  const salesResponse = await fetch(salesUrl, {
+    method: "GET",
+    headers: {
+      "Authorization": `Bearer ${serviceKey}`,
+      "apikey": serviceKey,
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+      "Prefer": "return=representation"
+    }
+  });
+
+  console.log("PostgREST response status:", salesResponse.status);
+
+  if (!salesResponse.ok) {
+    const errorText = await salesResponse.text();
+    console.error("PostgREST error:", errorText);
+    return createErrorResponse(401, `AUTH_STEP_6: Sales lookup error - ${salesResponse.status}: ${errorText}`, corsHeaders);
+  }
+
+  const salesData = await salesResponse.json();
+  console.log("Sales data retrieved:", salesData?.length ?? 0, "records");
+
+  if (!salesData || salesData.length === 0) {
     return createErrorResponse(401, `AUTH_STEP_7: User ${data.user.id} not in sales table`, corsHeaders);
   }
+
+  const currentUserSale = { data: salesData[0], error: null };
   if (req.method === "POST") {
     return inviteUser(req, currentUserSale.data, corsHeaders);
   }
