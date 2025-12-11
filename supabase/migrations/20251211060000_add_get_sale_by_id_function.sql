@@ -1,13 +1,14 @@
 -- Migration: Add get_sale_by_id SECURITY DEFINER function
 -- Purpose: Allow Edge Functions to look up sales by ID without needing service_role RLS bypass
+-- Returns single row (not SETOF) for compatibility with Supabase JS .single()
 
 CREATE OR REPLACE FUNCTION get_sale_by_id(target_sale_id INTEGER)
-RETURNS SETOF sales
+RETURNS sales
 LANGUAGE SQL
 SECURITY DEFINER
 SET search_path = public
 AS $$
-  SELECT * FROM sales WHERE id = target_sale_id AND deleted_at IS NULL;
+  SELECT * FROM sales WHERE id = target_sale_id AND deleted_at IS NULL LIMIT 1;
 $$;
 
 COMMENT ON FUNCTION get_sale_by_id IS
