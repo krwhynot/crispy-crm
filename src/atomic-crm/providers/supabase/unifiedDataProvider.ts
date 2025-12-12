@@ -312,6 +312,15 @@ async function validateData(
       } satisfies ValidationError;
     }
 
+    // If already in React Admin format (has errors nested in body)
+    // This handles errors thrown by validation functions like validateContactForm()
+    if (extendedError?.body?.errors && typeof extendedError.body.errors === "object") {
+      throw {
+        message: extendedError.message || "Validation failed",
+        errors: extendedError.body.errors,
+      } satisfies ValidationError;
+    }
+
     // For other Error types, wrap with generic error
     if (error instanceof Error) {
       throw {
