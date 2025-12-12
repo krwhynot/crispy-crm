@@ -32,7 +32,7 @@ describe("ContactCreate", () => {
       const inputData = {
         first_name: "John",
         last_name: "Doe",
-        email: createEmailArray([{ email: "john@example.com", type: "Work" }]),
+        email: createEmailArray([{ value: "john@example.com", type: "work" }]),
         sales_id: 1,
       };
 
@@ -66,12 +66,12 @@ describe("ContactCreate", () => {
         first_name: "John",
         last_name: "Doe",
         email: createEmailArray([
-          { email: "work@example.com", type: "Work" },
-          { email: "personal@example.com", type: "Home" },
+          { value: "work@example.com", type: "work" },
+          { value: "personal@example.com", type: "home" },
         ]),
         phone: createPhoneArray([
-          { number: "+1-555-0100", type: "Work" },
-          { number: "+1-555-0101", type: "Mobile" },
+          { value: "+1-555-0100", type: "work" },
+          { value: "+1-555-0101", type: "home" },
         ]),
         sales_id: 1,
       };
@@ -104,7 +104,7 @@ describe("ContactCreate", () => {
           data: {
             first_name: "Test",
             last_name: "User",
-            email: [{ email: "test@example.com", type: "Work" }],
+            email: [{ value: "test@example.com", type: "work" }],
             sales_id: 1,
           },
         });
@@ -130,7 +130,7 @@ describe("ContactCreate", () => {
           data: {
             first_name: "John",
             last_name: "Doe",
-            email: [{ email: "existing@example.com", type: "Work" }],
+            email: [{ value: "existing@example.com", type: "work" }],
             organization_id: 999,
             sales_id: 1,
           },
@@ -153,7 +153,7 @@ describe("ContactCreate", () => {
           data: {
             first_name: "Jane",
             last_name: "Smith",
-            email: [{ email: "jane@example.com", type: "Work" }],
+            email: [{ value: "jane@example.com", type: "work" }],
             sales_id: 1,
           },
         });
@@ -178,7 +178,7 @@ describe("ContactCreate", () => {
       const inputWithOrg = {
         first_name: "John",
         last_name: "Doe",
-        email: [{ email: "john@example.com", type: "Work" as const }],
+        email: [{ value: "john@example.com", type: "work" as const }],
         organization_id: 1,
         sales_id: 1,
       };
@@ -200,7 +200,7 @@ describe("ContactCreate", () => {
       const inputWithoutOrg = {
         first_name: "Jane",
         last_name: "Smith",
-        email: [{ email: "jane@example.com", type: "Work" as const }],
+        email: [{ value: "jane@example.com", type: "work" as const }],
         phone: [],
         sales_id: 1,
         // No organization_id - should fail validation
@@ -220,9 +220,9 @@ describe("ContactCreate", () => {
   describe("JSONB Array Structure", () => {
     test("email array follows correct JSONB structure", () => {
       const emailArray = createEmailArray([
-        { email: "work@example.com", type: "Work" },
-        { email: "home@example.com", type: "Home" },
-        { email: "other@example.com", type: "Other" },
+        { value: "work@example.com", type: "work" },
+        { value: "home@example.com", type: "home" },
+        { value: "other@example.com", type: "other" },
       ]);
 
       // Validate email array structure
@@ -230,15 +230,15 @@ describe("ContactCreate", () => {
       expect(emailArray).toHaveLength(3);
 
       emailArray.forEach((emailEntry) => {
-        // Each entry must have email and type
-        expect(emailEntry).toHaveProperty("email");
+        // Each entry must have value and type
+        expect(emailEntry).toHaveProperty("value");
         expect(emailEntry).toHaveProperty("type");
 
         // Type must be one of the allowed values
-        expect(["Work", "Home", "Other"]).toContain(emailEntry.type);
+        expect(["work", "home", "other"]).toContain(emailEntry.type);
 
         // Email should be a valid format (basic check)
-        expect(emailEntry.email).toMatch(/@/);
+        expect(emailEntry.value).toMatch(/@/);
       });
 
       // Test transform preserves the structure
@@ -316,7 +316,7 @@ describe("ContactCreate", () => {
       const validData = {
         first_name: "John",
         last_name: "Doe",
-        email: [{ email: "john@example.com", type: "Work" as const }],
+        email: [{ value: "john@example.com", type: "work" as const }],
         sales_id: 1,
       };
 

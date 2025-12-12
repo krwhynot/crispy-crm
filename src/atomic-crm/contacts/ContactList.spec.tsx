@@ -16,8 +16,8 @@ const mockContacts = [
     first_name: "John",
     last_name: "Doe",
     title: "CTO",
-    email: [{ email: "john.doe@acme.com", type: "Work" }],
-    phone: [{ number: "+1-555-0123", type: "Work" }],
+    email: [{ value: "john.doe@acme.com", type: "work" }],
+    phone: [{ value: "+1-555-0123", type: "work" }],
     organization_id: 1, // Single org relationship
     role: "decision_maker",
     purchase_influence: "High",
@@ -28,8 +28,8 @@ const mockContacts = [
     first_name: "Jane",
     last_name: "Smith",
     title: "VP Engineering",
-    email: [{ email: "jane.smith@techcorp.com", type: "Work" }],
-    phone: [{ number: "+1-555-0124", type: "Work" }],
+    email: [{ value: "jane.smith@techcorp.com", type: "work" }],
+    phone: [{ value: "+1-555-0124", type: "work" }],
     organization_id: 2, // Single org relationship
     role: "influencer",
     purchase_influence: "Medium",
@@ -40,8 +40,8 @@ const mockContacts = [
     first_name: "Bob",
     last_name: "Johnson",
     title: "Procurement Manager",
-    email: [{ email: "bob.johnson@global.com", type: "Work" }],
-    phone: [{ number: "+1-555-0125", type: "Work" }],
+    email: [{ value: "bob.johnson@global.com", type: "work" }],
+    phone: [{ value: "+1-555-0125", type: "work" }],
     organization_id: 3, // Single org relationship
     role: "buyer",
     purchase_influence: "High",

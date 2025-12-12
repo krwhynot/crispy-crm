@@ -120,8 +120,8 @@ describe("ContactShow", () => {
       last_name: "Doe",
       title: "Senior Engineer",
       department: "Engineering",
-      email: [{ email: "john@example.com", type: "Work" }],
-      phone: [{ number: "555-0100", type: "Work" }],
+      email: [{ value: "john@example.com", type: "work" }],
+      phone: [{ value: "555-0100", type: "work" }],
       organization_id: 1,
     });
 
