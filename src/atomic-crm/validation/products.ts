@@ -66,9 +66,9 @@ export const productSchema = z.strictObject({
   // NOTE: Using .nullish() to accept both undefined and null values
   certifications: z.array(z.string()).nullish(),
   allergens: z.array(z.string()).nullish(),
-  ingredients: z.string().nullish(),
+  ingredients: z.string().max(5000).nullish(),
   nutritional_info: z.record(z.any()).nullish(),
-  marketing_description: z.string().nullish(),
+  marketing_description: z.string().max(2000).nullish(),
 
   // Distributor-specific product codes (all optional, max 50 chars)
   usf_code: z.string().max(50, "USF code too long").nullish(),
@@ -135,7 +135,7 @@ export const opportunityProductSchema = z.strictObject({
   product_id_reference: z.coerce.number().int().positive("Product is required"),
   product_name: z.string().min(1, "Product name is required").max(255, "Product name too long"),
   product_category: z.string().optional(),
-  notes: z.string().optional(),
+  notes: z.string().max(500).optional(),
 });
 
 // Type inference for opportunity products
