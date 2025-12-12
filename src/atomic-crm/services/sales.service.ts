@@ -64,9 +64,9 @@ export class SalesService {
    */
   async salesUpdate(
     id: Identifier,
-    data: Partial<Omit<SalesFormData, "password">>
-  ): Promise<Partial<Omit<SalesFormData, "password">>> {
-    const { email, first_name, last_name, role, avatar, disabled } = data;
+    data: Partial<Omit<SalesFormData, "password">> & { deleted_at?: string }
+  ): Promise<Partial<Omit<SalesFormData, "password">> & { deleted_at?: string }> {
+    const { email, first_name, last_name, role, avatar, disabled, deleted_at } = data;
 
     if (!this.dataProvider.invoke) {
       devError("SalesService", "DataProvider missing invoke capability", {
@@ -90,6 +90,7 @@ export class SalesService {
           role,
           disabled,
           avatar,
+          deleted_at,
         },
       });
 
