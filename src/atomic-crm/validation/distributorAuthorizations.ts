@@ -15,7 +15,7 @@ import { z } from "zod";
  * Follows Engineering Constitution: Single validation at API boundary
  */
 export const distributorAuthorizationSchema = z
-  .object({
+  .strictObject({
     id: z.union([z.string(), z.number()]).optional(),
 
     // Required foreign keys
@@ -26,8 +26,8 @@ export const distributorAuthorizationSchema = z
     is_authorized: z.coerce.boolean().default(true),
     authorization_date: z.coerce.date().optional().nullable(),
     expiration_date: z.coerce.date().optional().nullable(),
-    territory_restrictions: z.array(z.string()).optional().nullable(),
-    notes: z.string().optional().nullable(),
+    territory_restrictions: z.array(z.string().max(255)).optional().nullable(),
+    notes: z.string().max(2000).optional().nullable(),
 
     // Audit fields (system-managed)
     created_by: z.coerce.number().int().optional().nullable(),
@@ -160,7 +160,7 @@ export const specialPricingSchema = z
  * @see supabase/migrations/20251129051625_add_product_distributor_authorizations.sql
  */
 export const productDistributorAuthorizationSchema = z
-  .object({
+  .strictObject({
     id: z.union([z.string(), z.number()]).optional(),
 
     // Required foreign keys
@@ -176,8 +176,8 @@ export const productDistributorAuthorizationSchema = z
     special_pricing: specialPricingSchema.optional().nullable(),
 
     // Territory restrictions (array)
-    territory_restrictions: z.array(z.string()).optional().nullable(),
-    notes: z.string().optional().nullable(),
+    territory_restrictions: z.array(z.string().max(255)).optional().nullable(),
+    notes: z.string().max(2000).optional().nullable(),
 
     // Audit fields (system-managed)
     created_by: z.coerce.number().int().optional().nullable(),

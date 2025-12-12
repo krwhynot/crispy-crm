@@ -19,7 +19,7 @@ import { z } from "zod";
  * Follows Engineering Constitution: Single validation at API boundary
  */
 export const organizationDistributorSchema = z
-  .object({
+  .strictObject({
     id: z.union([z.string(), z.number()]).optional(),
 
     // Required foreign keys
