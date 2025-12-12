@@ -1,8 +1,9 @@
 # Issue Report: Sales SlideOver Edit Returns 400 Error
 
 **Date:** 2025-12-12
-**Status:** ✅ FIXED
+**Status:** ✅ FIXED & VERIFIED
 **Severity:** High (blocks user self-edit functionality)
+**Resolution:** Removed duplicate client-side validation - Edge Function handles all validation
 
 ## Problem Statement
 
@@ -159,6 +160,21 @@ Use truthy checks in service layer - catches all empty strings regardless of for
 **Action:** Removed update validation for sales in ValidationService (Edge Function handles it)
 **Result:** ✅ Fixed!
 
+### Attempt 4: Component-Level Validation (ACTUAL FIX)
+**Date:** 2025-12-12 ~09:00
+**Investigation:** Re-traced data flow after "same issue" report
+**Discovery:** THIRD validation point - components call `validateUpdateSales()` directly!
+- `SalesProfileTab.tsx` line 60: `await validateUpdateSales({ id: record.id, ...formData })`
+- `SalesPermissionsTab.tsx` line 111: `await validateUpdateSales({ id: record.id, ...formData })`
+**Root Cause:** Component-level validation happens BEFORE even calling `useUpdate()`:
+```
+SalesProfileTab.tsx handleSave()
+  → validateUpdateSales(formData)     ← 400 ERROR HERE!
+  → useUpdate() never called!
+```
+**Action:** Removed `validateUpdateSales()` import and call from both components
+**Result:** ✅ Fixed! Edge Function handles validation correctly.
+
 ## Lessons Learned
 
 1. **Zod `.nullish()` does NOT accept empty strings** - only `null` and `undefined`
@@ -168,6 +184,7 @@ Use truthy checks in service layer - catches all empty strings regardless of for
 5. **Trace the FULL data flow** - fixes can be correct but unreachable if validation happens upstream
 6. **Avoid duplicate validation** - having Zod validation in both data provider AND Edge Function creates sync issues
 7. **`.partial()` doesn't help with empty strings** - it makes fields optional, but if provided, validators still run
+8. **Check ALL code paths** - validation can happen at component level, data provider level, and Edge Function level
 
 ## Actual Fix Applied (2025-12-12)
 
@@ -202,6 +219,8 @@ The validation happened **BEFORE** `salesService.salesUpdate()` could filter out
 |------|--------|
 | `src/atomic-crm/services/sales.service.ts` | Truthy checks for optional strings (lines 86-94) |
 | `src/atomic-crm/providers/supabase/services/ValidationService.ts` | Removed update validation for sales - Edge Function handles it |
+| `src/atomic-crm/sales/SalesProfileTab.tsx` | **Removed** `validateUpdateSales()` call - Edge Function validates |
+| `src/atomic-crm/sales/SalesPermissionsTab.tsx` | **Removed** `validateUpdateSales()` call - Edge Function validates |
 
 ### Fix Details
 
@@ -222,14 +241,15 @@ sales: {
 
 ### Data Flow (after fix)
 ```
-SalesProfileTab → useUpdate()
-  → unifiedDataProvider.update()
-    → processForDatabase()
+SalesProfileTab.tsx handleSave()
+  → NO validateUpdateSales() call (removed!)
+  → useUpdate() called immediately
+    → unifiedDataProvider.update()
       → ValidationService.validate() → NO update handler for sales → SKIP!
-    → salesService.salesUpdate()
-      → Truthy checks filter out avatar_url: ""
-      → Edge Function receives clean payload
-        → patchUserSchema validates → SUCCESS!
+      → salesService.salesUpdate()
+        → Truthy checks filter out avatar_url: ""
+        → Edge Function receives clean payload
+          → patchUserSchema validates → SUCCESS!
 ```
 
 ## Test Plan (Updated)

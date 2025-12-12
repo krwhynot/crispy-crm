@@ -24,7 +24,10 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Trash2 } from "lucide-react";
-import { validateUpdateSales } from "../validation/sales";
+// NOTE: Client-side validation removed (2025-12-12)
+// Edge Function /users PATCH handles validation with patchUserSchema
+// salesService.salesUpdate() filters empty strings before sending to Edge Function
+// Having duplicate validation here caused 400 errors from empty string avatar_url
 import { invalidateIdentityCache } from "../providers/supabase/authProvider";
 
 interface SalesPermissionsTabProps {
@@ -107,8 +110,8 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
   // Save changes
   const handleSave = async () => {
     try {
-      // Validate form data
-      await validateUpdateSales({ id: record.id, ...formData });
+      // NOTE: Client-side validation removed - Edge Function validates
+      // salesService.salesUpdate() filters empty strings before sending
 
       // Update record - CRITICAL: previousData required by ra-data-postgrest's getChanges()
       await update(
