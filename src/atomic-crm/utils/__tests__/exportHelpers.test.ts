@@ -9,53 +9,53 @@ import {
 describe("exportHelpers", () => {
   describe("extractEmailByType", () => {
     const emails = [
-      { email: "work@test.com", type: "Work" as const },
-      { email: "home@test.com", type: "Home" as const },
+      { value: "work@test.com", type: "work" as const },
+      { value: "home@test.com", type: "home" as const },
     ];
 
     it("extracts email by type", () => {
-      expect(extractEmailByType(emails, "Work")).toBe("work@test.com");
-      expect(extractEmailByType(emails, "Home")).toBe("home@test.com");
+      expect(extractEmailByType(emails, "work")).toBe("work@test.com");
+      expect(extractEmailByType(emails, "home")).toBe("home@test.com");
     });
 
     it("returns undefined for missing type", () => {
-      expect(extractEmailByType(emails, "Other")).toBeUndefined();
+      expect(extractEmailByType(emails, "other")).toBeUndefined();
     });
 
     it("handles undefined array", () => {
-      expect(extractEmailByType(undefined, "Work")).toBeUndefined();
+      expect(extractEmailByType(undefined, "work")).toBeUndefined();
     });
 
     it("handles empty array", () => {
-      expect(extractEmailByType([], "Work")).toBeUndefined();
+      expect(extractEmailByType([], "work")).toBeUndefined();
     });
   });
 
   describe("extractPhoneByType", () => {
     const phones = [
-      { number: "555-1234", type: "Work" as const },
-      { number: "555-5678", type: "Home" as const },
+      { value: "555-1234", type: "work" as const },
+      { value: "555-5678", type: "home" as const },
     ];
 
     it("extracts phone by type", () => {
-      expect(extractPhoneByType(phones, "Work")).toBe("555-1234");
-      expect(extractPhoneByType(phones, "Home")).toBe("555-5678");
+      expect(extractPhoneByType(phones, "work")).toBe("555-1234");
+      expect(extractPhoneByType(phones, "home")).toBe("555-5678");
     });
 
     it("returns undefined for missing type", () => {
-      expect(extractPhoneByType(phones, "Other")).toBeUndefined();
+      expect(extractPhoneByType(phones, "other")).toBeUndefined();
     });
 
     it("handles undefined array", () => {
-      expect(extractPhoneByType(undefined, "Work")).toBeUndefined();
+      expect(extractPhoneByType(undefined, "work")).toBeUndefined();
     });
   });
 
   describe("flattenEmailsForExport", () => {
     it("flattens emails to separate keys", () => {
       const emails = [
-        { email: "work@test.com", type: "Work" as const },
-        { email: "home@test.com", type: "Home" as const },
+        { value: "work@test.com", type: "work" as const },
+        { value: "home@test.com", type: "home" as const },
       ];
       const result = flattenEmailsForExport(emails);
       expect(result.email_work).toBe("work@test.com");
@@ -73,7 +73,7 @@ describe("exportHelpers", () => {
 
   describe("flattenPhonesForExport", () => {
     it("flattens phones to separate keys", () => {
-      const phones = [{ number: "555-1234", type: "Work" as const }];
+      const phones = [{ value: "555-1234", type: "work" as const }];
       const result = flattenPhonesForExport(phones);
       expect(result.phone_work).toBe("555-1234");
       expect(result.phone_home).toBeUndefined();

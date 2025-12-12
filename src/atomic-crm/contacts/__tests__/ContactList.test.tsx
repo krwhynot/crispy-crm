@@ -245,8 +245,8 @@ describe("ContactList", () => {
       id: 1,
       first_name: "John",
       last_name: "Doe",
-      email: [{ email: "john@example.com", type: "Work" }],
-      phone: [{ number: "555-0100", type: "Work" }],
+      email: [{ value: "john@example.com", type: "work" }],
+      phone: [{ value: "555-0100", type: "work" }],
       tags: [1, 2], // VIP and Lead tags
       company_name: "Tech Corp",
       organization_id: 1, // Single org relationship per PRD
@@ -259,7 +259,7 @@ describe("ContactList", () => {
       id: 2,
       first_name: "Jane",
       last_name: "Smith",
-      email: [{ email: "jane@example.com", type: "Personal" }],
+      email: [{ value: "jane@example.com", type: "other" }],
       tags: [3], // Customer tag
       company_name: "Health Inc",
       organization_id: 2, // Single org relationship per PRD
@@ -272,7 +272,7 @@ describe("ContactList", () => {
       id: 3,
       first_name: "Bob",
       last_name: "Wilson",
-      email: [{ email: "bob@example.com", type: "Other" }],
+      email: [{ value: "bob@example.com", type: "other" }],
       tags: [],
       company_name: null,
       organization_id: null, // No org (edge case)
@@ -662,12 +662,12 @@ describe("ContactList exporter", () => {
         first_name: "John",
         last_name: "Doe",
         email: [
-          { email: "john.work@example.com", type: "Work" },
-          { email: "john.home@example.com", type: "Home" },
+          { value: "john.work@example.com", type: "work" },
+          { value: "john.home@example.com", type: "home" },
         ],
         phone: [
-          { number: "555-0100", type: "Work" },
-          { number: "555-0200", type: "Mobile" },
+          { value: "555-0100", type: "work" },
+          { value: "555-0200", type: "mobile" },
         ],
         tags: [1, 2],
         organization_id: 1, // Single org relationship per PRD
@@ -707,10 +707,10 @@ describe("ContactList exporter", () => {
           tags: contact.tags
             .map((tagId: number) => tags[tagId as keyof typeof tags].name)
             .join(", "),
-          email_work: contact.email?.find((email: any) => email.type === "Work")?.email,
-          email_home: contact.email?.find((email: any) => email.type === "Home")?.email,
-          phone_work: contact.phone?.find((phone: any) => phone.type === "Work")?.number,
-          phone_mobile: contact.phone?.find((phone: any) => phone.type === "Mobile")?.number,
+          email_work: contact.email?.find((email: any) => email.type === "work")?.value,
+          email_home: contact.email?.find((email: any) => email.type === "home")?.value,
+          phone_work: contact.phone?.find((phone: any) => phone.type === "work")?.value,
+          phone_mobile: contact.phone?.find((phone: any) => phone.type === "mobile")?.value,
         };
       });
 

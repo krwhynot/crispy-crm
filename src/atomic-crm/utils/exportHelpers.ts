@@ -11,14 +11,14 @@ export function extractEmailByType(
   emails: EmailAndType[] | undefined,
   type: EmailType
 ): string | undefined {
-  return emails?.find((e) => e.type === type)?.email;
+  return emails?.find((e) => e.type === type)?.value;
 }
 
 export function extractPhoneByType(
   phones: PhoneNumberAndType[] | undefined,
   type: PhoneType
 ): string | undefined {
-  return phones?.find((p) => p.type === type)?.number;
+  return phones?.find((p) => p.type === type)?.value;
 }
 
 export function flattenEmailsForExport(emails: EmailAndType[] | undefined): {
@@ -27,9 +27,9 @@ export function flattenEmailsForExport(emails: EmailAndType[] | undefined): {
   email_other?: string;
 } {
   return {
-    email_work: extractEmailByType(emails, "Work"),
-    email_home: extractEmailByType(emails, "Home"),
-    email_other: extractEmailByType(emails, "Other"),
+    email_work: extractEmailByType(emails, "work"),
+    email_home: extractEmailByType(emails, "home"),
+    email_other: extractEmailByType(emails, "other"),
   };
 }
 
@@ -39,8 +39,8 @@ export function flattenPhonesForExport(phones: PhoneNumberAndType[] | undefined)
   phone_other?: string;
 } {
   return {
-    phone_work: extractPhoneByType(phones, "Work"),
-    phone_home: extractPhoneByType(phones, "Home"),
-    phone_other: extractPhoneByType(phones, "Other"),
+    phone_work: extractPhoneByType(phones, "work"),
+    phone_home: extractPhoneByType(phones, "home"),
+    phone_other: extractPhoneByType(phones, "other"),
   };
 }
