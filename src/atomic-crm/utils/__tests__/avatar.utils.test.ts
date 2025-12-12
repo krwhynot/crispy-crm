@@ -62,7 +62,7 @@ describe("processContactAvatar", () => {
         title: "User uploaded avatar",
       };
       const contactData: Partial<Contact> = {
-        email: [{ email: "test@example.com", type: "Work" }],
+        email: [{ value: "test@example.com", type: "work" }],
         avatar: existingAvatar,
       };
 
@@ -95,7 +95,7 @@ describe("processContactAvatar", () => {
       mockFetch.mockResolvedValueOnce({ ok: true });
 
       const contactData: Partial<Contact> = {
-        email: [{ email: "user@company.com", type: "Work" }],
+        email: [{ value: "user@company.com", type: "work" }],
         // No avatar
       };
 
@@ -114,7 +114,7 @@ describe("processContactAvatar", () => {
       vi.mocked(fetchWithTimeout).mockResolvedValueOnce({ ok: true } as Response);
 
       const contactData: Partial<Contact> = {
-        email: [{ email: "user@acme-corp.com", type: "Work" }],
+        email: [{ value: "user@acme-corp.com", type: "work" }],
       };
 
       const result = await processContactAvatar(contactData);
@@ -131,7 +131,7 @@ describe("processContactAvatar", () => {
       vi.mocked(fetchWithTimeout).mockResolvedValueOnce({ ok: false } as Response);
 
       const contactData: Partial<Contact> = {
-        email: [{ email: "user@obscure-domain.com", type: "Work" }],
+        email: [{ value: "user@obscure-domain.com", type: "work" }],
       };
 
       const result = await processContactAvatar(contactData);
@@ -145,7 +145,7 @@ describe("processContactAvatar", () => {
       mockFetch.mockResolvedValueOnce({ ok: false });
 
       const contactData: Partial<Contact> = {
-        email: [{ email: "user@gmail.com", type: "Work" }],
+        email: [{ value: "user@gmail.com", type: "work" }],
       };
 
       const result = await processContactAvatar(contactData);
@@ -163,8 +163,8 @@ describe("processContactAvatar", () => {
 
       const contactData: Partial<Contact> = {
         email: [
-          { email: "user@gmail.com", type: "Home" }, // Blocked domain
-          { email: "user@company.com", type: "Work" }, // Should succeed
+          { value: "user@gmail.com", type: "home" }, // Blocked domain
+          { value: "user@company.com", type: "work" }, // Should succeed
         ],
       };
 
@@ -211,7 +211,7 @@ describe("processContactAvatar", () => {
       vi.mocked(fetchWithTimeout).mockResolvedValueOnce({ ok: true } as Response);
 
       const contactData: Partial<Contact> = {
-        email: [{ email: "user@example.com", type: "Work" }],
+        email: [{ value: "user@example.com", type: "work" }],
       };
 
       const result = await processContactAvatar(contactData);
@@ -227,7 +227,7 @@ describe("processContactAvatar", () => {
       vi.mocked(fetchWithTimeout).mockRejectedValueOnce(new Error("Timeout"));
 
       const contactData: Partial<Contact> = {
-        email: [{ email: "user@example.com", type: "Work" }],
+        email: [{ value: "user@example.com", type: "work" }],
       };
 
       const result = await processContactAvatar(contactData);
@@ -397,7 +397,7 @@ describe("getContactAvatar", () => {
     mockFetch.mockResolvedValueOnce({ ok: true });
 
     const result = await getContactAvatar({
-      email: [{ email: "test@example.com", type: "Work" }],
+      email: [{ value: "test@example.com", type: "work" }],
     });
 
     expect(result).toContain("gravatar.com/avatar/");
