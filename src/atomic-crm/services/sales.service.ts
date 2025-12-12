@@ -81,16 +81,17 @@ export class SalesService {
     }
 
     try {
-      // Build body with only defined values - prevents null serialization issues with Zod strictObject
+      // Build body with only truthy values for strings, !== undefined for booleans/enums
+      // Empty strings ("") must be excluded: Zod .url().nullish() rejects "" but accepts null/undefined
       const body: Record<string, unknown> = { sales_id: id };
-      if (email !== undefined) body.email = email;
-      if (first_name !== undefined) body.first_name = first_name;
-      if (last_name !== undefined) body.last_name = last_name;
-      if (phone !== undefined) body.phone = phone;
-      if (role !== undefined) body.role = role;
-      if (disabled !== undefined) body.disabled = disabled;
-      if (avatar_url !== undefined) body.avatar_url = avatar_url;
-      if (deleted_at !== undefined) body.deleted_at = deleted_at;
+      if (email) body.email = email;
+      if (first_name) body.first_name = first_name;
+      if (last_name) body.last_name = last_name;
+      if (phone) body.phone = phone;
+      if (role !== undefined) body.role = role;  // enum - keep !== undefined
+      if (disabled !== undefined) body.disabled = disabled;  // boolean - false is valid
+      if (avatar_url) body.avatar_url = avatar_url;
+      if (deleted_at) body.deleted_at = deleted_at;
 
       const sale = await this.dataProvider.invoke<Sale>("users", {
         method: "PATCH",

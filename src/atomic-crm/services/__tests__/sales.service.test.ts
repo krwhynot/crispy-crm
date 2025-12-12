@@ -100,8 +100,10 @@ describe("SalesService", () => {
 
       await expect(service.salesCreate(mockSalesFormData)).rejects.toThrow();
 
+      // devError calls console.error with 3 arguments: component, message, context
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining("[SalesService] Failed to create account manager"),
+        "[SalesService]",
+        "Failed to create account manager",
         expect.objectContaining({
           body: mockSalesFormData,
           error: expect.any(Error),
@@ -171,22 +173,24 @@ describe("SalesService", () => {
         email: "updated@example.com",
         first_name: "Jane",
         last_name: "Smith",
-        administrator: true,
+        role: "admin" as const,
         disabled: false,
-        avatar: "https://example.com/new-avatar.jpg",
+        avatar_url: "https://example.com/new-avatar.jpg",
       };
 
       const mockUpdatedSale: Sale = {
         id: salesId,
         user_id: "uuid-123",
         ...updateData,
-        avatar: { src: updateData.avatar },
+        avatar: { src: updateData.avatar_url },
       };
 
       mockDataProvider.invoke = vi.fn().mockResolvedValue(mockUpdatedSale);
 
       const result = await service.salesUpdate(salesId, updateData);
 
+      // Note: role uses !== undefined check (enum), disabled uses !== undefined check (boolean)
+      // String fields use truthy checks - empty strings excluded
       expect(mockDataProvider.invoke).toHaveBeenCalledWith("users", {
         method: "PATCH",
         body: {
@@ -194,9 +198,9 @@ describe("SalesService", () => {
           email: updateData.email,
           first_name: updateData.first_name,
           last_name: updateData.last_name,
-          administrator: updateData.administrator,
+          role: updateData.role,
           disabled: updateData.disabled,
-          avatar: updateData.avatar,
+          avatar_url: updateData.avatar_url,
         },
       });
       expect(result).toEqual(updateData);
@@ -257,24 +261,26 @@ describe("SalesService", () => {
       });
     });
 
-    test("should handle undefined fields in update data", async () => {
+    test("should exclude falsy/undefined fields from update body", async () => {
       const updateData = {
         first_name: "John",
-        last_name: undefined,
-        email: undefined,
+        last_name: undefined,  // undefined - excluded
+        email: "",             // empty string - excluded (truthy check)
       };
 
       mockDataProvider.invoke = vi.fn().mockResolvedValue({ id: 1 } as Sale);
 
       await service.salesUpdate(1, updateData);
 
+      // Only truthy string values should be included
+      // undefined and empty strings are excluded to prevent Zod validation errors
       expect(mockDataProvider.invoke).toHaveBeenCalledWith("users", {
         method: "PATCH",
-        body: expect.objectContaining({
+        body: {
+          sales_id: 1,
           first_name: "John",
-          last_name: undefined,
-          email: undefined,
-        }),
+          // last_name and email NOT included (falsy values)
+        },
       });
     });
 
@@ -285,8 +291,10 @@ describe("SalesService", () => {
       const updateData = { first_name: "John" };
       await expect(service.salesUpdate(1, updateData)).rejects.toThrow();
 
+      // devError calls console.error with 3 arguments: component, message, context
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining("[SalesService] Failed to update account manager"),
+        "[SalesService]",
+        "Failed to update account manager",
         expect.objectContaining({
           id: 1,
           data: updateData,
@@ -382,8 +390,10 @@ describe("SalesService", () => {
 
       await expect(service.updatePassword(1)).rejects.toThrow();
 
+      // devError calls console.error with 3 arguments: component, message, context
       expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining("[SalesService] Failed to update password"),
+        "[SalesService]",
+        "Failed to update password",
         expect.objectContaining({
           id: 1,
           error: expect.any(Error),
