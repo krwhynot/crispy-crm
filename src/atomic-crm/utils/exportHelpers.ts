@@ -3,8 +3,9 @@
  */
 import type { EmailAndType, PhoneNumberAndType } from "../types";
 
-export type EmailType = "Work" | "Home" | "Other";
-export type PhoneType = "Work" | "Home" | "Other";
+// Lowercase to match Zod schema (personalInfoTypeSchema)
+export type EmailType = "work" | "home" | "other";
+export type PhoneType = "work" | "home" | "other";
 
 export function extractEmailByType(
   emails: EmailAndType[] | undefined,
