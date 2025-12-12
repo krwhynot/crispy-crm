@@ -29,14 +29,16 @@ const isLinkedinUrl = z
   .nullable();
 
 // Email and phone sub-schemas for JSONB arrays
+// Field is "value" (not "email") to match database JSONB format
 export const emailAndTypeSchema = z.strictObject({
-  email: z.string().email("Invalid email address").max(254, "Email too long"),
-  type: personalInfoTypeSchema.default("Work"),
+  value: z.string().email("Invalid email address").max(254, "Email too long"),
+  type: personalInfoTypeSchema.default("work"),
 });
 
+// Field is "value" (not "number") to match database JSONB format
 export const phoneNumberAndTypeSchema = z.strictObject({
-  number: z.string().max(30, "Phone number too long"),
-  type: personalInfoTypeSchema.default("Work"),
+  value: z.string().max(30, "Phone number too long"),
+  type: personalInfoTypeSchema.default("work"),
 });
 
 // Note: Legacy schemas removed per Engineering Constitution #1 (NO BACKWARD COMPATIBILITY)
@@ -122,18 +124,34 @@ export const contactBaseSchema = z.strictObject({
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)),
 
-  // Note: The following fields exist in database but are NOT validated
-  // because they have no UI input fields in ContactInputs.tsx (per "UI as truth" principle):
-  // - address, city, state, postal_code, country
-  // - birthday, gender
-  // - twitter_handle
-  // - tags (array field handled separately)
+  // Address fields - exist in DB, may not have UI inputs yet
+  address: z.string().max(500, "Address too long").optional().nullable(),
+  city: z.string().max(100, "City too long").optional().nullable(),
+  state: z.string().max(100, "State too long").optional().nullable(),
+  postal_code: z.string().max(20, "Postal code too long").optional().nullable(),
+  country: z.string().max(100, "Country too long").optional().nullable(),
+
+  // Personal info fields - exist in DB
+  birthday: z.coerce.date().optional().nullable(),
+  gender: z.string().max(50, "Gender too long").optional().nullable(),
+  twitter_handle: z.string().max(100, "Twitter handle too long").optional().nullable(),
+
+  // Classification fields - exist in DB
+  tags: z.array(z.string()).default([]),
+  status: z.string().max(50, "Status too long").optional().nullable(),
+
+  // System fields (readonly, set by triggers)
+  updated_by: z.union([z.string(), z.number()]).optional().nullable(),
+
+  // Computed fields from views/joins (readonly, not written to DB)
+  nb_notes: z.number().optional(),
+  nb_activities: z.number().optional(),
 });
 
-// Email entry type for iteration
+// Email entry type for iteration - matches database JSONB format
 interface EmailEntry {
-  email: string;
-  type?: "Work" | "Home" | "Other";
+  value: string;
+  type?: "work" | "home" | "other";
 }
 
 // Helper function to transform data
@@ -177,10 +195,10 @@ export const contactSchema = contactBaseSchema
     if (data.email && Array.isArray(data.email)) {
       const emailValidator = z.string().email("Invalid email address");
       data.email.forEach((entry: EmailEntry, index: number) => {
-        if (entry.email && !emailValidator.safeParse(entry.email).success) {
+        if (entry.value && !emailValidator.safeParse(entry.value).success) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            path: ["email", index, "email"],
+            path: ["email", index, "value"],
             message: "Must be a valid email address",
           });
         }
@@ -348,10 +366,10 @@ export async function validateContactForm(data: unknown): Promise<void> {
     if (data.email && Array.isArray(data.email)) {
       const emailValidator = z.string().email("Invalid email address");
       data.email.forEach((entry: EmailEntry, index: number) => {
-        if (entry.email && !emailValidator.safeParse(entry.email).success) {
+        if (entry.value && !emailValidator.safeParse(entry.value).success) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
-            path: ["email", index, "email"],
+            path: ["email", index, "value"],
             message: "Must be a valid email address",
           });
         }
@@ -362,11 +380,11 @@ export async function validateContactForm(data: unknown): Promise<void> {
     if (data.email && Array.isArray(data.email) && data.email.length > 0) {
       // Validate each email entry
       (data.email as EmailEntry[]).forEach((entry: EmailEntry, index: number) => {
-        if (!entry.email || entry.email.trim() === "") {
+        if (!entry.value || entry.value.trim() === "") {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             message: "Email address is required",
-            path: ["email", index, "email"],
+            path: ["email", index, "value"],
           });
         }
       });
