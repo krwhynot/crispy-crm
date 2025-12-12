@@ -11,7 +11,8 @@ import { useFormContext } from "react-hook-form";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import * as React from "react";
 
-const personalInfoTypes = [{ id: "Work" }, { id: "Home" }, { id: "Other" }];
+// Lowercase type values to match Zod schema (personalInfoTypeSchema)
+const personalInfoTypes = [{ id: "work" }, { id: "home" }, { id: "other" }];
 
 export const ContactCompactForm = () => {
   const { setValue, getValues } = useFormContext();
@@ -91,7 +92,7 @@ export const ContactCompactForm = () => {
             className="[&>ul>li]:border-b-0 [&>ul>li]:pb-0"
           >
             <TextInput
-              source="email"
+              source="value"
               className="w-full"
               helperText={false}
               label={false}
@@ -121,7 +122,7 @@ export const ContactCompactForm = () => {
             className="[&>ul>li]:border-b-0 [&>ul>li]:pb-0"
           >
             <TextInput
-              source="number"
+              source="value"
               className="w-full"
               helperText={false}
               label={false}

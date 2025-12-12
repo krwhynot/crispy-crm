@@ -80,13 +80,13 @@ export interface OrganizationWithHierarchy extends Organization {
 }
 
 export interface EmailAndType {
-  email: string;
-  type: "Work" | "Home" | "Other";
+  value: string;
+  type: "work" | "home" | "other";
 }
 
 export interface PhoneNumberAndType {
-  number: string;
-  type: "Work" | "Home" | "Other";
+  value: string;
+  type: "work" | "home" | "other";
 }
 
 export interface Contact extends Pick<RaRecord, "id"> {
