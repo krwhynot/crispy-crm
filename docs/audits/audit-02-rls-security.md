@@ -19,7 +19,7 @@ The Crispy CRM database security implementation is production-ready for MVP laun
 | SECURITY INVOKER | ✅ Complete | All views properly secured |
 | SECURITY DEFINER | ✅ Hardened | All functions have search_path protection |
 | RBAC Implementation | ✅ Complete | 3-tier model (admin/manager/rep) |
-| Soft-Delete Pattern | ⚠️ 1 Gap | product_distributor_authorizations |
+| Soft-Delete Pattern | ✅ Complete | All tables covered (verified 2025-12-12) |
 | Audit Trail | ✅ Complete | Field-level change tracking |
 
 ---
@@ -48,7 +48,7 @@ The Crispy CRM database security implementation is production-ready for MVP laun
 | `interaction_participants` | ✅ | All auth | All auth | Creator/Owner/Mgr | Admin only | ✅ |
 | `organization_distributors` | ✅ | All auth | All auth | All auth | All auth | ✅ |
 | `distributor_principal_authorizations` | ✅ | All auth | All auth | All auth | All auth | ✅ |
-| `product_distributor_authorizations` | ✅ | All auth | All auth | All auth | All auth | ⚠️ Missing |
+| `product_distributor_authorizations` | ✅ | All auth | All auth | All auth | All auth | ✅ |
 
 ### Notes & Supporting Tables
 
@@ -70,14 +70,15 @@ The Crispy CRM database security implementation is production-ready for MVP laun
 
 No critical data leak vulnerabilities found. All tables have RLS enabled with appropriate policies.
 
-### P1 - High (Fix within 1 week): 1 Issue
+### P1 - High (Fix within 1 week): RESOLVED ✅
 
-#### P1-001: Missing soft-delete on product_distributor_authorizations
+#### P1-001: Missing soft-delete on product_distributor_authorizations - FIXED
 - **Table:** `product_distributor_authorizations`
-- **Issue:** Table lacks `deleted_at` column, inconsistent with soft-delete pattern
-- **Risk:** Hard deletes lose audit trail, cannot recover authorization data
-- **Remediation:** Add `deleted_at TIMESTAMPTZ` column, update RLS policies to filter
-- **File:** New migration required
+- **Issue:** ~~Table lacks `deleted_at` column, inconsistent with soft-delete pattern~~ RESOLVED
+- **Status:** ✅ Verified in cloud 2025-12-12
+- **Evidence:** Column exists (`timestamp with time zone`), RLS SELECT policy includes `deleted_at IS NULL`
+- **Original Risk:** Hard deletes lose audit trail, cannot recover authorization data
+- **Resolution:** Migration applied, soft-delete now enforced
 
 ### P2 - Medium (Fix before launch): 2 Issues
 
@@ -385,12 +386,14 @@ Update `docs/database-schema.md` to reflect:
 
 ## Success Criteria
 
-- [ ] Migration applies without errors
-- [ ] `deleted_at` column exists on product_distributor_authorizations
-- [ ] RLS SELECT policy includes `deleted_at IS NULL` filter
-- [ ] Verification queries return expected results
-- [ ] No data loss (existing records unaffected)
+- [x] Migration applies without errors
+- [x] `deleted_at` column exists on product_distributor_authorizations
+- [x] RLS SELECT policy includes `deleted_at IS NULL` filter
+- [x] Verification queries return expected results
+- [x] No data loss (existing records unaffected)
+
+**Verified:** 2025-12-12 via cloud SQL query (`mcp__supabase__execute_sql`)
 
 ---
 
-**Audit Complete** - P1 remediation plan ready for execution.
+**Audit Complete** - All P1 issues resolved. P2 items remain in backlog for pre-launch cleanup.

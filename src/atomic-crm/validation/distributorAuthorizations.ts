@@ -144,7 +144,7 @@ export const specialPricingSchema = z
     discount_percent: z.coerce.number().min(0).max(100).optional(),
     min_quantity: z.coerce.number().int().positive().optional(),
     max_quantity: z.coerce.number().int().positive().optional(),
-    notes: z.string().optional(),
+    notes: z.string().max(500).optional(),
   })
   .passthrough(); // Allow additional fields for flexibility
 
