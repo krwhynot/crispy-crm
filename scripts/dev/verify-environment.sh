@@ -8,16 +8,16 @@ YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
-# Load environment variables from .env.production
-if [ -f ".env.production" ]; then
-  export $(grep -v '^#' .env.production | xargs)
-elif [ -f "../.env.production" ]; then
-  export $(grep -v '^#' ../.env.production | xargs)
-elif [ -f "../../.env.production" ]; then
-  export $(grep -v '^#' ../../.env.production | xargs)
+# Load environment variables from .env.cloud
+if [ -f ".env.cloud" ]; then
+  export $(grep -v '^#' .env.cloud | xargs)
+elif [ -f "../.env.cloud" ]; then
+  export $(grep -v '^#' ../.env.cloud | xargs)
+elif [ -f "../../.env.cloud" ]; then
+  export $(grep -v '^#' ../../.env.cloud | xargs)
 else
-  echo -e "${RED}❌ Error: .env.production file not found${NC}"
-  echo "Please ensure DATABASE_URL_PRODUCTION is set in .env.production"
+  echo -e "${RED}❌ Error: .env.cloud file not found${NC}"
+  echo "Please ensure CLOUD_DB is set in .env.cloud"
   exit 1
 fi
 
