@@ -25,6 +25,7 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Trash2 } from "lucide-react";
 import { validateUpdateSales } from "../validation/sales";
+import { invalidateIdentityCache } from "../providers/supabase/authProvider";
 
 interface SalesPermissionsTabProps {
   record: any;
@@ -115,6 +116,10 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
         { id: record.id, data: formData, previousData: record },
         {
           onSuccess: () => {
+            // If role changed, invalidate cache so user sees new permissions immediately
+            if (formData.role !== record.role) {
+              invalidateIdentityCache();
+            }
             notify("Permissions updated successfully", { type: "success" });
             if (onModeToggle) onModeToggle(); // Switch back to view mode
           },
