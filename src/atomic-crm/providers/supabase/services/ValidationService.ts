@@ -137,7 +137,14 @@ export class ValidationService {
     },
     sales: {
       create: async (data: unknown) => validateSalesForm(data),
-      update: async (data: unknown) => validateSalesForm(data),
+      // INTENTIONALLY NO UPDATE VALIDATION - Edge Function handles it
+      // Bug fix (2025-12-12): updateSalesSchema (and salesSchema.partial()) rejects
+      // empty strings like avatar_url: "" because .url() validator runs on any string.
+      // The data flow is: form → unifiedDataProvider → salesService → Edge Function.
+      // salesService.salesUpdate() filters out empty strings with truthy checks.
+      // Edge Function /users PATCH does final Zod validation.
+      // Duplicate validation here was causing 400 errors before salesService could filter.
+      // update: undefined (intentionally omitted)
     },
     activities: {
       create: async (data: unknown) => validateActivitiesForm(data),

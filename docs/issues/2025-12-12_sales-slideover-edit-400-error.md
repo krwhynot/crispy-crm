@@ -1,7 +1,7 @@
 # Issue Report: Sales SlideOver Edit Returns 400 Error
 
 **Date:** 2025-12-12
-**Status:** Root Cause Identified, Fix Pending
+**Status:** ✅ FIXED
 **Severity:** High (blocks user self-edit functionality)
 
 ## Problem Statement
@@ -132,12 +132,115 @@ Use truthy checks in service layer - catches all empty strings regardless of for
 |------|--------|
 | `src/atomic-crm/services/sales.service.ts` | Update conditionals on lines 86-93 |
 
+## Debugging Attempts Timeline
+
+### Attempt 1: RLS Policy Fix (INCORRECT HYPOTHESIS)
+**Date:** 2025-12-12 ~02:00
+**Hypothesis:** RLS policy `update_sales` grants to `{public}` instead of `{authenticated}`
+**Action:** Created migration `20251212021008_fix_update_sales_policy_role.sql`
+**Result:** ❌ Issue persisted - 400 error still occurring
+**Learning:** RLS errors return 403, not 400. This was a red herring.
+
+### Attempt 2: Empty String Filtering in SalesService (CORRECT BUT INCOMPLETE)
+**Date:** 2025-12-12 ~02:30
+**Hypothesis:** Empty string `avatar_url: ""` fails Zod `.url()` validation in Edge Function
+**Action:** Changed `sales.service.ts` conditionals from `!== undefined` to truthy checks
+**Result:** ❌ Issue persisted - "nothing changed"
+**Learning:** The fix was correct but never executed because validation happened earlier in the pipeline.
+
+### Attempt 3: Trace Full Data Flow (ROOT CAUSE FOUND)
+**Date:** 2025-12-12 ~08:30
+**Investigation:** Traced data flow from SalesProfileTab through unifiedDataProvider
+**Discovery:** `ValidationService.ts` calls `validateSalesForm()` for sales updates BEFORE `salesService.salesUpdate()` is reached
+**Root Cause:**
+- `validateSalesForm()` uses `salesSchema` which is `z.strictObject()`
+- `avatar_url: z.string().url()` rejects empty string `""`
+- Validation fails → 400 error → `salesService.salesUpdate()` never called
+**Action:** Removed update validation for sales in ValidationService (Edge Function handles it)
+**Result:** ✅ Fixed!
+
 ## Lessons Learned
 
 1. **Zod `.nullish()` does NOT accept empty strings** - only `null` and `undefined`
 2. **`!== undefined` check lets empty strings through** - use truthy checks for optional strings
 3. **Edge Function 400 errors need payload inspection** - the error message "Invalid avatar URL" wasn't visible in logs
 4. **Defense in depth:** Service layer should sanitize data even if forms should do it too
+5. **Trace the FULL data flow** - fixes can be correct but unreachable if validation happens upstream
+6. **Avoid duplicate validation** - having Zod validation in both data provider AND Edge Function creates sync issues
+7. **`.partial()` doesn't help with empty strings** - it makes fields optional, but if provided, validators still run
+
+## Actual Fix Applied (2025-12-12)
+
+### Why The Initial Fix Didn't Work
+
+The initial fix in `sales.service.ts` was **correct** but **never executed**. Here's why:
+
+**Data Flow (before fix):**
+```
+SalesProfileTab → useUpdate()
+  → unifiedDataProvider.update()
+    → processForDatabase()
+      → ValidationService.validate("sales", "update", data)
+        → validateSalesForm() uses salesSchema (z.strictObject)
+          → avatar_url: z.string().url() REJECTS empty string ""
+            → 400 ERROR HERE!
+    → salesService.salesUpdate() ← NEVER REACHED!
+```
+
+The validation happened **BEFORE** `salesService.salesUpdate()` could filter out empty strings!
+
+### The Real Root Cause
+
+`ValidationService.ts` was using `validateSalesForm()` for sales updates, which uses the strict `salesSchema`:
+- `salesSchema` is `z.strictObject()` with `avatar_url: z.string().url()`
+- Empty string `""` is a string, so `.url()` validator runs and **rejects it**
+- Even `updateSalesSchema = salesSchema.partial()` has the same issue - `.partial()` makes fields optional, but if provided, validators still run
+
+### Files Modified
+
+| File | Change |
+|------|--------|
+| `src/atomic-crm/services/sales.service.ts` | Truthy checks for optional strings (lines 86-94) |
+| `src/atomic-crm/providers/supabase/services/ValidationService.ts` | Removed update validation for sales - Edge Function handles it |
+
+### Fix Details
+
+**ValidationService.ts** - Removed local update validation for sales:
+```typescript
+sales: {
+  create: async (data: unknown) => validateSalesForm(data),
+  // INTENTIONALLY NO UPDATE VALIDATION - Edge Function handles it
+  // update: undefined (intentionally omitted)
+},
+```
+
+**Why this is correct:**
+1. Edge Function `/users PATCH` already has Zod validation (`patchUserSchema`)
+2. `salesService.salesUpdate()` filters empty strings with truthy checks
+3. Duplicate validation was causing the 400 error before filtering could happen
+4. Defense in depth: Edge Function is the authoritative validator
+
+### Data Flow (after fix)
+```
+SalesProfileTab → useUpdate()
+  → unifiedDataProvider.update()
+    → processForDatabase()
+      → ValidationService.validate() → NO update handler for sales → SKIP!
+    → salesService.salesUpdate()
+      → Truthy checks filter out avatar_url: ""
+      → Edge Function receives clean payload
+        → patchUserSchema validates → SUCCESS!
+```
+
+## Test Plan (Updated)
+
+1. Login as `admin@test.com`
+2. Open Sales SlideOver (click own name in sales list)
+3. Edit `first_name` field
+4. Click "Save Changes"
+5. Verify success notification (no error)
+6. Refresh page, verify change persisted
+7. **Also test:** Leave avatar URL empty and save - should work
 
 ## Related Issues
 
