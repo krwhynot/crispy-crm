@@ -6,8 +6,8 @@ import { sanitizeHtml } from "@/lib/sanitization";
  * Implements validation rules from ContactInputs.tsx
  */
 
-// Email and phone type enum
-export const personalInfoTypeSchema = z.enum(["Work", "Home", "Other"]);
+// Email and phone type enum - lowercase to match database JSONB format
+export const personalInfoTypeSchema = z.enum(["work", "home", "other"]);
 
 // LinkedIn URL validation
 const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin\.com\//;
