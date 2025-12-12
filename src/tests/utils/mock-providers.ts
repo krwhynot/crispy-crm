@@ -222,14 +222,14 @@ export const createMockContact = (overrides?: any) => ({
   last_name: faker.person.lastName(),
   email: [
     {
-      email: faker.internet.email(),
-      type: faker.helpers.arrayElement(["Work", "Personal", "Other"]),
+      value: faker.internet.email(),
+      type: faker.helpers.arrayElement(["work", "home", "other"] as const),
     },
   ],
   phone: [
     {
-      number: faker.phone.number(),
-      type: faker.helpers.arrayElement(["Work", "Mobile", "Home", "Other"]),
+      value: faker.phone.number(),
+      type: faker.helpers.arrayElement(["work", "home", "other"] as const),
     },
   ],
   title: faker.person.jobTitle(),
@@ -320,18 +320,18 @@ export const createMockTask = (overrides?: any) => ({
 /**
  * Create an email array in JSONB format for contacts
  * @param emails Array of email objects with optional type
- * @returns JSONB-formatted email array
+ * @returns JSONB-formatted email array matching Zod schema: { value, type: "work" | "home" | "other" }
  */
-export const createEmailArray = (emails: { email: string; type?: string }[]) =>
-  emails.map(({ email, type = "Work" }) => ({ email, type }));
+export const createEmailArray = (emails: { value: string; type?: "work" | "home" | "other" }[]) =>
+  emails.map(({ value, type = "work" }) => ({ value, type }));
 
 /**
  * Create a phone array in JSONB format for contacts
  * @param phones Array of phone objects with optional type
- * @returns JSONB-formatted phone array
+ * @returns JSONB-formatted phone array matching Zod schema: { value, type: "work" | "home" | "other" }
  */
-export const createPhoneArray = (phones: { number: string; type?: string }[]) =>
-  phones.map(({ number, type = "Work" }) => ({ number, type }));
+export const createPhoneArray = (phones: { value: string; type?: "work" | "home" | "other" }[]) =>
+  phones.map(({ value, type = "work" }) => ({ value, type }));
 
 /**
  * API Error Simulation Helpers

@@ -204,7 +204,7 @@ export function extractEmailDomain(email: string): string {
  * @returns True if email is valid for avatar generation
  */
 export function isValidEmailForAvatar(email: string): boolean {
-  const result = emailAndTypeSchema.shape.email.safeParse(email);
+  const result = emailAndTypeSchema.shape.value.safeParse(email);
   return result.success;
 }
 

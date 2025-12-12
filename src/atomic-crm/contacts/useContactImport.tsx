@@ -183,16 +183,16 @@ export function useContactImport() {
 
           try {
             const email = [
-              { email: email_work, type: "Work" },
-              { email: email_home, type: "Home" },
-              { email: email_other, type: "Other" },
-            ].filter(({ email }) => email);
+              { value: email_work, type: "work" as const },
+              { value: email_home, type: "home" as const },
+              { value: email_other, type: "other" as const },
+            ].filter(({ value }) => value);
 
             const phone = [
-              { number: phone_work, type: "Work" },
-              { number: phone_home, type: "Home" },
-              { number: phone_other, type: "Other" },
-            ].filter(({ number }) => number);
+              { value: phone_work, type: "work" as const },
+              { value: phone_home, type: "home" as const },
+              { value: phone_other, type: "other" as const },
+            ].filter(({ value }) => value);
 
             const tagList = parseTags(tagNames)
               .map((name) => tags.get(name))
