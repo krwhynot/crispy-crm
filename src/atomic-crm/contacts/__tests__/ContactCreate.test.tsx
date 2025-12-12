@@ -261,9 +261,9 @@ describe("ContactCreate", () => {
 
     test("phone array follows correct JSONB structure", () => {
       const phoneArray = createPhoneArray([
-        { number: "+1-555-0100", type: "Work" },
-        { number: "+1-555-0200", type: "Home" },
-        { number: "+1-555-0300", type: "Other" },
+        { value: "+1-555-0100", type: "work" },
+        { value: "+1-555-0200", type: "home" },
+        { value: "+1-555-0300", type: "other" },
       ]);
 
       // Validate phone array structure
@@ -271,15 +271,15 @@ describe("ContactCreate", () => {
       expect(phoneArray).toHaveLength(3);
 
       phoneArray.forEach((phoneEntry) => {
-        // Each entry must have number and type
-        expect(phoneEntry).toHaveProperty("number");
+        // Each entry must have value and type
+        expect(phoneEntry).toHaveProperty("value");
         expect(phoneEntry).toHaveProperty("type");
 
         // Type must be one of the allowed values
-        expect(["Work", "Home", "Mobile", "Other"]).toContain(phoneEntry.type);
+        expect(["work", "home", "other"]).toContain(phoneEntry.type);
 
         // Number should be a string
-        expect(typeof phoneEntry.number).toBe("string");
+        expect(typeof phoneEntry.value).toBe("string");
       });
 
       // Test transform preserves the structure
