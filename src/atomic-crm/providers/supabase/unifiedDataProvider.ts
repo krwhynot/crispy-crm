@@ -660,6 +660,13 @@ export const unifiedDataProvider: DataProvider = {
         return { data: result as unknown as RecordType };
       }
 
+      // Delegate sales update to Edge Function (RLS prevents direct PostgREST updates)
+      // The sales table is protected - updates must go through /functions/v1/users
+      if (resource === "sales") {
+        const result = await salesService.salesUpdate(params.id, processedData as any);
+        return { data: { ...params.previousData, ...result, id: params.id } as RecordType };
+      }
+
       // Execute update
       const result = await baseDataProvider.update(dbResource, {
         ...params,

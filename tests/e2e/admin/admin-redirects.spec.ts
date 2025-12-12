@@ -36,9 +36,11 @@ test.describe("Admin Route Redirects", () => {
     await page.goto("/#/sales");
     await expect(page.getByRole("table")).toBeVisible({ timeout: 10000 });
 
-    // Click first row to get a valid ID
-    const firstRow = page.getByRole("row").nth(1);
-    await firstRow.click();
+    // Click first row's first cell (First Name column) to get a valid ID
+    // IMPORTANT: Must click cell without interactive elements (email links intercept clicks)
+    const firstDataRow = page.getByRole("row").nth(1);
+    const firstNameCell = firstDataRow.getByRole("cell").first();
+    await firstNameCell.click();
 
     // Wait for SlideOver to open first (pushState doesn't trigger navigation events)
     await expect(page.getByRole("dialog")).toBeVisible({ timeout: 10000 });
