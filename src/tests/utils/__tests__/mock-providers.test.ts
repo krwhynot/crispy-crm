@@ -155,10 +155,10 @@ describe("Test Data Factories", () => {
     expect(contact.first_name).toBeDefined();
     expect(contact.last_name).toBeDefined();
     expect(contact.email).toBeInstanceOf(Array);
-    expect(contact.email[0]).toHaveProperty("email");
+    expect(contact.email[0]).toHaveProperty("value");
     expect(contact.email[0]).toHaveProperty("type");
     expect(contact.phone).toBeInstanceOf(Array);
-    expect(contact.phone[0]).toHaveProperty("number");
+    expect(contact.phone[0]).toHaveProperty("value");
     expect(contact.phone[0]).toHaveProperty("type");
   });
 

@@ -183,8 +183,8 @@ describe("ContactSlideOver", () => {
     id: 123,
     first_name: "John",
     last_name: "Doe",
-    email: [{ email: "john@example.com", type: "Work" }],
-    phone: [{ number: "555-0100", type: "Work" }],
+    email: [{ value: "john@example.com", type: "work" }],
+    phone: [{ value: "555-0100", type: "work" }],
   });
 
   const mockOnClose = vi.fn();
