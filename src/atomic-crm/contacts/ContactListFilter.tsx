@@ -33,7 +33,7 @@ export const ContactListFilter = () => {
   // Fetch organizations for the organization filter dropdown
   // Prioritize customer/prospect types as most relevant for contact filtering
   const { data: organizationsData } = useGetList("organizations", {
-    pagination: { page: 1, perPage: 50 },
+    pagination: { page: 1, perPage: 100 },
     sort: { field: "name", order: "ASC" },
     filter: { deleted_at: null },
   });

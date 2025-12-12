@@ -329,6 +329,23 @@ export interface Task extends Pick<RaRecord, "id"> {
   updated_at?: string;
 }
 
+export interface DashboardSnapshot extends Pick<RaRecord, "id"> {
+  snapshot_date: string; // ISO date string (YYYY-MM-DD)
+  sales_id: Identifier;
+  // Performance metrics (matching useMyPerformance hook)
+  activities_count: number;
+  tasks_completed_count: number;
+  deals_moved_count: number;
+  open_opportunities_count: number;
+  // KPI metrics (matching useKPIMetrics hook)
+  total_opportunities_count: number;
+  overdue_tasks_count: number;
+  activities_this_week_count: number;
+  stale_deals_count: number;
+  // Metadata
+  created_at: string;
+}
+
 export interface ActivityOrganizationCreated extends Pick<RaRecord, "id"> {
   type: typeof ORGANIZATION_CREATED;
   organization_id: Identifier;

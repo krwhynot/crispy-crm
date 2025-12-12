@@ -80,7 +80,7 @@ No critical data leak vulnerabilities found. All tables have RLS enabled with ap
 - **Original Risk:** Hard deletes lose audit trail, cannot recover authorization data
 - **Resolution:** Migration applied, soft-delete now enforced
 
-### P2 - Medium (Fix before launch): 2 Issues
+### P2 - Medium (Fix before launch): 1 Issue Remaining (1 Resolved)
 
 #### P2-001: opportunity_notes missing soft-delete
 - **Table:** `opportunity_notes`
@@ -88,11 +88,18 @@ No critical data leak vulnerabilities found. All tables have RLS enabled with ap
 - **Risk:** Hard deletes lose historical note data
 - **Remediation:** Verify and add `deleted_at` if missing
 
-#### P2-002: Deprecated stage value in enum
+#### P2-002: Deprecated stage value in enum - RESOLVED ✅
 - **Enum:** `opportunity_stage`
-- **Issue:** `awaiting_response` deprecated but still in enum (migration 20251129173209)
-- **Risk:** Data integrity - existing records may have this value
-- **Remediation:** Data migration to remap, then remove from enum
+- **Issue:** ~~`awaiting_response` deprecated but still in enum~~ RESOLVED
+- **Status:** ✅ Fully cleaned up 2025-12-12
+- **Evidence:**
+  - Migration 20251128070000 migrated all records from `awaiting_response` to `sample_visit_offered`
+  - Migration 20251129173209 removed enum value from database (8→7 stages)
+  - Zod schema `/src/atomic-crm/validation/opportunities.ts` excludes `awaiting_response` from `opportunityStageSchema`
+  - TypeScript constants `/src/atomic-crm/opportunities/constants/stageConstants.ts` only define 7 stages
+  - All test files updated to reflect 7-stage pipeline
+  - UI forms only expose 7 valid stages
+- **Note:** PostgreSQL enum shows `awaiting_response` was removed from `opportunity_stage` type in migration 20251129173209
 
 ---
 

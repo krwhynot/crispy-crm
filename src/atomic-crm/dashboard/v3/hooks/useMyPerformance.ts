@@ -226,17 +226,14 @@ export function useMyPerformance(): UseMyPerformanceReturn {
             pagination: { page: 1, perPage: 1 },
           }),
 
-          // 8. Open opportunities last week snapshot
-          // For simplicity, we use current count as last week baseline
-          // A more accurate approach would require historical snapshots
-          // Note: opportunities table uses opportunity_owner_id, not sales_id
-          dataProvider.getList("opportunities", {
+          // 8. Historical snapshot from last week
+          // Query dashboard_snapshots table for accurate week-over-week comparison
+          dataProvider.getList("dashboard_snapshots", {
             filter: {
-              opportunity_owner_id: salesId,
-              "created_at@lte": lastWeekEnd.toISOString(),
-              "stage@not_in": ["closed_won", "closed_lost"],
+              sales_id: salesId,
+              snapshot_date: lastWeekEnd.toISOString().split("T")[0], // Date only
             },
-            sort: { field: "id", order: "ASC" },
+            sort: { field: "id", order: "DESC" },
             pagination: { page: 1, perPage: 1 },
           }),
         ]);
@@ -256,7 +253,15 @@ export function useMyPerformance(): UseMyPerformanceReturn {
         const dealsMovedThisWeek = getCount(dealsMovedThisWeekResult);
         const dealsMovedLastWeek = getCount(dealsMovedLastWeekResult);
         const openOpportunities = getCount(openOpportunitiesResult);
-        const openOpportunitiesLastWeek = getCount(openOpportunitiesLastWeekResult);
+
+        // Extract historical snapshot data for open opportunities
+        let openOpportunitiesLastWeek = openOpportunities; // Fallback to current count
+        if (openOpportunitiesLastWeekResult.status === "fulfilled") {
+          const snapshot = openOpportunitiesLastWeekResult.value.data?.[0];
+          if (snapshot && typeof snapshot.open_opportunities_count === "number") {
+            openOpportunitiesLastWeek = snapshot.open_opportunities_count;
+          }
+        }
 
         // Log any failures for debugging
         [

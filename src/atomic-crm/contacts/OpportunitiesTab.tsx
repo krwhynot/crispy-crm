@@ -30,7 +30,7 @@ export function OpportunitiesTab() {
     "opportunity_contacts",
     {
       filter: { contact_id: contact?.id },
-      pagination: { page: 1, perPage: 50 },
+      pagination: { page: 1, perPage: 100 },
       sort: { field: "created_at", order: "DESC" },
     },
     { enabled: !!contact?.id }
