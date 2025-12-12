@@ -14,7 +14,7 @@ import { SimpleFormIterator } from "@/components/admin/simple-form-iterator";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 
-const personalInfoTypes = [{ id: "Work" }, { id: "Home" }, { id: "Other" }];
+const personalInfoTypes = [{ id: "work" }, { id: "home" }, { id: "other" }];
 
 export const ContactInfoTab = () => {
   return (
@@ -23,7 +23,7 @@ export const ContactInfoTab = () => {
       <ArrayInput source="email" label="Email addresses" helperText={false}>
         <SimpleFormIterator inline disableReordering disableClear>
           <TextInput
-            source="email"
+            source="value"
             className="w-full"
             placeholder="Email (valid email required)"
             helperText={false}
@@ -44,7 +44,7 @@ export const ContactInfoTab = () => {
       {/* Phone array - same pattern */}
       <ArrayInput source="phone" label="Phone numbers" helperText={false}>
         <SimpleFormIterator inline disableReordering disableClear>
-          <TextInput source="number" placeholder="Phone number" />
+          <TextInput source="value" placeholder="Phone number" />
           <SelectInput source="type" choices={personalInfoTypes} />
         </SimpleFormIterator>
       </ArrayInput>
@@ -57,16 +57,16 @@ export const ContactInfoTab = () => {
 
 ```typescript
 // src/atomic-crm/validation/contacts.ts
-export const personalInfoTypeSchema = z.enum(["Work", "Home", "Other"]);
+export const personalInfoTypeSchema = z.enum(["work", "home", "other"]);
 
 export const emailAndTypeSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  type: personalInfoTypeSchema.default("Work"), // Default in sub-schema
+  value: z.string().email("Invalid email address"),
+  type: personalInfoTypeSchema.default("work"), // Default in sub-schema
 });
 
 export const phoneNumberAndTypeSchema = z.object({
-  number: z.string(),
-  type: personalInfoTypeSchema.default("Work"), // Default in sub-schema
+  value: z.string(),
+  type: personalInfoTypeSchema.default("work"), // Default in sub-schema
 });
 
 const contactBaseSchema = z.object({
@@ -84,7 +84,7 @@ const formDefaults = contactSchema.partial().parse({});
 
 // 2. User clicks "Add" button in ArrayInput
 // SimpleFormIterator creates new item with sub-schema defaults:
-{ email: "", type: "Work" } // From emailAndTypeSchema.default("Work")
+{ value: "", type: "work" } // From emailAndTypeSchema.default("work")
 
 // 3. User fills in email, type is already "Work"
 // 4. On save, data is validated against schema
@@ -96,18 +96,18 @@ const formDefaults = contactSchema.partial().parse({});
 // ❌ WRONG - defaultValue in SelectInput
 <ArrayInput source="email">
   <SimpleFormIterator>
-    <TextInput source="email" />
-    <SelectInput source="type" choices={types} defaultValue="Work" />
+    <TextInput source="value" />
+    <SelectInput source="type" choices={types} defaultValue="work" />
     {/* ^^^ WRONG - default should be in Zod sub-schema */}
   </SimpleFormIterator>
 </ArrayInput>
 
 // ❌ WRONG - Hardcoded initial array in component
-const [emails, setEmails] = useState([{ email: '', type: 'Work' }]);
+const [emails, setEmails] = useState([{ value: '', type: 'work' }]);
 
 // ❌ WRONG - Initializing array in useEffect
 useEffect(() => {
-  setValue('email', [{ email: '', type: 'Work' }]);
+  setValue('email', [{ value: '', type: 'work' }]);
 }, []);
 ```
 

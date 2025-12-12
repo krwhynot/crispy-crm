@@ -75,13 +75,13 @@ import { z } from "zod";
 
 // Sub-schemas for JSONB arrays
 export const emailAndTypeSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  type: z.enum(["Work", "Home", "Other"]).default("Work"),
+  value: z.string().email("Invalid email address"),
+  type: z.enum(["work", "home", "other"]).default("work"),
 });
 
 export const phoneNumberAndTypeSchema = z.object({
-  number: z.string(),
-  type: z.enum(["Work", "Home", "Other"]).default("Work"),
+  value: z.string(),
+  type: z.enum(["work", "home", "other"]).default("work"),
 });
 
 // Main schema

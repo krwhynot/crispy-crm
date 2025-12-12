@@ -105,6 +105,7 @@ export async function validateSalesForm(data: unknown): Promise<void> {
 }
 
 // Create-specific schema (stricter requirements)
+// Includes password field required by Edge Function inviteUserSchema
 export const createSalesSchema = salesSchema
   .omit({
     id: true,
@@ -113,10 +114,15 @@ export const createSalesSchema = salesSchema
     updated_at: true,
     deleted_at: true,
   })
+  .extend({
+    // Password required for user creation (validated by Edge Function)
+    password: z.string().min(8, "Password must be at least 8 characters").max(128, "Password too long"),
+  })
   .required({
     first_name: true,
     last_name: true,
     email: true,
+    password: true,
   });
 
 // Update-specific schema (more flexible)
