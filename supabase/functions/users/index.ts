@@ -49,6 +49,7 @@ const patchUserSchema = z
     email: z.string().email("Invalid email format").max(254).optional(),
     first_name: z.string().min(1).max(100).optional(),
     last_name: z.string().min(1).max(100).optional(),
+    phone: z.string().max(50).optional(),
     avatar: z.string().url("Invalid avatar URL").max(500).optional(),
     role: z.enum(["admin", "manager", "rep"]).optional(),
     administrator: z.coerce.boolean().optional(), // Deprecated: use role instead
