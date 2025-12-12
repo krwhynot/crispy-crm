@@ -53,6 +53,7 @@ const patchUserSchema = z
     role: z.enum(["admin", "manager", "rep"]).optional(),
     administrator: z.coerce.boolean().optional(), // Deprecated: use role instead
     disabled: z.coerce.boolean().optional(),
+    deleted_at: z.string().datetime().optional(), // Soft-delete timestamp (admin-only)
   })
   .transform((data) => {
     const role = data.role ?? (data.administrator !== undefined ? (data.administrator ? "admin" : "rep") : undefined);
@@ -89,14 +90,15 @@ async function parseAndValidateBody<T>(req: Request, schema: z.ZodSchema<T>): Pr
 async function updateSaleViaRPC(
   supabaseClient: ReturnType<typeof createClient>,
   user_id: string,
-  updates: { role?: 'admin' | 'manager' | 'rep'; disabled?: boolean; avatar?: string }
+  updates: { role?: 'admin' | 'manager' | 'rep'; disabled?: boolean; avatar?: string; deleted_at?: string }
 ): Promise<Sale> {
   const { data: updatedSale, error } = await supabaseClient
     .rpc('admin_update_sale', {
       target_user_id: user_id,
       new_role: updates.role ?? null,
       new_disabled: updates.disabled ?? null,
-      new_avatar: updates.avatar ?? null
+      new_avatar: updates.avatar ?? null,
+      new_deleted_at: updates.deleted_at ?? null
     })
     .single();
 
@@ -173,7 +175,7 @@ async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Recor
     return createErrorResponse(400, message, corsHeaders);
   }
 
-  const { sales_id, email, first_name, last_name, avatar, role, disabled } = validatedData;
+  const { sales_id, email, first_name, last_name, avatar, role, disabled, deleted_at } = validatedData;
 
   // Use SECURITY DEFINER RPC function instead of direct table access
   const { data: saleToUpdate, error: saleError } = await supabaseClient
@@ -229,7 +231,8 @@ async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Recor
     const updatedSale = await updateSaleViaRPC(supabaseClient, saleToUpdate.user_id, {
       role: role ?? undefined,
       disabled: disabled ?? undefined,
-      avatar: avatar ?? undefined
+      avatar: avatar ?? undefined,
+      deleted_at: deleted_at ?? undefined
     });
 
     return new Response(
