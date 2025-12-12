@@ -46,15 +46,15 @@ const inviteUserSchema = z
 const patchUserSchema = z
   .strictObject({
     sales_id: z.coerce.number().int().positive("Invalid sales ID"),
-    email: z.string().email("Invalid email format").max(254).optional(),
-    first_name: z.string().min(1).max(100).optional(),
-    last_name: z.string().min(1).max(100).optional(),
-    phone: z.string().max(50).optional(),
-    avatar: z.string().url("Invalid avatar URL").max(500).optional(),
-    role: z.enum(["admin", "manager", "rep"]).optional(),
-    administrator: z.coerce.boolean().optional(), // Deprecated: use role instead
-    disabled: z.coerce.boolean().optional(),
-    deleted_at: z.string().datetime().optional(), // Soft-delete timestamp (admin-only)
+    email: z.string().email("Invalid email format").max(254).nullish(),
+    first_name: z.string().min(1).max(100).nullish(),
+    last_name: z.string().min(1).max(100).nullish(),
+    phone: z.string().max(50).nullish(),
+    avatar_url: z.string().url("Invalid avatar URL").max(500).nullish(), // Renamed: matches DB column
+    role: z.enum(["admin", "manager", "rep"]).nullish(),
+    administrator: z.coerce.boolean().nullish(), // Deprecated: use role instead
+    disabled: z.coerce.boolean().nullish(),
+    deleted_at: z.string().datetime().nullish(), // Soft-delete timestamp (admin-only)
   })
   .transform((data) => {
     const role = data.role ?? (data.administrator !== undefined ? (data.administrator ? "admin" : "rep") : undefined);
@@ -94,7 +94,7 @@ async function updateSaleViaRPC(
   updates: {
     role?: 'admin' | 'manager' | 'rep';
     disabled?: boolean;
-    avatar?: string;
+    avatar_url?: string; // Renamed: matches DB column
     deleted_at?: string;
     first_name?: string;
     last_name?: string;
@@ -107,7 +107,7 @@ async function updateSaleViaRPC(
       target_user_id: user_id,
       new_role: updates.role ?? null,
       new_disabled: updates.disabled ?? null,
-      new_avatar: updates.avatar ?? null,
+      new_avatar: updates.avatar_url ?? null, // Maps avatar_url to RPC param new_avatar
       new_deleted_at: updates.deleted_at ?? null,
       new_first_name: updates.first_name ?? null,
       new_last_name: updates.last_name ?? null,
@@ -189,7 +189,7 @@ async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Recor
     return createErrorResponse(400, message, corsHeaders);
   }
 
-  const { sales_id, email, first_name, last_name, phone, avatar, role, disabled, deleted_at } = validatedData;
+  const { sales_id, email, first_name, last_name, phone, avatar_url, role, disabled, deleted_at } = validatedData;
 
   // Use SECURITY DEFINER RPC function instead of direct table access
   const { data: saleToUpdate, error: saleError } = await supabaseClient
@@ -226,7 +226,7 @@ async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Recor
         last_name: last_name ?? undefined,
         email: email ?? undefined,
         phone: phone ?? undefined,
-        avatar: avatar ?? undefined,
+        avatar_url: avatar_url ?? undefined,
         // NOTE: role, disabled, deleted_at intentionally omitted - admin only
       });
 
@@ -248,10 +248,15 @@ async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Recor
   }
 
   try {
+    // Admin path: can update all fields including role, disabled, and soft-delete
     const updatedSale = await updateSaleViaRPC(supabaseClient, saleToUpdate.user_id, {
+      first_name: first_name ?? undefined,
+      last_name: last_name ?? undefined,
+      email: email ?? undefined,
+      phone: phone ?? undefined,
       role: role ?? undefined,
       disabled: disabled ?? undefined,
-      avatar: avatar ?? undefined,
+      avatar_url: avatar_url ?? undefined,
       deleted_at: deleted_at ?? undefined
     });
 
