@@ -30,6 +30,12 @@ export {
 // Export the task-completion specific dialog
 export { QuickLogActivity } from "./QuickLogActivity";
 
+// Export shared components
+export { ActivityTimelineEntry } from "./components/ActivityTimelineEntry";
+
+// Export shared constants
+export { ACTIVITY_PAGE_SIZE } from "./constants";
+
 import { parseDateSafely } from "@/lib/date-utils";
 
 export default {

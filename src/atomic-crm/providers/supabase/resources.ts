@@ -40,6 +40,7 @@ export const RESOURCE_MAPPING = {
   sales: "sales",
   activities: "activities",
   products: "products",
+  dashboard_snapshots: "dashboard_snapshots", // Historical KPI snapshots for week-over-week trends
 } as const;
 
 /**

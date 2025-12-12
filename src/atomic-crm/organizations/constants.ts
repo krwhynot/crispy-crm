@@ -147,6 +147,8 @@ export const MAX_RELATED_ITEMS = 100;
 
 /**
  * Page size for activity timeline displays
+ * @deprecated Use ACTIVITY_PAGE_SIZE from activities/constants.ts instead
+ * Kept for backward compatibility - will be removed in future cleanup
  */
 export const ACTIVITY_PAGE_SIZE = 50;
 

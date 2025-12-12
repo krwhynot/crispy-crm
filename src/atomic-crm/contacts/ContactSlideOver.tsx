@@ -2,7 +2,7 @@ import { UserIcon, ActivityIcon, FileTextIcon } from "lucide-react";
 import { ResourceSlideOver, type TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ContactDetailSkeleton } from "@/components/ui/list-skeleton";
 import { ContactDetailsTab } from "./ContactDetailsTab";
-import { ContactNotesTab } from "./ContactNotesTab";
+import { ContactNotesTab } from "./slideOverTabs/ContactNotesTab";
 import { ActivitiesTab } from "./ActivitiesTab";
 import { ContactHierarchyBreadcrumb } from "./ContactHierarchyBreadcrumb";
 import type { Contact } from "../types";

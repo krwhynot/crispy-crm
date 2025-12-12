@@ -14,8 +14,32 @@
  * only list the base field name. The validation logic handles operator suffixes.
  * Example: "last_seen" allows "last_seen@gte", "last_seen@lte", etc.
  *
+ * ## $or Filter Limitation (UX-02)
+ *
+ * **KNOWN LIMITATION:** Same-key alternatives in $or do NOT work due to JavaScript
+ * object key deduplication:
+ *
+ * ```typescript
+ * // ❌ DOES NOT WORK: Same field in multiple $or conditions
+ * { $or: [{ stage: "a" }, { stage: "b" }] }
+ * // Transforms to: { "@or": { stage: "b" } } — "a" is silently lost!
+ *
+ * // ✅ WORKAROUND: Use @in operator instead
+ * { "stage@in": ["a", "b"] }
+ * // Correctly queries: stage IN ('a', 'b')
+ * ```
+ *
+ * **Why this happens:** When transformOrFilter() converts $or array to PostgREST
+ * object format, duplicate keys are deduplicated by JavaScript (last value wins).
+ *
+ * **When to use $or:** Multi-field OR queries work correctly:
+ * ```typescript
+ * { $or: [{ customer_org_id: 5 }, { principal_org_id: 5 }] }
+ * // Works! Different keys are preserved.
+ * ```
+ *
  * Schema Source: Derived from actual database columns via supabase-lite MCP tools
- * Last Updated: 2025-10-15
+ * Last Updated: 2025-12-12
  */
 
 export const filterableFields: Record<string, string[]> = {

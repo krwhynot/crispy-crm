@@ -158,7 +158,7 @@ vi.mock("./ContactDetailsTab", () => ({
   ),
 }));
 
-vi.mock("./ContactNotesTab", () => ({
+vi.mock("./slideOverTabs/ContactNotesTab", () => ({
   ContactNotesTab: ({ record, mode }: any) => (
     <div data-testid="contact-notes-tab">
       <p>Notes for contact {record.id}</p>
