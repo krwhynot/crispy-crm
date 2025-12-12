@@ -27,14 +27,9 @@ export const ROLE_CHOICES = [
   { id: "rep", name: "Rep" },
 ] as const;
 
-/**
- * Role badge color mapping (semantic tokens for badges)
- */
-export const ROLE_COLORS: Record<UserRole, string> = {
-  admin: "bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200",
-  manager: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200",
-  rep: "bg-muted text-muted-foreground",
-};
+// NOTE: Role badge colors are defined inline in SalesList.tsx and SalesPermissionsTab.tsx
+// using semantic tokens (border-primary, border-success, border-muted-foreground)
+// Do not add a ROLE_COLORS constant here - keep styling co-located with components
 
 // =====================================================================
 // Main Sales Schema
