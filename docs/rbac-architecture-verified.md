@@ -1,8 +1,8 @@
 # RBAC Architecture - Verified Implementation
 
-**Last Verified:** 2024-12-12
+**Last Verified:** 2025-12-12
 **Verification Method:** Live SQL queries + E2E Playwright tests
-**Status:** Production Ready (with known UI issues)
+**Status:** ✅ Production Ready (Regression Suite Passing)
 
 ---
 
@@ -374,7 +374,8 @@ getSalesGrid(): Locator {
 | Edge Function | `supabase/functions/users/index.ts` |
 | Auth Provider | `src/atomic-crm/providers/supabase/authProvider.ts` |
 | Permissions Tab | `src/atomic-crm/sales/SalesPermissionsTab.tsx` |
-| E2E Tests | `tests/e2e/specs/rbac/*.spec.ts` |
+| **Regression Tests** | `tests/e2e/specs/rbac-regression.spec.ts` |
+| RBAC Test Suites | `tests/e2e/specs/rbac/*.spec.ts` |
 | POMs | `tests/e2e/support/poms/Sales*.ts` |
 | RLS Docs | `docs/SECURITY_MODEL.md` |
 
