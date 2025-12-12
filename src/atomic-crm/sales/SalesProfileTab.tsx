@@ -5,7 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
-import { validateUpdateSales } from "../validation/sales";
+// NOTE: Client-side validation removed (2025-12-12)
+// Edge Function /users PATCH handles validation with patchUserSchema
+// salesService.salesUpdate() filters empty strings before sending to Edge Function
+// Having duplicate validation here caused 400 errors from empty string avatar_url
 
 interface SalesProfileTabProps {
   record: any;
