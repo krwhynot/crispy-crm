@@ -66,7 +66,8 @@ export class SalesService {
     id: Identifier,
     data: Partial<Omit<SalesFormData, "password">> & { deleted_at?: string }
   ): Promise<Partial<Omit<SalesFormData, "password">> & { deleted_at?: string }> {
-    const { email, first_name, last_name, role, avatar, disabled, deleted_at } = data;
+    // Destructure all fields that can be updated (avatar_url matches DB column name)
+    const { email, first_name, last_name, phone, role, avatar_url, disabled, deleted_at } = data;
 
     if (!this.dataProvider.invoke) {
       devError("SalesService", "DataProvider missing invoke capability", {
@@ -80,18 +81,20 @@ export class SalesService {
     }
 
     try {
+      // Build body with only defined values - prevents null serialization issues with Zod strictObject
+      const body: Record<string, unknown> = { sales_id: id };
+      if (email !== undefined) body.email = email;
+      if (first_name !== undefined) body.first_name = first_name;
+      if (last_name !== undefined) body.last_name = last_name;
+      if (phone !== undefined) body.phone = phone;
+      if (role !== undefined) body.role = role;
+      if (disabled !== undefined) body.disabled = disabled;
+      if (avatar_url !== undefined) body.avatar_url = avatar_url;
+      if (deleted_at !== undefined) body.deleted_at = deleted_at;
+
       const sale = await this.dataProvider.invoke<Sale>("users", {
         method: "PATCH",
-        body: {
-          sales_id: id,
-          email,
-          first_name,
-          last_name,
-          role,
-          disabled,
-          avatar,
-          deleted_at,
-        },
+        body,
       });
 
       if (!sale) {
