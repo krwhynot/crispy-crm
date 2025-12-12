@@ -208,8 +208,11 @@ test.describe("RBAC Regression Suite", () => {
 
   test.describe("Cross-Role Security", () => {
     test("REG-08: Fresh login as admin shows Team link", async ({ page }) => {
-      // Clear any existing session
+      // Clear any existing session (cookies AND localStorage)
       await page.context().clearCookies();
+      await page.goto("/#/");
+      await page.evaluate(() => localStorage.clear());
+      await page.waitForTimeout(500);
 
       const loginPage = new LoginPage(page);
       await loginPage.loginAsAdmin();
