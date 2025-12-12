@@ -3,6 +3,7 @@ import type {
   Contact,
   ContactNote,
   OpportunityNote,
+  OrganizationNote,
   Opportunity,
   Organization,
   Sale,
@@ -15,6 +16,7 @@ type TransformableData =
   | Partial<Contact>
   | Partial<ContactNote>
   | Partial<OpportunityNote>
+  | Partial<OrganizationNote>
   | Partial<Opportunity>
   | Partial<Organization>
   | Partial<Sale>;
@@ -55,6 +57,20 @@ export class TransformService {
     opportunityNotes: {
       transform: async (data: TransformableData) => {
         const noteData = data as Partial<OpportunityNote>;
+        if (noteData.attachments && Array.isArray(noteData.attachments)) {
+          // Upload all attachments in parallel for better performance
+          const uploadPromises = noteData.attachments
+            .filter((attachment) => attachment && typeof attachment === "object")
+            .map((attachment) => this.storageService.uploadToBucket(attachment as RAFile));
+
+          await Promise.all(uploadPromises);
+        }
+        return noteData;
+      },
+    },
+    organizationNotes: {
+      transform: async (data: TransformableData) => {
+        const noteData = data as Partial<OrganizationNote>;
         if (noteData.attachments && Array.isArray(noteData.attachments)) {
           // Upload all attachments in parallel for better performance
           const uploadPromises = noteData.attachments
