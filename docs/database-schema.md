@@ -1,8 +1,13 @@
 # Crispy CRM Database Schema
 
 **Generated:** 2025-12-08 (via Supabase MCP)
+**Last Security Audit:** 2025-12-12 (RLS & Authorization Deep Dive - PASSED)
 **Database:** PostgreSQL 17 + Supabase
 **Tables:** 24 | **Enums:** 14 | **Foreign Keys:** 69+
+
+> **Security Note:** All tables have RLS enabled. All views use SECURITY INVOKER.
+> All SECURITY DEFINER functions have search_path hardening. See audit report
+> at `.claude/plans/wondrous-discovering-blanket.md` for full details.
 
 ---
 
