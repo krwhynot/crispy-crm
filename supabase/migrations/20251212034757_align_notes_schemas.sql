@@ -8,16 +8,26 @@
 --            Views are camelCase (contactNotes, opportunityNotes) for React Admin
 --
 -- Changes Applied:
--- 1. Convert attachments from TEXT[] to JSONB
--- 2. Fix FK delete behavior (CASCADE -> SET NULL for sales_id)
--- 3. Add ownership-based RLS policies
--- 4. Add partial indexes for performance
--- 5. Add update triggers (if missing)
--- 6. Recreate views to reflect schema changes
+-- 1. Drop dependent views FIRST (critical for column modifications)
+-- 2. Convert attachments from TEXT[] to JSONB
+-- 3. Fix FK delete behavior (CASCADE -> SET NULL for sales_id)
+-- 4. Add ownership-based RLS policies
+-- 5. Add partial indexes for performance
+-- 6. Add update triggers (if missing)
+-- 7. Recreate views to reflect schema changes
 --
 -- Note: deleted_at and updated_by columns already exist from previous migrations
 --
 -- =====================================================
+
+-- =====================================================
+-- PART 0: DROP DEPENDENT VIEWS FIRST
+-- =====================================================
+-- Views must be dropped BEFORE modifying table columns they depend on
+-- This is a PostgreSQL requirement for column type changes
+
+DROP VIEW IF EXISTS "contactNotes";
+DROP VIEW IF EXISTS "opportunityNotes";
 
 -- =====================================================
 -- PART 1: SCHEMA CHANGES FOR contact_notes
@@ -351,11 +361,9 @@ CREATE TRIGGER "trigger_set_opportunity_notes_updated_by"
 -- =====================================================
 
 -- Views need to be recreated to pick up the new attachments column type
-DROP VIEW IF EXISTS "contactNotes";
 CREATE VIEW "contactNotes" WITH (security_invoker = true) AS
     SELECT * FROM contact_notes;
 
-DROP VIEW IF EXISTS "opportunityNotes";
 CREATE VIEW "opportunityNotes" WITH (security_invoker = true) AS
     SELECT * FROM opportunity_notes;
 
