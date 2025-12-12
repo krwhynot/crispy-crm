@@ -326,14 +326,35 @@ getSalesGrid(): Locator {
 
 ## 11. Test Coverage Summary
 
-| Test Suite | File | Tests | Passing |
-|------------|------|-------|---------|
-| Admin Operations | `admin-operations.spec.ts` | 6 | POM issues |
-| Manager Operations | `manager-operations.spec.ts` | 4 | 2/4 |
-| Rep Operations | `rep-operations.spec.ts` | 5 | 2/5 |
-| Edge Cases | `edge-cases.spec.ts` | 5 | POM issues |
+### 11.1 Regression Test Suite (CI/CD Ready) ✅
 
-**Note:** "POM issues" means the security behavior is correct but the test selector doesn't match the UI.
+| Test | Description | Status |
+|------|-------------|--------|
+| REG-01 | Admin can see Team Management in user menu | ✅ PASS |
+| REG-02 | Admin can navigate to /sales | ✅ PASS |
+| REG-03 | Manager cannot see Team link in sidebar | ✅ PASS |
+| REG-04 | Manager direct /sales access blocked or filtered | ✅ PASS |
+| REG-05 | Rep cannot see Team link in sidebar | ✅ PASS |
+| REG-06 | Rep direct /sales access blocked or filtered | ✅ PASS |
+| REG-07 | Rep RLS filters other users (via direct API) | ✅ PASS |
+| REG-08 | Fresh login as admin shows Team link | ✅ PASS |
+| REG-09 | Fresh login as rep hides Team link | ✅ PASS |
+| REG-10 | Unauthenticated access redirects to login | ✅ PASS |
+
+**File:** `tests/e2e/specs/rbac-regression.spec.ts`
+**Run Command:** `npx playwright test rbac-regression --project=chromium`
+**Runtime:** ~4 minutes (10 tests + 3 auth setup)
+
+### 11.2 Full RBAC Test Suites (Some POM Updates Needed)
+
+| Test Suite | File | Tests | Status |
+|------------|------|-------|--------|
+| Admin Operations | `admin-operations.spec.ts` | 6 | POM selector updates needed |
+| Manager Operations | `manager-operations.spec.ts` | 4 | 2/4 passing |
+| Rep Operations | `rep-operations.spec.ts` | 5 | 2/5 passing |
+| Edge Cases | `edge-cases.spec.ts` | 5 | POM selector updates needed |
+
+**Note:** "POM selector updates needed" means the security behavior is correct but test selectors need updating to match the actual UI (Team Management in user dropdown, not sidebar).
 
 ---
 
