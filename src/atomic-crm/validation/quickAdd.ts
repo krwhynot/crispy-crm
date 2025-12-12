@@ -17,27 +17,28 @@ import { z } from "zod";
 export const quickAddSchema = z
   .strictObject({
     // Contact fields (required)
-    first_name: z.string({ error: "First name required" }).min(1, "First name required"),
-    last_name: z.string({ error: "Last name required" }).min(1, "Last name required"),
+    first_name: z.string({ error: "First name required" }).min(1, "First name required").max(100),
+    last_name: z.string({ error: "Last name required" }).min(1, "Last name required").max(100),
 
     // Contact information (at least one required, validated in refine)
-    phone: z.string().optional(),
-    email: z.union([z.string().email("Invalid email address"), z.literal("")]).optional(),
+    phone: z.string().max(50).optional(),
+    email: z.union([z.string().email("Invalid email address").max(254), z.literal("")]).optional(),
 
     // Organization fields (required)
     org_name: z
       .string({ error: "Organization name required" })
-      .min(1, "Organization name required"),
-    city: z.string({ error: "City required" }).min(1, "City required"),
-    state: z.string({ error: "State required" }).min(1, "State required"),
+      .min(1, "Organization name required")
+      .max(255),
+    city: z.string({ error: "City required" }).min(1, "City required").max(100),
+    state: z.string({ error: "State required" }).min(1, "State required").max(50),
 
     // Opportunity fields (required)
-    campaign: z.string({ error: "Campaign required" }).min(1, "Campaign required"),
+    campaign: z.string({ error: "Campaign required" }).min(1, "Campaign required").max(255),
     principal_id: z.number({ error: "Principal required" }),
 
     // Optional fields
     product_ids: z.array(z.number()).optional().default([]),
-    quick_note: z.string().optional(),
+    quick_note: z.string().max(2000).optional(),
   })
   .refine((data) => !!data.phone || !!data.email, {
     message: "Phone or Email required (at least one)",
