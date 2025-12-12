@@ -1,0 +1,14 @@
+{
+  "cookies": [],
+  "origins": [
+    {
+      "origin": "http://127.0.0.1:5173",
+      "localStorage": [
+        {
+          "name": "sb-127-auth-token",
+          "value": "{\"access_token\":\"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJodHRwOi8vMTI3LjAuMC4xOjU0MzIxL2F1dGgvdjEiLCJzdWIiOiJhMWIyYzNkNC1lNWY2LTRhNWItOGM5ZC0wZTFmMmEzYjRjNWQiLCJhdWQiOiJhdXRoZW50aWNhdGVkIiwiZXhwIjoxNzY1NTI2NDM4LCJpYXQiOjE3NjU1MjI4MzgsImVtYWlsIjoibWFuYWdlckBtZmJyb2tlci5jb20iLCJwaG9uZSI6IiIsImFwcF9tZXRhZGF0YSI6eyJwcm92aWRlciI6ImVtYWlsIiwicHJvdmlkZXJzIjpbImVtYWlsIl19LCJ1c2VyX21ldGFkYXRhIjp7ImZpcnN0X25hbWUiOiJNYW5hZ2VyIiwibGFzdF9uYW1lIjoiVGVzdCJ9LCJyb2xlIjoiYXV0aGVudGljYXRlZCIsImFhbCI6ImFhbDEiLCJhbXIiOlt7Im1ldGhvZCI6InBhc3N3b3JkIiwidGltZXN0YW1wIjoxNzY1NTIyODM4fV0sInNlc3Npb25faWQiOiJmZDcwYzAwZS05YjYzLTQxZDQtYTJhYy0yMThiZGFmNGM3ZjkiLCJpc19hbm9ueW1vdXMiOmZhbHNlfQ.ySwRHYQBw82wpsVUqXTdO0IkyYBvc0H5SEjI_AlJLs4\",\"token_type\":\"bearer\",\"expires_in\":3600,\"expires_at\":1765526438,\"refresh_token\":\"tffe7w37ai42\",\"user\":{\"id\":\"a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d\",\"aud\":\"authenticated\",\"role\":\"authenticated\",\"email\":\"manager@mfbroker.com\",\"email_confirmed_at\":\"2025-12-12T06:55:45.983439Z\",\"phone\":\"\",\"confirmed_at\":\"2025-12-12T06:55:45.983439Z\",\"last_sign_in_at\":\"2025-12-12T07:00:38.294515888Z\",\"app_metadata\":{\"provider\":\"email\",\"providers\":[\"email\"]},\"user_metadata\":{\"first_name\":\"Manager\",\"last_name\":\"Test\"},\"identities\":[],\"created_at\":\"2025-12-12T06:55:45.983439Z\",\"updated_at\":\"2025-12-12T07:00:38.3089Z\",\"is_anonymous\":false},\"weak_password\":null}"
+        }
+      ]
+    }
+  ]
+}
