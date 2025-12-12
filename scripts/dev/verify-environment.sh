@@ -23,11 +23,11 @@ fi
 
 # Database connections
 LOCAL_DB="postgresql://postgres:postgres@localhost:54322/postgres"
-CLOUD_DB="${DATABASE_URL_PRODUCTION}"
+# CLOUD_DB is already set in .env.cloud
 
 # Verify cloud DB connection string exists
 if [ -z "$CLOUD_DB" ]; then
-  echo -e "${RED}❌ Error: DATABASE_URL_PRODUCTION not set in .env.production${NC}"
+  echo -e "${RED}❌ Error: CLOUD_DB not set in .env.cloud${NC}"
   exit 1
 fi
 
@@ -62,7 +62,7 @@ for table in "${TABLES[@]}"; do
   CLOUD_COUNT=$(psql "$CLOUD_DB" -t -c "SELECT COUNT(*) FROM public.\"$table\";" 2>/dev/null | tr -d ' ')
   if [ $? -ne 0 ]; then
     echo -e "${RED}❌ Error: Failed to query cloud database for $table${NC}"
-    echo "  Verify DATABASE_URL_PRODUCTION in .env.production is correct"
+    echo "  Verify CLOUD_DB in .env.cloud is correct"
     exit 1
   fi
 
