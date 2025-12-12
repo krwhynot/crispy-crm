@@ -7,7 +7,7 @@ describe("Contact Validation Functions - UI as Source of Truth", () => {
       const validData = {
         first_name: "John",
         last_name: "Doe",
-        email: [{ email: "john@example.com", type: "Work" }],
+        email: [{ value: "john@example.com", type: "work" }],
         sales_id: "1",
       };
 
@@ -18,7 +18,7 @@ describe("Contact Validation Functions - UI as Source of Truth", () => {
       const invalidData = {
         first_name: "John",
         last_name: "Doe",
-        email: [{ email: "invalid-email", type: "Work" }],
+        email: [{ value: "invalid-email", type: "work" }],
       };
 
       await expect(validateContactForm(invalidData)).rejects.toMatchObject({
@@ -28,7 +28,7 @@ describe("Contact Validation Functions - UI as Source of Truth", () => {
 
     it("should reject missing name fields", async () => {
       const invalidData = {
-        email: [{ email: "john@example.com", type: "Work" }],
+        email: [{ value: "john@example.com", type: "work" }],
       };
 
       await expect(validateContactForm(invalidData)).rejects.toMatchObject({
@@ -55,7 +55,7 @@ describe("Contact Validation Functions - UI as Source of Truth", () => {
       const invalidData = {
         first_name: "John",
         last_name: "Doe",
-        email: [{ email: "john@example.com", type: "Work" }],
+        email: [{ value: "john@example.com", type: "work" }],
         organization_id: "1", // Required per PRD
       };
 
@@ -69,7 +69,7 @@ describe("Contact Validation Functions - UI as Source of Truth", () => {
       const invalidData = {
         first_name: "John",
         last_name: "Doe",
-        email: [{ email: "john@example.com", type: "Work" }],
+        email: [{ value: "john@example.com", type: "work" }],
         sales_id: "1",
         // Missing organization_id
       };
@@ -83,7 +83,7 @@ describe("Contact Validation Functions - UI as Source of Truth", () => {
       const validData = {
         first_name: "John",
         last_name: "Doe",
-        email: [{ email: "john@example.com", type: "Work" }],
+        email: [{ value: "john@example.com", type: "work" }],
         sales_id: "1",
         organization_id: "1", // Required per PRD: contacts cannot exist without organization
       };
