@@ -50,6 +50,9 @@ import { logger } from "@/lib/logger";
 // Import development-only logger
 import { devLog, devWarn, DEV } from "@/lib/devLogger";
 
+// Import deep equality check for update verification
+import { dequal as isEqual } from "dequal";
+
 // Import service classes
 import {
   SalesService,
@@ -676,6 +679,15 @@ export const unifiedDataProvider: DataProvider = {
         return { data: { ...params.previousData, ...result, id: params.id } as RecordType };
       }
 
+      // DEV: Log update payload for debugging silent save failures
+      devWarn("DataProvider", "🔄 update() - payload:", {
+        resource: dbResource,
+        id: params.id,
+        processedDataKeys: Object.keys(processedData),
+        previousDataKeys: Object.keys(params.previousData || {}),
+        processedData: DEV ? processedData : "[hidden in prod]",
+      });
+
       // Execute update
       const result = await baseDataProvider.update(dbResource, {
         ...params,
@@ -685,7 +697,31 @@ export const unifiedDataProvider: DataProvider = {
         } as Partial<RecordType>,
       });
 
-      // No transformation needed yet (will be added in a future task)
+      // FAIL-FAST: Verify update actually occurred
+      // ra-data-postgrest may return previousData without API call if no changes detected
+      if (result.data && params.previousData) {
+        const submittedKeys = Object.keys(params.data || {});
+        const readonlyFields = ["id", "created_at", "updated_at", "deleted_at", "name", "search_tsv"];
+
+        // Check if any user-submitted fields actually changed in response
+        const hasActualChange = submittedKeys.some((key) => {
+          if (readonlyFields.includes(key)) return false;
+          const resultData = result.data as Record<string, unknown>;
+          const prevData = params.previousData as Record<string, unknown>;
+          return !isEqual(resultData[key], prevData[key]);
+        });
+
+        // If user submitted changes but response matches previousData, log warning
+        if (!hasActualChange && submittedKeys.length > 0) {
+          devWarn("DataProvider", "⚠️ Update may have silently failed:", {
+            resource,
+            id: params.id,
+            submittedFields: submittedKeys,
+            message: "Response matches previousData - no changes detected in DB",
+          });
+        }
+      }
+
       return result;
     });
   },
