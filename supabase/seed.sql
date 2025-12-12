@@ -66,6 +66,88 @@ ON CONFLICT (user_id) DO UPDATE SET
     updated_at = NOW();
 
 -- ============================================================================
+-- MANAGER TEST USER (for RBAC testing)
+-- ============================================================================
+-- Login: manager@mfbroker.com / password123
+
+INSERT INTO auth.users (
+  instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
+  raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+  confirmation_token, recovery_token, email_change, email_change_token_new,
+  email_change_token_current, phone_change, phone_change_token, reauthentication_token,
+  is_sso_user, is_anonymous
+) VALUES (
+  '00000000-0000-0000-0000-000000000000',
+  'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d',
+  'authenticated', 'authenticated', 'manager@mfbroker.com',
+  crypt('password123', gen_salt('bf')), NOW(),
+  '{"provider":"email","providers":["email"]}',
+  '{"first_name":"Manager","last_name":"Test"}',
+  NOW(), NOW(), '', '', '', '', '', '', '', '', false, false
+) ON CONFLICT (id) DO UPDATE SET
+  email = EXCLUDED.email,
+  encrypted_password = EXCLUDED.encrypted_password,
+  email_confirmed_at = EXCLUDED.email_confirmed_at;
+
+-- Manager sales record
+INSERT INTO sales (user_id, first_name, last_name, email, role)
+SELECT
+    u.id,
+    COALESCE(u.raw_user_meta_data->>'first_name', 'Manager'),
+    COALESCE(u.raw_user_meta_data->>'last_name', 'Test'),
+    u.email,
+    'manager'::user_role
+FROM auth.users u
+WHERE u.id = 'a1b2c3d4-e5f6-4a5b-8c9d-0e1f2a3b4c5d'
+ON CONFLICT (user_id) DO UPDATE SET
+    first_name = EXCLUDED.first_name,
+    last_name = EXCLUDED.last_name,
+    email = EXCLUDED.email,
+    role = EXCLUDED.role,
+    updated_at = NOW();
+
+-- ============================================================================
+-- REP TEST USER (for RBAC testing)
+-- ============================================================================
+-- Login: rep@mfbroker.com / password123
+
+INSERT INTO auth.users (
+  instance_id, id, aud, role, email, encrypted_password, email_confirmed_at,
+  raw_app_meta_data, raw_user_meta_data, created_at, updated_at,
+  confirmation_token, recovery_token, email_change, email_change_token_new,
+  email_change_token_current, phone_change, phone_change_token, reauthentication_token,
+  is_sso_user, is_anonymous
+) VALUES (
+  '00000000-0000-0000-0000-000000000000',
+  'f1e2d3c4-b5a6-4987-8765-4321fedcba98',
+  'authenticated', 'authenticated', 'rep@mfbroker.com',
+  crypt('password123', gen_salt('bf')), NOW(),
+  '{"provider":"email","providers":["email"]}',
+  '{"first_name":"Rep","last_name":"Test"}',
+  NOW(), NOW(), '', '', '', '', '', '', '', '', false, false
+) ON CONFLICT (id) DO UPDATE SET
+  email = EXCLUDED.email,
+  encrypted_password = EXCLUDED.encrypted_password,
+  email_confirmed_at = EXCLUDED.email_confirmed_at;
+
+-- Rep sales record
+INSERT INTO sales (user_id, first_name, last_name, email, role)
+SELECT
+    u.id,
+    COALESCE(u.raw_user_meta_data->>'first_name', 'Rep'),
+    COALESCE(u.raw_user_meta_data->>'last_name', 'Test'),
+    u.email,
+    'rep'::user_role
+FROM auth.users u
+WHERE u.id = 'f1e2d3c4-b5a6-4987-8765-4321fedcba98'
+ON CONFLICT (user_id) DO UPDATE SET
+    first_name = EXCLUDED.first_name,
+    last_name = EXCLUDED.last_name,
+    email = EXCLUDED.email,
+    role = EXCLUDED.role,
+    updated_at = NOW();
+
+-- ============================================================================
 -- VERIFICATION: Fail fast if sales record missing
 -- ============================================================================
 
