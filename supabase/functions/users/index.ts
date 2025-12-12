@@ -91,7 +91,16 @@ async function parseAndValidateBody<T>(req: Request, schema: z.ZodSchema<T>): Pr
 async function updateSaleViaRPC(
   supabaseClient: ReturnType<typeof createClient>,
   user_id: string,
-  updates: { role?: 'admin' | 'manager' | 'rep'; disabled?: boolean; avatar?: string; deleted_at?: string }
+  updates: {
+    role?: 'admin' | 'manager' | 'rep';
+    disabled?: boolean;
+    avatar?: string;
+    deleted_at?: string;
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+    phone?: string;
+  }
 ): Promise<Sale> {
   const { data: updatedSale, error } = await supabaseClient
     .rpc('admin_update_sale', {
@@ -99,7 +108,11 @@ async function updateSaleViaRPC(
       new_role: updates.role ?? null,
       new_disabled: updates.disabled ?? null,
       new_avatar: updates.avatar ?? null,
-      new_deleted_at: updates.deleted_at ?? null
+      new_deleted_at: updates.deleted_at ?? null,
+      new_first_name: updates.first_name ?? null,
+      new_last_name: updates.last_name ?? null,
+      new_email: updates.email ?? null,
+      new_phone: updates.phone ?? null
     })
     .single();
 
@@ -176,7 +189,7 @@ async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Recor
     return createErrorResponse(400, message, corsHeaders);
   }
 
-  const { sales_id, email, first_name, last_name, avatar, role, disabled, deleted_at } = validatedData;
+  const { sales_id, email, first_name, last_name, phone, avatar, role, disabled, deleted_at } = validatedData;
 
   // Use SECURITY DEFINER RPC function instead of direct table access
   const { data: saleToUpdate, error: saleError } = await supabaseClient
@@ -207,8 +220,14 @@ async function patchUser(req: Request, currentUserSale: Sale, corsHeaders: Recor
   // Only administrators can update the role and disabled status
   if (currentUserSale.role !== 'admin') {
     try {
+      // Non-admin self-edit: allow profile fields (RPC enforces self-edit restriction)
       const updatedSale = await updateSaleViaRPC(supabaseClient, saleToUpdate.user_id, {
-        avatar: avatar ?? undefined
+        first_name: first_name ?? undefined,
+        last_name: last_name ?? undefined,
+        email: email ?? undefined,
+        phone: phone ?? undefined,
+        avatar: avatar ?? undefined,
+        // NOTE: role, disabled, deleted_at intentionally omitted - admin only
       });
 
       return new Response(
