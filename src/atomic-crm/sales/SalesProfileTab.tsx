@@ -59,8 +59,8 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
   // Save changes
   const handleSave = async () => {
     try {
-      // Validate form data
-      await validateUpdateSales({ id: record.id, ...formData });
+      // NOTE: Client-side validation removed - Edge Function validates
+      // salesService.salesUpdate() filters empty strings before sending
 
       // Update record - CRITICAL: previousData required by ra-data-postgrest's getChanges()
       await update(
