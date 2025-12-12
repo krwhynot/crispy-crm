@@ -122,3 +122,13 @@ const getSaleFromCache = async () => {
   cacheTimestamp = Date.now();
   return dataSale;
 };
+
+/**
+ * Invalidate the identity cache to force fresh data on next getIdentity() call.
+ * Use after admin changes a user's role so new permissions take effect immediately.
+ */
+export const invalidateIdentityCache = () => {
+  cachedSale = undefined;
+  cacheTimestamp = 0;
+  console.log('[authProvider] Identity cache cleared - next getIdentity will fetch fresh data');
+};
