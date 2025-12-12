@@ -74,7 +74,7 @@ export async function getContactAvatar(record: Partial<Contact>): Promise<string
     return null;
   }
 
-  for (const { email } of record.email) {
+  for (const { value: email } of record.email) {
     // Step 1: Try to get Gravatar image
     const gravatarUrl = await getGravatarUrl(email);
     try {
