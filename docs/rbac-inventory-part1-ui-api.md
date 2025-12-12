@@ -16,7 +16,13 @@
 | Permission Checks in UI | 6+ | canAccess(), identity?.role, isSelfEdit, CanAccess component |
 | Data Provider Methods | 5 | getList, getOne, create, update (soft), delete (soft) |
 | Edge Functions | 5 | users, updatePassword, daily-digest, check-overdue-tasks, digest-opt-out |
-| **Potential Issues** | **4 Critical** | Two update paths, cache staleness, type mismatch, RLS/Edge desync |
+| **Confirmed Issues** | **2 Medium** | Cache staleness, type mismatch |
+| **Issues Resolved** | **2** | ~~Two update paths~~, ~~RLS/Edge desync~~ (architecture is consistent) |
+| **New Discovery** | **1 UX Bug** | Non-admin profile edits silently fail (Edge Function drops fields) |
+
+### Key Architectural Finding ✅
+
+**ALL sales updates flow through Edge Function** - the architecture is consistent, not divergent. The `unifiedDataProvider.update("sales")` method explicitly delegates to `salesService.salesUpdate()` which invokes the Edge Function. This is intentional: "RLS prevents direct PostgREST updates."
 
 ---
 
@@ -299,24 +305,43 @@ SalesSlideOver
 | sales | ✅ Base | ✅ Base | ✅ SalesService | ✅ SalesService | ✅ Soft | `salesCreate`, `salesUpdate`, `updatePassword` |
 | users | N/A | N/A | N/A | N/A | N/A | Handled by Edge Function |
 
-#### Sales Resource Handling
+#### Sales Resource Handling - CRITICAL DISCOVERY ✅
 
-**Two Distinct Update Paths Discovered (CRITICAL):**
+**UPDATE (Post-Analysis): Architecture is CONSISTENT - NOT Two Paths!**
 
-**Path 1: SalesProfileTab & SalesPermissionsTab**
-```tsx
-// Uses React Admin's useUpdate hook
-await update("sales", { id, data, previousData });
+Both apparent update paths **CONVERGE** through the Edge Function. This is intentional:
+
+**Lines 663-667 of unifiedDataProvider.ts:**
+```typescript
+// Delegate sales update to Edge Function (RLS prevents direct PostgREST updates)
+// The sales table is protected - updates must go through /functions/v1/users
+if (resource === "sales") {
+  const result = await salesService.salesUpdate(params.id, processedData as any);
+  return { data: { ...params.previousData, ...result, id: params.id } as RecordType };
+}
 ```
-Flow: `useUpdate` → `unifiedDataProvider.update()` → **Direct Supabase** (with RLS)
 
-**Path 2: SalesEdit.tsx (full-page form)**
+**Actual Flow (ALL paths):**
+
+**UI Path A: SlideOver tabs (SalesProfileTab, SalesPermissionsTab)**
 ```tsx
-// Uses SalesService directly
+useUpdate("sales", { id, data, previousData })
+  → unifiedDataProvider.update("sales", ...)
+    → salesService.salesUpdate(id, data)
+      → dataProvider.invoke("users", { method: "PATCH" })
+        → Edge Function /functions/v1/users
+```
+
+**UI Path B: Full-page SalesEdit.tsx**
+```tsx
 const salesService = new SalesService(dataProvider);
-mutate(data); // → salesService.salesUpdate()
+mutate(data)
+  → salesService.salesUpdate(record.id, data)
+    → dataProvider.invoke("users", { method: "PATCH" })
+      → Edge Function /functions/v1/users
 ```
-Flow: `SalesService.salesUpdate()` → `dataProvider.invoke("users")` → **Edge Function**
+
+**CONCLUSION**: All sales updates go through Edge Function. The comment "RLS prevents direct PostgREST updates" confirms this is intentional design.
 
 ---
 
@@ -454,37 +479,38 @@ export const salesSchema = z.strictObject({
 
 ## Part 3: Issues & Inconsistencies Found
 
-### Issue 1: Two Update Paths for Sales (CRITICAL)
+### ~~Issue 1: Two Update Paths for Sales~~ ✅ RESOLVED - Architecture is Consistent
 
 | Attribute | Value |
 |-----------|-------|
 | Layer | UI / Data Provider |
-| Severity | **Critical** |
+| Severity | ~~Critical~~ **None** (false alarm) |
 | Files | `SalesProfileTab.tsx`, `SalesPermissionsTab.tsx`, `SalesEdit.tsx`, `sales.service.ts` |
 
-**Description:**
+**Status: RESOLVED**
 
-Two different code paths exist for updating sales records:
+Initial analysis suggested two paths (direct Supabase vs Edge Function). Further investigation of `unifiedDataProvider.ts` lines 663-667 revealed:
 
-1. **SlideOver tabs** use `useUpdate("sales")` → Direct Supabase via Data Provider
-2. **Full-page SalesEdit** uses `SalesService.salesUpdate()` → Edge Function
-
-**Evidence:**
-
-```tsx
-// Path 1: SalesProfileTab.tsx:63
-await update("sales", { id: record.id, data: formData, previousData: record });
-
-// Path 2: SalesEdit.tsx:44
-return salesService.salesUpdate(record.id, data);  // → Edge Function
+```typescript
+// ALL sales updates delegate to Edge Function
+if (resource === "sales") {
+  const result = await salesService.salesUpdate(params.id, processedData as any);
+  return { data: { ...params.previousData, ...result, id: params.id } as RecordType };
+}
 ```
 
-**Potential Impact on Admin Edit Bug:**
+**Corrected Understanding:**
 
-- Path 1 (SlideOver) hits RLS policies directly
-- Path 2 (Full-page) bypasses RLS via Edge Function
-- **If admin is using SlideOver**, RLS might block role/disabled updates
-- **If using full-page edit**, Edge Function handles authorization
+- Both `useUpdate("sales")` and direct `SalesService.salesUpdate()` ultimately call the same Edge Function
+- The comment "RLS prevents direct PostgREST updates" confirms this is intentional design
+- Architecture is **consistent** - all sales updates are secured at Edge Function layer
+
+**Impact on Admin Edit Bug:**
+
+The issue is NOT dual paths. Focus investigation on:
+1. Edge Function authorization logic (`supabase/functions/users/index.ts`)
+2. UI permission checks (isSelfEdit, identity?.role === "admin")
+3. Data not being sent to Edge Function (check `formData` contents)
 
 ---
 
@@ -526,49 +552,41 @@ const salesId = identity?.id ? Number(identity.id) : null;
 
 ---
 
-### Issue 4: RLS vs Edge Function Authorization Desync
+### ~~Issue 4: RLS vs Edge Function Authorization Desync~~ ✅ NOT AN ISSUE
 
 | Attribute | Value |
 |-----------|-------|
 | Layer | Database / Edge Functions |
-| Severity | **Critical** |
+| Severity | ~~Critical~~ **None** (RLS intentionally bypassed) |
 | Files | RLS policies, `users/index.ts` |
 
-**Description:**
+**Status: NOT AN ISSUE**
 
-- **RLS Policy** allows self-update of ANY field for the user's own record
-- **Edge Function** restricts non-admins to avatar-only updates
+Since ALL sales updates go through the Edge Function (confirmed via unifiedDataProvider.ts lines 663-667), the RLS policies are **intentionally bypassed**. The comment explicitly states:
 
-**Evidence:**
+> "RLS prevents direct PostgREST updates"
 
-RLS Policy (migration):
-```sql
-CREATE POLICY "update_sales" ON sales
-  FOR UPDATE
-  USING (is_admin() OR (user_id = auth.uid()))
-```
+This means:
+1. RLS policies exist but are not used for sales updates
+2. Edge Function uses **service role client** (`supabaseAdmin`) which bypasses RLS
+3. Authorization is handled **exclusively** at the Edge Function layer
 
-Edge Function (lines 207-228):
-```typescript
-// Non-admins can ONLY update avatar
-if (currentUserSale.role !== 'admin') {
-  await updateSaleViaRPC(supabaseClient, saleToUpdate.user_id, {
-    avatar: avatar ?? undefined
-  });
-}
-```
+**The Actual Authorization Model:**
 
-**Impact:**
+| Action | Who | Enforced At |
+|--------|-----|-------------|
+| Create user | Admin only | Edge Function (line 114-116) |
+| Update self (avatar only) | Any user | Edge Function (line 207-228) |
+| Update self (all fields) | ❌ Not allowed | Edge Function restricts non-admins |
+| Update others | Admin only | Edge Function (line 191) |
 
-- If Path 1 (direct Supabase) is used, RLS allows ALL fields including `role`
-- If Path 2 (Edge Function) is used, only avatar is allowed
-- **Inconsistent security enforcement!**
+**RLS policies for sales table are effectively DOCUMENTATION only** - they describe intent but don't enforce it because all writes go through Edge Function with service role.
 
 ---
 
-## Part 4: Data Flow Traces
+## Part 4: Data Flow Traces (CORRECTED)
 
-### Flow A: Admin Editing Another User (SlideOver - Path 1)
+### Flow A: Admin Editing Another User (SlideOver)
 
 ```
 Step 1: Admin clicks user row in SalesList
@@ -585,16 +603,21 @@ Step 6: handleSave() validates with validateUpdateSales()
     ↓
 Step 7: update("sales", { id, data: { role }, previousData })
     ↓
-Step 8: unifiedDataProvider.update() called
+Step 8: unifiedDataProvider.update("sales", ...) called
     ↓
 Step 9: processForDatabase() → validate → transform
     ↓
-Step 10: ⚠️ UNCLEAR: Does it use SalesService or direct update?
+Step 10: CONFIRMED: Delegates to salesService.salesUpdate()
     ↓
-Step 11: If direct → RLS allows (admin) → Success
-Step 11: If SalesService → Edge Function → admin check → Success
+Step 11: dataProvider.invoke("users", { method: "PATCH", body: { sales_id, role } })
     ↓
-Step 12: Response returns, SlideOver refreshes
+Step 12: Edge Function /functions/v1/users handles PATCH
+    ↓
+Step 13: Edge Function checks: currentUserSale.role === 'admin' ✅
+    ↓
+Step 14: Admin authorized → updateSaleViaRPC() with all fields
+    ↓
+Step 15: Response returns, SlideOver refreshes
 ```
 
 ### Flow B: User Editing Own Profile (SlideOver)
@@ -610,13 +633,24 @@ Step 4: handleSave() → validateUpdateSales()
     ↓
 Step 5: update("sales", { id, data: { first_name } })
     ↓
-Step 6: unifiedDataProvider.update()
+Step 6: unifiedDataProvider.update("sales", ...) called
     ↓
-Step 7: ⚠️ If direct Supabase: RLS allows (user_id = auth.uid())
-Step 7: ⚠️ If Edge Function: Only avatar allowed!
+Step 7: CONFIRMED: Delegates to salesService.salesUpdate()
     ↓
-Step 8: SUCCESS or FAILURE depending on path taken
+Step 8: dataProvider.invoke("users", { method: "PATCH", body: { sales_id, first_name } })
+    ↓
+Step 9: Edge Function /functions/v1/users handles PATCH
+    ↓
+Step 10: Edge Function checks: currentUserSale.id === saleToUpdate.id ✅
+    ↓
+Step 11: BUT: Non-admin detected → ONLY avatar field processed!
+    ↓
+Step 12: updateSaleViaRPC() called with { avatar: undefined } (other fields DROPPED)
+    ↓
+Step 13: ⚠️ first_name change SILENTLY IGNORED (no error, but no update)
 ```
+
+**KEY INSIGHT**: Non-admin users attempting to edit their own profile fields other than avatar will see NO error but their changes will NOT persist! This is a **UX bug** - Edge Function should reject with clear error message.
 
 ---
 
@@ -668,23 +702,50 @@ Questions that need database/migration analysis to answer:
 
 ## Summary: Key Findings for Admin Edit Bug Investigation
 
-### Most Likely Causes
+### ✅ Confirmed Architecture (Not a Bug Source)
 
-1. **Two update paths** - SlideOver uses direct Supabase, SalesEdit uses Edge Function
-2. **RLS vs Edge Function mismatch** - Different authorization rules for same operation
-3. **Cache staleness** - Role changes not immediately reflected
+1. **All sales updates go through Edge Function** - architecture is consistent
+2. **RLS is intentionally bypassed** - Edge Function uses service role
+3. **Authorization happens at Edge Function layer only**
 
-### Recommended Investigation Path
+### 🐛 Actual Issues Found
 
-1. Trace which update path is actually used when admin edits via SlideOver
-2. Check if `unifiedDataProvider.update("sales")` delegates to SalesService or goes direct
-3. Verify RLS policies allow admin to update ANY sales record
-4. Test both paths with debug logging to confirm behavior
+1. **Cache staleness (Medium)** - Role changes not immediately reflected (15-min TTL)
+2. **Type mismatch (Medium)** - identity.id is number, some code expects string
+3. **Silent failure UX bug (Medium)** - Non-admin profile edits silently ignored by Edge Function
 
-### Critical File to Examine Next
+### 🔍 Recommended Investigation Path for Admin Edit Bug
 
-`/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/unifiedDataProvider.ts` lines 639-681 - the `update()` method for "sales" resource.
+Since architecture is consistent, the bug must be in one of these areas:
+
+1. **Edge Function authorization logic** (`supabase/functions/users/index.ts` lines 191-228)
+   - Is admin role being correctly detected?
+   - Is the PATCH handler receiving all expected fields?
+
+2. **Data serialization** - Is `formData` in SalesPermissionsTab correctly passed through?
+   - Check: Does `handleSave()` include all modified fields?
+   - Check: Does `salesService.salesUpdate()` receive the correct payload?
+
+3. **UI permission check logic** (`SalesPermissionsTab.tsx` lines 63, 179)
+   - Is `isSelfEdit` incorrectly blocking saves?
+   - Is `identity?.id` comparison working correctly (type mismatch)?
+
+### Files to Debug with Logging
+
+| File | What to Log |
+|------|-------------|
+| `SalesPermissionsTab.tsx:107-137` | handleSave() formData contents |
+| `unifiedDataProvider.ts:639-681` | update() params before salesService call |
+| `sales.service.ts:82-95` | salesUpdate() body before invoke |
+| `supabase/functions/users/index.ts:186-228` | PATCH handler - currentUserSale.role, body |
+
+### Part 2 Database Analysis Needed For
+
+1. Verify `is_admin()` function returns correct value for current user
+2. Check database triggers (if any) that sync is_admin with role
+3. Validate RPC functions (`admin_update_sale`, `get_sale_by_id`) are working
 
 ---
 
 *End of Part 1 Inventory*
+*Document updated with corrected analysis after examining unifiedDataProvider.ts*
