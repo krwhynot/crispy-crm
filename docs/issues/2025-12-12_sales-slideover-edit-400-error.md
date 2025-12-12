@@ -173,7 +173,7 @@ SalesProfileTab.tsx handleSave()
   → useUpdate() never called!
 ```
 **Action:** Removed `validateUpdateSales()` import and call from both components
-**Result:** ✅ Fixed! Edge Function handles validation correctly.
+**Result:** ✅ FIXED & VERIFIED by user - both Profile and Permissions tabs save successfully!
 
 ## Lessons Learned
 
@@ -252,15 +252,16 @@ SalesProfileTab.tsx handleSave()
           → patchUserSchema validates → SUCCESS!
 ```
 
-## Test Plan (Updated)
+## Test Plan (Updated) - ✅ PASSED
 
-1. Login as `admin@test.com`
-2. Open Sales SlideOver (click own name in sales list)
-3. Edit `first_name` field
-4. Click "Save Changes"
-5. Verify success notification (no error)
-6. Refresh page, verify change persisted
-7. **Also test:** Leave avatar URL empty and save - should work
+1. ✅ Login as `admin@test.com`
+2. ✅ Open Sales SlideOver (click own name in sales list)
+3. ✅ Edit `first_name` field
+4. ✅ Click "Save Changes"
+5. ✅ Verify success notification (no error)
+6. ✅ Refresh page, verify change persisted
+7. ✅ **Also test:** Leave avatar URL empty and save - works!
+8. ✅ **Permissions tab:** Edit role/disabled status - works!
 
 ## Related Issues
 
