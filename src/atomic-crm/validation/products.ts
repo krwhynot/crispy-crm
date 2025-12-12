@@ -59,7 +59,7 @@ export const productSchema = z.strictObject({
 
   // Optional fields with defaults
   status: productStatusSchema.default("active"),
-  description: z.string().optional(),
+  description: z.string().max(2000).optional(),
   distributor_id: z.number().int().positive().optional(),
 
   // Food/health specific fields (kept for flexibility)
