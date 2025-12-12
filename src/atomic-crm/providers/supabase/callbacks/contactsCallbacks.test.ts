@@ -93,7 +93,7 @@ describe("contactsCallbacks", () => {
     });
 
     it("should preserve existing email array", async () => {
-      const emailArray = [{ email: "john@example.com", type: "Work" }];
+      const emailArray = [{ value: "john@example.com", type: "work" }];
       const record = {
         id: 1,
         first_name: "John",
@@ -357,8 +357,8 @@ describe("contactsCallbacks", () => {
       const data = {
         first_name: "John",
         last_name: "Doe",
-        email: [{ email: "john@example.com", type: "Work" }],
-        phone: [{ phone: "555-1234", type: "Mobile" }],
+        email: [{ value: "john@example.com", type: "work" }],
+        phone: [{ value: "555-1234", type: "home" }],
         tags: [1, 2, 3],
       };
 

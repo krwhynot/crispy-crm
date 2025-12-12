@@ -41,8 +41,8 @@ describe("CSV Import Integration", () => {
         name,
         first_name,
         last_name,
-        email: row["Email"] ? [{ email: sanitizeCsvValue(row["Email"]), type: "Work" }] : [],
-        phone: row["Phone"] ? [{ phone: sanitizeCsvValue(row["Phone"]), type: "Work" }] : [],
+        email: row["Email"] ? [{ value: sanitizeCsvValue(row["Email"]), type: "work" }] : [],
+        phone: row["Phone"] ? [{ value: sanitizeCsvValue(row["Phone"]), type: "work" }] : [],
       };
     });
 
@@ -132,7 +132,7 @@ describe("CSV Import Integration", () => {
         name,
         first_name,
         last_name,
-        email: row["Email"] ? [{ email: sanitizeCsvValue(row["Email"]), type: "Work" }] : [],
+        email: row["Email"] ? [{ value: sanitizeCsvValue(row["Email"]), type: "work" }] : [],
       };
     });
 
