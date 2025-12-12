@@ -14,8 +14,8 @@ describe("Contact Validation - UI as Source of Truth", () => {
       const validContact = {
         first_name: "John",
         last_name: "Doe",
-        email: [{ email: "john@example.com", type: "Work" }],
-        phone: [{ number: "555-1234", type: "Work" }],
+        email: [{ value: "john@example.com", type: "work" }],
+        phone: [{ value: "555-1234", type: "work" }],
         title: "CTO",
         department: "Engineering",
         linkedin_url: "https://linkedin.com/in/johndoe",
@@ -46,7 +46,7 @@ describe("Contact Validation - UI as Source of Truth", () => {
       const invalidContact = {
         first_name: "John",
         last_name: "Doe",
-        email: [{ email: "invalid-email", type: "Work" }],
+        email: [{ value: "invalid-email", type: "work" }],
       };
 
       expect(() => contactSchema.parse(invalidContact)).toThrow(z.ZodError);
@@ -90,19 +90,19 @@ describe("Contact Validation - UI as Source of Truth", () => {
 
   describe("Email and Phone Type Schemas", () => {
     it("should validate email with type", () => {
-      const email = { email: "test@example.com", type: "Work" };
+      const email = { value: "test@example.com", type: "work" };
       expect(() => emailAndTypeSchema.parse(email)).not.toThrow();
     });
 
     it("should validate phone with type", () => {
-      const phone = { number: "555-1234", type: "Home" };
+      const phone = { value: "555-1234", type: "home" };
       expect(() => phoneNumberAndTypeSchema.parse(phone)).not.toThrow();
     });
 
-    it("should default type to Work", () => {
-      const email = { email: "test@example.com" };
+    it("should default type to work", () => {
+      const email = { value: "test@example.com" };
       const result = emailAndTypeSchema.parse(email);
-      expect(result.type).toBe("Work");
+      expect(result.type).toBe("work");
     });
   });
 });
