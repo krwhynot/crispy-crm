@@ -197,8 +197,7 @@ export interface ContactNote extends Pick<RaRecord, "id"> {
   text: string;
   created_at: string;
   updated_at: string;
-  opportunity_owner_id: Identifier;
-  status: string;
+  status?: undefined;
   attachments?: AttachmentNote[];
   sales_id?: Identifier; // Note author (matches database schema)
 }

@@ -6,9 +6,6 @@ import type { Opportunity } from "../../types";
 interface OpportunityNotesTabProps {
   record: Opportunity;
   mode: "view" | "edit";
-  onModeToggle?: () => void;
-  /** Whether this tab is currently active - available for conditional data fetching */
-  isActiveTab?: boolean;
 }
 
 /**

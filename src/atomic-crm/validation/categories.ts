@@ -15,7 +15,7 @@ import { z } from "zod";
  * The database view returns category as the id/name since categories
  * are stored as strings, not as a separate reference table.
  */
-export const categorySchema = z.object({
+export const categorySchema = z.strictObject({
   id: z.string(),
   name: z.string().max(255),
 });
