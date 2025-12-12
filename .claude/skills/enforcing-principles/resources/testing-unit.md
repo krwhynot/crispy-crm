@@ -34,8 +34,8 @@ describe('contactSchema', () => {
     const validContact = {
       first_name: 'John',
       last_name: 'Doe',
-      email: [{ email: 'john@example.com', type: 'Work' }],
-      phone: [{ number: '555-1234', type: 'Work' }],
+      email: [{ value: 'john@example.com', type: 'work' }],
+      phone: [{ value: '555-1234', type: 'work' }],
     };
 
     expect(() => contactSchema.parse(validContact)).not.toThrow();
@@ -43,7 +43,7 @@ describe('contactSchema', () => {
 
   test('requires first_name or last_name', () => {
     const invalidContact = {
-      email: [{ email: 'test@example.com', type: 'Work' }],
+      email: [{ value: 'test@example.com', type: 'work' }],
     };
 
     expect(() => contactSchema.parse(invalidContact)).toThrow();
@@ -53,17 +53,17 @@ describe('contactSchema', () => {
     const invalidEmail = {
       first_name: 'John',
       last_name: 'Doe',
-      email: [{ email: 'invalid-email', type: 'Work' }],
+      email: [{ value: 'invalid-email', type: 'work' }],
     };
 
     expect(() => contactSchema.parse(invalidEmail)).toThrow('Invalid email address');
   });
 
   test('applies default type to email', () => {
-    const emailEntry = { email: 'john@example.com' };
+    const emailEntry = { value: 'john@example.com' };
     const result = emailAndTypeSchema.parse(emailEntry);
 
-    expect(result.type).toBe('Work'); // Default from schema
+    expect(result.type).toBe('work'); // Default from schema
   });
 });
 ```

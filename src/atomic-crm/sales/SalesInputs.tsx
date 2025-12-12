@@ -7,7 +7,7 @@ export function SalesInputs() {
     {
       key: "general",
       label: "General",
-      fields: ["first_name", "last_name", "email"],
+      fields: ["first_name", "last_name", "email", "password"],
       content: <SalesGeneralTab />,
     },
     {
