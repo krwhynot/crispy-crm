@@ -21,12 +21,16 @@ const mockGetList = vi.fn();
 /**
  * Mock useGetList from ra-core to control responses in tests.
  */
-vi.mock("ra-core", () => ({
-  useGetList: (resource: string, params: any, options?: { enabled?: boolean; staleTime?: number }) => {
-    const enabled = options?.enabled !== false;
-    return mockGetList(resource, params, enabled);
-  },
-}));
+vi.mock("ra-core", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("ra-core")>();
+  return {
+    ...actual,
+    useGetList: (resource: string, params: any, options?: { enabled?: boolean; staleTime?: number }) => {
+      const enabled = options?.enabled !== false;
+      return mockGetList(resource, params, enabled);
+    },
+  };
+});
 
 // Mock useCurrentSale hook - mutable values stored in object
 const currentSaleState = {
@@ -128,13 +132,24 @@ describe("usePrincipalPipeline", () => {
     it("should wait for salesId loading when myPrincipalsOnly is true", async () => {
       currentSaleState.salesId = null;
       currentSaleState.loading = true;
+      mockGetList.mockReturnValue({
+        data: [],
+        total: 0,
+        isPending: false,
+        error: null,
+      });
 
       const { result } = renderHook(() => usePrincipalPipeline({ myPrincipalsOnly: true }));
 
       // When salesIdLoading is true and myPrincipalsOnly is true, the query is disabled
-      // The hook's loading state comes from useGetList's isPending, which is false when disabled
+      // The hook's loading state comes from useGetList's isPending
+      // When disabled, the query returns isPending=false
       expect(result.current.loading).toBe(false);
-      expect(mockGetList).not.toHaveBeenCalled();
+      expect(mockGetList).toHaveBeenCalledWith(
+        "principal_pipeline_summary",
+        expect.anything(),
+        false // enabled=false
+      );
     });
   });
 
@@ -232,14 +247,16 @@ describe("usePrincipalPipeline", () => {
   describe("Error Handling", () => {
     it("should handle fetch errors gracefully", async () => {
       const mockError = new Error("Network error");
-      mockGetList.mockRejectedValueOnce(mockError);
+      mockGetList.mockReturnValue({
+        data: [],
+        total: 0,
+        isPending: false,
+        error: mockError,
+      });
 
       const { result } = renderHook(() => usePrincipalPipeline());
 
-      await waitFor(() => {
-        expect(result.current.loading).toBe(false);
-      });
-
+      expect(result.current.loading).toBe(false);
       expect(result.current.error).toBeInstanceOf(Error);
       expect(result.current.error?.message).toBe("Network error");
     });
