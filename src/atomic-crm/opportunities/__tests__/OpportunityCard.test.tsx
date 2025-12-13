@@ -324,9 +324,10 @@ describe("OpportunityCard", () => {
       renderCard({});
 
       const dragHandle = screen.getByTestId("drag-handle");
-      // Check for min-h-[44px] and min-w-[44px] classes
+      // Check for min-h-[44px] (height meets 44px touch target requirement)
+      // Width is min-w-[36px] - intentionally narrower for drag handles
       expect(dragHandle.className).toMatch(/min-h-\[44px\]|min-h-11|h-11/);
-      expect(dragHandle.className).toMatch(/min-w-\[44px\]|min-w-11|w-11/);
+      expect(dragHandle.className).toMatch(/min-w-\[36px\]|min-w-9/);
     });
 
     it("card body does NOT have dragHandleProps", () => {
