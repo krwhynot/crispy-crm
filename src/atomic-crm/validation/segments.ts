@@ -17,6 +17,7 @@
  */
 
 import { z } from "zod";
+import { VALIDATION_LIMITS } from "./constants";
 import { SEGMENT_TYPES, type SegmentType } from "./operatorSegments";
 import type { OrganizationType } from "./organizations";
 
@@ -82,7 +83,7 @@ export const segmentSchema = z.strictObject({
   segment_type: z.enum(SEGMENT_TYPES).default("playbook"),
   parent_id: z.string().uuid().nullable().optional(),
   display_order: z.coerce.number().int().min(0).max(9999).default(0),
-  created_at: z.string().optional(),
+  created_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional(),
   created_by: z.string().uuid().optional(),
 });
 

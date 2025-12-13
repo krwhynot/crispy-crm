@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { VALIDATION_LIMITS } from "./constants";
 
 /**
  * Sales validation schemas and functions
@@ -42,9 +43,9 @@ export const salesSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
   first_name: z.string().min(1, "First name is required").max(100, "First name too long"),
   last_name: z.string().min(1, "Last name is required").max(100, "Last name too long"),
-  email: z.string().email("Must be a valid email address"),
-  phone: z.string().nullish(),
-  avatar_url: z.string().url("Must be a valid URL").optional().nullable(),
+  email: z.string().email("Must be a valid email address").max(VALIDATION_LIMITS.EMAIL_MAX, "Email too long"),
+  phone: z.string().max(VALIDATION_LIMITS.PHONE_MAX, "Phone number too long").nullish(),
+  avatar_url: z.string().url("Must be a valid URL").max(VALIDATION_LIMITS.AVATAR_URL_MAX, "Avatar URL too long").optional().nullable(),
   user_id: z.string().uuid("Must be a valid UUID").optional(),
 
   // Permission fields (role is primary, others are computed/deprecated)
@@ -61,12 +62,13 @@ export const salesSchema = z.strictObject({
   timezone: z
     .string()
     .regex(/^[A-Za-z]+\/[A-Za-z_]+$/)
+    .max(VALIDATION_LIMITS.TIMEZONE_MAX, "Timezone too long")
     .default("America/Chicago"),
 
   // System fields
-  created_at: z.string().optional(),
-  updated_at: z.string().optional(),
-  deleted_at: z.string().optional().nullable(),
+  created_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional(),
+  updated_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional(),
+  deleted_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional().nullable(),
 });
 
 // Type inference
