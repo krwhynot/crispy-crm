@@ -266,6 +266,13 @@ vi.mock("@hookform/resolvers/zod", () => ({
 // Mock react-hook-form with controlled form state - use importOriginal to preserve all exports
 vi.mock("react-hook-form", async (importOriginal) => {
   const actual = await importOriginal<typeof import("react-hook-form")>();
+  const mockFormValues = {
+    activityType: "Call",
+    outcome: "Connected",
+    notes: "",
+    date: new Date(),
+    createFollowUp: false,
+  };
   return {
     ...actual,
     useForm: () => ({
@@ -280,14 +287,7 @@ vi.mock("react-hook-form", async (importOriginal) => {
         });
       },
       watch: (field?: string) => {
-        if (!field)
-          return {
-            activityType: "Call",
-            outcome: "Connected",
-            notes: "",
-            date: new Date(),
-            createFollowUp: false,
-          };
+        if (!field) return mockFormValues;
         if (field === "activityType") return "Call";
         if (field === "createFollowUp") return false;
         return undefined;
@@ -297,6 +297,16 @@ vi.mock("react-hook-form", async (importOriginal) => {
       reset: vi.fn(),
       formState: { isSubmitting: false, errors: {} },
     }),
+    // Mock useWatch to work with our fake control object
+    // Handles both: useWatch({ control }) and useWatch({ control, name: [...] })
+    useWatch: (options?: { name?: string[] }) => {
+      if (options?.name) {
+        // Return array of values for named fields
+        return options.name.map((field: string) => (mockFormValues as any)[field]);
+      }
+      // Return all form values
+      return mockFormValues;
+    },
     Controller: ({ render, name }: any) => {
       const field = { value: undefined, onChange: vi.fn(), name };
       return render({ field });
