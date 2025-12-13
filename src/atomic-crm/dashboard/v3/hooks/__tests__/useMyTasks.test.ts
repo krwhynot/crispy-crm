@@ -169,6 +169,7 @@ describe("useMyTasks", () => {
           filter: {
             sales_id: 42,
             completed: false,
+            "deleted_at@is": null,
           },
         })
       );
