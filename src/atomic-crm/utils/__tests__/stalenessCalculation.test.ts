@@ -344,12 +344,12 @@ describe("Edge Cases (Additional)", () => {
   });
 
   describe("invalid date string handling", () => {
-    it("should handle invalid date strings gracefully (returns false due to NaN comparison)", () => {
-      // Invalid date parses to NaN, and NaN comparisons return false
-      // This is safe behavior - invalid dates won't incorrectly flag as stale
+    it("should handle invalid date strings gracefully (treated as no activity = stale)", () => {
+      // Invalid date parses to Invalid Date, which is treated as no recent activity
+      // This is safe behavior - invalid dates are flagged as stale (fail-fast principle)
       // Production code should ensure dates are validated at input time
-      expect(isOpportunityStale("new_lead", "not-a-date", referenceDate)).toBe(false);
-      expect(isOpportunityStale("new_lead", "invalid", referenceDate)).toBe(false);
+      expect(isOpportunityStale("new_lead", "not-a-date", referenceDate)).toBe(true);
+      expect(isOpportunityStale("new_lead", "invalid", referenceDate)).toBe(true);
     });
   });
 
