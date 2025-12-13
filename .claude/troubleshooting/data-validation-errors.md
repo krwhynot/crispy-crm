@@ -125,7 +125,7 @@ console.log(params.data) // in unifiedDataProvider.ts:338
 ```typescript
 // Email field must be JSONB array structure
 email: [
-  { email: "user@example.com", type: "Work" }
+  { value: "user@example.com", type: "work" }
 ]
 
 // NOT this:
@@ -201,7 +201,7 @@ organizations: [
 **Symptom:**
 ```javascript
 validationErrors: {
-  "email.0.email": "Invalid email address",
+  "email.0.value": "Invalid email address",
   "email": "At least one email address is required"
 }
 ```
@@ -217,7 +217,7 @@ validationErrors: {
 email: jsonb DEFAULT '[]'::jsonb
 
 -- Expected structure:
-[{"email": "user@example.com", "type": "Work"}]
+[{"value": "user@example.com", "type": "work"}]
 ```
 
 **Diagnostic Steps:**
@@ -242,14 +242,14 @@ params.data.email?.forEach((entry, i) => {
 ```typescript
 // ✓ Correct
 email: [
-  { email: "valid@example.com", type: "Work" }
+  { value: "valid@example.com", type: "work" }
 ]
 
 // ✗ Wrong - missing array wrapper
-email: { email: "valid@example.com", type: "Work" }
+email: { value: "valid@example.com", type: "work" }
 
 // ✗ Wrong - empty object
-email: [{ email: "", type: "Work" }]
+email: [{ value: "", type: "work" }]
 ```
 
 **B. Frontend Validation:**
@@ -447,7 +447,7 @@ import { validateCreateContact } from './validation/contacts';
 const testData = {
   first_name: "John",
   last_name: "Doe",
-  email: [{ email: "john@example.com", type: "Work" }],
+  email: [{ value: "john@example.com", type: "work" }],
   sales_id: 1,
   organizations: [
     { organization_id: 1, is_primary_organization: true }
@@ -513,7 +513,7 @@ ls src/atomic-crm/validation/__tests__/contacts/
 | "Last name is required" | `last_name` | Empty/null value | Ensure form field is populated |
 | "Account manager is required" | `sales_id` | Null/empty/undefined | Select sales person from dropdown |
 | "At least one email address is required" | `email` | Empty array or missing | Add email entry with valid format |
-| "Invalid email address" | `email.N.email` | Malformed email | Check email format (must be valid email) |
+| "Invalid email address" | `email.N.value` | Malformed email | Check email format (must be valid email) |
 | "URL must be from linkedin.com" | `linkedin_url` | Invalid URL domain | Use LinkedIn URL or leave empty |
 | "At least one organization relationship is required" | `organizations` | Empty array | Add organization with ContactMultiOrg |
 | "One organization must be designated as primary" | `organizations` | No `is_primary_organization: true` | Set one org as primary |

@@ -109,7 +109,7 @@ if (!data.email || data.email.length === 0) {
 
 #### Symptoms
 - Error: "Invalid email address"
-- validationErrors path: `email.0.email` or similar
+- validationErrors path: `email.0.value` or similar
 
 #### Root Cause
 - Email doesn't match regex pattern
@@ -143,7 +143,7 @@ emailSchema.safeParse(testEmail); // { success: false, error: ... }
 // Ensure frontend filters out empty email entries before submission
 
 // In form submit handler
-const filteredEmails = data.email.filter(e => e.email && e.email.trim());
+const filteredEmails = data.email.filter(e => e.value && e.value.trim());
 if (filteredEmails.length === 0) {
   throw new Error('At least one email address is required');
 }
@@ -456,7 +456,7 @@ const testData = {
   first_name: 'John',
   last_name: 'Doe',
   sales_id: '1',
-  email: [{ email: 'john@example.com', type: 'Work' }],
+  email: [{ value: 'john@example.com', type: 'work' }],
   organizations: [{
     organization_id: '1',
     is_primary_organization: true
@@ -477,7 +477,7 @@ const quickTest = async () => {
     first_name: 'Test',
     last_name: 'User',
     sales_id: '1',
-    email: [{ email: 'test@example.com', type: 'Work' }]
+    email: [{ value: 'test@example.com', type: 'work' }]
   };
 
   console.log('Testing minimal valid contact:', minimalValid);
@@ -525,8 +525,8 @@ contactSchema = z.object({
   sales_id: string | number (not empty)
 
   // Optional arrays
-  email: array of { email: string, type: enum }
-  phone: array of { number: string, type: enum }
+  email: array of { value: string, type: "work" | "home" | "other" }
+  phone: array of { value: string, type: "work" | "home" | "other" }
   organizations: array of organization relationships
 
   // Optional fields
@@ -590,7 +590,7 @@ contactSchema = z.object({
 | `last_name` | Last name validation | contacts.ts:104 |
 | `sales_id` | Account manager validation | contacts.ts:116-120 |
 | `email` | Email array validation | contacts.ts:106, 308-316 |
-| `email.0.email` | First email format | contacts.ts:224-232 |
+| `email.0.value` | First email format | contacts.ts:224-232 |
 | `organizations` | Multi-org validation | contacts.ts:176-220 |
 | `organizations.0.organization_id` | First org ID | contacts.ts:210-219 |
 | `linkedin_url` | LinkedIn format | contacts.ts:40-57 |
@@ -660,7 +660,7 @@ const handleSubmit = (data: ContactInput) => {
 // Create tests in src/atomic-crm/validation/__tests__/contacts/
 describe('Contact Validation', () => {
   it('should require first_name, last_name, sales_id', async () => {
-    const invalid = { email: [{ email: 'test@test.com', type: 'Work' }] };
+    const invalid = { email: [{ value: 'test@test.com', type: 'work' }] };
 
     await expect(validateContactForm(invalid))
       .rejects.toThrow('Validation failed');
@@ -671,7 +671,7 @@ describe('Contact Validation', () => {
       first_name: 'John',
       last_name: 'Doe',
       sales_id: '1',
-      email: [{ email: 'not-an-email', type: 'Work' }]
+      email: [{ value: 'not-an-email', type: 'work' }]
     };
 
     await expect(validateContactForm(invalid))
@@ -683,7 +683,7 @@ describe('Contact Validation', () => {
       first_name: 'John',
       last_name: 'Doe',
       sales_id: '1',
-      email: [{ email: 'john@example.com', type: 'Work' }],
+      email: [{ value: 'john@example.com', type: 'work' }],
       organizations: [
         { organization_id: '1', is_primary_organization: false },
         { organization_id: '2', is_primary_organization: false }
@@ -765,7 +765,7 @@ If validation errors persist after following this guide:
      first_name: 'Test',
      last_name: 'User',
      sales_id: '1',
-     email: [{ email: 'test@example.com', type: 'Work' }]
+     email: [{ value: 'test@example.com', type: 'work' }]
    };
    ```
 
@@ -825,7 +825,7 @@ npm run migrate:status
 curl -X POST $VITE_SUPABASE_URL/rest/v1/contacts \
   -H "apikey: $VITE_SUPABASE_ANON_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"first_name":"Test","last_name":"User","sales_id":"1","email":[{"email":"test@test.com","type":"Work"}]}'
+  -d '{"first_name":"Test","last_name":"User","sales_id":"1","email":[{"value":"test@test.com","type":"work"}]}'
 ```
 
 ### Emergency Recovery
