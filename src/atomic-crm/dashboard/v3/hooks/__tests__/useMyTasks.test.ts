@@ -27,14 +27,6 @@ const stableDataProvider = {
   delete: mockDelete,
 };
 
-// State for useGetList mock - allows per-test control
-const useGetListState = {
-  data: [] as unknown[],
-  total: 0,
-  isPending: false,
-  error: null as Error | null,
-};
-
 // Mock react-admin with stable reference - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
   const actual = await importOriginal<typeof import("react-admin")>();
@@ -43,21 +35,57 @@ vi.mock("react-admin", async (importOriginal) => {
   return {
     ...actual,
     useDataProvider: () => stableDataProvider,
-    // Mock useGetList to return controlled state and trigger mockGetList for assertions
-    useGetList: (resource: string, params: any) => {
-      // Call mockGetList synchronously for test assertions
-      React.useEffect(() => {
-        if (!useGetListState.isPending && useGetListState.data.length === 0) {
-          mockGetList(resource, params);
+    // Mock useGetList using React state to simulate async behavior
+    useGetList: (resource: string, params: any, options?: { enabled?: boolean; staleTime?: number }) => {
+      // Support enabled option - if false, don't fetch
+      const enabled = options?.enabled !== false;
+
+      const [state, setState] = React.useState<{
+        data: any[];
+        total: number;
+        isLoading: boolean;
+        error: Error | null;
+      }>({
+        data: [],
+        total: 0,
+        isLoading: enabled, // Only loading if enabled
+        error: null,
+      });
+
+      const fetchData = React.useCallback(async () => {
+        if (!enabled) return;
+        setState((s: any) => ({ ...s, isLoading: true, error: null }));
+        try {
+          const result = await mockGetList(resource, params);
+          setState({
+            data: result?.data || [],
+            total: result?.total || 0,
+            isLoading: false,
+            error: null,
+          });
+        } catch (e) {
+          setState({
+            data: [],
+            total: 0,
+            isLoading: false,
+            error: e instanceof Error ? e : new Error("Failed to fetch"),
+          });
         }
-      }, [resource, JSON.stringify(params)]);
+      }, [resource, JSON.stringify(params), enabled]);
+
+      React.useEffect(() => {
+        if (enabled) {
+          fetchData();
+        }
+      }, [fetchData, enabled]);
 
       return {
-        data: useGetListState.data,
-        total: useGetListState.total,
-        isPending: useGetListState.isPending,
-        error: useGetListState.error,
-        refetch: () => mockGetList(resource, params),
+        data: state.data,
+        total: state.total,
+        isLoading: state.isLoading,
+        isPending: state.isLoading, // Also provide isPending for compatibility
+        error: state.error,
+        refetch: fetchData,
       };
     },
   };

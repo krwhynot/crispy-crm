@@ -28,44 +28,51 @@ vi.mock("react-admin", async (importOriginal) => {
 
   return {
     ...actual,
-    useGetList: (resource: string, params: any) => {
+    useGetList: (resource: string, params: any, options?: { enabled?: boolean; staleTime?: number }) => {
+      // Support enabled option - if false, don't fetch
+      const enabled = options?.enabled !== false;
+
       const [state, setState] = React.useState<{
         data: any[];
-        isPending: boolean;
+        isLoading: boolean;
         error: Error | null;
       }>({
         data: [],
-        isPending: true,
+        isLoading: enabled, // Only loading if enabled
         error: null,
       });
 
       const fetchData = React.useCallback(async () => {
-        setState((s: any) => ({ ...s, isPending: true, error: null }));
+        if (!enabled) return; // Don't fetch if disabled
+        setState((s: any) => ({ ...s, isLoading: true, error: null }));
         try {
           const result = await mockGetList(resource, params);
           setState({
             data: result.data || [],
-            isPending: false,
+            isLoading: false,
             error: null,
           });
         } catch (e) {
           const errorMessage = e instanceof Error ? e.message : "Failed to fetch";
           setState({
             data: [],
-            isPending: false,
+            isLoading: false,
             error: errorMessage as any,
           });
         }
-      }, [resource, JSON.stringify(params)]);
+      }, [resource, JSON.stringify(params), enabled]);
 
       React.useEffect(() => {
-        fetchData();
-      }, [fetchData]);
+        if (enabled) {
+          fetchData();
+        }
+      }, [fetchData, enabled]);
 
       return {
         data: state.data,
         total: state.data.length,
-        isPending: state.isPending,
+        isLoading: state.isLoading,
+        isPending: state.isLoading, // Also provide isPending for compatibility
         error: state.error,
         refetch: fetchData,
       };
