@@ -24,6 +24,9 @@
  * Plan: Create new validators with standard names, deprecate old ones, migrate gradually.
  */
 
+// Constants and utilities
+export * from "./constants";
+
 // Core entity schemas
 export * from "./opportunities";
 export * from "./organizations";

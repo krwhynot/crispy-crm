@@ -11,6 +11,7 @@
  */
 
 import { z } from "zod";
+import { VALIDATION_LIMITS } from "./constants";
 
 /**
  * Segment type discriminator
@@ -178,7 +179,7 @@ export const operatorSegmentRecordSchema = z.strictObject({
   name: operatorSegmentSchema,
   segment_type: z.enum(SEGMENT_TYPES),
   parent_id: z.string().uuid().nullable().optional(),
-  created_at: z.string().optional(),
+  created_at: z.string().max(VALIDATION_LIMITS.TIMESTAMP_MAX, "Timestamp too long").optional(),
   created_by: z.string().uuid().optional(),
 });
 
