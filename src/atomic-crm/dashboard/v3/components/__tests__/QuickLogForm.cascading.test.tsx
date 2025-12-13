@@ -347,45 +347,49 @@ const mockDataProvider = {
 
 const mockNotify = vi.fn();
 
-// Mock hooks - provide minimal implementation without importing actual react-admin
-vi.mock("react-admin", () => ({
-  AdminProvider: ({ children }: any) => <div data-testid="admin-provider">{children}</div>,
-  useDataProvider: () => mockDataProvider,
-  useNotify: () => mockNotify,
-  // useGetList is used by the refactored component for hybrid search
-  useGetList: (resource: string) => {
-    const data = (() => {
-      switch (resource) {
-        case "contacts":
-          return mockContacts;
-        case "organizations":
-          return mockOrganizations;
-        case "opportunities":
-          return mockOpportunities.filter(
-            (o: any) => !["closed_won", "closed_lost"].includes(o.stage)
-          );
-        default:
-          return [];
+// Mock hooks - use importOriginal to preserve all exports
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    AdminProvider: ({ children }: any) => <div data-testid="admin-provider">{children}</div>,
+    useDataProvider: () => mockDataProvider,
+    useNotify: () => mockNotify,
+    // useGetList is used by the refactored component for hybrid search
+    useGetList: (resource: string) => {
+      const data = (() => {
+        switch (resource) {
+          case "contacts":
+            return mockContacts;
+          case "organizations":
+            return mockOrganizations;
+          case "opportunities":
+            return mockOpportunities.filter(
+              (o: any) => !["closed_won", "closed_lost"].includes(o.stage)
+            );
+          default:
+            return [];
+        }
+      })();
+      return {
+        data,
+        total: data.length,
+        isPending: false,
+        error: null,
+        refetch: vi.fn(),
+      };
+    },
+    // useGetOne is used to fetch a specific organization when not in paginated list
+    useGetOne: (resource: string, params: any) => {
+      // Return the org from mock data if it exists
+      if (resource === "organizations" && params?.id) {
+        const org = mockOrganizations.find((o: any) => o.id === params.id);
+        return { data: org, isPending: false, error: null };
       }
-    })();
-    return {
-      data,
-      total: data.length,
-      isPending: false,
-      error: null,
-      refetch: vi.fn(),
-    };
-  },
-  // useGetOne is used to fetch a specific organization when not in paginated list
-  useGetOne: (resource: string, params: any) => {
-    // Return the org from mock data if it exists
-    if (resource === "organizations" && params?.id) {
-      const org = mockOrganizations.find((o: any) => o.id === params.id);
-      return { data: org, isPending: false, error: null };
-    }
-    return { data: undefined, isPending: false, error: null };
-  },
-}));
+      return { data: undefined, isPending: false, error: null };
+    },
+  };
+});
 
 vi.mock("../../hooks/useCurrentSale", () => ({
   useCurrentSale: () => ({ salesId: 1, loading: false, error: null }),

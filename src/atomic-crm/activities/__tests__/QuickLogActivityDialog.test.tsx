@@ -27,16 +27,21 @@ let mockOppData: { data: unknown; isLoading: boolean; error: unknown } = {
   error: null,
 };
 
-vi.mock("react-admin", () => ({
-  useGetOne: (resource: string) => {
-    if (resource === "contacts") return mockContactData;
-    if (resource === "organizations") return mockOrgData;
-    if (resource === "opportunities") return mockOppData;
-    return { data: undefined, isLoading: false, error: null };
-  },
-  useDataProvider: () => mockDataProvider,
-  useNotify: () => mockNotify,
-}));
+// Mock react-admin - use importOriginal to preserve all exports
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useGetOne: (resource: string) => {
+      if (resource === "contacts") return mockContactData;
+      if (resource === "organizations") return mockOrgData;
+      if (resource === "opportunities") return mockOppData;
+      return { data: undefined, isLoading: false, error: null };
+    },
+    useDataProvider: () => mockDataProvider,
+    useNotify: () => mockNotify,
+  };
+});
 
 // Mock the lazy-loaded QuickLogForm module
 vi.mock("../../dashboard/v3/components/QuickLogForm", () => ({

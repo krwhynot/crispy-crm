@@ -3,9 +3,13 @@ import { useOpportunityContacts } from "../hooks/useOpportunityContacts";
 import { useGetMany } from "react-admin";
 import { describe, it, expect, vi } from "vitest";
 
-vi.mock("react-admin", () => ({
-  useGetMany: vi.fn(),
-}));
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useGetMany: vi.fn(),
+  };
+});
 
 describe("useOpportunityContacts", () => {
   it("returns primary contact when contact_ids has values", async () => {

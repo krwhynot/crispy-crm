@@ -9,14 +9,18 @@ const mockRecord = {
   name: "Test Opportunity",
 };
 
-// Mock React Admin hooks
-vi.mock("react-admin", () => ({
-  useUpdate: () => [vi.fn()],
-  useDelete: () => [vi.fn()],
-  useNotify: () => vi.fn(),
-  useRefresh: () => vi.fn(),
-  useRecordContext: () => mockRecord,
-}));
+// Mock React Admin hooks - use importOriginal to preserve all exports
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useUpdate: () => [vi.fn()],
+    useDelete: () => [vi.fn()],
+    useNotify: () => vi.fn(),
+    useRefresh: () => vi.fn(),
+    useRecordContext: () => mockRecord,
+  };
+});
 
 const renderWithRouter = (component: React.ReactElement) => {
   return render(<BrowserRouter>{component}</BrowserRouter>);

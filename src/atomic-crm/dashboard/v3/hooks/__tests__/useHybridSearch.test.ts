@@ -34,39 +34,43 @@ const mockRefetch = vi.fn();
 // Mock useGetList - track call args to validate queries
 const mockUseGetList = vi.fn();
 
-vi.mock("react-admin", () => ({
-  useGetList: (resource: string, params: any, options: any) => {
-    mockUseGetList(resource, params, options);
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useGetList: (resource: string, params: any, options: any) => {
+      mockUseGetList(resource, params, options);
 
-    // Determine which data to return based on search state
-    const isSearchQuery = params.filter?.q !== undefined;
+      // Determine which data to return based on search state
+      const isSearchQuery = params.filter?.q !== undefined;
 
-    if (!options.enabled) {
+      if (!options.enabled) {
+        return {
+          data: undefined,
+          isPending: false,
+          error: null,
+          refetch: mockRefetch,
+        };
+      }
+
+      if (isSearchQuery) {
+        return {
+          data: mockSearchData.data,
+          isPending: mockSearchData.isPending,
+          error: mockSearchData.error,
+          refetch: mockRefetch,
+        };
+      }
+
       return {
-        data: undefined,
-        isPending: false,
-        error: null,
+        data: mockInitialData.data,
+        isPending: mockInitialData.isPending,
+        error: mockInitialData.error,
         refetch: mockRefetch,
       };
-    }
-
-    if (isSearchQuery) {
-      return {
-        data: mockSearchData.data,
-        isPending: mockSearchData.isPending,
-        error: mockSearchData.error,
-        refetch: mockRefetch,
-      };
-    }
-
-    return {
-      data: mockInitialData.data,
-      isPending: mockInitialData.isPending,
-      error: mockInitialData.error,
-      refetch: mockRefetch,
-    };
-  },
-}));
+    },
+  };
+});
 
 // Helper to create mock records
 const createMockRecord = (id: number, name: string) => ({ id, name });

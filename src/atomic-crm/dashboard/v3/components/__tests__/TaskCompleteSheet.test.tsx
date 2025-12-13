@@ -2,15 +2,19 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import type { TaskItem } from "../../types";
 
-// Mock react-admin hooks
+// Mock react-admin hooks - use importOriginal to preserve all exports
 const mockNotify = vi.fn();
-vi.mock("react-admin", () => ({
-  useNotify: () => mockNotify,
-  useDataProvider: () => ({
-    getList: vi.fn().mockResolvedValue({ data: [] }),
-    update: vi.fn().mockResolvedValue({ data: {} }),
-  }),
-}));
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useNotify: () => mockNotify,
+    useDataProvider: () => ({
+      getList: vi.fn().mockResolvedValue({ data: [] }),
+      update: vi.fn().mockResolvedValue({ data: {} }),
+    }),
+  };
+});
 
 // Create mock tasks
 const createMockTasks = (): TaskItem[] => [

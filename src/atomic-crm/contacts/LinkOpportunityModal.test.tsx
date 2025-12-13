@@ -5,23 +5,27 @@ import { vi } from "vitest";
 const mockCreate = vi.fn();
 const mockNotify = vi.fn();
 
-// Mock react-admin hooks
-vi.mock("react-admin", () => ({
-  useCreate: () => [mockCreate, { isLoading: false }],
-  useNotify: () => mockNotify,
-  Form: ({ children, onSubmit }: any) => (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        // Simulate form data being passed to onSubmit handler
-        onSubmit({ opportunity_id: 10 });
-      }}
-    >
-      {children}
-    </form>
-  ),
-  ReferenceInput: ({ children }: any) => <div>{children}</div>,
-}));
+// Mock react-admin hooks - use importOriginal to preserve all exports
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useCreate: () => [mockCreate, { isLoading: false }],
+    useNotify: () => mockNotify,
+    Form: ({ children, onSubmit }: any) => (
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          // Simulate form data being passed to onSubmit handler
+          onSubmit({ opportunity_id: 10 });
+        }}
+      >
+        {children}
+      </form>
+    ),
+    ReferenceInput: ({ children }: any) => <div>{children}</div>,
+  };
+});
 
 // Mock AutocompleteInput component
 vi.mock("@/components/admin/autocomplete-input", () => ({

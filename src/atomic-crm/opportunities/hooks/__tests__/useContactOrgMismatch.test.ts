@@ -4,10 +4,14 @@ import { useContactOrgMismatch } from "../useContactOrgMismatch";
 import { useGetMany } from "react-admin";
 import type { Contact } from "../../../types";
 
-// Mock react-admin
-vi.mock("react-admin", () => ({
-  useGetMany: vi.fn(),
-}));
+// Mock react-admin - use importOriginal to preserve all exports
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useGetMany: vi.fn(),
+  };
+});
 
 const mockUseGetMany = vi.mocked(useGetMany);
 

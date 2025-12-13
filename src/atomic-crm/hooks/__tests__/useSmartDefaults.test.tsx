@@ -4,9 +4,13 @@ import { useSmartDefaults } from "../useSmartDefaults";
 import { format } from "date-fns";
 
 const mockUseGetIdentity = vi.fn();
-vi.mock("react-admin", () => ({
-  useGetIdentity: () => mockUseGetIdentity(),
-}));
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useGetIdentity: () => mockUseGetIdentity(),
+  };
+});
 
 describe("useSmartDefaults", () => {
   beforeEach(() => {

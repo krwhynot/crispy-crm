@@ -27,10 +27,14 @@ const stableDataProvider = {
   delete: mockDelete,
 };
 
-// Mock react-admin with stable reference
-vi.mock("react-admin", () => ({
-  useDataProvider: () => stableDataProvider,
-}));
+// Mock react-admin with stable reference - use importOriginal to preserve all exports
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useDataProvider: () => stableDataProvider,
+  };
+});
 
 // Mock useCurrentSale hook - mutable values stored in object
 const currentSaleState = {

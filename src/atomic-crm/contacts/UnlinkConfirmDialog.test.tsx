@@ -3,11 +3,15 @@ import { render, screen } from "@testing-library/react";
 import { UnlinkConfirmDialog } from "./UnlinkConfirmDialog";
 import { vi } from "vitest";
 
-// Mock react-admin hooks
-vi.mock("react-admin", () => ({
-  useDelete: () => [vi.fn(), { isLoading: false }],
-  useNotify: () => vi.fn(),
-}));
+// Mock react-admin hooks - use importOriginal to preserve all exports
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useDelete: () => [vi.fn(), { isLoading: false }],
+    useNotify: () => vi.fn(),
+  };
+});
 
 describe("UnlinkConfirmDialog", () => {
   const mockOpportunity = {
