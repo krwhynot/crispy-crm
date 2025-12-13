@@ -1,6 +1,6 @@
 import { TabbedFormInputs } from "@/components/admin/tabbed-form";
 import { SalesGeneralTab } from "./SalesGeneralTab";
-import { SalesPermissionsTab } from "./SalesPermissionsTab";
+import { SalesPermissionsInputs } from "./SalesPermissionsInputs";
 
 export function SalesInputs() {
   const tabs = [
@@ -13,8 +13,8 @@ export function SalesInputs() {
     {
       key: "permissions",
       label: "Permissions",
-      fields: ["role", "disabled"], // Changed from administrator to role
-      content: <SalesPermissionsTab />,
+      fields: ["role", "disabled"],
+      content: <SalesPermissionsInputs />,
     },
   ];
 
