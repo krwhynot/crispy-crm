@@ -263,47 +263,51 @@ vi.mock("@hookform/resolvers/zod", () => ({
   zodResolver: () => async (values: any) => ({ values, errors: {} }),
 }));
 
-// Mock react-hook-form with controlled form state
-vi.mock("react-hook-form", () => ({
-  useForm: () => ({
-    control: {},
-    handleSubmit: (fn: any) => (e?: any) => {
-      e?.preventDefault?.();
-      fn({
-        activityType: "Call",
-        outcome: "Connected",
-        notes: "Test notes",
-        date: new Date(),
-      });
-    },
-    watch: (field?: string) => {
-      if (!field)
-        return {
+// Mock react-hook-form with controlled form state - use importOriginal to preserve all exports
+vi.mock("react-hook-form", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-hook-form")>();
+  return {
+    ...actual,
+    useForm: () => ({
+      control: {},
+      handleSubmit: (fn: any) => (e?: any) => {
+        e?.preventDefault?.();
+        fn({
           activityType: "Call",
           outcome: "Connected",
-          notes: "",
+          notes: "Test notes",
           date: new Date(),
-          createFollowUp: false,
-        };
-      if (field === "activityType") return "Call";
-      if (field === "createFollowUp") return false;
-      return undefined;
+        });
+      },
+      watch: (field?: string) => {
+        if (!field)
+          return {
+            activityType: "Call",
+            outcome: "Connected",
+            notes: "",
+            date: new Date(),
+            createFollowUp: false,
+          };
+        if (field === "activityType") return "Call";
+        if (field === "createFollowUp") return false;
+        return undefined;
+      },
+      getValues: () => ({}),
+      setValue: vi.fn(),
+      reset: vi.fn(),
+      formState: { isSubmitting: false, errors: {} },
+    }),
+    Controller: ({ render, name }: any) => {
+      const field = { value: undefined, onChange: vi.fn(), name };
+      return render({ field });
     },
-    getValues: () => ({}),
-    setValue: vi.fn(),
-    reset: vi.fn(),
-    formState: { isSubmitting: false, errors: {} },
-  }),
-  Controller: ({ render, name }: any) => {
-    const field = { value: undefined, onChange: vi.fn(), name };
-    return render({ field });
-  },
-  FormProvider: ({ children }: any) => <>{children}</>,
-  useFormContext: () => ({
-    getFieldState: () => ({}),
-    formState: { isSubmitting: false, errors: {} },
-  }),
-}));
+    FormProvider: ({ children }: any) => <>{children}</>,
+    useFormContext: () => ({
+      getFieldState: () => ({}),
+      formState: { isSubmitting: false, errors: {} },
+    }),
+  };
+});
 
 // ============================================================================
 // MOCK DATA
