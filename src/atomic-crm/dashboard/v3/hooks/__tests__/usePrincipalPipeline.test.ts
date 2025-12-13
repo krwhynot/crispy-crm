@@ -18,13 +18,60 @@ import type { PipelineSummaryRow } from "../../types";
 // Create stable mock functions
 const mockGetList = vi.fn();
 
-const stableDataProvider = {
-  getList: mockGetList,
-};
+/**
+ * Mock useGetList hook with React state to simulate async behavior.
+ * Uses mockGetList to control responses in tests.
+ */
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  const React = require("react");
 
-vi.mock("react-admin", () => ({
-  useDataProvider: () => stableDataProvider,
-}));
+  return {
+    ...actual,
+    useGetList: (resource: string, params: any) => {
+      const [state, setState] = React.useState<{
+        data: any[];
+        isPending: boolean;
+        error: Error | null;
+      }>({
+        data: [],
+        isPending: true,
+        error: null,
+      });
+
+      const fetchData = React.useCallback(async () => {
+        setState((s: any) => ({ ...s, isPending: true, error: null }));
+        try {
+          const result = await mockGetList(resource, params);
+          setState({
+            data: result.data || [],
+            isPending: false,
+            error: null,
+          });
+        } catch (e) {
+          const errorMessage = e instanceof Error ? e.message : "Failed to fetch";
+          setState({
+            data: [],
+            isPending: false,
+            error: errorMessage as any,
+          });
+        }
+      }, [resource, JSON.stringify(params)]);
+
+      React.useEffect(() => {
+        fetchData();
+      }, [fetchData]);
+
+      return {
+        data: state.data,
+        total: state.data.length,
+        isPending: state.isPending,
+        error: state.error,
+        refetch: fetchData,
+      };
+    },
+  };
+});
 
 // Mock useCurrentSale hook - mutable values stored in object
 const currentSaleState = {

@@ -16,10 +16,14 @@ vi.mock("@/atomic-crm/providers/supabase/supabase", () => {
   };
 });
 
-// Mock React Admin's useDataProvider
-vi.mock("react-admin", () => ({
-  useDataProvider: vi.fn(),
-}));
+// Mock React Admin's useDataProvider - use importOriginal to preserve all exports
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useDataProvider: vi.fn(),
+  };
+});
 
 // Import the mocks after vi.mock is set up
 import { supabase } from "@/atomic-crm/providers/supabase/supabase";

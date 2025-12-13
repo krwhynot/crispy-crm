@@ -21,9 +21,13 @@ const stableDataProvider = {
   getList: mockGetList,
 };
 
-vi.mock("react-admin", () => ({
-  useDataProvider: () => stableDataProvider,
-}));
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useDataProvider: () => stableDataProvider,
+  };
+});
 
 // Mock useCurrentSale hook - mutable values stored in object
 const currentSaleState = {

@@ -2,15 +2,19 @@ import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { addDays, endOfDay, startOfDay, subDays } from "date-fns";
 
-// Mock react-admin's useDataProvider and useNotify
+// Mock react-admin's useDataProvider and useNotify - use importOriginal to preserve all exports
 const mockUpdate = vi.fn();
-vi.mock("react-admin", () => ({
-  useDataProvider: () => ({
-    getList: vi.fn().mockResolvedValue({ data: [] }),
-    update: mockUpdate,
-  }),
-  useNotify: () => vi.fn(),
-}));
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useDataProvider: () => ({
+      getList: vi.fn().mockResolvedValue({ data: [] }),
+      update: mockUpdate,
+    }),
+    useNotify: () => vi.fn(),
+  };
+});
 
 // Mock useCurrentSale
 vi.mock("../hooks/useCurrentSale", () => ({

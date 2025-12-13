@@ -126,11 +126,15 @@ vi.mock("../hooks/useMyTasks", () => ({
   useMyTasks: () => mockUseMyTasks(),
 }));
 
-// Mock React Admin's useNotify hook
+// Mock React Admin's useNotify hook - use importOriginal to preserve all exports
 const mockNotify = vi.fn();
-vi.mock("react-admin", () => ({
-  useNotify: () => mockNotify,
-}));
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useNotify: () => mockNotify,
+  };
+});
 
 // ============================================================================
 // TASKSPANEL PERFORMANCE TESTS

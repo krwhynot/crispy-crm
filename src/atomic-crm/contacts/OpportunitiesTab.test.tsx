@@ -61,30 +61,34 @@ vi.mock("./UnlinkConfirmDialog", () => ({
   },
 }));
 
-// Mock react-admin components
-vi.mock("react-admin", () => ({
-  Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,
-  FunctionField: ({ label }: any) => <div data-testid={`field-${label}`}>function-field</div>,
-  ReferenceField: ({ children, label }: any) => (
-    <div data-testid={`field-${label}`}>{children}</div>
-  ),
-  TextField: () => <div>text-field</div>,
-  NumberField: () => <div>number-field</div>,
-  ListContextProvider: ({ children, value }: any) => {
-    // Render the data items for testing (data is object keyed by ID)
-    const items = value?.ids?.map((id: any) => value.data[id]) || [];
-    return (
-      <div data-testid="list-context">
-        {items.map((item: any) => (
-          <div key={item.id} data-testid="opportunity-item">
-            {item.name}
-          </div>
-        ))}
-        {children}
-      </div>
-    );
-  },
-}));
+// Mock react-admin components - use importOriginal to preserve all exports
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,
+    FunctionField: ({ label }: any) => <div data-testid={`field-${label}`}>function-field</div>,
+    ReferenceField: ({ children, label }: any) => (
+      <div data-testid={`field-${label}`}>{children}</div>
+    ),
+    TextField: () => <div>text-field</div>,
+    NumberField: () => <div>number-field</div>,
+    ListContextProvider: ({ children, value }: any) => {
+      // Render the data items for testing (data is object keyed by ID)
+      const items = value?.ids?.map((id: any) => value.data[id]) || [];
+      return (
+        <div data-testid="list-context">
+          {items.map((item: any) => (
+            <div key={item.id} data-testid="opportunity-item">
+              {item.name}
+            </div>
+          ))}
+          {children}
+        </div>
+      );
+    },
+  };
+});
 
 vi.mock("ra-core", async () => {
   const actual = await vi.importActual("ra-core");

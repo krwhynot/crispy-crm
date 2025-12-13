@@ -2,19 +2,24 @@ import { render, screen, fireEvent } from "@testing-library/react";
 import { QuickAddOpportunity } from "../kanban/QuickAddOpportunity";
 import { describe, it, expect, vi } from "vitest";
 
-vi.mock("react-admin", () => ({
-  useCreate: () => [vi.fn().mockResolvedValue({ data: { id: 1 } }), { isLoading: false }],
-  useNotify: () => vi.fn(),
-  useRefresh: () => vi.fn(),
-  useGetIdentity: () => ({ identity: { id: 1 }, isLoading: false }),
-  useGetList: () => ({
-    data: [
-      { id: 1, name: "Acme Corp" },
-      { id: 2, name: "TechStart Inc" },
-    ],
-    isLoading: false,
-  }),
-}));
+// Mock react-admin - use importOriginal to preserve all exports
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  return {
+    ...actual,
+    useCreate: () => [vi.fn().mockResolvedValue({ data: { id: 1 } }), { isLoading: false }],
+    useNotify: () => vi.fn(),
+    useRefresh: () => vi.fn(),
+    useGetIdentity: () => ({ identity: { id: 1 }, isLoading: false }),
+    useGetList: () => ({
+      data: [
+        { id: 1, name: "Acme Corp" },
+        { id: 2, name: "TechStart Inc" },
+      ],
+      isLoading: false,
+    }),
+  };
+});
 
 describe("QuickAddOpportunity", () => {
   it("renders button to open modal", () => {
