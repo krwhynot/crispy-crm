@@ -306,7 +306,10 @@ describe("useMyTasks", () => {
         data: expect.objectContaining({ completed: true }),
         previousData: expect.any(Object),
       });
-      expect(result.current.tasks).toHaveLength(0);
+
+      await waitFor(() => {
+        expect(result.current.tasks).toHaveLength(0);
+      });
     });
 
     it("should re-throw error on failure", async () => {
@@ -357,7 +360,9 @@ describe("useMyTasks", () => {
       });
 
       // Should have moved to tomorrow status
-      expect(result.current.tasks[0].status).toBe("tomorrow");
+      await waitFor(() => {
+        expect(result.current.tasks[0].status).toBe("tomorrow");
+      });
     });
 
     it("should rollback on API failure", async () => {
@@ -426,7 +431,9 @@ describe("useMyTasks", () => {
         await result.current.deleteTask(1);
       });
 
-      expect(result.current.tasks).toHaveLength(0);
+      await waitFor(() => {
+        expect(result.current.tasks).toHaveLength(0);
+      });
     });
 
     it("should rollback on API failure", async () => {

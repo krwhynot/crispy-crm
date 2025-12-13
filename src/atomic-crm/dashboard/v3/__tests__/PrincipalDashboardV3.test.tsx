@@ -114,7 +114,8 @@ describe("PrincipalDashboardV3", () => {
   it("should render both panels (Pipeline and Tasks)", () => {
     renderDashboard();
 
-    expect(screen.getByText("Pipeline by Principal")).toBeInTheDocument();
+    // Tab labels in the tabbed interface
+    expect(screen.getByText("Pipeline")).toBeInTheDocument();
     expect(screen.getByText("My Tasks")).toBeInTheDocument();
   });
 
@@ -131,8 +132,8 @@ describe("PrincipalDashboardV3", () => {
     const flexColContainers = container.querySelectorAll(".flex-col");
     expect(flexColContainers.length).toBeGreaterThanOrEqual(1);
 
-    // Root container should be flex h-screen flex-col
-    const rootDiv = container.querySelector(".flex.h-screen.flex-col");
+    // Root container uses calc height for dynamic viewport
+    const rootDiv = container.querySelector(".flex.flex-col");
     expect(rootDiv).toBeInTheDocument();
 
     // Main element should have flex-1 for remaining height
@@ -152,12 +153,14 @@ describe("PrincipalDashboardV3", () => {
     expect(kpiSection).toBeInTheDocument();
   });
 
-  it("should have 2-column grid for Performance + Activity bottom row", () => {
-    const { container } = renderDashboard();
+  it("should have tabbed interface for all sections", () => {
+    renderDashboard();
 
-    // Bottom row uses grid-cols-1 (mobile) lg:grid-cols-2 (desktop)
-    const bottomGrid = container.querySelector(".grid.grid-cols-1.lg\\:grid-cols-2");
-    expect(bottomGrid).toBeInTheDocument();
+    // All sections are now in tabs - verify all tab triggers exist
+    expect(screen.getByText("Pipeline")).toBeInTheDocument();
+    expect(screen.getByText("My Tasks")).toBeInTheDocument();
+    expect(screen.getByText("Performance")).toBeInTheDocument();
+    expect(screen.getByText("Team Activity")).toBeInTheDocument();
   });
 
   it("should render all dashboard sections in vertical stack order", () => {
@@ -167,23 +170,24 @@ describe("PrincipalDashboardV3", () => {
     // 1. KPI Summary Row
     expect(screen.getByLabelText("Key Performance Indicators")).toBeInTheDocument();
 
-    // 2. Pipeline Table
-    expect(screen.getByText("Pipeline by Principal")).toBeInTheDocument();
-
-    // 3. Tasks Kanban
+    // 2-5. Tabbed interface contains all sections
+    // Tab labels (sections accessible via tabs)
+    expect(screen.getByText("Pipeline")).toBeInTheDocument();
     expect(screen.getByText("My Tasks")).toBeInTheDocument();
-
-    // 4. My Performance Widget
-    expect(screen.getByText("My Performance")).toBeInTheDocument();
-
-    // 5. Activity Feed Panel
+    expect(screen.getByText("Performance")).toBeInTheDocument();
     expect(screen.getByText("Team Activity")).toBeInTheDocument();
   });
 
-  it("should render dashboard header", () => {
-    renderDashboard();
+  it("should render dashboard main content area", () => {
+    const { container } = renderDashboard();
 
-    expect(screen.getByText("Principal Dashboard")).toBeInTheDocument();
+    // Dashboard renders main content area with KPI row and tabbed interface
+    // Header is provided by Layout component, not this component
+    const mainElement = container.querySelector("main");
+    expect(mainElement).toBeInTheDocument();
+
+    // KPI Summary Row should be present
+    expect(screen.getByLabelText("Key Performance Indicators")).toBeInTheDocument();
   });
 
   it("should render KPI summary row with four metrics (PRD v1.9)", () => {
