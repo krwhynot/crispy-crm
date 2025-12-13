@@ -469,9 +469,14 @@ vi.mock("react-hook-form", () => ({
   }),
 }));
 
-// Mock useGetList with large datasets
-vi.mock("react-admin", async () => {
+// Note: This second mock for react-admin is redundant with the earlier one
+// In Vitest, duplicate vi.mock() calls for the same module are hoisted and only one applies
+// Keeping the QuickLogForm-specific overrides here for reference, but the earlier mock takes precedence
+// Mock useGetList with large datasets - use importOriginal to preserve all exports
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
   return {
+    ...actual,
     useDataProvider: () => ({
       getList: vi.fn(),
       create: vi.fn(() => Promise.resolve({ data: { id: 1 } })),

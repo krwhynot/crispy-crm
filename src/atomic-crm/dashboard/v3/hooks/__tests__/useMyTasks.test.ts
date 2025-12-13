@@ -27,12 +27,39 @@ const stableDataProvider = {
   delete: mockDelete,
 };
 
+// State for useGetList mock - allows per-test control
+const useGetListState = {
+  data: [] as unknown[],
+  total: 0,
+  isPending: false,
+  error: null as Error | null,
+};
+
 // Mock react-admin with stable reference - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
   const actual = await importOriginal<typeof import("react-admin")>();
+  const React = await import("react");
+
   return {
     ...actual,
     useDataProvider: () => stableDataProvider,
+    // Mock useGetList to return controlled state and trigger mockGetList for assertions
+    useGetList: (resource: string, params: any) => {
+      // Call mockGetList synchronously for test assertions
+      React.useEffect(() => {
+        if (!useGetListState.isPending && useGetListState.data.length === 0) {
+          mockGetList(resource, params);
+        }
+      }, [resource, JSON.stringify(params)]);
+
+      return {
+        data: useGetListState.data,
+        total: useGetListState.total,
+        isPending: useGetListState.isPending,
+        error: useGetListState.error,
+        refetch: () => mockGetList(resource, params),
+      };
+    },
   };
 });
 
