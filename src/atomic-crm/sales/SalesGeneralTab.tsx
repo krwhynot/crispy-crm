@@ -1,9 +1,11 @@
 import { TextInput } from "@/components/admin/text-input";
-import { useCreateContext } from "ra-core";
+import { useContext } from "react";
+import { CreateContext } from "ra-core";
 
 export const SalesGeneralTab = () => {
   // Only show password field in create mode, not edit mode
-  const createContext = useCreateContext();
+  // Use useContext directly to safely access context without throwing when missing
+  const createContext = useContext(CreateContext);
   const isCreateMode = !!createContext;
 
   return (
