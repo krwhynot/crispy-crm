@@ -272,6 +272,9 @@ vi.mock("react-hook-form", async (importOriginal) => {
     notes: "",
     date: new Date(),
     createFollowUp: false,
+    opportunityId: undefined,
+    contactId: undefined,
+    organizationId: undefined,
   };
   return {
     ...actual,
