@@ -61,6 +61,14 @@ vi.mock("../../hooks/usePrincipalOpportunities", () => ({
   }),
 }));
 
+// Mock Tooltip components to avoid "must be used within TooltipProvider" error
+vi.mock("@/components/ui/tooltip", () => ({
+  TooltipProvider: ({ children }: any) => <>{children}</>,
+  Tooltip: ({ children }: any) => <>{children}</>,
+  TooltipTrigger: ({ children, asChild }: any) => <>{children}</>,
+  TooltipContent: ({ children }: any) => <span data-testid="tooltip-content">{children}</span>,
+}));
+
 describe("PrincipalPipelineTable", () => {
   beforeEach(() => {
     // Default mock returns populated data

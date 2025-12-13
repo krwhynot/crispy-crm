@@ -64,6 +64,14 @@ vi.mock("../hooks/useTeamActivities", () => ({
   }),
 }));
 
+// Mock the useTaskCount hook (used by DashboardTabPanel for badge)
+vi.mock("../hooks/useTaskCount", () => ({
+  useTaskCount: () => ({
+    pendingCount: 0,
+    isLoading: false,
+  }),
+}));
+
 // Mock MobileQuickActionBar to avoid complex dependencies
 vi.mock("../components/MobileQuickActionBar", () => ({
   MobileQuickActionBar: () => null,
