@@ -33,6 +33,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { getAvailableFieldsWithLabels } from "./organizationColumnAliases";
+import type { RawCSVRow } from "./types";
 
 // Types for preview data
 export interface ColumnMapping {
@@ -50,7 +51,7 @@ export interface DuplicateGroup {
 
 export interface PreviewData {
   mappings: ColumnMapping[];
-  sampleRows: any[];
+  sampleRows: RawCSVRow[];
   validCount: number;
   totalRows: number;
   newTags: string[];

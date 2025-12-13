@@ -33,6 +33,7 @@ import {
   type CsvValidationError,
 } from "../utils/csvUploadValidator";
 import { devLog, devWarn, DEV } from "@/lib/devLogger";
+import type { RawCSVRow, MappedCSVRow, OrganizationImportSchema } from "./types";
 
 interface OrganizationImportDialogProps {
   open: boolean;
@@ -62,7 +63,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
   const [previewData, setPreviewData] = useState<PreviewData | null>(null);
   const [userOverrides, setUserOverrides] = useState<Map<string, string | null>>(new Map());
   const [rawHeaders, setRawHeaders] = useState<string[]>([]);
-  const [rawDataRows, setRawDataRows] = useState<any[]>([]);
+  const [rawDataRows, setRawDataRows] = useState<RawCSVRow[]>([]);
   // Cache for account manager name -> sales_id mappings (useRef avoids re-renders)
   const salesLookupCache = useRef<Map<string, number>>(new Map());
   // Cache for segment name -> segment_id (UUID) mappings
@@ -92,13 +93,13 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
    */
   const transformRowData = useCallback(
     (
-      rawRow: any[],
+      rawRow: RawCSVRow,
       headers: string[],
       mappings: Record<string, string | null>,
       salesCache: Map<string, number>,
       segmentsCache: Map<string, string>
     ) => {
-      const mappedRow: any = {};
+      const mappedRow: MappedCSVRow = {};
       headers.forEach((header, index) => {
         const canonicalField = mappings[header];
         const rawValue = rawRow[index];
@@ -151,7 +152,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
    */
   const resolveAccountManagers = useCallback(
     async (
-      rows: any[],
+      rows: RawCSVRow[],
       headers: string[],
       mappings: Record<string, string | null>
     ): Promise<void> => {
@@ -316,7 +317,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
    */
   const resolveSegments = useCallback(
     async (
-      rows: any[],
+      rows: RawCSVRow[],
       headers: string[],
       mappings: Record<string, string | null>
     ): Promise<void> => {
@@ -582,7 +583,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
   // Handle preview confirmation and start the actual import
   // Enhanced processBatch wrapper with result accumulation across batches
   const processBatch = useCallback(
-    async (batch: any[]) => {
+    async (batch: OrganizationImportSchema[]) => {
       // Set start time on first batch
       if (!accumulatedResultRef.current.startTime) {
         accumulatedResultRef.current.startTime = new Date();
@@ -605,8 +606,8 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
         accumulatedResultRef.current.skippedCount += result.skippedCount;
         accumulatedResultRef.current.failedCount += result.failedCount;
         accumulatedResultRef.current.errors.push(...result.errors);
-      } catch (error: any) {
-        const errorMessage = error.message || "A critical error occurred during batch processing.";
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : "A critical error occurred during batch processing.";
         const batchStartRow = rowOffsetRef.current + 2;
 
         // Add an error entry for each organization in the failed batch
@@ -687,8 +688,8 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
 
         setImportResult(finalResult);
         refresh();
-      } catch (error: any) {
-        notify(`Import failed: ${error.message}`, { type: "error" });
+      } catch (error: unknown) {
+        notify(`Import failed: ${error instanceof Error ? error.message : "Import failed"}`, { type: "error" });
         setImportState("error");
       }
     },
@@ -740,7 +741,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
     Papa.parse(file, {
       ...getSecurePapaParseConfig(),
       complete: async (results) => {
-        const rows = results.data as any[];
+        const rows = results.data as RawCSVRow[];
         const headers = results.meta.fields || [];
 
         // Store raw data for re-processing when user changes mappings

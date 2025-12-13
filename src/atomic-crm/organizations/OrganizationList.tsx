@@ -24,6 +24,7 @@ import { ORGANIZATION_FILTER_CONFIG } from "./organizationFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
 import type { Organization, Sale, Segment } from "../types";
 import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
+import type { OrganizationExportRow, OrganizationRecord } from "./types";
 
 const OrganizationListActions = () => (
   <TopToolbar>
@@ -59,7 +60,7 @@ const exporter: Exporter<Organization> = async (records, fetchRelatedRecords) =>
       : {};
 
   const organizations = records.map((org) => {
-    const exportedOrg: any = {
+    const exportedOrg: OrganizationExportRow = {
       // Core fields
       id: org.id,
       name: org.name,
@@ -100,7 +101,7 @@ const exporter: Exporter<Organization> = async (records, fetchRelatedRecords) =>
     return exportedOrg;
   });
 
-  return jsonExport(organizations, {}, (_err: any, csv: string) => {
+  return jsonExport(organizations, {}, (_err: Error | null, csv: string) => {
     downloadCSV(csv, "organizations");
   });
 };
@@ -152,14 +153,14 @@ const OrganizationListLayout = ({
           <FunctionField
             label="Type"
             sortBy="organization_type"
-            render={(record: any) => <OrganizationTypeBadge type={record.organization_type} />}
+            render={(record: OrganizationRecord) => <OrganizationTypeBadge type={record.organization_type} />}
           />
 
           {/* Column 3: Priority - Business priority indicator (sortable) - always visible */}
           <FunctionField
             label="Priority"
             sortBy="priority"
-            render={(record: any) => <PriorityBadge priority={record.priority} />}
+            render={(record: OrganizationRecord) => <PriorityBadge priority={record.priority} />}
           />
 
           {/* Column 4: Parent - Hierarchy reference (sortable by parent_organization_id) - hidden on tablet */}
@@ -180,7 +181,7 @@ const OrganizationListLayout = ({
           <FunctionField
             label="Contacts"
             sortable={false}
-            render={(record: any) => record.nb_contacts || 0}
+            render={(record: OrganizationRecord) => record.nb_contacts || 0}
             textAlign="center"
             cellClassName="hidden md:table-cell"
             headerClassName="hidden md:table-cell"
@@ -190,7 +191,7 @@ const OrganizationListLayout = ({
           <FunctionField
             label="Opportunities"
             sortable={false}
-            render={(record: any) => record.nb_opportunities || 0}
+            render={(record: OrganizationRecord) => record.nb_opportunities || 0}
             textAlign="center"
             cellClassName="hidden md:table-cell"
             headerClassName="hidden md:table-cell"
