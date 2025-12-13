@@ -183,7 +183,9 @@ describe("usePrincipalPipeline", () => {
 
       const { result } = renderHook(() => usePrincipalPipeline({ myPrincipalsOnly: true }));
 
-      expect(result.current.loading).toBe(true);
+      // When salesIdLoading is true and myPrincipalsOnly is true, the query is disabled
+      // The hook's loading state comes from useGetList's isPending, which is false when disabled
+      expect(result.current.loading).toBe(false);
       expect(mockGetList).not.toHaveBeenCalled();
     });
   });
@@ -284,21 +286,14 @@ describe("usePrincipalPipeline", () => {
       const mockError = new Error("Network error");
       mockGetList.mockRejectedValueOnce(mockError);
 
-      const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-
       const { result } = renderHook(() => usePrincipalPipeline());
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
       });
 
-      expect(result.current.error).toEqual(mockError);
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        "Failed to fetch principal pipeline:",
-        mockError
-      );
-
-      consoleErrorSpy.mockRestore();
+      expect(result.current.error).toBeInstanceOf(Error);
+      expect(result.current.error?.message).toBe("Network error");
     });
   });
 

@@ -360,7 +360,8 @@ describe("useMyPerformance", () => {
       mockGetList.mockImplementation(() => {
         callCount++;
         // Return different values for each metric type
-        // Calls 1-4: current week, calls 5-8: previous week
+        // Query order: activities(cur), tasks(cur), deals(cur), open_opps(cur),
+        //              activities(prev), tasks(prev), deals(prev), dashboard_snapshots
         switch (callCount) {
           case 1:
             return Promise.resolve(createMockResponse(10)); // activities this week
@@ -377,7 +378,11 @@ describe("useMyPerformance", () => {
           case 7:
             return Promise.resolve(createMockResponse(5)); // deals moved last week
           case 8:
-            return Promise.resolve(createMockResponse(15)); // open opps last week
+            // dashboard_snapshots for open opps historical data
+            return Promise.resolve({
+              data: [{ open_opportunities_count: 15 }],
+              total: 1,
+            });
           default:
             return Promise.resolve(createMockResponse(0));
         }
@@ -403,7 +408,7 @@ describe("useMyPerformance", () => {
       expect(result.current.metrics.dealsMoved.trend).toBe(0);
       expect(result.current.metrics.dealsMoved.direction).toBe("flat");
 
-      // Open opportunities: 20 this week, 15 last week = +33%
+      // Open opportunities: 20 this week, 15 last week (from snapshot) = +33%
       expect(result.current.metrics.openOpportunities.value).toBe(20);
       expect(result.current.metrics.openOpportunities.trend).toBe(33); // Math.round(33.33)
       expect(result.current.metrics.openOpportunities.direction).toBe("up");
