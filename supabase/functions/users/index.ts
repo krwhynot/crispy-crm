@@ -27,10 +27,13 @@ function createErrorResponse(status: number, message: string, corsHeaders: Recor
 // - .max() on all strings (DoS prevention)
 // - z.coerce for type conversion
 
+// Industry-standard invite flow: Admin provides name/email/role
+// User sets their own password via Supabase inviteUserByEmail magic link
 const inviteUserSchema = z
   .strictObject({
     email: z.string().email("Invalid email format").max(254, "Email too long"),
-    password: z.string().min(8, "Password must be at least 8 characters").max(128, "Password too long"),
+    // Password optional - Supabase inviteUserByEmail handles password setup
+    password: z.string().min(8, "Password must be at least 8 characters").max(128, "Password too long").optional(),
     first_name: z.string().min(1, "First name required").max(100, "First name too long"),
     last_name: z.string().min(1, "Last name required").max(100, "Last name too long"),
     disabled: z.coerce.boolean().optional().default(false),
@@ -141,11 +144,23 @@ async function inviteUser(req: Request, currentUserSale: Sale, corsHeaders: Reco
 
   const { email, password, first_name, last_name, disabled, role } = validatedData;
 
-  const { data, error: userError } = await supabaseAdmin.auth.admin.createUser({
+  // Industry-standard invite flow:
+  // - If no password provided, create user with email_confirm: true
+  // - inviteUserByEmail() sends magic link for user to set their own password
+  const createUserOptions: Parameters<typeof supabaseAdmin.auth.admin.createUser>[0] = {
     email,
-    password,
     user_metadata: { first_name, last_name },
-  });
+  };
+
+  // Only include password if explicitly provided (backward compatibility)
+  if (password) {
+    createUserOptions.password = password;
+  } else {
+    // No password = invite flow, auto-confirm email since invite link handles verification
+    createUserOptions.email_confirm = true;
+  }
+
+  const { data, error: userError } = await supabaseAdmin.auth.admin.createUser(createUserOptions);
 
   if (!data?.user || userError) {
     console.error("Error creating user:", userError);
