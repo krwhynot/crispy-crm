@@ -75,12 +75,12 @@ describe("useMyPerformance", () => {
       // Should make 8 calls: 4 current week + 4 previous week
       expect(mockGetList.mock.calls.length).toBe(8);
 
-      // Verify activities query includes sales_id filter
+      // Verify activities query includes created_by filter (not sales_id)
       expect(mockGetList).toHaveBeenCalledWith(
         "activities",
         expect.objectContaining({
           filter: expect.objectContaining({
-            sales_id: 42,
+            created_by: 42,
           }),
         })
       );
