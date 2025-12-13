@@ -243,7 +243,7 @@ function ContactForm() {
         {emailFields.map((field, index) => (
           <div key={field.id} className="flex gap-2 mt-2">
             <input
-              {...register(`email.${index}.email`)}
+              {...register(`email.${index}.value`)}
               placeholder="email@example.com"
               className="flex-1 px-4 py-2 border rounded-md"
             />
@@ -251,9 +251,9 @@ function ContactForm() {
               {...register(`email.${index}.type`)}
               className="px-4 py-2 border rounded-md"
             >
-              <option value="Work">Work</option>
-              <option value="Home">Home</option>
-              <option value="Other">Other</option>
+              <option value="work">Work</option>
+              <option value="home">Home</option>
+              <option value="other">Other</option>
             </select>
             <button
               type="button"
@@ -266,7 +266,7 @@ function ContactForm() {
         ))}
         <button
           type="button"
-          onClick={() => appendEmail({ email: '', type: 'Work' })}
+          onClick={() => appendEmail({ value: '', type: 'work' })}
           className="mt-2 px-4 py-2 border rounded-md"
         >
           Add Email
@@ -284,7 +284,7 @@ function ContactForm() {
         {phoneFields.map((field, index) => (
           <div key={field.id} className="flex gap-2 mt-2">
             <input
-              {...register(`phone.${index}.number`)}
+              {...register(`phone.${index}.value`)}
               placeholder="555-1234"
               className="flex-1 px-4 py-2 border rounded-md"
             />
@@ -292,9 +292,9 @@ function ContactForm() {
               {...register(`phone.${index}.type`)}
               className="px-4 py-2 border rounded-md"
             >
-              <option value="Work">Work</option>
-              <option value="Home">Home</option>
-              <option value="Other">Other</option>
+              <option value="work">Work</option>
+              <option value="home">Home</option>
+              <option value="other">Other</option>
             </select>
             <button
               type="button"
@@ -307,7 +307,7 @@ function ContactForm() {
         ))}
         <button
           type="button"
-          onClick={() => appendPhone({ number: '', type: 'Work' })}
+          onClick={() => appendPhone({ value: '', type: 'work' })}
           className="mt-2 px-4 py-2 border rounded-md"
         >
           Add Phone
@@ -327,7 +327,7 @@ function ContactForm() {
 - `fields` array with unique `id` for keys
 - `append` adds new item with default values
 - `remove(index)` deletes item at index
-- Register with array syntax: `email.${index}.email`
+- Register with array syntax: `email.${index}.value`
 
 ## Tabbed Forms
 
