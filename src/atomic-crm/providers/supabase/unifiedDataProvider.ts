@@ -711,14 +711,39 @@ export const unifiedDataProvider: DataProvider = {
           return !isEqual(resultData[key], prevData[key]);
         });
 
-        // If user submitted changes but response matches previousData, log warning
+        // If response matches previousData, check if user actually submitted changes
         if (!hasActualChange && submittedKeys.length > 0) {
-          devWarn("DataProvider", "⚠️ Update may have silently failed:", {
-            resource,
-            id: params.id,
-            submittedFields: submittedKeys,
-            message: "Response matches previousData - no changes detected in DB",
+          // Determine which fields the user actually changed (not readonly, different from previous)
+          const userChangedFields = submittedKeys.filter((key) => {
+            if (readonlyFields.includes(key)) return false;
+            const submittedData = params.data as Record<string, unknown>;
+            const prevData = params.previousData as Record<string, unknown>;
+            return !isEqual(submittedData[key], prevData[key]);
           });
+
+          if (userChangedFields.length > 0) {
+            // FAIL-FAST: User made real changes that weren't persisted - this is a failure
+            const errorMessage = `Update failed: Changes to [${userChangedFields.join(", ")}] were not saved. The database returned unchanged data.`;
+
+            if (DEV) {
+              console.error("[DataProvider] Silent update failure detected:", {
+                resource,
+                id: params.id,
+                changedFields: userChangedFields,
+                submitted: params.data,
+                returned: result.data,
+                previousData: params.previousData,
+              });
+            }
+
+            throw new HttpError(errorMessage, 500, {
+              resource,
+              id: params.id,
+              changedFields: userChangedFields,
+            });
+          }
+          // If no user-changed fields, it's a no-op (user clicked save without editing)
+          // This is fine - return success silently
         }
       }
 
