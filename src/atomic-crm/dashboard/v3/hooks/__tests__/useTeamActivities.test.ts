@@ -19,13 +19,59 @@ import { useTeamActivities } from "../useTeamActivities";
 // Create stable mock functions
 const mockGetList = vi.fn();
 
-const stableDataProvider = {
-  getList: mockGetList,
-};
+/**
+ * Mock useGetList hook that uses React state to properly simulate async behavior.
+ * This allows tests to control responses via mockGetList.mockResolvedValueOnce().
+ */
+vi.mock("react-admin", () => {
+  // Import React for hooks - must be inside the mock factory
+  const React = require("react");
 
-vi.mock("react-admin", () => ({
-  useDataProvider: () => stableDataProvider,
-}));
+  return {
+    useGetList: (resource: string, params: any) => {
+      const [state, setState] = React.useState<{
+        data: any[];
+        isPending: boolean;
+        error: Error | null;
+      }>({
+        data: [],
+        isPending: true,
+        error: null,
+      });
+
+      const fetchData = React.useCallback(async () => {
+        setState((s: any) => ({ ...s, isPending: true, error: null }));
+        try {
+          const result = await mockGetList(resource, params);
+          setState({
+            data: result.data || [],
+            isPending: false,
+            error: null,
+          });
+        } catch (e) {
+          setState({
+            data: [],
+            isPending: false,
+            error: e instanceof Error ? e : new Error("Failed to fetch activities"),
+          });
+          console.error("[useTeamActivities] Failed to fetch activities:", e);
+        }
+      }, [resource, JSON.stringify(params)]);
+
+      React.useEffect(() => {
+        fetchData();
+      }, [fetchData]);
+
+      return {
+        data: state.data,
+        total: state.data.length,
+        isPending: state.isPending,
+        error: state.error,
+        refetch: fetchData,
+      };
+    },
+  };
+});
 
 // Helper to create mock activity
 const createMockActivity = (overrides: Partial<TeamActivity> = {}): TeamActivity => ({
