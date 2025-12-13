@@ -15,16 +15,56 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useMyTasks } from "../useMyTasks";
 import { startOfDay, addDays } from "date-fns";
 
+// Track which tasks have been completed or deleted to simulate server filtering
+const completedTaskIds = new Set<number>();
+const deletedTaskIds = new Set<number>();
+
+// Store the base tasks data that tests will populate
+let baseTasksData: any[] = [];
+
 // Create stable mock functions OUTSIDE the factory to prevent new references
-const mockGetList = vi.fn();
+const mockGetList = vi.fn().mockImplementation((resource: string, params: any) => {
+  if (resource === "tasks") {
+    // Filter out completed and deleted tasks to simulate server-side filtering
+    const filteredTasks = baseTasksData.filter((task: any) =>
+      !completedTaskIds.has(task.id) && !deletedTaskIds.has(task.id)
+    );
+    return Promise.resolve({
+      data: filteredTasks,
+      total: filteredTasks.length,
+    });
+  }
+  return Promise.resolve({ data: [], total: 0 });
+});
+
 const mockUpdate = vi.fn();
 const mockDelete = vi.fn();
+
+// Wrap mockUpdate to track completed tasks
+const wrappedUpdate = async (...args: any[]) => {
+  const result = await mockUpdate(...args);
+  const [resource, params] = args;
+  if (resource === "tasks" && params.data?.completed === true) {
+    completedTaskIds.add(params.id);
+  }
+  return result;
+};
+
+// Wrap mockDelete to track deleted tasks
+const wrappedDelete = async (...args: any[]) => {
+  const result = await mockDelete(...args);
+  const [resource, params] = args;
+  if (resource === "tasks") {
+    deletedTaskIds.add(params.id);
+  }
+  return result;
+};
 
 // Create a stable dataProvider object that persists across renders
 const stableDataProvider = {
   getList: mockGetList,
-  update: mockUpdate,
-  delete: mockDelete,
+  update: wrappedUpdate,
+  delete: wrappedDelete,
 };
 
 // Mock react-admin with stable reference
@@ -142,20 +182,19 @@ describe("useMyTasks", () => {
     currentSaleState.salesId = 42;
     currentSaleState.loading = false;
     currentSaleState.error = null;
+    // Clear task tracking sets and base data
+    completedTaskIds.clear();
+    deletedTaskIds.clear();
+    baseTasksData = [];
   });
 
   describe("Task Fetching", () => {
     it("should fetch tasks when salesId is available", async () => {
       const dates = createTestDates();
-      const mockTasks = [
+      baseTasksData = [
         createMockTask({ id: 1, due_date: dates.today.toISOString() }),
         createMockTask({ id: 2, due_date: dates.tomorrow.toISOString() }),
       ];
-
-      mockGetList.mockResolvedValueOnce({
-        data: mockTasks,
-        total: mockTasks.length,
-      });
 
       const { result } = renderHook(() => useMyTasks());
 
@@ -215,7 +254,7 @@ describe("useMyTasks", () => {
         createMockTask({ id: 6, type: "unknown" }),
       ];
 
-      mockGetList.mockResolvedValueOnce({ data: mockTasks, total: mockTasks.length });
+      baseTasksData = mockTasks;
 
       const { result } = renderHook(() => useMyTasks());
 
@@ -235,8 +274,6 @@ describe("useMyTasks", () => {
   describe("calculateStatus() - Date Logic", () => {
     it("should return correct status for various dates", async () => {
       const dates = createTestDates();
-      mockGetList.mockResolvedValueOnce({ data: [], total: 0 });
-
       const { result } = renderHook(() => useMyTasks());
 
       await waitFor(() => {
