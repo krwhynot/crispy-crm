@@ -32,7 +32,7 @@ import type { OrganizationNote } from "../../../validation/notes";
 import { validateTaskForSubmission } from "../../../validation/task";
 import { validateProductForm, validateProductUpdate } from "../../../validation/products";
 import { validateCreateTag, validateUpdateTag } from "../../../validation/tags";
-import { validateSalesForm, validateUpdateSales } from "../../../validation/sales";
+import { validateSalesForm } from "../../../validation/sales";
 import {
   validateActivitiesForm,
   validateEngagementsForm,
