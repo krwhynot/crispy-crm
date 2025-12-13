@@ -112,8 +112,9 @@ describe("Tutorial Integration", () => {
 
     fireEvent.click(screen.getByText("Start"));
 
-    // Driver.js should be initialized
-    const { driver } = await import("driver.js");
-    expect(driver).toHaveBeenCalled();
+    // Wait for async startTutorial to complete and driver.js to be initialized
+    await waitFor(() => {
+      expect(driverMock).toHaveBeenCalled();
+    });
   });
 });

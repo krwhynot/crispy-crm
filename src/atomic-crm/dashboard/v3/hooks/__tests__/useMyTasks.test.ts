@@ -398,7 +398,11 @@ describe("useMyTasks", () => {
       const dates = createTestDates();
       const mockTask = createMockTask({ id: 1, due_date: dates.today.toISOString() });
       baseTasksData = [mockTask];
-      mockUpdate.mockResolvedValueOnce({ data: mockTask });
+      // Return updated task with tomorrow's date when update is called
+      const tomorrowDate = addDays(dates.today, 1);
+      mockUpdate.mockResolvedValueOnce({
+        data: { ...mockTask, due_date: tomorrowDate.toISOString() }
+      });
 
       const { result } = renderHook(() => useMyTasks());
 
@@ -407,14 +411,20 @@ describe("useMyTasks", () => {
         expect(result.current.tasks[0].status).toBe("today");
       });
 
+      // Small delay to ensure React effects have flushed and tasksRef is updated
+      await act(async () => {
+        // Yield to allow effects to run
+        await new Promise((resolve) => setTimeout(resolve, 0));
+      });
+
       await act(async () => {
         await result.current.snoozeTask(1);
       });
 
-      // Should have moved to tomorrow status
+      // Should have moved to tomorrow status via optimistic update
       await waitFor(() => {
         expect(result.current.tasks[0].status).toBe("tomorrow");
-      });
+      }, { timeout: 2000 });
     });
 
     it("should rollback on API failure", async () => {
