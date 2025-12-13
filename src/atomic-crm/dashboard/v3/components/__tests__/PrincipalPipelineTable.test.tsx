@@ -65,7 +65,7 @@ vi.mock("../../hooks/usePrincipalOpportunities", () => ({
 vi.mock("@/components/ui/tooltip", () => ({
   TooltipProvider: ({ children }: any) => <>{children}</>,
   Tooltip: ({ children }: any) => <>{children}</>,
-  TooltipTrigger: ({ children, asChild }: any) => <>{children}</>,
+  TooltipTrigger: ({ children, asChild: _asChild }: any) => <>{children}</>,
   TooltipContent: ({ children }: any) => <span data-testid="tooltip-content">{children}</span>,
 }));
 

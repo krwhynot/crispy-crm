@@ -1,6 +1,6 @@
 import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { supabaseAdmin } from "../_shared/supabaseAdmin.ts";
-import { startOfWeek, endOfWeek, subWeeks, startOfDay } from "npm:date-fns@3";
+import { startOfWeek, endOfWeek, startOfDay } from "npm:date-fns@3";
 
 /**
  * Capture Dashboard Snapshots Edge Function

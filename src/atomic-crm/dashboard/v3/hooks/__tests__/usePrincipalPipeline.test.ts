@@ -24,7 +24,7 @@ const mockGetList = vi.fn();
  */
 vi.mock("react-admin", async (importOriginal) => {
   const actual = await importOriginal<typeof import("react-admin")>();
-  const React = require("react");
+  const React = await import("react");
 
   return {
     ...actual,

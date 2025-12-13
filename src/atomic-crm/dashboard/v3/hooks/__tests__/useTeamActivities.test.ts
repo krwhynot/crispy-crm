@@ -23,9 +23,9 @@ const mockGetList = vi.fn();
  * Mock useGetList hook that uses React state to properly simulate async behavior.
  * This allows tests to control responses via mockGetList.mockResolvedValueOnce().
  */
-vi.mock("react-admin", () => {
+vi.mock("react-admin", async () => {
   // Import React for hooks - must be inside the mock factory
-  const React = require("react");
+  const React = await import("react");
 
   return {
     useGetList: (resource: string, params: any) => {
