@@ -31,7 +31,7 @@ type InteractionType = Database["public"]["Enums"]["interaction_type"];
 export interface SalesFormData {
   avatar: string;
   email: string;
-  password: string;
+  password?: string; // Optional - user sets via invite email
   first_name: string;
   last_name: string;
   role: "admin" | "manager" | "rep"; // Primary field (from DB enum)
