@@ -26,7 +26,7 @@ let baseTasksData: any[] = [];
 let mutationVersion = 0;
 
 // Create stable mock functions OUTSIDE the factory to prevent new references
-const mockGetList = vi.fn().mockImplementation((resource: string, params: any) => {
+const mockGetList = vi.fn().mockImplementation((resource: string, _params: any) => {
   if (resource === "tasks") {
     // Filter out completed and deleted tasks to simulate server-side filtering
     const filteredTasks = baseTasksData.filter((task: any) =>
@@ -86,7 +86,7 @@ const stableDataProvider = {
 // Mock react-admin with stable reference
 vi.mock("react-admin", async (importOriginal) => {
   const actual = await importOriginal<typeof import("react-admin")>();
-  const React = require("react");
+  const React = await import("react");
 
   return {
     ...actual,

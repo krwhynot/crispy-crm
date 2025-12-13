@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useUpdate, useNotify } from "react-admin";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -87,20 +86,6 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
         notify("An error occurred", { type: "error" });
       }
     }
-  };
-
-  // Cancel edit
-  const handleCancel = () => {
-    // Reset form data to original values
-    setFormData({
-      first_name: record?.first_name || "",
-      last_name: record?.last_name || "",
-      email: record?.email || "",
-      phone: record?.phone || "",
-      avatar_url: record?.avatar_url || "",
-    });
-    setErrors({});
-    if (onModeToggle) onModeToggle();
   };
 
   // Get initials for avatar fallback

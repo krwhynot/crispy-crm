@@ -144,17 +144,6 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
     }
   };
 
-  // Cancel edit
-  const handleCancel = () => {
-    // Reset form data to original values
-    setFormData({
-      role: record?.role || "rep",
-      disabled: record?.disabled || false,
-    });
-    setErrors({});
-    if (onModeToggle) onModeToggle();
-  };
-
   // Get role badge styling
   const getRoleBadge = (role: string) => {
     switch (role) {

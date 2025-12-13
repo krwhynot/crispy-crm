@@ -1,7 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { SalesListPage } from "../../support/poms/SalesListPage";
 import { SalesFormPage } from "../../support/poms/SalesFormPage";
-import { LoginPage } from "../../support/poms/LoginPage";
 import { consoleMonitor } from "../../support/utils/console-monitor";
 
 /**
