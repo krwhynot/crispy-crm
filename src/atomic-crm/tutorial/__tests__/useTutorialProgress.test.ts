@@ -34,6 +34,7 @@ describe("useTutorialProgress", () => {
       currentChapter: null,
       currentStepIndex: 0,
       completedChapters: [],
+      visitedPages: [],
       lastUpdated: expect.any(String),
     });
   });
@@ -43,6 +44,7 @@ describe("useTutorialProgress", () => {
       currentChapter: "contacts",
       currentStepIndex: 3,
       completedChapters: ["organizations"],
+      visitedPages: [],
       lastUpdated: "2025-12-06T10:00:00.000Z",
     };
     localStorageMock.getItem.mockReturnValueOnce(JSON.stringify(savedProgress));

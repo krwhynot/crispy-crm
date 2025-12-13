@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { TutorialProvider, useTutorial } from "../TutorialProvider";
 import { TutorialLauncher } from "../TutorialLauncher";
@@ -9,14 +9,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
+import { driver as driverMock } from "driver.js";
 
-// Mock driver.js
+// Mock driver.js - factory must be self-contained for hoisting
 vi.mock("driver.js", () => ({
   driver: vi.fn(() => ({
     drive: vi.fn(),
     destroy: vi.fn(),
     isActive: vi.fn(() => false),
   })),
+}));
+
+// Mock waitForElement to resolve immediately in tests
+vi.mock("../waitForElement", () => ({
+  waitForElement: vi.fn().mockResolvedValue(document.createElement("div")),
 }));
 
 // Mock steps module to return test steps

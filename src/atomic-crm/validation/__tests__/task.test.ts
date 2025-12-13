@@ -164,8 +164,8 @@ describe("Task Validation Schemas (task.ts)", () => {
       const result = taskSchema.safeParse(invalidTask);
       expect(result.success).toBe(false);
       if (!result.success) {
-        // z.coerce.date() produces "Invalid input" for empty string -> invalid Date
-        expect(result.error.issues[0].message).toContain("Invalid");
+        // Schema has custom message "Due date is required" for invalid dates
+        expect(result.error.issues[0].message).toContain("Due date is required");
       }
     });
 

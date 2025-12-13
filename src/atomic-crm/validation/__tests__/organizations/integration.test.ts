@@ -29,10 +29,10 @@ describe("Organization Validation Functions", () => {
         expect.fail("Should have thrown validation error");
       } catch (error: any) {
         expect(error.message).toBe("Validation failed");
-        expect(error.errors).toBeDefined();
-        expect(error.errors.name).toBe("Organization name is required");
-        expect(error.errors.organization_type).toBeDefined();
-        expect(error.errors.website).toBe("Must be a valid URL");
+        expect(error.body.errors).toBeDefined();
+        expect(error.body.errors.name).toBe("Organization name is required");
+        expect(error.body.errors.organization_type).toBeDefined();
+        expect(error.body.errors.website).toBe("Must be a valid URL");
       }
     });
 
@@ -46,7 +46,7 @@ describe("Organization Validation Functions", () => {
         await validateOrganizationForm(invalidLinkedIn);
         expect.fail("Should have thrown validation error");
       } catch (error: any) {
-        expect(error.errors.linkedin_url).toBe("Must be a valid LinkedIn organization URL");
+        expect(error.body.errors.linkedin_url).toBe("Must be a valid LinkedIn organization URL");
       }
     });
 
@@ -66,8 +66,8 @@ describe("Organization Validation Functions", () => {
       try {
         await validateOrganizationForm(complexInvalidData);
       } catch (error: any) {
-        // If address and contact are nested fields in the schema
-        expect(error.errors).toBeDefined();
+        // z.strictObject() rejects unrecognized keys like 'address' and 'contact'
+        expect(error.body.errors).toBeDefined();
       }
     });
   });
@@ -140,7 +140,7 @@ describe("Organization Validation Functions", () => {
           await validateOrganizationForm(data);
           expect.fail(`Should have thrown error for field: ${field}`);
         } catch (error: any) {
-          expect(error.errors[field]).toBeDefined();
+          expect(error.body.errors[field]).toBeDefined();
         }
       }
     });
