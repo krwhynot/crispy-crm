@@ -32,6 +32,13 @@ export const OrganizationCompactForm = () => {
       </CompactFormRow>
 
       <CompactFormRow>
+        <SelectInput
+          source="priority"
+          label="Priority"
+          choices={PRIORITY_CHOICES}
+          helperText={false}
+          emptyText="Select priority"
+        />
         <ReferenceInput
           reference="sales"
           source="sales_id"
