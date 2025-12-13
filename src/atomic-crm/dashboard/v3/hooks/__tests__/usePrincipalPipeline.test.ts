@@ -19,66 +19,14 @@ import type { PipelineSummaryRow } from "../../types";
 const mockGetList = vi.fn();
 
 /**
- * Mock useGetList hook with React state to simulate async behavior.
- * Uses mockGetList to control responses in tests.
+ * Mock useGetList from ra-core to control responses in tests.
  */
-vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
-  const React = require("react");
-
-  return {
-    ...actual,
-    useGetList: (resource: string, params: any, options?: { enabled?: boolean; staleTime?: number }) => {
-      // Support enabled option - if false, don't fetch
-      const enabled = options?.enabled !== false;
-
-      const [state, setState] = React.useState<{
-        data: any[];
-        isLoading: boolean;
-        error: Error | null;
-      }>({
-        data: [],
-        isLoading: enabled, // Only loading if enabled
-        error: null,
-      });
-
-      const fetchData = React.useCallback(async () => {
-        if (!enabled) return; // Don't fetch if disabled
-        setState((s: any) => ({ ...s, isLoading: true, error: null }));
-        try {
-          const result = await mockGetList(resource, params);
-          setState({
-            data: result.data || [],
-            isLoading: false,
-            error: null,
-          });
-        } catch (e) {
-          const errorMessage = e instanceof Error ? e.message : "Failed to fetch";
-          setState({
-            data: [],
-            isLoading: false,
-            error: errorMessage as any,
-          });
-        }
-      }, [resource, JSON.stringify(params), enabled]);
-
-      React.useEffect(() => {
-        if (enabled) {
-          fetchData();
-        }
-      }, [fetchData, enabled]);
-
-      return {
-        data: state.data,
-        total: state.data.length,
-        isLoading: state.isLoading,
-        isPending: state.isLoading, // Also provide isPending for compatibility
-        error: state.error,
-        refetch: fetchData,
-      };
-    },
-  };
-});
+vi.mock("ra-core", () => ({
+  useGetList: (resource: string, params: any, options?: { enabled?: boolean; staleTime?: number }) => {
+    const enabled = options?.enabled !== false;
+    return mockGetList(resource, params, enabled);
+  },
+}));
 
 // Mock useCurrentSale hook - mutable values stored in object
 const currentSaleState = {

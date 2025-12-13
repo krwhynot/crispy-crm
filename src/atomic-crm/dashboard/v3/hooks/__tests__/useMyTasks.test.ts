@@ -27,10 +27,10 @@ const stableDataProvider = {
   delete: mockDelete,
 };
 
-// Mock react-admin with stable reference - use importOriginal to preserve all exports
+// Mock react-admin with stable reference
 vi.mock("react-admin", async (importOriginal) => {
   const actual = await importOriginal<typeof import("react-admin")>();
-  const React = await import("react");
+  const React = require("react");
 
   return {
     ...actual,
