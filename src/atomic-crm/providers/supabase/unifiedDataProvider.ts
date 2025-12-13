@@ -701,7 +701,7 @@ export const unifiedDataProvider: DataProvider = {
       // ra-data-postgrest may return previousData without API call if no changes detected
       if (result.data && params.previousData) {
         const submittedKeys = Object.keys(params.data || {});
-        const readonlyFields = ["id", "created_at", "updated_at", "deleted_at", "name", "search_tsv"];
+        const readonlyFields = ["id", "created_at", "updated_at", "deleted_at", "search_tsv"];
 
         // Check if any user-submitted fields actually changed in response
         const hasActualChange = submittedKeys.some((key) => {
