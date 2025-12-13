@@ -24,7 +24,23 @@ vi.mock("ra-core", async () => {
   const actual = await vi.importActual("ra-core");
   return {
     ...actual,
-    useListContext: vi.fn(),
+    useListContext: vi.fn(() => ({
+      data: [],
+      total: 0,
+      isLoading: false,
+      filterValues: {},
+      setFilters: vi.fn(),
+      displayedFilters: {},
+      showFilter: vi.fn(),
+      hideFilter: vi.fn(),
+      sort: { field: "name", order: "ASC" },
+      setSort: vi.fn(),
+      resource: "organizations",
+      selectedIds: [],
+      onSelect: vi.fn(),
+      onToggleItem: vi.fn(),
+      onUnselectItems: vi.fn(),
+    })),
     useGetList: vi.fn(),
     useGetIdentity: () => ({
       data: { id: 1, fullName: "Test User", sales_id: 1 },
