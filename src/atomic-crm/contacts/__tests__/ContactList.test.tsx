@@ -19,7 +19,23 @@ vi.mock("ra-core", async () => {
   const actual = await vi.importActual("ra-core");
   return {
     ...actual,
-    useListContext: vi.fn(),
+    useListContext: vi.fn(() => ({
+      data: [],
+      total: 0,
+      isLoading: false,
+      filterValues: {},
+      setFilters: vi.fn(),
+      displayedFilters: {},
+      showFilter: vi.fn(),
+      hideFilter: vi.fn(),
+      sort: { field: "last_name", order: "ASC" },
+      setSort: vi.fn(),
+      resource: "contacts",
+      selectedIds: [],
+      onSelect: vi.fn(),
+      onToggleItem: vi.fn(),
+      onUnselectItems: vi.fn(),
+    })),
     useGetList: vi.fn(),
     useGetIdentity: () => ({
       data: { id: 1, fullName: "Test User", sales_id: 1 },
@@ -35,6 +51,24 @@ vi.mock("react-admin", async () => {
   const actual = await vi.importActual("ra-core");
   return {
     ...actual,
+    // Mock useListContext to avoid ListContextProvider requirement
+    useListContext: vi.fn(() => ({
+      data: [],
+      total: 0,
+      isLoading: false,
+      filterValues: {},
+      setFilters: vi.fn(),
+      displayedFilters: {},
+      showFilter: vi.fn(),
+      hideFilter: vi.fn(),
+      sort: { field: "last_name", order: "ASC" },
+      setSort: vi.fn(),
+      resource: "contacts",
+      selectedIds: [],
+      onSelect: vi.fn(),
+      onToggleItem: vi.fn(),
+      onUnselectItems: vi.fn(),
+    })),
     Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,
     FunctionField: ({ label }: any) => <div data-testid={`function-field-${label}`}>{label}</div>,
     ReferenceField: ({ children, source, reference }: any) => (
@@ -115,6 +149,26 @@ vi.mock("@/atomic-crm/filters/FilterCategory", () => ({
       {children}
     </div>
   ),
+}));
+
+// Mock TutorialProvider to avoid context error
+vi.mock("@/atomic-crm/tutorial/TutorialProvider", () => ({
+  useTutorial: () => ({
+    isActive: false,
+    currentChapter: null,
+    currentStep: null,
+    startTutorial: vi.fn(),
+    endTutorial: vi.fn(),
+    nextStep: vi.fn(),
+    previousStep: vi.fn(),
+    skipTutorial: vi.fn(),
+  }),
+  TutorialProvider: ({ children }: any) => children,
+}));
+
+// Mock PageTutorialTrigger to avoid tutorial context requirement
+vi.mock("@/atomic-crm/tutorial/PageTutorialTrigger", () => ({
+  PageTutorialTrigger: () => null,
 }));
 
 // Mock StandardListLayout
