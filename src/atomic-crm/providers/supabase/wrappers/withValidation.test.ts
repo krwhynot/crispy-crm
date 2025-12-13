@@ -200,6 +200,28 @@ describe("withValidation", () => {
 
       expect(mockProvider.getList).toHaveBeenCalled();
     });
+
+    it("should propagate errors when validateFilters throws (fail-fast)", async () => {
+      // Configure mock to throw error on invalid filters
+      const validationError = new Error("Invalid filter field(s) for contacts: [invalid_field]");
+      (validationError as any).status = 400;
+      mockValidationService.validateFilters.mockImplementation(() => {
+        throw validationError;
+      });
+
+      const wrappedProvider = withValidation(mockProvider);
+
+      await expect(
+        wrappedProvider.getList("contacts", {
+          pagination: { page: 1, perPage: 10 },
+          sort: { field: "id", order: "ASC" },
+          filter: { invalid_field: "value" },
+        })
+      ).rejects.toThrow("Invalid filter field");
+
+      // Provider should NOT be called if validation fails
+      expect(mockProvider.getList).not.toHaveBeenCalled();
+    });
   });
 
   describe("passthrough methods", () => {
