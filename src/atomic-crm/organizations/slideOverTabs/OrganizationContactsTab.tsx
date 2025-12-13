@@ -6,6 +6,7 @@ import { Users } from "lucide-react";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";
 import { MAX_RELATED_ITEMS } from "../constants";
+import type { EmailEntry } from "../types";
 
 interface Contact {
   id: Identifier;
@@ -13,7 +14,7 @@ interface Contact {
   first_name?: string;
   last_name?: string;
   title?: string;
-  email?: any[];
+  email?: EmailEntry[];
   avatar?: { src?: string };
 }
 

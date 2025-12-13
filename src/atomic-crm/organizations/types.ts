@@ -118,6 +118,11 @@ export interface OrganizationExportRow {
   nb_contacts: number;
   nb_opportunities: number;
   created_at: string;
+  sales_id: string | null;
+  parent_organization_id: string | null;
+  parent_organization?: string;
+  segment?: string;
+  sales_rep?: string;
 }
 
 // =====================================================================

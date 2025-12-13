@@ -111,7 +111,7 @@ export function sanitizeFormulaInjection(value: string): string {
  * @param row - Raw organization data from CSV
  * @returns Validation result with success status and errors
  */
-export function validateOrganizationRow(row: any): ValidationResult {
+export function validateOrganizationRow(row: unknown): ValidationResult {
   // Use the organization schema for validation
   const result = organizationSchema.safeParse(row);
 

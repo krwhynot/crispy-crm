@@ -25,12 +25,12 @@ export type DataQualityDecisions = LogicDataQualityDecisions;
 export interface FieldError {
   field: string;
   message: string;
-  value?: any;
+  value?: string | number | boolean | null;
 }
 
 export interface ImportError {
   row: number;
-  data: any;
+  data: OrganizationImportSchema;
   errors: FieldError[];
 }
 
@@ -198,7 +198,7 @@ export function useOrganizationImport() {
             }
 
             return { rowNumber, success: true };
-          } catch (error: any) {
+          } catch (error: unknown) {
             const finalErrors: FieldError[] = [];
             if (error instanceof ZodError) {
               error.issues.forEach((issue) => {
@@ -229,7 +229,7 @@ export function useOrganizationImport() {
       // 5. Tally results
       results.forEach((result, index) => {
         if (result.status === "fulfilled") {
-          const value = result.value as any;
+          const value = result.value as { success: boolean; rowNumber: number; errors?: FieldError[]; data?: OrganizationImportSchema };
           if (value.success) {
             successCount++;
           } else {

@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge";
 import { AsideSection } from "@/components/ui";
 import { ArrayInput, SimpleFormIterator } from "react-admin";
 import type { OrganizationWithHierarchy } from "../../types";
+import type { ContextLink } from "../types";
 import {
   ORGANIZATION_TYPE_CHOICES,
   PRIORITY_CHOICES,
@@ -184,15 +185,15 @@ export function OrganizationDetailsTab({
                   <div>
                     <span className="text-sm text-muted-foreground block mb-2">Context Links:</span>
                     <div className="space-y-1">
-                      {record.context_links.map((link: any, index: number) => (
+                      {record.context_links.map((link: ContextLink | string, index: number) => (
                         <div key={index}>
                           <a
-                            href={link.url || link}
+                            href={typeof link === 'string' ? link : link.url}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-sm text-primary hover:underline"
                           >
-                            {link.name || link.url || link}
+                            {typeof link === 'string' ? link : (link.label || link.url)}
                           </a>
                         </div>
                       ))}

@@ -23,7 +23,7 @@ import * as React from "react";
 export interface FieldError {
   field: string;
   message: string;
-  value?: any;
+  value?: string | number | boolean | null;
 }
 
 export interface ImportError {

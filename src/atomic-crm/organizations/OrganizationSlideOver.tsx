@@ -19,6 +19,7 @@ import { OrganizationOpportunitiesTab } from "./slideOverTabs/OrganizationOpport
 import { OrganizationNotesTab } from "./slideOverTabs/OrganizationNotesTab";
 import { AuthorizationsTab } from "./AuthorizationsTab";
 import { useGetOne } from "react-admin";
+import type { OrganizationRecord } from "./types";
 
 interface OrganizationSlideOverProps {
   recordId: number | null;
@@ -57,21 +58,21 @@ export function OrganizationSlideOver({
       label: "Contacts",
       component: OrganizationContactsTab,
       icon: Users,
-      countFromRecord: (record: any) => record.nb_contacts,
+      countFromRecord: (record: OrganizationRecord) => record.nb_contacts,
     },
     {
       key: "opportunities",
       label: "Opportunities",
       component: OrganizationOpportunitiesTab,
       icon: Target,
-      countFromRecord: (record: any) => record.nb_opportunities,
+      countFromRecord: (record: OrganizationRecord) => record.nb_opportunities,
     },
     {
       key: "notes",
       label: "Notes",
       component: OrganizationNotesTab,
       icon: StickyNote,
-      countFromRecord: (record: any) => record.nb_notes,
+      countFromRecord: (record: OrganizationRecord) => record.nb_notes,
     },
   ];
 
@@ -89,7 +90,7 @@ export function OrganizationSlideOver({
       ]
     : baseTabs;
 
-  const recordRepresentation = (record: any) => {
+  const recordRepresentation = (record: OrganizationRecord) => {
     return record.name || `Organization #${record.id}`;
   };
 

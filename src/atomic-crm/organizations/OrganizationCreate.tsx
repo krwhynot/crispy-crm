@@ -26,6 +26,7 @@ import { useDuplicateOrgCheck } from "./useDuplicateOrgCheck";
 import { DuplicateOrgWarningDialog } from "./DuplicateOrgWarningDialog";
 import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
 import type { Database } from "@/types/database.generated";
+import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
 
 type Segment = Database["public"]["Tables"]["segments"]["Row"];
 
@@ -38,7 +39,7 @@ type Segment = Database["public"]["Tables"]["segments"]["Row"];
  * 3. Hidden button has type="submit" which triggers React Admin's form submission
  */
 interface DuplicateCheckSaveButtonProps {
-  onDuplicateFound: (name: string, values: any) => void;
+  onDuplicateFound: DuplicateCheckCallback;
   checkForDuplicate: (name: string) => Promise<{ id: string | number; name: string } | null>;
   isChecking: boolean;
 }
@@ -117,7 +118,7 @@ const OrganizationCreate = () => {
     useDuplicateOrgCheck();
 
   // Store pending values when duplicate is found
-  const pendingValuesRef = useRef<any>(null);
+  const pendingValuesRef = useRef<OrganizationFormValues | null>(null);
   const [isCreating, setIsCreating] = useState(false);
 
   const { data: segments = [] } = useGetList<Segment>(
@@ -139,7 +140,7 @@ const OrganizationCreate = () => {
 
   // Transform function for URL prefixing
   // NOTE: All useCallback hooks must be declared before any early returns (React rules-of-hooks)
-  const transformValues = useCallback((values: any) => {
+  const transformValues = useCallback((values: OrganizationFormValues) => {
     if (values.website && !values.website.startsWith("http")) {
       values.website = `https://${values.website}`;
     }
@@ -147,7 +148,7 @@ const OrganizationCreate = () => {
   }, []);
 
   // Handle when duplicate is found - store values and show dialog
-  const handleDuplicateFound = useCallback((_duplicateName: string, values: any) => {
+  const handleDuplicateFound = useCallback((_duplicateName: string, values: OrganizationFormValues) => {
     pendingValuesRef.current = values;
   }, []);
 
@@ -168,8 +169,8 @@ const OrganizationCreate = () => {
             notify("Organization created", { type: "success" });
             redirect("show", "organizations", data.id);
           },
-          onError: (error: any) => {
-            notify(error?.message || "Failed to create organization", { type: "error" });
+          onError: (error: unknown) => {
+            notify(error instanceof Error ? error.message : "Failed to create organization", { type: "error" });
           },
         }
       );
@@ -246,7 +247,7 @@ const OrganizationFormContent = ({
   checkForDuplicate,
   isChecking,
 }: {
-  onDuplicateFound: (name: string, values: any) => void;
+  onDuplicateFound: DuplicateCheckCallback;
   checkForDuplicate: (name: string) => Promise<{ id: string | number; name: string } | null>;
   isChecking: boolean;
 }) => {
