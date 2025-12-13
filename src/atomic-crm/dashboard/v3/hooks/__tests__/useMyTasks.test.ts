@@ -22,6 +22,9 @@ const deletedTaskIds = new Set<number>();
 // Store the base tasks data that tests will populate
 let baseTasksData: any[] = [];
 
+// Version counter to trigger re-fetch after mutations
+let mutationVersion = 0;
+
 // Create stable mock functions OUTSIDE the factory to prevent new references
 const mockGetList = vi.fn().mockImplementation((resource: string, params: any) => {
   if (resource === "tasks") {
@@ -40,12 +43,24 @@ const mockGetList = vi.fn().mockImplementation((resource: string, params: any) =
 const mockUpdate = vi.fn();
 const mockDelete = vi.fn();
 
-// Wrap mockUpdate to track completed tasks
+// Wrap mockUpdate to track completed tasks and update base data for snooze
 const wrappedUpdate = async (...args: any[]) => {
   const result = await mockUpdate(...args);
   const [resource, params] = args;
-  if (resource === "tasks" && params.data?.completed === true) {
-    completedTaskIds.add(params.id);
+  if (resource === "tasks") {
+    // Track completed tasks
+    if (params.data?.completed === true) {
+      completedTaskIds.add(params.id);
+      mutationVersion++;
+    }
+    // Update base data for other updates (like snooze)
+    if (params.data?.due_date) {
+      const taskIndex = baseTasksData.findIndex((t: any) => t.id === params.id);
+      if (taskIndex !== -1) {
+        baseTasksData[taskIndex] = { ...baseTasksData[taskIndex], ...params.data };
+        mutationVersion++;
+      }
+    }
   }
   return result;
 };
@@ -56,6 +71,7 @@ const wrappedDelete = async (...args: any[]) => {
   const [resource, params] = args;
   if (resource === "tasks") {
     deletedTaskIds.add(params.id);
+    mutationVersion++;
   }
   return result;
 };
@@ -111,7 +127,7 @@ vi.mock("react-admin", async (importOriginal) => {
             error: e instanceof Error ? e : new Error("Failed to fetch"),
           });
         }
-      }, [resource, JSON.stringify(params), enabled]);
+      }, [resource, JSON.stringify(params), enabled, mutationVersion]);
 
       React.useEffect(() => {
         if (enabled) {
@@ -186,6 +202,7 @@ describe("useMyTasks", () => {
     completedTaskIds.clear();
     deletedTaskIds.clear();
     baseTasksData = [];
+    mutationVersion = 0;
   });
 
   describe("Task Fetching", () => {
@@ -297,8 +314,6 @@ describe("useMyTasks", () => {
     });
 
     it("should handle same day with different times", async () => {
-      mockGetList.mockResolvedValueOnce({ data: [], total: 0 });
-
       const { result } = renderHook(() => useMyTasks());
 
       await waitFor(() => {
@@ -325,7 +340,7 @@ describe("useMyTasks", () => {
   describe("completeTask()", () => {
     it("should update task and remove from local state", async () => {
       const mockTask = createMockTask({ id: 1 });
-      mockGetList.mockResolvedValueOnce({ data: [mockTask], total: 1 });
+      baseTasksData = [mockTask];
       mockUpdate.mockResolvedValueOnce({ data: { ...mockTask, completed: true } });
 
       const { result } = renderHook(() => useMyTasks());
@@ -351,7 +366,7 @@ describe("useMyTasks", () => {
 
     it("should re-throw error on failure", async () => {
       const mockTask = createMockTask({ id: 1 });
-      mockGetList.mockResolvedValueOnce({ data: [mockTask], total: 1 });
+      baseTasksData = [mockTask];
       mockUpdate.mockRejectedValueOnce(new Error("Update failed"));
 
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
@@ -382,7 +397,7 @@ describe("useMyTasks", () => {
     it("should optimistically update task due date", async () => {
       const dates = createTestDates();
       const mockTask = createMockTask({ id: 1, due_date: dates.today.toISOString() });
-      mockGetList.mockResolvedValueOnce({ data: [mockTask], total: 1 });
+      baseTasksData = [mockTask];
       mockUpdate.mockResolvedValueOnce({ data: mockTask });
 
       const { result } = renderHook(() => useMyTasks());
@@ -405,7 +420,7 @@ describe("useMyTasks", () => {
     it("should rollback on API failure", async () => {
       const dates = createTestDates();
       const mockTask = createMockTask({ id: 1, due_date: dates.today.toISOString() });
-      mockGetList.mockResolvedValueOnce({ data: [mockTask], total: 1 });
+      baseTasksData = [mockTask];
       mockUpdate.mockRejectedValueOnce(new Error("Snooze failed"));
 
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
@@ -435,7 +450,7 @@ describe("useMyTasks", () => {
     });
 
     it("should handle non-existent task gracefully", async () => {
-      mockGetList.mockResolvedValueOnce({ data: [], total: 0 });
+      // No tasks
 
       const { result } = renderHook(() => useMyTasks());
 
@@ -455,7 +470,7 @@ describe("useMyTasks", () => {
   describe("deleteTask() - Optimistic Update", () => {
     it("should optimistically remove task from state", async () => {
       const mockTask = createMockTask({ id: 1 });
-      mockGetList.mockResolvedValueOnce({ data: [mockTask], total: 1 });
+      baseTasksData = [mockTask];
       mockDelete.mockResolvedValueOnce({ data: mockTask });
 
       const { result } = renderHook(() => useMyTasks());
@@ -475,7 +490,7 @@ describe("useMyTasks", () => {
 
     it("should rollback on API failure", async () => {
       const mockTask = createMockTask({ id: 1 });
-      mockGetList.mockResolvedValueOnce({ data: [mockTask], total: 1 });
+      baseTasksData = [mockTask];
       mockDelete.mockRejectedValueOnce(new Error("Delete failed"));
 
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
@@ -507,7 +522,7 @@ describe("useMyTasks", () => {
   describe("updateTaskLocally()", () => {
     it("should update task in local state without API call", async () => {
       const mockTask = createMockTask({ id: 1 });
-      mockGetList.mockResolvedValueOnce({ data: [mockTask], total: 1 });
+      baseTasksData = [mockTask];
 
       const { result } = renderHook(() => useMyTasks());
 
@@ -527,7 +542,7 @@ describe("useMyTasks", () => {
   describe("rollbackTask()", () => {
     it("should restore task to previous state", async () => {
       const mockTask = createMockTask({ id: 1, title: "Original Title" });
-      mockGetList.mockResolvedValueOnce({ data: [mockTask], total: 1 });
+      baseTasksData = [mockTask];
 
       const { result } = renderHook(() => useMyTasks());
 
@@ -565,7 +580,7 @@ describe("useMyTasks", () => {
         contact_id: null,
         organization_id: null,
       });
-      mockGetList.mockResolvedValueOnce({ data: [mockTask], total: 1 });
+      baseTasksData = [mockTask];
 
       const { result } = renderHook(() => useMyTasks());
 
@@ -589,7 +604,7 @@ describe("useMyTasks", () => {
         organization_id: null,
         opportunity: undefined,
       });
-      mockGetList.mockResolvedValueOnce({ data: [mockTask], total: 1 });
+      baseTasksData = [mockTask];
 
       const { result } = renderHook(() => useMyTasks());
 
@@ -614,7 +629,7 @@ describe("useMyTasks", () => {
         opportunity: undefined,
         contact: undefined,
       });
-      mockGetList.mockResolvedValueOnce({ data: [mockTask], total: 1 });
+      baseTasksData = [mockTask];
 
       const { result } = renderHook(() => useMyTasks());
 

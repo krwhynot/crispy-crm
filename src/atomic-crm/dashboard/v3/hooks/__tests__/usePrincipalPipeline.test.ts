@@ -19,15 +19,66 @@ import type { PipelineSummaryRow } from "../../types";
 const mockGetList = vi.fn();
 
 /**
- * Mock useGetList from ra-core to control responses in tests.
+ * Mock useGetList from react-admin to control responses in tests.
+ * Uses React state to properly simulate async behavior.
  */
-vi.mock("ra-core", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("ra-core")>();
+vi.mock("react-admin", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("react-admin")>();
+  const React = require("react");
+
   return {
     ...actual,
     useGetList: (resource: string, params: any, options?: { enabled?: boolean; staleTime?: number }) => {
+      // Support enabled option - if false, don't fetch
       const enabled = options?.enabled !== false;
-      return mockGetList(resource, params, enabled);
+
+      const [state, setState] = React.useState<{
+        data: any[];
+        total: number;
+        isPending: boolean;
+        error: Error | null;
+      }>({
+        data: [],
+        total: 0,
+        isPending: enabled, // Only loading if enabled
+        error: null,
+      });
+
+      const fetchData = React.useCallback(async () => {
+        if (!enabled) return;
+        setState((s: any) => ({ ...s, isPending: true, error: null }));
+        try {
+          const result = await mockGetList(resource, params, enabled);
+          setState({
+            data: result?.data || [],
+            total: result?.total || 0,
+            isPending: false,
+            error: result?.error || null,
+          });
+        } catch (e) {
+          setState({
+            data: [],
+            total: 0,
+            isPending: false,
+            error: e instanceof Error ? e : new Error("Failed to fetch"),
+          });
+        }
+      }, [resource, JSON.stringify(params), enabled]);
+
+      React.useEffect(() => {
+        if (enabled) {
+          fetchData();
+        }
+      }, [fetchData, enabled]);
+
+      return {
+        data: state.data,
+        total: state.total,
+        isPending: state.isPending,
+        isLoading: state.isPending,
+        error: state.error,
+        refetch: fetchData,
+      };
     },
   };
 });
@@ -91,7 +142,8 @@ describe("usePrincipalPipeline", () => {
           filter: {},
           sort: { field: "active_this_week", order: "DESC" },
           pagination: { page: 1, perPage: 100 },
-        })
+        }),
+        true // enabled=true
       );
       expect(result.current.data).toHaveLength(2);
       expect(result.current.data[0].name).toBe("Acme Foods");
@@ -111,7 +163,8 @@ describe("usePrincipalPipeline", () => {
         "principal_pipeline_summary",
         expect.objectContaining({
           filter: { sales_id: 42 },
-        })
+        }),
+        true // enabled=true
       );
       expect(result.current.data).toHaveLength(1);
     });
@@ -132,24 +185,14 @@ describe("usePrincipalPipeline", () => {
     it("should wait for salesId loading when myPrincipalsOnly is true", async () => {
       currentSaleState.salesId = null;
       currentSaleState.loading = true;
-      mockGetList.mockReturnValue({
-        data: [],
-        total: 0,
-        isPending: false,
-        error: null,
-      });
 
       const { result } = renderHook(() => usePrincipalPipeline({ myPrincipalsOnly: true }));
 
       // When salesIdLoading is true and myPrincipalsOnly is true, the query is disabled
       // The hook's loading state comes from useGetList's isPending
-      // When disabled, the query returns isPending=false
+      // When disabled, mockGetList is not called (query is disabled)
       expect(result.current.loading).toBe(false);
-      expect(mockGetList).toHaveBeenCalledWith(
-        "principal_pipeline_summary",
-        expect.anything(),
-        false // enabled=false
-      );
+      expect(mockGetList).not.toHaveBeenCalled();
     });
   });
 
@@ -247,7 +290,7 @@ describe("usePrincipalPipeline", () => {
   describe("Error Handling", () => {
     it("should handle fetch errors gracefully", async () => {
       const mockError = new Error("Network error");
-      mockGetList.mockReturnValue({
+      mockGetList.mockResolvedValueOnce({
         data: [],
         total: 0,
         isPending: false,
@@ -256,9 +299,13 @@ describe("usePrincipalPipeline", () => {
 
       const { result } = renderHook(() => usePrincipalPipeline());
 
-      expect(result.current.loading).toBe(false);
+      await waitFor(() => {
+        expect(result.current.loading).toBe(false);
+      });
+
       expect(result.current.error).toBeInstanceOf(Error);
-      expect(result.current.error?.message).toBe("Network error");
+      // Hook wraps the error in a new Error with String(error), so we check the message contains the original
+      expect(result.current.error?.message).toContain("Network error");
     });
   });
 
@@ -290,7 +337,8 @@ describe("usePrincipalPipeline", () => {
         "principal_pipeline_summary",
         expect.objectContaining({
           filter: {},
-        })
+        }),
+        true // enabled=true
       );
     });
 
@@ -307,7 +355,8 @@ describe("usePrincipalPipeline", () => {
         "principal_pipeline_summary",
         expect.objectContaining({
           sort: { field: "active_this_week", order: "DESC" },
-        })
+        }),
+        true // enabled=true
       );
     });
   });

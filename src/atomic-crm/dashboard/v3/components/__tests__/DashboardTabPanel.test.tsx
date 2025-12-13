@@ -9,6 +9,10 @@ vi.mock("../../hooks/useTaskCount", () => ({
 }));
 
 // Mock lazy-loaded components
+vi.mock("../PrincipalPipelineTable", () => ({
+  default: () => <div data-testid="pipeline-table">Pipeline Content</div>,
+}));
+
 vi.mock("../TasksKanbanPanel", () => ({
   default: () => <div data-testid="tasks-panel">Tasks Content</div>,
 }));
@@ -36,15 +40,16 @@ describe("DashboardTabPanel", () => {
     expect(screen.getByText("3")).toBeInTheDocument();
   });
 
-  it("defaults to tasks tab and loads content", async () => {
+  it("defaults to pipeline tab and loads content", async () => {
     render(<DashboardTabPanel />);
 
-    const tasksTab = screen.getByRole("tab", { name: /my tasks/i });
-    expect(tasksTab).toHaveAttribute("data-state", "active");
+    // Pipeline is the default tab (defaultValue="pipeline")
+    const pipelineTab = screen.getByRole("tab", { name: /pipeline/i });
+    expect(pipelineTab).toHaveAttribute("data-state", "active");
 
     // Wait for lazy-loaded content (Suspense boundary)
     await waitFor(() => {
-      expect(screen.getByTestId("tasks-panel")).toBeInTheDocument();
+      expect(screen.getByTestId("pipeline-table")).toBeInTheDocument();
     });
   });
 
@@ -52,8 +57,8 @@ describe("DashboardTabPanel", () => {
     const user = userEvent.setup();
     render(<DashboardTabPanel />);
 
-    // Wait for initial content
-    await screen.findByTestId("tasks-panel");
+    // Wait for initial content (pipeline is the default tab)
+    await screen.findByTestId("pipeline-table");
 
     await user.click(screen.getByRole("tab", { name: /performance/i }));
 
@@ -65,8 +70,8 @@ describe("DashboardTabPanel", () => {
       expect(screen.getByTestId("performance-widget")).toBeInTheDocument();
     });
 
-    // With forceMount, tasks content should still be in DOM (hidden)
-    expect(screen.getByTestId("tasks-panel")).toBeInTheDocument();
+    // With forceMount, pipeline content should still be in DOM (hidden)
+    expect(screen.getByTestId("pipeline-table")).toBeInTheDocument();
   });
 
   it("has accessible touch targets (44px)", () => {
