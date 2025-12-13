@@ -55,6 +55,24 @@ vi.mock("react-admin", async () => {
   const actual = await vi.importActual("ra-core");
   return {
     ...actual,
+    // Mock useListContext to avoid ListContextProvider requirement
+    useListContext: vi.fn(() => ({
+      data: [],
+      total: 0,
+      isLoading: false,
+      filterValues: {},
+      setFilters: vi.fn(),
+      displayedFilters: {},
+      showFilter: vi.fn(),
+      hideFilter: vi.fn(),
+      sort: { field: "name", order: "ASC" },
+      setSort: vi.fn(),
+      resource: "organizations",
+      selectedIds: [],
+      onSelect: vi.fn(),
+      onToggleItem: vi.fn(),
+      onUnselectItems: vi.fn(),
+    })),
     TextField: ({ source, sortable, label }: any) => (
       <span
         data-testid={`text-field-${source}`}
@@ -101,6 +119,26 @@ vi.mock("../OrganizationSlideOver", () => ({
       {isOpen && <div data-testid={`slide-over-org-${recordId}`}>Slide Over</div>}
     </div>
   ),
+}));
+
+// Mock TutorialProvider to avoid context error
+vi.mock("@/atomic-crm/tutorial/TutorialProvider", () => ({
+  useTutorial: () => ({
+    isActive: false,
+    currentChapter: null,
+    currentStep: null,
+    startTutorial: vi.fn(),
+    endTutorial: vi.fn(),
+    nextStep: vi.fn(),
+    previousStep: vi.fn(),
+    skipTutorial: vi.fn(),
+  }),
+  TutorialProvider: ({ children }: any) => children,
+}));
+
+// Mock PageTutorialTrigger to avoid tutorial context requirement
+vi.mock("@/atomic-crm/tutorial/PageTutorialTrigger", () => ({
+  PageTutorialTrigger: () => null,
 }));
 
 // Track sortable column configuration for testing
