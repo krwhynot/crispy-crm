@@ -437,12 +437,10 @@ describe("unifiedDataProvider - Error Handling", () => {
   });
 
   describe("query syntax errors", () => {
-    it("should propagate invalid filter syntax errors", async () => {
-      mockGetList.mockRejectedValue({
-        code: "PGRST102",
-        message: "Invalid filter syntax",
-      });
-
+    it("should throw HttpError on invalid filter fields (fail-fast validation)", async () => {
+      // UPDATED: With fail-fast validation, invalid filters are caught BEFORE
+      // reaching the database, so we get HttpError(400) instead of PGRST102
+      // This is the desired behavior per Engineering Constitution
       await expect(
         unifiedDataProvider.getList("contacts", {
           pagination: { page: 1, perPage: 10 },
@@ -450,8 +448,12 @@ describe("unifiedDataProvider - Error Handling", () => {
           filter: { "invalid@operator": "value" },
         })
       ).rejects.toMatchObject({
-        code: "PGRST102",
+        status: 400,
+        message: expect.stringContaining("invalid@operator"),
       });
+
+      // The database should never be called - validation catches it first
+      expect(mockGetList).not.toHaveBeenCalled();
     });
 
     it("should propagate column does not exist errors", async () => {

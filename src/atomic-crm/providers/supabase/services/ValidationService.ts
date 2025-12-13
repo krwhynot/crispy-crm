@@ -1,3 +1,4 @@
+import { HttpError } from "react-admin";
 import type { DataProviderMethod } from "../types";
 import type {
   Contact,
@@ -213,55 +214,62 @@ export class ValidationService {
    *
    * @param resource The resource name (e.g., 'contacts', 'organizations')
    * @param filters The filter object from React Admin (e.g., { status: 'active', last_seen@gte: '2024-01-01' })
-   * @returns A new filter object with invalid fields removed
+   * @returns The validated filter object (unchanged if all fields are valid)
+   * @throws {HttpError} 400 error if any filter fields are invalid (fail-fast principle)
    */
   validateFilters(resource: string, filters: Record<string, any>): Record<string, any> {
     const allowedFields = filterableFields[resource];
 
     if (!allowedFields) {
+      // No filter config = allow all (backward compatible for unconfigured resources)
+      // But log warning in dev to encourage adding filter registry
       if (DEV) {
         console.warn(
           `[ValidationService] No filterable fields defined for resource: "${resource}". ` +
-            `Skipping filter validation. Consider adding this resource to filterRegistry.ts`
+            `Allowing all filters. Consider adding this resource to filterRegistry.ts`
         );
       }
-      return filters; // No validation possible, return as-is
+      return filters;
     }
 
-    const cleanedFilters: Record<string, any> = {};
-    let modified = false;
+    const invalidFilters: string[] = [];
+    const validFilters: Record<string, any> = {};
 
     for (const filterKey in filters) {
       if (Object.prototype.hasOwnProperty.call(filters, filterKey)) {
         if (isValidFilterField(resource, filterKey)) {
           // Valid filter - keep it
-          cleanedFilters[filterKey] = filters[filterKey];
+          validFilters[filterKey] = filters[filterKey];
         } else {
-          // Invalid filter - log warning and remove it
-          if (DEV) {
-            console.warn(
-              `[ValidationService] Resource "${resource}" received invalid filter field: "${filterKey}". ` +
-                `This field does not exist in the database schema. Removing it to prevent API errors. ` +
-                `If this field should be filterable, add it to filterRegistry.ts`
-            );
-          }
-          modified = true;
+          // Track invalid filter for error reporting
+          invalidFilters.push(filterKey);
         }
       }
     }
 
-    if (modified) {
+    if (invalidFilters.length > 0) {
+      // FAIL-FAST: Throw error instead of silently dropping invalid filters
+      const errorMessage =
+        `Invalid filter field(s) for "${resource}": [${invalidFilters.join(", ")}]. ` +
+        `Allowed fields: [${allowedFields.join(", ")}]. ` +
+        `If these fields should be filterable, add them to filterRegistry.ts`;
+
       if (DEV) {
-        console.info(
-          `[ValidationService] Filters cleaned for resource "${resource}".`,
-          `\nOriginal:`,
-          filters,
-          `\nCleaned:`,
-          cleanedFilters
-        );
+        console.error("[ValidationService] Filter validation failed:", {
+          resource,
+          invalidFilters,
+          allowedFields,
+          submittedFilters: filters,
+        });
       }
+
+      throw new HttpError(errorMessage, 400, {
+        resource,
+        invalidFilters,
+        allowedFields,
+      });
     }
 
-    return cleanedFilters;
+    return validFilters;
   }
 }

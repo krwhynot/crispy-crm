@@ -98,5 +98,55 @@ describe("Service Integration Tests", () => {
       expect(result).toHaveProperty("@or");
       expect(result).toHaveProperty("status");
     });
+
+    it("should throw HttpError on invalid filter fields (fail-fast)", () => {
+      // Invalid filter that doesn't exist in schema
+      const filters = {
+        status: "active",
+        invalid_field_that_does_not_exist: "should_cause_error",
+      };
+
+      expect(() => validationService.validateFilters("contacts", filters)).toThrow();
+
+      // Verify error details
+      try {
+        validationService.validateFilters("contacts", filters);
+      } catch (error: any) {
+        expect(error.status).toBe(400);
+        expect(error.message).toContain("invalid_field_that_does_not_exist");
+        expect(error.message).toContain("contacts");
+      }
+    });
+
+    it("should throw HttpError listing all invalid filter fields", () => {
+      const filters = {
+        status: "active",
+        bad_field_1: "value",
+        bad_field_2: "value",
+      };
+
+      try {
+        validationService.validateFilters("contacts", filters);
+        expect.fail("Should have thrown");
+      } catch (error: any) {
+        expect(error.status).toBe(400);
+        expect(error.message).toContain("bad_field_1");
+        expect(error.message).toContain("bad_field_2");
+        // Should also list allowed fields for user guidance
+        expect(error.message).toContain("Allowed fields");
+      }
+    });
+
+    it("should allow all filters for resources without filter config", () => {
+      // Resources not in filterRegistry should allow all filters (backward compatible)
+      const filters = {
+        any_field: "value",
+        another_field: "value",
+      };
+
+      // This should NOT throw - unknown resources allow all filters
+      const result = validationService.validateFilters("unknown_resource", filters);
+      expect(result).toEqual(filters);
+    });
   });
 });
