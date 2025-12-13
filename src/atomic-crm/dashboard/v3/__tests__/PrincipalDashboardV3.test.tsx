@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { MemoryRouter } from "react-router-dom";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { PrincipalDashboardV3 } from "../PrincipalDashboardV3";
 
 // Mock LogActivityFAB to avoid React Admin dependency in tests
@@ -98,34 +99,33 @@ vi.mock("../hooks/useKPIMetrics", () => ({
   }),
 }));
 
+// Helper to render with all required providers
+const renderDashboard = () => {
+  return render(
+    <MemoryRouter>
+      <TooltipProvider>
+        <PrincipalDashboardV3 />
+      </TooltipProvider>
+    </MemoryRouter>
+  );
+};
+
 describe("PrincipalDashboardV3", () => {
   it("should render both panels (Pipeline and Tasks)", () => {
-    render(
-      <MemoryRouter>
-        <PrincipalDashboardV3 />
-      </MemoryRouter>
-    );
+    renderDashboard();
 
     expect(screen.getByText("Pipeline by Principal")).toBeInTheDocument();
     expect(screen.getByText("My Tasks")).toBeInTheDocument();
   });
 
   it("should render the Log Activity FAB", () => {
-    render(
-      <MemoryRouter>
-        <PrincipalDashboardV3 />
-      </MemoryRouter>
-    );
+    renderDashboard();
 
     expect(screen.getByRole("button", { name: /log activity/i })).toBeInTheDocument();
   });
 
   it("should use vertically stacked layout for main sections", () => {
-    const { container } = render(
-      <MemoryRouter>
-        <PrincipalDashboardV3 />
-      </MemoryRouter>
-    );
+    const { container } = renderDashboard();
 
     // Main content should use flex-col for vertical stacking
     const flexColContainers = container.querySelectorAll(".flex-col");
@@ -141,11 +141,7 @@ describe("PrincipalDashboardV3", () => {
   });
 
   it("should have KPI row with 4-column desktop grid", () => {
-    const { container } = render(
-      <MemoryRouter>
-        <PrincipalDashboardV3 />
-      </MemoryRouter>
-    );
+    const { container } = renderDashboard();
 
     // KPI Summary Row should use responsive grid: 2-col mobile, 4-col desktop
     const kpiGrid = container.querySelector(".grid.grid-cols-2.lg\\:grid-cols-4");
@@ -157,11 +153,7 @@ describe("PrincipalDashboardV3", () => {
   });
 
   it("should have 2-column grid for Performance + Activity bottom row", () => {
-    const { container } = render(
-      <MemoryRouter>
-        <PrincipalDashboardV3 />
-      </MemoryRouter>
-    );
+    const { container } = renderDashboard();
 
     // Bottom row uses grid-cols-1 (mobile) lg:grid-cols-2 (desktop)
     const bottomGrid = container.querySelector(".grid.grid-cols-1.lg\\:grid-cols-2");
@@ -169,11 +161,7 @@ describe("PrincipalDashboardV3", () => {
   });
 
   it("should render all dashboard sections in vertical stack order", () => {
-    render(
-      <MemoryRouter>
-        <PrincipalDashboardV3 />
-      </MemoryRouter>
-    );
+    renderDashboard();
 
     // Verify all sections are present (order is implicit by DOM structure)
     // 1. KPI Summary Row
@@ -193,21 +181,13 @@ describe("PrincipalDashboardV3", () => {
   });
 
   it("should render dashboard header", () => {
-    render(
-      <MemoryRouter>
-        <PrincipalDashboardV3 />
-      </MemoryRouter>
-    );
+    renderDashboard();
 
     expect(screen.getByText("Principal Dashboard")).toBeInTheDocument();
   });
 
   it("should render KPI summary row with four metrics (PRD v1.9)", () => {
-    render(
-      <MemoryRouter>
-        <PrincipalDashboardV3 />
-      </MemoryRouter>
-    );
+    renderDashboard();
 
     // Check that KPI labels are rendered per PRD v1.9 Section 9.2.1
     // KPI #1: Open Opportunities (count, not $ value per Decision #5)
@@ -221,11 +201,7 @@ describe("PrincipalDashboardV3", () => {
   });
 
   it("should render KPI values from mocked data", () => {
-    render(
-      <MemoryRouter>
-        <PrincipalDashboardV3 />
-      </MemoryRouter>
-    );
+    renderDashboard();
 
     // Check KPI values using aria-labels for specificity (avoids collision with Performance widget)
     // KPIs have aria-label like "Open Opportunities: 8. Click to view details."
