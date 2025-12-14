@@ -1,219 +1,320 @@
-# Pre-Beta Diagnostic Audit
-
-**Generated:** Sat Dec 13 2025
-**Scope:** Crispy CRM - React 19 + TypeScript + React Admin + Supabase
-**Status:** Family Beta Launch Readiness Assessment
-
----
-
-## Quick Summary
-
-| Category | Issues Found | Priority | Status |
-|----------|--------------|----------|--------|
-| Build & Test Health | 125 | **CRITICAL** | ❌ Blocking |
-| Performance Anti-Patterns | ~60 | **LOW** | ⚠️ Monitor |
-| Consistency Anti-Patterns | ~65 | **MEDIUM** | ⚠️ Pre-GA |
-| Constitution Violations | ~95 | **HIGH** | 🔧 Fix Soon |
-
-**Total Issues Identified:** ~345
+# Pre-Beta Diagnostic Audit Report
+**Generated:** December 13, 2025 (16:08 CST)
+**Project:** Crispy CRM (Atomic CRM)
+**Tech Stack:** React 19 + React Admin 5 + TypeScript + Supabase + Tailwind v4
 
 ---
 
-## Top 5 Priority Issues
+## Executive Summary
 
-| # | Issue | Files Affected | Effort | Impact |
-|---|-------|----------------|--------|--------|
-| 1 | **Test Suite Failures** - Mock configuration errors in `useTeamActivities` | 22 test files, 116 cases | Medium | Blocks CI/CD |
-| 2 | **TypeScript `any` Usage** - Type safety violations across import dialogs | 30+ locations | Large | Runtime errors |
-| 3 | **Zod Strings Without `.max()`** - DoS vulnerability risk | 20+ schema fields | Medium | Security |
-| 4 | **Form-Level Validation** - Should be API boundary only | 4 forms | Small | Architecture |
-| 5 | **Lint Errors** - Unused imports/variables | 7 locations | Quick | CI fails |
+| Category | Status | Issues | Priority |
+|----------|--------|--------|----------|
+| **Build Health** | ✅ Passing | 0 | - |
+| **Test Suite** | ⚠️ 1 Failing | 1 | HIGH |
+| **Performance** | ✅ Score 8.5/10 | 17 | MODERATE |
+| **Consistency** | ✅ Grade A (95%) | 2 | LOW |
+| **Constitution** | ⚠️ Violations | 27-32 | HIGH |
+
+**Total Actionable Issues:** ~50 (2 critical, ~30 high, ~18 moderate/low)
 
 ---
 
-## Category Details
+## Top 5 Highest-Priority Issues
 
-### 1. Build & Test Health ❌ CRITICAL
+### 1. ❌ CRITICAL: Failing Test
+**Location:** `src/atomic-crm/providers/supabase/unifiedDataProvider.errors.test.ts:446`
+**Impact:** Blocks CI/CD pipeline
+**Effort:** Low (likely a test assertion update)
 
-#### TypeScript Build: ✅ PASS
-- Build completed successfully in **51.45s**
-- **Performance Warning:** 2 large chunks exceed 300 kB
-  - `chunk-Ci8ZLF02.js`: 363.91 kB (95.10 kB gzipped)
-  - `index-BWSp190D.js`: 664.61 kB (202.30 kB gzipped)
-- **Recommendation:** Implement code-splitting via dynamic `import()`
+### 2. ❌ CRITICAL: Direct Supabase Imports (Architecture Violation)
+**Files:**
+- `src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts` - bypasses data provider
+- `src/atomic-crm/opportunities/__tests__/product-filtering-integration.test.tsx`
 
-#### Test Suite: ❌ FAIL
-| Metric | Value |
-|--------|-------|
-| Test Files | 197 total |
-| Passing Files | 175 (88.8%) |
-| Failing Files | 22 (11.2%) |
-| Test Cases | 2,655 total |
-| Passing Cases | 2,539 (95.6%) |
-| Failing Cases | 116 (4.4%) |
-| Duration | 243.32s |
+**Impact:** Violates single entry point principle, harder to maintain
+**Effort:** Medium (refactor to use data provider)
 
-**Root Cause:** Mock configuration error - missing `useGetList` export in react-admin mock
+### 3. ⚠️ HIGH: Zod Strings Without .max() (DoS Risk)
+**Files:** `contacts.ts`, `organizations.ts`, `categories.ts`, `opportunities.ts`
+**Count:** 25-30 instances
+**Impact:** Potential DoS via unbounded string inputs
+**Effort:** Low (add .max() constraints)
+
+### 4. ⚠️ HIGH: TypeScript 'any' in Production Code
+**Files:** ~10-15 production instances
+**Impact:** Type safety holes
+**Effort:** Medium (requires proper typing)
+
+### 5. ⚠️ MODERATE: Inline Style Objects (17 instances)
+**Files:** Opportunity views, Kanban, BulkActionsToolbar
+**Impact:** React memoization broken, unnecessary re-renders
+**Effort:** Low (migrate to Tailwind or useMemo)
+
+---
+
+## Detailed Findings by Category
+
+---
+
+# Build & Test Health
+**Agent:** 1 | **Generated:** Sat Dec 13 2025
+
+## TypeScript Build
+**Status:** ✅ PASSING
+**Duration:** 1m 58s
+
+**Bundle Analysis:**
+- Largest chunk: `index.js` (665 kB / 202 kB gzip)
+- Warning: Some chunks exceed 300 kB - code splitting recommended
+
+**Chunk Size Warnings:**
+| Chunk | Size | Gzipped |
+|-------|------|---------|
+| index.js | 665 kB | 202 kB |
+| chunk-Ci8ZLF02.js | 364 kB | 95 kB |
+| chunk-BFpD3gGA.js | 234 kB | 61 kB |
+| OverviewTab.js | 204 kB | 70 kB |
+| OpportunityList.js | 201 kB | 55 kB |
+
+## Test Suite
+**Status:** ⚠️ 1 FAILING
+**Results:** 2658 passed, 1 failed (194 test files)
+**Duration:** 347s
+
+### Failing Test
 ```
-Error: [vitest] No "useGetList" export is defined on the "react-admin" mock
-Location: src/atomic-crm/dashboard/v3/hooks/__tests__/useTeamActivities.test.ts
+src/atomic-crm/providers/supabase/unifiedDataProvider.errors.test.ts:446
+
+Test: getList with invalid filter operators
+Error: Expected HttpError with specific structure
+Issue: Response validation mismatch in error handling
 ```
 
-#### Lint Status: ❌ FAIL (7 errors, 1 warning)
-
-| File | Line | Issue |
-|------|------|-------|
-| `ValidationService.ts` | 35 | `validateUpdateSales` defined but never used |
-| `SalesPermissionsTab.tsx` | 148 | `handleCancel` assigned but never used |
-| `SalesProfileTab.tsx` | 3 | `Button` imported but never used |
-| `SalesProfileTab.tsx` | 93 | `handleCancel` assigned but never used |
-| `capture-dashboard-snapshots/index.ts` | 3 | `subWeeks` imported but never used |
-| `manager-operations.spec.ts` | 2 | `SalesListPage` imported but never used |
-| `manager-operations.spec.ts` | 4 | `LoginPage` imported but never used |
+## Test Coverage
+**Test Files:** 194
+**Total Tests:** 2659
 
 ---
 
-### 2. Performance Anti-Patterns ⚠️ LOW
+# Performance Anti-Patterns
+**Agent:** 2 | **Score:** 8.5/10
+
+## Summary Table
+
+| Pattern | Count | Severity | Status |
+|---------|-------|----------|--------|
+| Form mode:'onChange' | 1 | Low | Test only |
+| watch() misuse | 0 | - | ✅ Pass |
+| Inline style={{}} | 17 | Moderate | Needs fix |
+| Inline validators | 0 | - | ✅ Pass |
+| Inline onClick | 0 | - | ✅ Pass |
+
+## Good Patterns Observed
+- ✅ useWatch adoption: 9 files
+- ✅ React.memo usage: 6 components (list/kanban)
+- ✅ useCallback/useMemo: 346 occurrences across 82 files
+- ✅ Zod validation at API boundary only
+
+## Inline Styles Requiring Migration
+
+### Dynamic Colors (Priority: HIGH)
+```tsx
+// src/atomic-crm/opportunities/OpportunityRowListView.tsx:212
+style={{ backgroundColor: getOpportunityStageColor(opportunity.stage) }}
+
+// src/atomic-crm/opportunities/BulkActionsToolbar.tsx:172, 373
+style={{ backgroundColor: getOpportunityStageColor(opp.stage) }}
+
+// src/atomic-crm/opportunities/kanban/OpportunityColumn.tsx:145
+style={{ borderBottom: `2px solid ${getOpportunityStageColor(stage)}` }}
+```
+**Recommendation:** Memoize color values or use CSS custom properties
+
+### Dynamic Positioning (Priority: MEDIUM)
+```tsx
+// src/atomic-crm/utils/contextMenu.tsx:83
+style={{ left: `${position.x}px`, top: `${position.y}px` }}
+```
+
+### Progress Bars (Priority: LOW)
+- `OrganizationImportResult.tsx:197`
+- `ContactImportResult.tsx:213`
+
+### Static Styles (Priority: LOW)
+- Empty state components (6 files)
+- Hidden inputs
+- Header styling
+
+---
+
+# Consistency Anti-Patterns
+**Agent:** 3 | **Grade:** A (95/100)
+
+## Summary Table
 
 | Pattern | Count | Status |
 |---------|-------|--------|
-| `mode: 'onChange'` (re-render storm) | 0 | ✅ Clean |
-| `watch()` without `useWatch` | 1 | ⚠️ Minor |
-| Inline `style={{}}` | 17 | ⚠️ Acceptable |
-| Inline validators | 0 | ✅ Clean |
-| Inline `onClick` handlers | 20+ | ⚠️ Monitor |
-| Inline `onChange` handlers | 20+ | ⚠️ Monitor |
+| Semantic Color Violations | 49 | ⚠️ Email templates only |
+| Hardcoded Tailwind Colors | 0 | ✅ Pass |
+| Touch Targets < 44px | 0 | ✅ Pass |
+| Hardcoded Form Defaults | 2 | ⚠️ Review |
+| Deprecated company_id | 0 | ✅ Pass |
+| Deprecated archived_at | 0 | ✅ Pass (4 in tests) |
 
-**Assessment:** No critical performance anti-patterns. Inline handlers are acceptable for MVP scope.
+## Semantic Color Analysis
 
-**Notable Files:**
-- `OpportunitiesByPrincipalReport.tsx:54` - Uses `form.watch()` subscription (documented, acceptable)
-- Dynamic styles for progress bars and stage colors - necessary for runtime values
+**UI Components:** ✅ 100% Compliant
+- All atomic-crm code uses semantic tokens
+- No hardcoded Tailwind colors (`text-gray-500`, `bg-red-600`, etc.)
 
----
+**Email Templates:** ⚠️ 49 Warnings (Acceptable)
+- Location: `src/emails/` directory only
+- These are HTML email templates, not UI components
+- Legacy code tracked for future migration
 
-### 3. Consistency Anti-Patterns ⚠️ MEDIUM
+## Form Defaults Needing Review
 
-| Pattern | Count | Status |
-|---------|-------|--------|
-| Hardcoded Tailwind colors | 0 | ✅ Clean |
-| Raw hex colors | 1 | ✅ Docs only |
-| Touch targets < 44px | 25+ | ⚠️ Review |
-| Hardcoded form defaults | 22+ | ⚠️ Refactor |
-| Deprecated `company_id` | 0 | ✅ Clean |
-| Deprecated `archived_at` | 0 | ✅ Clean |
-| Missing `aria-invalid` | 15+ | ⚠️ A11y |
+### Compliant Examples
+```tsx
+// ProductCreate.tsx - CORRECT
+productSchema.partial().parse({})
 
-**Hardcoded Form Defaults (should use `schema.partial().parse({})`):**
-- `OrganizationCreate.tsx`
-- `SalesCreate.tsx`
-- `TaskCreate.tsx`
-- `ContactCreate.tsx`
-- `OpportunityCreate.tsx`
-- `QuickAddForm.tsx`
-- `ActivityNoteForm.tsx`
-- `ProductCreate.tsx`
-
-**Touch Targets:** Most are decorative icons (h-4/w-4), not interactive elements. Review interactive buttons for compliance.
-
----
-
-### 4. Constitution Violations 🔧 HIGH
-
-#### Direct Supabase Imports (3 occurrences)
-| File | Import | Assessment |
-|------|--------|------------|
-| `CRM.tsx:2` | `ForgotPasswordPage` from supabase | Auth UI - acceptable |
-| `CRM.tsx:3` | `SetPasswordPage` from supabase | Auth UI - acceptable |
-| `i18nProvider.tsx:4` | `raSupabaseEnglishMessages` | i18n - acceptable |
-
-**Verdict:** Auth UI components acceptable exception to data provider rule.
-
-#### Retry Logic / Circuit Breakers: ✅ COMPLIANT
-All references are documentation comments explaining the **absence** of retry/circuit breaker patterns (fail-fast is enforced).
-
-#### TypeScript `any` Usage (30+ violations)
-
-**Hotspots:**
-| File | Count | Context |
-|------|-------|---------|
-| `OrganizationImportDialog.tsx` | 8 | CSV parsing |
-| `useOrganizationImport.tsx` | 4 | Import state |
-| `OrganizationSlideOver.tsx` | 4 | Record representation |
-| `OrganizationCreate.tsx` | 5 | Form handlers |
-| `OrganizationList.tsx` | 4 | Export functions |
-
-#### Zod Validation Issues
-
-**z.object without strictObject (4 locations):**
-```
-src/atomic-crm/validation/rpc.ts:90
-src/atomic-crm/validation/rpc.ts:132
+// TaskCreate.tsx - CORRECT
+getTaskDefaultValues() // wraps schema.partial().parse({})
 ```
 
-**Strings without `.max()` (20+ locations):**
-- `operatorSegments.ts` - id, parent_id, created_at, created_by
-- `sales.ts` - id, email, phone, avatar_url, user_id, timestamps
-- `segments.ts` - id, parent_id, created_at, created_by
-- `organizationDistributors.ts` - id, timestamps
-
-**Non-string inputs without `z.coerce` (20+ locations):**
-- `quickAdd.ts` - product_ids array
-- `notes.ts` - size, various IDs
-- `activities.ts` - duration_minutes, contact_id, organization_id, opportunity_id
-
-#### Form-Level Validation (4 forms)
-| File | Issue |
-|------|-------|
-| `CloseOpportunityModal.tsx` | Uses `zodResolver` |
-| `QuickAddForm.tsx` | Uses `zodResolver` |
-| `ActivityNoteForm.tsx` | Uses `zodResolver` |
-| `QuickLogForm.tsx` | Uses `zodResolver` |
-
-**Constitution requires:** Validation at API boundary only (in unifiedDataProvider), not in forms.
+### Needs Inspection
+- `QuickAddForm.tsx:43` - Merges schema defaults with localStorage (acceptable pattern)
+- `QuickLogForm.tsx:76` - Uses useMemo for defaultValues
 
 ---
 
-## Recommendations
+# Constitution Violations
+**Agent:** 4 | **Status:** ⚠️ Issues Found
 
-### Phase 1: Immediate (Pre-Beta)
-1. **Fix test mocks** - Add `useGetList` to react-admin mock
-2. **Remove lint errors** - Delete 7 unused imports/variables
-3. **Fix form validation architecture** - Move validation to API boundary
+## Summary Table
 
-### Phase 2: Short-Term (Pre-GA)
-1. **Type safety** - Replace `any` with proper types in import dialogs
-2. **Zod hardening** - Add `.max()` to all string fields, `.coerce` for form inputs
-3. **A11y** - Add `aria-invalid` to form error states
+| Violation | Count | Severity |
+|-----------|-------|----------|
+| Direct Supabase Imports | 2 | ❌ CRITICAL |
+| TypeScript 'any' Usage | 600+ | ⚠️ HIGH |
+| Zod Strings Without .max() | 25-30 | ⚠️ HIGH |
+| z.object (mass assignment) | 0 | ✅ Pass |
+| Retry Logic | 0 | ✅ Pass |
+| Circuit Breakers | 0 | ✅ Pass |
 
-### Phase 3: Optimization (Post-GA)
-1. **Bundle splitting** - Code-split large chunks via dynamic import
-2. **Form defaults** - Migrate to `schema.partial().parse({})` pattern
-3. **Performance monitoring** - Extract inline handlers in hot paths
+## Critical: Direct Supabase Imports
+
+### Bypassing Data Provider
+```typescript
+// src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts:3
+import { supabase } from '...' // Direct client import
+supabase.from('sales')... // Bypasses unifiedDataProvider
+```
+
+```typescript
+// src/atomic-crm/opportunities/__tests__/product-filtering-integration.test.tsx:9
+import { supabase } from '...' // Direct in test
+```
+
+**Fix:** Route all queries through `unifiedDataProvider`
+
+## High: Zod Strings Without .max()
+
+### Locations
+| File | Lines | Fields |
+|------|-------|--------|
+| contacts.ts | 196, 213-214, 225-325, 367 | email, first_name, last_name, etc. |
+| organizations.ts | 22 | isLinkedinUrl |
+| categories.ts | 19-20 | id, name |
+| opportunities.ts | 424 | stage |
+
+### Example Fix
+```typescript
+// Before (DoS risk)
+const emailValidator = z.string().email()
+
+// After (protected)
+const emailValidator = z.string().max(254).email()
+```
+
+## High: TypeScript 'any' Usage
+
+### Production Code (~10-15 instances)
+```typescript
+// src/atomic-crm/organizations/OrganizationCreate.tsx:139
+(location.state as any)?.record?.parent_organization_id
+```
+
+### Test Files (590+ instances)
+- Mock component props: `({ source }: any)`
+- Type assertions: `(useListContext as any).mockReturnValue()`
+- Test data: `const data: any = {...}`
+
+**Note:** Test file 'any' usage is lower priority but indicates need for better test utilities.
+
+## Compliant Areas
+
+### Fail-Fast Principle ✅
+- No retry logic implementations found
+- No circuit breaker patterns found
+- All "retry" mentions are test configurations disabling retries
+
+### Mass Assignment Protection ✅
+- `z.strictObject()` used for input schemas
+- `z.object()` only used for response schemas (acceptable)
 
 ---
 
-## Files for Reference
+## Effort Estimates by Category
 
-| File | Purpose |
-|------|---------|
-| `docs/audit/temp/audit-health.md` | Full build/test/lint output |
-| `docs/audit/temp/audit-performance.md` | Performance anti-pattern details |
-| `docs/audit/temp/audit-consistency.md` | Design system violations |
-| `docs/audit/temp/audit-constitution.md` | Engineering principle violations |
+| Category | Issues | Effort | Time Est. |
+|----------|--------|--------|-----------|
+| Fix failing test | 1 | Low | 30 min |
+| Direct Supabase imports | 2 | Medium | 2-4 hours |
+| Zod .max() constraints | 25-30 | Low | 1-2 hours |
+| Production 'any' types | 10-15 | Medium | 2-4 hours |
+| Inline styles | 17 | Low | 1-2 hours |
+| Form defaults review | 2 | Low | 30 min |
 
----
-
-## Audit Methodology
-
-This audit was performed using 4 parallel diagnostic agents:
-- **Agent 1:** Build compilation, test suite execution, lint check
-- **Agent 2:** Performance anti-pattern scanning (grep-based)
-- **Agent 3:** Design system consistency checks
-- **Agent 4:** Engineering constitution compliance
-
-All agents completed successfully and findings are preserved in `docs/audit/temp/`.
+**Total Estimated Effort:** 1-2 days
 
 ---
 
-**Next Action:** Fix test mocks to unblock CI, then address lint errors. Constitution violations (Zod/types) should be prioritized for security before GA launch.
+## Recommendations for Phase 2
+
+### Priority 1: Blocking Issues (Do First)
+1. **Fix failing test** - Unblocks CI
+2. **Refactor useCurrentSale.ts** - Critical architecture violation
+
+### Priority 2: Security Hardening
+3. **Add .max() to all Zod strings** - DoS protection
+4. **Remove 'any' from production code** - Type safety
+
+### Priority 3: Performance Polish
+5. **Migrate inline styles to Tailwind** - Start with dynamic colors
+6. **Review form default patterns** - Minor consistency improvement
+
+### Optional: Technical Debt
+7. **Reduce 'any' in test files** - Create better test utilities
+8. **Email template modernization** - Migrate hardcoded colors
+
+---
+
+## Files Modified: 0
+**This audit is diagnostic only. No changes were made.**
+
+---
+
+## Appendix: Agent Completion Status
+
+| Agent | Focus | Status | Duration |
+|-------|-------|--------|----------|
+| Agent 1 | Build & Test Health | ✅ Complete | ~7 min |
+| Agent 2 | Performance | ✅ Complete | ~4 min |
+| Agent 3 | Consistency | ✅ Complete | ~5 min |
+| Agent 4 | Constitution | ✅ Complete | ~4 min |
+
+---
+
+*Report generated by Claude Code parallel audit system*
