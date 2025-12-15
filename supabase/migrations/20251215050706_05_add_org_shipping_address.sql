@@ -1,8 +1,8 @@
--- Shipping address (flat model for MVP)
+-- Shipping address fields (flat model for MVP)
 
 ALTER TABLE organizations
-  ADD COLUMN shipping_street TEXT,
-  ADD COLUMN shipping_city TEXT,
-  ADD COLUMN shipping_state TEXT,
-  ADD COLUMN shipping_postal_code TEXT,
-  ADD COLUMN shipping_country TEXT DEFAULT 'US';
+  ADD COLUMN IF NOT EXISTS shipping_street TEXT,
+  ADD COLUMN IF NOT EXISTS shipping_city TEXT,
+  ADD COLUMN IF NOT EXISTS shipping_state TEXT,
+  ADD COLUMN IF NOT EXISTS shipping_postal_code TEXT,
+  ADD COLUMN IF NOT EXISTS shipping_country TEXT DEFAULT 'US';
