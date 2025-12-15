@@ -1,49 +1,24 @@
 import { TabbedFormInputs } from "@/components/admin/tabbed-form";
-import { ProductGeneralTab } from "./ProductGeneralTab";
-import { ProductRelationshipsInputTab } from "./ProductRelationshipsInputTab";
-import { ProductClassificationTab } from "./ProductClassificationTab";
-import { ProductDistributorCodesTab } from "./ProductDistributorCodesTab";
+import { ProductDetailsInputTab } from "./ProductDetailsInputTab";
+import { ProductDistributionTab } from "./ProductDistributionTab";
 
 export const ProductInputs = () => {
   const tabs = [
     {
-      key: "general",
-      label: "General",
-      fields: ["name", "sku", "description"],
-      content: <ProductGeneralTab />,
-      dataTutorial: "product-tab-general",
+      key: "details",
+      label: "Product Details",
+      fields: ["name", "principal_id", "category", "status", "description"],
+      content: <ProductDetailsInputTab />,
+      dataTutorial: "product-tab-details",
     },
     {
-      key: "relationships",
-      label: "Relationships",
-      fields: ["principal_id", "distributor_id"],
-      content: <ProductRelationshipsInputTab />,
-      dataTutorial: "product-tab-relationships",
-    },
-    {
-      key: "classification",
-      label: "Classification",
-      fields: ["category", "status"],
-      content: <ProductClassificationTab />,
-      dataTutorial: "product-tab-classification",
-    },
-    {
-      key: "distributor-codes",
-      label: "Distributor Codes",
-      fields: [
-        "usf_code",
-        "sysco_code",
-        "gfs_code",
-        "pfg_code",
-        "greco_code",
-        "gofo_code",
-        "rdp_code",
-        "wilkens_code",
-      ],
-      content: <ProductDistributorCodesTab />,
-      dataTutorial: "product-tab-distributor-codes",
+      key: "distribution",
+      label: "Distribution",
+      fields: ["distributor_ids", "product_distributors"],
+      content: <ProductDistributionTab />,
+      dataTutorial: "product-tab-distribution",
     },
   ];
 
-  return <TabbedFormInputs tabs={tabs} defaultTab="general" />;
+  return <TabbedFormInputs tabs={tabs} defaultTab="details" />;
 };

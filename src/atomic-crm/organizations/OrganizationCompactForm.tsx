@@ -4,12 +4,10 @@ import { SelectInput } from "@/components/admin/select-input";
 import { CompactFormRow, CollapsibleSection } from "@/components/admin/form";
 import { SegmentComboboxInput } from "@/components/admin/SegmentComboboxInput";
 import { StateComboboxInput } from "@/components/admin/state-combobox-input";
-import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES } from "./constants";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import { OrganizationHierarchySection } from "./OrganizationHierarchySection";
 import { OrganizationAddressSection } from "./OrganizationAddressSection";
-import { OrganizationStatusSection } from "./OrganizationStatusSection";
 
 export const OrganizationCompactForm = () => {
   return (
@@ -74,7 +72,6 @@ export const OrganizationCompactForm = () => {
             label="LinkedIn URL"
             helperText="Format: https://linkedin.com/company/name"
           />
-          <ParentOrganizationInput />
           <TextInput
             source="description"
             label="Description"
@@ -87,7 +84,7 @@ export const OrganizationCompactForm = () => {
 
       <OrganizationHierarchySection />
       <OrganizationAddressSection />
-      <OrganizationStatusSection />
+      {/* Status & Payment fields hidden per user feedback - defaults: status='active' */}
     </div>
   );
 };

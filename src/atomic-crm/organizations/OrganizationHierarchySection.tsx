@@ -17,11 +17,18 @@ export const OrganizationHierarchySection = () => {
             helperText="National = brand/HQ, Regional = operating company"
             emptyText="Select scope"
           />
-          <BooleanInput
-            source="is_operating_entity"
-            label="Operating Entity"
-            helperText="Where business transactions occur"
-          />
+          <div className="space-y-1">
+            <BooleanInput
+              source="is_operating_entity"
+              label="This location processes orders"
+              helperText={false}
+            />
+            <p className="text-sm text-muted-foreground ml-11">
+              <strong>ON:</strong> Orders and invoices happen here (e.g., Sysco Chicago)
+              <br />
+              <strong>OFF:</strong> Corporate brand or holding company only (e.g., Sysco Corporation)
+            </p>
+          </div>
         </CompactFormRow>
       </div>
     </CollapsibleSection>

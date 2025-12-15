@@ -53,7 +53,6 @@ export const ProductCard = (props: { record?: Product }) => {
               <h3 className="text-sm font-medium line-clamp-1 group-hover:text-foreground transition-colors">
                 {record.name}
               </h3>
-              <p className="text-xs text-muted-foreground">SKU: {record.sku}</p>
               <div className="flex gap-1 mt-1 justify-center flex-wrap">
                 {record.status && (
                   <Badge variant={statusColors[record.status]} className="text-xs px-1 py-0">
