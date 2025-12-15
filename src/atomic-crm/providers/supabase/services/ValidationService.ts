@@ -13,6 +13,7 @@ import type {
 } from "../../../types";
 import type { ProductFormData } from "../../../validation/products";
 import type { Segment } from "../../../validation/segments";
+import type { ProductDistributor } from "../../../validation/productDistributors";
 
 // Import all validation schemas
 import { validateContactForm, validateUpdateContact } from "../../../validation/contacts";
