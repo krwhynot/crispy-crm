@@ -40,6 +40,10 @@ import { quickAddSchema } from "../../validation/quickAdd";
 import { supabase } from "./supabase";
 import { getResourceName, supportsSoftDelete } from "./resources";
 import { getDatabaseResource, applySearchParams, normalizeResponseData } from "./dataProviderUtils";
+import {
+  parseCompositeId,
+  createCompositeId,
+} from "../../validation/productDistributors";
 
 // Import decomposed services
 import { ValidationService, TransformService, StorageService } from "./services";
@@ -533,6 +537,27 @@ export const unifiedDataProvider: DataProvider = {
       // Get appropriate database resource
       const dbResource = getDatabaseResource(resource, "one");
 
+      // Handle product_distributors composite key
+      if (resource === "product_distributors") {
+        const { product_id, distributor_id } = parseCompositeId(String(params.id));
+
+        const { data, error } = await supabase
+          .from('product_distributors')
+          .select('*, product:products(id, name), distributor:organizations(id, name)')
+          .eq('product_id', product_id)
+          .eq('distributor_id', distributor_id)
+          .single();
+
+        if (error) throw error;
+
+        return {
+          data: {
+            ...data,
+            id: createCompositeId(data.product_id, data.distributor_id),
+          },
+        } as GetOneResult<RecordType>;
+      }
+
       // Execute query
       const result = await baseDataProvider.getOne(dbResource, params);
 
@@ -637,6 +662,24 @@ export const unifiedDataProvider: DataProvider = {
         return { data: result as unknown as RecordType };
       }
 
+      // Handle product_distributors composite key
+      if (resource === "product_distributors") {
+        const dbResource = getResourceName(resource);
+        const result = await baseDataProvider.create(dbResource, {
+          ...params,
+          data: processedData as Partial<RecordType>,
+        });
+
+        // Add composite ID for React Admin
+        const data = result.data as Record<string, unknown>;
+        return {
+          data: {
+            ...data,
+            id: createCompositeId(Number(data.product_id), Number(data.distributor_id)),
+          } as RecordType,
+        };
+      }
+
       // Execute create
       const result = await baseDataProvider.create(dbResource, {
         ...params,
@@ -677,6 +720,30 @@ export const unifiedDataProvider: DataProvider = {
       if (resource === "sales") {
         const result = await salesService.salesUpdate(params.id, processedData as any);
         return { data: { ...params.previousData, ...result, id: params.id } as RecordType };
+      }
+
+      // Handle product_distributors composite key
+      if (resource === "product_distributors") {
+        const { product_id, distributor_id } = parseCompositeId(String(params.id));
+        const dbResource = getResourceName(resource);
+
+        // Update using composite key
+        const { data, error } = await supabase
+          .from(dbResource)
+          .update({ ...processedData, updated_at: new Date().toISOString() })
+          .eq('product_id', product_id)
+          .eq('distributor_id', distributor_id)
+          .select()
+          .single();
+
+        if (error) throw error;
+
+        return {
+          data: {
+            ...data,
+            id: createCompositeId(data.product_id, data.distributor_id),
+          } as RecordType,
+        };
       }
 
       // DEV: Log update payload for debugging silent save failures
@@ -780,6 +847,22 @@ export const unifiedDataProvider: DataProvider = {
   ): Promise<DeleteResult<RecordType>> {
     return wrapMethod("delete", resource, params, async () => {
       const dbResource = getResourceName(resource);
+
+      // Handle product_distributors composite key (hard delete, no soft delete)
+      if (resource === "product_distributors") {
+        const { product_id, distributor_id } = parseCompositeId(String(params.id));
+
+        const { data, error } = await supabase
+          .from('product_distributors')
+          .delete()
+          .eq('product_id', product_id)
+          .eq('distributor_id', distributor_id)
+          .select()
+          .single();
+
+        if (error) throw error;
+        return { data: data as RecordType };
+      }
 
       // Constitution: soft-deletes rule - check if resource supports soft delete
       if (supportsSoftDelete(dbResource)) {
