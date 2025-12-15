@@ -1,17 +1,25 @@
 import { TextInput } from "@/components/admin/text-input";
-import { CollapsibleSection, CompactFormRow } from "@/components/admin/form";
+import { CollapsibleSection, CompactFormRow, FormFieldWrapper } from "@/components/admin/form";
 import { StateComboboxInput } from "@/components/admin/state-combobox-input";
 
 export const OrganizationAddressSection = () => {
   return (
     <CollapsibleSection title="Address">
       <div className="space-y-4">
-        <TextInput source="shipping_street" label="Street" helperText={false} />
+        <FormFieldWrapper name="shipping_street">
+          <TextInput source="shipping_street" label="Street" helperText={false} />
+        </FormFieldWrapper>
         <CompactFormRow>
-          <TextInput source="shipping_city" label="City" helperText={false} />
-          <StateComboboxInput source="shipping_state" label="State" />
+          <FormFieldWrapper name="shipping_city">
+            <TextInput source="shipping_city" label="City" helperText={false} />
+          </FormFieldWrapper>
+          <FormFieldWrapper name="shipping_state">
+            <StateComboboxInput source="shipping_state" label="State" />
+          </FormFieldWrapper>
         </CompactFormRow>
-        <TextInput source="shipping_postal_code" label="ZIP Code" helperText={false} />
+        <FormFieldWrapper name="shipping_postal_code">
+          <TextInput source="shipping_postal_code" label="ZIP Code" helperText={false} />
+        </FormFieldWrapper>
       </div>
     </CollapsibleSection>
   );
