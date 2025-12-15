@@ -33,7 +33,7 @@ export const ProductDistributorCreate = () => {
 
   return (
     <CreateBase redirect="list">
-      <div className="mt-2">
+      <div className="bg-muted mt-2 px-6 py-6">
         <Card>
           <CardContent>
             <Form defaultValues={defaultValues}>

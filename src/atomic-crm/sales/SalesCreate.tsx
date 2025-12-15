@@ -41,7 +41,7 @@ export default function SalesCreate() {
   };
 
   return (
-    <div className="max-w-lg w-full mx-auto mt-8">
+    <div className="bg-muted max-w-lg w-full mx-auto mt-8 px-6 py-6">
       <Card>
         <CardHeader>
           <CardTitle>Create a new user</CardTitle>

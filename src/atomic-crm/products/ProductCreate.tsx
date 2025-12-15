@@ -30,7 +30,7 @@ const ProductCreate = () => {
 
   return (
     <CreateBase redirect="show">
-      <div className="mt-2 flex lg:mr-72">
+      <div className="bg-muted mt-2 flex lg:mr-72 px-6 py-6">
         <div className="flex-1">
           <Form defaultValues={defaultValues}>
             <Card>
