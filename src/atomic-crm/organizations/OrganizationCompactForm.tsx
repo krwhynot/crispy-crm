@@ -7,6 +7,9 @@ import { StateComboboxInput } from "@/components/admin/state-combobox-input";
 import { ParentOrganizationInput } from "./ParentOrganizationInput";
 import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES } from "./constants";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
+import { OrganizationHierarchySection } from "./OrganizationHierarchySection";
+import { OrganizationAddressSection } from "./OrganizationAddressSection";
+import { OrganizationStatusSection } from "./OrganizationStatusSection";
 
 export const OrganizationCompactForm = () => {
   return (
@@ -81,6 +84,10 @@ export const OrganizationCompactForm = () => {
           />
         </div>
       </CollapsibleSection>
+
+      <OrganizationHierarchySection />
+      <OrganizationAddressSection />
+      <OrganizationStatusSection />
     </div>
   );
 };
