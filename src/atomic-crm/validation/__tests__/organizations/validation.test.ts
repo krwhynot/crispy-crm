@@ -150,14 +150,9 @@ describe("Organization Validation Schemas", () => {
     // Numeric field validation removed - annual_revenue, employee_count, founded_year
     // are not part of form validation as they have no UI inputs
 
-    it("should accept both string and number IDs", () => {
-      expect(() =>
-        organizationSchema.parse({
-          ...validOrganization,
-          id: "string-id",
-        })
-      ).not.toThrow();
-
+    it("should accept numeric IDs (z.coerce.number)", () => {
+      // Schema uses z.coerce.number() which requires numeric IDs
+      // String IDs that can be coerced to numbers work, but non-numeric strings become NaN
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
@@ -168,7 +163,7 @@ describe("Organization Validation Schemas", () => {
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
-          parent_organization_id: "parent-123",
+          id: "67890", // Numeric string coerces to number
         })
       ).not.toThrow();
 
@@ -176,6 +171,13 @@ describe("Organization Validation Schemas", () => {
         organizationSchema.parse({
           ...validOrganization,
           parent_organization_id: 456,
+        })
+      ).not.toThrow();
+
+      expect(() =>
+        organizationSchema.parse({
+          ...validOrganization,
+          parent_organization_id: "789", // Numeric string coerces to number
         })
       ).not.toThrow();
     });
@@ -243,8 +245,9 @@ describe("Organization Validation Schemas", () => {
 
   describe("updateOrganizationSchema", () => {
     it("should require id for updates", () => {
+      // Use numeric ID since schema uses z.coerce.number()
       const validUpdate = {
-        id: "org-123",
+        id: 123,
         name: "Updated Name",
       };
 
@@ -260,34 +263,35 @@ describe("Organization Validation Schemas", () => {
     });
 
     it("should allow partial updates", () => {
-      expect(() => updateOrganizationSchema.parse({ id: "org-1", name: "New Name" })).not.toThrow();
+      // Use numeric IDs since schema uses z.coerce.number()
+      expect(() => updateOrganizationSchema.parse({ id: 1, name: "New Name" })).not.toThrow();
       expect(() =>
-        updateOrganizationSchema.parse({ id: "org-1", organization_type: "principal" })
+        updateOrganizationSchema.parse({ id: 2, organization_type: "principal" })
       ).not.toThrow();
       expect(() =>
-        updateOrganizationSchema.parse({ id: "org-1", website: "https://example.com" })
+        updateOrganizationSchema.parse({ id: 3, website: "https://example.com" })
       ).not.toThrow();
-      expect(() => updateOrganizationSchema.parse({ id: "org-1" })).not.toThrow();
+      expect(() => updateOrganizationSchema.parse({ id: 4 })).not.toThrow();
     });
 
     it("should validate updated fields", () => {
       expect(() =>
         updateOrganizationSchema.parse({
-          id: "org-1",
+          id: 1,
           organization_type: "invalid_type",
         })
       ).toThrow(z.ZodError);
 
       expect(() =>
         updateOrganizationSchema.parse({
-          id: "org-1",
+          id: 1,
           website: "not-a-url",
         })
       ).toThrow(z.ZodError);
 
       expect(() =>
         updateOrganizationSchema.parse({
-          id: "org-1",
+          id: 1,
           linkedin_url: "https://facebook.com/page",
         })
       ).toThrow(z.ZodError);
