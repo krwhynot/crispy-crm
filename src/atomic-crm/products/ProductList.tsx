@@ -170,10 +170,7 @@ const ProductListLayout = ({
           {/* Column 1: Product Name - Primary identifier (sortable) - always visible */}
           <TextField source="name" label="Product Name" {...COLUMN_VISIBILITY.alwaysVisible} />
 
-          {/* Column 2: SKU - Unique identifier (sortable) - always visible */}
-          <TextField source="sku" label="SKU" {...COLUMN_VISIBILITY.alwaysVisible} />
-
-          {/* Column 3: Distributor Codes - Popover display (non-sortable) - always visible */}
+          {/* Column 2: Distributor Codes - Popover display (non-sortable) - always visible */}
           <FunctionField
             label="Dist. Codes"
             sortable={false}
@@ -181,7 +178,7 @@ const ProductListLayout = ({
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
-          {/* Column 4: Category - Classification badge (sortable) - always visible */}
+          {/* Column 3: Category - Classification badge (sortable) - always visible */}
           <FunctionField
             label="Category"
             sortBy="category"
@@ -189,7 +186,7 @@ const ProductListLayout = ({
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
-          {/* Column 5: Status - Lifecycle badge (sortable) - always visible */}
+          {/* Column 4: Status - Lifecycle badge (sortable) - always visible */}
           <FunctionField
             label="Status"
             sortBy="status"
@@ -197,7 +194,7 @@ const ProductListLayout = ({
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
-          {/* Column 6: Principal - Organization reference (sortable) - hidden on tablet/mobile */}
+          {/* Column 5: Principal - Organization reference (sortable) - hidden on tablet/mobile */}
           <ReferenceField
             source="principal_id"
             reference="organizations"
@@ -209,7 +206,7 @@ const ProductListLayout = ({
             <TextField source="name" />
           </ReferenceField>
 
-          {/* Column 7: Certifications - Badges list (non-sortable) - hidden on tablet/mobile */}
+          {/* Column 6: Certifications - Badges list (non-sortable) - hidden on tablet/mobile */}
           <FunctionField
             label="Certifications"
             sortable={false}
@@ -228,7 +225,7 @@ const ProductListLayout = ({
  */
 const ProductListActions = () => (
   <TopToolbar>
-    <SortButton fields={["name", "sku", "category", "status"]} />
+    <SortButton fields={["name", "category", "status"]} />
     <span data-tutorial="create-product-btn">
       <CreateButton />
     </span>
