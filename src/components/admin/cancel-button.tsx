@@ -6,6 +6,15 @@ import { useFormState } from "react-hook-form";
 
 import { Button } from "../ui/button";
 
+interface CancelButtonProps extends React.ComponentProps<"button"> {
+  /**
+   * Skip dirty state check. Use when CancelButton is outside a Form context
+   * or when you want to allow navigation without confirmation.
+   * @default false
+   */
+  skipDirtyCheck?: boolean;
+}
+
 /**
  * CancelButton - Navigation button with dirty state protection
  *
@@ -14,30 +23,24 @@ import { Button } from "../ui/button";
  * - Show a browser confirmation dialog before navigating away
  * - Prevent accidental data loss
  *
- * Falls back to simple navigation if used outside form context.
+ * Use skipDirtyCheck={true} when used outside form context.
  */
-export function CancelButton(props: React.ComponentProps<"button">) {
+export function CancelButton({ skipDirtyCheck = false, ...props }: CancelButtonProps) {
   const navigate = useNavigate();
 
-  // Try to get form state - will return undefined if outside form context
-  // Using a try-catch pattern since useFormState throws outside FormProvider
-  let isDirty = false;
-  try {
-    const formState = useFormState();
-    isDirty = formState.isDirty;
-  } catch {
-    // Not inside a form context - proceed without dirty check
-  }
+  // Get form state for dirty check
+  // Note: Must be inside FormProvider context. Use skipDirtyCheck=true if not.
+  const { isDirty } = useFormState({ disabled: skipDirtyCheck });
 
   const handleCancel = useCallback(() => {
-    if (isDirty) {
+    if (!skipDirtyCheck && isDirty) {
       const confirmed = window.confirm(
         "You have unsaved changes. Are you sure you want to leave?"
       );
       if (!confirmed) return;
     }
     navigate(-1);
-  }, [isDirty, navigate]);
+  }, [skipDirtyCheck, isDirty, navigate]);
 
   return (
     <Button
