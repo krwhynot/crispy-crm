@@ -29,7 +29,7 @@ export default function ActivityCreate() {
 
   return (
     <CreateBase redirect="list">
-      <div className="mt-2 flex justify-center">
+      <div className="bg-muted mt-2 flex justify-center px-6 py-6">
         <div className="w-full max-w-5xl">
           <Form defaultValues={defaultValues}>
             <Card>
