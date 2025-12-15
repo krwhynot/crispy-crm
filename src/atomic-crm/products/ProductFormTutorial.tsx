@@ -36,15 +36,6 @@ const FORM_TUTORIAL_STEPS: DriveStep[] = [
     },
   },
   {
-    element: '[data-tutorial="product-sku"]',
-    popover: {
-      title: "SKU (Optional)",
-      description: "Add a Stock Keeping Unit code if you have one. Useful for inventory tracking.",
-      side: "right",
-      align: "start",
-    },
-  },
-  {
     element: '[data-tutorial="product-tab-relationships"]',
     popover: {
       title: "Relationships",

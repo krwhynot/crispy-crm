@@ -16,7 +16,7 @@ interface ProductSlideOverProps {
  * ProductSlideOver - Slide-over panel for viewing and editing products
  *
  * Features:
- * - Details tab: Core product fields (name, SKU, description, category, status, principal)
+ * - Details tab: Core product fields (name, description, category, status, principal)
  * - Relationships tab: Related organizations and opportunities
  * - View/Edit mode toggle
  * - URL synchronization

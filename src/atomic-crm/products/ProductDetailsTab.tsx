@@ -25,12 +25,10 @@ const DISTRIBUTOR_CODE_LABELS: Record<string, string> = {
 interface Product {
   id: number;
   name: string;
-  sku: string;
   description?: string | null;
   category: string;
   status: "active" | "discontinued" | "coming_soon";
   principal_id: number;
-  distributor_id?: number | null;
   certifications?: string[] | null;
   allergens?: string[] | null;
   ingredients?: string | null;
@@ -66,7 +64,7 @@ function hasDistributorCodes(record: any): boolean {
  * Details tab for ProductSlideOver.
  *
  * **View Mode**: Displays core product fields:
- * - Name, SKU
+ * - Name
  * - Description
  * - Category (badge)
  * - Status (badge with semantic colors)
@@ -123,7 +121,6 @@ export function ProductDetailsTab({ record, mode, onModeToggle }: ProductDetails
           <div className="space-y-6">
             <div className="space-y-4">
               <TextInput source="name" label="Product Name" />
-              <TextInput source="sku" label="SKU" />
               <TextInput source="description" label="Description" multiline rows={3} />
 
               <AutocompleteInput
@@ -161,7 +158,6 @@ export function ProductDetailsTab({ record, mode, onModeToggle }: ProductDetails
             <CardContent className="p-4 space-y-3">
               <div>
                 <h3 className="text-lg font-semibold">{record.name}</h3>
-                {record.sku && <p className="text-sm text-muted-foreground">SKU: {record.sku}</p>}
               </div>
 
               {record.description && (

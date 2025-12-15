@@ -24,8 +24,8 @@ export const ProductEditView = () => (
   </ResourceErrorBoundary>
 );
 
-const productRecordRepresentation = (record: { name?: string; sku?: string }) =>
-  record?.name || record?.sku || "Product";
+const productRecordRepresentation = (record: { name?: string }) =>
+  record?.name || "Product";
 
 export default {
   list: ProductListView,
