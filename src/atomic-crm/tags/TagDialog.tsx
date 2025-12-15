@@ -11,13 +11,15 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import { Loader2, SaveIcon } from "lucide-react";
-import type { FormEvent } from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
+import { useForm, FormProvider } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import type { Tag } from "../types";
 import { colors } from "./colors";
 import { RoundButton } from "./RoundButton";
-import { validateTagColor, normalizeColorToSemantic } from "./tag-colors";
 import type { TagColorName } from "@/lib/color-types";
+import { createTagSchema, type CreateTagInput } from "../validation/tags";
+import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 
 interface TagDialogProps {
   open: boolean;
@@ -27,125 +29,152 @@ interface TagDialogProps {
   onClose(): void;
 }
 
+/**
+ * TagDialog - Constitution-compliant modal for creating/editing tags
+ *
+ * P2: Schema defaults via createTagSchema.partial().parse({})
+ * P3: FormErrorSummary for accessible error aggregation
+ * P5: Form mode "onSubmit" for performance (no re-render storms)
+ */
 export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProps) {
-  const [newTagName, setNewTagName] = useState("");
-  const [newTagColor, setNewTagColor] = useState<TagColorName>(colors[0]);
-  const [disabled, setDisabled] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [colorError, setColorError] = useState<string | undefined>();
+  // P2: Schema-derived defaults - NOT local useState
+  // This ensures Zod type coercion is applied
+  const defaultValues = useMemo(
+    () =>
+      createTagSchema.partial().parse({
+        name: tag?.name ?? "",
+        color: tag?.color ?? "warm",
+      }),
+    [tag]
+  );
 
-  const handleNewTagNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNewTagName(event.target.value);
-  };
+  const form = useForm<CreateTagInput>({
+    resolver: zodResolver(createTagSchema),
+    defaultValues,
+    mode: "onSubmit", // P5: onSubmit mode for performance
+  });
 
-  const handleClose = () => {
-    setDisabled(false);
-    setIsSubmitting(false);
-    setColorError(undefined);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setValue,
+    watch,
+    formState: { errors, isSubmitting, isValid },
+  } = form;
+
+  // Watch color for the color picker UI
+  const selectedColor = watch("color") as TagColorName;
+
+  // Reset form when dialog opens/closes or tag changes
+  useEffect(() => {
+    if (open) {
+      reset({
+        name: tag?.name ?? "",
+        color: (tag?.color as TagColorName) ?? "warm",
+      });
+    }
+  }, [open, tag, reset]);
+
+  const handleFormSubmit = async (data: CreateTagInput) => {
+    await onSubmit({ name: data.name, color: data.color });
+    reset(defaultValues);
     onClose();
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
-    // Validate the color before submission
-    const validationError = validateTagColor(newTagColor);
-    if (validationError) {
-      setColorError(validationError);
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      await onSubmit({ name: newTagName, color: newTagColor });
-
-      setDisabled(true);
-      setNewTagName("");
-      setNewTagColor(colors[0]);
-      setColorError(undefined);
-
-      handleClose();
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleClose = () => {
+    reset(defaultValues);
+    onClose();
   };
-
-  useEffect(() => {
-    setNewTagName(tag?.name ?? "");
-    // Normalize the color to semantic name (handles both hex and semantic)
-    const normalizedColor = tag?.color ? normalizeColorToSemantic(tag.color) : colors[0];
-    setNewTagColor(normalizedColor);
-  }, [tag]);
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-lg">
-        <form onSubmit={handleSubmit}>
-          <DialogHeader>
-            <DialogTitle>{title}</DialogTitle>
-            <DialogDescription>Enter a name and choose a color for your tag.</DialogDescription>
-          </DialogHeader>
+        <FormProvider {...form}>
+          <form onSubmit={handleSubmit(handleFormSubmit)}>
+            <DialogHeader>
+              <DialogTitle>{title}</DialogTitle>
+              <DialogDescription>Enter a name and choose a color for your tag.</DialogDescription>
+            </DialogHeader>
 
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-              <Label htmlFor="tag-name">Tag name</Label>
-              <Input
-                id="tag-name"
-                value={newTagName}
-                onChange={handleNewTagNameChange}
-                placeholder="Enter tag name"
+            <div className="space-y-4 py-4">
+              {/* P3: FormErrorSummary for accessible error aggregation */}
+              <FormErrorSummary
+                errors={errors}
+                fieldLabels={{
+                  name: "Tag Name",
+                  color: "Color",
+                }}
               />
-            </div>
 
-            <div className="space-y-2">
-              <Label>Color</Label>
-              <div className="flex flex-wrap gap-1">
-                {colors.map((color) => (
-                  <div key={color} className="relative group">
-                    <RoundButton
-                      color={color}
-                      selected={color === newTagColor}
-                      handleClick={() => {
-                        setNewTagColor(color);
-                        setColorError(undefined);
-                      }}
-                    />
-                    <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-                      {color}
-                    </span>
-                  </div>
-                ))}
+              <div className="space-y-2">
+                <Label htmlFor="tag-name">Tag name</Label>
+                <Input
+                  id="tag-name"
+                  {...register("name")}
+                  placeholder="Enter tag name"
+                  aria-invalid={!!errors.name}
+                  aria-describedby={errors.name ? "name-error" : undefined}
+                />
+                {errors.name && (
+                  <p id="name-error" className="text-sm text-destructive" role="alert">
+                    {errors.name.message}
+                  </p>
+                )}
               </div>
-              {colorError && <p className="text-sm text-destructive mt-1">{colorError}</p>}
-            </div>
-          </div>
 
-          <div className="flex justify-end pt-4">
-            <Button
-              variant="outline"
-              disabled={disabled || isSubmitting || !newTagName.trim()}
-              className={cn(
-                buttonVariants({ variant: "outline" }),
-                "text-primary",
-                disabled || isSubmitting || !newTagName.trim()
-                  ? "opacity-50 cursor-not-allowed"
-                  : "cursor-pointer"
-              )}
-            >
-              {isSubmitting ? (
-                <>
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                  Saving...
-                </>
-              ) : (
-                <>
-                  <SaveIcon />
-                  Save
-                </>
-              )}
-            </Button>
-          </div>
-        </form>
+              <div className="space-y-2">
+                <Label>Color</Label>
+                <div className="flex flex-wrap gap-1">
+                  {colors.map((color) => (
+                    <div key={color} className="relative group">
+                      <RoundButton
+                        color={color}
+                        selected={color === selectedColor}
+                        handleClick={() => {
+                          setValue("color", color, { shouldValidate: true });
+                        }}
+                      />
+                      <span className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                        {color}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+                {errors.color && (
+                  <p id="color-error" className="text-sm text-destructive mt-1" role="alert">
+                    {errors.color.message}
+                  </p>
+                )}
+              </div>
+            </div>
+
+            <div className="flex justify-end pt-4">
+              <Button
+                type="submit"
+                variant="outline"
+                disabled={isSubmitting}
+                className={cn(
+                  buttonVariants({ variant: "outline" }),
+                  "text-primary",
+                  isSubmitting ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                )}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Saving...
+                  </>
+                ) : (
+                  <>
+                    <SaveIcon />
+                    Save
+                  </>
+                )}
+              </Button>
+            </div>
+          </form>
+        </FormProvider>
       </DialogContent>
     </Dialog>
   );
