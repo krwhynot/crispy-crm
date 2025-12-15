@@ -14,3 +14,13 @@ export { CollapsibleSection } from "./CollapsibleSection";
 export { CompactFormRow } from "./CompactFormRow";
 export { CompactFormFieldWithButton } from "./CompactFormFieldWithButton";
 export { ButtonPlaceholder } from "./ButtonPlaceholder";
+
+// Form progress system
+export { FormProgressProvider, useFormProgress } from "./FormProgressProvider";
+export { FormProgressBar } from "./FormProgressBar";
+export { FormFieldWrapper } from "./FormFieldWrapper";
+
+// Types
+export type { FormProgressBarProps } from "./FormProgressBar";
+export type { FormFieldWrapperProps } from "./FormFieldWrapper";
+export type { FormSectionProps } from "./FormSection";
