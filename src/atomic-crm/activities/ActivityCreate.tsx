@@ -6,6 +6,10 @@ import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { FormToolbar } from "@/atomic-crm/layout/FormToolbar";
 import { activitiesSchema } from "../validation/activities";
 import ActivitySinglePage from "./ActivitySinglePage";
+import {
+  FormProgressProvider,
+  FormProgressBar,
+} from "@/components/admin/form";
 
 const HiddenActivityTypeField = () => {
   const { field } = useInput({
@@ -31,13 +35,16 @@ export default function ActivityCreate() {
     <CreateBase redirect="list">
       <div className="bg-muted mt-2 flex justify-center px-6 py-6">
         <div className="w-full max-w-5xl">
-          <Form defaultValues={defaultValues}>
-            <Card>
-              <CardContent className="space-y-6 p-6">
-                <ActivityFormContent />
-              </CardContent>
-            </Card>
-          </Form>
+          <FormProgressProvider initialProgress={10}>
+            <FormProgressBar className="mb-6" />
+            <Form defaultValues={defaultValues} mode="onBlur">
+              <Card>
+                <CardContent className="space-y-6 p-6">
+                  <ActivityFormContent />
+                </CardContent>
+              </Card>
+            </Form>
+          </FormProgressProvider>
         </div>
       </div>
     </CreateBase>

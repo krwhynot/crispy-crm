@@ -31,6 +31,7 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
       outcome: "",
       location: "",
     },
+    mode: "onBlur",
   });
 
   return (

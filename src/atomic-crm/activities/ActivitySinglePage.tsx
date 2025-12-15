@@ -3,7 +3,7 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
-import { FormGrid, FormSection } from "@/components/admin/form";
+import { FormGrid, FormSection, FormFieldWrapper } from "@/components/admin/form";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { contactOptionText } from "../contacts/ContactOption";
@@ -24,77 +24,93 @@ export default function ActivitySinglePage() {
       <FormSection title="Activity Details">
         <FormGrid>
           <div data-tutorial="activity-type">
-            <SelectInput
-              source="type"
-              label="Interaction Type"
-              choices={INTERACTION_TYPE_OPTIONS.map((option) => ({
-                id: option.value,
-                name: option.label,
-              }))}
-              helperText="Choose how this interaction occurred"
-              isRequired
-            />
+            <FormFieldWrapper name="type" isRequired>
+              <SelectInput
+                source="type"
+                label="Interaction Type"
+                choices={INTERACTION_TYPE_OPTIONS.map((option) => ({
+                  id: option.value,
+                  name: option.label,
+                }))}
+                helperText="Choose how this interaction occurred"
+                isRequired
+              />
+            </FormFieldWrapper>
           </div>
         </FormGrid>
 
-        <TextInput
-          source="subject"
-          label="Subject"
-          isRequired
-          helperText="Summarize the outcome or topic"
-        />
+        <FormFieldWrapper name="subject" isRequired>
+          <TextInput
+            source="subject"
+            label="Subject"
+            isRequired
+            helperText="Summarize the outcome or topic"
+          />
+        </FormFieldWrapper>
 
         <FormGrid>
-          <TextInput source="activity_date" label="Date" type="date" isRequired />
-          <TextInput
-            source="duration_minutes"
-            label="Duration (minutes)"
-            type="number"
-            helperText="Optional length of the activity"
-          />
+          <FormFieldWrapper name="activity_date" isRequired>
+            <TextInput source="activity_date" label="Date" type="date" isRequired />
+          </FormFieldWrapper>
+          <FormFieldWrapper name="duration_minutes">
+            <TextInput
+              source="duration_minutes"
+              label="Duration (minutes)"
+              type="number"
+              helperText="Optional length of the activity"
+            />
+          </FormFieldWrapper>
         </FormGrid>
 
         <div data-tutorial="activity-description">
-          <TextInput
-            source="description"
-            label="Notes"
-            multiline
-            rows={4}
-            helperText="Optional narrative for this interaction"
-          />
+          <FormFieldWrapper name="description">
+            <TextInput
+              source="description"
+              label="Notes"
+              multiline
+              rows={4}
+              helperText="Optional narrative for this interaction"
+            />
+          </FormFieldWrapper>
         </div>
       </FormSection>
 
       <FormSection title="Relationships">
         <FormGrid>
           <div data-tutorial="activity-opportunity">
-            <ReferenceInput source="opportunity_id" reference="opportunities">
+            <FormFieldWrapper name="opportunity_id">
+              <ReferenceInput source="opportunity_id" reference="opportunities">
+                <AutocompleteInput
+                  label="Opportunity"
+                  optionText="name"
+                  helperText="Required for interaction activities"
+                  placeholder="Search opportunities"
+                />
+              </ReferenceInput>
+            </FormFieldWrapper>
+          </div>
+          <FormFieldWrapper name="contact_id">
+            <ReferenceInput source="contact_id" reference="contacts_summary">
               <AutocompleteInput
-                label="Opportunity"
-                optionText="name"
-                helperText="Required for interaction activities"
-                placeholder="Search opportunities"
+                label="Contact"
+                optionText={contactOptionText}
+                helperText="Optional contact involved"
+                placeholder="Search contacts"
               />
             </ReferenceInput>
-          </div>
-          <ReferenceInput source="contact_id" reference="contacts_summary">
-            <AutocompleteInput
-              label="Contact"
-              optionText={contactOptionText}
-              helperText="Optional contact involved"
-              placeholder="Search contacts"
-            />
-          </ReferenceInput>
+          </FormFieldWrapper>
         </FormGrid>
 
-        <ReferenceInput source="organization_id" reference="organizations">
-          <AutocompleteInput
-            label="Organization"
-            optionText="name"
-            helperText="Optional organization context"
-            placeholder="Search organizations"
-          />
-        </ReferenceInput>
+        <FormFieldWrapper name="organization_id">
+          <ReferenceInput source="organization_id" reference="organizations">
+            <AutocompleteInput
+              label="Organization"
+              optionText="name"
+              helperText="Optional organization context"
+              placeholder="Search organizations"
+            />
+          </ReferenceInput>
+        </FormFieldWrapper>
       </FormSection>
 
       <Collapsible open={followUpOpen} onOpenChange={setFollowUpOpen}>
@@ -117,23 +133,29 @@ export default function ActivitySinglePage() {
         <CollapsibleContent className="pt-6">
           <div className="space-y-6">
             <FormGrid>
-              <SelectInput
-                source="sentiment"
-                label="Sentiment"
-                choices={sentimentChoices}
-                helperText="How did the contact respond?"
-              />
+              <FormFieldWrapper name="sentiment">
+                <SelectInput
+                  source="sentiment"
+                  label="Sentiment"
+                  choices={sentimentChoices}
+                  helperText="How did the contact respond?"
+                />
+              </FormFieldWrapper>
             </FormGrid>
 
             <FormGrid>
-              <TextInput source="follow_up_date" label="Follow-up Date" type="date" />
-              <TextInput
-                source="follow_up_notes"
-                label="Follow-up Notes"
-                multiline
-                rows={3}
-                helperText="Optional next steps summary"
-              />
+              <FormFieldWrapper name="follow_up_date">
+                <TextInput source="follow_up_date" label="Follow-up Date" type="date" />
+              </FormFieldWrapper>
+              <FormFieldWrapper name="follow_up_notes">
+                <TextInput
+                  source="follow_up_notes"
+                  label="Follow-up Notes"
+                  multiline
+                  rows={3}
+                  helperText="Optional next steps summary"
+                />
+              </FormFieldWrapper>
             </FormGrid>
           </div>
         </CollapsibleContent>
@@ -159,8 +181,12 @@ export default function ActivitySinglePage() {
         <CollapsibleContent className="pt-6">
           <div className="space-y-6">
             <FormGrid>
-              <TextInput source="location" label="Location" helperText="Where did this occur?" />
-              <TextInput source="outcome" label="Outcome" helperText="Optional result summary" />
+              <FormFieldWrapper name="location">
+                <TextInput source="location" label="Location" helperText="Where did this occur?" />
+              </FormFieldWrapper>
+              <FormFieldWrapper name="outcome">
+                <TextInput source="outcome" label="Outcome" helperText="Optional result summary" />
+              </FormFieldWrapper>
             </FormGrid>
           </div>
         </CollapsibleContent>
