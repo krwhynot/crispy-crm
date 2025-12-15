@@ -50,7 +50,6 @@ export const productSchema = z.strictObject({
     .string({ error: "Product name is required" })
     .min(1, "Product name is required")
     .max(255, "Product name too long"),
-  sku: z.string().max(50, "SKU too long").nullish(),
   principal_id: z
     .number({ error: "Principal/Supplier is required" })
     .int()
@@ -60,7 +59,6 @@ export const productSchema = z.strictObject({
   // Optional fields with defaults
   status: productStatusSchema.default("active"),
   description: z.string().max(2000).optional(),
-  distributor_id: z.number().int().positive().optional(),
 
   // Food/health specific fields (kept for flexibility)
   // NOTE: Using .nullish() to accept both undefined and null values
@@ -69,16 +67,6 @@ export const productSchema = z.strictObject({
   ingredients: z.string().max(5000).nullish(),
   nutritional_info: z.record(z.any()).nullish(),
   marketing_description: z.string().max(2000).nullish(),
-
-  // Distributor-specific product codes (all optional, max 50 chars)
-  usf_code: z.string().max(50, "USF code too long").nullish(),
-  sysco_code: z.string().max(50, "Sysco code too long").nullish(),
-  gfs_code: z.string().max(50, "GFS code too long").nullish(),
-  pfg_code: z.string().max(50, "PFG code too long").nullish(),
-  greco_code: z.string().max(50, "Greco code too long").nullish(),
-  gofo_code: z.string().max(50, "GOFO code too long").nullish(),
-  rdp_code: z.string().max(50, "RDP code too long").nullish(),
-  wilkens_code: z.string().max(50, "Wilkens code too long").nullish(),
 
   // System fields (handled automatically)
   created_by: z.number().int().nullish(),
