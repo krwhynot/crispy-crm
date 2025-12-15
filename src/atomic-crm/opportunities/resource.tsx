@@ -3,7 +3,9 @@ import type { Opportunity } from "../types";
 import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
 
 const OpportunityListLazy = React.lazy(() => import("./OpportunityList"));
-const OpportunityCreateLazy = React.lazy(() => import("./OpportunityCreate"));
+// Wizard is now the default create experience (19 tests pass)
+// Old tabbed form preserved in OpportunityCreate.tsx for reference
+const OpportunityCreateLazy = React.lazy(() => import("./OpportunityCreateWizard"));
 const OpportunityEditLazy = React.lazy(() => import("./OpportunityEdit"));
 
 export const OpportunityListView = () => (
