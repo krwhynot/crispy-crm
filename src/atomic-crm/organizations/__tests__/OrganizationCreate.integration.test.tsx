@@ -22,17 +22,17 @@ describe("OrganizationCreate with Progress Tracking", () => {
   });
 
   it("shows Basic Information section with incomplete indicator", async () => {
-    renderWithAdminContext(<OrganizationCreate />);
+    renderOrganizationCreate();
     expect(await screen.findByTestId("section-incomplete-icon")).toBeInTheDocument();
   });
 
   it("shows Basic Information section title", async () => {
-    renderWithAdminContext(<OrganizationCreate />);
+    renderOrganizationCreate();
     expect(await screen.findByText("Basic Information")).toBeInTheDocument();
   });
 
   it("shows Account & Segment section without completion indicator", async () => {
-    renderWithAdminContext(<OrganizationCreate />);
+    renderOrganizationCreate();
     expect(await screen.findByText("Account & Segment")).toBeInTheDocument();
     // Section has no required fields, so no icon should be shown
     const allIncompleteIcons = screen.queryAllByTestId("section-incomplete-icon");
@@ -41,26 +41,26 @@ describe("OrganizationCreate with Progress Tracking", () => {
   });
 
   it("shows Location section without completion indicator", async () => {
-    renderWithAdminContext(<OrganizationCreate />);
+    renderOrganizationCreate();
     expect(await screen.findByText("Location")).toBeInTheDocument();
   });
 
   it("renders all form sections", async () => {
-    renderWithAdminContext(<OrganizationCreate />);
+    renderOrganizationCreate();
     expect(await screen.findByText("Basic Information")).toBeInTheDocument();
     expect(screen.getByText("Account & Segment")).toBeInTheDocument();
     expect(screen.getByText("Location")).toBeInTheDocument();
   });
 
   it("wraps organization name field with isRequired", async () => {
-    renderWithAdminContext(<OrganizationCreate />);
+    renderOrganizationCreate();
     const nameInput = await screen.findByLabelText(/Organization Name/i);
     expect(nameInput).toBeInTheDocument();
   });
 
   it("shows complete icon when name is filled", async () => {
     const user = userEvent.setup();
-    renderWithAdminContext(<OrganizationCreate />);
+    renderOrganizationCreate();
 
     const nameInput = await screen.findByLabelText(/Organization Name/i);
     await user.type(nameInput, "Test Organization");
@@ -74,7 +74,7 @@ describe("OrganizationCreate with Progress Tracking", () => {
 
   it("shows Complete badge when name field is valid", async () => {
     const user = userEvent.setup();
-    renderWithAdminContext(<OrganizationCreate />);
+    renderOrganizationCreate();
 
     const nameInput = await screen.findByLabelText(/Organization Name/i);
     await user.type(nameInput, "Test Organization");
@@ -87,7 +87,7 @@ describe("OrganizationCreate with Progress Tracking", () => {
 
   it("increases progress bar when name is filled", async () => {
     const user = userEvent.setup();
-    renderWithAdminContext(<OrganizationCreate />);
+    renderOrganizationCreate();
 
     const progressBar = await screen.findByRole("progressbar");
     const initialProgress = progressBar.getAttribute("aria-valuenow");
@@ -102,20 +102,28 @@ describe("OrganizationCreate with Progress Tracking", () => {
   });
 
   it("preserves data-tutorial attributes on fields", async () => {
-    renderWithAdminContext(<OrganizationCreate />);
+    const user = userEvent.setup();
+    const { container } = renderOrganizationCreate();
 
-    const orgNameTutorial = await screen.findByTestId("org-name");
+    // Check for data-tutorial attributes using querySelector
+    const orgNameTutorial = container.querySelector('[data-tutorial="org-name"]');
     expect(orgNameTutorial).toBeInTheDocument();
 
-    const orgTypeTutorial = screen.getByTestId("org-type");
+    const orgTypeTutorial = container.querySelector('[data-tutorial="org-type"]');
     expect(orgTypeTutorial).toBeInTheDocument();
 
-    const orgWebsiteTutorial = screen.getByTestId("org-website");
-    expect(orgWebsiteTutorial).toBeInTheDocument();
+    // Additional Details is collapsed by default - need to expand it
+    const additionalDetailsButton = screen.getByRole("button", { name: /Additional Details/i });
+    await user.click(additionalDetailsButton);
+
+    await waitFor(() => {
+      const orgWebsiteTutorial = container.querySelector('[data-tutorial="org-website"]');
+      expect(orgWebsiteTutorial).toBeInTheDocument();
+    });
   });
 
   it("renders FormProgressProvider wrapper", async () => {
-    renderWithAdminContext(<OrganizationCreate />);
+    renderOrganizationCreate();
 
     // Progress bar should be rendered if provider exists
     const progressBar = await screen.findByRole("progressbar");
@@ -123,7 +131,7 @@ describe("OrganizationCreate with Progress Tracking", () => {
   });
 
   it("renders FormProgressBar before the form card", async () => {
-    renderWithAdminContext(<OrganizationCreate />);
+    renderOrganizationCreate();
 
     const progressBar = await screen.findByRole("progressbar");
     expect(progressBar).toBeInTheDocument();
@@ -131,7 +139,7 @@ describe("OrganizationCreate with Progress Tracking", () => {
   });
 
   it("maintains form mode as onBlur", async () => {
-    renderWithAdminContext(<OrganizationCreate />);
+    renderOrganizationCreate();
 
     // The form should exist
     const nameInput = await screen.findByLabelText(/Organization Name/i);
@@ -147,7 +155,7 @@ describe("OrganizationCreate with Progress Tracking", () => {
   });
 
   it("shows section with requiredFields prop correctly", async () => {
-    renderWithAdminContext(<OrganizationCreate />);
+    renderOrganizationCreate();
 
     // Basic Information has requiredFields=['name']
     const basicInfoSection = await screen.findByText("Basic Information");
@@ -159,9 +167,16 @@ describe("OrganizationCreate with Progress Tracking", () => {
   });
 
   it("wraps Additional Details fields with FormFieldWrapper", async () => {
-    renderWithAdminContext(<OrganizationCreate />);
+    const user = userEvent.setup();
+    renderOrganizationCreate();
 
-    // Additional Details is in a collapsible section
+    // Additional Details is in a collapsible section - need to expand it
+    const additionalDetailsButton = await screen.findByRole("button", {
+      name: /Additional Details/i,
+    });
+    await user.click(additionalDetailsButton);
+
+    // Now the fields should be visible
     const websiteInput = await screen.findByLabelText(/Website/i);
     expect(websiteInput).toBeInTheDocument();
 
