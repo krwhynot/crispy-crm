@@ -9,8 +9,9 @@
  * - prospect: Potential customer in sales pipeline
  * - principal: Food manufacturer whose products MFB represents
  * - distributor: Company that buys from principals and distributes (Sysco, USF, etc.)
+ * - operator: Restaurant/foodservice (end customer)
  */
-export type OrganizationType = "customer" | "prospect" | "principal" | "distributor";
+export type OrganizationType = "customer" | "prospect" | "principal" | "distributor" | "operator";
 
 /**
  * Priority level for organizations
@@ -27,6 +28,7 @@ export const ORGANIZATION_TYPE_CHOICES = [
   { id: "prospect", name: "Prospect" },
   { id: "principal", name: "Principal" },
   { id: "distributor", name: "Distributor" },
+  { id: "operator", name: "Operator" },
 ] as const;
 
 /**
