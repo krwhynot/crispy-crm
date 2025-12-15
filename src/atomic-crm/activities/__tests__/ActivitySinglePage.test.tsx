@@ -11,6 +11,7 @@ import userEvent from "@testing-library/user-event";
 import { useForm, FormProvider } from "react-hook-form";
 import { AdminContext } from "react-admin";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
+import { FormProgressProvider } from "@/components/admin/form";
 import ActivitySinglePage from "../ActivitySinglePage";
 
 const TestWrapper = ({ children }: { children: React.ReactNode }) => {
@@ -37,7 +38,9 @@ const TestWrapper = ({ children }: { children: React.ReactNode }) => {
   return (
     <AdminContext>
       <FormProvider {...methods}>
-        <form>{children}</form>
+        <FormProgressProvider>
+          <form>{children}</form>
+        </FormProgressProvider>
       </FormProvider>
     </AdminContext>
   );
