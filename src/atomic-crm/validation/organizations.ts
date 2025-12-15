@@ -13,6 +13,36 @@ export const organizationTypeSchema = z.enum(["customer", "prospect", "principal
 // Organization priority enum
 export const organizationPrioritySchema = z.enum(["A", "B", "C", "D"]);
 
+// Organization scope enum
+export const orgScopeSchema = z.enum(['national', 'regional', 'local']);
+export type OrgScope = z.infer<typeof orgScopeSchema>;
+
+// Organization status enum
+export const orgStatusSchema = z.enum(['active', 'inactive']);
+export type OrgStatus = z.infer<typeof orgStatusSchema>;
+
+// Status reason enum
+export const orgStatusReasonSchema = z.enum([
+  'active_customer',
+  'prospect',
+  'authorized_distributor',
+  'account_closed',
+  'out_of_business',
+  'disqualified',
+]);
+export type OrgStatusReason = z.infer<typeof orgStatusReasonSchema>;
+
+// Payment terms enum
+export const paymentTermsSchema = z.enum([
+  'net_30',
+  'net_60',
+  'net_90',
+  'cod',
+  'prepaid',
+  '2_10_net_30',
+]);
+export type PaymentTerms = z.infer<typeof paymentTermsSchema>;
+
 // LinkedIn URL validation - domain-specific regex required
 const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin.com\//;
 
@@ -36,10 +66,10 @@ const isLinkedinUrl = z.string().refine(
 // This schema serves as the single source of truth for all organization validation
 // per Engineering Constitution - all validation happens at API boundary only
 export const organizationSchema = z.strictObject({
-  id: z.union([z.string(), z.number()]).optional(),
+  id: z.coerce.number().optional(),
   name: z.string().min(1, "Organization name is required").max(255, "Organization name too long"),
   logo: z.any().optional().nullable(), // RAFile type
-  parent_organization_id: z.union([z.string(), z.number()]).optional().nullable(), // Parent organization reference
+  parent_organization_id: z.coerce.number().optional().nullable(), // Parent organization reference
   // Updated field names to match database schema
   segment_id: z.string().uuid().optional().nullable(), // was: industry (text field) - optional field, can be null or undefined
   linkedin_url: isLinkedinUrl.nullish(),
@@ -49,7 +79,7 @@ export const organizationSchema = z.strictObject({
   postal_code: z.string().max(20, "Postal code too long").nullish(), // was: zipcode
   city: z.string().max(100, "City name too long").nullish(),
   state: z.string().max(100, "State name too long").nullish(), // was: stateAbbr
-  sales_id: z.union([z.string(), z.number()]).nullish(),
+  sales_id: z.coerce.number().nullish(),
   description: z
     .string()
     .max(5000, "Description too long")
@@ -71,7 +101,7 @@ export const organizationSchema = z.strictObject({
   tax_identifier: z.string().max(50, "Tax identifier too long").nullish(), // Tax ID / EIN
   logo_url: z.string().url().nullish(), // Direct URL to logo (separate from logo RAFile)
   updated_at: z.string().optional(), // System-managed timestamp
-  updated_by: z.union([z.string(), z.number()]).nullish(), // Audit: who last updated
+  updated_by: z.coerce.number().nullish(), // Audit: who last updated
 
   // Organization-specific fields
   organization_type: organizationTypeSchema.default("prospect"), // Default for new organizations
@@ -82,9 +112,36 @@ export const organizationSchema = z.strictObject({
   nb_opportunities: z.number().optional(),
   nb_notes: z.number().optional(),
 
+  // Hierarchy fields (Task 12)
+  org_scope: orgScopeSchema.nullable().optional(),
+  is_operating_entity: z.coerce.boolean().default(true),
+
+  // Status fields (Task 13)
+  status: orgStatusSchema.default('active'),
+  status_reason: orgStatusReasonSchema.nullable().optional(),
+
+  // Billing Address fields (Task 14)
+  billing_street: z.string().max(255).nullable().optional(),
+  billing_city: z.string().max(100).nullable().optional(),
+  billing_state: z.string().max(2).nullable().optional(),
+  billing_postal_code: z.string().max(20).nullable().optional(),
+  billing_country: z.string().max(2).default('US'),
+
+  // Shipping Address fields (Task 14)
+  shipping_street: z.string().max(255).nullable().optional(),
+  shipping_city: z.string().max(100).nullable().optional(),
+  shipping_state: z.string().max(2).nullable().optional(),
+  shipping_postal_code: z.string().max(20).nullable().optional(),
+  shipping_country: z.string().max(2).default('US'),
+
+  // Payment fields (Task 14)
+  payment_terms: paymentTermsSchema.nullable().optional(),
+  credit_limit: z.coerce.number().nonnegative().nullable().optional(),
+  territory: z.string().max(100).nullable().optional(),
+
   // System/Audit fields
   created_at: z.string().optional(),
-  created_by: z.union([z.string(), z.number()]).nullish(), // Audit: who created
+  created_by: z.coerce.number().nullish(), // Audit: who created
   deleted_at: z.string().optional().nullable(), // Soft-delete timestamp
 });
 
@@ -133,6 +190,7 @@ export const createOrganizationSchema = organizationSchema
     deleted_at: true,
     nb_contacts: true, // Computed field
     nb_opportunities: true, // Computed field
+    nb_notes: true, // Computed field
   })
   .required({
     name: true,

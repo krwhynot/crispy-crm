@@ -59,9 +59,9 @@ export const phoneNumberAndTypeSchema = z.strictObject({
 // Contact-Organization relationship schema
 export const contactOrganizationSchema = z
   .strictObject({
-    id: z.union([z.string(), z.number()]).optional(),
-    contact_id: z.union([z.string(), z.number()]).optional(),
-    organization_id: z.union([z.string(), z.number()]).optional(),
+    id: z.coerce.number().optional(),
+    contact_id: z.coerce.number().optional(),
+    organization_id: z.coerce.number().optional(),
     is_primary: z.coerce.boolean().default(false),
     created_at: z.string().optional(),
     updated_at: z.string().optional(),
@@ -85,7 +85,7 @@ export const contactOrganizationSchema = z
 // per Engineering Constitution #5: FORM STATE DERIVED FROM TRUTH
 export const contactBaseSchema = z.strictObject({
   // Primary key
-  id: z.union([z.string(), z.number()]).optional(),
+  id: z.coerce.number().optional(),
 
   // Name fields - ContactIdentityInputs (required in UI)
   name: z.string().max(255, "Name too long").optional(), // Computed from first + last
@@ -100,22 +100,29 @@ export const contactBaseSchema = z.strictObject({
   // Professional information - ContactPositionInputs
   title: z.string().max(100, "Title too long").optional().nullable(),
   department: z.string().max(100, "Department too long").optional().nullable(),
+  department_type: contactDepartmentSchema.nullable().optional(),
 
   // Social media - ContactMiscInputs
   linkedin_url: isLinkedinUrl,
 
   // Relationships - ContactPositionInputs
-  sales_id: z.union([z.string(), z.number()]).optional().nullable(),
+  sales_id: z.coerce.number().nullish(),
+  // Manager relationship - BIGINT FK for manager hierarchy
+  manager_id: z.coerce.number().nullable().optional(),
   // REQUIRED: Contacts must belong to an organization (no orphans)
   // See migration 20251129030358_contact_organization_id_not_null.sql
   // Note: Base schema accepts undefined for form defaults via .partial().parse({})
   // Create/Update schemas enforce requirement via superRefine
-  organization_id: z.union([z.string(), z.number()]).optional().nullable(),
+  organization_id: z.coerce.number().nullable().optional(),
+
+  // Territory assignment fields
+  district_code: z.string().max(10, "District code too long").nullable().optional(),
+  territory_name: z.string().max(100, "Territory name too long").nullable().optional(),
 
   // System fields (readonly, not validated)
   created_at: z.string().optional(),
   updated_at: z.string().optional(),
-  created_by: z.union([z.string(), z.number()]).optional().nullable(),
+  created_by: z.coerce.number().optional().nullable(),
   deleted_at: z.string().optional().nullable(),
   first_seen: z.string().optional(),
   last_seen: z.string().optional(),
@@ -153,7 +160,7 @@ export const contactBaseSchema = z.strictObject({
   status: z.string().max(50, "Status too long").optional().nullable(),
 
   // System fields (readonly, set by triggers)
-  updated_by: z.union([z.string(), z.number()]).optional().nullable(),
+  updated_by: z.coerce.number().optional().nullable(),
 
   // Computed fields from views/joins (readonly, not written to DB)
   nb_notes: z.number().optional(),
