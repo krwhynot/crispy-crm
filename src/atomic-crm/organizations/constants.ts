@@ -52,12 +52,14 @@ export const PRIORITY_CHOICES = [
  * - prospect: tag-sage (Olive Green - growth potential)
  * - principal: tag-purple (Eggplant - important/primary)
  * - distributor: tag-teal (Active/connected in supply chain)
+ * - operator: tag-warm (Clay Orange - end customer, similar to customer)
  */
 export const ORG_TYPE_COLOR_MAP: Record<OrganizationType, string> = {
   customer: "tag-warm",
   prospect: "tag-sage",
   principal: "tag-purple",
   distributor: "tag-teal",
+  operator: "tag-warm",
 };
 
 /**
@@ -74,6 +76,64 @@ export const PRIORITY_VARIANT_MAP: Record<PriorityLevel, "default" | "secondary"
   C: "outline", // Routine
   D: "outline", // Minimal
 };
+
+/**
+ * Organization scope choices for distributor modeling
+ * - national: Brand/HQ level organization
+ * - regional: Regional operating company
+ * - local: Local/single-location entity
+ */
+export const ORG_SCOPE_CHOICES = [
+  { id: "national", name: "National" },
+  { id: "regional", name: "Regional" },
+  { id: "local", name: "Local" },
+] as const;
+
+/**
+ * Organization status choices
+ * - active: Currently active organization
+ * - inactive: Inactive organization
+ */
+export const STATUS_CHOICES = [
+  { id: "active", name: "Active" },
+  { id: "inactive", name: "Inactive" },
+] as const;
+
+/**
+ * Status reason choices - explains why organization is in current status
+ * - active_customer: Currently active customer
+ * - prospect: Prospective customer
+ * - authorized_distributor: Authorized to distribute products
+ * - account_closed: Account has been closed
+ * - out_of_business: Organization is no longer in business
+ * - disqualified: Disqualified from consideration
+ */
+export const STATUS_REASON_CHOICES = [
+  { id: "active_customer", name: "Active Customer" },
+  { id: "prospect", name: "Prospect" },
+  { id: "authorized_distributor", name: "Authorized Distributor" },
+  { id: "account_closed", name: "Account Closed" },
+  { id: "out_of_business", name: "Out of Business" },
+  { id: "disqualified", name: "Disqualified" },
+] as const;
+
+/**
+ * Payment terms choices for business transactions
+ * - net_30: Payment due in 30 days
+ * - net_60: Payment due in 60 days
+ * - net_90: Payment due in 90 days
+ * - cod: Cash on delivery
+ * - prepaid: Payment required in advance
+ * - 2_10_net_30: 2% discount if paid within 10 days, otherwise net 30
+ */
+export const PAYMENT_TERMS_CHOICES = [
+  { id: "net_30", name: "Net 30" },
+  { id: "net_60", name: "Net 60" },
+  { id: "net_90", name: "Net 90" },
+  { id: "cod", name: "COD" },
+  { id: "prepaid", name: "Prepaid" },
+  { id: "2_10_net_30", name: "2/10 Net 30" },
+] as const;
 
 /**
  * US States for address forms

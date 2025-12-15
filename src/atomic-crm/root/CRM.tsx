@@ -11,6 +11,7 @@ import contacts from "../contacts";
 import { DashboardErrorBoundary, PrincipalDashboardV3 } from "../dashboard/v3";
 import opportunities from "../opportunities";
 import products from "../products";
+import productDistributors from "../productDistributors";
 import tasks from "../tasks";
 import notifications from "../notifications";
 import activities from "../activities";
