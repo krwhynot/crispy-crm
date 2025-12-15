@@ -77,72 +77,74 @@ describe("ActivitySinglePage", () => {
     });
   });
 
-  describe("Collapsible Sections", () => {
-    test("Follow-up section is collapsed by default", () => {
+  describe("Always Expanded Follow-up and Outcome Sections", () => {
+    // Note: FormSection components are now always expanded (not collapsible)
+    // Tests updated to reflect the new non-collapsible design
+
+    test("Follow-up section is expanded by default with all fields visible", () => {
       renderWithAdminContext(
         <TestWrapper>
           <ActivitySinglePage />
         </TestWrapper>
       );
 
-      expect(screen.getByText(/follow-up/i)).toBeInTheDocument();
-
-      // Radix Collapsible unmounts content when closed - use toBeNull()
-      expect(screen.queryByText(/^sentiment$/i)).toBeNull();
-      expect(screen.queryByText(/follow-up date/i)).toBeNull();
-      expect(screen.queryByText(/follow-up notes/i)).toBeNull();
-    });
-
-    test("Outcome section is collapsed by default", () => {
-      renderWithAdminContext(
-        <TestWrapper>
-          <ActivitySinglePage />
-        </TestWrapper>
+      // Find the Follow-up section header using a more specific query
+      const followUpHeaders = screen.getAllByText(/follow-up/i);
+      const sectionHeader = followUpHeaders.find(
+        (el) => el.tagName === "H2" && el.textContent === "Follow-up"
       );
+      expect(sectionHeader).toBeInTheDocument();
 
-      // Find the Outcome section header specifically (not the helper text)
-      const outcomeHeader = screen.getAllByText(/outcome/i).find((el) => el.tagName === "H3");
-      expect(outcomeHeader).toBeInTheDocument();
-
-      // Radix Collapsible unmounts content when closed - use toBeNull()
-      expect(screen.queryByText(/^location$/i)).toBeNull();
-    });
-
-    test("can expand Follow-up section", async () => {
-      const user = userEvent.setup();
-
-      renderWithAdminContext(
-        <TestWrapper>
-          <ActivitySinglePage />
-        </TestWrapper>
-      );
-
-      // Find and click the Follow-up trigger
-      const followUpTrigger = screen.getByRole("button", { name: /follow-up/i });
-      await user.click(followUpTrigger);
-
-      // Fields should now be visible
+      // All Follow-up fields should be visible (non-collapsible FormSection)
       expect(screen.getByText(/^sentiment$/i)).toBeVisible();
-      expect(screen.getByText(/follow-up date/i)).toBeVisible();
-      expect(screen.getByText(/follow-up notes/i)).toBeVisible();
+      // Use getAllByText for Follow-up Date since there are multiple matches
+      const followUpDateLabels = screen.getAllByText(/follow-up date/i);
+      expect(followUpDateLabels.length).toBeGreaterThan(0);
+      expect(followUpDateLabels[0]).toBeVisible();
     });
 
-    test("can expand Outcome section", async () => {
-      const user = userEvent.setup();
-
+    test("Outcome section is expanded by default with all fields visible", () => {
       renderWithAdminContext(
         <TestWrapper>
           <ActivitySinglePage />
         </TestWrapper>
       );
 
-      // Find and click the Outcome trigger
-      const outcomeTrigger = screen.getByRole("button", { name: /outcome/i });
-      await user.click(outcomeTrigger);
+      // Find the Outcome section header (h2 element)
+      const outcomeHeaders = screen.getAllByText(/outcome/i);
+      const sectionHeader = outcomeHeaders.find(
+        (el) => el.tagName === "H2" && el.textContent === "Outcome"
+      );
+      expect(sectionHeader).toBeInTheDocument();
 
-      // Fields should now be visible
+      // All Outcome fields should be visible (non-collapsible FormSection)
       expect(screen.getByText(/^location$/i)).toBeVisible();
-      // Check for the outcome field label (not the subject helper text)
+    });
+
+    test("Follow-up section contains sentiment field", () => {
+      renderWithAdminContext(
+        <TestWrapper>
+          <ActivitySinglePage />
+        </TestWrapper>
+      );
+
+      // Sentiment field should be rendered and visible
+      expect(screen.getByText(/^sentiment$/i)).toBeVisible();
+      expect(screen.getByText(/how did the contact respond/i)).toBeVisible();
+    });
+
+    test("Outcome section contains location and outcome fields", () => {
+      renderWithAdminContext(
+        <TestWrapper>
+          <ActivitySinglePage />
+        </TestWrapper>
+      );
+
+      // Location field with helper text
+      expect(screen.getByText(/^location$/i)).toBeVisible();
+      expect(screen.getByText(/where did this occur/i)).toBeVisible();
+
+      // Outcome field label (not section header)
       const outcomeLabels = screen.getAllByText(/outcome/i);
       const outcomeFieldLabel = outcomeLabels.find(
         (el) => el.tagName === "SPAN" && el.textContent === "Outcome"
@@ -150,23 +152,27 @@ describe("ActivitySinglePage", () => {
       expect(outcomeFieldLabel).toBeVisible();
     });
 
-    test("can collapse expanded sections", async () => {
-      const user = userEvent.setup();
-
+    test("all four sections render as non-collapsible FormSections", () => {
       renderWithAdminContext(
         <TestWrapper>
           <ActivitySinglePage />
         </TestWrapper>
       );
 
-      // Expand Follow-up
-      const followUpTrigger = screen.getByRole("button", { name: /follow-up/i });
-      await user.click(followUpTrigger);
-      expect(screen.getByText(/^sentiment$/i)).toBeVisible();
+      // Verify all sections are rendered
+      expect(screen.getByText(/activity details/i)).toBeInTheDocument();
+      expect(screen.getByText(/relationships/i)).toBeInTheDocument();
 
-      // Collapse it again
-      await user.click(followUpTrigger);
-      expect(screen.queryByText(/^sentiment$/i)).toBeNull();
+      // Follow-up and Outcome headers exist (multiple matches due to field labels)
+      const followUpHeaders = screen.getAllByText(/follow-up/i);
+      expect(followUpHeaders.length).toBeGreaterThan(0);
+
+      const outcomeHeaders = screen.getAllByText(/outcome/i);
+      expect(outcomeHeaders.length).toBeGreaterThan(0);
+
+      // No collapsible triggers should exist (buttons with expand/collapse functionality)
+      expect(screen.queryByRole("button", { name: /follow-up/i })).toBeNull();
+      expect(screen.queryByRole("button", { name: /outcome/i })).toBeNull();
     });
   });
 
