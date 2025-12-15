@@ -1,7 +1,12 @@
 # Opportunity Create Form Audit
 
+**Audit Date:** 2025-12-15
+**Git Branch:** `feature/distributor-organization-modeling`
+**Git Commit:** `1cd3fbd3`
+**File Path:** `src/atomic-crm/opportunities/OpportunityCreate.tsx`
+**Zod Schema:** `src/atomic-crm/validation/opportunities.ts`
+
 **Form:** `OpportunityCreate`
-**Date:** 2025-12-15
 **Files Analyzed:**
 - `/src/atomic-crm/opportunities/OpportunityCreate.tsx`
 - `/src/atomic-crm/opportunities/forms/OpportunityInputs.tsx`
