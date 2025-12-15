@@ -15,32 +15,107 @@
 
 ---
 
-## Form Structure Overview
+## 1. Form Structure Overview
 
-**Type:** Full-page create form with collapsible sections
-**Layout:** Single-column card (max-w-4xl, centered)
-**Background:** bg-muted with padding
+| Property | Value |
+|----------|-------|
+| Form Type | `CreateBase` + `Form` with custom layout |
+| Layout Style | Full-page centered card (max-w-4xl) |
+| Number of Tabs | N/A |
+| Tab Names | N/A |
+| Collapsible Sections | **YES** - 3 sections (Contacts & Products, Classification, Additional Details) |
+| Total Fields | 19 fields + 2 dynamic arrays (products, tags) |
+| Required Fields | 7 (name, customer, principal, stage, priority, close date, contacts, products) |
+| Optional Fields | 12 |
+| Loading State | **YES** - Handled by React Admin CreateBase |
+| Error Summary | **YES** - FormErrorSummary component at form top |
+| Tutorial Integration | **YES** - OpportunityCreateFormTutorial (floating bottom-left button) |
+
+**Layout Details:**
+- **Type:** Full-page create form with collapsible sections
+- **Background:** `bg-muted` with `px-6 py-6` padding
+- **Card Container:** Single-column card (max-w-4xl, centered)
+
 **Sections:**
 1. Main Section (always visible) - 8 fields
 2. Contacts & Products (collapsible, default open) - 2 complex inputs
-3. Classification (collapsible) - 3 fields
-4. Additional Details (collapsible) - 6 fields
+3. Classification (collapsible, default closed) - 3 fields
+4. Additional Details (collapsible, default closed) - 6 fields
 
-**Total Field Count:** 19 fields + 2 dynamic arrays (products, tags)
-**Required Fields:** 7 (name, customer, principal, stage, priority, close date, contacts, products)
-
-**Features:**
+**Special Features:**
 - Similar opportunity detection (Levenshtein threshold: 3)
 - Inline create dialogs for organizations and contacts
-- Auto-name generation from customer + principal
+- Auto-name generation from customer + principal (edit mode only)
 - Contact-organization mismatch warnings
 - Distributor authorization warnings
 - Naming convention help (collapsible)
-- Standalone tutorial system
+- Standalone tutorial system with data-tutorial attributes
 
 ---
 
-## ASCII Wireframe
+## 2. Default Values Strategy
+
+| Strategy | Implementation |
+|----------|---------------|
+| Schema-derived defaults | **YES** - `opportunitySchema.partial().parse({})` |
+| Identity injection | **YES** - `identity?.id` for `opportunity_owner_id` and `account_manager_id` |
+| Smart defaults hook | **NO** |
+| Router state pre-fill | **NO** |
+| Async segment lookup | **NO** |
+
+**Constitution Compliance:** **YES** - Follows Constitution #5: "FORM STATE DERIVED FROM TRUTH"
+
+**Code Example (OpportunityCreate.tsx:29-40):**
+```typescript
+// Generate defaults from schema, then merge with identity-specific values
+// Per Constitution #5: FORM STATE DERIVED FROM TRUTH
+// Use .partial() to make all fields optional during default generation
+// This extracts fields with .default() (stage, priority, estimated_close_date)
+// Explicitly initialize array fields for React Hook Form to track them:
+const formDefaults = {
+  ...opportunitySchema.partial().parse({}), // Extracts:
+                                            // - stage: "new_lead"
+                                            // - priority: "medium"
+                                            // - estimated_close_date: +30 days
+  opportunity_owner_id: identity?.id,
+  account_manager_id: identity?.id,
+  contact_ids: [], // Explicitly initialize for ReferenceArrayInput
+  products_to_sync: [], // Explicitly initialize for ArrayInput
+};
+```
+
+**Schema Defaults (opportunities.ts):**
+- `stage`: `"new_lead"` (line 111)
+- `priority`: `"medium"` (line 112)
+- `estimated_close_date`: `+30 days from now` (lines 103-108)
+- `contact_ids`: `[]` (line 125)
+- `tags`: `[]` (line 144)
+
+**Runtime Defaults:**
+- `opportunity_owner_id`: Current user ID from identity
+- `account_manager_id`: Current user ID from identity
+- `products_to_sync`: Explicitly initialized as `[]` for form state tracking
+
+---
+
+## 3. Special Features
+
+| Feature | Present | Implementation |
+|---------|---------|----------------|
+| Duplicate Detection | **YES** | `useSimilarOpportunityCheck()` hook with Levenshtein distance ≤3 |
+| Transform on Save | **YES** | Products virtual field (`products_to_sync`) transformed by data provider |
+| Save & Add Another | **NO** | Standard save redirects to show page |
+| Dirty State Check | **YES** | `CancelButton` confirms navigation if form dirty |
+| Hidden Fields | **YES** | `opportunity_owner_id` auto-populated from identity |
+| Custom Save Button | **YES** | `OpportunityCreateSaveButton` with duplicate check integration |
+| Inline Create Dialogs | **YES** | Organizations (customer, principal, distributor) and contacts |
+| Warning Systems | **YES** | Contact-organization mismatch, distributor authorization |
+| Tutorial Integration | **YES** | `OpportunityCreateFormTutorial` with data-tutorial attributes |
+| Auto-Name Generation | **PARTIAL** | Only in edit mode, not create mode (inconsistency #6) |
+
+---
+
+## 4. ASCII Wireframe
 
 ```
 ┌─────────────────────────────────────────────────────────────────┐
@@ -120,7 +195,7 @@ Legend:
 
 ---
 
-## Complete Field Inventory
+## 5. Field Inventory
 
 | # | Field Name | Label | Input Type | Required | Default | Validation | Source Line |
 |---|---|---|---|---|---|---|---|
@@ -154,7 +229,21 @@ Legend:
 
 ---
 
-## Input Types Used
+## 6. Form Components Used
+
+### Core Form Components
+
+| Component | Source | Purpose |
+|-----------|--------|---------|
+| `CreateBase` | `ra-core` | Provides mutation context and redirect handling |
+| `Form` | `ra-core` | Form wrapper with React Hook Form integration |
+| `Card`, `CardContent` | `@/components/ui/card` | Container layout structure |
+| `FormToolbar` | `@/atomic-crm/layout/FormToolbar` | Footer with Save/Cancel buttons |
+| `CancelButton` | `@/components/admin/cancel-button` | Navigation back with dirty check |
+| `OpportunityCreateSaveButton` | Custom | Save button with duplicate check integration |
+| `FormErrorSummary` | `@/components/admin/FormErrorSummary` | Error display at form top |
+
+### Input Components
 
 | Input Component | Count | Fields |
 |---|---|---|
@@ -164,6 +253,28 @@ Legend:
 | ReferenceArrayInput → AutocompleteArrayInput | 1 | contact_ids |
 | ArrayInput → SimpleFormIterator | 2 | products_to_sync, tags |
 | Hidden/Computed | 1 | opportunity_owner_id |
+
+### Layout Components
+
+| Component | Source | Purpose |
+|-----------|--------|---------|
+| `CompactFormRow` | `@/components/admin/form/CompactFormRow.tsx` | Responsive grid wrapper (1-col mobile, 2/3-col desktop) |
+| `CollapsibleSection` | `@/components/admin/form/CollapsibleSection.tsx` | Accordion-style section with chevron indicator |
+| `CompactFormFieldWithButton` | `@/components/admin/form/CompactFormFieldWithButton.tsx` | Grid layout: [1fr_auto] for field + button |
+
+### Domain-Specific Components
+
+| Component | Source | Purpose |
+|-----------|--------|---------|
+| `OpportunityInputs` | `@/atomic-crm/opportunities/forms/OpportunityInputs.tsx` | Container for all opportunity fields |
+| `OpportunityCompactForm` | `@/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx` | Actual field implementations |
+| `AutocompleteOrganizationInput` | `@/atomic-crm/organizations/AutocompleteOrganizationInput.tsx` | Type-aware organization selector |
+| `CreateInDialogButton` | `@/components/admin/create-in-dialog-button.tsx` | Opens modal with form, auto-selects created record |
+| `ContactOrgMismatchWarning` | Custom | Validates contact organizations match customer |
+| `DistributorAuthorizationWarning` | Custom | Checks distributor authorization for principal |
+| `NamingConventionHelp` | Custom | Collapsible tips with naming examples |
+| `SimilarOpportunitiesDialog` | Custom | Warns if opportunity name is similar (Levenshtein ≤3) |
+| `OpportunityCreateFormTutorial` | Custom | Standalone tutorial system (bottom-left floating) |
 
 ---
 
@@ -323,7 +434,51 @@ LEAD_SOURCE_CHOICES = [
 
 ---
 
-## Accessibility Audit
+## 9. Design System Compliance
+
+| Rule | Compliant | Issues |
+|------|-----------|--------|
+| Semantic colors only | **YES** | All colors use Tailwind v4 semantic tokens |
+| No hardcoded hex/oklch | **YES** | No raw color values found |
+| `bg-muted` page background | **YES** | OpportunityCreate.tsx:44 |
+| `create-form-card` class | **YES** | OpportunityCreate.tsx:45 |
+| Touch targets h-11 w-11 | **YES** | CollapsibleSection trigger uses h-11 (44px) |
+
+**Semantic Color Usage:**
+- `text-muted-foreground` - Helper text, section labels
+- `bg-muted` - Page background wrapper
+- `border-border` - CollapsibleSection borders
+- `text-warning`, `bg-warning-subtle`, `border-warning` - DistributorAuthorizationWarning
+- `text-foreground` - Primary text
+
+**Touch Target Compliance:**
+- CollapsibleSection trigger: `h-11` (44px minimum) - WCAG AA compliant
+- Buttons: Standard Button component maintains 44x44px minimum
+- Inline create buttons: Proper touch targets via shadcn/ui primitives
+
+**Layout Classes:**
+- Page wrapper: `bg-muted px-6 py-6`
+- Card container: `max-w-4xl mx-auto create-form-card`
+- Section spacing: `space-y-4` (consistent 1rem vertical)
+- Row gap: `gap-3` (0.75rem between grid items)
+
+**No Violations Found** - Form fully complies with Crispy Design System standards.
+
+---
+
+## 8. Accessibility Audit
+
+| Requirement | Compliant | Notes |
+|-------------|-----------|-------|
+| `aria-invalid` on error fields | **YES** | Handled by React Admin Input components |
+| `aria-describedby` linking | **YES** | Error messages linked via React Admin |
+| `role="alert"` on errors | **YES** | FormErrorSummary and inline validation |
+| Touch targets 44x44px min | **YES** | All interactive elements meet WCAG AA |
+| Keyboard navigation | **YES** | Full keyboard support throughout |
+| Focus management | **YES** | Proper focus handling for dialogs and collapsibles |
+| Explicit labels | **YES** | All inputs have `label` prop |
+| Helper text | **YES** | Contextual help provided where needed |
+| ARIA attributes | **YES** | CollapsibleSection uses `aria-controls` |
 
 ### Labels ✅
 - All inputs have explicit `label` prop
@@ -382,7 +537,47 @@ LEAD_SOURCE_CHOICES = [
 
 ---
 
-## Zod Schema Reference
+## 7. Validation Schema Analysis
+
+**Schema File:** `src/atomic-crm/validation/opportunities.ts`
+
+| Rule | Compliant | Notes |
+|------|-----------|-------|
+| Uses `z.strictObject()` | **YES** | Base schema uses `z.strictObject()` (line 84) |
+| All strings have `.max()` | **YES** | All string fields have max length constraints |
+| Uses `z.coerce` for non-strings | **YES** | Dates use `z.coerce.date()` (lines 99, 150) |
+| Uses `z.enum()` for constrained values | **YES** | Stage, priority, lead source, win/loss reasons all use enums |
+| API boundary validation only | **YES** | No form-level validation; Zod validation at data provider |
+
+**String Max Length Constraints:**
+- `name`: `.max(255)` (line 92)
+- `description`: `.max(2000)` (line 95)
+- `campaign`: `.max(100)` (line 130)
+- `notes`: `.max(5000)` (line 136)
+- `next_action`: `.max(500)` (line 147)
+- `decision_criteria`: `.max(2000)` (line 153)
+- `close_reason_notes`: `.max(500)` (line 165)
+- `tags[]`: `.max(50)` with array `.max(20)` (lines 141-142)
+
+**Coercion Rules:**
+- `estimated_close_date`: `z.coerce.date()` with default +30 days (lines 99-108)
+- `next_action_date`: `z.coerce.date().optional().nullable()` (line 150)
+
+**Enum Schemas:**
+- `opportunityStageSchema`: 7 values (lines 11-19)
+- `opportunityPrioritySchema`: 4 values (line 21)
+- `leadSourceSchema`: 8 values (lines 23-32)
+- `winReasonSchema`: 5 values (lines 41-47)
+- `lossReasonSchema`: 7 values (lines 50-58)
+
+**Sanitization:**
+- `description`, `notes`, `decision_criteria`, `close_reason_notes` use `sanitizeHtml()` transform for XSS prevention
+
+**Constitution Compliance:** **FULL** - All validation rules follow Engineering Constitution principles.
+
+---
+
+## Zod Schema Reference (Detailed)
 
 **File:** `/src/atomic-crm/validation/opportunities.ts`
 
@@ -589,88 +784,71 @@ OpportunityCreate
 
 ---
 
-## Inconsistencies & Notes
+## 10. Identified Issues / Recommendations
 
-### 1. Lead Source Field Type Mismatch
+### Critical Issues
+
+#### 1. Lead Source Field Type Mismatch
 **Issue:** `lead_source` has enum validation in schema (opportunities.ts:23-32) but renders as TextInput (CompactForm:388-389)
 **Expected:** SelectInput with LEAD_SOURCE_CHOICES
 **Current:** Free-text input (allows invalid values)
 **Impact:** User can enter arbitrary strings, bypassing enum validation
 
-### 2. Related Opportunity Field Hidden in Create
-**Location:** CompactForm:446-450
-**Behavior:** `related_opportunity_id` only shown in edit mode
-**Note:** Intentional design decision, but not documented why
-
-### 3. Products Virtual Field Pattern
-**Issue:** `products_to_sync` is a client-side virtual field transformed before DB save
-**Location:** Schema line 253-260
-**Note:** This pattern prevents direct use of `opportunity_products` junction table. Transformation logic must exist in data provider.
-
-### 4. Duplicate FormErrorSummary
-**Locations:**
-- OpportunityCreate:88 (via OpportunityFormContent)
-- OpportunityInputs:34-39
-
-**Issue:** Two error summaries rendered (though OpportunityInputs conditionally hides if no errors)
-**Impact:** Potential confusion with two identical error displays
-
-### 5. Opportunity Owner vs Account Manager
-**Fields:**
-- `opportunity_owner_id` (hidden, auto-set to identity.id)
-- `account_manager_id` (visible, user-selectable)
-
-**Confusion:** Two separate ownership concepts without clear distinction in UI
-**Location:** OpportunityCreate:36, CompactForm:224-235
-
-### 6. Auto-Generated Name in Create Mode
-**Issue:** Name field has no auto-generation in create mode (only edit mode shows refresh button)
-**Location:** CompactForm:75-98
-**Impact:** User must manually follow naming convention or wait until edit to use auto-generate
-
-### 7. Tags Input Type
-**Issue:** Uses SimpleFormIterator with text inputs instead of a proper tag picker
-**Location:** CompactForm:400-404
-**UX Impact:** No autocomplete, no existing tag suggestions, manual entry only
-
-### 8. Contact/Product Required Validation
+#### 2. Contact/Product Required Validation
 **Issue:** Schema marks these as optional with defaults, but UI describes them as required
 **Locations:**
 - CompactForm:288-291 (Contacts: "At least one contact is required")
 - CompactForm:348-352 (Products: "At least one product is required")
 - Schema line 122-125, 253-260 (both optional)
-
 **Resolution:** Update schema has .refine() for contacts (line 333-347), but create schema does not enforce this
 
-### 9. Naming Convention Help Always Collapsed
+#### 3. Duplicate FormErrorSummary
+**Locations:**
+- OpportunityCreate:88 (via OpportunityFormContent)
+- OpportunityInputs:34-39
+**Issue:** Two error summaries rendered (though OpportunityInputs conditionally hides if no errors)
+**Impact:** Potential confusion with two identical error displays
+
+### Improvements
+
+#### 4. Auto-Generated Name in Create Mode
+**Issue:** Name field has no auto-generation in create mode (only edit mode shows refresh button)
+**Location:** CompactForm:75-98
+**Impact:** User must manually follow naming convention or wait until edit to use auto-generate
+
+#### 5. Tags Input Type
+**Issue:** Uses SimpleFormIterator with text inputs instead of a proper tag picker
+**Location:** CompactForm:400-404
+**UX Impact:** No autocomplete, no existing tag suggestions, manual entry only
+
+#### 6. Naming Convention Help Always Collapsed
 **Location:** NamingConventionHelp:14
 **Issue:** `useState(false)` - help always starts collapsed
 **UX Impact:** First-time users may not discover naming tips
 
-### 10. Tutorial Attributes on Inner Elements
+#### 7. Opportunity Owner vs Account Manager
+**Fields:**
+- `opportunity_owner_id` (hidden, auto-set to identity.id)
+- `account_manager_id` (visible, user-selectable)
+**Confusion:** Two separate ownership concepts without clear distinction in UI
+**Location:** OpportunityCreate:36, CompactForm:224-235
+
+### Notes for Standardization
+
+#### 8. Products Virtual Field Pattern
+**Pattern:** `products_to_sync` is a client-side virtual field transformed before DB save
+**Location:** Schema line 253-260
+**Note:** This pattern prevents direct use of `opportunity_products` junction table. Transformation logic must exist in data provider.
+
+#### 9. Related Opportunity Field Hidden in Create
+**Location:** CompactForm:446-450
+**Behavior:** `related_opportunity_id` only shown in edit mode
+**Note:** Intentional design decision, but not documented why
+
+#### 10. Tutorial Attributes on Inner Elements
 **Pattern:** `data-tutorial="opp-name"` on wrapper divs
 **Locations:** CompactForm:69, 136, 176, 193, etc.
 **Note:** Tutorial system targets these for onboarding steps. Ensure IDs remain stable.
-
----
-
-## Recommendations
-
-### High Priority
-1. **Fix lead_source input type** - Change TextInput to SelectInput with LEAD_SOURCE_CHOICES
-2. **Consolidate error summaries** - Remove duplicate or clarify roles
-3. **Enforce contact/product requirements** - Add .refine() to createOpportunitySchema
-4. **Add auto-name generation to create mode** - Remove edit-only restriction (users expect this during initial creation)
-
-### Medium Priority
-5. **Improve tags UX** - Replace SimpleFormIterator with proper tag picker (autocomplete, chips)
-6. **Default naming help to open** - Change `useState(true)` for first-time user discoverability
-7. **Document products_to_sync transform** - Add comment explaining virtual field pattern
-8. **Clarify owner vs account manager** - Add helper text or consolidate fields
-
-### Low Priority
-9. **Add related_opportunity in create** - Or document why edit-only
-10. **Tutorial attribute stability** - Document data-tutorial ID conventions in codebase
 
 ---
 
@@ -728,6 +906,39 @@ const formDefaults = {
 - **ContactOrgMismatchWarning:** Detects contacts from wrong organization
 - **DistributorAuthorizationWarning:** Validates distributor authorization status
 - **Both:** Soft warnings (don't block, but require acknowledgment)
+
+---
+
+## 11. Cross-References
+
+**Related Files:**
+- **Edit Form:** `src/atomic-crm/opportunities/OpportunityEdit.tsx`
+- **SlideOver:** `src/atomic-crm/opportunities/OpportunitySlideOver.tsx`
+- **Inputs Component:** `src/atomic-crm/opportunities/forms/OpportunityInputs.tsx`
+- **Compact Form:** `src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx`
+- **Save Button:** `src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx`
+- **Similar Check Hook:** `src/atomic-crm/opportunities/hooks/useSimilarOpportunityCheck.tsx`
+- **Tutorial:** `src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx`
+- **Related Tests:** `src/atomic-crm/opportunities/__tests__/`
+
+**Related Components:**
+- `ContactOrgMismatchWarning` - `src/atomic-crm/opportunities/components/ContactOrgMismatchWarning.tsx`
+- `DistributorAuthorizationWarning` - `src/atomic-crm/opportunities/components/DistributorAuthorizationWarning.tsx`
+- `SimilarOpportunitiesDialog` - `src/atomic-crm/opportunities/components/SimilarOpportunitiesDialog.tsx`
+- `NamingConventionHelp` - `src/atomic-crm/opportunities/forms/NamingConventionHelp.tsx`
+- `AutocompleteOrganizationInput` - `src/atomic-crm/organizations/AutocompleteOrganizationInput.tsx`
+- `CreateInDialogButton` - `src/components/admin/create-in-dialog-button.tsx`
+
+**Shared Layout Components:**
+- `CompactFormRow` - `src/components/admin/form/CompactFormRow.tsx`
+- `CollapsibleSection` - `src/components/admin/form/CollapsibleSection.tsx`
+- `CompactFormFieldWithButton` - `src/components/admin/form/CompactFormFieldWithButton.tsx`
+- `FormErrorSummary` - `src/components/admin/FormErrorSummary.tsx`
+- `FormToolbar` - `src/atomic-crm/layout/FormToolbar.tsx`
+
+**Related Audits:**
+- Discovery Summary: `docs/audits/create-forms/00-discovery-summary.md`
+- Template: `docs/audits/create-forms/TEMPLATE.md`
 
 ---
 
