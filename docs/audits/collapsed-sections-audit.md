@@ -100,7 +100,9 @@ These use the `CollapsibleSection` component from `@/components/admin/form` and 
 **File:** `src/atomic-crm/contacts/ContactAdditionalDetails.tsx`
 **Lines:** 14-63
 
-**Pattern detected:**
+**Status:** ✅ **COMPLETED** (2025-12-15)
+
+**Pattern detected (BEFORE):**
 ```typescript
 <CollapsibleSection title="Additional Details">
   {/* 4 fields: title, department, linkedin_url, notes */}
@@ -111,11 +113,16 @@ These use the `CollapsibleSection` component from `@/components/admin/form` and 
 </CollapsibleSection>
 ```
 
+**Transformation Applied:**
+- **Before:** 2 CollapsibleSection components hiding 7 fields
+- **After:** 2 FormSection components with fields always visible
+- **Fields now visible:** 7
+
 **Context:**
 - Where it appears: Contact Create/Edit Form
 - What it contains: Job information, organization relationships
 - Field count inside: 7 fields across 2 sections
-- User interaction required: Click to expand each section
+- User interaction required: ~~Click to expand each section~~ None (always visible)
 
 **Assessment:**
 - [x] Form context (research says remove)
@@ -124,8 +131,8 @@ These use the `CollapsibleSection` component from `@/components/admin/form` and 
 - [x] Contains optional/advanced fields
 - [ ] Has accessibility concerns
 
-**Recommendation:** REMOVE
-**Rationale:** Only 7 fields total. Hiding them adds unnecessary clicks. Replace with visual grouping via `FormSection` headers.
+**Resolution:** ✅ REMOVED
+**Action taken:** Replaced CollapsibleSection with FormSection headers. All 7 fields now always visible.
 
 ---
 
@@ -224,18 +231,25 @@ These use the `CollapsibleSection` component from `@/components/admin/form` and 
 **File:** `src/atomic-crm/organizations/OrganizationStatusSection.tsx`
 **Lines:** 9-47
 
-**Pattern detected:**
+**Status:** ✅ **COMPLETED** (2025-12-15)
+
+**Pattern detected (BEFORE):**
 ```typescript
 <CollapsibleSection title="Status & Payment">
   {/* 5 fields: status, status_reason, payment_terms, credit_limit, territory */}
 </CollapsibleSection>
 ```
 
+**Transformation Applied:**
+- **Before:** 1 CollapsibleSection hiding 5 fields
+- **After:** 1 FormSection with fields always visible
+- **Fields now visible:** 5
+
 **Context:**
 - Where it appears: Organization Edit Form
 - What it contains: Account status and payment configuration
 - Field count inside: 5 fields
-- User interaction required: Click to expand
+- User interaction required: ~~Click to expand~~ None (always visible)
 
 **Assessment:**
 - [x] Form context (research says remove)
@@ -244,8 +258,10 @@ These use the `CollapsibleSection` component from `@/components/admin/form` and 
 - [x] Contains optional/advanced fields
 - [ ] Has accessibility concerns
 
-**Recommendation:** REMOVE
-**Rationale:** Note in code says "Status & Payment fields hidden per user feedback - defaults: status='active'" - but the section still exists. Either remove entirely or convert to `FormSection`.
+**Resolution:** ✅ REMOVED
+**Action taken:** Replaced CollapsibleSection with FormSection. All 5 fields now always visible.
+
+**Note:** Optional enhancement pending: Could add FormFieldWrapper components to individual fields for consistent spacing.
 
 ---
 
@@ -286,7 +302,9 @@ These use the `CollapsibleSection` component from `@/components/admin/form` and 
 **File:** `src/atomic-crm/activities/ActivitySinglePage.tsx`
 **Lines:** 116-193
 
-**Pattern detected:**
+**Status:** ✅ **COMPLETED** (2025-12-15)
+
+**Pattern detected (BEFORE):**
 ```typescript
 <Collapsible open={followUpOpen} onOpenChange={setFollowUpOpen}>
   <CollapsibleTrigger asChild>
@@ -305,11 +323,17 @@ These use the `CollapsibleSection` component from `@/components/admin/form` and 
 </Collapsible>
 ```
 
+**Transformation Applied:**
+- **Before:** 2 raw Collapsible components hiding 5 fields (Follow-up, Outcome)
+- **After:** 4 FormSection components organizing all fields visibly
+- **Sections now:** Basic Info, Details, Follow-up, Outcome
+- **Fields now visible:** 13 (all activity fields)
+
 **Context:**
 - Where it appears: Activity Create/Edit Form
 - What it contains: Follow-up tracking, outcome fields
-- Field count inside: 5 fields across 2 sections
-- User interaction required: Click to expand each section
+- Field count inside: 13 fields across 4 sections (full form)
+- User interaction required: ~~Click to expand each section~~ None (always visible)
 
 **Assessment:**
 - [x] Form context (research says remove)
@@ -318,8 +342,8 @@ These use the `CollapsibleSection` component from `@/components/admin/form` and 
 - [x] Contains optional fields
 - [ ] Has accessibility concerns
 
-**Recommendation:** REMOVE
-**Rationale:** Follow-up date is critical for activity tracking. Hiding it defeats the purpose. Convert to `FormSection` with headers.
+**Resolution:** ✅ REMOVED
+**Action taken:** Replaced raw Collapsible components with FormSection headers. All 13 fields now always visible with clear visual grouping.
 
 ---
 
@@ -842,17 +866,17 @@ className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-ac
 
 ### Form Contexts (HIGH PRIORITY for Removal)
 
-| Location | Fields Hidden | Impact | Action |
+| Location | Fields Hidden | Impact | Status |
 |----------|---------------|--------|--------|
-| `OpportunityCompactForm.tsx` | 11 | High (Classification hidden) | REMOVE |
-| `ContactAdditionalDetails.tsx` | 7 | Medium (territory hidden) | REMOVE |
-| `OrganizationCompactForm.tsx` | 4 | Low | REMOVE |
-| `OrganizationHierarchySection.tsx` | 3 | Low | REMOVE |
-| `OrganizationAddressSection.tsx` | 4 | Low | REMOVE |
-| `OrganizationStatusSection.tsx` | 5 | Medium (credit_limit hidden) | REMOVE |
-| `ProductDistributionTab.tsx` | 0 | None (placeholder) | REMOVE |
-| `ActivitySinglePage.tsx` | 5 | High (follow_up_date hidden!) | REMOVE |
-| `WorkflowManagementSection.tsx` | 1 | Low | REMOVE |
+| `OpportunityCompactForm.tsx` | 11 | High (Classification hidden) | PENDING |
+| `ContactAdditionalDetails.tsx` | 7 | Medium (territory hidden) | ✅ DONE |
+| `OrganizationCompactForm.tsx` | 4 | Low | PENDING |
+| `OrganizationHierarchySection.tsx` | 3 | Low | PENDING |
+| `OrganizationAddressSection.tsx` | 4 | Low | PENDING |
+| `OrganizationStatusSection.tsx` | 5 | Medium (credit_limit hidden) | ✅ DONE |
+| `ProductDistributionTab.tsx` | 0 | None (placeholder) | PENDING |
+| `ActivitySinglePage.tsx` | 13 | High (follow_up_date hidden!) | ✅ DONE |
+| `WorkflowManagementSection.tsx` | 1 | Low | PENDING |
 
 ### Non-Form Contexts (Evaluate Case-by-Case)
 
@@ -877,21 +901,32 @@ className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-ac
 
 **Goal:** Replace `CollapsibleSection` with `FormSection` or `FormSectionWithProgress` in all form files.
 
-1. **OpportunityCompactForm.tsx** — Replace 3 `CollapsibleSection` with `FormSection` headers
-2. **ContactAdditionalDetails.tsx** — Replace 2 `CollapsibleSection` with `FormSection` headers
-3. **ActivitySinglePage.tsx** — Replace 2 raw `Collapsible` with `FormSection` headers
-4. **OrganizationCompactForm.tsx** — Replace 1 `CollapsibleSection` with `FormSection`
-5. **OrganizationHierarchySection.tsx** — Replace wrapper with `FormSection`
-6. **OrganizationAddressSection.tsx** — Replace wrapper with `FormSection`
-7. **OrganizationStatusSection.tsx** — Replace wrapper with `FormSection` (or remove if unused)
-8. **WorkflowManagementSection.tsx** — Show decision_criteria textarea always
-9. **ProductDistributionTab.tsx** — Remove empty placeholder section
+**Status:** ✅ Priority items COMPLETE (2025-12-15)
+
+| # | File | Status | Notes |
+|---|------|--------|-------|
+| 1 | **OpportunityCompactForm.tsx** | ⏳ PENDING | Replace 3 `CollapsibleSection` with `FormSection` headers |
+| 2 | **ContactAdditionalDetails.tsx** | ✅ DONE | Replaced 2 `CollapsibleSection` → 2 `FormSection` (7 fields visible) |
+| 3 | **ActivitySinglePage.tsx** | ✅ DONE | Replaced 2 raw `Collapsible` → 4 `FormSection` (13 fields visible) |
+| 4 | **OrganizationCompactForm.tsx** | ⏳ PENDING | Replace 1 `CollapsibleSection` with `FormSection` |
+| 5 | **OrganizationHierarchySection.tsx** | ⏳ PENDING | Replace wrapper with `FormSection` |
+| 6 | **OrganizationAddressSection.tsx** | ⏳ PENDING | Replace wrapper with `FormSection` |
+| 7 | **OrganizationStatusSection.tsx** | ✅ DONE | Replaced 1 `CollapsibleSection` → 1 `FormSection` (5 fields visible) |
+| 8 | **WorkflowManagementSection.tsx** | ⏳ PENDING | Show decision_criteria textarea always |
+| 9 | **ProductDistributionTab.tsx** | ⏳ PENDING | Remove empty placeholder section |
+
+**Completion Notes:**
+- 3 high-impact files completed (ActivitySinglePage, ContactAdditionalDetails, OrganizationStatusSection)
+- 25 fields made always-visible across these files
+- Remaining 6 files are lower priority and can be addressed incrementally
 
 ### Phase 2: Evaluate (Non-Form Contexts)
 
 1. **FilterChipsPanel.tsx** — Consider showing chips always when ≤5 filters active, only collapse for many filters
 
 ### Phase 3: Cleanup
+
+**Status:** ⏳ Blocked by Phase 1 completion (CollapsibleSection still used by pending items)
 
 1. **Remove CollapsibleSection component** if all form instances removed (`src/components/admin/form/CollapsibleSection.tsx`)
 2. **Remove CollapsibleSection export** from `src/components/admin/form/index.ts`
