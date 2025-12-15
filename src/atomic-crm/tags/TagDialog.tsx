@@ -60,7 +60,7 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
     reset,
     setValue,
     watch,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isSubmitting, isValid, isDirty },
   } = form;
 
   // Watch color for the color picker UI
@@ -83,6 +83,13 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
   };
 
   const handleClose = () => {
+    // Check for unsaved changes before closing
+    if (isDirty) {
+      const confirmed = window.confirm(
+        'You have unsaved changes. Are you sure you want to close?'
+      );
+      if (!confirmed) return;
+    }
     reset(defaultValues);
     onClose();
   };
