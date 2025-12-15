@@ -41,6 +41,11 @@ import {
   validateInteractionsForm,
 } from "../../../validation/activities";
 import { validateCreateSegment, validateUpdateSegment } from "../../../validation/segments";
+import {
+  validateProductDistributorForm,
+  validateCreateProductDistributor,
+  validateUpdateProductDistributor,
+} from "../../../validation/productDistributors";
 import { filterableFields, isValidFilterField } from "../filterRegistry";
 import { DEV } from "@/lib/devLogger";
 
@@ -63,6 +68,7 @@ interface ResourceTypeMap {
   tasks: Task;
   tags: Tag;
   products: ProductFormData;
+  product_distributors: ProductDistributor;
   sales: Sale;
   activities: ActivityRecord;
   engagements: ActivityRecord;
@@ -94,6 +100,10 @@ export class ValidationService {
     products: {
       create: async (data: unknown) => validateProductForm(data),
       update: async (data: unknown) => validateProductUpdate(data),
+    },
+    product_distributors: {
+      create: async (data: unknown) => validateCreateProductDistributor(data),
+      update: async (data: unknown) => validateUpdateProductDistributor(data),
     },
     tags: {
       create: async (data: unknown) => {
