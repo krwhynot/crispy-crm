@@ -9,6 +9,18 @@ import { sanitizeHtml } from "@/lib/sanitization";
 // Email and phone type enum - lowercase to match database JSONB format
 export const personalInfoTypeSchema = z.enum(["work", "home", "other"]);
 
+// Contact department enum - for distributor staff classification
+export const contactDepartmentSchema = z.enum([
+  'senior_management',
+  'sales_management',
+  'district_management',
+  'area_sales',
+  'sales_specialist',
+  'sales_support',
+  'procurement',
+]);
+export type ContactDepartment = z.infer<typeof contactDepartmentSchema>;
+
 // LinkedIn URL validation
 const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin\.com\//;
 const isLinkedinUrl = z
