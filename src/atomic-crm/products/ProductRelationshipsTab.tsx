@@ -10,7 +10,6 @@ interface Product {
   id: number;
   name: string;
   principal_id?: number | null;
-  distributor_id?: number | null;
   created_at?: string | null;
   updated_at?: string | null;
 }
@@ -25,7 +24,6 @@ interface ProductRelationshipsTabProps {
  *
  * **Read-only tab** showing:
  * - Principal Organization (if exists)
- * - Distributor Organization (if exists)
  * - Related Opportunities (opportunities using this product)
  * - Created/Updated timestamps
  *
@@ -53,22 +51,6 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
                 <div className="flex items-center gap-2">
                   <Building2 className="size-4 text-muted-foreground" />
                   <ReferenceField source="principal_id" reference="organizations" link="show">
-                    <TextField source="name" className="font-medium" />
-                  </ReferenceField>
-                </div>
-              </CardContent>
-            </Card>
-          </AsideSection>
-        )}
-
-        {/* Distributor Organization */}
-        {record.distributor_id && (
-          <AsideSection title="Distributor">
-            <Card>
-              <CardContent className="p-4">
-                <div className="flex items-center gap-2">
-                  <Building2 className="size-4 text-muted-foreground" />
-                  <ReferenceField source="distributor_id" reference="organizations" link="show">
                     <TextField source="name" className="font-medium" />
                   </ReferenceField>
                 </div>

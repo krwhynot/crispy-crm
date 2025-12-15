@@ -1,4 +1,4 @@
-import { useWatch, useFormContext } from "react-hook-form";
+import { useWatch } from "react-hook-form";
 import { useGetList } from "react-admin";
 import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
@@ -17,9 +17,8 @@ import { TextInput } from "@/components/admin/text-input";
  */
 export function ProductDistributorInput() {
   const selectedIds = useWatch({ name: "distributor_ids" }) || [];
-  const { setValue } = useFormContext();
 
-  const { data: distributors, isLoading } = useGetList(
+  const { data: distributors } = useGetList(
     "organizations",
     {
       filter: { id: selectedIds, organization_type: "distributor" },

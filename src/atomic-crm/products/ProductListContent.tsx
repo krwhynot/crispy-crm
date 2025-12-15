@@ -42,7 +42,6 @@ export const ProductListContent = () => {
               <div className="flex-1">
                 <div className="flex items-center gap-4">
                   <h3 className="font-semibold text-lg">{product.name || "Untitled Product"}</h3>
-                  <span className="text-sm text-muted-foreground">SKU: {product.sku || "N/A"}</span>
                 </div>
 
                 <div className="flex items-center gap-6 mt-2 text-sm text-muted-foreground">

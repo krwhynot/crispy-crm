@@ -13,10 +13,8 @@ import { ProductFormTutorial } from "./ProductFormTutorial";
 // Human-readable field labels for error messages
 const PRODUCT_FIELD_LABELS: Record<string, string> = {
   name: "Product Name",
-  sku: "SKU",
   description: "Description",
   principal_id: "Principal/Supplier",
-  distributor_id: "Distributor",
   category: "Category",
   status: "Status",
 };
