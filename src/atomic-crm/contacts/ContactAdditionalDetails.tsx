@@ -1,7 +1,7 @@
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import {
-  CollapsibleSection,
+  FormSection,
   CompactFormRow,
   FormFieldWrapper,
 } from "@/components/admin/form";
