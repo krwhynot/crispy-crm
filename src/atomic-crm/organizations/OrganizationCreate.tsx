@@ -15,7 +15,12 @@ import { useState, useCallback, useRef } from "react";
 import { CreateBase, Form, useGetList, useCreate, useRedirect, useNotify } from "ra-core";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
-import { SaveButton, FormLoadingSkeleton } from "@/components/admin/form";
+import {
+  SaveButton,
+  FormLoadingSkeleton,
+  FormProgressProvider,
+  FormProgressBar,
+} from "@/components/admin/form";
 import { FormToolbar } from "@/components/admin/simple-form";
 import { useLocation } from "react-router-dom";
 import { useFormContext } from "react-hook-form";
@@ -215,17 +220,20 @@ const OrganizationCreate = () => {
       <CreateBase redirect="show" transform={transformValues}>
         <div className="bg-muted px-6 py-6">
           <div className="max-w-4xl mx-auto create-form-card">
-            <Form key={formKey} defaultValues={formDefaults}>
-              <Card>
-                <CardContent>
-                  <OrganizationFormContent
-                    onDuplicateFound={handleDuplicateFound}
-                    checkForDuplicate={checkForDuplicate}
-                    isChecking={isChecking}
-                  />
-                </CardContent>
-              </Card>
-            </Form>
+            <FormProgressProvider initialProgress={10}>
+              <Form key={formKey} defaultValues={formDefaults} mode="onBlur">
+                <FormProgressBar className="mb-6" />
+                <Card>
+                  <CardContent>
+                    <OrganizationFormContent
+                      onDuplicateFound={handleDuplicateFound}
+                      checkForDuplicate={checkForDuplicate}
+                      isChecking={isChecking}
+                    />
+                  </CardContent>
+                </Card>
+              </Form>
+            </FormProgressProvider>
           </div>
         </div>
       </CreateBase>

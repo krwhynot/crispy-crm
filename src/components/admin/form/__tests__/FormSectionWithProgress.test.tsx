@@ -1,0 +1,314 @@
+import { render, screen, waitFor } from "./test-utils";
+import { FormSectionWithProgress } from "../FormSectionWithProgress";
+import { FormFieldWrapper } from "../FormFieldWrapper";
+
+describe("FormSectionWithProgress", () => {
+  describe("rendering", () => {
+    it("renders title correctly", () => {
+      render(
+        <FormSectionWithProgress id="test" title="Contact Info">
+          <div>content</div>
+        </FormSectionWithProgress>
+      );
+      expect(screen.getByText("Contact Info")).toBeInTheDocument();
+    });
+
+    it("renders description when provided", () => {
+      render(
+        <FormSectionWithProgress
+          id="test"
+          title="Test"
+          description="Help text here"
+        >
+          <div>content</div>
+        </FormSectionWithProgress>
+      );
+      expect(screen.getByText("Help text here")).toBeInTheDocument();
+    });
+
+    it("does not render description when not provided", () => {
+      render(
+        <FormSectionWithProgress id="test" title="Test">
+          <div>content</div>
+        </FormSectionWithProgress>
+      );
+      expect(
+        screen.queryByText(/help text/i)
+      ).not.toBeInTheDocument();
+    });
+
+    it("renders children", () => {
+      render(
+        <FormSectionWithProgress id="test" title="Test">
+          <div data-testid="child">Child content</div>
+        </FormSectionWithProgress>
+      );
+      expect(screen.getByTestId("child")).toBeInTheDocument();
+    });
+
+    it("sets data-section-id attribute", () => {
+      const { container } = render(
+        <FormSectionWithProgress id="contact-info" title="Test">
+          <div>content</div>
+        </FormSectionWithProgress>
+      );
+      expect(container.querySelector('[data-section-id="contact-info"]')).toBeInTheDocument();
+    });
+  });
+
+  describe("completion indicator", () => {
+    it("shows no indicator when requiredFields is empty", () => {
+      render(
+        <FormSectionWithProgress id="test" title="Test" requiredFields={[]}>
+          <div>content</div>
+        </FormSectionWithProgress>
+      );
+      expect(screen.queryByText("Complete")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("section-complete-icon")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("section-incomplete-icon")).not.toBeInTheDocument();
+    });
+
+    it("shows no indicator when requiredFields is undefined", () => {
+      render(
+        <FormSectionWithProgress id="test" title="Test">
+          <div>content</div>
+        </FormSectionWithProgress>
+      );
+      expect(screen.queryByText("Complete")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("section-complete-icon")).not.toBeInTheDocument();
+      expect(screen.queryByTestId("section-incomplete-icon")).not.toBeInTheDocument();
+    });
+
+    it("shows empty circle when required fields are not registered", () => {
+      render(
+        <FormSectionWithProgress
+          id="test"
+          title="Test"
+          requiredFields={["first_name", "last_name"]}
+        >
+          <div>No fields registered yet</div>
+        </FormSectionWithProgress>
+      );
+
+      // Should show empty circle when fields aren't registered/valid
+      expect(screen.queryByText("Complete")).not.toBeInTheDocument();
+      expect(screen.getByTestId("section-incomplete-icon")).toBeInTheDocument();
+    });
+
+    it("shows empty circle when required fields are incomplete", async () => {
+      render(
+        <FormSectionWithProgress
+          id="test"
+          title="Test"
+          requiredFields={["first_name"]}
+        >
+          <FormFieldWrapper name="first_name" isRequired>
+            <input data-testid="first-name-input" />
+          </FormFieldWrapper>
+        </FormSectionWithProgress>,
+        { defaultValues: { first_name: "" } }
+      );
+
+      // Field registered but not valid - should show incomplete
+      expect(screen.queryByText("Complete")).not.toBeInTheDocument();
+      expect(screen.getByTestId("section-incomplete-icon")).toBeInTheDocument();
+    });
+
+    it("shows checkmark and Complete badge when all required fields valid", async () => {
+      render(
+        <FormSectionWithProgress
+          id="test"
+          title="Test"
+          requiredFields={["first_name"]}
+        >
+          <FormFieldWrapper name="first_name" isRequired>
+            <input data-testid="first-name-input" />
+          </FormFieldWrapper>
+        </FormSectionWithProgress>,
+        { defaultValues: { first_name: "John" } }
+      );
+
+      // With valid default value, field should be marked valid
+      await waitFor(() => {
+        expect(screen.getByText("Complete")).toBeInTheDocument();
+        expect(screen.getByTestId("section-complete-icon")).toBeInTheDocument();
+      });
+    });
+
+    it("requires ALL required fields to be valid for completion", async () => {
+      render(
+        <FormSectionWithProgress
+          id="test"
+          title="Test"
+          requiredFields={["first_name", "last_name"]}
+        >
+          <FormFieldWrapper name="first_name" isRequired>
+            <input data-testid="first-name-input" />
+          </FormFieldWrapper>
+          <FormFieldWrapper name="last_name" isRequired>
+            <input data-testid="last-name-input" />
+          </FormFieldWrapper>
+        </FormSectionWithProgress>,
+        { defaultValues: { first_name: "John", last_name: "" } }
+      );
+
+      // Only one field valid — not complete
+      await waitFor(() => {
+        expect(screen.queryByText("Complete")).not.toBeInTheDocument();
+        expect(screen.getByTestId("section-incomplete-icon")).toBeInTheDocument();
+      });
+    });
+
+    it("correctly computes completion from multiple fields", async () => {
+      // Tests the useMemo completion calculation with all fields valid
+      render(
+        <FormSectionWithProgress
+          id="test"
+          title="Test"
+          requiredFields={["first_name", "last_name", "email"]}
+        >
+          <FormFieldWrapper name="first_name" isRequired>
+            <input data-testid="first-name-input" />
+          </FormFieldWrapper>
+          <FormFieldWrapper name="last_name" isRequired>
+            <input data-testid="last-name-input" />
+          </FormFieldWrapper>
+          <FormFieldWrapper name="email" isRequired>
+            <input data-testid="email-input" />
+          </FormFieldWrapper>
+        </FormSectionWithProgress>,
+        { defaultValues: { first_name: "John", last_name: "Doe", email: "john@example.com" } }
+      );
+
+      // All three fields have values, so section should be complete
+      await waitFor(() => {
+        expect(screen.getByText("Complete")).toBeInTheDocument();
+        expect(screen.getByTestId("section-complete-icon")).toBeInTheDocument();
+      });
+    });
+  });
+
+  describe("accessibility", () => {
+    it("icons have aria-hidden for screen readers", () => {
+      render(
+        <FormSectionWithProgress
+          id="test"
+          title="Test"
+          requiredFields={["name"]}
+        >
+          <div>content</div>
+        </FormSectionWithProgress>
+      );
+
+      // Icons should be decorative
+      const svgs = document.querySelectorAll("svg");
+      svgs.forEach((svg) => {
+        expect(svg).toHaveAttribute("aria-hidden", "true");
+      });
+    });
+
+    it("title uses semantic heading element", () => {
+      render(
+        <FormSectionWithProgress id="test" title="Section Title">
+          <div>content</div>
+        </FormSectionWithProgress>
+      );
+
+      expect(
+        screen.getByRole("heading", { name: "Section Title" })
+      ).toBeInTheDocument();
+    });
+
+    it("heading is h3 level for proper hierarchy", () => {
+      render(
+        <FormSectionWithProgress id="test" title="Test Section">
+          <div>content</div>
+        </FormSectionWithProgress>
+      );
+
+      const heading = screen.getByRole("heading", { name: "Test Section" });
+      expect(heading.tagName).toBe("H3");
+    });
+  });
+
+  describe("styling", () => {
+    it("applies custom className", () => {
+      const { container } = render(
+        <FormSectionWithProgress
+          id="test"
+          title="Test"
+          className="custom-class"
+        >
+          <div>content</div>
+        </FormSectionWithProgress>
+      );
+
+      expect(container.firstChild).toHaveClass("custom-class");
+    });
+
+    it("has base spacing class", () => {
+      const { container } = render(
+        <FormSectionWithProgress id="test" title="Test">
+          <div>content</div>
+        </FormSectionWithProgress>
+      );
+
+      expect(container.firstChild).toHaveClass("space-y-4");
+    });
+
+    it("uses semantic color token for complete badge", async () => {
+      render(
+        <FormSectionWithProgress
+          id="test"
+          title="Test"
+          requiredFields={["name"]}
+        >
+          <FormFieldWrapper name="name" isRequired>
+            <input data-testid="name-input" />
+          </FormFieldWrapper>
+        </FormSectionWithProgress>,
+        { defaultValues: { name: "Valid" } }
+      );
+
+      await waitFor(() => {
+        const badge = screen.getByTestId("section-complete-badge");
+        expect(badge).toHaveClass("text-primary");
+      });
+    });
+
+    it("uses semantic color token for incomplete icon", () => {
+      render(
+        <FormSectionWithProgress
+          id="test"
+          title="Test"
+          requiredFields={["name"]}
+        >
+          <div>content</div>
+        </FormSectionWithProgress>
+      );
+
+      const icon = screen.getByTestId("section-incomplete-icon");
+      expect(icon).toHaveClass("text-muted-foreground");
+    });
+
+    it("uses semantic color token for complete icon", async () => {
+      render(
+        <FormSectionWithProgress
+          id="test"
+          title="Test"
+          requiredFields={["name"]}
+        >
+          <FormFieldWrapper name="name" isRequired>
+            <input data-testid="name-input" />
+          </FormFieldWrapper>
+        </FormSectionWithProgress>,
+        { defaultValues: { name: "Valid" } }
+      );
+
+      await waitFor(() => {
+        const icon = screen.getByTestId("section-complete-icon");
+        expect(icon).toHaveClass("text-primary");
+      });
+    });
+  });
+});

@@ -19,8 +19,10 @@ export { ButtonPlaceholder } from "./ButtonPlaceholder";
 export { FormProgressProvider, useFormProgress } from "./FormProgressProvider";
 export { FormProgressBar } from "./FormProgressBar";
 export { FormFieldWrapper } from "./FormFieldWrapper";
+export { FormSectionWithProgress } from "./FormSectionWithProgress";
 
 // Types
 export type { FormProgressBarProps } from "./FormProgressBar";
 export type { FormFieldWrapperProps } from "./FormFieldWrapper";
 export type { FormSectionProps } from "./FormSection";
+export type { FormSectionWithProgressProps } from "./FormSectionWithProgress";

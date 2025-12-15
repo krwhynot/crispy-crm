@@ -3,7 +3,12 @@ import { useFormContext, useFormState } from "react-hook-form";
 import { useCallback } from "react";
 
 import { Button } from "@/components/ui/button";
-import { SaveButton, FormLoadingSkeleton } from "@/components/admin/form";
+import {
+  SaveButton,
+  FormLoadingSkeleton,
+  FormProgressProvider,
+  FormProgressBar,
+} from "@/components/admin/form";
 import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
 import type { Contact } from "../types";
 import { ContactInputs } from "./ContactInputs";
@@ -45,9 +50,12 @@ const ContactCreate = () => {
     <CreateBase redirect="list" transform={transformData}>
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
-          <Form defaultValues={formDefaults}>
-            <ContactFormContent notify={notify} redirect={redirect} />
-          </Form>
+          <FormProgressProvider initialProgress={10}>
+            <FormProgressBar className="mb-6" />
+            <Form defaultValues={formDefaults} mode="onBlur">
+              <ContactFormContent notify={notify} redirect={redirect} />
+            </Form>
+          </FormProgressProvider>
         </div>
       </div>
       <ContactFormTutorial />
