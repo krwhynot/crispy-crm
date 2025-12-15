@@ -558,6 +558,32 @@ export const unifiedDataProvider: DataProvider = {
         } as GetOneResult<RecordType>;
       }
 
+      // Handle products - include distributors
+      if (resource === "products") {
+        const { data: product, error } = await supabase
+          .from('products')
+          .select('*, product_distributors(distributor_id, vendor_item_number)')
+          .eq('id', params.id)
+          .single();
+
+        if (error) throw error;
+
+        // Transform for form consumption
+        const distributor_ids = product.product_distributors?.map((pd: { distributor_id: number }) => pd.distributor_id) || [];
+        const product_distributors: Record<number, { vendor_item_number: string | null }> = {};
+        product.product_distributors?.forEach((pd: { distributor_id: number; vendor_item_number: string | null }) => {
+          product_distributors[pd.distributor_id] = { vendor_item_number: pd.vendor_item_number };
+        });
+
+        return {
+          data: {
+            ...product,
+            distributor_ids,
+            product_distributors,
+          } as RecordType,
+        };
+      }
+
       // Execute query
       const result = await baseDataProvider.getOne(dbResource, params);
 
@@ -662,6 +688,39 @@ export const unifiedDataProvider: DataProvider = {
         return { data: result as unknown as RecordType };
       }
 
+      // Handle product creation with distributors
+      if (resource === "products") {
+        const { distributor_ids, product_distributors, ...productData } = processedData as Record<string, unknown>;
+
+        // Create the product first
+        const { data: product, error: productError } = await supabase
+          .from('products')
+          .insert(productData)
+          .select()
+          .single();
+
+        if (productError) throw productError;
+
+        // If distributors selected, create junction records
+        if (Array.isArray(distributor_ids) && distributor_ids.length > 0) {
+          const distributorRecords = distributor_ids.map((distId: number) => ({
+            product_id: product.id,
+            distributor_id: distId,
+            vendor_item_number: (product_distributors as Record<string, { vendor_item_number?: string }>)?.[distId]?.vendor_item_number || null,
+            status: 'active',
+            valid_from: new Date().toISOString(),
+          }));
+
+          const { error: junctionError } = await supabase
+            .from('product_distributors')
+            .insert(distributorRecords);
+
+          if (junctionError) throw junctionError;
+        }
+
+        return { data: product as RecordType };
+      }
+
       // Handle product_distributors composite key
       if (resource === "product_distributors") {
         const dbResource = getResourceName(resource);
@@ -720,6 +779,48 @@ export const unifiedDataProvider: DataProvider = {
       if (resource === "sales") {
         const result = await salesService.salesUpdate(params.id, processedData as any);
         return { data: { ...params.previousData, ...result, id: params.id } as RecordType };
+      }
+
+      // Handle product update with distributors
+      if (resource === "products") {
+        const { id } = params;
+        const { distributor_ids, product_distributors, ...productData } = processedData as Record<string, unknown>;
+
+        // Update the product
+        const { data: product, error: productError } = await supabase
+          .from('products')
+          .update(productData)
+          .eq('id', id)
+          .select()
+          .single();
+
+        if (productError) throw productError;
+
+        // Sync distributors if provided
+        if (distributor_ids !== undefined) {
+          // Delete existing junction records
+          await supabase
+            .from('product_distributors')
+            .delete()
+            .eq('product_id', id);
+
+          // Insert new junction records
+          if (Array.isArray(distributor_ids) && distributor_ids.length > 0) {
+            const distributorRecords = distributor_ids.map((distId: number) => ({
+              product_id: id,
+              distributor_id: distId,
+              vendor_item_number: (product_distributors as Record<string, { vendor_item_number?: string }>)?.[distId]?.vendor_item_number || null,
+              status: 'active',
+              valid_from: new Date().toISOString(),
+            }));
+
+            await supabase
+              .from('product_distributors')
+              .insert(distributorRecords);
+          }
+        }
+
+        return { data: product as RecordType };
       }
 
       // Handle product_distributors composite key
