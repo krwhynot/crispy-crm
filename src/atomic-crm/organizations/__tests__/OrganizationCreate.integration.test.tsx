@@ -105,6 +105,9 @@ describe("OrganizationCreate with Progress Tracking", () => {
     const user = userEvent.setup();
     const { container } = renderOrganizationCreate();
 
+    // Wait for component to render by finding a known element first
+    await screen.findByText("Basic Information");
+
     // Check for data-tutorial attributes using querySelector
     const orgNameTutorial = container.querySelector('[data-tutorial="org-name"]');
     expect(orgNameTutorial).toBeInTheDocument();
@@ -131,11 +134,14 @@ describe("OrganizationCreate with Progress Tracking", () => {
   });
 
   it("renders FormProgressBar before the form card", async () => {
-    renderOrganizationCreate();
+    const { container } = renderOrganizationCreate();
 
     const progressBar = await screen.findByRole("progressbar");
     expect(progressBar).toBeInTheDocument();
-    expect(progressBar.className).toContain("mb-6");
+
+    // The mb-6 class is on the wrapper div, not the progressbar itself
+    const progressBarWrapper = progressBar.parentElement;
+    expect(progressBarWrapper?.className).toContain("mb-6");
   });
 
   it("maintains form mode as onBlur", async () => {
