@@ -127,9 +127,17 @@ describe("Tag Validation Schemas", () => {
     });
 
     it("should reject creation without required fields", () => {
+      // Empty object should throw - name is required
       expect(() => createTagSchema.parse({})).toThrow(z.ZodError);
-      expect(() => createTagSchema.parse({ name: "Test" })).toThrow(z.ZodError);
+      // Missing name should throw - color has default "warm" so it's not required
       expect(() => createTagSchema.parse({ color: "blue" })).toThrow(z.ZodError);
+    });
+
+    it("should use default color when only name provided", () => {
+      // Color has default "warm", so { name: "Test" } is valid
+      const result = createTagSchema.parse({ name: "Test" });
+      expect(result.name).toBe("Test");
+      expect(result.color).toBe("warm"); // Default color
     });
 
     it("should reject id field on creation (z.strictObject security)", () => {
