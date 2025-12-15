@@ -12,15 +12,6 @@ export const ProductGeneralTab = () => {
           label="Product Name *"
         />
       </div>
-      <div data-tutorial="product-sku">
-        <TextInput
-          source="sku"
-          className="w-full"
-          helperText="Optional product identifier"
-          placeholder="SKU-123"
-          label="SKU"
-        />
-      </div>
       <TextInput
         source="description"
         multiline
