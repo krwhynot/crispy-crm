@@ -10,7 +10,7 @@
  * @see Engineering Constitution - No `any` types
  */
 
-import type { RaRecord, Identifier } from "react-admin";
+import type { Identifier } from "react-admin";
 
 // Re-export canonical types from validation for convenience
 export type {
