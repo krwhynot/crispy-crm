@@ -1,9 +1,9 @@
 -- Status + status_reason (Microsoft Dynamics pattern)
 
 ALTER TABLE organizations
-  ADD COLUMN status TEXT NOT NULL DEFAULT 'active'
+  ADD COLUMN IF NOT EXISTS status TEXT NOT NULL DEFAULT 'active'
     CHECK (status IN ('active', 'inactive')),
-  ADD COLUMN status_reason TEXT
+  ADD COLUMN IF NOT EXISTS status_reason TEXT
     CHECK (status_reason IN (
       'active_customer',
       'prospect',
