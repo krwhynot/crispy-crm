@@ -72,12 +72,18 @@ export const tagSchema = z.strictObject({
 
 /**
  * Schema for creating a new tag
+ * Includes default color for form initialization via partial().parse({})
  */
-export const createTagSchema = tagSchema.omit({
-  id: true,
-  createdAt: true,
-  updatedAt: true,
-});
+export const createTagSchema = tagSchema
+  .omit({
+    id: true,
+    createdAt: true,
+    updatedAt: true,
+  })
+  .extend({
+    // Override color with a default for form initialization
+    color: semanticColorSchema.default("warm"),
+  });
 
 /**
  * Schema for updating an existing tag
