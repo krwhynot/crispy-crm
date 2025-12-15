@@ -21,7 +21,7 @@ vi.mock("ra-core", async () => {
 
 // Import ra-core components after mock definition
 import { CoreAdminContext as AdminContext, SaveContextProvider, Form as RaForm } from "ra-core";
-import { Form } from "@/components/admin/form";
+import { Form, FormProgressProvider } from "@/components/admin/form";
 import { OrganizationInputs } from "./OrganizationInputs";
 
 const mockDataProvider = {
@@ -70,9 +70,11 @@ const MockFormWrapper = ({
 
   return (
     <SaveContextProvider value={saveContext}>
-      <RaForm defaultValues={defaultValues} onSubmit={vi.fn()}>
-        <Form {...form}>{children}</Form>
-      </RaForm>
+      <FormProgressProvider initialProgress={10}>
+        <RaForm defaultValues={defaultValues} onSubmit={vi.fn()}>
+          <Form {...form}>{children}</Form>
+        </RaForm>
+      </FormProgressProvider>
     </SaveContextProvider>
   );
 };
