@@ -42,7 +42,6 @@ import {
 } from "../../../validation/activities";
 import { validateCreateSegment, validateUpdateSegment } from "../../../validation/segments";
 import {
-  validateProductDistributorForm,
   validateCreateProductDistributor,
   validateUpdateProductDistributor,
 } from "../../../validation/productDistributors";
