@@ -1,0 +1,218 @@
+/**
+ * Opportunity Create Form - Wizard Version
+ *
+ * Multi-step wizard for creating opportunities, implementing the
+ * form progress system from docs/guides/form-progress-implementation-guide.md
+ *
+ * 4 Steps (Miller's Law):
+ * 1. Basic Information - name, customer, principal
+ * 2. Pipeline & Team - stage, priority, date, team
+ * 3. Contacts & Products - relationships
+ * 4. Additional Details - classification, notes
+ */
+import { CreateBase, Form, useGetIdentity, useNotify, useRedirect, useCreate } from "ra-core";
+import { useFormState, FormProvider, useForm } from "react-hook-form";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { CancelButton } from "@/components/admin/cancel-button";
+import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import {
+  FormProgressProvider,
+  FormProgressBar,
+  FormWizard,
+  WizardStep,
+  WizardNavigation,
+  StepIndicator,
+} from "@/components/admin/form";
+import { opportunitySchema } from "../validation/opportunities";
+import { SimilarOpportunitiesDialog } from "./components/SimilarOpportunitiesDialog";
+import { useSimilarOpportunityCheck } from "./hooks/useSimilarOpportunityCheck";
+import { OpportunityCreateFormTutorial } from "../tutorial/OpportunityCreateFormTutorial";
+import {
+  OPPORTUNITY_WIZARD_STEPS,
+  OpportunityWizardStep1,
+  OpportunityWizardStep2,
+  OpportunityWizardStep3,
+  OpportunityWizardStep4,
+} from "./forms/OpportunityWizardSteps";
+
+const OPPORTUNITY_FIELD_LABELS: Record<string, string> = {
+  name: "Opportunity Name",
+  customer_organization_id: "Customer Organization",
+  principal_organization_id: "Principal Organization",
+  stage: "Stage",
+  priority: "Priority",
+  estimated_close_date: "Est. Close Date",
+  account_manager_id: "Account Manager",
+  distributor_organization_id: "Distributor Organization",
+  contact_ids: "Contacts",
+  lead_source: "Lead Source",
+  campaign: "Campaign",
+  description: "Description",
+  next_action: "Next Action",
+  next_action_date: "Next Action Date",
+  decision_criteria: "Decision Criteria",
+  notes: "Notes",
+};
+
+const OpportunityCreateWizard = () => {
+  const { data: identity } = useGetIdentity();
+
+  // Fuzzy match warning system (Levenshtein threshold: 3)
+  const {
+    checkForSimilar,
+    showDialog,
+    closeDialog,
+    confirmCreate,
+    proposedName,
+    similarOpportunities,
+    hasConfirmed,
+    resetConfirmation,
+  } = useSimilarOpportunityCheck();
+
+  // Generate defaults from schema, then merge with identity-specific values
+  // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
+  const formDefaults = {
+    ...opportunitySchema.partial().parse({}),
+    opportunity_owner_id: identity?.id,
+    account_manager_id: identity?.id,
+    contact_ids: [], // Explicitly initialize for ReferenceArrayInput
+    products_to_sync: [], // Explicitly initialize for ArrayInput
+  };
+
+  return (
+    <CreateBase redirect="show">
+      <div className="bg-muted px-6 py-6">
+        <div className="max-w-4xl mx-auto create-form-card">
+          <Form defaultValues={formDefaults} mode="onBlur">
+            <Card>
+              <CardHeader className="pb-4">
+                <CardTitle className="text-xl">Create Opportunity</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <OpportunityWizardContent
+                  checkForSimilar={checkForSimilar}
+                  hasConfirmed={hasConfirmed}
+                  resetConfirmation={resetConfirmation}
+                />
+              </CardContent>
+            </Card>
+          </Form>
+        </div>
+      </div>
+
+      {/* Similar Opportunities Warning Dialog */}
+      <SimilarOpportunitiesDialog
+        open={showDialog}
+        onClose={closeDialog}
+        onConfirm={confirmCreate}
+        proposedName={proposedName}
+        similarOpportunities={similarOpportunities}
+      />
+
+      {/* Standalone Form Tutorial - bottom-left floating button */}
+      <OpportunityCreateFormTutorial />
+    </CreateBase>
+  );
+};
+
+interface OpportunityWizardContentProps {
+  checkForSimilar: (name: string) => Promise<void>;
+  hasConfirmed: boolean;
+  resetConfirmation: () => void;
+}
+
+const OpportunityWizardContent = ({
+  checkForSimilar,
+  hasConfirmed,
+  resetConfirmation,
+}: OpportunityWizardContentProps) => {
+  const { errors } = useFormState();
+  const notify = useNotify();
+  const redirect = useRedirect();
+  const [create] = useCreate();
+
+  const handleSubmit = async (data: unknown) => {
+    // Check for similar opportunities before creating
+    const formData = data as Record<string, unknown>;
+    if (!hasConfirmed && formData.name) {
+      await checkForSimilar(formData.name as string);
+    }
+
+    // Create the opportunity
+    try {
+      await create(
+        "opportunities",
+        { data },
+        {
+          onSuccess: (record) => {
+            notify("Opportunity created successfully", { type: "success" });
+            redirect("show", "opportunities", record.id);
+          },
+          onError: (error: unknown) => {
+            const errorMessage =
+              error instanceof Error ? error.message : "Failed to create opportunity";
+            notify(errorMessage, { type: "error" });
+          },
+        }
+      );
+    } catch (error) {
+      // Error already handled by onError callback
+    }
+  };
+
+  const handleCancel = () => {
+    redirect("list", "opportunities");
+  };
+
+  return (
+    <FormProgressProvider initialProgress={10}>
+      {/* Error Summary */}
+      {Object.keys(errors || {}).length > 0 && (
+        <FormErrorSummary
+          errors={errors}
+          fieldLabels={OPPORTUNITY_FIELD_LABELS}
+          defaultExpanded={Object.keys(errors).length <= 3}
+        />
+      )}
+
+      {/* Step Indicator */}
+      <StepIndicator className="mb-4" />
+
+      {/* Progress Bar */}
+      <FormProgressBar className="mb-6" />
+
+      {/* Wizard Container */}
+      <FormWizard steps={OPPORTUNITY_WIZARD_STEPS} onSubmit={handleSubmit}>
+        {/* Step 1: Basic Information */}
+        <WizardStep step={1}>
+          <OpportunityWizardStep1 />
+        </WizardStep>
+
+        {/* Step 2: Pipeline & Team */}
+        <WizardStep step={2}>
+          <OpportunityWizardStep2 />
+        </WizardStep>
+
+        {/* Step 3: Contacts & Products */}
+        <WizardStep step={3}>
+          <OpportunityWizardStep3 />
+        </WizardStep>
+
+        {/* Step 4: Additional Details */}
+        <WizardStep step={4}>
+          <OpportunityWizardStep4 />
+        </WizardStep>
+
+        {/* Navigation */}
+        <WizardNavigation
+          submitLabel="Create Opportunity"
+          showCancel
+          onCancel={handleCancel}
+        />
+      </FormWizard>
+    </FormProgressProvider>
+  );
+};
+
+export { OpportunityCreateWizard };
+export default OpportunityCreateWizard;
