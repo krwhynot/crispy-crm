@@ -43,9 +43,12 @@ export default function TaskCreate() {
     <CreateBase redirect="list">
       <div className="bg-muted px-6 py-6">
         <div className="max-w-4xl mx-auto create-form-card">
-          <Form defaultValues={defaultValues}>
-            <TaskFormContent notify={notify} redirect={redirect} taskTypes={taskTypes} />
-          </Form>
+          <FormProgressProvider initialProgress={10}>
+            <FormProgressBar className="mb-6" />
+            <Form defaultValues={defaultValues} mode="onBlur">
+              <TaskFormContent notify={notify} redirect={redirect} taskTypes={taskTypes} />
+            </Form>
+          </FormProgressProvider>
         </div>
       </div>
     </CreateBase>
@@ -68,70 +71,84 @@ const TaskFormContent = ({
       <FormErrorSummary errors={errors} />
       <div className="space-y-6">
         <div data-tutorial="task-title">
-          <TextInput
-            source="title"
-            label="Task Title"
-            isRequired
-            helperText="What needs to be done?"
-          />
+          <FormFieldWrapper name="title" isRequired>
+            <TextInput
+              source="title"
+              label="Task Title"
+              isRequired
+              helperText="What needs to be done?"
+            />
+          </FormFieldWrapper>
         </div>
 
-        <TextInput
-          source="description"
-          label="Description"
-          multiline
-          rows={2}
-          helperText="Optional details"
-        />
+        <FormFieldWrapper name="description">
+          <TextInput
+            source="description"
+            label="Description"
+            multiline
+            rows={2}
+            helperText="Optional details"
+          />
+        </FormFieldWrapper>
 
         <div className="grid grid-cols-2 gap-4">
           <div data-tutorial="task-due-date">
-            <TextInput
-              source="due_date"
-              label="Due Date"
-              type="date"
-              isRequired
-              helperText="When is this due?"
-            />
+            <FormFieldWrapper name="due_date" isRequired>
+              <TextInput
+                source="due_date"
+                label="Due Date"
+                type="date"
+                isRequired
+                helperText="When is this due?"
+              />
+            </FormFieldWrapper>
           </div>
 
-          <SelectInput
-            source="type"
-            label="Type"
-            choices={taskTypes.map((type) => ({ id: type, name: type }))}
-            helperText="Category of task"
-          />
+          <FormFieldWrapper name="type">
+            <SelectInput
+              source="type"
+              label="Type"
+              choices={taskTypes.map((type) => ({ id: type, name: type }))}
+              helperText="Category of task"
+            />
+          </FormFieldWrapper>
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <SelectInput
-            source="priority"
-            label="Priority"
-            choices={[
-              { id: "low", name: "Low" },
-              { id: "medium", name: "Medium" },
-              { id: "high", name: "High" },
-              { id: "critical", name: "Critical" },
-            ]}
-            helperText="How urgent?"
-          />
-
-          <ReferenceInput source="opportunity_id" reference="opportunities">
-            <AutocompleteInput
-              label="Opportunity"
-              optionText="title"
-              helperText="Link to opportunity (optional)"
+          <FormFieldWrapper name="priority">
+            <SelectInput
+              source="priority"
+              label="Priority"
+              choices={[
+                { id: "low", name: "Low" },
+                { id: "medium", name: "Medium" },
+                { id: "high", name: "High" },
+                { id: "critical", name: "Critical" },
+              ]}
+              helperText="How urgent?"
             />
-          </ReferenceInput>
+          </FormFieldWrapper>
+
+          <FormFieldWrapper name="opportunity_id">
+            <ReferenceInput source="opportunity_id" reference="opportunities">
+              <AutocompleteInput
+                label="Opportunity"
+                optionText="title"
+                helperText="Link to opportunity (optional)"
+              />
+            </ReferenceInput>
+          </FormFieldWrapper>
         </div>
 
-        <ReferenceInput source="contact_id" reference="contacts_summary">
-          <AutocompleteInput
-            label="Contact"
-            optionText={contactOptionText}
-            helperText="Link to contact (optional)"
-          />
-        </ReferenceInput>
+        <FormFieldWrapper name="contact_id">
+          <ReferenceInput source="contact_id" reference="contacts_summary">
+            <AutocompleteInput
+              label="Contact"
+              optionText={contactOptionText}
+              helperText="Link to contact (optional)"
+            />
+          </ReferenceInput>
+        </FormFieldWrapper>
       </div>
 
       <TaskCreateFooter notify={notify} redirect={redirect} />
