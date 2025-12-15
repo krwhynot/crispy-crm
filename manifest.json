@@ -1,6 +1,6 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Atomic CRM",
+  "name": "Atomic CRM - Garden to Table Theme",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +20,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#63a200",
-  "background_color": "#ffffff"
+  "theme_color": "#7CB342",
+  "background_color": "#FEFEF9"
 }

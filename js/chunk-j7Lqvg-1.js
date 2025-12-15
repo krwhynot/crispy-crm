@@ -1,0 +1,1 @@
+var a=Object.defineProperty;import{o as e}from"../assets/index-BoLku8RR.js";import{i as s,$ as n}from"./chunk-ByJg_QQB.js";const r=((e,s)=>a(e,"name",{value:s,configurable:!0}))(({sale:a})=>{const{data:r,isPending:t}=s(),i=n(),o=a||i;return t||!o?null:o.id===r?.id?"You":e(o.first_name,o.last_name)},"SaleName");export{r as S};
