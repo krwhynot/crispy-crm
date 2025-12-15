@@ -23,7 +23,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
   describe("Progress Bar Initialization", () => {
     test("renders progress bar at ~10% initially", async () => {
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const progressBar = await screen.findByRole("progressbar");
       expect(progressBar).toBeInTheDocument();
@@ -31,7 +31,7 @@ describe("ContactCreate with Progress Tracking", () => {
     });
 
     test("progress bar has correct accessibility attributes", async () => {
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const progressBar = await screen.findByRole("progressbar");
       expect(progressBar).toHaveAttribute("aria-valuemin", "0");
@@ -40,7 +40,7 @@ describe("ContactCreate with Progress Tracking", () => {
     });
 
     test("progress bar is visible before form content", async () => {
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const progressBar = await screen.findByRole("progressbar");
       const firstNameInput = await screen.findByLabelText(/First Name/i);
@@ -52,7 +52,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
   describe("Form Section Rendering", () => {
     test("renders all three form sections", async () => {
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       expect(await screen.findByText("Name")).toBeInTheDocument();
       expect(await screen.findByText("Organization")).toBeInTheDocument();
@@ -60,7 +60,7 @@ describe("ContactCreate with Progress Tracking", () => {
     });
 
     test("Name section shows incomplete indicator initially", async () => {
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       await screen.findByText("Name");
       const incompleteIcons = screen.getAllByTestId("section-incomplete-icon");
@@ -68,7 +68,7 @@ describe("ContactCreate with Progress Tracking", () => {
     });
 
     test("Organization section shows incomplete indicator initially", async () => {
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       await screen.findByText("Organization");
       const incompleteIcons = screen.getAllByTestId("section-incomplete-icon");
@@ -76,7 +76,7 @@ describe("ContactCreate with Progress Tracking", () => {
     });
 
     test("Contact Info section does not show indicators (no required fields)", async () => {
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       await screen.findByText("Contact Info");
       const completeIcons = screen.queryAllByTestId("section-complete-icon");
@@ -90,7 +90,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
   describe("Field Validation State", () => {
     test("required fields show wrapper without validation icon initially", async () => {
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const firstNameInput = await screen.findByLabelText(/First Name/i);
       expect(firstNameInput).toBeInTheDocument();
@@ -102,7 +102,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
     test("filling required field shows check icon", async () => {
       const user = userEvent.setup();
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const firstNameInput = await screen.findByLabelText(/First Name/i);
       await user.type(firstNameInput, "John");
@@ -116,7 +116,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
     test("invalid field shows error icon", async () => {
       const user = userEvent.setup();
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const firstNameInput = await screen.findByLabelText(/First Name/i);
       // Type a very long string exceeding max length
@@ -132,7 +132,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
     test("all required fields in Name section marked valid shows complete badge", async () => {
       const user = userEvent.setup();
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const firstNameInput = await screen.findByLabelText(/First Name/i);
       const lastNameInput = await screen.findByLabelText(/Last Name/i);
@@ -152,7 +152,7 @@ describe("ContactCreate with Progress Tracking", () => {
   describe("Progress Calculation", () => {
     test("progress increases when filling Name section fields", async () => {
       const user = userEvent.setup();
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const progressBar = await screen.findByRole("progressbar");
       const initialProgress = parseInt(progressBar.getAttribute("aria-valuenow") || "0", 10);
@@ -169,7 +169,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
     test("progress continues increasing when filling Organization fields", async () => {
       const user = userEvent.setup();
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const progressBar = await screen.findByRole("progressbar");
 
@@ -191,7 +191,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
     test("progress reaches high percentage when all required fields filled", async () => {
       const user = userEvent.setup();
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const progressBar = await screen.findByRole("progressbar");
 
@@ -215,7 +215,7 @@ describe("ContactCreate with Progress Tracking", () => {
   describe("Section Completion Indicators", () => {
     test("Name section shows complete icon when both fields valid", async () => {
       const user = userEvent.setup();
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const firstNameInput = await screen.findByLabelText(/First Name/i);
       const lastNameInput = await screen.findByLabelText(/Last Name/i);
@@ -233,7 +233,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
     test("Name section shows Complete badge when both fields valid", async () => {
       const user = userEvent.setup();
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const firstNameInput = await screen.findByLabelText(/First Name/i);
       const lastNameInput = await screen.findByLabelText(/Last Name/i);
@@ -251,7 +251,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
     test("incomplete section does not show Complete badge", async () => {
       const user = userEvent.setup();
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const firstNameInput = await screen.findByLabelText(/First Name/i);
       await user.type(firstNameInput, "John");
@@ -267,7 +267,7 @@ describe("ContactCreate with Progress Tracking", () => {
   describe("Form Mode Configuration", () => {
     test("form uses onBlur mode for validation", async () => {
       const user = userEvent.setup();
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const firstNameInput = await screen.findByLabelText(/First Name/i);
 
@@ -292,7 +292,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
   describe("Accessibility and UX", () => {
     test("FormFieldWrapper maintains data-tutorial attributes", async () => {
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const firstNameContainer = screen.getByTestId("contact-first-name");
       expect(firstNameContainer).toBeInTheDocument();
@@ -302,18 +302,22 @@ describe("ContactCreate with Progress Tracking", () => {
     });
 
     test("section titles are semantic headings", async () => {
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
-      const nameHeading = await screen.findByText("Name");
-      expect(nameHeading.tagName).toBe("H3");
+      await waitFor(() => {
+        const headings = screen.getAllByText("Name");
+        const nameHeading = headings.find((el) => el.tagName === "H3");
+        expect(nameHeading).toBeInTheDocument();
 
-      const orgHeading = await screen.findByText("Organization");
-      expect(orgHeading.tagName).toBe("H3");
+        const orgHeadings = screen.getAllByText("Organization");
+        const orgHeading = orgHeadings.find((el) => el.tagName === "H3");
+        expect(orgHeading).toBeInTheDocument();
+      });
     });
 
     test("progress bar updates are smooth without flicker", async () => {
       const user = userEvent.setup();
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const progressBar = await screen.findByRole("progressbar");
 
@@ -333,7 +337,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
   describe("Additional Details Fields", () => {
     test("optional fields in CollapsibleSection are wrapped with FormFieldWrapper", async () => {
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       // Additional Details section should exist (collapsible)
       const additionalDetailsButton = await screen.findByText("Additional Details");
@@ -342,7 +346,7 @@ describe("ContactCreate with Progress Tracking", () => {
 
     test("optional fields do not affect required progress", async () => {
       const user = userEvent.setup();
-      renderWithAdminContext(<ContactCreate />);
+      renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       const progressBar = await screen.findByRole("progressbar");
 

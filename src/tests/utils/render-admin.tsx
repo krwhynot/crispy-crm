@@ -15,6 +15,7 @@ import englishMessages from "ra-language-english";
 import type { QueryClient } from "@tanstack/react-query";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { MemoryRouter } from "react-router-dom";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { createTestQueryClient } from "../setup";
 import { createMockDataProvider, createMockAuthProvider } from "./mock-providers";
 
@@ -127,27 +128,29 @@ export function renderWithAdminContext(
   // Wrapper component with all necessary providers
   const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>
-      <MemoryRouter initialEntries={initialEntries}>
-        <CoreAdminContext
-          dataProvider={dataProvider}
-          authProvider={authProvider}
-          i18nProvider={i18nProvider}
-        >
-          {resource ? (
-            <ResourceContextProvider value={resource}>
-              {record ? (
-                <RecordContextProvider value={record}>{children}</RecordContextProvider>
-              ) : (
-                children
-              )}
-            </ResourceContextProvider>
-          ) : record ? (
-            <RecordContextProvider value={record}>{children}</RecordContextProvider>
-          ) : (
-            children
-          )}
-        </CoreAdminContext>
-      </MemoryRouter>
+      <TooltipProvider>
+        <MemoryRouter initialEntries={initialEntries}>
+          <CoreAdminContext
+            dataProvider={dataProvider}
+            authProvider={authProvider}
+            i18nProvider={i18nProvider}
+          >
+            {resource ? (
+              <ResourceContextProvider value={resource}>
+                {record ? (
+                  <RecordContextProvider value={record}>{children}</RecordContextProvider>
+                ) : (
+                  children
+                )}
+              </ResourceContextProvider>
+            ) : record ? (
+              <RecordContextProvider value={record}>{children}</RecordContextProvider>
+            ) : (
+              children
+            )}
+          </CoreAdminContext>
+        </MemoryRouter>
+      </TooltipProvider>
     </QueryClientProvider>
   );
 
@@ -189,13 +192,15 @@ export function renderWithRecordContext(
 
   const Wrapper = ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>
-      {resource ? (
-        <ResourceContextProvider value={resource}>
+      <TooltipProvider>
+        {resource ? (
+          <ResourceContextProvider value={resource}>
+            <RecordContextProvider value={record}>{children}</RecordContextProvider>
+          </ResourceContextProvider>
+        ) : (
           <RecordContextProvider value={record}>{children}</RecordContextProvider>
-        </ResourceContextProvider>
-      ) : (
-        <RecordContextProvider value={record}>{children}</RecordContextProvider>
-      )}
+        )}
+      </TooltipProvider>
     </QueryClientProvider>
   );
 
