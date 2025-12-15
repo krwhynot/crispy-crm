@@ -1,12 +1,12 @@
 import { SelectInput } from "@/components/admin/select-input";
 import { TextInput } from "@/components/admin/text-input";
 import { NumberInput } from "@/components/admin/number-input";
-import { CollapsibleSection, CompactFormRow } from "@/components/admin/form";
+import { FormSection, CompactFormRow } from "@/components/admin/form";
 import { STATUS_CHOICES, STATUS_REASON_CHOICES, PAYMENT_TERMS_CHOICES } from "./constants";
 
 export const OrganizationStatusSection = () => {
   return (
-    <CollapsibleSection title="Status & Payment">
+    <FormSection title="Status & Payment">
       <div className="space-y-4">
         <CompactFormRow>
           <SelectInput
@@ -44,6 +44,6 @@ export const OrganizationStatusSection = () => {
           helperText="Geographic territory assignment"
         />
       </div>
-    </CollapsibleSection>
+    </FormSection>
   );
 };

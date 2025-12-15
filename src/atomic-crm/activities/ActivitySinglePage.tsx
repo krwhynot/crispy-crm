@@ -1,11 +1,8 @@
-import { useState } from "react";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { FormGrid, FormSection, FormFieldWrapper } from "@/components/admin/form";
-import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
-import { ChevronDown, ChevronRight } from "lucide-react";
 import { contactOptionText } from "../contacts/ContactOption";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
 
@@ -16,9 +13,6 @@ const sentimentChoices = [
 ];
 
 export default function ActivitySinglePage() {
-  const [followUpOpen, setFollowUpOpen] = useState(false);
-  const [outcomeOpen, setOutcomeOpen] = useState(false);
-
   return (
     <div className="space-y-6">
       <FormSection title="Activity Details">
@@ -113,84 +107,44 @@ export default function ActivitySinglePage() {
         </FormFieldWrapper>
       </FormSection>
 
-      <Collapsible open={followUpOpen} onOpenChange={setFollowUpOpen}>
-        <CollapsibleTrigger asChild>
-          <button
-            type="button"
-            className="flex items-center gap-2 w-full border-b border-border pb-2"
-            aria-label="Follow-up"
-          >
-            {followUpOpen ? (
-              <ChevronDown className="h-4 w-4" />
-            ) : (
-              <ChevronRight className="h-4 w-4" />
-            )}
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Follow-up
-            </h3>
-          </button>
-        </CollapsibleTrigger>
-        <CollapsibleContent className="pt-6">
-          <div className="space-y-6">
-            <FormGrid>
-              <FormFieldWrapper name="sentiment">
-                <SelectInput
-                  source="sentiment"
-                  label="Sentiment"
-                  choices={sentimentChoices}
-                  helperText="How did the contact respond?"
-                />
-              </FormFieldWrapper>
-            </FormGrid>
+      <FormSection title="Follow-up">
+        <FormGrid>
+          <FormFieldWrapper name="sentiment">
+            <SelectInput
+              source="sentiment"
+              label="Sentiment"
+              choices={sentimentChoices}
+              helperText="How did the contact respond?"
+            />
+          </FormFieldWrapper>
+        </FormGrid>
 
-            <FormGrid>
-              <FormFieldWrapper name="follow_up_date">
-                <TextInput source="follow_up_date" label="Follow-up Date" type="date" />
-              </FormFieldWrapper>
-              <FormFieldWrapper name="follow_up_notes">
-                <TextInput
-                  source="follow_up_notes"
-                  label="Follow-up Notes"
-                  multiline
-                  rows={3}
-                  helperText="Optional next steps summary"
-                />
-              </FormFieldWrapper>
-            </FormGrid>
-          </div>
-        </CollapsibleContent>
-      </Collapsible>
+        <FormGrid>
+          <FormFieldWrapper name="follow_up_date">
+            <TextInput source="follow_up_date" label="Follow-up Date" type="date" />
+          </FormFieldWrapper>
+          <FormFieldWrapper name="follow_up_notes">
+            <TextInput
+              source="follow_up_notes"
+              label="Follow-up Notes"
+              multiline
+              rows={3}
+              helperText="Optional next steps summary"
+            />
+          </FormFieldWrapper>
+        </FormGrid>
+      </FormSection>
 
-      <Collapsible open={outcomeOpen} onOpenChange={setOutcomeOpen}>
-        <CollapsibleTrigger asChild>
-          <button
-            type="button"
-            className="flex items-center gap-2 w-full border-b border-border pb-2"
-            aria-label="Outcome"
-          >
-            {outcomeOpen ? (
-              <ChevronDown className="h-4 w-4" />
-            ) : (
-              <ChevronRight className="h-4 w-4" />
-            )}
-            <h3 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Outcome
-            </h3>
-          </button>
-        </CollapsibleTrigger>
-        <CollapsibleContent className="pt-6">
-          <div className="space-y-6">
-            <FormGrid>
-              <FormFieldWrapper name="location">
-                <TextInput source="location" label="Location" helperText="Where did this occur?" />
-              </FormFieldWrapper>
-              <FormFieldWrapper name="outcome">
-                <TextInput source="outcome" label="Outcome" helperText="Optional result summary" />
-              </FormFieldWrapper>
-            </FormGrid>
-          </div>
-        </CollapsibleContent>
-      </Collapsible>
+      <FormSection title="Outcome">
+        <FormGrid>
+          <FormFieldWrapper name="location">
+            <TextInput source="location" label="Location" helperText="Where did this occur?" />
+          </FormFieldWrapper>
+          <FormFieldWrapper name="outcome">
+            <TextInput source="outcome" label="Outcome" helperText="Optional result summary" />
+          </FormFieldWrapper>
+        </FormGrid>
+      </FormSection>
     </div>
   );
 }

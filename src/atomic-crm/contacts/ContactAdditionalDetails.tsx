@@ -11,7 +11,7 @@ import { DEPARTMENT_CHOICES } from "./constants";
 export const ContactAdditionalDetails = () => {
   return (
     <>
-      <CollapsibleSection title="Additional Details">
+      <FormSection title="Additional Details">
         <div className="space-y-4">
           <CompactFormRow>
             <FormFieldWrapper name="title">
@@ -38,9 +38,9 @@ export const ContactAdditionalDetails = () => {
             <TextInput source="notes" label="Notes" multiline rows={3} helperText={false} />
           </FormFieldWrapper>
         </div>
-      </CollapsibleSection>
+      </FormSection>
 
-      <CollapsibleSection title="Organization & Territory">
+      <FormSection title="Organization & Territory">
         <div className="space-y-4">
           <ContactManagerInput />
           <CompactFormRow>
@@ -60,7 +60,7 @@ export const ContactAdditionalDetails = () => {
             </FormFieldWrapper>
           </CompactFormRow>
         </div>
-      </CollapsibleSection>
+      </FormSection>
     </>
   );
 };
