@@ -1,13 +1,63 @@
-import { Create, SimpleForm } from "react-admin";
+import { useMemo } from "react";
+import { CreateBase, Form } from "ra-core";
+import { useFormState } from "react-hook-form";
+import { Card, CardContent } from "@/components/ui/card";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { CancelButton } from "@/components/admin/cancel-button";
+import { SaveButton } from "@/components/admin/form";
+import { FormToolbar } from "@/components/admin/simple-form";
+import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
+import { productDistributorSchema } from "../validation/productDistributors";
 import { PRODUCT_DISTRIBUTOR_STATUS_CHOICES } from "./constants";
 
-export const ProductDistributorCreate = () => (
-  <Create redirect="list">
-    <SimpleForm>
+// Human-readable field labels for error messages
+const FIELD_LABELS: Record<string, string> = {
+  product_id: "Product",
+  distributor_id: "Distributor",
+  vendor_item_number: "DOT Number",
+  status: "Status",
+  valid_from: "Valid From",
+  valid_to: "Valid To",
+  notes: "Notes",
+};
+
+export const ProductDistributorCreate = () => {
+  // Constitution Rule #4: Form state from schema
+  const defaultValues = useMemo(
+    () => productDistributorSchema.partial().parse({}),
+    []
+  );
+
+  return (
+    <CreateBase redirect="list">
+      <div className="mt-2">
+        <Card>
+          <CardContent>
+            <Form defaultValues={defaultValues}>
+              <ProductDistributorFormContent />
+            </Form>
+          </CardContent>
+        </Card>
+      </div>
+    </CreateBase>
+  );
+};
+
+const ProductDistributorFormContent = () => {
+  const { errors } = useFormState();
+
+  return (
+    <>
+      {/* Constitution: FormErrorSummary for error aggregation */}
+      <FormErrorSummary
+        errors={errors}
+        fieldLabels={FIELD_LABELS}
+        defaultExpanded={Object.keys(errors).length <= 3}
+      />
+
       <ReferenceInput source="product_id" reference="products" isRequired>
         <AutocompleteInput
           optionText="name"
@@ -37,7 +87,6 @@ export const ProductDistributorCreate = () => (
         source="status"
         label="Status"
         choices={PRODUCT_DISTRIBUTOR_STATUS_CHOICES}
-        defaultValue="pending"
         helperText={false}
       />
 
@@ -45,7 +94,6 @@ export const ProductDistributorCreate = () => (
         source="valid_from"
         label="Valid From"
         type="date"
-        defaultValue={new Date().toISOString().split("T")[0]}
         helperText={false}
       />
 
@@ -59,8 +107,15 @@ export const ProductDistributorCreate = () => (
         fullWidth
         helperText={false}
       />
-    </SimpleForm>
-  </Create>
-);
+
+      <FormToolbar>
+        <div className="flex flex-row gap-2 justify-end">
+          <CancelButton />
+          <SaveButton label="Create Authorization" />
+        </div>
+      </FormToolbar>
+    </>
+  );
+};
 
 export default ProductDistributorCreate;
