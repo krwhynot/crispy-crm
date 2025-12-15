@@ -21,8 +21,19 @@ export { FormProgressBar } from "./FormProgressBar";
 export { FormFieldWrapper } from "./FormFieldWrapper";
 export { FormSectionWithProgress } from "./FormSectionWithProgress";
 
+// Multi-step wizard system
+export { FormWizard, useWizard } from "./FormWizard";
+export { WizardStep } from "./WizardStep";
+export { WizardNavigation } from "./WizardNavigation";
+export { StepIndicator } from "./StepIndicator";
+
 // Types
 export type { FormProgressBarProps } from "./FormProgressBar";
 export type { FormFieldWrapperProps } from "./FormFieldWrapper";
 export type { FormSectionProps } from "./FormSection";
 export type { FormSectionWithProgressProps } from "./FormSectionWithProgress";
+export type { WizardStepConfig, WizardContextValue } from "./wizard-types";
+export type { FormWizardProps } from "./FormWizard";
+export type { WizardStepProps } from "./WizardStep";
+export type { WizardNavigationProps } from "./WizardNavigation";
+export type { StepIndicatorProps } from "./StepIndicator";
