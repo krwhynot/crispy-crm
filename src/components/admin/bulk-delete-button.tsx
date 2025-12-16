@@ -84,7 +84,7 @@ export const BulkDeleteButton = <RecordType extends RaRecord = any, MutationOpti
       type="button"
       onClick={handleClick}
       disabled={isPending}
-      className={cn("h-9", className)}
+      className={cn(className)}
     >
       {icon}
       <Translate i18nKey={label ?? "ra.action.delete"}>{label ?? "Delete"}</Translate>
