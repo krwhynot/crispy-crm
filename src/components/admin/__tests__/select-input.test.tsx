@@ -328,8 +328,8 @@ describe("SelectInput", () => {
       { resource: "opportunities" }
     );
 
-    // Should show skeleton instead of select
-    const skeleton = document.querySelector(".w-full.h-9");
+    // Should show skeleton instead of select (h-11 for 44px touch target)
+    const skeleton = document.querySelector(".w-full.h-11");
     expect(skeleton).toBeInTheDocument();
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
   });
