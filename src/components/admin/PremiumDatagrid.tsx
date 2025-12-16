@@ -72,11 +72,21 @@ export function PremiumDatagrid({
   // Generate row className with keyboard focus indicator
   // React Admin's rowClassName receives (record, index) as arguments
   const getRowClassName = useCallback(
-    (_record: unknown, index: number) => {
+    (record: unknown, index: number) => {
       const isFocused = focusedIndex !== undefined && focusedIndex >= 0 && index === focusedIndex;
-      return cn("table-row-premium", isFocused && "ring-2 ring-primary ring-inset bg-primary/5");
+
+      // Compute external className if it's a function
+      const externalClassName = typeof externalRowClassName === 'function'
+        ? externalRowClassName(record, index)
+        : externalRowClassName;
+
+      return cn(
+        "table-row-premium",
+        isFocused && "ring-2 ring-primary ring-inset bg-primary/5",
+        externalClassName // Merge external styles
+      );
     },
-    [focusedIndex]
+    [focusedIndex, externalRowClassName]
   );
 
   // Scroll focused row into view

@@ -15,6 +15,7 @@ import { BulkActionsToolbar } from "./BulkActionsToolbar";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { parseDateSafely } from "@/lib/date-utils";
 import { NextTaskBadge } from "./components/NextTaskBadge";
+import { getOpportunityRowClassName } from "./utils/rowStyling";
 
 interface OpportunityRowListViewProps {
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
@@ -116,7 +117,7 @@ export const OpportunityRowListView = ({
           {opportunities.map((opportunity, index) => (
             <RecordContextProvider key={opportunity.id} value={opportunity}>
               <div
-                className={`group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 rounded-lg border bg-card px-3 py-2 sm:py-1.5 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${
+                className={`group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 rounded-lg border bg-card px-3 py-2 sm:py-1.5 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${getOpportunityRowClassName(opportunity)} ${
                   focusedIndex === index
                     ? "border-primary ring-2 ring-primary ring-offset-2"
                     : "border-transparent"
