@@ -185,7 +185,7 @@ export function ResourceSlideOver({
         ) : (
           <>
             {/* Header with optional breadcrumb, title, mode toggle, and close button */}
-            <SheetHeader className="!p-0 border-b border-border px-4 py-2 gap-1 flex flex-col shrink-0">
+            <SheetHeader className="!p-0 border-b border-border px-4 py-2 gap-2 flex flex-col shrink-0">
               {/* Breadcrumb row (optional) */}
               {BreadcrumbComponent && record && !isLoading && (
                 <div className="mb-1">
@@ -238,7 +238,7 @@ export function ResourceSlideOver({
               onValueChange={setActiveTab}
               className="flex-1 flex flex-col overflow-hidden"
             >
-              <TabsList className="border-b border-border h-11 rounded-none bg-transparent p-0 w-full justify-start gap-1 px-2">
+              <TabsList className="border-b border-border h-11 rounded-none bg-transparent p-0 w-full justify-start gap-2 px-2">
                 {tabs.map((tab) => {
                   // Compute count badge value if function provided
                   const count = record && tab.countFromRecord ? tab.countFromRecord(record) : null;
@@ -249,7 +249,7 @@ export function ResourceSlideOver({
                       <TooltipTrigger asChild>
                         <TabsTrigger
                           value={tab.key}
-                          className="h-11 min-w-11 px-2 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary flex items-center justify-center gap-1 relative"
+                          className="h-11 min-w-11 px-2 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary flex items-center justify-center gap-2 relative"
                           aria-label={showBadge ? `${tab.label} (${count})` : tab.label}
                         >
                           {tab.icon ? (
