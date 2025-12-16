@@ -54,7 +54,7 @@ export interface PremiumDatagridProps extends DatagridProps {
 export function PremiumDatagrid({
   onRowClick,
   focusedIndex,
-  rowClassName: _, // Extract and ignore - we always use our own getRowClassName
+  rowClassName: externalRowClassName,
   ...props
 }: PremiumDatagridProps) {
   const { data } = useListContext();

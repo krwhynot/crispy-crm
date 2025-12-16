@@ -21,6 +21,7 @@ import { ActivityPulseDot } from "./ActivityPulseDot";
 import { WIN_REASONS, LOSS_REASONS } from "@/atomic-crm/validation/opportunities";
 import type { Opportunity } from "../../types";
 import { parseDateSafely } from "@/lib/date-utils";
+import { NextTaskBadge } from "../components/NextTaskBadge";
 
 interface OpportunityCardProps {
   index: number;
@@ -239,8 +240,25 @@ export const OpportunityCard = React.memo(function OpportunityCard({
                   {isStuck && <span className="text-warning">⚠️</span>}
                 </div>
 
-                {/* Tasks */}
-                {pendingTasks > 0 && (
+                {/* Tasks - Show specific next task instead of generic count */}
+                {record.next_task_id ? (
+                  <>
+                    <NextTaskBadge
+                      taskId={record.next_task_id}
+                      title={record.next_task_title}
+                      dueDate={record.next_task_due_date}
+                      priority={record.next_task_priority}
+                      onClick={() => {
+                        console.log("Task clicked:", record.next_task_id);
+                      }}
+                    />
+                    {pendingTasks > 1 && (
+                      <span className="text-xs text-muted-foreground ml-6">
+                        +{pendingTasks - 1} more task{pendingTasks > 2 ? "s" : ""}
+                      </span>
+                    )}
+                  </>
+                ) : pendingTasks > 0 ? (
                   <div
                     className={`flex items-center gap-2 text-xs ${
                       overdueTasks > 0 ? "text-destructive" : "text-muted-foreground"
@@ -252,7 +270,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
                       {overdueTasks > 0 && ` (${overdueTasks} overdue)`}
                     </span>
                   </div>
-                )}
+                ) : null}
 
                 {/* Products */}
                 {productsCount > 0 && (

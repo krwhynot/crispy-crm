@@ -14,6 +14,7 @@ import { getOpportunityStageLabel, getOpportunityStageColor } from "./constants/
 import { BulkActionsToolbar } from "./BulkActionsToolbar";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { parseDateSafely } from "@/lib/date-utils";
+import { NextTaskBadge } from "./components/NextTaskBadge";
 
 interface OpportunityRowListViewProps {
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
@@ -213,6 +214,21 @@ export const OpportunityRowListView = ({
                   >
                     {getOpportunityStageLabel(opportunity.stage)}
                   </Badge>
+
+                  {/* Next Task - Hidden on mobile, shown on lg+ */}
+                  <div className="hidden lg:flex relative z-10">
+                    <NextTaskBadge
+                      taskId={opportunity.next_task_id}
+                      title={opportunity.next_task_title}
+                      dueDate={opportunity.next_task_due_date}
+                      priority={opportunity.next_task_priority}
+                      onClick={() => {
+                        if (opportunity.next_task_id) {
+                          console.log("Task clicked:", opportunity.next_task_id);
+                        }
+                      }}
+                    />
+                  </div>
 
                   {/* Priority - Hidden on mobile, shown on md+ */}
                   {opportunity.priority && (
