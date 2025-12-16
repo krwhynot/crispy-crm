@@ -173,7 +173,7 @@ export function ResourceSlideOver({
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent
         side="right"
-        className="w-[78vw] min-w-[576px] max-w-[1024px] bg-card shadow-md p-0 flex flex-col"
+        className="w-[40vw] max-w-[600px] md:w-full md:max-w-none md:fixed md:inset-0 min-w-[576px] bg-card shadow-md p-0 flex flex-col"
         role="dialog"
         aria-modal="true"
         aria-labelledby="slide-over-title"
