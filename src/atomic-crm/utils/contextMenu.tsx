@@ -79,7 +79,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, items, onClose }
   return createPortal(
     <div
       ref={menuRef}
-      className="fixed z-[9999] bg-card border border-border rounded-md shadow-lg py-1 min-w-[200px]"
+      className="fixed z-50 bg-card border border-border rounded-md shadow-lg py-1 min-w-[200px]"
       style={{ left: `${position.x}px`, top: `${position.y}px` }}
       role="menu"
     >
@@ -135,7 +135,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = ({ x, y, items, onClose }
                   <div
                     key={subIndex}
                     className={cn(
-                      "px-3 py-1.5 text-sm",
+                      "px-3 py-1.5 min-h-11 text-sm",
                       subItem.disabled
                         ? "opacity-50 cursor-not-allowed"
                         : "hover:bg-accent cursor-pointer"

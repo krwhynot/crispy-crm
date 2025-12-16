@@ -212,7 +212,7 @@ export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetails
           <AsideSection title="Notes">
             <Card>
               <CardContent className="p-4">
-                <p className="text-sm whitespace-pre-wrap">{record.notes}</p>
+                <p className="text-sm whitespace-pre-wrap max-h-96 overflow-y-auto">{record.notes}</p>
               </CardContent>
             </Card>
           </AsideSection>

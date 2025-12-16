@@ -138,7 +138,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
               data-tutorial="opp-drag-handle"
               data-drag-handle
               aria-label="Drag to reorder"
-              className="min-h-[44px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded cursor-grab active:cursor-grabbing transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 -ml-1"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded cursor-grab active:cursor-grabbing transition-colors touch-manipulation focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 -ml-1"
             >
               <GripVertical className="w-3.5 h-3.5" />
             </div>
@@ -160,7 +160,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
               onTouchStart={(e) => e.stopPropagation()}
               aria-expanded={isExpanded}
               aria-label={isExpanded ? "Collapse card" : "Expand card"}
-              className="min-h-[44px] min-w-[36px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded transition-colors"
+              className="min-h-[44px] min-w-[44px] flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent rounded transition-colors"
             >
               {isExpanded ? (
                 <ChevronUp className="w-3.5 h-3.5" />

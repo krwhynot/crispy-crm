@@ -91,7 +91,7 @@ export const RadioButtonGroupInput = (inProps: RadioButtonGroupInputProps) => {
   });
 
   if (isPending) {
-    return <Skeleton className="w-full h-9" />;
+    return <Skeleton className="w-full h-11" />;
   }
 
   return (

@@ -181,7 +181,7 @@ export const SelectInput = (props: SelectInputProps) => {
           </FormLabel>
         )}
         <div className="relative">
-          <Skeleton className="w-full h-9" />
+          <Skeleton className="w-full h-11" />
         </div>
         <InputHelperText helperText={helperText} />
         <FormError />

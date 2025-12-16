@@ -26,7 +26,7 @@ export function LocalesMenuButton() {
     return null; // No need to render the dropdown if there's only one language
   }
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" size="icon" className="hidden sm:inline-flex">
           {locale.toUpperCase()}
