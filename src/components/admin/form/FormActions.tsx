@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { SaveButtonGroup } from "./SaveButtonGroup";
 import { cn } from "@/lib/utils";
-import { Trash2 } from "lucide-react";
+import { Trash2, Loader2 } from "lucide-react";
+import { useFormState } from "react-hook-form";
 
 interface FormActionsProps {
   onCancel: () => void;
@@ -21,6 +22,8 @@ function FormActions({
   showSaveAndNew = false,
   className,
 }: FormActionsProps) {
+  const { isSubmitting } = useFormState();
+
   return (
     <div
       data-slot="form-actions"
@@ -47,7 +50,16 @@ function FormActions({
         {showSaveAndNew && onSave && onSaveAndNew ? (
           <SaveButtonGroup onSave={onSave} onSaveAndNew={onSaveAndNew} />
         ) : (
-          <Button type="submit">Save</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                Saving...
+              </>
+            ) : (
+              "Save"
+            )}
+          </Button>
         )}
       </div>
     </div>

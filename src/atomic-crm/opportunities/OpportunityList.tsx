@@ -3,6 +3,7 @@ import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { opportunityExporter } from "./opportunityExporter";
 import { List } from "@/components/admin/list";
+import { ListPagination } from "@/components/admin/list-pagination";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { QuickAddButton } from "./quick-add/QuickAddButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
@@ -61,7 +62,7 @@ const OpportunityList = () => {
     <>
       <div data-tutorial="opportunities-list">
         <List
-          perPage={100}
+          perPage={25}
           filter={{
             "deleted_at@is": null,
           }}
@@ -69,7 +70,7 @@ const OpportunityList = () => {
           sort={{ field: "created_at", order: "DESC" }}
           actions={<OpportunityActions view={view} onViewChange={handleViewChange} />}
           exporter={opportunityExporter}
-          pagination={null}
+          pagination={<ListPagination rowsPerPageOptions={[10, 25, 50]} />}
         >
           <OpportunityListLayout
             view={view}
