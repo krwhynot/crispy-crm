@@ -171,6 +171,10 @@ describe("opportunities_summary RLS Integration Tests", () => {
     });
 
     it("should return campaign-filtered opportunities with customer names", async () => {
+      if (!supabaseAvailable) {
+        console.log("⏭️ Skipping: Supabase not available");
+        return;
+      }
       // Query for a specific campaign that exists in seed data
       const { data, error } = await supabase
         .from("opportunities_summary")
@@ -201,6 +205,10 @@ describe("opportunities_summary RLS Integration Tests", () => {
     });
 
     it("should include all denormalized organization names in view", async () => {
+      if (!supabaseAvailable) {
+        console.log("⏭️ Skipping: Supabase not available");
+        return;
+      }
       const { data, error } = await supabase
         .from("opportunities_summary")
         .select(
@@ -238,6 +246,10 @@ describe("opportunities_summary RLS Integration Tests", () => {
     });
 
     it("should return correct total count for authenticated user", async () => {
+      if (!supabaseAvailable) {
+        console.log("⏭️ Skipping: Supabase not available");
+        return;
+      }
       const { count, error } = await supabase
         .from("opportunities_summary")
         .select("*", { count: "exact", head: true });
