@@ -295,7 +295,7 @@ export function SampleStatusBadge({
         <button
           type="button"
           className={cn(
-            "inline-flex cursor-pointer transition-opacity hover:opacity-80",
+            "inline-flex cursor-pointer min-h-11 transition-opacity hover:opacity-80",
             "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
             "rounded-md"
           )}

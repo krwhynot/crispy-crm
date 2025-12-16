@@ -47,7 +47,7 @@ export function ThemeModeToggle() {
   const isDark = resolvedTheme === "dark";
 
   return (
-    <DropdownMenu modal={false}>
+    <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"

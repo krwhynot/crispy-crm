@@ -138,7 +138,7 @@ export const OpportunityRowListView = ({
                         e.stopPropagation();
                         openSlideOver(opportunity.id as number, "view");
                       }}
-                      className="font-medium text-sm text-primary hover:underline focus:outline-none block truncate text-left w-full"
+                      className="font-medium text-sm text-primary hover:underline focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 block truncate text-left w-full"
                     >
                       {opportunity.name}
                       {/* Stretched link overlay: makes entire card clickable */}
