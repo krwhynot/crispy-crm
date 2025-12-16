@@ -14,3 +14,4 @@ export type { MetadataFieldProps } from "./MetadataField";
 export { MetadataRow } from "./MetadataRow";
 export type { MetadataRowProps } from "./MetadataRow";
 export { OpportunityActivitySection } from "./OpportunityActivitySection";
+export { NextTaskBadge } from "./NextTaskBadge";
