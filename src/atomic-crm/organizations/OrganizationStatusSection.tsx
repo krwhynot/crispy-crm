@@ -9,40 +9,50 @@ export const OrganizationStatusSection = () => {
     <FormSection title="Status & Payment">
       <div className="space-y-4">
         <CompactFormRow>
-          <SelectInput
-            source="status"
-            label="Status"
-            choices={STATUS_CHOICES}
-            helperText={false}
-            emptyText="Select status"
-          />
-          <SelectInput
-            source="status_reason"
-            label="Status Reason"
-            choices={STATUS_REASON_CHOICES}
-            helperText={false}
-            emptyText="Select reason"
-          />
+          <FormFieldWrapper name="status">
+            <SelectInput
+              source="status"
+              label="Status"
+              choices={STATUS_CHOICES}
+              helperText={false}
+              emptyText="Select status"
+            />
+          </FormFieldWrapper>
+          <FormFieldWrapper name="status_reason">
+            <SelectInput
+              source="status_reason"
+              label="Status Reason"
+              choices={STATUS_REASON_CHOICES}
+              helperText={false}
+              emptyText="Select reason"
+            />
+          </FormFieldWrapper>
         </CompactFormRow>
         <CompactFormRow>
-          <SelectInput
-            source="payment_terms"
-            label="Payment Terms"
-            choices={PAYMENT_TERMS_CHOICES}
-            helperText={false}
-            emptyText="Select terms"
-          />
-          <NumberInput
-            source="credit_limit"
-            label="Credit Limit"
-            helperText="Maximum credit allowed"
-          />
+          <FormFieldWrapper name="payment_terms">
+            <SelectInput
+              source="payment_terms"
+              label="Payment Terms"
+              choices={PAYMENT_TERMS_CHOICES}
+              helperText={false}
+              emptyText="Select terms"
+            />
+          </FormFieldWrapper>
+          <FormFieldWrapper name="credit_limit">
+            <NumberInput
+              source="credit_limit"
+              label="Credit Limit"
+              helperText="Maximum credit allowed"
+            />
+          </FormFieldWrapper>
         </CompactFormRow>
-        <TextInput
-          source="territory"
-          label="Territory"
-          helperText="Geographic territory assignment"
-        />
+        <FormFieldWrapper name="territory">
+          <TextInput
+            source="territory"
+            label="Territory"
+            helperText="Geographic territory assignment"
+          />
+        </FormFieldWrapper>
       </div>
     </FormSection>
   );
