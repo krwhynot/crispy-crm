@@ -2,7 +2,11 @@ import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { useFormState } from "react-hook-form";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
-import { SaveButton } from "@/components/admin/form";
+import {
+  SaveButton,
+  FormProgressProvider,
+  FormProgressBar,
+} from "@/components/admin/form";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { FormToolbar } from "@/components/admin/simple-form";
 
