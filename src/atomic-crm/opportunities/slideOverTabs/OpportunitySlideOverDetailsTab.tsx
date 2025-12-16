@@ -358,7 +358,7 @@ export function OpportunitySlideOverDetailsTab({
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
             Description
           </span>
-          <p className="text-sm whitespace-pre-wrap">{record.description}</p>
+          <p className="text-sm whitespace-pre-wrap max-h-64 overflow-y-auto">{record.description}</p>
         </div>
       )}
 
@@ -454,7 +454,7 @@ export function OpportunitySlideOverDetailsTab({
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
             Notes
           </span>
-          <p className="text-sm whitespace-pre-wrap">{record.notes}</p>
+          <p className="text-sm whitespace-pre-wrap max-h-64 overflow-y-auto">{record.notes}</p>
         </div>
       )}
 
@@ -482,7 +482,7 @@ export function OpportunitySlideOverDetailsTab({
           <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
             Decision Criteria
           </span>
-          <p className="text-sm whitespace-pre-wrap">{record.decision_criteria}</p>
+          <p className="text-sm whitespace-pre-wrap max-h-64 overflow-y-auto">{record.decision_criteria}</p>
         </div>
       )}
 
