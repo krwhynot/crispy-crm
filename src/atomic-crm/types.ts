@@ -272,6 +272,12 @@ export interface Opportunity extends Pick<RaRecord, "id"> {
   pending_task_count?: number;
   overdue_task_count?: number;
 
+  // Next task computed fields for "<2 second answer" UX goal (from opportunities_summary view)
+  next_task_id?: number | null;
+  next_task_title?: string | null;
+  next_task_due_date?: string | null;
+  next_task_priority?: "low" | "medium" | "high" | "critical" | null;
+
   // Close outcome tracking (for closed_won/closed_lost stages)
   win_reason?: string;
   loss_reason?: string;

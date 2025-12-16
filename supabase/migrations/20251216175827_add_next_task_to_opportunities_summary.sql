@@ -15,6 +15,8 @@
  * MIGRATION SAFETY:
  * - Uses DROP VIEW CASCADE to handle any dependent views/policies
  * - Re-applies COMMENT and GRANT after recreation
+ * - Conditionally includes columns based on schema availability
+ * - Handles missing opportunity_products table gracefully
  */
 
 -- Log dependencies before dropping (informational only)
@@ -47,6 +49,70 @@ END $$;
 
 -- Drop with CASCADE to handle any dependent views/policies
 DROP VIEW IF EXISTS opportunities_summary CASCADE;
+
+-- Add missing columns to opportunities table if they don't exist
+-- This handles schema drift between environments
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'opportunities' AND column_name = 'campaign') THEN
+        ALTER TABLE opportunities ADD COLUMN campaign TEXT;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'opportunities' AND column_name = 'related_opportunity_id') THEN
+        ALTER TABLE opportunities ADD COLUMN related_opportunity_id BIGINT REFERENCES opportunities(id);
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'opportunities' AND column_name = 'win_reason') THEN
+        ALTER TABLE opportunities ADD COLUMN win_reason TEXT;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'opportunities' AND column_name = 'loss_reason') THEN
+        ALTER TABLE opportunities ADD COLUMN loss_reason TEXT;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'opportunities' AND column_name = 'close_reason_notes') THEN
+        ALTER TABLE opportunities ADD COLUMN close_reason_notes TEXT;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'opportunities' AND column_name = 'notes') THEN
+        ALTER TABLE opportunities ADD COLUMN notes TEXT;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'opportunities' AND column_name = 'stage_changed_at') THEN
+        ALTER TABLE opportunities ADD COLUMN stage_changed_at TIMESTAMPTZ;
+    END IF;
+END $$;
+
+-- Add missing columns to tasks table if they don't exist
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'tasks' AND column_name = 'snooze_until') THEN
+        ALTER TABLE tasks ADD COLUMN snooze_until TIMESTAMPTZ DEFAULT NULL;
+        COMMENT ON COLUMN tasks.snooze_until IS 'Timestamp until which this task is snoozed (hidden from active task views). NULL means task is active.';
+        CREATE INDEX IF NOT EXISTS idx_tasks_snooze_until ON tasks (snooze_until) WHERE snooze_until IS NOT NULL;
+    END IF;
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'tasks' AND column_name = 'deleted_at') THEN
+        ALTER TABLE tasks ADD COLUMN deleted_at TIMESTAMPTZ DEFAULT NULL;
+        COMMENT ON COLUMN tasks.deleted_at IS 'Soft delete timestamp. NULL means task is active.';
+        CREATE INDEX IF NOT EXISTS idx_tasks_deleted_at ON tasks (deleted_at) WHERE deleted_at IS NULL;
+    END IF;
+END $$;
+
+-- Create opportunity_products table if it doesn't exist
+-- (Needed for the view, but may be missing in some environments)
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = 'opportunity_products') THEN
+        CREATE TABLE opportunity_products (
+            id BIGSERIAL PRIMARY KEY,
+            opportunity_id BIGINT REFERENCES opportunities(id) ON DELETE CASCADE,
+            product_id_reference BIGINT REFERENCES products(id),
+            product_name TEXT,
+            product_category TEXT,
+            notes TEXT,
+            created_at TIMESTAMPTZ DEFAULT NOW(),
+            updated_at TIMESTAMPTZ DEFAULT NOW()
+        );
+        CREATE INDEX idx_opportunity_products_opportunity_id ON opportunity_products(opportunity_id);
+        GRANT SELECT, INSERT, UPDATE, DELETE ON opportunity_products TO authenticated;
+        GRANT USAGE, SELECT ON SEQUENCE opportunity_products_id_seq TO authenticated;
+        RAISE NOTICE 'Created opportunity_products table';
+    END IF;
+END $$;
 
 CREATE VIEW opportunities_summary
 WITH (security_invoker = on)
@@ -90,17 +156,17 @@ SELECT
     o.notes,
     o.stage_changed_at,
 
-    -- Computed: days since opportunity entered current stage (existing)
+    -- Computed: days since opportunity entered current stage
     EXTRACT(DAY FROM (NOW() - COALESCE(o.stage_changed_at, o.created_at)))::integer AS days_in_stage,
 
-    -- Days since last activity (for activity pulse) - EXISTING
+    -- Days since last activity (for activity pulse)
     (SELECT EXTRACT(DAY FROM (NOW() - MAX(a.activity_date)))::integer
      FROM activities a
      WHERE a.opportunity_id = o.id
        AND a.deleted_at IS NULL
     ) AS days_since_last_activity,
 
-    -- Pending task count (excludes soft-deleted tasks) - EXISTING
+    -- Pending task count (excludes soft-deleted tasks)
     (SELECT COUNT(*)::integer
      FROM tasks t
      WHERE t.opportunity_id = o.id
@@ -108,7 +174,7 @@ SELECT
        AND t.deleted_at IS NULL
     ) AS pending_task_count,
 
-    -- Overdue task count (excludes soft-deleted tasks) - EXISTING
+    -- Overdue task count (excludes soft-deleted tasks)
     (SELECT COUNT(*)::integer
      FROM tasks t
      WHERE t.opportunity_id = o.id
