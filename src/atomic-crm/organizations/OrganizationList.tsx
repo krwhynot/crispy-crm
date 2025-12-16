@@ -147,7 +147,7 @@ const OrganizationListLayout = ({
           focusedIndex={focusedIndex}
         >
           {/* Column 1: Name - Primary identifier (sortable) - always visible */}
-          <TextField source="name" label="Organization Name" sortable />
+          <TextField source="name" label="Organization Name" sortable cellClassName="truncate max-w-[250px]" />
 
           {/* Column 2: Type - Organization classification (sortable by organization_type) - always visible */}
           <FunctionField
@@ -174,7 +174,7 @@ const OrganizationListLayout = ({
             cellClassName="hidden lg:table-cell"
             headerClassName="hidden lg:table-cell"
           >
-            <TextField source="name" />
+            <TextField source="name" className="truncate max-w-[200px]" />
           </ReferenceField>
 
           {/* Column 5: Contacts - Computed count metric (non-sortable) - hidden on mobile */}
