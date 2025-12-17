@@ -29,7 +29,7 @@ export const CollapsibleSection = ({
         aria-controls={contentId}
         className={cn(
           "flex w-full items-center justify-between px-3",
-          "text-sm font-medium text-muted-foreground",
+          "text-sm font-medium text-foreground/70",
           "hover:bg-muted/50 transition-colors",
           "h-11", // 44px touch target - Fitts's Law
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
