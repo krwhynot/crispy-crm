@@ -159,6 +159,7 @@ export const FilterFormInput = (inProps: FilterFormInputProps) => {
           onClick={handleHide}
           data-key={filterElement.props.source}
           title={translate("ra.action.remove_filter")}
+          aria-label={translate("ra.action.remove_filter")}
         >
           <MinusCircle className="h-4 w-4" />
         </Button>
