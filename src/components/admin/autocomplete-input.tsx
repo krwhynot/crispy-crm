@@ -165,12 +165,13 @@ export const AutocompleteInput = (
                 variant="outline"
                 role="combobox"
                 aria-expanded={open}
+                aria-label={selectedChoice ? String(getInputText(selectedChoice)) : placeholder}
                 className="w-full justify-between h-auto py-1.75 font-normal"
               >
                 {selectedChoice ? (
                   getInputText(selectedChoice)
                 ) : (
-                  <span className="text-muted-foreground">{placeholder}</span>
+                  <span className="text-foreground/70">{placeholder}</span>
                 )}
                 <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
               </Button>

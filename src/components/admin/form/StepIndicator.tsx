@@ -77,7 +77,7 @@ function StepIndicator({ className }: StepIndicatorProps) {
                 "ml-2 text-sm hidden md:block",
                 isCurrent
                   ? "font-medium text-foreground"
-                  : "text-muted-foreground"
+                  : "text-foreground/70"
               )}
             >
               {step.title}
