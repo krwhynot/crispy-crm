@@ -61,7 +61,7 @@ function StepIndicator({ className }: StepIndicatorProps) {
                 isCurrent &&
                   "border-2 border-primary text-primary bg-background",
                 isFuture &&
-                  "border-2 border-muted text-muted-foreground bg-background"
+                  "border-2 border-muted text-foreground/70 bg-background"
               )}
             >
               {isComplete ? (

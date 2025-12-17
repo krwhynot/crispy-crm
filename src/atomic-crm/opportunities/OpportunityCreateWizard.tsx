@@ -175,14 +175,13 @@ const OpportunityWizardContent = ({
         />
       )}
 
-      {/* Step Indicator */}
-      <StepIndicator className="mb-4" />
-
       {/* Progress Bar */}
       <FormProgressBar className="mb-6" />
 
-      {/* Wizard Container */}
+      {/* Wizard Container - StepIndicator MUST be inside FormWizard for useWizard context */}
       <FormWizard steps={OPPORTUNITY_WIZARD_STEPS} onSubmit={handleSubmit}>
+        {/* Step Indicator - moved inside FormWizard to access useWizard context */}
+        <StepIndicator className="mb-4" />
         {/* Step 1: Basic Information */}
         <WizardStep step={1}>
           <OpportunityWizardStep1 />

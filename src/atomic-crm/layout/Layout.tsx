@@ -41,7 +41,7 @@ export const Layout = ({ children }: { children: ReactNode }) => {
       </main>
       <footer className="fixed bottom-0 left-0 right-0 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 z-10">
         <div className="max-w-screen-xl mx-auto px-4 py-3">
-          <div className="flex items-center justify-between text-xs text-muted-foreground">
+          <div className="flex items-center justify-between text-xs text-foreground">
             <p>© {new Date().getFullYear()} MFB Master Food Brokers. All rights reserved.</p>
           </div>
         </div>
