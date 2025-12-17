@@ -1,6 +1,6 @@
 import React, { useCallback } from "react";
 import { Switch } from "@/components/ui/switch";
-import { FormError, FormField, FormLabel } from "@/components/admin/form";
+import { FormError, FormField, FormLabel, FormControl } from "@/components/admin/form";
 import { useInput, FieldTitle } from "ra-core";
 import { InputHelperText } from "./input-helper-text";
 
@@ -49,13 +49,14 @@ export const BooleanInput = (props: BooleanInputProps) => {
   return (
     <FormField className={className} id={id} name={field.name}>
       <div className="flex items-center space-x-2">
-        <Switch
-          id={id}
-          checked={Boolean(field.value)}
-          onFocus={onFocus}
-          onCheckedChange={handleChange}
-        />
-        <FormLabel htmlFor={id}>
+        <FormControl>
+          <Switch
+            checked={Boolean(field.value)}
+            onFocus={onFocus}
+            onCheckedChange={handleChange}
+          />
+        </FormControl>
+        <FormLabel>
           <FieldTitle label={label} source={source} resource={resource} isRequired={isRequired} />
         </FormLabel>
       </div>
