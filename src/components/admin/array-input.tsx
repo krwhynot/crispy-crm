@@ -46,10 +46,11 @@ export const ArrayInput = (props: ArrayInputProps) => {
   const sanitizedValidate = Array.isArray(validate) ? composeSyncValidators(validate) : validate;
   const getValidationErrorMessage = useGetValidationErrorMessage();
 
-  const { getValues } = useFormContext();
+  const { getValues, control } = useFormContext();
 
   const fieldProps = useFieldArray({
     name: finalSource,
+    control,
     rules: {
       validate: async (value) => {
         if (!sanitizedValidate) return true;
@@ -60,6 +61,8 @@ export const ArrayInput = (props: ArrayInputProps) => {
       },
     },
   });
+
+  const id = `${finalSource}-field`;
 
   useEffect(() => {
     if (formGroups && formGroupName != null) {

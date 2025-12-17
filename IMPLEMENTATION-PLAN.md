@@ -6,28 +6,40 @@
 
 ## Quick Reference Checklist
 
-### 🚨 Immediate (Before Beta)
-- [ ] Add `aria-describedby` to form fields with errors
-- [ ] Add `role="alert"` to error messages
-- [ ] Migrate `OpportunityCompactForm.tsx` (3 CollapsibleSection → FormSection)
-- [ ] Migrate `OrganizationHierarchySection.tsx` (CollapsibleSection → FormSection)
-- [ ] Migrate `OrganizationAddressSection.tsx` (CollapsibleSection → FormSection)
-- [ ] Fix `FormErrorSummary.tsx:171` missing `focus-visible:ring`
+### Pre-Beta (13 tasks)
 
-### ⚠️ Before Beta Release
-- [ ] Run E2E touch target tests (`touch-targets.spec.ts`)
-- [ ] Verify gap-2 minimum between clickable elements
-- [ ] Manual test: Organization notes file upload
-- [ ] Manual test: Week-over-week trend accuracy
-- [ ] Manual test: Dashboard filtering
+**ARIA Accessibility**
+- [ ] Add `aria-describedby` to form fields with validation errors
+- [ ] Add `role="alert"` to all error messages
 
-### 🧹 Post-Beta (Technical Debt)
-- [ ] Remove `CollapsibleSection` component (after migration complete)
-- [ ] Remove `CollapsibleSection` export from `index.ts`
-- [ ] Remove/update `CollapsibleSection.test.tsx`
-- [ ] Remove `ProductDistributionTab.tsx` placeholder section
+**CollapsibleSection Migration**
+- [ ] OpportunityCompactForm.tsx - Replace 3 instances
+- [ ] OrganizationHierarchySection.tsx - Replace wrapper
+- [ ] OrganizationAddressSection.tsx - Replace wrapper
+
+**Focus Management**
+- [ ] FormErrorSummary.tsx:171 - Add `focus-visible:ring`
+
+**Verification**
+- [ ] Run E2E touch target tests
+- [ ] Run gap spacing verification
+- [ ] Manual: File upload for organization notes
+- [ ] Manual: Week-over-week trend accuracy
+- [ ] Manual: Gap-2 minimum spacing
+
+### Post-Beta (6 tasks)
+
+**Component Cleanup**
+- [ ] Remove CollapsibleSection component
+- [ ] Remove CollapsibleSection export from index.ts
+- [ ] Remove/update CollapsibleSection tests
+- [ ] Remove ProductDistributionTab placeholder
+
+**Test Coverage**
 - [ ] Add database schema verification tests
-- [ ] Add form completion performance benchmarks
+
+**Documentation**
+- [ ] Archive 22 files to docs/archive/2025-12-17/
 
 ---
 

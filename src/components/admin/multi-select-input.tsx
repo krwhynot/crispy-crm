@@ -46,7 +46,9 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
   });
 
   const {
+    id,
     field,
+    isRequired,
     fieldState: { error },
   } = useInput({
     defaultValue,
@@ -79,10 +81,10 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
   const displayText = selectedCount > 0 ? `${emptyText} (${selectedCount} selected)` : emptyText;
 
   return (
-    <FormField>
+    <FormField id={id} name={field.name} className={props.className}>
       {label !== false && (
-        <FormLabel htmlFor={field.name}>
-          <FieldTitle label={label} source={source} resource={resourceProp} />
+        <FormLabel>
+          <FieldTitle label={label} source={source} resource={resourceProp} isRequired={isRequired} />
         </FormLabel>
       )}
       <DropdownMenu>
@@ -131,7 +133,7 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
         </DropdownMenuContent>
       </DropdownMenu>
       <InputHelperText helperText={helperText} />
-      {error && <FormError>{error.message}</FormError>}
+      <FormError />
     </FormField>
   );
 };
