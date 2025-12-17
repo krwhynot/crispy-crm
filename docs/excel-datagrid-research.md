@@ -596,6 +596,177 @@ const FullyCustomContactList = () => {
 
 ---
 
+## Theming for Crispy CRM (Garden to Table)
+
+**Verified:** MRT fully supports custom theming via MUI's ThemeProvider system.
+**Source:** [MRT Customize Components Guide](https://www.material-react-table.com/docs/guides/customize-components)
+
+### Theming Capabilities Confirmed ✅
+
+| Capability | Support | Method |
+|------------|---------|--------|
+| Custom color palette | ✅ | MUI `createTheme()` |
+| Table-specific theme | ✅ | Nested `<ThemeProvider>` |
+| Component-level styling | ✅ | `mui...Props` with `sx` prop |
+| MRT-specific colors | ✅ | `mrtTheme` option (v3+) |
+| Dark mode | ✅ | Theme palette mode |
+
+### Option 1: MUI Theme Provider (Recommended)
+
+Wrap the table in a ThemeProvider with Crispy's Garden to Table colors:
+
+```tsx
+// src/theme/crispyMRTTheme.ts
+// Source: https://www.material-react-table.com/docs/guides/customize-components#material-ui-theme
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+export const crispyMRTTheme = createTheme({
+  palette: {
+    primary: {
+      main: 'oklch(0.65 0.2 145)',      // Garden green (semantic --primary)
+      light: 'oklch(0.75 0.15 145)',
+      dark: 'oklch(0.55 0.22 145)',
+      contrastText: '#FAFAFA',           // Off-white, not pure #FFF
+    },
+    secondary: {
+      main: 'oklch(0.55 0.12 75)',       // Warm cafe brown accent
+    },
+    background: {
+      default: 'oklch(0.98 0.01 90)',    // Warm off-white
+      paper: 'oklch(0.99 0.005 90)',
+    },
+    text: {
+      primary: 'oklch(0.25 0.02 60)',    // Dark warm gray (not pure #000)
+      secondary: 'oklch(0.45 0.02 60)',  // Muted foreground
+    },
+    error: {
+      main: 'oklch(0.55 0.22 25)',       // Destructive red (semantic)
+    },
+    success: {
+      main: 'oklch(0.65 0.2 145)',       // Success green
+    },
+  },
+  shape: {
+    borderRadius: 8,                      // Match Tailwind rounded-lg
+  },
+  components: {
+    // Ensure 44px+ touch targets (WCAG)
+    MuiIconButton: {
+      styleOverrides: {
+        root: { minWidth: 44, minHeight: 44 },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: { minHeight: 44, textTransform: 'none' },
+      },
+    },
+  },
+});
+
+// Usage - wrap just the table for isolated theming
+<ThemeProvider theme={crispyMRTTheme}>
+  <MaterialReactTable table={table} />
+</ThemeProvider>
+```
+
+### Option 2: MRT Props for Component-Level Styling
+
+Style individual components via `mui...Props` with the `sx` prop:
+
+```tsx
+// Source: https://www.material-react-table.com/docs/guides/customize-components#the-sx-prop
+const table = useMaterialReactTable({
+  columns,
+  data,
+  // Table container styling
+  muiTablePaperProps: {
+    sx: {
+      borderRadius: '0.5rem',
+      boxShadow: 'none',
+      border: '1px solid oklch(0.85 0.02 90)',
+    },
+  },
+  // Header cells - light green background
+  muiTableHeadCellProps: {
+    sx: {
+      backgroundColor: 'oklch(0.96 0.02 145)', // Light sage green
+      fontWeight: 600,
+      color: 'oklch(0.25 0.02 60)',
+    },
+  },
+  // Row hover - subtle green tint
+  muiTableBodyRowProps: ({ row }) => ({
+    sx: {
+      '&:hover': {
+        backgroundColor: 'oklch(0.97 0.015 145)',
+      },
+      cursor: 'pointer',
+    },
+  }),
+  // Filter text fields
+  muiFilterTextFieldProps: {
+    sx: {
+      '& .MuiOutlinedInput-root': {
+        borderRadius: '0.375rem',
+      },
+    },
+  },
+});
+```
+
+### Option 3: MRT Theme Values (v3+)
+
+New in MRT v3 - dedicated theme values for table-specific colors:
+
+```tsx
+// Source: https://www.material-react-table.com/docs/guides/customize-components#mrt-theme-values
+const table = useMaterialReactTable({
+  columns,
+  data,
+  mrtTheme: {
+    baseBackgroundColor: 'oklch(0.99 0.005 90)',     // Warm off-white
+    draggingBorderColor: 'oklch(0.65 0.2 145)',     // Primary green
+    matchHighlightColor: 'oklch(0.85 0.15 145)',    // Light green for filter matches
+    selectedRowBackgroundColor: 'oklch(0.92 0.08 145)', // Selected row green tint
+    pinnedRowBackgroundColor: 'oklch(0.95 0.05 145)',
+  },
+});
+```
+
+### Garden to Table Color Mapping
+
+| Crispy Semantic Token | MUI Palette Equivalent | Usage in MRT |
+|----------------------|------------------------|--------------|
+| `--primary` | `palette.primary.main` | Filter icons, selected states, buttons |
+| `--background` | `palette.background.default` | Table container background |
+| `--card` | `palette.background.paper` | Table paper, popovers |
+| `--muted` | `palette.text.secondary` | Secondary text, borders |
+| `--muted-foreground` | `palette.text.disabled` | Placeholder text |
+| `--destructive` | `palette.error.main` | Delete actions (keep red!) |
+| `--foreground` | `palette.text.primary` | Primary text |
+
+### Visual Result
+
+| Element | MRT Default | Crispy Themed |
+|---------|-------------|---------------|
+| Header background | Light gray | Light sage green |
+| Row hover | Blue tint | Soft green tint |
+| Filter icon | Blue | Garden green |
+| Selected row | Blue highlight | Green highlight |
+| Text | Pure black | Warm dark gray |
+| Background | Pure white | Warm off-white |
+| Filter match highlight | Yellow | Light green |
+
+### Implementation Notes
+
+1. **Use nested ThemeProvider** - Isolates MRT theming from rest of app
+2. **Preserve semantic colors** - Keep red for destructive, don't override with brand green
+3. **Touch targets verified** - MUI defaults to 48px, exceeds WCAG 44px minimum
+4. **Dark mode ready** - Can add `palette.mode: 'dark'` variant later
+
+---
+
 ## Implementation Phases
 
 ### Phase 1: Contacts List POC (Estimated: 3-5 days)
