@@ -20,7 +20,7 @@ export const NamingConventionHelp: React.FC = () => {
           type="button"
           variant="ghost"
           size="sm"
-          className="flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground px-0"
+          className="flex items-center gap-2 text-xs text-foreground/70 hover:text-foreground px-0"
         >
           <Lightbulb className="w-3 h-3" />
           {isOpen ? "Hide naming tips" : "Show naming tips"}

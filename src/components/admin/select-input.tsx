@@ -236,7 +236,8 @@ export const SelectInput = (props: SelectInputProps) => {
                 {field.value && field.value !== emptyValue ? (
                   <div
                     role="button"
-                    className="p-0 ml-auto pointer-events-auto hover:bg-transparent text-muted-foreground opacity-50 hover:opacity-100"
+                    aria-label="Clear selection"
+                    className="p-0 ml-auto pointer-events-auto hover:bg-transparent text-foreground/70 opacity-50 hover:opacity-100"
                     onClick={handleReset}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
