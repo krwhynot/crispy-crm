@@ -28,7 +28,12 @@ export function LocalesMenuButton() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" size="icon" className="hidden sm:inline-flex">
+        <Button
+          variant="ghost"
+          size="icon"
+          className="hidden sm:inline-flex"
+          aria-label={`Change language, current: ${getNameForLocale(locale)}`}
+        >
           {locale.toUpperCase()}
         </Button>
       </DropdownMenuTrigger>

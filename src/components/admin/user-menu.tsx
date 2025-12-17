@@ -38,7 +38,11 @@ export function UserMenu({ children }: UserMenuProps) {
     <UserMenuContext.Provider value={{ onClose: handleClose }}>
       <DropdownMenu open={open} onOpenChange={handleToggleOpen}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="relative h-11 w-11 ml-2 rounded-full">
+          <Button
+            variant="ghost"
+            className="relative h-11 w-11 ml-2 rounded-full"
+            aria-label="Open user menu"
+          >
             <Avatar className="h-11 w-11">
               <AvatarImage src={identity?.avatar} role="presentation" />
               <AvatarFallback>{identity?.fullName?.charAt(0)}</AvatarFallback>
