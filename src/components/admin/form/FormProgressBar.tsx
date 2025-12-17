@@ -28,7 +28,7 @@ function FormProgressBar({
   return (
     <div className={cn("space-y-2", className)}>
       {showStepInfo && (
-        <div className="flex items-center justify-between text-sm text-muted-foreground">
+        <div className="flex items-center justify-between text-sm text-foreground/70">
           {isWizardMode ? (
             <span>
               Step {currentStep} of {totalSteps}

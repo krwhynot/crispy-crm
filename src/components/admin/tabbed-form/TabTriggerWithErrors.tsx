@@ -25,7 +25,7 @@ export const TabTriggerWithErrors = ({
       value={value}
       aria-label={ariaLabel}
       data-tutorial={dataTutorial}
-      className="flex-none h-11 px-2.5 py-0.5 text-sm font-normal rounded-t-md border-b-0 bg-transparent data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=inactive]:text-muted-foreground hover:text-foreground"
+      className="flex-none h-11 px-2.5 py-0.5 text-sm font-normal rounded-t-md border-b-0 bg-transparent data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=inactive]:text-foreground/70 hover:text-foreground"
     >
       {label}
       {errorCount > 0 && (
