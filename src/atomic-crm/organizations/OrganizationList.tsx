@@ -18,6 +18,7 @@ import { OrganizationListFilter } from "./OrganizationListFilter";
 import { OrganizationSlideOver } from "./OrganizationSlideOver";
 import { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
 import { OrganizationEmpty } from "./OrganizationEmpty";
+import { FilterableBadge } from "@/components/admin/FilterableBadge";
 import { TopToolbar } from "../layout/TopToolbar";
 import { ORGANIZATION_FILTER_CONFIG } from "./organizationFilterConfig";
 import {
@@ -161,14 +162,22 @@ const OrganizationListLayout = ({
           <FunctionField
             label={<OrganizationTypeHeader />}
             sortBy="organization_type"
-            render={(record: OrganizationRecord) => <OrganizationTypeBadge type={record.organization_type} />}
+            render={(record: OrganizationRecord) => (
+              <FilterableBadge source="organization_type" value={record.organization_type}>
+                <OrganizationTypeBadge type={record.organization_type} />
+              </FilterableBadge>
+            )}
           />
 
           {/* Column 3: Priority - Business priority indicator (sortable) - always visible */}
           <FunctionField
             label={<OrganizationPriorityHeader />}
             sortBy="priority"
-            render={(record: OrganizationRecord) => <PriorityBadge priority={record.priority} />}
+            render={(record: OrganizationRecord) => (
+              <FilterableBadge source="priority" value={record.priority}>
+                <PriorityBadge priority={record.priority} />
+              </FilterableBadge>
+            )}
           />
 
           {/* Column 4: Parent - Hierarchy reference (sortable by parent_organization_id) - hidden on tablet */}

@@ -29,6 +29,7 @@ import { contactExporter } from "./contactExporter";
 import { CONTACT_FILTER_CONFIG } from "./contactFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
 import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
+import { FilterableBadge } from "@/components/admin/FilterableBadge";
 
 export const ContactList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
@@ -154,7 +155,11 @@ const ContactListLayout = ({
           <FunctionField
             label={<ContactStatusHeader />}
             sortable={false}
-            render={(record: Contact) => <ContactStatusBadge status={record.status} />}
+            render={(record: Contact) => (
+              <FilterableBadge source="status" value={record.status}>
+                <ContactStatusBadge status={record.status} />
+              </FilterableBadge>
+            )}
           />
 
           {/* Column 6: Notes - Activity count metric (non-sortable) - hidden on tablet */}

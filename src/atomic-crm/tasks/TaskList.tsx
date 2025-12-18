@@ -19,6 +19,7 @@ import { DateField } from "@/components/admin/date-field";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { Badge } from "@/components/ui/badge";
 import { PriorityBadge } from "@/components/ui/priority-badge";
+import { FilterableBadge } from "@/components/admin/FilterableBadge";
 import { TaskListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
@@ -177,7 +178,11 @@ const TaskListLayout = ({
             label={<TaskPriorityHeader />}
             sortBy="priority"
             render={(record: Task) =>
-              record.priority && <PriorityBadge priority={record.priority} />
+              record.priority && (
+                <FilterableBadge source="priority" value={record.priority}>
+                  <PriorityBadge priority={record.priority} />
+                </FilterableBadge>
+              )
             }
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
@@ -186,7 +191,13 @@ const TaskListLayout = ({
           <FunctionField
             label={<TaskTypeHeader />}
             sortBy="type"
-            render={(record: Task) => record.type && <Badge variant="outline">{record.type}</Badge>}
+            render={(record: Task) =>
+              record.type && (
+                <FilterableBadge source="type" value={record.type}>
+                  <Badge variant="outline">{record.type}</Badge>
+                </FilterableBadge>
+              )
+            }
             {...COLUMN_VISIBILITY.desktopOnly}
           />
 

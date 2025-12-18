@@ -23,6 +23,7 @@ import { ProductSlideOver } from "./ProductSlideOver";
 import { ProductEmpty } from "./ProductEmpty";
 import { PRODUCT_FILTER_CONFIG } from "./productFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
+import { FilterableBadge } from "@/components/admin/FilterableBadge";
 import {
   ProductNameHeader,
   ProductCategoryHeader,
@@ -194,7 +195,11 @@ const ProductListLayout = ({
           <FunctionField
             label={<ProductCategoryHeader />}
             sortBy="category"
-            render={(record: any) => <CategoryBadge category={record.category} />}
+            render={(record: any) => (
+              <FilterableBadge source="category" value={record.category}>
+                <CategoryBadge category={record.category} />
+              </FilterableBadge>
+            )}
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
@@ -202,7 +207,11 @@ const ProductListLayout = ({
           <FunctionField
             label={<ProductStatusHeader />}
             sortBy="status"
-            render={(record: any) => <StatusBadge status={record.status} />}
+            render={(record: any) => (
+              <FilterableBadge source="status" value={record.status}>
+                <StatusBadge status={record.status} />
+              </FilterableBadge>
+            )}
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
