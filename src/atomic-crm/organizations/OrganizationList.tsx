@@ -8,7 +8,6 @@ import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
 import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
-import { SortButton } from "@/components/admin/sort-button";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { OrganizationListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
@@ -26,6 +25,7 @@ import {
   OrganizationTypeHeader,
   OrganizationPriorityHeader,
 } from "./OrganizationDatagridHeader";
+import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 import { PageTutorialTrigger } from "../tutorial";
 import type { Organization, Sale, Segment } from "../types";
 import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
@@ -33,6 +33,7 @@ import type { OrganizationExportRow, OrganizationRecord } from "./types";
 
 const OrganizationListActions = () => (
   <TopToolbar>
+    <OwnerFilterDropdown source="sales_id" label="Account Manager" />
     <span data-tutorial="org-sort-btn">
       <SortButton fields={["name", "organization_type", "priority"]} />
     </span>

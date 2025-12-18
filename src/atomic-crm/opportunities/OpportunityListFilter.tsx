@@ -12,7 +12,6 @@ import {
   Flag,
   Layers,
   Megaphone,
-  Users,
   Zap,
   User,
   Calendar,
@@ -27,6 +26,7 @@ import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { OPPORTUNITY_STAGES } from "./constants/stageConstants";
 import { priorityChoices } from "./constants/priorityChoices";
+import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 
 export const OpportunityListFilter = () => {
   const { data: identity } = useGetIdentity();
@@ -333,13 +333,7 @@ export const OpportunityListFilter = () => {
           </Select>
         </FilterCategory>
 
-        <FilterCategory icon={<Users className="h-4 w-4" />} label="Owner">
-          <ToggleFilterButton
-            className="w-full justify-between"
-            label="Me"
-            value={{ opportunity_owner_id: identity?.id }}
-          />
-        </FilterCategory>
+        <OwnerFilterDropdown source="opportunity_owner_id" label="Owner" />
       </div>
     </div>
   );

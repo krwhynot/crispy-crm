@@ -1,12 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { endOfToday, startOfToday, addDays } from "date-fns";
-import { Calendar, CheckSquare, Star, Tag, Users } from "lucide-react";
-import { FilterLiveForm, useGetIdentity } from "ra-core";
+import { Calendar, CheckSquare, Star, Tag } from "lucide-react";
+import { FilterLiveForm } from "ra-core";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { useConfigurationContext } from "../root/ConfigurationContext";
+import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 
 /**
  * TaskListFilter Component
@@ -15,7 +16,6 @@ import { useConfigurationContext } from "../root/ConfigurationContext";
  * Filters: opportunity, due date, completion status, priority, type, assigned to
  */
 export const TaskListFilter = () => {
-  const { data: identity } = useGetIdentity();
   const { taskTypes } = useConfigurationContext();
 
   const priorityColors: Record<string, string> = {
@@ -101,15 +101,10 @@ export const TaskListFilter = () => {
             />
           ))}
         </FilterCategory>
-
-        <FilterCategory icon={<Users className="h-4 w-4" />} label="Assigned To">
-          <ToggleFilterButton
-            className="w-full justify-between"
-            label={"Me"}
-            value={{ sales_id: identity?.id }}
-          />
-        </FilterCategory>
       </div>
+
+      {/* Owner Filter - Always at bottom */}
+      <OwnerFilterDropdown source="sales_id" label="Assigned To" />
     </div>
   );
 };
