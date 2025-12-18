@@ -187,7 +187,8 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
       <li className="text-center mt-2 px-3">
         <Button
           variant="outline"
-          size="sm"
+          size="default"
+          className="min-h-11"
           onClick={() => {
             setColumnRanks(undefined);
             setHiddenColumns(defaultHiddenColumns);

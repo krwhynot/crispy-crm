@@ -1,16 +1,14 @@
 import { useGetIdentity, useListContext } from "ra-core";
 
-import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { List } from "@/components/admin/list";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
-import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
-import { TextField } from "@/components/admin/text-field";
+import { DataTable } from "@/components/admin/data-table";
+import { ColumnsButton } from "@/components/admin/columns-button";
 import { ReferenceField } from "@/components/admin/reference-field";
+import { TextField } from "@/components/admin/text-field";
 import { DateField } from "@/components/admin/date-field";
-import { FunctionField } from "react-admin";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
-import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { ContactListSkeleton } from "@/components/ui/list-skeleton";
 import type { Contact } from "../types";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
@@ -27,6 +25,10 @@ import { contactExporter } from "./contactExporter";
 import { CONTACT_FILTER_CONFIG } from "./contactFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
 import { FilterableBadge } from "@/components/admin/FilterableBadge";
+import {
+  CONTACT_HIDDEN_COLUMNS,
+  CONTACT_COLUMNS_STORE_KEY,
+} from "./contactColumns";
 
 export const ContactList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
@@ -79,13 +81,6 @@ const ContactListLayout = ({
 }) => {
   const { data, isPending, filterValues } = useListContext();
 
-  // Keyboard navigation for list rows
-  // Disabled when slide-over is open to prevent conflicts
-  const { focusedIndex } = useListKeyboardNavigation({
-    onSelect: (id) => openSlideOver(Number(id), "view"),
-    enabled: !isSlideOverOpen,
-  });
-
   const hasFilters = filterValues && Object.keys(filterValues).length > 0;
 
   // Show skeleton during initial load (identity check happens in parent)
@@ -102,89 +97,98 @@ const ContactListLayout = ({
   }
 
   return (
-    <>
-      <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
-        <ListSearchBar
-          placeholder="Search contacts..."
-          filterConfig={CONTACT_FILTER_CONFIG}
+    <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
+      <ListSearchBar
+        placeholder="Search contacts..."
+        filterConfig={CONTACT_FILTER_CONFIG}
+      />
+      <DataTable<Contact>
+        storeKey={CONTACT_COLUMNS_STORE_KEY}
+        defaultHiddenColumns={CONTACT_HIDDEN_COLUMNS}
+        rowClick={(id) => {
+          openSlideOver(Number(id), "view");
+          return false; // Prevent default navigation
+        }}
+      >
+        {/* Column 1: Avatar - Visual identifier (non-sortable) - hidden on mobile */}
+        <DataTable.Col<Contact>
+          source="avatar"
+          label=""
+          disableSort
+          render={(record) => <Avatar record={record} width={40} height={40} />}
+          cellClassName="hidden lg:table-cell"
+          headerClassName="hidden lg:table-cell"
         />
-        <PremiumDatagrid
-          onRowClick={(id) => openSlideOver(Number(id), "view")}
-          focusedIndex={focusedIndex}
+
+        {/* Column 2: Name - Primary identifier (sortable by first_name) - always visible */}
+        <DataTable.Col<Contact>
+          source="full_name"
+          label={<ContactNameHeader />}
+          render={(record) => formatFullName(record.first_name, record.last_name)}
+        />
+
+        {/* Column 3: Role - Merged Title + Department (sortable by title) - hidden on tablet */}
+        <DataTable.Col<Contact>
+          source="title"
+          label="Role"
+          render={(record) => formatRoleAndDept(record.title, record.department)}
+          cellClassName="hidden lg:table-cell"
+          headerClassName="hidden lg:table-cell"
+        />
+
+        {/* Column 4: Organization - Relationship reference (sortable) - always visible */}
+        <DataTable.Col<Contact>
+          source="organization_id"
+          label="Organization"
         >
-          {/* Column 1: Avatar - Visual identifier (non-sortable) - hidden on mobile */}
-          <FunctionField
-            label=""
-            sortable={false}
-            render={(record: Contact) => <Avatar record={record} width={40} height={40} />}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
-          />
-
-          {/* Column 2: Name - Primary identifier (sortable by first_name) - always visible */}
-          <FunctionField
-            label={<ContactNameHeader />}
-            sortBy="first_name"
-            render={(record: Contact) => formatFullName(record.first_name, record.last_name)}
-          />
-
-          {/* Column 3: Role - Merged Title + Department (sortable by title) - hidden on tablet */}
-          <FunctionField
-            label="Role"
-            sortBy="title"
-            render={(record: Contact) => formatRoleAndDept(record.title, record.department)}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
-          />
-
-          {/* Column 4: Organization - Relationship reference (sortable) - always visible */}
           <ReferenceField
             source="organization_id"
             reference="organizations"
-            label="Organization"
             link={false}
-            sortable
           >
             <TextField source="name" />
           </ReferenceField>
+        </DataTable.Col>
 
-          {/* Column 5: Status - Badge-based indicator (filterable) - always visible */}
-          <FunctionField
-            label={<ContactStatusHeader />}
-            sortable={false}
-            render={(record: Contact) => (
-              <FilterableBadge source="status" value={record.status}>
-                <ContactStatusBadge status={record.status} />
-              </FilterableBadge>
-            )}
-          />
+        {/* Column 5: Status - Badge-based indicator (filterable) - always visible */}
+        <DataTable.Col<Contact>
+          source="status"
+          label={<ContactStatusHeader />}
+          disableSort
+          render={(record) => (
+            <FilterableBadge source="status" value={record.status}>
+              <ContactStatusBadge status={record.status} />
+            </FilterableBadge>
+          )}
+        />
 
-          {/* Column 6: Notes - Activity count metric (non-sortable) - hidden on tablet */}
-          <FunctionField
-            label="Notes"
-            sortable={false}
-            render={(record: Contact) => record.nb_notes ?? 0}
-            textAlign="center"
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
-          />
+        {/* Column 6: Notes - Activity count metric (non-sortable) - hidden on tablet */}
+        <DataTable.Col<Contact>
+          source="nb_notes"
+          label="Notes"
+          disableSort
+          render={(record) => record.nb_notes ?? 0}
+          cellClassName="hidden lg:table-cell text-center"
+          headerClassName="hidden lg:table-cell text-center"
+        />
 
-          {/* Column 7: Last Activity - Recency metric (sortable) - hidden on mobile */}
-          <DateField
-            source="last_seen"
-            label="Last Activity"
-            sortable
-            showTime={false}
-            cellClassName="hidden lg:table-cell"
-            headerClassName="hidden lg:table-cell"
-          />
-        </PremiumDatagrid>
-      </StandardListLayout>
-      <BulkActionsToolbar />
-    </>
+        {/* Column 7: Last Activity - Recency metric (sortable) - hidden on mobile */}
+        <DataTable.Col<Contact>
+          source="last_seen"
+          label="Last Activity"
+          field={DateField}
+          cellClassName="hidden lg:table-cell"
+          headerClassName="hidden lg:table-cell"
+        />
+      </DataTable>
+    </StandardListLayout>
   );
 };
 
-const ContactListActions = () => <TopToolbar />;
+const ContactListActions = () => (
+  <TopToolbar>
+    <ColumnsButton storeKey={CONTACT_COLUMNS_STORE_KEY} />
+  </TopToolbar>
+);
 
 export default ContactList;
