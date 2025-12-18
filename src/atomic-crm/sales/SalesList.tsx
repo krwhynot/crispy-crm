@@ -135,7 +135,6 @@ const SalesListLayout = ({
 const SalesListActions = () => (
   <TopToolbar>
     <ExportButton />
-    <CreateButton label="New user" />
   </TopToolbar>
 );
 

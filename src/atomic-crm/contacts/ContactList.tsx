@@ -1,7 +1,6 @@
 import { useGetIdentity, useListContext } from "ra-core";
 
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
-import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
@@ -203,9 +202,6 @@ const ContactListActions = () => (
     */}
     <span data-tutorial="contact-export-btn">
       <ExportButton exporter={contactExporter} />
-    </span>
-    <span data-tutorial="create-contact-btn">
-      <CreateButton />
     </span>
   </TopToolbar>
 );

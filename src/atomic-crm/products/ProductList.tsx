@@ -3,7 +3,6 @@ import { FunctionField } from "react-admin";
 import { List } from "@/components/admin/list";
 import { TextField } from "@/components/admin/text-field";
 import { ReferenceField } from "@/components/admin/reference-field";
-import { CreateButton } from "@/components/admin/create-button";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
@@ -246,9 +245,6 @@ const ProductListLayout = ({
  */
 const ProductListActions = () => (
   <TopToolbar>
-    <span data-tutorial="create-product-btn">
-      <CreateButton />
-    </span>
   </TopToolbar>
 );
 

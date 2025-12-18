@@ -185,9 +185,6 @@ const OpportunityActions = ({
       <span data-tutorial="opp-quick-add">
         <QuickAddButton />
       </span>
-      <span data-tutorial="create-opportunity-btn">
-        <CreateButton label="New Opportunity" />
-      </span>
     </TopToolbar>
   );
 };
