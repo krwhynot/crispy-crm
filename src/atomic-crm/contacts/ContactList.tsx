@@ -29,6 +29,7 @@ import { formatFullName, formatRoleAndDept } from "./formatters";
 import { contactExporter } from "./contactExporter";
 import { CONTACT_FILTER_CONFIG } from "./contactFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
+import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 
 export const ContactList = () => {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
@@ -182,6 +183,7 @@ const ContactListLayout = ({
 
 const ContactListActions = () => (
   <TopToolbar>
+    <OwnerFilterDropdown source="sales_id" label="Account Manager" />
     <span data-tutorial="contact-sort-btn">
       <SortButton fields={["first_name", "last_name", "last_seen"]} />
     </span>

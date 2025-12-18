@@ -6,6 +6,8 @@
 // RBAC
 export { useUserRole } from "./useUserRole";
 export type { UserRole, UserIdentity } from "./useUserRole";
+export { useTeamMembers } from "./useTeamMembers";
+export type { TeamMember, UseTeamMembersReturn } from "./useTeamMembers";
 
 // UI State
 export { useSlideOverState } from "./useSlideOverState";
