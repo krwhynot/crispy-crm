@@ -7,13 +7,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { endOfYesterday, startOfMonth, startOfWeek, subMonths } from "date-fns";
-import { Building2, Clock, Tag } from "lucide-react";
+import { Building2, Clock, Tag, User } from "lucide-react";
 import { useGetList, useListContext } from "ra-core";
 import { cn } from "@/lib/utils";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
 import { getTagColorClass } from "../tags/tag-colors";
+import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 
 /**
  * ContactListFilter - Sidebar filter UI for Contacts list
@@ -146,6 +147,10 @@ export const ContactListFilter = () => {
               ))}
             </SelectContent>
           </Select>
+        </FilterCategory>
+
+        <FilterCategory label="Account Manager" icon={<User className="h-4 w-4" />}>
+          <OwnerFilterDropdown source="sales_id" label="Account Manager" />
         </FilterCategory>
       </div>
     </div>

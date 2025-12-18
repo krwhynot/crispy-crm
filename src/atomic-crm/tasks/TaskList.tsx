@@ -35,7 +35,6 @@ import { TASK_FILTER_CONFIG } from "./taskFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
 import { TaskTitleHeader, TaskPriorityHeader, TaskTypeHeader } from "./TasksDatagridHeader";
 import { TopToolbar } from "../layout/TopToolbar";
-import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 import { ExportButton } from "@/components/admin/export-button";
 import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import type { Task, Opportunity, Organization } from "../types";
@@ -45,7 +44,6 @@ import type { Task, Opportunity, Organization } from "../types";
  */
 const TaskListActions = () => (
   <TopToolbar>
-    <OwnerFilterDropdown source="sales_id" label="Assigned To" />
     <ExportButton exporter={exporter} />
   </TopToolbar>
 );

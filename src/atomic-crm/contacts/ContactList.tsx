@@ -27,7 +27,6 @@ import { formatFullName, formatRoleAndDept } from "./formatters";
 import { contactExporter } from "./contactExporter";
 import { CONTACT_FILTER_CONFIG } from "./contactFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
-import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 import { FilterableBadge } from "@/components/admin/FilterableBadge";
 
 export const ContactList = () => {
@@ -189,7 +188,6 @@ const ContactListLayout = ({
 
 const ContactListActions = () => (
   <TopToolbar>
-    <OwnerFilterDropdown source="sales_id" label="Account Manager" />
     {/* MVP: Import feature hidden - re-enable post-launch
     <span data-tutorial="contact-import-btn">
       <ContactImportButton />

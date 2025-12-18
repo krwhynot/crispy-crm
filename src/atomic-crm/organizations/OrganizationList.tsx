@@ -25,7 +25,6 @@ import {
   OrganizationTypeHeader,
   OrganizationPriorityHeader,
 } from "./OrganizationDatagridHeader";
-import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 import { PageTutorialTrigger } from "../tutorial";
 import type { Organization, Sale, Segment } from "../types";
 import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
@@ -33,7 +32,6 @@ import type { OrganizationExportRow, OrganizationRecord } from "./types";
 
 const OrganizationListActions = () => (
   <TopToolbar>
-    <OwnerFilterDropdown source="sales_id" label="Account Manager" />
     <span data-tutorial="org-export-btn">
       <ExportButton exporter={exporter} />
     </span>

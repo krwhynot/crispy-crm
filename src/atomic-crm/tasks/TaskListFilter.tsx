@@ -1,8 +1,9 @@
 import { endOfToday, startOfToday, addDays } from "date-fns";
-import { Calendar, CheckSquare } from "lucide-react";
+import { Calendar, CheckSquare, User } from "lucide-react";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
+import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 
 /**
  * TaskListFilter Component
@@ -51,6 +52,10 @@ export const TaskListFilter = () => {
           label="Completed"
           value={{ completed: true }}
         />
+      </FilterCategory>
+
+      <FilterCategory label="Assigned To" icon={<User className="h-4 w-4" />}>
+        <OwnerFilterDropdown source="sales_id" label="Assigned To" />
       </FilterCategory>
     </div>
   );
