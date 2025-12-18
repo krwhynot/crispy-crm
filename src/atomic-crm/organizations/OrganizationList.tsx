@@ -6,7 +6,6 @@ import { OrganizationBulkActionsToolbar } from "./OrganizationBulkActionsToolbar
 import { List } from "@/components/admin/list";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
-import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { OrganizationListSkeleton } from "@/components/ui/list-skeleton";
@@ -37,9 +36,6 @@ const OrganizationListActions = () => (
     <OwnerFilterDropdown source="sales_id" label="Account Manager" />
     <span data-tutorial="org-export-btn">
       <ExportButton exporter={exporter} />
-    </span>
-    <span data-tutorial="create-organization-btn">
-      <CreateButton />
     </span>
   </TopToolbar>
 );

@@ -3,7 +3,6 @@ import { downloadCSV, type Exporter, useGetIdentity, useListContext } from "ra-c
 import { FunctionField } from "react-admin";
 
 import { List } from "@/components/admin/list";
-import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
@@ -230,9 +229,6 @@ const ActivityListActions = () => (
   <TopToolbar>
     <OwnerFilterDropdown source="created_by" label="Created By" />
     <ExportButton exporter={exporter} />
-    <span data-tutorial="create-activity-btn">
-      <CreateButton label="Log Activity" />
-    </span>
   </TopToolbar>
 );
 

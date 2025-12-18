@@ -222,10 +222,6 @@ vi.mock("../layout/TopToolbar", () => ({
   TopToolbar: ({ children }: any) => <div data-testid="top-toolbar">{children}</div>,
 }));
 
-vi.mock("@/components/admin/create-button", () => ({
-  CreateButton: () => <button data-testid="create-button">Create</button>,
-}));
-
 vi.mock("@/components/admin/export-button", () => ({
   ExportButton: () => <button data-testid="export-button">Export</button>,
 }));
