@@ -16,15 +16,13 @@ export const OnlyMineInput = (_: { alwaysOn: boolean; source: string }) => {
     setFilters(newFilterValues, displayedFilters);
   };
   return (
-    <div className="mt-auto pb-2.25">
-      <div className="flex items-center space-x-2">
-        <Switch
-          id="only-mine"
-          checked={typeof filterValues.opportunity_owner_id !== "undefined"}
-          onCheckedChange={handleChange}
-        />
-        <Label htmlFor="only-mine">Only opportunities I manage</Label>
-      </div>
+    <div className="flex items-center space-x-2">
+      <Switch
+        id="only-mine"
+        checked={typeof filterValues.opportunity_owner_id !== "undefined"}
+        onCheckedChange={handleChange}
+      />
+      <Label htmlFor="only-mine">Only opportunities I manage</Label>
     </div>
   );
 };
