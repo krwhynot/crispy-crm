@@ -49,16 +49,14 @@ export const OwnerFilterDropdown = ({ source, label = "Owner" }: OwnerFilterDrop
 
   if (isRep) {
     return (
-      <div className="mt-auto pb-2.25">
-        <div className="flex items-center space-x-2">
-          <Switch
-            id={`${source}-owner-filter`}
-            checked={typeof currentFilterValue !== "undefined"}
-            onCheckedChange={handleRepToggle}
-            aria-label={`Filter by my ${label.toLowerCase()}`}
-          />
-          <Label htmlFor={`${source}-owner-filter`}>My Items</Label>
-        </div>
+      <div className="flex items-center space-x-2">
+        <Switch
+          id={`${source}-owner-filter`}
+          checked={typeof currentFilterValue !== "undefined"}
+          onCheckedChange={handleRepToggle}
+          aria-label={`Filter by my ${label.toLowerCase()}`}
+        />
+        <Label htmlFor={`${source}-owner-filter`}>My Items</Label>
       </div>
     );
   }
@@ -74,25 +72,23 @@ export const OwnerFilterDropdown = ({ source, label = "Owner" }: OwnerFilterDrop
   };
 
   return (
-    <div className="mt-auto pb-2.25">
-      <div className="flex items-center space-x-2">
-        <Label htmlFor={`${source}-owner-select`}>{label}:</Label>
-        <Select value={getSelectValue()} onValueChange={handleManagerSelectChange}>
-          <SelectTrigger id={`${source}-owner-select`} aria-label={`Filter by ${label.toLowerCase()}`}>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="mine">My Items</SelectItem>
-            <SelectItem value="all">All</SelectItem>
-            <SelectSeparator />
-            {teamMembers.map((member) => (
-              <SelectItem key={member.id} value={String(member.id)}>
-                {member.fullName}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+    <div className="flex items-center space-x-2">
+      <Label htmlFor={`${source}-owner-select`}>{label}:</Label>
+      <Select value={getSelectValue()} onValueChange={handleManagerSelectChange}>
+        <SelectTrigger id={`${source}-owner-select`} aria-label={`Filter by ${label.toLowerCase()}`}>
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="mine">My Items</SelectItem>
+          <SelectItem value="all">All</SelectItem>
+          <SelectSeparator />
+          {teamMembers.map((member) => (
+            <SelectItem key={member.id} value={String(member.id)}>
+              {member.fullName}
+            </SelectItem>
+          ))}
+        </SelectContent>
+      </Select>
     </div>
   );
 };
