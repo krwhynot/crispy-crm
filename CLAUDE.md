@@ -85,6 +85,13 @@ src/atomic-crm/feature/
 
 **Layouts:** List Shell (sidebar + PremiumDatagrid) | Slide-Over (40vw right panel) | Create Forms (full-page tabbed)
 
+## 🎨 Column Filter Pattern (Pilot: Organizations)
+- Reusable components in `src/components/admin/column-filters/`
+- Text filters: debounced (300ms), expand on click
+- Checkbox filters: popover with multi-select
+- Always use `useListContext` for filter state
+- Touch targets ≥44px, semantic colors only
+
 ## Testing
 
 **Unit (Vitest):** Use `renderWithAdminContext()` from `src/tests/utils/render-admin.tsx`. Supabase mocked in `src/tests/setup.ts`. Tests in `__tests__/` directories.
