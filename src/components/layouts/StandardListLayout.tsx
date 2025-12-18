@@ -76,7 +76,7 @@ export function StandardListLayout({
   }, []);
 
   return (
-    <div className="flex h-full min-h-0 flex-1 flex-col lg:flex-row gap-6">
+    <div className={`flex h-full min-h-0 flex-1 flex-col lg:grid lg:grid-cols-[auto_1fr] ${isCollapsed ? "gap-2" : "gap-6"}`}>
       {/* Collapse toggle button */}
       <div className="flex items-center gap-2 lg:hidden mb-2 shrink-0">
         <Tooltip>
@@ -163,8 +163,8 @@ export function StandardListLayout({
       <main
         role="main"
         aria-label={`${resource} list`}
-        className={`flex h-full min-h-0 min-w-[600px] flex-1 flex-col overflow-hidden transition-all duration-200 ${
-          isCollapsed ? "max-w-full" : "max-w-[1800px] mx-auto"
+        className={`flex h-full min-h-0 flex-1 flex-col overflow-hidden transition-all duration-200 ${
+          isCollapsed ? "w-full" : "min-w-[600px] max-w-[1800px] mx-auto"
         }`}
       >
         <div className="card-container flex h-full min-h-0 flex-1 flex-col overflow-hidden pb-2">
