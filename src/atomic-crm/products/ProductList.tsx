@@ -24,6 +24,11 @@ import { ProductSlideOver } from "./ProductSlideOver";
 import { ProductEmpty } from "./ProductEmpty";
 import { PRODUCT_FILTER_CONFIG } from "./productFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
+import {
+  ProductNameHeader,
+  ProductCategoryHeader,
+  ProductStatusHeader,
+} from "./ProductsDatagridHeader";
 
 const DISTRIBUTOR_CODE_LABELS: Record<string, string> = {
   usf_code: "USF",
@@ -168,7 +173,12 @@ const ProductListLayout = ({
           focusedIndex={focusedIndex}
         >
           {/* Column 1: Product Name - Primary identifier (sortable) - always visible */}
-          <TextField source="name" label="Product Name" {...COLUMN_VISIBILITY.alwaysVisible} />
+          <TextField
+            source="name"
+            label={<ProductNameHeader />}
+            sortable
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
 
           {/* Column 2: Distributor Codes - Popover display (non-sortable) - always visible */}
           <FunctionField
@@ -180,7 +190,7 @@ const ProductListLayout = ({
 
           {/* Column 3: Category - Classification badge (sortable) - always visible */}
           <FunctionField
-            label="Category"
+            label={<ProductCategoryHeader />}
             sortBy="category"
             render={(record: any) => <CategoryBadge category={record.category} />}
             {...COLUMN_VISIBILITY.alwaysVisible}
@@ -188,7 +198,7 @@ const ProductListLayout = ({
 
           {/* Column 4: Status - Lifecycle badge (sortable) - always visible */}
           <FunctionField
-            label="Status"
+            label={<ProductStatusHeader />}
             sortBy="status"
             render={(record: any) => <StatusBadge status={record.status} />}
             {...COLUMN_VISIBILITY.alwaysVisible}
