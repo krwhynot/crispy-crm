@@ -26,7 +26,7 @@ export interface ColumnConfig {
 export const CONTACT_COLUMNS: ColumnConfig[] = [
   // Protected columns - always visible (core identifiers)
   {
-    source: "full_name",
+    source: "first_name",
     label: "Name",
     hideable: false,
     defaultVisible: true,

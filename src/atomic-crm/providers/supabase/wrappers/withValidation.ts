@@ -17,6 +17,21 @@
 
 import type { DataProvider, RaRecord, CreateParams, UpdateParams, GetListParams } from "ra-core";
 import { ValidationService } from "../services";
+import { isValidFilterField } from "../filterRegistry";
+
+/**
+ * Default sort fields for each resource when invalid sort is detected
+ * This should be kept in sync with useFilterCleanup.ts
+ */
+const DEFAULT_SORT_FIELDS: Record<string, string> = {
+  contacts: "last_seen",
+  organizations: "name",
+  opportunities: "created_at",
+  activities: "activity_date",
+  tasks: "due_date",
+  sales: "first_name",
+  tags: "name",
+};
 
 /**
  * Interface for Zod validation errors
