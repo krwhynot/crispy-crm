@@ -112,10 +112,12 @@ export function PremiumDatagrid({
   }
 
   return (
-    <Datagrid
-      {...props}
-      rowClassName={getRowClassName}
-      rowClick={onRowClick ? handleRowClick : props.rowClick}
-    />
+    <div className="flex-1 min-h-0 overflow-auto">
+      <Datagrid
+        {...props}
+        rowClassName={getRowClassName}
+        rowClick={onRowClick ? handleRowClick : props.rowClick}
+      />
+    </div>
   );
 }
