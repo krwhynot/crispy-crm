@@ -98,3 +98,9 @@ supabase/cloud_users.sql
 .claude/memory-capture.log
 .env.test
 .env.cloud
+
+# Drawbridge annotation files (visual UI feedback tool)
+.moat/
+moat-tasks.md
+moat-tasks-detail.json
+screenshots/

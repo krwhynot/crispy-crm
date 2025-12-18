@@ -7,12 +7,11 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { endOfYesterday, startOfMonth, startOfWeek, subMonths } from "date-fns";
-import { Building2, Clock, Tag, Users } from "lucide-react";
-import { FilterLiveForm, useGetIdentity, useGetList, useListContext } from "ra-core";
+import { Building2, Clock, Tag } from "lucide-react";
+import { useGetList, useListContext } from "ra-core";
 import { cn } from "@/lib/utils";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
-import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { getTagColorClass } from "../tags/tag-colors";
 
@@ -22,7 +21,6 @@ import { getTagColorClass } from "../tags/tag-colors";
  * NOTE: Active filter chips are now displayed via FilterChipBar above the datagrid.
  */
 export const ContactListFilter = () => {
-  const { data: identity } = useGetIdentity();
   const { filterValues, setFilters } = useListContext();
 
   const { data: tagsData } = useGetList("tags", {
@@ -59,11 +57,6 @@ export const ContactListFilter = () => {
 
   return (
     <div className="flex flex-col gap-4" data-tutorial="contact-filters">
-      {/* Search - Always visible */}
-      <FilterLiveForm>
-        <SearchInput source="q" placeholder="Search contacts..." />
-      </FilterLiveForm>
-
       {/* Collapsible Filter Sections */}
       <div className="flex flex-col gap-2">
         <FilterCategory label="Last activity" icon={<Clock className="h-4 w-4" />}>
@@ -153,14 +146,6 @@ export const ContactListFilter = () => {
               ))}
             </SelectContent>
           </Select>
-        </FilterCategory>
-
-        <FilterCategory icon={<Users className="h-4 w-4" />} label="Account Manager">
-          <ToggleFilterButton
-            className="w-full justify-between"
-            label={"Me"}
-            value={{ sales_id: identity?.id }}
-          />
         </FilterCategory>
       </div>
     </div>
