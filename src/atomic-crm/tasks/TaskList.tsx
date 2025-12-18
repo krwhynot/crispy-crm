@@ -33,6 +33,7 @@ import { SaleName } from "../sales/SaleName";
 import { contactOptionText } from "../contacts/ContactOption";
 import { TASK_FILTER_CONFIG } from "./taskFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
+import { TaskTitleHeader, TaskPriorityHeader, TaskTypeHeader } from "./TasksDatagridHeader";
 import type { Task, Opportunity, Organization } from "../types";
 
 /**
@@ -140,7 +141,12 @@ const TaskListLayout = ({
           />
 
           {/* Column 2: Title - Primary identifier (sortable) - always visible */}
-          <TextField source="title" label="Title" {...COLUMN_VISIBILITY.alwaysVisible} />
+          <TextField
+            source="title"
+            label={<TaskTitleHeader />}
+            sortable
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
 
           {/* Column 3: Due Date - Time-sensitive field (sortable) - always visible */}
           <DateField
@@ -152,7 +158,7 @@ const TaskListLayout = ({
 
           {/* Column 4: Priority - Visual indicator (sortable) - always visible */}
           <FunctionField
-            label="Priority"
+            label={<TaskPriorityHeader />}
             sortBy="priority"
             render={(record: Task) =>
               record.priority && <PriorityBadge priority={record.priority} />
@@ -162,7 +168,7 @@ const TaskListLayout = ({
 
           {/* Column 5: Type - Classification badge (sortable) - hidden on tablet/mobile */}
           <FunctionField
-            label="Type"
+            label={<TaskTypeHeader />}
             sortBy="type"
             render={(record: Task) => record.type && <Badge variant="outline">{record.type}</Badge>}
             {...COLUMN_VISIBILITY.desktopOnly}
