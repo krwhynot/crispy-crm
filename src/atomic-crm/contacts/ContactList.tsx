@@ -4,7 +4,6 @@ import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
-import { SortButton } from "@/components/admin/sort-button";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
@@ -184,9 +183,6 @@ const ContactListLayout = ({
 const ContactListActions = () => (
   <TopToolbar>
     <OwnerFilterDropdown source="sales_id" label="Account Manager" />
-    <span data-tutorial="contact-sort-btn">
-      <SortButton fields={["first_name", "last_name", "last_seen"]} />
-    </span>
     {/* MVP: Import feature hidden - re-enable post-launch
     <span data-tutorial="contact-import-btn">
       <ContactImportButton />

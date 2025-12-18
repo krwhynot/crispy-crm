@@ -92,15 +92,28 @@ vi.mock("react-admin", async () => {
         {children}
       </span>
     ),
-    FunctionField: ({ label, sortBy, sortable }: any) => (
-      <div
-        data-testid={`function-field-${label}`}
-        data-sortable={sortBy ? "true" : sortable === false ? "false" : "unknown"}
-        data-sort-by={sortBy || ""}
-      >
-        {label}
-      </div>
-    ),
+    FunctionField: ({ label, sortBy, sortable }: any) => {
+      // Extract label text for testid - handle both string and React element labels
+      let labelText = "";
+      if (typeof label === "string") {
+        labelText = label;
+      } else if (label?.type?.name) {
+        // React component - extract name from component name pattern
+        // OrganizationTypeHeader -> Type, OrganizationPriorityHeader -> Priority
+        const name = label.type.name;
+        labelText = name.replace(/^Organization/, "").replace(/Header$/, "");
+      }
+
+      return (
+        <div
+          data-testid={`function-field-${labelText}`}
+          data-sortable={sortBy ? "true" : sortable === false ? "false" : "unknown"}
+          data-sort-by={sortBy || ""}
+        >
+          {label}
+        </div>
+      );
+    },
   };
 });
 
@@ -247,14 +260,6 @@ vi.mock("@/components/admin/create-button", () => ({
 
 vi.mock("@/components/admin/export-button", () => ({
   ExportButton: () => <button data-testid="export-button">Export</button>,
-}));
-
-vi.mock("@/components/admin/sort-button", () => ({
-  SortButton: ({ fields }: any) => (
-    <button data-testid="sort-button" data-fields={fields?.join(",")}>
-      Sort
-    </button>
-  ),
 }));
 
 vi.mock("@/components/admin/bulk-actions-toolbar", () => ({
@@ -635,10 +640,6 @@ describe("OrganizationList column sorting configuration", () => {
       expect(opportunitiesField).toHaveAttribute("data-sortable", "false");
     });
   });
-
-  // Note: SortButton fields test would require mocking the List component
-  // to render the actions prop, which adds complexity without much value
-  // since the column sortable props are already tested above.
 });
 
 describe("OrganizationList exporter", () => {

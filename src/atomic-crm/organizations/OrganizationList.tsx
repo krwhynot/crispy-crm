@@ -34,9 +34,6 @@ import type { OrganizationExportRow, OrganizationRecord } from "./types";
 const OrganizationListActions = () => (
   <TopToolbar>
     <OwnerFilterDropdown source="sales_id" label="Account Manager" />
-    <span data-tutorial="org-sort-btn">
-      <SortButton fields={["name", "organization_type", "priority"]} />
-    </span>
     <span data-tutorial="org-export-btn">
       <ExportButton exporter={exporter} />
     </span>
