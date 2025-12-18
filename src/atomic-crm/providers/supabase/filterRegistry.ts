@@ -308,6 +308,7 @@ export const filterableFields: Record<string, string[]> = {
     "created_by", // FK to sales (created by user)
     "created_at",
     "updated_at",
+    "deleted_at", // Soft delete timestamp
     "q", // Special: full-text search parameter
   ],
 
