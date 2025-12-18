@@ -104,50 +104,50 @@ export function StandardListLayout({
         {isCollapsed && <span className="text-sm text-muted-foreground">Filters hidden</span>}
       </div>
 
-      {/* Filter sidebar with collapse animation - sticky within scroll container */}
-      <aside
-        id="filter-sidebar"
-        aria-label={`Filter ${resource}`}
-        className={`
-          filter-sidebar w-full lg:w-auto lg:sticky lg:top-0 lg:h-fit lg:self-start
-          transition-all duration-200 ease-out overflow-y-auto shrink-0
-          ${isCollapsed ? "max-h-0 lg:max-h-none lg:w-0 lg:opacity-0 lg:invisible" : "max-h-[60vh] lg:max-h-[calc(100vh-6rem)] lg:opacity-100"}
-        `}
-        aria-hidden={isCollapsed}
-      >
-        <div className="card-container p-2">
-          {/* Desktop collapse toggle inside sidebar */}
-          <div className="hidden lg:flex items-center justify-between mb-2">
-            <span className="text-sm font-medium text-muted-foreground">Filters</span>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  onClick={toggleSidebar}
-                  className="h-11 w-11"
-                  aria-label="Hide filters"
-                >
-                  <PanelLeftClose className="size-5" />
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">Hide filters</TooltipContent>
-            </Tooltip>
+      {/* Sidebar column - contains both sidebar and expand button in same grid cell */}
+      <div className="hidden lg:block lg:sticky lg:top-0 lg:h-fit lg:self-start">
+        {/* Filter sidebar with collapse animation */}
+        <aside
+          id="filter-sidebar"
+          aria-label={`Filter ${resource}`}
+          className={`
+            filter-sidebar transition-all duration-200 ease-out overflow-y-auto
+            ${isCollapsed ? "w-0 opacity-0 invisible overflow-hidden" : "w-64 opacity-100 max-h-[calc(100vh-6rem)]"}
+          `}
+          aria-hidden={isCollapsed}
+        >
+          <div className="card-container p-2">
+            {/* Desktop collapse toggle inside sidebar */}
+            <div className="flex items-center justify-between mb-2">
+              <span className="text-sm font-medium text-muted-foreground">Filters</span>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={toggleSidebar}
+                    className="h-11 w-11"
+                    aria-label="Hide filters"
+                  >
+                    <PanelLeftClose className="size-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="right">Hide filters</TooltipContent>
+              </Tooltip>
+            </div>
+            {filterComponent}
           </div>
-          {filterComponent}
-        </div>
-      </aside>
+        </aside>
 
-      {/* Desktop expand button when sidebar is collapsed */}
-      {isCollapsed && (
-        <div className="hidden lg:block shrink-0">
+        {/* Desktop expand button when sidebar is collapsed */}
+        {isCollapsed && (
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
                 variant="outline"
                 size="icon"
                 onClick={toggleSidebar}
-                className="h-11 w-11 sticky top-0"
+                className="h-11 w-11"
                 aria-label="Show filters"
                 aria-expanded={false}
                 aria-controls="filter-sidebar"
@@ -157,15 +157,26 @@ export function StandardListLayout({
             </TooltipTrigger>
             <TooltipContent side="right">Show filters</TooltipContent>
           </Tooltip>
+        )}
+      </div>
+
+      {/* Mobile/Tablet filter sidebar */}
+      <aside
+        className={`
+          lg:hidden filter-sidebar w-full transition-all duration-200 ease-out overflow-y-auto
+          ${isCollapsed ? "max-h-0 opacity-0 invisible" : "max-h-[60vh] opacity-100"}
+        `}
+        aria-hidden={isCollapsed}
+      >
+        <div className="card-container p-2">
+          {filterComponent}
         </div>
-      )}
+      </aside>
 
       <main
         role="main"
         aria-label={`${resource} list`}
-        className={`flex h-full min-h-0 flex-1 flex-col overflow-hidden transition-all duration-200 ${
-          isCollapsed ? "w-full" : "min-w-[600px] max-w-[1800px] mx-auto"
-        }`}
+        className="flex h-full min-h-0 flex-col overflow-hidden transition-all duration-200"
       >
         <div className="card-container flex h-full min-h-0 flex-1 flex-col overflow-hidden pb-2">
           {children}
