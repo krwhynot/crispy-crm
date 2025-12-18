@@ -1,5 +1,4 @@
 import * as React from "react";
-import { FieldTitle, useResourceContext } from "ra-core";
 import { GripVertical } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
@@ -9,7 +8,6 @@ import { cn } from "@/lib/utils";
  */
 export const FieldToggle = (props: FieldToggleProps) => {
   const { selected, label, onToggle, onMove, source, index } = props;
-  const resource = useResourceContext();
   const dropIndex = React.useRef<number | null>(null);
   const x = React.useRef<number | null>(null);
   const y = React.useRef<number | null>(null);
