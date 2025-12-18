@@ -1,4 +1,17 @@
 /**
+ * Contact status choices for filters and forms
+ * Maps to ContactStatus type in ContactBadges.tsx
+ */
+export const CONTACT_STATUS_CHOICES = [
+  { id: "cold", name: "Cold" },
+  { id: "warm", name: "Warm" },
+  { id: "hot", name: "Hot" },
+  { id: "in-contract", name: "Contract" },
+] as const;
+
+export type ContactStatusId = (typeof CONTACT_STATUS_CHOICES)[number]["id"];
+
+/**
  * Department choices for contact forms
  * Common organizational departments in food distribution
  */
