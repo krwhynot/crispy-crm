@@ -10,6 +10,8 @@ interface ListSearchBarProps {
   source?: string;
   /** Filter configuration for chip bar labels */
   filterConfig: FilterConfig;
+  /** Optional action buttons (e.g., Export) to display at the end of the search bar */
+  actions?: React.ReactNode;
 }
 
 /**
