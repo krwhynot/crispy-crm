@@ -121,7 +121,7 @@ const ContactListLayout = ({
 
         {/* Column 2: Name - Primary identifier (sortable by first_name) - always visible */}
         <DataTable.Col<Contact>
-          source="full_name"
+          source="first_name"
           label="Name"
           render={(record) => formatFullName(record.first_name, record.last_name)}
         />
