@@ -70,7 +70,28 @@ vi.mock("react-admin", async () => {
       onUnselectItems: vi.fn(),
     })),
     Datagrid: ({ children }: any) => <div data-testid="datagrid">{children}</div>,
-    FunctionField: ({ label }: any) => <div data-testid={`function-field-${label}`}>{label}</div>,
+    FunctionField: ({ label, sortBy, sortable }: any) => {
+      // Extract label text for testid - handle both string and React element labels
+      let labelText = "";
+      if (typeof label === "string") {
+        labelText = label;
+      } else if (label?.type?.name) {
+        // React component - extract name from component name pattern
+        // ContactNameHeader -> Name, ContactStatusHeader -> Status
+        const name = label.type.name;
+        labelText = name.replace(/^Contact/, "").replace(/Header$/, "");
+      }
+
+      return (
+        <div
+          data-testid={`function-field-${labelText}`}
+          data-sortable={sortBy ? "true" : sortable === false ? "false" : "unknown"}
+          data-sort-by={sortBy || ""}
+        >
+          {label}
+        </div>
+      );
+    },
     ReferenceField: ({ children, source, reference }: any) => (
       <div data-testid={`reference-field-${source}`} data-reference={reference}>
         {children}
