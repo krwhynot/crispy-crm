@@ -1,4 +1,4 @@
-import { Truck, Store } from "lucide-react";
+import { Truck, Store, User } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { useListContext } from "ra-core";
@@ -7,6 +7,7 @@ import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { FilterCategory } from "../filters/FilterCategory";
 import { PLAYBOOK_CATEGORY_CHOICES } from "@/atomic-crm/validation/segments";
 import { OPERATOR_SEGMENT_PARENT_CHOICES } from "@/atomic-crm/validation/operatorSegments";
+import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 
 /**
  * OrganizationListFilter - Sidebar filter UI for Organizations list
@@ -79,6 +80,10 @@ export const OrganizationListFilter = () => {
             ))}
           </FilterCategory>
         )}
+
+        <FilterCategory label="Account Manager" icon={<User className="h-4 w-4" />}>
+          <OwnerFilterDropdown source="sales_id" label="Account Manager" />
+        </FilterCategory>
       </div>
     </div>
   );

@@ -1,12 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { endOfToday, startOfToday, startOfWeek, subDays } from "date-fns";
-import { Calendar, Filter, Package, Tag, Users } from "lucide-react";
+import { Calendar, Filter, Package, Tag, User, Users } from "lucide-react";
 import { FilterLiveForm, useGetIdentity } from "ra-core";
 
 import { ToggleFilterButton } from "@/components/admin/toggle-filter-button";
 import { SearchInput } from "@/components/admin/search-input";
 import { FilterCategory } from "../filters/FilterCategory";
 import { INTERACTION_TYPE_OPTIONS, SAMPLE_STATUS_OPTIONS } from "../validation/activities";
+import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 
 /**
  * ActivityListFilter Component
@@ -181,6 +182,11 @@ export const ActivityListFilter = () => {
             label="Me"
             value={{ created_by: identity?.id }}
           />
+        </FilterCategory>
+
+        {/* Owner Filter Dropdown */}
+        <FilterCategory label="Created By" icon={<User className="h-4 w-4" />}>
+          <OwnerFilterDropdown source="created_by" label="Created By" />
         </FilterCategory>
       </div>
     </div>

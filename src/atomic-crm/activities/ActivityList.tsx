@@ -25,7 +25,6 @@ import { PageTutorialTrigger } from "../tutorial";
 import type { ActivityRecord, Contact, Opportunity, Organization, Sale } from "../types";
 import { INTERACTION_TYPE_OPTIONS } from "../validation/activities";
 import { ACTIVITY_FILTER_CONFIG } from "./activityFilterConfig";
-import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
 
 /**
  * ActivityList - Standard list page for Activity records
@@ -227,7 +226,6 @@ const ActivityListLayout = () => {
  */
 const ActivityListActions = () => (
   <TopToolbar>
-    <OwnerFilterDropdown source="created_by" label="Created By" />
     <ExportButton exporter={exporter} />
   </TopToolbar>
 );
