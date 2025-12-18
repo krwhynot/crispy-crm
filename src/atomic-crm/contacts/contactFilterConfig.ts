@@ -30,7 +30,6 @@ function formatDateLabel(value: unknown): string {
  *
  * Matches filters available in ContactListFilter.tsx:
  * - tags: Contact tags (multiselect reference)
- * - organization_id: Associated organization
  * - last_seen@gte/lte: Activity date range
  * - sales_id: Owner/sales rep reference
  */
@@ -56,12 +55,6 @@ export const CONTACT_FILTER_CONFIG = validateFilterConfig([
     label: "Tag",
     type: "multiselect",
     reference: "tags",
-  },
-  {
-    key: "organization_id",
-    label: "Organization",
-    type: "reference",
-    reference: "organizations",
   },
   {
     key: "last_seen@gte",

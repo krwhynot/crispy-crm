@@ -1,13 +1,6 @@
 import { Badge } from "@/components/ui/badge";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { endOfYesterday, startOfMonth, startOfWeek, subMonths } from "date-fns";
-import { Building2, Clock, Tag, User } from "lucide-react";
+import { Clock, Tag, User } from "lucide-react";
 import { useGetList, useListContext } from "ra-core";
 import { cn } from "@/lib/utils";
 
@@ -29,32 +22,6 @@ export const ContactListFilter = () => {
     sort: { field: "name", order: "ASC" },
   });
 
-  // Fetch organizations for the organization filter dropdown
-  // Prioritize customer/prospect types as most relevant for contact filtering
-  const { data: organizationsData } = useGetList("organizations", {
-    pagination: { page: 1, perPage: 100 },
-    sort: { field: "name", order: "ASC" },
-    filter: { deleted_at: null },
-  });
-
-  // Handle organization filter change via Select dropdown
-  const handleOrganizationChange = (value: string) => {
-    if (value === "all") {
-      // Remove organization_id filter when "All Organizations" is selected
-      const { organization_id: _, ...rest } = filterValues || {};
-      setFilters(rest);
-    } else {
-      setFilters({
-        ...filterValues,
-        organization_id: Number(value),
-      });
-    }
-  };
-
-  // Get current organization filter value for controlled Select
-  const currentOrgFilter = filterValues?.organization_id
-    ? String(filterValues.organization_id)
-    : "all";
 
   return (
     <div className="flex flex-col gap-4" data-tutorial="contact-filters">
@@ -124,29 +91,6 @@ export const ContactListFilter = () => {
                 value={{ tags: record.id }}
               />
             ))}
-        </FilterCategory>
-
-        <FilterCategory label="Organization" icon={<Building2 className="h-4 w-4" />}>
-          <Select value={currentOrgFilter} onValueChange={handleOrganizationChange}>
-            <SelectTrigger
-              className="w-full min-h-11 bg-background border-border text-foreground"
-              aria-label="Filter by organization"
-            >
-              <SelectValue placeholder="All Organizations" />
-            </SelectTrigger>
-            <SelectContent className="max-h-60">
-              <SelectItem value="all" className="min-h-11">
-                <span className="text-muted-foreground">All Organizations</span>
-              </SelectItem>
-              {organizationsData?.map((org) => (
-                <SelectItem key={org.id} value={String(org.id)} className="min-h-11">
-                  <span className="truncate" title={org.name}>
-                    {org.name}
-                  </span>
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
         </FilterCategory>
 
         <FilterCategory label="Account Manager" icon={<User className="h-4 w-4" />}>
