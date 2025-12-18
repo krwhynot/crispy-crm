@@ -35,7 +35,6 @@ import { TASK_FILTER_CONFIG } from "./taskFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
 import { TaskTitleHeader, TaskPriorityHeader, TaskTypeHeader } from "./TasksDatagridHeader";
 import { TopToolbar } from "../layout/TopToolbar";
-import { ExportButton } from "@/components/admin/export-button";
 import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import type { Task, Opportunity, Organization } from "../types";
 
@@ -142,7 +141,6 @@ const TaskListLayout = ({
         <ListSearchBar
           placeholder="Search tasks..."
           filterConfig={TASK_FILTER_CONFIG}
-          actions={<ExportButton exporter={exporter} />}
         />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "edit")}

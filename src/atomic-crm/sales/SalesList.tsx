@@ -1,5 +1,4 @@
 import { useGetIdentity, useListContext } from "ra-core";
-import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
 import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
@@ -106,7 +105,6 @@ const SalesListLayout = ({
       <ListSearchBar
         placeholder="Search team members..."
         filterConfig={SALES_FILTER_CONFIG}
-        actions={<ExportButton />}
       />
       <PremiumDatagrid
         onRowClick={(id) => openSlideOver(Number(id), "view")}

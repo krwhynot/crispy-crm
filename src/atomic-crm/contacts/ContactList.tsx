@@ -1,7 +1,6 @@
 import { useGetIdentity, useListContext } from "ra-core";
 
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
-import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
@@ -108,11 +107,6 @@ const ContactListLayout = ({
         <ListSearchBar
           placeholder="Search contacts..."
           filterConfig={CONTACT_FILTER_CONFIG}
-          actions={
-            <span data-tutorial="contact-export-btn">
-              <ExportButton exporter={contactExporter} />
-            </span>
-          }
         />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
