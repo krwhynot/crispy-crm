@@ -17,7 +17,7 @@ import { TopToolbar } from "../layout/TopToolbar";
 import { ActivityListFilter } from "./ActivityListFilter";
 import { SampleStatusBadge } from "../components/SampleStatusBadge";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { FilterChipBar } from "../filters";
+import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
@@ -115,7 +115,11 @@ const ActivityListLayout = () => {
   return (
     <>
       <StandardListLayout resource="activities" filterComponent={<ActivityListFilter />}>
-        <FilterChipBar filterConfig={ACTIVITY_FILTER_CONFIG} />
+        <ListSearchBar
+          placeholder="Search activities..."
+          filterConfig={ACTIVITY_FILTER_CONFIG}
+          actions={<ExportButton exporter={exporter} />}
+        />
         <PremiumDatagrid focusedIndex={focusedIndex}>
           {/* Column 1: Activity Type - Classification badge (sortable) - always visible */}
           <FunctionField
@@ -226,7 +230,6 @@ const ActivityListLayout = () => {
  */
 const ActivityListActions = () => (
   <TopToolbar>
-    <ExportButton exporter={exporter} />
   </TopToolbar>
 );
 

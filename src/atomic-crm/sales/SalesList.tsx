@@ -1,7 +1,7 @@
 import { useGetIdentity, useListContext } from "ra-core";
 import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
-import { SearchInput } from "@/components/admin/search-input";
+import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
 import { Badge } from "@/components/ui/badge";
 import { SalesListSkeleton } from "@/components/ui/list-skeleton";
@@ -13,6 +13,7 @@ import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { SalesSlideOver } from "./SalesSlideOver";
+import { SALES_FILTER_CONFIG } from "./salesFilterConfig";
 
 /**
  * SalesList - Standard list page for Sales (User) records
@@ -39,7 +40,6 @@ export default function SalesList() {
     <>
       <List
         title={false}
-        filters={filters}
         actions={<SalesListActions />}
         sort={{ field: "first_name", order: "ASC" }}
       >
@@ -57,8 +57,6 @@ export default function SalesList() {
     </>
   );
 }
-
-const filters = [<SearchInput source="q" alwaysOn key="search" />];
 
 /**
  * SalesListLayout - Handles loading, empty states, and datagrid rendering
@@ -105,6 +103,11 @@ const SalesListLayout = ({
 
   return (
     <div className="card-container">
+      <ListSearchBar
+        placeholder="Search team members..."
+        filterConfig={SALES_FILTER_CONFIG}
+        actions={<ExportButton />}
+      />
       <PremiumDatagrid
         onRowClick={(id) => openSlideOver(Number(id), "view")}
         focusedIndex={focusedIndex}
@@ -130,13 +133,9 @@ const SalesListLayout = ({
 };
 
 /**
- * SalesListActions - TopToolbar with export and create actions
+ * SalesListActions - Empty TopToolbar (actions moved to ListSearchBar)
  */
-const SalesListActions = () => (
-  <TopToolbar>
-    <ExportButton />
-  </TopToolbar>
-);
+const SalesListActions = () => <TopToolbar />;
 
 /**
  * RoleBadgeField - Display role badge with semantic colors

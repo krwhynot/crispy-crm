@@ -108,6 +108,11 @@ const ContactListLayout = ({
         <ListSearchBar
           placeholder="Search contacts..."
           filterConfig={CONTACT_FILTER_CONFIG}
+          actions={
+            <span data-tutorial="contact-export-btn">
+              <ExportButton exporter={contactExporter} />
+            </span>
+          }
         />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
@@ -186,22 +191,6 @@ const ContactListLayout = ({
   );
 };
 
-const ContactListActions = () => (
-  <TopToolbar>
-    {/* MVP: Import feature hidden - re-enable post-launch
-    <span data-tutorial="contact-import-btn">
-      <ContactImportButton />
-    </span>
-    */}
-    {/* MVP: Template export hidden - re-enable post-launch
-    <span data-tutorial="contact-template-btn">
-      <ContactExportTemplateButton />
-    </span>
-    */}
-    <span data-tutorial="contact-export-btn">
-      <ExportButton exporter={contactExporter} />
-    </span>
-  </TopToolbar>
-);
+const ContactListActions = () => <TopToolbar />;
 
 export default ContactList;

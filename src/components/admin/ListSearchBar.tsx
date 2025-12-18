@@ -37,6 +37,7 @@ export function ListSearchBar({
   placeholder = "Search...",
   source = "q",
   filterConfig,
+  actions,
 }: ListSearchBarProps) {
   return (
     <div className="flex items-center gap-4 mb-4">
@@ -51,6 +52,13 @@ export function ListSearchBar({
       <div className="flex-1 min-w-0">
         <FilterChipBar filterConfig={filterConfig} />
       </div>
+
+      {/* Action buttons (Export, etc.) */}
+      {actions && (
+        <div className="flex-shrink-0">
+          {actions}
+        </div>
+      )}
     </div>
   );
 }

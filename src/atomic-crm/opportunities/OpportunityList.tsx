@@ -21,7 +21,7 @@ import { saveStagePreferences } from "../filters/opportunityStagePreferences";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { OpportunitySlideOver } from "./OpportunitySlideOver";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { FilterChipBar } from "../filters";
+import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { OpportunityListFilter } from "./OpportunityListFilter";
 import { OPPORTUNITY_FILTER_CONFIG } from "./opportunityFilterConfig";
 import { OpportunityListTutorial } from "./OpportunityListTutorial";
@@ -148,7 +148,15 @@ const OpportunityListLayout = ({
   // CRITICAL: h-full + min-h-0 + overflow-hidden enables scroll in child components
   return (
     <StandardListLayout resource="opportunities" filterComponent={<OpportunityListFilter />}>
-      <FilterChipBar filterConfig={OPPORTUNITY_FILTER_CONFIG} />
+      <ListSearchBar
+        placeholder="Search opportunities..."
+        filterConfig={OPPORTUNITY_FILTER_CONFIG}
+        actions={
+          <span data-tutorial="opp-export">
+            <ExportButton />
+          </span>
+        }
+      />
       <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
         {view === "kanban" ? (
           <OpportunityListContent
@@ -178,9 +186,6 @@ const OpportunityActions = ({
     <TopToolbar>
       <span data-tutorial="opp-view-switcher">
         <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
-      </span>
-      <span data-tutorial="opp-export">
-        <ExportButton />
       </span>
       <span data-tutorial="opp-quick-add">
         <QuickAddButton />

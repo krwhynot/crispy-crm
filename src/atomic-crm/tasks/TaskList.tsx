@@ -44,7 +44,6 @@ import type { Task, Opportunity, Organization } from "../types";
  */
 const TaskListActions = () => (
   <TopToolbar>
-    <ExportButton exporter={exporter} />
   </TopToolbar>
 );
 
@@ -140,7 +139,11 @@ const TaskListLayout = ({
   return (
     <>
       <StandardListLayout resource="tasks" filterComponent={<TaskListFilter />}>
-        <ListSearchBar placeholder="Search tasks..." filterConfig={TASK_FILTER_CONFIG} />
+        <ListSearchBar
+          placeholder="Search tasks..."
+          filterConfig={TASK_FILTER_CONFIG}
+          actions={<ExportButton exporter={exporter} />}
+        />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "edit")}
           focusedIndex={focusedIndex}
