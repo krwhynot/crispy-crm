@@ -36,6 +36,22 @@ function formatDateLabel(value: unknown): string {
  */
 export const CONTACT_FILTER_CONFIG = validateFilterConfig([
   {
+    key: "first_name",
+    label: "Name",
+    type: "search",
+  },
+  {
+    key: "status",
+    label: "Status",
+    type: "multiselect",
+    choices: [
+      { id: "cold", name: "Cold" },
+      { id: "warm", name: "Warm" },
+      { id: "hot", name: "Hot" },
+      { id: "in-contract", name: "Contract" },
+    ],
+  },
+  {
     key: "tags",
     label: "Tag",
     type: "multiselect",
