@@ -24,6 +24,7 @@ import { ContactSlideOver } from "./ContactSlideOver";
 import { TopToolbar } from "../layout/TopToolbar";
 import { Avatar } from "./Avatar";
 import { ContactStatusBadge } from "./ContactBadges";
+import { ContactNameHeader, ContactStatusHeader } from "./ContactDatagridHeader";
 import { formatFullName, formatRoleAndDept } from "./formatters";
 import { contactExporter } from "./contactExporter";
 import { CONTACT_FILTER_CONFIG } from "./contactFilterConfig";
@@ -121,7 +122,7 @@ const ContactListLayout = ({
 
           {/* Column 2: Name - Primary identifier (sortable by first_name) - always visible */}
           <FunctionField
-            label="Name"
+            label={<ContactNameHeader />}
             sortBy="first_name"
             render={(record: Contact) => formatFullName(record.first_name, record.last_name)}
           />
@@ -146,9 +147,9 @@ const ContactListLayout = ({
             <TextField source="name" />
           </ReferenceField>
 
-          {/* Column 5: Status - Badge-based indicator (non-sortable) - always visible */}
+          {/* Column 5: Status - Badge-based indicator (filterable) - always visible */}
           <FunctionField
-            label="Status"
+            label={<ContactStatusHeader />}
             sortable={false}
             render={(record: Contact) => <ContactStatusBadge status={record.status} />}
           />
