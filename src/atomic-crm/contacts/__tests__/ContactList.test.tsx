@@ -209,10 +209,6 @@ vi.mock("@/components/admin/export-button", () => ({
   ExportButton: () => <button data-testid="export-button">Export</button>,
 }));
 
-vi.mock("@/components/admin/sort-button", () => ({
-  SortButton: () => <button data-testid="sort-button">Sort</button>,
-}));
-
 vi.mock("@/components/admin/bulk-actions-toolbar", () => ({
   BulkActionsToolbar: () => <div data-testid="bulk-actions-toolbar">Bulk Actions</div>,
 }));

@@ -4,7 +4,6 @@ import { List } from "@/components/admin/list";
 import { TextField } from "@/components/admin/text-field";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { CreateButton } from "@/components/admin/create-button";
-import { SortButton } from "@/components/admin/sort-button";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
@@ -231,11 +230,10 @@ const ProductListLayout = ({
 };
 
 /**
- * ProductListActions - TopToolbar with sort and create actions
+ * ProductListActions - TopToolbar with create action
  */
 const ProductListActions = () => (
   <TopToolbar>
-    <SortButton fields={["name", "category", "status"]} />
     <span data-tutorial="create-product-btn">
       <CreateButton />
     </span>
