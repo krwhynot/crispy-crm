@@ -21,6 +21,11 @@ import { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
 import { OrganizationEmpty } from "./OrganizationEmpty";
 import { TopToolbar } from "../layout/TopToolbar";
 import { ORGANIZATION_FILTER_CONFIG } from "./organizationFilterConfig";
+import {
+  OrganizationNameHeader,
+  OrganizationTypeHeader,
+  OrganizationPriorityHeader,
+} from "./OrganizationDatagridHeader";
 import { PageTutorialTrigger } from "../tutorial";
 import type { Organization, Sale, Segment } from "../types";
 import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
@@ -147,18 +152,23 @@ const OrganizationListLayout = ({
           focusedIndex={focusedIndex}
         >
           {/* Column 1: Name - Primary identifier (sortable) - always visible */}
-          <TextField source="name" label="Organization Name" sortable cellClassName="truncate max-w-[250px]" />
+          <TextField
+            source="name"
+            label={<OrganizationNameHeader />}
+            sortable
+            cellClassName="truncate max-w-[250px]"
+          />
 
           {/* Column 2: Type - Organization classification (sortable by organization_type) - always visible */}
           <FunctionField
-            label="Type"
+            label={<OrganizationTypeHeader />}
             sortBy="organization_type"
             render={(record: OrganizationRecord) => <OrganizationTypeBadge type={record.organization_type} />}
           />
 
           {/* Column 3: Priority - Business priority indicator (sortable) - always visible */}
           <FunctionField
-            label="Priority"
+            label={<OrganizationPriorityHeader />}
             sortBy="priority"
             render={(record: OrganizationRecord) => <PriorityBadge priority={record.priority} />}
           />
