@@ -1,5 +1,4 @@
 import { useGetIdentity, useListContext } from "ra-core";
-import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { List } from "@/components/admin/list";
 import { SearchInput } from "@/components/admin/search-input";
