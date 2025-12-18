@@ -30,13 +30,7 @@ import type { Organization, Sale, Segment } from "../types";
 import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
 import type { OrganizationExportRow, OrganizationRecord } from "./types";
 
-const OrganizationListActions = () => (
-  <TopToolbar>
-    <span data-tutorial="org-export-btn">
-      <ExportButton exporter={exporter} />
-    </span>
-  </TopToolbar>
-);
+const OrganizationListActions = () => <TopToolbar />;
 
 const exporter: Exporter<Organization> = async (records, fetchRelatedRecords) => {
   const sales = await fetchRelatedRecords<Sale>(records, "sales_id", "sales");
@@ -139,7 +133,15 @@ const OrganizationListLayout = ({
   return (
     <>
       <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
-        <ListSearchBar placeholder="Search organizations..." filterConfig={ORGANIZATION_FILTER_CONFIG} />
+        <ListSearchBar
+          placeholder="Search organizations..."
+          filterConfig={ORGANIZATION_FILTER_CONFIG}
+          actions={
+            <span data-tutorial="org-export-btn">
+              <ExportButton exporter={exporter} />
+            </span>
+          }
+        />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
