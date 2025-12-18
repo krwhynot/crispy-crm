@@ -44,6 +44,8 @@ export function TextColumnFilter({
   const [localValue, setLocalValue] = useState<string>("");
   // Track if component has initialized from filterValues
   const [isInitialized, setIsInitialized] = useState(false);
+  // Track if user is actively typing to prevent external sync interference
+  const isTypingRef = useRef(false);
 
   // Initialize local state from filterValues on mount
   useEffect(() => {
