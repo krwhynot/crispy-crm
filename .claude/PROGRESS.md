@@ -10,14 +10,14 @@ Add Excel-style column header filters to Organizations list as reusable pattern.
 - [x] Read existing filter patterns
 - [x] Document column types in NOTES.md
 
-## Phase 2: Create Components - NEXT
-- [ ] TextColumnFilter.tsx (debounced text search)
-- [ ] CheckboxColumnFilter.tsx (popover multi-select)
-- [ ] FilterableColumnHeader.tsx (wrapper)
-- [ ] index.ts barrel export
-**Clear Point:** After components compile without errors
+## Phase 2: Create Components - COMPLETE
+- [x] TextColumnFilter.tsx (debounced text search)
+- [x] CheckboxColumnFilter.tsx (popover multi-select)
+- [x] FilterableColumnHeader.tsx (wrapper)
+- [x] index.ts barrel export
+**Clear Point:** ✅ Build passed - all components compile without errors
 
-## Phase 3: Integrate & Document - PENDING
+## Phase 3: Integrate & Document - NEXT
 - [ ] OrganizationDatagridHeader.tsx
 - [ ] Modify OrganizationList.tsx
 - [ ] iPad touch testing (>=44px targets)
@@ -27,6 +27,10 @@ Add Excel-style column header filters to Organizations list as reusable pattern.
 ## Completed
 - Phase 1: Codebase exploration (Organizations, filters, shadcn/ui)
 - Created NOTES.md with column mapping and API designs
+- Phase 2: Created reusable column filter components in `src/components/admin/column-filters/`
+  - TextColumnFilter: Debounced text input (300ms), clear button, keyboard navigation
+  - CheckboxColumnFilter: Popover with multi-select, count badge, select all/clear
+  - FilterableColumnHeader: Wrapper combining label + filter icon + filter component
 
 ## Blockers
 (none)
