@@ -122,7 +122,8 @@ export const FieldToggle = (props: FieldToggleProps) => {
           name={`${index}`}
         />
         <span className="text-sm">
-          <FieldTitle label={label} source={source} resource={resource} />
+          {/* Label is already translated by ColumnsSelectorItem - display directly */}
+          {label || source}
         </span>
       </label>
       {onMove && <GripVertical className="cursor-move dragIcon w-4 h-4 text-muted-foreground" />}
