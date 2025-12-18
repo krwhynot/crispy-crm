@@ -63,6 +63,9 @@ export function TextColumnFilter({
     if (!isInitialized) return;
 
     const handler = setTimeout(() => {
+      // Typing session ended - allow external sync again
+      isTypingRef.current = false;
+
       const currentFilters = filterValues || {};
       const currentFilterValue = currentFilters[source];
 
@@ -83,7 +86,10 @@ export function TextColumnFilter({
   }, [localValue, debounceMs, source, filterValues, setFilters, isInitialized]);
 
   // Sync external filter changes (e.g., from FilterChipBar removal)
+  // Skip sync while user is actively typing to prevent clearing mid-input
   useEffect(() => {
+    if (isTypingRef.current) return;
+
     if (isInitialized) {
       const externalValue = filterValues?.[source];
       if (typeof externalValue === "string" && externalValue !== localValue) {
@@ -93,9 +99,10 @@ export function TextColumnFilter({
         setLocalValue("");
       }
     }
-  }, [filterValues, source, isInitialized, localValue]);
+  }, [filterValues, source, isInitialized]); // Removed localValue - only sync on external changes
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    isTypingRef.current = true; // Mark as typing to prevent external sync
     setLocalValue(e.target.value);
   }, []);
 
