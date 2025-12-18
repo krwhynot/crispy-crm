@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { ExportButton } from "@/components/admin/export-button";
 import { opportunityExporter } from "./opportunityExporter";
 import { List } from "@/components/admin/list";
 import { ListPagination } from "@/components/admin/list-pagination";
@@ -151,11 +150,6 @@ const OpportunityListLayout = ({
       <ListSearchBar
         placeholder="Search opportunities..."
         filterConfig={OPPORTUNITY_FILTER_CONFIG}
-        actions={
-          <span data-tutorial="opp-export">
-            <ExportButton />
-          </span>
-        }
       />
       <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
         {view === "kanban" ? (

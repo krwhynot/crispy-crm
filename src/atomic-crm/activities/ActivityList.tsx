@@ -3,7 +3,6 @@ import { downloadCSV, type Exporter, useGetIdentity, useListContext } from "ra-c
 import { FunctionField } from "react-admin";
 
 import { List } from "@/components/admin/list";
-import { ExportButton } from "@/components/admin/export-button";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
@@ -118,7 +117,6 @@ const ActivityListLayout = () => {
         <ListSearchBar
           placeholder="Search activities..."
           filterConfig={ACTIVITY_FILTER_CONFIG}
-          actions={<ExportButton exporter={exporter} />}
         />
         <PremiumDatagrid focusedIndex={focusedIndex}>
           {/* Column 1: Activity Type - Classification badge (sortable) - always visible */}

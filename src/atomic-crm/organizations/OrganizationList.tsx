@@ -6,7 +6,6 @@ import { OrganizationBulkActionsToolbar } from "./OrganizationBulkActionsToolbar
 import { List } from "@/components/admin/list";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
-import { ExportButton } from "@/components/admin/export-button";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { OrganizationListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
@@ -136,11 +135,6 @@ const OrganizationListLayout = ({
         <ListSearchBar
           placeholder="Search organizations..."
           filterConfig={ORGANIZATION_FILTER_CONFIG}
-          actions={
-            <span data-tutorial="org-export-btn">
-              <ExportButton exporter={exporter} />
-            </span>
-          }
         />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
