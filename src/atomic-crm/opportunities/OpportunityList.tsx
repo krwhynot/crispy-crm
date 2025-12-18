@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { CreateButton } from "@/components/admin/create-button";
 import { ExportButton } from "@/components/admin/export-button";
 import { opportunityExporter } from "./opportunityExporter";
 import { List } from "@/components/admin/list";
