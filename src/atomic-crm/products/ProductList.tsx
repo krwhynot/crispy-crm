@@ -13,7 +13,7 @@ import { TopToolbar } from "../layout/TopToolbar";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { FilterChipBar } from "../filters";
+import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { Badge } from "@/components/ui/badge";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Package } from "lucide-react";
@@ -166,7 +166,10 @@ const ProductListLayout = ({
   return (
     <>
       <StandardListLayout resource="products" filterComponent={<ProductListFilter />}>
-        <FilterChipBar filterConfig={PRODUCT_FILTER_CONFIG} />
+        <ListSearchBar
+          placeholder="Search products..."
+          filterConfig={PRODUCT_FILTER_CONFIG}
+        />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}

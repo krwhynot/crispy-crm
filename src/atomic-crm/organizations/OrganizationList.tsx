@@ -13,7 +13,7 @@ import { OrganizationListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { FilterChipBar } from "../filters";
+import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { OrganizationListFilter } from "./OrganizationListFilter";
 import { OrganizationSlideOver } from "./OrganizationSlideOver";
 import { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
@@ -144,7 +144,7 @@ const OrganizationListLayout = ({
   return (
     <>
       <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
-        <FilterChipBar filterConfig={ORGANIZATION_FILTER_CONFIG} />
+        <ListSearchBar placeholder="Search organizations..." filterConfig={ORGANIZATION_FILTER_CONFIG} />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}

@@ -16,7 +16,7 @@ import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { ContactListSkeleton } from "@/components/ui/list-skeleton";
 import type { Contact } from "../types";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { FilterChipBar } from "../filters";
+import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { ContactEmpty } from "./ContactEmpty";
 import { ContactListFilter } from "./ContactListFilter";
 import { ContactSlideOver } from "./ContactSlideOver";
@@ -106,7 +106,10 @@ const ContactListLayout = ({
   return (
     <>
       <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
-        <FilterChipBar filterConfig={CONTACT_FILTER_CONFIG} />
+        <ListSearchBar
+          placeholder="Search contacts..."
+          filterConfig={CONTACT_FILTER_CONFIG}
+        />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}

@@ -22,7 +22,6 @@ import { PriorityBadge } from "@/components/ui/priority-badge";
 import { TaskListSkeleton } from "@/components/ui/list-skeleton";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
-import { FilterChipBar } from "../filters";
 import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
@@ -34,7 +33,23 @@ import { contactOptionText } from "../contacts/ContactOption";
 import { TASK_FILTER_CONFIG } from "./taskFilterConfig";
 import { PageTutorialTrigger } from "../tutorial";
 import { TaskTitleHeader, TaskPriorityHeader, TaskTypeHeader } from "./TasksDatagridHeader";
+import { TopToolbar } from "../layout/TopToolbar";
+import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
+import { CreateButton } from "@/components/admin/create-button";
+import { ExportButton } from "@/components/admin/export-button";
+import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import type { Task, Opportunity, Organization } from "../types";
+
+/**
+ * TaskListActions - TopToolbar actions for Tasks list
+ */
+const TaskListActions = () => (
+  <TopToolbar>
+    <OwnerFilterDropdown source="sales_id" label="Assigned To" />
+    <ExportButton exporter={exporter} />
+    <CreateButton />
+  </TopToolbar>
+);
 
 /**
  * TaskList - Standard list page for Task records
@@ -69,6 +84,7 @@ export default function TaskList() {
       <div data-tutorial="tasks-list">
         <List
           title={false}
+          actions={<TaskListActions />}
           perPage={100}
           sort={{ field: "due_date", order: "ASC" }}
           exporter={exporter}
@@ -127,7 +143,7 @@ const TaskListLayout = ({
   return (
     <>
       <StandardListLayout resource="tasks" filterComponent={<TaskListFilter />}>
-        <FilterChipBar filterConfig={TASK_FILTER_CONFIG} />
+        <ListSearchBar placeholder="Search tasks..." filterConfig={TASK_FILTER_CONFIG} />
         <PremiumDatagrid
           onRowClick={(id) => openSlideOver(Number(id), "edit")}
           focusedIndex={focusedIndex}
