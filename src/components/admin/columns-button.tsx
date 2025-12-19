@@ -167,11 +167,10 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
             {columnFilter && (
               <button
                 onClick={() => setColumnFilter("")}
-                className="absolute right-6 top-1/2 -translate-y-1/2 min-h-11 min-w-11 flex items-center justify-center text-muted-foreground hover:text-foreground transition-colors"
-                aria-label="Clear search"
-                type="button"
+                className="absolute right-8 top-2 h-4 w-4 text-muted-foreground"
+                aria-label="Clear"
               >
-                <span className="text-lg">×</span>
+                ×
               </button>
             )}
           </div>
@@ -187,8 +186,7 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
       <li className="text-center mt-2 px-3">
         <Button
           variant="outline"
-          size="default"
-          className="min-h-11"
+          size="sm"
           onClick={() => {
             setColumnRanks(undefined);
             setHiddenColumns(defaultHiddenColumns);
