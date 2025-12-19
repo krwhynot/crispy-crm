@@ -1,4 +1,5 @@
 import * as React from "react";
+import { FieldTitle, useResourceContext } from "ra-core";
 import { GripVertical } from "lucide-react";
 import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
@@ -8,6 +9,7 @@ import { cn } from "@/lib/utils";
  */
 export const FieldToggle = (props: FieldToggleProps) => {
   const { selected, label, onToggle, onMove, source, index } = props;
+  const resource = useResourceContext();
   const dropIndex = React.useRef<number | null>(null);
   const x = React.useRef<number | null>(null);
   const y = React.useRef<number | null>(null);
@@ -120,8 +122,7 @@ export const FieldToggle = (props: FieldToggleProps) => {
           name={`${index}`}
         />
         <span className="text-sm">
-          {/* Label is already translated by ColumnsSelectorItem - display directly */}
-          {label || source}
+          <FieldTitle label={label} source={source} resource={resource} />
         </span>
       </label>
       {onMove && <GripVertical className="cursor-move dragIcon w-4 h-4 text-muted-foreground" />}
