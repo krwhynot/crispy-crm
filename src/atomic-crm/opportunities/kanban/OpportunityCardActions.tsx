@@ -1,4 +1,4 @@
-import { useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useUpdate, useDelete, useNotify, useRefresh, useRecordContext } from "react-admin";
 import { MoreVertical, Eye, Pencil, Trophy, XCircle, Trash2 } from "lucide-react";
@@ -90,23 +90,31 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
     setShowCloseModal(open);
   }, []);
 
-  const handleDelete = useCallback(async () => {
-    if (window.confirm("Are you sure you want to delete this opportunity?")) {
-      try {
-        await deleteOne("opportunities", { id: opportunityId, previousData: {} });
-        notify("Opportunity deleted", { type: "success" });
-        // Optimistically remove from local state if callback provided (Kanban)
-        // Otherwise fall back to refresh (other contexts like List view)
-        if (onDelete) {
-          onDelete(opportunityId);
-        } else {
-          refresh();
+  const handleDelete = useCallback(
+    async (e: React.MouseEvent) => {
+      // Prevent click from bubbling to card after dropdown portal closes
+      // Without this, the card's handleCardClick fires and opens the slide-over
+      e.stopPropagation();
+      e.preventDefault();
+
+      if (window.confirm("Are you sure you want to delete this opportunity?")) {
+        try {
+          await deleteOne("opportunities", { id: opportunityId, previousData: {} });
+          notify("Opportunity deleted", { type: "success" });
+          // Optimistically remove from local state if callback provided (Kanban)
+          // Otherwise fall back to refresh (other contexts like List view)
+          if (onDelete) {
+            onDelete(opportunityId);
+          } else {
+            refresh();
+          }
+        } catch {
+          notify("Error deleting opportunity", { type: "error" });
         }
-      } catch {
-        notify("Error deleting opportunity", { type: "error" });
       }
-    }
-  }, [deleteOne, opportunityId, notify, onDelete, refresh]);
+    },
+    [deleteOne, opportunityId, notify, onDelete, refresh]
+  );
 
   return (
     <div data-action-button>
