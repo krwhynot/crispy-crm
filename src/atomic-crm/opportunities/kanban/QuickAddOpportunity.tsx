@@ -2,13 +2,15 @@ import { useState } from "react";
 import { useCreate, useNotify, useRefresh, useGetIdentity, useGetList } from "react-admin";
 import { Loader2 } from "lucide-react";
 import { quickCreateOpportunitySchema } from "../../validation/opportunities";
-import type { OpportunityStageValue, Organization } from "../../types";
+import type { OpportunityStageValue, Organization, Opportunity } from "../../types";
 
 interface QuickAddOpportunityProps {
   stage: OpportunityStageValue;
+  /** Callback when opportunity is created - enables optimistic UI updates */
+  onOpportunityCreated?: (opportunity: Opportunity) => void;
 }
 
-export function QuickAddOpportunity({ stage }: QuickAddOpportunityProps) {
+export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpportunityProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
   const [customerId, setCustomerId] = useState<string>("");
