@@ -2,14 +2,12 @@ import { useEffect, useState } from "react";
 import { opportunityExporter } from "./opportunityExporter";
 import { List } from "@/components/admin/list";
 import { ListPagination } from "@/components/admin/list-pagination";
-import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
-import { QuickAddButton } from "./quick-add/QuickAddButton";
+import { OpportunitySpeedDial } from "./OpportunitySpeedDial";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
 import { ListSkeleton } from "@/components/ui/list-skeleton";
 
 import { useGetIdentity, useListContext } from "ra-core";
 
-import { TopToolbar } from "../layout/TopToolbar";
 import { OpportunityArchivedList } from "./OpportunityArchivedList";
 import { OpportunityEmpty } from "./OpportunityEmpty";
 import { OpportunityListContent } from "./kanban";
@@ -66,18 +64,19 @@ const OpportunityList = () => {
           }}
           title={false}
           sort={{ field: "created_at", order: "DESC" }}
-          actions={<OpportunityActions view={view} onViewChange={handleViewChange} />}
+          actions={false}
           exporter={opportunityExporter}
           pagination={<ListPagination rowsPerPageOptions={[10, 25, 50]} />}
         >
           <OpportunityListLayout
             view={view}
+            onViewChange={handleViewChange}
             openSlideOver={openSlideOver}
             isSlideOverOpen={isOpen}
             slideOverId={slideOverId}
             closeSlideOver={closeSlideOver}
           />
-          <FloatingCreateButton />
+          <OpportunitySpeedDial />
         </List>
       </div>
 
@@ -149,10 +148,20 @@ const OpportunityListLayout = ({
   // CRITICAL: h-full + min-h-0 + overflow-hidden enables scroll in child components
   return (
     <StandardListLayout resource="opportunities" filterComponent={<OpportunityListFilter />}>
-      <ListSearchBar
-        placeholder="Search opportunities..."
-        filterConfig={OPPORTUNITY_FILTER_CONFIG}
-      />
+      {/* Search bar + view toggles row */}
+      <div className="flex items-center gap-4 mb-4">
+        <div className="flex-1">
+          <ListSearchBar
+            placeholder="Search opportunities..."
+            filterConfig={OPPORTUNITY_FILTER_CONFIG}
+          />
+        </div>
+        <div className="flex-shrink-0">
+          <span data-tutorial="opp-view-switcher">
+            <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
+          </span>
+        </div>
+      </div>
       <div className="flex h-full min-h-0 w-full flex-1 flex-col overflow-hidden">
         {view === "kanban" ? (
           <OpportunityListContent
@@ -168,25 +177,6 @@ const OpportunityListLayout = ({
         <OpportunityArchivedList />
       </div>
     </StandardListLayout>
-  );
-};
-
-const OpportunityActions = ({
-  view,
-  onViewChange,
-}: {
-  view: OpportunityView;
-  onViewChange: (view: OpportunityView) => void;
-}) => {
-  return (
-    <TopToolbar>
-      <span data-tutorial="opp-view-switcher">
-        <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
-      </span>
-      <span data-tutorial="opp-quick-add">
-        <QuickAddButton />
-      </span>
-    </TopToolbar>
   );
 };
 
