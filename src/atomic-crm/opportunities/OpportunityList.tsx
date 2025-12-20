@@ -101,12 +101,14 @@ const OpportunityList = () => {
  */
 const OpportunityListLayout = ({
   view,
+  onViewChange,
   openSlideOver,
   isSlideOverOpen,
   slideOverId,
   closeSlideOver,
 }: {
   view: OpportunityView;
+  onViewChange: (view: OpportunityView) => void;
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
   isSlideOverOpen: boolean;
   slideOverId: number | null;
