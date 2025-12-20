@@ -37,7 +37,7 @@ export function ListSearchBar({
   filterConfig,
 }: ListSearchBarProps) {
   return (
-    <div className="flex items-center gap-4 mb-4">
+    <div className="flex items-center gap-4">
       {/* Search Input - wrapped in FilterLiveForm for live updates */}
       <div className="flex-shrink-0 w-64">
         <FilterLiveForm>
