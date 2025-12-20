@@ -86,6 +86,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
             ${snapshot.isDragging ? "opacity-50 rotate-2" : "opacity-100"}
           `}
           style={{
+            ...provided.draggableProps.style,
             borderLeftColor: principalSlug
               ? `var(--principal-${principalSlug}, var(--muted))`
               : "var(--muted)",
