@@ -18,7 +18,7 @@
 **Parallelization:**
 - Group A (Tasks 1-3): Independent - can run simultaneously
 - Group B (Tasks 4-5): Depend on Group A completion
-- Group C (Task 6): Integration testing - depends on all prior tasks
+- Group C (Tasks 6-7): Integration testing + Cleanup - can run in parallel, both depend on Group B
 
 **Constitution Principles In Play:**
 - [x] Error handling (fail fast - NO retry logic)
@@ -38,7 +38,8 @@
 | 3    | None       | 1, 2                |
 | 4    | 1, 2       | 5                   |
 | 5    | 3          | 4                   |
-| 6    | 4, 5       | None                |
+| 6    | 4, 5       | 7                   |
+| 7    | 4          | 6                   |
 
 ---
 
@@ -1040,18 +1041,22 @@ npm test -- --run src/atomic-crm/opportunities/__tests__/stages.test.ts
 
 ### Step 3: Implement sorting logic
 
-Update `src/atomic-crm/opportunities/constants/stages.ts` to add the sorting function:
+**IMPORTANT:** This task REPLACES the existing `stages.ts` file entirely. The current file sorts by `created_at` - we're changing to status-based sorting.
+
+Replace the entire contents of `src/atomic-crm/opportunities/constants/stages.ts`:
 
 ```typescript
-import type { OpportunityStage } from "./stageConstants";
 import type { Opportunity } from "../../types";
+import { OPPORTUNITY_STAGES } from "./stageConstants";
 import { getStageStatus, type StageStatus } from "./stageThresholds";
 import { parseDateSafely } from "@/lib/date-utils";
 
-// ... existing code ...
+export type OpportunitiesByStage = Record<Opportunity["stage"], Opportunity[]>;
 
 /**
  * Status priority for sorting (lower = higher priority = shown first)
+ *
+ * PRD Reference: Pipeline PRD "Card Sorting Within Columns"
  */
 const STATUS_PRIORITY: Record<StageStatus, number> = {
   expired: 0,   // Most urgent - past close date
@@ -1101,31 +1106,49 @@ export function sortOpportunitiesByStatus(opportunities: Opportunity[]): Opportu
 /**
  * Get opportunities grouped by stage with status-based sorting
  *
- * Enhanced version that applies status sorting within each stage column.
+ * CHANGED: Now applies status-based sorting instead of created_at sorting.
+ * Red/rotting opportunities appear at top of each column.
  */
-export function getOpportunitiesByStage(
-  opportunities: Opportunity[],
-  stages: { value: string; label: string }[]
-): OpportunitiesByStage {
-  const result: OpportunitiesByStage = {};
+export const getOpportunitiesByStage = (
+  unorderedOpportunities: Opportunity[],
+  opportunityStages?: { value: string; label: string }[]
+): OpportunitiesByStage => {
+  // Use centralized stages if no stages provided
+  const stages =
+    opportunityStages ||
+    OPPORTUNITY_STAGES.map((stage) => ({
+      value: stage.value,
+      label: stage.label,
+    }));
 
+  if (!stages.length) return {} as OpportunitiesByStage;
+
+  const opportunitiesByStage: Record<Opportunity["stage"], Opportunity[]> =
+    unorderedOpportunities.reduce(
+      (acc, opportunity) => {
+        if (acc[opportunity.stage]) {
+          acc[opportunity.stage].push(opportunity);
+        }
+        return acc;
+      },
+      stages.reduce(
+        (obj, stage) => ({ ...obj, [stage.value]: [] }),
+        {} as Record<Opportunity["stage"], Opportunity[]>
+      )
+    );
+
+  // CHANGED: Sort each column by status priority (red first, then yellow, then green)
+  // Previously sorted by created_at DESC
   stages.forEach((stage) => {
-    result[stage.value] = [];
-  });
-
-  opportunities.forEach((opp) => {
-    if (result[opp.stage]) {
-      result[opp.stage].push(opp);
+    if (opportunitiesByStage[stage.value]) {
+      opportunitiesByStage[stage.value] = sortOpportunitiesByStatus(
+        opportunitiesByStage[stage.value]
+      );
     }
   });
 
-  // Apply status-based sorting within each column
-  Object.keys(result).forEach((stage) => {
-    result[stage] = sortOpportunitiesByStatus(result[stage]);
-  });
-
-  return result;
-}
+  return opportunitiesByStage;
+};
 ```
 
 ### Step 4: Verify test passes
@@ -1407,7 +1430,7 @@ After all tasks complete:
 ### Squash commits (optional)
 
 ```bash
-git rebase -i HEAD~6
+git rebase -i HEAD~7
 # Mark all but first as 'squash'
 ```
 
@@ -1445,16 +1468,128 @@ gh pr create --title "feat(pipeline): Phase 1 MVP - Principal-centric cards" --b
 
 ---
 
-## Cleanup
+## Task 7: Cleanup Deprecated Code
 
-### Remove deprecated code
+**Depends on:** Task 4 (card refactor must be complete)
 
-After PR merge, create follow-up PR to:
+**Can parallelize with:** Task 6 (integration testing)
 
-1. Delete `ActivityPulseDot.tsx` (replaced by `StageStatusDot`)
-2. Delete `STUCK_THRESHOLD_DAYS` constant from `useStageMetrics.ts`
-3. Remove `isExpanded` state from any remaining card code
-4. Update any documentation referencing old card layout
+**Constitution Check:**
+- [x] Boy Scout Rule - leave code cleaner than you found it
+- [x] No retry logic / circuit breakers
+- [x] Remove unused code completely (no commented-out code)
+
+**Files:**
+- Delete: `src/atomic-crm/opportunities/kanban/ActivityPulseDot.tsx`
+- Delete: `src/atomic-crm/opportunities/kanban/__tests__/ActivityPulseDot.test.tsx`
+- Modify: `src/atomic-crm/opportunities/hooks/useStageMetrics.ts` (remove STUCK_THRESHOLD_DAYS)
+- Modify: `src/atomic-crm/opportunities/kanban/index.ts` (update exports)
+
+### Step 1: Verify ActivityPulseDot is no longer imported
+
+Run grep to confirm no remaining imports:
+
+```bash
+grep -r "ActivityPulseDot" --include="*.tsx" --include="*.ts" src/
+```
+
+**Expected output:** Only `ActivityPulseDot.tsx` and its test file should appear. No other files should import it.
+
+If other files still import it, **STOP** and fix those files first.
+
+### Step 2: Delete ActivityPulseDot component
+
+```bash
+rm src/atomic-crm/opportunities/kanban/ActivityPulseDot.tsx
+```
+
+### Step 3: Delete ActivityPulseDot test file
+
+```bash
+rm src/atomic-crm/opportunities/kanban/__tests__/ActivityPulseDot.test.tsx
+```
+
+### Step 4: Remove STUCK_THRESHOLD_DAYS from useStageMetrics
+
+Edit `src/atomic-crm/opportunities/hooks/useStageMetrics.ts`:
+
+**Find and remove:**
+```typescript
+// DELETE THIS CONSTANT - now using per-stage thresholds in stageThresholds.ts
+export const STUCK_THRESHOLD_DAYS = 14;
+```
+
+**Also remove any references to STUCK_THRESHOLD_DAYS** in the same file. The hook may use it for `isStuck` calculations - those should now use `getStageStatus()` from `stageThresholds.ts` instead.
+
+If `useStageMetrics` uses `STUCK_THRESHOLD_DAYS`:
+```typescript
+// BEFORE (REMOVE)
+const isStuck = daysInStage > STUCK_THRESHOLD_DAYS;
+
+// AFTER (REPLACE WITH)
+import { getStageStatus } from "../constants/stageThresholds";
+const status = getStageStatus(stage, daysInStage);
+const isStuck = status === "rotting" || status === "expired";
+```
+
+### Step 5: Update kanban index exports
+
+Edit `src/atomic-crm/opportunities/kanban/index.ts`:
+
+**Remove:**
+```typescript
+export { ActivityPulseDot } from "./ActivityPulseDot";
+```
+
+**Keep (should already be added by Task 4):**
+```typescript
+export { StageStatusDot } from "./StageStatusDot";
+```
+
+### Step 6: Verify no broken imports
+
+```bash
+npm run build
+```
+
+**Expected output:** Build succeeds with no errors
+
+### Step 7: Run tests to confirm no regressions
+
+```bash
+npm test -- --run
+```
+
+**Expected output:** All tests pass. If any tests fail due to missing `STUCK_THRESHOLD_DAYS`, update them to use the new `stageThresholds` functions.
+
+### Step 8: Constitution compliance check
+
+- [x] Removed unused code completely (no commented-out code)
+- [x] No retry logic added
+- [x] Exports updated correctly
+- [x] Build passes
+- [x] Tests pass
+
+### Step 9: Commit (DO NOT PUSH)
+
+```bash
+git add -A
+git commit -m "chore(pipeline): cleanup deprecated ActivityPulseDot and STUCK_THRESHOLD_DAYS
+
+- Delete ActivityPulseDot component (replaced by StageStatusDot)
+- Delete ActivityPulseDot test file
+- Remove STUCK_THRESHOLD_DAYS constant (replaced by per-stage thresholds)
+- Update kanban index exports
+
+BREAKING: STUCK_THRESHOLD_DAYS is no longer exported from useStageMetrics.
+Use getStageStatus() from stageThresholds.ts instead.
+
+PRD Reference: Pipeline Phase 1 MVP
+
+🤖 Generated with [Claude Code](https://claude.com/claude-code)
+
+Co-Authored-By: Claude <noreply@anthropic.com>"
+```
 
 ---
 
