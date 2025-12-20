@@ -39,9 +39,8 @@ export default defineConfig(({ mode }) => ({
 
       // Heavy libraries
       "@tanstack/react-query",
-      "@hello-pangea/dnd",
 
-      // DnD Kit (Opportunity Kanban)
+      // DnD Kit (All Kanban boards - Opportunities + Tasks)
       "@dnd-kit/core",
       "@dnd-kit/sortable",
       "@dnd-kit/utilities",

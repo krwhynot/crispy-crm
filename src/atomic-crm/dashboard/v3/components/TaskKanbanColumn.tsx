@@ -102,6 +102,9 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
 }: TaskKanbanColumnProps) {
   const config = columnConfig[columnId];
 
+  const { setNodeRef, isOver } = useDroppable({ id: columnId });
+  const taskIds = useMemo(() => tasks.map(t => String(t.id)), [tasks]);
+
   return (
     <div
       className={cn(
@@ -119,41 +122,36 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
       </div>
 
       {/* Droppable Area */}
-      <Droppable droppableId={columnId}>
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.droppableProps}
-            className={cn(
-              "flex-1 p-3 space-y-2 overflow-y-auto",
-              "min-h-[120px] transition-colors duration-200",
-              snapshot.isDraggingOver && config.bgColor
-            )}
-          >
-            {tasks.length === 0 ? (
-              // Empty State
-              <div className="flex flex-col items-center justify-center h-full min-h-[100px] text-center p-4">
-                <p className="text-sm font-medium text-muted-foreground">{config.emptyText}</p>
-                <p className="text-xs text-muted-foreground/70 mt-1">{config.emptySubtext}</p>
-              </div>
-            ) : (
-              // Task Cards
-              tasks.map((task, index) => (
-                <TaskKanbanCard
-                  key={task.id}
-                  task={task}
-                  index={index}
-                  onComplete={onComplete}
-                  onSnooze={onSnooze}
-                  onDelete={onDelete}
-                  onView={onView}
-                />
-              ))
-            )}
-            {provided.placeholder}
-          </div>
+      <div
+        ref={setNodeRef}
+        className={cn(
+          "flex-1 p-3 space-y-2 overflow-y-auto",
+          "min-h-[120px] transition-colors duration-200",
+          isOver && config.bgColor
         )}
-      </Droppable>
+      >
+        {tasks.length === 0 ? (
+          // Empty State
+          <div className="flex flex-col items-center justify-center h-full min-h-[100px] text-center p-4">
+            <p className="text-sm font-medium text-muted-foreground">{config.emptyText}</p>
+            <p className="text-xs text-muted-foreground/70 mt-1">{config.emptySubtext}</p>
+          </div>
+        ) : (
+          // Task Cards
+          <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
+            {tasks.map((task) => (
+              <TaskKanbanCard
+                key={task.id}
+                task={task}
+                onComplete={onComplete}
+                onSnooze={onSnooze}
+                onDelete={onDelete}
+                onView={onView}
+              />
+            ))}
+          </SortableContext>
+        )}
+      </div>
     </div>
   );
 }, arePropsEqual);

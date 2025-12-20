@@ -1,11 +1,16 @@
-import { useMemo, useCallback } from "react";
+import { useMemo, useCallback, useState } from "react";
 import {
-  DragDropContext,
-  type DropResult,
-  type DragStart,
-  type DragUpdate,
-  type ResponderProvided,
-} from "@hello-pangea/dnd";
+  DndContext,
+  DragOverlay,
+  closestCorners,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragStartEvent,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 import { useNotify } from "react-admin";
 import { startOfDay, addDays, setHours, setMinutes } from "date-fns";
 // Card wrapper removed - parent DashboardTabPanel provides container
@@ -14,6 +19,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 import { Plus } from "lucide-react";
 import { TaskKanbanColumn, type TaskColumnId } from "./TaskKanbanColumn";
+import { TaskKanbanCard } from "./TaskKanbanCard";
 import type { TaskItem } from "../types";
 import { useMyTasks } from "../hooks/useMyTasks";
 
@@ -41,6 +47,25 @@ const columnLabels: Record<TaskColumnId, string> = {
   thisWeek: "This Week",
 };
 
+const announcements = {
+  onDragStart: ({ active }: { active: { id: string | number } }) => {
+    return `Picked up task. Currently in column.`;
+  },
+  onDragOver: ({ over }: { over: { id: string | number } | null }) => {
+    if (over && columnLabels[over.id as TaskColumnId]) {
+      return `Moving to ${columnLabels[over.id as TaskColumnId]}.`;
+    }
+    return `Not over a valid column.`;
+  },
+  onDragEnd: ({ over }: { over: { id: string | number } | null }) => {
+    if (over && columnLabels[over.id as TaskColumnId]) {
+      return `Dropped in ${columnLabels[over.id as TaskColumnId]}.`;
+    }
+    return `Drag cancelled.`;
+  },
+  onDragCancel: () => `Dragging was cancelled.`,
+};
+
 function TasksKanbanPanel() {
   const {
     tasks,
@@ -53,6 +78,13 @@ function TasksKanbanPanel() {
     updateTaskDueDate,
   } = useMyTasks();
   const notify = useNotify();
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
+  const [activeId, setActiveId] = useState<string | null>(null);
 
   // Memoize filtered task lists by time horizon
   const tasksByColumn = useMemo(() => {
@@ -78,6 +110,11 @@ function TasksKanbanPanel() {
 
     return { overdue, today, thisWeek };
   }, [tasks]);
+
+  const activeTask = activeId
+    ? [...tasksByColumn.overdue, ...tasksByColumn.today, ...tasksByColumn.thisWeek]
+        .find(t => String(t.id) === activeId)
+    : null;
 
   /**
    * Calculate target due date based on destination column
@@ -108,41 +145,59 @@ function TasksKanbanPanel() {
   }, []);
 
   const handleDragStart = useCallback(
-    (start: DragStart, provided: ResponderProvided) => {
-      const taskId = parseInt(start.draggableId, 10);
-      const task = tasks.find((t) => t.id === taskId);
-
-      if (task) {
-        const columnLabel = columnLabels[start.source.droppableId as TaskColumnId];
-        provided.announce(`Picked up task: ${task.subject}. Currently in ${columnLabel}.`);
-      }
+    (event: DragStartEvent) => {
+      setActiveId(String(event.active.id));
     },
-    [tasks]
+    []
   );
-
-  const handleDragUpdate = useCallback((update: DragUpdate, provided: ResponderProvided) => {
-    if (update.destination) {
-      const columnLabel = columnLabels[update.destination.droppableId as TaskColumnId];
-      provided.announce(`Moving to ${columnLabel}, position ${update.destination.index + 1}`);
-    }
-  }, []);
 
   /**
    * Handle drag end - update task due_date based on destination column
    */
   const handleDragEnd = useCallback(
-    async (result: DropResult, provided: ResponderProvided) => {
-      const { destination, source, draggableId } = result;
+    async (event: DragEndEvent) => {
+      setActiveId(null);
+
+      const { active, over } = event;
 
       // Dropped outside a valid droppable
-      if (!destination) {
-        provided.announce("Drag cancelled. Task returned to original position.");
+      if (!over) {
         return;
       }
 
-      // Dropped in same position
-      if (destination.droppableId === source.droppableId && destination.index === source.index) {
-        provided.announce("Dropped in original position.");
+      const draggableId = String(active.id);
+
+      // Find source column by searching tasksByColumn
+      let sourceColumnId: TaskColumnId | null = null;
+      for (const [columnId, columnTasks] of Object.entries(tasksByColumn)) {
+        if (columnTasks.some((t) => String(t.id) === draggableId)) {
+          sourceColumnId = columnId as TaskColumnId;
+          break;
+        }
+      }
+
+      if (!sourceColumnId) return;
+
+      // Determine destination column from over.id
+      let destColumnId: TaskColumnId | null = null;
+
+      // Check if over.id is a column ID
+      if (columnLabels[over.id as TaskColumnId]) {
+        destColumnId = over.id as TaskColumnId;
+      } else {
+        // over.id is a task ID - find which column it's in
+        for (const [columnId, columnTasks] of Object.entries(tasksByColumn)) {
+          if (columnTasks.some((t) => String(t.id) === String(over.id))) {
+            destColumnId = columnId as TaskColumnId;
+            break;
+          }
+        }
+      }
+
+      if (!destColumnId) return;
+
+      // Same column - no date change needed
+      if (destColumnId === sourceColumnId) {
         return;
       }
 
@@ -150,30 +205,17 @@ function TasksKanbanPanel() {
       const task = tasks.find((t) => t.id === taskId);
       if (!task) return;
 
-      const destColumnId = destination.droppableId as TaskColumnId;
-      const sourceColumnId = source.droppableId as TaskColumnId;
-
-      // Same column, different position - no date change needed
-      if (destColumnId === sourceColumnId) {
-        provided.announce(`Reordered within ${columnLabels[destColumnId]}.`);
-        return;
-      }
-
       // Calculate new due date based on destination column
       const newDueDate = getTargetDueDate(destColumnId, task.dueDate);
 
       try {
         await updateTaskDueDate(taskId, newDueDate);
-        provided.announce(
-          `Moved to ${columnLabels[destColumnId]} at position ${destination.index + 1}`
-        );
         notify(`Moved to ${columnLabels[destColumnId]}`, { type: "success" });
       } catch {
-        provided.announce("Failed to move task. Returned to original position.");
         notify("Failed to move task. Please try again.", { type: "error" });
       }
     },
-    [tasks, getTargetDueDate, updateTaskDueDate, notify]
+    [tasksByColumn, tasks, getTargetDueDate, updateTaskDueDate, notify]
   );
 
   // Loading state - matches production flex layout
@@ -272,10 +314,12 @@ function TasksKanbanPanel() {
             </div>
           </div>
         ) : (
-          <DragDropContext
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCorners}
             onDragStart={handleDragStart}
-            onDragUpdate={handleDragUpdate}
             onDragEnd={handleDragEnd}
+            accessibility={{ announcements }}
           >
             <div
               className="
@@ -313,7 +357,19 @@ function TasksKanbanPanel() {
                 onView={viewTask}
               />
             </div>
-          </DragDropContext>
+            <DragOverlay>
+              {activeTask ? (
+                <TaskKanbanCard
+                  task={activeTask}
+                  isDragOverlay
+                  onComplete={completeTask}
+                  onSnooze={snoozeTask}
+                  onDelete={deleteTask}
+                  onView={viewTask}
+                />
+              ) : null}
+            </DragOverlay>
+          </DndContext>
         )}
       </div>
     </div>
