@@ -41,6 +41,15 @@ export default defineConfig(({ mode }) => ({
       "@tanstack/react-query",
       "@hello-pangea/dnd",
 
+      // DnD Kit (Opportunity Kanban)
+      "@dnd-kit/core",
+      "@dnd-kit/sortable",
+      "@dnd-kit/utilities",
+
+      // Chart libraries
+      "chart.js",
+      "react-chartjs-2",
+
       // Form libraries
       "react-hook-form",
       "@hookform/resolvers",
@@ -207,8 +216,14 @@ export default defineConfig(({ mode }) => ({
           // Form handling libraries
           forms: ["react-hook-form", "@hookform/resolvers", "zod"],
 
-          // Drag and drop - only for kanban
+          // Drag and drop - Task Kanban (hello-pangea)
           dnd: ["@hello-pangea/dnd"],
+
+          // Drag and drop - Opportunity Kanban (dnd-kit)
+          "dnd-kit": ["@dnd-kit/core", "@dnd-kit/sortable", "@dnd-kit/utilities"],
+
+          // Chart libraries - Reports only
+          charts: ["chart.js", "react-chartjs-2"],
 
           // Utilities that don't need to be in main bundle
           utils: ["lodash", "date-fns", "clsx", "class-variance-authority", "inflection"],
