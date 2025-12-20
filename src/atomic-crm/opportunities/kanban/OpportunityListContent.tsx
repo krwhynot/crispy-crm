@@ -437,7 +437,7 @@ export const OpportunityListContent = ({
           </div>
         </div>
 
-        <DragOverlay modifiers={[restrictToWindowEdges]}>
+        <DragOverlay>
           {activeOpportunity ? (
             <OpportunityCard
               opportunity={activeOpportunity}

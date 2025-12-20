@@ -1,24 +1,21 @@
 import { describe, it, expect, vi } from "vitest";
 import { screen, fireEvent } from "@testing-library/react";
-import { DragDropContext, Droppable } from "@hello-pangea/dnd";
+import { DndContext } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { OpportunityCard } from "../kanban/OpportunityCard";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import type { Opportunity } from "../../types";
 
 /**
- * DnD wrapper required for testing Draggable components
+ * DnD wrapper required for testing Sortable components
+ * Uses @dnd-kit instead of @hello-pangea/dnd
  */
-const DndWrapper = ({ children }: { children: React.ReactNode }) => (
-  <DragDropContext onDragEnd={() => {}}>
-    <Droppable droppableId="test-droppable">
-      {(provided) => (
-        <div ref={provided.innerRef} {...provided.droppableProps}>
-          {children}
-          {provided.placeholder}
-        </div>
-      )}
-    </Droppable>
-  </DragDropContext>
+const DndWrapper = ({ children, itemId }: { children: React.ReactNode; itemId: string }) => (
+  <DndContext>
+    <SortableContext items={[itemId]} strategy={verticalListSortingStrategy}>
+      {children}
+    </SortableContext>
+  </DndContext>
 );
 
 /**
@@ -54,9 +51,8 @@ const renderCard = (
   };
 
   return renderWithAdminContext(
-    <DndWrapper>
+    <DndWrapper itemId={String(defaultRecord.id)}>
       <OpportunityCard
-        index={0}
         openSlideOver={props.openSlideOver ?? vi.fn()}
         onDelete={props.onDelete}
       />
@@ -99,13 +95,14 @@ describe("OpportunityCard", () => {
       expect(dragHandle.className).toMatch(/min-w-\[44px\]|min-w-11|w-11/);
     });
 
-    it("card body does NOT have dragHandleProps", () => {
+    it("card body does NOT have drag listeners", () => {
       renderCard({});
 
       const cardBody = screen.getByTestId("opportunity-card");
-      // Card should have draggableProps but NOT dragHandleProps
-      // dragHandleProps adds data-rbd-drag-handle-draggable-id attribute
-      expect(cardBody).not.toHaveAttribute("data-rbd-drag-handle-draggable-id");
+      // Card body should NOT have drag listeners - only the drag handle does
+      // @dnd-kit applies listeners as event handlers, not data attributes on the card body
+      // The drag handle has aria-roledescription="sortable" from @dnd-kit
+      expect(cardBody).not.toHaveAttribute("aria-roledescription", "sortable");
     });
 
     it("does not trigger openSlideOver when drag handle is clicked", () => {
@@ -155,7 +152,8 @@ describe("OpportunityCard", () => {
     it("shows StageStatusDot instead of ActivityPulseDot", () => {
       renderCard(mockOpportunity);
       expect(screen.getByText(/5 days/)).toBeInTheDocument();
-      expect(screen.getByRole("status")).toBeInTheDocument();
+      // Use more specific selector - @dnd-kit adds its own aria-live status region
+      expect(screen.getByTestId("status-dot")).toBeInTheDocument();
     });
 
     it("has principal color stripe on left border", () => {
