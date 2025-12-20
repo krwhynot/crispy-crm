@@ -229,7 +229,7 @@ export function TaskCompleteSheet({ open, onOpenChange, onRefresh }: TaskComplet
         aria-describedby="complete-task-description"
       >
         <SheetHeader className="border-b border-border pb-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between pr-14">
             <SheetTitle id="complete-task-title" className="flex items-center gap-2">
               <CheckCircle2 className="h-5 w-5 text-success" aria-hidden="true" />
               Complete Task
