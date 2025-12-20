@@ -1,13 +1,9 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { screen, fireEvent } from "@testing-library/react";
 import { DragDropContext, Droppable } from "@hello-pangea/dnd";
 import { OpportunityCard } from "../kanban/OpportunityCard";
-import { useOpportunityContacts } from "../hooks/useOpportunityContacts";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import type { Opportunity } from "../../types";
-
-// Mock the contacts hook
-vi.mock("../hooks/useOpportunityContacts");
 
 /**
  * DnD wrapper required for testing Draggable components
