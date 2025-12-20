@@ -1599,7 +1599,7 @@ If issues arise:
 
 ```bash
 # Revert to previous commit
-git revert HEAD~6..HEAD
+git revert HEAD~7..HEAD
 
 # Or revert specific commit
 git revert <commit-sha>
