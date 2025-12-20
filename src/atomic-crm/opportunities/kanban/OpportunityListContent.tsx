@@ -71,9 +71,7 @@ export const OpportunityListContent = ({
   );
 
   const [activeId, setActiveId] = useState<string | null>(null);
-  const activeOpportunity = activeId
-    ? Object.values(opportunitiesByStage).flat().find(o => String(o.id) === activeId)
-    : null;
+  // NOTE: activeOpportunity moved after opportunitiesByStage declaration to avoid TDZ error
 
   const {
     collapsedStages,
@@ -96,6 +94,11 @@ export const OpportunityListContent = ({
   const [opportunitiesByStage, setOpportunitiesByStage] = useState<OpportunitiesByStage>(
     getOpportunitiesByStage([], allOpportunityStages)
   );
+
+  // Find active opportunity for DragOverlay (must be after opportunitiesByStage declaration)
+  const activeOpportunity = activeId
+    ? Object.values(opportunitiesByStage).flat().find(o => String(o.id) === activeId)
+    : null;
 
   useEffect(() => {
     if (unorderedOpportunities) {
