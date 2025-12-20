@@ -1,6 +1,6 @@
 import React from "react";
-import { Droppable } from "@hello-pangea/dnd";
 import { RecordContextProvider } from "react-admin";
+import { StrictModeDroppable } from "@/components/ui/StrictModeDroppable";
 import type { Opportunity } from "../../types";
 import { OpportunityCard } from "./OpportunityCard";
 import {
@@ -126,7 +126,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
   min-w-[260px] max-w-[300px]
   md:min-w-[280px] md:max-w-[320px]
   lg:min-w-[300px] lg:max-w-[340px]
-  h-full max-h-full overflow-hidden shrink-0
+  h-full max-h-full overflow-y-auto overflow-x-hidden shrink-0
 `}
       data-testid="kanban-column"
     >
@@ -195,7 +195,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
           <div className="mb-2 px-1">
             <QuickAddOpportunity stage={stage} onOpportunityCreated={onOpportunityCreated} />
           </div>
-          <Droppable droppableId={stage}>
+          <StrictModeDroppable droppableId={stage}>
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
@@ -216,7 +216,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
                 {provided.placeholder}
               </div>
             )}
-          </Droppable>
+          </StrictModeDroppable>
         </>
       )}
     </div>
