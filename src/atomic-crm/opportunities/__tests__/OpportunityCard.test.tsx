@@ -69,16 +69,6 @@ const renderCard = (
 };
 
 describe("OpportunityCard", () => {
-  beforeEach(() => {
-    // Reset mock before each test
-    vi.mocked(useOpportunityContacts).mockReturnValue({
-      primaryContact: null,
-      contacts: [],
-      isLoading: false,
-      error: null,
-    });
-  });
-
   describe("Interactions", () => {
     it("calls openSlideOver when card body is clicked", () => {
       const openSlideOver = vi.fn();
