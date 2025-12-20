@@ -1,6 +1,6 @@
 import React from "react";
 import { RecordContextProvider } from "react-admin";
-import { StrictModeDroppable } from "@/components/ui/StrictModeDroppable";
+import { Droppable } from "@hello-pangea/dnd";
 import type { Opportunity } from "../../types";
 import { OpportunityCard } from "./OpportunityCard";
 import {
@@ -195,7 +195,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
           <div className="mb-2 px-1">
             <QuickAddOpportunity stage={stage} onOpportunityCreated={onOpportunityCreated} />
           </div>
-          <StrictModeDroppable droppableId={stage}>
+          <Droppable droppableId={stage}>
             {(provided, snapshot) => (
               <div
                 ref={provided.innerRef}
@@ -216,7 +216,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
                 {provided.placeholder}
               </div>
             )}
-          </StrictModeDroppable>
+          </Droppable>
         </>
       )}
     </div>
