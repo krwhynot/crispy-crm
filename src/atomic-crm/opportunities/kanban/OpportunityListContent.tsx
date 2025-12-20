@@ -39,6 +39,33 @@ interface OpportunityListContentProps {
 }
 
 /**
+ * Custom collision detection that prioritizes pointer position.
+ *
+ * 1. First tries `pointerWithin` - checks if pointer is inside a droppable
+ * 2. Falls back to `rectIntersection` - checks if dragged element overlaps droppables
+ * 3. Finally falls back to `closestCorners` for keyboard navigation
+ *
+ * This solves issues where `closestCorners` alone fails to detect collisions
+ * in nested scrollable containers.
+ */
+const customCollisionDetection: CollisionDetection = (args) => {
+  // First, check if pointer is directly within a droppable
+  const pointerCollisions = pointerWithin(args);
+  if (pointerCollisions.length > 0) {
+    return pointerCollisions;
+  }
+
+  // Fall back to rectangle intersection (more tolerant)
+  const rectCollisions = rectIntersection(args);
+  if (rectCollisions.length > 0) {
+    return rectCollisions;
+  }
+
+  // Final fallback to closestCorners (useful for keyboard navigation)
+  return closestCorners(args);
+};
+
+/**
  * State for pending close modal - stores drag data while modal is open
  */
 interface PendingCloseData {
@@ -405,7 +432,7 @@ export const OpportunityListContent = ({
     <div className="flex min-h-0 flex-1 flex-col h-full">
       <DndContext
         sensors={sensors}
-        collisionDetection={closestCorners}
+        collisionDetection={customCollisionDetection}
         onDragStart={handleDragStart}
         onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
