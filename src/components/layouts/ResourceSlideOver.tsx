@@ -194,7 +194,7 @@ export function ResourceSlideOver({
               )}
 
               {/* Title and actions row */}
-              <div className="flex flex-row items-center justify-between min-h-[28px] pr-10">
+              <div className="flex flex-row items-center justify-between min-h-[28px] pr-14">
                 <SheetTitle id="slide-over-title" className="text-base font-semibold">
                   {getRecordTitle()}
                 </SheetTitle>
