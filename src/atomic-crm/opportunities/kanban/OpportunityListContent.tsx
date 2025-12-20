@@ -3,12 +3,18 @@ import { isEqual } from "es-toolkit";
 import { useListContext, useUpdate, useNotify, useRefresh } from "ra-core";
 import { useEffect, useState, useCallback } from "react";
 import {
-  DragDropContext,
-  type DropResult,
-  type DragStart,
-  type DragUpdate,
-  type ResponderProvided,
-} from "@hello-pangea/dnd";
+  DndContext,
+  DragOverlay,
+  closestCorners,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+  type DragStartEvent,
+  type DragOverEvent,
+  type DragEndEvent,
+} from "@dnd-kit/core";
+import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
 import type { Opportunity } from "../../types";
 import { OpportunityColumn } from "./OpportunityColumn";
@@ -19,6 +25,7 @@ import { useColumnPreferences } from "../hooks/useColumnPreferences";
 import { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
 import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
+import { OpportunityCard } from "./OpportunityCard";
 
 interface OpportunityListContentProps {
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
@@ -57,6 +64,16 @@ export const OpportunityListContent = ({
   const [showCloseModal, setShowCloseModal] = useState(false);
   const [pendingCloseData, setPendingCloseData] = useState<PendingCloseData | null>(null);
   const [isClosing, setIsClosing] = useState(false);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
+  );
+
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const activeOpportunity = activeId
+    ? Object.values(opportunitiesByStage).flat().find(o => String(o.id) === activeId)
+    : null;
 
   const {
     collapsedStages,
@@ -238,52 +255,78 @@ export const OpportunityListContent = ({
     []
   );
 
-  const handleDragStart = useCallback(
-    (start: DragStart, provided: ResponderProvided) => {
-      const sourceStage = start.source.droppableId;
-      const draggedItem = opportunitiesByStage[sourceStage]?.find(
-        (opp) => opp.id.toString() === start.draggableId
-      );
-
-      if (draggedItem) {
-        const stageName = getOpportunityStageLabel(sourceStage);
-        provided.announce(`Picked up ${draggedItem.name}. Currently in ${stageName} stage.`);
-      }
-    },
-    [opportunitiesByStage]
-  );
-
-  const handleDragUpdate = useCallback((update: DragUpdate, provided: ResponderProvided) => {
-    if (update.destination) {
-      const stageName = getOpportunityStageLabel(update.destination.droppableId);
-      provided.announce(`Moving to ${stageName} stage, position ${update.destination.index + 1}`);
-    }
+  const handleDragStart = useCallback((event: DragStartEvent) => {
+    setActiveId(String(event.active.id));
   }, []);
 
-  const handleDragEnd = (result: DropResult, provided: ResponderProvided) => {
-    const { destination, source, draggableId } = result;
+  const handleDragOver = useCallback((_event: DragOverEvent) => {}, []);
+
+  const handleDragCancel = useCallback(() => {
+    setActiveId(null);
+  }, []);
+
+  const handleDragEnd = useCallback((event: DragEndEvent) => {
+    const { active, over } = event;
+    setActiveId(null);
 
     // Dropped outside a valid droppable
-    if (!destination) {
-      provided.announce("Drag cancelled. Returned to original position.");
+    if (!over) {
+      return;
+    }
+
+    const draggableId = String(active.id);
+
+    // Find source stage by searching opportunitiesByStage
+    let sourceColId: string | null = null;
+    let sourceIndex = -1;
+    for (const [stageId, opportunities] of Object.entries(opportunitiesByStage)) {
+      const index = opportunities.findIndex((opp) => String(opp.id) === draggableId);
+      if (index !== -1) {
+        sourceColId = stageId;
+        sourceIndex = index;
+        break;
+      }
+    }
+
+    if (!sourceColId || sourceIndex === -1) {
+      return;
+    }
+
+    // Determine destination from over.id (could be stage ID or opportunity ID)
+    let destColId: string | null = null;
+    let destIndex = 0;
+
+    // Check if over.id is a stage ID
+    if (opportunitiesByStage[String(over.id)]) {
+      destColId = String(over.id);
+      destIndex = opportunitiesByStage[destColId].length; // Add to end
+    } else {
+      // over.id is an opportunity ID - find which stage it's in
+      for (const [stageId, opportunities] of Object.entries(opportunitiesByStage)) {
+        const index = opportunities.findIndex((opp) => String(opp.id) === String(over.id));
+        if (index !== -1) {
+          destColId = stageId;
+          destIndex = index;
+          break;
+        }
+      }
+    }
+
+    if (!destColId) {
       return;
     }
 
     // Dropped in the same position
-    if (destination.droppableId === source.droppableId && destination.index === source.index) {
-      provided.announce("Dropped in original position.");
+    if (destColId === sourceColId && destIndex === sourceIndex) {
       return;
     }
-
-    const sourceColId = source.droppableId;
-    const destColId = destination.droppableId;
 
     // Store previous state for rollback on API error
     const previousState = opportunitiesByStage;
 
     const sourceCol = previousState[sourceColId];
     const destCol = previousState[destColId];
-    const draggedItem = sourceCol.find((opp) => opp.id.toString() === draggableId);
+    const draggedItem = sourceCol.find((opp) => String(opp.id) === draggableId);
 
     if (!draggedItem) {
       return;
@@ -294,21 +337,17 @@ export const OpportunityListContent = ({
 
     // Remove item from the source column
     const newSourceCol = Array.from(sourceCol);
-    newSourceCol.splice(source.index, 1);
+    newSourceCol.splice(sourceIndex, 1);
     newOpportunitiesByStage[sourceColId] = newSourceCol;
 
     // Add item to the destination column
     // Note: If moving in the same column, newSourceCol already has the item removed.
     const newDestCol = sourceColId === destColId ? newSourceCol : Array.from(destCol);
-    newDestCol.splice(destination.index, 0, { ...draggedItem, stage: destColId });
+    newDestCol.splice(destIndex, 0, { ...draggedItem, stage: destColId });
     newOpportunitiesByStage[destColId] = newDestCol;
 
     setOpportunitiesByStage(newOpportunitiesByStage);
     // --- End Optimistic UI Update ---
-
-    // Announce successful drop
-    const stageName = getOpportunityStageLabel(destColId);
-    provided.announce(`Dropped in ${stageName} stage at position ${destination.index + 1}`);
 
     // Check if dropping into a closed stage - show modal to collect reason
     if (destColId === "closed_won" || destColId === "closed_lost") {
@@ -326,6 +365,30 @@ export const OpportunityListContent = ({
 
     // --- API Call for non-close stages ---
     performStageUpdate(draggableId, destColId, previousState, draggedItem);
+  }, [opportunitiesByStage, performStageUpdate]);
+
+  const announcements = {
+    onDragStart: ({ active }: { active: { id: string | number } }) => {
+      const opp = Object.values(opportunitiesByStage).flat()
+        .find(o => String(o.id) === String(active.id));
+      const stageName = getOpportunityStageLabel(opp?.stage || '');
+      return `Picked up ${opp?.name || 'opportunity'}. Currently in ${stageName} stage.`;
+    },
+    onDragOver: ({ over }: { over: { id: string | number } | null }) => {
+      if (over) {
+        const stageName = getOpportunityStageLabel(String(over.id));
+        return `Moving to ${stageName} stage.`;
+      }
+      return `No longer over a droppable area.`;
+    },
+    onDragEnd: ({ over }: { over: { id: string | number } | null }) => {
+      if (over) {
+        const stageName = getOpportunityStageLabel(String(over.id));
+        return `Dropped in ${stageName} stage.`;
+      }
+      return `Drag cancelled.`;
+    },
+    onDragCancel: () => `Dragging was cancelled.`,
   };
 
   if (isPending) return null;
@@ -334,10 +397,14 @@ export const OpportunityListContent = ({
   // Kanban board: horizontal scroll for columns, each column scrolls vertically for cards
   return (
     <div className="flex min-h-0 flex-1 flex-col h-full">
-      <DragDropContext
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
         onDragStart={handleDragStart}
-        onDragUpdate={handleDragUpdate}
+        onDragOver={handleDragOver}
         onDragEnd={handleDragEnd}
+        onDragCancel={handleDragCancel}
+        accessibility={{ announcements }}
       >
         {/* Tighter layout: reduced padding p-3, smaller gap-3 between columns */}
         <div
@@ -369,7 +436,17 @@ export const OpportunityListContent = ({
             />
           </div>
         </div>
-      </DragDropContext>
+
+        <DragOverlay modifiers={[restrictToWindowEdges]}>
+          {activeOpportunity ? (
+            <OpportunityCard
+              opportunity={activeOpportunity}
+              isDragOverlay
+              openSlideOver={openSlideOver}
+            />
+          ) : null}
+        </DragOverlay>
+      </DndContext>
 
       {/* CloseOpportunityModal - shown when dragging to closed_won or closed_lost */}
       {pendingCloseData && (
