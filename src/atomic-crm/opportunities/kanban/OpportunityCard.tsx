@@ -80,8 +80,8 @@ export const OpportunityCard = React.memo(function OpportunityCard({
           className={`
             bg-card rounded-lg border border-border border-l-4
             p-3 space-y-1
-            transition-all duration-200
-            hover:shadow-md hover:-translate-y-0.5
+            transition-[box-shadow,opacity] duration-200
+            hover:shadow-md
             cursor-pointer
             ${snapshot.isDragging ? "opacity-50 rotate-2" : "opacity-100"}
           `}

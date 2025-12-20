@@ -11,7 +11,7 @@ import {
   getOpportunityMfbPhase,
 } from "../constants/stageConstants";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
-import { useStageMetrics, STUCK_THRESHOLD_DAYS } from "../hooks/useStageMetrics";
+import { useStageMetrics } from "../hooks/useStageMetrics";
 import { QuickAddOpportunity } from "./QuickAddOpportunity";
 
 /**
@@ -182,7 +182,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
             {metrics.stuckCount > 0 && (
               <span
                 className="text-warning"
-                title={`Opportunities stuck >${STUCK_THRESHOLD_DAYS} days`}
+                title="Opportunities needing attention"
               >
                 ⚠ {metrics.stuckCount}
               </span>
