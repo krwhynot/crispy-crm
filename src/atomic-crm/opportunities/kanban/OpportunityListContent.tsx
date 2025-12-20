@@ -209,6 +209,35 @@ export const OpportunityListContent = ({
     [refresh, slideOverId, closeSlideOver]
   );
 
+  /**
+   * Handle new opportunity creation - optimistically add to local state
+   * This ensures the card appears immediately in the Kanban board
+   * without waiting for the full data refresh to complete.
+   *
+   * The refresh() call in QuickAddOpportunity will eventually sync with
+   * server data (including computed fields like principal_organization_name).
+   */
+  const handleOpportunityCreated = useCallback(
+    (opportunity: Opportunity) => {
+      setOpportunitiesByStage((prevState) => {
+        const stage = opportunity.stage;
+        if (!stage || !prevState[stage]) {
+          // If stage is invalid or not in our stages, don't add
+          // (will be picked up on refresh)
+          console.warn(`[Kanban] New opportunity has invalid stage: ${stage}`);
+          return prevState;
+        }
+
+        const newState = { ...prevState };
+        // Add new opportunity at the START of the stage array (newest first)
+        // The refresh will later apply proper sorting
+        newState[stage] = [opportunity, ...prevState[stage]];
+        return newState;
+      });
+    },
+    []
+  );
+
   const handleDragStart = useCallback(
     (start: DragStart, provided: ResponderProvided) => {
       const sourceStage = start.source.droppableId;
@@ -327,6 +356,7 @@ export const OpportunityListContent = ({
               onToggleCollapse={() => toggleCollapse(stage.value)}
               openSlideOver={openSlideOver}
               onDeleteOpportunity={handleDeleteOpportunity}
+              onOpportunityCreated={handleOpportunityCreated}
             />
           ))}
           {/* Settings button at end of columns - scroll right to access */}

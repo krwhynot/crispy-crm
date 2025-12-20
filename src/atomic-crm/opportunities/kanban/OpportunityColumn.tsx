@@ -25,6 +25,8 @@ interface OpportunityColumnProps {
   onToggleCollapse?: () => void;
   openSlideOver: (id: number, mode?: "view" | "edit") => void;
   onDeleteOpportunity?: (opportunityId: number) => void;
+  /** Callback when an opportunity is created - for optimistic UI updates */
+  onOpportunityCreated?: (opportunity: Opportunity) => void;
 }
 
 /**
@@ -42,6 +44,7 @@ function arePropsEqual(
   if (prevProps.onToggleCollapse !== nextProps.onToggleCollapse) return false;
   if (prevProps.openSlideOver !== nextProps.openSlideOver) return false;
   if (prevProps.onDeleteOpportunity !== nextProps.onDeleteOpportunity) return false;
+  if (prevProps.onOpportunityCreated !== nextProps.onOpportunityCreated) return false;
 
   // Deep comparison for opportunities array
   // Only re-render if the actual opportunity data changed
@@ -92,6 +95,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
   onToggleCollapse,
   openSlideOver,
   onDeleteOpportunity,
+  onOpportunityCreated,
 }: OpportunityColumnProps) {
   const metrics = useStageMetrics(opportunities);
 
@@ -189,7 +193,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
       {!isCollapsed && (
         <>
           <div className="mb-2 px-1">
-            <QuickAddOpportunity stage={stage} />
+            <QuickAddOpportunity stage={stage} onOpportunityCreated={onOpportunityCreated} />
           </div>
           <Droppable droppableId={stage}>
             {(provided, snapshot) => (

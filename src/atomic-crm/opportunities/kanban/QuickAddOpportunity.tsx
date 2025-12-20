@@ -53,12 +53,31 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
         account_manager_id: identity?.id,
       });
 
-      await create("opportunities", { data: validatedData });
+      // Get the selected customer name for optimistic update display
+      const selectedCustomer = customers?.find((c) => c.id === Number(customerId));
+
+      // Create returns the new record - use it for optimistic updates
+      const result = await create("opportunities", { data: validatedData });
+
+      // Optimistic update: immediately add to Kanban before refresh completes
+      // This ensures the new opportunity appears instantly in the UI
+      if (onOpportunityCreated && result?.data) {
+        const newOpportunity: Opportunity = {
+          ...result.data,
+          // Add computed fields that the summary view would provide
+          customer_organization_name: selectedCustomer?.name || "",
+          principal_organization_name: null,
+          distributor_organization_name: null,
+          days_in_stage: 0,
+        } as Opportunity;
+        onOpportunityCreated(newOpportunity);
+      }
+
       notify("Opportunity created! Add details via the card menu.", { type: "success" });
       setIsOpen(false);
       setName("");
       setCustomerId("");
-      refresh();
+      refresh(); // Still refresh to sync with server (gets full computed fields)
     } catch (error) {
       // Fail-fast: show actual validation error for debugging
       const message = error instanceof Error ? error.message : "Error creating opportunity";
