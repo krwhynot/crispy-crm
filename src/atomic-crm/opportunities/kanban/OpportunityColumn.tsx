@@ -200,7 +200,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
               <div
                 ref={provided.innerRef}
                 {...provided.droppableProps}
-                className={`flex flex-col flex-1 rounded-xl mt-1 gap-1.5 pb-2 min-h-[80px] overflow-y-auto overflow-x-hidden transition-colors px-1 ${
+                className={`flex flex-col flex-1 rounded-xl mt-1 gap-1.5 pb-2 min-h-[80px] transition-colors px-1 ${
                   snapshot.isDraggingOver ? "bg-accent" : ""
                 }`}
               >
