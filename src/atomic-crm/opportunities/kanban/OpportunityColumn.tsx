@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { RecordContextProvider } from "react-admin";
-import { Droppable } from "@hello-pangea/dnd";
+import { useDroppable } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import type { Opportunity } from "../../types";
 import { OpportunityCard } from "./OpportunityCard";
 import {
@@ -99,6 +100,13 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
 }: OpportunityColumnProps) {
   const metrics = useStageMetrics(opportunities);
 
+  const { setNodeRef, isOver } = useDroppable({ id: stage });
+
+  const opportunityIds = useMemo(
+    () => opportunities.map(o => String(o.id)),
+    [opportunities]
+  );
+
   // Map elevation levels to semantic shadow utilities (design system compliant)
   // Uses shadow-elevation-* utilities defined in index.css, which map to --elevation-* tokens
   const elevation = getOpportunityStageElevation(stage);
@@ -195,28 +203,23 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
           <div className="mb-2 px-1">
             <QuickAddOpportunity stage={stage} onOpportunityCreated={onOpportunityCreated} />
           </div>
-          <Droppable droppableId={stage}>
-            {(provided, snapshot) => (
-              <div
-                ref={provided.innerRef}
-                {...provided.droppableProps}
-                className={`flex flex-col flex-1 rounded-xl mt-1 gap-1.5 pb-2 min-h-[80px] transition-colors px-1 ${
-                  snapshot.isDraggingOver ? "bg-accent" : ""
-                }`}
-              >
-                {opportunities.map((opportunity, index) => (
-                  <RecordContextProvider key={opportunity.id} value={opportunity}>
-                    <OpportunityCard
-                      index={index}
-                      openSlideOver={openSlideOver}
-                      onDelete={onDeleteOpportunity}
-                    />
-                  </RecordContextProvider>
-                ))}
-                {provided.placeholder}
-              </div>
-            )}
-          </Droppable>
+          <div
+            ref={setNodeRef}
+            className={`flex flex-col flex-1 rounded-xl mt-1 gap-1.5 pb-2 min-h-[80px] transition-colors px-1 ${
+              isOver ? "bg-accent ring-2 ring-ring" : ""
+            }`}
+          >
+            <SortableContext items={opportunityIds} strategy={verticalListSortingStrategy}>
+              {opportunities.map((opportunity) => (
+                <RecordContextProvider key={opportunity.id} value={opportunity}>
+                  <OpportunityCard
+                    openSlideOver={openSlideOver}
+                    onDelete={onDeleteOpportunity}
+                  />
+                </RecordContextProvider>
+              ))}
+            </SortableContext>
+          </div>
         </>
       )}
     </div>
