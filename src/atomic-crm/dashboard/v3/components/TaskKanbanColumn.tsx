@@ -1,5 +1,6 @@
-import React from "react";
-import { Droppable } from "@hello-pangea/dnd";
+import React, { useMemo } from "react";
+import { useDroppable } from "@dnd-kit/core";
+import { SortableContext, verticalListSortingStrategy } from "@dnd-kit/sortable";
 import { TaskKanbanCard } from "./TaskKanbanCard";
 import type { TaskItem } from "../types";
 import { cn } from "@/lib/utils";
