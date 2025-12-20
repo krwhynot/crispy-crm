@@ -62,13 +62,6 @@ export const OpportunityCard = React.memo(function OpportunityCard({
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 
-  // Use CSS variable for principal color stripe (avoids style prop conflicts with drag library)
-  const cardStyle = {
-    '--principal-stripe-color': principalSlug
-      ? `var(--principal-${principalSlug}, var(--muted))`
-      : 'var(--muted)',
-  } as React.CSSProperties;
-
   return (
     <Draggable draggableId={String(record.id)} index={index}>
       {(provided, snapshot) => (
@@ -92,9 +85,11 @@ export const OpportunityCard = React.memo(function OpportunityCard({
             ${snapshot.isDragging ? "opacity-50" : "opacity-100"}
           `}
           style={{
+            // Custom styles FIRST, library styles LAST (required for drag positioning)
+            borderLeftColor: principalSlug
+              ? `var(--principal-${principalSlug}, var(--muted))`
+              : 'var(--muted)',
             ...provided.draggableProps.style,
-            ...cardStyle,
-            borderLeftColor: 'var(--principal-stripe-color)',
           }}
           data-testid="opportunity-card"
           data-tutorial="opp-card"
