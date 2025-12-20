@@ -519,7 +519,7 @@ export function QuickLogActivityDialog({
         aria-labelledby="log-activity-title"
         aria-describedby="log-activity-description"
       >
-        <SheetHeader className="border-b border-border pb-4">
+        <SheetHeader className="border-b border-border pb-4 pr-14">
           <SheetTitle id="log-activity-title">
             Log Activity
             {hasDraft && enableDraftPersistence && (
