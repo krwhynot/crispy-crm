@@ -263,6 +263,12 @@ export const createOpportunitySchema = opportunityBaseSchema
     customer_organization_id: z.union([z.string(), z.number()]),
     // Principal optional (can be enriched later)
     principal_organization_id: z.union([z.string(), z.number()]).optional().nullable(),
+
+    // Fields used by quick-create but not in UI forms
+    // These are set programmatically (status=active, owner=current user)
+    // Must be included since opportunityBaseSchema uses strictObject()
+    status: z.literal("active").optional().default("active"),
+    opportunity_owner_id: z.union([z.string(), z.number()]).optional().nullable(),
   })
   .required({
     name: true,
