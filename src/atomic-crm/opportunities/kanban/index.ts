@@ -21,3 +21,4 @@ export { OpportunityCardActions } from "./OpportunityCardActions";
 export { QuickAddOpportunity } from "./QuickAddOpportunity";
 export { ColumnCustomizationMenu } from "./ColumnCustomizationMenu";
 export { ActivityPulseDot } from "./ActivityPulseDot";
+export { StageStatusDot } from "./StageStatusDot";
