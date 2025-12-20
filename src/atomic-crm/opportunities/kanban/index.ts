@@ -10,7 +10,7 @@
  *   - OpportunityColumn (stage column with droppable area)
  *     - QuickAddOpportunity (inline create form)
  *     - OpportunityCard (draggable card)
- *       - ActivityPulseDot (activity recency indicator)
+ *       - StageStatusDot (days in stage indicator)
  *       - OpportunityCardActions (action menu)
  */
 
