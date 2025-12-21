@@ -1,4 +1,4 @@
-import { Children, useCallback, useState } from "react";
+import { Children, useCallback, useMemo, useState } from "react";
 import { Translate, useAuthProvider, useGetIdentity, useLogout } from "ra-core";
 import { LogOut } from "lucide-react";
 import {
@@ -34,8 +34,10 @@ export function UserMenu({ children }: UserMenuProps) {
 
   if (!authProvider) return null;
 
+  const userMenuContextValue = useMemo(() => ({ onClose: handleClose }), [handleClose]);
+
   return (
-    <UserMenuContext.Provider value={{ onClose: handleClose }}>
+    <UserMenuContext.Provider value={userMenuContextValue}>
       <DropdownMenu open={open} onOpenChange={handleToggleOpen}>
         <DropdownMenuTrigger asChild>
           <Button

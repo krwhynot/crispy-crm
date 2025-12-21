@@ -204,18 +204,23 @@ describe("Opportunity Delete Cascade", () => {
     it("should document expected cascade targets", () => {
       // This test documents the expected cascade behavior
       // as defined in archive_opportunity_with_relations function
+      // Updated 2025-12-21: Added opportunity_contacts and opportunity_products
       const expectedCascadeTargets = [
-        "opportunities",      // The opportunity itself
-        "activities",         // Related activities
-        "opportunityNotes",   // Related notes
-        "opportunity_participants", // Related participants
-        "tasks",              // Related tasks
+        "opportunities",           // The opportunity itself
+        "activities",              // Related activities
+        "opportunityNotes",        // Related notes
+        "opportunity_participants",// Related participants
+        "tasks",                   // Related tasks
+        "opportunity_contacts",    // Junction: opportunities ↔ contacts (P0 fix)
+        "opportunity_products",    // Junction: opportunities ↔ products (P0 fix)
       ];
 
       // This is a documentation test - just verifying the expected targets
-      expect(expectedCascadeTargets).toHaveLength(5);
+      expect(expectedCascadeTargets).toHaveLength(7);
       expect(expectedCascadeTargets).toContain("activities");
       expect(expectedCascadeTargets).toContain("tasks");
+      expect(expectedCascadeTargets).toContain("opportunity_contacts");
+      expect(expectedCascadeTargets).toContain("opportunity_products");
     });
   });
 });

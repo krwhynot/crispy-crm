@@ -4,7 +4,7 @@ import { StageStatusDot } from "../StageStatusDot";
 
 describe("StageStatusDot", () => {
   it("renders with accessible role", () => {
-    render(<StageStatusDot status="healthy" daysInStage={3} />);
+    render(<StageStatusDot status="healthy" daysSinceLastActivity={3} daysInStage={3} />);
     expect(screen.getByRole("status")).toBeInTheDocument();
   });
 
