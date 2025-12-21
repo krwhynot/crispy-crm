@@ -72,7 +72,10 @@ export const OpportunityCard = React.memo(function OpportunityCard({
     openSlideOver(record.id as number, "view");
   };
 
-  // Stage status calculation
+  // Activity recency for card display (user requirement F)
+  const daysSinceLastActivity = record.days_since_last_activity ?? null;
+
+  // Stage status calculation (uses days_in_stage for rotting logic)
   const daysInStage = record.days_in_stage || 0;
   const expectedCloseDate = record.estimated_close_date
     ? parseDateSafely(record.estimated_close_date)
@@ -105,7 +108,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
       }}
       className={`
         bg-card rounded-lg border border-border border-l-4
-        p-3 space-y-1
+        p-2 space-y-0.5
         hover:shadow-md
         cursor-pointer
         ${isDragging && !isDragOverlay ? "opacity-50" : "opacity-100"}
@@ -146,9 +149,18 @@ export const OpportunityCard = React.memo(function OpportunityCard({
         {record.customer_organization_name || "No Operator"}
       </p>
 
-      {/* Row 4: Stage Status (days + dot) */}
-      <div className="pl-10">
-        <StageStatusDot status={stageStatus} daysInStage={daysInStage} />
+      {/* Row 4: Stage Status (days since last activity + dot) + Past Due badge */}
+      <div className="pl-10 flex items-center gap-2">
+        <StageStatusDot
+          status={stageStatus}
+          daysSinceLastActivity={daysSinceLastActivity}
+          daysInStage={daysInStage}
+        />
+        {stageStatus === "expired" && (
+          <span className="text-[10px] bg-destructive/10 text-destructive px-1.5 py-0.5 rounded font-medium">
+            Past due
+          </span>
+        )}
       </div>
     </div>
   );

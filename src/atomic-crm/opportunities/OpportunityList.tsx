@@ -13,6 +13,7 @@ import { OpportunityEmpty } from "./OpportunityEmpty";
 import { OpportunityListContent } from "./kanban";
 import { OpportunityRowListView } from "./OpportunityRowListView";
 import { CampaignGroupedList } from "./CampaignGroupedList";
+import { PrincipalGroupedList } from "./PrincipalGroupedList";
 import { OpportunityViewSwitcher, type OpportunityView } from "./OpportunityViewSwitcher";
 import { saveStagePreferences } from "../filters/opportunityStagePreferences";
 import { useSlideOverState } from "@/hooks/useSlideOverState";
@@ -28,7 +29,9 @@ const OPPORTUNITY_VIEW_KEY = "opportunity.view.preference";
 
 const getViewPreference = (): OpportunityView => {
   const saved = localStorage.getItem(OPPORTUNITY_VIEW_KEY);
-  return saved === "list" || saved === "kanban" || saved === "campaign" ? saved : "kanban";
+  return saved === "list" || saved === "kanban" || saved === "campaign" || saved === "principal"
+    ? saved
+    : "kanban";
 };
 
 const saveViewPreference = (view: OpportunityView) => {
@@ -171,6 +174,8 @@ const OpportunityListLayout = ({
           />
         ) : view === "campaign" ? (
           <CampaignGroupedList openSlideOver={openSlideOver} />
+        ) : view === "principal" ? (
+          <PrincipalGroupedList openSlideOver={openSlideOver} />
         ) : (
           <OpportunityRowListView openSlideOver={openSlideOver} isSlideOverOpen={isSlideOverOpen} />
         )}
