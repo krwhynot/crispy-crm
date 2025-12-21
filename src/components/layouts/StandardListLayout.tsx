@@ -105,7 +105,8 @@ export function StandardListLayout({
       </div>
 
       {/* Sidebar column - contains both sidebar and expand button in same grid cell */}
-      <div className="hidden lg:block lg:sticky lg:top-0 lg:h-fit lg:self-start">
+      {/* When collapsed, ensure minimum width for the show filters button (w-11 = 44px) */}
+      <div className={`hidden lg:block lg:sticky lg:top-0 lg:h-fit lg:self-start ${isCollapsed ? "w-11" : ""}`}>
         {/* Filter sidebar with collapse animation */}
         <aside
           id="filter-sidebar"
