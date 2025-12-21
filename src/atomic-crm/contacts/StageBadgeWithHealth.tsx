@@ -1,3 +1,4 @@
+import { memo } from "react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 
@@ -6,7 +7,7 @@ interface StageBadgeWithHealthProps {
   health?: "active" | "cooling" | "at_risk";
 }
 
-export function StageBadgeWithHealth({ stage, health }: StageBadgeWithHealthProps) {
+export const StageBadgeWithHealth = memo(function StageBadgeWithHealth({ stage, health }: StageBadgeWithHealthProps) {
   return (
     <Badge
       variant="outline"
@@ -20,4 +21,6 @@ export function StageBadgeWithHealth({ stage, health }: StageBadgeWithHealthProp
       {stage}
     </Badge>
   );
-}
+});
+
+StageBadgeWithHealth.displayName = "StageBadgeWithHealth";

@@ -15,7 +15,7 @@
  * serialization delay from dashboard initial load.
  */
 
-import { type ReactNode } from "react";
+import { type ReactNode, useMemo, useCallback } from "react";
 import { useGetIdentity } from "react-admin";
 import { CurrentSaleContext } from "../hooks/useCurrentSale";
 
@@ -59,14 +59,19 @@ export function CurrentSaleProvider({ children }: CurrentSaleProviderProps) {
 
   // No-op refetch since React Admin manages the cache
   // Identity cache is cleared on login/logout via authProvider
-  const refetch = () => {
+  const refetch = useCallback(() => {
     if (import.meta.env.DEV) {
       console.log("[CurrentSaleProvider] refetch called but no-op (managed by authProvider)");
     }
-  };
+  }, []);
+
+  const contextValue = useMemo(
+    () => ({ salesId, loading: isLoading, error, refetch }),
+    [salesId, isLoading, error, refetch]
+  );
 
   return (
-    <CurrentSaleContext.Provider value={{ salesId, loading: isLoading, error, refetch }}>
+    <CurrentSaleContext.Provider value={contextValue}>
       {children}
     </CurrentSaleContext.Provider>
   );

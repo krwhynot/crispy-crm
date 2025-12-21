@@ -85,9 +85,9 @@ export const checkAuthorizationParamsSchema = z.strictObject({
  * Response schema for check_authorization RPC
  * Used for type inference and response validation
  */
-// Response schemas use z.object() (not strictObject) to tolerate
-// additional fields the database might return in future versions
-export const checkAuthorizationResponseSchema = z.object({
+// Response schemas use z.strictObject() to prevent mass assignment attacks
+// If DB returns new fields, update this schema explicitly
+export const checkAuthorizationResponseSchema = z.strictObject({
   authorized: z.boolean(),
   reason: z.string().max(500, "Reason too long").optional(),
   error: z.string().max(1000, "Error message too long").optional(),
@@ -127,9 +127,9 @@ export const checkAuthorizationBatchParamsSchema = z.strictObject({
 
 /**
  * Response schema for check_authorization_batch RPC
- * Uses z.object() to tolerate additional fields from database
+ * Uses z.strictObject() to prevent mass assignment attacks
  */
-export const checkAuthorizationBatchResponseSchema = z.object({
+export const checkAuthorizationBatchResponseSchema = z.strictObject({
   distributor_id: z.number(),
   total_checked: z.number(),
   all_authorized: z.boolean().nullable(),

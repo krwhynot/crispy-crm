@@ -110,8 +110,10 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
       });
       setValue("stage", newStage);
       notify("Stage updated successfully", { type: "success" });
-    } catch (_error) {
-      notify("Error updating stage", { type: "error" });
+    } catch (error) {
+      console.error('Stage update failed:', error);
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      notify(`Error updating stage: ${message}`, { type: "error" });
     }
   };
 
@@ -132,8 +134,10 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
       notify("Activity created successfully", { type: "success" });
       reset();
       onSuccess?.();
-    } catch (_error) {
-      notify("Error creating activity", { type: "error" });
+    } catch (error) {
+      console.error('Activity creation failed:', error);
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      notify(`Error creating activity: ${message}`, { type: "error" });
     }
   };
 

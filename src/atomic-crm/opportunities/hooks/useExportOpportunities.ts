@@ -99,8 +99,10 @@ export const useExportOpportunities = () => {
             type: "success",
           }
         );
-      } catch (_error) {
-        notify("Failed to export opportunities", { type: "error" });
+      } catch (error) {
+        console.error('Export failed:', error);
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        notify(`Failed to export opportunities: ${message}`, { type: "error" });
       }
     },
     [notify]

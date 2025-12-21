@@ -87,7 +87,8 @@ export function useBulkActionsState({
             previousData: opportunities.find((opp) => opp.id === id),
           });
           successCount++;
-        } catch (_error) {
+        } catch (error) {
+          console.error(`Bulk update failed for ${resource} id=${id}:`, error);
           failureCount++;
         }
       }

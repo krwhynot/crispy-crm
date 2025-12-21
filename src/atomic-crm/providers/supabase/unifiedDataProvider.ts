@@ -965,6 +965,27 @@ export const unifiedDataProvider: DataProvider = {
         return { data: data as RecordType };
       }
 
+      // P0 FIX: Opportunities require cascade soft-delete to related records
+      // Uses archive_opportunity_with_relations RPC to soft-delete:
+      // - The opportunity itself
+      // - Related activities, opportunityNotes, opportunity_participants, tasks
+      // Engineering Constitution: Fail-fast - if RPC fails, the whole delete fails
+      if (resource === "opportunities") {
+        const { error: rpcError } = await supabase.rpc(
+          'archive_opportunity_with_relations',
+          { opp_id: params.id }
+        );
+
+        if (rpcError) {
+          console.error('Failed to archive opportunity with relations:', rpcError);
+          throw new Error(`Failed to delete opportunity: ${rpcError.message}`);
+        }
+
+        // Return the previousData as the deleted record
+        // React Admin expects the deleted record to be returned
+        return { data: (params.previousData || { id: params.id }) as RecordType };
+      }
+
       // Constitution: soft-deletes rule - check if resource supports soft delete
       if (supportsSoftDelete(dbResource)) {
         // Soft delete: set deleted_at timestamp

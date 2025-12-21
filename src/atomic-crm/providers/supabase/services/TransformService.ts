@@ -49,7 +49,12 @@ export class TransformService {
             .filter((attachment) => attachment && typeof attachment === "object")
             .map((attachment) => this.storageService.uploadToBucket(attachment as RAFile));
 
-          await Promise.all(uploadPromises);
+          try {
+            await Promise.all(uploadPromises);
+          } catch (error) {
+            console.error('Contact note attachment upload failed:', error);
+            throw error; // Fail-fast: re-throw for caller to handle
+          }
         }
         return noteData;
       },
@@ -63,7 +68,12 @@ export class TransformService {
             .filter((attachment) => attachment && typeof attachment === "object")
             .map((attachment) => this.storageService.uploadToBucket(attachment as RAFile));
 
-          await Promise.all(uploadPromises);
+          try {
+            await Promise.all(uploadPromises);
+          } catch (error) {
+            console.error('Opportunity note attachment upload failed:', error);
+            throw error; // Fail-fast: re-throw for caller to handle
+          }
         }
         return noteData;
       },
@@ -77,7 +87,12 @@ export class TransformService {
             .filter((attachment) => attachment && typeof attachment === "object")
             .map((attachment) => this.storageService.uploadToBucket(attachment as RAFile));
 
-          await Promise.all(uploadPromises);
+          try {
+            await Promise.all(uploadPromises);
+          } catch (error) {
+            console.error('Organization note attachment upload failed:', error);
+            throw error; // Fail-fast: re-throw for caller to handle
+          }
         }
         return noteData;
       },

@@ -47,7 +47,7 @@ export type PaymentTerms = z.infer<typeof paymentTermsSchema>;
 const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin.com\//;
 
 // Custom validators
-const isValidUrl = z.string().url({ message: "Must be a valid URL" }).or(z.literal(""));
+const isValidUrl = z.string().url({ message: "Must be a valid URL" }).max(2048).or(z.literal(""));
 
 const isLinkedinUrl = z.string().refine(
   (url) => {
