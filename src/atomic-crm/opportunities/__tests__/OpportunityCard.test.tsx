@@ -122,6 +122,7 @@ describe("OpportunityCard", () => {
       name: "Test Deal",
       stage: "new_lead",
       days_in_stage: 5,
+      days_since_last_activity: 5,
       estimated_close_date: "2026-01-15",
       principal_organization_name: "McCRUM",
       distributor_organization_name: "Sysco Foods",
