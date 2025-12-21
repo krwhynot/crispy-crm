@@ -52,9 +52,9 @@ describe("Product Filtering Integration", () => {
       expect(resource).toBe("products_summary");
     });
 
-    it("returns products_summary for one operations", () => {
+    it("returns products (not summary) for one operations", () => {
       const resource = getDatabaseResource("products", "one");
-      expect(resource).toBe("products_summary");
+      expect(resource).toBe("products");
     });
 
     it("returns products (not summary) for create operations", () => {

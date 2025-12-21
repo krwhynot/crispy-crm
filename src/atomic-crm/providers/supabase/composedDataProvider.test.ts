@@ -187,13 +187,13 @@ describe("composedDataProvider", () => {
   });
 
   describe("all DataProvider methods route correctly", () => {
-    it("should route getOne to handler for contacts (routes to contacts_summary view)", async () => {
+    it("should route getOne to handler for contacts (routes to base table)", async () => {
       const provider = createComposedDataProvider(mockBaseProvider);
 
       await provider.getOne("contacts", { id: 1 });
 
-      // Contacts handler routes to contacts_summary view via getDatabaseResource
-      expect(mockBaseProvider.getOne).toHaveBeenCalledWith("contacts_summary", { id: 1 });
+      // getOne uses base table (not summary view) to avoid RLS mismatches
+      expect(mockBaseProvider.getOne).toHaveBeenCalledWith("contacts", { id: 1 });
     });
 
     it("should route getMany to handler for contacts", async () => {
