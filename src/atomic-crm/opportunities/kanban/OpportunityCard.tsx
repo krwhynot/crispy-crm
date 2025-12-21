@@ -59,7 +59,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
 
   if (!record) return null;
 
-  const handleCardClick = (e: React.MouseEvent) => {
+  const handleCardClick = (e: React.MouseEvent | React.KeyboardEvent) => {
     // Only open slide-over if not clicking on action buttons or drag handle
     if (
       (e.target as HTMLElement).closest("[data-action-button]") ||
@@ -103,7 +103,7 @@ export const OpportunityCard = React.memo(function OpportunityCard({
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          handleCardClick(e as unknown as React.MouseEvent);
+          handleCardClick(e);
         }
       }}
       className={`

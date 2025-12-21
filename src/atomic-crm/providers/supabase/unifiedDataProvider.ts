@@ -349,8 +349,9 @@ async function validateData(
 
 /**
  * Transform data based on resource configuration
+ * @template T - Record type with string keys and unknown values
  */
-async function transformData<T>(
+async function transformData<T extends Record<string, unknown>>(
   resource: string,
   data: Partial<T>,
   _operation: "create" | "update" = "create"
@@ -364,8 +365,9 @@ async function transformData<T>(
  * CRITICAL: Validate FIRST, Transform SECOND (Issue 0.4)
  * This allows validation of original field names (e.g., 'products')
  * before transformation renames them (e.g., 'products_to_sync')
+ * @template T - Record type with string keys and unknown values
  */
-async function processForDatabase<T>(
+async function processForDatabase<T extends Record<string, unknown>>(
   resource: string,
   data: Partial<T>,
   operation: "create" | "update" = "create"

@@ -16,7 +16,7 @@ import { z } from "zod";
  * are stored as strings, not as a separate reference table.
  */
 export const categorySchema = z.strictObject({
-  id: z.string(),
+  id: z.string().max(255),
   name: z.string().max(255),
 });
 

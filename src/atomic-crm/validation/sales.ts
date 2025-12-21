@@ -218,12 +218,12 @@ export type UserUpdate = z.infer<typeof userUpdateSchema>;
  * Uses .transform() to coerce nullish values to empty strings
  * This is the single source of truth for profile form defaults
  */
-export const salesProfileSchema = z.object({
-  first_name: z.string().nullish().transform(v => v ?? ''),
-  last_name: z.string().nullish().transform(v => v ?? ''),
-  email: z.string().nullish().transform(v => v ?? ''),
-  phone: z.string().nullish().transform(v => v ?? ''),
-  avatar_url: z.string().nullish().transform(v => v ?? ''),
+export const salesProfileSchema = z.strictObject({
+  first_name: z.string().max(100).nullish().transform(v => v ?? ''),
+  last_name: z.string().max(100).nullish().transform(v => v ?? ''),
+  email: z.string().max(254).nullish().transform(v => v ?? ''),
+  phone: z.string().max(50).nullish().transform(v => v ?? ''),
+  avatar_url: z.string().max(2048).nullish().transform(v => v ?? ''),
 });
 
 export type SalesProfileFormData = z.infer<typeof salesProfileSchema>;
@@ -233,7 +233,7 @@ export type SalesProfileFormData = z.infer<typeof salesProfileSchema>;
  * Uses schema defaults for role and disabled status
  * This is the single source of truth for permissions form defaults
  */
-export const salesPermissionsSchema = z.object({
+export const salesPermissionsSchema = z.strictObject({
   role: UserRoleEnum.default('rep'),
   disabled: z.coerce.boolean().default(false),
 });

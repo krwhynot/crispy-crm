@@ -60,9 +60,9 @@ export default function SalesEdit() {
     <div className="max-w-lg w-full mx-auto mt-8">
       <Card>
         <CardContent>
-          <SimpleForm
+          <SimpleForm<SalesFormData>
             toolbar={<EditToolbar />}
-            onSubmit={onSubmit as SubmitHandler<any>}
+            onSubmit={onSubmit}
             record={record}
           >
             <SaleEditTitle />

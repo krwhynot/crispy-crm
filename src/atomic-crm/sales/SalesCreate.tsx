@@ -47,7 +47,7 @@ export default function SalesCreate() {
           <CardTitle>Create a new user</CardTitle>
         </CardHeader>
         <CardContent>
-          <SimpleForm onSubmit={onSubmit as SubmitHandler<any>} defaultValues={formDefaults}>
+          <SimpleForm<SalesFormData> onSubmit={onSubmit} defaultValues={formDefaults}>
             <SalesFormContent />
           </SimpleForm>
         </CardContent>

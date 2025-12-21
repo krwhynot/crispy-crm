@@ -254,7 +254,7 @@ export const createOpportunitySchema = opportunityBaseSchema
       .array(
         z.strictObject({
           product_id_reference: z.union([z.string(), z.number()]).optional(),
-          notes: z.string().optional().nullable(),
+          notes: z.string().max(2000).optional().nullable(),
         })
       )
       .optional(),
@@ -328,7 +328,7 @@ export const updateOpportunitySchema = opportunityBaseSchema
       .array(
         z.strictObject({
           product_id_reference: z.union([z.string(), z.number()]).optional(),
-          notes: z.string().optional().nullable(),
+          notes: z.string().max(2000).optional().nullable(),
         })
       )
       .optional(),

@@ -43,3 +43,6 @@ export {
   DEFAULT_PER_PAGE,
   getColumnVisibility,
 } from "./listPatterns";
+
+// Notification utilities
+export { useNotifyWithRetry } from "./useNotifyWithRetry";
