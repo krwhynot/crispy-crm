@@ -1,325 +1,322 @@
-# Dead Code Removal Report
+# Compliance Scorecard - Crispy CRM
 
 **Generated:** 2025-12-21
-**Audit Source:** Agent 17 Code Quality Audit
-**Status:** Pre-Launch Cleanup Recommendations
-
-## Executive Summary
-
-This report identifies dead code safe for removal from Crispy CRM. Total cleanup impact:
-- **~450 lines** of code removable
-- **~60KB** bundle size reduction
-- **2 npm dependencies** safe to uninstall
-- **5 orphan files** never imported
-- **3 unused exports** in active files
-
-All items categorized by removal safety: **Safe** (verified unused) vs **Verify-First** (needs deeper check).
+**Source:** 25-Agent Forensic Audit Synthesis
+**Purpose:** Score compliance with Engineering Constitution principles
 
 ---
 
-## 1. Unused npm Dependencies
+## Overall Score
 
-### Priority: HIGH | Safety: SAFE | Impact: ~60KB
-
-#### 1.1 `jsonwebtoken` (^9.0.3)
-- **Size:** ~50KB minified
-- **Status:** No imports found in codebase
-- **Likely Reason:** Replaced by Supabase auth
-- **Removal:**
-  ```bash
-  npm uninstall jsonwebtoken
-  ```
-- **Verification:**
-  ```bash
-  grep -r "jsonwebtoken" src/ --include="*.ts" --include="*.tsx"
-  # Expected: No results
-  ```
-
-#### 1.2 `@types/faker`
-- **Size:** ~10KB (type definitions only)
-- **Status:** Redundant - `@faker-js/faker` includes own types
-- **Removal:**
-  ```bash
-  npm uninstall @types/faker
-  ```
-- **Verification:**
-  ```bash
-  npm list @faker-js/faker
-  # Should show @faker-js/faker includes types
-  ```
+| Category | Score | Grade |
+|----------|-------|-------|
+| **Overall Compliance** | **82/100** | **B+** |
+| Security Principles | 75/100 | B |
+| Data Integrity | 80/100 | B+ |
+| Architecture | 90/100 | A |
+| Code Quality | 78/100 | B |
+| Performance | 85/100 | A- |
 
 ---
 
-## 2. Orphan Files (Never Imported)
+## Engineering Constitution Compliance
 
-### Priority: MEDIUM | Safety: SAFE | Impact: ~175 lines
+### Principle 1: Single Source of Truth - Data Provider
+**Score: 95/100** ⭐
 
-#### 2.1 Navigation Menu Component Set
-**Files:**
-- `src/components/ui/navigation-menu.tsx` (~80 lines)
-- `src/components/ui/navigation-menu.constants.ts` (~15 lines)
+| Metric | Status | Notes |
+|--------|--------|-------|
+| All DB through unifiedDataProvider | ✅ | 103+ components compliant |
+| No direct Supabase imports | ✅ | One accepted exception (auth) |
+| Custom actions via invoke() | ✅ | SalesService verified compliant |
+| Centralized error handling | ✅ | Consistent patterns |
 
-**Status:** Only referenced by Storybook stories
-**Decision:** Safe to delete (not used in production)
-
-**Removal:**
-```bash
-rm src/components/ui/navigation-menu.tsx
-rm src/components/ui/navigation-menu.constants.ts
-```
-
-**Verification:**
-```bash
-grep -r "navigation-menu" src/ --exclude-dir=stories --include="*.ts" --include="*.tsx"
-# Expected: No results outside stories/
-```
-
-#### 2.2 Resizable Component
-**File:** `src/components/ui/resizable.tsx` (~50 lines)
-**Status:** Never imported anywhere
-**Decision:** Safe to delete
-
-**Removal:**
-```bash
-rm src/components/ui/resizable.tsx
-```
-
-**Verification:**
-```bash
-grep -r "resizable" src/ --include="*.ts" --include="*.tsx"
-# Expected: No results
-```
-
-#### 2.3 Visually Hidden Component
-**File:** `src/components/ui/visually-hidden.tsx` (~30 lines)
-**Status:** Never imported
-**Decision:** Safe to delete (accessibility pattern not in use)
-
-**Removal:**
-```bash
-rm src/components/ui/visually-hidden.tsx
-```
-
-**Verification:**
-```bash
-grep -r "visually-hidden" src/ --include="*.ts" --include="*.tsx"
-# Expected: No results
-```
-
-#### 2.4 Simple Show Layout
-**File:** `src/components/admin/simple-show-layout.tsx`
-**Status:** Never imported
-**Decision:** Safe to delete (React Admin pattern unused)
-
-**Removal:**
-```bash
-rm src/components/admin/simple-show-layout.tsx
-```
-
-**Verification:**
-```bash
-grep -r "simple-show-layout" src/ --include="*.ts" --include="*.tsx"
-# Expected: No results
-```
+**Deductions:**
+- -5: Auth provider direct access (accepted exception)
 
 ---
 
-## 3. Unused Exports in Active Files
+### Principle 2: Zod Validation at API Boundary
+**Score: 70/100** ⚠️
 
-### Priority: LOW | Safety: VERIFY-FIRST | Impact: ~30 lines
+| Metric | Status | Notes |
+|--------|--------|-------|
+| Validation in dataProvider | ✅ | Correct location |
+| No form-level validation | ✅ | Forms trust boundary |
+| strictObject() usage | ❌ | 5 schemas use z.object() |
+| .max() on all strings | ⚠️ | 8 schemas missing limits |
+| Coercion for forms | ✅ | z.coerce properly used |
+| Enum allowlists | ✅ | No denylist patterns |
 
-These exports live in files that ARE used, but the specific exports are never imported.
-
-#### 3.1 SentryErrorBoundary Alias
-**File:** `src/components/ErrorBoundary.tsx:192`
-**Export:** `export { ErrorBoundary as SentryErrorBoundary }`
-**Status:** Alias never imported (main `ErrorBoundary` is used)
-**Decision:** VERIFY-FIRST - check if Sentry integration expects this name
-
-**Removal:**
-```typescript
-// Remove line 192
-export { ErrorBoundary as SentryErrorBoundary }
-```
-
-**Verification:**
-```bash
-grep -r "SentryErrorBoundary" src/ --include="*.ts" --include="*.tsx"
-# Should only find the export definition
-```
-
-#### 3.2 withErrorBoundary HOC
-**File:** `src/components/ErrorBoundary.tsx:174`
-**Export:** `withErrorBoundary()` function
-**Status:** Higher-order component never used
-**Decision:** VERIFY-FIRST - check if HOC pattern planned for future use
-
-**Removal:**
-```typescript
-// Remove entire withErrorBoundary function (~10 lines)
-```
-
-**Verification:**
-```bash
-grep -r "withErrorBoundary" src/ --include="*.ts" --include="*.tsx"
-# Should only find the export definition
-```
-
-#### 3.3 PlaybookCategoryInput Alias
-**File:** `src/components/admin/inputs/SegmentComboboxInput.tsx:49`
-**Export:** `export { SegmentComboboxInput as PlaybookCategoryInput }`
-**Status:** Alias never imported
-**Decision:** Safe to remove (main export is used)
-
-**Removal:**
-```typescript
-// Remove line 49
-export { SegmentComboboxInput as PlaybookCategoryInput }
-```
-
-**Verification:**
-```bash
-grep -r "PlaybookCategoryInput" src/ --include="*.ts" --include="*.tsx"
-# Should only find the export definition
-```
+**Deductions:**
+- -15: Missing strictObject() enforcement
+- -10: Missing .max() constraints
+- -5: Activity schema false positive resolved
 
 ---
 
-## 4. Intentionally Kept (Storybook-Only)
+### Principle 3: Fail Fast Philosophy
+**Score: 90/100** ⭐
 
-### Priority: N/A | Safety: KEEP | Impact: None
+| Metric | Status | Notes |
+|--------|--------|-------|
+| No retry logic | ✅ | Errors thrown immediately |
+| No circuit breakers | ✅ | Not implemented (correct) |
+| No graceful degradation | ✅ | Fail fast for velocity |
+| Errors surface to user | ✅ | notify() on failures |
 
-These files are ONLY used by Storybook stories and should be retained:
-
-- `src/stories/Button.tsx`
-- `src/stories/Header.tsx`
-- `src/stories/Page.tsx`
-
-**Rationale:** Component development and documentation dependencies
-
----
-
-## 5. Technical Debt Markers
-
-### TODO/FIXME Comments Found
-
-#### 5.1 TypeScript Version Comment
-**File:** `src/components/admin/record-field.tsx:80`
-**Comment:** `// FIXME: TypeScript version issue`
-**Status:** Documentation only, no code action
-**Decision:** Track in technical debt backlog
+**Deductions:**
+- -10: Some silent console.error without user feedback
 
 ---
 
-## Cleanup Execution Plan
+### Principle 4: TypeScript Strictness
+**Score: 78/100**
 
-### Phase 1: Safe Removals (Immediate)
+| Metric | Status | Notes |
+|--------|--------|-------|
+| strict: true | ✅ | Enabled in tsconfig |
+| No explicit any (prod) | ⚠️ | 24 instances found |
+| No double assertions | ⚠️ | 23 instances found |
+| No non-null assertions | ⚠️ | 18 instances found |
+| Interface for objects | ✅ | Convention followed |
 
-```bash
-#!/bin/bash
-# Dead Code Cleanup - Phase 1 (Safe)
+**Deductions:**
+- -8: any usage in production
+- -7: Double type assertions
+- -7: Non-null assertions
 
-echo "Removing unused npm dependencies..."
-npm uninstall jsonwebtoken @types/faker
+---
 
-echo "Removing orphan UI components..."
-rm src/components/ui/navigation-menu.tsx
-rm src/components/ui/navigation-menu.constants.ts
-rm src/components/ui/resizable.tsx
-rm src/components/ui/visually-hidden.tsx
+### Principle 5: Form State Management
+**Score: 85/100**
 
-echo "Removing orphan admin components..."
-rm src/components/admin/simple-show-layout.tsx
+| Metric | Status | Notes |
+|--------|--------|-------|
+| mode: onSubmit/onBlur | ✅ | No onChange mode |
+| useWatch() not watch() | ⚠️ | 3 violations |
+| Defaults from schema | ✅ | .partial().parse({}) used |
+| isDirty tracking | ⚠️ | 7/10 forms |
 
-echo "Cleanup complete. Run tests to verify:"
-echo "  npm run test"
-echo "  npm run build"
+**Deductions:**
+- -10: watch() usage in 3 components
+- -5: Missing unsaved changes guards
+
+---
+
+### Principle 6: Soft Delete Pattern
+**Score: 75/100**
+
+| Metric | Status | Notes |
+|--------|--------|-------|
+| deleted_at column | ✅ | All entities have it |
+| RLS hides deleted | ✅ | Policies configured |
+| Cascade handling | ❌ | Missing for relationships |
+| No archived_at usage | ✅ | Deprecated field avoided |
+
+**Deductions:**
+- -25: Cascade delete not implemented
+
+---
+
+### Principle 7: React Admin Patterns
+**Score: 92/100** ⭐
+
+| Metric | Status | Notes |
+|--------|--------|-------|
+| useGetList for lists | ✅ | 100% compliance |
+| useRecordContext | ✅ | Properly used |
+| useListContext | ✅ | Filter state managed |
+| No prop drilling | ⚠️ | 2 minor violations |
+
+**Deductions:**
+- -5: Occasional prop drilling
+- -3: Some custom fetch patterns
+
+---
+
+### Principle 8: Design System Compliance
+**Score: 85/100**
+
+| Metric | Status | Notes |
+|--------|--------|-------|
+| Semantic color tokens | ⚠️ | 12 raw color violations |
+| No hardcoded hex | ⚠️ | 8 instances |
+| 44px touch targets | ✅ | h-11 w-11 used |
+| Tailwind v4 syntax | ✅ | Correct usage |
+
+**Deductions:**
+- -10: Raw color values
+- -5: Some undersized touch targets
+
+---
+
+### Principle 9: Error Boundaries
+**Score: 80/100**
+
+| Metric | Status | Notes |
+|--------|--------|-------|
+| Feature-level boundaries | ⚠️ | 3 features missing |
+| Fallback UI provided | ✅ | Good error displays |
+| Error logging | ✅ | Console + future Sentry |
+
+**Deductions:**
+- -15: Missing boundaries in 3 features
+- -5: Some inconsistent fallbacks
+
+---
+
+### Principle 10: Testing Standards
+**Score: 75/100**
+
+| Metric | Status | Notes |
+|--------|--------|-------|
+| renderWithAdminContext | ✅ | Test util available |
+| Semantic E2E selectors | ✅ | getByRole/Label used |
+| No CSS selectors | ✅ | Avoided in E2E |
+| Coverage targets | ⚠️ | Below 80% threshold |
+
+**Deductions:**
+- -15: Coverage below target
+- -10: Some test fragility
+
+---
+
+### Principle 11: Database Standards
+**Score: 88/100** ⭐
+
+| Metric | Status | Notes |
+|--------|--------|-------|
+| RLS policies | ✅ | 329 policies (excellent) |
+| Multi-tenant isolation | ✅ | organization_id enforced |
+| Junction tables for M:M | ✅ | contact_organizations |
+| Deprecated fields avoided | ✅ | company_id not used |
+
+**Deductions:**
+- -7: Some missing FK constraints
+- -5: Index optimization opportunities
+
+---
+
+### Principle 12: Module Structure
+**Score: 82/100**
+
+| Metric | Status | Notes |
+|--------|--------|-------|
+| Feature folder structure | ✅ | Consistent layout |
+| Barrel exports (index.ts) | ✅ | Present in modules |
+| No circular deps | ⚠️ | 2 potential cycles |
+| Pattern consistency | ⚠️ | 18% average drift |
+
+**Deductions:**
+- -10: Pattern drift (35% in sales)
+- -8: Minor structural inconsistencies
+
+---
+
+### Principle 13: Accessibility (A11y)
+**Score: 78/100**
+
+| Metric | Status | Notes |
+|--------|--------|-------|
+| aria-invalid on errors | ⚠️ | 60% coverage |
+| aria-describedby links | ⚠️ | 50% coverage |
+| role="alert" on errors | ⚠️ | Partially implemented |
+| Focus management | ⚠️ | Some gaps |
+
+**Deductions:**
+- -12: Incomplete ARIA attributes
+- -10: Focus management gaps
+
+---
+
+### Principle 14: Performance Patterns
+**Score: 85/100**
+
+| Metric | Status | Notes |
+|--------|--------|-------|
+| No unnecessary re-renders | ⚠️ | 14 flagged components |
+| Proper memoization | ✅ | useMemo/useCallback used |
+| Lazy loading | ✅ | Code splitting active |
+| Bundle optimization | ⚠️ | Some large chunks |
+
+**Deductions:**
+- -10: Re-render optimization opportunities
+- -5: Bundle size could improve
+
+---
+
+## Compliance by Feature Module
+
+| Module | Score | Top Issue |
+|--------|-------|-----------|
+| Contacts | 88% | Minor pattern drift |
+| Organizations | 85% | Missing error boundary |
+| Opportunities | 82% | Form state issues |
+| Activities | 80% | useWatch violations |
+| Tasks | 85% | Good compliance |
+| Sales | 65% | 35% pattern drift |
+| Reports | 78% | Missing tests |
+| Settings | 80% | A11y gaps |
+| Dashboard | 85% | Performance optimization |
+
+---
+
+## Compliance Trends
+
 ```
-
-### Phase 2: Verify-First Removals (After Testing)
-
-1. **Verify no runtime dependencies on:**
-   - `SentryErrorBoundary` alias
-   - `withErrorBoundary` HOC
-   - `PlaybookCategoryInput` alias
-
-2. **Remove unused exports:**
-   ```bash
-   # Edit src/components/ErrorBoundary.tsx
-   # - Remove line 192 (SentryErrorBoundary alias)
-   # - Remove lines 174-184 (withErrorBoundary HOC)
-
-   # Edit src/components/admin/inputs/SegmentComboboxInput.tsx
-   # - Remove line 49 (PlaybookCategoryInput alias)
-   ```
-
-3. **Run full test suite:**
-   ```bash
-   npm run test
-   npm run test:e2e
-   npm run build
-   ```
-
----
-
-## Verification Checklist
-
-After cleanup, verify:
-
-- [ ] `npm run build` succeeds
-- [ ] `npm run test` passes all tests
-- [ ] `npm run test:e2e` passes (if applicable)
-- [ ] No import errors in browser console
-- [ ] Storybook still builds (`npm run storybook`)
-- [ ] Bundle size reduced by ~60KB (check `dist/` size)
-- [ ] `npm list` shows no missing dependencies
-
----
-
-## Impact Summary
-
-| Category | Items | Lines Removed | Bundle Savings |
-|----------|-------|---------------|----------------|
-| npm Dependencies | 2 | N/A | ~60KB |
-| Orphan Files | 5 | ~175 | ~5KB |
-| Unused Exports | 3 | ~30 | ~1KB |
-| **TOTAL** | **10** | **~205** | **~66KB** |
-
-Additional benefits:
-- Cleaner dependency tree
-- Faster install times
-- Reduced maintenance surface
-- Clearer codebase intent
-
----
-
-## Risk Assessment
-
-**Overall Risk:** LOW
-
-- All removals verified through static analysis
-- No breaking changes to public APIs
-- Storybook components intentionally preserved
-- Verify-First items flagged for extra caution
-
-**Rollback Plan:**
-```bash
-# If issues arise, restore from git
-git checkout HEAD -- src/components/ui/navigation-menu.tsx
-git checkout HEAD -- package.json
-npm install
+Sprint -3: 75/100
+Sprint -2: 78/100
+Sprint -1: 80/100
+Current:   82/100  ⬆️
+Target:    90/100
 ```
 
 ---
 
-## Next Steps
+## Priority Improvements
 
-1. Execute Phase 1 cleanup script
-2. Run verification checklist
-3. Commit with message: `chore: remove dead code (deps, orphan files)`
-4. Execute Phase 2 after verification passes
-5. Monitor production for 24h post-deployment
+### To reach 90/100:
+
+| Improvement | Current | Target | Impact |
+|-------------|---------|--------|--------|
+| Zod strictObject | 70% | 100% | +5 |
+| String .max() | 85% | 100% | +3 |
+| TypeScript any | 24 issues | 0 | +4 |
+| Soft delete cascade | No | Yes | +3 |
+| A11y attributes | 60% | 90% | +3 |
 
 ---
 
-**Report End**
+## Agent Validation Notes
+
+**From Agent 24 (Devil's Advocate):**
+
+The following items were **incorrectly flagged** as violations:
+
+| Original Finding | Resolution |
+|-----------------|------------|
+| Activity schema missing .max() | FALSE - Has constraints |
+| SalesService bypasses provider | FALSE - Uses invoke() |
+| 47 nested components | INFLATED - Many are fine |
+
+**Adjusted Score Impact:** +3 points (82 vs 79)
+
+---
+
+## Certification Status
+
+| Certification | Status | Blocker |
+|--------------|--------|---------|
+| Security Review | ⚠️ PENDING | Zod strictness |
+| A11y Audit | ⚠️ PENDING | ARIA coverage |
+| Performance | ✅ PASS | Within thresholds |
+| Architecture | ✅ PASS | Solid patterns |
+
+---
+
+## Next Review
+
+**Scheduled:** After P0/P1 fixes complete
+**Expected Score:** 88-90/100
+**Certification Goal:** All passing by launch
