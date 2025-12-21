@@ -102,8 +102,8 @@ const baseActivitiesSchema = z.strictObject({
     .transform((val) => (val ? sanitizeHtml(val) : val)),
   sentiment: sentimentSchema.optional().nullable(),
   attachments: z.array(z.string().max(2048)).max(20).optional().nullable(),
-  location: z.string().optional().nullable(),
-  attendees: z.array(z.string()).optional().nullable(),
+  location: z.string().max(255).optional().nullable(),
+  attendees: z.array(z.string().max(255)).max(50).optional().nullable(),
   tags: z
     .array(z.union([z.string(), z.number()]))
     .optional()

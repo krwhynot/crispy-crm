@@ -26,7 +26,7 @@ export const distributorAuthorizationSchema = z
     is_authorized: z.coerce.boolean().default(true),
     authorization_date: z.coerce.date().optional().nullable(),
     expiration_date: z.coerce.date().optional().nullable(),
-    territory_restrictions: z.array(z.string().max(255)).optional().nullable(),
+    territory_restrictions: z.array(z.string().max(255)).max(50).optional().nullable(),
     notes: z.string().max(2000).optional().nullable(),
 
     // Audit fields (system-managed)
@@ -176,7 +176,7 @@ export const productDistributorAuthorizationSchema = z
     special_pricing: specialPricingSchema.optional().nullable(),
 
     // Territory restrictions (array)
-    territory_restrictions: z.array(z.string().max(255)).optional().nullable(),
+    territory_restrictions: z.array(z.string().max(255)).max(50).optional().nullable(),
     notes: z.string().max(2000).optional().nullable(),
 
     // Audit fields (system-managed)
