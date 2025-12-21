@@ -84,7 +84,13 @@ export const FieldToggle = (props: FieldToggleProps) => {
     }
 
     if (dropItem && list && dropItem.closest("ul") === list) {
-      if (onMove) onMove(selectedItem.dataset.index!, dropIndex.current!);
+      if (onMove) {
+        const dragIndex = selectedItem.dataset.index;
+        const drop = dropIndex.current;
+        if (dragIndex != null && drop != null) {
+          onMove(dragIndex, drop);
+        }
+      }
     } else {
       event.preventDefault();
       event.stopPropagation();

@@ -13,9 +13,11 @@
  * @module secureStorage
  */
 
+import type { ZodSchema } from "zod";
+
 export type StorageType = "session" | "local";
 
-export interface StorageOptions {
+export interface StorageOptions<T = unknown> {
   /**
    * Preferred storage type
    * - 'session': Cleared when browser tab closes (more secure, recommended)
@@ -28,6 +30,13 @@ export interface StorageOptions {
    * Currently not implemented, but structure supports it
    */
   encrypt?: boolean;
+
+  /**
+   * Optional Zod schema for runtime validation of parsed data
+   * When provided, parsed JSON is validated against the schema
+   * Invalid data returns null (fail-fast principle)
+   */
+  schema?: ZodSchema<T>;
 }
 
 /**
@@ -42,7 +51,7 @@ export interface StorageOptions {
  * const stages = getStorageItem<string[]>('filter.opportunity_stages');
  * // Returns: ['new_lead', 'initial_outreach'] or null
  */
-export function getStorageItem<T = any>(key: string, options: StorageOptions = {}): T | null {
+export function getStorageItem<T = unknown>(key: string, options: StorageOptions<T> = {}): T | null {
   const storageType = options.type || "session";
 
   try {
@@ -51,7 +60,16 @@ export function getStorageItem<T = any>(key: string, options: StorageOptions = {
     const item = storage.getItem(key);
 
     if (item) {
-      return JSON.parse(item) as T;
+      const parsed: unknown = JSON.parse(item);
+      if (options.schema) {
+        const result = options.schema.safeParse(parsed);
+        if (!result.success) {
+          console.error(`[Storage] Validation failed for key "${key}":`, result.error.flatten());
+          return null;
+        }
+        return result.data;
+      }
+      return parsed as T;
     }
 
     // Fallback to alternate storage if not found (migration path)
@@ -60,13 +78,25 @@ export function getStorageItem<T = any>(key: string, options: StorageOptions = {
 
     if (fallbackItem) {
       // Migrate to preferred storage
-      const parsed = JSON.parse(fallbackItem) as T;
-      setStorageItem(key, parsed, options);
+      const parsed: unknown = JSON.parse(fallbackItem);
+      if (options.schema) {
+        const result = options.schema.safeParse(parsed);
+        if (!result.success) {
+          console.error(`[Storage] Validation failed for key "${key}":`, result.error.flatten());
+          // Clean up invalid data from fallback storage
+          fallbackStorage.removeItem(key);
+          return null;
+        }
+        setStorageItem(key, result.data, options);
+        fallbackStorage.removeItem(key);
+        return result.data;
+      }
+      setStorageItem(key, parsed as T, options);
 
       // Clean up old storage
       fallbackStorage.removeItem(key);
 
-      return parsed;
+      return parsed as T;
     }
   } catch (e) {
     console.error(`[Storage] Error reading key "${key}":`, e);

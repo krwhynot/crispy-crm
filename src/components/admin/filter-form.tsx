@@ -76,7 +76,12 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
   };
 
   const handleHide = useCallback(
-    (event: React.MouseEvent<HTMLElement>) => hideFilter(event.currentTarget.dataset.key!),
+    (event: React.MouseEvent<HTMLElement>) => {
+      const key = event.currentTarget.dataset.key;
+      if (key) {
+        hideFilter(key);
+      }
+    },
     [hideFilter]
   );
 
