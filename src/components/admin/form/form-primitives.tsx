@@ -15,7 +15,7 @@ import {
 import { Loader2, Save } from "lucide-react";
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
-import { FormProvider, useFormContext, useFormState } from "react-hook-form";
+import { type FieldValues, FormProvider, useFormContext, useFormState } from "react-hook-form";
 import type { UseMutationOptions } from "@tanstack/react-query";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
@@ -166,7 +166,7 @@ const SaveButton = <RecordType extends RaRecord = RaRecord>(props: SaveButtonPro
   );
 
   const handleSubmit = useCallback(
-    async (values: any) => {
+    async (values: FieldValues) => {
       let errors;
       if (saveContext?.save) {
         errors = await saveContext.save(values, {
@@ -237,7 +237,7 @@ export type SaveButtonProps<RecordType extends RaRecord = RaRecord> = Props<Reco
     alwaysEnable?: boolean;
   };
 
-const valueOrDefault = (value: any, defaultValue: any) =>
+const valueOrDefault = <T,>(value: T | undefined, defaultValue: T): T =>
   typeof value === "undefined" ? defaultValue : value;
 
 export {

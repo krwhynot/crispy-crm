@@ -199,9 +199,10 @@ export function getSecurePapaParseConfig() {
     },
 
     // Error handling
-    error: (error: any) => {
-      console.error("[CSV Security] Parse error:", error.message);
-      throw new Error(`CSV parsing failed: ${error.message}`);
+    error: (error: unknown) => {
+      const message = error instanceof Error ? error.message : "Unknown error";
+      console.error("[CSV Security] Parse error:", message);
+      throw new Error(`CSV parsing failed: ${message}`);
     },
   };
 }
@@ -217,7 +218,7 @@ export function getSecurePapaParseConfig() {
  * const safe = sanitizeCsvValue("=cmd|'/c calc'!A0");
  * // Returns: "'=cmd|'/c calc'!A0"
  */
-export function sanitizeCsvValue(value: any): string {
+export function sanitizeCsvValue(value: unknown): string {
   if (!value || typeof value !== "string") {
     return "";
   }

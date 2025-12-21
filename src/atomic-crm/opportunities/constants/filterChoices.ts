@@ -18,7 +18,7 @@ export interface FilterConfig {
   label: string;
   type: "select" | "multiselect" | "reference" | "search" | "toggle";
   choices?: Array<{ id: string; name: string }>;
-  defaultValue?: any;
+  defaultValue?: string | number | boolean | string[];
   dynamicChoices?: boolean;
   reference?: string;
 }

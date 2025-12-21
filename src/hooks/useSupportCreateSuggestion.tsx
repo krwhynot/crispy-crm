@@ -70,8 +70,8 @@ export const useSupportCreateSuggestion = <T = unknown,>(
       );
     },
 
-    handleChange: async (eventOrValue: MouseEvent | any) => {
-      const value = eventOrValue?.target?.value || eventOrValue;
+    handleChange: async (eventOrValue: ChangeEvent | T | unknown) => {
+      const value = (eventOrValue as ChangeEvent)?.target?.value || eventOrValue;
       const finalValue = Array.isArray(value) ? [...value].pop() : value;
 
       if (finalValue?.id === createValue || finalValue === createValue) {
@@ -111,7 +111,7 @@ export const useSupportCreateSuggestion = <T = unknown,>(
         </CreateSuggestionContext.Provider>
       ) : null,
     getOptionDisabled: (option) =>
-      (option as any)?.id === createHintValue || option === createHintValue,
+      (option as { id?: unknown })?.id === createHintValue || option === createHintValue,
   };
 };
 
@@ -139,7 +139,7 @@ export interface UseSupportCreateValue<T = unknown> {
   getCreateItem: (filterValue?: string) => {
     id: Identifier;
 
-    [key: string]: any;
+    [key: string]: unknown;
   };
   handleChange: (eventOrValue: ChangeEvent | T) => Promise<void>;
   createElement: ReactElement | null;
@@ -177,4 +177,4 @@ export const useCreateSuggestionContext = () => {
  * @deprecated Use `OnCreateHandler` from "ra-core" when available.
  */
 
-export type OnCreateHandler = (filter?: string) => any | Promise<any>;
+export type OnCreateHandler = (filter?: string) => unknown | Promise<unknown>;

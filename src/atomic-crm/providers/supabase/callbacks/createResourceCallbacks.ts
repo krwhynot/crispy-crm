@@ -124,9 +124,9 @@ function isTransform(value: unknown): value is Transform {
     typeof value === "object" &&
     value !== null &&
     "apply" in value &&
-    typeof (value as any).apply === "function" &&
+    typeof (value as Transform).apply === "function" &&
     "name" in value &&
-    typeof (value as any).name === "string"
+    typeof (value as Transform).name === "string"
   );
 }
 

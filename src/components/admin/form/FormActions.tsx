@@ -2,14 +2,14 @@ import { Button } from "@/components/ui/button";
 import { SaveButtonGroup } from "./SaveButtonGroup";
 import { cn } from "@/lib/utils";
 import { Trash2, Loader2 } from "lucide-react";
-import { useFormState } from "react-hook-form";
+import { type FieldValues, useFormState } from "react-hook-form";
 
 interface FormActionsProps {
   onCancel: () => void;
   onDelete?: () => void;
   /** Handler for regular Save action (required when showSaveAndNew is true) */
-  onSave?: (data: any) => void | Promise<void>;
-  onSaveAndNew?: (data: any) => void | Promise<void>;
+  onSave?: (data: FieldValues) => void | Promise<void>;
+  onSaveAndNew?: (data: FieldValues) => void | Promise<void>;
   showSaveAndNew?: boolean;
   className?: string;
 }

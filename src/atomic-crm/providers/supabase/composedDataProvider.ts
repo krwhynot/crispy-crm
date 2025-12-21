@@ -189,7 +189,7 @@ export function createComposedDataProvider(baseProvider: DataProvider): DataProv
       params: Parameters<DataProvider["delete"]>[1]
     ) => {
       const provider = getProviderForResource(resource);
-      return provider.delete<RecordType>(resource, params as any);
+      return provider.delete<RecordType>(resource, params);
     },
 
     deleteMany: async <RecordType extends RaRecord = RaRecord>(
@@ -197,7 +197,7 @@ export function createComposedDataProvider(baseProvider: DataProvider): DataProv
       params: Parameters<DataProvider["deleteMany"]>[1]
     ) => {
       const provider = getProviderForResource(resource);
-      return provider.deleteMany<RecordType>(resource, params as any);
+      return provider.deleteMany<RecordType>(resource, params);
     },
   };
 
