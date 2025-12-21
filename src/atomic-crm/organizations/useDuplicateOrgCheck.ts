@@ -24,7 +24,7 @@
  * ```
  */
 import { useState, useCallback, useRef } from "react";
-import { useDataProvider } from "ra-core";
+import { useDataProvider, useNotify } from "ra-core";
 import type { Company } from "../types";
 
 interface DuplicateOrgInfo {
