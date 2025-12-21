@@ -104,8 +104,7 @@ export function StandardListLayout({
         {isCollapsed && <span className="text-sm text-muted-foreground">Filters hidden</span>}
       </div>
 
-      {/* Sidebar column - contains both sidebar and expand button in same grid cell */}
-      {/* When collapsed, ensure minimum width for the show filters button (w-11 = 44px) */}
+      {/* Sidebar column - collapsed: w-11 (button width) + h-[50vh] (consistent centering across pages) */}
       <div className={`hidden lg:block lg:sticky lg:top-0 lg:self-start relative ${isCollapsed ? "w-11 h-[50vh]" : "h-fit"}`}>
         {/* Filter sidebar with collapse animation */}
         <aside
@@ -140,8 +139,7 @@ export function StandardListLayout({
           </div>
         </aside>
 
-        {/* Desktop expand button when sidebar is collapsed */}
-        {/* z-10 ensures button is above invisible z-index layers from collapsed Select dropdowns */}
+        {/* Desktop expand button - centered vertically (top-1/2) within h-[50vh] container */}
         {isCollapsed && (
           <div className="absolute top-1/2 -translate-y-1/2 left-0 z-10">
             <Tooltip>
@@ -178,9 +176,8 @@ export function StandardListLayout({
       </aside>
 
       <main
-        role="main"
         aria-label={`${resource} list`}
-        className="flex h-full min-h-0 flex-col overflow-hidden transition-all duration-200"
+        className="flex h-full min-h-0 flex-col overflow-hidden"
       >
         <div className="card-container flex h-full min-h-0 flex-1 flex-col overflow-hidden pb-2">
           {children}
