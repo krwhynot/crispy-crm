@@ -223,6 +223,15 @@ export const contactSchema = contactBaseSchema
         }
       });
     }
+
+    // Prevent self-manager circular reference (defense in depth)
+    if (data.manager_id && data.id && data.manager_id === data.id) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Contact cannot be their own manager",
+        path: ["manager_id"],
+      });
+    }
   });
 
 // Schema specifically for CSV imports - validates raw string fields from CSV
@@ -406,6 +415,15 @@ export async function validateContactForm(data: unknown): Promise<void> {
             path: ["email", index, "value"],
           });
         }
+      });
+    }
+
+    // Prevent self-manager circular reference (defense in depth)
+    if (data.manager_id && data.id && data.manager_id === data.id) {
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        message: "Contact cannot be their own manager",
+        path: ["manager_id"],
       });
     }
   });

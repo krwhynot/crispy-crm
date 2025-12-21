@@ -682,12 +682,16 @@ export const unifiedDataProvider: DataProvider = {
       // Delegate segment creation to service (handles get_or_create)
       if (resource === "segments") {
         const result = await segmentsService.getOrCreateSegment(processedData.name);
+        // LIBRARY-BOUNDARY: Service returns Segment, but DataProvider generic expects RecordType.
+        // Type-safe because caller uses dataProvider.create<Segment>("segments", {...})
         return { data: result as unknown as RecordType };
       }
 
       // Delegate opportunity creation to service (handles products sync)
       if (resource === "opportunities") {
         const result = await opportunitiesService.createWithProducts(processedData as Partial<OpportunityCreateInput>);
+        // LIBRARY-BOUNDARY: Service returns Opportunity, but DataProvider generic expects RecordType.
+        // Type-safe because caller uses dataProvider.create<Opportunity>("opportunities", {...})
         return { data: result as unknown as RecordType };
       }
 
@@ -774,6 +778,8 @@ export const unifiedDataProvider: DataProvider = {
           processedData as Partial<OpportunityUpdateInput>,
           previousProducts
         );
+        // LIBRARY-BOUNDARY: Service returns Opportunity, but DataProvider generic expects RecordType.
+        // Type-safe because caller uses dataProvider.update<Opportunity>("opportunities", {...})
         return { data: result as unknown as RecordType };
       }
 
