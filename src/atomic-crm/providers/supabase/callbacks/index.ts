@@ -65,6 +65,7 @@ export { COMPUTED_FIELDS as ACTIVITIES_COMPUTED_FIELDS } from "./activitiesCallb
 
 // Products callbacks
 export { productsCallbacks } from "./productsCallbacks";
+export { COMPUTED_FIELDS as PRODUCTS_COMPUTED_FIELDS } from "./productsCallbacks";
 
 // Tasks callbacks
 export { tasksCallbacks } from "./tasksCallbacks";
