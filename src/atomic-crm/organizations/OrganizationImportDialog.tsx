@@ -156,13 +156,11 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
       headers: string[],
       mappings: Record<string, string | null>
     ): Promise<void> => {
-      if (DEV) {
-        console.log("[OrgImport] resolveAccountManagers called with", {
-          headerCount: headers.length,
-          rowCount: rows.length,
-        });
-        console.log("[OrgImport] Column mappings:", mappings);
-      }
+      devLog("OrgImport", "resolveAccountManagers called with", {
+        headerCount: headers.length,
+        rowCount: rows.length,
+      });
+      devLog("OrgImport", "Column mappings:", mappings);
 
       const accountManagerHeader = Object.keys(mappings).find((h) => mappings[h] === "sales_id");
       if (!accountManagerHeader) {
@@ -193,9 +191,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
         }
       });
 
-      if (DEV) {
-        console.log("[OrgImport] Collected unique account manager names:", Array.from(names));
-      }
+      devLog("OrgImport", "Collected unique account manager names:", Array.from(names));
 
       if (names.size === 0) {
         devLog("OrgImport", "No account manager names found (all values empty or numeric)");
@@ -204,9 +200,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
 
       const uniqueNames = Array.from(names);
       const firstNames = uniqueNames.map((name) => name.split(/\s+/)[0]);
-      if (DEV) {
-        console.log("[OrgImport] First names to check:", firstNames);
-      }
+      devLog("OrgImport", "First names to check:", firstNames);
 
       try {
         // 2. Check which names already exist in the DB (for user_id IS NULL)
@@ -221,9 +215,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
 
         const existing = response.data;
 
-        if (DEV) {
-          console.log("[OrgImport] Found existing account managers:", existing);
-        }
+        devLog("OrgImport", "Found existing account managers:", existing);
 
         // 3. Populate cache with existing managers and identify new ones
         const existingNames = new Set<string>();
@@ -239,9 +231,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
           (name) => !existingNames.has(name.toLowerCase())
         );
 
-        if (DEV) {
-          console.log("[OrgImport] New account managers to insert:", newNamesToInsert);
-        }
+        devLog("OrgImport", "New account managers to insert:", newNamesToInsert);
 
         if (newNamesToInsert.length === 0) {
           devLog("OrgImport", "No new account managers to insert (all already exist)");
@@ -263,9 +253,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
           };
         });
 
-        if (DEV) {
-          console.log("[OrgImport] Inserting sales records:", newSalesRecords);
-        }
+        devLog("OrgImport", "Inserting sales records:", newSalesRecords);
 
         // 4. Batch insert new managers using Promise.allSettled for partial failure handling
         const insertResults = await Promise.allSettled(
@@ -282,13 +270,11 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
 
         // Log any failures
         const failures = insertResults.filter((result) => result.status === "rejected");
-        if (failures.length > 0 && DEV) {
-          console.error("[OrgImport] Some account managers failed to insert:", failures);
+        if (failures.length > 0) {
+          devWarn("OrgImport", "Some account managers failed to insert:", failures);
         }
 
-        if (DEV) {
-          console.log("[OrgImport] Successfully inserted account managers:", inserted);
-        }
+        devLog("OrgImport", "Successfully inserted account managers:", inserted);
 
         // 5. Populate cache with newly created managers
         inserted.forEach((sale) => {
@@ -296,16 +282,9 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
           salesLookupCache.current.set(fullName.toLowerCase(), sale.id);
         });
 
-        if (DEV) {
-          console.log(
-            "[OrgImport] Final sales cache state:",
-            Array.from(salesLookupCache.current.entries())
-          );
-        }
+        devLog("OrgImport", "Final sales cache state:", Array.from(salesLookupCache.current.entries()));
       } catch (error) {
-        if (DEV) {
-          console.error("[OrgImport] Unexpected error resolving account managers:", error);
-        }
+        devWarn("OrgImport", "Unexpected error resolving account managers:", error);
       }
     },
     [dataProvider]
@@ -346,9 +325,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
         }
       });
 
-      if (DEV) {
-        console.log("[OrgImport] Collected unique segment names:", Array.from(names));
-      }
+      devLog("OrgImport", "Collected unique segment names:", Array.from(names));
 
       if (names.size === 0) {
         devLog("OrgImport", "No segment names to resolve");

@@ -207,3 +207,35 @@ export const userUpdateSchema = z.strictObject({
 });
 
 export type UserUpdate = z.infer<typeof userUpdateSchema>;
+
+// =====================================================================
+// Form Default Schemas (per Engineering Constitution #5)
+// These provide schema-derived defaults for form state initialization
+// =====================================================================
+
+/**
+ * Schema for SalesProfileTab form fields
+ * Uses .transform() to coerce nullish values to empty strings
+ * This is the single source of truth for profile form defaults
+ */
+export const salesProfileSchema = z.object({
+  first_name: z.string().nullish().transform(v => v ?? ''),
+  last_name: z.string().nullish().transform(v => v ?? ''),
+  email: z.string().nullish().transform(v => v ?? ''),
+  phone: z.string().nullish().transform(v => v ?? ''),
+  avatar_url: z.string().nullish().transform(v => v ?? ''),
+});
+
+export type SalesProfileFormData = z.infer<typeof salesProfileSchema>;
+
+/**
+ * Schema for SalesPermissionsTab form fields
+ * Uses schema defaults for role and disabled status
+ * This is the single source of truth for permissions form defaults
+ */
+export const salesPermissionsSchema = z.object({
+  role: UserRoleEnum.default('rep'),
+  disabled: z.coerce.boolean().default(false),
+});
+
+export type SalesPermissionsFormData = z.infer<typeof salesPermissionsSchema>;

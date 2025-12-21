@@ -29,6 +29,7 @@ import { Trash2 } from "lucide-react";
 // salesService.salesUpdate() filters empty strings before sending to Edge Function
 // Having duplicate validation here caused 400 errors from empty string avatar_url
 import { invalidateIdentityCache } from "../providers/supabase/authProvider";
+import { salesPermissionsSchema } from "@/atomic-crm/validation/sales";
 import type { Sale } from "@/atomic-crm/types";
 
 interface SalesPermissionsTabProps {
@@ -57,10 +58,10 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
   const [isDeleting, setIsDeleting] = useState(false);
 
   // Form state
-  const [formData, setFormData] = useState({
-    role: record?.role || "rep",
-    disabled: record?.disabled || false,
-  });
+  // Per Engineering Constitution #5: Form defaults from schema
+  const [formData, setFormData] = useState(() =>
+    salesPermissionsSchema.parse(record)
+  );
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 

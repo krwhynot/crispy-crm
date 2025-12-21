@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { Sale } from "@/atomic-crm/types";
+import { salesProfileSchema } from "@/atomic-crm/validation/sales";
 // NOTE: Client-side validation removed (2025-12-12)
 // Edge Function /users PATCH handles validation with patchUserSchema
 // salesService.salesUpdate() filters empty strings before sending to Edge Function
@@ -38,13 +39,10 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
   const notify = useNotify();
 
   // Form state (only used in edit mode)
-  const [formData, setFormData] = useState({
-    first_name: record.first_name || "",
-    last_name: record.last_name || "",
-    email: record.email || "",
-    phone: record.phone || "",
-    avatar_url: record.avatar_url || "",
-  });
+  // Per Engineering Constitution #5: Form defaults from schema
+  const [formData, setFormData] = useState(() =>
+    salesProfileSchema.parse(record)
+  );
 
   const [errors, setErrors] = useState<Record<string, string>>({});
 
