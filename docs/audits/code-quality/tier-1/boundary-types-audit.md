@@ -1,7 +1,7 @@
 # Boundary Type Safety Audit Report
 
 **Agent:** 5 - Boundary Type Safety Auditor
-**Date:** 2025-12-20
+**Date:** 2025-12-21 (Updated)
 **Files Analyzed:** 150+ files in `src/atomic-crm/`
 
 ---
@@ -13,7 +13,7 @@ The codebase has **moderate type safety at API boundaries** with notable strengt
 **Key Metrics:**
 - 🔴 **P0 (Critical):** 8 dangerous assertions in production code
 - 🟠 **P1 (High):** 23 risky assertions without validation
-- 🟡 **P2 (Medium):** 28 non-null assertions
+- 🟡 **P2 (Medium):** 28 non-null assertions + 9 missing React Admin generics
 - ⚪ **P3 (Low):** 100+ test file assertions (acceptable but noted)
 
 ---
@@ -156,7 +156,15 @@ The codebase has **moderate type safety at API boundaries** with notable strengt
 
 | File | Line | Component | Issue |
 |------|------|-----------|-------|
-| - | - | - | **Not Found** - React Admin components appear to be properly typed |
+| `organizations/OrganizationList.tsx` | 228 | `<List>` | Should be `<List<Organization>>` |
+| `sales/SalesList.tsx` | 40 | `<List>` | Should be `<List<Sale>>` |
+| `tasks/TaskList.tsx` | 80 | `<List>` | Should be `<List<Task>>` |
+| `contacts/ContactList.tsx` | 50 | `<List>` | Should be `<List<Contact>>` |
+| `opportunities/OpportunityList.tsx` | 63 | `<List>` | Should be `<List<Opportunity>>` |
+| `activities/ActivityList.tsx` | 59 | `<List>` | Should be `<List<Activity>>` |
+| `products/ProductList.tsx` | 59 | `<List>` | Should be `<List<Product>>` |
+| `notifications/NotificationsList.tsx` | 31 | `<List>` | Should be `<List<Notification>>` |
+| `productDistributors/ProductDistributorList.tsx` | 47 | `<List>` | Should be `<List<ProductDistributor>>` |
 
 ---
 
