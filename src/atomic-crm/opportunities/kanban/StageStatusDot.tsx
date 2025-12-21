@@ -4,8 +4,10 @@ import type { StageStatus } from "../constants/stageThresholds";
 interface StageStatusDotProps {
   /** Status derived from getStageStatus() */
   status: StageStatus;
-  /** Number of days in current stage */
-  daysInStage: number;
+  /** Days since last activity - primary display value (user requirement F) */
+  daysSinceLastActivity: number | null;
+  /** Number of days in current stage - kept for aria-label context */
+  daysInStage?: number;
 }
 
 /**
