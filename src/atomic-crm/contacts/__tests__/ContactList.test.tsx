@@ -19,6 +19,14 @@ vi.mock("ra-core", async () => {
   const actual = await vi.importActual("ra-core");
   return {
     ...actual,
+    useListFilterContext: vi.fn(() => ({
+      filterValues: {},
+      displayedFilters: {},
+      setFilters: vi.fn(),
+      hideFilter: vi.fn(),
+      showFilter: vi.fn(),
+      resource: "contacts",
+    })),
     useListContext: vi.fn(() => ({
       data: [],
       total: 0,

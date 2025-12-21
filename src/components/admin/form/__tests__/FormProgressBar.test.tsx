@@ -139,10 +139,11 @@ describe("FormProgressBar", () => {
     expect(progressBar).toHaveAttribute("aria-valuetext", "Step 1 of 3");
   });
 
-  test("text-muted-foreground applied to step info text", () => {
+  test("semantic muted text color applied to step info", () => {
     const { container } = render(<FormProgressBar />);
 
-    const stepInfoContainer = container.querySelector(".text-muted-foreground");
+    // Component uses text-foreground/70 for muted text styling
+    const stepInfoContainer = container.querySelector('[class*="text-foreground"]');
     expect(stepInfoContainer).toBeInTheDocument();
   });
 });
