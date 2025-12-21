@@ -7,12 +7,18 @@
  * Key behaviors:
  * 1. Soft delete - Sets deleted_at instead of hard delete
  * 2. Filter cleaning - Adds soft delete filter by default
- * 3. No computed fields - Products don't have summary views with computed fields
+ * 3. Data transformation - Strips computed fields from products_summary view before save
  *
  * Engineering Constitution: Resource-specific logic extracted for single responsibility
  */
 
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
+
+/**
+ * Computed fields from products_summary view (must be stripped before save)
+ * - principal_name: Joined from organizations table on principal_id
+ */
+export const COMPUTED_FIELDS = ["principal_name"] as const;
 
 /**
  * Products lifecycle callbacks for React Admin withLifecycleCallbacks
@@ -30,5 +36,5 @@ import { createResourceCallbacks, type ResourceCallbacks } from "./createResourc
 export const productsCallbacks: ResourceCallbacks = createResourceCallbacks({
   resource: "products",
   supportsSoftDelete: true,
-  // No computedFields - products don't have summary views
+  computedFields: COMPUTED_FIELDS,
 });

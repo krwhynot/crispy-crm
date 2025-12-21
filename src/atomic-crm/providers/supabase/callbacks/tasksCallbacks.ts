@@ -18,7 +18,7 @@ import {
 } from "./createResourceCallbacks";
 
 /**
- * Computed fields from tasks view (must be stripped before save)
+ * Computed fields from tasks view and priority_tasks view (must be stripped before save)
  * These are populated by database joins/views
  */
 export const COMPUTED_FIELDS = [
@@ -28,6 +28,9 @@ export const COMPUTED_FIELDS = [
   "assignee_name",
   "assignee_email",
   "creator_name",
+  // From priority_tasks view
+  "customer_name",
+  "principal_name",
 ] as const;
 
 /**

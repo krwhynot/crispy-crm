@@ -2,15 +2,15 @@
  * Tests for productsCallbacks
  *
  * TDD: These tests define the expected behavior for products-specific lifecycle callbacks.
- * Products have simple soft-delete logic:
+ * Products lifecycle logic:
  * 1. Soft delete (deleted_at timestamp)
  * 2. Filter cleaning with soft delete exclusion
- * 3. No computed fields from views
+ * 3. Computed fields from products_summary view (principal_name)
  */
 
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import type { DataProvider, RaRecord } from "ra-core";
-import { productsCallbacks } from "./productsCallbacks";
+import { productsCallbacks, COMPUTED_FIELDS } from "./productsCallbacks";
 
 describe("productsCallbacks", () => {
   let mockDataProvider: DataProvider;
