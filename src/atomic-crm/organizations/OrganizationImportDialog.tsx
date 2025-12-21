@@ -32,7 +32,7 @@ import {
   sanitizeCsvValue,
   type CsvValidationError,
 } from "../utils/csvUploadValidator";
-import { devLog, devWarn, DEV } from "@/lib/devLogger";
+import { devLog, devWarn } from "@/lib/devLogger";
 import type { RawCSVRow, MappedCSVRow, OrganizationImportSchema } from "./types";
 
 interface OrganizationImportDialogProps {
@@ -346,9 +346,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
 
         const existing = response.data;
 
-        if (DEV) {
-          console.log("[OrgImport] Found existing segments:", existing);
-        }
+        devLog("OrgImport", "Found existing segments:", existing);
 
         // Populate cache with existing segments
         const existingNames = new Set<string>();
@@ -363,9 +361,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
           (name) => !existingNames.has(name.toLowerCase())
         );
 
-        if (DEV) {
-          console.log("[OrgImport] New segments to insert:", newNamesToInsert);
-        }
+        devLog("OrgImport", "New segments to insert:", newNamesToInsert);
 
         if (newNamesToInsert.length === 0) {
           devLog("OrgImport", "No new segments to insert");
@@ -377,9 +373,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
           name: name.trim(),
         }));
 
-        if (DEV) {
-          console.log("[OrgImport] Inserting segments:", newSegments);
-        }
+        devLog("OrgImport", "Inserting segments:", newSegments);
 
         // Batch insert new segments using Promise.allSettled for partial failure handling
         const insertResults = await Promise.allSettled(
@@ -396,29 +390,20 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
 
         // Log any failures
         const failures = insertResults.filter((result) => result.status === "rejected");
-        if (failures.length > 0 && DEV) {
-          console.error("[OrgImport] Some segments failed to insert:", failures);
+        if (failures.length > 0) {
+          devWarn("OrgImport", "Some segments failed to insert:", failures);
         }
 
-        if (DEV) {
-          console.log("[OrgImport] Successfully inserted segments:", inserted);
-        }
+        devLog("OrgImport", "Successfully inserted segments:", inserted);
 
         // Populate cache with newly created segments
         inserted.forEach((segment) => {
           segmentsLookupCache.current.set(segment.name.toLowerCase(), segment.id);
         });
 
-        if (DEV) {
-          console.log(
-            "[OrgImport] Final segments cache state:",
-            Array.from(segmentsLookupCache.current.entries())
-          );
-        }
+        devLog("OrgImport", "Final segments cache state:", Array.from(segmentsLookupCache.current.entries()));
       } catch (error) {
-        if (DEV) {
-          console.error("[OrgImport] Unexpected error resolving segments:", error);
-        }
+        devWarn("OrgImport", "Unexpected error resolving segments:", error);
       }
     },
     [dataProvider]
