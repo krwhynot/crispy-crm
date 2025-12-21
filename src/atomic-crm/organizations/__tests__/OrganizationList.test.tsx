@@ -46,6 +46,7 @@ vi.mock("ra-core", async () => {
       data: { id: 1, fullName: "Test User", sales_id: 1 },
       isLoading: false,
     }),
+    FilterLiveForm: ({ children }: any) => <div>{children}</div>,
     downloadCSV: vi.fn(),
   };
 });

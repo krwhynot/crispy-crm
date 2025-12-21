@@ -8,8 +8,7 @@ describe("ButtonPlaceholder", () => {
     const element = container.firstChild as HTMLElement;
 
     expect(element).toHaveClass("invisible");
-    expect(element).toHaveClass("h-9"); // 36px button height
-    expect(element).toHaveClass("w-9"); // 36px square icon button size
+    expect(element).toHaveClass("size-12"); // 48px touch target (meets 44px minimum)
   });
 
   it("has aria-hidden for accessibility", () => {
