@@ -650,7 +650,8 @@ describe("ContactListFilter", () => {
   test("renders account manager filter", () => {
     renderWithAdminContext(<ContactListFilter />);
 
-    expect(screen.getByText("Me")).toBeInTheDocument();
+    // OwnerFilterDropdown renders "My Items" for owner filter
+    expect(screen.getByText("My Items")).toBeInTheDocument();
   });
 
   test("renders last activity date filters", () => {

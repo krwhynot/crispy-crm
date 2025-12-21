@@ -30,7 +30,7 @@ import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip
  *
  * Responsive Behavior (Desktop-First):
  * - Base (mobile/tablet <1024px): Stacked vertical layout (flex-col), collapsed by default
- * - Desktop (≥1024px): Side-by-side two-column layout (lg:flex-row)
+ * - Desktop (≥1024px): Side-by-side two-column grid layout (lg:grid-cols-[auto_1fr])
  * - Filter sidebar collapse state persisted to localStorage
  *
  * @param filterComponent - React node containing filter UI components
@@ -106,7 +106,7 @@ export function StandardListLayout({
 
       {/* Sidebar column - contains both sidebar and expand button in same grid cell */}
       {/* When collapsed, ensure minimum width for the show filters button (w-11 = 44px) */}
-      <div className={`hidden lg:block lg:sticky lg:top-0 lg:h-fit lg:self-start relative ${isCollapsed ? "w-11" : ""}`}>
+      <div className={`hidden lg:block lg:sticky lg:top-0 lg:self-start relative ${isCollapsed ? "w-11 h-[50vh]" : "h-fit"}`}>
         {/* Filter sidebar with collapse animation */}
         <aside
           id="filter-sidebar"
