@@ -75,7 +75,7 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
 
     const unreadNotifications = notifications.filter((n) => !n.read);
 
-    await Promise.allSettled(
+    const results = await Promise.allSettled(
       unreadNotifications.map((notification) =>
         update("notifications", {
           id: notification.id,
@@ -84,6 +84,13 @@ export const NotificationDropdown = ({ children, onOpenChange }: NotificationDro
         })
       )
     );
+
+    // Fail-fast: surface any failures to the user
+    const failures = results.filter((r): r is PromiseRejectedResult => r.status === 'rejected');
+    if (failures.length > 0) {
+      console.error('Notification updates failed:', failures.map(f => f.reason));
+      notify(`${failures.length} notification update(s) failed`, { type: 'error' });
+    }
 
     refetch();
   };

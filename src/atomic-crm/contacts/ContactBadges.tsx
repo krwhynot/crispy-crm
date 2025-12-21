@@ -13,6 +13,7 @@
  * @see src/index.css - OKLCH tag color definitions (lines 406-431)
  */
 
+import { memo } from "react";
 import { Badge } from "@/components/ui/badge";
 
 // =============================================================================
@@ -93,7 +94,7 @@ interface InfluenceBadgeProps {
  * WCAG AA Contrast: All tag colors use oklch(20% 0.02 85) foreground
  * against light backgrounds (85%+ lightness) = ~10:1 contrast ratio
  */
-export function ContactStatusBadge({ status }: ContactStatusBadgeProps) {
+export const ContactStatusBadge = memo(function ContactStatusBadge({ status }: ContactStatusBadgeProps) {
   // Handle null/undefined status gracefully - return placeholder
   if (!status) {
     return <Badge className="text-xs px-2 py-1 tag-gray">--</Badge>;
@@ -112,7 +113,9 @@ export function ContactStatusBadge({ status }: ContactStatusBadgeProps) {
   };
 
   return <Badge className={`text-xs px-2 py-1 ${className}`}>{label}</Badge>;
-}
+});
+
+ContactStatusBadge.displayName = "ContactStatusBadge";
 
 /**
  * Displays contact's role in the buying process
@@ -129,7 +132,7 @@ export function ContactStatusBadge({ status }: ContactStatusBadgeProps) {
  *
  * Matches database enum: public.contact_role
  */
-export function RoleBadge({ role }: RoleBadgeProps) {
+export const RoleBadge = memo(function RoleBadge({ role }: RoleBadgeProps) {
   const config: Record<string, { label: string; className: string }> = {
     executive: { label: "Executive", className: "tag-purple" },
     decision_maker: { label: "Decision Maker", className: "tag-purple" },
@@ -151,7 +154,9 @@ export function RoleBadge({ role }: RoleBadgeProps) {
   };
 
   return <Badge className={`text-xs px-2 py-1 ${className}`}>{label}</Badge>;
-}
+});
+
+RoleBadge.displayName = "RoleBadge";
 
 /**
  * Displays contact's influence level with semantic status colors
@@ -169,7 +174,7 @@ export function RoleBadge({ role }: RoleBadgeProps) {
  *
  * This follows PriorityBadge pattern from OrganizationBadges.tsx
  */
-export function InfluenceBadge({ influence }: InfluenceBadgeProps) {
+export const InfluenceBadge = memo(function InfluenceBadge({ influence }: InfluenceBadgeProps) {
   type BadgeVariant = "default" | "secondary" | "destructive" | "outline";
 
   // Convert numeric score (1-5) to semantic level
@@ -196,7 +201,9 @@ export function InfluenceBadge({ influence }: InfluenceBadgeProps) {
       {label}
     </Badge>
   );
-}
+});
+
+InfluenceBadge.displayName = "InfluenceBadge";
 
 /**
  * Converts numeric purchase_influence (1-5) to semantic level

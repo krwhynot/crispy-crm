@@ -330,16 +330,21 @@ const fetchRecordsWithCache = async function <T>(
     }
   }
 
-  // Create missing records - errors will propagate
-  await Promise.all(
-    uncachedRecordNames.map(async (name) => {
-      if (cache.has(name)) return;
-      const response = await dataProvider.create(resource, {
-        data: getCreateData(name),
-      });
-      cache.set(name, response.data);
-    })
-  );
+  // Create missing records - fail-fast on any error
+  try {
+    await Promise.all(
+      uncachedRecordNames.map(async (name) => {
+        if (cache.has(name)) return;
+        const response = await dataProvider.create(resource, {
+          data: getCreateData(name),
+        });
+        cache.set(name, response.data);
+      })
+    );
+  } catch (error) {
+    console.error(`Failed to create ${resource} records:`, error);
+    throw error; // Re-throw for fail-fast behavior
+  }
 
   // now all records are in cache, return a map of all records
   return trimmedNames.reduce((acc, name) => {

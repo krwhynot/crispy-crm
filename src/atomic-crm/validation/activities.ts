@@ -91,6 +91,7 @@ const baseActivitiesSchema = z.strictObject({
   follow_up_date: z.coerce.date().optional().nullable(),
   follow_up_notes: z
     .string()
+    .max(5000)
     .optional()
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)),
@@ -98,6 +99,7 @@ const baseActivitiesSchema = z.strictObject({
   // Activity details
   outcome: z
     .string()
+    .max(2000)
     .optional()
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)),
@@ -106,7 +108,8 @@ const baseActivitiesSchema = z.strictObject({
   location: z.string().max(255).optional().nullable(),
   attendees: z.array(z.string().max(255)).max(50).optional().nullable(),
   tags: z
-    .array(z.union([z.string(), z.number()]))
+    .array(z.union([z.string().max(100), z.number()]))
+    .max(20)
     .optional()
     .nullable(),
 

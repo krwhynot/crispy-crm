@@ -6,6 +6,7 @@ import {
   useRef,
   useState,
   useEffect,
+  useMemo,
   type ReactNode,
 } from "react";
 import { useNavigate } from "react-router-dom";
@@ -252,17 +253,20 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
     };
   }, []);
 
+  const contextValue = useMemo(
+    () => ({
+      startTutorial,
+      stopTutorial,
+      isActive,
+      progress,
+      hasVisitedPage,
+      markPageVisited,
+    }),
+    [isActive, progress] // Callbacks are stable (useCallback), only state values need tracking
+  );
+
   return (
-    <TutorialContext.Provider
-      value={{
-        startTutorial,
-        stopTutorial,
-        isActive,
-        progress,
-        hasVisitedPage,
-        markPageVisited,
-      }}
-    >
+    <TutorialContext.Provider value={contextValue}>
       {children}
     </TutorialContext.Provider>
   );

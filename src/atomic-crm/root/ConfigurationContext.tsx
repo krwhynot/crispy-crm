@@ -1,6 +1,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import type { ReactNode } from "react";
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 import type { ContactGender, DealStage, NoteStatus } from "../types";
 import {
   defaultContactGender,
@@ -63,9 +63,9 @@ export const ConfigurationProvider = ({
   taskTypes,
   title,
   contactGender,
-}: ConfigurationProviderProps) => (
-  <ConfigurationContext.Provider
-    value={{
+}: ConfigurationProviderProps) => {
+  const contextValue = useMemo(
+    () => ({
       dealCategories,
       dealPipelineStatuses,
       dealStages,
@@ -77,10 +77,27 @@ export const ConfigurationProvider = ({
       title,
       taskTypes,
       contactGender,
-    }}
-  >
-    {children}
-  </ConfigurationContext.Provider>
-);
+    }),
+    [
+      dealCategories,
+      dealPipelineStatuses,
+      dealStages,
+      opportunityCategories,
+      opportunityStages,
+      darkModeLogo,
+      lightModeLogo,
+      noteStatuses,
+      title,
+      taskTypes,
+      contactGender,
+    ]
+  );
+
+  return (
+    <ConfigurationContext.Provider value={contextValue}>
+      {children}
+    </ConfigurationContext.Provider>
+  );
+};
 
 export const useConfigurationContext = () => useContext(ConfigurationContext);
