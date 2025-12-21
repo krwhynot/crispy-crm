@@ -546,6 +546,18 @@ interface DuplicateCheckResult {
 }
 
 /**
+ * Custom error type for duplicate opportunity detection
+ */
+interface DuplicateOpportunityError extends Error {
+  code: "DUPLICATE_OPPORTUNITY";
+  existingOpportunity: {
+    id: Identifier;
+    name: string;
+    stage: string;
+  };
+}
+
+/**
  * Check for exact duplicate opportunities
  *
  * Blocks creation/update of opportunities with identical:
