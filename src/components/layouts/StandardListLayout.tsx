@@ -141,23 +141,26 @@ export function StandardListLayout({
         </aside>
 
         {/* Desktop expand button when sidebar is collapsed */}
+        {/* z-10 ensures button is above invisible z-index layers from collapsed Select dropdowns */}
         {isCollapsed && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={toggleSidebar}
-                className="h-11 w-11"
-                aria-label="Show filters"
-                aria-expanded={false}
-                aria-controls="filter-sidebar"
-              >
-                <PanelLeft className="size-5" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="right">Show filters</TooltipContent>
-          </Tooltip>
+          <div className="relative z-10">
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={toggleSidebar}
+                  className="h-11 w-11"
+                  aria-label="Show filters"
+                  aria-expanded={false}
+                  aria-controls="filter-sidebar"
+                >
+                  <PanelLeft className="size-5" />
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent side="right">Show filters</TooltipContent>
+            </Tooltip>
+          </div>
         )}
       </div>
 
