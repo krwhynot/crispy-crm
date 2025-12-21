@@ -52,11 +52,11 @@ export interface NumberFieldProps<RecordType extends Record<string, any> = Recor
     HTMLAttributes<HTMLSpanElement> {
   locales?: string | string[];
   options?: object;
-  transform?: (value: any) => number;
+  transform?: (value: unknown) => number;
 }
 
-const defaultTransform = (value: any) =>
-  value && typeof value === "string" && !isNaN(value as any) ? +value : value;
+const defaultTransform = (value: unknown) =>
+  value && typeof value === "string" && !isNaN(value as unknown as number) ? +value : value;
 
 const hasNumberFormat = !!(
   typeof Intl === "object" &&

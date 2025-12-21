@@ -138,7 +138,7 @@ export const SelectInput = (props: SelectInputProps) => {
       : emptyText;
   }, [emptyText, translate]);
 
-  const renderMenuItemOption = useCallback((choice: any) => getChoiceText(choice), [getChoiceText]);
+  const renderMenuItemOption = useCallback((choice: RaRecord) => getChoiceText(choice), [getChoiceText]);
 
   const handleChange = useCallback(
     async (value: string) => {
@@ -282,6 +282,6 @@ export type SelectInputProps = ChoicesProps &
   Omit<SupportCreateSuggestionOptions, "handleChange"> & {
     emptyText?: string | ReactElement;
 
-    emptyValue?: any;
+    emptyValue?: string | number;
     onChange?: (value: string) => void;
   } & Omit<ComponentProps<typeof FormField>, "id" | "name" | "children">;
