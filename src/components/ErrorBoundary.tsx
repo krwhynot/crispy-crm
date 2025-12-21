@@ -160,35 +160,4 @@ export class ErrorBoundary extends Component<Props, State> {
   }
 }
 
-/**
- * Higher-order component version of ErrorBoundary
- *
- * @example
- * ```tsx
- * const SafeComponent = withErrorBoundary(MyComponent, {
- *   feature: 'dashboard',
- *   context: { version: '1.0' }
- * });
- * ```
- */
-export function withErrorBoundary<P extends object>(
-  WrappedComponent: React.ComponentType<P>,
-  options?: Omit<Props, "children">
-): React.FC<P> {
-  const displayName = WrappedComponent.displayName || WrappedComponent.name || "Component";
-
-  const WithErrorBoundary: React.FC<P> = (props) => (
-    <ErrorBoundary {...options}>
-      <WrappedComponent {...props} />
-    </ErrorBoundary>
-  );
-
-  WithErrorBoundary.displayName = `withErrorBoundary(${displayName})`;
-
-  return WithErrorBoundary;
-}
-
-// Legacy export for backward compatibility
-export const SentryErrorBoundary = ErrorBoundary;
-
 export default ErrorBoundary;
