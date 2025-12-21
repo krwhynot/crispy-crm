@@ -14,8 +14,6 @@ import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { Badge } from "@/components/ui/badge";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Package } from "lucide-react";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { ProductListFilter } from "./ProductListFilter";
 import { ProductSlideOver } from "./ProductSlideOver";
@@ -28,57 +26,8 @@ import {
   ProductCategoryHeader,
   ProductStatusHeader,
 } from "./ProductsDatagridHeader";
+import type { Product } from "../types";
 
-const DISTRIBUTOR_CODE_LABELS: Record<string, string> = {
-  usf_code: "USF",
-  sysco_code: "Sysco",
-  gfs_code: "GFS",
-  pfg_code: "PFG",
-  greco_code: "Greco",
-  gofo_code: "GOFO",
-  rdp_code: "RDP",
-  wilkens_code: "Wilkens",
-};
-
-function hasDistributorCodes(record: any): boolean {
-  return Object.keys(DISTRIBUTOR_CODE_LABELS).some(
-    (field) => record[field]
-  );
-}
-
-function DistributorCodesPopover({ record }: { record: any }) {
-  if (!hasDistributorCodes(record)) {
-    return <span className="text-muted-foreground">—</span>;
-  }
-
-  const codes = Object.entries(DISTRIBUTOR_CODE_LABELS)
-    .filter(([field]) => record[field])
-    .map(([field, label]) => ({ label, value: record[field] }));
-
-  return (
-    <Popover>
-      <PopoverTrigger asChild>
-        <button className="flex items-center gap-1 text-primary hover:text-primary/80">
-          <Package className="h-4 w-4" />
-          <span className="text-xs">{codes.length} codes</span>
-        </button>
-      </PopoverTrigger>
-      <PopoverContent className="w-64">
-        <div className="space-y-2">
-          <h4 className="font-medium text-sm">Distributor Codes</h4>
-          <div className="space-y-1">
-            {codes.map(({ label, value }) => (
-              <div key={label} className="flex justify-between text-sm">
-                <span className="text-muted-foreground">{label}:</span>
-                <span className="font-mono">{value}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
-}
 
 /**
  * ProductList - Standard list page for Product records
@@ -182,19 +131,11 @@ const ProductListLayout = ({
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
-          {/* Column 2: Distributor Codes - Popover display (non-sortable) - always visible */}
-          <FunctionField
-            label="Dist. Codes"
-            sortable={false}
-            render={(record: any) => <DistributorCodesPopover record={record} />}
-            {...COLUMN_VISIBILITY.alwaysVisible}
-          />
-
-          {/* Column 3: Category - Classification badge (sortable) - always visible */}
+          {/* Column 2: Category - Classification badge (sortable) - always visible */}
           <FunctionField
             label={<ProductCategoryHeader />}
             sortBy="category"
-            render={(record: any) => (
+            render={(record: Product) => (
               <FilterableBadge source="category" value={record.category}>
                 <CategoryBadge category={record.category} />
               </FilterableBadge>
@@ -202,11 +143,11 @@ const ProductListLayout = ({
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
-          {/* Column 4: Status - Lifecycle badge (sortable) - always visible */}
+          {/* Column 3: Status - Lifecycle badge (sortable) - always visible */}
           <FunctionField
             label={<ProductStatusHeader />}
             sortBy="status"
-            render={(record: any) => (
+            render={(record: Product) => (
               <FilterableBadge source="status" value={record.status}>
                 <StatusBadge status={record.status} />
               </FilterableBadge>
@@ -214,7 +155,7 @@ const ProductListLayout = ({
             {...COLUMN_VISIBILITY.alwaysVisible}
           />
 
-          {/* Column 5: Principal - Organization reference (sortable) - hidden on tablet/mobile */}
+          {/* Column 4: Principal - Organization reference (sortable) - hidden on tablet/mobile */}
           <ReferenceField
             source="principal_id"
             reference="organizations"
@@ -226,11 +167,11 @@ const ProductListLayout = ({
             <TextField source="name" />
           </ReferenceField>
 
-          {/* Column 6: Certifications - Badges list (non-sortable) - hidden on tablet/mobile */}
+          {/* Column 5: Certifications - Badges list (non-sortable) - hidden on tablet/mobile */}
           <FunctionField
             label="Certifications"
             sortable={false}
-            render={(record: any) => <CertificationBadges certifications={record.certifications} />}
+            render={(record: Product) => <CertificationBadges certifications={record.certifications} />}
             {...COLUMN_VISIBILITY.desktopOnly}
           />
         </PremiumDatagrid>

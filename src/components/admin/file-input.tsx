@@ -128,7 +128,7 @@ export const FileInput = (props: FileInputProps) => {
     }
   };
 
-  const onRemove = (file: any) => async () => {
+  const onRemove = (file: TransformedFile) => async () => {
     if (validateFileRemoval) {
       try {
         await validateFileRemoval(file);
@@ -240,7 +240,7 @@ export const FileInput = (props: FileInputProps) => {
 
       {children && (
         <div className="previews flex flex-col gap-1">
-          {files.map((file: any, index: number) => (
+          {files.map((file: TransformedFile, index: number) => (
             <FileInputPreview
               key={index}
               file={file}
@@ -267,12 +267,12 @@ export type FileInputProps = Omit<InputProps, "type"> & {
   multiple?: DropzoneOptions["multiple"];
   options?: DropzoneOptions;
 
-  onRemove?: (file: any) => void;
+  onRemove?: (file: TransformedFile) => void;
   placeholder?: ReactNode;
   removeIcon?: ComponentType<{ className?: string }>;
   inputProps?: DropzoneInputProps & React.ComponentProps<"input">;
 
-  validateFileRemoval?(file: any): boolean | Promise<boolean>;
+  validateFileRemoval?(file: TransformedFile): boolean | Promise<boolean>;
 };
 
 export interface TransformedFile {
@@ -323,7 +323,7 @@ export const FileInputPreview = (props: FileInputPreviewProps) => {
 };
 
 export interface FileInputPreviewProps extends HTMLAttributes<HTMLDivElement> {
-  file: any;
+  file: TransformedFile;
   onRemove: () => void;
   removeIcon?: React.ComponentType<{ className?: string }>;
 }

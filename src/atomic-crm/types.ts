@@ -421,3 +421,32 @@ export interface ContactGender {
   label: string;
   icon: ComponentType<{ className?: string }>;
 }
+
+/**
+ * Product entity - represents a product in the catalog.
+ * Links to principal organizations and can be associated with opportunities.
+ */
+export interface Product extends Pick<RaRecord, "id"> {
+  name: string;
+  principal_id: Identifier;
+  category: string;
+  status: "active" | "discontinued" | "seasonal" | "coming_soon" | "limited_availability";
+  description?: string | null;
+  certifications?: string[] | null;
+  allergens?: string[] | null;
+  ingredients?: string | null;
+  nutritional_info?: Record<string, unknown> | null;
+  marketing_description?: string | null;
+  manufacturer_part_number?: string | null;
+  list_price?: number | null;
+  currency_code?: string | null;
+  unit_of_measure?: string | null;
+  created_at?: string;
+  updated_at?: string;
+  created_by?: Identifier;
+  updated_by?: Identifier;
+  deleted_at?: string;
+
+  // Computed fields from products_summary view (read-only)
+  principal_name?: string;
+}

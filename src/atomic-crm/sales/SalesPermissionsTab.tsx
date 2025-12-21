@@ -29,9 +29,10 @@ import { Trash2 } from "lucide-react";
 // salesService.salesUpdate() filters empty strings before sending to Edge Function
 // Having duplicate validation here caused 400 errors from empty string avatar_url
 import { invalidateIdentityCache } from "../providers/supabase/authProvider";
+import type { Sale } from "@/atomic-crm/types";
 
 interface SalesPermissionsTabProps {
-  record: any;
+  record: Sale;
   mode: "view" | "edit";
   onModeToggle?: () => void;
 }
@@ -85,7 +86,7 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
             refresh();
             redirect("/sales");
           },
-          onError: (error: any) => {
+          onError: (error: Error) => {
             notify(error.message || "Failed to remove user", { type: "error" });
           },
         }
@@ -96,7 +97,7 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
   };
 
   // Update form field
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: string, value: "admin" | "manager" | "rep" | boolean) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
     if (errors[field]) {
       setErrors((prev) => {
@@ -126,17 +127,19 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
             notify("Permissions updated successfully", { type: "success" });
             if (onModeToggle) onModeToggle(); // Switch back to view mode
           },
-          onError: (error: any) => {
+          onError: (error: Error) => {
             notify(error.message || "Failed to update permissions", { type: "error" });
-            if (error.errors) {
-              setErrors(error.errors);
+            const errorWithErrors = error as Error & { errors?: Record<string, string> };
+            if (errorWithErrors.errors) {
+              setErrors(errorWithErrors.errors);
             }
           },
         }
       );
-    } catch (error: any) {
-      if (error.errors) {
-        setErrors(error.errors);
+    } catch (error) {
+      const errorWithErrors = error as Error & { errors?: Record<string, string> };
+      if (errorWithErrors.errors) {
+        setErrors(errorWithErrors.errors);
         notify("Validation failed. Please check the form.", { type: "warning" });
       } else {
         notify("An error occurred", { type: "error" });

@@ -14,7 +14,7 @@ export const ToggleFilterButton = ({
   multiselect = false,
 }: {
   label: React.ReactElement | string;
-  value: any;
+  value: Record<string, unknown>;
   className?: string;
   size?: "default" | "sm" | "lg" | "icon" | null | undefined;
   /** When true, allows multiple values to be selected (accumulates into array) */
@@ -60,7 +60,10 @@ export const ToggleFilterButton = ({
   );
 };
 
-const toggleFilter = (value: any, filters: any) => {
+const toggleFilter = (
+  value: Record<string, unknown>,
+  filters: Record<string, unknown>
+): Record<string, unknown> => {
   // Ensure filters is an object
   const safeFilters = filters || {};
 
@@ -81,7 +84,10 @@ const toggleFilter = (value: any, filters: any) => {
   return { ...safeFilters, ...value };
 };
 
-const getIsSelected = (value: any, filters: any) => {
+const getIsSelected = (
+  value: Record<string, unknown>,
+  filters: Record<string, unknown>
+): boolean => {
   const safeFilters = filters || {};
   return isMatch(
     safeFilters,
@@ -93,7 +99,10 @@ const getIsSelected = (value: any, filters: any) => {
  * Multi-select toggle: adds/removes values from array filters
  * Example: value = { tags: 5 }, filters = { tags: [1, 2] } → { tags: [1, 2, 5] }
  */
-const toggleFilterMulti = (value: any, filters: any) => {
+const toggleFilterMulti = (
+  value: Record<string, unknown>,
+  filters: Record<string, unknown>
+): Record<string, unknown> => {
   // Ensure filters is an object
   const safeFilters = filters || {};
 
@@ -111,7 +120,7 @@ const toggleFilterMulti = (value: any, filters: any) => {
   if (Array.isArray(currentValue)) {
     if (currentValue.includes(val)) {
       // Remove value from array
-      const newValue = currentValue.filter((v: any) => v !== val);
+      const newValue = currentValue.filter((v: unknown) => v !== val);
       if (newValue.length === 0) {
         // Remove filter entirely if array becomes empty
         const { [key]: _, ...rest } = safeFilters;
@@ -143,7 +152,10 @@ const toggleFilterMulti = (value: any, filters: any) => {
  * Check if a specific value is selected in multi-select mode
  * Handles both array and single values
  */
-const getIsSelectedMulti = (value: any, filters: any): boolean => {
+const getIsSelectedMulti = (
+  value: Record<string, unknown>,
+  filters: Record<string, unknown>
+): boolean => {
   // Ensure filters is an object
   const safeFilters = filters || {};
 
