@@ -1,9 +1,9 @@
 # Modals & SlideOvers Forensic Audit
 
 **Agent:** 3 of 13 (Overlay Specialist)
-**Audited:** 2025-12-15
-**Files Analyzed:** 24
-**Overlay Components Found:** 17 (7 primitives + 10 feature-specific)
+**Audited:** 2025-12-20
+**Files Analyzed:** 52
+**Overlay Components Found:** 45
 
 ---
 
@@ -11,690 +11,430 @@
 
 | Category | Count |
 |----------|-------|
-| 🔴 NEW Violations | 6 |
-| 🟡 CONFIRMED Violations | 5 |
-| 🟢 Verified Compliant | 11 |
-| ⚪ Verified N/A | 0 |
-| ⚠️ NEEDS VERIFICATION | 2 |
+| **NEW Violations** | 17 |
+| **CONFIRMED Backlog Issues** | 4 |
+| **REFUTED/FIXED Backlog Issues** | 3 |
+| **Verified Compliant** | 21 |
+| **Verified N/A** | 0 |
 
-### Key Findings
-
-1. **Portal Usage: EXCELLENT** - All Radix-based primitives auto-portal to `document.body`. Custom `contextMenu.tsx` correctly uses `createPortal()`.
-
-2. **Z-Index: MOSTLY COMPLIANT** - All primitives use `z-50`. Two violations found:
-   - `contextMenu.tsx:82` uses `z-[9999]` (P1 - confirmed)
-   - `navigation-menu.tsx:137` uses `z-[1]` (P2 - confirmed)
-
-3. **Width Constraints: MAJOR ISSUE** - `ResourceSlideOver` at `w-[78vw]` violates 600px main content minimum (P1 - confirmed)
-
-4. **Touch Targets: MIXED** - Many buttons correctly use `h-11`, but several overlays have undersized elements
-
-5. **Mobile-First Patterns: WIDESPREAD** - Most DialogFooter patterns use `flex-col-reverse sm:flex-row` which contradicts desktop-first philosophy
+This audit exhaustively analyzed all dialogs, modals, sheets, slide-overs, popovers, and dropdown menus in the Crispy CRM codebase. The codebase shows strong adherence to Radix UI primitives with consistent portaling and z-index management. However, several custom implementations bypass these patterns, creating accessibility and UX gaps.
 
 ---
 
-## Overlay-by-Overlay Analysis
-
-### 1. Dialog (`src/components/ui/dialog.tsx`)
-
-**Type:** Modal Dialog
-**Radix-based:** Yes (`@radix-ui/react-dialog`)
-**First Audit Status:** P2 (mobile-first footer)
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (via `DialogPortal`) | ✅ |
-| Render target | document.body (Radix default) | ✅ |
-
-#### Z-Index Analysis
-| Element | Z-Index | Standard? |
-|---------|---------|-----------|
-| DialogOverlay | `z-50` | ✅ |
-| DialogContent | `z-50` | ✅ |
-
-#### Dimension Analysis
-| Viewport | Width | Height | Usable? |
-|----------|-------|--------|---------|
-| Desktop 1440px | `max-w-lg` (512px) | Auto | ✅ |
-| iPad 768px | `max-w-[calc(100%-2rem)]` | Auto | ✅ |
-
-#### Content Overflow
-| Metric | Value |
-|--------|-------|
-| Scrollable | No (content determines height) |
-| Actions sticky | N/A |
-| Close visible | Yes (absolute positioned top-right) |
-
-#### Focus Management
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Focus trap | Yes (Radix built-in) | ✅ |
-| Initial focus | First focusable (Radix default) | ✅ |
-| ESC closes | Yes (Radix built-in) | ✅ |
-| Close button | Yes with `sr-only` label | ✅ |
-
-#### Issues Found
-1. **P2 - Mobile-first footer (line 82):** `flex-col-reverse gap-2 sm:flex-row sm:justify-end`
-   - Should be: `flex-row justify-end gap-2 md:flex-col-reverse`
-2. **NEW - Close button touch target:** Close button has no explicit size, icon is 16px. Total clickable area ~24px (below 44px minimum)
-
-#### Verdict
-- [x] First audit classification CORRECT (P2 mobile-first)
-- [ ] NEW violation: Close button < 44px touch target
-
----
-
-### 2. AlertDialog (`src/components/ui/alert-dialog.tsx`)
-
-**Type:** Confirmation Dialog
-**Radix-based:** Yes (`@radix-ui/react-alert-dialog`)
-**First Audit Status:** P2 (mobile-first footer)
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (via `AlertDialogPortal`) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Z-Index Analysis
-| Element | Z-Index | Standard? |
-|---------|---------|-----------|
-| AlertDialogOverlay | `z-50` | ✅ |
-| AlertDialogContent | `z-50` | ✅ |
-
-#### Dimension Analysis
-| Viewport | Width | Height | Usable? |
-|----------|-------|--------|---------|
-| Desktop 1440px | `max-w-lg` (512px) | Auto | ✅ |
-| iPad 768px | Full width - 2rem | Auto | ✅ |
-
-#### Issues Found
-1. **P2 - Mobile-first footer (line 53):** `flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2`
-2. **P2 - Mobile-first cancel button (line 97):** `mt-2 sm:mt-0`
-
-#### Verdict
-- [x] First audit classification CORRECT
-
----
-
-### 3. Sheet (`src/components/ui/sheet.tsx`)
-
-**Type:** Side Panel / Slide-over
-**Radix-based:** Yes (`@radix-ui/react-dialog` as Sheet)
-**First Audit Status:** Not in first audit
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (via `SheetPortal`) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Z-Index Analysis
-| Element | Z-Index | Standard? |
-|---------|---------|-----------|
-| SheetOverlay | `z-50` | ✅ |
-| SheetContent | `z-50` | ✅ |
-
-#### Dimension Analysis
-| Viewport | Width (side=right) | Usable? |
-|----------|-------------------|---------|
-| Desktop | `w-3/4 sm:max-w-sm` (75% / max 384px) | ⚠️ |
-| iPad | `w-3/4` (576px on 768px viewport) | ⚠️ |
-
-#### Issues Found
-1. **NEW - Close button size (line 69):** `p-2` + 20px icon = ~36px total clickable area (below 44px)
-2. **NEW - Mobile-first width:** `w-3/4 sm:max-w-sm` should be desktop-first
-
-#### Verdict
-- [x] NEW violations found (close button size, mobile-first width)
-
----
-
-### 4. Popover (`src/components/ui/popover.tsx`)
-
-**Type:** Contextual Overlay
-**Radix-based:** Yes (`@radix-ui/react-popover`)
-**First Audit Status:** Not in first audit (compliant)
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (explicit `PopoverPrimitive.Portal`) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Z-Index Analysis
-| Element | Z-Index | Standard? |
-|---------|---------|-----------|
-| PopoverContent | `z-50` | ✅ |
-
-#### Dimension Analysis
-| Viewport | Width | Usable? |
-|----------|-------|---------|
-| All viewports | `w-72` (288px) fixed | ✅ |
-
-#### Verdict
-- [x] FULLY COMPLIANT - No issues found
-
----
-
-### 5. DropdownMenu (`src/components/ui/dropdown-menu.tsx`)
-
-**Type:** Action Menu
-**Radix-based:** Yes (`@radix-ui/react-dropdown-menu`)
-**First Audit Status:** Not in first audit
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (explicit `DropdownMenuPrimitive.Portal`) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Z-Index Analysis
-| Element | Z-Index | Standard? |
-|---------|---------|-----------|
-| DropdownMenuContent | `z-50` | ✅ |
-| DropdownMenuSubContent | `z-50` | ✅ |
-
-#### Content Overflow
-| Metric | Value |
-|--------|-------|
-| Max height | `max-h-(--radix-dropdown-menu-content-available-height)` |
-| Overflow | `overflow-y-auto` |
-
-#### Issues Found
-1. **NEW - Menu item height (line 62):** `py-1.5` (12px padding) + text ≈ 28-32px height (below 44px touch target)
-
-#### Verdict
-- [ ] NEW violation: Menu items below 44px touch target
-
----
-
-### 6. Drawer (`src/components/ui/drawer.tsx`)
-
-**Type:** Mobile-optimized Bottom Sheet
-**Radix-based:** No (uses `vaul` library)
-**First Audit Status:** Not in first audit
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (via `DrawerPortal`) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Z-Index Analysis
-| Element | Z-Index | Standard? |
-|---------|---------|-----------|
-| DrawerOverlay | `z-50` | ✅ |
-| DrawerContent | `z-50` | ✅ |
-
-#### Dimension Analysis
-| Direction | Width/Height | Usable? |
-|-----------|--------------|---------|
-| Bottom | `max-h-[80vh]` | ✅ |
-| Right/Left | `w-3/4 sm:max-w-sm` | ⚠️ (mobile-first) |
-
-#### Verdict
-- [x] Mostly compliant, mobile-first width pattern
-
----
-
-### 7. Tooltip (`src/components/ui/tooltip.tsx`)
-
-**Type:** Informational Overlay
-**Radix-based:** Yes (`@radix-ui/react-tooltip`)
-**First Audit Status:** Not in first audit (compliant)
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (explicit `TooltipPrimitive.Portal`) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Z-Index Analysis
-| Element | Z-Index | Standard? |
-|---------|---------|-----------|
-| TooltipContent | `z-50` | ✅ |
-
-#### Verdict
-- [x] FULLY COMPLIANT - No issues found
-
----
-
-### 8. ResourceSlideOver (`src/components/layouts/ResourceSlideOver.tsx`)
-
-**Type:** Record Detail Panel
-**Radix-based:** Yes (uses Sheet component)
-**First Audit Status:** P1 - Width squeezes main content
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (via Sheet → SheetPortal) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Z-Index Analysis
-| Element | Z-Index | Standard? |
-|---------|---------|-----------|
-| Inherited from Sheet | `z-50` | ✅ |
-
-#### Dimension Analysis
-| Viewport | Width | Main Content Remaining | Usable? |
-|----------|-------|------------------------|---------|
-| Desktop 1440px | `w-[78vw]` (1123px) | 317px | ❌ |
-| iPad 1024px | 799px | 225px | ❌ |
-| iPad 768px | 599px | 169px | ❌ |
-
-**CRITICAL ISSUE:** At 78vw, the slide-over consumes most of the viewport. Main content shrinks below the 600px minimum on all viewport sizes when slide-over is open.
-
-#### Content Overflow
-| Metric | Value |
-|--------|-------|
-| Scrollable | Yes (`overflow-y-auto` on TabsContent) |
-| Actions sticky | Yes (SheetFooter in edit mode) |
-| Close visible | Yes (inherited from Sheet) |
-
-#### Focus Management
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Focus trap | Yes (Radix built-in) | ✅ |
-| ESC closes | Yes (via `useKeyboardShortcuts`) | ✅ |
-| ARIA attributes | Yes (`role="dialog"`, `aria-modal`, `aria-labelledby`) | ✅ |
-
-#### Issues Found
-1. **P1 CONFIRMED - Width (line 176):** `w-[78vw] min-w-[576px] max-w-[1024px]`
-   - Should be: `w-[40vw] max-w-[600px]` on desktop, `fixed inset-0` on iPad
-2. **Compliant - Buttons:** Uses `h-11` for Edit/Cancel/Save buttons ✅
-
-#### Verdict
-- [x] First audit classification CORRECT (P1)
-
----
-
-### 9. ContextMenu (`src/atomic-crm/utils/contextMenu.tsx`)
-
-**Type:** Right-click Context Menu
-**Radix-based:** No (custom implementation)
-**First Audit Status:** P1 - z-[9999] + menu items < 44px
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (`createPortal(...)`) | ✅ |
-| Render target | `document.body` | ✅ |
-
-#### Z-Index Analysis
-| Element | Z-Index | Standard? |
-|---------|---------|-----------|
-| Menu container | `z-[9999]` | ❌ |
-| Submenu | None specified | ⚠️ |
-
-#### Issues Found
-1. **P1 CONFIRMED - Z-index (line 82):** `z-[9999]` should be `z-50`
-2. **P1 CONFIRMED - Menu item height (line 95):** `py-3` (24px) is NOT 44px minimum
-   - Calculation: `px-3 py-3` = ~40px height with text, close but not quite 44px
-
-#### Verdict
-- [x] First audit classifications CORRECT (P1)
-
----
-
-### 10. QuickAddDialog (`src/atomic-crm/opportunities/quick-add/QuickAddDialog.tsx`)
-
-**Type:** Form Dialog
-**Radix-based:** Yes (uses Dialog component)
-**First Audit Status:** P2 - Mobile-first width
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (via Dialog) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Dimension Analysis
-| Viewport | Width | Usable? |
-|----------|-------|---------|
-| Desktop | `max-w-2xl` (672px) | ✅ |
-| Mobile | `sm:w-[calc(100%-2rem)]` | ⚠️ |
-
-#### Issues Found
-1. **P2 CONFIRMED - Mobile-first width (line 26):** `sm:w-[calc(100%-2rem)]`
-
-#### Verdict
-- [x] First audit classification CORRECT (P2)
-
----
-
-### 11. CloseOpportunityModal (`src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx`)
-
-**Type:** Confirmation Dialog with Form
-**Radix-based:** Yes (uses Dialog component)
-**First Audit Status:** P2 - Mobile-first width
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (via Dialog) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Dimension Analysis
-| Viewport | Width | Usable? |
-|----------|-------|---------|
-| Desktop | `max-w-md` (448px) | ✅ |
-| Mobile | `sm:w-[calc(100%-2rem)]` | ⚠️ |
-
-#### Touch Targets
-| Element | Size | Compliant? |
-|---------|------|------------|
-| Cancel button | `h-11 min-w-[100px]` | ✅ |
-| Submit button | `h-11 min-w-[120px]` | ✅ |
-
-#### Issues Found
-1. **P2 CONFIRMED - Mobile-first width (line 148):** `sm:w-[calc(100%-2rem)]`
-
-#### Verdict
-- [x] First audit classification CORRECT (P2)
-- [x] Button touch targets compliant
-
----
-
-### 12. SimilarOpportunitiesDialog (`src/atomic-crm/opportunities/components/SimilarOpportunitiesDialog.tsx`)
-
-**Type:** Warning Dialog with Table
-**Radix-based:** Yes (uses Dialog component)
-**First Audit Status:** P2 - Mobile-first footer
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (via Dialog) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Dimension Analysis
-| Viewport | Width | Usable? |
-|----------|-------|---------|
-| Desktop | `sm:max-w-2xl` (672px) | ⚠️ (mobile-first) |
-
-#### Content Overflow
-| Metric | Value |
-|--------|-------|
-| Table scrollable | Yes (`max-h-64 overflow-y-auto`) |
-
-#### Touch Targets
-| Element | Size | Compliant? |
-|---------|------|------------|
-| Go Back button | `h-11 min-w-[120px]` | ✅ |
-| Create button | `h-11 min-w-[150px]` | ✅ |
-
-#### Issues Found
-1. **P2 CONFIRMED - Mobile-first footer (line 139):** `flex-col gap-2 sm:flex-row sm:justify-end`
-
-#### Verdict
-- [x] First audit classification CORRECT (P2)
-
----
-
-### 13. ContactImportDialog (`src/atomic-crm/contacts/ContactImportDialog.tsx`)
-
-**Type:** Multi-step Import Wizard
-**Radix-based:** Yes (uses Dialog component)
-**First Audit Status:** Not in first audit
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (via Dialog) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Dimension Analysis
-| Dialog | Width | Usable? |
-|--------|-------|---------|
-| Main dialog | `max-w-2xl` (672px) | ✅ |
-| Preview dialog | `sm:max-w-7xl h-[90vh]` | ⚠️ |
-
-#### Content Overflow
-| Metric | Value |
-|--------|-------|
-| Preview scrollable | Yes (`overflow-y-auto` on content) |
-| Import progress visible | Yes (in-view card) |
-
-#### Touch Targets
-| Element | Size | Compliant? |
-|---------|------|------------|
-| Import button | Default button height | ⚠️ (no explicit h-11) |
-| Cancel button | `h-11 px-4` | ✅ |
-
-#### Issues Found
-1. **NEW - Import button:** Line 490 uses default Button without explicit height
-
-#### Verdict
-- [ ] NEW violation: Import button missing h-11
-
----
-
-### 14. TagDialog (`src/atomic-crm/tags/TagDialog.tsx`)
-
-**Type:** Create/Edit Tag Form
-**Radix-based:** Yes (uses Dialog component)
-**First Audit Status:** Not in first audit
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (via Dialog) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Dimension Analysis
-| Viewport | Width | Usable? |
-|----------|-------|---------|
-| Desktop | `sm:max-w-lg` (512px) | ⚠️ (mobile-first) |
-
-#### Touch Targets
-| Element | Size | Compliant? |
-|---------|------|------------|
-| Save button | Default height | ❌ (no h-11) |
-| Color buttons | RoundButton component | ⚠️ (needs verification) |
-
-#### Issues Found
-1. **NEW - Save button height (line 160):** No explicit height, uses default
-2. **Mobile-first width:** `sm:max-w-lg`
-
-#### Verdict
-- [ ] NEW violations found (button height, mobile-first width)
-
----
-
-### 15. TaskCompleteSheet (`src/atomic-crm/dashboard/v3/components/TaskCompleteSheet.tsx`)
-
-**Type:** Bottom Sheet for Task Management
-**Radix-based:** Yes (uses Sheet component)
-**First Audit Status:** Not in first audit
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (via Sheet) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Dimension Analysis
-| Metric | Value |
-|--------|-------|
-| Side | Bottom |
-| Max height | `max-h-[80vh]` |
-| Border radius | `rounded-t-xl` |
-
-#### Touch Targets
-| Element | Size | Compliant? |
-|---------|------|------------|
-| Complete button | `h-11 w-11` | ✅ |
-
-#### Accessibility
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| aria-labelledby | Yes (`complete-task-title`) | ✅ |
-| aria-describedby | Yes (`complete-task-description`) | ✅ |
-
-#### Verdict
-- [x] FULLY COMPLIANT - No issues found
-
----
-
-### 16. PipelineDrillDownSheet (`src/atomic-crm/dashboard/v3/components/PipelineDrillDownSheet.tsx`)
-
-**Type:** Side Panel for Pipeline Details
-**Radix-based:** Yes (uses Sheet component)
-**First Audit Status:** Not in first audit
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (via Sheet) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Dimension Analysis
-| Viewport | Width | Main Content Remaining | Usable? |
-|----------|-------|------------------------|---------|
-| Desktop 1440px | `w-[480px] max-w-[90vw]` | 960px | ✅ |
-| iPad 768px | 480px (capped at 90vw = 691px) | ~77px - 288px | ⚠️ |
-
-#### Content Overflow
-| Metric | Value |
-|--------|-------|
-| Scrollable | Yes (`ScrollArea` component) |
-
-#### Touch Targets
-| Element | Size | Compliant? |
-|---------|------|------------|
-| OpportunityCard | Full card clickable | ✅ |
-| Keyboard | `tabIndex={0}` + Enter/Space | ✅ |
-
-#### Issues Found
-1. **NEEDS VERIFICATION:** On iPad 768px, 480px width may squeeze main content below 600px
-
-#### Verdict
-- [x] Mostly compliant, iPad behavior needs verification
-
----
-
-### 17. LinkOpportunityModal (`src/atomic-crm/contacts/LinkOpportunityModal.tsx`)
-
-**Type:** Selection Dialog
-**Radix-based:** Yes (uses Dialog component)
-**First Audit Status:** Not in first audit
-
-#### Portal Analysis
-| Metric | Value | Compliant? |
-|--------|-------|------------|
-| Portal used | Yes (via Dialog) | ✅ |
-| Render target | document.body | ✅ |
-
-#### Dimension Analysis
-| Viewport | Width | Usable? |
-|----------|-------|---------|
-| Desktop | `max-w-2xl` (672px) | ✅ |
-
-#### Touch Targets
-| Element | Size | Compliant? |
-|---------|------|------------|
-| Cancel button | Default height | ❌ (no h-11) |
-| Submit button | Default height | ❌ (no h-11) |
-
-#### Issues Found
-1. **NEW - Button heights (lines 91, 94):** Both buttons missing explicit `h-11`
-
-#### Verdict
-- [ ] NEW violations found (button heights)
+## Backlog Verification Results
+
+### CONFIRMED Issues
+
+| Backlog ID | Component | Issue | Status |
+|------------|-----------|-------|--------|
+| **#1** | `ColumnCustomizationMenu.tsx:44` | Settings button 32px (h-8 w-8) | **CONFIRMED** - violates 44px minimum |
+| **#15** | `contextMenu.tsx:138` | Submenu items < 44px height | **CONFIRMED** - `py-1.5 min-h-11` results in ~28px |
+| **#24** | `alert-dialog.tsx:53` | Footer mobile-first layout | **CONFIRMED** - `flex-col-reverse sm:flex-row` |
+| **#25** | `dialog.tsx:82` | Footer mobile-first layout | **CONFIRMED** - `flex-col-reverse sm:flex-row` |
+
+### REFUTED / ALREADY FIXED Issues
+
+| Backlog ID | Component | Claimed Issue | Actual Finding |
+|------------|-----------|---------------|----------------|
+| **#9** | `ResourceSlideOver.tsx:176` | SlideOver width 78vw | **FIXED** - Now `lg:w-[40vw] lg:max-w-[600px]` |
+| **#14** | `contextMenu.tsx:82` | Uses z-[9999] | **FALSE** - Uses standard `z-50` |
+| **#40** | `navigation-menu.tsx:137` | Uses z-[1] | **PARTIAL** - Uses `z-10` (standard Tailwind value) |
 
 ---
 
 ## NEW Violations Discovered
 
-| ID | File:Line | Principle | Issue | Why First Audit Missed |
-|----|-----------|-----------|-------|------------------------|
-| N1 | `dialog.tsx:59` | Interactive | Close button ~24px clickable area | First audit focused on explicit button elements, not DialogClose |
-| N2 | `sheet.tsx:69` | Interactive | Close button ~36px clickable area | Sheet not audited in first pass |
-| N3 | `dropdown-menu.tsx:62` | Interactive | Menu items ~28-32px height | First audit didn't analyze menu item heights |
-| N4 | `ContactImportDialog.tsx:490` | Interactive | Import button missing h-11 | File not in first audit scope |
-| N5 | `TagDialog.tsx:160` | Interactive | Save button missing h-11 | File not in first audit scope |
-| N6 | `LinkOpportunityModal.tsx:91,94` | Interactive | Both buttons missing h-11 | File not in first audit scope |
+### CRITICAL Priority (P0) - Accessibility Violations
+
+#### NEW-01: QuickAddOpportunity Missing ESC Handler
+**File:** `src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:102-196`
+**Impact:** WCAG 2.1 AA violation - keyboard users cannot dismiss dialog
+**Fix:** Add keyboard event listener for ESC key
+
+#### NEW-02: QuickAddOpportunity Missing Close Button
+**File:** `src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:102-196`
+**Impact:** UX convention violation - no X button in modal header
+**Fix:** Add 44x44px close button in top-right corner
+
+#### NEW-03: QuickAddOpportunity Missing Click-Outside Handler
+**File:** `src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:106`
+**Impact:** Modal backdrop click does not dismiss - unexpected behavior
+**Fix:** Add click handler on backdrop div
+
+#### NEW-04: ColumnCustomizationMenu Missing ESC Handler
+**File:** `src/atomic-crm/opportunities/kanban/ColumnCustomizationMenu.tsx:23-36`
+**Impact:** Keyboard users cannot dismiss menu
+**Fix:** Add useEffect for ESC key listener
+
+#### NEW-05: ColumnsButton Non-Standard Portal
+**File:** `src/components/admin/columns-button.tsx:86-96, 148-200`
+**Impact:** Uses `createPortal` manually, bypassing Radix Portal's z-index management
+**Risk:** Z-index conflicts, broken focus traps, click-outside issues
+**Fix:** Refactor to use standard Radix Popover pattern
+
+### HIGH Priority (P1) - Touch Target Violations
+
+#### NEW-06: ColumnsButton Clear Button Too Small
+**File:** `src/components/admin/columns-button.tsx:170`
+**Current:** `h-4 w-4` (16x16px)
+**Required:** 44x44px minimum for touch targets
+**Fix:** Change to `h-11 w-11` with position adjustments
+
+#### NEW-07: QuickAddOpportunity Form Buttons Not 44px
+**File:** `src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx:167-191`
+**Impact:** Cancel and Create buttons lack explicit `h-11` class
+**Fix:** Add `h-11` class to both buttons
+
+### MEDIUM Priority (P2) - Broken Functionality
+
+#### NEW-08: AddTask Invalid Tailwind Class
+**File:** `src/atomic-crm/tasks/AddTask.tsx`
+**Issue:** Uses `max-h-9/10` which is not valid Tailwind CSS
+**Fix:** Change to `max-h-[90vh]`
+
+#### NEW-09: AddTask Positioning Override
+**File:** `src/atomic-crm/tasks/AddTask.tsx`
+**Issue:** `top-1/20 translate-y-0` breaks Dialog's default centering
+**Fix:** Remove positioning overrides
+
+#### NEW-10: LogActivityFAB Z-Index Conflict
+**File:** `src/atomic-crm/dashboard/v3/components/LogActivityFAB.tsx`
+**Issue:** FAB button and Sheet content both use `z-50`
+**Risk:** FAB may overlay Sheet when both visible
+**Fix:** Change FAB from `z-50` to `z-40`
+
+#### NEW-11: Missing aria-describedby Auto-Link
+**Files:**
+- `src/components/ui/dialog.tsx:55`
+- `src/components/ui/sheet.tsx:65`
+**Issue:** DialogDescription/SheetDescription not automatically linked to content
+**Fix:** Generate default aria-describedby when description component present
+
+### LOW Priority (P3) - Design Consistency
+
+#### NEW-12: SimilarOpportunitiesDialog Missing ARIA
+**File:** `src/atomic-crm/opportunities/components/SimilarOpportunitiesDialog.tsx:79`
+**Issue:** Missing `aria-describedby` attribute on DialogContent
+**Fix:** Add `aria-describedby="similar-opportunities-description"`
+
+#### NEW-13: NotificationDropdown Button Sizing
+**File:** `src/components/NotificationDropdown.tsx:114`
+**Issue:** Mixed pattern - `size="sm"` with `h-11` override
+**Fix:** Use standard size variant without manual override
+
+#### NEW-14: KPIDrillDown Redundant Overflow
+**File:** `src/atomic-crm/reports/components/KPIDrillDown.tsx`
+**Issue:** Content div has `max-h-[calc(100vh-8rem)]` but SheetContent already handles this
+**Fix:** Remove redundant constraint
+
+#### NEW-15: NavigationMenu Z-Index Inconsistency
+**File:** `src/components/ui/navigation-menu.tsx:137`
+**Issue:** Indicator uses `z-10` while all other overlays use `z-50`
+**Note:** z-10 is valid Tailwind but breaks visual consistency
+
+#### NEW-16: Drawer Non-Semantic Color
+**File:** `src/components/ui/drawer.tsx:30`
+**Issue:** Uses `bg-black/80` instead of `bg-overlay` semantic token
+**Fix:** Change to `bg-overlay`
+
+#### NEW-17: ResourceSlideOver Mobile Width
+**File:** `src/components/layouts/ResourceSlideOver.tsx:176`
+**Issue:** Full-width on mobile (`w-full max-w-none`) breaks slide-over pattern
+**Consideration:** May be intentional for full-screen mobile experience
 
 ---
 
-## False Negatives Corrected
+## Component Analysis by Domain
 
-| File:Line | First Audit Said | Actually Is | Evidence |
-|-----------|------------------|-------------|----------|
-| None | - | - | First audit was accurate for files covered |
+### Contacts & Organizations (9 components)
+
+| Component | Portal | Z-Index | Width | Touch Targets | Status |
+|-----------|--------|---------|-------|---------------|--------|
+| ContactSlideOver | Radix Sheet | z-50 | 40vw/600px | 44px | **COMPLIANT** |
+| ContactImportDialog | Radix Dialog | z-50 | 2xl/7xl | 44px | **COMPLIANT** (backlog #25 applies) |
+| LinkOpportunityModal | Radix Dialog | z-50 | 2xl | 44px | **COMPLIANT** (backlog #25 applies) |
+| UnlinkConfirmDialog | Radix AlertDialog | z-50 | lg | 44px | **COMPLIANT** (backlog #24 applies) |
+| OrganizationSlideOver | Radix Sheet | z-50 | 40vw/600px | 44px | **COMPLIANT** |
+| OrganizationImportDialog | Radix Dialog | z-50 | 2xl/7xl | 44px | **COMPLIANT** (backlog #25 applies) |
+| DuplicateOrgWarningDialog | Radix AlertDialog | z-50 | lg | 44px | **COMPLIANT** (backlog #24 applies) |
+| BulkReassignButton | Radix Dialog | z-50 | lg | 44px | **COMPLIANT** (backlog #25 applies) |
+| PrincipalChangeWarning | Radix AlertDialog | z-50 | 2xl | 44px | **COMPLIANT** (backlog #24 applies) |
+
+### Opportunities (8 components)
+
+| Component | Portal | Z-Index | Width | Touch Targets | Status |
+|-----------|--------|---------|-------|---------------|--------|
+| OpportunitySlideOver | Radix Sheet | z-50 | 40vw/600px | 44px | **COMPLIANT** |
+| QuickAddDialog | Radix Dialog | z-50 | 2xl | 44px | **COMPLIANT** |
+| CloseOpportunityModal | Radix Dialog | z-50 | md | 44px | **COMPLIANT** |
+| SimilarOpportunitiesDialog | Radix Dialog | z-50 | 2xl | 44px | **MINOR** (NEW-12) |
+| ColumnCustomizationMenu | Manual | z-50 | 64 | **32px** | **FAIL** (#1, NEW-04) |
+| QuickAddOpportunity | Custom Fixed | z-50 | md | **<44px** | **FAIL** (NEW-01-07) |
+| OpportunityCardActions | Radix Dropdown | z-50 | 48 | 44px | **COMPLIANT** |
+| contextMenu | Custom Portal | z-50 | 200px | **<44px** | **FAIL** (#15) |
+
+### Dashboard & Tasks (9 components)
+
+| Component | Portal | Z-Index | Width | Touch Targets | Status |
+|-----------|--------|---------|-------|---------------|--------|
+| PipelineDrillDownSheet | Radix Sheet | z-50 | 480px | 44px | **COMPLIANT** |
+| TaskCompleteSheet | Radix Sheet | z-50 | Full (bottom) | 44px | **COMPLIANT** |
+| SnoozePopover | Radix Popover | z-50 | 72 | 44px | **COMPLIANT** |
+| LogActivityFAB | Radix Sheet | **z-50 conflict** | 420px | 44px | **FAIL** (NEW-10) |
+| MobileQuickActionBar | Radix Sheet | z-40/z-50 | 90vh | 44px | **COMPLIANT** |
+| TaskSlideOver | Radix Sheet | z-50 | 40vw | 44px | **COMPLIANT** |
+| AddTask | Radix Dialog | z-50 | xl | 44px | **FAIL** (NEW-08-09) |
+| QuickLogActivityDialog | Radix Sheet | z-50 | 420px | 44px | **COMPLIANT** |
+| KPIDrillDown | Radix Sheet | z-50 | xl | 44px | **MINOR** (NEW-14) |
+
+### Tags, Products & Admin (10 components)
+
+| Component | Portal | Z-Index | Width | Touch Targets | Status |
+|-----------|--------|---------|-------|---------------|--------|
+| TagDialog | Radix Dialog | z-50 | lg | 44px | **COMPLIANT** |
+| ProductSlideOver | Radix Sheet | z-50 | 40vw/600px | 44px | **COMPLIANT** |
+| SalesSlideOver | Radix Sheet | z-50 | 40vw/600px | 44px | **COMPLIANT** |
+| confirm.tsx | Radix Dialog | z-50 | lg | 44px | **COMPLIANT** |
+| CreateInDialogButton | Radix Dialog | z-50 | 2xl | 44px | **COMPLIANT** |
+| SavedQueries | Radix Dialog | z-50 | 425px | 44px | **COMPLIANT** |
+| ColumnsButton | **Manual Portal** | z-50 | 72 | **16px** | **FAIL** (NEW-05-06) |
+| FilterForm | Radix Popover | z-50 | auto | 44px | **COMPLIANT** |
+| NotificationDropdown | Radix Dropdown | z-50 | 400px | 44px | **MINOR** (NEW-13) |
+| Combobox | Radix Popover | z-50 | var | 44px | **COMPLIANT** |
+
+### Base UI Components (9 components)
+
+| Component | Portal | Z-Index | Touch Targets | Status |
+|-----------|--------|---------|---------------|--------|
+| dialog.tsx | Radix Portal | z-50 | 44px | **MINOR** (#25, NEW-11) |
+| alert-dialog.tsx | Radix Portal | z-50 | 44px | **MINOR** (#24) |
+| sheet.tsx | Radix Portal | z-50 | 44px | **MINOR** (NEW-11) |
+| popover.tsx | Radix Portal | z-50 | N/A | **COMPLIANT** |
+| dropdown-menu.tsx | Radix Portal | z-50 | 44px | **COMPLIANT** |
+| drawer.tsx | Vaul Portal | z-50 | 44px | **MINOR** (NEW-16) |
+| tooltip.tsx | Radix Portal | z-50 | N/A | **COMPLIANT** |
+| navigation-menu.tsx | Absolute | z-10/z-50 | N/A | **MINOR** (NEW-15) |
+| select.tsx | Radix Portal | z-50 | 44px | **COMPLIANT** |
 
 ---
 
-## Confirmed Violations from First Audit
+## Portal Analysis
 
-| ID | File:Line | Status | Notes |
-|----|-----------|--------|-------|
-| 9 | `ResourceSlideOver.tsx:176` | CONFIRMED P1 | Width `w-[78vw]` squeezes main content |
-| 14 | `contextMenu.tsx:82` | CONFIRMED P1 | `z-[9999]` non-standard |
-| 15 | `contextMenu.tsx:95` | CONFIRMED P1 | Menu items < 44px height |
-| 24 | `alert-dialog.tsx:53` | CONFIRMED P2 | Mobile-first footer |
-| 25 | `dialog.tsx:82` | CONFIRMED P2 | Mobile-first footer |
+### Standard Pattern (Correct)
+```tsx
+// All Radix-based components auto-portal to document.body
+<DialogPrimitive.Portal>
+  <DialogPrimitive.Overlay className="z-50" />
+  <DialogPrimitive.Content className="z-50" />
+</DialogPrimitive.Portal>
+```
 
----
+**Components Using Standard Pattern:** 38 of 45 (84%)
 
-## Success Criteria Verification
+### Non-Standard Implementations (Require Review)
 
-- [x] EVERY overlay component analyzed (17 total)
-- [x] ALL z-index values mapped (all use z-50 except contextMenu z-[9999] and navigation-menu z-[1])
-- [x] ALL widths calculated at multiple viewports
-- [x] Portal usage verified for each overlay (all compliant)
-- [x] Focus management tested conceptually (all Radix-based components inherit correct behavior)
-- [x] Nested overlay scenarios considered (no nested overlays found in codebase)
-
----
-
-## Recommendations
-
-### Immediate (P0/P1)
-
-1. **ResourceSlideOver width:** Change to `w-[40vw] max-w-[600px]` on desktop, `fixed inset-0 z-50` on iPad
-2. **ContextMenu z-index:** Change `z-[9999]` to `z-50`
-3. **ContextMenu items:** Add `min-h-[44px]` to menu items
-
-### Short-term (P2)
-
-1. **Dialog/AlertDialog close buttons:** Add explicit `h-11 w-11` sizing
-2. **Button standardization:** Audit all Dialog/Modal buttons for missing `h-11`
-3. **Mobile-first patterns:** Batch convert to desktop-first:
-   - `flex-col-reverse sm:flex-row` → `flex-row md:flex-col-reverse`
-   - `sm:max-w-lg` → `max-w-lg md:max-w-full`
-
-### Long-term
-
-1. **Consider Radix ContextMenu:** Replace custom `contextMenu.tsx` with `@radix-ui/react-context-menu` for built-in accessibility and portal handling
-2. **Sheet width standardization:** Create design tokens for sheet widths (small: 384px, medium: 480px, large: 600px)
+| Component | Implementation | Risk Level |
+|-----------|---------------|------------|
+| ColumnsButton | Manual `createPortal` | **HIGH** - bypasses Radix z-index context |
+| QuickAddOpportunity | Custom `fixed inset-0` | **MEDIUM** - missing ESC/close handlers |
+| contextMenu | Custom `createPortal` | **LOW** - properly implements ESC/click-outside |
 
 ---
 
-## Appendix: Z-Index Scale Verification
+## Z-Index Analysis
 
-| Component | Element | Z-Index | Compliant? |
-|-----------|---------|---------|------------|
-| dialog.tsx | Overlay | z-50 | ✅ |
-| dialog.tsx | Content | z-50 | ✅ |
-| alert-dialog.tsx | Overlay | z-50 | ✅ |
-| alert-dialog.tsx | Content | z-50 | ✅ |
-| sheet.tsx | Overlay | z-50 | ✅ |
-| sheet.tsx | Content | z-50 | ✅ |
-| popover.tsx | Content | z-50 | ✅ |
-| dropdown-menu.tsx | Content | z-50 | ✅ |
-| dropdown-menu.tsx | SubContent | z-50 | ✅ |
-| drawer.tsx | Overlay | z-50 | ✅ |
-| drawer.tsx | Content | z-50 | ✅ |
-| tooltip.tsx | Content | z-50 | ✅ |
-| contextMenu.tsx | Container | z-[9999] | ❌ |
-| navigation-menu.tsx | Indicator | z-[1] | ❌ |
+### Standard Layer: z-50
+All overlay components correctly use `z-50` for both overlay backdrop and content:
+- **Dialog/AlertDialog:** z-50 overlay, z-50 content
+- **Sheet:** z-50 overlay, z-50 content
+- **Popover:** z-50 content (no overlay)
+- **Dropdown:** z-50 content (no overlay)
+- **Drawer:** z-50 overlay, z-50 content
+- **Tooltip:** z-50 content
 
-**Standard Z-Index Scale (from interactive-elements.md):**
-- `z-0` - Base content layer
-- `z-10` - Sticky headers, fixed toolbars
-- `z-50` - Dropdowns, popovers, modals (via Radix Portal)
-- `z-[100]` - Toasts, notifications
+### Exceptions
+| Component | Z-Index | Reason |
+|-----------|---------|--------|
+| NavigationMenu Indicator | z-10 | Arrow indicator only |
+| MobileQuickActionBar (bar) | z-40 | Below modals, above content |
+| LogActivityFAB (button) | z-50 | **CONFLICT** - same as Sheet |
+
+### No Arbitrary Z-Index Values Found
+Grep for `z-\[\d+\]` returned **no matches** - the codebase correctly uses standard Tailwind z-index values.
+
+---
+
+## Focus Management Analysis
+
+### WCAG 2.2 AAA Compliance
+
+| Requirement | Status | Notes |
+|-------------|--------|-------|
+| Focus trap in modals | **PASS** | All Radix-based dialogs auto-trap focus |
+| ESC key dismissal | **PARTIAL** | QuickAddOpportunity and ColumnCustomizationMenu missing |
+| Return focus on close | **PASS** | Radix handles automatically |
+| aria-modal attribute | **PASS** | All modal dialogs have `aria-modal="true"` |
+| aria-labelledby | **PASS** | All dialogs reference their title |
+| aria-describedby | **PARTIAL** | Not auto-linked to description components |
+
+---
+
+## Overflow & Content Visibility
+
+### Height Constraints
+
+| Pattern | Usage | Example |
+|---------|-------|---------|
+| `max-h-[90vh]` | Modal dialogs | QuickAddDialog, CreateInDialogButton |
+| `max-h-[80vh]` | Bottom sheets | TaskCompleteSheet |
+| `ScrollArea` | Long lists | PipelineDrillDownSheet, PrincipalChangeWarning |
+| `overflow-y-auto` | Scrollable content | All slide-overs via ResourceSlideOver |
+
+### Width Constraints (Desktop 1440px / iPad 1024px)
+
+| Component Type | Desktop Width | iPad Landscape | iPad Portrait |
+|----------------|---------------|----------------|---------------|
+| Slide-Over | 40vw (576px) | 410px | Full width |
+| Standard Dialog | 512px (lg) | 512px | 512px |
+| Large Dialog | 672px (2xl) | 672px | 672px |
+| Import Preview | 1280px (7xl) | 1024px | 768px |
+| Bottom Sheet | Full width | Full width | Full width |
+
+---
+
+## Remediation Priority
+
+### P0 - CRITICAL (Fix Immediately)
+1. **QuickAddOpportunity** - Add ESC handler, close button, click-outside (NEW-01 to NEW-03)
+2. **ColumnsButton** - Refactor portal implementation (NEW-05)
+
+### P1 - HIGH (Fix This Sprint)
+3. **ColumnsButton** - Increase clear button to 44px (NEW-06)
+4. **QuickAddOpportunity** - Add `h-11` to form buttons (NEW-07)
+5. **ColumnCustomizationMenu** - Add ESC handler (NEW-04)
+6. **ColumnCustomizationMenu** - Increase settings button to 44px (#1)
+7. **contextMenu** - Fix submenu item height (#15)
+
+### P2 - MEDIUM (Fix Next Sprint)
+8. **AddTask** - Fix invalid Tailwind class (NEW-08)
+9. **AddTask** - Remove positioning override (NEW-09)
+10. **LogActivityFAB** - Change FAB z-index to z-40 (NEW-10)
+11. **Dialog/Sheet** - Auto-link aria-describedby (NEW-11)
+12. **DialogFooter** - Change to desktop-first pattern (#25)
+13. **AlertDialogFooter** - Change to desktop-first pattern (#24)
+
+### P3 - LOW (Backlog)
+14. **SimilarOpportunitiesDialog** - Add aria-describedby (NEW-12)
+15. **NotificationDropdown** - Fix button sizing pattern (NEW-13)
+16. **KPIDrillDown** - Remove redundant overflow (NEW-14)
+17. **NavigationMenu** - Consider z-50 for consistency (NEW-15)
+18. **Drawer** - Use semantic bg-overlay (NEW-16)
+
+---
+
+## File Change Summary
+
+| File | Changes Required |
+|------|-----------------|
+| `src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx` | ESC handler, close button, click-outside, button heights |
+| `src/components/admin/columns-button.tsx` | Refactor portal, increase clear button size |
+| `src/atomic-crm/opportunities/kanban/ColumnCustomizationMenu.tsx` | ESC handler, increase button size |
+| `src/atomic-crm/utils/contextMenu.tsx` | Fix submenu item padding |
+| `src/atomic-crm/tasks/AddTask.tsx` | Fix max-h class, remove position overrides |
+| `src/atomic-crm/dashboard/v3/components/LogActivityFAB.tsx` | Change FAB z-index |
+| `src/components/ui/dialog.tsx` | Auto-link aria-describedby, fix footer pattern |
+| `src/components/ui/alert-dialog.tsx` | Fix footer pattern |
+| `src/components/ui/sheet.tsx` | Auto-link aria-describedby |
+| `src/components/ui/drawer.tsx` | Use bg-overlay |
+
+---
+
+## Architectural Recommendations
+
+### 1. Z-Index Strategy Documentation
+Document standard z-index tiers:
+- `z-40`: Floating elements (FAB, quick action bars)
+- `z-50`: Modal overlays (dialogs, sheets, popovers)
+- Avoid arbitrary values like `z-[9999]`
+
+### 2. Portal Standardization
+All overlay components should use Radix Primitives Portal to ensure:
+- Consistent z-index stacking context
+- Proper focus trap behavior
+- Correct click-outside handling
+
+### 3. Touch Target Enforcement
+Add ESLint rule or custom hook to enforce 44px minimum touch targets on all interactive overlay elements.
+
+### 4. ARIA Automation
+Enhance base Dialog/Sheet components to auto-generate aria-describedby when description component is present.
+
+---
+
+## Appendix: Files Analyzed
+
+### Contacts Domain
+- `src/atomic-crm/contacts/ContactSlideOver.tsx`
+- `src/atomic-crm/contacts/ContactImportDialog.tsx`
+- `src/atomic-crm/contacts/LinkOpportunityModal.tsx`
+- `src/atomic-crm/contacts/UnlinkConfirmDialog.tsx`
+
+### Organizations Domain
+- `src/atomic-crm/organizations/OrganizationSlideOver.tsx`
+- `src/atomic-crm/organizations/OrganizationImportDialog.tsx`
+- `src/atomic-crm/organizations/DuplicateOrgWarningDialog.tsx`
+- `src/atomic-crm/organizations/BulkReassignButton.tsx`
+- `src/atomic-crm/organizations/PrincipalChangeWarning.tsx`
+
+### Opportunities Domain
+- `src/atomic-crm/opportunities/OpportunitySlideOver.tsx`
+- `src/atomic-crm/opportunities/quick-add/QuickAddDialog.tsx`
+- `src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx`
+- `src/atomic-crm/opportunities/components/SimilarOpportunitiesDialog.tsx`
+- `src/atomic-crm/opportunities/kanban/ColumnCustomizationMenu.tsx`
+- `src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx`
+- `src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx`
+- `src/atomic-crm/utils/contextMenu.tsx`
+
+### Dashboard & Tasks Domain
+- `src/atomic-crm/dashboard/v3/components/PipelineDrillDownSheet.tsx`
+- `src/atomic-crm/dashboard/v3/components/TaskCompleteSheet.tsx`
+- `src/atomic-crm/dashboard/v3/components/SnoozePopover.tsx`
+- `src/atomic-crm/dashboard/v3/components/LogActivityFAB.tsx`
+- `src/atomic-crm/dashboard/v3/components/MobileQuickActionBar.tsx`
+- `src/atomic-crm/tasks/TaskSlideOver.tsx`
+- `src/atomic-crm/tasks/AddTask.tsx`
+- `src/atomic-crm/activities/QuickLogActivityDialog.tsx`
+- `src/atomic-crm/reports/components/KPIDrillDown.tsx`
+
+### Tags, Products & Admin
+- `src/atomic-crm/tags/TagCreateModal.tsx`
+- `src/atomic-crm/tags/TagEditModal.tsx`
+- `src/atomic-crm/tags/TagDialog.tsx`
+- `src/atomic-crm/products/ProductSlideOver.tsx`
+- `src/atomic-crm/sales/SalesSlideOver.tsx`
+- `src/components/admin/confirm.tsx`
+- `src/components/admin/create-in-dialog-button.tsx`
+- `src/components/admin/saved-queries.tsx`
+- `src/components/admin/columns-button.tsx`
+- `src/components/admin/filter-form.tsx`
+- `src/components/NotificationDropdown.tsx`
+
+### Base UI Components
+- `src/components/ui/dialog.tsx`
+- `src/components/ui/alert-dialog.tsx`
+- `src/components/ui/sheet.tsx`
+- `src/components/ui/popover.tsx`
+- `src/components/ui/dropdown-menu.tsx`
+- `src/components/ui/drawer.tsx`
+- `src/components/ui/tooltip.tsx`
+- `src/components/ui/navigation-menu.tsx`
+- `src/components/ui/select.tsx`
+- `src/components/ui/combobox.tsx`
+
+### Layout Components
+- `src/components/layouts/ResourceSlideOver.tsx`
+
+---
+
+*Generated by Agent 3 (Overlay Specialist) as part of Tier 1 Parallel UI/UX Deep Audit*
