@@ -42,8 +42,8 @@ export const baseNoteSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
 
   // Timestamps (automatically managed by database)
-  created_at: z.string().optional(),
-  updated_at: z.string().optional(),
+  created_at: z.string().max(50).optional(),
+  updated_at: z.string().max(50).optional(),
 });
 
 /**

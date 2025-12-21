@@ -13,7 +13,7 @@
 |----------|-------|-------------|-------|--------|
 | P0 | 8 | 6 hours | 5 | Critical - Fix Before Beta |
 | P1 | 18 | 16 hours | 12 | High - Fix This Week |
-| P2 | 31 | 24 hours | 0 | Medium - Fix Before Launch |
+| P2 | 31 | 24 hours | 3 | Medium - Fix Before Launch |
 | P3 | 32 | 20+ hours | 0 | Low - Post-Launch Backlog |
 
 **Last Updated:** 2025-12-21

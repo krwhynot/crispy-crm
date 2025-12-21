@@ -425,7 +425,7 @@ export const activityNoteFormSchema = z.strictObject({
   activity_date: z.coerce.date(),
   type: interactionTypeSchema,
   contact_id: z.coerce.number().nullable().optional(),
-  stage: z.string(),
+  stage: z.string().max(50),
   subject: z.string().min(1, "Subject is required").max(255, "Subject too long"),
 });
 

@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { FormToolbar } from "../layout/FormToolbar";
-import { OpportunityInputs } from "./forms/OpportunityInputs";
+import { OpportunityInputs } from "./OpportunityInputs";
 import { opportunitySchema } from "../validation/opportunities";
 import { OpportunityCreateSaveButton } from "./components/OpportunityCreateSaveButton";
 import { SimilarOpportunitiesDialog } from "./components/SimilarOpportunitiesDialog";

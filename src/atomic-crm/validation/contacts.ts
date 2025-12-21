@@ -238,8 +238,8 @@ export const contactSchema = contactBaseSchema
 // More permissive than the main schema to handle real-world CSV data
 export const importContactSchema = z
   .object({
-    first_name: z.string().optional().nullable(),
-    last_name: z.string().optional().nullable(),
+    first_name: z.string().max(100).optional().nullable(),
+    last_name: z.string().max(100).optional().nullable(),
     organization_name: z
       .string({ error: "Organization name is required" })
       .trim()
@@ -323,34 +323,34 @@ export const importContactSchema = z
       ])
       .optional()
       .nullable(),
-    // Other optional fields - allow empty, null, or any string
+    // Other optional fields - allow empty, null, or any string (with .max() for DoS prevention)
     title: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(100)])
       .optional()
       .nullable(),
     notes: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(5000)])
       .optional()
       .nullable(),
     tags: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(1000)])
       .optional()
       .nullable(),
     first_seen: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(50)])
       .optional()
       .nullable(),
     last_seen: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(50)])
       .optional()
       .nullable(),
     gender: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(50)])
       .optional()
       .nullable(),
     // Avatar field - allow URL strings for importing avatar images
     avatar: z
-      .union([z.literal(""), z.literal(null), z.undefined(), z.string()])
+      .union([z.literal(""), z.literal(null), z.undefined(), z.string().max(2048)])
       .optional()
       .nullable(),
   })

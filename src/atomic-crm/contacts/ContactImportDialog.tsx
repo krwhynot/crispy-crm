@@ -61,6 +61,22 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
   const { state: wizardState, actions: wizardActions, isAborted } = useImportWizard();
 
   // ============================================================
+  // BEFOREUNLOAD PROTECTION - Warn user before closing during import
+  // ============================================================
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (wizardState.step === "importing") {
+        e.preventDefault();
+        e.returnValue = "Import in progress. Are you sure you want to leave?";
+        return e.returnValue;
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [wizardState.step]);
+
+  // ============================================================
   // COLUMN MAPPING - Extracted hook for reusability
   // ============================================================
   const {

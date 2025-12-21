@@ -48,8 +48,8 @@ export function DigestPreferences() {
   } = useQuery<DigestPreferenceResponse>({
     queryKey: ["digestPreference"],
     queryFn: async () => {
-      const data = await dataProvider.rpc("get_digest_preference", {});
-      return data as DigestPreferenceResponse;
+      // Use generic RPC typing to avoid explicit assertion
+      return dataProvider.rpc<DigestPreferenceResponse>("get_digest_preference", {});
     },
     staleTime: 5 * 60 * 1000, // 5 minutes
   });
@@ -57,11 +57,12 @@ export function DigestPreferences() {
   // Update preference mutation
   const { mutate: updatePreference, isPending: isUpdating } = useMutation({
     mutationFn: async (optIn: boolean) => {
-      const data = await dataProvider.rpc("update_digest_preference", {
-        p_opt_in: optIn,
-      });
+      // Use generic RPC typing to avoid explicit assertion
+      const response = await dataProvider.rpc<UpdatePreferenceResponse>(
+        "update_digest_preference",
+        { p_opt_in: optIn }
+      );
 
-      const response = data as UpdatePreferenceResponse;
       if (!response.success) {
         throw new Error(response.error || "Failed to update preference");
       }

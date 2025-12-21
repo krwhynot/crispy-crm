@@ -32,6 +32,9 @@ const OrganizationEdit = () => (
   </ResourceErrorBoundary>
 );
 
+// Export wrapped view components for direct imports
+export { OrganizationList, OrganizationShow, OrganizationCreate, OrganizationEdit };
+
 // Export hierarchy components
 export { ParentOrganizationInput } from "./ParentOrganizationInput";
 export { BranchLocationsSection } from "./BranchLocationsSection";
@@ -39,6 +42,15 @@ export { ParentOrganizationSection } from "./ParentOrganizationSection";
 // Export badge components for reuse across views
 export { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
 export type { OrganizationType, PriorityLevel } from "./OrganizationBadges";
+
+// Resource configuration for React Admin
+export const organizationResource = {
+  name: "organizations",
+  list: OrganizationList,
+  show: OrganizationShow,
+  create: OrganizationCreate,
+  edit: OrganizationEdit,
+};
 
 export default {
   list: OrganizationList,

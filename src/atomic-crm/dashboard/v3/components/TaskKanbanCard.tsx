@@ -145,7 +145,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
         transition,
       };
 
-  const handleCardClick = (e: React.MouseEvent) => {
+  const handleCardClick = (e: React.MouseEvent | React.KeyboardEvent) => {
     // Don't open slide-over when clicking on action buttons or checkbox
     if ((e.target as HTMLElement).closest("[data-action-button]")) {
       return;
@@ -197,7 +197,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
-          handleCardClick(e as unknown as React.MouseEvent);
+          handleCardClick(e);
         }
       }}
       className={`

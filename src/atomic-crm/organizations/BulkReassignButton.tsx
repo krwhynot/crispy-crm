@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useNotify, useRefresh, useDataProvider, useGetList, useListContext } from "ra-core";
 import { Button } from "@/components/ui/button";
 import {
@@ -44,6 +44,16 @@ export const BulkReassignButton = ({ onSuccess }: BulkReassignButtonProps) => {
   const [selectedSalesId, setSelectedSalesId] = useState<string>("");
   const [isProcessing, setIsProcessing] = useState(false);
 
+  // AbortController for cancellation support
+  const abortControllerRef = useRef<AbortController | null>(null);
+
+  // Cleanup on unmount - abort any in-flight operation
+  useEffect(() => {
+    return () => {
+      abortControllerRef.current?.abort();
+    };
+  }, []);
+
   const { selectedIds, data: organizations, onUnselectItems } = useListContext<Organization>();
   const notify = useNotify();
   const refresh = useRefresh();
@@ -74,19 +84,33 @@ export const BulkReassignButton = ({ onSuccess }: BulkReassignButtonProps) => {
   };
 
   /**
+   * Cancel the in-progress bulk operation
+   */
+  const handleCancelOperation = () => {
+    abortControllerRef.current?.abort();
+    notify("Operation cancelled", { type: "info" });
+  };
+
+  /**
    * Execute the bulk reassignment
    *
-   * Pattern: Sequential updates with individual try-catch
+   * Pattern: Sequential updates with individual try-catch + AbortController
    * - Allows partial success reporting
+   * - Supports cancellation mid-operation
    * - Audit logging handled by database triggers automatically
    * - Follows fail-fast principle (no retries)
    */
   const handleExecuteReassign = async () => {
     if (!selectedSalesId || !selectedIds?.length) return;
 
+    // Create new AbortController for this operation
+    abortControllerRef.current = new AbortController();
+    const { signal } = abortControllerRef.current;
+
     setIsProcessing(true);
     let successCount = 0;
     let failureCount = 0;
+    let wasCancelled = false;
 
     // Log the reassignment action for debugging
     console.log(
@@ -96,6 +120,12 @@ export const BulkReassignButton = ({ onSuccess }: BulkReassignButtonProps) => {
     try {
       // Execute bulk update for each selected organization
       for (const id of selectedIds) {
+        // Check if operation was cancelled before each update
+        if (signal.aborted) {
+          wasCancelled = true;
+          break;
+        }
+
         try {
           await dataProvider.update("organizations", {
             id,
@@ -104,27 +134,41 @@ export const BulkReassignButton = ({ onSuccess }: BulkReassignButtonProps) => {
           });
           successCount++;
         } catch (error) {
+          // Check if this was an abort error
+          if (error instanceof DOMException && error.name === "AbortError") {
+            wasCancelled = true;
+            break;
+          }
           console.error(`[BulkReassign] Failed to update organization ${id}:`, error);
           failureCount++;
         }
       }
 
-      // Show results notification
-      if (successCount > 0) {
-        const salesRep = salesList?.find((s) => String(s.id) === selectedSalesId);
-        const salesRepName = salesRep
-          ? formatName(salesRep.first_name, salesRep.last_name)
-          : "selected rep";
+      // Show results notification (only if not cancelled or if some work was done)
+      if (wasCancelled) {
+        if (successCount > 0) {
+          notify(
+            `Cancelled after reassigning ${successCount} organization${successCount === 1 ? "" : "s"}`,
+            { type: "warning" }
+          );
+        }
+      } else {
+        if (successCount > 0) {
+          const salesRep = salesList?.find((s) => String(s.id) === selectedSalesId);
+          const salesRepName = salesRep
+            ? formatName(salesRep.first_name, salesRep.last_name)
+            : "selected rep";
 
-        notify(
-          `Successfully reassigned ${successCount} organization${successCount === 1 ? "" : "s"} to ${salesRepName}`,
-          { type: "success" }
-        );
-      }
-      if (failureCount > 0) {
-        notify(`Failed to reassign ${failureCount} organization${failureCount === 1 ? "" : "s"}`, {
-          type: "error",
-        });
+          notify(
+            `Successfully reassigned ${successCount} organization${successCount === 1 ? "" : "s"} to ${salesRepName}`,
+            { type: "success" }
+          );
+        }
+        if (failureCount > 0) {
+          notify(`Failed to reassign ${failureCount} organization${failureCount === 1 ? "" : "s"}`, {
+            type: "error",
+          });
+        }
       }
 
       // Refresh list and clear selection
@@ -136,10 +180,15 @@ export const BulkReassignButton = ({ onSuccess }: BulkReassignButtonProps) => {
       }
       handleCloseDialog();
     } catch (error) {
+      if (error instanceof DOMException && error.name === "AbortError") {
+        // Already handled above
+        return;
+      }
       notify("Bulk reassignment failed", { type: "error" });
       console.error("[BulkReassign] Bulk action error:", error);
     } finally {
       setIsProcessing(false);
+      abortControllerRef.current = null;
     }
   };
 
@@ -211,14 +260,23 @@ export const BulkReassignButton = ({ onSuccess }: BulkReassignButtonProps) => {
           </div>
 
           <DialogFooter>
-            <Button variant="outline" onClick={handleCloseDialog} disabled={isProcessing}>
-              Cancel
-            </Button>
-            <Button onClick={handleExecuteReassign} disabled={!selectedSalesId || isProcessing}>
-              {isProcessing
-                ? "Reassigning..."
-                : `Reassign ${selectedIds.length} Organization${selectedIds.length === 1 ? "" : "s"}`}
-            </Button>
+            {isProcessing ? (
+              <>
+                <Button variant="destructive" onClick={handleCancelOperation}>
+                  Cancel Operation
+                </Button>
+                <Button disabled>Reassigning...</Button>
+              </>
+            ) : (
+              <>
+                <Button variant="outline" onClick={handleCloseDialog}>
+                  Cancel
+                </Button>
+                <Button onClick={handleExecuteReassign} disabled={!selectedSalesId}>
+                  Reassign {selectedIds.length} Organization{selectedIds.length === 1 ? "" : "s"}
+                </Button>
+              </>
+            )}
           </DialogFooter>
         </DialogContent>
       </Dialog>

@@ -5,17 +5,26 @@ import { Form, type FormProps } from "ra-core";
 import { cn } from "@/lib/utils";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { SaveButton } from "@/components/admin/form";
+import type { FieldValues, SubmitHandler } from "react-hook-form";
 
-export const SimpleForm = ({
+/**
+ * Props for SimpleForm with generic type support for form data.
+ * This allows proper typing of onSubmit handlers without requiring `as any` casts.
+ */
+export interface SimpleFormProps<TFormData extends FieldValues = FieldValues>
+  extends Omit<FormProps, "onSubmit"> {
+  children: ReactNode;
+  className?: string;
+  toolbar?: ReactNode;
+  onSubmit?: SubmitHandler<TFormData>;
+}
+
+export const SimpleForm = <TFormData extends FieldValues = FieldValues>({
   children,
   className,
   toolbar = defaultFormToolbar,
   ...rest
-}: {
-  children: ReactNode;
-  className?: string;
-  toolbar?: ReactNode;
-} & FormProps) => (
+}: SimpleFormProps<TFormData>) => (
   <Form className={cn(`flex flex-col gap-4 w-full max-w-lg`, className)} {...rest}>
     {children}
     {toolbar}

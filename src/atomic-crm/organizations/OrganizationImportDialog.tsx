@@ -10,7 +10,7 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Loader2, CheckCircle2, Building2, Upload } from "lucide-react";
 import { useRefresh, useNotify, useDataProvider } from "ra-core";
-import { useState, useRef, useCallback, useMemo } from "react";
+import { useState, useRef, useCallback, useMemo, useEffect } from "react";
 import Papa from "papaparse";
 import { findCanonicalField, mapHeadersToFields } from "./organizationColumnAliases";
 import { detectDuplicateOrganizations } from "./organizationImport.logic";
@@ -86,6 +86,22 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
     startTime: null,
   });
   const rowOffsetRef = useRef(0);
+
+  // ============================================================
+  // BEFOREUNLOAD PROTECTION - Warn user before closing during import
+  // ============================================================
+  useEffect(() => {
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (importState === "running") {
+        e.preventDefault();
+        e.returnValue = "Import in progress. Are you sure you want to leave?";
+        return e.returnValue;
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [importState]);
 
   /**
    * Helper function to transform raw CSV row data to mapped organization object
@@ -425,7 +441,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
   }, [rawHeaders, userOverrides]);
 
   // Reprocess organizations whenever mappings or raw data change
-  const reprocessedOrganizations = useMemo<any[]>(() => {
+  const reprocessedOrganizations = useMemo<MappedCSVRow[]>(() => {
     if (!rawHeaders.length || !rawDataRows.length) {
       return [];
     }
