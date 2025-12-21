@@ -1,6 +1,6 @@
 import type { ComponentProps } from "react";
 import { useCallback, useEffect, type ReactElement } from "react";
-import type { InputProps } from "ra-core";
+import type { InputProps, RaRecord } from "ra-core";
 import {
   FieldTitle,
   useChoices,

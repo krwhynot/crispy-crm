@@ -1,7 +1,7 @@
 import React, { useCallback } from "react";
 import { Switch } from "@/components/ui/switch";
 import { FormError, FormField, FormLabel, FormControl } from "@/components/admin/form";
-import { useInput, FieldTitle } from "ra-core";
+import { useInput, FieldTitle, type InputProps } from "ra-core";
 import { InputHelperText } from "./input-helper-text";
 
 export const BooleanInput = (props: BooleanInputProps) => {
@@ -66,19 +66,9 @@ export const BooleanInput = (props: BooleanInputProps) => {
   );
 };
 
-export interface BooleanInputProps {
+export interface BooleanInputProps extends InputProps {
   className?: string;
-  defaultValue?: boolean;
-  format?: (value: any) => any;
   helperText?: React.ReactNode;
-  label?: string;
   onBlur?: (event: React.FocusEvent<HTMLButtonElement>) => void;
-  onChange?: (value: any) => void;
   onFocus?: (event: React.FocusEvent<HTMLButtonElement>) => void;
-  readOnly?: boolean;
-  disabled?: boolean;
-  parse?: (value: any) => any;
-  resource?: string;
-  source: string;
-  validate?: any;
 }

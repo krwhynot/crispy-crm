@@ -4,7 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { Command, CommandGroup, CommandItem, CommandList } from "@/components/ui/command";
 import { FormControl, FormError, FormField, FormLabel } from "@/components/admin/form";
 import { Command as CommandPrimitive } from "cmdk";
-import type { ChoicesProps, InputProps } from "ra-core";
+import type { ChoicesProps, InputProps, FilterPayload, RaRecord } from "ra-core";
 import {
   useChoices,
   useChoicesContext,
@@ -23,10 +23,10 @@ export const AutocompleteArrayInput = (
     ChoicesProps & {
       className?: string;
       disableValue?: string;
-      filterToQuery?: (searchText: string) => any;
+      filterToQuery?: (searchText: string) => FilterPayload;
       translateChoice?: boolean;
       placeholder?: string;
-      inputText?: React.ReactNode | ((option: any | undefined) => React.ReactNode);
+      inputText?: React.ReactNode | ((option: RaRecord | undefined) => React.ReactNode);
     }
 ) => {
   const { filterToQuery = DefaultFilterToQuery, inputText } = props;
@@ -52,8 +52,8 @@ export const AutocompleteArrayInput = (
   const inputRef = React.useRef<HTMLInputElement>(null);
   const [open, setOpen] = React.useState(false);
 
-  const handleUnselect = useEvent((choice: any) => {
-    field.onChange(field.value.filter((v: any) => v !== getChoiceValue(choice)));
+  const handleUnselect = useEvent((choice: RaRecord) => {
+    field.onChange(field.value.filter((v: unknown) => v !== getChoiceValue(choice)));
   });
 
   const handleKeyDown = useEvent((e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -80,7 +80,7 @@ export const AutocompleteArrayInput = (
   const [filterValue, setFilterValue] = React.useState("");
 
   const getInputText = useCallback(
-    (selectedChoice: any) => {
+    (selectedChoice: RaRecord | undefined) => {
       if (typeof inputText === "function") {
         return inputText(selectedChoice);
       }

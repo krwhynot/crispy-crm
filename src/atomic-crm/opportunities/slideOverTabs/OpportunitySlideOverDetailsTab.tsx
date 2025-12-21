@@ -13,6 +13,7 @@ import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
 import type { CloseOpportunityInput } from "@/atomic-crm/validation/opportunities";
 import { WIN_REASONS, LOSS_REASONS } from "@/atomic-crm/validation/opportunities";
 import { parseDateSafely } from "@/lib/date-utils";
+import type { Opportunity } from "@/atomic-crm/types";
 
 /**
  * OrganizationCard - Displays organization info in view mode
@@ -80,7 +81,7 @@ const OrganizationCard = ({
 };
 
 interface OpportunitySlideOverDetailsTabProps {
-  record: any;
+  record: Opportunity;
   mode: "view" | "edit";
   onModeToggle?: () => void;
   /** Whether this tab is currently active - available for conditional data fetching */
@@ -102,13 +103,13 @@ export function OpportunitySlideOverDetailsTab({
   const [closeTargetStage, setCloseTargetStage] = useState<"closed_won" | "closed_lost">(
     "closed_won"
   );
-  const pendingFormDataRef = useRef<any>(null);
+  const pendingFormDataRef = useRef<Partial<Opportunity> | null>(null);
 
   /**
    * Perform the actual save operation
    */
   const performSave = useCallback(
-    async (data: any, additionalData?: Partial<CloseOpportunityInput>) => {
+    async (data: Partial<Opportunity>, additionalData?: Partial<CloseOpportunityInput>) => {
       setIsSaving(true);
       try {
         await update(
@@ -125,7 +126,7 @@ export function OpportunitySlideOverDetailsTab({
                 onModeToggle(); // Switch back to view mode
               }
             },
-            onError: (error: any) => {
+            onError: (error: Error) => {
               notify(error?.message || "Failed to update opportunity", { type: "error" });
             },
           }
@@ -141,7 +142,7 @@ export function OpportunitySlideOverDetailsTab({
    * Handle form submission - intercept closed stage transitions
    */
   const handleSave = useCallback(
-    async (data: any) => {
+    async (data: Partial<Opportunity>) => {
       const isClosingOpportunity =
         (data.stage === "closed_won" || data.stage === "closed_lost") &&
         record.stage !== data.stage;

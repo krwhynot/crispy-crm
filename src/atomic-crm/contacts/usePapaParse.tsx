@@ -79,10 +79,10 @@ export function usePapaParse<T>({
           try {
             // REFACTORED: Use the single source of truth to process raw CSV data.
             // This replaces ~40 lines of duplicated logic.
-            const parseResult = parseRawCsvData(results.data as any[][]);
+            const parseResult = parseRawCsvData(results.data as unknown[][]);
             transformedData = parseResult.contacts as T[];
             headers = parseResult.headers;
-          } catch (error: any) {
+          } catch (error: unknown) {
             setImporter({
               state: "error",
               error: error instanceof Error ? error : new Error(String(error)),
@@ -93,7 +93,7 @@ export function usePapaParse<T>({
           // If in preview mode, call onPreview callback and return early
           if (onPreview && previewRowCount) {
             // Pass raw data rows (skip first 3 rows: instructions, empty, headers)
-            const rawDataRows = (results.data as any[][]).slice(3);
+            const rawDataRows = (results.data as unknown[][]).slice(3);
             onPreview({ rows: transformedData, headers, rawDataRows });
             setImporter({
               state: "idle",
