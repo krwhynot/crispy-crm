@@ -17,16 +17,17 @@ export class ActivitiesService {
    * @param salesId Optional sales ID to filter activities
    * @returns Array of activity records sorted by date descending, limited to 250 items
    */
-  async getActivityLog(organizationId?: Identifier, salesId?: Identifier): Promise<any[]> {
+  async getActivityLog(organizationId?: Identifier, salesId?: Identifier): Promise<Record<string, unknown>[]> {
     try {
       return await getActivityLog(this.dataProvider, organizationId, salesId);
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[ActivitiesService] Failed to get activity log`, {
         organizationId,
         salesId,
         error,
       });
-      throw new Error(`Get activity log failed: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      throw new Error(`Get activity log failed: ${errorMessage}`);
     }
   }
 }

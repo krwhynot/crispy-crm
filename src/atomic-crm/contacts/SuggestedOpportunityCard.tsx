@@ -6,7 +6,7 @@ interface SuggestedOpportunityCardProps {
     id: number;
     name: string;
     stage: string;
-    health_status?: string;
+    health_status?: "active" | "cooling" | "at_risk";
     amount?: number;
   };
   onLink: () => void;
@@ -20,7 +20,7 @@ export function SuggestedOpportunityCard({ opportunity, onLink }: SuggestedOppor
         <div className="flex items-center gap-2 mt-1">
           <StageBadgeWithHealth
             stage={opportunity.stage}
-            health={opportunity.health_status as any}
+            health={opportunity.health_status}
           />
           {opportunity.amount && (
             <span className="text-sm text-muted-foreground">

@@ -76,7 +76,7 @@ export function ProductRelationshipsTab({ record }: ProductRelationshipsTabProps
 
               {!isLoadingOpportunities && opportunityProducts && opportunityProducts.length > 0 && (
                 <div className="space-y-2">
-                  {opportunityProducts.map((oppProduct: any) => (
+                  {opportunityProducts.map((oppProduct: { id: number | string; opportunity_id: number; notes?: string }) => (
                     <div
                       key={oppProduct.id}
                       className="border-b border-border pb-2 last:border-0 last:pb-0"

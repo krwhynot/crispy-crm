@@ -78,7 +78,7 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
   // PREVIEW CALLBACK - Triggered when PapaParse completes
   // ============================================================
   const onPreview = useCallback(
-    (data: { rows: ContactImportSchema[]; headers: string[]; rawDataRows?: any[][] }) => {
+    (data: { rows: ContactImportSchema[]; headers: string[]; rawDataRows?: unknown[][] }) => {
       if (!ENABLE_IMPORT_PREVIEW) return;
 
       const { rows, headers, rawDataRows: dataRows } = data;
@@ -277,8 +277,8 @@ export function ContactImportDialog({ open, onClose }: ContactImportModalProps) 
           batchErrors: result.errors,
           batchSize: batch.length,
         });
-      } catch (error: any) {
-        const errorMessage = error.message || "A critical error occurred during batch processing.";
+      } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : "A critical error occurred during batch processing.";
         const batchStartRow = wizardState.rowOffset + 1;
 
         // Add an error entry for each contact in the failed batch

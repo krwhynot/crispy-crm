@@ -44,4 +44,4 @@ export const sanitizeInputRestProps = ({
   validateFields,
   value,
   ...rest
-}: any) => rest;
+}: Record<string, unknown>) => rest;

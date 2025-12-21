@@ -690,7 +690,7 @@ export function extendWithCustomMethods(config: ExtensionConfig): ExtendedDataPr
           processedOptions.body
         ) {
           // Safe to access schema since we've verified the function name exists
-          const schema = edgeFunctionSchemas[functionName as EdgeFunctionName] as any;
+          const schema = edgeFunctionSchemas[functionName as EdgeFunctionName];
           const validationResult = schema.safeParse(processedOptions.body);
 
           if (!validationResult.success) {

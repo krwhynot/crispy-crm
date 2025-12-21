@@ -220,7 +220,7 @@ const DataTableRow = ({ children, className }: { children: ReactNode; className?
   );
 };
 
-const isPromise = (value: any): value is Promise<any> => value && typeof value.then === "function";
+const isPromise = (value: unknown): value is Promise<unknown> => value && typeof value.then === "function";
 
 const DataTableEmpty = () => {
   return (

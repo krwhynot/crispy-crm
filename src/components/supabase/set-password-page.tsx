@@ -53,25 +53,27 @@ export const SetPasswordPage = () => {
         refresh_token,
         password: values.password,
       });
-    } catch (error: any) {
-      notify(
+    } catch (error: unknown) {
+      const errorMessage =
         typeof error === "string"
           ? error
-          : typeof error === "undefined" || !error.message
-            ? "ra.auth.sign_in_error"
-            : error.message,
-        {
-          type: "warning",
-          messageArgs: {
-            _:
-              typeof error === "string"
-                ? error
-                : error && error.message
-                  ? error.message
-                  : undefined,
-          },
-        }
-      );
+          : error instanceof Error
+            ? error.message
+            : "ra.auth.sign_in_error";
+
+      const errorDetails =
+        typeof error === "string"
+          ? error
+          : error instanceof Error
+            ? error.message
+            : undefined;
+
+      notify(errorMessage, {
+        type: "warning",
+        messageArgs: {
+          _: errorDetails,
+        },
+      });
     } finally {
       setLoading(false);
     }

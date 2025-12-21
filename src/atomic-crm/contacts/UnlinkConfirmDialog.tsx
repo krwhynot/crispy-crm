@@ -42,8 +42,8 @@ export function UnlinkConfirmDialog({
             onSuccess();
             onClose();
           },
-          onError: (error: any) => {
-            notify(error?.message || "Failed to unlink opportunity", { type: "error" });
+          onError: (error: Error) => {
+            notify(error.message || "Failed to unlink opportunity", { type: "error" });
           },
         }
       );

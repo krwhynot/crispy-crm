@@ -131,7 +131,15 @@ export default function WeeklyActivitySummary() {
   }, [activities, salesMap, orgMap]);
 
   const handleExport = () => {
-    const exportData: any[] = [];
+    const exportData: Array<{
+      rep_name: string;
+      principal_name: string;
+      calls: number;
+      emails: number;
+      meetings: number;
+      notes: number;
+      total: number;
+    }> = [];
 
     reportData.forEach((repGroup) => {
       repGroup.principals.forEach((stats) => {

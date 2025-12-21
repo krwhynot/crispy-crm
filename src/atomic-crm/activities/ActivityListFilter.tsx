@@ -25,7 +25,7 @@ export const ActivityListFilter = () => {
   const { data: identity } = useGetIdentity();
 
   // Sample status badge colors for visual consistency
-  const sampleStatusColors: Record<string, string> = {
+  const sampleStatusColors: Record<string, "outline" | "secondary" | "default" | "destructive"> = {
     sent: "outline",
     received: "secondary",
     feedback_pending: "default",
@@ -96,7 +96,7 @@ export const ActivityListFilter = () => {
               className="w-full justify-between"
               label={
                 <Badge
-                  variant={sampleStatusColors[option.value] as any}
+                  variant={sampleStatusColors[option.value]}
                   className="text-xs px-1 py-0"
                 >
                   {option.label}

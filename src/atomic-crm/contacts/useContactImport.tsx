@@ -229,7 +229,7 @@ export function useContactImport() {
             }
 
             return { rowNumber, success: true };
-          } catch (error: any) {
+          } catch (error: unknown) {
             // Catch errors from dataProvider (e.g., unique constraints)
             const finalErrors: FieldError[] = [];
             if (error instanceof ZodError) {
@@ -239,14 +239,17 @@ export function useContactImport() {
                   message: issue.message,
                 });
               });
-            } else if (error.body?.errors) {
-              for (const [field, message] of Object.entries(error.body.errors)) {
-                finalErrors.push({ field, message: String(message) });
+            } else if (typeof error === "object" && error !== null && "body" in error) {
+              const errorBody = error.body as Record<string, unknown> | undefined;
+              if (errorBody?.errors && typeof errorBody.errors === "object") {
+                for (const [field, message] of Object.entries(errorBody.errors)) {
+                  finalErrors.push({ field, message: String(message) });
+                }
               }
             } else {
               finalErrors.push({
                 field: "general",
-                message: error.message || "Unknown error during record creation",
+                message: error instanceof Error ? error.message : "Unknown error during record creation",
               });
             }
             return { rowNumber, success: false, errors: finalErrors, data: contactData };
@@ -261,7 +264,7 @@ export function useContactImport() {
       // 5. Tally results
       results.forEach((result) => {
         if (result.status === "fulfilled") {
-          const value = result.value as any;
+          const value = result.value;
           if (value.success) {
             successCount++;
           } else {
@@ -273,13 +276,14 @@ export function useContactImport() {
           }
         } else {
           // This case is less likely now but kept for safety
+          const reason = result.reason;
           errors.push({
             row: 0, // Cannot determine row number here
             data: {},
             errors: [
               {
                 field: "processing",
-                message: result.reason?.message || "Unknown processing error",
+                message: reason instanceof Error ? reason.message : "Unknown processing error",
               },
             ],
           });

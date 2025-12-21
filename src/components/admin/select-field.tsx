@@ -100,7 +100,7 @@ const SelectFieldImpl = <RecordType extends Record<string, any> = Record<string,
   });
   const translate = useTranslate();
 
-  const choice = choices ? choices.find((choice: any) => getChoiceValue(choice) === value) : null;
+  const choice = choices ? choices.find((choice) => getChoiceValue(choice) === value) : null;
 
   if (!choice) {
     if (!empty) {

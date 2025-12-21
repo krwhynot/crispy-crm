@@ -5,6 +5,7 @@ import { OpportunitySlideOverDetailsTab } from "./slideOverTabs/OpportunitySlide
 import { OpportunityContactsTab } from "./slideOverTabs/OpportunityContactsTab";
 import { OpportunityProductsTab } from "./slideOverTabs/OpportunityProductsTab";
 import { OpportunityNotesTab } from "./slideOverTabs/OpportunityNotesTab";
+import type { Opportunity } from "@/atomic-crm/types";
 
 interface OpportunitySlideOverProps {
   recordId: number | null;
@@ -48,7 +49,7 @@ export function OpportunitySlideOver({
     },
   ];
 
-  const recordRepresentation = (record: any) => {
+  const recordRepresentation = (record: Opportunity) => {
     return record.name || `Opportunity #${record.id}`;
   };
 

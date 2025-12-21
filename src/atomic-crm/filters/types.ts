@@ -95,7 +95,7 @@ export type FilterValidator = (value: FilterValue) => boolean;
 /**
  * Filter transform function type
  */
-export type FilterTransform = (value: FilterValue) => any;
+export type FilterTransform = (value: FilterValue) => unknown;
 
 /**
  * Type guards for filter values
@@ -108,7 +108,7 @@ export const isSingleFilterValue = (value: FilterValue): value is SingleFilterVa
   return !Array.isArray(value);
 };
 
-export const isValidFilterValue = (value: any): value is FilterValue => {
+export const isValidFilterValue = (value: unknown): value is FilterValue => {
   if (value === null || value === undefined) return true;
 
   if (Array.isArray(value)) {

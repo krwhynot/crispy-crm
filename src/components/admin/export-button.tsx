@@ -86,5 +86,5 @@ export interface ExportButtonProps {
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   resource?: string;
 
-  meta?: any;
+  meta?: Record<string, unknown>;
 }

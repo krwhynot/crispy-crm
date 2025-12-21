@@ -141,7 +141,7 @@ const OrganizationCreate = () => {
   const unknownSegmentId = segments?.[0]?.id;
 
   // Read parent_organization_id from router state (set by "Add Branch" button)
-  const parentOrgId = (location.state as any)?.record?.parent_organization_id;
+  const parentOrgId = (location.state as { record?: { parent_organization_id?: string | number } })?.record?.parent_organization_id;
 
   // Transform function for URL prefixing
   // NOTE: All useCallback hooks must be declared before any early returns (React rules-of-hooks)

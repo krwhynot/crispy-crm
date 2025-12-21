@@ -34,7 +34,7 @@ export interface UseColumnMappingReturn {
   setOverride: (csvHeader: string, targetField: string | null) => void;
 
   /** Initialize with parsed CSV data (called from onPreview callback) */
-  setRawData: (headers: string[], rows: any[][]) => void;
+  setRawData: (headers: string[], rows: unknown[][]) => void;
 
   /** Reset all state (called when dialog closes or new file selected) */
   reset: () => void;
@@ -73,7 +73,7 @@ export interface UseColumnMappingReturn {
 export function useColumnMapping(): UseColumnMappingReturn {
   // Core state
   const [rawHeaders, setRawHeaders] = useState<string[]>([]);
-  const [rawDataRows, setRawDataRows] = useState<any[][]>([]);
+  const [rawDataRows, setRawDataRows] = useState<unknown[][]>([]);
   const [userOverrides, setUserOverrides] = useState<Map<string, string | null>>(new Map());
 
   // Track previous headers to detect new file selection
@@ -144,7 +144,7 @@ export function useColumnMapping(): UseColumnMappingReturn {
    * Initialize with parsed CSV data.
    * Called from the onPreview callback when usePapaParse completes parsing.
    */
-  const setRawData = useCallback((headers: string[], rows: any[][]) => {
+  const setRawData = useCallback((headers: string[], rows: unknown[][]) => {
     setRawHeaders(headers);
     setRawDataRows(rows);
   }, []);

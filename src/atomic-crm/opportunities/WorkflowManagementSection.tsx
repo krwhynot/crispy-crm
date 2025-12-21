@@ -48,7 +48,7 @@ export const WorkflowManagementSection: React.FC = () => {
 
   if (!record) return null;
 
-  const handleSaveField = (field: keyof Opportunity, value: any) => {
+  const handleSaveField = (field: keyof Opportunity, value: string | string[] | null) => {
     update(
       "opportunities",
       {
