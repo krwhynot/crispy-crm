@@ -35,7 +35,7 @@ import { contactImportLimiter } from "../utils/rateLimiter";
 import { FileInput } from "@/components/admin/file-input";
 import { FileField } from "@/components/admin/file-field";
 import * as React from "react";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useEffect } from "react";
 import * as sampleCsv from "./contacts_export.csv?raw";
 
 // Feature flag for enhanced import preview

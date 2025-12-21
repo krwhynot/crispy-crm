@@ -12,7 +12,7 @@
 | Priority | Count | Est. Effort | Fixed | Status |
 |----------|-------|-------------|-------|--------|
 | P0 | 8 | 6 hours | 5 | Critical - Fix Before Beta |
-| P1 | 18 | 16 hours | 7 | High - Fix This Week |
+| P1 | 18 | 16 hours | 12 | High - Fix This Week |
 | P2 | 31 | 24 hours | 0 | Medium - Fix Before Launch |
 | P3 | 32 | 20+ hours | 0 | Low - Post-Launch Backlog |
 
@@ -104,21 +104,25 @@
 
 ### Pattern Drift
 
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P1-DRIFT-1 | TaskEdit uses wrong wrapper pattern | `TaskEdit.tsx` | 1 hr | Agent 17 |
-| P1-DRIFT-2 | Console.log statements in prod code | `OrganizationImportDialog.tsx` (15+) | 30 min | Agent 17 |
-| P1-DRIFT-3 | Console.log in useOrganizationImport | `useOrganizationImport.tsx` | 15 min | Agent 17 |
+| ID | Finding | Location | Effort | Source | Status |
+|----|---------|----------|--------|--------|--------|
+| P1-DRIFT-1 | TaskEdit uses wrong wrapper pattern | `TaskEdit.tsx` | 1 hr | Agent 17 | ✅ Fixed |
+| P1-DRIFT-2 | Console.log statements in prod code | `OrganizationImportDialog.tsx` (15+) | 30 min | Agent 17 | ✅ Fixed |
+| P1-DRIFT-3 | Console.log in useOrganizationImport | `useOrganizationImport.tsx` | 15 min | Agent 17 | ✅ Fixed |
 
 ### Component Structure
 
 | ID | Finding | Location | Effort | Source | Status |
 |----|---------|----------|--------|--------|--------|
-| P1-COMP-1 | Nested component definitions (15-20) | Various files | 2 hrs | Agent 6, 24 | |
+| P1-COMP-1 | Nested component definitions (15-20) | Various files | 2 hrs | Agent 6, 24 | ⚠️ False Positive |
 | P1-COMP-2 | Context value not memoized | `ConfigurationContext` | 30 min | Agent 9 | ✅ Already Fixed |
-| P1-COMP-3 | ValidationService wrong function | `ValidationService.ts:88` | 15 min | Agent 11 | |
+| P1-COMP-3 | ValidationService wrong function | `ValidationService.ts:88` | 15 min | Agent 11 | ⚠️ Not Applicable |
+
+**P1-COMP-1 Resolution:** Comprehensive analysis of all flagged files (OrganizationAside.tsx, OrganizationShow.tsx, NotificationsList.tsx, CRM.tsx, Header.tsx, OpportunityList.tsx, SalesList.tsx, ActivityList.tsx, Create/Edit forms) shows **all components are defined at module level**, not nested inside other component functions. The audit incorrectly counted "multiple components in same file" as "nested components".
 
 **P1-COMP-2 Resolution:** Duplicate of P0-PERF-2. Already fixed - `ConfigurationContext.tsx:67-94` has `useMemo` correctly implemented.
+
+**P1-COMP-3 Resolution:** `ValidationService.ts` is a **service class**, not a React component. The pattern at line 88 (`create: async (data: unknown) => validateContactForm(data)`) is correct class property initialization - methods are created once per class instance, not on every render.
 
 ---
 
@@ -276,7 +280,7 @@
 | Type | Count | Top Priority | Est. Effort |
 |------|-------|--------------|-------------|
 | Type Safety | 14 | P0-TYPE-1 | 6 hrs |
-| Form Patterns | 8 | P1-FORM-1 | 2 hrs |
+| Form Patterns | 2 actual (6 false positive/missing) | P1-FORM-7 | 30 min |
 | Error Handling | 6 | P1-ERR-1 | 2 hrs |
 | Dead Code | 12 | P3-DEAD-1 | 2 hrs |
 | Module Structure | 9 | P2-MOD-1 | 6 hrs |
@@ -308,13 +312,13 @@ Per Agent 24 (Devil's Advocate) analysis:
 
 | ID | Finding | Effort | Impact | Status |
 |----|---------|--------|--------|--------|
-| P0-SEC-1 | field-toggle.tsx null check | 15 min | Prevents crash |
+| P0-SEC-1 | field-toggle.tsx null check | 15 min | Prevents crash | |
 | P0-DAT-1 | Contact self-manager constraint | 15 min | Data integrity | ✅ Done |
 | P0-DAT-2 | Tags soft-delete fix | 15 min | Consistency | ✅ Done |
-| P1-FORM-* | 8 form schema fixes | 2 hrs total | Pattern compliance |
-| P3-DEAD-1 | Delete OrganizationType.tsx | 5 min | Code cleanup |
-| P3-DEAD-6 | Delete simple-list/ | 5 min | 475 lines removed |
-| P3-DEP-* | npm uninstall 3 packages | 5 min | ~90KB bundle savings |
+| P1-FORM-7,8 | 2 sales tab form schema fixes | 30 min | Pattern compliance | ✅ Done |
+| P3-DEAD-1 | Delete OrganizationType.tsx | 5 min | Code cleanup | |
+| P3-DEAD-6 | Delete simple-list/ | 5 min | 475 lines removed | |
+| P3-DEP-* | npm uninstall 3 packages | 5 min | ~90KB bundle savings | |
 
 ---
 
@@ -436,6 +440,105 @@ All are cast to the generic `RecordType` parameter required by React Admin's Dat
 **Verification:**
 - `npm run typecheck` ✅
 - Schema patterns verified with grep ✅
+
+---
+
+### P1-C: Pattern Drift Fixes ✅
+**Fixed:** 2025-12-21
+
+**Problem:** 3 pattern drift issues in task editing and organization import code.
+
+**Findings:**
+| ID | Status | Resolution |
+|----|--------|------------|
+| P1-DRIFT-1 | ✅ Fixed | Refactored TaskEdit to use EditBase + Form pattern |
+| P1-DRIFT-2 | ✅ Fixed | Converted 15 console.log to devLog() calls |
+| P1-DRIFT-3 | ✅ Fixed | Removed 2 unguarded console.log statements |
+
+**Fix Applied (P1-DRIFT-1):**
+```typescript
+// Before: TaskEdit.tsx used Edit wrapper + SimpleForm
+import { Edit } from "@/components/admin/edit";
+import { SimpleForm } from "@/components/admin/simple-form";
+
+// After: Matches standard EditBase pattern like OpportunityEdit
+import { EditBase, Form, useRecordContext } from "ra-core";
+
+export const TaskEdit = () => (
+  <EditBase redirect="show" mutationMode="pessimistic" mutationOptions={...}>
+    <TaskEditForm />
+  </EditBase>
+);
+
+const TaskEditForm = () => {
+  const record = useRecordContext<Task>();
+  if (!record) return null;
+  return (
+    <Form defaultValues={record} key={record.id}>
+      ...
+    </Form>
+  );
+};
+```
+
+**Fix Applied (P1-DRIFT-2, P1-DRIFT-3):**
+- Converted `if (DEV) { console.log(...) }` blocks to `devLog()` calls
+- Converted `console.error` to `devWarn()` for non-critical warnings
+- Removed unused `DEV` import after conversion
+
+**Verification:**
+- `npm run typecheck` ✅
+- `npm run build` ✅
+- `grep console.log OrganizationImportDialog.tsx` → 0 results ✅
+- `grep console.log useOrganizationImport.tsx` → 0 results ✅
+
+---
+
+### P1-D: Component Structure Fixes ✅
+**Analyzed:** 2025-12-21
+
+**Problem:** 3 component structure issues flagged by the audit:
+- P1-COMP-1: "15-20 nested component definitions causing re-renders"
+- P1-COMP-2: "ConfigurationContext value not memoized"
+- P1-COMP-3: "ValidationService wrong function pattern at line 88"
+
+**Root Cause Analysis:**
+
+| ID | Finding | Actual Status |
+|----|---------|---------------|
+| P1-COMP-1 | Nested components | ⚠️ **False Positive** - All examined components are at module level |
+| P1-COMP-2 | Context memoization | ✅ Already fixed - `useMemo` at lines 67-94 |
+| P1-COMP-3 | ValidationService pattern | ⚠️ **Not Applicable** - Service class, not React component |
+
+**Files Analyzed (all follow correct patterns):**
+- `OrganizationAside.tsx` - Helper components (`OrganizationInfo`, `AddressInfo`, etc.) at module level ✅
+- `OrganizationShow.tsx` - `ContactsIterator`, `OpportunitiesIterator` at module level ✅
+- `NotificationsList.tsx` - All 10+ helper components at module level ✅
+- `CRM.tsx` - Redirect components at module level ✅
+- `Header.tsx` - `NavigationTab`, `UsersMenu`, etc. at module level ✅
+- `OpportunityList.tsx` - `OpportunityListLayout` at module level ✅
+- `SalesList.tsx` - `SalesListLayout`, `RoleBadgeField`, etc. at module level ✅
+- `ActivityList.tsx` - `ActivityListLayout`, `ActivityListActions` at module level ✅
+- `ActivityCreate.tsx`, `SalesCreate.tsx`, `SalesEdit.tsx` - All form components at module level ✅
+
+**Key Distinction:**
+```typescript
+// ✅ CORRECT (Module level) - What the codebase uses:
+const Child = () => <div>...</div>;  // Defined at file scope
+const Parent = () => <Child />;       // Defined at file scope
+
+// ❌ PROBLEMATIC (Nested) - Not found in codebase:
+const Parent = () => {
+  const Child = () => <div>...</div>;  // Recreated every render!
+  return <Child />;
+};
+```
+
+**Conclusion:** The original audit miscounted "components in same file" as "nested components". The codebase follows React best practices.
+
+**Verification:**
+- `npm run typecheck` ✅
+- `npm test` - 16/17 files pass, 266/275 tests pass (9 failures are unrelated mock config issues in `useDuplicateOrgCheck.test.tsx`)
 
 ---
 

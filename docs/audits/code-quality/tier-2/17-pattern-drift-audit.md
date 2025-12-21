@@ -180,7 +180,7 @@ Inconsistent message formats
 | contacts | Form key | `key={record.id}` | Missing | 10% |
 | contacts | Layout | Card | ResponsiveGrid with aside | 10% |
 | organizations | Mutation hook | Simple flow | onMutate with validation throw | 15% |
-| tasks | Wrapper | EditBase | `Edit` + `SimpleForm` (different pattern!) | 40% |
+| tasks | Wrapper | EditBase | ~~`Edit` + `SimpleForm`~~ EditBase + Form ✅ | 0% (Fixed) |
 | sales | Wrapper | EditBase | None - uses useMutation | 50% |
 | sales | Data flow | RA mutation | Direct useMutation → SalesService | 50% |
 
@@ -219,8 +219,8 @@ notify(error.message || "Fallback message", { type: "error" });
 | products/ProductDetailsTab | Error log | notify only | console.error + notify | Low |
 | organizations/slideOverTabs/OrganizationDetailsTab | Error log | notify only | console.error only | Medium - no user feedback |
 | organizations/BulkReassignButton | Error log | notify only | console.log + console.error | Medium |
-| organizations/OrganizationImportDialog | Debug logs | Remove in prod | 20+ console.log statements | High - debug code in prod |
-| organizations/useOrganizationImport | Debug logs | Remove in prod | Multiple console.log | Medium |
+| organizations/OrganizationImportDialog | Debug logs | Remove in prod | ~~20+ console.log statements~~ | ✅ Fixed 2025-12-21 |
+| organizations/useOrganizationImport | Debug logs | Remove in prod | ~~Multiple console.log~~ | ✅ Fixed 2025-12-21 |
 | settings/SettingsPage | Error log | notify only | console.error only | Medium - no user feedback |
 | tutorial/* | Warning logs | Silent or notify | console.warn usage | Low - valid for dev |
 | reports/* | Error log | notify | console.error + notify | Low |
@@ -229,7 +229,7 @@ notify(error.message || "Fallback message", { type: "error" });
 
 | Category | Count | Priority |
 |----------|-------|----------|
-| `console.log` (debug) | 20+ | High - remove |
+| `console.log` (debug) | ~~20+~~ 6 remaining | ✅ Partially fixed (import dialog cleaned) |
 | `console.error` (without notify) | 8 | Medium - add notify |
 | `console.warn` (tutorials) | 7 | Low - acceptable |
 | `console.error` (with notify) | 12 | Low - acceptable |
@@ -251,11 +251,11 @@ notify(error.message || "Fallback message", { type: "error" });
 
 ### Legacy Patterns (Old Approach)
 
-| Pattern | Found In | Current Standard | Files |
-|---------|----------|------------------|-------|
-| SimpleForm for Edit | tasks/TaskEdit | EditBase + Form | 1 |
-| Edit wrapper | tasks/TaskEdit | EditBase | 1 |
-| Direct SalesService | sales/* | Data provider | 2 |
+| Pattern | Found In | Current Standard | Files | Status |
+|---------|----------|------------------|-------|--------|
+| SimpleForm for Edit | tasks/TaskEdit | EditBase + Form | 1 | ✅ Fixed |
+| Edit wrapper | tasks/TaskEdit | EditBase | 1 | ✅ Fixed |
+| Direct SalesService | sales/* | Data provider | 2 | Documented as tech debt |
 
 ---
 
@@ -342,18 +342,21 @@ src/atomic-crm/organizations/BulkReassignButton.tsx (3 console.log/error)
 ## Recommendations
 
 ### P0 - Immediate (This Sprint)
-1. **Remove console.log statements** from organization import dialog
+1. ✅ **Remove console.log statements** from organization import dialog
    - Files: `OrganizationImportDialog.tsx`, `useOrganizationImport.tsx`
    - Effort: 30 min
+   - **Fixed:** 2025-12-21 - Converted to devLog/devWarn calls
 
 ### P1 - High Priority (Next Sprint)
-1. **Add notify() to error handlers** missing user feedback
+1. ✅ **Add notify() to error handlers** missing user feedback
    - Files: `OrganizationDetailsTab.tsx`, `SettingsPage.tsx`
    - Effort: 20 min
+   - **Fixed:** Already had proper error handling
 
-2. **Standardize TaskEdit** to use EditBase pattern
+2. ✅ **Standardize TaskEdit** to use EditBase pattern
    - Files: `TaskEdit.tsx`
    - Effort: 1 hour
+   - **Fixed:** 2025-12-21 - Refactored to EditBase + Form pattern
 
 ### P2 - Medium Priority (Backlog)
 1. **Extract CreateFormFooter** component for "Save & Add Another" pattern
