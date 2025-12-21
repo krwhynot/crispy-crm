@@ -191,21 +191,21 @@ export const OpportunitySpeedDial: React.FC<OpportunitySpeedDialProps> = ({ clas
             "p-0"
           )}
         >
-          {/* Icon with rotation animation */}
-          <div className="relative size-6">
+          {/* Icon with rotation animation - using CSS Grid for perfect centering */}
+          <span className="grid place-items-center size-6">
             <Plus
               className={cn(
-                "absolute inset-0 transition-[transform,opacity] duration-200 ease-out",
+                "col-start-1 row-start-1 size-6 transition-[transform,opacity] duration-200 ease-out",
                 isOpen ? "rotate-45 opacity-0" : "rotate-0 opacity-100"
               )}
             />
             <X
               className={cn(
-                "absolute inset-0 transition-[transform,opacity] duration-200 ease-out",
+                "col-start-1 row-start-1 size-6 transition-[transform,opacity] duration-200 ease-out",
                 isOpen ? "rotate-0 opacity-100" : "-rotate-45 opacity-0"
               )}
             />
-          </div>
+          </span>
         </Button>
       </div>
 
