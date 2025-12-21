@@ -1,13 +1,15 @@
 import { useState } from "react";
 import { useGetList, Form, useUpdate, useNotify, ReferenceArrayInput } from "react-admin";
+import type { Identifier } from "ra-core";
 import { Link } from "react-router-dom";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { UserIcon, Star } from "lucide-react";
+import type { Opportunity, OpportunityContact, Contact } from "@/atomic-crm/types";
 
 interface OpportunityContactsTabProps {
-  record: any;
+  record: Opportunity;
   mode: "view" | "edit";
   onModeToggle?: () => void;
   /** Whether this tab is currently active - controls data fetching */
@@ -25,7 +27,7 @@ export function OpportunityContactsTab({
   const [isSaving, setIsSaving] = useState(false);
 
   // Fetch junction table data for view mode - only when tab is active AND in view mode
-  const { data: junctionRecords, isLoading } = useGetList(
+  const { data: junctionRecords, isLoading } = useGetList<OpportunityContact>(
     "opportunity_contacts",
     {
       filter: { opportunity_id: record.id },
@@ -36,8 +38,8 @@ export function OpportunityContactsTab({
   );
 
   // Fetch contact details for view mode - only when tab is active
-  const contactIds = junctionRecords?.map((jr: any) => jr.contact_id) || [];
-  const { data: contacts } = useGetList(
+  const contactIds = junctionRecords?.map((jr) => jr.contact_id) || [];
+  const { data: contacts } = useGetList<Contact>(
     "contacts",
     {
       filter: { id: contactIds },
@@ -46,7 +48,7 @@ export function OpportunityContactsTab({
     { enabled: isActiveTab && mode === "view" && contactIds.length > 0 }
   );
 
-  const handleSave = async (data: any) => {
+  const handleSave = async (data: { contact_ids?: Identifier[] }) => {
     setIsSaving(true);
     try {
       await update(
@@ -63,7 +65,7 @@ export function OpportunityContactsTab({
               onModeToggle();
             }
           },
-          onError: (error: any) => {
+          onError: (error: Error) => {
             notify(error?.message || "Failed to update contacts", { type: "error" });
           },
         }
@@ -89,8 +91,8 @@ export function OpportunityContactsTab({
         <ReferenceArrayInput source="contact_ids" reference="contacts">
           <AutocompleteArrayInput
             label="Contacts"
-            optionText={(choice: any) =>
-              choice ? `${choice.firstName || ""} ${choice.lastName || ""}`.trim() : ""
+            optionText={(choice: Contact) =>
+              choice ? `${choice.first_name || ""} ${choice.last_name || ""}`.trim() : ""
             }
             filterToQuery={(searchText: string) => ({ q: searchText })}
             helperText="Search and select contacts associated with this opportunity"
@@ -130,11 +132,11 @@ export function OpportunityContactsTab({
   }
 
   // Create a map of junction data by contact_id
-  const junctionMap = new Map(junctionRecords.map((jr: any) => [jr.contact_id, jr]));
+  const junctionMap = new Map(junctionRecords.map((jr) => [jr.contact_id, jr]));
 
   return (
     <div className="space-y-3">
-      {contacts?.map((contact: any) => {
+      {contacts?.map((contact) => {
         const junctionData = junctionMap.get(contact.id);
 
         return (
@@ -155,7 +157,7 @@ export function OpportunityContactsTab({
                     to={`/contacts?view=${contact.id}`}
                     className="text-base font-medium hover:underline"
                   >
-                    {contact.firstName} {contact.lastName}
+                    {contact.first_name} {contact.last_name}
                   </Link>
 
                   {contact.title && (
