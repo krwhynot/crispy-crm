@@ -80,11 +80,11 @@ function transformHeaders(headers: string[]): string[] {
  * @param dataRows - Raw data rows (arrays of values)
  * @returns Array of Contact objects ready for validation and import
  */
-export function processCsvData(headers: string[], dataRows: any[][]): ContactImportSchema[] {
+export function processCsvData(headers: string[], dataRows: Array<Array<unknown>>): ContactImportSchema[] {
   const transformedHeaders = transformHeaders(headers);
 
   return dataRows.map((row) => {
-    const contact: any = {};
+    const contact: Record<string, string> = {};
 
     headers.forEach((originalHeader, index) => {
       const transformedHeader = transformedHeaders[index];
@@ -118,11 +118,11 @@ export function processCsvData(headers: string[], dataRows: any[][]): ContactImp
  */
 export function processCsvDataWithMappings(
   headers: string[],
-  dataRows: any[][],
+  dataRows: Array<Array<unknown>>,
   customMappings: Record<string, string | null>
 ): ContactImportSchema[] {
   return dataRows.map((row) => {
-    const contact: any = {};
+    const contact: Record<string, string> = {};
 
     headers.forEach((originalHeader, index) => {
       const targetField = customMappings[originalHeader];
@@ -158,7 +158,7 @@ export function processCsvDataWithMappings(
  * @returns Object containing processed contact data and original headers
  * @throws Error if CSV structure is invalid
  */
-export function parseRawCsvData(rawData: any[][]): {
+export function parseRawCsvData(rawData: Array<Array<unknown>>): {
   contacts: ContactImportSchema[];
   headers: string[];
 } {

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useGetOne } from "react-admin";
+import type { RaRecord } from "react-admin";
 import { PencilIcon, XIcon } from "lucide-react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetFooter } from "@/components/ui/sheet";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -13,7 +14,7 @@ import { useKeyboardShortcuts, formatShortcut } from "@/hooks/useKeyboardShortcu
  * Props passed to each tab component
  */
 export interface TabComponentProps {
-  record: any;
+  record: RaRecord;
   mode: "view" | "edit";
   onModeToggle?: () => void;
   /** Whether this tab is currently active - use to enable/disable data fetching */
@@ -33,7 +34,7 @@ export interface TabConfig {
    * Return undefined/null/0 to hide badge.
    * @example countFromRecord: (record) => record.nb_notes
    */
-  countFromRecord?: (record: any) => number | undefined | null;
+  countFromRecord?: (record: RaRecord) => number | undefined | null;
 }
 
 /**
@@ -55,12 +56,12 @@ export interface ResourceSlideOverProps {
   /** Resource-specific tab configuration */
   tabs: TabConfig[];
   /** Optional record representation function (defaults to record.name) */
-  recordRepresentation?: (record: any) => string;
+  recordRepresentation?: (record: RaRecord) => string;
   /**
    * Optional breadcrumb component to render above the title.
    * Receives the record as a prop for dynamic breadcrumb generation.
    */
-  breadcrumbComponent?: React.ComponentType<{ record: any }>;
+  breadcrumbComponent?: React.ComponentType<{ record: RaRecord }>;
   /**
    * Optional custom skeleton component for loading state.
    * Defaults to generic SlideOverSkeleton if not provided.
