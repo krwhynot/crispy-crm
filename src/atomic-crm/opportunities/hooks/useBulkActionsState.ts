@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { useNotify, useRefresh, useDataProvider } from "ra-core";
-import type { Opportunity } from "../types";
+import type { Opportunity, OpportunityStageValue } from "../types";
 
 export type BulkAction = "change_stage" | "change_status" | "assign_owner" | "archive" | null;
 
@@ -72,9 +72,9 @@ export function useBulkActionsState({
       let updateData: Partial<Opportunity> = {};
 
       if (activeAction === "change_stage" && selectedStage) {
-        updateData = { stage: selectedStage as any, stage_manual: true };
+        updateData = { stage: selectedStage as OpportunityStageValue, stage_manual: true };
       } else if (activeAction === "change_status" && selectedStatus) {
-        updateData = { status: selectedStatus as any, status_manual: true };
+        updateData = { status: selectedStatus as Opportunity["status"], stage_manual: true };
       } else if (activeAction === "assign_owner" && selectedOwner) {
         updateData = { opportunity_owner_id: parseInt(selectedOwner) };
       }

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useCallback } from "react";
-import { useFormContext, useFormState } from "react-hook-form";
+import { type FieldValues, useFormContext, useFormState } from "react-hook-form";
 import { ChevronDown, Loader2, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,8 +14,8 @@ import { cn } from "@/lib/utils";
 type SaveAction = "save" | "saveAndNew";
 
 interface SaveButtonGroupProps {
-  onSave: (data: any) => void | Promise<void>;
-  onSaveAndNew: (data: any) => void | Promise<void>;
+  onSave: (data: FieldValues) => void | Promise<void>;
+  onSaveAndNew: (data: FieldValues) => void | Promise<void>;
   className?: string;
 }
 

@@ -169,7 +169,7 @@ export default function OpportunitiesByPrincipalReport() {
 
   // Build filter object for API
   const apiFilter = useMemo(() => {
-    const filter: any = {
+    const filter: Record<string, unknown> = {
       "deleted_at@is": null,
       status: "active",
     };
@@ -280,7 +280,17 @@ export default function OpportunitiesByPrincipalReport() {
 
   // Handle CSV export
   const handleExport = () => {
-    const exportData: any[] = [];
+    const exportData: Array<{
+      principal: string;
+      opportunity: string;
+      organization: string;
+      stage: string;
+      close_date: string;
+      sales_rep: string;
+      priority: string;
+      status: string;
+      days_in_stage: number;
+    }> = [];
 
     principalGroups.forEach((group) => {
       group.opportunities.forEach((opp) => {

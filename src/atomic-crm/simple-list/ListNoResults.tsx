@@ -44,6 +44,6 @@ export const ListNoResults = (props: ListNoResultsProps) => {
 
 export interface ListNoResultsProps {
   resource?: string;
-  filterValues?: any;
-  setFilters?: (filters: any, filterTypes?: string[]) => void;
+  filterValues?: Record<string, unknown>;
+  setFilters?: (filters: Record<string, unknown>, filterTypes?: string[]) => void;
 }

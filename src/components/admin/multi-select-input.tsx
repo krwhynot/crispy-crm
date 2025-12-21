@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import type { InputProps } from "ra-core";
+import type { InputProps, Identifier } from "ra-core";
 import { FieldTitle, useChoicesContext, useInput, useTranslate, type ChoicesProps } from "ra-core";
 import { X } from "lucide-react";
 
@@ -59,11 +59,11 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
   });
 
   const handleChange = useCallback(
-    (choiceId: any, checked: boolean) => {
+    (choiceId: Identifier, checked: boolean) => {
       const currentValue = field.value || [];
       const newValue = checked
         ? [...currentValue, choiceId]
-        : currentValue.filter((v: any) => v !== choiceId);
+        : currentValue.filter((v: Identifier) => v !== choiceId);
       field.onChange(newValue);
     },
     [field]
