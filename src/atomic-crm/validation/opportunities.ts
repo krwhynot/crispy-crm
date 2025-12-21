@@ -642,10 +642,10 @@ export async function checkExactDuplicate(
         `Duplicate opportunity detected: An opportunity already exists for this ` +
           `Principal + Customer + Product combination. ` +
           `Existing opportunity: "${opportunity.name}" (ID: ${opportunity.id}, Stage: ${opportunity.stage})`
-      );
+      ) as DuplicateOpportunityError;
       // Attach metadata for UI error handling
-      (error as any).code = "DUPLICATE_OPPORTUNITY";
-      (error as any).existingOpportunity = {
+      error.code = "DUPLICATE_OPPORTUNITY";
+      error.existingOpportunity = {
         id: opportunity.id,
         name: opportunity.name,
         stage: opportunity.stage,
@@ -673,7 +673,11 @@ export async function validateNoDuplicate(
   try {
     await checkExactDuplicate(dataProvider, params);
   } catch (error) {
-    if (error instanceof Error && (error as any).code === "DUPLICATE_OPPORTUNITY") {
+    if (
+      error instanceof Error &&
+      "code" in error &&
+      (error as DuplicateOpportunityError).code === "DUPLICATE_OPPORTUNITY"
+    ) {
       // Format for React Admin error display
       throw {
         message: "Validation failed",

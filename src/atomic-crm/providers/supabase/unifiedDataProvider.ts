@@ -32,6 +32,7 @@ import type {
   RaRecord,
   FilterPayload,
 } from "ra-core";
+import type { PostgRestSortOrder } from "@raphiniert/ra-data-postgrest";
 import { HttpError } from "react-admin";
 import type { FileObject } from "@supabase/storage-js";
 import type { QuickAddInput } from "../../validation/quickAdd";
@@ -64,6 +65,8 @@ import {
   ActivitiesService,
   JunctionsService,
   SegmentsService,
+  type OpportunityCreateInput,
+  type OpportunityUpdateInput,
 } from "../../services";
 
 // Import RPC validation schemas
@@ -156,7 +159,7 @@ const getBaseDataProvider = () => {
     instanceUrl: import.meta.env.VITE_SUPABASE_URL,
     apiKey: import.meta.env.VITE_SUPABASE_ANON_KEY,
     supabaseClient: supabase,
-    sortOrder: "asc,desc.nullslast" as any,
+    sortOrder: "asc,desc.nullslast" as PostgRestSortOrder,
   });
 };
 
@@ -684,7 +687,7 @@ export const unifiedDataProvider: DataProvider = {
 
       // Delegate opportunity creation to service (handles products sync)
       if (resource === "opportunities") {
-        const result = await opportunitiesService.createWithProducts(processedData as any);
+        const result = await opportunitiesService.createWithProducts(processedData as Partial<OpportunityCreateInput>);
         return { data: result as unknown as RecordType };
       }
 
@@ -768,7 +771,7 @@ export const unifiedDataProvider: DataProvider = {
         const previousProducts = params.previousData?.products || [];
         const result = await opportunitiesService.updateWithProducts(
           params.id,
-          processedData as any,
+          processedData as Partial<OpportunityUpdateInput>,
           previousProducts
         );
         return { data: result as unknown as RecordType };
@@ -777,7 +780,7 @@ export const unifiedDataProvider: DataProvider = {
       // Delegate sales update to Edge Function (RLS prevents direct PostgREST updates)
       // The sales table is protected - updates must go through /functions/v1/users
       if (resource === "sales") {
-        const result = await salesService.salesUpdate(params.id, processedData as any);
+        const result = await salesService.salesUpdate(params.id, processedData as Partial<Omit<SalesFormData, "password">> & { deleted_at?: string });
         return { data: { ...params.previousData, ...result, id: params.id } as RecordType };
       }
 

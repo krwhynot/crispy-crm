@@ -49,9 +49,9 @@ function isZodError(error: unknown): error is ZodError {
     typeof error === "object" &&
     error !== null &&
     "name" in error &&
-    (error as any).name === "ZodError" &&
+    error.name === "ZodError" &&
     "issues" in error &&
-    Array.isArray((error as any).issues)
+    Array.isArray(error.issues)
   );
 }
 
@@ -116,8 +116,9 @@ export function withValidation<T extends DataProvider>(
           "[withValidation] Creating organization with data:",
           JSON.stringify(params.data, null, 2)
         );
-        console.log("[withValidation] segment_id value:", (params.data as any)?.segment_id);
-        console.log("[withValidation] segment_id type:", typeof (params.data as any)?.segment_id);
+        const data = params.data as Record<string, unknown>;
+        console.log("[withValidation] segment_id value:", data.segment_id);
+        console.log("[withValidation] segment_id type:", typeof data.segment_id);
       }
       // Validate before create
       await validationService.validate(resource, "create", params.data);

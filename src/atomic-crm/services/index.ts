@@ -12,6 +12,7 @@ export { DigestService, createDigestService } from "./digest.service";
 export type { SalesFormData, Sale } from "../types";
 export type { ContactOrganization, OpportunityParticipant } from "../types";
 export type { Opportunity } from "../types";
+export type { OpportunityCreateInput, OpportunityUpdateInput } from "./opportunities.service";
 
 // Re-export digest types
 export type {
