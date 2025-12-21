@@ -168,9 +168,10 @@ export class DigestService {
       }
 
       return parsed.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[DigestService] Failed to get overdue tasks", { salesId, error });
-      throw new Error(`Failed to get overdue tasks: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      throw new Error(`Failed to get overdue tasks: ${errorMessage}`);
     }
   }
 

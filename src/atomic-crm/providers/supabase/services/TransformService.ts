@@ -113,11 +113,13 @@ export class TransformService {
         const processedData = await processContactAvatar(contactData);
 
         // Extract organizations for junction table sync (similar to opportunities/products pattern)
-        const { organizations, ...cleanedData } = processedData as any;
+        // Type-safe destructuring with unknown record to handle dynamic fields
+        const processedDataWithDynamicFields = processedData as Partial<Contact> & Record<string, unknown>;
+        const { organizations, ...cleanedData } = processedDataWithDynamicFields;
 
         // Combine first_name and last_name into name field (required by database)
         if (cleanedData.first_name || cleanedData.last_name) {
-          cleanedData.name =
+          (cleanedData as Record<string, unknown>).name =
             `${cleanedData.first_name || ""} ${cleanedData.last_name || ""}`.trim();
         }
 
@@ -128,8 +130,8 @@ export class TransformService {
         }
 
         // Preserve organizations for sync (rename to avoid column error, handled by data provider)
-        if (organizations) {
-          (cleanedData as any).organizations_to_sync = organizations;
+        if (organizations !== undefined) {
+          (cleanedData as Record<string, unknown>).organizations_to_sync = organizations;
         }
 
         return cleanedData;
@@ -143,15 +145,17 @@ export class TransformService {
         // - 'products' is the legacy field name (may come from some forms)
         // - 'products_to_sync' is sent directly by current OpportunityCreate form (ArrayInput source)
         // Destructuring both removes them from cleanedData, preventing PostgREST column errors
-        const { products, products_to_sync, ...cleanedData } = opportunityData as any;
+        // Type-safe destructuring with unknown record to handle dynamic fields
+        const opportunityDataWithDynamicFields = opportunityData as Partial<Opportunity> & Record<string, unknown>;
+        const { products, products_to_sync, ...cleanedData } = opportunityDataWithDynamicFields;
 
         // Determine which products array to use (prefer products_to_sync if present)
         const productsArray = products_to_sync ?? products;
 
         // Preserve products for service layer sync
         // Service layer will extract and delete this before database operations
-        if (productsArray && Array.isArray(productsArray)) {
-          (cleanedData as any).products_to_sync = productsArray;
+        if (productsArray !== undefined && Array.isArray(productsArray)) {
+          (cleanedData as Record<string, unknown>).products_to_sync = productsArray;
         }
 
         // Add timestamp for create operations
