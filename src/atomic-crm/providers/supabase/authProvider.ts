@@ -90,7 +90,16 @@ function isPublicPath(pathname: string): boolean {
   return publicPaths.some((path) => pathname.startsWith(path));
 }
 
-let cachedSale: any;
+interface CachedSale {
+  id: string | number;
+  first_name: string;
+  last_name: string;
+  avatar_url: string | null;
+  is_admin: boolean;
+  role: string | null;
+}
+
+let cachedSale: CachedSale | undefined;
 let cacheTimestamp: number = 0;
 const CACHE_TTL_MS = 15 * 60 * 1000;
 

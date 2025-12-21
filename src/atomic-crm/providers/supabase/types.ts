@@ -16,7 +16,7 @@ export type DataProviderMethod =
 export interface LogContext {
   method: string;
   resource: string;
-  params?: any;
+  params?: Record<string, unknown>;
   timestamp: string;
 }
 

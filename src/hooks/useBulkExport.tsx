@@ -55,5 +55,5 @@ export type ResourceInformation = Partial<{ resource: string }>;
 export type UseBulkExportProps<T extends ResourceInformation> = T & {
   exporter?: Exporter;
 
-  meta?: any;
+  meta?: Record<string, unknown>;
 };

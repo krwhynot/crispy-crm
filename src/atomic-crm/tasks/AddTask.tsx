@@ -48,7 +48,7 @@ export const AddTask = ({
     setOpen(true);
   };
 
-  const handleSuccess = async (data: any) => {
+  const handleSuccess = async (data: { contact_id?: string | number }) => {
     setOpen(false);
 
     // Phase 3: Add error handling to prevent unhandled promise rejections

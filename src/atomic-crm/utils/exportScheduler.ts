@@ -309,13 +309,17 @@ export class ExportScheduler {
         return;
       }
 
-      data.forEach((item: any) => {
-        this.schedules.set(item.id, {
-          ...item,
-          createdAt: new Date(item.createdAt),
-          updatedAt: new Date(item.updatedAt),
-          recipients: Array.isArray(item.recipients) ? item.recipients : [],
-        });
+      data.forEach((item: unknown) => {
+        if (typeof item !== "object" || item === null || !("id" in item)) {
+          return;
+        }
+        const schedule = item as Record<string, unknown>;
+        this.schedules.set(schedule.id as string, {
+          ...schedule,
+          createdAt: new Date(schedule.createdAt as string),
+          updatedAt: new Date(schedule.updatedAt as string),
+          recipients: Array.isArray(schedule.recipients) ? schedule.recipients : [],
+        } as ExportSchedule);
       });
     } catch (error) {
       console.error("Failed to load export schedules from localStorage:", error);

@@ -1,4 +1,4 @@
-import type { SortPayload } from "ra-core";
+import type { SortPayload, FilterPayload } from "ra-core";
 import { useResourceContext, useGetList, useTimeout, useCreatePath } from "ra-core";
 import { CircleX, LoaderCircle } from "lucide-react";
 
@@ -77,7 +77,7 @@ export const Count = (props: CountProps) => {
 };
 
 export interface CountProps {
-  filter?: any;
+  filter?: FilterPayload;
   sort?: SortPayload;
   link?: boolean;
   resource?: string;

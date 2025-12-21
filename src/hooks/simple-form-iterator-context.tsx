@@ -15,7 +15,7 @@ export const SimpleFormIteratorContext = createContext<SimpleFormIteratorContext
  * @deprecated Use SimpleFormIteratorContextValue from `ra-core` once available.
  */
 export interface SimpleFormIteratorContextValue {
-  add: (item?: any) => void;
+  add: (item?: Record<string, unknown>) => void;
   remove: (index: number) => void;
   reOrder: (index: number, newIndex: number) => void;
   source: string;

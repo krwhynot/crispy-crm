@@ -84,7 +84,7 @@ export const getFilterChoice = (
 /**
  * Format filter value for display
  */
-export const formatFilterValue = (filterKey: string, value: any): string => {
-  const choice = getFilterChoice(filterKey, value);
+export const formatFilterValue = (filterKey: string, value: string | number | boolean): string => {
+  const choice = getFilterChoice(filterKey, String(value));
   return choice?.name || String(value);
 };

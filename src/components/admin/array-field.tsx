@@ -39,4 +39,4 @@ export type ArrayFieldProps<
     children?: ReactNode;
   };
 
-const emptyArray: any[] = [];
+const emptyArray: RaRecord[] = [];

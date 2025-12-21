@@ -74,7 +74,7 @@ export function OpportunityCreateSaveButton({
    * Handle form submission through React Admin's save context
    */
   const handleSubmit = useCallback(
-    async (values: any) => {
+    async (values: Record<string, unknown>) => {
       let errors;
       if (saveContext?.save) {
         errors = await saveContext.save(values, {});

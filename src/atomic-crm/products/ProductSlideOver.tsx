@@ -51,7 +51,7 @@ export function ProductSlideOver({
   ];
 
   // Record representation function
-  const recordRepresentation = (record: any) => {
+  const recordRepresentation = (record: { id: number | string; name?: string }) => {
     return record.name || `Product #${record.id}`;
   };
 

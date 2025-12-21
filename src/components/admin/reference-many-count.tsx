@@ -1,4 +1,4 @@
-import type { RaRecord, SortPayload } from "ra-core";
+import type { RaRecord, SortPayload, FilterPayload } from "ra-core";
 import { useCreatePath, useRecordContext, useReferenceManyFieldController } from "ra-core";
 import { Link } from "react-router-dom";
 
@@ -49,7 +49,7 @@ export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
   source?: string;
   sort?: SortPayload;
 
-  filter?: any;
+  filter?: FilterPayload;
   link?: boolean;
   timeout?: number;
 }

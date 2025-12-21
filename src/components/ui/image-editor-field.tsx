@@ -202,7 +202,7 @@ export interface ImageEditorFieldProps {
   width?: number;
   height?: number;
   type?: "avatar" | "image";
-  onSave?: any;
+  onSave?: () => void;
   linkPosition?: "right" | "bottom" | "none";
   backgroundImageColor?: string;
   className?: string;

@@ -48,7 +48,7 @@ export function AuditLogSection() {
         ) : (
           <ScrollArea className="h-[400px]">
             <div className="space-y-3">
-              {auditEntries?.map((entry: any) => (
+              {auditEntries?.map((entry: { audit_id: string | number; table_name: string; field_name: string; changed_at: string; old_value?: string; new_value?: string }) => (
                 <div key={entry.audit_id} className="border-b pb-3 last:border-0">
                   <div className="flex items-center gap-2 text-sm">
                     <Badge variant="outline">{entry.table_name}</Badge>

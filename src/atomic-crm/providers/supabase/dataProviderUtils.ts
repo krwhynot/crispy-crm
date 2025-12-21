@@ -13,7 +13,7 @@ import { getSearchableFields, supportsSoftDelete, getResourceName } from "./reso
 import { escapeCacheManager } from "./dataProviderCache";
 
 // Type for filter payloads (compatible with React Admin filters)
-type FilterPayload = Record<string, any>;
+type FilterPayload = Record<string, unknown>;
 
 /**
  * Cache for searchable fields to avoid repeated lookups
@@ -90,7 +90,7 @@ export function transformArrayFilters(filter: FilterRecord | undefined | null): 
     return filter || {};
   }
 
-  const transformed: Record<string, any> = {};
+  const transformed: Record<string, unknown> = {};
 
   // Fields that are stored as JSONB arrays in PostgreSQL
   // These use the @cs (contains) operator
@@ -348,7 +348,7 @@ export function normalizeJsonbArrayFields<T extends JsonbArrayRecord>(
   if (!data) return data;
 
   // Helper to ensure a value is always an array
-  const ensureArray = (value: any): any[] => {
+  const ensureArray = (value: unknown): unknown[] => {
     if (value === null || value === undefined) {
       return [];
     }

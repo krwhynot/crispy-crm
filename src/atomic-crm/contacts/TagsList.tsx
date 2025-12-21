@@ -5,7 +5,20 @@ import { cn } from "@/lib/utils";
 import { useRecordContext } from "ra-core";
 import { getTagColorClass } from "../tags/tag-colors";
 
-const ColoredBadge = (props: any) => {
+interface ColoredBadgeProps {
+  source?: string;
+  label?: string;
+  sortable?: boolean;
+  sortBy?: string;
+  textAlign?: string;
+  rowClassName?: string;
+  cellClassName?: string;
+  headerClassName?: string;
+  resource?: string;
+  className?: string;
+}
+
+const ColoredBadge = (props: ColoredBadgeProps) => {
   const record = useRecordContext();
   if (!record) return null;
 

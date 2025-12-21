@@ -24,7 +24,7 @@ import * as React from "react";
 export interface FieldError {
   field: string;
   message: string;
-  value?: any;
+  value?: unknown;
 }
 
 export interface ImportError {

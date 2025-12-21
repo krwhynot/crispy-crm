@@ -54,7 +54,7 @@ interface ProductDetailsTabProps {
   onModeToggle?: () => void;
 }
 
-function hasDistributorCodes(record: any): boolean {
+function hasDistributorCodes(record: Record<string, unknown>): boolean {
   return Object.keys(DISTRIBUTOR_CODE_LABELS).some(
     (key) => record[key as keyof typeof record]
   );
