@@ -96,21 +96,25 @@ export const OpportunityListFilter = () => {
 
   const currentCampaignFilter = filterValues?.campaign || "all";
 
-  // Extract unique campaign values from opportunities
-  const { data: opportunitiesData } = useGetList("opportunities", {
-    pagination: { page: 1, perPage: 1000 },
-  });
+  // Fetch distinct campaign values efficiently via database view
+  // P0-PERF-1 fix: Previously fetched 1000 full records, now fetches only unique values
+  const { data: campaignsData } = useGetList<{ id: string; name: string }>(
+    "distinct_opportunities_campaigns",
+    {
+      pagination: { page: 1, perPage: 100 },
+      sort: { field: "name", order: "ASC" },
+    },
+    {
+      staleTime: 5 * 60 * 1000, // Cache for 5 minutes
+      gcTime: 15 * 60 * 1000,
+      refetchOnWindowFocus: false,
+    }
+  );
 
-  const campaigns = React.useMemo(() => {
-    if (!opportunitiesData) return [];
-    const uniqueCampaigns = new Set<string>();
-    opportunitiesData.forEach((opp) => {
-      if (opp.campaign) {
-        uniqueCampaigns.add(opp.campaign);
-      }
-    });
-    return Array.from(uniqueCampaigns).sort();
-  }, [opportunitiesData]);
+  const campaigns = React.useMemo(
+    () => campaignsData?.map((c) => c.name) ?? [],
+    [campaignsData]
+  );
 
   // Quick filter presets
   const today = new Date();
