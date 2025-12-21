@@ -21,13 +21,18 @@ interface StageStatusDotProps {
  *
  * PRD Reference: Pipeline PRD "Status Indicator Logic" table
  */
-export function StageStatusDot({ status, daysInStage }: StageStatusDotProps) {
-  const { colorClass, label } = getStatusConfig(status, daysInStage);
+export function StageStatusDot({ status, daysSinceLastActivity, daysInStage }: StageStatusDotProps) {
+  const { colorClass, label } = getStatusConfig(status, daysInStage ?? 0);
+
+  // Display "X days" for last activity, "No activity" when null
+  const displayText = daysSinceLastActivity !== null
+    ? `${daysSinceLastActivity} ${daysSinceLastActivity === 1 ? "day" : "days"}`
+    : "No activity";
 
   return (
     <span
       role="status"
-      aria-label={label}
+      aria-label={`Last activity: ${displayText}. ${label}`}
       className="inline-flex items-center gap-1.5 text-xs"
     >
       <span
@@ -35,7 +40,7 @@ export function StageStatusDot({ status, daysInStage }: StageStatusDotProps) {
         className={`inline-block w-2.5 h-2.5 rounded-full flex-shrink-0 ${colorClass}`}
       />
       <span className="text-muted-foreground">
-        {daysInStage} {daysInStage === 1 ? "day" : "days"}
+        {displayText}
       </span>
     </span>
   );
