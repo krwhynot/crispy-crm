@@ -103,8 +103,8 @@ Inconsistent message formats
 | opportunities | 0% | 0% | 0% | 0% | 0% | **0%** | Baseline |
 | contacts | 5% | 15% | 20% | 0% | 10% | **10%** | Low |
 | organizations | 5% | 20% | 15% | 0% | 10% | **12%** | Low |
-| tasks | 5% | 20% | 40% | 0% | 15% | **16%** | Medium |
-| activities | 15% | 10% | N/A | 0% | 15% | **13%** | Low |
+| tasks | 5% | 20% | 0% | 0% | 15% | **8%** | Low (Fixed) |
+| activities | 15% | 10% | 0% | 0% | 15% | **8%** | Low (Fixed - ActivityEdit added) |
 | products | 5% | 10% | 15% | 0% | 10% | **10%** | Low |
 | sales | 20% | 50% | 50% | 50% | 10% | **35%** | High |
 

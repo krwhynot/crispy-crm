@@ -73,12 +73,12 @@ The Crispy CRM codebase demonstrates **strong TypeScript configuration** with ex
 
 ### P1 - Must Fix (Lazy Typing in Production)
 
-| File | Line | Code | Suggested Type |
-|------|------|------|----------------|
-| `src/atomic-crm/sales/SalesEdit.tsx` | 65 | `onSubmit as SubmitHandler<any>` | `SubmitHandler<SalesFormValues>` |
-| `src/atomic-crm/sales/SalesCreate.tsx` | 50 | `onSubmit as SubmitHandler<any>` | `SubmitHandler<SalesFormValues>` |
-| `src/atomic-crm/organizations/OrganizationImportDialog.tsx` | 466 | `useMemo<any[]>` | `useMemo<Organization[]>` |
-| `src/tests/utils/render-admin.tsx` | 53, 184 | `record?: any` | Generic `<T = RaRecord>` |
+| File | Line | Code | Suggested Type | Status |
+|------|------|------|----------------|--------|
+| `src/atomic-crm/sales/SalesEdit.tsx` | 65 | `onSubmit as SubmitHandler<any>` | `SubmitHandler<SalesFormValues>` | ✅ Fixed |
+| `src/atomic-crm/sales/SalesCreate.tsx` | 50 | `onSubmit as SubmitHandler<any>` | `SubmitHandler<SalesFormValues>` | ✅ Fixed |
+| `src/atomic-crm/organizations/OrganizationImportDialog.tsx` | 444 | `useMemo<any[]>` | `useMemo<MappedCSVRow[]>` | ✅ Fixed |
+| `src/tests/utils/render-admin.tsx` | 53, 184 | `record?: any` | Generic `<T = RaRecord>` | |
 
 ### P2 - Should Fix (Complex Generics)
 
@@ -108,24 +108,24 @@ The Crispy CRM codebase demonstrates **strong TypeScript configuration** with ex
 
 ### Double Assertions (CRITICAL - All Suspicious)
 
-| File | Line | Assertion | Fix Required |
-|------|------|-----------|--------------|
-| `src/components/admin/select-input.tsx` | 245 | `e as unknown as React.MouseEvent` | Proper event typing |
-| `src/components/admin/number-field.tsx` | 59 | `value as unknown as number` | Use `z.coerce` |
-| `src/atomic-crm/notes/NoteCreate.tsx` | 91 | `record.id as unknown as Identifier` | Type guard |
-| `src/atomic-crm/opportunities/kanban/OpportunityCard.tsx` | 106 | `e as unknown as React.MouseEvent` | Proper event typing |
-| `src/atomic-crm/dashboard/v3/components/TaskKanbanCard.tsx` | 200 | `e as unknown as React.MouseEvent` | Proper event typing |
-| `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` | 685, 691, 777 | `result as unknown as RecordType` | ✅ DOCUMENTED - Library boundary (React Admin DataProvider generic) |
-| `src/lib/genericMemo.ts` | 17 | `result as unknown as T` | Documented deprecation |
-| `src/tests/setup.ts` | 220 | `MockPointerEvent as unknown as typeof PointerEvent` | Test polyfill (acceptable) |
-| `src/components/admin/form/__tests__/useFormShortcuts.test.tsx` | 17-157 | 8x `as unknown as React.KeyboardEvent` | Test mocks (acceptable) |
+| File | Line | Assertion | Fix Required | Status |
+|------|------|-----------|--------------|--------|
+| `src/components/admin/select-input.tsx` | 245 | `e as unknown as React.MouseEvent` | Proper event typing | |
+| `src/components/admin/number-field.tsx` | 59 | `value as unknown as number` | Use `z.coerce` | |
+| `src/atomic-crm/notes/NoteCreate.tsx` | 91 | `record.id as unknown as Identifier` | Type guard | |
+| `src/atomic-crm/opportunities/kanban/OpportunityCard.tsx` | 106 | `e as unknown as React.MouseEvent` | Union event type | ✅ Fixed |
+| `src/atomic-crm/dashboard/v3/components/TaskKanbanCard.tsx` | 200 | `e as unknown as React.MouseEvent` | Union event type | ✅ Fixed |
+| `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` | 685, 691, 777 | `result as unknown as RecordType` | ✅ DOCUMENTED - Library boundary (React Admin DataProvider generic) | ✅ Documented |
+| `src/lib/genericMemo.ts` | 17 | `result as unknown as T` | Documented deprecation | |
+| `src/tests/setup.ts` | 220 | `MockPointerEvent as unknown as typeof PointerEvent` | Test polyfill (acceptable) | ✅ Acceptable |
+| `src/components/admin/form/__tests__/useFormShortcuts.test.tsx` | 17-157 | 8x `as unknown as React.KeyboardEvent` | Test mocks (acceptable) | ✅ Acceptable |
 
 ### Unsafe Assertions (No Post-Validation)
 
 | File | Line | Assertion | Risk | Status |
 |------|------|-----------|------|--------|
 | `src/atomic-crm/utils/secureStorage.ts` | 54, 63 | `JSON.parse(item) as T` | Storage corruption | ✅ Fixed 2025-12-21 (optional schema param) |
-| `src/atomic-crm/settings/DigestPreferences.tsx` | 41, 52, 64 | `data as DigestPreferenceResponse` | API contract | |
+| `src/atomic-crm/settings/DigestPreferences.tsx` | 52, 64 | `data as DigestPreferenceResponse` | API contract | ✅ Fixed - Uses generic RPC typing |
 | `src/components/admin/bulk-delete-button.tsx` | 70 | `(error as Error)?.message` | Error shape | |
 | `src/atomic-crm/sales/SalesPermissionsTab.tsx` | 132, 140 | `error as Error & { errors?: ... }` | Error shape | |
 
@@ -200,14 +200,14 @@ The Crispy CRM codebase demonstrates **strong TypeScript configuration** with ex
 
 ### Unconstrained Generics (Should Add Constraints)
 
-| File | Line | Generic | Suggested Constraint |
-|------|------|---------|---------------------|
-| `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` | 353 | `<T>` | `<T extends RaRecord>` |
-| `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` | 368 | `<T>` | `<T extends Record<string, unknown>>` |
-| `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` | 387 | `<T>` | `<T extends RaRecord>` |
-| `src/atomic-crm/organizations/useOrganizationImport.tsx` | 280 | `<T>` | `<T extends RaRecord>` |
-| `src/atomic-crm/contacts/usePapaParse.tsx` | 28, 42 | `<T>` | `<T = Record<string, unknown>>` |
-| `src/atomic-crm/contacts/useContactImport.tsx` | 313 | `<T>` | `<T extends RaRecord>` |
+| File | Line | Generic | Suggested Constraint | Status |
+|------|------|---------|---------------------|--------|
+| `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` | 354 | `<T>` | `<T extends Record<string, unknown>>` | ✅ Fixed |
+| `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` | 370 | `<T>` | `<T extends Record<string, unknown>>` | ✅ Fixed |
+| `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` | 389 | `<T>` | Unconstrained - wrapper function | ✅ Acceptable |
+| `src/atomic-crm/organizations/useOrganizationImport.tsx` | 280 | `<T>` | `<T extends RaRecord>` | |
+| `src/atomic-crm/contacts/usePapaParse.tsx` | 28, 42 | `<T>` | `<T = Record<string, unknown>>` | |
+| `src/atomic-crm/contacts/useContactImport.tsx` | 313 | `<T>` | `<T extends RaRecord>` | |
 
 ### Exported Functions Missing Return Types
 

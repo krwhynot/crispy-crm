@@ -62,8 +62,8 @@ export const productSchema = z.strictObject({
 
   // Food/health specific fields (kept for flexibility)
   // NOTE: Using .nullish() to accept both undefined and null values
-  certifications: z.array(z.string()).nullish(),
-  allergens: z.array(z.string()).nullish(),
+  certifications: z.array(z.string().max(100)).max(50).nullish(),
+  allergens: z.array(z.string().max(100)).max(50).nullish(),
   ingredients: z.string().max(5000).nullish(),
   nutritional_info: z.record(z.any()).nullish(),
   marketing_description: z.string().max(2000).nullish(),
@@ -122,7 +122,7 @@ export const opportunityProductSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
   product_id_reference: z.coerce.number().int().positive("Product is required"),
   product_name: z.string().min(1, "Product name is required").max(255, "Product name too long"),
-  product_category: z.string().optional(),
+  product_category: z.string().max(100).optional(),
   notes: z.string().max(500).optional(),
 });
 
