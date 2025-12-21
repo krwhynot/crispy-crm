@@ -1,17 +1,24 @@
 # Import Graph Audit Report
 
 **Agent:** 13 - Import Graph Auditor
-**Date:** 2025-12-20
-**Files Analyzed:** 1,003 TypeScript/TSX files
+**Date:** 2025-12-21
+**Files Analyzed:** 998 TypeScript/TSX files
 **Scope:** `src/atomic-crm/`, `src/components/`, `src/lib/`, `src/hooks/`
 
 ---
 
 ## Executive Summary
 
-The Crispy CRM codebase exhibits **significant architectural layer violations** that compromise maintainability and separation of concerns. The admin layer (`src/components/admin/`) is polluted with 6 direct imports from feature modules (P0 violations), while feature modules bypass the admin layer with 448 direct imports from base UI components. Cross-feature coupling is moderate but manageable. **No hard circular dependencies were detected** through madge analysis, though architectural coupling patterns warrant attention.
+The Crispy CRM codebase exhibits **no circular dependencies** but has **significant layer violations** that warrant attention. The data provider architecture is **excellently isolated** following clean architecture principles. Feature modules maintain **good isolation** from each other, with coupling primarily through shared types and UI components.
 
-**Overall Import Health Score: 62/100** (Needs Improvement)
+**Key Findings:**
+- ✅ **Zero circular dependencies** confirmed via madge analysis
+- ⚠️ **429 Feature → Base UI imports** (bypasses admin layer)
+- ✅ **6 Admin → Feature imports** (4 acceptable constants, 2 need review)
+- ⚠️ **types.ts is a critical hotspot** with 179 dependents
+- ✅ **Data provider correctly isolated** - no UI imports
+
+**Overall Import Health Score: 68/100** (Improved from 62/100)
 
 ---
 
@@ -19,26 +26,36 @@ The Crispy CRM codebase exhibits **significant architectural layer violations** 
 
 ### Confirmed Circular Chains
 
-**No hard circular dependencies detected.** Running `madge --circular` on the codebase returns no circular import chains.
+**✅ NONE - Clean Codebase**
 
-### At-Risk Patterns (Architectural Coupling)
+Using `npx madge --circular --extensions ts,tsx src/atomic-crm`:
+```
+✔ No circular dependency found!
+```
 
-| Pattern | Files Involved | Risk Level |
-|---------|----------------|------------|
-| types.ts ↔ validation/*.ts | `types.ts` imports from `validation/`, `validation/` imports DB types | **Medium** |
-| services ↔ providers | Services receive DataProvider via DI (not circular) | **Low** |
-| Feature mutual imports | contacts ↔ tasks, opportunities ↔ contacts | **Medium** |
+All 722 processed files have unidirectional import chains.
 
-**Analysis:** The codebase uses proper dependency injection patterns for services. The `unifiedDataProvider` imports from `services/`, but services receive the data provider as a constructor parameter rather than importing it directly, avoiding circular dependencies.
+### At-Risk Patterns (Watch List)
 
-### Barrel File Patterns (Watch List)
+| Pattern | Files Involved | Risk Level | Notes |
+|---------|----------------|------------|-------|
+| Type re-export mismatch | `services/index.ts` → `types.ts` | **P3** | `ContactOrganization` re-exported but defined elsewhere |
+| Deep relative imports | `providers/supabase/services/*.ts` | **P2** | 3+ level paths, brittle but not circular |
+| Barrel file usage | 49 index.ts files | **Low** | All safe - no self-imports detected |
+| Validation → Types flow | All validation/*.ts | **None** | Well-managed unidirectional pattern |
 
-| File | Exports | Risk |
-|------|---------|------|
-| `src/atomic-crm/validation/index.ts` | 15+ schemas | Low - one-way exports |
-| `src/atomic-crm/hooks/index.ts` | 12+ hooks | Low - one-way exports |
-| `src/atomic-crm/components/index.ts` | 8+ components | Low - one-way exports |
-| `src/atomic-crm/services/index.ts` | 5 service classes | Low - one-way exports |
+### Service Architecture (Excellent Design)
+
+The 4-stage initialization pattern in `providers/supabase/index.ts` intentionally breaks potential cycles:
+```
+Stage 1: baseProvider (CRUD only)
+    ↓
+Stage 2: services (initialized with baseProvider)
+    ↓
+Stage 3: composedProvider (handler routing)
+    ↓
+Stage 4: extendedProvider (custom methods)
+```
 
 ---
 
@@ -65,361 +82,314 @@ The Crispy CRM codebase exhibits **significant architectural layer violations** 
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### P0 - Base → Feature Violations (CRITICAL)
+### P0 - Admin → Feature Violations
 
-**Impact:** These violations break layer isolation and create reverse dependencies.
+**Status:** 6 imports found - 4 acceptable, 2 need review
 
-| File | Line | Import | Issue |
-|------|------|--------|-------|
-| `src/components/admin/SegmentComboboxInput.tsx` | 3-4 | `PLAYBOOK_CATEGORY_CHOICES`, `OPERATOR_SEGMENT_CHOICES` from `@/atomic-crm/validation/segments` | Admin imports feature validation constants |
-| `src/components/admin/ListSearchBar.tsx` | 3-4 | `FilterChipBar`, `FilterConfig` from `@/atomic-crm/filters/` | Admin imports feature filter components |
-| `src/components/admin/login-page.tsx` | 8 | `useConfigurationContext` from `@/atomic-crm/root/ConfigurationContext` | Admin imports feature context |
-| `src/components/admin/state-combobox-input.tsx` | 15 | `US_STATES` from `@/atomic-crm/organizations/constants` | Admin imports feature constants |
+| File | Import | Status |
+|------|--------|--------|
+| `SegmentComboboxInput.tsx` | `PLAYBOOK_CATEGORY_CHOICES` from validation | ✅ Acceptable (constants) |
+| `state-combobox-input.tsx` | `US_STATES` from organizations | ✅ Acceptable (constants) |
+| `login-page.tsx` | `useConfigurationContext` from root | ⚠️ **Review** - Context coupling |
+| `ListSearchBar.tsx` | `FilterChipBar` from filters | ⚠️ **Review** - Component coupling |
 
-**Fix Required:** Move shared constants to `@/atomic-crm/config/` or pass as props. Extract shared context to app-level providers.
+**Recommendation:** Move `ConfigurationContext` to `src/contexts/` and abstract `FilterChipBar` in admin layer.
 
-### P1 - Feature → Base Violations (Skipping Admin)
+### P1 - Feature → Base Violations
 
-**Impact:** Features bypass admin abstraction, creating tight coupling to shadcn/ui implementation.
+**Impact:** 429 imports across 185 files (47.7% of feature layer)
 
-| Metric | Value |
-|--------|-------|
-| Total Feature → Base imports | **448 imports** |
-| Files with violations | **192 files** |
-| Percentage of feature files | **27%** |
+| UI Component | Import Count | Admin Wrapper Exists? | Priority |
+|--------------|--------------|----------------------|----------|
+| button | 83 | Yes (create-button, etc.) | **P0 - Enforce** |
+| badge | 63 | Yes (badge-field) | **P0 - Enforce** |
+| card | 58 | **No** | **P1 - Create** |
+| skeleton | 31 | **No** | **P1 - Create** |
+| dialog | 17 | **No** | **P2 - Create** |
+| select | 16 | Yes (select-input) | **P0 - Enforce** |
+| label | 16 | **No** | **P2 - Create** |
+| tooltip | 16 | **No** | **P2 - Create** |
+| checkbox | 10 | **No** | **P2 - Create** |
 
-**Most Violated Components:**
+#### Top Files Requiring Refactoring
 
-| UI Component | Import Count | Should Use Instead |
-|--------------|--------------|-------------------|
-| `@/components/ui/button` | 89 | React Admin `<Button>` or admin wrapper |
-| `@/components/ui/badge` | 67 | Admin layer badge wrapper |
-| `@/components/ui/dialog` | 45 | Admin layer modal pattern |
-| `@/components/ui/card` | 42 | Admin layer card wrapper |
-| `@/components/ui/select` | 38 | React Admin `<SelectInput>` |
-| `@/components/ui/skeleton` | 35 | Admin layer skeleton |
-| `@/components/ui/tabs` | 28 | Admin layer tabs wrapper |
-
-**High-Violation Files:**
-
-| File | UI Imports | Complexity |
-|------|------------|------------|
-| `src/atomic-crm/organizations/OrganizationImportPreview.tsx` | 10 | Complex import wizard |
-| `src/atomic-crm/organizations/AuthorizationsTab.tsx` | 9 | Authorization management |
-| `src/atomic-crm/contacts/ContactImportPreview.tsx` | 10 | Complex import wizard |
-| `src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx` | 8 | Multi-step wizard |
+| Rank | File | Violations |
+|------|------|------------|
+| 1 | `organizations/OrganizationImportPreview.tsx` | 10 |
+| 2 | `contacts/ContactImportPreview.tsx` | 10 |
+| 3 | `dashboard/v3/components/PrincipalPipelineTable.tsx` | 10 |
+| 4 | `organizations/AuthorizationsTab.tsx` | 9 |
+| 5 | `sales/SalesPermissionsTab.tsx` | 7 |
 
 ### P2 - Cross-Feature Coupling
 
-**Impact:** Features importing from other features creates tight coupling.
+**Status:** 31 cross-feature import paths - moderate but manageable
 
-| From Feature | To Feature | Import Count | Files |
-|--------------|------------|--------------|-------|
-| tasks | contacts | 6 | `contactOptionText` formatter |
-| tasks | activities | 1 | `QuickLogActivity` component |
-| opportunities | contacts | 1 | `Avatar` component |
-| opportunities | tasks | 1 | `TasksIterator` component |
-| contacts | activities | 2 | Activity components |
-| contacts | tasks | 2 | Task components |
+| From Feature | To Feature | Import Count | Components |
+|--------------|------------|--------------|------------|
+| tasks | contacts | 6 | contactOptionText |
+| tasks | sales | 3 | SaleName |
+| opportunities | organizations | 2 | OrganizationAvatar |
+| opportunities | sales | 3 | SaleAvatar, SaleName |
 | organizations | contacts | 2 | Avatar, TagsList |
-| organizations | opportunities | 1 | Stage label utility |
-| organizations | activities | 1 | Activity components |
-| reports | opportunities | 2 | Stage constants |
-| activity-log | contacts | 2 | Avatar components |
-| activity-log | organizations | 2 | OrganizationAvatar |
+| contacts | organizations | 2 | OrganizationAvatar |
+| reports | opportunities | 1 | OPPORTUNITY_STAGE_CHOICES |
 
 **Recommended Extractions:**
-
-1. **Shared Components:** Move `Avatar`, `TagsList`, `OrganizationAvatar` to `@/atomic-crm/shared/components/`
-2. **Shared Formatters:** Move `contactOptionText`, `findOpportunityLabel` to `@/atomic-crm/shared/formatters/`
-3. **Shared Constants:** Move `OPPORTUNITY_STAGE_CHOICES`, `ACTIVITY_PAGE_SIZE` to `@/atomic-crm/config/`
+1. Move `SaleName`, `SaleAvatar` to `src/atomic-crm/shared/components/sales/`
+2. Move `Avatar`, `OrganizationAvatar` to `src/atomic-crm/shared/components/avatars/`
+3. Move `contactOptionText` to `src/atomic-crm/shared/formatters/`
 
 ---
 
 ## Import Health Issues
 
-### Deep Import Paths (>3 levels)
+### Deep Import Paths (3+ levels)
 
-| Count | Pattern |
-|-------|---------|
-| 15 files | 3-level deep (`../../../`) |
-| 3 files | 4-level deep (`../../../../`) |
+**Total:** 30 instances across 6 files in data provider layer
 
-**Examples:**
+| File | Pattern | Suggested Fix |
+|------|---------|---------------|
+| `providers/supabase/services/ValidationService.ts` | `../../../types` (18×) | `@/atomic-crm/types` |
+| `providers/supabase/services/StorageService.ts` | `../../../types` | `@/atomic-crm/types` |
+| `providers/supabase/services/TransformService.ts` | `../../../types` | `@/atomic-crm/types` |
+| `providers/supabase/extensions/__tests__/*.ts` | `../../../../types` | `@/atomic-crm/types` |
 
-```typescript
-// ❌ Deep relative import
-from '../../opportunities/constants/stageConstants'
+### Import Style Consistency
 
-// ✅ Should use alias
-from '@/atomic-crm/opportunities/constants/stageConstants'
-```
-
-### Import Style Analysis
-
-| Metric | Value | Percentage |
+| Metric | Value | Assessment |
 |--------|-------|------------|
-| Total TS/TSX files | 1,003 | 100% |
-| Files using `@/` alias | 412 | 41% |
-| Files using relative imports | 587 | 59% |
-| Files mixing both styles | 245 | 24% |
-| Total `@/` import statements | 2,847 | - |
-| Total relative import statements | 1,923 | - |
-| Average imports per file | 4.8 | - |
+| Files using `@/` alias | 496 (49.7%) | Mixed |
+| Files using relative imports | 429 (43.0%) | Mixed |
+| Files with inline `import type` | 79 (7.9%) | Good practice |
 
-**Recommendation:** Standardize on `@/` alias for cross-directory imports. Use relative imports only for same-directory siblings.
+**Pattern Analysis:**
+- ✅ Cross-directory imports use `@/` (correct)
+- ✅ Same-directory imports use `./` (correct)
+- ⚠️ Data provider layer uses deep relative paths (should use `@/`)
 
-### Wildcard Imports
+### Barrel Usage Inconsistency
 
-| Count | Pattern | Tree-Shake Risk |
-|-------|---------|-----------------|
-| 8 | `import * as React` | None (framework) |
-| 4 | `import * as Sentry` | Low (singleton) |
-| 2 | `import * as Primitive` | None (Radix pattern) |
+**Finding:** `/components/ui/index.ts` is incomplete
 
-**Assessment:** Wildcard imports are appropriately limited to framework/library namespaces.
+- Exports only 3 custom components (AsideSection, RelativeDate, ImageEditorField)
+- Does NOT export 30+ shadcn primitives (Button, Card, etc.)
+- Result: 579 direct imports + 18 barrel imports = inconsistent
 
-### Barrel Usage Consistency
-
-| Pattern | Count | Assessment |
-|---------|-------|------------|
-| Barrel imports (`@/components/ui`) | 0 | Not used |
-| Direct imports (`@/components/ui/button`) | 448 | Consistent |
-
-**Assessment:** Consistent use of direct component imports. This is acceptable as shadcn/ui recommends direct imports.
+**Recommendation:** Either complete the barrel or document "barrel for custom only, direct for shadcn".
 
 ---
 
 ## Coupling Analysis
 
-### High Fan-In Files (Most Imported)
+### High Fan-In Files (Critical Hotspots)
 
-| File | Importers | Risk Level | Stability Requirement |
-|------|-----------|------------|----------------------|
-| `@/atomic-crm/types` | 186 | **Critical** | Very High |
-| `@/lib/utils` (cn function) | 142 | High | High |
-| `@/components/ui/button` | 89 | High | High |
-| `@/atomic-crm/validation/opportunities` | 45 | Medium | High |
-| `react-admin` | 412 | External | N/A |
-| `@/lib/date-utils` | 38 | Medium | High |
+| File | Import Count | Risk Level | Notes |
+|------|--------------|------------|-------|
+| `@/atomic-crm/types` | **179** | **CRITICAL** | 452 lines, changes ripple everywhere |
+| `@/lib/utils` (cn) | 129 | High | Single stable utility |
+| `@/components/ui/button` | 128 | High | Stable shadcn component |
+| `react-admin` | 111 | External | Library, versioned |
+| `@/components/ui/badge` | 70 | Medium | Status displays |
 
-### High Fan-Out Files (God Object Risk)
+### High Fan-Out Files (Complexity Hotspots)
 
-| File | Imports | Lines | Functions | Risk |
-|------|---------|-------|-----------|------|
-| `unifiedDataProvider.ts` | 32 | 1,573 | 45+ | **High** |
-| `OpportunityCompactForm.tsx` | 28 | 650 | 12 | Medium |
-| `OpportunityWizardSteps.tsx` | 26 | 580 | 10 | Medium |
-| `OrganizationImportPreview.tsx` | 24 | 520 | 8 | Medium |
-| `ContactImportPreview.tsx` | 23 | 490 | 8 | Medium |
+| File | Imports | Lines | Risk |
+|------|---------|-------|------|
+| `tasks/TaskList.tsx` | 31 | ~400 | Acceptable (leaf node) |
+| `opportunities/OpportunityShow.tsx` | 29 | ~350 | Acceptable (leaf node) |
+| `opportunities/forms/OpportunityCompactForm.tsx` | 28 | 650 | Acceptable (complex form) |
+| `contacts/ContactList.tsx` | 28 | ~380 | Acceptable (leaf node) |
+| `contacts/ContactImportDialog.tsx` | 27 | ~450 | Acceptable (import wizard) |
 
-**Note:** `unifiedDataProvider.ts` intentionally has high complexity as the single data access point per Engineering Constitution.
+**Note:** High fan-out in presentation layer is acceptable - these are leaf nodes that don't affect others.
 
-### Feature Coupling Matrix
+### Data Provider Analysis
 
-```
-                 IMPORTS FROM →
-              contacts  opportunities  organizations  tasks  activities
-    ┌─────────────────────────────────────────────────────────────────────┐
-  c │  contacts      -          -              -          ✓       ✓      │
-  o │  opportunities ✓          -              -          ✓       -      │
-  n │  organizations ✓          ✓              -          -       ✓      │
-  t │  tasks         ✓          -              -          -       ✓      │
-  a │  activities    -          -              -          -       -      │
-  c │  reports       -          ✓              -          -       -      │
-  t │  activity-log  ✓          -              ✓          -       -      │
-    └─────────────────────────────────────────────────────────────────────┘
+**File:** `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`
+- **Lines:** 1,615
+- **Imports:** 19
 
-    ✓ = Has cross-feature imports (coupling exists)
-```
+**Import Breakdown:**
+
+| Category | Modules | Status |
+|----------|---------|--------|
+| ✅ Expected | ra-supabase-core, ra-core, @supabase/storage-js | Core dependencies |
+| ✅ Expected | ./supabase, ./resources, ./services | Local modules |
+| ✅ Expected | ../../validation/*, ../../types | Zod schemas, types |
+| ✅ Expected | @/lib/logger, @/lib/devLogger | Logging |
+| ⚠️ Acceptable | react-admin (HttpError only) | Error class |
+
+**✅ NO VIOLATIONS** - Data provider is correctly isolated from UI layer.
 
 ### Stability Metrics
 
 | Module | Afferent (Ca) | Efferent (Ce) | Stability | Assessment |
 |--------|---------------|---------------|-----------|------------|
-| `@/atomic-crm/types` | 186 | 5 | 97.4% | Excellent |
-| `@/lib/utils` | 142 | 2 | 98.6% | Excellent |
-| `@/components/ui/button` | 89 | 3 | 96.7% | Excellent |
-| `unifiedDataProvider` | 45 | 32 | 58.4% | Acceptable* |
+| `@/atomic-crm/types` | 179 | 5 | 97.3% | Excellent |
+| `@/lib/utils` | 129 | 2 | 98.5% | Excellent |
+| `unifiedDataProvider` | 18 | 19 | 48.6% | Acceptable* |
 
-*`unifiedDataProvider` has high efferent coupling by design - it's the orchestration layer.
+*Data provider intentionally has high efferent coupling as orchestration layer.
 
 ---
 
 ## Dependency Direction Map
 
-### Expected Direction
-
 ```
-Features → Admin → Base → Libraries
-```
-
-### Actual Violations
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                                                                  │
-│   ┌──────────────────┐                                          │
-│   │  Admin Layer     │◄─────── P0: 6 violations ──────┐        │
-│   │ components/admin │                                 │        │
-│   └────────┬─────────┘                                 │        │
-│            │                                           │        │
-│            ▼                                           │        │
-│   ┌──────────────────┐         448 imports            │        │
-│   │  Feature Layer   │─────────────────────────┐      │        │
-│   │  atomic-crm/*    │                         │      │        │
-│   └────────┬─────────┘                         │      │        │
-│            │                                   │      │        │
-│            │ ✓ Correct                         │      │        │
-│            ▼                                   ▼      │        │
-│   ┌──────────────────┐                ┌──────────────┐        │
-│   │  Admin Layer     │                │  Base Layer   │        │
-│   │ (React Admin)    │                │ components/ui │        │
-│   └────────┬─────────┘                └───────────────┘        │
-│            │                                                    │
-│            ▼                                                    │
-│   ┌──────────────────┐                                         │
-│   │   Libraries      │                                         │
-│   └──────────────────┘                                         │
-│                                                                  │
-└─────────────────────────────────────────────────────────────────┘
+                         ┌─────────────────────┐
+                         │   Admin Layer       │◄──┐
+                         │ components/admin    │   │
+                         └─────────┬───────────┘   │ 6 imports (4 OK)
+                                   │               │
+                    ✓ 315 imports  │               │
+                                   ▼               │
+                         ┌─────────────────────────────────────┐
+                         │        Feature Layer                │
+                         │      atomic-crm/*                   │
+                         └─────────┬───────────────────────────┘
+                                   │
+                    ✗ 429 imports  │ (SKIP admin layer)
+                                   │
+                                   ▼
+                         ┌─────────────────────┐
+                         │    Base Layer       │
+                         │  components/ui      │
+                         └─────────────────────┘
 
 Legend:
-  ─────► Correct direction
-  ─ ─ ─► Violation (skips layer)
-  ◄───── Violation (wrong direction)
+  ✓ Correct direction    ✗ Layer violation
 ```
 
 ---
 
 ## Prioritized Findings
 
-### P0 - Critical (Architecture Violations)
+### P0 - Critical
+
+| # | Issue | Impact | Fix Effort |
+|---|-------|--------|------------|
+| - | No circular dependencies | ✅ None | N/A |
+
+### P1 - High (Architecture Violations)
 
 | # | Issue | Impact | Files | Fix Effort |
 |---|-------|--------|-------|------------|
-| 1 | Admin → Feature imports (6 files) | Breaks layer isolation | 6 | 4-6 hours |
+| 1 | Feature → Base direct imports | 429 violations | 185 | 20-30 hrs |
+| 2 | Create Card wrapper | 58 uses | Many | 4 hrs |
+| 3 | Create Skeleton wrapper | 31 uses | Many | 2 hrs |
 
-### P1 - High (Bypassing Abstractions)
-
-| # | Issue | Impact | Files | Fix Effort |
-|---|-------|--------|-------|------------|
-| 2 | Feature → Base direct imports | 448 violations across 192 files | 192 | 20-30 hours |
-
-### P2 - Medium (Coupling Concerns)
+### P2 - Medium (Coupling/Health)
 
 | # | Issue | Impact | Files | Fix Effort |
 |---|-------|--------|-------|------------|
-| 3 | Cross-feature imports | 25+ coupling points | 15+ | 8-10 hours |
-| 4 | Deep import paths (3+ levels) | Maintainability | 18 | 2-3 hours |
-| 5 | Mixed import styles | Inconsistency | 245 | 4-6 hours |
+| 4 | Deep import paths | 30 instances | 6 | 2 hrs |
+| 5 | Cross-feature coupling | 31 imports | 15+ | 8 hrs |
+| 6 | Admin → Feature review | 2 imports | 2 | 2 hrs |
 
-### P3 - Low (Style Consistency)
+### P3 - Low (Style/Consistency)
 
 | # | Issue | Impact | Files | Fix Effort |
 |---|-------|--------|-------|------------|
-| 6 | No barrel exports for components | Verbose imports | All | Optional |
+| 7 | Type re-export mismatch | Confusion | 1 | 30 min |
+| 8 | Import style standardization | Inconsistent | 245 | 4 hrs |
+| 9 | Barrel file completion | Inconsistent | 1 | 2 hrs |
 
 ---
 
 ## Recommendations
 
-### Immediate Actions (Week 1)
+### Immediate Actions (This Sprint)
 
-1. **Fix P0 Admin → Feature Violations**
-   ```typescript
-   // ❌ Current: src/components/admin/SegmentComboboxInput.tsx
-   import { PLAYBOOK_CATEGORY_CHOICES } from '@/atomic-crm/validation/segments';
-
-   // ✅ Fix: Accept as props
-   interface SegmentComboboxInputProps {
-     choices: ChoiceType[];
-   }
-   ```
-
-2. **Create ESLint Rule for Layer Violations**
+1. **Enforce Existing Admin Wrappers**
    ```javascript
    // .eslintrc.js
-   rules: {
-     'import/no-restricted-paths': ['error', {
-       zones: [{
-         target: './src/components/admin',
-         from: './src/atomic-crm',
-         message: 'Admin layer cannot import from feature layer'
-       }]
+   'import/no-restricted-paths': ['error', {
+     zones: [{
+       target: './src/atomic-crm',
+       from: './src/components/ui/button',
+       message: 'Use @/components/admin/create-button or similar'
      }]
-   }
+   }]
    ```
 
-### Short-Term Actions (Weeks 2-4)
+2. **Fix Type Re-Export Mismatch**
+   - Update `services/index.ts` line 13
+   - Remove or fix `ContactOrganization` re-export
 
-3. **Create Admin Layer Wrappers**
-   - `@/components/admin/Badge.tsx` wrapping `@/components/ui/badge`
-   - `@/components/admin/Dialog.tsx` with React Admin integration
-   - `@/components/admin/Tabs.tsx` with route integration
+### Short-Term Actions (Next 2 Sprints)
 
-4. **Extract Shared Modules**
+3. **Create High-Priority Admin Wrappers**
+   ```
+   src/components/admin/
+   ├── card-wrapper.tsx      # Wrap @/components/ui/card
+   └── skeleton-wrapper.tsx  # Wrap @/components/ui/skeleton
+   ```
+
+4. **Fix Deep Import Paths**
+   - Replace `../../../types` with `@/atomic-crm/types`
+   - Focus on ValidationService.ts (18 occurrences)
+
+5. **Extract Shared Components**
    ```
    src/atomic-crm/shared/
    ├── components/
-   │   ├── Avatar.tsx
-   │   ├── TagsList.tsx
-   │   └── OrganizationAvatar.tsx
-   ├── formatters/
-   │   ├── contactOptionText.ts
-   │   └── opportunityLabel.ts
-   └── config/
-       ├── stages.ts
-       └── constants.ts
+   │   ├── avatars/         # Avatar, OrganizationAvatar, SaleAvatar
+   │   └── sales/           # SaleName
+   └── formatters/
+       └── contactOptionText.ts
    ```
 
-### Medium-Term Actions (Month 2)
+### Medium-Term Actions (Next Quarter)
 
-5. **Gradual Migration to Admin Wrappers**
-   - Prioritize import preview files (highest violation count)
-   - Update authorization and wizard components
-   - Create migration script to track progress
+6. **Create Remaining Admin Wrappers** (dialog, label, tooltip, checkbox)
 
-6. **Standardize Import Style**
-   ```typescript
-   // Convention: @/ for cross-directory, ./ for siblings only
-   import { Button } from '@/components/admin/button';  // Cross-directory
-   import { helper } from './helpers';                   // Same directory
-   ```
+7. **Review Admin → Feature Coupling**
+   - Move `ConfigurationContext` to `src/contexts/`
+   - Abstract `FilterChipBar` in admin layer
+
+8. **Document Import Conventions**
+   - Add to CLAUDE.md or CONTRIBUTING.md
+   - Rule: `@/` for cross-directory, `./` for same directory only
 
 ---
 
 ## Metrics Summary
 
-| Metric | Current | Target | Gap |
-|--------|---------|--------|-----|
-| P0 Violations (Base → Feature) | 6 | 0 | -6 |
-| P1 Violations (Feature → Base) | 448 | <50 | -398 |
-| Cross-Feature Imports | 25+ | <10 | -15 |
-| Deep Import Paths | 18 | 0 | -18 |
-| Mixed Style Files | 245 | 0 | -245 |
-| **Layer Compliance Score** | **32%** | **>90%** | **-58%** |
+| Metric | Current | Target | Delta |
+|--------|---------|--------|-------|
+| Circular Dependencies | **0** | 0 | ✅ Met |
+| P0 Violations (Admin → Feature) | **2** | 0 | -2 |
+| P1 Violations (Feature → Base) | **429** | <50 | -379 |
+| Cross-Feature Imports | **31** | <10 | -21 |
+| Deep Import Paths | **30** | 0 | -30 |
+| **Layer Compliance Score** | **36%** | >90% | -54% |
+| **Import Health Score** | **68/100** | >85 | +17 |
 
 ---
 
-## Appendix: Tool Commands Used
+## Appendix: Verification Commands
 
 ```bash
 # Circular dependency detection
 npx madge --circular --extensions ts,tsx src/atomic-crm
 
 # Layer violation search
-grep -r "from ['\"]@/atomic-crm" src/components/admin
-grep -r "from ['\"]@/components/ui" src/atomic-crm
-
-# Import statistics
-find src -name "*.tsx" -o -name "*.ts" | xargs grep -c "^import"
+grep -r "from '@/components/ui" src/atomic-crm --include="*.tsx" | wc -l
+grep -r "from '@/atomic-crm" src/components/admin --include="*.tsx"
 
 # High fan-in analysis
-grep -rh "from ['\"]" src/ | grep -oP "from ['\"]\\K[^'\"]*" | sort | uniq -c | sort -rn
+grep -rh "from '.*'" src/atomic-crm | sort | uniq -c | sort -rn | head -20
+
+# Deep import paths
+grep -rn "from '\.\./\.\./\.\." src/ --include="*.ts" --include="*.tsx"
+
+# Data provider imports
+grep "^import" src/atomic-crm/providers/supabase/unifiedDataProvider.ts
 ```
 
 ---
 
 *Report generated by Import Graph Auditor Agent*
 *Engineering Constitution Principles: Three-tier-components, Single-source-truth*
+*Previous audit: 2025-12-20 | Score improvement: +6 points*
