@@ -1,8 +1,9 @@
 # Bundle Analysis Audit Report
 
-**Agent:** 8 - Bundle Analysis
-**Date:** 2025-12-20
+**Agent:** 8 - Bundle Analysis Auditor
+**Date:** 2025-12-21 (Updated)
 **Files Analyzed:** 1003 source files, 44 barrel files, 80+ dependencies
+**Last Review:** Confirmed all prior findings, added Sentry optimization opportunity
 
 ---
 
@@ -226,11 +227,13 @@ manualChunks: {
 
 | Issue Category | Count | Est. Savings | Priority |
 |----------------|-------|--------------|----------|
+| Sentry SDK deferred loading | 1 | ~25-30KB initial | P2 |
+| Static SettingsPage import | 1 | ~2-5KB initial | P2 |
 | Validation barrel export * | 1 | ~5-10KB | P3 |
-| Static SettingsPage import | 1 | ~2-5KB initial | P3 |
-| **Total Potential Savings** | - | **~10-15KB** | - |
+| lodash optimizeDeps cleanup | 1 | Config only | P3 |
+| **Total Potential Savings** | - | **~30-45KB initial** | - |
 
-**Note:** These are minor optimizations. The codebase is already highly optimized.
+**Note:** The codebase is already highly optimized. The Sentry deferral is the most impactful opportunity, particularly for iPad users on slow connections.
 
 ---
 
@@ -243,13 +246,38 @@ manualChunks: {
 **NONE** - All heavy components are already lazy-loaded.
 
 ### P2 - Medium (Optimization Opportunities)
-1. **SettingsPage static import** - Could be lazy-loaded in CRM.tsx since it's only used in CustomRoutes
+
+1. **Sentry SDK Deferred Loading** (~25KB initial bundle savings)
+   - File: `src/main.tsx:9`
+   - Current: Sentry loaded synchronously at bootstrap
+   - Impact: ~25-30KB in initial bundle before first paint
+   - Suggested:
+   ```typescript
+   // Defer Sentry initialization to after first paint
+   if (import.meta.env.VITE_SENTRY_DSN) {
+     requestIdleCallback(() => {
+       import('@sentry/react').then((Sentry) => {
+         Sentry.init({ /* existing config */ });
+       });
+     });
+   }
+   ```
+   - Trade-off: Pre-Sentry errors won't be captured (acceptable for CRM)
+
+2. **SettingsPage static import** - Could be lazy-loaded in CRM.tsx since it's only used in CustomRoutes
    - File: `src/atomic-crm/root/CRM.tsx:24`
    - Current: `import { SettingsPage } from "../settings/SettingsPage"`
    - Suggested: `const SettingsPage = React.lazy(() => import("../settings/SettingsPage"))`
 
 ### P3 - Low (Minor Improvements)
-1. **Validation barrel file** - Consider direct imports in high-frequency consumer files
+
+1. **Remove unused lodash from optimizeDeps**
+   - File: `vite.config.ts:59`
+   - Issue: `lodash` listed in `optimizeDeps.include` but NOT used in codebase (es-toolkit used instead)
+   - Impact: Build config cleanup only, no bundle savings
+   - Fix: Remove `'lodash'` from the include array
+
+2. **Validation barrel file** - Consider direct imports in high-frequency consumer files
    - File: `src/atomic-crm/validation/index.ts`
    - Pattern: `export * from "./opportunities"` (x12)
    - Note: Low impact since validation is centralized at API boundary

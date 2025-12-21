@@ -29,9 +29,25 @@ The Crispy CRM codebase demonstrates **generally good query patterns** with prop
 
 | File | Line | Pattern | Queries | Potential Savings |
 |------|------|---------|---------|-------------------|
+| `unifiedDataProvider.ts` | 1018-1030 | `for (const id of params.ids) { await supabase.rpc() }` | N sequential | ~(N-1) × 100ms |
 | `BulkReassignButton.tsx` | 98-104 | `for (const id of selectedIds) { await dataProvider.update }` | N sequential | ~(N-1) round trips |
 
-**Note:** This is an intentional pattern for progress tracking, but could use `Promise.all` for bulk operations.
+**Critical Finding (2025-12-21):** The `deleteMany` method for opportunities executes RPC calls sequentially:
+
+```typescript
+// src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1018-1030
+if (resource === "opportunities") {
+  for (const id of params.ids) {
+    const { error: rpcError } = await supabase.rpc(
+      'archive_opportunity_with_relations',
+      { opp_id: id }
+    );
+    // Sequential execution - O(N) round trips
+  }
+}
+```
+
+**Fix:** Create batch RPC `archive_opportunities_batch(opp_ids: int[])` or use `Promise.all()`.
 
 ---
 
@@ -126,6 +142,31 @@ const sixtyDaysAgo = useMemo(() => subDays(new Date(), 60).toISOString(), []);
 |-------|-------|-----------|------------|-----|
 | `OpportunitiesTab.tsx` | junction → opportunities | 2 RTT | ✅ **GOOD** - Uses `useGetMany` for batch fetch | None needed |
 | `AuthorizationsTab.tsx` | authorizations → (per-card: principal, products, productAuths) | 1 + N×3 RTT | **BAD** - N+1 pattern | Join in parent or batch fetch |
+| `OpportunityContactsTab.tsx` | junction → contacts | 2 RTT | ⚠️ **SUBOPTIMAL** - Uses `useGetList` not `useGetMany` | Use `useGetMany` |
+| `OpportunityProductsTab.tsx` | junction → products | 2 RTT | ⚠️ **SUBOPTIMAL** - Uses `useGetList` not `useGetMany` | Use `useGetMany` |
+
+### New Finding (2025-12-21): Suboptimal Junction Fetching
+
+The slide-over tabs use `useGetList` with `filter: { id: ids }` instead of `useGetMany`:
+
+```typescript
+// src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx:30-48
+const { data: junctionRecords } = useGetList("opportunity_contacts", ...);
+const contactIds = junctionRecords?.map((jr) => jr.contact_id) || [];
+
+// SUBOPTIMAL: Should use useGetMany
+const { data: contacts } = useGetList("contacts", {
+  filter: { id: contactIds },  // ❌ Not designed for ID batch lookups
+  pagination: { page: 1, perPage: 100 },
+});
+```
+
+**Fix:** Use `useGetMany` which is designed for batch ID fetches:
+```typescript
+const { data: contacts } = useGetMany("contacts", { ids: contactIds });
+```
+
+Same pattern exists in `OpportunityProductsTab.tsx:46-64`.
 
 ### Good Pattern Example: OpportunitiesTab
 
@@ -150,6 +191,19 @@ const { data: opportunities } = useGetMany("opportunities", { ids: opportunityId
 | `useGetMany` for batch ID fetches | `OpportunitiesTab.tsx:43-47` | Avoids N+1 |
 | Memoized date objects | `OverviewTab.tsx:111-113` | Prevents infinite loops |
 | Lazy loading with `isExpanded` | `AuthorizationsTab.tsx:302` | Defers expensive queries |
+| **staleTime caching** (5 min) | Dashboard hooks, entity data | Reduces network calls |
+| **placeholderData: prev** | `useEntityData.ts` | Smooth UI during refetch |
+| **Promise.all/allSettled** | Import handlers, metrics | Parallel execution |
+
+### Caching Strategy (2025-12-21 Update)
+
+The codebase has a well-defined caching strategy:
+
+| staleTime | Usage | Files |
+|-----------|-------|-------|
+| 30 seconds | High-frequency data (task counts) | `useTaskCount.ts`, `CRM.tsx` |
+| 5 minutes | Reference data (entities, lookups) | Dashboard hooks, filters |
+| `placeholderData: prev` | Keep previous data during refetch | `useEntityData.ts`, `useHybridSearch.ts` |
 
 ---
 
@@ -181,7 +235,15 @@ const { data: opportunities } = useGetMany("opportunities", { ids: opportunityId
    - Fetches all activities twice (unfiltered + filtered)
    - **Fix:** Fetch once, derive unfiltered counts from full response
 
-2. **Excessive perPage: 10000 in Reports** (7 occurrences)
+2. **Sequential deleteMany in Data Provider** (`unifiedDataProvider.ts:1018-1030`)
+   - Bulk delete executes N sequential RPC calls
+   - **Fix:** Create `archive_opportunities_batch(opp_ids: int[])` or use `Promise.all()`
+
+3. **useGetList instead of useGetMany** (`OpportunityContactsTab.tsx`, `OpportunityProductsTab.tsx`)
+   - Uses `useGetList` with ID filter instead of `useGetMany` for batch lookups
+   - **Fix:** Replace with `useGetMany` which is optimized for ID batch fetching
+
+4. **Excessive perPage: 10000 in Reports** (7 occurrences)
    - Fetches entire datasets when aggregates would suffice
    - **Fix:** Consider server-side aggregation or pagination
 
@@ -229,15 +291,17 @@ const { data: opportunities } = useGetMany("opportunities", { ids: opportunityId
 
 ## Verification Checklist
 
-- [x] All useGetList usages analyzed (35 found)
+- [x] All useGetList usages analyzed (35+ found)
 - [x] All useGetOne usages analyzed (8 found)
 - [x] All useGetMany usages analyzed (4 found)
-- [x] N+1 patterns identified (3 critical)
-- [x] Over-fetching catalogued (7 high-pagination queries)
-- [x] Caching issues found (1 duplicate fetch pattern)
-- [x] Waterfall patterns analyzed (1 bad, 1 good)
+- [x] N+1 patterns identified (4 total: 3 in AuthorizationsTab + 1 in deleteMany)
+- [x] Over-fetching catalogued (7 high-pagination queries in reports)
+- [x] Caching issues found (1 duplicate fetch, good staleTime coverage overall)
+- [x] Waterfall patterns analyzed (2 bad in slide-over tabs, 1 good in OrganizationsTab)
+- [x] Positive patterns documented (staleTime, Promise.all, placeholderData)
 - [x] Report created at `/docs/audits/code-quality/tier-1/query-efficiency-audit.md`
 
 ---
 
 *Generated by Query Efficiency Auditor | Crispy CRM Code Quality Initiative*
+*Last Updated: 2025-12-21*
