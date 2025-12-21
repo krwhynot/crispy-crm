@@ -1,5 +1,6 @@
 import { useState, useMemo } from "react";
 import { useShowContext, useGetList, useGetMany, useRefresh, useCreate, useNotify } from "ra-core";
+import type { Identifier } from "ra-core";
 import {
   Datagrid,
   FunctionField,
@@ -15,12 +16,17 @@ import { StageBadgeWithHealth } from "./StageBadgeWithHealth";
 import { LinkOpportunityModal } from "./LinkOpportunityModal";
 import { UnlinkConfirmDialog } from "./UnlinkConfirmDialog";
 import { SuggestedOpportunityCard } from "./SuggestedOpportunityCard";
-import type { Contact } from "../types";
+import type { Contact, Opportunity, OpportunityContact } from "../types";
+
+// Extended type for opportunities with junction table metadata
+interface OpportunityWithJunction extends Opportunity {
+  junctionId: Identifier;
+}
 
 export function OpportunitiesTab() {
   const { record: contact, isPending } = useShowContext<Contact>();
   const [showLinkModal, setShowLinkModal] = useState(false);
-  const [unlinkingOpportunity, setUnlinkingOpportunity] = useState<any>(null);
+  const [unlinkingOpportunity, setUnlinkingOpportunity] = useState<OpportunityWithJunction | null>(null);
   const refresh = useRefresh();
   const [create] = useCreate();
   const notify = useNotify();
@@ -37,7 +43,7 @@ export function OpportunitiesTab() {
   );
 
   // Step 2: Extract opportunity IDs
-  const opportunityIds = junctionRecords?.map((jr: any) => jr.opportunity_id) || [];
+  const opportunityIds = junctionRecords?.map((jr: OpportunityContact) => jr.opportunity_id) || [];
 
   // Step 3: Fetch opportunity details using getMany (batch fetch by IDs)
   const { data: opportunities, isLoading: oppsLoading } = useGetMany(
@@ -62,7 +68,7 @@ export function OpportunitiesTab() {
   const suggestedOpps = useMemo(() => {
     if (!orgOpportunities) return [];
     return orgOpportunities
-      .filter((opp: any) => !["closed_won", "closed_lost"].includes(opp.stage))
+      .filter((opp: Opportunity) => !["closed_won", "closed_lost"].includes(opp.stage))
       .slice(0, 5);
   }, [orgOpportunities]);
 
@@ -95,7 +101,7 @@ export function OpportunitiesTab() {
             notify("Opportunity linked", { type: "success" });
             refresh();
           },
-          onError: (error: any) => {
+          onError: (error: Error) => {
             notify(error?.message || "Failed to link opportunity", { type: "error" });
           },
         }
@@ -121,7 +127,7 @@ export function OpportunitiesTab() {
           </p>
 
           <div className="space-y-2 max-w-2xl mx-auto">
-            {suggestedOpps.map((opp: any) => (
+            {suggestedOpps.map((opp: Opportunity) => (
               <SuggestedOpportunityCard
                 key={opp.id}
                 opportunity={opp}
@@ -172,19 +178,19 @@ export function OpportunitiesTab() {
 
   // Merge junction data with opportunities
   const linkedOpportunities = junctionRecords
-    .map((junction: any) => {
-      const opp = opportunities?.find((o: any) => o.id === junction.opportunity_id);
+    .map((junction: OpportunityContact) => {
+      const opp = opportunities?.find((o: Opportunity) => o.id === junction.opportunity_id);
       return opp ? { ...opp, junctionId: junction.id } : null;
     })
-    .filter(Boolean);
+    .filter(Boolean) as OpportunityWithJunction[];
 
-  const linkedOpportunityIds = linkedOpportunities.map((opp: any) => opp.id);
+  const linkedOpportunityIds = linkedOpportunities.map((opp: OpportunityWithJunction) => opp.id);
 
   // Convert array to object keyed by ID for React Admin Datagrid
-  const linkedOpportunitiesData = linkedOpportunities.reduce((acc: any, opp: any) => {
+  const linkedOpportunitiesData = linkedOpportunities.reduce((acc: Record<Identifier, OpportunityWithJunction>, opp: OpportunityWithJunction) => {
     acc[opp.id] = opp;
     return acc;
-  }, {});
+  }, {} as Record<Identifier, OpportunityWithJunction>);
 
   const listContext = {
     data: linkedOpportunitiesData,
@@ -204,7 +210,7 @@ export function OpportunitiesTab() {
         <Datagrid bulkActionButtons={false} rowClick={false} className="border rounded-lg">
           <FunctionField
             label="Opportunity"
-            render={(record: any) => (
+            render={(record: OpportunityWithJunction) => (
               <Link
                 to={`/opportunities/${record.id}`}
                 className="font-medium text-primary hover:underline"
@@ -224,7 +230,7 @@ export function OpportunitiesTab() {
 
           <FunctionField
             label="Stage"
-            render={(record: any) => (
+            render={(record: OpportunityWithJunction) => (
               <StageBadgeWithHealth stage={record.stage} health={record.health_status} />
             )}
           />
@@ -233,7 +239,7 @@ export function OpportunitiesTab() {
 
           <FunctionField
             label=""
-            render={(record: any) => (
+            render={(record: OpportunityWithJunction) => (
               <button
                 aria-label={`Unlink ${record.name} from ${contactName}`}
                 className="h-11 w-11 inline-flex items-center justify-center rounded-md hover:bg-muted"

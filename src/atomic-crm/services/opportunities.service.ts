@@ -48,17 +48,18 @@ export class OpportunitiesService {
    * @param opportunity The opportunity to archive
    * @returns Promise resolving to the RPC response
    */
-  async archiveOpportunity(opportunity: Opportunity): Promise<any> {
+  async archiveOpportunity(opportunity: Opportunity): Promise<Opportunity[]> {
     try {
-      return await this.dataProvider.rpc("archive_opportunity_with_relations", {
+      return await this.dataProvider.rpc<Opportunity[]>("archive_opportunity_with_relations", {
         opp_id: opportunity.id,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       devError("OpportunitiesService", "Failed to archive opportunity", {
         opportunityId: opportunity.id,
         error,
       });
-      throw new Error(`Archive opportunity failed: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Archive opportunity failed: ${errorMessage}`);
     }
   }
 
@@ -69,17 +70,18 @@ export class OpportunitiesService {
    * @param opportunity The opportunity to unarchive
    * @returns Promise resolving to the RPC response
    */
-  async unarchiveOpportunity(opportunity: Opportunity): Promise<any> {
+  async unarchiveOpportunity(opportunity: Opportunity): Promise<Opportunity[]> {
     try {
-      return await this.dataProvider.rpc("unarchive_opportunity_with_relations", {
+      return await this.dataProvider.rpc<Opportunity[]>("unarchive_opportunity_with_relations", {
         opp_id: opportunity.id,
       });
-    } catch (error: any) {
+    } catch (error: unknown) {
       devError("OpportunitiesService", "Failed to unarchive opportunity", {
         opportunityId: opportunity.id,
         error,
       });
-      throw new Error(`Unarchive opportunity failed: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Unarchive opportunity failed: ${errorMessage}`);
     }
   }
 
@@ -96,8 +98,7 @@ export class OpportunitiesService {
     try {
       // Extract products before sending to database
       const productsToSync = data.products_to_sync || [];
-      const opportunityData = { ...data };
-      delete (opportunityData as any).products_to_sync;
+      const { products_to_sync, ...opportunityData } = data;
 
       // If no products to sync, use standard create
       if (productsToSync.length === 0) {
@@ -115,7 +116,7 @@ export class OpportunitiesService {
       const opportunity = await this.rpcSyncOpportunity(opportunityData, productsToSync, [], []);
       devLog("OpportunitiesService", "Opportunity created successfully with products", opportunity);
       return opportunity;
-    } catch (error: any) {
+    } catch (error: unknown) {
       devError("OpportunitiesService", "Failed to create opportunity with products", {
         error,
       });
@@ -142,17 +143,17 @@ export class OpportunitiesService {
     try {
       // Extract products before sending to database
       const productsToSync = data.products_to_sync || [];
-      const opportunityData = { ...data, id };
-      delete (opportunityData as any).products_to_sync;
+      const { products_to_sync, ...restData } = data;
+      const opportunityData = { ...restData, id };
 
       // If no products in form, use standard update
       if (productsToSync.length === 0) {
         devLog("OpportunitiesService", "Updating opportunity without product changes");
-        const result = await this.dataProvider.update("opportunities", {
+        const result = await this.dataProvider.update<Opportunity>("opportunities", {
           id,
-          data: opportunityData as any,
+          data: opportunityData,
         });
-        return result.data as Opportunity;
+        return result.data;
       }
 
       // Diff products to determine creates, updates, deletes
@@ -173,7 +174,7 @@ export class OpportunitiesService {
         opportunity
       );
       return opportunity;
-    } catch (error: any) {
+    } catch (error: unknown) {
       devError("OpportunitiesService", "Failed to update opportunity with products", {
         opportunityId: id,
         error,
@@ -195,12 +196,12 @@ export class OpportunitiesService {
    * @throws Error if RPC call fails
    */
   private async rpcSyncOpportunity(
-    opportunityData: any,
+    opportunityData: Partial<OpportunityCreateInput> | (Partial<OpportunityUpdateInput> & { id: Identifier }),
     productsToCreate: Product[],
     productsToUpdate: Product[],
     productIdsToDelete: (string | number)[]
   ): Promise<Opportunity> {
-    const rpcData = await this.dataProvider.rpc("sync_opportunity_with_products", {
+    const rpcData = await this.dataProvider.rpc<Opportunity | { data: Opportunity }>("sync_opportunity_with_products", {
       opportunity_data: opportunityData,
       products_to_create: productsToCreate,
       products_to_update: productsToUpdate,
@@ -218,7 +219,7 @@ export class OpportunitiesService {
    * @param response RPC response that may or may not be wrapped
    * @returns Unwrapped response data
    */
-  private unwrapRpcResponse(response: any): Opportunity {
+  private unwrapRpcResponse(response: Opportunity | { data: Opportunity }): Opportunity {
     // Check if response is wrapped in { data: ... } format
     if (
       response !== null &&
@@ -229,7 +230,7 @@ export class OpportunitiesService {
       typeof response.data === "object" &&
       "id" in response.data
     ) {
-      return response.data as Opportunity;
+      return response.data;
     }
     // Otherwise, assume it's already unwrapped
     return response as Opportunity;

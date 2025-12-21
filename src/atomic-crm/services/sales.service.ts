@@ -12,7 +12,14 @@ import { devError } from "@/lib/devLogger";
 export class SalesService {
   constructor(
     private dataProvider: DataProvider & {
-      invoke?: <T = any>(functionName: string, options?: any) => Promise<T>;
+      invoke?: <T = unknown>(
+        functionName: string,
+        options?: {
+          method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+          body?: Record<string, unknown>;
+          headers?: Record<string, string>;
+        }
+      ) => Promise<T>;
     }
   ) {}
 
@@ -47,12 +54,13 @@ export class SalesService {
       }
 
       return data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       devError("SalesService", "Failed to create account manager", {
         body,
         error,
       });
-      throw new Error(`Sales creation failed: ${error.message}`);
+      const message = error instanceof Error ? error.message : "Unknown error";
+      throw new Error(`Sales creation failed: ${message}`);
     }
   }
 
@@ -107,13 +115,14 @@ export class SalesService {
       }
 
       return data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       devError("SalesService", "Failed to update account manager", {
         id,
         data,
         error,
       });
-      throw new Error(`Sales update failed: ${error.message}`);
+      const message = error instanceof Error ? error.message : "Unknown error";
+      throw new Error(`Sales update failed: ${message}`);
     }
   }
 
@@ -149,12 +158,13 @@ export class SalesService {
       }
 
       return passwordUpdated;
-    } catch (error: any) {
+    } catch (error: unknown) {
       devError("SalesService", "Failed to update password", {
         id,
         error,
       });
-      throw new Error(`Password update failed: ${error.message}`);
+      const message = error instanceof Error ? error.message : "Unknown error";
+      throw new Error(`Password update failed: ${message}`);
     }
   }
 }

@@ -1,13 +1,31 @@
 import { useState } from "react";
-import { useGetList, Form, useUpdate, useNotify, ReferenceArrayInput } from "react-admin";
+import { useGetList, Form, useUpdate, useNotify, ReferenceArrayInput, Identifier } from "react-admin";
 import { Link } from "react-router-dom";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Package } from "lucide-react";
+import type { Opportunity } from "@/atomic-crm/types";
+
+interface OpportunityProduct {
+  id: Identifier;
+  product_id_reference: Identifier;
+  notes?: string | null;
+  created_at: string;
+}
+
+interface ProductRecord {
+  id: Identifier;
+  name: string;
+  category?: string;
+}
+
+interface ProductFormData {
+  product_ids: Identifier[];
+}
 
 interface OpportunityProductsTabProps {
-  record: any;
+  record: Opportunity;
   mode: "view" | "edit";
   onModeToggle?: () => void;
   /** Whether this tab is currently active - controls data fetching */
@@ -25,7 +43,7 @@ export function OpportunityProductsTab({
   const [isSaving, setIsSaving] = useState(false);
 
   // Fetch junction table data for view mode - only when tab is active AND in view mode
-  const { data: junctionRecords, isLoading } = useGetList(
+  const { data: junctionRecords, isLoading } = useGetList<OpportunityProduct>(
     "opportunity_products",
     {
       filter: { opportunity_id: record.id },
@@ -36,8 +54,8 @@ export function OpportunityProductsTab({
   );
 
   // Fetch product details for view mode - only when tab is active
-  const productIds = junctionRecords?.map((jr: any) => jr.product_id_reference) || [];
-  const { data: products } = useGetList(
+  const productIds = junctionRecords?.map((jr) => jr.product_id_reference) || [];
+  const { data: products } = useGetList<ProductRecord>(
     "products",
     {
       filter: { id: productIds },
@@ -46,11 +64,11 @@ export function OpportunityProductsTab({
     { enabled: isActiveTab && mode === "view" && productIds.length > 0 }
   );
 
-  const handleSave = async (data: any) => {
+  const handleSave = async (data: ProductFormData) => {
     setIsSaving(true);
     try {
       // Convert product_ids array to products_to_sync format
-      const productsToSync = (data.product_ids || []).map((productId: any) => ({
+      const productsToSync = (data.product_ids || []).map((productId) => ({
         product_id_reference: productId,
         notes: null,
       }));
@@ -69,7 +87,7 @@ export function OpportunityProductsTab({
               onModeToggle();
             }
           },
-          onError: (error: any) => {
+          onError: (error: Error) => {
             notify(error?.message || "Failed to update products", { type: "error" });
           },
         }
@@ -137,11 +155,11 @@ export function OpportunityProductsTab({
   }
 
   // Create a map of junction data by product_id
-  const junctionMap = new Map(junctionRecords.map((jr: any) => [jr.product_id_reference, jr]));
+  const junctionMap = new Map(junctionRecords.map((jr) => [jr.product_id_reference, jr]));
 
   return (
     <div className="space-y-3">
-      {products?.map((product: any) => {
+      {products?.map((product) => {
         const junctionData = junctionMap.get(product.id);
 
         return (

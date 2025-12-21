@@ -112,7 +112,7 @@ export const FileInput = (props: FileInputProps) => {
   });
   const files = value ? (Array.isArray(value) ? value : [value]) : [];
 
-  const onDrop = (newFiles: any[], rejectedFiles: FileRejection[], event: DropEvent) => {
+  const onDrop = (newFiles: File[], rejectedFiles: FileRejection[], event: DropEvent) => {
     const updatedFiles = multiple ? [...files, ...newFiles] : [...newFiles];
 
     if (multiple) {

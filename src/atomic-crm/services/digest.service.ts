@@ -203,9 +203,10 @@ export class DigestService {
       }
 
       return parsed.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[DigestService] Failed to get tasks due today", { salesId, error });
-      throw new Error(`Failed to get tasks due today: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      throw new Error(`Failed to get tasks due today: ${errorMessage}`);
     }
   }
 
@@ -242,9 +243,10 @@ export class DigestService {
       }
 
       return parsed.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[DigestService] Failed to get stale deals", { salesId, error });
-      throw new Error(`Failed to get stale deals: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      throw new Error(`Failed to get stale deals: ${errorMessage}`);
     }
   }
 
@@ -287,9 +289,10 @@ export class DigestService {
       }
 
       return parsed.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[DigestService] Failed to get digest summary", { salesId, error });
-      throw new Error(`Failed to get digest summary: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      throw new Error(`Failed to get digest summary: ${errorMessage}`);
     }
   }
 
@@ -316,9 +319,10 @@ export class DigestService {
       }
 
       return parsed.data;
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error("[DigestService] Failed to generate daily digests", { error });
-      throw new Error(`Failed to generate daily digests: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : "Unknown error";
+      throw new Error(`Failed to generate daily digests: ${errorMessage}`);
     }
   }
 
