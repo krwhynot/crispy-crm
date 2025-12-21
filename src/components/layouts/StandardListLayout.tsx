@@ -106,7 +106,7 @@ export function StandardListLayout({
 
       {/* Sidebar column - contains both sidebar and expand button in same grid cell */}
       {/* When collapsed, ensure minimum width for the show filters button (w-11 = 44px) */}
-      <div className={`hidden lg:block lg:sticky lg:top-0 lg:h-fit lg:self-start ${isCollapsed ? "w-11" : ""}`}>
+      <div className={`hidden lg:block lg:sticky lg:top-0 lg:h-fit lg:self-start relative ${isCollapsed ? "w-11" : ""}`}>
         {/* Filter sidebar with collapse animation */}
         <aside
           id="filter-sidebar"
@@ -143,7 +143,7 @@ export function StandardListLayout({
         {/* Desktop expand button when sidebar is collapsed */}
         {/* z-10 ensures button is above invisible z-index layers from collapsed Select dropdowns */}
         {isCollapsed && (
-          <div className="relative z-10">
+          <div className="absolute top-2 left-0 z-10">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
