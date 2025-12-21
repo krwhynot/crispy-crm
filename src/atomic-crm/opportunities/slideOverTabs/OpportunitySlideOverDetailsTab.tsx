@@ -325,64 +325,6 @@ export function OpportunitySlideOverDetailsTab({
     return "outline";
   };
 
-  // Organization card component for view mode
-  const OrganizationCard = ({
-    organizationId,
-    label,
-    required = false,
-  }: {
-    organizationId: number | null;
-    label: string;
-    required?: boolean;
-  }) => {
-    const { data: org, isLoading } = useGetOne(
-      "organizations",
-      { id: organizationId! },
-      { enabled: isActiveTab && !!organizationId }
-    );
-
-    if (!organizationId && !required) {
-      return null;
-    }
-
-    if (isLoading) {
-      return (
-        <div className="border border-border rounded-md p-2">
-          <label className="text-xs font-medium text-muted-foreground block mb-1">{label}</label>
-          <div className="h-4 bg-muted animate-pulse rounded" />
-        </div>
-      );
-    }
-
-    if (!org) {
-      return (
-        <div className="border border-border rounded-md p-2">
-          <label className="text-xs font-medium text-muted-foreground block mb-1">{label}</label>
-          <p className="text-xs text-muted-foreground">Not set</p>
-        </div>
-      );
-    }
-
-    return (
-      <div className="border border-border rounded-md p-2 hover:bg-muted/50 transition-colors">
-        <label className="text-xs font-medium text-muted-foreground block mb-1">{label}</label>
-        <div className="flex items-center gap-2">
-          <div className="w-6 h-6 rounded bg-primary/10 flex items-center justify-center shrink-0">
-            <Building2 className="w-3.5 h-3.5 text-primary" />
-          </div>
-          <div className="flex-1 min-w-0">
-            <Link
-              to={`/organizations?view=${org.id}`}
-              className="text-sm font-medium hover:underline block truncate"
-            >
-              {org.name}
-            </Link>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
   const stageName =
     OPPORTUNITY_STAGE_CHOICES.find((choice) => choice.id === record.stage)?.name || record.stage;
 
@@ -561,15 +503,18 @@ export function OpportunitySlideOverDetailsTab({
             organizationId={record.customer_organization_id}
             label="Customer"
             required
+            isActiveTab={isActiveTab}
           />
           <OrganizationCard
             organizationId={record.principal_organization_id}
             label="Principal"
             required
+            isActiveTab={isActiveTab}
           />
           <OrganizationCard
             organizationId={record.distributor_organization_id}
             label="Distributor"
+            isActiveTab={isActiveTab}
           />
         </div>
       </div>
