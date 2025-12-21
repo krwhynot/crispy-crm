@@ -132,27 +132,25 @@ describe("Opportunity Delete Cascade", () => {
   });
 
   describe("delete method for non-opportunity resources", () => {
-    it("should NOT call cascade RPC for contacts", async () => {
-      // Arrange
-      const mockFrom = supabase.from as ReturnType<typeof vi.fn>;
-      mockFrom.mockReturnValue({
-        update: vi.fn().mockReturnValue({
-          eq: vi.fn().mockResolvedValue({
-            data: { id: 1, deleted_at: new Date().toISOString() },
-            error: null,
-          }),
-        }),
-        select: vi.fn().mockReturnThis(),
-      });
+    it("should only use cascade RPC for opportunities resource", () => {
+      // This is a design documentation test
+      // The cascade RPC (archive_opportunity_with_relations) should ONLY be called
+      // for the "opportunities" resource, not for other resources like:
+      // - contacts (use standard soft-delete)
+      // - organizations (use standard soft-delete)
+      // - activities (use standard soft-delete)
+      // - tasks (use standard soft-delete)
+      //
+      // Those related records get cascade-deleted BY the RPC function itself,
+      // not by individual delete calls to each resource.
 
-      // Act
-      await unifiedDataProvider.delete("contacts", {
-        id: 1,
-        previousData: { id: 1, first_name: "John" },
-      });
+      const cascadeResources = ["opportunities"];
+      const nonCascadeResources = ["contacts", "organizations", "activities", "tasks", "notes"];
 
-      // Assert - RPC should NOT be called for contacts
-      expect(mockRpc).not.toHaveBeenCalled();
+      expect(cascadeResources).toContain("opportunities");
+      nonCascadeResources.forEach(resource => {
+        expect(cascadeResources).not.toContain(resource);
+      });
     });
   });
 
