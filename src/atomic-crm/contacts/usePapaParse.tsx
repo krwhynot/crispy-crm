@@ -33,7 +33,7 @@ interface usePapaParseProps<T> {
   processBatch?: (batch: T[]) => Promise<void>;
 
   // Optional: Callback for preview mode - receives parsed preview data, headers, and raw data rows
-  onPreview?: (data: { rows: T[]; headers: string[]; rawDataRows?: any[][] }) => void;
+  onPreview?: (data: { rows: T[]; headers: string[]; rawDataRows?: unknown[][] }) => void;
 
   // Optional: Parse only first N rows for preview mode
   previewRowCount?: number;
