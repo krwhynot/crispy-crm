@@ -268,6 +268,15 @@ vi.mock("../OrganizationListFilter", () => ({
   OrganizationListFilter: () => <div data-testid="organization-list-filter">Filters</div>,
 }));
 
+// Mock ListSearchBar to avoid FilterLiveForm/SearchInput context issues
+vi.mock("@/components/admin/ListSearchBar", () => ({
+  ListSearchBar: ({ placeholder }: any) => (
+    <div data-testid="list-search-bar">
+      <input type="text" placeholder={placeholder || "Search..."} data-testid="search-input" />
+    </div>
+  ),
+}));
+
 // Mock useSlideOverState hook
 const mockOpenSlideOver = vi.fn();
 const mockCloseSlideOver = vi.fn();
