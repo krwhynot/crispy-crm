@@ -413,5 +413,86 @@ The identified drift is primarily due to organic growth patterns. The recommende
 
 ---
 
+## Appendix: Fresh Component Analysis (2025-12-21)
+
+### List Component Detailed Comparison
+
+| Aspect | OpportunityList | ContactList | OrganizationList | ActivityList | TaskList |
+|--------|:---:|:---:|:---:|:---:|:---:|
+| **Datagrid Usage** | Custom multi-view | PremiumDatagrid ✅ | PremiumDatagrid ✅ | PremiumDatagrid ✅ | PremiumDatagrid ✅ |
+| **Column Config** | Scattered (4 views) | Inline ✅ | Inline ✅ | Inline ✅ | Inline ✅ |
+| **Filter Pattern** | FilterConfig ✅ | FilterConfig ✅ | FilterConfig ✅ | FilterConfig ✅ | FilterConfig ✅ |
+| **Bulk Actions** | ❌ Missing | ✅ BulkActionsToolbar | ✅ BulkActionsToolbar | ✅ BulkActionsToolbar | ✅ BulkActionsToolbar |
+| **Empty State** | Component ✅ | Component ✅ | Component ✅ | ⚠️ Inline div | Component ✅ |
+| **Keyboard Nav** | ❌ N/A (multi-view) | ✅ useListKeyboardNavigation | ✅ useListKeyboardNavigation | ⚠️ Intentional no-op | ✅ useListKeyboardNavigation |
+| **Export** | ✅ opportunityExporter | ✅ contactExporter | ✅ Inline exporter | ✅ Inline exporter | ✅ Inline exporter |
+| **SlideOver** | ✅ useSlideOverState | ✅ useSlideOverState | ✅ useSlideOverState | ❌ Modal-only | ✅ useSlideOverState |
+| **Filter Cleanup** | ✅ useFilterCleanup | ✅ useFilterCleanup | ✅ useFilterCleanup | ✅ useFilterCleanup | ✅ useFilterCleanup |
+| **Tutorial** | Custom component | PageTutorialTrigger ✅ | PageTutorialTrigger ✅ | PageTutorialTrigger ✅ | PageTutorialTrigger ✅ |
+
+### Create Form Detailed Comparison
+
+| Criterion | OpportunityCreate | ContactCreate | OrganizationCreate | ActivityCreate | TaskCreate |
+|-----------|:---:|:---:|:---:|:---:|:---:|
+| **schema.partial().parse()** | ✅ | ✅ | ✅ | ✅ | ✅ (via helper) |
+| **Form mode="onBlur"** | ❌ Default | ✅ Explicit | ✅ Explicit | ✅ Explicit | ✅ Explicit |
+| **CreateBase Usage** | ✅ redirect="show" | ✅ redirect="list" | ✅ redirect="show" | ✅ redirect="list" | ✅ |
+| **FormErrorSummary** | ✅ | ❌ Missing | ❌ Missing | ✅ | ✅ |
+| **Input Component** | ✅ OpportunityInputs | ✅ ContactInputs | ✅ OrganizationInputs | ⚠️ ActivitySinglePage | ❌ Inline fields |
+| **Identity Context** | ✅ useGetIdentity | useSmartDefaults | useSmartDefaults | ✅ useGetIdentity | ✅ useGetIdentity |
+| **Constitution Comment** | ✅ #5 reference | ✅ #5 reference | ✅ #5 reference | ❌ Missing | ✅ |
+| **Loading Skeleton** | ❌ | ✅ FormLoadingSkeleton | ✅ FormLoadingSkeleton | ❌ | ❌ |
+| **Form Progress** | ❌ | ✅ FormProgressProvider | ✅ FormProgressProvider | ✅ FormProgressProvider | ✅ FormProgressProvider |
+
+### Module Structure Detailed Comparison
+
+| Pattern | opportunities | contacts | organizations | activities | tasks |
+|---------|:---:|:---:|:---:|:---:|:---:|
+| **index.tsx Pattern** | Re-exports resource ✅ | Re-exports resource ✅ | ❌ Inline config | ❌ Inline config | Re-exports resource ✅ |
+| **resource.tsx Present** | ✅ (37 lines) | ✅ (37 lines) | ❌ N/A | ❌ N/A | ✅ (~35 lines) |
+| **React.lazy()** | ✅ All views | ✅ All views | ✅ All views | ✅ All views | ✅ All views |
+| **ResourceErrorBoundary** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **{Feature}List.tsx** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **{Feature}Create.tsx** | ✅ | ✅ | ✅ | ✅ | ✅ |
+| **{Feature}Edit.tsx** | ✅ | ✅ | ✅ | ❌ Missing | ✅ |
+| **{Feature}Show.tsx** | ✅ Active | ⚠️ Deprecated | ⚠️ Deprecated | ❌ N/A | ✅ Active |
+| **{Feature}SlideOver.tsx** | ✅ | ✅ | ✅ | ❌ N/A | ✅ |
+| **{Feature}Inputs.tsx** | ✅ forms/ | ✅ Root | ✅ Root | ❌ ActivitySinglePage | ✅ Root |
+| **{Feature}CompactForm.tsx** | ✅ forms/ | ✅ Root | ✅ Root | ❌ N/A | ❌ Missing |
+| **slideOverTabs/ dir** | ✅ Multiple tabs | ✅ 1 file | ✅ 4 files | ❌ N/A | ❌ N/A |
+| **forms/ subdir** | ✅ | ❌ Root level | ❌ Root level | ❌ N/A | ❌ N/A |
+| **hooks/ subdir** | ✅ Extensive | ⚠️ Minimal | ⚠️ Minimal | ❌ N/A | ⚠️ Minimal |
+
+### Drift Summary by Module
+
+| Module | Structure Drift | List Drift | Form Drift | Overall Score |
+|--------|:---:|:---:|:---:|:---:|
+| **opportunities** | 5% | 50% (intentional) | 22% | 26% |
+| **contacts** | 15% | 10% | 33% | 19% |
+| **organizations** | 25% | 10% | 33% | 23% |
+| **activities** | 35% | 40% | 22% | 32% |
+| **tasks** | 15% | 20% | 39% | 25% |
+
+**Weighted Average Drift: 22%** (unchanged from previous audit)
+
+### Key Insights from Fresh Analysis
+
+1. **OpportunityList architecture is intentionally different** - Multi-view system (kanban/campaign/principal) prevents using standard PremiumDatagrid/bulk actions patterns
+
+2. **ActivityList modal-only pattern is intentional** - No SlideOver because activities use dialog-based creation/viewing
+
+3. **Two identity context patterns coexist**:
+   - `useGetIdentity()` - direct (Opportunity, Activity, Task)
+   - `useSmartDefaults()` - async wrapper (Contact, Organization)
+
+4. **forms/ subdirectory pattern not adopted** - Only opportunities organizes inputs in subdirectory; others use root level
+
+5. **Exporter pattern split**:
+   - Dedicated file: opportunities, contacts
+   - Inline function: organizations, activities, tasks
+
+---
+
 *Report generated by Agent 16 - Pattern Drift Detector*
 *Builds on Tier 1 audits from Agents 2, 3, 10, 12, 13, 14*
+*Fresh analysis via parallel subagents for List, Form, and Module structure patterns*
