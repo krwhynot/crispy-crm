@@ -9,9 +9,9 @@
 
 ## Executive Summary
 
-**Total Dead Code Found:** ~2,500 lines
+**Total Dead Code Found:** ~2,463 lines
 **Estimated Bundle Impact:** ~25-30 KB (uncompressed)
-**Unused Dependencies:** 3 packages
+**Unused Dependencies:** 4 packages
 
 The Crispy CRM codebase demonstrates excellent code hygiene overall. Dead code is concentrated in a few specific areas: orphan files from abandoned features, unused exports in utility modules, and deprecated type definitions. The codebase has zero unreachable code, zero empty catch blocks, and minimal commented-out code.
 
@@ -103,6 +103,7 @@ The Crispy CRM codebase demonstrates excellent code hygiene overall. Dead code i
 | Dependency | Version | Status |
 |------------|---------|--------|
 | `react-resizable-panels` | v3.0.6 | Zero imports in codebase |
+| `@radix-ui/react-navigation-menu` | ^1.2.14 | Zero imports in codebase (navigation-menu.tsx is orphan) |
 | `vite-bundle-visualizer` | v1.2.1 | Superseded by rollup-plugin-visualizer |
 | `jsonwebtoken` | ^9.0.3 | No imports in src/ or supabase/ |
 
@@ -131,6 +132,8 @@ The Crispy CRM codebase demonstrates excellent code hygiene overall. Dead code i
 
 | File | Lines | Description |
 |------|-------|-------------|
+| src/stories/ (entire directory) | 287 | Storybook default templates - not used in app |
+| src/atomic-crm/admin/index.tsx | 12 | Deprecated stub - exports nothing |
 | src/atomic-crm/simple-list/SimpleList.tsx | 225 | Abandoned list component |
 | src/atomic-crm/simple-list/SimpleListItem.tsx | 138 | Child of SimpleList |
 | src/atomic-crm/simple-list/SimpleListLoading.tsx | 54 | Child of SimpleList |
@@ -141,7 +144,7 @@ The Crispy CRM codebase demonstrates excellent code hygiene overall. Dead code i
 | src/components/ui/navigation-menu.constants.ts | ~15 | Constants for navigation-menu, unused |
 | src/components/ui/resizable.tsx | ~50 | Resizable panels component, never imported |
 | src/components/ui/visually-hidden.tsx | ~30 | Accessibility helper, never imported |
-| **Total** | **~1,164** | - |
+| **Total** | **~1,463** | - |
 
 ### Stale Named Files
 | File | Name Pattern |
@@ -181,6 +184,21 @@ The Crispy CRM codebase demonstrates excellent code hygiene overall. Dead code i
 | `validateCreateOperatorSegment` | src/atomic-crm/validation/operatorSegments.ts | @deprecated |
 | `validateUpdateOperatorSegment` | src/atomic-crm/validation/operatorSegments.ts | @deprecated |
 
+### Deprecated Hooks (~407 lines, Blocked)
+
+These hooks are internal implementations waiting for upstream ra-core equivalents. Still in use - **do NOT remove until ra-core exports these**:
+
+| File | Lines | Waiting For |
+|------|-------|-------------|
+| `src/hooks/saved-queries.tsx` | ~55 | ra-core useSavedQueries |
+| `src/hooks/simple-form-iterator-context.tsx` | ~70 | ra-core SimpleFormIteratorContext |
+| `src/hooks/filter-context.tsx` | ~30 | ra-core FilterContext |
+| `src/hooks/useSupportCreateSuggestion.tsx` | ~180 | ra-core useSupportCreateSuggestion |
+| `src/hooks/user-menu-context.tsx` | ~25 | ra-core UserMenuContext |
+| `src/hooks/array-input-context.tsx` | ~25 | ra-core ArrayInputContext |
+| `src/hooks/useBulkExport.tsx` | ~15 | ra-core useBulkExport |
+| `src/lib/genericMemo.ts` | ~20 | ra-core genericMemo |
+
 ---
 
 ## Cleanup Impact
@@ -191,10 +209,11 @@ The Crispy CRM codebase demonstrates excellent code hygiene overall. Dead code i
 | Unused exports | 14 | ~380 | ~4 KB |
 | Unreachable code | 0 | 0 | 0 |
 | Commented code | 0 | 0 | 0 |
-| Unused deps | 4 | - | ~55 KB |
-| Orphan files | 10 | ~1,164 | ~15 KB |
+| Unused deps | 5 | - | ~60 KB |
+| Orphan files | 12 | ~1,463 | ~18 KB |
 | Unused types | 14 | ~200 | ~2 KB |
-| **Total** | **42** | **~1,744** | **~76 KB** |
+| Deprecated hooks | 8 | ~420 | ~5 KB |
+| **Total** | **53** | **~2,463** | **~89 KB** |
 
 ### By Priority
 | Priority | Items | Effort | Impact |
@@ -211,6 +230,12 @@ The Crispy CRM codebase demonstrates excellent code hygiene overall. Dead code i
 #!/bin/bash
 # Files safe to delete
 
+# Storybook default templates (not used in app)
+rm -rf src/stories/
+
+# Deprecated admin stub
+rm src/atomic-crm/admin/index.tsx
+
 # Orphan simple-list directory
 rm -rf src/atomic-crm/simple-list/
 
@@ -225,7 +250,7 @@ rm src/components/ui/visually-hidden.tsx
 rm src/components/admin/simple-show-layout.tsx
 
 # Dependencies to remove
-npm uninstall react-resizable-panels vite-bundle-visualizer jsonwebtoken @types/faker
+npm uninstall react-resizable-panels @radix-ui/react-navigation-menu vite-bundle-visualizer jsonwebtoken @types/faker
 
 # Move to devDependencies
 npm uninstall rollup-plugin-visualizer
@@ -254,17 +279,20 @@ npm install -D rollup-plugin-visualizer
 1. **Fix broken exports in utils/index.ts** - `registerShortcut` and `unregisterShortcut` don't exist in keyboardShortcuts.ts
 
 ### P2 - High (Quick Wins)
-1. Delete `src/atomic-crm/simple-list/` directory (989 lines)
-2. Delete `src/atomic-crm/pages/WhatsNew.tsx` (514 lines)
-3. Remove unused dependencies from package.json (~55KB savings)
-4. Delete orphan UI components (~175 lines)
-5. Remove unused exports from form components
+1. Delete `src/stories/` directory (287 lines) - Storybook templates
+2. Delete `src/atomic-crm/admin/index.tsx` (12 lines) - deprecated stub
+3. Delete `src/atomic-crm/simple-list/` directory (989 lines)
+4. Delete `src/atomic-crm/pages/WhatsNew.tsx` (514 lines)
+5. Remove unused dependencies from package.json (~60KB savings)
+6. Delete orphan UI components (~175 lines)
+7. Remove unused exports from form components
 
 ### P3 - Medium (Should Clean)
 1. Remove 10 unused type definitions from organizations/types.ts
 2. Remove 4 unused interfaces from csvUploadValidator.ts
 3. Remove deprecated operator segment schemas if not needed
 4. Remove unused exports from ErrorBoundary.tsx
+5. **Monitor ra-core releases** for deprecated hooks (~420 lines blocked)
 
 ### P4 - Low (When Touching Files)
 1. Consolidate `formatRelativeTime` usage (use exported utility or remove)
