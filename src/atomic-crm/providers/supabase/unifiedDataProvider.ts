@@ -1008,6 +1008,25 @@ export const unifiedDataProvider: DataProvider = {
     return wrapMethod("deleteMany", resource, params, async () => {
       const dbResource = getResourceName(resource);
 
+      // P0 FIX: Opportunities require cascade soft-delete to related records
+      // Must call RPC for each opportunity to cascade to activities, notes, tasks, participants
+      if (resource === "opportunities") {
+        // Call cascade RPC for each opportunity (fail-fast: stop on first error)
+        for (const id of params.ids) {
+          const { error: rpcError } = await supabase.rpc(
+            'archive_opportunity_with_relations',
+            { opp_id: id }
+          );
+
+          if (rpcError) {
+            console.error(`Failed to archive opportunity ${id} with relations:`, rpcError);
+            throw new Error(`Failed to delete opportunity ${id}: ${rpcError.message}`);
+          }
+        }
+
+        return { data: params.ids };
+      }
+
       // Constitution: soft-deletes rule - check if resource supports soft delete
       if (supportsSoftDelete(dbResource)) {
         // Soft delete many: set deleted_at timestamp with direct Supabase query

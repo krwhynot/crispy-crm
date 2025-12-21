@@ -131,6 +131,52 @@ describe("Opportunity Delete Cascade", () => {
     });
   });
 
+  describe("deleteMany method for opportunities", () => {
+    it("should call cascade RPC for each opportunity in bulk delete", async () => {
+      // Arrange
+      const opportunityIds = [101, 102, 103];
+
+      // Mock RPC to succeed for each call
+      mockRpc
+        .mockResolvedValueOnce({ data: null, error: null })
+        .mockResolvedValueOnce({ data: null, error: null })
+        .mockResolvedValueOnce({ data: null, error: null });
+
+      // Act
+      const result = await unifiedDataProvider.deleteMany("opportunities", {
+        ids: opportunityIds,
+      });
+
+      // Assert - RPC was called for each opportunity
+      expect(mockRpc).toHaveBeenCalledTimes(3);
+      expect(mockRpc).toHaveBeenNthCalledWith(1, "archive_opportunity_with_relations", { opp_id: 101 });
+      expect(mockRpc).toHaveBeenNthCalledWith(2, "archive_opportunity_with_relations", { opp_id: 102 });
+      expect(mockRpc).toHaveBeenNthCalledWith(3, "archive_opportunity_with_relations", { opp_id: 103 });
+
+      // Assert - returns the IDs that were deleted
+      expect(result.data).toEqual(opportunityIds);
+    });
+
+    it("should fail-fast on first RPC error in bulk delete", async () => {
+      // Arrange
+      const opportunityIds = [201, 202, 203];
+      const rpcError = { message: "Database error", code: "42000" };
+
+      // First succeeds, second fails
+      mockRpc
+        .mockResolvedValueOnce({ data: null, error: null })
+        .mockResolvedValueOnce({ data: null, error: rpcError });
+
+      // Act & Assert
+      await expect(
+        unifiedDataProvider.deleteMany("opportunities", { ids: opportunityIds })
+      ).rejects.toThrow("Failed to delete opportunity 202: Database error");
+
+      // Should have stopped after the error (not called for 203)
+      expect(mockRpc).toHaveBeenCalledTimes(2);
+    });
+  });
+
   describe("delete method for non-opportunity resources", () => {
     it("should only use cascade RPC for opportunities resource", () => {
       // This is a design documentation test

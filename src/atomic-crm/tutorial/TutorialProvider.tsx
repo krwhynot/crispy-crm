@@ -262,7 +262,7 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
       hasVisitedPage,
       markPageVisited,
     }),
-    [isActive, progress] // Callbacks are stable (useCallback), only state values need tracking
+    [isActive, progress] // progress covers hasVisitedPage (depends on progress.visitedPages); other callbacks are stable
   );
 
   return (
