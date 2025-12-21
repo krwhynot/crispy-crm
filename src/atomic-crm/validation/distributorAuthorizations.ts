@@ -31,9 +31,9 @@ export const distributorAuthorizationSchema = z
 
     // Audit fields (system-managed)
     created_by: z.coerce.number().int().optional().nullable(),
-    created_at: z.string().optional(),
-    updated_at: z.string().optional(),
-    deleted_at: z.string().optional().nullable(),
+    created_at: z.string().max(50).optional(),
+    updated_at: z.string().max(50).optional(),
+    deleted_at: z.string().max(50).optional().nullable(),
   })
   .refine((data) => data.distributor_id !== data.principal_id, {
     message: "Distributor and Principal cannot be the same organization",
@@ -181,9 +181,9 @@ export const productDistributorAuthorizationSchema = z
 
     // Audit fields (system-managed)
     created_by: z.coerce.number().int().optional().nullable(),
-    created_at: z.string().optional(),
-    updated_at: z.string().optional(),
-    deleted_at: z.string().optional().nullable(),
+    created_at: z.string().max(50).optional(),
+    updated_at: z.string().max(50).optional(),
+    deleted_at: z.string().max(50).optional().nullable(),
   })
   .refine(
     (data) => {

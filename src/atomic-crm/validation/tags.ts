@@ -105,7 +105,7 @@ export const tagWithCountSchema = tagSchema.extend({
  */
 export const tagFilterSchema = z.strictObject({
   colors: z.array(z.enum(VALID_TAG_COLORS as [TagColorName, ...TagColorName[]])).optional(),
-  searchTerm: z.string().optional(),
+  searchTerm: z.string().max(100).optional(),
 });
 
 /**

@@ -39,7 +39,7 @@ export const taskSchema = z.strictObject({
   due_date: z.coerce.date({ error: "Due date is required" }),
   reminder_date: z.coerce.date().nullable().optional(),
   completed: z.coerce.boolean().default(false),
-  completed_at: z.string().nullable().optional(),
+  completed_at: z.string().max(50).nullable().optional(),
   priority: priorityLevelSchema.default("medium"),
   type: taskTypeSchema,
   contact_id: idSchema.nullable().optional(), // Optional: task can be associated with contact, opportunity, or organization
@@ -56,9 +56,9 @@ export const taskSchema = z.strictObject({
 
   // Audit fields (per migration 20251127054700_fix_critical_rls_security_tasks.sql)
   created_by: z.union([z.string(), z.number()]).optional().nullable(), // Sales rep who created this task (different from assignee)
-  created_at: z.string().optional(),
-  updated_at: z.string().optional(),
-  deleted_at: z.string().optional().nullable(), // Soft-delete timestamp (NULL = active)
+  created_at: z.string().max(50).optional(),
+  updated_at: z.string().max(50).optional(),
+  deleted_at: z.string().max(50).optional().nullable(), // Soft-delete timestamp (NULL = active)
 });
 
 // ============================================================================

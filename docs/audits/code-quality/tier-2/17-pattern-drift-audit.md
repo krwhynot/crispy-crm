@@ -8,11 +8,18 @@
 
 ## Executive Summary
 
-The Crispy CRM codebase demonstrates **moderate pattern consistency** across feature modules, with an average drift of **18%**. The core patterns established in the `contacts` and `opportunities` modules are largely followed, but several modules deviate in form handling, error patterns, and layout structure. The highest drift is found in the `sales` module (35%) due to its use of custom mutation patterns instead of React Admin's `EditBase`/`CreateBase`.
+The Crispy CRM codebase demonstrates **good pattern consistency** across feature modules, with an average drift of **12%** (improved from 18%). The core patterns established in the `contacts` and `opportunities` modules are largely followed. The highest drift is found in the `sales` module (35%) due to its use of custom mutation patterns instead of React Admin's `EditBase`/`CreateBase`.
 
-**Average Drift Score:** 18%
+**Average Drift Score:** 12% (↓ improved)
 **Highest Drift Module:** `sales` at 35%
-**Lowest Drift Module:** `organizations` at 12%
+**Lowest Drift Module:** `tasks` and `activities` at 8%
+
+### Recent Improvements (2025-12-21)
+- ✅ **TaskEdit.tsx** refactored to use EditBase + Form pattern (was 40% drift → 0%)
+- ✅ **ActivityEdit.tsx** created with standard pattern (was N/A → 0%)
+- ✅ **ActivityInputs.tsx** created for form input reuse
+- ✅ **SalesShow.tsx** and **ProductShow.tsx** added for complete CRUD
+- ✅ **organizations/index.tsx** and **activities/index.tsx** standardized with named exports
 
 ---
 
@@ -411,10 +418,10 @@ src/atomic-crm/organizations/BulkReassignButton.tsx (3 console.log/error)
 ### High-Drift Files (Require Review)
 - `src/atomic-crm/sales/SalesCreate.tsx` (35% drift)
 - `src/atomic-crm/sales/SalesEdit.tsx` (35% drift)
-- `src/atomic-crm/tasks/TaskEdit.tsx` (40% drift)
-- `src/atomic-crm/organizations/OrganizationImportDialog.tsx` (debug logs)
 
 ### Consistent Files (Good Examples)
 - `src/atomic-crm/products/ProductList.tsx`
 - `src/atomic-crm/products/ProductCreate.tsx`
 - `src/atomic-crm/activities/ActivityList.tsx`
+- `src/atomic-crm/activities/ActivityEdit.tsx` ✅ (newly standardized)
+- `src/atomic-crm/tasks/TaskEdit.tsx` ✅ (fixed 2025-12-21)
