@@ -19,7 +19,7 @@
 // This file intentionally exports both a component and related utilities (workflow constants,
 // status config, helper functions) as a cohesive module. Separating them would reduce cohesion.
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, memo } from "react";
 import { useUpdate, useNotify } from "react-admin";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -179,7 +179,7 @@ interface SampleStatusBadgeProps {
  *   onStatusChange={(s) => console.log('Updated to:', s)}
  * />
  */
-export function SampleStatusBadge({
+export const SampleStatusBadge = memo(function SampleStatusBadge({
   status,
   activityId,
   interactive = false,
@@ -447,7 +447,9 @@ export function SampleStatusBadge({
       </PopoverContent>
     </Popover>
   );
-}
+});
+
+SampleStatusBadge.displayName = "SampleStatusBadge";
 
 // ============================================
 // Utility Components

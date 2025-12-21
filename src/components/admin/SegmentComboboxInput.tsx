@@ -44,6 +44,5 @@ export const SegmentSelectInput = (props: SegmentSelectInputProps) => {
   );
 };
 
-// Keep backward compatible exports
+// Keep backward compatible export (used by OrganizationCompactForm)
 export const SegmentComboboxInput = SegmentSelectInput;
-export const PlaybookCategoryInput = SegmentSelectInput;

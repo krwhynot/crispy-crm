@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { EditBase, Form, useRecordContext, useNotify } from "ra-core";
+import { useQueryClient } from "@tanstack/react-query";
 
 import { OrganizationInputs } from "./OrganizationInputs";
 import { PrincipalChangeWarning } from "./PrincipalChangeWarning";
@@ -13,12 +14,19 @@ import type { Organization } from "../types";
 const OrganizationEdit = () => {
   const [showWarning, setShowWarning] = useState(false);
   const [attemptedType, setAttemptedType] = useState<string>("");
+  const queryClient = useQueryClient();
 
   return (
     <EditBase
       actions={false}
       redirect="show"
       mutationOptions={{
+        onSuccess: () => {
+          // Invalidate related caches to prevent stale data
+          queryClient.invalidateQueries({ queryKey: ["organizations"] });
+          queryClient.invalidateQueries({ queryKey: ["contacts"] });
+          queryClient.invalidateQueries({ queryKey: ["opportunities"] });
+        },
         onMutate: async (variables) => {
           // Check if trying to change FROM principal
           const { data, previousData } = variables as {
