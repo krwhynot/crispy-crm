@@ -83,12 +83,6 @@ export function useOrganizationImport() {
       options: ImportOptions = {}
     ): Promise<ImportResult> => {
       const { preview = false, onProgress, startingRow = 1, dataQualityDecisions } = options;
-      console.log("processBatch called with:", {
-        batchSize: batch.length,
-        preview,
-        startingRow,
-        dataQualityDecisions,
-      });
       const startTime = new Date();
       const errors: ImportError[] = [];
       let successCount = 0;
@@ -268,7 +262,6 @@ export function useOrganizationImport() {
         endTime,
       };
 
-      console.log("processBatch returning:", finalResult);
       return finalResult;
     },
     [dataProvider, getTags, identity?.id, today]

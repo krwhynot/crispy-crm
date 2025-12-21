@@ -50,6 +50,7 @@ interface UseDuplicateOrgCheckResult {
 
 export function useDuplicateOrgCheck(): UseDuplicateOrgCheckResult {
   const dataProvider = useDataProvider();
+  const notify = useNotify();
   const [duplicateOrg, setDuplicateOrg] = useState<DuplicateOrgInfo | null>(null);
   const [isChecking, setIsChecking] = useState(false);
 
@@ -99,13 +100,16 @@ export function useDuplicateOrgCheck(): UseDuplicateOrgCheckResult {
         return null;
       } catch (error) {
         console.error("Failed to check for duplicate organization:", error);
+        notify("Unable to check for duplicate organizations. Please try again.", {
+          type: "warning",
+        });
         // Don't block on check errors - let the DB constraint handle it
         return null;
       } finally {
         setIsChecking(false);
       }
     },
-    [dataProvider]
+    [dataProvider, notify]
   );
 
   const clearDuplicate = useCallback(() => {
