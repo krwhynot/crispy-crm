@@ -14,7 +14,7 @@ import {
 import * as React from "react";
 import type { ReactNode } from "react";
 import { Children, type ReactElement, useCallback, useMemo, useRef, useState } from "react";
-import { type UseFieldArrayReturn, useFormContext } from "react-hook-form";
+import { type FieldError, type UseFieldArrayReturn, useFormContext } from "react-hook-form";
 import { ArrowDownCircle, ArrowUpCircle, PlusCircle, Trash, XCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -67,7 +67,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
   const removeField = useCallback(
     (index: number) => {
       remove(index);
-      const isScalarArray = getValues(finalSource).every((value: any) => typeof value !== "object");
+      const isScalarArray = getValues(finalSource).every((value: unknown) => typeof value !== "object");
       if (isScalarArray) {
         // Trigger validation on the Array to avoid ghost errors.
         // Otherwise, validation errors on removed fields might still be displayed
@@ -87,7 +87,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
   }
 
   const addField = useCallback(
-    (item: any = undefined) => {
+    (item: Record<string, unknown> | string | undefined = undefined) => {
       let defaultValue = item;
       if (item == null) {
         defaultValue = initialDefaultValue.current;
@@ -213,7 +213,7 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
   inline?: boolean;
   meta?: {
     // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
-    error?: any;
+    error?: FieldError;
     submitFailed?: boolean;
   };
   record?: RaRecord;

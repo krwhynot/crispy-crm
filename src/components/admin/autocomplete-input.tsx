@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/command";
 import { FormControl, FormError, FormField, FormLabel } from "@/components/admin/form";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import type { ChoicesProps, InputProps } from "ra-core";
+import type { ChoicesProps, InputProps, RaRecord, FilterPayload } from "ra-core";
 import {
   useChoices,
   useChoicesContext,
@@ -33,10 +33,10 @@ export const AutocompleteInput = (
     ChoicesProps & {
       className?: string;
       disableValue?: string;
-      filterToQuery?: (searchText: string) => any;
+      filterToQuery?: (searchText: string) => FilterPayload;
       translateChoice?: boolean;
       placeholder?: string;
-      inputText?: React.ReactNode | ((option: any | undefined) => React.ReactNode);
+      inputText?: React.ReactNode | ((option: RaRecord | undefined) => React.ReactNode);
     }
 ) => {
   const {
@@ -75,7 +75,7 @@ export const AutocompleteInput = (
   const selectedChoice = allChoices.find((choice) => getChoiceValue(choice) === field.value);
 
   const getInputText = useCallback(
-    (selectedChoice: any) => {
+    (selectedChoice: RaRecord | undefined) => {
       if (typeof inputText === "function") {
         return inputText(selectedChoice);
       }
@@ -96,7 +96,7 @@ export const AutocompleteInput = (
   });
 
   const handleChange = useCallback(
-    (choice: any) => {
+    (choice: RaRecord) => {
       if (field.value === getChoiceValue(choice) && !isRequired) {
         field.onChange("");
         setFilterValue("");
