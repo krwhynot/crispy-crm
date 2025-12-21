@@ -143,7 +143,7 @@ export function StandardListLayout({
         {/* Desktop expand button when sidebar is collapsed */}
         {/* z-10 ensures button is above invisible z-index layers from collapsed Select dropdowns */}
         {isCollapsed && (
-          <div className="absolute top-2 left-0 z-10">
+          <div className="absolute top-1/2 -translate-y-1/2 left-0 z-10">
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
