@@ -18,13 +18,16 @@ import { contactsCallbacks } from "../callbacks";
  * Create a fully composed DataProvider for contacts
  *
  * Composition order (innermost to outermost):
- * baseProvider → withLifecycleCallbacks → withValidation → withErrorLogging
+ * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ *
+ * CRITICAL: withLifecycleCallbacks MUST wrap withValidation so that beforeSave
+ * can strip computed fields (from views) BEFORE Zod validation runs.
  *
  * @param baseProvider - The raw Supabase DataProvider
  * @returns Composed DataProvider with all contacts-specific behavior
  */
 export function createContactsHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(withLifecycleCallbacks(baseProvider, [contactsCallbacks]))
+    withLifecycleCallbacks(withValidation(baseProvider), [contactsCallbacks])
   );
 }

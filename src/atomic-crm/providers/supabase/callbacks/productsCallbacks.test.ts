@@ -141,11 +141,28 @@ describe("productsCallbacks", () => {
     });
   });
 
-  describe("no beforeSave - products has no computed fields", () => {
-    it("should not have beforeSave callback since no computed fields to strip", () => {
-      // Products don't have computed fields from views
-      // The factory should not add beforeSave when computedFields is empty/undefined
-      expect(productsCallbacks.beforeSave).toBeUndefined();
+  describe("beforeSave - computed fields stripping", () => {
+    it("should export COMPUTED_FIELDS for reference", () => {
+      expect(COMPUTED_FIELDS).toContain("principal_name");
+    });
+
+    it("should have beforeSave callback to strip computed fields", () => {
+      expect(productsCallbacks.beforeSave).toBeDefined();
+    });
+
+    it("should strip principal_name computed field before save", async () => {
+      const data = {
+        id: 1,
+        name: "Widget X",
+        sku: "WX-001",
+        principal_name: "ACME Corp", // This comes from products_summary view JOIN
+      } as RaRecord;
+
+      const result = await productsCallbacks.beforeSave!(data, mockDataProvider, "products");
+
+      expect(result).not.toHaveProperty("principal_name");
+      expect(result).toHaveProperty("name", "Widget X");
+      expect(result).toHaveProperty("sku", "WX-001");
     });
   });
 });

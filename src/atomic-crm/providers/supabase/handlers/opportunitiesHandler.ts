@@ -21,13 +21,17 @@ import { opportunitiesCallbacks } from "../callbacks";
  * Create a fully composed DataProvider for opportunities
  *
  * Composition order (innermost to outermost):
- * baseProvider → withLifecycleCallbacks → withValidation → withErrorLogging
+ * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ *
+ * CRITICAL: withLifecycleCallbacks MUST wrap withValidation so that beforeSave
+ * can strip computed fields (from views/triggers) BEFORE Zod validation runs.
+ * Otherwise validation fails with "Unrecognized keys" for view-computed fields.
  *
  * @param baseProvider - The raw Supabase DataProvider
  * @returns Composed DataProvider with all opportunities-specific behavior
  */
 export function createOpportunitiesHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(withLifecycleCallbacks(baseProvider, [opportunitiesCallbacks]))
+    withLifecycleCallbacks(withValidation(baseProvider), [opportunitiesCallbacks])
   );
 }

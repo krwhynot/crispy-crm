@@ -18,13 +18,16 @@ import { organizationsCallbacks } from "../callbacks";
  * Create a fully composed DataProvider for organizations
  *
  * Composition order (innermost to outermost):
- * baseProvider → withLifecycleCallbacks → withValidation → withErrorLogging
+ * baseProvider → withValidation → withLifecycleCallbacks → withErrorLogging
+ *
+ * CRITICAL: withLifecycleCallbacks MUST wrap withValidation so that beforeSave
+ * can strip computed fields (from views) BEFORE Zod validation runs.
  *
  * @param baseProvider - The raw Supabase DataProvider
  * @returns Composed DataProvider with all organizations-specific behavior
  */
 export function createOrganizationsHandler(baseProvider: DataProvider): DataProvider {
   return withErrorLogging(
-    withValidation(withLifecycleCallbacks(baseProvider, [organizationsCallbacks]))
+    withLifecycleCallbacks(withValidation(baseProvider), [organizationsCallbacks])
   );
 }
