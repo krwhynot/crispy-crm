@@ -115,19 +115,19 @@ The Crispy CRM codebase demonstrates **strong TypeScript configuration** with ex
 | `src/atomic-crm/notes/NoteCreate.tsx` | 91 | `record.id as unknown as Identifier` | Type guard |
 | `src/atomic-crm/opportunities/kanban/OpportunityCard.tsx` | 106 | `e as unknown as React.MouseEvent` | Proper event typing |
 | `src/atomic-crm/dashboard/v3/components/TaskKanbanCard.tsx` | 200 | `e as unknown as React.MouseEvent` | Proper event typing |
-| `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` | 685, 691, 777 | `result as unknown as RecordType` | Zod validation |
+| `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` | 685, 691, 777 | `result as unknown as RecordType` | ✅ DOCUMENTED - Library boundary (React Admin DataProvider generic) |
 | `src/lib/genericMemo.ts` | 17 | `result as unknown as T` | Documented deprecation |
 | `src/tests/setup.ts` | 220 | `MockPointerEvent as unknown as typeof PointerEvent` | Test polyfill (acceptable) |
 | `src/components/admin/form/__tests__/useFormShortcuts.test.tsx` | 17-157 | 8x `as unknown as React.KeyboardEvent` | Test mocks (acceptable) |
 
 ### Unsafe Assertions (No Post-Validation)
 
-| File | Line | Assertion | Risk |
-|------|------|-----------|------|
-| `src/atomic-crm/utils/secureStorage.ts` | 54, 63 | `JSON.parse(item) as T` | Storage corruption |
-| `src/atomic-crm/settings/DigestPreferences.tsx` | 41, 52, 64 | `data as DigestPreferenceResponse` | API contract |
-| `src/components/admin/bulk-delete-button.tsx` | 70 | `(error as Error)?.message` | Error shape |
-| `src/atomic-crm/sales/SalesPermissionsTab.tsx` | 132, 140 | `error as Error & { errors?: ... }` | Error shape |
+| File | Line | Assertion | Risk | Status |
+|------|------|-----------|------|--------|
+| `src/atomic-crm/utils/secureStorage.ts` | 54, 63 | `JSON.parse(item) as T` | Storage corruption | ✅ Fixed 2025-12-21 (optional schema param) |
+| `src/atomic-crm/settings/DigestPreferences.tsx` | 41, 52, 64 | `data as DigestPreferenceResponse` | API contract | |
+| `src/components/admin/bulk-delete-button.tsx` | 70 | `(error as Error)?.message` | Error shape | |
+| `src/atomic-crm/sales/SalesPermissionsTab.tsx` | 132, 140 | `error as Error & { errors?: ... }` | Error shape | |
 
 ---
 
@@ -144,10 +144,10 @@ The Crispy CRM codebase demonstrates **strong TypeScript configuration** with ex
 
 ### Unguarded Assertions (BUGS WAITING TO HAPPEN)
 
-| File | Line | Code | Fix |
-|------|------|------|-----|
-| `src/components/admin/field-toggle.tsx` | 87 | `selectedItem.dataset.index!` | Add null check for `selectedItem` |
-| `src/components/admin/filter-form.tsx` | 79 | `event.currentTarget.dataset.key!` | Validate `dataset.key` exists |
+| File | Line | Code | Fix | Status |
+|------|------|------|-----|--------|
+| `src/components/admin/field-toggle.tsx` | 87 | `selectedItem.dataset.index!` | Add null check for `selectedItem` | ✅ Fixed 2025-12-21 |
+| `src/components/admin/filter-form.tsx` | 79 | `event.currentTarget.dataset.key!` | Validate `dataset.key` exists | ✅ Fixed 2025-12-21 |
 
 ### Guarded Assertions (Acceptable)
 
@@ -278,7 +278,7 @@ The Crispy CRM codebase demonstrates **strong TypeScript configuration** with ex
 
 | File | Issues | Types |
 |------|--------|-------|
-| `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` | 6 | Double assertions, unconstrained generics |
+| `src/atomic-crm/providers/supabase/unifiedDataProvider.ts` | 3 | ✅ Double assertions DOCUMENTED, unconstrained generics |
 | `src/atomic-crm/organizations/OrganizationImportDialog.tsx` | 4 | any[], PromiseFulfilledResult<any> |
 | `src/components/admin/select-input.tsx` | 1 | Double assertion event handler |
 | `src/atomic-crm/utils/secureStorage.ts` | 2 | JSON.parse without validation |
