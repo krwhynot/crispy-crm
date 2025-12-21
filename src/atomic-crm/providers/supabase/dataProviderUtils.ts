@@ -234,8 +234,8 @@ export function getDatabaseResource(
 ): string {
   const actualResource = getResourceName(resource);
 
-  // Use summary views for list operations when available
-  if (operation === "list" || operation === "one") {
+  // Use summary views for list operations only (not getOne - base table avoids RLS mismatches)
+  if (operation === "list") {
     const summaryResource = `${actualResource}_summary`;
     if (
       resource === "organizations" ||
