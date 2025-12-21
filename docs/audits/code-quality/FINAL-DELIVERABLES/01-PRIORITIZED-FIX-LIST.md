@@ -13,7 +13,7 @@
 |----------|-------|-------------|-------|--------|
 | P0 | 8 | 6 hours | 5 | Critical - Fix Before Beta |
 | P1 | 18 | 16 hours | 12 | High - Fix This Week |
-| P2 | 31 | 24 hours | 3 | Medium - Fix Before Launch |
+| P2 | 31 | 24 hours | 16 | Medium - Fix Before Launch |
 | P3 | 32 | 20+ hours | 0 | Low - Post-Launch Backlog |
 
 **Last Updated:** 2025-12-21
@@ -130,34 +130,34 @@
 
 ### Type Safety
 
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P2-TYPE-1 | SalesEdit SubmitHandler<any> | `SalesEdit.tsx:65` | 30 min | Agent 16 |
-| P2-TYPE-2 | SalesCreate SubmitHandler<any> | `SalesCreate.tsx:50` | 30 min | Agent 16 |
-| P2-TYPE-3 | OrganizationImportDialog useMemo<any[]> | `OrganizationImportDialog.tsx:466` | 30 min | Agent 16 |
-| P2-TYPE-4 | 5 event double-assertions | Various | 1 hr | Agent 16 |
-| P2-TYPE-5 | 6 unconstrained generics | `unifiedDataProvider.ts` | 1 hr | Agent 16 |
-| P2-TYPE-6 | DigestPreferences unsafe assertions | `DigestPreferences.tsx:41,52,64` | 30 min | Agent 16 |
+| ID | Finding | Location | Effort | Source | Status |
+|----|---------|----------|--------|--------|--------|
+| P2-TYPE-1 | SalesEdit SubmitHandler<any> | `SalesEdit.tsx:65` | 30 min | Agent 16 | ✅ Fixed |
+| P2-TYPE-2 | SalesCreate SubmitHandler<any> | `SalesCreate.tsx:50` | 30 min | Agent 16 | ✅ Fixed |
+| P2-TYPE-3 | OrganizationImportDialog useMemo<any[]> | `OrganizationImportDialog.tsx:444` | 30 min | Agent 16 | ✅ Fixed |
+| P2-TYPE-4 | 2 event double-assertions | OpportunityCard, TaskKanbanCard | 30 min | Agent 16 | ✅ Fixed |
+| P2-TYPE-5 | 2 unconstrained generics | `unifiedDataProvider.ts` | 30 min | Agent 16 | ✅ Fixed |
+| P2-TYPE-6 | DigestPreferences RPC assertions | `DigestPreferences.tsx:52,64` | 15 min | Agent 16 | ✅ Fixed |
 
 ### Module Structure
 
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P2-MOD-1 | organizations/index.tsx pattern drift | `organizations/index.tsx` | 30 min | Agent 10 |
-| P2-MOD-2 | activities/index.tsx pattern drift | `activities/index.tsx` | 30 min | Agent 10 |
-| P2-MOD-3 | OpportunityInputs in forms/ subdir | `opportunities/forms/` | 15 min | Agent 10 |
-| P2-MOD-4 | Missing ActivityEdit.tsx | `activities/` | 1 hr | Agent 10 |
-| P2-MOD-5 | Missing ActivityInputs.tsx | `activities/` | 30 min | Agent 10 |
-| P2-MOD-6 | Missing SalesShow.tsx | `sales/` | 1 hr | Agent 10 |
-| P2-MOD-7 | Missing ProductShow.tsx | `products/` | 1 hr | Agent 10 |
+| ID | Finding | Location | Effort | Source | Status |
+|----|---------|----------|--------|--------|--------|
+| P2-MOD-1 | organizations/index.tsx pattern drift | `organizations/index.tsx` | 30 min | Agent 10 | ✅ Fixed |
+| P2-MOD-2 | activities/index.tsx pattern drift | `activities/index.tsx` | 30 min | Agent 10 | ✅ Fixed |
+| P2-MOD-3 | OpportunityInputs in forms/ subdir | `opportunities/forms/` | 15 min | Agent 10 | ✅ Fixed |
+| P2-MOD-4 | Missing ActivityEdit.tsx | `activities/` | 1 hr | Agent 10 | ✅ Fixed |
+| P2-MOD-5 | Missing ActivityInputs.tsx | `activities/` | 30 min | Agent 10 | ✅ Fixed |
+| P2-MOD-6 | Missing SalesShow.tsx | `sales/` | 1 hr | Agent 10 | ✅ Fixed |
+| P2-MOD-7 | Missing ProductShow.tsx | `products/` | 1 hr | Agent 10 | ✅ Fixed |
 
 ### Async Handling
 
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P2-ASYNC-1 | beforeunload missing in import wizard | `ContactImportDialog.tsx` | 30 min | Agent 23 |
-| P2-ASYNC-2 | AbortController missing in bulk ops | `BulkReassignButton.tsx` | 30 min | Agent 23 |
-| P2-ASYNC-3 | Missing retry action on error toasts | Toast notifications | 1 hr | Agent 23 |
+| ID | Finding | Location | Effort | Source | Status |
+|----|---------|----------|--------|--------|--------|
+| P2-ASYNC-1 | beforeunload missing in import wizard | `ContactImportDialog.tsx`, `OrganizationImportDialog.tsx` | 30 min | Agent 23 | ✅ Fixed |
+| P2-ASYNC-2 | AbortController missing in bulk ops | `BulkReassignButton.tsx` | 30 min | Agent 23 | ✅ Fixed |
+| P2-ASYNC-3 | Missing retry action on error toasts | Toast notifications | 1 hr | Agent 23 | ✅ Fixed |
 
 ### Large Components
 
@@ -539,6 +539,204 @@ const Parent = () => {
 **Verification:**
 - `npm run typecheck` ✅
 - `npm test` - 16/17 files pass, 266/275 tests pass (9 failures are unrelated mock config issues in `useDuplicateOrgCheck.test.tsx`)
+
+---
+
+### P2-D: Async Handling Fixes ✅
+**Fixed:** 2025-12-21
+
+**Problem:** 3 async handling issues affecting user experience and data safety:
+- P2-ASYNC-1: Users could accidentally close browser during CSV import, losing progress
+- P2-ASYNC-2: Bulk operations couldn't be cancelled once started
+- P2-ASYNC-3: Error notifications didn't offer retry option
+
+**Fixes Applied:**
+
+| ID | File(s) Modified | Change |
+|----|------------------|--------|
+| P2-ASYNC-1 | `ContactImportDialog.tsx:66-77`, `OrganizationImportDialog.tsx:90-104` | Added `beforeunload` handler during import state |
+| P2-ASYNC-2 | `BulkReassignButton.tsx:47-55, 86-193` | Added AbortController with cancel button |
+| P2-ASYNC-3 | `utils/useNotifyWithRetry.tsx` (new) | Created reusable retry hook for error notifications |
+
+**P2-ASYNC-1 Implementation:**
+```typescript
+// Both ContactImportDialog and OrganizationImportDialog
+useEffect(() => {
+  const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    if (wizardState.step === "importing") { // or importState === "running"
+      e.preventDefault();
+      e.returnValue = "Import in progress. Are you sure you want to leave?";
+      return e.returnValue;
+    }
+  };
+  window.addEventListener("beforeunload", handleBeforeUnload);
+  return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+}, [wizardState.step]); // or [importState]
+```
+
+**P2-ASYNC-2 Implementation:**
+```typescript
+// BulkReassignButton.tsx
+const abortControllerRef = useRef<AbortController | null>(null);
+
+useEffect(() => {
+  return () => { abortControllerRef.current?.abort(); };
+}, []);
+
+const handleExecuteReassign = async () => {
+  abortControllerRef.current = new AbortController();
+  const { signal } = abortControllerRef.current;
+
+  for (const id of selectedIds) {
+    if (signal.aborted) { wasCancelled = true; break; }
+    // ... update logic
+  }
+};
+
+const handleCancelOperation = () => {
+  abortControllerRef.current?.abort();
+  notify("Operation cancelled", { type: "info" });
+};
+```
+
+**P2-ASYNC-3 Implementation:**
+```typescript
+// New file: src/atomic-crm/utils/useNotifyWithRetry.tsx
+export const useNotifyWithRetry = () => {
+  const notify = useNotify();
+  return useCallback(
+    (message: string, retryAction: () => void, options?: NotifyWithRetryOptions) => {
+      notify(message, {
+        type: options?.type ?? "error",
+        autoHideDuration: 10000, // Keep visible longer for retry
+        messageArgs: {
+          action: <Button onClick={retryAction}>Retry</Button>,
+        },
+      });
+    },
+    [notify]
+  );
+};
+```
+
+**Verification:**
+- `npm run typecheck` ✅
+- `npm run build` ✅ (2m 48s)
+
+---
+
+### P2-B: Type Safety Fixes ✅
+**Fixed:** 2025-12-21
+
+**Problem:** 6 type safety issues with explicit `any` usage, double assertions, and unconstrained generics.
+
+**Fixes Applied:**
+
+| ID | Fix Applied |
+|----|-------------|
+| P2-TYPE-1 | Made `SimpleForm` generic: `<TFormData extends FieldValues>` to properly type `onSubmit` |
+| P2-TYPE-2 | Updated `SalesCreate` to use `<SimpleForm<SalesFormData>>` |
+| P2-TYPE-3 | Changed `useMemo<any[]>` → `useMemo<MappedCSVRow[]>` using existing type |
+| P2-TYPE-4 | Changed handlers to accept `React.MouseEvent \| React.KeyboardEvent` union type |
+| P2-TYPE-5 | Added `extends Record<string, unknown>` constraint to `transformData<T>` and `processForDatabase<T>` |
+| P2-TYPE-6 | Used generic RPC typing `rpc<ResponseType>()` instead of post-call `as` assertions |
+
+**Key Changes:**
+
+1. **Generic SimpleForm** (`simple-form.tsx`):
+```typescript
+export interface SimpleFormProps<TFormData extends FieldValues = FieldValues>
+  extends Omit<FormProps, "onSubmit"> {
+  onSubmit?: SubmitHandler<TFormData>;
+}
+
+export const SimpleForm = <TFormData extends FieldValues = FieldValues>({
+  ...props
+}: SimpleFormProps<TFormData>) => (...)
+```
+
+2. **Event Handler Union Type** (`OpportunityCard.tsx`, `TaskKanbanCard.tsx`):
+```typescript
+// Before: Required double assertion
+const handleCardClick = (e: React.MouseEvent) => {...}
+onKeyDown={(e) => handleCardClick(e as unknown as React.MouseEvent)}
+
+// After: Proper union type
+const handleCardClick = (e: React.MouseEvent | React.KeyboardEvent) => {...}
+onKeyDown={(e) => handleCardClick(e)}
+```
+
+3. **Generic RPC Typing** (`DigestPreferences.tsx`):
+```typescript
+// Before: Post-call assertion
+const data = await dataProvider.rpc("get_digest_preference", {});
+return data as DigestPreferenceResponse;
+
+// After: Generic RPC call
+return dataProvider.rpc<DigestPreferenceResponse>("get_digest_preference", {});
+```
+
+**Verification:**
+- `npm run typecheck` ✅
+- `grep "SubmitHandler<any>"` → 0 results ✅
+- `grep "useMemo<any\[\]>"` → 0 results ✅
+- `grep "as unknown as.*Event"` → 0 results ✅
+
+---
+
+### P2-C: Module Structure Fixes ✅
+**Fixed:** 2025-12-21
+
+**Problem:** 7 module structure issues where feature modules were missing standard components or had pattern drift from established conventions.
+
+**Fixes Applied:**
+
+| ID | Issue | Resolution |
+|----|-------|------------|
+| P2-MOD-1 | organizations/index.tsx pattern drift | Added named exports (`OrganizationList`, etc.) + `organizationResource` config |
+| P2-MOD-2 | activities/index.tsx pattern drift | Added `ActivityEdit` lazy load + named exports + `activityResource` config |
+| P2-MOD-3 | OpportunityInputs in forms/ subdir | Moved to `opportunities/OpportunityInputs.tsx`, updated imports, forms/index.ts re-exports for backward compatibility |
+| P2-MOD-4 | Missing ActivityEdit.tsx | Created with `EditBase`, form handling, cache invalidation |
+| P2-MOD-5 | Missing ActivityInputs.tsx | Created wrapper around `ActivitySinglePage` with error summary |
+| P2-MOD-6 | Missing SalesShow.tsx | Created show component with avatar, name, email, role, status display |
+| P2-MOD-7 | Missing ProductShow.tsx | Created show component with product details, pricing, principal reference |
+
+**Files Created:**
+- `src/atomic-crm/activities/ActivityEdit.tsx`
+- `src/atomic-crm/activities/ActivityInputs.tsx`
+- `src/atomic-crm/sales/SalesShow.tsx`
+- `src/atomic-crm/products/ProductShow.tsx`
+- `src/atomic-crm/opportunities/OpportunityInputs.tsx` (moved from forms/)
+
+**Files Modified:**
+- `src/atomic-crm/organizations/index.tsx` - Added named exports + resource config
+- `src/atomic-crm/activities/index.tsx` - Added ActivityEdit, named exports, resource config
+- `src/atomic-crm/opportunities/OpportunityCreate.tsx` - Updated import path
+- `src/atomic-crm/opportunities/forms/index.ts` - Re-export from new location
+- `src/atomic-crm/sales/resource.tsx` - Added SalesShow lazy load + view wrapper
+- `src/atomic-crm/products/resource.tsx` - Added ProductShow lazy load + view wrapper
+
+**Pattern Applied:**
+```typescript
+// Standard index.tsx pattern now applied:
+export { FeatureList, FeatureCreate, FeatureEdit, FeatureShow };
+export { FeatureInputs } from "./FeatureInputs";
+
+export const featureResource = {
+  name: "features",
+  list: FeatureList,
+  create: FeatureCreate,
+  edit: FeatureEdit,
+  show: FeatureShow,
+};
+
+export default { ... };
+```
+
+**Verification:**
+- `npm run typecheck` ✅
+- `npm run build` ✅ (2m 44s)
+- All module structures verified via directory listing ✅
 
 ---
 

@@ -100,7 +100,7 @@ export const organizationSchema = z.strictObject({
   founded_year: z.coerce.number().int().min(1800).max(new Date().getFullYear()).nullish(), // Year founded
   tax_identifier: z.string().max(50, "Tax identifier too long").nullish(), // Tax ID / EIN
   logo_url: z.string().url().nullish(), // Direct URL to logo (separate from logo RAFile)
-  updated_at: z.string().optional(), // System-managed timestamp
+  updated_at: z.string().max(50).optional(), // System-managed timestamp
   updated_by: z.coerce.number().nullish(), // Audit: who last updated
 
   // Organization-specific fields
@@ -140,9 +140,9 @@ export const organizationSchema = z.strictObject({
   territory: z.string().max(100).nullable().optional(),
 
   // System/Audit fields
-  created_at: z.string().optional(),
+  created_at: z.string().max(50).optional(),
   created_by: z.coerce.number().nullish(), // Audit: who created
-  deleted_at: z.string().optional().nullable(), // Soft-delete timestamp
+  deleted_at: z.string().max(50).optional().nullable(), // Soft-delete timestamp
 });
 
 // Type inference

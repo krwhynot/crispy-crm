@@ -63,9 +63,9 @@ export const contactOrganizationSchema = z
     contact_id: z.coerce.number().optional(),
     organization_id: z.coerce.number().optional(),
     is_primary: z.coerce.boolean().default(false),
-    created_at: z.string().optional(),
-    updated_at: z.string().optional(),
-    deleted_at: z.string().optional().nullable(),
+    created_at: z.string().max(50).optional(),
+    updated_at: z.string().max(50).optional(),
+    deleted_at: z.string().max(50).optional().nullable(),
   })
   .superRefine((data, ctx) => {
     // Check for removed legacy fields and provide helpful error messages
@@ -120,12 +120,12 @@ export const contactBaseSchema = z.strictObject({
   territory_name: z.string().max(100, "Territory name too long").nullable().optional(),
 
   // System fields (readonly, not validated)
-  created_at: z.string().optional(),
-  updated_at: z.string().optional(),
+  created_at: z.string().max(50).optional(),
+  updated_at: z.string().max(50).optional(),
   created_by: z.coerce.number().optional().nullable(),
-  deleted_at: z.string().optional().nullable(),
-  first_seen: z.string().optional(),
-  last_seen: z.string().optional(),
+  deleted_at: z.string().max(50).optional().nullable(),
+  first_seen: z.string().max(50).optional(),
+  last_seen: z.string().max(50).optional(),
 
   // Avatar field (managed by ImageEditorField, not validated)
   avatar: z.any().optional(), // Partial<RAFile>
@@ -156,7 +156,7 @@ export const contactBaseSchema = z.strictObject({
   twitter_handle: z.string().max(100, "Twitter handle too long").optional().nullable(),
 
   // Classification fields - exist in DB
-  tags: z.array(z.string()).default([]),
+  tags: z.array(z.string().max(100)).default([]),
   status: z.string().max(50, "Status too long").optional().nullable(),
 
   // System fields (readonly, set by triggers)
@@ -278,7 +278,7 @@ export const importContactSchema = z
         z.literal(""),
         z.literal(null),
         z.undefined(),
-        z.string(),
+        z.string().max(50),
         z.number().transform(String), // Convert numbers to strings
       ])
       .optional()
@@ -288,7 +288,7 @@ export const importContactSchema = z
         z.literal(""),
         z.literal(null),
         z.undefined(),
-        z.string(),
+        z.string().max(50),
         z.number().transform(String), // Convert numbers to strings
       ])
       .optional()
@@ -298,7 +298,7 @@ export const importContactSchema = z
         z.literal(""),
         z.literal(null),
         z.undefined(),
-        z.string(),
+        z.string().max(50),
         z.number().transform(String), // Convert numbers to strings
       ])
       .optional()

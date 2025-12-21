@@ -84,9 +84,9 @@ export const LOSS_REASONS: Array<{ id: LossReason; name: string }> = [
 const opportunityBaseSchema = z.strictObject({
   // System fields
   id: z.union([z.string(), z.number()]).optional(),
-  created_at: z.string().optional(),
-  updated_at: z.string().optional(),
-  deleted_at: z.string().optional().nullable(),
+  created_at: z.string().max(50).optional(),
+  updated_at: z.string().max(50).optional(),
+  deleted_at: z.string().max(50).optional().nullable(),
 
   // OpportunityInfoInputs fields
   name: z.string().min(1, "Opportunity name is required").max(255, "Opportunity name too long"),
