@@ -6,7 +6,7 @@ export interface CacheOptions {
 }
 
 export class CacheManager {
-  private cache: LRUCache<string, any>;
+  private cache: LRUCache<string, unknown>;
 
   constructor(options: CacheOptions = {}) {
     this.cache = new LRUCache({
@@ -16,11 +16,11 @@ export class CacheManager {
     });
   }
 
-  get(key: string): any | undefined {
+  get(key: string): unknown | undefined {
     return this.cache.get(key);
   }
 
-  set(key: string, value: any, options?: { ttl?: number }): void {
+  set(key: string, value: unknown, options?: { ttl?: number }): void {
     this.cache.set(key, value, options);
   }
 

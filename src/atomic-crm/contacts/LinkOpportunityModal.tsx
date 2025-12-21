@@ -9,6 +9,7 @@ import {
   DialogFooter,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import type { Opportunity } from "@/atomic-crm/types";
 
 interface LinkOpportunityModalProps {
   open: boolean;
@@ -17,6 +18,10 @@ interface LinkOpportunityModalProps {
   linkedOpportunityIds: number[];
   onClose: () => void;
   onSuccess: () => void;
+}
+
+interface LinkOpportunityFormData {
+  opportunity_id?: number;
 }
 
 export function LinkOpportunityModal({
@@ -30,7 +35,7 @@ export function LinkOpportunityModal({
   const [create, { isLoading }] = useCreate();
   const notify = useNotify();
 
-  const handleLink = async (data: any) => {
+  const handleLink = async (data: LinkOpportunityFormData) => {
     if (!data.opportunity_id) return;
 
     // Check for duplicate
@@ -56,8 +61,9 @@ export function LinkOpportunityModal({
             onSuccess();
             onClose();
           },
-          onError: (error: any) => {
-            notify(error?.message || "Failed to link opportunity", { type: "error" });
+          onError: (error: unknown) => {
+            const errorMessage = error instanceof Error ? error.message : "Failed to link opportunity";
+            notify(errorMessage, { type: "error" });
           },
         }
       );
@@ -80,7 +86,7 @@ export function LinkOpportunityModal({
           <ReferenceInput source="opportunity_id" reference="opportunities">
             <AutocompleteInput
               filterToQuery={(searchText: string) => ({ name: searchText })}
-              optionText={(opp: any) =>
+              optionText={(opp: Opportunity) =>
                 opp ? `${opp.name} - ${opp.customer_organization_name || ""} (${opp.stage})` : ""
               }
               label="Search opportunities"

@@ -119,13 +119,13 @@ const StyledForm = (props: React.FormHTMLAttributes<HTMLFormElement>) => {
   );
 };
 
-const isEmptyValue = (filterValue: any): boolean => {
+const isEmptyValue = (filterValue: unknown): boolean => {
   if (filterValue === "" || filterValue == null) return true;
 
   // If one of the value leaf is not empty
   // the value is considered not empty
   if (typeof filterValue === "object") {
-    return Object.keys(filterValue).every((key) => isEmptyValue(filterValue[key]));
+    return Object.keys(filterValue as Record<string, unknown>).every((key) => isEmptyValue((filterValue as Record<string, unknown>)[key]));
   }
 
   return false;
@@ -241,7 +241,7 @@ export const FilterButton = (props: FilterButtonProps) => {
   );
 
   const handleShow = useCallback(
-    ({ source, defaultValue }: { source: string; defaultValue: any }) => {
+    ({ source, defaultValue }: { source: string; defaultValue: unknown }) => {
       showFilter(source, defaultValue === "" ? undefined : defaultValue);
       // We have to fallback to imperative code because the new FilterFormInput
       // has no way of knowing it has just been displayed (and thus that it should focus its input)
@@ -449,7 +449,7 @@ export interface FilterButtonMenuItemProps {
   filter: React.ReactElement<FilterElementProps>;
   displayed: boolean;
 
-  onShow: (params: { source: string; defaultValue: any }) => void;
+  onShow: (params: { source: string; defaultValue: unknown }) => void;
   onHide: (params: { source: string }) => void;
   resource?: string;
   autoFocus?: boolean;

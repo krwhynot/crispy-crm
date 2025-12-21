@@ -4,13 +4,19 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { Sale } from "@/atomic-crm/types";
 // NOTE: Client-side validation removed (2025-12-12)
 // Edge Function /users PATCH handles validation with patchUserSchema
 // salesService.salesUpdate() filters empty strings before sending to Edge Function
 // Having duplicate validation here caused 400 errors from empty string avatar_url
 
+interface SaleWithProfile extends Sale {
+  phone?: string | null;
+  avatar_url?: string | null;
+}
+
 interface SalesProfileTabProps {
-  record: any;
+  record: SaleWithProfile;
   mode: "view" | "edit";
   onModeToggle?: () => void;
 }
@@ -33,11 +39,11 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
 
   // Form state (only used in edit mode)
   const [formData, setFormData] = useState({
-    first_name: record?.first_name || "",
-    last_name: record?.last_name || "",
-    email: record?.email || "",
-    phone: record?.phone || "",
-    avatar_url: record?.avatar_url || "",
+    first_name: record.first_name || "",
+    last_name: record.last_name || "",
+    email: record.email || "",
+    phone: record.phone || "",
+    avatar_url: record.avatar_url || "",
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -70,17 +76,19 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
             notify("Profile updated successfully", { type: "success" });
             if (onModeToggle) onModeToggle(); // Switch back to view mode
           },
-          onError: (error: any) => {
+          onError: (error: Error) => {
             notify(error.message || "Failed to update profile", { type: "error" });
-            if (error.errors) {
-              setErrors(error.errors);
+            const errorWithErrors = error as Error & { errors?: Record<string, string> };
+            if (errorWithErrors.errors) {
+              setErrors(errorWithErrors.errors);
             }
           },
         }
       );
-    } catch (error: any) {
-      if (error.errors) {
-        setErrors(error.errors);
+    } catch (error: unknown) {
+      const errorWithErrors = error as { errors?: Record<string, string> };
+      if (errorWithErrors.errors) {
+        setErrors(errorWithErrors.errors);
         notify("Validation failed. Please check the form.", { type: "warning" });
       } else {
         notify("An error occurred", { type: "error" });

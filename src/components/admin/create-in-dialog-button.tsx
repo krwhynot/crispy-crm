@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CreateBase, Form, useNotify, useRefresh } from "ra-core";
+import { CreateBase, Form, useNotify, useRefresh, type RaRecord, type Identifier } from "ra-core";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import {
@@ -14,13 +14,13 @@ import { Card, CardContent } from "@/components/ui/card";
 import { FormToolbar } from "@/components/admin/simple-form";
 import { SaveButton } from "@/components/admin/form";
 
-interface CreateInDialogButtonProps {
+interface CreateInDialogButtonProps<RecordType extends RaRecord = RaRecord> {
   resource: string;
   children: React.ReactElement; // The Create component (e.g., OrganizationCreate content)
-  defaultValues?: Record<string, any>;
+  defaultValues?: Partial<Omit<RecordType, 'id'>>;
   label?: string;
-  onSave?: (record: any) => void;
-  transform?: (data: any) => any;
+  onSave?: (record: RecordType) => void;
+  transform?: (data: Partial<Omit<RecordType, 'id'>>, options?: { previousData?: Partial<Omit<RecordType, 'id'>> }) => Partial<Omit<RecordType, 'id'>> | Promise<Partial<Omit<RecordType, 'id'>>>;
   title?: string;
   description?: string;
   variant?: "default" | "outline" | "ghost";
@@ -28,7 +28,7 @@ interface CreateInDialogButtonProps {
   className?: string;
 }
 
-export const CreateInDialogButton = ({
+export const CreateInDialogButton = <RecordType extends RaRecord = RaRecord>({
   resource,
   children,
   defaultValues = {},
@@ -40,14 +40,14 @@ export const CreateInDialogButton = ({
   variant = "outline",
   size = "sm",
   className,
-}: CreateInDialogButtonProps) => {
+}: CreateInDialogButtonProps<RecordType>) => {
   const [open, setOpen] = useState(false);
   const notify = useNotify();
   const refresh = useRefresh();
 
   // Handle successful creation - CreateBase already called dataProvider.create(),
   // so this callback receives the newly created record with its ID
-  const handleSuccess = (createdRecord: any) => {
+  const handleSuccess = (createdRecord: RecordType) => {
     // Close dialog
     setOpen(false);
 
