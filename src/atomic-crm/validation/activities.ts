@@ -74,6 +74,7 @@ const baseActivitiesSchema = z.strictObject({
   subject: z.string().min(1, "Subject is required").max(255, "Subject too long"),
   description: z
     .string()
+    .max(5000)
     .optional()
     .nullable()
     .transform((val) => (val ? sanitizeHtml(val) : val)),
