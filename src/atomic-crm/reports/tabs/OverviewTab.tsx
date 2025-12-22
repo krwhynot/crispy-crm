@@ -6,6 +6,8 @@ import { KPICard } from "../components/KPICard";
 import { ChartWrapper } from "../components/ChartWrapper";
 import { Skeleton } from "@/components/ui/skeleton";
 import { TabFilterBar } from "../components/TabFilterBar";
+import { AppliedFiltersBar, EmptyState } from "../components";
+import { useReportData } from "../hooks";
 import { PipelineChart } from "../charts/PipelineChart";
 import { ActivityTrendChart } from "../charts/ActivityTrendChart";
 import { TopPrincipalsChart } from "../charts/TopPrincipalsChart";
