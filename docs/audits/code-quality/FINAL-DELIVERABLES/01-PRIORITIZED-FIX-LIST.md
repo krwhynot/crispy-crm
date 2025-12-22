@@ -24,12 +24,14 @@ After analyzing 24 audit reports, deduplicating overlapping findings, and resolv
 
 ### Priority Distribution
 
-| Priority | Count | Timeline |
-|----------|-------|----------|
-| P0 - Critical | 3 | Fix before beta |
-| P1 - High | 12 | Fix this week |
-| P2 - Medium | 14 | Fix before launch |
-| P3 - Low | 6 | Post-launch backlog |
+| Priority | Count | Remaining | Timeline |
+|----------|-------|-----------|----------|
+| P0 - Critical | 3 | 3 | Fix before beta |
+| P1 - High | 12 | **7** | ~~Fix this week~~ 5 DONE |
+| P2 - Medium | 14 | 14 | Fix before launch |
+| P3 - Low | 6 | 6 | Post-launch backlog |
+
+> **Update 2025-12-21:** P1-1, P1-2, P1-3, P1-4, P1-5 completed (5 of 12 P1 items)
 
 ---
 
@@ -614,16 +616,19 @@ Per Agent 24 (Devil's Advocate) analysis:
 | Metric | Before | Current | Target |
 |--------|--------|---------|--------|
 | RLS vulnerabilities | 1 | 1 | 0 |
-| Type safety score | 78/100 | 82/100 | 88/100 |
+| Type safety score | 78/100 | 86/100 | 88/100 |
 | Dead code (lines) | ~1,600 | ~1,600 | 0 |
-| Constitution compliance | 85% | 88% | 95% |
+| Constitution compliance | 85% | 91% | 95% |
 | Pattern drift average | 12% | 10% | 8% |
 | Bundle waste | ~90KB | ~90KB | 0 |
+| JSON.parse unvalidated | 13 | 0 | 0 |
+| z.object schemas | 9 | 1 (exception) | 0 |
 
 ### Completed Fixes Log
 | Date | Items | Impact |
 |------|-------|--------|
 | 2025-12-21 | P1-3, P1-4, P1-5 | +3% constitution compliance, +4 type safety |
+| 2025-12-21 | P1-1 (JSON.parse), P1-2 (strictObject) | +3% compliance, +4 type safety, 13 security fixes |
 
 ---
 
