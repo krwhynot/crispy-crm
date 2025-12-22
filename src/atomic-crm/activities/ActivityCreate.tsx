@@ -10,6 +10,7 @@ import {
   FormProgressProvider,
   FormProgressBar,
 } from "@/components/admin/form";
+import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 
 const HiddenActivityTypeField = () => {
   const { field } = useInput({
@@ -53,6 +54,7 @@ export default function ActivityCreate() {
 
 const ActivityFormContent = () => {
   const { errors } = useFormState();
+  useUnsavedChangesWarning();
 
   return (
     <>

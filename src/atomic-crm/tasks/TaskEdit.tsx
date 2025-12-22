@@ -1,8 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { EditBase, Form, useRecordContext } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { TaskInputs } from "./TaskInputs";
 import { FormToolbar } from "../layout/FormToolbar";
+import { taskSchema } from "@/atomic-crm/validation/task";
 import type { Task } from "../types";
 
 /**
@@ -34,11 +36,16 @@ export const TaskEdit = () => {
 const TaskEditForm = () => {
   const record = useRecordContext<Task>();
 
+  const defaultValues = useMemo(
+    () => taskSchema.partial().parse(record),
+    [record]
+  );
+
   if (!record) return null;
 
   return (
     <div className="mt-2">
-      <Form className="flex flex-col gap-4" defaultValues={record} key={record.id}>
+      <Form className="flex flex-col gap-4" defaultValues={defaultValues} key={record.id}>
         <Card>
           <CardContent className="pt-6">
             <h2 className="text-2xl font-semibold mb-4">Edit Task</h2>

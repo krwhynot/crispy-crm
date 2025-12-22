@@ -196,7 +196,7 @@ export const SelectInput = (props: SelectInputProps) => {
   }
 
   // Handle reset functionality
-  const handleReset = (e: React.MouseEvent<HTMLDivElement>) => {
+  const handleReset = (e: React.MouseEvent | React.KeyboardEvent) => {
     e.stopPropagation();
     field.onChange(emptyValue);
   };
@@ -242,7 +242,7 @@ export const SelectInput = (props: SelectInputProps) => {
                     onKeyDown={(e) => {
                       if (e.key === "Enter" || e.key === " ") {
                         e.preventDefault();
-                        handleReset(e as unknown as React.MouseEvent);
+                        handleReset(e);
                       }
                     }}
                     tabIndex={0}

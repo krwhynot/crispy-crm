@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { EditBase, Form, useRecordContext, useNotify } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { OrganizationInputs } from "./OrganizationInputs";
 import { PrincipalChangeWarning } from "./PrincipalChangeWarning";
+import { organizationSchema } from "@/atomic-crm/validation/organizations";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ResponsiveGrid } from "@/components/design-system";
@@ -76,6 +77,11 @@ const OrganizationEditContent = ({
   const record = useRecordContext<Organization>();
   const notify = useNotify();
 
+  const defaultValues = useMemo(
+    () => organizationSchema.partial().parse(record),
+    [record]
+  );
+
   const handleWarningClose = () => {
     setShowWarning(false);
     // Reset form field back to principal
@@ -91,7 +97,7 @@ const OrganizationEditContent = ({
     <>
       <ResponsiveGrid variant="dashboard" className="mt-2">
         <main role="main" aria-label="Edit organization">
-          <Form className="flex flex-col gap-4">
+          <Form defaultValues={defaultValues} key={record.id} className="flex flex-col gap-4">
             <Card>
               <CardContent>
                 <OrganizationInputs />

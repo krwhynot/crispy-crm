@@ -1,11 +1,13 @@
 import { EditBase, Form, useRecordContext, useGetIdentity } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { DeleteButton } from "@/components/admin/delete-button";
 import { SaveButton } from "@/components/admin/form";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { FormToolbar } from "@/components/admin/simple-form";
 import { ProductInputs } from "./ProductInputs";
+import { productSchema } from "@/atomic-crm/validation/products";
 import type { Product } from "../types";
 
 const ProductEdit = () => {
@@ -33,15 +35,20 @@ const ProductEditForm = () => {
   const record = useRecordContext<Product>();
   const { data: identity } = useGetIdentity();
 
+  const defaultValues = useMemo(
+    () => ({
+      ...productSchema.partial().parse(record),
+      updated_by: identity?.id,
+    }),
+    [record, identity?.id]
+  );
+
   // Wait for record to load before rendering form
   if (!record) return null;
 
   return (
     <Form
-      defaultValues={{
-        ...record,
-        updated_by: identity?.id,
-      }}
+      defaultValues={defaultValues}
       key={record.id} // Force remount when record changes
     >
       <Card>

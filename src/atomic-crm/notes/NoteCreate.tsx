@@ -88,7 +88,7 @@ const NoteCreateButton = ({
     // Only update last_seen for contacts (opportunities don't have last_seen)
     if (reference === "contacts") {
       update(reference, {
-        id: (record && record.id) as unknown as Identifier,
+        id: record.id,
         data: { last_seen: new Date().toISOString() },
         previousData: record,
       });
