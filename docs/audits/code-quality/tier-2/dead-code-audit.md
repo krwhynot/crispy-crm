@@ -7,6 +7,42 @@
 
 ---
 
+## 🧹 Cleanup Status (P3-A Task)
+
+**Last Updated:** 2025-12-21
+**Status:** ✅ PARTIAL CLEANUP COMPLETE
+
+### Completed Items
+
+| Item | Status | Notes |
+|------|--------|-------|
+| `OrganizationType.tsx` | ✅ DELETED | Was already deleted in checkpoint |
+| `sizes.ts` | ✅ DELETED | Was already deleted in checkpoint |
+| `ProductGridList.tsx` | ✅ DELETED | Was already deleted in checkpoint |
+| `toggle.tsx` | ✅ DELETED | Was already deleted in checkpoint |
+| `simple-list/` directory | ✅ N/A | Directory didn't exist |
+| `react.svg`, `adding-users.png` | ✅ N/A | Assets didn't exist |
+| npm: react-resizable-panels | ✅ REMOVED | Already not in package.json |
+| npm: @radix-ui/react-navigation-menu | ✅ REMOVED | Already not in package.json |
+| npm: @radix-ui/react-toggle | ✅ REMOVED | Already not in package.json |
+| Barrel exports: contextMenu, exportScheduler, keyboardShortcuts | ✅ REMOVED | Removed from utils/index.ts (test-only) |
+
+### Items NOT Dead Code (Audit Corrections)
+
+| Item | Actual Status | Notes |
+|------|---------------|-------|
+| `organizationImport.logic.ts` | ✅ IN USE | Used by OrganizationImportDialog, useOrganizationImport, types.ts |
+| `organizationColumnAliases.ts` | ✅ IN USE | Used by OrganizationImportDialog, OrganizationImportPreview |
+| `OrganizationType` (type) | ✅ IN USE | Referenced in 13 files (type, not component) |
+
+### Verification Results
+
+- ✅ TypeScript: Passes
+- ✅ Build: Succeeds (18MB bundle)
+- ⚠️ Tests: 11 pre-existing failures (unrelated to cleanup)
+
+---
+
 ## Executive Summary
 
 **Total Dead Code Found:** ~2,463 lines
