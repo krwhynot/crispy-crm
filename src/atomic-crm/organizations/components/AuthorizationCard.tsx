@@ -23,7 +23,6 @@ import {
 
 import type {
   AuthorizationCardProps,
-  AuthorizationWithPrincipal,
   PrincipalOrganization,
   Product,
   ProductAuthorization,
