@@ -30,15 +30,14 @@ export default function WeeklyActivitySummary() {
   }));
 
   // Fetch activities for date range
-  const { data: activities, isPending: activitiesPending } = useGetList<ActivityRecord>(
+  const { data: activities, isLoading: activitiesLoading, error: activitiesError } = useReportData<ActivityRecord>(
     "activities",
     {
-      pagination: { page: 1, perPage: 10000 },
-      filter: {
-        "activity_date@gte": dateRange.start,
-        "activity_date@lte": dateRange.end,
+      dateRange: {
+        start: new Date(dateRange.start),
+        end: new Date(dateRange.end),
       },
-      sort: { field: "activity_date", order: "DESC" },
+      dateField: "activity_date",
     }
   );
 
@@ -71,6 +70,42 @@ export default function WeeklyActivitySummary() {
     () => new Map((organizations || []).map((o) => [o.id, o])),
     [organizations]
   );
+
+  // Applied filters for filter bar
+  const appliedFilters = useMemo(() => {
+    const result: Array<{ label: string; value: string; onRemove: () => void }> = [];
+
+    // Week filter (always show current date range)
+    result.push({
+      label: "Week",
+      value: `${dateRange.start} to ${dateRange.end}`,
+      onRemove: () => {
+        // Reset to current week
+        setDateRange({
+          start: format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd"),
+          end: format(endOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd"),
+        });
+      },
+    });
+
+    return result;
+  }, [dateRange]);
+
+  // Check if we're viewing current week (not a non-default filter)
+  const isCurrentWeek = useMemo(() => {
+    const currentStart = format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd");
+    const currentEnd = format(endOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd");
+    return dateRange.start === currentStart && dateRange.end === currentEnd;
+  }, [dateRange]);
+
+  const hasActiveFilters = !isCurrentWeek;
+
+  const handleResetAllFilters = () => {
+    setDateRange({
+      start: format(startOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd"),
+      end: format(endOfWeek(new Date(), { weekStartsOn: 1 }), "yyyy-MM-dd"),
+    });
+  };
 
   // Group activities by rep → principal → type
   const reportData = useMemo(() => {
@@ -169,7 +204,7 @@ export default function WeeklyActivitySummary() {
     });
   };
 
-  if (activitiesPending || !identity) {
+  if (activitiesLoading || !identity) {
     return (
       <ReportLayout title="Weekly Activity Summary">
         <p className="text-muted-foreground">Loading activities...</p>
@@ -201,7 +236,21 @@ export default function WeeklyActivitySummary() {
         </div>
       }
     >
+      <AppliedFiltersBar
+        filters={appliedFilters}
+        onResetAll={handleResetAllFilters}
+        hasActiveFilters={hasActiveFilters}
+      />
+
       <div className="space-y-section">
+        {/* Error display (fail-fast principle) */}
+        {activitiesError && (
+          <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive">
+            <p className="font-medium">Failed to load activities</p>
+            <p className="text-sm">{activitiesError.message}</p>
+          </div>
+        )}
+
         {/* Summary Stats */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-content">
           <Card>
@@ -227,11 +276,14 @@ export default function WeeklyActivitySummary() {
         </div>
 
         {/* Rep Activity Breakdown */}
-        {reportData.length === 0 ? (
-          <p className="text-center text-muted-foreground py-8">
-            No activities found for this date range
-          </p>
-        ) : (
+        {reportData.length === 0 && !activitiesLoading && !activitiesError && (
+          <EmptyState
+            title="No Activities This Week"
+            description="Log calls, emails, or meetings to see activity summaries."
+            icon={Activity}
+          />
+        )}
+        {reportData.length > 0 && (
           <div className="space-y-6">
             {reportData.map((repGroup) => (
               <RepActivityCard key={repGroup.rep.id} repGroup={repGroup} />

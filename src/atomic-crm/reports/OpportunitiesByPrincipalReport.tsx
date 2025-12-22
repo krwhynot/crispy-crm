@@ -8,7 +8,9 @@ import { ReportLayout } from "./ReportLayout";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ChevronDown, ChevronRight, ExternalLink } from "lucide-react";
+import { ChevronDown, ChevronRight, ExternalLink, TrendingUp } from "lucide-react";
+import { AppliedFiltersBar, EmptyState } from "./components";
+import { useReportData } from "./hooks";
 import { MultiSelectInput } from "@/components/admin/multi-select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
@@ -198,12 +200,10 @@ export default function OpportunitiesByPrincipalReport() {
   }, [filters]);
 
   // Fetch opportunities
-  const { data: opportunities, isPending: opportunitiesPending } = useGetList<Opportunity>(
+  const { data: opportunities, isLoading: opportunitiesLoading, error: opportunitiesError } = useReportData<Opportunity>(
     "opportunities_summary",
     {
-      pagination: { page: 1, perPage: 10000 },
-      filter: apiFilter,
-      sort: { field: "estimated_close_date", order: "ASC" },
+      additionalFilters: apiFilter,
     }
   );
 
@@ -332,8 +332,71 @@ export default function OpportunitiesByPrincipalReport() {
     navigate(`/opportunities/${oppId}/show`);
   };
 
+  // Build applied filters for AppliedFiltersBar
+  const appliedFilters = useMemo(() => {
+    const result: Array<{ label: string; value: string; onRemove: () => void }> = [];
+
+    if (filters.principal_organization_id) {
+      result.push({
+        label: "Principal",
+        value: "Selected",
+        onRemove: () => setFilters({ ...filters, principal_organization_id: null }),
+      });
+    }
+
+    if (filters.stage.length > 0) {
+      result.push({
+        label: "Stage",
+        value: `${filters.stage.length} selected`,
+        onRemove: () => setFilters({ ...filters, stage: [] }),
+      });
+    }
+
+    if (filters.opportunity_owner_id) {
+      result.push({
+        label: "Sales Rep",
+        value: "Selected",
+        onRemove: () => setFilters({ ...filters, opportunity_owner_id: null }),
+      });
+    }
+
+    if (filters.startDate) {
+      result.push({
+        label: "Start Date",
+        value: format(new Date(filters.startDate), "MMM dd, yyyy"),
+        onRemove: () => setFilters({ ...filters, startDate: null }),
+      });
+    }
+
+    if (filters.endDate) {
+      result.push({
+        label: "End Date",
+        value: format(new Date(filters.endDate), "MMM dd, yyyy"),
+        onRemove: () => setFilters({ ...filters, endDate: null }),
+      });
+    }
+
+    return result;
+  }, [filters]);
+
+  const hasActiveFilters = filters.principal_organization_id ||
+    filters.stage.length > 0 ||
+    filters.opportunity_owner_id ||
+    filters.startDate ||
+    filters.endDate;
+
+  const handleResetAllFilters = () => {
+    setFilters({
+      principal_organization_id: null,
+      stage: [],
+      opportunity_owner_id: null,
+      startDate: null,
+      endDate: null,
+    });
+  };
+
   // Loading state
-  if (opportunitiesPending) {
+  if (opportunitiesLoading) {
     return (
       <ReportLayout title="Opportunities by Principal">
         <p className="text-muted-foreground">Loading opportunities...</p>
@@ -351,6 +414,19 @@ export default function OpportunitiesByPrincipalReport() {
       actions={<FilterToolbar filters={filters} onFiltersChange={setFilters} />}
     >
       <div className="space-y-section">
+        <AppliedFiltersBar
+          filters={appliedFilters}
+          onResetAll={handleResetAllFilters}
+          hasActiveFilters={hasActiveFilters}
+        />
+
+        {opportunitiesError && (
+          <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive">
+            <p className="font-medium">Failed to load opportunities</p>
+            <p className="text-sm">{opportunitiesError.message}</p>
+          </div>
+        )}
+
         {/* Summary Stats */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-content">
           <Card>
@@ -376,10 +452,16 @@ export default function OpportunitiesByPrincipalReport() {
         </div>
 
         {/* Principal Groups */}
-        {principalGroups.length === 0 ? (
-          <p className="text-center text-muted-foreground py-8">
-            No opportunities found matching the selected filters
-          </p>
+        {principalGroups.length === 0 && !opportunitiesLoading && !opportunitiesError ? (
+          <EmptyState
+            title="No Opportunities Found"
+            description="Try adjusting your filters or create a new opportunity."
+            icon={TrendingUp}
+            action={{
+              label: "Create Opportunity",
+              onClick: () => navigate("/opportunities/create"),
+            }}
+          />
         ) : (
           <div className="space-y-content">
             {principalGroups.map((group) => (
