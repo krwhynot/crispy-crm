@@ -224,9 +224,7 @@ export const OpportunityRowListView = ({
                       dueDate={opportunity.next_task_due_date}
                       priority={opportunity.next_task_priority}
                       onClick={() => {
-                        if (opportunity.next_task_id) {
-                          console.log("Task clicked:", opportunity.next_task_id);
-                        }
+                        // TODO: Open task slide-over when task panel is implemented
                       }}
                     />
                   </div>
