@@ -1,0 +1,740 @@
+{
+  "status": "complete",
+  "completed_at": "2025-12-22T00:00:00.000Z",
+  "migrations_processed": 212,
+  "tables": [
+    {
+      "table_name": "segments",
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()", "primary_key": true},
+        {"name": "name", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": false, "default": "now()", "primary_key": false},
+        {"name": "created_by", "type": "uuid", "nullable": true, "default": null, "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "created_by", "references_table": "auth.users", "references_column": "id", "on_delete": "NO ACTION"}
+      ],
+      "indexes": ["industries_name_case_insensitive_idx"],
+      "constraints": ["UNIQUE(name)"],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "activities",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval('activities_id_seq')", "primary_key": true},
+        {"name": "activity_type", "type": "activity_type", "nullable": false, "default": null, "primary_key": false},
+        {"name": "type", "type": "interaction_type", "nullable": false, "default": null, "primary_key": false},
+        {"name": "subject", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "description", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "activity_date", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "duration_minutes", "type": "integer", "nullable": true, "default": null, "primary_key": false},
+        {"name": "contact_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "organization_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "opportunity_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "follow_up_required", "type": "boolean", "nullable": true, "default": "false", "primary_key": false},
+        {"name": "follow_up_date", "type": "date", "nullable": true, "default": null, "primary_key": false},
+        {"name": "follow_up_notes", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "outcome", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "sentiment", "type": "varchar(10)", "nullable": true, "default": null, "primary_key": false},
+        {"name": "attachments", "type": "text[]", "nullable": true, "default": null, "primary_key": false},
+        {"name": "location", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "attendees", "type": "text[]", "nullable": true, "default": null, "primary_key": false},
+        {"name": "tags", "type": "text[]", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "created_by", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "deleted_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "contact_id", "references_table": "contacts", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "organization_id", "references_table": "organizations", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "opportunity_id", "references_table": "opportunities", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "created_by", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"}
+      ],
+      "indexes": ["idx_activities_contact", "idx_activities_date", "idx_activities_follow_up", "idx_activities_opportunity", "idx_activities_organization", "idx_activities_type"],
+      "constraints": ["CHECK(sentiment IN ('positive','neutral','negative'))", "CHECK(contact_id IS NOT NULL OR organization_id IS NOT NULL)", "CHECK((activity_type='interaction' AND opportunity_id IS NOT NULL) OR activity_type='engagement')"],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "contactNotes",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval('contactNotes_id_seq')", "primary_key": true},
+        {"name": "contact_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "text", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "attachments", "type": "text[]", "nullable": true, "default": null, "primary_key": false},
+        {"name": "sales_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "date", "type": "timestamptz", "nullable": false, "default": "now()", "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "contact_id", "references_table": "contacts", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "sales_id", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"}
+      ],
+      "indexes": ["idx_contact_notes_contact_id"],
+      "constraints": [],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "contacts",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval('contacts_id_seq')", "primary_key": true},
+        {"name": "name", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "first_name", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "last_name", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "email", "type": "jsonb", "nullable": true, "default": "[]", "primary_key": false},
+        {"name": "phone", "type": "jsonb", "nullable": true, "default": "[]", "primary_key": false},
+        {"name": "title", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "department", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "address", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "city", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "state", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "postal_code", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "country", "type": "text", "nullable": true, "default": "'USA'", "primary_key": false},
+        {"name": "birthday", "type": "date", "nullable": true, "default": null, "primary_key": false},
+        {"name": "linkedin_url", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "twitter_handle", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "notes", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "sales_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "created_by", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "deleted_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false},
+        {"name": "search_tsv", "type": "tsvector", "nullable": true, "default": null, "primary_key": false},
+        {"name": "first_seen", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "last_seen", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "gender", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "tags", "type": "bigint[]", "nullable": true, "default": "{}", "primary_key": false},
+        {"name": "organization_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "organization_id", "references_table": "organizations", "references_column": "id", "on_delete": "SET NULL"},
+        {"column": "sales_id", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "created_by", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"}
+      ],
+      "indexes": ["idx_contacts_deleted_at", "idx_contacts_organization_id", "idx_contacts_sales_id", "idx_contacts_search_tsv"],
+      "constraints": [],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "organizations",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval('organizations_id_seq')", "primary_key": true},
+        {"name": "name", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "organization_type", "type": "organization_type", "nullable": true, "default": "'unknown'", "primary_key": false},
+        {"name": "is_principal", "type": "boolean", "nullable": true, "default": "false", "primary_key": false},
+        {"name": "is_distributor", "type": "boolean", "nullable": true, "default": "false", "primary_key": false},
+        {"name": "parent_organization_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "priority", "type": "varchar(1)", "nullable": true, "default": "'C'", "primary_key": false},
+        {"name": "website", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "address", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "city", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "state", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "postal_code", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "phone", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "email", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "logo_url", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "linkedin_url", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "annual_revenue", "type": "numeric(15,2)", "nullable": true, "default": null, "primary_key": false},
+        {"name": "employee_count", "type": "integer", "nullable": true, "default": null, "primary_key": false},
+        {"name": "founded_year", "type": "integer", "nullable": true, "default": null, "primary_key": false},
+        {"name": "notes", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "sales_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "created_by", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "deleted_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false},
+        {"name": "import_session_id", "type": "uuid", "nullable": true, "default": null, "primary_key": false},
+        {"name": "search_tsv", "type": "tsvector", "nullable": true, "default": null, "primary_key": false},
+        {"name": "context_links", "type": "jsonb", "nullable": true, "default": null, "primary_key": false},
+        {"name": "description", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "tax_identifier", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "segment_id", "type": "uuid", "nullable": true, "default": null, "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "parent_organization_id", "references_table": "organizations", "references_column": "id", "on_delete": "SET NULL"},
+        {"column": "segment_id", "references_table": "segments", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "sales_id", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "created_by", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"}
+      ],
+      "indexes": ["idx_companies_deleted_at", "idx_companies_is_distributor", "idx_companies_is_principal", "idx_companies_organization_type", "idx_companies_parent_company_id", "idx_companies_priority", "idx_companies_sales_id", "idx_companies_search_tsv", "idx_organizations_name", "idx_organizations_parent_company_id", "idx_organizations_search_tsv"],
+      "constraints": ["CHECK(priority IN ('A','B','C','D'))"],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "interaction_participants",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval('interaction_participants_id_seq')", "primary_key": true},
+        {"name": "activity_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "contact_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "organization_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "role", "type": "varchar(20)", "nullable": true, "default": "'participant'", "primary_key": false},
+        {"name": "notes", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "activity_id", "references_table": "activities", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "contact_id", "references_table": "contacts", "references_column": "id", "on_delete": "NO ACTION"}
+      ],
+      "indexes": ["idx_interaction_participants_activity", "idx_interaction_participants_contact", "idx_interaction_participants_organization"],
+      "constraints": ["CHECK(contact_id IS NOT NULL OR organization_id IS NOT NULL)"],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "migration_history",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval('migration_history_id_seq')", "primary_key": true},
+        {"name": "phase_number", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "phase_name", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "status", "type": "text", "nullable": false, "default": "'pending'", "primary_key": false},
+        {"name": "started_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false},
+        {"name": "completed_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false},
+        {"name": "error_message", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "rollback_sql", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "rows_affected", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false}
+      ],
+      "foreign_keys": [],
+      "indexes": [],
+      "constraints": [],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "opportunities",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval('opportunities_id_seq')", "primary_key": true},
+        {"name": "name", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "description", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "stage", "type": "opportunity_stage", "nullable": true, "default": "'new_lead'", "primary_key": false},
+        {"name": "status", "type": "opportunity_status", "nullable": true, "default": "'active'", "primary_key": false},
+        {"name": "priority", "type": "priority_level", "nullable": true, "default": "'medium'", "primary_key": false},
+        {"name": "index", "type": "integer", "nullable": true, "default": null, "primary_key": false},
+        {"name": "estimated_close_date", "type": "date", "nullable": true, "default": "CURRENT_DATE + '90 days'", "primary_key": false},
+        {"name": "actual_close_date", "type": "date", "nullable": true, "default": null, "primary_key": false},
+        {"name": "customer_organization_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "principal_organization_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "distributor_organization_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "founding_interaction_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "stage_manual", "type": "boolean", "nullable": true, "default": "false", "primary_key": false},
+        {"name": "status_manual", "type": "boolean", "nullable": true, "default": "false", "primary_key": false},
+        {"name": "next_action", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "next_action_date", "type": "date", "nullable": true, "default": null, "primary_key": false},
+        {"name": "competition", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "decision_criteria", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "contact_ids", "type": "bigint[]", "nullable": true, "default": "{}", "primary_key": false},
+        {"name": "opportunity_owner_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "created_by", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "deleted_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false},
+        {"name": "search_tsv", "type": "tsvector", "nullable": true, "default": null, "primary_key": false},
+        {"name": "tags", "type": "text[]", "nullable": true, "default": "{}", "primary_key": false},
+        {"name": "account_manager_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "lead_source", "type": "text", "nullable": true, "default": null, "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "customer_organization_id", "references_table": "organizations", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "principal_organization_id", "references_table": "organizations", "references_column": "id", "on_delete": "RESTRICT"},
+        {"column": "distributor_organization_id", "references_table": "organizations", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "account_manager_id", "references_table": "sales", "references_column": "id", "on_delete": "SET NULL"},
+        {"column": "opportunity_owner_id", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "created_by", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"}
+      ],
+      "indexes": ["idx_opportunities_account_manager", "idx_opportunities_customer_org", "idx_opportunities_customer_organization_id", "idx_opportunities_deleted_at", "idx_opportunities_distributor_organization_id", "idx_opportunities_estimated_close", "idx_opportunities_owner_id", "idx_opportunities_principal_org", "idx_opportunities_principal_organization_id", "idx_opportunities_priority", "idx_opportunities_search_tsv", "idx_opportunities_stage", "idx_opportunities_status", "idx_opportunities_tags"],
+      "constraints": ["CHECK(lead_source IN ('referral','trade_show','website','cold_call','email_campaign','social_media','partner','existing_customer'))"],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "opportunityNotes",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval('opportunityNotes_id_seq')", "primary_key": true},
+        {"name": "opportunity_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "text", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "attachments", "type": "text[]", "nullable": true, "default": null, "primary_key": false},
+        {"name": "sales_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "date", "type": "timestamptz", "nullable": false, "default": "now()", "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "opportunity_id", "references_table": "opportunities", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "sales_id", "references_table": "sales", "references_column": "id", "on_delete": "CASCADE"}
+      ],
+      "indexes": ["idx_opportunity_notes_opportunity_id"],
+      "constraints": [],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "opportunity_participants",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval('opportunity_participants_id_seq')", "primary_key": true},
+        {"name": "opportunity_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "organization_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "role", "type": "varchar(20)", "nullable": false, "default": null, "primary_key": false},
+        {"name": "is_primary", "type": "boolean", "nullable": true, "default": "false", "primary_key": false},
+        {"name": "commission_rate", "type": "numeric(5,4)", "nullable": true, "default": null, "primary_key": false},
+        {"name": "territory", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "notes", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "created_by", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "deleted_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "opportunity_id", "references_table": "opportunities", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "organization_id", "references_table": "organizations", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "created_by", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"}
+      ],
+      "indexes": ["idx_opportunity_participants_opp_id", "idx_opportunity_participants_org_id", "idx_opportunity_participants_primary", "idx_opportunity_participants_role"],
+      "constraints": ["CHECK(commission_rate >= 0 AND commission_rate <= 1)", "CHECK(role IN ('customer','principal','distributor','partner','competitor'))"],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "products",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval('products_id_seq')", "primary_key": true},
+        {"name": "principal_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "name", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "description", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "sku", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "category", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "list_price", "type": "numeric(12,2)", "nullable": true, "default": null, "primary_key": false},
+        {"name": "status", "type": "product_status", "nullable": true, "default": "'active'", "primary_key": false},
+        {"name": "certifications", "type": "text[]", "nullable": true, "default": null, "primary_key": false},
+        {"name": "allergens", "type": "text[]", "nullable": true, "default": null, "primary_key": false},
+        {"name": "ingredients", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "nutritional_info", "type": "jsonb", "nullable": true, "default": null, "primary_key": false},
+        {"name": "marketing_description", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "created_by", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "updated_by", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "deleted_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false},
+        {"name": "search_tsv", "type": "tsvector", "nullable": true, "default": null, "primary_key": false},
+        {"name": "currency_code", "type": "text", "nullable": true, "default": "'USD'", "primary_key": false},
+        {"name": "unit_of_measure", "type": "text", "nullable": true, "default": "'each'", "primary_key": false},
+        {"name": "manufacturer_part_number", "type": "text", "nullable": true, "default": null, "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "principal_id", "references_table": "organizations", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "created_by", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "updated_by", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"}
+      ],
+      "indexes": ["idx_products_category", "idx_products_principal_id", "idx_products_search_tsv", "idx_products_sku", "idx_products_status"],
+      "constraints": ["CHECK(currency_code ~ '^[A-Z]{3}$')", "UNIQUE(principal_id, sku, deleted_at)"],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "sales",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval('sales_id_seq')", "primary_key": true},
+        {"name": "user_id", "type": "uuid", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "first_name", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "last_name", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "email", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "phone", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "avatar_url", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "is_admin", "type": "boolean", "nullable": true, "default": "false", "primary_key": false},
+        {"name": "deleted_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false},
+        {"name": "disabled", "type": "boolean", "nullable": true, "default": "false", "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "user_id", "references_table": "auth.users", "references_column": "id", "on_delete": "CASCADE"}
+      ],
+      "indexes": ["idx_sales_disabled"],
+      "constraints": ["UNIQUE(user_id)"],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "tags",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval('tags_id_seq')", "primary_key": true},
+        {"name": "name", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "color", "type": "text", "nullable": true, "default": "'blue-500'", "primary_key": false},
+        {"name": "description", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "usage_count", "type": "integer", "nullable": true, "default": "0", "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false}
+      ],
+      "foreign_keys": [],
+      "indexes": [],
+      "constraints": ["UNIQUE(name)"],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "tasks",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval('tasks_id_seq')", "primary_key": true},
+        {"name": "title", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "description", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "due_date", "type": "date", "nullable": true, "default": null, "primary_key": false},
+        {"name": "reminder_date", "type": "date", "nullable": true, "default": null, "primary_key": false},
+        {"name": "completed", "type": "boolean", "nullable": true, "default": "false", "primary_key": false},
+        {"name": "completed_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false},
+        {"name": "priority", "type": "priority_level", "nullable": true, "default": "'medium'", "primary_key": false},
+        {"name": "contact_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "opportunity_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "sales_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "type", "type": "task_type", "nullable": true, "default": "'None'", "primary_key": false},
+        {"name": "deleted_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false},
+        {"name": "organization_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "snooze_until", "type": "date", "nullable": true, "default": null, "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "contact_id", "references_table": "contacts", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "opportunity_id", "references_table": "opportunities", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "sales_id", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"},
+        {"column": "organization_id", "references_table": "organizations", "references_column": "id", "on_delete": "SET NULL"}
+      ],
+      "indexes": ["idx_tasks_contact_id", "idx_tasks_due_date", "idx_tasks_opportunity_id", "idx_tasks_reminder_date", "idx_tasks_sales_id"],
+      "constraints": [],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "test_user_metadata",
+      "columns": [
+        {"name": "id", "type": "uuid", "nullable": false, "default": "gen_random_uuid()", "primary_key": true},
+        {"name": "user_id", "type": "uuid", "nullable": true, "default": null, "primary_key": false},
+        {"name": "role", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "created_by", "type": "text", "nullable": true, "default": "'automated_script'", "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "last_sync_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false},
+        {"name": "test_data_counts", "type": "jsonb", "nullable": true, "default": "{\"notes\": 0, \"tasks\": 0, \"contacts\": 0, \"activities\": 0, \"opportunities\": 0, \"organizations\": 0}", "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "user_id", "references_table": "auth.users", "references_column": "id", "on_delete": "CASCADE"}
+      ],
+      "indexes": ["idx_test_user_metadata_role", "idx_test_user_metadata_user_id"],
+      "constraints": ["UNIQUE(user_id)", "CHECK(role IN ('admin','sales_director','account_manager'))"],
+      "source_migration": "20251018152315_cloud_schema_fresh.sql"
+    },
+    {
+      "table_name": "opportunity_contacts",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "GENERATED ALWAYS AS IDENTITY", "primary_key": true},
+        {"name": "opportunity_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "contact_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "role", "type": "varchar(50)", "nullable": true, "default": null, "primary_key": false},
+        {"name": "is_primary", "type": "boolean", "nullable": true, "default": "false", "primary_key": false},
+        {"name": "notes", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "NOW()", "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "opportunity_id", "references_table": "opportunities", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "contact_id", "references_table": "contacts", "references_column": "id", "on_delete": "CASCADE"}
+      ],
+      "indexes": [],
+      "constraints": ["UNIQUE(opportunity_id, contact_id)"],
+      "source_migration": "20251028213020_create_opportunity_contacts_junction_table.sql"
+    },
+    {
+      "table_name": "opportunity_products",
+      "columns": [
+        {"name": "id", "type": "bigserial", "nullable": false, "default": null, "primary_key": true},
+        {"name": "opportunity_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "product_id_reference", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "product_name", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "product_category", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "notes", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "NOW()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "NOW()", "primary_key": false},
+        {"name": "deleted_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "opportunity_id", "references_table": "opportunities", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "product_id_reference", "references_table": "products", "references_column": "id", "on_delete": "CASCADE"}
+      ],
+      "indexes": [],
+      "constraints": ["UNIQUE(opportunity_id, product_id_reference)"],
+      "source_migration": "20251029051540_create_opportunity_products_table.sql"
+    },
+    {
+      "table_name": "audit_trail",
+      "columns": [
+        {"name": "audit_id", "type": "bigint", "nullable": false, "default": "GENERATED ALWAYS AS IDENTITY", "primary_key": true},
+        {"name": "table_name", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "record_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "field_name", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "old_value", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "new_value", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "changed_by", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "changed_at", "type": "timestamptz", "nullable": false, "default": "NOW()", "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "changed_by", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"}
+      ],
+      "indexes": ["idx_audit_trail_table_record", "idx_audit_trail_changed_by"],
+      "constraints": [],
+      "source_migration": "20251103232837_create_audit_trail_system.sql"
+    },
+    {
+      "table_name": "notifications",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "GENERATED ALWAYS AS IDENTITY", "primary_key": true},
+        {"name": "user_id", "type": "uuid", "nullable": false, "default": null, "primary_key": false},
+        {"name": "type", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "message", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "entity_type", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "entity_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "read", "type": "boolean", "nullable": false, "default": "FALSE", "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": false, "default": "NOW()", "primary_key": false},
+        {"name": "deleted_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "user_id", "references_table": "auth.users", "references_column": "id", "on_delete": "CASCADE"}
+      ],
+      "indexes": [],
+      "constraints": ["CHECK(type IN ('task_overdue','task_assigned','mention','opportunity_won','opportunity_lost','system'))", "CHECK(entity_type IN ('task','opportunity','contact','organization','product') OR entity_type IS NULL)"],
+      "source_migration": "20251105001240_add_notifications_table.sql"
+    },
+    {
+      "table_name": "organizationNotes",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "nextval sequence", "primary_key": true},
+        {"name": "organization_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "text", "type": "text", "nullable": false, "default": null, "primary_key": false},
+        {"name": "attachments", "type": "jsonb", "nullable": true, "default": "[]", "primary_key": false},
+        {"name": "sales_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "date", "type": "timestamptz", "nullable": false, "default": "now()", "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "now()", "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "organization_id", "references_table": "organizations", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "sales_id", "references_table": "sales", "references_column": "id", "on_delete": "SET NULL"}
+      ],
+      "indexes": [],
+      "constraints": [],
+      "source_migration": "20251124225546_add_organization_notes.sql"
+    },
+    {
+      "table_name": "distributor_principal_authorizations",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "GENERATED ALWAYS AS IDENTITY", "primary_key": true},
+        {"name": "distributor_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "principal_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "is_authorized", "type": "boolean", "nullable": false, "default": "true", "primary_key": false},
+        {"name": "authorization_date", "type": "date", "nullable": true, "default": "CURRENT_DATE", "primary_key": false},
+        {"name": "expiration_date", "type": "date", "nullable": true, "default": null, "primary_key": false},
+        {"name": "territory_restrictions", "type": "text[]", "nullable": true, "default": null, "primary_key": false},
+        {"name": "notes", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": false, "default": "NOW()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": false, "default": "NOW()", "primary_key": false},
+        {"name": "created_by", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "deleted_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "distributor_id", "references_table": "organizations", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "principal_id", "references_table": "organizations", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "created_by", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"}
+      ],
+      "indexes": [],
+      "constraints": ["UNIQUE(distributor_id, principal_id)"],
+      "source_migration": "20251129050428_add_distributor_principal_authorizations.sql"
+    },
+    {
+      "table_name": "product_distributor_authorizations",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "GENERATED ALWAYS AS IDENTITY", "primary_key": true},
+        {"name": "product_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "distributor_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "is_authorized", "type": "boolean", "nullable": false, "default": "true", "primary_key": false},
+        {"name": "authorization_date", "type": "date", "nullable": true, "default": "CURRENT_DATE", "primary_key": false},
+        {"name": "expiration_date", "type": "date", "nullable": true, "default": null, "primary_key": false},
+        {"name": "special_pricing", "type": "jsonb", "nullable": true, "default": null, "primary_key": false},
+        {"name": "notes", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "NOW()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "NOW()", "primary_key": false},
+        {"name": "created_by", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "deleted_at", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "product_id", "references_table": "products", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "distributor_id", "references_table": "organizations", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "created_by", "references_table": "sales", "references_column": "id", "on_delete": "NO ACTION"}
+      ],
+      "indexes": [],
+      "constraints": ["UNIQUE(product_id, distributor_id)"],
+      "source_migration": "20251129051625_add_product_distributor_authorizations.sql"
+    },
+    {
+      "table_name": "tutorial_progress",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "GENERATED BY DEFAULT AS IDENTITY", "primary_key": true},
+        {"name": "sales_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "organization_completed", "type": "boolean", "nullable": false, "default": "false", "primary_key": false},
+        {"name": "contact_completed", "type": "boolean", "nullable": false, "default": "false", "primary_key": false},
+        {"name": "opportunity_completed", "type": "boolean", "nullable": false, "default": "false", "primary_key": false},
+        {"name": "activity_completed", "type": "boolean", "nullable": false, "default": "false", "primary_key": false},
+        {"name": "task_completed", "type": "boolean", "nullable": false, "default": "false", "primary_key": false},
+        {"name": "created_organization_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_contact_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_opportunity_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_activity_id", "type": "bigint", "nullable": true, "default": null, "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "sales_id", "references_table": "sales", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "created_organization_id", "references_table": "organizations", "references_column": "id", "on_delete": "SET NULL"},
+        {"column": "created_contact_id", "references_table": "contacts", "references_column": "id", "on_delete": "SET NULL"},
+        {"column": "created_opportunity_id", "references_table": "opportunities", "references_column": "id", "on_delete": "SET NULL"},
+        {"column": "created_activity_id", "references_table": "activities", "references_column": "id", "on_delete": "SET NULL"}
+      ],
+      "indexes": [],
+      "constraints": ["UNIQUE(sales_id)"],
+      "source_migration": "20251206000001_create_tutorial_progress.sql"
+    },
+    {
+      "table_name": "organization_distributors",
+      "columns": [
+        {"name": "id", "type": "bigint", "nullable": false, "default": "GENERATED ALWAYS AS IDENTITY", "primary_key": true},
+        {"name": "organization_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "distributor_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "is_primary", "type": "boolean", "nullable": false, "default": "false", "primary_key": false},
+        {"name": "notes", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": false, "default": "NOW()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": false, "default": "NOW()", "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "organization_id", "references_table": "organizations", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "distributor_id", "references_table": "organizations", "references_column": "id", "on_delete": "CASCADE"}
+      ],
+      "indexes": [],
+      "constraints": ["UNIQUE(organization_id, distributor_id)"],
+      "source_migration": "20251207211946_add_organization_distributors.sql"
+    },
+    {
+      "table_name": "dashboard_snapshots",
+      "columns": [
+        {"name": "id", "type": "bigserial", "nullable": false, "default": null, "primary_key": true},
+        {"name": "snapshot_date", "type": "date", "nullable": false, "default": null, "primary_key": false},
+        {"name": "sales_id", "type": "bigint", "nullable": false, "default": null, "primary_key": false},
+        {"name": "activities_count", "type": "integer", "nullable": false, "default": "0", "primary_key": false},
+        {"name": "tasks_completed_count", "type": "integer", "nullable": false, "default": "0", "primary_key": false},
+        {"name": "deals_moved_count", "type": "integer", "nullable": false, "default": "0", "primary_key": false},
+        {"name": "open_opportunities_count", "type": "integer", "nullable": false, "default": "0", "primary_key": false},
+        {"name": "total_opportunities_count", "type": "integer", "nullable": false, "default": "0", "primary_key": false},
+        {"name": "overdue_tasks_count", "type": "integer", "nullable": false, "default": "0", "primary_key": false},
+        {"name": "activities_this_week_count", "type": "integer", "nullable": false, "default": "0", "primary_key": false},
+        {"name": "stale_deals_count", "type": "integer", "nullable": false, "default": "0", "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": false, "default": "NOW()", "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "sales_id", "references_table": "sales", "references_column": "id", "on_delete": "CASCADE"}
+      ],
+      "indexes": [],
+      "constraints": ["UNIQUE(sales_id, snapshot_date)"],
+      "source_migration": "20251212094908_create_dashboard_snapshots_table.sql"
+    },
+    {
+      "table_name": "product_distributors",
+      "columns": [
+        {"name": "product_id", "type": "bigint", "nullable": false, "default": null, "primary_key": true},
+        {"name": "distributor_id", "type": "bigint", "nullable": false, "default": null, "primary_key": true},
+        {"name": "vendor_item_number", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "status", "type": "text", "nullable": false, "default": "'pending'", "primary_key": false},
+        {"name": "valid_from", "type": "timestamptz", "nullable": false, "default": "NOW()", "primary_key": false},
+        {"name": "valid_to", "type": "timestamptz", "nullable": true, "default": null, "primary_key": false},
+        {"name": "notes", "type": "text", "nullable": true, "default": null, "primary_key": false},
+        {"name": "created_at", "type": "timestamptz", "nullable": true, "default": "NOW()", "primary_key": false},
+        {"name": "updated_at", "type": "timestamptz", "nullable": true, "default": "NOW()", "primary_key": false}
+      ],
+      "foreign_keys": [
+        {"column": "product_id", "references_table": "products", "references_column": "id", "on_delete": "CASCADE"},
+        {"column": "distributor_id", "references_table": "organizations", "references_column": "id", "on_delete": "CASCADE"}
+      ],
+      "indexes": [],
+      "constraints": ["CHECK(status IN ('pending','active','inactive'))", "PRIMARY KEY(product_id, distributor_id)"],
+      "source_migration": "20251215054822_08_create_product_distributors.sql"
+    }
+  ],
+  "relationships": [
+    {"from_table": "activities", "to_table": "contacts", "type": "many_to_one", "foreign_key": "contact_id"},
+    {"from_table": "activities", "to_table": "organizations", "type": "many_to_one", "foreign_key": "organization_id"},
+    {"from_table": "activities", "to_table": "opportunities", "type": "many_to_one", "foreign_key": "opportunity_id"},
+    {"from_table": "activities", "to_table": "sales", "type": "many_to_one", "foreign_key": "created_by"},
+    {"from_table": "contactNotes", "to_table": "contacts", "type": "many_to_one", "foreign_key": "contact_id"},
+    {"from_table": "contactNotes", "to_table": "sales", "type": "many_to_one", "foreign_key": "sales_id"},
+    {"from_table": "contacts", "to_table": "organizations", "type": "many_to_one", "foreign_key": "organization_id"},
+    {"from_table": "contacts", "to_table": "sales", "type": "many_to_one", "foreign_key": "sales_id"},
+    {"from_table": "contacts", "to_table": "sales", "type": "many_to_one", "foreign_key": "created_by"},
+    {"from_table": "interaction_participants", "to_table": "activities", "type": "many_to_one", "foreign_key": "activity_id"},
+    {"from_table": "interaction_participants", "to_table": "contacts", "type": "many_to_one", "foreign_key": "contact_id"},
+    {"from_table": "opportunities", "to_table": "organizations", "type": "many_to_one", "foreign_key": "customer_organization_id"},
+    {"from_table": "opportunities", "to_table": "organizations", "type": "many_to_one", "foreign_key": "principal_organization_id"},
+    {"from_table": "opportunities", "to_table": "organizations", "type": "many_to_one", "foreign_key": "distributor_organization_id"},
+    {"from_table": "opportunities", "to_table": "sales", "type": "many_to_one", "foreign_key": "account_manager_id"},
+    {"from_table": "opportunities", "to_table": "sales", "type": "many_to_one", "foreign_key": "opportunity_owner_id"},
+    {"from_table": "opportunities", "to_table": "sales", "type": "many_to_one", "foreign_key": "created_by"},
+    {"from_table": "opportunityNotes", "to_table": "opportunities", "type": "many_to_one", "foreign_key": "opportunity_id"},
+    {"from_table": "opportunityNotes", "to_table": "sales", "type": "many_to_one", "foreign_key": "sales_id"},
+    {"from_table": "opportunity_participants", "to_table": "opportunities", "type": "many_to_one", "foreign_key": "opportunity_id"},
+    {"from_table": "opportunity_participants", "to_table": "organizations", "type": "many_to_one", "foreign_key": "organization_id"},
+    {"from_table": "opportunity_participants", "to_table": "sales", "type": "many_to_one", "foreign_key": "created_by"},
+    {"from_table": "organizations", "to_table": "organizations", "type": "many_to_one", "foreign_key": "parent_organization_id"},
+    {"from_table": "organizations", "to_table": "segments", "type": "many_to_one", "foreign_key": "segment_id"},
+    {"from_table": "organizations", "to_table": "sales", "type": "many_to_one", "foreign_key": "sales_id"},
+    {"from_table": "organizations", "to_table": "sales", "type": "many_to_one", "foreign_key": "created_by"},
+    {"from_table": "products", "to_table": "organizations", "type": "many_to_one", "foreign_key": "principal_id"},
+    {"from_table": "products", "to_table": "sales", "type": "many_to_one", "foreign_key": "created_by"},
+    {"from_table": "products", "to_table": "sales", "type": "many_to_one", "foreign_key": "updated_by"},
+    {"from_table": "sales", "to_table": "auth.users", "type": "one_to_one", "foreign_key": "user_id"},
+    {"from_table": "tasks", "to_table": "contacts", "type": "many_to_one", "foreign_key": "contact_id"},
+    {"from_table": "tasks", "to_table": "opportunities", "type": "many_to_one", "foreign_key": "opportunity_id"},
+    {"from_table": "tasks", "to_table": "sales", "type": "many_to_one", "foreign_key": "sales_id"},
+    {"from_table": "tasks", "to_table": "organizations", "type": "many_to_one", "foreign_key": "organization_id"},
+    {"from_table": "test_user_metadata", "to_table": "auth.users", "type": "one_to_one", "foreign_key": "user_id"},
+    {"from_table": "opportunity_contacts", "to_table": "opportunities", "type": "many_to_one", "foreign_key": "opportunity_id"},
+    {"from_table": "opportunity_contacts", "to_table": "contacts", "type": "many_to_one", "foreign_key": "contact_id"},
+    {"from_table": "opportunity_products", "to_table": "opportunities", "type": "many_to_one", "foreign_key": "opportunity_id"},
+    {"from_table": "opportunity_products", "to_table": "products", "type": "many_to_one", "foreign_key": "product_id_reference"},
+    {"from_table": "audit_trail", "to_table": "sales", "type": "many_to_one", "foreign_key": "changed_by"},
+    {"from_table": "notifications", "to_table": "auth.users", "type": "many_to_one", "foreign_key": "user_id"},
+    {"from_table": "organizationNotes", "to_table": "organizations", "type": "many_to_one", "foreign_key": "organization_id"},
+    {"from_table": "organizationNotes", "to_table": "sales", "type": "many_to_one", "foreign_key": "sales_id"},
+    {"from_table": "distributor_principal_authorizations", "to_table": "organizations", "type": "many_to_one", "foreign_key": "distributor_id"},
+    {"from_table": "distributor_principal_authorizations", "to_table": "organizations", "type": "many_to_one", "foreign_key": "principal_id"},
+    {"from_table": "distributor_principal_authorizations", "to_table": "sales", "type": "many_to_one", "foreign_key": "created_by"},
+    {"from_table": "product_distributor_authorizations", "to_table": "products", "type": "many_to_one", "foreign_key": "product_id"},
+    {"from_table": "product_distributor_authorizations", "to_table": "organizations", "type": "many_to_one", "foreign_key": "distributor_id"},
+    {"from_table": "product_distributor_authorizations", "to_table": "sales", "type": "many_to_one", "foreign_key": "created_by"},
+    {"from_table": "tutorial_progress", "to_table": "sales", "type": "one_to_one", "foreign_key": "sales_id"},
+    {"from_table": "tutorial_progress", "to_table": "organizations", "type": "many_to_one", "foreign_key": "created_organization_id"},
+    {"from_table": "tutorial_progress", "to_table": "contacts", "type": "many_to_one", "foreign_key": "created_contact_id"},
+    {"from_table": "tutorial_progress", "to_table": "opportunities", "type": "many_to_one", "foreign_key": "created_opportunity_id"},
+    {"from_table": "tutorial_progress", "to_table": "activities", "type": "many_to_one", "foreign_key": "created_activity_id"},
+    {"from_table": "organization_distributors", "to_table": "organizations", "type": "many_to_one", "foreign_key": "organization_id"},
+    {"from_table": "organization_distributors", "to_table": "organizations", "type": "many_to_one", "foreign_key": "distributor_id"},
+    {"from_table": "dashboard_snapshots", "to_table": "sales", "type": "many_to_one", "foreign_key": "sales_id"},
+    {"from_table": "product_distributors", "to_table": "products", "type": "many_to_one", "foreign_key": "product_id"},
+    {"from_table": "product_distributors", "to_table": "organizations", "type": "many_to_one", "foreign_key": "distributor_id"}
+  ],
+  "enums": [
+    {"name": "activity_type", "values": ["interaction", "engagement"]},
+    {"name": "interaction_type", "values": ["call", "email", "meeting", "presentation", "sample", "note"]},
+    {"name": "organization_type", "values": ["principal", "distributor", "operator", "unknown"]},
+    {"name": "opportunity_stage", "values": ["new_lead", "initial_outreach", "sample_visit_offered", "feedback_logged", "demo_scheduled", "closed_won", "closed_lost"]},
+    {"name": "opportunity_status", "values": ["active", "on_hold", "closed"]},
+    {"name": "priority_level", "values": ["low", "medium", "high", "urgent"]},
+    {"name": "product_status", "values": ["active", "discontinued", "pending"]},
+    {"name": "task_type", "values": ["None", "Call", "Email", "Meeting", "Demo", "Follow-up", "Sample"]},
+    {"name": "contact_role", "values": ["buyer", "influencer", "decision_maker", "end_user", "other"]}
+  ],
+  "dropped_tables": [
+    {"table_name": "contact_organizations", "dropped_in": "20251103220544_remove_deprecated_contact_organizations.sql", "reason": "Deprecated - contacts now use direct organization_id"},
+    {"table_name": "contact_preferred_principals", "dropped_in": "20251103215645_remove_phase3_features.sql", "reason": "Phase 3 feature removed"},
+    {"table_name": "product_category_hierarchy", "dropped_in": "20251103220544_remove_deprecated_contact_organizations.sql", "reason": "Not MVP - removed"},
+    {"table_name": "product_features", "dropped_in": "20251103220544_remove_deprecated_contact_organizations.sql", "reason": "Not MVP - removed"},
+    {"table_name": "product_pricing_models", "dropped_in": "20251103220516_remove_product_pricing_tables.sql", "reason": "Not MVP - removed"},
+    {"table_name": "product_pricing_tiers", "dropped_in": "20251103220516_remove_product_pricing_tables.sql", "reason": "Not MVP - removed"}
+  ],
+  "verification": {
+    "table_count": 26,
+    "fk_count": 58,
+    "index_count": 67,
+    "enum_count": 9
+  }
+}

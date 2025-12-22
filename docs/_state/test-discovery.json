@@ -342,13 +342,35 @@
     }
   },
   "coverage": {
-    "status": "pending",
-    "note": "Coverage is being generated - update this section when vitest coverage completes",
+    "status": "not_collected",
+    "reason": "Coverage run takes several minutes with 2800+ tests. Run manually with: npx vitest run --coverage",
+    "partial_data_available": true,
+    "partial_files_count": 18,
     "configured_thresholds": {
       "lines": 70,
       "functions": 70,
       "branches": 70,
       "statements": 70
+    },
+    "coverage_config": {
+      "provider": "v8",
+      "reporters": [
+        "text",
+        "json",
+        "html",
+        "lcov"
+      ],
+      "include": [
+        "src/**/*.{ts,tsx}"
+      ],
+      "exclude": [
+        "src/**/*.test.{ts,tsx}",
+        "src/**/*.spec.{ts,tsx}",
+        "src/tests/**",
+        "src/**/__tests__/**",
+        "src/**/*.d.ts"
+      ],
+      "all": true
     }
   },
   "test_inventory": [
