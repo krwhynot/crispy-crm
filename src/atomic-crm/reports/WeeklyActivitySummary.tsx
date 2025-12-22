@@ -2,10 +2,13 @@ import { useState, useMemo } from "react";
 import { useGetList, useGetIdentity, downloadCSV, useNotify } from "ra-core";
 import { startOfWeek, endOfWeek, format } from "date-fns";
 import jsonExport from "jsonexport/dist";
+import { Activity } from "lucide-react";
 import { ReportLayout } from "./ReportLayout";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
+import { AppliedFiltersBar, EmptyState } from "./components";
+import { useReportData } from "./hooks";
 import type { ActivityRecord, Organization, Sale } from "../types";
 
 /**

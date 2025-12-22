@@ -59,6 +59,47 @@ export default function OverviewTab() {
     setSalesRepId(null);
   }, []);
 
+  // Fetch sales reps for filter display and rep performance
+  const { data: salesReps = [] } = useGetList<Sale>("sales", {
+    pagination: { page: 1, perPage: 100 },
+  });
+
+  // Build filters array for AppliedFiltersBar
+  const appliedFilters = useMemo(() => {
+    const filters: Array<{ label: string; value: string; onRemove: () => void }> = [];
+
+    // Date range filter (only show if not default)
+    if (dateRange.preset !== "last30") {
+      const dateLabels: Record<string, string> = {
+        last7: "Last 7 Days",
+        last30: "Last 30 Days",
+        last90: "Last 90 Days",
+        thisMonth: "This Month",
+        lastMonth: "Last Month",
+        thisQuarter: "This Quarter",
+        thisYear: "This Year",
+      };
+      filters.push({
+        label: "Date Range",
+        value: dateLabels[dateRange.preset] || dateRange.preset,
+        onRemove: () => setDateRange({ preset: "last30", start: null, end: null }),
+      });
+    }
+
+    // Sales rep filter (only show if selected)
+    if (salesRepId) {
+      const rep = salesReps.find((r) => r.id === salesRepId);
+      const repName = rep ? `${rep.first_name} ${rep.last_name}` : `Rep ${salesRepId}`;
+      filters.push({
+        label: "Sales Rep",
+        value: repName,
+        onRemove: () => setSalesRepId(null),
+      });
+    }
+
+    return filters;
+  }, [dateRange.preset, salesRepId, salesReps]);
+
   // KPI click handlers - navigate to filtered list views (PRD Section 9.2.1)
   const handleTotalOpportunitiesClick = useCallback(() => {
     // Navigate to opportunities list showing all active opportunities
@@ -95,40 +136,51 @@ export default function OverviewTab() {
     navigate(`/opportunities?${params.toString()}`);
   }, [navigate]);
 
-  // Fetch opportunities
-  const { data: opportunities = [], isPending: opportunitiesPending } = useGetList<Opportunity>(
-    "opportunities",
-    {
-      pagination: { page: 1, perPage: 10000 },
-      filter: {
-        "deleted_at@is": null,
-        ...(salesRepId && { opportunity_owner_id: salesRepId }),
-      },
-    }
+  // Memoize opportunity filters to prevent infinite re-render loops in useReportData
+  // Note: We use additionalFilters for salesRepId because useReportData uses 'sales_id',
+  // but opportunities use 'opportunity_owner_id' as the owner field
+  const opportunityFilters = useMemo(
+    () => ({
+      "deleted_at@is": null,
+      ...(salesRepId && { opportunity_owner_id: salesRepId }),
+    }),
+    [salesRepId]
   );
 
-  // Fetch activities for the date range (last 30 days for trends)
-  // IMPORTANT: All dates must be memoized to prevent infinite re-render loops
-  // Creating new Date().toISOString() on each render causes useGetList to re-fetch infinitely
-  const now = useMemo(() => new Date().toISOString(), []);
-  const _thirtyDaysAgo = useMemo(() => subDays(new Date(), 30).toISOString(), []); // Kept for future use
-  const sixtyDaysAgo = useMemo(() => subDays(new Date(), 60).toISOString(), []);
+  // Fetch opportunities via useReportData (centralizes through unifiedDataProvider)
+  const {
+    data: opportunities,
+    isLoading: opportunitiesLoading,
+    error: opportunitiesError,
+  } = useReportData<Opportunity>("opportunities", {
+    additionalFilters: opportunityFilters,
+  });
 
-  const { data: activities = [], isPending: activitiesPending } = useGetList<ActivityRecord>(
-    "activities",
-    {
-      pagination: { page: 1, perPage: 10000 },
-      filter: {
-        "created_at@gte": sixtyDaysAgo, // Get 60 days for comparison
-        "created_at@lte": now,
-        ...(salesRepId && { created_by: salesRepId }),
-      },
-    }
+  // Activity date range: always 60 days for trend comparison (KPI calculations)
+  // This is independent of UI date range filters - we need historical data for trends
+  const activityDateRange = useMemo(
+    () => ({
+      start: subDays(new Date(), 60),
+      end: new Date(),
+    }),
+    []
   );
 
-  // Fetch sales reps for rep performance
-  const { data: salesReps = [] } = useGetList<Sale>("sales", {
-    pagination: { page: 1, perPage: 100 },
+  // Memoize activity filters - activities use 'created_by' not 'sales_id'
+  const activityFilters = useMemo(
+    () => (salesRepId ? { created_by: salesRepId } : {}),
+    [salesRepId]
+  );
+
+  // Fetch activities via useReportData
+  const {
+    data: activities,
+    isLoading: activitiesLoading,
+    error: activitiesError,
+  } = useReportData<ActivityRecord>("activities", {
+    dateRange: activityDateRange,
+    additionalFilters: activityFilters,
+    dateField: "created_at",
   });
 
   const salesMap = useMemo(
@@ -137,7 +189,10 @@ export default function OverviewTab() {
   );
 
   // Calculate KPIs with real trend percentages
+  // Use nullish coalescing for safety during initial render when data is loading
   const kpis = useMemo(() => {
+    const opps = opportunities ?? [];
+    const acts = activities ?? [];
     const now = new Date();
     const weekAgo = subDays(now, 7);
     const twoWeeksAgo = subDays(now, 14);
@@ -145,13 +200,13 @@ export default function OverviewTab() {
     const sixtyDaysAgoDate = subDays(now, 60);
 
     // Current week activities
-    const currentWeekActivities = activities.filter((a) => {
+    const currentWeekActivities = acts.filter((a) => {
       const date = parseDateSafely(a.created_at);
       return date && date >= weekAgo;
     }).length;
 
     // Previous week activities (for comparison)
-    const previousWeekActivities = activities.filter((a) => {
+    const previousWeekActivities = acts.filter((a) => {
       const date = parseDateSafely(a.created_at);
       return date && date >= twoWeeksAgo && date < weekAgo;
     }).length;
@@ -170,17 +225,17 @@ export default function OverviewTab() {
     }
 
     // Current period opportunities (last 30 days)
-    const currentOpportunities = opportunities.length;
+    const currentOpportunities = opps.length;
 
     // Calculate opportunity trend (compare to nothing since we can't see historical counts)
     // For now, we'll base trend on activity in last 30 days
-    const recentActiveOpps = opportunities.filter((opp) => {
+    const recentActiveOpps = opps.filter((opp) => {
       if (!opp.last_activity_at) return false;
       const activityDate = parseDateSafely(opp.last_activity_at);
       return activityDate && activityDate >= thirtyDaysAgoDate;
     }).length;
 
-    const olderActiveOpps = opportunities.filter((opp) => {
+    const olderActiveOpps = opps.filter((opp) => {
       if (!opp.last_activity_at) return false;
       const activityDate = parseDateSafely(opp.last_activity_at);
       return activityDate && activityDate >= sixtyDaysAgoDate && activityDate < thirtyDaysAgoDate;
@@ -196,7 +251,7 @@ export default function OverviewTab() {
     }
 
     // Stale Leads - uses STAGE_STALE_THRESHOLDS.new_lead (7 days) per PRD Section 6.3
-    const staleLeads = opportunities.filter((opp) => {
+    const staleLeads = opps.filter((opp) => {
       const isLead = opp.stage === "Lead" || opp.stage === "new_lead";
       if (!isLead) return false;
       return isOpportunityStale(opp.stage, opp.last_activity_at ?? null, now);
@@ -205,7 +260,7 @@ export default function OverviewTab() {
     // Stale Deals - all opportunities exceeding STAGE_STALE_THRESHOLDS (PRD Section 9.2.1 KPI #4)
     // Per-stage thresholds from STAGE_STALE_THRESHOLDS: new_lead=7d, initial_outreach=14d,
     // sample_visit_offered=14d, feedback_logged=21d, demo_scheduled=14d
-    const staleDeals = countStaleOpportunities(opportunities, now);
+    const staleDeals = countStaleOpportunities(opps, now);
 
     return {
       totalOpportunities: currentOpportunities,
@@ -221,15 +276,17 @@ export default function OverviewTab() {
 
   // Prepare pipeline data for chart
   const pipelineData = useMemo(() => {
+    const opps = opportunities ?? [];
     const stageCounts = OPPORTUNITY_STAGE_CHOICES.map((stage) => ({
       stage: stage.name,
-      count: opportunities.filter((o) => o.stage === stage.id).length,
+      count: opps.filter((o) => o.stage === stage.id).length,
     }));
     return stageCounts.filter((s) => s.count > 0);
   }, [opportunities]);
 
   // Prepare activity trend data (last 14 days)
   const activityTrendData = useMemo(() => {
+    const acts = activities ?? [];
     const now = new Date();
     const fourteenDaysAgo = subDays(now, 13); // 14 days including today
 
@@ -237,7 +294,7 @@ export default function OverviewTab() {
 
     return days.map((day) => {
       const dayStr = format(day, "yyyy-MM-dd");
-      const count = activities.filter((a) => {
+      const count = acts.filter((a) => {
         const activityDate = parseDateSafely(a.created_at);
         return activityDate && format(activityDate, "yyyy-MM-dd") === dayStr;
       }).length;
@@ -251,9 +308,10 @@ export default function OverviewTab() {
 
   // Prepare top principals data
   const topPrincipalsData = useMemo(() => {
+    const opps = opportunities ?? [];
     const principalCounts = new Map<string, { name: string; count: number }>();
 
-    opportunities.forEach((opp) => {
+    opps.forEach((opp) => {
       const principalName = opp.principal_organization_name || "No Principal";
       const key = opp.principal_organization_id?.toString() || "none";
 
@@ -268,10 +326,12 @@ export default function OverviewTab() {
 
   // Prepare rep performance data
   const repPerformanceData = useMemo(() => {
+    const opps = opportunities ?? [];
+    const acts = activities ?? [];
     const repStats = new Map<number, { name: string; activities: number; opportunities: number }>();
 
     // Count activities per rep
-    activities.forEach((activity) => {
+    acts.forEach((activity) => {
       if (!activity.created_by) return;
       if (!repStats.has(activity.created_by)) {
         repStats.set(activity.created_by, {
@@ -284,7 +344,7 @@ export default function OverviewTab() {
     });
 
     // Count opportunities per rep
-    opportunities.forEach((opp) => {
+    opps.forEach((opp) => {
       if (!opp.opportunity_owner_id) return;
       if (!repStats.has(opp.opportunity_owner_id)) {
         repStats.set(opp.opportunity_owner_id, {
@@ -299,7 +359,10 @@ export default function OverviewTab() {
     return Array.from(repStats.values());
   }, [activities, opportunities, salesMap]);
 
-  const isLoading = opportunitiesPending || activitiesPending;
+  const isLoading = opportunitiesLoading || activitiesLoading;
+
+  // Compute whether we have any data to show
+  const hasData = (opportunities?.length ?? 0) > 0 || (activities?.length ?? 0) > 0;
 
   return (
     <div className="space-y-section">
@@ -313,6 +376,36 @@ export default function OverviewTab() {
         hasActiveFilters={hasActiveFilters}
         onReset={handleReset}
       />
+
+      {/* Show applied filters bar when filters are active */}
+      <AppliedFiltersBar
+        filters={appliedFilters}
+        onResetAll={handleReset}
+        hasActiveFilters={hasActiveFilters}
+      />
+
+      {/* Error display (fail-fast principle) */}
+      {(opportunitiesError || activitiesError) && (
+        <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive">
+          <p className="font-medium">Failed to load report data</p>
+          <p className="text-sm">
+            {opportunitiesError?.message || activitiesError?.message}
+          </p>
+        </div>
+      )}
+
+      {/* Empty state when no data matches filters */}
+      {!isLoading && !hasData && !opportunitiesError && !activitiesError && (
+        <EmptyState
+          title="No Data Found"
+          description="Try adjusting your filters or create a new opportunity to get started."
+          icon={TrendingUp}
+          action={{
+            label: "Create Opportunity",
+            onClick: () => navigate("/opportunities/create"),
+          }}
+        />
+      )}
 
       {isLoading ? (
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-content" data-testid="kpi-grid">
