@@ -12,7 +12,7 @@ import { Badge } from "@/components/ui/badge";
 import { PriorityBadge } from "@/components/ui/priority-badge";
 import { AsideSection } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";
-import { useConfigurationContext } from "../root/ConfigurationContext";
+import { useFormOptions } from "../root/ConfigurationContext";
 import { contactOptionText } from "../contacts/ContactOption";
 import type { Task } from "../types";
 
@@ -43,7 +43,7 @@ export function TaskSlideOverDetailsTab({
 }: TaskSlideOverDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
-  const { taskTypes } = useConfigurationContext();
+  const { taskTypes } = useFormOptions();
 
   // Handle save in edit mode
   const handleSave = async (data: Partial<Task>) => {

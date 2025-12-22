@@ -22,7 +22,7 @@
  */
 
 import { FilterableColumnHeader } from "@/components/admin/column-filters";
-import { useConfigurationContext } from "../root/ConfigurationContext";
+import { useFormOptions } from "../root/ConfigurationContext";
 
 /**
  * Task priority choices for column filter
@@ -71,7 +71,7 @@ export function TaskPriorityHeader() {
  * Uses checkbox filter with dynamic choices from ConfigurationContext
  */
 export function TaskTypeHeader() {
-  const { taskTypes } = useConfigurationContext();
+  const { taskTypes } = useFormOptions();
 
   // Convert string array to FilterChoice format
   const typeChoices = taskTypes.map((type) => ({ id: type, name: type }));
