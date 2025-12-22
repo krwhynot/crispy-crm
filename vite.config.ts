@@ -55,7 +55,6 @@ export default defineConfig(({ mode }) => ({
 
       // Utilities
       "date-fns",
-      "lodash",
       "inflection",
       "clsx",
       "class-variance-authority",
@@ -220,7 +219,7 @@ export default defineConfig(({ mode }) => ({
           charts: ["chart.js", "react-chartjs-2"],
 
           // Utilities that don't need to be in main bundle
-          utils: ["lodash", "date-fns", "clsx", "class-variance-authority", "inflection"],
+          utils: ["date-fns", "clsx", "class-variance-authority", "inflection"],
 
           // File handling
           "file-utils": ["papaparse", "jsonexport", "react-dropzone", "react-cropper"],
