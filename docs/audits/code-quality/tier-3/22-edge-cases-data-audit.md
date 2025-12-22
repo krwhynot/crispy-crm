@@ -279,24 +279,24 @@ CHECK (manager_id IS NULL OR manager_id != id);
 
 ## Concurrent Modification Risks
 
-### Optimistic Locking Status
+### ✅ Optimistic Locking Status (Updated 2025-12-22)
 
 | Entity | Has updated_at | Version Column | Conflict Detection |
 |--------|----------------|----------------|-------------------|
-| opportunities | ✅ | ❌ | ❌ None |
+| opportunities | ✅ | ✅ **Added 2025-12-22** | ✅ **Implemented** |
 | contacts | ✅ | ❌ | ❌ None |
 | organizations | ✅ | ❌ | ❌ None |
 | activities | ✅ | ❌ | ❌ None |
 | tasks | ✅ | ❌ | ❌ None |
 | products | ✅ | ❌ | ❌ None |
 
-**Finding:** No optimistic locking is implemented. All updates use "last write wins" semantics.
+**Finding:** ~~No optimistic locking is implemented.~~ **UPDATE 2025-12-22:** Opportunities now have optimistic locking via `version` column with full conflict detection.
 
 ### Race Condition Scenarios
 
 | Scenario | Risk | Current Handling | Impact |
 |----------|------|------------------|--------|
-| Two users edit same opportunity | ⚠️ Medium | Last write wins | Data loss possible |
+| Two users edit same opportunity | ✅ **Resolved** | Version check + conflict error | **Protected** |
 | Delete opportunity while edit in progress | ⚠️ Low | Error on save | UX issue |
 | Create contact while org being deleted | ✅ Low | RESTRICT prevents | Protected |
 | Two users assign same task | ⚠️ Medium | Last write wins | Confusion |
@@ -310,19 +310,26 @@ The data provider test suite includes a test for handling concurrent update erro
 message: "could not serialize access due to concurrent update"
 ```
 
-This indicates awareness of the issue but no proactive prevention.
+**UPDATE 2025-12-22:** Proactive prevention is now implemented for opportunities.
 
-**Recommendation (P2):** Implement optimistic locking for opportunities and tasks:
+### Implementation Applied (Migration 20251222034729)
+
 ```sql
--- Add version column
+-- Version column added
 ALTER TABLE opportunities ADD COLUMN version INTEGER DEFAULT 1;
 
--- Trigger to increment on update
-CREATE TRIGGER increment_version
+-- Trigger auto-increments on update
+CREATE TRIGGER opportunities_version_increment
 BEFORE UPDATE ON opportunities
 FOR EACH ROW
-EXECUTE FUNCTION increment_version();
+EXECUTE FUNCTION increment_opportunity_version();
+
+-- RPC checks version before update
+sync_opportunity_with_products(..., expected_version INTEGER)
+-- Raises CONFLICT exception (40001) on mismatch
 ```
+
+**Remaining Work:** Consider extending to contacts, tasks, organizations.
 
 ---
 
@@ -392,10 +399,11 @@ All P0 issues have been addressed:
 
 ### P2 - Medium Priority (Robustness)
 
-1. **Implement optimistic locking for opportunities**
-   - Add `version` column
-   - Check version on update
-   - Return conflict error on mismatch
+1. ✅ **~~Implement optimistic locking for opportunities~~** **COMPLETED 2025-12-22**
+   - ✅ Added `version` column
+   - ✅ Check version on update via RPC
+   - ✅ Return conflict error on mismatch
+   - ✅ UI handles conflict with user-friendly refresh
 
 2. **Add empty state guidance**
    - Show "create organization first" for contacts

@@ -28,12 +28,13 @@ This risk assessment consolidates security, data integrity, and operational risk
 | Severity | Security | Data Integrity | Performance | UX | Total |
 |----------|----------|----------------|-------------|----|----|
 | Critical | ~~1~~ **0** ✅ | 0 | ~~1~~ **0** ✅ | 0 | **0** (was 2) |
-| High | ~~2~~ 0 ✅ | ~~2~~ **1** | ~~1~~ **0** ✅ | 0 | **1** (was 5) |
+| High | ~~2~~ 0 ✅ | ~~2~~ **0** ✅ | ~~1~~ **0** ✅ | 0 | **0** (was 5) |
 | Medium | 3 | 3 | 2 | 4 | **12** |
 | Low | 2 | 2 | 3 | 6 | **13** |
 
 > **Update 2025-12-21:** HIGH-01 (JSON.parse) and HIGH-02 (z.object) have been fully mitigated.
 > **Update 2025-12-21:** CRIT-01 (RLS), CRIT-02 (View Performance), HIGH-03 (Cascade) have been fully mitigated. ✅
+> **Update 2025-12-22:** HIGH-04 (Concurrent Edit Detection) mitigated via optimistic locking. ✅
 
 ---
 
@@ -185,27 +186,28 @@ SELECT prosrc FROM pg_proc WHERE proname = 'archive_opportunity_with_relations';
 
 ---
 
-### HIGH-04: Missing Concurrent Edit Detection
+### HIGH-04: Missing Concurrent Edit Detection ✅ MITIGATED 2025-12-22
 
 **Risk Type:** Data Integrity - Lost Updates
-**Severity:** High
+**Severity:** High → **Resolved**
 **Likelihood:** Medium (multi-user scenarios)
 **Impact:** Silent data loss
 
 **Description:**
-No optimistic locking implemented. When two users edit the same record, last write wins without warning.
+~~No optimistic locking implemented. When two users edit the same record, last write wins without warning.~~
 
-**Attack Scenario:**
-1. User A opens Opportunity X at 10:00
-2. User B opens Opportunity X at 10:01
-3. User B saves at 10:05
-4. User A saves at 10:10 (B's changes silently lost)
+**Resolution Applied:**
+Migration `20251222034729_add_opportunity_version_column.sql`:
+- Added `version` integer column (default 1, auto-increments on update)
+- RPC function `sync_opportunity_with_products` now accepts `expected_version` parameter
+- On version mismatch, RPC raises `CONFLICT` exception (PostgreSQL 40001)
+- Data provider passes `previousData.version` to service for all updates
+- UI shows user-friendly warning: "This opportunity was modified by another user. Refreshing."
 
-**Mitigation:**
-Add `version` column with update checks.
+**Verification:**
+- User A opens record (version 1) → User B saves (version becomes 2) → User A saves → Conflict detected, refresh triggered
 
-**Timeline:** Pre-launch
-**Owner:** Backend team
+**Status:** ✅ MITIGATED - Optimistic locking now prevents silent data loss
 
 ---
 
