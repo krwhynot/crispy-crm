@@ -1,11 +1,11 @@
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
-import { useConfigurationContext } from "../root/ConfigurationContext";
+import { useFormOptions } from "../root/ConfigurationContext";
 import { contactOptionText } from "../contacts/ContactOption";
 
 export const TaskDetailsTab = () => {
-  const { taskTypes } = useConfigurationContext();
+  const { taskTypes } = useFormOptions();
 
   return (
     <div className="space-y-2">

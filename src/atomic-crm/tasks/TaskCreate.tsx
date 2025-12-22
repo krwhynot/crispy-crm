@@ -13,7 +13,7 @@ import {
 } from "@/components/admin/form";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { Button } from "@/components/ui/button";
-import { useConfigurationContext } from "../root/ConfigurationContext";
+import { useFormOptions } from "../root/ConfigurationContext";
 import { contactOptionText } from "../contacts/ContactOption";
 import { getTaskDefaultValues } from "../validation/task";
 
@@ -30,7 +30,7 @@ import { getTaskDefaultValues } from "../validation/task";
  */
 export default function TaskCreate() {
   const { data: identity } = useGetIdentity();
-  const { taskTypes } = useConfigurationContext();
+  const { taskTypes } = useFormOptions();
   const notify = useNotify();
   const redirect = useRedirect();
 

@@ -31,7 +31,7 @@ import { Avatar } from "../contacts/Avatar";
 import { TagsList } from "../contacts/TagsList";
 import { findOpportunityLabel } from "../opportunities/opportunity";
 import { Status } from "../shared/components/Status";
-import { useConfigurationContext } from "../root/ConfigurationContext";
+import { usePipelineConfig } from "../root/ConfigurationContext";
 import type { Company, Contact, Opportunity } from "../types";
 import { formatName } from "../utils/formatName";
 import { OrganizationAside } from "./OrganizationAside";
@@ -246,7 +246,7 @@ const CreateRelatedOpportunityButton = () => {
 
 const OpportunitiesIterator = () => {
   const { data: opportunities, error, isPending } = useListContext<Opportunity>();
-  const { opportunityStages } = useConfigurationContext();
+  const { opportunityStages } = usePipelineConfig();
   if (isPending || error) return null;
 
   const now = Date.now();

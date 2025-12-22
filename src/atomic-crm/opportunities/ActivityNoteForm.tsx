@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useConfigurationContext } from "../root/ConfigurationContext";
+import { usePipelineConfig } from "../root/ConfigurationContext";
 import {
   activityNoteFormSchema,
   activitiesSchema,
@@ -77,7 +77,7 @@ const ContactSelectField = ({
 export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormProps) => {
   const dataProvider = useDataProvider();
   const notify = useNotify();
-  const { opportunityStages } = useConfigurationContext();
+  const { opportunityStages } = usePipelineConfig();
 
   // Extract form defaults from schema per Constitution #5
   // activitiesSchema provides defaults for activity_date and type

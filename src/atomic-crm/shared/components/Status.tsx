@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils.ts";
-import { useConfigurationContext } from "../../root/ConfigurationContext";
+import { useFormOptions } from "../../root/ConfigurationContext";
 
 /**
  * Maps status value to semantic CSS class for background color
@@ -15,7 +15,7 @@ function getStatusBackgroundClass(status: string): string {
 }
 
 export const Status = ({ status, className }: { status: string; className?: string }) => {
-  const { noteStatuses } = useConfigurationContext();
+  const { noteStatuses } = useFormOptions();
   if (!status || !noteStatuses) return null;
   const statusObject = noteStatuses.find((s: { value: string; label: string }) => s.value === status);
 

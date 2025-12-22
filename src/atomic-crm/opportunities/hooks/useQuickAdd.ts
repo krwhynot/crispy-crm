@@ -28,8 +28,8 @@ export const useQuickAdd = () => {
     },
     onSuccess: (result, formData) => {
       // Update localStorage with last used campaign and principal
-      localStorage.setItem("last_campaign", formData.campaign);
-      localStorage.setItem("last_principal", formData.principal_id.toString());
+      setStorageItem("last_campaign", formData.campaign, { type: "local" });
+      setStorageItem("last_principal", formData.principal_id.toString(), { type: "local" });
 
       // Show success toast with 2-second auto-hide
       const message = `✅ Created: ${formData.first_name} ${formData.last_name} - ${formData.org_name}`;
