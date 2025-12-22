@@ -11,6 +11,8 @@ import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
 import type { Contact, Organization, Opportunity } from "../types";
+import { safeJsonParse } from "@/atomic-crm/utils/safeJsonParse";
+import { activityDraftSchema, type ActivityDraft } from "@/atomic-crm/activities/activityDraftSchema";
 
 // Lazy load QuickLogForm - saves ~15-20KB from initial chunk
 const QuickLogForm = lazy(() =>
@@ -171,14 +173,6 @@ const DEFAULT_DRAFT_STORAGE_KEY = "quick-log-activity-draft";
 const DRAFT_SAVE_DEBOUNCE_MS = 500;
 const DRAFT_EXPIRY_MS = 24 * 60 * 60 * 1000; // 24 hours
 
-/**
- * Draft state stored in localStorage
- */
-interface ActivityDraft {
-  formData: Partial<ActivityLogInput>;
-  savedAt: number;
-}
-
 // ═══════════════════════════════════════════════════════════════════════════════
 // Draft Persistence Helpers
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -186,23 +180,22 @@ interface ActivityDraft {
 function loadDraft(storageKey: string): Partial<ActivityLogInput> | null {
   if (typeof window === "undefined") return null;
 
-  try {
-    const stored = localStorage.getItem(storageKey);
-    if (!stored) return null;
+  const stored = localStorage.getItem(storageKey);
+  if (!stored) return null;
 
-    const draft: ActivityDraft = JSON.parse(stored);
-
-    // Check if draft has expired
-    if (Date.now() - draft.savedAt > DRAFT_EXPIRY_MS) {
-      localStorage.removeItem(storageKey);
-      return null;
-    }
-
-    return draft.formData;
-  } catch {
+  const draft = safeJsonParse(stored, activityDraftSchema);
+  if (!draft) {
     localStorage.removeItem(storageKey);
     return null;
   }
+
+  // Check if draft has expired
+  if (Date.now() - draft.savedAt > DRAFT_EXPIRY_MS) {
+    localStorage.removeItem(storageKey);
+    return null;
+  }
+
+  return draft.formData;
 }
 
 function saveDraft(storageKey: string, formData: Partial<ActivityLogInput>): void {

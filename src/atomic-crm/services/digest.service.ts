@@ -23,7 +23,7 @@ import { STAGE_STALE_THRESHOLDS, type ActivePipelineStage } from "../utils/stale
 /**
  * Schema for overdue task records returned from database
  */
-export const OverdueTaskSchema = z.object({
+export const OverdueTaskSchema = z.strictObject({
   id: z.number(),
   title: z.string(),
   description: z.string().nullable(),
@@ -44,7 +44,7 @@ export type OverdueTask = z.infer<typeof OverdueTaskSchema>;
 /**
  * Schema for tasks due today records returned from database
  */
-export const TodayTaskSchema = z.object({
+export const TodayTaskSchema = z.strictObject({
   id: z.number(),
   title: z.string(),
   description: z.string().nullable(),
@@ -63,7 +63,7 @@ export type TodayTask = z.infer<typeof TodayTaskSchema>;
 /**
  * Schema for stale deal records with per-stage threshold info
  */
-export const StaleDealSchema = z.object({
+export const StaleDealSchema = z.strictObject({
   id: z.number(),
   name: z.string(),
   stage: z.string(),
@@ -82,7 +82,7 @@ export type StaleDeal = z.infer<typeof StaleDealSchema>;
 /**
  * Schema for complete user digest summary
  */
-export const UserDigestSummarySchema = z.object({
+export const UserDigestSummarySchema = z.strictObject({
   sales_id: z.number(),
   user_id: z.string().uuid(),
   first_name: z.string().nullable(),
@@ -103,7 +103,7 @@ export type UserDigestSummary = z.infer<typeof UserDigestSummarySchema>;
 /**
  * Schema for digest generation result
  */
-export const DigestGenerationResultSchema = z.object({
+export const DigestGenerationResultSchema = z.strictObject({
   success: z.boolean(),
   digestsGenerated: z.number().int().min(0),
   notificationsCreated: z.number().int().min(0),

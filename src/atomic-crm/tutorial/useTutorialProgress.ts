@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
+import { z } from "zod";
 import type { TutorialChapter, TutorialProgress } from "./types";
+import { safeJsonParse } from "../utils/safeJsonParse";
 
 const STORAGE_KEY = "tutorial-progress";
 
@@ -11,20 +13,38 @@ const DEFAULT_PROGRESS: TutorialProgress = {
   lastUpdated: new Date().toISOString(),
 };
 
+const tutorialChapterSchema = z.enum([
+  "organizations",
+  "contacts",
+  "opportunities",
+  "activities",
+  "tasks",
+  "products",
+  "notes",
+  "users",
+]);
+
+const tutorialProgressSchema = z
+  .object({
+    currentChapter: tutorialChapterSchema.nullable(),
+    currentStepIndex: z.number(),
+    completedChapters: z.array(tutorialChapterSchema),
+    visitedPages: z.array(tutorialChapterSchema),
+    lastUpdated: z.string().max(50),
+  })
+  .passthrough();
+
 function loadProgress(): TutorialProgress {
-  try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-      const parsed = JSON.parse(stored);
-      // Handle migration for existing users without visitedPages
-      return {
-        ...parsed,
-        visitedPages: parsed.visitedPages ?? [],
-      } as TutorialProgress;
-    }
-  } catch {
-    // Fail silently, return default
+  const stored = localStorage.getItem(STORAGE_KEY);
+  const parsed = safeJsonParse(stored, tutorialProgressSchema);
+
+  if (parsed) {
+    return {
+      ...parsed,
+      visitedPages: parsed.visitedPages ?? [],
+    } as TutorialProgress;
   }
+
   return { ...DEFAULT_PROGRESS, lastUpdated: new Date().toISOString() };
 }
 

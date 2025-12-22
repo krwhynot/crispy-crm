@@ -12,6 +12,8 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import type { ActivityLogInput } from "@/atomic-crm/validation/activities";
+import { safeJsonParse } from "@/atomic-crm/utils/safeJsonParse";
+import { activityDraftSchema, type ActivityDraft } from "@/atomic-crm/activities/activityDraftSchema";
 
 // Lazy load QuickLogForm - saves ~15-20KB from main dashboard chunk
 const QuickLogForm = lazy(() =>
@@ -26,15 +28,6 @@ const DRAFT_SAVE_DEBOUNCE_MS = 500;
 
 // Draft expires after 24 hours
 const DRAFT_EXPIRY_MS = 24 * 60 * 60 * 1000;
-
-/**
- * Draft state stored in localStorage
- * Includes timestamp for expiry logic
- */
-interface ActivityDraft {
-  formData: Partial<ActivityLogInput>;
-  savedAt: number;
-}
 
 interface LogActivityFABProps {
   /** Callback to refresh dashboard data after activity is logged */
@@ -98,24 +91,22 @@ function QuickLogFormSkeleton() {
 function loadDraft(): Partial<ActivityLogInput> | null {
   if (typeof window === "undefined") return null;
 
-  try {
-    const stored = localStorage.getItem(DRAFT_STORAGE_KEY);
-    if (!stored) return null;
+  const stored = localStorage.getItem(DRAFT_STORAGE_KEY);
+  if (!stored) return null;
 
-    const draft: ActivityDraft = JSON.parse(stored);
-
-    // Check if draft has expired
-    if (Date.now() - draft.savedAt > DRAFT_EXPIRY_MS) {
-      localStorage.removeItem(DRAFT_STORAGE_KEY);
-      return null;
-    }
-
-    return draft.formData;
-  } catch {
-    // Invalid JSON or structure, clear it
+  const draft = safeJsonParse(stored, activityDraftSchema);
+  if (!draft) {
     localStorage.removeItem(DRAFT_STORAGE_KEY);
     return null;
   }
+
+  // Check if draft has expired
+  if (Date.now() - draft.savedAt > DRAFT_EXPIRY_MS) {
+    localStorage.removeItem(DRAFT_STORAGE_KEY);
+    return null;
+  }
+
+  return draft.formData;
 }
 
 /**

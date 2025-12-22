@@ -54,7 +54,7 @@ export const STAGE_STALE_THRESHOLDS: Record<ActivePipelineStage, number> = {
  * Zod schema for validating stage stale threshold configuration.
  * Useful for runtime validation or API boundary checks.
  */
-export const StageStaleThresholdsSchema = z.object({
+export const StageStaleThresholdsSchema = z.strictObject({
   new_lead: z.number().int().positive().default(7),
   initial_outreach: z.number().int().positive().default(14),
   sample_visit_offered: z.number().int().positive().default(14),
