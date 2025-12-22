@@ -13,6 +13,8 @@
  */
 import { useState, useCallback, useRef } from "react";
 import { CreateBase, Form, useGetList, useCreate, useRedirect, useNotify } from "ra-core";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Card, CardContent } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
 import {
@@ -215,6 +217,15 @@ const OrganizationCreate = () => {
     ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch
   };
   const formKey = unknownSegmentId ? `org-create-${unknownSegmentId}` : "org-create";
+
+  // Connect Zod schema as form resolver for client-side validation
+  // This enables form.trigger() to work in DuplicateCheckSaveButton
+  // Schema remains single source of truth (Constitution-compliant)
+  const form = useForm<OrganizationFormValues>({
+    resolver: zodResolver(organizationSchema),
+    defaultValues: formDefaults,
+    mode: "onBlur",
+  });
 
   return (
     <>

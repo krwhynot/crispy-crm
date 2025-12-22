@@ -30,12 +30,18 @@ export const ListPagination = ({
   const { hasPreviousPage, hasNextPage, page, perPage, setPerPage, total, setPage } =
     useListPaginationContext();
 
-  const pageStart = (page - 1) * perPage + 1;
-  const pageEnd = hasNextPage ? page * perPage : total;
+  // Defensive defaults to prevent undefined values causing template placeholder issues
+  const safeTotal = total ?? 0;
+  const safePage = page ?? 1;
+  const safePerPage = perPage ?? 10;
+
+  // Handle empty results: show "0 of 0" instead of "1-0 of 0"
+  const pageStart = safeTotal === 0 ? 0 : (safePage - 1) * safePerPage + 1;
+  const pageEnd = safeTotal === 0 ? 0 : (hasNextPage ? safePage * safePerPage : safeTotal);
 
   const boundaryCount = 1;
   const siblingCount = 1;
-  const count = total ? Math.ceil(total / perPage) : 1;
+  const count = safeTotal ? Math.ceil(safeTotal / safePerPage) : 1;
 
   const range = (start: number, end: number) => {
     const length = end - start + 1;
@@ -111,10 +117,10 @@ export const ListPagination = ({
             options={{
               offsetBegin: pageStart,
               offsetEnd: pageEnd,
-              total: total === -1 ? pageEnd : total,
+              total: safeTotal === -1 ? pageEnd : safeTotal,
             }}
           >
-            {total != null ? `${pageStart}-${pageEnd} of ${total === -1 ? pageEnd : total}` : null}
+            {`${pageStart}-${pageEnd} of ${safeTotal === -1 ? pageEnd : safeTotal}`}
           </Translate>
         </div>
         <Pagination className="-w-full -mx-auto">
