@@ -139,13 +139,17 @@
 
 ### Spec Updates (Documentation)
 
-- [ ] **#1, #6, #9, #15** - Update page title expectations → breadcrumb assertions
-- [ ] **#7** - Update button label expectation → "Create [Entity]"
-- [ ] **#4** - Document bulk action order: Reassign > Export > Delete
-- [ ] **#5** - Document indeterminate checkbox as not implemented (React Admin limitation)
-- [ ] **#10** - Correct column expectations (no "Notes" column in list)
-- [ ] **#14** - Update required fields count → 1 (name only)
-- [ ] **#16** - List all 13 activity types; distinguish type vs outcome
+> **Status:** ✅ COMPLETED - See `docs/spec-updates-2025-12.md`
+
+- [x] **#1, #6, #9, #15** - Update page title expectations → breadcrumb assertions
+- [x] **#7** - Update button label expectation → "Create [Entity]"
+- [x] **#4** - Document bulk action order: Reassign > Export > Delete
+- [x] **#5** - Document indeterminate checkbox as not implemented (React Admin limitation)
+- [x] **#10** - Correct column expectations (no "Notes" column in list)
+- [x] **#14** - Update required fields count → 1 (name only)
+- [x] **#16** - List all 13 activity types; distinguish type vs outcome
+
+**Note:** E2E test files already follow correct patterns - no code changes needed.
 
 ### No Action Required (Documented)
 
