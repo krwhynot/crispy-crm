@@ -110,6 +110,7 @@ export const OpportunityListContent = ({
     toggleVisibility,
     collapseAll,
     expandAll,
+    resetPreferences,
   } = useColumnPreferences();
 
   // Filter stages based on active filter and user preferences
@@ -509,6 +510,7 @@ export const OpportunityListContent = ({
               toggleVisibility={toggleVisibility}
               collapseAll={collapseAll}
               expandAll={expandAll}
+              resetPreferences={resetPreferences}
             />
           </div>
         </div>
