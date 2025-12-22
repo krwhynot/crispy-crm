@@ -1,287 +1,394 @@
-# Risk Assessment - Crispy CRM
+# Risk Assessment Report
 
-**Generated:** 2025-12-21
-**Source:** 25-Agent Forensic Audit Synthesis
-**Purpose:** Identify and categorize risks by domain
+**Agent:** 25 - Forensic Aggregator
+**Date:** 2025-12-21
+**Source Reports:** Agents 4, 16, 20, 21, 22, 23
 
 ---
 
 ## Executive Summary
 
-| Risk Category | Critical | High | Medium | Low |
-|--------------|----------|------|--------|-----|
-| Security | 1 | 3 | 5 | 2 |
-| Data Integrity | 2 | 4 | 8 | 3 |
-| Stability | 0 | 2 | 6 | 4 |
-| Performance | 0 | 1 | 4 | 3 |
-| **Total** | **3** | **10** | **23** | **12** |
+This risk assessment consolidates security, data integrity, and operational risks identified across the 25-agent audit. The codebase has **one critical security vulnerability** (RLS policy) and several medium-severity issues requiring attention before launch.
 
-**Overall Risk Level:** MEDIUM - Acceptable for pre-launch MVP with remediation plan
+### Risk Matrix
 
----
-
-## 1. Security Risks
-
-### 🔴 CRITICAL
-
-#### SEC-01: API Key in Client Code
-- **Risk:** Supabase API keys visible in browser
-- **Impact:** Potential unauthorized data access
-- **Mitigation:** RLS policies provide defense-in-depth
-- **Status:** ACCEPTABLE for MVP - RLS properly configured (329 policies)
-- **Post-MVP:** Implement server-side proxy
-
-### 🟠 HIGH
-
-#### SEC-02: Mass Assignment Vulnerability
-- **Location:** 5 Zod schemas using `z.object()` instead of `z.strictObject()`
-- **Risk:** Attackers could inject unexpected fields
-- **Impact:** Data corruption, privilege escalation
-- **Fix:** Convert to `z.strictObject()` at API boundary
-- **Priority:** P0 - Before beta
-
-#### SEC-03: String DoS Vulnerability  
-- **Location:** 8 schemas missing `.max()` on strings
-- **Risk:** Denial of service via oversized payloads
-- **Impact:** Server/database resource exhaustion
-- **Fix:** Add `.max()` constraints to all string fields
-- **Priority:** P0 - Before beta
-- **Note:** Activity schema already has `.max()` (Agent 24 verified)
-
-#### SEC-04: Missing Input Sanitization
-- **Location:** Free-text fields in notes, activity descriptions
-- **Risk:** XSS if rendered without escaping
-- **Impact:** Account compromise via stored XSS
-- **Mitigation:** React escapes by default
-- **Fix:** Audit any `dangerouslySetInnerHTML` usage
-- **Priority:** P1
-
-### 🟡 MEDIUM
-
-| ID | Risk | Location | Impact |
-|----|------|----------|--------|
-| SEC-05 | Soft delete not cascade-aware | contact_organizations | Orphaned references |
-| SEC-06 | Auth token logging | Development console | Token exposure |
-| SEC-07 | Missing rate limiting | dataProvider | Abuse potential |
-| SEC-08 | Overly permissive CORS | Supabase config | Cross-origin attacks |
-| SEC-09 | Session fixation | Auth provider | Account takeover |
-
-### 🟢 LOW
-
-| ID | Risk | Location | Notes |
-|----|------|----------|-------|
-| SEC-10 | Debug endpoints exposed | public/debug.html | Dev-only, remove in prod |
-| SEC-11 | Source maps in production | Vite config | Info disclosure |
+| Severity | Security | Data Integrity | Performance | UX | Total |
+|----------|----------|----------------|-------------|----|----|
+| Critical | 1 | 0 | 1 | 0 | **2** |
+| High | 2 | 2 | 1 | 0 | **5** |
+| Medium | 3 | 3 | 2 | 4 | **12** |
+| Low | 2 | 2 | 3 | 6 | **13** |
 
 ---
 
-## 2. Data Integrity Risks
+## Critical Risks
 
-### 🔴 CRITICAL
+### CRIT-01: RLS USING(true) Vulnerability
 
-#### DI-01: Concurrent Edit Overwrites
-- **Risk:** Last write wins with no conflict detection
-- **Impact:** User B's changes silently lost when User A saves
-- **Scenario:** Both users edit same Opportunity
-- **Fix:** Implement optimistic locking via `updated_at`
-- **Priority:** P2 (Post-MVP, affects multi-user scenarios)
+**Risk Type:** Security - Data Isolation Breach
+**Severity:** Critical
+**Likelihood:** Certain if exploited
+**Impact:** Cross-tenant data leakage
 
-#### DI-02: Orphaned Records on Delete
-- **Risk:** Deleting Contact leaves orphaned Activities
-- **Impact:** Data inconsistency, broken references
-- **Fix:** Add cascade handling in dataProvider
-- **Priority:** P1 - This week
+**Description:**
+The `product_distributors` table has RLS policies with `USING(true)`, meaning any authenticated user can read, insert, update, or delete ANY record regardless of organization membership.
 
-### 🟠 HIGH
+**Attack Scenario:**
+1. Attacker creates account for Organization A
+2. Attacker queries `product_distributors` table
+3. Attacker sees confidential pricing from Organizations B, C, D
+4. Attacker modifies competitor's product-distributor relationships
 
-| ID | Risk | Location | Impact | Priority |
-|----|------|----------|--------|----------|
-| DI-03 | Missing FK constraints | Some junction tables | Referential integrity | P1 |
-| DI-04 | Duplicate submission | Forms without debounce | Duplicate records | P2 |
-| DI-05 | Null in required fields | Legacy data | UI crashes | P2 |
-| DI-06 | Timezone mishandling | Date comparisons | Incorrect filtering | P2 |
+**Files Affected:**
+- `supabase/migrations/20251215054822_08_create_product_distributors.sql:41-51`
 
-### 🟡 MEDIUM
+**Mitigation:**
+```sql
+DROP POLICY "Users can view product_distributors" ON product_distributors;
+CREATE POLICY "Users can view product_distributors"
+  ON product_distributors FOR SELECT
+  USING (
+    auth.uid() IS NOT NULL 
+    AND deleted_at IS NULL
+    AND organization_id IN (
+      SELECT id FROM organizations WHERE deleted_at IS NULL
+    )
+  );
+```
 
-| ID | Risk | Notes |
-|----|------|-------|
-| DI-07 | No data versioning | Can't rollback changes |
-| DI-08 | Missing unique constraints | Potential duplicates |
-| DI-09 | Enum drift | DB vs code enums can mismatch |
-| DI-10 | Partial form saves | Wizard steps not atomic |
-| DI-11 | Cache invalidation | Stale data after updates |
-| DI-12 | Bulk operation failures | Partial success unclear |
-| DI-13 | Import validation gaps | CSV import edge cases |
-| DI-14 | Audit trail gaps | Some operations unlogged |
-
----
-
-## 3. Stability Risks
-
-### 🟠 HIGH
-
-#### ST-01: Unhandled Promise Rejections
-- **Location:** 12 async operations without error handling
-- **Risk:** Silent failures, inconsistent state
-- **Impact:** User actions appear to succeed but don't
-- **Fix:** Add try/catch with user notification
-- **Priority:** P1
-
-#### ST-02: Memory Leaks in Effects
-- **Location:** 16 useEffect hooks without cleanup
-- **Risk:** Memory growth, stale subscriptions
-- **Impact:** App slowdown over time
-- **Fix:** Add cleanup functions
-- **Priority:** P2
-
-### 🟡 MEDIUM
-
-| ID | Risk | Location | Notes |
-|----|------|----------|-------|
-| ST-03 | Error boundary gaps | Some feature modules | Crashes propagate up |
-| ST-04 | Race conditions | 3 identified | Old data displayed |
-| ST-05 | Infinite re-renders | 2 potential locations | Browser freeze |
-| ST-06 | Third-party failures | External dependencies | No fallback |
-| ST-07 | Build fragility | Complex Vite config | CI failures |
-| ST-08 | Hot reload issues | Development only | DX impact |
-
-### 🟢 LOW
-
-| ID | Risk | Notes |
-|----|------|-------|
-| ST-09 | Console errors in production | Noise in monitoring |
-| ST-10 | Deprecation warnings | Future maintenance |
-| ST-11 | Test flakiness | CI unreliability |
-| ST-12 | Type assertion risks | 23 double assertions |
+**Timeline:** Immediate (before any beta users)
+**Owner:** Database/Security team
 
 ---
 
-## 4. Performance Risks
+### CRIT-02: Query Performance Causing Browser Crash
 
-### 🟠 HIGH
+**Risk Type:** Performance - Denial of Service
+**Severity:** Critical
+**Likelihood:** High with production data
+**Impact:** Browser tab crash, user frustration
 
-#### PF-01: N+1 Query Pattern
-- **Location:** OpportunityList with nested principals
-- **Risk:** Linear query growth
-- **Impact:** Slow list loading at scale
-- **Fix:** Eager loading or DataLoader pattern
-- **Priority:** P2
+**Description:**
+The `opportunities_summary` view executes the same subquery 4 times per row. With 1000+ opportunities, this causes:
+- ~4000 subquery executions
+- Browser memory exhaustion
+- Tab crash on list load
 
-### 🟡 MEDIUM
+**Attack Scenario:**
+1. User with many opportunities loads Opportunities page
+2. Browser allocates memory for repeated subqueries
+3. Memory limit exceeded, tab crashes
+4. User can't access their opportunities
 
-| ID | Risk | Location | Notes |
-|----|------|----------|-------|
-| PF-02 | Large bundle chunks | ui-radix chunk 89KB | Initial load time |
-| PF-03 | Missing pagination | Some list views | Memory exhaustion |
-| PF-04 | Expensive re-renders | 14 components flagged | UI jank |
-| PF-05 | Unoptimized images | Some assets | Bandwidth waste |
+**Files Affected:**
+- `supabase/migrations/.../opportunities_summary.sql`
 
-### 🟢 LOW
+**Mitigation:**
+Refactor view to use CTEs with single aggregation pass.
 
-| ID | Risk | Notes |
-|----|------|-------|
-| PF-06 | Unused dependencies | 5 packages (~150KB) |
-| PF-07 | Console logging | Minor overhead |
-| PF-08 | Development checks | Stripped in prod |
-
----
-
-## 5. Maintainability Risks
-
-### 🟡 MEDIUM
-
-| ID | Risk | Impact | Notes |
-|----|------|--------|-------|
-| MT-01 | Pattern drift (35% in sales) | Onboarding confusion | Standardization needed |
-| MT-02 | Dead code (~1500 lines) | Technical debt | Cleanup planned |
-| MT-03 | Inconsistent naming | Developer friction | Style guide needed |
-| MT-04 | Missing documentation | Knowledge silos | Document key flows |
-| MT-05 | Test coverage gaps | Regression risk | Increase coverage |
-| MT-06 | Complex file structure | Navigation difficulty | Refactor consideration |
+**Timeline:** This week
+**Owner:** Backend team
 
 ---
 
-## Risk Mitigation Priorities
+## High Risks
 
-### Immediate (P0 - Before Beta)
+### HIGH-01: JSON.parse Without Validation
 
-| Risk ID | Mitigation | Effort |
-|---------|------------|--------|
-| SEC-02 | Convert to z.strictObject() | 2h |
-| SEC-03 | Add .max() to all strings | 2h |
-| DI-02 | Add cascade delete handling | 2h |
+**Risk Type:** Security - Type Confusion
+**Severity:** High
+**Likelihood:** Low (requires XSS or physical access)
+**Impact:** Application state corruption, potential XSS
 
-### This Week (P1)
+**Description:**
+11 locations parse JSON from localStorage/sessionStorage without Zod validation. An attacker with XSS access could modify storage to inject malicious data.
 
-| Risk ID | Mitigation | Effort |
-|---------|------------|--------|
-| ST-01 | Add error handling to async ops | 4h |
-| DI-03 | Add FK constraints | 2h |
-| SEC-04 | Audit XSS vectors | 2h |
+**Attack Scenario:**
+1. Attacker finds XSS vulnerability
+2. Attacker modifies localStorage `columnPreferences`
+3. Injected object causes React render error
+4. User sees broken UI, can't work
 
-### Before Launch (P2)
+**Files Affected:**
+| File | Line |
+|------|------|
+| `useTutorialProgress.ts` | 18 |
+| `secureStorage.ts` | 54, 63 |
+| `useColumnPreferences.ts` | 13, 18 |
+| (8 more locations) | - |
 
-| Risk ID | Mitigation | Effort |
-|---------|------------|--------|
-| DI-01 | Implement optimistic locking | 8h |
-| ST-02 | Add effect cleanup | 4h |
-| PF-01 | Fix N+1 queries | 4h |
-| DI-04 | Add submission debounce | 2h |
+**Mitigation:**
+Create `safeJsonParse<T>(schema: ZodSchema<T>)` utility.
 
-### Backlog (P3)
+**Timeline:** This sprint
+**Owner:** Frontend team
 
-| Risk ID | Mitigation | Effort |
-|---------|------------|--------|
-| MT-01 | Pattern standardization | 8h |
-| MT-02 | Dead code removal | 4h |
-| PF-02 | Bundle optimization | 4h |
+---
+
+### HIGH-02: z.object Mass Assignment Risk
+
+**Risk Type:** Security - Mass Assignment
+**Severity:** High
+**Likelihood:** Low (requires API knowledge)
+**Impact:** Unauthorized field modification
+
+**Description:**
+9 schemas use `z.object()` instead of `z.strictObject()`, allowing extra fields to pass through validation and potentially modify protected fields.
+
+**Attack Scenario:**
+1. Attacker inspects API payloads
+2. Attacker adds `is_admin: true` to request
+3. Non-strict schema passes it through
+4. Protected field modified
+
+**Files Affected:**
+- `stalenessCalculation.ts:57`
+- `digest.service.ts:26,47,66,85,106`
+- `filterConfigSchema.ts:15,52`
+- `distributorAuthorizations.ts:141`
+
+**Mitigation:**
+Replace `z.object()` with `z.strictObject()`.
+
+**Timeline:** This sprint
+**Owner:** Backend team
+
+---
+
+### HIGH-03: Soft-Delete Cascade Bypass
+
+**Risk Type:** Data Integrity - Orphaned Records
+**Severity:** High
+**Likelihood:** Medium
+**Impact:** Data inconsistency, broken references
+
+**Description:**
+Direct `deleted_at` updates bypass `archive_opportunity_with_relations()` function, leaving orphaned junction table records.
+
+**Attack Scenario:**
+1. Admin uses database tool to archive opportunity
+2. Sets `deleted_at` directly, not via function
+3. `opportunity_contacts`, `opportunity_products` remain
+4. Reports show inconsistent data
+
+**Files Affected:**
+- `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`
+
+**Mitigation:**
+Route all deletions through cascade function in data provider.
+
+**Timeline:** This week
+**Owner:** Backend team
+
+---
+
+### HIGH-04: Missing Concurrent Edit Detection
+
+**Risk Type:** Data Integrity - Lost Updates
+**Severity:** High
+**Likelihood:** Medium (multi-user scenarios)
+**Impact:** Silent data loss
+
+**Description:**
+No optimistic locking implemented. When two users edit the same record, last write wins without warning.
+
+**Attack Scenario:**
+1. User A opens Opportunity X at 10:00
+2. User B opens Opportunity X at 10:01
+3. User B saves at 10:05
+4. User A saves at 10:10 (B's changes silently lost)
+
+**Mitigation:**
+Add `version` column with update checks.
+
+**Timeline:** Pre-launch
+**Owner:** Backend team
+
+---
+
+### HIGH-05: 10K Record Bulk Loads
+
+**Risk Type:** Performance - Resource Exhaustion
+**Severity:** High
+**Likelihood:** Medium
+**Impact:** Slow page loads, memory pressure
+
+**Description:**
+6 locations fetch up to 10,000 records for client-side filtering instead of server-side aggregation.
+
+**Files Affected:**
+- `CampaignActivityReport.tsx` - Reports loading
+- `OpportunityListFilter.tsx` - Campaign filter dropdown
+
+**Mitigation:**
+Create server-side aggregation endpoints.
+
+**Timeline:** Pre-launch
+**Owner:** Backend team
+
+---
+
+## Medium Risks
+
+### MED-01: Missing Unsaved Changes Warning
+
+**Risk Type:** UX - Data Loss
+**Severity:** Medium
+**Likelihood:** High
+**Impact:** User frustration, lost work
+
+**Description:**
+5 major forms lack `isDirty` check before navigation, causing silent loss of user input.
+
+**Forms Affected:**
+- OpportunityCreate
+- OrganizationCreate
+- ActivityCreate
+- ProductCreate
+- SalesEdit
+
+**Mitigation:**
+Add `window.confirm` on cancel/navigation when `isDirty`.
+
+**Timeline:** This sprint
+**Owner:** Frontend team
+
+---
+
+### MED-02: Whitespace-Only Validation Gap
+
+**Risk Type:** Data Integrity - Invalid Data
+**Severity:** Medium
+**Likelihood:** Medium
+**Impact:** Data quality issues
+
+**Description:**
+Required string fields accept whitespace-only input ("   "), creating records with effectively blank names.
+
+**Mitigation:**
+Add `.trim()` before `.min(1)` in all required string schemas.
+
+**Timeline:** This sprint
+**Owner:** Frontend team
+
+---
+
+### MED-03: ConfigurationContext Re-render Blast Radius
+
+**Risk Type:** Performance - Unnecessary Renders
+**Severity:** Medium
+**Likelihood:** Certain
+**Impact:** Performance degradation
+
+**Description:**
+11 values in single context cause 13 consumer components to re-render on any config change.
+
+**Mitigation:**
+Split into `AppBrandingContext`, `StagesContext`, `FormOptionsContext`.
+
+**Timeline:** Pre-launch
+**Owner:** Frontend team
+
+---
+
+### MED-04: Large Component Maintainability
+
+**Risk Type:** Maintainability
+**Severity:** Medium
+**Likelihood:** N/A
+**Impact:** Developer velocity, bug surface area
+
+**Description:**
+7 components exceed 400 lines, handling multiple concerns.
+
+**Components:**
+- OrganizationImportDialog (1,082 lines)
+- AuthorizationsTab (1,043 lines)
+- CampaignActivityReport (900 lines)
+
+**Mitigation:**
+Split into smaller, focused components.
+
+**Timeline:** Post-launch backlog
+**Owner:** Frontend team
+
+---
+
+### MED-05 through MED-12
+
+*(Additional medium risks documented in 01-PRIORITIZED-FIX-LIST.md)*
+
+---
+
+## Low Risks
+
+### LOW-01: Missing Autocomplete Attributes
+
+**Risk Type:** Accessibility
+**Severity:** Low
+**Impact:** Suboptimal autofill behavior
+
+### LOW-02: Double Type Assertions
+
+**Risk Type:** Type Safety
+**Severity:** Low
+**Impact:** Potential runtime type errors
+
+### LOW-03: useEffect Missing Cleanup
+
+**Risk Type:** Memory Management
+**Severity:** Low
+**Impact:** Potential memory leaks (minor)
+
+*(Additional low risks documented in 01-PRIORITIZED-FIX-LIST.md)*
 
 ---
 
 ## Accepted Risks
 
-The following risks are **accepted** for MVP:
+The following risks have been accepted with documented justification:
 
-| Risk | Reason | Review Date |
-|------|--------|-------------|
-| SEC-01 (API key exposure) | RLS provides protection | Post-MVP |
-| DI-01 (Concurrent edits) | Low user count initially | Post-MVP |
-| No server-side validation | Zod at API boundary sufficient | Post-MVP |
-| No rate limiting | Internal tool, trusted users | Post-MVP |
-
----
-
-## Risk Monitoring
-
-### Metrics to Track
-
-| Metric | Threshold | Action |
-|--------|-----------|--------|
-| Error rate | >1% | Investigate |
-| P95 latency | >2s | Optimize |
-| Failed submissions | >0.5% | Debug |
-| Memory usage | >200MB | Investigate |
-
-### Review Schedule
-
-- **Weekly:** P0/P1 risk status
-- **Monthly:** Full risk assessment review
-- **Quarterly:** External security audit (post-MVP)
+| Risk | Justification | Accepted By |
+|------|---------------|-------------|
+| Auth provider direct Supabase | Architectural necessity - auth precedes context | Agent 24 |
+| Tutorial silent catches | Non-critical feature degradation acceptable | Agent 24 |
+| Promise.allSettled for bulk | Batch partial success is valid UX | Agent 13 |
+| `any` in RA wrappers | Library integration boundary | Agent 24 |
 
 ---
 
-## Summary
+## Risk Monitoring Plan
 
-**Pre-Launch Risk Level:** MEDIUM
+### Pre-Launch Monitoring
 
-The codebase is generally well-architected with:
-- Strong RLS policies (329 total)
-- Good React Admin pattern adoption
-- Centralized data provider
+| Metric | Target | Tool |
+|--------|--------|------|
+| RLS policy coverage | 100% proper policies | Migration audit |
+| Type safety score | 85%+ | TypeScript strict mode |
+| Bundle size | <2MB gzipped | Bundle analyzer |
+| Dead code | 0 lines | ESLint unused-imports |
 
-Key areas requiring attention:
-1. Zod schema strictness (security)
-2. Soft delete cascading (data integrity)
-3. Error handling completeness (stability)
+### Post-Launch Monitoring
 
-With the P0 and P1 fixes implemented, the risk level will be **LOW** and acceptable for production launch.
+| Metric | Target | Tool |
+|--------|--------|------|
+| Error rate | <0.1% | Sentry |
+| Page load time | <3s | Browser performance |
+| Memory usage | <200MB | Chrome DevTools |
+| User-reported issues | <5/week | Support tickets |
+
+---
+
+## Risk Response Matrix
+
+| Severity | Response Time | Escalation |
+|----------|---------------|------------|
+| Critical | Immediate (same day) | Team lead + PM |
+| High | This sprint | Team lead |
+| Medium | Pre-launch | Sprint planning |
+| Low | Backlog | Quarterly review |
+
+---
+
+*Generated by Agent 25 - Forensic Aggregator*
+*Source: Agents 4, 16, 20, 21, 22, 23*

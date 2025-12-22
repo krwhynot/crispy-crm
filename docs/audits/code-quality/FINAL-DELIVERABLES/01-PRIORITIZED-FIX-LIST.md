@@ -1,744 +1,615 @@
-# Prioritized Fix List
+# Prioritized Fix List - Forensic Aggregation Report
 
-**Generated:** 2025-12-21
-**Total Findings:** 89 (after deduplication)
-**Agents Contributing:** 23 (Agents 1-15, 16-19, 22-24)
-**False Positives Removed:** 6 (per Agent 24 Devil's Advocate)
-
----
-
-## Summary
-
-| Priority | Count | Est. Effort | Fixed | Status |
-|----------|-------|-------------|-------|--------|
-| P0 | 8 | 6 hours | 5 | Critical - Fix Before Beta |
-| P1 | 18 | 16 hours | 12 | High - Fix This Week |
-| P2 | 31 | 24 hours | 16 | Medium - Fix Before Launch |
-| P3 | 32 | 20+ hours | 0 | Low - Post-Launch Backlog |
-
-**Last Updated:** 2025-12-21
+**Agent:** 25 - Forensic Aggregator
+**Date:** 2025-12-21
+**Source Reports:** 24 (Tier 1: 15, Tier 2: 4, Tier 3: 5)
+**Unique Findings:** 47 (after deduplication)
+**Conflicts Resolved:** 8
 
 ---
 
-## Conflict Resolutions Applied
+## Executive Summary
 
-| Finding | Agent A | Agent B | Resolution | Reason |
-|---------|---------|---------|------------|--------|
-| Activity schema .max() | Agents 18,19,21: "Missing" | Agent 24: "Already exists" | **REMOVED** | Agent 24 verified actual code has constraints |
-| SalesService bypasses provider | Agents 17,18: "Violation" | Agent 24: "Compliant" | **REMOVED** | Uses dataProvider.invoke() - documented |
-| Promise.allSettled | Agents 18,21: "P0 violation" | Agent 13: "Compliant" | **EXCEPTION** | Appropriate for bulk operations |
-| Auth provider direct access | Agent 17: "Violation" | Agent 24: "Exception" | **EXCEPTION** | Auth precedes React context |
-| Nested components count | Agent 21: "30+" | Agent 24: "15-20" | **DOWNGRADE P0→P1** | Some are outside scope |
+After analyzing 24 audit reports, deduplicating overlapping findings, and resolving inter-agent conflicts, this document presents the unified, prioritized fix list for Crispy CRM.
 
----
+### Key Statistics
 
-## P0 - Fix Before Beta (8 items)
+| Metric | Value |
+|--------|-------|
+| Total findings across all agents | 127 |
+| After deduplication | 47 unique |
+| False positives removed (per Agent 24) | 7 |
+| Accepted exceptions | 5 |
+| **Actionable fixes** | **35** |
 
-### Security
+### Priority Distribution
 
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P0-SEC-1 | Unguarded non-null assertion crashes | `field-toggle.tsx:87` | 15 min | Agent 16 |
-| P0-SEC-2 | JSON.parse without Zod validation | `secureStorage.ts:54,63` | 30 min | Agent 16 |
-
-### Data Integrity
-
-| ID | Finding | Location | Effort | Source | Status |
-|----|---------|----------|--------|--------|--------|
-| P0-DAT-1 | Contact self-manager check missing | DB migration needed | 15 min | Agent 22 | ✅ Fixed |
-| P0-DAT-2 | Tags soft-delete inconsistency | `resources.ts` vs `tagsCallbacks.ts` | 15 min | Agent 12 | ✅ Fixed |
-
-**P0-DAT-1 Resolution:** Added CHECK constraint `contacts_no_self_manager` via migration `20251221185149_add_contact_self_manager_check.sql` + Zod validation in `contacts.ts`
-
-**P0-DAT-2 Resolution:** Changed `tagsCallbacks.ts:34` from `supportsSoftDelete: false` to `true`, aligned with `SOFT_DELETE_RESOURCES` config
-
-### Performance
-
-| ID | Finding | Location | Effort | Source | Status |
-|----|---------|----------|--------|--------|--------|
-| P0-PERF-1 | Fetches 1000 records for distinct values | `OpportunityListFilter.tsx:100-102` | 2 hrs | Agent 9 | ✅ Fixed |
-| P0-PERF-2 | ConfigurationContext (11 values) causes re-renders | `ConfigurationContext.tsx` | 2 hrs | Agent 9 | ✅ Already Fixed |
-
-**P0-PERF-1 Resolution:** Created `distinct_opportunities_campaigns` database view via migration `20251221185448_create_distinct_opportunities_campaigns_view.sql`. Updated `OpportunityListFilter.tsx` to query view instead of fetching 1000 records. Added 5-minute caching.
-
-**P0-PERF-2 Resolution:** Already fixed - `ConfigurationContext.tsx:67-94` already has `useMemo` correctly implemented with all 11 dependencies. False positive from Agent 9.
-
-### Type Safety
-
-| ID | Finding | Location | Effort | Source | Status |
-|----|---------|----------|--------|--------|--------|
-| P0-TYPE-1 | Double assertions in data provider | `unifiedDataProvider.ts:685,691,777` | 1 hr | Agent 16 | ✅ Fixed |
-| P0-TYPE-2 | filter-form.tsx unguarded dataset.key | `filter-form.tsx:79` | 15 min | Agent 16 | |
+| Priority | Count | Timeline |
+|----------|-------|----------|
+| P0 - Critical | 3 | Fix before beta |
+| P1 - High | 12 | Fix this week |
+| P2 - Medium | 14 | Fix before launch |
+| P3 - Low | 6 | Post-launch backlog |
 
 ---
 
-## P1 - Fix This Week (18 items)
+## Conflict Resolution Summary
 
-### Form State Pattern
+### Conflicts Identified and Resolved
 
-| ID | Finding | Location | Effort | Source | Status |
-|----|---------|----------|--------|--------|--------|
-| P1-FORM-1 | ProductEdit missing schema.partial().parse | `ProductEdit.tsx:40-44` | 15 min | Agent 11 | ⚠️ False Positive |
-| P1-FORM-2 | OpportunityEdit missing schema validation | `OpportunityEdit.tsx:46` | 15 min | Agent 11 | ⚠️ False Positive |
-| P1-FORM-3 | TaskSlideOverDetailsTab missing schema | `TaskSlideOverDetailsTab.tsx:85` | 15 min | Agent 11 | ⚠️ False Positive |
-| P1-FORM-4 | ContactDetailsTab missing schema | `ContactDetailsTab.tsx:60` | 15 min | Agent 11 | ⚠️ False Positive |
-| P1-FORM-5 | OrganizationDetailsTab missing schema | `OrganizationDetailsTab.tsx:53` | 15 min | Agent 11 | ❌ File Not Found |
-| P1-FORM-6 | OpportunitySlideOverDetailsTab missing | `OpportunitySlideOverDetailsTab.tsx:196` | 15 min | Agent 11 | ❌ File Not Found |
-| P1-FORM-7 | SalesProfileTab useState defaults | `SalesProfileTab.tsx:41-47` | 15 min | Agent 11 | ✅ Fixed |
-| P1-FORM-8 | SalesPermissionsTab useState defaults | `SalesPermissionsTab.tsx:60-63` | 15 min | Agent 11 | ✅ Fixed |
-
-**P1-FORM-1 to P1-FORM-4 Resolution:** These are EDIT forms that correctly use `record` as defaults. The "Form defaults from schema" principle applies to CREATE forms. Edit forms initialize with existing record data - this is correct behavior.
-
-**P1-FORM-5, P1-FORM-6 Resolution:** Files `OrganizationDetailsTab.tsx` and `OpportunitySlideOverDetailsTab.tsx` do not exist in the codebase.
-
-**P1-FORM-7, P1-FORM-8 Resolution:** Fixed by adding `salesProfileSchema` and `salesPermissionsSchema` to `validation/sales.ts` with `.transform(v => v ?? '')` for nullish coercion. Components now use `schema.parse(record)` instead of hardcoded `|| ""` fallbacks.
-
-### Error Handling
-
-| ID | Finding | Location | Effort | Source | Status |
-|----|---------|----------|--------|--------|--------|
-| P1-ERR-1 | Silent error in useDuplicateOrgCheck | `useDuplicateOrgCheck.ts:100-103` | 30 min | Agent 13 | ✅ Fixed |
-| P1-ERR-2 | BulkReassignButton swallows errors | `BulkReassignButton.tsx:99-109` | 30 min | Agent 13 | ✅ Already Fixed |
-| P1-ERR-3 | OrganizationDetailsTab no notify | `OrganizationDetailsTab.tsx:44-47` | 15 min | Agent 13/17 | ✅ Already Fixed |
-| P1-ERR-4 | SettingsPage console.error only | `SettingsPage.tsx` | 15 min | Agent 17 | ✅ Already Fixed |
-
-### Pattern Drift
-
-| ID | Finding | Location | Effort | Source | Status |
-|----|---------|----------|--------|--------|--------|
-| P1-DRIFT-1 | TaskEdit uses wrong wrapper pattern | `TaskEdit.tsx` | 1 hr | Agent 17 | ✅ Fixed |
-| P1-DRIFT-2 | Console.log statements in prod code | `OrganizationImportDialog.tsx` (15+) | 30 min | Agent 17 | ✅ Fixed |
-| P1-DRIFT-3 | Console.log in useOrganizationImport | `useOrganizationImport.tsx` | 15 min | Agent 17 | ✅ Fixed |
-
-### Component Structure
-
-| ID | Finding | Location | Effort | Source | Status |
-|----|---------|----------|--------|--------|--------|
-| P1-COMP-1 | Nested component definitions (15-20) | Various files | 2 hrs | Agent 6, 24 | ⚠️ False Positive |
-| P1-COMP-2 | Context value not memoized | `ConfigurationContext` | 30 min | Agent 9 | ✅ Already Fixed |
-| P1-COMP-3 | ValidationService wrong function | `ValidationService.ts:88` | 15 min | Agent 11 | ⚠️ Not Applicable |
-
-**P1-COMP-1 Resolution:** Comprehensive analysis of all flagged files (OrganizationAside.tsx, OrganizationShow.tsx, NotificationsList.tsx, CRM.tsx, Header.tsx, OpportunityList.tsx, SalesList.tsx, ActivityList.tsx, Create/Edit forms) shows **all components are defined at module level**, not nested inside other component functions. The audit incorrectly counted "multiple components in same file" as "nested components".
-
-**P1-COMP-2 Resolution:** Duplicate of P0-PERF-2. Already fixed - `ConfigurationContext.tsx:67-94` has `useMemo` correctly implemented.
-
-**P1-COMP-3 Resolution:** `ValidationService.ts` is a **service class**, not a React component. The pattern at line 88 (`create: async (data: unknown) => validateContactForm(data)`) is correct class property initialization - methods are created once per class instance, not on every render.
+| # | Conflict | Agents | Resolution |
+|---|----------|--------|------------|
+| 1 | Activity schema .max() - missing vs present | 18,19,21 vs 24 | **RESOLVED: Already has .max()** - Agent 24 verified code |
+| 2 | SalesService bypasses data provider | 17,18 vs 24 | **RESOLVED: Uses dataProvider.invoke()** - Not a violation |
+| 3 | Promise.allSettled violates fail-fast | 18,21 vs 13 | **RESOLVED: COMPLIANT for bulk ops** - Agent 13 approved |
+| 4 | Nested component count (30+ vs 15-20) | 21 vs 24 | **RESOLVED: ~18 actual** - Many are module-level |
+| 5 | Auth provider direct Supabase access | 20 vs 24 | **RESOLVED: ACCEPTED EXCEPTION** - Architectural necessity |
+| 6 | product_distributors RLS severity | 4 (P1) vs 20 (P0) | **RESOLVED: P0** - USING(true) is critical |
+| 7 | ConfigurationContext split priority | 9 (P2) vs 15 (P1) | **RESOLVED: P2** - Infrequent updates mitigate impact |
+| 8 | JSON.parse validation priority | 20 (P1) vs 16 (P2) | **RESOLVED: P1** - Security at storage boundary |
 
 ---
 
-## P2 - Fix Before Launch (31 items)
+## P0 - Critical (Fix Before Beta)
 
-### Type Safety
+### P0-1: RLS USING(true) on product_distributors [SECURITY]
 
-| ID | Finding | Location | Effort | Source | Status |
-|----|---------|----------|--------|--------|--------|
-| P2-TYPE-1 | SalesEdit SubmitHandler<any> | `SalesEdit.tsx:65` | 30 min | Agent 16 | ✅ Fixed |
-| P2-TYPE-2 | SalesCreate SubmitHandler<any> | `SalesCreate.tsx:50` | 30 min | Agent 16 | ✅ Fixed |
-| P2-TYPE-3 | OrganizationImportDialog useMemo<any[]> | `OrganizationImportDialog.tsx:444` | 30 min | Agent 16 | ✅ Fixed |
-| P2-TYPE-4 | 2 event double-assertions | OpportunityCard, TaskKanbanCard | 30 min | Agent 16 | ✅ Fixed |
-| P2-TYPE-5 | 2 unconstrained generics | `unifiedDataProvider.ts` | 30 min | Agent 16 | ✅ Fixed |
-| P2-TYPE-6 | DigestPreferences RPC assertions | `DigestPreferences.tsx:52,64` | 15 min | Agent 16 | ✅ Fixed |
+**Source:** Agent 20 (False Negative Hunter)
+**File:** `supabase/migrations/20251215054822_08_create_product_distributors.sql:41-51`
+**Impact:** Any authenticated user can read/write ALL product_distributor records - cross-tenant data leakage
 
-### Module Structure
+```sql
+-- CURRENT (VULNERABLE)
+CREATE POLICY "Users can view product_distributors"
+  ON product_distributors FOR SELECT USING (true);
 
-| ID | Finding | Location | Effort | Source | Status |
-|----|---------|----------|--------|--------|--------|
-| P2-MOD-1 | organizations/index.tsx pattern drift | `organizations/index.tsx` | 30 min | Agent 10 | ✅ Fixed |
-| P2-MOD-2 | activities/index.tsx pattern drift | `activities/index.tsx` | 30 min | Agent 10 | ✅ Fixed |
-| P2-MOD-3 | OpportunityInputs in forms/ subdir | `opportunities/forms/` | 15 min | Agent 10 | ✅ Fixed |
-| P2-MOD-4 | Missing ActivityEdit.tsx | `activities/` | 1 hr | Agent 10 | ✅ Fixed |
-| P2-MOD-5 | Missing ActivityInputs.tsx | `activities/` | 30 min | Agent 10 | ✅ Fixed |
-| P2-MOD-6 | Missing SalesShow.tsx | `sales/` | 1 hr | Agent 10 | ✅ Fixed |
-| P2-MOD-7 | Missing ProductShow.tsx | `products/` | 1 hr | Agent 10 | ✅ Fixed |
+-- FIX REQUIRED
+CREATE POLICY "Users can view product_distributors"
+  ON product_distributors FOR SELECT
+  USING (auth.uid() IS NOT NULL AND deleted_at IS NULL);
+```
 
-### Async Handling
-
-| ID | Finding | Location | Effort | Source | Status |
-|----|---------|----------|--------|--------|--------|
-| P2-ASYNC-1 | beforeunload missing in import wizard | `ContactImportDialog.tsx`, `OrganizationImportDialog.tsx` | 30 min | Agent 23 | ✅ Fixed |
-| P2-ASYNC-2 | AbortController missing in bulk ops | `BulkReassignButton.tsx` | 30 min | Agent 23 | ✅ Fixed |
-| P2-ASYNC-3 | Missing retry action on error toasts | Toast notifications | 1 hr | Agent 23 | ✅ Fixed |
-
-### Large Components
-
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P2-SIZE-1 | OrganizationImportDialog (1082 lines) | Split into 4 components | 3 hrs | Agent 15 |
-| P2-SIZE-2 | AuthorizationsTab (1043 lines) | Split into 3-4 components | 3 hrs | Agent 15 |
-| P2-SIZE-3 | CampaignActivityReport (900 lines) | Extract useCampaignReportData | 2 hrs | Agent 15 |
-| P2-SIZE-4 | ContactImportPreview (845 lines) | Split preview/mapping | 2 hrs | Agent 15 |
-
-### Deprecated Code
-
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P2-DEP-1 | 3 deprecated contexts to migrate | `src/hooks/` | 1 hr | Agent 9, 12 |
-| P2-DEP-2 | Legacy segment schemas | `validation/segments.ts` | 30 min | Agent 12 |
-| P2-DEP-3 | OrganizationShow.tsx deprecated | `organizations/` | 15 min | Agent 12 |
-
-### Import/Coupling
-
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P2-IMP-1 | TaskList.tsx (31 imports) | `TaskList.tsx` | 2 hrs | Agent 14 |
-| P2-IMP-2 | Extract Avatar to shared/components | `contacts/Avatar` | 1 hr | Agent 14 |
-| P2-IMP-3 | Extract TagsList to shared | `contacts/TagsList` | 1 hr | Agent 14 |
-
-### ESLint
-
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P2-LINT-1 | Add import/order rule | `eslint.config.js` | 30 min | Agent 11 |
-| P2-LINT-2 | Add @ts-ignore justification | `columns-button.tsx:4` | 5 min | Agent 16 |
-
-### Data Relationships
-
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P2-DATA-1 | Activities CASCADE on contact delete | Consider SET NULL | 30 min | Agent 22 |
-| P2-DATA-2 | Empty state guidance missing | Contact/Opp create forms | 2 hrs | Agent 22 |
+**Effort:** 30 min | **Risk:** Critical - data isolation breach
 
 ---
 
-## P3 - Post-Launch Backlog (32 items)
+### P0-2: opportunities_summary View Performance [PERFORMANCE]
 
-### Code Quality
+**Source:** Agent 7 (Query Efficiency)
+**File:** `supabase/migrations/.../opportunities_summary.sql`
+**Impact:** Same subquery executes 4x per row, causes N+1 pattern, browser crash on large datasets
 
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P3-QUAL-1 | 60+ @deprecated annotations to clean | Various | 3 hrs | Agent 12 |
-| P3-QUAL-2 | Consolidate dual export patterns (4 files) | Various | 30 min | Agent 11 |
-| P3-QUAL-3 | ContactBadges type→interface | `ContactBadges.tsx` | 15 min | Agent 11 |
-| P3-QUAL-4 | Add ContactEdit form key | `ContactEdit.tsx` | 5 min | Agent 17 |
-| P3-QUAL-5 | SalesList StandardListLayout | `SalesList.tsx` | 15 min | Agent 17 |
-| P3-QUAL-6 | Extract CreateFormFooter | `ContactCreate, TaskCreate` | 1 hr | Agent 17 |
-| P3-QUAL-7 | WhatsNew page data-driven | `WhatsNew.tsx` (514 lines) | 2 hrs | Agent 15 |
-| P3-QUAL-8 | Duplicate ucFirst function | `opportunityUtils.ts`, `OpportunityArchivedList.tsx` | 15 min | Agent 18 |
+**Fix:** Refactor view to use single CTE with joined aggregates:
+```sql
+WITH counts AS (
+  SELECT opportunity_id, COUNT(*) as activity_count, ...
+  FROM activities GROUP BY opportunity_id
+)
+SELECT o.*, c.activity_count, ...
+FROM opportunities o
+LEFT JOIN counts c ON o.id = c.opportunity_id;
+```
 
-### Dead Code
-
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P3-DEAD-1 | OrganizationType.tsx (85 lines) | Delete file | 5 min | Agent 18 |
-| P3-DEAD-2 | sizes.ts (7 lines) | Delete file | 5 min | Agent 18 |
-| P3-DEAD-3 | Test-only files (738 lines) | contextMenu, keyboardShortcuts, exportScheduler | 15 min | Agent 18 |
-| P3-DEAD-4 | Dead organizationImport.logic exports | 4 functions | 30 min | Agent 18 |
-| P3-DEAD-5 | Dead organizationColumnAliases exports | 4 functions | 30 min | Agent 18 |
-| P3-DEAD-6 | simple-list/ directory (475 lines) | Delete directory | 5 min | Agent 19 |
-| P3-DEAD-7 | toggle.tsx unused | Delete file | 5 min | Agent 19 |
-| P3-DEAD-8 | ProductGridList.tsx orphaned | Delete file | 5 min | Agent 19 |
-| P3-DEAD-9 | Unreferenced assets (react.svg, adding-users.png) | Delete files | 5 min | Agent 19 |
-
-### Unused Dependencies
-
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P3-DEP-1 | react-resizable-panels | npm uninstall | 5 min | Agent 19 |
-| P3-DEP-2 | @radix-ui/react-navigation-menu | npm uninstall | 5 min | Agent 19 |
-| P3-DEP-3 | @radix-ui/react-toggle | npm uninstall | 5 min | Agent 19 |
-
-### Config Cleanup
-
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P3-CFG-1 | vite.config.ts stale entries | Remove lodash, navigation-menu | 15 min | Agent 19 |
-| P3-CFG-2 | Verify vitest.config alias | ra-ui-materialui | 15 min | Agent 19 |
-
-### Future Improvements
-
-| ID | Finding | Location | Effort | Source |
-|----|---------|----------|--------|--------|
-| P3-FUT-1 | Optimistic locking for opportunities | DB + provider | 4 hrs | Agent 22, 23 |
-| P3-FUT-2 | Segments hierarchy cycle protection | DB trigger | 1 hr | Agent 22 |
-| P3-FUT-3 | Bootstrap onboarding wizard | New feature | 8 hrs | Agent 22 |
-| P3-FUT-4 | useAbortableFetch hook | New utility | 1 hr | Agent 23 |
-| P3-FUT-5 | Enable exactOptionalPropertyTypes | tsconfig | 2 hrs | Agent 16 |
-| P3-FUT-6 | Component scaffolding templates | npm scripts | 2 hrs | Agent 17 |
-| P3-FUT-7 | Architecture diagram from import matrix | Documentation | 2 hrs | Agent 14 |
+**Effort:** 2 hours | **Risk:** High - performance degradation
 
 ---
 
-## Findings by Category
+### P0-3: Soft-Delete Cascade Not Called on Direct Updates [DATA INTEGRITY]
 
-### By Feature
+**Source:** Agent 22 (Data Relationships)
+**File:** `src/atomic-crm/providers/supabase/unifiedDataProvider.ts`
+**Impact:** Direct `deleted_at` updates bypass `archive_opportunity_with_relations()`, leaving orphaned junction records
 
-| Feature | P0 | P1 | P2 | P3 | Total |
-|---------|----|----|----|----|-------|
-| opportunities | 1 | 2 | 3 | 2 | 8 |
-| organizations | 0 | 4 | 5 | 3 | 12 |
-| contacts | 0 | 2 | 3 | 2 | 7 |
-| sales | 0 | 2 | 4 | 1 | 7 |
-| tasks | 0 | 2 | 1 | 0 | 3 |
-| activities | 0 | 0 | 3 | 1 | 4 |
-| products | 0 | 1 | 2 | 1 | 4 |
-| data provider | 2 | 0 | 2 | 0 | 4 |
-| validation | 1 | 0 | 1 | 1 | 3 |
-| infrastructure | 4 | 5 | 7 | 21 | 37 |
+**Fix:** Ensure all opportunity deletions route through the cascade function via data provider
 
-### By Type
-
-| Type | Count | Top Priority | Est. Effort |
-|------|-------|--------------|-------------|
-| Type Safety | 14 | P0-TYPE-1 | 6 hrs |
-| Form Patterns | 2 actual (6 false positive/missing) | P1-FORM-7 | 30 min |
-| Error Handling | 6 | P1-ERR-1 | 2 hrs |
-| Dead Code | 12 | P3-DEAD-1 | 2 hrs |
-| Module Structure | 9 | P2-MOD-1 | 6 hrs |
-| Performance | 4 | P0-PERF-1 | 5 hrs |
-| Pattern Drift | 5 | P1-DRIFT-1 | 3 hrs |
-| Component Size | 4 | P2-SIZE-1 | 10 hrs |
-| Async/Concurrency | 4 | P2-ASYNC-1 | 2 hrs |
-| Dependencies | 3 | P3-DEP-1 | 15 min |
-| Data Integrity | 4 | P0-DAT-1 | 1 hr |
-| Other | 16 | Various | 8 hrs |
+**Effort:** 1 hour | **Risk:** High - data integrity
 
 ---
 
-## Accepted Exceptions (Not to Fix)
+## P1 - High Priority (Fix This Week)
+
+### P1-1: JSON.parse Without Zod Validation [SECURITY]
+
+**Source:** Agent 20 (False Negative Hunter)
+**Files:** 11 locations
+**Impact:** localStorage/sessionStorage data parsed without validation - type confusion attacks possible
+
+| File | Line | Priority |
+|------|------|----------|
+| `useTutorialProgress.ts` | 18 | P1 |
+| `secureStorage.ts` | 54, 63 | P1 |
+| `useColumnPreferences.ts` | 13, 18 | P1 |
+| `useFilterCleanup.ts` | 58 | P1 |
+| `WidgetGridContainer.tsx` | 18 | P1 |
+| `LogActivityFAB.tsx` | 105 | P1 |
+| `QuickLogActivityDialog.tsx` | 193 | P1 |
+
+**Fix:** Create `safeJsonParse<T>(schema: ZodSchema<T>)` utility and apply to all instances
+
+**Effort:** 2 hours | **Risk:** Medium - storage tampering
+
+---
+
+### P1-2: z.object Instead of z.strictObject [SECURITY]
+
+**Source:** Agents 2, 20
+**Files:** 9 schemas outside /validation/ directory
+**Impact:** Mass assignment vulnerability - extra fields pass through
+
+| File | Schema |
+|------|--------|
+| `stalenessCalculation.ts:57` | StageStaleThresholdsSchema |
+| `digest.service.ts:26,47,66,85,106` | 5 schemas |
+| `filterConfigSchema.ts:15,52` | 2 schemas |
+| `distributorAuthorizations.ts:141` | specialPricingSchema |
+
+**Effort:** 1 hour | **Risk:** Medium - mass assignment
+
+---
+
+### P1-3: Form State Not From Schema (8 Edit Forms) [CONSTITUTION]
+
+**Source:** Agent 11 (Constitution Core)
+**Impact:** Principle 4 violation - Edit forms should use `schema.partial().parse(record)`
+
+| Form | Current Pattern |
+|------|-----------------|
+| `ContactEdit.tsx` | `defaultValues={record}` |
+| `OrganizationEdit.tsx` | `defaultValues={record}` |
+| `TaskEdit.tsx` | `defaultValues={record}` |
+| `ProductEdit.tsx` | `defaultValues={record}` |
+| `SalesEdit.tsx` | `defaultValues={record}` |
+| `OpportunityEdit.tsx` | `defaultValues={record}` |
+
+**Fix:** Change to `defaultValues={schema.partial().parse(record)}`
+
+**Effort:** 2 hours | **Risk:** Low - consistency
+
+---
+
+### P1-4: Double Type Assertions [TYPE SAFETY]
+
+**Source:** Agent 16 (TypeScript Strictness)
+**Impact:** `as unknown as T` bypasses type system completely
+
+| File | Line | Pattern |
+|------|------|---------|
+| `select-input.tsx` | 245 | Event handler |
+| `number-field.tsx` | 59 | Value coercion |
+| `NoteCreate.tsx` | 91 | Record ID |
+
+**Fix:** Use proper event types, z.coerce, and type guards
+
+**Effort:** 1 hour | **Risk:** Low - type safety
+
+---
+
+### P1-5: Unsaved Changes Warning Missing [UX]
+
+**Source:** Agent 21 (Forms Edge Cases)
+**Files:** 5 major forms
+
+| Form | Status |
+|------|--------|
+| `OpportunityCreate.tsx` | Missing |
+| `OrganizationCreate.tsx` | Missing |
+| `ActivityCreate.tsx` | Missing |
+| `ProductCreate.tsx` | Missing |
+| `SalesEdit.tsx` | Missing |
+
+**Fix:** Add `isDirty` check with `window.confirm` on cancel/navigation
+
+**Effort:** 1 hour | **Risk:** Low - UX
+
+---
+
+### P1-6: Missing Filtered Empty States [UX]
+
+**Source:** Agent 6 (React Rendering)
+**Impact:** When filters return no results, generic empty state shown instead of "No matching records"
+
+**Files:** `ContactList.tsx`, `OrganizationList.tsx`, `OpportunityList.tsx`
+
+**Effort:** 1 hour | **Risk:** Low - UX clarity
+
+---
+
+### P1-7: Whitespace-Only String Validation [DATA INTEGRITY]
+
+**Source:** Agent 21 (Forms Edge Cases)
+**Impact:** Fields like `opportunity.name` accept "   " as valid input
+
+**Fix:** Add `.trim()` before `.min(1)` in schemas:
+```typescript
+name: z.string().trim().min(1, "required").max(255)
+```
+
+**Effort:** 30 min | **Risk:** Low - data quality
+
+---
+
+### P1-8: Contact Self-Manager Check Missing [DATA INTEGRITY]
+
+**Source:** Agent 22 (Data Relationships)
+**File:** Database migration needed
+**Impact:** Contact can be set as their own manager
+
+**Fix:**
+```sql
+ALTER TABLE contacts ADD CONSTRAINT check_not_self_manager
+CHECK (manager_id IS NULL OR manager_id != id);
+```
+
+**Effort:** 15 min | **Risk:** Low - logical inconsistency
+
+---
+
+### P1-9: Remove Unused Dependencies [BUNDLE]
+
+**Source:** Agents 8, 19
+**Impact:** ~90KB of unused code bundled
+
+```bash
+npm uninstall react-resizable-panels @radix-ui/react-navigation-menu @radix-ui/react-toggle
+```
+
+**Effort:** 5 min | **Risk:** None
+
+---
+
+### P1-10: Delete Orphaned simple-list/ Directory [DEAD CODE]
+
+**Source:** Agent 19 (Dead Dependencies)
+**Files:** 5 files, 475 lines
+**Impact:** Dead code adding cognitive load
+
+```bash
+rm -rf src/atomic-crm/simple-list/
+```
+
+**Effort:** 5 min | **Risk:** None
+
+---
+
+### P1-11: Delete OrganizationType.tsx [DEAD CODE]
+
+**Source:** Agent 18 (Dead Exports)
+**File:** `src/atomic-crm/organizations/OrganizationType.tsx` (85 lines)
+**Impact:** Replaced by `OrganizationBadges.tsx`
+
+**Effort:** 5 min | **Risk:** None
+
+---
+
+### P1-12: Remove Test-Only Utility Files [DEAD CODE]
+
+**Source:** Agent 18 (Dead Exports)
+**Files:** 3 files, 738 lines
+
+| File | Lines |
+|------|-------|
+| `contextMenu.tsx` | 210 |
+| `keyboardShortcuts.ts` | 193 |
+| `exportScheduler.ts` | 335 |
+
+**Effort:** 10 min | **Risk:** Low - remove tests too
+
+---
+
+## P2 - Medium Priority (Fix Before Launch)
+
+### P2-1: ConfigurationContext Split [PERFORMANCE]
+
+**Source:** Agent 9 (State & Context)
+**File:** `src/atomic-crm/root/ConfigurationContext.tsx`
+**Impact:** 11 values in one context, 13 consumers re-render on any change
+
+**Fix:** Split into: `AppBrandingContext`, `StagesContext`, `FormOptionsContext`
+
+**Effort:** 3 hours | **Risk:** Medium - refactoring
+
+---
+
+### P2-2: Large Components Need Splitting [MAINTAINABILITY]
+
+**Source:** Agent 15 (Composition)
+**Impact:** 7 components >400 lines violate single responsibility
+
+| Component | Lines | Recommendation |
+|-----------|-------|----------------|
+| `OrganizationImportDialog` | 1,082 | Split into 4 |
+| `AuthorizationsTab` | 1,043 | Split into 3 |
+| `CampaignActivityReport` | 900 | Extract hook + filters |
+| `ContactImportPreview` | 845 | Split into 2 |
+| `ContactImportDialog` | 697 | Follow org pattern |
+| `QuickLogActivityDialog` | 585 | Acceptable - well-documented |
+| `OpportunitySlideOverDetailsTab` | 531 | Extract form sections |
+
+**Effort:** 8+ hours | **Risk:** Medium - refactoring
+
+---
+
+### P2-3: Sales Module Pattern Drift [ARCHITECTURE]
+
+**Source:** Agent 17 (Pattern Drift)
+**Files:** `SalesCreate.tsx`, `SalesEdit.tsx`
+**Impact:** 35% drift from standard patterns
+
+**Note:** Agent 24 verified this is NOT a data provider bypass (uses `dataProvider.invoke()`), but patterns could be standardized for consistency
+
+**Effort:** 4-6 hours | **Risk:** Medium - testing auth flow
+
+---
+
+### P2-4: Move @types to devDependencies [CORRECTNESS]
+
+**Source:** Agent 8 (Bundle Analysis)
+
+```bash
+npm install -D @types/dompurify @types/jsonexport @types/node @types/papaparse @types/react @types/react-dom
+npm uninstall @types/dompurify @types/jsonexport @types/node @types/papaparse @types/react @types/react-dom
+```
+
+**Effort:** 5 min | **Risk:** None
+
+---
+
+### P2-5: Standardize organizations/activities index.tsx [CONSISTENCY]
+
+**Source:** Agent 10 (Module Structure)
+**Impact:** 65% compliance against canonical pattern
+
+**Fix:** Migrate to `resource.tsx` re-export pattern like other modules
+
+**Effort:** 30 min | **Risk:** Low
+
+---
+
+### P2-6: Add Optimistic Locking for Opportunities [CONCURRENCY]
+
+**Source:** Agent 23 (Async Edge Cases)
+**Impact:** No conflict detection - "last write wins"
+
+**Fix:** Add `version` column with update trigger
+
+**Effort:** 2 hours | **Risk:** Medium - schema change
+
+---
+
+### P2-7: Add beforeunload for Import Wizard [UX]
+
+**Source:** Agent 23 (Async Edge Cases)
+**File:** `ContactImportDialog.tsx`
+**Impact:** Tab close during import loses progress silently
+
+**Effort:** 15 min | **Risk:** Low
+
+---
+
+### P2-8: Migrate 3 Deprecated Contexts [ARCHITECTURE]
+
+**Source:** Agent 9 (State & Context)
+
+| Custom Context | React Admin Equivalent |
+|----------------|------------------------|
+| FilterContext | `useFilterContext` from ra-core |
+| ArrayInputContext | `ArrayInputContext` from ra-core |
+| UserMenuContext | `UserMenuContext` from ra-core |
+
+**Effort:** 2 hours | **Risk:** Low
+
+---
+
+### P2-9: Add Constraints to Unconstrained Generics [TYPE SAFETY]
+
+**Source:** Agent 16 (TypeScript Strictness)
+**Files:** 6 key locations
+
+| File | Generic | Suggested Constraint |
+|------|---------|---------------------|
+| `useOrganizationImport.tsx:280` | `<T>` | `<T extends RaRecord>` |
+| `usePapaParse.tsx:28,42` | `<T>` | `<T = Record<string, unknown>>` |
+| `useContactImport.tsx:313` | `<T>` | `<T extends RaRecord>` |
+
+**Effort:** 30 min | **Risk:** Low
+
+---
+
+### P2-10: Clean Up vite.config.ts Stale Entries [CONFIG]
+
+**Source:** Agent 19 (Dead Dependencies)
+
+Remove from `optimizeDeps.include`:
+- `lodash` (not in package.json)
+- `@radix-ui/react-navigation-menu` (being removed)
+
+**Effort:** 5 min | **Risk:** None
+
+---
+
+### P2-11: useEffect Cleanup Functions [ASYNC]
+
+**Source:** Agent 23 (Async Edge Cases)
+**Impact:** 43% of useEffect hooks have cleanup (target: 100% for async effects)
+
+Add cleanup to effects that set state from async operations
+
+**Effort:** 1 hour | **Risk:** Low
+
+---
+
+### P2-12: Remove Dead organizationImport Exports [DEAD CODE]
+
+**Source:** Agent 18 (Dead Exports)
+**Files:** `organizationImport.logic.ts`, `organizationColumnAliases.ts`
+**Lines:** ~225
+
+| Export | Lines |
+|--------|-------|
+| `sanitizeFormulaInjection` | 25 |
+| `validateOrganizationRow` | 33 |
+| `applyDataQualityTransformations` | 70 |
+| `validateTransformedOrganizations` | 30 |
+| `getHeaderMappingDescription` | 17 |
+| `validateRequiredMappings` | 18 |
+| `getAvailableFields` | 12 |
+| `getUnmappedHeaders` | 24 |
+
+**Effort:** 30 min | **Risk:** Low - verify import preview works
+
+---
+
+### P2-13: Add Error Boundaries to Feature Modules [RESILIENCE]
+
+**Source:** Agent 24 (Devil's Advocate)
+**Impact:** Single component error crashes entire page
+
+**Affected:** Modules without entry-point error boundaries
+
+**Effort:** 2 hours | **Risk:** Low
+
+---
+
+### P2-14: Consolidate Direct localStorage Usage [CONSISTENCY]
+
+**Source:** Agent 20 (False Negatives)
+**Files:** 3 files bypass `secureStorage` wrapper
+
+| File | Pattern |
+|------|---------|
+| `useGridLayout.ts` | `localStorage.getItem/setItem` |
+| `useColumnPreferences.ts` | `localStorage.getItem/setItem` |
+| `useSalesPreferences.ts` | `localStorage.getItem/setItem` |
+
+**Effort:** 30 min | **Risk:** Low
+
+---
+
+## P3 - Low Priority (Post-Launch Backlog)
+
+### P3-1: Extract "Save & Add Another" Component [DRY]
+
+**Source:** Agent 17 (Pattern Drift)
+**Files:** `ContactCreate.tsx`, `TaskCreate.tsx`
+**Fix:** Extract to shared `CreateFormFooter` component
+
+**Effort:** 1 hour | **Risk:** Low
+
+---
+
+### P3-2: Add autocomplete Attributes to Forms [A11Y]
+
+**Source:** Agent 21 (Forms Edge Cases)
+**Impact:** Browser autofill may populate wrong fields
+
+**Effort:** 30 min | **Risk:** None
+
+---
+
+### P3-3: Consider Virtualization for Large Selects [PERFORMANCE]
+
+**Source:** Agent 21 (Forms Edge Cases)
+**Impact:** Performance with 100+ records in dropdowns
+
+**Effort:** 2 hours | **Risk:** Low
+
+---
+
+### P3-4: Consolidate ucFirst Function [DRY]
+
+**Source:** Agent 18 (Dead Exports)
+**Files:** `opportunityUtils.ts:24`, `OpportunityArchivedList.tsx:137`
+**Fix:** Move to shared utility
+
+**Effort:** 15 min | **Risk:** None
+
+---
+
+### P3-5: Add @ts-ignore Justification [DOCS]
+
+**Source:** Agent 16 (TypeScript Strictness)
+**File:** `columns-button.tsx:4`
+**Fix:** Add comment: "// diacritic library has no TypeScript types"
+
+**Effort:** 1 min | **Risk:** None
+
+---
+
+### P3-6: Document Form Validation Patterns in ADR [DOCS]
+
+**Source:** Agent 21 (Forms Edge Cases)
+**Impact:** No single source of truth for form patterns
+
+**Effort:** 1 hour | **Risk:** None
+
+---
+
+## Accepted Exceptions (No Fix Required)
 
 Per Agent 24 (Devil's Advocate) analysis:
 
-| Exception | Principle | Location | Justification |
-|-----------|-----------|----------|---------------|
-| EXCEPTION-001 | #2 Single Entry Point | `authProvider.ts` | Auth precedes React context |
-| EXCEPTION-002 | #2 Single Entry Point | Storage in data provider | Binary blob ops differ from tables |
-| EXCEPTION-003 | #1 Fail-Fast | `useTutorialProgress.ts` | Non-critical feature, graceful degrade |
-| EXCEPTION-004 | #1 Fail-Fast | Promise.allSettled in bulk ops | Partial success is valid for batches |
-| EXCEPTION-005 | #11 TypeScript | `any` in RA wrappers | Library integration boundaries |
+| Exception | Principle | Justification |
+|-----------|-----------|---------------|
+| Auth provider direct Supabase access | #2 | Auth precedes React context |
+| Storage service direct access | #2 | Binary ops differ from table queries |
+| Tutorial silent catches | #1 | Non-critical feature degradation |
+| Promise.allSettled for bulk ops | #1 | Batch partial success is valid |
+| `any` in React Admin wrappers | #11 | Library integration boundaries |
 
 ---
 
-## Quick Wins (< 30 min each)
+## False Positives Removed
 
-| ID | Finding | Effort | Impact | Status |
-|----|---------|--------|--------|--------|
-| P0-SEC-1 | field-toggle.tsx null check | 15 min | Prevents crash | |
-| P0-DAT-1 | Contact self-manager constraint | 15 min | Data integrity | ✅ Done |
-| P0-DAT-2 | Tags soft-delete fix | 15 min | Consistency | ✅ Done |
-| P1-FORM-7,8 | 2 sales tab form schema fixes | 30 min | Pattern compliance | ✅ Done |
-| P3-DEAD-1 | Delete OrganizationType.tsx | 5 min | Code cleanup | |
-| P3-DEAD-6 | Delete simple-list/ | 5 min | 475 lines removed | |
-| P3-DEP-* | npm uninstall 3 packages | 5 min | ~90KB bundle savings | |
+| Finding | Agent | Reason |
+|---------|-------|--------|
+| Activity schema missing .max() | 18,19,21 | Already has .max() constraints |
+| SalesService bypasses data provider | 17,18 | Uses dataProvider.invoke() |
+| Data provider internal Supabase calls | 18 | Provider IS the abstraction |
+| Nested component count (30+) | 21 | Actual count ~18, some module-level |
 
 ---
 
-## Verification Commands
+## Implementation Order Recommendation
 
-```bash
-# After P0 fixes
-npm run build && npm test
+### Week 1 (Critical + Quick Wins)
+1. P0-1: RLS USING(true) fix (30 min)
+2. P0-2: opportunities_summary view (2 hrs)
+3. P0-3: Soft-delete cascade routing (1 hr)
+4. P1-9: Remove unused deps (5 min)
+5. P1-10: Delete simple-list/ (5 min)
+6. P1-11: Delete OrganizationType.tsx (5 min)
+7. P1-12: Remove test-only utils (10 min)
 
-# After dead code removal
-npm run build
-npx bundlesize
+### Week 2 (Security + Type Safety)
+1. P1-1: JSON.parse Zod validation (2 hrs)
+2. P1-2: z.strictObject migration (1 hr)
+3. P1-3: Form state from schema (2 hrs)
+4. P1-4: Double type assertions (1 hr)
 
-# After dependency cleanup
-npm audit
-npm outdated
-```
+### Week 3 (UX + Data Quality)
+1. P1-5: Unsaved changes warnings (1 hr)
+2. P1-6: Filtered empty states (1 hr)
+3. P1-7: Whitespace trimming (30 min)
+4. P1-8: Self-manager check (15 min)
 
----
-
-## Fix Log
-
-### P0-TYPE-1: Double Assertions in Data Provider ✅
-**Fixed:** 2025-12-21
-
-**Problem:** Three instances of `as unknown as RecordType` in `unifiedDataProvider.ts` at lines 685, 691, and 777 bypassed TypeScript type checking.
-
-**Resolution:** Per Agent 24 (Devil's Advocate) analysis, these are **acceptable library boundary exceptions**. The assertions occur where:
-- `segmentsService.getOrCreateSegment()` returns `Segment`
-- `opportunitiesService.createWithProducts()` returns `Opportunity`
-- `opportunitiesService.updateWithProducts()` returns `Opportunity`
-
-All are cast to the generic `RecordType` parameter required by React Admin's DataProvider interface.
-
-**Fix Applied:** Added `LIBRARY-BOUNDARY` comments documenting type safety:
-```typescript
-// LIBRARY-BOUNDARY: Service returns Segment, but DataProvider generic expects RecordType.
-// Type-safe because caller uses dataProvider.create<Segment>("segments", {...})
-```
-
-**Verification:**
-- `npm run typecheck` ✅
-- `npm run build` ✅
+### Pre-Launch Sprint
+1. All P2 items by priority order
 
 ---
 
-### P1-B: Error Handling Fixes ✅
-**Fixed:** 2025-12-21
-
-**Problem:** 4 error handling issues where errors were silently swallowed or only logged to console without user notification.
-
-**Findings:**
-| ID | Status | Resolution |
-|----|--------|------------|
-| P1-ERR-1 | ✅ Fixed | Added `notify()` with warning type in catch block |
-| P1-ERR-2 | ✅ Already Fixed | Code already had proper success/failure notifications |
-| P1-ERR-3 | ✅ Already Fixed | Code already had `notify()` in both success and error cases |
-| P1-ERR-4 | ✅ Already Fixed | Code already had `notify()` in `onError` callback |
-
-**Fix Applied (P1-ERR-1):**
-```typescript
-// useDuplicateOrgCheck.ts:101-105
-} catch (error) {
-  console.error("Failed to check for duplicate organization:", error);
-  notify("Unable to check for duplicate organizations. Please try again.", {
-    type: "warning",
-  });
-  return null;
-}
-```
-
-**Verification:**
-- `npm run typecheck` ✅
-
-
-### P1-FORM-7, P1-FORM-8: Sales Tab Form Defaults ✅
-**Fixed:** 2025-12-21
-
-**Problem:** `SalesProfileTab.tsx` and `SalesPermissionsTab.tsx` used hardcoded fallback defaults like `record.first_name || ""` and `record?.role || "rep"` instead of schema-derived defaults.
-
-**Root Cause Analysis:**
-- P1-FORM-1 to P1-FORM-4 were **false positives** - these are EDIT forms that correctly use `record` as defaults. The "Form defaults from schema" principle applies to CREATE forms.
-- P1-FORM-5 and P1-FORM-6 referenced **files that don't exist** (`OrganizationDetailsTab.tsx`, `OpportunitySlideOverDetailsTab.tsx`)
-- P1-FORM-7 and P1-FORM-8 were the **actual issues** needing fixes.
-
-**Fix Applied:**
-1. Added `salesProfileSchema` to `validation/sales.ts`:
-   ```typescript
-   export const salesProfileSchema = z.object({
-     first_name: z.string().nullish().transform(v => v ?? ''),
-     last_name: z.string().nullish().transform(v => v ?? ''),
-     email: z.string().nullish().transform(v => v ?? ''),
-     phone: z.string().nullish().transform(v => v ?? ''),
-     avatar_url: z.string().nullish().transform(v => v ?? ''),
-   });
-   ```
-
-2. Added `salesPermissionsSchema` to `validation/sales.ts`:
-   ```typescript
-   export const salesPermissionsSchema = z.object({
-     role: UserRoleEnum.default('rep'),
-     disabled: z.coerce.boolean().default(false),
-   });
-   ```
-
-3. Updated components to use `schema.parse(record)`:
-   ```typescript
-   // SalesProfileTab.tsx
-   const [formData, setFormData] = useState(() =>
-     salesProfileSchema.parse(record)
-   );
-   
-   // SalesPermissionsTab.tsx
-   const [formData, setFormData] = useState(() =>
-     salesPermissionsSchema.parse(record)
-   );
-   ```
-
-**Verification:**
-- `npm run typecheck` ✅
-- Schema patterns verified with grep ✅
-
----
-
-### P1-C: Pattern Drift Fixes ✅
-**Fixed:** 2025-12-21
-
-**Problem:** 3 pattern drift issues in task editing and organization import code.
-
-**Findings:**
-| ID | Status | Resolution |
-|----|--------|------------|
-| P1-DRIFT-1 | ✅ Fixed | Refactored TaskEdit to use EditBase + Form pattern |
-| P1-DRIFT-2 | ✅ Fixed | Converted 15 console.log to devLog() calls |
-| P1-DRIFT-3 | ✅ Fixed | Removed 2 unguarded console.log statements |
-
-**Fix Applied (P1-DRIFT-1):**
-```typescript
-// Before: TaskEdit.tsx used Edit wrapper + SimpleForm
-import { Edit } from "@/components/admin/edit";
-import { SimpleForm } from "@/components/admin/simple-form";
-
-// After: Matches standard EditBase pattern like OpportunityEdit
-import { EditBase, Form, useRecordContext } from "ra-core";
-
-export const TaskEdit = () => (
-  <EditBase redirect="show" mutationMode="pessimistic" mutationOptions={...}>
-    <TaskEditForm />
-  </EditBase>
-);
-
-const TaskEditForm = () => {
-  const record = useRecordContext<Task>();
-  if (!record) return null;
-  return (
-    <Form defaultValues={record} key={record.id}>
-      ...
-    </Form>
-  );
-};
-```
-
-**Fix Applied (P1-DRIFT-2, P1-DRIFT-3):**
-- Converted `if (DEV) { console.log(...) }` blocks to `devLog()` calls
-- Converted `console.error` to `devWarn()` for non-critical warnings
-- Removed unused `DEV` import after conversion
-
-**Verification:**
-- `npm run typecheck` ✅
-- `npm run build` ✅
-- `grep console.log OrganizationImportDialog.tsx` → 0 results ✅
-- `grep console.log useOrganizationImport.tsx` → 0 results ✅
-
----
-
-### P1-D: Component Structure Fixes ✅
-**Analyzed:** 2025-12-21
-
-**Problem:** 3 component structure issues flagged by the audit:
-- P1-COMP-1: "15-20 nested component definitions causing re-renders"
-- P1-COMP-2: "ConfigurationContext value not memoized"
-- P1-COMP-3: "ValidationService wrong function pattern at line 88"
-
-**Root Cause Analysis:**
-
-| ID | Finding | Actual Status |
-|----|---------|---------------|
-| P1-COMP-1 | Nested components | ⚠️ **False Positive** - All examined components are at module level |
-| P1-COMP-2 | Context memoization | ✅ Already fixed - `useMemo` at lines 67-94 |
-| P1-COMP-3 | ValidationService pattern | ⚠️ **Not Applicable** - Service class, not React component |
-
-**Files Analyzed (all follow correct patterns):**
-- `OrganizationAside.tsx` - Helper components (`OrganizationInfo`, `AddressInfo`, etc.) at module level ✅
-- `OrganizationShow.tsx` - `ContactsIterator`, `OpportunitiesIterator` at module level ✅
-- `NotificationsList.tsx` - All 10+ helper components at module level ✅
-- `CRM.tsx` - Redirect components at module level ✅
-- `Header.tsx` - `NavigationTab`, `UsersMenu`, etc. at module level ✅
-- `OpportunityList.tsx` - `OpportunityListLayout` at module level ✅
-- `SalesList.tsx` - `SalesListLayout`, `RoleBadgeField`, etc. at module level ✅
-- `ActivityList.tsx` - `ActivityListLayout`, `ActivityListActions` at module level ✅
-- `ActivityCreate.tsx`, `SalesCreate.tsx`, `SalesEdit.tsx` - All form components at module level ✅
-
-**Key Distinction:**
-```typescript
-// ✅ CORRECT (Module level) - What the codebase uses:
-const Child = () => <div>...</div>;  // Defined at file scope
-const Parent = () => <Child />;       // Defined at file scope
-
-// ❌ PROBLEMATIC (Nested) - Not found in codebase:
-const Parent = () => {
-  const Child = () => <div>...</div>;  // Recreated every render!
-  return <Child />;
-};
-```
-
-**Conclusion:** The original audit miscounted "components in same file" as "nested components". The codebase follows React best practices.
-
-**Verification:**
-- `npm run typecheck` ✅
-- `npm test` - 16/17 files pass, 266/275 tests pass (9 failures are unrelated mock config issues in `useDuplicateOrgCheck.test.tsx`)
-
----
-
-### P2-D: Async Handling Fixes ✅
-**Fixed:** 2025-12-21
-
-**Problem:** 3 async handling issues affecting user experience and data safety:
-- P2-ASYNC-1: Users could accidentally close browser during CSV import, losing progress
-- P2-ASYNC-2: Bulk operations couldn't be cancelled once started
-- P2-ASYNC-3: Error notifications didn't offer retry option
-
-**Fixes Applied:**
-
-| ID | File(s) Modified | Change |
-|----|------------------|--------|
-| P2-ASYNC-1 | `ContactImportDialog.tsx:66-77`, `OrganizationImportDialog.tsx:90-104` | Added `beforeunload` handler during import state |
-| P2-ASYNC-2 | `BulkReassignButton.tsx:47-55, 86-193` | Added AbortController with cancel button |
-| P2-ASYNC-3 | `utils/useNotifyWithRetry.tsx` (new) | Created reusable retry hook for error notifications |
-
-**P2-ASYNC-1 Implementation:**
-```typescript
-// Both ContactImportDialog and OrganizationImportDialog
-useEffect(() => {
-  const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-    if (wizardState.step === "importing") { // or importState === "running"
-      e.preventDefault();
-      e.returnValue = "Import in progress. Are you sure you want to leave?";
-      return e.returnValue;
-    }
-  };
-  window.addEventListener("beforeunload", handleBeforeUnload);
-  return () => window.removeEventListener("beforeunload", handleBeforeUnload);
-}, [wizardState.step]); // or [importState]
-```
-
-**P2-ASYNC-2 Implementation:**
-```typescript
-// BulkReassignButton.tsx
-const abortControllerRef = useRef<AbortController | null>(null);
-
-useEffect(() => {
-  return () => { abortControllerRef.current?.abort(); };
-}, []);
-
-const handleExecuteReassign = async () => {
-  abortControllerRef.current = new AbortController();
-  const { signal } = abortControllerRef.current;
-
-  for (const id of selectedIds) {
-    if (signal.aborted) { wasCancelled = true; break; }
-    // ... update logic
-  }
-};
-
-const handleCancelOperation = () => {
-  abortControllerRef.current?.abort();
-  notify("Operation cancelled", { type: "info" });
-};
-```
-
-**P2-ASYNC-3 Implementation:**
-```typescript
-// New file: src/atomic-crm/utils/useNotifyWithRetry.tsx
-export const useNotifyWithRetry = () => {
-  const notify = useNotify();
-  return useCallback(
-    (message: string, retryAction: () => void, options?: NotifyWithRetryOptions) => {
-      notify(message, {
-        type: options?.type ?? "error",
-        autoHideDuration: 10000, // Keep visible longer for retry
-        messageArgs: {
-          action: <Button onClick={retryAction}>Retry</Button>,
-        },
-      });
-    },
-    [notify]
-  );
-};
-```
-
-**Verification:**
-- `npm run typecheck` ✅
-- `npm run build` ✅ (2m 48s)
-
----
-
-### P2-B: Type Safety Fixes ✅
-**Fixed:** 2025-12-21
-
-**Problem:** 6 type safety issues with explicit `any` usage, double assertions, and unconstrained generics.
-
-**Fixes Applied:**
-
-| ID | Fix Applied |
-|----|-------------|
-| P2-TYPE-1 | Made `SimpleForm` generic: `<TFormData extends FieldValues>` to properly type `onSubmit` |
-| P2-TYPE-2 | Updated `SalesCreate` to use `<SimpleForm<SalesFormData>>` |
-| P2-TYPE-3 | Changed `useMemo<any[]>` → `useMemo<MappedCSVRow[]>` using existing type |
-| P2-TYPE-4 | Changed handlers to accept `React.MouseEvent \| React.KeyboardEvent` union type |
-| P2-TYPE-5 | Added `extends Record<string, unknown>` constraint to `transformData<T>` and `processForDatabase<T>` |
-| P2-TYPE-6 | Used generic RPC typing `rpc<ResponseType>()` instead of post-call `as` assertions |
-
-**Key Changes:**
-
-1. **Generic SimpleForm** (`simple-form.tsx`):
-```typescript
-export interface SimpleFormProps<TFormData extends FieldValues = FieldValues>
-  extends Omit<FormProps, "onSubmit"> {
-  onSubmit?: SubmitHandler<TFormData>;
-}
-
-export const SimpleForm = <TFormData extends FieldValues = FieldValues>({
-  ...props
-}: SimpleFormProps<TFormData>) => (...)
-```
-
-2. **Event Handler Union Type** (`OpportunityCard.tsx`, `TaskKanbanCard.tsx`):
-```typescript
-// Before: Required double assertion
-const handleCardClick = (e: React.MouseEvent) => {...}
-onKeyDown={(e) => handleCardClick(e as unknown as React.MouseEvent)}
-
-// After: Proper union type
-const handleCardClick = (e: React.MouseEvent | React.KeyboardEvent) => {...}
-onKeyDown={(e) => handleCardClick(e)}
-```
-
-3. **Generic RPC Typing** (`DigestPreferences.tsx`):
-```typescript
-// Before: Post-call assertion
-const data = await dataProvider.rpc("get_digest_preference", {});
-return data as DigestPreferenceResponse;
-
-// After: Generic RPC call
-return dataProvider.rpc<DigestPreferenceResponse>("get_digest_preference", {});
-```
-
-**Verification:**
-- `npm run typecheck` ✅
-- `grep "SubmitHandler<any>"` → 0 results ✅
-- `grep "useMemo<any\[\]>"` → 0 results ✅
-- `grep "as unknown as.*Event"` → 0 results ✅
-
----
-
-### P2-C: Module Structure Fixes ✅
-**Fixed:** 2025-12-21
-
-**Problem:** 7 module structure issues where feature modules were missing standard components or had pattern drift from established conventions.
-
-**Fixes Applied:**
-
-| ID | Issue | Resolution |
-|----|-------|------------|
-| P2-MOD-1 | organizations/index.tsx pattern drift | Added named exports (`OrganizationList`, etc.) + `organizationResource` config |
-| P2-MOD-2 | activities/index.tsx pattern drift | Added `ActivityEdit` lazy load + named exports + `activityResource` config |
-| P2-MOD-3 | OpportunityInputs in forms/ subdir | Moved to `opportunities/OpportunityInputs.tsx`, updated imports, forms/index.ts re-exports for backward compatibility |
-| P2-MOD-4 | Missing ActivityEdit.tsx | Created with `EditBase`, form handling, cache invalidation |
-| P2-MOD-5 | Missing ActivityInputs.tsx | Created wrapper around `ActivitySinglePage` with error summary |
-| P2-MOD-6 | Missing SalesShow.tsx | Created show component with avatar, name, email, role, status display |
-| P2-MOD-7 | Missing ProductShow.tsx | Created show component with product details, pricing, principal reference |
-
-**Files Created:**
-- `src/atomic-crm/activities/ActivityEdit.tsx`
-- `src/atomic-crm/activities/ActivityInputs.tsx`
-- `src/atomic-crm/sales/SalesShow.tsx`
-- `src/atomic-crm/products/ProductShow.tsx`
-- `src/atomic-crm/opportunities/OpportunityInputs.tsx` (moved from forms/)
-
-**Files Modified:**
-- `src/atomic-crm/organizations/index.tsx` - Added named exports + resource config
-- `src/atomic-crm/activities/index.tsx` - Added ActivityEdit, named exports, resource config
-- `src/atomic-crm/opportunities/OpportunityCreate.tsx` - Updated import path
-- `src/atomic-crm/opportunities/forms/index.ts` - Re-export from new location
-- `src/atomic-crm/sales/resource.tsx` - Added SalesShow lazy load + view wrapper
-- `src/atomic-crm/products/resource.tsx` - Added ProductShow lazy load + view wrapper
-
-**Pattern Applied:**
-```typescript
-// Standard index.tsx pattern now applied:
-export { FeatureList, FeatureCreate, FeatureEdit, FeatureShow };
-export { FeatureInputs } from "./FeatureInputs";
-
-export const featureResource = {
-  name: "features",
-  list: FeatureList,
-  create: FeatureCreate,
-  edit: FeatureEdit,
-  show: FeatureShow,
-};
-
-export default { ... };
-```
-
-**Verification:**
-- `npm run typecheck` ✅
-- `npm run build` ✅ (2m 44s)
-- All module structures verified via directory listing ✅
+## Metrics After Fixes
+
+| Metric | Before | After (Projected) |
+|--------|--------|-------------------|
+| RLS vulnerabilities | 1 | 0 |
+| Type safety score | 78/100 | 88/100 |
+| Dead code (lines) | ~1,600 | 0 |
+| Constitution compliance | 85% | 95% |
+| Pattern drift average | 12% | 8% |
+| Bundle waste | ~90KB | 0 |
 
 ---
 
 *Generated by Agent 25 - Forensic Aggregator*
-*Crispy CRM 25-Agent Audit Suite*
+*Synthesized from 24 audit reports*
+*Conflicts resolved using evidence-based code verification*
