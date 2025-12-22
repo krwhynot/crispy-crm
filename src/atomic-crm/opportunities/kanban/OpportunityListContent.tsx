@@ -132,6 +132,13 @@ export const OpportunityListContent = ({
 
   useEffect(() => {
     if (unorderedOpportunities) {
+      // Debug: Log refetch data to trace disappearing cards
+      console.log('[Kanban Sync] Rebuilding from server data:', {
+        totalOpportunities: unorderedOpportunities.length,
+        stages: [...new Set(unorderedOpportunities.map(o => o.stage))],
+        ids: unorderedOpportunities.map(o => o.id),
+      });
+
       const newOpportunitiesByStage = getOpportunitiesByStage(
         unorderedOpportunities,
         allOpportunityStages
