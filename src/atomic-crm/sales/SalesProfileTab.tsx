@@ -40,8 +40,15 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
 
   // Form state (only used in edit mode)
   // Per Engineering Constitution #5: Form defaults from schema
+  // Extract only the fields the schema expects (strictObject rejects unknown keys)
   const [formData, setFormData] = useState(() =>
-    salesProfileSchema.parse(record)
+    salesProfileSchema.parse({
+      first_name: record.first_name,
+      last_name: record.last_name,
+      email: record.email,
+      phone: record.phone,
+      avatar_url: record.avatar_url,
+    })
   );
 
   const [errors, setErrors] = useState<Record<string, string>>({});

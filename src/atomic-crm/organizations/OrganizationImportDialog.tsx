@@ -150,7 +150,7 @@ export function OrganizationImportDialog({ open, onClose }: OrganizationImportDi
               // Segment name - lookup in cache
               const normalizedName = value.trim().toLowerCase();
               const segmentId = segmentsCache.get(normalizedName);
-              mappedRow[canonicalField] = segmentId ?? value; // Keep original if not in cache
+              mappedRow[canonicalField] = segmentId ?? null; // Use null if segment not found (matches sales_id pattern)
             }
           } else {
             mappedRow[canonicalField] = value;

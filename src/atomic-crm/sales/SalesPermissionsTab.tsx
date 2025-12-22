@@ -59,8 +59,12 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
 
   // Form state
   // Per Engineering Constitution #5: Form defaults from schema
+  // Extract only the fields the schema expects (strictObject rejects unknown keys)
   const [formData, setFormData] = useState(() =>
-    salesPermissionsSchema.parse(record)
+    salesPermissionsSchema.parse({
+      role: record.role,
+      disabled: record.disabled,
+    })
   );
 
   const [errors, setErrors] = useState<Record<string, string>>({});

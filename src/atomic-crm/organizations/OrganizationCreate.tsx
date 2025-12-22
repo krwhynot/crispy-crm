@@ -233,7 +233,7 @@ const OrganizationCreate = () => {
         <div className="bg-muted px-6 py-6">
           <div className="max-w-4xl mx-auto create-form-card">
             <FormProgressProvider initialProgress={10}>
-              <Form key={formKey} defaultValues={formDefaults} mode="onBlur">
+              <Form key={formKey} {...form}>
                 <FormProgressBar className="mb-6" />
                 <Card>
                   <CardContent>
