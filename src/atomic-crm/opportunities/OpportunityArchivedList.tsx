@@ -13,6 +13,7 @@ import { format } from "date-fns";
 import type { Opportunity } from "../types";
 import { getOpportunityStageLabel } from "./constants/stageConstants";
 import { parseDateSafely } from "@/lib/date-utils";
+import { ucFirst } from "../utils/formatters";
 
 export const OpportunityArchivedList = () => {
   const { data: identity } = useGetIdentity();
@@ -132,8 +133,4 @@ export function getRelativeTimeString(dateString: string): string {
   // Intl.RelativeTimeFormat for dates within the last week
   const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
   return ucFirst(rtf.format(unitDiff, "day"));
-}
-
-function ucFirst(str: string): string {
-  return str.charAt(0).toUpperCase() + str.slice(1);
 }

@@ -85,8 +85,14 @@ export function PersonalSection() {
 }
 
 const TextRender = ({ source, isEditMode }: { source: string; isEditMode: boolean }) => {
+  const autoCompleteMap: Record<string, string> = {
+    first_name: "given-name",
+    last_name: "family-name",
+    email: "email",
+  };
+
   if (isEditMode) {
-    return <TextInput source={source} helperText={false} />;
+    return <TextInput source={source} helperText={false} autoComplete={autoCompleteMap[source]} />;
   }
   return (
     <div className="m-2">

@@ -43,3 +43,11 @@ export function formatTagsForExport(
 export function formatCount(count?: number | null): number {
   return count ?? 0;
 }
+
+/**
+ * Capitalizes the first character of a string.
+ * Used primarily for formatting relative time strings.
+ */
+export function ucFirst(str: string): string {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}

@@ -1,23 +1,18 @@
-import { CreateBase, Form, useNotify, useRedirect } from "ra-core";
-import { useFormContext, useFormState } from "react-hook-form";
-import { useCallback } from "react";
+import { CreateBase, Form } from "ra-core";
 
-import { Button } from "@/components/ui/button";
 import {
-  SaveButton,
   FormLoadingSkeleton,
   FormProgressProvider,
   FormProgressBar,
 } from "@/components/admin/form";
 import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
+import { CreateFormFooter } from "@/atomic-crm/components";
 import type { Contact } from "../types";
 import { ContactInputs } from "./ContactInputs";
 import { contactBaseSchema } from "../validation/contacts";
 import { ContactFormTutorial } from "./ContactFormTutorial";
 
 const ContactCreate = () => {
-  const notify = useNotify();
-  const redirect = useRedirect();
   const { defaults, isLoading } = useSmartDefaults();
 
   const transformData = (data: Contact) => ({
@@ -53,7 +48,7 @@ const ContactCreate = () => {
           <FormProgressProvider initialProgress={10}>
             <FormProgressBar className="mb-6" />
             <Form defaultValues={formDefaults} mode="onBlur">
-              <ContactFormContent notify={notify} redirect={redirect} />
+              <ContactFormContent />
             </Form>
           </FormProgressProvider>
         </div>
@@ -63,77 +58,16 @@ const ContactCreate = () => {
   );
 };
 
-const ContactFormContent = ({
-  notify,
-  redirect,
-}: {
-  notify: ReturnType<typeof useNotify>;
-  redirect: ReturnType<typeof useRedirect>;
-}) => {
+const ContactFormContent = () => {
   return (
     <>
       <ContactInputs />
-      <ContactCreateFooter notify={notify} redirect={redirect} />
+      <CreateFormFooter
+        resourceName="contact"
+        redirectPath="/contacts"
+        tutorialAttribute="contact-save-btn"
+      />
     </>
-  );
-};
-
-const ContactCreateFooter = ({
-  notify,
-  redirect,
-}: {
-  notify: ReturnType<typeof useNotify>;
-  redirect: ReturnType<typeof useRedirect>;
-}) => {
-  const { reset } = useFormContext();
-  const { isDirty } = useFormState();
-
-  const handleCancel = useCallback(() => {
-    if (isDirty) {
-      const confirmed = window.confirm("You have unsaved changes. Are you sure you want to leave?");
-      if (!confirmed) return;
-    }
-    redirect("/contacts");
-  }, [isDirty, redirect]);
-
-  const handleError = useCallback(
-    (error: Error) => {
-      notify(error.message || "Failed to create contact", { type: "error" });
-    },
-    [notify]
-  );
-
-  return (
-    <div className="sticky bottom-12 bg-card border-t border-border p-4 flex justify-between mt-6">
-      <Button variant="outline" onClick={handleCancel}>
-        Cancel
-      </Button>
-      <div className="flex gap-2">
-        <SaveButton
-          type="button"
-          label="Save & Close"
-          data-tutorial="contact-save-btn"
-          mutationOptions={{
-            onSuccess: () => {
-              notify("Contact created successfully", { type: "success" });
-              redirect("/contacts");
-            },
-            onError: handleError,
-          }}
-        />
-        <SaveButton
-          type="button"
-          label="Save & Add Another"
-          mutationOptions={{
-            onSuccess: () => {
-              notify("Contact created successfully", { type: "success" });
-              reset();
-            },
-            onError: handleError,
-          }}
-        />
-      </div>
-    </div>
   );
 };
 
