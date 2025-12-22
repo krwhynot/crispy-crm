@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { EditBase, Form, useRecordContext } from "ra-core";
+import { EditBase, Form, useRecordContext, useNotify, useRefresh } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
@@ -16,6 +16,8 @@ import { opportunitySchema } from "@/atomic-crm/validation/opportunities";
 
 const OpportunityEdit = () => {
   const queryClient = useQueryClient();
+  const notify = useNotify();
+  const refresh = useRefresh();
 
   return (
     <EditBase
@@ -24,8 +26,18 @@ const OpportunityEdit = () => {
       mutationMode="pessimistic"
       mutationOptions={{
         onSuccess: () => {
-          // Invalidate opportunities cache
           queryClient.invalidateQueries({ queryKey: ["opportunities"] });
+        },
+        onError: (error: Error) => {
+          if (error.message?.includes("CONFLICT")) {
+            notify(
+              "This opportunity was modified by another user. Refreshing to show latest version.",
+              { type: "warning" }
+            );
+            refresh();
+          } else {
+            notify(error.message || "Failed to save opportunity", { type: "error" });
+          }
         },
       }}
     >
