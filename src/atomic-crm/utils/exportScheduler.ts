@@ -24,6 +24,9 @@
  * scheduler.addRecipient(schedule.id, 'manager@company.com');
  */
 
+import { z } from "zod";
+import { safeJsonParse } from "./safeJsonParse";
+
 export type ExportFormat = "csv" | "excel" | "pdf";
 export type ScheduleFrequency = "daily" | "weekly" | "monthly";
 
@@ -65,6 +68,22 @@ export interface UpdateScheduleInput {
   dayOfMonth?: number;
   minute?: number;
 }
+
+const exportScheduleStorageSchema = z.strictObject({
+  id: z.string().min(1).max(100),
+  name: z.string().max(255),
+  frequency: z.enum(["daily", "weekly", "monthly"]),
+  format: z.enum(["csv", "excel", "pdf"]),
+  recipients: z.array(z.string().email()).max(50),
+  active: z.boolean(),
+  createdAt: z.string().max(50),
+  updatedAt: z.string().max(50),
+  hour: z.number().int().min(0).max(23).optional(),
+  dayOfWeek: z.number().int().min(0).max(6).optional(),
+  dayOfMonth: z.number().int().min(1).max(31).optional(),
+  minute: z.number().int().min(0).max(59).optional(),
+});
+const exportScheduleArraySchema = z.array(exportScheduleStorageSchema).max(1000);
 
 /**
  * Manages export schedules with persistence to localStorage
@@ -304,22 +323,17 @@ export class ExportScheduler {
         return;
       }
 
-      const data = JSON.parse(stored);
-      if (!Array.isArray(data)) {
+      const data = safeJsonParse(stored, exportScheduleArraySchema);
+      if (!data) {
         return;
       }
 
-      data.forEach((item: unknown) => {
-        if (typeof item !== "object" || item === null || !("id" in item)) {
-          return;
-        }
-        const schedule = item as Record<string, unknown>;
-        this.schedules.set(schedule.id as string, {
+      data.forEach((schedule) => {
+        this.schedules.set(schedule.id, {
           ...schedule,
-          createdAt: new Date(schedule.createdAt as string),
-          updatedAt: new Date(schedule.updatedAt as string),
-          recipients: Array.isArray(schedule.recipients) ? schedule.recipients : [],
-        } as ExportSchedule);
+          createdAt: new Date(schedule.createdAt),
+          updatedAt: new Date(schedule.updatedAt),
+        });
       });
     } catch (error) {
       console.error("Failed to load export schedules from localStorage:", error);

@@ -12,6 +12,9 @@
  * @module rateLimiter
  */
 
+import { z } from "zod";
+import { safeJsonParse } from "./safeJsonParse";
+
 interface RateLimitConfig {
   maxRequests: number;
   windowMs: number;
@@ -22,6 +25,11 @@ interface RateLimitState {
   requests: number[];
   firstRequest: number;
 }
+
+const rateLimitStateSchema = z.strictObject({
+  requests: z.array(z.number()).max(1000),
+  firstRequest: z.number(),
+});
 
 /**
  * Client-side rate limiter using sessionStorage
@@ -126,13 +134,12 @@ export class ClientRateLimiter {
    * Get current rate limit state from sessionStorage
    */
   private getState(): RateLimitState {
-    try {
-      const stored = sessionStorage.getItem(this.config.storageKey);
-      if (stored) {
-        return JSON.parse(stored);
+    const stored = sessionStorage.getItem(this.config.storageKey);
+    if (stored) {
+      const parsed = safeJsonParse(stored, rateLimitStateSchema);
+      if (parsed) {
+        return parsed;
       }
-    } catch (e) {
-      console.warn("[Rate Limiter] Failed to load state:", e);
     }
 
     return { requests: [], firstRequest: Date.now() };

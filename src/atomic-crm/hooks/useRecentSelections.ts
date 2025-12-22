@@ -15,6 +15,12 @@ interface UseRecentSelectionsReturn {
 
 const MAX_RECENT_ITEMS = 5;
 
+const recentItemSchema = z.strictObject({
+  id: z.union([z.string(), z.number()]),
+  label: z.string().max(255),
+});
+const recentItemsSchema = z.array(recentItemSchema).max(5);
+
 export const useRecentSelections = (fieldType: string): UseRecentSelectionsReturn => {
   const storageKey = `crm_recent_${fieldType}`;
 
@@ -24,8 +30,7 @@ export const useRecentSelections = (fieldType: string): UseRecentSelectionsRetur
       if (!stored) {
         return [];
       }
-      const parsed = JSON.parse(stored);
-      return Array.isArray(parsed) ? parsed : [];
+      return safeJsonParse(stored, recentItemsSchema) ?? [];
     } catch {
       return [];
     }
