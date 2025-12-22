@@ -1,6 +1,7 @@
 {
-  "status": "in_progress",
+  "status": "complete",
   "started_at": "2025-12-22T14:00:00Z",
+  "completed_at": "2025-12-22T14:30:00Z",
   "issues": [
     {
       "id": 1,
@@ -9,10 +10,10 @@
       "expected": "Page title 'Organizations' displayed at the top",
       "actual": "No page title shown, only navigation and data grid",
       "severity": "Low",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "spec_outdated",
+      "reasoning": "Code intentionally uses breadcrumb navigation instead of h1 titles. OrganizationList.tsx:243 explicitly sets title={false}. The resource name 'Organizations' is displayed in the breadcrumb (list.tsx:104), providing the same context in a more compact, hierarchical format suitable for the desktop-first design.",
+      "action_required": "Update spec - breadcrumb navigation replaces traditional page titles",
+      "code_location": "src/atomic-crm/organizations/OrganizationList.tsx:243"
     },
     {
       "id": 2,
@@ -21,10 +22,10 @@
       "expected": "Filter sidebar visible on page load",
       "actual": "Filter sidebar collapsed/hidden by default",
       "severity": "Low",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "intentional",
+      "reasoning": "StandardListLayout.tsx (lines 58-67) intentionally defaults the filter sidebar to collapsed state on tablet viewports (< 1024px) with state persistence in localStorage. This is a documented responsive design decision for iPad-first optimization.",
+      "action_required": "Document design decision - collapsed by default on tablet/mobile, expanded on desktop (>=1024px)",
+      "code_location": "src/components/layouts/StandardListLayout.tsx:58-67"
     },
     {
       "id": 3,
@@ -33,10 +34,10 @@
       "expected": "Proper pagination display or 'No results' message",
       "actual": "Template placeholders visible (e.g., '%{from}-%{to}')",
       "severity": "Medium",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "bug",
+      "reasoning": "ListPagination.tsx (lines 109-118) uses React Admin's <Translate> component with i18nKey 'ra.navigation.page_range_info'. When total=0, the translation falls back to showing raw template placeholders. The i18nProvider.tsx uses allowMissing:true which causes template strings to render literally.",
+      "action_required": "Fix code - Add conditional rendering to hide pagination text when total=0",
+      "code_location": "src/components/admin/list-pagination.tsx:109-118"
     },
     {
       "id": 4,
@@ -45,10 +46,10 @@
       "expected": "Delete button appears before Export",
       "actual": "Export button appears before Delete",
       "severity": "Low",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "spec_outdated",
+      "reasoning": "OrganizationBulkActionsToolbar.tsx (lines 19-23) shows intentional order: BulkReassignButton, BulkExportButton, BulkDeleteButton. This ordering follows React Admin conventions and is safer UX (Export-before-Delete reduces accidental data loss risk).",
+      "action_required": "Update spec - The order (Reassign > Export > Delete) is intentional and follows best practices",
+      "code_location": "src/atomic-crm/organizations/OrganizationBulkActionsToolbar.tsx:19-23"
     },
     {
       "id": 5,
@@ -57,10 +58,10 @@
       "expected": "Indeterminate checkbox when partial rows selected",
       "actual": "Checkbox shows checked/unchecked only",
       "severity": "Low",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "spec_outdated",
+      "reasoning": "PremiumDatagrid.tsx is a wrapper around React Admin's <Datagrid> (v5.13.0). React Admin's Datagrid does not include indeterminate state for partial selection by default. This would require custom DatagridHeaderCell override.",
+      "action_required": "Update spec - Document as React Admin limitation, not a bug",
+      "code_location": "src/components/admin/PremiumDatagrid.tsx:114-121"
     },
     {
       "id": 6,
@@ -69,10 +70,10 @@
       "expected": "Page title 'Contacts' displayed at the top",
       "actual": "No page title shown, only navigation and data grid",
       "severity": "Low",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "spec_outdated",
+      "reasoning": "Code intentionally uses breadcrumb navigation instead of h1 titles. ContactList.tsx:52 explicitly sets title={false}. Resource name is displayed in breadcrumb for compact hierarchical context.",
+      "action_required": "Update spec - breadcrumb navigation replaces traditional page titles",
+      "code_location": "src/atomic-crm/contacts/ContactList.tsx:52"
     },
     {
       "id": 7,
@@ -81,10 +82,10 @@
       "expected": "'Save' button label",
       "actual": "'Create Organization' button label",
       "severity": "Low",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "spec_outdated",
+      "reasoning": "OrganizationCreate.tsx:102 shows 'Create Organization' which is better UX than generic 'Save'. Context-specific button labels follow Nielsen Norman Group best practices for clarity.",
+      "action_required": "Update spec - 'Create [Entity]' is the correct, more descriptive label",
+      "code_location": "src/atomic-crm/organizations/OrganizationCreate.tsx:102"
     },
     {
       "id": 8,
@@ -93,10 +94,10 @@
       "expected": "Inline validation error messages shown",
       "actual": "No visible error feedback when validation fails",
       "severity": "Medium",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "bug",
+      "reasoning": "FormErrorSummary component exists (OrganizationInputs.tsx:22-33) and form-primitives.tsx has aria-invalid/role='alert' support. However, if errors aren't displaying, the FormErrorSummary may have a rendering issue or the error state isn't being passed correctly.",
+      "action_required": "Fix code - Verify FormErrorSummary renders errors correctly; test validation flow",
+      "code_location": "src/atomic-crm/organizations/OrganizationInputs.tsx:22-33"
     },
     {
       "id": 9,
@@ -105,10 +106,10 @@
       "expected": "Page title 'Opportunities' displayed at the top",
       "actual": "No page title shown, only navigation and data grid",
       "severity": "Low",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "spec_outdated",
+      "reasoning": "Code intentionally uses breadcrumb navigation. OpportunityList.tsx:69 sets title={false}. Line 103 comment confirms: 'Breadcrumb is handled by List wrapper (list.tsx) - no longer needed here'.",
+      "action_required": "Update spec - breadcrumb navigation replaces traditional page titles",
+      "code_location": "src/atomic-crm/opportunities/OpportunityList.tsx:69"
     },
     {
       "id": 10,
@@ -117,10 +118,10 @@
       "expected": "'Contacts count' column displayed",
       "actual": "'Notes' column displayed instead",
       "severity": "Low",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "spec_outdated",
+      "reasoning": "OrganizationList.tsx (lines 202-209) shows a column labeled 'Contacts' displaying record.nb_contacts. There is NO 'Notes' column in the list view - notes are only in slide-over tabs. Spec is factually incorrect.",
+      "action_required": "Update spec - Column is labeled 'Contacts', no 'Notes' column exists in list view",
+      "code_location": "src/atomic-crm/organizations/OrganizationList.tsx:202-209"
     },
     {
       "id": 11,
@@ -129,10 +130,10 @@
       "expected": "Breadcrumb showing: Home > Organizations > Create",
       "actual": "No breadcrumb navigation visible",
       "severity": "Low",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "intentional",
+      "reasoning": "OrganizationCreate.tsx uses CreateBase with custom layout (lines 222-239) including FormProgressBar. Standard breadcrumbs are replaced by progress bar UX pattern for multi-step form tracking.",
+      "action_required": "Document design decision - Progress bar replaces breadcrumbs on create forms",
+      "code_location": "src/atomic-crm/organizations/OrganizationCreate.tsx:221-239"
     },
     {
       "id": 12,
@@ -141,10 +142,10 @@
       "expected": "District Code and Territory fields present",
       "actual": "Territory fields not shown in form",
       "severity": "Low",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "intentional",
+      "reasoning": "Territory fields were explicitly removed per migration 20251103214809: 'PRD states: No Team Hierarchy: Flat structure, no territory or team concepts'. Later migration added territory ONLY to contacts table, NOT organizations.",
+      "action_required": "Document design decision - Territory is NOT in MVP scope for organizations (contacts only)",
+      "code_location": "supabase/migrations/20251103214809_remove_territory_fields.sql:1-6"
     },
     {
       "id": 13,
@@ -153,10 +154,10 @@
       "expected": "No debug information visible to end users",
       "actual": "Debug panel or developer info shown in UI",
       "severity": "High",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "bug",
+      "reasoning": "Lines 456-476 in OpportunityListContent.tsx show a DEBUG BANNER displaying internal diagnostic data (API counts, stage grouping, collapsed states). Comment says 'Remove after fixing issue' but it's still in code. Exposes implementation details to end users.",
+      "action_required": "Fix code - CRITICAL: Remove debug banner entirely or add proper admin-only feature flag",
+      "code_location": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx:456-476"
     },
     {
       "id": 14,
@@ -165,10 +166,10 @@
       "expected": "5 required fields indicated",
       "actual": "Different number of required fields shown",
       "severity": "Low",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "spec_outdated",
+      "reasoning": "Actual implementation has ONLY 1 required field: 'name' (organizationSchema.ts:70). OrganizationCompactForm.tsx shows requiredFields arrays: ['name'] for Basic Info, [] for other sections. Total = 1 required field.",
+      "action_required": "Update spec - Only 1 required field (Organization Name), all others optional",
+      "code_location": "src/atomic-crm/validation/organizations.ts:195-197"
     },
     {
       "id": 15,
@@ -177,10 +178,10 @@
       "expected": "Page title 'Activities' displayed at the top",
       "actual": "No page title shown",
       "severity": "Low",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "spec_outdated",
+      "reasoning": "Code intentionally uses breadcrumb navigation instead of h1 titles. ActivityList.tsx:60 explicitly sets title={false}. Resource name is displayed in breadcrumb.",
+      "action_required": "Update spec - breadcrumb navigation replaces traditional page titles",
+      "code_location": "src/atomic-crm/activities/ActivityList.tsx:60"
     },
     {
       "id": 16,
@@ -189,17 +190,17 @@
       "expected": "Activity types: Call, Email, Meeting, Sample, Complete",
       "actual": "Different or missing activity type options",
       "severity": "Medium",
-      "disposition": null,
-      "reasoning": null,
-      "action_required": null,
-      "code_location": null
+      "disposition": "spec_outdated",
+      "reasoning": "Implementation has 13 interaction types (call, email, meeting, demo, proposal, follow_up, trade_show, site_visit, contract_review, check_in, social, note, sample). 'Complete' is an OUTCOME, not a TYPE. Spec is outdated.",
+      "action_required": "Update spec - 13 activity types exist; 'Complete' is an outcome not a type",
+      "code_location": "src/atomic-crm/validation/activities.ts:16-30"
     }
   ],
   "summary": {
-    "bugs": 0,
-    "spec_outdated": 0,
-    "intentional": 0,
+    "bugs": 3,
+    "spec_outdated": 9,
+    "intentional": 4,
     "deferred": 0,
-    "pending": 16
+    "pending": 0
   }
 }
