@@ -41,8 +41,8 @@ export const ROLE_CHOICES = [
 // per Engineering Constitution - all validation happens at API boundary only
 export const salesSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
-  first_name: z.string().min(1, "First name is required").max(100, "First name too long"),
-  last_name: z.string().min(1, "Last name is required").max(100, "Last name too long"),
+  first_name: z.string().trim().min(1, "First name is required").max(100, "First name too long"),
+  last_name: z.string().trim().min(1, "Last name is required").max(100, "Last name too long"),
   email: z.string().email("Must be a valid email address").max(VALIDATION_LIMITS.EMAIL_MAX, "Email too long"),
   phone: z.string().max(VALIDATION_LIMITS.PHONE_MAX, "Phone number too long").nullish(),
   avatar_url: z.string().url("Must be a valid URL").max(VALIDATION_LIMITS.AVATAR_URL_MAX, "Avatar URL too long").optional().nullable(),
@@ -187,8 +187,8 @@ export const userInviteSchema = z.strictObject({
   email: z.string().email("Invalid email format").max(254, "Email too long"),
   // Password optional - Supabase inviteUserByEmail handles password setup
   password: z.string().min(8, "Password must be at least 8 characters").max(128, "Password too long").optional(),
-  first_name: z.string().min(1, "First name is required").max(100, "First name too long"),
-  last_name: z.string().min(1, "Last name is required").max(100, "Last name too long"),
+  first_name: z.string().trim().min(1, "First name is required").max(100, "First name too long"),
+  last_name: z.string().trim().min(1, "Last name is required").max(100, "Last name too long"),
   role: UserRoleEnum.default("rep"),
 });
 
@@ -200,8 +200,8 @@ export type UserInvite = z.infer<typeof userInviteSchema>;
  */
 export const userUpdateSchema = z.strictObject({
   sales_id: z.coerce.number().int().positive("Invalid sales ID"),
-  first_name: z.string().min(1, "First name is required").max(100, "First name too long").optional(),
-  last_name: z.string().min(1, "Last name is required").max(100, "Last name too long").optional(),
+  first_name: z.string().trim().min(1, "First name is required").max(100, "First name too long").optional(),
+  last_name: z.string().trim().min(1, "Last name is required").max(100, "Last name too long").optional(),
   role: UserRoleEnum.optional(),
   disabled: z.coerce.boolean().optional(),
 });

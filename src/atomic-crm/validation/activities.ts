@@ -71,7 +71,7 @@ const baseActivitiesSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
   activity_type: activityTypeSchema.default("interaction"), // Default to interaction
   type: interactionTypeSchema.default("call"), // Default to call
-  subject: z.string().min(1, "Subject is required").max(255, "Subject too long"),
+  subject: z.string().trim().min(1, "Subject is required").max(255, "Subject too long"),
   description: z
     .string()
     .max(5000)
@@ -426,7 +426,7 @@ export const activityNoteFormSchema = z.strictObject({
   type: interactionTypeSchema,
   contact_id: z.coerce.number().nullable().optional(),
   stage: z.string().max(50),
-  subject: z.string().min(1, "Subject is required").max(255, "Subject too long"),
+  subject: z.string().trim().min(1, "Subject is required").max(255, "Subject too long"),
 });
 
 // Type inference for activity note form

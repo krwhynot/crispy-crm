@@ -17,6 +17,7 @@ import { OrganizationSlideOver } from "./OrganizationSlideOver";
 import { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
 import { OrganizationEmpty } from "./OrganizationEmpty";
 import { FilterableBadge } from "@/components/admin/FilterableBadge";
+import { ListNoResults } from "@/components/admin/ListNoResults";
 import { TopToolbar } from "../layout/TopToolbar";
 import { ORGANIZATION_FILTER_CONFIG } from "./organizationFilterConfig";
 import {
@@ -128,6 +129,19 @@ const OrganizationListLayout = ({
   if (!identity) return null;
 
   if (!data?.length && !hasFilters) return <OrganizationEmpty />;
+
+  // Filtered empty state: filters are applied but no results match
+  if (!data?.length && hasFilters) {
+    return (
+      <StandardListLayout resource="organizations" filterComponent={<OrganizationListFilter />}>
+        <ListSearchBar
+          placeholder="Search organizations..."
+          filterConfig={ORGANIZATION_FILTER_CONFIG}
+        />
+        <ListNoResults />
+      </StandardListLayout>
+    );
+  }
 
   return (
     <>
