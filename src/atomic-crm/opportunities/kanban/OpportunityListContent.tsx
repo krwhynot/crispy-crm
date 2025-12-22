@@ -441,10 +441,38 @@ export const OpportunityListContent = ({
 
   if (isPending) return null;
 
+  // Diagnostic data for debugging missing cards
+  const uniqueStages = [...new Set(unorderedOpportunities?.map(o => o.stage) ?? [])];
+  const stageCounts = Object.fromEntries(
+    Object.entries(opportunitiesByStage).map(([k, v]) => [k, v.length])
+  );
+  const totalGrouped = Object.values(stageCounts).reduce((a, b) => a + b, 0);
+
   // Use flex column with min-h-0 and flex-1 to fill remaining height
   // Kanban board: horizontal scroll for columns, each column scrolls vertically for cards
   return (
     <div className="flex min-h-0 flex-1 flex-col h-full">
+      {/* DEBUG BANNER - Remove after fixing issue */}
+      {process.env.NODE_ENV === 'development' && (
+        <div className="mb-2 p-3 bg-warning/10 border border-warning rounded-lg text-sm">
+          <div className="font-semibold text-warning mb-1">🔍 Kanban Debug Info</div>
+          <div className="grid grid-cols-2 gap-2 text-xs">
+            <div><strong>Total from API:</strong> {unorderedOpportunities?.length ?? 0}</div>
+            <div><strong>Total Grouped:</strong> {totalGrouped}</div>
+            <div><strong>Unique Stages:</strong> {JSON.stringify(uniqueStages)}</div>
+            <div><strong>Collapsed:</strong> {JSON.stringify(collapsedStages)}</div>
+          </div>
+          <div className="mt-1 text-xs">
+            <strong>Per-Stage Counts:</strong> {JSON.stringify(stageCounts)}
+          </div>
+          {totalGrouped === 0 && unorderedOpportunities?.length > 0 && (
+            <div className="mt-2 p-2 bg-destructive/10 text-destructive rounded">
+              ⚠️ <strong>Stage Mismatch!</strong> Opportunities have stage values that don't match expected enum.
+              Check unique stages above - expected: new_lead, initial_outreach, sample_visit_offered, feedback_logged, demo_scheduled, closed_won, closed_lost
+            </div>
+          )}
+        </div>
+      )}
       <DndContext
         sensors={sensors}
         collisionDetection={customCollisionDetection}
