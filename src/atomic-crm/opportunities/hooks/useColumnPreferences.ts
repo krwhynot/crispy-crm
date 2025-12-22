@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { z } from "zod";
 import type { OpportunityStageValue } from "../types";
 import { OPPORTUNITY_STAGES } from "../constants/stageConstants";
-import { safeJsonParse } from "../../utils/safeJsonParse";
+import { getStorageItem, setStorageItem } from "../../utils/secureStorage";
 
 const COLLAPSED_KEY = "opportunity.kanban.collapsed_stages";
 const VISIBLE_KEY = "opportunity.kanban.visible_stages";
@@ -24,21 +24,25 @@ export function useColumnPreferences() {
   const allStages = OPPORTUNITY_STAGES.map((s) => s.value);
 
   const [collapsedStages, setCollapsedStages] = useState<OpportunityStageValue[]>(() => {
-    const stored = localStorage.getItem(COLLAPSED_KEY);
-    return safeJsonParse(stored, opportunityStageArraySchema) ?? [];
+    return getStorageItem<OpportunityStageValue[]>(COLLAPSED_KEY, {
+      type: "local",
+      schema: opportunityStageArraySchema,
+    }) ?? [];
   });
 
   const [visibleStages, setVisibleStages] = useState<OpportunityStageValue[]>(() => {
-    const stored = localStorage.getItem(VISIBLE_KEY);
-    return safeJsonParse(stored, opportunityStageArraySchema) ?? allStages;
+    return getStorageItem<OpportunityStageValue[]>(VISIBLE_KEY, {
+      type: "local",
+      schema: opportunityStageArraySchema,
+    }) ?? allStages;
   });
 
   useEffect(() => {
-    localStorage.setItem(COLLAPSED_KEY, JSON.stringify(collapsedStages));
+    setStorageItem(COLLAPSED_KEY, collapsedStages, { type: "local" });
   }, [collapsedStages]);
 
   useEffect(() => {
-    localStorage.setItem(VISIBLE_KEY, JSON.stringify(visibleStages));
+    setStorageItem(VISIBLE_KEY, visibleStages, { type: "local" });
   }, [visibleStages]);
 
   const toggleCollapse = (stage: OpportunityStageValue) => {

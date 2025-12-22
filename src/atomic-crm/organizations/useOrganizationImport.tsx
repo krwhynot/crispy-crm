@@ -1,4 +1,4 @@
-import type { DataProvider } from "ra-core";
+import type { DataProvider, RaRecord } from "ra-core";
 import { useDataProvider, useGetIdentity } from "ra-core";
 import { useCallback, useMemo } from "react";
 import type { Tag } from "../types";
@@ -270,7 +270,7 @@ export function useOrganizationImport() {
   return processBatch;
 }
 
-const fetchRecordsWithCache = async function <T>(
+const fetchRecordsWithCache = async function <T extends RaRecord>(
   resource: string,
   cache: Map<string, T>,
   names: string[],

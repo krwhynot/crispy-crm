@@ -27,7 +27,7 @@ import {
 // Validation removed per Engineering Constitution - single-point validation at API boundary only
 import { useState } from "react";
 import { contactOptionText } from "../contacts/ContactOption";
-import { useConfigurationContext } from "../root/ConfigurationContext";
+import { useFormOptions } from "../root/ConfigurationContext";
 import { getTaskDefaultValues } from "../validation/task";
 
 export const AddTask = ({
@@ -41,7 +41,7 @@ export const AddTask = ({
   const dataProvider = useDataProvider();
   const [update] = useUpdate();
   const notify = useNotify();
-  const { taskTypes } = useConfigurationContext();
+  const { taskTypes } = useFormOptions();
   const contact = useRecordContext();
   const [open, setOpen] = useState(false);
   const handleOpen = () => {

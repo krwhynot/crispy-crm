@@ -289,29 +289,6 @@ export function findCanonicalField(userHeader: string): string | null {
 }
 
 /**
- * Get all unrecognized headers from a CSV that don't map to any Organization schema field
- * Useful for showing warnings to users about unmapped columns
- */
-export function getUnmappedHeaders(headers: string[]): string[] {
-  if (!Array.isArray(headers)) {
-    return [];
-  }
-
-  return headers.filter((header) => {
-    // Skip empty headers and whitespace-only strings
-    if (!header || typeof header !== "string" || !header.trim()) {
-      return false;
-    }
-
-    // Check if it maps to a known field
-    const canonicalField = findCanonicalField(header);
-
-    // If it doesn't map to any field, it's unmapped
-    return !canonicalField;
-  });
-}
-
-/**
  * Transform CSV headers to their canonical Organization schema field names
  * Returns an object mapping original headers to canonical field names
  * Headers that don't match are mapped to null
@@ -333,42 +310,6 @@ export function mapHeadersToFields(headers: string[]): Record<string, string | n
   }
 
   return mappings;
-}
-
-/**
- * Get a human-readable description of how a header will be mapped
- * Useful for preview displays
- */
-export function getHeaderMappingDescription(header: string): string {
-  if (!header || typeof header !== "string") {
-    return "(ignored - empty header)";
-  }
-
-  const canonical = findCanonicalField(header);
-  if (canonical) {
-    return canonical;
-  }
-
-  return "(ignored - no matching field)";
-}
-
-/**
- * Validate that all required Organization schema fields have mappings
- * Returns an array of missing required fields
- */
-export function validateRequiredMappings(mappings: Record<string, string | null>): string[] {
-  const requiredFields = ["name"]; // Only name is strictly required for organizations
-  const mappedFields = new Set(Object.values(mappings).filter(Boolean));
-
-  const missingFields: string[] = [];
-
-  for (const field of requiredFields) {
-    if (!mappedFields.has(field)) {
-      missingFields.push(field);
-    }
-  }
-
-  return missingFields;
 }
 
 /**

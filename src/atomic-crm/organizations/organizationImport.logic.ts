@@ -3,14 +3,11 @@
  * Shared between application code and test scripts
  *
  * This module contains testable, framework-agnostic business logic for:
- * - CSV formula injection prevention
- * - Organization validation using Zod
  * - Duplicate detection
  * - Data quality transformations
  */
 
 import { organizationSchema } from "../validation/organizations";
-import { FORBIDDEN_FORMULA_PREFIXES } from "./csvConstants";
 
 /**
  * Organization import schema type - matches the structure we'll receive from CSV
@@ -68,70 +65,6 @@ export interface TransformResult {
   transformedOrganizations: OrganizationImportSchema[];
   transformationCount: number;
   wasTransformed: (index: number) => boolean;
-}
-
-/**
- * Sanitize a value to prevent CSV formula injection
- *
- * Security measure: Prevents malicious CSV files from executing formulas
- * when opened in Excel, LibreOffice, or Google Sheets.
- *
- * Strategy:
- * - Check if value starts with forbidden prefixes (=, +, -, @, \t, \r)
- * - If so, prefix with a single quote (') to force text interpretation
- * - Preserve original value otherwise
- *
- * @param value - Raw value from CSV cell
- * @returns Sanitized value safe for spreadsheet applications
- */
-export function sanitizeFormulaInjection(value: string): string {
-  if (!value || typeof value !== "string") {
-    return value;
-  }
-
-  // Check if the value starts with any forbidden prefix
-  const startsWithForbiddenPrefix = FORBIDDEN_FORMULA_PREFIXES.some((prefix) =>
-    value.startsWith(prefix)
-  );
-
-  if (startsWithForbiddenPrefix) {
-    // Prefix with single quote to force text interpretation
-    return `'${value}`;
-  }
-
-  return value;
-}
-
-/**
- * Validate a single organization row using Zod schema
- *
- * Uses safeParse (not parse) to avoid throwing exceptions.
- * Collects all validation errors for user feedback.
- *
- * @param row - Raw organization data from CSV
- * @returns Validation result with success status and errors
- */
-export function validateOrganizationRow(row: unknown): ValidationResult {
-  // Use the organization schema for validation
-  const result = organizationSchema.safeParse(row);
-
-  if (result.success) {
-    return {
-      success: true,
-      data: result.data as OrganizationImportSchema,
-    };
-  }
-
-  // Collect all validation errors
-  const errors = result.error.issues.map((issue) => ({
-    field: issue.path.join("."),
-    message: issue.message,
-  }));
-
-  return {
-    success: false,
-    errors,
-  };
 }
 
 /**

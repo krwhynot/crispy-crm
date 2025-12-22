@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import { z } from "zod";
-import { safeJsonParse } from "../utils/safeJsonParse";
+import { getStorageItem, setStorageItem, removeStorageItem } from "../utils/secureStorage";
 
 interface RecentItem {
   id: string | number;
@@ -25,26 +25,17 @@ export const useRecentSelections = (fieldType: string): UseRecentSelectionsRetur
   const storageKey = `crm_recent_${fieldType}`;
 
   const loadFromStorage = (): RecentItem[] => {
-    try {
-      const stored = localStorage.getItem(storageKey);
-      if (!stored) {
-        return [];
-      }
-      return safeJsonParse(stored, recentItemsSchema) ?? [];
-    } catch {
-      return [];
-    }
+    return getStorageItem<RecentItem[]>(storageKey, {
+      type: "local",
+      schema: recentItemsSchema,
+    }) ?? [];
   };
 
   const [recentItems, setRecentItems] = useState<RecentItem[]>(loadFromStorage);
 
   const saveToStorage = useCallback(
     (items: RecentItem[]) => {
-      try {
-        localStorage.setItem(storageKey, JSON.stringify(items));
-      } catch {
-        // Silently fail if localStorage is unavailable
-      }
+      setStorageItem(storageKey, items, { type: "local" });
     },
     [storageKey]
   );
@@ -70,11 +61,7 @@ export const useRecentSelections = (fieldType: string): UseRecentSelectionsRetur
 
   const clearRecent = useCallback(() => {
     setRecentItems([]);
-    try {
-      localStorage.removeItem(storageKey);
-    } catch {
-      // Silently fail if localStorage is unavailable
-    }
+    removeStorageItem(storageKey);
   }, [storageKey]);
 
   return {

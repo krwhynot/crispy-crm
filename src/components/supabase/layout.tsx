@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Notification } from "@/components/admin/notification";
-import { useConfigurationContext } from "@/atomic-crm/root/ConfigurationContext";
+import { useAppBranding } from "@/atomic-crm/root/ConfigurationContext";
 
 export const Layout = ({ children }: React.PropsWithChildren) => {
-  const { darkModeLogo, title } = useConfigurationContext();
+  const { darkModeLogo, title } = useAppBranding();
 
   return (
     <div className="min-h-screen flex">
