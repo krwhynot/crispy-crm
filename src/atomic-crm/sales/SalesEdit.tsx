@@ -16,7 +16,7 @@ import { SalesService } from "../services";
 import type { Sale, SalesFormData } from "../types";
 import { formatName } from "../utils/formatName";
 import { SalesInputs } from "./SalesInputs";
-import { salesSchema } from "@/atomic-crm/validation/sales";
+import { updateSalesSchema } from "@/atomic-crm/validation/sales";
 import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 
 function EditToolbar() {
@@ -39,7 +39,7 @@ export default function SalesEdit() {
   const salesService = new SalesService(dataProvider);
 
   const defaultValues = useMemo(
-    () => salesSchema.partial().parse(record),
+    () => updateSalesSchema.partial().parse(record),
     [record]
   );
 

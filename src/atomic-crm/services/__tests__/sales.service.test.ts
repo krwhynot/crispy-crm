@@ -32,7 +32,7 @@ describe("SalesService", () => {
       last_name: "Doe",
       administrator: false,
       disabled: false,
-      avatar: "https://example.com/avatar.jpg",
+      avatar_url: "https://example.com/avatar.jpg",
     };
   });
 
@@ -46,7 +46,7 @@ describe("SalesService", () => {
         last_name: mockSalesFormData.last_name,
         administrator: mockSalesFormData.administrator,
         disabled: mockSalesFormData.disabled,
-        avatar: { src: mockSalesFormData.avatar },
+        avatar: { src: mockSalesFormData.avatar_url },
       };
 
       mockDataProvider.invoke = vi.fn().mockResolvedValue(mockCreatedSale);
