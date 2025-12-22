@@ -29,7 +29,7 @@ type InteractionType = Database["public"]["Enums"]["interaction_type"];
 // SignUpData type removed - all users created through Sales management
 
 export interface SalesFormData {
-  avatar: string;
+  avatar_url: string;
   email: string;
   password?: string; // Optional - user sets via invite email
   first_name: string;
