@@ -74,6 +74,7 @@ After analyzing 24 audit reports, deduplicating overlapping findings, and resolv
 > **Update 2025-12-21:** P0 CRITICAL DATABASE FIXES completed - RLS, view performance, cascade deletes (3 of 3 P0 items) ✅
 > **Update 2025-12-22:** P2-6 Optimistic Locking completed - version column, trigger, RPC check, UI error handling (9 of 14 P2 items)
 > **Update 2025-12-21:** P2-1, P2-13 (Architecture) completed - context split + error boundaries (11 of 14 P2 items)
+> **Update 2025-12-21:** P2-C batch completed: P2-8 (FALSE POSITIVE - contexts already use RA built-ins), P2-3 (minimal fixes - updateSalesSchema + avatar_url field) (13 of 14 P2 items)
 
 ---
 
@@ -413,34 +414,55 @@ Note: `@radix-ui/react-toggle-group` IS used (different package, in toggle-group
 
 ---
 
-### P2-2: Large Components Need Splitting [MAINTAINABILITY]
+### P2-2: Large Components Need Splitting [MAINTAINABILITY] ⏸️ DEFERRED TO BACKLOG
 
 **Source:** Agent 15 (Composition)
 **Impact:** 7 components >400 lines violate single responsibility
+**Status:** Deferred per user choice (2025-12-21) - not blocking launch
 
-| Component | Lines | Recommendation |
-|-----------|-------|----------------|
-| `OrganizationImportDialog` | 1,082 | Split into 4 |
-| `AuthorizationsTab` | 1,043 | Split into 3 |
-| `CampaignActivityReport` | 900 | Extract hook + filters |
-| `ContactImportPreview` | 845 | Split into 2 |
-| `ContactImportDialog` | 697 | Follow org pattern |
-| `QuickLogActivityDialog` | 585 | Acceptable - well-documented |
-| `OpportunitySlideOverDetailsTab` | 531 | Extract form sections |
+| Component | Lines | Recommendation | Status |
+|-----------|-------|----------------|--------|
+| `OrganizationImportDialog` | 1,060 | Split into 4 | Already has ecosystem (5 files) |
+| `AuthorizationsTab` | 1,043 | Split into 3 | 7 internal components extractable |
+| `CampaignActivityReport` | 900 | Extract hook + filters | Partially decomposed |
+| `ContactImportPreview` | 845 | Split into 2 | Monolithic |
+| `ContactImportDialog` | 713 | Follow org pattern | Monolithic |
+| `QuickLogActivityDialog` | 578 | Acceptable - well-documented | ✅ Uses lazy loading |
+| `OpportunitySlideOverDetailsTab` | 531 | Extract form sections | Monolithic |
+
+**Highest Value Target:** `AuthorizationsTab` - contains 7 internal component functions that could be extracted without changing behavior.
 
 **Effort:** 8+ hours | **Risk:** Medium - refactoring
+**Decision:** User opted for Option A (minimal fixes) on 2025-12-21. Large component splitting moved to post-launch backlog.
 
 ---
 
-### P2-3: Sales Module Pattern Drift [ARCHITECTURE]
+### P2-3: Sales Module Pattern Drift [ARCHITECTURE] ✅ MINIMAL FIX 2025-12-21
 
 **Source:** Agent 17 (Pattern Drift)
 **Files:** `SalesCreate.tsx`, `SalesEdit.tsx`
-**Impact:** 35% drift from standard patterns
+**Impact:** Originally reported 35% drift, but most drift is **intentional**
 
-**Note:** Agent 24 verified this is NOT a data provider bypass (uses `dataProvider.invoke()`), but patterns could be standardized for consistency
+**Investigation Findings:**
+The Sales module uses Edge Functions for user management (`/users` endpoint), which requires:
+- Custom `SalesService` layer for Edge Function orchestration
+- Manual `useMutation` instead of React Admin's mutation system
+- Identity cache invalidation after role changes
+- Permission checking for self-edit prevention
 
-**Effort:** 4-6 hours | **Risk:** Medium - testing auth flow
+These are **intentional patterns** that should be preserved.
+
+**Actual Issues Fixed:**
+| File | Issue | Fix Applied |
+|------|-------|-------------|
+| `SalesEdit.tsx:19,42` | Used `salesSchema` | Changed to `updateSalesSchema` (semantic for edit) |
+| `types.ts:32` | `avatar` field name | Changed to `avatar_url` (matches DB column) |
+| `sales.service.test.ts:35,49` | Test mock used `avatar` | Updated to `avatar_url` |
+
+**Resolution:** Fixed actual issues (schema usage, field naming). The "pattern drift" is mostly intentional due to Edge Function requirements.
+
+**Effort:** ~30 min actual (vs 4-6 hours estimated)
+**Completed:** 2025-12-21
 
 ---
 
@@ -505,17 +527,25 @@ Migration `20251222034729_add_opportunity_version_column.sql`:
 
 ---
 
-### P2-8: Migrate 3 Deprecated Contexts [ARCHITECTURE]
+### P2-8: Migrate 3 Deprecated Contexts [ARCHITECTURE] ✅ FALSE POSITIVE 2025-12-21
 
 **Source:** Agent 9 (State & Context)
+**Status:** NO WORK NEEDED - Audit finding was incorrect
 
-| Custom Context | React Admin Equivalent |
-|----------------|------------------------|
-| FilterContext | `useFilterContext` from ra-core |
-| ArrayInputContext | `ArrayInputContext` from ra-core |
-| UserMenuContext | `UserMenuContext` from ra-core |
+| Custom Context | React Admin Equivalent | Actual Status |
+|----------------|------------------------|---------------|
+| FilterContext | `useFilterContext` from ra-core | ✅ Already imports from `ra-core` |
+| ArrayInputContext | `ArrayInputContext` from ra-core | ✅ Already imports from `ra-core` |
+| UserMenuContext | `UserMenuContext` from ra-core | ✅ Already imports from `ra-core` |
 
-**Effort:** 2 hours | **Risk:** Low
+**Resolution:** Investigation found NO custom implementations exist. All three contexts are already imported from `ra-core`:
+- `src/components/admin/list.tsx:15` - `import { FilterContext } from 'ra-core'`
+- `src/components/admin/array-input.tsx:23` - `import { ArrayInputContext } from 'ra-core'`
+- `src/components/admin/user-menu.tsx:14` - `import { UserMenuContext } from 'ra-core'`
+
+The audit was based on comments marking these as "deprecated" in the codebase, but they were marked deprecated to discourage CREATING custom implementations - the existing code already uses the correct React Admin versions.
+
+**Completed:** 2025-12-21 (no changes required)
 
 ---
 
@@ -796,6 +826,7 @@ Per Agent 24 (Devil's Advocate) analysis:
 | 2025-12-21 | P2-9, P2-12, P2-14 (Type/code quality) | +2% type safety, dead code removed, secure storage |
 | 2025-12-21 | P3-1 through P3-6 + cleanup | -124 lines duplication, +78KB freed, ADR documented, a11y improved |
 | 2025-12-21 | P0-1, P0-2, P0-3 (Database Critical) | RLS vulnerability fixed, view O(n×8)→O(n+4), cascade covers all 7 tables |
+| 2025-12-21 | P2-C: P2-8 (FALSE POSITIVE), P2-3 (minimal) | Contexts already RA built-ins, Sales field naming fixed |
 
 ---
 

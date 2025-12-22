@@ -296,13 +296,23 @@ src/atomic-crm/organizations/BulkReassignButton.tsx (3 console.log/error)
 **Effort:** Low (20 min total)
 **Risk:** Low
 
-### Fix Group 4: Sales Module Refactor (High Effort - Defer)
+### Fix Group 4: Sales Module Refactor - ✅ REVIEWED 2025-12-21 (INTENTIONAL DRIFT)
 **Issue:** Uses custom SalesService instead of data provider
 **Affected:** SalesCreate, SalesEdit
-**Fix:** Refactor to use CreateBase/EditBase with data provider
-**Effort:** High (4-6 hours)
-**Risk:** Medium - requires testing auth flow
-**Recommendation:** Document as tech debt, fix post-MVP
+**Original Recommendation:** Refactor to use CreateBase/EditBase with data provider
+
+**Investigation Findings (2025-12-21):**
+The Sales module uses **Edge Functions** for user management (`/users` endpoint), which requires:
+- Custom `SalesService` layer for Edge Function orchestration
+- Manual `useMutation` instead of React Admin's mutation system
+- Identity cache invalidation after role changes
+- Permission checking for self-edit prevention
+
+**Resolution:** This "drift" is **intentional and correct** for the use case. Only minor fixes applied:
+- `SalesEdit.tsx`: Changed `salesSchema` → `updateSalesSchema` (semantic correctness)
+- `types.ts`: Changed `avatar` → `avatar_url` (match DB column name)
+
+**Status:** Documented as accepted architecture pattern, not tech debt.
 
 ### Fix Group 5: TaskEdit Standardization (Medium Priority)
 **Issue:** Uses `Edit` + `SimpleForm` instead of `EditBase` + `Form`
@@ -418,9 +428,9 @@ src/atomic-crm/organizations/BulkReassignButton.tsx (3 console.log/error)
 - Create: `src/atomic-crm/opportunities/OpportunityCreate.tsx`
 - Edit: `src/atomic-crm/opportunities/OpportunityEdit.tsx`
 
-### High-Drift Files (Require Review)
-- `src/atomic-crm/sales/SalesCreate.tsx` (35% drift)
-- `src/atomic-crm/sales/SalesEdit.tsx` (35% drift)
+### High-Drift Files - ✅ REVIEWED 2025-12-21
+- `src/atomic-crm/sales/SalesCreate.tsx` (35% drift) - **INTENTIONAL** (Edge Functions)
+- `src/atomic-crm/sales/SalesEdit.tsx` (35% drift) - **INTENTIONAL** (Edge Functions), minor fix applied (updateSalesSchema)
 
 ### Consistent Files (Good Examples)
 - `src/atomic-crm/products/ProductList.tsx`

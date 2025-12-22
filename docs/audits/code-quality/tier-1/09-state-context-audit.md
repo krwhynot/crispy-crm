@@ -68,15 +68,20 @@ App.tsx
 - Components only using `taskTypes` still re-render when `logo` changes
 - Splitting would isolate re-renders to relevant consumers
 
-### Deprecated Contexts - Migrate to React Admin
+### Deprecated Contexts - ✅ FALSE POSITIVE (Verified 2025-12-21)
 
-| Custom Context | Marked Deprecated | React Admin Equivalent |
-|----------------|-------------------|------------------------|
-| FilterContext | Yes | `useFilterContext` from `ra-core` |
-| ArrayInputContext | Yes | `ArrayInputContext` from `ra-core` |
-| UserMenuContext | Yes | `UserMenuContext` from `ra-core` |
+| Custom Context | Marked Deprecated | React Admin Equivalent | Status |
+|----------------|-------------------|------------------------|--------|
+| FilterContext | Yes | `useFilterContext` from `ra-core` | ✅ Already uses RA built-in |
+| ArrayInputContext | Yes | `ArrayInputContext` from `ra-core` | ✅ Already uses RA built-in |
+| UserMenuContext | Yes | `UserMenuContext` from `ra-core` | ✅ Already uses RA built-in |
 
-**Recommendation:** These are marked as deprecated in the code. Verify React Admin version supports these and migrate.
+**Resolution (2025-12-21):** Investigation found NO custom implementations exist. All three contexts are already imported from `ra-core`:
+- `src/components/admin/list.tsx:15` - `import { FilterContext } from 'ra-core'`
+- `src/components/admin/array-input.tsx:23` - `import { ArrayInputContext } from 'ra-core'`
+- `src/components/admin/user-menu.tsx:14` - `import { UserMenuContext } from 'ra-core'`
+
+The "deprecated" comments in the code were meant to discourage CREATING custom implementations - the existing code already uses the correct React Admin versions. **No migration needed.**
 
 ### Context Best Practices Applied
 
@@ -252,9 +257,10 @@ Based on interface analysis, most components have **4-8 props** which is reasona
    - Combined provider in `ConfigurationContext.tsx` wraps all 3
    - All consumers migrated to focused hooks (`useAppBranding`, `usePipelineConfig`, `useFormOptions`)
 
-3. **Migrate Deprecated Contexts**
-   - Verify React Admin version supports: FilterContext, ArrayInputContext, UserMenuContext
-   - Replace custom implementations with ra-core equivalents
+3. ~~**Migrate Deprecated Contexts**~~ ✅ FALSE POSITIVE (2025-12-21)
+   - ~~Verify React Admin version supports: FilterContext, ArrayInputContext, UserMenuContext~~
+   - ~~Replace custom implementations with ra-core equivalents~~
+   - **Resolution:** No custom implementations exist - already uses `ra-core` built-ins
 
 ### Priority 3 - Code Quality
 
@@ -272,7 +278,7 @@ Based on interface analysis, most components have **4-8 props** which is reasona
 | Metric | Value | Assessment |
 |--------|-------|------------|
 | Custom Contexts | 14 | Reasonable for app size |
-| Deprecated Contexts | 3 | Should migrate |
+| Deprecated Contexts | 0 | ✅ FALSE POSITIVE - already use RA built-ins |
 | Files with useState | 68 | Normal React usage |
 | useMemo Occurrences | 111 | Good optimization |
 | React Admin Hooks | 200+ | Excellent integration |
