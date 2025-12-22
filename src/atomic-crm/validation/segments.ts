@@ -79,7 +79,7 @@ export const playbookCategorySchema = z.enum(PLAYBOOK_CATEGORIES);
  */
 export const segmentSchema = z.strictObject({
   id: z.string().uuid().optional(),
-  name: z.string().min(1).max(100),
+  name: z.string().trim().min(1).max(100),
   segment_type: z.enum(SEGMENT_TYPES).default("playbook"),
   parent_id: z.string().uuid().nullable().optional(),
   display_order: z.coerce.number().int().min(0).max(9999).default(0),

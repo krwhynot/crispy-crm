@@ -5,7 +5,7 @@ import { z } from "zod";
  * Get or create a segment by name. Case-insensitive lookup.
  */
 export const getOrCreateSegmentParamsSchema = z.strictObject({
-  p_name: z.string().min(1, "Segment name is required").max(255, "Segment name too long"),
+  p_name: z.string().trim().min(1, "Segment name is required").max(255, "Segment name too long"),
 });
 
 /**
