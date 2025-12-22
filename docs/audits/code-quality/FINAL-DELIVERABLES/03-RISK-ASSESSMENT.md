@@ -25,12 +25,13 @@ This risk assessment consolidates security, data integrity, and operational risk
 
 | Severity | Security | Data Integrity | Performance | UX | Total |
 |----------|----------|----------------|-------------|----|----|
-| Critical | 1 | 0 | 1 | 0 | **2** |
-| High | ~~2~~ 0 ✅ | 2 | 1 | 0 | **3** (was 5) |
+| Critical | ~~1~~ **0** ✅ | 0 | ~~1~~ **0** ✅ | 0 | **0** (was 2) |
+| High | ~~2~~ 0 ✅ | ~~2~~ **1** | ~~1~~ **0** ✅ | 0 | **1** (was 5) |
 | Medium | 3 | 3 | 2 | 4 | **12** |
 | Low | 2 | 2 | 3 | 6 | **13** |
 
 > **Update 2025-12-21:** HIGH-01 (JSON.parse) and HIGH-02 (z.object) have been fully mitigated.
+> **Update 2025-12-21:** CRIT-01 (RLS), CRIT-02 (View Performance), HIGH-03 (Cascade) have been fully mitigated. ✅
 
 ---
 
