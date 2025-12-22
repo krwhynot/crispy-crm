@@ -8,8 +8,8 @@ interface ListSearchBarProps {
   placeholder?: string;
   /** Filter source field name (default: "q") */
   source?: string;
-  /** Filter configuration for chip bar labels */
-  filterConfig: FilterConfig;
+  /** Filter configuration for chip bar labels (optional for search-only views) */
+  filterConfig?: FilterConfig;
 }
 
 /**
@@ -45,10 +45,12 @@ export function ListSearchBar({
         </FilterLiveForm>
       </div>
 
-      {/* Active Filter Chips - expands to fill remaining space */}
-      <div className="flex-1 min-w-0">
-        <FilterChipBar filterConfig={filterConfig} />
-      </div>
+      {/* Active Filter Chips - only rendered when filter config exists */}
+      {filterConfig && filterConfig.length > 0 && (
+        <div className="flex-1 min-w-0">
+          <FilterChipBar filterConfig={filterConfig} />
+        </div>
+      )}
     </div>
   );
 }
