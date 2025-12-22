@@ -51,12 +51,22 @@ export const ContactCompactForm = () => {
         <CompactFormRow columns="md:grid-cols-[1fr_1fr_auto]" alignItems="start">
           <div data-tutorial="contact-first-name">
             <FormFieldWrapper name="first_name" isRequired>
-              <TextInput source="first_name" label="First Name *" helperText="Required field" />
+              <TextInput
+                source="first_name"
+                label="First Name *"
+                helperText="Required field"
+                autoComplete="given-name"
+              />
             </FormFieldWrapper>
           </div>
           <div data-tutorial="contact-last-name">
             <FormFieldWrapper name="last_name" isRequired>
-              <TextInput source="last_name" label="Last Name *" helperText="Required field" />
+              <TextInput
+                source="last_name"
+                label="Last Name *"
+                helperText="Required field"
+                autoComplete="family-name"
+              />
             </FormFieldWrapper>
           </div>
           <div className="pt-6">
@@ -129,6 +139,7 @@ export const ContactCompactForm = () => {
                   placeholder="Email (valid email required)"
                   onPaste={handleEmailPaste}
                   onBlur={handleEmailBlur}
+                  autoComplete="email"
                 />
                 <SelectInput
                   source="type"
@@ -159,6 +170,7 @@ export const ContactCompactForm = () => {
                   helperText={false}
                   label={false}
                   placeholder="Phone number"
+                  autoComplete="tel"
                 />
                 <SelectInput
                   source="type"

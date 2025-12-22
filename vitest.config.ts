@@ -47,7 +47,7 @@ export default defineConfig({
     // Force Vitest to transform React Admin packages (needed for ESM compatibility)
     server: {
       deps: {
-        inline: ["react-admin", "ra-core", "ra-ui-materialui"],
+        inline: ["react-admin", "ra-core"],
       },
     },
   },
@@ -58,7 +58,6 @@ export default defineConfig({
       // See: https://github.com/marmelab/react-admin/blob/master/docs/Vite.md
       "react-admin": path.resolve(__dirname, "./node_modules/react-admin/src"),
       "ra-core": path.resolve(__dirname, "./node_modules/ra-core/src"),
-      "ra-ui-materialui": path.resolve(__dirname, "./node_modules/ra-ui-materialui/src"),
     },
   },
 });

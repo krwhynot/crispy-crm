@@ -88,10 +88,10 @@ export const OrganizationCompactForm = () => {
       >
         <CompactFormRow>
           <FormFieldWrapper name="address">
-            <TextInput source="address" label="Street" helperText={false} />
+            <TextInput source="address" label="Street" helperText={false} autoComplete="address-line1" />
           </FormFieldWrapper>
           <FormFieldWrapper name="city">
-            <TextInput source="city" label="City" helperText={false} />
+            <TextInput source="city" label="City" helperText={false} autoComplete="address-level2" />
           </FormFieldWrapper>
         </CompactFormRow>
 
@@ -100,7 +100,12 @@ export const OrganizationCompactForm = () => {
             <StateComboboxInput source="state" label="State" />
           </FormFieldWrapper>
           <FormFieldWrapper name="postal_code">
-            <TextInput source="postal_code" label="Zip Code" helperText={false} />
+            <TextInput
+              source="postal_code"
+              label="Zip Code"
+              helperText={false}
+              autoComplete="postal-code"
+            />
           </FormFieldWrapper>
         </CompactFormRow>
       </FormSectionWithProgress>
@@ -113,7 +118,12 @@ export const OrganizationCompactForm = () => {
             </FormFieldWrapper>
           </div>
           <FormFieldWrapper name="phone">
-            <TextInput source="phone" label="Phone" helperText="Format: (555) 123-4567" />
+            <TextInput
+              source="phone"
+              label="Phone"
+              helperText="Format: (555) 123-4567"
+              autoComplete="tel"
+            />
           </FormFieldWrapper>
           <FormFieldWrapper name="linkedin_url">
             <TextInput
