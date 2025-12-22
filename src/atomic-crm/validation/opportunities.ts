@@ -89,7 +89,7 @@ const opportunityBaseSchema = z.strictObject({
   deleted_at: z.string().max(50).optional().nullable(),
 
   // OpportunityInfoInputs fields
-  name: z.string().min(1, "Opportunity name is required").max(255, "Opportunity name too long"),
+  name: z.string().trim().min(1, "Opportunity name is required").max(255, "Opportunity name too long"),
   description: z
     .string()
     .max(2000, "Description must be 2000 characters or less")
@@ -287,7 +287,7 @@ export const createOpportunitySchema = opportunityBaseSchema
  */
 export const quickCreateOpportunitySchema = z.strictObject({
   // Required fields (Salesforce standard)
-  name: z.string().min(1, "Opportunity name is required").max(255, "Opportunity name too long"),
+  name: z.string().trim().min(1, "Opportunity name is required").max(255, "Opportunity name too long"),
   stage: opportunityStageSchema,
   customer_organization_id: z.union([z.string(), z.number()]), // Business rule Q12
 

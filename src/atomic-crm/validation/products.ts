@@ -48,6 +48,7 @@ export const productSchema = z.strictObject({
   // Required fields - Zod v4 uses 'error' property instead of required_error/invalid_type_error
   name: z
     .string({ error: "Product name is required" })
+    .trim()
     .min(1, "Product name is required")
     .max(255, "Product name too long"),
   principal_id: z
@@ -121,7 +122,7 @@ export type ProductFormData = z.infer<typeof productSchema>;
 export const opportunityProductSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
   product_id_reference: z.coerce.number().int().positive("Product is required"),
-  product_name: z.string().min(1, "Product name is required").max(255, "Product name too long"),
+  product_name: z.string().trim().min(1, "Product name is required").max(255, "Product name too long"),
   product_category: z.string().max(100).optional(),
   notes: z.string().max(500).optional(),
 });

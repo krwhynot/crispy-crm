@@ -14,7 +14,7 @@ import { sanitizeHtml } from "@/lib/sanitization";
  */
 const attachmentSchema = z.strictObject({
   src: z.string().url("Invalid attachment URL").max(2048),
-  title: z.string().min(1, "Attachment title is required").max(255, "Attachment title too long"),
+  title: z.string().trim().min(1, "Attachment title is required").max(255, "Attachment title too long"),
   type: z.string().max(100, "MIME type too long").optional(),
   size: z.number().positive().optional(),
 });
@@ -26,6 +26,7 @@ export const baseNoteSchema = z.strictObject({
   // Required fields
   text: z
     .string()
+    .trim()
     .min(1, "Note text is required")
     .max(10000, "Note text too long")
     .transform((val) => sanitizeHtml(val)),

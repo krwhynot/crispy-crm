@@ -17,7 +17,7 @@ import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { ContactEmpty } from "./ContactEmpty";
 import { ContactListFilter } from "./ContactListFilter";
-import { ListNoResults } from "../simple-list/ListNoResults";
+import { ListNoResults } from "@/components/admin/ListNoResults";
 import { ContactSlideOver } from "./ContactSlideOver";
 import { TopToolbar } from "../layout/TopToolbar";
 import { Avatar } from "./Avatar";
@@ -100,6 +100,16 @@ const ContactListLayout = ({
 
   if (!data?.length && !hasFilters) {
     return <ContactEmpty />;
+  }
+
+  // Filtered empty state: filters are applied but no results match
+  if (!data?.length && hasFilters) {
+    return (
+      <StandardListLayout resource="contacts" filterComponent={<ContactListFilter />}>
+        <ListSearchBar placeholder="Search contacts..." filterConfig={CONTACT_FILTER_CONFIG} />
+        <ListNoResults />
+      </StandardListLayout>
+    );
   }
 
   return (

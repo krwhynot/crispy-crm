@@ -23,6 +23,7 @@ import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { OpportunityListFilter } from "./OpportunityListFilter";
 import { OPPORTUNITY_FILTER_CONFIG } from "./opportunityFilterConfig";
 import { OpportunityListTutorial } from "./OpportunityListTutorial";
+import { ListNoResults } from "@/components/admin/ListNoResults";
 
 // Helper functions for view preference persistence
 const OPPORTUNITY_VIEW_KEY = "opportunity.view.preference";
@@ -142,6 +143,29 @@ const OpportunityListLayout = ({
         <OpportunityEmpty>
           <OpportunityArchivedList />
         </OpportunityEmpty>
+      </StandardListLayout>
+    );
+  }
+
+  // Filtered empty state: filters are applied but no results match
+  if (!data?.length && hasFilters) {
+    return (
+      <StandardListLayout resource="opportunities" filterComponent={<OpportunityListFilter />}>
+        <div className="flex items-center gap-4 mb-4">
+          <div className="flex-1">
+            <ListSearchBar
+              placeholder="Search opportunities..."
+              filterConfig={OPPORTUNITY_FILTER_CONFIG}
+            />
+          </div>
+          <div className="flex-shrink-0">
+            <span data-tutorial="opp-view-switcher">
+              <OpportunityViewSwitcher view={view} onViewChange={onViewChange} />
+            </span>
+          </div>
+        </div>
+        <ListNoResults />
+        <OpportunityArchivedList />
       </StandardListLayout>
     );
   }
