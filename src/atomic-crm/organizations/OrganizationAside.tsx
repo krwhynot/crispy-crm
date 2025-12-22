@@ -11,7 +11,6 @@ import { SelectField } from "@/components/admin/select-field";
 import { AsideSection } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";
 import type { Company } from "../types";
-import { sizes as _sizes } from "./sizes";
 import { ParentOrganizationSection } from "./ParentOrganizationSection";
 import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES } from "./constants";
 
