@@ -33,7 +33,6 @@ export default defineConfig(({ mode }) => ({
       "@radix-ui/react-tabs",
       "@radix-ui/react-tooltip",
       "@radix-ui/react-accordion",
-      "@radix-ui/react-navigation-menu",
       "@radix-ui/react-progress",
       "@radix-ui/react-radio-group",
 
@@ -207,7 +206,6 @@ export default defineConfig(({ mode }) => ({
             "@radix-ui/react-tabs",
             "@radix-ui/react-tooltip",
             "@radix-ui/react-accordion",
-            "@radix-ui/react-navigation-menu",
             "@radix-ui/react-progress",
             "@radix-ui/react-radio-group",
           ],
