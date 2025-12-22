@@ -127,14 +127,16 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
 
   return (
     <div
+      ref={setNodeRef}
       className={`
   flex flex-col pb-4 bg-card border border-border rounded-xl shadow-col-inner
   ${shadowConfig.rest} ${shadowConfig.hover}
-  transition-[box-shadow,border-color] duration-200 ease-in-out px-2
+  transition-[box-shadow,border-color,ring-color,background-color] duration-200 ease-in-out px-2
   min-w-[260px] max-w-[300px]
   md:min-w-[280px] md:max-w-[320px]
   lg:min-w-[300px] lg:max-w-[340px]
   h-full max-h-full overflow-y-auto overflow-x-hidden shrink-0
+  ${isOver ? "ring-2 ring-primary/50 bg-accent/20" : ""}
 `}
       data-testid="kanban-column"
     >
@@ -204,10 +206,7 @@ export const OpportunityColumn = React.memo(function OpportunityColumn({
             <QuickAddOpportunity stage={stage} onOpportunityCreated={onOpportunityCreated} />
           </div>
           <div
-            ref={setNodeRef}
-            className={`flex flex-col flex-1 rounded-xl mt-1 gap-1.5 pb-2 min-h-[80px] transition-colors px-1 ${
-              isOver ? "bg-accent ring-2 ring-ring" : ""
-            }`}
+            className="flex flex-col flex-1 rounded-xl mt-1 gap-1.5 pb-2 min-h-[80px] px-1"
           >
             <SortableContext items={opportunityIds} strategy={verticalListSortingStrategy}>
               {opportunities.map((opportunity) => (

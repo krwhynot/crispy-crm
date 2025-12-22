@@ -300,6 +300,14 @@ export const OpportunityListContent = ({
 
   const handleDragEnd = useCallback((event: DragEndEvent) => {
     const { active, over } = event;
+
+    // Debug logging - remove after verification
+    console.log('[DnD Debug]', {
+      activeId: active.id,
+      overId: over?.id ?? 'NULL - no drop target detected',
+      overData: over?.data?.current,
+    });
+
     setActiveId(null);
 
     // Dropped outside a valid droppable

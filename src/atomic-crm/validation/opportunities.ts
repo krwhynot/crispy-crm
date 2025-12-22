@@ -346,7 +346,17 @@ export const updateOpportunitySchema = opportunityBaseSchema
         return true;
       }
 
-      // If contact_ids IS provided, it must not be empty (can't remove all contacts)
+      // Skip contact validation for stage-only updates (e.g., Kanban drag-drop)
+      // These updates only change stage/win_reason/loss_reason, not contacts
+      const stageOnlyFields = new Set(["id", "stage", "win_reason", "loss_reason", "close_reason_notes", "contact_ids"]);
+      const providedFields = Object.keys(data).filter((key) => data[key as keyof typeof data] !== undefined);
+      const isStageOnlyUpdate = providedFields.every((field) => stageOnlyFields.has(field));
+      if (isStageOnlyUpdate) {
+        return true;
+      }
+
+      // If contact_ids IS provided in a non-stage-only update, it must not be empty
+      // (user is explicitly removing all contacts, which we don't allow)
       return Array.isArray(data.contact_ids) && data.contact_ids.length > 0;
     },
     {
