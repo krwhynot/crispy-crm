@@ -56,7 +56,7 @@ export interface NumberFieldProps<RecordType extends Record<string, any> = Recor
 }
 
 const defaultTransform = (value: unknown) =>
-  value && typeof value === "string" && !isNaN(value as unknown as number) ? +value : value;
+  value && typeof value === "string" && !Number.isNaN(Number(value)) ? +value : value;
 
 const hasNumberFormat = !!(
   typeof Intl === "object" &&

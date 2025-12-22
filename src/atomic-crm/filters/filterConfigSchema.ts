@@ -12,7 +12,7 @@ import { z } from "zod";
 /**
  * Schema for individual filter choice options
  */
-export const filterChoiceSchema = z.object({
+export const filterChoiceSchema = z.strictObject({
   id: z.union([z.string(), z.number()]),
   name: z.string().max(100),
 });
@@ -49,7 +49,7 @@ const formatLabelCallbackSchema = z.custom<(value: unknown) => string>(
  *
  * NOTE: ChipFilterConfig is named to avoid collision with existing FilterConfig in types.ts
  */
-export const chipFilterConfigSchema = z.object({
+export const chipFilterConfigSchema = z.strictObject({
   /** Filter key matching React Admin filterValues (e.g., "organization_type", "created_at@gte") */
   key: z.string().min(1).max(100),
   /** Human-readable label for the chip category (e.g., "Type", "Created After") */
