@@ -264,15 +264,31 @@ export const opportunitiesCallbacks: ResourceCallbacks = {
    * Process data before save (create/update)
    * - Strip computed fields (from views/aggregations)
    * - Strip virtual fields (products_to_sync, products - UI-only fields)
+   * - Strip contact_ids for stage-only updates (Kanban drag-drop)
    * - Merge defaults for create
    */
   beforeSave: async (data, _dataProvider, _resource) => {
     // Strip computed fields first
     let processed = stripComputedFields(data);
 
-    // Merge defaults for create (when no id present)
-    if (!data.id) {
-      processed = mergeCreateDefaults(processed);
+    // Strip empty contact_ids for stage-only updates (Kanban drag-drop)
+    // NOTE: data.id is NOT available in beforeSave - id is passed separately as params.id
+    // Detection: stage is present, name is NOT present (name is required for create/full edit)
+    // When contact_ids is empty array from previousData merge, strip it to avoid validation error
+    const isStageOnlyUpdate = data.stage && !data.name;
+    const hasEmptyContactIds = Array.isArray(data.contact_ids) && data.contact_ids.length === 0;
+    if (isStageOnlyUpdate && hasEmptyContactIds) {
+      delete processed.contact_ids;
+    }
+
+    // Merge defaults for create (when no required fields present - indicates create operation)
+    // Note: We check for name since it's required for create, not data.id (unavailable here)
+    if (!data.name) {
+      // Only merge defaults if this looks like a create (no id means create in validation layer)
+      // But for stage-only updates, skip defaults
+      if (!isStageOnlyUpdate) {
+        processed = mergeCreateDefaults(processed);
+      }
     }
 
     return processed;
