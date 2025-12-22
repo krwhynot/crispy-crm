@@ -13,6 +13,7 @@ import { FormToolbar } from "@/components/admin/simple-form";
 import { ProductInputs } from "./ProductInputs";
 import { productSchema } from "../validation/products";
 import { ProductFormTutorial } from "./ProductFormTutorial";
+import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 
 // Human-readable field labels for error messages
 const PRODUCT_FIELD_LABELS: Record<string, string> = {
@@ -55,6 +56,7 @@ const ProductCreate = () => {
 
 const ProductFormContent = () => {
   const { errors } = useFormState();
+  useUnsavedChangesWarning();
 
   return (
     <>

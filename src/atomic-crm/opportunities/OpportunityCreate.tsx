@@ -10,6 +10,7 @@ import { OpportunityCreateSaveButton } from "./components/OpportunityCreateSaveB
 import { SimilarOpportunitiesDialog } from "./components/SimilarOpportunitiesDialog";
 import { useSimilarOpportunityCheck } from "./hooks/useSimilarOpportunityCheck";
 import { OpportunityCreateFormTutorial } from "../tutorial/OpportunityCreateFormTutorial";
+import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 
 const OpportunityCreate = () => {
   const { data: identity } = useGetIdentity();
@@ -82,6 +83,7 @@ const OpportunityFormContent = ({
   resetConfirmation: () => void;
 }) => {
   const { errors } = useFormState();
+  useUnsavedChangesWarning();
 
   return (
     <>

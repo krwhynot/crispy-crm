@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { SimpleForm } from "@/components/admin/simple-form";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { SaveButton } from "@/components/admin/form";
@@ -15,6 +16,8 @@ import { SalesService } from "../services";
 import type { Sale, SalesFormData } from "../types";
 import { formatName } from "../utils/formatName";
 import { SalesInputs } from "./SalesInputs";
+import { salesSchema } from "@/atomic-crm/validation/sales";
+import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 
 function EditToolbar() {
   return (
@@ -34,6 +37,11 @@ export default function SalesEdit() {
 
   // Create service instance using the base data provider
   const salesService = new SalesService(dataProvider);
+
+  const defaultValues = useMemo(
+    () => salesSchema.partial().parse(record),
+    [record]
+  );
 
   const { mutate } = useMutation({
     mutationKey: ["signup"],
@@ -63,16 +71,27 @@ export default function SalesEdit() {
           <SimpleForm<SalesFormData>
             toolbar={<EditToolbar />}
             onSubmit={onSubmit}
-            record={record}
+            defaultValues={defaultValues}
+            key={record?.id}
           >
-            <SaleEditTitle />
-            <SalesInputs />
+            <SalesFormContent />
           </SimpleForm>
         </CardContent>
       </Card>
     </div>
   );
 }
+
+const SalesFormContent = () => {
+  useUnsavedChangesWarning();
+
+  return (
+    <>
+      <SaleEditTitle />
+      <SalesInputs />
+    </>
+  );
+};
 
 const SaleEditTitle = () => {
   const record = useRecordContext<Sale>();

@@ -32,6 +32,7 @@ import { DuplicateOrgWarningDialog } from "./DuplicateOrgWarningDialog";
 import { useSmartDefaults } from "@/atomic-crm/hooks/useSmartDefaults";
 import type { Database } from "@/types/database.generated";
 import type { OrganizationFormValues, DuplicateCheckCallback } from "./types";
+import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 
 type Segment = Database["public"]["Tables"]["segments"]["Row"];
 
@@ -259,6 +260,8 @@ const OrganizationFormContent = ({
   checkForDuplicate: (name: string) => Promise<{ id: string | number; name: string } | null>;
   isChecking: boolean;
 }) => {
+  useUnsavedChangesWarning();
+
   return (
     <>
       <OrganizationInputs />

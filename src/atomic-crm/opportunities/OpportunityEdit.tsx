@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { EditBase, Form, useRecordContext } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
@@ -11,6 +12,7 @@ import { OrganizationAvatar } from "../organizations/OrganizationAvatar";
 import type { Opportunity } from "../types";
 import { OpportunityCompactForm } from "./forms/OpportunityCompactForm";
 import { OpportunityActivitySection } from "./components/OpportunityActivitySection";
+import { opportunitySchema } from "@/atomic-crm/validation/opportunities";
 
 const OpportunityEdit = () => {
   const queryClient = useQueryClient();
@@ -37,13 +39,18 @@ const OpportunityEdit = () => {
 const OpportunityEditForm = () => {
   const record = useRecordContext<Opportunity>();
 
+  const defaultValues = useMemo(
+    () => opportunitySchema.partial().parse(record),
+    [record]
+  );
+
   // Wait for record to load before rendering form
   if (!record) return null;
 
   return (
     <Form
       className="flex flex-1 flex-col gap-4 pb-2"
-      defaultValues={record}
+      defaultValues={defaultValues}
       key={record.id} // Force remount when record changes
     >
       <Card>
