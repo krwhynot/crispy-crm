@@ -12,7 +12,6 @@ import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { SalesSlideOver } from "./SalesSlideOver";
-import { SALES_FILTER_CONFIG } from "./salesFilterConfig";
 
 /**
  * SalesList - Standard list page for Sales (User) records
@@ -102,10 +101,7 @@ const SalesListLayout = ({
 
   return (
     <div className="card-container">
-      <ListSearchBar
-        placeholder="Search team members..."
-        filterConfig={SALES_FILTER_CONFIG}
-      />
+      <ListSearchBar placeholder="Search team members..." />
       <PremiumDatagrid
         onRowClick={(id) => openSlideOver(Number(id), "view")}
         focusedIndex={focusedIndex}
