@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { z } from "zod";
 import type { TutorialChapter, TutorialProgress } from "./types";
-import { safeJsonParse } from "../utils/safeJsonParse";
+import { getStorageItem, setStorageItem } from "../utils/secureStorage";
 
 const STORAGE_KEY = "tutorial-progress";
 
@@ -35,8 +35,10 @@ const tutorialProgressSchema = z
   .passthrough();
 
 function loadProgress(): TutorialProgress {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  const parsed = safeJsonParse(stored, tutorialProgressSchema);
+  const parsed = getStorageItem<TutorialProgress>(STORAGE_KEY, {
+    type: "local",
+    schema: tutorialProgressSchema,
+  });
 
   if (parsed) {
     return {
@@ -49,12 +51,7 @@ function loadProgress(): TutorialProgress {
 }
 
 function saveProgress(progress: TutorialProgress): void {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-  } catch (error) {
-    // Safari private mode, quota exceeded, or disabled localStorage
-    console.warn("Failed to save tutorial progress:", error);
-  }
+  setStorageItem(STORAGE_KEY, progress, { type: "local" });
 }
 
 export function useTutorialProgress() {

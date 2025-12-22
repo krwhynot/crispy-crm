@@ -19,8 +19,8 @@ import { ArrowDownCircle, ArrowUpCircle, PlusCircle, Trash, XCircle } from "luci
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import type { ArrayInputContextValue } from "@/hooks/array-input-context";
-import { useArrayInput } from "@/hooks/array-input-context";
+import type { ArrayInputContextValue } from "ra-core";
+import { useArrayInput } from "ra-core";
 import type { SimpleFormIteratorItemContextValue } from "@/hooks/simple-form-iterator-context";
 import {
   SimpleFormIteratorContext,

@@ -15,8 +15,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { Bookmark, BookmarkMinus, BookmarkPlus, Check, Filter, MinusCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { FilterElementProps } from "@/hooks/filter-context";
-import { useFilterContext } from "@/hooks/filter-context";
+import { useFilterContext } from "ra-core";
+import type { FilterElementProps } from "@/components/admin/filter-types";
 import type { SavedQuery } from "@/hooks/saved-queries";
 import { extractValidSavedQueries, useSavedQueries } from "@/hooks/saved-queries";
 import { Button } from "@/components/ui/button";

@@ -25,7 +25,7 @@ type Import =
       error: Error;
     };
 
-interface usePapaParseProps<T> {
+interface usePapaParseProps<T = Record<string, unknown>> {
   // The import batch size
   batchSize?: number;
 
@@ -39,7 +39,7 @@ interface usePapaParseProps<T> {
   previewRowCount?: number;
 }
 
-export function usePapaParse<T>({
+export function usePapaParse<T = Record<string, unknown>>({
   batchSize = 10,
   processBatch,
   onPreview,

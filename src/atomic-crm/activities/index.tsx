@@ -1,32 +1,9 @@
-import * as React from "react";
-import type { ActivityRecord } from "../types";
-import { ResourceErrorBoundary } from "@/components/ResourceErrorBoundary";
+/* eslint-disable react-refresh/only-export-components -- React Admin resource config requires mixed exports */
 
-const ActivityListLazy = React.lazy(() => import("./ActivityList"));
-const ActivityCreateLazy = React.lazy(() => import("./ActivityCreate"));
-const ActivityEditLazy = React.lazy(() => import("./ActivityEdit"));
-
-// Wrap lazy components with resource-specific error boundaries
-const ActivityList = () => (
-  <ResourceErrorBoundary resource="activities" page="list">
-    <ActivityListLazy />
-  </ResourceErrorBoundary>
-);
-
-const ActivityCreate = () => (
-  <ResourceErrorBoundary resource="activities" page="create">
-    <ActivityCreateLazy />
-  </ResourceErrorBoundary>
-);
-
-const ActivityEdit = () => (
-  <ResourceErrorBoundary resource="activities" page="edit">
-    <ActivityEditLazy />
-  </ResourceErrorBoundary>
-);
-
-// Export wrapped view components for direct imports
-export { ActivityList, ActivityCreate, ActivityEdit };
+// Standard feature exports
+export { default as ActivityList } from './ActivityList';
+export { default as ActivityCreate } from './ActivityCreate';
+export { ActivityEdit } from './ActivityEdit';
 
 // Export shared form inputs
 export { ActivityInputs } from "./ActivityInputs";
@@ -48,21 +25,3 @@ export { ActivityTimelineEntry } from "./components/ActivityTimelineEntry";
 
 // Export shared constants
 export { ACTIVITY_PAGE_SIZE } from "./constants";
-
-import { parseDateSafely } from "@/lib/date-utils";
-
-// Resource configuration for React Admin
-export const activityResource = {
-  name: "activities",
-  list: ActivityList,
-  create: ActivityCreate,
-  edit: ActivityEdit,
-};
-
-export default {
-  list: ActivityList,
-  create: ActivityCreate,
-  edit: ActivityEdit,
-  recordRepresentation: (record: ActivityRecord) =>
-    `${record?.type || "Activity"} - ${record?.activity_date ? parseDateSafely(record.activity_date)?.toLocaleDateString() || "Unknown date" : "Unknown date"}`,
-};

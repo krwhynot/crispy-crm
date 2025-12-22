@@ -1,17 +1,17 @@
 import { RefreshButton } from "@/components/admin/refresh-button";
 import { ThemeModeToggle } from "@/components/admin/theme-mode-toggle";
 import { UserMenu } from "@/components/admin/user-menu";
-import { useUserMenu } from "@/hooks/user-menu-context";
+import { useUserMenu } from "ra-core";
 import { DropdownMenuItem, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
 import { Settings, Users } from "lucide-react";
 import { CanAccess } from "ra-core";
 import { Link, matchPath, useLocation } from "react-router-dom";
-import { useConfigurationContext } from "../root/ConfigurationContext";
+import { useAppBranding } from "../root/ConfigurationContext";
 import { NotificationBell } from "@/components/NotificationBell";
 import { TutorialLauncher } from "../tutorial/TutorialLauncher";
 
 const Header = () => {
-  const { darkModeLogo, lightModeLogo, title } = useConfigurationContext();
+  const { darkModeLogo, lightModeLogo, title } = useAppBranding();
   const location = useLocation();
 
   let currentPath: string | boolean = "/";

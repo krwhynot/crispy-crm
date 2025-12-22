@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
 import { useDataProvider, useNotify } from "ra-core";
 import type { QuickAddInput } from "@/atomic-crm/validation/quickAdd";
+import { setStorageItem } from "@/atomic-crm/utils/secureStorage";
 
 /**
  * Quick Add Hook for Booth Visitor Creation
