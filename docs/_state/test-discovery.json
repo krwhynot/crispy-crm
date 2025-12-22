@@ -1,0 +1,47 @@
+{
+  "status": "in_progress",
+  "generated_at": null,
+  "unit_test_files": [],
+  "e2e_test_files": [],
+  "test_counts": {
+    "total_files": 0,
+    "total_tests": 0,
+    "by_category": {
+      "unit": 0,
+      "integration": 0,
+      "e2e": 0
+    }
+  },
+  "coverage": null,
+  "test_inventory": [],
+  "vitest_config": {
+    "file": "vitest.config.ts",
+    "test_environment": "jsdom",
+    "setup_files": ["@testing-library/jest-dom", "./src/tests/setup.ts"],
+    "coverage_provider": "v8",
+    "coverage_reporters": ["text", "json", "html", "lcov"],
+    "include_patterns": ["src/**/*.test.{ts,tsx}"],
+    "exclude_patterns": ["node_modules/", "dist/", ".docs/", "tests/**/*.spec.{ts,tsx}", "tests/integration/**/*.test.{ts,tsx}"],
+    "thresholds": {
+      "lines": 70,
+      "functions": 70,
+      "branches": 70,
+      "statements": 70
+    }
+  },
+  "playwright_config": {
+    "file": "playwright.config.ts",
+    "test_dir": "./tests/e2e",
+    "base_url": "http://127.0.0.1:5173",
+    "browsers": ["chromium"],
+    "viewports": ["Desktop Chrome", "iPad Portrait (768x1024)", "iPad Landscape (1024x768)"],
+    "retries_ci": 2,
+    "retries_local": 0,
+    "global_setup": "./tests/e2e/global-setup.ts",
+    "auth_state": "tests/e2e/.auth/user.json"
+  },
+  "verification": {
+    "all_tests_pass": null,
+    "last_run": null
+  }
+}
