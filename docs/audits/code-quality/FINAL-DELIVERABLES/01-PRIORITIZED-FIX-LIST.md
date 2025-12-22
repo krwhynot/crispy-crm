@@ -460,14 +460,27 @@ npm install -D @types/dompurify @types/jsonexport @types/node @types/papaparse @
 
 ---
 
-### P2-6: Add Optimistic Locking for Opportunities [CONCURRENCY]
+### P2-6: Add Optimistic Locking for Opportunities [CONCURRENCY] ✅ COMPLETED 2025-12-22
 
 **Source:** Agent 23 (Async Edge Cases)
 **Impact:** No conflict detection - "last write wins"
 
-**Fix:** Add `version` column with update trigger
+**Resolution Applied:**
+Migration `20251222034729_add_opportunity_version_column.sql`:
+- Added `version` integer column with default 1
+- Created auto-increment trigger `increment_opportunity_version()`
+- Updated `sync_opportunity_with_products` RPC to accept `expected_version` parameter
+- RPC raises `CONFLICT` exception (PostgreSQL 40001) on version mismatch
+- Data provider passes `previousData.version` to service
+- OpportunitiesService uses RPC for all updates when version is provided
+- UI components (`OpportunityEdit`, `ActivityNoteForm`, `OpportunityCardActions`) handle conflict errors with user-friendly "refresh" notification
 
-**Effort:** 2 hours | **Risk:** Medium - schema change
+**Verification:**
+- `npm run typecheck` passes
+- `supabase db push` applied successfully
+- Conflict detection works: User A opens record (v1), User B saves (v2), User A saves → "This opportunity was modified by another user. Refreshing."
+
+**Completed:** 2025-12-22
 
 ---
 

@@ -74,8 +74,14 @@ export function OpportunityCardActions({ opportunityId, onDelete }: OpportunityC
         );
         refresh();
         setShowCloseModal(false);
-      } catch {
-        notify("Error updating opportunity", { type: "error" });
+      } catch (error) {
+        const message = error instanceof Error ? error.message : "";
+        if (message.includes("CONFLICT")) {
+          notify("This opportunity was modified by another user. Refreshing.", { type: "warning" });
+        } else {
+          notify("Error updating opportunity", { type: "error" });
+        }
+        refresh();
       } finally {
         setIsClosing(false);
       }

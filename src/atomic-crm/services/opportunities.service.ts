@@ -148,14 +148,22 @@ export class OpportunitiesService {
       const { products_to_sync, ...restData } = data;
       const opportunityData = { ...restData, id };
 
-      // If no products in form, use standard update
-      if (productsToSync.length === 0) {
+      // If no products AND no version check needed, use standard update
+      // Otherwise use RPC for version checking (optimistic locking)
+      if (productsToSync.length === 0 && previousVersion === undefined) {
         devLog("OpportunitiesService", "Updating opportunity without product changes");
         const result = await this.dataProvider.update<Opportunity>("opportunities", {
           id,
           data: opportunityData,
         });
         return result.data;
+      }
+
+      // Use RPC for updates with products OR when version checking is needed
+      if (productsToSync.length === 0) {
+        devLog("OpportunitiesService", "Updating opportunity via RPC for version check");
+        const opportunity = await this.rpcSyncOpportunity(opportunityData, [], [], [], previousVersion);
+        return opportunity;
       }
 
       // Diff products to determine creates, updates, deletes

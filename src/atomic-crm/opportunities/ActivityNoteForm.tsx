@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller, type Control } from "react-hook-form";
-import { useDataProvider, useNotify, useGetList } from "ra-core";
+import { useDataProvider, useNotify, useGetList, useRefresh } from "ra-core";
 
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -77,6 +77,7 @@ const ContactSelectField = ({
 export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormProps) => {
   const dataProvider = useDataProvider();
   const notify = useNotify();
+  const refresh = useRefresh();
   const { opportunityStages } = usePipelineConfig();
 
   // Extract form defaults from schema per Constitution #5
@@ -113,7 +114,12 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
     } catch (error) {
       console.error('Stage update failed:', error);
       const message = error instanceof Error ? error.message : 'Unknown error';
-      notify(`Error updating stage: ${message}`, { type: "error" });
+      if (message.includes("CONFLICT")) {
+        notify("This opportunity was modified by another user. Refreshing.", { type: "warning" });
+        refresh();
+      } else {
+        notify(`Error updating stage: ${message}`, { type: "error" });
+      }
     }
   };
 
