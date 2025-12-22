@@ -15,9 +15,11 @@ This risk assessment consolidates security, data integrity, and operational risk
 | Severity | Security | Data Integrity | Performance | UX | Total |
 |----------|----------|----------------|-------------|----|----|
 | Critical | 1 | 0 | 1 | 0 | **2** |
-| High | 2 | 2 | 1 | 0 | **5** |
+| High | ~~2~~ 0 ✅ | 2 | 1 | 0 | **3** (was 5) |
 | Medium | 3 | 3 | 2 | 4 | **12** |
 | Low | 2 | 2 | 3 | 6 | **13** |
+
+> **Update 2025-12-21:** HIGH-01 (JSON.parse) and HIGH-02 (z.object) have been fully mitigated.
 
 ---
 
@@ -93,65 +95,64 @@ Refactor view to use CTEs with single aggregation pass.
 
 ## High Risks
 
-### HIGH-01: JSON.parse Without Validation
+### HIGH-01: JSON.parse Without Validation ✅ MITIGATED 2025-12-21
 
 **Risk Type:** Security - Type Confusion
-**Severity:** High
+**Severity:** High → **Resolved**
 **Likelihood:** Low (requires XSS or physical access)
 **Impact:** Application state corruption, potential XSS
 
 **Description:**
-11 locations parse JSON from localStorage/sessionStorage without Zod validation. An attacker with XSS access could modify storage to inject malicious data.
+~~11~~ 13 locations parsed JSON from localStorage/sessionStorage without Zod validation. An attacker with XSS access could modify storage to inject malicious data.
 
-**Attack Scenario:**
-1. Attacker finds XSS vulnerability
-2. Attacker modifies localStorage `columnPreferences`
-3. Injected object causes React render error
-4. User sees broken UI, can't work
+**Resolution Applied:**
+- Created `src/atomic-crm/utils/safeJsonParse.ts` utility
+- Created `src/atomic-crm/activities/activityDraftSchema.ts` shared schema
+- All 13 locations now use `safeJsonParse()` with proper Zod schemas
+- `secureStorage.ts` already had built-in validation (used as template)
 
-**Files Affected:**
-| File | Line |
-|------|------|
-| `useTutorialProgress.ts` | 18 |
-| `secureStorage.ts` | 54, 63 |
-| `useColumnPreferences.ts` | 13, 18 |
-| (8 more locations) | - |
+**Files Fixed:**
+| File | Schema Applied |
+|------|----------------|
+| `useTutorialProgress.ts` | `tutorialProgressSchema` |
+| `useColumnPreferences.ts` | `opportunityStageArraySchema` |
+| `useFilterCleanup.ts` | `listParamsSchema` |
+| `LogActivityFAB.tsx` | `activityDraftSchema` |
+| `QuickLogActivityDialog.tsx` | `activityDraftSchema` |
+| `rateLimiter.ts` | `rateLimitStateSchema` |
+| `useRecentSelections.ts` | `recentItemsSchema` |
+| `opportunityStagePreferences.ts` | `urlFilterSchema` |
+| `filterPrecedence.ts` | `filterValueSchema` |
+| `exportScheduler.ts` | `exportScheduleArraySchema` |
 
-**Mitigation:**
-Create `safeJsonParse<T>(schema: ZodSchema<T>)` utility.
-
-**Timeline:** This sprint
-**Owner:** Frontend team
+**Status:** ✅ MITIGATED - All JSON.parse locations now have Zod validation
 
 ---
 
-### HIGH-02: z.object Mass Assignment Risk
+### HIGH-02: z.object Mass Assignment Risk ✅ MITIGATED 2025-12-21
 
 **Risk Type:** Security - Mass Assignment
-**Severity:** High
+**Severity:** High → **Resolved**
 **Likelihood:** Low (requires API knowledge)
 **Impact:** Unauthorized field modification
 
 **Description:**
-9 schemas use `z.object()` instead of `z.strictObject()`, allowing extra fields to pass through validation and potentially modify protected fields.
+9 schemas used `z.object()` instead of `z.strictObject()`, allowing extra fields to pass through validation.
 
-**Attack Scenario:**
-1. Attacker inspects API payloads
-2. Attacker adds `is_admin: true` to request
-3. Non-strict schema passes it through
-4. Protected field modified
+**Resolution Applied:**
+8 schemas converted to `z.strictObject()`. One intentional exception documented.
 
-**Files Affected:**
-- `stalenessCalculation.ts:57`
-- `digest.service.ts:26,47,66,85,106`
-- `filterConfigSchema.ts:15,52`
-- `distributorAuthorizations.ts:141`
+**Files Fixed:**
+| File | Schema | Status |
+|------|--------|--------|
+| `stalenessCalculation.ts:57` | StageStaleThresholdsSchema | ✅ Fixed |
+| `digest.service.ts` (5 schemas) | All digest schemas | ✅ Fixed |
+| `filterConfigSchema.ts` (2 schemas) | filterChoiceSchema, chipFilterConfigSchema | ✅ Fixed |
+| `distributorAuthorizations.ts:141` | specialPricingSchema | ⚠️ Exception |
 
-**Mitigation:**
-Replace `z.object()` with `z.strictObject()`.
+**Exception Documented:** `specialPricingSchema` intentionally keeps `.passthrough()` for JSONB field flexibility (user-approved).
 
-**Timeline:** This sprint
-**Owner:** Backend team
+**Status:** ✅ MITIGATED - All applicable schemas now use z.strictObject()
 
 ---
 

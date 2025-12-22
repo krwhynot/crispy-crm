@@ -17,6 +17,7 @@ import { useFilterCleanup } from "../hooks/useFilterCleanup";
 import { ListSearchBar } from "@/components/admin/ListSearchBar";
 import { ContactEmpty } from "./ContactEmpty";
 import { ContactListFilter } from "./ContactListFilter";
+import { ListNoResults } from "../simple-list/ListNoResults";
 import { ContactSlideOver } from "./ContactSlideOver";
 import { TopToolbar } from "../layout/TopToolbar";
 import { Avatar } from "./Avatar";
