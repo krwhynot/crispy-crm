@@ -1,7 +1,7 @@
 import { useState, useEffect, Children, type ComponentProps, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
+// @ts-ignore - diacritic library has no TypeScript type definitions
 import * as diacritic from "diacritic";
 import {
   useDataTableStoreContext,
