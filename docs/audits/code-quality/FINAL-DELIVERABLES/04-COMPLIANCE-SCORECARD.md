@@ -1,322 +1,286 @@
-# Compliance Scorecard - Crispy CRM
+# Compliance Scorecard
 
-**Generated:** 2025-12-21
-**Source:** 25-Agent Forensic Audit Synthesis
-**Purpose:** Score compliance with Engineering Constitution principles
-
----
-
-## Overall Score
-
-| Category | Score | Grade |
-|----------|-------|-------|
-| **Overall Compliance** | **82/100** | **B+** |
-| Security Principles | 75/100 | B |
-| Data Integrity | 80/100 | B+ |
-| Architecture | 90/100 | A |
-| Code Quality | 78/100 | B |
-| Performance | 85/100 | A- |
+**Agent:** 25 - Forensic Aggregator
+**Date:** 2025-12-21
+**Source Reports:** Agents 11, 12, 13, 14, 15, 16, 17, 24
 
 ---
 
-## Engineering Constitution Compliance
+## Executive Summary
 
-### Principle 1: Single Source of Truth - Data Provider
-**Score: 95/100** ⭐
-
-| Metric | Status | Notes |
-|--------|--------|-------|
-| All DB through unifiedDataProvider | ✅ | 103+ components compliant |
-| No direct Supabase imports | ✅ | One accepted exception (auth) |
-| Custom actions via invoke() | ✅ | SalesService verified compliant |
-| Centralized error handling | ✅ | Consistent patterns |
-
-**Deductions:**
-- -5: Auth provider direct access (accepted exception)
+The Crispy CRM codebase demonstrates **strong overall compliance** with the Engineering Constitution, achieving an aggregate score of **82%**. Key strengths include excellent React Admin integration, clean import architecture, and proper fail-fast error handling. Areas for improvement include form state patterns and TypeScript strictness.
 
 ---
 
-### Principle 2: Zod Validation at API Boundary
-**Score: 70/100** ⚠️
+## Overall Compliance Score
 
-| Metric | Status | Notes |
-|--------|--------|-------|
-| Validation in dataProvider | ✅ | Correct location |
-| No form-level validation | ✅ | Forms trust boundary |
-| strictObject() usage | ❌ | 5 schemas use z.object() |
-| .max() on all strings | ⚠️ | 8 schemas missing limits |
-| Coercion for forms | ✅ | z.coerce properly used |
-| Enum allowlists | ✅ | No denylist patterns |
-
-**Deductions:**
-- -15: Missing strictObject() enforcement
-- -10: Missing .max() constraints
-- -5: Activity schema false positive resolved
+```
+╔══════════════════════════════════════════════════════════════╗
+║                    OVERALL COMPLIANCE                        ║
+║                                                              ║
+║                         82%                                  ║
+║                      ████████░░                              ║
+║                                                              ║
+║            Target: 85%  │  Status: NEEDS ATTENTION           ║
+╚══════════════════════════════════════════════════════════════╝
+```
 
 ---
 
-### Principle 3: Fail Fast Philosophy
-**Score: 90/100** ⭐
+## Principle-by-Principle Breakdown
 
-| Metric | Status | Notes |
-|--------|--------|-------|
-| No retry logic | ✅ | Errors thrown immediately |
-| No circuit breakers | ✅ | Not implemented (correct) |
-| No graceful degradation | ✅ | Fail fast for velocity |
-| Errors surface to user | ✅ | notify() on failures |
+### Constitution Core Principles (1-7)
 
-**Deductions:**
-- -10: Some silent console.error without user feedback
+| # | Principle | Score | Status | Notes |
+|---|-----------|-------|--------|-------|
+| 1 | Fail Fast | 92% | ✅ | 2 accepted exceptions (tutorials) |
+| 2 | Single Entry Point | 95% | ✅ | Auth/storage exceptions documented |
+| 3 | Zod at API Boundary | 88% | ✅ | 9 schemas need strictObject |
+| 4 | Form State from Schema | 65% | ⚠️ | 8 Edit forms use raw record |
+| 5 | TypeScript Conventions | 78% | ⚠️ | 24 production `any` issues |
+| 6 | Security (RLS) | 90% | ⚠️ | 1 critical USING(true) policy |
+| 7 | No Backward Compat | 85% | ✅ | Some deprecated annotations remain |
 
----
+### Constitution Conventions (8-14)
 
-### Principle 4: TypeScript Strictness
-**Score: 78/100**
-
-| Metric | Status | Notes |
-|--------|--------|-------|
-| strict: true | ✅ | Enabled in tsconfig |
-| No explicit any (prod) | ⚠️ | 24 instances found |
-| No double assertions | ⚠️ | 23 instances found |
-| No non-null assertions | ⚠️ | 18 instances found |
-| Interface for objects | ✅ | Convention followed |
-
-**Deductions:**
-- -8: any usage in production
-- -7: Double type assertions
-- -7: Non-null assertions
+| # | Principle | Score | Status | Notes |
+|---|-----------|-------|--------|-------|
+| 8 | Performance | 75% | ⚠️ | Query efficiency issues, context splits needed |
+| 9 | Accessibility | 85% | ✅ | Good ARIA, missing autocomplete |
+| 10 | No Backward Compat | 70% | ⚠️ | 60+ deprecation annotations to clean |
+| 11 | TypeScript interface/type | 90% | ✅ | Consistent usage |
+| 12 | Validation Patterns | 88% | ✅ | Good coverage, some gaps |
+| 13 | Error Handling | 92% | ✅ | Proper notify() usage |
+| 14 | Module Structure | 65% | ⚠️ | Pattern drift in some modules |
 
 ---
 
-### Principle 5: Form State Management
-**Score: 85/100**
+## Visual Scorecard
 
-| Metric | Status | Notes |
-|--------|--------|-------|
-| mode: onSubmit/onBlur | ✅ | No onChange mode |
-| useWatch() not watch() | ⚠️ | 3 violations |
-| Defaults from schema | ✅ | .partial().parse({}) used |
-| isDirty tracking | ⚠️ | 7/10 forms |
-
-**Deductions:**
-- -10: watch() usage in 3 components
-- -5: Missing unsaved changes guards
-
----
-
-### Principle 6: Soft Delete Pattern
-**Score: 75/100**
-
-| Metric | Status | Notes |
-|--------|--------|-------|
-| deleted_at column | ✅ | All entities have it |
-| RLS hides deleted | ✅ | Policies configured |
-| Cascade handling | ❌ | Missing for relationships |
-| No archived_at usage | ✅ | Deprecated field avoided |
-
-**Deductions:**
-- -25: Cascade delete not implemented
+```
+Fail Fast            ████████████████████░░░░ 92%
+Single Entry Point   ███████████████████░░░░░ 95%
+Zod Boundary         █████████████████░░░░░░░ 88%
+Form State Schema    █████████████░░░░░░░░░░░ 65%  ← NEEDS WORK
+TypeScript Strict    ███████████████░░░░░░░░░ 78%
+Security (RLS)       ██████████████████░░░░░░ 90%
+No Backward Compat   █████████████████░░░░░░░ 85%
+Performance          ███████████████░░░░░░░░░ 75%
+Accessibility        █████████████████░░░░░░░ 85%
+Deprecation Cleanup  ██████████████░░░░░░░░░░ 70%  ← NEEDS WORK
+Interface/Type       ██████████████████░░░░░░ 90%
+Validation Patterns  █████████████████░░░░░░░ 88%
+Error Handling       ████████████████████░░░░ 92%
+Module Structure     █████████████░░░░░░░░░░░ 65%  ← NEEDS WORK
+```
 
 ---
 
-### Principle 7: React Admin Patterns
-**Score: 92/100** ⭐
+## Detailed Scores by Category
 
-| Metric | Status | Notes |
-|--------|--------|-------|
-| useGetList for lists | ✅ | 100% compliance |
-| useRecordContext | ✅ | Properly used |
-| useListContext | ✅ | Filter state managed |
-| No prop drilling | ⚠️ | 2 minor violations |
+### Data Provider Compliance
 
-**Deductions:**
-- -5: Occasional prop drilling
-- -3: Some custom fetch patterns
+| Metric | Score | Evidence |
+|--------|-------|----------|
+| All data through unifiedDataProvider | 100% | 0 violations found |
+| Auth exceptions documented | 100% | useCurrentSale.ts verified |
+| Storage exceptions documented | 100% | Inside provider, acceptable |
+
+**Grade: A**
 
 ---
 
-### Principle 8: Design System Compliance
-**Score: 85/100**
+### Zod Schema Compliance
 
-| Metric | Status | Notes |
-|--------|--------|-------|
-| Semantic color tokens | ⚠️ | 12 raw color violations |
-| No hardcoded hex | ⚠️ | 8 instances |
-| 44px touch targets | ✅ | h-11 w-11 used |
-| Tailwind v4 syntax | ✅ | Correct usage |
+| Metric | Score | Evidence |
+|--------|-------|----------|
+| z.strictObject usage | 85% | 9 schemas use z.object |
+| .max() on all strings | 95% | Minor gaps in edge cases |
+| .trim() on required strings | 60% | Missing on most fields |
+| z.coerce for form inputs | 90% | Good coverage |
+| z.enum for constrained values | 95% | Consistent usage |
 
-**Deductions:**
-- -10: Raw color values
-- -5: Some undersized touch targets
+**Grade: B+**
 
 ---
 
-### Principle 9: Error Boundaries
-**Score: 80/100**
+### Form Pattern Compliance
 
-| Metric | Status | Notes |
-|--------|--------|-------|
-| Feature-level boundaries | ⚠️ | 3 features missing |
-| Fallback UI provided | ✅ | Good error displays |
-| Error logging | ✅ | Console + future Sentry |
+| Metric | Score | Evidence |
+|--------|-------|----------|
+| Create forms use schema.partial().parse({}) | 90% | Minor variations |
+| Edit forms use schema.partial().parse(record) | 35% | 8 forms use raw record |
+| Form mode is onBlur/onSubmit | 100% | No onChange usage |
+| useWatch() instead of watch() | 95% | Good practice |
 
-**Deductions:**
-- -15: Missing boundaries in 3 features
-- -5: Some inconsistent fallbacks
+**Grade: C+** (Needs Improvement)
 
 ---
 
-### Principle 10: Testing Standards
-**Score: 75/100**
+### React Rendering Compliance
 
-| Metric | Status | Notes |
-|--------|--------|-------|
-| renderWithAdminContext | ✅ | Test util available |
-| Semantic E2E selectors | ✅ | getByRole/Label used |
-| No CSS selectors | ✅ | Avoided in E2E |
-| Coverage targets | ⚠️ | Below 80% threshold |
+| Metric | Score | Evidence |
+|--------|-------|----------|
+| No nested component definitions | 70% | ~18 instances found |
+| Context values memoized | 80% | Some providers missing useMemo |
+| Proper useCallback for handlers | 85% | Good coverage |
+| Key props on lists | 95% | Consistent usage |
 
-**Deductions:**
-- -15: Coverage below target
-- -10: Some test fragility
+**Grade: B**
 
 ---
 
-### Principle 11: Database Standards
-**Score: 88/100** ⭐
+### TypeScript Strictness
 
-| Metric | Status | Notes |
-|--------|--------|-------|
-| RLS policies | ✅ | 329 policies (excellent) |
-| Multi-tenant isolation | ✅ | organization_id enforced |
-| Junction tables for M:M | ✅ | contact_organizations |
-| Deprecated fields avoided | ✅ | company_id not used |
+| Metric | Score | Evidence |
+|--------|-------|----------|
+| tsconfig strict mode | 100% | All strict options enabled |
+| Explicit any (production) | 75% | 24 issues remaining |
+| Type assertions safety | 70% | 14 unsafe, 23 double |
+| Non-null assertions | 95% | 2 unguarded fixed |
+| Suppression comments | 91% | 1 without justification |
 
-**Deductions:**
-- -7: Some missing FK constraints
-- -5: Index optimization opportunities
+**Grade: B**
 
 ---
 
-### Principle 12: Module Structure
-**Score: 82/100**
+### Module Structure Compliance
 
-| Metric | Status | Notes |
-|--------|--------|-------|
-| Feature folder structure | ✅ | Consistent layout |
-| Barrel exports (index.ts) | ✅ | Present in modules |
-| No circular deps | ⚠️ | 2 potential cycles |
-| Pattern consistency | ⚠️ | 18% average drift |
+| Metric | Score | Evidence |
+|--------|-------|----------|
+| Canonical 6-file pattern | 65% | 7 of 11 modules compliant |
+| resource.tsx pattern | 70% | 2 modules need migration |
+| Inputs reuse in Create/Edit | 85% | Good practice |
+| Named exports match file names | 100% | Consistent |
+| Directory naming (lowercase plural) | 100% | Consistent |
 
-**Deductions:**
-- -10: Pattern drift (35% in sales)
-- -8: Minor structural inconsistencies
+**Grade: C+**
 
 ---
 
-### Principle 13: Accessibility (A11y)
-**Score: 78/100**
+### Import Graph Compliance
 
-| Metric | Status | Notes |
-|--------|--------|-------|
-| aria-invalid on errors | ⚠️ | 60% coverage |
-| aria-describedby links | ⚠️ | 50% coverage |
-| role="alert" on errors | ⚠️ | Partially implemented |
-| Focus management | ⚠️ | Some gaps |
+| Metric | Score | Evidence |
+|--------|-------|----------|
+| Circular dependencies | 100% | 0 found |
+| Layer violations | 100% | 0 found |
+| Import coupling (<25 imports) | 95% | 1 file with 31 |
+| Type-only imports | 90% | Good separation |
 
-**Deductions:**
-- -12: Incomplete ARIA attributes
-- -10: Focus management gaps
+**Grade: A**
 
 ---
 
-### Principle 14: Performance Patterns
-**Score: 85/100**
+### Bundle Optimization
 
-| Metric | Status | Notes |
-|--------|--------|-------|
-| No unnecessary re-renders | ⚠️ | 14 flagged components |
-| Proper memoization | ✅ | useMemo/useCallback used |
-| Lazy loading | ✅ | Code splitting active |
-| Bundle optimization | ⚠️ | Some large chunks |
+| Metric | Score | Evidence |
+|--------|-------|----------|
+| Tree-shakeable imports | 100% | Individual icon imports |
+| Code splitting | 95% | 40+ lazy components |
+| Unused dependencies | 85% | 4 packages to remove |
+| Manual chunk strategy | 100% | Well-configured |
 
-**Deductions:**
-- -10: Re-render optimization opportunities
-- -5: Bundle size could improve
-
----
-
-## Compliance by Feature Module
-
-| Module | Score | Top Issue |
-|--------|-------|-----------|
-| Contacts | 88% | Minor pattern drift |
-| Organizations | 85% | Missing error boundary |
-| Opportunities | 82% | Form state issues |
-| Activities | 80% | useWatch violations |
-| Tasks | 85% | Good compliance |
-| Sales | 65% | 35% pattern drift |
-| Reports | 78% | Missing tests |
-| Settings | 80% | A11y gaps |
-| Dashboard | 85% | Performance optimization |
+**Grade: A-**
 
 ---
 
 ## Compliance Trends
 
+### Improving Areas
+- ✅ Fail-fast error handling (was 85% → 92%)
+- ✅ React Admin hook usage (excellent adoption)
+- ✅ Import graph cleanliness (0 circular deps)
+
+### Stable Areas
+- ✅ Data provider discipline (100%)
+- ✅ Naming conventions (100%)
+- ✅ Directory structure (100%)
+
+### Declining Areas
+- ⚠️ Form state patterns (drifting from schema)
+- ⚠️ Module structure (new modules less compliant)
+- ⚠️ Deprecation cleanup (accumulating)
+
+---
+
+## Compliance by Module
+
+| Module | Overall | Data | Forms | Types | Structure |
+|--------|---------|------|-------|-------|-----------|
+| opportunities | 90% | 100% | 95% | 85% | 92% |
+| contacts | 88% | 100% | 85% | 90% | 100% |
+| organizations | 82% | 100% | 80% | 85% | 92% |
+| tasks | 85% | 100% | 90% | 85% | 100% |
+| activities | 70% | 100% | 75% | 80% | 50% |
+| products | 82% | 100% | 80% | 85% | 86% |
+| sales | 65% | 95% | 60% | 75% | 86% |
+
+---
+
+## Path to 90% Compliance
+
+### Week 1 Actions (Est. +4%)
+- [ ] Fix P0-1: RLS USING(true) → +1%
+- [ ] Fix P1-3: Form state from schema (8 forms) → +2%
+- [ ] Fix P1-2: z.strictObject migration → +1%
+
+### Week 2 Actions (Est. +3%)
+- [ ] Fix P1-1: JSON.parse Zod validation → +1%
+- [ ] Fix P1-7: Whitespace trimming → +1%
+- [ ] Fix P2-5: organizations/activities index.tsx → +1%
+
+### Week 3 Actions (Est. +2%)
+- [ ] Fix P2-1: ConfigurationContext split → +1%
+- [ ] Clean deprecation annotations → +1%
+
+### Target After Fixes
+
 ```
-Sprint -3: 75/100
-Sprint -2: 78/100
-Sprint -1: 80/100
-Current:   82/100  ⬆️
-Target:    90/100
+Current:  82% ████████░░
+Target:   90% █████████░
 ```
 
 ---
 
-## Priority Improvements
+## Compliance Exceptions Registry
 
-### To reach 90/100:
-
-| Improvement | Current | Target | Impact |
-|-------------|---------|--------|--------|
-| Zod strictObject | 70% | 100% | +5 |
-| String .max() | 85% | 100% | +3 |
-| TypeScript any | 24 issues | 0 | +4 |
-| Soft delete cascade | No | Yes | +3 |
-| A11y attributes | 60% | 90% | +3 |
+| ID | Principle | Exception | Approved | Expires |
+|----|-----------|-----------|----------|---------|
+| EXC-001 | #2 Single Entry | Auth provider direct Supabase | 2025-12-21 | Never |
+| EXC-002 | #2 Single Entry | Storage service in provider | 2025-12-21 | Never |
+| EXC-003 | #1 Fail Fast | Tutorial silent catches | 2025-12-21 | Never |
+| EXC-004 | #1 Fail Fast | Promise.allSettled bulk ops | 2025-12-21 | Never |
+| EXC-005 | #5 TypeScript | any in RA wrappers | 2025-12-21 | Review Q2 2026 |
 
 ---
 
-## Agent Validation Notes
+## Recommended Constitution Amendments
 
-**From Agent 24 (Devil's Advocate):**
+Per Agent 24 (Devil's Advocate), consider adding:
 
-The following items were **incorrectly flagged** as violations:
+### New Principles
+- **#15:** Component definitions at module level
+- **#16:** Context values must be memoized
+- **#17:** Loading state for async ops >200ms
+- **#18:** Error boundaries at feature entry points
 
-| Original Finding | Resolution |
-|-----------------|------------|
-| Activity schema missing .max() | FALSE - Has constraints |
-| SalesService bypasses provider | FALSE - Uses invoke() |
-| 47 nested components | INFLATED - Many are fine |
-
-**Adjusted Score Impact:** +3 points (82 vs 79)
-
----
-
-## Certification Status
-
-| Certification | Status | Blocker |
-|--------------|--------|---------|
-| Security Review | ⚠️ PENDING | Zod strictness |
-| A11y Audit | ⚠️ PENDING | ARIA coverage |
-| Performance | ✅ PASS | Within thresholds |
-| Architecture | ✅ PASS | Solid patterns |
+### Clarifications
+- **#1:** Scope fail-fast to business-critical operations
+- **#2:** Clarify data table vs auth vs storage access
+- **#12:** Allow `.passthrough().transform()` for imports
 
 ---
 
-## Next Review
+## Audit Cadence Recommendation
 
-**Scheduled:** After P0/P1 fixes complete
-**Expected Score:** 88-90/100
-**Certification Goal:** All passing by launch
+| Audit Type | Frequency | Scope |
+|------------|-----------|-------|
+| Constitution Core (1-7) | Weekly automated | CI/CD |
+| Full 25-agent audit | Quarterly | Pre-release |
+| Pattern drift check | Monthly | New features |
+| Security audit | Per release | RLS, validation |
+
+---
+
+*Generated by Agent 25 - Forensic Aggregator*
+*Source: Agents 11, 12, 13, 14, 15, 16, 17, 24*
