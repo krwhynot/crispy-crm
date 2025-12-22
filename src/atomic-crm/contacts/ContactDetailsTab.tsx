@@ -8,6 +8,7 @@ import { ArrayField } from "@/components/admin/array-field";
 import { EmailField } from "@/components/admin/email-field";
 import { SingleFieldList } from "@/components/admin/single-field-list";
 import { Card, CardContent } from "@/components/ui/card";
+import { FormProgressProvider } from "@/components/admin/form/FormProgressProvider";
 import { Badge } from "@/components/ui/badge";
 import { AsideSection } from "@/components/ui";
 import { SaleName } from "../sales/SaleName";
@@ -58,9 +59,11 @@ export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetails
     return (
       <RecordContextProvider value={record}>
         <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
-          <div className="space-y-6">
-            <ContactInputs />
-          </div>
+          <FormProgressProvider>
+            <div className="space-y-6">
+              <ContactInputs />
+            </div>
+          </FormProgressProvider>
         </Form>
       </RecordContextProvider>
     );
