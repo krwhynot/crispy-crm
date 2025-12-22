@@ -13,7 +13,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Badge } from "@/components/ui/badge";
 import { ActivityTypeCard } from "./ActivityTypeCard";
 import { StaleLeadsView } from "./StaleLeadsView";
 import { INTERACTION_TYPE_OPTIONS } from "@/atomic-crm/validation/activities";
@@ -26,6 +25,9 @@ import {
 import { format, subDays, startOfMonth } from "date-fns";
 import { parseDateSafely } from "@/lib/date-utils";
 import type { Sale, Activity as BaseActivity, ActivityGroup } from "../types";
+import { AppliedFiltersBar, EmptyState } from "@/atomic-crm/reports/components";
+import { useReportData } from "@/atomic-crm/reports/hooks";
+import { Activity, CheckCircle } from "lucide-react";
 
 /** Extended activity with required organization_name for campaign reporting */
 interface CampaignActivity extends Omit<BaseActivity, "organization_name"> {
@@ -107,24 +109,39 @@ export default function CampaignActivityReport() {
     });
 
   // Fetch activities for the selected campaign (with filters applied)
-  const { data: activities = [], isPending: activitiesPending } = useGetList<CampaignActivity>(
-    "activities",
-    {
-      pagination: { page: 1, perPage: 10000 },
-      filter: {
-        "opportunities.campaign": selectedCampaign,
-        "opportunities.deleted_at@is": null,
-        ...(dateRange?.start && { "created_at@gte": dateRange.start }),
-        ...(dateRange?.end && { "created_at@lte": dateRange.end }),
-        ...(selectedActivityTypes.length > 0 &&
-          selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length && {
-            type: selectedActivityTypes,
-          }),
-        ...(selectedSalesRep !== null && { created_by: selectedSalesRep }),
-      },
-      sort: { field: "created_at", order: "DESC" },
-    }
+  const activitiesFilter = useMemo(
+    () => ({
+      "opportunities.campaign": selectedCampaign,
+      "opportunities.deleted_at@is": null,
+      ...(selectedActivityTypes.length > 0 &&
+        selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length && {
+          type: selectedActivityTypes,
+        }),
+      ...(selectedSalesRep !== null && { created_by: selectedSalesRep }),
+    }),
+    [selectedCampaign, selectedActivityTypes, selectedSalesRep]
   );
+
+  const activitiesDateRange = useMemo(
+    () =>
+      dateRange
+        ? {
+            start: new Date(dateRange.start),
+            end: new Date(dateRange.end),
+          }
+        : undefined,
+    [dateRange]
+  );
+
+  const {
+    data: activities,
+    isLoading: activitiesLoading,
+    error: activitiesError,
+  } = useReportData<CampaignActivity>("activities", {
+    dateRange: activitiesDateRange,
+    additionalFilters: activitiesFilter,
+    dateField: "created_at",
+  });
 
   // Get sales rep names for created_by lookup
   const ownerIds = useMemo(
@@ -169,7 +186,7 @@ export default function CampaignActivityReport() {
 
   // Group activities by type
   const activityGroups = useMemo(() => {
-    if (!activities || activities.length === 0) return [];
+    if (activities.length === 0) return [];
 
     const grouped = new Map<string, CampaignActivityGroup>();
     const totalActivities = activities.length;
@@ -398,9 +415,62 @@ export default function CampaignActivityReport() {
     selectedSalesRep !== null ||
     showStaleLeads;
 
+  // Build applied filters array for AppliedFiltersBar
+  const appliedFilters = useMemo(() => {
+    const result: Array<{ label: string; value: string; onRemove: () => void }> = [];
+
+    // Campaign filter (always visible)
+    result.push({
+      label: "Campaign",
+      value: selectedCampaign,
+      onRemove: () => {}, // Can't remove campaign - it's required
+    });
+
+    // Date range (if not all time)
+    if (dateRange) {
+      result.push({
+        label: "Date Range",
+        value: `${dateRange.start} to ${dateRange.end}`,
+        onRemove: () => {
+          setDateRange(null);
+          setDatePreset("allTime");
+        },
+      });
+    }
+
+    // Activity types (if not all)
+    if (selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length) {
+      result.push({
+        label: "Activity Types",
+        value: `${selectedActivityTypes.length} selected`,
+        onRemove: () => setSelectedActivityTypes(INTERACTION_TYPE_OPTIONS.map((opt) => opt.value)),
+      });
+    }
+
+    // Sales rep
+    if (selectedSalesRep !== null) {
+      result.push({
+        label: "Sales Rep",
+        value: salesMap.get(selectedSalesRep) || `Rep ${selectedSalesRep}`,
+        onRemove: () => setSelectedSalesRep(null),
+      });
+    }
+
+    // Stale leads toggle
+    if (showStaleLeads) {
+      result.push({
+        label: "View",
+        value: "Stale Leads Only",
+        onRemove: () => setShowStaleLeads(false),
+      });
+    }
+
+    return result;
+  }, [selectedCampaign, dateRange, selectedActivityTypes, selectedSalesRep, showStaleLeads, salesMap]);
+
   // Check if data is loading
   const isLoadingCampaigns = opportunitiesPending;
-  const isLoadingActivities = activitiesPending || allActivitiesPending;
+  const isLoadingActivities = activitiesLoading || allActivitiesPending;
 
   // Calculate activity counts by type for all activities (unfiltered)
   const activityTypeCounts = useMemo(() => {
@@ -742,6 +812,21 @@ export default function CampaignActivityReport() {
         </Card>
       </div>
 
+      {/* Applied Filters Bar */}
+      <AppliedFiltersBar
+        filters={appliedFilters}
+        onResetAll={clearFilters}
+        hasActiveFilters={hasActiveFilters}
+      />
+
+      {/* Error Display */}
+      {activitiesError && (
+        <div className="rounded-lg border border-destructive/50 bg-destructive/10 p-4 text-destructive mb-section">
+          <p className="font-medium">Failed to load campaign activities</p>
+          <p className="text-sm">{activitiesError.message}</p>
+        </div>
+      )}
+
       {/* Summary Cards */}
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-content mb-section">
         {isLoadingActivities ? (
@@ -825,7 +910,15 @@ export default function CampaignActivityReport() {
           ))}
         </div>
       ) : showStaleLeads ? (
-        <StaleLeadsView campaignName={selectedCampaign} staleOpportunities={staleOpportunities} />
+        staleOpportunities.length === 0 && !activitiesError ? (
+          <EmptyState
+            title="No Stale Leads"
+            description="All leads have recent activity - great job!"
+            icon={CheckCircle}
+          />
+        ) : (
+          <StaleLeadsView campaignName={selectedCampaign} staleOpportunities={staleOpportunities} />
+        )
       ) : activityGroups.length > 0 ? (
         <div>
           <h3 className="text-lg font-semibold mb-4">Activity Type Breakdown</h3>
@@ -840,60 +933,25 @@ export default function CampaignActivityReport() {
           ))}
         </div>
       ) : (
-        <Card>
-          <CardContent className="py-12 text-center">
-            <div className="mb-4 text-4xl">📭</div>
-            {hasActiveFilters ? (
-              <>
-                <p className="text-lg font-medium text-muted-foreground mb-2">
-                  No activities match the current filters
-                </p>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Try adjusting your filters to see more results
-                </p>
-                <div className="flex flex-wrap gap-2 justify-center mb-4">
-                  {dateRange && (
-                    <Badge variant="secondary">
-                      Date Range: {dateRange.start} to {dateRange.end}
-                    </Badge>
-                  )}
-                  {selectedActivityTypes.length < INTERACTION_TYPE_OPTIONS.length && (
-                    <Badge variant="secondary">
-                      {selectedActivityTypes.length} Activity{" "}
-                      {selectedActivityTypes.length === 1 ? "Type" : "Types"} Selected
-                    </Badge>
-                  )}
-                  {selectedSalesRep && (
-                    <Badge variant="secondary">
-                      Sales Rep: {salesMap.get(selectedSalesRep) || "Unknown"}
-                    </Badge>
-                  )}
-                </div>
-                <Button variant="outline" onClick={clearFilters} size="sm">
-                  Clear All Filters
-                </Button>
-              </>
-            ) : totalOpportunities === 0 ? (
-              <>
-                <p className="text-lg font-medium text-muted-foreground mb-2">
-                  This campaign has no opportunities yet
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Add opportunities to this campaign to start tracking activities
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="text-lg font-medium text-muted-foreground mb-2">
-                  No activities found for this campaign
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  Activities will appear here once your team starts engaging with leads
-                </p>
-              </>
-            )}
-          </CardContent>
-        </Card>
+        !activitiesError && (
+          <EmptyState
+            title="No Campaign Activities"
+            description={
+              hasActiveFilters
+                ? "Try adjusting your filters to see more results."
+                : "Activities will appear here once your team starts engaging with leads."
+            }
+            icon={Activity}
+            action={
+              hasActiveFilters
+                ? {
+                    label: "Clear Filters",
+                    onClick: clearFilters,
+                  }
+                : undefined
+            }
+          />
+        )
       )}
     </ReportLayout>
   );
