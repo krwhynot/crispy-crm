@@ -267,6 +267,9 @@ export const filterableFields: Record<string, string[]> = {
     "deleted_at", // Soft delete timestamp
     "created_by", // FK to sales (for filtering by creator/owner - activities table uses created_by, NOT sales_id)
     "q", // Special: full-text search parameter
+    // Nested relationship filters for CampaignActivityReport
+    "opportunities.campaign", // Filter by related opportunity's campaign
+    "opportunities.deleted_at", // Filter by related opportunity's soft-delete status
   ],
 
   // Audit trail resource (field-level history)
