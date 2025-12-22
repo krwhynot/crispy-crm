@@ -4,52 +4,81 @@
 **Scope:** Reports module (`src/atomic-crm/reports/`)
 **Auditor:** Claude Code
 **Status:** Pre-launch MVP
+**Last Updated:** 2025-12-22
 
 ## Executive Summary
 
-| Severity | Count | Description |
-|----------|-------|-------------|
-| P0 (Critical) | 0 | Blocks functionality |
-| P1 (Major) | 2 | Architecture violations |
-| P2 (Moderate) | 2 | Missing features or inconsistencies |
-| P3 (Minor) | 1 | Polish or enhancements |
-| **Total Issues** | **5** | |
+| Severity | Count | Resolved |
+|----------|-------|----------|
+| P0 (Critical) | 0 | - |
+| P1 (Major) | 2 | ✅ 2/2 |
+| P2 (Moderate) | 2 | ✅ 1/2 |
+| P3 (Minor) | 1 | ✅ 1/1 |
+| **Total** | **5** | **4/5** |
 
-**Overall Assessment:** The reports module demonstrates strong adherence to design system standards (semantic colors, accessibility, touch targets) but violates the architecture principle of centralized data access. Filtering UX and empty states need enhancement before launch.
-
----
-
-## Findings by Category
-
-### Architecture Violations (P1)
-
-| ID | Issue | Severity | Location | Standard Violated | Recommendation |
-|----|-------|----------|----------|-------------------|----------------|
-| A1 | Reports bypass unifiedDataProvider, using useGetList directly | P1 | `TabFilterBar.tsx:69`<br>All report tabs | CLAUDE.md: "All DB access through ONE entry point: unifiedDataProvider" | Create `useReportData` hook that wraps unifiedDataProvider for centralized data access |
-| A2 | Unbounded pagination with `perPage: 10000` | P1 | All `useGetList` calls in report tabs | Scalable pagination patterns | Monitor for now (acceptable at MVP scale), document technical debt for future optimization when data exceeds 10K records |
-
-**Impact:** A1 bypasses Zod validation at the API boundary and creates multiple data access patterns. A2 will cause performance degradation as dataset grows.
+**Overall Assessment:** The reports module now demonstrates full adherence to architecture principles with centralized data access through `useReportData`. All P1 issues resolved. F2 (API-level filtering) deferred to post-MVP.
 
 ---
 
-### Filtering & Controls (P2)
+## Resolution Status
 
-| ID | Issue | Severity | Location | Standard Violated | Recommendation |
-|----|-------|----------|----------|-------------------|----------------|
-| F1 | No applied filter chips showing current filter state | P2 | `TabFilterBar.tsx` | Ant Design: Show active filters with clear affordance | Add `AppliedFiltersBar` component below filter controls showing active filters as dismissible chips |
-| F2 | Client-side filtering only | P2 | All report tabs | API-level filtering for performance | Move complex filters (date range, principal, stage) to query params passed to data provider |
+### A1 (P1) - Reports bypass unifiedDataProvider ✅ RESOLVED
 
-**Impact:** Users cannot see which filters are active without re-opening dropdowns. Client-side filtering acceptable at MVP scale but will degrade as data grows.
+- **Original Issue:** Reports using `useGetList` directly, bypassing centralized validation
+- **Resolution:** Created `useReportData` hook that wraps `useDataProvider`
+- **Files:** `src/atomic-crm/reports/hooks/useReportData.ts`
+- **Verified:** All 4 report tabs now use `useReportData`
+
+### A2 (P1) - Unbounded pagination ✅ DOCUMENTED
+
+- **Original Issue:** `perPage: 10000` without pagination controls
+- **Resolution:** Technical debt documented in `useReportData.ts` comments
+- **Status:** Acceptable at MVP scale (6 reps, 9 principals)
+- **Future:** Edge Function for server-side aggregation when data > 10K
+
+### F1 (P2) - No applied filter chips ✅ RESOLVED
+
+- **Original Issue:** Users couldn't see active filters without re-opening dropdowns
+- **Resolution:** Created `AppliedFiltersBar` and `FilterChip` components
+- **Files:** `src/atomic-crm/reports/components/AppliedFiltersBar.tsx`, `FilterChip.tsx`
+- **Verified:** All 4 report tabs display filter chips with Reset All functionality
+
+### F2 (P2) - Client-side filtering only ⏳ DEFERRED
+
+- **Original Issue:** All filtering done client-side
+- **Status:** Deferred to post-MVP
+- **Rationale:** Client-side filtering acceptable at current scale (~500 opportunities)
+- **Future:** Migrate to API-level filtering when dataset > 5K records
+
+### E1 (P3) - Basic empty states ✅ RESOLVED
+
+- **Original Issue:** "No data available" text without actionable guidance
+- **Resolution:** Created `EmptyState` component with icon + action support
+- **Files:** `src/atomic-crm/reports/components/EmptyState.tsx`
+- **Verified:** All 4 report tabs show actionable empty states
 
 ---
 
-### Empty States (P3)
+## New Components Created
 
-| ID | Issue | Severity | Location | Standard Violated | Recommendation |
-|----|-------|----------|----------|-------------------|----------------|
-| E1 | Basic "No data available" text without actionable guidance | P3 | All chart components | Actionable empty states with clear next steps | Add `EmptyState` component with icon, message, and action button (e.g., "Create your first opportunity") |
+| Component | File | Purpose |
+|-----------|------|---------|
+| FilterChip | `components/FilterChip.tsx` | Dismissible filter chip with keyboard support |
+| AppliedFiltersBar | `components/AppliedFiltersBar.tsx` | Filter chips row + Reset All button |
+| EmptyState | `components/EmptyState.tsx` | Zero-data state with icon and CTA |
+| useReportData | `hooks/useReportData.ts` | Centralized data fetching through data provider |
 
-**Impact:** Users hitting empty states lack guidance on how to populate data.
+---
+
+## Test Coverage
+
+| File | Tests | Status |
+|------|-------|--------|
+| FilterChip.test.tsx | 5 tests | ✅ Pass |
+| AppliedFiltersBar.test.tsx | 7 tests | ✅ Pass |
+| EmptyState.test.tsx | 6 tests | ✅ Pass |
+| useReportData.test.tsx | 8 tests | ✅ Pass |
+| **Total** | **26 tests** | **All Passing** |
 
 ---
 
@@ -64,54 +93,51 @@ The reports module demonstrates exceptional adherence to design system and acces
 
 ### Accessibility (A11y)
 - ✅ **ARIA labels on charts** - All chart components include `role="img"` and descriptive `aria-label` attributes
-- ✅ **Keyboard navigation** - KPI cards support Enter/Space key handlers for full keyboard accessibility
+- ✅ **Keyboard navigation** - KPI cards and FilterChips support Enter/Space key handlers
 - ✅ **Focus management** - Proper focus states on all interactive controls
+- ✅ **Filter chips** - `role="list"`/`role="listitem"` semantics for screen readers
 
 ### Performance
 - ✅ **Lazy loading** - All tabs wrapped in `React.lazy()` with Suspense boundaries
-- ✅ **Memoized computations** - Chart data and options use `useMemo` to prevent unnecessary recalculations
+- ✅ **Memoized computations** - Chart data and filter objects use `useMemo` to prevent unnecessary recalculations
 - ✅ **Efficient re-renders** - Proper dependency arrays throughout
 
 ### Engineering Patterns
-- ✅ **Fail-fast validation** - `useChartTheme` hook throws immediately if CSS variables are missing
+- ✅ **Single entry point** - All data access through `useReportData` → `useDataProvider` → `unifiedDataProvider`
+- ✅ **Fail-fast validation** - Errors surface immediately, no retry logic
 - ✅ **Type safety** - Full TypeScript coverage with proper interfaces
-- ✅ **Component composition** - Clean separation of concerns (container → tabs → components → charts)
 
 ---
 
-## Recommendation Priority
-
-### Before Launch (P1)
-1. **A1** - Create `useReportData` hook to centralize data access through unifiedDataProvider
-2. **A2** - Document pagination technical debt in code comments
-
-### Post-MVP (P2/P3)
-3. **F1** - Add applied filter chips for better UX visibility
-4. **F2** - Migrate to API-level filtering when dataset exceeds 5K records
-5. **E1** - Enhance empty states with actionable guidance
-
----
-
-## Files Audited
+## Files Audited (Updated)
 
 ```
 src/atomic-crm/reports/
 ├── ReportsPage.tsx              # Main container with 4 tabs
 ├── tabs/
-│   ├── OverviewTab.tsx          # KPIs and summary charts
-│   ├── OpportunitiesTab.tsx     # Pipeline analysis
-│   ├── ActivitiesTab.tsx        # Activity metrics
-│   └── PrincipalsTab.tsx        # Principal performance
+│   ├── OverviewTab.tsx          # KPIs and summary charts (✅ uses useReportData)
+│   ├── OpportunitiesTab.tsx     # Pipeline analysis (✅ uses useReportData)
+│   ├── WeeklyActivityTab.tsx    # Activity metrics (✅ uses useReportData)
+│   └── CampaignActivityTab.tsx  # Campaign tracking (✅ uses useReportData)
 ├── components/
 │   ├── KPICard.tsx              # Metric display cards
-│   └── TabFilterBar.tsx         # Filter controls (⚠️ useGetList on line 69)
+│   ├── KPICard.test.tsx         # Unit tests
+│   ├── FilterChip.tsx           # NEW: Dismissible filter chip
+│   ├── FilterChip.test.tsx      # NEW: 5 tests
+│   ├── AppliedFiltersBar.tsx    # NEW: Filter chips bar
+│   ├── AppliedFiltersBar.test.tsx # NEW: 7 tests
+│   ├── EmptyState.tsx           # NEW: Actionable empty state
+│   ├── EmptyState.test.tsx      # NEW: 6 tests
+│   └── TabFilterBar.tsx         # Filter controls
+├── hooks/
+│   ├── useReportData.ts         # NEW: Centralized data fetching
+│   ├── useReportData.test.tsx   # NEW: 8 tests
+│   └── useChartTheme.ts         # CSS variable extraction
 └── charts/
-    ├── OpportunitiesByStageChart.tsx
-    ├── OpportunitiesByPrincipalChart.tsx
-    ├── ActivityTimelineChart.tsx
-    ├── ActivityByTypeChart.tsx
-    ├── PrincipalPerformanceChart.tsx
-    └── TopDistributorsChart.tsx
+    ├── ActivityTrendChart.tsx
+    ├── PipelineChart.tsx
+    ├── RepPerformanceChart.tsx
+    └── TopPrincipalsChart.tsx
 ```
 
 ---
@@ -125,4 +151,4 @@ src/atomic-crm/reports/
 
 ---
 
-**Next Steps:** Review findings with team and prioritize P1 issues for remediation before launch.
+**Audit Complete:** 4/5 issues resolved. F2 (API-level filtering) tracked for post-MVP.
