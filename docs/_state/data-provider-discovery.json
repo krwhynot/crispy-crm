@@ -1,0 +1,654 @@
+{
+  "status": "complete",
+  "generated_at": "2025-12-22T00:00:00Z",
+  "discovery_scope": "API Layer Architecture - Data Provider, Handlers, Validation Schemas, Callbacks, Services, Wrappers",
+
+  "provider_architecture": {
+    "main_provider_file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
+    "line_count": 1625,
+    "architecture_type": "Monolithic with service delegation",
+    "feature_flag_alternative": {
+      "flag": "VITE_USE_COMPOSED_PROVIDER",
+      "alternative_file": "composedDataProvider.ts",
+      "line_count": 174,
+      "description": "Handler-based composition pattern for gradual migration"
+    },
+    "core_operations": {
+      "getList": { "line_start": 465, "line_end": 535 },
+      "getOne": { "line_start": 537, "line_end": 601 },
+      "getMany": { "line_start": 603, "line_end": 628 },
+      "getManyReference": { "line_start": 630, "line_end": 660 },
+      "create": { "line_start": 662, "line_end": 760 },
+      "update": { "line_start": 762, "line_end": 933 },
+      "updateMany": { "line_start": 935, "line_end": 956 },
+      "delete": { "line_start": 958, "line_end": 1015 },
+      "deleteMany": { "line_start": 1017, "line_end": 1063 }
+    },
+    "custom_methods_count": 30,
+    "service_instances": [
+      { "name": "storageService", "class": "StorageService", "line": 151 },
+      { "name": "transformService", "class": "TransformService", "line": 152 },
+      { "name": "validationService", "class": "ValidationService", "line": 153 },
+      { "name": "salesService", "class": "SalesService", "line": 170 },
+      { "name": "opportunitiesService", "class": "OpportunitiesService", "line": 171 },
+      { "name": "activitiesService", "class": "ActivitiesService", "line": 172 },
+      { "name": "junctionsService", "class": "JunctionsService", "line": 173 },
+      { "name": "segmentsService", "class": "SegmentsService", "line": 174 }
+    ],
+    "error_handling": {
+      "pattern": "Fail-fast with structured logging",
+      "sentry_integration": true,
+      "intentional_exceptions": [
+        "Idempotent delete (already deleted = success)",
+        "Silent update detection (throws error if update doesn't persist)"
+      ]
+    }
+  },
+
+  "provider_files": [
+    "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
+    "src/atomic-crm/providers/supabase/composedDataProvider.ts",
+    "src/atomic-crm/providers/supabase/authProvider.ts",
+    "src/atomic-crm/providers/supabase/dataProviderUtils.ts",
+    "src/atomic-crm/providers/supabase/dataProviderCache.ts",
+    "src/atomic-crm/providers/supabase/filterRegistry.ts",
+    "src/atomic-crm/providers/supabase/resources.ts",
+    "src/atomic-crm/providers/supabase/index.ts",
+    "src/atomic-crm/providers/supabase/supabase.ts",
+    "src/atomic-crm/providers/supabase/types.ts"
+  ],
+
+  "handlers": [
+    {
+      "file": "handlers/activitiesHandler.ts",
+      "resource_name": "activities",
+      "table_name": "activities",
+      "operations": ["getList", "getOne", "create", "update", "delete"],
+      "soft_delete": true,
+      "computed_fields": ["contact_name", "organization_name", "opportunity_name"],
+      "line_count": 33,
+      "composition_pattern": "Factory-based (createResourceCallbacks)"
+    },
+    {
+      "file": "handlers/contactsHandler.ts",
+      "resource_name": "contacts",
+      "table_name": "contacts",
+      "operations": ["getList", "getOne", "create", "update", "delete"],
+      "soft_delete": true,
+      "computed_fields": ["full_name", "organization_name", "primary_organization_name", "total_opportunities", "last_activity_date", "nb_notes", "nb_tasks", "nb_activities", "company_name"],
+      "custom_filters": ["q → ILIKE search on name, first_name, last_name"],
+      "line_count": 33,
+      "composition_pattern": "Factory-based with custom beforeGetList"
+    },
+    {
+      "file": "handlers/notesHandler.ts",
+      "resource_name": "contact_notes | opportunity_notes | organization_notes",
+      "table_name": "contact_notes | opportunity_notes | organization_notes",
+      "operations": ["getList", "getOne", "create", "update", "delete"],
+      "soft_delete": true,
+      "computed_fields": [],
+      "line_count": 56,
+      "composition_pattern": "DRY factory for 3 note types"
+    },
+    {
+      "file": "handlers/opportunitiesHandler.ts",
+      "resource_name": "opportunities",
+      "table_name": "opportunities",
+      "operations": ["getList", "getOne", "create", "update", "delete"],
+      "soft_delete": true,
+      "soft_delete_method": "RPC (archive_opportunity_with_relations)",
+      "computed_fields": ["principal_organization_name", "customer_organization_name", "distributor_organization_name", "days_in_stage", "days_since_last_activity", "pending_task_count", "overdue_task_count", "nb_interactions", "last_interaction_date", "next_task_id", "next_task_title", "next_task_due_date", "next_task_priority"],
+      "virtual_fields": ["products_to_sync", "products"],
+      "custom_filters": ["q → ILIKE search on name, description"],
+      "line_count": 37,
+      "composition_pattern": "Inline callbacks (complex RPC logic)"
+    },
+    {
+      "file": "handlers/organizationsHandler.ts",
+      "resource_name": "organizations",
+      "table_name": "organizations",
+      "operations": ["getList", "getOne", "create", "update", "delete"],
+      "soft_delete": true,
+      "computed_fields": ["contact_count", "opportunity_count", "total_revenue", "last_activity_date", "primary_contact_name", "nb_contacts", "nb_opportunities", "nb_notes", "parent_organization_name", "child_branch_count", "total_contacts_across_branches", "total_opportunities_across_branches", "last_opportunity_activity"],
+      "custom_filters": ["q → ILIKE search on name, city, state, sector"],
+      "line_count": 33,
+      "composition_pattern": "Factory-based with custom beforeGetList"
+    },
+    {
+      "file": "handlers/productsHandler.ts",
+      "resource_name": "products",
+      "table_name": "products",
+      "operations": ["getList", "getOne", "create", "update", "delete"],
+      "soft_delete": true,
+      "computed_fields": ["principal_name"],
+      "line_count": 36,
+      "composition_pattern": "Factory-based (createResourceCallbacks)"
+    },
+    {
+      "file": "handlers/salesHandler.ts",
+      "resource_name": "sales",
+      "table_name": "sales",
+      "operations": ["getList", "getOne", "create", "update", "delete"],
+      "soft_delete": true,
+      "computed_fields": ["administrator"],
+      "special_handling": "Writes via Edge Function (RLS restriction)",
+      "line_count": 30,
+      "composition_pattern": "Factory-based (createResourceCallbacks)"
+    },
+    {
+      "file": "handlers/tagsHandler.ts",
+      "resource_name": "tags",
+      "table_name": "tags",
+      "operations": ["getList", "getOne", "create", "update", "delete"],
+      "soft_delete": true,
+      "computed_fields": [],
+      "line_count": 30,
+      "composition_pattern": "Factory-based (createResourceCallbacks)"
+    },
+    {
+      "file": "handlers/tasksHandler.ts",
+      "resource_name": "tasks",
+      "table_name": "tasks",
+      "operations": ["getList", "getOne", "create", "update", "delete"],
+      "soft_delete": true,
+      "computed_fields": ["contact_name", "opportunity_name", "organization_name", "assignee_name", "assignee_email", "creator_name", "customer_name", "principal_name"],
+      "custom_transforms": ["Completion timestamp auto-management", "Snooze date normalization"],
+      "line_count": 34,
+      "composition_pattern": "Factory-based with custom write transforms"
+    }
+  ],
+
+  "schemas": [
+    {
+      "file": "validation/activities.ts",
+      "schemas": [
+        { "name": "activityTypeSchema", "type": "z.enum", "exported_types": ["ActivityType"] },
+        { "name": "interactionTypeSchema", "type": "z.enum", "exported_types": ["InteractionType"] },
+        { "name": "sampleStatusSchema", "type": "z.enum", "exported_types": ["SampleStatus"] },
+        { "name": "sentimentSchema", "type": "z.enum", "exported_types": ["Sentiment"] },
+        { "name": "baseActivitiesSchema", "type": "z.strictObject", "field_count": 24 },
+        { "name": "activitiesSchema", "type": "z.strictObject with superRefine", "exported_types": ["ActivitiesInput", "Activities", "ActivityRecord"] },
+        { "name": "engagementsSchema", "type": "z.strictObject with superRefine", "exported_types": ["EngagementsInput", "Engagements"] },
+        { "name": "interactionsSchema", "type": "z.strictObject with superRefine", "exported_types": ["InteractionsInput", "Interactions"] },
+        { "name": "activityNoteFormSchema", "type": "z.strictObject", "exported_types": ["ActivityNoteFormData"] },
+        { "name": "quickLogFormSchema", "type": "z.object with refine", "exported_types": ["QuickLogFormInput", "QuickLogFormOutput", "ActivityLogInput", "ActivityLog"] }
+      ]
+    },
+    {
+      "file": "validation/contacts.ts",
+      "schemas": [
+        { "name": "personalInfoTypeSchema", "type": "z.enum" },
+        { "name": "contactDepartmentSchema", "type": "z.enum", "exported_types": ["ContactDepartment"] },
+        { "name": "emailAndTypeSchema", "type": "z.strictObject" },
+        { "name": "phoneNumberAndTypeSchema", "type": "z.strictObject" },
+        { "name": "contactOrganizationSchema", "type": "z.strictObject with superRefine", "exported_types": ["ContactOrganization"] },
+        { "name": "contactBaseSchema", "type": "z.strictObject", "field_count": 35 },
+        { "name": "contactSchema", "type": "z.strictObject with transform", "exported_types": ["ContactInput", "Contact"] },
+        { "name": "importContactSchema", "type": "z.object with superRefine", "exported_types": ["ImportContactInput"], "security_note": "Uses z.object (not strictObject) for CSV import flexibility" },
+        { "name": "createContactSchema", "type": "z.strictObject with transform" },
+        { "name": "updateContactSchema", "type": "z.strictObject partial with transform" }
+      ]
+    },
+    {
+      "file": "validation/opportunities.ts",
+      "schemas": [
+        { "name": "opportunityStageSchema", "type": "z.enum (7 values)", "exported_types": ["OpportunityStageValue"] },
+        { "name": "opportunityPrioritySchema", "type": "z.enum (4 values)", "exported_types": ["OpportunityPriority"] },
+        { "name": "leadSourceSchema", "type": "z.enum (8 values)", "exported_types": ["LeadSource"] },
+        { "name": "winReasonSchema", "type": "z.enum (5 values)", "exported_types": ["WinReason"] },
+        { "name": "lossReasonSchema", "type": "z.enum (7 values)", "exported_types": ["LossReason"] },
+        { "name": "opportunityBaseSchema", "type": "z.strictObject", "field_count": 26 },
+        { "name": "opportunitySchema", "type": "z.strictObject", "exported_types": ["OpportunityInput", "Opportunity"] },
+        { "name": "createOpportunitySchema", "type": "z.strictObject.omit.extend" },
+        { "name": "quickCreateOpportunitySchema", "type": "z.strictObject", "exported_types": ["QuickCreateOpportunityInput"] },
+        { "name": "updateOpportunitySchema", "type": "z.strictObject.partial with refines" },
+        { "name": "closeOpportunitySchema", "type": "z.strictObject with refines", "exported_types": ["CloseOpportunityInput"] }
+      ]
+    },
+    {
+      "file": "validation/organizations.ts",
+      "schemas": [
+        { "name": "organizationTypeSchema", "type": "z.enum (4 values)", "exported_types": ["OrganizationType"] },
+        { "name": "organizationPrioritySchema", "type": "z.enum (4 values: A-D)", "exported_types": ["OrganizationPriority"] },
+        { "name": "orgScopeSchema", "type": "z.enum (3 values)", "exported_types": ["OrgScope"] },
+        { "name": "orgStatusSchema", "type": "z.enum (2 values)", "exported_types": ["OrgStatus"] },
+        { "name": "orgStatusReasonSchema", "type": "z.enum (6 values)", "exported_types": ["OrgStatusReason"] },
+        { "name": "paymentTermsSchema", "type": "z.enum (6 values)", "exported_types": ["PaymentTerms"] },
+        { "name": "organizationSchema", "type": "z.strictObject", "field_count": 43, "exported_types": ["OrganizationInput", "Organization"] },
+        { "name": "createOrganizationSchema", "type": "z.strictObject.omit.required" },
+        { "name": "updateOrganizationSchema", "type": "z.strictObject.partial.required" }
+      ]
+    },
+    {
+      "file": "validation/notes.ts",
+      "schemas": [
+        { "name": "attachmentSchema", "type": "z.strictObject", "exported_types": ["Attachment"] },
+        { "name": "baseNoteSchema", "type": "z.strictObject", "field_count": 7 },
+        { "name": "contactNoteSchema", "type": "baseNoteSchema.extend", "exported_types": ["ContactNote"] },
+        { "name": "opportunityNoteSchema", "type": "baseNoteSchema.extend", "exported_types": ["OpportunityNote"] },
+        { "name": "organizationNoteSchema", "type": "baseNoteSchema.extend", "exported_types": ["OrganizationNote"] },
+        { "name": "createContactNoteSchema", "type": "contactNoteSchema.omit", "exported_types": ["CreateContactNoteInput"] },
+        { "name": "updateContactNoteSchema", "type": "contactNoteSchema.partial.required", "exported_types": ["UpdateContactNoteInput"] },
+        { "name": "createOpportunityNoteSchema", "type": "opportunityNoteSchema.omit", "exported_types": ["CreateOpportunityNoteInput"] },
+        { "name": "updateOpportunityNoteSchema", "type": "opportunityNoteSchema.partial.required", "exported_types": ["UpdateOpportunityNoteInput"] },
+        { "name": "createOrganizationNoteSchema", "type": "organizationNoteSchema.omit", "exported_types": ["CreateOrganizationNoteInput"] },
+        { "name": "updateOrganizationNoteSchema", "type": "organizationNoteSchema.partial.required", "exported_types": ["UpdateOrganizationNoteInput"] }
+      ]
+    },
+    {
+      "file": "validation/products.ts",
+      "schemas": [
+        { "name": "productCategorySchema", "type": "z.string with validation" },
+        { "name": "productStatusSchema", "type": "z.enum (3 values)" },
+        { "name": "productSchema", "type": "z.strictObject", "field_count": 12, "exported_types": ["ProductFormData"] },
+        { "name": "productUpdateSchema", "type": "productSchema.strip()" },
+        { "name": "opportunityProductSchema", "type": "z.strictObject", "exported_types": ["OpportunityProduct"] }
+      ]
+    },
+    {
+      "file": "validation/sales.ts",
+      "schemas": [
+        { "name": "UserRoleEnum", "type": "z.enum (3 values)", "exported_types": ["UserRole"] },
+        { "name": "salesSchema", "type": "z.strictObject", "field_count": 16, "exported_types": ["SalesInput", "Sales", "Sale", "SalesRole"] },
+        { "name": "createSalesSchema", "type": "salesSchema.omit.extend.required" },
+        { "name": "updateSalesSchema", "type": "salesSchema.partial.required" },
+        { "name": "userInviteSchema", "type": "z.strictObject", "exported_types": ["UserInvite"] },
+        { "name": "userUpdateSchema", "type": "z.strictObject", "exported_types": ["UserUpdate"] },
+        { "name": "salesProfileSchema", "type": "z.strictObject with transforms", "exported_types": ["SalesProfileFormData"] },
+        { "name": "salesPermissionsSchema", "type": "z.strictObject", "exported_types": ["SalesPermissionsFormData"] }
+      ]
+    },
+    {
+      "file": "validation/task.ts",
+      "schemas": [
+        { "name": "taskTypeSchema", "type": "z.enum (7 values)", "exported_types": ["TaskType"] },
+        { "name": "priorityLevelSchema", "type": "z.enum (4 values)", "exported_types": ["PriorityLevel"] },
+        { "name": "taskSchema", "type": "z.strictObject", "field_count": 18, "exported_types": ["Task"] },
+        { "name": "taskCreateSchema", "type": "taskSchema.omit", "exported_types": ["CreateTaskInput"] },
+        { "name": "taskUpdateSchema", "type": "taskSchema.partial.passthrough.required", "exported_types": ["UpdateTaskInput"] }
+      ]
+    },
+    {
+      "file": "validation/tags.ts",
+      "schemas": [
+        { "name": "semanticColorSchema", "type": "z.string with refine and transform" },
+        { "name": "tagSchema", "type": "z.strictObject", "field_count": 5, "exported_types": ["Tag"] },
+        { "name": "createTagSchema", "type": "tagSchema.omit.extend", "exported_types": ["CreateTagInput"] },
+        { "name": "updateTagSchema", "type": "tagSchema.partial.required.omit", "exported_types": ["UpdateTagInput"] },
+        { "name": "tagWithCountSchema", "type": "tagSchema.extend", "exported_types": ["TagWithCount"] },
+        { "name": "tagFilterSchema", "type": "z.strictObject", "exported_types": ["TagFilterOptions"] }
+      ]
+    },
+    {
+      "file": "validation/segments.ts",
+      "schemas": [
+        { "name": "playbookCategorySchema", "type": "z.enum (9 values)", "exported_types": ["PlaybookCategory"] },
+        { "name": "segmentSchema", "type": "z.strictObject", "field_count": 7, "exported_types": ["Segment"] },
+        { "name": "playbookSegmentSchema", "type": "segmentSchema.extend" },
+        { "name": "createSegmentSchema", "type": "segmentSchema.omit", "exported_types": ["CreateSegmentInput"] },
+        { "name": "updateSegmentSchema", "type": "segmentSchema.partial.required.omit", "exported_types": ["UpdateSegmentInput"] }
+      ]
+    },
+    {
+      "file": "validation/distributorAuthorizations.ts",
+      "schemas": [
+        { "name": "distributorAuthorizationSchema", "type": "z.strictObject with refine", "field_count": 12, "exported_types": ["DistributorAuthorization", "DistributorAuthorizationInput", "DistributorAuthorizationWithNames"] },
+        { "name": "specialPricingSchema", "type": "z.object with passthrough", "security_note": "Uses passthrough for flexible JSONB pricing data" },
+        { "name": "productDistributorAuthorizationSchema", "type": "z.strictObject with refine", "exported_types": ["ProductDistributorAuthorization", "ProductDistributorAuthorizationInput", "ProductDistributorAuthorizationWithNames"] },
+        { "name": "createDistributorAuthorizationSchema", "type": "distributorAuthorizationSchema.innerType.omit" },
+        { "name": "updateDistributorAuthorizationSchema", "type": "distributorAuthorizationSchema.innerType.partial.required" },
+        { "name": "createProductDistributorAuthorizationSchema", "type": "productDistributorAuthorizationSchema.innerType.omit" },
+        { "name": "updateProductDistributorAuthorizationSchema", "type": "productDistributorAuthorizationSchema.innerType.partial.required" }
+      ]
+    },
+    {
+      "file": "validation/productDistributors.ts",
+      "schemas": [
+        { "name": "productDistributorStatusSchema", "type": "z.enum (3 values)", "exported_types": ["ProductDistributorStatus"] },
+        { "name": "productDistributorSchema", "type": "z.strictObject", "field_count": 9, "exported_types": ["ProductDistributor", "ProductDistributorInput"] },
+        { "name": "createProductDistributorSchema", "type": "productDistributorSchema.omit.required" },
+        { "name": "updateProductDistributorSchema", "type": "productDistributorSchema.partial.omit" }
+      ]
+    },
+    {
+      "file": "validation/operatorSegments.ts",
+      "schemas": [
+        { "name": "operatorSegmentSchema", "type": "z.enum (43 values)", "exported_types": ["OperatorSegment"] },
+        { "name": "operatorParentSegmentSchema", "type": "z.enum (16 values)", "exported_types": ["OperatorParentSegment"] },
+        { "name": "operatorChildSegmentSchema", "type": "z.enum (14 values)", "exported_types": ["OperatorChildSegment"] },
+        { "name": "operatorSegmentRecordSchema", "type": "z.strictObject", "exported_types": ["OperatorSegmentRecord"] },
+        { "name": "createOperatorSegmentSchema", "type": "operatorSegmentRecordSchema.omit", "exported_types": ["CreateOperatorSegmentInput"] },
+        { "name": "updateOperatorSegmentSchema", "type": "operatorSegmentRecordSchema.partial.required.omit", "exported_types": ["UpdateOperatorSegmentInput"] }
+      ]
+    },
+    {
+      "file": "validation/organizationDistributors.ts",
+      "schemas": [
+        { "name": "organizationDistributorSchema", "type": "z.strictObject with refine", "field_count": 9, "exported_types": ["OrganizationDistributor", "OrganizationDistributorInput", "OrganizationDistributorWithNames"] },
+        { "name": "createOrganizationDistributorSchema", "type": "organizationDistributorSchema.innerType.omit" },
+        { "name": "updateOrganizationDistributorSchema", "type": "organizationDistributorSchema.innerType.partial.required" }
+      ]
+    },
+    {
+      "file": "validation/rpc.ts",
+      "schemas": [
+        { "name": "getOrCreateSegmentParamsSchema", "type": "z.strictObject" },
+        { "name": "setPrimaryOrganizationParamsSchema", "type": "z.strictObject" },
+        { "name": "archiveOpportunityWithRelationsParamsSchema", "type": "z.strictObject" },
+        { "name": "unarchiveOpportunityWithRelationsParamsSchema", "type": "z.strictObject" },
+        { "name": "syncOpportunityWithProductsParamsSchema", "type": "z.strictObject" },
+        { "name": "checkAuthorizationParamsSchema", "type": "z.strictObject", "exported_types": ["CheckAuthorizationParams"] },
+        { "name": "checkAuthorizationResponseSchema", "type": "z.strictObject", "exported_types": ["CheckAuthorizationResponse"] },
+        { "name": "checkAuthorizationBatchParamsSchema", "type": "z.strictObject", "exported_types": ["CheckAuthorizationBatchParams"] },
+        { "name": "checkAuthorizationBatchResponseSchema", "type": "z.strictObject", "exported_types": ["CheckAuthorizationBatchResponse"] }
+      ]
+    },
+    {
+      "file": "validation/quickAdd.ts",
+      "schemas": [
+        { "name": "quickAddSchema", "type": "z.strictObject with refine", "field_count": 11, "exported_types": ["QuickAddInput"] }
+      ]
+    },
+    {
+      "file": "validation/categories.ts",
+      "schemas": [
+        { "name": "categorySchema", "type": "z.strictObject", "exported_types": ["Category"] }
+      ]
+    },
+    {
+      "file": "validation/constants.ts",
+      "schemas": [
+        { "name": "VALIDATION_LIMITS", "type": "const object", "purpose": "Central validation constants for DoS prevention", "exported_types": ["ValidationLimitKey"] }
+      ]
+    }
+  ],
+
+  "callbacks": [
+    {
+      "file": "callbacks/activitiesCallbacks.ts",
+      "resource": "activities",
+      "pattern": "Factory-based (createResourceCallbacks)",
+      "computed_fields": ["contact_name", "organization_name", "opportunity_name"]
+    },
+    {
+      "file": "callbacks/contactsCallbacks.ts",
+      "resource": "contacts",
+      "pattern": "Factory-based with custom beforeGetList",
+      "computed_fields": ["full_name", "organization_name", "primary_organization_name", "total_opportunities", "last_activity_date", "nb_notes", "nb_tasks", "nb_activities", "company_name"],
+      "transforms": ["normalizeJsonbArrays", "computeNameField", "transformQToIlikeSearch"]
+    },
+    {
+      "file": "callbacks/notesCallbacks.ts",
+      "resource": "contact_notes | opportunity_notes | organization_notes",
+      "pattern": "DRY factory for 3 note types",
+      "computed_fields": []
+    },
+    {
+      "file": "callbacks/opportunitiesCallbacks.ts",
+      "resource": "opportunities",
+      "pattern": "Custom (inline, not factory)",
+      "computed_fields": ["principal_organization_name", "customer_organization_name", "distributor_organization_name", "days_in_stage", "days_since_last_activity", "pending_task_count", "overdue_task_count", "nb_interactions", "last_interaction_date", "next_task_id", "next_task_title", "next_task_due_date", "next_task_priority"],
+      "virtual_fields": ["products_to_sync", "products"],
+      "transforms": ["archiveOpportunityWithRelations (RPC)", "stripComputedAndVirtualFields", "transformQToIlikeSearch"]
+    },
+    {
+      "file": "callbacks/organizationsCallbacks.ts",
+      "resource": "organizations",
+      "pattern": "Factory-based with custom beforeGetList",
+      "computed_fields": ["contact_count", "opportunity_count", "total_revenue", "last_activity_date", "primary_contact_name", "nb_contacts", "nb_opportunities", "nb_notes", "parent_organization_name", "child_branch_count"],
+      "transforms": ["transformQToIlikeSearch"]
+    },
+    {
+      "file": "callbacks/productsCallbacks.ts",
+      "resource": "products",
+      "pattern": "Factory-based (createResourceCallbacks)",
+      "computed_fields": ["principal_name"]
+    },
+    {
+      "file": "callbacks/salesCallbacks.ts",
+      "resource": "sales",
+      "pattern": "Factory-based (createResourceCallbacks)",
+      "computed_fields": ["administrator"]
+    },
+    {
+      "file": "callbacks/tagsCallbacks.ts",
+      "resource": "tags",
+      "pattern": "Factory-based (createResourceCallbacks)",
+      "computed_fields": []
+    },
+    {
+      "file": "callbacks/tasksCallbacks.ts",
+      "resource": "tasks",
+      "pattern": "Factory-based with custom write transforms",
+      "computed_fields": ["contact_name", "opportunity_name", "organization_name", "assignee_name", "assignee_email", "creator_name", "customer_name", "principal_name"],
+      "transforms": ["handleCompletionTimestamp", "normalizeSnoozeUntil"]
+    }
+  ],
+
+  "services": {
+    "utility_services": [
+      {
+        "name": "StorageService",
+        "file": "services/StorageService.ts",
+        "methods": ["upload", "getPublicUrl", "remove", "list", "exists"]
+      },
+      {
+        "name": "TransformService",
+        "file": "services/TransformService.ts",
+        "methods": ["transform", "hasTransform"],
+        "resources": ["contactNotes", "opportunityNotes", "organizationNotes", "sales", "contacts", "opportunities", "organizations"]
+      },
+      {
+        "name": "ValidationService",
+        "file": "services/ValidationService.ts",
+        "methods": ["validate", "hasValidation", "validateFilters"]
+      }
+    ],
+    "business_services": [
+      {
+        "name": "SalesService",
+        "custom_methods": ["salesCreate", "salesUpdate", "updatePassword"]
+      },
+      {
+        "name": "OpportunitiesService",
+        "custom_methods": ["archiveOpportunity", "unarchiveOpportunity", "createWithProducts", "updateWithProducts"]
+      },
+      {
+        "name": "ActivitiesService",
+        "custom_methods": ["getActivityLog"]
+      },
+      {
+        "name": "JunctionsService",
+        "custom_methods": ["getContactOrganizations", "addContactToOrganization", "removeContactFromOrganization", "setPrimaryOrganization", "getOpportunityParticipants", "addOpportunityParticipant", "removeOpportunityParticipant", "getOpportunityContacts", "addOpportunityContact", "removeOpportunityContact"]
+      },
+      {
+        "name": "SegmentsService",
+        "custom_methods": ["getOrCreateSegment"]
+      }
+    ]
+  },
+
+  "wrappers": [
+    {
+      "name": "withErrorLogging",
+      "file": "wrappers/withErrorLogging.ts",
+      "purpose": "Structured error logging with Sentry integration",
+      "wrapped_methods": ["getList", "getOne", "getMany", "getManyReference", "create", "update", "updateMany", "delete", "deleteMany"],
+      "features": ["Data redaction in logs", "Idempotent delete handling", "Validation error formatting"]
+    },
+    {
+      "name": "withValidation",
+      "file": "wrappers/withValidation.ts",
+      "purpose": "Zod validation at API boundary",
+      "wrapped_methods": ["create", "update", "getList"],
+      "features": ["Zod to React Admin error transformation", "Filter field cleaning"]
+    }
+  ],
+
+  "resource_matrix": [
+    {
+      "name": "activities",
+      "table": "activities",
+      "handler_file": "handlers/activitiesHandler.ts",
+      "schema_file": "validation/activities.ts",
+      "callback_file": "callbacks/activitiesCallbacks.ts",
+      "operations": { "getList": true, "getOne": true, "create": true, "update": true, "delete": "soft" },
+      "special_handling": []
+    },
+    {
+      "name": "contacts",
+      "table": "contacts",
+      "handler_file": "handlers/contactsHandler.ts",
+      "schema_file": "validation/contacts.ts",
+      "callback_file": "callbacks/contactsCallbacks.ts",
+      "operations": { "getList": true, "getOne": true, "create": true, "update": true, "delete": "soft" },
+      "special_handling": ["Custom search (q → ILIKE)", "JSONB array normalization", "Name computation"]
+    },
+    {
+      "name": "opportunities",
+      "table": "opportunities",
+      "handler_file": "handlers/opportunitiesHandler.ts",
+      "schema_file": "validation/opportunities.ts",
+      "callback_file": "callbacks/opportunitiesCallbacks.ts",
+      "operations": { "getList": true, "getOne": true, "create": true, "update": true, "delete": "soft-cascade-rpc" },
+      "special_handling": ["Product sync via opportunity_products", "RPC cascading soft delete", "Optimistic locking"]
+    },
+    {
+      "name": "organizations",
+      "table": "organizations",
+      "handler_file": "handlers/organizationsHandler.ts",
+      "schema_file": "validation/organizations.ts",
+      "callback_file": "callbacks/organizationsCallbacks.ts",
+      "operations": { "getList": true, "getOne": true, "create": true, "update": true, "delete": "soft" },
+      "special_handling": ["Custom search (q → ILIKE)", "Logo storage handling"]
+    },
+    {
+      "name": "products",
+      "table": "products",
+      "handler_file": "handlers/productsHandler.ts",
+      "schema_file": "validation/products.ts",
+      "callback_file": "callbacks/productsCallbacks.ts",
+      "operations": { "getList": true, "getOne": true, "create": true, "update": true, "delete": "soft" },
+      "special_handling": ["Distributor junction table management"]
+    },
+    {
+      "name": "product_distributors",
+      "table": "product_distributors",
+      "handler_file": "inline in unifiedDataProvider.ts",
+      "schema_file": "validation/productDistributors.ts",
+      "callback_file": null,
+      "operations": { "getList": true, "getOne": true, "create": true, "update": true, "delete": "hard" },
+      "special_handling": ["Composite key (product_id:distributor_id)"]
+    },
+    {
+      "name": "sales",
+      "table": "sales",
+      "handler_file": "handlers/salesHandler.ts",
+      "schema_file": "validation/sales.ts",
+      "callback_file": "callbacks/salesCallbacks.ts",
+      "operations": { "getList": true, "getOne": true, "create": "edge-function", "update": "edge-function", "delete": "soft" },
+      "special_handling": ["Edge Function for writes (RLS bypass)"]
+    },
+    {
+      "name": "tags",
+      "table": "tags",
+      "handler_file": "handlers/tagsHandler.ts",
+      "schema_file": "validation/tags.ts",
+      "callback_file": "callbacks/tagsCallbacks.ts",
+      "operations": { "getList": true, "getOne": true, "create": true, "update": true, "delete": "soft" },
+      "special_handling": []
+    },
+    {
+      "name": "tasks",
+      "table": "tasks",
+      "handler_file": "handlers/tasksHandler.ts",
+      "schema_file": "validation/task.ts",
+      "callback_file": "callbacks/tasksCallbacks.ts",
+      "operations": { "getList": true, "getOne": true, "create": true, "update": true, "delete": "soft" },
+      "special_handling": ["Completion timestamp auto-management", "Snooze date normalization", "Creator-only RLS"]
+    },
+    {
+      "name": "contact_notes",
+      "table": "contact_notes",
+      "handler_file": "handlers/notesHandler.ts",
+      "schema_file": "validation/notes.ts",
+      "callback_file": "callbacks/notesCallbacks.ts",
+      "operations": { "getList": true, "getOne": true, "create": true, "update": true, "delete": "soft" },
+      "special_handling": ["Attachment storage"]
+    },
+    {
+      "name": "opportunity_notes",
+      "table": "opportunity_notes",
+      "handler_file": "handlers/notesHandler.ts",
+      "schema_file": "validation/notes.ts",
+      "callback_file": "callbacks/notesCallbacks.ts",
+      "operations": { "getList": true, "getOne": true, "create": true, "update": true, "delete": "soft" },
+      "special_handling": ["Attachment storage"]
+    },
+    {
+      "name": "organization_notes",
+      "table": "organization_notes",
+      "handler_file": "handlers/notesHandler.ts",
+      "schema_file": "validation/notes.ts",
+      "callback_file": "callbacks/notesCallbacks.ts",
+      "operations": { "getList": true, "getOne": true, "create": true, "update": true, "delete": "soft" },
+      "special_handling": ["Attachment storage"]
+    },
+    {
+      "name": "segments",
+      "table": "segments",
+      "handler_file": "inline in unifiedDataProvider.ts",
+      "schema_file": "validation/segments.ts",
+      "callback_file": null,
+      "operations": { "getList": true, "getOne": true, "create": "get-or-create", "update": true, "delete": "soft" },
+      "special_handling": ["Get-or-create pattern via RPC"]
+    },
+    {
+      "name": "distributor_authorizations",
+      "table": "distributor_authorizations",
+      "handler_file": "inline in unifiedDataProvider.ts",
+      "schema_file": "validation/distributorAuthorizations.ts",
+      "callback_file": null,
+      "operations": { "getList": true, "getOne": true, "create": true, "update": true, "delete": "soft" },
+      "special_handling": []
+    }
+  ],
+
+  "security_findings": {
+    "strictObject_usage": {
+      "compliant": [
+        "activities.ts", "categories.ts", "contacts.ts (main schemas)", "distributorAuthorizations.ts (main schemas)",
+        "notes.ts", "operatorSegments.ts", "opportunities.ts", "organizationDistributors.ts",
+        "organizations.ts", "productDistributors.ts", "products.ts", "quickAdd.ts",
+        "rpc.ts", "sales.ts", "segments.ts", "tags.ts", "task.ts"
+      ],
+      "exceptions": [
+        { "file": "contacts.ts", "schema": "importContactSchema", "reason": "CSV import flexibility requires unknown keys" },
+        { "file": "distributorAuthorizations.ts", "schema": "specialPricingSchema", "reason": "Flexible JSONB pricing data" }
+      ]
+    },
+    "coercion_usage": "Consistent use of z.coerce for form inputs (dates, numbers, booleans)",
+    "max_length_limits": "All string fields have .max() constraints (DoS prevention)",
+    "allowlist_patterns": "z.enum() used for constrained values (never denylist)"
+  },
+
+  "verification": {
+    "resource_count": 14,
+    "schema_file_count": 18,
+    "handler_count": 9,
+    "callback_count": 9,
+    "service_count": 8,
+    "wrapper_count": 2,
+    "all_resources_have_schemas": true,
+    "all_schemas_imported_in_provider": true,
+    "orphan_handlers": [],
+    "architecture_patterns": [
+      "Composed Data Provider (base → wrappers → callbacks → custom methods)",
+      "Single Entry Point (Engineering Constitution)",
+      "Fail-Fast Error Handling (pre-launch)",
+      "Zod Validation at API Boundary Only",
+      "Service Delegation for Business Logic",
+      "Factory Pattern for Handler/Callback Creation"
+    ]
+  }
+}

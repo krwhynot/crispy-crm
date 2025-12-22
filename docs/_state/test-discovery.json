@@ -1,40 +1,3048 @@
 {
-  "status": "in_progress",
-  "generated_at": null,
-  "unit_test_files": [],
-  "e2e_test_files": [],
+  "status": "complete",
+  "generated_at": "2025-12-22T12:44:20.048457",
+  "summary": {
+    "total_test_files": 283,
+    "total_tests": 3520,
+    "unit_test_files": 213,
+    "e2e_test_files": 70,
+    "integration_test_files": 7
+  },
+  "unit_test_files": [
+    "src/__tests__/spacing-tokens.test.ts",
+    "src/atomic-crm/activities/__tests__/ActivityCreate.integration.test.tsx",
+    "src/atomic-crm/activities/__tests__/ActivitySinglePage.test.tsx",
+    "src/atomic-crm/activities/__tests__/QuickLogActivity.test.tsx",
+    "src/atomic-crm/activities/__tests__/QuickLogActivityDialog.test.tsx",
+    "src/atomic-crm/contacts/ContactSlideOver.test.tsx",
+    "src/atomic-crm/contacts/LinkOpportunityModal.test.tsx",
+    "src/atomic-crm/contacts/OpportunitiesTab.test.tsx",
+    "src/atomic-crm/contacts/StageBadgeWithHealth.test.tsx",
+    "src/atomic-crm/contacts/UnlinkConfirmDialog.test.tsx",
+    "src/atomic-crm/contacts/__tests__/ContactBadges.test.tsx",
+    "src/atomic-crm/contacts/__tests__/ContactCreate.integration.test.tsx",
+    "src/atomic-crm/contacts/__tests__/ContactCreate.test.tsx",
+    "src/atomic-crm/contacts/__tests__/ContactList.test.tsx",
+    "src/atomic-crm/contacts/__tests__/ContactShow.test.tsx",
+    "src/atomic-crm/contacts/__tests__/contactImport.helpers.test.ts",
+    "src/atomic-crm/contacts/__tests__/useColumnMapping.test.ts",
+    "src/atomic-crm/contacts/__tests__/useImportWizard.test.ts",
+    "src/atomic-crm/dashboard/v3/__tests__/DashboardErrorBoundary.test.tsx",
+    "src/atomic-crm/dashboard/v3/__tests__/PipelineDrillDown.test.tsx",
+    "src/atomic-crm/dashboard/v3/__tests__/PrincipalDashboardV3.test.tsx",
+    "src/atomic-crm/dashboard/v3/__tests__/PrincipalPipelineFiltering.test.tsx",
+    "src/atomic-crm/dashboard/v3/__tests__/types.test.ts",
+    "src/atomic-crm/dashboard/v3/__tests__/usePrincipalOpportunities.test.ts",
+    "src/atomic-crm/dashboard/v3/components/__tests__/DashboardTabPanel.test.tsx",
+    "src/atomic-crm/dashboard/v3/components/__tests__/MobileQuickActionBar.test.tsx",
+    "src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx",
+    "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.cascading.test.tsx",
+    "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.simple.test.tsx",
+    "src/atomic-crm/dashboard/v3/components/__tests__/TaskCompleteSheet.test.tsx",
+    "src/atomic-crm/dashboard/v3/hooks/__tests__/useCurrentSale.test.ts",
+    "src/atomic-crm/dashboard/v3/hooks/__tests__/useHybridSearch.test.ts",
+    "src/atomic-crm/dashboard/v3/hooks/__tests__/useKPIMetrics.test.ts",
+    "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyPerformance.test.ts",
+    "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyTasks.test.ts",
+    "src/atomic-crm/dashboard/v3/hooks/__tests__/usePrincipalPipeline.test.ts",
+    "src/atomic-crm/dashboard/v3/hooks/__tests__/useTeamActivities.test.ts",
+    "src/atomic-crm/filters/__tests__/FilterChipBar.test.tsx",
+    "src/atomic-crm/filters/__tests__/opportunityStagePreferences.test.ts",
+    "src/atomic-crm/filters/__tests__/useFilterChipBar.test.tsx",
+    "src/atomic-crm/hooks/__tests__/useFilterCleanup.test.ts",
+    "src/atomic-crm/hooks/__tests__/useRecentSelections.test.tsx",
+    "src/atomic-crm/hooks/__tests__/useSmartDefaults.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/BulkActionsToolbar.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/CampaignGroupedList.test.ts",
+    "src/atomic-crm/opportunities/__tests__/ColumnCustomizationMenu.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/OpportunityCard.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/OpportunityCardActions.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/OpportunityCreate.unit.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/OpportunityCreateWizard.integration.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/OpportunityEdit.unit.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/OpportunityList.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/OpportunityShow.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/OpportunityViewPersistence.test.ts",
+    "src/atomic-crm/opportunities/__tests__/OpportunityViewSwitcher.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/QuickAddButton.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/QuickAddDialog.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/QuickAddForm.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/QuickAddOpportunity.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/diffProducts.test.ts",
+    "src/atomic-crm/opportunities/__tests__/opportunityUtils.test.ts",
+    "src/atomic-crm/opportunities/__tests__/product-filtering-integration.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/quick-add-product-filtering-flow.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/stageThresholds.test.ts",
+    "src/atomic-crm/opportunities/__tests__/stages.test.ts",
+    "src/atomic-crm/opportunities/__tests__/useColumnPreferences.test.ts",
+    "src/atomic-crm/opportunities/__tests__/useOpportunityContacts.test.ts",
+    "src/atomic-crm/opportunities/__tests__/useStageMetrics.test.ts",
+    "src/atomic-crm/opportunities/components/__tests__/NextTaskBadge.test.tsx",
+    "src/atomic-crm/opportunities/hooks/__tests__/useContactOrgMismatch.test.ts",
+    "src/atomic-crm/opportunities/hooks/__tests__/useFilteredProducts.test.tsx",
+    "src/atomic-crm/opportunities/hooks/__tests__/useQuickAdd.test.tsx",
+    "src/atomic-crm/opportunities/kanban/__tests__/StageStatusDot.test.tsx",
+    "src/atomic-crm/opportunities/utils/__tests__/rowStyling.test.ts",
+    "src/atomic-crm/opportunities/utils/generateOpportunityName.test.ts",
+    "src/atomic-crm/organizations/OrganizationImportDialog.test.tsx",
+    "src/atomic-crm/organizations/OrganizationInputs.test.tsx",
+    "src/atomic-crm/organizations/OrganizationList.exporter.test.ts",
+    "src/atomic-crm/organizations/__tests__/AuthorizationsTab.test.tsx",
+    "src/atomic-crm/organizations/__tests__/BulkReassignButton.test.tsx",
+    "src/atomic-crm/organizations/__tests__/DuplicateOrgWarningDialog.test.tsx",
+    "src/atomic-crm/organizations/__tests__/OrganizationCreate.integration.test.tsx",
+    "src/atomic-crm/organizations/__tests__/OrganizationList.test.tsx",
+    "src/atomic-crm/organizations/__tests__/OrganizationShow.test.tsx",
+    "src/atomic-crm/organizations/__tests__/useDuplicateOrgCheck.test.tsx",
+    "src/atomic-crm/organizations/organizationColumnAliases.test.ts",
+    "src/atomic-crm/organizations/organizationImport.logic.test.ts",
+    "src/atomic-crm/providers/supabase/__tests__/authProvider.test.ts",
+    "src/atomic-crm/providers/supabase/__tests__/cache.test.ts",
+    "src/atomic-crm/providers/supabase/__tests__/dataProviderUtils.escape.test.ts",
+    "src/atomic-crm/providers/supabase/__tests__/dataProviderUtils.transform.test.ts",
+    "src/atomic-crm/providers/supabase/__tests__/deleteOpportunityCascade.test.ts",
+    "src/atomic-crm/providers/supabase/__tests__/filterRegistry.test.ts",
+    "src/atomic-crm/providers/supabase/__tests__/services.integration.test.ts",
+    "src/atomic-crm/providers/supabase/__tests__/userManagement.test.ts",
+    "src/atomic-crm/providers/supabase/authProvider.test.ts",
+    "src/atomic-crm/providers/supabase/callbacks/activitiesCallbacks.test.ts",
+    "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.test.ts",
+    "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.test.ts",
+    "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.test.ts",
+    "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.test.ts",
+    "src/atomic-crm/providers/supabase/callbacks/productsCallbacks.test.ts",
+    "src/atomic-crm/providers/supabase/composedDataProvider.test.ts",
+    "src/atomic-crm/providers/supabase/dataProviderCache.test.ts",
+    "src/atomic-crm/providers/supabase/dataProviderUtils.transformOrFilter.test.ts",
+    "src/atomic-crm/providers/supabase/extensions/__tests__/customMethodsExtension.test.ts",
+    "src/atomic-crm/providers/supabase/filterRegistry.test.ts",
+    "src/atomic-crm/providers/supabase/handlers/activitiesHandler.test.ts",
+    "src/atomic-crm/providers/supabase/handlers/contactsHandler.test.ts",
+    "src/atomic-crm/providers/supabase/handlers/notesHandler.test.ts",
+    "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.test.ts",
+    "src/atomic-crm/providers/supabase/handlers/organizationsHandler.test.ts",
+    "src/atomic-crm/providers/supabase/handlers/productsHandler.test.ts",
+    "src/atomic-crm/providers/supabase/handlers/salesHandler.test.ts",
+    "src/atomic-crm/providers/supabase/handlers/tagsHandler.test.ts",
+    "src/atomic-crm/providers/supabase/handlers/tasksHandler.test.ts",
+    "src/atomic-crm/providers/supabase/unifiedDataProvider.arrayFilter.test.ts",
+    "src/atomic-crm/providers/supabase/unifiedDataProvider.errors.test.ts",
+    "src/atomic-crm/providers/supabase/unifiedDataProvider.test.ts",
+    "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.test.ts",
+    "src/atomic-crm/providers/supabase/wrappers/withValidation.test.ts",
+    "src/atomic-crm/reports/CampaignActivity/__tests__/ActivityTypeCard.test.tsx",
+    "src/atomic-crm/reports/CampaignActivity/__tests__/CampaignActivityReport.test.tsx",
+    "src/atomic-crm/reports/OpportunitiesByPrincipalReport.test.tsx",
+    "src/atomic-crm/reports/ReportsPage.test.tsx",
+    "src/atomic-crm/reports/components/AppliedFiltersBar.test.tsx",
+    "src/atomic-crm/reports/components/EmptyState.test.tsx",
+    "src/atomic-crm/reports/components/FilterChip.test.tsx",
+    "src/atomic-crm/reports/components/KPICard.test.tsx",
+    "src/atomic-crm/reports/components/KPIDrillDown.test.tsx",
+    "src/atomic-crm/reports/components/ReportPageShell.test.tsx",
+    "src/atomic-crm/reports/components/TabFilterBar.test.tsx",
+    "src/atomic-crm/reports/hooks/useReportData.test.tsx",
+    "src/atomic-crm/reports/tabs/OverviewTab.test.tsx",
+    "src/atomic-crm/services/__tests__/activities.service.test.ts",
+    "src/atomic-crm/services/__tests__/junctions.service.test.ts",
+    "src/atomic-crm/services/__tests__/opportunities.service.test.ts",
+    "src/atomic-crm/services/__tests__/sales.service.test.ts",
+    "src/atomic-crm/services/__tests__/segments.service.test.ts",
+    "src/atomic-crm/tasks/__tests__/TaskCreate.integration.test.tsx",
+    "src/atomic-crm/tests/dataProviderErrors.test.ts",
+    "src/atomic-crm/tests/dataProviderSchemaValidation.test.ts",
+    "src/atomic-crm/tests/httpErrorPatterns.test.ts",
+    "src/atomic-crm/tests/opportunitiesSummaryRLS.test.ts",
+    "src/atomic-crm/tests/unifiedDataProvider.test.ts",
+    "src/atomic-crm/tutorial/__tests__/TutorialProvider.test.tsx",
+    "src/atomic-crm/tutorial/__tests__/integration.test.tsx",
+    "src/atomic-crm/tutorial/__tests__/useTutorialProgress.test.ts",
+    "src/atomic-crm/utils/__tests__/avatar.utils.test.ts",
+    "src/atomic-crm/utils/__tests__/csvUploadValidator.test.ts",
+    "src/atomic-crm/utils/__tests__/exportHelpers.test.ts",
+    "src/atomic-crm/utils/__tests__/formatRelativeTime.test.ts",
+    "src/atomic-crm/utils/__tests__/formatters.test.ts",
+    "src/atomic-crm/utils/__tests__/getActivityIcon.test.tsx",
+    "src/atomic-crm/utils/__tests__/levenshtein.test.ts",
+    "src/atomic-crm/utils/__tests__/stalenessCalculation.test.ts",
+    "src/atomic-crm/validation/__tests__/contacts/integration.test.ts",
+    "src/atomic-crm/validation/__tests__/contacts/validation.test.ts",
+    "src/atomic-crm/validation/__tests__/notes/edge-cases.test.ts",
+    "src/atomic-crm/validation/__tests__/notes/integration.test.ts",
+    "src/atomic-crm/validation/__tests__/notes/transformation.test.ts",
+    "src/atomic-crm/validation/__tests__/notes/validation.test.ts",
+    "src/atomic-crm/validation/__tests__/opportunities/duplicateCheck.test.ts",
+    "src/atomic-crm/validation/__tests__/opportunities/integration.test.ts",
+    "src/atomic-crm/validation/__tests__/opportunities/validation.test.ts",
+    "src/atomic-crm/validation/__tests__/organizations/edge-cases.test.ts",
+    "src/atomic-crm/validation/__tests__/organizations/integration.test.ts",
+    "src/atomic-crm/validation/__tests__/organizations/validation.test.ts",
+    "src/atomic-crm/validation/__tests__/quickAdd/validation.test.ts",
+    "src/atomic-crm/validation/__tests__/rpc.test.ts",
+    "src/atomic-crm/validation/__tests__/tags/edge-cases.test.ts",
+    "src/atomic-crm/validation/__tests__/tags/integration.test.ts",
+    "src/atomic-crm/validation/__tests__/tags/validation.test.ts",
+    "src/atomic-crm/validation/__tests__/task.test.ts",
+    "src/atomic-crm/validation/__tests__/tasks/edge-cases.test.ts",
+    "src/atomic-crm/validation/__tests__/tasks/integration.test.ts",
+    "src/atomic-crm/validation/__tests__/tasks/validation.test.ts",
+    "src/components/__tests__/NotificationDropdown.test.tsx",
+    "src/components/admin/__tests__/FloatingCreateButton.test.tsx",
+    "src/components/admin/__tests__/form.test.tsx",
+    "src/components/admin/__tests__/refresh-button.test.tsx",
+    "src/components/admin/__tests__/select-input.test.tsx",
+    "src/components/admin/__tests__/test-form-context.test.tsx",
+    "src/components/admin/__tests__/test-ra-form.test.tsx",
+    "src/components/admin/__tests__/text-input.test.tsx",
+    "src/components/admin/form/__tests__/ButtonPlaceholder.test.tsx",
+    "src/components/admin/form/__tests__/CollapsibleSection.test.tsx",
+    "src/components/admin/form/__tests__/CompactFormFieldWithButton.test.tsx",
+    "src/components/admin/form/__tests__/CompactFormRow.test.tsx",
+    "src/components/admin/form/__tests__/FormActions.test.tsx",
+    "src/components/admin/form/__tests__/FormFieldWrapper.test.tsx",
+    "src/components/admin/form/__tests__/FormGrid.test.tsx",
+    "src/components/admin/form/__tests__/FormLoadingSkeleton.test.tsx",
+    "src/components/admin/form/__tests__/FormProgressBar.test.tsx",
+    "src/components/admin/form/__tests__/FormProgressProvider.test.tsx",
+    "src/components/admin/form/__tests__/FormSection.test.tsx",
+    "src/components/admin/form/__tests__/FormSectionWithProgress.test.tsx",
+    "src/components/admin/form/__tests__/FormWizard.test.tsx",
+    "src/components/admin/form/__tests__/SaveButtonGroup.test.tsx",
+    "src/components/admin/form/__tests__/StepIndicator.test.tsx",
+    "src/components/admin/form/__tests__/WizardNavigation.test.tsx",
+    "src/components/admin/form/__tests__/WizardStep.test.tsx",
+    "src/components/admin/form/__tests__/useFormShortcuts.test.tsx",
+    "src/components/admin/tabbed-form/__tests__/TabPanel.test.tsx",
+    "src/components/admin/tabbed-form/__tests__/TabTriggerWithErrors.test.tsx",
+    "src/components/admin/tabbed-form/__tests__/TabbedFormInputs.test.tsx",
+    "src/hooks/__tests__/useBreakpoint.test.ts",
+    "src/hooks/useSlideOverState.test.ts",
+    "src/lib/__tests__/es-toolkit-parity.test.ts",
+    "src/lib/__tests__/sanitization.test.ts",
+    "src/tests/utils/__tests__/mock-providers.test.ts",
+    "src/tests/utils/__tests__/render-admin.test.tsx"
+  ],
+  "e2e_test_files": [
+    "tests/e2e/accessibility/skip-link.spec.ts",
+    "tests/e2e/admin/admin-redirects.spec.ts",
+    "tests/e2e/admin/user-management.spec.ts",
+    "tests/e2e/compact-dashboard.spec.ts",
+    "tests/e2e/contacts/column-visibility.spec.ts",
+    "tests/e2e/contacts/opportunities-tab.spec.ts",
+    "tests/e2e/contacts/slide-over.spec.ts",
+    "tests/e2e/dashboard-layout.spec.ts",
+    "tests/e2e/dashboard-quick-actions.spec.ts",
+    "tests/e2e/dashboard-v3/accessibility.spec.ts",
+    "tests/e2e/dashboard-v3/assigned-to-me-filter.spec.ts",
+    "tests/e2e/dashboard-v3/dashboard-v3.spec.ts",
+    "tests/e2e/dashboard-v3/data-flow.spec.ts",
+    "tests/e2e/dashboard-v3/log-activity-fab.spec.ts",
+    "tests/e2e/dashboard-v3/pipeline-drilldown.spec.ts",
+    "tests/e2e/dashboard-v3/quick-logger-kyle-ramsy.spec.ts",
+    "tests/e2e/dashboard-v3/responsive-layout.spec.ts",
+    "tests/e2e/dashboard-v3/smoke.spec.ts",
+    "tests/e2e/dashboard-v3/task-snooze.spec.ts",
+    "tests/e2e/debug-cards.spec.ts",
+    "tests/e2e/design-system-coverage.spec.ts",
+    "tests/e2e/design-system-smoke.spec.ts",
+    "tests/e2e/design-system/create-form.spec.ts",
+    "tests/e2e/design-system/list-layout.spec.ts",
+    "tests/e2e/design-system/slide-over-responsive.spec.ts",
+    "tests/e2e/design-system/slide-over.spec.ts",
+    "tests/e2e/design-system/visual-primitives.spec.ts",
+    "tests/e2e/filters/filter-chip-bar.spec.ts",
+    "tests/e2e/opportunities-kanban-enhancements.spec.ts",
+    "tests/e2e/opportunities/kanban-expand.spec.ts",
+    "tests/e2e/opportunities/slide-over-tabs.spec.ts",
+    "tests/e2e/organizations/parent-relationship-display.spec.ts",
+    "tests/e2e/smoke-test-simple.spec.ts",
+    "tests/e2e/spacing/reports-spacing.spec.ts",
+    "tests/e2e/spacing/spacing-tokens.spec.ts",
+    "tests/e2e/specs/contacts/contacts-crud.spec.ts",
+    "tests/e2e/specs/dashboard/dashboard-v3.spec.ts",
+    "tests/e2e/specs/diagnostics/app-loading.spec.ts",
+    "tests/e2e/specs/diagnostics/env-vars.spec.ts",
+    "tests/e2e/specs/forms/activity-form-debug.spec.ts",
+    "tests/e2e/specs/forms/activity-form.spec.ts",
+    "tests/e2e/specs/forms/contact-form.spec.ts",
+    "tests/e2e/specs/forms/organization-form.spec.ts",
+    "tests/e2e/specs/forms/tabbed-forms-ui-design.spec.ts",
+    "tests/e2e/specs/layout/opportunities-form-layout.spec.ts",
+    "tests/e2e/specs/opportunities/activity-timeline.spec.ts",
+    "tests/e2e/specs/opportunities/crud.spec.ts",
+    "tests/e2e/specs/opportunities/kanban-board.spec.ts",
+    "tests/e2e/specs/opportunities/stage-transitions.spec.ts",
+    "tests/e2e/specs/organizations/organization-opportunities-filter.spec.ts",
+    "tests/e2e/specs/organizations/organizations-ui-audit.spec.ts",
+    "tests/e2e/specs/ownership/ownership-on-create.spec.ts",
+    "tests/e2e/specs/rbac-regression.spec.ts",
+    "tests/e2e/specs/rbac/admin-operations.spec.ts",
+    "tests/e2e/specs/rbac/edge-cases.spec.ts",
+    "tests/e2e/specs/rbac/manager-operations.spec.ts",
+    "tests/e2e/specs/rbac/rep-operations.spec.ts",
+    "tests/e2e/specs/reports/campaign-activity-report.spec.ts",
+    "tests/e2e/specs/reports/reports-navigation.spec.ts",
+    "tests/e2e/specs/reports/reports-overview.spec.ts",
+    "tests/e2e/specs/reports/weekly-activity-report.spec.ts",
+    "tests/e2e/specs/tasks/tasks-crud.spec.ts",
+    "tests/e2e/specs/ui-ux-changes/accessibility.spec.ts",
+    "tests/e2e/specs/ui-ux-changes/activity-form-layout.spec.ts",
+    "tests/e2e/specs/ui-ux-changes/save-button-feedback.spec.ts",
+    "tests/e2e/specs/ui-ux-changes/slideover-width.spec.ts",
+    "tests/e2e/specs/ui-ux-changes/task-visibility.spec.ts",
+    "tests/e2e/specs/ui-ux-changes/touch-targets.spec.ts",
+    "tests/e2e/specs/ui-ux-changes/visual-polish.spec.ts",
+    "tests/e2e/theme-switching.spec.ts"
+  ],
+  "integration_test_files": [
+    "src/atomic-crm/activities/__tests__/ActivityCreate.integration.test.tsx",
+    "src/atomic-crm/contacts/__tests__/ContactCreate.integration.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/OpportunityCreateWizard.integration.test.tsx",
+    "src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx",
+    "src/atomic-crm/organizations/__tests__/OrganizationCreate.integration.test.tsx",
+    "src/atomic-crm/providers/supabase/__tests__/services.integration.test.ts",
+    "src/atomic-crm/tasks/__tests__/TaskCreate.integration.test.tsx"
+  ],
   "test_counts": {
-    "total_files": 0,
-    "total_tests": 0,
+    "total_files": 283,
+    "total_tests": 3520,
     "by_category": {
-      "unit": 0,
-      "integration": 0,
-      "e2e": 0
+      "unit": 2761,
+      "integration": 91,
+      "e2e": 668
+    },
+    "by_feature": {
+      "data-provider": 512,
+      "e2e": 485,
+      "opportunities": 450,
+      "validation": 362,
+      "contacts": 259,
+      "dashboard": 240,
+      "admin-components": 239,
+      "organizations": 237,
+      "utils": 208,
+      "reports": 130,
+      "services": 122,
+      "hooks": 76,
+      "filters": 54,
+      "activities": 52,
+      "test-utils": 35,
+      "lib": 30,
+      "tasks": 14,
+      "tutorial": 13,
+      "other": 1,
+      "components": 1
+    },
+    "breakdown": {
+      "unit_it_blocks": 2287,
+      "unit_test_blocks": 565,
+      "unit_describe_blocks": 965,
+      "e2e_test_blocks": 668
     }
   },
-  "coverage": null,
-  "test_inventory": [],
-  "vitest_config": {
-    "file": "vitest.config.ts",
-    "test_environment": "jsdom",
-    "setup_files": ["@testing-library/jest-dom", "./src/tests/setup.ts"],
-    "coverage_provider": "v8",
-    "coverage_reporters": ["text", "json", "html", "lcov"],
-    "include_patterns": ["src/**/*.test.{ts,tsx}"],
-    "exclude_patterns": ["node_modules/", "dist/", ".docs/", "tests/**/*.spec.{ts,tsx}", "tests/integration/**/*.test.{ts,tsx}"],
-    "thresholds": {
+  "coverage": {
+    "status": "pending",
+    "note": "Coverage is being generated - update this section when vitest coverage completes",
+    "configured_thresholds": {
       "lines": 70,
       "functions": 70,
       "branches": 70,
       "statements": 70
     }
   },
+  "test_inventory": [
+    {
+      "file": "src/__tests__/spacing-tokens.test.ts",
+      "category": "unit",
+      "feature_area": "other",
+      "test_count": 1,
+      "it_blocks": 1,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/hooks/useSlideOverState.test.ts",
+      "category": "unit",
+      "feature_area": "hooks",
+      "test_count": 32,
+      "it_blocks": 32,
+      "test_blocks": 0,
+      "describe_blocks": 11
+    },
+    {
+      "file": "src/atomic-crm/organizations/OrganizationList.exporter.test.ts",
+      "category": "unit",
+      "feature_area": "organizations",
+      "test_count": 22,
+      "it_blocks": 22,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/organizations/organizationImport.logic.test.ts",
+      "category": "unit",
+      "feature_area": "organizations",
+      "test_count": 37,
+      "it_blocks": 37,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/organizations/organizationColumnAliases.test.ts",
+      "category": "unit",
+      "feature_area": "organizations",
+      "test_count": 38,
+      "it_blocks": 38,
+      "test_blocks": 0,
+      "describe_blocks": 9
+    },
+    {
+      "file": "src/atomic-crm/tests/dataProviderSchemaValidation.test.ts",
+      "category": "unit",
+      "feature_area": "test-utils",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/tests/unifiedDataProvider.test.ts",
+      "category": "unit",
+      "feature_area": "test-utils",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/tests/dataProviderErrors.test.ts",
+      "category": "unit",
+      "feature_area": "test-utils",
+      "test_count": 5,
+      "it_blocks": 5,
+      "test_blocks": 0,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/atomic-crm/tests/opportunitiesSummaryRLS.test.ts",
+      "category": "unit",
+      "feature_area": "test-utils",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/tests/httpErrorPatterns.test.ts",
+      "category": "unit",
+      "feature_area": "test-utils",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/tutorial/__tests__/useTutorialProgress.test.ts",
+      "category": "unit",
+      "feature_area": "tutorial",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/utils/__tests__/csvUploadValidator.test.ts",
+      "category": "unit",
+      "feature_area": "utils",
+      "test_count": 26,
+      "it_blocks": 26,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/utils/__tests__/stalenessCalculation.test.ts",
+      "category": "unit",
+      "feature_area": "utils",
+      "test_count": 46,
+      "it_blocks": 46,
+      "test_blocks": 0,
+      "describe_blocks": 27
+    },
+    {
+      "file": "src/atomic-crm/utils/__tests__/formatters.test.ts",
+      "category": "unit",
+      "feature_area": "utils",
+      "test_count": 17,
+      "it_blocks": 17,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/utils/__tests__/levenshtein.test.ts",
+      "category": "unit",
+      "feature_area": "utils",
+      "test_count": 27,
+      "it_blocks": 27,
+      "test_blocks": 0,
+      "describe_blocks": 12
+    },
+    {
+      "file": "src/atomic-crm/utils/__tests__/exportHelpers.test.ts",
+      "category": "unit",
+      "feature_area": "utils",
+      "test_count": 11,
+      "it_blocks": 11,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/utils/__tests__/formatRelativeTime.test.ts",
+      "category": "unit",
+      "feature_area": "utils",
+      "test_count": 10,
+      "it_blocks": 10,
+      "test_blocks": 0,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/atomic-crm/utils/__tests__/avatar.utils.test.ts",
+      "category": "unit",
+      "feature_area": "utils",
+      "test_count": 29,
+      "it_blocks": 29,
+      "test_blocks": 0,
+      "describe_blocks": 12
+    },
+    {
+      "file": "src/atomic-crm/hooks/__tests__/useFilterCleanup.test.ts",
+      "category": "unit",
+      "feature_area": "hooks",
+      "test_count": 20,
+      "it_blocks": 20,
+      "test_blocks": 0,
+      "describe_blocks": 10
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.errors.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 32,
+      "it_blocks": 32,
+      "test_blocks": 0,
+      "describe_blocks": 12
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/authProvider.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 17,
+      "it_blocks": 17,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/dataProviderCache.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 31,
+      "it_blocks": 31,
+      "test_blocks": 0,
+      "describe_blocks": 9
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/composedDataProvider.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 19,
+      "it_blocks": 19,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 14,
+      "it_blocks": 14,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/dataProviderUtils.transformOrFilter.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 9,
+      "it_blocks": 9,
+      "test_blocks": 0,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/filterRegistry.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 39,
+      "it_blocks": 39,
+      "test_blocks": 0,
+      "describe_blocks": 9
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.arrayFilter.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/__tests__/authProvider.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 13,
+      "it_blocks": 13,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/__tests__/userManagement.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 7,
+      "it_blocks": 7,
+      "test_blocks": 0,
+      "describe_blocks": 3
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/__tests__/filterRegistry.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 18,
+      "it_blocks": 18,
+      "test_blocks": 0,
+      "describe_blocks": 10
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/__tests__/services.integration.test.ts",
+      "category": "integration",
+      "feature_area": "data-provider",
+      "test_count": 11,
+      "it_blocks": 11,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/__tests__/deleteOpportunityCascade.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/__tests__/dataProviderUtils.transform.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 33,
+      "it_blocks": 33,
+      "test_blocks": 0,
+      "describe_blocks": 9
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/__tests__/dataProviderUtils.escape.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 16,
+      "it_blocks": 16,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/__tests__/cache.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 11,
+      "it_blocks": 11,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/wrappers/withValidation.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 14,
+      "it_blocks": 14,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 17,
+      "it_blocks": 17,
+      "test_blocks": 0,
+      "describe_blocks": 9
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/handlers/salesHandler.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 7,
+      "it_blocks": 7,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/handlers/activitiesHandler.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/handlers/organizationsHandler.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/handlers/contactsHandler.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/handlers/productsHandler.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/handlers/tagsHandler.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 7,
+      "it_blocks": 7,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/handlers/notesHandler.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 9,
+      "it_blocks": 9,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/handlers/tasksHandler.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 11,
+      "it_blocks": 11,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 23,
+      "it_blocks": 23,
+      "test_blocks": 0,
+      "describe_blocks": 8
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 25,
+      "it_blocks": 25,
+      "test_blocks": 0,
+      "describe_blocks": 9
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/callbacks/productsCallbacks.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 11,
+      "it_blocks": 11,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 12,
+      "it_blocks": 12,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/callbacks/activitiesCallbacks.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 11,
+      "it_blocks": 11,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 12,
+      "it_blocks": 12,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/providers/supabase/extensions/__tests__/customMethodsExtension.test.ts",
+      "category": "unit",
+      "feature_area": "data-provider",
+      "test_count": 37,
+      "it_blocks": 37,
+      "test_blocks": 0,
+      "describe_blocks": 13
+    },
+    {
+      "file": "src/atomic-crm/contacts/__tests__/useImportWizard.test.ts",
+      "category": "unit",
+      "feature_area": "contacts",
+      "test_count": 39,
+      "it_blocks": 39,
+      "test_blocks": 0,
+      "describe_blocks": 11
+    },
+    {
+      "file": "src/atomic-crm/contacts/__tests__/useColumnMapping.test.ts",
+      "category": "unit",
+      "feature_area": "contacts",
+      "test_count": 20,
+      "it_blocks": 20,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/contacts/__tests__/contactImport.helpers.test.ts",
+      "category": "unit",
+      "feature_area": "contacts",
+      "test_count": 42,
+      "it_blocks": 42,
+      "test_blocks": 0,
+      "describe_blocks": 15
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/diffProducts.test.ts",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 12,
+      "it_blocks": 12,
+      "test_blocks": 0,
+      "describe_blocks": 2
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/opportunityUtils.test.ts",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 25,
+      "it_blocks": 25,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/OpportunityViewPersistence.test.ts",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 8,
+      "it_blocks": 0,
+      "test_blocks": 8,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/useStageMetrics.test.ts",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 5,
+      "it_blocks": 5,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/stageThresholds.test.ts",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 16,
+      "it_blocks": 16,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/useOpportunityContacts.test.ts",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 2,
+      "it_blocks": 2,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/useColumnPreferences.test.ts",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 3,
+      "it_blocks": 3,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/CampaignGroupedList.test.ts",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 21,
+      "it_blocks": 21,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/stages.test.ts",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 4,
+      "it_blocks": 4,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/utils/generateOpportunityName.test.ts",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 37,
+      "it_blocks": 37,
+      "test_blocks": 0,
+      "describe_blocks": 9
+    },
+    {
+      "file": "src/atomic-crm/opportunities/utils/__tests__/rowStyling.test.ts",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 20,
+      "it_blocks": 20,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/opportunities/hooks/__tests__/useContactOrgMismatch.test.ts",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/__tests__/usePrincipalOpportunities.test.ts",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 13,
+      "it_blocks": 13,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/__tests__/types.test.ts",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 2,
+      "it_blocks": 2,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/useHybridSearch.test.ts",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 18,
+      "it_blocks": 18,
+      "test_blocks": 0,
+      "describe_blocks": 9
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/useTeamActivities.test.ts",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 15,
+      "it_blocks": 15,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/usePrincipalPipeline.test.ts",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 13,
+      "it_blocks": 13,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/useCurrentSale.test.ts",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 3,
+      "it_blocks": 3,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/useKPIMetrics.test.ts",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 16,
+      "it_blocks": 16,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyTasks.test.ts",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 18,
+      "it_blocks": 18,
+      "test_blocks": 0,
+      "describe_blocks": 9
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/hooks/__tests__/useMyPerformance.test.ts",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 15,
+      "it_blocks": 15,
+      "test_blocks": 0,
+      "describe_blocks": 8
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/rpc.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 55,
+      "it_blocks": 55,
+      "test_blocks": 0,
+      "describe_blocks": 11
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/task.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 52,
+      "it_blocks": 52,
+      "test_blocks": 0,
+      "describe_blocks": 10
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/organizations/integration.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 9,
+      "it_blocks": 9,
+      "test_blocks": 0,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/organizations/edge-cases.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 3
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/organizations/validation.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 18,
+      "it_blocks": 18,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/tasks/integration.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/tasks/edge-cases.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 3
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/tasks/validation.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 23,
+      "it_blocks": 23,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/contacts/integration.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 9,
+      "it_blocks": 9,
+      "test_blocks": 0,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/contacts/validation.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 11,
+      "it_blocks": 11,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/opportunities/integration.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/opportunities/duplicateCheck.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 9,
+      "it_blocks": 9,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/opportunities/validation.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 11,
+      "it_blocks": 11,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/tags/integration.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 5,
+      "it_blocks": 5,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/tags/edge-cases.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 14,
+      "it_blocks": 14,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/tags/validation.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 33,
+      "it_blocks": 33,
+      "test_blocks": 0,
+      "describe_blocks": 10
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/quickAdd/validation.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 26,
+      "it_blocks": 26,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/notes/integration.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 3,
+      "it_blocks": 3,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/notes/transformation.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 18,
+      "it_blocks": 18,
+      "test_blocks": 0,
+      "describe_blocks": 14
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/notes/edge-cases.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 11,
+      "it_blocks": 11,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/validation/__tests__/notes/validation.test.ts",
+      "category": "unit",
+      "feature_area": "validation",
+      "test_count": 29,
+      "it_blocks": 29,
+      "test_blocks": 0,
+      "describe_blocks": 9
+    },
+    {
+      "file": "src/atomic-crm/services/__tests__/segments.service.test.ts",
+      "category": "unit",
+      "feature_area": "services",
+      "test_count": 20,
+      "it_blocks": 20,
+      "test_blocks": 0,
+      "describe_blocks": 8
+    },
+    {
+      "file": "src/atomic-crm/services/__tests__/junctions.service.test.ts",
+      "category": "unit",
+      "feature_area": "services",
+      "test_count": 20,
+      "it_blocks": 0,
+      "test_blocks": 20,
+      "describe_blocks": 13
+    },
+    {
+      "file": "src/atomic-crm/services/__tests__/opportunities.service.test.ts",
+      "category": "unit",
+      "feature_area": "services",
+      "test_count": 30,
+      "it_blocks": 0,
+      "test_blocks": 30,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/services/__tests__/activities.service.test.ts",
+      "category": "unit",
+      "feature_area": "services",
+      "test_count": 20,
+      "it_blocks": 0,
+      "test_blocks": 20,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/services/__tests__/sales.service.test.ts",
+      "category": "unit",
+      "feature_area": "services",
+      "test_count": 32,
+      "it_blocks": 0,
+      "test_blocks": 32,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/filters/__tests__/opportunityStagePreferences.test.ts",
+      "category": "unit",
+      "feature_area": "filters",
+      "test_count": 12,
+      "it_blocks": 12,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/hooks/__tests__/useBreakpoint.test.ts",
+      "category": "unit",
+      "feature_area": "hooks",
+      "test_count": 5,
+      "it_blocks": 5,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/tests/utils/__tests__/mock-providers.test.ts",
+      "category": "unit",
+      "feature_area": "utils",
+      "test_count": 19,
+      "it_blocks": 0,
+      "test_blocks": 19,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/lib/__tests__/sanitization.test.ts",
+      "category": "unit",
+      "feature_area": "lib",
+      "test_count": 11,
+      "it_blocks": 11,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/lib/__tests__/es-toolkit-parity.test.ts",
+      "category": "unit",
+      "feature_area": "lib",
+      "test_count": 19,
+      "it_blocks": 19,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/components/__tests__/NotificationDropdown.test.tsx",
+      "category": "unit",
+      "feature_area": "components",
+      "test_count": 1,
+      "it_blocks": 1,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/__tests__/select-input.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 15,
+      "it_blocks": 0,
+      "test_blocks": 15,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/__tests__/text-input.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 11,
+      "it_blocks": 0,
+      "test_blocks": 11,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/__tests__/form.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 22,
+      "it_blocks": 0,
+      "test_blocks": 22,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/components/admin/__tests__/test-ra-form.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 1,
+      "it_blocks": 0,
+      "test_blocks": 1,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/__tests__/test-form-context.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 1,
+      "it_blocks": 0,
+      "test_blocks": 1,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/__tests__/FloatingCreateButton.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 8,
+      "it_blocks": 0,
+      "test_blocks": 8,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/__tests__/refresh-button.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 3,
+      "it_blocks": 0,
+      "test_blocks": 3,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/tabbed-form/__tests__/TabPanel.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 4,
+      "it_blocks": 4,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/tabbed-form/__tests__/TabbedFormInputs.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 4,
+      "it_blocks": 4,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/tabbed-form/__tests__/TabTriggerWithErrors.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 4,
+      "it_blocks": 4,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/WizardStep.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 6,
+      "it_blocks": 0,
+      "test_blocks": 6,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/FormLoadingSkeleton.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 5,
+      "it_blocks": 0,
+      "test_blocks": 5,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/FormProgressBar.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 14,
+      "it_blocks": 0,
+      "test_blocks": 14,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/FormSection.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 10,
+      "it_blocks": 0,
+      "test_blocks": 10,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/CollapsibleSection.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 9,
+      "it_blocks": 9,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/FormGrid.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 6,
+      "it_blocks": 0,
+      "test_blocks": 6,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/CompactFormRow.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/ButtonPlaceholder.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 4,
+      "it_blocks": 4,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/SaveButtonGroup.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 6,
+      "it_blocks": 0,
+      "test_blocks": 6,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/FormProgressProvider.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 12,
+      "it_blocks": 0,
+      "test_blocks": 12,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/FormSectionWithProgress.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 20,
+      "it_blocks": 20,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/components/admin/form/__tests__/FormFieldWrapper.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 15,
+      "it_blocks": 0,
+      "test_blocks": 15,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/StepIndicator.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 11,
+      "it_blocks": 0,
+      "test_blocks": 11,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/useFormShortcuts.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/FormWizard.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 9,
+      "it_blocks": 0,
+      "test_blocks": 9,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/components/admin/form/__tests__/FormActions.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/CompactFormFieldWithButton.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 7,
+      "it_blocks": 7,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/components/admin/form/__tests__/WizardNavigation.test.tsx",
+      "category": "unit",
+      "feature_area": "admin-components",
+      "test_count": 10,
+      "it_blocks": 0,
+      "test_blocks": 10,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/organizations/OrganizationImportDialog.test.tsx",
+      "category": "unit",
+      "feature_area": "organizations",
+      "test_count": 8,
+      "it_blocks": 0,
+      "test_blocks": 8,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/organizations/OrganizationInputs.test.tsx",
+      "category": "unit",
+      "feature_area": "organizations",
+      "test_count": 9,
+      "it_blocks": 9,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.test.tsx",
+      "category": "unit",
+      "feature_area": "reports",
+      "test_count": 2,
+      "it_blocks": 2,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/reports/ReportsPage.test.tsx",
+      "category": "unit",
+      "feature_area": "reports",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/contacts/StageBadgeWithHealth.test.tsx",
+      "category": "unit",
+      "feature_area": "contacts",
+      "test_count": 4,
+      "it_blocks": 4,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/contacts/OpportunitiesTab.test.tsx",
+      "category": "unit",
+      "feature_area": "contacts",
+      "test_count": 7,
+      "it_blocks": 7,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/contacts/UnlinkConfirmDialog.test.tsx",
+      "category": "unit",
+      "feature_area": "contacts",
+      "test_count": 2,
+      "it_blocks": 2,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/contacts/LinkOpportunityModal.test.tsx",
+      "category": "unit",
+      "feature_area": "contacts",
+      "test_count": 3,
+      "it_blocks": 3,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/contacts/ContactSlideOver.test.tsx",
+      "category": "unit",
+      "feature_area": "contacts",
+      "test_count": 17,
+      "it_blocks": 0,
+      "test_blocks": 17,
+      "describe_blocks": 8
+    },
+    {
+      "file": "src/atomic-crm/organizations/__tests__/OrganizationCreate.integration.test.tsx",
+      "category": "integration",
+      "feature_area": "organizations",
+      "test_count": 16,
+      "it_blocks": 16,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/organizations/__tests__/OrganizationList.test.tsx",
+      "category": "unit",
+      "feature_area": "organizations",
+      "test_count": 14,
+      "it_blocks": 0,
+      "test_blocks": 14,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/atomic-crm/organizations/__tests__/OrganizationShow.test.tsx",
+      "category": "unit",
+      "feature_area": "organizations",
+      "test_count": 9,
+      "it_blocks": 0,
+      "test_blocks": 9,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/organizations/__tests__/BulkReassignButton.test.tsx",
+      "category": "unit",
+      "feature_area": "organizations",
+      "test_count": 31,
+      "it_blocks": 31,
+      "test_blocks": 0,
+      "describe_blocks": 11
+    },
+    {
+      "file": "src/atomic-crm/organizations/__tests__/AuthorizationsTab.test.tsx",
+      "category": "unit",
+      "feature_area": "organizations",
+      "test_count": 21,
+      "it_blocks": 0,
+      "test_blocks": 21,
+      "describe_blocks": 10
+    },
+    {
+      "file": "src/atomic-crm/organizations/__tests__/DuplicateOrgWarningDialog.test.tsx",
+      "category": "unit",
+      "feature_area": "organizations",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/organizations/__tests__/useDuplicateOrgCheck.test.tsx",
+      "category": "unit",
+      "feature_area": "organizations",
+      "test_count": 9,
+      "it_blocks": 9,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/reports/components/ReportPageShell.test.tsx",
+      "category": "unit",
+      "feature_area": "reports",
+      "test_count": 4,
+      "it_blocks": 4,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/reports/components/KPICard.test.tsx",
+      "category": "unit",
+      "feature_area": "reports",
+      "test_count": 13,
+      "it_blocks": 13,
+      "test_blocks": 0,
+      "describe_blocks": 3
+    },
+    {
+      "file": "src/atomic-crm/reports/components/TabFilterBar.test.tsx",
+      "category": "unit",
+      "feature_area": "reports",
+      "test_count": 4,
+      "it_blocks": 4,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/reports/components/EmptyState.test.tsx",
+      "category": "unit",
+      "feature_area": "reports",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/reports/components/FilterChip.test.tsx",
+      "category": "unit",
+      "feature_area": "reports",
+      "test_count": 5,
+      "it_blocks": 5,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/reports/components/AppliedFiltersBar.test.tsx",
+      "category": "unit",
+      "feature_area": "reports",
+      "test_count": 7,
+      "it_blocks": 7,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/reports/components/KPIDrillDown.test.tsx",
+      "category": "unit",
+      "feature_area": "reports",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/reports/tabs/OverviewTab.test.tsx",
+      "category": "unit",
+      "feature_area": "reports",
+      "test_count": 5,
+      "it_blocks": 5,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/reports/hooks/useReportData.test.tsx",
+      "category": "unit",
+      "feature_area": "reports",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/reports/CampaignActivity/__tests__/CampaignActivityReport.test.tsx",
+      "category": "unit",
+      "feature_area": "reports",
+      "test_count": 23,
+      "it_blocks": 23,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/reports/CampaignActivity/__tests__/ActivityTypeCard.test.tsx",
+      "category": "unit",
+      "feature_area": "reports",
+      "test_count": 2,
+      "it_blocks": 2,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/tutorial/__tests__/integration.test.tsx",
+      "category": "unit",
+      "feature_area": "tutorial",
+      "test_count": 3,
+      "it_blocks": 3,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/tutorial/__tests__/TutorialProvider.test.tsx",
+      "category": "unit",
+      "feature_area": "tutorial",
+      "test_count": 4,
+      "it_blocks": 4,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/tasks/__tests__/TaskCreate.integration.test.tsx",
+      "category": "integration",
+      "feature_area": "tasks",
+      "test_count": 8,
+      "it_blocks": 0,
+      "test_blocks": 8,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/utils/__tests__/getActivityIcon.test.tsx",
+      "category": "unit",
+      "feature_area": "utils",
+      "test_count": 17,
+      "it_blocks": 17,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/hooks/__tests__/useSmartDefaults.test.tsx",
+      "category": "unit",
+      "feature_area": "hooks",
+      "test_count": 9,
+      "it_blocks": 9,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/hooks/__tests__/useRecentSelections.test.tsx",
+      "category": "unit",
+      "feature_area": "hooks",
+      "test_count": 10,
+      "it_blocks": 10,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/contacts/__tests__/ContactCreate.integration.test.tsx",
+      "category": "integration",
+      "feature_area": "contacts",
+      "test_count": 23,
+      "it_blocks": 0,
+      "test_blocks": 23,
+      "describe_blocks": 9
+    },
+    {
+      "file": "src/atomic-crm/contacts/__tests__/ContactBadges.test.tsx",
+      "category": "unit",
+      "feature_area": "contacts",
+      "test_count": 34,
+      "it_blocks": 0,
+      "test_blocks": 34,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/atomic-crm/contacts/__tests__/ContactShow.test.tsx",
+      "category": "unit",
+      "feature_area": "contacts",
+      "test_count": 8,
+      "it_blocks": 0,
+      "test_blocks": 8,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/contacts/__tests__/ContactList.test.tsx",
+      "category": "unit",
+      "feature_area": "contacts",
+      "test_count": 16,
+      "it_blocks": 0,
+      "test_blocks": 16,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/contacts/__tests__/ContactCreate.test.tsx",
+      "category": "unit",
+      "feature_area": "contacts",
+      "test_count": 11,
+      "it_blocks": 0,
+      "test_blocks": 11,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/QuickAddButton.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 4,
+      "it_blocks": 4,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/OpportunityShow.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 12,
+      "it_blocks": 0,
+      "test_blocks": 12,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/QuickAddDialog.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 7,
+      "it_blocks": 7,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/QuickAddOpportunity.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 3,
+      "it_blocks": 3,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/OpportunityCreateWizard.integration.test.tsx",
+      "category": "integration",
+      "feature_area": "opportunities",
+      "test_count": 19,
+      "it_blocks": 0,
+      "test_blocks": 19,
+      "describe_blocks": 10
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/QuickAdd.integration.test.tsx",
+      "category": "integration",
+      "feature_area": "opportunities",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/ColumnCustomizationMenu.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 3,
+      "it_blocks": 3,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/OpportunityCardActions.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 3,
+      "it_blocks": 3,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/OpportunityCreate.unit.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 11,
+      "it_blocks": 11,
+      "test_blocks": 0,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/OpportunityList.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 8,
+      "it_blocks": 0,
+      "test_blocks": 8,
+      "describe_blocks": 3
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/quick-add-product-filtering-flow.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 4,
+      "it_blocks": 4,
+      "test_blocks": 0,
+      "describe_blocks": 3
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/BulkActionsToolbar.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 19,
+      "it_blocks": 19,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/OpportunityViewSwitcher.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 6,
+      "it_blocks": 0,
+      "test_blocks": 6,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/product-filtering-integration.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 17,
+      "it_blocks": 17,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/OpportunityCard.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 12,
+      "it_blocks": 12,
+      "test_blocks": 0,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/QuickAddForm.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 17,
+      "it_blocks": 17,
+      "test_blocks": 0,
+      "describe_blocks": 2
+    },
+    {
+      "file": "src/atomic-crm/opportunities/__tests__/OpportunityEdit.unit.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 16,
+      "it_blocks": 16,
+      "test_blocks": 0,
+      "describe_blocks": 6
+    },
+    {
+      "file": "src/atomic-crm/opportunities/components/__tests__/NextTaskBadge.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 21,
+      "it_blocks": 21,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/opportunities/hooks/__tests__/useQuickAdd.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 9,
+      "it_blocks": 0,
+      "test_blocks": 9,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/opportunities/hooks/__tests__/useFilteredProducts.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 20,
+      "it_blocks": 20,
+      "test_blocks": 0,
+      "describe_blocks": 8
+    },
+    {
+      "file": "src/atomic-crm/opportunities/kanban/__tests__/StageStatusDot.test.tsx",
+      "category": "unit",
+      "feature_area": "opportunities",
+      "test_count": 9,
+      "it_blocks": 9,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/__tests__/PrincipalDashboardV3.test.tsx",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 9,
+      "it_blocks": 9,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/__tests__/DashboardErrorBoundary.test.tsx",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 4,
+      "it_blocks": 4,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/__tests__/PipelineDrillDown.test.tsx",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 16,
+      "it_blocks": 16,
+      "test_blocks": 0,
+      "describe_blocks": 8
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/__tests__/PrincipalPipelineFiltering.test.tsx",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 14,
+      "it_blocks": 14,
+      "test_blocks": 0,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.cascading.test.tsx",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 10,
+      "it_blocks": 10,
+      "test_blocks": 0,
+      "describe_blocks": 7
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/components/__tests__/TaskCompleteSheet.test.tsx",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 15,
+      "it_blocks": 15,
+      "test_blocks": 0,
+      "describe_blocks": 10
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/components/__tests__/PrincipalPipelineTable.test.tsx",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 11,
+      "it_blocks": 11,
+      "test_blocks": 0,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/components/__tests__/DashboardTabPanel.test.tsx",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 6,
+      "it_blocks": 6,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/components/__tests__/MobileQuickActionBar.test.tsx",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 21,
+      "it_blocks": 21,
+      "test_blocks": 0,
+      "describe_blocks": 8
+    },
+    {
+      "file": "src/atomic-crm/dashboard/v3/components/__tests__/QuickLogForm.simple.test.tsx",
+      "category": "unit",
+      "feature_area": "dashboard",
+      "test_count": 5,
+      "it_blocks": 5,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/activities/__tests__/ActivitySinglePage.test.tsx",
+      "category": "unit",
+      "feature_area": "activities",
+      "test_count": 9,
+      "it_blocks": 0,
+      "test_blocks": 9,
+      "describe_blocks": 4
+    },
+    {
+      "file": "src/atomic-crm/activities/__tests__/ActivityCreate.integration.test.tsx",
+      "category": "integration",
+      "feature_area": "activities",
+      "test_count": 6,
+      "it_blocks": 0,
+      "test_blocks": 6,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/activities/__tests__/QuickLogActivityDialog.test.tsx",
+      "category": "unit",
+      "feature_area": "activities",
+      "test_count": 29,
+      "it_blocks": 29,
+      "test_blocks": 0,
+      "describe_blocks": 10
+    },
+    {
+      "file": "src/atomic-crm/activities/__tests__/QuickLogActivity.test.tsx",
+      "category": "unit",
+      "feature_area": "activities",
+      "test_count": 8,
+      "it_blocks": 8,
+      "test_blocks": 0,
+      "describe_blocks": 1
+    },
+    {
+      "file": "src/atomic-crm/filters/__tests__/useFilterChipBar.test.tsx",
+      "category": "unit",
+      "feature_area": "filters",
+      "test_count": 16,
+      "it_blocks": 0,
+      "test_blocks": 16,
+      "describe_blocks": 8
+    },
+    {
+      "file": "src/atomic-crm/filters/__tests__/FilterChipBar.test.tsx",
+      "category": "unit",
+      "feature_area": "filters",
+      "test_count": 11,
+      "it_blocks": 0,
+      "test_blocks": 11,
+      "describe_blocks": 5
+    },
+    {
+      "file": "src/tests/utils/__tests__/render-admin.test.tsx",
+      "category": "unit",
+      "feature_area": "utils",
+      "test_count": 6,
+      "it_blocks": 0,
+      "test_blocks": 6,
+      "describe_blocks": 1
+    },
+    {
+      "file": "tests/e2e/theme-switching.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 4,
+      "it_blocks": 0,
+      "test_blocks": 4,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/design-system-coverage.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 18,
+      "it_blocks": 0,
+      "test_blocks": 18,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/design-system-smoke.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 11,
+      "it_blocks": 0,
+      "test_blocks": 11,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/opportunities-kanban-enhancements.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 14,
+      "it_blocks": 0,
+      "test_blocks": 14,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/smoke-test-simple.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 1,
+      "it_blocks": 0,
+      "test_blocks": 1,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/debug-cards.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 1,
+      "it_blocks": 0,
+      "test_blocks": 1,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/dashboard-quick-actions.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 16,
+      "it_blocks": 0,
+      "test_blocks": 16,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/compact-dashboard.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 4,
+      "it_blocks": 0,
+      "test_blocks": 4,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/dashboard-layout.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 15,
+      "it_blocks": 0,
+      "test_blocks": 15,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/accessibility/skip-link.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 5,
+      "it_blocks": 0,
+      "test_blocks": 5,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/organizations/parent-relationship-display.spec.ts",
+      "category": "e2e",
+      "feature_area": "organizations",
+      "test_count": 3,
+      "it_blocks": 0,
+      "test_blocks": 3,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/dashboard-v3/dashboard-v3.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 17,
+      "it_blocks": 0,
+      "test_blocks": 17,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/dashboard-v3/assigned-to-me-filter.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 13,
+      "it_blocks": 0,
+      "test_blocks": 13,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/dashboard-v3/accessibility.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 26,
+      "it_blocks": 0,
+      "test_blocks": 26,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/dashboard-v3/smoke.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 1,
+      "it_blocks": 0,
+      "test_blocks": 1,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/dashboard-v3/pipeline-drilldown.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 15,
+      "it_blocks": 0,
+      "test_blocks": 15,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/dashboard-v3/responsive-layout.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 15,
+      "it_blocks": 0,
+      "test_blocks": 15,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/dashboard-v3/task-snooze.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 8,
+      "it_blocks": 0,
+      "test_blocks": 8,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/dashboard-v3/quick-logger-kyle-ramsy.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 17,
+      "it_blocks": 0,
+      "test_blocks": 17,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/dashboard-v3/data-flow.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 36,
+      "it_blocks": 0,
+      "test_blocks": 36,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/dashboard-v3/log-activity-fab.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 26,
+      "it_blocks": 0,
+      "test_blocks": 26,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/spacing/spacing-tokens.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 4,
+      "it_blocks": 0,
+      "test_blocks": 4,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/spacing/reports-spacing.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 2,
+      "it_blocks": 0,
+      "test_blocks": 2,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/contacts/slide-over.spec.ts",
+      "category": "e2e",
+      "feature_area": "contacts",
+      "test_count": 11,
+      "it_blocks": 0,
+      "test_blocks": 11,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/contacts/opportunities-tab.spec.ts",
+      "category": "e2e",
+      "feature_area": "contacts",
+      "test_count": 8,
+      "it_blocks": 0,
+      "test_blocks": 8,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/contacts/column-visibility.spec.ts",
+      "category": "e2e",
+      "feature_area": "contacts",
+      "test_count": 8,
+      "it_blocks": 0,
+      "test_blocks": 8,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/rbac-regression.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 10,
+      "it_blocks": 0,
+      "test_blocks": 10,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/opportunities/slide-over-tabs.spec.ts",
+      "category": "e2e",
+      "feature_area": "opportunities",
+      "test_count": 14,
+      "it_blocks": 0,
+      "test_blocks": 14,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/opportunities/kanban-expand.spec.ts",
+      "category": "e2e",
+      "feature_area": "opportunities",
+      "test_count": 7,
+      "it_blocks": 0,
+      "test_blocks": 7,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/admin/admin-redirects.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 3,
+      "it_blocks": 0,
+      "test_blocks": 3,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/admin/user-management.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 4,
+      "it_blocks": 0,
+      "test_blocks": 4,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/design-system/slide-over-responsive.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 2,
+      "it_blocks": 0,
+      "test_blocks": 2,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/design-system/create-form.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 19,
+      "it_blocks": 0,
+      "test_blocks": 19,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/design-system/visual-primitives.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 21,
+      "it_blocks": 0,
+      "test_blocks": 21,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/design-system/slide-over.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 24,
+      "it_blocks": 0,
+      "test_blocks": 24,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/design-system/list-layout.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 26,
+      "it_blocks": 0,
+      "test_blocks": 26,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/filters/filter-chip-bar.spec.ts",
+      "category": "e2e",
+      "feature_area": "filters",
+      "test_count": 15,
+      "it_blocks": 0,
+      "test_blocks": 15,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/organizations/organizations-ui-audit.spec.ts",
+      "category": "e2e",
+      "feature_area": "organizations",
+      "test_count": 7,
+      "it_blocks": 0,
+      "test_blocks": 7,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/organizations/organization-opportunities-filter.spec.ts",
+      "category": "e2e",
+      "feature_area": "organizations",
+      "test_count": 5,
+      "it_blocks": 0,
+      "test_blocks": 5,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/reports/reports-navigation.spec.ts",
+      "category": "e2e",
+      "feature_area": "reports",
+      "test_count": 3,
+      "it_blocks": 0,
+      "test_blocks": 3,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/reports/reports-overview.spec.ts",
+      "category": "e2e",
+      "feature_area": "reports",
+      "test_count": 18,
+      "it_blocks": 0,
+      "test_blocks": 18,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/reports/campaign-activity-report.spec.ts",
+      "category": "e2e",
+      "feature_area": "reports",
+      "test_count": 10,
+      "it_blocks": 0,
+      "test_blocks": 10,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/reports/weekly-activity-report.spec.ts",
+      "category": "e2e",
+      "feature_area": "reports",
+      "test_count": 6,
+      "it_blocks": 0,
+      "test_blocks": 6,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/tasks/tasks-crud.spec.ts",
+      "category": "e2e",
+      "feature_area": "tasks",
+      "test_count": 6,
+      "it_blocks": 0,
+      "test_blocks": 6,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/ui-ux-changes/accessibility.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 9,
+      "it_blocks": 0,
+      "test_blocks": 9,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/ui-ux-changes/task-visibility.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 5,
+      "it_blocks": 0,
+      "test_blocks": 5,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/ui-ux-changes/touch-targets.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 4,
+      "it_blocks": 0,
+      "test_blocks": 4,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/ui-ux-changes/visual-polish.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 6,
+      "it_blocks": 0,
+      "test_blocks": 6,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/ui-ux-changes/save-button-feedback.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 3,
+      "it_blocks": 0,
+      "test_blocks": 3,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/ui-ux-changes/activity-form-layout.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 3,
+      "it_blocks": 0,
+      "test_blocks": 3,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/ui-ux-changes/slideover-width.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 4,
+      "it_blocks": 0,
+      "test_blocks": 4,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/rbac/admin-operations.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 6,
+      "it_blocks": 0,
+      "test_blocks": 6,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/rbac/edge-cases.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 5,
+      "it_blocks": 0,
+      "test_blocks": 5,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/rbac/rep-operations.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 5,
+      "it_blocks": 0,
+      "test_blocks": 5,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/rbac/manager-operations.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 4,
+      "it_blocks": 0,
+      "test_blocks": 4,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/layout/opportunities-form-layout.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 17,
+      "it_blocks": 0,
+      "test_blocks": 17,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/contacts/contacts-crud.spec.ts",
+      "category": "e2e",
+      "feature_area": "contacts",
+      "test_count": 6,
+      "it_blocks": 0,
+      "test_blocks": 6,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/opportunities/crud.spec.ts",
+      "category": "e2e",
+      "feature_area": "opportunities",
+      "test_count": 7,
+      "it_blocks": 0,
+      "test_blocks": 7,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/opportunities/activity-timeline.spec.ts",
+      "category": "e2e",
+      "feature_area": "opportunities",
+      "test_count": 13,
+      "it_blocks": 0,
+      "test_blocks": 13,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/opportunities/kanban-board.spec.ts",
+      "category": "e2e",
+      "feature_area": "opportunities",
+      "test_count": 10,
+      "it_blocks": 0,
+      "test_blocks": 10,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/opportunities/stage-transitions.spec.ts",
+      "category": "e2e",
+      "feature_area": "opportunities",
+      "test_count": 10,
+      "it_blocks": 0,
+      "test_blocks": 10,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/diagnostics/env-vars.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 1,
+      "it_blocks": 0,
+      "test_blocks": 1,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/diagnostics/app-loading.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 1,
+      "it_blocks": 0,
+      "test_blocks": 1,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/dashboard/dashboard-v3.spec.ts",
+      "category": "e2e",
+      "feature_area": "dashboard",
+      "test_count": 16,
+      "it_blocks": 0,
+      "test_blocks": 16,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/forms/contact-form.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 2,
+      "it_blocks": 0,
+      "test_blocks": 2,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/forms/activity-form.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 2,
+      "it_blocks": 0,
+      "test_blocks": 2,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/forms/organization-form.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 9,
+      "it_blocks": 0,
+      "test_blocks": 9,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/forms/activity-form-debug.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 1,
+      "it_blocks": 0,
+      "test_blocks": 1,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/forms/tabbed-forms-ui-design.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 14,
+      "it_blocks": 0,
+      "test_blocks": 14,
+      "describe_blocks": 0
+    },
+    {
+      "file": "tests/e2e/specs/ownership/ownership-on-create.spec.ts",
+      "category": "e2e",
+      "feature_area": "e2e",
+      "test_count": 6,
+      "it_blocks": 0,
+      "test_blocks": 6,
+      "describe_blocks": 0
+    }
+  ],
+  "top_test_files": {
+    "unit": [
+      {
+        "file": "src/atomic-crm/validation/__tests__/rpc.test.ts",
+        "tests": 55
+      },
+      {
+        "file": "src/atomic-crm/validation/__tests__/task.test.ts",
+        "tests": 52
+      },
+      {
+        "file": "src/atomic-crm/utils/__tests__/stalenessCalculation.test.ts",
+        "tests": 46
+      },
+      {
+        "file": "src/atomic-crm/contacts/__tests__/contactImport.helpers.test.ts",
+        "tests": 42
+      },
+      {
+        "file": "src/atomic-crm/providers/supabase/filterRegistry.test.ts",
+        "tests": 39
+      },
+      {
+        "file": "src/atomic-crm/contacts/__tests__/useImportWizard.test.ts",
+        "tests": 39
+      },
+      {
+        "file": "src/atomic-crm/organizations/organizationColumnAliases.test.ts",
+        "tests": 38
+      },
+      {
+        "file": "src/atomic-crm/organizations/organizationImport.logic.test.ts",
+        "tests": 37
+      },
+      {
+        "file": "src/atomic-crm/providers/supabase/extensions/__tests__/customMethodsExtension.test.ts",
+        "tests": 37
+      },
+      {
+        "file": "src/atomic-crm/opportunities/utils/generateOpportunityName.test.ts",
+        "tests": 37
+      },
+      {
+        "file": "src/atomic-crm/contacts/__tests__/ContactBadges.test.tsx",
+        "tests": 34
+      },
+      {
+        "file": "src/atomic-crm/providers/supabase/__tests__/dataProviderUtils.transform.test.ts",
+        "tests": 33
+      },
+      {
+        "file": "src/atomic-crm/validation/__tests__/tags/validation.test.ts",
+        "tests": 33
+      },
+      {
+        "file": "src/hooks/useSlideOverState.test.ts",
+        "tests": 32
+      },
+      {
+        "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.errors.test.ts",
+        "tests": 32
+      }
+    ],
+    "e2e": [
+      {
+        "file": "tests/e2e/dashboard-v3/data-flow.spec.ts",
+        "tests": 36
+      },
+      {
+        "file": "tests/e2e/dashboard-v3/accessibility.spec.ts",
+        "tests": 26
+      },
+      {
+        "file": "tests/e2e/dashboard-v3/log-activity-fab.spec.ts",
+        "tests": 26
+      },
+      {
+        "file": "tests/e2e/design-system/list-layout.spec.ts",
+        "tests": 26
+      },
+      {
+        "file": "tests/e2e/design-system/slide-over.spec.ts",
+        "tests": 24
+      },
+      {
+        "file": "tests/e2e/design-system/visual-primitives.spec.ts",
+        "tests": 21
+      },
+      {
+        "file": "tests/e2e/design-system/create-form.spec.ts",
+        "tests": 19
+      },
+      {
+        "file": "tests/e2e/design-system-coverage.spec.ts",
+        "tests": 18
+      },
+      {
+        "file": "tests/e2e/specs/reports/reports-overview.spec.ts",
+        "tests": 18
+      },
+      {
+        "file": "tests/e2e/dashboard-v3/dashboard-v3.spec.ts",
+        "tests": 17
+      }
+    ]
+  },
+  "vitest_config": {
+    "file": "vitest.config.ts",
+    "test_environment": "jsdom",
+    "setup_files": [
+      "@testing-library/jest-dom",
+      "./src/tests/setup.ts"
+    ],
+    "coverage_provider": "v8",
+    "coverage_reporters": [
+      "text",
+      "json",
+      "html",
+      "lcov"
+    ],
+    "include_patterns": [
+      "src/**/*.test.{ts,tsx}"
+    ],
+    "exclude_patterns": [
+      "node_modules/",
+      "dist/",
+      ".docs/",
+      "tests/**/*.spec.{ts,tsx}",
+      "tests/integration/**/*.test.{ts,tsx}"
+    ]
+  },
   "playwright_config": {
     "file": "playwright.config.ts",
     "test_dir": "./tests/e2e",
     "base_url": "http://127.0.0.1:5173",
-    "browsers": ["chromium"],
-    "viewports": ["Desktop Chrome", "iPad Portrait (768x1024)", "iPad Landscape (1024x768)"],
+    "browsers": [
+      "chromium"
+    ],
+    "viewports": [
+      "Desktop Chrome",
+      "iPad Portrait (768x1024)",
+      "iPad Landscape (1024x768)"
+    ],
     "retries_ci": 2,
     "retries_local": 0,
     "global_setup": "./tests/e2e/global-setup.ts",
@@ -42,6 +3050,7 @@
   },
   "verification": {
     "all_tests_pass": null,
-    "last_run": null
+    "last_run": null,
+    "note": "Run 'npm test -- --run' to verify all tests pass"
   }
 }

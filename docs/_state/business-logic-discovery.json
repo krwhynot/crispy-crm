@@ -1,0 +1,561 @@
+{
+  "status": "complete",
+  "generated_at": "2025-12-22",
+  "source_project": "Crispy CRM (Atomic CRM)",
+
+  "pipeline_stages": [
+    {
+      "stage_key": "new_lead",
+      "display_label": "New Lead",
+      "order": 1,
+      "stale_threshold_days": 7,
+      "rotting_threshold_days": 7,
+      "color": "var(--info-subtle)",
+      "elevation": 3,
+      "description": "New prospect identified. Research the operator's menu, identify which principal products fit, and prepare your pitch.",
+      "mfb_phase": {
+        "phase": "Phase 2",
+        "name": "Planning",
+        "context": "Phase 2 activities: defining parameters, setting goals, and analyzing distributor landscape."
+      },
+      "source_file": "src/atomic-crm/opportunities/constants/stageConstants.ts",
+      "source_line": 37
+    },
+    {
+      "stage_key": "initial_outreach",
+      "display_label": "Initial Outreach",
+      "order": 2,
+      "stale_threshold_days": 14,
+      "rotting_threshold_days": 10,
+      "color": "var(--tag-teal-bg)",
+      "elevation": 2,
+      "description": "First contact made. Introduce MFB and relevant principals, qualify interest, and schedule a follow-up call or visit.",
+      "mfb_phase": {
+        "phase": "Phase 3A",
+        "name": "Target Distributors",
+        "context": "Phase 3A activities: intro emails, presentations, and operator call coordination."
+      },
+      "source_file": "src/atomic-crm/opportunities/constants/stageConstants.ts",
+      "source_line": 50
+    },
+    {
+      "stage_key": "sample_visit_offered",
+      "display_label": "Sample/Visit Offered",
+      "order": 3,
+      "stale_threshold_days": 14,
+      "rotting_threshold_days": 14,
+      "color": "var(--warning-subtle)",
+      "elevation": 2,
+      "description": "Product sample sent or site visit scheduled. Follow up within 3-5 days to gather feedback - this is a critical stage.",
+      "mfb_phase": {
+        "phase": "Phase 3A",
+        "name": "Target Distributors",
+        "context": "Phase 3A activities: sample coordination and site visit scheduling with targeted distributors."
+      },
+      "source_file": "src/atomic-crm/opportunities/constants/stageConstants.ts",
+      "source_line": 63
+    },
+    {
+      "stage_key": "feedback_logged",
+      "display_label": "Feedback Logged",
+      "order": 4,
+      "stale_threshold_days": 21,
+      "rotting_threshold_days": 7,
+      "color": "var(--tag-blue-bg)",
+      "elevation": 2,
+      "description": "Operator feedback recorded. Evaluate fit, address concerns, and determine if a formal demo or pricing discussion is warranted.",
+      "mfb_phase": {
+        "phase": "Phase 3B",
+        "name": "Stocking Distributors",
+        "context": "Phase 3B activities: creating stock lists and developing marketing campaigns."
+      },
+      "source_file": "src/atomic-crm/opportunities/constants/stageConstants.ts",
+      "source_line": 78
+    },
+    {
+      "stage_key": "demo_scheduled",
+      "display_label": "Demo Scheduled",
+      "order": 5,
+      "stale_threshold_days": 14,
+      "rotting_threshold_days": 5,
+      "color": "var(--success-subtle)",
+      "elevation": 3,
+      "description": "Final product demonstration or tasting scheduled. Confirm distributor availability and prepare pricing/terms for close.",
+      "mfb_phase": {
+        "phase": "Phase 3B",
+        "name": "Stocking Distributors",
+        "context": "Phase 3B activities: setting appointments and finalizing stock arrangements."
+      },
+      "source_file": "src/atomic-crm/opportunities/constants/stageConstants.ts",
+      "source_line": 92
+    },
+    {
+      "stage_key": "closed_won",
+      "display_label": "Closed - Won",
+      "order": 6,
+      "stale_threshold_days": null,
+      "rotting_threshold_days": null,
+      "color": "var(--success-strong)",
+      "elevation": 2,
+      "description": "Deal won! First purchase order placed. Ensure distributor authorization is active and hand off to account management.",
+      "mfb_phase": {
+        "phase": "Phase 5",
+        "name": "Ongoing Activities",
+        "context": "Phase 5 activities: annual/quarterly goals, promotions, DSR training, and food show planning."
+      },
+      "requires_reason": true,
+      "reason_field": "win_reason",
+      "source_file": "src/atomic-crm/opportunities/constants/stageConstants.ts",
+      "source_line": 105
+    },
+    {
+      "stage_key": "closed_lost",
+      "display_label": "Closed - Lost",
+      "order": 7,
+      "stale_threshold_days": null,
+      "rotting_threshold_days": null,
+      "color": "var(--error-subtle)",
+      "elevation": 1,
+      "description": "Opportunity lost. Review the loss reason and consider re-engagement after 90 days if circumstances change.",
+      "mfb_phase": {
+        "phase": "Phase 4",
+        "name": "Measuring Results",
+        "context": "Phase 4 review: analyze loss reasons for corrective actions and future opportunity improvement."
+      },
+      "requires_reason": true,
+      "reason_field": "loss_reason",
+      "source_file": "src/atomic-crm/opportunities/constants/stageConstants.ts",
+      "source_line": 119
+    }
+  ],
+
+  "activity_types": [
+    {
+      "type_key": "call",
+      "display_label": "Call",
+      "category": "Communication",
+      "required_fields": ["subject", "activity_date"],
+      "optional_fields": ["description", "duration_minutes", "contact_id", "organization_id", "outcome", "sentiment"],
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 17
+    },
+    {
+      "type_key": "email",
+      "display_label": "Email",
+      "category": "Communication",
+      "required_fields": ["subject", "activity_date"],
+      "optional_fields": ["description", "contact_id", "organization_id", "outcome", "attachments"],
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 18
+    },
+    {
+      "type_key": "meeting",
+      "display_label": "Meeting",
+      "category": "Meetings",
+      "required_fields": ["subject", "activity_date"],
+      "optional_fields": ["description", "duration_minutes", "location", "attendees", "outcome"],
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 19
+    },
+    {
+      "type_key": "demo",
+      "display_label": "Demo",
+      "category": "Meetings",
+      "required_fields": ["subject", "activity_date"],
+      "optional_fields": ["description", "duration_minutes", "location", "outcome", "sentiment"],
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 20
+    },
+    {
+      "type_key": "proposal",
+      "display_label": "Proposal",
+      "category": "Documentation",
+      "required_fields": ["subject", "activity_date"],
+      "optional_fields": ["description", "attachments", "outcome"],
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 21
+    },
+    {
+      "type_key": "follow_up",
+      "display_label": "Follow Up",
+      "category": "Documentation",
+      "required_fields": ["subject", "activity_date"],
+      "optional_fields": ["description", "follow_up_date", "follow_up_notes"],
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 22
+    },
+    {
+      "type_key": "trade_show",
+      "display_label": "Trade Show",
+      "category": "Meetings",
+      "required_fields": ["subject", "activity_date"],
+      "optional_fields": ["description", "location", "attendees", "outcome"],
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 23
+    },
+    {
+      "type_key": "site_visit",
+      "display_label": "Site Visit",
+      "category": "Meetings",
+      "required_fields": ["subject", "activity_date"],
+      "optional_fields": ["description", "duration_minutes", "location", "outcome", "sentiment"],
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 24
+    },
+    {
+      "type_key": "contract_review",
+      "display_label": "Contract Review",
+      "category": "Documentation",
+      "required_fields": ["subject", "activity_date"],
+      "optional_fields": ["description", "attachments", "outcome"],
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 25
+    },
+    {
+      "type_key": "check_in",
+      "display_label": "Check In",
+      "category": "Communication",
+      "required_fields": ["subject", "activity_date"],
+      "optional_fields": ["description", "duration_minutes", "outcome", "sentiment"],
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 26
+    },
+    {
+      "type_key": "social",
+      "display_label": "Social",
+      "category": "Communication",
+      "required_fields": ["subject", "activity_date"],
+      "optional_fields": ["description", "outcome"],
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 27
+    },
+    {
+      "type_key": "note",
+      "display_label": "Note",
+      "category": "Documentation",
+      "required_fields": ["subject", "activity_date"],
+      "optional_fields": ["description"],
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 28
+    },
+    {
+      "type_key": "sample",
+      "display_label": "Sample",
+      "category": "Documentation",
+      "required_fields": ["subject", "activity_date", "sample_status"],
+      "optional_fields": ["description", "follow_up_date", "follow_up_notes"],
+      "sample_workflow": ["sent", "received", "feedback_pending", "feedback_received"],
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 29
+    }
+  ],
+
+  "task_types": [
+    {
+      "type_key": "Call",
+      "display_label": "Call",
+      "description": "Phone call task",
+      "is_default": true,
+      "source_file": "src/atomic-crm/validation/task.ts",
+      "source_line": 17
+    },
+    {
+      "type_key": "Email",
+      "display_label": "Email",
+      "description": "Email correspondence task",
+      "is_default": false,
+      "source_file": "src/atomic-crm/validation/task.ts",
+      "source_line": 18
+    },
+    {
+      "type_key": "Meeting",
+      "display_label": "Meeting",
+      "description": "In-person or virtual meeting task",
+      "is_default": false,
+      "source_file": "src/atomic-crm/validation/task.ts",
+      "source_line": 19
+    },
+    {
+      "type_key": "Follow-up",
+      "display_label": "Follow-up",
+      "description": "Follow-up reminder task",
+      "is_default": false,
+      "source_file": "src/atomic-crm/validation/task.ts",
+      "source_line": 20
+    },
+    {
+      "type_key": "Demo",
+      "display_label": "Demo",
+      "description": "Product demonstration task",
+      "is_default": false,
+      "source_file": "src/atomic-crm/validation/task.ts",
+      "source_line": 21
+    },
+    {
+      "type_key": "Proposal",
+      "display_label": "Proposal",
+      "description": "Formal proposal/offer task",
+      "is_default": false,
+      "source_file": "src/atomic-crm/validation/task.ts",
+      "source_line": 22
+    },
+    {
+      "type_key": "Other",
+      "display_label": "Other",
+      "description": "Miscellaneous task",
+      "is_default": false,
+      "source_file": "src/atomic-crm/validation/task.ts",
+      "source_line": 23
+    }
+  ],
+
+  "priority_levels": [
+    { "key": "low", "label": "Low", "order": 1 },
+    { "key": "medium", "label": "Medium", "order": 2, "is_default": true },
+    { "key": "high", "label": "High", "order": 3 },
+    { "key": "critical", "label": "Critical", "order": 4 }
+  ],
+
+  "lead_sources": [
+    { "key": "referral", "label": "Referral" },
+    { "key": "trade_show", "label": "Trade Show" },
+    { "key": "website", "label": "Website" },
+    { "key": "cold_call", "label": "Cold Call" },
+    { "key": "email_campaign", "label": "Email Campaign" },
+    { "key": "social_media", "label": "Social Media" },
+    { "key": "partner", "label": "Partner" },
+    { "key": "existing_customer", "label": "Existing Customer" }
+  ],
+
+  "win_reasons": [
+    { "key": "relationship", "label": "Strong Relationship", "description": "Strong existing relationship with customer" },
+    { "key": "product_quality", "label": "Product Quality/Fit", "description": "Superior product quality/fit" },
+    { "key": "price_competitive", "label": "Competitive Pricing", "description": "Competitive pricing" },
+    { "key": "timing", "label": "Right Timing", "description": "Right timing for customer needs" },
+    { "key": "other", "label": "Other (specify)", "description": "Free-text reason required", "requires_notes": true }
+  ],
+
+  "loss_reasons": [
+    { "key": "price_too_high", "label": "Price Too High", "description": "Price not competitive" },
+    { "key": "no_authorization", "label": "No Distributor Authorization", "description": "Distributor not authorized for principal" },
+    { "key": "competitor_relationship", "label": "Competitor Relationship", "description": "Customer has existing competitor relationship" },
+    { "key": "product_fit", "label": "Product Didn't Fit", "description": "Product doesn't meet customer needs" },
+    { "key": "timing", "label": "Bad Timing", "description": "Bad timing (budget, seasonality, etc.)" },
+    { "key": "no_response", "label": "Customer Unresponsive", "description": "Customer became unresponsive" },
+    { "key": "other", "label": "Other (specify)", "description": "Free-text reason required", "requires_notes": true }
+  ],
+
+  "sample_status_workflow": [
+    { "key": "sent", "label": "Sent", "order": 1 },
+    { "key": "received", "label": "Received", "order": 2 },
+    { "key": "feedback_pending", "label": "Feedback Pending", "order": 3 },
+    { "key": "feedback_received", "label": "Feedback Received", "order": 4 }
+  ],
+
+  "sentiment_values": [
+    { "key": "positive", "label": "Positive" },
+    { "key": "neutral", "label": "Neutral" },
+    { "key": "negative", "label": "Negative" }
+  ],
+
+  "business_rules": [
+    {
+      "rule_id": "stale_opportunity_thresholds",
+      "category": "staleness",
+      "description": "Per-stage thresholds define when opportunities become stale (need attention)",
+      "thresholds": {
+        "new_lead": 7,
+        "initial_outreach": 14,
+        "sample_visit_offered": 14,
+        "feedback_logged": 21,
+        "demo_scheduled": 14,
+        "closed_won": null,
+        "closed_lost": null
+      },
+      "source_file": "src/atomic-crm/utils/stalenessCalculation.ts",
+      "source_line": 46
+    },
+    {
+      "rule_id": "rotting_opportunity_thresholds",
+      "category": "staleness",
+      "description": "Per-stage thresholds define when opportunities are rotting (stuck in stage too long)",
+      "thresholds": {
+        "new_lead": 7,
+        "initial_outreach": 10,
+        "sample_visit_offered": 14,
+        "feedback_logged": 7,
+        "demo_scheduled": 5,
+        "closed_won": null,
+        "closed_lost": null
+      },
+      "source_file": "src/atomic-crm/opportunities/constants/stageThresholds.ts",
+      "source_line": 17
+    },
+    {
+      "rule_id": "warning_threshold_calculation",
+      "category": "staleness",
+      "description": "Warning threshold is 75% of rotting threshold",
+      "formula": "Math.floor(rotting_threshold * 0.75)",
+      "source_file": "src/atomic-crm/opportunities/constants/stageThresholds.ts",
+      "source_line": 44
+    },
+    {
+      "rule_id": "closed_stages_never_stale_or_rotting",
+      "category": "staleness",
+      "description": "Closed won and closed lost opportunities can never be stale or rotting",
+      "source_file": "src/atomic-crm/opportunities/constants/stageThresholds.ts",
+      "source_line": 64
+    },
+    {
+      "rule_id": "opportunity_requires_customer",
+      "category": "validation",
+      "description": "Opportunities must have a customer_organization_id (Salesforce standard, business rule Q12)",
+      "source_file": "src/atomic-crm/validation/opportunities.ts",
+      "source_line": 117
+    },
+    {
+      "rule_id": "opportunity_requires_principal",
+      "category": "validation",
+      "description": "Opportunities must have a principal_organization_id",
+      "source_file": "src/atomic-crm/validation/opportunities.ts",
+      "source_line": 118
+    },
+    {
+      "rule_id": "closed_won_requires_win_reason",
+      "category": "workflow",
+      "description": "Closing an opportunity as 'won' requires a win_reason to be specified",
+      "source_file": "src/atomic-crm/validation/opportunities.ts",
+      "source_line": 370
+    },
+    {
+      "rule_id": "closed_lost_requires_loss_reason",
+      "category": "workflow",
+      "description": "Closing an opportunity as 'lost' requires a loss_reason to be specified",
+      "source_file": "src/atomic-crm/validation/opportunities.ts",
+      "source_line": 383
+    },
+    {
+      "rule_id": "other_reason_requires_notes",
+      "category": "validation",
+      "description": "When win_reason or loss_reason is 'other', close_reason_notes (max 500 chars) must be provided",
+      "source_file": "src/atomic-crm/validation/opportunities.ts",
+      "source_line": 397
+    },
+    {
+      "rule_id": "activity_interaction_requires_opportunity",
+      "category": "validation",
+      "description": "Activities with type 'interaction' must have an opportunity_id",
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 134
+    },
+    {
+      "rule_id": "activity_engagement_prohibits_opportunity",
+      "category": "validation",
+      "description": "Activities with type 'engagement' should not have an opportunity_id",
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 143
+    },
+    {
+      "rule_id": "activity_requires_entity_relationship",
+      "category": "validation",
+      "description": "All activities must have at least one entity relationship (contact or organization)",
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 152
+    },
+    {
+      "rule_id": "follow_up_date_conditional_required",
+      "category": "validation",
+      "description": "When follow_up_required is true, follow_up_date must be provided",
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 161
+    },
+    {
+      "rule_id": "sample_activity_requires_status",
+      "category": "workflow",
+      "description": "Activities with type 'sample' must have a sample_status value",
+      "source_file": "src/atomic-crm/validation/activities.ts",
+      "source_line": 171
+    },
+    {
+      "rule_id": "task_requires_sales_rep_assignment",
+      "category": "validation",
+      "description": "All tasks must be assigned to a sales rep (sales_id is required)",
+      "source_file": "src/atomic-crm/validation/task.ts",
+      "source_line": 48
+    },
+    {
+      "rule_id": "opportunity_duplicate_detection",
+      "category": "duplicate",
+      "description": "Opportunities are exact duplicates if they share principal_organization_id + customer_organization_id + product_id",
+      "action": "fail_fast_block",
+      "source_file": "src/atomic-crm/validation/opportunities.ts",
+      "source_line": 574
+    },
+    {
+      "rule_id": "organization_duplicate_detection",
+      "category": "duplicate",
+      "description": "Organizations are detected as duplicates using case-insensitive, trimmed name comparison",
+      "action": "soft_warning_dialog",
+      "source_file": "src/atomic-crm/organizations/organizationImport.logic.ts",
+      "source_line": 96
+    },
+    {
+      "rule_id": "soft_delete_via_deleted_at",
+      "category": "data_integrity",
+      "description": "Soft deletion is implemented by setting deleted_at timestamp; NULL means active record",
+      "source_file": "src/atomic-crm/validation/task.ts",
+      "source_line": 61
+    },
+    {
+      "rule_id": "estimated_close_date_default_30_days",
+      "category": "defaults",
+      "description": "Opportunities default to 30 days from now for estimated_close_date",
+      "source_file": "src/atomic-crm/validation/opportunities.ts",
+      "source_line": 104
+    },
+    {
+      "rule_id": "organization_priority_normalization",
+      "category": "data_quality",
+      "description": "Invalid organization priority values are normalized to 'C' (medium priority) during import",
+      "source_file": "src/atomic-crm/organizations/organizationImport.logic.ts",
+      "source_line": 156
+    }
+  ],
+
+  "database_enums": {
+    "opportunity_stage": ["new_lead", "initial_outreach", "sample_visit_offered", "feedback_logged", "demo_scheduled", "closed_won", "closed_lost"],
+    "interaction_type": ["call", "email", "meeting", "demo", "proposal", "follow_up", "trade_show", "site_visit", "contract_review", "check_in", "social", "note"],
+    "task_type": ["Call", "Email", "Meeting", "Follow-up", "Demo", "Proposal", "Other"],
+    "priority_level": ["low", "medium", "high", "critical"],
+    "win_reason": ["relationship", "product_quality", "price_competitive", "timing", "other"],
+    "loss_reason": ["price_too_high", "no_authorization", "competitor_relationship", "product_fit", "timing", "no_response", "other"],
+    "organization_type": ["customer", "principal", "distributor", "prospect"],
+    "opportunity_status": ["active", "on_hold", "nurturing", "stalled", "expired"]
+  },
+
+  "deprecated_enum_values": {
+    "opportunity_stage": {
+      "removed": ["awaiting_response"],
+      "migration": "20251129173209_remove_awaiting_response_enum_value.sql",
+      "data_migration": "Records migrated to feedback_logged"
+    },
+    "task_type": {
+      "removed": ["None", "Discovery", "Administrative"],
+      "migration": "20251129044526_align_task_type_enum.sql",
+      "data_migration": { "None": "Other", "Discovery": "Meeting", "Administrative": "Other" }
+    }
+  },
+
+  "verification": {
+    "stage_count": 7,
+    "activity_type_count": 13,
+    "task_type_count": 7,
+    "priority_level_count": 4,
+    "lead_source_count": 8,
+    "win_reason_count": 5,
+    "loss_reason_count": 7,
+    "business_rule_count": 20,
+    "database_enum_alignment": "verified",
+    "validation_schema_alignment": "verified"
+  }
+}
