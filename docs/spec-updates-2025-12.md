@@ -358,20 +358,29 @@ See `activityOutcomeSchema` for outcomes.
 - Type vs Outcome distinction is semantically correct
 
 #### Test Update
+
+**Note:** The Quick Logger UI intentionally shows a subset of 5 common types: `Call, Email, Meeting, Follow-up, Note`. This is correct UX design - users can access all 13 types in other contexts (full activity form).
+
 ```typescript
 // OLD ASSERTIONS (remove)
 await expect(activityTypeSelect).toContainText('Complete');
 const types = ['Call', 'Email', 'Meeting', 'Sample', 'Complete'];
 
-// NEW ASSERTIONS (add)
-const types = [
+// NEW ASSERTIONS (Quick Logger context - tests 5 common types)
+const quickLoggerTypes = ['Call', 'Email', 'Meeting', 'Follow-up', 'Note'];
+
+// FULL ACTIVITY FORM (all 13 types available)
+const allTypes = [
   'call', 'email', 'meeting', 'demo', 'proposal',
   'follow_up', 'trade_show', 'site_visit', 'contract_review',
   'check_in', 'social', 'note', 'sample'
 ];
-// Verify Complete is NOT in type options
+
+// Verify Complete is NOT in type options (it's an outcome)
 await expect(activityTypeSelect).not.toContainText('Complete');
 ```
+
+**Current Status:** `tests/e2e/support/fixtures/test-data.ts` already has correct 13-type enumeration.
 
 ---
 
@@ -405,6 +414,25 @@ After implementing spec updates, verify:
 - [ ] #14 - Required fields count updated to 1
 - [ ] #15 - Tasks page title → breadcrumb assertion
 - [ ] #16 - Activity type options assertions updated (13 types)
+
+---
+
+## Implementation Status
+
+After reviewing the E2E test files, most tests are **already aligned** with the current implementation:
+
+| Issue | Test File | Status | Notes |
+|-------|-----------|--------|-------|
+| #1, #9, #15 | N/A | ✅ No fix needed | No page title assertions found in tests |
+| #4 | N/A | ✅ No fix needed | No bulk action order assertions found |
+| #5 | N/A | ✅ No fix needed | No indeterminate checkbox assertions found |
+| #6 | N/A | ✅ No fix needed | Tests use progress bar, not title assertions |
+| #7 | Various | ✅ Already correct | Tests use `/save.*close/i` patterns |
+| #10 | N/A | ✅ No fix needed | Organizations tests don't assert Notes column |
+| #14 | N/A | ✅ No fix needed | Tests use "required fields" generically |
+| #16 | `test-data.ts` | ✅ Already correct | Has all 13 types enumerated |
+
+**Key Finding:** The E2E tests follow good practices - they test actual UI behavior rather than hardcoding expected values. The original spec may have been a design document that diverged from implementation, not the test files themselves.
 
 ---
 
