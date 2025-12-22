@@ -151,9 +151,9 @@ rm src/atomic-crm/utils/exportScheduler.test.ts
 
 | Asset | Size | Referenced? | Action |
 |-------|------|-------------|--------|
-| `src/assets/react.svg` | ~1KB | No | Delete |
-| `public/img/adding-users.png` | ~5KB | No | Delete |
-| `public/debug.html` | ~22KB | No (dev only) | Consider delete |
+| `src/assets/react.svg` | ~1KB | No | ✅ **DELETED 2025-12-21** |
+| `public/img/adding-users.png` | ~5KB | No | ✅ **DELETED 2025-12-21** |
+| `public/debug.html` | ~22KB | No (dev only) | ✅ **DELETED 2025-12-21** |
 
 ### Removal Commands
 
@@ -179,7 +179,7 @@ rm public/img/adding-users.png
 
 | Entry | Issue | Action |
 |-------|-------|--------|
-| `resolve.alias['ra-ui-materialui']` | Package never imported | Verify or remove |
+| `resolve.alias['ra-ui-materialui']` | Package never imported | ✅ **REMOVED 2025-12-21** |
 
 ---
 
@@ -195,7 +195,7 @@ rm public/img/adding-users.png
 
 | Function | Location 1 | Location 2 | Action |
 |----------|-----------|-----------|--------|
-| `ucFirst` | opportunityUtils.ts:24 | OpportunityArchivedList.tsx:137 | Consolidate to single location |
+| `ucFirst` | opportunityUtils.ts:24 | OpportunityArchivedList.tsx:137 | ✅ **FIXED 2025-12-21** - Consolidated to `src/atomic-crm/utils/formatters.ts` |
 
 ---
 

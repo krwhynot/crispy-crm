@@ -152,12 +152,13 @@ All queries go through Supabase client with parameterized queries. No raw SQL co
 | Paste multi-line into single-line | Accepted | May break for certain fields |
 | Paste with formatting | Stripped by sanitizeHtml | ✅ Safe |
 
-### Autocomplete Attributes
+### Autocomplete Attributes ✅ FIXED 2025-12-21
 | Form | autocomplete Attrs | Issue |
 |------|-------------------|-------|
-| ContactCreate | ❌ Not set | Browser autofill may populate wrong fields |
-| OrganizationCreate | ❌ Not set | Same issue |
-| All forms | ❌ Not standardized | No consistent pattern |
+| ContactCreate | ✅ Set | `given-name`, `family-name`, `email`, `tel` |
+| OrganizationCreate | ✅ Set | `address-line1`, `address-level2`, `postal-code`, `tel` |
+| PersonalSection | ✅ Set | `given-name`, `family-name`, `email` |
+| SalesGeneralTab | ✅ Set | `given-name`, `family-name`, `email` |
 
 ---
 
@@ -303,13 +304,13 @@ All date inputs use `type="date"` or `type="datetime-local"` HTML5 inputs:
    - Fix: Pass `maxLength` from validation schema to input element for real-time feedback
 
 ### P3 - Medium
-1. **Add autocomplete attributes for better UX**
-   - Files: Form components
-   - Fix: Add appropriate `autocomplete` attributes (email, name, tel, etc.)
+1. ✅ **Add autocomplete attributes for better UX** - **FIXED 2025-12-21**
+   - Files: `ContactCompactForm.tsx`, `OrganizationCompactForm.tsx`, `PersonalSection.tsx`, `SalesGeneralTab.tsx`
+   - Resolution: Added standard WHATWG autocomplete tokens (`given-name`, `family-name`, `email`, `tel`, `address-line1`, etc.)
 
-2. **Consider virtualization for large reference selects**
+2. **Consider virtualization for large reference selects** - DEFERRED
    - Impact: Performance with 100+ records
-   - Fix: Implement `react-window` or similar for large datasets
+   - Status: Current scale (~50 distributors) doesn't require virtualization. Implement if performance issues observed.
 
 3. **Add aria-required to required fields**
    - Files: `src/components/admin/form/form-primitives.tsx`
@@ -342,7 +343,9 @@ All date inputs use `type="date"` or `type="datetime-local"` HTML5 inputs:
 ### Architecture Improvements
 1. Consider React Admin's built-in `warnWhenUnsavedChanges` prop for Create/Edit components
 2. Add input-level validation mode (`onChange` with debounce) for critical fields
-3. Document form validation patterns in ADR
+3. ✅ **Document form validation patterns in ADR** - **COMPLETED 2025-12-21**
+   - Created `docs/adr/006-form-validation-patterns.md` (339 lines)
+   - Documents: Single-point validation, Zod schema patterns, form modes, state initialization, accessibility
 
 ---
 

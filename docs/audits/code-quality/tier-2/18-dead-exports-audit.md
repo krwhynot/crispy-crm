@@ -66,7 +66,7 @@ The codebase contains **significant dead code** primarily in utility modules tha
 
 | Function | Location 1 | Location 2 | Action |
 |----------|-----------|-----------|--------|
-| `ucFirst` | opportunityUtils.ts:24 | OpportunityArchivedList.tsx:137 | **Consolidate** to single location |
+| `ucFirst` | opportunityUtils.ts:24 | OpportunityArchivedList.tsx:137 | ✅ **FIXED 2025-12-21** - Consolidated to `src/atomic-crm/utils/formatters.ts` |
 
 ---
 
@@ -152,7 +152,7 @@ The following items are marked `@deprecated` and may be dead:
 | Delete test-only utilities | 3 files | 738 | Remove contextMenu.tsx, keyboardShortcuts.ts, exportScheduler.ts + tests |
 | Remove dead organizationImport.logic.ts exports | 1 file | ~155 | Remove unused functions |
 | Remove dead organizationColumnAliases.ts exports | 1 file | ~70 | Remove unused functions |
-| Consolidate `ucFirst` | 2 files | - | Move to shared utility |
+| Consolidate `ucFirst` | 2 files | - | ✅ **DONE 2025-12-21** - Moved to `formatters.ts` |
 
 ### Requires Verification
 
