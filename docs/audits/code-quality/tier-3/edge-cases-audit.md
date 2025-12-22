@@ -116,8 +116,9 @@ Crispy CRM demonstrates **strong foundational security practices** with comprehe
 
 | Scenario | Current Behavior | Risk |
 |----------|------------------|------|
-| Same record, two users | Last write wins | **Data loss possible** |
-| Optimistic locking | **NOT implemented** | No version/revision columns |
+| Same record, two users (opportunities) | ✅ Version check + conflict error | **RESOLVED 2025-12-22** |
+| Same record, two users (other entities) | Last write wins | **Data loss possible** |
+| Optimistic locking (opportunities) | ✅ **Implemented 2025-12-22** | Version column with RPC check |
 | Post-submission validation | YES - dequal deep equality check | Catches silent failures |
 
 ### Rapid Action Handling
@@ -226,7 +227,7 @@ Crispy CRM demonstrates **strong foundational security practices** with comprehe
 | No FK on principal_organization_id | Medium | High | **P0** |
 | Slide-over stale data | High | Medium | P1 |
 | Filtered empty state missing | High | Medium | P1 |
-| No optimistic locking | Medium | High | P1 |
+| ~~No optimistic locking~~ | ~~Medium~~ | ~~High~~ | ~~P1~~ ✅ **RESOLVED 2025-12-22** |
 | Activity fields missing .max() | Medium | High | P1 |
 | Contact orphans on org delete | Medium | Medium | P1 |
 | CloseOpportunityModal no dirty warning | Medium | Low | P2 |

@@ -64,7 +64,7 @@ After analyzing 24 audit reports, deduplicating overlapping findings, and resolv
 |----------|-------|-----------|----------|
 | P0 - Critical | 3 | **0** | ~~Fix before beta~~ **ALL DONE** ✅ |
 | P1 - High | 12 | **0** | ~~Fix this week~~ **ALL DONE** ✅ |
-| P2 - Medium | 14 | **6** | ~~Fix before launch~~ 8 DONE |
+| P2 - Medium | 14 | **3** | ~~Fix before launch~~ 11 DONE |
 | P3 - Low | 6 | **0** | ~~Post-launch backlog~~ **ALL DONE** |
 
 > **Update 2025-12-21:** P1-1 through P1-8 completed (8 of 12 P1 items)
@@ -72,6 +72,8 @@ After analyzing 24 audit reports, deduplicating overlapping findings, and resolv
 > **Update 2025-12-21:** P2-B batch completed: P2-4, P2-5, P2-7, P2-9, P2-10, P2-11, P2-12, P2-14 (8 of 14 P2 items)
 > **Update 2025-12-21:** P3 backlog completed: P3-1 through P3-6 + dead asset cleanup (6 of 6 P3 items)
 > **Update 2025-12-21:** P0 CRITICAL DATABASE FIXES completed - RLS, view performance, cascade deletes (3 of 3 P0 items) ✅
+> **Update 2025-12-22:** P2-6 Optimistic Locking completed - version column, trigger, RPC check, UI error handling (9 of 14 P2 items)
+> **Update 2025-12-21:** P2-1, P2-13 (Architecture) completed - context split + error boundaries (11 of 14 P2 items)
 
 ---
 
@@ -392,15 +394,22 @@ Note: `@radix-ui/react-toggle-group` IS used (different package, in toggle-group
 
 ## P2 - Medium Priority (Fix Before Launch)
 
-### P2-1: ConfigurationContext Split [PERFORMANCE]
+### P2-1: ConfigurationContext Split [PERFORMANCE] ✅ COMPLETED 2025-12-21
 
 **Source:** Agent 9 (State & Context)
 **File:** `src/atomic-crm/root/ConfigurationContext.tsx`
 **Impact:** 11 values in one context, 13 consumers re-render on any change
 
-**Fix:** Split into: `AppBrandingContext`, `StagesContext`, `FormOptionsContext`
+**Resolution Applied:**
+- Created 3 focused contexts in `src/atomic-crm/contexts/`:
+  - `AppBrandingContext.tsx` - title, logos (rarely changes)
+  - `PipelineConfigContext.tsx` - stages, categories (pipeline workflow)
+  - `FormOptionsContext.tsx` - noteStatuses, taskTypes, contactGender (form inputs)
+- Combined provider in `ConfigurationContext.tsx` wraps all 3
+- All 13 consumers migrated to focused hooks (`useAppBranding`, `usePipelineConfig`, `useFormOptions`)
+- Deprecated `useConfigurationContext()` kept for backward compatibility
 
-**Effort:** 3 hours | **Risk:** Medium - refactoring
+**Completed:** 2025-12-21
 
 ---
 
@@ -570,14 +579,26 @@ Migration `20251222034729_add_opportunity_version_column.sql`:
 
 ---
 
-### P2-13: Add Error Boundaries to Feature Modules [RESILIENCE]
+### P2-13: Add Error Boundaries to Feature Modules [RESILIENCE] ✅ COMPLETED 2025-12-21
 
 **Source:** Agent 24 (Devil's Advocate)
 **Impact:** Single component error crashes entire page
 
-**Affected:** Modules without entry-point error boundaries
+**Resolution Applied:**
+- Created `src/atomic-crm/organizations/resource.tsx` with `ResourceErrorBoundary` wrapper
+- Created `src/atomic-crm/activities/resource.tsx` with `ResourceErrorBoundary` wrapper
+- Updated both `index.tsx` files to re-export from `resource.tsx`
+- All 11 feature modules now have error boundary protection:
+  - opportunities, contacts, tasks, sales, products, notifications, productDistributors → `ResourceErrorBoundary`
+  - settings, reports → `ErrorBoundary`
+  - dashboard → `DashboardErrorBoundary`
+  - organizations, activities → `ResourceErrorBoundary` (new)
 
-**Effort:** 2 hours | **Risk:** Low
+**Verification:**
+- `npm run typecheck` ✅ passes
+- `npm run build` ✅ succeeds
+
+**Completed:** 2025-12-21
 
 ---
 

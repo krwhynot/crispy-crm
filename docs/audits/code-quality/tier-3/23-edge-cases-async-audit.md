@@ -286,47 +286,41 @@ useEffect(() => {
 
 ## Concurrent User Risks
 
-### No Conflict Detection
+### ✅ Conflict Detection IMPLEMENTED (2025-12-22)
 
-The codebase does **not** implement optimistic locking or version checking:
+~~The codebase does **not** implement optimistic locking or version checking:~~
+
+**UPDATE 2025-12-22:** Optimistic locking is now implemented for opportunities:
 
 | Entity | Concurrent Edit Risk | Detection | Resolution |
 |--------|---------------------|-----------|------------|
-| Opportunity | High - multiple users | ❌ None | Last write wins |
+| Opportunity | High - multiple users | ✅ Version column | Conflict error + refresh |
 | Contact | Medium | ❌ None | Last write wins |
 | Organization | Medium | ❌ None | Last write wins |
 | Task | Low - personal | N/A | Own tasks only |
 | Activity | Low - append only | N/A | No conflicts |
 
-### Risk Scenarios
+### Implementation Details (Migration 20251222034729)
 
-1. **User A opens Opportunity X at 10:00**
-2. **User B opens Opportunity X at 10:01**
-3. **User B saves changes at 10:05**
-4. **User A saves at 10:10 → User B's changes are lost**
+1. **Database:** Added `version` integer column (default 1)
+2. **Trigger:** `increment_opportunity_version()` auto-increments on update
+3. **RPC:** `sync_opportunity_with_products` accepts `expected_version` parameter
+4. **Conflict Detection:** RPC raises `CONFLICT` exception (40001) on version mismatch
+5. **UI:** Shows user-friendly "Refreshing..." warning on conflict
 
-### Recommended Solution: Optimistic Locking
+### ~~Risk Scenarios~~ → Now Protected
 
-```typescript
-// Database: Add updated_at column with trigger
-// Provider: Capture version on fetch
-const { data, updated_at } = await getOne(id);
+1. **User A opens Opportunity X at 10:00** (version 1)
+2. **User B opens Opportunity X at 10:01** (version 1)
+3. **User B saves changes at 10:05** (version becomes 2)
+4. **User A saves at 10:10** → ✅ **Conflict detected, User A sees warning and page refreshes**
 
-// On update: Check version
-await update(id, changes, {
-  ifVersion: updated_at,
-  onConflict: () => {
-    notify("Record was modified by another user. Please refresh.", { type: "warning" });
-  }
-});
-```
+### Remaining Work (Other Entities)
 
-### Alternative: Visual Indicators
-
-For MVP, consider adding:
-- "Last edited by [User] at [Time]" indicator
-- Manual refresh button on detail views
-- Read-only mode warning if record is open elsewhere (requires websockets)
+Consider extending optimistic locking to:
+- Contacts (medium priority - less frequent concurrent edits)
+- Organizations (medium priority)
+- Tasks (low priority - personal to each user)
 
 ---
 
@@ -343,9 +337,9 @@ For MVP, consider adding:
 
 | # | Issue | File | Fix |
 |---|-------|------|-----|
-| 1 | No beforeunload for import wizard | ContactImportDialog.tsx | Add warning when closing during import |
+| 1 | No beforeunload for import wizard | ContactImportDialog.tsx | ✅ Already implemented |
 | 2 | Missing retry on network errors | Toast notifications | Add retry action to error toasts |
-| 3 | No concurrent edit detection | Data provider | Add optimistic locking (post-MVP) |
+| 3 | No concurrent edit detection | Data provider | ✅ **COMPLETED 2025-12-22** - Optimistic locking for opportunities |
 
 ### P3 - Medium (Polish)
 
@@ -412,9 +406,9 @@ For long-running operations like CSV import, add browser close warning.
 | Loading states implemented | 90%+ | ✅ Good |
 | Error handling implemented | 95%+ | ✅ Excellent |
 | Unsaved changes warnings | 3/10 forms | ⚠️ Partial |
-| Concurrent user protection | 0% | ❌ Not implemented |
+| Concurrent user protection | ✅ Opportunities | ✅ **Implemented 2025-12-22** |
 | AbortController usage | 1 file | ⚠️ Limited |
 
-**Overall Grade: B+**
+**Overall Grade: A-** (upgraded from B+ after optimistic locking implementation)
 
-The codebase demonstrates solid async handling fundamentals with React Admin's built-in protections. Main areas for improvement are: consistent useEffect cleanup, broader AbortController usage for long operations, and concurrent user conflict detection for multi-user scenarios.
+The codebase demonstrates solid async handling fundamentals with React Admin's built-in protections. Opportunities now have optimistic locking for concurrent user protection. Main remaining areas for improvement are: consistent useEffect cleanup, broader AbortController usage for long operations, and extending optimistic locking to other high-edit entities.
