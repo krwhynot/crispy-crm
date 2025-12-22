@@ -1,5 +1,7 @@
+import { z } from "zod";
 import { OPPORTUNITY_STAGE_CHOICES } from "../opportunities/constants/stageConstants";
 import { getStorageItem, setStorageItem } from "../utils/secureStorage";
+import { safeJsonParse } from "../utils/safeJsonParse";
 
 /**
  * Storage key for opportunity stage preferences
@@ -7,6 +9,17 @@ import { getStorageItem, setStorageItem } from "../utils/secureStorage";
  * (cleared on tab close for better privacy)
  */
 const STORAGE_KEY = "filter.opportunity_stages";
+
+/**
+ * Schema for validating URL filter parameters
+ * Prevents JSON.parse attacks from malicious URL parameters
+ */
+const urlFilterSchema = z.object({
+  stage: z.union([
+    z.string(),
+    z.array(z.string()),
+  ]).optional(),
+}).passthrough(); // Allow other filter fields
 
 /**
  * Default visible stages - excludes closed stages by default
@@ -80,13 +93,11 @@ export const getInitialStageFilter = (): string[] | undefined => {
   const urlParams = new URLSearchParams(window.location.search);
   const urlFilter = urlParams.get("filter");
   if (urlFilter) {
-    try {
-      const parsed = JSON.parse(urlFilter);
-      if (parsed.stage) {
-        return Array.isArray(parsed.stage) ? parsed.stage : [parsed.stage];
-      }
-    } catch {
+    const parsed = safeJsonParse(urlFilter, urlFilterSchema);
+    if (!parsed) {
       // Invalid JSON in URL, continue to fallback
+    } else if (parsed.stage) {
+      return Array.isArray(parsed.stage) ? parsed.stage : [parsed.stage];
     }
   }
 
