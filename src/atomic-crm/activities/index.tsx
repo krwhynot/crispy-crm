@@ -1,8 +1,15 @@
 /* eslint-disable react-refresh/only-export-components -- React Admin resource config requires mixed exports */
-import type { ActivityRecord } from "../types";
-import { parseDateSafely } from "@/lib/date-utils";
 
-// Standard feature exports
+/**
+ * Activities Module Entry Point
+ *
+ * Re-exports components for external use and provides error-boundary-wrapped
+ * resource configuration via resource.tsx.
+ *
+ * Part of P2-13 fix: Add error boundaries to feature modules
+ */
+
+// Standard feature exports (raw components for testing/embedding)
 export { default as ActivityList } from './ActivityList';
 export { default as ActivityCreate } from './ActivityCreate';
 export { ActivityEdit } from './ActivityEdit';
@@ -28,16 +35,12 @@ export { ActivityTimelineEntry } from "./components/ActivityTimelineEntry";
 // Export shared constants
 export { ACTIVITY_PAGE_SIZE } from "./constants";
 
-// Re-import for default export
-import ActivityList from './ActivityList';
-import ActivityCreate from './ActivityCreate';
-import { ActivityEdit } from './ActivityEdit';
+// Export wrapped views (with error boundaries)
+export {
+  ActivityListView,
+  ActivityCreateView,
+  ActivityEditView,
+} from "./resource";
 
-// React Admin resource configuration
-export default {
-  list: ActivityList,
-  create: ActivityCreate,
-  edit: ActivityEdit,
-  recordRepresentation: (record: ActivityRecord) =>
-    `${record?.type || "Activity"} - ${record?.activity_date ? parseDateSafely(record.activity_date)?.toLocaleDateString() || "Unknown date" : "Unknown date"}`,
-};
+// React Admin resource configuration (with error boundaries)
+export { default } from "./resource";

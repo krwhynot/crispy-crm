@@ -32,6 +32,7 @@ export interface OpportunityCreateInput {
 
 export interface OpportunityUpdateInput extends Partial<OpportunityCreateInput> {
   id: Identifier;
+  version?: number;
 }
 
 /**
@@ -138,7 +139,8 @@ export class OpportunitiesService {
   async updateWithProducts(
     id: Identifier,
     data: Partial<OpportunityUpdateInput>,
-    previousProducts: Product[] = []
+    previousProducts: Product[] = [],
+    previousVersion?: number
   ): Promise<Opportunity> {
     try {
       // Extract products before sending to database
@@ -167,7 +169,7 @@ export class OpportunitiesService {
       });
 
       // Call RPC function for atomic update with products
-      const opportunity = await this.rpcSyncOpportunity(opportunityData, creates, updates, deletes);
+      const opportunity = await this.rpcSyncOpportunity(opportunityData, creates, updates, deletes, previousVersion);
       devLog(
         "OpportunitiesService",
         "Opportunity updated successfully with product sync",
@@ -199,13 +201,15 @@ export class OpportunitiesService {
     opportunityData: Partial<OpportunityCreateInput> | (Partial<OpportunityUpdateInput> & { id: Identifier }),
     productsToCreate: Product[],
     productsToUpdate: Product[],
-    productIdsToDelete: (string | number)[]
+    productIdsToDelete: (string | number)[],
+    expectedVersion?: number
   ): Promise<Opportunity> {
     const rpcData = await this.dataProvider.rpc<Opportunity | { data: Opportunity }>("sync_opportunity_with_products", {
       opportunity_data: opportunityData,
       products_to_create: productsToCreate,
       products_to_update: productsToUpdate,
       product_ids_to_delete: productIdsToDelete,
+      expected_version: expectedVersion,
     });
 
     return this.unwrapRpcResponse(rpcData);

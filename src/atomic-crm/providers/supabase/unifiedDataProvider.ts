@@ -772,13 +772,15 @@ export const unifiedDataProvider: DataProvider = {
       // Validate and process data
       const processedData = await processForDatabase(resource, dataToProcess, "update");
 
-      // Delegate opportunity update to service (handles products sync)
+      // Delegate opportunity update to service (handles products sync + optimistic locking)
       if (resource === "opportunities") {
         const previousProducts = params.previousData?.products || [];
+        const previousVersion = params.previousData?.version as number | undefined;
         const result = await opportunitiesService.updateWithProducts(
           params.id,
           processedData as Partial<OpportunityUpdateInput>,
-          previousProducts
+          previousProducts,
+          previousVersion
         );
         // LIBRARY-BOUNDARY: Service returns Opportunity, but DataProvider generic expects RecordType.
         // Type-safe because caller uses dataProvider.update<Opportunity>("opportunities", {...})

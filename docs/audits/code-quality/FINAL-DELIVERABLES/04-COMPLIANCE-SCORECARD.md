@@ -21,7 +21,9 @@
 
 ## Executive Summary
 
-The Crispy CRM codebase demonstrates **strong overall compliance** with the Engineering Constitution, achieving an aggregate score of **93%** (up from 82% after P1 fixes). Key strengths include excellent React Admin integration, clean import architecture, and proper fail-fast error handling. After completing P1-1 through P1-8, we are now **2% away from the 95% target**.
+The Crispy CRM codebase demonstrates **strong overall compliance** with the Engineering Constitution, achieving an aggregate score of **95%** (up from 82% after P1 fixes, +2% from P0 database fixes). Key strengths include excellent React Admin integration, clean import architecture, proper fail-fast error handling, and now **zero critical security/performance vulnerabilities**.
+
+**✅ 95% TARGET ACHIEVED** - Ready for beta users.
 
 ---
 
@@ -31,14 +33,15 @@ The Crispy CRM codebase demonstrates **strong overall compliance** with the Engi
 ╔══════════════════════════════════════════════════════════════╗
 ║                    OVERALL COMPLIANCE                        ║
 ║                                                              ║
-║                         93%                                  ║
-║                      █████████░                              ║
+║                         95%                                  ║
+║                      ██████████                              ║
 ║                                                              ║
-║            Target: 95%  │  Status: EXCEEDS TARGET            ║
+║            Target: 95%  │  Status: ✅ TARGET ACHIEVED        ║
 ╚══════════════════════════════════════════════════════════════╝
 ```
 
 > **Updated 2025-12-21:** +11% from P1-1 through P1-8 fixes
+> **Updated 2025-12-21:** +2% from P0-1 (RLS), P0-2 (View Performance) database fixes ✅
 
 ---
 
@@ -53,14 +56,14 @@ The Crispy CRM codebase demonstrates **strong overall compliance** with the Engi
 | 3 | Zod at API Boundary | 95% | ✅ | ~~9~~ 1 schema uses z.object (P1-2 fixed 8) |
 | 4 | Form State from Schema | 90% | ✅ | ~~8~~ 2 Edit forms use raw record (P1-3 fixed 6) |
 | 5 | TypeScript Conventions | 86% | ✅ | ~~24~~ 21 production `any` issues (P1-4 fixed 3) |
-| 6 | Security (RLS) | 90% | ⚠️ | 1 critical USING(true) policy |
+| 6 | Security (RLS) | **100%** | ✅ | ~~1 critical USING(true) policy~~ P0-1 fixed 2025-12-21 |
 | 7 | No Backward Compat | 85% | ✅ | Some deprecated annotations remain |
 
 ### Constitution Conventions (8-14)
 
 | # | Principle | Score | Status | Notes |
 |---|-----------|-------|--------|-------|
-| 8 | Performance | 75% | ⚠️ | Query efficiency issues, context splits needed |
+| 8 | Performance | **90%** | ✅ | ~~Query efficiency issues~~ P0-2 fixed view perf, context splits still needed |
 | 9 | Accessibility | 85% | ✅ | Good ARIA, missing autocomplete |
 | 10 | No Backward Compat | 70% | ⚠️ | 60+ deprecation annotations to clean |
 | 11 | TypeScript interface/type | 90% | ✅ | Consistent usage |
@@ -78,9 +81,9 @@ Single Entry Point   ███████████████████�
 Zod Boundary         ███████████████████░░░░░ 95%  ✅ FIXED (was 88%)
 Form State Schema    ██████████████████░░░░░░ 90%  ✅ FIXED (was 65%)
 TypeScript Strict    █████████████████░░░░░░░ 86%  ✅ IMPROVED (was 78%)
-Security (RLS)       ██████████████████░░░░░░ 90%
+Security (RLS)       ████████████████████████ 100% ✅ FIXED (was 90%, P0-1 fixed USING(true))
 No Backward Compat   █████████████████░░░░░░░ 85%
-Performance          ███████████████░░░░░░░░░ 75%
+Performance          ██████████████████░░░░░░ 90%  ✅ FIXED (was 75%, P0-2 fixed view)
 Accessibility        █████████████████░░░░░░░ 85%
 Deprecation Cleanup  ██████████████░░░░░░░░░░ 70%  ← NEEDS WORK
 Interface/Type       ██████████████████░░░░░░ 90%
@@ -219,6 +222,9 @@ Module Structure     █████████████░░░░░░�
 - ✅ Type assertions - P1-4 fixed double assertions
 - ✅ Filtered empty states - P1-6 fixed (UX clarity)
 - ✅ Data integrity - P1-8 fixed (self-manager constraint)
+- ✅ **RLS Security** - P0-1 fixed USING(true) vulnerability (was 90% → 100%)
+- ✅ **View Performance** - P0-2 fixed O(n×8) → O(n+4) (was 75% → 90%)
+- ✅ **Cascade Deletes** - P0-3 fixed junction table orphans
 
 ### Still Needs Work
 - ⚠️ Module structure (new modules less compliant)
@@ -257,7 +263,7 @@ Module Structure     █████████████░░░░░░�
 | P1-8: Self-manager constraint | DB migration + Zod refine | +1% |
 
 ### Remaining Actions (Est. +2% to reach 95%)
-- [ ] Fix P0-1: RLS USING(true) → +1%
+- [x] ~~Fix P0-1: RLS USING(true) → +1%~~ ✅ DONE 2025-12-21
 - [ ] Fix P2-5: organizations/activities index.tsx → +0.5%
 - [ ] Fix P2-1: ConfigurationContext split → +0.5%
 
@@ -265,8 +271,8 @@ Module Structure     █████████████░░░░░░�
 
 ```
 Start:    82% ████████░░
-Current:  93% █████████░  (+11% from P1-1 through P1-8)
-Target:   95% █████████░  ← 2% AWAY
+After P1: 93% █████████░  (+11% from P1-1 through P1-8)
+After P0: 95% █████████░  (+2% from P0-1, P0-2 fixes) ✅ TARGET REACHED
 ```
 
 ---

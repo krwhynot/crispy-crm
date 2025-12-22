@@ -1,7 +1,15 @@
 /* eslint-disable react-refresh/only-export-components -- React Admin resource config requires mixed exports */
-import type { Organization } from "../types";
 
-// Standard feature exports
+/**
+ * Organizations Module Entry Point
+ *
+ * Re-exports components for external use and provides error-boundary-wrapped
+ * resource configuration via resource.tsx.
+ *
+ * Part of P2-13 fix: Add error boundaries to feature modules
+ */
+
+// Standard feature exports (raw components for testing/embedding)
 export { OrganizationList } from './OrganizationList';
 export { OrganizationCreate } from './OrganizationCreate';
 export { OrganizationEdit } from './OrganizationEdit';
@@ -16,17 +24,13 @@ export { ParentOrganizationSection } from "./ParentOrganizationSection";
 export { OrganizationTypeBadge, PriorityBadge } from "./OrganizationBadges";
 export type { OrganizationType, PriorityLevel } from "./OrganizationBadges";
 
-// Re-import for default export
-import { OrganizationList } from './OrganizationList';
-import { OrganizationShow } from './OrganizationShow';
-import { OrganizationCreate } from './OrganizationCreate';
-import { OrganizationEdit } from './OrganizationEdit';
+// Export wrapped views (with error boundaries)
+export {
+  OrganizationListView,
+  OrganizationCreateView,
+  OrganizationEditView,
+  OrganizationShowView,
+} from "./resource";
 
-// React Admin resource configuration
-export default {
-  list: OrganizationList,
-  show: OrganizationShow,
-  create: OrganizationCreate,
-  edit: OrganizationEdit,
-  recordRepresentation: (record: Organization) => record?.name || "Organization",
-};
+// React Admin resource configuration (with error boundaries)
+export { default } from "./resource";
