@@ -80,6 +80,18 @@ export const getOpportunitiesByStage = (
       (acc, opportunity) => {
         if (acc[opportunity.stage]) {
           acc[opportunity.stage].push(opportunity);
+        } else {
+          // Fallback: Add to new_lead if stage is invalid/null/undefined
+          // Log warning to help debug stage mismatch issues
+          console.warn('[Stage Grouping] Invalid stage detected:', {
+            opportunityId: opportunity.id,
+            stage: opportunity.stage,
+            expectedStages: Object.keys(acc),
+          });
+          // Push to new_lead as fallback so cards aren't lost
+          if (acc['new_lead']) {
+            acc['new_lead'].push({ ...opportunity, stage: 'new_lead' as Opportunity['stage'] });
+          }
         }
         return acc;
       },

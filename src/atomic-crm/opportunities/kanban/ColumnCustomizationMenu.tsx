@@ -9,6 +9,7 @@ interface ColumnCustomizationMenuProps {
   toggleVisibility: (stage: OpportunityStageValue) => void;
   collapseAll: () => void;
   expandAll: () => void;
+  resetPreferences?: () => void;
 }
 
 export function ColumnCustomizationMenu({
@@ -16,6 +17,7 @@ export function ColumnCustomizationMenu({
   toggleVisibility,
   collapseAll,
   expandAll,
+  resetPreferences,
 }: ColumnCustomizationMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -86,6 +88,21 @@ export function ColumnCustomizationMenu({
                 </label>
               ))}
             </div>
+
+            {/* Reset All - fixes corrupted localStorage state */}
+            {resetPreferences && (
+              <div className="px-4 py-2 border-t border-border">
+                <button
+                  onClick={() => {
+                    resetPreferences();
+                    setIsOpen(false);
+                  }}
+                  className="w-full min-h-[44px] px-3 text-sm text-destructive hover:bg-destructive/10 rounded transition-colors touch-manipulation text-left"
+                >
+                  🔄 Reset All Columns
+                </button>
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -65,6 +65,15 @@ export function useColumnPreferences() {
     setCollapsedStages([]);
   };
 
+  /**
+   * Reset all column preferences to defaults
+   * Fixes corrupted localStorage state that may hide columns or cards
+   */
+  const resetPreferences = () => {
+    setCollapsedStages([]);
+    setVisibleStages(allStages);
+  };
+
   return {
     collapsedStages,
     visibleStages,
@@ -72,5 +81,6 @@ export function useColumnPreferences() {
     toggleVisibility,
     collapseAll,
     expandAll,
+    resetPreferences,
   };
 }
