@@ -277,6 +277,15 @@ export const opportunitiesCallbacks: ResourceCallbacks = {
     // When contact_ids is empty array from previousData merge, strip it to avoid validation error
     const isStageOnlyUpdate = data.stage && !data.name;
     const hasEmptyContactIds = Array.isArray(data.contact_ids) && data.contact_ids.length === 0;
+
+    // Debug logging - remove after verification
+    console.log('[beforeSave] Processing opportunity:', {
+      incomingData: { stage: data.stage, name: data.name, contact_ids: data.contact_ids },
+      isStageOnlyUpdate,
+      hasEmptyContactIds,
+      willStripContactIds: isStageOnlyUpdate && hasEmptyContactIds,
+    });
+
     if (isStageOnlyUpdate && hasEmptyContactIds) {
       delete processed.contact_ids;
     }
@@ -290,6 +299,8 @@ export const opportunitiesCallbacks: ResourceCallbacks = {
         processed = mergeCreateDefaults(processed);
       }
     }
+
+    console.log('[beforeSave] Final processed data:', { stage: processed.stage, keys: Object.keys(processed) });
 
     return processed;
   },
