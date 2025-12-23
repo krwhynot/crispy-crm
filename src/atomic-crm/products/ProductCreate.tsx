@@ -1,28 +1,14 @@
 import { CreateBase, Form, useGetIdentity } from "ra-core";
-import { useFormState } from "react-hook-form";
 import { Card, CardContent } from "@/components/ui/card";
-import { CancelButton } from "@/components/admin/cancel-button";
 import {
-  SaveButton,
   FormProgressProvider,
   FormProgressBar,
 } from "@/components/admin/form";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
-import { FormToolbar } from "@/components/admin/simple-form";
+import { CreateFormFooter } from "../components/CreateFormFooter";
 
 import { ProductInputs } from "./ProductInputs";
 import { productSchema } from "../validation/products";
 import { ProductFormTutorial } from "./ProductFormTutorial";
-import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
-
-// Human-readable field labels for error messages
-const PRODUCT_FIELD_LABELS: Record<string, string> = {
-  name: "Product Name",
-  description: "Description",
-  principal_id: "Principal/Supplier",
-  category: "Category",
-  status: "Status",
-};
 
 const ProductCreate = () => {
   const { data: identity } = useGetIdentity();
@@ -55,23 +41,14 @@ const ProductCreate = () => {
 };
 
 const ProductFormContent = () => {
-  const { errors } = useFormState();
-  useUnsavedChangesWarning();
-
   return (
     <>
-      <FormErrorSummary
-        errors={errors}
-        fieldLabels={PRODUCT_FIELD_LABELS}
-        defaultExpanded={Object.keys(errors).length <= 3}
-      />
       <ProductInputs />
-      <FormToolbar>
-        <div className="flex flex-row gap-2 justify-end">
-          <CancelButton />
-          <SaveButton label="Create Product" data-tutorial="product-save-btn" />
-        </div>
-      </FormToolbar>
+      <CreateFormFooter
+        resourceName="product"
+        redirectPath="/products"
+        tutorialAttribute="product-save-btn"
+      />
     </>
   );
 };
