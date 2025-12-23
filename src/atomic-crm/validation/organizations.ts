@@ -46,21 +46,45 @@ export type PaymentTerms = z.infer<typeof paymentTermsSchema>;
 // LinkedIn URL validation - domain-specific regex required
 const LINKEDIN_URL_REGEX = /^http(?:s)?:\/\/(?:www\.)?linkedin.com\//;
 
-// Custom validators
-const isValidUrl = z.string().url({ message: "Must be a valid URL" }).max(2048).or(z.literal(""));
+/**
+ * URL auto-prefix transform
+ * Automatically adds https:// to URLs that don't have a protocol.
+ * This prevents the false positive where client shows ✓ but server rejects.
+ *
+ * Example: "linkedin.com/company/test" → "https://linkedin.com/company/test"
+ */
+const urlAutoPrefix = (val: string | null | undefined): string => {
+  if (!val) return val ?? '';
+  const trimmed = val.trim();
+  if (!trimmed) return '';
+  // Only add protocol if the value doesn't already have one
+  if (trimmed && !trimmed.startsWith('http://') && !trimmed.startsWith('https://')) {
+    return `https://${trimmed}`;
+  }
+  return trimmed;
+};
 
-const isLinkedinUrl = z.string().refine(
-  (url) => {
-    if (!url) return true;
-    try {
-      const parsedUrl = new URL(url);
-      return parsedUrl.href.match(LINKEDIN_URL_REGEX) !== null;
-    } catch {
-      return false;
-    }
-  },
-  { message: "Must be a valid LinkedIn organization URL" }
-);
+// Custom validators with auto-prefix transform
+const isValidUrl = z.string()
+  .transform(urlAutoPrefix)
+  .pipe(z.string().url({ message: "Must be a valid URL" }).max(2048).or(z.literal("")));
+
+const isLinkedinUrl = z.string()
+  .transform(urlAutoPrefix)
+  .pipe(
+    z.string().refine(
+      (url) => {
+        if (!url) return true;
+        try {
+          const parsedUrl = new URL(url);
+          return parsedUrl.href.match(LINKEDIN_URL_REGEX) !== null;
+        } catch {
+          return false;
+        }
+      },
+      { message: "Must be a valid LinkedIn organization URL" }
+    )
+  );
 
 // Main organization schema with comprehensive validation
 // This schema serves as the single source of truth for all organization validation
