@@ -1,5 +1,7 @@
 import { CreateBase, Form, useGetIdentity } from "ra-core";
 import { useFormState } from "react-hook-form";
+import { useLocation } from "react-router-dom";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
@@ -13,7 +15,18 @@ import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { CreateFormFooter } from "@/atomic-crm/components";
 import { useFormOptions } from "../root/ConfigurationContext";
 import { contactOptionText } from "../contacts/ContactOption";
-import { getTaskDefaultValues } from "../validation/task";
+import { getTaskDefaultValues, taskCreateSchema } from "../validation/task";
+
+// Map URL param values to task type enum values
+const URL_TYPE_MAP: Record<string, string> = {
+  follow_up: "Follow-up",
+  call: "Call",
+  email: "Email",
+  meeting: "Meeting",
+  demo: "Demo",
+  proposal: "Proposal",
+  other: "Other",
+};
 
 /**
  * TaskCreate Component
@@ -29,10 +42,19 @@ import { getTaskDefaultValues } from "../validation/task";
 export default function TaskCreate() {
   const { data: identity } = useGetIdentity();
   const { taskTypes } = useFormOptions();
+  const location = useLocation();
+
+  // Read URL params for pre-fill (follow-up task creation flow)
+  const searchParams = new URLSearchParams(location.search);
+  const urlTitle = searchParams.get("title");
+  const urlType = searchParams.get("type");
 
   const defaultValues = {
     ...getTaskDefaultValues(),
     sales_id: identity?.id,
+    // URL params override defaults
+    ...(urlTitle && { title: urlTitle }),
+    ...(urlType && { type: URL_TYPE_MAP[urlType.toLowerCase()] || urlType }),
   };
 
   return (
@@ -41,7 +63,7 @@ export default function TaskCreate() {
         <div className="max-w-4xl mx-auto create-form-card">
           <FormProgressProvider initialProgress={10}>
             <FormProgressBar className="mb-6" />
-            <Form defaultValues={defaultValues} mode="onBlur">
+            <Form defaultValues={defaultValues} mode="onBlur" resolver={zodResolver(taskCreateSchema)}>
               <TaskFormContent taskTypes={taskTypes} />
             </Form>
           </FormProgressProvider>

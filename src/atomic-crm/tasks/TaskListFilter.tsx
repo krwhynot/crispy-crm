@@ -19,23 +19,23 @@ export const TaskListFilter = () => {
           className="w-full justify-between"
           label="Today"
           value={{
-            "due_date@gte": startOfToday().toISOString(),
-            "due_date@lte": endOfToday().toISOString(),
+            "due_date@gte": format(startOfToday(), "yyyy-MM-dd"),
+            "due_date@lte": format(startOfToday(), "yyyy-MM-dd"),
           }}
         />
         <ToggleFilterButton
           className="w-full justify-between"
           label="This Week"
           value={{
-            "due_date@gte": startOfToday().toISOString(),
-            "due_date@lte": addDays(startOfToday(), 7).toISOString(),
+            "due_date@gte": format(startOfToday(), "yyyy-MM-dd"),
+            "due_date@lte": format(addDays(startOfToday(), 6), "yyyy-MM-dd"),
           }}
         />
         <ToggleFilterButton
           className="w-full justify-between"
           label="Overdue"
           value={{
-            "due_date@lte": startOfToday().toISOString(),
+            "due_date@lt": format(startOfToday(), "yyyy-MM-dd"),
             completed: false,
           }}
         />

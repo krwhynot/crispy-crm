@@ -116,7 +116,7 @@ const TaskListLayout = ({
   // Keyboard navigation for list rows
   // Disabled when slide-over is open to prevent conflicts
   const { focusedIndex } = useListKeyboardNavigation({
-    onSelect: (id) => openSlideOver(Number(id), "edit"),
+    onSelect: (id) => openSlideOver(Number(id), "view"),
     enabled: !isSlideOverOpen,
   });
 

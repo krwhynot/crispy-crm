@@ -241,7 +241,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
                     onCreateFollowUp: (completedTask) => {
                       // Navigate to task create page with pre-filled follow-up context
                       const params = new URLSearchParams();
-                      params.set("type", "follow_up");
+                      params.set("type", "Follow-up");
                       params.set("title", `Follow-up: ${completedTask.subject}`);
                       if (completedTask.relatedTo.type === "opportunity") {
                         params.set("opportunity_id", String(completedTask.relatedTo.id));
