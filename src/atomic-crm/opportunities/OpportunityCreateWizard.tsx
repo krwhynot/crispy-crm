@@ -14,6 +14,8 @@ import { useMemo } from "react";
 import { CreateBase, Form, useGetIdentity, useNotify, useRedirect, useCreate } from "ra-core";
 import { useFormState } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useInAppUnsavedChanges } from "@/hooks";
+import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import {
@@ -157,6 +159,13 @@ const OpportunityWizardContent = ({
   const redirect = useRedirect();
   const [create] = useCreate();
 
+  const {
+    showWarning,
+    confirmDiscard,
+    cancelDiscard,
+    handlePotentialDiscard,
+  } = useInAppUnsavedChanges();
+
   const handleSubmit = async (data: unknown) => {
     // Check for similar opportunities before creating
     const formData = data as Record<string, unknown>;
@@ -187,7 +196,7 @@ const OpportunityWizardContent = ({
   };
 
   const handleCancel = () => {
-    redirect("list", "opportunities");
+    handlePotentialDiscard(() => redirect("list", "opportunities"));
   };
 
   return (
@@ -235,6 +244,13 @@ const OpportunityWizardContent = ({
           onCancel={handleCancel}
         />
       </FormWizard>
+
+      {/* Unsaved Changes Warning Dialog */}
+      <UnsavedChangesDialog
+        open={showWarning}
+        onConfirm={confirmDiscard}
+        onCancel={cancelDiscard}
+      />
     </FormProgressProvider>
   );
 };

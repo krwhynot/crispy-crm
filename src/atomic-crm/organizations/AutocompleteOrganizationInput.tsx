@@ -1,48 +1,63 @@
+import { useState } from "react";
 import { useCreate, useGetIdentity, useNotify } from "ra-core";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { QuickCreatePopover } from "./QuickCreatePopover";
 
 export const AutocompleteOrganizationInput = ({
   label,
   organizationType,
   helperText,
+  source,
 }: {
   label?: string;
   organizationType?: string;
   helperText?: string | false;
+  source?: string;
 }) => {
   const [create] = useCreate();
   const { data: identity } = useGetIdentity();
   const notify = useNotify();
-  const handleCreateOrganization = async (name?: string) => {
+  const [showQuickCreate, setShowQuickCreate] = useState(false);
+  const [pendingName, setPendingName] = useState("");
+
+  const handleCreateOrganization = (name?: string) => {
     if (!name) return;
-    try {
-      const newOrganization = await create(
-        "organizations",
-        {
-          data: {
-            name,
-            sales_id: identity?.id,
-            created_at: new Date().toISOString(),
-            ...(organizationType && { organization_type: organizationType }),
-          },
-        },
-        { returnPromise: true }
-      );
-      return newOrganization;
-    } catch {
-      notify("An error occurred while creating the organization", {
-        type: "error",
-      });
-    }
+    setPendingName(name);
+    setShowQuickCreate(true);
+    return undefined; // Don't return a record yet - popover will handle it
+  };
+
+  const handleCreated = (record: { id: number; name: string }) => {
+    setShowQuickCreate(false);
+    setPendingName("");
+    // Return the record to the autocomplete
+    return record;
+  };
+
+  const handleCancelCreate = () => {
+    setShowQuickCreate(false);
+    setPendingName("");
   };
 
   return (
-    <AutocompleteInput
-      optionText="name"
-      helperText={helperText}
-      onCreate={handleCreateOrganization}
-      createItemLabel="Create %{item}"
-      label={label}
-    />
+    <>
+      <AutocompleteInput
+        optionText="name"
+        helperText={helperText}
+        onCreate={handleCreateOrganization}
+        createItemLabel="Create %{item}"
+        label={label}
+      />
+      {showQuickCreate && (
+        <QuickCreatePopover
+          name={pendingName}
+          organizationType={(organizationType as "customer" | "prospect" | "principal" | "distributor") || "customer"}
+          onCreated={handleCreated}
+          onCancel={handleCancelCreate}
+        >
+          <span /> {/* Hidden trigger - popover is controlled via open state */}
+        </QuickCreatePopover>
+      )}
+    </>
   );
 };
