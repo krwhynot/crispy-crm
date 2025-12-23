@@ -130,6 +130,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
   const [isSnoozing, setIsSnoozing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showCompletionDialog, setShowCompletionDialog] = useState(false);
+  const [pendingComplete, setPendingComplete] = useState(false);
   const notify = useNotify();
 
   const {
