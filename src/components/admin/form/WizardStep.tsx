@@ -13,7 +13,8 @@ interface WizardStepProps {
 
 /**
  * Container for wizard step content.
- * Only renders when the step matches the current wizard step.
+ * All steps remain mounted to preserve React Hook Form state.
+ * Inactive steps are hidden via CSS and made inert for accessibility.
  *
  * @example
  * ```tsx
@@ -24,21 +25,25 @@ interface WizardStepProps {
  * ```
  */
 function WizardStep({ step, children, className }: WizardStepProps) {
-  const { currentStep, currentStepConfig } = useWizard();
+  const { currentStep, steps } = useWizard();
+  const isActive = step === currentStep;
+  const stepConfig = steps[step - 1]; // Get THIS step's config, not current step's
 
-  // Only render if this is the active step
-  if (step !== currentStep) return null;
-
+  // Keep all steps mounted to preserve React Hook Form state.
+  // Use CSS visibility + inert to hide inactive steps.
   return (
     <div
       id={`wizard-step-${step}`}
       role="tabpanel"
       aria-labelledby={`wizard-step-${step}-trigger`}
-      className={cn("space-y-6", className)}
+      aria-hidden={!isActive}
+      // @ts-expect-error - inert is valid HTML attribute, React 19 types lagging
+      inert={!isActive ? "" : undefined}
+      className={cn("space-y-6", !isActive && "hidden", className)}
     >
       {/* Step heading for accessibility */}
       <h2 className="text-lg font-semibold text-foreground">
-        Step {step}: {currentStepConfig.title}
+        Step {step}: {stepConfig.title}
       </h2>
 
       {children}
