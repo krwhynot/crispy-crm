@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import { useCreate, useNotify } from "ra-core";
+import { useDataProvider, useNotify } from "ra-core";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
@@ -39,7 +39,8 @@ export function QuickCreatePopover({
   children,
 }: QuickCreatePopoverProps) {
   const [open, setOpen] = useState(true);
-  const [create, { isPending }] = useCreate();
+  const [isPending, setIsPending] = useState(false);
+  const dataProvider = useDataProvider();
   const notify = useNotify();
 
   const methods = useForm<QuickCreateInput>({
@@ -52,39 +53,39 @@ export function QuickCreatePopover({
   });
 
   const handleSubmit = methods.handleSubmit(async (data) => {
+    setIsPending(true);
     try {
-      const result = await create(
-        "organizations",
-        { data: { ...data, segment_id: PLAYBOOK_CATEGORY_IDS.Unknown } },
-        { returnPromise: true }
-      );
+      const result = await dataProvider.create("organizations", {
+        data: { ...data, segment_id: PLAYBOOK_CATEGORY_IDS.Unknown },
+      });
       notify("Organization created", { type: "success" });
       onCreated(result.data as { id: number; name: string });
       setOpen(false);
     } catch {
       notify("Failed to create organization", { type: "error" });
+    } finally {
+      setIsPending(false);
     }
   });
 
   const handleQuickCreate = async () => {
+    setIsPending(true);
     try {
-      const result = await create(
-        "organizations",
-        {
-          data: {
-            name,
-            organization_type: organizationType,
-            priority: "C",
-            segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
-          },
+      const result = await dataProvider.create("organizations", {
+        data: {
+          name,
+          organization_type: organizationType,
+          priority: "C",
+          segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
         },
-        { returnPromise: true }
-      );
+      });
       notify("Organization created", { type: "success" });
       onCreated(result.data as { id: number; name: string });
       setOpen(false);
     } catch {
       notify("Failed to create organization", { type: "error" });
+    } finally {
+      setIsPending(false);
     }
   };
 

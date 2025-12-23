@@ -8,7 +8,10 @@ import { useFormState } from "react-hook-form";
  * @returns Object with warning state and handlers
  */
 export function useInAppUnsavedChanges() {
-  const { isDirty } = useFormState();
+  const { dirtyFields } = useFormState();
+  // useFormState().isDirty can be unreliable - use dirtyFields instead
+  // See: https://github.com/react-hook-form/react-hook-form/issues/4740
+  const isDirty = Object.keys(dirtyFields).length > 0;
   const [showWarning, setShowWarning] = useState(false);
   const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
 
