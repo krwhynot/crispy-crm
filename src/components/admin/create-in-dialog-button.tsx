@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CreateBase, Form, useNotify, useRefresh, type RaRecord, type Identifier } from "ra-core";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Plus, AlertCircle } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -11,8 +11,43 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Card, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { FormToolbar } from "@/components/admin/simple-form";
 import { SaveButton } from "@/components/admin/form";
+
+/**
+ * Parse database/API errors into user-friendly messages.
+ * Handles common constraint violations with specific guidance.
+ */
+function parseCreateError(error: unknown, resource: string): string {
+  if (!(error instanceof Error)) return `Failed to create ${resource}`;
+
+  const msg = error.message.toLowerCase();
+
+  // Unique constraint violations
+  if (msg.includes("unique constraint") || msg.includes("duplicate key")) {
+    if (msg.includes("name")) return `An ${resource} with this name already exists`;
+    if (msg.includes("email")) return "This email is already in use";
+    return `A ${resource} with this value already exists`;
+  }
+
+  // Foreign key violations
+  if (msg.includes("foreign key")) {
+    return "Invalid selection - referenced record not found";
+  }
+
+  // Not null violations
+  if (msg.includes("not-null") || msg.includes("null value")) {
+    return "Please fill in all required fields";
+  }
+
+  // Fallback to original message if it's reasonably short
+  if (error.message.length < 100) {
+    return error.message;
+  }
+
+  return `Failed to create ${resource}`;
+}
 
 interface CreateInDialogButtonProps<RecordType extends RaRecord = RaRecord> {
   resource: string;
