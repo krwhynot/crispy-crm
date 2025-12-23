@@ -227,7 +227,9 @@ export const filterableFields: Record<string, string[]> = {
     "principal_organization_name",
     "distributor_organization_name",
     "products", // JSONB array from view
+    "last_activity_date", // Computed field for staleness filtering
     "q", // Special: full-text search parameter
+    "stale", // Virtual filter: transformed to last_activity_date + stage filters (see dataProviderUtils.ts)
   ],
 
   // Dashboard Principal Summary View (principal-centric dashboard)
