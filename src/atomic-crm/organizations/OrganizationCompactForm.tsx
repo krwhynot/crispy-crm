@@ -9,11 +9,11 @@ import {
 } from "@/components/admin/form";
 import { SegmentComboboxInput } from "@/components/admin/SegmentComboboxInput";
 import { StateComboboxInput } from "@/components/admin/state-combobox-input";
-import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES } from "./constants";
+import { PRIORITY_CHOICES } from "./constants";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import { OrganizationHierarchySection } from "./OrganizationHierarchySection";
-import { OrganizationAddressSection } from "./OrganizationAddressSection";
 import { useCityStateMapping } from "@/hooks";
+import { PrincipalAwareTypeInput } from "./PrincipalAwareTypeInput";
 
 export const OrganizationCompactForm = () => {
   useCityStateMapping();
@@ -38,13 +38,7 @@ export const OrganizationCompactForm = () => {
           </div>
           <div data-tutorial="org-type">
             <FormFieldWrapper name="organization_type">
-              <SelectInput
-                source="organization_type"
-                label="Type"
-                choices={ORGANIZATION_TYPE_CHOICES}
-                helperText={false}
-                emptyText="Select organization type"
-              />
+              <PrincipalAwareTypeInput />
             </FormFieldWrapper>
           </div>
         </CompactFormRow>
@@ -148,7 +142,6 @@ export const OrganizationCompactForm = () => {
       </CollapsibleSection>
 
       <OrganizationHierarchySection />
-      <OrganizationAddressSection />
       {/* Status & Payment fields hidden per user feedback - defaults: status='active' */}
     </div>
   );
