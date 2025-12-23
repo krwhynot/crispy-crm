@@ -13,8 +13,11 @@ import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES } from "./constants";
 import { saleOptionRenderer } from "../utils/saleOptionRenderer";
 import { OrganizationHierarchySection } from "./OrganizationHierarchySection";
 import { OrganizationAddressSection } from "./OrganizationAddressSection";
+import { useCityStateMapping } from "@/hooks";
 
 export const OrganizationCompactForm = () => {
+  useCityStateMapping();
+
   return (
     <div className="space-y-6">
       <FormSectionWithProgress

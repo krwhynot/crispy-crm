@@ -5,10 +5,10 @@ import { generateOpportunityName } from "../utils/generateOpportunityName";
 
 /**
  * Auto-Generate Name Hook
- * Automatically generates opportunity name from customer + principal + quarter/year
+ * Automatically generates opportunity name from principal + customer + month/year
  *
- * Format: "{Customer Name} - {Principal Name} - Q{quarter} {year}"
- * Example: "Nobu Miami - Ocean Hugger - Q1 2025"
+ * Format: "{Principal Name} - {Customer Name} - MMYY"
+ * Example: "Ocean Hugger - Nobu Miami - 1225" (December 2025)
  *
  * @param mode - 'create' for auto-generation, 'edit' for manual regeneration
  * @returns regenerate function, loading state, and canGenerate flag
@@ -42,7 +42,7 @@ export const useAutoGenerateName = (mode: "create" | "edit") => {
 
   /**
    * Generate name using the standardized utility function
-   * Format: "{Customer Name} - {Principal Name} - Q{quarter} {year}"
+   * Format: "{Principal Name} - {Customer Name} - MMYY"
    */
   const generateName = useCallback(() => {
     return generateOpportunityName({

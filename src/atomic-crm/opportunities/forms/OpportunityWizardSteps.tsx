@@ -6,6 +6,7 @@
  */
 import { useMemo } from "react";
 import { TextInput } from "@/components/admin/text-input";
+import { TextInputWithCounter } from "@/components/admin/text-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
@@ -20,6 +21,10 @@ import {
 import { CreateInDialogButton } from "@/components/admin/create-in-dialog-button";
 import { useWatch, useFormContext } from "react-hook-form";
 import { useGetIdentity } from "ra-core";
+import { RefreshCw } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 import { AutocompleteOrganizationInput } from "../../organizations/AutocompleteOrganizationInput";
 import { OrganizationInputs } from "../../organizations/OrganizationInputs";
 import { ContactInputs } from "../../contacts/ContactInputs";
@@ -32,6 +37,7 @@ import { DEFAULT_SEGMENT_ID } from "../../constants";
 import { organizationSchema } from "../../validation/organizations";
 import { contactBaseSchema } from "../../validation/contacts";
 import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
+import { useAutoGenerateName } from "../hooks/useAutoGenerateName";
 import type { WizardStepConfig } from "@/components/admin/form";
 
 const priorityChoices = [
@@ -78,13 +84,36 @@ export const OPPORTUNITY_WIZARD_STEPS: WizardStepConfig[] = [
 export function OpportunityWizardStep1() {
   const { data: identity } = useGetIdentity();
   const { setValue } = useFormContext();
+  const { regenerate, isLoading, canGenerate } = useAutoGenerateName("create");
 
   return (
     <div className="space-y-4">
       {/* Opportunity Name */}
       <FormFieldWrapper name="name" isRequired>
-        <div data-tutorial="opp-name">
-          <TextInput source="name" label="Opportunity Name" helperText={false} />
+        <div className="flex gap-2 items-start">
+          <div className="flex-1" data-tutorial="opp-name">
+            <TextInput source="name" label="Opportunity Name" helperText={false} />
+          </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                className="h-11 w-11 mt-6 flex-shrink-0"
+                onClick={regenerate}
+                disabled={!canGenerate || isLoading}
+                aria-label="Regenerate name"
+              >
+                <RefreshCw className={cn("h-4 w-4", isLoading && "animate-spin")} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {canGenerate
+                ? "Regenerate name from Principal and Customer"
+                : "Select Customer or Principal first"}
+            </TooltipContent>
+          </Tooltip>
         </div>
         <div className="mt-2">
           <NamingConventionHelp />
@@ -463,12 +492,12 @@ export function OpportunityWizardStep4() {
         <h4 className="text-sm font-medium mb-3">Notes & Actions</h4>
         <FormFieldWrapper name="description">
           <div data-tutorial="opp-description">
-            <TextInput
+            <TextInputWithCounter
               source="description"
               label="Description"
               multiline
               rows={2}
-              helperText={false}
+              maxLength={2000}
             />
           </div>
         </FormFieldWrapper>
@@ -495,22 +524,22 @@ export function OpportunityWizardStep4() {
           </FormFieldWrapper>
         </CompactFormRow>
         <FormFieldWrapper name="decision_criteria">
-          <TextInput
+          <TextInputWithCounter
             source="decision_criteria"
             label="Decision Criteria"
             multiline
             rows={2}
-            helperText={false}
+            maxLength={2000}
             placeholder="Key factors influencing the decision..."
           />
         </FormFieldWrapper>
         <FormFieldWrapper name="notes">
-          <TextInput
+          <TextInputWithCounter
             source="notes"
             label="Notes"
             multiline
             rows={2}
-            helperText={false}
+            maxLength={5000}
             placeholder="General notes about the opportunity..."
           />
         </FormFieldWrapper>
