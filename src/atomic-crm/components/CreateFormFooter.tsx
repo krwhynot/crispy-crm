@@ -45,6 +45,7 @@ export const CreateFormFooter = ({
         <SaveButton
           type="button"
           label="Save & Close"
+          alwaysEnable
           data-tutorial={tutorialAttribute}
           mutationOptions={{
             onSuccess: () => {
@@ -57,6 +58,7 @@ export const CreateFormFooter = ({
         <SaveButton
           type="button"
           label="Save & Add Another"
+          alwaysEnable
           mutationOptions={{
             onSuccess: () => {
               notify(`${resourceName.charAt(0).toUpperCase() + resourceName.slice(1)} created successfully`, { type: "success" });
