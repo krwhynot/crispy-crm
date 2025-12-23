@@ -52,6 +52,17 @@ export const authProvider: AuthProvider = {
       error,
     } = await supabase.auth.getSession();
 
+    // Detect stale JWT (user deleted but token still valid - e.g., after db reset)
+    // Industry standard: auto-logout on auth errors for self-healing UX
+    if (error?.message?.includes('does not exist') ||
+        error?.message?.includes('JWT')) {
+      // Clear stale session and cache
+      await supabase.auth.signOut();
+      cachedSale = undefined;
+      cacheTimestamp = 0;
+      throw new Error('Session expired. Please log in again.');
+    }
+
     // If no valid session, only allow public paths
     if (!session || error) {
       if (isPublicPath(window.location.pathname)) {
@@ -110,6 +121,14 @@ const getSaleFromCache = async () => {
   if (cachedSale != null && !isCacheExpired) return cachedSale;
 
   const { data: dataSession, error: errorSession } = await supabase.auth.getSession();
+
+  // Check for stale JWT error (user deleted but token valid - e.g., after db reset)
+  if (errorSession?.message?.includes('does not exist')) {
+    await supabase.auth.signOut();
+    cachedSale = undefined;
+    cacheTimestamp = 0;
+    return undefined;
+  }
 
   // Shouldn't happen after login but just in case
   if (dataSession?.session?.user == null || errorSession) {
