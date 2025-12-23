@@ -468,7 +468,7 @@ export function isValidFilterField(resource: string, filterKey: string): boolean
   // Logical operators - whitelist both input and output formats:
   // Input: MongoDB-style $or/$and/$not from components
   // Output: PostgREST or/and/not after transformOrFilter() conversion.
-  const LOGICAL_OPERATORS = ["$or", "$and", "$not", "or", "and", "not", "@or"];
+  const LOGICAL_OPERATORS = ["$or", "$and", "$not", "or", "and", "not", "@or", "or@"];
   if (LOGICAL_OPERATORS.includes(filterKey)) {
     return true;
   }
