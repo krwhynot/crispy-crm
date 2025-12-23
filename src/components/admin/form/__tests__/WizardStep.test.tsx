@@ -5,7 +5,7 @@ import { renderWithWizard, DEFAULT_TEST_STEPS } from "./test-utils";
 import type { WizardStepConfig } from "../wizard-types";
 
 describe("WizardStep", () => {
-  test("renders nothing when step does not match currentStep", () => {
+  test("hides inactive steps with CSS while keeping them mounted for form state", () => {
     renderWithWizard(
       <>
         <WizardStep step={1}>
@@ -17,11 +17,17 @@ describe("WizardStep", () => {
       </>
     );
 
-    // Step 1 should be visible (current)
+    // Step 1 should be visible (current step)
     expect(screen.getByTestId("step-1-content")).toBeInTheDocument();
+    const step1Panel = document.getElementById("wizard-step-1");
+    expect(step1Panel).not.toHaveClass("hidden");
+    expect(step1Panel).toHaveAttribute("aria-hidden", "false");
 
-    // Step 2 should not be in the document at all
-    expect(screen.queryByTestId("step-2-content")).not.toBeInTheDocument();
+    // Step 2 should be in DOM (mounted to preserve form state) but visually hidden
+    expect(screen.getByTestId("step-2-content")).toBeInTheDocument();
+    const step2Panel = document.getElementById("wizard-step-2");
+    expect(step2Panel).toHaveClass("hidden");
+    expect(step2Panel).toHaveAttribute("aria-hidden", "true");
   });
 
   test("renders children when step matches currentStep", () => {
