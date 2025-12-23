@@ -24,13 +24,29 @@ const HiddenActivityTypeField = () => {
 
 export default function ActivityCreate() {
   const { identity } = useGetIdentity();
+  const location = useLocation();
+
+  // Read URL params for pre-fill
+  const searchParams = new URLSearchParams(location.search);
+  const urlType = searchParams.get("type");
+  const urlSubject = searchParams.get("subject");
+  const urlContactId = searchParams.get("contact_id");
+  const urlOpportunityId = searchParams.get("opportunity_id");
+  const urlOrganizationId = searchParams.get("organization_id");
+
   const defaultValues = useMemo(
     () => ({
       ...activitiesSchema.partial().parse({}),
       // Set current user as creator - ensures proper audit trail
       created_by: identity?.id,
+      // URL params override defaults
+      ...(urlType && { type: urlType }),
+      ...(urlSubject && { subject: decodeURIComponent(urlSubject) }),
+      ...(urlContactId && { contact_id: Number(urlContactId) }),
+      ...(urlOpportunityId && { opportunity_id: Number(urlOpportunityId) }),
+      ...(urlOrganizationId && { organization_id: Number(urlOrganizationId) }),
     }),
-    [identity?.id]
+    [identity?.id, urlType, urlSubject, urlContactId, urlOpportunityId, urlOrganizationId]
   );
 
   return (

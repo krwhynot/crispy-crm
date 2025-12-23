@@ -32,7 +32,7 @@ import {
   CalendarDays,
 } from "lucide-react";
 import type { TaskItem } from "../types";
-import { showFollowUpToast } from "../utils/showFollowUpToast";
+import { TaskCompletionDialog } from "@/atomic-crm/tasks/components/TaskCompletionDialog";
 
 interface TaskKanbanCardProps {
   task: TaskItem;
@@ -129,6 +129,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
 }: TaskKanbanCardProps) {
   const [isSnoozing, setIsSnoozing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showCompletionDialog, setShowCompletionDialog] = useState(false);
   const notify = useNotify();
 
   const {
@@ -256,29 +257,10 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
         >
           <Checkbox
             className="h-5 w-5"
-            onCheckedChange={async (checked) => {
+            onCheckedChange={(checked) => {
               if (checked) {
-                try {
-                  await onComplete(task.id);
-                  // Show follow-up toast after successful completion
-                  showFollowUpToast({
-                    task,
-                    onCreateFollowUp: (completedTask) => {
-                      // Navigate to task create page with pre-filled follow-up context
-                      const params = new URLSearchParams();
-                      params.set("type", "Follow-up");
-                      params.set("title", `Follow-up: ${completedTask.subject}`);
-                      if (completedTask.relatedTo.type === "opportunity") {
-                        params.set("opportunity_id", String(completedTask.relatedTo.id));
-                      } else if (completedTask.relatedTo.type === "contact") {
-                        params.set("contact_id", String(completedTask.relatedTo.id));
-                      }
-                      window.location.href = `/#/tasks/create?${params.toString()}`;
-                    },
-                  });
-                } catch {
-                  notify("Failed to complete task", { type: "error" });
-                }
+                // Open completion dialog instead of immediately completing
+                setShowCompletionDialog(true);
               }
             }}
             aria-label={`Complete task: ${task.subject}`}
@@ -363,6 +345,22 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
         </Badge>
         <span className="text-xs text-muted-foreground">{format(task.dueDate, "MMM d")}</span>
       </div>
+
+      {/* Task Completion Dialog - Industry standard (HubSpot/Salesforce pattern) */}
+      <TaskCompletionDialog
+        task={task}
+        open={showCompletionDialog}
+        onClose={() => setShowCompletionDialog(false)}
+        onComplete={async () => {
+          try {
+            await onComplete(task.id);
+            setShowCompletionDialog(false);
+            notify("Task completed", { type: "success" });
+          } catch {
+            notify("Failed to complete task", { type: "error" });
+          }
+        }}
+      />
     </div>
   );
 }, arePropsEqual);
