@@ -151,6 +151,23 @@ export function transformArrayFilters(filter: FilterRecord | undefined | null): 
 }
 
 /**
+ * Escape ILIKE special characters in search strings
+ * ILIKE uses % and _ as wildcards, and \ as escape character
+ * These must be escaped to be treated as literals
+ *
+ * @example
+ * escapeForIlike("100% done") → "100\\% done"
+ * escapeForIlike("file_name") → "file\\_name"
+ */
+export function escapeForIlike(str: string): string {
+  // Escape backslash first (it's the escape character), then % and _
+  return str
+    .replace(/\\/g, "\\\\")
+    .replace(/%/g, "\\%")
+    .replace(/_/g, "\\_");
+}
+
+/**
  * Apply full-text search to query parameters
  * Replicates the behavior from the original dataProvider's applyFullTextSearch function
  */
@@ -169,6 +186,9 @@ export function applyFullTextSearch(
     const softDeleteFilter =
       params.filter?.includeDeleted || !shouldAddSoftDeleteFilter ? {} : { "deleted_at@is": null };
 
+    // Escape ILIKE special characters and wrap with wildcards for partial matching
+    const escapedSearch = `%${escapeForIlike(String(q))}%`;
+
     return {
       ...params,
       filter: {
@@ -177,7 +197,7 @@ export function applyFullTextSearch(
         "@or": columns.reduce((acc, column) => {
           return {
             ...acc,
-            [`${column}@ilike`]: q,
+            [`${column}@ilike`]: escapedSearch,
           };
         }, {}),
       },

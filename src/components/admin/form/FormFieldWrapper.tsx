@@ -30,7 +30,9 @@ function FormFieldWrapper({
   const { errors, dirtyFields } = useFormState({ name });
 
   const hasError = !!errors[name];
-  const hasValue = value !== undefined && value !== null && value !== "";
+  // Trim string values to prevent whitespace-only inputs showing as valid
+  const hasValue = value !== undefined && value !== null &&
+    (typeof value === "string" ? value.trim() !== "" : value !== "");
 
   // For progress tracking: field is "filled" only if user has modified it
   // OR if countDefaultAsFilled is true and it has a value
