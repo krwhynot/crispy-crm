@@ -6,7 +6,7 @@
  */
 import { useMemo } from "react";
 import { TextInput } from "@/components/admin/text-input";
-import { TextInputWithCounter } from "@/components/admin/text-input";
+import { TextInputWithCounter } from "@/components/admin/text-input/";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGetIdentity, useNotify } from "ra-core";
+import { useCreate, useGetIdentity, useNotify } from "ra-core";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { QuickCreatePopover } from "./QuickCreatePopover";
 
