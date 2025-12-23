@@ -252,7 +252,7 @@ export function OpportunityWizardStep2() {
             <TextInput
               source="estimated_close_date"
               label="Est. Close Date"
-              helperText={false}
+              helperText="Defaults to 30 days from today"
               type="date"
             />
           </div>
