@@ -77,8 +77,16 @@ export const CreateInDialogButton = <RecordType extends RaRecord = RaRecord>({
   className,
 }: CreateInDialogButtonProps<RecordType>) => {
   const [open, setOpen] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
   const notify = useNotify();
   const refresh = useRefresh();
+
+  // Clear error when dialog opens
+  useEffect(() => {
+    if (open) {
+      setSubmitError(null);
+    }
+  }, [open]);
 
   // Handle successful creation - CreateBase already called dataProvider.create(),
   // so this callback receives the newly created record with its ID
@@ -117,14 +125,24 @@ export const CreateInDialogButton = <RecordType extends RaRecord = RaRecord>({
           transform={transform}
           mutationOptions={{
             onSuccess: handleSuccess,
-            onError: () => {
-              notify(`Error creating ${resource}`, { type: "error" });
+            onError: (error: unknown) => {
+              // Parse error for user-friendly message and display inline
+              const message = parseCreateError(error, resource);
+              setSubmitError(message);
+              // Dialog stays open - user can fix and retry
             },
           }}
         >
           <Form defaultValues={defaultValues}>
             <Card className="border-0 shadow-none">
               <CardContent className="p-0 pt-4">
+                {/* Inline error display - accessible with role="alert" */}
+                {submitError && (
+                  <Alert variant="destructive" className="mb-4">
+                    <AlertCircle className="h-4 w-4" />
+                    <AlertDescription>{submitError}</AlertDescription>
+                  </Alert>
+                )}
                 {children}
                 <FormToolbar>
                   <div className="flex flex-row gap-2 justify-end">
