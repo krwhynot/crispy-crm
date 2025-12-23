@@ -3,7 +3,7 @@ import { useRecordContext, useGetList } from "ra-core";
 import { useFormContext, useWatch } from "react-hook-form";
 import { SelectInput } from "@/components/admin/select-input";
 import { PrincipalChangeWarning } from "./PrincipalChangeWarning";
-import { ORGANIZATION_TYPE_CHOICES } from "./constants";
+import { ORGANIZATION_TYPE_CHOICES, ORGANIZATION_TYPE_DESCRIPTIONS, type OrganizationType } from "./constants";
 import type { Organization } from "../types";
 
 interface Product {
@@ -89,6 +89,23 @@ export const PrincipalAwareTypeInput = () => {
     setAttemptedType("");
   };
 
+  /**
+   * Custom renderer that displays organization type with description
+   * This provides inline context about what each type means without needing
+   * to hover over tooltips - better for accessibility and discoverability.
+   */
+  const renderTypeWithDescription = (choice: { id: string; name: string }) => {
+    const description = ORGANIZATION_TYPE_DESCRIPTIONS[choice.id as OrganizationType];
+    return (
+      <div className="flex flex-col gap-0.5">
+        <span className="font-medium">{choice.name}</span>
+        {description && (
+          <span className="text-xs text-muted-foreground">{description}</span>
+        )}
+      </div>
+    );
+  };
+
   return (
     <>
       <SelectInput
@@ -97,6 +114,7 @@ export const PrincipalAwareTypeInput = () => {
         choices={ORGANIZATION_TYPE_CHOICES}
         helperText={false}
         emptyText="Select organization type"
+        optionText={renderTypeWithDescription}
       />
 
       <PrincipalChangeWarning

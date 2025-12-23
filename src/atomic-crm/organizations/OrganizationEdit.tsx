@@ -1,9 +1,7 @@
-import { useMemo } from "react";
 import { EditBase, Form, useRecordContext } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { OrganizationInputs } from "./OrganizationInputs";
-import { organizationSchema } from "@/atomic-crm/validation/organizations";
 
 import { Card, CardContent } from "@/components/ui/card";
 import { ResponsiveGrid } from "@/components/design-system";

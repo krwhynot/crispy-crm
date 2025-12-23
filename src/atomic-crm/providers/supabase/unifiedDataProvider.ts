@@ -425,6 +425,37 @@ async function wrapMethod<T>(
       return { data: params.previousData } as T;
     }
 
+    /**
+     * SEARCH ERROR TRANSFORMATION
+     *
+     * PostgREST returns technical errors like "failed to parse logic tree"
+     * when search queries contain special characters that break the filter parsing.
+     * Transform these into user-friendly messages while preserving full details
+     * in development for debugging.
+     */
+    if (
+      method === "getList" &&
+      (extendedError?.message?.includes("parse logic tree") ||
+        extendedError?.message?.includes("syntax error") ||
+        extendedError?.message?.includes("invalid input") ||
+        extendedError?.details?.includes("parse") ||
+        extendedError?.code === "PGRST100")
+    ) {
+      const friendlyMessage =
+        "Search couldn't process your query. Try simpler terms or check for special characters.";
+
+      // In development, include technical details for debugging
+      if (DEV) {
+        devWarn("DataProvider", "Search parsing error:", {
+          originalMessage: extendedError?.message,
+          details: extendedError?.details,
+          code: extendedError?.code,
+        });
+      }
+
+      throw new HttpError(friendlyMessage, 400);
+    }
+
     // For validation errors, ensure React Admin format
     // This allows errors to be displayed inline next to form fields
     if (extendedError?.body?.errors && typeof extendedError.body.errors === "object") {
