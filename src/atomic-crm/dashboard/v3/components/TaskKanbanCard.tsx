@@ -6,30 +6,18 @@ import { CSS } from "@dnd-kit/utilities";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { TaskActionMenu } from "@/atomic-crm/tasks/components/TaskActionMenu";
 import {
   Phone,
   Mail,
   Users,
   FileText,
   CheckCircle2,
-  MoreHorizontal,
   Loader2,
-  Eye,
-  Pencil,
-  Trash2,
   AlarmClock,
   Presentation,
   FileSignature,
   GripVertical,
-  Calendar,
-  CalendarDays,
 } from "lucide-react";
 import type { TaskItem } from "../types";
 import { TaskCompletionDialog } from "@/atomic-crm/tasks/components/TaskCompletionDialog";
@@ -128,7 +116,6 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
   onView,
 }: TaskKanbanCardProps) {
   const [isSnoozing, setIsSnoozing] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
   const [showCompletionDialog, setShowCompletionDialog] = useState(false);
   const [pendingComplete, setPendingComplete] = useState(false);
   const notify = useNotify();
@@ -176,42 +163,6 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
       notify("Failed to snooze task", { type: "error" });
     } finally {
       setIsSnoozing(false);
-    }
-  };
-
-  const handleDelete = async () => {
-    setIsDeleting(true);
-    try {
-      await onDelete(task.id);
-      notify("Task deleted", { type: "success" });
-    } catch {
-      notify("Failed to delete task", { type: "error" });
-    } finally {
-      setIsDeleting(false);
-    }
-  };
-
-  const handleEdit = () => {
-    window.location.href = `/#/tasks/${task.id}`;
-  };
-
-  const handlePostponeTomorrow = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    try {
-      await onPostpone(task.id, 1);
-      notify("Task postponed to tomorrow", { type: "success" });
-    } catch {
-      notify("Failed to postpone task", { type: "error" });
-    }
-  };
-
-  const handlePostponeNextWeek = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    try {
-      await onPostpone(task.id, 7);
-      notify("Task postponed to next week", { type: "success" });
-    } catch {
-      notify("Failed to postpone task", { type: "error" });
     }
   };
 
@@ -302,46 +253,12 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
               <AlarmClock className="h-4 w-4" />
             )}
           </Button>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="ghost"
-                size="sm"
-                className="h-11 w-11 p-0"
-                aria-label={`More actions for "${task.subject}"`}
-                disabled={isDeleting}
-              >
-                {isDeleting ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <MoreHorizontal className="h-4 w-4" />
-                )}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onView(task.id)} className="min-h-11">
-                <Eye className="mr-2 h-4 w-4" />
-                View
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleEdit} className="min-h-11">
-                <Pencil className="mr-2 h-4 w-4" />
-                Edit
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handlePostponeTomorrow} className="min-h-11">
-                <Calendar className="mr-2 h-4 w-4" />
-                Postpone to Tomorrow
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handlePostponeNextWeek} className="min-h-11">
-                <CalendarDays className="mr-2 h-4 w-4" />
-                Postpone to Next Week
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleDelete} className="text-destructive min-h-11">
-                <Trash2 className="mr-2 h-4 w-4" />
-                Delete
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <TaskActionMenu
+            task={{ ...task, subject: task.subject, dueDate: task.dueDate }}
+            onView={onView}
+            onPostpone={onPostpone}
+            onDelete={onDelete}
+          />
         </div>
       </div>
 

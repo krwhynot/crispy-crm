@@ -13,7 +13,7 @@ export const TaskInputs = () => {
     {
       key: "details",
       label: "Details",
-      fields: ["priority", "type", "organization_id", "opportunity_id", "contact_id"],
+      fields: ["priority", "type", "organization_id", "opportunity_id", "contact_id", "sales_id"],
       content: <TaskDetailsTab />,
     },
   ];
