@@ -99,18 +99,27 @@ describe("Organization Validation Schemas", () => {
         })
       ).not.toThrow();
 
-      // Invalid URLs
+      // Auto-prefix behavior: URLs without protocol get https:// added
+      // "example.com" becomes "https://example.com" which is valid
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
-          website: "not-a-url",
+          website: "example.com",
+        })
+      ).not.toThrow();
+
+      // Truly invalid URLs (malformed structure)
+      expect(() =>
+        organizationSchema.parse({
+          ...validOrganization,
+          website: "://invalid",
         })
       ).toThrow(z.ZodError);
 
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
-          website: "example.com",
+          website: "https://[invalid",
         })
       ).toThrow(z.ZodError);
     });
