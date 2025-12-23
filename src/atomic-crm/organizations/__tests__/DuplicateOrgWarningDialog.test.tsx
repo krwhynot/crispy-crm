@@ -4,6 +4,7 @@
  * Verifies the soft duplicate warning dialog behavior:
  * - Renders when open with duplicate name
  * - Does not render when closed
+ * - Calls onViewExisting when "View Existing" clicked
  * - Calls onCancel when "Change Name" clicked
  * - Calls onProceed when "Create Anyway" clicked
  * - Shows loading state when isLoading is true
@@ -17,8 +18,10 @@ describe("DuplicateOrgWarningDialog", () => {
   const defaultProps = {
     open: true,
     duplicateName: "Acme Corp",
+    duplicateOrgId: 123,
     onCancel: vi.fn(),
     onProceed: vi.fn(),
+    onViewExisting: vi.fn(),
     isLoading: false,
   };
 
@@ -79,11 +82,40 @@ describe("DuplicateOrgWarningDialog", () => {
     expect(proceedButton).toBeDisabled();
   });
 
-  it("shows the explanation text about proceeding or changing name", () => {
+  it("shows the explanation text about options", () => {
     render(<DuplicateOrgWarningDialog {...defaultProps} />);
 
     expect(
-      screen.getByText(/Would you like to proceed anyway, or go back to change the name/i)
+      screen.getByText(/Would you like to view the existing organization, change the name, or proceed anyway/i)
     ).toBeInTheDocument();
+  });
+
+  it("renders 'View Existing' button when onViewExisting and duplicateOrgId are provided", () => {
+    render(<DuplicateOrgWarningDialog {...defaultProps} />);
+
+    expect(screen.getByRole("button", { name: /View Existing/i })).toBeInTheDocument();
+  });
+
+  it("calls onViewExisting when 'View Existing' button is clicked", async () => {
+    const user = userEvent.setup();
+    const onViewExisting = vi.fn();
+
+    render(<DuplicateOrgWarningDialog {...defaultProps} onViewExisting={onViewExisting} />);
+
+    await user.click(screen.getByRole("button", { name: /View Existing/i }));
+
+    expect(onViewExisting).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not render 'View Existing' button when onViewExisting is not provided", () => {
+    render(<DuplicateOrgWarningDialog {...defaultProps} onViewExisting={undefined} />);
+
+    expect(screen.queryByRole("button", { name: /View Existing/i })).not.toBeInTheDocument();
+  });
+
+  it("does not render 'View Existing' button when duplicateOrgId is not provided", () => {
+    render(<DuplicateOrgWarningDialog {...defaultProps} duplicateOrgId={undefined} />);
+
+    expect(screen.queryByRole("button", { name: /View Existing/i })).not.toBeInTheDocument();
   });
 });

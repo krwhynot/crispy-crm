@@ -53,8 +53,10 @@ interface DuplicateOrgWarningDialogProps {
 export function DuplicateOrgWarningDialog({
   open,
   duplicateName,
+  duplicateOrgId,
   onCancel,
   onProceed,
+  onViewExisting,
   isLoading = false,
 }: DuplicateOrgWarningDialogProps) {
   return (
@@ -68,11 +70,20 @@ export function DuplicateOrgWarningDialog({
                 An organization named <strong>&quot;{duplicateName}&quot;</strong> already exists in
                 the system.
               </p>
-              <p>Would you like to proceed anyway, or go back to change the name?</p>
+              <p>Would you like to view the existing organization, change the name, or proceed anyway?</p>
             </div>
           </AlertDialogDescription>
         </AlertDialogHeader>
-        <AlertDialogFooter>
+        <AlertDialogFooter className="flex-col sm:flex-row gap-2">
+          {onViewExisting && duplicateOrgId && (
+            <Button
+              variant="outline"
+              onClick={onViewExisting}
+              className="w-full sm:w-auto"
+            >
+              View Existing
+            </Button>
+          )}
           <AlertDialogCancel onClick={onCancel}>Change Name</AlertDialogCancel>
           <AlertDialogAction
             onClick={onProceed}

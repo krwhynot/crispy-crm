@@ -32,6 +32,18 @@ export const ORGANIZATION_TYPE_CHOICES = [
 ] as const;
 
 /**
+ * Organization type descriptions for tooltips/help text
+ * Maps each type ID to a user-friendly explanation
+ */
+export const ORGANIZATION_TYPE_DESCRIPTIONS: Record<OrganizationType, string> = {
+  customer: "Active buying accounts with existing orders",
+  prospect: "Potential customers being pursued",
+  principal: "Food manufacturers MFB represents",
+  distributor: "Partners who warehouse and deliver products",
+  operator: "Restaurants and foodservice businesses",
+};
+
+/**
  * Priority choices for React Admin SelectInput
  * A: High priority (immediate attention)
  * B: Medium-High priority (important but not urgent)
