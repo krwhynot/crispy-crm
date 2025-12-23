@@ -169,7 +169,13 @@ export function escapeForIlike(str: string): string {
 
 /**
  * Apply full-text search to query parameters
- * Replicates the behavior from the original dataProvider's applyFullTextSearch function
+ *
+ * WORKAROUND for ra-data-postgrest library bug:
+ * The library splits multi-word ILIKE values on whitespace and has a bug
+ * handling 3+ words (line 151 checks result[key] instead of result.filter[key]).
+ *
+ * SOLUTION: Use "or@" key (empty operator) which passes the value through
+ * unchanged, bypassing the flawed ILIKE splitting and array handling.
  */
 export function applyFullTextSearch(
   columns: readonly string[],
@@ -182,24 +188,37 @@ export function applyFullTextSearch(
 
     const { q, ...filter } = params.filter;
 
+    // Trim and validate search term
+    const trimmed = String(q).trim();
+    if (!trimmed) {
+      return params;
+    }
+
     // Apply soft delete filter automatically for supported resources (unless it's a view)
     const softDeleteFilter =
       params.filter?.includeDeleted || !shouldAddSoftDeleteFilter ? {} : { "deleted_at@is": null };
 
-    // Escape ILIKE special characters and wrap with wildcards for partial matching
-    const escapedSearch = `%${escapeForIlike(String(q))}%`;
+    // Escape ILIKE special characters (%, _, \)
+    const escaped = escapeForIlike(trimmed);
 
+    // Build raw PostgREST OR condition with properly escaped ILIKE
+    // Uses * for wildcards (PostgREST URL syntax, not SQL %)
+    // Values with spaces/special chars are double-quoted per PostgREST spec
+    const needsQuoting = /[,."':() ]/.test(escaped);
+    const wildcardValue = needsQuoting ? `"*${escaped}*"` : `*${escaped}*`;
+
+    const orConditions = columns
+      .map((column) => `${column}.ilike.${wildcardValue}`)
+      .join(",");
+
+    // Use "or@" key to pass raw PostgREST syntax through unchanged
+    // The empty operator (@) makes ra-data-postgrest return the value as-is
     return {
       ...params,
       filter: {
         ...filter,
         ...softDeleteFilter,
-        "@or": columns.reduce((acc, column) => {
-          return {
-            ...acc,
-            [`${column}@ilike`]: escapedSearch,
-          };
-        }, {}),
+        "or@": `(${orConditions})`,
       },
     };
   };

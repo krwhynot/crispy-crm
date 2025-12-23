@@ -41,10 +41,11 @@ type Segment = Database["public"]["Tables"]["segments"]["Row"];
 /**
  * Custom save button that checks for duplicates before saving
  *
- * Uses a hidden submit button pattern:
- * 1. Visible button checks for duplicates on click
- * 2. If no duplicate, triggers hidden submit button to perform actual save
- * 3. Hidden button has type="submit" which triggers React Admin's form submission
+ * IMPORTANT: Uses a controlled submission pattern:
+ * 1. Prevents Enter key from bypassing duplicate check (onKeyDown at form level)
+ * 2. Visible button checks for duplicates on click
+ * 3. If no duplicate, triggers hidden submit button to perform actual save
+ * 4. Hidden button has type="submit" which triggers React Admin's form submission
  */
 interface DuplicateCheckSaveButtonProps {
   onDuplicateFound: DuplicateCheckCallback;
@@ -110,6 +111,25 @@ const DuplicateCheckSaveButton = ({
       />
     </>
   );
+};
+
+/**
+ * Prevents Enter key in form inputs from triggering form submission
+ *
+ * This is critical for the duplicate check pattern: without this, pressing Enter
+ * in any text field would trigger the hidden submit button directly, completely
+ * bypassing the DuplicateCheckSaveButton's duplicate detection logic.
+ *
+ * Only blocks Enter in INPUT elements (not TEXTAREA for multi-line input).
+ */
+const handleFormKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+  if (
+    event.key === "Enter" &&
+    event.target instanceof HTMLInputElement &&
+    event.target.type !== "submit"
+  ) {
+    event.preventDefault();
+  }
 };
 
 const OrganizationCreate = () => {
@@ -239,7 +259,8 @@ const OrganizationCreate = () => {
   return (
     <>
       <CreateBase redirect="show" transform={transformValues}>
-        <div className="bg-muted px-6 py-6">
+        {/* onKeyDown prevents Enter from bypassing duplicate check - see handleFormKeyDown */}
+        <div className="bg-muted px-6 py-6" onKeyDown={handleFormKeyDown}>
           <div className="max-w-4xl mx-auto create-form-card">
             <FormProgressProvider initialProgress={10}>
               <Form key={formKey} {...form}>
