@@ -4,7 +4,7 @@ import { FormFieldWrapper } from "../FormFieldWrapper";
 
 // Mock react-hook-form
 vi.mock("react-hook-form", () => ({
-  useFormState: vi.fn(() => ({ errors: {} })),
+  useFormState: vi.fn(() => ({ errors: {}, dirtyFields: {} })),
   useWatch: vi.fn(() => undefined),
 }));
 
@@ -38,7 +38,7 @@ describe("FormFieldWrapper", () => {
     mockRegisterField = vi.fn();
     mockMarkFieldValid = vi.fn();
 
-    mockUseFormState.mockReturnValue({ errors: {} });
+    mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
     mockUseWatch.mockReturnValue(undefined);
     mockUseFormProgress.mockReturnValue({
       registerField: mockRegisterField,
@@ -72,7 +72,7 @@ describe("FormFieldWrapper", () => {
 
   test("shows no indicator when field is empty", () => {
     mockUseWatch.mockReturnValue(undefined);
-    mockUseFormState.mockReturnValue({ errors: {} });
+    mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
 
     const { container } = render(
       <FormFieldWrapper name="email">
@@ -86,7 +86,7 @@ describe("FormFieldWrapper", () => {
 
   test("shows checkmark when field has value and no error", () => {
     mockUseWatch.mockReturnValue("test@example.com");
-    mockUseFormState.mockReturnValue({ errors: {} });
+    mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
 
     const { container } = render(
       <FormFieldWrapper name="email">
@@ -94,6 +94,7 @@ describe("FormFieldWrapper", () => {
       </FormFieldWrapper>
     );
 
+    // Visual checkmark appears even for non-dirty fields (shows user the field has a value)
     const checkIcon = container.querySelector(".text-primary");
     expect(checkIcon).toBeInTheDocument();
     expect(checkIcon).toHaveClass("text-primary");
@@ -105,6 +106,7 @@ describe("FormFieldWrapper", () => {
       errors: {
         email: { message: "Invalid email" },
       },
+      dirtyFields: { email: true },
     });
 
     const { container } = render(
@@ -117,9 +119,10 @@ describe("FormFieldWrapper", () => {
     expect(xIcon).toBeInTheDocument();
   });
 
-  test("updates provider when validity changes", () => {
+  test("marks field as NOT valid for progress when field has value but is not dirty", () => {
+    // This is the key fix: schema defaults should not count toward progress
     mockUseWatch.mockReturnValue("test@example.com");
-    mockUseFormState.mockReturnValue({ errors: {} });
+    mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
 
     render(
       <FormFieldWrapper name="email">
@@ -127,7 +130,37 @@ describe("FormFieldWrapper", () => {
       </FormFieldWrapper>
     );
 
+    // Field has value but user hasn't modified it, so it shouldn't count for progress
+    expect(mockMarkFieldValid).toHaveBeenCalledWith("email", false);
+  });
+
+  test("marks field as valid for progress when field has value AND is dirty", () => {
+    mockUseWatch.mockReturnValue("test@example.com");
+    mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: { email: true } });
+
+    render(
+      <FormFieldWrapper name="email">
+        <input data-testid="input" />
+      </FormFieldWrapper>
+    );
+
+    // Field has value AND user modified it, so it counts for progress
     expect(mockMarkFieldValid).toHaveBeenCalledWith("email", true);
+  });
+
+  test("marks field as valid for progress when countDefaultAsFilled is true", () => {
+    // Some fields should count defaults as filled (e.g., stage dropdown)
+    mockUseWatch.mockReturnValue("new_lead");
+    mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
+
+    render(
+      <FormFieldWrapper name="stage" countDefaultAsFilled>
+        <input data-testid="input" />
+      </FormFieldWrapper>
+    );
+
+    // Field has value and countDefaultAsFilled=true, so it counts for progress
+    expect(mockMarkFieldValid).toHaveBeenCalledWith("stage", true);
   });
 
   test("uses useWatch instead of watch for isolated re-renders", () => {
@@ -164,7 +197,7 @@ describe("FormFieldWrapper", () => {
 
   test("positions icon absolutely at right-3 top-9", () => {
     mockUseWatch.mockReturnValue("value");
-    mockUseFormState.mockReturnValue({ errors: {} });
+    mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
 
     const { container } = render(
       <FormFieldWrapper name="email">
@@ -180,7 +213,7 @@ describe("FormFieldWrapper", () => {
 
   test("checkmark has fade-in animation", () => {
     mockUseWatch.mockReturnValue("value");
-    mockUseFormState.mockReturnValue({ errors: {} });
+    mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
 
     const { container } = render(
       <FormFieldWrapper name="email">
@@ -196,7 +229,7 @@ describe("FormFieldWrapper", () => {
 
   test("icon size is h-4 w-4", () => {
     mockUseWatch.mockReturnValue("value");
-    mockUseFormState.mockReturnValue({ errors: {} });
+    mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: {} });
 
     const { container } = render(
       <FormFieldWrapper name="email">
@@ -209,12 +242,13 @@ describe("FormFieldWrapper", () => {
     expect(icon).toHaveClass("w-4");
   });
 
-  test("marks field as invalid when has value but has error", () => {
+  test("marks field as invalid when has value but has error (even if dirty)", () => {
     mockUseWatch.mockReturnValue("invalid-email");
     mockUseFormState.mockReturnValue({
       errors: {
         email: { message: "Invalid format" },
       },
+      dirtyFields: { email: true },
     });
 
     render(
@@ -228,7 +262,7 @@ describe("FormFieldWrapper", () => {
 
   test("treats null value as empty", () => {
     mockUseWatch.mockReturnValue(null);
-    mockUseFormState.mockReturnValue({ errors: {} });
+    mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: { email: true } });
 
     const { container } = render(
       <FormFieldWrapper name="email">
@@ -243,7 +277,7 @@ describe("FormFieldWrapper", () => {
 
   test("treats empty string as empty", () => {
     mockUseWatch.mockReturnValue("");
-    mockUseFormState.mockReturnValue({ errors: {} });
+    mockUseFormState.mockReturnValue({ errors: {}, dirtyFields: { email: true } });
 
     const { container } = render(
       <FormFieldWrapper name="email">

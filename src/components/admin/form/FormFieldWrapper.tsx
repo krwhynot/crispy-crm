@@ -10,6 +10,12 @@ interface FormFieldWrapperProps {
   isRequired?: boolean;
   children: React.ReactNode;
   className?: string;
+  /**
+   * When true, field counts as "filled" even if it has a default value.
+   * Use for fields where schema defaults are meaningful user choices.
+   * Default: false (only user-modified fields count for progress)
+   */
+  countDefaultAsFilled?: boolean;
 }
 
 function FormFieldWrapper({
@@ -17,29 +23,38 @@ function FormFieldWrapper({
   isRequired = false,
   children,
   className,
+  countDefaultAsFilled = false,
 }: FormFieldWrapperProps) {
   const { registerField, markFieldValid } = useFormProgress();
   const value = useWatch({ name });
-  const { errors } = useFormState({ name });
+  const { errors, dirtyFields } = useFormState({ name });
 
   const hasError = !!errors[name];
   const hasValue = value !== undefined && value !== null && value !== "";
-  const isValid = hasValue && !hasError;
+
+  // For progress tracking: field is "filled" only if user has modified it
+  // OR if countDefaultAsFilled is true and it has a value
+  // This prevents schema defaults from inflating progress
+  const isDirty = !!dirtyFields[name];
+  const isFilledForProgress = hasValue && (isDirty || countDefaultAsFilled);
+
+  // For visual validation: show checkmark if field has value and no error
+  const isVisuallyValid = hasValue && !hasError;
 
   // Register field on mount
   useEffect(() => {
     registerField(name, isRequired);
   }, [name, isRequired, registerField]);
 
-  // Update validity when value or error state changes
+  // Update validity for progress tracking based on user interaction
   useEffect(() => {
-    markFieldValid(name, isValid);
-  }, [name, isValid, markFieldValid]);
+    markFieldValid(name, isFilledForProgress && !hasError);
+  }, [name, isFilledForProgress, hasError, markFieldValid]);
 
   return (
     <div className={cn("relative", className)}>
       {children}
-      {isValid && (
+      {isVisuallyValid && (
         <Check className="absolute right-3 top-9 h-4 w-4 text-primary animate-in fade-in duration-100" />
       )}
       {hasError && <X className="absolute right-3 top-9 h-4 w-4 text-destructive" />}
