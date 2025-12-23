@@ -538,9 +538,8 @@ export function OpportunityWizardStep4() {
             source="notes"
             label="Notes"
             multiline
-            rows={2}
-            maxLength={5000}
-            placeholder="General notes about the opportunity..."
+            rows={4}
+            maxLength={2000}
           />
         </FormFieldWrapper>
       </div>
