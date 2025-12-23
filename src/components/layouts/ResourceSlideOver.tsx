@@ -205,36 +205,41 @@ export function ResourceSlideOver({
                   {getRecordTitle()}
                 </SheetTitle>
 
-                {/* Mode toggle button (if handler provided) */}
-                {onModeToggle && (
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        onClick={onModeToggle}
-                        className="h-11 px-3 text-sm"
-                        aria-label={mode === "view" ? "Switch to edit mode" : "Switch to view mode"}
-                      >
-                        {mode === "view" ? (
-                          <>
-                            <PencilIcon className="size-4 mr-1" />
-                            Edit
-                          </>
-                        ) : (
-                          <>
-                            <XIcon className="size-4 mr-1" />
-                            Cancel
-                          </>
-                        )}
-                      </Button>
-                    </TooltipTrigger>
-                    <TooltipContent side="bottom">
-                      {mode === "view"
-                        ? "Edit record"
-                        : `Cancel editing (${formatShortcut("Escape")})`}
-                    </TooltipContent>
-                  </Tooltip>
-                )}
+                <div className="flex items-center gap-2">
+                  {/* Custom header actions */}
+                  {headerActions && record && !isLoading && headerActions(record)}
+
+                  {/* Mode toggle button (if handler provided) */}
+                  {onModeToggle && (
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <Button
+                          variant="ghost"
+                          onClick={onModeToggle}
+                          className="h-11 px-3 text-sm"
+                          aria-label={mode === "view" ? "Switch to edit mode" : "Switch to view mode"}
+                        >
+                          {mode === "view" ? (
+                            <>
+                              <PencilIcon className="size-4 mr-1" />
+                              Edit
+                            </>
+                          ) : (
+                            <>
+                              <XIcon className="size-4 mr-1" />
+                              Cancel
+                            </>
+                          )}
+                        </Button>
+                      </TooltipTrigger>
+                      <TooltipContent side="bottom">
+                        {mode === "view"
+                          ? "Edit record"
+                          : `Cancel editing (${formatShortcut("Escape")})`}
+                      </TooltipContent>
+                    </Tooltip>
+                  )}
+                </div>
               </div>
             </SheetHeader>
 

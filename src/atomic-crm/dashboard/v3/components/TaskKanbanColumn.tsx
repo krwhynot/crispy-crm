@@ -16,6 +16,7 @@ interface TaskKanbanColumnProps {
   tasks: TaskItem[];
   onComplete: (taskId: number) => Promise<void>;
   onSnooze: (taskId: number) => Promise<void>;
+  onPostpone: (taskId: number, days: number) => Promise<void>;
   onDelete: (taskId: number) => Promise<void>;
   onView: (taskId: number) => void;
 }
@@ -63,6 +64,7 @@ function arePropsEqual(
   if (prevProps.title !== nextProps.title) return false;
   if (prevProps.onComplete !== nextProps.onComplete) return false;
   if (prevProps.onSnooze !== nextProps.onSnooze) return false;
+  if (prevProps.onPostpone !== nextProps.onPostpone) return false;
   if (prevProps.onDelete !== nextProps.onDelete) return false;
   if (prevProps.onView !== nextProps.onView) return false;
 
@@ -97,6 +99,7 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
   tasks,
   onComplete,
   onSnooze,
+  onPostpone,
   onDelete,
   onView,
 }: TaskKanbanColumnProps) {
@@ -145,6 +148,7 @@ export const TaskKanbanColumn = React.memo(function TaskKanbanColumn({
                 task={task}
                 onComplete={onComplete}
                 onSnooze={onSnooze}
+                onPostpone={onPostpone}
                 onDelete={onDelete}
                 onView={onView}
               />

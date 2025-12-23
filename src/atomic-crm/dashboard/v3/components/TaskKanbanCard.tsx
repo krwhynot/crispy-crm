@@ -88,6 +88,7 @@ function arePropsEqual(prevProps: TaskKanbanCardProps, nextProps: TaskKanbanCard
   // Check callback references
   if (prevProps.onComplete !== nextProps.onComplete) return false;
   if (prevProps.onSnooze !== nextProps.onSnooze) return false;
+  if (prevProps.onPostpone !== nextProps.onPostpone) return false;
   if (prevProps.onDelete !== nextProps.onDelete) return false;
   if (prevProps.onView !== nextProps.onView) return false;
 
@@ -122,6 +123,7 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
   isDragOverlay = false,
   onComplete,
   onSnooze,
+  onPostpone,
   onDelete,
   onView,
 }: TaskKanbanCardProps) {
@@ -185,6 +187,26 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
 
   const handleEdit = () => {
     window.location.href = `/#/tasks/${task.id}`;
+  };
+
+  const handlePostponeTomorrow = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await onPostpone(task.id, 1);
+      notify("Task postponed to tomorrow", { type: "success" });
+    } catch {
+      notify("Failed to postpone task", { type: "error" });
+    }
+  };
+
+  const handlePostponeNextWeek = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    try {
+      await onPostpone(task.id, 7);
+      notify("Task postponed to next week", { type: "success" });
+    } catch {
+      notify("Failed to postpone task", { type: "error" });
+    }
   };
 
   const priorityClass =
@@ -308,16 +330,24 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => onView(task.id)}>
+              <DropdownMenuItem onClick={() => onView(task.id)} className="min-h-11">
                 <Eye className="mr-2 h-4 w-4" />
                 View
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleEdit}>
+              <DropdownMenuItem onClick={handleEdit} className="min-h-11">
                 <Pencil className="mr-2 h-4 w-4" />
                 Edit
               </DropdownMenuItem>
+              <DropdownMenuItem onClick={handlePostponeTomorrow} className="min-h-11">
+                <Calendar className="mr-2 h-4 w-4" />
+                Postpone to Tomorrow
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={handlePostponeNextWeek} className="min-h-11">
+                <CalendarDays className="mr-2 h-4 w-4" />
+                Postpone to Next Week
+              </DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleDelete} className="text-destructive">
+              <DropdownMenuItem onClick={handleDelete} className="text-destructive min-h-11">
                 <Trash2 className="mr-2 h-4 w-4" />
                 Delete
               </DropdownMenuItem>

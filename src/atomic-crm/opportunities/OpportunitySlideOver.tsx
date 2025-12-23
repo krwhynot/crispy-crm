@@ -5,6 +5,7 @@ import { OpportunitySlideOverDetailsTab } from "./slideOverTabs/OpportunitySlide
 import { OpportunityContactsTab } from "./slideOverTabs/OpportunityContactsTab";
 import { OpportunityProductsTab } from "./slideOverTabs/OpportunityProductsTab";
 import { OpportunityNotesTab } from "./slideOverTabs/OpportunityNotesTab";
+import { QuickAddTaskButton } from "@/atomic-crm/components";
 import type { Opportunity } from "@/atomic-crm/types";
 
 interface OpportunitySlideOverProps {
@@ -63,6 +64,9 @@ export function OpportunitySlideOver({
       onModeToggle={onModeToggle}
       tabs={tabs}
       recordRepresentation={recordRepresentation}
+      headerActions={(record) => (
+        <QuickAddTaskButton opportunityId={record.id} />
+      )}
     />
   );
 }
