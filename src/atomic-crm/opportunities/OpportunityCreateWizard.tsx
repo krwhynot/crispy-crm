@@ -56,7 +56,7 @@ const OPPORTUNITY_FIELD_LABELS: Record<string, string> = {
 };
 
 const OpportunityCreateWizard = () => {
-  const { data: identity } = useGetIdentity();
+  const { data: identity, isPending: identityLoading } = useGetIdentity();
 
   // Fuzzy match warning system (Levenshtein threshold: 3)
   const {
@@ -70,15 +70,40 @@ const OpportunityCreateWizard = () => {
     resetConfirmation,
   } = useSimilarOpportunityCheck();
 
-  // Generate defaults from schema, then merge with identity-specific values
-  // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
-  const formDefaults = {
-    ...opportunitySchema.partial().parse({}),
-    opportunity_owner_id: identity?.id,
-    account_manager_id: identity?.id,
-    contact_ids: [], // Explicitly initialize for ReferenceArrayInput
-    products_to_sync: [], // Explicitly initialize for ArrayInput
-  };
+  // CRITICAL: Memoize formDefaults to prevent React Admin's Form from resetting
+  // on every re-render. React Admin's useAugmentedForm calls reset() whenever
+  // defaultValues object reference changes. Without useMemo, every step navigation
+  // creates a new object → triggers reset → ALL FORM DATA LOST!
+  // See: node_modules/ra-core/src/form/useAugmentedForm.ts:88-90
+  const formDefaults = useMemo(
+    () => ({
+      ...opportunitySchema.partial().parse({}),
+      opportunity_owner_id: identity?.id,
+      account_manager_id: identity?.id,
+      contact_ids: [], // Explicitly initialize for ReferenceArrayInput
+      products_to_sync: [], // Explicitly initialize for ArrayInput
+    }),
+    [identity?.id] // Only recompute when identity.id changes
+  );
+
+  // Wait for identity to load before rendering form
+  // This prevents the form from resetting when identity becomes available
+  if (identityLoading) {
+    return (
+      <div className="bg-muted px-6 py-6">
+        <div className="max-w-4xl mx-auto">
+          <Card>
+            <CardContent className="py-12">
+              <div className="flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+                <span className="ml-3 text-muted-foreground">Loading...</span>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <CreateBase redirect="show">
