@@ -18,10 +18,12 @@ describe("Organization Validation Functions", () => {
     });
 
     it("should format errors for React Admin", async () => {
+      // Note: "not-a-url" now becomes "https://not-a-url" via auto-prefix (valid format)
+      // Use malformed URL "://invalid" to test URL validation error
       const invalidData = {
         name: "",
         organization_type: "invalid_type",
-        website: "not-a-url",
+        website: "://invalid",
       };
 
       try {

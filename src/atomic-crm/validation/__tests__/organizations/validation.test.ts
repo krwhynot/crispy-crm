@@ -140,7 +140,15 @@ describe("Organization Validation Schemas", () => {
         })
       ).not.toThrow();
 
-      // Invalid LinkedIn URLs
+      // Auto-prefix behavior: "linkedin.com/company/test" becomes valid
+      expect(() =>
+        organizationSchema.parse({
+          ...validOrganization,
+          linkedin_url: "linkedin.com/company/auto-prefix-test",
+        })
+      ).not.toThrow();
+
+      // Invalid LinkedIn URLs (wrong domain - even with auto-prefix)
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
@@ -148,10 +156,11 @@ describe("Organization Validation Schemas", () => {
         })
       ).toThrow(z.ZodError);
 
+      // Auto-prefixed but wrong domain
       expect(() =>
         organizationSchema.parse({
           ...validOrganization,
-          linkedin_url: "not-a-url",
+          linkedin_url: "twitter.com/company/test",
         })
       ).toThrow(z.ZodError);
     });
@@ -291,10 +300,12 @@ describe("Organization Validation Schemas", () => {
         })
       ).toThrow(z.ZodError);
 
+      // With auto-prefix, "not-a-url" becomes "https://not-a-url" (valid format)
+      // Use malformed URL to test rejection
       expect(() =>
         updateOrganizationSchema.parse({
           id: 1,
-          website: "not-a-url",
+          website: "://invalid-url",
         })
       ).toThrow(z.ZodError);
 
