@@ -36,6 +36,7 @@ import { PageTutorialTrigger } from "../tutorial";
 import { TaskTitleHeader, TaskPriorityHeader, TaskTypeHeader } from "./TasksDatagridHeader";
 import { TopToolbar } from "../layout/TopToolbar";
 import { ListSearchBar } from "@/components/admin/ListSearchBar";
+import { TaskActionMenu } from "./components/TaskActionMenu";
 import type { Task, Opportunity, Organization } from "../types";
 
 /**
@@ -233,6 +234,22 @@ const TaskListLayout = ({
           >
             <TextField source="title" />
           </ReferenceField>
+
+          {/* Column 9: Actions - Row action menu (non-sortable) - always visible */}
+          <FunctionField
+            label=""
+            sortable={false}
+            cellClassName="w-16 text-right"
+            render={(record: Task) => (
+              <TaskActionMenu
+                task={record}
+                onView={(id) => openSlideOver(id, "view")}
+                onEdit={(id) => openSlideOver(id, "edit")}
+                useInternalHandlers
+              />
+            )}
+            {...COLUMN_VISIBILITY.alwaysVisible}
+          />
         </PremiumDatagrid>
       </StandardListLayout>
       <BulkActionsToolbar />
