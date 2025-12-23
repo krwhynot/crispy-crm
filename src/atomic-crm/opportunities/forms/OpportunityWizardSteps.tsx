@@ -102,7 +102,7 @@ export function OpportunityWizardStep1() {
               description="Create a new customer organization and select it automatically"
               defaultValues={{
                 ...organizationDefaults,
-                organization_type: "prospect",
+                organization_type: "customer",
                 sales_id: identity?.id,
                 segment_id: DEFAULT_SEGMENT_ID,
               }}

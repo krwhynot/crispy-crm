@@ -352,7 +352,7 @@ describe("OpportunityCreateWizard Integration", () => {
   });
 
   describe("Step Content Visibility", () => {
-    test("WizardStep only shows content for current step", async () => {
+    test("all steps are mounted but only current step is visible", async () => {
       const user = userEvent.setup();
 
       const TestWizard = () => {
@@ -388,20 +388,49 @@ describe("OpportunityCreateWizard Integration", () => {
         steps: OPPORTUNITY_WIZARD_STEPS,
       });
 
-      // Step 1 should be visible
+      // All steps should be in DOM
       expect(screen.getByTestId("step-1")).toBeInTheDocument();
+      expect(screen.getByTestId("step-2")).toBeInTheDocument();
+      expect(screen.getByTestId("step-3")).toBeInTheDocument();
+      expect(screen.getByTestId("step-4")).toBeInTheDocument();
 
-      // Steps 2, 3, 4 should not be in DOM
-      expect(screen.queryByTestId("step-2")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("step-3")).not.toBeInTheDocument();
-      expect(screen.queryByTestId("step-4")).not.toBeInTheDocument();
+      // Step 1 container should be visible
+      const step1Container = screen.getByTestId("step-1").parentElement;
+      expect(step1Container).not.toHaveClass("hidden");
+      expect(step1Container).not.toHaveAttribute("aria-hidden", "true");
+
+      // Inactive steps should be hidden
+      const step2Container = screen.getByTestId("step-2").parentElement;
+      const step3Container = screen.getByTestId("step-3").parentElement;
+      const step4Container = screen.getByTestId("step-4").parentElement;
+
+      expect(step2Container).toHaveClass("hidden");
+      expect(step2Container).toHaveAttribute("aria-hidden", "true");
+      expect(step3Container).toHaveClass("hidden");
+      expect(step3Container).toHaveAttribute("aria-hidden", "true");
+      expect(step4Container).toHaveClass("hidden");
+      expect(step4Container).toHaveAttribute("aria-hidden", "true");
 
       // Navigate to step 2
       await user.click(screen.getByRole("button", { name: /next/i }));
 
       await waitFor(() => {
-        expect(screen.getByTestId("step-2")).toBeInTheDocument();
-        expect(screen.queryByTestId("step-1")).not.toBeInTheDocument();
+        // Step 2 container should now be visible
+        expect(screen.getByTestId("step-2").parentElement).not.toHaveClass(
+          "hidden"
+        );
+        expect(
+          screen.getByTestId("step-2").parentElement
+        ).not.toHaveAttribute("aria-hidden", "true");
+
+        // Step 1 container should now be hidden
+        expect(screen.getByTestId("step-1").parentElement).toHaveClass(
+          "hidden"
+        );
+        expect(screen.getByTestId("step-1").parentElement).toHaveAttribute(
+          "aria-hidden",
+          "true"
+        );
       });
     });
   });
@@ -519,6 +548,67 @@ describe("OpportunityCreateWizard Integration", () => {
         id: "details",
         title: "Additional Details",
         fields: [],
+      });
+    });
+  });
+
+  describe("Form State Persistence", () => {
+    test("preserves form data when navigating between steps", async () => {
+      const user = userEvent.setup();
+
+      const TestPersistenceWizard = () => {
+        const methods = useForm({
+          defaultValues: { name: "", customer_organization_id: "" },
+          mode: "onBlur",
+        });
+
+        return (
+          <FormProvider {...methods}>
+            <FormProgressProvider>
+              <FormWizard steps={OPPORTUNITY_WIZARD_STEPS} onSubmit={vi.fn()}>
+                <WizardStep step={1}>
+                  <label htmlFor="opp-name">Opportunity Name</label>
+                  <input id="opp-name" {...methods.register("name")} />
+                </WizardStep>
+                <WizardStep step={2}>
+                  <p data-testid="step-2-content">Step 2 content</p>
+                </WizardStep>
+                <WizardStep step={3}>
+                  <p>Step 3 content</p>
+                </WizardStep>
+                <WizardStep step={4}>
+                  <p>Step 4 content</p>
+                </WizardStep>
+                <WizardNavigation />
+              </FormWizard>
+            </FormProgressProvider>
+          </FormProvider>
+        );
+      };
+
+      renderWithWizard(<TestPersistenceWizard />, {
+        steps: OPPORTUNITY_WIZARD_STEPS,
+      });
+
+      // Fill Step 1 input
+      const nameInput = screen.getByLabelText(/opportunity name/i);
+      await user.type(nameInput, "Big Deal 2025");
+
+      // Navigate to Step 2
+      await user.click(screen.getByRole("button", { name: /next/i }));
+
+      // Verify we're on step 2
+      await waitFor(() => {
+        const step2Container = screen.getByTestId("step-2-content").parentElement;
+        expect(step2Container).not.toHaveClass("hidden");
+      });
+
+      // Navigate back to Step 1
+      await user.click(screen.getByRole("button", { name: /previous/i }));
+
+      // Verify data persisted
+      await waitFor(() => {
+        expect(screen.getByLabelText(/opportunity name/i)).toHaveValue("Big Deal 2025");
       });
     });
   });
