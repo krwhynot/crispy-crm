@@ -79,6 +79,25 @@ function TasksKanbanPanel() {
   } = useMyTasks();
   const notify = useNotify();
 
+  /**
+   * Handle postpone - Add days to task due date
+   */
+  const handlePostpone = useCallback(
+    async (taskId: number, days: number) => {
+      const task = tasks.find((t) => t.id === taskId);
+      if (!task) return;
+
+      const newDueDate = addDays(task.dueDate, days);
+
+      try {
+        await updateTaskDueDate(taskId, newDueDate);
+      } catch {
+        throw new Error("Failed to postpone task");
+      }
+    },
+    [tasks, updateTaskDueDate]
+  );
+
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates })
@@ -335,6 +354,7 @@ function TasksKanbanPanel() {
                 tasks={tasksByColumn.overdue}
                 onComplete={completeTask}
                 onSnooze={snoozeTask}
+                onPostpone={handlePostpone}
                 onDelete={deleteTask}
                 onView={viewTask}
               />
@@ -344,6 +364,7 @@ function TasksKanbanPanel() {
                 tasks={tasksByColumn.today}
                 onComplete={completeTask}
                 onSnooze={snoozeTask}
+                onPostpone={handlePostpone}
                 onDelete={deleteTask}
                 onView={viewTask}
               />
@@ -353,6 +374,7 @@ function TasksKanbanPanel() {
                 tasks={tasksByColumn.thisWeek}
                 onComplete={completeTask}
                 onSnooze={snoozeTask}
+                onPostpone={handlePostpone}
                 onDelete={deleteTask}
                 onView={viewTask}
               />
@@ -364,6 +386,7 @@ function TasksKanbanPanel() {
                   isDragOverlay
                   onComplete={completeTask}
                   onSnooze={snoozeTask}
+                  onPostpone={handlePostpone}
                   onDelete={deleteTask}
                   onView={viewTask}
                 />

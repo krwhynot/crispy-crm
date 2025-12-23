@@ -5,6 +5,7 @@ import { ContactDetailsTab } from "./ContactDetailsTab";
 import { ContactNotesTab } from "./slideOverTabs/ContactNotesTab";
 import { ActivitiesTab } from "./ActivitiesTab";
 import { ContactHierarchyBreadcrumb } from "./ContactHierarchyBreadcrumb";
+import { QuickAddTaskButton } from "@/atomic-crm/components";
 import type { Contact } from "../types";
 
 interface ContactSlideOverProps {
@@ -73,6 +74,9 @@ export function ContactSlideOver({
       recordRepresentation={getContactName}
       breadcrumbComponent={ContactHierarchyBreadcrumb}
       loadingSkeleton={ContactDetailSkeleton}
+      headerActions={(record) => (
+        <QuickAddTaskButton contactId={record.id} />
+      )}
     />
   );
 }
