@@ -16,6 +16,7 @@
 
 import type { RaRecord, GetListParams, DataProvider } from "ra-core";
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
+import { escapeForIlike } from "../dataProviderUtils";
 
 /**
  * Computed fields that should be stripped before saving to database

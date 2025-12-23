@@ -40,10 +40,10 @@ const OrganizationEdit = () => {
 const OrganizationEditContent = () => {
   const record = useRecordContext<Organization>();
 
-  const defaultValues = useMemo(
-    () => organizationSchema.partial().parse(record),
-    [record]
-  );
+  // Use record directly for form defaults - validation happens at API boundary (save time)
+  // Do NOT parse through organizationSchema here - it uses strictObject which rejects
+  // internal DB fields (import_session_id, search_tsv, playbook_category_id)
+  const defaultValues = record;
 
   return (
     <ResponsiveGrid variant="dashboard" className="mt-2">
