@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useCreate, useGetIdentity, useNotify } from "ra-core";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { QuickCreatePopover } from "./QuickCreatePopover";
 
@@ -14,9 +13,6 @@ export const AutocompleteOrganizationInput = ({
   helperText?: string | false;
   source?: string;
 }) => {
-  const [create] = useCreate();
-  const { data: identity } = useGetIdentity();
-  const notify = useNotify();
   const [showQuickCreate, setShowQuickCreate] = useState(false);
   const [pendingName, setPendingName] = useState("");
 

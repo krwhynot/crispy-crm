@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useDataProvider, useNotify } from "ra-core";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -9,8 +9,15 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
-import { SelectInput } from "@/components/admin/select-input";
-import { TextInput } from "@/components/admin/text-input";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Label } from "@/components/ui/label";
 import { PLAYBOOK_CATEGORY_IDS } from "@/atomic-crm/validation/segments";
 
 const quickCreateSchema = z.object({
@@ -93,68 +100,115 @@ export function QuickCreatePopover({
     <Popover open={open} onOpenChange={(isOpen) => !isOpen && onCancel()}>
       <PopoverTrigger asChild>{children}</PopoverTrigger>
       <PopoverContent className="w-80 p-4" align="start">
-        <FormProvider {...methods}>
-          <form onSubmit={handleSubmit} className="space-y-3">
-            <p className="font-medium text-sm">Quick Create: {name}</p>
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <p className="font-medium text-sm">Quick Create: {name}</p>
 
-            <TextInput source="name" label="Name" />
+          {/* Name field - uses native Input instead of React Admin TextInput */}
+          <div className="space-y-1">
+            <Label htmlFor="org-name">Name</Label>
+            <Input
+              id="org-name"
+              {...methods.register("name")}
+              aria-invalid={!!methods.formState.errors.name}
+            />
+            {methods.formState.errors.name && (
+              <p className="text-xs text-destructive" role="alert">
+                {methods.formState.errors.name.message}
+              </p>
+            )}
+          </div>
 
-            <div className="grid grid-cols-2 gap-2">
-              <SelectInput
-                source="organization_type"
-                label="Type"
-                choices={[
-                  { id: "customer", name: "Customer" },
-                  { id: "prospect", name: "Prospect" },
-                  { id: "principal", name: "Principal" },
-                  { id: "distributor", name: "Distributor" },
-                ]}
-              />
-              <SelectInput
-                source="priority"
-                label="Priority"
-                choices={[
-                  { id: "A", name: "A" },
-                  { id: "B", name: "B" },
-                  { id: "C", name: "C" },
-                  { id: "D", name: "D" },
-                ]}
-              />
+          <div className="grid grid-cols-2 gap-2">
+            {/* Organization Type - uses native Select instead of React Admin SelectInput */}
+            <div className="space-y-1">
+              <Label htmlFor="org-type">Type</Label>
+              <Select
+                value={methods.watch("organization_type")}
+                onValueChange={(value) =>
+                  methods.setValue(
+                    "organization_type",
+                    value as "customer" | "prospect" | "principal" | "distributor"
+                  )
+                }
+              >
+                <SelectTrigger id="org-type" className="h-11">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="customer">Customer</SelectItem>
+                  <SelectItem value="prospect">Prospect</SelectItem>
+                  <SelectItem value="principal">Principal</SelectItem>
+                  <SelectItem value="distributor">Distributor</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
 
-            <div className="grid grid-cols-2 gap-2">
-              <TextInput source="city" label="City" />
-              <TextInput source="state" label="State" />
+            {/* Priority - uses native Select */}
+            <div className="space-y-1">
+              <Label htmlFor="org-priority">Priority</Label>
+              <Select
+                value={methods.watch("priority")}
+                onValueChange={(value) =>
+                  methods.setValue("priority", value as "A" | "B" | "C" | "D")
+                }
+              >
+                <SelectTrigger id="org-priority" className="h-11">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="A">A</SelectItem>
+                  <SelectItem value="B">B</SelectItem>
+                  <SelectItem value="C">C</SelectItem>
+                  <SelectItem value="D">D</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            {/* City - uses native Input */}
+            <div className="space-y-1">
+              <Label htmlFor="org-city">City</Label>
+              <Input id="org-city" {...methods.register("city")} />
             </div>
 
-            <div className="flex justify-between pt-2">
+            {/* State - uses native Input */}
+            <div className="space-y-1">
+              <Label htmlFor="org-state">State</Label>
+              <Input id="org-state" {...methods.register("state")} />
+            </div>
+          </div>
+
+          <div className="flex justify-between pt-2">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleQuickCreate}
+              disabled={isPending}
+              className="text-xs h-9"
+            >
+              Just use name
+            </Button>
+            <div className="flex gap-2">
               <Button
                 type="button"
-                variant="ghost"
+                variant="outline"
                 size="sm"
-                onClick={handleQuickCreate}
-                disabled={isPending}
-                className="text-xs h-9"
+                onClick={() => {
+                  setOpen(false);
+                  onCancel();
+                }}
+                className="h-9"
               >
-                Just use name
+                Cancel
               </Button>
-              <div className="flex gap-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => { setOpen(false); onCancel(); }}
-                  className="h-9"
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" size="sm" disabled={isPending} className="h-9">
-                  Create
-                </Button>
-              </div>
+              <Button type="submit" size="sm" disabled={isPending} className="h-9">
+                Create
+              </Button>
             </div>
-          </form>
-        </FormProvider>
+          </div>
+        </form>
       </PopoverContent>
     </Popover>
   );
