@@ -26,6 +26,7 @@ export type { Breakpoint } from "./useBreakpoint";
 
 // Form Utilities
 export { useCityStateMapping } from "./useCityStateMapping";
+export { useInAppUnsavedChanges } from "./useInAppUnsavedChanges";
 
 // Dialog Utilities
 export { useDialogError, parseServerError } from "./useDialogError";
