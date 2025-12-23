@@ -188,6 +188,7 @@ export const filterableFields: Record<string, string[]> = {
     "updated_at",
     "deleted_at", // Soft delete timestamp
     "q", // Special: full-text search parameter
+    "stale", // Virtual filter: transformed to last_activity_date + stage filters (see dataProviderUtils.ts)
   ],
 
   // Opportunities Summary View (database view with computed fields)

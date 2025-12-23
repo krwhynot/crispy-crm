@@ -9,11 +9,76 @@
  */
 
 import type { GetListParams } from "ra-core";
+import { subDays } from "date-fns";
 import { getSearchableFields, supportsSoftDelete, getResourceName } from "./resources";
 import { escapeCacheManager } from "./dataProviderCache";
+import { STAGE_STALE_THRESHOLDS, CLOSED_STAGES } from "../../utils/stalenessCalculation";
 
 // Type for filter payloads (compatible with React Admin filters)
 type FilterPayload = Record<string, unknown>;
+
+/**
+ * Virtual Filter Transformations
+ *
+ * Transforms virtual filter fields (not actual DB columns) into database-compatible filters.
+ * Called in applySearchParams before other transformations.
+ *
+ * Currently supported virtual filters:
+ * - "stale": For opportunities - fetches deals exceeding per-stage activity thresholds
+ */
+
+/**
+ * Transform "stale" virtual filter to database-compatible filters.
+ *
+ * Staleness has per-stage thresholds (PRD Section 6.3):
+ * - new_lead: 7 days
+ * - initial_outreach: 14 days
+ * - sample_visit_offered: 14 days
+ * - feedback_logged: 21 days
+ * - demo_scheduled: 14 days
+ *
+ * Since we can't express per-stage thresholds in a single PostgREST query,
+ * we use the minimum threshold (7 days) to fetch all POTENTIALLY stale candidates.
+ * Client-side filtering with isOpportunityStale() can refine the results.
+ *
+ * Filter transforms:
+ * { stale: true } → {
+ *   "stage@not.in": (closed_won,closed_lost),
+ *   "or@": "(last_activity_date.lt.THRESHOLD,last_activity_date.is.null)"
+ * }
+ */
+export function transformStaleFilter(filter: FilterPayload, resource: string): FilterPayload {
+  // Only applies to opportunities resource
+  if (resource !== "opportunities" && resource !== "opportunities_summary") {
+    return filter;
+  }
+
+  // Check if stale filter is present
+  if (!filter || filter.stale !== true) {
+    return filter;
+  }
+
+  // Remove the virtual "stale" key
+  const { stale: _, ...restFilter } = filter;
+
+  // Calculate threshold date using minimum threshold (7 days for new_lead)
+  // This ensures we capture ALL potentially stale deals
+  const minThreshold = Math.min(...Object.values(STAGE_STALE_THRESHOLDS));
+  const thresholdDate = subDays(new Date(), minThreshold);
+  const thresholdISO = thresholdDate.toISOString().split("T")[0]; // YYYY-MM-DD format
+
+  // Build the transformed filter:
+  // 1. Exclude closed stages (closed_won, closed_lost)
+  // 2. Include deals with last_activity_date < threshold OR last_activity_date IS NULL
+  return {
+    ...restFilter,
+    // Exclude closed stages
+    "stage@not.in": `(${CLOSED_STAGES.join(",")})`,
+    // Include deals with old activity OR no activity
+    // Using PostgREST's native OR syntax via "or@" key
+    "or@": `(last_activity_date.lt.${thresholdISO},last_activity_date.is.null)`,
+  };
+}
 
 /**
  * Cache for searchable fields to avoid repeated lookups
@@ -314,9 +379,13 @@ export function applySearchParams(
   const needsSoftDeleteFilter =
     supportsSoftDelete(resource) && !params.filter?.includeDeleted && !isView;
 
-  // Transform $or filters to PostgREST @or format FIRST
+  // Transform virtual filters (e.g., "stale") to database-compatible filters FIRST
+  // This must happen before other transformations to remove virtual keys
+  const virtualTransformedFilter = transformStaleFilter(params.filter || {}, resource);
+
+  // Transform $or filters to PostgREST @or format
   // This must happen before array transformation to properly handle $or conditions
-  const orTransformedFilter = transformOrFilter(params.filter);
+  const orTransformedFilter = transformOrFilter(virtualTransformedFilter);
 
   // Transform array filters to PostgREST operators
   const transformedFilter = transformArrayFilters(orTransformedFilter);

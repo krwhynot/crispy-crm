@@ -348,3 +348,112 @@ describe("transformArrayFilters", () => {
     });
   });
 });
+
+/**
+ * Tests for transformStaleFilter
+ * Virtual filter transformation for "stale" opportunities
+ */
+import { transformStaleFilter } from "../dataProviderUtils";
+
+describe("transformStaleFilter", () => {
+  describe("non-opportunities resources", () => {
+    it("should pass through filters unchanged for contacts", () => {
+      const filter = { stale: true, name: "test" };
+      expect(transformStaleFilter(filter, "contacts")).toEqual(filter);
+    });
+
+    it("should pass through filters unchanged for organizations", () => {
+      const filter = { stale: true, type: "customer" };
+      expect(transformStaleFilter(filter, "organizations")).toEqual(filter);
+    });
+
+    it("should pass through filters unchanged for tasks", () => {
+      const filter = { stale: true, completed: false };
+      expect(transformStaleFilter(filter, "tasks")).toEqual(filter);
+    });
+  });
+
+  describe("opportunities resource", () => {
+    it("should transform stale: true to date-based filters", () => {
+      const filter = { stale: true };
+      const result = transformStaleFilter(filter, "opportunities");
+
+      // Should remove the virtual "stale" key
+      expect(result.stale).toBeUndefined();
+
+      // Should exclude closed stages
+      expect(result["stage@not.in"]).toBe("(closed_won,closed_lost)");
+
+      // Should add OR condition for last_activity_date
+      expect(result["or@"]).toMatch(/\(last_activity_date\.lt\.\d{4}-\d{2}-\d{2},last_activity_date\.is\.null\)/);
+    });
+
+    it("should transform stale: true for opportunities_summary", () => {
+      const filter = { stale: true };
+      const result = transformStaleFilter(filter, "opportunities_summary");
+
+      expect(result.stale).toBeUndefined();
+      expect(result["stage@not.in"]).toBe("(closed_won,closed_lost)");
+      expect(result["or@"]).toMatch(/last_activity_date\.lt\./);
+    });
+
+    it("should preserve other filters when transforming stale", () => {
+      const filter = { stale: true, name: "Test Deal", priority: "high" };
+      const result = transformStaleFilter(filter, "opportunities");
+
+      expect(result.stale).toBeUndefined();
+      expect(result.name).toBe("Test Deal");
+      expect(result.priority).toBe("high");
+      expect(result["stage@not.in"]).toBeDefined();
+    });
+
+    it("should not transform when stale is false", () => {
+      const filter = { stale: false, name: "Test" };
+      const result = transformStaleFilter(filter, "opportunities");
+
+      // When stale is false, no transformation happens
+      expect(result).toEqual(filter);
+    });
+
+    it("should not transform when stale is not present", () => {
+      const filter = { name: "Test Deal", stage: "new_lead" };
+      const result = transformStaleFilter(filter, "opportunities");
+
+      expect(result).toEqual(filter);
+    });
+
+    it("should handle empty filter", () => {
+      const result = transformStaleFilter({}, "opportunities");
+      expect(result).toEqual({});
+    });
+
+    it("should handle null/undefined filter gracefully", () => {
+      // @ts-expect-error - testing runtime behavior
+      expect(transformStaleFilter(null, "opportunities")).toEqual(null);
+      // @ts-expect-error - testing runtime behavior
+      expect(transformStaleFilter(undefined, "opportunities")).toEqual(undefined);
+    });
+  });
+
+  describe("date threshold calculation", () => {
+    it("should use minimum stale threshold (7 days for new_lead)", () => {
+      const filter = { stale: true };
+      const result = transformStaleFilter(filter, "opportunities");
+
+      // The threshold should be 7 days (minimum across all stage thresholds)
+      // This captures all potentially stale deals
+      const orCondition = result["or@"] as string;
+      const dateMatch = orCondition.match(/last_activity_date\.lt\.(\d{4}-\d{2}-\d{2})/);
+      expect(dateMatch).toBeTruthy();
+
+      if (dateMatch) {
+        const thresholdDate = new Date(dateMatch[1]);
+        const today = new Date();
+        const daysDiff = Math.floor((today.getTime() - thresholdDate.getTime()) / (1000 * 60 * 60 * 24));
+        // Should be approximately 7 days (minimum threshold)
+        expect(daysDiff).toBeGreaterThanOrEqual(6);
+        expect(daysDiff).toBeLessThanOrEqual(8);
+      }
+    });
+  });
+});
