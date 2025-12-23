@@ -141,7 +141,7 @@ export const SelectInput = (props: SelectInputProps) => {
   const renderMenuItemOption = useCallback((choice: RaRecord) => getChoiceText(choice), [getChoiceText]);
 
   const handleChange = useCallback(
-    async (value: string) => {
+    (value: string) => {
       if (value === emptyValue) {
         field.onChange(emptyValue);
       } else {
