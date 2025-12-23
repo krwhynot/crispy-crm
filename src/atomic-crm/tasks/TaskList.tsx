@@ -143,7 +143,7 @@ const TaskListLayout = ({
           filterConfig={TASK_FILTER_CONFIG}
         />
         <PremiumDatagrid
-          onRowClick={(id) => openSlideOver(Number(id), "edit")}
+          onRowClick={(id) => openSlideOver(Number(id), "view")}
           focusedIndex={focusedIndex}
         >
           {/* Column 1: Completion - Inline checkbox (non-sortable) - always visible */}

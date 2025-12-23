@@ -14,3 +14,4 @@ export {
 
 // Form Components
 export { CreateFormFooter } from "./CreateFormFooter";
+export { QuickAddTaskButton } from "./QuickAddTaskButton";
