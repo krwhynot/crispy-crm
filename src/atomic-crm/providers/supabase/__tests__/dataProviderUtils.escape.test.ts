@@ -6,7 +6,7 @@
  */
 
 import { describe, it, expect, beforeEach } from "vitest";
-import { escapeForPostgREST } from "../dataProviderUtils";
+import { escapeForPostgREST, escapeForIlike } from "../dataProviderUtils";
 
 describe("escapeForPostgREST", () => {
   beforeEach(() => {
@@ -153,6 +153,58 @@ describe("escapeForPostgREST", () => {
     it("should handle unicode characters", () => {
       expect(escapeForPostgREST("hello 世界")).toBe('"hello 世界"');
       expect(escapeForPostgREST("emoji 😀")).toBe('"emoji 😀"');
+    });
+  });
+});
+
+describe("escapeForIlike", () => {
+  describe("ILIKE wildcard escaping", () => {
+    it("should escape % wildcard character", () => {
+      expect(escapeForIlike("100% complete")).toBe("100\\% complete");
+      expect(escapeForIlike("50%")).toBe("50\\%");
+      expect(escapeForIlike("%start")).toBe("\\%start");
+    });
+
+    it("should escape _ single-character wildcard", () => {
+      expect(escapeForIlike("file_name")).toBe("file\\_name");
+      expect(escapeForIlike("test_case_1")).toBe("test\\_case\\_1");
+      expect(escapeForIlike("_prefix")).toBe("\\_prefix");
+    });
+
+    it("should escape backslash first (escape character)", () => {
+      expect(escapeForIlike("path\\to\\file")).toBe("path\\\\to\\\\file");
+      expect(escapeForIlike("\\")).toBe("\\\\");
+    });
+
+    it("should handle combined special characters", () => {
+      // Backslash escaping must happen first, then % and _
+      // Input: 100%\_done → Output: 100\%\\\_done
+      expect(escapeForIlike("100%\\_done")).toBe("100\\%\\\\\\_done");
+      // Input: \%_ → Output: \\%\_
+      expect(escapeForIlike("\\%_")).toBe("\\\\\\%\\_");
+    });
+
+    it("should leave regular characters unchanged", () => {
+      expect(escapeForIlike("normal text")).toBe("normal text");
+      expect(escapeForIlike("Test Organization 2024")).toBe("Test Organization 2024");
+      expect(escapeForIlike("john@example.com")).toBe("john@example.com");
+    });
+
+    it("should handle empty string", () => {
+      expect(escapeForIlike("")).toBe("");
+    });
+  });
+
+  describe("search query scenarios", () => {
+    it("should safely escape user search input", () => {
+      // Users might accidentally type ILIKE wildcards
+      expect(escapeForIlike("100%")).toBe("100\\%");
+      expect(escapeForIlike("file_v2")).toBe("file\\_v2");
+    });
+
+    it("should handle multi-word search terms", () => {
+      // The bug report case: "Test Organization 2024"
+      expect(escapeForIlike("Test Organization 2024")).toBe("Test Organization 2024");
     });
   });
 });
