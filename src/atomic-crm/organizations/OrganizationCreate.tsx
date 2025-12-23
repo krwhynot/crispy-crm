@@ -193,6 +193,15 @@ const OrganizationCreate = () => {
     pendingValuesRef.current = null;
   }, [clearDuplicate]);
 
+  // Handle user wanting to view the existing duplicate organization
+  const handleViewExisting = useCallback(() => {
+    if (duplicateOrg?.id) {
+      clearDuplicate();
+      pendingValuesRef.current = null;
+      redirect("show", "organizations", duplicateOrg.id);
+    }
+  }, [duplicateOrg?.id, clearDuplicate, redirect]);
+
   // Show loading skeleton while identity loads
   if (isLoadingDefaults) {
     return (
@@ -254,8 +263,10 @@ const OrganizationCreate = () => {
       <DuplicateOrgWarningDialog
         open={!!duplicateOrg}
         duplicateName={duplicateOrg?.name}
+        duplicateOrgId={duplicateOrg?.id}
         onCancel={handleCancelDuplicate}
         onProceed={handleProceedAnyway}
+        onViewExisting={handleViewExisting}
         isLoading={isCreating}
       />
     </>
