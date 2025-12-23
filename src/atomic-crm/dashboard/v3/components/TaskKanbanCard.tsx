@@ -153,6 +153,10 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
       };
 
   const handleCardClick = (e: React.MouseEvent | React.KeyboardEvent) => {
+    // Don't open slide-over when completion dialog is open (prevents focus race condition)
+    if (showCompletionDialog) {
+      return;
+    }
     // Don't open slide-over when clicking on action buttons or checkbox
     if ((e.target as HTMLElement).closest("[data-action-button]")) {
       return;
@@ -258,9 +262,11 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
         >
           <Checkbox
             className="h-5 w-5"
+            checked={pendingComplete}
             onCheckedChange={(checked) => {
               if (checked) {
-                // Open completion dialog instead of immediately completing
+                // Set pending state and open dialog (checkbox is now controlled)
+                setPendingComplete(true);
                 setShowCompletionDialog(true);
               }
             }}
@@ -351,13 +357,19 @@ export const TaskKanbanCard = memo(function TaskKanbanCard({
       <TaskCompletionDialog
         task={task}
         open={showCompletionDialog}
-        onClose={() => setShowCompletionDialog(false)}
+        onClose={() => {
+          // User closed without action - REVERT completion
+          setPendingComplete(false);
+          setShowCompletionDialog(false);
+        }}
         onComplete={async () => {
           try {
             await onComplete(task.id);
+            setPendingComplete(false);  // Reset pending (task is now actually complete)
             setShowCompletionDialog(false);
             notify("Task completed", { type: "success" });
           } catch {
+            setPendingComplete(false);  // Revert on error too
             notify("Failed to complete task", { type: "error" });
           }
         }}
