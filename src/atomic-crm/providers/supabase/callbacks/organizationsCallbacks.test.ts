@@ -181,6 +181,140 @@ describe("organizationsCallbacks", () => {
     });
   });
 
+  describe("beforeGetList - q filter transformation", () => {
+    it("should transform single-word q filter to raw PostgREST OR syntax", async () => {
+      const params = {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "id", order: "ASC" as const },
+        filter: { q: "Sysco" },
+      };
+
+      const result = await organizationsCallbacks.beforeGetList!(params, mockDataProvider);
+
+      // q should be removed from filter
+      expect(result.filter).not.toHaveProperty("q");
+      // Should use raw PostgREST "or@" syntax (empty operator passthrough)
+      expect(result.filter).toHaveProperty("or@");
+      expect(result.filter["or@"]).toContain("name.ilike.*Sysco*");
+      expect(result.filter["or@"]).toContain("city.ilike.*Sysco*");
+    });
+
+    it("should transform two-word q filter correctly", async () => {
+      const params = {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "id", order: "ASC" as const },
+        filter: { q: "Test Organization" },
+      };
+
+      const result = await organizationsCallbacks.beforeGetList!(params, mockDataProvider);
+
+      expect(result.filter).not.toHaveProperty("q");
+      expect(result.filter["or@"]).toContain("name.ilike.");
+      // Multi-word terms should be quoted
+      expect(result.filter["or@"]).toContain('"*Test Organization*"');
+    });
+
+    it("should transform three-word q filter correctly (regression test)", async () => {
+      // This is the specific case that was broken due to ra-data-postgrest bug
+      const params = {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "id", order: "ASC" as const },
+        filter: { q: "Test Organization 2024" },
+      };
+
+      const result = await organizationsCallbacks.beforeGetList!(params, mockDataProvider);
+
+      expect(result.filter).not.toHaveProperty("q");
+      expect(result.filter["or@"]).toContain('"*Test Organization 2024*"');
+      // Should have all search fields
+      expect(result.filter["or@"]).toContain("name.ilike.");
+      expect(result.filter["or@"]).toContain("city.ilike.");
+      expect(result.filter["or@"]).toContain("state.ilike.");
+      expect(result.filter["or@"]).toContain("sector.ilike.");
+    });
+
+    it("should escape ILIKE special characters in search term", async () => {
+      const params = {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "id", order: "ASC" as const },
+        filter: { q: "100% Natural" },
+      };
+
+      const result = await organizationsCallbacks.beforeGetList!(params, mockDataProvider);
+
+      // % should be escaped as \%
+      expect(result.filter["or@"]).toContain("100\\% Natural");
+    });
+
+    it("should handle apostrophes in search term", async () => {
+      const params = {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "id", order: "ASC" as const },
+        filter: { q: "O'Brien Foods" },
+      };
+
+      const result = await organizationsCallbacks.beforeGetList!(params, mockDataProvider);
+
+      expect(result.filter).not.toHaveProperty("q");
+      expect(result.filter["or@"]).toContain("O'Brien Foods");
+    });
+
+    it("should preserve other filters when q is transformed", async () => {
+      const params = {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "id", order: "ASC" as const },
+        filter: { q: "Sysco", org_type: "customer", priority: "A" },
+      };
+
+      const result = await organizationsCallbacks.beforeGetList!(params, mockDataProvider);
+
+      expect(result.filter).not.toHaveProperty("q");
+      expect(result.filter.org_type).toBe("customer");
+      expect(result.filter.priority).toBe("A");
+      expect(result.filter["or@"]).toContain("name.ilike.*Sysco*");
+    });
+
+    it("should handle empty q filter gracefully", async () => {
+      const params = {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "id", order: "ASC" as const },
+        filter: { q: "", sector: "Technology" },
+      };
+
+      const result = await organizationsCallbacks.beforeGetList!(params, mockDataProvider);
+
+      // Empty q should not create or@ filter
+      expect(result.filter).not.toHaveProperty("or@");
+      expect(result.filter.sector).toBe("Technology");
+    });
+
+    it("should handle whitespace-only q filter gracefully", async () => {
+      const params = {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "id", order: "ASC" as const },
+        filter: { q: "   ", sector: "Technology" },
+      };
+
+      const result = await organizationsCallbacks.beforeGetList!(params, mockDataProvider);
+
+      // Whitespace-only q should not create or@ filter
+      expect(result.filter).not.toHaveProperty("or@");
+    });
+
+    it("should handle non-string q filter gracefully", async () => {
+      const params = {
+        pagination: { page: 1, perPage: 10 },
+        sort: { field: "id", order: "ASC" as const },
+        filter: { q: 123, sector: "Technology" },
+      };
+
+      const result = await organizationsCallbacks.beforeGetList!(params, mockDataProvider);
+
+      // Non-string q should not create or@ filter
+      expect(result.filter).not.toHaveProperty("or@");
+    });
+  });
+
   describe("afterRead - data normalization", () => {
     it("should not define afterRead (no transformation needed)", () => {
       // Organizations don't need afterRead transformation

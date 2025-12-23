@@ -49,26 +49,28 @@ export const ORGANIZATIONS_SEARCH_FIELDS = ["name", "city", "state", "sector"] a
 /**
  * Transform q filter into ILIKE search on organization fields
  *
- * Matches the unified data provider's search behavior by transforming a simple
- * `q` filter into an `@or` filter with ILIKE conditions on each searchable field.
+ * WORKAROUND for ra-data-postgrest library bug:
+ * The library splits multi-word ILIKE values on whitespace and has a bug
+ * handling 3+ words (line 151 checks result[key] instead of result.filter[key]).
+ * This causes nested arrays that produce malformed PostgREST queries like:
+ *   "name.ilike."%Test",ilike."Organization"" (missing field name on 2nd term)
+ *
+ * SOLUTION: Use "or@" key (empty operator) which passes the value through
+ * unchanged per library line 131: `if (operation.length === 0) return value;`
+ * This bypasses the flawed ILIKE splitting and array handling entirely.
  *
  * @param params - GetListParams containing the filter with q
- * @returns GetListParams with q transformed to @or ILIKE filters
+ * @returns GetListParams with q transformed to raw PostgREST OR filter
  *
  * @example
  * ```typescript
  * // Input filter:
- * { q: "chicago", org_type: "customer" }
+ * { q: "Test Organization 2024", org_type: "customer" }
  *
- * // Output filter:
+ * // Output filter (raw PostgREST syntax):
  * {
  *   org_type: "customer",
- *   "@or": {
- *     "name@ilike": "%chicago%",
- *     "city@ilike": "%chicago%",
- *     "state@ilike": "%chicago%",
- *     "sector@ilike": "%chicago%"
- *   }
+ *   "or@": "(name.ilike.*Test Organization 2024*,city.ilike.*Test Organization 2024*,...)"
  * }
  * ```
  */
@@ -80,23 +82,30 @@ export function transformQToIlikeSearch(params: GetListParams): GetListParams {
     return params;
   }
 
-  // Wrap search term with wildcards for partial matching
-  const searchTerm = `%${q}%`;
+  // Trim and escape ILIKE special characters (%, _, \) in search term
+  const trimmed = q.trim();
+  if (!trimmed) {
+    return params;
+  }
+  const escaped = escapeForIlike(trimmed);
 
-  // Build @or filter with ILIKE conditions for each searchable field
-  const orFilter = ORGANIZATIONS_SEARCH_FIELDS.reduce(
-    (acc, field) => ({
-      ...acc,
-      [`${field}@ilike`]: searchTerm,
-    }),
-    {} as Record<string, string>
-  );
+  // Build raw PostgREST OR condition with properly escaped ILIKE
+  // Uses * for wildcards (PostgREST URL syntax, not SQL %)
+  // Values with spaces/special chars are double-quoted per PostgREST spec
+  const needsQuoting = /[,."':() ]/.test(escaped);
+  const wildcardValue = needsQuoting ? `"*${escaped}*"` : `*${escaped}*`;
 
+  const orConditions = ORGANIZATIONS_SEARCH_FIELDS.map(
+    (field) => `${field}.ilike.${wildcardValue}`
+  ).join(",");
+
+  // Use "or@" key to pass raw PostgREST syntax through unchanged
+  // The empty operator (@) makes ra-data-postgrest return the value as-is
   return {
     ...params,
     filter: {
       ...filterWithoutQ,
-      "@or": orFilter,
+      "or@": `(${orConditions})`,
     },
   };
 }
