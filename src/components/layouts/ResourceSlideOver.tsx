@@ -69,6 +69,10 @@ export interface ResourceSlideOverProps {
    * for better visual matching during load.
    */
   loadingSkeleton?: React.ComponentType;
+  /**
+   * Optional header action buttons (rendered before Edit button)
+   */
+  headerActions?: (record: RaRecord) => React.ReactNode;
 }
 
 /**
@@ -124,6 +128,7 @@ export function ResourceSlideOver({
   recordRepresentation,
   breadcrumbComponent: BreadcrumbComponent,
   loadingSkeleton: LoadingSkeleton = SlideOverSkeleton,
+  headerActions,
 }: ResourceSlideOverProps) {
   const [activeTab, setActiveTab] = useState(tabs[0]?.key || "");
 

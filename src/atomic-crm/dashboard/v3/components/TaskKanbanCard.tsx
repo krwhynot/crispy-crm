@@ -28,6 +28,8 @@ import {
   Presentation,
   FileSignature,
   GripVertical,
+  Calendar,
+  CalendarDays,
 } from "lucide-react";
 import type { TaskItem } from "../types";
 import { showFollowUpToast } from "../utils/showFollowUpToast";
@@ -37,6 +39,7 @@ interface TaskKanbanCardProps {
   isDragOverlay?: boolean;
   onComplete: (taskId: number) => Promise<void>;
   onSnooze: (taskId: number) => Promise<void>;
+  onPostpone: (taskId: number, days: number) => Promise<void>;
   onDelete: (taskId: number) => Promise<void>;
   onView: (taskId: number) => void;
 }

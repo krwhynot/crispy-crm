@@ -1,20 +1,12 @@
 import { CreateBase, Form, useGetIdentity } from "ra-core";
-import { useFormState } from "react-hook-form";
 import { useLocation } from "react-router-dom";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { TextInput } from "@/components/admin/text-input";
-import { SelectInput } from "@/components/admin/select-input";
-import { ReferenceInput } from "@/components/admin/reference-input";
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import {
   FormProgressProvider,
   FormProgressBar,
-  FormFieldWrapper,
 } from "@/components/admin/form";
-import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import { CreateFormFooter } from "@/atomic-crm/components";
-import { useFormOptions } from "../root/ConfigurationContext";
-import { contactOptionText } from "../contacts/ContactOption";
+import { TaskInputs } from "./TaskInputs";
 import { getTaskDefaultValues, taskCreateSchema } from "../validation/task";
 
 // Map URL param values to task type enum values
@@ -34,6 +26,7 @@ const URL_TYPE_MAP: Record<string, string> = {
  * Full-page create form following unified design system:
  * - bg-muted page background
  * - Centered card with create-form-card styling
+ * - Tabbed form layout (General/Details) via TaskInputs
  * - Sticky footer with Cancel, Save & Close, Save & Add Another
  * - Dirty state confirmation on cancel
  *
@@ -41,13 +34,15 @@ const URL_TYPE_MAP: Record<string, string> = {
  */
 export default function TaskCreate() {
   const { data: identity } = useGetIdentity();
-  const { taskTypes } = useFormOptions();
   const location = useLocation();
 
   // Read URL params for pre-fill (follow-up task creation flow)
   const searchParams = new URLSearchParams(location.search);
   const urlTitle = searchParams.get("title");
   const urlType = searchParams.get("type");
+  const urlContactId = searchParams.get("contact_id");
+  const urlOpportunityId = searchParams.get("opportunity_id");
+  const urlOrganizationId = searchParams.get("organization_id");
 
   const defaultValues = {
     ...getTaskDefaultValues(),
@@ -55,6 +50,9 @@ export default function TaskCreate() {
     // URL params override defaults
     ...(urlTitle && { title: urlTitle }),
     ...(urlType && { type: URL_TYPE_MAP[urlType.toLowerCase()] || urlType }),
+    ...(urlContactId && { contact_id: Number(urlContactId) }),
+    ...(urlOpportunityId && { opportunity_id: Number(urlOpportunityId) }),
+    ...(urlOrganizationId && { organization_id: Number(urlOrganizationId) }),
   };
 
   return (
@@ -64,7 +62,12 @@ export default function TaskCreate() {
           <FormProgressProvider initialProgress={10}>
             <FormProgressBar className="mb-6" />
             <Form defaultValues={defaultValues} mode="onBlur" resolver={zodResolver(taskCreateSchema)}>
-              <TaskFormContent taskTypes={taskTypes} />
+              <TaskInputs />
+              <CreateFormFooter
+                resourceName="task"
+                redirectPath="/tasks"
+                tutorialAttribute="task-save-btn"
+              />
             </Form>
           </FormProgressProvider>
         </div>
@@ -72,105 +75,4 @@ export default function TaskCreate() {
     </CreateBase>
   );
 }
-
-const TaskFormContent = ({
-  taskTypes,
-}: {
-  taskTypes: string[];
-}) => {
-  const { errors } = useFormState();
-
-  return (
-    <>
-      <FormErrorSummary errors={errors} />
-      <div className="space-y-6">
-        <div data-tutorial="task-title">
-          <FormFieldWrapper name="title" isRequired>
-            <TextInput
-              source="title"
-              label="Task Title"
-              isRequired
-              helperText="What needs to be done?"
-            />
-          </FormFieldWrapper>
-        </div>
-
-        <FormFieldWrapper name="description">
-          <TextInput
-            source="description"
-            label="Description"
-            multiline
-            rows={2}
-            helperText="Optional details"
-          />
-        </FormFieldWrapper>
-
-        <div className="grid grid-cols-2 gap-4">
-          <div data-tutorial="task-due-date">
-            <FormFieldWrapper name="due_date" isRequired>
-              <TextInput
-                source="due_date"
-                label="Due Date"
-                type="date"
-                isRequired
-                helperText="When is this due?"
-              />
-            </FormFieldWrapper>
-          </div>
-
-          <FormFieldWrapper name="type">
-            <SelectInput
-              source="type"
-              label="Type"
-              choices={taskTypes.map((type) => ({ id: type, name: type }))}
-              helperText="Category of task"
-            />
-          </FormFieldWrapper>
-        </div>
-
-        <div className="grid grid-cols-2 gap-4">
-          <FormFieldWrapper name="priority">
-            <SelectInput
-              source="priority"
-              label="Priority"
-              choices={[
-                { id: "low", name: "Low" },
-                { id: "medium", name: "Medium" },
-                { id: "high", name: "High" },
-                { id: "critical", name: "Critical" },
-              ]}
-              helperText="How urgent?"
-            />
-          </FormFieldWrapper>
-
-          <FormFieldWrapper name="opportunity_id">
-            <ReferenceInput source="opportunity_id" reference="opportunities">
-              <AutocompleteInput
-                label="Opportunity"
-                optionText="title"
-                helperText="Link to opportunity (optional)"
-              />
-            </ReferenceInput>
-          </FormFieldWrapper>
-        </div>
-
-        <FormFieldWrapper name="contact_id">
-          <ReferenceInput source="contact_id" reference="contacts_summary">
-            <AutocompleteInput
-              label="Contact"
-              optionText={contactOptionText}
-              helperText="Link to contact (optional)"
-            />
-          </ReferenceInput>
-        </FormFieldWrapper>
-      </div>
-
-      <CreateFormFooter
-        resourceName="task"
-        redirectPath="/tasks"
-        tutorialAttribute="task-save-btn"
-      />
-    </>
-  );
-};
 
