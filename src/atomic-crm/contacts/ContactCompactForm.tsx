@@ -180,6 +180,7 @@ export const ContactCompactForm = () => {
                   optionText="id"
                   choices={personalInfoTypes}
                   className="w-24 min-w-24"
+                  defaultValue="work"
                 />
               </SimpleFormIterator>
             </ArrayInput>
