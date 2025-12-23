@@ -10,8 +10,9 @@
  * 3. Contacts & Products - relationships
  * 4. Additional Details - classification, notes
  */
+import { useMemo } from "react";
 import { CreateBase, Form, useGetIdentity, useNotify, useRedirect, useCreate } from "ra-core";
-import { useFormState, FormProvider, useForm } from "react-hook-form";
+import { useFormState } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { CancelButton } from "@/components/admin/cancel-button";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
