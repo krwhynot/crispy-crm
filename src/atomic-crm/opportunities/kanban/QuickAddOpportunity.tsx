@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useCreate, useNotify, useRefresh, useGetIdentity, useGetList } from "react-admin";
-import { Loader2 } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import { quickCreateOpportunitySchema } from "../../validation/opportunities";
 import type { OpportunityStageValue, Organization, Opportunity } from "../../types";
 
@@ -88,6 +88,15 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
   // Format stage for display
   const stageLabel = stage.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
 
+  // ESC key handler for modal dismissal
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) setIsOpen(false);
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen]);
+
   return (
     <>
       <button
@@ -104,8 +113,17 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
           aria-modal="true"
           aria-labelledby="quick-add-opportunity-title"
           className="fixed inset-0 bg-background/80 flex items-center justify-center z-50 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-150"
+          onClick={(e) => e.target === e.currentTarget && setIsOpen(false)}
         >
-          <div className="bg-card rounded-lg shadow-xl p-6 w-full max-w-md motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-200">
+          <div className="bg-card rounded-lg shadow-xl p-6 w-full max-w-md motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-200 relative">
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="absolute top-4 right-4 h-11 w-11 rounded-md hover:bg-accent active:bg-accent/80 transition-colors flex items-center justify-center focus-visible:ring-2 focus-visible:ring-ring"
+              aria-label="Close dialog"
+            >
+              <X className="h-5 w-5 text-foreground" />
+            </button>
             <h2 id="quick-add-opportunity-title" className="text-lg font-semibold mb-4">
               Create Opportunity
             </h2>
@@ -170,14 +188,14 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
                     setIsOpen(false);
                     setName("");
                   }}
-                  className="px-4 py-2 text-sm border border-border rounded hover:bg-accent active:bg-accent/80 transition-colors motion-safe:active:scale-[0.98]"
+                  className="px-4 h-11 text-sm border border-border rounded hover:bg-accent active:bg-accent/80 transition-colors motion-safe:active:scale-[0.98]"
                   disabled={isLoading}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 active:bg-primary/80 transition-colors motion-safe:active:scale-[0.98] disabled:opacity-50 inline-flex items-center gap-2"
+                  className="px-4 h-11 text-sm bg-primary text-primary-foreground rounded hover:bg-primary/90 active:bg-primary/80 transition-colors motion-safe:active:scale-[0.98] disabled:opacity-50 inline-flex items-center gap-2"
                   disabled={isLoading}
                 >
                   {isLoading ? (
