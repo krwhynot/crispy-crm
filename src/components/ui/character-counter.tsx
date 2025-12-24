@@ -18,7 +18,7 @@ export function CharacterCounter({ current, max, className }: CharacterCounterPr
         isAtLimit
           ? "text-destructive font-medium"
           : isNearLimit
-            ? "text-amber-600 dark:text-amber-500"
+            ? "text-warning"
             : "text-muted-foreground",
         className
       )}

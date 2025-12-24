@@ -161,7 +161,7 @@ export function CheckboxColumnFilter({
               variant="ghost"
               size="sm"
               onClick={handleClearAll}
-              className="h-7 px-2 text-xs text-muted-foreground hover:text-foreground"
+              className="h-11 px-3 text-sm text-muted-foreground hover:text-foreground"
             >
               <X className="mr-1 h-3 w-3" />
               Clear
@@ -207,7 +207,7 @@ export function CheckboxColumnFilter({
             size="sm"
             onClick={handleSelectAll}
             disabled={selectedValues.length === choices.length}
-            className="h-8 px-2 text-xs text-muted-foreground hover:text-foreground"
+            className="h-11 px-3 text-sm text-muted-foreground hover:text-foreground"
           >
             Select All
           </Button>
