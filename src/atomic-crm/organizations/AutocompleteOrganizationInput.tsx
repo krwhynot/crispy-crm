@@ -38,11 +38,13 @@ export const AutocompleteOrganizationInput = ({
   return (
     <>
       <AutocompleteInput
+        source={source}
         optionText="name"
         helperText={helperText}
         onCreate={handleCreateOrganization}
         createItemLabel="Create %{item}"
         label={label}
+        filterToQuery={(searchText) => ({ q: searchText })}
       />
       {showQuickCreate && (
         <QuickCreatePopover
