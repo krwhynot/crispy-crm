@@ -142,8 +142,19 @@ export const CloseOpportunityModal = ({
     onOpenChange(false);
   }, [onOpenChange]);
 
+  // Prevent dialog close during submission (P2-18 accessibility fix)
+  const handleOpenChange = useCallback(
+    (newOpen: boolean) => {
+      // Allow opening, but prevent closing while submitting
+      if (newOpen || !isSubmitting) {
+        onOpenChange(newOpen);
+      }
+    },
+    [onOpenChange, isSubmitting]
+  );
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
         className="w-full max-w-md sm:w-[calc(100%-2rem)]"
         aria-describedby="close-opportunity-description"
