@@ -130,7 +130,7 @@ const NavigationTab = ({
   <Link
     to={to}
     data-tutorial={dataTutorial}
-    className={`px-1.5 lg:px-6 py-3 text-xs md:text-sm font-medium transition-colors border-b-2 ${
+    className={`px-1.5 lg:px-6 py-3 min-h-11 flex items-center text-xs md:text-sm font-medium transition-colors border-b-2 outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ${
       isActive
         ? "text-secondary-foreground border-secondary-foreground"
         : "text-secondary-foreground border-transparent hover:text-secondary-foreground"

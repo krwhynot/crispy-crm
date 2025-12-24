@@ -116,7 +116,7 @@ export const AddTask = ({
         mutationOptions={{ onSuccess: handleSuccess }}
       >
         <Dialog open={open} onOpenChange={() => setOpen(false)}>
-          <DialogContent className="lg:max-w-xl overflow-y-auto max-h-9/10 top-1/20 translate-y-0">
+          <DialogContent className="lg:max-w-xl max-h-[90vh] overflow-y-auto">
             <Form className="flex flex-col gap-4">
               <DialogHeader>
                 <DialogTitle>

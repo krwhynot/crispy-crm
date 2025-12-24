@@ -37,13 +37,21 @@ export function ColumnCustomizationMenu({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isOpen]);
 
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) setIsOpen(false);
+    };
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
+  }, [isOpen]);
+
   return (
     <div className="relative" ref={menuRef}>
       <button
         type="button"
         aria-label="Customize columns"
         onClick={() => setIsOpen(!isOpen)}
-        className="h-8 w-8 flex items-center justify-center text-muted-foreground hover:text-foreground bg-card/80 backdrop-blur-sm border border-border rounded-md hover:bg-accent transition-colors shadow-sm"
+        className="h-11 w-11 flex items-center justify-center text-muted-foreground hover:text-foreground bg-card/80 backdrop-blur-sm border border-border rounded-md hover:bg-accent transition-colors shadow-sm"
       >
         <Settings2 className="w-4 h-4" />
       </button>
