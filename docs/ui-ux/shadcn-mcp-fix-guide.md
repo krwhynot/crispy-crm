@@ -53,7 +53,7 @@ Show me shadcn dialog or popover patterns that include proper ESC key
 dismissal. I have a custom modal that needs keyboard navigation support.
 ```
 
-- [ ] Fixed
+- [x] Fixed ✅ (Verified 2025-12-24: Lines 92-98 have useEffect ESC handler)
 
 ---
 
@@ -71,7 +71,7 @@ Show me the shadcn dialog component with DialogClose button.
 I need the correct close button implementation with 44px touch target.
 ```
 
-- [ ] Fixed
+- [x] Fixed ✅ (Verified 2025-12-24: Lines 119-126 have X button with `h-11 w-11`)
 
 ---
 
@@ -89,7 +89,7 @@ Show me shadcn dialog overlay implementation. I need the click-outside
 dismissal pattern that Radix Dialog uses.
 ```
 
-- [ ] Fixed
+- [x] Fixed ✅ (Verified 2025-12-24: Line 116 has backdrop onClick handler)
 
 ---
 
@@ -108,7 +108,7 @@ Show me the shadcn popover component implementation. I need to refactor
 a custom portal to use proper Radix Popover with focus management.
 ```
 
-- [ ] Fixed
+- [x] Fixed ✅ (Verified 2025-12-24: Uses Radix `<Popover>` components at lines 67-88)
 
 ---
 
@@ -809,11 +809,11 @@ color classes should I use for text on colored backgrounds?
 ### Summary
 | Priority | Total | Fixed | Remaining |
 |----------|-------|-------|-----------|
-| P0 Critical | 5 | 0 | 5 |
+| P0 Critical | 5 | **5** | **0** ✅ |
 | P1 High | 17 | 0 | 17 |
 | P2 Medium | 23 | 0 | 23 |
 | P3 Low | 15 | 0 | 15 |
-| **TOTAL** | **60** | **0** | **60** |
+| **TOTAL** | **60** | **5** | **55** |
 
 ### Score Projection
 | Milestone | Expected Score |
@@ -830,14 +830,14 @@ color classes should I use for text on colored backgrounds?
 
 Run these 8 fixes in one session:
 
-1. [ ] ColumnCustomizationMenu 32px → `h-11 w-11`
+1. [x] ColumnCustomizationMenu 32px → `h-11 w-11` ✅ (Already fixed)
 2. [ ] Header NavigationTab → add `min-h-11`
 3. [ ] contextMenu items → add `min-h-11`
 4. [ ] Sidebar sm variant → change `h-7` to `min-h-11`
 5. [ ] theme/locales `modal={false}` → remove prop
 6. [ ] ContactList truncation → add `truncate` class
 7. [ ] AddTask invalid Tailwind → change `max-h-9/10` to `max-h-[90vh]`
-8. [ ] QuickAddOpportunity ESC → add useEffect ESC listener
+8. [x] QuickAddOpportunity ESC → add useEffect ESC listener ✅ (Already fixed)
 
 ---
 
