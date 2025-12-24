@@ -62,7 +62,7 @@ export function OpportunityCreateFormTutorial() {
       smoothScroll: true,
       allowClose: true,
       allowKeyboardControl: true,
-      overlayColor: "hsl(var(--foreground) / 0.75)",
+      overlayColor: "hsl(var(--overlay))",
       popoverClass: "tutorial-popover",
       showButtons: ["next", "previous", "close"],
       nextBtnText: "Next",

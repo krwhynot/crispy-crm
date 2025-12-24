@@ -6,6 +6,7 @@ function Input({ className, type, ...props }: React.ComponentProps<"input">) {
   return (
     <input
       type={type}
+      dir="auto"
       data-slot="input"
       className={cn(
         // Base styles with refined transitions

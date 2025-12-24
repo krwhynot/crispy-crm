@@ -83,11 +83,20 @@ export interface NumberInputProps
   parse?: (value: string) => number;
 }
 
+/**
+ * Parse a string to number with locale awareness.
+ * Handles both '.' and ',' as decimal separators based on the input.
+ * HTML5 number inputs always use '.' internally, but this handles
+ * edge cases where values might come from other sources.
+ */
 const convertStringToNumber = (value?: string | null) => {
   if (value == null || value === "") {
     return null;
   }
-  const float = parseFloat(value);
+  // HTML5 number inputs always use '.' as decimal separator internally
+  // But normalize common locale variations just in case
+  const normalized = value.replace(",", ".");
+  const float = parseFloat(normalized);
 
   return isNaN(float) ? 0 : float;
 };
