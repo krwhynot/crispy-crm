@@ -124,7 +124,7 @@ export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetails
                 <SingleFieldList className="flex-col gap-2">
                   <div className="flex items-center gap-2">
                     <Mail className="size-4 text-muted-foreground" />
-                    <EmailField source="email" />
+                    <EmailField source="value" />
                     <TextField source="type" className="text-xs text-muted-foreground" />
                   </div>
                 </SingleFieldList>
@@ -137,7 +137,7 @@ export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetails
                 <SingleFieldList className="flex-col gap-2">
                   <div className="flex items-center gap-2">
                     <Phone className="size-4 text-muted-foreground" />
-                    <TextField source="number" />
+                    <TextField source="value" />
                     <TextField source="type" className="text-xs text-muted-foreground" />
                   </div>
                 </SingleFieldList>

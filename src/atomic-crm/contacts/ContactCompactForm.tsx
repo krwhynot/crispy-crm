@@ -119,12 +119,12 @@ export const ContactCompactForm = () => {
       <FormSectionWithProgress
         id="contact-info-section"
         title="Contact Info"
-        requiredFields={[]}
+        requiredFields={["email"]}
       >
         {/* Email - full width row */}
         <div data-tutorial="contact-email">
-          <FormFieldWrapper name="email">
-            <ArrayInput source="email" label="Email addresses" helperText={false}>
+          <FormFieldWrapper name="email" isRequired>
+            <ArrayInput source="email" label="Email addresses *" helperText="At least one email required">
               <SimpleFormIterator
                 inline
                 disableReordering
