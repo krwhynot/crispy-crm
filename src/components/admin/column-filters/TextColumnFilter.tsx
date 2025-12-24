@@ -156,7 +156,7 @@ export function TextColumnFilter({
           size="icon"
           onClick={handleClear}
           className={cn(
-            "absolute right-1 h-8 w-8",
+            "absolute right-1 h-11 w-11",
             "text-muted-foreground hover:text-foreground",
             "focus-visible:ring-1 focus-visible:ring-ring"
           )}
