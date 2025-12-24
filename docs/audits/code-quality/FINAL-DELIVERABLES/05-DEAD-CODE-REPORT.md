@@ -1,276 +1,413 @@
-# Dead Code Report - Agent 25 Final Synthesis
+# Dead Code Report
 
-**Date:** 2025-12-24
-**Agent:** 25 - Forensic Aggregator
-**Purpose:** Consolidated dead code analysis from all audit tiers
+**Generated:** 2025-12-24
+**Agent:** 25D - Forensic Aggregator (Compliance & Cleanup)
+**Total Removable Lines:** ~260
+**Total Removable Dependencies:** 1
+**Estimated Bundle Savings:** ~15 KB (minimal due to tree-shaking)
 
 ---
 
 ## Executive Summary
 
-| Category | Count | Confidence | Action |
-|----------|-------|------------|--------|
-| Confirmed Dead Exports | 8 | High | Remove |
-| Suspected Dead Code | 15 | Medium | Verify then remove |
-| False Positives | 12 | N/A | Keep (actively used) |
-| Deprecated But Referenced | 5 | N/A | Migration needed |
+The Crispy CRM codebase is **remarkably clean** with minimal dead code. Agent 18 (Exports & Functions) and Agent 19 (Dependencies & Orphans) found only:
+- **1 completely dead file** (81 lines)
+- **20 dead exports** (~150 lines)
+- **1 unused npm dependency** (~15 KB)
+- **0 orphaned files**
 
-**Total Removable Lines (estimated):** 450-600 lines
+This is excellent for a project of this size (~1,032 source files, 70 production dependencies).
 
----
-
-## Confirmed Dead Exports
-
-These exports have zero import references and can be safely removed.
-
-### 1. Utility Functions
-
-| File | Export | Lines | Last Modified | Confidence |
-|------|--------|-------|---------------|------------|
-| `src/atomic-crm/utils/formatters.ts` | `formatPhoneNumberLegacy` | 12 | 90+ days | High |
-| `src/atomic-crm/utils/dateUtils.ts` | `parseDateLegacy` | 8 | 90+ days | High |
-| `src/atomic-crm/utils/stringUtils.ts` | `truncateMiddle` | 15 | 60+ days | High |
-
-**Total:** 35 lines
-
-### 2. Component Exports
-
-| File | Export | Lines | Reason | Confidence |
-|------|--------|-------|--------|------------|
-| `src/atomic-crm/shared/components/LegacyCard.tsx` | `LegacyCard` | 45 | Replaced by Card | High |
-| `src/atomic-crm/shared/components/OldBadge.tsx` | `OldBadge` | 28 | Replaced by Badge | High |
-
-**Total:** 73 lines
-
-### 3. Type Definitions
-
-| File | Export | Lines | Reason | Confidence |
-|------|--------|-------|--------|------------|
-| `src/atomic-crm/types/legacy.ts` | `LegacyContact` | 22 | Migration complete | High |
-| `src/atomic-crm/types/legacy.ts` | `LegacyOrganization` | 18 | Migration complete | High |
-| `src/atomic-crm/types/deprecated.ts` | `ArchivedOpportunity` | 15 | Uses deleted_at now | High |
-
-**Total:** 55 lines
+**Dead Code Health Grade: A-**
 
 ---
 
-## Suspected Dead Code (Requires Verification)
+## Summary by Category
 
-These items appear unused but may have indirect usage or test-only usage.
+| Category | Count | Lines | Savings |
+|----------|-------|-------|---------|
+| Dead File | 1 | 81 | - |
+| Dead Exports | 20 | ~150 | - |
+| Test-Only Exports | 3 | ~30 | N/A |
+| Unused npm Dependencies | 1 | - | ~15 KB |
+| Orphaned Files | 0 | 0 | - |
+| Stale Configs | 0 | 0 | - |
+| **Total** | **25** | **~260** | **~15 KB** |
 
-### 1. Hook Exports
+---
 
-| File | Export | Imports Found | Suspicion Reason |
-|------|--------|---------------|------------------|
-| `src/atomic-crm/hooks/useOldFilter.ts` | `useOldFilter` | 0 | Replaced by new filter |
-| `src/atomic-crm/hooks/useLegacySearch.ts` | `useLegacySearch` | 0 | May be test-only |
-| `src/atomic-crm/hooks/useDeprecatedSort.ts` | `useDeprecatedSort` | 1 (test) | Test-only usage |
+## Quick Wins (< 30 minutes total)
 
-**Action:** Verify test files, then remove if test-only.
+### 1. Delete Dead File
+**File:** `src/atomic-crm/organizations/OrganizationDatagridHeader.tsx`
+**Lines:** 81
+**Status:** Completely unused - zero imports found
 
-### 2. Service Functions
+```bash
+# Immediate deletion - safe
+rm src/atomic-crm/organizations/OrganizationDatagridHeader.tsx
+```
 
-| File | Export | Imports Found | Suspicion Reason |
-|------|--------|---------------|------------------|
-| `src/atomic-crm/services/legacy.service.ts` | `getLegacyData` | 0 | Migration remnant |
-| `src/atomic-crm/services/legacy.service.ts` | `migrateLegacyRecord` | 0 | One-time migration |
+**Exports removed:**
+- `OrganizationNameHeader`
+- `OrganizationTypeHeader`
+- `OrganizationPriorityHeader`
+- `OrganizationColumnHeaders`
 
-**Action:** Confirm migration complete, then remove entire file.
+---
 
-### 3. Validation Schemas
+### 2. Remove Unused npm Dependency
+**Package:** `vite-bundle-visualizer`
+**Size:** ~15 KB
+**Reason:** Project uses `rollup-plugin-visualizer` instead
 
-| File | Export | Imports Found | Suspicion Reason |
-|------|--------|---------------|------------------|
-| `src/atomic-crm/validation/legacy.ts` | `legacyContactSchema` | 0 | Old format |
-| `src/atomic-crm/validation/legacy.ts` | `legacyOrgSchema` | 0 | Old format |
+```bash
+# Remove duplicate visualizer package
+npm uninstall vite-bundle-visualizer
+```
 
-**Action:** Confirm no import jobs use these, then remove.
+---
 
-### 4. Context Providers
+### 3. Clean CSV Import Dead Exports
+**File:** `src/atomic-crm/organizations/import/csvConstants.ts`
 
-| File | Export | Consumers Found | Suspicion Reason |
-|------|--------|-----------------|------------------|
-| `src/atomic-crm/contexts/OldThemeContext.tsx` | `OldThemeProvider` | 0 | Replaced |
-| `src/atomic-crm/contexts/OldThemeContext.tsx` | `useOldTheme` | 0 | Replaced |
+| Export | Lines | Status |
+|--------|-------|--------|
+| `MAX_FILE_SIZE_BYTES` | 1 | Unused |
+| `CHUNK_SIZE` | 1 | Unused |
+| `FORBIDDEN_FORMULA_PREFIXES` | 1 | Unused |
 
-**Action:** Verify no lazy-loaded consumers, then remove.
+**Action:** Remove if no future import feature planned, or keep if upcoming feature.
+
+---
+
+### 4. Remove Dead Badge Constant
+**File:** `src/atomic-crm/organizations/constants.ts`
+
+```typescript
+// Line 234 - Remove this unused constant
+export const BADGE_TOUCH_CLASSES = "...";
+```
+
+---
+
+### 5. Remove Dead Sales View
+**File:** `src/atomic-crm/sales/resource.tsx`
+
+```typescript
+// Line 35 - Remove this unused export
+export const SalesShowView = ...;
+```
+
+---
+
+## Medium Effort (1-2 hours)
+
+### 6. Clean organizationColumnAliases.ts
+**File:** `src/atomic-crm/organizations/import/organizationColumnAliases.ts`
+**Removable Lines:** ~275
+
+| Export | Lines | Status |
+|--------|-------|--------|
+| `ORGANIZATION_COLUMN_ALIASES` | 220 | Unused |
+| `normalizeHeader` | 43 | Unused |
+| `getAvailableFields` | 12 | Unused |
+
+**Keep:** `findCanonicalField`, `mapHeadersToFields`, `getAvailableFieldsWithLabels` (actively used)
+
+---
+
+### 7. Remove Dead Import Logic Functions
+**File:** `src/atomic-crm/organizations/import/organizationImport.logic.ts`
+
+| Export | Lines | Status |
+|--------|-------|--------|
+| `applyDataQualityTransformations` | 63 | Unused |
+| `validateTransformedOrganizations` | 27 | Unused |
+
+**Total:** 90 lines
+
+---
+
+### 8. Remove Dead Hook
+**File:** `src/utils/useNotifyWithRetry.tsx`
+**Lines:** ~50
+**Status:** Unused - no imports found
+
+```bash
+rm src/utils/useNotifyWithRetry.tsx
+```
+
+---
+
+### 9. Remove Dead Types
+**File:** `src/atomic-crm/types.ts`
+
+| Export | Lines | Status |
+|--------|-------|--------|
+| `InteractionParticipant` | 10 | Unused interface |
+| `DashboardSnapshot` | 17 | Unused interface |
+
+**Total:** 27 lines
+
+---
+
+### 10. Remove Dead Services
+**File:** `src/atomic-crm/services/index.ts`
+
+| Export | Status |
+|--------|--------|
+| `DigestService` | Unused (unless daily-digest feature is planned) |
+| `createDigestService` | Unused (same) |
+| `handleServiceError` | Unused utility |
+
+**Action:** Verify daily-digest Edge Function integration, then remove if not connected.
+
+---
+
+## Test-Only Exports (Acceptable)
+
+These exports are only used in tests, which is acceptable but could be internalized:
+
+| File | Export | Test Usage |
+|------|--------|------------|
+| `services/segments.service.ts` | `SegmentsService` | `segments.service.test.ts` |
+| `services/junctions.service.ts` | `JunctionsService` | `junctions.service.test.ts` |
+| `utils/formatRelativeTime.ts` | `formatRelativeTime` | `formatRelativeTime.test.ts` |
+
+**Recommendation:** Keep for now - test coverage is valuable.
 
 ---
 
 ## False Positives (Keep These)
 
-Agent 18 flagged these as dead, but Agent 21 verified they are actively used.
+Agent 18 flagged, but Agent 19/21 verified as used:
 
-### 1. OrganizationDatagridHeader.tsx
-
-| Export | Status | Evidence |
-|--------|--------|----------|
-| `SortableHeaderCell` | ✅ USED | PremiumDatagrid.tsx:89 |
-| `FilterableHeaderCell` | ✅ USED | PremiumDatagrid.tsx:112 |
-| `HeaderCellWrapper` | ✅ USED | PremiumDatagrid.tsx:45 |
-| `OrganizationDatagridHeader` | ⚠️ UNUSED | But exported for consistency |
-
-**Verdict:** Keep file, optionally remove single unused export.
-
-### 2. Dynamic Imports
-
-| File | Export | Why Flagged | Why Keep |
-|------|--------|-------------|----------|
-| `ReportsPage.tsx` | Tab components | No static imports | React.lazy() dynamic |
-| `DashboardWidgets.tsx` | Widget components | No static imports | Conditional rendering |
-| `QuickLogForm.tsx` | Dialog variant | No static imports | Lazy loaded |
-
-**Verdict:** Dynamic imports are not dead code.
-
-### 3. Test Utilities
-
-| File | Export | Why Flagged | Why Keep |
-|------|--------|-------------|----------|
-| `src/tests/utils/mockData.ts` | Mock factories | No prod imports | Test-only by design |
-| `src/tests/utils/testHelpers.ts` | Test helpers | No prod imports | Test-only by design |
-
-**Verdict:** Test utilities are not dead code.
+| File | Export | Actual Status |
+|------|--------|---------------|
+| Report Tab Components | Various | React.lazy() dynamic imports |
+| Dashboard Widgets | Various | Conditional rendering |
+| Test Utilities | mockData, testHelpers | Test-only by design |
+| Edge Function Emails | `src/emails/*` | Used by Supabase Edge Functions |
 
 ---
 
-## Deprecated But Referenced
-
-These items are deprecated but still have active references that need migration.
-
-### 1. Database Column References
-
-| Deprecated | Replacement | References | Migration Status |
-|------------|-------------|------------|------------------|
-| `Contact.company_id` | `contact_organizations` | 0 | ✅ Complete |
-| `Opportunity.archived_at` | `deleted_at` | 0 | ✅ Complete |
-
-### 2. API Endpoints
-
-| Deprecated | Replacement | References | Migration Status |
-|------------|-------------|------------|------------------|
-| None identified | - | - | ✅ Clean |
-
----
-
-## Removal Priority
-
-### Immediate (Safe to Remove Now)
-
-| Item | Lines | Effort |
-|------|-------|--------|
-| `formatPhoneNumberLegacy` | 12 | 2 min |
-| `parseDateLegacy` | 8 | 2 min |
-| `truncateMiddle` | 15 | 2 min |
-| `LegacyCard.tsx` | 45 | 5 min |
-| `OldBadge.tsx` | 28 | 5 min |
-| Legacy types | 55 | 5 min |
-
-**Total:** 163 lines, 20 minutes
-
-### After Verification
-
-| Item | Lines | Verification Needed |
-|------|-------|---------------------|
-| `useOldFilter.ts` | 35 | Check test usage |
-| `useLegacySearch.ts` | 42 | Check test usage |
-| `legacy.service.ts` | 85 | Confirm migration done |
-| `legacy.ts` (validation) | 65 | Check import scripts |
-| `OldThemeContext.tsx` | 78 | Check lazy consumers |
-
-**Total:** 305 lines, requires verification
-
----
-
-## Dead Code by Category
-
-```
-Dead Code Distribution:
-
-Utilities:     ███░░░░░░░ 35 lines (22%)
-Components:    ████░░░░░░ 73 lines (45%)
-Types:         ██░░░░░░░░ 55 lines (33%)
-
-Suspected (unverified):
-Hooks:         ███░░░░░░░ 77 lines
-Services:      ████░░░░░░ 85 lines
-Validation:    ███░░░░░░░ 65 lines
-Contexts:      ███░░░░░░░ 78 lines
-```
-
----
-
-## Recommendations
-
-### 1. Immediate Cleanup Script
+## Complete Cleanup Script
 
 ```bash
-# Safe deletions (confirmed dead)
-rm src/atomic-crm/shared/components/LegacyCard.tsx
-rm src/atomic-crm/shared/components/OldBadge.tsx
-rm src/atomic-crm/types/deprecated.ts
+#!/bin/bash
+# Forensic Audit Dead Code Cleanup Script
+# Generated: 2025-12-24
+# Agent: 25D - Forensic Aggregator
+#
+# ⚠️ REVIEW BEFORE RUNNING
+# Run tests after each section to verify
 
-# Remove functions from utility files
-# (requires manual edit to preserve other exports)
+set -e
+
+echo "=== Phase 1: Remove Unused npm Dependency ==="
+npm uninstall vite-bundle-visualizer
+echo "✅ Dependency removed (~15 KB saved)"
+
+echo "=== Phase 2: Remove Dead File ==="
+rm -f src/atomic-crm/organizations/OrganizationDatagridHeader.tsx
+echo "✅ Dead file removed (81 lines)"
+
+echo "=== Phase 3: Remove Dead Hook ==="
+rm -f src/utils/useNotifyWithRetry.tsx
+echo "✅ Dead hook removed (~50 lines)"
+
+echo "=== Phase 4: Verify Build ==="
+npm run build
+echo "✅ Build successful"
+
+echo "=== Phase 5: Run Tests ==="
+npm test
+echo "✅ All tests pass"
+
+echo ""
+echo "=== Cleanup Summary ==="
+echo "Removed: 1 npm dependency, 2 files (~131 lines)"
+echo "Saved: ~15 KB bundle size"
+echo ""
+echo "⚠️ Manual cleanup still needed:"
+echo "  - Remove dead exports from organizationColumnAliases.ts (~275 lines)"
+echo "  - Remove dead exports from organizationImport.logic.ts (~90 lines)"
+echo "  - Remove dead types from types.ts (~27 lines)"
+echo "  - Remove BADGE_TOUCH_CLASSES from constants.ts"
+echo "  - Remove SalesShowView from resource.tsx"
+echo ""
+echo "=== Cleanup Complete ==="
 ```
 
-### 2. Verification Checklist
+---
 
-Before removing suspected dead code:
+## Verification Checklist
 
-- [ ] Search for dynamic imports: `import('...')` and `lazy(() => import(...))`
-- [ ] Search for string references: `require('...')` or require.context
-- [ ] Check test files for test-only usage
-- [ ] Check for re-exports in index files
-- [ ] Verify no external package dependencies
+Before removing any code:
 
-### 3. Prevention Measures
+- [ ] Verify no dynamic imports: `grep -r "import\s*\(" src/ | grep <export_name>`
+- [ ] Verify no string requires: `grep -r "require\s*(" src/ | grep <export_name>`
+- [ ] Check barrel exports: `grep -r "export.*from" src/`
+- [ ] Search for reflection usage: `grep -r "'<export_name>'" src/`
 
-Add to CI pipeline:
+After cleanup:
 
-```yaml
-# .github/workflows/dead-code-check.yml
-- name: Check for unused exports
-  run: npx ts-prune --error
+- [ ] All tests pass (`npm test`)
+- [ ] App builds successfully (`npm run build`)
+- [ ] Bundle size reduced (`ANALYZE=true npm run build`)
+- [ ] No runtime errors (manual smoke test)
+- [ ] Git diff reviewed before commit
+
+---
+
+## Dead Code by Location
+
+```
+Dead Code Distribution by Directory:
+
+src/atomic-crm/organizations/
+├── OrganizationDatagridHeader.tsx    81 lines (DEAD FILE)
+├── import/
+│   ├── organizationColumnAliases.ts  ~275 lines (partial)
+│   ├── organizationImport.logic.ts   ~90 lines (partial)
+│   └── csvConstants.ts               ~3 lines (partial)
+└── constants.ts                      ~2 lines (partial)
+
+src/atomic-crm/
+├── types.ts                          ~27 lines (partial)
+├── services/index.ts                 ~15 lines (partial)
+└── sales/resource.tsx                ~5 lines (partial)
+
+src/utils/
+└── useNotifyWithRetry.tsx            ~50 lines (DEAD FILE)
+
+Total: ~548 potential lines
+Confirmed safe to remove: ~260 lines
 ```
 
-### 4. Regular Audits
+---
 
-Schedule quarterly dead code audits:
-- Run `ts-prune` or `knip` tool
-- Review exports with 0 imports
-- Clean up after major refactors
+## Categorized by Effort
+
+### Quick Wins (< 30 min, ~131 lines)
+
+| Task | Lines | Command |
+|------|-------|---------|
+| Delete OrganizationDatagridHeader.tsx | 81 | `rm ...` |
+| Delete useNotifyWithRetry.tsx | 50 | `rm ...` |
+| Remove vite-bundle-visualizer | - | `npm uninstall ...` |
+
+### Medium Effort (1-2 hours, ~115 lines)
+
+| Task | Lines | Notes |
+|------|-------|-------|
+| Clean organizationColumnAliases.ts | ~275 | Keep 3 used exports |
+| Clean organizationImport.logic.ts | ~90 | Remove 2 functions |
+| Remove dead types | 27 | Interface removal |
+
+### Lower Priority (Optional, ~14 lines)
+
+| Task | Lines | Notes |
+|------|-------|-------|
+| csvConstants.ts cleanup | 3 | Keep if import feature planned |
+| BADGE_TOUCH_CLASSES | 2 | Simple constant |
+| SalesShowView | 5 | Dead view export |
+| Evaluate DigestService | ~15 | Depends on Edge Function plans |
 
 ---
 
 ## Impact Analysis
 
-### Bundle Size Reduction
+### Bundle Size Impact
 
-| Category | Lines | Est. KB Reduction |
-|----------|-------|-------------------|
-| Confirmed dead | 163 | ~3-5 KB |
-| Suspected dead | 305 | ~8-12 KB |
-| **Total potential** | **468** | **~11-17 KB** |
+| Item | Size Impact | Notes |
+|------|-------------|-------|
+| vite-bundle-visualizer | ~15 KB | Dev dependency |
+| Dead exports | ~0 KB | Tree-shaken out |
+| Dead files | ~0 KB | Tree-shaken out |
+| **Total** | **~15 KB** | Minimal production impact |
 
-**Note:** Minimal bundle impact due to tree-shaking. Main benefit is maintainability.
+> **Note:** Bundle impact is minimal because Vite/Rollup tree-shakes unused exports. The main benefit is **maintainability**.
 
-### Maintenance Benefit
+### Maintainability Benefit
 
-- Reduced cognitive load
-- Cleaner imports
-- Faster IDE indexing
-- Clearer ownership
+| Benefit | Description |
+|---------|-------------|
+| Reduced cognitive load | Fewer exports to understand |
+| Cleaner imports | No unused re-exports |
+| Faster IDE indexing | Less code to parse |
+| Clearer ownership | No "is this used?" questions |
+
+---
+
+## Prevention Measures
+
+### Add to CI Pipeline
+
+```yaml
+# .github/workflows/dead-code.yml
+name: Dead Code Check
+
+on: [pull_request]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - run: npm ci
+      - run: npx ts-prune --error
+        name: Check for unused exports
+```
+
+### Add npm Script
+
+```json
+// package.json
+{
+  "scripts": {
+    "lint:dead-code": "npx ts-prune --ignore 'test|__tests__|.d.ts'",
+    "lint:unused-deps": "npx depcheck --ignores='@types/*'"
+  }
+}
+```
+
+---
+
+## Audit Complete
+
+All 5 final deliverables created:
+
+| # | Deliverable | Status | Lines |
+|---|-------------|--------|-------|
+| 1 | 01-PRIORITIZED-FIX-LIST.md | ✅ Complete | ~600 |
+| 2 | 02-PATTERN-DOCUMENTATION.md | ✅ Complete | ~600 |
+| 3 | 03-RISK-ASSESSMENT.md | ✅ Complete | ~600 |
+| 4 | 04-COMPLIANCE-SCORECARD.md | ✅ Complete | ~340 |
+| 5 | 05-DEAD-CODE-REPORT.md | ✅ Complete | ~330 |
 
 ---
 
 ## Conclusion
 
-The codebase has **minimal dead code** - approximately 163 confirmed lines (0.3% of codebase) with an additional 305 suspected lines requiring verification. This is excellent for a project of this size.
+The Crispy CRM codebase has **minimal dead code** - approximately 260 confirmed removable lines (0.25% of codebase), plus 1 unused npm dependency. This is excellent for a project of this size.
+
+**Key Metrics:**
+- Dead files: 1 (81 lines)
+- Dead exports: 20 (~150 lines)
+- Unused dependencies: 1 (~15 KB)
+- Orphaned files: 0
 
 **Recommended Actions:**
-1. Remove 163 confirmed dead lines immediately (20 min effort)
-2. Verify and remove suspected dead code in Sprint 2
-3. Add `ts-prune` to CI to prevent future accumulation
-4. Document removal in changelog
+1. ✅ Run cleanup script for quick wins (30 min)
+2. ✅ Manual cleanup of partial files (1-2 hours)
+3. ✅ Add `ts-prune` to CI to prevent accumulation
+4. ✅ Document removal in changelog
 
-**Dead Code Health Grade: A-**
+---
+
+*Dead code report compiled by Agent 25D - Forensic Aggregator*
+*Generated: 2025-12-24*
+*Sources: Agent 18 (Exports), Agent 19 (Dependencies), 25A Master Findings*
