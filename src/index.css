@@ -558,6 +558,13 @@
 
   --radius: 0.5rem; /* 8px - MFB organic aesthetic */
 
+  /* ========================================
+     SIDEPANE WIDTH SYSTEM
+     ======================================== */
+  --sidepane-width: 440px;
+  --sidepane-width-min: 400px;
+  --sidepane-width-max: 560px;
+
   /* === AESTHETIC POLISH TOKENS === */
 
   /* Button elevation - subtle depth for B2B professional feel */
