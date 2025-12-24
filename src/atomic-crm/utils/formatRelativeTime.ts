@@ -1,12 +1,23 @@
 import { parseDateSafely } from "@/lib/date-utils";
 
-const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto", style: "narrow" });
+/**
+ * Get the user's locale, falling back to 'en' if not available
+ */
+function getUserLocale(): string {
+  if (typeof navigator !== "undefined" && navigator.language) {
+    return navigator.language;
+  }
+  return "en";
+}
 
 /**
  * Format a date as relative time (e.g., "2h ago", "3d ago")
  * Desktop-optimized: compact format suitable for table displays
+ * Uses the user's browser locale for proper i18n support.
  */
 export function formatRelativeTime(date: Date | string | null | undefined): string {
+  const locale = getUserLocale();
+  const rtf = new Intl.RelativeTimeFormat(locale, { numeric: "auto", style: "narrow" });
   if (!date) return "unknown";
 
   let targetDate: Date | null;
@@ -48,10 +59,8 @@ export function formatRelativeTime(date: Date | string | null | undefined): stri
       return rtf.format(-diffDay, "day");
     }
 
-    // Older than 7 days: show abbreviated date (e.g., "Nov 13")
-    const month = targetDate.toLocaleDateString("en-US", { month: "short" });
-    const day = targetDate.getDate();
-    return `${month} ${day}`;
+    // Older than 7 days: show abbreviated date using user's locale
+    return targetDate.toLocaleDateString(locale, { month: "short", day: "numeric" });
   } catch {
     return "unknown";
   }
