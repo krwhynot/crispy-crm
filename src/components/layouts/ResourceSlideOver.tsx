@@ -289,39 +289,30 @@ export function ResourceSlideOver({
               onValueChange={setActiveTab}
               className="flex-1 flex flex-col overflow-hidden"
             >
-              <TabsList className="border-b border-border h-11 rounded-none bg-transparent p-0 w-full justify-start gap-2 px-2">
+              <TabsList className="w-full justify-start rounded-none border-b border-border h-auto p-0 bg-transparent px-6">
                 {tabs.map((tab) => {
                   // Compute count badge value if function provided
                   const count = record && tab.countFromRecord ? tab.countFromRecord(record) : null;
                   const showBadge = count != null && count > 0;
 
                   return (
-                    <Tooltip key={tab.key}>
-                      <TooltipTrigger asChild>
-                        <TabsTrigger
-                          value={tab.key}
-                          className="h-11 min-w-11 px-2 rounded-none data-[state=active]:border-b-2 data-[state=active]:border-primary flex items-center justify-center gap-2 relative"
-                          aria-label={showBadge ? `${tab.label} (${count})` : tab.label}
+                    <TabsTrigger
+                      key={tab.key}
+                      value={tab.key}
+                      className="rounded-none border-b-2 border-transparent data-[state=active]:border-primary data-[state=active]:bg-transparent py-3 px-4 flex items-center gap-2"
+                      aria-label={showBadge ? `${tab.label} (${count})` : tab.label}
+                    >
+                      {tab.icon && <tab.icon className="h-4 w-4" />}
+                      <span className="text-sm font-medium">{tab.label}</span>
+                      {showBadge && (
+                        <Badge
+                          variant="secondary"
+                          className="ml-1 h-5 min-w-[20px] px-1.5 text-xs"
                         >
-                          {tab.icon ? (
-                            <tab.icon className="size-5" />
-                          ) : (
-                            <span className="text-sm font-medium">{tab.label.charAt(0)}</span>
-                          )}
-                          {showBadge && (
-                            <Badge
-                              variant="secondary"
-                              className="h-5 min-w-5 px-1.5 text-xs font-medium"
-                            >
-                              {count > 99 ? "99+" : count}
-                            </Badge>
-                          )}
-                        </TabsTrigger>
-                      </TooltipTrigger>
-                      <TooltipContent side="bottom" sideOffset={4}>
-                        {showBadge ? `${tab.label} (${count})` : tab.label}
-                      </TooltipContent>
-                    </Tooltip>
+                          {count > 99 ? "99+" : count}
+                        </Badge>
+                      )}
+                    </TabsTrigger>
                   );
                 })}
               </TabsList>
@@ -369,7 +360,12 @@ export function ResourceSlideOver({
                 <Button variant="outline" onClick={onModeToggle} className="h-11 px-4">
                   Cancel
                 </Button>
-                <Button type="submit" form="slide-over-edit-form" className="h-11 px-4">
+                <Button
+                  type="submit"
+                  form="slide-over-edit-form"
+                  className="h-11 px-4"
+                  disabled={!isDirty}
+                >
                   Save Changes
                 </Button>
               </SheetFooter>
