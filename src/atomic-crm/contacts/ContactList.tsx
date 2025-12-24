@@ -137,6 +137,7 @@ const ContactListLayout = ({
             label={<ContactNameHeader />}
             sortBy="first_name"
             render={(record: Contact) => formatFullName(record.first_name, record.last_name)}
+            cellClassName="truncate max-w-[200px]"
           />
 
           {/* Column 3: Role - Merged Title + Department (sortable by title) - hidden on tablet */}
