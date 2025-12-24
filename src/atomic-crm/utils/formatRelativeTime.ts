@@ -1,5 +1,7 @@
 import { parseDateSafely } from "@/lib/date-utils";
 
+const rtf = new Intl.RelativeTimeFormat("en", { numeric: "auto", style: "narrow" });
+
 /**
  * Format a date as relative time (e.g., "2h ago", "3d ago")
  * Desktop-optimized: compact format suitable for table displays
@@ -29,21 +31,21 @@ export function formatRelativeTime(date: Date | string | null | undefined): stri
 
     // Within 1 minute (inclusive)
     if (diffSec <= 60) {
-      return "now";
+      return rtf.format(0, "second");
     }
 
     // Within 1 hour: show minutes
     if (diffHour === 0) {
-      return `${diffMin}m ago`;
+      return rtf.format(-diffMin, "minute");
     }
 
     // Within 7 days: show hours or days
     if (diffDay === 0) {
-      return `${diffHour}h ago`;
+      return rtf.format(-diffHour, "hour");
     }
 
     if (diffDay <= 7) {
-      return diffDay === 1 ? "1d ago" : `${diffDay}d ago`;
+      return rtf.format(-diffDay, "day");
     }
 
     // Older than 7 days: show abbreviated date (e.g., "Nov 13")
