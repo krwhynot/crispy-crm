@@ -1,125 +1,129 @@
-# UI/UX Remediation Session Prompts
+# UI/UX Remediation - Parallel Sessions
 
-**Purpose:** Fix all 60 remaining UI/UX audit violations across multiple Claude Code sessions without context rot.
+**Fix all 60 issues by running 4 Claude Code sessions simultaneously.**
 
 ---
 
 ## Quick Start
 
-1. **Restart Claude Code** to activate shadcn MCP server
-2. **Run `/mcp`** to verify `shadcn` is Connected
-3. Copy the prompt from **prompt-1-critical-p0.md** into a new session
-4. Complete that batch, then move to the next prompt
+1. Open **4 terminal windows**
+2. Run `claude` in each
+3. Paste one prompt per session:
+
+| Terminal | Prompt File | Issues |
+|----------|-------------|--------|
+| 1 | [session-a-kanban.md](./session-a-kanban.md) | 15 |
+| 2 | [session-b-navigation.md](./session-b-navigation.md) | 16 |
+| 3 | [session-c-primitives.md](./session-c-primitives.md) | 17 |
+| 4 | [session-d-layouts.md](./session-d-layouts.md) | 12 |
 
 ---
 
-## Prompt Sequence
-
-| Prompt | Priority | Issues | Time Est. | Score Impact |
-|--------|----------|--------|-----------|--------------|
-| [prompt-1-critical-p0.md](./prompt-1-critical-p0.md) | P0 Critical | 5 | 60-75 min | 8.2 → 8.6 |
-| [prompt-2-high-p1.md](./prompt-2-high-p1.md) | P1 High | 17 | 90-120 min | 8.6 → 9.3 |
-| [prompt-3-medium-p2.md](./prompt-3-medium-p2.md) | P2 Medium | 23 | 2-3 hours | 9.3 → 9.7 |
-| [prompt-4-low-p3.md](./prompt-4-low-p3.md) | P3 Low | 15 | 2-3 hours | 9.7 → 10.0 |
-
-**Total:** 60 issues, ~8-10 hours, 8.2 → 10.0 score
-
----
-
-## Why Separate Prompts?
-
-1. **Context Window Management** - Each prompt fits comfortably in Claude's context
-2. **Natural Save Points** - Complete one priority level, take a break
-3. **Progress Tracking** - Clear milestones with score improvements
-4. **Error Isolation** - If something goes wrong, only one batch is affected
-
----
-
-## Prerequisites
-
-### shadcn MCP Server (Required)
-
-Your `~/.mcp.json` should contain:
-```json
-{
-  "mcpServers": {
-    "shadcn": {
-      "command": "npx",
-      "args": ["shadcn@latest", "mcp"]
-    }
-  }
-}
-```
-
-### Fix Guide (Reference)
-All issue details are in: `/docs/ui-ux/shadcn-mcp-fix-guide.md`
-
----
-
-## Session Workflow
+## Parallel Execution Diagram
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│  START NEW SESSION                                          │
-├─────────────────────────────────────────────────────────────┤
-│  1. Copy prompt N into Claude Code                          │
-│  2. Run /mcp to verify shadcn connected                     │
-│  3. Work through each issue/batch                           │
-│  4. Update checkboxes in fix guide                          │
-│  5. Verify success criteria                                 │
-│  6. END SESSION - Move to prompt N+1                        │
-└─────────────────────────────────────────────────────────────┘
+Terminal 1          Terminal 2          Terminal 3          Terminal 4
+────────────        ────────────        ────────────        ────────────
+Session A           Session B           Session C           Session D
+Kanban/Opps         Navigation          UI Primitives       Lists/Layouts
+15 issues           16 issues           17 issues           12 issues
+    │                   │                   │                   │
+    ▼                   ▼                   ▼                   ▼
+QuickAddOpp         Header.tsx          button.constants    ContactList
+ColumnCustom        contextMenu         calendar.tsx        ResourceSlide
+OpportunityCard     sidebar.tsx         dialog.tsx          StandardList
+AddTask.tsx         columns-button      Avatar.tsx          formatRelative
+    │                   │                   │                   │
+    └───────────────────┴───────────────────┴───────────────────┘
+                                │
+                        All 60 fixes merge
+                        without conflicts
 ```
 
 ---
 
-## Verification Commands
+## File Ownership (No Conflicts)
 
-After each session, verify fixes:
+Each session owns exclusive files:
+
+### Session A - Kanban
+```
+src/atomic-crm/opportunities/kanban/*
+src/atomic-crm/opportunities/components/*
+src/atomic-crm/tasks/AddTask.tsx
+src/atomic-crm/dashboard/v3/components/LogActivityFAB.tsx
+src/atomic-crm/products/ProductList.tsx
+```
+
+### Session B - Navigation
+```
+src/atomic-crm/layout/Header.tsx
+src/atomic-crm/utils/contextMenu.tsx
+src/components/ui/sidebar.tsx
+src/components/ui/navigation-menu.tsx
+src/components/ui/breadcrumb.tsx
+src/components/admin/columns-button.tsx
+src/components/admin/theme-mode-toggle.tsx
+src/components/admin/locales-menu-button.tsx
+src/components/admin/user-menu.tsx
+```
+
+### Session C - Primitives
+```
+src/components/ui/button.constants.ts
+src/components/ui/badge.constants.ts
+src/components/ui/calendar.tsx
+src/components/ui/dialog.tsx
+src/components/ui/alert-dialog.tsx
+src/components/ui/sheet.tsx
+src/components/ui/drawer.tsx
+src/components/admin/*-input.tsx
+src/atomic-crm/shared/Avatar.tsx
+src/atomic-crm/shared/Combobox.tsx
+```
+
+### Session D - Layouts
+```
+src/atomic-crm/contacts/*
+src/atomic-crm/organizations/OrganizationList.tsx
+src/components/layouts/*
+src/atomic-crm/dashboard/v3/components/KPI*
+src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx
+src/atomic-crm/utils/formatRelativeTime.ts
+src/stories/*
+src/atomic-crm/shared/TutorialProvider.tsx
+```
+
+---
+
+## Time Estimate
+
+| Mode | Time |
+|------|------|
+| Sequential | 8-10 hours |
+| **4 Parallel Sessions** | **2-3 hours** |
+
+---
+
+## After Completion
+
+When all 4 sessions finish:
 
 ```bash
-# Touch target verification
-grep -r "h-11\|min-h-11\|size-11" src/components/ui/
+# Verify no conflicts
+git status
 
-# Z-index verification (should see no z-[9999])
+# Check touch targets
+grep -r "h-11\|min-h-11" src/
+
+# Check no bad z-index
 grep -r "z-\[" src/ --include="*.tsx"
 
-# Focus ring patterns
-grep -r "focus-visible:ring" src/components/ui/
-
-# Gap violations (should see no gap-1)
-grep -r "gap-1[^0-9]" src/ --include="*.tsx"
+# Update score in audit
+# docs/ui-ux/audits/ui-ux-audit-executive-summary.md
+# Score: 8.2 → 10.0
 ```
 
 ---
 
-## Troubleshooting
-
-### shadcn MCP shows "No tools"
-```bash
-npx clear-npx-cache
-# Then restart Claude Code
-```
-
-### MCP guard blocks calls
-Your `mcp-dependency-guard.sh` will prompt for confirmation - this is expected.
-
-### Score not improving
-Re-read the executive summary at `docs/ui-ux/audits/ui-ux-audit-executive-summary.md` to verify what's been fixed.
-
----
-
-## Files in This Directory
-
-```
-session-prompts/
-├── README.md                  # This file
-├── prompt-1-critical-p0.md    # 5 critical issues
-├── prompt-2-high-p1.md        # 17 high priority
-├── prompt-3-medium-p2.md      # 23 medium priority
-└── prompt-4-low-p3.md         # 15 low priority (polish)
-```
-
----
-
-*Generated 2025-12-24 from UI/UX audit reports*
+*Generated 2025-12-24*
