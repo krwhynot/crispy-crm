@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import { useGetOne } from "react-admin";
 import type { RaRecord } from "react-admin";
 import { PencilIcon, XIcon } from "lucide-react";
@@ -9,6 +9,7 @@ import { SlideOverSkeleton } from "@/components/ui/list-skeleton";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@/components/ui/tooltip";
 import { Badge } from "@/components/ui/badge";
 import { useKeyboardShortcuts, formatShortcut } from "@/hooks/useKeyboardShortcuts";
+import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
 
 /**
  * Props passed to each tab component
@@ -19,6 +20,7 @@ export interface TabComponentProps {
   onModeToggle?: () => void;
   /** Whether this tab is currently active - use to enable/disable data fetching */
   isActiveTab: boolean;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
 /**
@@ -131,6 +133,39 @@ export function ResourceSlideOver({
   headerActions,
 }: ResourceSlideOverProps) {
   const [activeTab, setActiveTab] = useState(tabs[0]?.key || "");
+  const [isDirty, setIsDirty] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
+
+  // Reset dirty when switching to view mode
+  useEffect(() => {
+    if (mode === "view") setIsDirty(false);
+  }, [mode]);
+
+  // Reset dirty when record changes
+  useEffect(() => {
+    setIsDirty(false);
+  }, [recordId]);
+
+  const handleCloseAttempt = useCallback(() => {
+    if (mode === "edit" && isDirty) {
+      setShowExitConfirm(true);
+      return;
+    }
+    onClose();
+  }, [mode, isDirty, onClose]);
+
+  // Override ESC key to use our close handler (capture phase)
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isOpen) {
+        e.preventDefault();
+        e.stopPropagation();
+        handleCloseAttempt();
+      }
+    };
+    document.addEventListener("keydown", handleKeyDown, true);
+    return () => document.removeEventListener("keydown", handleKeyDown, true);
+  }, [isOpen, handleCloseAttempt]);
 
   // Keyboard shortcuts for slide-over navigation
   useKeyboardShortcuts({
@@ -176,7 +211,12 @@ export function ResourceSlideOver({
   }, [isOpen, firstTabKey]);
 
   return (
-    <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
+    <Sheet
+      open={isOpen}
+      onOpenChange={(open) => {
+        if (!open) handleCloseAttempt();
+      }}
+    >
       <SheetContent
         side="right"
         className="w-full max-w-none sm:max-w-none lg:w-[40vw] lg:max-w-[600px] lg:min-w-[576px] bg-card shadow-md p-0 flex flex-col"
@@ -311,6 +351,7 @@ export function ResourceSlideOver({
                             mode={mode}
                             onModeToggle={onModeToggle}
                             isActiveTab={isActive}
+                            onDirtyChange={setIsDirty}
                           />
                         ) : (
                           <p className="text-muted-foreground">Record not found</p>
@@ -336,6 +377,15 @@ export function ResourceSlideOver({
           </>
         )}
       </SheetContent>
+      <UnsavedChangesDialog
+        open={showExitConfirm}
+        onConfirm={() => {
+          setIsDirty(false);
+          setShowExitConfirm(false);
+          onClose();
+        }}
+        onCancel={() => setShowExitConfirm(false)}
+      />
     </Sheet>
   );
 }
