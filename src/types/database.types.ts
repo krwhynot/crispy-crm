@@ -228,6 +228,13 @@ export type Database = {
             foreignKeyName: "activities_related_task_id_fkey"
             columns: ["related_task_id"]
             isOneToOne: false
+            referencedRelation: "opportunities_summary"
+            referencedColumns: ["next_task_id"]
+          },
+          {
+            foreignKeyName: "activities_related_task_id_fkey"
+            columns: ["related_task_id"]
+            isOneToOne: false
             referencedRelation: "priority_tasks"
             referencedColumns: ["task_id"]
           },
@@ -976,6 +983,7 @@ export type Database = {
           tags: string[] | null
           updated_at: string | null
           updated_by: number | null
+          version: number
           win_reason: Database["public"]["Enums"]["win_reason"] | null
         }
         Insert: {
@@ -1015,6 +1023,7 @@ export type Database = {
           tags?: string[] | null
           updated_at?: string | null
           updated_by?: number | null
+          version?: number
           win_reason?: Database["public"]["Enums"]["win_reason"] | null
         }
         Update: {
@@ -1054,9 +1063,59 @@ export type Database = {
           tags?: string[] | null
           updated_at?: string | null
           updated_by?: number | null
+          version?: number
           win_reason?: Database["public"]["Enums"]["win_reason"] | null
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "dashboard_principal_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_opportunities"
+            referencedColumns: ["principal_id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_pipeline_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_pipeline_summary"
+            referencedColumns: ["principal_id"]
+          },
           {
             foreignKeyName: "opportunities_account_manager_id_fkey"
             columns: ["account_manager_id"]
@@ -1182,55 +1241,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "sales"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "dashboard_principal_summary"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations_summary"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations_with_account_manager"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "principal_opportunities"
-            referencedColumns: ["principal_id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "principal_pipeline_summary"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "principal_pipeline_summary"
-            referencedColumns: ["principal_id"]
           },
           {
             foreignKeyName: "opportunities_related_opportunity_id_fkey"
@@ -2184,6 +2194,8 @@ export type Database = {
       product_distributors: {
         Row: {
           created_at: string | null
+          created_by: number | null
+          deleted_at: string | null
           distributor_id: number
           notes: string | null
           product_id: number
@@ -2195,6 +2207,8 @@ export type Database = {
         }
         Insert: {
           created_at?: string | null
+          created_by?: number | null
+          deleted_at?: string | null
           distributor_id: number
           notes?: string | null
           product_id: number
@@ -2206,6 +2220,8 @@ export type Database = {
         }
         Update: {
           created_at?: string | null
+          created_by?: number | null
+          deleted_at?: string | null
           distributor_id?: number
           notes?: string | null
           product_id?: number
@@ -2852,6 +2868,13 @@ export type Database = {
             foreignKeyName: "tutorial_progress_created_task_id_fkey"
             columns: ["created_task_id"]
             isOneToOne: false
+            referencedRelation: "opportunities_summary"
+            referencedColumns: ["next_task_id"]
+          },
+          {
+            foreignKeyName: "tutorial_progress_created_task_id_fkey"
+            columns: ["created_task_id"]
+            isOneToOne: false
             referencedRelation: "priority_tasks"
             referencedColumns: ["task_id"]
           },
@@ -3342,6 +3365,13 @@ export type Database = {
         }
         Relationships: []
       }
+      distinct_opportunities_campaigns: {
+        Row: {
+          id: string | null
+          name: string | null
+        }
+        Relationships: []
+      }
       distinct_product_categories: {
         Row: {
           id: string | null
@@ -3372,11 +3402,18 @@ export type Database = {
           founding_interaction_id: number | null
           id: number | null
           index: number | null
+          last_activity_date: string | null
           lead_source: string | null
           loss_reason: Database["public"]["Enums"]["loss_reason"] | null
           name: string | null
           next_action: string | null
           next_action_date: string | null
+          next_task_due_date: string | null
+          next_task_id: number | null
+          next_task_priority:
+            | Database["public"]["Enums"]["priority_level"]
+            | null
+          next_task_title: string | null
           notes: string | null
           opportunity_owner_id: number | null
           overdue_task_count: number | null
@@ -3398,6 +3435,55 @@ export type Database = {
           win_reason: Database["public"]["Enums"]["win_reason"] | null
         }
         Relationships: [
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "dashboard_principal_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_opportunities"
+            referencedColumns: ["principal_id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_pipeline_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_pipeline_summary"
+            referencedColumns: ["principal_id"]
+          },
           {
             foreignKeyName: "opportunities_account_manager_id_fkey"
             columns: ["account_manager_id"]
@@ -3523,55 +3609,6 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "sales"
             referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "dashboard_principal_summary"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations_summary"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations_with_account_manager"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "principal_opportunities"
-            referencedColumns: ["principal_id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "principal_pipeline_summary"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "principal_pipeline_summary"
-            referencedColumns: ["principal_id"]
           },
           {
             foreignKeyName: "opportunities_related_opportunity_id_fkey"
@@ -4201,6 +4238,55 @@ export type Database = {
         }
         Relationships: [
           {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "dashboard_principal_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations_with_account_manager"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_opportunities"
+            referencedColumns: ["principal_id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_pipeline_summary"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "fk_opportunities_principal_organization"
+            columns: ["principal_organization_id"]
+            isOneToOne: false
+            referencedRelation: "principal_pipeline_summary"
+            referencedColumns: ["principal_id"]
+          },
+          {
             foreignKeyName: "opportunities_customer_organization_id_fkey"
             columns: ["organization_id"]
             isOneToOne: false
@@ -4245,55 +4331,6 @@ export type Database = {
           {
             foreignKeyName: "opportunities_customer_organization_id_fkey"
             columns: ["organization_id"]
-            isOneToOne: false
-            referencedRelation: "principal_pipeline_summary"
-            referencedColumns: ["principal_id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "dashboard_principal_summary"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations_summary"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "organizations_with_account_manager"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "principal_opportunities"
-            referencedColumns: ["principal_id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
-            isOneToOne: false
-            referencedRelation: "principal_pipeline_summary"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "opportunities_principal_organization_id_fkey"
-            columns: ["principal_organization_id"]
             isOneToOne: false
             referencedRelation: "principal_pipeline_summary"
             referencedColumns: ["principal_id"]
@@ -4492,6 +4529,10 @@ export type Database = {
       create_opportunity_with_participants: {
         Args: { p_opportunity_data: Json; p_participants: Json[] }
         Returns: number
+      }
+      create_product_with_distributors: {
+        Args: { distributors?: Json; product_data: Json }
+        Returns: Json
       }
       current_sales_id: { Args: never; Returns: number }
       generate_daily_digest: { Args: never; Returns: Json }
@@ -4718,15 +4759,26 @@ export type Database = {
         Args: { p_contact_id: number; p_organizations: Json }
         Returns: undefined
       }
-      sync_opportunity_with_products: {
-        Args: {
-          opportunity_data: Json
-          product_ids_to_delete: number[]
-          products_to_create: Json
-          products_to_update: Json
-        }
-        Returns: Json
-      }
+      sync_opportunity_with_products:
+        | {
+            Args: {
+              opportunity_data: Json
+              product_ids_to_delete: number[]
+              products_to_create: Json
+              products_to_update: Json
+            }
+            Returns: Json
+          }
+        | {
+            Args: {
+              expected_version?: number
+              opportunity_data: Json
+              product_ids_to_delete: number[]
+              products_to_create: Json
+              products_to_update: Json
+            }
+            Returns: Json
+          }
       unarchive_opportunity_with_relations: {
         Args: { opp_id: number }
         Returns: undefined
@@ -5260,5 +5312,5 @@ export const Constants = {
   },
 } as const
 
-A new version of Supabase CLI is available: v2.65.5 (currently installed v2.63.1)
+A new version of Supabase CLI is available: v2.67.1 (currently installed v2.63.1)
 We recommend updating regularly for new features and bug fixes: https://supabase.com/docs/guides/cli/getting-started#updating-the-supabase-cli
