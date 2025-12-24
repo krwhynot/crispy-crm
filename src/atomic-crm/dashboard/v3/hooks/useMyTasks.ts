@@ -16,6 +16,7 @@ import { parseDateSafely } from "@/lib/date-utils";
  */
 export function useMyTasks() {
   const dataProvider = useDataProvider();
+  const queryClient = useQueryClient();
   const { salesId, loading: salesLoading } = useCurrentSale();
 
   // Fetch tasks from server using React Admin's useGetList
@@ -161,6 +162,9 @@ export function useMyTasks() {
           next.delete(taskId);
           return next;
         });
+
+        // Invalidate tasks query to ensure fresh data on next fetch
+        queryClient.invalidateQueries({ queryKey: ["tasks"] });
       } catch (err) {
         console.error("Failed to complete task:", err);
         // Rollback optimistic update on failure
@@ -172,7 +176,7 @@ export function useMyTasks() {
         throw err;
       }
     },
-    [dataProvider]
+    [dataProvider, queryClient]
   );
 
   /**
@@ -232,6 +236,10 @@ export function useMyTasks() {
           next.delete(taskId);
           return next;
         });
+
+        // Invalidate tasks query to ensure fresh data on next fetch
+        // This ensures the UI stays in sync when optimistic update is cleared
+        queryClient.invalidateQueries({ queryKey: ["tasks"] });
       } catch (err) {
         console.error("Failed to snooze task:", err);
         // Rollback optimistic update on failure
@@ -243,7 +251,7 @@ export function useMyTasks() {
         throw err;
       }
     },
-    [dataProvider, calculateStatus]
+    [dataProvider, calculateStatus, queryClient]
   );
 
   /**
@@ -275,6 +283,9 @@ export function useMyTasks() {
           next.delete(taskId);
           return next;
         });
+
+        // Invalidate tasks query to ensure fresh data on next fetch
+        queryClient.invalidateQueries({ queryKey: ["tasks"] });
       } catch (err) {
         console.error("Failed to delete task:", err);
         // Rollback optimistic update on failure
@@ -286,7 +297,7 @@ export function useMyTasks() {
         throw err;
       }
     },
-    [dataProvider]
+    [dataProvider, queryClient]
   );
 
   /**
@@ -335,6 +346,9 @@ export function useMyTasks() {
           next.delete(taskId);
           return next;
         });
+
+        // Invalidate tasks query to ensure fresh data on next fetch
+        queryClient.invalidateQueries({ queryKey: ["tasks"] });
       } catch (err) {
         console.error("Failed to update task due date:", err);
         // Rollback optimistic update on failure
@@ -346,7 +360,7 @@ export function useMyTasks() {
         throw err;
       }
     },
-    [dataProvider, calculateStatus]
+    [dataProvider, calculateStatus, queryClient]
   );
 
   /**
