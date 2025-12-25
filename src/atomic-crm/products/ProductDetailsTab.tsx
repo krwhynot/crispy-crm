@@ -6,9 +6,13 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AsideSection } from "@/components/ui";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  SidepaneSection,
+  SidepaneMetadata,
+  DirtyStateTracker,
+} from "@/components/layouts/sidepane";
 import { PRODUCT_STATUSES, PRODUCT_CATEGORIES } from "../validation/products";
 
 const DISTRIBUTOR_CODE_LABELS: Record<string, string> = {
@@ -52,6 +56,7 @@ interface ProductDetailsTabProps {
   record: Product;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
 function hasDistributorCodes(record: Record<string, unknown>): boolean {
@@ -72,7 +77,7 @@ function hasDistributorCodes(record: Record<string, unknown>): boolean {
  *
  * **Edit Mode**: Full form with save/cancel buttons
  */
-export function ProductDetailsTab({ record, mode, onModeToggle }: ProductDetailsTabProps) {
+export function ProductDetailsTab({ record, mode, onModeToggle, onDirtyChange }: ProductDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
 
@@ -118,6 +123,7 @@ export function ProductDetailsTab({ record, mode, onModeToggle }: ProductDetails
     return (
       <RecordContextProvider value={record}>
         <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
+          <DirtyStateTracker onDirtyChange={onDirtyChange} />
           <div className="space-y-6">
             <div className="space-y-4">
               <TextInput source="name" label="Product Name" />
@@ -151,19 +157,15 @@ export function ProductDetailsTab({ record, mode, onModeToggle }: ProductDetails
   // View mode - display all product fields
   return (
     <RecordContextProvider value={record}>
-      <div className="space-y-6">
-        {/* Product Info Section */}
-        <AsideSection title="Product Details">
-          <Card>
-            <CardContent className="p-4 space-y-3">
-              <div>
-                <h3 className="text-lg font-semibold">{record.name}</h3>
-              </div>
+      <ScrollArea className="h-full">
+        <div className="px-6 py-4">
+          {/* Product Info Section */}
+          <SidepaneSection label="Product">
+            <div className="space-y-3">
+              <h3 className="text-lg font-semibold">{record.name}</h3>
 
               {record.description && (
-                <div>
-                  <p className="text-sm whitespace-pre-wrap">{record.description}</p>
-                </div>
+                <p className="text-sm whitespace-pre-wrap">{record.description}</p>
               )}
 
               <div className="flex items-center gap-2">
@@ -180,43 +182,43 @@ export function ProductDetailsTab({ record, mode, onModeToggle }: ProductDetails
                 <span className="text-sm text-muted-foreground">Status:</span>
                 <StatusBadge status={record.status} />
               </div>
-            </CardContent>
-          </Card>
-        </AsideSection>
+            </div>
+          </SidepaneSection>
 
-        {/* Principal Section */}
-        <AsideSection title="Principal/Supplier">
-          <Card>
-            <CardContent className="p-4">
+          {/* Principal Section - uses variant="list" for relationship card */}
+          <SidepaneSection label="Principal/Supplier" variant="list" showSeparator>
+            <div className="p-2">
               <ReferenceField source="principal_id" reference="organizations" link="show">
                 <TextField source="name" className="font-medium" />
               </ReferenceField>
-            </CardContent>
-          </Card>
-        </AsideSection>
+            </div>
+          </SidepaneSection>
 
-        {/* Distributor Codes Section */}
-        {hasDistributorCodes(record) && (
-          <AsideSection title="Distributor Codes">
-            <Card>
-              <CardContent className="p-4">
-                <div className="grid grid-cols-2 gap-2 p-3 bg-muted/50 rounded-md">
-                  {Object.entries(DISTRIBUTOR_CODE_LABELS).map(([field, label]) => {
-                    const value = record[field as keyof typeof record];
-                    if (!value) return null;
-                    return (
-                      <div key={field} className="flex justify-between">
-                        <span className="text-sm text-muted-foreground">{label}:</span>
-                        <span className="text-sm font-mono">{value}</span>
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          </AsideSection>
-        )}
-      </div>
+          {/* Distributor Codes Section */}
+          {hasDistributorCodes(record) && (
+            <SidepaneSection label="Distributor Codes" showSeparator>
+              <div className="grid grid-cols-2 gap-2 p-3 bg-muted/50 rounded-md">
+                {Object.entries(DISTRIBUTOR_CODE_LABELS).map(([field, label]) => {
+                  const value = record[field as keyof typeof record];
+                  if (!value) return null;
+                  return (
+                    <div key={field} className="flex justify-between">
+                      <span className="text-sm text-muted-foreground">{label}:</span>
+                      <span className="text-sm font-mono">{value}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </SidepaneSection>
+          )}
+
+          {/* Metadata - created/updated timestamps */}
+          <SidepaneMetadata
+            createdAt={record.created_at}
+            updatedAt={record.updated_at}
+          />
+        </div>
+      </ScrollArea>
     </RecordContextProvider>
   );
 }
