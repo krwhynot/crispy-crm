@@ -45,7 +45,31 @@ if [ -n "$ts_files" ]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 3. SKIP heavy checks - run manually or in CI
+# 3. DISCOVERY: Check if codebase discovery is stale
+# ═══════════════════════════════════════════════════════════════
+# Only run if component/hook files are staged (performance optimization)
+discovery_files=$(echo "$STAGED_FILES" | grep -E '\.(ts|tsx)$' | grep -E 'src/atomic-crm/' || true)
+
+if [ -n "$discovery_files" ]; then
+  echo "🔍 Checking discovery freshness..."
+  if ! npx tsx scripts/discover/index.ts --check 2>/dev/null; then
+    echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo -e "${YELLOW}⚠️  Discovery files are stale${NC}"
+    echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+    echo
+    echo "Run 'just discover' to regenerate, then stage the updated files:"
+    echo "  just discover"
+    echo "  git add docs/_state/*.json"
+    echo
+    echo -e "${YELLOW}Continuing anyway (discovery is non-blocking)...${NC}"
+    # Note: Not blocking commit - just warning. Change 'echo' to 'exit 1' to block.
+  else
+    echo -e "${GREEN}✓ Discovery files are fresh${NC}"
+  fi
+fi
+
+# ═══════════════════════════════════════════════════════════════
+# 4. SKIP heavy checks - run manually or in CI
 # ═══════════════════════════════════════════════════════════════
 # Semantic colors: Run 'npm run validate:semantic-colors' manually
 # Full test suite: Run 'npm test' manually or rely on CI
