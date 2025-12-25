@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-25T06:38:53.138Z",
+  "generated_at": "2025-12-25T16:06:13.066Z",
   "generator": "scripts/discover/extractors/hooks.ts",
   "source_globs": [
     "src/**/use*.ts",
@@ -8,7 +8,7 @@
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
-  "checksum": "sha256:5575b38d83d47090",
+  "checksum": "sha256:64d30f985160b682",
   "source_hashes": {
     "src/App.tsx": "f0ea5cecc938",
     "src/main.tsx": "8e7c914a808c",
@@ -585,6 +585,7 @@
     "src/atomic-crm/opportunities/components/ArchivedBanner.tsx": "47a8b6ae9c72",
     "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx": "fa40cd4d7bf1",
     "src/atomic-crm/opportunities/components/ContactOrgMismatchWarning.tsx": "685f5cb00226",
+    "src/atomic-crm/opportunities/components/CustomerDistributorIndicator.tsx": "297de79299dd",
     "src/atomic-crm/opportunities/components/DistributorAuthorizationWarning.tsx": "8d20b22e0b06",
     "src/atomic-crm/opportunities/components/index.ts": "7d7fdb5008f7",
     "src/atomic-crm/opportunities/components/MetadataField.tsx": "3e55a59535fb",
@@ -605,12 +606,13 @@
     "src/atomic-crm/opportunities/forms/NamingConventionHelp.tsx": "e535aa90a418",
     "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx": "d31bcf0d2463",
     "src/atomic-crm/opportunities/forms/OpportunityInputs.tsx": "b96950fa50fc",
-    "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx": "b08c6081e725",
-    "src/atomic-crm/opportunities/hooks/index.ts": "13e3510ea3ba",
+    "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx": "ec48ebf173d5",
+    "src/atomic-crm/opportunities/hooks/index.ts": "5e94e0d485e3",
     "src/atomic-crm/opportunities/hooks/useAutoGenerateName.ts": "f42fbfc5a89a",
     "src/atomic-crm/opportunities/hooks/useBulkActionsState.ts": "1e1341176efa",
     "src/atomic-crm/opportunities/hooks/useColumnPreferences.ts": "167e699b59be",
     "src/atomic-crm/opportunities/hooks/useContactOrgMismatch.ts": "79357c2bc5fd",
+    "src/atomic-crm/opportunities/hooks/useCustomerDistributors.ts": "efee8b5a2c62",
     "src/atomic-crm/opportunities/hooks/useDistributorAuthorization.ts": "20ec69fb4de9",
     "src/atomic-crm/opportunities/hooks/useExportOpportunities.ts": "16240dd9c1ea",
     "src/atomic-crm/opportunities/hooks/useFilteredProducts.ts": "6d4e99515c0f",
@@ -661,7 +663,7 @@
     "src/atomic-crm/providers/supabase/dataProviderUtils.ts": "24dbb1c3d9e4",
     "src/atomic-crm/providers/supabase/filterRegistry.ts": "473be1610b9c",
     "src/atomic-crm/providers/supabase/index.ts": "497707223264",
-    "src/atomic-crm/providers/supabase/resources.ts": "52b55ff41b4c",
+    "src/atomic-crm/providers/supabase/resources.ts": "d605ed6c28af",
     "src/atomic-crm/providers/supabase/supabase.ts": "87552d9731c1",
     "src/atomic-crm/providers/supabase/types.ts": "ac091ebdeac6",
     "src/atomic-crm/providers/supabase/unifiedDataProvider.ts": "471397ba440a",
@@ -819,16 +821,16 @@
     "src/atomic-crm/providers/supabase/services/index.ts": "898d46d3bd07",
     "src/atomic-crm/providers/supabase/services/StorageService.ts": "c3e1933fe46c",
     "src/atomic-crm/providers/supabase/services/TransformService.ts": "60108ca73bda",
-    "src/atomic-crm/providers/supabase/services/ValidationService.ts": "b9fd43e881c0",
+    "src/atomic-crm/providers/supabase/services/ValidationService.ts": "4d49bf412993",
     "src/atomic-crm/providers/supabase/wrappers/index.ts": "7cf8c072703d",
     "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts": "feb4e753aa81",
     "src/atomic-crm/providers/supabase/wrappers/withValidation.ts": "e55e330c67c2",
     "src/components/admin/form/__tests__/test-utils.tsx": "c8fb5037052e"
   },
   "summary": {
-    "total_items": 76,
+    "total_items": 77,
     "react19_actions": 0,
-    "standard_hooks": 76
+    "standard_hooks": 77
   },
   "hooks": [
     {
@@ -1481,6 +1483,19 @@
         "customerOrganizationId"
       ],
       "returnType": "UseContactOrgMismatchResult",
+      "dependencies": [
+        "useMemo"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useCustomerDistributors",
+      "file": "src/atomic-crm/opportunities/hooks/useCustomerDistributors.ts",
+      "line": 57,
+      "parameters": [
+        "customerId"
+      ],
+      "returnType": "UseCustomerDistributorsResult",
       "dependencies": [
         "useMemo"
       ],
