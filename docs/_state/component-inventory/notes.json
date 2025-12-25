@@ -1,0 +1,92 @@
+{
+  "chunk_name": "notes",
+  "generated_at": "2025-12-25T16:06:03.552Z",
+  "item_count": 4,
+  "items": [
+    {
+      "name": "Note",
+      "file": "src/atomic-crm/notes/Note.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [
+        "useDelete",
+        "useNotify",
+        "useResourceContext",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "../contacts/Avatar",
+        "../organizations/OrganizationAvatar",
+        "../sales/SaleName",
+        "../types",
+        "./NoteInputs",
+        "@/components/admin/reference-field",
+        "@/components/ui",
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "NoteCreate",
+      "file": "src/atomic-crm/notes/NoteCreate.tsx",
+      "line": 25,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useRecordContext",
+        "useResourceContext"
+      ],
+      "imports": [
+        "../validation/notes",
+        "./NoteInputs",
+        "@/components/admin/FormErrorSummary",
+        "@/components/admin/form",
+        "ra-core",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "NoteInputs",
+      "file": "src/atomic-crm/notes/NoteInputs.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [
+        "useFormContext",
+        "useState"
+      ],
+      "imports": [
+        "../validation/notes",
+        "@/components/admin/text-input",
+        "@/components/ui/button",
+        "@/lib/utils.ts",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "NotesIterator",
+      "file": "src/atomic-crm/notes/NotesIterator.tsx",
+      "line": 8,
+      "type": "presentational",
+      "hooks": [
+        "useListContext"
+      ],
+      "imports": [
+        "./Note",
+        "./NoteCreate",
+        "@/components/ui/separator",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

@@ -1,0 +1,1406 @@
+{
+  "chunk_name": "organizations",
+  "generated_at": "2025-12-25T16:06:03.554Z",
+  "item_count": 73,
+  "items": [
+    {
+      "name": "ActivitiesTab",
+      "file": "src/atomic-crm/organizations/ActivitiesTab.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useState"
+      ],
+      "imports": [
+        "../activities",
+        "../activities/constants",
+        "../types",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivitiesTab",
+      "file": "src/atomic-crm/organizations/ActivitiesTab.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useState"
+      ],
+      "imports": [
+        "../activities",
+        "../activities/constants",
+        "../types",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "AuthorizationsTab",
+      "file": "src/atomic-crm/organizations/AuthorizationsTab.tsx",
+      "line": 40,
+      "type": "presentational",
+      "hooks": [
+        "useDelete",
+        "useGetList",
+        "useNotify",
+        "useRefresh",
+        "useState"
+      ],
+      "imports": [
+        "./components/AddPrincipalDialog",
+        "./components/AuthorizationCard",
+        "./components/AuthorizationsEmptyState",
+        "./components/RemoveConfirmDialog",
+        "./components/authorization-types",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "AuthorizationsTab",
+      "file": "src/atomic-crm/organizations/AuthorizationsTab.tsx",
+      "line": 40,
+      "type": "presentational",
+      "hooks": [
+        "useDelete",
+        "useGetList",
+        "useNotify",
+        "useRefresh",
+        "useState"
+      ],
+      "imports": [
+        "./components/AddPrincipalDialog",
+        "./components/AuthorizationCard",
+        "./components/AuthorizationsEmptyState",
+        "./components/RemoveConfirmDialog",
+        "./components/authorization-types",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "AutocompleteOrganizationInput",
+      "file": "src/atomic-crm/organizations/AutocompleteOrganizationInput.tsx",
+      "line": 5,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "./QuickCreatePopover",
+        "@/components/admin/autocomplete-input",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "BranchLocationsSection",
+      "file": "src/atomic-crm/organizations/BranchLocationsSection.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useCreatePath",
+        "useGetList",
+        "useRecordContext",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "lucide-react",
+        "react",
+        "react-admin",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "BulkReassignButton",
+      "file": "src/atomic-crm/organizations/BulkReassignButton.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useEffect",
+        "useGetList",
+        "useListContext",
+        "useNotify",
+        "useRef",
+        "useRefresh",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/select",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "BulkReassignButton",
+      "file": "src/atomic-crm/organizations/BulkReassignButton.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useEffect",
+        "useGetList",
+        "useListContext",
+        "useNotify",
+        "useRef",
+        "useRefresh",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/select",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "DuplicateOrgWarningDialog",
+      "file": "src/atomic-crm/organizations/DuplicateOrgWarningDialog.tsx",
+      "line": 53,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/alert-dialog",
+        "@/components/ui/button"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationAddressSection",
+      "file": "src/atomic-crm/organizations/OrganizationAddressSection.tsx",
+      "line": 5,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/admin/form",
+        "@/components/admin/state-combobox-input",
+        "@/components/admin/text-input"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationAside",
+      "file": "src/atomic-crm/organizations/OrganizationAside.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [
+        "useRecordContext"
+      ],
+      "imports": [
+        "../sales/SaleName",
+        "../types",
+        "./ParentOrganizationSection",
+        "./constants",
+        "@/components/admin/date-field",
+        "@/components/admin/edit-button",
+        "@/components/admin/reference-field",
+        "@/components/admin/select-field",
+        "@/components/admin/show-button",
+        "@/components/admin/text-field",
+        "@/components/admin/url-field",
+        "@/components/ui",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationAvatar",
+      "file": "src/atomic-crm/organizations/OrganizationAvatar.tsx",
+      "line": 6,
+      "type": "presentational",
+      "hooks": [
+        "useRecordContext"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/avatar",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationTypeBadge",
+      "file": "src/atomic-crm/organizations/OrganizationBadges.tsx",
+      "line": 45,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/ui/badge",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PriorityBadge",
+      "file": "src/atomic-crm/organizations/OrganizationBadges.tsx",
+      "line": 66,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/ui/badge",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationBulkActionsToolbar",
+      "file": "src/atomic-crm/organizations/OrganizationBulkActionsToolbar.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./BulkReassignButton",
+        "@/components/admin/bulk-actions-toolbar",
+        "@/components/admin/bulk-delete-button",
+        "@/components/admin/bulk-export-button"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationBulkActionsToolbar",
+      "file": "src/atomic-crm/organizations/OrganizationBulkActionsToolbar.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./BulkReassignButton",
+        "@/components/admin/bulk-actions-toolbar",
+        "@/components/admin/bulk-delete-button",
+        "@/components/admin/bulk-export-button"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OrganizationCompactForm",
+      "file": "src/atomic-crm/organizations/OrganizationCompactForm.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [
+        "useCityStateMapping"
+      ],
+      "imports": [
+        "../utils/saleOptionRenderer",
+        "./OrganizationHierarchySection",
+        "./PrincipalAwareTypeInput",
+        "./constants",
+        "@/components/admin/SegmentComboboxInput",
+        "@/components/admin/form",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/state-combobox-input",
+        "@/components/admin/text-input",
+        "@/hooks"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationCreate",
+      "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
+      "line": 135,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useCreate",
+        "useDuplicateOrgCheck",
+        "useForm",
+        "useGetList",
+        "useLocation",
+        "useNotify",
+        "useRedirect",
+        "useRef",
+        "useSmartDefaults",
+        "useState"
+      ],
+      "imports": [
+        "../validation/organizations",
+        "./DuplicateOrgWarningDialog",
+        "./OrganizationInputs",
+        "./types",
+        "./useDuplicateOrgCheck",
+        "@/atomic-crm/hooks/useSmartDefaults",
+        "@/components/admin/cancel-button",
+        "@/components/admin/form",
+        "@/components/admin/simple-form",
+        "@/components/ui/card",
+        "@/hooks/useUnsavedChangesWarning",
+        "@/types/database.generated",
+        "@hookform/resolvers/zod",
+        "ra-core",
+        "react",
+        "react-hook-form",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationCreate",
+      "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
+      "line": 135,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useCreate",
+        "useDuplicateOrgCheck",
+        "useForm",
+        "useGetList",
+        "useLocation",
+        "useNotify",
+        "useRedirect",
+        "useRef",
+        "useSmartDefaults",
+        "useState"
+      ],
+      "imports": [
+        "../validation/organizations",
+        "./DuplicateOrgWarningDialog",
+        "./OrganizationInputs",
+        "./types",
+        "./useDuplicateOrgCheck",
+        "@/atomic-crm/hooks/useSmartDefaults",
+        "@/components/admin/cancel-button",
+        "@/components/admin/form",
+        "@/components/admin/simple-form",
+        "@/components/ui/card",
+        "@/hooks/useUnsavedChangesWarning",
+        "@/types/database.generated",
+        "@hookform/resolvers/zod",
+        "ra-core",
+        "react",
+        "react-hook-form",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OrganizationNameHeader",
+      "file": "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx",
+      "line": 31,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/admin/column-filters"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationTypeHeader",
+      "file": "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx",
+      "line": 47,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/admin/column-filters"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationPriorityHeader",
+      "file": "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx",
+      "line": 62,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/admin/column-filters"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationColumnHeaders",
+      "file": "src/atomic-crm/organizations/OrganizationDatagridHeader.tsx",
+      "line": 76,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/admin/column-filters"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationEdit",
+      "file": "src/atomic-crm/organizations/OrganizationEdit.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useQueryClient"
+      ],
+      "imports": [
+        "../layout/FormToolbar",
+        "../types",
+        "./OrganizationAside",
+        "./OrganizationInputs",
+        "@/components/design-system",
+        "@/components/ui/card",
+        "@tanstack/react-query",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationEdit",
+      "file": "src/atomic-crm/organizations/OrganizationEdit.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useQueryClient"
+      ],
+      "imports": [
+        "../layout/FormToolbar",
+        "../types",
+        "./OrganizationAside",
+        "./OrganizationInputs",
+        "@/components/design-system",
+        "@/components/ui/card",
+        "@tanstack/react-query",
+        "ra-core"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OrganizationEmpty",
+      "file": "src/atomic-crm/organizations/OrganizationEmpty.tsx",
+      "line": 5,
+      "type": "presentational",
+      "hooks": [
+        "useAppBarHeight"
+      ],
+      "imports": [
+        "../hooks/useAppBarHeight",
+        "@/components/admin/create-button",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationHierarchySection",
+      "file": "src/atomic-crm/organizations/OrganizationHierarchySection.tsx",
+      "line": 7,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./ParentOrganizationInput",
+        "./constants",
+        "@/components/admin/boolean-input",
+        "@/components/admin/form",
+        "@/components/admin/select-input"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationImportButton",
+      "file": "src/atomic-crm/organizations/OrganizationImportButton.tsx",
+      "line": 6,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "./OrganizationImportDialog",
+        "@/components/ui/button",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationImportDialog",
+      "file": "src/atomic-crm/organizations/OrganizationImportDialog.tsx",
+      "line": 45,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useDataProvider",
+        "useEffect",
+        "useMemo",
+        "useNotify",
+        "useOrganizationImport",
+        "useRef",
+        "useRefresh",
+        "useState"
+      ],
+      "imports": [
+        "../utils/csvUploadValidator",
+        "../utils/formatName",
+        "./OrganizationImportPreview",
+        "./organizationColumnAliases",
+        "./organizationImport.logic",
+        "./types",
+        "./useOrganizationImport",
+        "@/components/ui/alert",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/progress",
+        "@/lib/devLogger",
+        "lucide-react",
+        "papaparse",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationImportPreview",
+      "file": "src/atomic-crm/organizations/OrganizationImportPreview.tsx",
+      "line": 75,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "./organizationColumnAliases",
+        "./types",
+        "@/components/ui/alert",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/checkbox",
+        "@/components/ui/collapsible",
+        "@/components/ui/dialog",
+        "@/components/ui/label",
+        "@/components/ui/select",
+        "@/components/ui/table",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationImportPreview",
+      "file": "src/atomic-crm/organizations/OrganizationImportPreview.tsx",
+      "line": 75,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "./organizationColumnAliases",
+        "./types",
+        "@/components/ui/alert",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/checkbox",
+        "@/components/ui/collapsible",
+        "@/components/ui/dialog",
+        "@/components/ui/label",
+        "@/components/ui/select",
+        "@/components/ui/table",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OrganizationImportResult",
+      "file": "src/atomic-crm/organizations/OrganizationImportResult.tsx",
+      "line": 53,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/alert",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationInputs",
+      "file": "src/atomic-crm/organizations/OrganizationInputs.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [
+        "useFormState"
+      ],
+      "imports": [
+        "./OrganizationCompactForm",
+        "@/components/admin/FormErrorSummary",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationList",
+      "file": "src/atomic-crm/organizations/OrganizationList.tsx",
+      "line": 227,
+      "type": "presentational",
+      "hooks": [
+        "useFilterCleanup",
+        "useGetIdentity",
+        "useSlideOverState"
+      ],
+      "imports": [
+        "../hooks/useFilterCleanup",
+        "../layout/TopToolbar",
+        "../tutorial",
+        "../types",
+        "./OrganizationBadges",
+        "./OrganizationBulkActionsToolbar",
+        "./OrganizationDatagridHeader",
+        "./OrganizationEmpty",
+        "./OrganizationListFilter",
+        "./OrganizationSlideOver",
+        "./constants",
+        "./organizationFilterConfig",
+        "./types",
+        "@/components/admin/FilterableBadge",
+        "@/components/admin/FloatingCreateButton",
+        "@/components/admin/ListNoResults",
+        "@/components/admin/ListSearchBar",
+        "@/components/admin/PremiumDatagrid",
+        "@/components/admin/list",
+        "@/components/layouts/StandardListLayout",
+        "@/components/ui/list-skeleton",
+        "@/hooks/useListKeyboardNavigation",
+        "@/hooks/useSlideOverState",
+        "jsonexport/dist",
+        "ra-core",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationList",
+      "file": "src/atomic-crm/organizations/OrganizationList.tsx",
+      "line": 227,
+      "type": "presentational",
+      "hooks": [
+        "useFilterCleanup",
+        "useGetIdentity",
+        "useSlideOverState"
+      ],
+      "imports": [
+        "../hooks/useFilterCleanup",
+        "../layout/TopToolbar",
+        "../tutorial",
+        "../types",
+        "./OrganizationBadges",
+        "./OrganizationBulkActionsToolbar",
+        "./OrganizationDatagridHeader",
+        "./OrganizationEmpty",
+        "./OrganizationListFilter",
+        "./OrganizationSlideOver",
+        "./constants",
+        "./organizationFilterConfig",
+        "./types",
+        "@/components/admin/FilterableBadge",
+        "@/components/admin/FloatingCreateButton",
+        "@/components/admin/ListNoResults",
+        "@/components/admin/ListSearchBar",
+        "@/components/admin/PremiumDatagrid",
+        "@/components/admin/list",
+        "@/components/layouts/StandardListLayout",
+        "@/components/ui/list-skeleton",
+        "@/hooks/useListKeyboardNavigation",
+        "@/hooks/useSlideOverState",
+        "jsonexport/dist",
+        "ra-core",
+        "react-admin"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OrganizationListFilter",
+      "file": "src/atomic-crm/organizations/OrganizationListFilter.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [
+        "useListContext"
+      ],
+      "imports": [
+        "../filters/FilterCategory",
+        "@/atomic-crm/validation/operatorSegments",
+        "@/atomic-crm/validation/segments",
+        "@/components/admin/OwnerFilterDropdown",
+        "@/components/admin/toggle-filter-button",
+        "@/components/ui/badge",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationShow",
+      "file": "src/atomic-crm/organizations/OrganizationShow.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../activity-log/ActivityLog",
+        "../contacts/Avatar",
+        "../contacts/TagsList",
+        "../opportunities/opportunity",
+        "../root/ConfigurationContext",
+        "../shared/components/Status",
+        "../types",
+        "../utils/formatName",
+        "./ActivitiesTab",
+        "./AuthorizationsTab",
+        "./OrganizationAside",
+        "./OrganizationAvatar",
+        "@/components/admin/reference-many-field",
+        "@/components/admin/sort-button",
+        "@/components/design-system",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/tabs",
+        "date-fns",
+        "lucide-react",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationShow",
+      "file": "src/atomic-crm/organizations/OrganizationShow.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../activity-log/ActivityLog",
+        "../contacts/Avatar",
+        "../contacts/TagsList",
+        "../opportunities/opportunity",
+        "../root/ConfigurationContext",
+        "../shared/components/Status",
+        "../types",
+        "../utils/formatName",
+        "./ActivitiesTab",
+        "./AuthorizationsTab",
+        "./OrganizationAside",
+        "./OrganizationAvatar",
+        "@/components/admin/reference-many-field",
+        "@/components/admin/sort-button",
+        "@/components/design-system",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/tabs",
+        "date-fns",
+        "lucide-react",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OrganizationSlideOver",
+      "file": "src/atomic-crm/organizations/OrganizationSlideOver.tsx",
+      "line": 32,
+      "type": "presentational",
+      "hooks": [
+        "useGetOne"
+      ],
+      "imports": [
+        "./AuthorizationsTab",
+        "./slideOverTabs/OrganizationContactsTab",
+        "./slideOverTabs/OrganizationDetailsTab",
+        "./slideOverTabs/OrganizationNotesTab",
+        "./slideOverTabs/OrganizationOpportunitiesTab",
+        "./types",
+        "@/components/layouts/ResourceSlideOver",
+        "@/components/ui/list-skeleton",
+        "lucide-react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationStatusSection",
+      "file": "src/atomic-crm/organizations/OrganizationStatusSection.tsx",
+      "line": 7,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/admin/form",
+        "@/components/admin/number-input",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ParentOrganizationInput",
+      "file": "src/atomic-crm/organizations/ParentOrganizationInput.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [
+        "useRecordContext"
+      ],
+      "imports": [
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/reference-input",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ParentOrganizationSection",
+      "file": "src/atomic-crm/organizations/ParentOrganizationSection.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useCreatePath",
+        "useGetList",
+        "useGetOne",
+        "useRecordContext",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "lucide-react",
+        "react",
+        "react-admin",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PrincipalAwareTypeInput",
+      "file": "src/atomic-crm/organizations/PrincipalAwareTypeInput.tsx",
+      "line": 26,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useFormContext",
+        "useGetList",
+        "useRecordContext",
+        "useRef",
+        "useState",
+        "useWatch"
+      ],
+      "imports": [
+        "../types",
+        "./PrincipalChangeWarning",
+        "./constants",
+        "@/components/admin/select-input",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PrincipalChangeWarning",
+      "file": "src/atomic-crm/organizations/PrincipalChangeWarning.tsx",
+      "line": 29,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useRecordContext"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/alert-dialog",
+        "@/components/ui/button",
+        "@/components/ui/scroll-area",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "QuickCreatePopover",
+      "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
+      "line": 41,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useForm",
+        "useNotify",
+        "useState"
+      ],
+      "imports": [
+        "@/atomic-crm/validation/segments",
+        "@/components/ui/button",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/components/ui/popover",
+        "@/components/ui/select",
+        "@hookform/resolvers/zod",
+        "ra-core",
+        "react",
+        "react-hook-form",
+        "zod"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "AddPrincipalDialog",
+      "file": "src/atomic-crm/organizations/components/AddPrincipalDialog.tsx",
+      "line": 25,
+      "type": "presentational",
+      "hooks": [
+        "useCreate",
+        "useGetIdentity",
+        "useNotify",
+        "useState"
+      ],
+      "imports": [
+        "./authorization-types",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/label",
+        "@/components/ui/select",
+        "@/components/ui/textarea",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "AddProductExceptionDialog",
+      "file": "src/atomic-crm/organizations/components/AddProductExceptionDialog.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [
+        "useCreate",
+        "useGetIdentity",
+        "useNotify",
+        "useState"
+      ],
+      "imports": [
+        "./authorization-types",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/label",
+        "@/components/ui/select",
+        "@/components/ui/textarea",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "AuthorizationCard",
+      "file": "src/atomic-crm/organizations/components/AuthorizationCard.tsx",
+      "line": 32,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useState"
+      ],
+      "imports": [
+        "./ProductExceptionsSection",
+        "./authorization-types",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/collapsible",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "AuthorizationsEmptyState",
+      "file": "src/atomic-crm/organizations/components/AuthorizationsEmptyState.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/button",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductExceptionsSection",
+      "file": "src/atomic-crm/organizations/components/ProductExceptionsSection.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [
+        "useDelete",
+        "useNotify",
+        "useRefresh",
+        "useState"
+      ],
+      "imports": [
+        "./AddProductExceptionDialog",
+        "./RemoveConfirmDialog",
+        "./authorization-types",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "@/lib/date-utils",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "RemoveConfirmDialog",
+      "file": "src/atomic-crm/organizations/components/RemoveConfirmDialog.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./authorization-types",
+        "@/components/ui/alert-dialog"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationList",
+      "file": "src/atomic-crm/organizations/index.tsx",
+      "line": 227,
+      "type": "presentational",
+      "hooks": [
+        "useFilterCleanup",
+        "useGetIdentity",
+        "useSlideOverState"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationCreate",
+      "file": "src/atomic-crm/organizations/index.tsx",
+      "line": 135,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useCreate",
+        "useDuplicateOrgCheck",
+        "useForm",
+        "useGetList",
+        "useLocation",
+        "useNotify",
+        "useRedirect",
+        "useRef",
+        "useSmartDefaults",
+        "useState"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationEdit",
+      "file": "src/atomic-crm/organizations/index.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useQueryClient"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationShow",
+      "file": "src/atomic-crm/organizations/index.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ParentOrganizationInput",
+      "file": "src/atomic-crm/organizations/index.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [
+        "useRecordContext"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "BranchLocationsSection",
+      "file": "src/atomic-crm/organizations/index.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useCreatePath",
+        "useGetList",
+        "useRecordContext",
+        "useState"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ParentOrganizationSection",
+      "file": "src/atomic-crm/organizations/index.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useCreatePath",
+        "useGetList",
+        "useGetOne",
+        "useRecordContext",
+        "useState"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationTypeBadge",
+      "file": "src/atomic-crm/organizations/index.tsx",
+      "line": 45,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PriorityBadge",
+      "file": "src/atomic-crm/organizations/index.tsx",
+      "line": 66,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationListView",
+      "file": "src/atomic-crm/organizations/index.tsx",
+      "line": 28,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationCreateView",
+      "file": "src/atomic-crm/organizations/index.tsx",
+      "line": 34,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationEditView",
+      "file": "src/atomic-crm/organizations/index.tsx",
+      "line": 40,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationShowView",
+      "file": "src/atomic-crm/organizations/index.tsx",
+      "line": 46,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationListView",
+      "file": "src/atomic-crm/organizations/resource.tsx",
+      "line": 28,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationCreateView",
+      "file": "src/atomic-crm/organizations/resource.tsx",
+      "line": 34,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationEditView",
+      "file": "src/atomic-crm/organizations/resource.tsx",
+      "line": 40,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationShowView",
+      "file": "src/atomic-crm/organizations/resource.tsx",
+      "line": 46,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationContactsTab",
+      "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationContactsTab.tsx",
+      "line": 51,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useNavigate"
+      ],
+      "imports": [
+        "../../types",
+        "../constants",
+        "../types",
+        "@/components/layouts/sidepane",
+        "@/components/ui/scroll-area",
+        "@/components/ui/skeleton",
+        "lucide-react",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationDetailsTab",
+      "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx",
+      "line": 31,
+      "type": "presentational",
+      "hooks": [
+        "useNotify",
+        "useUpdate"
+      ],
+      "imports": [
+        "../../types",
+        "../../utils/saleOptionRenderer",
+        "../OrganizationBadges",
+        "../constants",
+        "../types",
+        "@/components/admin/SegmentComboboxInput",
+        "@/components/admin/autocomplete-array-input",
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/reference-array-input",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input",
+        "@/components/layouts/sidepane",
+        "@/components/ui/badge",
+        "@/components/ui/scroll-area",
+        "ra-core",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationNotesTab",
+      "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationNotesTab.tsx",
+      "line": 20,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../../notes",
+        "../../types",
+        "@/components/admin/reference-many-field",
+        "@/components/ui/scroll-area",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationOpportunitiesTab",
+      "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useNavigate"
+      ],
+      "imports": [
+        "../../opportunities/constants/stageConstants",
+        "../../types",
+        "../constants",
+        "@/components/layouts/sidepane",
+        "@/components/ui/badge",
+        "@/components/ui/scroll-area",
+        "@/components/ui/skeleton",
+        "@/lib/date-utils",
+        "lucide-react",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "useOrganizationImport",
+      "file": "src/atomic-crm/organizations/useOrganizationImport.tsx",
+      "line": 55,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useDataProvider",
+        "useGetIdentity",
+        "useMemo"
+      ],
+      "imports": [
+        "../types",
+        "./organizationImport.logic",
+        "ra-core",
+        "react",
+        "zod"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

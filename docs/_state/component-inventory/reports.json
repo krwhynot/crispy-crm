@@ -1,0 +1,427 @@
+{
+  "chunk_name": "reports",
+  "generated_at": "2025-12-25T16:06:03.556Z",
+  "item_count": 23,
+  "items": [
+    {
+      "name": "ActivityTypeCard",
+      "file": "src/atomic-crm/reports/CampaignActivity/ActivityTypeCard.tsx",
+      "line": 36,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ui/card",
+        "@/lib/date-utils",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "CampaignActivityReport",
+      "file": "src/atomic-crm/reports/CampaignActivity/CampaignActivityReport.tsx",
+      "line": 55,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useMemo",
+        "useNotify",
+        "useReportData",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "./ActivityTypeCard",
+        "./StaleLeadsView",
+        "@/atomic-crm/reports/ReportLayout",
+        "@/atomic-crm/reports/components",
+        "@/atomic-crm/reports/hooks",
+        "@/atomic-crm/utils/csvUploadValidator",
+        "@/atomic-crm/utils/stalenessCalculation",
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/checkbox",
+        "@/components/ui/label",
+        "@/components/ui/select",
+        "@/lib/date-utils",
+        "date-fns",
+        "jsonexport/dist",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "StaleLeadsView",
+      "file": "src/atomic-crm/reports/CampaignActivity/StaleLeadsView.tsx",
+      "line": 32,
+      "type": "presentational",
+      "hooks": [
+        "useNavigate"
+      ],
+      "imports": [
+        "@/atomic-crm/utils/stalenessCalculation",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/lib/date-utils",
+        "date-fns",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunitiesByPrincipalReport",
+      "file": "src/atomic-crm/reports/OpportunitiesByPrincipalReport.tsx",
+      "line": 156,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useMemo",
+        "useNavigate",
+        "useNotify",
+        "useReportData",
+        "useState"
+      ],
+      "imports": [
+        "../opportunities/constants/stageConstants",
+        "../types",
+        "./ReportLayout",
+        "./components",
+        "./hooks",
+        "@/atomic-crm/utils/csvUploadValidator",
+        "@/components/admin/autocomplete-array-input",
+        "@/components/admin/multi-select-input",
+        "@/components/admin/reference-input",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/lib/date-utils",
+        "date-fns",
+        "jsonexport/dist",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-hook-form",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ReportLayout",
+      "file": "src/atomic-crm/reports/ReportLayout.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ReportsPage",
+      "file": "src/atomic-crm/reports/ReportsPage.tsx",
+      "line": 30,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useSearchParams"
+      ],
+      "imports": [
+        "./components/ReportPageShell",
+        "./utils/cleanupMigration",
+        "@/components/ui/skeleton",
+        "@/components/ui/tabs",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "WeeklyActivitySummary",
+      "file": "src/atomic-crm/reports/WeeklyActivitySummary.tsx",
+      "line": 24,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useGetList",
+        "useMemo",
+        "useNotify",
+        "useReportData",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "./ReportLayout",
+        "./components",
+        "./hooks",
+        "@/atomic-crm/utils/csvUploadValidator",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "date-fns",
+        "jsonexport/dist",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ActivityTrendChart",
+      "file": "src/atomic-crm/reports/charts/ActivityTrendChart.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [
+        "useChartTheme",
+        "useMemo"
+      ],
+      "imports": [
+        "../hooks/useChartTheme",
+        "./chartSetup",
+        "./chartUtils",
+        "react",
+        "react-chartjs-2"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PipelineChart",
+      "file": "src/atomic-crm/reports/charts/PipelineChart.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [
+        "useChartTheme",
+        "useMemo"
+      ],
+      "imports": [
+        "../hooks/useChartTheme",
+        "./chartSetup",
+        "react",
+        "react-chartjs-2"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "RepPerformanceChart",
+      "file": "src/atomic-crm/reports/charts/RepPerformanceChart.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [
+        "useChartTheme",
+        "useMemo"
+      ],
+      "imports": [
+        "../hooks/useChartTheme",
+        "./chartSetup",
+        "./chartUtils",
+        "react",
+        "react-chartjs-2"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TopPrincipalsChart",
+      "file": "src/atomic-crm/reports/charts/TopPrincipalsChart.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [
+        "useChartTheme",
+        "useMemo"
+      ],
+      "imports": [
+        "../hooks/useChartTheme",
+        "./chartSetup",
+        "./chartUtils",
+        "react",
+        "react-chartjs-2"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "AppliedFiltersBar",
+      "file": "src/atomic-crm/reports/components/AppliedFiltersBar.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./FilterChip",
+        "@/components/ui/button",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ChartWrapper",
+      "file": "src/atomic-crm/reports/components/ChartWrapper.tsx",
+      "line": 11,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/card",
+        "@/components/ui/skeleton",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "EmptyState",
+      "file": "src/atomic-crm/reports/components/EmptyState.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/button",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "FilterChip",
+      "file": "src/atomic-crm/reports/components/FilterChip.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "KPICard",
+      "file": "src/atomic-crm/reports/components/KPICard.tsx",
+      "line": 19,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/card",
+        "@/lib/utils",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "KPIDrillDown",
+      "file": "src/atomic-crm/reports/components/KPIDrillDown.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/sheet",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ReportPageShell",
+      "file": "src/atomic-crm/reports/components/ReportPageShell.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "lucide-react",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TabFilterBar",
+      "file": "src/atomic-crm/reports/components/TabFilterBar.tsx",
+      "line": 57,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useMemo"
+      ],
+      "imports": [
+        "../../types",
+        "@/components/ui/button",
+        "@/components/ui/select",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "CampaignActivityTab",
+      "file": "src/atomic-crm/reports/tabs/CampaignActivityTab.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/skeleton",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OpportunitiesTab",
+      "file": "src/atomic-crm/reports/tabs/OpportunitiesTab.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/skeleton",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OverviewTab",
+      "file": "src/atomic-crm/reports/tabs/OverviewTab.tsx",
+      "line": 44,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useGetList",
+        "useMemo",
+        "useNavigate",
+        "useReportData",
+        "useState"
+      ],
+      "imports": [
+        "../../opportunities/constants/stageConstants",
+        "../charts/ActivityTrendChart",
+        "../charts/PipelineChart",
+        "../charts/RepPerformanceChart",
+        "../charts/TopPrincipalsChart",
+        "../charts/chartSetup",
+        "../components",
+        "../components/ChartWrapper",
+        "../components/KPICard",
+        "../components/TabFilterBar",
+        "../hooks",
+        "../types",
+        "@/atomic-crm/utils/stalenessCalculation",
+        "@/components/ui/skeleton",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "WeeklyActivityTab",
+      "file": "src/atomic-crm/reports/tabs/WeeklyActivityTab.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/skeleton",
+        "react"
+      ],
+      "isDefaultExport": true
+    }
+  ]
+}

@@ -1,0 +1,246 @@
+{
+  "chunk_name": "productDistributors",
+  "generated_at": "2025-12-25T16:06:03.555Z",
+  "item_count": 17,
+  "items": [
+    {
+      "name": "ProductDistributorCreate",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [
+        "useMemo"
+      ],
+      "imports": [
+        "../validation/productDistributors",
+        "./constants",
+        "@/components/admin/FormErrorSummary",
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/cancel-button",
+        "@/components/admin/form",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/simple-form",
+        "@/components/admin/text-input",
+        "@/components/ui/card",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductDistributorCreate",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [
+        "useMemo"
+      ],
+      "imports": [
+        "../validation/productDistributors",
+        "./constants",
+        "@/components/admin/FormErrorSummary",
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/cancel-button",
+        "@/components/admin/form",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/simple-form",
+        "@/components/admin/text-input",
+        "@/components/ui/card",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ProductDistributorEdit",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx",
+      "line": 6,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductDistributorEdit",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx",
+      "line": 6,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input",
+        "react-admin"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ProductDistributorList",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorList.tsx",
+      "line": 46,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductDistributorList",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorList.tsx",
+      "line": 46,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input",
+        "react-admin"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "productDistributors",
+      "file": "src/atomic-crm/productDistributors/index.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ProductDistributorListView",
+      "file": "src/atomic-crm/productDistributors/index.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductDistributorEditView",
+      "file": "src/atomic-crm/productDistributors/index.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductDistributorCreateView",
+      "file": "src/atomic-crm/productDistributors/index.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductDistributorListView",
+      "file": "src/atomic-crm/productDistributors/resource.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductDistributorCreateView",
+      "file": "src/atomic-crm/productDistributors/resource.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductDistributorEditView",
+      "file": "src/atomic-crm/productDistributors/resource.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "productDistributors",
+      "file": "src/atomic-crm/productDistributors/resource.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ProductDistributorListView",
+      "file": "src/atomic-crm/productDistributors/resource.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductDistributorEditView",
+      "file": "src/atomic-crm/productDistributors/resource.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductDistributorCreateView",
+      "file": "src/atomic-crm/productDistributors/resource.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

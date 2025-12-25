@@ -1,0 +1,133 @@
+{
+  "chunk_name": "contexts",
+  "generated_at": "2025-12-25T16:06:03.550Z",
+  "item_count": 9,
+  "items": [
+    {
+      "name": "AppBrandingContext",
+      "file": "src/atomic-crm/contexts/AppBrandingContext.tsx",
+      "line": 33,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../root/defaultConfiguration",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "AppBrandingProvider",
+      "file": "src/atomic-crm/contexts/AppBrandingContext.tsx",
+      "line": 39,
+      "type": "presentational",
+      "hooks": [
+        "useMemo"
+      ],
+      "imports": [
+        "../root/defaultConfiguration",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "useAppBranding",
+      "file": "src/atomic-crm/contexts/AppBrandingContext.tsx",
+      "line": 63,
+      "type": "presentational",
+      "hooks": [
+        "useContext"
+      ],
+      "imports": [
+        "../root/defaultConfiguration",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "FormOptionsContext",
+      "file": "src/atomic-crm/contexts/FormOptionsContext.tsx",
+      "line": 33,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../root/defaultConfiguration",
+        "../types",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "FormOptionsProvider",
+      "file": "src/atomic-crm/contexts/FormOptionsContext.tsx",
+      "line": 39,
+      "type": "presentational",
+      "hooks": [
+        "useMemo"
+      ],
+      "imports": [
+        "../root/defaultConfiguration",
+        "../types",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "useFormOptions",
+      "file": "src/atomic-crm/contexts/FormOptionsContext.tsx",
+      "line": 63,
+      "type": "presentational",
+      "hooks": [
+        "useContext"
+      ],
+      "imports": [
+        "../root/defaultConfiguration",
+        "../types",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PipelineConfigContext",
+      "file": "src/atomic-crm/contexts/PipelineConfigContext.tsx",
+      "line": 41,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../root/defaultConfiguration",
+        "../types",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PipelineConfigProvider",
+      "file": "src/atomic-crm/contexts/PipelineConfigContext.tsx",
+      "line": 47,
+      "type": "presentational",
+      "hooks": [
+        "useMemo"
+      ],
+      "imports": [
+        "../root/defaultConfiguration",
+        "../types",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "usePipelineConfig",
+      "file": "src/atomic-crm/contexts/PipelineConfigContext.tsx",
+      "line": 79,
+      "type": "presentational",
+      "hooks": [
+        "useContext"
+      ],
+      "imports": [
+        "../root/defaultConfiguration",
+        "../types",
+        "react"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

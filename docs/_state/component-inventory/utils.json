@@ -1,0 +1,50 @@
+{
+  "chunk_name": "utils",
+  "generated_at": "2025-12-25T16:06:03.561Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "getActivityIcon",
+      "file": "src/atomic-crm/utils/getActivityIcon.tsx",
+      "line": 43,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "useNotifyWithRetry",
+      "file": "src/atomic-crm/utils/useNotifyWithRetry.tsx",
+      "line": 31,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useNotify"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "useNotifyWithRetry",
+      "file": "src/atomic-crm/utils/useNotifyWithRetry.tsx",
+      "line": 31,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useNotify"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": true
+    }
+  ]
+}

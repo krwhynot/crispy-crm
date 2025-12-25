@@ -1,0 +1,980 @@
+{
+  "chunk_name": "contacts",
+  "generated_at": "2025-12-25T16:06:03.550Z",
+  "item_count": 51,
+  "items": [
+    {
+      "name": "ActivitiesTab",
+      "file": "src/atomic-crm/contacts/ActivitiesTab.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useState"
+      ],
+      "imports": [
+        "../activities",
+        "../activities/constants",
+        "../types",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivitiesTab",
+      "file": "src/atomic-crm/contacts/ActivitiesTab.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useState"
+      ],
+      "imports": [
+        "../activities",
+        "../activities/constants",
+        "../types",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "Avatar",
+      "file": "src/atomic-crm/contacts/Avatar.tsx",
+      "line": 6,
+      "type": "presentational",
+      "hooks": [
+        "useRecordContext"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/avatar",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactAdditionalDetails",
+      "file": "src/atomic-crm/contacts/ContactAdditionalDetails.tsx",
+      "line": 11,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./ContactManagerInput",
+        "./constants",
+        "@/components/admin/form",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactAside",
+      "file": "src/atomic-crm/contacts/ContactAside.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [
+        "useRecordContext"
+      ],
+      "imports": [
+        "../sales/SaleName",
+        "../tasks/AddTask",
+        "../tasks/TasksIterator",
+        "../types",
+        "./TagsListEdit",
+        "@/components/admin/array-field",
+        "@/components/admin/date-field",
+        "@/components/admin/edit-button",
+        "@/components/admin/email-field",
+        "@/components/admin/reference-field",
+        "@/components/admin/reference-many-field",
+        "@/components/admin/show-button",
+        "@/components/admin/single-field-list",
+        "@/components/admin/text-field",
+        "@/components/ui",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactBadgeGroup",
+      "file": "src/atomic-crm/contacts/ContactBadges.tsx",
+      "line": 244,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/badge",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactStatusBadge",
+      "file": "src/atomic-crm/contacts/ContactBadges.tsx",
+      "line": 97,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/badge",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "RoleBadge",
+      "file": "src/atomic-crm/contacts/ContactBadges.tsx",
+      "line": 135,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/badge",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "InfluenceBadge",
+      "file": "src/atomic-crm/contacts/ContactBadges.tsx",
+      "line": 177,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/badge",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactCompactForm",
+      "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [
+        "useFormContext"
+      ],
+      "imports": [
+        "../organizations/AutocompleteOrganizationInput",
+        "../utils/saleOptionRenderer",
+        "./Avatar",
+        "./ContactAdditionalDetails",
+        "@/components/admin/array-input",
+        "@/components/admin/form",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/simple-form-iterator",
+        "@/components/admin/text-input",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactCreate",
+      "file": "src/atomic-crm/contacts/ContactCreate.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [
+        "useSmartDefaults"
+      ],
+      "imports": [
+        "../types",
+        "../validation/contacts",
+        "./ContactFormTutorial",
+        "./ContactInputs",
+        "@/atomic-crm/components",
+        "@/atomic-crm/hooks/useSmartDefaults",
+        "@/components/admin/form",
+        "ra-core"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ContactNameHeader",
+      "file": "src/atomic-crm/contacts/ContactDatagridHeader.tsx",
+      "line": 30,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/admin/column-filters"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactStatusHeader",
+      "file": "src/atomic-crm/contacts/ContactDatagridHeader.tsx",
+      "line": 46,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/admin/column-filters"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactColumnHeaders",
+      "file": "src/atomic-crm/contacts/ContactDatagridHeader.tsx",
+      "line": 60,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants",
+        "@/components/admin/column-filters"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactDetailsTab",
+      "file": "src/atomic-crm/contacts/ContactDetailsTab.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [
+        "useNotify",
+        "useUpdate"
+      ],
+      "imports": [
+        "../sales/SaleName",
+        "../types",
+        "./Avatar",
+        "./ContactInputs",
+        "@/components/admin/array-field",
+        "@/components/admin/email-field",
+        "@/components/admin/form/FormProgressProvider",
+        "@/components/admin/reference-field",
+        "@/components/admin/single-field-list",
+        "@/components/admin/text-field",
+        "@/components/layouts/sidepane",
+        "@/components/ui/badge",
+        "@/components/ui/scroll-area",
+        "lucide-react",
+        "ra-core",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactEdit",
+      "file": "src/atomic-crm/contacts/ContactEdit.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useQueryClient"
+      ],
+      "imports": [
+        "../layout/FormToolbar",
+        "../types",
+        "./ContactAside",
+        "./ContactInputs",
+        "@/atomic-crm/validation/contacts",
+        "@/components/design-system",
+        "@/components/ui/card",
+        "@tanstack/react-query",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactEdit",
+      "file": "src/atomic-crm/contacts/ContactEdit.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useQueryClient"
+      ],
+      "imports": [
+        "../layout/FormToolbar",
+        "../types",
+        "./ContactAside",
+        "./ContactInputs",
+        "@/atomic-crm/validation/contacts",
+        "@/components/design-system",
+        "@/components/ui/card",
+        "@tanstack/react-query",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ContactEmpty",
+      "file": "src/atomic-crm/contacts/ContactEmpty.tsx",
+      "line": 5,
+      "type": "presentational",
+      "hooks": [
+        "useAppBarHeight"
+      ],
+      "imports": [
+        "../hooks/useAppBarHeight",
+        "./ContactImportButton",
+        "@/components/admin/create-button"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactExportTemplateButton",
+      "file": "src/atomic-crm/contacts/ContactExportTemplateButton.tsx",
+      "line": 6,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactFormTutorial",
+      "file": "src/atomic-crm/contacts/ContactFormTutorial.tsx",
+      "line": 104,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useRef"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "driver.js",
+        "driver.js/dist/driver.css",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactHierarchyBreadcrumb",
+      "file": "src/atomic-crm/contacts/ContactHierarchyBreadcrumb.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [
+        "useGetOne"
+      ],
+      "imports": [
+        "../types",
+        "lucide-react",
+        "react-admin",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactImportButton",
+      "file": "src/atomic-crm/contacts/ContactImportButton.tsx",
+      "line": 6,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "./ContactImportDialog",
+        "@/components/ui/button",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactImportDialog",
+      "file": "src/atomic-crm/contacts/ContactImportDialog.tsx",
+      "line": 53,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useColumnMapping",
+        "useContactImport",
+        "useEffect",
+        "useImportWizard",
+        "useMemo",
+        "usePapaParse",
+        "useRefresh"
+      ],
+      "imports": [
+        "../utils/csvUploadValidator",
+        "../utils/rateLimiter",
+        "./ContactImportPreview",
+        "./ContactImportResult",
+        "./columnAliases",
+        "./contactImport.helpers",
+        "./contacts_export.csv?raw",
+        "./csvConstants",
+        "./useColumnMapping",
+        "./useContactImport",
+        "./useImportWizard",
+        "./useImportWizard.types",
+        "./usePapaParse",
+        "@/components/admin/file-field",
+        "@/components/admin/file-input",
+        "@/components/ui/alert",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/dialog",
+        "@/components/ui/progress",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactImportPreview",
+      "file": "src/atomic-crm/contacts/ContactImportPreview.tsx",
+      "line": 86,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "./columnAliases",
+        "./contactImport.types",
+        "./csvConstants",
+        "@/atomic-crm/validation/contacts",
+        "@/components/ui/alert",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/checkbox",
+        "@/components/ui/collapsible",
+        "@/components/ui/dialog",
+        "@/components/ui/label",
+        "@/components/ui/select",
+        "@/components/ui/table",
+        "lucide-react",
+        "react",
+        "zod"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactImportPreview",
+      "file": "src/atomic-crm/contacts/ContactImportPreview.tsx",
+      "line": 86,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "./columnAliases",
+        "./contactImport.types",
+        "./csvConstants",
+        "@/atomic-crm/validation/contacts",
+        "@/components/ui/alert",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/checkbox",
+        "@/components/ui/collapsible",
+        "@/components/ui/dialog",
+        "@/components/ui/label",
+        "@/components/ui/select",
+        "@/components/ui/table",
+        "lucide-react",
+        "react",
+        "zod"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ContactImportResult",
+      "file": "src/atomic-crm/contacts/ContactImportResult.tsx",
+      "line": 55,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/alert",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactInputs",
+      "file": "src/atomic-crm/contacts/ContactInputs.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [
+        "useFormState"
+      ],
+      "imports": [
+        "./ContactCompactForm",
+        "@/components/admin/FormErrorSummary",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactList",
+      "file": "src/atomic-crm/contacts/ContactList.tsx",
+      "line": 32,
+      "type": "presentational",
+      "hooks": [
+        "useFilterCleanup",
+        "useGetIdentity",
+        "useSlideOverState"
+      ],
+      "imports": [
+        "../hooks/useFilterCleanup",
+        "../layout/TopToolbar",
+        "../tutorial",
+        "../types",
+        "./Avatar",
+        "./ContactBadges",
+        "./ContactDatagridHeader",
+        "./ContactEmpty",
+        "./ContactListFilter",
+        "./ContactSlideOver",
+        "./contactExporter",
+        "./contactFilterConfig",
+        "./formatters",
+        "@/components/admin/FilterableBadge",
+        "@/components/admin/FloatingCreateButton",
+        "@/components/admin/ListNoResults",
+        "@/components/admin/ListSearchBar",
+        "@/components/admin/PremiumDatagrid",
+        "@/components/admin/bulk-actions-toolbar",
+        "@/components/admin/date-field",
+        "@/components/admin/list",
+        "@/components/admin/reference-field",
+        "@/components/admin/text-field",
+        "@/components/layouts/StandardListLayout",
+        "@/components/ui/list-skeleton",
+        "@/hooks/useListKeyboardNavigation",
+        "@/hooks/useSlideOverState",
+        "ra-core",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactList",
+      "file": "src/atomic-crm/contacts/ContactList.tsx",
+      "line": 32,
+      "type": "presentational",
+      "hooks": [
+        "useFilterCleanup",
+        "useGetIdentity",
+        "useSlideOverState"
+      ],
+      "imports": [
+        "../hooks/useFilterCleanup",
+        "../layout/TopToolbar",
+        "../tutorial",
+        "../types",
+        "./Avatar",
+        "./ContactBadges",
+        "./ContactDatagridHeader",
+        "./ContactEmpty",
+        "./ContactListFilter",
+        "./ContactSlideOver",
+        "./contactExporter",
+        "./contactFilterConfig",
+        "./formatters",
+        "@/components/admin/FilterableBadge",
+        "@/components/admin/FloatingCreateButton",
+        "@/components/admin/ListNoResults",
+        "@/components/admin/ListSearchBar",
+        "@/components/admin/PremiumDatagrid",
+        "@/components/admin/bulk-actions-toolbar",
+        "@/components/admin/date-field",
+        "@/components/admin/list",
+        "@/components/admin/reference-field",
+        "@/components/admin/text-field",
+        "@/components/layouts/StandardListLayout",
+        "@/components/ui/list-skeleton",
+        "@/hooks/useListKeyboardNavigation",
+        "@/hooks/useSlideOverState",
+        "ra-core",
+        "react-admin"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ContactListFilter",
+      "file": "src/atomic-crm/contacts/ContactListFilter.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useListContext"
+      ],
+      "imports": [
+        "../filters/FilterCategory",
+        "../tags/tag-colors",
+        "@/components/admin/OwnerFilterDropdown",
+        "@/components/admin/toggle-filter-button",
+        "@/components/ui/badge",
+        "@/lib/utils",
+        "date-fns",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactManagerInput",
+      "file": "src/atomic-crm/contacts/ContactManagerInput.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [
+        "useRecordContext"
+      ],
+      "imports": [
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/reference-input",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "contactOptionText",
+      "file": "src/atomic-crm/contacts/ContactOption.tsx",
+      "line": 24,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "./Avatar",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactShow",
+      "file": "src/atomic-crm/contacts/ContactShow.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../notes",
+        "../organizations/OrganizationAvatar",
+        "../types",
+        "./ActivitiesTab",
+        "./Avatar",
+        "./ContactAside",
+        "./OpportunitiesTab",
+        "@/components/admin/reference-field",
+        "@/components/admin/reference-many-field",
+        "@/components/admin/text-field",
+        "@/components/design-system",
+        "@/components/ui/card",
+        "@/components/ui/tabs",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactShow",
+      "file": "src/atomic-crm/contacts/ContactShow.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../notes",
+        "../organizations/OrganizationAvatar",
+        "../types",
+        "./ActivitiesTab",
+        "./Avatar",
+        "./ContactAside",
+        "./OpportunitiesTab",
+        "@/components/admin/reference-field",
+        "@/components/admin/reference-many-field",
+        "@/components/admin/text-field",
+        "@/components/design-system",
+        "@/components/ui/card",
+        "@/components/ui/tabs",
+        "ra-core"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ContactSlideOver",
+      "file": "src/atomic-crm/contacts/ContactSlideOver.tsx",
+      "line": 29,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "./ActivitiesTab",
+        "./ContactDetailsTab",
+        "./ContactHierarchyBreadcrumb",
+        "./slideOverTabs/ContactNotesTab",
+        "@/atomic-crm/components",
+        "@/components/layouts/ResourceSlideOver",
+        "@/components/ui/list-skeleton",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "LinkOpportunityModal",
+      "file": "src/atomic-crm/contacts/LinkOpportunityModal.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [
+        "useCreate",
+        "useNotify"
+      ],
+      "imports": [
+        "@/atomic-crm/types",
+        "@/components/admin/autocomplete-input",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunitiesTab",
+      "file": "src/atomic-crm/contacts/OpportunitiesTab.tsx",
+      "line": 26,
+      "type": "presentational",
+      "hooks": [
+        "useCreate",
+        "useGetList",
+        "useGetMany",
+        "useMemo",
+        "useNotify",
+        "useRefresh",
+        "useShowContext",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "./LinkOpportunityModal",
+        "./StageBadgeWithHealth",
+        "./SuggestedOpportunityCard",
+        "./UnlinkConfirmDialog",
+        "@/components/ui/button",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-admin",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "StageBadgeWithHealth",
+      "file": "src/atomic-crm/contacts/StageBadgeWithHealth.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/badge",
+        "@/lib/utils",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SuggestedOpportunityCard",
+      "file": "src/atomic-crm/contacts/SuggestedOpportunityCard.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./StageBadgeWithHealth",
+        "@/components/ui/button"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TagsList",
+      "file": "src/atomic-crm/contacts/TagsList.tsx",
+      "line": 50,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../tags/tag-colors",
+        "@/components/admin/reference-array-field",
+        "@/components/admin/single-field-list",
+        "@/components/ui/badge",
+        "@/lib/utils",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TagsListEdit",
+      "file": "src/atomic-crm/contacts/TagsListEdit.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useGetMany",
+        "useRecordContext",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "../tags/TagChip",
+        "../tags/TagCreateModal",
+        "../tags/tag-colors",
+        "../types",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/dropdown-menu",
+        "@/lib/utils",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "UnlinkConfirmDialog",
+      "file": "src/atomic-crm/contacts/UnlinkConfirmDialog.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [
+        "useDelete",
+        "useNotify"
+      ],
+      "imports": [
+        "@/components/ui/alert-dialog",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactListView",
+      "file": "src/atomic-crm/contacts/index.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactEditView",
+      "file": "src/atomic-crm/contacts/index.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactCreateView",
+      "file": "src/atomic-crm/contacts/index.tsx",
+      "line": 22,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactListView",
+      "file": "src/atomic-crm/contacts/resource.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactEditView",
+      "file": "src/atomic-crm/contacts/resource.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactCreateView",
+      "file": "src/atomic-crm/contacts/resource.tsx",
+      "line": 22,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactNotesTab",
+      "file": "src/atomic-crm/contacts/slideOverTabs/ContactNotesTab.tsx",
+      "line": 19,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../../notes",
+        "../types",
+        "@/components/admin/reference-many-field",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "useContactImport",
+      "file": "src/atomic-crm/contacts/useContactImport.tsx",
+      "line": 31,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useDataProvider",
+        "useGetIdentity",
+        "useMemo"
+      ],
+      "imports": [
+        "../types",
+        "./contactImport.logic",
+        "./contactImport.types",
+        "@/lib/date-utils",
+        "ra-core",
+        "react",
+        "zod"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "usePapaParse",
+      "file": "src/atomic-crm/contacts/usePapaParse.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useMemo",
+        "useRef",
+        "useState"
+      ],
+      "imports": [
+        "./csvProcessor",
+        "papaparse",
+        "react"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "chunk_name": "login",
+  "generated_at": "2025-12-25T16:06:03.552Z",
+  "item_count": 2,
+  "items": [
+    {
+      "name": "LoginSkeleton",
+      "file": "src/atomic-crm/login/LoginSkeleton.tsx",
+      "line": 3,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/skeleton"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "StartPage",
+      "file": "src/atomic-crm/login/StartPage.tsx",
+      "line": 3,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/admin/login-page"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

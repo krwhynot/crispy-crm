@@ -1,0 +1,93 @@
+{
+  "chunk_name": "filters",
+  "generated_at": "2025-12-25T16:06:03.551Z",
+  "item_count": 5,
+  "items": [
+    {
+      "name": "FilterCategory",
+      "file": "src/atomic-crm/filters/FilterCategory.tsx",
+      "line": 7,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "@/lib/utils",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "FilterChip",
+      "file": "src/atomic-crm/filters/FilterChip.tsx",
+      "line": 41,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../../components/ui/button",
+        "@/lib/utils",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "FilterChipBar",
+      "file": "src/atomic-crm/filters/FilterChipBar.tsx",
+      "line": 44,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useFilterChipBar",
+        "useRef"
+      ],
+      "imports": [
+        "./FilterChip",
+        "./filterConfigSchema",
+        "./useFilterChipBar",
+        "@/components/ui/button",
+        "@/lib/utils",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "FilterChipsPanel",
+      "file": "src/atomic-crm/filters/FilterChipsPanel.tsx",
+      "line": 23,
+      "type": "presentational",
+      "hooks": [
+        "useFilterManagement",
+        "useOrganizationNames",
+        "useSalesNames",
+        "useTagNames"
+      ],
+      "imports": [
+        "./FilterChip",
+        "./filterFormatters",
+        "./useFilterManagement",
+        "./useOrganizationNames",
+        "./useSalesNames",
+        "./useTagNames",
+        "@/components/ui/accordion",
+        "@/lib/utils"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "FilterSidebar",
+      "file": "src/atomic-crm/filters/FilterSidebar.tsx",
+      "line": 49,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/admin/search-input",
+        "@/lib/utils",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

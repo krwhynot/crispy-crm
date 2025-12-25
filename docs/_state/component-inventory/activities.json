@@ -1,0 +1,407 @@
+{
+  "chunk_name": "activities",
+  "generated_at": "2025-12-25T16:06:03.547Z",
+  "item_count": 25,
+  "items": [
+    {
+      "name": "ActivityCreate",
+      "file": "src/atomic-crm/activities/ActivityCreate.tsx",
+      "line": 25,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useLocation",
+        "useMemo"
+      ],
+      "imports": [
+        "../validation/activities",
+        "./ActivitySinglePage",
+        "@/atomic-crm/layout/FormToolbar",
+        "@/components/admin/FormErrorSummary",
+        "@/components/admin/form",
+        "@/components/ui/card",
+        "@/hooks/useUnsavedChangesWarning",
+        "ra-core",
+        "react",
+        "react-hook-form",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ActivityEdit",
+      "file": "src/atomic-crm/activities/ActivityEdit.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useQueryClient"
+      ],
+      "imports": [
+        "../types",
+        "./ActivityInputs",
+        "@/atomic-crm/layout/FormToolbar",
+        "@/components/ui/card",
+        "@tanstack/react-query",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityEdit",
+      "file": "src/atomic-crm/activities/ActivityEdit.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useQueryClient"
+      ],
+      "imports": [
+        "../types",
+        "./ActivityInputs",
+        "@/atomic-crm/layout/FormToolbar",
+        "@/components/ui/card",
+        "@tanstack/react-query",
+        "ra-core"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ActivityInputs",
+      "file": "src/atomic-crm/activities/ActivityInputs.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [
+        "useFormState"
+      ],
+      "imports": [
+        "./ActivitySinglePage",
+        "@/components/admin/FormErrorSummary",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityInputs",
+      "file": "src/atomic-crm/activities/ActivityInputs.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [
+        "useFormState"
+      ],
+      "imports": [
+        "./ActivitySinglePage",
+        "@/components/admin/FormErrorSummary",
+        "react-hook-form"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ActivityList",
+      "file": "src/atomic-crm/activities/ActivityList.tsx",
+      "line": 47,
+      "type": "presentational",
+      "hooks": [
+        "useFilterCleanup",
+        "useGetIdentity"
+      ],
+      "imports": [
+        "../components/SampleStatusBadge",
+        "../hooks/useFilterCleanup",
+        "../layout/TopToolbar",
+        "../sales/SaleName",
+        "../tutorial",
+        "../types",
+        "../utils/listPatterns",
+        "../validation/activities",
+        "./ActivityListFilter",
+        "./activityFilterConfig",
+        "@/components/admin/FloatingCreateButton",
+        "@/components/admin/ListSearchBar",
+        "@/components/admin/PremiumDatagrid",
+        "@/components/admin/bulk-actions-toolbar",
+        "@/components/admin/date-field",
+        "@/components/admin/list",
+        "@/components/admin/reference-field",
+        "@/components/admin/text-field",
+        "@/components/layouts/StandardListLayout",
+        "@/components/ui/badge",
+        "@/components/ui/list-skeleton",
+        "@/hooks/useListKeyboardNavigation",
+        "jsonexport/dist",
+        "ra-core",
+        "react-admin"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ActivityListFilter",
+      "file": "src/atomic-crm/activities/ActivityListFilter.tsx",
+      "line": 24,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity"
+      ],
+      "imports": [
+        "../filters/FilterCategory",
+        "../validation/activities",
+        "@/components/admin/OwnerFilterDropdown",
+        "@/components/admin/search-input",
+        "@/components/admin/toggle-filter-button",
+        "@/components/ui/badge",
+        "date-fns",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivitySinglePage",
+      "file": "src/atomic-crm/activities/ActivitySinglePage.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../contacts/ContactOption",
+        "../validation/activities",
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/form",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "QuickLogActivity",
+      "file": "src/atomic-crm/activities/QuickLogActivity.tsx",
+      "line": 95,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useEffect",
+        "useGetOne",
+        "useNotify",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/label",
+        "@/components/ui/select",
+        "@/components/ui/textarea",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "QuickLogActivityDialog",
+      "file": "src/atomic-crm/activities/QuickLogActivityDialog.tsx",
+      "line": 345,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useGetOne",
+        "useMemo",
+        "useRef",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "@/atomic-crm/activities/activityDraftSchema",
+        "@/atomic-crm/utils/safeJsonParse",
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/badge",
+        "@/components/ui/sheet",
+        "@/components/ui/skeleton",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityTimelineEntry",
+      "file": "src/atomic-crm/activities/components/ActivityTimelineEntry.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../../types",
+        "@/components/admin/reference-field",
+        "@/components/ui/badge",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityList",
+      "file": "src/atomic-crm/activities/index.tsx",
+      "line": 47,
+      "type": "presentational",
+      "hooks": [
+        "useFilterCleanup",
+        "useGetIdentity"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityCreate",
+      "file": "src/atomic-crm/activities/index.tsx",
+      "line": 25,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useLocation",
+        "useMemo"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityEdit",
+      "file": "src/atomic-crm/activities/index.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useQueryClient"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityInputs",
+      "file": "src/atomic-crm/activities/index.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [
+        "useFormState"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "QuickLogActivityDialog",
+      "file": "src/atomic-crm/activities/index.tsx",
+      "line": 345,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useGetOne",
+        "useMemo",
+        "useRef",
+        "useState"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "QuickLogActivity",
+      "file": "src/atomic-crm/activities/index.tsx",
+      "line": 95,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useEffect",
+        "useGetOne",
+        "useNotify",
+        "useState"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityTimelineEntry",
+      "file": "src/atomic-crm/activities/index.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ACTIVITY_PAGE_SIZE",
+      "file": "src/atomic-crm/activities/index.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityListView",
+      "file": "src/atomic-crm/activities/index.tsx",
+      "line": 22,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityCreateView",
+      "file": "src/atomic-crm/activities/index.tsx",
+      "line": 28,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityEditView",
+      "file": "src/atomic-crm/activities/index.tsx",
+      "line": 34,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityListView",
+      "file": "src/atomic-crm/activities/resource.tsx",
+      "line": 22,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ResourceErrorBoundary",
+        "@/lib/date-utils",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityCreateView",
+      "file": "src/atomic-crm/activities/resource.tsx",
+      "line": 28,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ResourceErrorBoundary",
+        "@/lib/date-utils",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityEditView",
+      "file": "src/atomic-crm/activities/resource.tsx",
+      "line": 34,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ResourceErrorBoundary",
+        "@/lib/date-utils",
+        "react"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

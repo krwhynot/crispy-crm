@@ -1,0 +1,338 @@
+{
+  "chunk_name": "sales",
+  "generated_at": "2025-12-25T16:06:03.558Z",
+  "item_count": 20,
+  "items": [
+    {
+      "name": "SaleAvatar",
+      "file": "src/atomic-crm/sales/SaleAvatar.tsx",
+      "line": 6,
+      "type": "presentational",
+      "hooks": [
+        "useRecordContext"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/avatar",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SaleName",
+      "file": "src/atomic-crm/sales/SaleName.tsx",
+      "line": 5,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useRecordContext"
+      ],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesCreate",
+      "file": "src/atomic-crm/sales/SalesCreate.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useMutation",
+        "useNotify",
+        "useRedirect"
+      ],
+      "imports": [
+        "../services",
+        "../types",
+        "../validation/sales",
+        "./SalesInputs",
+        "@/components/admin/FormErrorSummary",
+        "@/components/admin/simple-form",
+        "@/components/ui/card",
+        "@tanstack/react-query",
+        "ra-core",
+        "react-hook-form"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "SalesEdit",
+      "file": "src/atomic-crm/sales/SalesEdit.tsx",
+      "line": 31,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useEditController",
+        "useMemo",
+        "useMutation",
+        "useNotify",
+        "useRedirect"
+      ],
+      "imports": [
+        "../services",
+        "../types",
+        "../utils/formatName",
+        "./SalesInputs",
+        "@/atomic-crm/validation/sales",
+        "@/components/admin/cancel-button",
+        "@/components/admin/form",
+        "@/components/admin/simple-form",
+        "@/components/ui/card",
+        "@/hooks/useUnsavedChangesWarning",
+        "@tanstack/react-query",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "SalesGeneralTab",
+      "file": "src/atomic-crm/sales/SalesGeneralTab.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/admin/text-input"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesInputs",
+      "file": "src/atomic-crm/sales/SalesInputs.tsx",
+      "line": 5,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SalesGeneralTab",
+        "./SalesPermissionsInputs",
+        "@/components/admin/tabbed-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesList",
+      "file": "src/atomic-crm/sales/SalesList.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [
+        "useFilterCleanup",
+        "useGetIdentity",
+        "useSlideOverState"
+      ],
+      "imports": [
+        "../hooks/useFilterCleanup",
+        "../layout/TopToolbar",
+        "../utils/listPatterns",
+        "./SalesSlideOver",
+        "@/components/admin/FloatingCreateButton",
+        "@/components/admin/ListSearchBar",
+        "@/components/admin/PremiumDatagrid",
+        "@/components/admin/list",
+        "@/components/ui/badge",
+        "@/components/ui/list-skeleton",
+        "@/hooks/useListKeyboardNavigation",
+        "@/hooks/useSlideOverState",
+        "ra-core",
+        "react-admin"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "SalesPermissionsInputs",
+      "file": "src/atomic-crm/sales/SalesPermissionsInputs.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../validation/sales",
+        "@/components/admin/select-input"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesPermissionsTab",
+      "file": "src/atomic-crm/sales/SalesPermissionsTab.tsx",
+      "line": 52,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useNotify",
+        "useRedirect",
+        "useRefresh",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "../providers/supabase/authProvider",
+        "@/atomic-crm/types",
+        "@/atomic-crm/validation/sales",
+        "@/components/ui/alert-dialog",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/label",
+        "@/components/ui/select",
+        "@/components/ui/skeleton",
+        "@/components/ui/switch",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesProfileTab",
+      "file": "src/atomic-crm/sales/SalesProfileTab.tsx",
+      "line": 37,
+      "type": "presentational",
+      "hooks": [
+        "useNotify",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "@/atomic-crm/types",
+        "@/atomic-crm/validation/sales",
+        "@/components/ui/avatar",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/components/ui/skeleton",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesShow",
+      "file": "src/atomic-crm/sales/SalesShow.tsx",
+      "line": 7,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "@/components/ui/avatar",
+        "@/components/ui/card",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesShow",
+      "file": "src/atomic-crm/sales/SalesShow.tsx",
+      "line": 7,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "@/components/ui/avatar",
+        "@/components/ui/card",
+        "ra-core"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "SalesSlideOver",
+      "file": "src/atomic-crm/sales/SalesSlideOver.tsx",
+      "line": 31,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "./SalesPermissionsTab",
+        "./SalesProfileTab",
+        "@/components/layouts/ResourceSlideOver",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesListView",
+      "file": "src/atomic-crm/sales/index.tsx",
+      "line": 11,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesEditView",
+      "file": "src/atomic-crm/sales/index.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesCreateView",
+      "file": "src/atomic-crm/sales/index.tsx",
+      "line": 23,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesListView",
+      "file": "src/atomic-crm/sales/resource.tsx",
+      "line": 11,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesEditView",
+      "file": "src/atomic-crm/sales/resource.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesCreateView",
+      "file": "src/atomic-crm/sales/resource.tsx",
+      "line": 23,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SalesShowView",
+      "file": "src/atomic-crm/sales/resource.tsx",
+      "line": 29,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "../utils/formatName",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

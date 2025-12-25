@@ -1,0 +1,634 @@
+{
+  "chunk_name": "dashboard",
+  "generated_at": "2025-12-25T16:06:03.551Z",
+  "item_count": 30,
+  "items": [
+    {
+      "name": "DashboardTutorial",
+      "file": "src/atomic-crm/dashboard/v3/DashboardTutorial.tsx",
+      "line": 25,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useRef",
+        "useState"
+      ],
+      "imports": [
+        "./dashboardTutorialSteps",
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "driver.js",
+        "driver.js/dist/driver.css",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PrincipalDashboardV3",
+      "file": "src/atomic-crm/dashboard/v3/PrincipalDashboardV3.tsx",
+      "line": 24,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useState"
+      ],
+      "imports": [
+        "./DashboardTutorial",
+        "./components/DashboardTabPanel",
+        "./components/KPISummaryRow",
+        "./components/LogActivityFAB",
+        "./components/MobileQuickActionBar",
+        "./components/TaskCompleteSheet",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityFeedPanel",
+      "file": "src/atomic-crm/dashboard/v3/components/ActivityFeedPanel.tsx",
+      "line": 114,
+      "type": "presentational",
+      "hooks": [
+        "useMemo",
+        "useTeamActivities"
+      ],
+      "imports": [
+        "../hooks/useTeamActivities",
+        "@/atomic-crm/utils/getActivityIcon",
+        "@/components/ui/avatar",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "@/lib/date-utils",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityFeedPanel",
+      "file": "src/atomic-crm/dashboard/v3/components/ActivityFeedPanel.tsx",
+      "line": 114,
+      "type": "presentational",
+      "hooks": [
+        "useMemo",
+        "useTeamActivities"
+      ],
+      "imports": [
+        "../hooks/useTeamActivities",
+        "@/atomic-crm/utils/getActivityIcon",
+        "@/components/ui/avatar",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "@/lib/date-utils",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ActivityTypeSection",
+      "file": "src/atomic-crm/dashboard/v3/components/ActivityTypeSection.tsx",
+      "line": 41,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/form",
+        "@/components/ui/input",
+        "@/components/ui/select",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "DashboardTabPanel",
+      "file": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx",
+      "line": 45,
+      "type": "presentational",
+      "hooks": [
+        "useTaskCount"
+      ],
+      "imports": [
+        "../hooks/useTaskCount",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "@/components/ui/skeleton",
+        "@/components/ui/tabs",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "DashboardTabPanel",
+      "file": "src/atomic-crm/dashboard/v3/components/DashboardTabPanel.tsx",
+      "line": 45,
+      "type": "presentational",
+      "hooks": [
+        "useTaskCount"
+      ],
+      "imports": [
+        "../hooks/useTaskCount",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "@/components/ui/skeleton",
+        "@/components/ui/tabs",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "EntityCombobox",
+      "file": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx",
+      "line": 69,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useState"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/command",
+        "@/components/ui/form",
+        "@/components/ui/popover",
+        "@/lib/utils",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "FollowUpSection",
+      "file": "src/atomic-crm/dashboard/v3/components/FollowUpSection.tsx",
+      "line": 23,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/button",
+        "@/components/ui/calendar",
+        "@/components/ui/form",
+        "@/components/ui/popover",
+        "@/components/ui/switch",
+        "@/lib/utils",
+        "date-fns",
+        "lucide-react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "KPICard",
+      "file": "src/atomic-crm/dashboard/v3/components/KPICard.tsx",
+      "line": 98,
+      "type": "presentational",
+      "hooks": [
+        "useNavigate"
+      ],
+      "imports": [
+        "@/components/ui/card",
+        "@/components/ui/skeleton",
+        "@/lib/utils",
+        "lucide-react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "KPISummaryRow",
+      "file": "src/atomic-crm/dashboard/v3/components/KPISummaryRow.tsx",
+      "line": 22,
+      "type": "presentational",
+      "hooks": [
+        "useKPIMetrics"
+      ],
+      "imports": [
+        "../hooks/useKPIMetrics",
+        "./KPICard"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "LogActivityFAB",
+      "file": "src/atomic-crm/dashboard/v3/components/LogActivityFAB.tsx",
+      "line": 153,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useRef",
+        "useState"
+      ],
+      "imports": [
+        "@/atomic-crm/activities/activityDraftSchema",
+        "@/atomic-crm/utils/safeJsonParse",
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/button",
+        "@/components/ui/sheet",
+        "@/components/ui/skeleton",
+        "@/lib/utils",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "MobileQuickActionBar",
+      "file": "src/atomic-crm/dashboard/v3/components/MobileQuickActionBar.tsx",
+      "line": 156,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useState"
+      ],
+      "imports": [
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/button",
+        "@/components/ui/sheet",
+        "@/components/ui/skeleton",
+        "@/lib/utils",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "MyPerformanceWidget",
+      "file": "src/atomic-crm/dashboard/v3/components/MyPerformanceWidget.tsx",
+      "line": 158,
+      "type": "presentational",
+      "hooks": [
+        "useMyPerformance"
+      ],
+      "imports": [
+        "../hooks/useMyPerformance",
+        "@/components/ui/skeleton",
+        "@/lib/utils",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "MyPerformanceWidget",
+      "file": "src/atomic-crm/dashboard/v3/components/MyPerformanceWidget.tsx",
+      "line": 158,
+      "type": "presentational",
+      "hooks": [
+        "useMyPerformance"
+      ],
+      "imports": [
+        "../hooks/useMyPerformance",
+        "@/components/ui/skeleton",
+        "@/lib/utils",
+        "lucide-react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "PipelineDrillDownSheet",
+      "file": "src/atomic-crm/dashboard/v3/components/PipelineDrillDownSheet.tsx",
+      "line": 40,
+      "type": "presentational",
+      "hooks": [
+        "useNavigate",
+        "usePrincipalOpportunities"
+      ],
+      "imports": [
+        "../hooks/usePrincipalOpportunities",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/scroll-area",
+        "@/components/ui/sheet",
+        "@/components/ui/skeleton",
+        "date-fns",
+        "lucide-react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PipelineTableRow",
+      "file": "src/atomic-crm/dashboard/v3/components/PipelineTableRow.tsx",
+      "line": 61,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ui/badge",
+        "@/components/ui/table",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PrincipalPipelineTable",
+      "file": "src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "usePipelineTableState",
+        "usePrincipalPipeline",
+        "useState"
+      ],
+      "imports": [
+        "../hooks/usePipelineTableState",
+        "../hooks/usePrincipalPipeline",
+        "../types",
+        "./PipelineTableRow",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/checkbox",
+        "@/components/ui/dropdown-menu",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/components/ui/skeleton",
+        "@/components/ui/switch",
+        "@/components/ui/table",
+        "@/components/ui/tooltip",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PrincipalPipelineTable",
+      "file": "src/atomic-crm/dashboard/v3/components/PrincipalPipelineTable.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "usePipelineTableState",
+        "usePrincipalPipeline",
+        "useState"
+      ],
+      "imports": [
+        "../hooks/usePipelineTableState",
+        "../hooks/usePrincipalPipeline",
+        "../types",
+        "./PipelineTableRow",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/checkbox",
+        "@/components/ui/dropdown-menu",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/components/ui/skeleton",
+        "@/components/ui/switch",
+        "@/components/ui/table",
+        "@/components/ui/tooltip",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "QuickLogForm",
+      "file": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
+      "line": 61,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useCurrentSale",
+        "useDataProvider",
+        "useEffect",
+        "useEntityData",
+        "useForm",
+        "useMemo",
+        "useNotify",
+        "useWatch"
+      ],
+      "imports": [
+        "../hooks/useCurrentSale",
+        "../hooks/useEntityData",
+        "./ActivityTypeSection",
+        "./EntityCombobox",
+        "./FollowUpSection",
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/button",
+        "@/components/ui/form",
+        "@/components/ui/textarea",
+        "@hookform/resolvers/zod",
+        "lucide-react",
+        "react",
+        "react-admin",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SnoozePopover",
+      "file": "src/atomic-crm/dashboard/v3/components/SnoozePopover.tsx",
+      "line": 30,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useState"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/calendar",
+        "@/components/ui/popover",
+        "date-fns",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskCompleteSheet",
+      "file": "src/atomic-crm/dashboard/v3/components/TaskCompleteSheet.tsx",
+      "line": 164,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useMyTasks",
+        "useNotify",
+        "useState"
+      ],
+      "imports": [
+        "../hooks/useMyTasks",
+        "../types",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/sheet",
+        "@/components/ui/skeleton",
+        "@/lib/utils",
+        "date-fns",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskKanbanCard",
+      "file": "src/atomic-crm/dashboard/v3/components/TaskKanbanCard.tsx",
+      "line": 109,
+      "type": "presentational",
+      "hooks": [
+        "useNotify",
+        "useSortable",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "@/atomic-crm/tasks/components/TaskActionMenu",
+        "@/atomic-crm/tasks/components/TaskCompletionDialog",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/checkbox",
+        "@dnd-kit/sortable",
+        "@dnd-kit/utilities",
+        "date-fns",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskKanbanColumn",
+      "file": "src/atomic-crm/dashboard/v3/components/TaskKanbanColumn.tsx",
+      "line": 96,
+      "type": "presentational",
+      "hooks": [
+        "useDroppable",
+        "useMemo"
+      ],
+      "imports": [
+        "../types",
+        "./TaskKanbanCard",
+        "@/lib/utils",
+        "@dnd-kit/core",
+        "@dnd-kit/sortable",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TasksKanbanPanel",
+      "file": "src/atomic-crm/dashboard/v3/components/TasksKanbanPanel.tsx",
+      "line": 69,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useMemo",
+        "useMyTasks",
+        "useNotify",
+        "useSensor",
+        "useSensors",
+        "useState"
+      ],
+      "imports": [
+        "../hooks/useMyTasks",
+        "../types",
+        "./TaskKanbanCard",
+        "./TaskKanbanColumn",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "@dnd-kit/core",
+        "@dnd-kit/sortable",
+        "date-fns",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TasksKanbanPanel",
+      "file": "src/atomic-crm/dashboard/v3/components/TasksKanbanPanel.tsx",
+      "line": 69,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useMemo",
+        "useMyTasks",
+        "useNotify",
+        "useSensor",
+        "useSensors",
+        "useState"
+      ],
+      "imports": [
+        "../hooks/useMyTasks",
+        "../types",
+        "./TaskKanbanCard",
+        "./TaskKanbanColumn",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/skeleton",
+        "@dnd-kit/core",
+        "@dnd-kit/sortable",
+        "date-fns",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "CurrentSaleProvider",
+      "file": "src/atomic-crm/dashboard/v3/context/CurrentSaleContext.tsx",
+      "line": 39,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useGetIdentity",
+        "useMemo"
+      ],
+      "imports": [
+        "../hooks/useCurrentSale",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PrincipalDashboardV3WithProvider",
+      "file": "src/atomic-crm/dashboard/v3/index.tsx",
+      "line": 62,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./context",
+        "@/components/ui/skeleton",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "CurrentSaleProvider",
+      "file": "src/atomic-crm/dashboard/v3/index.tsx",
+      "line": 39,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useGetIdentity",
+        "useMemo"
+      ],
+      "imports": [
+        "./context",
+        "@/components/ui/skeleton",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "showFollowUpToast",
+      "file": "src/atomic-crm/dashboard/v3/utils/showFollowUpToast.tsx",
+      "line": 33,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "sonner"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}
