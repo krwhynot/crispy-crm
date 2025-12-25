@@ -125,7 +125,7 @@ src/atomic-crm/feature/
 
 **Unit (Vitest):** Use `renderWithAdminContext()` from `src/tests/utils/render-admin.tsx`. Supabase mocked in `src/tests/setup.ts`. Tests in `__tests__/` directories.
 
-**E2E (Playwright):** POMs in `tests/e2e/support/poms/`. Semantic selectors only (`getByRole`, `getByLabel`, `getByText`) - never CSS. Auth: `tests/e2e/.auth/user.json`.
+**Manual E2E (Claude Chrome):** See `docs/tests/e2e/` for manual testing checklists. Seed test data with `just seed-e2e`.
 
 ## Database
 
