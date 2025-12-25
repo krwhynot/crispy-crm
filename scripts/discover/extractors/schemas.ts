@@ -435,9 +435,9 @@ export async function extractSchemas(): Promise<void> {
 
   const globs = ["src/atomic-crm/validation/**/*.ts"];
 
-  project.addSourceFilesAtPaths(globs);
-
-  const sourceFiles = project.getSourceFiles();
+  // Use the return value to get ONLY the files matching our globs
+  // (not all files accumulated in the project singleton)
+  const sourceFiles = project.addSourceFilesAtPaths(globs);
   const schemas: SchemaInfo[] = [];
   const processedFiles = new Set<string>();
 

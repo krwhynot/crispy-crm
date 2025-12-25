@@ -45,6 +45,48 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
       );
     },
   },
+  schemas: {
+    name: "schemas",
+    label: "Zod Schemas",
+    outputPath: "schemas-inventory.json",
+    isChunked: false,
+    extractFn: extractSchemas,
+    getSourceFiles: () => {
+      const files = project.addSourceFilesAtPaths("src/atomic-crm/validation/**/*.ts");
+      return files.map(f => f.getFilePath()).filter(p => !p.includes("__tests__"));
+    },
+  },
+  types: {
+    name: "types",
+    label: "TypeScript Types",
+    outputPath: "types-inventory.json",
+    isChunked: false,
+    extractFn: extractTypes,
+    getSourceFiles: () => {
+      const globs = ["src/atomic-crm/types.ts", "src/atomic-crm/**/types.ts", "src/types/**/*.ts"];
+      const files = project.addSourceFilesAtPaths(globs);
+      return files.map(f => f.getFilePath()).filter(p => !p.includes("database.generated.ts"));
+    },
+  },
+  forms: {
+    name: "forms",
+    label: "Forms",
+    outputPath: "forms-inventory.json",
+    isChunked: false,
+    extractFn: extractForms,
+    getSourceFiles: () => {
+      const globs = [
+        "src/atomic-crm/**/*Create*.tsx",
+        "src/atomic-crm/**/*Edit*.tsx",
+        "src/atomic-crm/**/*Form*.tsx",
+        "src/atomic-crm/**/*Inputs*.tsx"
+      ];
+      const files = project.addSourceFilesAtPaths(globs);
+      return files.map(f => f.getFilePath()).filter(
+        p => !p.includes("__tests__") && !p.includes(".test.") && !p.includes(".spec.")
+      );
+    },
+  },
 };
 
 interface CliArgs {

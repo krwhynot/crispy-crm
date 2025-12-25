@@ -202,10 +202,9 @@ function shouldExcludeFile(filePath: string): boolean {
 export async function extractTypes(): Promise<void> {
   console.log("📐 Extracting TypeScript types...");
 
-  // Add source files
-  project.addSourceFilesAtPaths(SOURCE_GLOBS);
-
-  const sourceFiles = project.getSourceFiles();
+  // Use the return value to get ONLY the files matching our globs
+  // (not all files accumulated in the project singleton)
+  const sourceFiles = project.addSourceFilesAtPaths(SOURCE_GLOBS);
   const types: TypeInfo[] = [];
   const processedFiles = new Set<string>();
 

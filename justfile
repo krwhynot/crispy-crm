@@ -172,6 +172,22 @@ discover-priority:
 discover-check:
     npx tsx scripts/discover/index.ts --check
 
+# Extract Zod schemas only
+discover-schemas:
+    npx tsx scripts/discover/index.ts --only=schemas
+
+# Extract TypeScript types only
+discover-types:
+    npx tsx scripts/discover/index.ts --only=types
+
+# Extract form components only
+discover-forms:
+    npx tsx scripts/discover/index.ts --only=forms
+
+# Run all new extractors (schemas, types, forms)
+discover-new:
+    npx tsx scripts/discover/index.ts --only=schemas,types,forms
+
 # ─────────────────────────────────────────────────────────────
 # 📦 Composite Commands
 # ─────────────────────────────────────────────────────────────

@@ -1,11 +1,11 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-25T16:17:00.114Z",
+  "generated_at": "2025-12-25T16:38:19.361Z",
   "generator": "scripts/discover/extractors/schemas.ts",
   "source_globs": [
     "src/atomic-crm/validation/**/*.ts"
   ],
-  "checksum": "sha256:e189a134b8912014",
+  "checksum": "sha256:e407e3da83f81017",
   "source_hashes": {
     "src/atomic-crm/validation/activities.ts": "d1ec200643e2",
     "src/atomic-crm/validation/categories.ts": "0f7d9f25b8f8",
@@ -19,8 +19,8 @@
     "src/atomic-crm/validation/organizationDistributors.ts": "a201071a648d",
     "src/atomic-crm/validation/organizations.ts": "7e57676597b7",
     "src/atomic-crm/validation/productDistributors.ts": "5e4faaed36a3",
-    "src/atomic-crm/validation/products.ts": "afaaef6b2b3e",
     "src/atomic-crm/validation/productWithDistributors.ts": "b06088504136",
+    "src/atomic-crm/validation/products.ts": "afaaef6b2b3e",
     "src/atomic-crm/validation/quickAdd.ts": "07d39e2703f0",
     "src/atomic-crm/validation/rpc.ts": "13a03b9b60d9",
     "src/atomic-crm/validation/sales.ts": "b38862b14bc6",
@@ -2221,242 +2221,6 @@
       "hasSuperRefine": false
     },
     {
-      "name": "productStatusSchema",
-      "file": "src/atomic-crm/validation/products.ts",
-      "line": 41,
-      "schemaType": "enum",
-      "fields": [],
-      "enumValues": [
-        "active",
-        "discontinued",
-        "coming_soon"
-      ],
-      "relatedSchemas": [
-        "productSchema"
-      ],
-      "validationFunctions": [],
-      "hasTransforms": false,
-      "hasSuperRefine": false
-    },
-    {
-      "name": "productSchema",
-      "file": "src/atomic-crm/validation/products.ts",
-      "line": 47,
-      "schemaType": "strictObject",
-      "fields": [
-        {
-          "name": "name",
-          "zodType": "unknown",
-          "constraints": [
-            "trim()",
-            "min(1, \"Product name is required\")",
-            "max(255, \"Product name too long\")"
-          ],
-          "optional": false,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "principal_id",
-          "zodType": "unknown",
-          "constraints": [],
-          "optional": false,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "category",
-          "zodType": "ref:productCategorySchema",
-          "constraints": [],
-          "optional": false,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "status",
-          "zodType": "ref:productStatusSchema",
-          "constraints": [],
-          "optional": false,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": true
-        },
-        {
-          "name": "description",
-          "zodType": "string",
-          "constraints": [
-            "max(2000)"
-          ],
-          "optional": true,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "certifications",
-          "zodType": "array",
-          "constraints": [
-            "max(100)",
-            "max(50)"
-          ],
-          "optional": false,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "allergens",
-          "zodType": "array",
-          "constraints": [
-            "max(100)",
-            "max(50)"
-          ],
-          "optional": false,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "ingredients",
-          "zodType": "string",
-          "constraints": [
-            "max(5000)"
-          ],
-          "optional": false,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "nutritional_info",
-          "zodType": "record",
-          "constraints": [],
-          "optional": false,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "marketing_description",
-          "zodType": "string",
-          "constraints": [
-            "max(2000)"
-          ],
-          "optional": false,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "created_by",
-          "zodType": "number",
-          "constraints": [],
-          "optional": false,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "updated_by",
-          "zodType": "number",
-          "constraints": [],
-          "optional": false,
-          "nullable": true,
-          "hasTransform": false,
-          "hasDefault": false
-        }
-      ],
-      "relatedSchemas": [
-        "productDistributorAuthorizationSchema",
-        "productDistributorStatusSchema",
-        "productDistributorSchema",
-        "productStatusSchema",
-        "opportunityProductSchema",
-        "productWithDistributorsSchema",
-        "syncOpportunityWithProductsParamsSchema"
-      ],
-      "validationFunctions": [
-        "validateProductForm"
-      ],
-      "hasTransforms": false,
-      "hasSuperRefine": false
-    },
-    {
-      "name": "opportunityProductSchema",
-      "file": "src/atomic-crm/validation/products.ts",
-      "line": 122,
-      "schemaType": "strictObject",
-      "fields": [
-        {
-          "name": "id",
-          "zodType": "union",
-          "constraints": [],
-          "optional": true,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "product_id_reference",
-          "zodType": "coerce.number",
-          "constraints": [],
-          "optional": false,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "product_name",
-          "zodType": "string",
-          "constraints": [
-            "trim()",
-            "min(1, \"Product name is required\")",
-            "max(255, \"Product name too long\")"
-          ],
-          "optional": false,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "product_category",
-          "zodType": "string",
-          "constraints": [
-            "max(100)"
-          ],
-          "optional": true,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        },
-        {
-          "name": "notes",
-          "zodType": "string",
-          "constraints": [
-            "max(500)"
-          ],
-          "optional": true,
-          "nullable": false,
-          "hasTransform": false,
-          "hasDefault": false
-        }
-      ],
-      "relatedSchemas": [
-        "createOpportunitySchema",
-        "updateOpportunitySchema",
-        "closeOpportunitySchema",
-        "productSchema"
-      ],
-      "validationFunctions": [
-        "validateOpportunityProduct"
-      ],
-      "hasTransforms": false,
-      "hasSuperRefine": false
-    },
-    {
       "name": "distributorAssociationSchema",
       "file": "src/atomic-crm/validation/productWithDistributors.ts",
       "line": 12,
@@ -2609,6 +2373,242 @@
       ],
       "validationFunctions": [
         "validateCreateProductWithDistributors"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "productStatusSchema",
+      "file": "src/atomic-crm/validation/products.ts",
+      "line": 41,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "active",
+        "discontinued",
+        "coming_soon"
+      ],
+      "relatedSchemas": [
+        "productSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "productSchema",
+      "file": "src/atomic-crm/validation/products.ts",
+      "line": 47,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "name",
+          "zodType": "unknown",
+          "constraints": [
+            "trim()",
+            "min(1, \"Product name is required\")",
+            "max(255, \"Product name too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "principal_id",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "category",
+          "zodType": "ref:productCategorySchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "status",
+          "zodType": "ref:productStatusSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "description",
+          "zodType": "string",
+          "constraints": [
+            "max(2000)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "certifications",
+          "zodType": "array",
+          "constraints": [
+            "max(100)",
+            "max(50)"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "allergens",
+          "zodType": "array",
+          "constraints": [
+            "max(100)",
+            "max(50)"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "ingredients",
+          "zodType": "string",
+          "constraints": [
+            "max(5000)"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "nutritional_info",
+          "zodType": "record",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "marketing_description",
+          "zodType": "string",
+          "constraints": [
+            "max(2000)"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_by",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_by",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "productDistributorAuthorizationSchema",
+        "productDistributorStatusSchema",
+        "productDistributorSchema",
+        "productWithDistributorsSchema",
+        "productStatusSchema",
+        "opportunityProductSchema",
+        "syncOpportunityWithProductsParamsSchema"
+      ],
+      "validationFunctions": [
+        "validateProductForm"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "opportunityProductSchema",
+      "file": "src/atomic-crm/validation/products.ts",
+      "line": 122,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "product_id_reference",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "product_name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1, \"Product name is required\")",
+            "max(255, \"Product name too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "product_category",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "notes",
+          "zodType": "string",
+          "constraints": [
+            "max(500)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "createOpportunitySchema",
+        "updateOpportunitySchema",
+        "closeOpportunitySchema",
+        "productSchema"
+      ],
+      "validationFunctions": [
+        "validateOpportunityProduct"
       ],
       "hasTransforms": false,
       "hasSuperRefine": false
