@@ -1,11 +1,11 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-25T05:23:13.429Z",
+  "generated_at": "2025-12-25T05:27:21.021Z",
   "generator": "scripts/discover/extractors/components.ts",
   "source_globs": [
     "src/atomic-crm/**/*.tsx"
   ],
-  "checksum": "sha256:4c296e9d0df5930b",
+  "checksum": "sha256:542fa8ce583e088b",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "ac18d4791030",
     "src/atomic-crm/activities/ActivityEdit.tsx": "55bb5d0670e9",

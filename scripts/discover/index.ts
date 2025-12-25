@@ -131,9 +131,6 @@ async function runExtractors(extractorsToRun: ExtractorConfig[]): Promise<void> 
 }
 
 function printSummary(extractorsRun: ExtractorConfig[]): void {
-  const fs = require("fs");
-  const path = require("path");
-
   console.log(chalk.cyan.bold("\n📊 Discovery Complete!\n"));
 
   let totalItems = 0;
