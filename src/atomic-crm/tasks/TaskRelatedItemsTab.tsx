@@ -3,8 +3,9 @@ import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
 import { Card, CardContent } from "@/components/ui/card";
 import { AsideSection } from "@/components/ui";
+import { SidepaneEmptyState } from "@/components/layouts/sidepane";
 import { SaleName } from "../sales/SaleName";
-import { Building2, UserCircle, Target } from "lucide-react";
+import { Building2, UserCircle, Target, Link } from "lucide-react";
 import type { Task } from "../types";
 import { contactOptionText } from "../contacts/ContactOption";
 
