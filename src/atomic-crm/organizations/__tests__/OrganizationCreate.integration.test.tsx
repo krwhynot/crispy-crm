@@ -134,7 +134,7 @@ describe("OrganizationCreate with Progress Tracking", () => {
   });
 
   it("renders FormProgressBar before the form card", async () => {
-    const { container } = renderOrganizationCreate();
+    renderOrganizationCreate();
 
     const progressBar = await screen.findByRole("progressbar");
     expect(progressBar).toBeInTheDocument();

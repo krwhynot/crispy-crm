@@ -222,25 +222,16 @@ const OrganizationCreate = () => {
     }
   }, [duplicateOrg?.id, clearDuplicate, redirect]);
 
-  // Show loading skeleton while identity loads
-  if (isLoadingDefaults) {
-    return (
-      <div className="bg-muted px-6 py-6">
-        <div className="max-w-4xl mx-auto create-form-card">
-          <FormLoadingSkeleton rows={4} />
-        </div>
-      </div>
-    );
-  }
-
   // Generate defaults from schema, then merge with runtime values
   // Per Constitution #5: FORM STATE DERIVED FROM TRUTH
   // Use .partial() to make all fields optional during default generation
   // This extracts fields with .default() (organization_type, priority)
   // Note: Only use sales_id from smartDefaults - activity_date is for activities only
+  // IMPORTANT: formDefaults computed here but form created AFTER loading check
+  // to ensure useForm is always called in same order (React rules-of-hooks)
   const formDefaults = {
     ...organizationSchema.partial().parse({}),
-    sales_id: smartDefaults.sales_id, // Only take sales_id, not activity_date
+    sales_id: smartDefaults?.sales_id ?? null, // Handle loading state
     // Use null (not undefined) when no segment found - null is a valid value for nullable UUID fields
     segment_id: unknownSegmentId ?? null,
     ...(parentOrgId ? { parent_organization_id: parentOrgId } : {}), // Pre-fill parent when adding branch
@@ -250,11 +241,24 @@ const OrganizationCreate = () => {
   // Connect Zod schema as form resolver for client-side validation
   // This enables form.trigger() to work in DuplicateCheckSaveButton
   // Schema remains single source of truth (Constitution-compliant)
+  // CRITICAL: useForm MUST be called before any early returns (React hooks rules)
   const form = useForm<OrganizationFormValues>({
     resolver: zodResolver(organizationSchema),
     defaultValues: formDefaults,
     mode: "onBlur",
   });
+
+  // Show loading skeleton while identity loads
+  // NOTE: This early return is now AFTER all hooks have been called
+  if (isLoadingDefaults) {
+    return (
+      <div className="bg-muted px-6 py-6">
+        <div className="max-w-4xl mx-auto create-form-card">
+          <FormLoadingSkeleton rows={4} />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <>

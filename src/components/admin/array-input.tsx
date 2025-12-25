@@ -62,8 +62,6 @@ export const ArrayInput = (props: ArrayInputProps) => {
     },
   });
 
-  const id = `${finalSource}-field`;
-
   useEffect(() => {
     if (formGroups && formGroupName != null) {
       formGroups.registerField(finalSource, formGroupName);
