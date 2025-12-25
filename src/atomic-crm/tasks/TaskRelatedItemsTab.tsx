@@ -2,8 +2,7 @@ import { RecordContextProvider } from "ra-core";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
 import { Card, CardContent } from "@/components/ui/card";
-import { AsideSection } from "@/components/ui";
-import { SidepaneEmptyState } from "@/components/layouts/sidepane";
+import { SidepaneSection, SidepaneEmptyState } from "@/components/layouts/sidepane";
 import { SaleName } from "../sales/SaleName";
 import { Building2, UserCircle, Target, Link } from "lucide-react";
 import type { Task } from "../types";
@@ -41,7 +40,7 @@ export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
 
         {/* Related Organization */}
         {record.organization_id && (
-          <AsideSection title="Related Organization">
+          <SidepaneSection label="Related Organization">
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
@@ -52,12 +51,12 @@ export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
                 </div>
               </CardContent>
             </Card>
-          </AsideSection>
+          </SidepaneSection>
         )}
 
         {/* Related Contact */}
         {record.contact_id && (
-          <AsideSection title="Related Contact">
+          <SidepaneSection label="Related Contact">
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
@@ -68,12 +67,12 @@ export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
                 </div>
               </CardContent>
             </Card>
-          </AsideSection>
+          </SidepaneSection>
         )}
 
         {/* Related Opportunity */}
         {record.opportunity_id && (
-          <AsideSection title="Related Opportunity">
+          <SidepaneSection label="Related Opportunity">
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
@@ -84,12 +83,12 @@ export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
                 </div>
               </CardContent>
             </Card>
-          </AsideSection>
+          </SidepaneSection>
         )}
 
         {/* Assigned Sales Rep */}
         {record.sales_id && (
-          <AsideSection title="Assigned To">
+          <SidepaneSection label="Assigned To">
             <Card>
               <CardContent className="p-4">
                 <div className="flex items-center gap-2">
@@ -100,7 +99,7 @@ export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
                 </div>
               </CardContent>
             </Card>
-          </AsideSection>
+          </SidepaneSection>
         )}
       </div>
     </RecordContextProvider>

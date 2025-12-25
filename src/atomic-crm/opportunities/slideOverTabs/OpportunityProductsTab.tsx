@@ -153,10 +153,16 @@ export function OpportunityProductsTab({
 
   if (!junctionRecords || junctionRecords.length === 0) {
     return (
-      <SidepaneEmptyState
-        icon={Package}
-        message="No products associated with this opportunity"
-      />
+      <ScrollArea className="h-full">
+        <div className="px-6 py-4">
+          <SidepaneSection label="Products">
+            <SidepaneEmptyState
+              icon={Package}
+              message="No products associated with this opportunity"
+            />
+          </SidepaneSection>
+        </div>
+      </ScrollArea>
     );
   }
 
