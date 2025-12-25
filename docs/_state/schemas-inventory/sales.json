@@ -1,0 +1,457 @@
+{
+  "chunk_name": "sales",
+  "generated_at": "2025-12-25T17:02:03.148Z",
+  "item_count": 6,
+  "items": [
+    {
+      "name": "salesSchema",
+      "file": "src/atomic-crm/validation/sales.ts",
+      "line": 42,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "first_name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1, \"First name is required\")",
+            "max(100, \"First name too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1, \"Last name is required\")",
+            "max(100, \"Last name too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "email",
+          "zodType": "string",
+          "constraints": [
+            "email(\"Must be a valid email address\")",
+            "max(VALIDATION_LIMITS.EMAIL_MAX, \"Email too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "phone",
+          "zodType": "string",
+          "constraints": [
+            "max(VALIDATION_LIMITS.PHONE_MAX, \"Phone number too long\")"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "avatar_url",
+          "zodType": "string",
+          "constraints": [
+            "url(\"Must be a valid URL\")",
+            "max(VALIDATION_LIMITS.AVATAR_URL_MAX, \"Avatar URL too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "user_id",
+          "zodType": "string",
+          "constraints": [
+            "uuid(\"Must be a valid UUID\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "role",
+          "zodType": "enum",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true,
+          "enumValues": [
+            "admin",
+            "manager",
+            "rep"
+          ]
+        },
+        {
+          "name": "is_admin",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "administrator",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "disabled",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "digest_opt_in",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "timezone",
+          "zodType": "unknown",
+          "constraints": [
+            "regex(/^[A-Za-z]+\\/[A-Za-z_]+$/)",
+            "max(VALIDATION_LIMITS.TIMEZONE_MAX, \"Timezone too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "created_at",
+          "zodType": "string",
+          "constraints": [
+            "max(VALIDATION_LIMITS.TIMESTAMP_MAX, \"Timestamp too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_at",
+          "zodType": "string",
+          "constraints": [
+            "max(VALIDATION_LIMITS.TIMESTAMP_MAX, \"Timestamp too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "deleted_at",
+          "zodType": "string",
+          "constraints": [
+            "max(VALIDATION_LIMITS.TIMESTAMP_MAX, \"Timestamp too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "createSalesSchema",
+        "salesProfileSchema",
+        "salesPermissionsSchema"
+      ],
+      "validationFunctions": [
+        "validateSalesForm"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "createSalesSchema",
+      "file": "src/atomic-crm/validation/sales.ts",
+      "line": 111,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "salesSchema",
+        "salesProfileSchema",
+        "salesPermissionsSchema"
+      ],
+      "validationFunctions": [
+        "validateCreateSales"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "userInviteSchema",
+      "file": "src/atomic-crm/validation/sales.ts",
+      "line": 186,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "email",
+          "zodType": "string",
+          "constraints": [
+            "email(\"Invalid email format\")",
+            "max(254, \"Email too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "password",
+          "zodType": "string",
+          "constraints": [
+            "min(8, \"Password must be at least 8 characters\")",
+            "max(128, \"Password too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "first_name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1, \"First name is required\")",
+            "max(100, \"First name too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1, \"Last name is required\")",
+            "max(100, \"Last name too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "role",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "userUpdateSchema",
+      "file": "src/atomic-crm/validation/sales.ts",
+      "line": 201,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "sales_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "first_name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1, \"First name is required\")",
+            "max(100, \"First name too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1, \"Last name is required\")",
+            "max(100, \"Last name too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "role",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "disabled",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "salesProfileSchema",
+      "file": "src/atomic-crm/validation/sales.ts",
+      "line": 221,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "first_name",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false
+        },
+        {
+          "name": "last_name",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false
+        },
+        {
+          "name": "email",
+          "zodType": "string",
+          "constraints": [
+            "max(254)"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false
+        },
+        {
+          "name": "phone",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false
+        },
+        {
+          "name": "avatar_url",
+          "zodType": "string",
+          "constraints": [
+            "max(2048)"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "salesSchema",
+        "createSalesSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": true,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "salesPermissionsSchema",
+      "file": "src/atomic-crm/validation/sales.ts",
+      "line": 236,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "role",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "disabled",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        }
+      ],
+      "relatedSchemas": [
+        "salesSchema",
+        "createSalesSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

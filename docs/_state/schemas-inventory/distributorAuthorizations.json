@@ -1,0 +1,50 @@
+{
+  "chunk_name": "distributorAuthorizations",
+  "generated_at": "2025-12-25T17:02:03.143Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "distributorAuthorizationSchema",
+      "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
+      "line": 17,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "productDistributorAuthorizationSchema"
+      ],
+      "validationFunctions": [
+        "validateDistributorAuthorization"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "specialPricingSchema",
+      "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
+      "line": 141,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "productDistributorAuthorizationSchema",
+      "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
+      "line": 162,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "distributorAuthorizationSchema",
+        "productDistributorSchema",
+        "productSchema"
+      ],
+      "validationFunctions": [
+        "validateProductDistributorAuthorization"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

@@ -1,0 +1,600 @@
+{
+  "chunk_name": "contacts",
+  "generated_at": "2025-12-25T17:02:03.142Z",
+  "item_count": 9,
+  "items": [
+    {
+      "name": "personalInfoTypeSchema",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 10,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "work",
+        "home",
+        "other"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "contactDepartmentSchema",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 13,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "senior_management",
+        "sales_management",
+        "district_management",
+        "area_sales",
+        "sales_specialist",
+        "sales_support",
+        "procurement"
+      ],
+      "relatedSchemas": [
+        "contactSchema",
+        "importContactSchema",
+        "createContactSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "emailAndTypeSchema",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 45,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "value",
+          "zodType": "string",
+          "constraints": [
+            "email(\"Invalid email address\")",
+            "max(254, \"Email too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "type",
+          "zodType": "ref:personalInfoTypeSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "phoneNumberAndTypeSchema",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 51,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "value",
+          "zodType": "string",
+          "constraints": [
+            "max(30, \"Phone number too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "type",
+          "zodType": "ref:personalInfoTypeSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "contactOrganizationSchema",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 60,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "contactSchema",
+        "importContactSchema",
+        "createContactSchema",
+        "organizationSchema"
+      ],
+      "validationFunctions": [
+        "validateContactOrganization"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": true
+    },
+    {
+      "name": "contactBaseSchema",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 86,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "name",
+          "zodType": "string",
+          "constraints": [
+            "max(255, \"Name too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "first_name",
+          "zodType": "string",
+          "constraints": [
+            "max(100, \"First name too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_name",
+          "zodType": "string",
+          "constraints": [
+            "max(100, \"Last name too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "email",
+          "zodType": "array",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "phone",
+          "zodType": "array",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "title",
+          "zodType": "string",
+          "constraints": [
+            "max(100, \"Title too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "department",
+          "zodType": "string",
+          "constraints": [
+            "max(100, \"Department too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "department_type",
+          "zodType": "ref:contactDepartmentSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "linkedin_url",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "sales_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "manager_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "organization_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "district_code",
+          "zodType": "string",
+          "constraints": [
+            "max(10, \"District code too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "territory_name",
+          "zodType": "string",
+          "constraints": [
+            "max(100, \"Territory name too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_by",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "deleted_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "first_seen",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_seen",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "avatar",
+          "zodType": "any",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "nb_tasks",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "company_name",
+          "zodType": "string",
+          "constraints": [
+            "max(255, \"Company name too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "search_tsv",
+          "zodType": "any",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "notes",
+          "zodType": "unknown",
+          "constraints": [
+            "max(5000, \"Notes too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false
+        },
+        {
+          "name": "address",
+          "zodType": "string",
+          "constraints": [
+            "max(500, \"Address too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "city",
+          "zodType": "string",
+          "constraints": [
+            "max(100, \"City too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "state",
+          "zodType": "string",
+          "constraints": [
+            "max(100, \"State too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "postal_code",
+          "zodType": "string",
+          "constraints": [
+            "max(20, \"Postal code too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "country",
+          "zodType": "string",
+          "constraints": [
+            "max(100, \"Country too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "birthday",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "gender",
+          "zodType": "string",
+          "constraints": [
+            "max(50, \"Gender too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "twitter_handle",
+          "zodType": "string",
+          "constraints": [
+            "max(100, \"Twitter handle too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "tags",
+          "zodType": "array",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "status",
+          "zodType": "string",
+          "constraints": [
+            "max(50, \"Status too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_by",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "nb_notes",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "nb_activities",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "contactSchema",
+        "importContactSchema",
+        "createContactSchema"
+      ],
+      "validationFunctions": [
+        "validateContactForm",
+        "validateCreateContact"
+      ],
+      "hasTransforms": true,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "contactSchema",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 201,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "contactDepartmentSchema",
+        "contactOrganizationSchema",
+        "contactBaseSchema",
+        "importContactSchema",
+        "createContactSchema",
+        "contactNoteSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": true,
+      "hasSuperRefine": true
+    },
+    {
+      "name": "importContactSchema",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 239,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "contactDepartmentSchema",
+        "contactOrganizationSchema",
+        "contactBaseSchema",
+        "contactSchema",
+        "createContactSchema",
+        "contactNoteSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": true,
+      "hasSuperRefine": true
+    },
+    {
+      "name": "createContactSchema",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 454,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "contactDepartmentSchema",
+        "contactOrganizationSchema",
+        "contactBaseSchema",
+        "contactSchema",
+        "importContactSchema",
+        "contactNoteSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": true,
+      "hasSuperRefine": true
+    }
+  ]
+}

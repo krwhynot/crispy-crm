@@ -1,0 +1,157 @@
+{
+  "chunk_name": "reports",
+  "generated_at": "2025-12-25T17:02:03.312Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "Sale",
+      "file": "src/atomic-crm/reports/types.ts",
+      "line": 10,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "first_name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "last_name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "Activity",
+      "file": "src/atomic-crm/reports/types.ts",
+      "line": 20,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "subject",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "created_by",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "organization_id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "contact_id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "opportunity_id",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "organization_name",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "contact_name",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "ActivityGroup",
+      "file": "src/atomic-crm/reports/types.ts",
+      "line": 37,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "type",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "activities",
+          "type": "Activity[]",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "totalCount",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "uniqueOrgs",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "percentage",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "mostActiveOrg",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "mostActiveCount",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    }
+  ]
+}

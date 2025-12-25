@@ -48,8 +48,8 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
   schemas: {
     name: "schemas",
     label: "Zod Schemas",
-    outputPath: "schemas-inventory.json",
-    isChunked: false,
+    outputPath: "schemas-inventory",
+    isChunked: true,
     extractFn: extractSchemas,
     getSourceFiles: () => {
       const files = project.addSourceFilesAtPaths("src/atomic-crm/validation/**/*.ts");
@@ -59,8 +59,8 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
   types: {
     name: "types",
     label: "TypeScript Types",
-    outputPath: "types-inventory.json",
-    isChunked: false,
+    outputPath: "types-inventory",
+    isChunked: true,
     extractFn: extractTypes,
     getSourceFiles: () => {
       const globs = ["src/atomic-crm/types.ts", "src/atomic-crm/**/types.ts", "src/types/**/*.ts"];

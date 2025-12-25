@@ -1,0 +1,129 @@
+{
+  "chunk_name": "productDistributors",
+  "generated_at": "2025-12-25T17:02:03.146Z",
+  "item_count": 2,
+  "items": [
+    {
+      "name": "productDistributorStatusSchema",
+      "file": "src/atomic-crm/validation/productDistributors.ts",
+      "line": 10,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "pending",
+        "active",
+        "inactive"
+      ],
+      "relatedSchemas": [
+        "productDistributorSchema",
+        "productSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "productDistributorSchema",
+      "file": "src/atomic-crm/validation/productDistributors.ts",
+      "line": 14,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "product_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "distributor_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "vendor_item_number",
+          "zodType": "string",
+          "constraints": [
+            "max(50, \"Vendor item number too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "status",
+          "zodType": "ref:productDistributorStatusSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "valid_from",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "valid_to",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "notes",
+          "zodType": "string",
+          "constraints": [
+            "max(1000, \"Notes too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_at",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_at",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "productDistributorAuthorizationSchema",
+        "productDistributorStatusSchema",
+        "productSchema"
+      ],
+      "validationFunctions": [
+        "validateProductDistributorForm"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

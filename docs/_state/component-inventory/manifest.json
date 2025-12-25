@@ -1,11 +1,11 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-25T16:38:10.919Z",
+  "generated_at": "2025-12-25T17:01:53.031Z",
   "generator": "scripts/discover/extractors/components.ts",
   "source_globs": [
     "src/atomic-crm/**/*.tsx"
   ],
-  "checksum": "sha256:cb7b75fa004144a4",
+  "checksum": "sha256:9a25cb11cf78e5d7",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "ac18d4791030",
     "src/atomic-crm/activities/ActivityEdit.tsx": "55bb5d0670e9",
@@ -431,157 +431,157 @@
       "name": "activities",
       "file": "activities.json",
       "item_count": 25,
-      "checksum": "sha256:2143dcffa1584ee0"
+      "checksum": "sha256:2c9d61555cb78252"
     },
     {
       "name": "activity-log",
       "file": "activity-log.json",
       "item_count": 10,
-      "checksum": "sha256:8c4b020181fbd9fc"
+      "checksum": "sha256:49e7007954e2f2be"
     },
     {
       "name": "admin",
       "file": "admin.json",
       "item_count": 2,
-      "checksum": "sha256:61afb8bdfa85c7e6"
+      "checksum": "sha256:7ca723012bebcf9a"
     },
     {
       "name": "components",
       "file": "components.json",
       "item_count": 23,
-      "checksum": "sha256:b8fc677031aa9cc4"
+      "checksum": "sha256:0b5c10f01f748b4b"
     },
     {
       "name": "contacts",
       "file": "contacts.json",
       "item_count": 51,
-      "checksum": "sha256:f60970b9216aab86"
+      "checksum": "sha256:5875a9b132e2b245"
     },
     {
       "name": "contexts",
       "file": "contexts.json",
       "item_count": 9,
-      "checksum": "sha256:5a4c13db039f9c5f"
+      "checksum": "sha256:ec3e0d6af2dcea95"
     },
     {
       "name": "dashboard",
       "file": "dashboard.json",
       "item_count": 30,
-      "checksum": "sha256:a5ebc976e3a02061"
+      "checksum": "sha256:abdb1b88a9fcea6e"
     },
     {
       "name": "filters",
       "file": "filters.json",
       "item_count": 5,
-      "checksum": "sha256:5d26cdf7209d3c47"
+      "checksum": "sha256:fa679cd8edc20fe3"
     },
     {
       "name": "layout",
       "file": "layout.json",
       "item_count": 5,
-      "checksum": "sha256:22dba3bea1c590b5"
+      "checksum": "sha256:5e4a35b2067741a1"
     },
     {
       "name": "login",
       "file": "login.json",
       "item_count": 2,
-      "checksum": "sha256:2d1d34ff2bcbd29e"
+      "checksum": "sha256:f201d555f8b40eb3"
     },
     {
       "name": "notes",
       "file": "notes.json",
       "item_count": 4,
-      "checksum": "sha256:4bdd40df21592c11"
+      "checksum": "sha256:dc911f620f616db2"
     },
     {
       "name": "notifications",
       "file": "notifications.json",
       "item_count": 3,
-      "checksum": "sha256:b2b4b56c33a80cf2"
+      "checksum": "sha256:c650669a00fcad51"
     },
     {
       "name": "opportunities",
       "file": "opportunities.json",
       "item_count": 79,
-      "checksum": "sha256:81da76769f29140c"
+      "checksum": "sha256:fce0d729ca7544b2"
     },
     {
       "name": "organizations",
       "file": "organizations.json",
       "item_count": 73,
-      "checksum": "sha256:0230b657259cc1f6"
+      "checksum": "sha256:25ca1f1d71c63d6b"
     },
     {
       "name": "pages",
       "file": "pages.json",
       "item_count": 2,
-      "checksum": "sha256:4b0a3cc6f371be48"
+      "checksum": "sha256:55b3b360d3c6d425"
     },
     {
       "name": "productDistributors",
       "file": "productDistributors.json",
       "item_count": 17,
-      "checksum": "sha256:48838ddf6670472d"
+      "checksum": "sha256:ba06eb1ce31b396b"
     },
     {
       "name": "products",
       "file": "products.json",
       "item_count": 31,
-      "checksum": "sha256:9d7a52b3d4dabd4b"
+      "checksum": "sha256:d1ef1a32b2cdcd88"
     },
     {
       "name": "reports",
       "file": "reports.json",
       "item_count": 23,
-      "checksum": "sha256:b90d088ff1cf41f8"
+      "checksum": "sha256:df6e1f313b0c06e5"
     },
     {
       "name": "root",
       "file": "root.json",
       "item_count": 8,
-      "checksum": "sha256:81538d7668399e5e"
+      "checksum": "sha256:eb14fd3c302318b8"
     },
     {
       "name": "sales",
       "file": "sales.json",
       "item_count": 20,
-      "checksum": "sha256:0fd5bb1b8e98cc6e"
+      "checksum": "sha256:25942a404f0fb61f"
     },
     {
       "name": "settings",
       "file": "settings.json",
       "item_count": 13,
-      "checksum": "sha256:b9ec1b0d82567a06"
+      "checksum": "sha256:d48bc1ca1e0a5d6b"
     },
     {
       "name": "shared",
       "file": "shared.json",
       "item_count": 2,
-      "checksum": "sha256:4c0d7a8a32a24ea3"
+      "checksum": "sha256:c7a8b79486337a9d"
     },
     {
       "name": "tags",
       "file": "tags.json",
       "item_count": 5,
-      "checksum": "sha256:fb450b0f6faa9117"
+      "checksum": "sha256:428d10a5ebef717e"
     },
     {
       "name": "tasks",
       "file": "tasks.json",
       "item_count": 29,
-      "checksum": "sha256:bdf01f771118e4f2"
+      "checksum": "sha256:b4be3fdc621eba12"
     },
     {
       "name": "tutorial",
       "file": "tutorial.json",
       "item_count": 10,
-      "checksum": "sha256:4cfc58bc374b4204"
+      "checksum": "sha256:987fd6535ffba73d"
     },
     {
       "name": "utils",
       "file": "utils.json",
       "item_count": 3,
-      "checksum": "sha256:234e677836f2b3b2"
+      "checksum": "sha256:70538fe380396b91"
     }
   ]
 }

@@ -1,0 +1,123 @@
+{
+  "chunk_name": "tags",
+  "generated_at": "2025-12-25T17:02:03.148Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "tagSchema",
+      "file": "src/atomic-crm/validation/tags.ts",
+      "line": 55,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "name",
+          "zodType": "unknown",
+          "constraints": [
+            "min(1, \"Tag name is required\")",
+            "max(50, \"Tag name must be less than 50 characters\")",
+            "trim()"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "color",
+          "zodType": "ref:semanticColorSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "createdAt",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updatedAt",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "opportunityStageSchema",
+        "tagWithCountSchema",
+        "tagFilterSchema"
+      ],
+      "validationFunctions": [
+        "validateTagForSubmission"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "tagWithCountSchema",
+      "file": "src/atomic-crm/validation/tags.ts",
+      "line": 99,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "tagSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "tagFilterSchema",
+      "file": "src/atomic-crm/validation/tags.ts",
+      "line": 106,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "colors",
+          "zodType": "array",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "searchTerm",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "tagSchema"
+      ],
+      "validationFunctions": [
+        "validateTagFilter"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

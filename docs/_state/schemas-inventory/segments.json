@@ -1,0 +1,132 @@
+{
+  "chunk_name": "segments",
+  "generated_at": "2025-12-25T17:02:03.148Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "playbookCategorySchema",
+      "file": "src/atomic-crm/validation/segments.ts",
+      "line": 74,
+      "schemaType": "enum",
+      "fields": [],
+      "relatedSchemas": [
+        "categorySchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "segmentSchema",
+      "file": "src/atomic-crm/validation/segments.ts",
+      "line": 80,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "string",
+          "constraints": [
+            "uuid()"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1)",
+            "max(100)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "segment_type",
+          "zodType": "enum",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "parent_id",
+          "zodType": "string",
+          "constraints": [
+            "uuid()"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "display_order",
+          "zodType": "coerce.number",
+          "constraints": [
+            "min(0)",
+            "max(9999)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "created_at",
+          "zodType": "string",
+          "constraints": [
+            "max(VALIDATION_LIMITS.TIMESTAMP_MAX, \"Timestamp too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_by",
+          "zodType": "string",
+          "constraints": [
+            "uuid()"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "operatorSegmentSchema",
+        "operatorParentSegmentSchema",
+        "operatorChildSegmentSchema",
+        "operatorSegmentRecordSchema",
+        "getOrCreateSegmentParamsSchema",
+        "playbookSegmentSchema"
+      ],
+      "validationFunctions": [
+        "validateSegmentForSubmission"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "playbookSegmentSchema",
+      "file": "src/atomic-crm/validation/segments.ts",
+      "line": 94,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [
+        "segmentSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

@@ -1,0 +1,640 @@
+{
+  "chunk_name": "organizations",
+  "generated_at": "2025-12-25T17:02:03.145Z",
+  "item_count": 7,
+  "items": [
+    {
+      "name": "organizationTypeSchema",
+      "file": "src/atomic-crm/validation/organizations.ts",
+      "line": 11,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "customer",
+        "prospect",
+        "principal",
+        "distributor",
+        "operator"
+      ],
+      "relatedSchemas": [
+        "organizationSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "organizationPrioritySchema",
+      "file": "src/atomic-crm/validation/organizations.ts",
+      "line": 14,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "A",
+        "B",
+        "C",
+        "D"
+      ],
+      "relatedSchemas": [
+        "organizationSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "orgScopeSchema",
+      "file": "src/atomic-crm/validation/organizations.ts",
+      "line": 17,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "national",
+        "regional",
+        "local"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "orgStatusSchema",
+      "file": "src/atomic-crm/validation/organizations.ts",
+      "line": 21,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "active",
+        "inactive"
+      ],
+      "relatedSchemas": [
+        "orgStatusReasonSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "orgStatusReasonSchema",
+      "file": "src/atomic-crm/validation/organizations.ts",
+      "line": 25,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "active_customer",
+        "prospect",
+        "authorized_distributor",
+        "account_closed",
+        "out_of_business",
+        "disqualified"
+      ],
+      "relatedSchemas": [
+        "orgStatusSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "paymentTermsSchema",
+      "file": "src/atomic-crm/validation/organizations.ts",
+      "line": 36,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "net_30",
+        "net_60",
+        "net_90",
+        "cod",
+        "prepaid",
+        "2_10_net_30"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "organizationSchema",
+      "file": "src/atomic-crm/validation/organizations.ts",
+      "line": 92,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1, \"Organization name is required\")",
+            "max(255, \"Organization name too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "logo",
+          "zodType": "any",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "parent_organization_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "segment_id",
+          "zodType": "string",
+          "constraints": [
+            "uuid()"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "linkedin_url",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "website",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "phone",
+          "zodType": "string",
+          "constraints": [
+            "max(30, \"Phone number too long\")"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "address",
+          "zodType": "string",
+          "constraints": [
+            "max(500, \"Address too long\")"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "postal_code",
+          "zodType": "string",
+          "constraints": [
+            "max(20, \"Postal code too long\")"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "city",
+          "zodType": "string",
+          "constraints": [
+            "max(100, \"City name too long\")"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "state",
+          "zodType": "string",
+          "constraints": [
+            "max(100, \"State name too long\")"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "sales_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "description",
+          "zodType": "unknown",
+          "constraints": [
+            "max(5000, \"Description too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false
+        },
+        {
+          "name": "context_links",
+          "zodType": "array",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "tags",
+          "zodType": "string",
+          "constraints": [
+            "max(1000, \"Tags too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "email",
+          "zodType": "string",
+          "constraints": [
+            "email()"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "notes",
+          "zodType": "unknown",
+          "constraints": [
+            "max(5000, \"Notes too long\")"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false
+        },
+        {
+          "name": "employee_count",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "founded_year",
+          "zodType": "coerce.number",
+          "constraints": [
+            "min(1800)",
+            "max(new Date()"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "tax_identifier",
+          "zodType": "string",
+          "constraints": [
+            "max(50, \"Tax identifier too long\")"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "logo_url",
+          "zodType": "string",
+          "constraints": [
+            "url()"
+          ],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_by",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "organization_type",
+          "zodType": "ref:organizationTypeSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "priority",
+          "zodType": "ref:organizationPrioritySchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "nb_contacts",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "nb_opportunities",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "nb_notes",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "org_scope",
+          "zodType": "ref:orgScopeSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "is_operating_entity",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "status",
+          "zodType": "ref:orgStatusSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "status_reason",
+          "zodType": "ref:orgStatusReasonSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "billing_street",
+          "zodType": "string",
+          "constraints": [
+            "max(255)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "billing_city",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "billing_state",
+          "zodType": "string",
+          "constraints": [
+            "max(2)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "billing_postal_code",
+          "zodType": "string",
+          "constraints": [
+            "max(20)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "billing_country",
+          "zodType": "string",
+          "constraints": [
+            "max(2)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "shipping_street",
+          "zodType": "string",
+          "constraints": [
+            "max(255)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "shipping_city",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "shipping_state",
+          "zodType": "string",
+          "constraints": [
+            "max(2)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "shipping_postal_code",
+          "zodType": "string",
+          "constraints": [
+            "max(20)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "shipping_country",
+          "zodType": "string",
+          "constraints": [
+            "max(2)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "payment_terms",
+          "zodType": "ref:paymentTermsSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "credit_limit",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "territory",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_by",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "deleted_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "contactOrganizationSchema",
+        "organizationNoteSchema",
+        "organizationDistributorSchema",
+        "organizationTypeSchema",
+        "organizationPrioritySchema",
+        "setPrimaryOrganizationParamsSchema"
+      ],
+      "validationFunctions": [
+        "validateOrganizationForSubmission"
+      ],
+      "hasTransforms": true,
+      "hasSuperRefine": false
+    }
+  ]
+}

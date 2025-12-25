@@ -1,0 +1,223 @@
+{
+  "chunk_name": "activities",
+  "generated_at": "2025-12-25T17:02:03.141Z",
+  "item_count": 11,
+  "items": [
+    {
+      "name": "activityTypeSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 10,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "engagement",
+        "interaction"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "interactionTypeSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 16,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "call",
+        "email",
+        "meeting",
+        "demo",
+        "proposal",
+        "follow_up",
+        "trade_show",
+        "site_visit",
+        "contract_review",
+        "check_in",
+        "social",
+        "note",
+        "sample"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "sampleStatusSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 34,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "sent",
+        "received",
+        "feedback_pending",
+        "feedback_received"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "sentimentSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 42,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "positive",
+        "neutral",
+        "negative"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "activitiesSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 130,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [],
+      "validationFunctions": [
+        "validateActivitiesForm"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": true
+    },
+    {
+      "name": "engagementsSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 193,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [],
+      "validationFunctions": [
+        "validateEngagementsForm"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": true
+    },
+    {
+      "name": "interactionsSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 246,
+      "schemaType": "union",
+      "fields": [],
+      "relatedSchemas": [],
+      "validationFunctions": [
+        "validateInteractionsForm"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": true
+    },
+    {
+      "name": "activityNoteFormSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 424,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "activity_date",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "type",
+          "zodType": "ref:interactionTypeSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "contact_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "stage",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "subject",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1, \"Subject is required\")",
+            "max(255, \"Subject too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "activityDisplayTypeSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 460,
+      "schemaType": "enum",
+      "fields": [],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "activityOutcomeSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 508,
+      "schemaType": "enum",
+      "fields": [],
+      "enumValues": [
+        "Connected",
+        "Left Voicemail",
+        "No Answer",
+        "Completed",
+        "Rescheduled"
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "quickLogFormSchema",
+      "file": "src/atomic-crm/validation/activities.ts",
+      "line": 526,
+      "schemaType": "other",
+      "fields": [],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": true,
+      "hasSuperRefine": true
+    }
+  ]
+}

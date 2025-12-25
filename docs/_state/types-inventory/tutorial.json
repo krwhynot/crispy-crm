@@ -1,0 +1,84 @@
+{
+  "chunk_name": "tutorial",
+  "generated_at": "2025-12-25T17:02:03.312Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "TutorialProgress",
+      "file": "src/atomic-crm/tutorial/types.ts",
+      "line": 11,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "currentChapter",
+          "type": "TutorialChapter",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "currentStepIndex",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "completedChapters",
+          "type": "TutorialChapter[]",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "visitedPages",
+          "type": "TutorialChapter[]",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "lastUpdated",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "TutorialStep",
+      "file": "src/atomic-crm/tutorial/types.ts",
+      "line": 19,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "element",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "popover",
+          "type": "{ title: string; description: string; side?: \"top\" | \"bottom\" | \"left\" | \"right\"; align?: \"start\" | \"center\" | \"end\"; }",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "navigateTo",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "TutorialChapter",
+      "file": "src/atomic-crm/tutorial/types.ts",
+      "line": 1,
+      "kind": "type_alias",
+      "typeExpression": "| \"organizations\"\n  | \"contacts\"\n  | \"opportunities\"\n  | \"activities\"\n  | \"tasks\"\n  | \"products\"\n  | \"notes\"\n  | \"users\"",
+      "isComplex": true,
+      "isExported": true
+    }
+  ]
+}

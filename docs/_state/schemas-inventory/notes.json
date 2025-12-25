@@ -1,0 +1,142 @@
+{
+  "chunk_name": "notes",
+  "generated_at": "2025-12-25T17:02:03.143Z",
+  "item_count": 4,
+  "items": [
+    {
+      "name": "baseNoteSchema",
+      "file": "src/atomic-crm/validation/notes.ts",
+      "line": 25,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "text",
+          "zodType": "unknown",
+          "constraints": [
+            "trim()",
+            "min(1, \"Note text is required\")",
+            "max(10000, \"Note text too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": true,
+          "hasDefault": false
+        },
+        {
+          "name": "date",
+          "zodType": "coerce.date",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "sales_id",
+          "zodType": "union",
+          "constraints": [
+            "min(1, \"Sales ID is required\")",
+            "min(1, \"Sales ID is required\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "attachments",
+          "zodType": "array",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": true,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "contactNoteSchema",
+      "file": "src/atomic-crm/validation/notes.ts",
+      "line": 53,
+      "schemaType": "union",
+      "fields": [],
+      "relatedSchemas": [
+        "contactSchema",
+        "importContactSchema",
+        "createContactSchema"
+      ],
+      "validationFunctions": [
+        "validateContactNoteForSubmission"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "opportunityNoteSchema",
+      "file": "src/atomic-crm/validation/notes.ts",
+      "line": 63,
+      "schemaType": "union",
+      "fields": [],
+      "relatedSchemas": [
+        "createOpportunitySchema",
+        "updateOpportunitySchema",
+        "closeOpportunitySchema"
+      ],
+      "validationFunctions": [
+        "validateOpportunityNoteForSubmission"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "organizationNoteSchema",
+      "file": "src/atomic-crm/validation/notes.ts",
+      "line": 74,
+      "schemaType": "union",
+      "fields": [],
+      "relatedSchemas": [
+        "organizationSchema"
+      ],
+      "validationFunctions": [
+        "validateOrganizationNoteForSubmission"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

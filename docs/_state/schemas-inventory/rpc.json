@@ -1,0 +1,473 @@
+{
+  "chunk_name": "rpc",
+  "generated_at": "2025-12-25T17:02:03.147Z",
+  "item_count": 10,
+  "items": [
+    {
+      "name": "getOrCreateSegmentParamsSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 7,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "p_name",
+          "zodType": "string",
+          "constraints": [
+            "trim()",
+            "min(1, \"Segment name is required\")",
+            "max(255, \"Segment name too long\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "segmentSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "setPrimaryOrganizationParamsSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 15,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "p_contact_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "p_organization_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "organizationSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "archiveOpportunityWithRelationsParamsSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 25,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "opp_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "createOpportunitySchema",
+        "updateOpportunitySchema",
+        "closeOpportunitySchema",
+        "unarchiveOpportunityWithRelationsParamsSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "unarchiveOpportunityWithRelationsParamsSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 34,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "opp_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "createOpportunitySchema",
+        "updateOpportunitySchema",
+        "closeOpportunitySchema",
+        "archiveOpportunityWithRelationsParamsSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "syncOpportunityWithProductsParamsSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 52,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "opportunity_data",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "products_to_create",
+          "zodType": "array",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "products_to_update",
+          "zodType": "array",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "product_ids_to_delete",
+          "zodType": "array",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        }
+      ],
+      "relatedSchemas": [
+        "createOpportunitySchema",
+        "updateOpportunitySchema",
+        "closeOpportunitySchema",
+        "productSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "checkAuthorizationParamsSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 68,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "_distributor_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "_principal_id",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "_product_id",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "checkAuthorizationResponseSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 90,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "authorized",
+          "zodType": "boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "reason",
+          "zodType": "string",
+          "constraints": [
+            "max(500, \"Reason too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "error",
+          "zodType": "string",
+          "constraints": [
+            "max(1000, \"Error message too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "authorization_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "distributor_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "distributor_name",
+          "zodType": "string",
+          "constraints": [
+            "max(255, \"Distributor name too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "principal_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "principal_name",
+          "zodType": "string",
+          "constraints": [
+            "max(255, \"Principal name too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "authorization_date",
+          "zodType": "string",
+          "constraints": [
+            "max(50, \"Authorization date too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "expiration_date",
+          "zodType": "string",
+          "constraints": [
+            "max(50, \"Expiration date too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "territory_restrictions",
+          "zodType": "string",
+          "constraints": [
+            "max(255, \"Territory restriction too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "notes",
+          "zodType": "string",
+          "constraints": [
+            "max(2000, \"Notes too long\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "product_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "product_name",
+          "zodType": "string",
+          "constraints": [
+            "max(255, \"Product name too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "resolved_via",
+          "zodType": "literal",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "checkAuthorizationBatchParamsSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 122,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "_distributor_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "_product_ids",
+          "zodType": "array",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "_principal_ids",
+          "zodType": "array",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "checkAuthorizationBatchResponseSchema",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 132,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "distributor_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "total_checked",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "all_authorized",
+          "zodType": "boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "results",
+          "zodType": "array",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "edgeFunctionSchemas",
+      "file": "src/atomic-crm/validation/rpc.ts",
+      "line": 162,
+      "schemaType": "object",
+      "fields": [],
+      "relatedSchemas": [],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

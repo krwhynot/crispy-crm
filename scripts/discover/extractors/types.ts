@@ -5,7 +5,7 @@ import {
   PropertySignature,
 } from "ts-morph";
 import { project } from "../utils/project.js";
-import { createEnvelope, writeDiscoveryFile } from "../utils/output.js";
+import { writeChunkedDiscovery } from "../utils/output.js";
 import * as path from "path";
 
 /**
@@ -49,6 +49,31 @@ const SOURCE_GLOBS = [
  * Files to exclude from extraction.
  */
 const EXCLUDED_FILES = ["database.generated.ts"];
+
+/**
+ * Extract chunk key from type file path.
+ * Groups types by feature directory for efficient partial loading.
+ */
+function extractChunkKey(filePath: string): string {
+  // Pattern 1: src/atomic-crm/{feature}/types.ts or src/atomic-crm/{feature}/{subdir}/types.ts
+  const featureMatch = filePath.match(/^src\/atomic-crm\/([^/]+)\//);
+  if (featureMatch) {
+    return featureMatch[1];
+  }
+
+  // Pattern 2: src/atomic-crm/types.ts → "_root"
+  if (filePath === "src/atomic-crm/types.ts") {
+    return "_root";
+  }
+
+  // Pattern 3: src/types/{name}.types.ts → "{name}"
+  const topLevelMatch = filePath.match(/^src\/types\/([^.]+)/);
+  if (topLevelMatch) {
+    return topLevelMatch[1];
+  }
+
+  return "_other";
+}
 
 /**
  * Detect if a type alias is derived from z.infer<typeof X>.
@@ -259,22 +284,33 @@ export async function extractTypes(): Promise<void> {
   const exportedCount = types.filter((t) => t.isExported).length;
   const complexCount = types.filter((t) => t.isComplex).length;
 
-  const envelope = createEnvelope(
+  // Group types by chunk key (feature directory)
+  const chunks = new Map<string, TypeInfo[]>();
+  for (const typeInfo of types) {
+    const chunkKey = extractChunkKey(typeInfo.file);
+    if (!chunks.has(chunkKey)) {
+      chunks.set(chunkKey, []);
+    }
+    chunks.get(chunkKey)!.push(typeInfo);
+  }
+
+  // Write chunked output
+  writeChunkedDiscovery(
+    "types-inventory",
     "scripts/discover/extractors/types.ts",
     SOURCE_GLOBS,
     Array.from(processedFiles),
     {
       total_items: types.length,
+      total_chunks: chunks.size,
       interfaces: interfaceCount,
       type_aliases: typeAliasCount,
       zod_derived: zodDerivedCount,
       exported: exportedCount,
       complex: complexCount,
     },
-    { types }
+    chunks
   );
-
-  writeDiscoveryFile("types-inventory.json", envelope);
 
   console.log(`  ✓ Found ${types.length} TypeScript types`);
   console.log(`    - ${interfaceCount} interfaces`);
