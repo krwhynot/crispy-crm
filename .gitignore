@@ -100,3 +100,13 @@ supabase/cloud_users.sql
 moat-tasks.md
 moat-tasks-detail.json
 screenshots/
+
+# Serena language server cache
+.serena/cache/
+.serena/memories/
+
+# Claude Code session caches (keep commands/ and skills/)
+.claude/tsc-cache/
+.claude/agents/
+.claude/hooks/state/
+.claude/troubleshooting/
