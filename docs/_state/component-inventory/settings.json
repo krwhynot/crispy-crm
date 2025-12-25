@@ -1,0 +1,241 @@
+{
+  "chunk_name": "settings",
+  "generated_at": "2025-12-25T16:06:03.559Z",
+  "item_count": 13,
+  "items": [
+    {
+      "name": "DigestPreferences",
+      "file": "src/atomic-crm/settings/DigestPreferences.tsx",
+      "line": 38,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useMutation",
+        "useNotify",
+        "useQuery",
+        "useQueryClient"
+      ],
+      "imports": [
+        "../providers/supabase/extensions/types",
+        "@/components/ui/card",
+        "@/components/ui/label",
+        "@/components/ui/skeleton",
+        "@/components/ui/switch",
+        "@tanstack/react-query",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "RolePermissionsMatrix",
+      "file": "src/atomic-crm/settings/RolePermissionsMatrix.tsx",
+      "line": 51,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SettingsLayout",
+      "file": "src/atomic-crm/settings/SettingsLayout.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/lib/utils",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SettingsPage",
+      "file": "src/atomic-crm/settings/SettingsPage.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useGetIdentity",
+        "useGetOne",
+        "useMutation",
+        "useNotify",
+        "useSalesUpdate"
+      ],
+      "imports": [
+        "../providers/types",
+        "../types",
+        "./SettingsLayout",
+        "./hooks",
+        "./sections/AuditLogSection",
+        "./sections/NotificationsSection",
+        "./sections/PersonalSection",
+        "./sections/SecuritySection",
+        "./sections/UsersSection",
+        "@tanstack/react-query",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TimeZoneSelect",
+      "file": "src/atomic-crm/settings/TimeZoneSelect.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/label",
+        "@/components/ui/select"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "Settings",
+      "file": "src/atomic-crm/settings/index.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SettingsPage",
+        "@/components/ErrorBoundary"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SettingsPage",
+      "file": "src/atomic-crm/settings/index.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useGetIdentity",
+        "useGetOne",
+        "useMutation",
+        "useNotify",
+        "useSalesUpdate"
+      ],
+      "imports": [
+        "./SettingsPage",
+        "@/components/ErrorBoundary"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SettingsLayout",
+      "file": "src/atomic-crm/settings/index.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "./SettingsPage",
+        "@/components/ErrorBoundary"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "AuditLogSection",
+      "file": "src/atomic-crm/settings/sections/AuditLogSection.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useGetList"
+      ],
+      "imports": [
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "@/components/ui/scroll-area",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "NotificationsSection",
+      "file": "src/atomic-crm/settings/sections/NotificationsSection.tsx",
+      "line": 4,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../DigestPreferences",
+        "@/components/ui/card"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PersonalSection",
+      "file": "src/atomic-crm/settings/sections/PersonalSection.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useFormState",
+        "useGetIdentity",
+        "useRecordContext",
+        "useSalesUpdate",
+        "useState"
+      ],
+      "imports": [
+        "../../types",
+        "../TimeZoneSelect",
+        "../hooks",
+        "@/components/admin/record-field",
+        "@/components/admin/text-input",
+        "@/components/ui",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SecuritySection",
+      "file": "src/atomic-crm/settings/sections/SecuritySection.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity"
+      ],
+      "imports": [
+        "../RolePermissionsMatrix",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/label",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "UsersSection",
+      "file": "src/atomic-crm/settings/sections/UsersSection.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useRedirect"
+      ],
+      "imports": [
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

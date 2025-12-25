@@ -1,0 +1,181 @@
+{
+  "chunk_name": "activity-log",
+  "generated_at": "2025-12-25T16:06:03.549Z",
+  "item_count": 10,
+  "items": [
+    {
+      "name": "ActivityLog",
+      "file": "src/atomic-crm/activity-log/ActivityLog.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useQuery"
+      ],
+      "imports": [
+        "../services",
+        "./ActivityLogContext",
+        "./ActivityLogIterator",
+        "@/components/ui/alert",
+        "@/components/ui/separator",
+        "@/components/ui/skeleton",
+        "@tanstack/react-query",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityLogContactCreated",
+      "file": "src/atomic-crm/activity-log/ActivityLogContactCreated.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [
+        "useActivityLogContext"
+      ],
+      "imports": [
+        "../contacts/Avatar",
+        "../sales/SaleName",
+        "../types",
+        "../utils/formatName",
+        "./ActivityLogContext",
+        "@/components/admin/reference-field",
+        "@/components/ui",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityLogContactNoteCreated",
+      "file": "src/atomic-crm/activity-log/ActivityLogContactNoteCreated.tsx",
+      "line": 20,
+      "type": "presentational",
+      "hooks": [
+        "useActivityLogContext"
+      ],
+      "imports": [
+        "../contacts/Avatar",
+        "../sales/SaleName",
+        "../types",
+        "./ActivityLogContext",
+        "./ActivityLogNote",
+        "@/components/admin/reference-field",
+        "@/components/admin/text-field",
+        "@/components/ui",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityLogContext",
+      "file": "src/atomic-crm/activity-log/ActivityLogContext.tsx",
+      "line": 5,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "useActivityLogContext",
+      "file": "src/atomic-crm/activity-log/ActivityLogContext.tsx",
+      "line": 7,
+      "type": "presentational",
+      "hooks": [
+        "useContext"
+      ],
+      "imports": [
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityLogIterator",
+      "file": "src/atomic-crm/activity-log/ActivityLogIterator.tsx",
+      "line": 23,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "../consts",
+        "../types",
+        "./ActivityLogContactCreated",
+        "./ActivityLogContactNoteCreated",
+        "./ActivityLogOpportunityCreated",
+        "./ActivityLogOpportunityNoteCreated",
+        "./ActivityLogOrganizationCreated",
+        "@/components/ui/separator",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityLogNote",
+      "file": "src/atomic-crm/activity-log/ActivityLogNote.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityLogOpportunityCreated",
+      "file": "src/atomic-crm/activity-log/ActivityLogOpportunityCreated.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useActivityLogContext"
+      ],
+      "imports": [
+        "../types",
+        "./ActivityLogContext",
+        "@/components/ui",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityLogOpportunityNoteCreated",
+      "file": "src/atomic-crm/activity-log/ActivityLogOpportunityNoteCreated.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [
+        "useActivityLogContext"
+      ],
+      "imports": [
+        "../organizations/OrganizationAvatar",
+        "../sales/SaleName",
+        "../types",
+        "./ActivityLogContext",
+        "./ActivityLogNote",
+        "@/components/admin/reference-field",
+        "@/components/ui",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityLogOrganizationCreated",
+      "file": "src/atomic-crm/activity-log/ActivityLogOrganizationCreated.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useActivityLogContext"
+      ],
+      "imports": [
+        "../organizations/OrganizationAvatar",
+        "../sales/SaleName",
+        "../types",
+        "./ActivityLogContext",
+        "@/components/admin/reference-field",
+        "@/components/ui",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

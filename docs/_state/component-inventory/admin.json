@@ -1,0 +1,49 @@
+{
+  "chunk_name": "admin",
+  "generated_at": "2025-12-25T16:06:03.549Z",
+  "item_count": 2,
+  "items": [
+    {
+      "name": "HealthDashboard",
+      "file": "src/atomic-crm/admin/HealthDashboard.tsx",
+      "line": 115,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useState"
+      ],
+      "imports": [
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/progress",
+        "@/lib/logger",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "HealthDashboard",
+      "file": "src/atomic-crm/admin/HealthDashboard.tsx",
+      "line": 115,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useState"
+      ],
+      "imports": [
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/progress",
+        "@/lib/logger",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": true
+    }
+  ]
+}

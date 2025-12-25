@@ -1,0 +1,163 @@
+{
+  "chunk_name": "root",
+  "generated_at": "2025-12-25T16:06:03.557Z",
+  "item_count": 8,
+  "items": [
+    {
+      "name": "CRM",
+      "file": "src/atomic-crm/root/CRM.tsx",
+      "line": 138,
+      "type": "presentational",
+      "hooks": [
+        "useEffect"
+      ],
+      "imports": [
+        "../activities",
+        "../contacts",
+        "../dashboard/v3",
+        "../layout/Layout",
+        "../notifications",
+        "../opportunities",
+        "../organizations",
+        "../productDistributors",
+        "../products",
+        "../providers/supabase",
+        "../sales",
+        "../settings/SettingsPage",
+        "../tasks",
+        "./ConfigurationContext",
+        "./defaultConfiguration",
+        "./i18nProvider",
+        "@/atomic-crm/login/StartPage.tsx",
+        "@/components/admin/admin",
+        "@/components/supabase/forgot-password-page",
+        "@/components/supabase/set-password-page",
+        "@tanstack/react-query",
+        "ra-core",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ConfigurationContext",
+      "file": "src/atomic-crm/root/ConfigurationContext.tsx",
+      "line": 70,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../contexts/AppBrandingContext",
+        "../contexts/FormOptionsContext",
+        "../contexts/PipelineConfigContext",
+        "../types",
+        "./defaultConfiguration",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ConfigurationProvider",
+      "file": "src/atomic-crm/root/ConfigurationContext.tsx",
+      "line": 91,
+      "type": "presentational",
+      "hooks": [
+        "useMemo"
+      ],
+      "imports": [
+        "../contexts/AppBrandingContext",
+        "../contexts/FormOptionsContext",
+        "../contexts/PipelineConfigContext",
+        "../types",
+        "./defaultConfiguration",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "useConfigurationContext",
+      "file": "src/atomic-crm/root/ConfigurationContext.tsx",
+      "line": 170,
+      "type": "presentational",
+      "hooks": [
+        "useContext"
+      ],
+      "imports": [
+        "../contexts/AppBrandingContext",
+        "../contexts/FormOptionsContext",
+        "../contexts/PipelineConfigContext",
+        "../types",
+        "./defaultConfiguration",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "useAppBranding",
+      "file": "src/atomic-crm/root/ConfigurationContext.tsx",
+      "line": 63,
+      "type": "presentational",
+      "hooks": [
+        "useContext"
+      ],
+      "imports": [
+        "../contexts/AppBrandingContext",
+        "../contexts/FormOptionsContext",
+        "../contexts/PipelineConfigContext",
+        "../types",
+        "./defaultConfiguration",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "usePipelineConfig",
+      "file": "src/atomic-crm/root/ConfigurationContext.tsx",
+      "line": 79,
+      "type": "presentational",
+      "hooks": [
+        "useContext"
+      ],
+      "imports": [
+        "../contexts/AppBrandingContext",
+        "../contexts/FormOptionsContext",
+        "../contexts/PipelineConfigContext",
+        "../types",
+        "./defaultConfiguration",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "useFormOptions",
+      "file": "src/atomic-crm/root/ConfigurationContext.tsx",
+      "line": 63,
+      "type": "presentational",
+      "hooks": [
+        "useContext"
+      ],
+      "imports": [
+        "../contexts/AppBrandingContext",
+        "../contexts/FormOptionsContext",
+        "../contexts/PipelineConfigContext",
+        "../types",
+        "./defaultConfiguration",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "i18nProvider",
+      "file": "src/atomic-crm/root/i18nProvider.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "ra-core",
+        "ra-i18n-polyglot",
+        "ra-language-english",
+        "ra-supabase-language-english"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

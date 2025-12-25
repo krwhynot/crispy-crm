@@ -1,0 +1,366 @@
+{
+  "chunk_name": "components",
+  "generated_at": "2025-12-25T16:06:03.549Z",
+  "item_count": 23,
+  "items": [
+    {
+      "name": "CreateFormFooter",
+      "file": "src/atomic-crm/components/CreateFormFooter.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useFormContext",
+        "useFormState",
+        "useNotify",
+        "useRedirect"
+      ],
+      "imports": [
+        "@/components/admin/form",
+        "@/components/ui/button",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "QuickAddTaskButton",
+      "file": "src/atomic-crm/components/QuickAddTaskButton.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useNavigate"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "lucide-react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "meta",
+      "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
+      "line": 25,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SampleStatusBadge",
+        "@storybook/react",
+        "react-admin"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "Sent",
+      "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
+      "line": 106,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SampleStatusBadge",
+        "@storybook/react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "Received",
+      "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
+      "line": 120,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SampleStatusBadge",
+        "@storybook/react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "FeedbackPending",
+      "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
+      "line": 133,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SampleStatusBadge",
+        "@storybook/react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "FeedbackReceived",
+      "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
+      "line": 146,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SampleStatusBadge",
+        "@storybook/react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "AllStatuses",
+      "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
+      "line": 163,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SampleStatusBadge",
+        "@storybook/react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "CompactMode",
+      "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
+      "line": 184,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SampleStatusBadge",
+        "@storybook/react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "Interactive",
+      "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
+      "line": 205,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SampleStatusBadge",
+        "@storybook/react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "InteractiveAtStart",
+      "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
+      "line": 222,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SampleStatusBadge",
+        "@storybook/react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "InteractiveAtEnd",
+      "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
+      "line": 239,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SampleStatusBadge",
+        "@storybook/react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "StepperOnly",
+      "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
+      "line": 259,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SampleStatusBadge",
+        "@storybook/react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "InActivityList",
+      "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
+      "line": 332,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SampleStatusBadge",
+        "@storybook/react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "WithCallback",
+      "file": "src/atomic-crm/components/SampleStatusBadge.stories.tsx",
+      "line": 383,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./SampleStatusBadge",
+        "@storybook/react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "getNextStatus",
+      "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
+      "line": 108,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/popover",
+        "@/lib/utils",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "getPreviousStatus",
+      "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
+      "line": 120,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/popover",
+        "@/lib/utils",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "isValidTransition",
+      "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
+      "line": 131,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/popover",
+        "@/lib/utils",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SampleStatusStepper",
+      "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
+      "line": 462,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/popover",
+        "@/lib/utils",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SAMPLE_STATUS_WORKFLOW",
+      "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
+      "line": 46,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/popover",
+        "@/lib/utils",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SAMPLE_STATUS_CONFIG",
+      "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
+      "line": 69,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/popover",
+        "@/lib/utils",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SampleStatusBadge",
+      "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
+      "line": 182,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useNotify",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/popover",
+        "@/lib/utils",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SampleStatusBadge",
+      "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
+      "line": 182,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useNotify",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "@/atomic-crm/validation/activities",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/popover",
+        "@/lib/utils",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": true
+    }
+  ]
+}

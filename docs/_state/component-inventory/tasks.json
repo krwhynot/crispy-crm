@@ -1,0 +1,517 @@
+{
+  "chunk_name": "tasks",
+  "generated_at": "2025-12-25T16:06:03.560Z",
+  "item_count": 29,
+  "items": [
+    {
+      "name": "AddTask",
+      "file": "src/atomic-crm/tasks/AddTask.tsx",
+      "line": 33,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useFormOptions",
+        "useGetIdentity",
+        "useNotify",
+        "useRecordContext",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "../contacts/ContactOption",
+        "../root/ConfigurationContext",
+        "../validation/task",
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/form",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/tooltip",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "Task",
+      "file": "src/atomic-crm/tasks/Task.tsx",
+      "line": 31,
+      "type": "presentational",
+      "hooks": [
+        "useDeleteWithUndoController",
+        "useEffect",
+        "useNotify",
+        "useQueryClient",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "../activities/QuickLogActivity",
+        "../types",
+        "./TaskEdit",
+        "@/components/admin/date-field",
+        "@/components/admin/reference-field",
+        "@/components/ui/button",
+        "@/components/ui/checkbox",
+        "@/components/ui/dropdown-menu",
+        "@/lib/date-utils",
+        "@/lib/utils",
+        "@tanstack/react-query",
+        "date-fns",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskCreate",
+      "file": "src/atomic-crm/tasks/TaskCreate.tsx",
+      "line": 35,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useLocation"
+      ],
+      "imports": [
+        "../validation/task",
+        "./TaskInputs",
+        "@/atomic-crm/components",
+        "@/components/admin/form",
+        "@hookform/resolvers/zod",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "TaskDetailsTab",
+      "file": "src/atomic-crm/tasks/TaskDetailsTab.tsx",
+      "line": 7,
+      "type": "presentational",
+      "hooks": [
+        "useFormOptions"
+      ],
+      "imports": [
+        "../contacts/ContactOption",
+        "../root/ConfigurationContext",
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskEdit",
+      "file": "src/atomic-crm/tasks/TaskEdit.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [
+        "useQueryClient"
+      ],
+      "imports": [
+        "../layout/FormToolbar",
+        "../types",
+        "./TaskInputs",
+        "@/atomic-crm/validation/task",
+        "@/components/ui/card",
+        "@tanstack/react-query",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskEdit",
+      "file": "src/atomic-crm/tasks/TaskEdit.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [
+        "useQueryClient"
+      ],
+      "imports": [
+        "../layout/FormToolbar",
+        "../types",
+        "./TaskInputs",
+        "@/atomic-crm/validation/task",
+        "@/components/ui/card",
+        "@tanstack/react-query",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "TaskEmpty",
+      "file": "src/atomic-crm/tasks/TaskEmpty.tsx",
+      "line": 4,
+      "type": "presentational",
+      "hooks": [
+        "useAppBarHeight"
+      ],
+      "imports": [
+        "../hooks/useAppBarHeight",
+        "@/components/admin/create-button"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskGeneralTab",
+      "file": "src/atomic-crm/tasks/TaskGeneralTab.tsx",
+      "line": 3,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/admin/text-input"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskInputs",
+      "file": "src/atomic-crm/tasks/TaskInputs.tsx",
+      "line": 5,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./TaskDetailsTab",
+        "./TaskGeneralTab",
+        "@/components/admin/tabbed-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskList",
+      "file": "src/atomic-crm/tasks/TaskList.tsx",
+      "line": 63,
+      "type": "presentational",
+      "hooks": [
+        "useFilterCleanup",
+        "useGetIdentity",
+        "useSlideOverState"
+      ],
+      "imports": [
+        "../contacts/ContactOption",
+        "../hooks/useFilterCleanup",
+        "../layout/TopToolbar",
+        "../sales/SaleName",
+        "../tutorial",
+        "../types",
+        "../utils/listPatterns",
+        "./TaskEmpty",
+        "./TaskListFilter",
+        "./TaskSlideOver",
+        "./TasksDatagridHeader",
+        "./components/TaskActionMenu",
+        "./taskFilterConfig",
+        "@/components/admin/FilterableBadge",
+        "@/components/admin/FloatingCreateButton",
+        "@/components/admin/ListSearchBar",
+        "@/components/admin/PremiumDatagrid",
+        "@/components/admin/bulk-actions-toolbar",
+        "@/components/admin/date-field",
+        "@/components/admin/list",
+        "@/components/admin/reference-field",
+        "@/components/admin/text-field",
+        "@/components/layouts/StandardListLayout",
+        "@/components/ui/badge",
+        "@/components/ui/list-skeleton",
+        "@/components/ui/priority-badge",
+        "@/hooks/useListKeyboardNavigation",
+        "@/hooks/useSlideOverState",
+        "jsonexport/dist",
+        "ra-core",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "TaskListFilter",
+      "file": "src/atomic-crm/tasks/TaskListFilter.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../filters/FilterCategory",
+        "@/components/admin/OwnerFilterDropdown",
+        "@/components/admin/toggle-filter-button",
+        "date-fns",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskRelatedItemsTab",
+      "file": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../contacts/ContactOption",
+        "../sales/SaleName",
+        "../types",
+        "@/components/admin/reference-field",
+        "@/components/admin/text-field",
+        "@/components/layouts/sidepane",
+        "@/components/ui/card",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskShow",
+      "file": "src/atomic-crm/tasks/TaskShow.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [
+        "useShowContext"
+      ],
+      "imports": [
+        "../types",
+        "@/components/admin/date-field",
+        "@/components/admin/reference-field",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "@/components/ui/priority-badge",
+        "ra-core"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "TaskSlideOver",
+      "file": "src/atomic-crm/tasks/TaskSlideOver.tsx",
+      "line": 31,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "./TaskRelatedItemsTab",
+        "./TaskSlideOverDetailsTab",
+        "@/components/layouts/ResourceSlideOver",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskSlideOverDetailsTab",
+      "file": "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx",
+      "line": 44,
+      "type": "presentational",
+      "hooks": [
+        "useFormOptions",
+        "useNotify",
+        "useUpdate"
+      ],
+      "imports": [
+        "../contacts/ContactOption",
+        "../root/ConfigurationContext",
+        "../sales/SaleName",
+        "../types",
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/boolean-input",
+        "@/components/admin/date-field",
+        "@/components/admin/reference-field",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input",
+        "@/components/layouts/sidepane",
+        "@/components/ui/badge",
+        "@/components/ui/priority-badge",
+        "@/components/ui/scroll-area",
+        "ra-core",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskTitleHeader",
+      "file": "src/atomic-crm/tasks/TasksDatagridHeader.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../root/ConfigurationContext",
+        "@/components/admin/column-filters"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskPriorityHeader",
+      "file": "src/atomic-crm/tasks/TasksDatagridHeader.tsx",
+      "line": 58,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../root/ConfigurationContext",
+        "@/components/admin/column-filters"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskTypeHeader",
+      "file": "src/atomic-crm/tasks/TasksDatagridHeader.tsx",
+      "line": 73,
+      "type": "presentational",
+      "hooks": [
+        "useFormOptions"
+      ],
+      "imports": [
+        "../root/ConfigurationContext",
+        "@/components/admin/column-filters"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskColumnHeaders",
+      "file": "src/atomic-crm/tasks/TasksDatagridHeader.tsx",
+      "line": 92,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../root/ConfigurationContext",
+        "@/components/admin/column-filters"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TasksIterator",
+      "file": "src/atomic-crm/tasks/TasksIterator.tsx",
+      "line": 7,
+      "type": "presentational",
+      "hooks": [
+        "useListContext"
+      ],
+      "imports": [
+        "./Task",
+        "@/lib/date-utils",
+        "@/lib/utils",
+        "date-fns",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskActionMenu",
+      "file": "src/atomic-crm/tasks/components/TaskActionMenu.tsx",
+      "line": 60,
+      "type": "presentational",
+      "hooks": [
+        "useDelete",
+        "useNotify",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/dropdown-menu",
+        "date-fns",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskCompletionDialog",
+      "file": "src/atomic-crm/tasks/components/TaskCompletionDialog.tsx",
+      "line": 38,
+      "type": "presentational",
+      "hooks": [
+        "useNavigate"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "lucide-react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskCompletionDialog",
+      "file": "src/atomic-crm/tasks/components/TaskCompletionDialog.tsx",
+      "line": 38,
+      "type": "presentational",
+      "hooks": [
+        "useNavigate"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "lucide-react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "TaskListView",
+      "file": "src/atomic-crm/tasks/index.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskEditView",
+      "file": "src/atomic-crm/tasks/index.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskCreateView",
+      "file": "src/atomic-crm/tasks/index.tsx",
+      "line": 22,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskListView",
+      "file": "src/atomic-crm/tasks/resource.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskEditView",
+      "file": "src/atomic-crm/tasks/resource.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TaskCreateView",
+      "file": "src/atomic-crm/tasks/resource.tsx",
+      "line": 22,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

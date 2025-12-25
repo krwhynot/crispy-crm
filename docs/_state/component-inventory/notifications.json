@@ -1,0 +1,53 @@
+{
+  "chunk_name": "notifications",
+  "generated_at": "2025-12-25T16:06:03.553Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "NotificationsList",
+      "file": "src/atomic-crm/notifications/NotificationsList.tsx",
+      "line": 29,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../filters/FilterCategory",
+        "../layout/TopToolbar",
+        "@/components/admin/bulk-actions-toolbar",
+        "@/components/admin/list",
+        "@/components/admin/search-input",
+        "@/components/admin/toggle-filter-button",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/lib/date-utils",
+        "@/lib/utils",
+        "date-fns",
+        "lucide-react",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "NotificationsListView",
+      "file": "src/atomic-crm/notifications/index.tsx",
+      "line": 6,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "NotificationsListView",
+      "file": "src/atomic-crm/notifications/resource.tsx",
+      "line": 6,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

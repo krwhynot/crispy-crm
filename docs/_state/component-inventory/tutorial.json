@@ -1,0 +1,181 @@
+{
+  "chunk_name": "tutorial",
+  "generated_at": "2025-12-25T16:06:03.560Z",
+  "item_count": 10,
+  "items": [
+    {
+      "name": "OpportunityCreateFormTutorial",
+      "file": "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useLocation",
+        "useRef",
+        "useState"
+      ],
+      "imports": [
+        "./steps/opportunityCreateFormSteps",
+        "./waitForElement",
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "driver.js",
+        "driver.js/dist/driver.css",
+        "lucide-react",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PageTutorialTrigger",
+      "file": "src/atomic-crm/tutorial/PageTutorialTrigger.tsx",
+      "line": 41,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useRef",
+        "useTutorial"
+      ],
+      "imports": [
+        "./TutorialProvider",
+        "./types",
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TutorialLauncher",
+      "file": "src/atomic-crm/tutorial/TutorialLauncher.tsx",
+      "line": 22,
+      "type": "presentational",
+      "hooks": [
+        "useTutorial"
+      ],
+      "imports": [
+        "./TutorialProvider",
+        "./types",
+        "@/components/ui/dropdown-menu",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TutorialProvider",
+      "file": "src/atomic-crm/tutorial/TutorialProvider.tsx",
+      "line": 36,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useMemo",
+        "useNavigate",
+        "useRef",
+        "useState",
+        "useTutorialProgress"
+      ],
+      "imports": [
+        "./steps",
+        "./types",
+        "./useTutorialProgress",
+        "./waitForElement",
+        "driver.js",
+        "driver.js/dist/driver.css",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "useTutorial",
+      "file": "src/atomic-crm/tutorial/TutorialProvider.tsx",
+      "line": 275,
+      "type": "presentational",
+      "hooks": [
+        "useContext"
+      ],
+      "imports": [
+        "./steps",
+        "./types",
+        "./useTutorialProgress",
+        "./waitForElement",
+        "driver.js",
+        "driver.js/dist/driver.css",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TutorialProvider",
+      "file": "src/atomic-crm/tutorial/index.tsx",
+      "line": 36,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useMemo",
+        "useNavigate",
+        "useRef",
+        "useState",
+        "useTutorialProgress"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "useTutorial",
+      "file": "src/atomic-crm/tutorial/index.tsx",
+      "line": 275,
+      "type": "presentational",
+      "hooks": [
+        "useContext"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TutorialLauncher",
+      "file": "src/atomic-crm/tutorial/index.tsx",
+      "line": 22,
+      "type": "presentational",
+      "hooks": [
+        "useTutorial"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PageTutorialTrigger",
+      "file": "src/atomic-crm/tutorial/index.tsx",
+      "line": 41,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useRef",
+        "useTutorial"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityCreateFormTutorial",
+      "file": "src/atomic-crm/tutorial/index.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useLocation",
+        "useRef",
+        "useState"
+      ],
+      "imports": [],
+      "isDefaultExport": false
+    }
+  ]
+}

@@ -1,0 +1,85 @@
+{
+  "chunk_name": "layout",
+  "generated_at": "2025-12-25T16:06:03.551Z",
+  "item_count": 5,
+  "items": [
+    {
+      "name": "FormToolbar",
+      "file": "src/atomic-crm/layout/FormToolbar.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/admin/cancel-button",
+        "@/components/admin/delete-button",
+        "@/components/admin/form",
+        "@/components/admin/simple-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "Header",
+      "file": "src/atomic-crm/layout/Header.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useAppBranding",
+        "useLocation"
+      ],
+      "imports": [
+        "../root/ConfigurationContext",
+        "../tutorial/TutorialLauncher",
+        "@/components/NotificationBell",
+        "@/components/admin/refresh-button",
+        "@/components/admin/theme-mode-toggle",
+        "@/components/admin/user-menu",
+        "@/components/ui/dropdown-menu",
+        "lucide-react",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "Layout",
+      "file": "src/atomic-crm/layout/Layout.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../tutorial/TutorialProvider",
+        "./Header",
+        "@/components/admin/error",
+        "@/components/admin/notification",
+        "@/components/ui/skeleton",
+        "react",
+        "react-error-boundary"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TopToolbar",
+      "file": "src/atomic-crm/layout/TopToolbar.tsx",
+      "line": 23,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/lib/utils.ts",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TopToolbar",
+      "file": "src/atomic-crm/layout/TopToolbar.tsx",
+      "line": 23,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/lib/utils.ts",
+        "react"
+      ],
+      "isDefaultExport": true
+    }
+  ]
+}

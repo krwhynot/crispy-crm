@@ -4,13 +4,14 @@ import * as fs from "fs";
 import * as path from "path";
 import { extractComponents } from "./extractors/components.js";
 import { extractHooks } from "./extractors/hooks.js";
-import { isDiscoveryStale } from "./utils/output.js";
+import { isDiscoveryStale, isChunkedDiscoveryStale } from "./utils/output.js";
 import { project } from "./utils/project.js";
 
 interface ExtractorConfig {
   name: string;
   label: string;
-  outputFile: string;
+  outputPath: string;        // File name for single file, directory name for chunked
+  isChunked: boolean;        // Whether output is chunked (directory with manifest)
   extractFn: () => Promise<void>;
   getSourceFiles: () => string[];
 }
@@ -19,7 +20,8 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
   components: {
     name: "components",
     label: "Components",
-    outputFile: "component-inventory.json",
+    outputPath: "component-inventory",  // Directory for chunked output
+    isChunked: true,
     extractFn: extractComponents,
     getSourceFiles: () => {
       const files = project.addSourceFilesAtPaths("src/atomic-crm/**/*.tsx");
@@ -29,7 +31,8 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
   hooks: {
     name: "hooks",
     label: "Hooks",
-    outputFile: "hooks-inventory.json",
+    outputPath: "hooks-inventory.json",  // Single file output
+    isChunked: false,
     extractFn: extractHooks,
     getSourceFiles: () => {
       const globs = ["src/**/use*.ts", "src/**/use*.tsx", "src/**/*.ts", "src/**/*.tsx"];
@@ -71,7 +74,11 @@ async function checkStaleness(extractorsToCheck: ExtractorConfig[]): Promise<num
 
   for (const extractor of extractorsToCheck) {
     const sourceFiles = extractor.getSourceFiles();
-    const result = isDiscoveryStale(extractor.outputFile, sourceFiles);
+
+    // Use appropriate staleness checker based on output type
+    const result = extractor.isChunked
+      ? isChunkedDiscoveryStale(extractor.outputPath, sourceFiles)
+      : isDiscoveryStale(extractor.outputPath, sourceFiles);
 
     if (result.stale) {
       hasStale = true;
@@ -136,14 +143,28 @@ function printSummary(extractorsRun: ExtractorConfig[]): void {
   let totalItems = 0;
 
   extractorsRun.forEach((extractor) => {
-    const outputPath = path.join(process.cwd(), "docs/_state", extractor.outputFile);
+    // For chunked output, read manifest.json; for single file, read the file directly
+    const outputPath = extractor.isChunked
+      ? path.join(process.cwd(), "docs/_state", extractor.outputPath, "manifest.json")
+      : path.join(process.cwd(), "docs/_state", extractor.outputPath);
+
+    const displayName = extractor.isChunked
+      ? `${extractor.outputPath}/`
+      : extractor.outputPath;
+
     try {
       const data = JSON.parse(fs.readFileSync(outputPath, "utf-8"));
       const itemCount = data.summary?.total_items || 0;
       totalItems += itemCount;
-      console.log(chalk.gray("├──"), chalk.white(extractor.outputFile.padEnd(30)), chalk.green(`✓ ${itemCount} items`));
+
+      if (extractor.isChunked) {
+        const chunkCount = data.chunks?.length || data.summary?.total_chunks || 0;
+        console.log(chalk.gray("├──"), chalk.white(displayName.padEnd(30)), chalk.green(`✓ ${itemCount} items (${chunkCount} chunks)`));
+      } else {
+        console.log(chalk.gray("├──"), chalk.white(displayName.padEnd(30)), chalk.green(`✓ ${itemCount} items`));
+      }
     } catch {
-      console.log(chalk.gray("├──"), chalk.white(extractor.outputFile.padEnd(30)), chalk.red("✗ Error reading file"));
+      console.log(chalk.gray("├──"), chalk.white(displayName.padEnd(30)), chalk.red("✗ Error reading file"));
     }
   });
 

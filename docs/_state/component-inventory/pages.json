@@ -1,0 +1,45 @@
+{
+  "chunk_name": "pages",
+  "generated_at": "2025-12-25T16:06:03.555Z",
+  "item_count": 2,
+  "items": [
+    {
+      "name": "WhatsNew",
+      "file": "src/atomic-crm/pages/WhatsNew.tsx",
+      "line": 197,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/tabs",
+        "@/lib/utils",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "WhatsNew",
+      "file": "src/atomic-crm/pages/WhatsNew.tsx",
+      "line": 197,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/tabs",
+        "@/lib/utils",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": true
+    }
+  ]
+}

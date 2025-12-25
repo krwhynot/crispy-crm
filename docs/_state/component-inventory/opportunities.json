@@ -1,0 +1,1810 @@
+{
+  "chunk_name": "opportunities",
+  "generated_at": "2025-12-25T16:06:03.553Z",
+  "item_count": 79,
+  "items": [
+    {
+      "name": "ActivitiesList",
+      "file": "src/atomic-crm/opportunities/ActivitiesList.tsx",
+      "line": 7,
+      "type": "presentational",
+      "hooks": [
+        "useListContext"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/badge",
+        "@/lib/date-utils",
+        "date-fns",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityNoteForm",
+      "file": "src/atomic-crm/opportunities/ActivityNoteForm.tsx",
+      "line": 77,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useForm",
+        "useNotify",
+        "usePipelineConfig",
+        "useRefresh"
+      ],
+      "imports": [
+        "../root/ConfigurationContext",
+        "../types",
+        "../validation/activities",
+        "@/components/ui/button",
+        "@/components/ui/input",
+        "@/components/ui/select",
+        "@/components/ui/textarea",
+        "@hookform/resolvers/zod",
+        "ra-core",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ActivityTimelineFilters",
+      "file": "src/atomic-crm/opportunities/ActivityTimelineFilters.tsx",
+      "line": 33,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useMemo",
+        "useRef",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "../validation/activities",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/checkbox",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/components/ui/popover",
+        "@/components/ui/switch",
+        "es-toolkit",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "BulkActionsToolbar",
+      "file": "src/atomic-crm/opportunities/BulkActionsToolbar.tsx",
+      "line": 52,
+      "type": "presentational",
+      "hooks": [
+        "useBulkActionsState",
+        "useExportOpportunities",
+        "useGetList"
+      ],
+      "imports": [
+        "../types",
+        "./constants/stageConstants",
+        "./hooks",
+        "./hooks/useExportOpportunities",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/select",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "CampaignGroupedList",
+      "file": "src/atomic-crm/opportunities/CampaignGroupedList.tsx",
+      "line": 50,
+      "type": "presentational",
+      "hooks": [
+        "useListContext",
+        "useMemo"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/accordion",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ChangeLogTab",
+      "file": "src/atomic-crm/opportunities/ChangeLogTab.tsx",
+      "line": 45,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useMemo",
+        "useShowContext",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/components/ui/select",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ContactList",
+      "file": "src/atomic-crm/opportunities/ContactList.tsx",
+      "line": 5,
+      "type": "presentational",
+      "hooks": [
+        "useListContext"
+      ],
+      "imports": [
+        "../contacts/Avatar",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "LeadSourceInput",
+      "file": "src/atomic-crm/opportunities/LeadSourceInput.tsx",
+      "line": 4,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./constants/LeadSourceInput.constants",
+        "@/components/admin/select-input"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OnlyMineInput",
+      "file": "src/atomic-crm/opportunities/OnlyMineInput.tsx",
+      "line": 5,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useListFilterContext"
+      ],
+      "imports": [
+        "@/components/ui/label",
+        "@/components/ui/switch",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "getRelativeTimeString",
+      "file": "src/atomic-crm/opportunities/OpportunityArchivedList.tsx",
+      "line": 115,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "../utils/formatters",
+        "./constants/stageConstants",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/lib/date-utils",
+        "date-fns",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityArchivedList",
+      "file": "src/atomic-crm/opportunities/OpportunityArchivedList.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useGetIdentity",
+        "useGetList",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "../utils/formatters",
+        "./constants/stageConstants",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/lib/date-utils",
+        "date-fns",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityAside",
+      "file": "src/atomic-crm/opportunities/OpportunityAside.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [
+        "useRecordContext"
+      ],
+      "imports": [
+        "../sales/SaleAvatar",
+        "../sales/SaleName",
+        "../tasks/TasksIterator",
+        "../types",
+        "./constants/stageConstants",
+        "@/components/admin/date-field",
+        "@/components/admin/edit-button",
+        "@/components/admin/reference-field",
+        "@/components/admin/reference-many-field",
+        "@/components/admin/show-button",
+        "@/components/ui",
+        "@/components/ui/badge",
+        "@/lib/date-utils",
+        "date-fns",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityCreate",
+      "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useSimilarOpportunityCheck"
+      ],
+      "imports": [
+        "../layout/FormToolbar",
+        "../tutorial/OpportunityCreateFormTutorial",
+        "../validation/opportunities",
+        "./OpportunityInputs",
+        "./components/OpportunityCreateSaveButton",
+        "./components/SimilarOpportunitiesDialog",
+        "./hooks/useSimilarOpportunityCheck",
+        "@/components/admin/FormErrorSummary",
+        "@/components/admin/cancel-button",
+        "@/components/ui/card",
+        "@/hooks/useUnsavedChangesWarning",
+        "ra-core",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityCreate",
+      "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useSimilarOpportunityCheck"
+      ],
+      "imports": [
+        "../layout/FormToolbar",
+        "../tutorial/OpportunityCreateFormTutorial",
+        "../validation/opportunities",
+        "./OpportunityInputs",
+        "./components/OpportunityCreateSaveButton",
+        "./components/SimilarOpportunitiesDialog",
+        "./hooks/useSimilarOpportunityCheck",
+        "@/components/admin/FormErrorSummary",
+        "@/components/admin/cancel-button",
+        "@/components/ui/card",
+        "@/hooks/useUnsavedChangesWarning",
+        "ra-core",
+        "react-hook-form"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OpportunityCreateWizard",
+      "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
+      "line": 59,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useMemo",
+        "useSimilarOpportunityCheck"
+      ],
+      "imports": [
+        "../tutorial/OpportunityCreateFormTutorial",
+        "../validation/opportunities",
+        "./components/SimilarOpportunitiesDialog",
+        "./forms/OpportunityWizardSteps",
+        "./hooks/useSimilarOpportunityCheck",
+        "@/components/admin/FormErrorSummary",
+        "@/components/admin/form",
+        "@/components/ui/card",
+        "@/components/ui/unsaved-changes-dialog",
+        "@/hooks",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityCreateWizard",
+      "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
+      "line": 59,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useMemo",
+        "useSimilarOpportunityCheck"
+      ],
+      "imports": [
+        "../tutorial/OpportunityCreateFormTutorial",
+        "../validation/opportunities",
+        "./components/SimilarOpportunitiesDialog",
+        "./forms/OpportunityWizardSteps",
+        "./hooks/useSimilarOpportunityCheck",
+        "@/components/admin/FormErrorSummary",
+        "@/components/admin/form",
+        "@/components/ui/card",
+        "@/components/ui/unsaved-changes-dialog",
+        "@/hooks",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OpportunityEdit",
+      "file": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [
+        "useNotify",
+        "useQueryClient",
+        "useRefresh"
+      ],
+      "imports": [
+        "../layout/FormToolbar",
+        "../organizations/OrganizationAvatar",
+        "../types",
+        "./components/OpportunityActivitySection",
+        "./forms/OpportunityCompactForm",
+        "@/atomic-crm/validation/opportunities",
+        "@/components/admin/cancel-button",
+        "@/components/admin/delete-button",
+        "@/components/admin/form",
+        "@/components/admin/reference-field",
+        "@/components/ui/card",
+        "@/components/ui/separator",
+        "@tanstack/react-query",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityEdit",
+      "file": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [
+        "useNotify",
+        "useQueryClient",
+        "useRefresh"
+      ],
+      "imports": [
+        "../layout/FormToolbar",
+        "../organizations/OrganizationAvatar",
+        "../types",
+        "./components/OpportunityActivitySection",
+        "./forms/OpportunityCompactForm",
+        "@/atomic-crm/validation/opportunities",
+        "@/components/admin/cancel-button",
+        "@/components/admin/delete-button",
+        "@/components/admin/form",
+        "@/components/admin/reference-field",
+        "@/components/ui/card",
+        "@/components/ui/separator",
+        "@tanstack/react-query",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OpportunityEmpty",
+      "file": "src/atomic-crm/opportunities/OpportunityEmpty.tsx",
+      "line": 8,
+      "type": "presentational",
+      "hooks": [
+        "useAppBarHeight",
+        "useGetList"
+      ],
+      "imports": [
+        "../hooks/useAppBarHeight",
+        "../types",
+        "@/components/admin/create-button",
+        "@/components/ui/progress",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityHeader",
+      "file": "src/atomic-crm/opportunities/OpportunityHeader.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [
+        "useRecordContext"
+      ],
+      "imports": [
+        "../organizations/OrganizationAvatar",
+        "../types",
+        "@/components/admin/cancel-button",
+        "@/components/admin/delete-button",
+        "@/components/admin/edit-button",
+        "@/components/admin/form",
+        "@/components/admin/reference-field",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityInputs",
+      "file": "src/atomic-crm/opportunities/OpportunityInputs.tsx",
+      "line": 28,
+      "type": "presentational",
+      "hooks": [
+        "useFormState"
+      ],
+      "imports": [
+        "./forms/OpportunityCompactForm",
+        "@/components/admin/FormErrorSummary",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityList",
+      "file": "src/atomic-crm/opportunities/OpportunityList.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [
+        "useFilterCleanup",
+        "useGetIdentity",
+        "useSlideOverState",
+        "useState"
+      ],
+      "imports": [
+        "../filters/opportunityStagePreferences",
+        "../hooks/useFilterCleanup",
+        "./CampaignGroupedList",
+        "./OpportunityArchivedList",
+        "./OpportunityEmpty",
+        "./OpportunityListFilter",
+        "./OpportunityListTutorial",
+        "./OpportunityRowListView",
+        "./OpportunitySlideOver",
+        "./OpportunitySpeedDial",
+        "./OpportunityViewSwitcher",
+        "./PrincipalGroupedList",
+        "./kanban",
+        "./opportunityExporter",
+        "./opportunityFilterConfig",
+        "@/components/admin/ListNoResults",
+        "@/components/admin/ListSearchBar",
+        "@/components/admin/list",
+        "@/components/admin/list-pagination",
+        "@/components/layouts/StandardListLayout",
+        "@/components/ui/list-skeleton",
+        "@/hooks/useSlideOverState",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OpportunityListFilter",
+      "file": "src/atomic-crm/opportunities/OpportunityListFilter.tsx",
+      "line": 31,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useGetList",
+        "useListContext"
+      ],
+      "imports": [
+        "../filters/FilterCategory",
+        "./constants/priorityChoices",
+        "./constants/stageConstants",
+        "@/components/admin/OwnerFilterDropdown",
+        "@/components/admin/search-input",
+        "@/components/admin/toggle-filter-button",
+        "@/components/ui/button",
+        "@/components/ui/select",
+        "date-fns",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityListTutorial",
+      "file": "src/atomic-crm/opportunities/OpportunityListTutorial.tsx",
+      "line": 145,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useRef"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "driver.js",
+        "driver.js/dist/driver.css",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityRowListView",
+      "file": "src/atomic-crm/opportunities/OpportunityRowListView.tsx",
+      "line": 25,
+      "type": "presentational",
+      "hooks": [
+        "useListContext",
+        "useListKeyboardNavigation"
+      ],
+      "imports": [
+        "../types",
+        "./BulkActionsToolbar",
+        "./components/NextTaskBadge",
+        "./constants/stageConstants",
+        "./utils/rowStyling",
+        "@/components/admin/edit-button",
+        "@/components/admin/reference-field",
+        "@/components/admin/text-field",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/checkbox",
+        "@/components/ui/skeleton",
+        "@/hooks/useListKeyboardNavigation",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityShow",
+      "file": "src/atomic-crm/opportunities/OpportunityShow.tsx",
+      "line": 33,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../notes",
+        "../sales/SaleAvatar",
+        "../types",
+        "./ActivitiesList",
+        "./ActivityNoteForm",
+        "./ActivityTimelineFilters",
+        "./ChangeLogTab",
+        "./ContactList",
+        "./OpportunityAside",
+        "./OpportunityHeader",
+        "./OrganizationInfoCard",
+        "./ProductsTable",
+        "./RelatedOpportunitiesSection",
+        "./WorkflowManagementSection",
+        "./components",
+        "./constants",
+        "./opportunity",
+        "@/components/admin/reference-array-field",
+        "@/components/admin/reference-field",
+        "@/components/admin/reference-many-field",
+        "@/components/design-system",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "@/components/ui/tabs",
+        "@/lib/date-utils",
+        "date-fns",
+        "ra-core",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityShow",
+      "file": "src/atomic-crm/opportunities/OpportunityShow.tsx",
+      "line": 33,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../notes",
+        "../sales/SaleAvatar",
+        "../types",
+        "./ActivitiesList",
+        "./ActivityNoteForm",
+        "./ActivityTimelineFilters",
+        "./ChangeLogTab",
+        "./ContactList",
+        "./OpportunityAside",
+        "./OpportunityHeader",
+        "./OrganizationInfoCard",
+        "./ProductsTable",
+        "./RelatedOpportunitiesSection",
+        "./WorkflowManagementSection",
+        "./components",
+        "./constants",
+        "./opportunity",
+        "@/components/admin/reference-array-field",
+        "@/components/admin/reference-field",
+        "@/components/admin/reference-many-field",
+        "@/components/design-system",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "@/components/ui/tabs",
+        "@/lib/date-utils",
+        "date-fns",
+        "ra-core",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OpportunitySlideOver",
+      "file": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx",
+      "line": 19,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./slideOverTabs/OpportunityContactsTab",
+        "./slideOverTabs/OpportunityNotesTab",
+        "./slideOverTabs/OpportunityProductsTab",
+        "./slideOverTabs/OpportunitySlideOverDetailsTab",
+        "@/atomic-crm/components",
+        "@/atomic-crm/types",
+        "@/components/layouts/ResourceSlideOver",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunitySpeedDial",
+      "file": "src/atomic-crm/opportunities/OpportunitySpeedDial.tsx",
+      "line": 48,
+      "type": "presentational",
+      "hooks": [
+        "useCreatePath",
+        "useState"
+      ],
+      "imports": [
+        "./quick-add/QuickAddDialog",
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "@/lib/utils",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityViewSwitcher",
+      "file": "src/atomic-crm/opportunities/OpportunityViewSwitcher.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/toggle-group",
+        "@/components/ui/tooltip",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OrganizationInfoCard",
+      "file": "src/atomic-crm/opportunities/OrganizationInfoCard.tsx",
+      "line": 24,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/admin/reference-field",
+        "@/components/admin/text-field",
+        "@/components/ui/card",
+        "@/components/ui/tooltip",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "PrincipalGroupedList",
+      "file": "src/atomic-crm/opportunities/PrincipalGroupedList.tsx",
+      "line": 124,
+      "type": "presentational",
+      "hooks": [
+        "useListContext",
+        "useMemo"
+      ],
+      "imports": [
+        "../types",
+        "./constants/stageConstants",
+        "./constants/stageThresholds",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "@/lib/date-utils",
+        "lucide-react",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductsTable",
+      "file": "src/atomic-crm/opportunities/ProductsTable.tsx",
+      "line": 51,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/alert-dialog",
+        "@/components/ui/button",
+        "@/components/ui/table",
+        "lucide-react",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "RelatedOpportunitiesSection",
+      "file": "src/atomic-crm/opportunities/RelatedOpportunitiesSection.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useGetOne"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/badge",
+        "lucide-react",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "WorkflowManagementSection",
+      "file": "src/atomic-crm/opportunities/WorkflowManagementSection.tsx",
+      "line": 27,
+      "type": "presentational",
+      "hooks": [
+        "useNavigate",
+        "useNotify",
+        "useShowContext",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/collapsible",
+        "@/components/ui/input",
+        "@/components/ui/textarea",
+        "date-fns",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ArchiveButton",
+      "file": "src/atomic-crm/opportunities/components/ArchiveActions.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useNotify",
+        "useRedirect",
+        "useRefresh",
+        "useUpdate"
+      ],
+      "imports": [
+        "../../services",
+        "../../types",
+        "../constants",
+        "@/components/ui/button",
+        "@tanstack/react-query",
+        "lucide-react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "UnarchiveButton",
+      "file": "src/atomic-crm/opportunities/components/ArchiveActions.tsx",
+      "line": 56,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useMutation",
+        "useNotify",
+        "useRedirect",
+        "useRefresh"
+      ],
+      "imports": [
+        "../../services",
+        "../../types",
+        "../constants",
+        "@/components/ui/button",
+        "@tanstack/react-query",
+        "lucide-react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ArchivedBanner",
+      "file": "src/atomic-crm/opportunities/components/ArchivedBanner.tsx",
+      "line": 1,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "CloseOpportunityModal",
+      "file": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx",
+      "line": 73,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useForm",
+        "useWatch"
+      ],
+      "imports": [
+        "@/atomic-crm/validation/opportunities",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/lib/utils",
+        "@hookform/resolvers/zod",
+        "lucide-react",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "CloseOpportunityModal",
+      "file": "src/atomic-crm/opportunities/components/CloseOpportunityModal.tsx",
+      "line": 73,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useForm",
+        "useWatch"
+      ],
+      "imports": [
+        "@/atomic-crm/validation/opportunities",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/lib/utils",
+        "@hookform/resolvers/zod",
+        "lucide-react",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ContactOrgMismatchWarning",
+      "file": "src/atomic-crm/opportunities/components/ContactOrgMismatchWarning.tsx",
+      "line": 40,
+      "type": "presentational",
+      "hooks": [
+        "useContactOrgMismatch",
+        "useFormContext",
+        "useGetOne",
+        "useWatch"
+      ],
+      "imports": [
+        "../../types",
+        "../hooks/useContactOrgMismatch",
+        "@/components/ui/alert",
+        "@/components/ui/alert-dialog",
+        "@/components/ui/button",
+        "lucide-react",
+        "ra-core",
+        "react-admin",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "CustomerDistributorIndicator",
+      "file": "src/atomic-crm/opportunities/components/CustomerDistributorIndicator.tsx",
+      "line": 19,
+      "type": "presentational",
+      "hooks": [
+        "useCustomerDistributors",
+        "useWatch"
+      ],
+      "imports": [
+        "../hooks/useCustomerDistributors",
+        "@/lib/utils",
+        "lucide-react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "DistributorAuthorizationWarning",
+      "file": "src/atomic-crm/opportunities/components/DistributorAuthorizationWarning.tsx",
+      "line": 36,
+      "type": "presentational",
+      "hooks": [
+        "useDistributorAuthorization",
+        "useWatch"
+      ],
+      "imports": [
+        "../hooks/useDistributorAuthorization",
+        "@/components/ui/alert",
+        "@/components/ui/alert-dialog",
+        "@/components/ui/button",
+        "lucide-react",
+        "ra-core",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "MetadataField",
+      "file": "src/atomic-crm/opportunities/components/MetadataField.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../constants",
+        "@/lib/utils"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "MetadataRow",
+      "file": "src/atomic-crm/opportunities/components/MetadataRow.tsx",
+      "line": 8,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/lib/utils"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "NextTaskBadge",
+      "file": "src/atomic-crm/opportunities/components/NextTaskBadge.tsx",
+      "line": 78,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/priority-badge",
+        "@/lib/utils",
+        "date-fns",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "NextTaskBadge",
+      "file": "src/atomic-crm/opportunities/components/NextTaskBadge.tsx",
+      "line": 78,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/priority-badge",
+        "@/lib/utils",
+        "date-fns",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "OpportunityActivitySection",
+      "file": "src/atomic-crm/opportunities/components/OpportunityActivitySection.tsx",
+      "line": 8,
+      "type": "presentational",
+      "hooks": [
+        "useRecordContext"
+      ],
+      "imports": [
+        "../../notes",
+        "../ActivityNoteForm",
+        "../types",
+        "@/components/admin/reference-many-field",
+        "@/components/ui/separator",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityCreateSaveButton",
+      "file": "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx",
+      "line": 42,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useEffect",
+        "useFormContext",
+        "useFormState",
+        "useRecordFromLocation",
+        "useRef",
+        "useSaveContext",
+        "useTranslate",
+        "useWatch"
+      ],
+      "imports": [
+        "../../utils/levenshtein",
+        "@/components/ui/button",
+        "@/lib/utils",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "SimilarOpportunitiesDialog",
+      "file": "src/atomic-crm/opportunities/components/SimilarOpportunitiesDialog.tsx",
+      "line": 69,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../../utils/levenshtein",
+        "../constants/stageConstants",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/dialog",
+        "@/components/ui/table",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "NamingConventionHelp",
+      "file": "src/atomic-crm/opportunities/forms/NamingConventionHelp.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/collapsible",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityCompactForm",
+      "file": "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx",
+      "line": 48,
+      "type": "presentational",
+      "hooks": [
+        "useAutoGenerateName",
+        "useFormContext",
+        "useGetIdentity",
+        "useMemo",
+        "useWatch"
+      ],
+      "imports": [
+        "../../constants",
+        "../../contacts/ContactInputs",
+        "../../contacts/ContactOption",
+        "../../organizations/AutocompleteOrganizationInput",
+        "../../organizations/OrganizationInputs",
+        "../../utils/saleOptionRenderer",
+        "../../validation/contacts",
+        "../../validation/organizations",
+        "../components/ContactOrgMismatchWarning",
+        "../components/DistributorAuthorizationWarning",
+        "../constants/stageConstants",
+        "../hooks/useAutoGenerateName",
+        "./NamingConventionHelp",
+        "@/components/admin/array-input",
+        "@/components/admin/autocomplete-array-input",
+        "@/components/admin/create-in-dialog-button",
+        "@/components/admin/form",
+        "@/components/admin/reference-array-input",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/simple-form-iterator",
+        "@/components/admin/text-input",
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityInputs",
+      "file": "src/atomic-crm/opportunities/forms/OpportunityInputs.tsx",
+      "line": 28,
+      "type": "presentational",
+      "hooks": [
+        "useFormState"
+      ],
+      "imports": [
+        "./OpportunityCompactForm",
+        "@/components/admin/FormErrorSummary",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityWizardStep1",
+      "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
+      "line": 85,
+      "type": "presentational",
+      "hooks": [
+        "useAutoGenerateName",
+        "useFormContext",
+        "useGetIdentity"
+      ],
+      "imports": [
+        "../../constants",
+        "../../contacts/ContactInputs",
+        "../../contacts/ContactOption",
+        "../../organizations/AutocompleteOrganizationInput",
+        "../../organizations/OrganizationInputs",
+        "../../utils/saleOptionRenderer",
+        "../../validation/contacts",
+        "../../validation/organizations",
+        "../components/ContactOrgMismatchWarning",
+        "../components/CustomerDistributorIndicator",
+        "../components/DistributorAuthorizationWarning",
+        "../constants/stageConstants",
+        "../hooks",
+        "./NamingConventionHelp",
+        "@/components/admin/array-input",
+        "@/components/admin/autocomplete-array-input",
+        "@/components/admin/create-in-dialog-button",
+        "@/components/admin/form",
+        "@/components/admin/reference-array-input",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/simple-form-iterator",
+        "@/components/admin/text-input",
+        "@/components/admin/text-input/",
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "@/lib/utils",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityWizardStep2",
+      "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
+      "line": 228,
+      "type": "presentational",
+      "hooks": [
+        "useCustomerDistributors",
+        "useEffect",
+        "useFormContext",
+        "useGetIdentity",
+        "useRef",
+        "useWatch"
+      ],
+      "imports": [
+        "../../constants",
+        "../../contacts/ContactInputs",
+        "../../contacts/ContactOption",
+        "../../organizations/AutocompleteOrganizationInput",
+        "../../organizations/OrganizationInputs",
+        "../../utils/saleOptionRenderer",
+        "../../validation/contacts",
+        "../../validation/organizations",
+        "../components/ContactOrgMismatchWarning",
+        "../components/CustomerDistributorIndicator",
+        "../components/DistributorAuthorizationWarning",
+        "../constants/stageConstants",
+        "../hooks",
+        "./NamingConventionHelp",
+        "@/components/admin/array-input",
+        "@/components/admin/autocomplete-array-input",
+        "@/components/admin/create-in-dialog-button",
+        "@/components/admin/form",
+        "@/components/admin/reference-array-input",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/simple-form-iterator",
+        "@/components/admin/text-input",
+        "@/components/admin/text-input/",
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "@/lib/utils",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityWizardStep3",
+      "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
+      "line": 382,
+      "type": "presentational",
+      "hooks": [
+        "useFormContext",
+        "useGetIdentity",
+        "useMemo",
+        "useWatch"
+      ],
+      "imports": [
+        "../../constants",
+        "../../contacts/ContactInputs",
+        "../../contacts/ContactOption",
+        "../../organizations/AutocompleteOrganizationInput",
+        "../../organizations/OrganizationInputs",
+        "../../utils/saleOptionRenderer",
+        "../../validation/contacts",
+        "../../validation/organizations",
+        "../components/ContactOrgMismatchWarning",
+        "../components/CustomerDistributorIndicator",
+        "../components/DistributorAuthorizationWarning",
+        "../constants/stageConstants",
+        "../hooks",
+        "./NamingConventionHelp",
+        "@/components/admin/array-input",
+        "@/components/admin/autocomplete-array-input",
+        "@/components/admin/create-in-dialog-button",
+        "@/components/admin/form",
+        "@/components/admin/reference-array-input",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/simple-form-iterator",
+        "@/components/admin/text-input",
+        "@/components/admin/text-input/",
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "@/lib/utils",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityWizardStep4",
+      "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
+      "line": 508,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../../constants",
+        "../../contacts/ContactInputs",
+        "../../contacts/ContactOption",
+        "../../organizations/AutocompleteOrganizationInput",
+        "../../organizations/OrganizationInputs",
+        "../../utils/saleOptionRenderer",
+        "../../validation/contacts",
+        "../../validation/organizations",
+        "../components/ContactOrgMismatchWarning",
+        "../components/CustomerDistributorIndicator",
+        "../components/DistributorAuthorizationWarning",
+        "../constants/stageConstants",
+        "../hooks",
+        "./NamingConventionHelp",
+        "@/components/admin/array-input",
+        "@/components/admin/autocomplete-array-input",
+        "@/components/admin/create-in-dialog-button",
+        "@/components/admin/form",
+        "@/components/admin/reference-array-input",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/simple-form-iterator",
+        "@/components/admin/text-input",
+        "@/components/admin/text-input/",
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "@/lib/utils",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OPPORTUNITY_WIZARD_STEPS",
+      "file": "src/atomic-crm/opportunities/forms/OpportunityWizardSteps.tsx",
+      "line": 58,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../../constants",
+        "../../contacts/ContactInputs",
+        "../../contacts/ContactOption",
+        "../../organizations/AutocompleteOrganizationInput",
+        "../../organizations/OrganizationInputs",
+        "../../utils/saleOptionRenderer",
+        "../../validation/contacts",
+        "../../validation/organizations",
+        "../components/ContactOrgMismatchWarning",
+        "../components/CustomerDistributorIndicator",
+        "../components/DistributorAuthorizationWarning",
+        "../constants/stageConstants",
+        "../hooks",
+        "./NamingConventionHelp",
+        "@/components/admin/array-input",
+        "@/components/admin/autocomplete-array-input",
+        "@/components/admin/create-in-dialog-button",
+        "@/components/admin/form",
+        "@/components/admin/reference-array-input",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/simple-form-iterator",
+        "@/components/admin/text-input",
+        "@/components/admin/text-input/",
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "@/lib/utils",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityActivityTab",
+      "file": "src/atomic-crm/opportunities/forms/tabs/OpportunityActivityTab.tsx",
+      "line": 8,
+      "type": "presentational",
+      "hooks": [
+        "useRecordContext"
+      ],
+      "imports": [
+        "../../../notes",
+        "../../ActivityNoteForm",
+        "../../types",
+        "@/components/admin/reference-many-field",
+        "@/components/ui/separator",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityListView",
+      "file": "src/atomic-crm/opportunities/index.tsx",
+      "line": 11,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityCreateView",
+      "file": "src/atomic-crm/opportunities/index.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityEditView",
+      "file": "src/atomic-crm/opportunities/index.tsx",
+      "line": 23,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ColumnCustomizationMenu",
+      "file": "src/atomic-crm/opportunities/kanban/ColumnCustomizationMenu.tsx",
+      "line": 15,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useRef",
+        "useState"
+      ],
+      "imports": [
+        "../../types",
+        "../constants/stageConstants",
+        "@/components/ui/checkbox",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityCard",
+      "file": "src/atomic-crm/opportunities/kanban/OpportunityCard.tsx",
+      "line": 32,
+      "type": "presentational",
+      "hooks": [
+        "useRecordContext",
+        "useSortable"
+      ],
+      "imports": [
+        "../../types",
+        "../constants/stageThresholds",
+        "./OpportunityCardActions",
+        "./StageStatusDot",
+        "@/lib/date-utils",
+        "@dnd-kit/sortable",
+        "@dnd-kit/utilities",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityCardActions",
+      "file": "src/atomic-crm/opportunities/kanban/OpportunityCardActions.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useDelete",
+        "useNavigate",
+        "useNotify",
+        "useRecordContext",
+        "useRefresh",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "../../types",
+        "../components/CloseOpportunityModal",
+        "@/atomic-crm/validation/opportunities",
+        "@/components/ui/dropdown-menu",
+        "lucide-react",
+        "react",
+        "react-admin",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityColumn",
+      "file": "src/atomic-crm/opportunities/kanban/OpportunityColumn.tsx",
+      "line": 92,
+      "type": "presentational",
+      "hooks": [
+        "useDroppable",
+        "useMemo",
+        "useStageMetrics"
+      ],
+      "imports": [
+        "../../types",
+        "../constants/stageConstants",
+        "../hooks/useStageMetrics",
+        "./OpportunityCard",
+        "./QuickAddOpportunity",
+        "@/components/ui/tooltip",
+        "@dnd-kit/core",
+        "@dnd-kit/sortable",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityListContent",
+      "file": "src/atomic-crm/opportunities/kanban/OpportunityListContent.tsx",
+      "line": 80,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useColumnPreferences",
+        "useEffect",
+        "useListContext",
+        "useNotify",
+        "useRefresh",
+        "useSensor",
+        "useSensors",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "../../types",
+        "../components/CloseOpportunityModal",
+        "../constants/stageConstants",
+        "../constants/stages",
+        "../hooks/useColumnPreferences",
+        "./ColumnCustomizationMenu",
+        "./OpportunityCard",
+        "./OpportunityColumn",
+        "@/atomic-crm/validation/opportunities",
+        "@dnd-kit/core",
+        "@dnd-kit/sortable",
+        "es-toolkit",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "QuickAddOpportunity",
+      "file": "src/atomic-crm/opportunities/kanban/QuickAddOpportunity.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useCreate",
+        "useEffect",
+        "useGetIdentity",
+        "useGetList",
+        "useNotify",
+        "useRefresh",
+        "useState"
+      ],
+      "imports": [
+        "../../types",
+        "../../validation/opportunities",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "StageStatusDot",
+      "file": "src/atomic-crm/opportunities/kanban/StageStatusDot.tsx",
+      "line": 24,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../constants/stageThresholds",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "QuickAddButton",
+      "file": "src/atomic-crm/opportunities/quick-add/QuickAddButton.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "./QuickAddDialog",
+        "@/components/ui/button",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "QuickAddDialog",
+      "file": "src/atomic-crm/opportunities/quick-add/QuickAddDialog.tsx",
+      "line": 22,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./QuickAddForm",
+        "@/components/ui/dialog"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "QuickAddForm",
+      "file": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx",
+      "line": 28,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useFilteredProducts",
+        "useForm",
+        "useGetList",
+        "useQuickAdd",
+        "useRef",
+        "useWatch"
+      ],
+      "imports": [
+        "../data/us-cities",
+        "../hooks/useFilteredProducts",
+        "../hooks/useQuickAdd",
+        "@/atomic-crm/validation/quickAdd",
+        "@/components/ui/button",
+        "@/components/ui/combobox",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/components/ui/select",
+        "@/lib/storage-utils",
+        "@/lib/utils",
+        "@hookform/resolvers/zod",
+        "ra-core",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityListView",
+      "file": "src/atomic-crm/opportunities/resource.tsx",
+      "line": 11,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityCreateView",
+      "file": "src/atomic-crm/opportunities/resource.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityEditView",
+      "file": "src/atomic-crm/opportunities/resource.tsx",
+      "line": 23,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../types",
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityContactsTab",
+      "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx",
+      "line": 23,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useNotify",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "@/atomic-crm/types",
+        "@/components/admin/autocomplete-array-input",
+        "@/components/layouts/sidepane",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/scroll-area",
+        "lucide-react",
+        "ra-core",
+        "react",
+        "react-admin",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityNotesTab",
+      "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityNotesTab.tsx",
+      "line": 21,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../../notes",
+        "../../types",
+        "@/components/admin/reference-many-field",
+        "@/components/layouts/sidepane",
+        "@/components/ui/scroll-area",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunityProductsTab",
+      "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx",
+      "line": 39,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useNotify",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "@/atomic-crm/types",
+        "@/components/admin/autocomplete-array-input",
+        "@/components/layouts/sidepane",
+        "@/components/ui/badge",
+        "@/components/ui/button",
+        "@/components/ui/card",
+        "@/components/ui/scroll-area",
+        "lucide-react",
+        "react",
+        "react-admin",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "OpportunitySlideOverDetailsTab",
+      "file": "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx",
+      "line": 95,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useNotify",
+        "useRef",
+        "useState",
+        "useUpdate"
+      ],
+      "imports": [
+        "../LeadSourceInput",
+        "../components/CloseOpportunityModal",
+        "../constants/stageConstants",
+        "@/atomic-crm/types",
+        "@/atomic-crm/validation/opportunities",
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input",
+        "@/components/layouts/sidepane",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "@/components/ui/scroll-area",
+        "@/lib/date-utils",
+        "date-fns",
+        "lucide-react",
+        "react",
+        "react-admin",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

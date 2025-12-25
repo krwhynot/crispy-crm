@@ -1,0 +1,96 @@
+{
+  "chunk_name": "tags",
+  "generated_at": "2025-12-25T16:06:03.560Z",
+  "item_count": 5,
+  "items": [
+    {
+      "name": "RoundButton",
+      "file": "src/atomic-crm/tags/RoundButton.tsx",
+      "line": 9,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./tag-colors"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TagChip",
+      "file": "src/atomic-crm/tags/TagChip.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "./TagEditModal",
+        "./tag-colors",
+        "@/lib/utils",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TagCreateModal",
+      "file": "src/atomic-crm/tags/TagCreateModal.tsx",
+      "line": 11,
+      "type": "presentational",
+      "hooks": [
+        "useCreate"
+      ],
+      "imports": [
+        "../types",
+        "./TagDialog",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TagDialog",
+      "file": "src/atomic-crm/tags/TagDialog.tsx",
+      "line": 39,
+      "type": "presentational",
+      "hooks": [
+        "useEffect",
+        "useForm",
+        "useMemo"
+      ],
+      "imports": [
+        "../types",
+        "../validation/tags",
+        "./RoundButton",
+        "./colors",
+        "@/components/admin/FormErrorSummary",
+        "@/components/ui/button",
+        "@/components/ui/button.constants",
+        "@/components/ui/dialog",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/lib/color-types",
+        "@/lib/utils",
+        "@hookform/resolvers/zod",
+        "lucide-react",
+        "react",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "TagEditModal",
+      "file": "src/atomic-crm/tags/TagEditModal.tsx",
+      "line": 12,
+      "type": "presentational",
+      "hooks": [
+        "useUpdate"
+      ],
+      "imports": [
+        "../types",
+        "./TagDialog",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}

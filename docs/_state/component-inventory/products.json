@@ -1,0 +1,539 @@
+{
+  "chunk_name": "products",
+  "generated_at": "2025-12-25T16:06:03.555Z",
+  "item_count": 31,
+  "items": [
+    {
+      "name": "ProductCard",
+      "file": "src/atomic-crm/products/ProductCard.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [
+        "useCreatePath",
+        "useListContext",
+        "useRecordContext"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/badge",
+        "@/components/ui/badge.constants",
+        "@/components/ui/card",
+        "@/components/ui/checkbox",
+        "@/lib/date-utils",
+        "class-variance-authority",
+        "date-fns",
+        "lucide-react",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductCreate",
+      "file": "src/atomic-crm/products/ProductCreate.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity"
+      ],
+      "imports": [
+        "../components/CreateFormFooter",
+        "../validation/products",
+        "./ProductFormTutorial",
+        "./ProductInputs",
+        "@/components/admin/form",
+        "@/components/ui/card",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductCreate",
+      "file": "src/atomic-crm/products/ProductCreate.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity"
+      ],
+      "imports": [
+        "../components/CreateFormFooter",
+        "../validation/products",
+        "./ProductFormTutorial",
+        "./ProductInputs",
+        "@/components/admin/form",
+        "@/components/ui/card",
+        "ra-core"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ProductDetailsInputTab",
+      "file": "src/atomic-crm/products/ProductDetailsInputTab.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "../validation/products",
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/form",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/text-input"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductDetailsTab",
+      "file": "src/atomic-crm/products/ProductDetailsTab.tsx",
+      "line": 80,
+      "type": "presentational",
+      "hooks": [
+        "useNotify",
+        "useUpdate"
+      ],
+      "imports": [
+        "../validation/products",
+        "@/components/admin/autocomplete-input",
+        "@/components/admin/reference-field",
+        "@/components/admin/reference-input",
+        "@/components/admin/select-input",
+        "@/components/admin/text-field",
+        "@/components/admin/text-input",
+        "@/components/layouts/sidepane",
+        "@/components/ui/badge",
+        "@/components/ui/scroll-area",
+        "ra-core",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductDistributionTab",
+      "file": "src/atomic-crm/products/ProductDistributionTab.tsx",
+      "line": 11,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./ProductDistributorInput",
+        "@/components/admin/form/CollapsibleSection"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductDistributorInput",
+      "file": "src/atomic-crm/products/ProductDistributorInput.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [
+        "useGetList",
+        "useWatch"
+      ],
+      "imports": [
+        "@/components/admin/autocomplete-array-input",
+        "@/components/admin/reference-array-input",
+        "@/components/admin/text-input",
+        "react-admin",
+        "react-hook-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductEdit",
+      "file": "src/atomic-crm/products/ProductEdit.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useQueryClient"
+      ],
+      "imports": [
+        "../types",
+        "./ProductInputs",
+        "@/atomic-crm/validation/products",
+        "@/components/admin/cancel-button",
+        "@/components/admin/delete-button",
+        "@/components/admin/form",
+        "@/components/admin/simple-form",
+        "@/components/ui/card",
+        "@tanstack/react-query",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductEdit",
+      "file": "src/atomic-crm/products/ProductEdit.tsx",
+      "line": 13,
+      "type": "presentational",
+      "hooks": [
+        "useQueryClient"
+      ],
+      "imports": [
+        "../types",
+        "./ProductInputs",
+        "@/atomic-crm/validation/products",
+        "@/components/admin/cancel-button",
+        "@/components/admin/delete-button",
+        "@/components/admin/form",
+        "@/components/admin/simple-form",
+        "@/components/ui/card",
+        "@tanstack/react-query",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ProductEmpty",
+      "file": "src/atomic-crm/products/ProductEmpty.tsx",
+      "line": 5,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/admin/create-button",
+        "@/components/ui/card",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductFormTutorial",
+      "file": "src/atomic-crm/products/ProductFormTutorial.tsx",
+      "line": 108,
+      "type": "presentational",
+      "hooks": [
+        "useCallback",
+        "useRef"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/tooltip",
+        "driver.js",
+        "driver.js/dist/driver.css",
+        "lucide-react",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductInputs",
+      "file": "src/atomic-crm/products/ProductInputs.tsx",
+      "line": 5,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./ProductDetailsInputTab",
+        "./ProductDistributionTab",
+        "@/components/admin/tabbed-form"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductList",
+      "file": "src/atomic-crm/products/ProductList.tsx",
+      "line": 41,
+      "type": "presentational",
+      "hooks": [
+        "useFilterCleanup",
+        "useGetIdentity",
+        "useSlideOverState"
+      ],
+      "imports": [
+        "../hooks/useFilterCleanup",
+        "../layout/TopToolbar",
+        "../tutorial",
+        "../types",
+        "../utils/listPatterns",
+        "./ProductEmpty",
+        "./ProductListFilter",
+        "./ProductSlideOver",
+        "./ProductsDatagridHeader",
+        "./productFilterConfig",
+        "@/components/admin/FilterableBadge",
+        "@/components/admin/FloatingCreateButton",
+        "@/components/admin/ListSearchBar",
+        "@/components/admin/PremiumDatagrid",
+        "@/components/admin/bulk-actions-toolbar",
+        "@/components/admin/list",
+        "@/components/admin/reference-field",
+        "@/components/admin/text-field",
+        "@/components/layouts/StandardListLayout",
+        "@/components/ui/badge",
+        "@/components/ui/list-skeleton",
+        "@/hooks/useListKeyboardNavigation",
+        "@/hooks/useSlideOverState",
+        "ra-core",
+        "react-admin"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductList",
+      "file": "src/atomic-crm/products/ProductList.tsx",
+      "line": 41,
+      "type": "presentational",
+      "hooks": [
+        "useFilterCleanup",
+        "useGetIdentity",
+        "useSlideOverState"
+      ],
+      "imports": [
+        "../hooks/useFilterCleanup",
+        "../layout/TopToolbar",
+        "../tutorial",
+        "../types",
+        "../utils/listPatterns",
+        "./ProductEmpty",
+        "./ProductListFilter",
+        "./ProductSlideOver",
+        "./ProductsDatagridHeader",
+        "./productFilterConfig",
+        "@/components/admin/FilterableBadge",
+        "@/components/admin/FloatingCreateButton",
+        "@/components/admin/ListSearchBar",
+        "@/components/admin/PremiumDatagrid",
+        "@/components/admin/bulk-actions-toolbar",
+        "@/components/admin/list",
+        "@/components/admin/reference-field",
+        "@/components/admin/text-field",
+        "@/components/layouts/StandardListLayout",
+        "@/components/ui/badge",
+        "@/components/ui/list-skeleton",
+        "@/hooks/useListKeyboardNavigation",
+        "@/hooks/useSlideOverState",
+        "ra-core",
+        "react-admin"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ProductListContent",
+      "file": "src/atomic-crm/products/ProductListContent.tsx",
+      "line": 8,
+      "type": "presentational",
+      "hooks": [
+        "useListContext"
+      ],
+      "imports": [
+        "../types",
+        "@/components/ui/skeleton",
+        "@/lib/date-utils",
+        "date-fns",
+        "ra-core",
+        "react-router-dom"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductListFilter",
+      "file": "src/atomic-crm/products/ProductListFilter.tsx",
+      "line": 8,
+      "type": "presentational",
+      "hooks": [
+        "useGetList"
+      ],
+      "imports": [
+        "../filters/FilterCategory",
+        "../types",
+        "@/components/admin/toggle-filter-button",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductRelationshipsTab",
+      "file": "src/atomic-crm/products/ProductRelationshipsTab.tsx",
+      "line": 32,
+      "type": "presentational",
+      "hooks": [
+        "useGetList"
+      ],
+      "imports": [
+        "@/components/admin/date-field",
+        "@/components/admin/reference-field",
+        "@/components/admin/text-field",
+        "@/components/ui",
+        "@/components/ui/card",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductShow",
+      "file": "src/atomic-crm/products/ProductShow.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useShowContext"
+      ],
+      "imports": [
+        "../types",
+        "@/components/admin/date-field",
+        "@/components/admin/reference-field",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "ra-core"
+      ],
+      "isDefaultExport": true
+    },
+    {
+      "name": "ProductShow",
+      "file": "src/atomic-crm/products/ProductShow.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useShowContext"
+      ],
+      "imports": [
+        "../types",
+        "@/components/admin/date-field",
+        "@/components/admin/reference-field",
+        "@/components/ui/badge",
+        "@/components/ui/card",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductSlideOver",
+      "file": "src/atomic-crm/products/ProductSlideOver.tsx",
+      "line": 30,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "./ProductDetailsTab",
+        "./ProductRelationshipsTab",
+        "@/components/layouts/ResourceSlideOver",
+        "lucide-react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductNameHeader",
+      "file": "src/atomic-crm/products/ProductsDatagridHeader.tsx",
+      "line": 40,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/admin/column-filters",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductCategoryHeader",
+      "file": "src/atomic-crm/products/ProductsDatagridHeader.tsx",
+      "line": 56,
+      "type": "presentational",
+      "hooks": [
+        "useGetList"
+      ],
+      "imports": [
+        "@/components/admin/column-filters",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductStatusHeader",
+      "file": "src/atomic-crm/products/ProductsDatagridHeader.tsx",
+      "line": 100,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/admin/column-filters",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductColumnHeaders",
+      "file": "src/atomic-crm/products/ProductsDatagridHeader.tsx",
+      "line": 114,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/admin/column-filters",
+        "ra-core"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductListView",
+      "file": "src/atomic-crm/products/index.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductEditView",
+      "file": "src/atomic-crm/products/index.tsx",
+      "line": 22,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductCreateView",
+      "file": "src/atomic-crm/products/index.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductListView",
+      "file": "src/atomic-crm/products/resource.tsx",
+      "line": 10,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductCreateView",
+      "file": "src/atomic-crm/products/resource.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductEditView",
+      "file": "src/atomic-crm/products/resource.tsx",
+      "line": 22,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    },
+    {
+      "name": "ProductShowView",
+      "file": "src/atomic-crm/products/resource.tsx",
+      "line": 28,
+      "type": "presentational",
+      "hooks": [],
+      "imports": [
+        "@/components/ResourceErrorBoundary",
+        "react"
+      ],
+      "isDefaultExport": false
+    }
+  ]
+}
