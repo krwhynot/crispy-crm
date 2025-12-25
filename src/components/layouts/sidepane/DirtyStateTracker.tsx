@@ -13,7 +13,7 @@ interface DirtyStateTrackerProps {
  * ```tsx
  * <Form>
  *   <DirtyStateTracker onDirtyChange={onDirtyChange} />
- *   {/* form fields */}
+ *   <TextInput source="name" />
  * </Form>
  * ```
  *
