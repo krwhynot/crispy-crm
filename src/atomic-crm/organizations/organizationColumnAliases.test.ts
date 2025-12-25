@@ -6,10 +6,7 @@ import { describe, it, expect } from "vitest";
 import {
   normalizeHeader,
   findCanonicalField,
-  getUnmappedHeaders,
   mapHeadersToFields,
-  getHeaderMappingDescription,
-  validateRequiredMappings,
   getAvailableFields,
   getAvailableFieldsWithLabels,
 } from "./organizationColumnAliases";
@@ -82,38 +79,6 @@ describe("findCanonicalField", () => {
   });
 });
 
-describe("getUnmappedHeaders", () => {
-  it("should identify headers that do not map to any field", () => {
-    const headers = ["Organizations", "Unknown Field", "PHONE", "Random Header"];
-    const unmapped = getUnmappedHeaders(headers);
-
-    expect(unmapped).toContain("Unknown Field");
-    expect(unmapped).toContain("Random Header");
-    expect(unmapped).not.toContain("Organizations");
-    expect(unmapped).not.toContain("PHONE");
-  });
-
-  it("should return empty array when all headers are mapped", () => {
-    const headers = ["Organizations", "PHONE", "CITY", "STATE"];
-    const unmapped = getUnmappedHeaders(headers);
-
-    expect(unmapped).toEqual([]);
-  });
-
-  it("should skip empty headers", () => {
-    const headers = ["Organizations", "", "  ", "PHONE"];
-    const unmapped = getUnmappedHeaders(headers);
-
-    expect(unmapped).not.toContain("");
-    expect(unmapped).not.toContain("  ");
-  });
-
-  it("should handle non-array input gracefully", () => {
-    expect(getUnmappedHeaders(null as any)).toEqual([]);
-    expect(getUnmappedHeaders(undefined as any)).toEqual([]);
-  });
-});
-
 describe("mapHeadersToFields", () => {
   it("should map recognized headers to canonical field names", () => {
     const headers = ["Organizations", "PHONE", "CITY"];
@@ -148,63 +113,6 @@ describe("mapHeadersToFields", () => {
   it("should handle non-array input gracefully", () => {
     expect(mapHeadersToFields(null as any)).toEqual({});
     expect(mapHeadersToFields(undefined as any)).toEqual({});
-  });
-});
-
-describe("getHeaderMappingDescription", () => {
-  it("should return canonical field name for recognized headers", () => {
-    expect(getHeaderMappingDescription("Organizations")).toBe("name");
-    expect(getHeaderMappingDescription("PHONE")).toBe("phone");
-  });
-
-  it("should return ignore message for unrecognized headers", () => {
-    expect(getHeaderMappingDescription("Unknown Field")).toBe("(ignored - no matching field)");
-  });
-
-  it("should return ignore message for empty headers", () => {
-    expect(getHeaderMappingDescription("")).toBe("(ignored - empty header)");
-  });
-
-  it("should handle null/undefined gracefully", () => {
-    expect(getHeaderMappingDescription(null as any)).toBe("(ignored - empty header)");
-    expect(getHeaderMappingDescription(undefined as any)).toBe("(ignored - empty header)");
-  });
-});
-
-describe("validateRequiredMappings", () => {
-  it("should return empty array when all required fields are mapped", () => {
-    const mappings = {
-      Organizations: "name",
-      PHONE: "phone",
-    };
-
-    const missing = validateRequiredMappings(mappings);
-    expect(missing).toEqual([]);
-  });
-
-  it("should return missing required field names", () => {
-    const mappings = {
-      PHONE: "phone",
-      CITY: "city",
-    };
-
-    const missing = validateRequiredMappings(mappings);
-    expect(missing).toContain("name");
-  });
-
-  it("should handle mappings with null values", () => {
-    const mappings = {
-      Organizations: "name",
-      Unknown: null,
-    };
-
-    const missing = validateRequiredMappings(mappings);
-    expect(missing).toEqual([]);
-  });
-
-  it("should handle empty mappings object", () => {
-    const missing = validateRequiredMappings({});
-    expect(missing).toContain("name");
   });
 });
 
