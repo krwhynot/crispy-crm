@@ -12,13 +12,16 @@
 
 import { memo } from "react";
 import { Badge } from "@/components/ui/badge";
-import { ORG_TYPE_COLOR_MAP, PRIORITY_VARIANT_MAP, PRIORITY_CHOICES } from "./constants";
+import {
+  ORG_TYPE_COLOR_MAP,
+  PRIORITY_VARIANT_MAP,
+  PRIORITY_CHOICES,
+  type OrganizationType,
+  type PriorityLevel,
+} from "./constants";
 
-/** Valid organization types matching database enum */
-export type OrganizationType = "customer" | "prospect" | "principal" | "distributor";
-
-/** Valid priority levels matching database enum */
-export type PriorityLevel = "A" | "B" | "C" | "D";
+// Re-export types for consumers
+export type { OrganizationType, PriorityLevel };
 
 interface OrganizationTypeBadgeProps {
   /** Organization type from record.organization_type */

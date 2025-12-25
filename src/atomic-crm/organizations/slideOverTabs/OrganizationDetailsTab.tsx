@@ -2,8 +2,10 @@ import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
+import { ReferenceInput } from "@/components/admin/reference-input";
 import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
+import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrayInput, SimpleFormIterator } from "react-admin";
@@ -12,14 +14,12 @@ import {
   SidepaneMetadata,
   DirtyStateTracker,
 } from "@/components/layouts/sidepane";
+import { SegmentComboboxInput } from "@/components/admin/SegmentComboboxInput";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { ContextLink } from "../types";
-import {
-  ORGANIZATION_TYPE_CHOICES,
-  PRIORITY_CHOICES,
-  ORG_TYPE_COLOR_MAP,
-  PRIORITY_VARIANT_MAP,
-} from "../constants";
+import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, STATUS_CHOICES } from "../constants";
+import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
+import { OrganizationTypeBadge, PriorityBadge } from "../OrganizationBadges";
 
 interface OrganizationDetailsTabProps {
   record: OrganizationWithHierarchy;
@@ -69,14 +69,52 @@ export function OrganizationDetailsTab({
 
               <SelectInput source="priority" label="Priority" choices={PRIORITY_CHOICES} />
 
+              <SelectInput
+                source="status"
+                label="Status"
+                choices={STATUS_CHOICES}
+              />
+
+              <SegmentComboboxInput source="segment_id" label="Segment" />
+
+              <ReferenceInput
+                reference="sales"
+                source="sales_id"
+                sort={{ field: "last_name", order: "ASC" }}
+                filter={{ "disabled@neq": true, "user_id@not.is": null }}
+              >
+                <SelectInput label="Account Manager" optionText={saleOptionRenderer} />
+              </ReferenceInput>
+
+              <ReferenceInput
+                source="parent_organization_id"
+                reference="organizations"
+                filter={record?.id ? { "id@neq": record.id } : {}}
+              >
+                <AutocompleteInput
+                  label="Parent Organization"
+                  emptyText="No parent organization"
+                  optionText="name"
+                  filterToQuery={(searchText) => ({ "name@ilike": `%${searchText}%` })}
+                />
+              </ReferenceInput>
+
               <TextInput source="email" label="Email" type="email" />
 
               <TextInput source="phone" label="Phone" />
               <TextInput source="website" label="Website" />
+              <TextInput source="linkedin_url" label="LinkedIn URL" type="url" />
               <TextInput source="address" label="Street Address" />
               <TextInput source="city" label="City" />
               <TextInput source="state" label="State" />
               <TextInput source="postal_code" label="ZIP Code" />
+
+              <TextInput
+                source="description"
+                label="Description"
+                multiline
+                rows={3}
+              />
 
               <ReferenceArrayInput source="tags" reference="tags" label="Tags">
                 <AutocompleteArrayInput optionText="name" />
@@ -216,26 +254,5 @@ export function OrganizationDetailsTab({
         </div>
       </ScrollArea>
     </RecordContextProvider>
-  );
-}
-
-function OrganizationTypeBadge({ type }: { type: string }) {
-  const colorClass = ORG_TYPE_COLOR_MAP[type as keyof typeof ORG_TYPE_COLOR_MAP] || "tag-gray";
-
-  return (
-    <Badge className={`text-xs px-3 py-2 min-h-[44px] flex items-center ${colorClass}`}>
-      {type.charAt(0).toUpperCase() + type.slice(1)}
-    </Badge>
-  );
-}
-
-function PriorityBadge({ priority }: { priority: string }) {
-  const variant = PRIORITY_VARIANT_MAP[priority as keyof typeof PRIORITY_VARIANT_MAP] || "default";
-  const label = PRIORITY_CHOICES.find((p) => p.id === priority)?.name || priority;
-
-  return (
-    <Badge variant={variant} className="text-xs px-3 py-2 min-h-[44px] flex items-center">
-      {label}
-    </Badge>
   );
 }
