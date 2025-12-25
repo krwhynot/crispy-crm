@@ -98,6 +98,7 @@ export const SOFT_DELETE_RESOURCES = [
   "opportunity_products",
   "notifications",
   "distributor_principal_authorizations",
+  "organization_distributors",
 ] as const;
 
 /**

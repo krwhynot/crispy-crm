@@ -4,7 +4,7 @@
  * Provides field groupings for the multi-step wizard pattern.
  * Each step is a self-contained component that can be used within WizardStep.
  */
-import { useMemo } from "react";
+import { useMemo, useEffect, useRef } from "react";
 import { TextInput } from "@/components/admin/text-input";
 import { TextInputWithCounter } from "@/components/admin/text-input/";
 import { ReferenceInput } from "@/components/admin/reference-input";
@@ -31,13 +31,14 @@ import { ContactInputs } from "../../contacts/ContactInputs";
 import { contactOptionText } from "../../contacts/ContactOption";
 import { ContactOrgMismatchWarning } from "../components/ContactOrgMismatchWarning";
 import { DistributorAuthorizationWarning } from "../components/DistributorAuthorizationWarning";
+import { CustomerDistributorIndicator } from "../components/CustomerDistributorIndicator";
 import { NamingConventionHelp } from "./NamingConventionHelp";
 import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
 import { DEFAULT_SEGMENT_ID } from "../../constants";
 import { organizationSchema } from "../../validation/organizations";
 import { contactBaseSchema } from "../../validation/contacts";
 import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
-import { useAutoGenerateName } from "../hooks/useAutoGenerateName";
+import { useAutoGenerateName, useCustomerDistributors } from "../hooks";
 import type { WizardStepConfig } from "@/components/admin/form";
 
 const priorityChoices = [
@@ -218,10 +219,52 @@ export function OpportunityWizardStep1() {
 /**
  * Step 2: Pipeline & Team
  * Stage, Priority, Close Date, Account Manager, Distributor
+ *
+ * Distributor Auto-Selection:
+ * - When customer is selected in Step 1, we query their existing distributor relationships
+ * - If the customer has a primary distributor and no distributor is selected, auto-select it
+ * - Visual indicators show relationship status (primary, related, or unrelated)
  */
 export function OpportunityWizardStep2() {
   const { data: identity } = useGetIdentity();
-  const { setValue } = useFormContext();
+  const { setValue, getValues } = useFormContext();
+
+  // Watch customer selection from Step 1
+  const customerId = useWatch({ name: "customer_organization_id" });
+
+  // Fetch distributor relationships for the selected customer
+  const { primaryDistributorId, hasRelationships, isLoading } = useCustomerDistributors(customerId);
+
+  // Track the last customer ID we processed to prevent re-triggering on unrelated changes
+  const lastProcessedCustomerRef = useRef<typeof customerId>(null);
+
+  // Auto-select primary distributor when customer changes
+  useEffect(() => {
+    // Skip if:
+    // - Still loading relationships
+    // - No primary distributor exists
+    // - We already processed this customer (prevents infinite loops)
+    // - Customer hasn't changed
+    if (
+      isLoading ||
+      !primaryDistributorId ||
+      lastProcessedCustomerRef.current === customerId
+    ) {
+      return;
+    }
+
+    // Update the ref to mark this customer as processed
+    lastProcessedCustomerRef.current = customerId;
+
+    // Only auto-fill if distributor field is empty (don't override user selection)
+    const currentDistributor = getValues("distributor_organization_id");
+    if (!currentDistributor) {
+      setValue("distributor_organization_id", primaryDistributorId, {
+        shouldValidate: false,
+        shouldDirty: true,
+      });
+    }
+  }, [customerId, primaryDistributorId, isLoading, getValues, setValue]);
 
   return (
     <div className="space-y-4">
@@ -305,7 +348,12 @@ export function OpportunityWizardStep2() {
               <OrganizationInputs />
             </CreateInDialogButton>
           }
-          footer={<DistributorAuthorizationWarning />}
+          footer={
+            <div className="space-y-1">
+              <CustomerDistributorIndicator />
+              <DistributorAuthorizationWarning />
+            </div>
+          }
         >
           <FormFieldWrapper name="distributor_organization_id">
             <div data-tutorial="opp-distributor">
