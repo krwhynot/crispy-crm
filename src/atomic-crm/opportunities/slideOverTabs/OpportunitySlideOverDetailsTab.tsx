@@ -392,131 +392,123 @@ export function OpportunitySlideOverDetailsTab({
           </div>
         </SidepaneSection>
 
-      {/* Win/Loss Reason - shown for closed opportunities */}
-      {isClosedOpportunity && closedReason && (
-        <div
-          className={`rounded-lg p-3 ${
-            record.stage === "closed_won"
-              ? "bg-success/10 border border-success/20"
-              : "bg-destructive/10 border border-destructive/20"
-          }`}
-        >
-          <div className="flex items-center gap-2 mb-1">
-            {record.stage === "closed_won" ? (
-              <Trophy className="h-4 w-4 text-success" />
-            ) : (
-              <XCircle className="h-4 w-4 text-destructive" />
+        {/* Win/Loss Reason - shown for closed opportunities */}
+        {isClosedOpportunity && closedReason && (
+          <div
+            className={`rounded-lg p-3 mt-4 ${
+              record.stage === "closed_won"
+                ? "bg-success/10 border border-success/20"
+                : "bg-destructive/10 border border-destructive/20"
+            }`}
+          >
+            <div className="flex items-center gap-2 mb-1">
+              {record.stage === "closed_won" ? (
+                <Trophy className="h-4 w-4 text-success" />
+              ) : (
+                <XCircle className="h-4 w-4 text-destructive" />
+              )}
+              <span
+                className={`text-xs font-medium uppercase tracking-wide ${
+                  record.stage === "closed_won" ? "text-success" : "text-destructive"
+                }`}
+              >
+                {record.stage === "closed_won" ? "Won Reason" : "Lost Reason"}
+              </span>
+            </div>
+            <p className="text-sm font-medium">{closedReason}</p>
+            {record.close_reason_notes && (
+              <p className="text-sm text-muted-foreground mt-1">{record.close_reason_notes}</p>
             )}
-            <span
-              className={`text-xs font-medium uppercase tracking-wide ${
-                record.stage === "closed_won" ? "text-success" : "text-destructive"
-              }`}
-            >
-              {record.stage === "closed_won" ? "Won Reason" : "Lost Reason"}
-            </span>
           </div>
-          <p className="text-sm font-medium">{closedReason}</p>
-          {record.close_reason_notes && (
-            <p className="text-sm text-muted-foreground mt-1">{record.close_reason_notes}</p>
-          )}
-        </div>
-      )}
+        )}
 
-      {/* Lead Source & Close Date row */}
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-            Lead Source
-          </span>
-          <p className="text-sm">
-            {record.lead_source
-              ? record.lead_source
-                  .replace(/_/g, " ")
-                  .replace(/\b\w/g, (l: string) => l.toUpperCase())
-              : "—"}
-          </p>
-        </div>
-        <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-            Est. Close
-          </span>
-          <p className="text-sm">{formatDate(record.estimated_close_date)}</p>
-        </div>
-      </div>
-
-      {/* Campaign */}
-      {record.campaign && (
-        <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-            Campaign
-          </span>
-          <p className="text-sm">{record.campaign}</p>
-        </div>
-      )}
-
-      {/* Notes */}
-      {record.notes && (
-        <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-            Notes
-          </span>
-          <p className="text-sm whitespace-pre-wrap max-h-96 overflow-y-auto">{record.notes}</p>
-        </div>
-      )}
-
-      {/* Next Action row */}
-      {(record.next_action || record.next_action_date) && (
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              Next Action
-            </span>
-            <p className="text-sm">{record.next_action || "—"}</p>
+        {/* Timeline Section */}
+        <SidepaneSection label="Timeline" showSeparator>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <span className="text-xs text-muted-foreground">Lead Source</span>
+              <p className="text-sm mt-1">
+                {record.lead_source
+                  ? record.lead_source
+                      .replace(/_/g, " ")
+                      .replace(/\b\w/g, (l: string) => l.toUpperCase())
+                  : "—"}
+              </p>
+            </div>
+            <div>
+              <span className="text-xs text-muted-foreground">Est. Close</span>
+              <p className="text-sm mt-1">{formatDate(record.estimated_close_date)}</p>
+            </div>
           </div>
-          <div>
-            <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-              Action Date
-            </span>
-            <p className="text-sm">{formatDate(record.next_action_date)}</p>
+        </SidepaneSection>
+
+        {/* Workflow Section - only show if there's workflow data */}
+        {(record.campaign || record.notes || record.next_action || record.next_action_date || record.decision_criteria) && (
+          <SidepaneSection label="Workflow" showSeparator>
+            <div className="space-y-3">
+              {/* Campaign */}
+              {record.campaign && (
+                <div>
+                  <span className="text-xs text-muted-foreground">Campaign</span>
+                  <p className="text-sm mt-1">{record.campaign}</p>
+                </div>
+              )}
+
+              {/* Notes */}
+              {record.notes && (
+                <div>
+                  <span className="text-xs text-muted-foreground">Notes</span>
+                  <p className="text-sm mt-1 whitespace-pre-wrap max-h-96 overflow-y-auto">{record.notes}</p>
+                </div>
+              )}
+
+              {/* Next Action row */}
+              {(record.next_action || record.next_action_date) && (
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <span className="text-xs text-muted-foreground">Next Action</span>
+                    <p className="text-sm mt-1">{record.next_action || "—"}</p>
+                  </div>
+                  <div>
+                    <span className="text-xs text-muted-foreground">Action Date</span>
+                    <p className="text-sm mt-1">{formatDate(record.next_action_date)}</p>
+                  </div>
+                </div>
+              )}
+
+              {/* Decision Criteria */}
+              {record.decision_criteria && (
+                <div>
+                  <span className="text-xs text-muted-foreground">Decision Criteria</span>
+                  <p className="text-sm mt-1 whitespace-pre-wrap max-h-96 overflow-y-auto">{record.decision_criteria}</p>
+                </div>
+              )}
+            </div>
+          </SidepaneSection>
+        )}
+
+        {/* Organizations Section */}
+        <SidepaneSection label="Organizations" showSeparator>
+          <div className="grid grid-cols-3 gap-1.5">
+            <OrganizationCard
+              organizationId={record.customer_organization_id}
+              label="Customer"
+              required
+              isActiveTab={isActiveTab}
+            />
+            <OrganizationCard
+              organizationId={record.principal_organization_id}
+              label="Principal"
+              required
+              isActiveTab={isActiveTab}
+            />
+            <OrganizationCard
+              organizationId={record.distributor_organization_id}
+              label="Distributor"
+              isActiveTab={isActiveTab}
+            />
           </div>
-        </div>
-      )}
-
-      {/* Decision Criteria */}
-      {record.decision_criteria && (
-        <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-            Decision Criteria
-          </span>
-          <p className="text-sm whitespace-pre-wrap max-h-96 overflow-y-auto">{record.decision_criteria}</p>
-        </div>
-      )}
-
-      {/* Organizations - 3 column grid */}
-      <div className="pt-2 border-t border-border">
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide block mb-1.5">
-          Organizations
-        </span>
-        <div className="grid grid-cols-3 gap-1.5">
-          <OrganizationCard
-            organizationId={record.customer_organization_id}
-            label="Customer"
-            required
-            isActiveTab={isActiveTab}
-          />
-          <OrganizationCard
-            organizationId={record.principal_organization_id}
-            label="Principal"
-            required
-            isActiveTab={isActiveTab}
-          />
-          <OrganizationCard
-            organizationId={record.distributor_organization_id}
-            label="Distributor"
-            isActiveTab={isActiveTab}
-          />
-        </div>
-      </div>
+        </SidepaneSection>
 
         {/* Metadata - replaces manual timestamps */}
         <SidepaneMetadata
