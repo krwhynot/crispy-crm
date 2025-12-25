@@ -1,4 +1,4 @@
-import { SyntaxKind } from "ts-morph";
+import { SyntaxKind, SourceFile, Node } from "ts-morph";
 import * as path from "path";
 import { project } from "../utils/project.js";
 import { createEnvelope, writeDiscoveryFile } from "../utils/output.js";
@@ -24,35 +24,34 @@ export async function extractComponents(): Promise<void> {
     const relativePath = path.relative(process.cwd(), filePath);
 
     const exportedDeclarations = sourceFile.getExportedDeclarations();
+    const imports = extractImportSources(sourceFile);
 
     for (const [exportName, declarations] of exportedDeclarations) {
       for (const declaration of declarations) {
         let componentName: string | undefined;
         let lineNumber: number | undefined;
         let isDefaultExport = false;
+        let componentNode: Node | undefined;
 
         if (declaration.getKind() === SyntaxKind.FunctionDeclaration) {
           const funcDecl = declaration.asKindOrThrow(SyntaxKind.FunctionDeclaration);
           componentName = funcDecl.getName();
           lineNumber = funcDecl.getStartLineNumber();
           isDefaultExport = exportName === "default";
+          componentNode = funcDecl;
         } else if (declaration.getKind() === SyntaxKind.VariableDeclaration) {
           const varDecl = declaration.asKindOrThrow(SyntaxKind.VariableDeclaration);
           componentName = varDecl.getName();
           lineNumber = varDecl.getStartLineNumber();
-
-          const exportDecl = varDecl.getFirstAncestorByKind(SyntaxKind.VariableStatement);
-          isDefaultExport = exportDecl?.hasExportKeyword() === false && exportName === "default";
+          isDefaultExport = exportName === "default";
+          componentNode = varDecl;
         }
 
-        if (!componentName || !lineNumber) {
+        if (!componentName || !lineNumber || !componentNode) {
           continue;
         }
 
-        const sourceFileForComponent = declaration.getSourceFile();
-        const hooks = extractHooks(sourceFileForComponent);
-        const imports = extractImportSources(sourceFileForComponent);
-
+        const hooks = extractHooksFromNode(componentNode);
         const type = determineComponentType(hooks);
 
         components.push({
@@ -88,17 +87,17 @@ export async function extractComponents(): Promise<void> {
   writeDiscoveryFile("component-inventory.json", envelope);
 }
 
-function extractHooks(sourceFile: any): string[] {
+function extractHooksFromNode(node: Node): string[] {
   const hooks = new Set<string>();
 
-  const callExpressions = sourceFile.getDescendantsOfKind(SyntaxKind.CallExpression);
+  const callExpressions = node.getDescendantsOfKind(SyntaxKind.CallExpression);
 
   for (const callExpr of callExpressions) {
     const expression = callExpr.getExpression();
 
     if (expression.getKind() === SyntaxKind.Identifier) {
       const text = expression.getText();
-      if (text.startsWith("use") && text.length > 3 && text[3] === text[3].toUpperCase()) {
+      if (isHookName(text)) {
         hooks.add(text);
       }
     }
@@ -107,7 +106,11 @@ function extractHooks(sourceFile: any): string[] {
   return Array.from(hooks).sort();
 }
 
-function extractImportSources(sourceFile: any): string[] {
+function isHookName(name: string): boolean {
+  return name.startsWith("use") && name.length > 3 && /[A-Z]/.test(name[3]);
+}
+
+function extractImportSources(sourceFile: SourceFile): string[] {
   const importSources = new Set<string>();
 
   const importDeclarations = sourceFile.getImportDeclarations();
