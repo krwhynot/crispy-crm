@@ -11,11 +11,7 @@
 # testing
 /coverage
 /coverage-temp
-/playwright-report
 /test-results
-
-# Playwright MCP artifacts (traces, videos, screenshots)
-tests/e2e/.playwright-mcp/
 
 # production
 /build

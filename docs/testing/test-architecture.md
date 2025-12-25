@@ -1,7 +1,7 @@
 # Testing Architecture
 
-> Generated: 2025-12-22
-> Total Tests: **3,520** | Test Files: **283**
+> Updated: 2025-12-25
+> Automated Tests: **2,852** | Manual E2E Checklists: **118+ scenarios**
 
 ## Testing Philosophy
 
@@ -10,14 +10,14 @@ Crispy CRM follows a **fail-fast** testing philosophy aligned with the engineeri
 - **Fail Fast:** Tests should surface errors loudly and immediately - no silent failures
 - **Constitution Compliance:** Tests verify engineering principles (Zod at API boundary, single data provider, etc.)
 - **Regression Prevention:** Every bug fix includes a test to prevent recurrence
-- **Real Selectors:** E2E tests use semantic selectors (`getByRole`, `getByLabel`) - never CSS selectors
+- **Manual E2E:** Claude Chrome for browser-based testing with manual checklists in `docs/tests/e2e/`
 
 ## Test Pyramid
 
 ```
               ╱╲
-             ╱  ╲       E2E (668 tests)
-            ╱    ╲      Browser-based user flows
+             ╱  ╲       Manual E2E (118+ scenarios)
+            ╱    ╲      Claude Chrome browser testing
            ╱──────╲
           ╱        ╲    Integration (91 tests)
          ╱          ╲   Component + Provider tests
@@ -31,7 +31,7 @@ Crispy CRM follows a **fail-fast** testing philosophy aligned with the engineeri
 |-------|-------|-------|-------|
 | **Unit** | 2,761 | 213 | Pure functions, hooks, utilities, Zod schemas |
 | **Integration** | 91 | 7 | React Admin forms with mocked data provider |
-| **E2E** | 668 | 70 | Full user flows through browser |
+| **Manual E2E** | 118+ | 6 | Manual testing checklists for Claude Chrome |
 
 ## Tests by Feature Area
 
