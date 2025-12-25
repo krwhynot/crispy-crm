@@ -3,14 +3,17 @@ import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { ReferenceField } from "@/components/admin/reference-field";
 import { TextField } from "@/components/admin/text-field";
-import { DateField } from "@/components/admin/date-field";
 import { ArrayField } from "@/components/admin/array-field";
 import { EmailField } from "@/components/admin/email-field";
 import { SingleFieldList } from "@/components/admin/single-field-list";
-import { Card, CardContent } from "@/components/ui/card";
 import { FormProgressProvider } from "@/components/admin/form/FormProgressProvider";
 import { Badge } from "@/components/ui/badge";
-import { AsideSection } from "@/components/ui";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  SidepaneSection,
+  SidepaneMetadata,
+  DirtyStateTracker,
+} from "@/components/layouts/sidepane";
 import { SaleName } from "../sales/SaleName";
 import { ContactInputs } from "./ContactInputs";
 import { Avatar } from "./Avatar";
@@ -20,6 +23,7 @@ interface ContactDetailsTabProps {
   record: Contact;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
 /**
@@ -35,7 +39,7 @@ interface ContactDetailsTabProps {
  *
  * **Edit Mode**: Renders existing ContactInputs component inline with save/cancel.
  */
-export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetailsTabProps) {
+export function ContactDetailsTab({ record, mode, onModeToggle, onDirtyChange }: ContactDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
 
@@ -59,6 +63,7 @@ export function ContactDetailsTab({ record, mode, onModeToggle }: ContactDetails
     return (
       <RecordContextProvider value={record}>
         <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
+          <DirtyStateTracker onDirtyChange={onDirtyChange} />
           <FormProgressProvider>
             <div className="space-y-6">
               <ContactInputs />
