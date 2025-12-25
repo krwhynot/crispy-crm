@@ -9,6 +9,21 @@ Guidance for Claude Code working with Crispy CRM (Atomic CRM) - a React 19 + Typ
 - **Tablet Accessibility:** Optimize the experience for iPad use by field sales reps.    
 - **Team Adoption:** Achieve 100% adoption and cessation of Excel usage within 30 days.
 
+## Codebase Discovery (Read First!)
+
+**Before exploring code manually, read these pre-computed discovery files:**
+
+| File | Contents | Use When |
+|------|----------|----------|
+| `docs/_state/component-inventory.json` | 483 React components with hooks, imports, types | "Which components exist?", "What uses X hook?" |
+| `docs/_state/hooks-inventory.json` | 76 custom hooks with dependencies | "What hooks are available?", "What does useX do?" |
+| `docs/_state/schema-discovery.json` | All database tables, columns, relationships | "What's the DB schema?", "How are tables related?" |
+| `docs/_state/data-provider-discovery.json` | API layer architecture, methods, line numbers | "How does data flow?", "Where is X implemented?" |
+
+**These files are auto-generated and CI-enforced fresh.** Use them to understand structure before reading individual source files.
+
+To regenerate: `just discover` | To check freshness: `just discover-check`
+
 ## Preferred CLI Tools
 
 **Use these high-performance tools instead of defaults:**

@@ -29,6 +29,9 @@ jobs:
       - name: Type Check
         run: npx tsc --noEmit
 
+      - name: Discovery Freshness Check
+        run: npx tsx scripts/discover/index.ts --check
+
       - name: Build
         run: npm run build
         env:
