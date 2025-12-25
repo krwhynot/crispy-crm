@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2025-12-25T17:01:53.018Z",
+  "generated_at": "2025-12-25T17:36:04.967Z",
   "item_count": 79,
   "items": [
     {
@@ -18,7 +18,14 @@
         "date-fns",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityRecord"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityNoteForm",
@@ -44,7 +51,17 @@
         "ra-core",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "INTERACTION_TYPE_OPTIONS",
+        "ActivityNoteFormData",
+        "Opportunity",
+        "Contact"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityTimelineFilters",
@@ -72,7 +89,13 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "INTERACTION_TYPE_OPTIONS",
+        "Sale"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "BulkActionsToolbar",
@@ -96,7 +119,13 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity",
+        "OPPORTUNITY_STAGES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "CampaignGroupedList",
@@ -116,7 +145,14 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ChangeLogTab",
@@ -143,7 +179,12 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactList",
@@ -158,7 +199,14 @@
         "ra-core",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Avatar"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "LeadSourceInput",
@@ -170,7 +218,12 @@
         "./constants/LeadSourceInput.constants",
         "@/components/admin/select-input"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "LEAD_SOURCE_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OnlyMineInput",
@@ -186,7 +239,10 @@
         "@/components/ui/switch",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "getRelativeTimeString",
@@ -205,7 +261,12 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityArchivedList",
@@ -229,7 +290,12 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityAside",
@@ -256,7 +322,17 @@
         "date-fns",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TasksIterator",
+        "SaleName",
+        "SaleAvatar",
+        "Opportunity"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityCreate",
@@ -282,7 +358,16 @@
         "ra-core",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "FormToolbar",
+        "OpportunityInputs",
+        "OpportunityCreateSaveButton",
+        "SimilarOpportunitiesDialog",
+        "OpportunityCreateFormTutorial"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityCreate",
@@ -308,7 +393,16 @@
         "ra-core",
         "react-hook-form"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "FormToolbar",
+        "OpportunityInputs",
+        "OpportunityCreateSaveButton",
+        "SimilarOpportunitiesDialog",
+        "OpportunityCreateFormTutorial"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityCreateWizard",
@@ -335,7 +429,18 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SimilarOpportunitiesDialog",
+        "OpportunityCreateFormTutorial",
+        "OPPORTUNITY_WIZARD_STEPS",
+        "OpportunityWizardStep1",
+        "OpportunityWizardStep2",
+        "OpportunityWizardStep3",
+        "OpportunityWizardStep4"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityCreateWizard",
@@ -362,7 +467,18 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "SimilarOpportunitiesDialog",
+        "OpportunityCreateFormTutorial",
+        "OPPORTUNITY_WIZARD_STEPS",
+        "OpportunityWizardStep1",
+        "OpportunityWizardStep2",
+        "OpportunityWizardStep3",
+        "OpportunityWizardStep4"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityEdit",
@@ -391,7 +507,16 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "FormToolbar",
+        "OrganizationAvatar",
+        "Opportunity",
+        "OpportunityCompactForm",
+        "OpportunityActivitySection"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityEdit",
@@ -420,7 +545,16 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "FormToolbar",
+        "OrganizationAvatar",
+        "Opportunity",
+        "OpportunityCompactForm",
+        "OpportunityActivitySection"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityEmpty",
@@ -439,7 +573,12 @@
         "ra-core",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Contact"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityHeader",
@@ -459,7 +598,15 @@
         "@/components/admin/reference-field",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationAvatar",
+        "Opportunity"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityInputs",
@@ -474,7 +621,14 @@
         "@/components/admin/FormErrorSummary",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OpportunityCompactForm"
+      ],
+      "contextDependencies": [
+        "useFormState"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityList",
@@ -513,7 +667,24 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "OpportunitySpeedDial",
+        "OpportunityArchivedList",
+        "OpportunityEmpty",
+        "OpportunityListContent",
+        "OpportunityRowListView",
+        "CampaignGroupedList",
+        "PrincipalGroupedList",
+        "OpportunityViewSwitcher",
+        "OpportunityView",
+        "OpportunitySlideOver",
+        "OpportunityListFilter",
+        "OPPORTUNITY_FILTER_CONFIG",
+        "OpportunityListTutorial"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityListFilter",
@@ -539,7 +710,15 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "FilterCategory",
+        "OPPORTUNITY_STAGES"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityListTutorial",
@@ -558,7 +737,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OpportunityRowListView",
@@ -589,7 +771,16 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity",
+        "BulkActionsToolbar",
+        "NextTaskBadge"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityShow",
@@ -628,7 +819,30 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "DETAIL_FIELD_MIN_WIDTH",
+        "ArchivedBanner",
+        "ArchiveButton",
+        "UnarchiveButton",
+        "NoteCreate",
+        "NotesIterator",
+        "Opportunity",
+        "ContactList",
+        "OpportunityHeader",
+        "OpportunityAside",
+        "ActivityNoteForm",
+        "ActivitiesList",
+        "ChangeLogTab",
+        "ProductsTable",
+        "OrganizationInfoCard",
+        "SaleAvatar",
+        "WorkflowManagementSection",
+        "ActivityTimelineFilters",
+        "RelatedOpportunitiesSection"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityShow",
@@ -667,7 +881,30 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "DETAIL_FIELD_MIN_WIDTH",
+        "ArchivedBanner",
+        "ArchiveButton",
+        "UnarchiveButton",
+        "NoteCreate",
+        "NotesIterator",
+        "Opportunity",
+        "ContactList",
+        "OpportunityHeader",
+        "OpportunityAside",
+        "ActivityNoteForm",
+        "ActivitiesList",
+        "ChangeLogTab",
+        "ProductsTable",
+        "OrganizationInfoCard",
+        "SaleAvatar",
+        "WorkflowManagementSection",
+        "ActivityTimelineFilters",
+        "RelatedOpportunitiesSection"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunitySlideOver",
@@ -685,7 +922,15 @@
         "@/components/layouts/ResourceSlideOver",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OpportunitySlideOverDetailsTab",
+        "OpportunityContactsTab",
+        "OpportunityProductsTab",
+        "OpportunityNotesTab"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunitySpeedDial",
@@ -706,7 +951,12 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "QuickAddDialog"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityViewSwitcher",
@@ -719,7 +969,10 @@
         "@/components/ui/tooltip",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OrganizationInfoCard",
@@ -736,7 +989,12 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "PrincipalGroupedList",
@@ -758,7 +1016,15 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity",
+        "StageStatus"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductsTable",
@@ -774,7 +1040,10 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "RelatedOpportunitiesSection",
@@ -792,7 +1061,12 @@
         "ra-core",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "WorkflowManagementSection",
@@ -820,7 +1094,12 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ArchiveButton",
@@ -842,7 +1121,14 @@
         "lucide-react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OpportunitiesService",
+        "Opportunity",
+        "TOUCH_TARGET_MIN_HEIGHT"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "UnarchiveButton",
@@ -865,7 +1151,16 @@
         "lucide-react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OpportunitiesService",
+        "Opportunity",
+        "TOUCH_TARGET_MIN_HEIGHT"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ArchivedBanner",
@@ -874,7 +1169,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "CloseOpportunityModal",
@@ -899,7 +1197,12 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useWatch"
+      ],
+      "componentRole": "leaf"
     },
     {
       "name": "CloseOpportunityModal",
@@ -924,7 +1227,12 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [],
+      "contextDependencies": [
+        "useWatch"
+      ],
+      "componentRole": "leaf"
     },
     {
       "name": "ContactOrgMismatchWarning",
@@ -948,7 +1256,15 @@
         "react-admin",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Organization"
+      ],
+      "contextDependencies": [
+        "useFormContext",
+        "useWatch"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "CustomerDistributorIndicator",
@@ -965,7 +1281,12 @@
         "lucide-react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useWatch"
+      ],
+      "componentRole": "leaf"
     },
     {
       "name": "DistributorAuthorizationWarning",
@@ -985,7 +1306,12 @@
         "ra-core",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useWatch"
+      ],
+      "componentRole": "leaf"
     },
     {
       "name": "MetadataField",
@@ -997,7 +1323,12 @@
         "../constants",
         "@/lib/utils"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "DETAIL_FIELD_MIN_WIDTH"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "MetadataRow",
@@ -1008,7 +1339,10 @@
       "imports": [
         "@/lib/utils"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "NextTaskBadge",
@@ -1023,7 +1357,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "NextTaskBadge",
@@ -1038,7 +1375,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OpportunityActivitySection",
@@ -1056,7 +1396,16 @@
         "@/components/ui/separator",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityNoteForm",
+        "NotesIterator",
+        "Opportunity"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityCreateSaveButton",
@@ -1083,7 +1432,16 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SimilarityCheckResult"
+      ],
+      "contextDependencies": [
+        "useFormContext",
+        "useFormState",
+        "useWatch"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "SimilarOpportunitiesDialog",
@@ -1100,7 +1458,12 @@
         "@/components/ui/table",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SimilarOpportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "NamingConventionHelp",
@@ -1114,7 +1477,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OpportunityCompactForm",
@@ -1158,7 +1524,22 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "AutocompleteOrganizationInput",
+        "OrganizationInputs",
+        "ContactInputs",
+        "ContactOrgMismatchWarning",
+        "DistributorAuthorizationWarning",
+        "NamingConventionHelp",
+        "OPPORTUNITY_STAGE_CHOICES",
+        "DEFAULT_SEGMENT_ID"
+      ],
+      "contextDependencies": [
+        "useFormContext",
+        "useWatch"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityInputs",
@@ -1173,7 +1554,14 @@
         "@/components/admin/FormErrorSummary",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OpportunityCompactForm"
+      ],
+      "contextDependencies": [
+        "useFormState"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityWizardStep1",
@@ -1218,7 +1606,22 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "AutocompleteOrganizationInput",
+        "OrganizationInputs",
+        "ContactInputs",
+        "ContactOrgMismatchWarning",
+        "DistributorAuthorizationWarning",
+        "CustomerDistributorIndicator",
+        "NamingConventionHelp",
+        "OPPORTUNITY_STAGE_CHOICES",
+        "DEFAULT_SEGMENT_ID"
+      ],
+      "contextDependencies": [
+        "useFormContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityWizardStep2",
@@ -1266,7 +1669,23 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "AutocompleteOrganizationInput",
+        "OrganizationInputs",
+        "ContactInputs",
+        "ContactOrgMismatchWarning",
+        "DistributorAuthorizationWarning",
+        "CustomerDistributorIndicator",
+        "NamingConventionHelp",
+        "OPPORTUNITY_STAGE_CHOICES",
+        "DEFAULT_SEGMENT_ID"
+      ],
+      "contextDependencies": [
+        "useFormContext",
+        "useWatch"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityWizardStep3",
@@ -1312,7 +1731,23 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "AutocompleteOrganizationInput",
+        "OrganizationInputs",
+        "ContactInputs",
+        "ContactOrgMismatchWarning",
+        "DistributorAuthorizationWarning",
+        "CustomerDistributorIndicator",
+        "NamingConventionHelp",
+        "OPPORTUNITY_STAGE_CHOICES",
+        "DEFAULT_SEGMENT_ID"
+      ],
+      "contextDependencies": [
+        "useFormContext",
+        "useWatch"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityWizardStep4",
@@ -1353,7 +1788,20 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "AutocompleteOrganizationInput",
+        "OrganizationInputs",
+        "ContactInputs",
+        "ContactOrgMismatchWarning",
+        "DistributorAuthorizationWarning",
+        "CustomerDistributorIndicator",
+        "NamingConventionHelp",
+        "OPPORTUNITY_STAGE_CHOICES",
+        "DEFAULT_SEGMENT_ID"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OPPORTUNITY_WIZARD_STEPS",
@@ -1394,7 +1842,20 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "AutocompleteOrganizationInput",
+        "OrganizationInputs",
+        "ContactInputs",
+        "ContactOrgMismatchWarning",
+        "DistributorAuthorizationWarning",
+        "CustomerDistributorIndicator",
+        "NamingConventionHelp",
+        "OPPORTUNITY_STAGE_CHOICES",
+        "DEFAULT_SEGMENT_ID"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityActivityTab",
@@ -1412,7 +1873,16 @@
         "@/components/ui/separator",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityNoteForm",
+        "NotesIterator",
+        "Opportunity"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityListView",
@@ -1421,7 +1891,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "OpportunityCreateView",
@@ -1430,7 +1903,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "OpportunityEditView",
@@ -1439,7 +1915,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ColumnCustomizationMenu",
@@ -1458,7 +1937,13 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OPPORTUNITY_STAGES",
+        "OpportunityStageValue"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityCard",
@@ -1481,7 +1966,16 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OpportunityCardActions",
+        "StageStatusDot",
+        "Opportunity"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityCardActions",
@@ -1508,7 +2002,15 @@
         "react-admin",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "CloseOpportunityModal",
+        "Opportunity"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityColumn",
@@ -1532,7 +2034,14 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity",
+        "OpportunityCard",
+        "QuickAddOpportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityListContent",
@@ -1567,7 +2076,20 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity",
+        "OpportunityColumn",
+        "OPPORTUNITY_STAGES_LEGACY",
+        "OpportunitiesByStage",
+        "ColumnCustomizationMenu",
+        "CloseOpportunityModal",
+        "OpportunityCard"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "QuickAddOpportunity",
@@ -1590,7 +2112,14 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OpportunityStageValue",
+        "Organization",
+        "Opportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "StageStatusDot",
@@ -1602,7 +2131,12 @@
         "../constants/stageThresholds",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "StageStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "QuickAddButton",
@@ -1617,7 +2151,12 @@
         "@/components/ui/button",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "QuickAddDialog"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "QuickAddDialog",
@@ -1629,7 +2168,12 @@
         "./QuickAddForm",
         "@/components/ui/dialog"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "QuickAddForm"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "QuickAddForm",
@@ -1662,7 +2206,14 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "US_CITIES"
+      ],
+      "contextDependencies": [
+        "useWatch"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityListView",
@@ -1675,7 +2226,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityCreateView",
@@ -1688,7 +2244,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityEditView",
@@ -1701,7 +2262,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Opportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityContactsTab",
@@ -1728,7 +2294,10 @@
         "react-admin",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OpportunityNotesTab",
@@ -1744,7 +2313,13 @@
         "@/components/ui/scroll-area",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "NotesIterator",
+        "Opportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OpportunityProductsTab",
@@ -1770,7 +2345,10 @@
         "react-admin",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OpportunitySlideOverDetailsTab",
@@ -1804,7 +2382,14 @@
         "react-admin",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OPPORTUNITY_STAGE_CHOICES",
+        "LeadSourceInput",
+        "CloseOpportunityModal"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "chunk_name": "utils",
-  "generated_at": "2025-12-25T17:01:53.031Z",
+  "generated_at": "2025-12-25T17:36:05.027Z",
   "item_count": 3,
   "items": [
     {
@@ -12,7 +12,10 @@
       "imports": [
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "useNotifyWithRetry",
@@ -28,7 +31,10 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "useNotifyWithRetry",
@@ -44,7 +50,10 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     }
   ]
 }

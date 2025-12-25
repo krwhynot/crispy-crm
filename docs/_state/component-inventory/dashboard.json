@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2025-12-25T17:01:53.013Z",
+  "generated_at": "2025-12-25T17:36:04.961Z",
   "item_count": 30,
   "items": [
     {
@@ -23,7 +23,12 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "DASHBOARD_TUTORIAL_STEPS"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "PrincipalDashboardV3",
@@ -43,7 +48,17 @@
         "./components/TaskCompleteSheet",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "DashboardTabPanel",
+        "LogActivityFAB",
+        "MobileQuickActionBar",
+        "TaskCompleteSheet",
+        "KPISummaryRow",
+        "DashboardTutorial"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityFeedPanel",
@@ -64,7 +79,12 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TeamActivity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityFeedPanel",
@@ -85,7 +105,12 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "TeamActivity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityTypeSection",
@@ -100,7 +125,10 @@
         "@/components/ui/select",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "DashboardTabPanel",
@@ -119,7 +147,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "DashboardTabPanel",
@@ -138,7 +169,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "EntityCombobox",
@@ -158,7 +192,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "FollowUpSection",
@@ -178,7 +215,10 @@
         "lucide-react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "KPICard",
@@ -195,7 +235,10 @@
         "lucide-react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "KPISummaryRow",
@@ -209,7 +252,12 @@
         "../hooks/useKPIMetrics",
         "./KPICard"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "KPICard"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "LogActivityFAB",
@@ -233,7 +281,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "MobileQuickActionBar",
@@ -253,7 +304,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "MyPerformanceWidget",
@@ -269,7 +323,12 @@
         "@/lib/utils",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "PerformanceMetric"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "MyPerformanceWidget",
@@ -285,7 +344,12 @@
         "@/lib/utils",
         "lucide-react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "PerformanceMetric"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "PipelineDrillDownSheet",
@@ -307,7 +371,12 @@
         "lucide-react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OpportunitySummary"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "PipelineTableRow",
@@ -321,7 +390,13 @@
         "@/components/ui/table",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "PrincipalPipelineRow",
+        "Momentum"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "PrincipalPipelineTable",
@@ -352,7 +427,15 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "PrincipalPipelineRow",
+        "Momentum",
+        "SortField",
+        "PipelineTableRow"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "PrincipalPipelineTable",
@@ -383,7 +466,15 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "PrincipalPipelineRow",
+        "Momentum",
+        "SortField",
+        "PipelineTableRow"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "QuickLogForm",
@@ -417,7 +508,18 @@
         "react-admin",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Contact",
+        "EntityCombobox",
+        "ActivityTypeSection",
+        "FollowUpSection"
+      ],
+      "contextDependencies": [
+        "useDataProvider",
+        "useWatch"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "SnoozePopover",
@@ -436,7 +538,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "TaskCompleteSheet",
@@ -462,7 +567,12 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TaskItem"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "TaskKanbanCard",
@@ -488,7 +598,12 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TaskItem"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "TaskKanbanColumn",
@@ -507,7 +622,13 @@
         "@dnd-kit/sortable",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TaskKanbanCard",
+        "TaskItem"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "TasksKanbanPanel",
@@ -538,7 +659,15 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TaskKanbanColumn",
+        "TaskColumnId",
+        "TaskKanbanCard",
+        "TaskItem"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "TasksKanbanPanel",
@@ -569,7 +698,15 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "TaskKanbanColumn",
+        "TaskColumnId",
+        "TaskKanbanCard",
+        "TaskItem"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "CurrentSaleProvider",
@@ -586,7 +723,12 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "CurrentSaleContext"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "PrincipalDashboardV3WithProvider",
@@ -599,7 +741,12 @@
         "@/components/ui/skeleton",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "CurrentSaleProvider"
+      ],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "CurrentSaleProvider",
@@ -616,7 +763,12 @@
         "@/components/ui/skeleton",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "CurrentSaleProvider"
+      ],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "showFollowUpToast",
@@ -628,7 +780,12 @@
         "../types",
         "sonner"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TaskItem"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     }
   ]
 }

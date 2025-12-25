@@ -1,6 +1,6 @@
 {
   "chunk_name": "root",
-  "generated_at": "2025-12-25T17:01:53.026Z",
+  "generated_at": "2025-12-25T17:36:05.015Z",
   "item_count": 8,
   "items": [
     {
@@ -37,7 +37,17 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "DashboardErrorBoundary",
+        "PrincipalDashboardV3",
+        "Layout",
+        "SettingsPage",
+        "ConfigurationContextValue",
+        "ConfigurationProvider"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ConfigurationContext",
@@ -53,7 +63,17 @@
         "./defaultConfiguration",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ContactGender",
+        "DealStage",
+        "NoteStatus",
+        "AppBrandingProvider",
+        "PipelineConfigProvider",
+        "FormOptionsProvider"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ConfigurationProvider",
@@ -71,7 +91,17 @@
         "./defaultConfiguration",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ContactGender",
+        "DealStage",
+        "NoteStatus",
+        "AppBrandingProvider",
+        "PipelineConfigProvider",
+        "FormOptionsProvider"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "useConfigurationContext",
@@ -89,7 +119,17 @@
         "./defaultConfiguration",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ContactGender",
+        "DealStage",
+        "NoteStatus",
+        "AppBrandingProvider",
+        "PipelineConfigProvider",
+        "FormOptionsProvider"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "useAppBranding",
@@ -107,7 +147,17 @@
         "./defaultConfiguration",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ContactGender",
+        "DealStage",
+        "NoteStatus",
+        "AppBrandingProvider",
+        "PipelineConfigProvider",
+        "FormOptionsProvider"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "usePipelineConfig",
@@ -125,7 +175,17 @@
         "./defaultConfiguration",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ContactGender",
+        "DealStage",
+        "NoteStatus",
+        "AppBrandingProvider",
+        "PipelineConfigProvider",
+        "FormOptionsProvider"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "useFormOptions",
@@ -143,7 +203,17 @@
         "./defaultConfiguration",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ContactGender",
+        "DealStage",
+        "NoteStatus",
+        "AppBrandingProvider",
+        "PipelineConfigProvider",
+        "FormOptionsProvider"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "i18nProvider",
@@ -157,7 +227,10 @@
         "ra-language-english",
         "ra-supabase-language-english"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     }
   ]
 }

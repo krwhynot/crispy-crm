@@ -1,6 +1,6 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2025-12-25T17:01:53.017Z",
+  "generated_at": "2025-12-25T17:36:04.966Z",
   "item_count": 4,
   "items": [
     {
@@ -30,7 +30,18 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationAvatar",
+        "Avatar",
+        "SaleName",
+        "ContactNote",
+        "OpportunityNote",
+        "OrganizationNote",
+        "NoteInputs"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "NoteCreate",
@@ -50,7 +61,14 @@
         "ra-core",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "NoteInputs"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "NoteInputs",
@@ -69,7 +87,12 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useFormContext"
+      ],
+      "componentRole": "leaf"
     },
     {
       "name": "NotesIterator",
@@ -86,7 +109,15 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Note",
+        "NoteCreate"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     }
   ]
 }

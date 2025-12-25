@@ -1,6 +1,6 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2025-12-25T17:01:53.028Z",
+  "generated_at": "2025-12-25T17:36:05.022Z",
   "item_count": 5,
   "items": [
     {
@@ -12,7 +12,10 @@
       "imports": [
         "./tag-colors"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "TagChip",
@@ -30,7 +33,13 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Tag",
+        "TagEditModal"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "TagCreateModal",
@@ -45,7 +54,13 @@
         "./TagDialog",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Tag",
+        "TagDialog"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "TagDialog",
@@ -75,7 +90,14 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Tag",
+        "RoundButton",
+        "CreateTagInput"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "TagEditModal",
@@ -90,7 +112,13 @@
         "./TagDialog",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Tag",
+        "TagDialog"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     }
   ]
 }

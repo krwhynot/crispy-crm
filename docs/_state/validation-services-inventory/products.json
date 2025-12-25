@@ -1,0 +1,32 @@
+{
+  "chunk_name": "products",
+  "generated_at": "2025-12-25T17:35:10.868Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "validateProductForm",
+      "file": "src/atomic-crm/validation/products.ts",
+      "line": 80,
+      "pattern": "date"
+    },
+    {
+      "name": "validateProductUpdate",
+      "file": "src/atomic-crm/validation/products.ts",
+      "line": 101,
+      "pattern": "date"
+    },
+    {
+      "name": "validateOpportunityProduct",
+      "file": "src/atomic-crm/validation/products.ts",
+      "line": 134,
+      "type": "formatter",
+      "schemaReference": "opportunityProductSchema",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": [
+        "validateProductForm",
+        "validateProductUpdate"
+      ]
+    }
+  ]
+}

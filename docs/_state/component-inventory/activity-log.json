@@ -1,6 +1,6 @@
 {
   "chunk_name": "activity-log",
-  "generated_at": "2025-12-25T17:01:53.010Z",
+  "generated_at": "2025-12-25T17:36:04.953Z",
   "item_count": 10,
   "items": [
     {
@@ -22,7 +22,16 @@
         "@tanstack/react-query",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivitiesService",
+        "ActivityLogContext",
+        "ActivityLogIterator"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityLogContactCreated",
@@ -42,7 +51,14 @@
         "@/components/ui",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Avatar",
+        "SaleName",
+        "ActivityContactCreated"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityLogContactNoteCreated",
@@ -63,7 +79,16 @@
         "@/components/ui",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Avatar",
+        "SaleName",
+        "ActivityContactNoteCreated",
+        "Contact",
+        "ActivityLogNote"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityLogContext",
@@ -74,7 +99,10 @@
       "imports": [
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "useActivityLogContext",
@@ -87,7 +115,10 @@
       "imports": [
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ActivityLogIterator",
@@ -108,7 +139,22 @@
         "@/components/ui/separator",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ORGANIZATION_CREATED",
+        "CONTACT_CREATED",
+        "CONTACT_NOTE_CREATED",
+        "OPPORTUNITY_CREATED",
+        "OPPORTUNITY_NOTE_CREATED",
+        "Activity",
+        "ActivityLogOrganizationCreated",
+        "ActivityLogContactCreated",
+        "ActivityLogContactNoteCreated",
+        "ActivityLogOpportunityCreated",
+        "ActivityLogOpportunityNoteCreated"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityLogNote",
@@ -119,7 +165,10 @@
       "imports": [
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ActivityLogOpportunityCreated",
@@ -136,7 +185,12 @@
         "ra-core",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityOpportunityCreated"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityLogOpportunityNoteCreated",
@@ -156,7 +210,15 @@
         "@/components/ui",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationAvatar",
+        "SaleName",
+        "ActivityOpportunityNoteCreated",
+        "ActivityLogNote"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityLogOrganizationCreated",
@@ -175,7 +237,14 @@
         "@/components/ui",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationAvatar",
+        "SaleName",
+        "ActivityOrganizationCreated"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     }
   ]
 }

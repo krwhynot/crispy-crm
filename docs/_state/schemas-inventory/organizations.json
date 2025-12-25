@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2025-12-25T17:02:03.145Z",
+  "generated_at": "2025-12-25T17:36:23.428Z",
   "item_count": 7,
   "items": [
     {
@@ -263,7 +263,11 @@
           "optional": true,
           "nullable": true,
           "hasTransform": true,
-          "hasDefault": false
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "unknown",
+            "isSecurity": false
+          }
         },
         {
           "name": "context_links",
@@ -305,7 +309,11 @@
           "optional": false,
           "nullable": true,
           "hasTransform": true,
-          "hasDefault": false
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "unknown",
+            "isSecurity": false
+          }
         },
         {
           "name": "employee_count",

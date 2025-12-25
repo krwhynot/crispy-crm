@@ -1,6 +1,6 @@
 {
   "chunk_name": "pages",
-  "generated_at": "2025-12-25T17:01:53.022Z",
+  "generated_at": "2025-12-25T17:36:05.008Z",
   "item_count": 2,
   "items": [
     {
@@ -20,7 +20,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "WhatsNew",
@@ -39,7 +42,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     }
   ]
 }

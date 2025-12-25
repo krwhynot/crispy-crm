@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2025-12-25T17:01:53.011Z",
+  "generated_at": "2025-12-25T17:36:04.957Z",
   "item_count": 51,
   "items": [
     {
@@ -22,7 +22,15 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "QuickLogActivityDialog",
+        "ActivityTimelineEntry",
+        "ActivityRecord",
+        "ACTIVITY_PAGE_SIZE"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivitiesTab",
@@ -43,7 +51,15 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "QuickLogActivityDialog",
+        "ActivityTimelineEntry",
+        "ActivityRecord",
+        "ACTIVITY_PAGE_SIZE"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "Avatar",
@@ -58,7 +74,14 @@
         "@/components/ui/avatar",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Contact"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactAdditionalDetails",
@@ -73,7 +96,13 @@
         "@/components/admin/select-input",
         "@/components/admin/text-input"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ContactManagerInput",
+        "DEPARTMENT_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactAside",
@@ -103,7 +132,18 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "AddTask",
+        "TasksIterator",
+        "TagsListEdit",
+        "SaleName",
+        "Contact"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactBadgeGroup",
@@ -115,7 +155,10 @@
         "@/components/ui/badge",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ContactStatusBadge",
@@ -127,7 +170,10 @@
         "@/components/ui/badge",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "RoleBadge",
@@ -139,7 +185,10 @@
         "@/components/ui/badge",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "InfluenceBadge",
@@ -151,7 +200,10 @@
         "@/components/ui/badge",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ContactCompactForm",
@@ -175,7 +227,16 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Avatar",
+        "ContactAdditionalDetails",
+        "AutocompleteOrganizationInput"
+      ],
+      "contextDependencies": [
+        "useFormContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactCreate",
@@ -195,7 +256,14 @@
         "@/components/admin/form",
         "ra-core"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "Contact",
+        "ContactInputs",
+        "ContactFormTutorial"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactNameHeader",
@@ -207,7 +275,12 @@
         "./constants",
         "@/components/admin/column-filters"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "CONTACT_STATUS_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactStatusHeader",
@@ -219,7 +292,12 @@
         "./constants",
         "@/components/admin/column-filters"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "CONTACT_STATUS_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactColumnHeaders",
@@ -231,7 +309,12 @@
         "./constants",
         "@/components/admin/column-filters"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "CONTACT_STATUS_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactDetailsTab",
@@ -260,7 +343,15 @@
         "ra-core",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SaleName",
+        "ContactInputs",
+        "Avatar",
+        "Contact"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactEdit",
@@ -282,7 +373,15 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Contact",
+        "ContactAside",
+        "ContactInputs",
+        "FormToolbar"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactEdit",
@@ -304,7 +403,15 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "Contact",
+        "ContactAside",
+        "ContactInputs",
+        "FormToolbar"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactEmpty",
@@ -319,7 +426,12 @@
         "./ContactImportButton",
         "@/components/admin/create-button"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ContactImportButton"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactExportTemplateButton",
@@ -333,7 +445,10 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ContactFormTutorial",
@@ -352,7 +467,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ContactHierarchyBreadcrumb",
@@ -368,7 +486,13 @@
         "react-admin",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Contact",
+        "Organization"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactImportButton",
@@ -384,7 +508,12 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ContactImportDialog"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactImportDialog",
@@ -427,7 +556,17 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ContactImportSchema",
+        "PreviewData",
+        "DataQualityDecisions",
+        "ContactImportPreview",
+        "ContactImportResult",
+        "FULL_NAME_SPLIT_MARKER"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactImportPreview",
@@ -456,7 +595,13 @@
         "react",
         "zod"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "FULL_NAME_SPLIT_MARKER",
+        "DataQualityDecisions"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactImportPreview",
@@ -485,7 +630,13 @@
         "react",
         "zod"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "FULL_NAME_SPLIT_MARKER",
+        "DataQualityDecisions"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactImportResult",
@@ -501,7 +652,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ContactInputs",
@@ -516,7 +670,14 @@
         "@/components/admin/FormErrorSummary",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ContactCompactForm"
+      ],
+      "contextDependencies": [
+        "useFormState"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactList",
@@ -559,7 +720,22 @@
         "ra-core",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Contact",
+        "ContactEmpty",
+        "ContactListFilter",
+        "ContactSlideOver",
+        "TopToolbar",
+        "Avatar",
+        "ContactStatusBadge",
+        "ContactNameHeader",
+        "ContactStatusHeader",
+        "CONTACT_FILTER_CONFIG",
+        "PageTutorialTrigger"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactList",
@@ -602,7 +778,22 @@
         "ra-core",
         "react-admin"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "Contact",
+        "ContactEmpty",
+        "ContactListFilter",
+        "ContactSlideOver",
+        "TopToolbar",
+        "Avatar",
+        "ContactStatusBadge",
+        "ContactNameHeader",
+        "ContactStatusHeader",
+        "CONTACT_FILTER_CONFIG",
+        "PageTutorialTrigger"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactListFilter",
@@ -624,7 +815,14 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "FilterCategory"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactManagerInput",
@@ -639,7 +837,12 @@
         "@/components/admin/reference-input",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "leaf"
     },
     {
       "name": "contactOptionText",
@@ -653,7 +856,13 @@
         "./Avatar",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Avatar",
+        "Contact"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactShow",
@@ -677,7 +886,19 @@
         "@/components/ui/tabs",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationAvatar",
+        "NoteCreate",
+        "NotesIterator",
+        "Contact",
+        "Avatar",
+        "ContactAside",
+        "ActivitiesTab",
+        "OpportunitiesTab"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactShow",
@@ -701,7 +922,19 @@
         "@/components/ui/tabs",
         "ra-core"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "OrganizationAvatar",
+        "NoteCreate",
+        "NotesIterator",
+        "Contact",
+        "Avatar",
+        "ContactAside",
+        "ActivitiesTab",
+        "OpportunitiesTab"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactSlideOver",
@@ -720,7 +953,16 @@
         "@/components/ui/list-skeleton",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ContactDetailsTab",
+        "ContactNotesTab",
+        "ActivitiesTab",
+        "ContactHierarchyBreadcrumb",
+        "Contact"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "LinkOpportunityModal",
@@ -738,7 +980,10 @@
         "@/components/ui/dialog",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OpportunitiesTab",
@@ -768,7 +1013,18 @@
         "react-admin",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "StageBadgeWithHealth",
+        "LinkOpportunityModal",
+        "UnlinkConfirmDialog",
+        "SuggestedOpportunityCard",
+        "Contact",
+        "Opportunity",
+        "OpportunityContact"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "StageBadgeWithHealth",
@@ -781,7 +1037,10 @@
         "@/lib/utils",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "SuggestedOpportunityCard",
@@ -793,7 +1052,12 @@
         "./StageBadgeWithHealth",
         "@/components/ui/button"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "StageBadgeWithHealth"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "TagsList",
@@ -809,7 +1073,10 @@
         "@/lib/utils",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "TagsListEdit",
@@ -836,7 +1103,17 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TagChip",
+        "TagCreateModal",
+        "Contact",
+        "Tag"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "UnlinkConfirmDialog",
@@ -851,7 +1128,10 @@
         "@/components/ui/alert-dialog",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ContactListView",
@@ -860,7 +1140,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ContactEditView",
@@ -869,7 +1152,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ContactCreateView",
@@ -878,7 +1164,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ContactListView",
@@ -892,7 +1181,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Contact"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactEditView",
@@ -906,7 +1200,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Contact"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactCreateView",
@@ -920,7 +1219,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Contact"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ContactNotesTab",
@@ -934,7 +1238,13 @@
         "@/components/admin/reference-many-field",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "NotesIterator",
+        "Contact"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "useContactImport",
@@ -956,7 +1266,20 @@
         "react",
         "zod"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Organization",
+        "Tag",
+        "ContactImportSchema",
+        "ImportError",
+        "ImportOptions",
+        "ImportResult",
+        "FieldError"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "usePapaParse",
@@ -974,7 +1297,10 @@
         "papaparse",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     }
   ]
 }

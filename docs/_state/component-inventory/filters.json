@@ -1,6 +1,6 @@
 {
   "chunk_name": "filters",
-  "generated_at": "2025-12-25T17:01:53.015Z",
+  "generated_at": "2025-12-25T17:36:04.963Z",
   "item_count": 5,
   "items": [
     {
@@ -17,7 +17,10 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "FilterChip",
@@ -31,7 +34,12 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Button"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "FilterChipBar",
@@ -51,7 +59,13 @@
         "@/lib/utils",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ChipFilterConfig",
+        "FilterChip"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "FilterChipsPanel",
@@ -74,7 +88,12 @@
         "@/components/ui/accordion",
         "@/lib/utils"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "FilterChip"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "FilterSidebar",
@@ -87,7 +106,10 @@
         "@/lib/utils",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     }
   ]
 }

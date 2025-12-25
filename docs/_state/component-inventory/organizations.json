@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2025-12-25T17:01:53.020Z",
+  "generated_at": "2025-12-25T17:36:04.999Z",
   "item_count": 73,
   "items": [
     {
@@ -22,7 +22,15 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "QuickLogActivityDialog",
+        "ActivityTimelineEntry",
+        "ActivityRecord",
+        "ACTIVITY_PAGE_SIZE"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivitiesTab",
@@ -43,7 +51,15 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "QuickLogActivityDialog",
+        "ActivityTimelineEntry",
+        "ActivityRecord",
+        "ACTIVITY_PAGE_SIZE"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "AuthorizationsTab",
@@ -69,7 +85,18 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "AuthorizationsTabProps",
+        "AuthorizationWithPrincipal",
+        "PrincipalOrganization",
+        "AuthorizationsEmptyState",
+        "AuthorizationCard",
+        "AddPrincipalDialog",
+        "RemoveConfirmDialog"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "AuthorizationsTab",
@@ -95,7 +122,18 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "AuthorizationsTabProps",
+        "AuthorizationWithPrincipal",
+        "PrincipalOrganization",
+        "AuthorizationsEmptyState",
+        "AuthorizationCard",
+        "AddPrincipalDialog",
+        "RemoveConfirmDialog"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "AutocompleteOrganizationInput",
@@ -110,7 +148,12 @@
         "@/components/admin/autocomplete-input",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "QuickCreatePopover"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "BranchLocationsSection",
@@ -132,7 +175,14 @@
         "react-admin",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Company"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "BulkReassignButton",
@@ -159,7 +209,16 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Organization",
+        "Sale"
+      ],
+      "contextDependencies": [
+        "useDataProvider",
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "BulkReassignButton",
@@ -186,7 +245,16 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "Organization",
+        "Sale"
+      ],
+      "contextDependencies": [
+        "useDataProvider",
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "DuplicateOrgWarningDialog",
@@ -198,7 +266,10 @@
         "@/components/ui/alert-dialog",
         "@/components/ui/button"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OrganizationAddressSection",
@@ -211,7 +282,10 @@
         "@/components/admin/state-combobox-input",
         "@/components/admin/text-input"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OrganizationAside",
@@ -237,7 +311,18 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SaleName",
+        "Company",
+        "ParentOrganizationSection",
+        "ORGANIZATION_TYPE_CHOICES",
+        "PRIORITY_CHOICES"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationAvatar",
@@ -252,7 +337,14 @@
         "@/components/ui/avatar",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Company"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationTypeBadge",
@@ -265,7 +357,16 @@
         "@/components/ui/badge",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ORG_TYPE_COLOR_MAP",
+        "PRIORITY_VARIANT_MAP",
+        "PRIORITY_CHOICES",
+        "OrganizationType",
+        "PriorityLevel"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "PriorityBadge",
@@ -278,7 +379,16 @@
         "@/components/ui/badge",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ORG_TYPE_COLOR_MAP",
+        "PRIORITY_VARIANT_MAP",
+        "PRIORITY_CHOICES",
+        "OrganizationType",
+        "PriorityLevel"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationBulkActionsToolbar",
@@ -292,7 +402,12 @@
         "@/components/admin/bulk-delete-button",
         "@/components/admin/bulk-export-button"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "BulkReassignButton"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationBulkActionsToolbar",
@@ -306,7 +421,12 @@
         "@/components/admin/bulk-delete-button",
         "@/components/admin/bulk-export-button"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "BulkReassignButton"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationCompactForm",
@@ -329,7 +449,14 @@
         "@/components/admin/text-input",
         "@/hooks"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "PRIORITY_CHOICES",
+        "OrganizationHierarchySection",
+        "PrincipalAwareTypeInput"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationCreate",
@@ -368,7 +495,15 @@
         "react-hook-form",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationInputs",
+        "DuplicateOrgWarningDialog",
+        "OrganizationFormValues",
+        "DuplicateCheckCallback"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationCreate",
@@ -407,7 +542,15 @@
         "react-hook-form",
         "react-router-dom"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "OrganizationInputs",
+        "DuplicateOrgWarningDialog",
+        "OrganizationFormValues",
+        "DuplicateCheckCallback"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationNameHeader",
@@ -419,7 +562,13 @@
         "./constants",
         "@/components/admin/column-filters"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ORGANIZATION_TYPE_CHOICES",
+        "PRIORITY_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationTypeHeader",
@@ -431,7 +580,13 @@
         "./constants",
         "@/components/admin/column-filters"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ORGANIZATION_TYPE_CHOICES",
+        "PRIORITY_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationPriorityHeader",
@@ -443,7 +598,13 @@
         "./constants",
         "@/components/admin/column-filters"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ORGANIZATION_TYPE_CHOICES",
+        "PRIORITY_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationColumnHeaders",
@@ -455,7 +616,13 @@
         "./constants",
         "@/components/admin/column-filters"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ORGANIZATION_TYPE_CHOICES",
+        "PRIORITY_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationEdit",
@@ -475,7 +642,15 @@
         "@tanstack/react-query",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationInputs",
+        "OrganizationAside",
+        "FormToolbar",
+        "Organization"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationEdit",
@@ -495,7 +670,15 @@
         "@tanstack/react-query",
         "ra-core"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "OrganizationInputs",
+        "OrganizationAside",
+        "FormToolbar",
+        "Organization"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationEmpty",
@@ -510,7 +693,10 @@
         "@/components/admin/create-button",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OrganizationHierarchySection",
@@ -525,7 +711,13 @@
         "@/components/admin/form",
         "@/components/admin/select-input"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ParentOrganizationInput",
+        "ORG_SCOPE_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationImportButton",
@@ -541,7 +733,12 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationImportDialog"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationImportDialog",
@@ -577,7 +774,24 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ImportResult",
+        "ImportError",
+        "PreviewData",
+        "DataQualityDecisions",
+        "ColumnMapping",
+        "DuplicateGroup",
+        "OrganizationImportPreview",
+        "CsvValidationError",
+        "RawCSVRow",
+        "MappedCSVRow",
+        "OrganizationImportSchema"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationImportPreview",
@@ -603,7 +817,12 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "RawCSVRow"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationImportPreview",
@@ -629,7 +848,12 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "RawCSVRow"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationImportResult",
@@ -645,7 +869,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OrganizationInputs",
@@ -660,7 +887,14 @@
         "@/components/admin/FormErrorSummary",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationCompactForm"
+      ],
+      "contextDependencies": [
+        "useFormState"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationList",
@@ -700,7 +934,29 @@
         "ra-core",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationBulkActionsToolbar",
+        "OrganizationListFilter",
+        "OrganizationSlideOver",
+        "OrganizationTypeBadge",
+        "PriorityBadge",
+        "OrganizationEmpty",
+        "TopToolbar",
+        "ORGANIZATION_FILTER_CONFIG",
+        "OrganizationNameHeader",
+        "OrganizationTypeHeader",
+        "OrganizationPriorityHeader",
+        "PageTutorialTrigger",
+        "Organization",
+        "Sale",
+        "Segment",
+        "DEFAULT_LIST_PAGE_SIZE",
+        "OrganizationExportRow",
+        "OrganizationRecord"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationList",
@@ -740,7 +996,29 @@
         "ra-core",
         "react-admin"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "OrganizationBulkActionsToolbar",
+        "OrganizationListFilter",
+        "OrganizationSlideOver",
+        "OrganizationTypeBadge",
+        "PriorityBadge",
+        "OrganizationEmpty",
+        "TopToolbar",
+        "ORGANIZATION_FILTER_CONFIG",
+        "OrganizationNameHeader",
+        "OrganizationTypeHeader",
+        "OrganizationPriorityHeader",
+        "PageTutorialTrigger",
+        "Organization",
+        "Sale",
+        "Segment",
+        "DEFAULT_LIST_PAGE_SIZE",
+        "OrganizationExportRow",
+        "OrganizationRecord"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationListFilter",
@@ -760,7 +1038,14 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "FilterCategory"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationShow",
@@ -792,7 +1077,22 @@
         "ra-core",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityLog",
+        "Avatar",
+        "TagsList",
+        "Status",
+        "Company",
+        "Contact",
+        "Opportunity",
+        "OrganizationAside",
+        "OrganizationAvatar",
+        "ActivitiesTab",
+        "AuthorizationsTab"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationShow",
@@ -824,7 +1124,22 @@
         "ra-core",
         "react-router-dom"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "ActivityLog",
+        "Avatar",
+        "TagsList",
+        "Status",
+        "Company",
+        "Contact",
+        "Opportunity",
+        "OrganizationAside",
+        "OrganizationAvatar",
+        "ActivitiesTab",
+        "AuthorizationsTab"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationSlideOver",
@@ -846,7 +1161,17 @@
         "lucide-react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationDetailsTab",
+        "OrganizationContactsTab",
+        "OrganizationOpportunitiesTab",
+        "OrganizationNotesTab",
+        "AuthorizationsTab",
+        "OrganizationRecord"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationStatusSection",
@@ -861,7 +1186,14 @@
         "@/components/admin/select-input",
         "@/components/admin/text-input"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "STATUS_CHOICES",
+        "STATUS_REASON_CHOICES",
+        "PAYMENT_TERMS_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ParentOrganizationInput",
@@ -876,7 +1208,12 @@
         "@/components/admin/reference-input",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "leaf"
     },
     {
       "name": "ParentOrganizationSection",
@@ -899,7 +1236,14 @@
         "react-admin",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Company"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "PrincipalAwareTypeInput",
@@ -924,7 +1268,20 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "PrincipalChangeWarning",
+        "ORGANIZATION_TYPE_CHOICES",
+        "ORGANIZATION_TYPE_DESCRIPTIONS",
+        "OrganizationType",
+        "Organization"
+      ],
+      "contextDependencies": [
+        "useFormContext",
+        "useRecordContext",
+        "useWatch"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "PrincipalChangeWarning",
@@ -943,7 +1300,14 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Organization"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "QuickCreatePopover",
@@ -969,7 +1333,12 @@
         "react-hook-form",
         "zod"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "leaf"
     },
     {
       "name": "AddPrincipalDialog",
@@ -992,7 +1361,12 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "AddPrincipalDialogProps"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "AddProductExceptionDialog",
@@ -1017,7 +1391,12 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "AddProductExceptionDialogProps"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "AuthorizationCard",
@@ -1040,7 +1419,16 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "AuthorizationCardProps",
+        "PrincipalOrganization",
+        "Product",
+        "ProductAuthorization",
+        "ProductExceptionsSection"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "AuthorizationsEmptyState",
@@ -1052,7 +1440,10 @@
         "@/components/ui/button",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductExceptionsSection",
@@ -1077,7 +1468,15 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ProductExceptionsSectionProps",
+        "ProductAuthorization",
+        "AddProductExceptionDialog",
+        "RemoveConfirmDialog"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "RemoveConfirmDialog",
@@ -1089,7 +1488,12 @@
         "./authorization-types",
         "@/components/ui/alert-dialog"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "RemoveConfirmDialogProps"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationList",
@@ -1102,7 +1506,10 @@
         "useSlideOverState"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "OrganizationCreate",
@@ -1123,7 +1530,10 @@
         "useState"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "OrganizationEdit",
@@ -1134,7 +1544,10 @@
         "useQueryClient"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "OrganizationShow",
@@ -1143,7 +1556,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ParentOrganizationInput",
@@ -1154,7 +1570,12 @@
         "useRecordContext"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "entry"
     },
     {
       "name": "BranchLocationsSection",
@@ -1168,7 +1589,12 @@
         "useState"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "entry"
     },
     {
       "name": "ParentOrganizationSection",
@@ -1183,7 +1609,12 @@
         "useState"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "entry"
     },
     {
       "name": "OrganizationTypeBadge",
@@ -1192,7 +1623,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "PriorityBadge",
@@ -1201,7 +1635,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "OrganizationListView",
@@ -1210,7 +1647,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "OrganizationCreateView",
@@ -1219,7 +1659,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "OrganizationEditView",
@@ -1228,7 +1671,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "OrganizationShowView",
@@ -1237,7 +1683,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "OrganizationListView",
@@ -1250,7 +1699,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Organization"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationCreateView",
@@ -1263,7 +1717,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Organization"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationEditView",
@@ -1276,7 +1735,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Organization"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationShowView",
@@ -1289,7 +1753,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Organization"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationContactsTab",
@@ -1311,7 +1780,14 @@
         "ra-core",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationWithHierarchy",
+        "MAX_RELATED_ITEMS",
+        "EmailEntry"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationDetailsTab",
@@ -1341,7 +1817,18 @@
         "ra-core",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationWithHierarchy",
+        "ContextLink",
+        "ORGANIZATION_TYPE_CHOICES",
+        "PRIORITY_CHOICES",
+        "STATUS_CHOICES",
+        "OrganizationTypeBadge",
+        "PriorityBadge"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationNotesTab",
@@ -1356,7 +1843,13 @@
         "@/components/ui/scroll-area",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "NotesIterator",
+        "OrganizationWithHierarchy"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "OrganizationOpportunitiesTab",
@@ -1380,7 +1873,13 @@
         "ra-core",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "OrganizationWithHierarchy",
+        "MAX_RELATED_ITEMS"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "useOrganizationImport",
@@ -1400,7 +1899,16 @@
         "react",
         "zod"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Tag",
+        "DataQualityDecisions",
+        "OrganizationImportSchema"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "wrapper"
     }
   ]
 }

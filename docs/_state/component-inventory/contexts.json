@@ -1,6 +1,6 @@
 {
   "chunk_name": "contexts",
-  "generated_at": "2025-12-25T17:01:53.013Z",
+  "generated_at": "2025-12-25T17:36:04.959Z",
   "item_count": 9,
   "items": [
     {
@@ -13,7 +13,10 @@
         "../root/defaultConfiguration",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "AppBrandingProvider",
@@ -27,7 +30,10 @@
         "../root/defaultConfiguration",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "useAppBranding",
@@ -41,7 +47,10 @@
         "../root/defaultConfiguration",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "FormOptionsContext",
@@ -54,7 +63,13 @@
         "../types",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "NoteStatus",
+        "ContactGender"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "FormOptionsProvider",
@@ -69,7 +84,13 @@
         "../types",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "NoteStatus",
+        "ContactGender"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "useFormOptions",
@@ -84,7 +105,13 @@
         "../types",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "NoteStatus",
+        "ContactGender"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "PipelineConfigContext",
@@ -97,7 +124,12 @@
         "../types",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "DealStage"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "PipelineConfigProvider",
@@ -112,7 +144,12 @@
         "../types",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "DealStage"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "usePipelineConfig",
@@ -127,7 +164,12 @@
         "../types",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "DealStage"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     }
   ]
 }
