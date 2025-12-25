@@ -7,10 +7,14 @@ import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { BooleanInput } from "@/components/admin/boolean-input";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { PriorityBadge } from "@/components/ui/priority-badge";
-import { AsideSection } from "@/components/ui";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import {
+  SidepaneSection,
+  SidepaneMetadata,
+  DirtyStateTracker,
+} from "@/components/layouts/sidepane";
 import { SaleName } from "../sales/SaleName";
 import { useFormOptions } from "../root/ConfigurationContext";
 import { contactOptionText } from "../contacts/ContactOption";
@@ -20,6 +24,7 @@ interface TaskSlideOverDetailsTabProps {
   record: Task;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
 /**
@@ -40,6 +45,7 @@ export function TaskSlideOverDetailsTab({
   record,
   mode,
   onModeToggle,
+  onDirtyChange,
 }: TaskSlideOverDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
@@ -83,6 +89,7 @@ export function TaskSlideOverDetailsTab({
     return (
       <RecordContextProvider value={record}>
         <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
+          <DirtyStateTracker onDirtyChange={onDirtyChange} />
           <div className="space-y-6" role="form" aria-label="Edit task form">
             <div className="space-y-4">
               <TextInput source="title" label="Task Title" />
@@ -130,19 +137,17 @@ export function TaskSlideOverDetailsTab({
   // View mode - display all task fields
   return (
     <RecordContextProvider value={record}>
-      <div className="space-y-6">
-        {/* Task Info Section */}
-        <AsideSection title="Task Details">
-          <Card>
-            <CardContent className="p-4 space-y-3">
-              <div>
-                <h3 className="text-lg font-semibold mb-2">{record.title}</h3>
-                {record.description && (
-                  <p className="text-sm text-muted-foreground whitespace-pre-wrap">
-                    {record.description}
-                  </p>
-                )}
-              </div>
+      <ScrollArea className="h-full">
+        <div className="px-6 py-4">
+          {/* Task Info Section */}
+          <SidepaneSection label="Task">
+            <div className="space-y-3">
+              <h3 className="text-lg font-semibold">{record.title}</h3>
+              {record.description && (
+                <p className="text-sm text-muted-foreground whitespace-pre-wrap">
+                  {record.description}
+                </p>
+              )}
 
               {/* Completion status - Interactive checkbox even in view mode */}
               {/* min-h-11 ensures 44px touch target for WCAG AA compliance */}
@@ -165,85 +170,69 @@ export function TaskSlideOverDetailsTab({
                   </span>
                 )}
               </label>
-            </CardContent>
-          </Card>
-        </AsideSection>
-
-        {/* Dates Section */}
-        <AsideSection title="Schedule">
-          <div className="space-y-2">
-            <div className="text-sm">
-              <span className="text-muted-foreground">Due: </span>
-              <DateField
-                source="due_date"
-                options={{ year: "numeric", month: "long", day: "numeric" }}
-                className="font-medium"
-              />
             </div>
-            {record.reminder_date && (
+          </SidepaneSection>
+
+          {/* Schedule Section */}
+          <SidepaneSection label="Schedule" showSeparator>
+            <div className="space-y-2">
               <div className="text-sm">
-                <span className="text-muted-foreground">Reminder: </span>
+                <span className="text-muted-foreground">Due: </span>
                 <DateField
-                  source="reminder_date"
+                  source="due_date"
                   options={{ year: "numeric", month: "long", day: "numeric" }}
                   className="font-medium"
                 />
               </div>
-            )}
-          </div>
-        </AsideSection>
+              {record.reminder_date && (
+                <div className="text-sm">
+                  <span className="text-muted-foreground">Reminder: </span>
+                  <DateField
+                    source="reminder_date"
+                    options={{ year: "numeric", month: "long", day: "numeric" }}
+                    className="font-medium"
+                  />
+                </div>
+              )}
+            </div>
+          </SidepaneSection>
 
-        {/* Priority & Type Section */}
-        <AsideSection title="Classification">
-          <div className="space-y-2">
-            {record.priority && (
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Priority:</span>
-                <PriorityBadge priority={record.priority} />
-              </div>
-            )}
-            {record.type && (
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">Type:</span>
-                <Badge variant="outline">{record.type}</Badge>
-              </div>
-            )}
-          </div>
-        </AsideSection>
+          {/* Classification Section */}
+          <SidepaneSection label="Classification" showSeparator>
+            <div className="space-y-2">
+              {record.priority && (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">Priority:</span>
+                  <PriorityBadge priority={record.priority} />
+                </div>
+              )}
+              {record.type && (
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">Type:</span>
+                  <Badge variant="outline">{record.type}</Badge>
+                </div>
+              )}
+            </div>
+          </SidepaneSection>
 
-        {/* Assignment Section */}
-        {record.sales_id && (
-          <AsideSection title="Assigned To">
-            <ReferenceField source="sales_id" reference="sales">
-              <SaleName />
-            </ReferenceField>
-          </AsideSection>
-        )}
-
-        {/* Timestamps Section */}
-        <AsideSection title="Timeline">
-          <div className="space-y-2">
-            {record.created_at && (
+          {/* Assignment Section */}
+          {record.sales_id && (
+            <SidepaneSection label="Assigned To" showSeparator>
               <div className="text-sm">
-                <span className="text-muted-foreground">Created: </span>
-                <DateField
-                  source="created_at"
-                  options={{ year: "numeric", month: "short", day: "numeric" }}
-                />
+                <ReferenceField source="sales_id" reference="sales">
+                  <SaleName />
+                </ReferenceField>
               </div>
-            )}
-            {record.updated_at && (
-              <div className="text-sm">
-                <span className="text-muted-foreground">Updated: </span>
-                <DateField
-                  source="updated_at"
-                  options={{ year: "numeric", month: "short", day: "numeric" }}
-                />
-              </div>
-            )}
-          </div>
-        </AsideSection>
-      </div>
+            </SidepaneSection>
+          )}
+
+          {/* Metadata - replaces manual Timeline section */}
+          <SidepaneMetadata
+            createdAt={record.created_at}
+            updatedAt={record.updated_at}
+          />
+        </div>
+      </ScrollArea>
     </RecordContextProvider>
   );
 }

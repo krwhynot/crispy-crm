@@ -7,6 +7,8 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { DirtyStateTracker, SidepaneMetadata } from "@/components/layouts/sidepane";
 import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
 import { LeadSourceInput } from "../LeadSourceInput";
 import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
@@ -84,6 +86,7 @@ interface OpportunitySlideOverDetailsTabProps {
   record: Opportunity;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
   /** Whether this tab is currently active - available for conditional data fetching */
   isActiveTab: boolean;
 }
@@ -92,6 +95,7 @@ export function OpportunitySlideOverDetailsTab({
   record,
   mode,
   onModeToggle,
+  onDirtyChange,
   isActiveTab,
 }: OpportunitySlideOverDetailsTabProps) {
   const [update] = useUpdate();
@@ -197,6 +201,7 @@ export function OpportunitySlideOverDetailsTab({
         onSubmit={handleSave}
         className="space-y-2"
       >
+        <DirtyStateTracker onDirtyChange={onDirtyChange} />
         <TextInput source="name" label="Opportunity Name" helperText={false} fullWidth />
         <TextInput
           source="description"
@@ -351,14 +356,15 @@ export function OpportunitySlideOverDetailsTab({
         : null;
 
   return (
-    <div className="space-y-2">
-      {/* Name */}
-      <div>
-        <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-          Name
-        </span>
-        <p className="text-sm">{record.name || "N/A"}</p>
-      </div>
+    <ScrollArea className="h-full">
+      <div className="px-6 py-4 space-y-2">
+        {/* Name */}
+        <div>
+          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
+            Name
+          </span>
+          <p className="text-sm">{record.name || "N/A"}</p>
+        </div>
 
       {/* Description */}
       {record.description && (

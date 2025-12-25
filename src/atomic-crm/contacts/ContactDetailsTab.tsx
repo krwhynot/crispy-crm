@@ -77,155 +77,148 @@ export function ContactDetailsTab({ record, mode, onModeToggle, onDirtyChange }:
   // View mode - display all contact fields
   return (
     <RecordContextProvider value={record}>
-      <div className="space-y-6">
-        {/* Identity Section */}
-        <AsideSection title="Identity">
-          <div className="flex items-center gap-4">
-            <Avatar />
-            <div className="flex-1">
-              <h3 className="text-lg font-semibold">
-                {record.first_name} {record.last_name}
-              </h3>
-              {record.gender && <p className="text-sm text-muted-foreground">{record.gender}</p>}
-              {record.title && <p className="text-sm text-muted-foreground">{record.title}</p>}
-            </div>
-          </div>
-        </AsideSection>
-
-        {/* Position Section */}
-        <AsideSection title="Position">
-          <Card>
-            <CardContent className="p-4 space-y-2">
-              {record.organization_id && (
-                <div className="flex items-center gap-2">
-                  <Building2 className="size-4 text-muted-foreground" />
-                  <ReferenceField source="organization_id" reference="organizations" link="show">
-                    <TextField source="name" className="font-medium" />
-                  </ReferenceField>
-                </div>
-              )}
-              {record.department && (
-                <div className="text-sm">
-                  <span className="text-muted-foreground">Department: </span>
-                  <span className="font-medium">{record.department}</span>
-                </div>
-              )}
-              {record.title && (
-                <div className="text-sm">
-                  <span className="text-muted-foreground">Title: </span>
-                  <span className="font-medium">{record.title}</span>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </AsideSection>
-
-        {/* Contact Info Section */}
-        <AsideSection title="Contact Info">
-          <div className="space-y-3">
-            {/* Email */}
-            {record.email && record.email.length > 0 && (
-              <ArrayField source="email">
-                <SingleFieldList className="flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <Mail className="size-4 text-muted-foreground" />
-                    <EmailField source="value" />
-                    <TextField source="type" className="text-xs text-muted-foreground" />
-                  </div>
-                </SingleFieldList>
-              </ArrayField>
-            )}
-
-            {/* Phone */}
-            {record.phone && record.phone.length > 0 && (
-              <ArrayField source="phone">
-                <SingleFieldList className="flex-col gap-2">
-                  <div className="flex items-center gap-2">
-                    <Phone className="size-4 text-muted-foreground" />
-                    <TextField source="value" />
-                    <TextField source="type" className="text-xs text-muted-foreground" />
-                  </div>
-                </SingleFieldList>
-              </ArrayField>
-            )}
-
-            {/* LinkedIn */}
-            {record.linkedin_url && (
-              <div className="flex items-center gap-2">
-                <Linkedin className="size-4 text-muted-foreground" />
-                <a
-                  href={record.linkedin_url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-sm text-primary hover:underline"
-                >
-                  LinkedIn Profile
-                </a>
+      <ScrollArea className="h-full">
+        <div className="px-6 py-4">
+          {/* Identity Section */}
+          <SidepaneSection label="Identity">
+            <div className="flex items-center gap-4">
+              <Avatar />
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold">
+                  {record.first_name} {record.last_name}
+                </h3>
+                {record.gender && <p className="text-sm text-muted-foreground">{record.gender}</p>}
+                {record.title && <p className="text-sm text-muted-foreground">{record.title}</p>}
               </div>
-            )}
-          </div>
-        </AsideSection>
-
-        {/* Account Section */}
-        <AsideSection title="Account">
-          <div className="space-y-2">
-            <div className="text-sm">
-              <span className="text-muted-foreground">Added on </span>
-              <DateField
-                source="first_seen"
-                options={{ year: "numeric", month: "long", day: "numeric" }}
-              />
             </div>
+          </SidepaneSection>
 
-            <div className="text-sm">
-              <span className="text-muted-foreground">Last activity on </span>
-              <DateField
-                source="last_seen"
-                options={{ year: "numeric", month: "long", day: "numeric" }}
-              />
-            </div>
-
-            <div className="text-sm">
-              <span className="text-muted-foreground">Followed by </span>
-              <ReferenceField source="sales_id" reference="sales">
-                <SaleName />
-              </ReferenceField>
-            </div>
-          </div>
-        </AsideSection>
-
-        {/* Tags Section */}
-        {record.tags && record.tags.length > 0 && (
-          <AsideSection title="Tags">
-            <div className="flex flex-wrap gap-2">
-              {record.tags.map((tagId) => (
-                <ReferenceField
-                  key={tagId}
-                  record={{ tag_id: tagId }}
-                  source="tag_id"
-                  reference="tags"
-                  link={false}
-                >
-                  <Badge variant="outline">
-                    <TextField source="name" />
-                  </Badge>
+          {/* Organization Section - uses variant="list" for relationship card */}
+          {record.organization_id && (
+            <SidepaneSection label="Organization" variant="list" showSeparator>
+              <div className="flex items-center gap-2 p-2">
+                <Building2 className="size-4 text-muted-foreground" />
+                <ReferenceField source="organization_id" reference="organizations" link="show">
+                  <TextField source="name" className="font-medium" />
                 </ReferenceField>
-              ))}
-            </div>
-          </AsideSection>
-        )}
+              </div>
+            </SidepaneSection>
+          )}
 
-        {/* Notes Section */}
-        {record.notes && (
-          <AsideSection title="Notes">
-            <Card>
-              <CardContent className="p-4">
-                <p className="text-sm whitespace-pre-wrap max-h-96 overflow-y-auto">{record.notes}</p>
-              </CardContent>
-            </Card>
-          </AsideSection>
-        )}
-      </div>
+          {/* Details Section - title, department */}
+          {(record.department || record.title) && (
+            <SidepaneSection label="Details" showSeparator>
+              <div className="space-y-2">
+                {record.title && (
+                  <div className="text-sm">
+                    <span className="text-muted-foreground">Title: </span>
+                    <span className="font-medium">{record.title}</span>
+                  </div>
+                )}
+                {record.department && (
+                  <div className="text-sm">
+                    <span className="text-muted-foreground">Department: </span>
+                    <span className="font-medium">{record.department}</span>
+                  </div>
+                )}
+              </div>
+            </SidepaneSection>
+          )}
+
+          {/* Contact Section */}
+          <SidepaneSection label="Contact" showSeparator>
+            <div className="space-y-3">
+              {/* Email */}
+              {record.email && record.email.length > 0 && (
+                <ArrayField source="email">
+                  <SingleFieldList className="flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <Mail className="size-4 text-muted-foreground" />
+                      <EmailField source="value" />
+                      <TextField source="type" className="text-xs text-muted-foreground" />
+                    </div>
+                  </SingleFieldList>
+                </ArrayField>
+              )}
+
+              {/* Phone */}
+              {record.phone && record.phone.length > 0 && (
+                <ArrayField source="phone">
+                  <SingleFieldList className="flex-col gap-2">
+                    <div className="flex items-center gap-2">
+                      <Phone className="size-4 text-muted-foreground" />
+                      <TextField source="value" />
+                      <TextField source="type" className="text-xs text-muted-foreground" />
+                    </div>
+                  </SingleFieldList>
+                </ArrayField>
+              )}
+
+              {/* LinkedIn */}
+              {record.linkedin_url && (
+                <div className="flex items-center gap-2">
+                  <Linkedin className="size-4 text-muted-foreground" />
+                  <a
+                    href={record.linkedin_url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-primary hover:underline"
+                  >
+                    LinkedIn Profile
+                  </a>
+                </div>
+              )}
+            </div>
+          </SidepaneSection>
+
+          {/* Account Section - assigned sales rep */}
+          {record.sales_id && (
+            <SidepaneSection label="Assigned To" showSeparator>
+              <div className="text-sm">
+                <ReferenceField source="sales_id" reference="sales">
+                  <SaleName />
+                </ReferenceField>
+              </div>
+            </SidepaneSection>
+          )}
+
+          {/* Tags Section */}
+          {record.tags && record.tags.length > 0 && (
+            <SidepaneSection label="Tags" showSeparator>
+              <div className="flex flex-wrap gap-2">
+                {record.tags.map((tagId) => (
+                  <ReferenceField
+                    key={tagId}
+                    record={{ tag_id: tagId }}
+                    source="tag_id"
+                    reference="tags"
+                    link={false}
+                  >
+                    <Badge variant="outline">
+                      <TextField source="name" />
+                    </Badge>
+                  </ReferenceField>
+                ))}
+              </div>
+            </SidepaneSection>
+          )}
+
+          {/* Notes Section - no Card wrapper */}
+          {record.notes && (
+            <SidepaneSection label="Notes" showSeparator>
+              <p className="text-sm whitespace-pre-wrap max-h-96 overflow-y-auto">
+                {record.notes}
+              </p>
+            </SidepaneSection>
+          )}
+
+          {/* Metadata - created/updated timestamps */}
+          <SidepaneMetadata
+            createdAt={record.created_at}
+            updatedAt={record.updated_at}
+          />
+        </div>
+      </ScrollArea>
     </RecordContextProvider>
   );
 }
