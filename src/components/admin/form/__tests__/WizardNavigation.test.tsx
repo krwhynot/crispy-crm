@@ -1,13 +1,8 @@
 import { describe, test, expect, vi } from "vitest";
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import * as React from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { FormProgressProvider } from "../FormProgressProvider";
-import { FormWizard } from "../FormWizard";
 import { WizardNavigation } from "../WizardNavigation";
-import { WizardStep } from "../WizardStep";
-import { renderWithWizard, render } from "./test-utils";
+import { renderWithWizard } from "./test-utils";
 import type { WizardStepConfig } from "../wizard-types";
 
 describe("WizardNavigation", () => {
@@ -48,8 +43,7 @@ describe("WizardNavigation", () => {
     expect(nextButton.querySelector("svg")).toBeInTheDocument();
   });
 
-  test("shows submitLabel on final step", async () => {
-    const user = userEvent.setup();
+  test("shows submitLabel on final step", () => {
     const singleStepConfig: WizardStepConfig[] = [
       { id: "step1", title: "Only Step", fields: [] },
     ];

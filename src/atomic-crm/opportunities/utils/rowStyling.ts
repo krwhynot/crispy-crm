@@ -9,15 +9,6 @@ import { cn } from "@/lib/utils";
 // Use 'type' for unions per Engineering Constitution
 type CloseDateStatus = "overdue" | "today" | "soon" | "normal" | "no-date";
 
-type OpportunityStage =
-  | "new_lead"
-  | "initial_outreach"
-  | "sample_visit_offered"
-  | "feedback_logged"
-  | "demo_scheduled"
-  | "closed_won"
-  | "closed_lost";
-
 interface OpportunityRowData {
   estimated_close_date?: string | null;
   stage?: string | null;

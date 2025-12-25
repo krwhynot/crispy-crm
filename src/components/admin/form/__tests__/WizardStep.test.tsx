@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
 import { screen } from "@testing-library/react";
 import { WizardStep } from "../WizardStep";
-import { renderWithWizard, DEFAULT_TEST_STEPS } from "./test-utils";
+import { renderWithWizard } from "./test-utils";
 import type { WizardStepConfig } from "../wizard-types";
 
 describe("WizardStep", () => {

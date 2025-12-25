@@ -5,8 +5,8 @@
  * Covers navigation, validation, accessibility, and form submission.
  */
 
-import { describe, test, expect, vi, beforeEach } from "vitest";
-import { screen, waitFor, within } from "@testing-library/react";
+import { describe, test, expect, vi } from "vitest";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import * as React from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -145,7 +145,7 @@ describe("OpportunityCreateWizard Integration", () => {
 
   describe("Navigation", () => {
     test("starts on step 1", async () => {
-      const { container } = renderWithWizard(
+      renderWithWizard(
         <>
           <StepIndicator />
           <WizardNavigation />
@@ -384,7 +384,7 @@ describe("OpportunityCreateWizard Integration", () => {
         );
       };
 
-      const { container } = renderWithWizard(<TestWizard />, {
+      renderWithWizard(<TestWizard />, {
         steps: OPPORTUNITY_WIZARD_STEPS,
       });
 

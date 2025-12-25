@@ -3,12 +3,10 @@
  *
  * Follows the standard module pattern with EditBase and pessimistic mutations.
  */
-import { useMemo } from "react";
-import { EditBase, Form, useRecordContext, useGetIdentity } from "ra-core";
+import { EditBase, Form, useRecordContext } from "ra-core";
 import { useQueryClient } from "@tanstack/react-query";
 import { Card, CardContent } from "@/components/ui/card";
 import { FormToolbar } from "@/atomic-crm/layout/FormToolbar";
-import { activitiesSchema } from "../validation/activities";
 import type { ActivityRecord } from "../types";
 import { ActivityInputs } from "./ActivityInputs";
 
@@ -37,7 +35,6 @@ const ActivityEdit = () => {
 
 const ActivityEditForm = () => {
   const record = useRecordContext<ActivityRecord>();
-  const { identity } = useGetIdentity();
 
   // Wait for record to load before rendering form
   if (!record) return null;

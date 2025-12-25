@@ -54,7 +54,7 @@ describe("FormProgressBar", () => {
   });
 
   test("progress bar width matches percentage", () => {
-    const { container } = render(<FormProgressBar />);
+    render(<FormProgressBar />);
 
     const progressBar = screen.getByRole("progressbar");
     const fillBar = progressBar.querySelector("div");
@@ -63,7 +63,7 @@ describe("FormProgressBar", () => {
   });
 
   test("uses semantic color classes", () => {
-    const { container } = render(<FormProgressBar />);
+    render(<FormProgressBar />);
 
     const progressBar = screen.getByRole("progressbar");
     expect(progressBar).toHaveClass("bg-muted");
@@ -98,7 +98,7 @@ describe("FormProgressBar", () => {
   });
 
   test("progress bar has correct styling classes", () => {
-    const { container } = render(<FormProgressBar />);
+    render(<FormProgressBar />);
 
     const progressBar = screen.getByRole("progressbar");
     expect(progressBar).toHaveClass("relative");
@@ -110,7 +110,7 @@ describe("FormProgressBar", () => {
   });
 
   test("fill bar has transition animation classes", () => {
-    const { container } = render(<FormProgressBar />);
+    render(<FormProgressBar />);
 
     const progressBar = screen.getByRole("progressbar");
     const fillBar = progressBar.querySelector("div");

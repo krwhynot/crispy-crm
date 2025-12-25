@@ -15,7 +15,7 @@ import { OwnerFilterDropdown } from "@/components/admin/OwnerFilterDropdown";
  * NOTE: Active filter chips are now displayed via FilterChipBar above the datagrid.
  */
 export const ContactListFilter = () => {
-  const { filterValues, setFilters } = useListContext();
+  useListContext(); // Ensure we're inside a ListContext (used by ToggleFilterButton children)
 
   const { data: tagsData } = useGetList("tags", {
     pagination: { page: 1, perPage: 10 },

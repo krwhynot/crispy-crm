@@ -48,7 +48,7 @@ const columnLabels: Record<TaskColumnId, string> = {
 };
 
 const announcements = {
-  onDragStart: ({ active }: { active: { id: string | number } }) => {
+  onDragStart: (_event: { active: { id: string | number } }) => {
     return `Picked up task. Currently in column.`;
   },
   onDragOver: ({ over }: { over: { id: string | number } | null }) => {
