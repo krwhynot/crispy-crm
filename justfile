@@ -57,17 +57,9 @@ test-ui:
 test-smoke:
     npm run test:smoke
 
-# Run Playwright E2E tests
-e2e:
-    npm run test:e2e
-
-# Run Playwright with UI mode
-e2e-ui:
-    npm run test:e2e:ui
-
-# Run Playwright in headed mode (see browser)
-e2e-headed:
-    npm run test:e2e:headed
+# Seed E2E test data
+seed-e2e:
+    npm run seed:e2e:dashboard-v3
 
 # ─────────────────────────────────────────────────────────────
 # 🔍 Code Quality
@@ -163,26 +155,6 @@ search-reindex:
 # Run pre-migration validation
 validate-migration:
     npm run validate:pre-migration
-
-# ─────────────────────────────────────────────────────────────
-# 🔧 MCP Testing (Playwright MCP)
-# ─────────────────────────────────────────────────────────────
-
-# Start MCP test browser
-mcp:
-    npm run mcp:test
-
-# MCP with iPad viewport
-mcp-ipad:
-    npm run mcp:test:ipad
-
-# MCP with desktop viewport
-mcp-desktop:
-    npm run mcp:test:desktop
-
-# MCP with debug options (trace + video)
-mcp-debug:
-    npm run mcp:debug
 
 # ─────────────────────────────────────────────────────────────
 # 🔍 Discovery (Codebase Analysis)
