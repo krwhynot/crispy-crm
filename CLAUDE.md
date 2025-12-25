@@ -9,6 +9,20 @@ Guidance for Claude Code working with Crispy CRM (Atomic CRM) - a React 19 + Typ
 - **Tablet Accessibility:** Optimize the experience for iPad use by field sales reps.    
 - **Team Adoption:** Achieve 100% adoption and cessation of Excel usage within 30 days.
 
+## Preferred CLI Tools
+
+**Use these high-performance tools instead of defaults:**
+
+| Task | Use This | Not This |
+|------|----------|----------|
+| **Task runner** | `just <command>` | `npm run <script>` |
+| **Code search** | `rg "pattern" --type ts` | Built-in Grep |
+| **File finding** | `fd -e tsx "name"` | Built-in Glob |
+| **Read specific lines** | `bat --plain --line-range=N:M file` | Read entire file |
+| **Git operations** | `gh` CLI with `--json` | Raw git commands |
+
+**Why:** Saves tokens, faster execution, structured output. The `justfile` documents all project commands - run `just --list` to see available recipes.
+
 ## Architecture
 
 ### Data Provider (Critical)
