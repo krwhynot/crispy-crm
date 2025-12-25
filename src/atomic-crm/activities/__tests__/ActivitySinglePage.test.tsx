@@ -7,7 +7,6 @@
 
 import { describe, test, expect } from "vitest";
 import { screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { useForm, FormProvider } from "react-hook-form";
 import { AdminContext } from "react-admin";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";

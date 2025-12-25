@@ -49,7 +49,6 @@ export const MultiSelectInput = (props: MultiSelectInputProps) => {
     id,
     field,
     isRequired,
-    fieldState: { error },
   } = useInput({
     defaultValue,
     resource: resourceProp,

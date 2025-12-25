@@ -16,7 +16,6 @@ import { useFormState } from "react-hook-form";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useInAppUnsavedChanges } from "@/hooks";
 import { UnsavedChangesDialog } from "@/components/ui/unsaved-changes-dialog";
-import { CancelButton } from "@/components/admin/cancel-button";
 import { FormErrorSummary } from "@/components/admin/FormErrorSummary";
 import {
   FormProgressProvider,
@@ -152,7 +151,7 @@ interface OpportunityWizardContentProps {
 const OpportunityWizardContent = ({
   checkForSimilar,
   hasConfirmed,
-  resetConfirmation,
+  resetConfirmation: _resetConfirmation,
 }: OpportunityWizardContentProps) => {
   const { errors } = useFormState();
   const notify = useNotify();
@@ -190,7 +189,7 @@ const OpportunityWizardContent = ({
           },
         }
       );
-    } catch (error) {
+    } catch {
       // Error already handled by onError callback
     }
   };

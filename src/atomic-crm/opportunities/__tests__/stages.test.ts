@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { getOpportunitiesByStage, sortOpportunitiesByStatus } from "../constants/stages";
+import { sortOpportunitiesByStatus } from "../constants/stages";
 import type { Opportunity } from "../../types";
 
 describe("sortOpportunitiesByStatus", () => {
