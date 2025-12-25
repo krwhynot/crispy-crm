@@ -18,6 +18,11 @@ export type {
   DistributorPrincipalAuthorization,
   UseDistributorAuthorizationResult,
 } from "./useDistributorAuthorization";
+export { useCustomerDistributors } from "./useCustomerDistributors";
+export type {
+  OrganizationDistributorRecord,
+  UseCustomerDistributorsResult,
+} from "./useCustomerDistributors";
 export { useBulkActionsState } from "./useBulkActionsState";
 export type {
   BulkAction,

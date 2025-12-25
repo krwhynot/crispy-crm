@@ -45,6 +45,11 @@ import {
   validateCreateProductDistributor,
   validateUpdateProductDistributor,
 } from "../../../validation/productDistributors";
+import {
+  validateCreateOrganizationDistributor,
+  validateOrganizationDistributor,
+} from "../../../validation/organizationDistributors";
+import type { OrganizationDistributor } from "../../../validation/organizationDistributors";
 import { filterableFields, isValidFilterField } from "../filterRegistry";
 import { DEV } from "@/lib/devLogger";
 
@@ -68,6 +73,7 @@ interface ResourceTypeMap {
   tags: Tag;
   products: ProductFormData;
   product_distributors: ProductDistributor;
+  organization_distributors: OrganizationDistributor;
   sales: Sale;
   activities: ActivityRecord;
   engagements: ActivityRecord;
@@ -103,6 +109,10 @@ export class ValidationService {
     product_distributors: {
       create: async (data: unknown) => validateCreateProductDistributor(data),
       update: async (data: unknown) => validateUpdateProductDistributor(data),
+    },
+    organization_distributors: {
+      create: async (data: unknown) => validateCreateOrganizationDistributor(data),
+      update: async (data: unknown) => validateOrganizationDistributor(data),
     },
     tags: {
       create: async (data: unknown) => {
