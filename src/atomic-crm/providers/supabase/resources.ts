@@ -33,6 +33,7 @@ export const RESOURCE_MAPPING = {
   opportunity_contacts: "opportunity_contacts",
   interaction_participants: "interaction_participants",
   distributor_principal_authorizations: "distributor_principal_authorizations",
+  organization_distributors: "organization_distributors",
 
   // Other resources
   tasks: "tasks",
