@@ -30,6 +30,10 @@ interface SchemaField {
   hasTransform: boolean;
   hasDefault: boolean;
   enumValues?: string[];
+  transformDetails?: {
+    functionName: string; // 'sanitizeHtml', 'urlAutoPrefix', 'toLowerCase'
+    isSecurity: boolean; // true for sanitization functions
+  };
 }
 
 /**
@@ -153,6 +157,63 @@ function hasDefault(text: string): boolean {
 }
 
 /**
+ * Extract transform function details from a Zod chain
+ * Pattern: .transform((val) => functionName(val)) or .transform(functionName)
+ */
+function extractTransformDetails(text: string): { functionName: string; isSecurity: boolean } | undefined {
+  if (!hasTransform(text)) return undefined;
+
+  // Pattern 1: .transform((val) => functionName(val)) or .transform((val) => (condition ? functionName(val) : val))
+  // This matches sanitizeHtml in ternary: (val ? sanitizeHtml(val) : val)
+  const arrowMatch = text.match(/\.transform\s*\(\s*\([^)]*\)\s*=>\s*(?:\([^)]*\?\s*)?(\w+)\s*\(/);
+  if (arrowMatch) {
+    const funcName = arrowMatch[1];
+    // Skip common condition keywords
+    if (funcName === 'val' || funcName === 'value') {
+      // Try to find function call after ternary operator
+      const ternaryMatch = text.match(/\.transform\s*\(\s*\([^)]*\)\s*=>\s*\([^?]+\?\s*(\w+)\s*\(/);
+      if (ternaryMatch) {
+        const ternaryFunc = ternaryMatch[1];
+        return {
+          functionName: ternaryFunc,
+          isSecurity: /sanitize|escape|encode|clean|strip|purify/i.test(ternaryFunc),
+        };
+      }
+    } else {
+      return {
+        functionName: funcName,
+        isSecurity: /sanitize|escape|encode|clean|strip|purify/i.test(funcName),
+      };
+    }
+  }
+
+  // Pattern 2: .transform(functionName)
+  const directMatch = text.match(/\.transform\s*\(\s*(\w+)\s*\)/);
+  if (directMatch) {
+    const funcName = directMatch[1];
+    return {
+      functionName: funcName,
+      isSecurity: /sanitize|escape|encode|clean|strip|purify/i.test(funcName),
+    };
+  }
+
+  // Pattern 3: .transform((val) => val.toLowerCase()) - inline method
+  const methodMatch = text.match(/\.transform\s*\(\s*\([^)]*\)\s*=>\s*\w+\.(\w+)\s*\(\s*\)\s*\)/);
+  if (methodMatch) {
+    return {
+      functionName: methodMatch[1],
+      isSecurity: false,
+    };
+  }
+
+  // Has transform but couldn't parse details
+  return {
+    functionName: 'unknown',
+    isSecurity: false,
+  };
+}
+
+/**
  * Extract the base Zod type from a property value
  */
 function extractZodType(valueText: string): string {
@@ -218,6 +279,8 @@ function extractFields(callExpr: CallExpression): SchemaField[] {
         }
       }
 
+      const transformDetails = extractTransformDetails(valueText);
+
       fields.push({
         name,
         zodType,
@@ -227,6 +290,7 @@ function extractFields(callExpr: CallExpression): SchemaField[] {
         hasTransform: hasTransform(valueText),
         hasDefault: hasDefault(valueText),
         ...(enumValues && { enumValues }),
+        ...(transformDetails && { transformDetails }),
       });
     }
   }

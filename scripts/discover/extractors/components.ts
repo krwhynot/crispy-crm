@@ -11,6 +11,9 @@ interface ComponentInfo {
   hooks: string[];
   imports: string[];
   isDefaultExport: boolean;
+  childComponents: string[];
+  contextDependencies: string[];
+  componentRole: 'entry' | 'wrapper' | 'leaf';
 }
 
 /**
@@ -27,6 +30,88 @@ function extractFeatureName(relativePath: string): string {
   }
   // Files directly in src/atomic-crm/ go to "_root" chunk
   return "_root";
+}
+
+/**
+ * Extract local component imports (not from node_modules)
+ * Pattern: import { ComponentName } from "./path" or from "../path"
+ */
+function extractLocalComponentImports(sourceFile: SourceFile): string[] {
+  const localComponents: string[] = [];
+
+  for (const importDecl of sourceFile.getImportDeclarations()) {
+    const moduleSpecifier = importDecl.getModuleSpecifierValue();
+
+    // Skip node_modules imports (don't start with . or ..)
+    if (!moduleSpecifier.startsWith('.')) continue;
+
+    // Get named imports
+    const namedImports = importDecl.getNamedImports();
+    for (const namedImport of namedImports) {
+      const name = namedImport.getName();
+      // Component names start with uppercase
+      if (/^[A-Z]/.test(name)) {
+        localComponents.push(name);
+      }
+    }
+
+    // Get default import
+    const defaultImport = importDecl.getDefaultImport();
+    if (defaultImport) {
+      const name = defaultImport.getText();
+      if (/^[A-Z]/.test(name)) {
+        localComponents.push(name);
+      }
+    }
+  }
+
+  return [...new Set(localComponents)]; // Deduplicate
+}
+
+/**
+ * Detect React context hook dependencies
+ */
+function extractContextDependencies(hooks: string[]): string[] {
+  const contextHooks = [
+    'useFormContext',
+    'useFormState',
+    'useWatch',
+    'useFieldArray',
+    'useListContext',
+    'useRecordContext',
+    'useEditContext',
+    'useCreateContext',
+    'useDataProvider',
+  ];
+
+  return hooks.filter(hook => contextHooks.includes(hook));
+}
+
+/**
+ * Classify component role based on its characteristics
+ */
+function classifyComponentRole(
+  childComponents: string[],
+  contextDependencies: string[],
+  filePath: string
+): 'entry' | 'wrapper' | 'leaf' {
+  // Entry = exported from feature index.tsx
+  if (filePath.endsWith('index.tsx')) {
+    return 'entry';
+  }
+
+  // Wrapper = has children AND uses context hooks
+  if (childComponents.length > 0 && contextDependencies.length > 0) {
+    return 'wrapper';
+  }
+
+  // Leaf = no children components
+  if (childComponents.length === 0) {
+    return 'leaf';
+  }
+
+  // Default to wrapper if has children but no context
+  return 'wrapper';
 }
 
 export async function extractComponents(): Promise<void> {
@@ -69,6 +154,9 @@ export async function extractComponents(): Promise<void> {
 
         const hooks = extractHooksFromNode(componentNode);
         const type = determineComponentType(hooks);
+        const childComponents = extractLocalComponentImports(sourceFile);
+        const contextDependencies = extractContextDependencies(hooks);
+        const componentRole = classifyComponentRole(childComponents, contextDependencies, relativePath);
 
         components.push({
           name: componentName,
@@ -78,6 +166,9 @@ export async function extractComponents(): Promise<void> {
           hooks,
           imports,
           isDefaultExport,
+          childComponents,
+          contextDependencies,
+          componentRole,
         });
       }
     }

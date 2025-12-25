@@ -1,6 +1,6 @@
 {
   "chunk_name": "components",
-  "generated_at": "2025-12-25T17:01:53.011Z",
+  "generated_at": "2025-12-25T17:36:04.957Z",
   "item_count": 23,
   "items": [
     {
@@ -22,7 +22,13 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useFormContext",
+        "useFormState"
+      ],
+      "componentRole": "leaf"
     },
     {
       "name": "QuickAddTaskButton",
@@ -37,7 +43,10 @@
         "lucide-react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "meta",
@@ -50,7 +59,15 @@
         "@storybook/react",
         "react-admin"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "SampleStatusBadge",
+        "SampleStatusStepper",
+        "SAMPLE_STATUS_WORKFLOW",
+        "SampleStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "Sent",
@@ -63,7 +80,15 @@
         "@storybook/react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SampleStatusBadge",
+        "SampleStatusStepper",
+        "SAMPLE_STATUS_WORKFLOW",
+        "SampleStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "Received",
@@ -76,7 +101,15 @@
         "@storybook/react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SampleStatusBadge",
+        "SampleStatusStepper",
+        "SAMPLE_STATUS_WORKFLOW",
+        "SampleStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "FeedbackPending",
@@ -89,7 +122,15 @@
         "@storybook/react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SampleStatusBadge",
+        "SampleStatusStepper",
+        "SAMPLE_STATUS_WORKFLOW",
+        "SampleStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "FeedbackReceived",
@@ -102,7 +143,15 @@
         "@storybook/react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SampleStatusBadge",
+        "SampleStatusStepper",
+        "SAMPLE_STATUS_WORKFLOW",
+        "SampleStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "AllStatuses",
@@ -115,7 +164,15 @@
         "@storybook/react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SampleStatusBadge",
+        "SampleStatusStepper",
+        "SAMPLE_STATUS_WORKFLOW",
+        "SampleStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "CompactMode",
@@ -128,7 +185,15 @@
         "@storybook/react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SampleStatusBadge",
+        "SampleStatusStepper",
+        "SAMPLE_STATUS_WORKFLOW",
+        "SampleStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "Interactive",
@@ -141,7 +206,15 @@
         "@storybook/react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SampleStatusBadge",
+        "SampleStatusStepper",
+        "SAMPLE_STATUS_WORKFLOW",
+        "SampleStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "InteractiveAtStart",
@@ -154,7 +227,15 @@
         "@storybook/react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SampleStatusBadge",
+        "SampleStatusStepper",
+        "SAMPLE_STATUS_WORKFLOW",
+        "SampleStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "InteractiveAtEnd",
@@ -167,7 +248,15 @@
         "@storybook/react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SampleStatusBadge",
+        "SampleStatusStepper",
+        "SAMPLE_STATUS_WORKFLOW",
+        "SampleStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "StepperOnly",
@@ -180,7 +269,15 @@
         "@storybook/react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SampleStatusBadge",
+        "SampleStatusStepper",
+        "SAMPLE_STATUS_WORKFLOW",
+        "SampleStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "InActivityList",
@@ -193,7 +290,15 @@
         "@storybook/react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SampleStatusBadge",
+        "SampleStatusStepper",
+        "SAMPLE_STATUS_WORKFLOW",
+        "SampleStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "WithCallback",
@@ -206,7 +311,15 @@
         "@storybook/react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SampleStatusBadge",
+        "SampleStatusStepper",
+        "SAMPLE_STATUS_WORKFLOW",
+        "SampleStatus"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "getNextStatus",
@@ -224,7 +337,10 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "getPreviousStatus",
@@ -242,7 +358,10 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "isValidTransition",
@@ -260,7 +379,10 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "SampleStatusStepper",
@@ -278,7 +400,10 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "SAMPLE_STATUS_WORKFLOW",
@@ -296,7 +421,10 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "SAMPLE_STATUS_CONFIG",
@@ -314,7 +442,10 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "SampleStatusBadge",
@@ -337,7 +468,10 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "SampleStatusBadge",
@@ -360,7 +494,10 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     }
   ]
 }

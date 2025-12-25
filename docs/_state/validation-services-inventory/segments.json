@@ -1,0 +1,31 @@
+{
+  "chunk_name": "segments",
+  "generated_at": "2025-12-25T17:35:10.870Z",
+  "item_count": 4,
+  "items": [
+    {
+      "name": "validateCreateSegment",
+      "file": "src/atomic-crm/validation/segments.ts",
+      "line": 133,
+      "pattern": "date"
+    },
+    {
+      "name": "validateUpdateSegment",
+      "file": "src/atomic-crm/validation/segments.ts",
+      "line": 145,
+      "pattern": "date"
+    },
+    {
+      "name": "validateSegmentForSubmission",
+      "file": "src/atomic-crm/validation/segments.ts",
+      "line": 154,
+      "pattern": "date"
+    },
+    {
+      "name": "isValidPlaybookCategory",
+      "file": "src/atomic-crm/validation/segments.ts",
+      "line": 172,
+      "pattern": "unknown"
+    }
+  ]
+}

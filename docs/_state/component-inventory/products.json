@@ -1,6 +1,6 @@
 {
   "chunk_name": "products",
-  "generated_at": "2025-12-25T17:01:53.024Z",
+  "generated_at": "2025-12-25T17:36:05.011Z",
   "item_count": 31,
   "items": [
     {
@@ -26,7 +26,15 @@
         "ra-core",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Product"
+      ],
+      "contextDependencies": [
+        "useListContext",
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductCreate",
@@ -45,7 +53,14 @@
         "@/components/ui/card",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "CreateFormFooter",
+        "ProductInputs",
+        "ProductFormTutorial"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductCreate",
@@ -64,7 +79,14 @@
         "@/components/ui/card",
         "ra-core"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "CreateFormFooter",
+        "ProductInputs",
+        "ProductFormTutorial"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductDetailsInputTab",
@@ -80,7 +102,13 @@
         "@/components/admin/select-input",
         "@/components/admin/text-input"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "PRODUCT_STATUSES",
+        "PRODUCT_CATEGORIES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductDetailsTab",
@@ -105,7 +133,13 @@
         "ra-core",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "PRODUCT_STATUSES",
+        "PRODUCT_CATEGORIES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductDistributionTab",
@@ -117,7 +151,12 @@
         "./ProductDistributorInput",
         "@/components/admin/form/CollapsibleSection"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ProductDistributorInput"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductDistributorInput",
@@ -135,7 +174,12 @@
         "react-admin",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useWatch"
+      ],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductEdit",
@@ -158,7 +202,13 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ProductInputs",
+        "Product"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductEdit",
@@ -181,7 +231,13 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "ProductInputs",
+        "Product"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductEmpty",
@@ -194,7 +250,10 @@
         "@/components/ui/card",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductFormTutorial",
@@ -213,7 +272,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductInputs",
@@ -226,7 +288,13 @@
         "./ProductDistributionTab",
         "@/components/admin/tabbed-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ProductDetailsInputTab",
+        "ProductDistributionTab"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductList",
@@ -265,7 +333,22 @@
         "ra-core",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TopToolbar",
+        "COLUMN_VISIBILITY",
+        "ProductListFilter",
+        "ProductSlideOver",
+        "ProductEmpty",
+        "PRODUCT_FILTER_CONFIG",
+        "PageTutorialTrigger",
+        "ProductNameHeader",
+        "ProductCategoryHeader",
+        "ProductStatusHeader",
+        "Product"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductList",
@@ -304,7 +387,22 @@
         "ra-core",
         "react-admin"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "TopToolbar",
+        "COLUMN_VISIBILITY",
+        "ProductListFilter",
+        "ProductSlideOver",
+        "ProductEmpty",
+        "PRODUCT_FILTER_CONFIG",
+        "PageTutorialTrigger",
+        "ProductNameHeader",
+        "ProductCategoryHeader",
+        "ProductStatusHeader",
+        "Product"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductListContent",
@@ -322,7 +420,14 @@
         "ra-core",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Product"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductListFilter",
@@ -339,7 +444,13 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "FilterCategory",
+        "Organization"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductRelationshipsTab",
@@ -358,7 +469,10 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductShow",
@@ -376,7 +490,12 @@
         "@/components/ui/card",
         "ra-core"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "Product"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductShow",
@@ -394,7 +513,12 @@
         "@/components/ui/card",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Product"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductSlideOver",
@@ -408,7 +532,13 @@
         "@/components/layouts/ResourceSlideOver",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ProductDetailsTab",
+        "ProductRelationshipsTab"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductNameHeader",
@@ -420,7 +550,10 @@
         "@/components/admin/column-filters",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductCategoryHeader",
@@ -434,7 +567,10 @@
         "@/components/admin/column-filters",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductStatusHeader",
@@ -446,7 +582,10 @@
         "@/components/admin/column-filters",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductColumnHeaders",
@@ -458,7 +597,10 @@
         "@/components/admin/column-filters",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductListView",
@@ -467,7 +609,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ProductEditView",
@@ -476,7 +621,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ProductCreateView",
@@ -485,7 +633,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ProductListView",
@@ -497,7 +648,10 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductCreateView",
@@ -509,7 +663,10 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductEditView",
@@ -521,7 +678,10 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductShowView",
@@ -533,7 +693,10 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     }
   ]
 }

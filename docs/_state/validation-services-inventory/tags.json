@@ -1,0 +1,37 @@
+{
+  "chunk_name": "tags",
+  "generated_at": "2025-12-25T17:35:10.870Z",
+  "item_count": 5,
+  "items": [
+    {
+      "name": "validateCreateTag",
+      "file": "src/atomic-crm/validation/tags.ts",
+      "line": 127,
+      "pattern": "date"
+    },
+    {
+      "name": "validateUpdateTag",
+      "file": "src/atomic-crm/validation/tags.ts",
+      "line": 138,
+      "pattern": "date"
+    },
+    {
+      "name": "validateTagFilter",
+      "file": "src/atomic-crm/validation/tags.ts",
+      "line": 147,
+      "pattern": "date"
+    },
+    {
+      "name": "validateTagUniqueness",
+      "file": "src/atomic-crm/validation/tags.ts",
+      "line": 160,
+      "pattern": "date"
+    },
+    {
+      "name": "validateTagForSubmission",
+      "file": "src/atomic-crm/validation/tags.ts",
+      "line": 188,
+      "pattern": "date"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "chunk_name": "tutorial",
-  "generated_at": "2025-12-25T17:01:53.030Z",
+  "generated_at": "2025-12-25T17:36:05.026Z",
   "item_count": 10,
   "items": [
     {
@@ -26,7 +26,10 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "PageTutorialTrigger",
@@ -46,7 +49,12 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TutorialChapter"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "TutorialLauncher",
@@ -62,7 +70,12 @@
         "@/components/ui/dropdown-menu",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TutorialChapter"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "TutorialProvider",
@@ -88,7 +101,14 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TutorialChapter",
+        "TutorialProgress",
+        "TutorialStep"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "useTutorial",
@@ -108,7 +128,14 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TutorialChapter",
+        "TutorialProgress",
+        "TutorialStep"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "TutorialProvider",
@@ -125,7 +152,10 @@
         "useTutorialProgress"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "useTutorial",
@@ -136,7 +166,10 @@
         "useContext"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "TutorialLauncher",
@@ -147,7 +180,10 @@
         "useTutorial"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "PageTutorialTrigger",
@@ -160,7 +196,10 @@
         "useTutorial"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "OpportunityCreateFormTutorial",
@@ -175,7 +214,10 @@
         "useState"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     }
   ]
 }

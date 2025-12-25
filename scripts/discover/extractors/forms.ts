@@ -30,6 +30,9 @@ interface FormInfo {
     hasWizard: boolean;
     hasProgress: boolean;
   };
+  componentChain: string[];
+  inputComponentsDeep: string[];
+  formContextWrappers: string[];
 }
 
 // React Admin form wrapper components
@@ -150,6 +153,101 @@ function extractInputComponents(jsxElements: Set<string>): string[] {
     }
   }
   return inputs.sort();
+}
+
+/**
+ * Recursively scan JSX for input components
+ * Looks for components ending in Input, Select, Checkbox, etc.
+ */
+function extractInputComponentsDeep(sourceFile: SourceFile): string[] {
+  const inputs = new Set<string>();
+
+  // Input component patterns
+  const inputPatterns = /^(Text|Number|Boolean|Date|Reference|Select|AutoComplete|Checkbox|Radio|File|Image|Rich|Autocomplete|State|Segment|Country|Currency).*Input$/;
+  const otherInputs = /^(SelectInput|SelectArrayInput|CheckboxGroupInput|RadioButtonGroupInput|FileInput|ImageInput|RichTextInput|Input)$/;
+
+  // Scan all JSX elements
+  sourceFile.forEachDescendant((node) => {
+    if (node.getKind() === SyntaxKind.JsxOpeningElement ||
+        node.getKind() === SyntaxKind.JsxSelfClosingElement) {
+      const tagNameNode = node.getChildAtIndex(1);
+      if (tagNameNode) {
+        const tagName = tagNameNode.getText();
+        if (tagName && (inputPatterns.test(tagName) || otherInputs.test(tagName))) {
+          inputs.add(tagName);
+        }
+        // Also catch custom combobox inputs
+        if (tagName && tagName.endsWith('ComboboxInput')) {
+          inputs.add(tagName);
+        }
+      }
+    }
+  });
+
+  return [...inputs].sort();
+}
+
+/**
+ * Build component chain by following local imports
+ * Returns array from entry point to deepest form component
+ */
+function buildComponentChain(sourceFile: SourceFile, componentName: string): string[] {
+  const chain: string[] = [componentName];
+
+  // Get local component imports
+  for (const importDecl of sourceFile.getImportDeclarations()) {
+    const moduleSpecifier = importDecl.getModuleSpecifierValue();
+    if (!moduleSpecifier.startsWith('.')) continue;
+
+    // Look for form-related component imports
+    const namedImports = importDecl.getNamedImports();
+    for (const namedImport of namedImports) {
+      const name = namedImport.getName();
+      // Form component patterns
+      if (name.includes('Inputs') || name.includes('Form') || name.includes('Compact')) {
+        chain.push(name);
+      }
+    }
+  }
+
+  return chain;
+}
+
+/**
+ * Detect components using form context hooks
+ */
+function extractFormContextWrappers(sourceFile: SourceFile): string[] {
+  const wrappers: string[] = [];
+  const contextHooks = ['useFormContext', 'useFormState', 'useWatch', 'useFieldArray'];
+
+  // Check if file uses any form context hooks
+  const fileText = sourceFile.getText();
+  for (const hook of contextHooks) {
+    if (fileText.includes(hook)) {
+      // Get the component name from exported functions
+      const exportedDeclarations = sourceFile.getExportedDeclarations();
+      for (const [exportName, declarations] of exportedDeclarations) {
+        for (const declaration of declarations) {
+          if (declaration.getKind() === SyntaxKind.FunctionDeclaration) {
+            const funcDecl = declaration.asKindOrThrow(SyntaxKind.FunctionDeclaration);
+            const name = funcDecl.getName();
+            if (name && /^[A-Z]/.test(name)) {
+              wrappers.push(name);
+            }
+          } else if (declaration.getKind() === SyntaxKind.VariableDeclaration) {
+            const varDecl = declaration.asKindOrThrow(SyntaxKind.VariableDeclaration);
+            const name = varDecl.getName();
+            if (/^[A-Z]/.test(name)) {
+              wrappers.push(name);
+            }
+          }
+        }
+      }
+      break;
+    }
+  }
+
+  return [...new Set(wrappers)];
 }
 
 /**
@@ -306,6 +404,11 @@ function extractFormsFromFile(sourceFile: SourceFile): FormInfo[] {
       // Extract zodResolver info
       const { hasResolver, schemaName } = extractZodResolver(componentNode);
 
+      // Extract new fields
+      const inputComponentsDeep = extractInputComponentsDeep(sourceFile);
+      const componentChain = buildComponentChain(sourceFile, componentName);
+      const formContextWrappers = extractFormContextWrappers(sourceFile);
+
       // Build form info
       const formInfo: FormInfo = {
         componentName,
@@ -316,6 +419,9 @@ function extractFormsFromFile(sourceFile: SourceFile): FormInfo[] {
         inputComponents: extractInputComponents(jsxElements),
         hasZodResolver: hasResolver,
         features: detectFormFeatures(jsxElements),
+        componentChain,
+        inputComponentsDeep,
+        formContextWrappers,
       };
 
       // Add schema reference if found

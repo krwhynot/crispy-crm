@@ -1,0 +1,37 @@
+{
+  "chunk_name": "sales",
+  "generated_at": "2025-12-25T17:35:10.869Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "validateSalesForm",
+      "file": "src/atomic-crm/validation/sales.ts",
+      "line": 86,
+      "type": "formatter",
+      "schemaReference": "salesSchema",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": []
+    },
+    {
+      "name": "validateCreateSales",
+      "file": "src/atomic-crm/validation/sales.ts",
+      "line": 136,
+      "type": "formatter",
+      "schemaReference": "createSalesSchema",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": []
+    },
+    {
+      "name": "validateUpdateSales",
+      "file": "src/atomic-crm/validation/sales.ts",
+      "line": 155,
+      "type": "formatter",
+      "schemaReference": "updateSalesSchema",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": []
+    }
+  ]
+}

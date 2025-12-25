@@ -1,6 +1,6 @@
 {
   "chunk_name": "reports",
-  "generated_at": "2025-12-25T17:01:53.025Z",
+  "generated_at": "2025-12-25T17:36:05.013Z",
   "item_count": 23,
   "items": [
     {
@@ -16,7 +16,12 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityGroup"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "CampaignActivityReport",
@@ -52,7 +57,16 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "ActivityTypeCard",
+        "StaleLeadsView",
+        "Sale",
+        "Activity",
+        "ActivityGroup"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "StaleLeadsView",
@@ -72,7 +86,10 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OpportunitiesByPrincipalReport",
@@ -109,7 +126,17 @@
         "react-hook-form",
         "react-router-dom"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "ReportLayout",
+        "AppliedFiltersBar",
+        "EmptyState",
+        "OPPORTUNITY_STAGE_CHOICES",
+        "Opportunity",
+        "Sale"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ReportLayout",
@@ -123,7 +150,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ReportsPage",
@@ -142,7 +172,12 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "ReportPageShell"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "WeeklyActivitySummary",
@@ -171,7 +206,17 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "ReportLayout",
+        "AppliedFiltersBar",
+        "EmptyState",
+        "ActivityRecord",
+        "Organization",
+        "Sale"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityTrendChart",
@@ -189,7 +234,12 @@
         "react",
         "react-chartjs-2"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TooltipContextY"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "PipelineChart",
@@ -206,7 +256,10 @@
         "react",
         "react-chartjs-2"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "RepPerformanceChart",
@@ -224,7 +277,12 @@
         "react",
         "react-chartjs-2"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TooltipTitleContext"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "TopPrincipalsChart",
@@ -242,7 +300,13 @@
         "react",
         "react-chartjs-2"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "TooltipContextX",
+        "TooltipTitleContext"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "AppliedFiltersBar",
@@ -255,7 +319,12 @@
         "@/components/ui/button",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "FilterChip"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ChartWrapper",
@@ -268,7 +337,10 @@
         "@/components/ui/skeleton",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "EmptyState",
@@ -280,7 +352,10 @@
         "@/components/ui/button",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "FilterChip",
@@ -291,7 +366,10 @@
       "imports": [
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "KPICard",
@@ -304,7 +382,10 @@
         "@/lib/utils",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "KPIDrillDown",
@@ -316,7 +397,10 @@
         "@/components/ui/sheet",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ReportPageShell",
@@ -329,7 +413,10 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "TabFilterBar",
@@ -348,7 +435,12 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Sale"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "CampaignActivityTab",
@@ -360,7 +452,10 @@
         "@/components/ui/skeleton",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OpportunitiesTab",
@@ -372,7 +467,10 @@
         "@/components/ui/skeleton",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "OverviewTab",
@@ -409,7 +507,22 @@
         "react",
         "react-router-dom"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "KPICard",
+        "ChartWrapper",
+        "TabFilterBar",
+        "AppliedFiltersBar",
+        "EmptyState",
+        "PipelineChart",
+        "ActivityTrendChart",
+        "TopPrincipalsChart",
+        "RepPerformanceChart",
+        "OPPORTUNITY_STAGE_CHOICES",
+        "Sale"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "WeeklyActivityTab",
@@ -421,7 +534,10 @@
         "@/components/ui/skeleton",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     }
   ]
 }

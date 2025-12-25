@@ -1,6 +1,6 @@
 {
   "chunk_name": "notifications",
-  "generated_at": "2025-12-25T17:01:53.017Z",
+  "generated_at": "2025-12-25T17:36:04.967Z",
   "item_count": 3,
   "items": [
     {
@@ -26,7 +26,13 @@
         "ra-core",
         "react-router-dom"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "TopToolbar",
+        "FilterCategory"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "NotificationsListView",
@@ -35,7 +41,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "NotificationsListView",
@@ -47,7 +56,10 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     }
   ]
 }

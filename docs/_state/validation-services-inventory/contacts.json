@@ -1,0 +1,46 @@
+{
+  "chunk_name": "contacts",
+  "generated_at": "2025-12-25T17:35:10.866Z",
+  "item_count": 4,
+  "items": [
+    {
+      "name": "validateContactForm",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 381,
+      "type": "formatter",
+      "schemaReference": "formSchema",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": []
+    },
+    {
+      "name": "validateCreateContact",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 512,
+      "type": "formatter",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": []
+    },
+    {
+      "name": "validateUpdateContact",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 594,
+      "type": "formatter",
+      "schemaReference": "updateContactSchema",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": []
+    },
+    {
+      "name": "validateContactOrganization",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 614,
+      "type": "formatter",
+      "schemaReference": "contactOrganizationSchema",
+      "errorFormatting": true,
+      "isAsync": true,
+      "customValidators": []
+    }
+  ]
+}

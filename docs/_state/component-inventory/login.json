@@ -1,6 +1,6 @@
 {
   "chunk_name": "login",
-  "generated_at": "2025-12-25T17:01:53.016Z",
+  "generated_at": "2025-12-25T17:36:04.965Z",
   "item_count": 2,
   "items": [
     {
@@ -12,7 +12,10 @@
       "imports": [
         "@/components/ui/skeleton"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "StartPage",
@@ -23,7 +26,10 @@
       "imports": [
         "@/components/admin/login-page"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     }
   ]
 }

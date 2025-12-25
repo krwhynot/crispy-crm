@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2025-12-25T17:01:53.009Z",
+  "generated_at": "2025-12-25T17:36:04.948Z",
   "item_count": 25,
   "items": [
     {
@@ -26,7 +26,12 @@
         "react-hook-form",
         "react-router-dom"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "ActivitySinglePage"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityEdit",
@@ -44,7 +49,13 @@
         "@tanstack/react-query",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityRecord",
+        "ActivityInputs"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityEdit",
@@ -62,7 +73,13 @@
         "@tanstack/react-query",
         "ra-core"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "ActivityRecord",
+        "ActivityInputs"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityInputs",
@@ -77,7 +94,14 @@
         "@/components/admin/FormErrorSummary",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivitySinglePage"
+      ],
+      "contextDependencies": [
+        "useFormState"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityInputs",
@@ -92,7 +116,14 @@
         "@/components/admin/FormErrorSummary",
         "react-hook-form"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "ActivitySinglePage"
+      ],
+      "contextDependencies": [
+        "useFormState"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityList",
@@ -130,7 +161,24 @@
         "ra-core",
         "react-admin"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "SaleName",
+        "TopToolbar",
+        "ActivityListFilter",
+        "SampleStatusBadge",
+        "COLUMN_VISIBILITY",
+        "PageTutorialTrigger",
+        "ActivityRecord",
+        "Contact",
+        "Opportunity",
+        "Organization",
+        "Sale",
+        "INTERACTION_TYPE_OPTIONS",
+        "ACTIVITY_FILTER_CONFIG"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityListFilter",
@@ -151,7 +199,14 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "FilterCategory",
+        "INTERACTION_TYPE_OPTIONS",
+        "SAMPLE_STATUS_OPTIONS"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivitySinglePage",
@@ -168,7 +223,12 @@
         "@/components/admin/select-input",
         "@/components/admin/text-input"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "INTERACTION_TYPE_OPTIONS"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "QuickLogActivity",
@@ -192,7 +252,15 @@
         "ra-core",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Task",
+        "Opportunity"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "QuickLogActivityDialog",
@@ -218,7 +286,14 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Contact",
+        "Organization",
+        "Opportunity"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityTimelineEntry",
@@ -236,7 +311,12 @@
         "ra-core",
         "react-router-dom"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityRecord"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityList",
@@ -248,7 +328,10 @@
         "useGetIdentity"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ActivityCreate",
@@ -261,7 +344,10 @@
         "useMemo"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ActivityEdit",
@@ -272,7 +358,10 @@
         "useQueryClient"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ActivityInputs",
@@ -283,7 +372,12 @@
         "useFormState"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useFormState"
+      ],
+      "componentRole": "entry"
     },
     {
       "name": "QuickLogActivityDialog",
@@ -299,7 +393,10 @@
         "useState"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "QuickLogActivity",
@@ -314,7 +411,12 @@
         "useState"
       ],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "entry"
     },
     {
       "name": "ActivityTimelineEntry",
@@ -323,7 +425,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ACTIVITY_PAGE_SIZE",
@@ -332,7 +437,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ActivityListView",
@@ -341,7 +449,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ActivityCreateView",
@@ -350,7 +461,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ActivityEditView",
@@ -359,7 +473,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ActivityListView",
@@ -373,7 +490,12 @@
         "@/lib/date-utils",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityRecord"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityCreateView",
@@ -387,7 +509,12 @@
         "@/lib/date-utils",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityRecord"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ActivityEditView",
@@ -401,7 +528,12 @@
         "@/lib/date-utils",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ActivityRecord"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     }
   ]
 }

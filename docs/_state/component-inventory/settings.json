@@ -1,6 +1,6 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2025-12-25T17:01:53.028Z",
+  "generated_at": "2025-12-25T17:36:05.019Z",
   "item_count": 13,
   "items": [
     {
@@ -25,7 +25,14 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ExtendedDataProvider"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "RolePermissionsMatrix",
@@ -38,7 +45,10 @@
         "@/components/ui/card",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "SettingsLayout",
@@ -55,7 +65,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "SettingsPage",
@@ -84,7 +97,21 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "CrmDataProvider",
+        "SalesFormData",
+        "SettingsLayout",
+        "PersonalSection",
+        "NotificationsSection",
+        "SecuritySection",
+        "AuditLogSection",
+        "UsersSection"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "TimeZoneSelect",
@@ -96,7 +123,10 @@
         "@/components/ui/label",
         "@/components/ui/select"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "Settings",
@@ -108,7 +138,12 @@
         "./SettingsPage",
         "@/components/ErrorBoundary"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SettingsPage"
+      ],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "SettingsPage",
@@ -127,7 +162,14 @@
         "./SettingsPage",
         "@/components/ErrorBoundary"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SettingsPage"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "entry"
     },
     {
       "name": "SettingsLayout",
@@ -141,7 +183,12 @@
         "./SettingsPage",
         "@/components/ErrorBoundary"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SettingsPage"
+      ],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "AuditLogSection",
@@ -161,7 +208,10 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "NotificationsSection",
@@ -173,7 +223,12 @@
         "../DigestPreferences",
         "@/components/ui/card"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "DigestPreferences"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "PersonalSection",
@@ -201,7 +256,17 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Sale",
+        "SalesFormData",
+        "TimeZoneSelect"
+      ],
+      "contextDependencies": [
+        "useFormState",
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "SecuritySection",
@@ -220,7 +285,12 @@
         "lucide-react",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "RolePermissionsMatrix"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "UsersSection",
@@ -235,7 +305,10 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     }
   ]
 }

@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-25T17:02:03.513Z",
+  "generated_at": "2025-12-25T17:36:24.048Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:775f157a23ed71ad",
+  "checksum": "sha256:fb5308145c6b1401",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "ac18d4791030",
     "src/atomic-crm/activities/ActivityEdit.tsx": "55bb5d0670e9",
@@ -88,7 +88,14 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": true
-      }
+      },
+      "componentChain": [
+        "ActivityCreate"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [
+        "ActivityCreate"
+      ]
     },
     {
       "componentName": "ActivityEdit",
@@ -105,7 +112,13 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "ActivityEdit",
+        "ActivityInputs"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "ActivityEdit",
@@ -122,7 +135,13 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "ActivityEdit",
+        "ActivityInputs"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "CreateFormFooter",
@@ -141,7 +160,14 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "CreateFormFooter"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [
+        "CreateFormFooter"
+      ]
     },
     {
       "componentName": "ContactCompactForm",
@@ -164,7 +190,19 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "ContactCompactForm"
+      ],
+      "inputComponentsDeep": [
+        "AutocompleteOrganizationInput",
+        "ReferenceInput",
+        "SelectInput",
+        "TextInput"
+      ],
+      "formContextWrappers": [
+        "ContactCompactForm"
+      ]
     },
     {
       "componentName": "ContactCreate",
@@ -183,7 +221,14 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": true
-      }
+      },
+      "componentChain": [
+        "ContactCreate",
+        "ContactInputs",
+        "ContactFormTutorial"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "ContactEdit",
@@ -200,7 +245,14 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "ContactEdit",
+        "ContactInputs",
+        "FormToolbar"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "ContactEdit",
@@ -217,7 +269,14 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "ContactEdit",
+        "ContactInputs",
+        "FormToolbar"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "QuickLogForm",
@@ -238,6 +297,13 @@
         "hasWizard": false,
         "hasProgress": false
       },
+      "componentChain": [
+        "QuickLogForm"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [
+        "QuickLogForm"
+      ],
       "validationSchemaRef": "activityLogSchema"
     },
     {
@@ -257,7 +323,15 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "NoteCreate",
+        "NoteInputs"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [
+        "NoteCreate"
+      ]
     },
     {
       "componentName": "NoteInputs",
@@ -276,7 +350,16 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "NoteInputs"
+      ],
+      "inputComponentsDeep": [
+        "TextInput"
+      ],
+      "formContextWrappers": [
+        "NoteInputs"
+      ]
     },
     {
       "componentName": "ActivityNoteForm",
@@ -297,6 +380,15 @@
         "hasWizard": false,
         "hasProgress": false
       },
+      "componentChain": [
+        "ActivityNoteForm",
+        "activityNoteFormSchema",
+        "ActivityNoteFormData"
+      ],
+      "inputComponentsDeep": [
+        "Input"
+      ],
+      "formContextWrappers": [],
       "validationSchemaRef": "activityNoteFormSchema"
     },
     {
@@ -316,7 +408,17 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "OpportunityCreate",
+        "FormToolbar",
+        "OpportunityInputs",
+        "OpportunityCreateFormTutorial"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [
+        "OpportunityCreate"
+      ]
     },
     {
       "componentName": "OpportunityCreate",
@@ -335,7 +437,17 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "OpportunityCreate",
+        "FormToolbar",
+        "OpportunityInputs",
+        "OpportunityCreateFormTutorial"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [
+        "OpportunityCreate"
+      ]
     },
     {
       "componentName": "OpportunityCreateWizard",
@@ -354,7 +466,15 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "OpportunityCreateWizard",
+        "OpportunityCreateFormTutorial"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [
+        "OpportunityCreateWizard"
+      ]
     },
     {
       "componentName": "OpportunityCreateWizard",
@@ -373,7 +493,15 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "OpportunityCreateWizard",
+        "OpportunityCreateFormTutorial"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [
+        "OpportunityCreateWizard"
+      ]
     },
     {
       "componentName": "OpportunityEdit",
@@ -390,7 +518,14 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "OpportunityEdit",
+        "FormToolbar",
+        "OpportunityCompactForm"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "OpportunityEdit",
@@ -407,7 +542,14 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "OpportunityEdit",
+        "FormToolbar",
+        "OpportunityCompactForm"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "OpportunityCreateSaveButton",
@@ -427,7 +569,14 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "OpportunityCreateSaveButton"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [
+        "OpportunityCreateSaveButton"
+      ]
     },
     {
       "componentName": "OpportunityCompactForm",
@@ -454,7 +603,23 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "OpportunityCompactForm",
+        "OrganizationInputs",
+        "ContactInputs"
+      ],
+      "inputComponentsDeep": [
+        "AutocompleteArrayInput",
+        "AutocompleteOrganizationInput",
+        "ReferenceArrayInput",
+        "ReferenceInput",
+        "SelectInput",
+        "TextInput"
+      ],
+      "formContextWrappers": [
+        "OpportunityCompactForm"
+      ]
     },
     {
       "componentName": "QuickAddForm",
@@ -477,6 +642,15 @@
         "hasWizard": false,
         "hasProgress": false
       },
+      "componentChain": [
+        "QuickAddForm"
+      ],
+      "inputComponentsDeep": [
+        "Input"
+      ],
+      "formContextWrappers": [
+        "QuickAddForm"
+      ],
       "validationSchemaRef": "quickAddSchema"
     },
     {
@@ -498,6 +672,15 @@
         "hasWizard": false,
         "hasProgress": true
       },
+      "componentChain": [
+        "OrganizationCreate",
+        "OrganizationInputs",
+        "OrganizationFormValues"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [
+        "OrganizationCreate"
+      ],
       "validationSchemaRef": "organizationSchema"
     },
     {
@@ -519,6 +702,15 @@
         "hasWizard": false,
         "hasProgress": true
       },
+      "componentChain": [
+        "OrganizationCreate",
+        "OrganizationInputs",
+        "OrganizationFormValues"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [
+        "OrganizationCreate"
+      ],
       "validationSchemaRef": "organizationSchema"
     },
     {
@@ -536,7 +728,14 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "OrganizationEdit",
+        "OrganizationInputs",
+        "FormToolbar"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "OrganizationEdit",
@@ -553,7 +752,14 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "OrganizationEdit",
+        "OrganizationInputs",
+        "FormToolbar"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "QuickCreatePopover",
@@ -574,6 +780,13 @@
         "hasWizard": false,
         "hasProgress": false
       },
+      "componentChain": [
+        "QuickCreatePopover"
+      ],
+      "inputComponentsDeep": [
+        "Input"
+      ],
+      "formContextWrappers": [],
       "validationSchemaRef": "quickCreateSchema"
     },
     {
@@ -593,7 +806,19 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "ProductDistributorCreate"
+      ],
+      "inputComponentsDeep": [
+        "AutocompleteInput",
+        "ReferenceInput",
+        "SelectInput",
+        "TextInput"
+      ],
+      "formContextWrappers": [
+        "ProductDistributorCreate"
+      ]
     },
     {
       "componentName": "ProductDistributorCreate",
@@ -612,7 +837,19 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "ProductDistributorCreate"
+      ],
+      "inputComponentsDeep": [
+        "AutocompleteInput",
+        "ReferenceInput",
+        "SelectInput",
+        "TextInput"
+      ],
+      "formContextWrappers": [
+        "ProductDistributorCreate"
+      ]
     },
     {
       "componentName": "ProductDistributorEdit",
@@ -632,7 +869,15 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "ProductDistributorEdit"
+      ],
+      "inputComponentsDeep": [
+        "SelectInput",
+        "TextInput"
+      ],
+      "formContextWrappers": []
     },
     {
       "componentName": "ProductDistributorEdit",
@@ -652,7 +897,15 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "ProductDistributorEdit"
+      ],
+      "inputComponentsDeep": [
+        "SelectInput",
+        "TextInput"
+      ],
+      "formContextWrappers": []
     },
     {
       "componentName": "ProductCreate",
@@ -671,7 +924,15 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": true
-      }
+      },
+      "componentChain": [
+        "ProductCreate",
+        "CreateFormFooter",
+        "ProductInputs",
+        "ProductFormTutorial"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "ProductCreate",
@@ -690,7 +951,15 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": true
-      }
+      },
+      "componentChain": [
+        "ProductCreate",
+        "CreateFormFooter",
+        "ProductInputs",
+        "ProductFormTutorial"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "ProductEdit",
@@ -707,7 +976,13 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "ProductEdit",
+        "ProductInputs"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "ProductEdit",
@@ -724,7 +999,13 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "ProductEdit",
+        "ProductInputs"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "SalesCreate",
@@ -741,7 +1022,16 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "SalesCreate",
+        "SalesFormData",
+        "SalesInputs"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [
+        "SalesCreate"
+      ]
     },
     {
       "componentName": "SalesEdit",
@@ -758,7 +1048,14 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "SalesEdit",
+        "SalesFormData",
+        "SalesInputs"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "TaskCreate",
@@ -778,6 +1075,12 @@
         "hasWizard": false,
         "hasProgress": true
       },
+      "componentChain": [
+        "TaskCreate",
+        "TaskInputs"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": [],
       "validationSchemaRef": "taskCreateSchema"
     },
     {
@@ -795,7 +1098,14 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "TaskEdit",
+        "TaskInputs",
+        "FormToolbar"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     },
     {
       "componentName": "TaskEdit",
@@ -812,7 +1122,14 @@
         "hasTabs": false,
         "hasWizard": false,
         "hasProgress": false
-      }
+      },
+      "componentChain": [
+        "TaskEdit",
+        "TaskInputs",
+        "FormToolbar"
+      ],
+      "inputComponentsDeep": [],
+      "formContextWrappers": []
     }
   ]
 }

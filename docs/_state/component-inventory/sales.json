@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2025-12-25T17:01:53.027Z",
+  "generated_at": "2025-12-25T17:36:05.018Z",
   "item_count": 20,
   "items": [
     {
@@ -16,7 +16,14 @@
         "@/components/ui/avatar",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Sale"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "SaleName",
@@ -32,7 +39,14 @@
         "../utils/formatName",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Sale"
+      ],
+      "contextDependencies": [
+        "useRecordContext"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "SalesCreate",
@@ -57,7 +71,16 @@
         "ra-core",
         "react-hook-form"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "SalesService",
+        "SalesFormData",
+        "SalesInputs"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "SalesEdit",
@@ -88,7 +111,17 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "SalesService",
+        "Sale",
+        "SalesFormData",
+        "SalesInputs"
+      ],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "wrapper"
     },
     {
       "name": "SalesGeneralTab",
@@ -99,7 +132,10 @@
       "imports": [
         "@/components/admin/text-input"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "SalesInputs",
@@ -112,7 +148,13 @@
         "./SalesPermissionsInputs",
         "@/components/admin/tabbed-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SalesGeneralTab",
+        "SalesPermissionsInputs"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "SalesList",
@@ -140,7 +182,14 @@
         "ra-core",
         "react-admin"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "TopToolbar",
+        "COLUMN_VISIBILITY",
+        "SalesSlideOver"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "SalesPermissionsInputs",
@@ -152,7 +201,12 @@
         "../validation/sales",
         "@/components/admin/select-input"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "ROLE_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "SalesPermissionsTab",
@@ -182,7 +236,10 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "SalesProfileTab",
@@ -204,7 +261,10 @@
         "react",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "SalesShow",
@@ -219,7 +279,12 @@
         "@/components/ui/card",
         "ra-core"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Sale"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "SalesShow",
@@ -234,7 +299,12 @@
         "@/components/ui/card",
         "ra-core"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "Sale"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "SalesSlideOver",
@@ -249,7 +319,14 @@
         "@/components/layouts/ResourceSlideOver",
         "lucide-react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "SalesProfileTab",
+        "SalesPermissionsTab",
+        "Sale"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "SalesListView",
@@ -258,7 +335,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "SalesEditView",
@@ -267,7 +347,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "SalesCreateView",
@@ -276,7 +359,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "SalesListView",
@@ -290,7 +376,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Sale"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "SalesEditView",
@@ -304,7 +395,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Sale"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "SalesCreateView",
@@ -318,7 +414,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Sale"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "SalesShowView",
@@ -332,7 +433,12 @@
         "@/components/ResourceErrorBoundary",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "Sale"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     }
   ]
 }

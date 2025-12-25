@@ -1,6 +1,6 @@
 {
   "chunk_name": "productDistributors",
-  "generated_at": "2025-12-25T17:01:53.024Z",
+  "generated_at": "2025-12-25T17:36:05.010Z",
   "item_count": 17,
   "items": [
     {
@@ -27,7 +27,12 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductDistributorCreate",
@@ -53,7 +58,12 @@
         "react",
         "react-hook-form"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductDistributorEdit",
@@ -67,7 +77,12 @@
         "@/components/admin/text-input",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductDistributorEdit",
@@ -81,7 +96,12 @@
         "@/components/admin/text-input",
         "react-admin"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductDistributorList",
@@ -97,7 +117,12 @@
         "@/components/admin/text-input",
         "react-admin"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [
+        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "ProductDistributorList",
@@ -113,7 +138,12 @@
         "@/components/admin/text-input",
         "react-admin"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [
+        "PRODUCT_DISTRIBUTOR_STATUS_CHOICES"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
     },
     {
       "name": "productDistributors",
@@ -122,7 +152,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ProductDistributorListView",
@@ -131,7 +164,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ProductDistributorEditView",
@@ -140,7 +176,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ProductDistributorCreateView",
@@ -149,7 +188,10 @@
       "type": "presentational",
       "hooks": [],
       "imports": [],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "entry"
     },
     {
       "name": "ProductDistributorListView",
@@ -162,7 +204,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductDistributorCreateView",
@@ -175,7 +220,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductDistributorEditView",
@@ -188,7 +236,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "productDistributors",
@@ -201,7 +252,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": true
+      "isDefaultExport": true,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductDistributorListView",
@@ -214,7 +268,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductDistributorEditView",
@@ -227,7 +284,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     },
     {
       "name": "ProductDistributorCreateView",
@@ -240,7 +300,10 @@
         "lucide-react",
         "react"
       ],
-      "isDefaultExport": false
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
     }
   ]
 }
