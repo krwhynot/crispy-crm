@@ -526,12 +526,12 @@ export function OpportunitySlideOverDetailsTab({
         </div>
       </div>
 
-      {/* Timestamps */}
-      <div className="pt-2 border-t border-border flex gap-3 text-xs text-muted-foreground">
-        <span>Created {formatDate(record.created_at)}</span>
-        <span>•</span>
-        <span>Updated {formatDate(record.updated_at)}</span>
+        {/* Metadata - replaces manual timestamps */}
+        <SidepaneMetadata
+          createdAt={record.created_at}
+          updatedAt={record.updated_at}
+        />
       </div>
-    </div>
+    </ScrollArea>
   );
 }

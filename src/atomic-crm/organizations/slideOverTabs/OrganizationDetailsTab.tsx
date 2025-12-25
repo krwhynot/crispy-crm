@@ -4,10 +4,14 @@ import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
-import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { AsideSection } from "@/components/ui";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { ArrayInput, SimpleFormIterator } from "react-admin";
+import {
+  SidepaneSection,
+  SidepaneMetadata,
+  DirtyStateTracker,
+} from "@/components/layouts/sidepane";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { ContextLink } from "../types";
 import {
@@ -16,18 +20,19 @@ import {
   ORG_TYPE_COLOR_MAP,
   PRIORITY_VARIANT_MAP,
 } from "../constants";
-import { parseDateSafely } from "@/lib/date-utils";
 
 interface OrganizationDetailsTabProps {
   record: OrganizationWithHierarchy;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
 export function OrganizationDetailsTab({
   record,
   mode,
   onModeToggle,
+  onDirtyChange,
 }: OrganizationDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
@@ -51,6 +56,7 @@ export function OrganizationDetailsTab({
     return (
       <RecordContextProvider value={record}>
         <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
+          <DirtyStateTracker onDirtyChange={onDirtyChange} />
           <div className="space-y-6">
             <div className="space-y-4">
               <TextInput source="name" label="Organization Name" />
