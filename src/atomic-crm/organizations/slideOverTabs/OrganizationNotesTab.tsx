@@ -1,5 +1,6 @@
 import { RecordContextProvider } from "ra-core";
 import { ReferenceManyField } from "@/components/admin/reference-many-field";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { NotesIterator } from "../../notes";
 import type { OrganizationWithHierarchy } from "../../types";
 
@@ -19,23 +20,25 @@ interface OrganizationNotesTabProps {
 export function OrganizationNotesTab({ record, mode }: OrganizationNotesTabProps) {
   return (
     <RecordContextProvider value={record}>
-      <div className="space-y-4">
-        {/* Notes list with create form - NotesIterator includes NoteCreate internally */}
-        <ReferenceManyField
-          target="organization_id"
-          reference="organizationNotes"
-          sort={{ field: "created_at", order: "DESC" }}
-        >
-          <NotesIterator reference="organizations" />
-        </ReferenceManyField>
+      <ScrollArea className="h-full">
+        <div className="px-6 py-4 space-y-4">
+          {/* Notes list with create form - NotesIterator includes NoteCreate internally */}
+          <ReferenceManyField
+            target="organization_id"
+            reference="organizationNotes"
+            sort={{ field: "created_at", order: "DESC" }}
+          >
+            <NotesIterator reference="organizations" />
+          </ReferenceManyField>
 
-        {/* Helper text for empty state */}
-        <div className="text-sm text-muted-foreground text-center py-4">
-          {mode === "view"
-            ? "Notes are visible to all team members"
-            : "Add notes to track important information about this organization"}
+          {/* Helper text for empty state */}
+          <div className="text-sm text-muted-foreground text-center py-4">
+            {mode === "view"
+              ? "Notes are visible to all team members"
+              : "Add notes to track important information about this organization"}
+          </div>
         </div>
-      </div>
+      </ScrollArea>
     </RecordContextProvider>
   );
 }

@@ -1,8 +1,9 @@
 import { useGetList, RecordContextProvider } from "ra-core";
-import { Card, CardContent } from "@/components/ui/card";
+import { useNavigate } from "react-router-dom";
 import { Skeleton } from "@/components/ui/skeleton";
-import { AsideSection } from "@/components/ui";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Users } from "lucide-react";
+import { SidepaneEmptyState } from "@/components/layouts/sidepane";
 import type { OrganizationWithHierarchy } from "../../types";
 import type { Identifier } from "ra-core";
 import { MAX_RELATED_ITEMS } from "../constants";
@@ -48,6 +49,7 @@ interface OrganizationContactsTabProps {
 }
 
 export function OrganizationContactsTab({ record }: OrganizationContactsTabProps) {
+  const navigate = useNavigate();
   const {
     data: contacts = [],
     isLoading,
@@ -79,87 +81,67 @@ export function OrganizationContactsTab({ record }: OrganizationContactsTabProps
 
   if (errorMessage) {
     return (
-      <Card>
-        <CardContent className="p-4">
-          <p className="text-sm text-destructive">{errorMessage}</p>
-        </CardContent>
-      </Card>
+      <div className="px-6 py-4">
+        <p className="text-sm text-destructive">{errorMessage}</p>
+      </div>
     );
   }
 
   if (contacts.length === 0) {
     return (
-      <RecordContextProvider value={record}>
-        <AsideSection title="Contacts">
-          <Card>
-            <CardContent className="p-8 text-center">
-              <Users className="size-11 mx-auto text-muted-foreground mb-4" />
-              <p className="text-muted-foreground">No contacts yet.</p>
-              <p className="text-sm text-muted-foreground mt-2">
-                Add contacts to this organization from the Contacts module.
-              </p>
-            </CardContent>
-          </Card>
-        </AsideSection>
-      </RecordContextProvider>
+      <SidepaneEmptyState
+        icon={Users}
+        message="No contacts yet"
+      />
     );
   }
 
   return (
     <RecordContextProvider value={record}>
-      <div className="space-y-6">
-        <AsideSection title={`Contacts (${contacts.length})`}>
-          <Card>
-            <CardContent className="p-4">
-              <div className="space-y-3">
-                {contacts.map((contact) => (
-                  <div
-                    key={contact.id}
-                    className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/5 transition-colors"
-                  >
-                    {contact.avatar?.src ? (
-                      <img
-                        src={contact.avatar.src}
-                        alt={getContactDisplayName(contact)}
-                        className="size-10 rounded-full object-cover"
-                      />
-                    ) : (
-                      <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center">
-                        <span className="text-sm font-semibold text-primary">
-                          {getContactInitials(contact)}
-                        </span>
-                      </div>
-                    )}
+      <ScrollArea className="h-full">
+        <div className="px-6 py-4 space-y-3">
+          {contacts.map((contact) => (
+            <div
+              key={contact.id}
+              className="flex items-center gap-3 p-3 border border-border rounded-lg hover:bg-muted/50 transition-colors"
+            >
+              {contact.avatar?.src ? (
+                <img
+                  src={contact.avatar.src}
+                  alt={getContactDisplayName(contact)}
+                  className="size-10 rounded-full object-cover"
+                />
+              ) : (
+                <div className="size-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <span className="text-sm font-semibold text-primary">
+                    {getContactInitials(contact)}
+                  </span>
+                </div>
+              )}
 
-                    <div className="flex-1 min-w-0">
-                      <a
-                        href={`/contacts?view=${contact.id}`}
-                        onClick={(e) => {
-                          e.preventDefault();
-                          window.location.href = `/contacts?view=${contact.id}`;
-                        }}
-                        className="text-sm font-medium text-primary hover:underline block truncate"
-                      >
-                        {getContactDisplayName(contact)}
-                      </a>
-                      {contact.title && (
-                        <p className="text-xs text-muted-foreground truncate">{contact.title}</p>
-                      )}
-                      {contact.email &&
-                        Array.isArray(contact.email) &&
-                        contact.email.length > 0 && (
-                          <p className="text-xs text-muted-foreground truncate">
-                            {contact.email[0]?.value || ""}
-                          </p>
-                        )}
-                    </div>
-                  </div>
-                ))}
+              <div className="flex-1 min-w-0">
+                <button
+                  type="button"
+                  onClick={() => navigate(`/contacts?view=${contact.id}`)}
+                  className="text-sm font-medium text-primary hover:underline block truncate text-left"
+                >
+                  {getContactDisplayName(contact)}
+                </button>
+                {contact.title && (
+                  <p className="text-xs text-muted-foreground truncate">{contact.title}</p>
+                )}
+                {contact.email &&
+                  Array.isArray(contact.email) &&
+                  contact.email.length > 0 && (
+                    <p className="text-xs text-muted-foreground truncate">
+                      {contact.email[0]?.value || ""}
+                    </p>
+                  )}
               </div>
-            </CardContent>
-          </Card>
-        </AsideSection>
-      </div>
+            </div>
+          ))}
+        </div>
+      </ScrollArea>
     </RecordContextProvider>
   );
 }

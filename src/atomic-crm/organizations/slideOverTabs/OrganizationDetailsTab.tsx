@@ -97,13 +97,12 @@ export function OrganizationDetailsTab({
 
   return (
     <RecordContextProvider value={record}>
-      <div className="space-y-6">
-        <AsideSection title="Organization Details">
-          <Card>
-            <CardContent className="p-4 space-y-3">
-              <div>
-                <h3 className="text-lg font-semibold">{record.name}</h3>
-              </div>
+      <ScrollArea className="h-full">
+        <div className="px-6 py-4">
+          {/* Organization Identity */}
+          <SidepaneSection label="Organization">
+            <div className="space-y-3">
+              <h3 className="text-lg font-semibold">{record.name}</h3>
 
               <div className="flex items-center gap-2">
                 <span className="text-sm text-muted-foreground">Type:</span>
@@ -114,118 +113,108 @@ export function OrganizationDetailsTab({
                 <span className="text-sm text-muted-foreground">Priority:</span>
                 <PriorityBadge priority={record.priority} />
               </div>
+            </div>
+          </SidepaneSection>
 
-              {record.email && (
-                <div className="flex items-center gap-2">
-                  <span className="text-sm text-muted-foreground">Email:</span>
-                  <a
-                    href={`mailto:${record.email}`}
-                    className="text-sm text-primary hover:underline"
-                  >
-                    {record.email}
-                  </a>
-                </div>
-              )}
+          {/* Contact Information */}
+          {(record.email || record.phone || record.website) && (
+            <SidepaneSection label="Contact" showSeparator>
+              <div className="space-y-2">
+                {record.email && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">Email:</span>
+                    <a
+                      href={`mailto:${record.email}`}
+                      className="text-sm text-primary hover:underline"
+                    >
+                      {record.email}
+                    </a>
+                  </div>
+                )}
+                {record.phone && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">Phone:</span>
+                    <a
+                      href={`tel:${record.phone}`}
+                      className="text-sm text-primary hover:underline"
+                    >
+                      {record.phone}
+                    </a>
+                  </div>
+                )}
+                {record.website && (
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm text-muted-foreground">Website:</span>
+                    <a
+                      href={record.website}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sm text-primary hover:underline"
+                    >
+                      {record.website.replace(/^https?:\/\//, "")}
+                    </a>
+                  </div>
+                )}
+              </div>
+            </SidepaneSection>
+          )}
 
-              {/* Phone & Website */}
-              {(record.phone || record.website) && (
-                <div className="space-y-2">
-                  {record.phone && (
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-muted-foreground">Phone:</span>
+          {/* Address */}
+          {(record.address || record.city || record.state || record.postal_code) && (
+            <SidepaneSection label="Address" showSeparator>
+              <div className="text-sm">
+                {record.address && <div>{record.address}</div>}
+                {(record.city || record.state || record.postal_code) && (
+                  <div>
+                    {[record.city, record.state, record.postal_code].filter(Boolean).join(", ")}
+                  </div>
+                )}
+              </div>
+            </SidepaneSection>
+          )}
+
+          {/* Tags */}
+          {record.tags && record.tags.length > 0 && (
+            <SidepaneSection label="Tags" showSeparator>
+              <div className="flex flex-wrap gap-2">
+                {record.tags.map((tagId) => (
+                  <Badge key={tagId} variant="outline" className="text-xs">
+                    Tag #{tagId}
+                  </Badge>
+                ))}
+              </div>
+            </SidepaneSection>
+          )}
+
+          {/* Context Links */}
+          {record.context_links &&
+            Array.isArray(record.context_links) &&
+            record.context_links.length > 0 && (
+              <SidepaneSection label="Context Links" showSeparator>
+                <div className="space-y-1">
+                  {record.context_links.map((link: ContextLink | string, index: number) => (
+                    <div key={index}>
                       <a
-                        href={`tel:${record.phone}`}
-                        className="text-sm text-primary hover:underline"
-                      >
-                        {record.phone}
-                      </a>
-                    </div>
-                  )}
-                  {record.website && (
-                    <div className="flex items-center gap-2">
-                      <span className="text-sm text-muted-foreground">Website:</span>
-                      <a
-                        href={record.website}
+                        href={typeof link === 'string' ? link : link.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-sm text-primary hover:underline"
                       >
-                        {record.website.replace(/^https?:\/\//, "")}
+                        {typeof link === 'string' ? link : (link.label || link.url)}
                       </a>
                     </div>
-                  )}
+                  ))}
                 </div>
-              )}
+              </SidepaneSection>
+            )}
 
-              {/* Address */}
-              {(record.address || record.city || record.state || record.postal_code) && (
-                <div className="space-y-1">
-                  <span className="text-sm text-muted-foreground">Address:</span>
-                  <div className="text-sm">
-                    {record.address && <div>{record.address}</div>}
-                    {(record.city || record.state || record.postal_code) && (
-                      <div>
-                        {[record.city, record.state, record.postal_code].filter(Boolean).join(", ")}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              )}
-
-              {record.tags && record.tags.length > 0 && (
-                <div>
-                  <span className="text-sm text-muted-foreground block mb-2">Tags:</span>
-                  <div className="flex flex-wrap gap-2">
-                    {record.tags.map((tagId) => (
-                      <Badge key={tagId} variant="outline" className="text-xs">
-                        Tag #{tagId}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {record.context_links &&
-                Array.isArray(record.context_links) &&
-                record.context_links.length > 0 && (
-                  <div>
-                    <span className="text-sm text-muted-foreground block mb-2">Context Links:</span>
-                    <div className="space-y-1">
-                      {record.context_links.map((link: ContextLink | string, index: number) => (
-                        <div key={index}>
-                          <a
-                            href={typeof link === 'string' ? link : link.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-sm text-primary hover:underline"
-                          >
-                            {typeof link === 'string' ? link : (link.label || link.url)}
-                          </a>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-              {record.created_at && (
-                <div className="pt-2 border-t border-border">
-                  <span className="text-xs text-muted-foreground">
-                    Created: {parseDateSafely(record.created_at)?.toLocaleDateString() ?? "N/A"}
-                  </span>
-                </div>
-              )}
-
-              {record.updated_at && (
-                <div>
-                  <span className="text-xs text-muted-foreground">
-                    Updated: {parseDateSafely(record.updated_at)?.toLocaleDateString() ?? "N/A"}
-                  </span>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </AsideSection>
-      </div>
+          {/* Metadata - created/updated timestamps */}
+          <SidepaneMetadata
+            createdAt={record.created_at}
+            updatedAt={record.updated_at}
+          />
+        </div>
+      </ScrollArea>
     </RecordContextProvider>
   );
 }
