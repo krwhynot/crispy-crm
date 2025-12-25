@@ -1,0 +1,818 @@
+{
+  "status": "complete",
+  "generated_at": "2025-12-25T16:15:02.887Z",
+  "generator": "scripts/discover/extractors/forms.ts",
+  "source_globs": [
+    "src/atomic-crm/**/*Create*.tsx",
+    "src/atomic-crm/**/*Edit*.tsx",
+    "src/atomic-crm/**/*Form*.tsx",
+    "src/atomic-crm/**/*Inputs*.tsx"
+  ],
+  "checksum": "sha256:481be035fa548170",
+  "source_hashes": {
+    "src/atomic-crm/activities/ActivityCreate.tsx": "ac18d4791030",
+    "src/atomic-crm/activities/ActivityEdit.tsx": "55bb5d0670e9",
+    "src/atomic-crm/activities/ActivityInputs.tsx": "ddf9ffb909b7",
+    "src/atomic-crm/activity-log/ActivityLogContactCreated.tsx": "2bf2a909a4af",
+    "src/atomic-crm/activity-log/ActivityLogContactNoteCreated.tsx": "e3939537f007",
+    "src/atomic-crm/activity-log/ActivityLogOpportunityCreated.tsx": "796619cbf306",
+    "src/atomic-crm/activity-log/ActivityLogOpportunityNoteCreated.tsx": "2c5ed84847a9",
+    "src/atomic-crm/activity-log/ActivityLogOrganizationCreated.tsx": "776329f3726e",
+    "src/atomic-crm/components/CreateFormFooter.tsx": "1be3e61ab2e6",
+    "src/atomic-crm/contacts/ContactCompactForm.tsx": "1731d33df282",
+    "src/atomic-crm/contacts/ContactCreate.tsx": "bcae10024763",
+    "src/atomic-crm/contacts/ContactEdit.tsx": "620c1a018959",
+    "src/atomic-crm/contacts/ContactFormTutorial.tsx": "c8b35aa930c8",
+    "src/atomic-crm/contacts/ContactInputs.tsx": "ce69f6134689",
+    "src/atomic-crm/contacts/TagsListEdit.tsx": "740faec91d7c",
+    "src/atomic-crm/contexts/FormOptionsContext.tsx": "12d49feef49d",
+    "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx": "d2e3bf70cdac",
+    "src/atomic-crm/layout/FormToolbar.tsx": "cffd014a8b77",
+    "src/atomic-crm/notes/NoteCreate.tsx": "9f968f8478e4",
+    "src/atomic-crm/notes/NoteInputs.tsx": "43599a6d73e2",
+    "src/atomic-crm/opportunities/ActivityNoteForm.tsx": "9ef3adc61f96",
+    "src/atomic-crm/opportunities/OpportunityCreate.tsx": "bd1c2ea22dbb",
+    "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx": "d0a3eeadc174",
+    "src/atomic-crm/opportunities/OpportunityEdit.tsx": "135e99aca938",
+    "src/atomic-crm/opportunities/OpportunityInputs.tsx": "73c2f5ebc9d4",
+    "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx": "14f7cab1c269",
+    "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx": "d31bcf0d2463",
+    "src/atomic-crm/opportunities/forms/OpportunityInputs.tsx": "b96950fa50fc",
+    "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx": "827aa5bd66a3",
+    "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "b086258368eb",
+    "src/atomic-crm/organizations/OrganizationCreate.tsx": "ce5d15b9c360",
+    "src/atomic-crm/organizations/OrganizationEdit.tsx": "fa95a5cc5ec7",
+    "src/atomic-crm/organizations/OrganizationInputs.tsx": "a22f8f2b9cb9",
+    "src/atomic-crm/organizations/QuickCreatePopover.tsx": "d01c6fc61d6c",
+    "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx": "9f7b736b354d",
+    "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx": "12b5a9621a83",
+    "src/atomic-crm/products/ProductCreate.tsx": "715de25825d5",
+    "src/atomic-crm/products/ProductEdit.tsx": "e68372b90093",
+    "src/atomic-crm/products/ProductFormTutorial.tsx": "e1cffe4833e3",
+    "src/atomic-crm/products/ProductInputs.tsx": "7404ed9b661a",
+    "src/atomic-crm/sales/SalesCreate.tsx": "d00cbe057240",
+    "src/atomic-crm/sales/SalesEdit.tsx": "b355b1de4961",
+    "src/atomic-crm/sales/SalesInputs.tsx": "34ac70873dd7",
+    "src/atomic-crm/sales/SalesPermissionsInputs.tsx": "4bdb7d8bdcdd",
+    "src/atomic-crm/tags/TagCreateModal.tsx": "0f6d4e2f2e1d",
+    "src/atomic-crm/tags/TagEditModal.tsx": "da8202cbdc29",
+    "src/atomic-crm/tasks/TaskCreate.tsx": "472ca21f2cb5",
+    "src/atomic-crm/tasks/TaskEdit.tsx": "be81749e5ec8",
+    "src/atomic-crm/tasks/TaskInputs.tsx": "9c004edad5db",
+    "src/atomic-crm/tutorial/OpportunityCreateFormTutorial.tsx": "1ea16822a0ca"
+  },
+  "summary": {
+    "total_items": 39,
+    "react_admin_forms": 31,
+    "react19_action_forms": 0,
+    "react_hook_form_direct": 3,
+    "with_zod_resolver": 7,
+    "with_tabs": 0,
+    "with_progress": 7
+  },
+  "forms": [
+    {
+      "componentName": "ActivityCreate",
+      "file": "src/atomic-crm/activities/ActivityCreate.tsx",
+      "line": 25,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": true
+      }
+    },
+    {
+      "componentName": "ActivityEdit",
+      "file": "src/atomic-crm/activities/ActivityEdit.tsx",
+      "line": 13,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "ActivityEdit",
+      "file": "src/atomic-crm/activities/ActivityEdit.tsx",
+      "line": 13,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "CreateFormFooter",
+      "file": "src/atomic-crm/components/CreateFormFooter.tsx",
+      "line": 14,
+      "formType": "unknown",
+      "formPatterns": {
+        "primary": "useFormContext",
+        "secondary": [
+          "useFormState"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "ContactCompactForm",
+      "file": "src/atomic-crm/contacts/ContactCompactForm.tsx",
+      "line": 21,
+      "formType": "unknown",
+      "formPatterns": {
+        "primary": "useFormContext",
+        "secondary": []
+      },
+      "inputComponents": [
+        "ArrayInput",
+        "AutocompleteOrganizationInput",
+        "ReferenceInput",
+        "SelectInput",
+        "TextInput"
+      ],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "ContactCreate",
+      "file": "src/atomic-crm/contacts/ContactCreate.tsx",
+      "line": 15,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": true
+      }
+    },
+    {
+      "componentName": "ContactEdit",
+      "file": "src/atomic-crm/contacts/ContactEdit.tsx",
+      "line": 13,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "ContactEdit",
+      "file": "src/atomic-crm/contacts/ContactEdit.tsx",
+      "line": 13,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "QuickLogForm",
+      "file": "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx",
+      "line": 61,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "useForm",
+          "useWatch"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": true,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      },
+      "validationSchemaRef": "activityLogSchema"
+    },
+    {
+      "componentName": "NoteCreate",
+      "file": "src/atomic-crm/notes/NoteCreate.tsx",
+      "line": 25,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "NoteInputs",
+      "file": "src/atomic-crm/notes/NoteInputs.tsx",
+      "line": 9,
+      "formType": "unknown",
+      "formPatterns": {
+        "primary": "useFormContext",
+        "secondary": []
+      },
+      "inputComponents": [
+        "TextInput"
+      ],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "ActivityNoteForm",
+      "file": "src/atomic-crm/opportunities/ActivityNoteForm.tsx",
+      "line": 77,
+      "formType": "react-hook-form-direct",
+      "formPatterns": {
+        "primary": "useForm",
+        "secondary": []
+      },
+      "inputComponents": [
+        "Input",
+        "Select"
+      ],
+      "hasZodResolver": true,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      },
+      "validationSchemaRef": "activityNoteFormSchema"
+    },
+    {
+      "componentName": "OpportunityCreate",
+      "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
+      "line": 15,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "OpportunityCreate",
+      "file": "src/atomic-crm/opportunities/OpportunityCreate.tsx",
+      "line": 15,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "OpportunityCreateWizard",
+      "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
+      "line": 59,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "OpportunityCreateWizard",
+      "file": "src/atomic-crm/opportunities/OpportunityCreateWizard.tsx",
+      "line": 59,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "OpportunityEdit",
+      "file": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
+      "line": 17,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "OpportunityEdit",
+      "file": "src/atomic-crm/opportunities/OpportunityEdit.tsx",
+      "line": 17,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "OpportunityCreateSaveButton",
+      "file": "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx",
+      "line": 42,
+      "formType": "unknown",
+      "formPatterns": {
+        "primary": "useFormContext",
+        "secondary": [
+          "useFormState",
+          "useWatch"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "OpportunityCompactForm",
+      "file": "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx",
+      "line": 48,
+      "formType": "unknown",
+      "formPatterns": {
+        "primary": "useFormContext",
+        "secondary": [
+          "useWatch"
+        ]
+      },
+      "inputComponents": [
+        "ArrayInput",
+        "AutocompleteArrayInput",
+        "AutocompleteOrganizationInput",
+        "ReferenceArrayInput",
+        "ReferenceInput",
+        "SelectInput",
+        "TextInput"
+      ],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "QuickAddForm",
+      "file": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx",
+      "line": 28,
+      "formType": "react-hook-form-direct",
+      "formPatterns": {
+        "primary": "useForm",
+        "secondary": [
+          "useWatch"
+        ]
+      },
+      "inputComponents": [
+        "Input",
+        "Select"
+      ],
+      "hasZodResolver": true,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      },
+      "validationSchemaRef": "quickAddSchema"
+    },
+    {
+      "componentName": "OrganizationCreate",
+      "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
+      "line": 135,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase",
+          "useForm"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": true,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": true
+      },
+      "validationSchemaRef": "organizationSchema"
+    },
+    {
+      "componentName": "OrganizationCreate",
+      "file": "src/atomic-crm/organizations/OrganizationCreate.tsx",
+      "line": 135,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase",
+          "useForm"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": true,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": true
+      },
+      "validationSchemaRef": "organizationSchema"
+    },
+    {
+      "componentName": "OrganizationEdit",
+      "file": "src/atomic-crm/organizations/OrganizationEdit.tsx",
+      "line": 12,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "OrganizationEdit",
+      "file": "src/atomic-crm/organizations/OrganizationEdit.tsx",
+      "line": 12,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "QuickCreatePopover",
+      "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
+      "line": 41,
+      "formType": "react-hook-form-direct",
+      "formPatterns": {
+        "primary": "useForm",
+        "secondary": []
+      },
+      "inputComponents": [
+        "Input",
+        "Select"
+      ],
+      "hasZodResolver": true,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      },
+      "validationSchemaRef": "quickCreateSchema"
+    },
+    {
+      "componentName": "ProductDistributorCreate",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
+      "line": 27,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "ProductDistributorCreate",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx",
+      "line": 27,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "ProductDistributorEdit",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx",
+      "line": 6,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "SimpleForm",
+        "secondary": []
+      },
+      "inputComponents": [
+        "SelectInput",
+        "TextInput"
+      ],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "ProductDistributorEdit",
+      "file": "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx",
+      "line": 6,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "SimpleForm",
+        "secondary": []
+      },
+      "inputComponents": [
+        "SelectInput",
+        "TextInput"
+      ],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "ProductCreate",
+      "file": "src/atomic-crm/products/ProductCreate.tsx",
+      "line": 13,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": true
+      }
+    },
+    {
+      "componentName": "ProductCreate",
+      "file": "src/atomic-crm/products/ProductCreate.tsx",
+      "line": 13,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": true
+      }
+    },
+    {
+      "componentName": "ProductEdit",
+      "file": "src/atomic-crm/products/ProductEdit.tsx",
+      "line": 13,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "ProductEdit",
+      "file": "src/atomic-crm/products/ProductEdit.tsx",
+      "line": 13,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "SalesCreate",
+      "file": "src/atomic-crm/sales/SalesCreate.tsx",
+      "line": 13,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "SimpleForm",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "SalesEdit",
+      "file": "src/atomic-crm/sales/SalesEdit.tsx",
+      "line": 31,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "SimpleForm",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "TaskCreate",
+      "file": "src/atomic-crm/tasks/TaskCreate.tsx",
+      "line": 35,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "Form",
+        "secondary": [
+          "CreateBase"
+        ]
+      },
+      "inputComponents": [],
+      "hasZodResolver": true,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": true
+      },
+      "validationSchemaRef": "taskCreateSchema"
+    },
+    {
+      "componentName": "TaskEdit",
+      "file": "src/atomic-crm/tasks/TaskEdit.tsx",
+      "line": 16,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    },
+    {
+      "componentName": "TaskEdit",
+      "file": "src/atomic-crm/tasks/TaskEdit.tsx",
+      "line": 16,
+      "formType": "react-admin-simple",
+      "formPatterns": {
+        "primary": "EditBase",
+        "secondary": []
+      },
+      "inputComponents": [],
+      "hasZodResolver": false,
+      "features": {
+        "hasTabs": false,
+        "hasWizard": false,
+        "hasProgress": false
+      }
+    }
+  ]
+}
