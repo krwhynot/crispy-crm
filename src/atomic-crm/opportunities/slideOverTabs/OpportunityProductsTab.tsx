@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Package } from "lucide-react";
+import { DirtyStateTracker, SidepaneEmptyState } from "@/components/layouts/sidepane";
 import type { Opportunity } from "@/atomic-crm/types";
 
 interface OpportunityProduct {
@@ -28,6 +30,7 @@ interface OpportunityProductsTabProps {
   record: Opportunity;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
   /** Whether this tab is currently active - controls data fetching */
   isActiveTab: boolean;
 }
@@ -36,6 +39,7 @@ export function OpportunityProductsTab({
   record,
   mode,
   onModeToggle,
+  onDirtyChange,
   isActiveTab,
 }: OpportunityProductsTabProps) {
   const [update] = useUpdate();
@@ -113,6 +117,7 @@ export function OpportunityProductsTab({
         onSubmit={handleSave}
         className="space-y-4"
       >
+        <DirtyStateTracker onDirtyChange={onDirtyChange} />
         <ReferenceArrayInput source="product_ids" reference="products">
           <AutocompleteArrayInput
             label="Products"
@@ -147,10 +152,10 @@ export function OpportunityProductsTab({
 
   if (!junctionRecords || junctionRecords.length === 0) {
     return (
-      <div className="text-center py-8">
-        <Package className="w-12 h-12 mx-auto mb-3 text-muted-foreground" />
-        <p className="text-muted-foreground">No products associated with this opportunity</p>
-      </div>
+      <SidepaneEmptyState
+        icon={Package}
+        message="No products associated with this opportunity"
+      />
     );
   }
 
@@ -158,46 +163,48 @@ export function OpportunityProductsTab({
   const junctionMap = new Map(junctionRecords.map((jr) => [jr.product_id_reference, jr]));
 
   return (
-    <div className="space-y-3">
-      {products?.map((product) => {
-        const junctionData = junctionMap.get(product.id);
+    <ScrollArea className="h-full">
+      <div className="px-6 py-4 space-y-3">
+        {products?.map((product) => {
+          const junctionData = junctionMap.get(product.id);
 
-        return (
-          <div
-            key={product.id}
-            className="border border-border rounded-lg p-4 hover:bg-muted/50 transition-colors"
-          >
-            <div className="flex items-start gap-3">
-              {/* Icon */}
-              <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
-                <Package className="w-5 h-5 text-primary" />
-              </div>
+          return (
+            <div
+              key={product.id}
+              className="border border-border rounded-lg p-4 hover:bg-muted/50 transition-colors"
+            >
+              <div className="flex items-start gap-3">
+                {/* Icon */}
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center shrink-0">
+                  <Package className="w-5 h-5 text-primary" />
+                </div>
 
-              {/* Product info */}
-              <div className="flex-1 min-w-0">
-                <Link
-                  to={`/products?view=${product.id}`}
-                  className="text-base font-medium hover:underline block"
-                >
-                  {product.name}
-                </Link>
+                {/* Product info */}
+                <div className="flex-1 min-w-0">
+                  <Link
+                    to={`/products?view=${product.id}`}
+                    className="text-base font-medium hover:underline block"
+                  >
+                    {product.name}
+                  </Link>
 
-                {product.category && (
-                  <div className="mt-2">
-                    <Badge variant="outline" className="text-xs">
-                      {product.category}
-                    </Badge>
-                  </div>
-                )}
+                  {product.category && (
+                    <div className="mt-2">
+                      <Badge variant="outline" className="text-xs">
+                        {product.category}
+                      </Badge>
+                    </div>
+                  )}
 
-                {junctionData?.notes && (
-                  <p className="text-sm text-muted-foreground mt-2 italic">{junctionData.notes}</p>
-                )}
+                  {junctionData?.notes && (
+                    <p className="text-sm text-muted-foreground mt-2 italic">{junctionData.notes}</p>
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        );
-      })}
-    </div>
+          );
+        })}
+      </div>
+    </ScrollArea>
   );
 }
