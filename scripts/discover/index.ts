@@ -4,6 +4,9 @@ import * as fs from "fs";
 import * as path from "path";
 import { extractComponents } from "./extractors/components.js";
 import { extractHooks } from "./extractors/hooks.js";
+import { extractSchemas } from "./extractors/schemas.js";
+import { extractTypes } from "./extractors/types.js";
+import { extractForms } from "./extractors/forms.js";
 import { isDiscoveryStale, isChunkedDiscoveryStale } from "./utils/output.js";
 import { project } from "./utils/project.js";
 
