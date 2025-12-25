@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { CreateBase, Form, useNotify, useRefresh, type RaRecord, type Identifier } from "ra-core";
+import { CreateBase, Form, useNotify, useRefresh, type RaRecord } from "ra-core";
 import { Button } from "@/components/ui/button";
 import { Plus, AlertCircle } from "lucide-react";
 import {

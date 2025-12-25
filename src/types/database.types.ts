@@ -6,6 +6,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+// eslint-disable-next-line @typescript-eslint/consistent-type-definitions -- Database schema type, matches Supabase generated pattern
 export type Database = {
   graphql_public: {
     Tables: {

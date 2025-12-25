@@ -264,6 +264,7 @@ const OrganizationCreate = () => {
     <>
       <CreateBase redirect="show" transform={transformValues}>
         {/* onKeyDown prevents Enter from bypassing duplicate check - see handleFormKeyDown */}
+        {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions -- Event delegation for form input Enter key prevention, not an interactive element */}
         <div className="bg-muted px-6 py-6" onKeyDown={handleFormKeyDown}>
           <div className="max-w-4xl mx-auto create-form-card">
             <FormProgressProvider initialProgress={10}>

@@ -22,7 +22,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 
-import type { AddProductExceptionDialogProps, Product } from "./authorization-types";
+import type { AddProductExceptionDialogProps } from "./authorization-types";
 
 export function AddProductExceptionDialog({
   open,
