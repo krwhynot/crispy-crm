@@ -33,13 +33,10 @@ export function TaskRelatedItemsTab({ record }: TaskRelatedItemsTabProps) {
     <RecordContextProvider value={record}>
       <div className="space-y-6">
         {!hasRelationships && (
-          <Card>
-            <CardContent className="p-8 text-center">
-              <p className="text-sm text-muted-foreground">
-                No related items. Add relationships in the Details tab.
-              </p>
-            </CardContent>
-          </Card>
+          <SidepaneEmptyState
+            icon={Link}
+            message="No related items. Add relationships in the Details tab."
+          />
         )}
 
         {/* Related Organization */}

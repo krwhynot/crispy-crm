@@ -32,9 +32,9 @@ export function UserMenu({ children }: UserMenuProps) {
     setOpen(false);
   }, []);
 
-  if (!authProvider) return null;
-
   const userMenuContextValue = useMemo(() => ({ onClose: handleClose }), [handleClose]);
+
+  if (!authProvider) return null;
 
   return (
     <UserMenuContext.Provider value={userMenuContextValue}>
