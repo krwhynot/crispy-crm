@@ -163,3 +163,155 @@ export function isDiscoveryStale(
     };
   }
 }
+
+/**
+ * Manifest for chunked discovery output.
+ * Points to individual feature chunks for efficient partial loading.
+ */
+export interface ChunkedManifest {
+  status: "complete" | "in_progress" | "error";
+  generated_at: string;
+  generator: string;
+  source_globs: string[];
+  checksum: string;
+  source_hashes: Record<string, string>;
+  summary: Record<string, number>;
+  chunks: ChunkInfo[];
+}
+
+export interface ChunkInfo {
+  name: string;
+  file: string;
+  item_count: number;
+  checksum: string;
+}
+
+/**
+ * Write chunked discovery output: manifest.json + feature chunks.
+ * Reduces context usage by allowing Claude to load only needed features.
+ */
+export function writeChunkedDiscovery<T>(
+  dirName: string,
+  generator: string,
+  sourceGlobs: string[],
+  sourceFiles: string[],
+  summary: Record<string, number>,
+  chunks: Map<string, T[]>
+): void {
+  const outputDir = path.resolve(process.cwd(), "docs/_state", dirName);
+
+  // Ensure output directory exists
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  const sourceHashes = buildSourceHashes(sourceFiles);
+  const chunkInfos: ChunkInfo[] = [];
+
+  // Write each feature chunk
+  for (const [chunkName, items] of chunks) {
+    const chunkFileName = `${chunkName}.json`;
+    const chunkPath = path.join(outputDir, chunkFileName);
+    const tempPath = `${chunkPath}.tmp`;
+
+    const chunkData = {
+      chunk_name: chunkName,
+      generated_at: new Date().toISOString(),
+      item_count: items.length,
+      items,
+    };
+
+    const chunkChecksum = hashPayload(chunkData);
+
+    // Atomic write for chunk
+    fs.writeFileSync(tempPath, JSON.stringify(chunkData, null, 2), "utf-8");
+    fs.renameSync(tempPath, chunkPath);
+
+    chunkInfos.push({
+      name: chunkName,
+      file: chunkFileName,
+      item_count: items.length,
+      checksum: chunkChecksum,
+    });
+  }
+
+  // Sort chunks alphabetically for consistent output
+  chunkInfos.sort((a, b) => a.name.localeCompare(b.name));
+
+  // Create manifest
+  const manifest: ChunkedManifest = {
+    status: "complete",
+    generated_at: new Date().toISOString(),
+    generator,
+    source_globs: sourceGlobs,
+    checksum: "", // Will be filled
+    source_hashes: sourceHashes,
+    summary,
+    chunks: chunkInfos,
+  };
+
+  manifest.checksum = hashPayload({ ...manifest, checksum: "" });
+
+  // Write manifest atomically
+  const manifestPath = path.join(outputDir, "manifest.json");
+  const tempManifestPath = `${manifestPath}.tmp`;
+  fs.writeFileSync(tempManifestPath, JSON.stringify(manifest, null, 2), "utf-8");
+  fs.renameSync(tempManifestPath, manifestPath);
+
+  console.log(`✅ Written: ${dirName}/ (${chunkInfos.length} chunks, ${summary.total_items || 0} items)`);
+}
+
+/**
+ * Check if a chunked discovery directory is stale.
+ * Checks manifest.json source hashes against current source files.
+ */
+export function isChunkedDiscoveryStale(
+  dirName: string,
+  currentSourceFiles: string[]
+): { stale: boolean; reason?: string; changedFiles?: string[] } {
+  const outputDir = path.resolve(process.cwd(), "docs/_state", dirName);
+  const manifestPath = path.join(outputDir, "manifest.json");
+
+  // If manifest doesn't exist, it's definitely stale
+  if (!fs.existsSync(manifestPath)) {
+    return { stale: true, reason: "Manifest file does not exist" };
+  }
+
+  try {
+    const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8")) as ChunkedManifest;
+    const currentHashes = buildSourceHashes(currentSourceFiles);
+
+    const changedFiles: string[] = [];
+
+    // Check for new or modified files
+    for (const [file, hash] of Object.entries(currentHashes)) {
+      if (!manifest.source_hashes[file]) {
+        changedFiles.push(`+ ${file} (new)`);
+      } else if (manifest.source_hashes[file] !== hash) {
+        changedFiles.push(`~ ${file} (modified)`);
+      }
+    }
+
+    // Check for deleted files
+    for (const file of Object.keys(manifest.source_hashes)) {
+      if (!currentHashes[file]) {
+        changedFiles.push(`- ${file} (deleted)`);
+      }
+    }
+
+    if (changedFiles.length > 0) {
+      return {
+        stale: true,
+        reason: `${changedFiles.length} file(s) changed`,
+        changedFiles,
+      };
+    }
+
+    return { stale: false };
+  } catch (error) {
+    return {
+      stale: true,
+      reason: `Error reading manifest: ${error instanceof Error ? error.message : "Unknown error"}`,
+    };
+  }
+}
