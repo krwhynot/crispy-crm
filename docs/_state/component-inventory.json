@@ -1,11 +1,11 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-25T05:27:21.021Z",
+  "generated_at": "2025-12-25T06:33:24.312Z",
   "generator": "scripts/discover/extractors/components.ts",
   "source_globs": [
     "src/atomic-crm/**/*.tsx"
   ],
-  "checksum": "sha256:542fa8ce583e088b",
+  "checksum": "sha256:29e7a3b4a37548ee",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "ac18d4791030",
     "src/atomic-crm/activities/ActivityEdit.tsx": "55bb5d0670e9",
@@ -231,7 +231,7 @@
     "src/atomic-crm/opportunities/resource.tsx": "699c143f340f",
     "src/atomic-crm/opportunities/slideOverTabs/OpportunityContactsTab.tsx": "7839e838e45c",
     "src/atomic-crm/opportunities/slideOverTabs/OpportunityNotesTab.tsx": "d93d176a44a2",
-    "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx": "a0cd8e955635",
+    "src/atomic-crm/opportunities/slideOverTabs/OpportunityProductsTab.tsx": "b8467e028087",
     "src/atomic-crm/opportunities/slideOverTabs/OpportunitySlideOverDetailsTab.tsx": "da07ab07bf8b",
     "src/atomic-crm/organizations/ActivitiesTab.tsx": "68a33e9056bf",
     "src/atomic-crm/organizations/AuthorizationsTab.tsx": "5143464b3b9a",
@@ -242,7 +242,7 @@
     "src/atomic-crm/organizations/OrganizationAddressSection.tsx": "589e2c4a1cc5",
     "src/atomic-crm/organizations/OrganizationAside.tsx": "50d3354f24e2",
     "src/atomic-crm/organizations/OrganizationAvatar.tsx": "fd80d991a0b0",
-    "src/atomic-crm/organizations/OrganizationBadges.tsx": "3476a0dbfde4",
+    "src/atomic-crm/organizations/OrganizationBadges.tsx": "acbf254aba7f",
     "src/atomic-crm/organizations/OrganizationBulkActionsToolbar.tsx": "318700123ff3",
     "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "b086258368eb",
     "src/atomic-crm/organizations/OrganizationCreate.tsx": "ce5d15b9c360",
@@ -285,7 +285,7 @@
     "src/atomic-crm/organizations/index.tsx": "60fb23b59821",
     "src/atomic-crm/organizations/resource.tsx": "5bee64304797",
     "src/atomic-crm/organizations/slideOverTabs/OrganizationContactsTab.tsx": "159c5c207ad2",
-    "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx": "dad6426ade96",
+    "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx": "0091d4dc5a61",
     "src/atomic-crm/organizations/slideOverTabs/OrganizationNotesTab.tsx": "5681ef9f5330",
     "src/atomic-crm/organizations/slideOverTabs/OrganizationOpportunitiesTab.tsx": "1bc3f3e875c7",
     "src/atomic-crm/organizations/useOrganizationImport.tsx": "57be4263238d",
@@ -396,7 +396,7 @@
     "src/atomic-crm/tasks/TaskInputs.tsx": "9c004edad5db",
     "src/atomic-crm/tasks/TaskList.tsx": "b2ff8a0ef089",
     "src/atomic-crm/tasks/TaskListFilter.tsx": "0fabc44f91fd",
-    "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx": "d3a78bac9d77",
+    "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx": "143446a3fba2",
     "src/atomic-crm/tasks/TaskShow.tsx": "c0b3862310d5",
     "src/atomic-crm/tasks/TaskSlideOver.tsx": "607139b34afe",
     "src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx": "e819917496df",
@@ -5474,7 +5474,7 @@
     {
       "name": "OrganizationTypeBadge",
       "file": "src/atomic-crm/organizations/OrganizationBadges.tsx",
-      "line": 42,
+      "line": 45,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -5487,7 +5487,7 @@
     {
       "name": "PriorityBadge",
       "file": "src/atomic-crm/organizations/OrganizationBadges.tsx",
-      "line": 63,
+      "line": 66,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -6405,7 +6405,7 @@
     {
       "name": "OrganizationTypeBadge",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 42,
+      "line": 45,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -6414,7 +6414,7 @@
     {
       "name": "PriorityBadge",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 63,
+      "line": 66,
       "type": "presentational",
       "hooks": [],
       "imports": [],
@@ -6541,10 +6541,15 @@
       ],
       "imports": [
         "../../types",
+        "../../utils/saleOptionRenderer",
+        "../OrganizationBadges",
         "../constants",
         "../types",
+        "@/components/admin/SegmentComboboxInput",
         "@/components/admin/autocomplete-array-input",
+        "@/components/admin/autocomplete-input",
         "@/components/admin/reference-array-input",
+        "@/components/admin/reference-input",
         "@/components/admin/select-input",
         "@/components/admin/text-input",
         "@/components/layouts/sidepane",
@@ -8927,7 +8932,7 @@
     {
       "name": "TaskRelatedItemsTab",
       "file": "src/atomic-crm/tasks/TaskRelatedItemsTab.tsx",
-      "line": 28,
+      "line": 27,
       "type": "presentational",
       "hooks": [],
       "imports": [
@@ -8937,7 +8942,6 @@
         "@/components/admin/reference-field",
         "@/components/admin/text-field",
         "@/components/layouts/sidepane",
-        "@/components/ui",
         "@/components/ui/card",
         "lucide-react",
         "ra-core"
