@@ -15,10 +15,11 @@ Guidance for Claude Code working with Crispy CRM (Atomic CRM) - a React 19 + Typ
 
 | File | Contents | Use When |
 |------|----------|----------|
-| `docs/_state/component-inventory.json` | 483 React components with hooks, imports, types | "Which components exist?", "What uses X hook?" |
-| `docs/_state/hooks-inventory.json` | 76 custom hooks with dependencies | "What hooks are available?", "What does useX do?" |
-| `docs/_state/schema-discovery.json` | All database tables, columns, relationships | "What's the DB schema?", "How are tables related?" |
-| `docs/_state/data-provider-discovery.json` | API layer architecture, methods, line numbers | "How does data flow?", "Where is X implemented?" |
+| `docs/_state/component-inventory/` | 484 React components (26 feature chunks) | "Which components exist?", "What uses X hook?" |
+| `docs/_state/hooks-inventory.json` | 77 custom hooks with dependencies | "What hooks are available?", "What does useX do?" |
+| `docs/_state/schemas-inventory.json` | 82 Zod schemas (strictObject, enum, transforms) | "What validation exists?", "Schema structure?" |
+| `docs/_state/types-inventory.json` | 101 TypeScript types (interfaces, type aliases) | "What types exist?", "Type definitions?" |
+| `docs/_state/forms-inventory.json` | 39 form components (React Admin, React 19) | "What forms exist?", "Form validation patterns?" |
 
 **These files are auto-generated and CI-enforced fresh.** Use them to understand structure before reading individual source files.
 

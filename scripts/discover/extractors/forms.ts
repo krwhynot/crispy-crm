@@ -338,6 +338,8 @@ export async function extractForms(): Promise<void> {
   console.log("📝 Extracting form components...");
 
   // Source globs from the plan
+  // Use the return value to get ONLY the files matching our globs
+  // (not all files accumulated in the project singleton)
   const globs = [
     "src/atomic-crm/**/*Create*.tsx",
     "src/atomic-crm/**/*Edit*.tsx",

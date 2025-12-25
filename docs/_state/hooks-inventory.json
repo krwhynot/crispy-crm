@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-25T16:06:13.066Z",
+  "generated_at": "2025-12-25T16:38:19.049Z",
   "generator": "scripts/discover/extractors/hooks.ts",
   "source_globs": [
     "src/**/use*.ts",
@@ -8,7 +8,7 @@
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
-  "checksum": "sha256:64d30f985160b682",
+  "checksum": "sha256:e5a02bf98d7b92c1",
   "source_hashes": {
     "src/App.tsx": "f0ea5cecc938",
     "src/main.tsx": "8e7c914a808c",

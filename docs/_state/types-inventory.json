@@ -1,25 +1,25 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-25T16:14:54.735Z",
+  "generated_at": "2025-12-25T16:38:19.656Z",
   "generator": "scripts/discover/extractors/types.ts",
   "source_globs": [
     "src/atomic-crm/types.ts",
     "src/atomic-crm/**/types.ts",
     "src/types/**/*.ts"
   ],
-  "checksum": "sha256:26c5f197202e855d",
+  "checksum": "sha256:9c50d5fbed575aab",
   "source_hashes": {
-    "src/atomic-crm/types.ts": "c857c0a1a7bb",
-    "src/types/database.types.ts": "42ec55637206",
+    "src/atomic-crm/dashboard/v3/types.ts": "a31606a565ce",
     "src/atomic-crm/filters/types.ts": "65608e159c7f",
     "src/atomic-crm/organizations/types.ts": "76ca26cbf464",
+    "src/atomic-crm/providers/supabase/extensions/types.ts": "b1f0c04bf5f5",
+    "src/atomic-crm/providers/supabase/types.ts": "ac091ebdeac6",
     "src/atomic-crm/providers/types.ts": "32d3407ddc5c",
     "src/atomic-crm/reports/types.ts": "f28725d85208",
     "src/atomic-crm/tags/types.ts": "9cd98db1ff7b",
     "src/atomic-crm/tutorial/types.ts": "b66ec8c41b6f",
-    "src/atomic-crm/dashboard/v3/types.ts": "a31606a565ce",
-    "src/atomic-crm/providers/supabase/types.ts": "ac091ebdeac6",
-    "src/atomic-crm/providers/supabase/extensions/types.ts": "b1f0c04bf5f5"
+    "src/atomic-crm/types.ts": "c857c0a1a7bb",
+    "src/types/database.types.ts": "42ec55637206"
   },
   "summary": {
     "total_items": 101,
@@ -30,6 +30,1843 @@
     "complex": 54
   },
   "types": [
+    {
+      "name": "PrincipalPipelineRow",
+      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "line": 37,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "totalPipeline",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "activeThisWeek",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "activeLastWeek",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "momentum",
+          "type": "Momentum",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "nextAction",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "RelatedEntity",
+      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "line": 52,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "type",
+          "type": "\"contact\" | \"opportunity\" | \"organization\" | \"personal\"",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "TaskItem",
+      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "line": 58,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "subject",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "dueDate",
+          "type": "Date",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "priority",
+          "type": "Priority",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "taskType",
+          "type": "TaskType",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "relatedTo",
+          "type": "RelatedEntity",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "status",
+          "type": "TaskStatus",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "owner",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "notes",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "PipelineSummaryRow",
+      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "line": 78,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "principal_id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "principal_name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "total_pipeline",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "active_this_week",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "active_last_week",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "momentum",
+          "type": "Momentum",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "next_action_summary",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "sales_id",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "TaskApiResponse",
+      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "line": 93,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "subject",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "due_date",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "priority",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "completed",
+          "type": "boolean",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "notes",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "sales_id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "opportunity_id",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "contact_id",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "organization_id",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "opportunity",
+          "type": "{ id: number; name: string; }",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "contact",
+          "type": "{ id: number; name: string; }",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "organization",
+          "type": "{ id: number; name: string; }",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "OpportunityApiResponse",
+      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "line": 115,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "stage",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "amount",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "probability",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "last_activity_date",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "estimated_close_date",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "principal_organization_id",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "ActivityLogInput",
+      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "line": 28,
+      "kind": "type_alias",
+      "typeExpression": "QuickLogFormInput",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ActivityType",
+      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "line": 31,
+      "kind": "type_alias",
+      "typeExpression": "z.infer<typeof activityDisplayTypeSchema>",
+      "isComplex": true,
+      "derivedFrom": "activityDisplayTypeSchema",
+      "isExported": true
+    },
+    {
+      "name": "ActivityOutcome",
+      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "line": 32,
+      "kind": "type_alias",
+      "typeExpression": "z.infer<typeof activityOutcomeSchema>",
+      "isComplex": true,
+      "derivedFrom": "activityOutcomeSchema",
+      "isExported": true
+    },
+    {
+      "name": "Momentum",
+      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "line": 35,
+      "kind": "type_alias",
+      "typeExpression": "\"increasing\" | \"steady\" | \"decreasing\" | \"stale\"",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "Priority",
+      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "line": 48,
+      "kind": "type_alias",
+      "typeExpression": "\"critical\" | \"high\" | \"medium\" | \"low\"",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "TaskStatus",
+      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "line": 49,
+      "kind": "type_alias",
+      "typeExpression": "\"overdue\" | \"today\" | \"tomorrow\" | \"upcoming\" | \"later\"",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "TaskType",
+      "file": "src/atomic-crm/dashboard/v3/types.ts",
+      "line": 50,
+      "kind": "type_alias",
+      "typeExpression": "\"Call\" | \"Email\" | \"Meeting\" | \"Follow-up\" | \"Demo\" | \"Proposal\" | \"Other\"",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "FilterValues",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 16,
+      "kind": "interface",
+      "properties": [],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "FilterChipData",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 23,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "key",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "value",
+          "type": "SingleFilterValue",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "FilterChoice",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 32,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string | number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "FilterConfig",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 49,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "key",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "type",
+          "type": "\"search\" | \"select\" | \"toggle\" | \"multiselect\" | \"reference\"",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "choices",
+          "type": "FilterChoice[]",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "defaultValue",
+          "type": "FilterValue",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "dynamicChoices",
+          "type": "boolean",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "reference",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "FilterPreferences",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 71,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "hiddenStages",
+          "type": "string[]",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "defaultFilters",
+          "type": "FilterValues",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "lastUsedFilters",
+          "type": "FilterValues",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "Organization",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 80,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string | number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "SingleFilterValue",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 9,
+      "kind": "type_alias",
+      "typeExpression": "string | number | boolean | null | undefined",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "ArrayFilterValue",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 10,
+      "kind": "type_alias",
+      "typeExpression": "string[] | number[]",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "FilterValue",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 11,
+      "kind": "type_alias",
+      "typeExpression": "SingleFilterValue | ArrayFilterValue",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "FilterFormatter",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 88,
+      "kind": "type_alias",
+      "typeExpression": "(value: SingleFilterValue) => string",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "FilterValidator",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 93,
+      "kind": "type_alias",
+      "typeExpression": "(value: FilterValue) => boolean",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "FilterTransform",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 98,
+      "kind": "type_alias",
+      "typeExpression": "(value: FilterValue) => unknown",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "FilterKey",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 137,
+      "kind": "type_alias",
+      "typeExpression": "(typeof FILTER_KEYS)[keyof typeof FILTER_KEYS]",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "MappedCSVRow",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 48,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "organization_type",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "priority",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "segment_id",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "city",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "postal_code",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "linkedin_url",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "website",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "parent_organization_id",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "sales_id",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "tags",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "ImportRowError",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 70,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "row",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "field",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ImportBatchResult",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 79,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "success",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "failed",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "errors",
+          "type": "ImportRowError[]",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ImportPreviewState",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 88,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "parsedData",
+          "type": "OrganizationImportSchema[]",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "sampleRows",
+          "type": "RawCSVRow[]",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "headers",
+          "type": "string[]",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "totalRows",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "OrganizationExportRow",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 103,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "Identifier",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "organization_type",
+          "type": "\"customer\" | \"prospect\" | \"principal\" | \"distributor\" | \"operator\"",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "priority",
+          "type": "\"A\" | \"B\" | \"C\" | \"D\"",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "segment_id",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "city",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "postal_code",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "website",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "linkedin_url",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "nb_contacts",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "nb_opportunities",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "sales_id",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "parent_organization_id",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "parent_organization",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "segment",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "sales_rep",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "OrganizationRecord",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 136,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "Identifier",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "nb_contacts",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "nb_opportunities",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "nb_notes",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "extends": [
+        "Organization"
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "OrganizationTabProps",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 148,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "record",
+          "type": "OrganizationRecord",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "OrganizationSlideOverTab",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 155,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "label",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "countFromRecord",
+          "type": "(record: OrganizationRecord) => number",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "OrganizationTransformResult",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 175,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "organization_type",
+          "type": "\"customer\" | \"prospect\" | \"principal\" | \"distributor\" | \"operator\"",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "priority",
+          "type": "\"A\" | \"B\" | \"C\" | \"D\"",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "segment_id",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "city",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "postal_code",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "linkedin_url",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "website",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "sales_id",
+          "type": "string | number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "parent_organization_id",
+          "type": "string | number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "tags",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "ContextLink",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 205,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "url",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "EmailEntry",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 213,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "value",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "type",
+          "type": "\"other\" | \"work\" | \"home\"",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ColumnMapping",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 226,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "columnIndex",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "fieldName",
+          "type": "keyof OrganizationImportSchema",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "PreviewRow",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 234,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "data",
+          "type": "MappedCSVRow",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "isValid",
+          "type": "boolean",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "errors",
+          "type": "string[]",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ImportFieldValue",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 243,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "field",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "value",
+          "type": "string | number | boolean",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "isValid",
+          "type": "boolean",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "RawCSVRow",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 42,
+      "kind": "type_alias",
+      "typeExpression": "string[]",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "OrganizationFormValues",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 169,
+      "kind": "type_alias",
+      "typeExpression": "Partial<Organization>",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "DuplicateCheckCallback",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 196,
+      "kind": "type_alias",
+      "typeExpression": "(name: string, values: OrganizationFormValues) => void",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "JunctionParams",
+      "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
+      "line": 48,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "is_primary",
+          "type": "boolean",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "notes",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "BoothVisitorResult",
+      "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
+      "line": 63,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "organization_id",
+          "type": "Identifier",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "contact_id",
+          "type": "Identifier",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "opportunity_id",
+          "type": "Identifier",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ExtendedDataProvider",
+      "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
+      "line": 84,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "storage",
+          "type": "{ upload(bucket: string, path: string, file: File | Blob): Promise<{ path: string; }>; getPublicUrl(bucket: string, path: string): string; remove(bucket: string, paths: string[]): Promise<void>; list(bucket: string, path?: string): Promise<FileObject[]>; }",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "extends": [
+        "DataProvider"
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "CrmDataProvider",
+      "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
+      "line": 651,
+      "kind": "type_alias",
+      "typeExpression": "ExtendedDataProvider",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "LogContext",
+      "file": "src/atomic-crm/providers/supabase/types.ts",
+      "line": 16,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "method",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "resource",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "params",
+          "type": "Record<string, unknown>",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ErrorLogContext",
+      "file": "src/atomic-crm/providers/supabase/types.ts",
+      "line": 23,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "error",
+          "type": "{ message: string; stack?: string; }",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "extends": [
+        "LogContext"
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "DataProviderMethod",
+      "file": "src/atomic-crm/providers/supabase/types.ts",
+      "line": 5,
+      "kind": "type_alias",
+      "typeExpression": "| \"getList\"\n  | \"getOne\"\n  | \"create\"\n  | \"update\"\n  | \"delete\"\n  | \"deleteMany\"\n  | \"getMany\"\n  | \"getManyReference\"\n  | \"updateMany\"",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "Sale",
+      "file": "src/atomic-crm/reports/types.ts",
+      "line": 10,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "first_name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "last_name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "Activity",
+      "file": "src/atomic-crm/reports/types.ts",
+      "line": 20,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "type",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "subject",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "created_by",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "organization_id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "contact_id",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "opportunity_id",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "organization_name",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "contact_name",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "ActivityGroup",
+      "file": "src/atomic-crm/reports/types.ts",
+      "line": 37,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "type",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "activities",
+          "type": "Activity[]",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "totalCount",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "uniqueOrgs",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "percentage",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "mostActiveOrg",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "mostActiveCount",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "Tag",
+      "file": "src/atomic-crm/tags/types.ts",
+      "line": 6,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "color",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "createdAt",
+          "type": "string | Date",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "string | Date",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "CreateTagInput",
+      "file": "src/atomic-crm/tags/types.ts",
+      "line": 17,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "color",
+          "type": "TagColorName",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "UpdateTagInput",
+      "file": "src/atomic-crm/tags/types.ts",
+      "line": 25,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "color",
+          "type": "TagColorName",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "TagWithCount",
+      "file": "src/atomic-crm/tags/types.ts",
+      "line": 34,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "count",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "extends": [
+        "Tag"
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "TagSelection",
+      "file": "src/atomic-crm/tags/types.ts",
+      "line": 41,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "tagId",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "TagFilterOptions",
+      "file": "src/atomic-crm/tags/types.ts",
+      "line": 49,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "colors",
+          "type": "TagColorName[]",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "searchTerm",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "TutorialProgress",
+      "file": "src/atomic-crm/tutorial/types.ts",
+      "line": 11,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "currentChapter",
+          "type": "TutorialChapter",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "currentStepIndex",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "completedChapters",
+          "type": "TutorialChapter[]",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "visitedPages",
+          "type": "TutorialChapter[]",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "lastUpdated",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "TutorialStep",
+      "file": "src/atomic-crm/tutorial/types.ts",
+      "line": 19,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "element",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "popover",
+          "type": "{ title: string; description: string; side?: \"top\" | \"bottom\" | \"left\" | \"right\"; align?: \"start\" | \"center\" | \"end\"; }",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "navigateTo",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "TutorialChapter",
+      "file": "src/atomic-crm/tutorial/types.ts",
+      "line": 1,
+      "kind": "type_alias",
+      "typeExpression": "| \"organizations\"\n  | \"contacts\"\n  | \"opportunities\"\n  | \"activities\"\n  | \"tasks\"\n  | \"products\"\n  | \"notes\"\n  | \"users\"",
+      "isComplex": true,
+      "isExported": true
+    },
     {
       "name": "SalesFormData",
       "file": "src/atomic-crm/types.ts",
@@ -68,7 +1905,7 @@
         },
         {
           "name": "role",
-          "type": "\"admin\" | \"manager\" | \"rep\"",
+          "type": "\"rep\" | \"admin\" | \"manager\"",
           "optional": false,
           "readonly": false
         },
@@ -102,7 +1939,7 @@
         },
         {
           "name": "role",
-          "type": "\"admin\" | \"manager\" | \"rep\"",
+          "type": "\"rep\" | \"admin\" | \"manager\"",
           "optional": false,
           "readonly": false
         },
@@ -212,7 +2049,7 @@
         },
         {
           "name": "type",
-          "type": "\"work\" | \"home\" | \"other\"",
+          "type": "\"other\" | \"work\" | \"home\"",
           "optional": false,
           "readonly": false
         }
@@ -234,7 +2071,7 @@
         },
         {
           "name": "type",
-          "type": "\"work\" | \"home\" | \"other\"",
+          "type": "\"other\" | \"work\" | \"home\"",
           "optional": false,
           "readonly": false
         }
@@ -541,7 +2378,7 @@
         },
         {
           "name": "type",
-          "type": "\"call\" | \"email\" | \"meeting\" | \"demo\" | \"proposal\" | \"follow_up\" | \"trade_show\" | \"site_visit\" | \"contract_review\" | \"check_in\" | \"social\" | \"note\" | \"sample\"",
+          "type": "\"email\" | \"note\" | \"call\" | \"meeting\" | \"demo\" | \"proposal\" | \"follow_up\" | \"trade_show\" | \"site_visit\" | \"contract_review\" | \"check_in\" | \"social\" | \"sample\"",
           "optional": false,
           "readonly": false
         },
@@ -838,7 +2675,7 @@
         },
         {
           "name": "priority",
-          "type": "\"low\" | \"medium\" | \"high\" | \"critical\"",
+          "type": "\"medium\" | \"critical\" | \"high\" | \"low\"",
           "optional": false,
           "readonly": false
         },
@@ -910,7 +2747,7 @@
         },
         {
           "name": "lead_source",
-          "type": "\"trade_show\" | \"referral\" | \"website\" | \"cold_call\" | \"email_campaign\" | \"social_media\" | \"partner\" | \"existing_customer\"",
+          "type": "\"website\" | \"trade_show\" | \"referral\" | \"cold_call\" | \"email_campaign\" | \"social_media\" | \"partner\" | \"existing_customer\"",
           "optional": true,
           "readonly": false
         },
@@ -1060,7 +2897,7 @@
         },
         {
           "name": "next_task_priority",
-          "type": "\"low\" | \"medium\" | \"high\" | \"critical\"",
+          "type": "\"medium\" | \"critical\" | \"high\" | \"low\"",
           "optional": true,
           "readonly": false
         },
@@ -1268,7 +3105,7 @@
         },
         {
           "name": "type",
-          "type": "\"Call\" | \"Email\" | \"Meeting\" | \"Follow-up\" | \"Demo\" | \"Proposal\" | \"Other\"",
+          "type": "\"Other\" | \"Call\" | \"Email\" | \"Meeting\" | \"Follow-up\" | \"Demo\" | \"Proposal\"",
           "optional": false,
           "readonly": false
         },
@@ -1298,7 +3135,7 @@
         },
         {
           "name": "priority",
-          "type": "\"low\" | \"medium\" | \"high\" | \"critical\"",
+          "type": "\"medium\" | \"critical\" | \"high\" | \"low\"",
           "optional": true,
           "readonly": false
         },
@@ -1438,7 +3275,7 @@
         },
         {
           "name": "organization",
-          "type": "{ name: string; organization_type: \"customer\" | \"principal\" | \"distributor\" | \"prospect\" | \"operator\"; priority: \"A\" | \"B\" | \"C\" | \"D\"; is_operating_entity: boolean; status: \"active\" | \"inactive\"; billing_country: string; shipping_country: string; id?: number; logo?: any; parent_organization_id?: number; segment_id?: string; linkedin_url?: string; website?: string; phone?: string; address?: string; postal_code?: string; city?: string; state?: string; sales_id?: number; description?: string; context_links?: string[]; tags?: string; email?: string; notes?: string; employee_count?: number; founded_year?: number; tax_identifier?: string; logo_url?: string; updated_at?: string; updated_by?: number; nb_contacts?: number; nb_opportunities?: number; nb_notes?: number; org_scope?: \"national\" | \"regional\" | \"local\"; status_reason?: \"prospect\" | \"active_customer\" | \"authorized_distributor\" | \"account_closed\" | \"out_of_business\" | \"disqualified\"; billing_street?: string; billing_city?: string; billing_state?: string; billing_postal_code?: string; shipping_street?: string; shipping_city?: string; shipping_state?: string; shipping_postal_code?: string; payment_terms?: \"net_30\" | \"net_60\" | \"net_90\" | \"cod\" | \"prepaid\" | \"2_10_net_30\"; credit_limit?: number; territory?: string; created_at?: string; created_by?: number; deleted_at?: string; }",
+          "type": "{ name: string; organization_type: \"customer\" | \"prospect\" | \"principal\" | \"distributor\" | \"operator\"; priority: \"A\" | \"B\" | \"C\" | \"D\"; is_operating_entity: boolean; status: \"active\" | \"inactive\"; billing_country: string; shipping_country: string; id?: number; logo?: any; parent_organization_id?: number; segment_id?: string; linkedin_url?: string; website?: string; phone?: string; address?: string; postal_code?: string; city?: string; state?: string; sales_id?: number; description?: string; context_links?: string[]; tags?: string; email?: string; notes?: string; employee_count?: number; founded_year?: number; tax_identifier?: string; logo_url?: string; updated_at?: string; updated_by?: number; nb_contacts?: number; nb_opportunities?: number; nb_notes?: number; org_scope?: \"national\" | \"regional\" | \"local\"; status_reason?: \"prospect\" | \"active_customer\" | \"authorized_distributor\" | \"account_closed\" | \"out_of_business\" | \"disqualified\"; billing_street?: string; billing_city?: string; billing_state?: string; billing_postal_code?: string; shipping_street?: string; shipping_city?: string; shipping_state?: string; shipping_postal_code?: string; payment_terms?: \"net_30\" | \"net_60\" | \"net_90\" | \"cod\" | \"prepaid\" | \"2_10_net_30\"; credit_limit?: number; territory?: string; created_at?: string; created_by?: number; deleted_at?: string; }",
           "optional": false,
           "readonly": false
         },
@@ -1980,1843 +3817,6 @@
         "PublicCompositeTypeNameOrOptions extends | keyof DefaultSchema[\"CompositeTypes\"]\n    | { schema: keyof DatabaseWithoutInternals }",
         "CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {\n    schema: keyof DatabaseWithoutInternals\n  }\n    ? keyof DatabaseWithoutInternals[PublicCompositeTypeNameOrOptions[\"schema\"]][\"CompositeTypes\"]\n    : never = never"
       ]
-    },
-    {
-      "name": "FilterValues",
-      "file": "src/atomic-crm/filters/types.ts",
-      "line": 16,
-      "kind": "interface",
-      "properties": [],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "FilterChipData",
-      "file": "src/atomic-crm/filters/types.ts",
-      "line": 23,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "key",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "value",
-          "type": "SingleFilterValue",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "label",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "FilterChoice",
-      "file": "src/atomic-crm/filters/types.ts",
-      "line": 32,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "string | number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "FilterConfig",
-      "file": "src/atomic-crm/filters/types.ts",
-      "line": 49,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "key",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "label",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "type",
-          "type": "\"search\" | \"select\" | \"multiselect\" | \"reference\" | \"toggle\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "choices",
-          "type": "FilterChoice[]",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "defaultValue",
-          "type": "FilterValue",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "dynamicChoices",
-          "type": "boolean",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "reference",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "FilterPreferences",
-      "file": "src/atomic-crm/filters/types.ts",
-      "line": 71,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "hiddenStages",
-          "type": "string[]",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "defaultFilters",
-          "type": "FilterValues",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "lastUsedFilters",
-          "type": "FilterValues",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "Organization",
-      "file": "src/atomic-crm/filters/types.ts",
-      "line": 80,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "string | number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "SingleFilterValue",
-      "file": "src/atomic-crm/filters/types.ts",
-      "line": 9,
-      "kind": "type_alias",
-      "typeExpression": "string | number | boolean | null | undefined",
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "ArrayFilterValue",
-      "file": "src/atomic-crm/filters/types.ts",
-      "line": 10,
-      "kind": "type_alias",
-      "typeExpression": "string[] | number[]",
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "FilterValue",
-      "file": "src/atomic-crm/filters/types.ts",
-      "line": 11,
-      "kind": "type_alias",
-      "typeExpression": "SingleFilterValue | ArrayFilterValue",
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "FilterFormatter",
-      "file": "src/atomic-crm/filters/types.ts",
-      "line": 88,
-      "kind": "type_alias",
-      "typeExpression": "(value: SingleFilterValue) => string",
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "FilterValidator",
-      "file": "src/atomic-crm/filters/types.ts",
-      "line": 93,
-      "kind": "type_alias",
-      "typeExpression": "(value: FilterValue) => boolean",
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "FilterTransform",
-      "file": "src/atomic-crm/filters/types.ts",
-      "line": 98,
-      "kind": "type_alias",
-      "typeExpression": "(value: FilterValue) => unknown",
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "FilterKey",
-      "file": "src/atomic-crm/filters/types.ts",
-      "line": 137,
-      "kind": "type_alias",
-      "typeExpression": "(typeof FILTER_KEYS)[keyof typeof FILTER_KEYS]",
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "MappedCSVRow",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 48,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "organization_type",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "priority",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "segment_id",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "phone",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "address",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "city",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "state",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "postal_code",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "linkedin_url",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "website",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "parent_organization_id",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "sales_id",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "tags",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "ImportRowError",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 70,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "row",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "field",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "message",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "ImportBatchResult",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 79,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "success",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "failed",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "errors",
-          "type": "ImportRowError[]",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "ImportPreviewState",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 88,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "parsedData",
-          "type": "OrganizationImportSchema[]",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "sampleRows",
-          "type": "RawCSVRow[]",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "headers",
-          "type": "string[]",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "totalRows",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "OrganizationExportRow",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 103,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "organization_type",
-          "type": "\"customer\" | \"principal\" | \"distributor\" | \"prospect\" | \"operator\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "priority",
-          "type": "\"A\" | \"B\" | \"C\" | \"D\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "segment_id",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "phone",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "email",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "address",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "city",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "state",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "postal_code",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "website",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "linkedin_url",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "nb_contacts",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "nb_opportunities",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "sales_id",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "parent_organization_id",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "parent_organization",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "segment",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "sales_rep",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "OrganizationRecord",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 136,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "nb_contacts",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "nb_opportunities",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "nb_notes",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Organization"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "OrganizationTabProps",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 148,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "record",
-          "type": "OrganizationRecord",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "OrganizationSlideOverTab",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 155,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "label",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "count",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "countFromRecord",
-          "type": "(record: OrganizationRecord) => number",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "OrganizationTransformResult",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 175,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "organization_type",
-          "type": "\"customer\" | \"principal\" | \"distributor\" | \"prospect\" | \"operator\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "priority",
-          "type": "\"A\" | \"B\" | \"C\" | \"D\"",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "segment_id",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "phone",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "address",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "city",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "state",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "postal_code",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "linkedin_url",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "website",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "description",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "sales_id",
-          "type": "string | number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "parent_organization_id",
-          "type": "string | number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "tags",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "ContextLink",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 205,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "url",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "label",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "EmailEntry",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 213,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "value",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "type",
-          "type": "\"work\" | \"home\" | \"other\"",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "ColumnMapping",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 226,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "columnIndex",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "fieldName",
-          "type": "keyof OrganizationImportSchema",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "PreviewRow",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 234,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "data",
-          "type": "MappedCSVRow",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "isValid",
-          "type": "boolean",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "errors",
-          "type": "string[]",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "ImportFieldValue",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 243,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "field",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "value",
-          "type": "string | number | boolean",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "isValid",
-          "type": "boolean",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "error",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "RawCSVRow",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 42,
-      "kind": "type_alias",
-      "typeExpression": "string[]",
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "OrganizationFormValues",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 169,
-      "kind": "type_alias",
-      "typeExpression": "Partial<Organization>",
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "DuplicateCheckCallback",
-      "file": "src/atomic-crm/organizations/types.ts",
-      "line": 196,
-      "kind": "type_alias",
-      "typeExpression": "(name: string, values: OrganizationFormValues) => void",
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "Sale",
-      "file": "src/atomic-crm/reports/types.ts",
-      "line": 10,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "first_name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "last_name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "Activity",
-      "file": "src/atomic-crm/reports/types.ts",
-      "line": 20,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "type",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "subject",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "created_at",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "created_by",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "organization_id",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "contact_id",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "opportunity_id",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "organization_name",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "contact_name",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "ActivityGroup",
-      "file": "src/atomic-crm/reports/types.ts",
-      "line": 37,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "type",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "activities",
-          "type": "Activity[]",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "totalCount",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "uniqueOrgs",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "percentage",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "mostActiveOrg",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "mostActiveCount",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "Tag",
-      "file": "src/atomic-crm/tags/types.ts",
-      "line": 6,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "color",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "createdAt",
-          "type": "string | Date",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "updatedAt",
-          "type": "string | Date",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "CreateTagInput",
-      "file": "src/atomic-crm/tags/types.ts",
-      "line": 17,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "color",
-          "type": "TagColorName",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "UpdateTagInput",
-      "file": "src/atomic-crm/tags/types.ts",
-      "line": 25,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "color",
-          "type": "TagColorName",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "TagWithCount",
-      "file": "src/atomic-crm/tags/types.ts",
-      "line": 34,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "count",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "Tag"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "TagSelection",
-      "file": "src/atomic-crm/tags/types.ts",
-      "line": 41,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "tagId",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "selected",
-          "type": "boolean",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "TagFilterOptions",
-      "file": "src/atomic-crm/tags/types.ts",
-      "line": 49,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "colors",
-          "type": "TagColorName[]",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "searchTerm",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "TutorialProgress",
-      "file": "src/atomic-crm/tutorial/types.ts",
-      "line": 11,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "currentChapter",
-          "type": "TutorialChapter",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "currentStepIndex",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "completedChapters",
-          "type": "TutorialChapter[]",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "visitedPages",
-          "type": "TutorialChapter[]",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "lastUpdated",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "TutorialStep",
-      "file": "src/atomic-crm/tutorial/types.ts",
-      "line": 19,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "element",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "popover",
-          "type": "{ title: string; description: string; side?: \"top\" | \"bottom\" | \"left\" | \"right\"; align?: \"start\" | \"center\" | \"end\"; }",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "navigateTo",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "TutorialChapter",
-      "file": "src/atomic-crm/tutorial/types.ts",
-      "line": 1,
-      "kind": "type_alias",
-      "typeExpression": "| \"organizations\"\n  | \"contacts\"\n  | \"opportunities\"\n  | \"activities\"\n  | \"tasks\"\n  | \"products\"\n  | \"notes\"\n  | \"users\"",
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "PrincipalPipelineRow",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 37,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "totalPipeline",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "activeThisWeek",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "activeLastWeek",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "momentum",
-          "type": "Momentum",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "nextAction",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "RelatedEntity",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 52,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "type",
-          "type": "\"opportunity\" | \"contact\" | \"organization\" | \"personal\"",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "id",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "TaskItem",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 58,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "subject",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "dueDate",
-          "type": "Date",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "priority",
-          "type": "Priority",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "taskType",
-          "type": "TaskType",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "relatedTo",
-          "type": "RelatedEntity",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "status",
-          "type": "TaskStatus",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "owner",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "notes",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "PipelineSummaryRow",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 78,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "principal_id",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "principal_name",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "total_pipeline",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "active_this_week",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "active_last_week",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "momentum",
-          "type": "Momentum",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "next_action_summary",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "sales_id",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "TaskApiResponse",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 93,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "subject",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "due_date",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "priority",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "type",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "completed",
-          "type": "boolean",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "notes",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "sales_id",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "opportunity_id",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "contact_id",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "organization_id",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "opportunity",
-          "type": "{ id: number; name: string; }",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "contact",
-          "type": "{ id: number; name: string; }",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "organization",
-          "type": "{ id: number; name: string; }",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "OpportunityApiResponse",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 115,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "id",
-          "type": "number",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "name",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "stage",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "amount",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "probability",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "last_activity_date",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "estimated_close_date",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "principal_organization_id",
-          "type": "number",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "ActivityLogInput",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 28,
-      "kind": "type_alias",
-      "typeExpression": "QuickLogFormInput",
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "ActivityType",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 31,
-      "kind": "type_alias",
-      "typeExpression": "z.infer<typeof activityDisplayTypeSchema>",
-      "isComplex": true,
-      "derivedFrom": "activityDisplayTypeSchema",
-      "isExported": true
-    },
-    {
-      "name": "ActivityOutcome",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 32,
-      "kind": "type_alias",
-      "typeExpression": "z.infer<typeof activityOutcomeSchema>",
-      "isComplex": true,
-      "derivedFrom": "activityOutcomeSchema",
-      "isExported": true
-    },
-    {
-      "name": "Momentum",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 35,
-      "kind": "type_alias",
-      "typeExpression": "\"increasing\" | \"steady\" | \"decreasing\" | \"stale\"",
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "Priority",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 48,
-      "kind": "type_alias",
-      "typeExpression": "\"critical\" | \"high\" | \"medium\" | \"low\"",
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "TaskStatus",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 49,
-      "kind": "type_alias",
-      "typeExpression": "\"overdue\" | \"today\" | \"tomorrow\" | \"upcoming\" | \"later\"",
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "TaskType",
-      "file": "src/atomic-crm/dashboard/v3/types.ts",
-      "line": 50,
-      "kind": "type_alias",
-      "typeExpression": "\"Call\" | \"Email\" | \"Meeting\" | \"Follow-up\" | \"Demo\" | \"Proposal\" | \"Other\"",
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "LogContext",
-      "file": "src/atomic-crm/providers/supabase/types.ts",
-      "line": 16,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "method",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "resource",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "params",
-          "type": "Record<string, unknown>",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "timestamp",
-          "type": "string",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "ErrorLogContext",
-      "file": "src/atomic-crm/providers/supabase/types.ts",
-      "line": 23,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "error",
-          "type": "{ message: string; stack?: string; }",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "LogContext"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "DataProviderMethod",
-      "file": "src/atomic-crm/providers/supabase/types.ts",
-      "line": 5,
-      "kind": "type_alias",
-      "typeExpression": "| \"getList\"\n  | \"getOne\"\n  | \"create\"\n  | \"update\"\n  | \"delete\"\n  | \"deleteMany\"\n  | \"getMany\"\n  | \"getManyReference\"\n  | \"updateMany\"",
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "JunctionParams",
-      "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
-      "line": 48,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "is_primary",
-          "type": "boolean",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "role",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        },
-        {
-          "name": "notes",
-          "type": "string",
-          "optional": true,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "BoothVisitorResult",
-      "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
-      "line": 63,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "organization_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "contact_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        },
-        {
-          "name": "opportunity_id",
-          "type": "Identifier",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "isComplex": false,
-      "isExported": true
-    },
-    {
-      "name": "ExtendedDataProvider",
-      "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
-      "line": 84,
-      "kind": "interface",
-      "properties": [
-        {
-          "name": "storage",
-          "type": "{ upload(bucket: string, path: string, file: File | Blob): Promise<{ path: string; }>; getPublicUrl(bucket: string, path: string): string; remove(bucket: string, paths: string[]): Promise<void>; list(bucket: string, path?: string): Promise<FileObject[]>; }",
-          "optional": false,
-          "readonly": false
-        }
-      ],
-      "extends": [
-        "DataProvider"
-      ],
-      "isComplex": true,
-      "isExported": true
-    },
-    {
-      "name": "CrmDataProvider",
-      "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
-      "line": 651,
-      "kind": "type_alias",
-      "typeExpression": "ExtendedDataProvider",
-      "isComplex": false,
-      "isExported": true
     }
   ]
 }
