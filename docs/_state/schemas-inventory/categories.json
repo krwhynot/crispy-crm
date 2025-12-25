@@ -1,0 +1,45 @@
+{
+  "chunk_name": "categories",
+  "generated_at": "2025-12-25T17:02:03.141Z",
+  "item_count": 1,
+  "items": [
+    {
+      "name": "categorySchema",
+      "file": "src/atomic-crm/validation/categories.ts",
+      "line": 18,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "string",
+          "constraints": [
+            "max(255)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "name",
+          "zodType": "string",
+          "constraints": [
+            "max(255)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "playbookCategorySchema"
+      ],
+      "validationFunctions": [
+        "validateCategory"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

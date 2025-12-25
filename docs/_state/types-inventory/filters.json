@@ -1,0 +1,231 @@
+{
+  "chunk_name": "filters",
+  "generated_at": "2025-12-25T17:02:03.311Z",
+  "item_count": 13,
+  "items": [
+    {
+      "name": "FilterValues",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 16,
+      "kind": "interface",
+      "properties": [],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "FilterChipData",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 23,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "key",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "value",
+          "type": "SingleFilterValue",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "FilterChoice",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 32,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string | number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "FilterConfig",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 49,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "key",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "type",
+          "type": "\"search\" | \"select\" | \"toggle\" | \"multiselect\" | \"reference\"",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "choices",
+          "type": "FilterChoice[]",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "defaultValue",
+          "type": "FilterValue",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "dynamicChoices",
+          "type": "boolean",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "reference",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "FilterPreferences",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 71,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "hiddenStages",
+          "type": "string[]",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "defaultFilters",
+          "type": "FilterValues",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "lastUsedFilters",
+          "type": "FilterValues",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "Organization",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 80,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string | number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "SingleFilterValue",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 9,
+      "kind": "type_alias",
+      "typeExpression": "string | number | boolean | null | undefined",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "ArrayFilterValue",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 10,
+      "kind": "type_alias",
+      "typeExpression": "string[] | number[]",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "FilterValue",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 11,
+      "kind": "type_alias",
+      "typeExpression": "SingleFilterValue | ArrayFilterValue",
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "FilterFormatter",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 88,
+      "kind": "type_alias",
+      "typeExpression": "(value: SingleFilterValue) => string",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "FilterValidator",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 93,
+      "kind": "type_alias",
+      "typeExpression": "(value: FilterValue) => boolean",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "FilterTransform",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 98,
+      "kind": "type_alias",
+      "typeExpression": "(value: FilterValue) => unknown",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "FilterKey",
+      "file": "src/atomic-crm/filters/types.ts",
+      "line": 137,
+      "kind": "type_alias",
+      "typeExpression": "(typeof FILTER_KEYS)[keyof typeof FILTER_KEYS]",
+      "isComplex": false,
+      "isExported": true
+    }
+  ]
+}

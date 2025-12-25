@@ -8,7 +8,15 @@ import {
 } from "ts-morph";
 import * as path from "path";
 import { project } from "../utils/project.js";
-import { createEnvelope, writeDiscoveryFile } from "../utils/output.js";
+import { writeChunkedDiscovery } from "../utils/output.js";
+
+/**
+ * Extract feature name from validation file path.
+ * Pattern: src/atomic-crm/validation/{feature}.ts → "feature"
+ */
+function extractFeatureName(filePath: string): string {
+  return path.basename(filePath, '.ts');
+}
 
 /**
  * Schema field information extracted from Zod object schemas
@@ -499,22 +507,33 @@ export async function extractSchemas(): Promise<void> {
   const withTransforms = schemas.filter((s) => s.hasTransforms).length;
   const withSuperRefine = schemas.filter((s) => s.hasSuperRefine).length;
 
-  const envelope = createEnvelope(
+  // Group schemas by feature (validation file name)
+  const chunks = new Map<string, SchemaInfo[]>();
+  for (const schema of schemas) {
+    const feature = extractFeatureName(schema.file);
+    if (!chunks.has(feature)) {
+      chunks.set(feature, []);
+    }
+    chunks.get(feature)!.push(schema);
+  }
+
+  // Write chunked output
+  writeChunkedDiscovery(
+    "schemas-inventory",
     "scripts/discover/extractors/schemas.ts",
     globs,
     Array.from(processedFiles),
     {
       total_items: schemas.length,
+      total_chunks: chunks.size,
       strict_objects: strictObjectCount,
       objects: objectCount,
       enums: enumCount,
       with_transforms: withTransforms,
       with_super_refine: withSuperRefine,
     },
-    { schemas }
+    chunks
   );
-
-  writeDiscoveryFile("schemas-inventory.json", envelope);
 
   console.log(`  ✓ Found ${schemas.length} Zod schemas`);
   console.log(`    - ${strictObjectCount} z.strictObject()`);

@@ -1,0 +1,675 @@
+{
+  "chunk_name": "organizations",
+  "generated_at": "2025-12-25T17:02:03.311Z",
+  "item_count": 17,
+  "items": [
+    {
+      "name": "MappedCSVRow",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 48,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "organization_type",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "priority",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "segment_id",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "city",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "postal_code",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "linkedin_url",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "website",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "parent_organization_id",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "sales_id",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "tags",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "ImportRowError",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 70,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "row",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "field",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "message",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ImportBatchResult",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 79,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "success",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "failed",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "errors",
+          "type": "ImportRowError[]",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ImportPreviewState",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 88,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "parsedData",
+          "type": "OrganizationImportSchema[]",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "sampleRows",
+          "type": "RawCSVRow[]",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "headers",
+          "type": "string[]",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "totalRows",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "OrganizationExportRow",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 103,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "Identifier",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "organization_type",
+          "type": "\"customer\" | \"prospect\" | \"principal\" | \"distributor\" | \"operator\"",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "priority",
+          "type": "\"A\" | \"B\" | \"C\" | \"D\"",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "segment_id",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "email",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "city",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "postal_code",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "website",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "linkedin_url",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "nb_contacts",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "nb_opportunities",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "created_at",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "sales_id",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "parent_organization_id",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "parent_organization",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "segment",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "sales_rep",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "OrganizationRecord",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 136,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "Identifier",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "nb_contacts",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "nb_opportunities",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "nb_notes",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "extends": [
+        "Organization"
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "OrganizationTabProps",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 148,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "record",
+          "type": "OrganizationRecord",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "OrganizationSlideOverTab",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 155,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "label",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "count",
+          "type": "number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "countFromRecord",
+          "type": "(record: OrganizationRecord) => number",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "OrganizationTransformResult",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 175,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "organization_type",
+          "type": "\"customer\" | \"prospect\" | \"principal\" | \"distributor\" | \"operator\"",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "priority",
+          "type": "\"A\" | \"B\" | \"C\" | \"D\"",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "segment_id",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "phone",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "address",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "city",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "state",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "postal_code",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "linkedin_url",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "website",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "description",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "sales_id",
+          "type": "string | number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "parent_organization_id",
+          "type": "string | number",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "tags",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "ContextLink",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 205,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "url",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "label",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "EmailEntry",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 213,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "value",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "type",
+          "type": "\"other\" | \"work\" | \"home\"",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ColumnMapping",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 226,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "columnIndex",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "fieldName",
+          "type": "keyof OrganizationImportSchema",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "PreviewRow",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 234,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "data",
+          "type": "MappedCSVRow",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "isValid",
+          "type": "boolean",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "errors",
+          "type": "string[]",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ImportFieldValue",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 243,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "field",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "value",
+          "type": "string | number | boolean",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "isValid",
+          "type": "boolean",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "error",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "RawCSVRow",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 42,
+      "kind": "type_alias",
+      "typeExpression": "string[]",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "OrganizationFormValues",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 169,
+      "kind": "type_alias",
+      "typeExpression": "Partial<Organization>",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "DuplicateCheckCallback",
+      "file": "src/atomic-crm/organizations/types.ts",
+      "line": 196,
+      "kind": "type_alias",
+      "typeExpression": "(name: string, values: OrganizationFormValues) => void",
+      "isComplex": false,
+      "isExported": true
+    }
+  ]
+}

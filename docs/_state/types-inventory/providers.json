@@ -1,0 +1,153 @@
+{
+  "chunk_name": "providers",
+  "generated_at": "2025-12-25T17:02:03.312Z",
+  "item_count": 7,
+  "items": [
+    {
+      "name": "JunctionParams",
+      "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
+      "line": 48,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "is_primary",
+          "type": "boolean",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "role",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "notes",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "BoothVisitorResult",
+      "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
+      "line": 63,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "organization_id",
+          "type": "Identifier",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "contact_id",
+          "type": "Identifier",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "opportunity_id",
+          "type": "Identifier",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ExtendedDataProvider",
+      "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
+      "line": 84,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "storage",
+          "type": "{ upload(bucket: string, path: string, file: File | Blob): Promise<{ path: string; }>; getPublicUrl(bucket: string, path: string): string; remove(bucket: string, paths: string[]): Promise<void>; list(bucket: string, path?: string): Promise<FileObject[]>; }",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "extends": [
+        "DataProvider"
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "CrmDataProvider",
+      "file": "src/atomic-crm/providers/supabase/extensions/types.ts",
+      "line": 651,
+      "kind": "type_alias",
+      "typeExpression": "ExtendedDataProvider",
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "LogContext",
+      "file": "src/atomic-crm/providers/supabase/types.ts",
+      "line": 16,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "method",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "resource",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "params",
+          "type": "Record<string, unknown>",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "timestamp",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "ErrorLogContext",
+      "file": "src/atomic-crm/providers/supabase/types.ts",
+      "line": 23,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "error",
+          "type": "{ message: string; stack?: string; }",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "extends": [
+        "LogContext"
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "DataProviderMethod",
+      "file": "src/atomic-crm/providers/supabase/types.ts",
+      "line": 5,
+      "kind": "type_alias",
+      "typeExpression": "| \"getList\"\n  | \"getOne\"\n  | \"create\"\n  | \"update\"\n  | \"delete\"\n  | \"deleteMany\"\n  | \"getMany\"\n  | \"getManyReference\"\n  | \"updateMany\"",
+      "isComplex": true,
+      "isExported": true
+    }
+  ]
+}

@@ -1,0 +1,126 @@
+{
+  "chunk_name": "operatorSegments",
+  "generated_at": "2025-12-25T17:02:03.144Z",
+  "item_count": 4,
+  "items": [
+    {
+      "name": "operatorSegmentSchema",
+      "file": "src/atomic-crm/validation/operatorSegments.ts",
+      "line": 162,
+      "schemaType": "enum",
+      "fields": [],
+      "relatedSchemas": [
+        "operatorSegmentRecordSchema",
+        "segmentSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "operatorParentSegmentSchema",
+      "file": "src/atomic-crm/validation/operatorSegments.ts",
+      "line": 167,
+      "schemaType": "enum",
+      "fields": [],
+      "relatedSchemas": [
+        "segmentSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "operatorChildSegmentSchema",
+      "file": "src/atomic-crm/validation/operatorSegments.ts",
+      "line": 172,
+      "schemaType": "enum",
+      "fields": [],
+      "relatedSchemas": [
+        "segmentSchema"
+      ],
+      "validationFunctions": [],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
+      "name": "operatorSegmentRecordSchema",
+      "file": "src/atomic-crm/validation/operatorSegments.ts",
+      "line": 177,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "string",
+          "constraints": [
+            "uuid()"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "name",
+          "zodType": "ref:operatorSegmentSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "segment_type",
+          "zodType": "enum",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "parent_id",
+          "zodType": "string",
+          "constraints": [
+            "uuid()"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_at",
+          "zodType": "string",
+          "constraints": [
+            "max(VALIDATION_LIMITS.TIMESTAMP_MAX, \"Timestamp too long\")"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_by",
+          "zodType": "string",
+          "constraints": [
+            "uuid()"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "operatorSegmentSchema",
+        "segmentSchema"
+      ],
+      "validationFunctions": [
+        "validateOperatorSegmentForSubmission"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    }
+  ]
+}

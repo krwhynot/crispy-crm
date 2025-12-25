@@ -1,0 +1,160 @@
+{
+  "chunk_name": "tags",
+  "generated_at": "2025-12-25T17:02:03.312Z",
+  "item_count": 6,
+  "items": [
+    {
+      "name": "Tag",
+      "file": "src/atomic-crm/tags/types.ts",
+      "line": 6,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "color",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "createdAt",
+          "type": "string | Date",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "updatedAt",
+          "type": "string | Date",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "CreateTagInput",
+      "file": "src/atomic-crm/tags/types.ts",
+      "line": 17,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "name",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "color",
+          "type": "TagColorName",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "UpdateTagInput",
+      "file": "src/atomic-crm/tags/types.ts",
+      "line": 25,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "id",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "name",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "color",
+          "type": "TagColorName",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "TagWithCount",
+      "file": "src/atomic-crm/tags/types.ts",
+      "line": 34,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "count",
+          "type": "number",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "extends": [
+        "Tag"
+      ],
+      "isComplex": true,
+      "isExported": true
+    },
+    {
+      "name": "TagSelection",
+      "file": "src/atomic-crm/tags/types.ts",
+      "line": 41,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "tagId",
+          "type": "string",
+          "optional": false,
+          "readonly": false
+        },
+        {
+          "name": "selected",
+          "type": "boolean",
+          "optional": false,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    },
+    {
+      "name": "TagFilterOptions",
+      "file": "src/atomic-crm/tags/types.ts",
+      "line": 49,
+      "kind": "interface",
+      "properties": [
+        {
+          "name": "colors",
+          "type": "TagColorName[]",
+          "optional": true,
+          "readonly": false
+        },
+        {
+          "name": "searchTerm",
+          "type": "string",
+          "optional": true,
+          "readonly": false
+        }
+      ],
+      "isComplex": false,
+      "isExported": true
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "status": "complete",
+  "generated_at": "2025-12-25T17:02:03.318Z",
+  "generator": "scripts/discover/extractors/types.ts",
+  "source_globs": [
+    "src/atomic-crm/types.ts",
+    "src/atomic-crm/**/types.ts",
+    "src/types/**/*.ts"
+  ],
+  "checksum": "sha256:c47adbb5123422c4",
+  "source_hashes": {
+    "src/atomic-crm/dashboard/v3/types.ts": "a31606a565ce",
+    "src/atomic-crm/filters/types.ts": "65608e159c7f",
+    "src/atomic-crm/organizations/types.ts": "76ca26cbf464",
+    "src/atomic-crm/providers/supabase/extensions/types.ts": "b1f0c04bf5f5",
+    "src/atomic-crm/providers/supabase/types.ts": "ac091ebdeac6",
+    "src/atomic-crm/providers/types.ts": "32d3407ddc5c",
+    "src/atomic-crm/reports/types.ts": "f28725d85208",
+    "src/atomic-crm/tags/types.ts": "9cd98db1ff7b",
+    "src/atomic-crm/tutorial/types.ts": "b66ec8c41b6f",
+    "src/atomic-crm/types.ts": "c857c0a1a7bb",
+    "src/types/database.types.ts": "42ec55637206"
+  },
+  "summary": {
+    "total_items": 101,
+    "total_chunks": 9,
+    "interfaces": 68,
+    "type_aliases": 33,
+    "zod_derived": 2,
+    "exported": 98,
+    "complex": 54
+  },
+  "chunks": [
+    {
+      "name": "_root",
+      "file": "_root.json",
+      "item_count": 30,
+      "checksum": "sha256:a115a086d44ad4c0"
+    },
+    {
+      "name": "dashboard",
+      "file": "dashboard.json",
+      "item_count": 13,
+      "checksum": "sha256:1dd61931ae8fa548"
+    },
+    {
+      "name": "database",
+      "file": "database.json",
+      "item_count": 9,
+      "checksum": "sha256:b62281e88ec395e2"
+    },
+    {
+      "name": "filters",
+      "file": "filters.json",
+      "item_count": 13,
+      "checksum": "sha256:8af2f0f1fc5c9db4"
+    },
+    {
+      "name": "organizations",
+      "file": "organizations.json",
+      "item_count": 17,
+      "checksum": "sha256:3412463a7068601d"
+    },
+    {
+      "name": "providers",
+      "file": "providers.json",
+      "item_count": 7,
+      "checksum": "sha256:3665e4b30137a3b3"
+    },
+    {
+      "name": "reports",
+      "file": "reports.json",
+      "item_count": 3,
+      "checksum": "sha256:3ea39a38c40c1b2f"
+    },
+    {
+      "name": "tags",
+      "file": "tags.json",
+      "item_count": 6,
+      "checksum": "sha256:dce67ebe5850e20b"
+    },
+    {
+      "name": "tutorial",
+      "file": "tutorial.json",
+      "item_count": 3,
+      "checksum": "sha256:7739fefd37cf2a66"
+    }
+  ]
+}
