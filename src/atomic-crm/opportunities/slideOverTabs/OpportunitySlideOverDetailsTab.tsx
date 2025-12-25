@@ -8,7 +8,8 @@ import { SelectInput } from "@/components/admin/select-input";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { DirtyStateTracker, SidepaneMetadata } from "@/components/layouts/sidepane";
+import { DirtyStateTracker, SidepaneMetadata, SidepaneSection } from "@/components/layouts/sidepane";
+import { Card } from "@/components/ui/card";
 import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
 import { LeadSourceInput } from "../LeadSourceInput";
 import { CloseOpportunityModal } from "../components/CloseOpportunityModal";
@@ -46,24 +47,24 @@ const OrganizationCard = ({
 
   if (isLoading) {
     return (
-      <div className="border border-border rounded-md p-2">
+      <Card className="p-2 bg-muted/30 border-0">
         <label className="text-xs font-medium text-muted-foreground block mb-1">{label}</label>
         <div className="h-4 bg-muted animate-pulse rounded" />
-      </div>
+      </Card>
     );
   }
 
   if (!org) {
     return (
-      <div className="border border-border rounded-md p-2">
+      <Card className="p-2 bg-muted/30 border-0">
         <label className="text-xs font-medium text-muted-foreground block mb-1">{label}</label>
         <p className="text-xs text-muted-foreground">Not set</p>
-      </div>
+      </Card>
     );
   }
 
   return (
-    <div className="border border-border rounded-md p-2 hover:bg-muted/50 transition-colors">
+    <Card className="p-2 bg-muted/30 border-0 hover:bg-muted/50 transition-colors">
       <label className="text-xs font-medium text-muted-foreground block mb-1">{label}</label>
       <div className="flex items-center gap-2">
         <div className="w-6 h-6 rounded bg-primary/10 flex items-center justify-center shrink-0">
@@ -78,7 +79,7 @@ const OrganizationCard = ({
           </Link>
         </div>
       </div>
-    </div>
+    </Card>
   );
 };
 
@@ -260,10 +261,7 @@ export function OpportunitySlideOverDetailsTab({
         />
 
         {/* Organizations section */}
-        <div className="pt-2 border-t border-border">
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide block mb-2">
-            Organizations
-          </span>
+        <SidepaneSection label="Organizations" showSeparator>
           <div className="space-y-2">
             <ReferenceInput source="customer_organization_id" reference="organizations">
               <AutocompleteInput
@@ -295,7 +293,7 @@ export function OpportunitySlideOverDetailsTab({
               />
             </ReferenceInput>
           </div>
-        </div>
+        </SidepaneSection>
 
         {/* CloseOpportunityModal - shown when changing stage to closed_won/closed_lost */}
         <CloseOpportunityModal
@@ -357,48 +355,42 @@ export function OpportunitySlideOverDetailsTab({
 
   return (
     <ScrollArea className="h-full">
-      <div className="px-6 py-4 space-y-2">
-        {/* Name */}
-        <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-            Name
-          </span>
-          <p className="text-sm">{record.name || "N/A"}</p>
-        </div>
-
-      {/* Description */}
-      {record.description && (
-        <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-            Description
-          </span>
-          <p className="text-sm whitespace-pre-wrap max-h-96 overflow-y-auto">{record.description}</p>
-        </div>
-      )}
-
-      {/* Stage & Priority row */}
-      <div className="grid grid-cols-2 gap-3">
-        <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-            Stage
-          </span>
-          <div>
-            <Badge variant={getStageBadgeVariant(record.stage || "")}>{stageName}</Badge>
+      <div className="px-6 py-4">
+        {/* Overview Section */}
+        <SidepaneSection label="Overview">
+          <div className="space-y-3">
+            <div>
+              <h3 className="text-lg font-semibold">{record.name || "Untitled Opportunity"}</h3>
+            </div>
+            {record.description && (
+              <p className="text-sm text-muted-foreground whitespace-pre-wrap max-h-96 overflow-y-auto">
+                {record.description}
+              </p>
+            )}
           </div>
-        </div>
-        <div>
-          <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-            Priority
-          </span>
-          <div>
-            <Badge variant={getPriorityBadgeVariant(record.priority || "low")}>
-              {record.priority
-                ? record.priority.charAt(0).toUpperCase() + record.priority.slice(1)
-                : "Low"}
-            </Badge>
+        </SidepaneSection>
+
+        {/* Status Section */}
+        <SidepaneSection label="Status" showSeparator>
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <span className="text-xs text-muted-foreground">Stage</span>
+              <div className="mt-1">
+                <Badge variant={getStageBadgeVariant(record.stage || "")}>{stageName}</Badge>
+              </div>
+            </div>
+            <div>
+              <span className="text-xs text-muted-foreground">Priority</span>
+              <div className="mt-1">
+                <Badge variant={getPriorityBadgeVariant(record.priority || "low")}>
+                  {record.priority
+                    ? record.priority.charAt(0).toUpperCase() + record.priority.slice(1)
+                    : "Low"}
+                </Badge>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        </SidepaneSection>
 
       {/* Win/Loss Reason - shown for closed opportunities */}
       {isClosedOpportunity && closedReason && (
