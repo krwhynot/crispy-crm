@@ -26,6 +26,7 @@ import type { WizardStepConfig } from "@/components/admin/form";
  * Test wrapper that mimics the OpportunityCreateWizard structure
  * without needing the full React Admin context
  */
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 function TestOpportunityWizard({
   onSubmit = vi.fn(),
   defaultValues = {},

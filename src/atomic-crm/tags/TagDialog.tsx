@@ -60,7 +60,7 @@ export function TagDialog({ open, tag, title, onClose, onSubmit }: TagDialogProp
     reset,
     setValue,
     watch,
-    formState: { errors, isSubmitting, isValid, isDirty },
+    formState: { errors, isSubmitting, isDirty },
   } = form;
 
   // Watch color for the color picker UI
