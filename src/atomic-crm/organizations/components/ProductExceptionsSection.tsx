@@ -10,7 +10,6 @@ import { parseDateSafely } from "@/lib/date-utils";
 import type {
   ProductExceptionsSectionProps,
   ProductAuthorization,
-  Product,
 } from "./authorization-types";
 import { AddProductExceptionDialog } from "./AddProductExceptionDialog";
 import { RemoveConfirmDialog } from "./RemoveConfirmDialog";
