@@ -47,7 +47,7 @@ export default function SalesCreate() {
     ...createSalesSchema.partial().parse({}),
   };
 
-  const { mutate } = useMutation({
+  const { mutate, isPending: isCreating } = useMutation({
     mutationKey: ["signup"],
     mutationFn: async (data: SalesFormData) => {
       return salesService.salesCreate(data);
@@ -56,12 +56,35 @@ export default function SalesCreate() {
       notify("User created. They will soon receive an email to set their password.");
       redirect("/sales");
     },
-    onError: () => {
-      notify("An error occurred while creating the user.", {
-        type: "error",
-      });
+    onError: (error: Error) => {
+      // Log for debugging
+      console.error("[SalesCreate] Creation failed:", error);
+
+      // Provide specific messages based on error type
+      let message = "An error occurred while creating the user.";
+
+      if (error.message?.includes("Not authenticated")) {
+        message = "Your session has expired. Please log in again.";
+        redirect("/login");
+        return;
+      }
+
+      if (error.message?.includes("already exists") || error.message?.includes("duplicate")) {
+        message = "A user with this email already exists.";
+      }
+
+      if (error.message?.includes("403") || error.message?.includes("Forbidden")) {
+        message = "You don't have permission to create users.";
+      }
+
+      if (error.message?.includes("validation") || error.message?.includes("invalid")) {
+        message = "Please check your input. Some fields may be invalid.";
+      }
+
+      notify(message, { type: "error" });
     },
   });
+
   const onSubmit: SubmitHandler<SalesFormData> = async (data) => {
     mutate(data);
   };
@@ -73,7 +96,11 @@ export default function SalesCreate() {
           <CardTitle>Create a new user</CardTitle>
         </CardHeader>
         <CardContent>
-          <SimpleForm<SalesFormData> onSubmit={onSubmit} defaultValues={formDefaults}>
+          <SimpleForm<SalesFormData>
+            onSubmit={onSubmit}
+            defaultValues={formDefaults}
+            disabled={isCreating}
+          >
             <SalesFormContent />
           </SimpleForm>
         </CardContent>
