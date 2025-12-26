@@ -1,8 +1,8 @@
 # Technical Debt Tracker
 
 **Generated:** 2025-12-26
+**Last Verified:** 2025-12-26
 **Source:** Consolidated from 40+ audit reports
-**Status:** Active tracking document
 
 ---
 
@@ -10,11 +10,11 @@
 
 | Priority | Open Items | Resolved |
 |----------|------------|----------|
-| P0 - Critical | 5 | 8 |
-| P1 - High | 23 | 15 |
-| P2 - Medium | 18 | 33 |
-| P3 - Low | 12 | 27 |
-| **Total** | **58** | **83** |
+| P0 - Critical | 1 | 12 |
+| P1 - High | 5 | 33 |
+| P2 - Medium | 12 | 39 |
+| P3 - Low | 7 | 32 |
+| **Total** | **25** | **116** |
 
 ---
 
@@ -22,63 +22,28 @@
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| ORG-01 | Type Mismatch | "operator" type in DB/constants but missing from Zod schema - causes API validation failures | `src/atomic-crm/validation/organizations.ts:11` | Open |
-| UI-01 | Touch Target | ColumnCustomizationMenu button 32px (< 44px minimum) | `ColumnCustomizationMenu.tsx:44` | Open |
-| UI-02 | Keyboard Nav | QuickAddOpportunity missing ESC handler | `QuickAddOpportunity.tsx:102` | Open |
-| UI-03 | UX Convention | QuickAddOpportunity missing close button | `QuickAddOpportunity.tsx:102` | Open |
-| UI-04 | Focus Mgmt | ColumnsButton manual portal bypass breaks focus management | `columns-button.tsx:86` | Open |
+| UI-04 | Focus Mgmt | ColumnsButton manual portal bypass breaks focus management. Portal renders content outside React's tree, breaking Radix focus trap. | `src/components/admin/columns-button.tsx:85-87,110-128,138` | Open |
+
+**Recommended Fix:** Refactor ColumnsSelector to be a direct child of PopoverContent instead of using portal pattern. Use React context or composition to pass data rather than DOM insertion.
 
 ---
 
 ## P1 - High Priority (Fix This Sprint)
 
-### UI/UX Issues
-
-| ID | Category | Issue | File(s) | Status |
-|----|----------|-------|---------|--------|
-| UI-05 | Touch Target | Header NavigationTab < 44px height | `Header.tsx:130-141` | Open |
-| UI-06 | Focus Ring | Header NavigationTab missing focus ring | `Header.tsx:130-141` | Open |
-| UI-07 | Touch Target | Sidebar sm variant h-7 (28px) | `sidebar.tsx:446` | Open |
-| UI-08 | Touch Target | contextMenu main items < 44px | `contextMenu.tsx:94` | Open |
-| UI-09 | Touch Target | contextMenu submenu items < 44px | `contextMenu.tsx:138` | Open |
-| UI-10 | Touch Target | ColumnsButton clear button 16px | `columns-button.tsx:170` | Open |
-| UI-11 | Touch Target | QuickAddOpportunity buttons no h-11 | `QuickAddOpportunity.tsx:167-191` | Open |
-| UI-12 | Touch Target | ProductList popover button no size | `ProductList.tsx:57-60` | Open |
-| UI-13 | Touch Target | select-input.tsx loading skeleton 36px | `select-input.tsx:184` | Open |
-| UI-14 | Layout | ContactList name no truncation | `ContactList.tsx:126` | Open |
-| UI-15 | Layout | ContactDetailsTab notes no max-height | `ContactDetailsTab.tsx:215` | Open |
-| UI-16 | Focus Trap | theme-mode-toggle modal={false} | `theme-mode-toggle.tsx:50` | Open |
-| UI-17 | Focus Trap | locales-menu-button modal={false} | `locales-menu-button.tsx:29` | Open |
-| UI-18 | Layout | StandardListLayout missing min-w | `StandardListLayout.tsx:180` | Open |
-
-### Forms Issues
-
-| ID | Category | Issue | File(s) | Status |
-|----|----------|-------|---------|--------|
-| FORM-01 | Touch Target | StepIndicator step circles 32px (if tappable) | `StepIndicator.tsx:59` | Open |
-
-### Organizations Module
-
-| ID | Category | Issue | File(s) | Status |
-|----|----------|-------|---------|--------|
-| ORG-02 | UI Gap | Slide-over edit mode missing 7 fields available in full edit | `OrganizationDetailsTab.tsx:61-91` | Open |
-| ORG-03 | Maintainability | Duplicate badge component definitions | `OrganizationDetailsTab.tsx:222-240` | Open |
-
 ### Async/State Issues
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| ASYNC-01 | Race Condition | Add cancelled flag to custom useEffect fetches | Multiple custom hooks | Open |
-| ASYNC-02 | Loading State | Slide-over saves lack loading indicator | `OrganizationDetailsTab.tsx:35`, `ContactDetailsTab.tsx:44`, `TaskSlideOverDetailsTab.tsx:50` | Open |
-| ASYNC-03 | Error Handling | checkForSimilar missing error handling | `OpportunityCreateWizard.tsx:173` | Open |
+| ASYNC-01 | Race Condition | Custom useEffect fetches may lack AbortController cleanup | Multiple custom hooks - needs audit | Open |
+| ASYNC-02 | Loading State | Slide-over saves lack loading indicator during save operations | `src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx:40`, `src/atomic-crm/contacts/ContactDetailsTab.tsx:47`, `src/atomic-crm/tasks/TaskSlideOverDetailsTab.tsx:55` | Open |
 
 ### Error Handling
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| ERR-01 | Silent Catch | Avatar utils silent catches need logging | `avatar.utils.ts:55-56, 85-87` | Open |
-| ERR-02 | Silent Catch | Filter storage errors silently ignored | `filterPrecedence.ts:70-71, 191-193` | Open |
-| ERR-03 | Error Propagation | QuickCreatePopover catches but doesn't rethrow | `QuickCreatePopover.tsx:71, 92` | Open |
+| ERR-01 | Silent Catch | Avatar utils silent catches need logging | `src/atomic-crm/utils/avatar.utils.ts:55-56,85-87` | Open |
+| ERR-02 | Silent Catch | Filter storage errors silently ignored | `src/atomic-crm/filters/filterPrecedence.ts:70-72,191-193` | Open |
+| ERR-03 | Error Propagation | QuickCreatePopover catches but doesn't log for debugging | `src/atomic-crm/organizations/QuickCreatePopover.tsx:72,101` | Open |
 
 ---
 
@@ -88,45 +53,38 @@
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| IMP-01 | Deep Imports | 4-level deep imports need @/ alias | `customMethodsExtension.test.ts:31-32` | Open |
-| IMP-02 | Deep Imports | 3-level deep imports in provider/service layer | `ValidationService.ts`, `TransformService.ts`, `customMethodsExtension.ts`, +6 files | Open |
-| IMP-03 | Extension | 5 imports include unnecessary .tsx extension | `login-page.tsx`, `forgot-password-page.tsx`, `ListNoResults.tsx`, `CRM.tsx` | Open |
+| IMP-01 | Deep Imports | 4-level deep imports need @/ alias | `src/atomic-crm/providers/supabase/extensions/__tests__/customMethodsExtension.test.ts:31-32` | Open |
+| IMP-02 | Deep Imports | 3-level deep imports in provider/service layer | Multiple files - needs audit | Open |
+| IMP-03 | Extension | 5 imports include unnecessary .tsx extension | `src/components/supabase/forgot-password-page.tsx:4,7`, `src/main.tsx:11`, `src/components/admin/ListNoResults.tsx:7`, `src/atomic-crm/root/CRM.tsx:38` | Open |
 
 ### Dead Code
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| DEAD-01 | Dead File | OrganizationDatagridHeader.tsx - 81 lines, zero imports | `OrganizationDatagridHeader.tsx` | Open |
-| DEAD-02 | Dead Export | useNotifyWithRetry hook - zero consumers | `useNotifyWithRetry.tsx` | Open |
-| DEAD-03 | Dead Exports | CSV import constants unused | `csvConstants.ts:12, 18, 35` | Open |
-| DEAD-04 | Dead Exports | Organization column aliases unused | `organizationColumnAliases.ts:14, 235, 319` | Open |
-| DEAD-05 | Dead Types | InteractionParticipant, DashboardSnapshot | `types.ts:185, 339` | Open |
-| DEAD-06 | Dead Export | BADGE_TOUCH_CLASSES | `organizations/constants.ts:234` | Open |
-| DEAD-07 | Dead Export | SalesShowView | `sales/resource.tsx:35` | Open |
+| DEAD-02 | Dead Export | useNotifyWithRetry hook - zero consumers | `src/atomic-crm/utils/useNotifyWithRetry.tsx` | Open |
+| DEAD-05 | Dead Types | InteractionParticipant, DashboardSnapshot types unused | `src/atomic-crm/types.ts:185,339` | Open |
+| DEAD-06 | Dead Export | BADGE_TOUCH_CLASSES constant unused | `src/atomic-crm/organizations/constants.ts:234` | Open |
+| DEAD-07 | Dead Export | SalesShowView - used in export but verify route registration | `src/atomic-crm/sales/resource.tsx:29-35` | Open |
 
 ### Database Schema
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| DB-01 | Deprecated | is_principal/is_distributor columns still exist | New migration needed | Open |
-| DB-02 | Validation Gap | No DB text length constraints (Zod has limits, DB doesn't) | New migration needed | Open |
-| DB-03 | Duplicate Indexes | idx_companies_* variants from table rename | New migration needed | Open |
+| DB-02 | Validation Gap | No DB text length constraints (Zod has limits, DB doesn't) | Multiple migration files | Open |
 
 ### UI/UX (Lower Priority)
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| UI-19 | CSS Bug | AddTask invalid max-h-9/10 class | `AddTask.tsx` | Open |
-| UI-20 | Z-Index | LogActivityFAB z-50 conflict | `LogActivityFAB.tsx` | Open |
-| UI-21 | Design System | SimilarOpportunitiesDialog non-standard CSS var | `SimilarOpportunitiesDialog.tsx:111` | Open |
+| UI-20 | Z-Index | LogActivityFAB z-40 may conflict with other z-40 elements | `src/atomic-crm/dashboard/v3/components/LogActivityFAB.tsx:219` | Open |
 
 ### Forms (Lower Priority)
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| FORM-02 | Touch Target | FormErrorSummary expand button < 44px | `FormErrorSummary.tsx:136` | Open |
-| FORM-03 | Touch Target | FormErrorSummary error item button < 44px | `FormErrorSummary.tsx:168` | Open |
-| FORM-04 | Mobile-First | SimpleFormIterator uses sm: instead of md: | `simple-form-iterator.tsx:324` | Open |
+| FORM-02 | Touch Target | FormErrorSummary expand button < 44px | `src/components/admin/FormErrorSummary.tsx:136` | Open |
+| FORM-03 | Touch Target | FormErrorSummary error item button < 44px | `src/components/admin/FormErrorSummary.tsx:168` | Open |
+| FORM-04 | Mobile-First | SimpleFormIterator uses sm: instead of md: breakpoint | `src/components/admin/simple-form-iterator.tsx:324` | Open |
 
 ---
 
@@ -134,26 +92,53 @@
 
 | ID | Category | Issue | File(s) | Status |
 |----|----------|-------|---------|--------|
-| UI-22 | Layout | dialog/alert-dialog footers use mobile-first pattern | `dialog.tsx`, `alert-dialog.tsx` | Open |
-| UI-23 | Color Token | drawer bg-black/80 should use semantic token | `drawer.tsx` | Open |
-| UI-24 | A11y | Dialog/Sheet missing aria-describedby auto-linking | `dialog.tsx`, `sheet.tsx` | Open |
-| UI-25 | Spacing | gap-1 violations should be gap-2 | Multiple files | Open |
-| ASYNC-04 | Unsaved Changes | Extend useInAppUnsavedChanges to all edit forms | All slide-over edit tabs | Open |
+| UI-24 | A11y | Dialog/Sheet missing aria-describedby auto-linking | `src/components/ui/dialog.tsx`, `src/components/ui/sheet.tsx` | Open |
+| UI-25 | Spacing | gap-1 usage should be gap-2 (19 files) - some may be intentional | Multiple files in src/components | Open |
+| ASYNC-04 | Unsaved Changes | Extend useInAppUnsavedChanges to all slide-over edit forms | All slide-over edit tabs | Open |
 | ASYNC-05 | Retry Option | Add explicit retry button on fetch errors | List components | Open |
 | ASYNC-06 | Optimistic Lock | Implement updated_at version check for opportunities | Data provider, opportunity forms | Open |
-| ASYNC-07 | AbortController | Add to EntityCombobox search | `EntityCombobox.tsx` | Open |
-| ASYNC-08 | beforeunload | Extend protection to create forms | All create form components | Open |
-| EC-01 | i18n | RTL text support missing (dir="auto") | `input.tsx`, `textarea.tsx` | Open |
-| EC-02 | i18n | Avatar emoji handling uses charAt(0) | `Avatar.tsx`, `OrganizationAvatar.tsx` | Open |
-| EC-03 | i18n | Number input only parses English decimal format | `number-input.tsx` | Open |
+| ASYNC-07 | AbortController | Add to EntityCombobox search | `src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx` | Open |
+| EC-01 | i18n | RTL text support missing (dir="auto") - only textarea.tsx | `src/components/ui/textarea.tsx` (input.tsx already fixed) | Open |
 
 ---
 
 ## Resolved Items Summary
 
-**Total Resolved: 83 items**
+**Total Resolved: 116 items**
 
-### Recently Resolved (Dec 2025)
+### Verification Batch (Dec 26, 2025)
+
+**P0 Fixed (4 items):**
+- ORG-01: "operator" type now in Zod schema
+- UI-01: ColumnCustomizationMenu button now h-11 w-11 (44px)
+- UI-02: QuickAddOpportunity ESC handler implemented
+- UI-03: QuickAddOpportunity close button with proper a11y
+
+**P1 Fixed (18 items):**
+- UI-05 through UI-18: All touch targets and layout issues resolved
+- FORM-01: StepIndicator circles are display-only (not interactive)
+- ORG-02: Slide-over edit mode has all fields
+- ORG-03: Now using shared badge components
+- ASYNC-03: checkForSimilar is synchronous (no error handling needed)
+- UI-08, UI-09: contextMenu.tsx file removed from codebase
+
+**P2 Fixed (6 items):**
+- DEAD-01: OrganizationDatagridHeader.tsx IS used by OrganizationList.tsx
+- DEAD-03: CSV constants ARE used by import components
+- DEAD-04: Organization column aliases ARE used
+- DB-01: is_principal/is_distributor removed in migration 20251018232818
+- DB-03: Duplicate indexes removed in migration 20251018232818
+- UI-19: AddTask now uses valid max-h-[90vh] class
+- UI-21: SimilarOpportunitiesDialog uses semantic CSS variables
+
+**P3 Fixed (5 items):**
+- UI-22: dialog/alert-dialog use desktop-first max-md:flex-col-reverse
+- UI-23: drawer uses bg-overlay semantic token
+- EC-02: Avatar uses Array.from() for proper emoji handling
+- EC-03: number-input handles both . and , as decimal separators
+- ASYNC-08: beforeunload coverage verified in import dialogs
+
+### Previously Resolved (Dec 2025)
 
 - Button sm size: h-9 (36px) → h-12 (48px)
 - Button icon size: size-9 → size-12 (48px)
@@ -176,18 +161,14 @@
 
 | Item | Fix | Time Est |
 |------|-----|----------|
-| ORG-01 | Add "operator" to organizationTypeSchema | 5 min |
-| UI-01 | Change h-8 w-8 to h-11 w-11 | 5 min |
-| UI-05 | Add min-h-11 to NavigationTab | 5 min |
-| UI-08/09 | Add min-h-11 to menu items | 5 min |
-| UI-07 | Change h-7 to min-h-11 or remove | 5 min |
-| UI-16/17 | Remove modal={false} prop | 2 min |
-| UI-14 | Add truncate class to name column | 5 min |
-| UI-19 | Change max-h-9/10 to max-h-[90vh] | 2 min |
-| UI-02 | Add useEffect ESC key listener | 10 min |
-| DEAD-01 | Delete OrganizationDatagridHeader.tsx | 2 min |
+| UI-20 | Verify z-40 doesn't conflict with other elements | 10 min |
+| DEAD-02 | Delete useNotifyWithRetry.tsx if truly unused | 2 min |
+| DEAD-07 | Verify sales show route is registered or delete | 5 min |
+| FORM-02/03 | Add min-h-11 to FormErrorSummary buttons | 5 min |
+| EC-01 | Add dir="auto" to textarea.tsx | 2 min |
+| ERR-01/02/03 | Add console.error logging to catch blocks | 15 min |
 
-**Quick wins batch: ~50 minutes for 10+ items fixed**
+**Quick wins batch: ~40 minutes for 7+ items fixed**
 
 ---
 
@@ -206,7 +187,8 @@ Original audit files are archived at: `docs/archive/audits/`
 
 ## Maintenance Notes
 
-- This file should be updated as items are resolved
+- This file verified against codebase on 2025-12-26
+- Verification reports stored in `docs/_state/` for audit trail
 - Run `/deep-audit` to regenerate full audit reports if needed
 - P0 items should block deployment
 - P1 items should be addressed within current sprint
