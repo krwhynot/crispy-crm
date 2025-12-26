@@ -469,7 +469,7 @@ OPTIONAL (after user validation):
 | `docs/architecture/data-model.md` | Complete entity reference |
 | `docs/architecture/rls-policies.md` | Security policies |
 | `docs/testing/test-architecture.md` | Testing patterns |
-| `docs/ui-ux/audits/FINAL-AUDIT-REPORT.md` | UI/UX standards |
+| `docs/archive/audits/ui-ux/FINAL-AUDIT-REPORT.md` | UI/UX standards |
 | `CLAUDE.md` | Engineering constitution |
 
 ---

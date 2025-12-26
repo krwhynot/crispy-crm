@@ -596,7 +596,7 @@ Consider removing the `sm` size variant from SidebarMenuButton entirely, as it v
 
 ## Related Backlog Items
 
-Cross-reference with `/docs/ui-ux/audits/prioritized-backlog.md`:
+Cross-reference with `/docs/archive/audits/ui-ux/prioritized-backlog.md`:
 
 | Backlog ID | Status | Notes |
 |------------|--------|-------|

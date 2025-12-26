@@ -386,4 +386,4 @@ export const organizationTypeSchema = z.enum(["customer", "prospect", "principal
 - [x] Opportunity 3-party flow traced
 - [x] useDistributorAuthorization logic understood
 - [x] TypeScript/Database alignment checked
-- [x] Output file saved to /docs/audits/orgs-relationships.md
+- [x] Output file saved to /docs/archive/audits/orgs-relationships.md

@@ -342,4 +342,4 @@ All SECURITY DEFINER functions have been remediated in migration `20251130045429
 - [x] Every RLS policy on organizations reviewed (4 policies)
 - [x] SECURITY DEFINER views flagged - NONE found (all use INVOKER)
 - [x] SECURITY DEFINER functions verified - all have search_path set
-- [x] Output file saved to /docs/audits/orgs-database-layer.md
+- [x] Output file saved to /docs/archive/audits/orgs-database-layer.md

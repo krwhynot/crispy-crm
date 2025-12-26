@@ -218,14 +218,14 @@
 
 | Category | Report Location | Status |
 |----------|-----------------|--------|
-| Foundation & Global | `docs/ui-ux/audits/base-ui-audit.md` | Updated Dec 20 |
-| Navigation & Layout | `docs/ui-ux/audits/navigation-audit.md` | Updated Dec 20 |
-| Forms & Inputs | `docs/ui-ux/audits/forms-audit.md` | Updated Dec 20 |
-| Data Display | `docs/ui-ux/audits/lists-tables-audit.md` | Updated Dec 20 |
-| Overlays & Feedback | `docs/ui-ux/audits/modals-slideovers-audit.md` | Updated Dec 20 |
-| Interactive Patterns | `docs/ui-ux/audits/interactive-elements-adversarial-audit.md` | Dec 15 |
-| Edge Cases | `docs/ui-ux/audits/edge-cases-audit.md` | Dec 15 |
-| Full Forensic Report | `docs/ui-ux/audits/FINAL-AUDIT-REPORT.md` | Dec 15 |
+| Foundation & Global | `docs/archive/audits/ui-ux/base-ui-audit.md` | Updated Dec 20 |
+| Navigation & Layout | `docs/archive/audits/ui-ux/navigation-audit.md` | Updated Dec 20 |
+| Forms & Inputs | `docs/archive/audits/ui-ux/forms-audit.md` | Updated Dec 20 |
+| Data Display | `docs/archive/audits/ui-ux/lists-tables-audit.md` | Updated Dec 20 |
+| Overlays & Feedback | `docs/archive/audits/ui-ux/modals-slideovers-audit.md` | Updated Dec 20 |
+| Interactive Patterns | `docs/archive/audits/ui-ux/interactive-elements-adversarial-audit.md` | Dec 15 |
+| Edge Cases | `docs/archive/audits/ui-ux/edge-cases-audit.md` | Dec 15 |
+| Full Forensic Report | `docs/archive/audits/ui-ux/FINAL-AUDIT-REPORT.md` | Dec 15 |
 
 ---
 

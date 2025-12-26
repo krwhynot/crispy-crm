@@ -491,8 +491,8 @@ Same issues as OpportunityColumn
 
 ## Related Documentation
 
-- [Spacing and Layout](/docs/ui-ux/spacing-and-layout.md)
-- [Typography and Readability](/docs/ui-ux/typography-and-readability.md)
-- [Interactive Elements](/docs/ui-ux/interactive-elements.md)
-- [Layout Patterns](/docs/ui-ux/layout-patterns.md)
-- [Internationalization Audit](/docs/ui-ux/audits/deep-dive/internationalization-audit.md)
+- [Spacing and Layout](/docs/archive/audits/ui-ux/spacing-and-layout.md)
+- [Typography and Readability](/docs/archive/audits/ui-ux/typography-and-readability.md)
+- [Interactive Elements](/docs/archive/audits/ui-ux/interactive-elements.md)
+- [Layout Patterns](/docs/archive/audits/ui-ux/layout-patterns.md)
+- [Internationalization Audit](/docs/archive/audits/ui-ux/deep-dive/internationalization-audit.md)

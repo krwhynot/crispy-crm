@@ -294,9 +294,9 @@ Based on dependencies and impact:
 ## 7. Source Reports
 
 This audit synthesized findings from:
-- `/docs/audits/orgs-database-layer.md` — Database schema, RLS policies, triggers, indexes
-- `/docs/audits/orgs-ui-consistency.md` — Form fields, list views, filter configuration
-- `/docs/audits/orgs-relationships.md` — Junction tables, authorization system, 3-party flow
+- `/docs/archive/audits/orgs-database-layer.md` — Database schema, RLS policies, triggers, indexes
+- `/docs/archive/audits/orgs-ui-consistency.md` — Form fields, list views, filter configuration
+- `/docs/archive/audits/orgs-relationships.md` — Junction tables, authorization system, 3-party flow
 
 ---
 
