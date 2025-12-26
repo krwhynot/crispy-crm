@@ -37,9 +37,10 @@ describe("formatRelativeTime", () => {
   });
 
   describe("past days", () => {
-    it('should return "1d ago" for 1 day ago', () => {
+    it('should return "yesterday" for 1 day ago', () => {
       const oneDayAgo = new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000);
-      expect(formatRelativeTime(oneDayAgo)).toBe("1d ago");
+      // Intl.RelativeTimeFormat with numeric:"auto" returns natural language
+      expect(formatRelativeTime(oneDayAgo)).toBe("yesterday");
     });
 
     it('should return "3d ago" for 3 days ago', () => {
