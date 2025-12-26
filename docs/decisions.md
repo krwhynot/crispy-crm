@@ -263,7 +263,7 @@
 
 #### Pre-Computed Discovery Files
 - Component/hook/schema inventories saved exploration time
-- `docs/_state/` files auto-generated and CI-enforced
+- `.claude/state/` files auto-generated and CI-enforced
 - **Pattern:** Invest in codebase discovery tooling early
 
 #### Junction Tables with Metadata

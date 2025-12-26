@@ -1,13 +1,13 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-25T17:43:13.747Z",
+  "generated_at": "2025-12-26T22:00:00.546Z",
   "generator": "scripts/discover/extractors/types.ts",
   "source_globs": [
     "src/atomic-crm/types.ts",
     "src/atomic-crm/**/types.ts",
     "src/types/**/*.ts"
   ],
-  "checksum": "sha256:38736c9558db8df4",
+  "checksum": "sha256:db81d8d686758f63",
   "source_hashes": {
     "src/atomic-crm/dashboard/v3/types.ts": "a31606a565ce",
     "src/atomic-crm/filters/types.ts": "65608e159c7f",
@@ -35,55 +35,55 @@
       "name": "_root",
       "file": "_root.json",
       "item_count": 30,
-      "checksum": "sha256:f2f9e649ca039d7f"
+      "checksum": "sha256:598a14ed0aa6a642"
     },
     {
       "name": "dashboard",
       "file": "dashboard.json",
       "item_count": 13,
-      "checksum": "sha256:9840869242a9fc2f"
+      "checksum": "sha256:e5a65a0418ad9712"
     },
     {
       "name": "database",
       "file": "database.json",
       "item_count": 9,
-      "checksum": "sha256:6d21ce10a79b80eb"
+      "checksum": "sha256:9a6697c76c7bf522"
     },
     {
       "name": "filters",
       "file": "filters.json",
       "item_count": 13,
-      "checksum": "sha256:de13f03c95003ad5"
+      "checksum": "sha256:86e3d9fc87fe2ae4"
     },
     {
       "name": "organizations",
       "file": "organizations.json",
       "item_count": 17,
-      "checksum": "sha256:eddb1b448771bda0"
+      "checksum": "sha256:687473452350b867"
     },
     {
       "name": "providers",
       "file": "providers.json",
       "item_count": 7,
-      "checksum": "sha256:c0adf937f6580564"
+      "checksum": "sha256:74917e63ac4c2f40"
     },
     {
       "name": "reports",
       "file": "reports.json",
       "item_count": 3,
-      "checksum": "sha256:147665ee8c38dad9"
+      "checksum": "sha256:4c106f931bd00a73"
     },
     {
       "name": "tags",
       "file": "tags.json",
       "item_count": 6,
-      "checksum": "sha256:616936957387e877"
+      "checksum": "sha256:57513ffe75df43f7"
     },
     {
       "name": "tutorial",
       "file": "tutorial.json",
       "item_count": 3,
-      "checksum": "sha256:408e1a27206cafc0"
+      "checksum": "sha256:448f1f8244efe9f1"
     }
   ]
 }

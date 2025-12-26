@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-25T17:43:14.204Z",
+  "generated_at": "2025-12-26T22:00:00.875Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:5dad2e6a8f17ed43",
+  "checksum": "sha256:97fc8af0ad8ccb08",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "ac18d4791030",
     "src/atomic-crm/activities/ActivityEdit.tsx": "55bb5d0670e9",
@@ -38,19 +38,19 @@
     "src/atomic-crm/opportunities/components/OpportunityCreateSaveButton.tsx": "14f7cab1c269",
     "src/atomic-crm/opportunities/forms/OpportunityCompactForm.tsx": "d31bcf0d2463",
     "src/atomic-crm/opportunities/forms/OpportunityInputs.tsx": "b96950fa50fc",
-    "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx": "827aa5bd66a3",
+    "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx": "76ab03047291",
     "src/atomic-crm/organizations/OrganizationCompactForm.tsx": "b086258368eb",
     "src/atomic-crm/organizations/OrganizationCreate.tsx": "ce5d15b9c360",
     "src/atomic-crm/organizations/OrganizationEdit.tsx": "fa95a5cc5ec7",
     "src/atomic-crm/organizations/OrganizationInputs.tsx": "a22f8f2b9cb9",
-    "src/atomic-crm/organizations/QuickCreatePopover.tsx": "d01c6fc61d6c",
+    "src/atomic-crm/organizations/QuickCreatePopover.tsx": "a1c9e4f5b578",
     "src/atomic-crm/productDistributors/ProductDistributorCreate.tsx": "9f7b736b354d",
     "src/atomic-crm/productDistributors/ProductDistributorEdit.tsx": "12b5a9621a83",
     "src/atomic-crm/products/ProductCreate.tsx": "715de25825d5",
     "src/atomic-crm/products/ProductEdit.tsx": "e68372b90093",
     "src/atomic-crm/products/ProductFormTutorial.tsx": "e1cffe4833e3",
     "src/atomic-crm/products/ProductInputs.tsx": "7404ed9b661a",
-    "src/atomic-crm/sales/SalesCreate.tsx": "d00cbe057240",
+    "src/atomic-crm/sales/SalesCreate.tsx": "7f8eed9fd7ee",
     "src/atomic-crm/sales/SalesEdit.tsx": "b355b1de4961",
     "src/atomic-crm/sales/SalesInputs.tsx": "34ac70873dd7",
     "src/atomic-crm/sales/SalesPermissionsInputs.tsx": "4bdb7d8bdcdd",
@@ -624,7 +624,7 @@
     {
       "componentName": "QuickAddForm",
       "file": "src/atomic-crm/opportunities/quick-add/QuickAddForm.tsx",
-      "line": 28,
+      "line": 64,
       "formType": "react-hook-form-direct",
       "formPatterns": {
         "primary": "useForm",
@@ -1010,7 +1010,7 @@
     {
       "componentName": "SalesCreate",
       "file": "src/atomic-crm/sales/SalesCreate.tsx",
-      "line": 13,
+      "line": 16,
       "formType": "react-admin-simple",
       "formPatterns": {
         "primary": "SimpleForm",

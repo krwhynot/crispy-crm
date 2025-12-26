@@ -23,7 +23,7 @@ scripts/discover/
     └── validation-services.ts        # Validation wrappers → chunked
 ```
 
-**Output Directory:** `docs/_state/`
+**Output Directory:** `.claude/state/`
 - 4 chunked outputs (component-inventory/, schemas-inventory/, types-inventory/, validation-services-inventory/)
 - 2 single-file outputs (hooks-inventory.json, forms-inventory.json)
 
@@ -294,7 +294,7 @@ The discovery files are directly referenced in CLAUDE.md:
 **Before exploring code manually, read these pre-computed discovery files:**
 | File | Contents | Use When |
 |------|----------|----------|
-| `docs/_state/component-inventory/` | 484 React components... |
+| `.claude/state/component-inventory/` | 484 React components... |
 ```
 
 ---

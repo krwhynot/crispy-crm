@@ -1,11 +1,11 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-26T21:50:58.670Z",
+  "generated_at": "2025-12-26T22:00:00.410Z",
   "generator": "scripts/discover/extractors/schemas.ts",
   "source_globs": [
     "src/atomic-crm/validation/**/*.ts"
   ],
-  "checksum": "sha256:200ec97df394d62c",
+  "checksum": "sha256:33f1cebf449ee1bf",
   "source_hashes": {
     "src/atomic-crm/validation/activities.ts": "d1ec200643e2",
     "src/atomic-crm/validation/categories.ts": "0f7d9f25b8f8",
@@ -42,109 +42,109 @@
       "name": "activities",
       "file": "activities.json",
       "item_count": 11,
-      "checksum": "sha256:63f224ae39478ce9"
+      "checksum": "sha256:e1d710888dbea9fe"
     },
     {
       "name": "categories",
       "file": "categories.json",
       "item_count": 1,
-      "checksum": "sha256:6b29389fa2897de5"
+      "checksum": "sha256:3ef3fdf26ac613b8"
     },
     {
       "name": "contacts",
       "file": "contacts.json",
       "item_count": 9,
-      "checksum": "sha256:4ecda44dde9b1993"
+      "checksum": "sha256:93f0583b5f363235"
     },
     {
       "name": "distributorAuthorizations",
       "file": "distributorAuthorizations.json",
       "item_count": 3,
-      "checksum": "sha256:4c56e2a6f56bc73b"
+      "checksum": "sha256:20fa8f91b73a1c87"
     },
     {
       "name": "notes",
       "file": "notes.json",
       "item_count": 4,
-      "checksum": "sha256:4a28164bf87310d9"
+      "checksum": "sha256:5a45122c7f5f0670"
     },
     {
       "name": "operatorSegments",
       "file": "operatorSegments.json",
       "item_count": 4,
-      "checksum": "sha256:3198598a59679564"
+      "checksum": "sha256:5e320d35c30f145c"
     },
     {
       "name": "opportunities",
       "file": "opportunities.json",
       "item_count": 9,
-      "checksum": "sha256:76f2cde038e9d437"
+      "checksum": "sha256:2822fa365eda9444"
     },
     {
       "name": "organizationDistributors",
       "file": "organizationDistributors.json",
       "item_count": 1,
-      "checksum": "sha256:0182032999bec56d"
+      "checksum": "sha256:233c2e4fc6138fc1"
     },
     {
       "name": "organizations",
       "file": "organizations.json",
       "item_count": 7,
-      "checksum": "sha256:dd1f2cd926b55017"
+      "checksum": "sha256:76e52209b1e2fbe2"
     },
     {
       "name": "productDistributors",
       "file": "productDistributors.json",
       "item_count": 2,
-      "checksum": "sha256:c958c80eeff3b6a1"
+      "checksum": "sha256:bdd01d7869499333"
     },
     {
       "name": "products",
       "file": "products.json",
       "item_count": 3,
-      "checksum": "sha256:3397b4776503334b"
+      "checksum": "sha256:1b01b762770fa44f"
     },
     {
       "name": "productWithDistributors",
       "file": "productWithDistributors.json",
       "item_count": 2,
-      "checksum": "sha256:ffea14fcc9c27d42"
+      "checksum": "sha256:6e45831927816e48"
     },
     {
       "name": "quickAdd",
       "file": "quickAdd.json",
       "item_count": 1,
-      "checksum": "sha256:e966211db4d591c0"
+      "checksum": "sha256:72eec346d56daf91"
     },
     {
       "name": "rpc",
       "file": "rpc.json",
       "item_count": 10,
-      "checksum": "sha256:ff170a48c1004068"
+      "checksum": "sha256:b353861f4a4524c6"
     },
     {
       "name": "sales",
       "file": "sales.json",
       "item_count": 6,
-      "checksum": "sha256:52811234c5fd0976"
+      "checksum": "sha256:c4afdabb56033f54"
     },
     {
       "name": "segments",
       "file": "segments.json",
       "item_count": 3,
-      "checksum": "sha256:f05c03d45c74b840"
+      "checksum": "sha256:08b5633fab8b713a"
     },
     {
       "name": "tags",
       "file": "tags.json",
       "item_count": 3,
-      "checksum": "sha256:e79ff5b70bd17b48"
+      "checksum": "sha256:e43afad8d9d3e1e6"
     },
     {
       "name": "task",
       "file": "task.json",
       "item_count": 3,
-      "checksum": "sha256:e59b9b4cc2457f78"
+      "checksum": "sha256:c583133c9ade9a4a"
     }
   ]
 }

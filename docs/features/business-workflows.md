@@ -2,7 +2,7 @@
 
 > **Generated:** 2025-12-22
 > **Activity Types:** 13 | **Task Types:** 7 | **Business Rules:** 20
-> **Source:** `docs/_state/business-logic-discovery.json`
+> **Source:** `.claude/state/business-logic-discovery.json`
 
 ## Activity Logging
 

@@ -1,18 +1,18 @@
 {
   "chunk_name": "organizationDistributors",
-  "generated_at": "2025-12-25T17:43:14.253Z",
+  "generated_at": "2025-12-26T22:00:00.900Z",
   "item_count": 2,
   "items": [
     {
       "name": "validateOrganizationDistributor",
       "file": "src/atomic-crm/validation/organizationDistributors.ts",
-      "line": 91,
+      "line": 104,
       "pattern": "date"
     },
     {
       "name": "validateCreateOrganizationDistributor",
       "file": "src/atomic-crm/validation/organizationDistributors.ts",
-      "line": 111,
+      "line": 124,
       "pattern": "date"
     }
   ]

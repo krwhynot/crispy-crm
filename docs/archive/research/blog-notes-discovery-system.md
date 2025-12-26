@@ -204,7 +204,7 @@ Combine both, plus:
 When discovery files exceed ~100KB (~25,000 tokens), chunk them:
 
 ```
-docs/_state/
+.claude/state/
 ├── component-inventory/          # Directory instead of single file
 │   ├── manifest.json             # Index with chunk metadata
 │   ├── contacts.json             # Feature-based chunk
@@ -443,9 +443,9 @@ Before exploring the codebase manually, read these pre-computed discovery files:
 
 | File | Contents | Use When |
 |------|----------|----------|
-| `docs/_state/component-inventory.json` | All React components | "Which components exist?" |
-| `docs/_state/hooks-inventory.json` | Custom hooks | "What hooks are available?" |
-| `docs/_state/schemas-inventory.json` | Validation schemas | "What validation rules exist?" |
+| `.claude/state/component-inventory.json` | All React components | "Which components exist?" |
+| `.claude/state/hooks-inventory.json` | Custom hooks | "What hooks are available?" |
+| `.claude/state/schemas-inventory.json` | Validation schemas | "What validation rules exist?" |
 
 These are auto-generated and CI-enforced fresh.
 
@@ -529,7 +529,7 @@ To check freshness: `just discover-check`
 **Fix:** Add explicit instructions:
 ```markdown
 ## IMPORTANT: Read discovery files BEFORE exploring
-Always check `docs/_state/*.json` before using Glob/Grep.
+Always check `.claude/state/*.json` before using Glob/Grep.
 ```
 
 ---

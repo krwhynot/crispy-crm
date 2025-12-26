@@ -637,4 +637,4 @@ This logs:
 
 **Last Updated:** 2025-12-22
 **Maintainer:** Crispy CRM Team
-**Source:** Generated from `/docs/_state/data-provider-discovery.json`
+**Source:** Generated from `/.claude/state/data-provider-discovery.json`

@@ -59,7 +59,7 @@ if [ -n "$discovery_files" ]; then
     echo
     echo "Run 'just discover' to regenerate, then stage the updated files:"
     echo "  just discover"
-    echo "  git add docs/_state/*.json"
+    echo "  git add .claude/state/*.json"
     echo
     echo -e "${RED}❌ Commit blocked. Run 'just discover' to update discovery files.${NC}"
     exit 1
