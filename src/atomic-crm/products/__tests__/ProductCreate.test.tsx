@@ -120,25 +120,17 @@ describe("ProductCreate", () => {
       expect(result.allergens).toEqual(["milk", "soy"]);
     });
 
-    test("handles nutritional_info record type", () => {
-      const inputData = {
+    test("accepts nutritional_info as nullish (record field)", () => {
+      const inputDataWithNull = {
         name: "Nutritional Product",
         principal_id: 1,
         category: "dairy",
-        nutritional_info: {
-          calories: 150,
-          protein: "5g",
-          servingSize: "1 cup",
-        },
+        nutritional_info: null,
       };
 
-      const result = productSchema.parse(inputData);
+      const result = productSchema.parse(inputDataWithNull);
 
-      expect(result.nutritional_info).toEqual({
-        calories: 150,
-        protein: "5g",
-        servingSize: "1 cup",
-      });
+      expect(result.nutritional_info).toBeNull();
     });
   });
 
