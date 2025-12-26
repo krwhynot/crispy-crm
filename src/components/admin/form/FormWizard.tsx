@@ -66,6 +66,8 @@ function FormWizard({ steps, children, onSubmit, className }: FormWizardProps) {
     // Focus first field in new step (accessibility)
     // Using setTimeout to wait for DOM update after step render
     setTimeout(() => {
+      // Guard for test environment where document may not exist
+      if (typeof document === 'undefined') return;
       const nextPanel = document.getElementById(`wizard-step-${nextStep}`);
       const firstInput = nextPanel?.querySelector(
         "input, select, textarea"
@@ -83,6 +85,8 @@ function FormWizard({ steps, children, onSubmit, className }: FormWizardProps) {
 
       // Focus first field in previous step
       setTimeout(() => {
+        // Guard for test environment where document may not exist
+        if (typeof document === 'undefined') return;
         const prevPanel = document.getElementById(`wizard-step-${prevStep}`);
         const firstInput = prevPanel?.querySelector(
           "input, select, textarea"
