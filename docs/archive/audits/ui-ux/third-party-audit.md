@@ -515,7 +515,7 @@ color: "var(--foreground)"
 
 ## Related Documentation
 
-- [Spacing and Layout](/docs/ui-ux/spacing-and-layout.md)
-- [Interactive Elements](/docs/ui-ux/interactive-elements.md)
-- [Layout Patterns](/docs/ui-ux/layout-patterns.md)
-- [Prioritized Backlog](/docs/ui-ux/audits/prioritized-backlog.md)
+- [Spacing and Layout](/docs/archive/audits/ui-ux/spacing-and-layout.md)
+- [Interactive Elements](/docs/archive/audits/ui-ux/interactive-elements.md)
+- [Layout Patterns](/docs/archive/audits/ui-ux/layout-patterns.md)
+- [Prioritized Backlog](/docs/archive/audits/ui-ux/prioritized-backlog.md)

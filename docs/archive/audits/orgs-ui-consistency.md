@@ -334,4 +334,4 @@ territory: z.string().max(100).nullable().optional(),
 - [x] Filter options listed
 - [x] Code snippet showing conditional logic (slide-over tabs)
 - [x] Inconsistencies section has specific file references
-- [x] Output file saved to /docs/audits/orgs-ui-consistency.md
+- [x] Output file saved to /docs/archive/audits/orgs-ui-consistency.md

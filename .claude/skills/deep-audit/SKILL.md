@@ -42,7 +42,7 @@ Complete ALL phases before presenting findings. Do not pause between phases.
                           ↓
               ┌───────────────────────┐
               │  CONSOLIDATED REPORT  │
-              │  docs/audits/*.md     │
+              │ docs/archive/audits/  │
               └───────────────────────┘
                           ↓
               ┌───────────────────────┐
@@ -202,7 +202,7 @@ catch (e) { return cachedValue; }
 
 ### Report Structure
 
-Generate report in `docs/audits/YYYY-MM-DD-audit.md`:
+Generate report in `docs/archive/audits/YYYY-MM-DD-audit.md`:
 
 ```markdown
 # Codebase Audit Report

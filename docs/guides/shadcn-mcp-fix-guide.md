@@ -841,4 +841,4 @@ All 8 quick wins verified or fixed:
 
 ---
 
-*Guide generated from UI/UX audit reports in `docs/ui-ux/audits/`*
+*Guide generated from UI/UX audit reports in `docs/archive/audits/ui-ux/`*

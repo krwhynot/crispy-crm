@@ -372,7 +372,7 @@ grep -rn "z-\[" src/ | grep -v "z-50\|z-40\|z-30\|z-20\|z-10"
 
 ## Updated Backlog Additions
 
-These violations should be added to `/docs/ui-ux/audits/prioritized-backlog.md`:
+These violations should be added to `/docs/archive/audits/ui-ux/prioritized-backlog.md`:
 
 ### P0 (Critical - Touch Targets)
 
