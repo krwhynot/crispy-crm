@@ -17,7 +17,7 @@ Tables are optimized for **desktop displays first** (1440px+), then adapted for 
 
 ### Unified Design System Pattern
 
-**ALL list pages must use StandardListLayout** (docs/plans/2025-11-16-unified-design-system-rollout.md:45-104):
+**ALL list pages must use StandardListLayout** (docs/archive/plans/2025-11-16-unified-design-system-rollout.md:45-104):
 
 ```tsx
 // src/atomic-crm/contacts/List.tsx
@@ -391,7 +391,7 @@ function ResponsiveList({ data }: { data: Item[] }) {
 
 ## Migration Checklist
 
-**When migrating any resource to unified design system** (docs/plans/2025-11-16-unified-design-system-rollout.md:488-502):
+**When migrating any resource to unified design system** (docs/archive/plans/2025-11-16-unified-design-system-rollout.md:488-502):
 
 - [ ] List view uses `StandardListLayout` component
 - [ ] Table wrapped with `PremiumDatagrid` wrapper
@@ -404,7 +404,7 @@ function ResponsiveList({ data }: { data: Item[] }) {
 - [ ] E2E tests updated for slide-over navigation
 - [ ] Old components deleted (no legacy code)
 
-**See also:** [Migration Checklist](docs/plans/2025-11-16-unified-design-system-rollout.md:530-543)
+**See also:** [Migration Checklist](docs/archive/plans/2025-11-16-unified-design-system-rollout.md:530-543)
 
 ## Best Practices
 

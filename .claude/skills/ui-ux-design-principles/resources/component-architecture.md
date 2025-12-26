@@ -6,7 +6,7 @@ Document React component patterns used in Atomic CRM for building maintainable, 
 
 ## Unified Admin Components
 
-**Per unified design system rollout** (docs/plans/2025-11-16-unified-design-system-rollout.md:422-434):
+**Per unified design system rollout** (docs/archive/plans/2025-11-16-unified-design-system-rollout.md:422-434):
 
 Three reusable components establish the standardized layout pattern across all resources:
 
@@ -69,7 +69,7 @@ import { StandardListLayout } from '@/components/admin/StandardListLayout';
 
 ### Direct Migration Rule
 
-**NO feature flags, gradual rollout, or legacy fallbacks** (docs/plans/2025-11-16-unified-design-system-rollout.md:436-487):
+**NO feature flags, gradual rollout, or legacy fallbacks** (docs/archive/plans/2025-11-16-unified-design-system-rollout.md:436-487):
 - Delete old components immediately
 - Breaking changes are expected
 - Fix forward if issues arise

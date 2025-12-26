@@ -197,7 +197,7 @@ function Card({ className, ...props }: React.ComponentProps<"div">) {
 
 ### Tokenized Utility Classes
 
-**Per unified design system** (docs/plans/2025-11-16-unified-design-system-rollout.md:346-398):
+**Per unified design system** (docs/archive/plans/2025-11-16-unified-design-system-rollout.md:346-398):
 
 | Utility | Elevation | Usage |
 |---------|-----------|-------|

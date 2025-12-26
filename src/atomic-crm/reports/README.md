@@ -980,7 +980,7 @@ jsonExport(exportData, (err, csv) => {
 - [Engineering Constitution](../../docs/claude/engineering-constitution.md) - Core principles
 - [Supabase Workflow](../../docs/supabase/WORKFLOW.md) - Database operations
 - [Color Theming Architecture](../../docs/internal-docs/color-theming-architecture.docs.md) - Design system
-- [Spacing System Design](../../docs/plans/2025-11-08-spacing-layout-system-design.md) - Layout tokens
+- [Spacing System Design](../../docs/archive/plans/2025-11-08-spacing-layout-system-design.md) - Layout tokens
 - [CSV Security](../utils/csvUploadValidator.ts) - Formula injection prevention
 
 ---

@@ -63,7 +63,7 @@ Each family includes multiple lightness values for different UI states (hover, a
 
 ## Atomic CRM Semantic Palette
 
-**Mandatory semantic utilities per unified design system** (docs/plans/2025-11-16-unified-design-system-rollout.md:295-308):
+**Mandatory semantic utilities per unified design system** (docs/archive/plans/2025-11-16-unified-design-system-rollout.md:295-308):
 
 ### Page & Container Backgrounds
 - `bg-muted` - Page background (light, airy)
@@ -99,7 +99,7 @@ Each family includes multiple lightness values for different UI states (hover, a
 
 ### Premium Interactive Utilities
 
-Reference `src/index.css` for reusable utilities (docs/plans/2025-11-16-unified-design-system-rollout.md:346-398):
+Reference `src/index.css` for reusable utilities (docs/archive/plans/2025-11-16-unified-design-system-rollout.md:346-398):
 - `.card-container` - Standard card with shadow-sm
 - `.create-form-card` - Create form elevation (shadow-lg)
 - `.interactive-card` - Hover effects + lift animation

@@ -5,7 +5,7 @@
  * This ensures all three operations succeed or fail together, preventing data inconsistency.
  *
  * Feature: Dashboard Quick Actions
- * Design Doc: docs/plans/2025-11-10-dashboard-quick-actions-design.md
+ * Design Doc: docs/archive/plans/2025-11-10-dashboard-quick-actions-design.md
  *
  * Parameters:
  *   p_task_id: ID of the task to mark complete

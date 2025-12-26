@@ -5,7 +5,7 @@ This document mirrors the context in `CLAUDE.md`, but is trimmed and reformatted
 ## Project Snapshot
 - **Product:** Atomic CRM – React 19 + Vite + TypeScript + Supabase + React Admin + Tailwind 4, pre-launch.
 - **Focus Areas (last 90 days):** Principal Dashboard V2 launch, cloud-only Supabase workflow, port consolidation, tasks module + weekly activity report, semantic spacing + color systems, security/testing remediation.
-- **Live references:** `docs/dashboard-v2-migration.md`, `docs/plans/2025-11-13-principal-dashboard-v2-PLANNING.md`, `docs/plans/2025-11-09-tasks-module-weekly-activity-report.md`.
+- **Live references:** `docs/dashboard-v2-migration.md`, `docs/archive/plans/2025-11-13-principal-dashboard-v2-PLANNING.md`, `docs/archive/plans/2025-11-09-tasks-module-weekly-activity-report.md`.
 
 ## Core Rules (from Engineering Constitution)
 1. **No over-engineering** – prefer straightforward fixes.

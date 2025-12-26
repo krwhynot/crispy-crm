@@ -4,7 +4,7 @@
 -- Issue: OpportunitiesHierarchy and TasksPanel need to filter by sales rep
 -- Solution: Expose o.sales_id and t.sales_id in views
 -- Date: 2025-11-16
--- Tracking: docs/plans/2025-01-15-assignee-filter-migration-tracker.md
+-- Tracking: docs/archive/plans/2025-01-15-assignee-filter-migration-tracker.md
 -- =====================================================
 
 -- =====================================================

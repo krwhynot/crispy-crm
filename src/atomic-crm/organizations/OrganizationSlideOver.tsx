@@ -6,7 +6,7 @@
  * - Details, Contacts, Opportunities, Notes: All organizations
  * - Authorizations: Only for distributor organizations
  *
- * @see docs/plans/2025-11-16-unified-design-system-rollout.md
+ * @see docs/archive/plans/2025-11-16-unified-design-system-rollout.md
  */
 
 import { BuildingIcon, Users, Target, StickyNote, ShieldCheck } from "lucide-react";

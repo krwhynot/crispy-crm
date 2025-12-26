@@ -697,7 +697,7 @@ All resources have corresponding Zod schemas in `src/atomic-crm/validation/`:
 
 ## Related Documentation
 
-- **Architecture Overview:** `/home/krwhynot/projects/crispy-crm/docs/api/architecture.md`
+- **Architecture Overview:** `docs/architecture/data-model.md`
 - **Source Data:** `/home/krwhynot/projects/crispy-crm/docs/_state/data-provider-discovery.json`
 - **Validation Schemas:** `/home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/`
 - **Handlers:** `/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/handlers/`

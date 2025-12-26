@@ -120,7 +120,7 @@ Does this look correct? Any adjustments before I write the plan?
 
 Only after confirmation, write the plan following the `writing-plans` skill structure.
 
-**Save to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+**Save to:** `docs/archive/plans/YYYY-MM-DD-<feature-name>.md`
 
 ---
 
@@ -170,7 +170,7 @@ Review this implementation plan for a Crispy CRM feature.
 ### Review Workflow (Loop Until Clean)
 
 ```
-Plan Written → Save to docs/plans/
+Plan Written → Save to docs/archive/plans/
                     ↓
     ┌───────────────────────────────────┐
     │         ZEN MCP REVIEW            │
@@ -232,7 +232,7 @@ mcp__zen__thinkdeep({
   findings: "Analyzing plan for gaps, principle violations, and ambiguity",
   hypothesis: "Plan may have issues with [specific concern]",
   confidence: "medium",
-  relevant_files: ["docs/plans/2025-12-03-feature-name.md"],
+  relevant_files: ["docs/archive/plans/2025-12-03-feature-name.md"],
   model: "gemini-2.5-pro",
   thinking_mode: "high"
 })
