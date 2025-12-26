@@ -16,7 +16,7 @@
 
 import React from "react";
 import { Plus } from "lucide-react";
-import { useCreatePath, useResourceContext } from "ra-core";
+import { useCanAccess, useCreatePath, useResourceContext } from "ra-core";
 import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 
@@ -40,6 +40,17 @@ export const FloatingCreateButton: React.FC<FloatingCreateButtonProps> = ({
   const contextResource = useResourceContext();
   const createPath = useCreatePath();
   const resourceName = targetResource ?? contextResource;
+
+  // RBAC Check: Only show button if user can create this resource
+  const { canAccess, isPending } = useCanAccess({
+    resource: resourceName,
+    action: "create",
+  });
+
+  // Don't render while checking permissions or if user lacks access
+  if (isPending || !canAccess) {
+    return null;
+  }
 
   const link = createPath({
     resource: resourceName,

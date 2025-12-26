@@ -289,12 +289,14 @@ export const filterableFields: Record<string, string[]> = {
     "last_name",
     "email",
     "phone",
+    "role", // User role: admin, manager, rep
     "administrator",
     "disabled",
     "deleted_at", // Soft delete timestamp
     "avatar",
     "created_at",
     "updated_at",
+    "q", // Special: full-text search parameter
   ],
 
   // Tasks resource

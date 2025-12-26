@@ -12,6 +12,8 @@ import { useListKeyboardNavigation } from "@/hooks/useListKeyboardNavigation";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { COLUMN_VISIBILITY } from "../utils/listPatterns";
 import { SalesSlideOver } from "./SalesSlideOver";
+import { SalesListFilter } from "./SalesListFilter";
+import { SALES_FILTER_CONFIG } from "./salesFilterConfig";
 
 /**
  * SalesList - Standard list page for Sales (User) records
@@ -20,9 +22,10 @@ import { SalesSlideOver } from "./SalesSlideOver";
  * - Identity-aware rendering with skeleton loading
  * - Keyboard navigation with slide-over integration
  * - Responsive columns using COLUMN_VISIBILITY semantic presets
+ * - Sidebar filters for role and status (industry standard pattern)
  *
- * Note: Sales uses search filters (not sidebar filters) and no bulk actions
- * since this is an admin-only resource for team member management.
+ * Note: This is an admin-only resource for team member management.
+ * Default filter shows Active users only (industry standard: Google Workspace, Salesforce).
  */
 export default function SalesList() {
   const { data: identity, isPending: isIdentityPending } = useGetIdentity();
