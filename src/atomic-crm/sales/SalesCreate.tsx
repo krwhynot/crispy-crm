@@ -11,6 +11,7 @@ import { createSalesSchema } from "../validation/sales";
 import { SalesInputs } from "./SalesInputs";
 import { SalesListSkeleton } from "@/components/ui/list-skeleton";
 import { useEffect } from "react";
+import { useUnsavedChangesWarning } from "@/hooks/useUnsavedChangesWarning";
 
 export default function SalesCreate() {
   // ═══════════════════════════════════════════════════════════════════════════
@@ -120,6 +121,7 @@ export default function SalesCreate() {
 }
 
 const SalesFormContent = () => {
+  useUnsavedChangesWarning();
   const { errors } = useFormState();
 
   return (

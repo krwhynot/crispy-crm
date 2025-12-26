@@ -43,8 +43,8 @@ export const salesSchema = z.strictObject({
   id: z.union([z.string(), z.number()]).optional(),
   first_name: z.string().trim().min(1, "First name is required").max(100, "First name too long"),
   last_name: z.string().trim().min(1, "Last name is required").max(100, "Last name too long"),
-  email: z.string().email("Must be a valid email address").max(VALIDATION_LIMITS.EMAIL_MAX, "Email too long"),
-  phone: z.string().max(VALIDATION_LIMITS.PHONE_MAX, "Phone number too long").nullish(),
+  email: z.string().trim().email("Must be a valid email address").max(VALIDATION_LIMITS.EMAIL_MAX, "Email too long"),
+  phone: z.string().trim().max(VALIDATION_LIMITS.PHONE_MAX, "Phone number too long").nullish(),
   avatar_url: z.string().url("Must be a valid URL").max(VALIDATION_LIMITS.AVATAR_URL_MAX, "Avatar URL too long").optional().nullable(),
   user_id: z.string().uuid("Must be a valid UUID").optional(),
 
@@ -223,7 +223,7 @@ export const salesProfileSchema = z.strictObject({
   last_name: z.string().max(100).nullish().transform(v => v ?? ''),
   email: z.string().max(254).nullish().transform(v => v ?? ''),
   phone: z.string().max(50).nullish().transform(v => v ?? ''),
-  avatar_url: z.string().max(2048).nullish().transform(v => v ?? ''),
+  avatar_url: z.string().max(VALIDATION_LIMITS.AVATAR_URL_MAX).nullish().transform(v => v ?? ''),
 });
 
 export type SalesProfileFormData = z.infer<typeof salesProfileSchema>;
