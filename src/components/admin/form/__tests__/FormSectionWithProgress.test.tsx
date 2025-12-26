@@ -121,14 +121,14 @@ describe("FormSectionWithProgress", () => {
           title="Test"
           requiredFields={["first_name"]}
         >
-          <FormFieldWrapper name="first_name" isRequired>
+          <FormFieldWrapper name="first_name" isRequired countDefaultAsFilled>
             <input data-testid="first-name-input" />
           </FormFieldWrapper>
         </FormSectionWithProgress>,
         { defaultValues: { first_name: "John" } }
       );
 
-      // With valid default value, field should be marked valid
+      // With valid default value and countDefaultAsFilled, field should be marked valid
       await waitFor(() => {
         expect(screen.getByText("Complete")).toBeInTheDocument();
         expect(screen.getByTestId("section-complete-icon")).toBeInTheDocument();
@@ -167,20 +167,20 @@ describe("FormSectionWithProgress", () => {
           title="Test"
           requiredFields={["first_name", "last_name", "email"]}
         >
-          <FormFieldWrapper name="first_name" isRequired>
+          <FormFieldWrapper name="first_name" isRequired countDefaultAsFilled>
             <input data-testid="first-name-input" />
           </FormFieldWrapper>
-          <FormFieldWrapper name="last_name" isRequired>
+          <FormFieldWrapper name="last_name" isRequired countDefaultAsFilled>
             <input data-testid="last-name-input" />
           </FormFieldWrapper>
-          <FormFieldWrapper name="email" isRequired>
+          <FormFieldWrapper name="email" isRequired countDefaultAsFilled>
             <input data-testid="email-input" />
           </FormFieldWrapper>
         </FormSectionWithProgress>,
         { defaultValues: { first_name: "John", last_name: "Doe", email: "john@example.com" } }
       );
 
-      // All three fields have values, so section should be complete
+      // All three fields have values with countDefaultAsFilled, so section should be complete
       await waitFor(() => {
         expect(screen.getByText("Complete")).toBeInTheDocument();
         expect(screen.getByTestId("section-complete-icon")).toBeInTheDocument();
@@ -263,7 +263,7 @@ describe("FormSectionWithProgress", () => {
           title="Test"
           requiredFields={["name"]}
         >
-          <FormFieldWrapper name="name" isRequired>
+          <FormFieldWrapper name="name" isRequired countDefaultAsFilled>
             <input data-testid="name-input" />
           </FormFieldWrapper>
         </FormSectionWithProgress>,
@@ -298,7 +298,7 @@ describe("FormSectionWithProgress", () => {
           title="Test"
           requiredFields={["name"]}
         >
-          <FormFieldWrapper name="name" isRequired>
+          <FormFieldWrapper name="name" isRequired countDefaultAsFilled>
             <input data-testid="name-input" />
           </FormFieldWrapper>
         </FormSectionWithProgress>,

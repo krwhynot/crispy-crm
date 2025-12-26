@@ -265,7 +265,7 @@ describe("QuickAdd Integration", () => {
 
     // Find principal select trigger button (shadcn Select uses button with role="combobox")
     // Find the container with Principal label, then find the combobox within it
-    const principalLabel = screen.getByText("Principal *");
+    const principalLabel = screen.getByText("Principal");
     const principalContainer = principalLabel.parentElement;
     const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
     if (!principalTrigger) throw new Error("Principal trigger not found");
@@ -331,7 +331,7 @@ describe("QuickAdd Integration", () => {
     await user.type(screen.getByLabelText(/campaign/i), "Conference 2024");
 
     // Find principal select trigger button
-    const principalLabel = screen.getByText("Principal *");
+    const principalLabel = screen.getByText("Principal");
     const principalContainer = principalLabel.parentElement;
     const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
     if (!principalTrigger) throw new Error("Principal trigger not found");
@@ -374,7 +374,7 @@ describe("QuickAdd Integration", () => {
     // Verify campaign/principal preserved (they're input/select fields)
     expect(screen.getByLabelText(/campaign/i)).toHaveValue("Conference 2024");
     // Principal is in a Select trigger, verify by finding the combobox
-    const principalLabelEl = screen.getByText("Principal *");
+    const principalLabelEl = screen.getByText("Principal");
     const principalContainerEl = principalLabelEl.parentElement;
     const principalTriggerElement = principalContainerEl?.querySelector('[role="combobox"]');
     expect(principalTriggerElement).toHaveTextContent("Principal B");
@@ -397,7 +397,7 @@ describe("QuickAdd Integration", () => {
     await user.type(screen.getByLabelText(/organization name/i), "Test Org");
 
     // Select Principal
-    const principalLabel = screen.getByText("Principal *");
+    const principalLabel = screen.getByText("Principal");
     const principalContainer = principalLabel.parentElement;
     const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
     if (!principalTrigger) throw new Error("Principal trigger not found");
@@ -449,7 +449,7 @@ describe("QuickAdd Integration", () => {
     await user.type(screen.getByLabelText(/organization name/i), "Org");
 
     // Select Principal
-    const principalLabel = screen.getByText("Principal *");
+    const principalLabel = screen.getByText("Principal");
     const principalContainer = principalLabel.parentElement;
     const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
     if (!principalTrigger) throw new Error("Principal trigger not found");
@@ -498,7 +498,7 @@ describe("QuickAdd Integration", () => {
     // Select Principal A
     // Find principal select trigger button (shadcn Select uses button with role="combobox")
     // Find the container with Principal label, then find the combobox within it
-    const principalLabel = screen.getByText("Principal *");
+    const principalLabel = screen.getByText("Principal");
     const principalContainer = principalLabel.parentElement;
     const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
     if (!principalTrigger) throw new Error("Principal trigger not found");
@@ -554,7 +554,7 @@ describe("QuickAdd Integration", () => {
 
     // Find principal select trigger button (shadcn Select uses button with role="combobox")
     // Find the container with Principal label, then find the combobox within it
-    const principalLabel = screen.getByText("Principal *");
+    const principalLabel = screen.getByText("Principal");
     const principalContainer = principalLabel.parentElement;
     const principalTrigger = principalContainer?.querySelector('[role="combobox"]');
     if (!principalTrigger) throw new Error("Principal trigger not found");
@@ -598,7 +598,7 @@ describe("QuickAdd Integration", () => {
     await waitFor(() => {
       expect(screen.getByLabelText(/campaign/i)).toHaveValue("Trade Show 2024");
       // Principal trigger shows selected value
-      const principalLabelElement = screen.getByText("Principal *");
+      const principalLabelElement = screen.getByText("Principal");
       const principalContainerElement = principalLabelElement.parentElement;
       const principalTriggerEl = principalContainerElement?.querySelector('[role="combobox"]');
       expect(principalTriggerEl).toHaveTextContent("Principal A");

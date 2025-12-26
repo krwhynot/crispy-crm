@@ -86,7 +86,7 @@ describe("QuickAddForm", () => {
 
     // Pre-filled section
     expect(screen.getByLabelText(/campaign/i)).toBeInTheDocument();
-    expect(screen.getByText(/principal \*/i)).toBeInTheDocument();
+    expect(screen.getByText("Principal")).toBeInTheDocument();
 
     // Contact section
     expect(screen.getByLabelText(/first name \*/i)).toBeInTheDocument();
@@ -96,7 +96,7 @@ describe("QuickAddForm", () => {
 
     // Organization section
     expect(screen.getByLabelText(/organization name \*/i)).toBeInTheDocument();
-    expect(screen.getByText(/city \*/i)).toBeInTheDocument();
+    expect(screen.getByText("City")).toBeInTheDocument();
     expect(screen.getByLabelText(/state \*/i)).toBeInTheDocument();
 
     // Optional details
