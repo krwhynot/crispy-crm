@@ -202,8 +202,8 @@ function printSummary(extractorsRun: ExtractorConfig[]): void {
   extractorsRun.forEach((extractor) => {
     // For chunked output, read manifest.json; for single file, read the file directly
     const outputPath = extractor.isChunked
-      ? path.join(process.cwd(), "docs/_state", extractor.outputPath, "manifest.json")
-      : path.join(process.cwd(), "docs/_state", extractor.outputPath);
+      ? path.join(process.cwd(), ".claude/state", extractor.outputPath, "manifest.json")
+      : path.join(process.cwd(), ".claude/state", extractor.outputPath);
 
     const displayName = extractor.isChunked
       ? `${extractor.outputPath}/`

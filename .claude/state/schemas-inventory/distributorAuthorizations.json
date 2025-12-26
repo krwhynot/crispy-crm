@@ -1,6 +1,6 @@
 {
   "chunk_name": "distributorAuthorizations",
-  "generated_at": "2025-12-25T17:43:13.557Z",
+  "generated_at": "2025-12-26T21:50:58.651Z",
   "item_count": 3,
   "items": [
     {
@@ -21,7 +21,7 @@
     {
       "name": "specialPricingSchema",
       "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-      "line": 141,
+      "line": 170,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [],
@@ -32,7 +32,7 @@
     {
       "name": "productDistributorAuthorizationSchema",
       "file": "src/atomic-crm/validation/distributorAuthorizations.ts",
-      "line": 162,
+      "line": 191,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [

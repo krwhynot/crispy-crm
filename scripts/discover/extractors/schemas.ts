@@ -11,6 +11,19 @@ import { project } from "../utils/project.js";
 import { writeChunkedDiscovery } from "../utils/output.js";
 
 /**
+ * Centralized security function detection pattern.
+ * Expanded to catch more security-related transforms.
+ */
+const SECURITY_PATTERN = /sanitize|escape|encode|clean|strip|purify|xss|html|script|sql|inject|validate.*url|normalize|filter|whitelist|blacklist/i;
+
+/**
+ * Check if a function name indicates a security-related transform.
+ */
+function isSecurityFunction(funcName: string): boolean {
+  return SECURITY_PATTERN.test(funcName);
+}
+
+/**
  * Extract feature name from validation file path.
  * Pattern: src/atomic-crm/validation/{feature}.ts → "feature"
  */
@@ -176,13 +189,13 @@ function extractTransformDetails(text: string): { functionName: string; isSecuri
         const ternaryFunc = ternaryMatch[1];
         return {
           functionName: ternaryFunc,
-          isSecurity: /sanitize|escape|encode|clean|strip|purify/i.test(ternaryFunc),
+          isSecurity: isSecurityFunction(ternaryFunc),
         };
       }
     } else {
       return {
         functionName: funcName,
-        isSecurity: /sanitize|escape|encode|clean|strip|purify/i.test(funcName),
+        isSecurity: isSecurityFunction(funcName),
       };
     }
   }
@@ -193,7 +206,7 @@ function extractTransformDetails(text: string): { functionName: string; isSecuri
     const funcName = directMatch[1];
     return {
       functionName: funcName,
-      isSecurity: /sanitize|escape|encode|clean|strip|purify/i.test(funcName),
+      isSecurity: isSecurityFunction(funcName),
     };
   }
 
