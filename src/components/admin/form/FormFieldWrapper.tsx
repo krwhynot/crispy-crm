@@ -53,9 +53,23 @@ function FormFieldWrapper({
     markFieldValid(name, isFilledForProgress && !hasError);
   }, [name, isFilledForProgress, hasError, markFieldValid]);
 
+  // Clone child elements with aria-required for WCAG 3.3.2 compliance
+  // This allows screen readers to announce which fields are required
+  const enhancedChildren = React.Children.map(children, (child) => {
+    if (React.isValidElement(child)) {
+      return React.cloneElement(
+        child as React.ReactElement<{ 'aria-required'?: 'true' | undefined }>,
+        {
+          'aria-required': isRequired ? 'true' : undefined,
+        }
+      );
+    }
+    return child;
+  });
+
   return (
     <div className={cn("relative", className)}>
-      {children}
+      {enhancedChildren}
       {isVisuallyValid && (
         <Check className="absolute right-3 top-9 h-4 w-4 text-primary animate-in fade-in duration-100" />
       )}

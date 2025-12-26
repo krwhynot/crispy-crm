@@ -25,6 +25,42 @@ interface QuickAddFormProps {
   onSuccess: () => void;
 }
 
+// Local accessible field wrapper for WCAG 4.1.2/4.1.3 compliance
+interface AccessibleFieldProps {
+  name: string;
+  label: string;
+  error?: string;
+  required?: boolean;
+  children: React.ReactElement;
+  className?: string;
+}
+
+function AccessibleField({ name, label, error, required, children, className }: AccessibleFieldProps) {
+  const errorId = `${name}-error`;
+
+  return (
+    <div className={cn("space-y-2", className)}>
+      <Label htmlFor={name}>
+        {label}
+        {required && <span className="text-destructive" aria-hidden="true"> *</span>}
+      </Label>
+
+      {React.cloneElement(children, {
+        id: name,
+        'aria-invalid': error ? 'true' : undefined,
+        'aria-describedby': error ? errorId : undefined,
+        'aria-required': required ? 'true' : undefined,
+      })}
+
+      {error && (
+        <p id={errorId} role="alert" className="text-sm text-destructive">
+          {error}
+        </p>
+      )}
+    </div>
+  );
+}
+
 export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
   const { mutate, isPending } = useQuickAdd();
   const firstNameRef = useRef<HTMLInputElement>(null);
@@ -152,27 +188,35 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
       <div className="rounded-lg bg-success/10 p-4 space-y-4">
         <h3 className="text-sm font-medium text-foreground">Pre-filled Information</h3>
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="campaign">Campaign</Label>
+          <AccessibleField
+            name="campaign"
+            label="Campaign"
+            error={errors.campaign?.message}
+          >
             <Input
-              id="campaign"
               {...register("campaign")}
               placeholder="e.g., Q4 2025 Trade Show"
               className="bg-background"
             />
-            {errors.campaign && (
-              <p className="text-sm text-destructive">{errors.campaign.message}</p>
-            )}
-          </div>
+          </AccessibleField>
 
           <div className="space-y-2">
-            <Label htmlFor="principal">Principal *</Label>
+            <Label htmlFor="principal_id">
+              Principal
+              <span className="text-destructive" aria-hidden="true"> *</span>
+            </Label>
             <Select
               value={principalId?.toString()}
               onValueChange={(value) => setValue("principal_id", Number(value))}
               disabled={principalsLoading}
             >
-              <SelectTrigger className="bg-background">
+              <SelectTrigger
+                id="principal_id"
+                className="bg-background"
+                aria-invalid={errors.principal_id ? 'true' : undefined}
+                aria-describedby={errors.principal_id ? 'principal_id-error' : undefined}
+                aria-required="true"
+              >
                 <SelectValue placeholder={principalsLoading ? "Loading..." : "Select principal"} />
               </SelectTrigger>
               <SelectContent>
@@ -184,7 +228,9 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
               </SelectContent>
             </Select>
             {errors.principal_id && (
-              <p className="text-sm text-destructive">{errors.principal_id.message}</p>
+              <p id="principal_id-error" role="alert" className="text-sm text-destructive">
+                {errors.principal_id.message}
+              </p>
             )}
           </div>
         </div>
@@ -219,41 +265,46 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
       <div className="space-y-4">
         <h3 className="text-sm font-medium text-foreground">Contact Information</h3>
         <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-          <div className="space-y-2">
-            <Label htmlFor="first_name">First Name *</Label>
+          <AccessibleField
+            name="first_name"
+            label="First Name"
+            error={errors.first_name?.message}
+            required
+          >
             <Input
               ref={firstNameRef}
-              id="first_name"
               {...register("first_name")}
               placeholder="John"
             />
-            {errors.first_name && (
-              <p className="text-sm text-destructive">{errors.first_name.message}</p>
-            )}
-          </div>
+          </AccessibleField>
 
-          <div className="space-y-2">
-            <Label htmlFor="last_name">Last Name *</Label>
-            <Input id="last_name" {...register("last_name")} placeholder="Doe" />
-            {errors.last_name && (
-              <p className="text-sm text-destructive">{errors.last_name.message}</p>
-            )}
-          </div>
+          <AccessibleField
+            name="last_name"
+            label="Last Name"
+            error={errors.last_name?.message}
+            required
+          >
+            <Input {...register("last_name")} placeholder="Doe" />
+          </AccessibleField>
 
-          <div className="space-y-2">
-            <Label htmlFor="phone">Phone</Label>
-            <Input id="phone" type="tel" {...register("phone")} placeholder="555-123-4567" />
-            {errors.phone && <p className="text-sm text-destructive">{errors.phone.message}</p>}
-          </div>
+          <AccessibleField
+            name="phone"
+            label="Phone"
+            error={errors.phone?.message}
+          >
+            <Input type="tel" {...register("phone")} placeholder="555-123-4567" />
+          </AccessibleField>
 
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" {...register("email")} placeholder="john@example.com" />
-            {errors.email && <p className="text-sm text-destructive">{errors.email.message}</p>}
-          </div>
+          <AccessibleField
+            name="email"
+            label="Email"
+            error={errors.email?.message}
+          >
+            <Input type="email" {...register("email")} placeholder="john@example.com" />
+          </AccessibleField>
         </div>
         {!phoneValue && !emailValue && (
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm text-muted-foreground" aria-live="polite">
             At least one of Phone or Email is required
           </p>
         )}
@@ -263,17 +314,21 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
       <div className="space-y-4">
         <h3 className="text-sm font-medium text-foreground">Organization Information</h3>
         <div className="grid gap-4 grid-cols-1">
-          <div className="space-y-2">
-            <Label htmlFor="org_name">Organization Name *</Label>
-            <Input id="org_name" {...register("org_name")} placeholder="Acme Corporation" />
-            {errors.org_name && (
-              <p className="text-sm text-destructive">{errors.org_name.message}</p>
-            )}
-          </div>
+          <AccessibleField
+            name="org_name"
+            label="Organization Name"
+            error={errors.org_name?.message}
+            required
+          >
+            <Input {...register("org_name")} placeholder="Acme Corporation" />
+          </AccessibleField>
 
           <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
             <div className="space-y-2">
-              <Label htmlFor="city">City *</Label>
+              <Label htmlFor="city">
+                City
+                <span className="text-destructive" aria-hidden="true"> *</span>
+              </Label>
               <Combobox
                 id="city"
                 options={cityOptions}
@@ -284,20 +339,26 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
                 emptyText="Type to search cities"
                 className="w-full"
               />
-              {errors.city && <p className="text-sm text-destructive">{errors.city.message}</p>}
+              {errors.city && (
+                <p id="city-error" role="alert" className="text-sm text-destructive">
+                  {errors.city.message}
+                </p>
+              )}
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="state">State *</Label>
+            <AccessibleField
+              name="state"
+              label="State"
+              error={errors.state?.message}
+              required
+            >
               <Input
-                id="state"
                 {...register("state")}
                 placeholder="CA"
                 readOnly={!!US_CITIES.find((c) => c.city === cityValue)}
                 className={cn(US_CITIES.find((c) => c.city === cityValue) && "bg-muted")}
               />
-              {errors.state && <p className="text-sm text-destructive">{errors.state.message}</p>}
-            </div>
+            </AccessibleField>
           </div>
         </div>
       </div>
