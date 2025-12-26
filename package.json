@@ -56,6 +56,7 @@
     "db:local:check": "./scripts/docker/supabase-docker.sh check",
     "db:local:monitor": "./scripts/docker/monitor-resources.sh",
     "generate:seed": "npx tsx scripts/generate-seed.ts",
+    "docs:schema": "npx tsx scripts/generate-schema-docs.ts",
     "import:masterfoods:sql": "npx tsx scripts/import-masterfoods-data.ts --generate-sql",
     "import:masterfoods:cloud": "npx tsx scripts/import-masterfoods-data.ts --import-cloud",
     "supabase:deploy": "npx supabase db push && npx supabase functions deploy",
