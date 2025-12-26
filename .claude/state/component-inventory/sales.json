@@ -1,7 +1,7 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2025-12-25T17:43:06.109Z",
-  "item_count": 20,
+  "generated_at": "2025-12-26T21:59:54.691Z",
+  "item_count": 21,
   "items": [
     {
       "name": "SaleAvatar",
@@ -51,10 +51,12 @@
     {
       "name": "SalesCreate",
       "file": "src/atomic-crm/sales/SalesCreate.tsx",
-      "line": 13,
+      "line": 16,
       "type": "presentational",
       "hooks": [
+        "useCanAccess",
         "useDataProvider",
+        "useEffect",
         "useMutation",
         "useNotify",
         "useRedirect"
@@ -67,8 +69,11 @@
         "@/components/admin/FormErrorSummary",
         "@/components/admin/simple-form",
         "@/components/ui/card",
+        "@/components/ui/list-skeleton",
+        "@/hooks/useUnsavedChangesWarning",
         "@tanstack/react-query",
         "ra-core",
+        "react",
         "react-hook-form"
       ],
       "isDefaultExport": true,
@@ -159,7 +164,7 @@
     {
       "name": "SalesList",
       "file": "src/atomic-crm/sales/SalesList.tsx",
-      "line": 27,
+      "line": 30,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -170,7 +175,9 @@
         "../hooks/useFilterCleanup",
         "../layout/TopToolbar",
         "../utils/listPatterns",
+        "./SalesListFilter",
         "./SalesSlideOver",
+        "./salesFilterConfig",
         "@/components/admin/FloatingCreateButton",
         "@/components/admin/ListSearchBar",
         "@/components/admin/PremiumDatagrid",
@@ -186,9 +193,34 @@
       "childComponents": [
         "TopToolbar",
         "COLUMN_VISIBILITY",
-        "SalesSlideOver"
+        "SalesSlideOver",
+        "SalesListFilter",
+        "SALES_FILTER_CONFIG"
       ],
       "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "SalesListFilter",
+      "file": "src/atomic-crm/sales/SalesListFilter.tsx",
+      "line": 17,
+      "type": "presentational",
+      "hooks": [
+        "useListContext"
+      ],
+      "imports": [
+        "../filters/FilterCategory",
+        "@/components/admin/toggle-filter-button",
+        "lucide-react",
+        "ra-core"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "FilterCategory"
+      ],
+      "contextDependencies": [
+        "useListContext"
+      ],
       "componentRole": "wrapper"
     },
     {

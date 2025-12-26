@@ -1,7 +1,7 @@
 # Opportunity Pipeline Lifecycle
 
 > **Generated:** 2025-12-22
-> **Stages:** 7 | **Business Rules:** 20 | **Source:** `docs/_state/business-logic-discovery.json`
+> **Stages:** 7 | **Business Rules:** 20 | **Source:** `.claude/state/business-logic-discovery.json`
 
 ## Pipeline Overview
 

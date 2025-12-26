@@ -881,6 +881,6 @@ When creating a new schema, ensure:
 ## References
 
 - **Engineering Constitution:** `/home/krwhynot/projects/crispy-crm/CLAUDE.md`
-- **Data Provider Discovery:** `/home/krwhynot/projects/crispy-crm/docs/_state/data-provider-discovery.json`
+- **Data Provider Discovery:** `/home/krwhynot/projects/crispy-crm/.claude/state/data-provider-discovery.json`
 - **ValidationService:** `/home/krwhynot/projects/crispy-crm/src/atomic-crm/providers/supabase/services/ValidationService.ts`
 - **Validation Constants:** `/home/krwhynot/projects/crispy-crm/src/atomic-crm/validation/constants.ts`

@@ -91,7 +91,7 @@ export function writeDiscoveryFile(
   filename: string,
   data: DiscoveryEnvelope<unknown>
 ): void {
-  const outputDir = path.resolve(process.cwd(), "docs/_state");
+  const outputDir = path.resolve(process.cwd(), ".claude/state");
   const finalPath = path.join(outputDir, filename);
   const tempPath = `${finalPath}.tmp`;
 
@@ -117,7 +117,7 @@ export function isDiscoveryStale(
   filename: string,
   currentSourceFiles: string[]
 ): { stale: boolean; reason?: string; changedFiles?: string[] } {
-  const outputDir = path.resolve(process.cwd(), "docs/_state");
+  const outputDir = path.resolve(process.cwd(), ".claude/state");
   const filePath = path.join(outputDir, filename);
 
   // If file doesn't exist, it's definitely stale
@@ -198,7 +198,7 @@ export function writeChunkedDiscovery<T>(
   summary: Record<string, number>,
   chunks: Map<string, T[]>
 ): void {
-  const outputDir = path.resolve(process.cwd(), "docs/_state", dirName);
+  const outputDir = path.resolve(process.cwd(), ".claude/state", dirName);
 
   // Ensure output directory exists
   if (!fs.existsSync(outputDir)) {
@@ -269,7 +269,7 @@ export function isChunkedDiscoveryStale(
   dirName: string,
   currentSourceFiles: string[]
 ): { stale: boolean; reason?: string; changedFiles?: string[] } {
-  const outputDir = path.resolve(process.cwd(), "docs/_state", dirName);
+  const outputDir = path.resolve(process.cwd(), ".claude/state", dirName);
   const manifestPath = path.join(outputDir, "manifest.json");
 
   // If manifest doesn't exist, it's definitely stale
