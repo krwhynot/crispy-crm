@@ -21,10 +21,16 @@ const ROLE_CHOICES = [
 /**
  * Status choices for the disabled filter
  * Note: disabled=false means Active, disabled=true means Disabled
+ *
+ * IMPORTANT: IDs must be strings per filterChoiceSchema.
+ * The FilterChipBar displays these labels when the corresponding
+ * boolean filter value is active. The mapping is:
+ *   disabled: false → "active" → "Active"
+ *   disabled: true  → "disabled" → "Disabled"
  */
 const STATUS_CHOICES = [
-  { id: false, name: "Active" },
-  { id: true, name: "Disabled" },
+  { id: "active", name: "Active" },
+  { id: "disabled", name: "Disabled" },
 ];
 
 /**
