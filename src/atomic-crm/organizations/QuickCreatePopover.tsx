@@ -59,21 +59,30 @@ export function QuickCreatePopover({
     },
   });
 
-  const handleSubmit = methods.handleSubmit(async (data) => {
-    setIsPending(true);
-    try {
-      const result = await dataProvider.create("organizations", {
-        data: { ...data, segment_id: PLAYBOOK_CATEGORY_IDS.Unknown },
-      });
-      notify("Organization created", { type: "success" });
-      onCreated(result.data as { id: number; name: string });
-      setOpen(false);
-    } catch {
-      notify("Failed to create organization", { type: "error" });
-    } finally {
-      setIsPending(false);
+  const handleSubmit = methods.handleSubmit(
+    async (data) => {
+      setIsPending(true);
+      try {
+        const result = await dataProvider.create("organizations", {
+          data: { ...data, segment_id: PLAYBOOK_CATEGORY_IDS.Unknown },
+        });
+        notify("Organization created", { type: "success" });
+        onCreated(result.data as { id: number; name: string });
+        setOpen(false);
+      } catch {
+        notify("Failed to create organization", { type: "error" });
+      } finally {
+        setIsPending(false);
+      }
+    },
+    // Focus first error field on validation failure (WCAG 3.3.1)
+    (errors) => {
+      const firstErrorField = Object.keys(errors)[0] as keyof QuickCreateInput;
+      if (firstErrorField) {
+        methods.setFocus(firstErrorField);
+      }
     }
-  });
+  );
 
   const handleQuickCreate = async () => {
     setIsPending(true);

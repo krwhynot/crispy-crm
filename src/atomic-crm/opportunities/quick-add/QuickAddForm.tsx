@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useRef, useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm, useWatch, FieldErrors } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { quickAddSchema, type QuickAddInput } from "@/atomic-crm/validation/quickAdd";
 import { useQuickAdd } from "../hooks/useQuickAdd";
@@ -89,6 +89,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors },
     setValue,
     control,
@@ -161,6 +162,14 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
         }
       },
     });
+  };
+
+  // Focus first error field on validation failure (WCAG 3.3.1)
+  const onValidationError = (errors: FieldErrors<QuickAddInput>) => {
+    const firstErrorField = Object.keys(errors)[0] as keyof QuickAddInput;
+    if (firstErrorField) {
+      setFocus(firstErrorField);
+    }
   };
 
   // Convert products and principals to combobox options
@@ -385,7 +394,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
         <div className="flex gap-2">
           <Button
             type="button"
-            onClick={handleSubmit((data) => onSubmit(data, false))}
+            onClick={handleSubmit((data) => onSubmit(data, false), onValidationError)}
             disabled={isPending}
           >
             Save & Add Another
@@ -394,7 +403,7 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
           <Button
             type="button"
             variant="secondary"
-            onClick={handleSubmit((data) => onSubmit(data, true))}
+            onClick={handleSubmit((data) => onSubmit(data, true), onValidationError)}
             disabled={isPending}
           >
             Save & Close
