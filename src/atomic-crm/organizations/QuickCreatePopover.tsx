@@ -110,9 +110,10 @@ export function QuickCreatePopover({
               id="org-name"
               {...methods.register("name")}
               aria-invalid={!!methods.formState.errors.name}
+              aria-describedby={methods.formState.errors.name ? "name-error" : undefined}
             />
             {methods.formState.errors.name && (
-              <p className="text-xs text-destructive" role="alert">
+              <p id="name-error" className="text-xs text-destructive" role="alert">
                 {methods.formState.errors.name.message}
               </p>
             )}
@@ -169,13 +170,33 @@ export function QuickCreatePopover({
             {/* City - uses native Input */}
             <div className="space-y-1">
               <Label htmlFor="org-city">City</Label>
-              <Input id="org-city" {...methods.register("city")} />
+              <Input
+                id="org-city"
+                {...methods.register("city")}
+                aria-invalid={!!methods.formState.errors.city}
+                aria-describedby={methods.formState.errors.city ? "city-error" : undefined}
+              />
+              {methods.formState.errors.city && (
+                <p id="city-error" className="text-xs text-destructive" role="alert">
+                  {methods.formState.errors.city.message}
+                </p>
+              )}
             </div>
 
             {/* State - uses native Input */}
             <div className="space-y-1">
               <Label htmlFor="org-state">State</Label>
-              <Input id="org-state" {...methods.register("state")} />
+              <Input
+                id="org-state"
+                {...methods.register("state")}
+                aria-invalid={!!methods.formState.errors.state}
+                aria-describedby={methods.formState.errors.state ? "state-error" : undefined}
+              />
+              {methods.formState.errors.state && (
+                <p id="state-error" className="text-xs text-destructive" role="alert">
+                  {methods.formState.errors.state.message}
+                </p>
+              )}
             </div>
           </div>
 

@@ -289,4 +289,53 @@ describe("FormFieldWrapper", () => {
     const icon = container.querySelector("svg");
     expect(icon).not.toBeInTheDocument();
   });
+
+  // WCAG 3.3.2 Accessibility Tests
+  describe("aria-required propagation (WCAG 3.3.2)", () => {
+    test("propagates aria-required='true' to child input when isRequired is true", () => {
+      render(
+        <FormFieldWrapper name="email" isRequired>
+          <input data-testid="input" />
+        </FormFieldWrapper>
+      );
+
+      expect(screen.getByTestId("input")).toHaveAttribute("aria-required", "true");
+    });
+
+    test("does not add aria-required when isRequired is false", () => {
+      render(
+        <FormFieldWrapper name="email">
+          <input data-testid="input" />
+        </FormFieldWrapper>
+      );
+
+      expect(screen.getByTestId("input")).not.toHaveAttribute("aria-required");
+    });
+
+    test("handles multiple children, applying aria-required to each", () => {
+      render(
+        <FormFieldWrapper name="email" isRequired>
+          <input data-testid="input1" />
+          <input data-testid="input2" />
+        </FormFieldWrapper>
+      );
+
+      expect(screen.getByTestId("input1")).toHaveAttribute("aria-required", "true");
+      expect(screen.getByTestId("input2")).toHaveAttribute("aria-required", "true");
+    });
+
+    test("gracefully handles non-element children (text nodes)", () => {
+      // Should not throw when children include text nodes
+      expect(() => {
+        render(
+          <FormFieldWrapper name="email" isRequired>
+            Some text
+            <input data-testid="input" />
+          </FormFieldWrapper>
+        );
+      }).not.toThrow();
+
+      expect(screen.getByTestId("input")).toHaveAttribute("aria-required", "true");
+    });
+  });
 });
