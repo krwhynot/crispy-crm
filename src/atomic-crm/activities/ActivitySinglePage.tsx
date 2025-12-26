@@ -18,7 +18,7 @@ export default function ActivitySinglePage() {
       <FormSection title="Activity Details">
         <FormGrid>
           <div data-tutorial="activity-type">
-            <FormFieldWrapper name="type" isRequired>
+            <FormFieldWrapper name="type" isRequired countDefaultAsFilled>
               <SelectInput
                 source="type"
                 label="Interaction Type"
@@ -43,7 +43,7 @@ export default function ActivitySinglePage() {
         </FormFieldWrapper>
 
         <FormGrid>
-          <FormFieldWrapper name="activity_date" isRequired>
+          <FormFieldWrapper name="activity_date" isRequired countDefaultAsFilled>
             <TextInput source="activity_date" label="Date" type="date" isRequired />
           </FormFieldWrapper>
           <FormFieldWrapper name="duration_minutes">

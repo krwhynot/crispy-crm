@@ -86,9 +86,9 @@ describe("useQuickAdd", () => {
     // Wait for mutation to complete
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    // Verify localStorage was updated
-    expect(localStorage.getItem("last_campaign")).toBe("Trade Show 2025");
-    expect(localStorage.getItem("last_principal")).toBe("1");
+    // Verify localStorage was updated (secureStorage JSON-stringifies values)
+    expect(JSON.parse(localStorage.getItem("last_campaign") ?? "null")).toBe("Trade Show 2025");
+    expect(JSON.parse(localStorage.getItem("last_principal") ?? "null")).toBe("1");
   });
 
   test("successful creation shows success toast", async () => {
@@ -207,9 +207,9 @@ describe("useQuickAdd", () => {
     // Wait for mutation to complete
     await waitFor(() => expect(result.current.isSuccess).toBe(true));
 
-    // Verify localStorage was updated with minimal data
-    expect(localStorage.getItem("last_campaign")).toBe("Q1 Campaign");
-    expect(localStorage.getItem("last_principal")).toBe("2");
+    // Verify localStorage was updated with minimal data (secureStorage JSON-stringifies values)
+    expect(JSON.parse(localStorage.getItem("last_campaign") ?? "null")).toBe("Q1 Campaign");
+    expect(JSON.parse(localStorage.getItem("last_principal") ?? "null")).toBe("2");
 
     // Verify success toast with minimal data
     expect(mockNotify).toHaveBeenCalledWith("✅ Created: Jane Smith - Tech Inc", {
@@ -230,9 +230,9 @@ describe("useQuickAdd", () => {
     // Verify response matches expected result
     expect(response).toEqual(successResult);
 
-    // Verify localStorage was still updated
-    expect(localStorage.getItem("last_campaign")).toBe("Trade Show 2025");
-    expect(localStorage.getItem("last_principal")).toBe("1");
+    // Verify localStorage was still updated (secureStorage JSON-stringifies values)
+    expect(JSON.parse(localStorage.getItem("last_campaign") ?? "null")).toBe("Trade Show 2025");
+    expect(JSON.parse(localStorage.getItem("last_principal") ?? "null")).toBe("1");
   });
 
   test("mutateAsync throws on error", async () => {
