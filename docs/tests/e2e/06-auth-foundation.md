@@ -726,3 +726,87 @@ Before starting any tests, verify the application loads correctly:
 - Console errors related to ResizeObserver can be ignored (known browser quirk)
 - Some tests may behave differently in incognito mode (no localStorage persistence)
 - JWT tokens can be decoded at jwt.io for inspection (do not share production tokens)
+
+---
+
+## Troubleshooting
+
+### Application Stuck on "Loading..." Screen
+
+**Symptom:** The app shows a blank page or "Loading..." message indefinitely. DevTools Console shows JavaScript errors.
+
+**Common Causes:**
+
+#### 1. Zod v4 Schema Validation Error
+
+**Error message:**
+```
+TypeError: [schemaName].innerType is not a function
+```
+
+**Cause:** The codebase was upgraded to Zod v4, which removed the `ZodEffects` class and `.innerType()` method. This is a breaking change from Zod v3.
+
+**Fix:**
+1. Locate the file mentioned in the error (e.g., `organizationDistributors.ts`)
+2. Find code using `.innerType().omit({...})` or `.innerType().partial()`
+3. Remove `.innerType()` and re-apply any `.refine()` calls after `.omit()` or `.partial()`
+
+**Before (Zod v3):**
+```typescript
+export const createSchema = baseSchema.innerType().omit({ id: true });
+```
+
+**After (Zod v4):**
+```typescript
+export const createSchema = baseSchema
+  .omit({ id: true })
+  .refine((data) => /* original refinement logic */, { message: "..." });
+```
+
+**Why:** In Zod v4, `.omit()` and `.partial()` strip refinements by design. You must re-apply them manually.
+
+#### 2. Supabase Connection Error
+
+**Error message:**
+```
+Failed to fetch
+NetworkError: A network error occurred
+```
+
+**Fixes:**
+1. Verify Supabase is running: `npx supabase status`
+2. Check `.env` file has correct `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY`
+3. Restart Supabase: `npx supabase stop && npx supabase start`
+
+#### 3. Missing Database Seed Data
+
+**Error message:**
+```
+relation "users" does not exist
+No rows returned from query
+```
+
+**Fix:**
+```bash
+npx supabase db reset   # Resets DB and runs migrations + seed
+```
+
+### Login Page Shows But Login Fails
+
+**Symptom:** Login page appears, but entering credentials shows an error or nothing happens.
+
+**Fixes:**
+1. Verify test users exist: Run `npx supabase db reset` to reload seed data
+2. Check Network tab for the `/auth/v1/token` request status
+3. If 400/401: Double-check email/password (admin@test.com / password123)
+4. If no request made: Check for form validation errors on the page
+
+### Auth Token Not Persisting
+
+**Symptom:** Login succeeds but page refresh returns to login screen.
+
+**Fixes:**
+1. Check localStorage in DevTools > Application > Local Storage
+2. Look for `sb-*-auth-token` keys
+3. If missing: Supabase auth may be misconfigured - check `VITE_SUPABASE_URL`
+4. If present but redirect happens: Check for expired token or RLS policy issues
