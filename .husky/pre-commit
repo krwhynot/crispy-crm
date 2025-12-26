@@ -61,8 +61,8 @@ if [ -n "$discovery_files" ]; then
     echo "  just discover"
     echo "  git add docs/_state/*.json"
     echo
-    echo -e "${YELLOW}Continuing anyway (discovery is non-blocking)...${NC}"
-    # Note: Not blocking commit - just warning. Change 'echo' to 'exit 1' to block.
+    echo -e "${RED}❌ Commit blocked. Run 'just discover' to update discovery files.${NC}"
+    exit 1
   else
     echo -e "${GREEN}✓ Discovery files are fresh${NC}"
   fi
