@@ -1,7 +1,7 @@
 -- Migration: Add Organization Hierarchy Cycle Protection
 -- Date: 2025-11-17
 -- Purpose: Prevent self-parenting and circular parent relationships in organizations table
--- Reference: docs/plans/2025-11-17-organization-hierarchies-implementation-plan.md
+-- Reference: docs/archive/plans/2025-11-17-organization-hierarchies-implementation-plan.md
 
 -- =====================================================
 -- Function: Detect Cycles in Organization Hierarchy

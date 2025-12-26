@@ -6,7 +6,7 @@ Document form patterns for Atomic CRM including Zod validation, React Hook Form 
 
 ## Create Form Layout
 
-**Per unified design system** (docs/plans/2025-11-16-unified-design-system-rollout.md:211-288):
+**Per unified design system** (docs/archive/plans/2025-11-16-unified-design-system-rollout.md:211-288):
 
 ### Pattern: Full-Page Create Form
 

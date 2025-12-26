@@ -19,7 +19,7 @@ Dashboards are optimized for **desktop displays first** (1440px+), then adapted 
 
 ### Semantic Spacing Variables
 
-**Unified Design System spacing** (docs/plans/2025-11-16-unified-design-system-rollout.md:306-344):
+**Unified Design System spacing** (docs/archive/plans/2025-11-16-unified-design-system-rollout.md:306-344):
 
 ```css
 @layer theme {

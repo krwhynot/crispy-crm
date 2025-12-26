@@ -10,7 +10,7 @@
  * - Add indexes for performance optimization
  *
  * Feature: Dashboard Quick Actions
- * Design Doc: docs/plans/2025-11-10-dashboard-quick-actions-design.md
+ * Design Doc: docs/archive/plans/2025-11-10-dashboard-quick-actions-design.md
  */
 
 -- Drop existing view

@@ -39,7 +39,7 @@ Typography in Atomic CRM uses OKLCH-based warm text colors (hue 92° matching th
 
 ## Heading Hierarchy
 
-**Per unified design system** (docs/plans/2025-11-16-unified-design-system-rollout.md:298-308):
+**Per unified design system** (docs/archive/plans/2025-11-16-unified-design-system-rollout.md:298-308):
 
 ### Standard Heading Scale
 

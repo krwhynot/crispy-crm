@@ -10,7 +10,7 @@ Design tokens live in two places:
 1. **CSS Variables** (`src/index.css`) - For Tailwind and runtime
 2. **TypeScript Constants** (`src/lib/design-system/spacing.ts`) - For validation and logic
 
-**Unified Design System Semantic Spacing Variables** (docs/plans/2025-11-16-unified-design-system-rollout.md:306-344):
+**Unified Design System Semantic Spacing Variables** (docs/archive/plans/2025-11-16-unified-design-system-rollout.md:306-344):
 
 ```css
 @layer theme {
@@ -70,7 +70,7 @@ Design tokens live in two places:
 
 ### Tokenized Utility Classes
 
-**Reference `src/index.css` for reusable components** (docs/plans/2025-11-16-unified-design-system-rollout.md:346-398):
+**Reference `src/index.css` for reusable components** (docs/archive/plans/2025-11-16-unified-design-system-rollout.md:346-398):
 
 | Utility | Purpose | Token | Shadow |
 |---------|---------|-------|--------|
