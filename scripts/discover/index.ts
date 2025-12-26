@@ -7,6 +7,7 @@ import { extractHooks } from "./extractors/hooks.js";
 import { extractSchemas } from "./extractors/schemas.js";
 import { extractTypes } from "./extractors/types.js";
 import { extractForms } from "./extractors/forms.js";
+import { extractValidationServices } from "./extractors/validation-services.js";
 import { isDiscoveryStale, isChunkedDiscoveryStale } from "./utils/output.js";
 import { project } from "./utils/project.js";
 
@@ -85,6 +86,17 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
       return files.map(f => f.getFilePath()).filter(
         p => !p.includes("__tests__") && !p.includes(".test.") && !p.includes(".spec.")
       );
+    },
+  },
+  validationServices: {
+    name: "validationServices",
+    label: "Validation Services",
+    outputPath: "validation-services-inventory",
+    isChunked: true,
+    extractFn: extractValidationServices,
+    getSourceFiles: () => {
+      const files = project.addSourceFilesAtPaths("src/atomic-crm/validation/**/*.ts");
+      return files.map(f => f.getFilePath()).filter(p => !p.includes("__tests__") && !p.endsWith("index.ts"));
     },
   },
 };
