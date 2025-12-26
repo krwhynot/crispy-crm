@@ -68,21 +68,34 @@ export interface OrganizationDistributorWithNames extends OrganizationDistributo
  * Create-specific schema (stricter requirements)
  * Omits system-managed fields
  */
-export const createOrganizationDistributorSchema = organizationDistributorSchema.innerType().omit({
-  id: true,
-  created_at: true,
-  updated_at: true,
-  deleted_at: true,
-});
+export const createOrganizationDistributorSchema = organizationDistributorSchema
+  .omit({
+    id: true,
+    created_at: true,
+    updated_at: true,
+    deleted_at: true,
+  })
+  .refine((data) => data.organization_id !== data.distributor_id, {
+    message: "Organization cannot be its own distributor",
+  });
 
 /**
  * Update-specific schema (more flexible)
  * ID is required, other fields are optional
  */
 export const updateOrganizationDistributorSchema = organizationDistributorSchema
-  .innerType()
   .partial()
-  .required({ id: true });
+  .required({ id: true })
+  .refine(
+    (data) => {
+      // Only validate when both fields are being updated
+      if (data.organization_id !== undefined && data.distributor_id !== undefined) {
+        return data.organization_id !== data.distributor_id;
+      }
+      return true;
+    },
+    { message: "Organization cannot be its own distributor" }
+  );
 
 /**
  * Validation function for React Admin forms

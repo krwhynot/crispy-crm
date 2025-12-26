@@ -5,6 +5,7 @@ Foundational authentication tests that verify login flows, session management, a
 ## Prerequisites
 
 - [ ] Application is running locally at http://localhost:5173
+- [ ] **Pre-flight health check passes** (see below)
 - [ ] Browser DevTools is accessible (F12)
 - [ ] Test user accounts exist in the database:
   - Admin: admin@test.com / password123
@@ -12,6 +13,19 @@ Foundational authentication tests that verify login flows, session management, a
   - Rep: rep@mfbroker.com / password123
 - [ ] Browser is in a clean state (clear cookies/localStorage for localhost)
 - [ ] Network tab is open in DevTools to monitor auth requests
+
+### Pre-Flight Health Check
+
+Before starting any tests, verify the application loads correctly:
+
+1. Navigate to http://localhost:5173
+2. Open DevTools Console (F12 > Console tab)
+3. Wait for page to finish loading (watch Network tab)
+4. **Verify NO red JavaScript errors** in Console
+5. **Verify login page appears** (not stuck on "Loading..." screen)
+6. Verify you see email and password input fields
+
+**If health check fails:** See [Troubleshooting](#troubleshooting) section at the end of this document.
 
 ---
 

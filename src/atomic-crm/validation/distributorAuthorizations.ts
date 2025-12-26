@@ -72,22 +72,51 @@ export interface DistributorAuthorizationWithNames extends DistributorAuthorizat
  * Omits system-managed fields
  */
 export const createDistributorAuthorizationSchema = distributorAuthorizationSchema
-  .innerType()
   .omit({
     id: true,
     created_at: true,
     updated_at: true,
     deleted_at: true,
-  });
+  })
+  .refine((data) => data.distributor_id !== data.principal_id, {
+    message: "Distributor and Principal cannot be the same organization",
+  })
+  .refine(
+    (data) => {
+      if (data.expiration_date && data.authorization_date) {
+        return new Date(data.expiration_date) > new Date(data.authorization_date);
+      }
+      return true;
+    },
+    { message: "Expiration date must be after authorization date" }
+  );
 
 /**
  * Update-specific schema (more flexible)
  * ID is required, other fields are optional
  */
 export const updateDistributorAuthorizationSchema = distributorAuthorizationSchema
-  .innerType()
   .partial()
-  .required({ id: true });
+  .required({ id: true })
+  .refine(
+    (data) => {
+      // Only validate when both fields are being updated
+      if (data.distributor_id !== undefined && data.principal_id !== undefined) {
+        return data.distributor_id !== data.principal_id;
+      }
+      return true;
+    },
+    { message: "Distributor and Principal cannot be the same organization" }
+  )
+  .refine(
+    (data) => {
+      if (data.expiration_date && data.authorization_date) {
+        return new Date(data.expiration_date) > new Date(data.authorization_date);
+      }
+      return true;
+    },
+    { message: "Expiration date must be after authorization date" }
+  );
 
 /**
  * Validation function for React Admin forms
@@ -220,21 +249,37 @@ export interface ProductDistributorAuthorizationWithNames extends ProductDistrib
  * Create-specific schema (stricter requirements)
  */
 export const createProductDistributorAuthorizationSchema = productDistributorAuthorizationSchema
-  .innerType()
   .omit({
     id: true,
     created_at: true,
     updated_at: true,
     deleted_at: true,
-  });
+  })
+  .refine(
+    (data) => {
+      if (data.expiration_date && data.authorization_date) {
+        return new Date(data.expiration_date) > new Date(data.authorization_date);
+      }
+      return true;
+    },
+    { message: "Expiration date must be after authorization date" }
+  );
 
 /**
  * Update-specific schema (more flexible)
  */
 export const updateProductDistributorAuthorizationSchema = productDistributorAuthorizationSchema
-  .innerType()
   .partial()
-  .required({ id: true });
+  .required({ id: true })
+  .refine(
+    (data) => {
+      if (data.expiration_date && data.authorization_date) {
+        return new Date(data.expiration_date) > new Date(data.authorization_date);
+      }
+      return true;
+    },
+    { message: "Expiration date must be after authorization date" }
+  );
 
 /**
  * Validation function for React Admin forms
