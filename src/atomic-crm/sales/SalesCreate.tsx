@@ -13,6 +13,11 @@ import { SalesListSkeleton } from "@/components/ui/list-skeleton";
 import { useEffect } from "react";
 
 export default function SalesCreate() {
+  // ═══════════════════════════════════════════════════════════════════════════
+  // ALL HOOKS MUST BE CALLED UNCONDITIONALLY AT THE TOP
+  // React's Rules of Hooks: Hooks must run in the same order on every render
+  // ═══════════════════════════════════════════════════════════════════════════
+
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const redirect = useRedirect();
@@ -23,30 +28,13 @@ export default function SalesCreate() {
     action: "create",
   });
 
-  // Redirect unauthorized users after permission check completes
-  useEffect(() => {
-    if (!isCheckingAccess && !canAccess) {
-      notify("You don't have permission to create team members.", { type: "warning" });
-      redirect("/sales");
-    }
-  }, [isCheckingAccess, canAccess, notify, redirect]);
-
-  // Show loading skeleton while checking permissions
-  if (isCheckingAccess) {
-    return <SalesListSkeleton />;
-  }
-
-  // Don't render form for unauthorized users
-  if (!canAccess) {
-    return null;
-  }
-
+  // Service and defaults (not hooks, but needed for useMutation below)
   const salesService = new SalesService(dataProvider);
-
   const formDefaults = {
     ...createSalesSchema.partial().parse({}),
   };
 
+  // useMutation MUST be called before any early returns (Rules of Hooks)
   const { mutate, isPending: isCreating } = useMutation({
     mutationKey: ["signup"],
     mutationFn: async (data: SalesFormData) => {
@@ -84,6 +72,28 @@ export default function SalesCreate() {
       notify(message, { type: "error" });
     },
   });
+
+  // Redirect unauthorized users after permission check completes
+  useEffect(() => {
+    if (!isCheckingAccess && !canAccess) {
+      notify("You don't have permission to create team members.", { type: "warning" });
+      redirect("/sales");
+    }
+  }, [isCheckingAccess, canAccess, notify, redirect]);
+
+  // ═══════════════════════════════════════════════════════════════════════════
+  // CONDITIONAL RETURNS - Safe to use AFTER all hooks are called
+  // ═══════════════════════════════════════════════════════════════════════════
+
+  // Show loading skeleton while checking permissions
+  if (isCheckingAccess) {
+    return <SalesListSkeleton />;
+  }
+
+  // Don't render form for unauthorized users
+  if (!canAccess) {
+    return null;
+  }
 
   const onSubmit: SubmitHandler<SalesFormData> = async (data) => {
     mutate(data);
