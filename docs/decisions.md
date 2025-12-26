@@ -1,7 +1,8 @@
 # Architecture Decisions
 
 > Consolidated from implementation plans, audits, and project history
-> Last Updated: 2025-12
+> Last Updated: 2025-12-26
+> Last Verified: 2025-12-26
 
 ---
 
@@ -104,9 +105,16 @@
 ### 5. Organization Type Unification
 
 **Date:** 2024-10
+**Last Verified:** 2025-12-26
 **Context:** MFB's business model has Principals (manufacturers), Distributors, and Operators (restaurants). Originally considered separate tables.
 
-**Decision:** Single `organizations` table with `organization_type` enum (`principal`, `distributor`, `operator`, `unknown`). Different behaviors via type-specific logic, not separate tables.
+**Decision:** Single `organizations` table with `organization_type` enum. Different behaviors via type-specific logic, not separate tables.
+
+**Current Enum Values:**
+- **Database:** `customer`, `prospect`, `principal`, `distributor`
+- **TypeScript/Zod:** `customer`, `prospect`, `principal`, `distributor`, `operator`
+
+> **Note:** TypeScript includes `operator` for future use; database enum should be synced when operator support is needed.
 
 **Rationale:**
 - Reduces table proliferation (would have been 3+ tables)
@@ -119,7 +127,11 @@
 - **Prevents:** Table sprawl, duplicate CRUD logic
 - **Trade-off:** More complex queries when filtering by type
 
-**Deprecated Pattern:** `is_principal`, `is_distributor` boolean columns are deprecated—use `organization_type` enum only.
+**Deprecated Pattern:** `is_principal`, `is_distributor` boolean columns removed in migration `20251018232818`.
+
+**Key Files:**
+- `supabase/migrations/20251208122758_remove_partner_unknown_org_types.sql` - Current DB enum
+- `src/atomic-crm/validation/organizations.ts:11` - TypeScript schema
 
 **Source:** Organizations Architecture Audit, Data Model
 
@@ -175,24 +187,39 @@
 ### 8. RLS Security Model (Team Collaboration)
 
 **Date:** 2024-10
+**Last Verified:** 2025-12-26
 **Context:** Multi-user CRM with 6 account managers. Need data protection without row-level ownership complexity.
 
 **Decision:**
-- Team-based access: All authenticated users can SELECT/INSERT
-- Admin-only: UPDATE/DELETE requires `is_admin` check
+- **SELECT:** All authenticated users (with `deleted_at IS NULL` filter)
+- **INSERT:** All authenticated users
+- **UPDATE:** All authenticated users (shared team model)
+- **DELETE:** Admin-only for core tables; creator-or-admin for notes/activities
 - RLS policies filter `deleted_at IS NULL` automatically
 - No row-level ownership for core entities
 
+**Evolution:**
+| Date | Change | Migration |
+|------|--------|-----------|
+| Nov 8, 2025 | Admin-only UPDATE added | `20251108213039` |
+| Nov 29, 2025 | UPDATE reverted to shared model | `20251129181451` |
+
+> **Note:** UPDATE was reverted from admin-only to shared team access to support collaborative workflow where reps help each other.
+
 **Rationale:**
 - Small team, high trust environment
-- Collaborative workflow—reps need to see each other's data
+- Collaborative workflow—reps need to see AND modify each other's data
 - Simpler than per-user row ownership
-- Admin gate for destructive operations
+- Admin gate for destructive DELETE operations only
 
 **Consequences:**
-- **Enables:** Team collaboration, shared pipeline visibility
-- **Prevents:** Reps modifying/deleting each other's records
+- **Enables:** Team collaboration, shared pipeline visibility, reps can fix each other's data
+- **Prevents:** Reps permanently deleting each other's records
 - **Trade-off:** No privacy between reps (acceptable for MFB workflow)
+
+**Key Files:**
+- `supabase/migrations/20251129181451_add_missing_update_policies.sql` - Current UPDATE policies
+- `supabase/migrations/20251211180000_fix_is_admin_null_auth.sql` - is_admin() function
 
 **Source:** Organizations Architecture Audit (RLS Security Assessment)
 
