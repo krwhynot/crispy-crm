@@ -43,6 +43,8 @@ export default function SalesList() {
         title={false}
         actions={<SalesListActions />}
         sort={{ field: "first_name", order: "ASC" }}
+        filterDefaultValues={{ disabled: false }}
+        aside={<SalesListFilter />}
       >
         <SalesListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
         <FloatingCreateButton />
@@ -104,7 +106,7 @@ const SalesListLayout = ({
 
   return (
     <div className="card-container">
-      <ListSearchBar placeholder="Search team members..." />
+      <ListSearchBar placeholder="Search team members..." filterConfig={SALES_FILTER_CONFIG} />
       <PremiumDatagrid
         onRowClick={(id) => openSlideOver(Number(id), "view")}
         focusedIndex={focusedIndex}
