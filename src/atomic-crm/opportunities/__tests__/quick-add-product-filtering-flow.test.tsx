@@ -191,15 +191,17 @@ describe("Quick Add Flow with Product Filtering", () => {
         expect(screen.getByRole("dialog")).toBeInTheDocument();
       });
 
-      // Verify all form field labels are present (not checking form controls since Select uses buttons)
-      expect(screen.getByText(/^Campaign$/)).toBeInTheDocument();
-      expect(screen.getByText(/^Principal \*$/)).toBeInTheDocument();
-      expect(screen.getByText(/^Products$/)).toBeInTheDocument();
-      expect(screen.getByText(/^First Name \*$/)).toBeInTheDocument();
-      expect(screen.getByText(/^Last Name \*$/)).toBeInTheDocument();
-      expect(screen.getByText(/^Phone$/)).toBeInTheDocument();
-      expect(screen.getByText(/^Email$/)).toBeInTheDocument();
-      expect(screen.getByText(/^Organization Name \*$/)).toBeInTheDocument();
+      // Verify all form field labels are present
+      // Note: Required field asterisks are in separate <span> elements for accessibility,
+      // so we check label text without the asterisk
+      expect(screen.getByText("Campaign")).toBeInTheDocument();
+      expect(screen.getByText("Principal")).toBeInTheDocument();
+      expect(screen.getByText("Products")).toBeInTheDocument();
+      expect(screen.getByText("First Name")).toBeInTheDocument();
+      expect(screen.getByText("Last Name")).toBeInTheDocument();
+      expect(screen.getByText("Phone")).toBeInTheDocument();
+      expect(screen.getByText("Email")).toBeInTheDocument();
+      expect(screen.getByText("Organization Name")).toBeInTheDocument();
     });
   });
 });
