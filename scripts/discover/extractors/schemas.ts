@@ -206,6 +206,22 @@ function extractTransformDetails(text: string): { functionName: string; isSecuri
     };
   }
 
+  // Pattern 4: .transform(v => v ?? 'default') - nullish coalescing
+  if (text.match(/\.transform\s*\(\s*\w+\s*=>\s*\w+\s*\?\?\s*/)) {
+    return {
+      functionName: 'nullishCoalescing',
+      isSecurity: false,
+    };
+  }
+
+  // Pattern 5: .transform(v => v || 'default') - logical OR fallback
+  if (text.match(/\.transform\s*\(\s*\w+\s*=>\s*\w+\s*\|\|\s*/)) {
+    return {
+      functionName: 'logicalOrFallback',
+      isSecurity: false,
+    };
+  }
+
   // Has transform but couldn't parse details
   return {
     functionName: 'unknown',

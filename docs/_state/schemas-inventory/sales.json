@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2025-12-25T17:36:23.432Z",
+  "generated_at": "2025-12-25T17:43:13.562Z",
   "item_count": 6,
   "items": [
     {
@@ -367,7 +367,7 @@
           "hasTransform": true,
           "hasDefault": false,
           "transformDetails": {
-            "functionName": "unknown",
+            "functionName": "nullishCoalescing",
             "isSecurity": false
           }
         },
@@ -382,7 +382,7 @@
           "hasTransform": true,
           "hasDefault": false,
           "transformDetails": {
-            "functionName": "unknown",
+            "functionName": "nullishCoalescing",
             "isSecurity": false
           }
         },
@@ -397,7 +397,7 @@
           "hasTransform": true,
           "hasDefault": false,
           "transformDetails": {
-            "functionName": "unknown",
+            "functionName": "nullishCoalescing",
             "isSecurity": false
           }
         },
@@ -412,7 +412,7 @@
           "hasTransform": true,
           "hasDefault": false,
           "transformDetails": {
-            "functionName": "unknown",
+            "functionName": "nullishCoalescing",
             "isSecurity": false
           }
         },
@@ -427,7 +427,7 @@
           "hasTransform": true,
           "hasDefault": false,
           "transformDetails": {
-            "functionName": "unknown",
+            "functionName": "nullishCoalescing",
             "isSecurity": false
           }
         }

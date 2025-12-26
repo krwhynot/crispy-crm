@@ -15,13 +15,20 @@ Guidance for Claude Code working with Crispy CRM (Atomic CRM) - a React 19 + Typ
 
 | File | Contents | Use When |
 |------|----------|----------|
-| `docs/_state/component-inventory/` | 484 React components (26 feature chunks) | "Which components exist?", "What uses X hook?" |
+| `docs/_state/component-inventory/` | 484 React components (26 chunks) - includes childComponents, contextDependencies, componentRole | "Which components exist?", "What uses X hook?", "Component hierarchy?" |
 | `docs/_state/hooks-inventory.json` | 77 custom hooks with dependencies | "What hooks are available?", "What does useX do?" |
-| `docs/_state/schemas-inventory/` | 82 Zod schemas (~18 feature chunks) | "What validation exists?", "Schema structure?" |
-| `docs/_state/types-inventory/` | 101 TypeScript types (~10 feature chunks) | "What types exist?", "Type definitions?" |
-| `docs/_state/forms-inventory.json` | 39 form components (React Admin, React 19) | "What forms exist?", "Form validation patterns?" |
+| `docs/_state/schemas-inventory/` | 82 Zod schemas (~18 chunks) - includes transformDetails with function names | "What validation exists?", "Schema structure?", "Security transforms?" |
+| `docs/_state/types-inventory/` | 101 TypeScript types (~10 chunks) | "What types exist?", "Type definitions?" |
+| `docs/_state/forms-inventory.json` | 39 form components - includes componentChain, inputComponentsDeep | "What forms exist?", "Form hierarchy?", "Which inputs used?" |
+| `docs/_state/validation-services-inventory/` | Validation wrapper functions & custom validators | "Error formatting?", "Custom validators?" |
 
 **These files are auto-generated and CI-enforced fresh.** Use them to understand structure before reading individual source files.
+
+**Enhanced metadata includes:**
+- **Components:** `childComponents`, `contextDependencies`, `componentRole` (entry/wrapper/leaf)
+- **Schemas:** `transformDetails.functionName`, `transformDetails.isSecurity` (for sanitization)
+- **Forms:** `componentChain` (hierarchy), `inputComponentsDeep` (recursive inputs)
+- **Validation Services:** Error formatting detection, custom validator patterns
 
 To regenerate: `just discover` | To check freshness: `just discover-check`
 
