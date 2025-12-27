@@ -562,9 +562,95 @@ CLAUDE.md explicitly teaching AI to use discovery files is critical for adoption
 
 ---
 
-## 11. Future Enhancements (Not Yet Implemented)
+## 11. Phase 2: Incremental Updates (Implemented)
 
-1. **Incremental updates** - Only regenerate chunks for changed files
+### The Problem with Full Regeneration
+
+When ANY source file changes, the original system re-ran ALL extractors and rewrote ALL chunks:
+- 485 components in 26 chunks → all rewritten even if 1 file changed
+- Wasteful for large codebases
+- Slower CI checks
+
+### Solution: Chunk-Level Staleness Detection
+
+**New manifest fields:**
+
+```typescript
+interface ChunkedManifest {
+  // ... existing fields ...
+
+  /** Maps source file paths to chunk names (for incremental updates) */
+  file_to_chunks: Record<string, string[]>;
+  // Example: { "src/atomic-crm/contacts/ContactList.tsx": ["contacts"] }
+}
+
+interface ChunkInfo {
+  // ... existing fields ...
+
+  /** Source files that contributed to this chunk */
+  source_files: string[];
+  /** Hashes of source files in this chunk */
+  source_hashes: Record<string, string>;
+}
+```
+
+**New staleness detection function:**
+
+```typescript
+interface StaleChunksResult {
+  hasStaleChunks: boolean;
+  staleChunks: string[];           // ["contacts", "organizations"]
+  freshChunks: string[];           // ["activities", "opportunities", ...]
+  staleReasons: Map<string, string>; // { "contacts": "Modified: contacts.ts" }
+  requiresFullRegen: boolean;      // true if manifest missing/corrupted
+}
+
+function getStaleChunks(
+  dirName: string,
+  currentSourceFiles: string[],
+  getChunkForFile: (filePath: string) => string
+): StaleChunksResult
+```
+
+### CLI Usage
+
+```bash
+# Check which chunks need updating (no extraction yet)
+just discover --incremental
+
+# Example output when contacts.ts is modified:
+📝 Zod Schemas: Updating 1 of 18 chunks: contacts
+     contacts: Modified: src/atomic-crm/validation/contacts.ts
+
+# When all chunks are fresh:
+✓ Components: All 26 chunks fresh
+```
+
+### Key Design Decisions
+
+1. **Content hashes, not timestamps**: `touch file.ts` doesn't trigger staleness - only actual content changes do
+2. **File→chunk mapping stored in manifest**: No need to re-parse to know which chunks a file affects
+3. **Graceful fallback**: If manifest missing or corrupted, falls back to full regeneration
+4. **New chunk detection**: If a file would create a new chunk, requires full regen
+
+### Files Modified
+
+| File | Changes |
+|------|---------|
+| `scripts/discover/utils/output.ts` | Added `source_files`, `source_hashes` to `ChunkInfo`; Added `file_to_chunks` to manifest; Added `getStaleChunks()` |
+| `scripts/discover/index.ts` | Added `--incremental` flag; Added `getChunkNameForFile()` helper |
+| `scripts/discover/extractors/*.ts` | All 4 chunked extractors now pass `fileToChunkMapping` to `writeChunkedDiscovery()` |
+
+### Current Status
+
+**Implemented:** Staleness detection at chunk granularity
+**Not yet implemented:** Actual incremental extraction (Phase 2.5) - extractors still run full extraction
+
+---
+
+## 12. Future Enhancements (Not Yet Implemented)
+
+1. **Phase 2.5: Incremental extraction** - Only extract stale chunks, preserve fresh ones
 2. **Watch mode** - Auto-regenerate on file changes during development
 3. **Memory optimization** - Batch processing for very large codebases
 4. **Cross-file dependency graph** - Track component/schema import relationships
@@ -575,16 +661,16 @@ CLAUDE.md explicitly teaching AI to use discovery files is critical for adoption
 
 | File | Purpose | Lines |
 |------|---------|-------|
-| `scripts/discover/index.ts` | Entry point, CLI, orchestration | 250 |
-| `scripts/discover/extractors/components.ts` | Component extraction | 253 |
+| `scripts/discover/index.ts` | Entry point, CLI, orchestration | 336 |
+| `scripts/discover/extractors/components.ts` | Component extraction | 263 |
 | `scripts/discover/extractors/hooks.ts` | Hook extraction | 191 |
-| `scripts/discover/extractors/schemas.ts` | Schema extraction | 802 |
-| `scripts/discover/extractors/types.ts` | Type extraction | 328 |
+| `scripts/discover/extractors/schemas.ts` | Schema extraction | 810 |
+| `scripts/discover/extractors/types.ts` | Type extraction | 337 |
 | `scripts/discover/extractors/forms.ts` | Form extraction | 519 |
-| `scripts/discover/extractors/validation-services.ts` | Validator extraction | 208 |
-| `scripts/discover/utils/output.ts` | File I/O, hashing, staleness | 317 |
+| `scripts/discover/extractors/validation-services.ts` | Validator extraction | 217 |
+| `scripts/discover/utils/output.ts` | File I/O, hashing, staleness, incremental | 524 |
 | `scripts/discover/utils/project.ts` | ts-morph singleton | 35 |
-| **Total** | | **~2,900** |
+| **Total** | | **~3,200** |
 
 ---
 
@@ -609,3 +695,146 @@ CLAUDE.md explicitly teaching AI to use discovery files is critical for adoption
 5. **"Chunking for AI: How We Reduced Token Consumption by 90%"**
    - Chunking strategy deep-dive
    - Manifest design patterns
+
+---
+
+## Appendix: Phase 2.5 Implementation Prompt
+
+Copy this prompt to implement actual incremental extraction:
+
+```
+# Phase 2.5: Incremental Extraction Implementation
+
+## Context
+
+Phase 2 (already implemented) added:
+- `--incremental` flag to CLI that detects which chunks are stale
+- `getStaleChunks()` in `scripts/discover/utils/output.ts` returns `StaleChunksResult`
+- `file_to_chunks` and per-chunk `source_hashes` in manifests
+- All 4 chunked extractors pass `fileToChunkMapping` to `writeChunkedDiscovery()`
+
+Currently when `--incremental` is used, it REPORTS stale chunks but still runs full extraction.
+
+## Goal
+
+Modify the system to actually perform incremental extraction:
+1. Only extract items from source files in stale chunks
+2. Preserve existing chunk files for fresh chunks
+3. Update manifest with merged results
+
+## Implementation Tasks
+
+### Task 1: Add `writeIncrementalChunkedDiscovery()` to output.ts
+
+Create a new function that:
+1. Reads existing manifest and chunk files
+2. Writes only the chunks that need updating
+3. Preserves unchanged chunk files (don't rewrite)
+4. Updates manifest with new checksums for changed chunks only
+
+```typescript
+export function writeIncrementalChunkedDiscovery<T>(
+  dirName: string,
+  generator: string,
+  sourceGlobs: string[],
+  allSourceFiles: string[],            // All source files (for manifest)
+  updatedChunks: Map<string, T[]>,     // Only stale chunks with new data
+  fileToChunkMapping: Map<string, string>,
+  existingManifest: ChunkedManifest    // Current manifest to merge with
+): void
+```
+
+### Task 2: Modify extractors to accept `onlyChunks` parameter
+
+Each chunked extractor (schemas, components, types, validation-services) needs:
+
+1. Add optional parameter: `onlyChunks?: Set<string>`
+2. When provided, filter source files to only those in stale chunks
+3. Return extracted data for those chunks only
+
+Example signature change for schemas.ts:
+```typescript
+export async function extractSchemas(onlyChunks?: Set<string>): Promise<void>
+```
+
+Inside the extractor:
+```typescript
+// Filter source files if incremental
+if (onlyChunks) {
+  sourceFiles = sourceFiles.filter(sf => {
+    const chunkName = extractFeatureName(sf.getFilePath());
+    return onlyChunks.has(chunkName);
+  });
+}
+```
+
+### Task 3: Wire up incremental extraction in index.ts
+
+In the `--incremental` flow:
+
+1. Call `getStaleChunks()` to get stale chunk names
+2. If `requiresFullRegen`, fall back to full extraction
+3. If `hasStaleChunks`:
+   a. Read existing manifest
+   b. Call extractor with `new Set(staleChunks)`
+   c. Call `writeIncrementalChunkedDiscovery()` with updated chunks
+4. If no stale chunks, skip extraction entirely
+
+### Task 4: Add `readExistingManifest()` helper
+
+```typescript
+export function readExistingManifest(dirName: string): ChunkedManifest | null {
+  // Read and parse manifest.json, return null if missing/invalid
+}
+```
+
+## Critical Edge Cases
+
+1. **Deleted file empties a chunk**: If all files in a chunk are deleted, the chunk should be removed from manifest
+2. **New file creates new chunk**: Should fall back to full regeneration (already handled by `requiresFullRegen`)
+3. **Schema cross-references**: If schema A in chunk "contacts" references schema B in chunk "activities", changing B might affect A. For now, accept this limitation - user can run full discovery if cross-chunk issues occur.
+
+## Verification
+
+```bash
+# 1. Run full discovery first
+just discover
+
+# 2. Modify one file
+echo "// test" >> src/atomic-crm/validation/contacts.ts
+
+# 3. Run incremental
+just discover --incremental
+
+# 4. Verify only contacts chunk was rewritten
+ls -la .claude/state/schemas-inventory/  # contacts.json should have newer timestamp
+
+# 5. Verify other chunks unchanged
+# activities.json, organizations.json etc should have original timestamps
+
+# 6. Clean up
+git checkout src/atomic-crm/validation/contacts.ts
+```
+
+## Files to Modify
+
+| File | Changes |
+|------|---------|
+| `scripts/discover/utils/output.ts` | Add `writeIncrementalChunkedDiscovery()`, `readExistingManifest()` |
+| `scripts/discover/index.ts` | Wire up incremental extraction flow |
+| `scripts/discover/extractors/schemas.ts` | Add `onlyChunks` parameter |
+| `scripts/discover/extractors/components.ts` | Add `onlyChunks` parameter |
+| `scripts/discover/extractors/types.ts` | Add `onlyChunks` parameter |
+| `scripts/discover/extractors/validation-services.ts` | Add `onlyChunks` parameter |
+
+## Implementation Order
+
+1. Add `readExistingManifest()` helper
+2. Add `writeIncrementalChunkedDiscovery()` function
+3. Modify one extractor (schemas.ts) as proof of concept
+4. Test incremental extraction for schemas
+5. Modify remaining extractors
+6. Full verification
+
+Please IMPLEMENT all changes (write code), not just describe them.
+```
