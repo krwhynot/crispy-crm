@@ -1,7 +1,7 @@
 import { SyntaxKind, SourceFile, Node } from "ts-morph";
 import * as path from "path";
 import { project } from "../utils/project.js";
-import { writeChunkedDiscovery } from "../utils/output.js";
+import { writeChunkedDiscovery, writeIncrementalChunkedDiscovery, readExistingManifest } from "../utils/output.js";
 
 interface ComponentInfo {
   name: string;
@@ -209,20 +209,54 @@ export async function extractComponents(onlyChunks?: Set<string>): Promise<void>
     fileToChunkMapping.set(filePath, chunkName);
   }
 
-  writeChunkedDiscovery(
-    "component-inventory",
-    "scripts/discover/extractors/components.ts",
-    ["src/atomic-crm/**/*.tsx"],
-    sourceFilePaths,
-    {
-      total_items: components.length,
-      total_chunks: chunks.size,
-      form_controllers: formControllers,
-      presentational,
-    },
-    chunks,
-    fileToChunkMapping
-  );
+  // Write output - incremental or full
+  if (onlyChunks) {
+    // Incremental mode: merge with existing manifest
+    const existingManifest = readExistingManifest("component-inventory");
+    if (existingManifest) {
+      writeIncrementalChunkedDiscovery(
+        "component-inventory",
+        "scripts/discover/extractors/components.ts",
+        ["src/atomic-crm/**/*.tsx"],
+        sourceFilePaths,
+        chunks,
+        fileToChunkMapping,
+        existingManifest
+      );
+    } else {
+      console.log("  ⚠️  No existing manifest found, falling back to full write");
+      writeChunkedDiscovery(
+        "component-inventory",
+        "scripts/discover/extractors/components.ts",
+        ["src/atomic-crm/**/*.tsx"],
+        sourceFilePaths,
+        {
+          total_items: components.length,
+          total_chunks: chunks.size,
+          form_controllers: formControllers,
+          presentational,
+        },
+        chunks,
+        fileToChunkMapping
+      );
+    }
+  } else {
+    // Full mode: write all chunks
+    writeChunkedDiscovery(
+      "component-inventory",
+      "scripts/discover/extractors/components.ts",
+      ["src/atomic-crm/**/*.tsx"],
+      sourceFilePaths,
+      {
+        total_items: components.length,
+        total_chunks: chunks.size,
+        form_controllers: formControllers,
+        presentational,
+      },
+      chunks,
+      fileToChunkMapping
+    );
+  }
 }
 
 function extractHooksFromNode(node: Node): string[] {

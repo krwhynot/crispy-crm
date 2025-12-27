@@ -785,24 +785,63 @@ export async function extractSchemas(onlyChunks?: Set<string>): Promise<void> {
     fileToChunkMapping.set(filePath, chunkName);
   }
 
-  // Write chunked output (use ALL source file paths for manifest)
-  writeChunkedDiscovery(
-    "schemas-inventory",
-    "scripts/discover/extractors/schemas.ts",
-    globs,
-    sourceFiles.map(sf => sf.getFilePath()),
-    {
-      total_items: schemas.length,
-      total_chunks: chunks.size,
-      strict_objects: strictObjectCount,
-      objects: objectCount,
-      enums: enumCount,
-      with_transforms: withTransforms,
-      with_super_refine: withSuperRefine,
-    },
-    chunks,
-    fileToChunkMapping
-  );
+  // Write output - incremental or full
+  const allSourceFilePaths = sourceFiles.map(sf => sf.getFilePath());
+
+  if (onlyChunks) {
+    // Incremental mode: merge with existing manifest
+    const existingManifest = readExistingManifest("schemas-inventory");
+    if (existingManifest) {
+      writeIncrementalChunkedDiscovery(
+        "schemas-inventory",
+        "scripts/discover/extractors/schemas.ts",
+        globs,
+        allSourceFilePaths,
+        chunks,
+        fileToChunkMapping,
+        existingManifest
+      );
+    } else {
+      // Fallback to full write if manifest is missing
+      console.log("  ⚠️  No existing manifest found, falling back to full write");
+      writeChunkedDiscovery(
+        "schemas-inventory",
+        "scripts/discover/extractors/schemas.ts",
+        globs,
+        allSourceFilePaths,
+        {
+          total_items: schemas.length,
+          total_chunks: chunks.size,
+          strict_objects: strictObjectCount,
+          objects: objectCount,
+          enums: enumCount,
+          with_transforms: withTransforms,
+          with_super_refine: withSuperRefine,
+        },
+        chunks,
+        fileToChunkMapping
+      );
+    }
+  } else {
+    // Full mode: write all chunks
+    writeChunkedDiscovery(
+      "schemas-inventory",
+      "scripts/discover/extractors/schemas.ts",
+      globs,
+      allSourceFilePaths,
+      {
+        total_items: schemas.length,
+        total_chunks: chunks.size,
+        strict_objects: strictObjectCount,
+        objects: objectCount,
+        enums: enumCount,
+        with_transforms: withTransforms,
+        with_super_refine: withSuperRefine,
+      },
+      chunks,
+      fileToChunkMapping
+    );
+  }
 
   console.log(`  ✓ Found ${schemas.length} Zod schemas`);
   console.log(`    - ${strictObjectCount} z.strictObject()`);

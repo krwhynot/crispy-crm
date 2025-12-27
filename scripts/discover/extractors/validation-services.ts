@@ -1,7 +1,7 @@
 import { SyntaxKind, FunctionDeclaration, VariableDeclaration } from "ts-morph";
 import * as path from "path";
 import { project } from "../utils/project.js";
-import { writeChunkedDiscovery } from "../utils/output.js";
+import { writeChunkedDiscovery, writeIncrementalChunkedDiscovery, readExistingManifest } from "../utils/output.js";
 
 /**
  * Validation service information
@@ -190,29 +190,70 @@ export async function extractValidationServices(onlyChunks?: Set<string>): Promi
     }
   }
 
-  // Build file-to-chunk mapping for incremental updates
+  // Build file-to-chunk mapping from ALL source files (not just processed ones)
+  // This is critical for incremental mode to preserve fresh chunks
   const fileToChunkMapping = new Map<string, string>();
-  for (const filePath of processedFiles) {
-    const relativePath = path.relative(process.cwd(), filePath);
-    const chunkName = extractFeatureName(relativePath);
+  const allSourceFilePaths: string[] = [];
+  for (const sourceFile of sourceFiles) {
+    const filePath = sourceFile.getFilePath();
+    // Skip test files and index.ts (same filters as processing loop)
+    if (filePath.includes("__tests__") || filePath.includes(".test.") || filePath.endsWith("index.ts")) {
+      continue;
+    }
+    const chunkName = extractFeatureName(filePath);
     fileToChunkMapping.set(filePath, chunkName);
+    allSourceFilePaths.push(filePath);
   }
 
-  writeChunkedDiscovery(
-    "validation-services-inventory",
-    "scripts/discover/extractors/validation-services.ts",
-    globs,
-    Array.from(processedFiles),
-    {
-      total_items: services.length + customValidators.length,
-      total_chunks: chunks.size,
-      services: services.length,
-      custom_validators: customValidators.length,
-      with_error_formatting: services.filter(s => s.errorFormatting).length,
-    },
-    chunks as Map<string, unknown[]>,
-    fileToChunkMapping
-  );
+  if (onlyChunks) {
+    // Incremental mode: merge with existing manifest
+    const existingManifest = readExistingManifest("validation-services-inventory");
+    if (existingManifest) {
+      writeIncrementalChunkedDiscovery(
+        "validation-services-inventory",
+        "scripts/discover/extractors/validation-services.ts",
+        globs,
+        allSourceFilePaths,
+        chunks as Map<string, unknown[]>,
+        fileToChunkMapping,
+        existingManifest
+      );
+    } else {
+      console.log("  ⚠️  No existing manifest found, falling back to full write");
+      writeChunkedDiscovery(
+        "validation-services-inventory",
+        "scripts/discover/extractors/validation-services.ts",
+        globs,
+        allSourceFilePaths,
+        {
+          total_items: services.length + customValidators.length,
+          total_chunks: chunks.size,
+          services: services.length,
+          custom_validators: customValidators.length,
+          with_error_formatting: services.filter(s => s.errorFormatting).length,
+        },
+        chunks as Map<string, unknown[]>,
+        fileToChunkMapping
+      );
+    }
+  } else {
+    // Full mode: write all chunks
+    writeChunkedDiscovery(
+      "validation-services-inventory",
+      "scripts/discover/extractors/validation-services.ts",
+      globs,
+      allSourceFilePaths,
+      {
+        total_items: services.length + customValidators.length,
+        total_chunks: chunks.size,
+        services: services.length,
+        custom_validators: customValidators.length,
+        with_error_formatting: services.filter(s => s.errorFormatting).length,
+      },
+      chunks as Map<string, unknown[]>,
+      fileToChunkMapping
+    );
+  }
 
   console.log(`  ✓ Found ${services.length} validation services`);
   console.log(`    - ${customValidators.length} custom validators`);
