@@ -167,8 +167,23 @@ discover:
 # Generate SCIP index from TypeScript codebase
 discover-scip:
     @echo "🔍 Generating SCIP index..."
-    npx scip-typescript index --output .claude/state/index.scip
+    npx tsx scripts/discover/scip/generate.ts --verbose
     @echo "✅ SCIP index generated at .claude/state/index.scip"
+
+# Populate SQLite FTS5 database from SCIP index
+discover-scip-db:
+    @echo "📊 Populating SQLite database..."
+    npx tsx scripts/discover/scip/populate.ts --verbose
+    @echo "✅ Database populated at .claude/state/search.db"
+
+# Verify SCIP index and database integrity
+discover-scip-verify:
+    @echo "🔬 Verifying SCIP index..."
+    npx tsx scripts/discover/scip/verify.ts --verbose
+
+# Full SCIP pipeline: generate index + populate DB + verify
+discover-scip-full: discover-scip discover-scip-db discover-scip-verify
+    @echo "✅ Full SCIP pipeline complete"
 
 # Start Qdrant + Ollama services for semantic search
 discover-services:
