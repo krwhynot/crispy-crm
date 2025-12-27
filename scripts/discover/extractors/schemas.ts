@@ -32,6 +32,19 @@ function extractFeatureName(filePath: string): string {
 }
 
 /**
+ * Schema symbol table entry for tracking schema variable properties.
+ * Used in two-pass analysis to resolve transforms in referenced schemas.
+ */
+interface SchemaSymbol {
+  hasTransform: boolean;
+  hasPipe: boolean;
+  transformDetails?: {
+    functionName: string;
+    isSecurity: boolean;
+  };
+}
+
+/**
  * Schema field information extracted from Zod object schemas
  */
 interface SchemaField {
@@ -42,6 +55,8 @@ interface SchemaField {
   nullable: boolean;
   hasTransform: boolean;
   hasDefault: boolean;
+  hasPipe?: boolean; // Track .pipe() chains after transforms
+  pipedValidation?: string; // e.g., "z.string().url()"
   enumValues?: string[];
   transformDetails?: {
     functionName: string; // 'sanitizeHtml', 'urlAutoPrefix', 'toLowerCase'
@@ -170,6 +185,62 @@ function hasDefault(text: string): boolean {
 }
 
 /**
+ * Detect if a chain includes .pipe()
+ */
+function hasPipe(text: string): boolean {
+  return /\.pipe\(/.test(text);
+}
+
+/**
+ * AST-based transform detection for Node objects.
+ * More reliable than regex for nested structures like z.union([...]).
+ */
+function hasTransformInNode(node: Node): boolean {
+  const callExprs = node.getDescendantsOfKind(SyntaxKind.CallExpression);
+
+  for (const call of callExprs) {
+    const expr = call.getExpression();
+    if (expr.getKind() === SyntaxKind.PropertyAccessExpression) {
+      const propAccess = expr.asKindOrThrow(SyntaxKind.PropertyAccessExpression);
+      if (propAccess.getName() === 'transform') {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+/**
+ * Build a symbol table mapping schema variable names to their transform details.
+ * This enables two-pass analysis: first collect all schema properties,
+ * then resolve references to inherited transforms.
+ */
+function buildSchemaSymbolTable(sourceFile: SourceFile): Map<string, SchemaSymbol> {
+  const symbols = new Map<string, SchemaSymbol>();
+
+  sourceFile.getVariableDeclarations().forEach(decl => {
+    const name = decl.getName();
+    const init = decl.getInitializer();
+    if (!init) return;
+
+    const text = init.getText();
+    // Only track Zod-related variables
+    if (text.includes('z.') || name.includes('Schema') || name.includes('schema')) {
+      // Use AST-based detection for more accurate results
+      const hasTransformResult = hasTransformInNode(init);
+
+      symbols.set(name, {
+        hasTransform: hasTransformResult,
+        hasPipe: hasPipe(text),
+        transformDetails: hasTransformResult ? extractTransformDetails(text) : undefined,
+      });
+    }
+  });
+
+  return symbols;
+}
+
+/**
  * Extract transform function details from a Zod chain
  * Pattern: .transform((val) => functionName(val)) or .transform(functionName)
  */
@@ -268,9 +339,13 @@ function extractZodType(valueText: string): string {
 }
 
 /**
- * Extract fields from a z.object() or z.strictObject() call
+ * Extract fields from a z.object() or z.strictObject() call.
+ * Uses symbol table to resolve transforms in referenced schemas.
  */
-function extractFields(callExpr: CallExpression): SchemaField[] {
+function extractFields(
+  callExpr: CallExpression,
+  symbolTable?: Map<string, SchemaSymbol>
+): SchemaField[] {
   const fields: SchemaField[] = [];
   const args = callExpr.getArguments();
 
@@ -308,7 +383,61 @@ function extractFields(callExpr: CallExpression): SchemaField[] {
         }
       }
 
-      const transformDetails = extractTransformDetails(valueText);
+      // Detect transforms - use multiple strategies for accuracy
+      let fieldHasTransform = hasTransform(valueText);
+      let transformDetails = extractTransformDetails(valueText);
+
+      // Strategy 1: If zodType is a reference, check symbol table for inherited transforms
+      if (zodType.startsWith("ref:") && symbolTable) {
+        const refName = zodType.slice(4); // Remove "ref:" prefix
+        const symbolInfo = symbolTable.get(refName);
+        if (symbolInfo?.hasTransform) {
+          fieldHasTransform = true;
+          // Inherit transform details from referenced schema if we don't have local ones
+          if (!transformDetails && symbolInfo.transformDetails) {
+            transformDetails = symbolInfo.transformDetails;
+          }
+        }
+      }
+
+      // Strategy 2: For union types, use AST-based detection to find nested transforms
+      if (zodType === "union" || valueText.includes("z.union(")) {
+        if (hasTransformInNode(initializer)) {
+          fieldHasTransform = true;
+          // Try to extract transform details if not already found
+          if (!transformDetails) {
+            transformDetails = extractTransformDetails(valueText);
+          }
+        }
+      }
+
+      // Strategy 3: Check for any identifier references in the value that might have transforms
+      if (!fieldHasTransform && symbolTable) {
+        // Look for schema references without "Schema" suffix (e.g., isLinkedinUrl)
+        const identifierMatch = valueText.match(/^(\w+)\./);
+        if (identifierMatch) {
+          const refName = identifierMatch[1];
+          const symbolInfo = symbolTable.get(refName);
+          if (symbolInfo?.hasTransform) {
+            fieldHasTransform = true;
+            if (!transformDetails && symbolInfo.transformDetails) {
+              transformDetails = symbolInfo.transformDetails;
+            }
+          }
+        }
+      }
+
+      // Detect pipe chains
+      let fieldHasPipe: boolean | undefined;
+      let pipedValidation: string | undefined;
+      if (hasPipe(valueText)) {
+        fieldHasPipe = true;
+        // Extract what's piped: .transform(...).pipe(z.string().url())
+        const pipeMatch = valueText.match(/\.pipe\s*\(\s*(z\.[^)]+)\s*\)/);
+        if (pipeMatch) {
+          pipedValidation = pipeMatch[1];
+        }
+      }
 
       fields.push({
         name,
@@ -316,8 +445,10 @@ function extractFields(callExpr: CallExpression): SchemaField[] {
         constraints,
         optional: hasOptional(valueText),
         nullable: hasNullable(valueText),
-        hasTransform: hasTransform(valueText),
+        hasTransform: fieldHasTransform,
         hasDefault: hasDefault(valueText),
+        ...(fieldHasPipe && { hasPipe: fieldHasPipe }),
+        ...(pipedValidation && { pipedValidation }),
         ...(enumValues && { enumValues }),
         ...(transformDetails && { transformDetails }),
       });
@@ -380,11 +511,13 @@ function findRootZodCall(node: Node): CallExpression | null {
 }
 
 /**
- * Extract schema information from a variable declaration
+ * Extract schema information from a variable declaration.
+ * Uses symbol table to resolve transforms in referenced schemas.
  */
 function extractSchemaFromDeclaration(
   decl: VariableDeclaration,
-  filePath: string
+  filePath: string,
+  symbolTable?: Map<string, SchemaSymbol>
 ): SchemaInfo | null {
   const name = decl.getName();
 
@@ -420,7 +553,7 @@ function extractSchemaFromDeclaration(
     schemaType = detectSchemaType(rootCall);
 
     if (schemaType === "strictObject" || schemaType === "object") {
-      fields = extractFields(rootCall);
+      fields = extractFields(rootCall, symbolTable);
     } else if (schemaType === "enum") {
       enumValues = extractEnumValues(rootCall);
     }
@@ -557,6 +690,10 @@ export async function extractSchemas(): Promise<void> {
 
     processedFiles.add(filePath);
 
+    // Build symbol table FIRST to enable transform resolution in referenced schemas
+    // This is the key to fixing Bug 1 (linkedin_url) and Bug 3 (color)
+    const symbolTable = buildSchemaSymbolTable(sourceFile);
+
     // Collect schema names from this file for validation function matching
     const fileSchemaNames = new Set<string>();
 
@@ -567,7 +704,7 @@ export async function extractSchemas(): Promise<void> {
       if (!varStmt.isExported()) continue;
 
       for (const decl of varStmt.getDeclarations()) {
-        const schemaInfo = extractSchemaFromDeclaration(decl, filePath);
+        const schemaInfo = extractSchemaFromDeclaration(decl, filePath, symbolTable);
         if (schemaInfo) {
           schemas.push(schemaInfo);
           fileSchemaNames.add(schemaInfo.name);
