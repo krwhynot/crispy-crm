@@ -52,9 +52,10 @@ Deno.serve(async (req: Request) => {
 
   // CORRECT PATTERN (per Supabase docs): Create user-context client with ANON_KEY
   // This client has the user's auth context set via the Authorization header
+  // LOCAL_ prefixed vars allow Docker container to use host.docker.internal
   const supabaseClient = createClient(
-    Deno.env.get("SUPABASE_URL") ?? "",
-    Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+    Deno.env.get("LOCAL_SUPABASE_URL") || Deno.env.get("SUPABASE_URL") || "",
+    Deno.env.get("LOCAL_SUPABASE_ANON_KEY") || Deno.env.get("SUPABASE_ANON_KEY") || "",
     {
       global: {
         headers: { Authorization: authHeader },

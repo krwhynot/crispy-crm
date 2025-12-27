@@ -604,6 +604,15 @@ function extractFields(
         }
       }
 
+      // Inherit hasPipe from referenced schema if not detected locally
+      if (!fieldHasPipe && zodType.startsWith("ref:") && symbolTable) {
+        const refName = zodType.slice(4);
+        const symbolInfo = symbolTable.get(refName);
+        if (symbolInfo?.hasPipe) {
+          fieldHasPipe = true;
+        }
+      }
+
       fields.push({
         name,
         zodType,
