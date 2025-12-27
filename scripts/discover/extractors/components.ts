@@ -189,6 +189,15 @@ export async function extractComponents(): Promise<void> {
 
   const sourceFilePaths = sourceFiles.map(sf => sf.getFilePath());
 
+  // Build file-to-chunk mapping for incremental updates
+  const fileToChunkMapping = new Map<string, string>();
+  for (const sourceFile of sourceFiles) {
+    const filePath = sourceFile.getFilePath();
+    const relativePath = path.relative(process.cwd(), filePath);
+    const chunkName = extractFeatureName(relativePath);
+    fileToChunkMapping.set(filePath, chunkName);
+  }
+
   writeChunkedDiscovery(
     "component-inventory",
     "scripts/discover/extractors/components.ts",
@@ -200,7 +209,8 @@ export async function extractComponents(): Promise<void> {
       form_controllers: formControllers,
       presentational,
     },
-    chunks
+    chunks,
+    fileToChunkMapping
   );
 }
 

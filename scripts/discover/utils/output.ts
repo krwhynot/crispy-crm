@@ -366,3 +366,159 @@ export function isChunkedDiscoveryStale(
     };
   }
 }
+
+/**
+ * Result of chunk-level staleness detection for incremental updates.
+ */
+export interface StaleChunksResult {
+  /** Whether any chunks need updating */
+  hasStaleChunks: boolean;
+  /** Names of chunks that need regeneration */
+  staleChunks: string[];
+  /** Names of chunks that are still fresh */
+  freshChunks: string[];
+  /** Map of chunk name to reason why it's stale */
+  staleReasons: Map<string, string>;
+  /** Files that changed but couldn't be mapped to chunks (new files) */
+  unmappedChanges: string[];
+  /** Whether a full regeneration is required (manifest missing, corrupted, etc.) */
+  requiresFullRegen: boolean;
+  /** Reason for full regeneration if required */
+  fullRegenReason?: string;
+}
+
+/**
+ * Get which specific chunks need updating for incremental discovery.
+ * Uses per-chunk source_hashes to detect staleness at chunk granularity.
+ *
+ * @param dirName - The chunked discovery directory name
+ * @param currentSourceFiles - Current list of source file paths
+ * @param getChunkForFile - Function to determine which chunk a file belongs to
+ * @returns Details about which chunks need updating
+ */
+export function getStaleChunks(
+  dirName: string,
+  currentSourceFiles: string[],
+  getChunkForFile: (filePath: string) => string
+): StaleChunksResult {
+  const outputDir = path.resolve(process.cwd(), ".claude/state", dirName);
+  const manifestPath = path.join(outputDir, "manifest.json");
+  const cwd = process.cwd();
+
+  // If manifest doesn't exist, require full regeneration
+  if (!fs.existsSync(manifestPath)) {
+    return {
+      hasStaleChunks: true,
+      staleChunks: [],
+      freshChunks: [],
+      staleReasons: new Map(),
+      unmappedChanges: [],
+      requiresFullRegen: true,
+      fullRegenReason: "Manifest file does not exist",
+    };
+  }
+
+  let manifest: ChunkedManifest;
+  try {
+    manifest = JSON.parse(fs.readFileSync(manifestPath, "utf-8")) as ChunkedManifest;
+  } catch (error) {
+    return {
+      hasStaleChunks: true,
+      staleChunks: [],
+      freshChunks: [],
+      staleReasons: new Map(),
+      unmappedChanges: [],
+      requiresFullRegen: true,
+      fullRegenReason: `Error reading manifest: ${error instanceof Error ? error.message : "Unknown"}`,
+    };
+  }
+
+  // Check if manifest has the new incremental fields
+  if (!manifest.file_to_chunks || manifest.chunks.some(c => !c.source_hashes)) {
+    return {
+      hasStaleChunks: true,
+      staleChunks: [],
+      freshChunks: [],
+      staleReasons: new Map(),
+      unmappedChanges: [],
+      requiresFullRegen: true,
+      fullRegenReason: "Manifest missing incremental update fields (run full discovery first)",
+    };
+  }
+
+  const currentHashes = buildSourceHashes(currentSourceFiles);
+  const staleChunks = new Set<string>();
+  const staleReasons = new Map<string, string>();
+  const unmappedChanges: string[] = [];
+  const allChunkNames = new Set(manifest.chunks.map(c => c.name));
+
+  // Check each current source file for changes
+  for (const [relativePath, currentHash] of Object.entries(currentHashes)) {
+    const oldHash = manifest.source_hashes[relativePath];
+
+    if (!oldHash) {
+      // New file - determine which chunk it belongs to
+      const absolutePath = path.resolve(cwd, relativePath);
+      const chunkName = getChunkForFile(absolutePath);
+      if (allChunkNames.has(chunkName)) {
+        staleChunks.add(chunkName);
+        staleReasons.set(chunkName, `New file: ${relativePath}`);
+      } else {
+        // New chunk needed
+        unmappedChanges.push(`+ ${relativePath} (new chunk: ${chunkName})`);
+      }
+    } else if (oldHash !== currentHash) {
+      // Modified file - find its chunk(s) from manifest
+      const chunks = manifest.file_to_chunks[relativePath] || [];
+      if (chunks.length > 0) {
+        for (const chunkName of chunks) {
+          staleChunks.add(chunkName);
+          if (!staleReasons.has(chunkName)) {
+            staleReasons.set(chunkName, `Modified: ${relativePath}`);
+          }
+        }
+      } else {
+        // File not in any chunk mapping - shouldn't happen but handle gracefully
+        unmappedChanges.push(`~ ${relativePath} (modified, no chunk mapping)`);
+      }
+    }
+  }
+
+  // Check for deleted files
+  for (const [relativePath, chunks] of Object.entries(manifest.file_to_chunks)) {
+    if (!currentHashes[relativePath]) {
+      for (const chunkName of chunks) {
+        staleChunks.add(chunkName);
+        if (!staleReasons.has(chunkName)) {
+          staleReasons.set(chunkName, `Deleted: ${relativePath}`);
+        }
+      }
+    }
+  }
+
+  // If there are unmapped changes (new chunks needed), require full regen
+  if (unmappedChanges.length > 0 && unmappedChanges.some(c => c.includes("new chunk"))) {
+    return {
+      hasStaleChunks: true,
+      staleChunks: Array.from(staleChunks),
+      freshChunks: [],
+      staleReasons,
+      unmappedChanges,
+      requiresFullRegen: true,
+      fullRegenReason: "New chunks needed - run full discovery",
+    };
+  }
+
+  const freshChunks = manifest.chunks
+    .map(c => c.name)
+    .filter(name => !staleChunks.has(name));
+
+  return {
+    hasStaleChunks: staleChunks.size > 0,
+    staleChunks: Array.from(staleChunks).sort(),
+    freshChunks: freshChunks.sort(),
+    staleReasons,
+    unmappedChanges,
+    requiresFullRegen: false,
+  };
+}

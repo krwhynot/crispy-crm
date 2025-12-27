@@ -1,13 +1,13 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-26T22:00:00.546Z",
+  "generated_at": "2025-12-27T01:31:38.890Z",
   "generator": "scripts/discover/extractors/types.ts",
   "source_globs": [
     "src/atomic-crm/types.ts",
     "src/atomic-crm/**/types.ts",
     "src/types/**/*.ts"
   ],
-  "checksum": "sha256:db81d8d686758f63",
+  "checksum": "sha256:e581e00fb1aa9b99",
   "source_hashes": {
     "src/atomic-crm/dashboard/v3/types.ts": "a31606a565ce",
     "src/atomic-crm/filters/types.ts": "65608e159c7f",
@@ -35,55 +35,148 @@
       "name": "_root",
       "file": "_root.json",
       "item_count": 30,
-      "checksum": "sha256:598a14ed0aa6a642"
+      "checksum": "sha256:463dc7fb25eb71a7",
+      "source_files": [
+        "src/atomic-crm/types.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/types.ts": "c857c0a1a7bb"
+      }
     },
     {
       "name": "dashboard",
       "file": "dashboard.json",
       "item_count": 13,
-      "checksum": "sha256:e5a65a0418ad9712"
+      "checksum": "sha256:e71431001a28e2e0",
+      "source_files": [
+        "src/atomic-crm/dashboard/v3/types.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/dashboard/v3/types.ts": "a31606a565ce"
+      }
     },
     {
       "name": "database",
       "file": "database.json",
       "item_count": 9,
-      "checksum": "sha256:9a6697c76c7bf522"
+      "checksum": "sha256:ea1b59b07e9f9b49",
+      "source_files": [
+        "src/types/database.types.ts"
+      ],
+      "source_hashes": {
+        "src/types/database.types.ts": "42ec55637206"
+      }
     },
     {
       "name": "filters",
       "file": "filters.json",
       "item_count": 13,
-      "checksum": "sha256:86e3d9fc87fe2ae4"
+      "checksum": "sha256:afbba6f534616464",
+      "source_files": [
+        "src/atomic-crm/filters/types.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/filters/types.ts": "65608e159c7f"
+      }
     },
     {
       "name": "organizations",
       "file": "organizations.json",
       "item_count": 17,
-      "checksum": "sha256:687473452350b867"
+      "checksum": "sha256:52811fa64ab0cfb5",
+      "source_files": [
+        "src/atomic-crm/organizations/types.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/organizations/types.ts": "76ca26cbf464"
+      }
     },
     {
       "name": "providers",
       "file": "providers.json",
       "item_count": 7,
-      "checksum": "sha256:74917e63ac4c2f40"
+      "checksum": "sha256:cb27181b9f267944",
+      "source_files": [
+        "src/atomic-crm/providers/supabase/extensions/types.ts",
+        "src/atomic-crm/providers/supabase/types.ts",
+        "src/atomic-crm/providers/types.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/providers/supabase/extensions/types.ts": "b1f0c04bf5f5",
+        "src/atomic-crm/providers/supabase/types.ts": "ac091ebdeac6",
+        "src/atomic-crm/providers/types.ts": "32d3407ddc5c"
+      }
     },
     {
       "name": "reports",
       "file": "reports.json",
       "item_count": 3,
-      "checksum": "sha256:4c106f931bd00a73"
+      "checksum": "sha256:ec802579d7aa5b85",
+      "source_files": [
+        "src/atomic-crm/reports/types.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/reports/types.ts": "f28725d85208"
+      }
     },
     {
       "name": "tags",
       "file": "tags.json",
       "item_count": 6,
-      "checksum": "sha256:57513ffe75df43f7"
+      "checksum": "sha256:0a848b5253b3e4f7",
+      "source_files": [
+        "src/atomic-crm/tags/types.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/tags/types.ts": "9cd98db1ff7b"
+      }
     },
     {
       "name": "tutorial",
       "file": "tutorial.json",
       "item_count": 3,
-      "checksum": "sha256:448f1f8244efe9f1"
+      "checksum": "sha256:94cf68cf931149f2",
+      "source_files": [
+        "src/atomic-crm/tutorial/types.ts"
+      ],
+      "source_hashes": {
+        "src/atomic-crm/tutorial/types.ts": "b66ec8c41b6f"
+      }
     }
-  ]
+  ],
+  "file_to_chunks": {
+    "src/atomic-crm/dashboard/v3/types.ts": [
+      "dashboard"
+    ],
+    "src/atomic-crm/filters/types.ts": [
+      "filters"
+    ],
+    "src/atomic-crm/organizations/types.ts": [
+      "organizations"
+    ],
+    "src/atomic-crm/providers/supabase/extensions/types.ts": [
+      "providers"
+    ],
+    "src/atomic-crm/providers/supabase/types.ts": [
+      "providers"
+    ],
+    "src/atomic-crm/providers/types.ts": [
+      "providers"
+    ],
+    "src/atomic-crm/reports/types.ts": [
+      "reports"
+    ],
+    "src/atomic-crm/tags/types.ts": [
+      "tags"
+    ],
+    "src/atomic-crm/tutorial/types.ts": [
+      "tutorial"
+    ],
+    "src/atomic-crm/types.ts": [
+      "_root"
+    ],
+    "src/types/database.types.ts": [
+      "database"
+    ]
+  }
 }
