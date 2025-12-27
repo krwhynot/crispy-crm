@@ -123,9 +123,8 @@ export async function extractHooks(): Promise<void> {
 
   const globs = ["src/**/use*.ts", "src/**/use*.tsx", "src/**/*.ts", "src/**/*.tsx"];
 
-  project.addSourceFilesAtPaths(globs);
-
-  const sourceFiles = project.getSourceFiles();
+  // Use return value directly - getSourceFiles() returns stale cached files
+  const sourceFiles = project.addSourceFilesAtPaths(globs);
   const hooks: HookInfo[] = [];
   const processedFiles = new Set<string>();
 

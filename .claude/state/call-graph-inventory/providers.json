@@ -1,6 +1,6 @@
 {
   "chunk_name": "providers",
-  "generated_at": "2025-12-27T04:43:21.569Z",
+  "generated_at": "2025-12-27T05:56:34.329Z",
   "items": {
     "nodes": [
       {
@@ -191,6 +191,24 @@
         "nodeType": "function",
         "exported": true,
         "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts:54:transformQToIlikeSearch",
+        "name": "transformQToIlikeSearch",
+        "file": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts",
+        "line": 54,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts:101:salesBeforeGetList",
+        "name": "salesBeforeGetList",
+        "file": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts",
+        "line": 101,
+        "nodeType": "function",
+        "exported": false,
+        "async": true
       },
       {
         "id": "src/atomic-crm/providers/supabase/composedDataProvider.ts:61:isHandledResource",
@@ -1055,6 +1073,33 @@
         "targetName": "beforeGetList",
         "edgeType": "call",
         "line": 141,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts:54:transformQToIlikeSearch",
+        "target": "reduce",
+        "targetName": "reduce",
+        "edgeType": "call",
+        "line": 66,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts:101:salesBeforeGetList",
+        "target": "transformQToIlikeSearch",
+        "targetName": "transformQToIlikeSearch",
+        "edgeType": "call",
+        "line": 106,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts:101:salesBeforeGetList",
+        "target": "beforeGetList",
+        "targetName": "beforeGetList",
+        "edgeType": "call",
+        "line": 111,
         "conditional": true,
         "inLoop": false
       },
