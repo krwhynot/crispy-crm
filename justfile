@@ -160,17 +160,64 @@ validate-migration:
 # 🔍 Discovery (Codebase Analysis)
 # ─────────────────────────────────────────────────────────────
 
-# Run full codebase discovery (components, hooks, etc.)
+# Run full codebase discovery (SCIP + extractors)
 discover:
     npx tsx scripts/discover/index.ts
+
+# Generate SCIP index from TypeScript codebase
+discover-scip:
+    @echo "🔍 Generating SCIP index..."
+    npx scip-typescript index --output .claude/state/index.scip
+    @echo "✅ SCIP index generated at .claude/state/index.scip"
+
+# Start Qdrant + Ollama services for semantic search
+discover-services:
+    @echo "🐳 Starting discovery services..."
+    docker compose up -d qdrant ollama
+    @echo "⏳ Waiting for services to be healthy..."
+    @sleep 3
+    @curl -s http://localhost:6333 > /dev/null && echo "✅ Qdrant: http://localhost:6333" || echo "❌ Qdrant not ready"
+    @curl -s http://localhost:11434/api/version > /dev/null && echo "✅ Ollama: http://localhost:11434" || echo "❌ Ollama not ready"
+
+# Stop discovery services
+discover-services-stop:
+    docker compose down qdrant ollama
+
+# Pull embedding model for Ollama
+discover-pull-model:
+    docker exec crispy-crm-ollama-1 ollama pull nomic-embed-text
+
+# Check health of all discovery services
+discover-health:
+    npx tsx scripts/discover/embeddings/health-check.ts
+
+# Index codebase for semantic search (requires services running)
+discover-embeddings:
+    npx tsx scripts/discover/embeddings/indexer.ts
+
+# Semantic search CLI
+discover-search query:
+    npx tsx scripts/discover/embeddings/search-cli.ts "{{query}}"
+
+# Full semantic discovery: services + SCIP + embeddings
+discover-full: discover-services discover-scip discover-embeddings
+    @echo "✅ Full discovery complete"
 
 # Run priority extractors only (components + hooks)
 discover-priority:
     npx tsx scripts/discover/index.ts --only=components,hooks
 
-# Check if discoveries are stale (for CI/pre-commit)
+# Check if discoveries are stale (for CI/pre-commit) - full check
 discover-check:
     npx tsx scripts/discover/index.ts --check
+
+# Fast staleness check for CI (uses unified manifest)
+discover-staleness:
+    npx tsx scripts/discover/check-staleness.ts
+
+# Generate unified manifest for staleness tracking
+discover-staleness-generate:
+    npx tsx scripts/discover/check-staleness.ts --generate
 
 # Extract Zod schemas only
 discover-schemas:
