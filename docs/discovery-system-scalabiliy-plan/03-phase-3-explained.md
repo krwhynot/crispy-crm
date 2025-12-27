@@ -1,412 +1,552 @@
-# Phase 3 Explained: Teaching Computers to Understand Meaning
+# Phase 3 Explained: The Integration Layer
 
-> **What this document is:** A beginner-friendly explanation of Phase 3 concepts. Read this before diving into the technical implementation in `03-phase-3-worker-parallelization.md`.
-
----
-
-## The Problem: Keywords Are Not Enough
-
-Imagine you join a new project and need to find "code that handles user mistakes."
-
-You open your code search tool and type... what exactly?
-
-- "error handling"?
-- "validation"?
-- "catch"?
-- "try"?
-
-You end up running five different searches, scanning hundreds of results, because the computer doesn't understand that all these words relate to the same concept.
-
-This is frustrating.
-
-The computer is matching exact characters, not meaning.
+> **Reading Time:** 12-15 minutes
+> **Goal:** Understand how Claude Code talks to our discovery system through MCP
 
 ---
 
-## The Librarian Analogy
+## Wait, What Is This About?
 
-Think about asking a librarian versus using a card catalog.
+You have been reading about building search databases and vector embeddings. Now suddenly we are talking about "MCP servers" and "tools." What happened?
 
-**Card catalog (keyword search):**
-You search for books with "cooking" in the title. You miss cookbooks titled "The Art of French Cuisine" or "Kitchen Mastery."
+Here is the situation.
 
-**Librarian (semantic search):**
-You say "I want to learn to cook Italian food." The librarian understands your intent and brings you books from the cooking section, even ones without "cooking" in the title.
+We built two powerful search systems:
+1. **Phase 1:** A precision search that knows exactly where every function is defined
+2. **Phase 2:** A semantic search that understands meaning, not just keywords
 
-Phase 3 gives our discovery system a librarian instead of a card catalog.
+But there is a problem. These systems just sit there. They are like having a brilliant research librarian locked in a basement office with no phone line. The librarian has all the answers, but nobody can ask them questions.
 
----
+Phase 3 builds the phone line.
 
-## What We Need to Build This Librarian
-
-To make semantic search work, we need four things:
-
-1. **A way to run specialized software** (Docker)
-2. **A database that understands similarity** (Qdrant)
-3. **A translator that converts text to numbers** (Ollama + nomic-embed-text)
-4. **A way to break code into digestible pieces** (Tree-sitter chunking)
-
-Let's understand each one.
+We are creating a way for Claude Code (the AI assistant you are talking to right now) to call our search systems directly. When you ask "where is the form validation code?", Claude will not just search text files. Claude will pick up the phone and ask our specialized research librarian.
 
 ---
 
-## What is Docker?
+## What Is MCP?
 
-You want to run a restaurant, but you don't want to build a kitchen.
+MCP stands for Model Context Protocol.
 
-It's like... a food truck.
+Think of it this way. You walk into a restaurant. You do not go into the kitchen and start cooking. Instead, you look at a menu, choose items, and tell the waiter what you want. The waiter takes your order to the kitchen. The kitchen prepares the food. The waiter brings it back to you.
 
-A food truck comes with everything pre-installed: stove, fridge, counter, exhaust system. You just plug in power and water. The truck is self-contained and doesn't mess with your house.
+MCP is the waiter.
 
-Docker is a food truck for software.
+It is a standardized way for AI assistants like Claude to:
+1. See what capabilities are available (the menu)
+2. Request specific actions (placing an order)
+3. Receive results (getting your food)
 
-Instead of installing Qdrant (the vector database) directly on your computer, Docker runs it in a contained box. If something breaks, you throw away the container and start fresh. Your actual computer stays clean.
+Without MCP, Claude would have to run raw commands, parse text output, and hope things work. With MCP, Claude reads a clean menu of tools, calls them with proper parameters, and receives structured data back.
 
-**Why this matters:** You could spend hours figuring out how to install Qdrant on your specific operating system. Or you could run `docker compose up` and have it working in 30 seconds.
-
----
-
-## What is docker-compose.yml?
-
-One food truck is useful. But what if you need a pizza truck AND a coffee truck, parked next to each other, with specific spots marked out?
-
-It's like... a parking lot layout with reserved spots.
-
-`docker-compose.yml` is that layout. It says:
-
-- "Bring the Qdrant truck and park it at spot 6333"
-- "Bring the Ollama truck and park it at spot 11434"
-- "Store their stuff in these specific folders"
-- "Make sure they can talk to each other"
-
-One file, one command (`docker compose up`), and everything starts together.
-
-```yaml
-services:
-  qdrant:      # The vector database truck
-    image: qdrant/qdrant:latest
-    ports:
-      - "6333:6333"   # Park at spot 6333
-
-  ollama:      # The embedding generator truck
-    image: ollama/ollama:latest
-    ports:
-      - "11434:11434" # Park at spot 11434
-```
+The protocol is simple but powerful. Claude asks "what can you do?" The MCP server responds with a list of tools. Claude picks a tool, provides inputs, and gets outputs. Like ordering from a menu.
 
 ---
 
-## What is Qdrant?
+## What Is an MCP Server?
 
-Regular databases store text and numbers. You ask "give me all users named John" and it finds exact matches.
+The MCP server is like the restaurant's front-of-house manager.
 
-But what if you want "users similar to John"? Regular databases can't do that.
+It stands between Claude (the customer) and your code (the kitchen). When Claude wants to search code or find function definitions, it talks to the MCP server. The MCP server translates that request into actual database queries. Then it translates the results back into a format Claude understands.
 
-It's like... a map where similar things are physically close together.
+You do not need to know how the kitchen works. The manager handles everything.
 
-Imagine a giant map of a city. Restaurants that serve similar food are located near each other. Italian restaurants cluster together. So do Thai restaurants. If you're standing at one Italian restaurant and walk in any direction, you'll probably hit another Italian restaurant.
+In our case, the MCP server:
+- Connects to SQLite (the precision search database from Phase 1)
+- Connects to LanceDB (the semantic search database from Phase 2)
+- Exposes three tools that Claude can call
+- Handles all the translation between Claude and our databases
 
-Qdrant is a database, but instead of storing text, it stores locations on a meaning-map.
-
-"Form validation" and "input checking" might be stored close together because they mean similar things. When you search for "form validation," Qdrant finds not just exact matches but also nearby neighbors like "input checking," "user data verification," and "schema validation."
-
-**Technical name:** This is called a "vector database."
+The server runs as a small program on your computer. It starts when Claude Code starts. It stays running in the background. Claude sends requests through a communication channel called "stdio" (standard input/output, which we will explain shortly).
 
 ---
 
-## What Are Vectors and Embeddings?
+## So What Exactly Are "Tools"?
 
-This is the hardest concept. Let's build up to it.
+In the MCP world, a tool is like an item on the restaurant menu.
 
-### GPS Coordinates for Words
+Each tool has:
+1. **A name** - like "Margherita Pizza" on a menu
+2. **A description** - what it does and when to use it
+3. **An input schema** - what information you need to provide (like pizza toppings)
+4. **An output schema** - what you will get back (like a pizza)
 
-Every place on Earth has GPS coordinates. San Francisco is at (37.7749, -122.4194). Tokyo is at (35.6762, 139.6503).
+When Claude sees a tool, it knows exactly what that tool can do and how to call it properly.
 
-Close cities have similar coordinates. Different continents have very different coordinates.
-
-It's like... GPS coordinates, but for meaning.
-
-What if we could give every word or sentence GPS coordinates based on what it means?
-
-- "Happy" might be at (0.8, 0.3)
-- "Joyful" might be at (0.79, 0.31) - very close!
-- "Sad" might be at (0.2, 0.7) - far away
-- "Melancholy" might be at (0.25, 0.68) - close to sad
-
-Now finding similar words is just finding nearby coordinates.
-
-### From 2D to 768D
-
-Real GPS uses 2 numbers (latitude, longitude). That's not enough dimensions to capture all the nuances of meaning.
-
-Is "happy" similar to "joyful"? Yes.
-Is "happy" similar to "birthday"? Kind of, but differently.
-Is "happy" similar to "function"? Probably not, unless it's a function called "makeUserHappy."
-
-To capture all these relationships, we need more dimensions.
-
-Embeddings use 768 numbers to locate each piece of text in meaning-space.
-
-You can't visualize 768 dimensions. That's okay. The math still works the same way - similar things have coordinates that are close together.
-
-### What an Embedding Looks Like
-
-Here's a real (simplified) example:
+Here is a simplified example:
 
 ```
-"form validation" -> [0.23, -0.41, 0.87, 0.12, ... 764 more numbers]
-"input checking"  -> [0.21, -0.39, 0.85, 0.14, ... 764 more numbers]
-"database query"  -> [0.67, 0.32, -0.21, 0.89, ... 764 more numbers]
+Tool: search_code
+Description: Search codebase using text patterns or natural language
+Inputs needed:
+  - query: what you are looking for (required)
+  - limit: how many results to return (optional, defaults to 10)
+  - search_type: exact, semantic, or hybrid (optional, defaults to hybrid)
+Outputs:
+  - list of matching code locations with file paths and line numbers
 ```
 
-Notice how "form validation" and "input checking" have similar numbers, but "database query" is quite different?
-
-The distance between those coordinate lists tells us how similar the meanings are.
+Claude reads this and knows: "When the user asks about finding code, I can use this tool. I need to provide a query. I might want to limit results. I can choose the search type."
 
 ---
 
-## What is Ollama?
+## The Three Tools We Are Building
 
-Someone has to calculate those 768 numbers for each piece of text.
+We are giving Claude three specialized tools. Each one does something different.
 
-This requires a machine learning model - software that learned patterns from billions of text examples.
+### Tool 1: search_code
 
-It's like... having a translator living in your house.
+This is the main search tool. It combines both of our search engines.
 
-You could send your documents to a cloud translation service (expensive, privacy concerns, requires internet). Or you could have a translator living in your spare room who works for free.
+**What it does:**
+- Takes a query (text or natural language)
+- Searches both the exact-match database and the semantic database
+- Combines and ranks the results
+- Returns the best matches
 
-Ollama is a way to run AI models locally on your own computer. No cloud. No API costs. No privacy concerns. The translator lives on your machine.
+**When Claude uses it:**
+- "Find code that handles form validation"
+- "Search for error handling patterns"
+- "Where do we use Zod schemas?"
 
-**Why this matters:** Some embedding APIs charge $0.0001 per request. Sounds cheap, but index 50,000 code chunks and that's $5. Reindex after every change? Costs add up. Ollama is free forever.
+**Why it matters:**
+Claude no longer has to run ripgrep and parse messy text output. It calls one tool and gets structured, ranked results. Much more reliable.
 
----
+### Tool 2: go_to_definition
 
-## What is nomic-embed-text?
+This is the precision navigation tool.
 
-Ollama is the translator's house. But which translator lives there?
+**What it does:**
+- Takes a symbol name (like a function or variable name)
+- Looks up exactly where that symbol is defined
+- Returns the file path, line number, and column
 
-It's like... the specific translation dictionary the translator uses.
+**When Claude uses it:**
+- "Where is useContactForm defined?"
+- "What file contains the ContactSchema?"
+- "Jump to the definition of validateEmail"
 
-Different embedding models are trained on different data and produce different quality embeddings.
+**Why it matters:**
+Instead of searching for text and guessing which match is the actual definition, Claude gets compiler-verified accuracy. No false positives.
 
-`nomic-embed-text` is:
-- **Free and open source** (no licensing costs)
-- **768 dimensions** (good balance of quality vs. speed)
-- **Trained on diverse text** (understands code, not just prose)
-- **Fast** (about 100 embeddings per second on a normal laptop)
+### Tool 3: find_references
 
-To install the translator:
+This is the impact analysis tool.
 
-```bash
-ollama pull nomic-embed-text
-```
+**What it does:**
+- Takes a symbol name
+- Finds every place in the codebase where that symbol is used
+- Returns all locations with surrounding context
 
-Now your local Ollama can convert any text into 768-dimensional coordinates.
+**When Claude uses it:**
+- "What uses the useIsMobile hook?"
+- "If I change this function, what breaks?"
+- "Show me everywhere ContactSchema is validated"
 
----
-
-## What is Tree-sitter Chunking?
-
-We can't embed our entire codebase as one giant text block.
-
-It's like... instead of summarizing an entire book in one sentence, we summarize each chapter separately.
-
-If you embed 50,000 lines of code as one piece, the embedding captures a vague average of everything. Not useful for search.
-
-We need to break the code into meaningful chunks. But where do we break it?
-
-**Bad chunking:** Split every 100 lines.
-This might cut a function in half. The embedding of half a function is meaningless.
-
-**Good chunking:** Split at natural boundaries.
-Functions, classes, interfaces, type definitions. Each chunk is a complete, meaningful unit.
-
-Tree-sitter is a parser that understands code structure. It can find exactly where functions start and end, where classes are defined, where interfaces live.
-
-```typescript
-// Tree-sitter finds these boundaries:
-
-function validateUser(input: unknown) {  // <- chunk starts here
-  const schema = z.object({ ... });
-  return schema.parse(input);
-}                                         // <- chunk ends here
-
-interface UserProfile {                   // <- new chunk starts
-  id: string;
-  email: string;
-}                                         // <- chunk ends
-```
-
-Each chunk gets its own embedding. When you search for "user validation," you find the `validateUser` function specifically, not just "somewhere in user.ts."
+**Why it matters:**
+When you want to refactor something, you need to know what depends on it. This tool provides that complete picture.
 
 ---
 
-## The Complete Flow
+## What Is StdioServerTransport?
 
-Let's trace what happens from code to search result:
+This sounds very technical. Let me break it down.
 
-### Step 1: Index Time (Once, or when code changes)
+Think about how two people can communicate.
 
-```
-Source Code
-    |
-    v
-[Tree-sitter] -- breaks into meaningful chunks
-    |
-    v
-Code Chunks (functions, classes, etc.)
-    |
-    v
-[Ollama + nomic-embed-text] -- converts each chunk to 768 numbers
-    |
-    v
-Embeddings (lists of numbers)
-    |
-    v
-[Qdrant] -- stores embeddings with metadata (file path, line numbers)
-    |
-    v
-Vector Database (meaning-map populated)
-```
+**Option 1: Walkie-talkies (HTTP/Network)**
+You press a button, talk into a device, radio waves travel through the air, the other person's device picks them up. Works over long distances. Requires batteries, radio frequencies, potential interference.
 
-### Step 2: Search Time (Every query)
+**Option 2: Two tin cans with a string (Stdio)**
+You talk into one can, vibrations travel through the string, the other person hears through their can. Only works if you are connected by the string. Very simple. No batteries. Very reliable for short distances.
 
-```
-Your Query: "hooks for form validation"
-    |
-    v
-[Ollama + nomic-embed-text] -- converts query to 768 numbers
-    |
-    v
-Query Embedding
-    |
-    v
-[Qdrant] -- finds nearest neighbors in meaning-space
-    |
-    v
-Results: useFormValidation(), validateContactForm(), useInputValidator()
-         (sorted by similarity score)
-```
+StdioServerTransport is the tin can approach.
+
+When Claude Code starts our MCP server, it connects directly to the server process. Claude writes to the server's "standard input" (like talking into the can). The server writes back to its "standard output" (like the other person hearing through their can).
+
+This is called "stdio transport" because it uses standard input/output streams.
+
+Why not use network calls like a web API? Two reasons:
+
+1. **Speed.** Network calls have latency. Even localhost network calls add milliseconds. Stdio is essentially instant because it is just passing bytes between processes.
+
+2. **Simplicity.** No ports to configure. No firewall issues. No authentication complexity. Just start the process and start talking.
+
+For a local development tool, stdio is the right choice.
 
 ---
 
-## Why All This Complexity?
+## Let Me Make Sure I Have This Straight
 
-You might wonder: why not just use better keyword search?
+So far we have:
 
-Here's what semantic search can do that keywords cannot:
+1. **Phase 1** built a database that knows where every symbol is defined
+2. **Phase 2** built a database that understands what code means
+3. **Phase 3** builds a server that lets Claude ask questions to both databases
+4. The server exposes three tools: search, go-to-definition, find-references
+5. Claude talks to the server through a direct process connection (stdio)
 
-| Query | Keyword Search Finds | Semantic Search Finds |
-|-------|---------------------|----------------------|
-| "error handling" | Only code with "error" and "handling" | Code with try/catch, Result types, validation failures |
-| "form state" | Only code with "form" and "state" | useForm hooks, validation contexts, input controllers |
-| "data fetching" | Only code with "data" and "fetching" | useQuery, fetch calls, axios requests, SWR hooks |
-| "user authentication" | Only code with these words | Login logic, JWT handling, session management, auth guards |
+Is that right?
 
-The semantic search understands relationships between concepts that keyword search completely misses.
+Yes. That is the core of Phase 3.
 
----
-
-## Installation Summary
-
-Here's what you actually need to do:
-
-### 1. Install Docker Desktop
-Download from [docker.com](https://docker.com). This takes 5 minutes and gives you the food truck infrastructure.
-
-### 2. Start the Services
-```bash
-docker compose up -d qdrant ollama
-```
-This brings in both trucks and parks them.
-
-### 3. Download the Embedding Model
-```bash
-docker exec ollama ollama pull nomic-embed-text
-```
-This gives the translator their dictionary. Takes about 2 minutes to download.
-
-### 4. Index Your Codebase
-```bash
-npx tsx scripts/discover/embeddings/index.ts index
-```
-This walks through every file, chunks it, generates embeddings, and stores them.
-
-### 5. Search!
-```bash
-npx tsx scripts/discover/embeddings/index.ts search "form validation"
-```
+But there is one more important piece: when you use both search engines at once, how do you combine their results?
 
 ---
 
-## Try It Yourself: Example Queries
+## The Restaurant Recommendation Problem
 
-Once indexed, try these searches to see semantic understanding in action:
+Imagine you ask two friends for restaurant recommendations.
 
-| Query | What it should find |
-|-------|---------------------|
-| "handling user mistakes" | Validation code, error boundaries, form error displays |
-| "talking to the database" | Data provider, Supabase calls, query functions |
-| "showing lists of things" | List components, DataGrid, table views |
-| "checking if data is valid" | Zod schemas, validation hooks, type guards |
-| "reusable UI pieces" | Common components, shared inputs, button variations |
-| "user login flow" | Auth components, session management, protected routes |
+**Friend A** is a food critic. She ranks restaurants purely on food quality. Her top 5 are based on taste, ingredients, and cooking technique.
 
-Notice how none of these queries use exact function names. The semantic search finds relevant code based on what you mean, not what you type.
+**Friend B** is a logistics expert. He ranks restaurants on location, price, and wait times. His top 5 are based on convenience.
+
+Both lists are useful, but they are ranked differently. How do you combine them into one list?
+
+You cannot just add the scores together. Friend A rates on a 100-point scale. Friend B uses 1-5 stars. The numbers are incomparable.
+
+This is exactly our problem with search results.
+
+---
+
+## What Is Hybrid Ranking?
+
+When you run a "hybrid" search, you get two sets of results:
+
+1. **Exact matches** from SQLite (ranked by text relevance)
+2. **Semantic matches** from LanceDB (ranked by meaning similarity)
+
+Both sets use different scoring systems. Exact match scores come from a formula called BM25 (a text relevance algorithm). Semantic scores come from vector distance (how close two embeddings are in meaning-space).
+
+These scores are like apples and oranges. You cannot directly compare them.
+
+Hybrid ranking is the technique that combines these incompatible lists into one unified ranking.
+
+---
+
+## What Is RRF (Reciprocal Rank Fusion)?
+
+RRF is a proven method for combining ranked lists. The name sounds intimidating, but the idea is simple.
+
+**The insight:** We care about position, not score.
+
+If Friend A says Restaurant X is her #1 pick, and Friend B says it is his #3 pick, that restaurant is probably good. We do not care about their actual scores. We care that both friends ranked it highly.
+
+Here is how RRF works:
+
+1. Take the position of each result in each list
+2. Calculate a new score based on position: `1 / (60 + position)`
+3. If a result appears in both lists, add the scores together
+4. Sort by the combined score
+
+Why `60 + position`? This is a magic number from the original research paper. It prevents the top result from dominating too much. The exact number matters less than the concept: transform position into a score that can be added.
+
+**Example:**
+
+Result A:
+- Exact search: position 1 -> score = 1/(60+1) = 0.0164
+- Semantic search: position 5 -> score = 1/(60+5) = 0.0154
+- Combined: 0.0164 + 0.0154 = 0.0318
+
+Result B:
+- Exact search: position 3 -> score = 1/(60+3) = 0.0159
+- Not in semantic results -> 0
+- Combined: 0.0159
+
+Result A wins because it appeared in both lists. Being found by both methods is a strong signal of relevance.
+
+---
+
+## What Happens When Claude Asks a Question?
+
+Let me walk through a complete example.
+
+You type: "Where is the code that validates contact forms?"
+
+### Step 1: Claude Decides to Use a Tool
+
+Claude reads your question and thinks: "This is a code search question. I should use the search_code tool."
+
+### Step 2: Claude Calls the Tool
+
+Claude sends a request to the MCP server:
+
+```
+Tool: search_code
+Inputs:
+  query: "code that validates contact forms"
+  limit: 10
+  search_type: hybrid
+```
+
+### Step 3: The Server Processes the Request
+
+The MCP server receives the request and:
+
+1. Runs an exact-text search in SQLite
+   - Looks for "code", "validates", "contact", "forms"
+   - Gets back 15 results ranked by text relevance
+
+2. Runs a semantic search in LanceDB
+   - Converts the query into a 768-dimensional embedding
+   - Finds the 15 nearest neighbors in meaning-space
+   - Gets back 15 results ranked by vector similarity
+
+3. Combines results using RRF
+   - Some results appear in both lists (boosted)
+   - Removes duplicates
+   - Takes top 10
+
+### Step 4: The Server Returns Results
+
+The server sends back structured data:
+
+```json
+{
+  "results": [
+    {
+      "file_path": "src/atomic-crm/validation/contactSchema.ts",
+      "line_start": 15,
+      "line_end": 42,
+      "content": "export const ContactSchema = z.object({...",
+      "score": 0.892,
+      "match_type": "hybrid"
+    },
+    {
+      "file_path": "src/atomic-crm/contacts/ContactCreate.tsx",
+      "line_start": 55,
+      "line_end": 78,
+      "content": "const validate = (data) => {...",
+      "score": 0.834,
+      "match_type": "semantic"
+    }
+    // ... more results
+  ],
+  "total_count": 10
+}
+```
+
+### Step 5: Claude Uses the Results
+
+Claude now has structured data. It knows exactly which files contain relevant code, exactly which line numbers to look at. It can read those specific files instead of scanning the entire codebase.
+
+Claude responds: "I found the contact form validation code. The main schema is defined in `contactSchema.ts` at line 15. The validation is used in the ContactCreate component starting at line 55. Let me read those files to give you more details..."
+
+---
+
+## What Will Be Different When This Is Done?
+
+### Before Phase 3
+
+Claude's workflow for finding code:
+
+1. Run ripgrep across the entire codebase
+2. Parse text output (hope nothing breaks)
+3. Guess which results are actually relevant
+4. Read files to verify
+5. Often miss semantic matches (code that does the thing but uses different words)
+
+Time: 5-30 seconds depending on codebase size and search complexity.
+Accuracy: Maybe 70% if Claude is careful.
+
+### After Phase 3
+
+Claude's workflow for finding code:
+
+1. Call the search_code tool
+2. Receive structured, ranked results
+3. Get both exact and semantic matches
+4. Know exactly which file and line to read
+
+Time: Under 200 milliseconds.
+Accuracy: Compiler-verified for definitions. Semantic understanding for concepts.
+
+### The Real Improvement
+
+It is not just faster. It is fundamentally better.
+
+The hybrid search finds code that keyword search misses. When you ask "where do we handle user mistakes?", the system finds:
+- Code with "error" in the name (exact match)
+- Code with try/catch blocks (semantic match)
+- Validation failure handling (semantic match)
+- Result type error cases (semantic match)
+
+All from one query. All properly ranked. All with precise line numbers.
+
+---
+
+## How Do I Configure Claude Code to Use This?
+
+Once we build the MCP server, Claude Code needs to know about it.
+
+We create a file at `.claude/mcp.json` in the project:
+
+```json
+{
+  "mcpServers": {
+    "code-intel": {
+      "command": "npx",
+      "args": ["tsx", "scripts/mcp/server.ts"]
+    }
+  }
+}
+```
+
+This tells Claude Code:
+- There is a server called "code-intel"
+- To start it, run `npx tsx scripts/mcp/server.ts`
+- It uses stdio transport (the default)
+
+When Claude Code starts in this project, it automatically starts the MCP server and connects. No manual steps needed after initial configuration.
+
+---
+
+## Do I Need to Know All This to Use the System?
+
+No. Once Phase 3 is complete:
+
+1. You open the project in Claude Code
+2. The MCP server starts automatically
+3. You ask questions about code
+4. Claude uses the tools behind the scenes
+5. You get better, faster answers
+
+You do not need to understand RRF or embeddings or stdio transport. Those are implementation details. The benefit is automatic: smarter code search, faster navigation, more accurate references.
+
+The complexity is hidden. The power is exposed.
+
+---
+
+## What Is the FastMCP Framework?
+
+You might see references to "FastMCP" in some documentation. It is worth a quick explanation.
+
+Building an MCP server from scratch requires handling:
+- Protocol negotiation
+- Message parsing
+- Request routing
+- Error handling
+- Transport management
+
+FastMCP is a framework that handles all the boilerplate. Instead of writing 200 lines of infrastructure code, you write tool definitions and FastMCP handles the rest.
+
+Think of it like the difference between building a restaurant from raw lumber versus opening a franchise where the building is already constructed. FastMCP gives you the building. You just focus on the menu (your tools).
+
+In Phase 3, we use the official MCP TypeScript SDK which provides similar convenience. The code we write focuses on our three tools, not on protocol plumbing.
+
+---
+
+## Quick Architecture Summary
+
+Here is the complete picture of what we are building:
+
+```
+ +------------------+
+ |   Claude Code    |    <- You talk to Claude
+ +--------+---------+
+          |
+          | (stdio transport)
+          |
+ +--------v---------+
+ |   MCP Server     |    <- Translates requests
+ |   (code-intel)   |
+ +---+-------+------+
+     |       |
+     |       +------------+
+     |                    |
+ +---v-----+        +-----v-----+
+ | SQLite  |        |  LanceDB  |
+ | (Phase 1)|       | (Phase 2) |
+ | Precision|       | Semantic  |
+ +---------+        +-----------+
+```
+
+Claude talks to the MCP server. The MCP server queries both databases. Results are combined using RRF. Structured data flows back to Claude.
+
+One interface. Two search engines. Best of both worlds.
 
 ---
 
 ## What Could Go Wrong?
 
-### Qdrant won't start
-Usually means Docker isn't running. Start Docker Desktop first.
+### "Claude does not see the server"
 
-### Ollama is slow on first query
-The model loads into memory on first use. Subsequent queries are fast.
+Check that `.claude/mcp.json` exists and has correct syntax. Run `cat .claude/mcp.json | jq .` to validate the JSON. Restart Claude Code after adding the config.
 
-### Results seem random
-The embedding model might not have downloaded correctly. Run `ollama pull nomic-embed-text` again.
+### "Server fails to start"
 
-### Index takes forever
-Each file makes API calls to Ollama. If you have thousands of files, this takes time on first index. Future updates are incremental.
+The databases from Phase 1 and Phase 2 must exist. Check:
+- `.claude/state/search.db` (SQLite from Phase 1)
+- `.claude/state/vectors.lance/` (LanceDB from Phase 2)
 
----
+If missing, run the indexing steps from earlier phases first.
 
-## Key Takeaways
+### "Semantic search is slow"
 
-1. **Semantic search finds code by meaning**, not just keywords
-2. **Docker** packages software so you don't have to install it manually
-3. **Qdrant** is a database that stores locations on a meaning-map
-4. **Embeddings** are GPS coordinates for text (768 numbers that capture meaning)
-5. **Ollama** runs AI models locally, for free
-6. **nomic-embed-text** is the specific model that converts text to embeddings
-7. **Tree-sitter** breaks code at natural boundaries (functions, classes)
+The embedding model needs to be loaded into memory on first use. Subsequent queries are fast. Also, ensure Ollama is running if using local embeddings.
 
-The result: ask "where's the code for handling user mistakes" and find exactly that, even if no function is literally named "handleUserMistakes."
+### "Results seem weird"
+
+If the index is stale, results will not match current code. Rerun the indexers:
+- `just scip-index` for Phase 1
+- `just embed-code` for Phase 2
 
 ---
 
-## Next Steps
+## Verification Checklist
 
-Ready to implement? Head to [03-phase-3-worker-parallelization.md](./03-phase-3-worker-parallelization.md) for the technical details and code.
+Before calling Phase 3 complete:
 
-Still have questions? The concepts here are genuinely complex. Re-read the analogies. They'll click with time.
+- [ ] MCP server starts in under 2 seconds
+- [ ] `search_code` returns results in under 200 milliseconds
+- [ ] `go_to_definition` finds cross-file definitions
+- [ ] `find_references` locates all usages of a symbol
+- [ ] Hybrid search surfaces results from both search types
+- [ ] Claude Code shows "code-intel: connected" in MCP list
+- [ ] Claude can call the tools automatically during conversation
 
 ---
 
-## Glossary
+## Quick Glossary
 
-| Term | Plain English |
-|------|---------------|
-| **Vector** | A list of numbers representing a location |
-| **Embedding** | Converting text into a vector (GPS coordinates for meaning) |
-| **Vector Database** | Database that stores and searches vectors |
-| **Semantic Search** | Finding by meaning, not keywords |
-| **Docker Container** | Self-contained software package (food truck) |
-| **docker-compose** | Configuration for running multiple containers |
-| **Ollama** | Tool for running AI models locally |
-| **nomic-embed-text** | Specific embedding model we use |
-| **Tree-sitter** | Parser that understands code structure |
-| **Chunking** | Breaking code into meaningful pieces |
-| **768 dimensions** | How many numbers in each embedding |
-| **Cosine similarity** | Math for measuring how close two vectors are |
+**MCP (Model Context Protocol)**
+A standard way for AI assistants to use external tools. Like a waiter taking orders between customers and the kitchen.
+
+**MCP Server**
+A program that exposes tools to Claude. Translates Claude's requests into actions and returns structured results.
+
+**Tool**
+A capability exposed through MCP. Has a name, description, input schema, and output schema. Like an item on a menu.
+
+**StdioServerTransport**
+Communication method using standard input/output streams. Fast and simple for local processes. Like two tin cans connected by a string.
+
+**Hybrid Search**
+Combining exact-text search with semantic search to get the best of both approaches.
+
+**RRF (Reciprocal Rank Fusion)**
+A method for combining ranked lists from different sources. Uses position rather than raw scores to merge results fairly.
+
+**BM25**
+A text relevance scoring algorithm. Used by SQLite FTS5 for exact-text search ranking.
+
+**Vector Distance**
+How far apart two embeddings are in meaning-space. Smaller distance means more similar meaning.
+
+---
+
+## Summary
+
+Phase 3 connects everything together.
+
+We built two search engines in earlier phases. Phase 3 exposes them to Claude through MCP. Three tools give Claude superpowers: search code, find definitions, locate references.
+
+The hybrid ranking ensures Claude gets the best results from both search methods. Results found by both exact and semantic search are boosted. The final ranking reflects true relevance.
+
+When complete, Claude can answer code questions in milliseconds instead of seconds. More importantly, Claude can find code by meaning, not just by keywords. Ask "where do we validate user input?" and get every validation pattern, regardless of naming conventions.
+
+The integration layer is the phone line to the research librarian. Now Claude can call for help whenever it needs to understand the codebase.
+
+---
+
+**Next:** [Phase 4: Testing and Optimization](./04-phase-4-testing-optimization.md)

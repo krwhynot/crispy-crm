@@ -1,234 +1,169 @@
-# Understanding the Discovery System Migration
+# Understanding the Discovery System Overhaul
 
-## A Plain-Language Guide to What We're Building and Why
+You just opened `00-overview.md` and saw terms like "SCIP," "FTS5 trigram tokenizer," and "768-dimensional vector embeddings." Your eyes glazed over. That is completely normal.
 
----
+This document exists because technical specifications are written for implementation, not comprehension. They assume you already know what SCIP does, why trigrams matter, and how embedding vectors work. You probably do not. Most developers do not.
 
-So you have heard about this big migration we are doing.
-
-Maybe you saw the overview document with all the boxes and arrows.
-
-Maybe you nodded along while secretly wondering what any of it actually means.
-
-This guide is for you.
-
-No jargon without explanation. No assumptions about what you already know. Just a clear picture of what we are building, why we are building it, and how all the pieces fit together.
+So let us fix that. By the end of this document, you will understand what we are building, why we are building it, and what changes when it is done. You will not become an expert in compiler-based indexing. But you will know enough to follow along, ask smart questions, and recognize when something goes wrong.
 
 ---
 
-## What is the Discovery System in the First Place?
+## What Is the Discovery System in the First Place?
 
-Imagine you just started a new job at a company with 500 employees.
+Imagine you just joined a company with 50,000 pages of documentation scattered across filing cabinets, desk drawers, and banker boxes in the basement. Someone asks you to find "that memo about the Johnson account from last quarter." What do you do?
 
-On your first day, nobody gives you an employee directory. No org chart. No documentation about who does what. Your manager just says "figure it out" and walks away.
+You could open every drawer and read every page. That works when you have 50 documents. It becomes impossible at 50,000.
 
-That is what it is like for an AI assistant trying to understand a large codebase without a Discovery System.
+The Discovery System is like hiring a librarian. It reads everything once, creates an index of what exists and where, and then answers questions instantly. "Where is the Johnson memo?" becomes a 2-second lookup instead of a 2-hour search.
 
-It is like creating an employee handbook that documents "what exists where" in your code.
+For code, the "documents" are source files. The "questions" are things like:
+- "Where is the `useContactForm` hook defined?"
+- "What files use the `Contact` type?"
+- "Find code that handles form validation"
 
-The Discovery System scans your codebase and creates organized files that answer questions like:
-- What React components exist?
-- Where are the validation rules defined?
-- Which hooks are available?
-- How do different files connect to each other?
-
-Instead of reading thousands of files to answer a simple question, Claude Code can just check the handbook.
-
-The handbook stays up to date. Every time you change your code, the Discovery System updates its records.
+Currently, searching this codebase requires scanning files one by one. That takes 2 or more minutes for complex questions. The new system will answer those same questions in under 10 seconds.
 
 ---
 
-## So What is the Problem?
+## So What Is the Problem?
 
-The current Discovery System uses a tool called ts-morph.
+The current approach has three fatal flaws.
 
-Here is the issue with ts-morph.
+**Flaw 1: Text search is dumb.**
 
-It is like a librarian who reads every single book in the library cover-to-cover before answering any question.
+When you search for "Contact," plain text search finds every occurrence of those letters. It returns comments that say "// Contact form logic," variable names like `contactId`, and the actual `Contact` type definition. You wade through noise to find signal.
 
-Someone asks "Do you have any books about cooking?" The librarian does not check a catalog. Instead, they pick up every book, read the whole thing, remember it, and then answer.
+Worse, it cannot understand relationships. If you ask "what uses the Contact type," text search cannot answer. It just finds the word "Contact" and leaves you to figure out which matches are type usages versus coincidental string matches.
 
-That works fine when the library has 100 books. You might wait a minute or two.
+**Flaw 2: No cross-file understanding.**
 
-But what happens when the library grows to 10,000 books?
+Modern codebases split logic across dozens of files. The `ContactForm` component lives in one file. The `Contact` type lives in another. The Zod validation schema lives in a third. The database table definition lives in SQL migrations.
 
-The librarian's brain fills up. They literally cannot hold all that information at once. They collapse from mental exhaustion before finishing.
+Plain text search treats each file as isolated. It cannot tell you that `ContactForm.tsx` at line 45 is using the `Contact` type from `types/contacts.ts` at line 12. You have to trace those connections manually.
 
-This is exactly what happens with ts-morph on large codebases. It tries to load everything into memory (the computer's short-term thinking space). Once you hit around 500,000 lines of code, it runs out of memory and crashes.
+**Flaw 3: Cannot understand intent.**
 
-Our codebase is growing. We are planning for 2 million lines. ts-morph will not survive.
+What if you do not know the exact name of what you are looking for?
 
----
+"Show me the code that handles form validation errors" is a reasonable question. But text search requires exact matches. If the code uses `validationErrors` and you searched for "form errors," you get nothing.
 
-## Enter SCIP: The Card Catalog Approach
-
-What if the librarian just built a card catalog first?
-
-Read each book once. Write down what it contains. Put that card in an organized filing system. Done.
-
-Now when someone asks a question, the librarian does not re-read anything. They just flip through the cards.
-
-This is what SCIP does for code.
-
-SCIP stands for Source Code Intelligence Protocol. It was created by Sourcegraph, and it is used by GitHub and Meta (the company behind Facebook).
-
-Think about how Google works. When you search for something, Google does not visit every webpage on the internet in that moment. That would take forever. Instead, Google crawled the web beforehand and built an index. Your search just looks things up in the index.
-
-SCIP is like Google's index, but for your code.
-
-You run SCIP once. It reads all your files and creates an index file. From then on, answering questions is nearly instant because you are just looking things up, not re-reading everything.
-
-The index file lives on your hard drive. It does not hog your computer's memory. That is why SCIP can handle 2 million lines of code without breaking a sweat.
+Semantic search understands meaning. It knows that "form validation errors" and "validation error handling" and `displayFormErrors()` are all related concepts. Text search does not.
 
 ---
 
-## Why Do We Need Qdrant?
+## Enter the New Architecture: The Three Librarians Approach
 
-Okay, so SCIP can answer questions like:
-- "Where is the ContactForm component defined?"
-- "What functions does this file export?"
+The new system has three specialized librarians, each with a different skill set.
 
-But what about fuzzier questions?
+**The Precision Librarian (SCIP + SQLite FTS5)**
 
-"Find me the stuff that handles form validation."
+This librarian read every file and created a card catalog. Not of words, but of code symbols: functions, types, variables, imports. It knows that `useContactForm` is defined at line 23 of `hooks/contacts.ts` and is used in 7 other files.
 
-That is not a simple lookup. "Stuff" is not a technical term. "Handles" is vague. The code might use words like "validate," "check," "verify," or "sanitize."
+When you ask "go to definition of ContactSchema," it flips to the right card and gives you the exact location. No guessing. No scanning.
 
-This is where Qdrant comes in.
+**The Meaning Librarian (LanceDB + Ollama)**
 
-Imagine a librarian who understands meaning, not just keywords.
+This librarian understands concepts, not just words. When you ask "find hooks that handle form validation," it does not search for those exact words. It finds code that does form validation, regardless of what the developers named things.
 
-You walk up and say "I need books about heartbreak." A regular catalog search would only find books with "heartbreak" in the title. But this special librarian understands that books about loss, grief, breakups, and loneliness might also be relevant.
+How? It read every piece of code and placed it on a "meaning map." Related concepts are near each other on the map. When you ask a question, it places your question on the same map and finds the closest matches.
 
-Qdrant is a database that stores meanings.
+**The Coordinator (MCP Server)**
 
-Regular databases store text and match exact words. Qdrant stores the meaning behind things and finds related content even if the words are different.
-
-Ask for "form validation stuff" and Qdrant finds code related to input checking, error handling, and data sanitization. It understands that these concepts are related, even though the words are different.
-
-This is called semantic search. Semantic means "related to meaning."
-
----
-
-## Wait, How Does Qdrant Understand Meaning?
-
-Good question. This is where embeddings come in.
-
-An embedding is like coordinates on a map.
-
-Think about a real map. New York and Philadelphia are close together. New York and Tokyo are far apart. The coordinates (latitude and longitude) capture the physical relationship between places.
-
-Embeddings do the same thing, but for concepts.
-
-Instead of physical distance, embeddings capture conceptual distance. Code that does similar things ends up with similar coordinates.
-
-"Form validation" and "input checking" would be close together in embedding space.
-
-"Form validation" and "database migration" would be far apart.
-
-The embeddings are just lists of numbers. "Form validation" might become something like [0.23, -0.87, 0.45, ...]. There are 768 numbers in each list.
-
-Why 768? That is just how much detail we need to capture the nuances of code meaning. Fewer numbers means less precision. More numbers means more storage and slower processing. 768 is the sweet spot.
-
-Qdrant stores these number lists and can quickly find which ones are closest to each other.
-
----
-
-## So Who Creates the Embeddings?
-
-This is what Ollama does.
-
-Ollama is like a translator that converts code into those lists of numbers.
-
-You give it a piece of code. It reads the code, understands what it does, and outputs 768 numbers that represent the meaning.
-
-Here is the beautiful part: Ollama runs on your own machine.
-
-There are no API costs. No internet required. No privacy concerns about sending your code to some external service. Everything stays local.
-
-We are using a specific translation model called nomic-embed-text. It was trained specifically to understand code and technical content. It is free and produces high-quality embeddings.
-
-Think of it like having a bilingual friend who lives in your house. You can ask them to translate things anytime, for free, without worrying about anyone eavesdropping.
+Claude cannot talk directly to SQLite databases or vector stores. The MCP server is the translator. Claude asks questions in plain English. The MCP server converts those questions into database queries, gets results from both librarians, ranks the combined results, and returns answers.
 
 ---
 
 ## Let Me Make Sure I Have This Straight
 
-Here is how all the pieces fit together:
+Here is the full picture:
 
-**SCIP** is the card catalog. It indexes your code so you can look things up instantly.
+- **Source files** are the raw input. TypeScript, TSX, SQL migrations.
 
-**Qdrant** is the meaning-aware library. It stores embeddings so you can search by concept.
+- **SCIP** is a compiler-based indexer. It understands code structure the same way the TypeScript compiler does. It generates an index file (`.scip`) containing every symbol, where it is defined, and where it is used.
 
-**Ollama** is the translator. It converts code into embeddings that Qdrant can store.
+- **SQLite FTS5** is a full-text search engine embedded in a single file. It stores the SCIP index data and supports instant lookup. The "trigram tokenizer" means it can match partial words like "ontact" finding "Contact."
 
-**nomic-embed-text** is the specific translation dictionary Ollama uses.
+- **Tree-sitter** parses code into chunks at semantic boundaries (functions, classes, types). This is smarter than just splitting by line count.
 
-Together, they let you ask questions like "find me the hooks for form validation" and get relevant results in under a second, even in a codebase with 2 million lines.
+- **Ollama** runs locally on your machine. It converts code chunks into "embeddings"—768 numbers that represent the meaning of that code.
+
+- **LanceDB** stores those embeddings in a file. When you search, it finds embeddings closest to your query's embedding.
+
+- **FastMCP** is a framework for building MCP servers. Our server exposes three tools: `search_code`, `go_to_definition`, and `find_references`.
+
+- **Claude Code** connects to the MCP server and uses these tools autonomously.
 
 ---
 
-## Why Are We Doing a "Big Bang" Migration?
+## Why Are We Doing This With Embedded Databases?
 
-There are two ways to renovate a kitchen.
+There are cloud services that do all of this. Elasticsearch for text search. Pinecone for vector search. Sourcegraph for code intelligence. Why not use those?
 
-One way: swap out the sink while using the old stove, then swap the stove while using the old fridge, then swap the fridge. You can still cook dinner every night, but the renovation takes three months and you are constantly working around obstacles.
+Three reasons: cost, speed, and simplicity.
 
-Another way: rip everything out at once, do the whole renovation in a week, and eat takeout for a few days.
+**Cost.** Elasticsearch hosting starts at $50/month. Pinecone starts at $70/month. Sourcegraph enterprise is far more. Our approach costs $0/month. Everything runs from files on disk.
 
-We are doing the second approach.
+**Speed.** Cloud services add network latency. Every query takes 50-200ms just to reach the server and return. Embedded databases respond in under 5ms. When Claude makes dozens of queries during a complex task, those milliseconds add up.
 
-The technical term is "big bang migration." Replace the old system entirely instead of trying to run both systems side by side.
+**Simplicity.** Cloud services require accounts, API keys, Docker containers, health monitoring, backup strategies, and upgrade planning. Embedded databases are files. If something breaks, delete the file and regenerate. No DevOps expertise required.
 
-Why this approach?
-
-Because ts-morph and SCIP think about code in fundamentally different ways. Trying to make them work together would be like trying to run your kitchen on both gas and electric at the same time, with the gas pipes and electric wires tangled together.
-
-It is cleaner to remove ts-morph completely and replace it with SCIP.
-
-The migration takes 6 days. During that time, the old Discovery System still works. Once we are done, we flip the switch and use the new one.
+The tradeoff is that we must build and maintain the indexing pipeline ourselves. That is what the 6-day implementation plan covers.
 
 ---
 
 ## What Happens Over Those 6 Days?
 
-The migration has four phases.
+**Days 1-2: The Precision Layer**
 
-**Day 1: Install SCIP**
+We install `scip-typescript`, a tool that generates compiler-quality indexes for TypeScript projects. We run it on our codebase and get an `.scip` file containing every symbol and reference.
 
-We install the SCIP tool and make sure it can scan our codebase. By the end of Day 1, we have a working index file. This is the foundation everything else builds on.
+Then we parse that file and load its contents into a SQLite database. We configure FTS5 with the trigram tokenizer so partial matches work.
 
-**Days 2-3: Replace the Extractors**
+At the end of Day 2, `just search "useForm"` returns every hook with "Form" in the name, along with their exact file and line locations.
 
-The Discovery System has seven "extractors." Each one knows how to find a specific type of thing in code (components, hooks, schemas, etc.).
+**Days 3-4: The Semantic Layer**
 
-Currently, these extractors use ts-morph. We rewrite them to use SCIP instead. Same inputs, same outputs, different engine under the hood.
+We install Tree-sitter and write a "chunker" that breaks source files into meaningful pieces. Not arbitrary 100-line chunks, but complete functions, complete types, complete components.
 
-**Days 4-5: Add Semantic Search**
+We install Ollama and the `nomic-embed-text` model. For each code chunk, we generate an embedding—768 numbers representing its meaning—and store it in LanceDB.
 
-This is where Qdrant and Ollama come in. We set up the vector database, connect the embedding pipeline, and index all our discovery data.
+At the end of Day 4, `just semantic-search "form validation"` returns the most relevant code chunks, even if they do not contain those exact words.
 
-By the end of Day 5, we can ask natural language questions and get relevant code results.
+**Days 5-6: The Integration Layer**
 
-**Day 6: Update the Build System**
+We build an MCP server using FastMCP. We implement three tools:
+- `search_code`: Combines exact search (FTS5) with meaning search (LanceDB) and ranks results
+- `go_to_definition`: Uses the SCIP index to jump directly to where a symbol is defined
+- `find_references`: Uses the SCIP index to find everywhere a symbol is used
 
-The final day is cleanup. Update the automation scripts. Add health checks. Remove the old ts-morph dependency. Update the documentation.
+We configure Claude Code to connect to this server. At the end of Day 6, Claude can ask "where is useContactForm defined?" and get an immediate, precise answer.
 
 ---
 
 ## What Will Be Different When This is Done?
 
-From your perspective as a user, the Discovery System will feel the same. It still creates those inventory files. It still keeps them up to date.
+Today, asking Claude to find all usages of a type requires:
+1. Claude running grep commands
+2. Waiting 10-30 seconds for results
+3. Parsing through false positives
+4. Often missing some usages entirely
 
-But you will notice a few improvements:
+Time: 2+ minutes. Accuracy: 70-80%.
 
-**It will be faster.** Extraction that used to take 2+ minutes will complete in under 10 seconds.
+After the upgrade:
+1. Claude calls `find_references("Contact")`
+2. Gets complete, accurate results in under 200ms
+3. No false positives. No missed references.
 
-**It will use less memory.** Peak usage drops from 1.5GB to under 500MB.
+Time: Under 10 seconds. Accuracy: 100%.
 
-**It can grow with us.** The new system handles 2 million lines of code. The old system started choking at 500,000.
+For "find code that handles X" questions, the improvement is even larger. Today, Claude has to guess at naming conventions and run multiple searches. After the upgrade, semantic search finds conceptually related code regardless of naming.
 
-**You can search by meaning.** Ask "find me the hooks for form validation" and get useful results, even if those exact words do not appear in the code.
+Other specific improvements:
+- **Go-to-definition** resolves cross-file imports instantly. No more "I cannot find where this is defined."
+- **Incremental updates** take under 5 seconds. When you edit a file, the index updates without a full rebuild.
+- **Zero external dependencies.** No Docker containers. No cloud accounts. No API keys to rotate.
+- **Offline capable.** Everything runs locally. No internet required after initial setup.
 
 ---
 
@@ -236,60 +171,77 @@ But you will notice a few improvements:
 
 No.
 
-You can use the Discovery System without understanding any of these internals. Just run the commands and let it work.
+The commands are simple:
+```bash
+just discover          # Rebuild the full index
+just search "pattern"  # Find exact matches
+just mcp-start         # Start the MCP server
+```
 
-But understanding the architecture helps when:
-- Something breaks and you need to debug it
-- You want to extend the system with new features
-- You are curious about why things work the way they do
+Claude handles the rest automatically. When you ask "find where Contact is used," Claude queries the MCP server behind the scenes. You do not need to know about SCIP or embeddings or SQLite.
 
-This guide is for the curious ones.
+Understanding the internals helps in two scenarios:
 
----
+**Debugging.** If searches return unexpected results, knowing that FTS5 uses trigrams helps you understand why "ct" matches "Contact." If semantic search returns irrelevant results, knowing about embeddings helps you rephrase the query.
 
-## What Happens Next?
+**Extending.** If you want to add support for Python files, or index a different codebase, understanding the architecture helps you know what to modify.
 
-The next four documents walk through each phase in detail:
-
-1. **Phase 1: SCIP Installation** - Getting the index working
-2. **Phase 2: Extractor Migration** - Replacing ts-morph with SCIP queries
-3. **Phase 3: Qdrant + Ollama Integration** - Adding semantic search
-4. **Phase 4: CI Integration** - Updating automation and cleanup
-
-Each phase builds on the previous one. Do not skip ahead.
-
-If you are implementing this migration, start with Phase 1. If you are just trying to understand the system, keep reading the overviews before diving into the details.
-
-Either way, welcome to the journey.
+For day-to-day use, the system is a black box that answers questions faster and more accurately than before.
 
 ---
 
 ## Quick Glossary
 
-If you forget what something means, check here:
+**SCIP (Source Code Intelligence Protocol)**
+A standard format for code intelligence data. Think of it as the compiler's memory, pre-computed and saved to disk. It knows what every symbol means, where it is defined, and where it is used. Created by Sourcegraph and used by GitHub and Meta.
 
-**Embedding** - A list of numbers (768 of them) that represents the meaning of a piece of code. Similar code has similar embeddings.
+**SQLite FTS5**
+Full-Text Search version 5. A feature of SQLite that enables Google-like search over text. FTS5 is the search engine. SQLite is the database that contains it. It runs from a single file—no server required.
 
-**SCIP** - Source Code Intelligence Protocol. An index format that stores code structure for fast lookup.
+**Trigram**
+A three-character slice. "Contact" becomes ["Con", "ont", "nta", "tac", "act", "cts"]. Searching for "tac" finds "Contact" because "tac" is one of its trigrams. This enables partial matching and typo tolerance.
 
-**Qdrant** - A database that stores embeddings and finds similar ones quickly. Enables semantic search.
+**LanceDB**
+A vector database that runs from a single folder. No server required. Just files on disk that store embeddings and support similarity search. Think of it as a meaning database that runs from a file.
 
-**Ollama** - Software that runs AI models locally on your machine. Free and private.
+**Ollama**
+An application that runs AI models locally on your machine. Instead of sending data to OpenAI's servers, Ollama runs the models on your own CPU/GPU. We use it for embedding generation. Think of it as a local AI translator.
 
-**nomic-embed-text** - The specific AI model that converts code into embeddings.
+**Embeddings**
+A list of numbers (768 in our case) that represents the meaning of text. Similar meanings produce similar numbers. "Form validation" and "input error checking" would have nearly identical embeddings. Think of embeddings as coordinates on a meaning map.
 
-**Semantic search** - Searching by meaning instead of exact keywords. "Form validation" finds "input checking."
+**Semantic Search**
+Finding things by meaning rather than exact words. Traditional search requires matching characters. Semantic search matches concepts. "Form validation" finds code about "input checking" because they mean similar things.
 
-**ts-morph** - The old tool we are replacing. Works by loading everything into memory, which fails on large codebases.
+**MCP (Model Context Protocol)**
+A way for Claude to call external tools. Instead of just reading files, Claude can query databases, call APIs, and interact with systems through MCP servers. Think of it as Claude's API to talk to tools.
 
-**Big bang migration** - Replacing an entire system at once instead of gradually transitioning.
+**Tree-sitter**
+A parser that understands code structure. It knows where functions begin and end, which brackets belong together, and how to extract meaningful chunks from source files.
+
+**Hybrid Ranking**
+Combining exact match scores with semantic similarity scores. A result that matches both the exact words AND the meaning ranks higher than one that matches only one.
 
 ---
 
-That is the big picture.
+## What Happens Next?
 
-Now you know what we are building, why we are building it, and how all the pieces connect.
+The next three documents walk through each phase in detail:
 
-The details are in the phase documents. But you have the foundation now.
+1. **Phase 1: Precision Layer** (Days 1-2) - SCIP indexing and SQLite FTS5 setup
+2. **Phase 2: Semantic Layer** (Days 3-4) - Tree-sitter chunking, Ollama embeddings, LanceDB storage
+3. **Phase 3: Integration Layer** (Days 5-6) - FastMCP server connecting Claude to both layers
 
-Let's build something better.
+Each phase builds on the previous one. Do not skip ahead.
+
+If you are implementing this migration, start with Phase 1. If you are just trying to understand the system, keep reading the overviews before diving into the details.
+
+---
+
+## Final Note
+
+The technical overview document is 700 lines of specifications, code examples, and diagrams. This explanation is 280 lines of context. Both are necessary.
+
+The specification tells implementers exactly what to build. This explanation tells everyone else what is being built and why it matters.
+
+If you read both and still have questions, that is a documentation failure. Ask. The answer probably belongs in one of these documents.
