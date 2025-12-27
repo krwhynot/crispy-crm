@@ -5,7 +5,7 @@ import {
   PropertySignature,
 } from "ts-morph";
 import { project } from "../utils/project.js";
-import { writeChunkedDiscovery } from "../utils/output.js";
+import { writeChunkedDiscovery, writeIncrementalChunkedDiscovery, readExistingManifest } from "../utils/output.js";
 import * as path from "path";
 
 /**
@@ -320,24 +320,60 @@ export async function extractTypes(onlyChunks?: Set<string>): Promise<void> {
     allProcessedFiles.push(filePath);
   }
 
-  // Write chunked output
-  writeChunkedDiscovery(
-    "types-inventory",
-    "scripts/discover/extractors/types.ts",
-    SOURCE_GLOBS,
-    allProcessedFiles,
-    {
-      total_items: types.length,
-      total_chunks: chunks.size,
-      interfaces: interfaceCount,
-      type_aliases: typeAliasCount,
-      zod_derived: zodDerivedCount,
-      exported: exportedCount,
-      complex: complexCount,
-    },
-    chunks,
-    fileToChunkMapping
-  );
+  // Write output - incremental or full
+  if (onlyChunks) {
+    // Incremental mode: merge with existing manifest
+    const existingManifest = readExistingManifest("types-inventory");
+    if (existingManifest) {
+      writeIncrementalChunkedDiscovery(
+        "types-inventory",
+        "scripts/discover/extractors/types.ts",
+        SOURCE_GLOBS,
+        allProcessedFiles,
+        chunks,
+        fileToChunkMapping,
+        existingManifest
+      );
+    } else {
+      console.log("  ⚠️  No existing manifest found, falling back to full write");
+      writeChunkedDiscovery(
+        "types-inventory",
+        "scripts/discover/extractors/types.ts",
+        SOURCE_GLOBS,
+        allProcessedFiles,
+        {
+          total_items: types.length,
+          total_chunks: chunks.size,
+          interfaces: interfaceCount,
+          type_aliases: typeAliasCount,
+          zod_derived: zodDerivedCount,
+          exported: exportedCount,
+          complex: complexCount,
+        },
+        chunks,
+        fileToChunkMapping
+      );
+    }
+  } else {
+    // Full mode: write all chunks
+    writeChunkedDiscovery(
+      "types-inventory",
+      "scripts/discover/extractors/types.ts",
+      SOURCE_GLOBS,
+      allProcessedFiles,
+      {
+        total_items: types.length,
+        total_chunks: chunks.size,
+        interfaces: interfaceCount,
+        type_aliases: typeAliasCount,
+        zod_derived: zodDerivedCount,
+        exported: exportedCount,
+        complex: complexCount,
+      },
+      chunks,
+      fileToChunkMapping
+    );
+  }
 
   console.log(`  ✓ Found ${types.length} TypeScript types`);
   console.log(`    - ${interfaceCount} interfaces`);

@@ -1,13 +1,13 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-27T01:47:40.855Z",
+  "generated_at": "2025-12-27T01:53:50.221Z",
   "generator": "scripts/discover/extractors/types.ts",
   "source_globs": [
     "src/atomic-crm/types.ts",
     "src/atomic-crm/**/types.ts",
     "src/types/**/*.ts"
   ],
-  "checksum": "sha256:95165813f74185ad",
+  "checksum": "sha256:b360205c6fd9af1c",
   "source_hashes": {
     "src/atomic-crm/dashboard/v3/types.ts": "a31606a565ce",
     "src/atomic-crm/filters/types.ts": "65608e159c7f",
@@ -35,7 +35,7 @@
       "name": "_root",
       "file": "_root.json",
       "item_count": 30,
-      "checksum": "sha256:270caa1eef076928",
+      "checksum": "sha256:625ce8aad3a10205",
       "source_files": [
         "src/atomic-crm/types.ts"
       ],
@@ -47,7 +47,7 @@
       "name": "dashboard",
       "file": "dashboard.json",
       "item_count": 13,
-      "checksum": "sha256:28a8eaa7330d24d5",
+      "checksum": "sha256:2a3ecbf4f663f614",
       "source_files": [
         "src/atomic-crm/dashboard/v3/types.ts"
       ],
@@ -59,7 +59,7 @@
       "name": "database",
       "file": "database.json",
       "item_count": 9,
-      "checksum": "sha256:ace6d06f47e119ba",
+      "checksum": "sha256:e10e27e62ddd26f4",
       "source_files": [
         "src/types/database.types.ts"
       ],
@@ -71,7 +71,7 @@
       "name": "filters",
       "file": "filters.json",
       "item_count": 13,
-      "checksum": "sha256:e0410c504ff52e6e",
+      "checksum": "sha256:cc5e665ecf002dd9",
       "source_files": [
         "src/atomic-crm/filters/types.ts"
       ],
@@ -83,7 +83,7 @@
       "name": "organizations",
       "file": "organizations.json",
       "item_count": 17,
-      "checksum": "sha256:0468173f19edec35",
+      "checksum": "sha256:1acd13440dd155de",
       "source_files": [
         "src/atomic-crm/organizations/types.ts"
       ],
@@ -95,7 +95,7 @@
       "name": "providers",
       "file": "providers.json",
       "item_count": 7,
-      "checksum": "sha256:5f44eb2c35d60d2a",
+      "checksum": "sha256:81653c3cf067c8d9",
       "source_files": [
         "src/atomic-crm/providers/supabase/extensions/types.ts",
         "src/atomic-crm/providers/supabase/types.ts",
@@ -111,7 +111,7 @@
       "name": "reports",
       "file": "reports.json",
       "item_count": 3,
-      "checksum": "sha256:45b7794a7b8b8dd1",
+      "checksum": "sha256:cba3b37965fd894b",
       "source_files": [
         "src/atomic-crm/reports/types.ts"
       ],
@@ -123,7 +123,7 @@
       "name": "tags",
       "file": "tags.json",
       "item_count": 6,
-      "checksum": "sha256:71432ca664eebe9a",
+      "checksum": "sha256:6057ec7c46a4443e",
       "source_files": [
         "src/atomic-crm/tags/types.ts"
       ],
@@ -135,7 +135,7 @@
       "name": "tutorial",
       "file": "tutorial.json",
       "item_count": 3,
-      "checksum": "sha256:4753162f9c47f363",
+      "checksum": "sha256:b3388f937da672ff",
       "source_files": [
         "src/atomic-crm/tutorial/types.ts"
       ],

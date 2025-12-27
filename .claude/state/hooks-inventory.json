@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-27T01:48:13.844Z",
+  "generated_at": "2025-12-27T01:54:06.487Z",
   "generator": "scripts/discover/extractors/hooks.ts",
   "source_globs": [
     "src/**/use*.ts",
@@ -8,7 +8,7 @@
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
-  "checksum": "sha256:8361eb0ab863cc50",
+  "checksum": "sha256:b58c520e5ee7044e",
   "source_hashes": {
     "src/App.tsx": "f0ea5cecc938",
     "src/main.tsx": "8e7c914a808c",
@@ -389,7 +389,7 @@
     "src/atomic-crm/validation/activities.ts": "d1ec200643e2",
     "src/atomic-crm/validation/categories.ts": "0f7d9f25b8f8",
     "src/atomic-crm/validation/constants.ts": "b8985c2c0618",
-    "src/atomic-crm/validation/contacts.ts": "3c6c2697e386",
+    "src/atomic-crm/validation/contacts.ts": "f5e716c5cb38",
     "src/atomic-crm/validation/distributorAuthorizations.ts": "66445a74389a",
     "src/atomic-crm/validation/index.ts": "5e4890c4d980",
     "src/atomic-crm/validation/notes.ts": "319cf3813adb",
