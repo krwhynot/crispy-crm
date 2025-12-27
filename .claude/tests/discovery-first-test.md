@@ -17,7 +17,7 @@ IMPORTANT: Do NOT grep or scan source files. Use the discovery inventory at `.cl
 ## Test 2: Hooks Inventory
 How many custom hooks exist in this codebase? List 5 of them with their dependencies.
 
-IMPORTANT: Read from `.claude/state/hooks-inventory.json`, not source files.
+IMPORTANT: Read from `.claude/state/hooks-inventory/` (chunked directory), not source files.
 
 ## Test 3: Schema Inventory
 What Zod schemas exist for the opportunities feature?
@@ -47,7 +47,7 @@ This helps me verify you're using discovery files (fast, ~30KB) vs source scanni
 └────────────────────────────────────────────────────────┘
 
 ┌─ Read ─────────────────────────────────────────────────┐
-│ .claude/state/hooks-inventory.json                    │
+│ .claude/state/hooks-inventory/shared.json             │
 └────────────────────────────────────────────────────────┘
 
 ┌─ Read ─────────────────────────────────────────────────┐
