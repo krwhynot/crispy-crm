@@ -177,6 +177,8 @@ export interface ChunkedManifest {
   source_hashes: Record<string, string>;
   summary: Record<string, number>;
   chunks: ChunkInfo[];
+  /** Maps source file paths to chunk names they contribute to (for incremental updates) */
+  file_to_chunks: Record<string, string[]>;
 }
 
 export interface ChunkInfo {
@@ -184,11 +186,17 @@ export interface ChunkInfo {
   file: string;
   item_count: number;
   checksum: string;
+  /** Source files that contributed to this chunk (for incremental staleness detection) */
+  source_files: string[];
+  /** Hashes of source files in this chunk */
+  source_hashes: Record<string, string>;
 }
 
 /**
  * Write chunked discovery output: manifest.json + feature chunks.
  * Reduces context usage by allowing Claude to load only needed features.
+ *
+ * @param fileToChunkMapping - Maps source file paths to chunk names (for incremental updates)
  */
 export function writeChunkedDiscovery<T>(
   dirName: string,
@@ -196,9 +204,11 @@ export function writeChunkedDiscovery<T>(
   sourceGlobs: string[],
   sourceFiles: string[],
   summary: Record<string, number>,
-  chunks: Map<string, T[]>
+  chunks: Map<string, T[]>,
+  fileToChunkMapping?: Map<string, string>
 ): void {
   const outputDir = path.resolve(process.cwd(), ".claude/state", dirName);
+  const cwd = process.cwd();
 
   // Ensure output directory exists
   if (!fs.existsSync(outputDir)) {
@@ -208,11 +218,49 @@ export function writeChunkedDiscovery<T>(
   const sourceHashes = buildSourceHashes(sourceFiles);
   const chunkInfos: ChunkInfo[] = [];
 
+  // Build file_to_chunks mapping for manifest
+  const fileToChunks: Record<string, string[]> = {};
+  if (fileToChunkMapping) {
+    for (const [filePath, chunkName] of fileToChunkMapping) {
+      const relativePath = path.relative(cwd, filePath);
+      if (!fileToChunks[relativePath]) {
+        fileToChunks[relativePath] = [];
+      }
+      if (!fileToChunks[relativePath].includes(chunkName)) {
+        fileToChunks[relativePath].push(chunkName);
+      }
+    }
+  }
+
+  // Build reverse mapping: chunk → source files
+  const chunkToFiles: Map<string, string[]> = new Map();
+  if (fileToChunkMapping) {
+    for (const [filePath, chunkName] of fileToChunkMapping) {
+      const relativePath = path.relative(cwd, filePath);
+      if (!chunkToFiles.has(chunkName)) {
+        chunkToFiles.set(chunkName, []);
+      }
+      const files = chunkToFiles.get(chunkName)!;
+      if (!files.includes(relativePath)) {
+        files.push(relativePath);
+      }
+    }
+  }
+
   // Write each feature chunk
   for (const [chunkName, items] of chunks) {
     const chunkFileName = `${chunkName}.json`;
     const chunkPath = path.join(outputDir, chunkFileName);
     const tempPath = `${chunkPath}.tmp`;
+
+    // Get source files for this chunk
+    const chunkSourceFiles = chunkToFiles.get(chunkName) || [];
+    const chunkSourceHashes: Record<string, string> = {};
+    for (const file of chunkSourceFiles) {
+      if (sourceHashes[file]) {
+        chunkSourceHashes[file] = sourceHashes[file];
+      }
+    }
 
     const chunkData = {
       chunk_name: chunkName,
@@ -232,6 +280,8 @@ export function writeChunkedDiscovery<T>(
       file: chunkFileName,
       item_count: items.length,
       checksum: chunkChecksum,
+      source_files: chunkSourceFiles.sort(),
+      source_hashes: chunkSourceHashes,
     });
   }
 
@@ -248,6 +298,7 @@ export function writeChunkedDiscovery<T>(
     source_hashes: sourceHashes,
     summary,
     chunks: chunkInfos,
+    file_to_chunks: fileToChunks,
   };
 
   manifest.checksum = hashPayload({ ...manifest, checksum: "" });
