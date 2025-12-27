@@ -522,3 +522,201 @@ export function getStaleChunks(
     requiresFullRegen: false,
   };
 }
+
+/**
+ * Read an existing chunked manifest from disk.
+ * Returns null if manifest doesn't exist or is invalid.
+ *
+ * @param dirName - The chunked discovery directory name (e.g., "schemas-inventory")
+ * @returns The parsed manifest or null
+ */
+export function readExistingManifest(dirName: string): ChunkedManifest | null {
+  const outputDir = path.resolve(process.cwd(), ".claude/state", dirName);
+  const manifestPath = path.join(outputDir, "manifest.json");
+
+  if (!fs.existsSync(manifestPath)) {
+    return null;
+  }
+
+  try {
+    const content = fs.readFileSync(manifestPath, "utf-8");
+    const manifest = JSON.parse(content) as ChunkedManifest;
+
+    // Validate required fields
+    if (!manifest.chunks || !manifest.source_hashes || !manifest.file_to_chunks) {
+      console.warn(`⚠️  Manifest ${dirName} missing required incremental fields`);
+      return null;
+    }
+
+    return manifest;
+  } catch (error) {
+    console.warn(`⚠️  Error reading manifest ${dirName}:`, error instanceof Error ? error.message : "Unknown");
+    return null;
+  }
+}
+
+/**
+ * Write incremental chunked discovery output.
+ * Only writes stale chunks, preserves fresh chunk files, and merges manifest.
+ *
+ * This is the key function for incremental updates - it:
+ * 1. Writes only the updated chunk files (stale chunks)
+ * 2. Preserves existing chunk files for fresh chunks
+ * 3. Removes chunk files for chunks that no longer exist
+ * 4. Creates a merged manifest with updated checksums
+ *
+ * @param dirName - Directory name under .claude/state/
+ * @param generator - Name of the generator script
+ * @param sourceGlobs - Source file glob patterns
+ * @param allSourceFiles - All current source files (for manifest source_hashes)
+ * @param updatedChunks - Map of stale chunk names to their new items
+ * @param fileToChunkMapping - Maps source file paths to chunk names
+ * @param existingManifest - Current manifest to merge with
+ */
+export function writeIncrementalChunkedDiscovery<T>(
+  dirName: string,
+  generator: string,
+  sourceGlobs: string[],
+  allSourceFiles: string[],
+  updatedChunks: Map<string, T[]>,
+  fileToChunkMapping: Map<string, string>,
+  existingManifest: ChunkedManifest
+): void {
+  const outputDir = path.resolve(process.cwd(), ".claude/state", dirName);
+  const cwd = process.cwd();
+
+  // Ensure output directory exists
+  if (!fs.existsSync(outputDir)) {
+    fs.mkdirSync(outputDir, { recursive: true });
+  }
+
+  // Build current source hashes for ALL files (needed for manifest)
+  const sourceHashes = buildSourceHashes(allSourceFiles);
+
+  // Build file_to_chunks mapping for manifest
+  const fileToChunks: Record<string, string[]> = {};
+  for (const [filePath, chunkName] of fileToChunkMapping) {
+    const relativePath = path.relative(cwd, filePath);
+    if (!fileToChunks[relativePath]) {
+      fileToChunks[relativePath] = [];
+    }
+    if (!fileToChunks[relativePath].includes(chunkName)) {
+      fileToChunks[relativePath].push(chunkName);
+    }
+  }
+
+  // Build reverse mapping: chunk → source files
+  const chunkToFiles: Map<string, string[]> = new Map();
+  for (const [filePath, chunkName] of fileToChunkMapping) {
+    const relativePath = path.relative(cwd, filePath);
+    if (!chunkToFiles.has(chunkName)) {
+      chunkToFiles.set(chunkName, []);
+    }
+    const files = chunkToFiles.get(chunkName)!;
+    if (!files.includes(relativePath)) {
+      files.push(relativePath);
+    }
+  }
+
+  // Start with existing chunk infos, we'll update stale ones
+  const chunkInfoMap = new Map<string, ChunkInfo>();
+  for (const existingChunk of existingManifest.chunks) {
+    chunkInfoMap.set(existingChunk.name, existingChunk);
+  }
+
+  // Track total items for summary
+  let totalItems = 0;
+  const updatedChunkNames = new Set<string>();
+
+  // Write updated chunks and update their info
+  for (const [chunkName, items] of updatedChunks) {
+    updatedChunkNames.add(chunkName);
+
+    const chunkFileName = `${chunkName}.json`;
+    const chunkPath = path.join(outputDir, chunkFileName);
+    const tempPath = `${chunkPath}.tmp`;
+
+    // Get source files for this chunk
+    const chunkSourceFiles = chunkToFiles.get(chunkName) || [];
+    const chunkSourceHashes: Record<string, string> = {};
+    for (const file of chunkSourceFiles) {
+      if (sourceHashes[file]) {
+        chunkSourceHashes[file] = sourceHashes[file];
+      }
+    }
+
+    const chunkData = {
+      chunk_name: chunkName,
+      generated_at: new Date().toISOString(),
+      item_count: items.length,
+      items,
+    };
+
+    const chunkChecksum = hashPayload(chunkData);
+
+    // Atomic write for chunk
+    fs.writeFileSync(tempPath, JSON.stringify(chunkData, null, 2), "utf-8");
+    fs.renameSync(tempPath, chunkPath);
+
+    // Update chunk info
+    chunkInfoMap.set(chunkName, {
+      name: chunkName,
+      file: chunkFileName,
+      item_count: items.length,
+      checksum: chunkChecksum,
+      source_files: chunkSourceFiles.sort(),
+      source_hashes: chunkSourceHashes,
+    });
+
+    totalItems += items.length;
+  }
+
+  // Handle chunks that should be removed (all their source files deleted)
+  const currentChunkNames = new Set(chunkToFiles.keys());
+  for (const [chunkName, chunkInfo] of chunkInfoMap) {
+    if (!currentChunkNames.has(chunkName)) {
+      // This chunk no longer has any source files - remove it
+      const chunkPath = path.join(outputDir, chunkInfo.file);
+      if (fs.existsSync(chunkPath)) {
+        fs.unlinkSync(chunkPath);
+        console.log(`  🗑️  Removed empty chunk: ${chunkName}`);
+      }
+      chunkInfoMap.delete(chunkName);
+    } else if (!updatedChunkNames.has(chunkName)) {
+      // Fresh chunk - add its items to total count
+      totalItems += chunkInfo.item_count;
+    }
+  }
+
+  // Convert to sorted array
+  const chunkInfos = Array.from(chunkInfoMap.values()).sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
+
+  // Create updated manifest
+  const manifest: ChunkedManifest = {
+    status: "complete",
+    generated_at: new Date().toISOString(),
+    generator,
+    source_globs: sourceGlobs,
+    checksum: "", // Will be filled
+    source_hashes: sourceHashes,
+    summary: {
+      ...existingManifest.summary,
+      total_items: totalItems,
+      total_chunks: chunkInfos.length,
+    },
+    chunks: chunkInfos,
+    file_to_chunks: fileToChunks,
+  };
+
+  manifest.checksum = hashPayload({ ...manifest, checksum: "" });
+
+  // Write manifest atomically
+  const manifestPath = path.join(outputDir, "manifest.json");
+  const tempManifestPath = `${manifestPath}.tmp`;
+  fs.writeFileSync(tempManifestPath, JSON.stringify(manifest, null, 2), "utf-8");
+  fs.renameSync(tempManifestPath, manifestPath);
+
+  console.log(`✅ Incremental update: ${dirName}/ (${updatedChunks.size} chunks updated, ${chunkInfos.length} total)`);
+}

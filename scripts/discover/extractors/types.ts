@@ -223,17 +223,28 @@ function shouldExcludeFile(filePath: string): boolean {
 
 /**
  * Main extraction function for TypeScript types.
+ * @param onlyChunks - Optional set of chunk keys to process (incremental mode)
  */
-export async function extractTypes(): Promise<void> {
+export async function extractTypes(onlyChunks?: Set<string>): Promise<void> {
   console.log("📐 Extracting TypeScript types...");
 
   // Use the return value to get ONLY the files matching our globs
   // (not all files accumulated in the project singleton)
   const sourceFiles = project.addSourceFilesAtPaths(SOURCE_GLOBS);
   const types: TypeInfo[] = [];
-  const processedFiles = new Set<string>();
 
-  for (const sourceFile of sourceFiles) {
+  // Filter source files if incremental mode
+  let filesToProcess = sourceFiles;
+  if (onlyChunks) {
+    filesToProcess = sourceFiles.filter(sf => {
+      const relativePath = path.relative(process.cwd(), sf.getFilePath());
+      const chunkKey = extractChunkKey(relativePath);
+      return onlyChunks.has(chunkKey);
+    });
+    console.log(`  📂 Incremental mode: processing ${filesToProcess.length} of ${sourceFiles.length} files`);
+  }
+
+  for (const sourceFile of filesToProcess) {
     const filePath = sourceFile.getFilePath();
 
     // Skip excluded files
@@ -259,8 +270,6 @@ export async function extractTypes(): Promise<void> {
     if (!matchesGlob) {
       continue;
     }
-
-    processedFiles.add(filePath);
 
     // Extract interfaces
     const interfaces = sourceFile.getInterfaces();
@@ -295,11 +304,20 @@ export async function extractTypes(): Promise<void> {
   }
 
   // Build file-to-chunk mapping for incremental updates
+  // Use sourceFiles (not filesToProcess) to ensure full mapping is available
   const fileToChunkMapping = new Map<string, string>();
-  for (const filePath of processedFiles) {
+  const allProcessedFiles: string[] = [];
+  for (const sourceFile of sourceFiles) {
+    const filePath = sourceFile.getFilePath();
+    if (shouldExcludeFile(filePath)) continue;
+    if (filePath.includes("node_modules") || filePath.includes(".test.") || filePath.includes(".spec.")) continue;
     const relativePath = path.relative(process.cwd(), filePath);
+    const matchesGlob = relativePath.includes("types.ts") || relativePath.startsWith("src/types/");
+    if (!matchesGlob) continue;
+
     const chunkKey = extractChunkKey(relativePath);
     fileToChunkMapping.set(filePath, chunkKey);
+    allProcessedFiles.push(filePath);
   }
 
   // Write chunked output
@@ -307,7 +325,7 @@ export async function extractTypes(): Promise<void> {
     "types-inventory",
     "scripts/discover/extractors/types.ts",
     SOURCE_GLOBS,
-    Array.from(processedFiles),
+    allProcessedFiles,
     {
       total_items: types.length,
       total_chunks: chunks.size,

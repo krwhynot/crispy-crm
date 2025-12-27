@@ -87,18 +87,28 @@ function extractFeatureName(filePath: string): string {
 /**
  * Main extraction function
  */
-export async function extractValidationServices(): Promise<void> {
+export async function extractValidationServices(onlyChunks?: Set<string>): Promise<void> {
   console.log("🔐 Extracting validation services from src/atomic-crm/validation/**/*.ts...");
 
   const globs = ["src/atomic-crm/validation/**/*.ts"];
   const sourceFiles = project.addSourceFilesAtPaths(globs);
+
+  // Filter source files if incremental mode
+  let filesToProcess = sourceFiles;
+  if (onlyChunks) {
+    filesToProcess = sourceFiles.filter(sf => {
+      const chunkName = extractFeatureName(sf.getFilePath());
+      return onlyChunks.has(chunkName);
+    });
+    console.log(`  📂 Incremental mode: processing ${filesToProcess.length} of ${sourceFiles.length} files`);
+  }
 
   const services: ValidationServiceInfo[] = [];
   const customValidators: CustomValidatorInfo[] = [];
   const processedFiles = new Set<string>();
   const chunks = new Map<string, (ValidationServiceInfo | CustomValidatorInfo)[]>();
 
-  for (const sourceFile of sourceFiles) {
+  for (const sourceFile of filesToProcess) {
     const filePath = sourceFile.getFilePath();
 
     if (filePath.includes("__tests__") || filePath.includes(".test.") || filePath.endsWith("index.ts")) {
