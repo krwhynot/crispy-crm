@@ -196,6 +196,13 @@ discover-callgraph:
 callgraph-viz:
     npx tsx scripts/discover/generate-viz.ts
 
+# Render call graph DOT to SVG/PNG (requires graphviz: apt install graphviz)
+callgraph-render:
+    @mkdir -p docs/architecture/call-graphs
+    dot -Tsvg .claude/state/call-graph-inventory/_visualization/full-graph.dot -o docs/architecture/call-graphs/full-graph.svg
+    dot -Tpng .claude/state/call-graph-inventory/_visualization/full-graph.dot -o docs/architecture/call-graphs/full-graph.png
+    @echo "✅ Rendered to docs/architecture/call-graphs/"
+
 # ─────────────────────────────────────────────────────────────
 # 📦 Composite Commands
 # ─────────────────────────────────────────────────────────────

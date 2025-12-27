@@ -1,6 +1,6 @@
 {
   "chunk_name": "notes",
-  "generated_at": "2025-12-27T01:53:50.110Z",
+  "generated_at": "2025-12-27T04:46:12.586Z",
   "item_count": 4,
   "items": [
     {
@@ -22,8 +22,8 @@
           "hasTransform": true,
           "hasDefault": false,
           "transformDetails": {
-            "functionName": "sanitizeHtml",
-            "isSecurity": true
+            "functionName": "anonymous",
+            "isSecurity": false
           }
         },
         {

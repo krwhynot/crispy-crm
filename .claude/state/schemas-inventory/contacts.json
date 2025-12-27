@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2025-12-27T01:54:06.568Z",
+  "generated_at": "2025-12-27T04:46:12.585Z",
   "item_count": 9,
   "items": [
     {
@@ -117,7 +117,8 @@
       "relatedSchemas": [
         "contactSchema",
         "importContactSchema",
-        "createContactSchema"
+        "createContactSchema",
+        "organizationSchema"
       ],
       "validationFunctions": [
         "validateContactOrganization"
@@ -556,7 +557,8 @@
         "contactOrganizationSchema",
         "contactBaseSchema",
         "importContactSchema",
-        "createContactSchema"
+        "createContactSchema",
+        "contactNoteSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": true,
@@ -573,7 +575,8 @@
         "contactOrganizationSchema",
         "contactBaseSchema",
         "contactSchema",
-        "createContactSchema"
+        "createContactSchema",
+        "contactNoteSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": true,
@@ -590,7 +593,8 @@
         "contactOrganizationSchema",
         "contactBaseSchema",
         "contactSchema",
-        "importContactSchema"
+        "importContactSchema",
+        "contactNoteSchema"
       ],
       "validationFunctions": [],
       "hasTransforms": true,
