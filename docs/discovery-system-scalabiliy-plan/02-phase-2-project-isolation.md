@@ -1,124 +1,108 @@
-# Phase 2: Project Isolation (Week 2)
+# Phase 2: Replace Extractors with SCIP Queries
 
-> **Prerequisites:** Complete [Phase 1: Parallel Group Optimization](./01-phase-1-parallel-group-optimization.md) before starting Phase 2. The instrumentation from Task 1.3 will help verify memory improvements from project isolation.
+> **Prerequisites:** Complete [Phase 1: SCIP Index Generation](./01-phase-1-parallel-group-optimization.md) with a valid SCIP index before starting Phase 2.
 
 ---
 
 ## Goal
 
-Separate ts-morph Project per extractor to enable memory release.
+Rewrite all 7 extractors to query SCIP index instead of using ts-morph.
 
 ---
 
-## Task 2.1: Replace singleton with factory
+## Timeline
 
-**File:** `scripts/discover/utils/project.ts`
+Days 2-3
+
+---
+
+## Task 2.1: Create SCIP query utilities
+
+**File:** `scripts/discover/scip/query.ts`
 
 ```typescript
-// BEFORE: Singleton
-class DiscoveryProject {
-  private static instance: Project;
-  public static getInstance(): Project { ... }
-}
-export const project = DiscoveryProject.getInstance();
+// scripts/discover/scip/query.ts
+import { Index, Document, Occurrence } from '@sourcegraph/scip';
 
-// AFTER: Factory function
-export function createProject(name: string): Project {
-  const tsConfigPath = path.resolve(process.cwd(), "tsconfig.json");
-
-  console.log(`[Memory] Creating Project for: ${name}`);
-
-  const project = new Project({
-    tsConfigFilePath: tsConfigPath,
-    skipAddingFilesFromTsConfig: true,
-    skipFileDependencyResolution: true,  // NEW: Faster for extraction-only
-  });
-
-  return project;
+export function findSymbolsByPattern(index: Index, pattern: RegExp): Symbol[] {
+  // Query SCIP index for matching symbols
 }
 
-export function disposeProject(project: Project, name: string): void {
-  const sourceFiles = project.getSourceFiles();
-  console.log(`[Memory] Disposing ${sourceFiles.length} files from: ${name}`);
-  sourceFiles.forEach(sf => sf.forget());
+export function getReferences(index: Index, symbol: string): Occurrence[] {
+  // Get all references to a symbol
+}
+
+export function getDefinition(index: Index, symbol: string): Occurrence | null {
+  // Get definition location
 }
 ```
 
 ---
 
-## Task 2.2: Update each extractor to use factory
+## Task 2.2: Rewrite extractors
 
-**Pattern for each extractor:**
+Each extractor must be rewritten to query SCIP instead of ts-morph:
 
-```typescript
-// BEFORE:
-import { project } from '../utils/project';
+| Extractor | SCIP Query Strategy |
+|-----------|---------------------|
+| `extractors/components.ts` | Query SCIP for React components |
+| `extractors/hooks.ts` | Query SCIP for custom hooks |
+| `extractors/schemas.ts` | Query SCIP for Zod schemas |
+| `extractors/types.ts` | Query SCIP for TypeScript types |
+| `extractors/forms.ts` | Query SCIP for form components |
+| `extractors/validation-services.ts` | Query SCIP for validators |
+| `extractors/call-graph.ts` | Use SCIP relationships |
 
-export async function extractComponents(onlyChunks?: Set<string>) {
-  const sourceFiles = project.addSourceFilesAtPaths(globs);
-  // ...
-}
+---
 
-// AFTER:
-import { createProject, disposeProject } from '../utils/project';
+## Task 2.3: (Optional) Add ast-grep patterns for complex matching
 
-export async function extractComponents(onlyChunks?: Set<string>) {
-  const project = createProject('components');
-  try {
-    const sourceFiles = project.addSourceFilesAtPaths(globs);
-    // ... same extraction logic ...
-  } finally {
-    disposeProject(project, 'components');
-  }
-}
+For patterns that require more sophisticated matching beyond SCIP symbol queries:
+
+```yaml
+# .claude/ast-grep/react-components.yaml
+id: react-component
+language: tsx
+rule:
+  any:
+    - pattern: function $NAME($$$) { $$$ return <$$$>; }
+    - pattern: const $NAME = ($$$) => <$$$>;
 ```
 
 ---
 
-## Task 2.3: Add extractor-level isolation to orchestrator
+## Files to Create
 
-**File:** `scripts/discover/index.ts`
-
-```typescript
-// BEFORE (line 253-280):
-async function runExtractors(extractors: ExtractorConfig[]): Promise<void> {
-  const results = await Promise.allSettled(
-    extractors.map(ext => ext.extractFn())
-  );
-  // ...
-}
-
-// AFTER: True isolation
-async function runExtractors(extractors: ExtractorConfig[]): Promise<void> {
-  // Each extractor now has its own Project - truly parallel safe
-  const results = await Promise.allSettled(
-    extractors.map(async (ext) => {
-      const startMem = process.memoryUsage().heapUsed;
-      await ext.extractFn();
-      const endMem = process.memoryUsage().heapUsed;
-      console.log(`[Memory] ${ext.name}: ${((endMem - startMem) / 1024 / 1024).toFixed(1)}MB used`);
-    })
-  );
-  // ...
-}
-```
+- `scripts/discover/scip/query.ts`
 
 ---
 
-## Phase 2 Testing
+## Files to Rewrite
+
+- `scripts/discover/extractors/components.ts`
+- `scripts/discover/extractors/hooks.ts`
+- `scripts/discover/extractors/schemas.ts`
+- `scripts/discover/extractors/types.ts`
+- `scripts/discover/extractors/forms.ts`
+- `scripts/discover/extractors/validation-services.ts`
+- `scripts/discover/extractors/call-graph.ts`
+
+---
+
+## Verification
+
+- [ ] All extractors use SCIP instead of ts-morph
+- [ ] Output matches previous component/hook/schema counts
+- [ ] No ts-morph imports remain
 
 ```bash
-# Verify each extractor creates/disposes its own Project
-just discover 2>&1 | grep -E "Creating|Disposing"
-# Expected: 7 pairs of Create/Dispose messages
+# Verify no ts-morph imports in extractors
+rg "from.*ts-morph" scripts/discover/extractors/
+# Expected: No matches
 
-# Verify memory releases between extractors
-just discover-profile
-# Memory should drop after each extractor completes
-
-# Verify extraction results unchanged
+# Verify extraction counts unchanged
 just discover
-git diff .claude/state/  # Should be empty (no output changes)
+diff <(cat .claude/state/*-inventory/*.json | jq -r '.count // .totalNodes') expected-counts.txt
 ```
 
 ---
