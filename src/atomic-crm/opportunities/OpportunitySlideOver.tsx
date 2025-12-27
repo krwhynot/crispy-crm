@@ -25,6 +25,23 @@ export function OpportunitySlideOver({
   mode,
   onModeToggle,
 }: OpportunitySlideOverProps) {
+  const { isManagerOrAdmin } = useUserRole();
+  const { data: identity } = useGetIdentity();
+  const currentSalesId = identity?.id;
+
+  const { data: record } = useGetOne<Opportunity>(
+    "opportunities",
+    { id: recordId! },
+    { enabled: recordId != null }
+  );
+
+  const canEdit = !record
+    ? false
+    : isManagerOrAdmin ||
+      (currentSalesId != null &&
+        (Number(record.opportunity_owner_id) === Number(currentSalesId) ||
+          Number(record.account_manager_id) === Number(currentSalesId)));
+
   const tabs: TabConfig[] = [
     {
       key: "details",
@@ -64,6 +81,7 @@ export function OpportunitySlideOver({
       onClose={onClose}
       mode={mode}
       onModeToggle={onModeToggle}
+      canEdit={canEdit}
       tabs={tabs}
       recordRepresentation={recordRepresentation}
       headerActions={(record) => (

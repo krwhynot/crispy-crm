@@ -45,7 +45,7 @@ if [ -n "$ts_files" ]; then
 fi
 
 # ═══════════════════════════════════════════════════════════════
-# 3. DISCOVERY: Check if codebase discovery is stale
+# 3. DISCOVERY: Auto-regenerate if stale (stage_fixed pattern)
 # ═══════════════════════════════════════════════════════════════
 # Only run if component/hook files are staged (performance optimization)
 discovery_files=$(echo "$STAGED_FILES" | grep -E '\.(ts|tsx)$' | grep -E 'src/atomic-crm/' || true)
@@ -53,16 +53,10 @@ discovery_files=$(echo "$STAGED_FILES" | grep -E '\.(ts|tsx)$' | grep -E 'src/at
 if [ -n "$discovery_files" ]; then
   echo "🔍 Checking discovery freshness..."
   if ! npx tsx scripts/discover/index.ts --check 2>/dev/null; then
-    echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo -e "${YELLOW}⚠️  Discovery files are stale${NC}"
-    echo -e "${YELLOW}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
-    echo
-    echo "Run 'just discover' to regenerate, then stage the updated files:"
-    echo "  just discover"
-    echo "  git add .claude/state/*.json"
-    echo
-    echo -e "${RED}❌ Commit blocked. Run 'just discover' to update discovery files.${NC}"
-    exit 1
+    echo -e "${YELLOW}🔄 Auto-regenerating discovery files...${NC}"
+    just discover
+    git add .claude/state/
+    echo -e "${GREEN}✓ Discovery auto-updated and staged${NC}"
   else
     echo -e "${GREEN}✓ Discovery files are fresh${NC}"
   fi
