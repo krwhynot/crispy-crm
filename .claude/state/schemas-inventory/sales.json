@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2025-12-27T01:53:50.113Z",
+  "generated_at": "2025-12-27T04:46:12.605Z",
   "item_count": 6,
   "items": [
     {
@@ -274,7 +274,7 @@
         },
         {
           "name": "role",
-          "zodType": "unknown",
+          "zodType": "ref:UserRoleEnum",
           "constraints": [],
           "optional": false,
           "nullable": false,
@@ -330,7 +330,7 @@
         },
         {
           "name": "role",
-          "zodType": "unknown",
+          "zodType": "ref:UserRoleEnum",
           "constraints": [],
           "optional": true,
           "nullable": false,
@@ -369,7 +369,7 @@
           "hasTransform": true,
           "hasDefault": false,
           "transformDetails": {
-            "functionName": "nullishCoalescing",
+            "functionName": "anonymous",
             "isSecurity": false
           }
         },
@@ -384,7 +384,7 @@
           "hasTransform": true,
           "hasDefault": false,
           "transformDetails": {
-            "functionName": "nullishCoalescing",
+            "functionName": "anonymous",
             "isSecurity": false
           }
         },
@@ -399,7 +399,7 @@
           "hasTransform": true,
           "hasDefault": false,
           "transformDetails": {
-            "functionName": "nullishCoalescing",
+            "functionName": "anonymous",
             "isSecurity": false
           }
         },
@@ -414,7 +414,7 @@
           "hasTransform": true,
           "hasDefault": false,
           "transformDetails": {
-            "functionName": "nullishCoalescing",
+            "functionName": "anonymous",
             "isSecurity": false
           }
         },
@@ -429,7 +429,7 @@
           "hasTransform": true,
           "hasDefault": false,
           "transformDetails": {
-            "functionName": "nullishCoalescing",
+            "functionName": "anonymous",
             "isSecurity": false
           }
         }
@@ -450,7 +450,7 @@
       "fields": [
         {
           "name": "role",
-          "zodType": "unknown",
+          "zodType": "ref:UserRoleEnum",
           "constraints": [],
           "optional": false,
           "nullable": false,

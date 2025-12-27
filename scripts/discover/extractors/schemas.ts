@@ -231,6 +231,89 @@ function hasTransformInNode(node: Node): boolean {
 }
 
 /**
+ * AST-based extraction of transform details from a Node.
+ * More reliable than regex for nested structures like z.union([...]).
+ * Returns the first transform found with its function name and security status.
+ */
+function extractTransformDetailsFromNode(node: Node): { functionName: string; isSecurity: boolean } | undefined {
+  // Helper to check if a CallExpression is a .transform() call
+  const isTransformCall = (callExpr: Node): boolean => {
+    if (callExpr.getKind() !== SyntaxKind.CallExpression) return false;
+    const expr = (callExpr as CallExpression).getExpression();
+    if (expr.getKind() === SyntaxKind.PropertyAccessExpression) {
+      const propAccess = expr.asKindOrThrow(SyntaxKind.PropertyAccessExpression);
+      return propAccess.getName() === 'transform';
+    }
+    return false;
+  };
+
+  // Collect all transform calls (node itself + descendants)
+  const transformCalls: CallExpression[] = [];
+
+  if (isTransformCall(node)) {
+    transformCalls.push(node as CallExpression);
+  }
+
+  const descendantCalls = node.getDescendantsOfKind(SyntaxKind.CallExpression);
+  for (const call of descendantCalls) {
+    if (isTransformCall(call)) {
+      transformCalls.push(call);
+    }
+  }
+
+  if (transformCalls.length === 0) return undefined;
+
+  // Extract details from the first transform found
+  const transformCall = transformCalls[0];
+  const args = transformCall.getArguments();
+  if (args.length === 0) {
+    return { functionName: 'unknown', isSecurity: false };
+  }
+
+  const firstArg = args[0];
+  let functionName: string;
+
+  // Case 1: Named function reference - transform(urlAutoPrefix)
+  if (firstArg.getKind() === SyntaxKind.Identifier) {
+    functionName = firstArg.getText();
+  }
+  // Case 2: Built-in constructor - transform(String), transform(Number), transform(Boolean)
+  else if (['String', 'Number', 'Boolean'].includes(firstArg.getText())) {
+    functionName = firstArg.getText();
+  }
+  // Case 3: Arrow function - transform((x) => x.toLowerCase())
+  else if (firstArg.getKind() === SyntaxKind.ArrowFunction) {
+    const arrowText = firstArg.getText();
+    // Try to extract method name if it's a simple chain like x.toLowerCase()
+    const methodMatch = arrowText.match(/\.\s*(\w+)\s*\(\s*\)/);
+    if (methodMatch) {
+      functionName = methodMatch[1];
+    } else {
+      // Check for ternary with function call: (val ? sanitizeHtml(val) : val)
+      const ternaryFuncMatch = arrowText.match(/\?\s*(\w+)\s*\(/);
+      if (ternaryFuncMatch) {
+        functionName = ternaryFuncMatch[1];
+      } else {
+        functionName = 'anonymous';
+      }
+    }
+  }
+  // Case 4: Function expression
+  else if (firstArg.getKind() === SyntaxKind.FunctionExpression) {
+    functionName = 'inline';
+  }
+  // Default
+  else {
+    functionName = 'unknown';
+  }
+
+  return {
+    functionName,
+    isSecurity: isSecurityFunction(functionName),
+  };
+}
+
+/**
  * AST-based extraction of pipe content from a Node.
  * Handles nested parentheses that break simple regex patterns.
  * Returns the full text of what's being piped into.
@@ -458,7 +541,14 @@ function extractFields(
 
       // Detect transforms - use multiple strategies for accuracy
       let fieldHasTransform = hasTransform(valueText);
-      let transformDetails = extractTransformDetails(valueText);
+
+      // Try AST-based extraction first (handles unions, nested transforms)
+      let transformDetails = extractTransformDetailsFromNode(initializer);
+
+      // Fallback to text-based extraction if AST didn't find details
+      if (!transformDetails && fieldHasTransform) {
+        transformDetails = extractTransformDetails(valueText);
+      }
 
       // Strategy 1: If zodType is a reference, check symbol table for inherited transforms
       if (zodType.startsWith("ref:") && symbolTable) {
@@ -505,10 +595,12 @@ function extractFields(
       let pipedValidation: string | undefined;
       if (hasPipe(valueText)) {
         fieldHasPipe = true;
-        // Extract what's piped: .transform(...).pipe(z.string().url())
-        const pipeMatch = valueText.match(/\.pipe\s*\(\s*(z\.[^)]+)\s*\)/);
-        if (pipeMatch) {
-          pipedValidation = pipeMatch[1];
+        // Use AST extraction for accurate content (handles nested parentheses)
+        pipedValidation = extractPipeContent(initializer);
+        // Fallback to regex if AST fails
+        if (!pipedValidation) {
+          const pipeMatch = valueText.match(/\.pipe\s*\(\s*(z\.[^)]+)\s*\)/);
+          pipedValidation = pipeMatch?.[1];
         }
       }
 
