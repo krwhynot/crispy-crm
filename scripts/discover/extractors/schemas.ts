@@ -3,6 +3,7 @@ import {
   VariableDeclaration,
   CallExpression,
   PropertyAccessExpression,
+  ObjectLiteralExpression,
   Node,
   SourceFile,
 } from "ts-morph";
@@ -87,32 +88,29 @@ function detectSchemaType(
   callExpr: CallExpression
 ): SchemaInfo["schemaType"] {
   const expression = callExpr.getExpression();
-  // Use print() instead of getText() to normalize whitespace in multi-line declarations
-  // getText() preserves source formatting (e.g., "z\n  .object"), print() normalizes it
-  const exprText = expression.print();
+  const exprText = expression.getText();
 
-  // Check for z.strictObject()
-  if (exprText === "z.strictObject") {
+  // Use regex to handle whitespace/newlines in multi-line declarations
+  // e.g., "z\n  .object" should match as "z.object"
+  // Pattern: z (optional whitespace including newlines) . (method name) (end)
+
+  if (/^z\s*\.\s*strictObject$/.test(exprText)) {
     return "strictObject";
   }
 
-  // Check for z.object()
-  if (exprText === "z.object") {
+  if (/^z\s*\.\s*object$/.test(exprText)) {
     return "object";
   }
 
-  // Check for z.enum()
-  if (exprText === "z.enum") {
+  if (/^z\s*\.\s*enum$/.test(exprText)) {
     return "enum";
   }
 
-  // Check for z.array()
-  if (exprText === "z.array") {
+  if (/^z\s*\.\s*array$/.test(exprText)) {
     return "array";
   }
 
-  // Check for z.union() or z.discriminatedUnion()
-  if (exprText === "z.union" || exprText === "z.discriminatedUnion") {
+  if (/^z\s*\.\s*(union|discriminatedUnion)$/.test(exprText)) {
     return "union";
   }
 
@@ -626,6 +624,120 @@ function extractFields(
 }
 
 /**
+ * Extract fields directly from an ObjectLiteralExpression.
+ * Used for multi-line schemas where findRootZodCall() returns null.
+ * This is the core field extraction logic, also used by extractFields().
+ */
+function extractFieldsFromObjectLiteral(
+  objectLiteral: ObjectLiteralExpression,
+  symbolTable?: Map<string, SchemaSymbol>
+): SchemaField[] {
+  const fields: SchemaField[] = [];
+
+  for (const property of objectLiteral.getProperties()) {
+    if (property.getKind() === SyntaxKind.PropertyAssignment) {
+      const propAssignment = property.asKindOrThrow(SyntaxKind.PropertyAssignment);
+      const name = propAssignment.getName();
+      const initializer = propAssignment.getInitializer();
+
+      if (!initializer) continue;
+
+      const valueText = initializer.getText();
+      const zodType = extractZodType(valueText, symbolTable);
+      const constraints = extractConstraints(initializer);
+
+      // Check for enum values if it's an enum type
+      let enumValues: string[] | undefined;
+      if (zodType === "enum") {
+        const enumMatch = valueText.match(/z\.enum\(\s*\[([\s\S]*?)\]\s*\)/);
+        if (enumMatch) {
+          enumValues = enumMatch[1]
+            .split(",")
+            .map((v) => v.trim().replace(/^["']|["']$/g, ""))
+            .filter((v) => v.length > 0);
+        }
+      }
+
+      // Detect transforms - use multiple strategies for accuracy
+      let fieldHasTransform = hasTransform(valueText);
+
+      // Try AST-based extraction first (handles unions, nested transforms)
+      let transformDetails = extractTransformDetailsFromNode(initializer);
+
+      // Fallback to text-based extraction if AST didn't find details
+      if (!transformDetails && fieldHasTransform) {
+        transformDetails = extractTransformDetails(valueText);
+      }
+
+      // Strategy 1: If zodType is a reference, check symbol table for inherited transforms
+      if (zodType.startsWith("ref:") && symbolTable) {
+        const refName = zodType.slice(4);
+        const symbolInfo = symbolTable.get(refName);
+        if (symbolInfo?.hasTransform) {
+          fieldHasTransform = true;
+          if (!transformDetails && symbolInfo.transformDetails) {
+            transformDetails = symbolInfo.transformDetails;
+          }
+        }
+      }
+
+      // Strategy 2: For union types, use AST-based detection to find nested transforms
+      if (zodType === "union" || valueText.includes("z.union(")) {
+        if (hasTransformInNode(initializer)) {
+          fieldHasTransform = true;
+          if (!transformDetails) {
+            transformDetails = extractTransformDetails(valueText);
+          }
+        }
+      }
+
+      // Strategy 3: Check for any identifier references in the value that might have transforms
+      if (!fieldHasTransform && symbolTable) {
+        const identifierMatch = valueText.match(/^(\w+)\./);
+        if (identifierMatch) {
+          const refName = identifierMatch[1];
+          const symbolInfo = symbolTable.get(refName);
+          if (symbolInfo?.hasTransform) {
+            fieldHasTransform = true;
+            if (!transformDetails && symbolInfo.transformDetails) {
+              transformDetails = symbolInfo.transformDetails;
+            }
+          }
+        }
+      }
+
+      // Detect pipe chains
+      let fieldHasPipe: boolean | undefined;
+      let pipedValidation: string | undefined;
+      if (hasPipe(valueText)) {
+        fieldHasPipe = true;
+        pipedValidation = extractPipeContent(initializer);
+        if (!pipedValidation) {
+          const pipeMatch = valueText.match(/\.pipe\s*\(\s*(z\.[^)]+)\s*\)/);
+          pipedValidation = pipeMatch?.[1];
+        }
+      }
+
+      fields.push({
+        name,
+        zodType,
+        constraints,
+        optional: hasOptional(valueText),
+        nullable: hasNullable(valueText),
+        hasTransform: fieldHasTransform,
+        hasDefault: hasDefault(valueText),
+        ...(fieldHasPipe && { hasPipe: fieldHasPipe }),
+        ...(pipedValidation && { pipedValidation }),
+        ...(enumValues && { enumValues }),
+        ...(transformDetails && { transformDetails }),
+      });
+    }
+  }
+
+  return fields;
+}
+
+/**
  * Check if a schema has .superRefine() in its chain
  */
 function hasSuperRefine(node: Node): boolean {
@@ -725,7 +837,7 @@ function extractSchemaFromDeclaration(
       enumValues = extractEnumValues(rootCall);
     }
   } else {
-    // Try to detect type from text patterns
+    // Try to detect type from text patterns (handles multi-line schemas like z\n.object({...}))
     if (initText.includes("z.strictObject(")) {
       schemaType = "strictObject";
     } else if (initText.includes("z.object(")) {
@@ -736,6 +848,15 @@ function extractSchemaFromDeclaration(
       schemaType = "array";
     } else if (initText.includes("z.union(")) {
       schemaType = "union";
+    }
+
+    // For object schemas detected via text pattern, extract fields from ObjectLiteral
+    if (schemaType === "strictObject" || schemaType === "object") {
+      const objLiteralNodes = initializer.getDescendantsOfKind(SyntaxKind.ObjectLiteralExpression);
+      if (objLiteralNodes.length > 0) {
+        // Use the first ObjectLiteral (the schema fields definition)
+        fields = extractFieldsFromObjectLiteral(objLiteralNodes[0], symbolTable);
+      }
     }
   }
 
