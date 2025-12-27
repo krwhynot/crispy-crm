@@ -1,0 +1,35 @@
+{
+  "chunk_name": "organizations",
+  "generated_at": "2025-12-27T07:39:31.002Z",
+  "item_count": 2,
+  "items": [
+    {
+      "name": "useDuplicateOrgCheck",
+      "file": "src/atomic-crm/organizations/useDuplicateOrgCheck.ts",
+      "line": 51,
+      "parameters": [],
+      "returnType": "UseDuplicateOrgCheckResult",
+      "dependencies": [
+        "useCallback",
+        "useDataProvider",
+        "useNotify",
+        "useState"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useOrganizationImport",
+      "file": "src/atomic-crm/organizations/useOrganizationImport.tsx",
+      "line": 55,
+      "parameters": [],
+      "returnType": "(batch: OrganizationImportSchema[], options?: ImportOptions) => Promise<ImportResult>",
+      "dependencies": [
+        "useCallback",
+        "useDataProvider",
+        "useGetIdentity",
+        "useMemo"
+      ],
+      "isReact19Action": false
+    }
+  ]
+}

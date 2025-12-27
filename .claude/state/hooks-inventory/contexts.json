@@ -1,0 +1,40 @@
+{
+  "chunk_name": "contexts",
+  "generated_at": "2025-12-27T07:39:30.998Z",
+  "item_count": 3,
+  "items": [
+    {
+      "name": "useAppBranding",
+      "file": "src/atomic-crm/contexts/AppBrandingContext.tsx",
+      "line": 63,
+      "parameters": [],
+      "returnType": "AppBranding",
+      "dependencies": [
+        "useContext"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useFormOptions",
+      "file": "src/atomic-crm/contexts/FormOptionsContext.tsx",
+      "line": 63,
+      "parameters": [],
+      "returnType": "FormOptions",
+      "dependencies": [
+        "useContext"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "usePipelineConfig",
+      "file": "src/atomic-crm/contexts/PipelineConfigContext.tsx",
+      "line": 79,
+      "parameters": [],
+      "returnType": "PipelineConfig",
+      "dependencies": [
+        "useContext"
+      ],
+      "isReact19Action": false
+    }
+  ]
+}

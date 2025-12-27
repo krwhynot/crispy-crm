@@ -1,0 +1,36 @@
+{
+  "chunk_name": "reports",
+  "generated_at": "2025-12-27T07:39:31.002Z",
+  "item_count": 2,
+  "items": [
+    {
+      "name": "useChartTheme",
+      "file": "src/atomic-crm/reports/hooks/useChartTheme.ts",
+      "line": 65,
+      "parameters": [],
+      "returnType": "ChartTheme",
+      "dependencies": [
+        "useEffect"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useReportData",
+      "file": "src/atomic-crm/reports/hooks/useReportData.ts",
+      "line": 52,
+      "parameters": [
+        "resource",
+        "options"
+      ],
+      "returnType": "UseReportDataResult<T>",
+      "dependencies": [
+        "useCallback",
+        "useDataProvider",
+        "useEffect",
+        "useMemo",
+        "useState"
+      ],
+      "isReact19Action": false
+    }
+  ]
+}

@@ -1,0 +1,257 @@
+{
+  "chunk_name": "shared",
+  "generated_at": "2025-12-27T07:39:31.004Z",
+  "item_count": 20,
+  "items": [
+    {
+      "name": "useSavedQueries",
+      "file": "src/hooks/saved-queries.tsx",
+      "line": 7,
+      "parameters": [
+        "resource"
+      ],
+      "returnType": "[SavedQuery[], (value: SavedQuery[] | ((value: SavedQuery[]) => void), defaultValue?: SavedQuery[]) => void]",
+      "dependencies": [],
+      "isReact19Action": false
+    },
+    {
+      "name": "useSimpleFormIterator",
+      "file": "src/hooks/simple-form-iterator-context.tsx",
+      "line": 28,
+      "parameters": [],
+      "returnType": "SimpleFormIteratorContextValue",
+      "dependencies": [
+        "useContext"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useSimpleFormIteratorItem",
+      "file": "src/hooks/simple-form-iterator-context.tsx",
+      "line": 60,
+      "parameters": [],
+      "returnType": "SimpleFormIteratorItemContextValue",
+      "dependencies": [
+        "useContext"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useIsMobile",
+      "file": "src/hooks/use-mobile.ts",
+      "line": 5,
+      "parameters": [],
+      "returnType": "boolean",
+      "dependencies": [
+        "useEffect"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useBreakpoint",
+      "file": "src/hooks/useBreakpoint.ts",
+      "line": 30,
+      "parameters": [],
+      "returnType": "Breakpoint",
+      "dependencies": [
+        "useEffect"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useIsDesktop",
+      "file": "src/hooks/useBreakpoint.ts",
+      "line": 60,
+      "parameters": [],
+      "returnType": "boolean",
+      "dependencies": [
+        "useBreakpoint"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useIsLaptopOrLarger",
+      "file": "src/hooks/useBreakpoint.ts",
+      "line": 64,
+      "parameters": [],
+      "returnType": "boolean",
+      "dependencies": [
+        "useBreakpoint"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useIsMobileOrTablet",
+      "file": "src/hooks/useBreakpoint.ts",
+      "line": 69,
+      "parameters": [],
+      "returnType": "boolean",
+      "dependencies": [
+        "useBreakpoint"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useBulkExport",
+      "file": "src/hooks/useBulkExport.tsx",
+      "line": 16,
+      "parameters": [
+        "props"
+      ],
+      "returnType": "{ bulkExport: () => void; }",
+      "dependencies": [
+        "useCallback",
+        "useDataProvider",
+        "useListContext",
+        "useMemo",
+        "useNotify",
+        "useResourceContext"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useCityStateMapping",
+      "file": "src/hooks/useCityStateMapping.ts",
+      "line": 11,
+      "parameters": [
+        "{\n  cityField = \"city\",\n  stateField = \"state\",\n  onlyIfEmpty = true,\n}"
+      ],
+      "returnType": "void",
+      "dependencies": [
+        "useEffect",
+        "useFormContext",
+        "useWatch"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useDialogError",
+      "file": "src/hooks/useDialogError.ts",
+      "line": 8,
+      "parameters": [],
+      "returnType": "{ error: DialogError; handleError: (err: unknown) => void; clearError: () => void; }",
+      "dependencies": [
+        "useCallback"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useInAppUnsavedChanges",
+      "file": "src/hooks/useInAppUnsavedChanges.ts",
+      "line": 10,
+      "parameters": [],
+      "returnType": "{ showWarning: boolean; isDirty: boolean; confirmDiscard: () => void; cancelDiscard: () => void; handlePotentialDiscard: (action: () => void) => void; }",
+      "dependencies": [
+        "useCallback",
+        "useFormState",
+        "useState"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useKeyboardShortcuts",
+      "file": "src/hooks/useKeyboardShortcuts.ts",
+      "line": 87,
+      "parameters": [
+        "handlers"
+      ],
+      "returnType": "{ isMac: boolean; modifierKey: string; }",
+      "dependencies": [
+        "useCallback",
+        "useEffect"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useListKeyboardNavigation",
+      "file": "src/hooks/useListKeyboardNavigation.ts",
+      "line": 90,
+      "parameters": [
+        "{\n  onSelect,\n  enabled = true,\n}"
+      ],
+      "returnType": "UseListKeyboardNavigationReturn",
+      "dependencies": [
+        "useCallback",
+        "useCreatePath",
+        "useEffect",
+        "useListContext",
+        "useNavigate",
+        "useResourceContext"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useSlideOverState",
+      "file": "src/hooks/useSlideOverState.ts",
+      "line": 46,
+      "parameters": [],
+      "returnType": "UseSlideOverStateReturn",
+      "dependencies": [
+        "useCallback",
+        "useEffect",
+        "useState"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useSupportCreateSuggestion",
+      "file": "src/hooks/useSupportCreateSuggestion.tsx",
+      "line": 30,
+      "parameters": [
+        "options"
+      ],
+      "returnType": "UseSupportCreateValue<T>",
+      "dependencies": [
+        "useRef",
+        "useState",
+        "useTranslate"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useCreateSuggestionContext",
+      "file": "src/hooks/useSupportCreateSuggestion.tsx",
+      "line": 166,
+      "parameters": [],
+      "returnType": "CreateSuggestionContextValue<unknown>",
+      "dependencies": [
+        "useContext"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useTeamMembers",
+      "file": "src/hooks/useTeamMembers.ts",
+      "line": 17,
+      "parameters": [],
+      "returnType": "UseTeamMembersReturn",
+      "dependencies": [
+        "useGetList"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useUnsavedChangesWarning",
+      "file": "src/hooks/useUnsavedChangesWarning.ts",
+      "line": 11,
+      "parameters": [
+        "enabled"
+      ],
+      "returnType": "{ isDirty: boolean; }",
+      "dependencies": [
+        "useEffect",
+        "useFormState"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useUserRole",
+      "file": "src/hooks/useUserRole.ts",
+      "line": 24,
+      "parameters": [],
+      "returnType": "{ role: any; isAdmin: boolean; isManager: boolean; isRep: boolean; isManagerOrAdmin: boolean; isLoading: boolean; }",
+      "dependencies": [],
+      "isReact19Action": false
+    }
+  ]
+}

@@ -7,8 +7,28 @@ import {
   CallExpression,
 } from "ts-morph";
 import { project } from "../utils/project.js";
-import { createEnvelope, writeDiscoveryFile } from "../utils/output.js";
+import { writeChunkedDiscovery } from "../utils/output.js";
 import * as path from "path";
+
+/**
+ * Get chunk name for a hook based on its file path.
+ * Groups hooks by feature directory for token-efficient loading.
+ */
+function getChunkName(filePath: string): string {
+  const relativePath = path.relative(process.cwd(), filePath);
+
+  // Feature-specific hooks: src/atomic-crm/<feature>/... → "feature"
+  const featureMatch = relativePath.match(/^src\/atomic-crm\/([^/]+)\//);
+  if (featureMatch) return featureMatch[1];
+
+  // Shared hooks: src/hooks/... → "shared"
+  if (relativePath.startsWith("src/hooks/")) return "shared";
+
+  // Component hooks: src/components/... → "components"
+  if (relativePath.startsWith("src/components/")) return "components";
+
+  return "_root";
+}
 
 interface HookInfo {
   name: string;
@@ -118,13 +138,22 @@ function extractFromVariableDeclaration(
   };
 }
 
-export async function extractHooks(): Promise<void> {
+export async function extractHooks(onlyChunks?: Set<string>): Promise<void> {
   console.log("🪝 Extracting custom hooks...");
 
   const globs = ["src/**/use*.ts", "src/**/use*.tsx", "src/**/*.ts", "src/**/*.tsx"];
 
   // Use return value directly - getSourceFiles() returns stale cached files
-  const sourceFiles = project.addSourceFilesAtPaths(globs);
+  const allSourceFiles = project.addSourceFilesAtPaths(globs);
+
+  // Filter to only process files from stale chunks (incremental mode)
+  const sourceFiles = onlyChunks
+    ? allSourceFiles.filter(sf => {
+        const chunkName = getChunkName(sf.getFilePath());
+        return onlyChunks.has(chunkName);
+      })
+    : allSourceFiles;
+
   const hooks: HookInfo[] = [];
   const processedFiles = new Set<string>();
 
@@ -163,7 +192,26 @@ export async function extractHooks(): Promise<void> {
   const react19ActionCount = hooks.filter((h) => h.isReact19Action).length;
   const standardHookCount = hooks.length - react19ActionCount;
 
-  const envelope = createEnvelope(
+  // Group hooks by chunk for token-efficient loading
+  const hooksByChunk = new Map<string, HookInfo[]>();
+  const fileToChunkMapping = new Map<string, string>();
+
+  for (const hook of hooks) {
+    const chunkName = getChunkName(hook.file);
+
+    if (!hooksByChunk.has(chunkName)) {
+      hooksByChunk.set(chunkName, []);
+    }
+    hooksByChunk.get(chunkName)!.push(hook);
+
+    // Map absolute path for fileToChunkMapping
+    const absolutePath = path.resolve(process.cwd(), hook.file);
+    fileToChunkMapping.set(absolutePath, chunkName);
+  }
+
+  // Write chunked output
+  writeChunkedDiscovery(
+    "hooks-inventory",
     "scripts/discover/extractors/hooks.ts",
     globs,
     Array.from(processedFiles),
@@ -172,12 +220,11 @@ export async function extractHooks(): Promise<void> {
       react19_actions: react19ActionCount,
       standard_hooks: standardHookCount,
     },
-    { hooks }
+    hooksByChunk,
+    fileToChunkMapping
   );
 
-  writeDiscoveryFile("hooks-inventory.json", envelope);
-
-  console.log(`  ✓ Found ${hooks.length} custom hooks`);
+  console.log(`  ✓ Found ${hooks.length} custom hooks in ${hooksByChunk.size} chunks`);
   console.log(`    - ${standardHookCount} standard hooks`);
   console.log(`    - ${react19ActionCount} React 19 action hooks`);
 }
