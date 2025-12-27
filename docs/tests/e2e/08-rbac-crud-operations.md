@@ -19,11 +19,35 @@ Manual E2E testing checklist for Role-Based Access Control (RBAC) verification a
 | Rep | rep@mfbroker.com | password123 |
 
 ### Seed Data Requirements
-Run `just seed-e2e` to ensure test data exists:
+Run `just db-reset` to ensure test data exists:
 - Multiple contacts across different account managers
 - Multiple opportunities with various assignments
 - Tasks assigned to different users
 - Organizations of various types
+
+### RBAC Test Opportunities (Critical for B7/B8)
+The seed data includes 3 explicit RBAC test opportunities:
+
+| Opportunity Name | Owner Email | Purpose |
+|------------------|-------------|---------|
+| RBAC TEST - Rep Owned Deal | rep@mfbroker.com | Test B7: Rep edits own |
+| RBAC TEST - Admin Owned Deal | admin@test.com | Test B8: Rep blocked from editing |
+| RBAC TEST - Manager Owned Deal | manager@mfbroker.com | Test B5/B6: Manager edit permissions |
+
+**Verification Query** (run in Supabase SQL Editor):
+```sql
+SELECT o.name, s.email as owner, o.stage
+FROM opportunities o
+JOIN sales s ON s.id = o.opportunity_owner_id
+WHERE o.name LIKE 'RBAC TEST%'
+AND o.deleted_at IS NULL;
+```
+Expected: 3 rows with owners matching the table above.
+
+**UI Protection Update (Dec 2024):**
+- EditButton is now **hidden** for opportunities the user doesn't own
+- Reps will only see EditButton on opportunities where they are `opportunity_owner_id` or `account_manager_id`
+- Managers/Admins see EditButton on all opportunities
 
 ### Console Error Patterns to Monitor
 Throughout all tests, watch for these error patterns:

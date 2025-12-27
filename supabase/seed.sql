@@ -4924,6 +4924,113 @@ INSERT INTO organization_distributors (organization_id, distributor_id, is_prima
   (1663, 1922, true);
 
 -- ============================================================================
+-- RBAC TEST OPPORTUNITIES (for role-based access control testing)
+-- ============================================================================
+-- These opportunities have explicit ownership for RBAC testing verification.
+-- Test users: admin@test.com, manager@mfbroker.com, rep@mfbroker.com
+--
+-- Expected behavior:
+--   - Admin: Can edit all 3 opportunities
+--   - Manager: Can edit all 3 opportunities
+--   - Rep: Can ONLY edit "Rep Owned Deal" (their own)
+-- ============================================================================
+
+DO $$
+DECLARE
+  v_rep_sales_id BIGINT;
+  v_admin_sales_id BIGINT;
+  v_manager_sales_id BIGINT;
+  v_principal_org_id BIGINT;
+  v_customer_org_id BIGINT;
+BEGIN
+  -- Get sales IDs for test users
+  SELECT id INTO v_rep_sales_id FROM sales WHERE email = 'rep@mfbroker.com' LIMIT 1;
+  SELECT id INTO v_admin_sales_id FROM sales WHERE email = 'admin@test.com' LIMIT 1;
+  SELECT id INTO v_manager_sales_id FROM sales WHERE email = 'manager@mfbroker.com' LIMIT 1;
+
+  -- Validate all test users exist
+  IF v_rep_sales_id IS NULL THEN
+    RAISE NOTICE 'RBAC Test: rep@mfbroker.com not found, skipping test opportunities';
+    RETURN;
+  END IF;
+  IF v_admin_sales_id IS NULL THEN
+    RAISE NOTICE 'RBAC Test: admin@test.com not found, skipping test opportunities';
+    RETURN;
+  END IF;
+  IF v_manager_sales_id IS NULL THEN
+    RAISE NOTICE 'RBAC Test: manager@mfbroker.com not found, skipping test opportunities';
+    RETURN;
+  END IF;
+
+  -- Get any principal and customer org for FK references
+  SELECT id INTO v_principal_org_id FROM organizations
+    WHERE organization_type = 'principal' AND deleted_at IS NULL LIMIT 1;
+  SELECT id INTO v_customer_org_id FROM organizations
+    WHERE organization_type = 'customer' AND deleted_at IS NULL LIMIT 1;
+
+  -- Fallback: use any organization if no principal/customer found
+  IF v_principal_org_id IS NULL THEN
+    SELECT id INTO v_principal_org_id FROM organizations WHERE deleted_at IS NULL LIMIT 1;
+  END IF;
+  IF v_customer_org_id IS NULL THEN
+    SELECT id INTO v_customer_org_id FROM organizations WHERE deleted_at IS NULL LIMIT 1 OFFSET 1;
+  END IF;
+
+  -- If still no orgs, skip
+  IF v_principal_org_id IS NULL OR v_customer_org_id IS NULL THEN
+    RAISE NOTICE 'RBAC Test: No organizations found, skipping test opportunities';
+    RETURN;
+  END IF;
+
+  -- RBAC Test Opportunity 1: Rep-owned (for edit-own testing)
+  INSERT INTO opportunities (
+    name, description, stage,
+    principal_organization_id, customer_organization_id,
+    opportunity_owner_id, account_manager_id,
+    estimated_close_date, created_at, updated_at
+  ) VALUES (
+    'RBAC TEST - Rep Owned Deal',
+    'This opportunity is owned by rep@mfbroker.com for RBAC testing. Rep should be able to edit this.',
+    'new_lead',
+    v_principal_org_id, v_customer_org_id,
+    v_rep_sales_id, v_rep_sales_id,
+    CURRENT_DATE + INTERVAL '30 days', NOW(), NOW()
+  );
+
+  -- RBAC Test Opportunity 2: Admin-owned (for edit-other blocking testing)
+  INSERT INTO opportunities (
+    name, description, stage,
+    principal_organization_id, customer_organization_id,
+    opportunity_owner_id, account_manager_id,
+    estimated_close_date, created_at, updated_at
+  ) VALUES (
+    'RBAC TEST - Admin Owned Deal',
+    'This opportunity is owned by admin@test.com. Rep should NOT be able to edit this.',
+    'initial_outreach',
+    v_principal_org_id, v_customer_org_id,
+    v_admin_sales_id, v_admin_sales_id,
+    CURRENT_DATE + INTERVAL '45 days', NOW(), NOW()
+  );
+
+  -- RBAC Test Opportunity 3: Manager-owned (for manager permissions testing)
+  INSERT INTO opportunities (
+    name, description, stage,
+    principal_organization_id, customer_organization_id,
+    opportunity_owner_id, account_manager_id,
+    estimated_close_date, created_at, updated_at
+  ) VALUES (
+    'RBAC TEST - Manager Owned Deal',
+    'This opportunity is owned by manager@mfbroker.com. Manager should be able to edit, Rep should NOT.',
+    'sample_visit_offered',
+    v_principal_org_id, v_customer_org_id,
+    v_manager_sales_id, v_manager_sales_id,
+    CURRENT_DATE + INTERVAL '60 days', NOW(), NOW()
+  );
+
+  RAISE NOTICE 'RBAC Test: Created 3 test opportunities for rep/admin/manager';
+END $$;
+
+-- ============================================================================
 -- RESET SEQUENCES (critical for new record creation)
 -- ============================================================================
 
