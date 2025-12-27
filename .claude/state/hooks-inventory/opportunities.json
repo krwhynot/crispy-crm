@@ -1,0 +1,170 @@
+{
+  "chunk_name": "opportunities",
+  "generated_at": "2025-12-27T07:39:31.002Z",
+  "item_count": 12,
+  "items": [
+    {
+      "name": "useAutoGenerateName",
+      "file": "src/atomic-crm/opportunities/hooks/useAutoGenerateName.ts",
+      "line": 16,
+      "parameters": [
+        "mode"
+      ],
+      "returnType": "{ regenerate: () => void; isLoading: boolean; canGenerate: boolean; }",
+      "dependencies": [
+        "useCallback",
+        "useEffect",
+        "useFormContext",
+        "useGetOne",
+        "useWatch"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useBulkActionsState",
+      "file": "src/atomic-crm/opportunities/hooks/useBulkActionsState.ts",
+      "line": 34,
+      "parameters": [
+        "{\n  selectedIds,\n  opportunities,\n  onUnselectItems,\n  resource = \"opportunities\",\n}"
+      ],
+      "returnType": "UseBulkActionsStateResult",
+      "dependencies": [
+        "useCallback",
+        "useDataProvider",
+        "useNotify",
+        "useRefresh",
+        "useState"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useColumnPreferences",
+      "file": "src/atomic-crm/opportunities/hooks/useColumnPreferences.ts",
+      "line": 23,
+      "parameters": [],
+      "returnType": "{ collapsedStages: OpportunityStageValue[]; visibleStages: OpportunityStageValue[]; toggleCollapse: (stage: OpportunityStageValue) => void; toggleVisibility: (stage: OpportunityStageValue) => void; collapseAll: () => void; expandAll: () => void; resetPreferences: () => void; }",
+      "dependencies": [
+        "useEffect"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useContactOrgMismatch",
+      "file": "src/atomic-crm/opportunities/hooks/useContactOrgMismatch.ts",
+      "line": 40,
+      "parameters": [
+        "contactIds",
+        "customerOrganizationId"
+      ],
+      "returnType": "UseContactOrgMismatchResult",
+      "dependencies": [
+        "useMemo"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useCustomerDistributors",
+      "file": "src/atomic-crm/opportunities/hooks/useCustomerDistributors.ts",
+      "line": 57,
+      "parameters": [
+        "customerId"
+      ],
+      "returnType": "UseCustomerDistributorsResult",
+      "dependencies": [
+        "useMemo"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useDistributorAuthorization",
+      "file": "src/atomic-crm/opportunities/hooks/useDistributorAuthorization.ts",
+      "line": 64,
+      "parameters": [
+        "principalId",
+        "distributorId"
+      ],
+      "returnType": "UseDistributorAuthorizationResult",
+      "dependencies": [
+        "useMemo"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useExportOpportunities",
+      "file": "src/atomic-crm/opportunities/hooks/useExportOpportunities.ts",
+      "line": 8,
+      "parameters": [],
+      "returnType": "{ exportToCSV: (opportunities: Opportunity[], filename?: string) => void; }",
+      "dependencies": [
+        "useCallback",
+        "useNotify"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useFilteredProducts",
+      "file": "src/atomic-crm/opportunities/hooks/useFilteredProducts.ts",
+      "line": 23,
+      "parameters": [
+        "principalId"
+      ],
+      "returnType": "{ products: Product[]; isLoading: boolean; error: Error; isReady: boolean; isEmpty: boolean; }",
+      "dependencies": [],
+      "isReact19Action": false
+    },
+    {
+      "name": "useOpportunityContacts",
+      "file": "src/atomic-crm/opportunities/hooks/useOpportunityContacts.ts",
+      "line": 16,
+      "parameters": [
+        "contactIds"
+      ],
+      "returnType": "{ contacts: Contact[]; primaryContact: any; isLoading: boolean; error: Error; }",
+      "dependencies": [
+        "useMemo"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useQuickAdd",
+      "file": "src/atomic-crm/opportunities/hooks/useQuickAdd.ts",
+      "line": 21,
+      "parameters": [],
+      "returnType": "import(\"/home/krwhynot/projects/crispy-crm/node_modules/@tanstack/react-query/build/legacy/types\").UseMutationResult<any, Error, { first_name: string; last_name: string; org_name: string; city: string; state: string; campaign: string; principal_id: number; product_ids: number[]; phone?: string; email?: string; quick_note?: string; }, unknown>",
+      "dependencies": [
+        "useDataProvider",
+        "useMutation",
+        "useNotify"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useSimilarOpportunityCheck",
+      "file": "src/atomic-crm/opportunities/hooks/useSimilarOpportunityCheck.ts",
+      "line": 108,
+      "parameters": [
+        "options"
+      ],
+      "returnType": "UseSimilarOpportunityCheckResult",
+      "dependencies": [
+        "useCallback",
+        "useMemo",
+        "useState"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useStageMetrics",
+      "file": "src/atomic-crm/opportunities/hooks/useStageMetrics.ts",
+      "line": 48,
+      "parameters": [
+        "opportunities"
+      ],
+      "returnType": "StageMetrics",
+      "dependencies": [
+        "useMemo"
+      ],
+      "isReact19Action": false
+    }
+  ]
+}

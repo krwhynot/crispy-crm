@@ -1,0 +1,18 @@
+{
+  "chunk_name": "root",
+  "generated_at": "2025-12-27T07:39:31.003Z",
+  "item_count": 1,
+  "items": [
+    {
+      "name": "useConfigurationContext",
+      "file": "src/atomic-crm/root/ConfigurationContext.tsx",
+      "line": 170,
+      "parameters": [],
+      "returnType": "ConfigurationContextValue",
+      "dependencies": [
+        "useContext"
+      ],
+      "isReact19Action": false
+    }
+  ]
+}

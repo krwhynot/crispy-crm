@@ -36,8 +36,8 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
   hooks: {
     name: "hooks",
     label: "Hooks",
-    outputPath: "hooks-inventory.json",  // Single file output
-    isChunked: false,
+    outputPath: "hooks-inventory",  // Chunked directory output
+    isChunked: true,
     extractFn: extractHooks,
     getSourceFiles: () => {
       const globs = ["src/**/use*.ts", "src/**/use*.tsx", "src/**/*.ts", "src/**/*.tsx"];
@@ -191,6 +191,16 @@ function getChunkNameForFile(extractor: ExtractorConfig, filePath: string): stri
       if (relativePath.startsWith("src/hooks/")) {
         return "hooks";
       }
+      return "_root";
+
+    case "hooks":
+      // Pattern: src/atomic-crm/<feature>/... → "feature"
+      // Pattern: src/hooks/... → "shared"
+      // Pattern: src/components/... → "components"
+      const hooksMatch = relativePath.match(/^src\/atomic-crm\/([^/]+)\//);
+      if (hooksMatch) return hooksMatch[1];
+      if (relativePath.startsWith("src/hooks/")) return "shared";
+      if (relativePath.startsWith("src/components/")) return "components";
       return "_root";
 
     default:

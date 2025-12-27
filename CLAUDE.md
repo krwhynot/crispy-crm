@@ -16,7 +16,7 @@ Guidance for Claude Code working with Crispy CRM (Atomic CRM) - a React 19 + Typ
 | File | Contents | Use When |
 |------|----------|----------|
 | `.claude/state/component-inventory/` | 484 React components (26 chunks) - includes childComponents, contextDependencies, componentRole | "Which components exist?", "What uses X hook?", "Component hierarchy?" |
-| `.claude/state/hooks-inventory.json` | 77 custom hooks with dependencies | "What hooks are available?", "What does useX do?" |
+| `.claude/state/hooks-inventory/` | 77 custom hooks (15 chunks) - grouped by feature | "What hooks are available?", "What does useX do?" |
 | `.claude/state/schemas-inventory/` | 82 Zod schemas (~18 chunks) - includes transformDetails with function names | "What validation exists?", "Schema structure?", "Security transforms?" |
 | `.claude/state/types-inventory/` | 101 TypeScript types (~10 chunks) | "What types exist?", "Type definitions?" |
 | `.claude/state/forms-inventory.json` | 39 form components - includes componentChain, inputComponentsDeep | "What forms exist?", "Form hierarchy?", "Which inputs used?" |

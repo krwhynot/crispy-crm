@@ -1,0 +1,59 @@
+{
+  "chunk_name": "hooks",
+  "generated_at": "2025-12-27T07:39:31.001Z",
+  "item_count": 4,
+  "items": [
+    {
+      "name": "useAppBarHeight",
+      "file": "src/atomic-crm/hooks/useAppBarHeight.ts",
+      "line": 6,
+      "parameters": [],
+      "returnType": "number",
+      "dependencies": [
+        "useIsMobile"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useFilterCleanup",
+      "file": "src/atomic-crm/hooks/useFilterCleanup.ts",
+      "line": 60,
+      "parameters": [
+        "resource"
+      ],
+      "returnType": "void",
+      "dependencies": [
+        "useEffect",
+        "useStore"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useRecentSelections",
+      "file": "src/atomic-crm/hooks/useRecentSelections.ts",
+      "line": 24,
+      "parameters": [
+        "fieldType"
+      ],
+      "returnType": "UseRecentSelectionsReturn",
+      "dependencies": [
+        "useCallback"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useSmartDefaults",
+      "file": "src/atomic-crm/hooks/useSmartDefaults.ts",
+      "line": 15,
+      "parameters": [
+        "options"
+      ],
+      "returnType": "{ defaults: SmartDefaults; isLoading: boolean; }",
+      "dependencies": [
+        "useEffect",
+        "useRef"
+      ],
+      "isReact19Action": false
+    }
+  ]
+}

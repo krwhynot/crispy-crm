@@ -1,0 +1,61 @@
+{
+  "chunk_name": "contacts",
+  "generated_at": "2025-12-27T07:39:30.997Z",
+  "item_count": 4,
+  "items": [
+    {
+      "name": "useColumnMapping",
+      "file": "src/atomic-crm/contacts/useColumnMapping.ts",
+      "line": 73,
+      "parameters": [],
+      "returnType": "UseColumnMappingReturn",
+      "dependencies": [
+        "useCallback",
+        "useEffect"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useContactImport",
+      "file": "src/atomic-crm/contacts/useContactImport.tsx",
+      "line": 31,
+      "parameters": [],
+      "returnType": "(batch: ContactImportSchema[], options?: ImportOptions) => Promise<ImportResult>",
+      "dependencies": [
+        "useCallback",
+        "useDataProvider",
+        "useGetIdentity",
+        "useMemo"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useImportWizard",
+      "file": "src/atomic-crm/contacts/useImportWizard.ts",
+      "line": 506,
+      "parameters": [],
+      "returnType": "{ state: WizardState; actions: { startParsing: () => void; startImport: (totalContacts: number) => void; cancel: () => void; reset: () => void; selectFile: (file: File, validationErrors?: CsvValidationError[], validationWarnings?: string[]) => void; clearFile: () => void; parsingComplete: (previewData: PreviewData) => void; parsingFailed: (error: Error) => void; updatePreview: (previewData: PreviewData) => void; updateDataQualityDecisions: (decisions: { importOrganizationsWithoutContacts: boolean; importContactsWithoutContactInfo: boolean; }) => void; updateProgress: (count: number) => void; accumulateResult: (payload: { batchProcessed: number; batchSuccess: number; batchSkipped: number; batchFailed: number; batchErrors: Array<{ row: number; data: unknown; errors: Array<{ field: string; message: string; }>; }>; batchSize: number; }) => void; importComplete: () => void; importFailed: (error: Error) => void; }; flags: { showPreview: boolean; showResult: boolean; isImporting: boolean; isParsing: boolean; hasError: boolean; hasFile: boolean; isTerminal: boolean; isProcessing: boolean; }; dispatch: import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").ActionDispatch<[action: WizardAction]>; abortSignal: AbortSignal; isAborted: () => boolean; getAbortSignal: () => AbortSignal; }",
+      "dependencies": [
+        "useCallback",
+        "useEffect",
+        "useMemo",
+        "useReducer"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "usePapaParse",
+      "file": "src/atomic-crm/contacts/usePapaParse.tsx",
+      "line": 42,
+      "parameters": [
+        "{\n  batchSize = 10,\n  processBatch,\n  onPreview,\n  previewRowCount,\n}"
+      ],
+      "returnType": "{ importer: Import; parseCsv: (file: File) => void; reset: () => void; }",
+      "dependencies": [
+        "useCallback",
+        "useMemo"
+      ],
+      "isReact19Action": false
+    }
+  ]
+}

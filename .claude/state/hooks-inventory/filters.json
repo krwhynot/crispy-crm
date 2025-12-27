@@ -1,0 +1,118 @@
+{
+  "chunk_name": "filters",
+  "generated_at": "2025-12-27T07:39:31.001Z",
+  "item_count": 8,
+  "items": [
+    {
+      "name": "useResourceNamesBase",
+      "file": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts",
+      "line": 40,
+      "parameters": [
+        "resourceName",
+        "ids",
+        "getDisplayName",
+        "fallbackPrefix"
+      ],
+      "returnType": "ResourceNamesResult",
+      "dependencies": [
+        "useCallback",
+        "useDataProvider",
+        "useEffect",
+        "useMemo",
+        "useState"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useCategoryNames",
+      "file": "src/atomic-crm/filters/useCategoryNames.ts",
+      "line": 31,
+      "parameters": [
+        "categoryIds"
+      ],
+      "returnType": "{ categoryMap: Record<string, string>; getCategoryName: (id: string) => string; loading: boolean; }",
+      "dependencies": [],
+      "isReact19Action": false
+    },
+    {
+      "name": "useFilterChipBar",
+      "file": "src/atomic-crm/filters/useFilterChipBar.ts",
+      "line": 76,
+      "parameters": [
+        "filterConfig",
+        "context"
+      ],
+      "returnType": "UseFilterChipBarReturn",
+      "dependencies": [
+        "useCallback",
+        "useCategoryNames",
+        "useListContext",
+        "useMemo",
+        "useOrganizationNames",
+        "useSalesNames",
+        "useSegmentNames",
+        "useTagNames"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useFilterManagement",
+      "file": "src/atomic-crm/filters/useFilterManagement.ts",
+      "line": 46,
+      "parameters": [],
+      "returnType": "{ filterValues: any; addFilterValue: (key: string, value: PrimitiveFilterValue) => void; removeFilterValue: (key: string, valueToRemove: PrimitiveFilterValue) => void; toggleFilterValue: (key: string, value: PrimitiveFilterValue) => void; clearFilter: (key: string) => void; clearAllFilters: () => void; isFilterActive: (key: string) => boolean; activeFilterCount: number; }",
+      "dependencies": [
+        "useListContext",
+        "useMemo"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useOrganizationNames",
+      "file": "src/atomic-crm/filters/useOrganizationNames.ts",
+      "line": 27,
+      "parameters": [
+        "organizationIds"
+      ],
+      "returnType": "{ organizationMap: Record<string, string>; getOrganizationName: (id: string) => string; loading: boolean; }",
+      "dependencies": [],
+      "isReact19Action": false
+    },
+    {
+      "name": "useSalesNames",
+      "file": "src/atomic-crm/filters/useSalesNames.ts",
+      "line": 27,
+      "parameters": [
+        "salesIds"
+      ],
+      "returnType": "{ salesMap: Record<string, string>; getSalesName: (id: string) => string; loading: boolean; }",
+      "dependencies": [],
+      "isReact19Action": false
+    },
+    {
+      "name": "useSegmentNames",
+      "file": "src/atomic-crm/filters/useSegmentNames.ts",
+      "line": 39,
+      "parameters": [
+        "segmentIds"
+      ],
+      "returnType": "{ segmentMap: { [x: string]: string; }; getSegmentName: (id: string) => string; loading: boolean; }",
+      "dependencies": [
+        "useCallback",
+        "useMemo"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useTagNames",
+      "file": "src/atomic-crm/filters/useTagNames.ts",
+      "line": 31,
+      "parameters": [
+        "tagIds"
+      ],
+      "returnType": "{ tagMap: Record<string, string>; getTagName: (id: string) => string; loading: boolean; }",
+      "dependencies": [],
+      "isReact19Action": false
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "chunk_name": "components",
+  "generated_at": "2025-12-27T07:39:31.004Z",
+  "item_count": 4,
+  "items": [
+    {
+      "name": "useFormProgress",
+      "file": "src/components/admin/form/FormProgressProvider.tsx",
+      "line": 78,
+      "parameters": [],
+      "returnType": "FormProgressContextValue",
+      "dependencies": [
+        "useContext"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useWizard",
+      "file": "src/components/admin/form/FormWizard.tsx",
+      "line": 133,
+      "parameters": [],
+      "returnType": "WizardContextValue",
+      "dependencies": [
+        "useContext"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useFormShortcuts",
+      "file": "src/components/admin/form/useFormShortcuts.ts",
+      "line": 13,
+      "parameters": [
+        "{\n  onSave,\n  onSaveAndNew,\n  onCancel,\n}"
+      ],
+      "returnType": "UseFormShortcutsReturn",
+      "dependencies": [
+        "useCallback"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useSidebar",
+      "file": "src/components/ui/sidebar.utils.ts",
+      "line": 20,
+      "parameters": [],
+      "returnType": "SidebarContextProps",
+      "dependencies": [
+        "useContext"
+      ],
+      "isReact19Action": false
+    }
+  ]
+}

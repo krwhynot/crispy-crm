@@ -1,0 +1,30 @@
+{
+  "chunk_name": "tutorial",
+  "generated_at": "2025-12-27T07:39:31.003Z",
+  "item_count": 2,
+  "items": [
+    {
+      "name": "useTutorial",
+      "file": "src/atomic-crm/tutorial/TutorialProvider.tsx",
+      "line": 275,
+      "parameters": [],
+      "returnType": "TutorialContextType",
+      "dependencies": [
+        "useContext"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useTutorialProgress",
+      "file": "src/atomic-crm/tutorial/useTutorialProgress.ts",
+      "line": 57,
+      "parameters": [],
+      "returnType": "{ progress: TutorialProgress; setCurrentChapter: (chapter: TutorialChapter | null) => void; setCurrentStep: (stepIndex: number) => void; markChapterComplete: (chapter: TutorialChapter) => void; resetProgress: () => void; hasVisitedPage: (chapter: TutorialChapter) => boolean; markPageVisited: (chapter: TutorialChapter) => void; }",
+      "dependencies": [
+        "useCallback",
+        "useEffect"
+      ],
+      "isReact19Action": false
+    }
+  ]
+}

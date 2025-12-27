@@ -1,0 +1,176 @@
+{
+  "chunk_name": "dashboard",
+  "generated_at": "2025-12-27T07:39:31.000Z",
+  "item_count": 12,
+  "items": [
+    {
+      "name": "useCurrentSale",
+      "file": "src/atomic-crm/dashboard/v3/hooks/useCurrentSale.ts",
+      "line": 42,
+      "parameters": [],
+      "returnType": "{ salesId: number; loading: boolean; error: Error; }",
+      "dependencies": [
+        "useContext",
+        "useCurrentSaleDirect"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useDebouncedSearch",
+      "file": "src/atomic-crm/dashboard/v3/hooks/useDebouncedSearch.ts",
+      "line": 12,
+      "parameters": [
+        "delay"
+      ],
+      "returnType": "{ searchTerm: string; debouncedTerm: string; setSearchTerm: import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").Dispatch<import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").SetStateAction<string>>; clearSearch: () => void; }",
+      "dependencies": [
+        "useCallback",
+        "useEffect",
+        "useState"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useEntityData",
+      "file": "src/atomic-crm/dashboard/v3/hooks/useEntityData.ts",
+      "line": 52,
+      "parameters": [
+        "{\n  form,\n  selectedOrganizationId,\n  selectedContactId,\n  selectedOpportunityId,\n}"
+      ],
+      "returnType": "{ contacts: Contact[]; organizations: Organization[]; opportunities: Opportunity[]; contactsForAnchorOrg: Contact[]; oppsForAnchorOrg: Opportunity[]; filteredContacts: Contact[]; filteredOrganizations: Organization[]; filteredOpportunities: Opportunity[]; contactsLoading: boolean; organizationsLoading: boolean; opportunitiesLoading: boolean; isInitialLoading: boolean; contactSearch: { searchTerm: string; debouncedTerm: string; setSearchTerm: import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").Dispatch<import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").SetStateAction<string>>; clearSearch: () => void; }; orgSearch: { searchTerm: string; debouncedTerm: string; setSearchTerm: import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").Dispatch<import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").SetStateAction<string>>; clearSearch: () => void; }; oppSearch: { searchTerm: string; debouncedTerm: string; setSearchTerm: import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").Dispatch<import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").SetStateAction<string>>; clearSearch: () => void; }; anchorOrganizationId: number; }",
+      "dependencies": [
+        "useDebouncedSearch",
+        "useEffect",
+        "useMemo",
+        "useNotify"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useHybridSearch",
+      "file": "src/atomic-crm/dashboard/v3/hooks/useHybridSearch.ts",
+      "line": 62,
+      "parameters": [
+        "{\n  resource,\n  initialPageSize = 100,\n  minSearchLength = 2,\n  debounceMs = 300,\n  staleTimeMs = 5 * 60 * 1000, // 5 minutes default\n  sortField = \"name\",\n  additionalFilter = {},\n  enabled = true,\n}"
+      ],
+      "returnType": "HybridSearchResult<T>",
+      "dependencies": [
+        "useCallback",
+        "useMemo",
+        "useState"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useKPIMetrics",
+      "file": "src/atomic-crm/dashboard/v3/hooks/useKPIMetrics.ts",
+      "line": 65,
+      "parameters": [],
+      "returnType": "UseKPIMetricsReturn",
+      "dependencies": [
+        "useCurrentSale",
+        "useDataProvider",
+        "useEffect",
+        "useState"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useMyPerformance",
+      "file": "src/atomic-crm/dashboard/v3/hooks/useMyPerformance.ts",
+      "line": 88,
+      "parameters": [],
+      "returnType": "UseMyPerformanceReturn",
+      "dependencies": [
+        "useCurrentSale",
+        "useDataProvider",
+        "useEffect",
+        "useState"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useMyTasks",
+      "file": "src/atomic-crm/dashboard/v3/hooks/useMyTasks.ts",
+      "line": 17,
+      "parameters": [],
+      "returnType": "{ tasks: { id: number; subject: any; dueDate: Date; priority: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/types\").Priority; taskType: import(\"/home/krwhynot/projects/crispy-crm/src/atomic-crm/dashboard/v3/types\").TaskType; relatedTo: { type: string; name: string; id: number; }; status: TaskStatus; owner?: string; notes: any; deleted?: boolean; }[]; loading: boolean; error: Error; completeTask: (taskId: number) => Promise<void>; snoozeTask: (taskId: number) => Promise<void>; deleteTask: (taskId: number) => Promise<void>; viewTask: (taskId: number) => void; updateTaskDueDate: (taskId: number, newDueDate: Date) => Promise<void>; updateTaskLocally: (taskId: number, updates: Partial<TaskItem>) => void; rollbackTask: (taskId: number, _previousState: TaskItem) => void; calculateStatus: (dueDate: Date) => TaskStatus; }",
+      "dependencies": [
+        "useCallback",
+        "useCurrentSale",
+        "useDataProvider",
+        "useEffect",
+        "useMemo",
+        "useQueryClient"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "usePipelineTableState",
+      "file": "src/atomic-crm/dashboard/v3/hooks/usePipelineTableState.ts",
+      "line": 20,
+      "parameters": [
+        "{ data }"
+      ],
+      "returnType": "{ sortField: SortField; sortDirection: SortDirection; searchQuery: string; momentumFilters: Set<Momentum>; setSearchQuery: import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").Dispatch<import(\"/home/krwhynot/projects/crispy-crm/node_modules/@types/react/index\").SetStateAction<string>>; handleSort: (field: SortField) => void; toggleMomentumFilter: (momentum: Momentum) => void; sortedData: PrincipalPipelineRow[]; getAriaSortValue: (field: SortField) => \"ascending\" | \"descending\" | \"none\"; }",
+      "dependencies": [
+        "useCallback",
+        "useMemo",
+        "useState"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "usePrincipalOpportunities",
+      "file": "src/atomic-crm/dashboard/v3/hooks/usePrincipalOpportunities.ts",
+      "line": 30,
+      "parameters": [
+        "{\n  principalId,\n  enabled = true,\n}"
+      ],
+      "returnType": "{ opportunities: { id: number; name: string; stage: string; amount: number; probability: number; lastActivityDate: Date; expectedCloseDate: Date; }[]; loading: boolean; error: Error | null; }",
+      "dependencies": [
+        "useMemo"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "usePrincipalPipeline",
+      "file": "src/atomic-crm/dashboard/v3/hooks/usePrincipalPipeline.ts",
+      "line": 9,
+      "parameters": [
+        "filters"
+      ],
+      "returnType": "{ data: PrincipalPipelineRow[]; loading: boolean; error: Error; }",
+      "dependencies": [
+        "useCurrentSale",
+        "useMemo"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useTaskCount",
+      "file": "src/atomic-crm/dashboard/v3/hooks/useTaskCount.ts",
+      "line": 16,
+      "parameters": [],
+      "returnType": "UseTaskCountResult",
+      "dependencies": [
+        "useCurrentSale",
+        "useGetList"
+      ],
+      "isReact19Action": false
+    },
+    {
+      "name": "useTeamActivities",
+      "file": "src/atomic-crm/dashboard/v3/hooks/useTeamActivities.ts",
+      "line": 57,
+      "parameters": [
+        "limit"
+      ],
+      "returnType": "UseTeamActivitiesResult",
+      "dependencies": [
+        "useCallback"
+      ],
+      "isReact19Action": false
+    }
+  ]
+}
