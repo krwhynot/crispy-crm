@@ -167,11 +167,18 @@ async function inviteUser(req: Request, currentUserSale: Sale, corsHeaders: Reco
     return createErrorResponse(500, "Internal Server Error", corsHeaders);
   }
 
-  const { error: emailError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
+  // Only send invitation email in production (SMTP not configured in local dev)
+  const isDevelopment = Deno.env.get("ENVIRONMENT") === "development" ||
+                        Deno.env.get("SUPABASE_URL")?.includes("localhost");
 
-  if (emailError) {
-    console.error("Error sending invitation email:", emailError);
-    return createErrorResponse(500, "Failed to send invitation email", corsHeaders);
+  if (!isDevelopment) {
+    const { error: emailError } = await supabaseAdmin.auth.admin.inviteUserByEmail(email);
+    if (emailError) {
+      console.error("Error sending invitation email:", emailError);
+      return createErrorResponse(500, "Failed to send invitation email", corsHeaders);
+    }
+  } else {
+    console.log("Development mode: Skipping invitation email for", email);
   }
 
   try {
