@@ -192,6 +192,10 @@ discover-new:
 discover-callgraph:
     npx tsx scripts/discover/index.ts --only=callGraph
 
+# Incremental discovery (only changed chunks)
+discover-incr:
+    npx tsx scripts/discover/index.ts --incremental
+
 # Generate call graph visualizations
 callgraph-viz:
     npx tsx scripts/discover/generate-viz.ts
