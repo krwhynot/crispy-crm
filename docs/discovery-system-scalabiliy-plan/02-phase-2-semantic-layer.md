@@ -6,26 +6,500 @@
 
 ---
 
-## Goal
+## Current Status: Migration from Qdrant to LanceDB
+
+**✅ Already Implemented (using Qdrant):**
+- Tree-sitter chunking: `scripts/discover/embeddings/chunk.ts`
+- Ollama embeddings: `scripts/discover/embeddings/ollama.ts`
+- Vector storage: `scripts/discover/embeddings/qdrant.ts`
+- Indexer: `scripts/discover/embeddings/indexer.ts`
+- Search CLI: `scripts/discover/embeddings/search-cli.ts`
+- Health checks: `scripts/discover/embeddings/health-check.ts`
+- justfile recipes: `discover-services`, `discover-embeddings`, `discover-search`
+
+**🔄 Migration Required:**
+Replace Qdrant (Docker-based) with LanceDB (file-based, serverless) to eliminate Docker dependency.
+
+---
+
+## Migration Task 2.1: Replace Qdrant with LanceDB
+
+### Step 1: Install LanceDB
+
+**File:** `package.json`
+
+```bash
+npm install -D @lancedb/lancedb apache-arrow
+```
+
+```json
+{
+  "devDependencies": {
+    "@lancedb/lancedb": "^0.15.0",
+    "apache-arrow": "^18.0.0"
+  }
+}
+```
+
+> **Note:** The package is `@lancedb/lancedb` (not `lancedb` or `vectordb` which are deprecated).
+
+### Step 2: Create LanceDB Client
+
+**File:** `scripts/discover/embeddings/lancedb.ts` (NEW - replaces `qdrant.ts`)
+
+```typescript
+/**
+ * LanceDB Vector Database Client for Discovery System
+ *
+ * Replaces Qdrant with file-based, serverless vector storage.
+ * No Docker container required - just files on disk.
+ */
+
+import * as lancedb from "@lancedb/lancedb";
+import * as fs from "node:fs/promises";
+import * as path from "node:path";
+
+const DB_PATH = path.join(process.cwd(), ".claude/state/vectors.lance");
+const TABLE_NAME = "code_chunks";
+const VECTOR_SIZE = 768; // nomic-embed-text dimension
+
+// Re-export types for compatibility with existing code
+export interface CodePointPayload {
+  originalId: string;
+  filePath: string;
+  type: string;
+  name: string;
+  startLine: number;
+  endLine: number;
+  content: string;  // Full content (previously was 'preview' with truncation)
+}
+
+export interface SearchResult {
+  score: number;
+  payload: CodePointPayload;
+}
+
+export interface UpsertPoint {
+  id: string;
+  vector: number[];
+  payload: CodePointPayload;
+}
+
+export class LanceDBError extends Error {
+  constructor(
+    message: string,
+    public readonly statusCode?: number,
+    public readonly cause?: Error
+  ) {
+    super(message);
+    this.name = "LanceDBError";
+  }
+}
+
+let db: lancedb.Connection | null = null;
+
+async function getDatabase(): Promise<lancedb.Connection> {
+  if (db === null) {
+    db = await lancedb.connect(DB_PATH);
+  }
+  return db;
+}
+
+/**
+ * Create table if it doesn't exist (idempotent).
+ */
+export async function ensureCollection(): Promise<void> {
+  try {
+    const database = await getDatabase();
+    const tableNames = await database.tableNames();
+
+    if (!tableNames.includes(TABLE_NAME)) {
+      // Create table with schema-defining placeholder
+      const table = await database.createTable(TABLE_NAME, [{
+        id: "schema-placeholder",
+        filePath: "",
+        type: "",
+        name: "",
+        content: "",
+        startLine: 0,
+        endLine: 0,
+        vector: new Array(VECTOR_SIZE).fill(0),
+      }]);
+      await table.delete('id = "schema-placeholder"');
+    }
+  } catch (error) {
+    const cause = error instanceof Error ? error : new Error(String(error));
+    throw new LanceDBError(
+      `Failed to ensure table "${TABLE_NAME}" exists.`,
+      undefined,
+      cause
+    );
+  }
+}
+
+/**
+ * Delete and recreate table (for fresh indexing).
+ */
+export async function clearCollection(): Promise<void> {
+  try {
+    const database = await getDatabase();
+    const tableNames = await database.tableNames();
+
+    if (tableNames.includes(TABLE_NAME)) {
+      await database.dropTable(TABLE_NAME);
+    }
+
+    // Create fresh table
+    const table = await database.createTable(TABLE_NAME, [{
+      id: "schema-placeholder",
+      filePath: "",
+      type: "",
+      name: "",
+      content: "",
+      startLine: 0,
+      endLine: 0,
+      vector: new Array(VECTOR_SIZE).fill(0),
+    }]);
+    await table.delete('id = "schema-placeholder"');
+  } catch (error) {
+    const cause = error instanceof Error ? error : new Error(String(error));
+    throw new LanceDBError(
+      `Failed to clear table "${TABLE_NAME}"`,
+      undefined,
+      cause
+    );
+  }
+}
+
+/**
+ * Upsert points (embeddings with metadata) into the table.
+ * LanceDB supports native string IDs - no numeric conversion needed!
+ */
+export async function upsertPoints(points: UpsertPoint[]): Promise<void> {
+  if (points.length === 0) return;
+
+  try {
+    const database = await getDatabase();
+    const table = await database.openTable(TABLE_NAME);
+
+    const records = points.map((point) => ({
+      id: point.id,
+      filePath: point.payload.filePath,
+      type: point.payload.type,
+      name: point.payload.name,
+      content: point.payload.content,
+      startLine: point.payload.startLine,
+      endLine: point.payload.endLine,
+      vector: point.vector,
+    }));
+
+    // Use mergeInsert for upsert behavior
+    await table.mergeInsert("id", records, {
+      whenMatchedUpdateAll: true,
+      whenNotMatchedInsertAll: true,
+    });
+  } catch (error) {
+    const cause = error instanceof Error ? error : new Error(String(error));
+    throw new LanceDBError(
+      `Failed to upsert ${points.length} points to table "${TABLE_NAME}"`,
+      undefined,
+      cause
+    );
+  }
+}
+
+/**
+ * Search for similar vectors.
+ * Returns results ordered by similarity (highest first).
+ */
+export async function search(
+  queryVector: number[],
+  limit: number = 10
+): Promise<SearchResult[]> {
+  if (queryVector.length !== VECTOR_SIZE) {
+    throw new LanceDBError(
+      `Query vector has ${queryVector.length} dimensions, expected ${VECTOR_SIZE}`
+    );
+  }
+
+  try {
+    const database = await getDatabase();
+    const table = await database.openTable(TABLE_NAME);
+
+    const results = await table
+      .vectorSearch(queryVector)
+      .distanceType("cosine")
+      .limit(limit)
+      .toArray();
+
+    return results.map((row) => ({
+      // Convert LanceDB distance (0=identical, 2=opposite) to score (1=identical, -1=opposite)
+      score: 1 - ((row._distance as number) / 2),
+      payload: {
+        originalId: row.id as string,
+        filePath: row.filePath as string,
+        type: row.type as string,
+        name: row.name as string,
+        startLine: row.startLine as number,
+        endLine: row.endLine as number,
+        content: row.content as string,
+      },
+    }));
+  } catch (error) {
+    const cause = error instanceof Error ? error : new Error(String(error));
+    throw new LanceDBError(
+      `Failed to search in table "${TABLE_NAME}"`,
+      undefined,
+      cause
+    );
+  }
+}
+
+/**
+ * Search with type filtering (NEW feature).
+ */
+export async function searchByType(
+  queryVector: number[],
+  type: string,
+  limit: number = 10
+): Promise<SearchResult[]> {
+  if (queryVector.length !== VECTOR_SIZE) {
+    throw new LanceDBError(
+      `Query vector has ${queryVector.length} dimensions, expected ${VECTOR_SIZE}`
+    );
+  }
+
+  try {
+    const database = await getDatabase();
+    const table = await database.openTable(TABLE_NAME);
+
+    const results = await table
+      .vectorSearch(queryVector)
+      .distanceType("cosine")
+      .where(`type = '${type}'`)
+      .limit(limit)
+      .toArray();
+
+    return results.map((row) => ({
+      score: 1 - ((row._distance as number) / 2),
+      payload: {
+        originalId: row.id as string,
+        filePath: row.filePath as string,
+        type: row.type as string,
+        name: row.name as string,
+        startLine: row.startLine as number,
+        endLine: row.endLine as number,
+        content: row.content as string,
+      },
+    }));
+  } catch (error) {
+    const cause = error instanceof Error ? error : new Error(String(error));
+    throw new LanceDBError(
+      `Failed to search by type in table "${TABLE_NAME}"`,
+      undefined,
+      cause
+    );
+  }
+}
+
+/**
+ * Health check - verify LanceDB is accessible.
+ */
+export async function checkLanceDBHealth(): Promise<boolean> {
+  try {
+    const dbExists = await fs.access(DB_PATH).then(() => true).catch(() => false);
+    if (!dbExists) return true; // DB will be created on first use
+
+    const database = await getDatabase();
+    await database.tableNames();
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Get detailed health status.
+ */
+export async function getHealthDetails(): Promise<{
+  serverReachable: boolean;
+  collectionExists: boolean;
+  pointCount: number;
+  error?: string;
+}> {
+  try {
+    const dbExists = await fs.access(DB_PATH).then(() => true).catch(() => false);
+
+    if (!dbExists) {
+      return {
+        serverReachable: true,
+        collectionExists: false,
+        pointCount: 0,
+        error: `Database not created yet at ${DB_PATH}. Run indexer first.`,
+      };
+    }
+
+    const database = await getDatabase();
+    const tableNames = await database.tableNames();
+    const hasTable = tableNames.includes(TABLE_NAME);
+
+    let pointCount = 0;
+    if (hasTable) {
+      const table = await database.openTable(TABLE_NAME);
+      pointCount = await table.countRows();
+    }
+
+    return {
+      serverReachable: true,
+      collectionExists: hasTable,
+      pointCount,
+      error: hasTable ? undefined : `Table "${TABLE_NAME}" not found. Run indexer first.`,
+    };
+  } catch (error) {
+    return {
+      serverReachable: false,
+      collectionExists: false,
+      pointCount: 0,
+      error: error instanceof Error ? error.message : "Unknown error",
+    };
+  }
+}
+
+/**
+ * Get collection statistics.
+ */
+export async function getCollectionInfo(): Promise<{
+  pointCount: number;
+  vectorSize: number;
+  distance: string;
+}> {
+  try {
+    const database = await getDatabase();
+    const table = await database.openTable(TABLE_NAME);
+    const count = await table.countRows();
+
+    return {
+      pointCount: count,
+      vectorSize: VECTOR_SIZE,
+      distance: "cosine",
+    };
+  } catch (error) {
+    const cause = error instanceof Error ? error : new Error(String(error));
+    throw new LanceDBError(
+      `Failed to get table info for "${TABLE_NAME}"`,
+      undefined,
+      cause
+    );
+  }
+}
+```
+
+### Step 3: Update Imports in Existing Files
+
+**File:** `scripts/discover/embeddings/indexer.ts`
+
+```diff
+- import {
+-   ensureCollection,
+-   upsertPoints,
+-   clearCollection,
+-   checkQdrantHealth,
+-   getCollectionInfo,
+-   type UpsertPoint,
+- } from "./qdrant.js";
++ import {
++   ensureCollection,
++   upsertPoints,
++   clearCollection,
++   checkLanceDBHealth,
++   getCollectionInfo,
++   type UpsertPoint,
++ } from "./lancedb.js";
+
+- const qdrantOk = await checkQdrantHealth();
++ const lanceOk = await checkLanceDBHealth();
+- if (!qdrantOk) {
+-   console.error("❌ Qdrant not available. Run: just discover-services");
++ if (!lanceOk) {
++   console.error("❌ LanceDB not available. Check disk permissions.");
+    return false;
+  }
+- console.log("   ✅ Qdrant ready\n");
++ console.log("   ✅ LanceDB ready\n");
+
+// Also update payload to store full content
+- preview: chunk.content.slice(0, 200),
++ content: chunk.content,
+```
+
+**File:** `scripts/discover/embeddings/search-cli.ts`
+
+```diff
+- import { search, checkQdrantHealth, getCollectionInfo } from "./qdrant.js";
++ import { search, searchByType, checkLanceDBHealth, getCollectionInfo } from "./lancedb.js";
+
+// Add --type flag support
++ let typeFilter = "";
++ // In parseArgs loop:
++ if (arg === "--type" && args[i + 1]) {
++   typeFilter = args[i + 1];
++   i++;
++ }
+
+// Use searchByType when filter provided
+- const results = await search(queryEmbedding, options.limit);
++ const results = typeFilter
++   ? await searchByType(queryEmbedding, typeFilter, options.limit)
++   : await search(queryEmbedding, options.limit);
+```
+
+### Step 4: Update justfile
+
+```diff
+  discover-services:
+      @echo "🐳 Starting discovery services..."
+-     docker compose up -d qdrant ollama
++     docker compose up -d ollama
++     @echo "✅ Ollama ready (LanceDB is file-based, no server needed)"
+
+  discover-services-stop:
+-     docker compose down qdrant ollama
++     docker compose stop ollama
+```
+
+### Step 5: Cleanup (After Verification)
+
+Delete obsolete files:
+- `scripts/discover/embeddings/qdrant.ts`
+- `scripts/discover/embeddings/test-qdrant.ts`
+
+Remove from `package.json`:
+```diff
+- "@qdrant/js-client-rest": "^1.16.2",
+```
+
+---
+
+## Original Goal (Reference)
 
 Add vector embeddings for natural language code queries using Tree-sitter chunking, Ollama embeddings, and LanceDB storage.
 
 ---
 
-## Task 2.1: Install LanceDB
+## Original Task 2.1: Install LanceDB (Reference)
 
 **File:** `package.json`
 
 LanceDB is a file-based, serverless vector database that requires no Docker container or external service. It stores vectors in columnar format using Apache Arrow, enabling fast similarity searches without cold start delays.
 
 ```bash
-npm install -D lancedb apache-arrow
+npm install -D @lancedb/lancedb apache-arrow
 ```
 
 ```json
 {
   "devDependencies": {
-    "lancedb": "^0.15.0",
+    "@lancedb/lancedb": "^0.15.0",
     "apache-arrow": "^18.0.0"
   }
 }
