@@ -1,725 +1,627 @@
-# Performance & UX Validation Manual Checklist
+# E2E Performance & UX Validation - Manual Testing Checklist
 
-Manual E2E testing checklist for performance metrics and user experience validation. This is TEST 6 (FINAL) of the progressive 6-test RBAC suite.
+## TEST 6 (FINAL) - RBAC Suite Performance & UX Validation
+
+Manual E2E testing checklist for Performance and User Experience validation. This is the final test in the 6-test RBAC suite and validates that the application meets response time requirements, provides appropriate UI feedback, and supports keyboard accessibility.
 
 ## Prerequisites
 
-**Required:** Tests 1-5 of the RBAC suite must pass before running these tests.
+**CRITICAL:** Tests 1-5 of the RBAC suite must pass before running these tests.
 
-### Test Users
-
-| Role | Email | Password |
-|------|-------|----------|
-| Admin | admin@test.com | password123 |
-| Manager | manager@mfbroker.com | password123 |
-| Rep | rep@mfbroker.com | password123 |
-
-### Environment Setup
-
-- **Browser:** Chrome (recommended for DevTools Performance features)
+- **Browser:** Chrome (required for DevTools Network Throttling and Performance tab)
 - **URL:** http://localhost:5173
-- **DevTools:** Open with F12 before starting tests
-- **Network Tab:** Enable "Preserve log" checkbox
-- **Performance Tab:** Familiar with recording and markers
-
-### Tools Required
-
-1. **Browser DevTools** - Network throttling, Performance tab, Console
-2. **Stopwatch/Timer** - For manual timing (phone timer or DevTools Performance)
-3. **Keyboard** - For accessibility testing (no mouse during keyboard tests)
-
----
-
-## Section A: Response Times
-
-Performance benchmarks for critical user flows. All timings measured from user action to UI completion.
+- **Test Users:**
+  - Admin: admin@test.com / password123
+  - Manager: manager@mfbroker.com / password123
+  - Rep: rep@mfbroker.com / password123
+- **Tools Required:**
+  - Browser DevTools (F12)
+  - Stopwatch/timer (browser extension or physical)
+  - Optional: Performance tab in DevTools for precise timing
 
 ---
 
-### Test A1: Team List Load Time (< 2 seconds)
+## A. Response Times
 
-**Goal:** Verify the sales team list loads within 2 seconds from navigation.
+### Test A1: Team List Load Under 2 Seconds
 
-**Timing Method:** DevTools Performance tab or manual stopwatch
+**Objective:** Verify the team/sales list loads completely within 2 seconds under normal network conditions.
 
-#### Steps
+**Prerequisites:**
+- User is logged out
+- Browser cache is cleared
+- Network is NOT throttled (normal conditions)
 
-1. Open browser and navigate to http://localhost:5173
-2. Open DevTools (F12) and switch to Network tab
-3. Click "Clear" button in Network tab to clear existing requests
-4. Check "Disable cache" checkbox in Network tab toolbar
-5. Log in as admin user:
-   - Email: `admin@test.com`
-   - Password: `password123`
-6. Wait for dashboard to load completely (no loading spinners visible)
-7. Open DevTools Performance tab
-8. Click the "Record" button (circle icon) to start recording
-9. Navigate to `/#/sales` using the sidebar or direct URL
-10. Watch the page for the team member list to appear
-11. Click "Stop" in Performance tab when list is fully rendered (names visible)
-12. Check the total time in the Performance recording summary
-13. Verify the time from navigation start to list render is under 2 seconds
+**Steps:**
 
-#### Expected Results
+1. Open Chrome browser and press F12 to open DevTools
+2. Navigate to the **Network** tab in DevTools
+3. Check the "Disable cache" checkbox at the top of the Network panel
+4. Ensure no network throttling is applied (dropdown should show "No throttling")
+5. Navigate to http://localhost:5173 in the address bar
+6. Log in with admin credentials:
+   - Email: admin@test.com
+   - Password: password123
+7. Wait for the login to complete and dashboard to load
+8. Prepare your stopwatch/timer (or note the time in Performance tab)
+9. Click on "Sales" or navigate directly to `/#/sales` in the URL bar
+10. Start the timer immediately when you press Enter or click
+11. Watch the page content area for the data grid/list to appear
+12. Stop the timer when:
+    - The data grid header row is visible
+    - At least one data row is visible (or "No results" message)
+    - Loading spinners/skeletons have disappeared
+13. Record the measured time
 
-- [ ] Navigation to `/#/sales` completes without errors
-- [ ] Team member list renders with names visible
-- [ ] Total load time is less than 2 seconds (2000ms)
+**Expected Results:**
+
+- [ ] Page navigation initiates immediately (no frozen UI)
+- [ ] Loading indicator appears during data fetch
+- [ ] Team list is fully rendered within 2 seconds
 - [ ] No console errors during load (check Console tab)
-- [ ] Network requests complete with 200 status codes
+- [ ] Network requests complete successfully (check Network tab for 200 status codes)
 
-#### Performance Recording Analysis
+**Pass:** [ ] | **Fail:** [ ]
 
-In the Performance tab recording:
-- Look for "Navigation" event as the start point
-- Look for "First Contentful Paint" and "Largest Contentful Paint" markers
-- Total time from navigation to LCP should be < 2000ms
-
-#### Pass/Fail
-
-- [ ] **PASS** - Load time < 2 seconds, no errors
-- [ ] **FAIL** - Load time >= 2 seconds OR errors present
+**Notes:**
+```
+Measured load time: _____ seconds
+```
 
 ---
 
-### Test A2: Create Form Opens (< 500ms)
+### Test A2: Create Form Opens Under 500ms
 
-**Goal:** Verify the create form modal/page opens within 500 milliseconds.
+**Objective:** Verify the create form opens and renders within 500 milliseconds.
 
-**Timing Method:** DevTools Performance tab with precise markers
+**Prerequisites:**
+- User is logged in as admin (admin@test.com)
+- User is on the `/#/sales` list page
+- Page has finished loading completely
 
-#### Steps
+**Steps:**
 
-1. Log in as admin user if not already logged in
-2. Navigate to `/#/sales` (sales team list)
-3. Wait for the list to fully load (team members visible)
-4. Open DevTools Performance tab
-5. Click "Record" to start a new recording
-6. Locate the "Create" or "Add Team Member" button in the UI
-7. Note the exact moment you click the button (this is time zero)
-8. Click the "Create" button
-9. Watch for the create form to appear and become interactive
-10. Click "Stop" in Performance tab immediately when form is fully visible
-11. In the Performance recording, measure time from click event to form render
-12. Verify the elapsed time is under 500 milliseconds
+1. Ensure you are on the `/#/sales` page with the team list visible
+2. Verify no loading spinners are present (page is fully loaded)
+3. Open DevTools (F12) and navigate to the **Performance** tab
+4. Click the circular "Record" button in the Performance tab to start recording
+5. Locate the "Create" button in the UI (typically top-right of the list)
+6. Prepare your stopwatch/timer
+7. Click the "Create" button and simultaneously start your timer
+8. Watch for the create form to appear (either full page or slide-over)
+9. Stop the timer when:
+    - Form container is visible
+    - Form fields (inputs, labels) are rendered
+    - Submit buttons are visible ("Save", "Cancel", etc.)
+10. Click "Stop" in the Performance tab to end recording
+11. In the Performance recording, expand the "Timings" section
+12. Look for "First Contentful Paint" or measure the gap between click and form render
+13. Record both stopwatch time and Performance tab measurements
 
-#### Expected Results
+**Expected Results:**
 
-- [ ] Create button is visible and clickable
-- [ ] Form opens smoothly without jank or stutter
-- [ ] Form is fully rendered within 500ms of click
-- [ ] All form fields are visible and interactive
-- [ ] No console errors during form open
+- [ ] Form opens immediately with no perceptible delay
+- [ ] Form container appears within 500ms of clicking "Create"
+- [ ] All form fields are rendered and visible
+- [ ] No loading spinner visible on form open (form is pre-ready)
+- [ ] Focus moves to first form field or form container
 
-#### DevTools Timing Analysis
+**Pass:** [ ] | **Fail:** [ ]
 
-In the Performance recording:
-- Find the "Click" event in the Main thread
-- Measure to the next "Paint" or "Composite Layers" event
-- This duration should be < 500ms
-
-#### Pass/Fail
-
-- [ ] **PASS** - Form opens in < 500ms, fields interactive
-- [ ] **FAIL** - Form takes >= 500ms OR form does not render correctly
+**Notes:**
+```
+Stopwatch time: _____ ms
+Performance tab timing: _____ ms
+```
 
 ---
 
-### Test A3: Save Operation Completes (< 2 seconds)
+### Test A3: Save Operation Completes Under 2 Seconds
 
-**Goal:** Verify saving a team member record completes within 2 seconds.
+**Objective:** Verify that saving a new record completes within 2 seconds.
 
-**Timing Method:** Measure from Save click to redirect/success indication
+**Prerequisites:**
+- User is logged in as admin (admin@test.com)
+- Create form is open and ready for input
 
-#### Steps
+**Steps:**
 
-1. Log in as admin user if not already logged in
-2. Navigate to `/#/sales` (sales team list)
-3. Click "Create" to open the create form
-4. Fill in valid test data for a new team member:
-   - Name: `Performance Test User [Timestamp]`
-   - Email: `perf.test.[timestamp]@example.com` (use unique timestamp)
-   - Role: Select "Rep"
-   - Fill any other required fields
-5. Open DevTools Network tab
-6. Click "Clear" to clear existing requests
-7. Open DevTools Console tab in a split view
-8. Prepare to start timing (have stopwatch ready or note the time)
-9. Click the "Save" or "Save & Close" button
-10. Start timer immediately on click
-11. Watch for one of these success indicators:
-    - Redirect to list page (`/#/sales`)
-    - Success toast notification appears
-    - Form closes and list updates
-12. Stop timer when success indicator appears
-13. Verify total time is under 2 seconds
+1. If not already on create form, click "Create" from the `/#/sales` list
+2. Fill in all required form fields with valid test data:
+   - Name: "Performance Test User"
+   - Email: Use a unique email like `perftest-${Date.now()}@example.com`
+   - Role: Select any valid role (e.g., "Rep")
+   - Fill any other required fields as needed
+3. Verify all required fields are filled (no validation errors visible)
+4. Open DevTools (F12) and navigate to the **Network** tab
+5. Clear the Network log by clicking the clear button (circle with line)
+6. Prepare your stopwatch/timer
+7. Locate the "Save" or "Save & Close" button
+8. Click the Save button and simultaneously start your timer
+9. Watch for the save operation to complete, indicated by:
+    - Form closes or redirects
+    - Success toast/notification appears
+    - List view shows new record
+10. Stop the timer when the success state is confirmed
+11. Check the Network tab for the POST/PUT request that saved the data
+12. Note the request timing (hover over the request to see timing breakdown)
+13. Record the total time from click to confirmation
 
-#### Expected Results
+**Expected Results:**
 
-- [ ] Save button is clickable and responds to click
-- [ ] Network request to save endpoint is sent (visible in Network tab)
-- [ ] Network request completes with 200/201 status
-- [ ] Success indicator appears (redirect, toast, or list update)
-- [ ] Total time from click to success is < 2 seconds
-- [ ] No error messages in Console or UI
+- [ ] Save button becomes disabled or shows loading state during save
+- [ ] Network request completes with 200/201 status code
+- [ ] Total save operation (click to confirmation) is under 2 seconds
+- [ ] Success feedback is displayed (toast, notification, or redirect)
+- [ ] No console errors during save operation
+- [ ] New record appears in the list (if redirected to list)
 
-#### Network Request Analysis
+**Pass:** [ ] | **Fail:** [ ]
 
-In Network tab, find the POST/PUT request:
-- Request should be to a Supabase endpoint or API route
-- Response status should be 200 or 201
-- Response time shown in "Time" column should be reasonable (< 1500ms)
-
-#### Pass/Fail
-
-- [ ] **PASS** - Save completes in < 2 seconds with success indication
-- [ ] **FAIL** - Save takes >= 2 seconds OR errors occur
+**Notes:**
+```
+Measured save time: _____ seconds
+Network request time: _____ ms
+```
 
 ---
 
 ### Test A4: Role Change Reflects Immediately (No Stale Cache)
 
-**Goal:** Verify that role changes are reflected immediately without stale data.
+**Objective:** Verify that updates to user data are immediately reflected without stale cache issues.
 
-**Cache Verification:** Ensure UI shows updated data, not cached previous state
+**Prerequisites:**
+- User is logged in as admin (admin@test.com)
+- At least one team member exists with "Rep" role
+- User is on the `/#/sales` list page
 
-#### Steps
+**Steps:**
 
-1. Log in as admin user if not already logged in
-2. Navigate to `/#/sales` (sales team list)
-3. Identify a team member with "Rep" role (or create one if needed)
-4. Note the team member's current role displayed in the list
-5. Click on the team member row to open the edit slide-over/modal
-6. Wait for the edit form to fully load
-7. Locate the "Role" dropdown/select field
-8. Change the role from "Rep" to "Manager" (or vice versa)
-9. Click "Save" and wait for save to complete
-10. Close the slide-over/modal (click X or outside the panel)
-11. Verify the list updates immediately to show the new role
-12. IMMEDIATELY (within 2 seconds) click on the same team member again
-13. Wait for the edit form to open
-14. Check the Role field in the form
+1. Navigate to `/#/sales` to view the team list
+2. Identify a team member with the role "Rep" (note their name for reference)
+3. Click on the team member row to open the edit slide-over or edit page
+4. Wait for the edit form to fully load
+5. Locate the "Role" field in the form
+6. Verify the current role is displayed as "Rep"
+7. Change the role from "Rep" to "Manager" using the dropdown/select
+8. Click the "Save" or "Save & Close" button
+9. Wait for the save operation to complete (success feedback appears)
+10. Close the edit slide-over or navigate back to the list if redirected
+11. IMMEDIATELY (within 2 seconds) click on the same team member again
+12. Wait for the edit form to load
+13. Check the "Role" field value
+14. Verify it shows "Manager" (the updated value), NOT "Rep" (stale cache)
 
-#### Expected Results
+**Expected Results:**
 
-- [ ] Initial role is displayed correctly (e.g., "Rep")
-- [ ] Role dropdown allows changing the value
-- [ ] Save operation completes successfully
-- [ ] List view updates immediately to show new role ("Manager")
-- [ ] Re-opening edit form shows the NEW role ("Manager"), not old role ("Rep")
-- [ ] No flash of old data when re-opening the form
-- [ ] Console shows no cache-related warnings
+- [ ] Initial role is correctly displayed as "Rep"
+- [ ] Role change saves successfully (success feedback shown)
+- [ ] Slide-over/edit form closes or redirects after save
+- [ ] Upon re-opening the same record, role shows "Manager"
+- [ ] No stale data is displayed (not showing old "Rep" value)
+- [ ] List view also reflects the updated role (if visible in list columns)
+- [ ] No browser refresh was needed to see the update
 
-#### Cache Invalidation Verification
+**Pass:** [ ] | **Fail:** [ ]
 
-This test specifically checks:
-- React Query cache is invalidated on mutation
-- No stale data is served from client-side cache
-- Server returns fresh data on refetch
-
-#### Pass/Fail
-
-- [ ] **PASS** - Role change persists immediately, no stale cache
-- [ ] **FAIL** - Old role shown after re-opening (stale cache) OR save fails
-
----
-
-## Section B: UI Feedback
-
-User interface responsiveness and feedback during operations.
+**Notes:**
+```
+Original role: _____
+New role: _____
+Role displayed on re-open: _____
+```
 
 ---
+
+## B. UI Feedback
 
 ### Test B1: Loading Spinner/Skeleton During Data Loads
 
-**Goal:** Verify visual loading indicators appear during slow network conditions.
+**Objective:** Verify that a loading indicator is displayed while data is being fetched.
 
-**Setup:** Use DevTools Network throttling to simulate slow connection
+**Prerequisites:**
+- User is logged out
+- Browser cache is cleared
 
-#### Steps
+**Steps:**
 
-1. Log in as admin user if not already logged in
-2. Navigate to dashboard (`/#/`) and wait for full load
-3. Open DevTools (F12)
-4. Switch to Network tab
-5. Locate the throttling dropdown (usually shows "No throttling" or "Online")
-6. Select "Slow 3G" from the throttling options
-7. Verify throttling is active (icon may appear in DevTools toolbar)
-8. Clear the browser cache:
-   - DevTools > Application tab > Storage > "Clear site data"
-   - OR check "Disable cache" in Network tab
-9. Navigate to `/#/sales` (sales team list)
-10. IMMEDIATELY watch the page for loading indicators
-11. Look for one of these loading states:
-    - Spinning loader icon
-    - Skeleton placeholder elements (gray animated boxes)
-    - "Loading..." text
-    - Progress bar
-12. Continue watching until data loads completely
-13. Verify loading indicator was visible during the load
+1. Open Chrome browser and press F12 to open DevTools
+2. Navigate to the **Network** tab in DevTools
+3. Check the "Disable cache" checkbox
+4. Click the "Network conditions" icon (or "No throttling" dropdown)
+5. Select "Slow 3G" to simulate a slow network connection
+6. Navigate to http://localhost:5173
+7. Log in with admin credentials:
+   - Email: admin@test.com
+   - Password: password123
+8. Wait for login to complete
+9. Navigate to `/#/sales` in the URL bar
+10. Immediately observe the page content area
+11. Look for one of the following loading indicators:
+    - Spinning icon/loader
+    - Skeleton placeholders (gray animated boxes)
+    - "Loading..." text message
+12. Note what type of loading indicator appears
+13. Wait for data to fully load (may take 5-10 seconds on Slow 3G)
+14. Verify the loading indicator disappears when data is ready
+15. Reset network throttling to "No throttling" before next test
 
-#### Expected Results
+**Expected Results:**
 
 - [ ] Loading indicator appears within 100ms of navigation
 - [ ] Loading indicator is clearly visible (not too small or faint)
-- [ ] Loading indicator persists until data is ready
-- [ ] Loading indicator disappears when data renders
-- [ ] No blank/empty page shown during load (always shows feedback)
-- [ ] Page does not appear "frozen" during load
+- [ ] Loading indicator persists while data is loading
+- [ ] Loading indicator disappears when data is ready
+- [ ] No blank/white screen during loading
+- [ ] No error state shown while loading is in progress
 
-#### Types of Acceptable Loading Indicators
+**Pass:** [ ] | **Fail:** [ ]
 
-- **Spinner:** Animated circular or linear loading icon
-- **Skeleton:** Gray placeholder shapes that pulse/animate
-- **Progress Bar:** Horizontal bar showing load progress
-- **Text:** "Loading team members..." or similar message
-
-#### Cleanup
-
-After test completion:
-1. Set Network throttling back to "No throttling" or "Online"
-2. Re-enable cache if you disabled it
-
-#### Pass/Fail
-
-- [ ] **PASS** - Loading indicator visible during slow load
-- [ ] **FAIL** - No loading indicator OR blank screen during load
+**Notes:**
+```
+Type of loading indicator: [ ] Spinner [ ] Skeleton [ ] Text [ ] Other: _____
+Loading indicator visible: [ ] Yes [ ] No
+```
 
 ---
 
 ### Test B2: Success Toast Notification on Save
 
-**Goal:** Verify a success message appears after saving a record.
+**Objective:** Verify that a success notification appears after successfully saving data.
 
-**Notification Types:** Toast, snackbar, banner, or inline message
+**Prerequisites:**
+- User is logged in as admin (admin@test.com)
+- User is on the `/#/sales` list page
+- Network throttling is OFF (No throttling)
 
-#### Steps
+**Steps:**
 
-1. Log in as admin user if not already logged in
-2. Navigate to `/#/sales` (sales team list)
-3. Click "Create" to open the create form
-4. Fill in valid test data:
-   - Name: `Toast Test User [Timestamp]`
-   - Email: `toast.test.[timestamp]@example.com`
-   - Role: Select any role
-   - Fill any other required fields
-5. Position your eyes to see the entire screen (toasts often appear in corners)
-6. Click the "Save" or "Save & Close" button
-7. IMMEDIATELY watch all screen corners and the form area for:
-   - Toast notification (usually top-right or bottom-right)
-   - Snackbar (usually bottom-center)
-   - Banner message (top of page)
-   - Inline success message near the form
-8. Note the content of the success message
-9. Note how long the message stays visible
-10. Check if message is dismissible (X button or click-to-close)
+1. Ensure you are on the `/#/sales` list page
+2. Click the "Create" button to open the create form
+3. Fill in all required fields with valid test data:
+   - Name: "Toast Test User"
+   - Email: `toast-test-${Date.now()}@example.com`
+   - Role: Select any valid role
+4. Click the "Save" or "Save & Close" button
+5. IMMEDIATELY observe the screen for a notification/toast:
+   - Top-right corner (common toast location)
+   - Bottom-right corner (alternative location)
+   - Top-center (alert banner style)
+   - Within the form area (inline success message)
+6. Note the content of the success message
+7. Note how long the notification remains visible
+8. Check if the notification auto-dismisses or requires manual close
+9. If editing an existing record, repeat the test:
+   - Open an existing team member
+   - Make a small change (e.g., update phone number)
+   - Save and observe for success notification
 
-#### Expected Results
+**Expected Results:**
 
-- [ ] Success notification appears after save completes
-- [ ] Notification text indicates success (e.g., "Team member created", "Saved successfully")
-- [ ] Notification is clearly visible (good contrast, readable text)
-- [ ] Notification appears within 1 second of save completion
-- [ ] Notification auto-dismisses OR has manual dismiss option
-- [ ] Notification does not block important UI elements
+- [ ] Success notification/toast appears after save
+- [ ] Notification is clearly visible (contrasting colors)
+- [ ] Notification indicates success (green color, checkmark, or "Success" text)
+- [ ] Notification message is meaningful (e.g., "User saved successfully")
+- [ ] Notification appears within 1 second of save completing
+- [ ] Notification either auto-dismisses (3-5 seconds) or has close button
 
-#### Toast Notification Standards
+**Pass:** [ ] | **Fail:** [ ]
 
-Per UX best practices:
-- **Duration:** 3-5 seconds before auto-dismiss
-- **Position:** Consistent location (usually corner)
-- **Color:** Green or neutral for success (not red)
-- **Action:** Optional "Undo" or "View" action button
-
-#### Pass/Fail
-
-- [ ] **PASS** - Success toast/notification appears with clear message
-- [ ] **FAIL** - No notification OR notification is unclear/invisible
+**Notes:**
+```
+Notification location: [ ] Top-right [ ] Bottom-right [ ] Top-center [ ] Inline [ ] Other: _____
+Notification text: "_____"
+Auto-dismiss after: _____ seconds
+```
 
 ---
 
 ### Test B3: Error Message Displayed Clearly on Failure
 
-**Goal:** Verify error messages are displayed visibly when operations fail.
+**Objective:** Verify that validation errors and server errors are displayed clearly to the user.
 
-**Test Method:** Trigger a validation or server error and verify feedback
+**Prerequisites:**
+- User is logged in as admin (admin@test.com)
+- At least one team member exists with a known email
 
-#### Steps
+**Steps:**
 
-1. Log in as admin user if not already logged in
-2. Navigate to `/#/sales` (sales team list)
-3. Note an existing team member's email address from the list
-4. Click "Create" to open the create form
-5. Fill in test data with a DUPLICATE email:
-   - Name: `Duplicate Test User`
-   - Email: [Use the email you noted in step 3 - this should cause duplicate error]
-   - Role: Select any role
-   - Fill any other required fields
-6. Open DevTools Console tab to monitor for errors
-7. Click the "Save" or "Save & Close" button
-8. Watch for error feedback in the UI:
-   - Inline error message near the email field
-   - Toast/snackbar error notification
-   - Form-level error banner
-   - Modal/dialog with error message
-9. Read the error message content
-10. Check if the error message explains WHAT went wrong
-11. Check if the error message suggests HOW to fix it
-12. Verify the error is NOT only in the console (must be visible in UI)
+1. Navigate to `/#/sales` to view the team list
+2. Note the email of an existing team member (e.g., "manager@mfbroker.com")
+3. Click the "Create" button to open the create form
+4. Fill in form fields but use the DUPLICATE email:
+   - Name: "Duplicate Email Test"
+   - Email: Use the existing email noted in step 2
+   - Role: Select any valid role
+5. Click the "Save" or "Save & Close" button
+6. Observe the UI for error feedback:
+   - Check for inline error message near email field
+   - Check for toast/notification with error
+   - Check for error banner at top of form
+7. Note the exact error message text
+8. Check DevTools Console for any console errors (F12 > Console)
+9. Verify the error is user-friendly (not a stack trace or technical jargon)
+10. Try another validation error: Clear the form and submit with empty required fields
+11. Observe error messages for required field validation
+12. Note which fields show error indicators (red border, error text)
 
-#### Expected Results
+**Expected Results:**
 
-- [ ] Error message appears in the UI (not just console)
-- [ ] Error message is clearly visible (good contrast, readable)
-- [ ] Error message explains the problem (e.g., "Email already exists")
-- [ ] Error message appears near the relevant field OR in a prominent location
-- [ ] Form does NOT close or redirect on error (stays open for correction)
-- [ ] User can correct the error and retry
+- [ ] Error message appears when duplicate email is submitted
+- [ ] Error message is clearly visible (red color, warning icon, or error banner)
+- [ ] Error message is descriptive (e.g., "Email already exists" not just "Error")
+- [ ] Error is NOT only in the browser console (must be visible in UI)
+- [ ] Required field errors show inline error messages
+- [ ] Fields with errors have visual indicator (red border or icon)
+- [ ] Error messages use `role="alert"` for accessibility (check in DevTools)
 
-#### Error Message Standards
+**Pass:** [ ] | **Fail:** [ ]
 
-Good error message characteristics:
-- **Specific:** Tells user exactly what's wrong
-- **Actionable:** Suggests how to fix the issue
-- **Visible:** Uses appropriate color (red/destructive) and positioning
-- **Accessible:** Has `role="alert"` for screen readers
-
-#### Alternative Test (If Duplicate Check Fails)
-
-If duplicate email doesn't trigger error:
-1. Try submitting with invalid email format (e.g., "not-an-email")
-2. Try submitting with empty required fields
-3. Try submitting with very long text (> 255 characters)
-
-#### Pass/Fail
-
-- [ ] **PASS** - Clear error message displayed in UI
-- [ ] **FAIL** - Error only in console OR message unclear/invisible
+**Notes:**
+```
+Duplicate email error message: "_____"
+Required field error message: "_____"
+Error visibility: [ ] Toast [ ] Inline [ ] Banner [ ] Console only (FAIL)
+```
 
 ---
 
 ### Test B4: Confirmation Dialog for Destructive Actions
 
-**Goal:** Verify destructive actions (delete) require confirmation before executing.
+**Objective:** Verify that destructive actions (like delete) require confirmation before executing.
 
-**Safety Check:** Prevents accidental data deletion
+**Prerequisites:**
+- User is logged in as admin (admin@test.com)
+- At least one team member exists that can be deleted (or use test data)
 
-#### Steps
+**Steps:**
 
-1. Log in as admin user if not already logged in
-2. Navigate to `/#/sales` (sales team list)
-3. Identify a team member that can be deleted (preferably a test user)
-4. If no deletable user exists, create one first:
+1. Navigate to `/#/sales` to view the team list
+2. Create a test record first (to safely delete):
    - Click "Create"
-   - Name: `Delete Test User [Timestamp]`
-   - Email: `delete.test.[timestamp]@example.com`
-   - Role: Any role
-   - Save the user
-5. Click on the team member row to open the edit slide-over/modal
-6. Wait for the form to fully load
-7. Locate the "Delete" button (often at bottom of form or in action menu)
-8. Note the button's appearance (should indicate destructive action - red or warning style)
-9. Click the "Delete" button
-10. WATCH for a confirmation dialog/modal to appear
-11. Read the confirmation dialog content
-12. Check for these elements in the dialog:
-    - Warning message explaining what will happen
-    - Name of the item being deleted
-    - "Cancel" or "No" button
-    - "Confirm" or "Delete" button
-13. Click "Cancel" to abort the deletion
-14. Verify the user is NOT deleted (still in list)
+   - Fill in: Name: "Delete Test", Email: `delete-test-${Date.now()}@example.com`
+   - Save the record
+3. Navigate back to the list if not already there
+4. Locate the newly created "Delete Test" record
+5. Click on the record to open the edit slide-over or edit page
+6. Locate the "Delete" button (may be in footer, header, or actions menu)
+7. Click the "Delete" button
+8. IMMEDIATELY observe the UI:
+   - Check for confirmation dialog/modal
+   - Check for confirmation prompt with Yes/No buttons
+   - Check if the record was deleted immediately (NO confirmation = FAIL)
+9. If a confirmation dialog appears:
+   - Read the confirmation message
+   - Note the button labels (e.g., "Cancel" / "Delete" or "No" / "Yes")
+   - Click "Cancel" or "No" to abort the deletion
+10. Verify the record still exists after canceling
+11. Click "Delete" again and this time confirm the deletion
+12. Verify the record is actually deleted
 
-#### Expected Results
+**Expected Results:**
 
-- [ ] Delete button is visible and clickable
-- [ ] Delete button has destructive styling (red or warning color)
-- [ ] Clicking Delete shows confirmation dialog BEFORE deleting
-- [ ] Confirmation dialog has clear warning message
-- [ ] Confirmation dialog shows what will be deleted
-- [ ] Cancel button aborts the deletion
-- [ ] Confirm button is required to proceed with deletion
-- [ ] User remains in list after clicking Cancel
+- [ ] Confirmation dialog appears when Delete is clicked
+- [ ] Confirmation dialog clearly states the action ("Delete this user?")
+- [ ] Confirmation dialog has Cancel/Abort option
+- [ ] Confirmation dialog has Confirm/Delete option
+- [ ] Clicking Cancel does NOT delete the record
+- [ ] Clicking Confirm DOES delete the record
+- [ ] No accidental deletion without confirmation
+- [ ] Confirmation uses clear, non-confusing button labels
 
-#### Confirmation Dialog Standards
+**Pass:** [ ] | **Fail:** [ ]
 
-Good confirmation dialog includes:
-- **Title:** "Delete Team Member?" or similar
-- **Message:** "This action cannot be undone. Are you sure you want to delete [Name]?"
-- **Cancel:** Primary/neutral button to abort
-- **Confirm:** Destructive/red button to proceed
-- **Focus:** Cancel button should be focused by default (safer)
-
-#### Additional Verification (If Cancel Works)
-
-Optionally, verify the Confirm path:
-1. Click Delete again
-2. Click "Confirm" or "Delete" in the dialog
-3. Verify the user IS deleted from the list
-4. Verify a success message appears
-
-#### Pass/Fail
-
-- [ ] **PASS** - Confirmation dialog appears, Cancel aborts deletion
-- [ ] **FAIL** - No confirmation dialog OR immediate deletion without confirmation
+**Notes:**
+```
+Confirmation dialog appeared: [ ] Yes [ ] No (FAIL)
+Confirmation message: "_____"
+Button labels: Cancel: "____" | Confirm: "____"
+```
 
 ---
 
-## Section C: Accessibility
-
-Keyboard navigation and focus management for accessibility compliance.
-
----
+## C. Accessibility
 
 ### Test C1: Keyboard Navigation (Tab, Enter, Escape)
 
-**Goal:** Verify all critical actions can be performed using only the keyboard.
+**Objective:** Verify that all interactive elements can be accessed and activated using only the keyboard.
 
-**Setup:** DO NOT use the mouse during this test
+**Prerequisites:**
+- User is logged in as admin (admin@test.com)
+- User is on the `/#/sales` list page
+- MOUSE WILL NOT BE USED in this test (keyboard only)
 
-#### Steps
+**Steps:**
 
-1. Open browser and navigate to http://localhost:5173
-2. Log in using keyboard only:
-   - Press Tab to focus email field
-   - Type: `admin@test.com`
-   - Press Tab to focus password field
-   - Type: `password123`
-   - Press Tab to focus Sign In button
-   - Press Enter to submit
-3. Wait for dashboard to load
-4. Navigate to sales team list using keyboard:
-   - Press Tab repeatedly until sidebar navigation is focused
-   - Use Arrow keys to navigate sidebar items
-   - Press Enter on "Sales" or "Team" item
-   - OR press Tab until you can type in URL bar, type `/#/sales`, press Enter
-5. Once on `/#/sales`, test Tab navigation:
-   - Press Tab to move focus to first interactive element
-   - Continue pressing Tab and count the elements that receive focus
-   - Verify focus moves in a logical order (left-to-right, top-to-bottom)
-6. Test Enter key activation:
-   - Tab to the "Create" button
-   - Press Enter to open create form
-   - Verify form opens
-7. Test Escape key for closing:
-   - With create form/slide-over open
-   - Press Escape key
-   - Verify form/slide-over closes
-8. Test form navigation:
-   - Open create form again (Tab to Create, press Enter)
-   - Press Tab to navigate through form fields
-   - Verify all inputs can be reached
-   - Press Enter while in a text field (should NOT submit if there are more fields)
-9. Test combobox/dropdown navigation:
-   - Tab to a dropdown/select field (e.g., Role)
-   - Press Enter or Space to open dropdown
-   - Use Arrow Up/Down to navigate options
-   - Press Enter to select an option
-   - Press Escape to close without selecting (if opened)
+1. Navigate to `/#/sales` using the URL bar (you may use the mouse for this setup step only)
+2. Click in an empty area of the page, then move hands to keyboard
+3. From this point forward, DO NOT use the mouse
+4. Press Tab key and observe which element receives focus
+5. Continue pressing Tab and track each element that receives focus:
+   - Navigation menu items
+   - Create button
+   - Search/filter inputs
+   - Data grid rows or cells
+   - Pagination controls (if present)
+6. Count how many Tab presses it takes to reach the "Create" button
+7. When "Create" button is focused, press Enter to activate it
+8. Verify the create form opens
+9. Inside the create form, press Tab to navigate through form fields:
+   - Each input field should receive focus
+   - Dropdown/select fields should be focusable
+   - Save/Cancel buttons should be focusable
+10. Press Escape key while in the form
+11. Verify the form closes or the action is canceled
+12. Verify focus returns to a logical element (trigger or list)
+13. Navigate to the list and use Tab to focus a data row
+14. Press Enter on the focused row to open edit slide-over
+15. Press Escape to close the slide-over
 
-#### Expected Results
+**Expected Results:**
 
-- [ ] Login form fully navigable with Tab/Enter
-- [ ] Dashboard and sidebar navigable with keyboard
-- [ ] Sales team list reachable via keyboard navigation
-- [ ] All interactive elements receive visible focus
-- [ ] Focus order is logical (not jumping around randomly)
-- [ ] Enter key activates buttons and links
-- [ ] Escape key closes modals, slide-overs, and dropdowns
-- [ ] Form fields navigable with Tab
-- [ ] Dropdowns/selects operable with Arrow keys and Enter
+- [ ] Tab moves focus forward through interactive elements
+- [ ] Shift+Tab moves focus backward through elements
+- [ ] All buttons are focusable with Tab
+- [ ] All form inputs are focusable with Tab
+- [ ] Enter key activates focused buttons and links
+- [ ] Escape key closes dialogs, slide-overs, and dropdowns
+- [ ] Focus order is logical (left-to-right, top-to-bottom)
 - [ ] No keyboard traps (focus never gets stuck)
+- [ ] Focus indicator (ring/outline) is visible on focused elements
 
-#### Focus Visibility Check
+**Pass:** [ ] | **Fail:** [ ]
 
-At each focused element, verify:
-- Clear focus ring/outline is visible
-- Focus indicator has sufficient contrast
-- Focused element is clear (not hidden behind other elements)
-
-#### Pass/Fail
-
-- [ ] **PASS** - All critical actions possible with keyboard only
-- [ ] **FAIL** - Any critical action requires mouse OR keyboard trap exists
+**Notes:**
+```
+Tab presses to reach Create button: _____
+Elements NOT focusable: _____
+Escape closes slide-over: [ ] Yes [ ] No
+```
 
 ---
 
 ### Test C2: Focus Management After Modal Close
 
-**Goal:** Verify focus returns to the appropriate element after closing modals/dialogs.
+**Objective:** Verify that focus returns to the trigger element or a logical location after closing a modal or slide-over.
 
-**Focus Return:** Essential for screen reader users to maintain context
+**Prerequisites:**
+- User is logged in as admin (admin@test.com)
+- User is on the `/#/sales` list page
 
-#### Steps
+**Steps:**
 
-1. Log in as admin user if not already logged in
-2. Navigate to `/#/sales` (sales team list)
-3. Using keyboard, Tab to the "Create" button
-4. Note that the "Create" button has focus (visible focus ring)
-5. Press Enter to open the create form/slide-over
-6. Wait for the form to fully open
-7. Verify focus moved INTO the modal/slide-over:
-   - Focus should be on the first focusable element in the form
-   - OR focus should be on the modal container itself
-8. Press Escape to close the modal/slide-over
-9. IMMEDIATELY check where focus is now:
-   - Look for the visible focus ring
-   - It should be on or near the "Create" button that triggered the modal
-10. Repeat test with different trigger:
-    - Tab to a team member row in the list
+1. Navigate to `/#/sales` to view the team list
+2. Use Tab key to navigate to the "Create" button
+3. Verify the "Create" button has visible focus indicator (ring/outline)
+4. Press Enter to open the create form/slide-over
+5. Verify the form opens and focus moves into the form
+6. Do NOT fill in any fields (keep form empty)
+7. Press Escape key to close the form
+8. IMMEDIATELY check which element has focus:
+   - Press Tab once and observe where focus moves
+   - This indicates where focus was after closing
+9. Verify focus returned to the "Create" button (or nearby logical element)
+10. Repeat the test with the edit slide-over:
+    - Tab to a data row in the list
     - Press Enter to open the edit slide-over
-    - Wait for slide-over to open
     - Press Escape to close
-    - Verify focus returns to the row that was clicked
+    - Check which element now has focus
+11. Document where focus lands after each close action
 
-#### Expected Results
+**Expected Results:**
 
-- [ ] Focus moves into modal when modal opens
-- [ ] Modal has focus trap (Tab cycles within modal only)
-- [ ] Pressing Escape closes the modal
-- [ ] After Escape, focus returns to the trigger element (Create button or row)
-- [ ] Focus does NOT go to the top of the page
-- [ ] Focus does NOT go to document body (invisible/no focus ring)
-- [ ] Focus return is immediate (no delay)
+- [ ] Create form opens when Enter is pressed on Create button
+- [ ] Focus moves into the form when it opens
+- [ ] Pressing Escape closes the form
+- [ ] After closing create form, focus returns to Create button
+- [ ] After closing edit slide-over, focus returns to the triggering row or nearby element
+- [ ] Focus does NOT return to document body or get lost
+- [ ] Focus indicator is immediately visible after close (no need to Tab first)
 
-#### Focus Return Logic
+**Pass:** [ ] | **Fail:** [ ]
 
-Expected behavior:
-- Create button opens modal -> Close modal -> Focus returns to Create button
-- Table row opens slide-over -> Close slide-over -> Focus returns to that row
-- Action menu item opens dialog -> Close dialog -> Focus returns to action menu
-
-#### DevTools Verification
-
-To verify focus programmatically:
-1. Open DevTools Console
-2. After closing modal, type: `document.activeElement`
-3. Verify the returned element is the expected trigger
-
-#### Pass/Fail
-
-- [ ] **PASS** - Focus returns to trigger element after modal close
-- [ ] **FAIL** - Focus lost OR goes to wrong element
-
----
-
-## Important Notes
-
-### Network Throttling Instructions
-
-To enable Slow 3G throttling in Chrome DevTools:
-1. Open DevTools (F12)
-2. Go to Network tab
-3. Find the throttling dropdown (shows "No throttling" by default)
-4. Select "Slow 3G" from the list
-5. The icon will indicate throttling is active
-
-**Remember to disable throttling after Test B1!**
-
-### Performance Tab Usage
-
-For precise timing measurements:
-1. Open DevTools (F12)
-2. Go to Performance tab
-3. Click the record button (circle icon)
-4. Perform the action you're measuring
-5. Click stop when action completes
-6. Use the timeline to measure duration
-7. Look for "Summary" panel showing total time
-
-### Keyboard-Only Testing Tips
-
-- Remove your mouse from reach to avoid temptation
-- Use Shift+Tab to navigate backwards
-- Use Space for checkboxes and buttons
-- Use Arrow keys for radio buttons and some dropdowns
-- Tab key never activates - only moves focus
-
-### Timestamp Format for Test Data
-
-Use format: `YYYY-MM-DD-HHmmss`
-Example: `2025-12-26-143022`
-
-This ensures unique test data across multiple test runs.
+**Notes:**
+```
+After closing create form, focus on: "_____"
+After closing edit slide-over, focus on: "_____"
+Focus visible immediately: [ ] Yes [ ] No
+```
 
 ---
 
 ## Pass Criteria
 
-**All 10 tests must pass** for the Performance & UX Validation suite to be considered successful.
+**All 10 tests must pass** for Performance & UX Validation to be considered successful.
 
-### Section A: Response Times (4 tests)
-- [ ] A1: Team list load < 2 seconds
-- [ ] A2: Create form opens < 500ms
-- [ ] A3: Save operation completes < 2 seconds
+### Summary Checklist
+
+**A. Response Times:**
+- [ ] A1: Team list loads in < 2 seconds
+- [ ] A2: Create form opens in < 500ms
+- [ ] A3: Save operation completes in < 2 seconds
 - [ ] A4: Role change reflects immediately (no stale cache)
 
-### Section B: UI Feedback (4 tests)
-- [ ] B1: Loading spinner/skeleton during data loads
+**B. UI Feedback:**
+- [ ] B1: Loading spinner/skeleton visible during data loads
 - [ ] B2: Success toast notification on save
 - [ ] B3: Error message displayed clearly on failure
 - [ ] B4: Confirmation dialog for destructive actions
 
-### Section C: Accessibility (2 tests)
-- [ ] C1: Keyboard navigation (Tab, Enter, Escape)
-- [ ] C2: Focus management after modal close
+**C. Accessibility:**
+- [ ] C1: Keyboard navigation works (Tab, Enter, Escape)
+- [ ] C2: Focus returns to trigger after modal close
 
 ---
 
 ## Troubleshooting
 
-### Test A1 Fails (Slow Load)
+### Common Issues
 
-If team list takes > 2 seconds:
-1. Check Network tab for slow requests
-2. Look for large payloads in response
-3. Check if database query is optimized (indexes)
-4. Verify no N+1 query problem
-5. Check for unnecessary re-renders in React DevTools
+**Test A1/A3 - Slow Response Times:**
+- Check Network tab for slow API requests
+- Look for N+1 query patterns (many small requests)
+- Verify database has proper indexes
+- Check for blocking JavaScript execution
 
-### Test B1 Fails (No Loading State)
+**Test A4 - Stale Cache:**
+- Check if React Query/SWR cache is properly invalidated
+- Verify mutation hooks call `invalidateQueries` after save
+- Look for manual cache management issues
 
-If no loading indicator appears:
-1. Component may not have loading state implemented
-2. Check if React Query/data fetching shows `isLoading` state
-3. Look for Suspense boundaries in code
-4. Verify skeleton components exist
+**Test B1 - No Loading Indicator:**
+- Check if `isLoading` state is properly used
+- Verify loading component is not conditionally hidden
+- Check for race conditions in state updates
 
-### Test C1 Fails (Keyboard Trap)
+**Test B3 - Error Only in Console:**
+- Verify error boundary is catching errors
+- Check if API error responses are properly handled
+- Look for missing `.catch()` handlers on promises
 
-If focus gets stuck:
-1. Identify which element traps focus
-2. Check for `tabindex="-1"` that shouldn't be there
-3. Look for JavaScript focus handlers that prevent Tab
-4. Check modal/dialog for proper focus management
-
-### Test C2 Fails (Focus Not Returned)
-
-If focus doesn't return to trigger:
-1. Check if modal component tracks trigger element
-2. Look for `returnFocus` or similar prop on modal
-3. Verify focus is not explicitly set elsewhere on close
-4. Check for focus trap library configuration
+**Test C1 - Keyboard Traps:**
+- Check for improper `tabIndex` values
+- Verify focus trap libraries are configured correctly
+- Look for hidden elements receiving focus
 
 ---
 
-## Related Documentation
+## Tools Reference
 
-- [WCAG 2.1 AA Guidelines](https://www.w3.org/WAI/WCAG21/quickref/)
-- [React Admin Data Provider Documentation](https://marmelab.com/react-admin/DataProviderIntroduction.html)
-- [Chrome DevTools Performance Guide](https://developer.chrome.com/docs/devtools/performance/)
-- Project Accessibility Tests: `05-accessibility-tests.md`
-- Form Testing: `04-form-tests.md`
+**Performance Measurement:**
+- Chrome DevTools Performance tab
+- Lighthouse (built into Chrome DevTools)
+- Network tab with timing breakdown
+
+**Network Throttling:**
+- DevTools > Network > Throttling dropdown
+- Presets: Slow 3G, Fast 3G, Offline
+
+**Accessibility Testing:**
+- axe DevTools browser extension
+- Tab key for focus testing
+- Screen reader (optional): NVDA (Windows), VoiceOver (macOS)
 
 ---
 
-## Test Completion Checklist
+## Test Completion
 
-Before marking RBAC suite as complete:
+**Date:** _______________
 
-- [ ] All 10 Performance & UX tests pass
-- [ ] Screenshots captured for any failures
-- [ ] Issues filed for any bugs discovered
-- [ ] Network throttling disabled after testing
-- [ ] Test data cleaned up (optional)
-- [ ] Results documented in test log
+**Tester:** _______________
+
+**Environment:**
+- Browser: Chrome Version _____
+- OS: _____
+- Screen Resolution: _____
+
+**Overall Result:** [ ] PASS (10/10) | [ ] FAIL
+
+**Failed Tests:**
+```
+List any failed tests and notes here
+```
+
+**Issues to File:**
+```
+List any bugs discovered during testing
+```
