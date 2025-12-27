@@ -1,0 +1,169 @@
+---
+title: organizations Feature
+---
+flowchart LR
+
+  %% Components
+  ActivitiesTab([ActivitiesTab])
+  AuthorizationsTab([AuthorizationsTab])
+  AutocompleteOrganizationInput([AutocompleteOrganizationInput])
+  BranchLocationsSection([BranchLocationsSection])
+  BulkReassignButton([BulkReassignButton])
+  DuplicateOrgWarningDialog([DuplicateOrgWarningDialog])
+  OrganizationAddressSection([OrganizationAddressSection])
+  OrganizationAside([OrganizationAside])
+  OrganizationInfo([OrganizationInfo])
+  ContextInfo([ContextInfo])
+  AddressInfo([AddressInfo])
+  AdditionalInfo([AdditionalInfo])
+  OrganizationAvatar([OrganizationAvatar])
+  OrganizationBulkActionsToolbar([OrganizationBulkActionsToolbar])
+  OrganizationCompactForm([OrganizationCompactForm])
+  DuplicateCheckSaveButton([DuplicateCheckSaveButton])
+  OrganizationCreate([OrganizationCreate])
+  OrganizationFormContent([OrganizationFormContent])
+  OrganizationNameHeader([OrganizationNameHeader])
+  OrganizationTypeHeader([OrganizationTypeHeader])
+  OrganizationPriorityHeader([OrganizationPriorityHeader])
+  OrganizationEdit([OrganizationEdit])
+  OrganizationEditContent([OrganizationEditContent])
+  OrganizationEmpty([OrganizationEmpty])
+  OrganizationHierarchySection([OrganizationHierarchySection])
+  OrganizationImportButton([OrganizationImportButton])
+  OrganizationImportDialog([OrganizationImportDialog])
+  OrganizationImportPreview([OrganizationImportPreview])
+  OrganizationImportResult([OrganizationImportResult])
+  OrganizationInputs([OrganizationInputs])
+  OrganizationListActions([OrganizationListActions])
+  OrganizationListLayout([OrganizationListLayout])
+  OrganizationList([OrganizationList])
+  OrganizationListFilter([OrganizationListFilter])
+  OrganizationShow([OrganizationShow])
+  OrganizationShowContent([OrganizationShowContent])
+  ContactsIterator([ContactsIterator])
+  CreateRelatedContactButton([CreateRelatedContactButton])
+  CreateRelatedOpportunityButton([CreateRelatedOpportunityButton])
+  OpportunitiesIterator([OpportunitiesIterator])
+  OrganizationSlideOver([OrganizationSlideOver])
+  OrganizationStatusSection([OrganizationStatusSection])
+  ParentOrganizationInput([ParentOrganizationInput])
+  ParentOrganizationSection([ParentOrganizationSection])
+  PrincipalAwareTypeInput([PrincipalAwareTypeInput])
+  PrincipalChangeWarning([PrincipalChangeWarning])
+  QuickCreatePopover([QuickCreatePopover])
+  AddPrincipalDialog([AddPrincipalDialog])
+  AddProductExceptionDialog([AddProductExceptionDialog])
+  AuthorizationCard([AuthorizationCard])
+  AuthorizationsEmptyState([AuthorizationsEmptyState])
+  ProductExceptionsSection([ProductExceptionsSection])
+  RemoveConfirmDialog([RemoveConfirmDialog])
+  OrganizationListView([OrganizationListView])
+  OrganizationCreateView([OrganizationCreateView])
+  OrganizationEditView([OrganizationEditView])
+  OrganizationShowView([OrganizationShowView])
+  OrganizationContactsTab([OrganizationContactsTab])
+  OrganizationDetailsTab([OrganizationDetailsTab])
+  OrganizationNotesTab([OrganizationNotesTab])
+  OrganizationOpportunitiesTab([OrganizationOpportunitiesTab])
+  StageBadge([StageBadge])
+
+  %% Hooks
+  useDuplicateOrgCheck((useDuplicateOrgCheck))
+  useOrganizationImport((useOrganizationImport))
+
+  %% Functions
+  handleFormKeyDown[handleFormKeyDown]
+  exporter[exporter]
+  normalizeHeader[normalizeHeader]
+  findCanonicalField[findCanonicalField]
+  mapHeadersToFields[mapHeadersToFields]
+  getAvailableFields[getAvailableFields]
+  getAvailableFieldsWithLabels[getAvailableFieldsWithLabels]
+  detectDuplicateOrganizations[detectDuplicateOrganizations]
+  applyDataQualityTransformations[applyDataQualityTransformations]
+  validateTransformedOrganizations[validateTransformedOrganizations]
+  organizationRecordRepresentation[organizationRecordRepresentation]
+  getContactDisplayName[getContactDisplayName]
+  getContactInitials[getContactInitials]
+  fetchRecordsWithCache[fetchRecordsWithCache]
+  parseTags[parseTags]
+  validateTagNames[validateTagNames]
+
+  %% Render relationships
+  AuthorizationsTab -->|render| AuthorizationsEmptyState
+  AuthorizationsTab -->|render| AuthorizationCard
+  AuthorizationsTab -->|render| AddPrincipalDialog
+  AuthorizationsTab -->|render| RemoveConfirmDialog
+  AutocompleteOrganizationInput -->|render| QuickCreatePopover
+  OrganizationAside -->|render| OrganizationInfo
+  OrganizationAside -->|render| ParentOrganizationSection
+  OrganizationAside -->|render| AddressInfo
+  OrganizationAside -->|render| ContextInfo
+  OrganizationAside -->|render| AdditionalInfo
+  OrganizationBulkActionsToolbar -->|render| BulkReassignButton
+  OrganizationCompactForm -->|render| PrincipalAwareTypeInput
+  OrganizationCompactForm -->|render| OrganizationHierarchySection
+  OrganizationCreate -->|render| OrganizationFormContent
+  OrganizationCreate -->|render| DuplicateOrgWarningDialog
+  OrganizationFormContent -->|render| OrganizationInputs
+  OrganizationFormContent -->|render| DuplicateCheckSaveButton
+  OrganizationEdit -->|render| OrganizationEditContent
+  OrganizationEditContent -->|render| OrganizationInputs
+  OrganizationEditContent -->|render| OrganizationAside
+  OrganizationHierarchySection -->|render| ParentOrganizationInput
+  OrganizationImportButton -->|render| OrganizationImportDialog
+  OrganizationImportDialog -->|render| OrganizationImportPreview
+  OrganizationInputs -->|render| OrganizationCompactForm
+  OrganizationListLayout -->|render| OrganizationListFilter
+  OrganizationListLayout -->|render| OrganizationEmpty
+  OrganizationListLayout -->|render| OrganizationListFilter
+  OrganizationListLayout -->|render| OrganizationListFilter
+  OrganizationListLayout -->|render| OrganizationNameHeader
+  OrganizationListLayout -->|render| OrganizationTypeHeader
+  OrganizationListLayout -->|render| OrganizationPriorityHeader
+  OrganizationListLayout -->|render| OrganizationBulkActionsToolbar
+  OrganizationList -->|render| OrganizationListActions
+  OrganizationList -->|render| OrganizationListLayout
+  OrganizationList -->|render| OrganizationSlideOver
+  OrganizationShow -->|render| OrganizationShowContent
+  OrganizationShowContent -->|render| OrganizationAvatar
+  OrganizationShowContent -->|render| ActivitiesTab
+  OrganizationShowContent -->|render| CreateRelatedContactButton
+  OrganizationShowContent -->|render| ContactsIterator
+  OrganizationShowContent -->|render| CreateRelatedContactButton
+  OrganizationShowContent -->|render| OpportunitiesIterator
+  OrganizationShowContent -->|render| CreateRelatedOpportunityButton
+  OrganizationShowContent -->|render| AuthorizationsTab
+  OrganizationShowContent -->|render| OrganizationAside
+  PrincipalAwareTypeInput -->|render| PrincipalChangeWarning
+  AuthorizationCard -->|render| ProductExceptionsSection
+  ProductExceptionsSection -->|render| AddProductExceptionDialog
+  ProductExceptionsSection -->|render| RemoveConfirmDialog
+  OrganizationOpportunitiesTab -->|render| StageBadge
+
+  %% Hook dependencies
+  OrganizationCreate -.->|hook| useDuplicateOrgCheck
+  OrganizationImportDialog -.->|hook| useOrganizationImport
+
+  %% Function calls
+  OrganizationImportDialog -->|call| mapHeadersToFields
+  OrganizationImportDialog -->|call| detectDuplicateOrganizations
+  OrganizationImportDialog -->|call| mapHeadersToFields
+  OrganizationImportDialog -->|call| findCanonicalField
+  OrganizationImportDialog -->|call| detectDuplicateOrganizations
+  OrganizationImportPreview -->|call| getAvailableFieldsWithLabels
+  findCanonicalField -->|call| normalizeHeader
+  mapHeadersToFields -->|call| findCanonicalField
+  getAvailableFieldsWithLabels -->|call| getAvailableFields
+  OrganizationContactsTab -->|call| getContactDisplayName
+  OrganizationContactsTab -->|call| getContactInitials
+  OrganizationContactsTab -->|call| getContactDisplayName
+  useOrganizationImport -->|call| validateTagNames
+  useOrganizationImport -->|call| fetchRecordsWithCache
+  useOrganizationImport -->|call| applyDataQualityTransformations
+  useOrganizationImport -->|call| validateTransformedOrganizations
+  useOrganizationImport -->|call| parseTags
+  useOrganizationImport -->|call| parseTags
+
+  %% Callback references
+  OrganizationCreate -.->|callback| handleFormKeyDown

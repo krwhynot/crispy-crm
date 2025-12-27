@@ -1,0 +1,26 @@
+---
+title: root Feature
+---
+flowchart LR
+
+  %% Components
+  AdminUserRedirect([AdminUserRedirect])
+  ContactShowRedirect([ContactShowRedirect])
+  TaskShowRedirect([TaskShowRedirect])
+  ProductShowRedirect([ProductShowRedirect])
+  OrganizationShowRedirect([OrganizationShowRedirect])
+  OpportunityShowRedirect([OpportunityShowRedirect])
+  CRM([CRM])
+  ConfigurationProvider([ConfigurationProvider])
+
+  %% Hooks
+  useConfigurationContext((useConfigurationContext))
+
+  %% Render relationships
+  CRM -->|render| ConfigurationProvider
+  CRM -->|render| AdminUserRedirect
+  CRM -->|render| ContactShowRedirect
+  CRM -->|render| TaskShowRedirect
+  CRM -->|render| ProductShowRedirect
+  CRM -->|render| OrganizationShowRedirect
+  CRM -->|render| OpportunityShowRedirect

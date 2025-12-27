@@ -1,0 +1,111 @@
+---
+title: reports Feature
+---
+flowchart LR
+
+  %% Components
+  ActivityTypeCard([ActivityTypeCard])
+  CampaignActivityReport([CampaignActivityReport])
+  StaleLeadsView([StaleLeadsView])
+  FilterToolbar([FilterToolbar])
+  OpportunitiesByPrincipalReport([OpportunitiesByPrincipalReport])
+  PrincipalGroupCard([PrincipalGroupCard])
+  ReportLayout([ReportLayout])
+  TabSkeleton([TabSkeleton])
+  ReportsPage([ReportsPage])
+  WeeklyActivitySummary([WeeklyActivitySummary])
+  RepActivityCard([RepActivityCard])
+  ActivityTrendChart([ActivityTrendChart])
+  PipelineChart([PipelineChart])
+  RepPerformanceChart([RepPerformanceChart])
+  TopPrincipalsChart([TopPrincipalsChart])
+  AppliedFiltersBar([AppliedFiltersBar])
+  ChartWrapper([ChartWrapper])
+  EmptyState([EmptyState])
+  FilterChip([FilterChip])
+  KPICard([KPICard])
+  KPIDrillDown([KPIDrillDown])
+  ReportPageShell([ReportPageShell])
+  TabFilterBar([TabFilterBar])
+  WeeklyActivitySummary([WeeklyActivitySummary])
+  OpportunitiesByPrincipalReport([OpportunitiesByPrincipalReport])
+  CampaignActivityReport([CampaignActivityReport])
+  CampaignActivityTab([CampaignActivityTab])
+  OpportunitiesTab([OpportunitiesTab])
+  OverviewTab([OverviewTab])
+  WeeklyActivityTab([WeeklyActivityTab])
+
+  %% Hooks
+  useChartTheme((useChartTheme))
+  useReportData((useReportData))
+
+  %% Functions
+  getActivityTypeLabel[getActivityTypeLabel]
+  truncateLabel[truncateLabel]
+  throwMissingCssVarError[throwMissingCssVarError]
+  cleanupOldReportKeys[cleanupOldReportKeys]
+
+  %% Render relationships
+  CampaignActivityReport -->|render| ReportLayout
+  CampaignActivityReport -->|render| AppliedFiltersBar
+  CampaignActivityReport -->|render| EmptyState
+  CampaignActivityReport -->|render| StaleLeadsView
+  CampaignActivityReport -->|render| ActivityTypeCard
+  CampaignActivityReport -->|render| EmptyState
+  OpportunitiesByPrincipalReport -->|render| ReportLayout
+  OpportunitiesByPrincipalReport -->|render| ReportLayout
+  OpportunitiesByPrincipalReport -->|render| FilterToolbar
+  OpportunitiesByPrincipalReport -->|render| AppliedFiltersBar
+  OpportunitiesByPrincipalReport -->|render| EmptyState
+  OpportunitiesByPrincipalReport -->|render| PrincipalGroupCard
+  ReportsPage -->|render| ReportPageShell
+  ReportsPage -->|render| TabSkeleton
+  ReportsPage -->|render| OverviewTab
+  ReportsPage -->|render| TabSkeleton
+  ReportsPage -->|render| OpportunitiesTab
+  ReportsPage -->|render| TabSkeleton
+  ReportsPage -->|render| WeeklyActivityTab
+  ReportsPage -->|render| TabSkeleton
+  ReportsPage -->|render| CampaignActivityTab
+  WeeklyActivitySummary -->|render| ReportLayout
+  WeeklyActivitySummary -->|render| ReportLayout
+  WeeklyActivitySummary -->|render| AppliedFiltersBar
+  WeeklyActivitySummary -->|render| EmptyState
+  WeeklyActivitySummary -->|render| RepActivityCard
+  AppliedFiltersBar -->|render| FilterChip
+  CampaignActivityTab -->|render| CampaignActivityReport
+  OpportunitiesTab -->|render| OpportunitiesByPrincipalReport
+  OverviewTab -->|render| ChartWrapper
+  OverviewTab -->|render| ChartWrapper
+  OverviewTab -->|render| ChartWrapper
+  OverviewTab -->|render| ChartWrapper
+  OverviewTab -->|render| TabFilterBar
+  OverviewTab -->|render| AppliedFiltersBar
+  OverviewTab -->|render| EmptyState
+  OverviewTab -->|render| KPICard
+  OverviewTab -->|render| KPICard
+  OverviewTab -->|render| KPICard
+  OverviewTab -->|render| KPICard
+  OverviewTab -->|render| PipelineChart
+  OverviewTab -->|render| ActivityTrendChart
+  OverviewTab -->|render| TopPrincipalsChart
+  OverviewTab -->|render| RepPerformanceChart
+  WeeklyActivityTab -->|render| WeeklyActivitySummary
+
+  %% Hook dependencies
+  CampaignActivityReport -.->|hook| useReportData
+  OpportunitiesByPrincipalReport -.->|hook| useReportData
+  WeeklyActivitySummary -.->|hook| useReportData
+  ActivityTrendChart -.->|hook| useChartTheme
+  PipelineChart -.->|hook| useChartTheme
+  RepPerformanceChart -.->|hook| useChartTheme
+  TopPrincipalsChart -.->|hook| useChartTheme
+  OverviewTab -.->|hook| useReportData
+  OverviewTab -.->|hook| useReportData
+
+  %% Function calls
+  ActivityTypeCard -->|call| getActivityTypeLabel
+  ReportsPage -->|call| cleanupOldReportKeys
+  RepPerformanceChart -->|call| truncateLabel
+  TopPrincipalsChart -->|call| truncateLabel
+  useChartTheme -->|call| throwMissingCssVarError

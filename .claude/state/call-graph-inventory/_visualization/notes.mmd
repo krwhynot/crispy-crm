@@ -1,0 +1,28 @@
+---
+title: notes Feature
+---
+flowchart LR
+
+  %% Components
+  Note([Note])
+  NoteCreate([NoteCreate])
+  NoteFormContent([NoteFormContent])
+  NoteCreateButton([NoteCreateButton])
+  NoteInputs([NoteInputs])
+  NotesIterator([NotesIterator])
+
+  %% Functions
+  getCurrentDate[getCurrentDate]
+  formatNoteDate[formatNoteDate]
+
+  %% Render relationships
+  Note -->|render| NoteInputs
+  NoteCreate -->|render| NoteFormContent
+  NoteFormContent -->|render| NoteInputs
+  NoteFormContent -->|render| NoteCreateButton
+  NotesIterator -->|render| NoteCreate
+  NotesIterator -->|render| Note
+
+  %% Function calls
+  NoteCreateButton -->|call| getCurrentDate
+  NoteInputs -->|call| getCurrentDate

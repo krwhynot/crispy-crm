@@ -1,0 +1,40 @@
+---
+title: settings Feature
+---
+flowchart LR
+
+  %% Components
+  DigestPreferences([DigestPreferences])
+  RolePermissionsMatrix([RolePermissionsMatrix])
+  SettingsLayout([SettingsLayout])
+  SettingsPage([SettingsPage])
+  TimeZoneSelect([TimeZoneSelect])
+  Settings([Settings])
+  AuditLogSection([AuditLogSection])
+  NotificationsSection([NotificationsSection])
+  PersonalSection([PersonalSection])
+  TextRender([TextRender])
+  SecuritySection([SecuritySection])
+  UsersSection([UsersSection])
+
+  %% Hooks
+  useSalesUpdate((useSalesUpdate))
+
+  %% Render relationships
+  SettingsPage -->|render| PersonalSection
+  SettingsPage -->|render| NotificationsSection
+  SettingsPage -->|render| SecuritySection
+  SettingsPage -->|render| UsersSection
+  SettingsPage -->|render| AuditLogSection
+  SettingsPage -->|render| SettingsLayout
+  Settings -->|render| SettingsPage
+  NotificationsSection -->|render| DigestPreferences
+  PersonalSection -->|render| TextRender
+  PersonalSection -->|render| TextRender
+  PersonalSection -->|render| TextRender
+  PersonalSection -->|render| TimeZoneSelect
+  SecuritySection -->|render| RolePermissionsMatrix
+
+  %% Hook dependencies
+  SettingsPage -.->|hook| useSalesUpdate
+  PersonalSection -.->|hook| useSalesUpdate

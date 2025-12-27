@@ -1,0 +1,36 @@
+---
+title: tutorial Feature
+---
+flowchart LR
+
+  %% Components
+  OpportunityCreateFormTutorial([OpportunityCreateFormTutorial])
+  PageTutorialTrigger([PageTutorialTrigger])
+  TutorialLauncher([TutorialLauncher])
+  TutorialProvider([TutorialProvider])
+
+  %% Hooks
+  useTutorial((useTutorial))
+  useTutorialProgress((useTutorialProgress))
+
+  %% Functions
+  getChapterSteps[getChapterSteps]
+  getChapterOrder[getChapterOrder]
+  loadProgress[loadProgress]
+  saveProgress[saveProgress]
+  waitForElement[waitForElement]
+  elementExists[elementExists]
+  filterValidSteps[filterValidSteps]
+
+  %% Hook dependencies
+  PageTutorialTrigger -.->|hook| useTutorial
+  TutorialLauncher -.->|hook| useTutorial
+  TutorialProvider -.->|hook| useTutorialProgress
+
+  %% Function calls
+  OpportunityCreateFormTutorial -->|call| filterValidSteps
+  OpportunityCreateFormTutorial -->|call| waitForElement
+  TutorialProvider -->|call| waitForElement
+  TutorialProvider -->|call| getChapterSteps
+  useTutorialProgress -->|call| saveProgress
+  filterValidSteps -->|call| elementExists

@@ -1,0 +1,25 @@
+---
+title: layout Feature
+---
+flowchart LR
+
+  %% Components
+  FormToolbar([FormToolbar])
+  Header([Header])
+  NavigationTab([NavigationTab])
+  UsersMenu([UsersMenu])
+  ConfigurationMenu([ConfigurationMenu])
+  Layout([Layout])
+  TopToolbar([TopToolbar])
+
+  %% Render relationships
+  Header -->|render| NavigationTab
+  Header -->|render| NavigationTab
+  Header -->|render| NavigationTab
+  Header -->|render| NavigationTab
+  Header -->|render| NavigationTab
+  Header -->|render| NavigationTab
+  Header -->|render| NavigationTab
+  Header -->|render| ConfigurationMenu
+  Header -->|render| UsersMenu
+  Layout -->|render| Header

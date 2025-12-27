@@ -1,0 +1,14 @@
+---
+title: shared Feature
+---
+flowchart LR
+
+  %% Components
+  ContactSelectField([ContactSelectField])
+  Status([Status])
+
+  %% Functions
+  getStatusBackgroundClass[getStatusBackgroundClass]
+
+  %% Function calls
+  Status -->|call| getStatusBackgroundClass

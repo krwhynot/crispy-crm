@@ -1,0 +1,224 @@
+---
+title: opportunities Feature
+---
+flowchart LR
+
+  %% Components
+  ActivitiesList([ActivitiesList])
+  ContactSelectField([ContactSelectField])
+  ActivityNoteForm([ActivityNoteForm])
+  ActivityTimelineFilters([ActivityTimelineFilters])
+  BulkActionsToolbar([BulkActionsToolbar])
+  CampaignGroupedList([CampaignGroupedList])
+  ChangeLogTab([ChangeLogTab])
+  ChangeLogEntry([ChangeLogEntry])
+  ContactList([ContactList])
+  LeadSourceInput([LeadSourceInput])
+  OnlyMineInput([OnlyMineInput])
+  OpportunityArchivedList([OpportunityArchivedList])
+  OpportunityAside([OpportunityAside])
+  OpportunityCreate([OpportunityCreate])
+  OpportunityFormContent([OpportunityFormContent])
+  OpportunityCreateWizard([OpportunityCreateWizard])
+  OpportunityWizardContent([OpportunityWizardContent])
+  OpportunityEdit([OpportunityEdit])
+  OpportunityEditForm([OpportunityEditForm])
+  EditHeader([EditHeader])
+  OpportunityEmpty([OpportunityEmpty])
+  OpportunityHeader([OpportunityHeader])
+  OpportunityInputs([OpportunityInputs])
+  OpportunityList([OpportunityList])
+  OpportunityListLayout([OpportunityListLayout])
+  OpportunityListFilter([OpportunityListFilter])
+  OpportunityListTutorial([OpportunityListTutorial])
+  OpportunityRowListView([OpportunityRowListView])
+  OpportunityShow([OpportunityShow])
+  OpportunityShowContent([OpportunityShowContent])
+  OpportunitySlideOver([OpportunitySlideOver])
+  OpportunitySpeedDial([OpportunitySpeedDial])
+  OpportunityViewSwitcher([OpportunityViewSwitcher])
+  OrganizationInfoCard([OrganizationInfoCard])
+  PrincipalGroupedList([PrincipalGroupedList])
+  PrincipalColumn([PrincipalColumn])
+  PrincipalOpportunityCard([PrincipalOpportunityCard])
+  ProductsTable([ProductsTable])
+  RelatedOpportunitiesSection([RelatedOpportunitiesSection])
+  WorkflowManagementSection([WorkflowManagementSection])
+  ArchiveButton([ArchiveButton])
+  UnarchiveButton([UnarchiveButton])
+  ArchivedBanner([ArchivedBanner])
+  CloseOpportunityModal([CloseOpportunityModal])
+  ContactOrgMismatchWarning([ContactOrgMismatchWarning])
+  CustomerDistributorIndicator([CustomerDistributorIndicator])
+  DistributorAuthorizationWarning([DistributorAuthorizationWarning])
+  MetadataField([MetadataField])
+  MetadataRow([MetadataRow])
+  OpportunityActivitySection([OpportunityActivitySection])
+  OpportunityCreateSaveButton([OpportunityCreateSaveButton])
+  SimilarOpportunitiesDialog([SimilarOpportunitiesDialog])
+  NamingConventionHelp([NamingConventionHelp])
+  OpportunityCompactForm([OpportunityCompactForm])
+  OpportunityInputs([OpportunityInputs])
+  OpportunityWizardStep1([OpportunityWizardStep1])
+  OpportunityWizardStep2([OpportunityWizardStep2])
+  OpportunityWizardStep3([OpportunityWizardStep3])
+  OpportunityWizardStep4([OpportunityWizardStep4])
+  OpportunityActivityTab([OpportunityActivityTab])
+
+  %% Hooks
+  useAutoGenerateName((useAutoGenerateName))
+  useBulkActionsState((useBulkActionsState))
+  useColumnPreferences((useColumnPreferences))
+  useContactOrgMismatch((useContactOrgMismatch))
+  useCustomerDistributors((useCustomerDistributors))
+  useDistributorAuthorization((useDistributorAuthorization))
+  useExportOpportunities((useExportOpportunities))
+  useFilteredProducts((useFilteredProducts))
+  useOpportunityContacts((useOpportunityContacts))
+  useQuickAdd((useQuickAdd))
+  useSimilarOpportunityCheck((useSimilarOpportunityCheck))
+
+  %% Functions
+  getRelativeTimeString[getRelativeTimeString]
+  getViewPreference[getViewPreference]
+  saveViewPreference[saveViewPreference]
+  stopPropagation[stopPropagation]
+  calculateMetrics[calculateMetrics]
+  getStatusPriority[getStatusPriority]
+  sortOpportunities[sortOpportunities]
+  getDueStatus[getDueStatus]
+  getDueLabel[getDueLabel]
+  getSimilarityLabel[getSimilarityLabel]
+  getSimilarityVariant[getSimilarityVariant]
+  getDefaultVisibleStages[getDefaultVisibleStages]
+  getFilterChoice[getFilterChoice]
+  formatFilterValue[formatFilterValue]
+  getFilterPresets[getFilterPresets]
+  getOpportunityStageLabel[getOpportunityStageLabel]
+  getOpportunityStageColor[getOpportunityStageColor]
+  getOpportunityStageDescription[getOpportunityStageDescription]
+  getOpportunityStageElevation[getOpportunityStageElevation]
+  getOpportunityMfbPhase[getOpportunityMfbPhase]
+  isActiveStage[isActiveStage]
+  isClosedStage[isClosedStage]
+  findOpportunityLabel[findOpportunityLabel]
+  isRotting[isRotting]
+  getWarningThreshold[getWarningThreshold]
+  getStageStatus[getStageStatus]
+  sortOpportunitiesByStatus[sortOpportunitiesByStatus]
+  getOpportunitiesByStage[getOpportunitiesByStage]
+  calculateStageMetrics[calculateStageMetrics]
+
+  %% Render relationships
+  ActivityNoteForm -->|render| ContactSelectField
+  ChangeLogTab -->|render| ChangeLogEntry
+  OpportunityCreate -->|render| OpportunityFormContent
+  OpportunityCreate -->|render| SimilarOpportunitiesDialog
+  OpportunityFormContent -->|render| OpportunityInputs
+  OpportunityFormContent -->|render| OpportunityCreateSaveButton
+  OpportunityCreateWizard -->|render| OpportunityWizardContent
+  OpportunityCreateWizard -->|render| SimilarOpportunitiesDialog
+  OpportunityWizardContent -->|render| OpportunityWizardStep1
+  OpportunityWizardContent -->|render| OpportunityWizardStep2
+  OpportunityWizardContent -->|render| OpportunityWizardStep3
+  OpportunityWizardContent -->|render| OpportunityWizardStep4
+  OpportunityEdit -->|render| OpportunityEditForm
+  OpportunityEditForm -->|render| EditHeader
+  OpportunityEditForm -->|render| OpportunityCompactForm
+  OpportunityEditForm -->|render| OpportunityActivitySection
+  OpportunityHeader -->|render| UnarchiveButton
+  OpportunityHeader -->|render| ArchiveButton
+  OpportunityHeader -->|render| ArchiveButton
+  OpportunityInputs -->|render| OpportunityCompactForm
+  OpportunityList -->|render| OpportunityListLayout
+  OpportunityList -->|render| OpportunitySpeedDial
+  OpportunityList -->|render| OpportunitySlideOver
+  OpportunityList -->|render| OpportunityListTutorial
+  OpportunityListLayout -->|render| OpportunityEmpty
+  OpportunityListLayout -->|render| OpportunityListFilter
+  OpportunityListLayout -->|render| OpportunityListFilter
+  OpportunityListLayout -->|render| OpportunityArchivedList
+  OpportunityListLayout -->|render| OpportunityListFilter
+  OpportunityListLayout -->|render| OpportunityViewSwitcher
+  OpportunityListLayout -->|render| OpportunityArchivedList
+  OpportunityListLayout -->|render| OpportunityListFilter
+  OpportunityListLayout -->|render| OpportunityViewSwitcher
+  OpportunityListLayout -->|render| CampaignGroupedList
+  OpportunityListLayout -->|render| PrincipalGroupedList
+  OpportunityListLayout -->|render| OpportunityRowListView
+  OpportunityListLayout -->|render| OpportunityArchivedList
+  OpportunityRowListView -->|render| BulkActionsToolbar
+  OpportunityShow -->|render| OpportunityShowContent
+  OpportunityShowContent -->|render| ArchivedBanner
+  OpportunityShowContent -->|render| OpportunityHeader
+  OpportunityShowContent -->|render| OrganizationInfoCard
+  OpportunityShowContent -->|render| WorkflowManagementSection
+  OpportunityShowContent -->|render| RelatedOpportunitiesSection
+  OpportunityShowContent -->|render| ContactList
+  OpportunityShowContent -->|render| ProductsTable
+  OpportunityShowContent -->|render| ActivityNoteForm
+  OpportunityShowContent -->|render| ActivityTimelineFilters
+  OpportunityShowContent -->|render| ActivitiesList
+  OpportunityShowContent -->|render| ChangeLogTab
+  OpportunityShowContent -->|render| OpportunityAside
+  PrincipalGroupedList -->|render| PrincipalColumn
+  PrincipalColumn -->|render| PrincipalOpportunityCard
+  OpportunityActivitySection -->|render| ActivityNoteForm
+  OpportunityCompactForm -->|render| NamingConventionHelp
+  OpportunityCompactForm -->|render| DistributorAuthorizationWarning
+  OpportunityCompactForm -->|render| ContactOrgMismatchWarning
+  OpportunityInputs -->|render| OpportunityCompactForm
+  OpportunityWizardStep1 -->|render| NamingConventionHelp
+  OpportunityWizardStep2 -->|render| CustomerDistributorIndicator
+  OpportunityWizardStep2 -->|render| DistributorAuthorizationWarning
+  OpportunityWizardStep3 -->|render| ContactOrgMismatchWarning
+  OpportunityActivityTab -->|render| ActivityNoteForm
+
+  %% Hook dependencies
+  BulkActionsToolbar -.->|hook| useBulkActionsState
+  BulkActionsToolbar -.->|hook| useExportOpportunities
+  OpportunityCreate -.->|hook| useSimilarOpportunityCheck
+  OpportunityCreateWizard -.->|hook| useSimilarOpportunityCheck
+  ContactOrgMismatchWarning -.->|hook| useContactOrgMismatch
+  CustomerDistributorIndicator -.->|hook| useCustomerDistributors
+  DistributorAuthorizationWarning -.->|hook| useDistributorAuthorization
+  OpportunityCompactForm -.->|hook| useAutoGenerateName
+  OpportunityWizardStep1 -.->|hook| useAutoGenerateName
+  OpportunityWizardStep2 -.->|hook| useCustomerDistributors
+
+  %% Function calls
+  BulkActionsToolbar -->|call| getOpportunityStageColor
+  BulkActionsToolbar -->|call| getOpportunityStageLabel
+  BulkActionsToolbar -->|call| getOpportunityStageColor
+  BulkActionsToolbar -->|call| getOpportunityStageLabel
+  CampaignGroupedList -->|call| stopPropagation
+  OpportunityArchivedList -->|call| getRelativeTimeString
+  OpportunityArchivedList -->|call| getOpportunityStageLabel
+  OpportunityAside -->|call| getOpportunityStageLabel
+  OpportunityList -->|call| saveViewPreference
+  OpportunityRowListView -->|call| stopPropagation
+  OpportunityRowListView -->|call| getOpportunityStageColor
+  OpportunityRowListView -->|call| getOpportunityStageLabel
+  OpportunityShowContent -->|call| findOpportunityLabel
+  stopPropagation -->|call| stopPropagation
+  sortOpportunities -->|call| getStageStatus
+  sortOpportunities -->|call| getStageStatus
+  sortOpportunities -->|call| getStatusPriority
+  sortOpportunities -->|call| getStatusPriority
+  PrincipalGroupedList -->|call| sortOpportunities
+  PrincipalGroupedList -->|call| calculateMetrics
+  PrincipalOpportunityCard -->|call| getStageStatus
+  PrincipalOpportunityCard -->|call| getOpportunityStageLabel
+  WorkflowManagementSection -->|call| stopPropagation
+  OpportunityCreateSaveButton -->|call| stopPropagation
+  SimilarOpportunitiesDialog -->|call| getOpportunityStageColor
+  SimilarOpportunitiesDialog -->|call| getOpportunityStageLabel
+  SimilarOpportunitiesDialog -->|call| getSimilarityVariant
+  SimilarOpportunitiesDialog -->|call| getSimilarityLabel
+  formatFilterValue -->|call| getFilterChoice
+  findOpportunityLabel -->|call| getOpportunityStageLabel
+  sortOpportunitiesByStatus -->|call| getStageStatus
+  sortOpportunitiesByStatus -->|call| getStageStatus
+  getOpportunitiesByStage -->|call| sortOpportunitiesByStatus
+  useExportOpportunities -->|call| getOpportunityStageLabel
+  calculateStageMetrics -->|call| getStageStatus

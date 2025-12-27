@@ -1,0 +1,24 @@
+---
+title: admin Feature
+---
+flowchart LR
+
+  %% Components
+  StatusIndicator([StatusIndicator])
+  MetricCard([MetricCard])
+  HealthDashboard([HealthDashboard])
+
+  %% Functions
+  getStatusColor[getStatusColor]
+  getStatusText[getStatusText]
+
+  %% Render relationships
+  HealthDashboard -->|render| StatusIndicator
+  HealthDashboard -->|render| MetricCard
+  HealthDashboard -->|render| MetricCard
+  HealthDashboard -->|render| MetricCard
+  HealthDashboard -->|render| MetricCard
+
+  %% Function calls
+  HealthDashboard -->|call| getStatusColor
+  HealthDashboard -->|call| getStatusText

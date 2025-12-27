@@ -1,0 +1,152 @@
+---
+title: dashboard Feature
+---
+flowchart LR
+
+  %% Components
+  DashboardTutorial([DashboardTutorial])
+  PrincipalDashboardV3([PrincipalDashboardV3])
+  ActivityFeedPanel([ActivityFeedPanel])
+  ActivityTypeSection([ActivityTypeSection])
+  TabSkeleton([TabSkeleton])
+  DashboardTabPanel([DashboardTabPanel])
+  EntityCombobox([EntityCombobox])
+  FollowUpSection([FollowUpSection])
+  KPICard([KPICard])
+  KPISummaryRow([KPISummaryRow])
+  QuickLogFormSkeleton([QuickLogFormSkeleton])
+  LogActivityFAB([LogActivityFAB])
+  QuickLogFormSkeleton([QuickLogFormSkeleton])
+  MobileQuickActionBar([MobileQuickActionBar])
+  MetricCard([MetricCard])
+  MyPerformanceWidget([MyPerformanceWidget])
+  PipelineDrillDownSheet([PipelineDrillDownSheet])
+  OpportunityCard([OpportunityCard])
+  MomentumIcon([MomentumIcon])
+  PipelineTableRow([PipelineTableRow])
+  PrincipalPipelineTable([PrincipalPipelineTable])
+  SortableTableHead([SortableTableHead])
+  MomentumFilterDropdown([MomentumFilterDropdown])
+  EmptyState([EmptyState])
+  QuickLogForm([QuickLogForm])
+  SnoozePopover([SnoozePopover])
+  TaskItemCard([TaskItemCard])
+  TaskListSkeleton([TaskListSkeleton])
+  TaskCompleteSheet([TaskCompleteSheet])
+  TasksKanbanPanel([TasksKanbanPanel])
+  CurrentSaleProvider([CurrentSaleProvider])
+  DashboardSkeleton([DashboardSkeleton])
+  PrincipalDashboardV3WithProvider([PrincipalDashboardV3WithProvider])
+
+  %% Hooks
+  useCurrentSale((useCurrentSale))
+  useCurrentSaleDirect((useCurrentSaleDirect))
+  useDebouncedSearch((useDebouncedSearch))
+  useEntityData((useEntityData))
+  useHybridSearch((useHybridSearch))
+  useKPIMetrics((useKPIMetrics))
+  useMyPerformance((useMyPerformance))
+  useMyTasks((useMyTasks))
+  usePipelineTableState((usePipelineTableState))
+  usePrincipalOpportunities((usePrincipalOpportunities))
+  usePrincipalPipeline((usePrincipalPipeline))
+  useTaskCount((useTaskCount))
+  useTeamActivities((useTeamActivities))
+
+  %% Functions
+  formatActivityType[formatActivityType]
+  formatRelativeTime[formatRelativeTime]
+  getInitials[getInitials]
+  getDisplayName[getDisplayName]
+  loadDraft[loadDraft]
+  saveDraft[saveDraft]
+  clearDraft[clearDraft]
+  getDecayIndicatorColor[getDecayIndicatorColor]
+  arePropsEqual[arePropsEqual]
+  getTaskIcon[getTaskIcon]
+  arePropsEqual[arePropsEqual]
+  calculateTrend[calculateTrend]
+  createMetric[createMetric]
+  showFollowUpToast[showFollowUpToast]
+
+  %% Render relationships
+  PrincipalDashboardV3 -->|render| KPISummaryRow
+  PrincipalDashboardV3 -->|render| DashboardTabPanel
+  PrincipalDashboardV3 -->|render| LogActivityFAB
+  PrincipalDashboardV3 -->|render| MobileQuickActionBar
+  PrincipalDashboardV3 -->|render| TaskCompleteSheet
+  PrincipalDashboardV3 -->|render| DashboardTutorial
+  DashboardTabPanel -->|render| TabSkeleton
+  DashboardTabPanel -->|render| PrincipalPipelineTable
+  DashboardTabPanel -->|render| TabSkeleton
+  DashboardTabPanel -->|render| TasksKanbanPanel
+  DashboardTabPanel -->|render| TabSkeleton
+  DashboardTabPanel -->|render| MyPerformanceWidget
+  DashboardTabPanel -->|render| TabSkeleton
+  DashboardTabPanel -->|render| ActivityFeedPanel
+  KPISummaryRow -->|render| KPICard
+  KPISummaryRow -->|render| KPICard
+  KPISummaryRow -->|render| KPICard
+  KPISummaryRow -->|render| KPICard
+  LogActivityFAB -->|render| QuickLogFormSkeleton
+  LogActivityFAB -->|render| QuickLogForm
+  MobileQuickActionBar -->|render| QuickLogFormSkeleton
+  MobileQuickActionBar -->|render| QuickLogForm
+  MyPerformanceWidget -->|render| MetricCard
+  MyPerformanceWidget -->|render| MetricCard
+  MyPerformanceWidget -->|render| MetricCard
+  MyPerformanceWidget -->|render| MetricCard
+  PipelineDrillDownSheet -->|render| OpportunityCard
+  PipelineTableRow -->|render| MomentumIcon
+  PrincipalPipelineTable -->|render| MomentumFilterDropdown
+  PrincipalPipelineTable -->|render| EmptyState
+  PrincipalPipelineTable -->|render| SortableTableHead
+  PrincipalPipelineTable -->|render| SortableTableHead
+  PrincipalPipelineTable -->|render| SortableTableHead
+  PrincipalPipelineTable -->|render| SortableTableHead
+  PrincipalPipelineTable -->|render| SortableTableHead
+  PrincipalPipelineTable -->|render| PipelineTableRow
+  PrincipalPipelineTable -->|render| PipelineDrillDownSheet
+  QuickLogForm -->|render| ActivityTypeSection
+  QuickLogForm -->|render| EntityCombobox
+  QuickLogForm -->|render| EntityCombobox
+  QuickLogForm -->|render| EntityCombobox
+  QuickLogForm -->|render| FollowUpSection
+  TaskCompleteSheet -->|render| TaskListSkeleton
+  TaskCompleteSheet -->|render| TaskItemCard
+  PrincipalDashboardV3WithProvider -->|render| CurrentSaleProvider
+  PrincipalDashboardV3WithProvider -->|render| DashboardSkeleton
+
+  %% Hook dependencies
+  ActivityFeedPanel -.->|hook| useTeamActivities
+  DashboardTabPanel -.->|hook| useTaskCount
+  KPISummaryRow -.->|hook| useKPIMetrics
+  MyPerformanceWidget -.->|hook| useMyPerformance
+  PipelineDrillDownSheet -.->|hook| usePrincipalOpportunities
+  PrincipalPipelineTable -.->|hook| usePrincipalPipeline
+  PrincipalPipelineTable -.->|hook| usePipelineTableState
+  QuickLogForm -.->|hook| useCurrentSale
+  QuickLogForm -.->|hook| useEntityData
+  TaskCompleteSheet -.->|hook| useMyTasks
+  TasksKanbanPanel -.->|hook| useMyTasks
+  useCurrentSale -.->|hook| useCurrentSaleDirect
+  useEntityData -.->|hook| useDebouncedSearch
+  useEntityData -.->|hook| useDebouncedSearch
+  useEntityData -.->|hook| useDebouncedSearch
+  useKPIMetrics -.->|hook| useCurrentSale
+  useMyPerformance -.->|hook| useCurrentSale
+  useMyTasks -.->|hook| useCurrentSale
+  usePrincipalPipeline -.->|hook| useCurrentSale
+  useTaskCount -.->|hook| useCurrentSale
+
+  %% Function calls
+  LogActivityFAB -->|call| loadDraft
+  LogActivityFAB -->|call| clearDraft
+  LogActivityFAB -->|call| saveDraft
+  LogActivityFAB -->|call| loadDraft
+  PipelineTableRow -->|call| getDecayIndicatorColor
+  createMetric -->|call| calculateTrend
+  useMyPerformance -->|call| createMetric
+  useMyPerformance -->|call| createMetric
+  useMyPerformance -->|call| createMetric
+  useMyPerformance -->|call| createMetric

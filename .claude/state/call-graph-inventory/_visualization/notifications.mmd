@@ -1,0 +1,32 @@
+---
+title: notifications Feature
+---
+flowchart LR
+
+  %% Components
+  NotificationsList([NotificationsList])
+  NotificationsListLayout([NotificationsListLayout])
+  NotificationsListActions([NotificationsListActions])
+  NotificationsListFilter([NotificationsListFilter])
+  NotificationsListContent([NotificationsListContent])
+  NotificationRow([NotificationRow])
+  NotificationsBulkActions([NotificationsBulkActions])
+  NotificationsEmpty([NotificationsEmpty])
+  NotificationsListView([NotificationsListView])
+
+  %% Functions
+  getEntityLink[getEntityLink]
+  getNotificationTypeLabel[getNotificationTypeLabel]
+
+  %% Render relationships
+  NotificationsList -->|render| NotificationsListActions
+  NotificationsList -->|render| NotificationsEmpty
+  NotificationsList -->|render| NotificationsListLayout
+  NotificationsListLayout -->|render| NotificationsListFilter
+  NotificationsListLayout -->|render| NotificationsListContent
+  NotificationsListLayout -->|render| NotificationsBulkActions
+  NotificationsListContent -->|render| NotificationRow
+
+  %% Function calls
+  NotificationRow -->|call| getEntityLink
+  NotificationRow -->|call| getNotificationTypeLabel

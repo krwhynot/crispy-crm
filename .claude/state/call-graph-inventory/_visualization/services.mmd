@@ -1,0 +1,13 @@
+---
+title: services Feature
+---
+flowchart LR
+
+  %% Functions
+  createDigestService[createDigestService]
+  isErrorWithMessage[isErrorWithMessage]
+  getErrorMessage[getErrorMessage]
+  handleServiceError[handleServiceError]
+
+  %% Function calls
+  getErrorMessage -->|call| isErrorWithMessage

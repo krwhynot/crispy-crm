@@ -1,0 +1,97 @@
+---
+title: utils Feature
+---
+flowchart LR
+
+  %% Hooks
+  useNotifyWithRetry((useNotifyWithRetry))
+
+  %% Functions
+  fetchWithTimeout[fetchWithTimeout]
+  hash[hash]
+  getGravatarUrl[getGravatarUrl]
+  getFaviconUrl[getFaviconUrl]
+  getContactAvatar[getContactAvatar]
+  getOrganizationAvatar[getOrganizationAvatar]
+  processContactAvatar[processContactAvatar]
+  processOrganizationLogo[processOrganizationLogo]
+  extractEmailDomain[extractEmailDomain]
+  isValidEmailForAvatar[isValidEmailForAvatar]
+  getFallbackAvatarUrl[getFallbackAvatarUrl]
+  getOrganizationName[getOrganizationName]
+  cleanWebsiteUrl[cleanWebsiteUrl]
+  validateCsvFile[validateCsvFile]
+  isBinaryFile[isBinaryFile]
+  getSecurePapaParseConfig[getSecurePapaParseConfig]
+  sanitizeCsvValue[sanitizeCsvValue]
+  formatBytes[formatBytes]
+  normalizeName[normalizeName]
+  createDuplicateKey[createDuplicateKey]
+  detectDuplicates[detectDuplicates]
+  formatDuplicateSummary[formatDuplicateSummary]
+  extractEmailByType[extractEmailByType]
+  extractPhoneByType[extractPhoneByType]
+  flattenEmailsForExport[flattenEmailsForExport]
+  flattenPhonesForExport[flattenPhonesForExport]
+  formatName[formatName]
+  formatFullName[formatFullName]
+  getUserLocale[getUserLocale]
+  formatRelativeTime[formatRelativeTime]
+  formatFullName[formatFullName]
+  formatRoleAndDept[formatRoleAndDept]
+  formatSalesName[formatSalesName]
+  formatTagsForExport[formatTagsForExport]
+  formatCount[formatCount]
+  ucFirst[ucFirst]
+  getActivityIcon[getActivityIcon]
+  levenshteinDistance[levenshteinDistance]
+  findSimilarOpportunities[findSimilarOpportunities]
+  hasSimilarOpportunity[hasSimilarOpportunity]
+  getColumnVisibility[getColumnVisibility]
+  safeJsonParse[safeJsonParse]
+  saleOptionRenderer[saleOptionRenderer]
+  getStorageItem[getStorageItem]
+  setStorageItem[setStorageItem]
+  removeStorageItem[removeStorageItem]
+  clearStorageByPrefix[clearStorageByPrefix]
+  getKeysByPrefix[getKeysByPrefix]
+  isClosedStage[isClosedStage]
+  isActivePipelineStage[isActivePipelineStage]
+  getStaleThreshold[getStaleThreshold]
+  isOpportunityStale[isOpportunityStale]
+  getDaysSinceActivity[getDaysSinceActivity]
+  countStaleOpportunities[countStaleOpportunities]
+  filterStaleOpportunities[filterStaleOpportunities]
+
+  %% Function calls
+  getGravatarUrl -->|call| hash
+  getFaviconUrl -->|call| fetchWithTimeout
+  getContactAvatar -->|call| getGravatarUrl
+  getContactAvatar -->|call| getFaviconUrl
+  processContactAvatar -->|call| getContactAvatar
+  processOrganizationLogo -->|call| getOrganizationAvatar
+  validateCsvFile -->|call| formatBytes
+  validateCsvFile -->|call| formatBytes
+  validateCsvFile -->|call| isBinaryFile
+  createDuplicateKey -->|call| normalizeName
+  createDuplicateKey -->|call| normalizeName
+  detectDuplicates -->|call| createDuplicateKey
+  detectDuplicates -->|call| createDuplicateKey
+  detectDuplicates -->|call| createDuplicateKey
+  detectDuplicates -->|call| createDuplicateKey
+  flattenEmailsForExport -->|call| extractEmailByType
+  flattenEmailsForExport -->|call| extractEmailByType
+  flattenEmailsForExport -->|call| extractEmailByType
+  flattenPhonesForExport -->|call| extractPhoneByType
+  flattenPhonesForExport -->|call| extractPhoneByType
+  flattenPhonesForExport -->|call| extractPhoneByType
+  formatRelativeTime -->|call| getUserLocale
+  formatSalesName -->|call| formatFullName
+  findSimilarOpportunities -->|call| levenshteinDistance
+  hasSimilarOpportunity -->|call| findSimilarOpportunities
+  getStorageItem -->|call| setStorageItem
+  getStorageItem -->|call| setStorageItem
+  getStaleThreshold -->|call| isActivePipelineStage
+  isOpportunityStale -->|call| getStaleThreshold
+  countStaleOpportunities -->|call| isOpportunityStale
+  filterStaleOpportunities -->|call| isOpportunityStale
