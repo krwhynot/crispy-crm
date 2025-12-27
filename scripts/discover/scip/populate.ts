@@ -74,7 +74,7 @@ export async function populateDatabase(
 
   // Clear existing data unless incremental
   if (!incremental) {
-    db.exec("DELETE FROM references");
+    db.exec('DELETE FROM "references"');
     db.exec("DELETE FROM symbols");
     db.exec("DELETE FROM documents");
     db.exec("DELETE FROM file_contents_fts");
@@ -93,7 +93,7 @@ export async function populateDatabase(
   `);
 
   const insertRef = db.prepare(`
-    INSERT OR IGNORE INTO references
+    INSERT OR IGNORE INTO "references"
     (symbol_id, document_id, line, column, end_line, end_column, role)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `);
@@ -208,6 +208,9 @@ export async function populateDatabase(
   });
 
   populate();
+
+  // Rebuild FTS index to sync with content table (required after bulk insert)
+  db.exec("INSERT INTO symbols_fts(symbols_fts) VALUES('rebuild')");
 
   // Optimize FTS index
   db.exec("INSERT INTO symbols_fts(symbols_fts) VALUES('optimize')");

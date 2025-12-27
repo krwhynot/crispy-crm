@@ -103,8 +103,8 @@ END;
 CREATE INDEX IF NOT EXISTS idx_symbols_name ON symbols(name);
 CREATE INDEX IF NOT EXISTS idx_symbols_document ON symbols(document_id);
 CREATE INDEX IF NOT EXISTS idx_symbols_kind ON symbols(kind);
-CREATE INDEX IF NOT EXISTS idx_references_symbol ON references(symbol_id);
-CREATE INDEX IF NOT EXISTS idx_references_document ON references(document_id);
+CREATE INDEX IF NOT EXISTS idx_references_symbol ON "references"(symbol_id);
+CREATE INDEX IF NOT EXISTS idx_references_document ON "references"(document_id);
 CREATE INDEX IF NOT EXISTS idx_documents_path ON documents(relative_path);
 
 -- ============================================================================
@@ -135,7 +135,7 @@ SELECT
     COUNT(r.id) as reference_count
 FROM symbols s
 JOIN documents d ON s.document_id = d.id
-LEFT JOIN references r ON s.id = r.symbol_id
+LEFT JOIN "references" r ON s.id = r.symbol_id
 GROUP BY s.id;
 
 -- Hooks view (React hooks starting with "use")

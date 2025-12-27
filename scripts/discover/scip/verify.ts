@@ -57,7 +57,7 @@ export function verifyIndex(): VerificationResult {
   });
 
   // Test 3: Database has references
-  const refCount = db.prepare("SELECT COUNT(*) as count FROM references").get() as {
+  const refCount = db.prepare('SELECT COUNT(*) as count FROM "references"').get() as {
     count: number;
   };
   tests.push({
@@ -140,7 +140,7 @@ export function verifyIndex(): VerificationResult {
           r.line,
           r.role,
           d.relative_path
-        FROM references r
+        FROM "references" r
         JOIN documents d ON r.document_id = d.id
         WHERE r.symbol_id = ?
       `
