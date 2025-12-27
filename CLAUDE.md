@@ -21,6 +21,7 @@ Guidance for Claude Code working with Crispy CRM (Atomic CRM) - a React 19 + Typ
 | `.claude/state/types-inventory/` | 101 TypeScript types (~10 chunks) | "What types exist?", "Type definitions?" |
 | `.claude/state/forms-inventory.json` | 39 form components - includes componentChain, inputComponentsDeep | "What forms exist?", "Form hierarchy?", "Which inputs used?" |
 | `.claude/state/validation-services-inventory/` | Validation wrapper functions & custom validators | "Error formatting?", "Custom validators?" |
+| `.claude/state/call-graph-inventory/` | 919 nodes, 10K+ edges (30 chunks) - call/render/hook relationships, cycles | "What calls X?", "What renders Y?", "Circular deps?" |
 
 **These files are auto-generated and CI-enforced fresh.** Use them to understand structure before reading individual source files.
 
