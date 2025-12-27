@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Trash } from "lucide-react";
 import {
@@ -14,6 +15,7 @@ import {
 } from "ra-core";
 import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
+import { DeleteConfirmDialog } from "./delete-confirm-dialog";
 
 export interface BulkDeleteButtonProps<
   RecordType extends RaRecord = RaRecord,
@@ -46,8 +48,17 @@ export const BulkDeleteButton = <RecordType extends RaRecord = RaRecord, Mutatio
   const notify = useNotify();
   const refresh = useRefresh();
   const translate = useTranslate();
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  // Show confirmation dialog instead of immediate delete
   const handleClick = (e: React.MouseEvent) => {
     stopPropagation(e);
+    setShowConfirm(true);
+  };
+
+  // Perform actual deletion after user confirms
+  const handleConfirmDelete = () => {
+    setShowConfirm(false);
     deleteMany(
       resource,
       { ids: selectedIds, meta: mutationMeta },
@@ -78,17 +89,27 @@ export const BulkDeleteButton = <RecordType extends RaRecord = RaRecord, Mutatio
       }
     );
   };
+
   return (
-    <Button
-      variant="destructive"
-      type="button"
-      onClick={handleClick}
-      disabled={isPending}
-      className={cn(className)}
-    >
-      {icon}
-      <Translate i18nKey={label ?? "ra.action.delete"}>{label ?? "Delete"}</Translate>
-    </Button>
+    <>
+      <Button
+        variant="destructive"
+        type="button"
+        onClick={handleClick}
+        disabled={isPending}
+        className={cn(className)}
+      >
+        {icon}
+        <Translate i18nKey={label ?? "ra.action.delete"}>{label ?? "Delete"}</Translate>
+      </Button>
+      <DeleteConfirmDialog
+        open={showConfirm}
+        count={selectedIds.length}
+        resourceName={resource ?? "items"}
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setShowConfirm(false)}
+      />
+    </>
   );
 };
 
