@@ -111,3 +111,12 @@ screenshots/
 .claude/agents/
 .claude/hooks/state/
 .claude/troubleshooting/
+.claude/state/manifest.json
+
+# Old Docker-based code intelligence (superseded by embedded approach)
+.claude/qdrant/
+.claude/ollama/
+
+# Code intelligence index files (regenerate with `just discover-scip`)
+.claude/state/index.scip
+.claude/state/vectors.lance/
