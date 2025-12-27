@@ -962,6 +962,65 @@
         "todoScope": "all"
       }
     },
+    "discovery-first": {
+      "type": "guardrail",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Use pre-computed discovery files at .claude/state/ for codebase inventory questions instead of scanning source files. Saves 90%+ tokens.",
+      "promptTriggers": {
+        "keywords": [
+          "component",
+          "components",
+          "hook",
+          "hooks",
+          "schema",
+          "schemas",
+          "form",
+          "forms",
+          "type",
+          "types",
+          "inventory",
+          "what exists",
+          "list all",
+          "how many",
+          "which components",
+          "what hooks",
+          "what schemas",
+          "what forms",
+          "what types",
+          "codebase structure",
+          "component hierarchy",
+          "call graph",
+          "who calls",
+          "what calls",
+          "dependencies"
+        ],
+        "intentPatterns": [
+          "(what|which|list|show|find).*?(component|hook|schema|form|type)s?",
+          "how many.*?(component|hook|schema|form|type)s?",
+          "(find|search|locate).*?(component|hook|schema|form|type)s?",
+          "(what|which).*?(exist|available|defined)",
+          "(list|show|display).*?all.*?(component|hook|schema|form|type)s?",
+          "(codebase|code|project).*?(structure|hierarchy|overview)",
+          "(who|what).*?calls?.*?(function|hook|component)",
+          "(component|hook).*?(use|depend|import)",
+          "inventory.*?(component|hook|schema|form|type)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          ".claude/state/**/*.json"
+        ],
+        "contentPatterns": [
+          "component-inventory",
+          "hooks-inventory",
+          "schemas-inventory",
+          "forms-inventory",
+          "types-inventory",
+          "call-graph-inventory"
+        ]
+      }
+    },
     "troubleshooting": {
       "type": "domain",
       "enforcement": "contextual",
