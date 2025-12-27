@@ -194,19 +194,39 @@ function hasPipe(text: string): boolean {
 /**
  * AST-based transform detection for Node objects.
  * More reliable than regex for nested structures like z.union([...]).
+ *
+ * IMPORTANT: Checks BOTH the node itself AND its descendants.
+ * In chains like z.string().refine().transform(), the .transform()
+ * is the outermost CallExpression, not a descendant.
  */
 function hasTransformInNode(node: Node): boolean {
-  const callExprs = node.getDescendantsOfKind(SyntaxKind.CallExpression);
+  // Helper to check if a CallExpression is a .transform() call
+  const isTransformCall = (callExpr: Node): boolean => {
+    if (callExpr.getKind() !== SyntaxKind.CallExpression) return false;
 
-  for (const call of callExprs) {
-    const expr = call.getExpression();
+    const expr = (callExpr as CallExpression).getExpression();
     if (expr.getKind() === SyntaxKind.PropertyAccessExpression) {
       const propAccess = expr.asKindOrThrow(SyntaxKind.PropertyAccessExpression);
       if (propAccess.getName() === 'transform') {
         return true;
       }
     }
+    return false;
+  };
+
+  // Check the node itself (handles z.string().refine().transform() case)
+  if (isTransformCall(node)) {
+    return true;
   }
+
+  // Check all descendant CallExpressions (handles nested transforms in unions, etc.)
+  const callExprs = node.getDescendantsOfKind(SyntaxKind.CallExpression);
+  for (const call of callExprs) {
+    if (isTransformCall(call)) {
+      return true;
+    }
+  }
+
   return false;
 }
 
