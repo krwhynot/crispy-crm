@@ -231,7 +231,8 @@ Deno.serve(async (req) => {
   try {
     // Verify authorization (internal cron job or service role)
     const authHeader = req.headers.get("Authorization");
-    const serviceKey = Deno.env.get("SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+    // LOCAL_ prefixed vars allow Docker container to use host.docker.internal
+    const serviceKey = Deno.env.get("LOCAL_SERVICE_ROLE_KEY") || Deno.env.get("SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
     if (!authHeader?.includes(serviceKey || "")) {
       return new Response(JSON.stringify({ error: "Unauthorized" }), {

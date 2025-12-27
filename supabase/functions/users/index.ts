@@ -304,8 +304,9 @@ Deno.serve(async (req: Request) => {
     return createErrorResponse(401, "Missing or invalid Authorization header", corsHeaders);
   }
 
-  const supabaseUrl = Deno.env.get("SUPABASE_URL");
-  const supabaseAnonKey = Deno.env.get("SUPABASE_ANON_KEY");
+  // LOCAL_ prefixed vars allow Docker container to use host.docker.internal
+  const supabaseUrl = Deno.env.get("LOCAL_SUPABASE_URL") || Deno.env.get("SUPABASE_URL");
+  const supabaseAnonKey = Deno.env.get("LOCAL_SUPABASE_ANON_KEY") || Deno.env.get("SUPABASE_ANON_KEY");
 
   if (!supabaseUrl || !supabaseAnonKey) {
     console.error("Missing environment variables");

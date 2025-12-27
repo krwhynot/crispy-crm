@@ -74,8 +74,9 @@ interface DigestResult {
 }
 
 // Authentication secrets
+// LOCAL_ prefixed vars allow Docker container to use host.docker.internal
 const CRON_SECRET = Deno.env.get("CRON_SECRET");
-const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
+const SERVICE_ROLE_KEY = Deno.env.get("LOCAL_SERVICE_ROLE_KEY") || Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
 
 /**
  * Process a single user's digest - FAIL-FAST pattern
@@ -190,9 +191,10 @@ Deno.serve(async (req) => {
         console.log("Authenticated via cron/service key");
       } else if (authHeader?.startsWith("Bearer ")) {
         // Verify JWT for manual API calls
+        // LOCAL_ prefixed vars allow Docker container to use host.docker.internal
         const localClient = createClient(
-          Deno.env.get("SUPABASE_URL") ?? "",
-          Deno.env.get("SUPABASE_ANON_KEY") ?? "",
+          Deno.env.get("LOCAL_SUPABASE_URL") || Deno.env.get("SUPABASE_URL") || "",
+          Deno.env.get("LOCAL_SUPABASE_ANON_KEY") || Deno.env.get("SUPABASE_ANON_KEY") || "",
           { global: { headers: { Authorization: authHeader } } }
         );
         const { data: authData } = await localClient.auth.getUser();
