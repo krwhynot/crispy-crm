@@ -8,7 +8,7 @@ import { extractSchemas } from "./extractors/schemas.js";
 import { extractTypes } from "./extractors/types.js";
 import { extractForms } from "./extractors/forms.js";
 import { extractValidationServices } from "./extractors/validation-services.js";
-import { isDiscoveryStale, isChunkedDiscoveryStale, getStaleChunks, type StaleChunksResult } from "./utils/output.js";
+import { isDiscoveryStale, isChunkedDiscoveryStale, getStaleChunks, readExistingManifest, writeIncrementalChunkedDiscovery, type StaleChunksResult, type ChunkedManifest } from "./utils/output.js";
 import { project } from "./utils/project.js";
 
 interface ExtractorConfig {
@@ -16,7 +16,7 @@ interface ExtractorConfig {
   label: string;
   outputPath: string;        // File name for single file, directory name for chunked
   isChunked: boolean;        // Whether output is chunked (directory with manifest)
-  extractFn: () => Promise<void>;
+  extractFn: (onlyChunks?: Set<string>) => Promise<void>;
   getSourceFiles: () => string[];
 }
 
@@ -286,7 +286,15 @@ async function main() {
 
     for (const extractor of extractorsToUse) {
       if (!extractor.isChunked) {
-        console.log(chalk.gray(`⏭  ${extractor.label}: Skipping (not chunked)`));
+        // Non-chunked extractors run full extraction
+        const spinner = ora(chalk.blue(`Extracting ${extractor.label.toLowerCase()}...`)).start();
+        try {
+          await extractor.extractFn();
+          spinner.succeed(chalk.green(`${extractor.label} extracted (full)`));
+        } catch (error) {
+          spinner.fail(chalk.red(`${extractor.label} failed`));
+          throw error;
+        }
         continue;
       }
 
@@ -298,8 +306,9 @@ async function main() {
       );
 
       if (staleResult.requiresFullRegen) {
-        console.log(chalk.yellow(`⚠  ${extractor.label}: ${staleResult.fullRegenReason}`));
-        console.log(chalk.gray(`   Run without --incremental for full regeneration`));
+        console.log(chalk.yellow(`⚠️  ${extractor.label}: ${staleResult.fullRegenReason}`));
+        console.log(chalk.gray(`   Running full extraction...`));
+        await extractor.extractFn();
         continue;
       }
 
@@ -308,21 +317,19 @@ async function main() {
         continue;
       }
 
-      // Log which chunks will be updated
-      const staleCount = staleResult.staleChunks.length;
-      const totalCount = staleCount + staleResult.freshChunks.length;
-      console.log(chalk.blue(`📝 ${extractor.label}: Updating ${staleCount} of ${totalCount} chunks: ${staleResult.staleChunks.join(", ")}`));
+      // Perform incremental extraction
+      const staleChunkSet = new Set(staleResult.staleChunks);
+      console.log(chalk.blue(`📝 ${extractor.label}: Updating ${staleResult.staleChunks.length} of ${staleResult.staleChunks.length + staleResult.freshChunks.length} chunks`));
 
-      // Log reasons for staleness
       for (const [chunk, reason] of staleResult.staleReasons) {
         console.log(chalk.gray(`     ${chunk}: ${reason}`));
       }
 
-      // TODO: Pass stale chunks to extractor for partial regeneration
-      // For now, extractors will be modified separately to accept this info
+      // Call extractor with stale chunks only
+      await extractor.extractFn(staleChunkSet);
     }
 
-    console.log(chalk.gray("\n(Incremental extraction not yet implemented - extractors need modification)"));
+    printSummary(extractorsToUse);
     return;
   }
 

@@ -8,7 +8,7 @@ import {
 } from "ts-morph";
 import * as path from "path";
 import { project } from "../utils/project.js";
-import { writeChunkedDiscovery } from "../utils/output.js";
+import { writeChunkedDiscovery, writeIncrementalChunkedDiscovery, readExistingManifest } from "../utils/output.js";
 
 /**
  * Centralized security function detection pattern.
@@ -684,7 +684,7 @@ function findRelatedSchemas(schemas: SchemaInfo[]): void {
 /**
  * Main extraction function
  */
-export async function extractSchemas(): Promise<void> {
+export async function extractSchemas(onlyChunks?: Set<string>): Promise<void> {
   console.log("📋 Extracting Zod schemas from src/atomic-crm/validation/**/*.ts...");
 
   const globs = ["src/atomic-crm/validation/**/*.ts"];
@@ -695,7 +695,17 @@ export async function extractSchemas(): Promise<void> {
   const schemas: SchemaInfo[] = [];
   const processedFiles = new Set<string>();
 
-  for (const sourceFile of sourceFiles) {
+  // Filter source files if incremental mode
+  let filesToProcess = sourceFiles;
+  if (onlyChunks) {
+    filesToProcess = sourceFiles.filter(sf => {
+      const chunkName = extractFeatureName(sf.getFilePath());
+      return onlyChunks.has(chunkName);
+    });
+    console.log(`  📂 Incremental mode: processing ${filesToProcess.length} of ${sourceFiles.length} files`);
+  }
+
+  for (const sourceFile of filesToProcess) {
     const filePath = sourceFile.getFilePath();
 
     // Skip test files
@@ -767,19 +777,20 @@ export async function extractSchemas(): Promise<void> {
     chunks.get(feature)!.push(schema);
   }
 
-  // Build file-to-chunk mapping for incremental updates
+  // Build file-to-chunk mapping for incremental updates (use ALL source files for manifest)
   const fileToChunkMapping = new Map<string, string>();
-  for (const filePath of processedFiles) {
+  for (const sourceFile of sourceFiles) {
+    const filePath = sourceFile.getFilePath();
     const chunkName = extractFeatureName(filePath);
     fileToChunkMapping.set(filePath, chunkName);
   }
 
-  // Write chunked output
+  // Write chunked output (use ALL source file paths for manifest)
   writeChunkedDiscovery(
     "schemas-inventory",
     "scripts/discover/extractors/schemas.ts",
     globs,
-    Array.from(processedFiles),
+    sourceFiles.map(sf => sf.getFilePath()),
     {
       total_items: schemas.length,
       total_chunks: chunks.size,

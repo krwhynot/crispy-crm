@@ -114,13 +114,24 @@ function classifyComponentRole(
   return 'wrapper';
 }
 
-export async function extractComponents(): Promise<void> {
+export async function extractComponents(onlyChunks?: Set<string>): Promise<void> {
   console.log("🔍 Scanning React components in src/atomic-crm/**/*.tsx...");
 
   const sourceFiles = project.addSourceFilesAtPaths("src/atomic-crm/**/*.tsx");
   const components: ComponentInfo[] = [];
 
-  for (const sourceFile of sourceFiles) {
+  // Filter source files if incremental mode
+  let filesToProcess = sourceFiles;
+  if (onlyChunks) {
+    filesToProcess = sourceFiles.filter(sf => {
+      const relativePath = path.relative(process.cwd(), sf.getFilePath());
+      const chunkName = extractFeatureName(relativePath);
+      return onlyChunks.has(chunkName);
+    });
+    console.log(`  📂 Incremental mode: processing ${filesToProcess.length} of ${sourceFiles.length} files`);
+  }
+
+  for (const sourceFile of filesToProcess) {
     const filePath = sourceFile.getFilePath();
     const relativePath = path.relative(process.cwd(), filePath);
 
