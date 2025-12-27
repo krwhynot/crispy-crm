@@ -1,4 +1,4 @@
-import { useListContext, RecordContextProvider } from "ra-core";
+import { useListContext, RecordContextProvider, useGetIdentity } from "ra-core";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import { ReferenceField } from "@/components/admin/reference-field";
@@ -9,6 +9,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { EditButton } from "@/components/admin/edit-button";
 import { formatDistance, format } from "date-fns";
 import { Building2, X } from "lucide-react";
+import { useUserRole } from "@/hooks/useUserRole";
 import type { Opportunity } from "../types";
 import { getOpportunityStageLabel, getOpportunityStageColor } from "./constants/stageConstants";
 import { BulkActionsToolbar } from "./BulkActionsToolbar";
@@ -35,6 +36,10 @@ export const OpportunityRowListView = ({
     onSelect,
     onUnselectItems,
   } = useListContext<Opportunity>();
+
+  const { isManagerOrAdmin } = useUserRole();
+  const { data: identity } = useGetIdentity();
+  const currentSalesId = identity?.id;
 
   // Keyboard navigation for list rows
   const { focusedIndex } = useListKeyboardNavigation({
@@ -114,7 +119,14 @@ export const OpportunityRowListView = ({
 
       <Card className="bg-card border border-border shadow-sm rounded-xl p-2">
         <div className="space-y-2">
-          {opportunities.map((opportunity, index) => (
+          {opportunities.map((opportunity, index) => {
+            const canEdit = isManagerOrAdmin || (
+              currentSalesId != null && (
+                Number(opportunity.opportunity_owner_id) === Number(currentSalesId) ||
+                Number(opportunity.account_manager_id) === Number(currentSalesId)
+              )
+            );
+            return (
             <RecordContextProvider key={opportunity.id} value={opportunity}>
               <div
                 className={`group relative flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 sm:gap-3 rounded-lg border bg-card px-3 py-2 sm:py-1.5 transition-all duration-150 hover:border-border hover:shadow-md motion-safe:hover:-translate-y-0.5 active:scale-[0.98] focus-within:ring-2 focus-within:ring-ring focus-within:ring-offset-2 ${getOpportunityRowClassName(opportunity)} ${
@@ -272,14 +284,17 @@ export const OpportunityRowListView = ({
                     </div>
                   )}
 
-                  {/* Edit Button - positioned above stretched link overlay */}
-                  <div className="relative z-10">
-                    <EditButton resource="opportunities" />
-                  </div>
+                  {/* Edit Button - positioned above stretched link overlay (hidden for non-owners) */}
+                  {canEdit && (
+                    <div className="relative z-10">
+                      <EditButton resource="opportunities" />
+                    </div>
+                  )}
                 </div>
               </div>
             </RecordContextProvider>
-          ))}
+            );
+          })}
         </div>
       </Card>
     </>

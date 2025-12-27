@@ -1,4 +1,5 @@
 import { TargetIcon, Users, Package, StickyNote } from "lucide-react";
+import { useGetIdentity, useGetOne } from "react-admin";
 import type { TabConfig } from "@/components/layouts/ResourceSlideOver";
 import { ResourceSlideOver } from "@/components/layouts/ResourceSlideOver";
 import { OpportunitySlideOverDetailsTab } from "./slideOverTabs/OpportunitySlideOverDetailsTab";
@@ -7,6 +8,7 @@ import { OpportunityProductsTab } from "./slideOverTabs/OpportunityProductsTab";
 import { OpportunityNotesTab } from "./slideOverTabs/OpportunityNotesTab";
 import { QuickAddTaskButton } from "@/atomic-crm/components";
 import type { Opportunity } from "@/atomic-crm/types";
+import { useUserRole } from "@/hooks/useUserRole";
 
 interface OpportunitySlideOverProps {
   recordId: number | null;
