@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2025-12-27T04:43:21.536Z",
+  "generated_at": "2025-12-27T06:59:42.774Z",
   "items": {
     "nodes": [
       {
@@ -274,10 +274,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "id": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "name": "OpportunityRowListView",
         "file": "src/atomic-crm/opportunities/OpportunityRowListView.tsx",
-        "line": 25,
+        "line": 26,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -301,10 +301,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:19:OpportunitySlideOver",
+        "id": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
         "name": "OpportunitySlideOver",
         "file": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx",
-        "line": 19,
+        "line": 21,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -8196,425 +8196,479 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "useListContext",
         "targetName": "useListContext",
         "edgeType": "hook",
-        "line": 37,
+        "line": 38,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "useListKeyboardNavigation",
-        "targetName": "useListKeyboardNavigation",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "useUserRole",
+        "targetName": "useUserRole",
         "edgeType": "hook",
         "line": 40,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "openSlideOver",
-        "targetName": "openSlideOver",
-        "edgeType": "call",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "useGetIdentity",
+        "targetName": "useGetIdentity",
+        "edgeType": "hook",
         "line": 41,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "useListKeyboardNavigation",
+        "targetName": "useListKeyboardNavigation",
+        "edgeType": "hook",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "openSlideOver",
+        "targetName": "openSlideOver",
+        "edgeType": "call",
+        "line": 46,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 41,
+        "line": 46,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "onUnselectItems",
         "targetName": "onUnselectItems",
         "edgeType": "call",
-        "line": 72,
+        "line": 77,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "onSelect",
         "targetName": "onSelect",
         "edgeType": "call",
-        "line": 74,
+        "line": 79,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 74,
+        "line": 79,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 117,
+        "line": 122,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 126,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 126,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "getOpportunityRowClassName",
         "targetName": "getOpportunityRowClassName",
         "edgeType": "call",
-        "line": 120,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "includes",
         "targetName": "includes",
-        "edgeType": "call",
-        "line": 129,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "onToggleItem",
-        "targetName": "onToggleItem",
-        "edgeType": "call",
-        "line": 130,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "preventDefault",
-        "targetName": "preventDefault",
-        "edgeType": "call",
-        "line": 139,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "stopPropagation",
-        "targetName": "stopPropagation",
-        "edgeType": "call",
-        "line": 140,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "openSlideOver",
-        "targetName": "openSlideOver",
         "edgeType": "call",
         "line": 141,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "parseDateSafely",
-        "targetName": "parseDateSafely",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "onToggleItem",
+        "targetName": "onToggleItem",
         "edgeType": "call",
-        "line": 192,
+        "line": 142,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 151,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "stopPropagation",
+        "targetName": "stopPropagation",
+        "edgeType": "call",
+        "line": 152,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "openSlideOver",
+        "targetName": "openSlideOver",
+        "edgeType": "call",
+        "line": 153,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 204,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "formatDistance",
         "targetName": "formatDistance",
         "edgeType": "call",
-        "line": 197,
+        "line": 209,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 198,
+        "line": 210,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "getOpportunityStageColor",
         "targetName": "getOpportunityStageColor",
         "edgeType": "call",
-        "line": 214,
+        "line": 226,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "getOpportunityStageLabel",
         "targetName": "getOpportunityStageLabel",
         "edgeType": "call",
-        "line": 216,
+        "line": 228,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 252,
+        "line": 264,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "format",
         "targetName": "format",
         "edgeType": "call",
-        "line": 256,
+        "line": 268,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "parseDateSafely",
         "targetName": "parseDateSafely",
         "edgeType": "call",
-        "line": 257,
+        "line": 269,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 51,
+        "line": 56,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "Card",
         "targetName": "Card",
         "edgeType": "render",
-        "line": 61,
+        "line": 66,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "Button",
         "targetName": "Button",
-        "edgeType": "render",
-        "line": 96,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "onUnselectItems",
-        "targetName": "onUnselectItems",
-        "edgeType": "callback",
-        "line": 98,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "Card",
-        "targetName": "Card",
-        "edgeType": "render",
-        "line": 115,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "RecordContextProvider",
-        "targetName": "RecordContextProvider",
-        "edgeType": "render",
-        "line": 118,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 154,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 165,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 212,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "Badge",
-        "targetName": "Badge",
-        "edgeType": "render",
-        "line": 234,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "ReferenceField",
-        "targetName": "ReferenceField",
-        "edgeType": "render",
-        "line": 267,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "Skeleton",
-        "targetName": "Skeleton",
-        "edgeType": "render",
-        "line": 46,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "Checkbox",
-        "targetName": "Checkbox",
-        "edgeType": "render",
-        "line": 86,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "handleSelectAll",
-        "targetName": "handleSelectAll",
-        "edgeType": "callback",
-        "line": 89,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "X",
-        "targetName": "X",
         "edgeType": "render",
         "line": 101,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "BulkActionsToolbar",
-        "targetName": "BulkActionsToolbar",
-        "edgeType": "render",
-        "line": 107,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "onUnselectItems",
         "targetName": "onUnselectItems",
         "edgeType": "callback",
-        "line": 110,
+        "line": 103,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 120,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "RecordContextProvider",
+        "targetName": "RecordContextProvider",
+        "edgeType": "render",
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
+        "edgeType": "render",
+        "line": 166,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
+        "edgeType": "render",
+        "line": 177,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 224,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 246,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "ReferenceField",
+        "targetName": "ReferenceField",
+        "edgeType": "render",
+        "line": 279,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 51,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "Checkbox",
         "targetName": "Checkbox",
         "edgeType": "render",
-        "line": 128,
+        "line": 91,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "handleSelectAll",
+        "targetName": "handleSelectAll",
+        "edgeType": "callback",
+        "line": 94,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "X",
+        "targetName": "X",
+        "edgeType": "render",
+        "line": 106,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "BulkActionsToolbar",
+        "targetName": "BulkActionsToolbar",
+        "edgeType": "render",
+        "line": 112,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "onUnselectItems",
+        "targetName": "onUnselectItems",
+        "edgeType": "callback",
+        "line": 115,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "Checkbox",
+        "targetName": "Checkbox",
+        "edgeType": "render",
+        "line": 140,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "TextField",
         "targetName": "TextField",
-        "edgeType": "render",
-        "line": 159,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "Building2",
-        "targetName": "Building2",
         "edgeType": "render",
         "line": 171,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
-        "target": "TextField",
-        "targetName": "TextField",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "Building2",
+        "targetName": "Building2",
         "edgeType": "render",
-        "line": 172,
+        "line": 183,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
+        "target": "TextField",
+        "targetName": "TextField",
+        "edgeType": "render",
+        "line": 184,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "NextTaskBadge",
         "targetName": "NextTaskBadge",
         "edgeType": "render",
-        "line": 221,
+        "line": 233,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 269,
+        "line": 281,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 269,
+        "line": 281,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:25:OpportunityRowListView",
+        "source": "src/atomic-crm/opportunities/OpportunityRowListView.tsx:26:OpportunityRowListView",
         "target": "EditButton",
         "targetName": "EditButton",
         "edgeType": "render",
-        "line": 277,
+        "line": 290,
         "conditional": false,
         "inLoop": false
       },
@@ -9231,38 +9285,101 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:19:OpportunitySlideOver",
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "target": "useUserRole",
+        "targetName": "useUserRole",
+        "edgeType": "hook",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "target": "useGetIdentity",
+        "targetName": "useGetIdentity",
+        "edgeType": "hook",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "target": "useGetOne",
+        "targetName": "useGetOne",
+        "edgeType": "hook",
+        "line": 32,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 42,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 42,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 43,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 43,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
         "target": "ResourceSlideOver",
         "targetName": "ResourceSlideOver",
         "edgeType": "render",
-        "line": 58,
+        "line": 77,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:19:OpportunitySlideOver",
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
         "target": "onClose",
         "targetName": "onClose",
         "edgeType": "callback",
-        "line": 62,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:19:OpportunitySlideOver",
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
         "target": "onModeToggle",
         "targetName": "onModeToggle",
         "edgeType": "callback",
-        "line": 64,
+        "line": 83,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:19:OpportunitySlideOver",
+        "source": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx:21:OpportunitySlideOver",
         "target": "QuickAddTaskButton",
         "targetName": "QuickAddTaskButton",
         "edgeType": "render",
-        "line": 68,
+        "line": 88,
         "conditional": false,
         "inLoop": false
       },

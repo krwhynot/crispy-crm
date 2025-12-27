@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2025-12-27T01:53:45.699Z",
+  "generated_at": "2025-12-27T06:59:32.617Z",
   "item_count": 79,
   "items": [
     {
@@ -745,11 +745,13 @@
     {
       "name": "OpportunityRowListView",
       "file": "src/atomic-crm/opportunities/OpportunityRowListView.tsx",
-      "line": 25,
+      "line": 26,
       "type": "presentational",
       "hooks": [
+        "useGetIdentity",
         "useListContext",
-        "useListKeyboardNavigation"
+        "useListKeyboardNavigation",
+        "useUserRole"
       ],
       "imports": [
         "../types",
@@ -766,6 +768,7 @@
         "@/components/ui/checkbox",
         "@/components/ui/skeleton",
         "@/hooks/useListKeyboardNavigation",
+        "@/hooks/useUserRole",
         "@/lib/date-utils",
         "date-fns",
         "lucide-react",
@@ -909,9 +912,13 @@
     {
       "name": "OpportunitySlideOver",
       "file": "src/atomic-crm/opportunities/OpportunitySlideOver.tsx",
-      "line": 19,
+      "line": 21,
       "type": "presentational",
-      "hooks": [],
+      "hooks": [
+        "useGetIdentity",
+        "useGetOne",
+        "useUserRole"
+      ],
       "imports": [
         "./slideOverTabs/OpportunityContactsTab",
         "./slideOverTabs/OpportunityNotesTab",
@@ -920,7 +927,9 @@
         "@/atomic-crm/components",
         "@/atomic-crm/types",
         "@/components/layouts/ResourceSlideOver",
-        "lucide-react"
+        "@/hooks/useUserRole",
+        "lucide-react",
+        "react-admin"
       ],
       "isDefaultExport": false,
       "childComponents": [
