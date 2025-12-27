@@ -30,8 +30,9 @@ Guidance for Claude Code working with Crispy CRM (Atomic CRM) - a React 19 + Typ
 - **Schemas:** `transformDetails.functionName`, `transformDetails.isSecurity` (for sanitization)
 - **Forms:** `componentChain` (hierarchy), `inputComponentsDeep` (recursive inputs)
 - **Validation Services:** Error formatting detection, custom validator patterns
+- **Call Graph:** `nodeType` (component/hook/function/arrow), `edgeType` (call/render/hook/callback), `conditional`, `inLoop`, cycles via Tarjan's SCC
 
-To regenerate: `just discover` | To check freshness: `just discover-check`
+To regenerate: `just discover` | Single: `just discover-callgraph` | Check: `just discover-check`
 
 ### Incremental Discovery (Phase 2.5)
 
