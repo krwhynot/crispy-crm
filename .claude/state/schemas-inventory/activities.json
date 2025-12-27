@@ -1,6 +1,6 @@
 {
   "chunk_name": "activities",
-  "generated_at": "2025-12-27T04:46:12.581Z",
+  "generated_at": "2025-12-27T05:02:40.079Z",
   "item_count": 11,
   "items": [
     {
@@ -212,8 +212,116 @@
       "name": "quickLogFormSchema",
       "file": "src/atomic-crm/validation/activities.ts",
       "line": 526,
-      "schemaType": "other",
-      "fields": [],
+      "schemaType": "object",
+      "fields": [
+        {
+          "name": "activityType",
+          "zodType": "ref:activityDisplayTypeSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "outcome",
+          "zodType": "ref:activityOutcomeSchema",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "date",
+          "zodType": "date",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "duration",
+          "zodType": "number",
+          "constraints": [
+            "min(0)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "contactId",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "organizationId",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "opportunityId",
+          "zodType": "number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "notes",
+          "zodType": "unknown",
+          "constraints": [
+            "min(1, \"Notes are required\")"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": true,
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "anonymous",
+            "isSecurity": false
+          }
+        },
+        {
+          "name": "createFollowUp",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "followUpDate",
+          "zodType": "date",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "sampleStatus",
+          "zodType": "ref:sampleStatusSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
       "relatedSchemas": [],
       "validationFunctions": [],
       "hasTransforms": true,

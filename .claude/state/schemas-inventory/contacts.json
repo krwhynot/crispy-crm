@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2025-12-27T04:46:12.585Z",
+  "generated_at": "2025-12-27T05:02:40.080Z",
   "item_count": 9,
   "items": [
     {
@@ -112,8 +112,78 @@
       "name": "contactOrganizationSchema",
       "file": "src/atomic-crm/validation/contacts.ts",
       "line": 60,
-      "schemaType": "other",
-      "fields": [],
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "contact_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "organization_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "is_primary",
+          "zodType": "coerce.boolean",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "created_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "deleted_at",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
       "relatedSchemas": [
         "contactSchema",
         "importContactSchema",
@@ -568,8 +638,210 @@
       "name": "importContactSchema",
       "file": "src/atomic-crm/validation/contacts.ts",
       "line": 239,
-      "schemaType": "other",
-      "fields": [],
+      "schemaType": "object",
+      "fields": [
+        {
+          "name": "first_name",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_name",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "organization_name",
+          "zodType": "unknown",
+          "constraints": [
+            "trim()",
+            "min(1, { message: \"Organization name is required\" })"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "email_work",
+          "zodType": "literal",
+          "constraints": [
+            "trim()",
+            "email({ message: \"Invalid email address\" })"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "email_home",
+          "zodType": "literal",
+          "constraints": [
+            "trim()",
+            "email({ message: \"Invalid email address\" })"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "email_other",
+          "zodType": "literal",
+          "constraints": [
+            "trim()",
+            "email({ message: \"Invalid email address\" })"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "phone_work",
+          "zodType": "literal",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "String",
+            "isSecurity": false
+          }
+        },
+        {
+          "name": "phone_home",
+          "zodType": "literal",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "String",
+            "isSecurity": false
+          }
+        },
+        {
+          "name": "phone_other",
+          "zodType": "literal",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": true,
+          "hasDefault": false,
+          "transformDetails": {
+            "functionName": "String",
+            "isSecurity": false
+          }
+        },
+        {
+          "name": "linkedin_url",
+          "zodType": "literal",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "title",
+          "zodType": "literal",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "notes",
+          "zodType": "literal",
+          "constraints": [
+            "max(5000)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "tags",
+          "zodType": "literal",
+          "constraints": [
+            "max(1000)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "first_seen",
+          "zodType": "literal",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_seen",
+          "zodType": "literal",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "gender",
+          "zodType": "literal",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "avatar",
+          "zodType": "literal",
+          "constraints": [
+            "max(2048)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
       "relatedSchemas": [
         "contactDepartmentSchema",
         "contactOrganizationSchema",

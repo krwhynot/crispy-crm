@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2025-12-27T04:46:12.587Z",
+  "generated_at": "2025-12-27T05:02:40.082Z",
   "item_count": 9,
   "items": [
     {
@@ -113,7 +113,53 @@
       "file": "src/atomic-crm/validation/opportunities.ts",
       "line": 229,
       "schemaType": "strictObject",
-      "fields": [],
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "created_at",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "updated_at",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "version",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "deleted_at",
+          "zodType": "unknown",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
       "relatedSchemas": [
         "opportunityNoteSchema",
         "opportunityStageSchema",
@@ -229,7 +275,28 @@
       "file": "src/atomic-crm/validation/opportunities.ts",
       "line": 321,
       "schemaType": "strictObject",
-      "fields": [],
+      "fields": [
+        {
+          "name": "contact_ids",
+          "zodType": "array",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "products_to_sync",
+          "zodType": "strictObject",
+          "constraints": [
+            "max(2000)"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
       "relatedSchemas": [
         "opportunityNoteSchema",
         "opportunityStageSchema",
@@ -252,8 +319,60 @@
       "name": "closeOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities.ts",
       "line": 413,
-      "schemaType": "other",
-      "fields": [],
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "id",
+          "zodType": "union",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "stage",
+          "zodType": "enum",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false,
+          "enumValues": [
+            "closed_won",
+            "closed_lost"
+          ]
+        },
+        {
+          "name": "win_reason",
+          "zodType": "ref:winReasonSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "loss_reason",
+          "zodType": "ref:lossReasonSchema",
+          "constraints": [],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "close_reason_notes",
+          "zodType": "unknown",
+          "constraints": [
+            "max(500, \"Close reason notes must be 500 characters or less\")"
+          ],
+          "optional": true,
+          "nullable": true,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
       "relatedSchemas": [
         "opportunityNoteSchema",
         "opportunityStageSchema",

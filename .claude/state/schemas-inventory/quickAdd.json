@@ -1,14 +1,139 @@
 {
   "chunk_name": "quickAdd",
-  "generated_at": "2025-12-27T04:46:12.602Z",
+  "generated_at": "2025-12-27T05:02:40.085Z",
   "item_count": 1,
   "items": [
     {
       "name": "quickAddSchema",
       "file": "src/atomic-crm/validation/quickAdd.ts",
       "line": 17,
-      "schemaType": "other",
-      "fields": [],
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "first_name",
+          "zodType": "string",
+          "constraints": [
+            "min(1, \"First name required\")",
+            "max(100)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_name",
+          "zodType": "string",
+          "constraints": [
+            "min(1, \"Last name required\")",
+            "max(100)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "phone",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "email",
+          "zodType": "union",
+          "constraints": [
+            "email(\"Invalid email address\")",
+            "max(254)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "org_name",
+          "zodType": "unknown",
+          "constraints": [
+            "min(1, \"Organization name required\")",
+            "max(255)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "city",
+          "zodType": "string",
+          "constraints": [
+            "min(1, \"City required\")",
+            "max(100)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "state",
+          "zodType": "string",
+          "constraints": [
+            "min(1, \"State required\")",
+            "max(50)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "campaign",
+          "zodType": "string",
+          "constraints": [
+            "min(1, \"Campaign required\")",
+            "max(255)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "principal_id",
+          "zodType": "number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "product_ids",
+          "zodType": "array",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "quick_note",
+          "zodType": "string",
+          "constraints": [
+            "max(2000)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
       "relatedSchemas": [],
       "validationFunctions": [],
       "hasTransforms": false,
