@@ -15,7 +15,7 @@
  */
 
 import { generateEmbedding, checkOllamaHealth } from "./ollama.js";
-import { search, checkQdrantHealth, getCollectionInfo } from "./qdrant.js";
+import { search, searchByType, checkLanceDBHealth, getCollectionInfo } from "./lancedb.js";
 
 interface SearchOptions {
   query: string;
