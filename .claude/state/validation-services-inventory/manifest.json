@@ -1,16 +1,16 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-27T01:54:06.874Z",
+  "generated_at": "2025-12-27T05:56:33.909Z",
   "generator": "scripts/discover/extractors/validation-services.ts",
   "source_globs": [
     "src/atomic-crm/validation/**/*.ts"
   ],
-  "checksum": "sha256:d3fc05695ec42cde",
+  "checksum": "sha256:cc2b3637c3f4a2af",
   "source_hashes": {
     "src/atomic-crm/validation/activities.ts": "d1ec200643e2",
     "src/atomic-crm/validation/categories.ts": "0f7d9f25b8f8",
     "src/atomic-crm/validation/constants.ts": "b8985c2c0618",
-    "src/atomic-crm/validation/contacts.ts": "f5e716c5cb38",
+    "src/atomic-crm/validation/contacts.ts": "e6a4def2b9dd",
     "src/atomic-crm/validation/distributorAuthorizations.ts": "66445a74389a",
     "src/atomic-crm/validation/notes.ts": "319cf3813adb",
     "src/atomic-crm/validation/operatorSegments.ts": "b0f573acd197",
@@ -75,12 +75,12 @@
       "name": "contacts",
       "file": "contacts.json",
       "item_count": 4,
-      "checksum": "sha256:27c15d8d79f95c23",
+      "checksum": "sha256:03e09ea160703f83",
       "source_files": [
         "src/atomic-crm/validation/contacts.ts"
       ],
       "source_hashes": {
-        "src/atomic-crm/validation/contacts.ts": "f5e716c5cb38"
+        "src/atomic-crm/validation/contacts.ts": "e6a4def2b9dd"
       }
     },
     {

@@ -1,13 +1,13 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-27T04:43:21.600Z",
+  "generated_at": "2025-12-27T05:56:34.334Z",
   "generator": "scripts/discover/extractors/call-graph.ts",
   "source_globs": [
     "src/atomic-crm/**/*.ts",
     "src/atomic-crm/**/*.tsx",
     "src/hooks/**/*.ts"
   ],
-  "checksum": "sha256:c3d525fdf06ffed7",
+  "checksum": "sha256:a3ecd2bfa693a416",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "ac18d4791030",
     "src/atomic-crm/activities/ActivityEdit.tsx": "55bb5d0670e9",
@@ -374,7 +374,7 @@
     "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts": "a6023bbd78bb",
     "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts": "4ad1f9d5f26e",
     "src/atomic-crm/providers/supabase/callbacks/productsCallbacks.ts": "ad24cfd7f65d",
-    "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts": "fed3a402f252",
+    "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts": "6ed630ddeb65",
     "src/atomic-crm/providers/supabase/callbacks/tagsCallbacks.ts": "4a29b1a76e82",
     "src/atomic-crm/providers/supabase/callbacks/tasksCallbacks.ts": "d6c64fa412c4",
     "src/atomic-crm/providers/supabase/composedDataProvider.ts": "1d2e8592e221",
@@ -586,7 +586,7 @@
     "src/hooks/useUserRole.ts": "1dd0bdf28c95"
   },
   "summary": {
-    "total_items": 919,
+    "total_items": null,
     "total_nodes": 919,
     "total_edges": 10826,
     "total_chunks": 30,
@@ -1484,7 +1484,7 @@
     {
       "name": "providers",
       "file": "providers.json",
-      "checksum": "sha256:9d3e8ea73b6d4cdc",
+      "checksum": "sha256:5205fcb1a79151e0",
       "source_files": [
         "src/atomic-crm/providers/commons/activity.ts",
         "src/atomic-crm/providers/commons/canAccess.ts",
@@ -1545,7 +1545,7 @@
         "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts": "a6023bbd78bb",
         "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts": "4ad1f9d5f26e",
         "src/atomic-crm/providers/supabase/callbacks/productsCallbacks.ts": "ad24cfd7f65d",
-        "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts": "fed3a402f252",
+        "src/atomic-crm/providers/supabase/callbacks/salesCallbacks.ts": "6ed630ddeb65",
         "src/atomic-crm/providers/supabase/callbacks/tagsCallbacks.ts": "4a29b1a76e82",
         "src/atomic-crm/providers/supabase/callbacks/tasksCallbacks.ts": "d6c64fa412c4",
         "src/atomic-crm/providers/supabase/composedDataProvider.ts": "1d2e8592e221",
