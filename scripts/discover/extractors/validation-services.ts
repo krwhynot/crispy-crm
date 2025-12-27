@@ -180,6 +180,14 @@ export async function extractValidationServices(): Promise<void> {
     }
   }
 
+  // Build file-to-chunk mapping for incremental updates
+  const fileToChunkMapping = new Map<string, string>();
+  for (const filePath of processedFiles) {
+    const relativePath = path.relative(process.cwd(), filePath);
+    const chunkName = extractFeatureName(relativePath);
+    fileToChunkMapping.set(filePath, chunkName);
+  }
+
   writeChunkedDiscovery(
     "validation-services-inventory",
     "scripts/discover/extractors/validation-services.ts",
@@ -192,7 +200,8 @@ export async function extractValidationServices(): Promise<void> {
       custom_validators: customValidators.length,
       with_error_formatting: services.filter(s => s.errorFormatting).length,
     },
-    chunks as Map<string, unknown[]>
+    chunks as Map<string, unknown[]>,
+    fileToChunkMapping
   );
 
   console.log(`  ✓ Found ${services.length} validation services`);

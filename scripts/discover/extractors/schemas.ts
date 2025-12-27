@@ -767,6 +767,13 @@ export async function extractSchemas(): Promise<void> {
     chunks.get(feature)!.push(schema);
   }
 
+  // Build file-to-chunk mapping for incremental updates
+  const fileToChunkMapping = new Map<string, string>();
+  for (const filePath of processedFiles) {
+    const chunkName = extractFeatureName(filePath);
+    fileToChunkMapping.set(filePath, chunkName);
+  }
+
   // Write chunked output
   writeChunkedDiscovery(
     "schemas-inventory",
@@ -782,7 +789,8 @@ export async function extractSchemas(): Promise<void> {
       with_transforms: withTransforms,
       with_super_refine: withSuperRefine,
     },
-    chunks
+    chunks,
+    fileToChunkMapping
   );
 
   console.log(`  ✓ Found ${schemas.length} Zod schemas`);

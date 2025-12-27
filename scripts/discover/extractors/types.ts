@@ -294,6 +294,14 @@ export async function extractTypes(): Promise<void> {
     chunks.get(chunkKey)!.push(typeInfo);
   }
 
+  // Build file-to-chunk mapping for incremental updates
+  const fileToChunkMapping = new Map<string, string>();
+  for (const filePath of processedFiles) {
+    const relativePath = path.relative(process.cwd(), filePath);
+    const chunkKey = extractChunkKey(relativePath);
+    fileToChunkMapping.set(filePath, chunkKey);
+  }
+
   // Write chunked output
   writeChunkedDiscovery(
     "types-inventory",
@@ -309,7 +317,8 @@ export async function extractTypes(): Promise<void> {
       exported: exportedCount,
       complex: complexCount,
     },
-    chunks
+    chunks,
+    fileToChunkMapping
   );
 
   console.log(`  ✓ Found ${types.length} TypeScript types`);

@@ -8,7 +8,7 @@ import { extractSchemas } from "./extractors/schemas.js";
 import { extractTypes } from "./extractors/types.js";
 import { extractForms } from "./extractors/forms.js";
 import { extractValidationServices } from "./extractors/validation-services.js";
-import { isDiscoveryStale, isChunkedDiscoveryStale } from "./utils/output.js";
+import { isDiscoveryStale, isChunkedDiscoveryStale, getStaleChunks, type StaleChunksResult } from "./utils/output.js";
 import { project } from "./utils/project.js";
 
 interface ExtractorConfig {
@@ -104,11 +104,13 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
 interface CliArgs {
   checkOnly: boolean;
   onlyExtractors: string[] | null;
+  incremental: boolean;
 }
 
 function parseCliArgs(): CliArgs {
   const args = process.argv.slice(2);
   const checkOnly = args.includes("--check");
+  const incremental = args.includes("--incremental");
   const onlyFlag = args.find(a => a.startsWith("--only="));
   const onlyExtractors = onlyFlag ? onlyFlag.split("=")[1].split(",") : null;
 
@@ -121,7 +123,45 @@ function parseCliArgs(): CliArgs {
     }
   }
 
-  return { checkOnly, onlyExtractors };
+  return { checkOnly, onlyExtractors, incremental };
+}
+
+/**
+ * Get the chunk name for a file based on the extractor type.
+ * Each extractor has its own logic for grouping files into chunks.
+ */
+function getChunkNameForFile(extractor: ExtractorConfig, filePath: string): string {
+  const relativePath = path.relative(process.cwd(), filePath);
+
+  switch (extractor.name) {
+    case "components":
+      // Pattern: src/atomic-crm/<feature>/... → "feature"
+      // Files directly in src/atomic-crm/ → "_root"
+      const componentMatch = relativePath.match(/^src\/atomic-crm\/([^/]+)\//);
+      return componentMatch ? componentMatch[1] : "_root";
+
+    case "schemas":
+    case "validationServices":
+      // Pattern: src/atomic-crm/validation/{feature}.ts → "feature"
+      return path.basename(relativePath, ".ts");
+
+    case "types":
+      // Pattern: src/atomic-crm/types.ts → "_root"
+      // Pattern: src/atomic-crm/{feature}/types.ts → "feature"
+      // Pattern: src/types/{file}.ts → file basename
+      if (relativePath.includes("src/atomic-crm/types.ts")) {
+        return "_root";
+      }
+      const typesMatch = relativePath.match(/^src\/atomic-crm\/([^/]+)\/types\.ts/);
+      if (typesMatch) {
+        return typesMatch[1];
+      }
+      return path.basename(relativePath, ".ts");
+
+    default:
+      // Non-chunked extractors don't need this, but return a sensible default
+      return "_default";
+  }
 }
 
 async function checkStaleness(extractorsToCheck: ExtractorConfig[]): Promise<number> {
@@ -229,7 +269,7 @@ function printSummary(extractorsRun: ExtractorConfig[]): void {
 }
 
 async function main() {
-  const { checkOnly, onlyExtractors } = parseCliArgs();
+  const { checkOnly, onlyExtractors, incremental } = parseCliArgs();
 
   const extractorsToUse = onlyExtractors
     ? onlyExtractors.map(name => EXTRACTORS[name])
@@ -238,6 +278,52 @@ async function main() {
   if (checkOnly) {
     const exitCode = await checkStaleness(extractorsToUse);
     process.exit(exitCode);
+  }
+
+  // Handle incremental mode for chunked extractors
+  if (incremental) {
+    console.log(chalk.cyan.bold("\n🔄 Incremental Discovery Mode\n"));
+
+    for (const extractor of extractorsToUse) {
+      if (!extractor.isChunked) {
+        console.log(chalk.gray(`⏭  ${extractor.label}: Skipping (not chunked)`));
+        continue;
+      }
+
+      const sourceFiles = extractor.getSourceFiles();
+      const staleResult = getStaleChunks(
+        extractor.outputPath,
+        sourceFiles,
+        (filePath) => getChunkNameForFile(extractor, filePath)
+      );
+
+      if (staleResult.requiresFullRegen) {
+        console.log(chalk.yellow(`⚠  ${extractor.label}: ${staleResult.fullRegenReason}`));
+        console.log(chalk.gray(`   Run without --incremental for full regeneration`));
+        continue;
+      }
+
+      if (!staleResult.hasStaleChunks) {
+        console.log(chalk.green(`✓  ${extractor.label}: All ${staleResult.freshChunks.length} chunks fresh`));
+        continue;
+      }
+
+      // Log which chunks will be updated
+      const staleCount = staleResult.staleChunks.length;
+      const totalCount = staleCount + staleResult.freshChunks.length;
+      console.log(chalk.blue(`📝 ${extractor.label}: Updating ${staleCount} of ${totalCount} chunks: ${staleResult.staleChunks.join(", ")}`));
+
+      // Log reasons for staleness
+      for (const [chunk, reason] of staleResult.staleReasons) {
+        console.log(chalk.gray(`     ${chunk}: ${reason}`));
+      }
+
+      // TODO: Pass stale chunks to extractor for partial regeneration
+      // For now, extractors will be modified separately to accept this info
+    }
+
+    console.log(chalk.gray("\n(Incremental extraction not yet implemented - extractors need modification)"));
+    return;
   }
 
   await runExtractors(extractorsToUse);
