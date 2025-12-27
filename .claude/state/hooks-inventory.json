@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-27T05:56:58.751Z",
+  "generated_at": "2025-12-27T06:59:38.115Z",
   "generator": "scripts/discover/extractors/hooks.ts",
   "source_globs": [
     "src/**/use*.ts",
@@ -8,7 +8,7 @@
     "src/**/*.ts",
     "src/**/*.tsx"
   ],
-  "checksum": "sha256:30212074e367980c",
+  "checksum": "sha256:b3a2932dfafde670",
   "source_hashes": {
     "src/App.tsx": "f0ea5cecc938",
     "src/atomic-crm/activities/ActivityCreate.tsx": "ac18d4791030",
@@ -63,7 +63,7 @@
     "src/atomic-crm/contacts/ContactImportPreview.tsx": "064ae1c2899a",
     "src/atomic-crm/contacts/ContactImportResult.tsx": "295c80fc8503",
     "src/atomic-crm/contacts/ContactInputs.tsx": "ce69f6134689",
-    "src/atomic-crm/contacts/ContactList.tsx": "4d5a7ea03833",
+    "src/atomic-crm/contacts/ContactList.tsx": "209964831ec5",
     "src/atomic-crm/contacts/ContactListFilter.tsx": "8a7c0a935390",
     "src/atomic-crm/contacts/ContactManagerInput.tsx": "b97065577322",
     "src/atomic-crm/contacts/ContactOption.tsx": "61aa66ba1edf",
@@ -203,9 +203,9 @@
     "src/atomic-crm/opportunities/OpportunityList.tsx": "ab02901d75ee",
     "src/atomic-crm/opportunities/OpportunityListFilter.tsx": "a171bac293f0",
     "src/atomic-crm/opportunities/OpportunityListTutorial.tsx": "186c5dec0d6e",
-    "src/atomic-crm/opportunities/OpportunityRowListView.tsx": "1d9a98c8d466",
+    "src/atomic-crm/opportunities/OpportunityRowListView.tsx": "1e609dff1d49",
     "src/atomic-crm/opportunities/OpportunityShow.tsx": "03239a7f14b2",
-    "src/atomic-crm/opportunities/OpportunitySlideOver.tsx": "6ff33c4f88d8",
+    "src/atomic-crm/opportunities/OpportunitySlideOver.tsx": "fb43cb005187",
     "src/atomic-crm/opportunities/OpportunitySpeedDial.tsx": "1168bc024630",
     "src/atomic-crm/opportunities/OpportunityViewSwitcher.tsx": "1b1534e46337",
     "src/atomic-crm/opportunities/OrganizationInfoCard.tsx": "04875e2ea3eb",
@@ -694,7 +694,7 @@
     "src/components/admin/user-menu.tsx": "4bd037103f8f",
     "src/components/design-system/ResponsiveGrid.tsx": "bac9faa5be39",
     "src/components/design-system/index.ts": "68a8b0e470fb",
-    "src/components/layouts/ResourceSlideOver.tsx": "5d1b2f4d8108",
+    "src/components/layouts/ResourceSlideOver.tsx": "25f3b6171f73",
     "src/components/layouts/StandardListLayout.tsx": "789090b8f7f1",
     "src/components/layouts/sidepane/DirtyStateTracker.tsx": "4cf0a871cee3",
     "src/components/layouts/sidepane/SidepaneContactRow.tsx": "45fee8730aac",

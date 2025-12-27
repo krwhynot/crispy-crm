@@ -1,6 +1,6 @@
 {
   "chunk_name": "_root",
-  "generated_at": "2025-12-27T01:53:50.217Z",
+  "generated_at": "2025-12-27T06:59:38.508Z",
   "item_count": 30,
   "items": [
     {
@@ -41,7 +41,7 @@
         },
         {
           "name": "role",
-          "type": "\"rep\" | \"admin\" | \"manager\"",
+          "type": "\"admin\" | \"manager\" | \"rep\"",
           "optional": false,
           "readonly": false
         },
@@ -75,7 +75,7 @@
         },
         {
           "name": "role",
-          "type": "\"rep\" | \"admin\" | \"manager\"",
+          "type": "\"admin\" | \"manager\" | \"rep\"",
           "optional": false,
           "readonly": false
         },
@@ -1241,7 +1241,7 @@
         },
         {
           "name": "type",
-          "type": "\"Other\" | \"Call\" | \"Email\" | \"Meeting\" | \"Follow-up\" | \"Demo\" | \"Proposal\"",
+          "type": "\"Call\" | \"Email\" | \"Meeting\" | \"Follow-up\" | \"Demo\" | \"Proposal\" | \"Other\"",
           "optional": false,
           "readonly": false
         },
