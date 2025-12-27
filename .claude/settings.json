@@ -39,6 +39,11 @@
             "type": "command",
             "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/verification-before-git.sh",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "npx tsx ${CLAUDE_PROJECT_DIR}/.claude/hooks/supabase-cli-guard.ts",
+            "timeout": 5
           }
         ]
       },
@@ -104,6 +109,17 @@
           }
         ]
       }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PROJECT_DIR}/.claude/hooks/cleanup-state.sh",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   },
   "permissions": {
@@ -117,5 +133,5 @@
     "deny": [],
     "ask": []
   },
-  "description": "Project hooks for file tracking, git checkpoints, skill auto-activation, and infrastructure"
+  "description": "Project hooks for file tracking, git checkpoints, skill auto-activation, CLI guards, and automatic state cleanup"
 }
