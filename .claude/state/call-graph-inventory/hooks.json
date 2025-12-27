@@ -1,0 +1,2638 @@
+{
+  "chunk_name": "hooks",
+  "generated_at": "2025-12-27T02:01:23.853Z",
+  "items": {
+    "nodes": [
+      {
+        "id": "src/atomic-crm/hooks/useAppBarHeight.ts:6:useAppBarHeight",
+        "name": "useAppBarHeight",
+        "file": "src/atomic-crm/hooks/useAppBarHeight.ts",
+        "line": 6,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "name": "useFilterCleanup",
+        "file": "src/atomic-crm/hooks/useFilterCleanup.ts",
+        "line": 60,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/hooks/useRecentSelections.ts:24:useRecentSelections",
+        "name": "useRecentSelections",
+        "file": "src/atomic-crm/hooks/useRecentSelections.ts",
+        "line": 24,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/hooks/useSmartDefaults.ts:15:useSmartDefaults",
+        "name": "useSmartDefaults",
+        "file": "src/atomic-crm/hooks/useSmartDefaults.ts",
+        "line": 15,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/use-mobile.ts:5:useIsMobile",
+        "name": "useIsMobile",
+        "file": "src/hooks/use-mobile.ts",
+        "line": 5,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useBreakpoint.ts:21:getCurrentBreakpoint",
+        "name": "getCurrentBreakpoint",
+        "file": "src/hooks/useBreakpoint.ts",
+        "line": 21,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useBreakpoint.ts:30:useBreakpoint",
+        "name": "useBreakpoint",
+        "file": "src/hooks/useBreakpoint.ts",
+        "line": 30,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useBreakpoint.ts:60:useIsDesktop",
+        "name": "useIsDesktop",
+        "file": "src/hooks/useBreakpoint.ts",
+        "line": 60,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useBreakpoint.ts:64:useIsLaptopOrLarger",
+        "name": "useIsLaptopOrLarger",
+        "file": "src/hooks/useBreakpoint.ts",
+        "line": 64,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useBreakpoint.ts:69:useIsMobileOrTablet",
+        "name": "useIsMobileOrTablet",
+        "file": "src/hooks/useBreakpoint.ts",
+        "line": 69,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useCityStateMapping.ts:11:useCityStateMapping",
+        "name": "useCityStateMapping",
+        "file": "src/hooks/useCityStateMapping.ts",
+        "line": 11,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useDialogError.ts:8:useDialogError",
+        "name": "useDialogError",
+        "file": "src/hooks/useDialogError.ts",
+        "line": 8,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useDialogError.ts:20:parseServerError",
+        "name": "parseServerError",
+        "file": "src/hooks/useDialogError.ts",
+        "line": 20,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "name": "useInAppUnsavedChanges",
+        "file": "src/hooks/useInAppUnsavedChanges.ts",
+        "line": 10,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useKeyboardShortcuts.ts:209:formatShortcut",
+        "name": "formatShortcut",
+        "file": "src/hooks/useKeyboardShortcuts.ts",
+        "line": 209,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useKeyboardShortcuts.ts:6:isMac",
+        "name": "isMac",
+        "file": "src/hooks/useKeyboardShortcuts.ts",
+        "line": 6,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useKeyboardShortcuts.ts:13:isModifierPressed",
+        "name": "isModifierPressed",
+        "file": "src/hooks/useKeyboardShortcuts.ts",
+        "line": 13,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useKeyboardShortcuts.ts:21:shouldPreventShortcut",
+        "name": "shouldPreventShortcut",
+        "file": "src/hooks/useKeyboardShortcuts.ts",
+        "line": 21,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useKeyboardShortcuts.ts:45:isTextarea",
+        "name": "isTextarea",
+        "file": "src/hooks/useKeyboardShortcuts.ts",
+        "line": 45,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useKeyboardShortcuts.ts:53:isInForm",
+        "name": "isInForm",
+        "file": "src/hooks/useKeyboardShortcuts.ts",
+        "line": 53,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "name": "useKeyboardShortcuts",
+        "file": "src/hooks/useKeyboardShortcuts.ts",
+        "line": 87,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "name": "useListKeyboardNavigation",
+        "file": "src/hooks/useListKeyboardNavigation.ts",
+        "line": 90,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useListKeyboardNavigation.ts:8:isMac",
+        "name": "isMac",
+        "file": "src/hooks/useListKeyboardNavigation.ts",
+        "line": 8,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useListKeyboardNavigation.ts:16:shouldPreventShortcut",
+        "name": "shouldPreventShortcut",
+        "file": "src/hooks/useListKeyboardNavigation.ts",
+        "line": 16,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useSlideOverState.ts:28:getHashParams",
+        "name": "getHashParams",
+        "file": "src/hooks/useSlideOverState.ts",
+        "line": 28,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useSlideOverState.ts:38:setHashParams",
+        "name": "setHashParams",
+        "file": "src/hooks/useSlideOverState.ts",
+        "line": 38,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "name": "useSlideOverState",
+        "file": "src/hooks/useSlideOverState.ts",
+        "line": 46,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useTeamMembers.ts:17:useTeamMembers",
+        "name": "useTeamMembers",
+        "file": "src/hooks/useTeamMembers.ts",
+        "line": 17,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useUnsavedChangesWarning.ts:11:useUnsavedChangesWarning",
+        "name": "useUnsavedChangesWarning",
+        "file": "src/hooks/useUnsavedChangesWarning.ts",
+        "line": 11,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/hooks/useUserRole.ts:24:useUserRole",
+        "name": "useUserRole",
+        "file": "src/hooks/useUserRole.ts",
+        "line": 24,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      }
+    ],
+    "edges": [
+      {
+        "source": "src/atomic-crm/hooks/useAppBarHeight.ts:6:useAppBarHeight",
+        "target": "useIsMobile",
+        "targetName": "useIsMobile",
+        "edgeType": "hook",
+        "line": 7,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "useStore",
+        "targetName": "useStore",
+        "edgeType": "hook",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 63,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "getItem",
+        "targetName": "getItem",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "safeJsonParse",
+        "targetName": "safeJsonParse",
+        "edgeType": "call",
+        "line": 74,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 77,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "call",
+        "targetName": "call",
+        "edgeType": "call",
+        "line": 93,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "isValidFilterField",
+        "targetName": "isValidFilterField",
+        "edgeType": "call",
+        "line": 94,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 99,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "isValidFilterField",
+        "targetName": "isValidFilterField",
+        "edgeType": "call",
+        "line": 112,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 113,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "setItem",
+        "targetName": "setItem",
+        "edgeType": "call",
+        "line": 128,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 128,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "setItem",
+        "targetName": "setItem",
+        "edgeType": "call",
+        "line": 129,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "info",
+        "targetName": "info",
+        "edgeType": "call",
+        "line": 131,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useFilterCleanup.ts:60:useFilterCleanup",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 137,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSelections.ts:24:useRecentSelections",
+        "target": "getStorageItem",
+        "targetName": "getStorageItem",
+        "edgeType": "call",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSelections.ts:24:useRecentSelections",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSelections.ts:24:useRecentSelections",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSelections.ts:24:useRecentSelections",
+        "target": "setStorageItem",
+        "targetName": "setStorageItem",
+        "edgeType": "call",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSelections.ts:24:useRecentSelections",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 43,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSelections.ts:24:useRecentSelections",
+        "target": "setRecentItems",
+        "targetName": "setRecentItems",
+        "edgeType": "call",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSelections.ts:24:useRecentSelections",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSelections.ts:24:useRecentSelections",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSelections.ts:24:useRecentSelections",
+        "target": "saveToStorage",
+        "targetName": "saveToStorage",
+        "edgeType": "call",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSelections.ts:24:useRecentSelections",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSelections.ts:24:useRecentSelections",
+        "target": "setRecentItems",
+        "targetName": "setRecentItems",
+        "edgeType": "call",
+        "line": 63,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useRecentSelections.ts:24:useRecentSelections",
+        "target": "removeStorageItem",
+        "targetName": "removeStorageItem",
+        "edgeType": "call",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:15:useSmartDefaults",
+        "target": "useGetIdentity",
+        "targetName": "useGetIdentity",
+        "edgeType": "hook",
+        "line": 21,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:15:useSmartDefaults",
+        "target": "useRef",
+        "targetName": "useRef",
+        "edgeType": "hook",
+        "line": 22,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:15:useSmartDefaults",
+        "target": "format",
+        "targetName": "format",
+        "edgeType": "call",
+        "line": 26,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:15:useSmartDefaults",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/hooks/useSmartDefaults.ts:15:useSmartDefaults",
+        "target": "reset",
+        "targetName": "reset",
+        "edgeType": "call",
+        "line": 32,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/use-mobile.ts:5:useIsMobile",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 6,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/use-mobile.ts:5:useIsMobile",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 8,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/use-mobile.ts:5:useIsMobile",
+        "target": "matchMedia",
+        "targetName": "matchMedia",
+        "edgeType": "call",
+        "line": 9,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/use-mobile.ts:5:useIsMobile",
+        "target": "setIsMobile",
+        "targetName": "setIsMobile",
+        "edgeType": "call",
+        "line": 11,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/use-mobile.ts:5:useIsMobile",
+        "target": "addEventListener",
+        "targetName": "addEventListener",
+        "edgeType": "call",
+        "line": 13,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/use-mobile.ts:5:useIsMobile",
+        "target": "setIsMobile",
+        "targetName": "setIsMobile",
+        "edgeType": "call",
+        "line": 14,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/use-mobile.ts:5:useIsMobile",
+        "target": "removeEventListener",
+        "targetName": "removeEventListener",
+        "edgeType": "call",
+        "line": 15,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:21:getCurrentBreakpoint",
+        "target": "matchMedia",
+        "targetName": "matchMedia",
+        "edgeType": "call",
+        "line": 23,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:30:useBreakpoint",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:30:useBreakpoint",
+        "target": "getCurrentBreakpoint",
+        "targetName": "getCurrentBreakpoint",
+        "edgeType": "call",
+        "line": 32,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:30:useBreakpoint",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:30:useBreakpoint",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:30:useBreakpoint",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:30:useBreakpoint",
+        "target": "matchMedia",
+        "targetName": "matchMedia",
+        "edgeType": "call",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:30:useBreakpoint",
+        "target": "setBreakpoint",
+        "targetName": "setBreakpoint",
+        "edgeType": "call",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:30:useBreakpoint",
+        "target": "getCurrentBreakpoint",
+        "targetName": "getCurrentBreakpoint",
+        "edgeType": "call",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:30:useBreakpoint",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:30:useBreakpoint",
+        "target": "addEventListener",
+        "targetName": "addEventListener",
+        "edgeType": "call",
+        "line": 46,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:30:useBreakpoint",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 50,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:30:useBreakpoint",
+        "target": "removeEventListener",
+        "targetName": "removeEventListener",
+        "edgeType": "call",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:60:useIsDesktop",
+        "target": "useBreakpoint",
+        "targetName": "useBreakpoint",
+        "edgeType": "hook",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:64:useIsLaptopOrLarger",
+        "target": "useBreakpoint",
+        "targetName": "useBreakpoint",
+        "edgeType": "hook",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useBreakpoint.ts:69:useIsMobileOrTablet",
+        "target": "useBreakpoint",
+        "targetName": "useBreakpoint",
+        "edgeType": "hook",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useCityStateMapping.ts:11:useCityStateMapping",
+        "target": "useFormContext",
+        "targetName": "useFormContext",
+        "edgeType": "hook",
+        "line": 16,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useCityStateMapping.ts:11:useCityStateMapping",
+        "target": "useWatch",
+        "targetName": "useWatch",
+        "edgeType": "hook",
+        "line": 17,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useCityStateMapping.ts:11:useCityStateMapping",
+        "target": "useRef",
+        "targetName": "useRef",
+        "edgeType": "hook",
+        "line": 18,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useCityStateMapping.ts:11:useCityStateMapping",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 20,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useCityStateMapping.ts:11:useCityStateMapping",
+        "target": "getValues",
+        "targetName": "getValues",
+        "edgeType": "call",
+        "line": 25,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useCityStateMapping.ts:11:useCityStateMapping",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useCityStateMapping.ts:11:useCityStateMapping",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useCityStateMapping.ts:11:useCityStateMapping",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 30,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useCityStateMapping.ts:11:useCityStateMapping",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useCityStateMapping.ts:11:useCityStateMapping",
+        "target": "setValue",
+        "targetName": "setValue",
+        "edgeType": "call",
+        "line": 35,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:8:useDialogError",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 9,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:8:useDialogError",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 11,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:8:useDialogError",
+        "target": "setError",
+        "targetName": "setError",
+        "edgeType": "call",
+        "line": 12,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:8:useDialogError",
+        "target": "parseServerError",
+        "targetName": "parseServerError",
+        "edgeType": "call",
+        "line": 12,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:8:useDialogError",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 15,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:8:useDialogError",
+        "target": "setError",
+        "targetName": "setError",
+        "edgeType": "call",
+        "line": 15,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:20:parseServerError",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 23,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:20:parseServerError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 25,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:20:parseServerError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 25,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:20:parseServerError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 26,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:20:parseServerError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 27,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:20:parseServerError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:20:parseServerError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 35,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useDialogError.ts:20:parseServerError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 35,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "useFormState",
+        "targetName": "useFormState",
+        "edgeType": "hook",
+        "line": 11,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "keys",
+        "targetName": "keys",
+        "edgeType": "call",
+        "line": 14,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 15,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 16,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 18,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "setPendingAction",
+        "targetName": "setPendingAction",
+        "edgeType": "call",
+        "line": 20,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "setShowWarning",
+        "targetName": "setShowWarning",
+        "edgeType": "call",
+        "line": 21,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "action",
+        "targetName": "action",
+        "edgeType": "call",
+        "line": 23,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 27,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "setShowWarning",
+        "targetName": "setShowWarning",
+        "edgeType": "call",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "pendingAction",
+        "targetName": "pendingAction",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "setPendingAction",
+        "targetName": "setPendingAction",
+        "edgeType": "call",
+        "line": 30,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "setShowWarning",
+        "targetName": "setShowWarning",
+        "edgeType": "call",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useInAppUnsavedChanges.ts:10:useInAppUnsavedChanges",
+        "target": "setPendingAction",
+        "targetName": "setPendingAction",
+        "edgeType": "call",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:209:formatShortcut",
+        "target": "isMac",
+        "targetName": "isMac",
+        "edgeType": "call",
+        "line": 210,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:209:formatShortcut",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 214,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:209:formatShortcut",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 217,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:209:formatShortcut",
+        "target": "toUpperCase",
+        "targetName": "toUpperCase",
+        "edgeType": "call",
+        "line": 234,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:209:formatShortcut",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 236,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:209:formatShortcut",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 238,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:209:formatShortcut",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 238,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:6:isMac",
+        "target": "test",
+        "targetName": "test",
+        "edgeType": "call",
+        "line": 7,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:13:isModifierPressed",
+        "target": "isMac",
+        "targetName": "isMac",
+        "edgeType": "call",
+        "line": 14,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:21:shouldPreventShortcut",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:45:isTextarea",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:53:isInForm",
+        "target": "closest",
+        "targetName": "closest",
+        "edgeType": "call",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 88,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "isModifierPressed",
+        "targetName": "isModifierPressed",
+        "edgeType": "call",
+        "line": 94,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "isInForm",
+        "targetName": "isInForm",
+        "edgeType": "call",
+        "line": 96,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 97,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "onSave",
+        "targetName": "onSave",
+        "edgeType": "call",
+        "line": 98,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "isModifierPressed",
+        "targetName": "isModifierPressed",
+        "edgeType": "call",
+        "line": 104,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "shouldPreventShortcut",
+        "targetName": "shouldPreventShortcut",
+        "edgeType": "call",
+        "line": 106,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 107,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "onNew",
+        "targetName": "onNew",
+        "edgeType": "call",
+        "line": 108,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "isModifierPressed",
+        "targetName": "isModifierPressed",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "shouldPreventShortcut",
+        "targetName": "shouldPreventShortcut",
+        "edgeType": "call",
+        "line": 116,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 117,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "onSearch",
+        "targetName": "onSearch",
+        "edgeType": "call",
+        "line": 118,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "querySelector",
+        "targetName": "querySelector",
+        "edgeType": "call",
+        "line": 121,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "focus",
+        "targetName": "focus",
+        "edgeType": "call",
+        "line": 124,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "onCancel",
+        "targetName": "onCancel",
+        "edgeType": "call",
+        "line": 131,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "isInForm",
+        "targetName": "isInForm",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "isTextarea",
+        "targetName": "isTextarea",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "onSubmit",
+        "targetName": "onSubmit",
+        "edgeType": "call",
+        "line": 141,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "shouldPreventShortcut",
+        "targetName": "shouldPreventShortcut",
+        "edgeType": "call",
+        "line": 149,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "onDelete",
+        "targetName": "onDelete",
+        "edgeType": "call",
+        "line": 150,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "shouldPreventShortcut",
+        "targetName": "shouldPreventShortcut",
+        "edgeType": "call",
+        "line": 158,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 159,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "onArrowUp",
+        "targetName": "onArrowUp",
+        "edgeType": "call",
+        "line": 160,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "shouldPreventShortcut",
+        "targetName": "shouldPreventShortcut",
+        "edgeType": "call",
+        "line": 168,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 169,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "onArrowDown",
+        "targetName": "onArrowDown",
+        "edgeType": "call",
+        "line": 170,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "isInForm",
+        "targetName": "isInForm",
+        "edgeType": "call",
+        "line": 176,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "shouldPreventShortcut",
+        "targetName": "shouldPreventShortcut",
+        "edgeType": "call",
+        "line": 176,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 178,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "onEnter",
+        "targetName": "onEnter",
+        "edgeType": "call",
+        "line": 179,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 187,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "addEventListener",
+        "targetName": "addEventListener",
+        "edgeType": "call",
+        "line": 188,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "removeEventListener",
+        "targetName": "removeEventListener",
+        "edgeType": "call",
+        "line": 191,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "isMac",
+        "targetName": "isMac",
+        "edgeType": "call",
+        "line": 196,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useKeyboardShortcuts.ts:87:useKeyboardShortcuts",
+        "target": "isMac",
+        "targetName": "isMac",
+        "edgeType": "call",
+        "line": 197,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "useListContext",
+        "targetName": "useListContext",
+        "edgeType": "hook",
+        "line": 94,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "useResourceContext",
+        "targetName": "useResourceContext",
+        "edgeType": "hook",
+        "line": 95,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "useCreatePath",
+        "targetName": "useCreatePath",
+        "edgeType": "hook",
+        "line": 96,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "useNavigate",
+        "targetName": "useNavigate",
+        "edgeType": "hook",
+        "line": 97,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 99,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 105,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "setFocusedIndex",
+        "targetName": "setFocusedIndex",
+        "edgeType": "call",
+        "line": 106,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 110,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "createPath",
+        "targetName": "createPath",
+        "edgeType": "call",
+        "line": 112,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "navigate",
+        "targetName": "navigate",
+        "edgeType": "call",
+        "line": 113,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 117,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "querySelector",
+        "targetName": "querySelector",
+        "edgeType": "call",
+        "line": 118,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "focus",
+        "targetName": "focus",
+        "edgeType": "call",
+        "line": 121,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "isMac",
+        "targetName": "isMac",
+        "edgeType": "call",
+        "line": 131,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "shouldPreventShortcut",
+        "targetName": "shouldPreventShortcut",
+        "edgeType": "call",
+        "line": 135,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 136,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "handleCreate",
+        "targetName": "handleCreate",
+        "edgeType": "call",
+        "line": 137,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "shouldPreventShortcut",
+        "targetName": "shouldPreventShortcut",
+        "edgeType": "call",
+        "line": 143,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 144,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "handleSearch",
+        "targetName": "handleSearch",
+        "edgeType": "call",
+        "line": 145,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "shouldPreventShortcut",
+        "targetName": "shouldPreventShortcut",
+        "edgeType": "call",
+        "line": 150,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 155,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "setFocusedIndex",
+        "targetName": "setFocusedIndex",
+        "edgeType": "call",
+        "line": 156,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 165,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "setFocusedIndex",
+        "targetName": "setFocusedIndex",
+        "edgeType": "call",
+        "line": 166,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 175,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "onSelect",
+        "targetName": "onSelect",
+        "edgeType": "call",
+        "line": 178,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "createPath",
+        "targetName": "createPath",
+        "edgeType": "call",
+        "line": 181,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "navigate",
+        "targetName": "navigate",
+        "edgeType": "call",
+        "line": 182,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 189,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "setFocusedIndex",
+        "targetName": "setFocusedIndex",
+        "edgeType": "call",
+        "line": 190,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 196,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "setFocusedIndex",
+        "targetName": "setFocusedIndex",
+        "edgeType": "call",
+        "line": 197,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "addEventListener",
+        "targetName": "addEventListener",
+        "edgeType": "call",
+        "line": 202,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "removeEventListener",
+        "targetName": "removeEventListener",
+        "edgeType": "call",
+        "line": 203,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 217,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "setFocusedIndex",
+        "targetName": "setFocusedIndex",
+        "edgeType": "call",
+        "line": 218,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "isMac",
+        "targetName": "isMac",
+        "edgeType": "call",
+        "line": 226,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:90:useListKeyboardNavigation",
+        "target": "isMac",
+        "targetName": "isMac",
+        "edgeType": "call",
+        "line": 227,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:8:isMac",
+        "target": "test",
+        "targetName": "test",
+        "edgeType": "call",
+        "line": 9,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:16:shouldPreventShortcut",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 19,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useListKeyboardNavigation.ts:16:shouldPreventShortcut",
+        "target": "getAttribute",
+        "targetName": "getAttribute",
+        "edgeType": "call",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:28:getHashParams",
+        "target": "indexOf",
+        "targetName": "indexOf",
+        "edgeType": "call",
+        "line": 30,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:28:getHashParams",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 32,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:38:setHashParams",
+        "target": "indexOf",
+        "targetName": "indexOf",
+        "edgeType": "call",
+        "line": 40,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:38:setHashParams",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 41,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:38:setHashParams",
+        "target": "toString",
+        "targetName": "toString",
+        "edgeType": "call",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 48,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "getHashParams",
+        "targetName": "getHashParams",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 54,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setSlideOverId",
+        "targetName": "setSlideOverId",
+        "edgeType": "call",
+        "line": 58,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 58,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setMode",
+        "targetName": "setMode",
+        "edgeType": "call",
+        "line": 59,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setIsOpen",
+        "targetName": "setIsOpen",
+        "edgeType": "call",
+        "line": 60,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setSlideOverId",
+        "targetName": "setSlideOverId",
+        "edgeType": "call",
+        "line": 62,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 62,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setMode",
+        "targetName": "setMode",
+        "edgeType": "call",
+        "line": 63,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setIsOpen",
+        "targetName": "setIsOpen",
+        "edgeType": "call",
+        "line": 64,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 69,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setIsOpen",
+        "targetName": "setIsOpen",
+        "edgeType": "call",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setSlideOverId",
+        "targetName": "setSlideOverId",
+        "edgeType": "call",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "getHashParams",
+        "targetName": "getHashParams",
+        "edgeType": "call",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 74,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 75,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setHashParams",
+        "targetName": "setHashParams",
+        "edgeType": "call",
+        "line": 76,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "pushState",
+        "targetName": "pushState",
+        "edgeType": "call",
+        "line": 77,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 81,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "getHashParams",
+        "targetName": "getHashParams",
+        "edgeType": "call",
+        "line": 83,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 84,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 85,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setSlideOverId",
+        "targetName": "setSlideOverId",
+        "edgeType": "call",
+        "line": 88,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 88,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setMode",
+        "targetName": "setMode",
+        "edgeType": "call",
+        "line": 89,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setIsOpen",
+        "targetName": "setIsOpen",
+        "edgeType": "call",
+        "line": 90,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setSlideOverId",
+        "targetName": "setSlideOverId",
+        "edgeType": "call",
+        "line": 92,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 92,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setMode",
+        "targetName": "setMode",
+        "edgeType": "call",
+        "line": 93,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setIsOpen",
+        "targetName": "setIsOpen",
+        "edgeType": "call",
+        "line": 94,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setIsOpen",
+        "targetName": "setIsOpen",
+        "edgeType": "call",
+        "line": 97,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setSlideOverId",
+        "targetName": "setSlideOverId",
+        "edgeType": "call",
+        "line": 98,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "addEventListener",
+        "targetName": "addEventListener",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "addEventListener",
+        "targetName": "addEventListener",
+        "edgeType": "call",
+        "line": 103,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "removeEventListener",
+        "targetName": "removeEventListener",
+        "edgeType": "call",
+        "line": 105,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "removeEventListener",
+        "targetName": "removeEventListener",
+        "edgeType": "call",
+        "line": 106,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 111,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "closeSlideOver",
+        "targetName": "closeSlideOver",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "addEventListener",
+        "targetName": "addEventListener",
+        "edgeType": "call",
+        "line": 118,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "removeEventListener",
+        "targetName": "removeEventListener",
+        "edgeType": "call",
+        "line": 119,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setSlideOverId",
+        "targetName": "setSlideOverId",
+        "edgeType": "call",
+        "line": 123,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setMode",
+        "targetName": "setMode",
+        "edgeType": "call",
+        "line": 124,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setIsOpen",
+        "targetName": "setIsOpen",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "getHashParams",
+        "targetName": "getHashParams",
+        "edgeType": "call",
+        "line": 127,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 129,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 132,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 132,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setHashParams",
+        "targetName": "setHashParams",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "pushState",
+        "targetName": "pushState",
+        "edgeType": "call",
+        "line": 134,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setMode",
+        "targetName": "setMode",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "getHashParams",
+        "targetName": "getHashParams",
+        "edgeType": "call",
+        "line": 142,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 143,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 144,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 145,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 145,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "setHashParams",
+        "targetName": "setHashParams",
+        "edgeType": "call",
+        "line": 146,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useSlideOverState.ts:46:useSlideOverState",
+        "target": "replaceState",
+        "targetName": "replaceState",
+        "edgeType": "call",
+        "line": 147,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useTeamMembers.ts:17:useTeamMembers",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 18,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useTeamMembers.ts:17:useTeamMembers",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 25,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useUnsavedChangesWarning.ts:11:useUnsavedChangesWarning",
+        "target": "useFormState",
+        "targetName": "useFormState",
+        "edgeType": "hook",
+        "line": 12,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useUnsavedChangesWarning.ts:11:useUnsavedChangesWarning",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 14,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useUnsavedChangesWarning.ts:11:useUnsavedChangesWarning",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 19,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useUnsavedChangesWarning.ts:11:useUnsavedChangesWarning",
+        "target": "addEventListener",
+        "targetName": "addEventListener",
+        "edgeType": "call",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useUnsavedChangesWarning.ts:11:useUnsavedChangesWarning",
+        "target": "removeEventListener",
+        "targetName": "removeEventListener",
+        "edgeType": "call",
+        "line": 25,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/hooks/useUserRole.ts:24:useUserRole",
+        "target": "useGetIdentity",
+        "targetName": "useGetIdentity",
+        "edgeType": "hook",
+        "line": 25,
+        "conditional": false,
+        "inLoop": false
+      }
+    ]
+  }
+}

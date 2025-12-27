@@ -1,0 +1,730 @@
+{
+  "chunk_name": "pages",
+  "generated_at": "2025-12-27T02:01:23.872Z",
+  "items": {
+    "nodes": [
+      {
+        "id": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "name": "WhatsNew",
+        "file": "src/atomic-crm/pages/WhatsNew.tsx",
+        "line": 197,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      }
+    ],
+    "edges": [
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 198,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 199,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 200,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "setCompletedFeatures",
+        "targetName": "setCompletedFeatures",
+        "edgeType": "call",
+        "line": 203,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "setCurrentStep",
+        "targetName": "setCurrentStep",
+        "edgeType": "call",
+        "line": 208,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "setCurrentStep",
+        "targetName": "setCurrentStep",
+        "edgeType": "call",
+        "line": 214,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "setSelectedFeature",
+        "targetName": "setSelectedFeature",
+        "edgeType": "call",
+        "line": 219,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "setCurrentStep",
+        "targetName": "setCurrentStep",
+        "edgeType": "call",
+        "line": 220,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 258,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 268,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "getCategoryColor",
+        "targetName": "getCategoryColor",
+        "edgeType": "call",
+        "line": 268,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "toUpperCase",
+        "targetName": "toUpperCase",
+        "edgeType": "call",
+        "line": 269,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 276,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "startTour",
+        "targetName": "startTour",
+        "edgeType": "call",
+        "line": 282,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 300,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "getCategoryColor",
+        "targetName": "getCategoryColor",
+        "edgeType": "call",
+        "line": 300,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "handleFeatureComplete",
+        "targetName": "handleFeatureComplete",
+        "edgeType": "call",
+        "line": 352,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 384,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "startTour",
+        "targetName": "startTour",
+        "edgeType": "call",
+        "line": 387,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 395,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Tabs",
+        "targetName": "Tabs",
+        "edgeType": "render",
+        "line": 249,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "TabsList",
+        "targetName": "TabsList",
+        "edgeType": "render",
+        "line": 250,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "TabsTrigger",
+        "targetName": "TabsTrigger",
+        "edgeType": "render",
+        "line": 251,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "TabsTrigger",
+        "targetName": "TabsTrigger",
+        "edgeType": "render",
+        "line": 252,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "TabsTrigger",
+        "targetName": "TabsTrigger",
+        "edgeType": "render",
+        "line": 253,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "TabsContent",
+        "targetName": "TabsContent",
+        "edgeType": "render",
+        "line": 256,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 259,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 260,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 261,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 267,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 268,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 274,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 282,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "TabsContent",
+        "targetName": "TabsContent",
+        "edgeType": "render",
+        "line": 292,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 293,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 294,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 295,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 300,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 309,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 345,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 351,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 359,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 378,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 379,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 380,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 382,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 385,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "TabsContent",
+        "targetName": "TabsContent",
+        "edgeType": "render",
+        "line": 407,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 409,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 410,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 411,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 416,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 449,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 450,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 451,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 456,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 458,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 464,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 470,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 476,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 486,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 487,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 488,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 490,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 495,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 498,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CheckCircle",
+        "targetName": "CheckCircle",
+        "edgeType": "render",
+        "line": 278,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Play",
+        "targetName": "Play",
+        "edgeType": "render",
+        "line": 283,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "ChevronLeft",
+        "targetName": "ChevronLeft",
+        "edgeType": "render",
+        "line": 346,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CheckCircle",
+        "targetName": "CheckCircle",
+        "edgeType": "render",
+        "line": 355,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "ChevronRight",
+        "targetName": "ChevronRight",
+        "edgeType": "render",
+        "line": 361,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CheckCircle",
+        "targetName": "CheckCircle",
+        "edgeType": "render",
+        "line": 396,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "BookOpen",
+        "targetName": "BookOpen",
+        "edgeType": "render",
+        "line": 412,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Target",
+        "targetName": "Target",
+        "edgeType": "render",
+        "line": 452,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "CheckCircle",
+        "targetName": "CheckCircle",
+        "edgeType": "render",
+        "line": 460,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Briefcase",
+        "targetName": "Briefcase",
+        "edgeType": "render",
+        "line": 466,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Users",
+        "targetName": "Users",
+        "edgeType": "render",
+        "line": 472,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "Building",
+        "targetName": "Building",
+        "edgeType": "render",
+        "line": 478,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/pages/WhatsNew.tsx:197:WhatsNew",
+        "target": "ArrowRight",
+        "targetName": "ArrowRight",
+        "edgeType": "render",
+        "line": 500,
+        "conditional": false,
+        "inLoop": false
+      }
+    ]
+  }
+}

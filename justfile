@@ -188,6 +188,14 @@ discover-forms:
 discover-new:
     npx tsx scripts/discover/index.ts --only=schemas,types,forms
 
+# Extract call graph only
+discover-callgraph:
+    npx tsx scripts/discover/index.ts --only=callGraph
+
+# Generate call graph visualizations
+callgraph-viz:
+    npx tsx scripts/discover/generate-viz.ts
+
 # ─────────────────────────────────────────────────────────────
 # 📦 Composite Commands
 # ─────────────────────────────────────────────────────────────

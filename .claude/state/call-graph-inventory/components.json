@@ -1,0 +1,478 @@
+{
+  "chunk_name": "components",
+  "generated_at": "2025-12-27T02:01:23.840Z",
+  "items": {
+    "nodes": [
+      {
+        "id": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "name": "CreateFormFooter",
+        "file": "src/atomic-crm/components/CreateFormFooter.tsx",
+        "line": 14,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "name": "QuickAddTaskButton",
+        "file": "src/atomic-crm/components/QuickAddTaskButton.tsx",
+        "line": 12,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:108:getNextStatus",
+        "name": "getNextStatus",
+        "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
+        "line": 108,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:120:getPreviousStatus",
+        "name": "getPreviousStatus",
+        "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
+        "line": 120,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:131:isValidTransition",
+        "name": "isValidTransition",
+        "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
+        "line": 131,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/components/SampleStatusBadge.tsx:462:SampleStatusStepper",
+        "name": "SampleStatusStepper",
+        "file": "src/atomic-crm/components/SampleStatusBadge.tsx",
+        "line": 462,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      }
+    ],
+    "edges": [
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 19,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "useRedirect",
+        "targetName": "useRedirect",
+        "edgeType": "hook",
+        "line": 20,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "useFormContext",
+        "targetName": "useFormContext",
+        "edgeType": "hook",
+        "line": 21,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "useFormState",
+        "targetName": "useFormState",
+        "edgeType": "hook",
+        "line": 22,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "confirm",
+        "targetName": "confirm",
+        "edgeType": "call",
+        "line": 26,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "redirect",
+        "targetName": "redirect",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 32,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "toUpperCase",
+        "targetName": "toUpperCase",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "charAt",
+        "targetName": "charAt",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "redirect",
+        "targetName": "redirect",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "toUpperCase",
+        "targetName": "toUpperCase",
+        "edgeType": "call",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "charAt",
+        "targetName": "charAt",
+        "edgeType": "call",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "reset",
+        "targetName": "reset",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "handleCancel",
+        "targetName": "handleCancel",
+        "edgeType": "callback",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "SaveButton",
+        "targetName": "SaveButton",
+        "edgeType": "render",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/CreateFormFooter.tsx:14:CreateFormFooter",
+        "target": "SaveButton",
+        "targetName": "SaveButton",
+        "edgeType": "render",
+        "line": 58,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "useNavigate",
+        "targetName": "useNavigate",
+        "edgeType": "hook",
+        "line": 18,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 22,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 22,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 23,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 23,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 24,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 24,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "navigate",
+        "targetName": "navigate",
+        "edgeType": "call",
+        "line": 26,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "toString",
+        "targetName": "toString",
+        "edgeType": "call",
+        "line": 26,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "handleClick",
+        "targetName": "handleClick",
+        "edgeType": "callback",
+        "line": 33,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 46,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "handleClick",
+        "targetName": "handleClick",
+        "edgeType": "callback",
+        "line": 48,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "Plus",
+        "targetName": "Plus",
+        "edgeType": "render",
+        "line": 39,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/QuickAddTaskButton.tsx:12:QuickAddTaskButton",
+        "target": "Plus",
+        "targetName": "Plus",
+        "edgeType": "render",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:108:getNextStatus",
+        "target": "indexOf",
+        "targetName": "indexOf",
+        "edgeType": "call",
+        "line": 109,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:120:getPreviousStatus",
+        "target": "indexOf",
+        "targetName": "indexOf",
+        "edgeType": "call",
+        "line": 121,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:131:isValidTransition",
+        "target": "indexOf",
+        "targetName": "indexOf",
+        "edgeType": "call",
+        "line": 132,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:131:isValidTransition",
+        "target": "indexOf",
+        "targetName": "indexOf",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:462:SampleStatusStepper",
+        "target": "indexOf",
+        "targetName": "indexOf",
+        "edgeType": "call",
+        "line": 469,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:462:SampleStatusStepper",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 472,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:462:SampleStatusStepper",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 473,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:462:SampleStatusStepper",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 480,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/components/SampleStatusBadge.tsx:462:SampleStatusStepper",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 490,
+        "conditional": false,
+        "inLoop": false
+      }
+    ]
+  }
+}

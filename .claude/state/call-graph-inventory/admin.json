@@ -1,0 +1,694 @@
+{
+  "chunk_name": "admin",
+  "generated_at": "2025-12-27T02:01:23.839Z",
+  "items": {
+    "nodes": [
+      {
+        "id": "src/atomic-crm/admin/HealthDashboard.tsx:43:getStatusColor",
+        "name": "getStatusColor",
+        "file": "src/atomic-crm/admin/HealthDashboard.tsx",
+        "line": 43,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/admin/HealthDashboard.tsx:52:getStatusText",
+        "name": "getStatusText",
+        "file": "src/atomic-crm/admin/HealthDashboard.tsx",
+        "line": 52,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/admin/HealthDashboard.tsx:61:StatusIndicator",
+        "name": "StatusIndicator",
+        "file": "src/atomic-crm/admin/HealthDashboard.tsx",
+        "line": 61,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/admin/HealthDashboard.tsx:79:MetricCard",
+        "name": "MetricCard",
+        "file": "src/atomic-crm/admin/HealthDashboard.tsx",
+        "line": 79,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "name": "HealthDashboard",
+        "file": "src/atomic-crm/admin/HealthDashboard.tsx",
+        "line": 115,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      }
+    ],
+    "edges": [
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:79:MetricCard",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 93,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:79:MetricCard",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 94,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:79:MetricCard",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 95,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:79:MetricCard",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 98,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:79:MetricCard",
+        "target": "Icon",
+        "targetName": "Icon",
+        "edgeType": "render",
+        "line": 96,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:79:MetricCard",
+        "target": "TrendingUp",
+        "targetName": "TrendingUp",
+        "edgeType": "render",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:79:MetricCard",
+        "target": "TrendingUp",
+        "targetName": "TrendingUp",
+        "edgeType": "render",
+        "line": 103,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 116,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 122,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 123,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 125,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "setIsRefreshing",
+        "targetName": "setIsRefreshing",
+        "edgeType": "call",
+        "line": 126,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "setTimeout",
+        "targetName": "setTimeout",
+        "edgeType": "call",
+        "line": 128,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "getMetrics",
+        "targetName": "getMetrics",
+        "edgeType": "call",
+        "line": 129,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "setMetrics",
+        "targetName": "setMetrics",
+        "edgeType": "call",
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "setLastUpdated",
+        "targetName": "setLastUpdated",
+        "edgeType": "call",
+        "line": 131,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "setIsRefreshing",
+        "targetName": "setIsRefreshing",
+        "edgeType": "call",
+        "line": 132,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 137,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "refreshMetrics",
+        "targetName": "refreshMetrics",
+        "edgeType": "call",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "setInterval",
+        "targetName": "setInterval",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "clearInterval",
+        "targetName": "clearInterval",
+        "edgeType": "call",
+        "line": 140,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "getStatusColor",
+        "targetName": "getStatusColor",
+        "edgeType": "call",
+        "line": 151,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "getStatusText",
+        "targetName": "getStatusText",
+        "edgeType": "call",
+        "line": 152,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 156,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "round",
+        "targetName": "round",
+        "edgeType": "call",
+        "line": 159,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "reduce",
+        "targetName": "reduce",
+        "edgeType": "call",
+        "line": 159,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "toLocaleTimeString",
+        "targetName": "toLocaleTimeString",
+        "edgeType": "call",
+        "line": 173,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "toFixed",
+        "targetName": "toFixed",
+        "edgeType": "call",
+        "line": 191,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "open",
+        "targetName": "open",
+        "edgeType": "call",
+        "line": 198,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "toFixed",
+        "targetName": "toFixed",
+        "edgeType": "call",
+        "line": 218,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "min",
+        "targetName": "min",
+        "edgeType": "call",
+        "line": 221,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "toLocaleString",
+        "targetName": "toLocaleString",
+        "edgeType": "call",
+        "line": 243,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "toLocaleString",
+        "targetName": "toLocaleString",
+        "edgeType": "call",
+        "line": 249,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "toFixed",
+        "targetName": "toFixed",
+        "edgeType": "call",
+        "line": 250,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "toFixed",
+        "targetName": "toFixed",
+        "edgeType": "call",
+        "line": 263,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "max",
+        "targetName": "max",
+        "edgeType": "call",
+        "line": 263,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 321,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "reverse",
+        "targetName": "reverse",
+        "edgeType": "call",
+        "line": 321,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 321,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 331,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 331,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "toLocaleTimeString",
+        "targetName": "toLocaleTimeString",
+        "edgeType": "call",
+        "line": 342,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 176,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 185,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 186,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 195,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 207,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 208,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 209,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 214,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 271,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 272,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 273,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 275,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 278,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 286,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 294,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 305,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "CardHeader",
+        "targetName": "CardHeader",
+        "edgeType": "render",
+        "line": 306,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "CardTitle",
+        "targetName": "CardTitle",
+        "edgeType": "render",
+        "line": 307,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "CardContent",
+        "targetName": "CardContent",
+        "edgeType": "render",
+        "line": 309,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 332,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "RefreshCw",
+        "targetName": "RefreshCw",
+        "edgeType": "render",
+        "line": 146,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "RefreshCw",
+        "targetName": "RefreshCw",
+        "edgeType": "render",
+        "line": 177,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "AlertTriangle",
+        "targetName": "AlertTriangle",
+        "edgeType": "render",
+        "line": 187,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "StatusIndicator",
+        "targetName": "StatusIndicator",
+        "edgeType": "render",
+        "line": 211,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "Progress",
+        "targetName": "Progress",
+        "edgeType": "render",
+        "line": 220,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "MetricCard",
+        "targetName": "MetricCard",
+        "edgeType": "render",
+        "line": 241,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "MetricCard",
+        "targetName": "MetricCard",
+        "edgeType": "render",
+        "line": 247,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "MetricCard",
+        "targetName": "MetricCard",
+        "edgeType": "render",
+        "line": 254,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/admin/HealthDashboard.tsx:115:HealthDashboard",
+        "target": "MetricCard",
+        "targetName": "MetricCard",
+        "edgeType": "render",
+        "line": 261,
+        "conditional": false,
+        "inLoop": false
+      }
+    ]
+  }
+}

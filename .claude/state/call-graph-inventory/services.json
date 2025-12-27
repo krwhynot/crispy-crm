@@ -1,0 +1,82 @@
+{
+  "chunk_name": "services",
+  "generated_at": "2025-12-27T02:01:23.886Z",
+  "items": {
+    "nodes": [
+      {
+        "id": "src/atomic-crm/services/digest.service.ts:383:createDigestService",
+        "name": "createDigestService",
+        "file": "src/atomic-crm/services/digest.service.ts",
+        "line": 383,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/services/junctions.service.ts:46:isErrorWithMessage",
+        "name": "isErrorWithMessage",
+        "file": "src/atomic-crm/services/junctions.service.ts",
+        "line": 46,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/services/junctions.service.ts:58:getErrorMessage",
+        "name": "getErrorMessage",
+        "file": "src/atomic-crm/services/junctions.service.ts",
+        "line": 58,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/services/utils/handleServiceError.ts:11:handleServiceError",
+        "name": "handleServiceError",
+        "file": "src/atomic-crm/services/utils/handleServiceError.ts",
+        "line": 11,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      }
+    ],
+    "edges": [
+      {
+        "source": "src/atomic-crm/services/junctions.service.ts:58:getErrorMessage",
+        "target": "isErrorWithMessage",
+        "targetName": "isErrorWithMessage",
+        "edgeType": "call",
+        "line": 59,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/services/junctions.service.ts:58:getErrorMessage",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/services/utils/handleServiceError.ts:11:handleServiceError",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 17,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/services/utils/handleServiceError.ts:11:handleServiceError",
+        "target": "devError",
+        "targetName": "devError",
+        "edgeType": "call",
+        "line": 20,
+        "conditional": true,
+        "inLoop": false
+      }
+    ]
+  }
+}

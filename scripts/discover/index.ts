@@ -8,6 +8,7 @@ import { extractSchemas } from "./extractors/schemas.js";
 import { extractTypes } from "./extractors/types.js";
 import { extractForms } from "./extractors/forms.js";
 import { extractValidationServices } from "./extractors/validation-services.js";
+import { extractCallGraph } from "./extractors/call-graph.js";
 import { isDiscoveryStale, isChunkedDiscoveryStale, getStaleChunks, readExistingManifest, writeIncrementalChunkedDiscovery, type StaleChunksResult, type ChunkedManifest } from "./utils/output.js";
 import { project } from "./utils/project.js";
 
@@ -99,6 +100,27 @@ const EXTRACTORS: Record<string, ExtractorConfig> = {
       return files.map(f => f.getFilePath()).filter(p => !p.includes("__tests__") && !p.endsWith("index.ts"));
     },
   },
+  callGraph: {
+    name: "callGraph",
+    label: "Call Graph",
+    outputPath: "call-graph-inventory",
+    isChunked: true,
+    extractFn: extractCallGraph,
+    getSourceFiles: () => {
+      const globs = [
+        "src/atomic-crm/**/*.ts",
+        "src/atomic-crm/**/*.tsx",
+        "src/hooks/**/*.ts",
+      ];
+      const files = project.addSourceFilesAtPaths(globs);
+      return files.map(f => f.getFilePath()).filter(
+        p => !p.includes("node_modules") &&
+             !p.includes(".test.") &&
+             !p.includes(".spec.") &&
+             !p.includes("__tests__")
+      );
+    },
+  },
 };
 
 interface CliArgs {
@@ -157,6 +179,19 @@ function getChunkNameForFile(extractor: ExtractorConfig, filePath: string): stri
         return typesMatch[1];
       }
       return path.basename(relativePath, ".ts");
+
+    case "callGraph":
+      // Pattern: src/atomic-crm/<feature>/... → "feature"
+      // Pattern: src/hooks/... → "hooks"
+      // Files directly in src/atomic-crm/ → "_root"
+      const callGraphMatch = relativePath.match(/^src\/atomic-crm\/([^/]+)\//);
+      if (callGraphMatch) {
+        return callGraphMatch[1];
+      }
+      if (relativePath.startsWith("src/hooks/")) {
+        return "hooks";
+      }
+      return "_root";
 
     default:
       // Non-chunked extractors don't need this, but return a sensible default

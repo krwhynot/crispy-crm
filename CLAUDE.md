@@ -32,6 +32,40 @@ Guidance for Claude Code working with Crispy CRM (Atomic CRM) - a React 19 + Typ
 
 To regenerate: `just discover` | To check freshness: `just discover-check`
 
+### Incremental Discovery (Phase 2.5)
+
+**For faster updates after modifying source files:**
+
+```bash
+# Full extraction (all chunks rewritten)
+just discover
+
+# Incremental extraction (only stale chunks updated)
+npx tsx scripts/discover/index.ts --incremental
+```
+
+**How it works:**
+1. Compares source file hashes against manifest to detect changes
+2. Identifies which chunks contain modified/deleted files
+3. Extracts only from stale chunks, preserves fresh chunk files
+4. Merges results into updated manifest with correct totals
+
+**When to use each:**
+| Scenario | Command |
+|----------|---------|
+| First run / CI | `just discover` |
+| After editing 1-2 files | `--incremental` |
+| After major refactor | `just discover` |
+| New chunk needed (new feature dir) | `just discover` |
+
+**Output example:**
+```
+✓  Components: All 26 chunks fresh           # Skipped - no changes
+📝 Zod Schemas: Updating 1 of 18 chunks      # Only contacts.json rewritten
+     contacts: Modified: src/.../contacts.ts
+✅ Incremental update: schemas-inventory/ (1 chunks updated, 18 total)
+```
+
 ## Preferred CLI Tools
 
 **Use these high-performance tools instead of defaults:**
