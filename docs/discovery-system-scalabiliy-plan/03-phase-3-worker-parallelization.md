@@ -1,211 +1,438 @@
-# Phase 3: Worker Thread Parallelization (Week 3) - PERFORMANCE
+# Phase 3: Qdrant + Ollama Semantic Search (Days 4-5)
 
 > This phase builds on [Phase 1: Chunk-Based Output](./01-phase-1-chunked-output.md) and [Phase 2: Incremental Extraction](./02-phase-2-incremental-extraction.md). Ensure those are complete before proceeding.
 
-**Goal:** Use all CPU cores for parallel extraction.
+**Goal:** Add vector-based semantic search using Qdrant (self-hosted) and Ollama (free local embeddings).
 
 ---
 
-## Task 3.1: Create worker script
+## Task 3.1: Docker Compose setup
 
-**New File:** `scripts/discover/extractor-worker.ts`
+**File:** `docker-compose.yml` (add to existing or create)
+
+```yaml
+services:
+  qdrant:
+    image: qdrant/qdrant:latest
+    ports:
+      - "6333:6333"
+    volumes:
+      - .claude/qdrant:/qdrant/storage
+
+  ollama:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - .claude/ollama:/root/.ollama
+```
+
+---
+
+## Task 3.2: Start services and pull model
+
+```bash
+docker compose up -d qdrant ollama
+docker exec ollama ollama pull nomic-embed-text
+```
+
+Verify services are running:
+```bash
+curl http://localhost:6333/health          # Qdrant health check
+curl http://localhost:11434/api/version    # Ollama version
+```
+
+---
+
+## Task 3.3: Create AST-aware chunking script
+
+**New File:** `scripts/discover/embeddings/chunk.ts`
+
+Uses Tree-sitter for semantic boundaries (functions, classes, interfaces).
 
 ```typescript
-import { parentPort, workerData } from 'worker_threads';
-import { createProject, disposeProject } from './utils/project';
+import Parser from 'tree-sitter';
+import TypeScript from 'tree-sitter-typescript';
 
-interface WorkerInput {
-  extractorName: string;
-  globs: string[];
-  outputPath: string;
-  onlyChunks?: string[];
+interface CodeChunk {
+  id: string;
+  filePath: string;
+  type: 'function' | 'class' | 'interface' | 'type' | 'component';
+  name: string;
+  content: string;
+  startLine: number;
+  endLine: number;
 }
 
-interface WorkerOutput {
-  success: boolean;
-  extractorName: string;
-  itemCount: number;
-  error?: string;
-  memoryUsedMB: number;
+const parser = new Parser();
+parser.setLanguage(TypeScript.typescript);
+
+export function chunkFile(filePath: string, content: string): CodeChunk[] {
+  const tree = parser.parse(content);
+  const chunks: CodeChunk[] = [];
+
+  const visit = (node: Parser.SyntaxNode) => {
+    const chunkTypes = [
+      'function_declaration',
+      'arrow_function',
+      'class_declaration',
+      'interface_declaration',
+      'type_alias_declaration',
+    ];
+
+    if (chunkTypes.includes(node.type)) {
+      const name = extractName(node);
+      if (name) {
+        chunks.push({
+          id: `${filePath}:${name}`,
+          filePath,
+          type: mapNodeType(node.type),
+          name,
+          content: node.text,
+          startLine: node.startPosition.row + 1,
+          endLine: node.endPosition.row + 1,
+        });
+      }
+    }
+
+    for (const child of node.children) {
+      visit(child);
+    }
+  };
+
+  visit(tree.rootNode);
+  return chunks;
 }
 
-async function runExtractor(input: WorkerInput): Promise<WorkerOutput> {
-  const { extractorName, globs, outputPath, onlyChunks } = input;
-  const startMem = process.memoryUsage().heapUsed;
+function extractName(node: Parser.SyntaxNode): string | null {
+  const nameNode = node.childForFieldName('name');
+  return nameNode?.text ?? null;
+}
 
-  try {
-    const project = createProject(extractorName);
-    const sourceFiles = project.addSourceFilesAtPaths(globs);
+function mapNodeType(nodeType: string): CodeChunk['type'] {
+  switch (nodeType) {
+    case 'function_declaration':
+    case 'arrow_function':
+      return 'function';
+    case 'class_declaration':
+      return 'class';
+    case 'interface_declaration':
+      return 'interface';
+    case 'type_alias_declaration':
+      return 'type';
+    default:
+      return 'function';
+  }
+}
+```
 
-    // Dynamic import of extractor (avoids loading all extractors)
-    const extractor = await import(`./extractors/${extractorName}`);
-    const result = await extractor.extract(project, sourceFiles, onlyChunks ? new Set(onlyChunks) : undefined);
+---
 
-    disposeProject(project, extractorName);
+## Task 3.4: Create Ollama embedding client
 
-    const endMem = process.memoryUsage().heapUsed;
+**New File:** `scripts/discover/embeddings/ollama.ts`
 
-    return {
-      success: true,
-      extractorName,
-      itemCount: result.itemCount,
-      memoryUsedMB: (endMem - startMem) / 1024 / 1024,
-    };
-  } catch (error) {
-    return {
-      success: false,
-      extractorName,
-      itemCount: 0,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      memoryUsedMB: 0,
-    };
+```typescript
+const OLLAMA_BASE_URL = process.env.OLLAMA_URL ?? 'http://localhost:11434';
+
+export async function generateEmbedding(text: string): Promise<number[]> {
+  const response = await fetch(`${OLLAMA_BASE_URL}/api/embeddings`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: 'nomic-embed-text',
+      prompt: text,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Ollama embedding failed: ${response.statusText}`);
+  }
+
+  const data = await response.json();
+  return data.embedding; // 768-dimensional vector
+}
+
+export async function generateBatchEmbeddings(
+  texts: string[]
+): Promise<number[][]> {
+  const embeddings: number[][] = [];
+
+  for (const text of texts) {
+    const embedding = await generateEmbedding(text);
+    embeddings.push(embedding);
+  }
+
+  return embeddings;
+}
+```
+
+---
+
+## Task 3.5: Create Qdrant client
+
+**New File:** `scripts/discover/embeddings/qdrant.ts`
+
+```typescript
+import { QdrantClient } from '@qdrant/js-client-rest';
+
+const QDRANT_URL = process.env.QDRANT_URL ?? 'http://localhost:6333';
+const COLLECTION_NAME = 'crispy_code';
+const VECTOR_SIZE = 768; // nomic-embed-text dimension
+
+export const qdrant = new QdrantClient({ url: QDRANT_URL });
+
+export async function ensureCollection(): Promise<void> {
+  const collections = await qdrant.getCollections();
+  const exists = collections.collections.some(c => c.name === COLLECTION_NAME);
+
+  if (!exists) {
+    await qdrant.createCollection(COLLECTION_NAME, {
+      vectors: {
+        size: VECTOR_SIZE,
+        distance: 'Cosine',
+      },
+    });
+    console.log(`✅ Created collection: ${COLLECTION_NAME}`);
   }
 }
 
-// Worker entry point
-if (parentPort) {
-  parentPort.on('message', async (input: WorkerInput) => {
-    const result = await runExtractor(input);
-    parentPort!.postMessage(result);
+export async function upsertPoints(
+  points: {
+    id: string;
+    vector: number[];
+    payload: Record<string, unknown>;
+  }[]
+): Promise<void> {
+  await qdrant.upsert(COLLECTION_NAME, {
+    wait: true,
+    points: points.map((p, i) => ({
+      id: i, // Qdrant requires numeric or UUID ids
+      vector: p.vector,
+      payload: { ...p.payload, originalId: p.id },
+    })),
   });
+}
+
+export async function search(
+  queryVector: number[],
+  limit = 10
+): Promise<
+  {
+    score: number;
+    payload: Record<string, unknown>;
+  }[]
+> {
+  const results = await qdrant.search(COLLECTION_NAME, {
+    vector: queryVector,
+    limit,
+    with_payload: true,
+  });
+
+  return results.map(r => ({
+    score: r.score,
+    payload: r.payload as Record<string, unknown>,
+  }));
 }
 ```
 
 ---
 
-## Task 3.2: Create worker pool orchestrator
+## Task 3.6: Create embedding indexer
 
-**New File:** `scripts/discover/worker-pool.ts`
+**New File:** `scripts/discover/embeddings/index.ts`
+
+Orchestrates chunking, embedding generation, and Qdrant indexing.
 
 ```typescript
-import { Worker } from 'worker_threads';
-import os from 'os';
-import PQueue from 'p-queue';
+import { glob } from 'glob';
+import fs from 'fs/promises';
+import path from 'path';
+import { chunkFile } from './chunk';
+import { generateEmbedding } from './ollama';
+import { ensureCollection, upsertPoints, search } from './qdrant';
 
-const WORKER_PATH = new URL('./extractor-worker.ts', import.meta.url);
-const MAX_WORKERS = Math.max(1, os.cpus().length - 1); // Leave 1 core for main thread
+const SOURCE_GLOBS = [
+  'src/**/*.ts',
+  'src/**/*.tsx',
+  '!src/**/*.test.ts',
+  '!src/**/*.test.tsx',
+  '!node_modules/**',
+];
 
-interface ExtractorTask {
-  extractorName: string;
-  globs: string[];
-  outputPath: string;
-  onlyChunks?: string[];
-}
+export async function indexCodebase(rootDir: string): Promise<void> {
+  console.log('🔍 Starting semantic indexing...');
 
-export async function runExtractorsParallel(tasks: ExtractorTask[]): Promise<void> {
-  const queue = new PQueue({ concurrency: MAX_WORKERS });
+  await ensureCollection();
 
-  console.log(`🚀 Running ${tasks.length} extractors with ${MAX_WORKERS} workers`);
+  const files = await glob(SOURCE_GLOBS, { cwd: rootDir, absolute: true });
+  console.log(`📁 Found ${files.length} source files`);
 
-  const results = await Promise.allSettled(
-    tasks.map(task => queue.add(() => runWorker(task)))
-  );
+  let totalChunks = 0;
+  const batchSize = 50;
+  const points: {
+    id: string;
+    vector: number[];
+    payload: Record<string, unknown>;
+  }[] = [];
 
-  // Report results
-  results.forEach((result, i) => {
-    if (result.status === 'fulfilled' && result.value.success) {
-      console.log(`✅ ${result.value.extractorName}: ${result.value.itemCount} items (${result.value.memoryUsedMB.toFixed(1)}MB)`);
-    } else if (result.status === 'fulfilled') {
-      console.error(`❌ ${result.value.extractorName}: ${result.value.error}`);
-    } else {
-      console.error(`❌ ${tasks[i].extractorName}: Worker crashed - ${result.reason}`);
-    }
-  });
-}
+  for (const filePath of files) {
+    const content = await fs.readFile(filePath, 'utf-8');
+    const relativePath = path.relative(rootDir, filePath);
+    const chunks = chunkFile(relativePath, content);
 
-function runWorker(task: ExtractorTask): Promise<any> {
-  return new Promise((resolve, reject) => {
-    const worker = new Worker(WORKER_PATH, {
-      execArgv: ['--loader', 'tsx'], // Support TypeScript
-    });
+    for (const chunk of chunks) {
+      const embedding = await generateEmbedding(chunk.content);
+      points.push({
+        id: chunk.id,
+        vector: embedding,
+        payload: {
+          filePath: chunk.filePath,
+          type: chunk.type,
+          name: chunk.name,
+          startLine: chunk.startLine,
+          endLine: chunk.endLine,
+          preview: chunk.content.slice(0, 200),
+        },
+      });
 
-    const timeout = setTimeout(() => {
-      worker.terminate();
-      reject(new Error(`Timeout: ${task.extractorName} took > 5 minutes`));
-    }, 5 * 60 * 1000);
-
-    worker.on('message', (result) => {
-      clearTimeout(timeout);
-      resolve(result);
-    });
-
-    worker.on('error', (error) => {
-      clearTimeout(timeout);
-      reject(error);
-    });
-
-    worker.on('exit', (code) => {
-      if (code !== 0) {
-        clearTimeout(timeout);
-        reject(new Error(`Worker exited with code ${code}`));
+      if (points.length >= batchSize) {
+        await upsertPoints(points);
+        totalChunks += points.length;
+        console.log(`📤 Indexed ${totalChunks} chunks...`);
+        points.length = 0;
       }
+    }
+  }
+
+  if (points.length > 0) {
+    await upsertPoints(points);
+    totalChunks += points.length;
+  }
+
+  console.log(`✅ Indexed ${totalChunks} code chunks`);
+}
+
+export async function semanticSearch(
+  query: string,
+  limit = 10
+): Promise<
+  {
+    score: number;
+    filePath: string;
+    name: string;
+    type: string;
+    preview: string;
+  }[]
+> {
+  const queryVector = await generateEmbedding(query);
+  const results = await search(queryVector, limit);
+
+  return results.map(r => ({
+    score: r.score,
+    filePath: r.payload.filePath as string,
+    name: r.payload.name as string,
+    type: r.payload.type as string,
+    preview: r.payload.preview as string,
+  }));
+}
+
+// CLI entry point
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const command = process.argv[2];
+  const rootDir = process.cwd();
+
+  if (command === 'index') {
+    indexCodebase(rootDir).catch(console.error);
+  } else if (command === 'search') {
+    const query = process.argv.slice(3).join(' ');
+    if (!query) {
+      console.error('Usage: npx tsx embeddings/index.ts search <query>');
+      process.exit(1);
+    }
+    semanticSearch(query).then(results => {
+      console.log('\n🔎 Search Results:\n');
+      results.forEach((r, i) => {
+        console.log(`${i + 1}. [${r.score.toFixed(3)}] ${r.type}: ${r.name}`);
+        console.log(`   📁 ${r.filePath}`);
+        console.log(`   ${r.preview.slice(0, 100)}...\n`);
+      });
     });
-
-    worker.postMessage(task);
-  });
+  } else {
+    console.log('Usage:');
+    console.log('  npx tsx embeddings/index.ts index     # Index codebase');
+    console.log('  npx tsx embeddings/index.ts search <query>  # Semantic search');
+  }
 }
 ```
 
 ---
 
-## Task 3.3: Add graceful shutdown
+## Dependencies
 
-**File:** `scripts/discover/index.ts`
+**Add to `package.json`:**
 
-```typescript
-// Add at top of main()
-const activeWorkers: Worker[] = [];
+```json
+{
+  "devDependencies": {
+    "@qdrant/js-client-rest": "^1.8.0",
+    "tree-sitter": "^0.21.0",
+    "tree-sitter-typescript": "^0.21.0"
+  }
+}
+```
 
-process.on('SIGTERM', async () => {
-  console.log('\n🛑 Shutting down gracefully...');
-  await Promise.all(activeWorkers.map(w => w.terminate()));
-  process.exit(0);
-});
-
-process.on('SIGINT', () => {
-  process.emit('SIGTERM' as any);
-});
+Install:
+```bash
+npm install -D @qdrant/js-client-rest tree-sitter tree-sitter-typescript
 ```
 
 ---
 
-## Task 3.4: Add --parallel flag
+## Files to Create
 
-**File:** `scripts/discover/index.ts`
-
-```typescript
-function parseCliArgs() {
-  return {
-    // ... existing args ...
-    parallel: process.argv.includes('--parallel'),
-  };
-}
-
-// In main():
-if (parallel && !incremental) {
-  await runExtractorsParallel(extractorTasks);
-} else {
-  await runExtractors(extractorsToUse); // Existing sequential
-}
-```
+| File | Purpose |
+|------|---------|
+| `scripts/discover/embeddings/chunk.ts` | AST-aware code chunking with Tree-sitter |
+| `scripts/discover/embeddings/ollama.ts` | Ollama embedding generation client |
+| `scripts/discover/embeddings/qdrant.ts` | Qdrant vector database client |
+| `scripts/discover/embeddings/index.ts` | Orchestrator: chunking, embedding, indexing |
 
 ---
 
-## Phase 3 Testing
+## Phase 3 Verification
 
 ```bash
-# Benchmark: Sequential vs Parallel
-time just discover           # Note time
-time just discover --parallel  # Compare
+# 1. Start services
+docker compose up -d qdrant ollama
 
-# Verify worker isolation
-just discover --parallel 2>&1 | grep -E "Worker|✅|❌"
+# 2. Verify containers running
+docker ps | grep -E "qdrant|ollama"
 
-# Stress test with memory limits
-NODE_OPTIONS="--max-old-space-size=512" just discover --parallel
-# Should complete without OOM (each worker isolated)
+# 3. Verify Qdrant health
+curl http://localhost:6333/health
+# Expected: {"title":"qdrant - vector search engine","version":"..."}
 
-# Verify output unchanged
-just discover --parallel
-git diff .claude/state/  # Should be empty
+# 4. Verify Ollama running
+curl http://localhost:11434/api/version
+# Expected: {"version":"..."}
+
+# 5. Pull embedding model
+docker exec ollama ollama pull nomic-embed-text
+
+# 6. Index codebase
+npx tsx scripts/discover/embeddings/index.ts index
+
+# 7. Test semantic search
+npx tsx scripts/discover/embeddings/index.ts search "form validation"
+npx tsx scripts/discover/embeddings/index.ts search "data provider"
+npx tsx scripts/discover/embeddings/index.ts search "Zod schema"
 ```
+
+**Checklist:**
+
+- [ ] Qdrant container running on port 6333
+- [ ] Ollama container running on port 11434
+- [ ] nomic-embed-text model downloaded
+- [ ] Codebase indexed without errors
+- [ ] Semantic search returns relevant results
