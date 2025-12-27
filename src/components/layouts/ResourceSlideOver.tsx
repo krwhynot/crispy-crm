@@ -55,6 +55,8 @@ export interface ResourceSlideOverProps {
   mode?: "view" | "edit";
   /** Mode toggle handler */
   onModeToggle?: () => void;
+  /** Whether the current user can edit this record (default: true for backwards compatibility) */
+  canEdit?: boolean;
   /** Resource-specific tab configuration */
   tabs: TabConfig[];
   /** Optional record representation function (defaults to record.name) */
@@ -126,6 +128,7 @@ export function ResourceSlideOver({
   onClose,
   mode = "view",
   onModeToggle,
+  canEdit,
   tabs,
   recordRepresentation,
   breadcrumbComponent: BreadcrumbComponent,
@@ -249,8 +252,8 @@ export function ResourceSlideOver({
                   {/* Custom header actions */}
                   {headerActions && record && !isLoading && headerActions(record)}
 
-                  {/* Mode toggle button (if handler provided) */}
-                  {onModeToggle && (
+                  {/* Mode toggle button (if handler provided and user can edit) */}
+                  {onModeToggle && canEdit !== false && (
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
@@ -354,8 +357,8 @@ export function ResourceSlideOver({
               })}
             </Tabs>
 
-            {/* Footer message (edit mode only) */}
-            {mode === "edit" && (
+            {/* Footer message (edit mode only, hidden when canEdit is false) */}
+            {mode === "edit" && canEdit !== false && (
               <SheetFooter className="border-t border-border p-4 flex flex-row gap-2 justify-end items-center">
                 <Button variant="outline" onClick={onModeToggle} className="h-11 px-4">
                   Cancel
