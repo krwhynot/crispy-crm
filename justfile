@@ -196,6 +196,10 @@ discover-callgraph:
 discover-incr:
     npx tsx scripts/discover/index.ts --incremental
 
+# Watch mode for development (auto-regenerates on file changes)
+discover-watch:
+    npx tsx scripts/discover/watch.ts
+
 # Generate call graph visualizations
 callgraph-viz:
     npx tsx scripts/discover/generate-viz.ts
