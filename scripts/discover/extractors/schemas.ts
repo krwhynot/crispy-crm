@@ -87,7 +87,9 @@ function detectSchemaType(
   callExpr: CallExpression
 ): SchemaInfo["schemaType"] {
   const expression = callExpr.getExpression();
-  const exprText = expression.getText();
+  // Use print() instead of getText() to normalize whitespace in multi-line declarations
+  // getText() preserves source formatting (e.g., "z\n  .object"), print() normalizes it
+  const exprText = expression.print();
 
   // Check for z.strictObject()
   if (exprText === "z.strictObject") {
