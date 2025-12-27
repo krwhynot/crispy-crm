@@ -1,0 +1,70 @@
+---
+title: products Feature
+---
+flowchart LR
+
+  %% Components
+  ProductCard([ProductCard])
+  ProductCreate([ProductCreate])
+  ProductFormContent([ProductFormContent])
+  ProductDetailsInputTab([ProductDetailsInputTab])
+  ProductDetailsTab([ProductDetailsTab])
+  StatusBadge([StatusBadge])
+  ProductDistributionTab([ProductDistributionTab])
+  ProductDistributorInput([ProductDistributorInput])
+  ProductEdit([ProductEdit])
+  ProductEditForm([ProductEditForm])
+  ProductEmpty([ProductEmpty])
+  ProductFormTutorial([ProductFormTutorial])
+  ProductInputs([ProductInputs])
+  CategoryBadge([CategoryBadge])
+  StatusBadge([StatusBadge])
+  CertificationBadges([CertificationBadges])
+  ProductList([ProductList])
+  ProductListLayout([ProductListLayout])
+  ProductListActions([ProductListActions])
+  ProductListContent([ProductListContent])
+  ProductListFilter([ProductListFilter])
+  ProductRelationshipsTab([ProductRelationshipsTab])
+  ProductShow([ProductShow])
+  ProductSlideOver([ProductSlideOver])
+  ProductNameHeader([ProductNameHeader])
+  ProductCategoryHeader([ProductCategoryHeader])
+  ProductStatusHeader([ProductStatusHeader])
+  ProductListView([ProductListView])
+  ProductCreateView([ProductCreateView])
+  ProductEditView([ProductEditView])
+  ProductShowView([ProductShowView])
+
+  %% Functions
+  hasDistributorCodes[hasDistributorCodes]
+  formatSnakeCase[formatSnakeCase]
+  productRecordRepresentation[productRecordRepresentation]
+
+  %% Render relationships
+  ProductCreate -->|render| ProductFormContent
+  ProductCreate -->|render| ProductFormTutorial
+  ProductFormContent -->|render| ProductInputs
+  ProductDetailsTab -->|render| StatusBadge
+  ProductDistributionTab -->|render| ProductDistributorInput
+  ProductEdit -->|render| ProductEditForm
+  ProductEditForm -->|render| ProductInputs
+  ProductInputs -->|render| ProductDetailsInputTab
+  ProductInputs -->|render| ProductDistributionTab
+  ProductList -->|render| ProductListActions
+  ProductList -->|render| ProductListLayout
+  ProductList -->|render| ProductSlideOver
+  ProductListLayout -->|render| ProductListFilter
+  ProductListLayout -->|render| ProductEmpty
+  ProductListLayout -->|render| ProductListFilter
+  ProductListLayout -->|render| ProductNameHeader
+  ProductListLayout -->|render| ProductCategoryHeader
+  ProductListLayout -->|render| CategoryBadge
+  ProductListLayout -->|render| ProductStatusHeader
+  ProductListLayout -->|render| StatusBadge
+  ProductListLayout -->|render| CertificationBadges
+
+  %% Function calls
+  ProductDetailsTab -->|call| hasDistributorCodes
+  CategoryBadge -->|call| formatSnakeCase
+  StatusBadge -->|call| formatSnakeCase

@@ -231,6 +231,45 @@ function hasTransformInNode(node: Node): boolean {
 }
 
 /**
+ * AST-based extraction of pipe content from a Node.
+ * Handles nested parentheses that break simple regex patterns.
+ * Returns the full text of what's being piped into.
+ */
+function extractPipeContent(node: Node): string | undefined {
+  // Helper to check if a CallExpression is a .pipe() call
+  const isPipeCall = (callExpr: Node): boolean => {
+    if (callExpr.getKind() !== SyntaxKind.CallExpression) return false;
+    const expr = (callExpr as CallExpression).getExpression();
+    if (expr.getKind() === SyntaxKind.PropertyAccessExpression) {
+      const propAccess = expr.asKindOrThrow(SyntaxKind.PropertyAccessExpression);
+      return propAccess.getName() === 'pipe';
+    }
+    return false;
+  };
+
+  // Check node itself first
+  if (isPipeCall(node)) {
+    const args = (node as CallExpression).getArguments();
+    if (args.length > 0) {
+      return args[0].getText();
+    }
+  }
+
+  // Check descendants
+  const callExprs = node.getDescendantsOfKind(SyntaxKind.CallExpression);
+  for (const call of callExprs) {
+    if (isPipeCall(call)) {
+      const args = call.getArguments();
+      if (args.length > 0) {
+        return args[0].getText();
+      }
+    }
+  }
+
+  return undefined;
+}
+
+/**
  * Build a symbol table mapping schema variable names to their transform details.
  * This enables two-pass analysis: first collect all schema properties,
  * then resolve references to inherited transforms.
@@ -334,9 +373,13 @@ function extractTransformDetails(text: string): { functionName: string; isSecuri
 }
 
 /**
- * Extract the base Zod type from a property value
+ * Extract the base Zod type from a property value.
+ * Uses symbol table to detect references to schema variables (with or without Schema suffix).
  */
-function extractZodType(valueText: string): string {
+function extractZodType(
+  valueText: string,
+  symbolTable?: Map<string, SchemaSymbol>
+): string {
   // Match z.xxx or z.coerce.xxx patterns
   const coerceMatch = valueText.match(/z\.coerce\.(string|number|boolean|date)/);
   if (coerceMatch) {
@@ -350,9 +393,19 @@ function extractZodType(valueText: string): string {
     return simpleMatch[1];
   }
 
-  // Check for references to other schemas
-  if (!valueText.startsWith("z.") && /Schema/.test(valueText)) {
-    return "ref:" + valueText.split(/[.(]/)[0];
+  // Check for references to other schemas (with or without Schema suffix)
+  if (!valueText.startsWith("z.")) {
+    const identifierName = valueText.split(/[.(]/)[0];
+
+    // If it exists in symbol table, it's a schema reference (handles isLinkedinUrl, etc.)
+    if (symbolTable?.has(identifierName)) {
+      return "ref:" + identifierName;
+    }
+
+    // Legacy: also check Schema suffix for backward compatibility
+    if (/Schema/.test(valueText)) {
+      return "ref:" + identifierName;
+    }
   }
 
   return "unknown";
@@ -387,7 +440,7 @@ function extractFields(
       if (!initializer) continue;
 
       const valueText = initializer.getText();
-      const zodType = extractZodType(valueText);
+      const zodType = extractZodType(valueText, symbolTable);
       const constraints = extractConstraints(initializer);
 
       // Check for enum values if it's an enum type

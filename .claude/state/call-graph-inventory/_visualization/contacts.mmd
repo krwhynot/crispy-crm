@@ -1,0 +1,219 @@
+---
+title: contacts Feature
+---
+flowchart LR
+
+  %% Components
+  ActivitiesTab([ActivitiesTab])
+  Avatar([Avatar])
+  ContactAdditionalDetails([ContactAdditionalDetails])
+  ContactAside([ContactAside])
+  PersonalInfoRow([PersonalInfoRow])
+  ContactBadgeGroup([ContactBadgeGroup])
+  ContactCompactForm([ContactCompactForm])
+  ContactCreate([ContactCreate])
+  ContactFormContent([ContactFormContent])
+  ContactNameHeader([ContactNameHeader])
+  ContactStatusHeader([ContactStatusHeader])
+  ContactDetailsTab([ContactDetailsTab])
+  ContactEdit([ContactEdit])
+  ContactEditContent([ContactEditContent])
+  ContactEmpty([ContactEmpty])
+  ContactExportTemplateButton([ContactExportTemplateButton])
+  ContactFormTutorial([ContactFormTutorial])
+  ContactHierarchyBreadcrumb([ContactHierarchyBreadcrumb])
+  ContactImportButton([ContactImportButton])
+  ContactImportDialog([ContactImportDialog])
+  ContactImportPreview([ContactImportPreview])
+  ContactImportResult([ContactImportResult])
+  ContactInputs([ContactInputs])
+  ContactList([ContactList])
+  ContactListLayout([ContactListLayout])
+  ContactListActions([ContactListActions])
+  ContactListFilter([ContactListFilter])
+  ContactManagerInput([ContactManagerInput])
+  ContactOptionRender([ContactOptionRender])
+  ContactShow([ContactShow])
+  ContactShowContent([ContactShowContent])
+  ContactSlideOver([ContactSlideOver])
+  LinkOpportunityModal([LinkOpportunityModal])
+  OpportunitiesTab([OpportunitiesTab])
+  SuggestedOpportunityCard([SuggestedOpportunityCard])
+  ColoredBadge([ColoredBadge])
+  TagsList([TagsList])
+  TagsListEdit([TagsListEdit])
+  UnlinkConfirmDialog([UnlinkConfirmDialog])
+  ContactListView([ContactListView])
+  ContactEditView([ContactEditView])
+  ContactCreateView([ContactCreateView])
+  ContactNotesTab([ContactNotesTab])
+
+  %% Hooks
+  useColumnMapping((useColumnMapping))
+  useContactImport((useContactImport))
+  useImportWizard((useImportWizard))
+  usePapaParse((usePapaParse))
+
+  %% Functions
+  numericToLevel[numericToLevel]
+  normalizeHeader[normalizeHeader]
+  findCanonicalField[findCanonicalField]
+  isFullNameColumn[isFullNameColumn]
+  getUnmappedHeaders[getUnmappedHeaders]
+  mapHeadersToFields[mapHeadersToFields]
+  getHeaderMappingDescription[getHeaderMappingDescription]
+  validateRequiredMappings[validateRequiredMappings]
+  getAvailableFields[getAvailableFields]
+  getAvailableFieldsWithLabels[getAvailableFieldsWithLabels]
+  sanitizeForCSV[sanitizeForCSV]
+  contactExporter[contactExporter]
+  formatDateLabel[formatDateLabel]
+  extractNewOrganizations[extractNewOrganizations]
+  extractNewTags[extractNewTags]
+  findOrganizationsWithoutContacts[findOrganizationsWithoutContacts]
+  findContactsWithoutContactInfo[findContactsWithoutContactInfo]
+  isOrganizationOnlyEntry[isOrganizationOnlyEntry]
+  isContactWithoutContactInfo[isContactWithoutContactInfo]
+  applyDataQualityTransformations[applyDataQualityTransformations]
+  validateTransformedContacts[validateTransformedContacts]
+  splitFullName[splitFullName]
+  transformHeaders[transformHeaders]
+  processCsvData[processCsvData]
+  processCsvDataWithMappings[processCsvDataWithMappings]
+  parseRawCsvData[parseRawCsvData]
+  contactRecordRepresentation[contactRecordRepresentation]
+  fetchRecordsWithCache[fetchRecordsWithCache]
+  parseTags[parseTags]
+  validateOrganizationNames[validateOrganizationNames]
+  validateTagNames[validateTagNames]
+  createInitialState[createInitialState]
+  importWizardReducer[importWizardReducer]
+  reduceIdleState[reduceIdleState]
+  reduceFileSelectedState[reduceFileSelectedState]
+  reduceParsingState[reduceParsingState]
+  reducePreviewState[reducePreviewState]
+  reduceImportingState[reduceImportingState]
+  reduceCompleteState[reduceCompleteState]
+  reduceErrorState[reduceErrorState]
+  createWizardActions[createWizardActions]
+  assertNever[assertNever]
+  canSelectFile[canSelectFile]
+  canStartImport[canStartImport]
+  canCancel[canCancel]
+  hasFile[hasFile]
+  isTerminal[isTerminal]
+  isProcessing[isProcessing]
+  deriveWizardFlags[deriveWizardFlags]
+
+  %% Render relationships
+  ContactAdditionalDetails -->|render| ContactManagerInput
+  ContactAside -->|render| PersonalInfoRow
+  ContactAside -->|render| PersonalInfoRow
+  ContactAside -->|render| PersonalInfoRow
+  ContactAside -->|render| TagsListEdit
+  ContactCompactForm -->|render| Avatar
+  ContactCompactForm -->|render| ContactAdditionalDetails
+  ContactCreate -->|render| ContactFormContent
+  ContactCreate -->|render| ContactFormTutorial
+  ContactFormContent -->|render| ContactInputs
+  ContactDetailsTab -->|render| ContactInputs
+  ContactDetailsTab -->|render| Avatar
+  ContactEdit -->|render| ContactEditContent
+  ContactEditContent -->|render| ContactInputs
+  ContactEditContent -->|render| ContactAside
+  ContactEmpty -->|render| ContactImportButton
+  ContactImportButton -->|render| ContactImportDialog
+  ContactImportDialog -->|render| ContactImportPreview
+  ContactImportDialog -->|render| ContactImportResult
+  ContactInputs -->|render| ContactCompactForm
+  ContactList -->|render| ContactListActions
+  ContactList -->|render| ContactListLayout
+  ContactList -->|render| ContactSlideOver
+  ContactListLayout -->|render| ContactListFilter
+  ContactListLayout -->|render| ContactEmpty
+  ContactListLayout -->|render| ContactListFilter
+  ContactListLayout -->|render| ContactListFilter
+  ContactListLayout -->|render| Avatar
+  ContactListLayout -->|render| ContactNameHeader
+  ContactListLayout -->|render| ContactStatusHeader
+  ContactOptionRender -->|render| Avatar
+  ContactShow -->|render| ContactShowContent
+  ContactShowContent -->|render| Avatar
+  ContactShowContent -->|render| ActivitiesTab
+  ContactShowContent -->|render| OpportunitiesTab
+  ContactShowContent -->|render| ContactAside
+  ContactSlideOver -->|render| ActivitiesTab
+  OpportunitiesTab -->|render| SuggestedOpportunityCard
+  OpportunitiesTab -->|render| LinkOpportunityModal
+  OpportunitiesTab -->|render| LinkOpportunityModal
+  OpportunitiesTab -->|render| LinkOpportunityModal
+  OpportunitiesTab -->|render| UnlinkConfirmDialog
+  TagsList -->|render| ColoredBadge
+
+  %% Hook dependencies
+  ContactImportDialog -.->|hook| useContactImport
+  ContactImportDialog -.->|hook| useImportWizard
+  ContactImportDialog -.->|hook| useColumnMapping
+  ContactImportDialog -.->|hook| usePapaParse
+
+  %% Function calls
+  ContactImportDialog -->|call| findOrganizationsWithoutContacts
+  ContactImportDialog -->|call| findContactsWithoutContactInfo
+  ContactImportDialog -->|call| findCanonicalField
+  ContactImportDialog -->|call| isFullNameColumn
+  ContactImportDialog -->|call| extractNewOrganizations
+  ContactImportDialog -->|call| extractNewTags
+  ContactImportDialog -->|call| findOrganizationsWithoutContacts
+  ContactImportDialog -->|call| findContactsWithoutContactInfo
+  ContactImportDialog -->|call| extractNewOrganizations
+  ContactImportDialog -->|call| extractNewTags
+  ContactImportDialog -->|call| assertNever
+  ContactImportPreview -->|call| getAvailableFieldsWithLabels
+  findCanonicalField -->|call| normalizeHeader
+  isFullNameColumn -->|call| normalizeHeader
+  getUnmappedHeaders -->|call| findCanonicalField
+  getUnmappedHeaders -->|call| isFullNameColumn
+  mapHeadersToFields -->|call| isFullNameColumn
+  mapHeadersToFields -->|call| findCanonicalField
+  getHeaderMappingDescription -->|call| isFullNameColumn
+  getHeaderMappingDescription -->|call| findCanonicalField
+  getAvailableFieldsWithLabels -->|call| getAvailableFields
+  contactExporter -->|call| sanitizeForCSV
+  findOrganizationsWithoutContacts -->|call| isOrganizationOnlyEntry
+  findContactsWithoutContactInfo -->|call| isContactWithoutContactInfo
+  applyDataQualityTransformations -->|call| isOrganizationOnlyEntry
+  transformHeaders -->|call| mapHeadersToFields
+  processCsvData -->|call| transformHeaders
+  processCsvData -->|call| splitFullName
+  processCsvDataWithMappings -->|call| splitFullName
+  parseRawCsvData -->|call| processCsvData
+  useColumnMapping -->|call| mapHeadersToFields
+  useColumnMapping -->|call| processCsvDataWithMappings
+  useContactImport -->|call| validateOrganizationNames
+  useContactImport -->|call| fetchRecordsWithCache
+  useContactImport -->|call| validateTagNames
+  useContactImport -->|call| fetchRecordsWithCache
+  useContactImport -->|call| applyDataQualityTransformations
+  useContactImport -->|call| validateTransformedContacts
+  useContactImport -->|call| isContactWithoutContactInfo
+  useContactImport -->|call| parseTags
+  useContactImport -->|call| parseTags
+  importWizardReducer -->|call| createInitialState
+  importWizardReducer -->|call| reduceIdleState
+  importWizardReducer -->|call| reduceFileSelectedState
+  importWizardReducer -->|call| reduceParsingState
+  importWizardReducer -->|call| reducePreviewState
+  importWizardReducer -->|call| reduceImportingState
+  importWizardReducer -->|call| reduceCompleteState
+  importWizardReducer -->|call| reduceErrorState
+  importWizardReducer -->|call| assertNever
+  reduceFileSelectedState -->|call| createInitialState
+  reduceParsingState -->|call| createInitialState
+  reducePreviewState -->|call| createInitialState
+  reduceImportingState -->|call| createInitialState
+  useImportWizard -->|call| createWizardActions
+  useImportWizard -->|call| deriveWizardFlags
+  deriveWizardFlags -->|call| hasFile
+  deriveWizardFlags -->|call| isTerminal
+  deriveWizardFlags -->|call| isProcessing
+  usePapaParse -->|call| parseRawCsvData

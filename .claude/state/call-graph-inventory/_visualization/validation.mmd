@@ -1,0 +1,102 @@
+---
+title: validation Feature
+---
+flowchart LR
+
+  %% Functions
+  validateActivitiesForm[validateActivitiesForm]
+  validateCreateActivities[validateCreateActivities]
+  validateUpdateActivities[validateUpdateActivities]
+  validateEngagementsForm[validateEngagementsForm]
+  validateCreateEngagements[validateCreateEngagements]
+  validateUpdateEngagements[validateUpdateEngagements]
+  validateInteractionsForm[validateInteractionsForm]
+  validateCreateInteractions[validateCreateInteractions]
+  validateUpdateInteractions[validateUpdateInteractions]
+  validateCategory[validateCategory]
+  transformContactData[transformContactData]
+  validateContactForm[validateContactForm]
+  validateCreateContact[validateCreateContact]
+  validateUpdateContact[validateUpdateContact]
+  validateContactOrganization[validateContactOrganization]
+  validateDistributorAuthorization[validateDistributorAuthorization]
+  validateCreateDistributorAuthorization[validateCreateDistributorAuthorization]
+  validateProductDistributorAuthorization[validateProductDistributorAuthorization]
+  validateCreateContactNote[validateCreateContactNote]
+  validateUpdateContactNote[validateUpdateContactNote]
+  validateCreateOpportunityNote[validateCreateOpportunityNote]
+  validateUpdateOpportunityNote[validateUpdateOpportunityNote]
+  validateCreateOrganizationNote[validateCreateOrganizationNote]
+  validateUpdateOrganizationNote[validateUpdateOrganizationNote]
+  validateAttachment[validateAttachment]
+  validateAttachments[validateAttachments]
+  validateContactNoteForSubmission[validateContactNoteForSubmission]
+  validateOpportunityNoteForSubmission[validateOpportunityNoteForSubmission]
+  validateOrganizationNoteForSubmission[validateOrganizationNoteForSubmission]
+  noteHasAttachments[noteHasAttachments]
+  validateAttachmentSize[validateAttachmentSize]
+  validateAttachmentType[validateAttachmentType]
+  getCurrentDate[getCurrentDate]
+  formatDateForInput[formatDateForInput]
+  transformNoteDate[transformNoteDate]
+  getCurrentNoteDate[getCurrentNoteDate]
+  isOperatorParentSegment[isOperatorParentSegment]
+  getOperatorSegmentId[getOperatorSegmentId]
+  getOperatorSegmentChildren[getOperatorSegmentChildren]
+  isValidOperatorSegment[isValidOperatorSegment]
+  validateCreateOperatorSegment[validateCreateOperatorSegment]
+  validateUpdateOperatorSegment[validateUpdateOperatorSegment]
+  validateOperatorSegmentForSubmission[validateOperatorSegmentForSubmission]
+  validateOpportunityForm[validateOpportunityForm]
+  validateCreateOpportunity[validateCreateOpportunity]
+  validateUpdateOpportunity[validateUpdateOpportunity]
+  validateCloseOpportunity[validateCloseOpportunity]
+  checkExactDuplicate[checkExactDuplicate]
+  validateNoDuplicate[validateNoDuplicate]
+  validateOrganizationDistributor[validateOrganizationDistributor]
+  validateCreateOrganizationDistributor[validateCreateOrganizationDistributor]
+  validateOrganizationForSubmission[validateOrganizationForSubmission]
+  validateCreateOrganization[validateCreateOrganization]
+  validateUpdateOrganization[validateUpdateOrganization]
+  urlAutoPrefix[urlAutoPrefix]
+  validateProductDistributorForm[validateProductDistributorForm]
+  validateCreateProductDistributor[validateCreateProductDistributor]
+  validateUpdateProductDistributor[validateUpdateProductDistributor]
+  parseCompositeId[parseCompositeId]
+  createCompositeId[createCompositeId]
+  validateCreateProductWithDistributors[validateCreateProductWithDistributors]
+  transformToRpcParams[transformToRpcParams]
+  validateProductForm[validateProductForm]
+  validateProductUpdate[validateProductUpdate]
+  validateOpportunityProduct[validateOpportunityProduct]
+  validateSalesForm[validateSalesForm]
+  validateCreateSales[validateCreateSales]
+  validateUpdateSales[validateUpdateSales]
+  validateCreateSegment[validateCreateSegment]
+  validateUpdateSegment[validateUpdateSegment]
+  validateSegmentForSubmission[validateSegmentForSubmission]
+  getSegmentIdByCategory[getSegmentIdByCategory]
+  isValidPlaybookCategory[isValidPlaybookCategory]
+  getSegmentTypeForOrganization[getSegmentTypeForOrganization]
+  validateCreateTag[validateCreateTag]
+  validateUpdateTag[validateUpdateTag]
+  validateTagFilter[validateTagFilter]
+  validateTagUniqueness[validateTagUniqueness]
+  validateTagForSubmission[validateTagForSubmission]
+  getTaskDefaultValues[getTaskDefaultValues]
+  validateCreateTask[validateCreateTask]
+  validateUpdateTask[validateUpdateTask]
+  validateTaskForSubmission[validateTaskForSubmission]
+
+  %% Function calls
+  validateCreateActivities -->|call| validateActivitiesForm
+  validateUpdateActivities -->|call| validateActivitiesForm
+  validateCreateEngagements -->|call| validateEngagementsForm
+  validateUpdateEngagements -->|call| validateEngagementsForm
+  validateCreateInteractions -->|call| validateInteractionsForm
+  validateUpdateInteractions -->|call| validateInteractionsForm
+  validateContactNoteForSubmission -->|call| transformNoteDate
+  validateOpportunityNoteForSubmission -->|call| transformNoteDate
+  validateOrganizationNoteForSubmission -->|call| transformNoteDate
+  getCurrentNoteDate -->|call| formatDateForInput
+  validateNoDuplicate -->|call| checkExactDuplicate

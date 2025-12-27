@@ -1,0 +1,80 @@
+---
+title: hooks Feature
+---
+flowchart LR
+
+  %% Hooks
+  useAppBarHeight((useAppBarHeight))
+  useFilterCleanup((useFilterCleanup))
+  useRecentSelections((useRecentSelections))
+  useSmartDefaults((useSmartDefaults))
+  useIsMobile((useIsMobile))
+  useBreakpoint((useBreakpoint))
+  useIsDesktop((useIsDesktop))
+  useIsLaptopOrLarger((useIsLaptopOrLarger))
+  useIsMobileOrTablet((useIsMobileOrTablet))
+  useCityStateMapping((useCityStateMapping))
+  useDialogError((useDialogError))
+  useInAppUnsavedChanges((useInAppUnsavedChanges))
+  useKeyboardShortcuts((useKeyboardShortcuts))
+  useListKeyboardNavigation((useListKeyboardNavigation))
+  useSlideOverState((useSlideOverState))
+  useTeamMembers((useTeamMembers))
+  useUnsavedChangesWarning((useUnsavedChangesWarning))
+  useUserRole((useUserRole))
+
+  %% Functions
+  getCurrentBreakpoint[getCurrentBreakpoint]
+  parseServerError[parseServerError]
+  formatShortcut[formatShortcut]
+  isMac[isMac]
+  isModifierPressed[isModifierPressed]
+  shouldPreventShortcut[shouldPreventShortcut]
+  isTextarea[isTextarea]
+  isInForm[isInForm]
+  isMac[isMac]
+  shouldPreventShortcut[shouldPreventShortcut]
+  getHashParams[getHashParams]
+  setHashParams[setHashParams]
+
+  %% Hook dependencies
+  useAppBarHeight -.->|hook| useIsMobile
+  useIsDesktop -.->|hook| useBreakpoint
+  useIsLaptopOrLarger -.->|hook| useBreakpoint
+  useIsMobileOrTablet -.->|hook| useBreakpoint
+
+  %% Function calls
+  useBreakpoint -->|call| getCurrentBreakpoint
+  useBreakpoint -->|call| getCurrentBreakpoint
+  useDialogError -->|call| parseServerError
+  formatShortcut -->|call| isMac
+  isModifierPressed -->|call| isMac
+  useKeyboardShortcuts -->|call| isModifierPressed
+  useKeyboardShortcuts -->|call| isInForm
+  useKeyboardShortcuts -->|call| isModifierPressed
+  useKeyboardShortcuts -->|call| shouldPreventShortcut
+  useKeyboardShortcuts -->|call| isModifierPressed
+  useKeyboardShortcuts -->|call| shouldPreventShortcut
+  useKeyboardShortcuts -->|call| isInForm
+  useKeyboardShortcuts -->|call| isTextarea
+  useKeyboardShortcuts -->|call| shouldPreventShortcut
+  useKeyboardShortcuts -->|call| shouldPreventShortcut
+  useKeyboardShortcuts -->|call| shouldPreventShortcut
+  useKeyboardShortcuts -->|call| isInForm
+  useKeyboardShortcuts -->|call| shouldPreventShortcut
+  useKeyboardShortcuts -->|call| isMac
+  useKeyboardShortcuts -->|call| isMac
+  useListKeyboardNavigation -->|call| isMac
+  useListKeyboardNavigation -->|call| shouldPreventShortcut
+  useListKeyboardNavigation -->|call| shouldPreventShortcut
+  useListKeyboardNavigation -->|call| shouldPreventShortcut
+  useListKeyboardNavigation -->|call| isMac
+  useListKeyboardNavigation -->|call| isMac
+  useSlideOverState -->|call| getHashParams
+  useSlideOverState -->|call| getHashParams
+  useSlideOverState -->|call| setHashParams
+  useSlideOverState -->|call| getHashParams
+  useSlideOverState -->|call| getHashParams
+  useSlideOverState -->|call| setHashParams
+  useSlideOverState -->|call| getHashParams
+  useSlideOverState -->|call| setHashParams

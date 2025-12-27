@@ -1,0 +1,16 @@
+---
+title: productDistributors Feature
+---
+flowchart LR
+
+  %% Components
+  ProductDistributorCreate([ProductDistributorCreate])
+  ProductDistributorFormContent([ProductDistributorFormContent])
+  ProductDistributorEdit([ProductDistributorEdit])
+  ProductDistributorList([ProductDistributorList])
+  ProductDistributorListView([ProductDistributorListView])
+  ProductDistributorCreateView([ProductDistributorCreateView])
+  ProductDistributorEditView([ProductDistributorEditView])
+
+  %% Render relationships
+  ProductDistributorCreate -->|render| ProductDistributorFormContent

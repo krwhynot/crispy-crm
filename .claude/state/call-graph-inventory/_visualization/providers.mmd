@@ -1,0 +1,171 @@
+---
+title: providers Feature
+---
+flowchart LR
+
+  %% Functions
+  getActivityLog[getActivityLog]
+  canAccess[canAccess]
+  isPublicPath[isPublicPath]
+  getSaleFromCache[getSaleFromCache]
+  invalidateIdentityCache[invalidateIdentityCache]
+  normalizeJsonbArrays[normalizeJsonbArrays]
+  transformQToIlikeSearch[transformQToIlikeSearch]
+  computeNameField[computeNameField]
+  contactsBeforeGetList[contactsBeforeGetList]
+  stripComputedFields[stripComputedFields]
+  isTransform[isTransform]
+  composeTransforms[composeTransforms]
+  stripFields[stripFields]
+  createResourceCallbacks[createResourceCallbacks]
+  createNotesCallbacks[createNotesCallbacks]
+  transformQToIlikeSearch[transformQToIlikeSearch]
+  stripComputedFields[stripComputedFields]
+  mergeCreateDefaults[mergeCreateDefaults]
+  transformQToIlikeSearch[transformQToIlikeSearch]
+  organizationsBeforeGetList[organizationsBeforeGetList]
+  stripComputedFields[stripComputedFields]
+  isHandledResource[isHandledResource]
+  createComposedDataProvider[createComposedDataProvider]
+  transformStaleFilter[transformStaleFilter]
+  getCachedSearchableFields[getCachedSearchableFields]
+  escapeForPostgREST[escapeForPostgREST]
+  transformArrayFilters[transformArrayFilters]
+  escapeForIlike[escapeForIlike]
+  applyFullTextSearch[applyFullTextSearch]
+  getDatabaseResource[getDatabaseResource]
+  applySearchParams[applySearchParams]
+  normalizeJsonbArrayFields[normalizeJsonbArrayFields]
+  normalizeResponseData[normalizeResponseData]
+  transformOrFilter[transformOrFilter]
+  logError[logError]
+  extendWithCustomMethods[extendWithCustomMethods]
+  isValidFilterField[isValidFilterField]
+  createActivitiesHandler[createActivitiesHandler]
+  createContactsHandler[createContactsHandler]
+  createContactNotesHandler[createContactNotesHandler]
+  createOpportunityNotesHandler[createOpportunityNotesHandler]
+  createOrganizationNotesHandler[createOrganizationNotesHandler]
+  createOpportunitiesHandler[createOpportunitiesHandler]
+  createOrganizationsHandler[createOrganizationsHandler]
+  createProductsHandler[createProductsHandler]
+  createSalesHandler[createSalesHandler]
+  createTagsHandler[createTagsHandler]
+  createTasksHandler[createTasksHandler]
+  createExtendedDataProvider[createExtendedDataProvider]
+  getResourceName[getResourceName]
+  supportsSoftDelete[supportsSoftDelete]
+  getSearchableFields[getSearchableFields]
+  createServiceContainer[createServiceContainer]
+  logError[logError]
+  validateData[validateData]
+  transformData[transformData]
+  processForDatabase[processForDatabase]
+  wrapMethod[wrapMethod]
+  resourceUsesValidation[resourceUsesValidation]
+  resourceUsesTransformers[resourceUsesTransformers]
+  getBaseDataProvider[getBaseDataProvider]
+  getAuthToken[getAuthToken]
+  logError[logError]
+  transformSupabaseError[transformSupabaseError]
+  isSupabaseError[isSupabaseError]
+  isAlreadyDeletedError[isAlreadyDeletedError]
+  isReactAdminValidationError[isReactAdminValidationError]
+  logSuccess[logSuccess]
+  withErrorLogging[withErrorLogging]
+  isZodError[isZodError]
+  transformZodToReactAdmin[transformZodToReactAdmin]
+  withValidation[withValidation]
+
+  %% Function calls
+  contactsBeforeGetList -->|call| transformQToIlikeSearch
+  composeTransforms -->|call| isTransform
+  createResourceCallbacks -->|call| isTransform
+  createResourceCallbacks -->|call| composeTransforms
+  createResourceCallbacks -->|call| composeTransforms
+  createResourceCallbacks -->|call| composeTransforms
+  createResourceCallbacks -->|call| stripFields
+  createNotesCallbacks -->|call| createResourceCallbacks
+  transformQToIlikeSearch -->|call| escapeForIlike
+  organizationsBeforeGetList -->|call| transformQToIlikeSearch
+  createComposedDataProvider -->|call| createContactsHandler
+  createComposedDataProvider -->|call| createOrganizationsHandler
+  createComposedDataProvider -->|call| createOpportunitiesHandler
+  createComposedDataProvider -->|call| createActivitiesHandler
+  createComposedDataProvider -->|call| createProductsHandler
+  createComposedDataProvider -->|call| createTasksHandler
+  createComposedDataProvider -->|call| createContactNotesHandler
+  createComposedDataProvider -->|call| createOpportunityNotesHandler
+  createComposedDataProvider -->|call| createOrganizationNotesHandler
+  createComposedDataProvider -->|call| createTagsHandler
+  createComposedDataProvider -->|call| createSalesHandler
+  createComposedDataProvider -->|call| isHandledResource
+  createComposedDataProvider -->|call| getDatabaseResource
+  createComposedDataProvider -->|call| applySearchParams
+  createComposedDataProvider -->|call| getDatabaseResource
+  getCachedSearchableFields -->|call| getSearchableFields
+  transformArrayFilters -->|call| escapeForPostgREST
+  applyFullTextSearch -->|call| escapeForIlike
+  getDatabaseResource -->|call| getResourceName
+  applySearchParams -->|call| getCachedSearchableFields
+  applySearchParams -->|call| getDatabaseResource
+  applySearchParams -->|call| getResourceName
+  applySearchParams -->|call| supportsSoftDelete
+  applySearchParams -->|call| transformStaleFilter
+  applySearchParams -->|call| transformOrFilter
+  applySearchParams -->|call| transformArrayFilters
+  applySearchParams -->|call| applyFullTextSearch
+  normalizeResponseData -->|call| normalizeJsonbArrayFields
+  normalizeResponseData -->|call| normalizeJsonbArrayFields
+  extendWithCustomMethods -->|call| getActivityLog
+  extendWithCustomMethods -->|call| logError
+  extendWithCustomMethods -->|call| logError
+  extendWithCustomMethods -->|call| logError
+  extendWithCustomMethods -->|call| logError
+  extendWithCustomMethods -->|call| logError
+  extendWithCustomMethods -->|call| logError
+  extendWithCustomMethods -->|call| logError
+  extendWithCustomMethods -->|call| logError
+  extendWithCustomMethods -->|call| logError
+  extendWithCustomMethods -->|call| logError
+  extendWithCustomMethods -->|call| logError
+  extendWithCustomMethods -->|call| logError
+  createActivitiesHandler -->|call| withErrorLogging
+  createActivitiesHandler -->|call| withValidation
+  createContactsHandler -->|call| withErrorLogging
+  createContactsHandler -->|call| withValidation
+  createContactNotesHandler -->|call| withErrorLogging
+  createContactNotesHandler -->|call| withValidation
+  createOpportunityNotesHandler -->|call| withErrorLogging
+  createOpportunityNotesHandler -->|call| withValidation
+  createOrganizationNotesHandler -->|call| withErrorLogging
+  createOrganizationNotesHandler -->|call| withValidation
+  createOpportunitiesHandler -->|call| withErrorLogging
+  createOpportunitiesHandler -->|call| withValidation
+  createOrganizationsHandler -->|call| withErrorLogging
+  createOrganizationsHandler -->|call| withValidation
+  createProductsHandler -->|call| withErrorLogging
+  createProductsHandler -->|call| withValidation
+  createSalesHandler -->|call| withErrorLogging
+  createSalesHandler -->|call| withValidation
+  createTagsHandler -->|call| withErrorLogging
+  createTagsHandler -->|call| withValidation
+  createTasksHandler -->|call| withErrorLogging
+  createTasksHandler -->|call| withValidation
+  createExtendedDataProvider -->|call| createServiceContainer
+  createExtendedDataProvider -->|call| createComposedDataProvider
+  createExtendedDataProvider -->|call| extendWithCustomMethods
+  supportsSoftDelete -->|call| getResourceName
+  processForDatabase -->|call| validateData
+  processForDatabase -->|call| transformData
+  wrapMethod -->|call| logError
+  withErrorLogging -->|call| logSuccess
+  withErrorLogging -->|call| logError
+  withErrorLogging -->|call| isAlreadyDeletedError
+  withErrorLogging -->|call| isReactAdminValidationError
+  withErrorLogging -->|call| isSupabaseError
+  withErrorLogging -->|call| transformSupabaseError
+  withValidation -->|call| isZodError
+  withValidation -->|call| transformZodToReactAdmin
+  withValidation -->|call| isZodError
+  withValidation -->|call| transformZodToReactAdmin

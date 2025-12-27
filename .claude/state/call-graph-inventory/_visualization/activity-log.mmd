@@ -1,0 +1,38 @@
+---
+title: activity-log Feature
+---
+flowchart LR
+
+  %% Components
+  ActivityLog([ActivityLog])
+  ActivityLogContactCreated([ActivityLogContactCreated])
+  ContactAvatar([ContactAvatar])
+  ActivityLogContactNoteCreated([ActivityLogContactNoteCreated])
+  ActivityLogIterator([ActivityLogIterator])
+  ActivityItem([ActivityItem])
+  ActivityLogNote([ActivityLogNote])
+  ActivityLogOpportunityCreated([ActivityLogOpportunityCreated])
+  ActivityLogOpportunityNoteCreated([ActivityLogOpportunityNoteCreated])
+  ActivityLogOrganizationCreated([ActivityLogOrganizationCreated])
+
+  %% Hooks
+  useActivityLogContext((useActivityLogContext))
+
+  %% Render relationships
+  ActivityLog -->|render| ActivityLogIterator
+  ActivityLogContactNoteCreated -->|render| ActivityLogNote
+  ActivityLogContactNoteCreated -->|render| ContactAvatar
+  ActivityLogIterator -->|render| ActivityItem
+  ActivityItem -->|render| ActivityLogOrganizationCreated
+  ActivityItem -->|render| ActivityLogContactCreated
+  ActivityItem -->|render| ActivityLogContactNoteCreated
+  ActivityItem -->|render| ActivityLogOpportunityCreated
+  ActivityItem -->|render| ActivityLogOpportunityNoteCreated
+  ActivityLogOpportunityNoteCreated -->|render| ActivityLogNote
+
+  %% Hook dependencies
+  ActivityLogContactCreated -.->|hook| useActivityLogContext
+  ActivityLogContactNoteCreated -.->|hook| useActivityLogContext
+  ActivityLogOpportunityCreated -.->|hook| useActivityLogContext
+  ActivityLogOpportunityNoteCreated -.->|hook| useActivityLogContext
+  ActivityLogOrganizationCreated -.->|hook| useActivityLogContext

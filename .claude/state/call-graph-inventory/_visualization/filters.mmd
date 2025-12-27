@@ -1,0 +1,84 @@
+---
+title: filters Feature
+---
+flowchart LR
+
+  %% Components
+  FilterCategory([FilterCategory])
+  FilterChip([FilterChip])
+  FilterChipBar([FilterChipBar])
+  FilterChipsPanel([FilterChipsPanel])
+  FilterSidebar([FilterSidebar])
+
+  %% Hooks
+  useResourceNamesBase((useResourceNamesBase))
+  useCategoryNames((useCategoryNames))
+  useFilterChipBar((useFilterChipBar))
+  useFilterManagement((useFilterManagement))
+  useOrganizationNames((useOrganizationNames))
+  useSalesNames((useSalesNames))
+  useSegmentNames((useSegmentNames))
+  useTagNames((useTagNames))
+
+  %% Functions
+  validateFilterConfig[validateFilterConfig]
+  formatStageLabel[formatStageLabel]
+  formatPriorityLabel[formatPriorityLabel]
+  formatCategoryLabel[formatCategoryLabel]
+  formatFilterLabel[formatFilterLabel]
+  shouldDisplayFilter[shouldDisplayFilter]
+  flattenFilterValues[flattenFilterValues]
+  getStoredFilterPreferences[getStoredFilterPreferences]
+  saveFilterPreferences[saveFilterPreferences]
+  getInitialFilterValue[getInitialFilterValue]
+  parseUrlFilters[parseUrlFilters]
+  getDefaultVisibleStages[getDefaultVisibleStages]
+  getInitialStageFilter[getInitialStageFilter]
+  updateStagePreferences[updateStagePreferences]
+  buildInitialFilters[buildInitialFilters]
+  getStoredStagePreferences[getStoredStagePreferences]
+  saveStagePreferences[saveStagePreferences]
+  getDefaultVisibleStages[getDefaultVisibleStages]
+  getInitialStageFilter[getInitialStageFilter]
+  isArrayFilterValue[isArrayFilterValue]
+  isSingleFilterValue[isSingleFilterValue]
+  isValidFilterValue[isValidFilterValue]
+  categoryExtractor[categoryExtractor]
+  segmentExtractor[segmentExtractor]
+
+  %% Render relationships
+  FilterChipBar -->|render| FilterChip
+  FilterChipsPanel -->|render| FilterChip
+
+  %% Hook dependencies
+  FilterChipBar -.->|hook| useFilterChipBar
+  FilterChipsPanel -.->|hook| useFilterManagement
+  FilterChipsPanel -.->|hook| useOrganizationNames
+  FilterChipsPanel -.->|hook| useSalesNames
+  FilterChipsPanel -.->|hook| useTagNames
+  useCategoryNames -.->|hook| useResourceNamesBase
+  useFilterChipBar -.->|hook| useOrganizationNames
+  useFilterChipBar -.->|hook| useSalesNames
+  useFilterChipBar -.->|hook| useTagNames
+  useFilterChipBar -.->|hook| useSegmentNames
+  useFilterChipBar -.->|hook| useCategoryNames
+  useOrganizationNames -.->|hook| useResourceNamesBase
+  useSalesNames -.->|hook| useResourceNamesBase
+  useSegmentNames -.->|hook| useResourceNamesBase
+  useTagNames -.->|hook| useResourceNamesBase
+
+  %% Function calls
+  FilterChipsPanel -->|call| flattenFilterValues
+  FilterChipsPanel -->|call| formatFilterLabel
+  formatFilterLabel -->|call| formatStageLabel
+  formatFilterLabel -->|call| formatPriorityLabel
+  flattenFilterValues -->|call| shouldDisplayFilter
+  getInitialFilterValue -->|call| getStoredFilterPreferences
+  getInitialStageFilter -->|call| getStoredFilterPreferences
+  getInitialStageFilter -->|call| getDefaultVisibleStages
+  getInitialStageFilter -->|call| getDefaultVisibleStages
+  updateStagePreferences -->|call| getDefaultVisibleStages
+  updateStagePreferences -->|call| saveFilterPreferences
+  buildInitialFilters -->|call| parseUrlFilters
+  buildInitialFilters -->|call| getInitialFilterValue
+  getInitialStageFilter -->|call| getStoredStagePreferences

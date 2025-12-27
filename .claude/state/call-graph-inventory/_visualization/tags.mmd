@@ -1,0 +1,27 @@
+---
+title: tags Feature
+---
+flowchart LR
+
+  %% Components
+  RoundButton([RoundButton])
+  TagChip([TagChip])
+  TagCreateModal([TagCreateModal])
+  TagDialog([TagDialog])
+  TagEditModal([TagEditModal])
+
+  %% Functions
+  validateTagColor[validateTagColor]
+  getTagColorClass[getTagColorClass]
+  normalizeColorToSemantic[normalizeColorToSemantic]
+
+  %% Render relationships
+  TagChip -->|render| TagEditModal
+  TagCreateModal -->|render| TagDialog
+  TagDialog -->|render| RoundButton
+  TagEditModal -->|render| TagDialog
+
+  %% Function calls
+  RoundButton -->|call| normalizeColorToSemantic
+  RoundButton -->|call| getTagColorClass
+  TagChip -->|call| getTagColorClass

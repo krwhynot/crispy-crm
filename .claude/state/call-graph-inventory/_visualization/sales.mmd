@@ -1,0 +1,51 @@
+---
+title: sales Feature
+---
+flowchart LR
+
+  %% Components
+  SaleAvatar([SaleAvatar])
+  SaleName([SaleName])
+  SalesCreate([SalesCreate])
+  SalesFormContent([SalesFormContent])
+  EditToolbar([EditToolbar])
+  SalesEdit([SalesEdit])
+  SalesFormContent([SalesFormContent])
+  SaleEditTitle([SaleEditTitle])
+  SalesGeneralTab([SalesGeneralTab])
+  SalesInputs([SalesInputs])
+  SalesList([SalesList])
+  SalesListLayout([SalesListLayout])
+  SalesListActions([SalesListActions])
+  RoleBadgeField([RoleBadgeField])
+  StatusField([StatusField])
+  SalesListFilter([SalesListFilter])
+  SalesPermissionsInputs([SalesPermissionsInputs])
+  SalesPermissionsTab([SalesPermissionsTab])
+  SalesProfileTab([SalesProfileTab])
+  SalesShow([SalesShow])
+  SalesShowContent([SalesShowContent])
+  SalesAvatar([SalesAvatar])
+  SalesSlideOver([SalesSlideOver])
+  SalesListView([SalesListView])
+  SalesEditView([SalesEditView])
+  SalesCreateView([SalesCreateView])
+  SalesShowView([SalesShowView])
+
+  %% Render relationships
+  SalesCreate -->|render| SalesFormContent
+  SalesFormContent -->|render| SalesInputs
+  SalesEdit -->|render| EditToolbar
+  SalesEdit -->|render| SalesFormContent
+  SalesFormContent -->|render| SaleEditTitle
+  SalesFormContent -->|render| SalesInputs
+  SalesInputs -->|render| SalesGeneralTab
+  SalesInputs -->|render| SalesPermissionsInputs
+  SalesList -->|render| SalesListActions
+  SalesList -->|render| SalesListFilter
+  SalesList -->|render| SalesListLayout
+  SalesList -->|render| SalesSlideOver
+  SalesListLayout -->|render| RoleBadgeField
+  SalesListLayout -->|render| StatusField
+  SalesShow -->|render| SalesShowContent
+  SalesShowContent -->|render| SalesAvatar

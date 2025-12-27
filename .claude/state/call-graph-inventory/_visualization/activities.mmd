@@ -1,0 +1,58 @@
+---
+title: activities Feature
+---
+flowchart LR
+
+  %% Components
+  ActivityCreate([ActivityCreate])
+  HiddenActivityTypeField([HiddenActivityTypeField])
+  ActivityFormContent([ActivityFormContent])
+  ActivityEdit([ActivityEdit])
+  ActivityEditForm([ActivityEditForm])
+  ActivityInputs([ActivityInputs])
+  ActivityList([ActivityList])
+  ActivityListLayout([ActivityListLayout])
+  ActivityListActions([ActivityListActions])
+  ActivityListFilter([ActivityListFilter])
+  ActivitySinglePage([ActivitySinglePage])
+  QuickLogActivity([QuickLogActivity])
+  QuickLogFormSkeleton([QuickLogFormSkeleton])
+  LockedEntityDisplay([LockedEntityDisplay])
+  QuickLogActivityDialog([QuickLogActivityDialog])
+  ActivityTimelineEntry([ActivityTimelineEntry])
+  ActivityListView([ActivityListView])
+  ActivityCreateView([ActivityCreateView])
+  ActivityEditView([ActivityEditView])
+
+  %% Functions
+  exporter[exporter]
+  inferActivityTypeFromTitle[inferActivityTypeFromTitle]
+  loadDraft[loadDraft]
+  saveDraft[saveDraft]
+  clearDraft[clearDraft]
+  formatDateLabel[formatDateLabel]
+  activityRecordRepresentation[activityRecordRepresentation]
+
+  %% Render relationships
+  ActivityCreate -->|render| ActivityFormContent
+  ActivityFormContent -->|render| HiddenActivityTypeField
+  ActivityFormContent -->|render| ActivitySinglePage
+  ActivityEdit -->|render| ActivityEditForm
+  ActivityEditForm -->|render| ActivityInputs
+  ActivityInputs -->|render| ActivitySinglePage
+  ActivityList -->|render| ActivityListActions
+  ActivityList -->|render| ActivityListLayout
+  ActivityListLayout -->|render| ActivityListFilter
+  ActivityListLayout -->|render| ActivityListFilter
+  ActivityListLayout -->|render| ActivityListFilter
+  QuickLogActivityDialog -->|render| LockedEntityDisplay
+  QuickLogActivityDialog -->|render| LockedEntityDisplay
+  QuickLogActivityDialog -->|render| LockedEntityDisplay
+  QuickLogActivityDialog -->|render| QuickLogFormSkeleton
+
+  %% Function calls
+  QuickLogActivity -->|call| inferActivityTypeFromTitle
+  QuickLogActivityDialog -->|call| loadDraft
+  QuickLogActivityDialog -->|call| loadDraft
+  QuickLogActivityDialog -->|call| clearDraft
+  QuickLogActivityDialog -->|call| saveDraft

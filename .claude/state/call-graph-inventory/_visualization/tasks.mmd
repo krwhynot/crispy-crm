@@ -1,0 +1,61 @@
+---
+title: tasks Feature
+---
+flowchart LR
+
+  %% Components
+  AddTask([AddTask])
+  Task([Task])
+  TaskCreate([TaskCreate])
+  TaskDetailsTab([TaskDetailsTab])
+  TaskEdit([TaskEdit])
+  TaskEditForm([TaskEditForm])
+  TaskEmpty([TaskEmpty])
+  TaskGeneralTab([TaskGeneralTab])
+  TaskInputs([TaskInputs])
+  TaskList([TaskList])
+  TaskListActions([TaskListActions])
+  TaskListLayout([TaskListLayout])
+  TaskListFilter([TaskListFilter])
+  TaskRelatedItemsTab([TaskRelatedItemsTab])
+  TaskShow([TaskShow])
+  TaskSlideOver([TaskSlideOver])
+  TaskSlideOverDetailsTab([TaskSlideOverDetailsTab])
+  TaskTitleHeader([TaskTitleHeader])
+  TaskPriorityHeader([TaskPriorityHeader])
+  TaskTypeHeader([TaskTypeHeader])
+  TasksIterator([TasksIterator])
+  TaskActionMenu([TaskActionMenu])
+  TaskCompletionDialog([TaskCompletionDialog])
+  TaskListView([TaskListView])
+  TaskEditView([TaskEditView])
+  TaskCreateView([TaskCreateView])
+
+  %% Functions
+  exporter[exporter]
+  mapTaskTypeToActivityType[mapTaskTypeToActivityType]
+  taskRecordRepresentation[taskRecordRepresentation]
+  formatDateLabel[formatDateLabel]
+  getTaskTypeChoices[getTaskTypeChoices]
+
+  %% Render relationships
+  Task -->|render| TaskEdit
+  TaskCreate -->|render| TaskInputs
+  TaskEdit -->|render| TaskEditForm
+  TaskEditForm -->|render| TaskInputs
+  TaskInputs -->|render| TaskGeneralTab
+  TaskInputs -->|render| TaskDetailsTab
+  TaskList -->|render| TaskListActions
+  TaskList -->|render| TaskListLayout
+  TaskList -->|render| TaskSlideOver
+  TaskListLayout -->|render| TaskListFilter
+  TaskListLayout -->|render| TaskEmpty
+  TaskListLayout -->|render| TaskListFilter
+  TaskListLayout -->|render| TaskTitleHeader
+  TaskListLayout -->|render| TaskPriorityHeader
+  TaskListLayout -->|render| TaskTypeHeader
+  TaskListLayout -->|render| TaskActionMenu
+  TasksIterator -->|render| Task
+
+  %% Function calls
+  TaskCompletionDialog -->|call| mapTaskTypeToActivityType
