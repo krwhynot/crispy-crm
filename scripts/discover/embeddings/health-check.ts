@@ -1,7 +1,7 @@
 /**
  * Health Check Script for Discovery Services
  *
- * Verifies that all required services (Qdrant, Ollama) are running
+ * Verifies that all required services (LanceDB, Ollama) are running
  * and properly configured for semantic search.
  *
  * Usage: npx tsx scripts/discover/embeddings/health-check.ts
@@ -12,9 +12,9 @@ import {
   getHealthDetails as getOllamaHealthDetails,
 } from "./ollama.js";
 import {
-  checkQdrantHealth,
-  getHealthDetails as getQdrantHealthDetails,
-} from "./qdrant.js";
+  checkLanceDBHealth,
+  getHealthDetails as getLanceDBHealthDetails,
+} from "./lancedb.js";
 
 interface HealthStatus {
   service: string;
@@ -55,29 +55,29 @@ async function checkAllServices(): Promise<void> {
     }
   }
 
-  // Check Qdrant
-  console.log("\n📦 Qdrant (Vector Database)");
-  const qdrantHealthy = await checkQdrantHealth();
-  const qdrantDetails = await getQdrantHealthDetails();
+  // Check LanceDB
+  console.log("\n📦 LanceDB (Vector Database)");
+  const lanceDBHealthy = await checkLanceDBHealth();
+  const lanceDBDetails = await getLanceDBHealthDetails();
   results.push({
-    service: "Qdrant",
-    healthy: qdrantHealthy,
-    details: qdrantDetails,
+    service: "LanceDB",
+    healthy: lanceDBHealthy,
+    details: lanceDBDetails,
   });
 
-  if (qdrantHealthy) {
-    console.log("   ✅ Server reachable");
-    if (qdrantDetails.collectionExists) {
-      console.log(`   ✅ Collection 'crispy_code' exists`);
-      console.log(`   📊 Points indexed: ${qdrantDetails.pointCount}`);
+  if (lanceDBHealthy) {
+    console.log("   ✅ Database accessible at .claude/state/vectors.lance");
+    if (lanceDBDetails.collectionExists) {
+      console.log(`   ✅ Table 'code_chunks' exists`);
+      console.log(`   📊 Points indexed: ${lanceDBDetails.pointCount}`);
     } else {
-      console.log("   ⚠️  Collection 'crispy_code' not created yet");
+      console.log("   ⚠️  Table 'code_chunks' not created yet");
       console.log("   └─ Will be created on first indexing");
     }
   } else {
     console.log("   ❌ Not healthy");
-    console.log("   └─ Server not reachable at http://localhost:6333");
-    console.log("   └─ Run: just discover-services");
+    console.log("   └─ Database not accessible at .claude/state/vectors.lance");
+    console.log("   └─ Check file permissions or disk space");
   }
 
   // Summary

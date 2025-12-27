@@ -1,387 +1,67 @@
-# Phase C: Real Gotchas Discovered During Implementation
+# The Gotchas That Actually Bit Us
 
-> **Status:** Documented after Phase B implementation
-> **Date:** 2025-12-27
-> **Purpose:** Update placeholder gotchas in blog articles with real discoveries
+You will hit every one of these.
+
+Not maybe. Not if you're careless. These are the invisible walls that documentation doesn't mention. The errors that make you question your sanity at 2 AM.
+
+We discovered each one the hard way so you don't have to.
 
 ---
 
-## Article 2: SCIP Installation Gotchas
+## The SCIP CLI Doesn't Exist
 
-### 1. `@sourcegraph/scip` CLI Doesn't Exist in npm
+Here's what every tutorial says:
 
-**What the docs said:** `npm install -g @sourcegraph/scip`
+```bash
+npm install -g @sourcegraph/scip
+```
 
-**What actually happened:**
+Here's what actually happens:
+
 ```
 npm error 404 '@sourcegraph/scip@*' is not in this registry
 ```
 
-**Reality:** The SCIP snapshot CLI is a Go binary, not an npm package. Use:
-- `go install github.com/sourcegraph/scip/cmd/scip@latest`
-- Or download from GitHub releases
-- Or use the protobuf library directly in Node
+That package doesn't exist.
 
-**Blog update needed:** Article 3 needs to explain that SCIP snapshots require the Go CLI, not an npm package.
+The SCIP snapshot CLI is a Go binary. Go is a compiled language from Google. The tools live in a different ecosystem entirely.
 
----
+It's like showing up at a car dealership expecting to buy a boat.
 
-## Article 7: Ollama Embedding Gotchas
-
-### 1. Different API Structure Than OpenAI
-
-**OpenAI API:**
-```json
-{
-  "input": "text to embed",
-  "model": "text-embedding-3-small"
-}
-```
-
-**Ollama API:**
-```json
-{
-  "prompt": "text to embed",    // NOT "input"
-  "model": "nomic-embed-text"
-}
-```
-
-**Response also differs:**
-- OpenAI: `{ embeddings: [[...]] }`
-- Ollama: `{ embedding: [...] }` (singular, not nested)
-
-### 2. No Batch Endpoint
-
-Ollama processes one embedding at a time. For 500 code chunks:
-- Sequential: ~5 seconds @ 100 embeddings/sec
-- No way to batch-parallelize without multiple Ollama instances
-
-**Workaround:** Accept sequential processing or run multiple Ollama containers.
-
-### 3. Model Must Be Pre-Pulled
-
-First embedding call fails if model not pulled:
-```
-Error 404: Model "nomic-embed-text" not found
-```
-
-**Solution:** `just discover-pull-model` before indexing.
-
-### 4. Empty Strings Return Valid Embeddings
-
-Empty string produces 768 zeros - valid but meaningless:
-```typescript
-await generateEmbedding("") // Returns [0, 0, 0, ... 768 times]
-```
-
-**Gotcha:** Always filter empty/trivial content before embedding.
-
-### 5. Model Tags Include Version
-
-When checking available models, names include version:
-```json
-{ "models": [{ "name": "nomic-embed-text:latest" }] }
-```
-
-**Gotcha:** Match with `startsWith()` not exact equals.
-
----
-
-## Article 8: Tree-sitter Chunking Gotchas
-
-### 1. Separate Parsers for TS vs TSX
-
-**Wrong:**
-```typescript
-const parser = new Parser();
-parser.setLanguage(TypeScript.typescript);
-// Parsing .tsx file with TypeScript parser = JSX not recognized!
-```
-
-**Right:**
-```typescript
-const tsParser = new Parser();
-tsParser.setLanguage(TypeScript.typescript);
-
-const tsxParser = new Parser();
-tsxParser.setLanguage(TypeScript.tsx);  // Different grammar!
-
-// Choose based on file extension
-const parser = filePath.endsWith('.tsx') ? tsxParser : tsParser;
-```
-
-### 2. Arrow Functions Have No Name Field
-
-```typescript
-// function_declaration has name field
-node.childForFieldName('name') // Returns "greet" for: function greet() {}
-
-// arrow_function does NOT have name field
-node.childForFieldName('name') // Returns null for: const greet = () => {}
-```
-
-**Solution:** Traverse UP to parent `variable_declarator`:
-```typescript
-function extractArrowFunctionName(node: SyntaxNode): string | null {
-  const parent = node.parent;
-  if (parent?.type === 'variable_declarator') {
-    return parent.childForFieldName('name')?.text ?? null;
-  }
-  return null;
-}
-```
-
-### 3. Export Detection Requires Ancestry Traversal
-
-Export depth varies by syntax:
-```typescript
-// Depth 1: parent is export_statement
-export function foo() {}
-
-// Depth 3: arrow function → variable_declarator → lexical_declaration → export_statement
-export const foo = () => {}
-```
-
-**Gotcha:** Check multiple ancestor levels.
-
-### 4. Line Numbers Are 0-Indexed
-
-```typescript
-node.startPosition.row  // 0 for first line
-node.endPosition.row    // 9 for 10th line
-
-// Human-readable:
-const startLine = node.startPosition.row + 1;
-```
-
-### 5. Use Indices for Content, Not Positions
-
-**Wrong:**
-```typescript
-content.substring(startPosition.column, endPosition.column) // WRONG
-```
-
-**Right:**
-```typescript
-content.slice(node.startIndex, node.endIndex) // Correct!
-```
-
-`startPosition`/`endPosition` are row/column pairs. `startIndex`/`endIndex` are byte offsets.
-
-### 6. JSX Detection Requires Node Type Checking
-
-To identify React components:
-```typescript
-function hasJsxReturn(node: SyntaxNode): boolean {
-  // Check for any of these node types in function body
-  const jsxTypes = [
-    'jsx_element',           // <div>...</div>
-    'jsx_self_closing_element', // <Component />
-    'jsx_fragment'           // <>...</>
-  ];
-  // ... traverse body looking for these types
-}
-```
-
-### 7. TreeCursor Requires Manual Parent Return
-
-```typescript
-const cursor = node.walk();
-
-function visit() {
-  // Process current node
-
-  if (cursor.gotoFirstChild()) {
-    do {
-      visit();
-    } while (cursor.gotoNextSibling());
-    cursor.gotoParent();  // MUST call or cursor is lost!
-  }
-}
-```
-
----
-
-## Article 9: Qdrant Gotchas
-
-### 1. Point IDs Must Be Numeric or UUID
-
-**Wrong:**
-```typescript
-await qdrant.upsert('collection', {
-  points: [{ id: 'component:ContactList', vector: [...] }]  // FAILS
-});
-```
-
-**Right:**
-```typescript
-// Use incremental numeric IDs, store original in payload
-let nextId = 1;
-const idMap = new Map<string, number>();
-
-function getNumericId(stringId: string): number {
-  if (!idMap.has(stringId)) idMap.set(stringId, nextId++);
-  return idMap.get(stringId)!;
-}
-
-await qdrant.upsert('collection', {
-  points: [{
-    id: getNumericId('component:ContactList'),
-    vector: [...],
-    payload: { originalId: 'component:ContactList' }  // Preserve for retrieval
-  }]
-});
-```
-
-### 2. `search()` Is Deprecated - Use `query()`
-
-```typescript
-// Old (deprecated)
-await qdrant.search('collection', { vector: [...], limit: 10 });
-
-// New (recommended)
-await qdrant.query('collection', { query: [...], limit: 10 });
-```
-
-### 3. Distance Metric Is Case-Sensitive
-
-```typescript
-// WRONG
-await qdrant.createCollection('col', { vectors: { distance: 'cosine' } });
-
-// RIGHT
-await qdrant.createCollection('col', { vectors: { distance: 'Cosine' } });
-```
-
-### 4. `createCollection` Throws If Exists
-
-```typescript
-// This throws on second call
-await qdrant.createCollection('col', {...});
-await qdrant.createCollection('col', {...}); // Error!
-
-// Use idempotent pattern
-const { exists } = await qdrant.collectionExists('col');
-if (!exists) {
-  await qdrant.createCollection('col', {...});
-}
-```
-
-### 5. Health Check Returns Empty 200
+**The fix:**
 
 ```bash
-# Docs suggest /health returns JSON
-curl http://localhost:6333/health
-# Returns empty 200 with no body!
-
-# Use root endpoint for version info
-curl http://localhost:6333
-# Returns {"title":"qdrant","version":"1.x.x"}
+go install github.com/sourcegraph/scip/cmd/scip@latest
 ```
 
-### 6. `deleteCollection` Succeeds Even If Missing
-
-```typescript
-// No error if collection doesn't exist
-await qdrant.deleteCollection('nonexistent'); // Silent success
-```
-
-### 7. Use `wait: true` for Synchronous Writes
-
-```typescript
-// Async write (returns before persisted)
-await qdrant.upsert('col', { points: [...] });
-
-// Sync write (waits for persistence)
-await qdrant.upsert('col', { points: [...], wait: true });
-```
-
-### 8. TypeScript Type Assertions Needed
-
-```typescript
-// Payload type is `unknown`, needs assertion
-const result = await qdrant.query(...);
-const payload = result.points[0].payload as unknown as CodePointPayload;
-```
+Or download the binary from GitHub releases. Or skip the CLI entirely and use the protobuf library in Node.
 
 ---
 
-## Article 10: Docker & Infrastructure Gotchas
+## Ollama Speaks a Different Language
 
-### 1. Container Naming Convention
+OpenAI set the standard for embedding APIs. Everyone copies it.
 
-Docker Compose naming: `<project-dir>-<service>-<instance>`
+Except Ollama.
 
-```bash
-# If running from crispy-crm directory
-docker exec crispy-crm-ollama-1 ollama pull nomic-embed-text
+```json
+// What you'll try (OpenAI style)
+{ "input": "text to embed" }
 
-# NOT
-docker exec ollama ollama pull nomic-embed-text  # FAILS
+// What Ollama expects
+{ "prompt": "text to embed" }
 ```
 
-### 2. Volume Ownership Issues
+One field name. Hours of debugging.
 
-Docker volumes default to root:root ownership:
-```
-.claude/qdrant/  → root:root
-.claude/ollama/  → root:root
-```
+The response differs too. OpenAI returns `embeddings` (plural, nested array). Ollama returns `embedding` (singular, flat array).
 
-**Gotcha:** May need chmod/chown for non-root access.
+It's like ordering at a restaurant where the menu is in a slightly different dialect.
 
-### 3. Service Startup Timing
+**The working version:**
 
-Services need warmup time:
-```bash
-docker compose up -d qdrant ollama
-# Immediate curl fails:
-curl http://localhost:6333  # Connection refused
-
-# Wait ~3 seconds
-sleep 3
-curl http://localhost:6333  # Success
-```
-
-**Gotcha:** Add health check waits in automation.
-
-### 4. Ollama Model Download Timing
-
-First `ollama pull nomic-embed-text` downloads ~800MB:
-```
-pulling manifest
-pulling 8dd... 80%   600 MB/s
-```
-
-**Gotcha:** First indexing waits for model download if not pre-pulled.
-
----
-
-## Summary: Blog Articles to Update
-
-| Article | Placeholder | Real Gotcha |
-|---------|-------------|-------------|
-| 2 | TBD | SCIP CLI is Go binary, not npm |
-| 7 | TBD | Ollama uses "prompt", returns singular "embedding" |
-| 7 | TBD | No batch endpoint, ~100 embeddings/sec |
-| 8 | TBD | Separate parsers for TS vs TSX |
-| 8 | TBD | Arrow functions need parent traversal for name |
-| 8 | TBD | Use indices not positions for content |
-| 9 | TBD | IDs must be numeric, store originalId in payload |
-| 9 | TBD | Use query() not deprecated search() |
-| 9 | TBD | Distance metrics are case-sensitive |
-| 10 | TBD | Container naming is project-service-instance |
-| 10 | TBD | Services need warmup time |
-
----
-
-## Code Snippets for Blog
-
-### Correct Ollama Embedding Request
 ```typescript
 const response = await fetch('http://localhost:11434/api/embeddings', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
     model: 'nomic-embed-text',
     prompt: text,  // NOT "input"
@@ -390,40 +70,428 @@ const response = await fetch('http://localhost:11434/api/embeddings', {
 const { embedding } = await response.json(); // NOT "embeddings"
 ```
 
-### Correct Qdrant Upsert with ID Mapping
-```typescript
-const idMap = new Map<string, number>();
-let nextId = 1;
+---
 
-function upsertWithStringIds(points: Array<{ id: string; vector: number[]; payload: any }>) {
-  return qdrant.upsert('collection', {
-    wait: true,
-    points: points.map(p => ({
-      id: idMap.get(p.id) ?? idMap.set(p.id, nextId++).get(p.id)!,
-      vector: p.vector,
-      payload: { ...p.payload, originalId: p.id },
-    })),
-  });
-}
+## Ollama Has No Batch Mode
+
+OpenAI lets you embed 100 texts in one request.
+
+Ollama processes one at a time. Period.
+
+500 code chunks? That's 500 HTTP requests. Sequential. About 5 seconds total at 100 embeddings per second.
+
+There's no workaround. No hidden batch endpoint. No clever parallelization without running multiple Ollama instances.
+
+You just wait.
+
+It's like a coffee shop with one barista and no espresso machine automation.
+
+For most codebases, 5 seconds is fine. Just don't expect OpenAI-level throughput.
+
+---
+
+## The Model Must Already Exist
+
+Your first embedding request will fail.
+
+```
+Error 404: Model "nomic-embed-text" not found
 ```
 
-### Correct Tree-sitter Parser Selection
-```typescript
-import Parser from 'tree-sitter';
-import TypeScript from 'tree-sitter-typescript';
+Ollama doesn't auto-download models. You have to pull them explicitly first.
 
+```bash
+ollama pull nomic-embed-text
+```
+
+That's an 800MB download. First-time indexing waits for it.
+
+It's like a vending machine that requires you to stock it yourself before buying.
+
+**Pro tip:** Add `just discover-pull-model` to your setup script.
+
+---
+
+## Empty Strings Return Real Vectors
+
+This one's subtle.
+
+```typescript
+await generateEmbedding("")  // Returns [0, 0, 0, ... 768 zeros]
+```
+
+A valid 768-dimensional vector. Technically correct. Semantically useless.
+
+Those zeros pollute your search results. They match everything equally poorly.
+
+Filter empty content before embedding. Always.
+
+---
+
+## TypeScript and TSX Need Different Parsers
+
+Tree-sitter is a parsing library. It converts source code into a syntax tree you can navigate programmatically.
+
+Here's the trap: TypeScript and TSX are different grammars.
+
+```typescript
+// This parser can't see JSX
+const parser = new Parser();
+parser.setLanguage(TypeScript.typescript);
+parser.parse('<Button />');  // Confusion ensues
+```
+
+JSX is the syntax React uses for components. Looks like HTML inside JavaScript.
+
+Using the TypeScript parser on TSX files? The JSX nodes become invisible.
+
+It's like using an English dictionary to read Spanish. Some words match. Most don't.
+
+**The fix:**
+
+```typescript
 const tsParser = new Parser();
 tsParser.setLanguage(TypeScript.typescript);
 
 const tsxParser = new Parser();
 tsxParser.setLanguage(TypeScript.tsx);
 
-function parseFile(filePath: string, content: string) {
-  const parser = filePath.endsWith('.tsx') ? tsxParser : tsParser;
-  return parser.parse(content);
+const parser = filePath.endsWith('.tsx') ? tsxParser : tsParser;
+```
+
+Two parsers. Choose by file extension.
+
+---
+
+## Arrow Functions Hide Their Names
+
+Regular functions wear name tags:
+
+```typescript
+function greet() {}
+node.childForFieldName('name')  // Returns "greet"
+```
+
+Arrow functions don't:
+
+```typescript
+const greet = () => {}
+node.childForFieldName('name')  // Returns null
+```
+
+The name lives in the parent, not the function itself.
+
+An arrow function is assigned to a variable. The variable has the name. The function is anonymous.
+
+It's like asking a package what's inside when the label is on the shelf.
+
+**The fix:** Climb up to the parent `variable_declarator`:
+
+```typescript
+function extractArrowFunctionName(node: SyntaxNode): string | null {
+  if (node.parent?.type === 'variable_declarator') {
+    return node.parent.childForFieldName('name')?.text ?? null;
+  }
+  return null;
 }
 ```
 
 ---
 
-**Next Step:** Update each blog article's `[GOTCHA: TBD after implementation]` placeholders with these real discoveries.
+## Export Detection Is Ancestry Archaeology
+
+How many nodes between a function and its export statement?
+
+It depends.
+
+```typescript
+// Direct export: 1 level up
+export function foo() {}
+
+// Arrow export: 3 levels up
+export const foo = () => {}
+```
+
+The path is: arrow function → variable_declarator → lexical_declaration → export_statement.
+
+Don't check just the parent. Walk the ancestors.
+
+It's like asking "who's your boss" when the org chart has variable depth.
+
+---
+
+## Line Numbers Start at Zero
+
+Programmers count from zero. Humans count from one.
+
+```typescript
+node.startPosition.row  // 0 for the first line
+node.endPosition.row    // 9 for the tenth line
+```
+
+Every line number you display needs `+ 1`.
+
+It's like a building with no ground floor.
+
+---
+
+## Positions and Indices Are Different Things
+
+This error wastes hours:
+
+```typescript
+// WRONG: positions are row/column pairs
+content.substring(node.startPosition.column, node.endPosition.column)
+
+// RIGHT: indices are byte offsets
+content.slice(node.startIndex, node.endIndex)
+```
+
+Position tells you where something is in a grid (row 5, column 12).
+
+Index tells you the byte offset from the start of the file.
+
+Use indices for slicing content. Always.
+
+---
+
+## Qdrant Rejects String IDs
+
+Vector databases store points. Each point has an ID, a vector, and metadata.
+
+Qdrant IDs must be numbers or UUIDs. Not strings.
+
+```typescript
+// FAILS
+{ id: 'component:ContactList', vector: [...] }
+
+// WORKS
+{ id: 42, vector: [...], payload: { originalId: 'component:ContactList' } }
+```
+
+Your semantic identifier goes in the payload. The database gets a number.
+
+It's like a library that assigns call numbers but lets you write whatever title you want on the spine.
+
+**The mapping pattern:**
+
+```typescript
+const idMap = new Map<string, number>();
+let nextId = 1;
+
+function getNumericId(stringId: string): number {
+  if (!idMap.has(stringId)) idMap.set(stringId, nextId++);
+  return idMap.get(stringId)!;
+}
+```
+
+---
+
+## search() Is Dead, Long Live query()
+
+The Qdrant client has two methods that do similar things.
+
+```typescript
+// Deprecated (still works, warns in logs)
+await qdrant.search('collection', { vector: [...] });
+
+// Current (recommended)
+await qdrant.query('collection', { query: [...] });
+```
+
+Same result. Different name. The API evolved.
+
+It's like asking for a "tape" at a music store. They know what you mean. But it dates you.
+
+---
+
+## Case Sensitivity Strikes Again
+
+Creating a Qdrant collection requires specifying a distance metric. Cosine similarity is standard.
+
+```typescript
+// WRONG
+{ distance: 'cosine' }
+
+// RIGHT
+{ distance: 'Cosine' }
+```
+
+Capital C. That's it. That's the whole gotcha.
+
+One character. Cryptic error message. Twenty minutes of confusion.
+
+---
+
+## Creating Collections Isn't Idempotent
+
+Idempotent means "running twice produces the same result as running once."
+
+`createCollection` isn't idempotent.
+
+```typescript
+await qdrant.createCollection('col', {...});
+await qdrant.createCollection('col', {...});  // Throws!
+```
+
+But `deleteCollection` is:
+
+```typescript
+await qdrant.deleteCollection('nonexistent');  // Silent success
+```
+
+Asymmetric behavior. Check existence before creating.
+
+**The pattern:**
+
+```typescript
+const { exists } = await qdrant.collectionExists('col');
+if (!exists) {
+  await qdrant.createCollection('col', {...});
+}
+```
+
+---
+
+## Health Checks Lie
+
+The docs suggest `/health` returns JSON.
+
+```bash
+curl http://localhost:6333/health
+# Returns empty 200 with no body
+```
+
+Use the root endpoint instead:
+
+```bash
+curl http://localhost:6333
+# Returns {"title":"qdrant","version":"1.x.x"}
+```
+
+It's like a doctor who just nods instead of giving test results.
+
+---
+
+## Docker Names Are Predictable (But Not Obvious)
+
+Docker Compose generates container names from your project directory and service name.
+
+```bash
+# From crispy-crm directory
+docker exec crispy-crm-ollama-1 ollama pull nomic-embed-text
+
+# NOT this (fails)
+docker exec ollama ollama pull nomic-embed-text
+```
+
+The pattern: `<project-dir>-<service>-<instance>`.
+
+It's like how hotels number rooms by floor. Predictable once you know the system.
+
+---
+
+## Services Need Warmup Time
+
+Containers start fast. Services inside them don't.
+
+```bash
+docker compose up -d qdrant ollama
+curl http://localhost:6333  # Connection refused
+```
+
+Wait three seconds. Try again. Works.
+
+Health checks in automation need retry logic or sleep delays.
+
+It's like expecting a computer to boot instantly because you pressed the power button.
+
+---
+
+## Writes Can Be Async By Default
+
+Qdrant acknowledges writes before persisting them.
+
+```typescript
+// Returns immediately, might not be persisted yet
+await qdrant.upsert('col', { points: [...] });
+
+// Waits for actual persistence
+await qdrant.upsert('col', { points: [...], wait: true });
+```
+
+For indexing scripts that query immediately after writing, `wait: true` prevents race conditions.
+
+It's like the difference between "message sent" and "message delivered."
+
+---
+
+## TypeScript Doesn't Know Your Payloads
+
+Qdrant payload types are `unknown`. TypeScript can't help.
+
+```typescript
+const result = await qdrant.query(...);
+const payload = result.points[0].payload;  // Type: unknown
+```
+
+You need explicit assertions:
+
+```typescript
+const payload = result.points[0].payload as CodePointPayload;
+```
+
+Not ideal. But necessary.
+
+---
+
+## The Cursor Needs Manual Navigation
+
+Tree-sitter cursors are efficient. They're also easy to lose.
+
+```typescript
+const cursor = node.walk();
+
+function visit() {
+  // Process current node
+  if (cursor.gotoFirstChild()) {
+    do {
+      visit();
+    } while (cursor.gotoNextSibling());
+    cursor.gotoParent();  // FORGET THIS AND YOU'RE LOST
+  }
+}
+```
+
+Always return to parent after visiting children.
+
+It's like leaving breadcrumbs in a maze but forgetting to pick them up on the way back.
+
+---
+
+## Summary: The Traps That Got Us
+
+| Category | Gotcha | Pain Level |
+|----------|--------|------------|
+| SCIP | CLI is Go, not npm | Medium |
+| Ollama | Different API field names | High |
+| Ollama | No batch endpoint | Low |
+| Ollama | Model must be pre-pulled | Medium |
+| Tree-sitter | TS vs TSX need different parsers | High |
+| Tree-sitter | Arrow function names in parent | Medium |
+| Tree-sitter | Indices vs positions | High |
+| Qdrant | String IDs rejected | High |
+| Qdrant | search() deprecated | Low |
+| Qdrant | Case-sensitive distance | Medium |
+| Docker | Naming convention | Low |
+| Docker | Service warmup time | Medium |
+
+Every single one is documented somewhere.
+
+None of them are documented where you'll look first.
+
+Now you know.
+
+---
+
+*Part 11 of 12: Building Local Code Intelligence*

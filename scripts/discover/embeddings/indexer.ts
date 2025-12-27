@@ -25,10 +25,10 @@ import {
   ensureCollection,
   upsertPoints,
   clearCollection,
-  checkQdrantHealth,
+  checkLanceDBHealth,
   getCollectionInfo,
   type UpsertPoint,
-} from "./qdrant.js";
+} from "./lancedb.js";
 
 const SOURCE_PATTERNS = [
   "src/**/*.ts",
@@ -66,12 +66,12 @@ async function verifyServices(): Promise<boolean> {
   }
   console.log("   ✅ Ollama ready");
 
-  const qdrantOk = await checkQdrantHealth();
-  if (!qdrantOk) {
-    console.error("❌ Qdrant not available. Run: just discover-services");
+  const lanceOk = await checkLanceDBHealth();
+  if (!lanceOk) {
+    console.error("❌ LanceDB not available. Run: just discover-services");
     return false;
   }
-  console.log("   ✅ Qdrant ready\n");
+  console.log("   ✅ LanceDB ready\n");
 
   return true;
 }
@@ -143,7 +143,7 @@ async function indexCodebase(rootDir: string, freshIndex: boolean = true): Promi
               name: chunk.name,
               startLine: chunk.startLine,
               endLine: chunk.endLine,
-              preview: chunk.content.slice(0, 200),
+              content: chunk.content,
             },
           });
 
@@ -183,7 +183,7 @@ async function indexCodebase(rootDir: string, freshIndex: boolean = true): Promi
   console.log(`   Embeddings created: ${stats.embeddingsCreated}`);
   console.log(`   Errors:             ${stats.errors}`);
   console.log(`   Duration:           ${duration}s`);
-  console.log(`   Points in Qdrant:   ${info.pointCount}`);
+  console.log(`   Points in LanceDB:  ${info.pointCount}`);
   console.log("\n   Next: just discover-search \"your query here\"");
 }
 
