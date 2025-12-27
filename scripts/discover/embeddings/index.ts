@@ -2,7 +2,7 @@
  * Embeddings module for Discovery System
  *
  * Provides text embedding generation for semantic search and similarity.
- * Includes vector storage via Qdrant for fast similarity search.
+ * Includes vector storage via LanceDB for fast similarity search.
  */
 
 export {
@@ -14,16 +14,16 @@ export {
 } from "./ollama.js";
 
 export {
-  qdrant,
   ensureCollection,
   upsertPoints,
   search,
+  searchByType,
   clearCollection,
-  checkQdrantHealth,
-  getHealthDetails as getQdrantHealthDetails,
+  checkLanceDBHealth,
+  getHealthDetails as getLanceDBHealthDetails,
   getCollectionInfo,
-  QdrantError,
+  LanceDBError,
   type CodePointPayload,
   type SearchResult,
   type UpsertPoint,
-} from "./qdrant.js";
+} from "./lancedb.js";

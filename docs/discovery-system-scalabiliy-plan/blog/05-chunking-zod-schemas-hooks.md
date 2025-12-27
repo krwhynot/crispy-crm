@@ -1,50 +1,40 @@
 # Chunking at Semantic Boundaries: Zod Schemas, Hooks, and Beyond
 
-You can split a book into pages. Or you can split it into chapters.
+Most chunking systems are dumb.
 
-One approach is mechanical. The other is meaningful.
+They draw lines every N tokens. They have no idea they just cut a function in half. They produce garbage.
 
-Most chunking systems treat code like a book split into pages. They draw lines every N tokens, blissfully unaware that they just cut a function in half.
-
-We tried that. It produced garbage results. An AI asking "how do we validate contacts?" received a chunk that started mid-schema with `email: z.string().email()` and ended mid-field with `phoneNumber: z`.
+We tried that. An AI asking "how do we validate contacts?" got a chunk that started mid-schema with `email: z.string().email()` and ended with `phoneNumber: z`.
 
 Not helpful.
 
-This article is about chunking code the way humans think about code: at semantic boundaries.
+---
+
+## Semantic Chunking: What It Actually Means
+
+Semantic chunking splits code at meaningful boundaries instead of arbitrary line counts.
+
+It's like organizing magazine subscriptions by topic instead of by month. When a researcher asks "what do we know about solar energy?", topical filing delivers. Chronological filing requires reading every box.
+
+The key insight: code has natural joints.
+
+Functions. Classes. Schemas. Hooks. These are complete thoughts.
+
+Line-based chunking ignores them. Semantic chunking respects them.
 
 ---
 
-## The Magazine Subscription Analogy
+## What Makes a Boundary?
 
-Imagine you are organizing a library of magazine subscriptions.
+A **function** is a complete unit. Name. Parameters. Body. Purpose. Opening and closing braces mark its extent.
 
-You could file them by month. January issues in one box, February in another. Clean, predictable, completely useless for research.
+A **Zod schema** is a complete unit. Shape. Constraints. Transforms. The `z.object()` call and its closing parenthesis mark its extent.
 
-Or you could file them by topic. All the articles about solar energy together, regardless of which month they appeared.
+A **React hook** is a complete unit. Follows `use*` naming. Calls other hooks. Returns something useful. Function boundaries mark its extent.
 
-When a researcher asks "what do we know about solar energy?", the topical filing system delivers. The chronological system requires reading every box.
+These aren't arbitrary lines. They're where code naturally separates.
 
-Code has natural topics: functions, classes, schemas, hooks. These are semantic units that encapsulate complete ideas.
-
-Line-based chunking ignores these units. It files by month.
-
-Semantic chunking respects them. It files by topic.
-
----
-
-## What Makes a Semantic Boundary?
-
-In TypeScript, semantic boundaries align with the language's own structure.
-
-A **function** is a complete unit. It has a name, parameters, a body, and a purpose. The opening and closing braces mark its extent.
-
-A **Zod schema** is a complete unit. It declares a shape, defines constraints, and optionally transforms data. The `z.object()` call and its closing parenthesis mark its extent.
-
-A **React hook** is a complete unit. It follows a naming convention (`use*`), calls other hooks, and returns something useful. Its function boundaries mark its extent.
-
-These are not arbitrary lines. They are the joints where code naturally separates.
-
-Chunking at semantic boundaries means:
+Semantic chunking means:
 - Never splitting a function mid-body
 - Never separating a schema from its fields
 - Never isolating a hook from its dependencies
@@ -55,92 +45,58 @@ The chunk is the complete thought.
 
 ## The Zod Schema Problem
 
-Zod schemas present unique chunking challenges.
+Zod schemas present unique challenges.
 
-Consider this common pattern in our codebase:
+Here's a common pattern:
 
 ```typescript
-import { z } from 'zod';
-import { sanitizeHtml } from '../utils/security';
-
 export const contactSchema = z.strictObject({
   id: z.string().uuid(),
   firstName: z.string().min(1).max(100),
-  lastName: z.string().min(1).max(100),
   email: z.string().email().optional(),
-  phone: z.string().max(20).optional(),
   notes: z.string().max(10000).transform(sanitizeHtml).optional(),
 });
 
 export type Contact = z.infer<typeof contactSchema>;
-
 export const contactCreateSchema = contactSchema.omit({ id: true });
-export const contactUpdateSchema = contactSchema.partial();
 ```
 
-Naive chunking might split this file into three pieces:
-1. Imports and the first half of `contactSchema`
-2. The second half of `contactSchema` and the type
-3. The derived schemas
+Naive chunking might split this into three pieces. Every piece is incomplete.
 
-Every chunk is incomplete. The AI cannot understand `contactSchema` without all its fields. It cannot understand `Contact` without the schema it derives from. It cannot understand `contactUpdateSchema` without `contactSchema`.
+The AI cannot understand `contactSchema` without all its fields. Cannot understand `Contact` without the schema it derives from. Cannot understand `contactCreateSchema` without `contactSchema`.
 
-Semantic chunking keeps related declarations together.
+It's like tearing a recipe in half and asking someone to cook it.
+
+Semantic chunking keeps related declarations together. Period.
 
 ---
 
-## Let Us Build the Extractor
+## Building the Extractor
 
-We need to identify Zod schemas in source files and extract them as complete units.
-
-The key insight: Zod schemas are variable declarations that call `z.object()`, `z.strictObject()`, or related methods.
+The key insight: Zod schemas are variable declarations that call `z.object()` or related methods.
 
 ```typescript
-// scripts/discover/extractors/zod-schemas.ts
-import { Project, VariableDeclaration, SyntaxKind } from 'ts-morph';
-
-const ZOD_SCHEMA_PATTERNS = [
-  'z.object',
-  'z.strictObject',
-  'z.array',
-  'z.enum',
-  'z.union',
-  'z.intersection',
-  'z.discriminatedUnion',
+const ZOD_PATTERNS = [
+  'z.object', 'z.strictObject', 'z.array',
+  'z.enum', 'z.union', 'z.discriminatedUnion',
 ];
 
-interface ZodSchemaInfo {
-  name: string;
-  file: string;
-  line: number;
-  schemaType: string;
-  fields: FieldInfo[];
-  derivedFrom?: string;
-  hasTransform: boolean;
-  fullText: string;
-}
-
 function isZodSchema(decl: VariableDeclaration): boolean {
-  const initializer = decl.getInitializer();
-  if (!initializer) return false;
-
-  const text = initializer.getText();
-  return ZOD_SCHEMA_PATTERNS.some(pattern => text.includes(pattern));
-}
-
-function detectSchemaType(text: string): string {
-  for (const pattern of ZOD_SCHEMA_PATTERNS) {
-    if (text.startsWith(pattern) || text.includes(` ${pattern}`)) {
-      return pattern.split('.')[1]; // 'object', 'strictObject', etc.
-    }
-  }
-  return 'unknown';
+  const init = decl.getInitializer();
+  if (!init) return false;
+  return ZOD_PATTERNS.some(p => init.getText().includes(p));
 }
 ```
 
-Notice how we check the initializer text, not the variable name. A schema could be named anything. What matters is what it contains.
+Notice we check the initializer text, not the variable name. A schema could be named anything.
 
-Now the field extraction:
+What matters is what it contains.
+
+---
+
+## Extracting Fields
+
+Each field carries metadata the AI needs:
 
 ```typescript
 interface FieldInfo {
@@ -149,77 +105,32 @@ interface FieldInfo {
   constraints: string[];
   optional: boolean;
   hasTransform: boolean;
-  transformName?: string;
-}
-
-function extractFields(decl: VariableDeclaration): FieldInfo[] {
-  const fields: FieldInfo[] = [];
-  const initializer = decl.getInitializer();
-  if (!initializer) return fields;
-
-  // Find the object literal inside z.object() or z.strictObject()
-  const objLiterals = initializer.getDescendantsOfKind(
-    SyntaxKind.ObjectLiteralExpression
-  );
-
-  if (objLiterals.length === 0) return fields;
-
-  const schemaObj = objLiterals[0];
-
-  for (const prop of schemaObj.getProperties()) {
-    if (prop.getKind() !== SyntaxKind.PropertyAssignment) continue;
-
-    const propAssign = prop.asKindOrThrow(SyntaxKind.PropertyAssignment);
-    const name = propAssign.getName();
-    const valueText = propAssign.getInitializer()?.getText() || '';
-
-    fields.push({
-      name,
-      zodType: extractZodType(valueText),
-      constraints: extractConstraints(valueText),
-      optional: valueText.includes('.optional()'),
-      hasTransform: valueText.includes('.transform('),
-      transformName: extractTransformName(valueText),
-    });
-  }
-
-  return fields;
-}
-
-function extractZodType(text: string): string {
-  // Extract the base type: z.string(), z.number(), z.boolean(), etc.
-  const match = text.match(/z\.(\w+)\(/);
-  return match ? match[1] : 'unknown';
-}
-
-function extractConstraints(text: string): string[] {
-  const constraints: string[] = [];
-  const patterns = [
-    /\.min\((\d+)\)/g,
-    /\.max\((\d+)\)/g,
-    /\.email\(\)/g,
-    /\.url\(\)/g,
-    /\.uuid\(\)/g,
-    /\.regex\([^)]+\)/g,
-    /\.length\((\d+)\)/g,
-  ];
-
-  for (const pattern of patterns) {
-    const matches = text.matchAll(pattern);
-    for (const match of matches) {
-      constraints.push(match[0].slice(1)); // Remove leading dot
-    }
-  }
-
-  return constraints;
 }
 ```
 
+The extraction walks the AST:
+
+```typescript
+function extractFields(decl: VariableDeclaration): FieldInfo[] {
+  const init = decl.getInitializer();
+  const objLiteral = init?.getFirstDescendantByKind(
+    SyntaxKind.ObjectLiteralExpression
+  );
+  if (!objLiteral) return [];
+
+  return objLiteral.getProperties()
+    .filter(p => p.getKind() === SyntaxKind.PropertyAssignment)
+    .map(prop => parseFieldFromProperty(prop));
+}
+```
+
+It's like an X-ray machine for your validation logic. Every constraint visible at a glance.
+
 ---
 
-## Handling `z.infer<>` Type Derivation
+## The `z.infer` Relationship
 
-Here is where TypeScript generics get tricky.
+Here's where things get interesting.
 
 Many codebases derive types from schemas:
 
@@ -227,209 +138,138 @@ Many codebases derive types from schemas:
 export type Contact = z.infer<typeof contactSchema>;
 ```
 
-This creates a relationship. The `Contact` type is not independent. It is derived from `contactSchema`.
+This creates a relationship. The `Contact` type is not independent.
 
-Our chunking strategy must preserve this relationship:
+It's derived from `contactSchema`.
 
-```typescript
-function extractDerivedTypes(sourceFile: SourceFile): DerivedTypeInfo[] {
-  const derived: DerivedTypeInfo[] = [];
+Our chunking must preserve this. If you ask about `Contact`, you need to know about `contactSchema` too.
 
-  const typeAliases = sourceFile.getTypeAliases();
-
-  for (const alias of typeAliases) {
-    const typeNode = alias.getTypeNode();
-    if (!typeNode) continue;
-
-    const text = typeNode.getText();
-
-    // Pattern: z.infer<typeof schemaName>
-    const inferMatch = text.match(/z\.infer<typeof\s+(\w+)>/);
-    if (inferMatch) {
-      derived.push({
-        typeName: alias.getName(),
-        schemaName: inferMatch[1],
-        line: alias.getStartLineNumber(),
-        relationship: 'infer',
-      });
-      continue;
-    }
-
-    // Pattern: z.output<typeof schemaName>
-    const outputMatch = text.match(/z\.output<typeof\s+(\w+)>/);
-    if (outputMatch) {
-      derived.push({
-        typeName: alias.getName(),
-        schemaName: outputMatch[1],
-        line: alias.getStartLineNumber(),
-        relationship: 'output',
-      });
-      continue;
-    }
-
-    // Pattern: z.input<typeof schemaName>
-    const inputMatch = text.match(/z\.input<typeof\s+(\w+)>/);
-    if (inputMatch) {
-      derived.push({
-        typeName: alias.getName(),
-        schemaName: inputMatch[1],
-        line: alias.getStartLineNumber(),
-        relationship: 'input',
-      });
-    }
-  }
-
-  return derived;
-}
-```
-
-The key distinction between `z.infer`, `z.input`, and `z.output`:
-
-- `z.infer` is the default, usually equivalent to `z.output`
-- `z.input` gives the type before transforms run
-- `z.output` gives the type after transforms run
-
-If your schema has `.transform()`, these differ. If not, they are identical.
+Think of it as a family tree. You can't understand the child without knowing the parent.
 
 ---
 
-## Parsing TypeScript Generics: The Edge Cases
+## Three Flavors of Type Derivation
+
+Zod offers three type derivation helpers:
+
+```typescript
+z.infer<typeof schema>   // Output type (default)
+z.output<typeof schema>  // Output type (explicit)
+z.input<typeof schema>   // Input type (before transforms)
+```
+
+Here's what most people miss: if your schema has `.transform()`, input and output types differ.
+
+A `birthDate` field might accept a string (input) but produce a Date object (output).
+
+Your validation schema is doing double duty. It validates AND converts.
+
+The extraction captures this:
+
+```typescript
+function extractDerivedType(alias: TypeAliasDeclaration) {
+  const text = alias.getTypeNode()?.getText() || '';
+
+  if (text.match(/z\.infer<typeof\s+(\w+)>/)) {
+    return { relationship: 'infer', schemaName: RegExp.$1 };
+  }
+  if (text.match(/z\.input<typeof\s+(\w+)>/)) {
+    return { relationship: 'input', schemaName: RegExp.$1 };
+  }
+  // z.output similar...
+}
+```
+
+---
+
+## Why Regex Fails on Generics
 
 TypeScript generics break simple regex parsing.
 
-Consider:
+Consider these:
 
 ```typescript
-// Simple case
-z.infer<typeof schema>
-
-// Nested generics
-z.infer<typeof Record<string, typeof schema>>
-
-// With constraints
-T extends z.ZodType<infer U> ? U : never
-
-// Generic schema factory
-function createSchema<T extends z.ZodRawShape>(shape: T): z.ZodObject<T>
+z.infer<typeof schema>                    // Simple
+z.infer<typeof Record<string, Schema>>    // Nested
+T extends z.ZodType<infer U> ? U : never  // Conditional
 ```
 
-Each of these requires different handling.
+Regex cannot match balanced brackets reliably.
 
-For `z.infer`, we can use the AST:
+It's like trying to count parentheses by eye in a 50-line expression. You'll get lost.
+
+The AST approach handles nesting correctly because ts-morph already parsed the structure:
 
 ```typescript
-function findInferredSchema(typeNode: TypeNode): string | undefined {
-  // Walk the AST looking for z.infer type references
-  const typeRefs = typeNode.getDescendantsOfKind(SyntaxKind.TypeReference);
+function findInferredSchema(typeNode: TypeNode): string | null {
+  const typeRef = typeNode.getFirstDescendantByKind(
+    SyntaxKind.TypeReference
+  );
+  if (typeRef?.getTypeName().getText() !== 'z.infer') return null;
 
-  for (const ref of typeRefs) {
-    const typeName = ref.getTypeName().getText();
-    if (typeName !== 'z.infer') continue;
-
-    const typeArgs = ref.getTypeArguments();
-    if (typeArgs.length === 0) continue;
-
-    const arg = typeArgs[0];
-    if (arg.getKind() !== SyntaxKind.TypeQuery) continue;
-
-    // TypeQuery is "typeof X"
-    const query = arg.asKindOrThrow(SyntaxKind.TypeQuery);
-    return query.getExprName().getText();
-  }
-
-  return undefined;
+  const query = typeRef.getTypeArguments()[0];
+  return query?.asKind(SyntaxKind.TypeQuery)
+    ?.getExprName().getText() ?? null;
 }
 ```
 
-The AST approach handles nested generics correctly because ts-morph already parsed the nesting structure.
-
-Regex cannot match balanced brackets reliably. AST can.
+Let ts-morph do the hard work. That's what it's for.
 
 ---
 
-## Hook Detection Patterns
+## Hook Detection
 
-Custom React hooks follow conventions that make them detectable:
+Custom React hooks follow conventions that make them detectable.
 
-1. The name starts with `use`
-2. The character after `use` is uppercase
-3. The function calls at least one other hook
+Three rules:
+1. Name starts with `use`
+2. Fourth character is uppercase
+3. Function calls at least one other hook
 
 ```typescript
 function isHookName(name: string): boolean {
-  if (!name.startsWith('use')) return false;
-  if (name.length < 4) return false;
-  return /[A-Z]/.test(name[3]);
-}
-
-function extractHooks(sourceFile: SourceFile): HookInfo[] {
-  const hooks: HookInfo[] = [];
-
-  // Check function declarations
-  for (const func of sourceFile.getFunctions()) {
-    const name = func.getName();
-    if (!name || !isHookName(name)) continue;
-    if (!func.isExported()) continue;
-
-    hooks.push(extractHookInfo(func, sourceFile));
-  }
-
-  // Check arrow functions assigned to variables
-  for (const varStmt of sourceFile.getVariableStatements()) {
-    if (!varStmt.isExported()) continue;
-
-    for (const decl of varStmt.getDeclarations()) {
-      const name = decl.getName();
-      if (!isHookName(name)) continue;
-
-      const init = decl.getInitializer();
-      if (!init || init.getKind() !== SyntaxKind.ArrowFunction) continue;
-
-      hooks.push(extractHookInfoFromArrow(decl, sourceFile));
-    }
-  }
-
-  return hooks;
+  return name.startsWith('use') &&
+         name.length > 3 &&
+         /[A-Z]/.test(name[3]);
 }
 ```
 
-The hook info includes dependencies (other hooks called):
+Valid hooks: `useState`, `useContacts`, `useSmartDefaults`.
 
-```typescript
-interface HookInfo {
-  name: string;
-  file: string;
-  line: number;
-  parameters: ParameterInfo[];
-  returnType: string;
-  dependencies: string[];  // Other hooks this hook calls
-  fullText: string;
-}
+Not hooks: `use`, `used`, `useful`, `username`.
 
-function extractHookDependencies(bodyText: string): string[] {
-  const deps = new Set<string>();
-
-  // Pattern: hookName( - matches hook calls
-  const hookCallPattern = /\b(use[A-Z][a-zA-Z0-9]*)\s*\(/g;
-
-  let match;
-  while ((match = hookCallPattern.exec(bodyText)) !== null) {
-    deps.add(match[1]);
-  }
-
-  return Array.from(deps).sort();
-}
-```
+It's like spotting a doctor by their white coat. The naming convention is the uniform.
 
 ---
 
-## Chunking Strategy: Keep Related Units Together
+## Extracting Hook Dependencies
 
-Now we combine schema and hook extraction into a chunking strategy.
+Hooks call other hooks. This creates a dependency graph:
 
-The principle: a chunk should contain a complete semantic unit and its immediate dependencies.
+```typescript
+function extractHookDependencies(bodyText: string): string[] {
+  const deps = new Set<string>();
+  const pattern = /\b(use[A-Z][a-zA-Z0-9]*)\s*\(/g;
 
-For a Zod schema file:
+  let match;
+  while ((match = pattern.exec(bodyText))) {
+    deps.add(match[1]);
+  }
+  return Array.from(deps);
+}
+```
+
+When `useContactForm` calls `useState`, `useEffect`, and `useValidation`, all three become dependencies.
+
+The chunk should reflect this. Think of it as capturing the hook's "imports" even when they're not at the top of the file.
+
+---
+
+## Grouping Related Units
+
+Here's the core algorithm.
+
+First, identify all chunkable units in a file:
 
 ```typescript
 interface ChunkableUnit {
@@ -437,139 +277,63 @@ interface ChunkableUnit {
   name: string;
   startLine: number;
   endLine: number;
-  dependencies: string[];  // Names of other units this depends on
-}
-
-function identifyChunkBoundaries(sourceFile: SourceFile): ChunkableUnit[] {
-  const units: ChunkableUnit[] = [];
-
-  // Collect all schemas
-  for (const schema of extractSchemas(sourceFile)) {
-    units.push({
-      kind: 'schema',
-      name: schema.name,
-      startLine: schema.line,
-      endLine: findDeclarationEnd(sourceFile, schema.line),
-      dependencies: schema.derivedFrom ? [schema.derivedFrom] : [],
-    });
-  }
-
-  // Collect all derived types
-  for (const derived of extractDerivedTypes(sourceFile)) {
-    units.push({
-      kind: 'type',
-      name: derived.typeName,
-      startLine: derived.line,
-      endLine: findDeclarationEnd(sourceFile, derived.line),
-      dependencies: [derived.schemaName],
-    });
-  }
-
-  // Collect all hooks
-  for (const hook of extractHooks(sourceFile)) {
-    units.push({
-      kind: 'hook',
-      name: hook.name,
-      startLine: hook.line,
-      endLine: findDeclarationEnd(sourceFile, hook.line),
-      dependencies: hook.dependencies,
-    });
-  }
-
-  return units;
+  dependencies: string[];
 }
 ```
 
-Now group related units into chunks:
+Then group related units by following dependencies:
 
 ```typescript
-function createChunks(
-  sourceFile: SourceFile,
-  units: ChunkableUnit[],
-  maxChunkLines: number = 150
-): Chunk[] {
-  const chunks: Chunk[] = [];
-  const grouped = groupRelatedUnits(units);
-
-  for (const group of grouped) {
-    const startLine = Math.min(...group.map(u => u.startLine));
-    const endLine = Math.max(...group.map(u => u.endLine));
-    const lineCount = endLine - startLine + 1;
-
-    if (lineCount <= maxChunkLines) {
-      // Group fits in one chunk
-      chunks.push({
-        units: group,
-        startLine,
-        endLine,
-        content: extractLines(sourceFile, startLine, endLine),
-      });
-    } else {
-      // Group too large, split but keep individual units whole
-      for (const unit of group) {
-        chunks.push({
-          units: [unit],
-          startLine: unit.startLine,
-          endLine: unit.endLine,
-          content: extractLines(sourceFile, unit.startLine, unit.endLine),
-        });
-      }
-    }
-  }
-
-  return chunks;
-}
-
-function groupRelatedUnits(units: ChunkableUnit[]): ChunkableUnit[][] {
-  // Build dependency graph
-  const nameToUnit = new Map(units.map(u => [u.name, u]));
-  const groups: ChunkableUnit[][] = [];
+function groupRelated(units: ChunkableUnit[]): ChunkableUnit[][] {
+  const byName = new Map(units.map(u => [u.name, u]));
   const visited = new Set<string>();
+  const groups: ChunkableUnit[][] = [];
 
   for (const unit of units) {
     if (visited.has(unit.name)) continue;
-
-    const group: ChunkableUnit[] = [];
-    collectRelated(unit, nameToUnit, visited, group);
-
-    if (group.length > 0) {
-      groups.push(group);
-    }
+    const group = collectGroup(unit, byName, visited);
+    groups.push(group);
   }
-
   return groups;
-}
-
-function collectRelated(
-  unit: ChunkableUnit,
-  nameToUnit: Map<string, ChunkableUnit>,
-  visited: Set<string>,
-  group: ChunkableUnit[]
-): void {
-  if (visited.has(unit.name)) return;
-
-  visited.add(unit.name);
-  group.push(unit);
-
-  // Follow dependencies
-  for (const depName of unit.dependencies) {
-    const dep = nameToUnit.get(depName);
-    if (dep) {
-      collectRelated(dep, nameToUnit, visited, group);
-    }
-  }
 }
 ```
 
-This produces chunks where schemas stay with their derived types, hooks stay with their custom hook dependencies (when in the same file), and nothing gets split mid-declaration.
+It's like playing connect-the-dots. Follow the arrows until you run out.
+
+Schemas stay with their derived types. Hooks stay with their custom hook dependencies. Nothing gets orphaned.
 
 ---
 
-## Watch Out For
+## Size Limits
 
-Semantic chunking has failure modes. Here are the ones that bit us.
+Groups can get too big.
 
-**Re-exported schemas lose their context.**
+A single massive chunk defeats the purpose. The AI can't hold it all in context.
+
+Target 20-150 lines per chunk. If a group exceeds the limit, split it but keep individual units whole:
+
+```typescript
+if (groupLines > MAX_CHUNK_LINES) {
+  // Split, but never mid-declaration
+  for (const unit of group) {
+    chunks.push(createSingleUnitChunk(unit));
+  }
+} else {
+  chunks.push(createGroupChunk(group));
+}
+```
+
+Better to have two complete chunks than one that gets truncated.
+
+It's like packing boxes for a move. If something doesn't fit, it gets its own box. You don't saw the furniture in half.
+
+---
+
+## Re-Exports Lose Context
+
+Here's a gotcha that bit us.
+
+Barrel files look like this:
 
 ```typescript
 // src/validation/index.ts
@@ -577,11 +341,19 @@ export { contactSchema } from './contacts';
 export { organizationSchema } from './organizations';
 ```
 
-The barrel file has no schema definitions. Its chunk is just re-exports. When the AI asks about `contactSchema`, it might get the barrel file instead of the actual schema.
+The barrel has no schema definitions. Its chunk is just re-exports.
 
-Solution: trace re-exports back to their source files. Include the source location in metadata.
+When the AI asks about `contactSchema`, it might get the barrel file instead of the actual schema.
 
-**Circular schema dependencies.**
+Solution: trace re-exports back to source. Include the real file path in metadata.
+
+Think of barrel files as forwarding addresses. They point somewhere else.
+
+---
+
+## Circular Dependencies
+
+Zod allows circular references through `z.lazy()`:
 
 ```typescript
 // contacts.ts
@@ -595,124 +367,105 @@ export const organizationSchema = z.object({
 });
 ```
 
-Circular references through `z.lazy()` mean the schemas depend on each other across files. Our chunking cannot keep both in the same chunk.
+These schemas depend on each other across files. Our chunking can't keep both in the same chunk.
 
-Solution: detect `z.lazy()` calls and note them as deferred dependencies in metadata. The AI should be told that complete understanding requires both files.
+The solution: detect `z.lazy()` calls and note them as deferred dependencies. Tell the AI that complete understanding requires both files.
 
-**Generic schema factories.**
+It's like a reference book that says "see also." You need to follow the link.
 
-```typescript
-function createCrudSchema<T extends z.ZodRawShape>(
-  baseShape: T,
-  tableName: string
-) {
-  return z.object({
-    ...baseShape,
-    id: z.string().uuid(),
-    createdAt: z.date(),
-    updatedAt: z.date(),
-  });
-}
+---
 
-export const contactSchema = createCrudSchema({ name: z.string() }, 'contacts');
-```
+## Closure Dependencies
 
-The actual schema fields are split between the factory and the call site. Naive extraction misses fields from the factory.
-
-Solution: detect factory patterns and include both the factory definition and call site in the chunk. Or inline the factory output.
-
-**Hooks with closure dependencies.**
+Hooks often reference module-level constants:
 
 ```typescript
 const API_BASE = '/api/v1';
 
 export function useContactApi() {
-  // Uses API_BASE from closure
-  const fetch = useCallback(() => {
-    return axios.get(`${API_BASE}/contacts`);
-  }, []);
-
-  return { fetch };
+  return useCallback(() => axios.get(`${API_BASE}/contacts`), []);
 }
 ```
 
-The hook depends on `API_BASE` defined outside its boundaries. Chunking the hook alone loses context.
+Chunking the hook alone loses `API_BASE`.
 
-Solution: detect references to module-level variables and include them in the chunk metadata. Consider expanding chunk boundaries to include nearby constants.
+The solution: detect references to module-level variables. Expand chunk boundaries or include them in metadata.
 
-**Conditional type inference.**
-
-```typescript
-export type ContactInput = z.input<typeof contactSchema>;
-export type ContactOutput = z.output<typeof contactSchema>;
-
-// These differ if schema has transforms
-type InputDiffers = ContactInput extends ContactOutput ? false : true;
-```
-
-The relationship between input and output types is non-obvious. Simple "derives from" metadata misses the subtlety.
-
-Solution: explicitly note when schemas have transforms, and explain that input and output types may differ.
+Think of closures as invisible threads connecting code. Cut the thread, lose the meaning.
 
 ---
 
-## What is Next
+## Schema Factories
 
-We have chunked schemas and hooks as semantic units. The AI can now receive complete, coherent code blocks instead of arbitrary slices.
+Generic factories split schema definitions:
 
-But identification and chunking are just the first step. The discovery system needs to answer questions like:
+```typescript
+function createCrudSchema<T>(shape: T) {
+  return z.object({
+    ...shape,
+    id: z.string().uuid(),
+    createdAt: z.date(),
+  });
+}
 
+export const contactSchema = createCrudSchema({ name: z.string() });
+```
+
+The actual fields live in two places. Naive extraction misses half of them.
+
+Solution: detect factory patterns. Include both the factory and call site. Or inline the computed result.
+
+It's like understanding a templated document. You need the template AND the values.
+
+---
+
+## What's Next
+
+We've chunked schemas and hooks as semantic units. The AI receives complete, coherent code blocks instead of arbitrary slices.
+
+But identification and chunking are just step one.
+
+The discovery system needs to answer questions like:
 - "Which components use this schema?"
 - "What calls this hook?"
 - "Where is this function defined?"
 
-These questions require understanding symbol references across files. That is where SCIP comes in.
+These require understanding symbol references across files. That's where SCIP comes in.
 
-The next article dives into SCIP's symbol reference system: how it stores definitions and references, how cross-file navigation works, and how to query it efficiently.
+The next article dives into SCIP's symbol reference system. How it stores definitions and references. How cross-file navigation works. How to query it efficiently.
 
-The index knows everything. We just need to ask the right questions.
+The index knows everything.
+
+We just need to ask the right questions.
 
 ---
 
 ## Quick Reference
 
-**Zod schema patterns to detect:**
+**Zod schema patterns:**
 ```typescript
-const SCHEMA_PATTERNS = [
-  'z.object',
-  'z.strictObject',
-  'z.array',
-  'z.enum',
-  'z.union',
-  'z.discriminatedUnion',
-];
+['z.object', 'z.strictObject', 'z.array',
+ 'z.enum', 'z.union', 'z.discriminatedUnion']
 ```
 
-**Hook naming convention:**
+**Hook naming test:**
 ```typescript
-// Valid hooks: useState, useEffect, useContacts, useSmartDefaults
-// Not hooks: use, used, useful, username
-function isHookName(name: string): boolean {
-  return name.startsWith('use') &&
-         name.length > 3 &&
-         /[A-Z]/.test(name[3]);
-}
+name.startsWith('use') && name.length > 3 && /[A-Z]/.test(name[3])
 ```
 
-**Type derivation patterns:**
+**Type derivation:**
 ```typescript
-z.infer<typeof schema>   // Output type (default)
-z.output<typeof schema>  // Output type (explicit)
-z.input<typeof schema>   // Input type (before transforms)
+z.infer<typeof schema>   // Output (default)
+z.output<typeof schema>  // Output (explicit)
+z.input<typeof schema>   // Input (before transforms)
 ```
 
 **Chunking principles:**
-- Never split a declaration mid-body
-- Keep schemas with their derived types
-- Keep hooks with their local dependencies
+- Never split declarations mid-body
+- Keep schemas with derived types
+- Keep hooks with local dependencies
 - Target 20-150 lines per chunk
-- Filter out trivially small chunks
 
 ---
 
-*This is part 5 of a 12-part series on building local code intelligence.*
+*Part 5 of 12: Building Local Code Intelligence*

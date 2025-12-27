@@ -1,458 +1,338 @@
 # Querying SQLite FTS5: From Text to Results
 
-You have a database full of symbols. Thousands of them. Function names, type definitions, component names, hook identifiers.
+You have thousands of symbols in a database. Function names. Type definitions. Components. Hooks.
 
 Someone types "contact" into a search box.
 
-In 3 milliseconds, you return 47 results ranked by relevance. ContactList appears before validateContactEmail because it is a better match.
+47 results. Ranked by relevance. 3 milliseconds.
 
-This is not magic. This is SQLite FTS5.
+That's not magic. That's FTS5.
 
 ---
 
-## The Problem
+## The Exact Match Problem
 
-Regular database queries are exact. Ask for `WHERE name = 'contact'` and you get rows that exactly match "contact". Nothing else.
+Regular SQL is literal.
 
-But code search is fuzzy. Developers type partial names. They make typos. They remember the concept but not the exact spelling.
+`WHERE name = 'contact'` returns rows that exactly match "contact". Nothing else. Not "ContactList". Not "validateContact". Not even "CONTACT".
 
-When someone searches for "contact", they probably want:
+But developers don't search like that.
+
+They type partial names. They make typos. They remember the concept but not the exact spelling.
+
+When someone searches "contact", they want:
 - `Contact` (the interface)
 - `ContactList` (a component)
 - `useContactForm` (a hook)
 - `validateContact` (a function)
-- `contact_id` (a database column)
 
-A regular LIKE query could work: `WHERE name LIKE '%contact%'`. But LIKE scans every row. For 10,000 symbols, that is 10,000 string comparisons per query. Add case-insensitive matching and it gets slower.
+You could use LIKE: `WHERE name LIKE '%contact%'`. That scans every row. Ten thousand symbols means ten thousand string comparisons per keystroke.
 
-FTS5 inverts the problem. Instead of scanning rows looking for matches, it builds an index of where each word (or trigram) appears. Querying the index is constant time regardless of table size.
+Your UI stutters.
 
-Here is the key insight.
+FTS5 flips the problem. It builds an index of where each term appears. Querying that index takes the same time whether you have 100 symbols or 100,000.
 
-Building the index is expensive. Querying the index is cheap. Since you query far more often than you insert, the tradeoff is massively in your favor.
+It's like looking up a word in a book's index versus reading every page to find it.
+
+Here's the key insight.
+
+Building the index is expensive. Querying it is cheap. You query thousands of times for every insert. The math works massively in your favor.
 
 ---
 
-## The Virtual Table Approach
+## Virtual Tables
 
-FTS5 uses a SQLite feature called virtual tables.
+FTS5 uses something called a virtual table.
 
-A virtual table looks and acts like a regular table. You INSERT into it, SELECT from it, DELETE from it. The SQL syntax is identical.
+A virtual table is a SQLite abstraction that looks like a regular table but does custom work behind the scenes. You INSERT, SELECT, DELETE with normal SQL. The virtual table handles the magic internally.
 
-But under the hood, a virtual table can do anything. It is an abstraction over custom code.
+It's like a regular table wearing a costume.
 
-FTS5's virtual table builds a full-text index automatically. Every INSERT updates the index. Every MATCH query searches the index.
-
-Here is how to create one:
+FTS5's virtual table builds a full-text index automatically. Every INSERT updates the index. Every MATCH query searches it.
 
 ```sql
 CREATE VIRTUAL TABLE symbols_fts USING fts5(
   name,
   file_path,
   kind,
-  documentation,
   tokenize = 'trigram'
 );
 ```
 
-Notice what this does NOT specify. No column types. No primary keys. No foreign keys. FTS5 tables are pure text containers designed for search.
+Notice what's missing. No column types. No primary keys. No foreign keys.
 
-The `tokenize = 'trigram'` part is crucial. It tells FTS5 how to break text into searchable chunks. Trigrams mean every three-character sequence becomes an index entry.
+FTS5 tables are pure text containers optimized for one thing: search.
 
-Insert some data:
+The `tokenize = 'trigram'` part tells FTS5 how to break text into searchable chunks. More on that in a moment.
+
+Insert some symbols:
 
 ```sql
-INSERT INTO symbols_fts (name, file_path, kind, documentation) VALUES
-  ('ContactList', 'src/components/ContactList.tsx', 'component', 'Displays a list of contacts'),
-  ('useContactForm', 'src/hooks/useContactForm.ts', 'hook', 'Form state for contact editing'),
-  ('validateContact', 'src/validation/contacts.ts', 'function', 'Validates contact data'),
-  ('Contact', 'src/types/Contact.ts', 'interface', 'Contact entity type');
+INSERT INTO symbols_fts (name, file_path, kind) VALUES
+  ('ContactList', 'src/components/ContactList.tsx', 'component'),
+  ('useContactForm', 'src/hooks/useContactForm.ts', 'hook'),
+  ('validateContact', 'src/validation/contacts.ts', 'function');
 ```
 
-FTS5 automatically indexes these rows. You can start querying immediately.
+FTS5 indexes them immediately. You can query right now.
 
 ---
 
-## Let Us Build It
+## The MATCH Clause
 
-The MATCH clause is where FTS5 searches happen.
+MATCH is where FTS5 searches happen.
 
 ```sql
 SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'contact';
 ```
 
-This returns all rows where any column contains "contact" (via trigram matching). The ContactList, useContactForm, validateContact, and Contact rows all match.
+Returns every row containing "contact" anywhere. ContactList, useContactForm, validateContact—all of them.
 
-But MATCH can do more than simple text matching.
+But here's a gotcha that will bite you: MATCH requires the table name.
 
-**Column-specific search:**
 ```sql
--- Only search the name column
-SELECT * FROM symbols_fts WHERE name MATCH 'contact';
+-- Wrong. Confusing error.
+SELECT * FROM symbols_fts WHERE MATCH 'contact';
 
--- Only search documentation
-SELECT * FROM symbols_fts WHERE documentation MATCH 'validation';
+-- Right.
+SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'contact';
 ```
+
+The syntax feels redundant. It isn't optional.
+
+MATCH does more than simple text:
 
 **Prefix matching:**
 ```sql
--- Match anything starting with "use"
 SELECT * FROM symbols_fts WHERE name MATCH 'use*';
--- Returns: useContactForm, useState, useEffect, ...
 ```
-
-**Phrase matching:**
-```sql
--- Match exact phrase "list of contacts"
-SELECT * FROM symbols_fts WHERE documentation MATCH '"list of contacts"';
-```
+Returns useContactForm, useState, useEffect.
 
 **Boolean operators:**
 ```sql
--- Must contain both terms
 SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'contact AND form';
-
--- Either term
-SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'contact OR organization';
-
--- Exclude term
 SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'contact NOT test';
 ```
 
+Think of AND/OR/NOT as filters on top of the text search. It's like telling a librarian "find books about cooking AND Italian, but NOT desserts."
+
 ---
 
-## Ranking Results with bm25
+## Ranking with BM25
 
-Finding matches is not enough. You need to rank them.
+Finding matches isn't enough. You need to rank them.
 
-When someone searches "contact", should `Contact` appear before `validateContactEmail`? Probably. The first is an exact match. The second just contains the term.
+Should `Contact` appear before `validateContactEmail`? Probably. One is an exact match. The other just contains the term.
 
-FTS5 includes the bm25() function for relevance ranking.
+BM25 is a relevance scoring algorithm. It stands for "Best Matching 25" and it's the same algorithm early Google used. The function scores results based on term frequency, document rarity, and length.
 
-BM25 (Best Matching 25) is the same algorithm Google used in early search. It scores documents based on:
-- **Term frequency:** How often the search term appears
-- **Inverse document frequency:** How rare the term is across all documents
-- **Document length:** Shorter matches rank higher (all else equal)
-
-Here is how to use it:
+It's like a judge scoring how well each result answers your question.
 
 ```sql
-SELECT
-  name,
-  file_path,
-  bm25(symbols_fts) as relevance
+SELECT name, bm25(symbols_fts) as relevance
 FROM symbols_fts
 WHERE symbols_fts MATCH 'contact'
 ORDER BY relevance;
 ```
 
-Lower bm25 scores mean better matches. The function returns negative numbers, so ORDER BY without DESC gives you best matches first.
+Lower scores mean better matches. The function returns negative numbers. ORDER BY without DESC gives you best matches first.
+
+Counterintuitive, but it works.
 
 You can weight columns differently:
 
 ```sql
--- Give name column 10x importance, documentation 2x, others 1x
-SELECT
-  name,
-  bm25(symbols_fts, 10.0, 1.0, 1.0, 2.0) as relevance
+SELECT name, bm25(symbols_fts, 10.0, 1.0, 2.0) as score
 FROM symbols_fts
 WHERE symbols_fts MATCH 'contact'
-ORDER BY relevance;
+ORDER BY score;
 ```
 
-The weights correspond to columns in creation order. A match in the name column now contributes much more to the score than a match in file_path.
+The numbers correspond to columns in creation order. A match in name (10x) now matters far more than a match in file_path (1x).
+
+It's like telling the ranking algorithm: "I care most about name matches."
 
 ---
 
-## Configuring the Tokenizer
+## Trigrams Explained
 
-Trigrams work for fuzzy matching, but they are not the only option.
+A trigram is every three-character sequence in a string.
 
-FTS5 supports several tokenizers:
+"contact" becomes: con, ont, nta, tac, act.
 
-**unicode61 (default):**
+FTS5 stores which rows contain each trigram. When you search "contact", it finds rows containing all five trigrams, intersects the results, and returns them.
+
+It's like solving a crossword where multiple clues must all point to the same answer.
+
+This enables substring matching. Type "tact" and you find "Contact". Type "List" and you find "ContactList".
+
+But trigrams have a minimum length problem. Searching for "ab" produces no complete trigrams. No trigrams means no results.
+
 ```sql
-CREATE VIRTUAL TABLE docs USING fts5(content, tokenize = 'unicode61');
+-- Returns nothing with trigram tokenizer
+SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'ab';
+
+-- Works fine
+SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'abc';
 ```
-Splits on whitespace and punctuation. Good for natural language.
 
-**ascii:**
-```sql
-CREATE VIRTUAL TABLE docs USING fts5(content, tokenize = 'ascii');
-```
-Same as unicode61 but ASCII-only. Slightly faster.
+Always validate that search queries are at least 3 characters. Or use a different tokenizer for short-query support.
 
-**porter:**
-```sql
-CREATE VIRTUAL TABLE docs USING fts5(content, tokenize = 'porter ascii');
-```
-Applies Porter stemming. "running" and "runs" match "run". Great for documentation search.
+---
 
-**trigram:**
-```sql
-CREATE VIRTUAL TABLE docs USING fts5(content, tokenize = 'trigram');
-```
-Three-character chunks. Essential for substring matching in code.
+## Tokenizer Options
 
-For code search, trigram is usually the right choice. You want `ContactList` to match when someone types "tact" or "List" or "Con".
+Trigrams aren't the only choice.
 
-You can combine tokenizers:
+**unicode61:** Splits on whitespace and punctuation. Good for natural language documentation.
+
+**porter:** Applies stemming. "running" and "runs" match "run". It's like teaching the search engine that verb forms are the same word.
+
+**trigram:** Three-character chunks. Essential for code where you want substring matching.
+
+For code search, trigram is usually right. For documentation search, porter might be better.
+
+You can make trigrams case-insensitive:
 
 ```sql
--- Case-insensitive trigrams
 CREATE VIRTUAL TABLE symbols_fts USING fts5(
   name,
   tokenize = 'trigram case_sensitive 0'
 );
 ```
 
-The `case_sensitive 0` option normalizes to lowercase before tokenizing.
+Now "Contact" and "contact" match the same queries.
 
 ---
 
-## Practical Query Patterns
+## Escaping Special Characters
 
-Here are query patterns we use constantly.
+FTS5 uses special characters for query syntax.
 
-**Find all React hooks:**
-```sql
-SELECT name, file_path FROM symbols_fts
-WHERE name MATCH 'use*'
-  AND kind = 'function'
-ORDER BY name;
-```
+Parentheses group boolean expressions. Asterisks mean prefix match. Quotes mean phrase match.
 
-**Find components that mention "form":**
-```sql
-SELECT name, file_path FROM symbols_fts
-WHERE symbols_fts MATCH 'form'
-  AND kind = 'component'
-  AND file_path MATCH '*.tsx';
-```
-
-**Search with fallback (try exact, then fuzzy):**
-```sql
--- First, try exact name match
-SELECT * FROM symbols_fts WHERE name = 'ContactForm';
-
--- If no results, try FTS match
-SELECT * FROM symbols_fts WHERE name MATCH 'contactform';
-
--- If still nothing, try broader search
-SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'contact form';
-```
-
-**Autocomplete (prefix match with limit):**
-```sql
-SELECT name, kind FROM symbols_fts
-WHERE name MATCH 'cont*'
-ORDER BY bm25(symbols_fts)
-LIMIT 10;
-```
-
-**Find related symbols (same file):**
-```sql
-SELECT b.name, b.kind FROM symbols_fts a
-JOIN symbols_fts b ON a.file_path = b.file_path
-WHERE a.name = 'ContactList'
-  AND b.name != 'ContactList';
-```
-
----
-
-## Deep Dive: How FTS5 Stores Data
-
-Understanding the internals helps you optimize.
-
-FTS5 creates several internal tables when you create a virtual table:
+When user input contains these characters, things break:
 
 ```sql
-CREATE VIRTUAL TABLE t USING fts5(content);
--- Actually creates:
--- t           (virtual table interface)
--- t_data      (internal data storage)
--- t_content   (original content, if using external content)
--- t_docsize   (document lengths for ranking)
--- t_config    (configuration)
-```
-
-The `t_data` table stores the inverted index. For each token (word or trigram), it stores which rows contain that token and where.
-
-Conceptually:
-```
-Token "con" -> Row 1 (position 0), Row 3 (position 4), Row 7 (position 0)
-Token "ont" -> Row 1 (position 1), Row 3 (position 5), Row 7 (position 1)
-Token "nta" -> Row 1 (position 2), Row 3 (position 6)
-```
-
-When you search for "contact", FTS5:
-1. Extracts trigrams: con, ont, nta, tac, act
-2. Looks up each trigram in the inverted index
-3. Intersects the row sets
-4. Returns rows that contain all trigrams
-
-This intersection happens in memory, on pre-sorted lists. It is extremely fast.
-
-For ranking, FTS5 also stores:
-- Total document count
-- Total term frequency per term
-- Document length per row
-
-The bm25() function uses these to compute relevance without rescanning the data.
-
----
-
-## Watch Out For
-
-FTS5 gotchas that will bite you.
-
-**MATCH requires the table name.**
-```sql
--- Wrong (confusing error message)
-SELECT * FROM symbols_fts WHERE MATCH 'contact';
-
--- Right
-SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'contact';
-```
-
-**Single quotes for queries, not double quotes.**
-```sql
--- Wrong
-SELECT * FROM symbols_fts WHERE symbols_fts MATCH "contact";
-
--- Right
-SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'contact';
-```
-
-**Empty queries crash.**
-```sql
--- This throws an error
-SELECT * FROM symbols_fts WHERE symbols_fts MATCH '';
-
--- Always validate input
-SELECT * FROM symbols_fts WHERE length('query') > 0 AND symbols_fts MATCH 'query';
-```
-
-**Special characters need escaping.**
-```sql
--- Parentheses are boolean operators in FTS5
--- This tries to group: (foo) AND (bar)
+-- User searches for "foo(bar)"
+-- FTS5 interprets as: foo grouped with bar
 SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'foo(bar)';
+```
 
--- Quote to treat literally
+Escape by quoting:
+
+```sql
 SELECT * FROM symbols_fts WHERE symbols_fts MATCH '"foo(bar)"';
 ```
 
-**Trigram minimum length.**
-Trigrams are three characters. Searching for "ab" with trigram tokenization returns no results because "ab" produces no complete trigrams.
-```sql
--- Returns nothing with trigram tokenizer
-SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'ab';
+Or strip special characters before querying. It's like sanitizing HTML to prevent injection—you have to assume user input is hostile.
 
--- Returns rows containing "abc", "abd", etc.
-SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'abc';
+Empty queries crash too:
+
+```sql
+-- Throws an error
+SELECT * FROM symbols_fts WHERE symbols_fts MATCH '';
 ```
 
-**Index size grows with data.**
-For 100,000 symbols, the FTS5 index might be 20-50 MB. This is usually fine, but for massive codebases, consider partitioning (separate tables for different file types or directories).
+Always validate input length before querying.
 
 ---
 
-## Building the Complete Query Layer
+## Practical Patterns
 
-Here is a TypeScript wrapper that handles the common patterns:
+**Autocomplete:**
+```sql
+SELECT DISTINCT name FROM symbols_fts
+WHERE name MATCH 'cont*'
+ORDER BY length(name)
+LIMIT 10;
+```
+
+Shorter names first. It's like Google suggesting "contact" before "contactlessPaymentSystemInitializer".
+
+**Find all hooks:**
+```sql
+SELECT name, file_path FROM symbols_fts
+WHERE name MATCH 'use*' AND kind = 'function';
+```
+
+**Search with fallback:**
+```sql
+-- Try exact match first
+SELECT * FROM symbols_fts WHERE name = 'ContactForm';
+-- Then try FTS
+SELECT * FROM symbols_fts WHERE name MATCH 'contactform';
+```
+
+The cascading approach gives users the most relevant result when they know the exact name, but still works when they don't.
+
+---
+
+## How FTS5 Stores Data
+
+Understanding internals helps you optimize.
+
+When you create a virtual table, FTS5 creates several hidden tables:
+
+```
+t           (virtual table interface)
+t_data      (inverted index)
+t_docsize   (document lengths for ranking)
+```
+
+The inverted index maps each token to rows containing it:
+
+```
+Token "con" -> Row 1 (position 0), Row 3 (position 4)
+Token "ont" -> Row 1 (position 1), Row 3 (position 5)
+```
+
+It's like a book index that says "React: pages 12, 47, 89" except with row IDs instead of pages.
+
+When you search "contact", FTS5 extracts trigrams, looks up each one, intersects the row sets. All on pre-sorted lists. Blazingly fast.
+
+For 100,000 symbols, the index might be 20-50 MB. Usually fine. For massive codebases, consider partitioning into separate tables by file type or directory.
+
+---
+
+## A TypeScript Wrapper
 
 ```typescript
-import Database from 'better-sqlite3';
-
 export class SymbolSearch {
   private db: Database.Database;
 
-  constructor(dbPath: string) {
-    this.db = new Database(dbPath);
-    this.createTables();
+  search(query: string, limit = 50) {
+    if (query.length < 3) return [];
+
+    const escaped = query.replace(/[(){}[\]^"~*?:\\]/g, ' ').trim();
+    return this.db.prepare(`
+      SELECT name, file_path, kind, bm25(symbols_fts, 10, 1, 2) as score
+      FROM symbols_fts WHERE symbols_fts MATCH ?
+      ORDER BY score LIMIT ?
+    `).all(escaped, limit);
   }
 
-  private createTables() {
-    this.db.exec(`
-      CREATE VIRTUAL TABLE IF NOT EXISTS symbols_fts USING fts5(
-        name,
-        file_path,
-        kind,
-        line,
-        documentation,
-        tokenize = 'trigram case_sensitive 0'
-      );
-    `);
-  }
-
-  search(query: string, limit = 50): SearchResult[] {
-    if (query.length < 2) return [];
-
-    const escaped = this.escapeQuery(query);
-    const stmt = this.db.prepare(`
-      SELECT
-        name,
-        file_path,
-        kind,
-        line,
-        documentation,
-        bm25(symbols_fts, 10.0, 1.0, 2.0, 0.5, 1.0) as score
-      FROM symbols_fts
-      WHERE symbols_fts MATCH ?
-      ORDER BY score
-      LIMIT ?
-    `);
-
-    return stmt.all(escaped, limit) as SearchResult[];
-  }
-
-  searchByKind(query: string, kind: string): SearchResult[] {
-    const escaped = this.escapeQuery(query);
-    const stmt = this.db.prepare(`
-      SELECT name, file_path, kind, line
-      FROM symbols_fts
-      WHERE symbols_fts MATCH ? AND kind = ?
-      ORDER BY bm25(symbols_fts)
-      LIMIT 100
-    `);
-
-    return stmt.all(escaped, kind) as SearchResult[];
-  }
-
-  autocomplete(prefix: string, limit = 10): string[] {
-    if (prefix.length < 2) return [];
-
-    const stmt = this.db.prepare(`
-      SELECT DISTINCT name
-      FROM symbols_fts
-      WHERE name MATCH ?
-      ORDER BY length(name), name
-      LIMIT ?
-    `);
-
-    const results = stmt.all(`${prefix}*`, limit) as { name: string }[];
-    return results.map(r => r.name);
-  }
-
-  private escapeQuery(query: string): string {
-    // Escape FTS5 special characters
-    return query
-      .replace(/[(){}[\]^"~*?:\\]/g, ' ')
-      .trim();
+  autocomplete(prefix: string, limit = 10) {
+    if (prefix.length < 3) return [];
+    return this.db.prepare(`
+      SELECT DISTINCT name FROM symbols_fts
+      WHERE name MATCH ? ORDER BY length(name) LIMIT ?
+    `).all(`${prefix}*`, limit);
   }
 }
 ```
 
+Escape special characters. Validate length. Weight columns. That's it.
+
 ---
 
-## What Is Next
+## What's Next
 
-You can now store symbols and search them instantly. But we are still working with text matching.
+You can store symbols and search them instantly. But we're still matching text.
 
-"Find code related to authentication" returns nothing if no symbol contains the word "auth".
+"Find code related to authentication" returns nothing if no symbol contains "auth".
 
-The next article introduces Tree-sitter for parsing actual code structure. You will learn how to extract React components, find hook dependencies, and build the component hierarchy.
+The next article introduces Tree-sitter for parsing code structure. You'll learn how to extract React components, find hook dependencies, and build the component hierarchy.
 
 Structure is not enough. Meaning comes next.
 
@@ -462,45 +342,26 @@ Structure is not enough. Meaning comes next.
 
 **Create FTS5 table:**
 ```sql
-CREATE VIRTUAL TABLE symbols_fts USING fts5(
-  name, file_path, kind,
-  tokenize = 'trigram case_sensitive 0'
-);
+CREATE VIRTUAL TABLE t USING fts5(name, path, tokenize = 'trigram');
 ```
 
 **Basic search:**
 ```sql
-SELECT * FROM symbols_fts WHERE symbols_fts MATCH 'query';
+SELECT * FROM t WHERE t MATCH 'query';
 ```
 
 **Ranked search:**
 ```sql
-SELECT *, bm25(symbols_fts) as score
-FROM symbols_fts
-WHERE symbols_fts MATCH 'query'
-ORDER BY score;
+SELECT *, bm25(t) as score FROM t WHERE t MATCH 'query' ORDER BY score;
 ```
 
-**Column weights:**
-```sql
-bm25(symbols_fts, 10.0, 1.0, 2.0)  -- name=10x, path=1x, docs=2x
-```
-
-**Prefix matching:**
+**Prefix match:**
 ```sql
 WHERE name MATCH 'use*'
 ```
 
-**Boolean operators:**
-```sql
-WHERE symbols_fts MATCH 'contact AND form'
-WHERE symbols_fts MATCH 'contact OR organization'
-WHERE symbols_fts MATCH 'contact NOT test'
-```
-
-**Key insight:**
-Build the index once, query it forever. FTS5 handles the complexity.
+**Key insight:** Build the index once, query it forever. FTS5 handles the complexity.
 
 ---
 
-*This is part 3 of a 12-part series on building local code intelligence.*
+*Part 3 of 12: Building Local Code Intelligence*

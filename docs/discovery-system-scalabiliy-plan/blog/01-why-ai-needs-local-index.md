@@ -1,198 +1,277 @@
 # Why Your AI Assistant Needs a Local Index
 
-Every time you ask your AI coding assistant a question, something expensive happens in the background.
+Your AI coding assistant has amnesia.
 
-The AI reads files. Lots of them. Often the same files it read thirty seconds ago for your previous question. It parses them, analyzes them, builds a mental model, answers you, and then forgets everything it just learned.
+Every question you ask? It reads your entire codebase from scratch. The same files it read thirty seconds ago. The same parsing. The same analysis.
 
-Next question? Start from scratch.
+Then it forgets everything.
 
-This is the dirty secret of AI-assisted development. The tools are brilliant at understanding code, but terrible at remembering what they already know. And you are paying for that amnesia in tokens, time, and memory.
-
----
-
-## The Problem
-
-Picture what happens when you ask "Where is the login function defined?"
-
-1. The AI scans your project structure
-2. It reads dozens, maybe hundreds, of files looking for clues
-3. It parses each file to understand the code structure
-4. It finally locates your login function
-5. Then it forgets everything it just learned
-
-Ask a follow-up question like "What calls that function?" and the AI reads all those files again. From the beginning. As if the first question never happened.
-
-Here is why this matters.
-
-**Token costs add up fast.** If you are using a cloud-based AI assistant (and most of us are), every file read costs tokens. Reading the same 200 files ten times costs ten times as much as reading them once. For a team of five developers asking twenty questions each per day, that is 1,000 file-reading operations that could have been 100.
-
-**Memory pressure becomes real.** Each file gets loaded, parsed into an Abstract Syntax Tree, held in memory while the AI thinks, then discarded. A 100,000-line codebase can consume gigabytes of RAM during analysis. Your laptop with 16GB starts to sweat.
-
-**Latency compounds.** Reading files from disk, parsing them, analyzing their structure, walking their ASTs, it all takes time. For small codebases this is invisible. For large codebases you start noticing multi-second delays before the AI even begins thinking about your actual question.
-
-The worst part? Most of this work is completely redundant. Your codebase did not change between questions. The function definitions are in the same places. The import relationships are identical. Why should the AI pretend it has never seen your code before?
+That's expensive. In tokens. In time. In memory.
 
 ---
 
-## The Card Catalog Approach
+## The Expensive Reality
 
-Imagine walking into a library with a million books.
+Ask your AI: "Where is the login function defined?"
+
+Here's what happens behind the scenes:
+
+1. Scan the project structure
+2. Read dozens—maybe hundreds—of files
+3. Parse each one into a syntax tree
+4. Finally locate the function
+5. Forget everything
+
+Now ask: "What calls that function?"
+
+The AI starts over. From scratch. As if you never asked the first question.
+
+**Token costs add up fast.**
+
+Every file read costs tokens. Read 200 files once? One toll. Read them ten times? Ten tolls.
+
+It's like paying bridge fare each direction instead of buying a FastPass.
+
+**Memory pressure becomes real.**
+
+An Abstract Syntax Tree (AST) is a structured representation of your code—every function, every variable, every expression organized into a tree you can navigate.
+
+The AI builds one for each file. Holds it in memory. Discards it. Rebuilds it next question.
+
+A 100,000-line codebase can consume gigabytes of RAM during analysis.
+
+Your laptop starts to sweat.
+
+**Latency compounds.**
+
+Disk reads. Parsing. Tree walking. It all takes time.
+
+Small codebases? Invisible.
+
+Large codebases? Multi-second delays before the AI even *starts* thinking about your question.
+
+Here's the frustrating part.
+
+Your codebase didn't change between questions. The functions are in the same places. The imports are identical.
+
+Why pretend you've never seen it before?
+
+---
+
+## The Card Catalog Solution
+
+Picture a library with a million books.
 
 You ask the librarian: "Where can I find books about React hooks?"
 
-The librarian could do what your AI does today. Walk through every aisle. Pull each book off the shelf. Flip through the pages. Check if it mentions hooks. Put it back. Move to the next book.
+Option A: Walk every aisle. Pull each book. Flip through pages. Check for hooks. Put it back. Repeat a million times.
 
 Hours later, you have your answer.
 
-Or the librarian could walk to the card catalog.
+Option B: Walk to the card catalog.
 
-The card catalog does not contain the books. It contains information about the books. Titles. Authors. Subjects. Locations. Enough to answer most questions without touching the actual books.
+A card catalog is a compact index of every book's metadata—title, author, subject, location—without containing the books themselves.
 
-Need more detail? The card catalog tells you exactly which shelf to check. You read only what you need.
+That's the key insight.
 
-This is the fundamental insight: the cost of building knowledge about a codebase should happen once, not on every query.
+Most questions don't need the full book. They need to know *where* the book is.
 
-The card catalog is built once. Updated when new books arrive. Consulted thousands of times. The upfront cost is amortized across every future question.
+The card catalog gets built once. Updated when new books arrive. Consulted thousands of times.
+
+The upfront cost gets amortized across every future question.
 
 Your AI needs a card catalog for your code.
 
 ---
 
-## Why ripgrep Is Not Enough
+## Why ripgrep Isn't Enough
 
-You might be thinking: "I already have fast search. What is wrong with ripgrep?"
+You might be thinking: "I have ripgrep. Problem solved."
 
-Nothing is wrong with ripgrep. It is the fastest grep in the world. For text matching, nothing beats it.
+Not quite.
 
-But ripgrep searches text. It matches characters.
+ripgrep is the fastest text search in the world. For matching characters, nothing beats it.
 
-Code intelligence requires understanding structure.
+But code intelligence requires *structure*.
 
-Search for "validateContact" with ripgrep and you will find:
+Search for "validateContact" and ripgrep returns:
 
-- The actual function definition (good)
-- A comment that says "// TODO: fix validateContact later" (noise)
-- A test mock called validateContactMock (maybe relevant)
-- A string literal "validateContact is deprecated" (definitely not what you want)
-- A variable named validateContactSchema (different thing entirely)
+| Match | What it actually is |
+|-------|---------------------|
+| `function validateContact()` | ✓ The real definition |
+| `// TODO: fix validateContact` | ✗ A comment |
+| `validateContactMock` | ? Maybe relevant |
+| `"validateContact is deprecated"` | ✗ A string literal |
 
-Ripgrep cannot distinguish between these. It matches the characters "validateContact" and reports where they appear.
+ripgrep can't distinguish between these. It matches characters. Period.
 
-When you ask "what calls validateContact," you need semantic understanding. You need to know that `validateContact()` on line 47 is a function call, that `validateContact:` on line 23 is an object key, that `// validateContact` is a comment.
+When you ask "what calls validateContact," you need semantic understanding.
 
-Text search gives you positions. Code intelligence gives you meaning.
+Is `validateContact()` on line 47 a function call or an object key? Is it in a comment?
 
-Here is the key insight.
+Text search gives you positions.
 
-The TypeScript compiler already knows all of this. When it type-checks your code, it builds a complete model of every symbol, every reference, every relationship. It knows that `validateContact` on line 47 is a call to the function defined on line 12 of another file.
-
-The problem is that the compiler throws away this knowledge after compilation. And your AI rebuilds it from scratch on every question.
-
-What if we could save what the compiler knows and query it later?
+Code intelligence gives you *meaning*.
 
 ---
 
-## Let Us Build It
+## What the Compiler Already Knows
 
-The solution is called SCIP: Source Code Intelligence Protocol.
+Here's the part most people miss.
 
-SCIP is a standardized format for storing everything the compiler knows about your code. It was created by Sourcegraph (the code search company) and is used by GitHub, Meta, and every serious code intelligence tool.
+The TypeScript compiler already understands all of this. When it type-checks your code, it builds a complete model—every symbol, every reference, every relationship.
 
-Here is what SCIP captures:
+It knows that `validateContact` on line 47 is a call to the function defined on line 12 of another file.
 
-**Symbols.** Every named thing in your code gets a unique identifier. Not just the name "validateContact" but a fully-qualified path like `npm @crispy-crm 1.0.0 src/validation/contacts.ts validateContact().` This distinguishes your validateContact from a validateContact in another package or file.
+The problem?
 
-**Definitions.** Where each symbol is created. The exact file and line number where you wrote `function validateContact(...)`.
+The compiler throws away this knowledge after compilation.
 
-**References.** Where each symbol is used. Every call site, every import, every type annotation that references the symbol.
+Your AI rebuilds it from scratch. Every. Single. Question.
 
-With these three pieces of information, you can answer almost any code navigation question instantly:
+What if we could save what the compiler knows?
 
-- "Where is X defined?" Look up the definition.
-- "Where is X used?" List all references.
-- "What does this file export?" List definitions with export roles.
-- "What does this file import?" List references to external symbols.
+---
+
+## Enter SCIP
+
+SCIP stands for Source Code Intelligence Protocol.
+
+It's a standardized format for storing everything the compiler knows about your code. Think of it as a card catalog that captures not just where functions are, but who calls them, who imports them, and how they relate.
+
+Created by Sourcegraph. Used by GitHub, Meta, and every serious code intelligence tool.
+
+SCIP captures three things:
+
+**Symbols.** Unique identifiers for every named thing in your code.
+
+Not just "validateContact" but a fully-qualified path:
+```
+npm @crispy-crm 1.0.0 src/validation/contacts.ts validateContact()
+```
+
+This distinguishes *your* validateContact from one in another package.
+
+**Definitions.** Where each symbol is created.
+
+The exact file and line where you wrote `function validateContact(...)`.
+
+**References.** Where each symbol is used.
+
+Every call site. Every import. Every type annotation.
+
+With these three pieces, you can answer almost any code navigation question instantly:
+
+| Question | Answer |
+|----------|--------|
+| Where is X defined? | Look up the definition |
+| Where is X used? | List all references |
+| What does this file export? | List definitions with export roles |
+| What does this file import? | List references to external symbols |
 
 No parsing required. Just lookup.
 
-Let us generate an index for a TypeScript project:
+---
+
+## Building Your First Index
+
+Generate an index in two commands:
 
 ```bash
-# Install the TypeScript indexer
 npm install -D @sourcegraph/scip-typescript
-
-# Generate the index
 npx scip-typescript index --output .claude/state/index.scip
 ```
 
-That is it. One command.
+That's it.
 
-The indexer reads your tsconfig.json, processes every included file, and writes a compact binary index. For a 50,000-line codebase, this takes about 30 seconds. For 500,000 lines, maybe 2-3 minutes.
+The indexer reads your tsconfig.json, processes every file, writes a compact binary index.
 
-But here is the beautiful part.
+50,000 lines? About 30 seconds.
 
-Once the index exists, it just sits on disk. It does not consume memory until queried. It does not slow down your editor. It waits patiently until you need it.
+500,000 lines? Maybe 2-3 minutes.
 
-Compare that to the AI's current approach of loading everything into memory for every question.
+Here's the beautiful part.
+
+Once the index exists, it sits on disk. No memory consumption until queried. No editor slowdown. It waits patiently.
+
+Compare that to loading everything into memory for every question.
+
+**One gotcha:** The indexer uses TypeScript's compiler. If your code has type errors, files may be skipped. Run `tsc --noEmit` first.
+
+**Another gotcha:** Only files in your tsconfig.json get indexed. Excluding test files? They won't be searchable. Consider a separate tsconfig.indexing.json for full coverage.
 
 ---
 
 ## The Numbers
 
-Here is what changes when you have an index:
+Here's what changes:
 
 | Without Index | With Index |
 |---------------|------------|
 | Read 500 files per query | Read 1 index file |
 | Parse each file into AST | Query pre-parsed structure |
-| 2-4 GB memory per query | Under 100 MB |
+| 2-4 GB memory | Under 100 MB |
 | 5-30 seconds latency | Under 1 second |
 | Token cost multiplies | Token cost is constant |
 
-The performance difference is not 2x or 5x.
+This isn't 2x faster.
 
-Revolutionary.
+It's a different category.
 
-For incremental updates, the difference is even more dramatic. Changed one file? Without an index, you re-read everything. With an index, you update only the affected symbols. What took 30 seconds takes 50 milliseconds.
+For incremental updates, the gap widens further.
 
----
+Changed one file? Without an index, re-read everything. With an index, update only affected symbols.
 
-## Watch Out For
-
-Building code indexes is not without gotchas. Here are the ones we discovered.
-
-**Build before indexing.** SCIP uses the TypeScript compiler, which needs your code to type-check. If you have compilation errors, the indexer might skip those files or produce incomplete data. Always run `tsc --noEmit` first.
-
-**Watch your tsconfig scope.** The indexer only processes files included by your tsconfig.json. If your config excludes test files, those files will not be indexed. For complete coverage, consider a separate tsconfig.indexing.json that includes everything.
-
-**The index is a snapshot.** Rename a function, move a file, add new code, the old index is stale. Regenerate after significant changes. In CI, regenerate on every push. Locally, regenerate when starting a work session.
-
-**SCIP CLI is a Go binary, not an npm package.** The `@sourcegraph/scip-typescript` package handles indexing. But if you want to inspect or snapshot the index file, you need the SCIP CLI, which is installed via Go: `go install github.com/sourcegraph/scip/cmd/scip@latest`.
+30 seconds becomes 50 milliseconds.
 
 ---
 
-## What Is Next
+## The Index is a Snapshot
 
-Now you understand why your AI rereads everything and how an index fixes that.
+One thing to remember: indexes are point-in-time snapshots.
 
-But generating an index is just the beginning. An index file sitting on disk is like an unread encyclopedia. The information is there, but you need a way to access it.
+Rename a function? The old index is stale.
 
-The next article explains what SCIP actually stores and introduces trigrams, the technique that makes fuzzy search blazingly fast. You will learn how typing "con" can match "contacts", "ContactList", and "useContactForm" in milliseconds.
+Move a file? Stale.
 
-Time to open the index and see what is inside.
+Add new code? Stale.
+
+When to regenerate:
+- After refactoring or renaming
+- After adding new files
+- In CI: every push
+- Locally: when starting a work session
+
+It's like a printed phone book. Useful until someone moves.
+
+---
+
+## What's Next
+
+You now understand why your AI rereads everything—and how an index fixes that.
+
+But an index file on disk is like an unread encyclopedia. The information exists. You need a way to access it.
+
+The next article explains what SCIP actually stores and introduces trigrams—the technique that makes fuzzy search blazingly fast.
+
+Typing "con" will match "contacts", "ContactList", and "useContactForm" in milliseconds.
+
+Time to open the index and see what's inside.
 
 ---
 
 ## Quick Reference
 
-**Install scip-typescript:**
 ```bash
+# Install
 npm install -D @sourcegraph/scip-typescript
-```
 
-**Generate an index:**
-```bash
+# Generate
 npx scip-typescript index --output .claude/state/index.scip
+
+# Inspect (requires Go)
+go install github.com/sourcegraph/scip/cmd/scip@latest
+scip snapshot index.scip
 ```
 
 **What SCIP stores:**
@@ -200,15 +279,8 @@ npx scip-typescript index --output .claude/state/index.scip
 - Definitions (where symbols are created)
 - References (where symbols are used)
 
-**When to regenerate:**
-- After refactoring or renaming
-- After adding new files
-- In CI on every push
-- Locally when starting a work session
-
-**Key insight:**
-Index once, query many times. Separate the expensive work (parsing) from the frequent work (answering questions).
+**Key insight:** Index once, query many times. Separate the expensive work (parsing) from the frequent work (answering questions).
 
 ---
 
-*This is part 1 of a 12-part series on building local code intelligence.*
+*Part 1 of 12: Building Local Code Intelligence*

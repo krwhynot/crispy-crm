@@ -21,6 +21,7 @@ interface SearchOptions {
   query: string;
   limit: number;
   showPreview: boolean;
+  typeFilter?: string;
 }
 
 function parseArgs(): SearchOptions {
@@ -31,6 +32,7 @@ function parseArgs(): SearchOptions {
     console.log("Usage: npx tsx search-cli.ts <query> [options]\n");
     console.log("Options:");
     console.log("  --limit <n>     Maximum results (default: 10)");
+    console.log("  --type <type>   Filter by code element type (component, hook, function, etc.)");
     console.log("  --no-preview    Hide code previews");
     console.log("  --help          Show this help\n");
     console.log("Examples:");
@@ -43,11 +45,15 @@ function parseArgs(): SearchOptions {
   let query = "";
   let limit = 10;
   let showPreview = true;
+  let typeFilter: string | undefined;
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg === "--limit" && args[i + 1]) {
       limit = parseInt(args[i + 1], 10);
+      i++;
+    } else if (arg === "--type" && args[i + 1]) {
+      typeFilter = args[i + 1];
       i++;
     } else if (arg === "--no-preview") {
       showPreview = false;
@@ -61,7 +67,7 @@ function parseArgs(): SearchOptions {
     process.exit(1);
   }
 
-  return { query, limit, showPreview };
+  return { query, limit, showPreview, typeFilter };
 }
 
 async function runSearch(options: SearchOptions): Promise<void> {
@@ -72,9 +78,9 @@ async function runSearch(options: SearchOptions): Promise<void> {
     process.exit(1);
   }
 
-  const qdrantOk = await checkQdrantHealth();
-  if (!qdrantOk) {
-    console.error("❌ Qdrant not available. Run: just discover-services");
+  const lancedbOk = await checkLanceDBHealth();
+  if (!lancedbOk) {
+    console.error("❌ LanceDB not available. Check disk permissions.");
     process.exit(1);
   }
 
@@ -86,11 +92,14 @@ async function runSearch(options: SearchOptions): Promise<void> {
   }
 
   // Generate query embedding
-  console.log(`\n🔎 Searching for: "${options.query}"\n`);
+  const typeInfo = options.typeFilter ? ` (type: ${options.typeFilter})` : "";
+  console.log(`\n🔎 Searching for: "${options.query}"${typeInfo}\n`);
   const queryEmbedding = await generateEmbedding(options.query);
 
   // Search
-  const results = await search(queryEmbedding, options.limit);
+  const results = options.typeFilter
+    ? await searchByType(queryEmbedding, options.typeFilter, options.limit)
+    : await search(queryEmbedding, options.limit);
 
   if (results.length === 0) {
     console.log("No results found.\n");
@@ -110,8 +119,8 @@ async function runSearch(options: SearchOptions): Promise<void> {
     );
     console.log(`   📁 ${payload.filePath}:${payload.startLine}-${payload.endLine}`);
 
-    if (options.showPreview && payload.preview) {
-      const preview = payload.preview
+    if (options.showPreview && payload.content) {
+      const preview = payload.content
         .replace(/\s+/g, " ")
         .trim()
         .slice(0, 120);

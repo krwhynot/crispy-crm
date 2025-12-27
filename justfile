@@ -185,18 +185,18 @@ discover-scip-verify:
 discover-scip-full: discover-scip discover-scip-db discover-scip-verify
     @echo "✅ Full SCIP pipeline complete"
 
-# Start Qdrant + Ollama services for semantic search
+# Start discovery services (Ollama only - LanceDB is file-based)
 discover-services:
     @echo "🐳 Starting discovery services..."
-    docker compose up -d qdrant ollama
-    @echo "⏳ Waiting for services to be healthy..."
+    docker compose up -d ollama
+    @echo "⏳ Waiting for Ollama to be healthy..."
     @sleep 3
-    @curl -s http://localhost:6333 > /dev/null && echo "✅ Qdrant: http://localhost:6333" || echo "❌ Qdrant not ready"
     @curl -s http://localhost:11434/api/version > /dev/null && echo "✅ Ollama: http://localhost:11434" || echo "❌ Ollama not ready"
+    @echo "ℹ️  LanceDB requires no server (file-based storage)"
 
-# Stop discovery services
+# Stop discovery services (Ollama only - LanceDB is file-based)
 discover-services-stop:
-    docker compose down qdrant ollama
+    docker compose stop ollama
 
 # Pull embedding model for Ollama
 discover-pull-model:
