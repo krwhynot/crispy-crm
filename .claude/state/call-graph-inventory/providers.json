@@ -1,0 +1,3592 @@
+{
+  "chunk_name": "providers",
+  "generated_at": "2025-12-27T02:01:23.875Z",
+  "items": {
+    "nodes": [
+      {
+        "id": "src/atomic-crm/providers/commons/activity.ts:9:getActivityLog",
+        "name": "getActivityLog",
+        "file": "src/atomic-crm/providers/commons/activity.ts",
+        "line": 9,
+        "nodeType": "function",
+        "exported": true,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/providers/commons/canAccess.ts:42:canAccess",
+        "name": "canAccess",
+        "file": "src/atomic-crm/providers/commons/canAccess.ts",
+        "line": 42,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/authProvider.ts:93:isPublicPath",
+        "name": "isPublicPath",
+        "file": "src/atomic-crm/providers/supabase/authProvider.ts",
+        "line": 93,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/authProvider.ts:117:getSaleFromCache",
+        "name": "getSaleFromCache",
+        "file": "src/atomic-crm/providers/supabase/authProvider.ts",
+        "line": 117,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/authProvider.ts:158:invalidateIdentityCache",
+        "name": "invalidateIdentityCache",
+        "file": "src/atomic-crm/providers/supabase/authProvider.ts",
+        "line": 158,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/commonTransforms.ts:47:normalizeJsonbArrays",
+        "name": "normalizeJsonbArrays",
+        "file": "src/atomic-crm/providers/supabase/callbacks/commonTransforms.ts",
+        "line": 47,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:85:transformQToIlikeSearch",
+        "name": "transformQToIlikeSearch",
+        "file": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts",
+        "line": 85,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:136:computeNameField",
+        "name": "computeNameField",
+        "file": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts",
+        "line": 136,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:170:contactsBeforeGetList",
+        "name": "contactsBeforeGetList",
+        "file": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts",
+        "line": 170,
+        "nodeType": "function",
+        "exported": false,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:208:stripComputedFields",
+        "name": "stripComputedFields",
+        "file": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts",
+        "line": 208,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:122:isTransform",
+        "name": "isTransform",
+        "file": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts",
+        "line": 122,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:143:composeTransforms",
+        "name": "composeTransforms",
+        "file": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts",
+        "line": 143,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:181:stripFields",
+        "name": "stripFields",
+        "file": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts",
+        "line": 181,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "name": "createResourceCallbacks",
+        "file": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts",
+        "line": 217,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/notesCallbacks.ts:36:createNotesCallbacks",
+        "name": "createNotesCallbacks",
+        "file": "src/atomic-crm/providers/supabase/callbacks/notesCallbacks.ts",
+        "line": 36,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:116:transformQToIlikeSearch",
+        "name": "transformQToIlikeSearch",
+        "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
+        "line": 116,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:151:stripComputedFields",
+        "name": "stripComputedFields",
+        "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
+        "line": 151,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:174:mergeCreateDefaults",
+        "name": "mergeCreateDefaults",
+        "file": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts",
+        "line": 174,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:77:transformQToIlikeSearch",
+        "name": "transformQToIlikeSearch",
+        "file": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts",
+        "line": 77,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:131:organizationsBeforeGetList",
+        "name": "organizationsBeforeGetList",
+        "file": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts",
+        "line": 131,
+        "nodeType": "function",
+        "exported": false,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:169:stripComputedFields",
+        "name": "stripComputedFields",
+        "file": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts",
+        "line": 169,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/composedDataProvider.ts:61:isHandledResource",
+        "name": "isHandledResource",
+        "file": "src/atomic-crm/providers/supabase/composedDataProvider.ts",
+        "line": 61,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "name": "createComposedDataProvider",
+        "file": "src/atomic-crm/providers/supabase/composedDataProvider.ts",
+        "line": 94,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:50:transformStaleFilter",
+        "name": "transformStaleFilter",
+        "file": "src/atomic-crm/providers/supabase/dataProviderUtils.ts",
+        "line": 50,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:92:getCachedSearchableFields",
+        "name": "getCachedSearchableFields",
+        "file": "src/atomic-crm/providers/supabase/dataProviderUtils.ts",
+        "line": 92,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:110:escapeForPostgREST",
+        "name": "escapeForPostgREST",
+        "file": "src/atomic-crm/providers/supabase/dataProviderUtils.ts",
+        "line": 110,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "name": "transformArrayFilters",
+        "file": "src/atomic-crm/providers/supabase/dataProviderUtils.ts",
+        "line": 153,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:227:escapeForIlike",
+        "name": "escapeForIlike",
+        "file": "src/atomic-crm/providers/supabase/dataProviderUtils.ts",
+        "line": 227,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:245:applyFullTextSearch",
+        "name": "applyFullTextSearch",
+        "file": "src/atomic-crm/providers/supabase/dataProviderUtils.ts",
+        "line": 245,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:335:getDatabaseResource",
+        "name": "getDatabaseResource",
+        "file": "src/atomic-crm/providers/supabase/dataProviderUtils.ts",
+        "line": 335,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:365:applySearchParams",
+        "name": "applySearchParams",
+        "file": "src/atomic-crm/providers/supabase/dataProviderUtils.ts",
+        "line": 365,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:453:normalizeJsonbArrayFields",
+        "name": "normalizeJsonbArrayFields",
+        "file": "src/atomic-crm/providers/supabase/dataProviderUtils.ts",
+        "line": 453,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:498:normalizeResponseData",
+        "name": "normalizeResponseData",
+        "file": "src/atomic-crm/providers/supabase/dataProviderUtils.ts",
+        "line": 498,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:308:transformOrFilter",
+        "name": "transformOrFilter",
+        "file": "src/atomic-crm/providers/supabase/dataProviderUtils.ts",
+        "line": 308,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:74:logError",
+        "name": "logError",
+        "file": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts",
+        "line": 74,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "name": "extendWithCustomMethods",
+        "file": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts",
+        "line": 143,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/filterRegistry.ts:467:isValidFilterField",
+        "name": "isValidFilterField",
+        "file": "src/atomic-crm/providers/supabase/filterRegistry.ts",
+        "line": 467,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/activitiesHandler.ts:29:createActivitiesHandler",
+        "name": "createActivitiesHandler",
+        "file": "src/atomic-crm/providers/supabase/handlers/activitiesHandler.ts",
+        "line": 29,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/contactsHandler.ts:29:createContactsHandler",
+        "name": "createContactsHandler",
+        "file": "src/atomic-crm/providers/supabase/handlers/contactsHandler.ts",
+        "line": 29,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts:28:createContactNotesHandler",
+        "name": "createContactNotesHandler",
+        "file": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts",
+        "line": 28,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts:40:createOpportunityNotesHandler",
+        "name": "createOpportunityNotesHandler",
+        "file": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts",
+        "line": 40,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts:52:createOrganizationNotesHandler",
+        "name": "createOrganizationNotesHandler",
+        "file": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts",
+        "line": 52,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts:33:createOpportunitiesHandler",
+        "name": "createOpportunitiesHandler",
+        "file": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts",
+        "line": 33,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/organizationsHandler.ts:29:createOrganizationsHandler",
+        "name": "createOrganizationsHandler",
+        "file": "src/atomic-crm/providers/supabase/handlers/organizationsHandler.ts",
+        "line": 29,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:49:createProductsHandler",
+        "name": "createProductsHandler",
+        "file": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts",
+        "line": 49,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/salesHandler.ts:28:createSalesHandler",
+        "name": "createSalesHandler",
+        "file": "src/atomic-crm/providers/supabase/handlers/salesHandler.ts",
+        "line": 28,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/tagsHandler.ts:28:createTagsHandler",
+        "name": "createTagsHandler",
+        "file": "src/atomic-crm/providers/supabase/handlers/tagsHandler.ts",
+        "line": 28,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/handlers/tasksHandler.ts:32:createTasksHandler",
+        "name": "createTasksHandler",
+        "file": "src/atomic-crm/providers/supabase/handlers/tasksHandler.ts",
+        "line": 32,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/index.ts:58:createExtendedDataProvider",
+        "name": "createExtendedDataProvider",
+        "file": "src/atomic-crm/providers/supabase/index.ts",
+        "line": 58,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/resources.ts:142:getResourceName",
+        "name": "getResourceName",
+        "file": "src/atomic-crm/providers/supabase/resources.ts",
+        "line": 142,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/resources.ts:149:supportsSoftDelete",
+        "name": "supportsSoftDelete",
+        "file": "src/atomic-crm/providers/supabase/resources.ts",
+        "line": 149,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/resources.ts:157:getSearchableFields",
+        "name": "getSearchableFields",
+        "file": "src/atomic-crm/providers/supabase/resources.ts",
+        "line": 157,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/services/index.ts:85:createServiceContainer",
+        "name": "createServiceContainer",
+        "file": "src/atomic-crm/providers/supabase/services/index.ts",
+        "line": 85,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:195:logError",
+        "name": "logError",
+        "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
+        "line": 195,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:277:validateData",
+        "name": "validateData",
+        "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
+        "line": 277,
+        "nodeType": "function",
+        "exported": false,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:354:transformData",
+        "name": "transformData",
+        "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
+        "line": 354,
+        "nodeType": "function",
+        "exported": false,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:370:processForDatabase",
+        "name": "processForDatabase",
+        "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
+        "line": 370,
+        "nodeType": "function",
+        "exported": false,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:389:wrapMethod",
+        "name": "wrapMethod",
+        "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
+        "line": 389,
+        "nodeType": "function",
+        "exported": false,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1637:resourceUsesValidation",
+        "name": "resourceUsesValidation",
+        "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
+        "line": 1637,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1644:resourceUsesTransformers",
+        "name": "resourceUsesTransformers",
+        "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
+        "line": 1644,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:157:getBaseDataProvider",
+        "name": "getBaseDataProvider",
+        "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
+        "line": 157,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:180:getAuthToken",
+        "name": "getAuthToken",
+        "file": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts",
+        "line": 180,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": true
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:72:logError",
+        "name": "logError",
+        "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
+        "line": 72,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:138:transformSupabaseError",
+        "name": "transformSupabaseError",
+        "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
+        "line": 138,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:163:isSupabaseError",
+        "name": "isSupabaseError",
+        "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
+        "line": 163,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:172:isAlreadyDeletedError",
+        "name": "isAlreadyDeletedError",
+        "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
+        "line": 172,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:180:isReactAdminValidationError",
+        "name": "isReactAdminValidationError",
+        "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
+        "line": 180,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:194:logSuccess",
+        "name": "logSuccess",
+        "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
+        "line": 194,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:227:withErrorLogging",
+        "name": "withErrorLogging",
+        "file": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts",
+        "line": 227,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:47:isZodError",
+        "name": "isZodError",
+        "file": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts",
+        "line": 47,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:70:transformZodToReactAdmin",
+        "name": "transformZodToReactAdmin",
+        "file": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts",
+        "line": 70,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "name": "withValidation",
+        "file": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts",
+        "line": 100,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      }
+    ],
+    "edges": [
+      {
+        "source": "src/atomic-crm/providers/commons/activity.ts:9:getActivityLog",
+        "target": "rpc",
+        "targetName": "rpc",
+        "edgeType": "call",
+        "line": 15,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:93:isPublicPath",
+        "target": "some",
+        "targetName": "some",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:93:isPublicPath",
+        "target": "startsWith",
+        "targetName": "startsWith",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:117:getSaleFromCache",
+        "target": "now",
+        "targetName": "now",
+        "edgeType": "call",
+        "line": 118,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:117:getSaleFromCache",
+        "target": "getSession",
+        "targetName": "getSession",
+        "edgeType": "call",
+        "line": 123,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:117:getSaleFromCache",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 126,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:117:getSaleFromCache",
+        "target": "signOut",
+        "targetName": "signOut",
+        "edgeType": "call",
+        "line": 127,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:117:getSaleFromCache",
+        "target": "maybeSingle",
+        "targetName": "maybeSingle",
+        "edgeType": "call",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:117:getSaleFromCache",
+        "target": "match",
+        "targetName": "match",
+        "edgeType": "call",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:117:getSaleFromCache",
+        "target": "select",
+        "targetName": "select",
+        "edgeType": "call",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:117:getSaleFromCache",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:117:getSaleFromCache",
+        "target": "now",
+        "targetName": "now",
+        "edgeType": "call",
+        "line": 150,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/authProvider.ts:158:invalidateIdentityCache",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 161,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/commonTransforms.ts:47:normalizeJsonbArrays",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 55,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:85:transformQToIlikeSearch",
+        "target": "reduce",
+        "targetName": "reduce",
+        "edgeType": "call",
+        "line": 97,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:136:computeNameField",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 144,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:170:contactsBeforeGetList",
+        "target": "transformQToIlikeSearch",
+        "targetName": "transformQToIlikeSearch",
+        "edgeType": "call",
+        "line": 175,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/contactsCallbacks.ts:170:contactsBeforeGetList",
+        "target": "beforeGetList",
+        "targetName": "beforeGetList",
+        "edgeType": "call",
+        "line": 180,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:143:composeTransforms",
+        "target": "isTransform",
+        "targetName": "isTransform",
+        "edgeType": "call",
+        "line": 158,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:143:composeTransforms",
+        "target": "fn",
+        "targetName": "fn",
+        "edgeType": "call",
+        "line": 159,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:143:composeTransforms",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 161,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:143:composeTransforms",
+        "target": "errorHandler",
+        "targetName": "errorHandler",
+        "edgeType": "call",
+        "line": 163,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "isTransform",
+        "targetName": "isTransform",
+        "edgeType": "call",
+        "line": 242,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 249,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "composeTransforms",
+        "targetName": "composeTransforms",
+        "edgeType": "call",
+        "line": 255,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "composeTransforms",
+        "targetName": "composeTransforms",
+        "edgeType": "call",
+        "line": 256,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "composeTransforms",
+        "targetName": "composeTransforms",
+        "edgeType": "call",
+        "line": 261,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "deletePipeline",
+        "targetName": "deletePipeline",
+        "edgeType": "call",
+        "line": 275,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 277,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "update",
+        "targetName": "update",
+        "edgeType": "call",
+        "line": 279,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "keys",
+        "targetName": "keys",
+        "edgeType": "call",
+        "line": 313,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "writePipeline",
+        "targetName": "writePipeline",
+        "edgeType": "call",
+        "line": 317,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "stripFields",
+        "targetName": "stripFields",
+        "edgeType": "call",
+        "line": 321,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "keys",
+        "targetName": "keys",
+        "edgeType": "call",
+        "line": 325,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "readPipeline",
+        "targetName": "readPipeline",
+        "edgeType": "call",
+        "line": 337,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/createResourceCallbacks.ts:217:createResourceCallbacks",
+        "target": "afterReadTransform",
+        "targetName": "afterReadTransform",
+        "edgeType": "call",
+        "line": 341,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/notesCallbacks.ts:36:createNotesCallbacks",
+        "target": "createResourceCallbacks",
+        "targetName": "createResourceCallbacks",
+        "edgeType": "call",
+        "line": 37,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/opportunitiesCallbacks.ts:116:transformQToIlikeSearch",
+        "target": "reduce",
+        "targetName": "reduce",
+        "edgeType": "call",
+        "line": 128,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:77:transformQToIlikeSearch",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:77:transformQToIlikeSearch",
+        "target": "escapeForIlike",
+        "targetName": "escapeForIlike",
+        "edgeType": "call",
+        "line": 90,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:77:transformQToIlikeSearch",
+        "target": "test",
+        "targetName": "test",
+        "edgeType": "call",
+        "line": 95,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:77:transformQToIlikeSearch",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 98,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:77:transformQToIlikeSearch",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 98,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:131:organizationsBeforeGetList",
+        "target": "transformQToIlikeSearch",
+        "targetName": "transformQToIlikeSearch",
+        "edgeType": "call",
+        "line": 136,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/callbacks/organizationsCallbacks.ts:131:organizationsBeforeGetList",
+        "target": "beforeGetList",
+        "targetName": "beforeGetList",
+        "edgeType": "call",
+        "line": 141,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:61:isHandledResource",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "createContactsHandler",
+        "targetName": "createContactsHandler",
+        "edgeType": "call",
+        "line": 98,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "createOrganizationsHandler",
+        "targetName": "createOrganizationsHandler",
+        "edgeType": "call",
+        "line": 99,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "createOpportunitiesHandler",
+        "targetName": "createOpportunitiesHandler",
+        "edgeType": "call",
+        "line": 100,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "createActivitiesHandler",
+        "targetName": "createActivitiesHandler",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "createProductsHandler",
+        "targetName": "createProductsHandler",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "createTasksHandler",
+        "targetName": "createTasksHandler",
+        "edgeType": "call",
+        "line": 104,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "createContactNotesHandler",
+        "targetName": "createContactNotesHandler",
+        "edgeType": "call",
+        "line": 106,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "createOpportunityNotesHandler",
+        "targetName": "createOpportunityNotesHandler",
+        "edgeType": "call",
+        "line": 107,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "createOrganizationNotesHandler",
+        "targetName": "createOrganizationNotesHandler",
+        "edgeType": "call",
+        "line": 108,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "createTagsHandler",
+        "targetName": "createTagsHandler",
+        "edgeType": "call",
+        "line": 110,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "createSalesHandler",
+        "targetName": "createSalesHandler",
+        "edgeType": "call",
+        "line": 111,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "isHandledResource",
+        "targetName": "isHandledResource",
+        "edgeType": "call",
+        "line": 118,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getDatabaseResource",
+        "targetName": "getDatabaseResource",
+        "edgeType": "call",
+        "line": 131,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "applySearchParams",
+        "targetName": "applySearchParams",
+        "edgeType": "call",
+        "line": 132,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getProviderForResource",
+        "targetName": "getProviderForResource",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getList",
+        "targetName": "getList",
+        "edgeType": "call",
+        "line": 134,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getDatabaseResource",
+        "targetName": "getDatabaseResource",
+        "edgeType": "call",
+        "line": 142,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getProviderForResource",
+        "targetName": "getProviderForResource",
+        "edgeType": "call",
+        "line": 143,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getOne",
+        "targetName": "getOne",
+        "edgeType": "call",
+        "line": 144,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getProviderForResource",
+        "targetName": "getProviderForResource",
+        "edgeType": "call",
+        "line": 151,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getMany",
+        "targetName": "getMany",
+        "edgeType": "call",
+        "line": 152,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getProviderForResource",
+        "targetName": "getProviderForResource",
+        "edgeType": "call",
+        "line": 159,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getManyReference",
+        "targetName": "getManyReference",
+        "edgeType": "call",
+        "line": 160,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getProviderForResource",
+        "targetName": "getProviderForResource",
+        "edgeType": "call",
+        "line": 167,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "create",
+        "targetName": "create",
+        "edgeType": "call",
+        "line": 168,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getProviderForResource",
+        "targetName": "getProviderForResource",
+        "edgeType": "call",
+        "line": 175,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "update",
+        "targetName": "update",
+        "edgeType": "call",
+        "line": 176,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getProviderForResource",
+        "targetName": "getProviderForResource",
+        "edgeType": "call",
+        "line": 183,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "updateMany",
+        "targetName": "updateMany",
+        "edgeType": "call",
+        "line": 184,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getProviderForResource",
+        "targetName": "getProviderForResource",
+        "edgeType": "call",
+        "line": 191,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "delete",
+        "targetName": "delete",
+        "edgeType": "call",
+        "line": 192,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "getProviderForResource",
+        "targetName": "getProviderForResource",
+        "edgeType": "call",
+        "line": 199,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/composedDataProvider.ts:94:createComposedDataProvider",
+        "target": "deleteMany",
+        "targetName": "deleteMany",
+        "edgeType": "call",
+        "line": 200,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:50:transformStaleFilter",
+        "target": "min",
+        "targetName": "min",
+        "edgeType": "call",
+        "line": 66,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:50:transformStaleFilter",
+        "target": "values",
+        "targetName": "values",
+        "edgeType": "call",
+        "line": 66,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:50:transformStaleFilter",
+        "target": "subDays",
+        "targetName": "subDays",
+        "edgeType": "call",
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:50:transformStaleFilter",
+        "target": "split",
+        "targetName": "split",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:50:transformStaleFilter",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:50:transformStaleFilter",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 76,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:92:getCachedSearchableFields",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 93,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:92:getCachedSearchableFields",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 94,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:92:getCachedSearchableFields",
+        "target": "getSearchableFields",
+        "targetName": "getSearchableFields",
+        "edgeType": "call",
+        "line": 94,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:92:getCachedSearchableFields",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 96,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:110:escapeForPostgREST",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 111,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:110:escapeForPostgREST",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:110:escapeForPostgREST",
+        "target": "test",
+        "targetName": "test",
+        "edgeType": "call",
+        "line": 120,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:110:escapeForPostgREST",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 127,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:110:escapeForPostgREST",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 128,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:110:escapeForPostgREST",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 164,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 168,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 171,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 175,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 176,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 176,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 189,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 195,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 198,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 198,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 202,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 202,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 206,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:153:transformArrayFilters",
+        "target": "escapeForPostgREST",
+        "targetName": "escapeForPostgREST",
+        "edgeType": "call",
+        "line": 207,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:227:escapeForIlike",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 229,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:227:escapeForIlike",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 229,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:227:escapeForIlike",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 229,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:245:applyFullTextSearch",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 257,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:245:applyFullTextSearch",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 257,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:245:applyFullTextSearch",
+        "target": "escapeForIlike",
+        "targetName": "escapeForIlike",
+        "edgeType": "call",
+        "line": 267,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:245:applyFullTextSearch",
+        "target": "test",
+        "targetName": "test",
+        "edgeType": "call",
+        "line": 272,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:245:applyFullTextSearch",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 275,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:245:applyFullTextSearch",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 275,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:335:getDatabaseResource",
+        "target": "getResourceName",
+        "targetName": "getResourceName",
+        "edgeType": "call",
+        "line": 339,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:365:applySearchParams",
+        "target": "getCachedSearchableFields",
+        "targetName": "getCachedSearchableFields",
+        "edgeType": "call",
+        "line": 370,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:365:applySearchParams",
+        "target": "getDatabaseResource",
+        "targetName": "getDatabaseResource",
+        "edgeType": "call",
+        "line": 374,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:365:applySearchParams",
+        "target": "getResourceName",
+        "targetName": "getResourceName",
+        "edgeType": "call",
+        "line": 374,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:365:applySearchParams",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 375,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:365:applySearchParams",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 375,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:365:applySearchParams",
+        "target": "supportsSoftDelete",
+        "targetName": "supportsSoftDelete",
+        "edgeType": "call",
+        "line": 380,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:365:applySearchParams",
+        "target": "transformStaleFilter",
+        "targetName": "transformStaleFilter",
+        "edgeType": "call",
+        "line": 384,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:365:applySearchParams",
+        "target": "transformOrFilter",
+        "targetName": "transformOrFilter",
+        "edgeType": "call",
+        "line": 388,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:365:applySearchParams",
+        "target": "transformArrayFilters",
+        "targetName": "transformArrayFilters",
+        "edgeType": "call",
+        "line": 391,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:365:applySearchParams",
+        "target": "applyFullTextSearch",
+        "targetName": "applyFullTextSearch",
+        "edgeType": "call",
+        "line": 429,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:453:normalizeJsonbArrayFields",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 463,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:453:normalizeJsonbArrayFields",
+        "target": "ensureArray",
+        "targetName": "ensureArray",
+        "edgeType": "call",
+        "line": 476,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:453:normalizeJsonbArrayFields",
+        "target": "ensureArray",
+        "targetName": "ensureArray",
+        "edgeType": "call",
+        "line": 477,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:453:normalizeJsonbArrayFields",
+        "target": "ensureArray",
+        "targetName": "ensureArray",
+        "edgeType": "call",
+        "line": 478,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:498:normalizeResponseData",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 503,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:498:normalizeResponseData",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 505,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:498:normalizeResponseData",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 505,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:498:normalizeResponseData",
+        "target": "normalizeJsonbArrayFields",
+        "targetName": "normalizeJsonbArrayFields",
+        "edgeType": "call",
+        "line": 506,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:498:normalizeResponseData",
+        "target": "normalizeJsonbArrayFields",
+        "targetName": "normalizeJsonbArrayFields",
+        "edgeType": "call",
+        "line": 511,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/dataProviderUtils.ts:308:transformOrFilter",
+        "target": "keys",
+        "targetName": "keys",
+        "edgeType": "call",
+        "line": 322,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:74:logError",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 80,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:74:logError",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 82,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "salesCreate",
+        "targetName": "salesCreate",
+        "edgeType": "call",
+        "line": 165,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "salesUpdate",
+        "targetName": "salesUpdate",
+        "edgeType": "call",
+        "line": 180,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "updatePassword",
+        "targetName": "updatePassword",
+        "edgeType": "call",
+        "line": 191,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "archiveOpportunity",
+        "targetName": "archiveOpportunity",
+        "edgeType": "call",
+        "line": 206,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "unarchiveOpportunity",
+        "targetName": "unarchiveOpportunity",
+        "edgeType": "call",
+        "line": 217,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "getActivityLog",
+        "targetName": "getActivityLog",
+        "edgeType": "call",
+        "line": 233,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "getContactOrganizations",
+        "targetName": "getContactOrganizations",
+        "edgeType": "call",
+        "line": 250,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "addContactToOrganization",
+        "targetName": "addContactToOrganization",
+        "edgeType": "call",
+        "line": 267,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "removeContactFromOrganization",
+        "targetName": "removeContactFromOrganization",
+        "edgeType": "call",
+        "line": 282,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "setPrimaryOrganization",
+        "targetName": "setPrimaryOrganization",
+        "edgeType": "call",
+        "line": 297,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "getOpportunityParticipants",
+        "targetName": "getOpportunityParticipants",
+        "edgeType": "call",
+        "line": 314,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "addOpportunityParticipant",
+        "targetName": "addOpportunityParticipant",
+        "edgeType": "call",
+        "line": 331,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "removeOpportunityParticipant",
+        "targetName": "removeOpportunityParticipant",
+        "edgeType": "call",
+        "line": 346,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "getOpportunityContacts",
+        "targetName": "getOpportunityContacts",
+        "edgeType": "call",
+        "line": 363,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "addOpportunityContact",
+        "targetName": "addOpportunityContact",
+        "edgeType": "call",
+        "line": 380,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "removeOpportunityContact",
+        "targetName": "removeOpportunityContact",
+        "edgeType": "call",
+        "line": 395,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "getOpportunityContactsViaJunction",
+        "targetName": "getOpportunityContactsViaJunction",
+        "edgeType": "call",
+        "line": 409,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "addOpportunityContactViaJunction",
+        "targetName": "addOpportunityContactViaJunction",
+        "edgeType": "call",
+        "line": 427,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "removeOpportunityContactViaJunctionId",
+        "targetName": "removeOpportunityContactViaJunctionId",
+        "edgeType": "call",
+        "line": 444,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 445,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 484,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "safeParse",
+        "targetName": "safeParse",
+        "edgeType": "call",
+        "line": 489,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "rpc",
+        "targetName": "rpc",
+        "edgeType": "call",
+        "line": 501,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 504,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 508,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 511,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 544,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "upload",
+        "targetName": "upload",
+        "edgeType": "call",
+        "line": 554,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 554,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 560,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 564,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 567,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "getPublicUrl",
+        "targetName": "getPublicUrl",
+        "edgeType": "call",
+        "line": 580,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 580,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 581,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 595,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "remove",
+        "targetName": "remove",
+        "edgeType": "call",
+        "line": 597,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 597,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 600,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 604,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 606,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 622,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "list",
+        "targetName": "list",
+        "edgeType": "call",
+        "line": 624,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 624,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 627,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 631,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 634,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 682,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "keys",
+        "targetName": "keys",
+        "edgeType": "call",
+        "line": 686,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 689,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "safeParse",
+        "targetName": "safeParse",
+        "edgeType": "call",
+        "line": 694,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "invoke",
+        "targetName": "invoke",
+        "edgeType": "call",
+        "line": 706,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 713,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 721,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 724,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 758,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "rpc",
+        "targetName": "rpc",
+        "edgeType": "call",
+        "line": 760,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 768,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 772,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/extensions/customMethodsExtension.ts:143:extendWithCustomMethods",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 775,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:467:isValidFilterField",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 477,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:467:isValidFilterField",
+        "target": "split",
+        "targetName": "split",
+        "edgeType": "call",
+        "line": 483,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:467:isValidFilterField",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 485,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/filterRegistry.ts:467:isValidFilterField",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 485,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/activitiesHandler.ts:29:createActivitiesHandler",
+        "target": "withErrorLogging",
+        "targetName": "withErrorLogging",
+        "edgeType": "call",
+        "line": 30,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/activitiesHandler.ts:29:createActivitiesHandler",
+        "target": "withValidation",
+        "targetName": "withValidation",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/activitiesHandler.ts:29:createActivitiesHandler",
+        "target": "withLifecycleCallbacks",
+        "targetName": "withLifecycleCallbacks",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/contactsHandler.ts:29:createContactsHandler",
+        "target": "withErrorLogging",
+        "targetName": "withErrorLogging",
+        "edgeType": "call",
+        "line": 30,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/contactsHandler.ts:29:createContactsHandler",
+        "target": "withLifecycleCallbacks",
+        "targetName": "withLifecycleCallbacks",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/contactsHandler.ts:29:createContactsHandler",
+        "target": "withValidation",
+        "targetName": "withValidation",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts:28:createContactNotesHandler",
+        "target": "withErrorLogging",
+        "targetName": "withErrorLogging",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts:28:createContactNotesHandler",
+        "target": "withValidation",
+        "targetName": "withValidation",
+        "edgeType": "call",
+        "line": 30,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts:28:createContactNotesHandler",
+        "target": "withLifecycleCallbacks",
+        "targetName": "withLifecycleCallbacks",
+        "edgeType": "call",
+        "line": 30,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts:40:createOpportunityNotesHandler",
+        "target": "withErrorLogging",
+        "targetName": "withErrorLogging",
+        "edgeType": "call",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts:40:createOpportunityNotesHandler",
+        "target": "withValidation",
+        "targetName": "withValidation",
+        "edgeType": "call",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts:40:createOpportunityNotesHandler",
+        "target": "withLifecycleCallbacks",
+        "targetName": "withLifecycleCallbacks",
+        "edgeType": "call",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts:52:createOrganizationNotesHandler",
+        "target": "withErrorLogging",
+        "targetName": "withErrorLogging",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts:52:createOrganizationNotesHandler",
+        "target": "withValidation",
+        "targetName": "withValidation",
+        "edgeType": "call",
+        "line": 54,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/notesHandler.ts:52:createOrganizationNotesHandler",
+        "target": "withLifecycleCallbacks",
+        "targetName": "withLifecycleCallbacks",
+        "edgeType": "call",
+        "line": 54,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts:33:createOpportunitiesHandler",
+        "target": "withErrorLogging",
+        "targetName": "withErrorLogging",
+        "edgeType": "call",
+        "line": 34,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts:33:createOpportunitiesHandler",
+        "target": "withLifecycleCallbacks",
+        "targetName": "withLifecycleCallbacks",
+        "edgeType": "call",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/opportunitiesHandler.ts:33:createOpportunitiesHandler",
+        "target": "withValidation",
+        "targetName": "withValidation",
+        "edgeType": "call",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/organizationsHandler.ts:29:createOrganizationsHandler",
+        "target": "withErrorLogging",
+        "targetName": "withErrorLogging",
+        "edgeType": "call",
+        "line": 30,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/organizationsHandler.ts:29:createOrganizationsHandler",
+        "target": "withLifecycleCallbacks",
+        "targetName": "withLifecycleCallbacks",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/organizationsHandler.ts:29:createOrganizationsHandler",
+        "target": "withValidation",
+        "targetName": "withValidation",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:49:createProductsHandler",
+        "target": "withErrorLogging",
+        "targetName": "withErrorLogging",
+        "edgeType": "call",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:49:createProductsHandler",
+        "target": "withLifecycleCallbacks",
+        "targetName": "withLifecycleCallbacks",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:49:createProductsHandler",
+        "target": "withValidation",
+        "targetName": "withValidation",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:49:createProductsHandler",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 79,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:49:createProductsHandler",
+        "target": "validateCreateProductWithDistributors",
+        "targetName": "validateCreateProductWithDistributors",
+        "edgeType": "call",
+        "line": 81,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:49:createProductsHandler",
+        "target": "transformToRpcParams",
+        "targetName": "transformToRpcParams",
+        "edgeType": "call",
+        "line": 84,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:49:createProductsHandler",
+        "target": "rpc",
+        "targetName": "rpc",
+        "edgeType": "call",
+        "line": 97,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:49:createProductsHandler",
+        "target": "create",
+        "targetName": "create",
+        "edgeType": "call",
+        "line": 115,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/productsHandler.ts:49:createProductsHandler",
+        "target": "create",
+        "targetName": "create",
+        "edgeType": "call",
+        "line": 122,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/salesHandler.ts:28:createSalesHandler",
+        "target": "withErrorLogging",
+        "targetName": "withErrorLogging",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/salesHandler.ts:28:createSalesHandler",
+        "target": "withValidation",
+        "targetName": "withValidation",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/salesHandler.ts:28:createSalesHandler",
+        "target": "withLifecycleCallbacks",
+        "targetName": "withLifecycleCallbacks",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/tagsHandler.ts:28:createTagsHandler",
+        "target": "withErrorLogging",
+        "targetName": "withErrorLogging",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/tagsHandler.ts:28:createTagsHandler",
+        "target": "withValidation",
+        "targetName": "withValidation",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/tagsHandler.ts:28:createTagsHandler",
+        "target": "withLifecycleCallbacks",
+        "targetName": "withLifecycleCallbacks",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/tasksHandler.ts:32:createTasksHandler",
+        "target": "withErrorLogging",
+        "targetName": "withErrorLogging",
+        "edgeType": "call",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/tasksHandler.ts:32:createTasksHandler",
+        "target": "withValidation",
+        "targetName": "withValidation",
+        "edgeType": "call",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/handlers/tasksHandler.ts:32:createTasksHandler",
+        "target": "withLifecycleCallbacks",
+        "targetName": "withLifecycleCallbacks",
+        "edgeType": "call",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/index.ts:58:createExtendedDataProvider",
+        "target": "supabaseDataProvider",
+        "targetName": "supabaseDataProvider",
+        "edgeType": "call",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/index.ts:58:createExtendedDataProvider",
+        "target": "createServiceContainer",
+        "targetName": "createServiceContainer",
+        "edgeType": "call",
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/index.ts:58:createExtendedDataProvider",
+        "target": "createComposedDataProvider",
+        "targetName": "createComposedDataProvider",
+        "edgeType": "call",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/index.ts:58:createExtendedDataProvider",
+        "target": "extendWithCustomMethods",
+        "targetName": "extendWithCustomMethods",
+        "edgeType": "call",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/resources.ts:149:supportsSoftDelete",
+        "target": "getResourceName",
+        "targetName": "getResourceName",
+        "edgeType": "call",
+        "line": 150,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/resources.ts:149:supportsSoftDelete",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 151,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:195:logError",
+        "target": "slice",
+        "targetName": "slice",
+        "edgeType": "call",
+        "line": 215,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:195:logError",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 215,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:195:logError",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 221,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:195:logError",
+        "target": "trackRequest",
+        "targetName": "trackRequest",
+        "edgeType": "call",
+        "line": 230,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:195:logError",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 237,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:195:logError",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 239,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:195:logError",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 245,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:195:logError",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 251,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:195:logError",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 260,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:195:logError",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 262,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:195:logError",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 265,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:195:logError",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 267,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:277:validateData",
+        "target": "validate",
+        "targetName": "validate",
+        "edgeType": "call",
+        "line": 295,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:277:validateData",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 301,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:277:validateData",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 306,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:277:validateData",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 345,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:354:transformData",
+        "target": "transform",
+        "targetName": "transform",
+        "edgeType": "call",
+        "line": 360,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:370:processForDatabase",
+        "target": "validateData",
+        "targetName": "validateData",
+        "edgeType": "call",
+        "line": 376,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:370:processForDatabase",
+        "target": "transformData",
+        "targetName": "transformData",
+        "edgeType": "call",
+        "line": 379,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:389:wrapMethod",
+        "target": "now",
+        "targetName": "now",
+        "edgeType": "call",
+        "line": 395,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:389:wrapMethod",
+        "target": "operation",
+        "targetName": "operation",
+        "edgeType": "call",
+        "line": 397,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:389:wrapMethod",
+        "target": "now",
+        "targetName": "now",
+        "edgeType": "call",
+        "line": 399,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:389:wrapMethod",
+        "target": "trackRequest",
+        "targetName": "trackRequest",
+        "edgeType": "call",
+        "line": 400,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:389:wrapMethod",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 403,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:389:wrapMethod",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 423,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:389:wrapMethod",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 438,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:389:wrapMethod",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 439,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:389:wrapMethod",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 440,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:389:wrapMethod",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 441,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:389:wrapMethod",
+        "target": "devWarn",
+        "targetName": "devWarn",
+        "edgeType": "call",
+        "line": 449,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:389:wrapMethod",
+        "target": "match",
+        "targetName": "match",
+        "edgeType": "call",
+        "line": 473,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1637:resourceUsesValidation",
+        "target": "hasValidation",
+        "targetName": "hasValidation",
+        "edgeType": "call",
+        "line": 1638,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:1644:resourceUsesTransformers",
+        "target": "hasTransform",
+        "targetName": "hasTransform",
+        "edgeType": "call",
+        "line": 1645,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:157:getBaseDataProvider",
+        "target": "supabaseDataProvider",
+        "targetName": "supabaseDataProvider",
+        "edgeType": "call",
+        "line": 158,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/unifiedDataProvider.ts:180:getAuthToken",
+        "target": "getSession",
+        "targetName": "getSession",
+        "edgeType": "call",
+        "line": 183,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:72:logError",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 91,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:72:logError",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 100,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:72:logError",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:72:logError",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 111,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:72:logError",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 111,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:72:logError",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:72:logError",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 116,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:72:logError",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 120,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:72:logError",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 120,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:72:logError",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 123,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:72:logError",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 125,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:138:transformSupabaseError",
+        "target": "match",
+        "targetName": "match",
+        "edgeType": "call",
+        "line": 144,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:172:isAlreadyDeletedError",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 174,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:194:logSuccess",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 203,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:194:logSuccess",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 203,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:194:logSuccess",
+        "target": "info",
+        "targetName": "info",
+        "edgeType": "call",
+        "line": 205,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:194:logSuccess",
+        "target": "toISOString",
+        "targetName": "toISOString",
+        "edgeType": "call",
+        "line": 209,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:227:withErrorLogging",
+        "target": "call",
+        "targetName": "call",
+        "edgeType": "call",
+        "line": 251,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:227:withErrorLogging",
+        "target": "logSuccess",
+        "targetName": "logSuccess",
+        "edgeType": "call",
+        "line": 258,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:227:withErrorLogging",
+        "target": "logError",
+        "targetName": "logError",
+        "edgeType": "call",
+        "line": 263,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:227:withErrorLogging",
+        "target": "isAlreadyDeletedError",
+        "targetName": "isAlreadyDeletedError",
+        "edgeType": "call",
+        "line": 267,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:227:withErrorLogging",
+        "target": "isReactAdminValidationError",
+        "targetName": "isReactAdminValidationError",
+        "edgeType": "call",
+        "line": 273,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:227:withErrorLogging",
+        "target": "isSupabaseError",
+        "targetName": "isSupabaseError",
+        "edgeType": "call",
+        "line": 278,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withErrorLogging.ts:227:withErrorLogging",
+        "target": "transformSupabaseError",
+        "targetName": "transformSupabaseError",
+        "edgeType": "call",
+        "line": 279,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:47:isZodError",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 54,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:70:transformZodToReactAdmin",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 75,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 115,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "stringify",
+        "targetName": "stringify",
+        "edgeType": "call",
+        "line": 117,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 120,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "log",
+        "targetName": "log",
+        "edgeType": "call",
+        "line": 121,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "validate",
+        "targetName": "validate",
+        "edgeType": "call",
+        "line": 124,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "isZodError",
+        "targetName": "isZodError",
+        "edgeType": "call",
+        "line": 126,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "transformZodToReactAdmin",
+        "targetName": "transformZodToReactAdmin",
+        "edgeType": "call",
+        "line": 127,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "create",
+        "targetName": "create",
+        "edgeType": "call",
+        "line": 132,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "validate",
+        "targetName": "validate",
+        "edgeType": "call",
+        "line": 145,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "isZodError",
+        "targetName": "isZodError",
+        "edgeType": "call",
+        "line": 147,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "transformZodToReactAdmin",
+        "targetName": "transformZodToReactAdmin",
+        "edgeType": "call",
+        "line": 148,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "update",
+        "targetName": "update",
+        "edgeType": "call",
+        "line": 153,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "keys",
+        "targetName": "keys",
+        "edgeType": "call",
+        "line": 163,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "validateFilters",
+        "targetName": "validateFilters",
+        "edgeType": "call",
+        "line": 164,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/providers/supabase/wrappers/withValidation.ts:100:withValidation",
+        "target": "getList",
+        "targetName": "getList",
+        "edgeType": "call",
+        "line": 167,
+        "conditional": false,
+        "inLoop": false
+      }
+    ]
+  }
+}

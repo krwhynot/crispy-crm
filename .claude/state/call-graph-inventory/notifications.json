@@ -1,0 +1,640 @@
+{
+  "chunk_name": "notifications",
+  "generated_at": "2025-12-27T02:01:23.855Z",
+  "items": {
+    "nodes": [
+      {
+        "id": "src/atomic-crm/notifications/NotificationsList.tsx:29:NotificationsList",
+        "name": "NotificationsList",
+        "file": "src/atomic-crm/notifications/NotificationsList.tsx",
+        "line": 29,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/notifications/NotificationsList.tsx:43:NotificationsListLayout",
+        "name": "NotificationsListLayout",
+        "file": "src/atomic-crm/notifications/NotificationsList.tsx",
+        "line": 43,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/notifications/NotificationsList.tsx:63:NotificationsListActions",
+        "name": "NotificationsListActions",
+        "file": "src/atomic-crm/notifications/NotificationsList.tsx",
+        "line": 63,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/notifications/NotificationsList.tsx:67:NotificationsListFilter",
+        "name": "NotificationsListFilter",
+        "file": "src/atomic-crm/notifications/NotificationsList.tsx",
+        "line": 67,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/notifications/NotificationsList.tsx:99:NotificationsListContent",
+        "name": "NotificationsListContent",
+        "file": "src/atomic-crm/notifications/NotificationsList.tsx",
+        "line": 99,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "name": "NotificationRow",
+        "file": "src/atomic-crm/notifications/NotificationsList.tsx",
+        "line": 121,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "name": "NotificationsBulkActions",
+        "file": "src/atomic-crm/notifications/NotificationsList.tsx",
+        "line": 207,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/notifications/NotificationsList.tsx:248:NotificationsEmpty",
+        "name": "NotificationsEmpty",
+        "file": "src/atomic-crm/notifications/NotificationsList.tsx",
+        "line": 248,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/notifications/NotificationsList.tsx:259:getEntityLink",
+        "name": "getEntityLink",
+        "file": "src/atomic-crm/notifications/NotificationsList.tsx",
+        "line": 259,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/notifications/NotificationsList.tsx:273:getNotificationTypeLabel",
+        "name": "getNotificationTypeLabel",
+        "file": "src/atomic-crm/notifications/NotificationsList.tsx",
+        "line": 273,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/notifications/resource.tsx:6:NotificationsListView",
+        "name": "NotificationsListView",
+        "file": "src/atomic-crm/notifications/resource.tsx",
+        "line": 6,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      }
+    ],
+    "edges": [
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:29:NotificationsList",
+        "target": "List",
+        "targetName": "List",
+        "edgeType": "render",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:29:NotificationsList",
+        "target": "NotificationsListActions",
+        "targetName": "NotificationsListActions",
+        "edgeType": "render",
+        "line": 33,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:29:NotificationsList",
+        "target": "NotificationsEmpty",
+        "targetName": "NotificationsEmpty",
+        "edgeType": "render",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:29:NotificationsList",
+        "target": "NotificationsListLayout",
+        "targetName": "NotificationsListLayout",
+        "edgeType": "render",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:43:NotificationsListLayout",
+        "target": "useListContext",
+        "targetName": "useListContext",
+        "edgeType": "hook",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:43:NotificationsListLayout",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:43:NotificationsListLayout",
+        "target": "BulkActionsToolbar",
+        "targetName": "BulkActionsToolbar",
+        "edgeType": "render",
+        "line": 56,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:43:NotificationsListLayout",
+        "target": "NotificationsListFilter",
+        "targetName": "NotificationsListFilter",
+        "edgeType": "render",
+        "line": 50,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:43:NotificationsListLayout",
+        "target": "NotificationsListContent",
+        "targetName": "NotificationsListContent",
+        "edgeType": "render",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:43:NotificationsListLayout",
+        "target": "NotificationsBulkActions",
+        "targetName": "NotificationsBulkActions",
+        "edgeType": "render",
+        "line": 57,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:63:NotificationsListActions",
+        "target": "TopToolbar",
+        "targetName": "TopToolbar",
+        "edgeType": "render",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:67:NotificationsListFilter",
+        "target": "Card",
+        "targetName": "Card",
+        "edgeType": "render",
+        "line": 70,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:67:NotificationsListFilter",
+        "target": "FilterLiveForm",
+        "targetName": "FilterLiveForm",
+        "edgeType": "render",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:67:NotificationsListFilter",
+        "target": "FilterCategory",
+        "targetName": "FilterCategory",
+        "edgeType": "render",
+        "line": 81,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:67:NotificationsListFilter",
+        "target": "SearchInput",
+        "targetName": "SearchInput",
+        "edgeType": "render",
+        "line": 74,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:67:NotificationsListFilter",
+        "target": "Bell",
+        "targetName": "Bell",
+        "edgeType": "render",
+        "line": 81,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:67:NotificationsListFilter",
+        "target": "ToggleFilterButton",
+        "targetName": "ToggleFilterButton",
+        "edgeType": "render",
+        "line": 82,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:67:NotificationsListFilter",
+        "target": "ToggleFilterButton",
+        "targetName": "ToggleFilterButton",
+        "edgeType": "render",
+        "line": 87,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:99:NotificationsListContent",
+        "target": "useListContext",
+        "targetName": "useListContext",
+        "edgeType": "hook",
+        "line": 100,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:99:NotificationsListContent",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:99:NotificationsListContent",
+        "target": "Bell",
+        "targetName": "Bell",
+        "edgeType": "render",
+        "line": 105,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:99:NotificationsListContent",
+        "target": "NotificationRow",
+        "targetName": "NotificationRow",
+        "edgeType": "render",
+        "line": 115,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "useUpdate",
+        "targetName": "useUpdate",
+        "edgeType": "hook",
+        "line": 122,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 123,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "useRefresh",
+        "targetName": "useRefresh",
+        "edgeType": "hook",
+        "line": 124,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "update",
+        "targetName": "update",
+        "edgeType": "call",
+        "line": 127,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 132,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "refresh",
+        "targetName": "refresh",
+        "edgeType": "call",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 136,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "formatDistanceToNow",
+        "targetName": "formatDistanceToNow",
+        "edgeType": "call",
+        "line": 142,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "parseDateSafely",
+        "targetName": "parseDateSafely",
+        "edgeType": "call",
+        "line": 142,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "getEntityLink",
+        "targetName": "getEntityLink",
+        "edgeType": "call",
+        "line": 146,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 150,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 158,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "getNotificationTypeLabel",
+        "targetName": "getNotificationTypeLabel",
+        "edgeType": "call",
+        "line": 170,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "Badge",
+        "targetName": "Badge",
+        "edgeType": "render",
+        "line": 169,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "Link",
+        "targetName": "Link",
+        "edgeType": "render",
+        "line": 179,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 193,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "ExternalLink",
+        "targetName": "ExternalLink",
+        "edgeType": "render",
+        "line": 184,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:121:NotificationRow",
+        "target": "Eye",
+        "targetName": "Eye",
+        "edgeType": "render",
+        "line": 200,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "useUpdate",
+        "targetName": "useUpdate",
+        "edgeType": "hook",
+        "line": 208,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "useNotify",
+        "targetName": "useNotify",
+        "edgeType": "hook",
+        "line": 209,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "useRefresh",
+        "targetName": "useRefresh",
+        "edgeType": "hook",
+        "line": 210,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "useListContext",
+        "targetName": "useListContext",
+        "edgeType": "hook",
+        "line": 211,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "allSettled",
+        "targetName": "allSettled",
+        "edgeType": "call",
+        "line": 216,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 217,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "update",
+        "targetName": "update",
+        "edgeType": "call",
+        "line": 217,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 221,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 222,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 225,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 227,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 231,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "refresh",
+        "targetName": "refresh",
+        "edgeType": "call",
+        "line": 234,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "notify",
+        "targetName": "notify",
+        "edgeType": "call",
+        "line": 236,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 241,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:207:NotificationsBulkActions",
+        "target": "Check",
+        "targetName": "Check",
+        "edgeType": "render",
+        "line": 242,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/NotificationsList.tsx:248:NotificationsEmpty",
+        "target": "Bell",
+        "targetName": "Bell",
+        "edgeType": "render",
+        "line": 251,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/resource.tsx:6:NotificationsListView",
+        "target": "ResourceErrorBoundary",
+        "targetName": "ResourceErrorBoundary",
+        "edgeType": "render",
+        "line": 7,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/notifications/resource.tsx:6:NotificationsListView",
+        "target": "NotificationsListLazy",
+        "targetName": "NotificationsListLazy",
+        "edgeType": "render",
+        "line": 8,
+        "conditional": false,
+        "inLoop": false
+      }
+    ]
+  }
+}

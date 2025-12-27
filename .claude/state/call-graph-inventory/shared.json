@@ -1,0 +1,235 @@
+{
+  "chunk_name": "shared",
+  "generated_at": "2025-12-27T02:01:23.887Z",
+  "items": {
+    "nodes": [
+      {
+        "id": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "name": "ContactSelectField",
+        "file": "src/atomic-crm/shared/components/ContactSelectField.tsx",
+        "line": 22,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/shared/components/Status.tsx:7:getStatusBackgroundClass",
+        "name": "getStatusBackgroundClass",
+        "file": "src/atomic-crm/shared/components/Status.tsx",
+        "line": 7,
+        "nodeType": "function",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/shared/components/Status.tsx:17:Status",
+        "name": "Status",
+        "file": "src/atomic-crm/shared/components/Status.tsx",
+        "line": 17,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      }
+    ],
+    "edges": [
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "useGetList",
+        "targetName": "useGetList",
+        "edgeType": "hook",
+        "line": 30,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "toString",
+        "targetName": "toString",
+        "edgeType": "call",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "onChange",
+        "targetName": "onChange",
+        "edgeType": "call",
+        "line": 48,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "Number",
+        "targetName": "Number",
+        "edgeType": "call",
+        "line": 48,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "toString",
+        "targetName": "toString",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "FormItem",
+        "targetName": "FormItem",
+        "edgeType": "render",
+        "line": 40,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "FormLabel",
+        "targetName": "FormLabel",
+        "edgeType": "render",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "FormControl",
+        "targetName": "FormControl",
+        "edgeType": "render",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "Select",
+        "targetName": "Select",
+        "edgeType": "render",
+        "line": 46,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "SelectTrigger",
+        "targetName": "SelectTrigger",
+        "edgeType": "render",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "SelectContent",
+        "targetName": "SelectContent",
+        "edgeType": "render",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 63,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "SelectItem",
+        "targetName": "SelectItem",
+        "edgeType": "render",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "FormField",
+        "targetName": "FormField",
+        "edgeType": "render",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "SelectValue",
+        "targetName": "SelectValue",
+        "edgeType": "render",
+        "line": 52,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/ContactSelectField.tsx:22:ContactSelectField",
+        "target": "FormMessage",
+        "targetName": "FormMessage",
+        "edgeType": "render",
+        "line": 72,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/Status.tsx:17:Status",
+        "target": "useFormOptions",
+        "targetName": "useFormOptions",
+        "edgeType": "hook",
+        "line": 18,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/Status.tsx:17:Status",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 20,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/Status.tsx:17:Status",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/Status.tsx:17:Status",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 26,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/shared/components/Status.tsx:17:Status",
+        "target": "getStatusBackgroundClass",
+        "targetName": "getStatusBackgroundClass",
+        "edgeType": "call",
+        "line": 26,
+        "conditional": false,
+        "inLoop": false
+      }
+    ]
+  }
+}

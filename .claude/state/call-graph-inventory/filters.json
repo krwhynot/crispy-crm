@@ -1,0 +1,2593 @@
+{
+  "chunk_name": "filters",
+  "generated_at": "2025-12-27T02:01:23.852Z",
+  "items": {
+    "nodes": [
+      {
+        "id": "src/atomic-crm/filters/FilterCategory.tsx:7:FilterCategory",
+        "name": "FilterCategory",
+        "file": "src/atomic-crm/filters/FilterCategory.tsx",
+        "line": 7,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/FilterChip.tsx:41:FilterChip",
+        "name": "FilterChip",
+        "file": "src/atomic-crm/filters/FilterChip.tsx",
+        "line": 41,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "name": "FilterChipBar",
+        "file": "src/atomic-crm/filters/FilterChipBar.tsx",
+        "line": 44,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "name": "FilterChipsPanel",
+        "file": "src/atomic-crm/filters/FilterChipsPanel.tsx",
+        "line": 23,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/FilterSidebar.tsx:49:FilterSidebar",
+        "name": "FilterSidebar",
+        "file": "src/atomic-crm/filters/FilterSidebar.tsx",
+        "line": 49,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterConfigSchema.ts:110:validateFilterConfig",
+        "name": "validateFilterConfig",
+        "file": "src/atomic-crm/filters/filterConfigSchema.ts",
+        "line": 110,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterFormatters.ts:14:formatStageLabel",
+        "name": "formatStageLabel",
+        "file": "src/atomic-crm/filters/filterFormatters.ts",
+        "line": 14,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterFormatters.ts:22:formatPriorityLabel",
+        "name": "formatPriorityLabel",
+        "file": "src/atomic-crm/filters/filterFormatters.ts",
+        "line": 22,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterFormatters.ts:30:formatCategoryLabel",
+        "name": "formatCategoryLabel",
+        "file": "src/atomic-crm/filters/filterFormatters.ts",
+        "line": 30,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "name": "formatFilterLabel",
+        "file": "src/atomic-crm/filters/filterFormatters.ts",
+        "line": 37,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterFormatters.ts:89:shouldDisplayFilter",
+        "name": "shouldDisplayFilter",
+        "file": "src/atomic-crm/filters/filterFormatters.ts",
+        "line": 89,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterFormatters.ts:109:flattenFilterValues",
+        "name": "flattenFilterValues",
+        "file": "src/atomic-crm/filters/filterFormatters.ts",
+        "line": 109,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterPrecedence.ts:66:getStoredFilterPreferences",
+        "name": "getStoredFilterPreferences",
+        "file": "src/atomic-crm/filters/filterPrecedence.ts",
+        "line": 66,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterPrecedence.ts:83:saveFilterPreferences",
+        "name": "saveFilterPreferences",
+        "file": "src/atomic-crm/filters/filterPrecedence.ts",
+        "line": 83,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterPrecedence.ts:129:getInitialFilterValue",
+        "name": "getInitialFilterValue",
+        "file": "src/atomic-crm/filters/filterPrecedence.ts",
+        "line": 129,
+        "nodeType": "function",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterPrecedence.ts:24:parseUrlFilters",
+        "name": "parseUrlFilters",
+        "file": "src/atomic-crm/filters/filterPrecedence.ts",
+        "line": 24,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterPrecedence.ts:95:getDefaultVisibleStages",
+        "name": "getDefaultVisibleStages",
+        "file": "src/atomic-crm/filters/filterPrecedence.ts",
+        "line": 95,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterPrecedence.ts:153:getInitialStageFilter",
+        "name": "getInitialStageFilter",
+        "file": "src/atomic-crm/filters/filterPrecedence.ts",
+        "line": 153,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterPrecedence.ts:177:updateStagePreferences",
+        "name": "updateStagePreferences",
+        "file": "src/atomic-crm/filters/filterPrecedence.ts",
+        "line": 177,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/filterPrecedence.ts:207:buildInitialFilters",
+        "name": "buildInitialFilters",
+        "file": "src/atomic-crm/filters/filterPrecedence.ts",
+        "line": 207,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "name": "useResourceNamesBase",
+        "file": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts",
+        "line": 40,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/opportunityStagePreferences.ts:40:getStoredStagePreferences",
+        "name": "getStoredStagePreferences",
+        "file": "src/atomic-crm/filters/opportunityStagePreferences.ts",
+        "line": 40,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/opportunityStagePreferences.ts:64:saveStagePreferences",
+        "name": "saveStagePreferences",
+        "file": "src/atomic-crm/filters/opportunityStagePreferences.ts",
+        "line": 64,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/opportunityStagePreferences.ts:81:getDefaultVisibleStages",
+        "name": "getDefaultVisibleStages",
+        "file": "src/atomic-crm/filters/opportunityStagePreferences.ts",
+        "line": 81,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/opportunityStagePreferences.ts:91:getInitialStageFilter",
+        "name": "getInitialStageFilter",
+        "file": "src/atomic-crm/filters/opportunityStagePreferences.ts",
+        "line": 91,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/types.ts:103:isArrayFilterValue",
+        "name": "isArrayFilterValue",
+        "file": "src/atomic-crm/filters/types.ts",
+        "line": 103,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/types.ts:107:isSingleFilterValue",
+        "name": "isSingleFilterValue",
+        "file": "src/atomic-crm/filters/types.ts",
+        "line": 107,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/types.ts:111:isValidFilterValue",
+        "name": "isValidFilterValue",
+        "file": "src/atomic-crm/filters/types.ts",
+        "line": 111,
+        "nodeType": "arrow",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/useCategoryNames.ts:17:categoryExtractor",
+        "name": "categoryExtractor",
+        "file": "src/atomic-crm/filters/useCategoryNames.ts",
+        "line": 17,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/useCategoryNames.ts:31:useCategoryNames",
+        "name": "useCategoryNames",
+        "file": "src/atomic-crm/filters/useCategoryNames.ts",
+        "line": 31,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "name": "useFilterChipBar",
+        "file": "src/atomic-crm/filters/useFilterChipBar.ts",
+        "line": 76,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "name": "useFilterManagement",
+        "file": "src/atomic-crm/filters/useFilterManagement.ts",
+        "line": 46,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/useOrganizationNames.ts:27:useOrganizationNames",
+        "name": "useOrganizationNames",
+        "file": "src/atomic-crm/filters/useOrganizationNames.ts",
+        "line": 27,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/useSalesNames.ts:27:useSalesNames",
+        "name": "useSalesNames",
+        "file": "src/atomic-crm/filters/useSalesNames.ts",
+        "line": 27,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/useSegmentNames.ts:22:segmentExtractor",
+        "name": "segmentExtractor",
+        "file": "src/atomic-crm/filters/useSegmentNames.ts",
+        "line": 22,
+        "nodeType": "arrow",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/useSegmentNames.ts:39:useSegmentNames",
+        "name": "useSegmentNames",
+        "file": "src/atomic-crm/filters/useSegmentNames.ts",
+        "line": 39,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/filters/useTagNames.ts:31:useTagNames",
+        "name": "useTagNames",
+        "file": "src/atomic-crm/filters/useTagNames.ts",
+        "line": 31,
+        "nodeType": "hook",
+        "exported": true,
+        "async": false
+      }
+    ],
+    "edges": [
+      {
+        "source": "src/atomic-crm/filters/FilterCategory.tsx:7:FilterCategory",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 21,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterCategory.tsx:7:FilterCategory",
+        "target": "setIsExpanded",
+        "targetName": "setIsExpanded",
+        "edgeType": "call",
+        "line": 26,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterCategory.tsx:7:FilterCategory",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 40,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterCategory.tsx:7:FilterCategory",
+        "target": "Translate",
+        "targetName": "Translate",
+        "edgeType": "render",
+        "line": 35,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterCategory.tsx:7:FilterCategory",
+        "target": "ChevronDown",
+        "targetName": "ChevronDown",
+        "edgeType": "render",
+        "line": 39,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChip.tsx:41:FilterChip",
+        "target": "stopPropagation",
+        "targetName": "stopPropagation",
+        "edgeType": "call",
+        "line": 43,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChip.tsx:41:FilterChip",
+        "target": "onRemove",
+        "targetName": "onRemove",
+        "edgeType": "call",
+        "line": 44,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChip.tsx:41:FilterChip",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChip.tsx:41:FilterChip",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChip.tsx:41:FilterChip",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 57,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChip.tsx:41:FilterChip",
+        "target": "handleRemove",
+        "targetName": "handleRemove",
+        "edgeType": "callback",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChip.tsx:41:FilterChip",
+        "target": "X",
+        "targetName": "X",
+        "edgeType": "render",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "useRef",
+        "targetName": "useRef",
+        "edgeType": "hook",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "useFilterChipBar",
+        "targetName": "useFilterChipBar",
+        "edgeType": "hook",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 64,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "querySelectorAll",
+        "targetName": "querySelectorAll",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "findIndex",
+        "targetName": "findIndex",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "from",
+        "targetName": "from",
+        "edgeType": "call",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 72,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "focus",
+        "targetName": "focus",
+        "edgeType": "call",
+        "line": 73,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 76,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "focus",
+        "targetName": "focus",
+        "edgeType": "call",
+        "line": 77,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 80,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "focus",
+        "targetName": "focus",
+        "edgeType": "call",
+        "line": 81,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 84,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "focus",
+        "targetName": "focus",
+        "edgeType": "call",
+        "line": 85,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 115,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "removeFilter",
+        "targetName": "removeFilter",
+        "edgeType": "call",
+        "line": 117,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "handleKeyDown",
+        "targetName": "handleKeyDown",
+        "edgeType": "callback",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 122,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipBar.tsx:44:FilterChipBar",
+        "target": "FilterChip",
+        "targetName": "FilterChip",
+        "edgeType": "render",
+        "line": 117,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "useFilterManagement",
+        "targetName": "useFilterManagement",
+        "edgeType": "hook",
+        "line": 24,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 28,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 29,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 30,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 35,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 36,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 37,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 45,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 46,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 47,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 52,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 54,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "useOrganizationNames",
+        "targetName": "useOrganizationNames",
+        "edgeType": "hook",
+        "line": 58,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "useSalesNames",
+        "targetName": "useSalesNames",
+        "edgeType": "hook",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "useTagNames",
+        "targetName": "useTagNames",
+        "edgeType": "hook",
+        "line": 62,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "flattenFilterValues",
+        "targetName": "flattenFilterValues",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "formatFilterLabel",
+        "targetName": "formatFilterLabel",
+        "edgeType": "call",
+        "line": 87,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "removeFilterValue",
+        "targetName": "removeFilterValue",
+        "edgeType": "call",
+        "line": 99,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "Accordion",
+        "targetName": "Accordion",
+        "edgeType": "render",
+        "line": 74,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "AccordionItem",
+        "targetName": "AccordionItem",
+        "edgeType": "render",
+        "line": 75,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "AccordionTrigger",
+        "targetName": "AccordionTrigger",
+        "edgeType": "render",
+        "line": 76,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "AccordionContent",
+        "targetName": "AccordionContent",
+        "edgeType": "render",
+        "line": 84,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterChipsPanel.tsx:23:FilterChipsPanel",
+        "target": "FilterChip",
+        "targetName": "FilterChip",
+        "edgeType": "render",
+        "line": 96,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterSidebar.tsx:49:FilterSidebar",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 56,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterSidebar.tsx:49:FilterSidebar",
+        "target": "FilterLiveForm",
+        "targetName": "FilterLiveForm",
+        "edgeType": "render",
+        "line": 58,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/FilterSidebar.tsx:49:FilterSidebar",
+        "target": "SearchInput",
+        "targetName": "SearchInput",
+        "edgeType": "render",
+        "line": 59,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterConfigSchema.ts:110:validateFilterConfig",
+        "target": "parse",
+        "targetName": "parse",
+        "edgeType": "call",
+        "line": 111,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:14:formatStageLabel",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 15,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:22:formatPriorityLabel",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 23,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "formatStageLabel",
+        "targetName": "formatStageLabel",
+        "edgeType": "call",
+        "line": 47,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 47,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "formatPriorityLabel",
+        "targetName": "formatPriorityLabel",
+        "edgeType": "call",
+        "line": 50,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 50,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "getTagName",
+        "targetName": "getTagName",
+        "edgeType": "call",
+        "line": 56,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 56,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 59,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "getOrganizationName",
+        "targetName": "getOrganizationName",
+        "edgeType": "call",
+        "line": 62,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 62,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "getOrganizationName",
+        "targetName": "getOrganizationName",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 65,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 69,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "getSalesName",
+        "targetName": "getSalesName",
+        "edgeType": "call",
+        "line": 72,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 72,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:37:formatFilterLabel",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 82,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:89:shouldDisplayFilter",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 98,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:89:shouldDisplayFilter",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:109:flattenFilterValues",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 112,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:109:flattenFilterValues",
+        "target": "shouldDisplayFilter",
+        "targetName": "shouldDisplayFilter",
+        "edgeType": "call",
+        "line": 113,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:109:flattenFilterValues",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 117,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:109:flattenFilterValues",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 119,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:109:flattenFilterValues",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 120,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterFormatters.ts:109:flattenFilterValues",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 124,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:66:getStoredFilterPreferences",
+        "target": "getStorageItem",
+        "targetName": "getStorageItem",
+        "edgeType": "call",
+        "line": 69,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:83:saveFilterPreferences",
+        "target": "setStorageItem",
+        "targetName": "setStorageItem",
+        "edgeType": "call",
+        "line": 86,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:83:saveFilterPreferences",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 88,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:129:getInitialFilterValue",
+        "target": "getStoredFilterPreferences",
+        "targetName": "getStoredFilterPreferences",
+        "edgeType": "call",
+        "line": 140,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:24:parseUrlFilters",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 31,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:24:parseUrlFilters",
+        "target": "safeJsonParse",
+        "targetName": "safeJsonParse",
+        "edgeType": "call",
+        "line": 39,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:24:parseUrlFilters",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 40,
+        "conditional": true,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:24:parseUrlFilters",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:95:getDefaultVisibleStages",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 110,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:95:getDefaultVisibleStages",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 110,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:153:getInitialStageFilter",
+        "target": "getStoredFilterPreferences",
+        "targetName": "getStoredFilterPreferences",
+        "edgeType": "call",
+        "line": 157,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:153:getInitialStageFilter",
+        "target": "getDefaultVisibleStages",
+        "targetName": "getDefaultVisibleStages",
+        "edgeType": "call",
+        "line": 158,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:153:getInitialStageFilter",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 161,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:153:getInitialStageFilter",
+        "target": "getDefaultVisibleStages",
+        "targetName": "getDefaultVisibleStages",
+        "edgeType": "call",
+        "line": 169,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:177:updateStagePreferences",
+        "target": "getDefaultVisibleStages",
+        "targetName": "getDefaultVisibleStages",
+        "edgeType": "call",
+        "line": 178,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:177:updateStagePreferences",
+        "target": "every",
+        "targetName": "every",
+        "edgeType": "call",
+        "line": 182,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:177:updateStagePreferences",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 182,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:177:updateStagePreferences",
+        "target": "saveFilterPreferences",
+        "targetName": "saveFilterPreferences",
+        "edgeType": "call",
+        "line": 185,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:177:updateStagePreferences",
+        "target": "removeStorageItem",
+        "targetName": "removeStorageItem",
+        "edgeType": "call",
+        "line": 190,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:207:buildInitialFilters",
+        "target": "parseUrlFilters",
+        "targetName": "parseUrlFilters",
+        "edgeType": "call",
+        "line": 211,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:207:buildInitialFilters",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 215,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:207:buildInitialFilters",
+        "target": "getInitialFilterValue",
+        "targetName": "getInitialFilterValue",
+        "edgeType": "call",
+        "line": 216,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/filters/filterPrecedence.ts:207:buildInitialFilters",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 223,
+        "conditional": false,
+        "inLoop": true
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "useDataProvider",
+        "targetName": "useDataProvider",
+        "edgeType": "hook",
+        "line": 46,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "useState",
+        "targetName": "useState",
+        "edgeType": "hook",
+        "line": 48,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 51,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "useEffect",
+        "targetName": "useEffect",
+        "edgeType": "hook",
+        "line": 53,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "setLoading",
+        "targetName": "setLoading",
+        "edgeType": "call",
+        "line": 66,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "getMany",
+        "targetName": "getMany",
+        "edgeType": "call",
+        "line": 69,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "reduce",
+        "targetName": "reduce",
+        "edgeType": "call",
+        "line": 74,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 75,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "getDisplayName",
+        "targetName": "getDisplayName",
+        "edgeType": "call",
+        "line": 75,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "setNamesMap",
+        "targetName": "setNamesMap",
+        "edgeType": "call",
+        "line": 79,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "error",
+        "targetName": "error",
+        "edgeType": "call",
+        "line": 81,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "setLoading",
+        "targetName": "setLoading",
+        "edgeType": "call",
+        "line": 83,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "fetchNames",
+        "targetName": "fetchNames",
+        "edgeType": "call",
+        "line": 87,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/hooks/useResourceNamesBase.ts:40:useResourceNamesBase",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 93,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/opportunityStagePreferences.ts:40:getStoredStagePreferences",
+        "target": "getStorageItem",
+        "targetName": "getStorageItem",
+        "edgeType": "call",
+        "line": 43,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/opportunityStagePreferences.ts:40:getStoredStagePreferences",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 47,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/opportunityStagePreferences.ts:64:saveStagePreferences",
+        "target": "setStorageItem",
+        "targetName": "setStorageItem",
+        "edgeType": "call",
+        "line": 69,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/opportunityStagePreferences.ts:64:saveStagePreferences",
+        "target": "warn",
+        "targetName": "warn",
+        "edgeType": "call",
+        "line": 71,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/opportunityStagePreferences.ts:91:getInitialStageFilter",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 94,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/opportunityStagePreferences.ts:91:getInitialStageFilter",
+        "target": "safeJsonParse",
+        "targetName": "safeJsonParse",
+        "edgeType": "call",
+        "line": 96,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/opportunityStagePreferences.ts:91:getInitialStageFilter",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 100,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/opportunityStagePreferences.ts:91:getInitialStageFilter",
+        "target": "getStoredStagePreferences",
+        "targetName": "getStoredStagePreferences",
+        "edgeType": "call",
+        "line": 105,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/types.ts:103:isArrayFilterValue",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 104,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/types.ts:107:isSingleFilterValue",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 108,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/types.ts:111:isValidFilterValue",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 114,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/types.ts:111:isValidFilterValue",
+        "target": "every",
+        "targetName": "every",
+        "edgeType": "call",
+        "line": 115,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useCategoryNames.ts:31:useCategoryNames",
+        "target": "useResourceNamesBase",
+        "targetName": "useResourceNamesBase",
+        "edgeType": "hook",
+        "line": 32,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "useListContext",
+        "targetName": "useListContext",
+        "edgeType": "hook",
+        "line": 80,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 91,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 106,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 110,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 113,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 113,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 115,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 115,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 117,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 117,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 119,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 119,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 121,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "map",
+        "targetName": "map",
+        "edgeType": "call",
+        "line": 121,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "useOrganizationNames",
+        "targetName": "useOrganizationNames",
+        "edgeType": "hook",
+        "line": 129,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "useSalesNames",
+        "targetName": "useSalesNames",
+        "edgeType": "hook",
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "useTagNames",
+        "targetName": "useTagNames",
+        "edgeType": "hook",
+        "line": 131,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "useSegmentNames",
+        "targetName": "useSegmentNames",
+        "edgeType": "hook",
+        "line": 132,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "useCategoryNames",
+        "targetName": "useCategoryNames",
+        "edgeType": "hook",
+        "line": 133,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 136,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 138,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 140,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "set",
+        "targetName": "set",
+        "edgeType": "call",
+        "line": 141,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 148,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "choices",
+        "targetName": "choices",
+        "edgeType": "call",
+        "line": 153,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 162,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 166,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 166,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 168,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 172,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 178,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "add",
+        "targetName": "add",
+        "edgeType": "call",
+        "line": 179,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 182,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 185,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "formatLabel",
+        "targetName": "formatLabel",
+        "edgeType": "call",
+        "line": 188,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 188,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 189,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "join",
+        "targetName": "join",
+        "edgeType": "call",
+        "line": 195,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 197,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "trim",
+        "targetName": "trim",
+        "edgeType": "call",
+        "line": 202,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "replace",
+        "targetName": "replace",
+        "edgeType": "call",
+        "line": 202,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 208,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 210,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 216,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 217,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "formatLabel",
+        "targetName": "formatLabel",
+        "edgeType": "call",
+        "line": 222,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "resolveChoices",
+        "targetName": "resolveChoices",
+        "edgeType": "call",
+        "line": 225,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 226,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 227,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "getOrganizationName",
+        "targetName": "getOrganizationName",
+        "edgeType": "call",
+        "line": 229,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 229,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "getSalesName",
+        "targetName": "getSalesName",
+        "edgeType": "call",
+        "line": 233,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 233,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "getTagName",
+        "targetName": "getTagName",
+        "edgeType": "call",
+        "line": 235,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 235,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "getSegmentName",
+        "targetName": "getSegmentName",
+        "edgeType": "call",
+        "line": 237,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 237,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "getCategoryName",
+        "targetName": "getCategoryName",
+        "edgeType": "call",
+        "line": 239,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 239,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "String",
+        "targetName": "String",
+        "edgeType": "call",
+        "line": 241,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "push",
+        "targetName": "push",
+        "edgeType": "call",
+        "line": 244,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 260,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "find",
+        "targetName": "find",
+        "edgeType": "call",
+        "line": 263,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "has",
+        "targetName": "has",
+        "edgeType": "call",
+        "line": 268,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 270,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "get",
+        "targetName": "get",
+        "edgeType": "call",
+        "line": 273,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 281,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 283,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 284,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "forEach",
+        "targetName": "forEach",
+        "edgeType": "call",
+        "line": 291,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 294,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 300,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "fromEntries",
+        "targetName": "fromEntries",
+        "edgeType": "call",
+        "line": 302,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 303,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 303,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 303,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterChipBar.ts:76:useFilterChipBar",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 305,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "useListContext",
+        "targetName": "useListContext",
+        "edgeType": "hook",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 63,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 66,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 67,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 74,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 80,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 101,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 102,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 107,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 110,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 118,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 137,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 138,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "removeFilterValue",
+        "targetName": "removeFilterValue",
+        "edgeType": "call",
+        "line": 139,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "addFilterValue",
+        "targetName": "addFilterValue",
+        "edgeType": "call",
+        "line": 141,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "removeFilterValue",
+        "targetName": "removeFilterValue",
+        "edgeType": "call",
+        "line": 144,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "addFilterValue",
+        "targetName": "addFilterValue",
+        "edgeType": "call",
+        "line": 146,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 159,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "setFilters",
+        "targetName": "setFilters",
+        "edgeType": "call",
+        "line": 166,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 177,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 186,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 189,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "entries",
+        "targetName": "entries",
+        "edgeType": "call",
+        "line": 189,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "includes",
+        "targetName": "includes",
+        "edgeType": "call",
+        "line": 191,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useFilterManagement.ts:46:useFilterManagement",
+        "target": "isArray",
+        "targetName": "isArray",
+        "edgeType": "call",
+        "line": 193,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useOrganizationNames.ts:27:useOrganizationNames",
+        "target": "useResourceNamesBase",
+        "targetName": "useResourceNamesBase",
+        "edgeType": "hook",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useSalesNames.ts:27:useSalesNames",
+        "target": "useResourceNamesBase",
+        "targetName": "useResourceNamesBase",
+        "edgeType": "hook",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useSegmentNames.ts:39:useSegmentNames",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useSegmentNames.ts:39:useSegmentNames",
+        "target": "filter",
+        "targetName": "filter",
+        "edgeType": "call",
+        "line": 42,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useSegmentNames.ts:39:useSegmentNames",
+        "target": "useResourceNamesBase",
+        "targetName": "useResourceNamesBase",
+        "edgeType": "hook",
+        "line": 47,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useSegmentNames.ts:39:useSegmentNames",
+        "target": "useCallback",
+        "targetName": "useCallback",
+        "edgeType": "hook",
+        "line": 55,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useSegmentNames.ts:39:useSegmentNames",
+        "target": "useMemo",
+        "targetName": "useMemo",
+        "edgeType": "hook",
+        "line": 68,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/filters/useTagNames.ts:31:useTagNames",
+        "target": "useResourceNamesBase",
+        "targetName": "useResourceNamesBase",
+        "edgeType": "hook",
+        "line": 32,
+        "conditional": false,
+        "inLoop": false
+      }
+    ]
+  }
+}

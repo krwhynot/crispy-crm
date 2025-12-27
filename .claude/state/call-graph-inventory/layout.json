@@ -1,0 +1,559 @@
+{
+  "chunk_name": "layout",
+  "generated_at": "2025-12-27T02:01:23.854Z",
+  "items": {
+    "nodes": [
+      {
+        "id": "src/atomic-crm/layout/FormToolbar.tsx:10:FormToolbar",
+        "name": "FormToolbar",
+        "file": "src/atomic-crm/layout/FormToolbar.tsx",
+        "line": 10,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "name": "Header",
+        "file": "src/atomic-crm/layout/Header.tsx",
+        "line": 13,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/layout/Header.tsx:119:NavigationTab",
+        "name": "NavigationTab",
+        "file": "src/atomic-crm/layout/Header.tsx",
+        "line": 119,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/layout/Header.tsx:143:UsersMenu",
+        "name": "UsersMenu",
+        "file": "src/atomic-crm/layout/Header.tsx",
+        "line": 143,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/layout/Header.tsx:154:ConfigurationMenu",
+        "name": "ConfigurationMenu",
+        "file": "src/atomic-crm/layout/Header.tsx",
+        "line": 154,
+        "nodeType": "component",
+        "exported": false,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/layout/Layout.tsx:18:Layout",
+        "name": "Layout",
+        "file": "src/atomic-crm/layout/Layout.tsx",
+        "line": 18,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/layout/TopToolbar.tsx:23:TopToolbar",
+        "name": "TopToolbar",
+        "file": "src/atomic-crm/layout/TopToolbar.tsx",
+        "line": 23,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      }
+    ],
+    "edges": [
+      {
+        "source": "src/atomic-crm/layout/FormToolbar.tsx:10:FormToolbar",
+        "target": "KitFormToolbar",
+        "targetName": "KitFormToolbar",
+        "edgeType": "render",
+        "line": 11,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/FormToolbar.tsx:10:FormToolbar",
+        "target": "DeleteButton",
+        "targetName": "DeleteButton",
+        "edgeType": "render",
+        "line": 12,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/FormToolbar.tsx:10:FormToolbar",
+        "target": "CancelButton",
+        "targetName": "CancelButton",
+        "edgeType": "render",
+        "line": 15,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/FormToolbar.tsx:10:FormToolbar",
+        "target": "SaveButton",
+        "targetName": "SaveButton",
+        "edgeType": "render",
+        "line": 16,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "useAppBranding",
+        "targetName": "useAppBranding",
+        "edgeType": "hook",
+        "line": 14,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "useLocation",
+        "targetName": "useLocation",
+        "edgeType": "hook",
+        "line": 15,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "matchPath",
+        "targetName": "matchPath",
+        "edgeType": "call",
+        "line": 18,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "matchPath",
+        "targetName": "matchPath",
+        "edgeType": "call",
+        "line": 20,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "matchPath",
+        "targetName": "matchPath",
+        "edgeType": "call",
+        "line": 22,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "matchPath",
+        "targetName": "matchPath",
+        "edgeType": "call",
+        "line": 24,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "matchPath",
+        "targetName": "matchPath",
+        "edgeType": "call",
+        "line": 26,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "matchPath",
+        "targetName": "matchPath",
+        "edgeType": "call",
+        "line": 28,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "matchPath",
+        "targetName": "matchPath",
+        "edgeType": "call",
+        "line": 30,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "Link",
+        "targetName": "Link",
+        "edgeType": "render",
+        "line": 41,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "UserMenu",
+        "targetName": "UserMenu",
+        "edgeType": "render",
+        "line": 102,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "CanAccess",
+        "targetName": "CanAccess",
+        "edgeType": "render",
+        "line": 107,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "NavigationTab",
+        "targetName": "NavigationTab",
+        "edgeType": "render",
+        "line": 60,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "NavigationTab",
+        "targetName": "NavigationTab",
+        "edgeType": "render",
+        "line": 61,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "NavigationTab",
+        "targetName": "NavigationTab",
+        "edgeType": "render",
+        "line": 67,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "NavigationTab",
+        "targetName": "NavigationTab",
+        "edgeType": "render",
+        "line": 73,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "NavigationTab",
+        "targetName": "NavigationTab",
+        "edgeType": "render",
+        "line": 79,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "NavigationTab",
+        "targetName": "NavigationTab",
+        "edgeType": "render",
+        "line": 85,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "NavigationTab",
+        "targetName": "NavigationTab",
+        "edgeType": "render",
+        "line": 91,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "ThemeModeToggle",
+        "targetName": "ThemeModeToggle",
+        "edgeType": "render",
+        "line": 99,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "RefreshButton",
+        "targetName": "RefreshButton",
+        "edgeType": "render",
+        "line": 100,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "NotificationBell",
+        "targetName": "NotificationBell",
+        "edgeType": "render",
+        "line": 101,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "ConfigurationMenu",
+        "targetName": "ConfigurationMenu",
+        "edgeType": "render",
+        "line": 103,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "DropdownMenuSeparator",
+        "targetName": "DropdownMenuSeparator",
+        "edgeType": "render",
+        "line": 104,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "TutorialLauncher",
+        "targetName": "TutorialLauncher",
+        "edgeType": "render",
+        "line": 105,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "DropdownMenuSeparator",
+        "targetName": "DropdownMenuSeparator",
+        "edgeType": "render",
+        "line": 106,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:13:Header",
+        "target": "UsersMenu",
+        "targetName": "UsersMenu",
+        "edgeType": "render",
+        "line": 108,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:119:NavigationTab",
+        "target": "Link",
+        "targetName": "Link",
+        "edgeType": "render",
+        "line": 130,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:143:UsersMenu",
+        "target": "useUserMenu",
+        "targetName": "useUserMenu",
+        "edgeType": "hook",
+        "line": 144,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:143:UsersMenu",
+        "target": "DropdownMenuItem",
+        "targetName": "DropdownMenuItem",
+        "edgeType": "render",
+        "line": 146,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:143:UsersMenu",
+        "target": "onClose",
+        "targetName": "onClose",
+        "edgeType": "callback",
+        "line": 146,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:143:UsersMenu",
+        "target": "Link",
+        "targetName": "Link",
+        "edgeType": "render",
+        "line": 147,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:143:UsersMenu",
+        "target": "Users",
+        "targetName": "Users",
+        "edgeType": "render",
+        "line": 148,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:154:ConfigurationMenu",
+        "target": "useUserMenu",
+        "targetName": "useUserMenu",
+        "edgeType": "hook",
+        "line": 155,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:154:ConfigurationMenu",
+        "target": "DropdownMenuItem",
+        "targetName": "DropdownMenuItem",
+        "edgeType": "render",
+        "line": 157,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:154:ConfigurationMenu",
+        "target": "onClose",
+        "targetName": "onClose",
+        "edgeType": "callback",
+        "line": 157,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:154:ConfigurationMenu",
+        "target": "Link",
+        "targetName": "Link",
+        "edgeType": "render",
+        "line": 158,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Header.tsx:154:ConfigurationMenu",
+        "target": "Settings",
+        "targetName": "Settings",
+        "edgeType": "render",
+        "line": 159,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Layout.tsx:18:Layout",
+        "target": "preventDefault",
+        "targetName": "preventDefault",
+        "edgeType": "call",
+        "line": 20,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Layout.tsx:18:Layout",
+        "target": "getElementById",
+        "targetName": "getElementById",
+        "edgeType": "call",
+        "line": 21,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Layout.tsx:18:Layout",
+        "target": "focus",
+        "targetName": "focus",
+        "edgeType": "call",
+        "line": 23,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Layout.tsx:18:Layout",
+        "target": "getFullYear",
+        "targetName": "getFullYear",
+        "edgeType": "call",
+        "line": 45,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Layout.tsx:18:Layout",
+        "target": "TutorialProvider",
+        "targetName": "TutorialProvider",
+        "edgeType": "render",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Layout.tsx:18:Layout",
+        "target": "handleSkipToContent",
+        "targetName": "handleSkipToContent",
+        "edgeType": "callback",
+        "line": 31,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Layout.tsx:18:Layout",
+        "target": "ErrorBoundary",
+        "targetName": "ErrorBoundary",
+        "edgeType": "render",
+        "line": 38,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Layout.tsx:18:Layout",
+        "target": "Suspense",
+        "targetName": "Suspense",
+        "edgeType": "render",
+        "line": 39,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Layout.tsx:18:Layout",
+        "target": "Header",
+        "targetName": "Header",
+        "edgeType": "render",
+        "line": 36,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Layout.tsx:18:Layout",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 39,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/Layout.tsx:18:Layout",
+        "target": "Notification",
+        "targetName": "Notification",
+        "edgeType": "render",
+        "line": 49,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/layout/TopToolbar.tsx:23:TopToolbar",
+        "target": "cn",
+        "targetName": "cn",
+        "edgeType": "call",
+        "line": 28,
+        "conditional": false,
+        "inLoop": false
+      }
+    ]
+  }
+}

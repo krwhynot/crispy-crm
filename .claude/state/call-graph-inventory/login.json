@@ -1,0 +1,91 @@
+{
+  "chunk_name": "login",
+  "generated_at": "2025-12-27T02:01:23.855Z",
+  "items": {
+    "nodes": [
+      {
+        "id": "src/atomic-crm/login/LoginSkeleton.tsx:3:LoginSkeleton",
+        "name": "LoginSkeleton",
+        "file": "src/atomic-crm/login/LoginSkeleton.tsx",
+        "line": 3,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      },
+      {
+        "id": "src/atomic-crm/login/StartPage.tsx:3:StartPage",
+        "name": "StartPage",
+        "file": "src/atomic-crm/login/StartPage.tsx",
+        "line": 3,
+        "nodeType": "component",
+        "exported": true,
+        "async": false
+      }
+    ],
+    "edges": [
+      {
+        "source": "src/atomic-crm/login/LoginSkeleton.tsx:3:LoginSkeleton",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 8,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/login/LoginSkeleton.tsx:3:LoginSkeleton",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 9,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/login/LoginSkeleton.tsx:3:LoginSkeleton",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 10,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/login/LoginSkeleton.tsx:3:LoginSkeleton",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 11,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/login/LoginSkeleton.tsx:3:LoginSkeleton",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 12,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/login/LoginSkeleton.tsx:3:LoginSkeleton",
+        "target": "Skeleton",
+        "targetName": "Skeleton",
+        "edgeType": "render",
+        "line": 13,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/login/StartPage.tsx:3:StartPage",
+        "target": "LoginPage",
+        "targetName": "LoginPage",
+        "edgeType": "render",
+        "line": 5,
+        "conditional": false,
+        "inLoop": false
+      }
+    ]
+  }
+}
