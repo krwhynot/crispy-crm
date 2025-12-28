@@ -16,7 +16,7 @@
  * 4. Empty chunks are skipped to avoid meaningless embeddings
  */
 
-import * as fg from "fast-glob";
+import fg from "fast-glob";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
 import { chunkFile, type CodeChunk } from "./chunk.js";
@@ -101,7 +101,7 @@ async function indexCodebase(rootDir: string, freshIndex: boolean = true): Promi
 
   // Find source files
   console.log("📁 Scanning for source files...");
-  const files = await fg.glob(SOURCE_PATTERNS, {
+  const files = await fg(SOURCE_PATTERNS, {
     cwd: rootDir,
     absolute: true,
     ignore: IGNORE_PATTERNS,
