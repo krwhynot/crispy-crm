@@ -13,7 +13,10 @@
  */
 
 const OLLAMA_BASE_URL = process.env.OLLAMA_URL ?? "http://localhost:11434";
-const DEFAULT_MODEL = "nomic-embed-text";
+// Use nomic-embed-8k (custom model with 8192 context) for larger code chunks
+// Fallback to nomic-embed-text if 8k variant not available
+const DEFAULT_MODEL = "nomic-embed-8k";
+const FALLBACK_MODEL = "nomic-embed-text";
 const EXPECTED_DIMENSIONS = 768;
 
 interface OllamaEmbeddingRequest {
@@ -192,8 +195,13 @@ export async function checkOllamaHealth(): Promise<boolean> {
     const data = (await response.json()) as OllamaTagsResponse;
     const models = data.models || [];
 
+    // Check for either the 8k model or the fallback
     const hasModel = models.some(
-      (m) => m.name === DEFAULT_MODEL || m.name.startsWith(`${DEFAULT_MODEL}:`)
+      (m) =>
+        m.name === DEFAULT_MODEL ||
+        m.name.startsWith(`${DEFAULT_MODEL}:`) ||
+        m.name === FALLBACK_MODEL ||
+        m.name.startsWith(`${FALLBACK_MODEL}:`)
     );
 
     return hasModel;

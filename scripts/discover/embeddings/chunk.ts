@@ -48,13 +48,18 @@ import * as path from "node:path";
 export interface CodeChunk {
   id: string;
   filePath: string;
-  type: "function" | "class" | "interface" | "type" | "component";
+  type: "function" | "class" | "interface" | "type" | "component" | "file-segment";
   name: string;
   content: string;
   startLine: number;
   endLine: number;
   exported: boolean;
 }
+
+// Maximum tokens for nomic-embed-text with 8k context
+// Using ~4 chars per token as rough estimate, with safety margin
+const MAX_CHUNK_CHARS = 6000; // ~1500 tokens, leaving room for overhead
+const FALLBACK_LINES_PER_CHUNK = 100;
 
 export interface ChunkOptions {
   includePrivate?: boolean;
@@ -148,6 +153,77 @@ function isExported(node: Parser.SyntaxNode): boolean {
   return false;
 }
 
+/**
+ * Split content that exceeds MAX_CHUNK_CHARS into smaller pieces.
+ * Tries to split at logical boundaries (blank lines, function ends).
+ */
+function splitLargeContent(content: string): string[] {
+  if (content.length <= MAX_CHUNK_CHARS) {
+    return [content];
+  }
+
+  const chunks: string[] = [];
+  const lines = content.split("\n");
+  let currentChunk: string[] = [];
+  let currentLength = 0;
+
+  for (const line of lines) {
+    const lineLength = line.length + 1; // +1 for newline
+
+    if (currentLength + lineLength > MAX_CHUNK_CHARS && currentChunk.length > 0) {
+      chunks.push(currentChunk.join("\n"));
+      currentChunk = [];
+      currentLength = 0;
+    }
+
+    currentChunk.push(line);
+    currentLength += lineLength;
+  }
+
+  if (currentChunk.length > 0) {
+    chunks.push(currentChunk.join("\n"));
+  }
+
+  return chunks;
+}
+
+/**
+ * Fallback chunking when tree-sitter parsing fails.
+ * Splits file into segments of FALLBACK_LINES_PER_CHUNK lines.
+ * Used for generated files or files with syntax tree-sitter can't handle.
+ */
+function chunkFileByLines(filePath: string, content: string): CodeChunk[] {
+  const lines = content.split("\n");
+  const chunks: CodeChunk[] = [];
+
+  for (let i = 0; i < lines.length; i += FALLBACK_LINES_PER_CHUNK) {
+    const segmentLines = lines.slice(i, i + FALLBACK_LINES_PER_CHUNK);
+    const segmentContent = segmentLines.join("\n");
+
+    // Skip nearly empty segments
+    if (segmentContent.trim().length < 20) {
+      continue;
+    }
+
+    const startLine = i + 1;
+    const endLine = Math.min(i + FALLBACK_LINES_PER_CHUNK, lines.length);
+    const segmentNum = Math.floor(i / FALLBACK_LINES_PER_CHUNK) + 1;
+
+    chunks.push({
+      id: `${filePath}:segment-${segmentNum}`,
+      filePath,
+      type: "file-segment",
+      name: `segment-${segmentNum}`,
+      content: segmentContent,
+      startLine,
+      endLine,
+      exported: true, // Treat all segments as "exported" for indexing
+    });
+  }
+
+  return chunks;
+}
+
 function getFullDeclarationText(
   node: Parser.SyntaxNode,
   content: string
@@ -218,7 +294,17 @@ export function chunkFile(
   const { includePrivate = false } = options;
   const chunks: CodeChunk[] = [];
   const parser = getParserForFile(filePath);
-  const tree = parser.parse(content);
+
+  // Try tree-sitter parsing, fallback to line-based chunking on failure
+  let tree;
+  try {
+    tree = parser.parse(content);
+  } catch (error) {
+    // Tree-sitter failed (large/complex file) - use line-based fallback
+    console.warn(`   ⚡ Using line-based fallback for ${filePath}`);
+    return chunkFileByLines(filePath, content);
+  }
+
   const rootNode = tree.rootNode;
 
   const cursor = rootNode.walk();
@@ -289,16 +375,40 @@ export function chunkFile(
 
     if (chunkType && name) {
       const { text, startLine, endLine } = getFullDeclarationText(node, content);
-      chunks.push({
-        id: `${filePath}:${name}`,
-        filePath,
-        type: chunkType,
-        name,
-        content: text,
-        startLine,
-        endLine,
-        exported: nodeIsExported,
-      });
+
+      // Split large chunks to avoid context length errors
+      const contentParts = splitLargeContent(text);
+
+      if (contentParts.length === 1) {
+        // Single chunk - use as-is
+        chunks.push({
+          id: `${filePath}:${name}`,
+          filePath,
+          type: chunkType,
+          name,
+          content: text,
+          startLine,
+          endLine,
+          exported: nodeIsExported,
+        });
+      } else {
+        // Multiple parts - create numbered sub-chunks
+        const linesPerPart = Math.ceil((endLine - startLine + 1) / contentParts.length);
+        contentParts.forEach((part, idx) => {
+          const partStartLine = startLine + idx * linesPerPart;
+          const partEndLine = Math.min(partStartLine + linesPerPart - 1, endLine);
+          chunks.push({
+            id: `${filePath}:${name}-part${idx + 1}`,
+            filePath,
+            type: chunkType,
+            name: `${name}-part${idx + 1}`,
+            content: part,
+            startLine: partStartLine,
+            endLine: partEndLine,
+            exported: nodeIsExported,
+          });
+        });
+      }
     }
   };
 
