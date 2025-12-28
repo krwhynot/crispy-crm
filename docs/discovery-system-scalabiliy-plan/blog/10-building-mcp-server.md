@@ -52,7 +52,16 @@ The server executes. Returns results. Claude incorporates them into its response
 That is the missing link.
 
 ---
-
+  FastMCP API Discovery:
+  - The blog post example was outdated - FastMCP's API changed
+  - Constructor takes { name, version, ... } object, not (name, options)
+  - Method is start() not run() for stdio transport
+ ★ Insight ─────────────────────────────────────
+  FastMCP Response Format:
+  - Tools must return string, { type: "text", text: "..." }, or other MCP content types
+  - Our tools return custom objects like { definitions: [...] } which FastMCP doesn't understand
+  - Fix: Return JSON stringified text or TextContent objects
+  - 
 ## FastMCP: Skip the Boilerplate
 
 Building an MCP server from scratch means handling JSON-RPC, tool registration, parameter validation, and stdio communication.
