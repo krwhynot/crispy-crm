@@ -1,119 +1,73 @@
-# The Complete Picture: Architecture, Numbers, and What We Learned
+# The Complete Picture: Everything We Built
 
-We started with a problem.
+Eleven articles. Twelve components. Zero cloud dependencies.
 
-AI assistants read every file on every query. Memory spikes. Tokens burn. Responses crawl.
+We started with a problem: AI assistants read your entire codebase for every question. They forget everything between queries. Tokens burn. Memory spikes. Latency compounds.
 
-Twelve articles later, we built a complete solution.
+Now we have a solution.
 
-Zero cloud dependencies. Zero monthly costs. Instant semantic search across any codebase.
+Instant semantic search. Structural analysis. Call graphs. All running locally. All free.
 
-This is the capstone. Everything we built, how it fits together, and what we would do differently if we started over.
-
----
-
-## The Full Architecture
-
-Let me show you the complete system, from source code to AI-powered answers:
-
-```
-                    LOCAL CODE INTELLIGENCE SYSTEM
-                    ==============================
-
-  ┌─────────────────────────────────────────────────────────────────┐
-  │                        SOURCE CODE                               │
-  │   src/**/*.{ts,tsx} - Your TypeScript/React codebase            │
-  └──────────────────────────────┬──────────────────────────────────┘
-                                 │
-            ┌────────────────────┼────────────────────┐
-            ▼                    ▼                    ▼
-  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐
-  │      SCIP       │  │   Tree-sitter   │  │  File Hashing   │
-  │  (Structural)   │  │   (Chunking)    │  │  (Staleness)    │
-  │                 │  │                 │  │                 │
-  │  - Definitions  │  │  - Functions    │  │  - SHA-256      │
-  │  - References   │  │  - Classes      │  │  - Incremental  │
-  │  - Call graph   │  │  - Interfaces   │  │  - CI checks    │
-  └────────┬────────┘  └────────┬────────┘  └────────┬────────┘
-           │                    │                    │
-           │                    ▼                    │
-           │           ┌─────────────────┐           │
-           │           │     OLLAMA      │           │
-           │           │ (nomic-embed)   │           │
-           │           │                 │           │
-           │           │  768-dim        │           │
-           │           │  vectors        │           │
-           │           └────────┬────────┘           │
-           │                    │                    │
-           ▼                    ▼                    ▼
-  ┌─────────────────────────────────────────────────────────────────┐
-  │                     .claude/state/                               │
-  │                                                                  │
-  │  component-inventory/     LanceDB vectordb/    manifests/       │
-  │  ├── contacts.json       ├── code_chunks.lance ├── embed.json   │
-  │  ├── hooks.json          └── (vectors)         └── scip.json    │
-  │  └── manifest.json                                               │
-  │                                                                  │
-  │  call-graph-inventory/   schemas-inventory/                      │
-  │  ├── chunk1.json         ├── validation.json                    │
-  │  └── manifest.json       └── manifest.json                      │
-  └──────────────────────────────┬──────────────────────────────────┘
-                                 │
-                                 ▼
-  ┌─────────────────────────────────────────────────────────────────┐
-  │                       MCP SERVER                                 │
-  │                                                                  │
-  │   Tool: semantic_search    Tool: component_lookup                │
-  │   "Find code by meaning"   "Look up component details"           │
-  │                                                                  │
-  │   Tool: call_graph_query   Tool: index_stats                     │
-  │   "Who calls what"         "Check index freshness"               │
-  └──────────────────────────────┬──────────────────────────────────┘
-                                 │
-                                 ▼
-  ┌─────────────────────────────────────────────────────────────────┐
-  │                      CLAUDE CODE                                 │
-  │                                                                  │
-  │   User: "Find authentication hooks"                              │
-  │                                                                  │
-  │   Claude: [calls semantic_search("authentication hooks")]        │
-  │           Found 5 relevant hooks:                                │
-  │           1. useAuth (src/hooks/useAuth.ts:12)                  │
-  │           2. useSession (src/hooks/useSession.ts:8)             │
-  │           ...                                                    │
-  └─────────────────────────────────────────────────────────────────┘
-```
-
-Every box in this diagram is something we built and explained in this series.
+This is the capstone. Everything connected. Lessons distilled. What we'd do differently.
 
 ---
 
-## The Data Flow
+## The Architecture in One Diagram
 
-Let us trace a query through the system.
+Here's the complete system:
 
-**User asks:** "Find code that handles form validation"
-
-**Step 1: MCP Tool Selection**
-
-Claude Code reads the available MCP tools. It sees `semantic_search` with description: "Search codebase by meaning, not keywords."
-
-This matches the user's intent. Claude invokes the tool.
-
-**Step 2: Embedding Generation**
-
-The MCP server receives the query: "form validation"
-
-It calls Ollama to generate an embedding:
 ```
-"form validation" → [0.234, -0.567, 0.891, ...] (768 numbers)
+SOURCE CODE → SCIP + Tree-sitter + File Hashing
+                    ↓
+            Ollama (embeddings)
+                    ↓
+        .claude/state/ + LanceDB
+                    ↓
+              MCP Server
+                    ↓
+             Claude Code
 ```
+
+Five layers. Each does one thing well.
+
+Your TypeScript files get parsed three ways. SCIP extracts structure—definitions, references, call relationships. Tree-sitter finds natural chunk boundaries. File hashing tracks what changed.
+
+Ollama turns chunks into 768-dimensional vectors. GPS coordinates for meaning.
+
+Everything lands in `.claude/state/`. JSON inventories for fast lookup. LanceDB for vector similarity.
+
+The MCP server exposes tools. Claude Code calls them instead of reading files.
+
+That's it.
+
+---
+
+## Following a Query
+
+Let me trace what happens when you ask: "Find code that handles form validation."
+
+**Step 1: Tool Selection**
+
+Claude sees `semantic_search` in its available tools. Description: "Search by meaning, not keywords."
+
+Perfect match. It calls the tool.
+
+**Step 2: Embedding**
+
+The MCP server receives "form validation."
+
+Ollama converts it to numbers:
+
+```
+"form validation" → [0.234, -0.567, 0.891, ...768 values]
+```
+
+It's like translating a question into map coordinates.
 
 **Step 3: Vector Search**
 
-The server opens LanceDB (just a directory, no startup delay).
+LanceDB opens instantly. No startup delay—it's just a directory.
 
-It searches for vectors nearest to the query embedding:
 ```typescript
 const results = await table
   .vectorSearch(queryVector)
@@ -121,404 +75,284 @@ const results = await table
   .toArray();
 ```
 
-LanceDB returns the 10 most similar chunks in milliseconds.
+Fifteen milliseconds later: ten closest matches.
 
-**Step 4: Result Formatting**
+**Step 4: Response**
 
-The server formats results for Claude:
-```json
-[
-  { "file": "src/hooks/useFormValidation.ts", "lines": "12-45", "score": "0.234" },
-  { "file": "src/validation/schemas.ts", "lines": "8-34", "score": "0.287" },
-  { "file": "src/components/ContactForm.tsx", "lines": "67-89", "score": "0.312" }
-]
+Claude gets back:
+
+```
+useFormValidation (src/hooks/useFormValidation.ts:12-45)
+schemas (src/validation/schemas.ts:8-34)
+ContactForm (src/components/ContactForm.tsx:67-89)
 ```
 
-**Step 5: Claude Response**
+Total time? Under 500 milliseconds.
 
-Claude incorporates these results into its answer:
-
-> I found several files handling form validation:
->
-> 1. **useFormValidation hook** (`src/hooks/useFormValidation.ts:12-45`) - Main validation logic
-> 2. **Zod schemas** (`src/validation/schemas.ts:8-34`) - Validation schema definitions
-> 3. **ContactForm** (`src/components/ContactForm.tsx:67-89`) - Validation in the form component
-
-Total time: under 500 milliseconds.
+No file reading. No parsing. Just lookup.
 
 ---
 
-## Performance Numbers
+## The Numbers
 
-Real measurements from our 485-component codebase:
+Real measurements from our 485-component codebase.
 
-### Indexing Performance
+**Indexing:**
 
-| Operation | Time | Notes |
-|-----------|------|-------|
-| Full SCIP index | 8.2s | Parses all TypeScript |
-| Full embedding generation | 3m 42s | 892 chunks @ 250ms each |
-| Incremental (1 file) | 4.8s | Hash check + re-embed |
-| Incremental (0 files) | 1.2s | Just hash comparison |
-
-### Query Performance
-
-| Operation | Time | Notes |
-|-----------|------|-------|
-| LanceDB open | 2ms | Memory-mapped, instant |
-| Vector search (top 10) | 15ms | Sub-linear via ANN |
-| Component lookup | 8ms | JSON file read |
-| Call graph query | 12ms | Traverse edges |
-
-### Memory Usage
-
-| Component | Memory | Notes |
-|-----------|--------|-------|
-| Ollama (inference) | 1.2 GB | Model weights |
-| LanceDB (query) | 47 MB | Memory-mapped vectors |
-| SCIP index | 12 MB | Binary format |
-| Inventory JSONs | 8 MB | Pre-computed metadata |
-
-### Storage
-
-| Data | Size | Notes |
-|------|------|-------|
-| LanceDB vectors | 47 MB | 892 chunks @ 768 dims |
-| SCIP index | 12 MB | Compressed |
-| Component inventory | 2.1 MB | 26 JSON chunks |
-| Call graph | 4.8 MB | 919 nodes, 10K edges |
-| **Total** | **~66 MB** | Fits in any repo |
-
----
-
-## Cost Comparison
-
-What would this cost with cloud alternatives?
-
-### Cloud Vector Database (Pinecone, Weaviate Cloud)
-
-| Service | Pricing | Our Usage | Monthly Cost |
-|---------|---------|-----------|--------------|
-| Pinecone Starter | Free tier | 100K vectors | $0 |
-| Pinecone Standard | $70/month | 1M vectors | $70 |
-| Weaviate Cloud | $25/month | Base tier | $25+ |
-
-### Cloud Embeddings (OpenAI, Cohere)
-
-| Service | Pricing | Our Usage | Monthly Cost |
-|---------|---------|-----------|--------------|
-| OpenAI text-embedding-3-small | $0.02/1M tokens | ~50K tokens/index | $0.001/index |
-| Cohere embed-english-v3 | $0.10/1M tokens | ~50K tokens/index | $0.005/index |
-
-With daily re-indexing: ~$0.15-0.75/month for embeddings alone.
-
-### Our Solution
-
-| Component | Cost |
+| Operation | Time |
 |-----------|------|
-| LanceDB | $0 (OSS, local) |
-| Ollama + nomic-embed-text | $0 (OSS, local) |
-| SCIP | $0 (OSS, local) |
-| Tree-sitter | $0 (OSS, local) |
-| **Total** | **$0/month** |
+| Full SCIP index | 8 seconds |
+| Full embeddings | 3 minutes 42 seconds |
+| Incremental (1 file changed) | 5 seconds |
+| Incremental (nothing changed) | 1 second |
 
-The only cost is electricity and your laptop's CPU cycles.
+**Queries:**
 
-For a team of 10 developers, cloud costs would be $50-100/month minimum. We pay nothing.
+| Operation | Time |
+|-----------|------|
+| LanceDB open | 2 ms |
+| Vector search (top 10) | 15 ms |
+| Component lookup | 8 ms |
+| Call graph traversal | 12 ms |
 
-For enterprise with 50 developers and strict data policies? The privacy benefits alone justify local-first.
+**Memory:**
+
+| Component | Size |
+|-----------|------|
+| Ollama inference | 1.2 GB |
+| LanceDB queries | 47 MB |
+| SCIP index | 12 MB |
+| JSON inventories | 8 MB |
+
+**Storage:**
+
+| Data | Size |
+|------|------|
+| Vectors (892 chunks) | 47 MB |
+| SCIP index | 12 MB |
+| Component inventory | 2 MB |
+| Call graph | 5 MB |
+| **Total** | **~66 MB** |
+
+That last number matters. Sixty-six megabytes. Fits in any repo. Commits cleanly. Syncs instantly.
 
 ---
 
-## What Each Article Covered
+## What Cloud Would Cost
 
-A quick reference for the entire series:
+Pinecone charges $70/month for their standard tier. Weaviate Cloud starts at $25/month.
 
-| Article | Topic | Key Takeaway |
-|---------|-------|--------------|
-| 1 | The Problem | AI assistants re-read everything. Indexes fix this. |
+OpenAI embeddings cost $0.02 per million tokens. Sounds cheap until you're re-indexing daily.
+
+Our solution costs electricity.
+
+That's it.
+
+For a team of ten developers, cloud would run $50-100/month minimum. Enterprise with strict data policies? The privacy benefits alone justify local-first.
+
+It's like owning versus renting. Higher upfront investment, but the asset is yours forever.
+
+---
+
+## The Series at a Glance
+
+| Article | Topic | Key Insight |
+|---------|-------|-------------|
+| 1 | The Problem | Your AI has amnesia. Indexes fix this. |
 | 2 | Code Indexes | SCIP is a card catalog for code. |
-| 3 | Reading SCIP | Parse binary index into usable TypeScript data. |
-| 4 | React Components | Extract props, hooks, context from component ASTs. |
-| 5 | Hooks and Schemas | Specialized extractors for custom hooks and Zod. |
-| 6 | Call Graphs | Map who-calls-whom. Detect cycles with Tarjan. |
-| 7 | Embeddings | GPS coordinates for meaning. Local with Ollama. |
-| 8 | Chunking | Tree-sitter finds natural code boundaries. |
-| 9 | LanceDB | Serverless vectors. No Docker, instant queries. |
-| 10 | MCP Server | FastMCP exposes tools to Claude Code. |
-| 11 | Incremental Updates | Hash comparison for fast re-indexing. |
-| 12 | (This article) | Full architecture and lessons learned. |
+| 3 | Reading SCIP | Binary → TypeScript objects. |
+| 4 | React Components | Extract props, hooks, context from ASTs. |
+| 5 | Hooks and Schemas | Specialized extractors for custom patterns. |
+| 6 | Call Graphs | Who calls whom. Tarjan detects cycles. |
+| 7 | Embeddings | Meaning as coordinates. Ollama runs locally. |
+| 8 | Chunking | Tree-sitter finds natural boundaries. |
+| 9 | LanceDB | Serverless vectors. No Docker. |
+| 10 | MCP Server | FastMCP exposes tools to Claude. |
+| 11 | Incremental Updates | Hash comparison makes re-indexing fast. |
+| 12 | This article | Everything connected. |
 
-Each article built on the last. Skip any one and the system has a gap.
+Skip any one and the system has a gap.
 
 ---
 
-## Key Insights
+## Five Things That Made the Difference
 
-Looking back, these insights made the difference:
+**Chunking beats embedding quality.**
 
-### 1. Chunking Quality Beats Embedding Quality
+A mediocre embedding model on well-chunked code beats an excellent model on randomly sliced code.
 
-A mediocre embedding of well-chunked code beats an excellent embedding of randomly-sliced code.
+Tree-sitter was the unlock. It knows where functions end. No more splitting code mid-statement.
 
-Tree-sitter was the unlock. It knows where functions end and classes begin. No more splitting a function in half.
+We spent more time on chunking than any other component. Worth every hour.
 
-We spent more time on chunking than any other component. Worth it.
+**Structural plus semantic beats either alone.**
 
-### 2. Structural + Semantic Beats Either Alone
+SCIP tells you what calls what. Can't tell you what's "similar to" something.
 
-SCIP tells you what calls what. It cannot tell you what is "similar to" something.
+Embeddings tell you what's similar. Can't give you the call graph.
 
-Embeddings tell you what is similar. They cannot tell you the call graph.
-
-Together, you get answers neither could provide alone.
+Together? Questions neither could answer alone.
 
 "Find authentication code" (semantic) + "What calls useAuth?" (structural) = complete understanding.
 
-### 3. Incremental Is Not Optional
+It's like having both a GPS and a paper map. The GPS knows current conditions. The paper map shows relationships between places.
 
-A 4-minute full rebuild kills adoption. "I'll just grep" becomes the default.
+**Incremental updates aren't optional.**
 
-With incremental updates, one file change means one chunk re-embedded. Under 5 seconds.
+A 4-minute rebuild kills adoption. "I'll just grep" becomes the default.
 
-That speed difference changes behavior. People actually use the system.
+With incremental updates? One file change means one chunk re-embedded. Under 5 seconds.
 
-### 4. Serverless Simplifies Everything
+Speed changes behavior. People actually use the system.
 
-Docker startup, health checks, port conflicts - all friction.
+**Serverless simplifies everything.**
 
-LanceDB is just a directory. Open it, query it, close it. No daemon. No configuration.
+Docker startup. Health checks. Port conflicts. Container orchestration.
 
-For local development tools, serverless is the right architecture.
+All friction. All eliminated.
 
-### 5. CI Enforcement Keeps It Fresh
+LanceDB is just a directory. Open it, query it, close it. No daemon. No config file. No "is it running?" questions.
 
-Developers forget to regenerate indexes. Always.
+For local development tools, serverless is the only sensible architecture.
+
+**CI enforcement keeps it fresh.**
+
+Developers forget to regenerate indexes. Always. Every single one.
 
 CI staleness checks turn "please remember" into "your PR is blocked."
 
-The system is only trustworthy if it is always current. CI enforcement makes that real.
+The system is only trustworthy if it's always current. CI enforcement makes trust automatic.
 
 ---
 
-## What We Would Do Differently
+## What We'd Do Differently
 
-Hindsight from building this system:
+Hindsight is brutal. Here's what we learned the hard way.
 
-### Start with Chunking
+**Start with chunking.**
 
 We started with embeddings. Wrong order.
 
-You cannot evaluate embedding quality until you have good chunks. We wasted time tuning embedding parameters when the real problem was chunking.
+You can't evaluate embedding quality until you have good chunks. We wasted days tuning model parameters when the real problem was 200-line chunks splitting functions in half.
 
 Start with Tree-sitter. Get chunking right. Then add embeddings.
 
-### Design the Manifest First
+It's like tuning a car's engine before checking if the wheels are attached.
 
-Our manifest evolved organically. Early versions lacked crucial fields. We had to migrate data multiple times.
+**Design the manifest first.**
 
-If we started over, we would design the manifest schema upfront:
+Our manifest evolved organically. Early versions lacked crucial fields. We migrated data three times.
+
+If we started over? Design the manifest schema upfront:
 - What staleness detection needs
-- What incremental update needs
+- What incremental updates need
 - What CI checks need
 
 Get the manifest right and everything else follows.
 
-### Separate Structural from Semantic
+**Separate structural from semantic.**
 
-We initially tried to put everything in one index. Structural data (call graphs) and semantic data (embeddings) in the same queries.
+We initially tried putting everything in one index. Call graphs and embeddings. Exact lookups and similarity searches.
 
-They have different access patterns. Structural queries are exact lookups. Semantic queries are similarity searches.
+They have different access patterns. Structural queries are "find exactly this." Semantic queries are "find things like this."
 
 Two separate indexes, queried appropriately, work better than one unified mess.
 
-### Test With Real Queries First
+**Test with real queries first.**
 
-We built features based on what seemed useful. Some turned out essential. Others, never used.
+We built features based on what seemed useful. Some turned out essential. Others? Never touched.
 
-If we started over, we would collect real queries from developers for a week. What do they actually search for? What questions do they ask?
+If we started over? Collect real queries from developers for a week. What do they actually search for? What questions do they ask?
 
-Then build exactly what is needed. Nothing more.
+Then build exactly what's needed. Nothing more.
 
 ---
 
-## Future Enhancements
+## Where This Could Go
 
-The foundation is solid. Here is where we could go next:
+The foundation is solid. Here's what comes next.
 
-### Watch Mode
+**Watch mode.**
 
-Currently, you run `just discover-incr` manually after changes.
+Currently you run `just discover-incr` manually after changes.
 
-A file watcher could trigger re-indexing automatically. Change a file, wait 2 seconds, it is searchable.
+A file watcher could trigger re-indexing automatically. Change a file, wait 2 seconds, it's searchable.
 
-Implementation: chokidar watching `src/**/*.{ts,tsx}`, debounced triggers.
+It's like having your index auto-update instead of manually rebuilding.
 
-### Hybrid Search
+**Hybrid search.**
 
 Pure vector search sometimes misses exact matches. "useFormContext" should find the exact hook, not just similar concepts.
 
-Hybrid search combines vector similarity with keyword matching. LanceDB supports this natively with full-text search indexes.
+Hybrid search combines vector similarity with keyword matching. LanceDB supports this natively.
 
-### Cross-Repository Search
+Best of both worlds.
 
-Our system indexes one repository. Enterprise needs often span multiple repos.
+**Cross-repository search.**
 
-Architecture extension: one LanceDB table per repository, query router that fans out and merges results.
+Our system indexes one repository. Enterprise needs span dozens.
 
-### Custom Embedding Models
+Extension: one LanceDB table per repository, query router that fans out and merges results.
 
-nomic-embed-text is general-purpose. A model fine-tuned on code would understand that `useState` and `useReducer` are related, that `async/await` and `.then()` solve the same problem.
+Same architecture, replicated.
 
-Fine-tuning requires training data. We could generate it from our call graph: functions that call each other are related.
+**Custom embedding models.**
 
-### IDE Integration
+nomic-embed-text is general-purpose. A model fine-tuned on code would understand that `useState` and `useReducer` are related. That `async/await` and `.then()` solve the same problem.
 
-Right now, you query through Claude Code or command line.
+We could generate training data from our call graph. Functions that call each other are related.
 
-A VSCode extension could show semantic search results inline. Select text, right-click, "Find similar code."
+**IDE integration.**
+
+Right now you query through Claude Code.
+
+A VSCode extension could show results inline. Select text, right-click, "Find similar code."
 
 The MCP server already exists. It just needs a different client.
 
 ---
 
-## The Complete Justfile
+## Quick Start for Your Project
 
-For reference, here are all the discovery commands:
+Want this in your own codebase? Here's the minimal path.
 
-```makefile
-# =============================================================================
-# DISCOVERY SYSTEM
-# =============================================================================
-
-# Directory paths
-state-dir := ".claude/state"
-vector-db := ".claude/vectordb"
-
-# Full discovery (all extractors + embeddings)
-discover:
-    @echo "Running full discovery..."
-    npx tsx scripts/discover/index.ts
-    @echo "Discovery complete"
-
-# Incremental discovery (changed files only)
-discover-incr:
-    npx tsx scripts/discover/index.ts --incremental
-
-# Check if discovery files are fresh
-discover-check:
-    npx tsx scripts/discover/check-freshness.ts
-
-# Semantic search
-discover-search query:
-    @npx tsx scripts/discover/search.ts "{{query}}"
-
-# Component lookup
-discover-component name:
-    @npx tsx scripts/discover/lookup.ts component "{{name}}"
-
-# Call graph query
-discover-calls name:
-    @npx tsx scripts/discover/lookup.ts calls "{{name}}"
-
-# Show index statistics
-discover-stats:
-    @npx tsx scripts/discover/stats.ts
-
-# Force full rebuild (clear all state)
-discover-rebuild:
-    rm -rf {{state-dir}}
-    rm -rf {{vector-db}}
-    just discover
-
-# Start MCP server (for testing)
-mcp-server:
-    npx tsx .claude/mcp/discovery-server/src/index.ts
-
-# =============================================================================
-# OLLAMA (Embedding Model)
-# =============================================================================
-
-# Check if Ollama is running
-ollama-check:
-    @curl -s http://localhost:11434/api/version > /dev/null && echo "Ollama is running" || echo "Ollama is not running"
-
-# Pull the embedding model
-ollama-pull:
-    ollama pull nomic-embed-text
-
-# Warm up the embedding model
-ollama-warmup:
-    @curl -s -X POST http://localhost:11434/api/embeddings \
-      -d '{"model":"nomic-embed-text","prompt":"warmup"}' > /dev/null
-    @echo "Embedding model warmed up"
-```
-
----
-
-## Quick Start for New Projects
-
-Want to add this to your own project? Here is the minimal path:
-
-### Step 1: Install Dependencies
+**Install dependencies:**
 
 ```bash
 npm install @lancedb/lancedb tree-sitter tree-sitter-typescript fastmcp zod
 ```
 
-### Step 2: Create Discovery Script
+**Create the discovery script:**
 
 ```typescript
 // scripts/discover/index.ts
 import * as lancedb from "@lancedb/lancedb";
 import Parser from "tree-sitter";
-import TypeScript from "tree-sitter-typescript";
-import { glob } from "glob";
-import * as fs from "node:fs/promises";
 
 const parser = new Parser();
-parser.setLanguage(TypeScript.typescript);
-
-async function discover() {
-  const files = await glob("src/**/*.{ts,tsx}");
-  const db = await lancedb.connect(".claude/vectordb");
-
-  // ... chunk files with Tree-sitter
-  // ... generate embeddings with Ollama
-  // ... store in LanceDB
-
-  console.log("Discovery complete");
-}
-
-discover();
+// ... chunk files with Tree-sitter
+// ... embed with Ollama
+// ... store in LanceDB
 ```
 
-### Step 3: Create MCP Server
+**Create the MCP server:**
 
 ```typescript
 // .claude/mcp/server.ts
 import { FastMCP } from "fastmcp";
-import { z } from "zod";
 
 const server = new FastMCP("discovery");
-
 server.addTool({
   name: "search",
   description: "Semantic code search",
-  parameters: z.object({ query: z.string() }),
-  execute: async ({ query }) => {
-    // ... query LanceDB
-    return results;
-  },
+  execute: async ({ query }) => /* query LanceDB */
 });
-
 server.run();
 ```
 
-### Step 4: Configure Claude Code
+**Configure Claude Code:**
 
 ```json
-// .claude/mcp.json
 {
   "mcpServers": {
     "discovery": {
@@ -529,84 +363,104 @@ server.run();
 }
 ```
 
-### Step 5: Index and Search
+**Run it:**
 
 ```bash
-npx tsx scripts/discover/index.ts  # Build index
-# Now Claude Code can use semantic search
+npx tsx scripts/discover/index.ts
+# Now Claude Code has semantic search
 ```
 
-That is the skeleton. Fill in the details from the articles.
+That's the skeleton. Fill in details from the individual articles.
 
 ---
 
-## Closing Thoughts
+## The Commands
 
-We built enterprise-grade code intelligence infrastructure.
+Everything you need:
 
-For free.
+```bash
+just discover          # Full rebuild
+just discover-incr     # Changed files only
+just discover-check    # Verify freshness
+just discover-search "authentication"  # Search
+just discover-calls "useAuth"          # Call graph
+just discover-stats    # Show statistics
+```
 
-Running locally.
+One command to build. One command to search. That's the interface.
 
-With no cloud dependencies.
+---
 
-The same capabilities that GitHub, Sourcegraph, and Cursor charge for - semantic search, structural analysis, instant queries - are now yours to own and extend.
+## What You Built
 
-This is not a toy. This is production infrastructure that scales to millions of lines of code.
+Enterprise-grade code intelligence infrastructure.
 
-More importantly, you understand how it works. Every component. Every trade-off. Every edge case.
+Free.
+
+Local.
+
+Zero cloud dependencies.
+
+The same capabilities GitHub, Sourcegraph, and Cursor charge for—semantic search, structural analysis, instant queries—are now yours. To own. To extend. To modify.
+
+This isn't a toy. This is production infrastructure that scales to millions of lines.
+
+More importantly? You understand how it works.
+
+Every component. Every trade-off. Every edge case.
 
 When something breaks, you can fix it. When you need new features, you can add them. When the next AI revolution happens, you can adapt.
 
-That understanding is worth more than any SaaS subscription.
+That understanding is worth more than any subscription.
 
 ---
 
-## Your Next Steps
+## Your Move
 
-1. **Clone your largest codebase**
-2. **Run `just discover`**
-3. **Ask Claude Code a question about your code**
-4. **Watch it use semantic search instead of reading files**
+Clone your largest codebase.
 
-That moment when the answer comes back instantly, with relevant code you forgot existed?
+Run `just discover`.
 
-That is when this stops being theory.
+Ask Claude Code a question about your code.
 
-That is when you know it works.
+Watch it use semantic search instead of reading files.
+
+That moment when the answer comes back instantly? With relevant code you forgot existed?
+
+That's when theory becomes real.
+
+That's when you know it works.
 
 ---
 
 ## Resources
 
-Everything we built:
+What we built on:
 
-- **[SCIP](https://github.com/sourcegraph/scip)** - Structural code indexing
+- **[SCIP](https://github.com/sourcegraph/scip)** - Structural indexing
 - **[Tree-sitter](https://tree-sitter.github.io/tree-sitter/)** - Incremental parsing
-- **[LanceDB](https://lancedb.github.io/lancedb/)** - Serverless vector database
-- **[Ollama](https://ollama.ai/)** - Local LLM inference
-- **[FastMCP](https://github.com/jlowin/fastmcp)** - MCP server framework
+- **[LanceDB](https://lancedb.github.io/lancedb/)** - Serverless vectors
+- **[Ollama](https://ollama.ai/)** - Local inference
+- **[FastMCP](https://github.com/jlowin/fastmcp)** - MCP framework
 - **[nomic-embed-text](https://huggingface.co/nomic-ai/nomic-embed-text-v1.5)** - Embedding model
 
 Further reading:
 
-- **[Semantic Code Search at Scale](https://arxiv.org/abs/1909.09436)** - Academic foundations
-- **[CodeBERT](https://arxiv.org/abs/2002.08155)** - Code-specific embeddings
-- **[MCP Specification](https://spec.modelcontextprotocol.io/)** - Protocol details
+- **[Semantic Code Search at Scale](https://arxiv.org/abs/1909.09436)**
+- **[CodeBERT](https://arxiv.org/abs/2002.08155)**
+- **[MCP Specification](https://spec.modelcontextprotocol.io/)**
 
 ---
 
 ## Thank You
 
-This series took months to write.
+This series took months.
 
-Not because the concepts are hard. But because explaining them clearly is hard. Finding the right analogies. Building working examples. Making complex infrastructure feel approachable.
+Not because the concepts are hard. Because explaining them clearly is hard. Finding the right analogies. Building working examples. Making infrastructure feel approachable.
 
-I hope it was worth your time.
+The tools are real. The code works. The architecture scales.
 
-The tools we built are real. The code works. The architecture scales.
-
-Now it is yours.
+Now it's yours.
 
 Go index something.
 
@@ -619,6 +473,6 @@ You might finally find that bug.
 
 ---
 
-*This is the final article in the 12-part series on building local code intelligence. The complete implementation is available in our project repository. Questions, feedback, and contributions are welcome.*
+*Part 12 of 12: Building Local Code Intelligence*
 
 *Happy building.*
