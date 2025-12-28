@@ -210,9 +210,9 @@ discover-health:
 discover-embeddings:
     npx tsx scripts/discover/embeddings/indexer.ts
 
-# Semantic search CLI
-discover-search query:
-    npx tsx scripts/discover/embeddings/search-cli.ts "{{query}}"
+# Semantic search CLI (supports --limit, --type, --no-preview flags)
+discover-search query *args:
+    npx tsx scripts/discover/embeddings/search-cli.ts "{{query}}" {{args}}
 
 # Full semantic discovery: services + SCIP + embeddings
 discover-full: discover-services discover-scip discover-embeddings
