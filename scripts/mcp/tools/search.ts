@@ -217,18 +217,19 @@ export const searchCodeTool = {
 Use for: "find form validation", "where is authentication handled?"
 Returns: Array of {file, lines, preview, score}`,
   parameters: searchSchema,
-  execute: async (args: unknown): Promise<SearchResponse> => {
+  execute: async (args: unknown): Promise<string> => {
     // Validate input
     const parseResult = searchSchema.safeParse(args);
     if (!parseResult.success) {
-      return {
+      return JSON.stringify({
         error: "Invalid search parameters",
         suggestion: parseResult.error.errors
           .map((e) => `${e.path.join(".")}: ${e.message}`)
           .join("; "),
-      };
+      });
     }
 
-    return executeSearch(parseResult.data);
+    const result = await executeSearch(parseResult.data);
+    return JSON.stringify(result);
   },
 };

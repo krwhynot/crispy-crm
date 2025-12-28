@@ -39,60 +39,67 @@ interface RefsError {
   suggestion: string;
 }
 
-async function execute(
-  args: RefsInput
-): Promise<RefsResult | RefsError> {
+async function execute(args: RefsInput): Promise<string> {
   const { symbolName, includeDefinition } = args;
 
-  const db = getDb();
+  try {
+    const db = getDb();
 
-  const baseQuery = `
-    SELECT d.relative_path as path, r.line, r.column, r.end_line, r.end_column,
-           r.role, (r.role = 'definition') as isDefinition
-    FROM "references" r
-    JOIN symbols s ON r.symbol_id = s.id
-    JOIN documents d ON r.document_id = d.id
-    WHERE s.name = ?
-  `;
+    const baseQuery = `
+      SELECT d.relative_path as path, r.line, r.column, r.end_line, r.end_column,
+             r.role, (r.role = 'definition') as isDefinition
+      FROM "references" r
+      JOIN symbols s ON r.symbol_id = s.id
+      JOIN documents d ON r.document_id = d.id
+      WHERE s.name = ?
+    `;
 
-  const filterClause = includeDefinition ? "" : "AND r.role != 'definition'";
-  const orderClause = "ORDER BY d.relative_path, r.line";
+    const filterClause = includeDefinition ? "" : "AND r.role != 'definition'";
+    const orderClause = "ORDER BY d.relative_path, r.line";
 
-  const query = `${baseQuery} ${filterClause} ${orderClause}`;
+    const query = `${baseQuery} ${filterClause} ${orderClause}`;
 
-  const stmt = db.prepare(query);
-  const rows = stmt.all(symbolName) as Array<{
-    path: string;
-    line: number;
-    column: number;
-    end_line: number;
-    end_column: number;
-    role: string;
-    isDefinition: number;
-  }>;
+    const stmt = db.prepare(query);
+    const rows = stmt.all(symbolName) as Array<{
+      path: string;
+      line: number;
+      column: number;
+      end_line: number;
+      end_column: number;
+      role: string;
+      isDefinition: number;
+    }>;
 
-  if (rows.length === 0) {
-    return {
-      error: "No references found",
-      suggestion: "Check symbol name spelling",
-    };
+    if (rows.length === 0) {
+      return JSON.stringify({
+        error: "No references found",
+        suggestion: "Check symbol name spelling",
+      });
+    }
+
+    const references: ReferenceLocation[] = rows.map((row) => ({
+      file: row.path,
+      line: row.line,
+      column: row.column,
+      endLine: row.end_line,
+      endColumn: row.end_column,
+      role: row.role,
+      isDefinition: row.isDefinition === 1,
+    }));
+
+    return JSON.stringify({
+      symbol: symbolName,
+      references,
+      count: references.length,
+    });
+  } catch (err) {
+    const message = err instanceof Error ? err.message : String(err);
+    console.error(`find_references error: ${message}`);
+    return JSON.stringify({
+      error: `Database error: ${message}`,
+      suggestion: "Ensure the search database exists at .claude/state/search.db",
+    });
   }
-
-  const references: ReferenceLocation[] = rows.map((row) => ({
-    file: row.path,
-    line: row.line,
-    column: row.column,
-    endLine: row.end_line,
-    endColumn: row.end_column,
-    role: row.role,
-    isDefinition: row.isDefinition === 1,
-  }));
-
-  return {
-    symbol: symbolName,
-    references,
-    count: references.length,
-  };
 }
 
 export const findReferencesTool = {
