@@ -22,6 +22,8 @@ Guidance for Claude Code working with Crispy CRM (Atomic CRM) - a React 19 + Typ
 | `.claude/state/forms-inventory.json` | 39 form components - includes componentChain, inputComponentsDeep | "What forms exist?", "Form hierarchy?", "Which inputs used?" |
 | `.claude/state/validation-services-inventory/` | Validation wrapper functions & custom validators | "Error formatting?", "Custom validators?" |
 | `.claude/state/call-graph-inventory/` | 919 nodes, 10K+ edges (30 chunks) - call/render/hook relationships, cycles | "What calls X?", "What renders Y?", "Circular deps?" |
+| `.claude/state/search.db` | SQLite FTS5 + SCIP symbols/refs (77 MB) - powers MCP tools | Used by `search_code`, `go_to_definition`, `find_references` |
+| `.claude/state/vectors.lance/` | LanceDB semantic embeddings (7.6 MB) - 768-dim via Ollama | Used by `search_code` for semantic search |
 
 **These files are auto-generated and CI-enforced fresh.** Use them to understand structure before reading individual source files.
 
@@ -67,6 +69,30 @@ npx tsx scripts/discover/index.ts --incremental
      contacts: Modified: src/.../contacts.ts
 ✅ Incremental update: schemas-inventory/ (1 chunks updated, 18 total)
 ```
+
+## MCP Code Intelligence Server
+
+Claude Code auto-connects to `crispy-code-intel` MCP server via `.claude/mcp.json`. Three tools available:
+
+| Tool | Use Case | Returns |
+|------|----------|---------|
+| `search_code` | "find form validation", semantic search | `{file, lines, preview, score}` |
+| `go_to_definition` | "where is useForm defined?" | `{file, line, column, kind}` |
+| `find_references` | "who calls ContactList?" | `{file, line, isDefinition}[]` |
+
+**How it works:**
+- Combines FTS5 (exact match) + LanceDB vectors (semantic) using RRF ranking
+- Results found by both sources get boosted scores
+- Falls back to FTS-only if Ollama unavailable
+
+**Commands:**
+| Command | Description |
+|---------|-------------|
+| `just mcp-start` | Start server manually (usually auto-starts) |
+| `just mcp-test` | Verify tools are registered |
+| `just mcp-inspect` | Interactive debugging with MCP Inspector |
+
+**Requirements:** Run `just discover` first to build indexes. Docker with Ollama required for semantic search (optional - degrades gracefully to FTS-only).
 
 ## Preferred CLI Tools
 
