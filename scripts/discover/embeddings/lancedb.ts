@@ -189,11 +189,16 @@ export async function upsertPoints(points: UpsertPoint[]): Promise<void> {
 
     if (!exists) {
       // Create table with first batch of data
-      await conn.createTable(TABLE_NAME, records);
+      // Cast to Record<string, unknown>[] to satisfy LanceDB's type requirements
+      await conn.createTable(TABLE_NAME, records as unknown as Record<string, unknown>[]);
     } else {
-      // Upsert into existing table
+      // Upsert into existing table using merge insert (builder pattern)
       const table = await conn.openTable(TABLE_NAME);
-      await table.mergeInsert("id", records);
+      await table
+        .mergeInsert("id")
+        .whenMatchedUpdateAll()
+        .whenNotMatchedInsertAll()
+        .execute(records as unknown as Record<string, unknown>[]);
     }
   } catch (error) {
     const cause = error instanceof Error ? error : new Error(String(error));

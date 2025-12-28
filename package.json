@@ -159,7 +159,6 @@
     "@faker-js/faker": "^9.9.0",
     "@inquirer/prompts": "^8.0.1",
     "@lancedb/lancedb": "^0.23.0",
-    "@qdrant/js-client-rest": "^1.16.2",
     "@sourcegraph/scip-typescript": "^0.4.0",
     "@storybook/addon-a11y": "^9.1.10",
     "@storybook/addon-docs": "^9.1.10",
