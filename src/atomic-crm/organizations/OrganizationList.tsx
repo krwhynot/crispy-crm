@@ -19,6 +19,8 @@ import { OrganizationEmpty } from "./OrganizationEmpty";
 import { FilterableBadge } from "@/components/admin/FilterableBadge";
 import { ListNoResults } from "@/components/admin/ListNoResults";
 import { TopToolbar } from "../layout/TopToolbar";
+import { SortButton } from "@/components/admin/sort-button";
+import { ExportButton } from "@/components/admin/export-button";
 import { ORGANIZATION_FILTER_CONFIG } from "./organizationFilterConfig";
 import {
   OrganizationNameHeader,
@@ -30,7 +32,15 @@ import type { Organization, Sale, Segment } from "../types";
 import { DEFAULT_LIST_PAGE_SIZE } from "./constants";
 import type { OrganizationExportRow, OrganizationRecord } from "./types";
 
-const OrganizationListActions = () => <TopToolbar />;
+const OrganizationListActions = () => (
+  <TopToolbar>
+    <SortButton
+      fields={["name", "organization_type", "priority", "created_at"]}
+      dataTutorial="org-sort-btn"
+    />
+    <ExportButton dataTutorial="org-export-btn" />
+  </TopToolbar>
+);
 
 const exporter: Exporter<Organization> = async (records, fetchRelatedRecords) => {
   const sales = await fetchRelatedRecords<Sale>(records, "sales_id", "sales");

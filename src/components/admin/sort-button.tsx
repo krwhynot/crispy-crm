@@ -20,6 +20,7 @@ const SortButtonComponent = (props: SortButtonProps) => {
     label = "ra.sort.sort_by",
     icon = defaultIcon,
     resource: resourceProp,
+    dataTutorial,
     ...rest
   } = props;
   const { resource: resourceFromContext, sort, setSort } = useListSortContext();
@@ -58,7 +59,7 @@ const SortButtonComponent = (props: SortButtonProps) => {
           <Tooltip>
             <DropdownMenuTrigger asChild>
               <TooltipTrigger asChild>
-                <Button variant="outline" size="icon" aria-label={buttonLabel} {...rest}>
+                <Button variant="outline" size="icon" aria-label={buttonLabel} data-tutorial={dataTutorial} {...rest}>
                   {icon}
                 </Button>
               </TooltipTrigger>
@@ -70,7 +71,7 @@ const SortButtonComponent = (props: SortButtonProps) => {
         </TooltipProvider>
       ) : (
         <DropdownMenuTrigger asChild>
-          <Button variant="outline" size="sm" {...rest}>
+          <Button variant="outline" size="sm" data-tutorial={dataTutorial} {...rest}>
             {icon}
             <span className="ml-2">{buttonLabel}</span>
             <ChevronDown className="ml-2 h-4 w-4" />
@@ -104,6 +105,7 @@ export interface SortButtonProps extends ButtonProps {
   icon?: React.ReactNode;
   label?: string;
   resource?: string;
+  dataTutorial?: string;
 }
 
 export const SortButton = memo(SortButtonComponent, arePropsEqual);

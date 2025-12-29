@@ -20,6 +20,7 @@ export const ExportButton = (props: ExportButtonProps) => {
     exporter: customExporter,
     meta,
     className = "cursor-pointer",
+    dataTutorial,
   } = props;
   const {
     filter,
@@ -68,7 +69,7 @@ export const ExportButton = (props: ExportButtonProps) => {
   );
 
   return (
-    <Button variant="outline" onClick={handleClick} disabled={total === 0} className={className}>
+    <Button variant="outline" onClick={handleClick} disabled={total === 0} className={className} data-tutorial={dataTutorial}>
       {icon}
       <Translate i18nKey={label}>Export</Translate>
     </Button>
@@ -85,6 +86,6 @@ export interface ExportButtonProps {
   maxResults?: number;
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
   resource?: string;
-
   meta?: Record<string, unknown>;
+  dataTutorial?: string;
 }

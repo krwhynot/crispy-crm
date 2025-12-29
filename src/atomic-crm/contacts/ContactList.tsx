@@ -4,6 +4,8 @@ import { BulkActionsToolbar } from "@/components/admin/bulk-actions-toolbar";
 import { List } from "@/components/admin/list";
 import { FloatingCreateButton } from "@/components/admin/FloatingCreateButton";
 import { StandardListLayout } from "@/components/layouts/StandardListLayout";
+import { SortButton } from "@/components/admin/sort-button";
+import { ExportButton } from "@/components/admin/export-button";
 import { PremiumDatagrid } from "@/components/admin/PremiumDatagrid";
 import { TextField } from "@/components/admin/text-field";
 import { ReferenceField } from "@/components/admin/reference-field";
@@ -197,7 +199,15 @@ const ContactListLayout = ({
   );
 };
 
-const ContactListActions = () => <TopToolbar />;
+const ContactListActions = () => (
+  <TopToolbar>
+    <SortButton
+      fields={["first_name", "title", "last_seen"]}
+      dataTutorial="contact-sort-btn"
+    />
+    <ExportButton dataTutorial="contact-export-btn" />
+  </TopToolbar>
+);
 
 export default ContactList;
 // test

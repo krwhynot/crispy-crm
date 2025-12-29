@@ -39,16 +39,18 @@ export default function SalesList() {
 
   return (
     <>
-      <List
-        title={false}
-        actions={<SalesListActions />}
-        sort={{ field: "first_name", order: "ASC" }}
-        filterDefaultValues={{ disabled: false }}
-        aside={<SalesListFilter />}
-      >
-        <SalesListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
-        <FloatingCreateButton />
-      </List>
+      <div data-tutorial="sales-list">
+        <List
+          title={false}
+          actions={<SalesListActions />}
+          sort={{ field: "first_name", order: "ASC" }}
+          filterDefaultValues={{ disabled: false }}
+          aside={<SalesListFilter />}
+        >
+          <SalesListLayout openSlideOver={openSlideOver} isSlideOverOpen={isOpen} />
+          <FloatingCreateButton />
+        </List>
+      </div>
 
       <SalesSlideOver
         recordId={slideOverId}

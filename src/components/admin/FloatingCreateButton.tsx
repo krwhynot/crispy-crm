@@ -61,6 +61,7 @@ export const FloatingCreateButton: React.FC<FloatingCreateButtonProps> = ({
     <Link
       to={link}
       onClick={stopPropagation}
+      data-tutorial={`create-${resourceName}-btn`}
       aria-label={`Create new ${resourceName?.replace(/_/g, " ")}`}
       className={cn(
         // Base FAB styles
