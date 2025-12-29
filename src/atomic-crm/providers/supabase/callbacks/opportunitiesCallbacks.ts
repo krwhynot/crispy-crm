@@ -57,7 +57,7 @@ const COMPUTED_FIELDS = [
   "stage_manual",
   "status_manual",
   "competition",
-  "opportunity_owner_id",
+  // NOTE: opportunity_owner_id is NOT computed - it's user-provided and required by DB constraint
   // Legacy fields (kept for backward compatibility)
   "total_value",
   "participant_count",

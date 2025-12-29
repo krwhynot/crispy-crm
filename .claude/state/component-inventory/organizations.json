@@ -1,6 +1,6 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2025-12-27T06:59:32.620Z",
+  "generated_at": "2025-12-29T18:58:47.217Z",
   "item_count": 73,
   "items": [
     {
@@ -899,7 +899,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 227,
+      "line": 237,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -925,7 +925,9 @@
         "@/components/admin/ListNoResults",
         "@/components/admin/ListSearchBar",
         "@/components/admin/PremiumDatagrid",
+        "@/components/admin/export-button",
         "@/components/admin/list",
+        "@/components/admin/sort-button",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
         "@/hooks/useListKeyboardNavigation",
@@ -961,7 +963,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/OrganizationList.tsx",
-      "line": 227,
+      "line": 237,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -987,7 +989,9 @@
         "@/components/admin/ListNoResults",
         "@/components/admin/ListSearchBar",
         "@/components/admin/PremiumDatagrid",
+        "@/components/admin/export-button",
         "@/components/admin/list",
+        "@/components/admin/sort-button",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
         "@/hooks/useListKeyboardNavigation",
@@ -1498,7 +1502,7 @@
     {
       "name": "OrganizationList",
       "file": "src/atomic-crm/organizations/index.tsx",
-      "line": 227,
+      "line": 237,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",

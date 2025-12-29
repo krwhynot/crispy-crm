@@ -1,6 +1,6 @@
 {
   "status": "complete",
-  "generated_at": "2025-12-27T06:59:39.643Z",
+  "generated_at": "2025-12-29T18:58:51.506Z",
   "generator": "scripts/discover/extractors/forms.ts",
   "source_globs": [
     "src/atomic-crm/**/*Create*.tsx",
@@ -8,7 +8,7 @@
     "src/atomic-crm/**/*Form*.tsx",
     "src/atomic-crm/**/*Inputs*.tsx"
   ],
-  "checksum": "sha256:0ddf9502b15b85a4",
+  "checksum": "sha256:6bfd1eaa12500461",
   "source_hashes": {
     "src/atomic-crm/activities/ActivityCreate.tsx": "ac18d4791030",
     "src/atomic-crm/activities/ActivityEdit.tsx": "55bb5d0670e9",
@@ -28,7 +28,7 @@
     "src/atomic-crm/contexts/FormOptionsContext.tsx": "12d49feef49d",
     "src/atomic-crm/dashboard/v3/components/QuickLogForm.tsx": "d2e3bf70cdac",
     "src/atomic-crm/layout/FormToolbar.tsx": "cffd014a8b77",
-    "src/atomic-crm/notes/NoteCreate.tsx": "9f968f8478e4",
+    "src/atomic-crm/notes/NoteCreate.tsx": "870a953cb9ea",
     "src/atomic-crm/notes/NoteInputs.tsx": "43599a6d73e2",
     "src/atomic-crm/opportunities/ActivityNoteForm.tsx": "9ef3adc61f96",
     "src/atomic-crm/opportunities/OpportunityCreate.tsx": "bd1c2ea22dbb",
