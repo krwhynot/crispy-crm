@@ -1,6 +1,6 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2025-12-27T06:59:32.613Z",
+  "generated_at": "2025-12-29T18:58:47.213Z",
   "item_count": 51,
   "items": [
     {
@@ -682,7 +682,7 @@
     {
       "name": "ContactList",
       "file": "src/atomic-crm/contacts/ContactList.tsx",
-      "line": 32,
+      "line": 34,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -710,8 +710,10 @@
         "@/components/admin/PremiumDatagrid",
         "@/components/admin/bulk-actions-toolbar",
         "@/components/admin/date-field",
+        "@/components/admin/export-button",
         "@/components/admin/list",
         "@/components/admin/reference-field",
+        "@/components/admin/sort-button",
         "@/components/admin/text-field",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",
@@ -740,7 +742,7 @@
     {
       "name": "ContactList",
       "file": "src/atomic-crm/contacts/ContactList.tsx",
-      "line": 32,
+      "line": 34,
       "type": "presentational",
       "hooks": [
         "useFilterCleanup",
@@ -768,8 +770,10 @@
         "@/components/admin/PremiumDatagrid",
         "@/components/admin/bulk-actions-toolbar",
         "@/components/admin/date-field",
+        "@/components/admin/export-button",
         "@/components/admin/list",
         "@/components/admin/reference-field",
+        "@/components/admin/sort-button",
         "@/components/admin/text-field",
         "@/components/layouts/StandardListLayout",
         "@/components/ui/list-skeleton",

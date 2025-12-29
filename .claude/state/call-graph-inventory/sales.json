@@ -1,6 +1,6 @@
 {
   "chunk_name": "sales",
-  "generated_at": "2025-12-27T06:59:42.813Z",
+  "generated_at": "2025-12-29T18:58:52.879Z",
   "items": {
     "nodes": [
       {
@@ -103,37 +103,37 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "id": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
         "name": "SalesListLayout",
         "file": "src/atomic-crm/sales/SalesList.tsx",
-        "line": 67,
+        "line": 69,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesList.tsx:137:SalesListActions",
+        "id": "src/atomic-crm/sales/SalesList.tsx:139:SalesListActions",
         "name": "SalesListActions",
         "file": "src/atomic-crm/sales/SalesList.tsx",
-        "line": 137,
+        "line": 139,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesList.tsx:142:RoleBadgeField",
+        "id": "src/atomic-crm/sales/SalesList.tsx:144:RoleBadgeField",
         "name": "RoleBadgeField",
         "file": "src/atomic-crm/sales/SalesList.tsx",
-        "line": 142,
+        "line": 144,
         "nodeType": "component",
         "exported": false,
         "async": false
       },
       {
-        "id": "src/atomic-crm/sales/SalesList.tsx:184:StatusField",
+        "id": "src/atomic-crm/sales/SalesList.tsx:186:StatusField",
         "name": "StatusField",
         "file": "src/atomic-crm/sales/SalesList.tsx",
-        "line": 184,
+        "line": 186,
         "nodeType": "component",
         "exported": false,
         "async": false
@@ -991,7 +991,7 @@
         "target": "List",
         "targetName": "List",
         "edgeType": "render",
-        "line": 42,
+        "line": 43,
         "conditional": false,
         "inLoop": false
       },
@@ -1009,7 +1009,7 @@
         "target": "SalesListActions",
         "targetName": "SalesListActions",
         "edgeType": "render",
-        "line": 44,
+        "line": 45,
         "conditional": false,
         "inLoop": false
       },
@@ -1018,7 +1018,7 @@
         "target": "SalesListFilter",
         "targetName": "SalesListFilter",
         "edgeType": "render",
-        "line": 47,
+        "line": 48,
         "conditional": false,
         "inLoop": false
       },
@@ -1027,7 +1027,7 @@
         "target": "SalesListLayout",
         "targetName": "SalesListLayout",
         "edgeType": "render",
-        "line": 49,
+        "line": 50,
         "conditional": false,
         "inLoop": false
       },
@@ -1036,7 +1036,7 @@
         "target": "FloatingCreateButton",
         "targetName": "FloatingCreateButton",
         "edgeType": "render",
-        "line": 50,
+        "line": 51,
         "conditional": false,
         "inLoop": false
       },
@@ -1045,214 +1045,214 @@
         "target": "SalesSlideOver",
         "targetName": "SalesSlideOver",
         "edgeType": "render",
-        "line": 53,
+        "line": 55,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
         "target": "useListContext",
         "targetName": "useListContext",
         "edgeType": "hook",
-        "line": 74,
+        "line": 76,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
         "target": "useListKeyboardNavigation",
         "targetName": "useListKeyboardNavigation",
         "edgeType": "hook",
-        "line": 78,
+        "line": 80,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
         "target": "openSlideOver",
         "targetName": "openSlideOver",
         "edgeType": "call",
-        "line": 79,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
-        "line": 79,
+        "line": 81,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
         "target": "keys",
         "targetName": "keys",
         "edgeType": "call",
-        "line": 83,
+        "line": 85,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
         "target": "openSlideOver",
         "targetName": "openSlideOver",
         "edgeType": "call",
-        "line": 111,
+        "line": 113,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
         "target": "Number",
         "targetName": "Number",
         "edgeType": "call",
+        "line": 113,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
+        "target": "PremiumDatagrid",
+        "targetName": "PremiumDatagrid",
+        "edgeType": "render",
+        "line": 112,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
+        "target": "SalesListSkeleton",
+        "targetName": "SalesListSkeleton",
+        "edgeType": "render",
+        "line": 91,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
+        "target": "ListSearchBar",
+        "targetName": "ListSearchBar",
+        "edgeType": "render",
         "line": 111,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
-        "target": "PremiumDatagrid",
-        "targetName": "PremiumDatagrid",
-        "edgeType": "render",
-        "line": 110,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
-        "target": "SalesListSkeleton",
-        "targetName": "SalesListSkeleton",
-        "edgeType": "render",
-        "line": 89,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
-        "target": "ListSearchBar",
-        "targetName": "ListSearchBar",
-        "edgeType": "render",
-        "line": 109,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 116,
+        "line": 118,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
         "target": "TextField",
         "targetName": "TextField",
         "edgeType": "render",
-        "line": 119,
+        "line": 121,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
         "target": "EmailField",
         "targetName": "EmailField",
         "edgeType": "render",
-        "line": 122,
+        "line": 124,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
         "target": "RoleBadgeField",
         "targetName": "RoleBadgeField",
         "edgeType": "render",
-        "line": 125,
+        "line": 127,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:67:SalesListLayout",
+        "source": "src/atomic-crm/sales/SalesList.tsx:69:SalesListLayout",
         "target": "StatusField",
         "targetName": "StatusField",
         "edgeType": "render",
-        "line": 128,
+        "line": 130,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:137:SalesListActions",
+        "source": "src/atomic-crm/sales/SalesList.tsx:139:SalesListActions",
         "target": "TopToolbar",
         "targetName": "TopToolbar",
         "edgeType": "render",
-        "line": 137,
+        "line": 139,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:142:RoleBadgeField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:144:RoleBadgeField",
         "target": "useRecordContext",
         "targetName": "useRecordContext",
         "edgeType": "hook",
-        "line": 150,
+        "line": 152,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:142:RoleBadgeField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:144:RoleBadgeField",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 157,
+        "line": 159,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:142:RoleBadgeField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:144:RoleBadgeField",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 164,
+        "line": 166,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:142:RoleBadgeField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:144:RoleBadgeField",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 171,
+        "line": 173,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:184:StatusField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:186:StatusField",
         "target": "useRecordContext",
         "targetName": "useRecordContext",
         "edgeType": "hook",
-        "line": 192,
+        "line": 194,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:184:StatusField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:186:StatusField",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 198,
+        "line": 200,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/sales/SalesList.tsx:184:StatusField",
+        "source": "src/atomic-crm/sales/SalesList.tsx:186:StatusField",
         "target": "Badge",
         "targetName": "Badge",
         "edgeType": "render",
-        "line": 202,
+        "line": 204,
         "conditional": true,
         "inLoop": false
       },
