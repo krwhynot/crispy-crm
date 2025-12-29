@@ -9,16 +9,16 @@ export const userSteps: TutorialStep[] = [
     },
   },
   {
-    element: '[data-tutorial="team-list"]',
+    element: '[data-tutorial="sales-list"]',
     popover: {
       title: "Team Members",
       description: "View all team members and their roles.",
       side: "left",
     },
-    navigateTo: "/admin/users",
+    navigateTo: "/sales",
   },
   {
-    element: '[data-tutorial="invite-user-btn"]',
+    element: '[data-tutorial="create-sales-btn"]',
     popover: {
       title: "Invite User",
       description: "Click to invite a new team member.",

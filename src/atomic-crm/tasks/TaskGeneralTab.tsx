@@ -3,7 +3,9 @@ import { TextInput } from "@/components/admin/text-input";
 export const TaskGeneralTab = () => {
   return (
     <div className="space-y-2">
-      <TextInput source="title" label="Task Title *" helperText="Required field" />
+      <div data-tutorial="task-title">
+        <TextInput source="title" label="Task Title *" helperText="Required field" />
+      </div>
       <TextInput
         source="description"
         label="Description"
@@ -11,13 +13,15 @@ export const TaskGeneralTab = () => {
         rows={3}
         helperText="Optional detailed description"
       />
-      <TextInput
-        source="due_date"
-        label="Due Date *"
-        type="date"
-        isRequired
-        helperText="When is this due?"
-      />
+      <div data-tutorial="task-due-date">
+        <TextInput
+          source="due_date"
+          label="Due Date *"
+          type="date"
+          isRequired
+          helperText="When is this due?"
+        />
+      </div>
       <TextInput
         source="reminder_date"
         label="Reminder Date"
