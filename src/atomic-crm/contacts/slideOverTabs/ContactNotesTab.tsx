@@ -19,7 +19,7 @@ interface ContactNotesTabProps {
 export function ContactNotesTab({ record, mode }: ContactNotesTabProps) {
   return (
     <RecordContextProvider value={record}>
-      <div className="space-y-4">
+      <div className="space-y-4" data-tutorial="contact-notes-section">
         {/* Notes list with create form - NotesIterator includes NoteCreate internally */}
         <ReferenceManyField
           target="contact_id"
