@@ -89,16 +89,16 @@ describe("ContactCreate with Progress Tracking", () => {
       });
     });
 
-    test("Contact Info section does not show indicators (no required fields)", async () => {
+    test("Contact Info section shows indicator (email is required)", async () => {
       renderWithAdminContext(<ContactCreate />, { resource: "contacts" });
 
       await screen.findByText("Contact Info");
       const completeIcons = screen.queryAllByTestId("section-complete-icon");
       const incompleteIcons = screen.queryAllByTestId("section-incomplete-icon");
 
-      // Contact Info section should not contribute to icon count
-      // as it has requiredFields=[]
-      expect(completeIcons.length + incompleteIcons.length).toBe(2); // Only Name and Organization sections
+      // All three sections (Name, Organization, Contact Info) have required fields
+      // and should show indicators
+      expect(completeIcons.length + incompleteIcons.length).toBe(3);
     });
   });
 

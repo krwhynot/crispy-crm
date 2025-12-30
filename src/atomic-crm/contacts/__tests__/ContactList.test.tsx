@@ -471,7 +471,7 @@ describe("ContactList", () => {
     });
   });
 
-  test("renders datagrid when filters are applied even if no results", async () => {
+  test("renders ListNoResults when filters are applied with no results", async () => {
     const emptyWithFiltersContext = {
       ...defaultListContext,
       data: [],
@@ -484,9 +484,9 @@ describe("ContactList", () => {
     renderWithAdminContext(<ContactList />);
 
     await waitFor(() => {
-      // Should show datagrid when filters are active (even if no results)
-      const datagrid = screen.getByTestId("premium-datagrid");
-      expect(datagrid).toBeInTheDocument();
+      // Should show ListNoResults when filters are active but no results match
+      const noResults = screen.getByTestId("list-no-results");
+      expect(noResults).toBeInTheDocument();
     });
   });
 });

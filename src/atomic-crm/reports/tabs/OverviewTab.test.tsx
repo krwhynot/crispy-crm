@@ -1,12 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
+import { screen } from "@testing-library/react";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import OverviewTab from "./OverviewTab";
-
-// Mock ra-core hooks
-vi.mock("ra-core", () => ({
-  useGetList: vi.fn(),
-}));
 
 // Mock all chart components to avoid canvas rendering issues in tests
 vi.mock("../charts/PipelineChart", () => ({
@@ -24,8 +19,6 @@ vi.mock("../charts/TopPrincipalsChart", () => ({
 vi.mock("../charts/RepPerformanceChart", () => ({
   RepPerformanceChart: () => <div data-testid="rep-performance-chart">Rep Performance Chart</div>,
 }));
-
-import { useGetList } from "ra-core";
 
 const mockOpportunities = [
   {
@@ -61,10 +54,6 @@ const mockSalesReps = [
   { id: 1, first_name: "John", last_name: "Smith" },
   { id: 2, first_name: "Jane", last_name: "Doe" },
 ];
-
-const Wrapper = ({ children }: { children: React.ReactNode }) => (
-  <MemoryRouter>{children}</MemoryRouter>
-);
 
 describe("OverviewTab", () => {
   beforeEach(() => {
