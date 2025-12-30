@@ -17,6 +17,16 @@ interface OwnerFilterDropdownProps {
   label?: string;
 }
 
+/**
+ * Pattern G - Role-based owner filter (KEPT SEPARATE by design)
+ *
+ * This component has role-based UI logic that should NOT be abstracted:
+ * - Rep: Sees Switch toggle ("My Items" on/off)
+ * - Manager/Admin: Sees Select dropdown with team members
+ *
+ * The role-based split IS the business logic. Don't try to make
+ * a generic component "role-aware" — keep the decision explicit.
+ */
 export const OwnerFilterDropdown = ({ source, label = "Owner" }: OwnerFilterDropdownProps) => {
   const { filterValues, displayedFilters, setFilters } = useListFilterContext();
   const { data: identity } = useGetIdentity();
