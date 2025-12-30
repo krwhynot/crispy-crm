@@ -1,4 +1,3 @@
-import { SyntaxKind } from "ts-morph";
 import * as path from "path";
 import { project } from "../utils/project.js";
 import { writeChunkedDiscovery, writeIncrementalChunkedDiscovery, readExistingManifest } from "../utils/output.js";
