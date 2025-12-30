@@ -299,7 +299,7 @@ export function chunkFile(
   let tree;
   try {
     tree = parser.parse(content);
-  } catch (error) {
+  } catch (_error) {
     // Tree-sitter failed (large/complex file) - use line-based fallback
     console.warn(`   ⚡ Using line-based fallback for ${filePath}`);
     return chunkFileByLines(filePath, content);
