@@ -309,6 +309,52 @@
   .border-error-subtle {
     border-color: color-mix(in oklch, var(--destructive) 20%, transparent);
   }
+
+  /* ========================================
+     TOUCH TARGET & DATA ENTRY UTILITIES
+     ======================================== */
+
+  /* Touch target expansion: 44px hit area on any height element */
+  .touch-target-44 {
+    position: relative;
+  }
+  .touch-target-44::before {
+    content: '';
+    position: absolute;
+    /* Expand to 44px regardless of element height */
+    top: calc((44px - 100%) / -2);
+    bottom: calc((44px - 100%) / -2);
+    left: 0;
+    right: 0;
+    /* Debug: uncomment to visualize */
+    /* background: rgba(255, 0, 0, 0.1); */
+  }
+
+  /* Hybrid input: subtle borders that intensify on interaction */
+  .input-hybrid {
+    @apply border border-border/40 bg-transparent;
+    @apply transition-[border-color,background-color] duration-75;
+    @apply outline-none;
+  }
+  .input-hybrid:hover {
+    @apply border-border bg-accent/20;
+  }
+  .input-hybrid:focus {
+    @apply relative z-10 border-primary ring-1 ring-primary/30;
+  }
+
+  /* Data table cell: dense + touch-safe + tabular nums */
+  .data-cell {
+    @apply h-8 px-2 py-1.5;
+    @apply text-[13px] leading-snug;
+    @apply touch-target-44;
+  }
+  .data-cell-numeric {
+    @apply tabular-nums lining-nums text-right;
+  }
+  .data-cell-currency {
+    @apply tabular-nums lining-nums slashed-zero text-right;
+  }
 }
 
 @layer components {
