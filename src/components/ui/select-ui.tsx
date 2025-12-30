@@ -160,6 +160,7 @@ export function SelectUI({
           variant="outline"
           role="combobox"
           aria-expanded={open}
+          // TODO: Add aria-controls={popoverId} linking to PopoverContent id for screen readers
           aria-invalid={hasError || undefined}
           disabled={isDisabled}
           className={cn(

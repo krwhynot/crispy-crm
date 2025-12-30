@@ -157,6 +157,7 @@ export function FilterSelectUI({
             size="sm"
             role="combobox"
             aria-expanded={open}
+            // TODO: Add aria-controls={popoverId} linking to PopoverContent id for screen readers
             aria-label={`Filter by ${label}`}
             className={cn(
               "h-9 justify-between gap-1",
@@ -226,7 +227,7 @@ export function FilterSelectUI({
         <Button
           variant="ghost"
           size="sm"
-          className="h-9 w-9 p-0"
+          className="h-11 w-11 p-0"
           onClick={handleClear}
           aria-label={`Clear ${label} filter`}
         >

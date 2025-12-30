@@ -67,7 +67,7 @@ import { ReferenceInput } from "react-admin";
 import { GenericSelectInput } from "@/components/admin/generic-select-input";
 
 <ReferenceInput reference="organizations" source="org_id">
-  <GenericSelectInput optionText="name" />
+  <GenericSelectInput optionLabel="name" />
 </ReferenceInput>
 ```
 
@@ -92,7 +92,7 @@ function ContactPicker() {
       source="contact_id"
       filter={{ organization_id: orgId }}
     >
-      <GenericSelectInput optionText="full_name" />
+      <GenericSelectInput optionLabel="full_name" />
     </ReferenceInput>
   );
 }
