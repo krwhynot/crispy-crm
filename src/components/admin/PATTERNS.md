@@ -278,6 +278,205 @@ Note: Requires the create API to return the new record's ID.
 
 ---
 
+## Pattern G: List Filters
+
+For filtering React Admin lists (NOT forms). Uses `useListContext()` instead of `useInput()`.
+
+### Context: Form vs Filter vs Dashboard
+
+| Context | Hook | State Management | Example Component |
+|---------|------|------------------|-------------------|
+| **Form** | `useInput()` | react-hook-form | `GenericSelectInput` |
+| **Filter** | `useListContext()` | React Admin filterValues | `CheckboxColumnFilter` |
+| **Dashboard** | `useState()` | Local component state | `EntityCombobox` |
+
+### Column Filters (Existing Patterns)
+
+**TextColumnFilter** — Debounced text input for free-text search:
+```tsx
+// src/components/admin/column-filters/TextColumnFilter.tsx
+// Uses useListContext() for filterValues, setFilters
+// Features: 300ms debounce, clear button, escape key support
+```
+
+**CheckboxColumnFilter** — Multi-select checkbox popover:
+```tsx
+// src/components/admin/column-filters/CheckboxColumnFilter.tsx
+// Uses useListContext() for filterValues, setFilters
+// Features: Select All, Clear, count badge, touch targets
+```
+
+### Compact Sidebar Filters (FilterSelectUI)
+
+For sidebar or toolbar filters with many options, use `FilterSelectUI`:
+
+```tsx
+import { useListContext } from 'react-admin';
+import { FilterSelectUI } from '@/components/ui/filter-select-ui';
+
+const STAGE_OPTIONS = [
+  { id: 'new_lead', label: 'New Lead' },
+  { id: 'initial_outreach', label: 'Initial Outreach' },
+  { id: 'closed_won', label: 'Closed Won' },
+  // ...
+];
+
+export function StageFilter() {
+  const { filterValues, setFilters } = useListContext();
+  const currentValue = filterValues.stage || [];
+
+  const handleChange = (newValue: string[]) => {
+    const newFilters = { ...filterValues };
+    if (newValue.length > 0) {
+      newFilters.stage = newValue;
+    } else {
+      delete newFilters.stage;
+    }
+    setFilters(newFilters);
+  };
+
+  return (
+    <FilterSelectUI
+      options={STAGE_OPTIONS}
+      value={Array.isArray(currentValue) ? currentValue : [currentValue]}
+      onChange={handleChange}
+      label="Stage"
+    />
+  );
+}
+```
+
+### Role-Based Filters (Keep Separate)
+
+**OwnerFilterDropdown** — Role-based owner filter:
+```tsx
+// src/components/admin/OwnerFilterDropdown.tsx
+// KEPT SEPARATE by design - role-based UI logic should NOT be abstracted
+// - Rep: Sees Switch toggle ("My Items" on/off)
+// - Manager/Admin: Sees Select dropdown with team members
+// Uses useListFilterContext() (includes displayedFilters)
+```
+
+**When to use**: Filtering React Admin lists, NOT form inputs.
+
+---
+
+## Pattern H: Dashboard Pickers
+
+For entity selection OUTSIDE React Admin forms (dashboard widgets, quick actions).
+
+### Key Differences from Form Selects
+
+| Aspect | Form Select (Pattern A-F) | Dashboard Picker (Pattern H) |
+|--------|--------------------------|------------------------------|
+| **Context** | React Admin form | Standalone component |
+| **State** | `useInput()` / react-hook-form | Local `useState()` |
+| **Data** | `ReferenceInput` | `useGetList()` hook |
+| **Submission** | Form submit | Direct API call |
+
+### EntityCombobox Pattern
+
+For selecting entities in dashboard contexts (QuickLogForm, activity logging):
+
+```tsx
+import { useState, useEffect } from 'react';
+import { useGetList } from 'react-admin';
+import { SelectUI } from '@/components/ui/select-ui';
+
+interface EntityPickerProps {
+  resource: 'contacts' | 'organizations' | 'opportunities';
+  value: string | null;
+  onChange: (id: string | null) => void;
+  filter?: Record<string, unknown>;
+  placeholder?: string;
+}
+
+export function EntityPicker({
+  resource,
+  value,
+  onChange,
+  filter,
+  placeholder,
+}: EntityPickerProps) {
+  const { data, isLoading } = useGetList(resource, {
+    pagination: { page: 1, perPage: 100 },
+    sort: { field: 'name', order: 'ASC' },
+    filter,
+  });
+
+  const options = (data || []).map((record) => ({
+    id: String(record.id),
+    label: record.name || record.full_name || `#${record.id}`,
+  }));
+
+  return (
+    <SelectUI
+      options={options}
+      value={value ?? undefined}
+      onChange={(newValue) => onChange(newValue as string)}
+      placeholder={placeholder ?? `Select ${resource.slice(0, -1)}...`}
+      isLoading={isLoading}
+      searchable={options.length > 20}
+    />
+  );
+}
+```
+
+### Cascading Dashboard Pickers
+
+For dependent selections (contact depends on organization):
+
+```tsx
+function QuickLogForm() {
+  const [selectedOrg, setSelectedOrg] = useState<string | null>(null);
+  const [selectedContact, setSelectedContact] = useState<string | null>(null);
+
+  // Reset contact when org changes
+  useEffect(() => {
+    setSelectedContact(null);
+  }, [selectedOrg]);
+
+  // Filter contacts by selected org
+  const contactFilter = selectedOrg
+    ? { organization_id: selectedOrg }
+    : undefined;
+
+  return (
+    <div className="space-y-4">
+      <EntityPicker
+        resource="organizations"
+        value={selectedOrg}
+        onChange={setSelectedOrg}
+        placeholder="Select organization"
+      />
+
+      <EntityPicker
+        resource="contacts"
+        value={selectedContact}
+        onChange={setSelectedContact}
+        filter={contactFilter}
+        placeholder="Select contact"
+      />
+
+      <Button onClick={handleSubmit}>Log Activity</Button>
+    </div>
+  );
+}
+```
+
+### Existing Implementation
+
+**EntityCombobox** — Full-featured dashboard picker:
+```tsx
+// src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx
+// Features: hybrid search, fallback options, loading states, clear button
+// Used in QuickLogForm for Contact/Organization/Opportunity selection
+```
+
+**When to use**: Entity selection outside React Admin forms.
+
+---
+
 ## Migration Checklist
 
 When replacing an old select component:
