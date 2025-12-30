@@ -14,6 +14,10 @@
     "Nunito", "Inter", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
     sans-serif;
 
+  /* Data table optimized font size - 13px for high-density scanning */
+  --text-table: 0.8125rem;
+  --text-table--line-height: 1.35;
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -347,7 +351,16 @@
   .data-cell {
     @apply h-8 px-2 py-1.5;
     @apply text-[13px] leading-snug;
-    @apply touch-target-44;
+    /* Inline touch-target-44 (can't @apply custom utilities in same layer) */
+    position: relative;
+  }
+  .data-cell::before {
+    content: '';
+    position: absolute;
+    top: calc((44px - 100%) / -2);
+    bottom: calc((44px - 100%) / -2);
+    left: 0;
+    right: 0;
   }
   .data-cell-numeric {
     @apply tabular-nums lining-nums text-right;
