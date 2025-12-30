@@ -15,35 +15,35 @@ fi
 [ -z "$cmd" ] && exit 0
 
 # --- grep → rg ---
-if echo "$cmd" | grep -qE '\b(grep|egrep|fgrep)\b'; then
-  echo "❌ BLOCKED: Use 'rg' (ripgrep) instead of grep."
-  echo ""
-  echo "Examples:"
-  echo "  rg \"pattern\" --type ts    # TypeScript files"
-  echo "  rg -i \"pattern\"            # Case-insensitive"
-  echo "  rg -C 3 \"pattern\"          # With context"
+if echo "$cmd" | grep -qE '(^|\s)(grep|egrep|fgrep)\s+[^|]+\.(ts|tsx|js|jsx|json|md|py|rs|go|java|c|cpp|h)'; then
+  echo "❌ BLOCKED: Use 'rg' (ripgrep) instead of grep." >&2
+  echo "" >&2
+  echo "Examples:" >&2
+  echo "  rg \"pattern\" --type ts    # TypeScript files" >&2
+  echo "  rg -i \"pattern\"            # Case-insensitive" >&2
+  echo "  rg -C 3 \"pattern\"          # With context" >&2
   exit 2
 fi
 
 # --- find → fd ---
 if echo "$cmd" | grep -qE '^\s*find\b'; then
-  echo "❌ BLOCKED: Use 'fd' instead of find."
-  echo ""
-  echo "Examples:"
-  echo "  fd -e tsx \"name\"           # Find .tsx files"
-  echo "  fd -t f \"pattern\"          # Find files matching pattern"
-  echo "  fd . src/                   # List files in src/"
+  echo "❌ BLOCKED: Use 'fd' instead of find." >&2
+  echo "" >&2
+  echo "Examples:" >&2
+  echo "  fd -e tsx \"name\"           # Find .tsx files" >&2
+  echo "  fd -t f \"pattern\"          # Find files matching pattern" >&2
+  echo "  fd . src/                   # List files in src/" >&2
   exit 2
 fi
 
 # --- npm run → just ---
 if echo "$cmd" | grep -qE '\bnpm run\b'; then
-  echo "❌ BLOCKED: Use 'just' instead of npm run."
-  echo ""
-  echo "Examples:"
-  echo "  just dev                    # Start dev server"
-  echo "  just build                  # Build project"
-  echo "  just --list                 # Show all recipes"
+  echo "❌ BLOCKED: Use 'just' instead of npm run." >&2
+  echo "" >&2
+  echo "Examples:" >&2
+  echo "  just dev                    # Start dev server" >&2
+  echo "  just build                  # Build project" >&2
+  echo "  just --list                 # Show all recipes" >&2
   exit 2
 fi
 
