@@ -45,9 +45,17 @@ export default defineConfig({
       "tests/integration/**/*.test.{ts,tsx}", // Integration tests run separately
     ],
     // Force Vitest to transform React Admin packages (needed for ESM compatibility)
+    // All ra-* packages need to be inlined to avoid ESM directory import errors
     server: {
       deps: {
-        inline: ["react-admin", "ra-core"],
+        inline: [
+          "react-admin",
+          "ra-core",
+          "ra-ui-materialui",
+          "ra-data-fakerest",
+          "ra-i18n-polyglot",
+          "ra-language-english",
+        ],
       },
     },
   },
