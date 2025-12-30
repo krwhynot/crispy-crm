@@ -22,6 +22,8 @@ export interface TextColumnFilterProps {
 /**
  * Text-based column filter with debounced search
  *
+ * @pattern Pattern G - Column filter with debounced text input
+ *
  * Features:
  * - Debounced input (300ms default) to prevent excessive API calls
  * - Clear button (X) to remove filter

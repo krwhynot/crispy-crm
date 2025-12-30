@@ -63,6 +63,8 @@ interface EntityComboboxProps {
 /**
  * Reusable entity combobox with search, loading states, and clear button
  *
+ * @pattern Pattern H - Dashboard entity picker (no React Admin form context)
+ *
  * Used for Contact, Organization, and Opportunity selection in QuickLogForm.
  * Handles hybrid search (pre-loaded + server search) via parent hook.
  */

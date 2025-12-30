@@ -1,13 +1,13 @@
-import { SelectInput } from "@/components/admin/select-input";
-import { LEAD_SOURCE_CHOICES } from "./constants/LeadSourceInput.constants";
+import { GenericSelectInput } from "@/components/admin/generic-select-input";
+import { LEAD_SOURCE_CHOICES } from "@/constants/choices";
 
-export const LeadSourceInput = () => {
+export function LeadSourceInput() {
   return (
-    <SelectInput
+    <GenericSelectInput
       source="lead_source"
-      label="Lead Source"
       choices={LEAD_SOURCE_CHOICES}
-      helperText={false}
+      placeholder="Select lead source..."
+      searchable={false}
     />
   );
-};
+}

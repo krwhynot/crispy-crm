@@ -33,6 +33,8 @@ export interface CheckboxColumnFilterProps {
 /**
  * Multi-select checkbox column filter with popover
  *
+ * @pattern Pattern G - Column filter with checkbox popover (explicit multi-select affordance)
+ *
  * Features:
  * - Popover with checkbox list for multi-select
  * - Array accumulation (selecting multiple values)
