@@ -868,9 +868,9 @@ describe("CampaignActivityReport", () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByText("No activities found for this campaign")).toBeInTheDocument();
+        expect(screen.getByText("No Campaign Activities")).toBeInTheDocument();
         expect(
-          screen.getByText("Activities will appear here once your team starts engaging with leads")
+          screen.getByText("Activities will appear here once your team starts engaging with leads.")
         ).toBeInTheDocument();
       });
     });
@@ -892,7 +892,7 @@ describe("CampaignActivityReport", () => {
       });
 
       await waitFor(() => {
-        expect(screen.getByText("No activities found for this campaign")).toBeInTheDocument();
+        expect(screen.getByText("No Campaign Activities")).toBeInTheDocument();
       });
     });
 
@@ -923,7 +923,7 @@ describe("CampaignActivityReport", () => {
       await user.click(last7DaysButton);
 
       await waitFor(() => {
-        expect(screen.getByText("No activities match the current filters")).toBeInTheDocument();
+        expect(screen.getByText("Try adjusting your filters to see more results.")).toBeInTheDocument();
       });
     });
 
@@ -998,7 +998,8 @@ describe("CampaignActivityReport", () => {
       await user.click(checkbox);
 
       await waitFor(() => {
-        expect(screen.getByText(/No stale leads found/)).toBeInTheDocument();
+        expect(screen.getByText("No Stale Leads")).toBeInTheDocument();
+        expect(screen.getByText("All leads have recent activity - great job!")).toBeInTheDocument();
       });
     });
   });
