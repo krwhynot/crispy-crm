@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import OverviewTab from "./OverviewTab";
 
@@ -55,78 +55,96 @@ const mockSalesReps = [
   { id: 2, first_name: "Jane", last_name: "Doe" },
 ];
 
+const createMockGetList = () =>
+  vi.fn().mockImplementation((resource: string) => {
+    if (resource === "opportunities" || resource === "opportunities_summary") {
+      return Promise.resolve({ data: mockOpportunities, total: mockOpportunities.length });
+    }
+    if (resource === "activities") {
+      return Promise.resolve({ data: mockActivities, total: mockActivities.length });
+    }
+    if (resource === "sales" || resource === "sales_summary") {
+      return Promise.resolve({ data: mockSalesReps, total: mockSalesReps.length });
+    }
+    return Promise.resolve({ data: [], total: 0 });
+  });
+
 describe("OverviewTab", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it("renders KPI cards", () => {
-    (useGetList as any)
-      .mockReturnValueOnce({ data: mockOpportunities, isPending: false }) // opportunities
-      .mockReturnValueOnce({ data: mockActivities, isPending: false }) // activities
-      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }) // sales reps for rep performance
-      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }); // sales reps for TabFilterBar
+  it("renders KPI cards", async () => {
+    renderWithAdminContext(<OverviewTab />, {
+      dataProvider: {
+        getList: createMockGetList(),
+      },
+    });
 
-    render(<OverviewTab />, { wrapper: Wrapper });
-
-    expect(screen.getByText("Total Opportunities")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("Total Opportunities")).toBeInTheDocument();
+    });
     expect(screen.getByText("Activities This Week")).toBeInTheDocument();
     expect(screen.getByText("Stale Leads")).toBeInTheDocument();
   });
 
-  it("renders chart sections", () => {
-    (useGetList as any)
-      .mockReturnValueOnce({ data: mockOpportunities, isPending: false }) // opportunities
-      .mockReturnValueOnce({ data: mockActivities, isPending: false }) // activities
-      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }) // sales reps for rep performance
-      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }); // sales reps for TabFilterBar
+  it("renders chart sections", async () => {
+    renderWithAdminContext(<OverviewTab />, {
+      dataProvider: {
+        getList: createMockGetList(),
+      },
+    });
 
-    render(<OverviewTab />, { wrapper: Wrapper });
-
-    expect(screen.getByText("Pipeline by Stage")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByText("Pipeline by Stage")).toBeInTheDocument();
+    });
     expect(screen.getByText("Activity Trend (14 Days)")).toBeInTheDocument();
     expect(screen.getByText("Top Principals by Opportunities")).toBeInTheDocument();
     expect(screen.getByText("Rep Performance")).toBeInTheDocument();
   });
 
-  it("renders embedded TabFilterBar", () => {
-    (useGetList as any)
-      .mockReturnValueOnce({ data: mockOpportunities, isPending: false }) // opportunities
-      .mockReturnValueOnce({ data: mockActivities, isPending: false }) // activities
-      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }) // sales reps for rep performance
-      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }); // sales reps for TabFilterBar
-
-    render(<OverviewTab />, { wrapper: Wrapper });
+  it("renders embedded TabFilterBar", async () => {
+    renderWithAdminContext(<OverviewTab />, {
+      dataProvider: {
+        getList: createMockGetList(),
+      },
+    });
 
     // Filter bar should be inside the tab, not global
-    expect(screen.getByLabelText(/date range/i)).toBeInTheDocument();
+    await waitFor(() => {
+      expect(screen.getByLabelText(/date range/i)).toBeInTheDocument();
+    });
     expect(screen.getByLabelText(/sales rep/i)).toBeInTheDocument();
   });
 
-  it("uses lg: breakpoint for desktop-first grid", () => {
-    (useGetList as any)
-      .mockReturnValueOnce({ data: mockOpportunities, isPending: false }) // opportunities
-      .mockReturnValueOnce({ data: mockActivities, isPending: false }) // activities
-      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }) // sales reps for rep performance
-      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }); // sales reps for TabFilterBar
+  it("uses lg: breakpoint for desktop-first grid", async () => {
+    const { container } = renderWithAdminContext(<OverviewTab />, {
+      dataProvider: {
+        getList: createMockGetList(),
+      },
+    });
 
-    const { container } = render(<OverviewTab />, { wrapper: Wrapper });
+    await waitFor(() => {
+      const kpiGrid = container.querySelector('[data-testid="kpi-grid"]');
+      expect(kpiGrid).toHaveClass("grid-cols-1");
+    });
+
     const kpiGrid = container.querySelector('[data-testid="kpi-grid"]');
-    expect(kpiGrid).toHaveClass("grid-cols-1");
     expect(kpiGrid).toHaveClass("lg:grid-cols-4");
     // Should NOT have md: breakpoint
     expect(kpiGrid?.className).not.toMatch(/md:grid-cols-2/);
   });
 
-  it("uses semantic spacing tokens", () => {
-    (useGetList as any)
-      .mockReturnValueOnce({ data: mockOpportunities, isPending: false }) // opportunities
-      .mockReturnValueOnce({ data: mockActivities, isPending: false }) // activities
-      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }) // sales reps for rep performance
-      .mockReturnValueOnce({ data: mockSalesReps, isPending: false }); // sales reps for TabFilterBar
+  it("uses semantic spacing tokens", async () => {
+    const { container } = renderWithAdminContext(<OverviewTab />, {
+      dataProvider: {
+        getList: createMockGetList(),
+      },
+    });
 
-    const { container } = render(<OverviewTab />, { wrapper: Wrapper });
-    const wrapper = container.firstChild;
-    expect(wrapper).toHaveClass("space-y-section");
+    await waitFor(() => {
+      const wrapper = container.firstChild;
+      expect(wrapper).toHaveClass("space-y-section");
+    });
   });
 });

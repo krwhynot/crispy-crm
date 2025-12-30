@@ -71,8 +71,9 @@ describe("QuickAddForm", () => {
     });
 
     mockLocalStorage.getItem.mockImplementation((key) => {
-      if (key === "last_campaign") return "Test Campaign";
-      if (key === "last_principal") return "1";
+      // Return JSON-stringified values since getStorageItem uses JSON.parse
+      if (key === "last_campaign") return JSON.stringify("Test Campaign");
+      if (key === "last_principal") return JSON.stringify("1");
       return null;
     });
   });
@@ -223,7 +224,8 @@ describe("QuickAddForm", () => {
   it("shows 'Select a Principal first' when no principal is selected", async () => {
     // Mock no principal selected initially
     mockLocalStorage.getItem.mockImplementation((key) => {
-      if (key === "last_campaign") return "Test Campaign";
+      // Return JSON-stringified values since getStorageItem uses JSON.parse
+      if (key === "last_campaign") return JSON.stringify("Test Campaign");
       if (key === "last_principal") return null;
       return null;
     });
@@ -406,7 +408,8 @@ describe("QuickAddForm - Principal Selection and Product Filtering", () => {
     Object.defineProperty(window, "localStorage", {
       value: {
         getItem: vi.fn((key) => {
-          if (key === "last_campaign") return "Q4 Campaign";
+          // Return JSON-stringified values since getStorageItem uses JSON.parse
+          if (key === "last_campaign") return JSON.stringify("Q4 Campaign");
           if (key === "last_principal") return null; // No pre-selected principal
           return null;
         }),
