@@ -282,7 +282,7 @@ describe("Data Provider Schema Validation", () => {
           expect(errorText).toContain("does not exist");
           console.log("✓ Correctly identified schema mismatch via HTTP 400 error");
         }
-      } catch (err) {
+      } catch (_err) {
         // Network timeout or abort - skip the test
         console.log("⏭️ Skipping: Network timeout or Supabase not responding");
       }
