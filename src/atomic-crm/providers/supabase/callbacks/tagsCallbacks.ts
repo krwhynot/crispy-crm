@@ -2,11 +2,11 @@
  * Tags Resource Lifecycle Callbacks
  *
  * Callbacks for tags resource:
- * - Uses soft delete (aligned with SOFT_DELETE_RESOURCES config)
+ * - Uses hard delete (tags are simple entities truly removed from database)
  * - NO computed fields
  * - Standard validation via withValidation wrapper
  *
- * Engineering Constitution: Soft delete pattern for data integrity
+ * Engineering Constitution: Simple entity pattern for reference data
  */
 
 import { createResourceCallbacks, type ResourceCallbacks } from "./createResourceCallbacks";
@@ -15,7 +15,7 @@ import { createResourceCallbacks, type ResourceCallbacks } from "./createResourc
  * Tags lifecycle callbacks for React Admin withLifecycleCallbacks
  *
  * Tags are simple entities with:
- * - Soft delete (via deleted_at column)
+ * - Hard delete (truly removed from database)
  * - No computed fields
  * - Standard validation via withValidation wrapper
  *
@@ -31,6 +31,6 @@ import { createResourceCallbacks, type ResourceCallbacks } from "./createResourc
  */
 export const tagsCallbacks: ResourceCallbacks = createResourceCallbacks({
   resource: "tags",
-  supportsSoftDelete: true,
-  // No computed fields or transforms
+  supportsSoftDelete: false,
+  // No computed fields or transforms - tags use hard delete
 });

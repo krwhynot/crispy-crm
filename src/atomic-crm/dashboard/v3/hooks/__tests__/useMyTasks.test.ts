@@ -12,8 +12,28 @@
 
 import { renderHook, act, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
+import type { ReactNode } from "react";
 import { useMyTasks } from "../useMyTasks";
 import { startOfDay, addDays } from "date-fns";
+
+// Create a fresh QueryClient for each test to avoid test pollution
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: { retry: false, staleTime: 0, gcTime: 0 },
+      mutations: { retry: false },
+    },
+    logger: {
+      log: () => {},
+      warn: () => {},
+      error: () => {},
+    },
+  });
+
+// QueryClient instance (created fresh in beforeEach)
+let queryClient: QueryClient;
 
 // Track which tasks have been completed or deleted to simulate server filtering
 const completedTaskIds = new Set<number>();
@@ -82,6 +102,17 @@ const stableDataProvider = {
   update: wrappedUpdate,
   delete: wrappedDelete,
 };
+
+// Mock @tanstack/react-query's useQueryClient
+vi.mock("@tanstack/react-query", async (importOriginal) => {
+  const actual = await importOriginal<typeof import("@tanstack/react-query")>();
+  return {
+    ...actual,
+    useQueryClient: () => ({
+      invalidateQueries: vi.fn(),
+    }),
+  };
+});
 
 // Mock react-admin with stable reference
 vi.mock("react-admin", async (importOriginal) => {
@@ -192,8 +223,14 @@ const createMockTask = (overrides: Record<string, unknown> = {}) => ({
 });
 
 describe("useMyTasks", () => {
+  // Wrapper component for providing QueryClient context
+  const wrapper = ({ children }: { children: ReactNode }) =>
+    React.createElement(QueryClientProvider, { client: queryClient }, children);
+
   beforeEach(() => {
     vi.clearAllMocks();
+    // Create fresh QueryClient for each test
+    queryClient = createTestQueryClient();
     // Reset current sale state
     currentSaleState.salesId = 42;
     currentSaleState.loading = false;
@@ -213,7 +250,7 @@ describe("useMyTasks", () => {
         createMockTask({ id: 2, due_date: dates.tomorrow.toISOString() }),
       ];
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -235,7 +272,7 @@ describe("useMyTasks", () => {
     it("should not fetch tasks when salesId is null", async () => {
       currentSaleState.salesId = null;
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -251,7 +288,7 @@ describe("useMyTasks", () => {
 
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -273,7 +310,7 @@ describe("useMyTasks", () => {
 
       baseTasksData = mockTasks;
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -291,7 +328,7 @@ describe("useMyTasks", () => {
   describe("calculateStatus() - Date Logic", () => {
     it("should return correct status for various dates", async () => {
       const dates = createTestDates();
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -314,7 +351,7 @@ describe("useMyTasks", () => {
     });
 
     it("should handle same day with different times", async () => {
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -343,7 +380,7 @@ describe("useMyTasks", () => {
       baseTasksData = [mockTask];
       mockUpdate.mockResolvedValueOnce({ data: { ...mockTask, completed: true } });
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.tasks).toHaveLength(1);
@@ -371,7 +408,7 @@ describe("useMyTasks", () => {
 
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.tasks).toHaveLength(1);
@@ -404,7 +441,7 @@ describe("useMyTasks", () => {
         data: { ...mockTask, due_date: tomorrowDate.toISOString() }
       });
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.tasks).toHaveLength(1);
@@ -435,7 +472,7 @@ describe("useMyTasks", () => {
 
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.tasks).toHaveLength(1);
@@ -462,7 +499,7 @@ describe("useMyTasks", () => {
     it("should handle non-existent task gracefully", async () => {
       // No tasks
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.loading).toBe(false);
@@ -483,7 +520,7 @@ describe("useMyTasks", () => {
       baseTasksData = [mockTask];
       mockDelete.mockResolvedValueOnce({ data: mockTask });
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.tasks).toHaveLength(1);
@@ -505,7 +542,7 @@ describe("useMyTasks", () => {
 
       const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.tasks).toHaveLength(1);
@@ -534,7 +571,7 @@ describe("useMyTasks", () => {
       const mockTask = createMockTask({ id: 1 });
       baseTasksData = [mockTask];
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.tasks).toHaveLength(1);
@@ -554,7 +591,7 @@ describe("useMyTasks", () => {
       const mockTask = createMockTask({ id: 1, title: "Original Title" });
       baseTasksData = [mockTask];
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.tasks).toHaveLength(1);
@@ -592,7 +629,7 @@ describe("useMyTasks", () => {
       });
       baseTasksData = [mockTask];
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.tasks).toHaveLength(1);
@@ -616,7 +653,7 @@ describe("useMyTasks", () => {
       });
       baseTasksData = [mockTask];
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.tasks).toHaveLength(1);
@@ -641,7 +678,7 @@ describe("useMyTasks", () => {
       });
       baseTasksData = [mockTask];
 
-      const { result } = renderHook(() => useMyTasks());
+      const { result } = renderHook(() => useMyTasks(), { wrapper });
 
       await waitFor(() => {
         expect(result.current.tasks).toHaveLength(1);

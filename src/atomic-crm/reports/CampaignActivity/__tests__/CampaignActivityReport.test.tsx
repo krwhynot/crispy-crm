@@ -75,11 +75,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
@@ -164,11 +160,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
@@ -230,11 +222,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         // 2 notes out of 4 total = 50%, 2 calls out of 4 total = 50%
@@ -299,11 +287,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
@@ -367,11 +351,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
@@ -393,11 +373,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByLabelText("Start Date")).toBeInTheDocument();
@@ -423,11 +399,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByLabelText("End Date")).toBeInTheDocument();
@@ -457,11 +429,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByText("Last 7 days")).toBeInTheDocument();
@@ -488,11 +456,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByText("Activity Type")).toBeInTheDocument();
@@ -511,11 +475,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByText("Sales Rep")).toBeInTheDocument();
@@ -534,11 +494,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByText("Activity Type")).toBeInTheDocument();
@@ -559,11 +515,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       // Set a date filter first
       await waitFor(() => {
@@ -645,11 +597,7 @@ describe("CampaignActivityReport", () => {
         } as any;
       });
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(
@@ -699,11 +647,7 @@ describe("CampaignActivityReport", () => {
         } as any;
       });
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(
@@ -753,11 +697,7 @@ describe("CampaignActivityReport", () => {
         } as any;
       });
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(
@@ -843,11 +783,7 @@ describe("CampaignActivityReport", () => {
         } as any;
       });
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByText("Export to CSV")).toBeInTheDocument();
@@ -886,11 +822,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByText("No activities found for this campaign")).toBeInTheDocument();
@@ -912,11 +844,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByText("No activities found for this campaign")).toBeInTheDocument();
@@ -938,11 +866,7 @@ describe("CampaignActivityReport", () => {
         } as any;
       });
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByText("Last 7 days")).toBeInTheDocument();
@@ -1013,11 +937,7 @@ describe("CampaignActivityReport", () => {
         } as any;
       });
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(
@@ -1046,11 +966,7 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         expect(screen.getByText("Campaign Activity Report")).toBeInTheDocument();
@@ -1161,11 +1077,7 @@ describe("CampaignActivityReport", () => {
         } as any;
       });
 
-      render(
-        <MemoryRouter>
-          <CampaignActivityReport />
-        </MemoryRouter>
-      );
+      renderWithAdminContext(<CampaignActivityReport />);
 
       await waitFor(() => {
         // Check summary metrics - using getAllByText since "3" appears twice

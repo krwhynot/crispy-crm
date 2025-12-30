@@ -20,7 +20,7 @@ import {
 import { Combobox, MultiSelectCombobox } from "@/components/ui/combobox";
 import { US_CITIES } from "../data/us-cities";
 import { cn } from "@/lib/utils";
-import { getLocalStorageString } from "@/lib/storage-utils";
+import { getStorageItem } from "@/atomic-crm/utils/secureStorage";
 
 interface QuickAddFormProps {
   onSuccess: () => void;
@@ -77,13 +77,12 @@ export const QuickAddForm = ({ onSuccess }: QuickAddFormProps) => {
   const schemaDefaults = quickAddSchema.partial().parse({});
 
   // Then merge with validated localStorage for persistence
+  // Use getStorageItem (which JSON-parses) since setStorageItem JSON-stringifies
   const defaultValues = {
     ...schemaDefaults,
-    campaign: getLocalStorageString("last_campaign", schemaDefaults.campaign || ""),
+    campaign: getStorageItem<string>("last_campaign", { type: "local" }) ?? schemaDefaults.campaign ?? "",
     principal_id:
-      Number(
-        getLocalStorageString("last_principal", schemaDefaults.principal_id?.toString() || "")
-      ) || undefined,
+      Number(getStorageItem<string>("last_principal", { type: "local" }) ?? "") || undefined,
   };
 
   // Initialize form with defaults from schema and localStorage

@@ -368,7 +368,7 @@ describe("UnifiedDataProvider Array Filter Transformation", () => {
         expect.objectContaining({
           filter: expect.objectContaining({
             "tags@cs": "{1,2}",
-            "@or": expect.any(Object), // Search transformation
+            "or@": expect.any(String), // Search transformation uses "or@" key with string value
           }),
         })
       );
