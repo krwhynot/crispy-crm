@@ -1,9 +1,9 @@
-import { render, screen, waitFor, fireEvent } from "@testing-library/react";
+import { screen, waitFor, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { MemoryRouter } from "react-router-dom";
 import userEvent from "@testing-library/user-event";
 import CampaignActivityReport from "../CampaignActivityReport";
 import { sanitizeCsvValue } from "@/atomic-crm/utils/csvUploadValidator";
+import { renderWithAdminContext } from "@/tests/utils/render-admin";
 
 // Mock ra-core hooks
 vi.mock("ra-core", async () => {
