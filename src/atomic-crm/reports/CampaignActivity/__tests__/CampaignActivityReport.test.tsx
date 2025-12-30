@@ -24,6 +24,36 @@ vi.mock("jsonexport/dist", () => ({
   }),
 }));
 
+/**
+ * Helper to create mock dataProvider for tests that need useReportData to return data.
+ *
+ * The component uses both:
+ * - useGetList (from ra-core) - mocked globally above
+ * - useReportData (uses useDataProvider().getList()) - needs dataProvider mock
+ *
+ * This helper creates a dataProvider.getList mock that returns the provided activities.
+ */
+const createMockDataProviderWithActivities = (activities: any[]) => ({
+  getList: vi.fn().mockImplementation((resource: string) => {
+    if (resource === "activities") {
+      return Promise.resolve({
+        data: activities,
+        total: activities.length,
+        pageInfo: { hasNextPage: false, hasPreviousPage: false },
+      });
+    }
+    // Return opportunities with the default campaign for other resources
+    if (resource === "opportunities") {
+      return Promise.resolve({
+        data: [{ id: 1, name: "Test Opp", campaign: "Grand Rapids Trade Show" }],
+        total: 1,
+        pageInfo: { hasNextPage: false, hasPreviousPage: false },
+      });
+    }
+    return Promise.resolve({ data: [], total: 0 });
+  }),
+});
+
 describe("CampaignActivityReport", () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -75,7 +105,10 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      renderWithAdminContext(<CampaignActivityReport />);
+      // Pass dataProvider to make useReportData return activities
+      renderWithAdminContext(<CampaignActivityReport />, {
+        dataProvider: createMockDataProviderWithActivities(mockActivities),
+      });
 
       await waitFor(() => {
         expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
@@ -160,7 +193,9 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      renderWithAdminContext(<CampaignActivityReport />);
+      renderWithAdminContext(<CampaignActivityReport />, {
+        dataProvider: createMockDataProviderWithActivities(mockActivities),
+      });
 
       await waitFor(() => {
         expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
@@ -222,7 +257,9 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      renderWithAdminContext(<CampaignActivityReport />);
+      renderWithAdminContext(<CampaignActivityReport />, {
+        dataProvider: createMockDataProviderWithActivities(mockActivities),
+      });
 
       await waitFor(() => {
         // 2 notes out of 4 total = 50%, 2 calls out of 4 total = 50%
@@ -287,7 +324,9 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      renderWithAdminContext(<CampaignActivityReport />);
+      renderWithAdminContext(<CampaignActivityReport />, {
+        dataProvider: createMockDataProviderWithActivities(mockActivities),
+      });
 
       await waitFor(() => {
         expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
@@ -351,7 +390,9 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      renderWithAdminContext(<CampaignActivityReport />);
+      renderWithAdminContext(<CampaignActivityReport />, {
+        dataProvider: createMockDataProviderWithActivities(mockActivities),
+      });
 
       await waitFor(() => {
         expect(screen.getByText("Activity Type Breakdown")).toBeInTheDocument();
@@ -822,7 +863,9 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      renderWithAdminContext(<CampaignActivityReport />);
+      renderWithAdminContext(<CampaignActivityReport />, {
+        dataProvider: createMockDataProviderWithActivities([]),
+      });
 
       await waitFor(() => {
         expect(screen.getByText("No activities found for this campaign")).toBeInTheDocument();
@@ -844,7 +887,9 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      renderWithAdminContext(<CampaignActivityReport />);
+      renderWithAdminContext(<CampaignActivityReport />, {
+        dataProvider: createMockDataProviderWithActivities([]),
+      });
 
       await waitFor(() => {
         expect(screen.getByText("No activities found for this campaign")).toBeInTheDocument();
@@ -866,7 +911,9 @@ describe("CampaignActivityReport", () => {
         } as any;
       });
 
-      renderWithAdminContext(<CampaignActivityReport />);
+      renderWithAdminContext(<CampaignActivityReport />, {
+        dataProvider: createMockDataProviderWithActivities([]),
+      });
 
       await waitFor(() => {
         expect(screen.getByText("Last 7 days")).toBeInTheDocument();
@@ -937,7 +984,9 @@ describe("CampaignActivityReport", () => {
         } as any;
       });
 
-      renderWithAdminContext(<CampaignActivityReport />);
+      renderWithAdminContext(<CampaignActivityReport />, {
+        dataProvider: createMockDataProviderWithActivities(mockActivities),
+      });
 
       await waitFor(() => {
         expect(
@@ -966,7 +1015,9 @@ describe("CampaignActivityReport", () => {
         refetch: vi.fn(),
       } as any);
 
-      renderWithAdminContext(<CampaignActivityReport />);
+      renderWithAdminContext(<CampaignActivityReport />, {
+        dataProvider: createMockDataProviderWithActivities([]),
+      });
 
       await waitFor(() => {
         expect(screen.getByText("Campaign Activity Report")).toBeInTheDocument();
@@ -1077,7 +1128,9 @@ describe("CampaignActivityReport", () => {
         } as any;
       });
 
-      renderWithAdminContext(<CampaignActivityReport />);
+      renderWithAdminContext(<CampaignActivityReport />, {
+        dataProvider: createMockDataProviderWithActivities(mockActivities),
+      });
 
       await waitFor(() => {
         // Check summary metrics - using getAllByText since "3" appears twice
