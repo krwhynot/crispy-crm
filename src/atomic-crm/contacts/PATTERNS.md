@@ -1,65 +1,77 @@
-# Contact Feature Patterns
+# Contact Patterns
 
-Standard patterns for contact management in Crispy CRM, including CSV import/export, forms, badges, tags, and activity integration.
+Standard patterns for contact management in Crispy CRM, including CSV import, form handling, entity linking, and visual indicators.
 
 ## Component Hierarchy
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                         CONTACTS FEATURE                                     │
-├─────────────────────────────────────────────────────────────────────────────┤
-│                                                                              │
-│  ┌─────────────────────────────────────────────────────────────────────────┐│
-│  │                      CSV IMPORT PIPELINE (A, D, H)                      ││
-│  │  ┌──────────────┐   ┌─────────────┐   ┌──────────────┐   ┌───────────┐ ││
-│  │  │ CSV Upload   │ → │ PapaParse   │ → │ Column       │ → │ Preview   │ ││
-│  │  │ (validation) │   │ (parsing)   │   │ Mapping (D)  │   │ (data QA) │ ││
-│  │  └──────────────┘   └─────────────┘   └──────────────┘   └───────────┘ ││
-│  │          │                                   │                  │       ││
-│  │          ▼                                   ▼                  ▼       ││
-│  │  ┌──────────────┐   ┌─────────────────────────────────────────────────┐││
-│  │  │ Import Logic │   │            Import Wizard State Machine (H)       │││
-│  │  │ (A)          │   │  IDLE → FILE_SELECTED → PARSING → PREVIEW →     │││
-│  │  │              │   │  IMPORTING → COMPLETE/ERROR                      │││
-│  │  └──────────────┘   └─────────────────────────────────────────────────┘││
-│  └─────────────────────────────────────────────────────────────────────────┘│
-│                                                                              │
-│  ┌────────────────────────────────────────────────────────────────────────┐ │
-│  │                    CONTACT FORMS & DISPLAY (B, C, E, F, G)             │ │
-│  │  ┌───────────────┐  ┌───────────────┐  ┌───────────────────────────┐   │ │
-│  │  │ CompactForm   │  │ LinkModal     │  │ SlideOver                 │   │ │
-│  │  │ (B)           │  │ (C)           │  │                           │   │ │
-│  │  │ - Sections    │  │ - Dialog      │  │ ┌───────────────────────┐ │   │ │
-│  │  │ - ArrayInput  │  │ - useCreate   │  │ │ ContactBadges (G)     │ │   │ │
-│  │  │ - Defaults    │  │ - Duplicate   │  │ │ TagsList/Edit (E)     │ │   │ │
-│  │  └───────────────┘  └───────────────┘  │ │ ActivitiesTab (F)     │ │   │ │
-│  │                                        │ └───────────────────────┘ │   │ │
-│  │                                        └───────────────────────────┘   │ │
-│  └────────────────────────────────────────────────────────────────────────┘ │
-└─────────────────────────────────────────────────────────────────────────────┘
+ContactImportDialog (orchestrates import flow)
+    |
+useImportWizard (state machine) <------ useColumnMapping (field mapping)
+    |                                        |
+contactImport.logic.ts (validation) <-- columnAliases.ts (600+ aliases)
+    |
+csvProcessor.ts (CSV parsing + sanitization)
+
+ContactCreate / ContactEdit (form containers)
+    |
+ContactCompactForm (smart defaults + email parsing)
+    |
+contactBaseSchema (Zod validation)
+
+ContactSlideOver (detail panel)
+    |
++-- ContactDetailsTab (view/edit mode)
++-- ActivitiesTab (timeline + quick-log)
++-- OpportunitiesTab (junction table + suggestions)
++-- TagsListEdit (editable tags)
+
+Badge System
++-- ContactStatusBadge (cold/warm/hot/in-contract)
++-- RoleBadge (BANT/MEDDIC roles)
++-- InfluenceBadge (numeric -> semantic)
 ```
 
 ---
 
 ## Pattern A: Import/Export Pipeline
 
-Pure business logic for CSV contact import with data quality validation and transformation.
+Pure business logic for CSV contact import with data quality checks and security sanitization.
 
-**Key Files:**
-- `contactImport.logic.ts` - Pure functions for validation/transformation
-- `csvProcessor.ts` - CSV data processing and name splitting
-- `ContactImportPreview.tsx` - Preview UI with column mappings
-- `ContactImportResult.tsx` - Import result dialog with error export
+**When to use**: Bulk importing contacts from external sources (CSV files, spreadsheet exports).
 
-### Data Quality Transformations
+### Data Flow
+
+```
+CSV File
+    |
+csvUploadValidator -> validationErrors, warnings
+    |
+PapaParse -> rawHeaders[], rawDataRows[][]
+    |
+useColumnMapping.setRawData()
+    +-- mapHeadersToFields() -> auto-detected mappings
+    +-- userOverrides Map -> manual overrides (precedence)
+    +-- processCsvDataWithMappings() -> ContactImportSchema[]
+    |
+PREVIEW: Data Quality Checks
+    +-- isOrganizationOnlyEntry() -> org without contact person
+    +-- isContactWithoutContactInfo() -> contact without email/phone
+    |
+applyDataQualityTransformations() -> transformed contacts
+    |
+validateTransformedContacts() -> Zod validation
+    +-- successful[] (ready for import)
+    +-- failed[] (detailed errors with row/field)
+    |
+IMPORT: Batch processing with progress tracking
+```
+
+### Data Quality Predicates
 
 ```tsx
 // src/atomic-crm/contacts/contactImport.logic.ts
 
-/**
- * Pure function to check if a contact is organization-only (no person name).
- * Used for data quality decisions during import.
- */
 export function isOrganizationOnlyEntry(contact: Partial<ContactImportSchema>): boolean {
   const hasOrgName = contact.organization_name && String(contact.organization_name).trim();
   const hasFirstName = contact.first_name && String(contact.first_name).trim();
@@ -68,10 +80,30 @@ export function isOrganizationOnlyEntry(contact: Partial<ContactImportSchema>): 
   return !!(hasOrgName && !hasFirstName && !hasLastName);
 }
 
-/**
- * Applies data quality transformations based on user decisions.
- * Pure function - no side effects.
- */
+export function isContactWithoutContactInfo(contact: Partial<ContactImportSchema>): boolean {
+  const hasFirstName = contact.first_name && String(contact.first_name).trim();
+  const hasLastName = contact.last_name && String(contact.last_name).trim();
+  const hasName = hasFirstName || hasLastName;
+
+  const hasEmail =
+    (contact.email_work && String(contact.email_work).trim()) ||
+    (contact.email_home && String(contact.email_home).trim()) ||
+    (contact.email_other && String(contact.email_other).trim());
+
+  const hasPhone =
+    (contact.phone_work && String(contact.phone_work).trim()) ||
+    (contact.phone_home && String(contact.phone_home).trim()) ||
+    (contact.phone_other && String(contact.phone_other).trim());
+
+  return !!(hasName && !hasEmail && !hasPhone);
+}
+```
+
+### Data Quality Transformations
+
+```tsx
+// src/atomic-crm/contacts/contactImport.logic.ts
+
 export function applyDataQualityTransformations(
   contacts: ContactImportSchema[],
   decisions: DataQualityDecisions = {
@@ -84,7 +116,7 @@ export function applyDataQualityTransformations(
   const transformedContacts = contacts.map((contact, index) => {
     const transformed = { ...contact };
 
-    // Auto-fill placeholder contact if user approved
+    // Auto-fill placeholder contact for organization-only entries
     if (isOrganizationOnlyEntry(transformed) && decisions.importOrganizationsWithoutContacts) {
       transformed.first_name = "General";
       transformed.last_name = "Contact";
@@ -102,204 +134,160 @@ export function applyDataQualityTransformations(
 }
 ```
 
-### CSV Processing with Custom Mappings
+### Zod Validation with Error Collection
 
 ```tsx
-// src/atomic-crm/contacts/csvProcessor.ts
+// src/atomic-crm/contacts/contactImport.logic.ts
 
-/**
- * Transform raw CSV data with custom mappings (for interactive column mapping).
- * This is the SOURCE OF TRUTH for import - uses user overrides.
- */
-export function processCsvDataWithMappings(
-  headers: string[],
-  dataRows: Array<Array<unknown>>,
-  customMappings: Record<string, string | null>
-): ContactImportSchema[] {
-  return dataRows.map((row) => {
-    const contact: Record<string, string> = {};
-
-    headers.forEach((originalHeader, index) => {
-      const targetField = customMappings[originalHeader];
-      const rawValue = row[index];
-
-      // SECURITY: Sanitize all cell values
-      const value = sanitizeCsvValue(rawValue);
-
-      // Handle full name splitting
-      if (targetField === FULL_NAME_SPLIT_MARKER) {
-        const { first_name, last_name } = splitFullName(value || "");
-        contact.first_name = sanitizeCsvValue(first_name);
-        contact.last_name = sanitizeCsvValue(last_name);
-      } else if (targetField) {
-        contact[targetField] = value;
-      }
-      // If targetField is null/undefined, skip this column
-    });
-
-    return contact as ContactImportSchema;
-  });
-}
-
-/**
- * Split a full name into first and last name components.
- * Single name → assigned to last_name (formal convention).
- */
-export function splitFullName(fullName: string): { first_name: string; last_name: string } {
-  const nameParts = fullName.trim().split(/\s+/);
-
-  if (nameParts.length === 0 || fullName.trim() === "") {
-    return { first_name: "", last_name: "" };
-  } else if (nameParts.length === 1) {
-    // Single name - treat as last name
-    return { first_name: "", last_name: nameParts[0] };
-  } else {
-    // Multiple parts - first is first_name, rest is last_name
+export function validateTransformedContacts(contacts: ContactImportSchema[]) {
+  const validationResults = contacts.map((contact, index) => {
+    const result = importContactSchema.safeParse(contact);
     return {
-      first_name: nameParts[0],
-      last_name: nameParts.slice(1).join(" "),
+      index,
+      contact,
+      success: result.success,
+      error: result.success ? null : result.error,
     };
-  }
+  });
+
+  const successful = validationResults
+    .filter((r) => r.success)
+    .map((r) => ({ ...r.contact, originalIndex: r.index }));
+
+  const failed = validationResults
+    .filter((r) => !r.success)
+    .map((r) => ({
+      originalIndex: r.index,
+      data: r.contact,
+      errors: r.error!.issues.map((issue) => ({
+        field: issue.path.join("."),
+        message: issue.message,
+      })),
+    }));
+
+  return { successful, failed };
 }
 ```
 
-### Import Result with Error Export
+**Key points:**
+- Pure functions with no side effects - easy to test
+- Data quality checks are separate from validation - user can decide what to import
+- Errors include row numbers and field paths - actionable feedback
 
-```tsx
-// src/atomic-crm/contacts/ContactImportResult.tsx
-
-const handleDownloadErrors = () => {
-  // Create CSV content with comprehensive error details
-  const csvContent = [
-    [
-      "Row", "Error Reasons", "First Name", "Last Name", "Organization",
-      "Title", "Email (Work)", "Email (Home)", "Email (Other)",
-      "Phone (Work)", "Phone (Home)", "Phone (Other)", "LinkedIn URL", "Notes",
-    ],
-    ...result.errors.map((error) => [
-      error.row.toString(),
-      error.errors.map((e) => `${e.field}: ${e.message}`).join("; "),
-      error.data.first_name || "",
-      error.data.last_name || "",
-      // ... remaining fields
-    ]),
-  ]
-    .map((row) => row.map((cell) => `"${String(cell).replace(/"/g, '""')}"`).join(","))
-    .join("\n");
-
-  // Create and trigger download
-  const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-  const link = document.createElement("a");
-  link.href = URL.createObjectURL(blob);
-  link.download = `import_errors_${new Date().toISOString().split("T")[0]}.csv`;
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
-};
-```
-
-**When to use:**
-- Implementing bulk data import features
-- Need data quality checks before import
-- Want user decisions on edge cases (org-only entries, missing contact info)
-- Need downloadable error reports for failed imports
+**Example:** `src/atomic-crm/contacts/contactImport.logic.ts`
 
 ---
 
 ## Pattern B: Contact Form Defaults
 
-Smart form sections with email-to-name auto-fill and array inputs for multiple values.
+Smart defaults derived from Zod schema with sales context awareness.
 
-**Key File:** `ContactCompactForm.tsx`
+**When to use**: Creating/editing contacts with sensible defaults and auto-population.
 
-### Sectioned Form with Progress Indicators
+### Schema-Driven Defaults
+
+```tsx
+// src/atomic-crm/contacts/ContactCreate.tsx
+
+import { contactBaseSchema } from "../validation/contacts";
+
+// Generate defaults from schema truth
+// Per Engineering Constitution #5: FORM STATE DERIVED FROM TRUTH
+const formDefaults = {
+  ...contactBaseSchema.partial().parse({}),
+  sales_id: defaults.sales_id,  // Smart default: current user's sales_id
+};
+
+return (
+  <CreateBase redirect="list">
+    <Form defaultValues={formDefaults} mode="onBlur">
+      <ContactInputs />
+    </Form>
+  </CreateBase>
+);
+```
+
+### Smart Email-to-Name Parsing
 
 ```tsx
 // src/atomic-crm/contacts/ContactCompactForm.tsx
 
-export const ContactCompactForm = () => {
-  const { setValue, getValues } = useFormContext();
+const handleEmailChange = (email: string) => {
+  const { first_name, last_name } = getValues();
+  // Only auto-fill if name fields are empty
+  if (first_name || last_name || !email) return;
 
-  // Auto-fill name from email on paste/blur
-  const handleEmailChange = (email: string) => {
-    const { first_name, last_name } = getValues();
-    if (first_name || last_name || !email) return;
-    const [first, last] = email.split("@")[0].split(".");
-    setValue("first_name", first.charAt(0).toUpperCase() + first.slice(1));
-    setValue("last_name", last ? last.charAt(0).toUpperCase() + last.slice(1) : "");
-  };
+  // Extract name from email: john.doe@company.com -> John Doe
+  const [first, last] = email.split("@")[0].split(".");
+  setValue("first_name", first.charAt(0).toUpperCase() + first.slice(1));
+  setValue("last_name", last ? last.charAt(0).toUpperCase() + last.slice(1) : "");
+};
 
-  return (
-    <div className="space-y-6">
-      {/* Name Section */}
-      <FormSectionWithProgress
-        id="name-section"
-        title="Name"
-        requiredFields={["first_name", "last_name"]}
-      >
-        <CompactFormRow columns="md:grid-cols-[1fr_1fr_auto]" alignItems="start">
-          <FormFieldWrapper name="first_name" isRequired>
-            <TextInput source="first_name" label="First Name *" autoComplete="given-name" />
-          </FormFieldWrapper>
-          <FormFieldWrapper name="last_name" isRequired>
-            <TextInput source="last_name" label="Last Name *" autoComplete="family-name" />
-          </FormFieldWrapper>
-          <div className="pt-6">
-            <Avatar />
-          </div>
-        </CompactFormRow>
-      </FormSectionWithProgress>
+const handleEmailPaste: React.ClipboardEventHandler<...> = (e) => {
+  const email = e.clipboardData?.getData("text/plain");
+  handleEmailChange(email);
+};
 
-      {/* Contact Info Section with Array Inputs */}
-      <FormSectionWithProgress
-        id="contact-info-section"
-        title="Contact Info"
-        requiredFields={["email"]}
-      >
-        <FormFieldWrapper name="email" isRequired>
-          <ArrayInput source="email" label="Email addresses *">
-            <SimpleFormIterator inline disableReordering disableClear>
-              <TextInput
-                source="value"
-                placeholder="Email (valid email required)"
-                onPaste={handleEmailPaste}
-                onBlur={handleEmailBlur}
-              />
-              <SelectInput
-                source="type"
-                optionText="id"
-                choices={personalInfoTypes}
-                defaultValue="work"
-              />
-            </SimpleFormIterator>
-          </ArrayInput>
-        </FormFieldWrapper>
-      </FormSectionWithProgress>
-    </div>
-  );
+const handleEmailBlur = (e: React.FocusEvent<...>) => {
+  const email = e.target.value;
+  handleEmailChange(email);
 };
 ```
 
-### Personal Info Type Choices
+### Array Fields with Type Selection
 
 ```tsx
-// Lowercase type values to match Zod schema (personalInfoTypeSchema)
-const personalInfoTypes = [{ id: "work" }, { id: "home" }, { id: "other" }];
+// src/atomic-crm/contacts/ContactCompactForm.tsx
+
+<ArrayInput source="email" label="Email addresses *" helperText="At least one email required">
+  <SimpleFormIterator inline disableReordering disableClear>
+    <TextInput
+      source="value"
+      placeholder="Email (valid email required)"
+      onPaste={handleEmailPaste}
+      onBlur={handleEmailBlur}
+    />
+    <SelectInput
+      source="type"
+      choices={[{ id: "work" }, { id: "home" }, { id: "other" }]}
+      defaultValue="work"
+    />
+  </SimpleFormIterator>
+</ArrayInput>
 ```
 
-**When to use:**
-- Contact create/edit forms
-- Forms with multiple values per field (emails, phones)
-- Need visual progress indicators for form sections
-- Smart defaults/auto-fill from related fields
+**Key points:**
+- `contactBaseSchema.partial().parse({})` generates safe defaults from schema
+- `mode="onBlur"` prevents re-render storms (never use `onChange`)
+- Auto-population respects existing user input (only fills empty fields)
+- JSONB arrays for email/phone with typed entries
+
+**Example:** `src/atomic-crm/contacts/ContactCreate.tsx`, `ContactCompactForm.tsx`
 
 ---
 
 ## Pattern C: Contact Linking
 
-Modal dialogs for creating junction table records between contacts and other entities.
+Modal dialogs for creating junction table records between contacts and opportunities/organizations.
 
-**Key File:** `LinkOpportunityModal.tsx`
+**When to use**: Associating contacts with opportunities or organizations via junction tables.
+
+### Modal Props Interface
+
+```tsx
+// src/atomic-crm/contacts/LinkOpportunityModal.tsx
+
+interface LinkOpportunityModalProps {
+  open: boolean;
+  contactName: string;
+  contactId: number;
+  linkedOpportunityIds: number[];  // For duplicate detection
+  onClose: () => void;
+  onSuccess: () => void;
+}
+```
+
+### Junction Table Create with Duplicate Prevention
 
 ```tsx
 // src/atomic-crm/contacts/LinkOpportunityModal.tsx
@@ -318,9 +306,11 @@ export function LinkOpportunityModal({
   const handleLink = async (data: LinkOpportunityFormData) => {
     if (!data.opportunity_id) return;
 
-    // Duplicate check before creation
+    // Prevent duplicates before API call
     if (linkedOpportunityIds.includes(data.opportunity_id)) {
-      notify("This contact is already linked to that opportunity", { type: "warning" });
+      notify("This contact is already linked to that opportunity", {
+        type: "warning",
+      });
       return;
     }
 
@@ -340,7 +330,7 @@ export function LinkOpportunityModal({
             onClose();
           },
           onError: (error: unknown) => {
-            const errorMessage = error instanceof Error ? error.message : "Failed to link";
+            const errorMessage = error instanceof Error ? error.message : "Failed to link opportunity";
             notify(errorMessage, { type: "error" });
           },
         }
@@ -372,7 +362,9 @@ export function LinkOpportunityModal({
           </ReferenceInput>
 
           <DialogFooter>
-            <Button type="button" variant="outline" onClick={onClose}>Cancel</Button>
+            <Button type="button" variant="outline" onClick={onClose}>
+              Cancel
+            </Button>
             <Button type="submit" disabled={isLoading}>
               {isLoading ? "Linking..." : "Link Opportunity"}
             </Button>
@@ -384,21 +376,75 @@ export function LinkOpportunityModal({
 }
 ```
 
-**When to use:**
-- Creating many-to-many relationships
-- Need duplicate checking before creation
-- Searchable selection with `AutocompleteInput`
-- Modal workflow for linking entities
+### Three-Step Junction Fetch (OpportunitiesTab)
+
+```tsx
+// src/atomic-crm/contacts/OpportunitiesTab.tsx
+
+// Step 1: Fetch junction records
+const { data: junctionRecords } = useGetList(
+  "opportunity_contacts",
+  { filter: { contact_id: contact?.id }, pagination: { page: 1, perPage: 100 } }
+);
+
+// Step 2: Extract opportunity IDs
+const opportunityIds = junctionRecords?.map((jr) => jr.opportunity_id) || [];
+
+// Step 3: Fetch opportunity details by IDs
+const { data: opportunities } = useGetMany(
+  "opportunities",
+  { ids: opportunityIds },
+  { enabled: opportunityIds.length > 0 }
+);
+```
+
+**Key points:**
+- Pass `linkedOpportunityIds` to prevent duplicate links client-side
+- Context-aware messaging shows contact name in title
+- Three-step fetch pattern for junction tables: junctions -> IDs -> details
+- `useGetMany` only fetches when IDs are available
+
+**Example:** `src/atomic-crm/contacts/LinkOpportunityModal.tsx`, `OpportunitiesTab.tsx`
 
 ---
 
 ## Pattern D: Field Mapping Hook
 
-Reusable hook for CSV column-to-field mapping with user overrides.
+Two-layer mapping strategy for CSV column-to-field alignment with user overrides.
 
-**Key Files:**
-- `useColumnMapping.ts` - State management
-- `columnAliases.ts` - 200+ aliases for common CSV headers
+**When to use**: Mapping arbitrary CSV headers to canonical CRM field names with user customization.
+
+### Hook Interface
+
+```tsx
+// src/atomic-crm/contacts/useColumnMapping.ts
+
+export interface UseColumnMappingReturn {
+  /** Final mappings (auto-detected merged with user overrides) */
+  mappings: Record<string, string | null>;
+
+  /** User's manual overrides (exposed for UI "Custom" badge display) */
+  overrides: ReadonlyMap<string, string | null>;
+
+  /** Contacts with current mappings applied - SOURCE OF TRUTH for import */
+  contacts: ContactImportSchema[];
+
+  /** Raw headers from CSV (for preview UI) */
+  headers: string[];
+
+  /** Set or clear a single column override */
+  setOverride: (csvHeader: string, targetField: string | null) => void;
+
+  /** Initialize with parsed CSV data */
+  setRawData: (headers: string[], rows: unknown[][]) => void;
+
+  /** Reset all state */
+  reset: () => void;
+
+  /** True if data has been loaded */
+  hasData: boolean;
+}
+```
 
 ### Two-Layer Mapping Strategy
 
@@ -406,12 +452,9 @@ Reusable hook for CSV column-to-field mapping with user overrides.
 // src/atomic-crm/contacts/useColumnMapping.ts
 
 export function useColumnMapping(): UseColumnMappingReturn {
-  // Core state
   const [rawHeaders, setRawHeaders] = useState<string[]>([]);
   const [rawDataRows, setRawDataRows] = useState<unknown[][]>([]);
   const [userOverrides, setUserOverrides] = useState<Map<string, string | null>>(new Map());
-
-  // Track previous headers to detect new file selection
   const prevHeadersRef = useRef<string[]>([]);
 
   // Reset overrides when headers change (new file selected)
@@ -427,10 +470,7 @@ export function useColumnMapping(): UseColumnMappingReturn {
     }
   }, [rawHeaders]);
 
-  /**
-   * Derive final mappings by merging auto-detection with user overrides.
-   * Priority: User override > Auto-detection
-   */
+  // Derive final mappings: user overrides take precedence over auto-detection
   const mappings = useMemo<Record<string, string | null>>(() => {
     if (rawHeaders.length === 0) return {};
 
@@ -438,29 +478,25 @@ export function useColumnMapping(): UseColumnMappingReturn {
     const finalMappings: Record<string, string | null> = {};
 
     rawHeaders.forEach((header) => {
-      // User override takes precedence
+      // Priority: User override > Auto-detection
       finalMappings[header] = userOverrides.get(header) ?? autoMappings[header];
     });
 
     return finalMappings;
   }, [rawHeaders, userOverrides]);
 
-  /**
-   * Derive processed contacts - THIS IS THE SOURCE OF TRUTH FOR IMPORT
-   */
+  // SOURCE OF TRUTH: Process raw data with current mappings
   const contacts = useMemo<ContactImportSchema[]>(() => {
     if (!rawHeaders.length || !rawDataRows.length) return [];
     return processCsvDataWithMappings(rawHeaders, rawDataRows, mappings);
   }, [rawHeaders, rawDataRows, mappings]);
 
-  /**
-   * Set or clear a single column override.
-   */
+  // Set or clear single override
   const setOverride = useCallback((csvHeader: string, targetField: string | null) => {
     setUserOverrides((prev) => {
       const next = new Map(prev);
       if (targetField === null || targetField === "") {
-        next.delete(csvHeader);  // Revert to auto-detection
+        next.delete(csvHeader); // Revert to auto-detection
       } else {
         next.set(csvHeader, targetField);
       }
@@ -468,54 +504,25 @@ export function useColumnMapping(): UseColumnMappingReturn {
     });
   }, []);
 
-  return {
-    mappings,
-    overrides: userOverrides,
-    contacts,
-    headers: rawHeaders,
-    setOverride,
-    setRawData,
-    reset,
-    hasData: rawHeaders.length > 0,
-  };
+  return { mappings, overrides: userOverrides, contacts, headers: rawHeaders, setOverride, ... };
 }
 ```
 
-### Column Alias Registry
+### Header Normalization (columnAliases.ts)
 
 ```tsx
 // src/atomic-crm/contacts/columnAliases.ts
 
-/**
- * Registry mapping ContactImportSchema fields to common CSV header variations.
- * All variations are normalized (lowercase, trimmed) for comparison.
- */
-export const COLUMN_ALIASES: Record<string, string[]> = {
-  first_name: [
-    "first_name", "first name", "first", "firstname", "fname",
-    "given name", "given_name", "givenname", "forename",
-    "prenom", "vorname",  // Internationalization
-  ],
+export function normalizeHeader(header: string): string {
+  return header
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s_-]/g, " ")  // Remove special chars
+    .replace(/\s+/g, " ")             // Collapse spaces
+    .trim();
+}
 
-  organization_name: [
-    "organization_name", "organization name", "organization",
-    "company", "company name", "company_name", "companyname",
-    "business", "business name", "org", "org name",
-    "employer", "enterprise", "firm", "client", "customer", "account",
-  ],
-
-  email_work: [
-    "email_work", "email work", "work email", "work_email",
-    "business email", "business_email", "professional email",
-    "email", "e-mail", "email address",  // Default email maps to work
-    "email_primary", "primary email",
-  ],
-  // ... 200+ total aliases
-};
-
-/**
- * Pre-computed reverse map for O(1) lookups.
- */
+// Pre-computed reverse map: normalized alias -> canonical field
 const NORMALIZED_ALIAS_MAP: Map<string, string> = new Map();
 for (const [fieldName, aliases] of Object.entries(COLUMN_ALIASES)) {
   for (const alias of aliases) {
@@ -527,51 +534,23 @@ for (const [fieldName, aliases] of Object.entries(COLUMN_ALIASES)) {
 }
 ```
 
-**When to use:**
-- CSV import with flexible header matching
-- Need user-overridable auto-detection
-- Derived state from raw data + mappings
-- Internationalized header support
+**Key points:**
+- `contacts` array is the source of truth - derived from mappings, not re-parsed
+- User overrides stored in a Map, take precedence over auto-detection
+- Clearing an override (setting to null) reverts to auto-detection
+- 600+ aliases handle real-world CSV header variations
+
+**Example:** `src/atomic-crm/contacts/useColumnMapping.ts`, `columnAliases.ts`
 
 ---
 
 ## Pattern E: Contact Tags System
 
-Read-only display and editable tag lists with dropdown menu for quick actions.
+Editable tag lists with inline creation and semantic color mapping.
 
-**Key Files:**
-- `TagsList.tsx` - Read-only display in lists
-- `TagsListEdit.tsx` - Editable in slide-over/detail views
+**When to use**: Managing contact categorization with custom tags.
 
-### Read-Only Tag Display
-
-```tsx
-// src/atomic-crm/contacts/TagsList.tsx
-
-const ColoredBadge = (props: ColoredBadgeProps) => {
-  const record = useRecordContext();
-  if (!record) return null;
-
-  return (
-    <Badge
-      variant="outline"
-      className={cn("font-normal border-0", getTagColorClass(record.color))}
-    >
-      {record.name}
-    </Badge>
-  );
-};
-
-export const TagsList = () => (
-  <ReferenceArrayField className="inline-block" source="tags" reference="tags">
-    <SingleFieldList>
-      <ColoredBadge source="name" />
-    </SingleFieldList>
-  </ReferenceArrayField>
-);
-```
-
-### Editable Tag List with Dropdown
+### TagsListEdit Component
 
 ```tsx
 // src/atomic-crm/contacts/TagsListEdit.tsx
@@ -587,23 +566,40 @@ export const TagsListEdit = () => {
   const { data: tags } = useGetMany<Tag>(
     "tags",
     { ids: record?.tags },
-    { enabled: record && record.tags && record.tags.length > 0 }
+    { enabled: record?.tags?.length > 0 }
   );
   const [update] = useUpdate<Contact>();
 
-  const unselectedTags = allTags?.filter((tag) => !record?.tags.includes(tag.id));
+  const unselectedTags = allTags?.filter((tag) => !record?.tags?.includes(tag.id));
 
   const handleTagAdd = (id: Identifier) => {
     if (!record) throw new Error("No contact record found");
     const tags = [...record.tags, id];
-    update("contacts", { id: record.id, data: { tags }, previousData: record });
+    update("contacts", {
+      id: record.id,
+      data: { tags },  // Only send tags field (partial update)
+      previousData: record,
+    });
   };
 
   const handleTagDelete = async (id: Identifier) => {
     if (!record) throw new Error("No contact record found");
     const tags = record.tags.filter((tagId) => tagId !== id);
-    await update("contacts", { id: record.id, data: { tags }, previousData: record });
+    await update("contacts", {
+      id: record.id,
+      data: { tags },
+      previousData: record,
+    });
   };
+
+  const handleTagCreated = React.useCallback(async (tag: Tag) => {
+    if (!record) throw new Error("No contact record found");
+    await update("contacts", {
+      id: record.id,
+      data: { tags: [...record.tags, tag.id] },
+      previousData: record,
+    });
+  }, [update, record]);
 
   return (
     <div className="flex flex-wrap gap-2">
@@ -614,17 +610,21 @@ export const TagsListEdit = () => {
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button variant="outline" size="sm" className="h-11 px-3">
-            <Plus className="h-4 w-4 mr-1" /> Add tag
+            <Plus className="h-4 w-4 mr-1" />
+            Add tag
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           {unselectedTags?.map((tag) => (
             <DropdownMenuItem key={tag.id} onClick={() => handleTagAdd(tag.id)}>
-              <Badge className={getTagColorClass(tag.color)}>{tag.name}</Badge>
+              <Badge className={cn("text-xs font-normal", getTagColorClass(tag.color))}>
+                {tag.name}
+              </Badge>
             </DropdownMenuItem>
           ))}
           <DropdownMenuItem onClick={() => setOpen(true)}>
-            <Edit className="h-3 w-3 mr-2" /> Create new tag
+            <Edit className="h-3 w-3 mr-2" />
+            Create new tag
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
@@ -635,19 +635,44 @@ export const TagsListEdit = () => {
 };
 ```
 
-**When to use:**
-- Array field display with reference lookup
-- Inline tag editing with optimistic updates
-- Dropdown menu for quick add actions
-- Modal for creating new tags
+### Semantic Color Mapping
+
+```tsx
+// src/atomic-crm/tags/tag-colors.ts
+
+export function getTagColorClass(color: string): string {
+  const semanticColor = SEMANTIC_COLORS[color as TagColorName];
+  if (semanticColor) {
+    return semanticColor.cssClass;
+  }
+  return SEMANTIC_COLORS.gray.cssClass;  // Fallback
+}
+
+export function normalizeColorToSemantic(color: string): TagColorName {
+  if (VALID_TAG_COLORS.includes(color as TagColorName)) {
+    return color as TagColorName;
+  }
+  return "gray";
+}
+```
+
+**Key points:**
+- Partial updates: only send `{ tags }` field, not entire record
+- Dropdown shows unselected tags only (filtered from allTags)
+- Create modal allows inline tag creation with auto-link
+- 44px touch targets (`h-11`) for iPad accessibility
+
+**Example:** `src/atomic-crm/contacts/TagsListEdit.tsx`, `src/atomic-crm/tags/tag-colors.ts`
 
 ---
 
 ## Pattern F: Activity Tab Integration
 
-Shared activity tab component with pre-filled dialog context.
+Activity timeline with quick-log dialog for contact slide-overs.
 
-**Key File:** `ActivitiesTab.tsx`
+**When to use**: Displaying and logging activities for a specific contact.
+
+### ActivitiesTab Component
 
 ```tsx
 // src/atomic-crm/contacts/ActivitiesTab.tsx
@@ -659,130 +684,87 @@ interface ActivitiesTabProps {
 export const ActivitiesTab = ({ contactId }: ActivitiesTabProps) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
+  // Fetch activities for this contact
   const { data, isPending, error, refetch } = useGetList<ActivityRecord>("activities", {
     filter: { contact_id: contactId },
     sort: { field: "created_at", order: "DESC" },
     pagination: { page: 1, perPage: ACTIVITY_PAGE_SIZE },
   });
 
-  // Convert contactId to number for dialog (handles both string and number)
   const numericContactId = typeof contactId === "string" ? parseInt(contactId, 10) : contactId;
-
-  if (isPending) {
-    return (
-      <div className="space-y-4">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="p-4 border border-border rounded-lg">
-            <Skeleton className="h-4 w-32 mb-2" />
-            <Skeleton className="h-3 w-full mb-1" />
-            <Skeleton className="h-3 w-3/4" />
-          </div>
-        ))}
-      </div>
-    );
-  }
-
-  if (error) {
-    return <div className="text-center py-8 text-destructive">Failed to load activities</div>;
-  }
 
   return (
     <div className="space-y-4">
-      {/* Log Activity button */}
-      <div className="flex justify-end">
-        <Button variant="outline" className="h-11 gap-2" onClick={() => setIsDialogOpen(true)}>
-          <Plus className="h-4 w-4" /> Log Activity
+      <div className="flex justify-between items-center">
+        <h3>Activities</h3>
+        <Button onClick={() => setIsDialogOpen(true)}>
+          <Plus className="h-4 w-4 mr-1" />
+          Log Activity
         </Button>
       </div>
 
-      {data?.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">No activities recorded yet</div>
+      {isPending ? (
+        <LoadingSkeleton />
+      ) : activities.length === 0 ? (
+        <div className="text-center py-8 text-muted-foreground">
+          No activities recorded yet
+        </div>
       ) : (
         <div className="space-y-3">
-          {data?.map((activity) => (
+          {activities.map((activity) => (
             <ActivityTimelineEntry key={activity.id} activity={activity} />
           ))}
         </div>
       )}
 
-      {/* Activity logging dialog - pre-fills contact */}
       <QuickLogActivityDialog
         open={isDialogOpen}
         onOpenChange={setIsDialogOpen}
         entityContext={{ contactId: numericContactId }}
         config={{
-          enableDraftPersistence: false,  // No drafts for slide-over context
+          enableDraftPersistence: false,  // No drafts in slide-over
           showSaveAndNew: false,
         }}
-        onSuccess={() => refetch()}  // Refresh activity list
+        onSuccess={() => refetch()}  // Refresh timeline
       />
     </div>
   );
 };
 ```
 
-**When to use:**
-- Entity-specific activity feeds
-- Pre-filled activity dialogs with entity context
-- Skeleton loading for better UX
-- Refetch on successful creation
+**Key points:**
+- `useGetList` with contact filter retrieves only relevant activities
+- `refetch()` on dialog success keeps timeline current
+- `entityContext` pre-populates contact in the activity form
+- Disable draft persistence in slide-over context (ephemeral UI)
+
+**Example:** `src/atomic-crm/contacts/ActivitiesTab.tsx`
 
 ---
 
 ## Pattern G: Contact Badges
 
-Memoized badge components with semantic colors for status, role, and influence.
+Visual indicators for status, role, and influence with semantic colors.
 
-**Key File:** `ContactBadges.tsx`
+**When to use**: Displaying contact metadata in lists, detail views, and filters.
 
-### Type-Safe Badge Variants
+### ContactStatusBadge
 
 ```tsx
 // src/atomic-crm/contacts/ContactBadges.tsx
 
-/** Valid contact status levels matching database/configuration values */
 export type ContactStatus = "cold" | "warm" | "hot" | "in-contract";
 
-/**
- * Contact role within an organization's buying process.
- * Based on BANT/MEDDIC sales methodology.
- */
-export type ContactRole =
-  | "decision_maker"
-  | "influencer"
-  | "buyer"
-  | "end_user"
-  | "gatekeeper"
-  | "champion"
-  | "technical"
-  | "executive";
-
-/** Influence level (maps from database smallint 1-5) */
-export type InfluenceLevel = "critical" | "high" | "medium" | "low" | "minimal";
-```
-
-### Memoized Status Badge
-
-```tsx
-/**
- * Displays contact engagement status with semantic colors.
- *
- * Color mapping (MFB Garden to Table theme):
- * - cold: tag-blue (Cool/dormant)
- * - warm: tag-amber (Engaged)
- * - hot: tag-pink (Urgent/active)
- * - in-contract: tag-sage (Success)
- */
 export const ContactStatusBadge = memo(function ContactStatusBadge({ status }: ContactStatusBadgeProps) {
   if (!status) {
     return <Badge className="text-xs px-2 py-1 tag-gray">--</Badge>;
   }
 
   const config: Record<string, { label: string; className: string }> = {
-    cold: { label: "Cold", className: "tag-blue" },
-    warm: { label: "Warm", className: "tag-amber" },
-    hot: { label: "Hot", className: "tag-pink" },
-    "in-contract": { label: "Contract", className: "tag-sage" },
+    cold: { label: "Cold", className: "tag-blue" },      // Dormant
+    warm: { label: "Warm", className: "tag-amber" },     // Engaged
+    hot: { label: "Hot", className: "tag-pink" },        // Ready to buy
+    "in-contract": { label: "Contract", className: "tag-sage" },  // Closed
   };
 
   const { label, className } = config[status] || {
@@ -794,21 +776,57 @@ export const ContactStatusBadge = memo(function ContactStatusBadge({ status }: C
 });
 ```
 
-### Influence Badge with Numeric Conversion
+### RoleBadge (BANT/MEDDIC Roles)
 
 ```tsx
-/**
- * Displays contact's influence level.
- * Accepts string level OR numeric score (1-5).
- */
+// src/atomic-crm/contacts/ContactBadges.tsx
+
+export type ContactRole =
+  | "decision_maker"  // Has authority to approve
+  | "influencer"      // Technical evaluator
+  | "buyer"           // Procurement handler
+  | "end_user"        // Day-to-day user
+  | "gatekeeper"      // Controls access to decision makers
+  | "champion"        // Internal advocate
+  | "technical"       // Technical evaluator/implementer
+  | "executive";      // C-level with budget authority
+
+export const RoleBadge = memo(function RoleBadge({ role }: RoleBadgeProps) {
+  const config: Record<string, { label: string; className: string }> = {
+    executive: { label: "Executive", className: "tag-purple" },
+    decision_maker: { label: "Decision Maker", className: "tag-purple" },
+    champion: { label: "Champion", className: "tag-teal" },
+    influencer: { label: "Influencer", className: "tag-warm" },
+    technical: { label: "Technical", className: "tag-blue" },
+    buyer: { label: "Buyer", className: "tag-sage" },
+    gatekeeper: { label: "Gatekeeper", className: "tag-amber" },
+    end_user: { label: "End User", className: "tag-gray" },
+  };
+
+  const { label, className } = config[role] || {
+    label: role.split("_").map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(" "),
+    className: "tag-gray",
+  };
+
+  return <Badge className={`text-xs px-2 py-1 ${className}`}>{label}</Badge>;
+});
+```
+
+### InfluenceBadge (Numeric to Semantic Conversion)
+
+```tsx
+// src/atomic-crm/contacts/ContactBadges.tsx
+
+export type InfluenceLevel = "critical" | "high" | "medium" | "low" | "minimal";
+
 export const InfluenceBadge = memo(function InfluenceBadge({ influence }: InfluenceBadgeProps) {
   // Convert numeric score (1-5) to semantic level
   const normalizedInfluence = typeof influence === "number" ? numericToLevel(influence) : influence;
 
   const config: Record<string, { label: string; variant: BadgeVariant }> = {
-    critical: { label: "Critical", variant: "destructive" },
-    high: { label: "High", variant: "default" },
-    medium: { label: "Medium", variant: "secondary" },
+    critical: { label: "Critical", variant: "destructive" },  // Red
+    high: { label: "High", variant: "default" },              // Green
+    medium: { label: "Medium", variant: "secondary" },         // Muted
     low: { label: "Low", variant: "outline" },
     minimal: { label: "Minimal", variant: "outline" },
   };
@@ -833,16 +851,9 @@ function numericToLevel(score: number): InfluenceLevel {
 ### Composite Badge Group
 
 ```tsx
-/**
- * Renders multiple contact badges in a group.
- * Useful for slide-over detail views.
- */
-export function ContactBadgeGroup({
-  status,
-  role,
-  influence,
-  direction = "horizontal",
-}: ContactBadgeGroupProps) {
+// src/atomic-crm/contacts/ContactBadges.tsx
+
+export function ContactBadgeGroup({ status, role, influence, direction = "horizontal" }: ContactBadgeGroupProps) {
   const gapClass = direction === "horizontal" ? "flex-row gap-2" : "flex-col gap-1";
 
   return (
@@ -855,43 +866,60 @@ export function ContactBadgeGroup({
 }
 ```
 
-**When to use:**
-- Status/role visualization in lists and details
-- Type-safe badge configurations
-- Semantic colors from theme (`tag-*` classes)
-- Memoization for performance in large lists
+**Key points:**
+- `memo()` prevents unnecessary re-renders in list views
+- Graceful fallbacks for unknown values (gray badge with formatted label)
+- Numeric-to-semantic conversion for database smallint fields
+- Semantic tag colors from MFB Garden to Table theme
+
+**Example:** `src/atomic-crm/contacts/ContactBadges.tsx`
 
 ---
 
-## Pattern H: Import Wizard State Machine
+## Pattern H: Import Wizard State
 
-Discriminated union state machine for multi-step import flow with cancellation support.
+Discriminated union state machine for multi-step CSV import flow.
 
-**Key Files:**
-- `useImportWizard.ts` - Reducer + actions + hook
-- `useImportWizard.types.ts` - Discriminated union types
+**When to use**: Managing complex multi-step workflows with explicit state transitions.
 
-### Discriminated Union State Types
+### State Flow Diagram
+
+```
+IDLE -> FILE_SELECTED -> PARSING -> PREVIEW -> IMPORTING -> COMPLETE
+                            |          |           |
+                          ERROR      IDLE       ERROR
+```
+
+### Discriminated Union Types
 
 ```tsx
 // src/atomic-crm/contacts/useImportWizard.types.ts
 
-/**
- * All possible wizard steps as a literal union.
- */
-export type WizardStep =
-  | "idle"
-  | "file_selected"
-  | "parsing"
-  | "preview"
-  | "importing"
-  | "complete"
-  | "error";
+// Each state carries only its relevant data
+export interface WizardStateIdle { step: "idle"; }
+export interface WizardStateFileSelected {
+  step: "file_selected";
+  file: File;
+  validationErrors: CsvValidationError[];
+  validationWarnings: string[];
+}
+export interface WizardStateParsing { step: "parsing"; file: File; }
+export interface WizardStatePreview {
+  step: "preview";
+  file: File;
+  previewData: PreviewData;
+  dataQualityDecisions: DataQualityDecisions;
+}
+export interface WizardStateImporting {
+  step: "importing";
+  file: File;
+  progress: ImportProgress;
+  accumulated: AccumulatedResult;
+  rowOffset: number;
+}
+export interface WizardStateComplete { step: "complete"; result: ImportResult; }
+export interface WizardStateError { step: "error"; error: Error; previousStep: string; }
 
-/**
- * Discriminated union of all wizard states.
- * Makes illegal states UNREPRESENTABLE at the type level.
- */
 export type WizardState =
   | WizardStateIdle
   | WizardStateFileSelected
@@ -900,43 +928,13 @@ export type WizardState =
   | WizardStateImporting
   | WizardStateComplete
   | WizardStateError;
-
-/**
- * PREVIEW state carries preview data and data quality decisions.
- */
-export interface WizardStatePreview {
-  step: "preview";
-  file: File;
-  previewData: PreviewData;
-  dataQualityDecisions: DataQualityDecisions;
-}
-
-/**
- * IMPORTING state tracks progress and accumulated results.
- */
-export interface WizardStateImporting {
-  step: "importing";
-  file: File;
-  progress: ImportProgress;
-  accumulated: AccumulatedResult;
-  rowOffset: number;
-}
 ```
 
-### Pure Reducer Function
+### Pure Reducer with Exhaustive Handling
 
 ```tsx
 // src/atomic-crm/contacts/useImportWizard.ts
 
-/**
- * Pure reducer function for the import wizard state machine.
- *
- * Design principles:
- * 1. No side effects - only returns new state
- * 2. Invalid transitions return unchanged state (same reference)
- * 3. Exhaustive handling of all action types per state
- * 4. Immutable updates - never mutates input state
- */
 export function importWizardReducer(state: WizardState, action: WizardAction): WizardState {
   // Handle RESET action from any state
   if (action.type === "RESET") {
@@ -956,44 +954,41 @@ export function importWizardReducer(state: WizardState, action: WizardAction): W
     case "importing":
       return reduceImportingState(state, action);
     case "complete":
-      return reduceCompleteState(state, action);
     case "error":
-      return reduceErrorState(state, action);
+      return state; // Terminal states
     default:
-      // TypeScript exhaustive check
-      return assertNever(state);
+      return assertNever(state); // TypeScript exhaustiveness check
   }
 }
+```
 
-/**
- * Handles actions when in PREVIEW state.
- */
-function reducePreviewState(state: WizardStatePreview, action: WizardAction): WizardState {
+### State-Specific Reducer Example
+
+```tsx
+// src/atomic-crm/contacts/useImportWizard.ts
+
+function reduceIdleState(state: WizardStateIdle, action: WizardAction): WizardState {
   switch (action.type) {
-    case "START_IMPORT":
+    case "SELECT_FILE":
       return {
-        step: "importing",
-        file: state.file,
-        progress: { count: 0, total: action.payload.totalContacts },
-        accumulated: { ...INITIAL_ACCUMULATED_RESULT, startTime: new Date() },
-        rowOffset: 0,
+        step: "file_selected",
+        file: action.payload.file,
+        validationErrors: action.payload.validationErrors,
+        validationWarnings: action.payload.validationWarnings,
       };
 
-    case "UPDATE_DATA_QUALITY_DECISIONS":
-      return { ...state, dataQualityDecisions: action.payload.decisions };
-
-    case "CANCEL":
-      return createInitialState();
-
     default:
+      // Invalid action for this state - return unchanged
       return state;
   }
 }
 ```
 
-### Hook with AbortController Support
+### Hook with AbortController
 
 ```tsx
+// src/atomic-crm/contacts/useImportWizard.ts
+
 export function useImportWizard() {
   const [state, dispatch] = useReducer(importWizardReducer, undefined, createInitialState);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -1006,214 +1001,174 @@ export function useImportWizard() {
     return abortControllerRef.current;
   }, []);
 
-  const isAborted = useCallback(() => {
-    return abortControllerRef.current?.signal.aborted ?? false;
-  }, []);
-
-  // Override actions to manage abort lifecycle
   const actions = useMemo(() => {
     const baseActions = createWizardActions(dispatch);
     return {
       ...baseActions,
+      startParsing: () => {
+        createAbortController();
+        baseActions.startParsing();
+      },
       startImport: (totalContacts: number) => {
         createAbortController();
         baseActions.startImport(totalContacts);
       },
       cancel: () => {
-        abortControllerRef.current?.abort();
+        abortCurrentOperation();
         baseActions.cancel();
       },
     };
   }, [createAbortController]);
 
-  // Derive boolean flags from state
   const flags = useMemo(() => deriveWizardFlags(state), [state]);
 
-  return { state, actions, flags, isAborted };
+  return { state, actions, flags, abortSignal: getAbortSignal(), isAborted: () => ... };
 }
 ```
 
-### Derived Flags for UI Conditions
+**Key points:**
+- Discriminated unions make illegal state combinations impossible at compile time
+- Invalid transitions return unchanged state (same reference)
+- `assertNever()` ensures TypeScript exhaustiveness checking
+- AbortController enables safe cancellation of async operations
 
-```tsx
-/**
- * Derive boolean flags from wizard state.
- * Replaces multiple useState booleans.
- */
-export function deriveWizardFlags(state: WizardState) {
-  return {
-    showPreview: state.step === "preview",
-    showResult: state.step === "complete",
-    isImporting: state.step === "importing",
-    isParsing: state.step === "parsing",
-    hasError: state.step === "error",
-    hasFile: hasFile(state),
-    isTerminal: isTerminal(state),
-    isProcessing: isProcessing(state),
-  };
-}
-```
-
-**When to use:**
-- Multi-step workflows with complex state
-- Need cancellation/abort support
-- Type-safe state transitions
-- Derived UI flags from state
+**Example:** `src/atomic-crm/contacts/useImportWizard.ts`, `useImportWizard.types.ts`
 
 ---
 
-## Pattern Comparison
+## Pattern Comparison Tables
 
-### Tag Display vs Edit
+### Form vs Import Validation
 
-| Aspect | TagsList (Read-Only) | TagsListEdit (Editable) |
-|--------|---------------------|------------------------|
-| **Hooks** | `ReferenceArrayField` | `useGetList`, `useGetMany`, `useUpdate` |
-| **Actions** | Display only | Add, remove, create new |
-| **UI** | Inline badges | Badges + dropdown menu |
-| **Use case** | List cells | Slide-over/detail views |
+| Aspect | Form Validation | Import Validation |
+|--------|-----------------|-------------------|
+| **Schema** | `createContactSchema` (strict) | `importContactSchema` (flexible) |
+| **Required Fields** | first_name, last_name, sales_id, org_id, email | Minimal (org_name) |
+| **Mode** | `onBlur` | Batch (all at once) |
+| **Error Display** | Inline field errors | Table with row numbers |
+| **Data Source** | User input | CSV file |
 
-### Badge Patterns
+### State Management Patterns
 
-| Badge Type | Color System | Variants | Input Type |
-|------------|-------------|----------|------------|
-| **Status** | Semantic `tag-*` classes | N/A | String literal |
-| **Role** | Semantic `tag-*` classes | N/A | String literal |
-| **Influence** | Badge variants | destructive/default/secondary/outline | String OR number (1-5) |
+| Pattern | Hook | State Type | Use Case |
+|---------|------|-----------|----------|
+| **Import Wizard** | `useImportWizard` | Discriminated union | Multi-step flows |
+| **Column Mapping** | `useColumnMapping` | Derived state | Header-to-field mapping |
+| **Tag Management** | `useUpdate` | React Admin | CRUD on junction data |
+| **Activity Logging** | `useGetList` + dialog | Fetch + modal | Timeline + quick-add |
 
-### Import State Transitions
+### Badge Components
 
-| Current State | Valid Actions | Next State |
-|---------------|---------------|------------|
-| `idle` | SELECT_FILE | `file_selected` |
-| `file_selected` | START_PARSING, CLEAR_FILE | `parsing`, `idle` |
-| `parsing` | PARSING_COMPLETE, PARSING_FAILED | `preview`, `error` |
-| `preview` | START_IMPORT, CANCEL | `importing`, `idle` |
-| `importing` | UPDATE_PROGRESS, IMPORT_COMPLETE, CANCEL | `importing`, `complete`, `idle` |
-| `complete` | RESET | `idle` |
-| `error` | RESET | `idle` |
+| Badge | Data Type | Color System | Fallback |
+|-------|-----------|--------------|----------|
+| **ContactStatusBadge** | string | tag-* classes | tag-gray |
+| **RoleBadge** | string enum | tag-* classes | tag-gray + title case |
+| **InfluenceBadge** | number (1-5) or string | Badge variants | outline + "Level N" |
 
 ---
 
 ## Anti-Patterns
 
-### Direct CSV parsing in components
+### 1. Direct Supabase in Components
 
 ```tsx
-// BAD: Parsing in component
-function ImportButton() {
-  const handleFile = (file: File) => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      Papa.parse(e.target?.result, {
-        complete: (results) => { /* ... */ }
-      });
-    };
-    reader.readAsText(file);
-  };
-}
+// WRONG: Direct database access
+import { supabase } from "@/lib/supabase";
+const { data } = await supabase.from("contacts").select("*");
 
-// GOOD: Use usePapaParse hook
-function ImportButton() {
-  const { parseCsv } = usePapaParse({ onPreview });
-  const handleFile = (file: File) => parseCsv(file);
-}
+// CORRECT: Use data provider
+import { useGetList } from "react-admin";
+const { data } = useGetList("contacts", { ... });
 ```
 
-### Mutable state in reducer
+### 2. Form-Level Validation
 
 ```tsx
-// BAD: Mutating state
-case "UPDATE_PROGRESS":
-  state.progress.count = action.payload.count;  // MUTATION!
+// WRONG: Validate in form component
+const validate = (values) => {
+  const errors = {};
+  if (!values.email) errors.email = "Required";
+  return errors;
+};
+
+// CORRECT: Zod at API boundary only
+// Validation happens in unifiedDataProvider.ts via contactBaseSchema
+```
+
+### 3. Watch Instead of UseWatch
+
+```tsx
+// WRONG: Re-renders entire form on every change
+const values = watch();
+
+// CORRECT: Isolated re-renders
+const orgId = useWatch({ name: "organization_id" });
+```
+
+### 4. onChange Form Mode
+
+```tsx
+// WRONG: Re-render storm
+<Form mode="onChange">
+
+// CORRECT: Validate on blur or submit
+<Form mode="onBlur">
+```
+
+### 5. Mutable State in Reducer
+
+```tsx
+// WRONG: Mutating state
+function reducer(state, action) {
+  state.step = "preview";  // Mutation!
   return state;
-
-// GOOD: Return new state object
-case "UPDATE_PROGRESS":
-  return {
-    ...state,
-    progress: { ...state.progress, count: action.payload.count },
-  };
-```
-
-### Hardcoded column names
-
-```tsx
-// BAD: Hardcoded header detection
-if (header === "first name" || header === "First Name") {
-  mappings[header] = "first_name";
 }
 
-// GOOD: Use columnAliases registry
-const canonicalField = findCanonicalField(header);
-if (canonicalField) {
-  mappings[header] = canonicalField;
+// CORRECT: Return new object
+function reducer(state, action) {
+  return { ...state, step: "preview" };
 }
 ```
 
-### Inline badge colors
+### 6. Missing Exhaustiveness Check
 
 ```tsx
-// BAD: Hardcoded hex values
+// WRONG: Can miss new states
+switch (state.step) {
+  case "idle": ...
+  case "preview": ...
+  // What if "importing" is added later?
+}
+
+// CORRECT: TypeScript catches missing cases
+default:
+  return assertNever(state);
+```
+
+### 7. Hardcoded Colors
+
+```tsx
+// WRONG: Hardcoded hex values
 <Badge className="bg-[#ef4444] text-white">Hot</Badge>
 
-// GOOD: Use semantic tag classes
+// CORRECT: Use semantic tag classes
 <Badge className="tag-pink">Hot</Badge>
 ```
 
-### useEffect for derived data
+### 8. useEffect for Derived Data
 
 ```tsx
-// BAD: useEffect for derived state
+// WRONG: useEffect for derived state
 const [contacts, setContacts] = useState([]);
 useEffect(() => {
   setContacts(processCsvDataWithMappings(headers, rows, mappings));
 }, [headers, rows, mappings]);
 
-// GOOD: useMemo for derived data
+// CORRECT: useMemo for derived data
 const contacts = useMemo(
   () => processCsvDataWithMappings(headers, rows, mappings),
   [headers, rows, mappings]
 );
-```
-
-### Missing exhaustive switch
-
-```tsx
-// BAD: No exhaustive check
-switch (state.step) {
-  case "idle": return <IdleView />;
-  case "preview": return <PreviewView />;
-  // Missing cases! No TypeScript error.
-}
-
-// GOOD: assertNever for exhaustive checking
-switch (state.step) {
-  case "idle": return <IdleView />;
-  case "file_selected": return <FileView />;
-  case "parsing": return <ParsingView />;
-  case "preview": return <PreviewView />;
-  case "importing": return <ImportingView />;
-  case "complete": return <CompleteView />;
-  case "error": return <ErrorView />;
-  default: return assertNever(state);  // TypeScript error if case missing
-}
-```
-
-### Skipping data quality checks
-
-```tsx
-// BAD: Direct import without validation
-const handleImport = async (rows: ContactImportSchema[]) => {
-  await createMany("contacts", rows);
-};
-
-// GOOD: Validate and apply transformations
-const handleImport = async (rows: ContactImportSchema[], decisions: DataQualityDecisions) => {
-  const { transformedContacts } = applyDataQualityTransformations(rows, decisions);
-  const { successful, failed } = validateTransformedContacts(transformedContacts);
-  await createMany("contacts", successful);
-};
 ```
 
 ---
@@ -1222,16 +1177,44 @@ const handleImport = async (rows: ContactImportSchema[], decisions: DataQualityD
 
 When adding new contact features:
 
-- [ ] **Identify patterns** - Review this document for applicable patterns
-- [ ] **Check existing implementations** - Ensure consistency with existing code
-- [ ] **Add Zod validation** - New fields need validation in `validation/contacts.ts`
-- [ ] **Update column aliases** - If CSV-importable, add aliases in `columnAliases.ts`
-- [ ] **Add badge types** - New status/role types need badge configs in `ContactBadges.tsx`
-- [ ] **Update wizard states** - If affecting import flow, add new states/actions
-- [ ] **Add skeleton loading** - Use skeleton patterns for async data
-- [ ] **Use semantic colors** - Only `tag-*` classes, no hardcoded colors
-- [ ] **Add touch targets** - 44x44px minimum (`h-11 w-11`)
-- [ ] **Write tests** - Follow existing test patterns in `__tests__/`
+### Adding a New Contact Field
+
+- [ ] Add field to `contactBaseSchema` in `src/atomic-crm/validation/contacts.ts`
+- [ ] Add column alias mappings in `src/atomic-crm/contacts/columnAliases.ts`
+- [ ] Add to `ContactImportSchema` type if importable
+- [ ] Add database migration in `supabase/migrations/`
+- [ ] Add form input in `ContactCompactForm.tsx`
+- [ ] Add display in `ContactDetailsTab.tsx`
+- [ ] Verify with `npx tsc --noEmit`
+- [ ] Test import with CSV containing new field
+
+### Adding a New Import Data Quality Check
+
+- [ ] Add predicate function in `contactImport.logic.ts`
+- [ ] Add decision flag to `DataQualityDecisions` type
+- [ ] Add transformation logic if needed
+- [ ] Add UI control in preview step
+- [ ] Add test cases for predicate
+- [ ] Document in this PATTERNS.md file
+
+### Adding a New Badge Type
+
+- [ ] Add type definition in `ContactBadges.tsx`
+- [ ] Create memoized badge component with config object
+- [ ] Add semantic color mapping (use existing tag-* classes)
+- [ ] Handle unknown values gracefully (fallback + formatted label)
+- [ ] Add to `ContactBadgeGroup` if composite display needed
+- [ ] Add to discovery inventory
+
+### Adding a New Wizard State
+
+- [ ] Add state interface in `useImportWizard.types.ts`
+- [ ] Add to `WizardState` union type
+- [ ] Create state-specific reducer function
+- [ ] Add case to main `importWizardReducer` switch
+- [ ] Add action types for transitions
+- [ ] Update `deriveWizardFlags()` if needed
+- [ ] Update state flow diagram in this document
 
 ---
 
@@ -1239,11 +1222,11 @@ When adding new contact features:
 
 | Pattern | Primary Files |
 |---------|--------------|
-| A: Import Pipeline | `contactImport.logic.ts`, `csvProcessor.ts`, `ContactImportPreview.tsx`, `ContactImportResult.tsx` |
-| B: Form Defaults | `ContactCompactForm.tsx`, `ContactAdditionalDetails.tsx` |
-| C: Contact Linking | `LinkOpportunityModal.tsx`, `UnlinkConfirmDialog.tsx` |
+| A: Import Pipeline | `contactImport.logic.ts`, `csvProcessor.ts`, `columnAliases.ts` |
+| B: Form Defaults | `ContactCompactForm.tsx`, `ContactCreate.tsx`, `ContactEdit.tsx` |
+| C: Contact Linking | `LinkOpportunityModal.tsx`, `OpportunitiesTab.tsx` |
 | D: Field Mapping | `useColumnMapping.ts`, `columnAliases.ts` |
-| E: Tags System | `TagsList.tsx`, `TagsListEdit.tsx` |
+| E: Tags System | `TagsListEdit.tsx`, `TagChip.tsx`, `tag-colors.ts` |
 | F: Activity Tab | `ActivitiesTab.tsx` |
-| G: Contact Badges | `ContactBadges.tsx`, `StageBadgeWithHealth.tsx` |
-| H: Wizard State | `useImportWizard.ts`, `useImportWizard.types.ts`, `ContactImportDialog.tsx` |
+| G: Contact Badges | `ContactBadges.tsx` |
+| H: Wizard State | `useImportWizard.ts`, `useImportWizard.types.ts` |
