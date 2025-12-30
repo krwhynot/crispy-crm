@@ -1,10 +1,11 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { QuickAddOpportunity } from "../kanban/QuickAddOpportunity";
 import { describe, it, expect, vi } from "vitest";
+import type * as ReactAdmin from "react-admin";
 
 // Mock react-admin - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
     useCreate: () => [vi.fn().mockResolvedValue({ data: { id: 1 } }), { isLoading: false }],

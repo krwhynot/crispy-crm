@@ -245,6 +245,11 @@ vi.mock("../OrganizationEmpty", () => ({
   OrganizationEmpty: () => <div data-testid="organization-empty">No organizations</div>,
 }));
 
+// Mock ListNoResults to avoid useResourceContext() returning null
+vi.mock("@/components/admin/ListNoResults", () => ({
+  ListNoResults: () => <div data-testid="list-no-results">No results</div>,
+}));
+
 // Mock FloatingCreateButton
 vi.mock("@/components/admin/FloatingCreateButton", () => ({
   FloatingCreateButton: () => <button data-testid="floating-create">Create</button>,

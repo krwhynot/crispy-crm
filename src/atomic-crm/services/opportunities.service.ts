@@ -99,7 +99,7 @@ export class OpportunitiesService {
     try {
       // Extract products before sending to database
       const productsToSync = data.products_to_sync || [];
-      const { products_to_sync, ...opportunityData } = data;
+      const { products_to_sync: _, ...opportunityData } = data;
 
       // If no products to sync, use standard create
       if (productsToSync.length === 0) {
@@ -145,7 +145,7 @@ export class OpportunitiesService {
     try {
       // Extract products before sending to database
       const productsToSync = data.products_to_sync || [];
-      const { products_to_sync, ...restData } = data;
+      const { products_to_sync: _products, ...restData } = data;
       const opportunityData = { ...restData, id };
 
       // If no products AND no version check needed, use standard update

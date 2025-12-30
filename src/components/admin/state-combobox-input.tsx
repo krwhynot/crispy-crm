@@ -6,7 +6,7 @@ interface StateComboboxInputProps {
   label?: string;
 }
 
-export function StateComboboxInput({ source, label = "State" }: StateComboboxInputProps) {
+export function StateComboboxInput({ source, label: _label = "State" }: StateComboboxInputProps) {
   return (
     <GenericSelectInput
       source={source}

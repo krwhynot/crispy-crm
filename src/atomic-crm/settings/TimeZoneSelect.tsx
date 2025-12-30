@@ -10,8 +10,9 @@ interface TimeZoneSelectProps {
 export function TimeZoneSelect({ value, onChange, disabled }: TimeZoneSelectProps) {
   return (
     <div className="space-y-2">
-      <label className="text-sm font-medium leading-none">Time Zone</label>
+      <label htmlFor="timezone-select" className="text-sm font-medium leading-none">Time Zone</label>
       <GenericSelectInput
+        inputId="timezone-select"
         value={value}
         onChange={(v) => onChange(v as string)}
         choices={[...US_TIMEZONES]}
