@@ -189,7 +189,7 @@ describe("OpportunitySlideOver", () => {
         notes: false,
       };
 
-      Object.entries(expectedCountBadges).forEach(([key, hasCountBadge]) => {
+      Object.entries(expectedCountBadges).forEach(([_key, hasCountBadge]) => {
         expect(hasCountBadge).toBe(false);
       });
     });

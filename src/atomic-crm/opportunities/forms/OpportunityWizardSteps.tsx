@@ -233,7 +233,7 @@ export function OpportunityWizardStep2() {
   const customerId = useWatch({ name: "customer_organization_id" });
 
   // Fetch distributor relationships for the selected customer
-  const { primaryDistributorId, hasRelationships, isLoading } = useCustomerDistributors(customerId);
+  const { primaryDistributorId, isLoading } = useCustomerDistributors(customerId);
 
   // Track the last customer ID we processed to prevent re-triggering on unrelated changes
   const lastProcessedCustomerRef = useRef<typeof customerId>(null);

@@ -14,7 +14,6 @@ import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { renderWithAdminContext } from "@/tests/utils/render-admin";
 import { TaskSlideOver } from "../TaskSlideOver";
-import { CheckSquareIcon, LinkIcon } from "lucide-react";
 
 // Mock dependencies
 vi.mock("ra-core", async () => {

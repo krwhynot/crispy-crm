@@ -18,7 +18,6 @@ import {
   FB_CONSUMABLE_CATEGORIES,
   PRODUCT_CATEGORIES,
   PRODUCT_STATUSES,
-  type ProductFormData,
   type OpportunityProduct,
 } from "../products";
 
@@ -261,7 +260,7 @@ describe("Product Validation Schemas (products.ts)", () => {
       });
 
       it("should accept undefined description", () => {
-        const { description, ...productWithoutDesc } = validProduct;
+        const { description: _description, ...productWithoutDesc } = validProduct;
         const result = productSchema.safeParse(productWithoutDesc);
         expect(result.success).toBe(true);
       });
@@ -301,7 +300,7 @@ describe("Product Validation Schemas (products.ts)", () => {
       });
 
       it("should accept undefined for certifications", () => {
-        const { certifications, ...productWithoutCerts } = validProduct;
+        const { certifications: _certifications, ...productWithoutCerts } = validProduct;
         const result = productSchema.safeParse(productWithoutCerts);
         expect(result.success).toBe(true);
       });
@@ -330,7 +329,7 @@ describe("Product Validation Schemas (products.ts)", () => {
       });
 
       it("should accept undefined for allergens", () => {
-        const { allergens, ...productWithoutAllergens } = validProduct;
+        const { allergens: _allergens, ...productWithoutAllergens } = validProduct;
         const result = productSchema.safeParse(productWithoutAllergens);
         expect(result.success).toBe(true);
       });
@@ -576,7 +575,7 @@ describe("Product Validation Schemas (products.ts)", () => {
       });
 
       it("should accept undefined notes", () => {
-        const { notes, ...dataWithoutNotes } = validOpportunityProduct;
+        const { notes: _notes, ...dataWithoutNotes } = validOpportunityProduct;
         const result = opportunityProductSchema.safeParse(dataWithoutNotes);
         expect(result.success).toBe(true);
       });
@@ -646,7 +645,7 @@ describe("Product Validation Schemas (products.ts)", () => {
       });
 
       it("should accept undefined id (new record)", () => {
-        const { id, ...dataWithoutId } = { ...validOpportunityProduct, id: 1 };
+        const { id: _id, ...dataWithoutId } = { ...validOpportunityProduct, id: 1 };
         const result = opportunityProductSchema.safeParse(dataWithoutId);
         expect(result.success).toBe(true);
       });
@@ -660,7 +659,7 @@ describe("Product Validation Schemas (products.ts)", () => {
       });
 
       it("should accept undefined product_category", () => {
-        const { product_category, ...dataWithoutCategory } = validOpportunityProduct;
+        const { product_category: _product_category, ...dataWithoutCategory } = validOpportunityProduct;
         const result = opportunityProductSchema.safeParse(dataWithoutCategory);
         expect(result.success).toBe(true);
       });
