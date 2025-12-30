@@ -473,6 +473,44 @@ function QuickLogForm() {
 // Used in QuickLogForm for Contact/Organization/Opportunity selection
 ```
 
+**ActivityNoteForm** — Cascading selection with react-hook-form:
+```tsx
+// src/atomic-crm/opportunities/ActivityNoteForm.tsx
+// Pattern H: Contacts filtered by opportunity's organization
+
+// 1. Fetch contacts filtered by organization
+const { data: contacts, isPending: contactsLoading } = useGetList<Contact>(
+  "contacts_summary",
+  {
+    filter: { organization_id: opportunity.customer_organization_id },
+    pagination: { page: 1, perPage: 100 },
+  }
+);
+
+// 2. Transform for SelectUI
+const contactOptions = (contacts || []).map((contact) => ({
+  id: String(contact.id),
+  label: `${contact.first_name} ${contact.last_name}`,
+}));
+
+// 3. Use with react-hook-form Controller
+<Controller
+  name="contact_id"
+  control={control}
+  render={({ field }) => (
+    <SelectUI
+      options={contactOptions}
+      value={field.value ? String(field.value) : undefined}
+      onChange={(value) => field.onChange(value ? Number(value) : null)}
+      placeholder="Select contact (optional)"
+      isLoading={contactsLoading}
+      isDisabled={!opportunity.customer_organization_id}
+      clearable
+    />
+  )}
+/>
+```
+
 **When to use**: Entity selection outside React Admin forms.
 
 ---

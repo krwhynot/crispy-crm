@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, Controller, type Control } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { useDataProvider, useNotify, useGetList, useRefresh } from "ra-core";
 
 import { Button } from "@/components/ui/button";
@@ -12,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { SelectUI } from "@/components/ui/select-ui";
 import { usePipelineConfig } from "../root/ConfigurationContext";
 import {
   activityNoteFormSchema,
@@ -26,59 +27,26 @@ interface ActivityNoteFormProps {
   onSuccess?: () => void;
 }
 
-// Contact Select Field Component
-const ContactSelectField = ({
-  control,
-  organizationId,
-  error,
-}: {
-  control: Control<ActivityNoteFormData>;
-  organizationId: number | string;
-  error?: string;
-}) => {
-  const { data: contacts, isPending } = useGetList<Contact>("contacts_summary", {
-    filter: { organization_id: organizationId },
-    pagination: { page: 1, perPage: 100 },
-  });
-
-  return (
-    <div className="flex flex-col gap-2">
-      <label htmlFor="contact_id" className="text-sm font-medium">
-        Contact
-      </label>
-      <Controller
-        name="contact_id"
-        control={control}
-        render={({ field }) => (
-          <Select
-            value={field.value?.toString() || "none"}
-            onValueChange={(value) => field.onChange(value === "none" ? null : Number(value))}
-            disabled={isPending}
-          >
-            <SelectTrigger id="contact_id">
-              <SelectValue placeholder={isPending ? "Loading..." : "Select contact (optional)"} />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="none">None</SelectItem>
-              {contacts?.map((contact) => (
-                <SelectItem key={contact.id} value={contact.id.toString()}>
-                  {contact.first_name} {contact.last_name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        )}
-      />
-      {error && <p className="text-sm text-destructive">{error}</p>}
-    </div>
-  );
-};
-
 export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormProps) => {
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const refresh = useRefresh();
   const { opportunityStages } = usePipelineConfig();
+
+  // Pattern H: Cascading contact selection filtered by opportunity's organization
+  const { data: contacts, isPending: contactsLoading } = useGetList<Contact>(
+    "contacts_summary",
+    {
+      filter: { organization_id: opportunity.customer_organization_id },
+      pagination: { page: 1, perPage: 100 },
+    }
+  );
+
+  // Transform contacts for SelectUI
+  const contactOptions = (contacts || []).map((contact) => ({
+    id: String(contact.id),
+    label: `${contact.first_name} ${contact.last_name}`,
+  }));
 
   // Extract form defaults from schema per Constitution #5
   // activitiesSchema provides defaults for activity_date and type
@@ -202,12 +170,32 @@ export const ActivityNoteForm = ({ opportunity, onSuccess }: ActivityNoteFormPro
           {errors.type && <p className="text-sm text-destructive">{errors.type.message}</p>}
         </div>
 
-        {/* Contact Select */}
-        <ContactSelectField
-          control={control}
-          organizationId={opportunity.customer_organization_id}
-          error={errors.contact_id?.message}
-        />
+        {/* Contact Select - Pattern H cascading selection */}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="contact_id" className="text-sm font-medium">
+            Contact
+          </label>
+          <Controller
+            name="contact_id"
+            control={control}
+            render={({ field }) => (
+              <SelectUI
+                options={contactOptions}
+                value={field.value ? String(field.value) : undefined}
+                onChange={(value) =>
+                  field.onChange(value ? Number(value) : null)
+                }
+                placeholder="Select contact (optional)"
+                isLoading={contactsLoading}
+                isDisabled={!opportunity.customer_organization_id}
+                clearable
+              />
+            )}
+          />
+          {errors.contact_id && (
+            <p className="text-sm text-destructive">{errors.contact_id.message}</p>
+          )}
+        </div>
 
         {/* Stage Select */}
         <div className="flex flex-col gap-2">
