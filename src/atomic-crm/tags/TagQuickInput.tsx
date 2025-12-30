@@ -43,7 +43,7 @@ export function TagQuickInput({ source, label }: TagQuickInputProps) {
     <ReferenceInput reference="tags" source={source}>
       <GenericSelectInput
         label={label}
-        optionText="name"
+        optionLabel="name"
         onSearchChange={setSearchTerm}
         emptyAction={{
           label: `Create "${searchTerm}"`,
