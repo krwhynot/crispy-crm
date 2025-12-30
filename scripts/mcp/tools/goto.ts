@@ -41,7 +41,7 @@ interface GotoError {
   suggestion: string;
 }
 
-type GotoResult = GotoSuccess | GotoError;
+type _GotoResult = GotoSuccess | GotoError;
 
 async function execute(args: GotoArgs): Promise<string> {
   const { symbolName, kind } = args;

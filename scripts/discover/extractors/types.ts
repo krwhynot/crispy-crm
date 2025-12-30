@@ -1,5 +1,4 @@
-import {
-  SyntaxKind,
+import type {
   InterfaceDeclaration,
   TypeAliasDeclaration,
   PropertySignature,

@@ -16,7 +16,7 @@ import {
   inferSymbolKind,
   parseRange,
   SymbolRoles,
-  type ScipIndex,
+  type ScipIndex as _ScipIndex,
 } from "./parser.js";
 
 const PROJECT_ROOT = process.cwd();

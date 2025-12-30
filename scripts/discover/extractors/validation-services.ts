@@ -1,4 +1,4 @@
-import { SyntaxKind, FunctionDeclaration, VariableDeclaration } from "ts-morph";
+import { SyntaxKind } from "ts-morph";
 import * as path from "path";
 import { project } from "../utils/project.js";
 import { writeChunkedDiscovery, writeIncrementalChunkedDiscovery, readExistingManifest } from "../utils/output.js";
@@ -67,7 +67,7 @@ function isCustomValidator(name: string, funcText: string): boolean {
 /**
  * Detect what a custom validator validates
  */
-function detectValidatorPattern(name: string, funcText: string): string {
+function detectValidatorPattern(name: string, _funcText: string): string {
   const lowerName = name.toLowerCase();
   if (lowerName.includes('url')) return 'url';
   if (lowerName.includes('email')) return 'email';

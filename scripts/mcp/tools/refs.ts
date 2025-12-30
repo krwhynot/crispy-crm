@@ -28,13 +28,13 @@ interface ReferenceLocation {
   isDefinition: boolean;
 }
 
-interface RefsResult {
+interface _RefsResult {
   symbol: string;
   references: ReferenceLocation[];
   count: number;
 }
 
-interface RefsError {
+interface _RefsError {
   error: string;
   suggestion: string;
 }

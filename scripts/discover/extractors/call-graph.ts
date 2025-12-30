@@ -1,4 +1,5 @@
-import { SyntaxKind, Node, SourceFile, FunctionDeclaration, VariableDeclaration, ArrowFunction } from "ts-morph";
+import { SyntaxKind } from "ts-morph";
+import type { Node, SourceFile, FunctionDeclaration, VariableDeclaration, ArrowFunction } from "ts-morph";
 import * as path from "path";
 import { project } from "../utils/project.js";
 import { writeChunkedDiscovery, writeIncrementalChunkedDiscovery, readExistingManifest } from "../utils/output.js";
@@ -578,8 +579,8 @@ export async function extractCallGraph(onlyChunks?: Set<string>): Promise<void> 
     nodeToChunk.set(node.id, extractFeatureName(node.file));
   }
 
-  // Track cross-chunk edges separately
-  const crossChunkEdges: CallGraphEdge[] = [];
+  // Track cross-chunk edges separately (unused but kept for future cross-chunk analysis)
+  const _crossChunkEdges: CallGraphEdge[] = [];
 
   for (const edge of allEdges) {
     const sourceChunk = nodeToChunk.get(edge.source);
