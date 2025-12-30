@@ -15,7 +15,7 @@
  * Output: docs/architecture/data-model.md
  */
 
-import { readFileSync, writeFileSync } from "fs";
+import { writeFileSync } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
 import pg from "pg";

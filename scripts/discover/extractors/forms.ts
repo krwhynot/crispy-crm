@@ -1,4 +1,5 @@
-import { SyntaxKind, SourceFile, Node, JsxElement, JsxSelfClosingElement } from "ts-morph";
+import { SyntaxKind } from "ts-morph";
+import type { SourceFile, Node } from "ts-morph";
 import * as path from "path";
 import { project } from "../utils/project.js";
 import { createEnvelope, writeDiscoveryFile } from "../utils/output.js";
@@ -226,7 +227,7 @@ function extractFormContextWrappers(sourceFile: SourceFile): string[] {
     if (fileText.includes(hook)) {
       // Get the component name from exported functions
       const exportedDeclarations = sourceFile.getExportedDeclarations();
-      for (const [exportName, declarations] of exportedDeclarations) {
+      for (const [_exportName, declarations] of exportedDeclarations) {
         for (const declaration of declarations) {
           if (declaration.getKind() === SyntaxKind.FunctionDeclaration) {
             const funcDecl = declaration.asKindOrThrow(SyntaxKind.FunctionDeclaration);
@@ -370,7 +371,7 @@ function extractFormsFromFile(sourceFile: SourceFile): FormInfo[] {
   // Get exported function declarations
   const exportedDeclarations = sourceFile.getExportedDeclarations();
 
-  for (const [exportName, declarations] of exportedDeclarations) {
+  for (const [_exportName, declarations] of exportedDeclarations) {
     for (const declaration of declarations) {
       let componentName: string | undefined;
       let lineNumber: number | undefined;

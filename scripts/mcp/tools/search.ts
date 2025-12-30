@@ -158,7 +158,7 @@ async function executeSearch(args: SearchInput): Promise<SearchResponse> {
   let ftsResults: RankingSearchResult[];
   try {
     ftsResults = runFtsSearch(query, limit);
-  } catch (error) {
+  } catch (_error) {
     return {
       error: "FTS5 database not available",
       suggestion:

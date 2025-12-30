@@ -19,7 +19,7 @@
 import fg from "fast-glob";
 import * as fs from "node:fs/promises";
 import * as path from "node:path";
-import { chunkFile, type CodeChunk } from "./chunk.js";
+import { chunkFile } from "./chunk.js";
 import { generateEmbedding, checkOllamaHealth } from "./ollama.js";
 import {
   ensureCollection,

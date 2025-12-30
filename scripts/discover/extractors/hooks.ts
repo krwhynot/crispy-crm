@@ -1,10 +1,9 @@
-import {
-  SyntaxKind,
+import { SyntaxKind } from "ts-morph";
+import type {
   FunctionDeclaration,
   VariableDeclaration,
   ArrowFunction,
   FunctionExpression,
-  CallExpression,
 } from "ts-morph";
 import { project } from "../utils/project.js";
 import { writeChunkedDiscovery } from "../utils/output.js";

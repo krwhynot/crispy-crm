@@ -45,7 +45,7 @@ async function runIncrementalDiscovery(changedPath: string) {
       cwd: process.cwd(),
     });
     console.log(chalk.green('\n✅ Discovery updated successfully\n'));
-  } catch (error) {
+  } catch (_error) {
     console.error(chalk.red('\n❌ Discovery failed\n'));
   }
 

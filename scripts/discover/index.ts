@@ -9,7 +9,7 @@ import { extractTypes } from "./extractors/types.js";
 import { extractForms } from "./extractors/forms.js";
 import { extractValidationServices } from "./extractors/validation-services.js";
 import { extractCallGraph } from "./extractors/call-graph.js";
-import { isDiscoveryStale, isChunkedDiscoveryStale, getStaleChunks, readExistingManifest, writeIncrementalChunkedDiscovery, type StaleChunksResult, type ChunkedManifest } from "./utils/output.js";
+import { isDiscoveryStale, isChunkedDiscoveryStale, getStaleChunks } from "./utils/output.js";
 import { project } from "./utils/project.js";
 
 interface ExtractorConfig {
@@ -156,18 +156,19 @@ function getChunkNameForFile(extractor: ExtractorConfig, filePath: string): stri
   const relativePath = path.relative(process.cwd(), filePath);
 
   switch (extractor.name) {
-    case "components":
+    case "components": {
       // Pattern: src/atomic-crm/<feature>/... → "feature"
       // Files directly in src/atomic-crm/ → "_root"
       const componentMatch = relativePath.match(/^src\/atomic-crm\/([^/]+)\//);
       return componentMatch ? componentMatch[1] : "_root";
+    }
 
     case "schemas":
     case "validationServices":
       // Pattern: src/atomic-crm/validation/{feature}.ts → "feature"
       return path.basename(relativePath, ".ts");
 
-    case "types":
+    case "types": {
       // Pattern: src/atomic-crm/types.ts → "_root"
       // Pattern: src/atomic-crm/{feature}/types.ts → "feature"
       // Pattern: src/types/{file}.ts → file basename
@@ -179,8 +180,9 @@ function getChunkNameForFile(extractor: ExtractorConfig, filePath: string): stri
         return typesMatch[1];
       }
       return path.basename(relativePath, ".ts");
+    }
 
-    case "callGraph":
+    case "callGraph": {
       // Pattern: src/atomic-crm/<feature>/... → "feature"
       // Pattern: src/hooks/... → "hooks"
       // Files directly in src/atomic-crm/ → "_root"
@@ -192,8 +194,9 @@ function getChunkNameForFile(extractor: ExtractorConfig, filePath: string): stri
         return "hooks";
       }
       return "_root";
+    }
 
-    case "hooks":
+    case "hooks": {
       // Pattern: src/atomic-crm/<feature>/... → "feature"
       // Pattern: src/hooks/... → "shared"
       // Pattern: src/components/... → "components"
@@ -202,6 +205,7 @@ function getChunkNameForFile(extractor: ExtractorConfig, filePath: string): stri
       if (relativePath.startsWith("src/hooks/")) return "shared";
       if (relativePath.startsWith("src/components/")) return "components";
       return "_root";
+    }
 
     default:
       // Non-chunked extractors don't need this, but return a sensible default
