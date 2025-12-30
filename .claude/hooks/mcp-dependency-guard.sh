@@ -73,7 +73,7 @@ elif [ "$user_choice" = "continue_with" ]; then
 fi
 
 # First time seeing this MCP server in this session - BLOCK and ask
-cat << EOF
+cat << EOF >&2
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ⏸️  MCP DEPENDENCY CHECK - PAUSED
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
