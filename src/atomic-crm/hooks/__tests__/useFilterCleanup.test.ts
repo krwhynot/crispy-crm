@@ -35,7 +35,7 @@ describe("useFilterCleanup", () => {
   // Spy on console methods
   const consoleWarnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
   const consoleInfoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
-  const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+  const _consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
   beforeEach(() => {
     // Clear all mocks and localStorage before each test
