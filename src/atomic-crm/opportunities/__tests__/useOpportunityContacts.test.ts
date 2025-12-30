@@ -2,9 +2,10 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { useOpportunityContacts } from "../hooks/useOpportunityContacts";
 import { useGetMany } from "react-admin";
 import { describe, it, expect, vi } from "vitest";
+import type * as ReactAdmin from "react-admin";
 
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
     useGetMany: vi.fn(),

@@ -245,17 +245,16 @@ describe("useFilterCleanup", () => {
   });
 
   describe("when corrupted JSON in localStorage", () => {
-    it("should catch JSON parse error and log error", () => {
+    it("should handle corrupted JSON and log warning", () => {
       // Arrange - store invalid JSON
       localStorage.setItem("RaStoreCRM.contacts.listParams", "not valid json {{{");
 
       // Act
       renderHook(() => useFilterCleanup("contacts"));
 
-      // Assert - should not throw, should log error
-      expect(consoleErrorSpy).toHaveBeenCalledWith(
-        expect.stringContaining("Error parsing localStorage"),
-        expect.any(Error)
+      // Assert - should not throw, should log warning (safeJsonParse returns null, line 77 logs)
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining("has corrupted localStorage")
       );
       expect(mockSetItem).not.toHaveBeenCalled();
     });

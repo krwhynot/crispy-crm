@@ -1,5 +1,6 @@
 import * as React from "react";
-import { render, RenderOptions } from "@testing-library/react";
+import { render } from "@testing-library/react";
+import type { RenderOptions } from "@testing-library/react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FormProgressProvider } from "../FormProgressProvider";
 import { FormWizard } from "../FormWizard";

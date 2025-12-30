@@ -3,10 +3,11 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { useContactOrgMismatch } from "../useContactOrgMismatch";
 import { useGetMany } from "react-admin";
 import type { Contact } from "../../../types";
+import type * as ReactAdmin from "react-admin";
 
 // Mock react-admin - use importOriginal to preserve all exports
 vi.mock("react-admin", async (importOriginal) => {
-  const actual = await importOriginal<typeof import("react-admin")>();
+  const actual = await importOriginal<typeof ReactAdmin>();
   return {
     ...actual,
     useGetMany: vi.fn(),

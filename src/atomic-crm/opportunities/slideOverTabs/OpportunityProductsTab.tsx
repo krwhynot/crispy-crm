@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { useGetList, Form, useUpdate, useNotify, ReferenceArrayInput, Identifier } from "react-admin";
+import { useGetList, Form, useUpdate, useNotify, ReferenceArrayInput } from "react-admin";
+import type { Identifier } from "react-admin";
 import { Link } from "react-router-dom";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
 import { Button } from "@/components/ui/button";

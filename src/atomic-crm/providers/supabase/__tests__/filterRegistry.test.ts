@@ -99,8 +99,8 @@ describe("filterRegistry", () => {
     });
 
     it("should have valid field name format", () => {
-      // Field names should be snake_case or lowercase
-      const validFieldPattern = /^[a-z_][a-z0-9_]*$/;
+      // Field names should be snake_case or lowercase, with dots allowed for nested relationship filters
+      const validFieldPattern = /^[a-z_][a-z0-9_.]*$/;
 
       for (const [_resource, fields] of Object.entries(filterableFields)) {
         for (const field of fields) {

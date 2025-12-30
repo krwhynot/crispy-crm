@@ -101,7 +101,8 @@ export function TextColumnFilter({
         setLocalValue("");
       }
     }
-  }, [filterValues, source, isInitialized]); // Removed localValue - only sync on external changes
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- Removed localValue intentionally: only sync on external changes
+  }, [filterValues, source, isInitialized]);
 
   const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     isTypingRef.current = true; // Mark as typing to prevent external sync

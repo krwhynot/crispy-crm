@@ -110,7 +110,6 @@ export function QuickAddOpportunity({ stage, onOpportunityCreated }: QuickAddOpp
       {isOpen && (
         // Backdrop: Using div with explicit role="none" since it's purely decorative/functional overlay
         // The actual dialog content has proper role="dialog" semantics
-        // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions
         <div
           role="none"
           className="fixed inset-0 bg-background/80 flex items-center justify-center z-50 motion-safe:animate-in motion-safe:fade-in motion-safe:duration-150"

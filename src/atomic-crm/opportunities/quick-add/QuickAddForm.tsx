@@ -1,6 +1,7 @@
 import * as React from "react";
 import { useRef, useEffect } from "react";
-import { useForm, useWatch, FieldErrors } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
+import type { FieldErrors } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { quickAddSchema, type QuickAddInput } from "@/atomic-crm/validation/quickAdd";
 import { useQuickAdd } from "../hooks/useQuickAdd";

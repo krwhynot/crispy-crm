@@ -300,6 +300,70 @@ npx supabase migration new add_contact_tags
 # 001_add_contact_tags.sql
 ```
 
+### 9. TAILWIND V4 CSS PATTERNS
+
+**9a. No @apply Self-Reference**
+
+**Rule:** Custom utilities in `@layer utilities` cannot `@apply` other custom utilities from the same layer.
+
+**Why:** Tailwind v4 JIT processes utilities independently; self-references create circular dependencies.
+
+**❌ WRONG — fails in Tailwind v4:**
+```css
+@layer utilities {
+  .touch-target-44 { /* ... */ }
+  .data-cell {
+    @apply touch-target-44; /* ERROR: Cannot resolve */
+  }
+}
+```
+
+**✅ CORRECT — inline the styles:**
+```css
+@layer utilities {
+  .data-cell {
+    position: relative;
+    /* Inline the touch-target styles directly */
+  }
+  .data-cell::before {
+    content: '';
+    position: absolute;
+    top: calc((44px - 100%) / -2);
+    /* ... */
+  }
+}
+```
+
+**9b. Touch Expansion via calc()**
+
+**Rule:** Use `calc((TARGET - 100%) / -2)` to center-expand touch targets.
+
+**Why:** `100%` references parent height; dividing by `-2` distributes expansion equally top/bottom.
+
+**Pattern:**
+```css
+.touch-target-44::before {
+  top: calc((44px - 100%) / -2);    /* Expand upward */
+  bottom: calc((44px - 100%) / -2); /* Expand downward */
+}
+/* Result: 32px element → 44px touch area (6px each direction) */
+```
+
+**9c. CSS Custom Properties for Typography Tokens**
+
+**Rule:** Define font tokens as CSS custom properties, not Tailwind theme extensions.
+
+**Why:** Tailwind v4 JIT only bundles used utilities; custom properties are always available.
+
+**Pattern:**
+```css
+:root {
+  --text-table: 0.8125rem;
+  --text-table--line-height: 1.35;
+}
+/* Usage: text-[length:var(--text-table)] leading-[var(--text-table--line-height)] */
+```
+
 ## Common Mistakes
 
 | Mistake | Fix |
@@ -408,6 +472,15 @@ If you find yourself:
 | Role check | Helper function (`is_admin()`) | Inline check |
 | Enum values | Add only (can't remove) | Try to remove |
 | Migrations | `npx supabase migration new` | Manual numbering |
+
+### CSS/Tailwind v4
+
+| Situation | DO | DON'T |
+|-----------|-----|-------|
+| Custom utility needs other utility | Inline the styles directly | `@apply other-utility` |
+| Touch target expansion | `calc((44px - 100%) / -2)` | Fixed pixel offsets |
+| Typography tokens | CSS custom properties | Tailwind theme extension |
+| Arbitrary values | `text-[length:var(--token)]` | Hardcoded sizes |
 
 ## Decision Tree: When This Skill Triggers
 
@@ -528,6 +601,12 @@ Comprehensive patterns with real code examples from Atomic CRM:
 14. **VALIDATION MODE** - Use `onSubmit` or `onBlur` mode (never `onChange`)
 15. **WATCH ISOLATION** - Use `useWatch()` for subscriptions (not `watch()`)
 16. **RESOLVER ONLY** - Use `zodResolver(schema)` exclusively (don't mix with `register` validation)
+
+### Tailwind v4 CSS Rules (NEW)
+
+17. **NO @APPLY SELF-REFERENCE** - Custom utilities cannot `@apply` other custom utilities from same layer
+18. **TOUCH EXPANSION VIA CALC()** - Use `calc((44px - 100%) / -2)` for centered touch expansion
+19. **CSS CUSTOM PROPERTIES** - Define typography tokens as CSS vars, not Tailwind theme extensions
 
 **Full details:** `docs/claude/engineering-constitution.md`
 

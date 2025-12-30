@@ -54,10 +54,6 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      // React Admin ESM fix: Point to src directories to avoid directory import errors
-      // See: https://github.com/marmelab/react-admin/blob/master/docs/Vite.md
-      "react-admin": path.resolve(__dirname, "./node_modules/react-admin/src"),
-      "ra-core": path.resolve(__dirname, "./node_modules/ra-core/src"),
     },
   },
 });

@@ -298,8 +298,8 @@ describe("QuickAdd Integration", () => {
     });
 
     // 7. Verify localStorage updated
-    expect(localStorage.getItem("last_campaign")).toBe("Trade Show 2024");
-    expect(localStorage.getItem("last_principal")).toBe("1");
+    expect(JSON.parse(localStorage.getItem("last_campaign") ?? "null")).toBe("Trade Show 2024");
+    expect(JSON.parse(localStorage.getItem("last_principal") ?? "null")).toBe("1");
 
     // 8. Verify dialog closed
     await waitFor(() => {
@@ -583,8 +583,8 @@ describe("QuickAdd Integration", () => {
     });
 
     // Verify preferences saved
-    expect(localStorage.getItem("last_campaign")).toBe("Trade Show 2024");
-    expect(localStorage.getItem("last_principal")).toBe("1");
+    expect(JSON.parse(localStorage.getItem("last_campaign") ?? "null")).toBe("Trade Show 2024");
+    expect(JSON.parse(localStorage.getItem("last_principal") ?? "null")).toBe("1");
 
     // Unmount first component before rendering second
     unmount1();

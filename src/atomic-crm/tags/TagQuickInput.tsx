@@ -20,23 +20,19 @@ export function TagQuickInput({ source, label }: TagQuickInputProps) {
   const handleQuickCreate = async (name: string) => {
     if (!name.trim()) return;
 
-    try {
-      await create(
-        'tags',
-        { data: { name: name.trim(), color: 'warm' } },
-        {
-          onSuccess: () => {
-            notify('Tag created', { type: 'success' });
-            refresh();
-          },
-          onError: (error) => {
-            notify(`Error: ${error.message}`, { type: 'error' });
-          },
-        }
-      );
-    } catch (error) {
-      throw error; // Fail-fast
-    }
+    await create(
+      'tags',
+      { data: { name: name.trim(), color: 'warm' } },
+      {
+        onSuccess: () => {
+          notify('Tag created', { type: 'success' });
+          refresh();
+        },
+        onError: (error) => {
+          notify(`Error: ${error.message}`, { type: 'error' });
+        },
+      }
+    );
   };
 
   return (

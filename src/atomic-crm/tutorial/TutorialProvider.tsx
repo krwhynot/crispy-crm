@@ -262,7 +262,8 @@ export function TutorialProvider({ children }: TutorialProviderProps) {
       hasVisitedPage,
       markPageVisited,
     }),
-    [isActive, progress] // progress covers hasVisitedPage (depends on progress.visitedPages); other callbacks are stable
+    // eslint-disable-next-line react-hooks/exhaustive-deps -- progress covers hasVisitedPage (depends on progress.visitedPages); other callbacks are stable
+    [isActive, progress]
   );
 
   return (
