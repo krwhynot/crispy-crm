@@ -228,7 +228,7 @@ export function SelectUI({
               {options.map((option) => (
                 <CommandItem
                   key={option.id}
-                  value={option.id}
+                  value={option.label}
                   disabled={option.disabled}
                   onSelect={() => handleSelect(option.id)}
                 >
