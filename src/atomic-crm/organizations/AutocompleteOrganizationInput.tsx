@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRefresh } from "react-admin";
 import { AutocompleteInput } from "@/components/admin/autocomplete-input";
 import { QuickCreatePopover } from "./QuickCreatePopover";
 
@@ -13,6 +14,7 @@ export const AutocompleteOrganizationInput = ({
   helperText?: string | false;
   source?: string;
 }) => {
+  const refresh = useRefresh();
   const [showQuickCreate, setShowQuickCreate] = useState(false);
   const [pendingName, setPendingName] = useState("");
 
@@ -26,6 +28,8 @@ export const AutocompleteOrganizationInput = ({
   const handleCreated = (record: { id: number; name: string }) => {
     setShowQuickCreate(false);
     setPendingName("");
+    // Invalidate React Admin query cache so ReferenceInput can resolve the new org
+    refresh();
     // Return the record to the autocomplete
     return record;
   };
