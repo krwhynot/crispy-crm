@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useGetList, Form, useUpdate, useNotify, ReferenceArrayInput } from "react-admin";
+import { useGetList, Form, useUpdate, useNotify, useRefresh, useGetIdentity, ReferenceArrayInput } from "react-admin";
 import type { Identifier } from "ra-core";
+import { useFormContext } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
 import { Button } from "@/components/ui/button";
@@ -9,6 +10,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserIcon, Star } from "lucide-react";
 import { DirtyStateTracker, SidepaneEmptyState, SidepaneSection } from "@/components/layouts/sidepane";
 import { Card } from "@/components/ui/card";
+import { QuickCreateContactPopover } from "../../contacts/QuickCreateContactPopover";
+import { contactOptionText } from "../../contacts/ContactOption";
 import type { Opportunity, OpportunityContact, Contact } from "@/atomic-crm/types";
 
 interface OpportunityContactsTabProps {
