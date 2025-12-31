@@ -58,6 +58,10 @@ function ContactEditFormContent({
     setPendingContactName("");
     const currentContacts = getValues("contact_ids") || [];
     setValue("contact_ids", [...currentContacts, createdRecord.id]);
+    // Clear the filter to remove the "Create X" option from the dropdown
+    if (clearFilterRef.current) {
+      clearFilterRef.current();
+    }
     refresh(); // Trigger ReferenceArrayInput to refetch so new contact appears
     return createdRecord;
   };
@@ -82,6 +86,7 @@ function ContactEditFormContent({
           helperText="Search and select contacts associated with this opportunity"
           onCreate={handleCreateContact}
           createItemLabel="Create %{item}"
+          onFilterClear={handleFilterClear}
         />
       </ReferenceArrayInput>
       {showContactCreate && record.customer_organization_id && (
