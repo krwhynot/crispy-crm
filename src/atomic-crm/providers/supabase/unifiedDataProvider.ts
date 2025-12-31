@@ -698,7 +698,14 @@ export const unifiedDataProvider: DataProvider = {
       const dbResource = getResourceName(resource);
 
       // Validate and process data
-      const processedData = await processForDatabase(resource, params.data, "create");
+      let processedData = await processForDatabase(resource, params.data, "create");
+
+      // Belt-and-suspenders: Explicitly strip quickCreate for contacts
+      // TransformService should do this, but adding explicit stripping per React Admin patterns
+      if (resource === "contacts") {
+        const { quickCreate, ...contactDataWithoutFlag } = processedData as Record<string, unknown>;
+        processedData = contactDataWithoutFlag as typeof processedData;
+      }
 
       // Check for preview/dry-run mode
       if (params.meta?.dryRun === true) {
