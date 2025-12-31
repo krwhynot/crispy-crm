@@ -39,9 +39,18 @@ export function OrganizationDetailsTab({
 
   const handleSave = async (data: Partial<OrganizationWithHierarchy>) => {
     try {
+      // Ensure sales_id is always included (even if null/unchanged)
+      // This fixes ra-data-postgrest change detection for null → value changes
+      // See: node_modules/@raphiniert/ra-data-postgrest - getChanges() only compares
+      // fields present in data object, so we must explicitly include sales_id
+      const dataWithSalesId = {
+        ...data,
+        sales_id: data.sales_id ?? record.sales_id ?? null,
+      };
+
       await update("organizations", {
         id: record.id,
-        data,
+        data: dataWithSalesId,
         previousData: record,
       });
       notify("Organization updated successfully", { type: "success" });
