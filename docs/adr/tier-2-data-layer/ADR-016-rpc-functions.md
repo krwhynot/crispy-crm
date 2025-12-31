@@ -543,7 +543,7 @@ async function callRpc(fn: string, params: object) {
 
 ## Related ADRs
 
-- **[ADR-001: Unified Data Provider](./ADR-001-unified-data-provider.md)** - RPC calls flow through single entry point
+- **[ADR-001: Unified Data Provider](../tier-1-foundations/ADR-001-unified-data-provider.md)** - RPC calls flow through single entry point
 - **[ADR-007: Soft Delete Pattern](./ADR-007-soft-delete-pattern.md)** - Cascade functions implement soft delete atomically
 - **[ADR-015: Edge Functions](./ADR-015-edge-functions.md)** - Edge Functions for non-transactional background jobs
 

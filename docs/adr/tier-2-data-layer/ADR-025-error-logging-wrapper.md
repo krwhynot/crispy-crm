@@ -456,11 +456,11 @@ throw transformSupabaseError(error);  // Consistent format
 
 ## Related ADRs
 
-- **[ADR-020: Sentry Error Monitoring](./ADR-020-sentry-error-monitoring.md)** - Where errors ultimately land after logging
-- **[ADR-024: Structured Logging](./ADR-024-structured-logging.md)** - Logger class that could replace console.error
+- **[ADR-020: Sentry Error Monitoring](../tier-4-infrastructure/ADR-020-sentry-error-monitoring.md)** - Where errors ultimately land after logging
+- **[ADR-024: Structured Logging](../tier-4-infrastructure/ADR-024-structured-logging.md)** - Logger class that could replace console.error
 - **[ADR-009: Composed Data Provider](./ADR-009-composed-data-provider.md)** - Pattern for composing multiple wrappers
-- **[ADR-001: Unified Data Provider](./ADR-001-unified-data-provider.md)** - Original monolithic provider this was extracted from
-- **[ADR-014: Fail-Fast Philosophy](./ADR-014-fail-fast-philosophy.md)** - Why errors are re-thrown, not swallowed
+- **[ADR-001: Unified Data Provider](../tier-1-foundations/ADR-001-unified-data-provider.md)** - Original monolithic provider this was extracted from
+- **[ADR-014: Fail-Fast Philosophy](../tier-1-foundations/ADR-014-fail-fast-philosophy.md)** - Why errors are re-thrown, not swallowed
 
 ---
 

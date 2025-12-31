@@ -290,8 +290,8 @@ Sentry.init({
 ## Related ADRs
 
 - **[ADR-024: Structured Logging](./ADR-024-structured-logging.md)** - Logger class that routes to Sentry based on log level
-- **[ADR-025: Error Logging Wrapper](./ADR-025-error-logging-wrapper.md)** - DataProvider wrapper that enriches error context before logging
-- **[ADR-014: Fail-Fast Philosophy](./ADR-014-fail-fast-philosophy.md)** - Why errors should surface loudly, not be silently caught
+- **[ADR-025: Error Logging Wrapper](../tier-2-data-layer/ADR-025-error-logging-wrapper.md)** - DataProvider wrapper that enriches error context before logging
+- **[ADR-014: Fail-Fast Philosophy](../tier-1-foundations/ADR-014-fail-fast-philosophy.md)** - Why errors should surface loudly, not be silently caught
 
 ---
 

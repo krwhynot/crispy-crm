@@ -435,8 +435,8 @@ logger.error('Operation failed', error, {
 ## Related ADRs
 
 - **[ADR-020: Sentry Error Monitoring](./ADR-020-sentry-error-monitoring.md)** - Ultimate destination for error/warn level logs
-- **[ADR-025: Error Logging Wrapper](./ADR-025-error-logging-wrapper.md)** - DataProvider wrapper that uses this logger
-- **[ADR-014: Fail-Fast Philosophy](./ADR-014-fail-fast-philosophy.md)** - Why errors should use `error` level, not `debug`
+- **[ADR-025: Error Logging Wrapper](../tier-2-data-layer/ADR-025-error-logging-wrapper.md)** - DataProvider wrapper that uses this logger
+- **[ADR-014: Fail-Fast Philosophy](../tier-1-foundations/ADR-014-fail-fast-philosophy.md)** - Why errors should use `error` level, not `debug`
 
 ---
 

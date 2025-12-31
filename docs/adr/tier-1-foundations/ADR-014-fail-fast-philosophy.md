@@ -279,7 +279,7 @@ At that point, consider introducing:
 
 ## Related ADRs
 
-- **[ADR-011: Feature Directory Structure](./ADR-011-feature-directory-structure.md)** - Error boundaries placed at resource level following this structure
+- **[ADR-011: Feature Directory Structure](../tier-3-frontend/ADR-011-feature-directory-structure.md)** - Error boundaries placed at resource level following this structure
 
 ---
 

@@ -84,7 +84,7 @@ export const createTestQueryClient = () =>
   });
 ```
 
-This configuration aligns with [ADR-014: Fail-Fast Philosophy](./ADR-014-fail-fast-philosophy.md):
+This configuration aligns with [ADR-014: Fail-Fast Philosophy](../tier-1-foundations/ADR-014-fail-fast-philosophy.md):
 - `retry: false` - Fail immediately, no retry logic
 - `gcTime: 0` - Aggressive cache cleanup prevents test pollution
 - Silent logger - Prevents noise in test output
@@ -307,8 +307,8 @@ const queryClient = new QueryClient(); // NEVER: Default retry causes flaky test
 
 ## Related ADRs
 
-- **[ADR-001: Unified Data Provider Entry Point](./ADR-001-unified-data-provider.md)** - The provider being mocked in tests
-- **[ADR-014: Fail-Fast Philosophy](./ADR-014-fail-fast-philosophy.md)** - Test config mirrors fail-fast (no retries)
+- **[ADR-001: Unified Data Provider Entry Point](../tier-1-foundations/ADR-001-unified-data-provider.md)** - The provider being mocked in tests
+- **[ADR-014: Fail-Fast Philosophy](../tier-1-foundations/ADR-014-fail-fast-philosophy.md)** - Test config mirrors fail-fast (no retries)
 
 ---
 

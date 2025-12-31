@@ -16,7 +16,7 @@ Original: 2024-12 | Documented: 2025-12-30
 
 ## Context
 
-[ADR-002](./ADR-002-zod-api-boundary.md) established that Zod validation happens at the API boundary in the data provider, not in forms. However, two challenges emerged:
+[ADR-002](../tier-1-foundations/ADR-002-zod-api-boundary.md) established that Zod validation happens at the API boundary in the data provider, not in forms. However, two challenges emerged:
 
 1. **Error Format Mismatch**: Zod errors use `{ issues: [{ path: ["field"], message: "..." }] }` but React Admin expects `{ body: { errors: { field: "message" } } }` for inline field error display.
 
@@ -290,9 +290,9 @@ async create(resource, params) {
 
 ## Related ADRs
 
-- **[ADR-002: Zod Validation at API Boundary](./ADR-002-zod-api-boundary.md)** - Why validation lives in provider, not forms
+- **[ADR-002: Zod Validation at API Boundary](../tier-1-foundations/ADR-002-zod-api-boundary.md)** - Why validation lives in provider, not forms
 - **[ADR-009: Composed Data Provider Pattern](./ADR-009-composed-data-provider.md)** - How this wrapper fits in composition chain
-- **[ADR-001: Unified Data Provider Entry Point](./ADR-001-unified-data-provider.md)** - The entry point that uses this wrapper
+- **[ADR-001: Unified Data Provider Entry Point](../tier-1-foundations/ADR-001-unified-data-provider.md)** - The entry point that uses this wrapper
 
 ---
 

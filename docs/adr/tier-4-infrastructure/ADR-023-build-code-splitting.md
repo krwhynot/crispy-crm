@@ -272,7 +272,7 @@ manualChunks: {
 ## Related ADRs
 
 - **[ADR-021: Multi-Environment Configuration](./ADR-021-multi-environment-config.md)** - Environment-specific build configuration (CSP, sourcemaps)
-- **[ADR-005: DnD Kit Library Selection](./ADR-005-dnd-kit-library.md)** - Why dnd-kit was chosen for Kanban (impacts chunk strategy)
+- **[ADR-005: DnD Kit Library Selection](../tier-3-frontend/ADR-005-dnd-kit-library.md)** - Why dnd-kit was chosen for Kanban (impacts chunk strategy)
 - **[ADR-020: Sentry Error Monitoring](./ADR-020-sentry-error-monitoring.md)** - Sourcemap upload requires production build configuration
 
 ---

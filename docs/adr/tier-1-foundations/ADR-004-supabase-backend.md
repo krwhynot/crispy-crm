@@ -55,9 +55,9 @@ Use **Supabase** as the unified backend platform with:
 ### Decision Drivers
 
 1. **PostgreSQL for relational CRM data** - Contacts, organizations, opportunities have many-to-many relationships requiring joins, foreign keys, and referential integrity
-2. **RLS at database layer** - Authorization enforced at the database level, not in application code (see [ADR-008](./ADR-008-rls-database-layer.md))
+2. **RLS at database layer** - Authorization enforced at the database level, not in application code (see [ADR-008](./ADR-008-rls-security.md))
 3. **ra-supabase-core integration** - Native React Admin data provider, eliminating custom adapter code
-4. **Edge Functions** - TypeScript/Deno for user management, daily digest (see [ADR-015](./ADR-015-edge-functions.md))
+4. **Edge Functions** - TypeScript/Deno for user management, daily digest (see [ADR-015](../tier-2-data-layer/ADR-015-edge-functions.md))
 5. **Single platform** - Auth, database, storage, and functions in one dashboard = faster development
 6. **Generous free tier** - Sufficient for MVP development and initial launch
 
@@ -460,9 +460,9 @@ const { data } = await supabaseClient.from("contacts").select("*");
 ## Related ADRs
 
 - **[ADR-001: Unified Data Provider](./ADR-001-unified-data-provider.md)** - Single entry point pattern that wraps Supabase
-- **[ADR-008: RLS at Database Layer](./ADR-008-rls-database-layer.md)** - Row-level security implementation details
-- **[ADR-015: Edge Functions for Background Jobs](./ADR-015-edge-functions.md)** - Edge Function patterns and anti-patterns
-- **[ADR-016: RPC Functions for Atomic Operations](./ADR-016-rpc-functions.md)** - Database functions for complex transactions
+- **[ADR-008: RLS at Database Layer](./ADR-008-rls-security.md)** - Row-level security implementation details
+- **[ADR-015: Edge Functions for Background Jobs](../tier-2-data-layer/ADR-015-edge-functions.md)** - Edge Function patterns and anti-patterns
+- **[ADR-016: RPC Functions for Atomic Operations](../tier-2-data-layer/ADR-016-rpc-functions.md)** - Database functions for complex transactions
 
 ---
 

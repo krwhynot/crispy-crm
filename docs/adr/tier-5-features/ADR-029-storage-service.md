@@ -302,8 +302,8 @@ function AvatarUpload({ onUpload }) {
 
 ## Related ADRs
 
-- **[ADR-001: Unified Data Provider Entry Point](./ADR-001-unified-data-provider.md)** - The provider that uses StorageService
-- **[ADR-009: Composed Data Provider Pattern](./ADR-009-composed-data-provider.md)** - How services compose in the provider
+- **[ADR-001: Unified Data Provider Entry Point](../tier-1-foundations/ADR-001-unified-data-provider.md)** - The provider that uses StorageService
+- **[ADR-009: Composed Data Provider Pattern](../tier-2-data-layer/ADR-009-composed-data-provider.md)** - How services compose in the provider
 - **[ADR-028: CSV Upload Validation](./ADR-028-csv-upload-validation.md)** - File validation before storage
 
 ---

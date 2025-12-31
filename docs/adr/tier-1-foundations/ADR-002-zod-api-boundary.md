@@ -276,7 +276,7 @@ const unsafeSchema = z.object({
 ## Related ADRs
 
 - **[ADR-001: Unified Data Provider Entry Point](./ADR-001-unified-data-provider.md)** - The provider that executes validation
-- **[ADR-009: Composed Data Provider Pattern](./ADR-009-composed-data-provider.md)** - How validation integrates into handler composition
+- **[ADR-009: Composed Data Provider Pattern](../tier-2-data-layer/ADR-009-composed-data-provider.md)** - How validation integrates into handler composition
 
 ---
 

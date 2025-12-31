@@ -16,7 +16,7 @@ Original: 2024-12 | Documented: 2025-12-30
 
 ## Context
 
-As documented in [ADR-001](./ADR-001-unified-data-provider.md), the unified data provider grew to ~1657 lines with interleaved resource-specific logic. [ADR-009](./ADR-009-composed-data-provider.md) introduced a composed handler architecture to address this, but migrating a live production system from one architecture to another presents risks:
+As documented in [ADR-001](../tier-1-foundations/ADR-001-unified-data-provider.md), the unified data provider grew to ~1657 lines with interleaved resource-specific logic. [ADR-009](./ADR-009-composed-data-provider.md) introduced a composed handler architecture to address this, but migrating a live production system from one architecture to another presents risks:
 
 1. **Zero-Downtime Requirement**: The CRM is actively used by 6 sales reps. A failed migration could halt pipeline management during critical sales periods.
 
@@ -214,9 +214,9 @@ await unifiedDataProvider.getList("contacts", { ... });
 
 ## Related ADRs
 
-- **[ADR-001: Unified Data Provider Entry Point](./ADR-001-unified-data-provider.md)** - The monolithic provider being migrated from
+- **[ADR-001: Unified Data Provider Entry Point](../tier-1-foundations/ADR-001-unified-data-provider.md)** - The monolithic provider being migrated from
 - **[ADR-009: Composed Data Provider Pattern](./ADR-009-composed-data-provider.md)** - The handler architecture being migrated to
-- **[ADR-002: Zod Validation at API Boundary](./ADR-002-zod-api-boundary.md)** - Validation integrated into both architectures
+- **[ADR-002: Zod Validation at API Boundary](../tier-1-foundations/ADR-002-zod-api-boundary.md)** - Validation integrated into both architectures
 
 ---
 

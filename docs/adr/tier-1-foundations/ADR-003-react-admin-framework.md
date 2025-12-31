@@ -358,7 +358,7 @@ const formDefaults = opportunitySchema.partial().parse({});
 
 - **[ADR-001: Unified Data Provider](./ADR-001-unified-data-provider.md)** - How DataProvider integrates with Supabase
 - **[ADR-002: Zod Validation at API Boundary](./ADR-002-zod-api-boundary.md)** - Why validation happens in DataProvider, not forms
-- **[ADR-007: Soft Delete Pattern](./ADR-007-soft-delete-pattern.md)** - How soft deletes are handled in DataProvider
+- **[ADR-007: Soft Delete Pattern](../tier-2-data-layer/ADR-007-soft-delete-pattern.md)** - How soft deletes are handled in DataProvider
 
 ## References
 

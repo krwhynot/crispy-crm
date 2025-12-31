@@ -254,7 +254,7 @@ export const queryKeys = {
 
 ## Related ADRs
 
-- **[ADR-001: Unified Data Provider Entry Point](./ADR-001-unified-data-provider.md)** - The data layer that React Admin hooks use
+- **[ADR-001: Unified Data Provider Entry Point](../tier-1-foundations/ADR-001-unified-data-provider.md)** - The data layer that React Admin hooks use
 - **[ADR-009: Composed Data Provider Pattern](./ADR-009-composed-data-provider.md)** - How CRUD operations are routed
 
 ---

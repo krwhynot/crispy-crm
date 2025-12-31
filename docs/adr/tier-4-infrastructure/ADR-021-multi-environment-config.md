@@ -215,7 +215,7 @@ const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 
 ## Related ADRs
 
-- **[ADR-001: Unified Data Provider Entry Point](./ADR-001-unified-data-provider.md)** - Uses environment-configured Supabase client
+- **[ADR-001: Unified Data Provider Entry Point](../tier-1-foundations/ADR-001-unified-data-provider.md)** - Uses environment-configured Supabase client
 - **[ADR-022: Content Security Policy Configuration](./ADR-022-csp-security-headers.md)** - CSP differs by environment (dev vs production)
 - **[ADR-030: Vitest Configuration](./ADR-030-vitest-esm-workaround.md)** - Test environment uses Vitest env config
 

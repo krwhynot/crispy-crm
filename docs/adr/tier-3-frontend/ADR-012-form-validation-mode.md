@@ -260,6 +260,6 @@ const value = useWatch({ control, name: "field" }); // Unnecessary for simple fo
 
 ## Related ADRs
 
-- **[ADR-002: Zod Validation at API Boundary](./ADR-002-zod-api-boundary.md)** - Schema-derived defaults and API-level validation
-- **[ADR-014: Fail-Fast Philosophy](./ADR-014-fail-fast-philosophy.md)** - Why validation errors throw rather than gracefully degrade
+- **[ADR-002: Zod Validation at API Boundary](../tier-1-foundations/ADR-002-zod-api-boundary.md)** - Schema-derived defaults and API-level validation
+- **[ADR-014: Fail-Fast Philosophy](../tier-1-foundations/ADR-014-fail-fast-philosophy.md)** - Why validation errors throw rather than gracefully degrade
 - **[ADR-013: WCAG Accessibility](./ADR-013-wcag-accessibility.md)** - Form error accessibility patterns

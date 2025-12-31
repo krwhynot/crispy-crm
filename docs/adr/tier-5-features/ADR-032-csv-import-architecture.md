@@ -373,9 +373,9 @@ Deletion candidates:
 
 ## Related ADRs
 
-- **[ADR-014: Fail-Fast Philosophy](./ADR-014-fail-fast-philosophy.md)** - Validation errors stop import immediately
+- **[ADR-014: Fail-Fast Philosophy](../tier-1-foundations/ADR-014-fail-fast-philosophy.md)** - Validation errors stop import immediately
 - **[ADR-028: CSV Upload Validation](./ADR-028-csv-upload-validation.md)** - Client-side validation (for UI imports)
-- **[ADR-008: RLS Security](./ADR-008-rls-security.md)** - Why service role key needed for bypass
+- **[ADR-008: RLS Security](../tier-1-foundations/ADR-008-rls-security.md)** - Why service role key needed for bypass
 
 ---
 

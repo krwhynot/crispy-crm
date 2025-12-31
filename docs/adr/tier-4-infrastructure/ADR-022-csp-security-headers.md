@@ -242,7 +242,7 @@ npm run preview
 
 - **[ADR-021: Multi-Environment Configuration](./ADR-021-multi-environment-config.md)** - Environment switching that triggers different CSP policies
 - **[ADR-020: Sentry Error Monitoring](./ADR-020-sentry-error-monitoring.md)** - Sentry integration requiring `blob:` and `connect-src` entries
-- **[ADR-014: Fail-Fast Philosophy](./ADR-014-fail-fast-philosophy.md)** - Why CSP violations should break functionality, not be silently reported
+- **[ADR-014: Fail-Fast Philosophy](../tier-1-foundations/ADR-014-fail-fast-philosophy.md)** - Why CSP violations should break functionality, not be silently reported
 
 ---
 
