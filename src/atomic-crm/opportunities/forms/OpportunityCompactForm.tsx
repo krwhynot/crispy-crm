@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { TextInput } from "@/components/admin/text-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
 import { ReferenceArrayInput } from "@/components/admin/reference-array-input";
@@ -19,7 +19,7 @@ import { useWatch, useFormContext } from "react-hook-form";
 import { useGetIdentity } from "ra-core";
 import { AutocompleteOrganizationInput } from "../../organizations/AutocompleteOrganizationInput";
 import { OrganizationInputs } from "../../organizations/OrganizationInputs";
-import { ContactInputs } from "../../contacts/ContactInputs";
+import { QuickCreateContactPopover } from "../../contacts/QuickCreateContactPopover";
 import { contactOptionText } from "../../contacts/ContactOption";
 import { ContactOrgMismatchWarning } from "../components/ContactOrgMismatchWarning";
 import { DistributorAuthorizationWarning } from "../components/DistributorAuthorizationWarning";
@@ -28,7 +28,6 @@ import { useAutoGenerateName } from "../hooks/useAutoGenerateName";
 import { OPPORTUNITY_STAGE_CHOICES } from "../constants/stageConstants";
 import { DEFAULT_SEGMENT_ID } from "../../constants";
 import { organizationSchema } from "../../validation/organizations";
-import { contactBaseSchema } from "../../validation/contacts";
 import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
 
 const priorityChoices = [
@@ -39,7 +38,6 @@ const priorityChoices = [
 ];
 
 const organizationDefaults = organizationSchema.partial().parse({});
-const contactDefaults = contactBaseSchema.partial().parse({});
 
 interface OpportunityCompactFormProps {
   mode?: "create" | "edit";
@@ -62,6 +60,30 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
     () => (principalOrganizationId ? { principal_id: principalOrganizationId } : {}),
     [principalOrganizationId]
   );
+
+  const [showContactCreate, setShowContactCreate] = useState(false);
+  const [pendingContactName, setPendingContactName] = useState("");
+
+  const handleCreateContact = (name?: string) => {
+    if (!name) return;
+    setPendingContactName(name);
+    setShowContactCreate(true);
+    return undefined;
+  };
+
+  const handleContactCreated = (record: { id: number; first_name: string; last_name: string }) => {
+    setShowContactCreate(false);
+    setPendingContactName("");
+    const currentContacts = getValues("contact_ids") || [];
+    setValue("contact_ids", [...currentContacts, record.id]);
+    return record;
+  };
+
+  const handleCancelContactCreate = () => {
+    setShowContactCreate(false);
+    setPendingContactName("");
+  };
+
   return (
     <div className="space-y-4">
       {/* Row 1: Name (full width) with regenerate button in edit mode */}
@@ -283,50 +305,42 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
         <div className="space-y-4">
           {/* Contacts */}
           <div>
-            <div className="flex justify-between items-start mb-2">
-              <div>
-                <h4 className="text-sm font-medium">Contacts *</h4>
-                <p className="text-xs text-muted-foreground">
-                  {customerOrganizationId
-                    ? "At least one contact is required"
-                    : "Please select a Customer Organization first"}
-                </p>
-              </div>
-              {customerOrganizationId && (
-                <CreateInDialogButton
-                  resource="contacts"
-                  label="New Contact"
-                  title="Create new Contact"
-                  description="Create a new contact for the selected customer organization"
-                  defaultValues={{
-                    ...contactDefaults,
-                    organization_id: customerOrganizationId,
-                    sales_id: identity?.id,
-                    first_seen: new Date().toISOString(),
-                    last_seen: new Date().toISOString(),
-                  }}
-                  onSave={(record) => {
-                    const currentContacts = getValues("contact_ids") || [];
-                    setValue("contact_ids", [...currentContacts, record.id]);
-                  }}
-                >
-                  <ContactInputs />
-                </CreateInDialogButton>
-              )}
+            <div className="mb-2">
+              <h4 className="text-sm font-medium">Contacts *</h4>
+              <p className="text-xs text-muted-foreground">
+                {customerOrganizationId
+                  ? "At least one contact is required"
+                  : "Please select a Customer Organization first"}
+              </p>
             </div>
             <div data-tutorial="opp-contacts">
               {customerOrganizationId ? (
-                <ReferenceArrayInput
-                  source="contact_ids"
-                  reference="contacts_summary"
-                  filter={contactFilter}
-                >
-                  <AutocompleteArrayInput
-                    label={false}
-                    optionText={contactOptionText}
-                    helperText={false}
-                  />
-                </ReferenceArrayInput>
+                <>
+                  <ReferenceArrayInput
+                    source="contact_ids"
+                    reference="contacts_summary"
+                    filter={contactFilter}
+                  >
+                    <AutocompleteArrayInput
+                      label={false}
+                      optionText={contactOptionText}
+                      helperText={false}
+                      onCreate={handleCreateContact}
+                      createItemLabel="Create %{item}"
+                    />
+                  </ReferenceArrayInput>
+                  {showContactCreate && (
+                    <QuickCreateContactPopover
+                      name={pendingContactName}
+                      organizationId={customerOrganizationId}
+                      salesId={identity?.id}
+                      onCreated={handleContactCreated}
+                      onCancel={handleCancelContactCreate}
+                    >
+                      <span />
+                    </QuickCreateContactPopover>
+                  )}
+                </>
               ) : (
                 <AutocompleteArrayInput
                   source="contact_ids"
