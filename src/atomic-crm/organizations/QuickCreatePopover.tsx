@@ -5,9 +5,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import {
   Popover,
+  PopoverAnchor,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { useCreateSuggestionContext } from "@/hooks/useSupportCreateSuggestion";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -229,6 +231,205 @@ export function QuickCreatePopover({
                   setOpen(false);
                   onCancel();
                 }}
+                className="h-9"
+              >
+                Cancel
+              </Button>
+              <Button type="submit" size="sm" disabled={isPending} className="h-9">
+                Create
+              </Button>
+            </div>
+          </div>
+        </form>
+      </PopoverContent>
+    </Popover>
+  );
+}
+
+interface QuickCreateOrganizationRAProps {
+  organizationType?: "customer" | "prospect" | "principal" | "distributor";
+}
+
+export function QuickCreateOrganizationRA({
+  organizationType = "customer",
+}: QuickCreateOrganizationRAProps) {
+  const { filter, onCreate, onCancel } = useCreateSuggestionContext();
+  const [isPending, setIsPending] = useState(false);
+  const dataProvider = useDataProvider();
+  const notify = useNotify();
+
+  const name = filter || "";
+
+  const methods = useForm<QuickCreateInput>({
+    resolver: zodResolver(quickCreateSchema),
+    defaultValues: {
+      name,
+      organization_type: organizationType,
+      priority: "C",
+    },
+  });
+
+  const handleSubmit = methods.handleSubmit(
+    async (data) => {
+      setIsPending(true);
+      try {
+        const result = await dataProvider.create("organizations", {
+          data: { ...data, segment_id: PLAYBOOK_CATEGORY_IDS.Unknown },
+        });
+        notify("Organization created", { type: "success" });
+        onCreate(result.data);
+      } catch (error) {
+        notify("Failed to create organization", { type: "error" });
+        throw error;
+      } finally {
+        setIsPending(false);
+      }
+    },
+    (errors) => {
+      const firstErrorField = Object.keys(errors)[0] as keyof QuickCreateInput;
+      if (firstErrorField) {
+        methods.setFocus(firstErrorField);
+      }
+    }
+  );
+
+  const handleQuickCreate = async () => {
+    setIsPending(true);
+    try {
+      const result = await dataProvider.create("organizations", {
+        data: {
+          name,
+          organization_type: organizationType,
+          priority: "C",
+          segment_id: PLAYBOOK_CATEGORY_IDS.Unknown,
+        },
+      });
+      notify("Organization created", { type: "success" });
+      onCreate(result.data);
+    } catch (error) {
+      notify("Failed to create organization", { type: "error" });
+      throw error;
+    } finally {
+      setIsPending(false);
+    }
+  };
+
+  return (
+    <Popover open={true} onOpenChange={(isOpen) => !isOpen && onCancel()}>
+      <PopoverAnchor />
+      <PopoverContent className="w-80 p-4" align="start">
+        <form onSubmit={handleSubmit} className="space-y-3">
+          <p className="font-medium text-sm">Quick Create: {name}</p>
+
+          <div className="space-y-1">
+            <Label htmlFor="ra-org-name">Name</Label>
+            <Input
+              id="ra-org-name"
+              {...methods.register("name")}
+              aria-invalid={!!methods.formState.errors.name}
+              aria-describedby={methods.formState.errors.name ? "ra-name-error" : undefined}
+            />
+            {methods.formState.errors.name && (
+              <p id="ra-name-error" className="text-xs text-destructive" role="alert">
+                {methods.formState.errors.name.message}
+              </p>
+            )}
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-1">
+              <Label htmlFor="ra-org-type">Type</Label>
+              <Select
+                value={methods.watch("organization_type")}
+                onValueChange={(value) =>
+                  methods.setValue(
+                    "organization_type",
+                    value as "customer" | "prospect" | "principal" | "distributor"
+                  )
+                }
+              >
+                <SelectTrigger id="ra-org-type" className="h-11">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="customer">Customer</SelectItem>
+                  <SelectItem value="prospect">Prospect</SelectItem>
+                  <SelectItem value="principal">Principal</SelectItem>
+                  <SelectItem value="distributor">Distributor</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-1">
+              <Label htmlFor="ra-org-priority">Priority</Label>
+              <Select
+                value={methods.watch("priority")}
+                onValueChange={(value) =>
+                  methods.setValue("priority", value as "A" | "B" | "C" | "D")
+                }
+              >
+                <SelectTrigger id="ra-org-priority" className="h-11">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="A">A</SelectItem>
+                  <SelectItem value="B">B</SelectItem>
+                  <SelectItem value="C">C</SelectItem>
+                  <SelectItem value="D">D</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-1">
+              <Label htmlFor="ra-org-city">City</Label>
+              <Input
+                id="ra-org-city"
+                {...methods.register("city")}
+                aria-invalid={!!methods.formState.errors.city}
+                aria-describedby={methods.formState.errors.city ? "ra-city-error" : undefined}
+              />
+              {methods.formState.errors.city && (
+                <p id="ra-city-error" className="text-xs text-destructive" role="alert">
+                  {methods.formState.errors.city.message}
+                </p>
+              )}
+            </div>
+
+            <div className="space-y-1">
+              <Label htmlFor="ra-org-state">State</Label>
+              <Input
+                id="ra-org-state"
+                {...methods.register("state")}
+                aria-invalid={!!methods.formState.errors.state}
+                aria-describedby={methods.formState.errors.state ? "ra-state-error" : undefined}
+              />
+              {methods.formState.errors.state && (
+                <p id="ra-state-error" className="text-xs text-destructive" role="alert">
+                  {methods.formState.errors.state.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="flex justify-between pt-2">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={handleQuickCreate}
+              disabled={isPending}
+              className="text-xs h-9"
+            >
+              Just use name
+            </Button>
+            <div className="flex gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => onCancel()}
                 className="h-9"
               >
                 Cancel
