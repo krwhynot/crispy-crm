@@ -104,9 +104,9 @@ All pattern files follow a consistent structure:
 | 1 | Foundations | 1 |
 | 2 | Data Layer | 5 |
 | 3 | Frontend | 7 |
-| 4 | Infrastructure | 0 |
+| 4 | Infrastructure | 10 |
 | 5 | Features | 11 |
-| **Total** | | **24** |
+| **Total** | | **34** |
 
 ---
 
