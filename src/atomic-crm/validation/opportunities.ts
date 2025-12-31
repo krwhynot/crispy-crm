@@ -120,8 +120,10 @@ const opportunityBaseSchema = z.strictObject({
   account_manager_id: z.union([z.string(), z.number()]).optional().nullable(),
 
   // OpportunityContactsInput fields
+  // SECURITY: Use z.coerce.number() to reject non-numeric strings like "@@ra-create"
+  // This provides defense-in-depth against UI bugs that might add invalid IDs
   contact_ids: z
-    .array(z.union([z.string(), z.number()]))
+    .array(z.coerce.number().int().positive())
     .optional()
     .default([]),
 
@@ -236,8 +238,9 @@ export const createOpportunitySchema = opportunityBaseSchema
   })
   .extend({
     // Contact_ids optional for quick-add (can be enriched later via slide-over)
+    // SECURITY: Use z.coerce.number() to reject non-numeric strings like "@@ra-create"
     contact_ids: z
-      .array(z.union([z.string(), z.number()]))
+      .array(z.coerce.number().int().positive())
       .optional()
       .default([]),
 
@@ -322,7 +325,8 @@ export const updateOpportunitySchema = opportunityBaseSchema
   .partial()
   .extend({
     // Override contact_ids to remove the default([]) that causes issues with partial updates
-    contact_ids: z.array(z.union([z.string(), z.number()])).optional(), // No .default([]) here!
+    // SECURITY: Use z.coerce.number() to reject non-numeric strings like "@@ra-create"
+    contact_ids: z.array(z.coerce.number().int().positive()).optional(), // No .default([]) here!
 
     // Virtual field: products_to_sync (stripped by TransformService before DB save)
     // Must be declared here since opportunityBaseSchema uses strictObject()
