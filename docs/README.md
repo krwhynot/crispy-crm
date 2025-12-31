@@ -5,6 +5,13 @@
 ```
 docs/
 ├── architecture/      # System design, data model, component patterns
+├── design/            # UI/UX design system documentation
+│   ├── INDEX.md       # Design system navigation hub
+│   ├── ACCESSIBILITY.md # WCAG 2.1 AA compliance guide
+│   ├── USER-FLOWS.md  # MVP user journeys
+│   ├── RESPONSIVE-SPECS.md # Viewport breakpoints
+│   ├── INTERACTION-PATTERNS.md # Micro-interactions
+│   └── COMPONENT-CATALOG.md # Visual component index
 ├── features/          # Feature specifications (pipeline, dashboard, etc.)
 ├── guides/            # Developer how-to documentation
 │   └── testing/       # Test strategy and workflow guides
@@ -29,6 +36,8 @@ docs/
 |----------|---------|
 | `architecture/data-model.md` | Complete entity reference |
 | `architecture/rls-policies.md` | Row-level security policies |
+| `design/INDEX.md` | Design system navigation hub |
+| `design/ACCESSIBILITY.md` | WCAG 2.1 AA compliance guide |
 | `decisions.md` | Architecture Decision Records |
 | `technical-debt.md` | Tracked technical debt items |
 
