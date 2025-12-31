@@ -54,10 +54,7 @@ export function OrganizationDetailsTab({
   if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
-        <Form id="slide-over-edit-form" onSubmit={(data) => {
-          console.log("🔍 Form onSubmit triggered with:", data);
-          return handleSave(data);
-        }} record={record}>
+        <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
           <DirtyStateTracker onDirtyChange={onDirtyChange} />
           <div className="space-y-6">
             <div className="space-y-4">
