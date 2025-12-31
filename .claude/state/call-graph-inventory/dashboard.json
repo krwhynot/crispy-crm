@@ -1,6 +1,6 @@
 {
   "chunk_name": "dashboard",
-  "generated_at": "2025-12-29T18:58:52.846Z",
+  "generated_at": "2025-12-31T21:26:23.092Z",
   "items": {
     "nodes": [
       {
@@ -94,10 +94,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "id": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "name": "EntityCombobox",
         "file": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx",
-        "line": 69,
+        "line": 71,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -1932,344 +1932,344 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "useState",
         "targetName": "useState",
         "edgeType": "hook",
-        "line": 87,
+        "line": 89,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "useEffect",
         "targetName": "useEffect",
         "edgeType": "hook",
-        "line": 90,
+        "line": 92,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "onSearchChange",
         "targetName": "onSearchChange",
         "edgeType": "call",
-        "line": 92,
+        "line": 94,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 98,
+        "line": 100,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "find",
         "targetName": "find",
         "edgeType": "call",
-        "line": 99,
+        "line": 101,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 116,
+        "line": 118,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "toLowerCase",
         "targetName": "toLowerCase",
         "edgeType": "call",
-        "line": 130,
+        "line": 132,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "map",
         "targetName": "map",
         "edgeType": "call",
-        "line": 148,
+        "line": 150,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "String",
         "targetName": "String",
         "edgeType": "call",
-        "line": 151,
+        "line": 153,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "onChange",
         "targetName": "onChange",
-        "edgeType": "call",
-        "line": 154,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "onSelect",
-        "targetName": "onSelect",
-        "edgeType": "call",
-        "line": 155,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "setOpen",
-        "targetName": "setOpen",
         "edgeType": "call",
         "line": 156,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "onSelect",
+        "targetName": "onSelect",
+        "edgeType": "call",
+        "line": 157,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "setOpen",
+        "targetName": "setOpen",
+        "edgeType": "call",
+        "line": 158,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "cn",
         "targetName": "cn",
         "edgeType": "call",
-        "line": 160,
+        "line": 162,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "onChange",
         "targetName": "onChange",
         "edgeType": "call",
-        "line": 185,
+        "line": 187,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "onClear",
         "targetName": "onClear",
-        "edgeType": "call",
-        "line": 186,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "toLowerCase",
-        "targetName": "toLowerCase",
         "edgeType": "call",
         "line": 188,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "toLowerCase",
+        "targetName": "toLowerCase",
+        "edgeType": "call",
+        "line": 190,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "FormItem",
         "targetName": "FormItem",
         "edgeType": "render",
-        "line": 104,
+        "line": 106,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "FormLabel",
         "targetName": "FormLabel",
-        "edgeType": "render",
-        "line": 105,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "Popover",
-        "targetName": "Popover",
         "edgeType": "render",
         "line": 107,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "PopoverTrigger",
-        "targetName": "PopoverTrigger",
-        "edgeType": "render",
-        "line": 108,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "FormControl",
-        "targetName": "FormControl",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "Popover",
+        "targetName": "Popover",
         "edgeType": "render",
         "line": 109,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "Button",
-        "targetName": "Button",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "PopoverTrigger",
+        "targetName": "PopoverTrigger",
         "edgeType": "render",
         "line": 110,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "PopoverContent",
-        "targetName": "PopoverContent",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "FormControl",
+        "targetName": "FormControl",
         "edgeType": "render",
-        "line": 127,
+        "line": 111,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "Command",
-        "targetName": "Command",
-        "edgeType": "render",
-        "line": 128,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "CommandList",
-        "targetName": "CommandList",
-        "edgeType": "render",
-        "line": 134,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "CommandEmpty",
-        "targetName": "CommandEmpty",
-        "edgeType": "render",
-        "line": 135,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "CommandGroup",
-        "targetName": "CommandGroup",
-        "edgeType": "render",
-        "line": 147,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "CommandItem",
-        "targetName": "CommandItem",
-        "edgeType": "render",
-        "line": 149,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "Button",
         "targetName": "Button",
         "edgeType": "render",
-        "line": 179,
+        "line": 112,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "FormDescription",
-        "targetName": "FormDescription",
-        "edgeType": "render",
-        "line": 194,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "Loader2",
-        "targetName": "Loader2",
-        "edgeType": "render",
-        "line": 120,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "ChevronsUpDown",
-        "targetName": "ChevronsUpDown",
-        "edgeType": "render",
-        "line": 122,
-        "conditional": true,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "CommandInput",
-        "targetName": "CommandInput",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "PopoverContent",
+        "targetName": "PopoverContent",
         "edgeType": "render",
         "line": 129,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
-        "target": "onSearchChange",
-        "targetName": "onSearchChange",
-        "edgeType": "callback",
-        "line": 132,
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "Command",
+        "targetName": "Command",
+        "edgeType": "render",
+        "line": 130,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "CommandList",
+        "targetName": "CommandList",
+        "edgeType": "render",
+        "line": 136,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "CommandEmpty",
+        "targetName": "CommandEmpty",
+        "edgeType": "render",
+        "line": 137,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "CommandGroup",
+        "targetName": "CommandGroup",
+        "edgeType": "render",
+        "line": 149,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "CommandItem",
+        "targetName": "CommandItem",
+        "edgeType": "render",
+        "line": 151,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "Button",
+        "targetName": "Button",
+        "edgeType": "render",
+        "line": 181,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "FormDescription",
+        "targetName": "FormDescription",
+        "edgeType": "render",
+        "line": 196,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "Loader2",
         "targetName": "Loader2",
         "edgeType": "render",
-        "line": 138,
+        "line": 122,
         "conditional": true,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "ChevronsUpDown",
+        "targetName": "ChevronsUpDown",
+        "edgeType": "render",
+        "line": 124,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "CommandInput",
+        "targetName": "CommandInput",
+        "edgeType": "render",
+        "line": 131,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "onSearchChange",
+        "targetName": "onSearchChange",
+        "edgeType": "callback",
+        "line": 134,
+        "conditional": false,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
+        "target": "Loader2",
+        "targetName": "Loader2",
+        "edgeType": "render",
+        "line": 140,
+        "conditional": true,
+        "inLoop": false
+      },
+      {
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "Check",
         "targetName": "Check",
         "edgeType": "render",
-        "line": 159,
+        "line": 161,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "X",
         "targetName": "X",
         "edgeType": "render",
-        "line": 190,
+        "line": 192,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:69:EntityCombobox",
+        "source": "src/atomic-crm/dashboard/v3/components/EntityCombobox.tsx:71:EntityCombobox",
         "target": "FormMessage",
         "targetName": "FormMessage",
         "edgeType": "render",
-        "line": 195,
+        "line": 197,
         "conditional": false,
         "inLoop": false
       },

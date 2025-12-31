@@ -1,6 +1,6 @@
 {
   "chunk_name": "opportunities",
-  "generated_at": "2025-12-29T18:58:51.267Z",
+  "generated_at": "2025-12-31T21:26:19.513Z",
   "item_count": 9,
   "items": [
     {
@@ -111,7 +111,7 @@
     {
       "name": "createOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities.ts",
-      "line": 229,
+      "line": 231,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -181,7 +181,7 @@
     {
       "name": "quickCreateOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities.ts",
-      "line": 290,
+      "line": 293,
       "schemaType": "strictObject",
       "fields": [
         {
@@ -273,12 +273,12 @@
     {
       "name": "updateOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities.ts",
-      "line": 321,
+      "line": 324,
       "schemaType": "strictObject",
       "fields": [
         {
           "name": "contact_ids",
-          "zodType": "array",
+          "zodType": "coerce.number",
           "constraints": [],
           "optional": true,
           "nullable": false,
@@ -318,7 +318,7 @@
     {
       "name": "closeOpportunitySchema",
       "file": "src/atomic-crm/validation/opportunities.ts",
-      "line": 413,
+      "line": 417,
       "schemaType": "strictObject",
       "fields": [
         {

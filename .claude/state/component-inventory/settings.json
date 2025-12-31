@@ -1,6 +1,6 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2025-12-29T18:58:47.221Z",
+  "generated_at": "2025-12-31T21:26:11.803Z",
   "item_count": 13,
   "items": [
     {
@@ -116,12 +116,12 @@
     {
       "name": "TimeZoneSelect",
       "file": "src/atomic-crm/settings/TimeZoneSelect.tsx",
-      "line": 27,
+      "line": 10,
       "type": "presentational",
       "hooks": [],
       "imports": [
-        "@/components/ui/label",
-        "@/components/ui/select"
+        "@/components/admin/generic-select-input",
+        "@/constants/choices"
       ],
       "isDefaultExport": false,
       "childComponents": [],

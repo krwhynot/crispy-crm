@@ -1,28 +1,8 @@
 {
   "chunk_name": "shared",
-  "generated_at": "2025-12-29T18:58:47.221Z",
-  "item_count": 2,
+  "generated_at": "2025-12-31T21:26:11.804Z",
+  "item_count": 1,
   "items": [
-    {
-      "name": "ContactSelectField",
-      "file": "src/atomic-crm/shared/components/ContactSelectField.tsx",
-      "line": 22,
-      "type": "presentational",
-      "hooks": [
-        "useGetList"
-      ],
-      "imports": [
-        "@/atomic-crm/types",
-        "@/components/ui/form",
-        "@/components/ui/select",
-        "react-admin",
-        "react-hook-form"
-      ],
-      "isDefaultExport": false,
-      "childComponents": [],
-      "contextDependencies": [],
-      "componentRole": "leaf"
-    },
     {
       "name": "Status",
       "file": "src/atomic-crm/shared/components/Status.tsx",

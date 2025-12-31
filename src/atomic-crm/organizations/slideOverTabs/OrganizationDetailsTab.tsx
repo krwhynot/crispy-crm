@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
 import { useFormContext } from "react-hook-form";
@@ -24,55 +25,27 @@ import { OrganizationTypeBadge, PriorityBadge } from "../OrganizationBadges";
 
 /**
  * Helper component that must be rendered INSIDE a Form to access form context.
- * This component gets the current form values and calls the save handler.
+ * Uses a ref to expose getValues() to the parent component's handleSave.
  *
  * Problem: React Admin's Form onSubmit may only pass dirty fields, causing
  * sales_id to be missing when its initial value is null (null → null = no change).
  *
- * Solution: Use useFormContext().getValues() to get ALL registered field values
- * regardless of dirty state, ensuring sales_id is always included in the update.
+ * Solution: Store getValues() in a ref so handleSave can get ALL registered
+ * field values regardless of dirty state.
  */
-function FormValuesHandler({
-  onSave,
+function FormValuesProvider({
+  getValuesRef,
   onDirtyChange,
 }: {
-  onSave: (data: Partial<OrganizationWithHierarchy>) => Promise<void>;
+  getValuesRef: React.MutableRefObject<(() => Record<string, unknown>) | null>;
   onDirtyChange?: (isDirty: boolean) => void;
 }) {
   const { getValues } = useFormContext();
 
-  // This function is called by the parent's onSubmit wrapper
-  // It ensures we get ALL form values, not just dirty fields
-  const handleFormSubmit = async () => {
-    // Get ALL current form values, regardless of dirty state
-    const allFormValues = getValues();
+  // Store getValues in the ref so parent can access it
+  getValuesRef.current = getValues;
 
-    // Ensure sales_id is explicitly included (null if not set)
-    const completeData: Partial<OrganizationWithHierarchy> = {
-      ...allFormValues,
-      sales_id: allFormValues.sales_id ?? null,
-    };
-
-    await onSave(completeData);
-  };
-
-  // Store the handler in a data attribute so the Form's onSubmit can access it
-  // This is a workaround because onSubmit is defined outside Form context
-  return (
-    <>
-      <DirtyStateTracker onDirtyChange={onDirtyChange} />
-      <input
-        type="hidden"
-        data-form-submit-handler="true"
-        ref={(el) => {
-          if (el) {
-            // Attach our handler to the DOM element for access from onSubmit
-            (el as HTMLInputElement & { submitHandler?: () => Promise<void> }).submitHandler = handleFormSubmit;
-          }
-        }}
-      />
-    </>
-  );
+  return <DirtyStateTracker onDirtyChange={onDirtyChange} />;
 }
 
 interface OrganizationDetailsTabProps {
@@ -90,14 +63,27 @@ export function OrganizationDetailsTab({
 }: OrganizationDetailsTabProps) {
   const [update] = useUpdate();
   const notify = useNotify();
+  // Ref to access form's getValues() from outside the Form context
+  const getValuesRef = useRef<(() => Record<string, unknown>) | null>(null);
 
-  const handleSave = async (data: Partial<OrganizationWithHierarchy>) => {
+  const handleSave = async (formData: Partial<OrganizationWithHierarchy>) => {
     try {
-      // Data now comes from FormSaveHandler which ensures sales_id is always included
-      // via useFormContext().getValues() - fixes ra-data-postgrest change detection
+      // Get ALL current form values using the ref (not just dirty fields)
+      // This ensures sales_id is included even when initial value was null
+      const allFormValues = getValuesRef.current?.() ?? formData;
+
+      // Merge form data with explicit sales_id from getValues()
+      // This fixes ra-data-postgrest change detection for null → value changes
+      const completeData = {
+        ...formData,
+        // Use allFormValues.sales_id which is the actual current form value
+        // Falls back to null if somehow not set
+        sales_id: allFormValues.sales_id ?? null,
+      };
+
       await update("organizations", {
         id: record.id,
-        data,
+        data: completeData,
         previousData: record,
       });
       notify("Organization updated successfully", { type: "success" });
@@ -110,9 +96,8 @@ export function OrganizationDetailsTab({
   if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
-        <Form id="slide-over-edit-form" record={record}>
-          <FormSaveHandler record={record} onSave={handleSave} />
-          <DirtyStateTracker onDirtyChange={onDirtyChange} />
+        <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
+          <FormValuesProvider getValuesRef={getValuesRef} onDirtyChange={onDirtyChange} />
           <div className="space-y-6">
             <div className="space-y-4">
               <TextInput source="name" label="Organization Name" />

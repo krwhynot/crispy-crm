@@ -1,7 +1,7 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2025-12-29T18:58:51.265Z",
-  "item_count": 9,
+  "generated_at": "2025-12-31T21:26:19.510Z",
+  "item_count": 10,
   "items": [
     {
       "name": "personalInfoTypeSchema",
@@ -627,6 +627,7 @@
         "contactOrganizationSchema",
         "contactBaseSchema",
         "importContactSchema",
+        "quickCreateContactSchema",
         "createContactSchema",
         "contactNoteSchema"
       ],
@@ -847,6 +848,7 @@
         "contactOrganizationSchema",
         "contactBaseSchema",
         "contactSchema",
+        "quickCreateContactSchema",
         "createContactSchema",
         "contactNoteSchema"
       ],
@@ -855,9 +857,128 @@
       "hasSuperRefine": true
     },
     {
+      "name": "quickCreateContactSchema",
+      "file": "src/atomic-crm/validation/contacts.ts",
+      "line": 380,
+      "schemaType": "strictObject",
+      "fields": [
+        {
+          "name": "first_name",
+          "zodType": "string",
+          "constraints": [
+            "min(1, \"First name required\")",
+            "max(100)"
+          ],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "organization_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_name",
+          "zodType": "string",
+          "constraints": [
+            "max(100)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "email",
+          "zodType": "array",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "phone",
+          "zodType": "array",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": true
+        },
+        {
+          "name": "sales_id",
+          "zodType": "coerce.number",
+          "constraints": [],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "first_seen",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "last_seen",
+          "zodType": "string",
+          "constraints": [
+            "max(50)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "quickCreate",
+          "zodType": "literal",
+          "constraints": [],
+          "optional": false,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        },
+        {
+          "name": "name",
+          "zodType": "string",
+          "constraints": [
+            "max(201)"
+          ],
+          "optional": true,
+          "nullable": false,
+          "hasTransform": false,
+          "hasDefault": false
+        }
+      ],
+      "relatedSchemas": [
+        "contactSchema",
+        "importContactSchema",
+        "createContactSchema"
+      ],
+      "validationFunctions": [
+        "validateContactForm"
+      ],
+      "hasTransforms": false,
+      "hasSuperRefine": false
+    },
+    {
       "name": "createContactSchema",
       "file": "src/atomic-crm/validation/contacts.ts",
-      "line": 454,
+      "line": 495,
       "schemaType": "other",
       "fields": [],
       "relatedSchemas": [
@@ -866,6 +987,7 @@
         "contactBaseSchema",
         "contactSchema",
         "importContactSchema",
+        "quickCreateContactSchema",
         "contactNoteSchema"
       ],
       "validationFunctions": [],
