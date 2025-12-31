@@ -38,24 +38,30 @@ export function OrganizationDetailsTab({
   const notify = useNotify();
 
   const handleSave = async (data: Partial<OrganizationWithHierarchy>) => {
+    console.log("🔍 handleSave CALLED with data:", data);
     try {
+      console.log("🔍 Calling update() with:", { id: record.id, data });
       await update("organizations", {
         id: record.id,
         data,
         previousData: record,
       });
+      console.log("🔍 update() completed successfully");
       notify("Organization updated successfully", { type: "success" });
       onModeToggle?.();
     } catch (error) {
+      console.error("🔍 Save error:", error);
       notify("Error updating organization", { type: "error" });
-      console.error("Save error:", error);
     }
   };
 
   if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
-        <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
+        <Form id="slide-over-edit-form" onSubmit={(data) => {
+          console.log("🔍 Form onSubmit triggered with:", data);
+          return handleSave(data);
+        }} record={record}>
           <DirtyStateTracker onDirtyChange={onDirtyChange} />
           <div className="space-y-6">
             <div className="space-y-4">
