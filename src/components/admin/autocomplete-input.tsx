@@ -138,8 +138,17 @@ export const AutocompleteInput = (
     filter: filterValue,
   });
 
+  // TEMPORARY DEBUG - Remove after fixing Bug #2
+  console.log('🔍 Create item debug:', {
+    hasCreate: !!create,
+    hasOnCreate: !!onCreate,
+    filterValue,
+    createLabel,
+    createItemLabel,
+  });
   const createItem =
     (create || onCreate) && (filterValue !== "" || createLabel) ? getCreateItem(filterValue) : null;
+  console.log('🔍 Create item result:', { createItem: !!createItem, createItemValue: createItem });
   let finalChoices = allChoices;
   if (createItem) {
     finalChoices = [...finalChoices, createItem];
