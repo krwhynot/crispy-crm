@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUpdate, useNotify, useGetIdentity, useRedirect, useRefresh } from "react-admin";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -36,6 +36,7 @@ interface SalesPermissionsTabProps {
   record: Sale;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
 /**
@@ -49,7 +50,7 @@ interface SalesPermissionsTabProps {
  * View mode: Read-only display with badges
  * Edit mode: Inline form with dropdowns and switches
  */
-export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermissionsTabProps) {
+export function SalesPermissionsTab({ record, mode, onModeToggle, onDirtyChange }: SalesPermissionsTabProps) {
   const [update, { isLoading }] = useUpdate();
   const notify = useNotify();
   const redirect = useRedirect();
@@ -68,6 +69,19 @@ export function SalesPermissionsTab({ record, mode, onModeToggle }: SalesPermiss
   );
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Track dirty state for ResourceSlideOver's Save button
+  // Since this component uses local useState (not react-hook-form),
+  // we manually compare formData with original record values
+  useEffect(() => {
+    if (mode !== "edit" || !onDirtyChange) return;
+
+    const isDirty =
+      formData.role !== record.role ||
+      formData.disabled !== record.disabled;
+
+    onDirtyChange(isDirty);
+  }, [formData, record, mode, onDirtyChange]);
 
   // Prevent editing own account
   const isSelfEdit = record?.id === identity?.id;

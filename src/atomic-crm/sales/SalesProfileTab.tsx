@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUpdate, useNotify } from "react-admin";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -20,6 +20,7 @@ interface SalesProfileTabProps {
   record: SaleWithProfile;
   mode: "view" | "edit";
   onModeToggle?: () => void;
+  onDirtyChange?: (isDirty: boolean) => void;
 }
 
 /**
@@ -34,7 +35,7 @@ interface SalesProfileTabProps {
  * View mode: Read-only display with labels
  * Edit mode: Inline form with Save/Cancel buttons
  */
-export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabProps) {
+export function SalesProfileTab({ record, mode, onModeToggle, onDirtyChange }: SalesProfileTabProps) {
   const [update, { isLoading }] = useUpdate();
   const notify = useNotify();
 
@@ -52,6 +53,22 @@ export function SalesProfileTab({ record, mode, onModeToggle }: SalesProfileTabP
   );
 
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Track dirty state for ResourceSlideOver's Save button
+  // Since this component uses local useState (not react-hook-form),
+  // we manually compare formData with original record values
+  useEffect(() => {
+    if (mode !== "edit" || !onDirtyChange) return;
+
+    const isDirty =
+      formData.first_name !== record.first_name ||
+      formData.last_name !== record.last_name ||
+      formData.email !== record.email ||
+      formData.phone !== (record.phone ?? "") ||
+      formData.avatar_url !== (record.avatar_url ?? "");
+
+    onDirtyChange(isDirty);
+  }, [formData, record, mode, onDirtyChange]);
 
   // Update form field
   const handleChange = (field: string, value: string) => {
