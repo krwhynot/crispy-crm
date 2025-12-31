@@ -376,9 +376,46 @@ export type Contact = z.infer<typeof contactSchema>;
 export type ContactOrganization = z.infer<typeof contactOrganizationSchema>;
 export type ImportContactInput = z.input<typeof importContactSchema>;
 
+// Quick create schema - reduced requirements but maintains security
+export const quickCreateContactSchema = z.strictObject({
+  // REQUIRED: Security-critical fields
+  first_name: z.string().min(1, "First name required").max(100),
+  organization_id: z.coerce.number().int().positive(),
+
+  // OPTIONAL: Can be empty for quick create
+  last_name: z.string().max(100).optional().default(""),
+  email: z.array(emailAndTypeSchema).optional().default([]),
+  phone: z.array(phoneNumberAndTypeSchema).optional().default([]),
+
+  // PASS-THROUGH: Other valid fields
+  sales_id: z.coerce.number().int().positive().optional(),
+  first_seen: z.string().max(50).optional(),
+  last_seen: z.string().max(50).optional(),
+  quickCreate: z.literal(true), // Must be explicitly true
+});
+
 // Validation function matching expected signature from unifiedDataProvider
 // This is the ONLY place where contact validation occurs
 export async function validateContactForm(data: unknown): Promise<void> {
+  const rawData = data as Record<string, unknown>;
+
+  // Quick create path - reduced but secure validation
+  if (rawData.quickCreate === true) {
+    try {
+      quickCreateContactSchema.parse(rawData);
+      return; // Valid quick create
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const formattedErrors: Record<string, string> = {};
+        error.issues.forEach((err) => {
+          formattedErrors[err.path.join(".")] = err.message;
+        });
+        throw { message: "Validation failed", body: { errors: formattedErrors } };
+      }
+      throw error;
+    }
+  }
+
   // Create a schema that includes the email entry validation
   const formSchema = contactBaseSchema.transform(transformContactData).superRefine((data, ctx) => {
     // Validate that at least name or first_name/last_name is provided

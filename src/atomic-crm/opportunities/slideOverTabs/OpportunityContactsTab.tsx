@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { useGetList, Form, useUpdate, useNotify, useGetIdentity, ReferenceArrayInput } from "react-admin";
+import { useGetList, Form, useNotify, useGetIdentity, ReferenceArrayInput, useDataProvider } from "react-admin";
 import type { Identifier } from "ra-core";
+import { OpportunitiesService } from "@/atomic-crm/services/opportunities.service";
+import type { ExtendedDataProvider } from "@/atomic-crm/providers/supabase/extensions/types";
 import { Link } from "react-router-dom";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
 import { Button } from "@/components/ui/button";
