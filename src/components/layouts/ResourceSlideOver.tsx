@@ -368,7 +368,6 @@ export function ResourceSlideOver({
                   form="slide-over-edit-form"
                   className="h-11 px-4"
                   disabled={!isDirty}
-                  onClick={() => console.log("🔍 Save button clicked, isDirty:", isDirty)}
                 >
                   Save Changes
                 </Button>
