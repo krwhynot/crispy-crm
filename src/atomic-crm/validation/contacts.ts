@@ -510,8 +510,15 @@ export const updateContactSchema = contactBaseSchema.partial().transform(transfo
 
 // Export validation functions for specific operations
 export async function validateCreateContact(data: unknown): Promise<void> {
+  // Check if this is a quick create request (validation bypass for "Just use name" flow)
+  const isQuickCreate = typeof data === "object" && data !== null && "quickCreate" in data && (data as Record<string, unknown>).quickCreate === true;
+
   // Create a schema that includes the email requirement validation
   const createSchemaWithEmail = contactBaseSchema
+    .extend({
+      // Add quickCreate flag - not stored in DB, only for validation bypass
+      quickCreate: z.boolean().optional(),
+    })
     .omit({
       id: true,
       first_seen: true,
@@ -526,20 +533,32 @@ export async function validateCreateContact(data: unknown): Promise<void> {
     })
     .transform(transformContactData)
     .superRefine((data, ctx) => {
-      // For creation, we need at least first_name and last_name OR name
-      if (!data.name && (!data.first_name || !data.last_name)) {
+      // For quick create, only require first_name
+      // For regular creation, require first_name and last_name OR name
+      if (!isQuickCreate) {
+        if (!data.name && (!data.first_name || !data.last_name)) {
+          if (!data.first_name) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ["first_name"],
+              message: "First name is required",
+            });
+          }
+          if (!data.last_name) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              path: ["last_name"],
+              message: "Last name is required",
+            });
+          }
+        }
+      } else {
+        // Quick create only requires first_name
         if (!data.first_name) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             path: ["first_name"],
             message: "First name is required",
-          });
-        }
-        if (!data.last_name) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            path: ["last_name"],
-            message: "Last name is required",
           });
         }
       }
@@ -563,13 +582,15 @@ export async function validateCreateContact(data: unknown): Promise<void> {
         });
       }
 
-      // Ensure at least one email is provided for new contacts
-      if (!data.email || !Array.isArray(data.email) || data.email.length === 0) {
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          message: "At least one email address is required",
-          path: ["email"],
-        });
+      // Ensure at least one email is provided for new contacts (skip for quick create)
+      if (!isQuickCreate) {
+        if (!data.email || !Array.isArray(data.email) || data.email.length === 0) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: "At least one email address is required",
+            path: ["email"],
+          });
+        }
       }
     });
 
