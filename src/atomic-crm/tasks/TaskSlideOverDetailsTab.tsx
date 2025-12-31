@@ -91,7 +91,10 @@ export function TaskSlideOverDetailsTab({
   if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
-        <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
+        <Form id="slide-over-edit-form" onSubmit={(data) => {
+          console.log("🔍 [TASK] Form onSubmit triggered with:", data);
+          return handleSave(data);
+        }} record={record}>
           <DirtyStateTracker onDirtyChange={onDirtyChange} />
           <div className="space-y-6" role="form" aria-label="Edit task form">
             <div className="space-y-4">
