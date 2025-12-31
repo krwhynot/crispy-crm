@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { useGetList, Form, useUpdate, useNotify, useRefresh, useGetIdentity, ReferenceArrayInput } from "react-admin";
+import { useGetList, Form, useUpdate, useNotify, useGetIdentity, ReferenceArrayInput } from "react-admin";
 import type { Identifier } from "ra-core";
-import { useFormContext } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { AutocompleteArrayInput } from "@/components/admin/autocomplete-array-input";
 import { Button } from "@/components/ui/button";
@@ -10,13 +9,12 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserIcon, Star } from "lucide-react";
 import { DirtyStateTracker, SidepaneEmptyState, SidepaneSection } from "@/components/layouts/sidepane";
 import { Card } from "@/components/ui/card";
-import { QuickCreateContactPopover } from "../../contacts/QuickCreateContactPopover";
+import { QuickCreateContactRA } from "../../contacts/QuickCreateContactPopover";
 import { contactOptionText } from "../../contacts/ContactOption";
 import type { Opportunity, OpportunityContact, Contact } from "@/atomic-crm/types";
 
 /**
- * Inner form component for contact editing - needs to be separate to access useFormContext
- * React-hook-form's context is only available to children of the Form component
+ * Inner form component for contact editing - needs to be separate to access React Admin form context
  */
 interface ContactEditFormContentProps {
   record: Opportunity;
@@ -32,33 +30,6 @@ function ContactEditFormContent({
   onDirtyChange,
 }: ContactEditFormContentProps) {
   const { data: identity } = useGetIdentity();
-  const refresh = useRefresh();
-  const { setValue, getValues } = useFormContext();
-
-  // State for inline contact creation
-  const [showContactCreate, setShowContactCreate] = useState(false);
-  const [pendingContactName, setPendingContactName] = useState("");
-
-  const handleCreateContact = (name?: string) => {
-    if (!name) return;
-    setPendingContactName(name);
-    setShowContactCreate(true);
-    return undefined;
-  };
-
-  const handleContactCreated = (createdRecord: { id: number; first_name: string; last_name: string }) => {
-    setShowContactCreate(false);
-    setPendingContactName("");
-    const currentContacts = getValues("contact_ids") || [];
-    setValue("contact_ids", [...currentContacts, createdRecord.id]);
-    refresh(); // Trigger ReferenceArrayInput to refetch so new contact appears
-    return createdRecord;
-  };
-
-  const handleCancelContactCreate = () => {
-    setShowContactCreate(false);
-    setPendingContactName("");
-  };
 
   return (
     <>
@@ -73,21 +44,17 @@ function ContactEditFormContent({
           optionText={contactOptionText}
           filterToQuery={(searchText: string) => ({ q: searchText })}
           helperText="Search and select contacts associated with this opportunity"
-          onCreate={handleCreateContact}
+          create={
+            record.customer_organization_id ? (
+              <QuickCreateContactRA
+                organizationId={record.customer_organization_id}
+                salesId={identity?.id as number | undefined}
+              />
+            ) : undefined
+          }
           createItemLabel="Create %{item}"
         />
       </ReferenceArrayInput>
-      {showContactCreate && record.customer_organization_id && (
-        <QuickCreateContactPopover
-          name={pendingContactName}
-          organizationId={record.customer_organization_id}
-          salesId={identity?.id as number | undefined}
-          onCreated={handleContactCreated}
-          onCancel={handleCancelContactCreate}
-        >
-          <span />
-        </QuickCreateContactPopover>
-      )}
 
       <div className="flex gap-2 pt-4">
         <Button type="submit" disabled={isSaving} className="flex-1">
