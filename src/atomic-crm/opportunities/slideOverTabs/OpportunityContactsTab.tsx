@@ -86,7 +86,7 @@ export function OpportunityContactsTab({
   onDirtyChange,
   isActiveTab,
 }: OpportunityContactsTabProps) {
-  const [update] = useUpdate();
+  const dataProvider = useDataProvider();
   const notify = useNotify();
   const [isSaving, setIsSaving] = useState(false);
 
@@ -115,25 +115,17 @@ export function OpportunityContactsTab({
   const handleSave = async (data: { contact_ids?: Identifier[] }) => {
     setIsSaving(true);
     try {
-      await update(
-        "opportunities",
-        {
-          id: record.id,
-          data: { contact_ids: data.contact_ids || [] },
-          previousData: record,
-        },
-        {
-          onSuccess: () => {
-            notify("Contacts updated successfully", { type: "success" });
-            if (onModeToggle) {
-              onModeToggle();
-            }
-          },
-          onError: (error: Error) => {
-            notify(error?.message || "Failed to update contacts", { type: "error" });
-          },
-        }
-      );
+      // Use service to sync junction table atomically via RPC
+      const service = new OpportunitiesService(dataProvider as ExtendedDataProvider);
+      await service.updateWithContacts(record.id, data.contact_ids || []);
+
+      notify("Contacts updated successfully", { type: "success" });
+      if (onModeToggle) {
+        onModeToggle();
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : "Failed to update contacts";
+      notify(errorMessage, { type: "error" });
     } finally {
       setIsSaving(false);
     }
