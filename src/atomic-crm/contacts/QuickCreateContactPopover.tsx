@@ -105,8 +105,10 @@ export function QuickCreateContactPopover({
       notify("Contact created", { type: "success" });
       onCreated(result.data as { id: number; first_name: string; last_name: string });
       setOpen(false);
-    } catch {
-      notify("Failed to create contact", { type: "error" });
+    } catch (error) {
+      console.error('[QuickCreateContact] Failed:', error);
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      notify(`Failed to create contact: ${message}`, { type: "error" });
     } finally {
       setIsPending(false);
     }
@@ -278,8 +280,10 @@ export function QuickCreateContactRA({
       notify("Contact created", { type: "success" });
       onCreate(result.data);  // KEY FIX: Pass real record back to RA
     } catch (error) {
-      notify("Failed to create contact", { type: "error" });
-      throw error;  // Fail-fast
+      console.error('[QuickCreateContact] Failed:', error);
+      const message = error instanceof Error ? error.message : 'Unknown error';
+      notify(`Failed to create contact: ${message}`, { type: "error" });
+      // Don't re-throw in event handlers - toast is the error handling
     } finally {
       setIsPending(false);
     }
