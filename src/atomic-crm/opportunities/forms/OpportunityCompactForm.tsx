@@ -16,7 +16,7 @@ import { Button } from "@/components/ui/button";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { RefreshCw } from "lucide-react";
 import { useWatch, useFormContext } from "react-hook-form";
-import { useGetIdentity } from "ra-core";
+import { useGetIdentity, useRefresh } from "ra-core";
 import { AutocompleteOrganizationInput } from "../../organizations/AutocompleteOrganizationInput";
 import { OrganizationInputs } from "../../organizations/OrganizationInputs";
 import { QuickCreateContactPopover } from "../../contacts/QuickCreateContactPopover";
@@ -46,6 +46,7 @@ interface OpportunityCompactFormProps {
 export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFormProps) => {
   const { data: identity } = useGetIdentity();
   const { setValue, getValues } = useFormContext();
+  const refresh = useRefresh();
   const { regenerate, isLoading, canGenerate } = useAutoGenerateName(mode);
 
   const customerOrganizationId = useWatch({ name: "customer_organization_id" });
@@ -76,6 +77,8 @@ export const OpportunityCompactForm = ({ mode = "create" }: OpportunityCompactFo
     setPendingContactName("");
     const currentContacts = getValues("contact_ids") || [];
     setValue("contact_ids", [...currentContacts, record.id]);
+    // Trigger ReferenceInput to refetch so new contact appears in choices
+    refresh();
     return record;
   };
 
