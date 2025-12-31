@@ -97,6 +97,7 @@ export function QuickCreateContactPopover({
           sales_id: salesId,
           first_seen: now,
           last_seen: now,
+          quickCreate: true, // Bypass last_name and email validation for "Just use name" flow
         },
       });
       notify("Contact created", { type: "success" });

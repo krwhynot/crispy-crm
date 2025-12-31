@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useCallback } from "react";
 import { useGetList, Form, useUpdate, useNotify, useRefresh, useGetIdentity, ReferenceArrayInput } from "react-admin";
 import type { Identifier } from "ra-core";
 import { useFormContext } from "react-hook-form";
@@ -38,6 +38,13 @@ function ContactEditFormContent({
   // State for inline contact creation
   const [showContactCreate, setShowContactCreate] = useState(false);
   const [pendingContactName, setPendingContactName] = useState("");
+
+  // Ref to store the filter clear function from AutocompleteArrayInput
+  const clearFilterRef = useRef<(() => void) | null>(null);
+
+  const handleFilterClear = useCallback((clearFn: () => void) => {
+    clearFilterRef.current = clearFn;
+  }, []);
 
   const handleCreateContact = (name?: string) => {
     if (!name) return;
