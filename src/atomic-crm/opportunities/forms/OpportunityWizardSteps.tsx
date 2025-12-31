@@ -380,6 +380,7 @@ export function OpportunityWizardStep2() {
 export function OpportunityWizardStep3() {
   const { data: identity } = useGetIdentity();
   const { setValue, getValues } = useFormContext();
+  const refresh = useRefresh();
 
   const customerOrganizationId = useWatch({ name: "customer_organization_id" });
   const principalOrganizationId = useWatch({ name: "principal_organization_id" });
@@ -410,6 +411,8 @@ export function OpportunityWizardStep3() {
     setPendingContactName("");
     const currentContacts = getValues("contact_ids") || [];
     setValue("contact_ids", [...currentContacts, record.id]);
+    // Trigger ReferenceInput to refetch so new contact appears in choices
+    refresh();
     return record;
   };
 
