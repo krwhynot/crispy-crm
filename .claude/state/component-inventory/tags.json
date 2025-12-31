@@ -1,7 +1,7 @@
 {
   "chunk_name": "tags",
-  "generated_at": "2025-12-29T18:58:47.221Z",
-  "item_count": 5,
+  "generated_at": "2025-12-31T21:26:11.805Z",
+  "item_count": 7,
   "items": [
     {
       "name": "RoundButton",
@@ -116,6 +116,55 @@
       "childComponents": [
         "Tag",
         "TagDialog"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "TagQuickInput",
+      "file": "src/atomic-crm/tags/TagQuickInput.tsx",
+      "line": 14,
+      "type": "presentational",
+      "hooks": [
+        "useCreate",
+        "useNotify",
+        "useRefresh",
+        "useState"
+      ],
+      "imports": [
+        "@/components/admin/generic-select-input",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "TagSelectWithCreate",
+      "file": "src/atomic-crm/tags/TagSelectWithCreate.tsx",
+      "line": 18,
+      "type": "presentational",
+      "hooks": [
+        "useCreate",
+        "useNotify",
+        "useRefresh",
+        "useState"
+      ],
+      "imports": [
+        "../types",
+        "./TagDialog",
+        "@/components/admin/generic-select-input",
+        "@/components/ui/button",
+        "lucide-react",
+        "react",
+        "react-admin"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "TagDialog",
+        "Tag"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"

@@ -1,7 +1,7 @@
 {
   "chunk_name": "organizations",
-  "generated_at": "2025-12-29T18:58:47.217Z",
-  "item_count": 73,
+  "generated_at": "2025-12-31T21:26:11.795Z",
+  "item_count": 74,
   "items": [
     {
       "name": "ActivitiesTab",
@@ -138,19 +138,16 @@
     {
       "name": "AutocompleteOrganizationInput",
       "file": "src/atomic-crm/organizations/AutocompleteOrganizationInput.tsx",
-      "line": 5,
+      "line": 4,
       "type": "presentational",
-      "hooks": [
-        "useState"
-      ],
+      "hooks": [],
       "imports": [
         "./QuickCreatePopover",
-        "@/components/admin/autocomplete-input",
-        "react"
+        "@/components/admin/autocomplete-input"
       ],
       "isDefaultExport": false,
       "childComponents": [
-        "QuickCreatePopover"
+        "QuickCreateOrganizationRA"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -1316,7 +1313,7 @@
     {
       "name": "QuickCreatePopover",
       "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
-      "line": 41,
+      "line": 43,
       "type": "presentational",
       "hooks": [
         "useDataProvider",
@@ -1331,6 +1328,40 @@
         "@/components/ui/label",
         "@/components/ui/popover",
         "@/components/ui/select",
+        "@/hooks/useSupportCreateSuggestion",
+        "@hookform/resolvers/zod",
+        "ra-core",
+        "react",
+        "react-hook-form",
+        "zod"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "QuickCreateOrganizationRA",
+      "file": "src/atomic-crm/organizations/QuickCreatePopover.tsx",
+      "line": 253,
+      "type": "presentational",
+      "hooks": [
+        "useCreateSuggestionContext",
+        "useDataProvider",
+        "useForm",
+        "useNotify",
+        "useState"
+      ],
+      "imports": [
+        "@/atomic-crm/validation/segments",
+        "@/components/ui/button",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/components/ui/popover",
+        "@/components/ui/select",
+        "@/hooks/useSupportCreateSuggestion",
         "@hookform/resolvers/zod",
         "ra-core",
         "react",
@@ -1796,10 +1827,11 @@
     {
       "name": "OrganizationDetailsTab",
       "file": "src/atomic-crm/organizations/slideOverTabs/OrganizationDetailsTab.tsx",
-      "line": 31,
+      "line": 58,
       "type": "presentational",
       "hooks": [
         "useNotify",
+        "useRef",
         "useUpdate"
       ],
       "imports": [
@@ -1819,7 +1851,9 @@
         "@/components/ui/badge",
         "@/components/ui/scroll-area",
         "ra-core",
-        "react-admin"
+        "react",
+        "react-admin",
+        "react-hook-form"
       ],
       "isDefaultExport": false,
       "childComponents": [

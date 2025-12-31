@@ -1,6 +1,6 @@
 {
   "chunk_name": "settings",
-  "generated_at": "2025-12-29T18:58:52.882Z",
+  "generated_at": "2025-12-31T21:26:23.171Z",
   "items": {
     "nodes": [
       {
@@ -40,10 +40,10 @@
         "async": false
       },
       {
-        "id": "src/atomic-crm/settings/TimeZoneSelect.tsx:27:TimeZoneSelect",
+        "id": "src/atomic-crm/settings/TimeZoneSelect.tsx:10:TimeZoneSelect",
         "name": "TimeZoneSelect",
         "file": "src/atomic-crm/settings/TimeZoneSelect.tsx",
-        "line": 27,
+        "line": 10,
         "nodeType": "component",
         "exported": true,
         "async": false
@@ -852,74 +852,20 @@
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/TimeZoneSelect.tsx:27:TimeZoneSelect",
-        "target": "map",
-        "targetName": "map",
-        "edgeType": "call",
-        "line": 36,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/TimeZoneSelect.tsx:27:TimeZoneSelect",
-        "target": "Label",
-        "targetName": "Label",
-        "edgeType": "render",
-        "line": 30,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/TimeZoneSelect.tsx:27:TimeZoneSelect",
-        "target": "Select",
-        "targetName": "Select",
-        "edgeType": "render",
-        "line": 31,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/TimeZoneSelect.tsx:27:TimeZoneSelect",
+        "source": "src/atomic-crm/settings/TimeZoneSelect.tsx:10:TimeZoneSelect",
         "target": "onChange",
         "targetName": "onChange",
-        "edgeType": "callback",
-        "line": 31,
+        "edgeType": "call",
+        "line": 17,
         "conditional": false,
         "inLoop": false
       },
       {
-        "source": "src/atomic-crm/settings/TimeZoneSelect.tsx:27:TimeZoneSelect",
-        "target": "SelectTrigger",
-        "targetName": "SelectTrigger",
+        "source": "src/atomic-crm/settings/TimeZoneSelect.tsx:10:TimeZoneSelect",
+        "target": "GenericSelectInput",
+        "targetName": "GenericSelectInput",
         "edgeType": "render",
-        "line": 32,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/TimeZoneSelect.tsx:27:TimeZoneSelect",
-        "target": "SelectContent",
-        "targetName": "SelectContent",
-        "edgeType": "render",
-        "line": 35,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/TimeZoneSelect.tsx:27:TimeZoneSelect",
-        "target": "SelectItem",
-        "targetName": "SelectItem",
-        "edgeType": "render",
-        "line": 37,
-        "conditional": false,
-        "inLoop": false
-      },
-      {
-        "source": "src/atomic-crm/settings/TimeZoneSelect.tsx:27:TimeZoneSelect",
-        "target": "SelectValue",
-        "targetName": "SelectValue",
-        "edgeType": "render",
-        "line": 33,
+        "line": 14,
         "conditional": false,
         "inLoop": false
       },

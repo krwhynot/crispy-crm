@@ -1,7 +1,7 @@
 {
   "chunk_name": "contacts",
-  "generated_at": "2025-12-29T18:58:47.213Z",
-  "item_count": 51,
+  "generated_at": "2025-12-31T21:26:11.784Z",
+  "item_count": 54,
   "items": [
     {
       "name": "ActivitiesTab",
@@ -57,6 +57,28 @@
         "ActivityTimelineEntry",
         "ActivityRecord",
         "ACTIVITY_PAGE_SIZE"
+      ],
+      "contextDependencies": [],
+      "componentRole": "wrapper"
+    },
+    {
+      "name": "AutocompleteContactInput",
+      "file": "src/atomic-crm/contacts/AutocompleteContactInput.tsx",
+      "line": 16,
+      "type": "presentational",
+      "hooks": [
+        "useGetIdentity",
+        "useState"
+      ],
+      "imports": [
+        "./QuickCreateContactPopover",
+        "@/components/admin/autocomplete-input",
+        "ra-core",
+        "react"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [
+        "QuickCreateContactPopover"
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
@@ -1029,6 +1051,67 @@
       ],
       "contextDependencies": [],
       "componentRole": "wrapper"
+    },
+    {
+      "name": "QuickCreateContactPopover",
+      "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
+      "line": 34,
+      "type": "presentational",
+      "hooks": [
+        "useDataProvider",
+        "useForm",
+        "useNotify",
+        "useState"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/components/ui/popover",
+        "@/hooks/useSupportCreateSuggestion",
+        "@hookform/resolvers/zod",
+        "ra-core",
+        "react",
+        "react-hook-form",
+        "zod"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "leaf"
+    },
+    {
+      "name": "QuickCreateContactRA",
+      "file": "src/atomic-crm/contacts/QuickCreateContactPopover.tsx",
+      "line": 210,
+      "type": "presentational",
+      "hooks": [
+        "useCreateSuggestionContext",
+        "useDataProvider",
+        "useForm",
+        "useNotify",
+        "useState"
+      ],
+      "imports": [
+        "@/components/ui/button",
+        "@/components/ui/input",
+        "@/components/ui/label",
+        "@/components/ui/popover",
+        "@/hooks/useSupportCreateSuggestion",
+        "@hookform/resolvers/zod",
+        "ra-core",
+        "react",
+        "react-hook-form",
+        "zod"
+      ],
+      "isDefaultExport": false,
+      "childComponents": [],
+      "contextDependencies": [
+        "useDataProvider"
+      ],
+      "componentRole": "leaf"
     },
     {
       "name": "StageBadgeWithHealth",
