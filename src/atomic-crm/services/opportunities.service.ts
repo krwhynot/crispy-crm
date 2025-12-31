@@ -247,4 +247,26 @@ export class OpportunitiesService {
     // Otherwise, assume it's already unwrapped
     return response as Opportunity;
   }
+
+  /**
+   * Sync opportunity contacts via RPC
+   * Uses sync_opportunity_with_contacts RPC for atomic update of junction table
+   * @param id Opportunity ID
+   * @param contactIds Array of contact IDs to associate
+   */
+  async updateWithContacts(
+    id: Identifier,
+    contactIds: Identifier[]
+  ): Promise<void> {
+    try {
+      await this.dataProvider.rpc("sync_opportunity_with_contacts", {
+        p_opportunity_id: id,
+        p_contact_ids: contactIds,
+      });
+      devLog("OpportunitiesService", "Contacts synced successfully", { id, contactIds });
+    } catch (error) {
+      devError("OpportunitiesService", "Failed to sync contacts", { id, error });
+      throw error;  // Fail-fast
+    }
+  }
 }
