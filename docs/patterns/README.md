@@ -50,7 +50,18 @@ Component design, hooks, and user interaction patterns.
 
 Build, test, monitoring, and deployment patterns.
 
-*No pattern documentation exists for this tier yet.*
+| Pattern | Description | Source |
+|---------|-------------|--------|
+| [GitHub Workflows](./tier-4-infrastructure/github-workflows.md) | CI/CD pipelines, security scans, deployment | `.github/workflows/` |
+| [Husky](./tier-4-infrastructure/husky.md) | Git hooks, pre-commit validation | `.husky/` |
+| [Dev Scripts](./tier-4-infrastructure/dev-scripts.md) | Development tooling, seeding, utilities | `scripts/dev/` |
+| [Discovery](./tier-4-infrastructure/discovery.md) | Code indexing, SCIP symbols, FTS5 | `scripts/discover/` |
+| [Docker Scripts](./tier-4-infrastructure/docker-scripts.md) | Container orchestration, health checks | `scripts/docker/` |
+| [MCP Server](./tier-4-infrastructure/mcp.md) | Code intelligence, hybrid search, RRF | `scripts/mcp/` |
+| [Validation Scripts](./tier-4-infrastructure/validation-scripts.md) | Pre-migration validation, Go/No-Go | `scripts/validation/` |
+| [Supabase Docker](./tier-4-infrastructure/supabase-docker.md) | Local Supabase stack, health checks | `supabase/docker/` |
+| [E2E Testing](./tier-4-infrastructure/e2e-testing.md) | Integration tests, RLS validation | `tests/` |
+| [Unit Testing](./tier-4-infrastructure/unit-testing.md) | Vitest patterns, mocks, test utils | `src/tests/` |
 
 ---
 
