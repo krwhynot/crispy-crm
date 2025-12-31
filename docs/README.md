@@ -61,6 +61,7 @@ These files are auto-generated and CI-enforced fresh:
 | Architecture decision | Add to `decisions.md` |
 | Technical debt | Add to `technical-debt.md` |
 | Developer guide | `guides/[topic].md` |
+| UI/UX patterns | `design/` (see `design/INDEX.md`) |
 | Completed audit | `archive/audits/` |
 | Historical record | `archive/` |
 
