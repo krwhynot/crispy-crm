@@ -392,6 +392,10 @@ export const quickCreateContactSchema = z.strictObject({
   first_seen: z.string().max(50).optional(),
   last_seen: z.string().max(50).optional(),
   quickCreate: z.literal(true), // Must be explicitly true
+
+  // COMPUTED: Added by contactsCallbacks.computeNameField() before validation
+  // Required by database NOT NULL constraint, but computed from first_name + last_name
+  name: z.string().max(201).optional(), // 100 + space + 100 = max combined length
 });
 
 // Validation function matching expected signature from unifiedDataProvider
