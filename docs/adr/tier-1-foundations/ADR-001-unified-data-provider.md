@@ -119,7 +119,7 @@ export const unifiedDataProvider: DataProvider = {
 ### Neutral
 
 - **Requires Discipline**: Team must resist temptation to bypass provider with direct Supabase imports
-- **Evolution to Composition**: Growing complexity led to [ADR-009](./ADR-009-composed-data-provider.md) for per-resource handlers
+- **Evolution to Composition**: Growing complexity led to [ADR-009](../tier-2-data-layer/ADR-009-composed-data-provider.md) for per-resource handlers
 
 ---
 
@@ -160,7 +160,7 @@ function MyComponent() {
 ## Related ADRs
 
 - **[ADR-002: Zod Validation at API Boundary](./ADR-002-zod-api-boundary.md)** - Explains why validation happens in this provider, not in forms
-- **[ADR-009: Composed Data Provider Pattern](./ADR-009-composed-data-provider.md)** - Explains how the provider delegates to per-resource handlers
+- **[ADR-009: Composed Data Provider Pattern](../tier-2-data-layer/ADR-009-composed-data-provider.md)** - Explains how the provider delegates to per-resource handlers
 
 ---
 

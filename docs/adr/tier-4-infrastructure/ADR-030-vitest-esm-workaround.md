@@ -410,7 +410,7 @@ const queryClient = new QueryClient({
 
 - **[ADR-018: Test Render Utility](./ADR-018-test-render-utility.md)** - Test utilities that depend on this configuration
 - **[ADR-021: Multi-Environment Configuration](./ADR-021-multi-environment-config.md)** - Environment variables for test configuration
-- **[ADR-014: Fail-Fast Philosophy](./ADR-014-fail-fast-philosophy.md)** - Test QueryClient mirrors fail-fast (retry: false)
+- **[ADR-014: Fail-Fast Philosophy](../tier-1-foundations/ADR-014-fail-fast-philosophy.md)** - Test QueryClient mirrors fail-fast (retry: false)
 
 ---
 

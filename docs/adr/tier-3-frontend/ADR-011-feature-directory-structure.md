@@ -224,8 +224,8 @@ export * from "./ContactSlideOver";
 ## Related ADRs
 
 - **[ADR-010: Slide-Over Panel Pattern](./ADR-010-slide-over-panels.md)**: Defines the `[Feature]SlideOver.tsx` component pattern referenced in this structure
-- **[ADR-014: Fail-Fast Philosophy](./ADR-014-fail-fast-philosophy.md)**: Explains why error boundaries are critical and how they support the fail-fast principle
-- **[ADR-001: Unified Data Provider](./ADR-001-unified-data-provider.md)**: All feature components use the unified data provider, never direct Supabase imports
+- **[ADR-014: Fail-Fast Philosophy](../tier-1-foundations/ADR-014-fail-fast-philosophy.md)**: Explains why error boundaries are critical and how they support the fail-fast principle
+- **[ADR-001: Unified Data Provider](../tier-1-foundations/ADR-001-unified-data-provider.md)**: All feature components use the unified data provider, never direct Supabase imports
 
 ---
 

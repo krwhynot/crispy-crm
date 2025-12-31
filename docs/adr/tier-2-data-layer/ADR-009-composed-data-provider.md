@@ -16,7 +16,7 @@ Original: 2024-11 | Documented: 2025-12-30
 
 ## Context
 
-As Crispy CRM grew, the unified data provider ([ADR-001](./ADR-001-unified-data-provider.md)) accumulated resource-specific logic:
+As Crispy CRM grew, the unified data provider ([ADR-001](../tier-1-foundations/ADR-001-unified-data-provider.md)) accumulated resource-specific logic:
 
 - **Contacts**: JSONB array normalization for email/phone, soft delete filtering
 - **Opportunities**: Product sync, optimistic locking, cascade soft delete
@@ -285,8 +285,8 @@ const result = await supabase.from("contacts").select("*");
 
 ## Related ADRs
 
-- **[ADR-001: Unified Data Provider Entry Point](./ADR-001-unified-data-provider.md)** - The entry point that delegates to this composed provider
-- **[ADR-002: Zod Validation at API Boundary](./ADR-002-zod-api-boundary.md)** - The validation wrapper used in composition chain
+- **[ADR-001: Unified Data Provider Entry Point](../tier-1-foundations/ADR-001-unified-data-provider.md)** - The entry point that delegates to this composed provider
+- **[ADR-002: Zod Validation at API Boundary](../tier-1-foundations/ADR-002-zod-api-boundary.md)** - The validation wrapper used in composition chain
 
 ---
 

@@ -283,7 +283,7 @@ const cache = new LRUCache({
 
 ## Related ADRs
 
-- **[ADR-001: Unified Data Provider Entry Point](./ADR-001-unified-data-provider.md)** - Where escape function is called
+- **[ADR-001: Unified Data Provider Entry Point](../tier-1-foundations/ADR-001-unified-data-provider.md)** - Where escape function is called
 - **[ADR-009: Composed Data Provider Pattern](./ADR-009-composed-data-provider.md)** - Handler routing that uses filters
 
 ---

@@ -288,8 +288,8 @@ Papa.parse(file, {
 
 ## Related ADRs
 
-- **[ADR-002: Zod Validation at API Boundary](./ADR-002-zod-api-boundary.md)** - Server-side validation pattern (defense in depth)
-- **[ADR-014: Fail-Fast Philosophy](./ADR-014-fail-fast-philosophy.md)** - Validation errors throw immediately
+- **[ADR-002: Zod Validation at API Boundary](../tier-1-foundations/ADR-002-zod-api-boundary.md)** - Server-side validation pattern (defense in depth)
+- **[ADR-014: Fail-Fast Philosophy](../tier-1-foundations/ADR-014-fail-fast-philosophy.md)** - Validation errors throw immediately
 - **[ADR-032: CSV Data Import Architecture](./ADR-032-csv-import-architecture.md)** - How validated CSV data is imported
 
 ---
