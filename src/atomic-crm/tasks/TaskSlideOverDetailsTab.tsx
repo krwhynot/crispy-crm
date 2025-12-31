@@ -53,17 +53,20 @@ export function TaskSlideOverDetailsTab({
 
   // Handle save in edit mode
   const handleSave = async (data: Partial<Task>) => {
+    console.log("🔍 [TASK] handleSave CALLED with data:", data);
     try {
+      console.log("🔍 [TASK] Calling update() with:", { id: record.id, data });
       await update("tasks", {
         id: record.id,
         data,
         previousData: record,
       });
+      console.log("🔍 [TASK] update() completed successfully");
       notify("Task updated successfully", { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error) {
+      console.error("🔍 [TASK] Save error:", error);
       notify("Error updating task", { type: "error" });
-      console.error("Save error:", error);
     }
   };
 
