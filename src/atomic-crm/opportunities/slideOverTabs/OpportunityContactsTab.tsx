@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from "react";
+import { useState } from "react";
 import { useGetList, Form, useUpdate, useNotify, useRefresh, useGetIdentity, ReferenceArrayInput } from "react-admin";
 import type { Identifier } from "ra-core";
 import { useFormContext } from "react-hook-form";

@@ -30,8 +30,6 @@ export const AutocompleteArrayInput = (
       translateChoice?: boolean;
       placeholder?: string;
       inputText?: React.ReactNode | ((option: RaRecord | undefined) => React.ReactNode);
-      /** Callback to get a function that clears the filter. Used when external creation bypasses normal handleChange flow. */
-      onFilterClear?: (clearFilter: () => void) => void;
     }
 ) => {
   const {
@@ -44,7 +42,6 @@ export const AutocompleteArrayInput = (
     createItemLabel,
     onCreate,
     optionText,
-    onFilterClear,
   } = props;
   const {
     allChoices = [],
@@ -94,19 +91,6 @@ export const AutocompleteArrayInput = (
     field.value.includes(getChoiceValue(choice))
   );
   const [filterValue, setFilterValue] = React.useState("");
-
-  const clearFilter = React.useCallback(() => {
-    setFilterValue("");
-    if (isFromReference) {
-      setFilters(filterToQuery(""));
-    }
-  }, [isFromReference, setFilters, filterToQuery]);
-
-  React.useEffect(() => {
-    if (onFilterClear) {
-      onFilterClear(clearFilter);
-    }
-  }, [onFilterClear, clearFilter]);
 
   const getInputText = useCallback(
     (selectedChoice: RaRecord | undefined) => {
