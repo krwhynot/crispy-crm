@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import { Building2, Trophy, XCircle } from "lucide-react";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
-import { AutocompleteInput } from "@/components/admin/autocomplete-input";
+import { AutocompleteOrganizationInput } from "../../organizations/AutocompleteOrganizationInput";
 import { Badge } from "@/components/ui/badge";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { DirtyStateTracker, SidepaneMetadata, SidepaneSection } from "@/components/layouts/sidepane";
@@ -260,36 +260,39 @@ export function OpportunitySlideOverDetailsTab({
           fullWidth
         />
 
-        {/* Organizations section */}
+        {/* Organizations section - with inline creation via AutocompleteOrganizationInput */}
         <SidepaneSection label="Organizations" showSeparator>
           <div className="space-y-2">
-            <ReferenceInput source="customer_organization_id" reference="organizations">
-              <AutocompleteInput
+            <ReferenceInput
+              source="customer_organization_id"
+              reference="organizations"
+              filter={{ "organization_type@in": "(prospect,customer)" }}
+            >
+              <AutocompleteOrganizationInput
                 label="Customer Organization *"
-                optionText="name"
-                filterToQuery={(searchText: string) => ({ q: searchText })}
-                helperText="The customer organization for this opportunity"
-                fullWidth
+                organizationType="customer"
               />
             </ReferenceInput>
 
-            <ReferenceInput source="principal_organization_id" reference="organizations">
-              <AutocompleteInput
+            <ReferenceInput
+              source="principal_organization_id"
+              reference="organizations"
+              filter={{ organization_type: "principal" }}
+            >
+              <AutocompleteOrganizationInput
                 label="Principal Organization *"
-                optionText="name"
-                filterToQuery={(searchText: string) => ({ q: searchText })}
-                helperText="The principal/manufacturer organization"
-                fullWidth
+                organizationType="principal"
               />
             </ReferenceInput>
 
-            <ReferenceInput source="distributor_organization_id" reference="organizations">
-              <AutocompleteInput
+            <ReferenceInput
+              source="distributor_organization_id"
+              reference="organizations"
+              filter={{ organization_type: "distributor" }}
+            >
+              <AutocompleteOrganizationInput
                 label="Distributor Organization"
-                optionText="name"
-                filterToQuery={(searchText: string) => ({ q: searchText })}
-                helperText="Optional distributor organization"
-                fullWidth
+                organizationType="distributor"
               />
             </ReferenceInput>
           </div>
