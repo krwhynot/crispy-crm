@@ -38,19 +38,15 @@ export function OrganizationDetailsTab({
   const notify = useNotify();
 
   const handleSave = async (data: Partial<OrganizationWithHierarchy>) => {
-    console.log("🔍 handleSave CALLED with data:", data);
     try {
-      console.log("🔍 Calling update() with:", { id: record.id, data });
       await update("organizations", {
         id: record.id,
         data,
         previousData: record,
       });
-      console.log("🔍 update() completed successfully");
       notify("Organization updated successfully", { type: "success" });
       onModeToggle?.();
     } catch (error) {
-      console.error("🔍 Save error:", error);
       notify("Error updating organization", { type: "error" });
     }
   };

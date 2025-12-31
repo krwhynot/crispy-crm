@@ -53,19 +53,15 @@ export function TaskSlideOverDetailsTab({
 
   // Handle save in edit mode
   const handleSave = async (data: Partial<Task>) => {
-    console.log("🔍 [TASK] handleSave CALLED with data:", data);
     try {
-      console.log("🔍 [TASK] Calling update() with:", { id: record.id, data });
       await update("tasks", {
         id: record.id,
         data,
         previousData: record,
       });
-      console.log("🔍 [TASK] update() completed successfully");
       notify("Task updated successfully", { type: "success" });
       onModeToggle?.(); // Return to view mode after successful save
     } catch (error) {
-      console.error("🔍 [TASK] Save error:", error);
       notify("Error updating task", { type: "error" });
     }
   };
@@ -91,10 +87,7 @@ export function TaskSlideOverDetailsTab({
   if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
-        <Form id="slide-over-edit-form" onSubmit={(data) => {
-          console.log("🔍 [TASK] Form onSubmit triggered with:", data);
-          return handleSave(data);
-        }} record={record}>
+        <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
           <DirtyStateTracker onDirtyChange={onDirtyChange} />
           <div className="space-y-6" role="form" aria-label="Edit task form">
             <div className="space-y-4">
