@@ -1,5 +1,6 @@
 import { useUpdate, useNotify, RecordContextProvider } from "ra-core";
 import { Form } from "react-admin";
+import { useFormContext } from "react-hook-form";
 import { TextInput } from "@/components/admin/text-input";
 import { SelectInput } from "@/components/admin/select-input";
 import { ReferenceInput } from "@/components/admin/reference-input";
@@ -21,6 +22,59 @@ import { ORGANIZATION_TYPE_CHOICES, PRIORITY_CHOICES, STATUS_CHOICES } from "../
 import { saleOptionRenderer } from "../../utils/saleOptionRenderer";
 import { OrganizationTypeBadge, PriorityBadge } from "../OrganizationBadges";
 
+/**
+ * Helper component that must be rendered INSIDE a Form to access form context.
+ * This component gets the current form values and calls the save handler.
+ *
+ * Problem: React Admin's Form onSubmit may only pass dirty fields, causing
+ * sales_id to be missing when its initial value is null (null → null = no change).
+ *
+ * Solution: Use useFormContext().getValues() to get ALL registered field values
+ * regardless of dirty state, ensuring sales_id is always included in the update.
+ */
+function FormValuesHandler({
+  onSave,
+  onDirtyChange,
+}: {
+  onSave: (data: Partial<OrganizationWithHierarchy>) => Promise<void>;
+  onDirtyChange?: (isDirty: boolean) => void;
+}) {
+  const { getValues } = useFormContext();
+
+  // This function is called by the parent's onSubmit wrapper
+  // It ensures we get ALL form values, not just dirty fields
+  const handleFormSubmit = async () => {
+    // Get ALL current form values, regardless of dirty state
+    const allFormValues = getValues();
+
+    // Ensure sales_id is explicitly included (null if not set)
+    const completeData: Partial<OrganizationWithHierarchy> = {
+      ...allFormValues,
+      sales_id: allFormValues.sales_id ?? null,
+    };
+
+    await onSave(completeData);
+  };
+
+  // Store the handler in a data attribute so the Form's onSubmit can access it
+  // This is a workaround because onSubmit is defined outside Form context
+  return (
+    <>
+      <DirtyStateTracker onDirtyChange={onDirtyChange} />
+      <input
+        type="hidden"
+        data-form-submit-handler="true"
+        ref={(el) => {
+          if (el) {
+            // Attach our handler to the DOM element for access from onSubmit
+            (el as HTMLInputElement & { submitHandler?: () => Promise<void> }).submitHandler = handleFormSubmit;
+          }
+        }}
+      />
+    </>
+  );
+}
+
 interface OrganizationDetailsTabProps {
   record: OrganizationWithHierarchy;
   mode: "view" | "edit";
@@ -39,18 +93,11 @@ export function OrganizationDetailsTab({
 
   const handleSave = async (data: Partial<OrganizationWithHierarchy>) => {
     try {
-      // Ensure sales_id is always included (even if null/unchanged)
-      // This fixes ra-data-postgrest change detection for null → value changes
-      // See: node_modules/@raphiniert/ra-data-postgrest - getChanges() only compares
-      // fields present in data object, so we must explicitly include sales_id
-      const dataWithSalesId = {
-        ...data,
-        sales_id: data.sales_id ?? record.sales_id ?? null,
-      };
-
+      // Data now comes from FormSaveHandler which ensures sales_id is always included
+      // via useFormContext().getValues() - fixes ra-data-postgrest change detection
       await update("organizations", {
         id: record.id,
-        data: dataWithSalesId,
+        data,
         previousData: record,
       });
       notify("Organization updated successfully", { type: "success" });
@@ -63,7 +110,8 @@ export function OrganizationDetailsTab({
   if (mode === "edit") {
     return (
       <RecordContextProvider value={record}>
-        <Form id="slide-over-edit-form" onSubmit={handleSave} record={record}>
+        <Form id="slide-over-edit-form" record={record}>
+          <FormSaveHandler record={record} onSave={handleSave} />
           <DirtyStateTracker onDirtyChange={onDirtyChange} />
           <div className="space-y-6">
             <div className="space-y-4">
