@@ -25,6 +25,57 @@ type TransformableData =
 type TransformerFunction<T = TransformableData> = (data: T) => Promise<T>;
 
 /**
+ * Fields to strip BEFORE Zod validation (from opportunities_summary view + system fields)
+ *
+ * SECURITY: Uses explicit denylist. z.strictObject() remains as final security gate.
+ * If a new bad field appears, validation fails safely (caught by strictObject).
+ *
+ * Source: opportunities_summary view definition + database schema
+ */
+const OPPORTUNITY_FIELDS_TO_STRIP = [
+  // View JOIN fields (organization names from LEFT JOINs)
+  "principal_organization_name",
+  "customer_organization_name",
+  "distributor_organization_name",
+  // Computed aggregations (calculated in view CTEs)
+  "nb_interactions",
+  "last_interaction_date",
+  "days_in_stage",
+  "days_since_last_activity",
+  "pending_task_count",
+  "overdue_task_count",
+  // Next task computed fields (from tasks subquery in view)
+  "next_task_id",
+  "next_task_title",
+  "next_task_due_date",
+  "next_task_priority",
+  // System/trigger fields (managed by PostgreSQL, not user input)
+  "search_tsv",
+  "stage_changed_at",
+  "created_by",
+  "updated_by",
+  "index",
+  // Internal state fields (not in UI schema, managed by system)
+  "status",
+  "actual_close_date",
+  "founding_interaction_id",
+  "stage_manual",
+  "status_manual",
+  "competition",
+  // Metadata (managed by DB triggers, not form fields)
+  "created_at",
+  "updated_at",
+  "deleted_at",
+  // Legacy/view fields
+  "products", // View field - UI uses products_to_sync for sync
+  "total_value",
+  "participant_count",
+  "contact_count",
+  "product_count",
+  "version", // Managed by DB for optimistic locking
+] as const;
+
+/**
  * TransformService handles data mutations and transformations
  * Following Engineering Constitution principle #1: Single responsibility
  *
@@ -221,5 +272,73 @@ export class TransformService {
     }
 
     return transformer.transform(data) as Promise<T>;
+  }
+
+  /**
+   * Transform data BEFORE Zod validation (strips non-schema fields)
+   *
+   * SECURITY: Uses explicit denylist to preserve schema integrity.
+   * z.strictObject() remains as the final security gate - this just removes
+   * known view/computed fields that would cause validation to fail.
+   *
+   * @param resource The resource being validated
+   * @param data The data to transform before validation
+   * @returns Data with non-schema fields stripped
+   */
+  transformForValidation(resource: string, data: Record<string, unknown>): Record<string, unknown> {
+    if (resource === "opportunities") {
+      return this.transformOpportunityForValidation(data);
+    }
+    // No pre-validation transform needed for other resources (yet)
+    return data;
+  }
+
+  /**
+   * Strip non-schema fields from opportunity data before Zod validation
+   *
+   * Handles three categories:
+   * 1. View/computed fields (from opportunities_summary view)
+   * 2. React Admin internal tracking IDs in array items
+   * 3. contact_ids normalization (objects → plain numbers)
+   *
+   * @param data Opportunity data from form submission
+   * @returns Cleaned data ready for Zod validation
+   */
+  private transformOpportunityForValidation(data: Record<string, unknown>): Record<string, unknown> {
+    const cleaned = { ...data };
+
+    // 1. Strip view/system fields by explicit denylist
+    for (const field of OPPORTUNITY_FIELDS_TO_STRIP) {
+      delete cleaned[field];
+    }
+
+    // 2. Strip internal `id` from products_to_sync array items
+    // React Admin's SimpleFormIterator adds tracking IDs like "@@ra-generated-1"
+    // Schema expects: { product_id_reference, notes } - no id field
+    if (Array.isArray(cleaned.products_to_sync)) {
+      cleaned.products_to_sync = (cleaned.products_to_sync as Array<Record<string, unknown>>).map(
+        (item) => {
+          if (item && typeof item === "object") {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { id, ...rest } = item;
+            return rest;
+          }
+          return item;
+        }
+      );
+    }
+
+    // 3. Normalize contact_ids (objects → plain numbers)
+    // Some components may pass { id: 123 } instead of just 123
+    if (Array.isArray(cleaned.contact_ids)) {
+      cleaned.contact_ids = (cleaned.contact_ids as Array<unknown>).map((item) => {
+        if (item && typeof item === "object" && "id" in item) {
+          return (item as { id: number }).id;
+        }
+        return item;
+      });
+    }
+
+    return cleaned;
   }
 }
